@@ -1,0 +1,23 @@
+{
+  "version": "1.0.0-*",
+  "description": "UnitTests Class Library",
+  "authors": [ "sony" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "dependencies": {
+    "System.Collections": "4.0.10-beta-23019",
+    "System.Linq": "4.0.0-beta-23019",
+    "System.Threading": "4.0.10-beta-23019",
+    "System.Runtime": "4.0.10-beta-23019",
+    "Microsoft.CSharp": "4.0.0-beta-23019",
+    "NUnit": "2.6.4",
+    "MongoDB.Driver": "2.0.1",
+    "Common": "1.0.0-*"
+  },
+
+  "frameworks": {
+    "dnx451": { }
+  }
+}

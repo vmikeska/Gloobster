@@ -1,0 +1,10 @@
+{
+  "AppSettings": {
+    "SiteTitle": "Goobster"
+  },
+  "Data": {
+    "DefaultConnection": {
+      "ConnectionString": "Server=(localdb)\\mssqllocaldb;Database=aspnet5-Goobster-65c8098f-9226-49fe-8444-05f32eed4f6f;Trusted_Connection=True;MultipleActiveResultSets=true"
+    }
+  }
+}

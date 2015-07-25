@@ -1,0 +1,127 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
+    <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+        <li data-target="#myCarousel" data-slide-to="3"></li>
+    </ol>
+    <div class="carousel-inner" role="listbox">
+        <div class="item active">
+            <img src="~/images/ASP-NET-Banners-01.png" alt="ASP.NET" class="img-responsive">
+            <div class="container">
+                <div class="carousel-caption">
+                    <p>
+                        Learn how to build ASP.NET apps that can run anywhere.
+                        <a class="btn btn-default btn-default" href="http://go.microsoft.com/fwlink/?LinkID=525028&clcid=0x409">
+                            Learn More
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <img src="~/images/Banner-02-VS.png" alt="Visual Studio" class="img-responsive">
+            <div class="container">
+                <div class="carousel-caption">
+                    <p>
+                        There are powerful new features in Visual Studio for building modern web apps.
+                        <a class="btn btn-default btn-default" href="http://go.microsoft.com/fwlink/?LinkID=525030&clcid=0x409">
+                            Learn More
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <img src="~/images/ASP-NET-Banners-02.png" alt="Package Management" class="img-responsive">
+            <div class="container">
+                <div class="carousel-caption">
+                    <p>
+                        Bring in libraries from NuGet, Bower, and npm, and automate tasks using Grunt or Gulp.
+                        <a class="btn btn-default btn-default" href="http://go.microsoft.com/fwlink/?LinkID=525029&clcid=0x409">
+                            Learn More
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <img src="~/images/Banner-01-Azure.png" alt="Microsoft Azure" class="img-responsive">
+            <div class="container">
+                <div class="carousel-caption">
+                    <p>
+                        Learn how Microsoft's Azure cloud platform allows you to build, deploy, and scale web apps.
+                        <a class="btn btn-default btn-default" href="http://go.microsoft.com/fwlink/?LinkID=525027&clcid=0x409">
+                            Learn More
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+
+    <script type="text/javascript" src="@Url.Content("~/js/facebook.js")"></script>
+
+    <script>
+
+        var loginConfig = {
+
+            onFacebookConnected: function (authResponse) {
+                FB.api('/me', function (response) {
+                    document.getElementById('status').innerHTML = JSON.stringify(response);
+                });
+            }
+        }
+
+        var fbLogin = new Gloobster.Facebook.Login(loginConfig);
+        var fbInit = new Gloobster.Facebook.Initialization(fbLogin.refreshLoginStatus);
+
+        window.fbAsyncInit = fbInit.asyncInit;
+        fbInit.sdkLoad(document);
+
+        function register() {
+            $.ajax({
+                type: 'POST',
+                url: '/api/user',
+                data: $('#registerUserForm').serialize(),
+                success: function(res) {}
+                //,dataType: dataType
+            });
+        }
+    </script>
+
+
+    <div>
+        <fb:login-button scope="user_tagged_places,user_likes,publish_actions,user_location,user_hometown,email,user_status" onlogin="fbLogin.refreshLoginStatus();">
+        </fb:login-button>
+
+        <form id="registerUserForm" style="border: 1px solid black">
+
+            <div>
+                <label for="ContactName">Mail</label>
+                <input type="text" name="mail" value="" />
+            </div>
+
+            <div>
+                <label for="ContactName">Password</label>
+                <input type="text" name="password" value="" />
+            </div>
+
+            <button onclick="register()">Register</button>
+        </form>
+
+    </div>
+
+
+
+        <div id="status">
+        </div>
+
+    </div>
