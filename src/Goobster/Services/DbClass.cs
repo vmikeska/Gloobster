@@ -51,6 +51,8 @@ namespace Goobster.Portal.Services
             var collectionName = typeof(T).Name;
             var collection = Database.GetCollection<BsonDocument>(collectionName);
 
+            var filter = Builders<T>.Filter.Lt("grades.score", 10);
+
             var result = collection.Find(query).ToListAsync();
             return result;
         }
