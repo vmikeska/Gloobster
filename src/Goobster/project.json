@@ -28,7 +28,10 @@
         "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0-beta5",
         "MongoDB.Driver": "2.0.1",
         "Facebook": "7.0.6",
-        "Common": "1.0.0-*"
+        "Common": "1.0.0-*",
+        "DomainModelsCommon": "1.0.0-*",
+        "DomainModels": "1.0.0-*",
+        "Microsoft.AspNet.Mvc.WebApiCompatShim": "6.0.0-beta5"
     },
 
     "commands": {

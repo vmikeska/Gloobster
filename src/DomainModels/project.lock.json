@@ -39,14 +39,6 @@
           "lib/net45/MongoDB.Driver.Core.dll": {}
         }
       },
-      "NUnit/2.6.4": {
-        "compile": {
-          "lib/nunit.framework.dll": {}
-        },
-        "runtime": {
-          "lib/nunit.framework.dll": {}
-        }
-      },
       "System.Collections/4.0.10-beta-23019": {
         "dependencies": {
           "System.Runtime": "4.0.0-beta-23019"
@@ -116,17 +108,6 @@
         "MongoDB.Driver.Core.2.0.1.nupkg.sha512",
         "MongoDB.Driver.Core.nuspec",
         "lib/net45/MongoDB.Driver.Core.dll"
-      ]
-    },
-    "NUnit/2.6.4": {
-      "sha512": "cmSPvaCMRSP0DI19FP1Liw9DyJY3E/vOY1OrVaeJBZpZFWHkmT3fB9ngGWnZX/ftvA7zJEbghEaw3Yd+u4YFAw==",
-      "files": [
-        "license.txt",
-        "NUnit.2.6.4.nupkg",
-        "NUnit.2.6.4.nupkg.sha512",
-        "NUnit.nuspec",
-        "lib/nunit.framework.dll",
-        "lib/nunit.framework.xml"
       ]
     },
     "System.Collections/4.0.10-beta-23019": {
@@ -211,9 +192,7 @@
       "System.Threading >= 4.0.10-beta-23019",
       "System.Runtime >= 4.0.10-beta-23019",
       "Microsoft.CSharp >= 4.0.0-beta-23019",
-      "NUnit >= 2.6.4",
-      "MongoDB.Driver >= 2.0.1",
-      "Common >= 1.0.0-*"
+      "DomainModelsCommon >= 1.0.0-*"
     ],
     "DNX,Version=v4.5.1": []
   }

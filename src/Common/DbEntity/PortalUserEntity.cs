@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Gloobster.Common.DbEntity
 {
-    public class PortalUser
+    public class PortalUserEntity
     {
         public string Id { get; set; }
         public string DisplayName { get; set; }

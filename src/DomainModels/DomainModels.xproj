@@ -6,8 +6,8 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\DNX\Microsoft.DNX.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>3d56605a-7756-4301-94bb-f25449235ee2</ProjectGuid>
-    <RootNamespace>Gloobster.UnitTests</RootNamespace>
+    <ProjectGuid>6b301ad2-2933-4cb8-8b95-852a2e638c0e</ProjectGuid>
+    <RootNamespace>Gloobster.</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">..\..\artifacts\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">..\..\artifacts\bin\$(MSBuildProjectName)\</OutputPath>
   </PropertyGroup>

@@ -1,20 +1,22 @@
 ﻿using System;
+using Gloobster.Common;
 using Gloobster.Common.DbEntity;
 using Goobster.Portal.Services;
 using Microsoft.AspNet.Mvc;
+using Microsoft.Framework.Configuration;
 using MongoDB.Bson;
 
 namespace Goobster.Portal.Controllers
 {
     public class HomeController : Controller
     {
-        public HomeController(IDbClass db)
+        public HomeController(IDbOperations db)
         {
             DB = db;
         }
 
 
-        public IDbClass DB;
+        public IDbOperations DB;
 
         public BsonDocument GenerateDoc()
         {
@@ -27,7 +29,7 @@ namespace Goobster.Portal.Controllers
 
         public IActionResult Index()
         {
-           
+            DB.SaveAsync(new object());
 
 
             return View();

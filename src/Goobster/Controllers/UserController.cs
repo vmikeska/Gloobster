@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Gloobster.Common;
 using Gloobster.Common.DbEntity;
+using Gloobster.DomainModelsCommon.User;
+using Goobster.Portal.DomainModels;
 using Goobster.Portal.Services;
 using Microsoft.AspNet.Mvc;
 
@@ -11,22 +14,12 @@ using Microsoft.AspNet.Mvc;
 
 namespace Goobster.Portal.Controllers
 {
-    public class PortalBaseController
-    {
-        public PortalBaseController(IDbClass db)
-        {
-            DB = db;
-        }
-
-
-        public IDbClass DB;
-    }
-    
-
-
     [Route("api/[controller]")]
-    public class UserController : PortalBaseController
+    public class UserController : Controller
+        //PortalBaseController
     {
+        public IPortalUserDomain UserDomain;
+
         // GET: api/values
         [HttpGet]
         public IEnumerable<string> Get()
@@ -43,19 +36,11 @@ namespace Goobster.Portal.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post(string mail, string password)
+        public async void Post(string mail, string password)
         {
+            var result  = await UserDomain.CreateUserBase(mail, password);
 
-
-            var newUser = new PortalUser
-            {
-                Mail = mail,
-                Password = password
-            };
-
-
-            DB.Save(newUser);
-
+           //todo: handle results
         }
 
         // PUT api/values/5
@@ -70,8 +55,14 @@ namespace Goobster.Portal.Controllers
         {
         }
 
-        public UserController(IDbClass db) : base(db)
+        public UserController(IPortalUserDomain userDomain)
         {
+            UserDomain = userDomain;
         }
+
+        //public UserController(IDbOperations db, IPortalUserDomain userDomain) : base(db)
+        //{
+        //    UserDomain = userDomain;
+        //}
     }
 }

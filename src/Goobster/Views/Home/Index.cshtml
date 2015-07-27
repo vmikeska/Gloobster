@@ -91,7 +91,12 @@
                 type: 'POST',
                 url: '/api/user',
                 data: $('#registerUserForm').serialize(),
-                success: function(res) {}
+                success: function(res) {
+                    alert(JSON.stringify(res));
+                },
+                error: function(res) {
+                    alert(JSON.stringify(res));
+                }
                 //,dataType: dataType
             });
         }
