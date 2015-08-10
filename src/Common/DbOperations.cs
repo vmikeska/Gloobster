@@ -1,4 +1,6 @@
+using System;
 using System.Threading.Tasks;
+using Gloobster.Common.DbEntity;
 using Microsoft.Framework.Configuration;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -30,7 +32,7 @@ namespace Gloobster.Common
             return database;
         }
 
-        public async Task<T> SaveAsync<T>(T entity)
+        public async Task<T> SaveAsync<T>(T entity) where T: EntityBase
         {
             if (Database == null)
             {
@@ -40,6 +42,8 @@ namespace Gloobster.Common
             var collectionName = entity.GetType().Name;
             var collection = Database.GetCollection<BsonDocument>(collectionName);
 
+            entity.id = ObjectId.GenerateNewId();
+
             var bsonDoc = entity.ToBsonDocument();
 
             await collection.InsertOneAsync(bsonDoc);
@@ -47,7 +51,7 @@ namespace Gloobster.Common
             return entity;
         }
 
-        public async Task<T[]> FindAsync<T>(string query) 
+        public async Task<T[]> FindAsync<T>(string query) where T : EntityBase
         {
             if (Database == null)
             {
@@ -62,7 +66,7 @@ namespace Gloobster.Common
         }
         
 
-        public async Task<long> GetCount<T>(string query = null)
+        public async Task<long> GetCount<T>(string query = null) where T : EntityBase
         {
             if (Database == null)
             {

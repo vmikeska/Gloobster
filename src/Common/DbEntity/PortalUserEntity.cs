@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace Gloobster.Common.DbEntity
 {
-    public class PortalUserEntity
+    public class PortalUserEntity : EntityBase
     {
-        public string Id { get; set; }
         public string DisplayName { get; set; }
         public string Password { get; set; }
         public string Mail { get; set; }

@@ -1,2 +1,4 @@
 /src/Goobster/node_modules
 lib
+bin
+obj

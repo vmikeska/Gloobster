@@ -29,14 +29,12 @@ namespace Goobster.Portal.Controllers
 
         public IActionResult Index()
         {
-            DB.SaveAsync(new object());
-
-
+            
             return View();
         }
         
 
-        public IActionResult About()
+        public IActionResult Map()
         {
             ViewData["Message"] = "Your application description page.";
 

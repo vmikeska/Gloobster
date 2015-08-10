@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "About";
+}
+<h2>@ViewData["Title"].</h2>
+<h3>@ViewData["Message"]</h3>
+
+
+
+<head>
+    <script src="http://www.webglearth.com/v2/api.js"></script>
+
+    <script type="text/javascript" src="@Url.Content("~/js/coordinates.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/js/iso3countrycodes.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/js/mapDisplay.js")"></script>
+
+    <script>
+        function initialize() {
+
+            var config = {
+                earthDiv: 'earth_div'
+            };
+
+            var mapDisplay = new Gloobster.Maps.Creator(config);
+            mapDisplay.initializeGlobe('OSM');
+
+            
+
+            //drawOneCountry("RUS", earth);
+            //drawAllCountries(earth);
+
+            //earth.setView([48, 6], 5);
+
+        }
+
+        
+
+        
+
+
+    </script>
+</head>
+<body onload="initialize()">
+    <div id="earth_div" style="width:800px;height:600px; border: 1px solid black;"></div>
+</body>
