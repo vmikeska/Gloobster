@@ -1,23 +1,15 @@
-﻿using System.Configuration;
-using Gloobster.Common;
+﻿using Gloobster.Common;
+using Gloobster.DomainModels;
 using Gloobster.DomainModelsCommon.User;
-using Goobster.Portal.DomainModels;
-using Goobster.Portal.Models;
-using Goobster.Portal.Services;
-using Microsoft.AspNet.Authentication.Facebook;
-using Microsoft.AspNet.Authentication.MicrosoftAccount;
+using Gloobster.Portal.Services;
 using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Diagnostics;
-using Microsoft.AspNet.Diagnostics.Entity;
 using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Framework.Configuration;
 using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
-using Microsoft.Framework.OptionsModel;
 using Microsoft.Framework.Runtime;
 
-namespace Goobster.Portal
+namespace Gloobster.Portal
 {
     public class Startup
     {

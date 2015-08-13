@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Gloobster.Common;
-using Gloobster.Common.DbEntity;
+﻿// For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+
+
 using Gloobster.DomainModelsCommon.User;
-using Goobster.Portal.DomainModels;
-using Goobster.Portal.Services;
 using Microsoft.AspNet.Mvc;
+using System.Collections.Generic;
 
-// For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-
-
-namespace Goobster.Portal.Controllers
+namespace Gloobster.Portal.Controllers
 {
     [Route("api/[controller]")]
     public class UserController : Controller

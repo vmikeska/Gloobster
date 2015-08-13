@@ -195,6 +195,7 @@
           "lib/dnx451/Microsoft.Framework.TestHost.dll": {}
         }
       },
+      "Microsoft.VisualStudio.QualityTools.UnitTestFramework/11.0.50727.1": {},
       "Newtonsoft.Json/6.0.6": {
         "compile": {
           "lib/net45/Newtonsoft.Json.dll": {}
@@ -446,6 +447,18 @@
         "lib/dnx451/Microsoft.Framework.TestHost.xml",
         "lib/dnxcore50/Microsoft.Framework.TestHost.dll",
         "lib/dnxcore50/Microsoft.Framework.TestHost.xml"
+      ]
+    },
+    "Microsoft.VisualStudio.QualityTools.UnitTestFramework/11.0.50727.1": {
+      "sha512": "MM3IUKZ11zbZA658hkGnAgf2Br58ZOWExCLevemDlw+xKgh5pgWO5stPSZM50w4bt0WzQ8DzKAA8N7yBxa8u8A==",
+      "files": [
+        "Microsoft.VisualStudio.QualityTools.UnitTestFramework.11.0.50727.1.nupkg",
+        "Microsoft.VisualStudio.QualityTools.UnitTestFramework.11.0.50727.1.nupkg.sha512",
+        "Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll",
+        "Microsoft.VisualStudio.QualityTools.UnitTestFramework.nuspec",
+        "Microsoft.VisualStudio.QualityTools.UnitTestFramework.xml",
+        "MSTest.exe",
+        "MSTest.exe.config"
       ]
     },
     "Newtonsoft.Json/6.0.6": {

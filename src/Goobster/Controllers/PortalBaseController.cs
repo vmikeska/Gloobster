@@ -1,6 +1,8 @@
-﻿using Gloobster.Common;
+﻿
 
-namespace Goobster.Portal.Controllers
+using Gloobster.Common;
+
+namespace Gloobster.Portal.Controllers
 {
     public class PortalBaseController
     {

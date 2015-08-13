@@ -2,3 +2,5 @@
 lib
 bin
 obj
+*.user
+*.suo

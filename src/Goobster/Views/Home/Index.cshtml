@@ -6,7 +6,7 @@
 
 <div class="row">
 
-    <script type="text/javascript" src="@Url.Content("~/js/facebook.js")"></script>
+		<script type="text/javascript" src="@Url.Content("~/js/facebook.js")"></script>
 
     <script>
 
@@ -16,10 +16,13 @@
                 FB.api('/me', function (response) {
                     document.getElementById('status').innerHTML = JSON.stringify(response);
                 });
-            }
+            },
+
+						//fb: FB
         }
 
-        var fbLogin = new Gloobster.Facebook.Login(loginConfig);
+				//var fbLogin = new Gloobster.Facebook.Login(loginConfig);
+        var fbLogin = new FacebookLogin(loginConfig);
         var fbInit = new Gloobster.Facebook.Initialization(fbLogin.refreshLoginStatus);
 
         window.fbAsyncInit = fbInit.asyncInit;

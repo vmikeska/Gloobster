@@ -1,12 +1,12 @@
-﻿using System;
-using Gloobster.Common;
-using Gloobster.Common.DbEntity;
-using Goobster.Portal.Services;
-using Microsoft.AspNet.Mvc;
-using Microsoft.Framework.Configuration;
-using MongoDB.Bson;
+﻿
 
-namespace Goobster.Portal.Controllers
+
+using Gloobster.Common;
+using Microsoft.AspNet.Mvc;
+using MongoDB.Bson;
+using System;
+
+namespace Gloobster.Portal.Controllers
 {
     public class HomeController : Controller
     {

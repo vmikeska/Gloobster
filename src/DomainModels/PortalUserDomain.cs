@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Gloobster.Common;
 using Gloobster.Common.DbEntity;
 using Gloobster.DomainModelsCommon.User;
 
-namespace Goobster.Portal.DomainModels
+namespace Gloobster.DomainModels
 {
     public class PortalUserDomain : IPortalUserDomain
     {

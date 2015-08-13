@@ -1145,6 +1145,20 @@
           "lib/dnx451/Microsoft.Framework.Configuration.dll": {}
         }
       },
+      "Microsoft.Framework.Configuration.Abstractions/1.0.0-beta5": {
+        "frameworkAssemblies": [
+          "mscorlib",
+          "System",
+          "System.Core",
+          "Microsoft.CSharp"
+        ],
+        "compile": {
+          "lib/dnx451/Microsoft.Framework.Configuration.Abstractions.dll": {}
+        },
+        "runtime": {
+          "lib/dnx451/Microsoft.Framework.Configuration.Abstractions.dll": {}
+        }
+      },
       "Microsoft.Framework.Configuration.Binder/1.0.0-beta5": {
         "dependencies": {
           "Microsoft.Framework.Configuration": "1.0.0-beta5"
@@ -2531,6 +2545,21 @@
         "lib/net45/Microsoft.Framework.Configuration.xml"
       ]
     },
+    "Microsoft.Framework.Configuration.Abstractions/1.0.0-beta5": {
+      "serviceable": true,
+      "sha512": "dW5gHHlvvNnrFFSGtfOFhKClSi9Eb4WFPVdrrIbZYq2gIVw2Dde740p68H3+v9Fr511sk4yPCkGZ0wqXm1GObw==",
+      "files": [
+        "Microsoft.Framework.Configuration.Abstractions.1.0.0-beta5.nupkg",
+        "Microsoft.Framework.Configuration.Abstractions.1.0.0-beta5.nupkg.sha512",
+        "Microsoft.Framework.Configuration.Abstractions.nuspec",
+        "lib/dnx451/Microsoft.Framework.Configuration.Abstractions.dll",
+        "lib/dnx451/Microsoft.Framework.Configuration.Abstractions.xml",
+        "lib/dotnet/Microsoft.Framework.Configuration.Abstractions.dll",
+        "lib/dotnet/Microsoft.Framework.Configuration.Abstractions.xml",
+        "lib/net45/Microsoft.Framework.Configuration.Abstractions.dll",
+        "lib/net45/Microsoft.Framework.Configuration.Abstractions.xml"
+      ]
+    },
     "Microsoft.Framework.Configuration.Binder/1.0.0-beta5": {
       "serviceable": true,
       "sha512": "xSWVoCC0gtn9h12O/M2Eie6eXehJ0P2ovvGkZU5ZWNh8ycTyisyKrkhAmtObcF0dDdPJO9HXUHbRT5ady9fb8Q==",
@@ -3061,10 +3090,10 @@
       "Microsoft.VisualStudio.Web.BrowserLink.Loader >= 14.0.0-beta5",
       "MongoDB.Driver >= 2.0.1",
       "Facebook >= 7.0.6",
+      "Microsoft.AspNet.Mvc.WebApiCompatShim >= 6.0.0-beta5",
       "Common >= 1.0.0-*",
-      "DomainModelsCommon >= 1.0.0-*",
       "DomainModels >= 1.0.0-*",
-      "Microsoft.AspNet.Mvc.WebApiCompatShim >= 6.0.0-beta5"
+      "DomainModelsCommon >= 1.0.0-*"
     ],
     "DNX,Version=v4.5.1": []
   }
