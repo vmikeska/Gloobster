@@ -1,0 +1,63 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+
+<div class="row">
+
+		<script type="text/javascript" src="@Url.Content("~/js/FacebookInit.js")"></script>
+		<script type="text/javascript" src="@Url.Content("~/js/FacebookLogin.js")"></script>
+		<script type="text/javascript" src="@Url.Content("~/js/FacebookExecutor.js")"></script>
+		<script type="text/javascript" src="@Url.Content("~/js/registration/registration.js")"></script>
+
+    <script>
+
+				var exec = new FacebookLoginExecutor();
+				exec.execute();
+				fbLogin = exec.fbLogin;
+
+        function register() {
+            $.ajax({
+                type: 'POST',
+                url: '/api/user',
+                data: $('#registerUserForm').serialize(),
+                success: function(res) {
+                    alert(JSON.stringify(res));
+                },
+                error: function(res) {
+                    alert(JSON.stringify(res));
+                }
+                //,dataType: dataType
+            });
+        }
+    </script>
+
+
+    <div>
+        <fb:login-button scope="user_tagged_places,user_likes,publish_actions,user_location,user_hometown,email,user_status" onlogin="fbLogin.refreshLoginStatus();">
+        </fb:login-button>
+
+        <form id="registerUserForm" style="border: 1px solid black">
+
+            <div>
+                <label for="ContactName">Mail</label>
+                <input type="text" name="mail" value="" />
+            </div>
+
+            <div>
+                <label for="ContactName">Password</label>
+                <input type="text" name="password" value="" />
+            </div>
+
+            <button onclick="register()">Register</button>
+        </form>
+
+    </div>
+
+
+
+        <div id="status">
+        </div>
+
+    </div>

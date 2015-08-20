@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "About";
+}
+<h2>@ViewData["Title"].</h2>
+<h3>@ViewData["Message"]</h3>
+
+
+
+<head>
+    <script src="http://www.webglearth.com/v2/api.js"></script>
+
+    <script type="text/javascript" src="@Url.Content("~/js/CountryShapes.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/js/CountryCodes.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/js/MapsDisplayer.js")"></script>
+		<script type="text/javascript" src="@Url.Content("~/js/MapsCreator.js")"></script>
+
+
+		
+    <script>
+        function initialize() {
+
+        		var mapsCreator = new MapsCreator('earth_div');
+        		mapsCreator.initializeGlobe(MapTypes.OSM);
+
+        		var mapsBaseOperations = new MapsBaseOperation3d(mapsCreator.earth);
+        		var mapsOperations = new MapsOperations3d(mapsBaseOperations);
+            
+        		var countryShapes = new CountryShapes();
+
+        		var rusCoordinates = countryShapes.getCoordinatesByCountry('RUS');
+
+        		var countryConfig = new PolygonConfig();
+        		//borderColor: string;
+        		//borderOpacity: number;
+        		//borderWeight: number;
+
+        		//fillColor: string;
+        		//fillOpacity: number;
+
+        		mapsOperations.drawContry(rusCoordinates, countryConfig);
+
+            //drawOneCountry("RUS", earth);
+            //drawAllCountries(earth);
+
+            //earth.setView([48, 6], 5);
+
+        }
+
+        
+
+        
+
+
+    </script>
+</head>
+<body onload="initialize()">
+    <div id="earth_div" style="width:800px;height:600px; border: 1px solid black;"></div>
+</body>

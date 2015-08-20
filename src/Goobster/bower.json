@@ -1,9 +1,0 @@
-{
-  "name": "Gloobster",
-  "private": true,
-  "dependencies": {
-    "jquery": "2.1.4",
-    "jquery-validation": "1.11.1",
-    "jquery-validation-unobtrusive": "3.2.2"
-  }
-}
