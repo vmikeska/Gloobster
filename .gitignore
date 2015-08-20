@@ -5,3 +5,5 @@ obj
 *.user
 *.suo
 /src/Portal/node_modules
+.vs
+*.map
