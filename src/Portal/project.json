@@ -29,7 +29,8 @@
         "Common": "1.0.0-*",
         "DomainModels": "1.0.0-*",
         "DomainModelsCommon": "1.0.0-*",
-        "Mappers": "1.0.0-*"
+        "Mappers": "1.0.0-*",
+        "WebApiObjects": "1.0.0-*"
     },
 
     "commands": {

@@ -9,19 +9,25 @@ namespace Gloobster.Common
 {
     public class DbOperations: IDbOperations
     {
+		public DbOperations(IGloobsterConfig config)
+		{
+			Config = config;
 
-        public static IConfiguration Configuration { get; set; }
-        //$"mongodb://{"GloobsterConnector"}:{"Gloobster007"}@{"ds036178.mongolab.com"}:{"36178"}/Gloobster";
+			Database = GetDatabase();
+		}
 
-        const string DatabaseName = "Gloobster";
+		public IGloobsterConfig Config;
+		//$"mongodb://{"GloobsterConnector"}:{"Gloobster007"}@{"ds036178.mongolab.com"}:{"36178"}/Gloobster";
+
+		const string DatabaseName = "Gloobster";
 
         public IMongoClient Client { get; set; }
         public IMongoDatabase Database { get; set; }
 
         public IMongoClient GetClient()
         {
-            var connectionString = Configuration["Data:DefaultConnection:ConnectionString"];
-            var client = new MongoClient(connectionString);
+            //var connectionString = Configuration["Data:DefaultConnection:ConnectionString"];
+            var client = new MongoClient(Config.MongoConnectionString);
             return client;
         }
 
@@ -32,13 +38,14 @@ namespace Gloobster.Common
             return database;
         }
 
-        public async Task<T> SaveAsync<T>(T entity) where T: EntityBase
-        {
-            if (Database == null)
-            {
-                Database = GetDatabase();
-            }
+		public async void DropCollection<T>()
+		{
+			string collectionName = typeof(T).Name;
+			await Database.DropCollectionAsync(collectionName);
+        }
 
+        public async Task<T> SaveAsync<T>(T entity) where T: EntityBase
+        {            
             var collectionName = entity.GetType().Name;
             var collection = Database.GetCollection<BsonDocument>(collectionName);
 
@@ -52,12 +59,7 @@ namespace Gloobster.Common
         }
 
         public async Task<T[]> FindAsync<T>(string query) where T : EntityBase
-        {
-            if (Database == null)
-            {
-                Database = GetDatabase();
-            }
-
+        {            
             var collectionName = typeof(T).Name;
             var collection = Database.GetCollection<T>(collectionName);
             
@@ -67,12 +69,7 @@ namespace Gloobster.Common
         
 
         public async Task<long> GetCount<T>(string query = null) where T : EntityBase
-        {
-            if (Database == null)
-            {
-                Database = GetDatabase();
-            }
-
+        {            
             var collectionName = typeof(T).Name;
             var collection = Database.GetCollection<T>(collectionName);
 

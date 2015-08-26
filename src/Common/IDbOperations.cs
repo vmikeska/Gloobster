@@ -15,5 +15,7 @@ namespace Gloobster.Common
 
         IMongoClient Client { get; set; }
         IMongoDatabase Database { get; set; }
+
+		void DropCollection<T>();
     }
 }

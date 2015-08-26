@@ -1,6 +1,9 @@
-﻿using Gloobster.Common;
+﻿using System;
+using System.Collections.Generic;
+using Gloobster.Common;
 using Gloobster.DomainModels;
 using Gloobster.DomainModelsCommon.User;
+using Gloobster.SocialLogin.Facebook.Communication;
 using Microsoft.AspNet.Authentication.Facebook;
 using Microsoft.AspNet.Authentication.MicrosoftAccount;
 using Microsoft.AspNet.Builder;
@@ -33,6 +36,8 @@ namespace Gloobster.Portal
             }
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
+
+			
         }
 
         public IConfiguration Configuration { get; set; }
@@ -40,21 +45,29 @@ namespace Gloobster.Portal
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-			RegisterDomainModels(services);
+			var config = new GloobsterConfig
+			{
+				MongoConnectionString = Configuration["Data:DefaultConnection:ConnectionString"]
+			};
 
-			//todo: solve this automatic resolving issue
-			DbOperations.Configuration = Configuration;
+			services.AddInstance<IGloobsterConfig>(config);
 
-			services.AddTransient<IDbOperations, DbOperations>();
+			RegisterApplicationStuff(services);
+			
+			
 
 			// Add MVC services to the services container.
 			services.AddMvc();
 		}
 
-		private void RegisterDomainModels(IServiceCollection services)
+		private void RegisterApplicationStuff(IServiceCollection services)
 		{
 			services.AddTransient<IPortalUserDomain, PortalUserDomain>();
+			services.AddTransient<IFacebookUserDomain, FacebookUserDomain>();
 
+
+			services.AddTransient<IDbOperations, DbOperations>();
+			services.AddTransient<IFacebookService, FacebookService>();
 
 		}
 

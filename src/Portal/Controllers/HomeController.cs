@@ -1,7 +1,4 @@
-﻿
-
-
-using Gloobster.Common;
+﻿using Gloobster.Common;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using System;

@@ -2,23 +2,49 @@
 using Gloobster.Common;
 using Gloobster.Common.DbEntity;
 using Gloobster.DomainModelsCommon.User;
-using System.Linq;
-using Gloobster.Mappers;
+using System;
 
 namespace Gloobster.DomainModels
 {
 	public class PortalUserDomain : IPortalUserDomain
     {
         public IDbOperations DB;
+		public IFacebookUserDomain FbUserDomain; 
 
-        public PortalUserDomain(IDbOperations db)
+        public PortalUserDomain(IDbOperations db, IFacebookUserDomain fbUserDomain)
         {
             DB = db;
+	        FbUserDomain = fbUserDomain;
         }
 
-        public PortalUserDomain() { }
+		public async Task<UserLoggedResultDO> ValidateOrCreateUser(PortalUserDO portalUser)
+		{
+			bool isFromFacebook = portalUser.Facebook?.Authentication != null;
+			bool isFromTwitter = false;
+			bool isFromFoursquare = false;
 
-        public async Task<UserCreatedResultDO> CreateUserBase(PortalUserDO user)
+			if (isFromFacebook)
+			{
+				UserLoggedResultDO res = await FbUserDomain.ValidateFacebookUser(portalUser.Facebook.Authentication);
+				return res;
+			}
+			else if (isFromTwitter)
+			{
+
+			}
+			else if (isFromFoursquare)
+			{
+			}
+			//is standart user
+			else
+			{
+				
+			}
+
+			return null;
+		}
+		
+		public async Task<UserCreatedResultDO> CreateUserBase(PortalUserDO user)
         {
             bool userExists = await UserExists(user.Mail);
             if (userExists)
@@ -37,41 +63,7 @@ namespace Gloobster.DomainModels
             var result = new UserCreatedResultDO {Entity = userEntity, State = UserCreatedState.Created};
             return result;
         }
-
 		
-
-		public async Task<FacebookUserExistsDO> FacebookUserExists(FacebookUserDO facebookUser)
-		{
-			//todo: write query
-			var query = string.Format("{{'Mail': '{0}'}}", facebookUser.UserID);
-			var results = await DB.FindAsync<PortalUserEntity>(query);
-
-			bool exist = (results != null && results.Any());
-
-			var result = new FacebookUserExistsDO
-			{
-				UserExists = exist
-			};
-			
-            if (exist)
-			{
-				result.PortalUser = results.First().ToDO();
-			}
-
-			return result;			
-        }
-
-		public void CreateFacebookUser(FacebookUserDO facebookUser)
-		{
-			//todo: check on existance of userId in the system.
-
-			//call the ME
-
-			//check if email exists in the system already
-
-			//generate the name, check if is unique/
-		}
-
         public async Task<bool> UserExists(string mail)
         {
             var query = string.Format("{{'Mail': '{0}'}}", mail);
@@ -79,6 +71,6 @@ namespace Gloobster.DomainModels
 
             bool exists = results > 0;
             return exists;
-        }
-    }
+        }		
+	}
 }

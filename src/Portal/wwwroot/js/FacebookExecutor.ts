@@ -13,7 +13,7 @@
 
 						FB.api('/me', function (response) {
 								var strResponse = JSON.stringify(response);
-								$('#status').html(strResponse)
+							$('#status').html(strResponse);
 						});
 				}
         

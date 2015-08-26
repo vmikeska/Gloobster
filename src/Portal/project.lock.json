@@ -123,6 +123,14 @@
           "lib/net45/EntityFramework.SqlServer.dll": {}
         }
       },
+      "Facebook/7.0.6": {
+        "compile": {
+          "lib/net45/Facebook.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Facebook.dll": {}
+        }
+      },
       "Ix-Async/1.2.4": {
         "frameworkAssemblies": [
           "System",
@@ -1970,6 +1978,35 @@
         "repo.json"
       ]
     },
+    "Facebook/7.0.6": {
+      "sha512": "D9nlWZb88S4U+eh1pUDQ+AkSkiht6m0eFpxKFddZnQSSFTnncvDMBEnNODy4fOIOjWQIiOXRVbuY04jCPyWqkw==",
+      "files": [
+        "Facebook.7.0.6.nupkg",
+        "Facebook.7.0.6.nupkg.sha512",
+        "Facebook.nuspec",
+        "lib/net35-client/Facebook.dll",
+        "lib/net35-client/Facebook.xml",
+        "lib/net40-client/Facebook.dll",
+        "lib/net40-client/Facebook.xml",
+        "lib/net45/Facebook.dll",
+        "lib/net45/Facebook.xml",
+        "lib/portable-win81+wpa81/Facebook.dll",
+        "lib/portable-win81+wpa81/Facebook.xml",
+        "lib/sl5/Facebook.dll",
+        "lib/sl5/Facebook.xml",
+        "lib/win8/Facebook.dll",
+        "lib/win8/Facebook.xml",
+        "lib/wp71/Facebook.dll",
+        "lib/wp71/Facebook.xml",
+        "lib/wp8/Facebook.dll",
+        "lib/wp8/Facebook.xml",
+        "lib/wp81/Facebook.dll",
+        "lib/wp81/Facebook.xml",
+        "LICENSE.txt",
+        "readme.txt",
+        "serializers/JsonNetSerializer.cs"
+      ]
+    },
     "Ix-Async/1.2.4": {
       "sha512": "kbPg6eod0fNN79RjuPJADw2wcq57iyLXY7XoXWEFzltfUMUbxFZ8266jQ8nZn8bvsXIruwCngljuLRTAiRYG5A==",
       "files": [
@@ -3732,7 +3769,8 @@
       "Common >= 1.0.0-*",
       "DomainModels >= 1.0.0-*",
       "DomainModelsCommon >= 1.0.0-*",
-      "Mappers >= 1.0.0-*"
+      "Mappers >= 1.0.0-*",
+      "WebApiObjects >= 1.0.0-*"
     ],
     "DNX,Version=v4.5.1": []
   }
