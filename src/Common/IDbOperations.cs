@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Gloobster.Common.DbEntity;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Gloobster.Common
@@ -13,7 +14,10 @@ namespace Gloobster.Common
 
         Task<long> GetCount<T>(string query = null) where T : EntityBase;
 
-        IMongoClient Client { get; set; }
+	    Task<UpdateResult> UpdateAsync<T>(T entity, FilterDefinition<BsonDocument> filter);
+	    Task<UpdateResult> UpdateAsync<T>(UpdateDefinition<BsonDocument> update, FilterDefinition<BsonDocument> filter);
+
+		IMongoClient Client { get; set; }
         IMongoDatabase Database { get; set; }
 
 		void DropCollection<T>();

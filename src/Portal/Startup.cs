@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Gloobster.Common;
 using Gloobster.DomainModels;
+using Gloobster.DomainModels.Services;
 using Gloobster.DomainModelsCommon.User;
 using Gloobster.SocialLogin.Facebook.Communication;
 using Microsoft.AspNet.Authentication.Facebook;
@@ -68,6 +69,10 @@ namespace Gloobster.Portal
 
 			services.AddTransient<IDbOperations, DbOperations>();
 			services.AddTransient<IFacebookService, FacebookService>();
+
+			services.AddTransient<IFacebookTaggedPlacesExtractor, FacebookTaggedPlacesExtractor>();
+
+			services.AddInstance<IGeoService>(new GeoService());
 
 		}
 

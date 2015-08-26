@@ -58,7 +58,29 @@ namespace Gloobster.Common
             return entity;
         }
 
-        public async Task<T[]> FindAsync<T>(string query) where T : EntityBase
+	    public async Task<UpdateResult> UpdateAsync<T>(T entity, FilterDefinition<BsonDocument> filter)
+		{
+			var collectionName = entity.GetType().Name;
+			var collection = Database.GetCollection<BsonDocument>(collectionName);
+			
+			var bsonDoc = entity.ToBsonDocument();
+
+		    UpdateResult result = await collection.UpdateOneAsync(filter, bsonDoc);
+		    return result;
+		}
+
+		public async Task<UpdateResult> UpdateAsync<T>(UpdateDefinition<BsonDocument> update, FilterDefinition<BsonDocument> filter)
+		{
+			var collectionName = typeof(T).Name;
+			var collection = Database.GetCollection<BsonDocument>(collectionName);
+			
+			UpdateResult result = await collection.UpdateOneAsync(filter, update);
+			return result;
+		}
+
+		
+
+		public async Task<T[]> FindAsync<T>(string query) where T : EntityBase
         {            
             var collectionName = typeof(T).Name;
             var collection = Database.GetCollection<T>(collectionName);

@@ -4,12 +4,14 @@ namespace Gloobster.SocialLogin.Facebook.Communication
 {
 	public class FacebookService: IFacebookService
 	{
-		public T Get<T>(string query, string accessToken)
+		public string AccessToken { get; set; }
+
+		public T Get<T>(string query)
 		{			
 			FacebookClient fbClient;
 			try
 			{
-				fbClient = new FacebookClient(accessToken);
+				fbClient = new FacebookClient(AccessToken);
 			}
 			catch (FacebookOAuthException)
 			{
@@ -19,6 +21,11 @@ namespace Gloobster.SocialLogin.Facebook.Communication
 
 			var result = fbClient.Get<T>(query);
 			return result;
+		}
+
+		public void SetAccessToken(string accessToken)
+		{
+			AccessToken = accessToken;
 		}
 	}
 }

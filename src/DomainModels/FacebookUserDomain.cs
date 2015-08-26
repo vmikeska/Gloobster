@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Facebook;
@@ -6,6 +7,8 @@ using Gloobster.Common.DbEntity;
 using Gloobster.DomainModelsCommon.User;
 using Gloobster.Mappers;
 using Gloobster.SocialLogin.Facebook.Communication;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace Gloobster.DomainModels
 {
@@ -13,12 +16,14 @@ namespace Gloobster.DomainModels
 	{
 		public IDbOperations DB;
 		public IFacebookService FBService;
+		public IFacebookTaggedPlacesExtractor TaggedPlacesExtractor;
 
 
-		public FacebookUserDomain(IDbOperations db, IFacebookService fbService)
+		public FacebookUserDomain(IDbOperations db, IFacebookService fbService, IFacebookTaggedPlacesExtractor taggedPlacesExtractor)
 		{
 			DB = db;
 			FBService = fbService;
+			TaggedPlacesExtractor = taggedPlacesExtractor;
 		}
 
 		public bool LogInFacebookUser(FacebookUserAuthenticationDO facebookUser)
@@ -58,7 +63,8 @@ namespace Gloobster.DomainModels
 
 			//todo: check if email exists in the system already
 
-			var userCallResult = FBService.Get<FacebookUserFO>("/me", fbUserAuthentication.AccessToken);
+			FBService.SetAccessToken(fbUserAuthentication.AccessToken);
+			var userCallResult = FBService.Get<FacebookUserFO>("/me");
 			var resultEntity = userCallResult.ToEntity();
 
 			var userEntity = new PortalUserEntity
@@ -89,6 +95,10 @@ namespace Gloobster.DomainModels
 				await CreateFacebookUser(fbAuth);
 				result.RegisteredNewUser = true;
 			}
+			else
+			{
+				UpdateFacebookUserAuth(fbAuth);
+			}
 
 			//todo: implement some login service
 			bool fbLogged = LogInFacebookUser(fbAuth);
@@ -108,13 +118,28 @@ namespace Gloobster.DomainModels
 			return result;
 		}
 
+		public async void UpdateFacebookUserAuth(FacebookUserAuthenticationDO fbAuth)
+		{
+			var fbAuthEntity = fbAuth.ToEntity();
+
+			var filter = Builders<BsonDocument>.Filter.Eq("Facebook.Authentication.UserId", fbAuth.UserID);
+			var update = Builders<BsonDocument>.Update
+				.Set("Facebook.Authentication.AccessToken", fbAuth.AccessToken)
+				.Set("Facebook.Authentication.UserId", fbAuth.UserID);
+				//todo: possibly remove SignedRequest and ExpiresIn at all
+			var result = await DB.UpdateAsync<PortalUserEntity>(update, filter);
+
+			
+		}
+
 		private void ExtractVisitedCountries(FacebookUserAuthenticationDO fbAuth)
 		{
-			var taggedPlacesQuery = $"/{fbAuth.UserID}/tagged_places";
 
-			//tagged_places'
-			var places = FBService.Get<TaggedPlacesFO>(taggedPlacesQuery, fbAuth.AccessToken);
-			//<FacebookUserFO>
+			TaggedPlacesExtractor.SetUserData(fbAuth.AccessToken, fbAuth.UserID);
+
+			TaggedPlacesExtractor.ExtractAll();
+
+			
 
 		}
 
@@ -126,34 +151,7 @@ namespace Gloobster.DomainModels
 
 	}
 
-	public class FacebookTaggedPlacesExtractor
-	{
-		public string AccessToken;
-		public IFacebookService FBService;
-
-		public void ExtractAll()
-		{
-			//extractAllCities(new Array(), '/me/tagged_places', everythingExtracted);
-		}
-
-		public void Extract()
-		{
-			var response = FBService.Get<TaggedPlacesFO>("todoQuery", AccessToken);
+	
 
 
-			//var currentPlaces = extractCities(response.data);
-
-			//locations = locations.concat(currentPlaces.locations);
-			//if (response.paging.next)
-			//{
-			//	extractAllCities(locations, response.paging.next, onEverythingExtracted);
-			//}
-			//else
-			//{
-			//	onEverythingExtracted(locations);
-			//}
-
-		}
-
-	}
 }

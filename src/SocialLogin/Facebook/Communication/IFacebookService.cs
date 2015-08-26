@@ -2,6 +2,8 @@
 {
 	public interface IFacebookService
 	{
-		T Get<T>(string query, string accessToken);
+		T Get<T>(string query);
+
+		void SetAccessToken(string accessToken);
 	}
 }

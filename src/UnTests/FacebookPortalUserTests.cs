@@ -16,7 +16,7 @@ namespace Gloobster.UnitTests
 		{
 			FacebookServiceMock = new Mock<IFacebookService>();
 			FacebookServiceMock
-				.Setup(f => f.Get<FacebookUserFO>("/me", UserCreations.AccessToken1))
+				.Setup(f => f.Get<FacebookUserFO>("/me"))
 				.Returns(UserCreations.CreateFacebookUserFO1());
 
 			FBUserDomain = new FacebookUserDomain(DBOper, FacebookServiceMock.Object);
@@ -102,12 +102,13 @@ namespace Gloobster.UnitTests
 		[Fact]
 		public async void ExtractFacebookTaggedPlaces()
 		{
-			var extractor = new FacebookTaggedPlacesExtractor();
+			var extractor = new FacebookTaggedPlacesExtractor(new FacebookService());
+			extractor.AccessToken =
+				"CAAVlse7iUKoBAJZCwNszsZCvgOR6i36lWCfZCVDkP4taDh2NWsabfZA0XfWqzvWvZAGswJ2MHzCr1xt9KmRQPnUYMbjNvQHRmurE6C8VZBUB3WoG9ZBu7S3m8ql0i9d4Gr9QTo90F3GQeB7PuVQbcVDEHBCj4m7umPgDgHZBNUMvunWsvJOjntspWSvyPt199AsBaErcJIuRZBwZDZD";
+			extractor.UserId = "10202803343824427";
 
-
-			//AccessToken;
-   //     public IFacebookService FBService;
-	}
+			extractor.ExtractAll();
+		}
 
 
 
@@ -126,12 +127,5 @@ namespace Gloobster.UnitTests
 
 
 	}
-
-	public class FacebookServiceFake : IFacebookService
-	{
-		public T Get<T>(string query, string accessToken)
-		{
-			throw new System.NotImplementedException();
-		}
-	}
+	
 }
