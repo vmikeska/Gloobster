@@ -1,10 +1,10 @@
 ﻿using Gloobster.Common.DbEntity;
 using Gloobster.DomainModels;
-using Gloobster.DomainModelsCommon.User;
 using Microsoft.AspNet.Hosting;
 using Microsoft.Framework.Configuration;
 using Microsoft.Framework.Runtime;
 using System;
+using Gloobster.DomainModelsCommon.DO;
 using Xunit;
 
 namespace Gloobster.UnitTests

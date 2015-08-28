@@ -8,10 +8,12 @@ namespace Gloobster.Common
 	public interface IGloobsterConfig
 	{
 		string MongoConnectionString { get; set; }
+		string DatabaseName { get; set; }
 	}
 
 	public class GloobsterConfig : IGloobsterConfig
 	{
 		public string MongoConnectionString { get; set; }
+		public string DatabaseName { get; set; }
 	}
 }

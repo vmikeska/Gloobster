@@ -1,7 +1,11 @@
 ﻿using System.Linq;
 using Gloobster.Common.DbEntity;
 using Gloobster.DomainModels;
-using Gloobster.DomainModelsCommon.User;
+using Gloobster.DomainModels.Services;
+using Gloobster.DomainModels.Services.GeonamesService;
+using Gloobster.DomainModels.Services.GeoService;
+using Gloobster.DomainModels.Services.TaggedPlacesExtractor;
+using Gloobster.DomainModelsCommon.DO;
 using Gloobster.SocialLogin.Facebook.Communication;
 using Moq;
 using Xunit;
@@ -14,12 +18,20 @@ namespace Gloobster.UnitTests
 
 		public FacebookPortalUserTests()
 		{
+			
+
 			FacebookServiceMock = new Mock<IFacebookService>();
 			FacebookServiceMock
 				.Setup(f => f.Get<FacebookUserFO>("/me"))
 				.Returns(UserCreations.CreateFacebookUserFO1());
 
-			FBUserDomain = new FacebookUserDomain(DBOper, FacebookServiceMock.Object);
+			var countryService = new CountryService();
+			var geoNamesService = new GeoNamesService();
+			var visitedPlacesDomain = new PortalUserVisitedPlacesDomain(DBOper);
+
+			var taggedPlaces = new FacebookTaggedPlacesExtractor(FacebookServiceMock.Object, countryService, geoNamesService);
+
+			FBUserDomain = new FacebookUserDomain(DBOper, FacebookServiceMock.Object, taggedPlaces, visitedPlacesDomain);
 		}
 		
 		public FacebookUserDomain FBUserDomain { get; set; }
@@ -99,16 +111,18 @@ namespace Gloobster.UnitTests
 		}
 
 
-		[Fact]
-		public async void ExtractFacebookTaggedPlaces()
-		{
-			var extractor = new FacebookTaggedPlacesExtractor(new FacebookService());
-			extractor.AccessToken =
-				"CAAVlse7iUKoBAJZCwNszsZCvgOR6i36lWCfZCVDkP4taDh2NWsabfZA0XfWqzvWvZAGswJ2MHzCr1xt9KmRQPnUYMbjNvQHRmurE6C8VZBUB3WoG9ZBu7S3m8ql0i9d4Gr9QTo90F3GQeB7PuVQbcVDEHBCj4m7umPgDgHZBNUMvunWsvJOjntspWSvyPt199AsBaErcJIuRZBwZDZD";
-			extractor.UserId = "10202803343824427";
+		//[Fact]
+		//public async void ExtractFacebookTaggedPlaces()
+		//{
+		//	var geoService = new CountryService();
 
-			extractor.ExtractAll();
-		}
+		//	var extractor = new FacebookTaggedPlacesExtractor(new FacebookService(), geoService);
+		//	extractor.AccessToken =
+		//		"CAAVlse7iUKoBAJZCwNszsZCvgOR6i36lWCfZCVDkP4taDh2NWsabfZA0XfWqzvWvZAGswJ2MHzCr1xt9KmRQPnUYMbjNvQHRmurE6C8VZBUB3WoG9ZBu7S3m8ql0i9d4Gr9QTo90F3GQeB7PuVQbcVDEHBCj4m7umPgDgHZBNUMvunWsvJOjntspWSvyPt199AsBaErcJIuRZBwZDZD";
+		//	extractor.UserId = "10202803343824427";
+
+		//	extractor.ExtractAll();
+		//}
 
 
 

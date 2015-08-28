@@ -1,12 +1,12 @@
-﻿using Gloobster.Common;
+using Gloobster.Common;
 
 namespace Gloobster.UnitTests
 {
-	public abstract class TestBase
+	public class CreationsBase
 	{
-		public IDbOperations DBOper;
+		public static IDbOperations DB;
 
-		protected TestBase()
+		static CreationsBase()
 		{
 			var config = new GloobsterConfig
 			{
@@ -14,8 +14,7 @@ namespace Gloobster.UnitTests
 				DatabaseName = "GloobsterTest"
 			};
 
-			DBOper = new DbOperations(config);
+			DB = new DbOperations(config);
 		}
-		
 	}
 }

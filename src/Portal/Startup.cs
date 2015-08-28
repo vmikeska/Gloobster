@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using Gloobster.Common;
 using Gloobster.DomainModels;
 using Gloobster.DomainModels.Services;
-using Gloobster.DomainModelsCommon.User;
+using Gloobster.DomainModels.Services.GeonamesService;
+using Gloobster.DomainModels.Services.GeoService;
+using Gloobster.DomainModels.Services.TaggedPlacesExtractor;
+using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.SocialLogin.Facebook.Communication;
 using Microsoft.AspNet.Authentication.Facebook;
 using Microsoft.AspNet.Authentication.MicrosoftAccount;
@@ -48,7 +51,8 @@ namespace Gloobster.Portal
         {
 			var config = new GloobsterConfig
 			{
-				MongoConnectionString = Configuration["Data:DefaultConnection:ConnectionString"]
+				MongoConnectionString = Configuration["Data:DefaultConnection:ConnectionString"],
+				DatabaseName = Configuration["Data:DefaultConnection:DatabaseName"]
 			};
 
 			services.AddInstance<IGloobsterConfig>(config);
@@ -65,6 +69,9 @@ namespace Gloobster.Portal
 		{
 			services.AddTransient<IPortalUserDomain, PortalUserDomain>();
 			services.AddTransient<IFacebookUserDomain, FacebookUserDomain>();
+			services.AddTransient<IPortalUserVisitedPlacesDomain, PortalUserVisitedPlacesDomain>();
+
+			
 
 
 			services.AddTransient<IDbOperations, DbOperations>();
@@ -72,8 +79,9 @@ namespace Gloobster.Portal
 
 			services.AddTransient<IFacebookTaggedPlacesExtractor, FacebookTaggedPlacesExtractor>();
 
-			services.AddInstance<IGeoService>(new GeoService());
+			services.AddInstance<ICountryService>(new CountryService());
 
+			services.AddTransient<IGeoNamesService, GeoNamesService>();
 		}
 
 		// Configure is called after ConfigureServices is called.

@@ -1,8 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Gloobster.Common;
 using Gloobster.Common.DbEntity;
-using Gloobster.DomainModelsCommon.User;
 using System;
+using Gloobster.DomainModelsCommon.DO;
+using Gloobster.DomainModelsCommon.Interfaces;
 
 namespace Gloobster.DomainModels
 {

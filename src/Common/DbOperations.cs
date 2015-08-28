@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Common.DbEntity;
 using Microsoft.Framework.Configuration;
@@ -7,7 +9,22 @@ using MongoDB.Driver;
 
 namespace Gloobster.Common
 {
-    public class DbOperations: IDbOperations
+	public class EmptyEntityIdException : Exception
+	{
+		private const string ExceptionMessageBase = "Id of '{0}' is empty";
+
+		public EmptyEntityIdException() {}
+
+		public EmptyEntityIdException(EntityBase entity): base(BuildMessage(entity)) {}
+		private static string BuildMessage(EntityBase entity)
+		{
+			var message = string.Format(ExceptionMessageBase, entity.GetType().Name);
+			return message;
+		}
+
+	}
+
+	public class DbOperations: IDbOperations
     {
 		public DbOperations(IGloobsterConfig config)
 		{
@@ -18,9 +35,7 @@ namespace Gloobster.Common
 
 		public IGloobsterConfig Config;
 		//$"mongodb://{"GloobsterConnector"}:{"Gloobster007"}@{"ds036178.mongolab.com"}:{"36178"}/Gloobster";
-
-		const string DatabaseName = "Gloobster";
-
+		
         public IMongoClient Client { get; set; }
         public IMongoDatabase Database { get; set; }
 
@@ -34,19 +49,21 @@ namespace Gloobster.Common
         public IMongoDatabase GetDatabase()
         {
             Client = GetClient();
-            var database = Client.GetDatabase(DatabaseName);
+            var database = Client.GetDatabase(Config.DatabaseName);
             return database;
         }
 
 		public async void DropCollection<T>()
 		{
-			string collectionName = typeof(T).Name;
+			var collectionName = GetCollectionName<T>();
 			await Database.DropCollectionAsync(collectionName);
         }
+		
+	    public async Task<T> SaveAsync<T>(T entity) where T: EntityBase
+	    {
+		    TestEntityForId(entity);
 
-        public async Task<T> SaveAsync<T>(T entity) where T: EntityBase
-        {            
-            var collectionName = entity.GetType().Name;
+			var collectionName = GetCollectionName<T>();
             var collection = Database.GetCollection<BsonDocument>(collectionName);
 
             entity.id = ObjectId.GenerateNewId();
@@ -54,13 +71,36 @@ namespace Gloobster.Common
             var bsonDoc = entity.ToBsonDocument();
 
             await collection.InsertOneAsync(bsonDoc);
-
+			
             return entity;
         }
 
-	    public async Task<UpdateResult> UpdateAsync<T>(T entity, FilterDefinition<BsonDocument> filter)
+		public async Task<IEnumerable<T>> SaveManyAsync<T>(IEnumerable<T> entities) where T : EntityBase
 		{
-			var collectionName = entity.GetType().Name;
+			var entitiesList = entities.ToList();
+			
+			if (!entitiesList.Any())
+			{
+				return null;
+			}
+
+			var collectionName = GetCollectionName<T>();
+			var collection = Database.GetCollection<BsonDocument>(collectionName);
+
+			entitiesList.ForEach(e => e.id = ObjectId.GenerateNewId());
+			
+			var bsonDocs = entitiesList.Select(e => e.ToBsonDocument());
+
+			await collection.InsertManyAsync(bsonDocs);
+
+			return entitiesList;			
+		}
+
+		public async Task<UpdateResult> UpdateAsync<T>(T entity, FilterDefinition<BsonDocument> filter) where T : EntityBase
+		{			
+			TestEntityForId(entity);
+
+			var collectionName = GetCollectionName<T>();
 			var collection = Database.GetCollection<BsonDocument>(collectionName);
 			
 			var bsonDoc = entity.ToBsonDocument();
@@ -71,7 +111,7 @@ namespace Gloobster.Common
 
 		public async Task<UpdateResult> UpdateAsync<T>(UpdateDefinition<BsonDocument> update, FilterDefinition<BsonDocument> filter)
 		{
-			var collectionName = typeof(T).Name;
+			var collectionName = GetCollectionName<T>();
 			var collection = Database.GetCollection<BsonDocument>(collectionName);
 			
 			UpdateResult result = await collection.UpdateOneAsync(filter, update);
@@ -81,9 +121,9 @@ namespace Gloobster.Common
 		
 
 		public async Task<T[]> FindAsync<T>(string query) where T : EntityBase
-        {            
-            var collectionName = typeof(T).Name;
-            var collection = Database.GetCollection<T>(collectionName);
+        {
+			var collectionName = GetCollectionName<T>();
+			var collection = Database.GetCollection<T>(collectionName);
             
             var result =  await collection.Find(query).ToListAsync();
             return result.ToArray();
@@ -91,9 +131,9 @@ namespace Gloobster.Common
         
 
         public async Task<long> GetCount<T>(string query = null) where T : EntityBase
-        {            
-            var collectionName = typeof(T).Name;
-            var collection = Database.GetCollection<T>(collectionName);
+        {
+			var collectionName = GetCollectionName<T>();
+			var collection = Database.GetCollection<T>(collectionName);
 
             var filter = new BsonDocument();
             if (!string.IsNullOrEmpty(query))
@@ -104,5 +144,20 @@ namespace Gloobster.Common
             long count = await collection.CountAsync(filter);
             return count;
         }
+
+		private string GetCollectionName<T>()
+		{
+			var entityName = typeof(T).Name;
+			var collectionName = entityName.Replace("Entity", string.Empty);
+			return collectionName;
+		}
+
+		private void TestEntityForId(EntityBase entity)
+		{
+			if (entity.id == ObjectId.Empty)
+			{
+				throw new EmptyEntityIdException(entity);
+			}
+		}
     }
 }

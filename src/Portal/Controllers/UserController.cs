@@ -1,11 +1,11 @@
-﻿using Gloobster.DomainModelsCommon.User;
-using Microsoft.AspNet.Mvc;
+﻿using Microsoft.AspNet.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using Gloobster.Common.DbEntity;
+using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.WebApiObjects;
 using Gloobster.Mappers;
 

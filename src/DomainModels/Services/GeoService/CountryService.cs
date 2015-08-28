@@ -1,38 +1,37 @@
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json.Linq;
+using Gloobster.DomainModels.Services.GeonamesService;
 
-namespace Gloobster.DomainModels.Services
+namespace Gloobster.DomainModels.Services.GeoService
 {
-	public interface IGeoService
-	{
-		Country GetByCountryName(string countryName);
-	}
-
-	public class GeoService: IGeoService
+	public class CountryService: ICountryService
 	{
 		public List<Country> CountriesList;
 
-		public GeoService()
+		public CountryService()
 		{
-			CountriesList = new List<Country>();
-
 			var countriesJson = GetCountriesJson();
-			JObject jObject = JObject.Parse(countriesJson);
-			var jCountries = jObject["countries"].ToArray();
+			var countries = Newtonsoft.Json.JsonConvert.DeserializeObject<CountriesRoot>(countriesJson);
+			CountriesList = countries.Countries;
 
-			foreach (var jCountry in jCountries)
-			{
-				var country = new Country
-				{
-					CountryCode = jCountry["countryCode"].Value<string>(),
-					CountryName = jCountry["countryName"].Value<string>(),
-					IsoAlpha3 = jCountry["isoAlpha3"].Value<string>()
-				};
+			//	new List<Country>();
 
-				CountriesList.Add(country);
-			}
-			
+			//var countriesJson = GetCountriesJson();
+			//JObject jObject = JObject.Parse(countriesJson);
+			//var jCountries = jObject["countries"].ToArray();
+
+			//foreach (var jCountry in jCountries)
+			//{
+			//	var country = new Country
+			//	{
+			//		CountryCode = jCountry["countryCode"].Value<string>(),
+			//		CountryName = jCountry["countryName"].Value<string>(),
+			//		IsoAlpha3 = jCountry["isoAlpha3"].Value<string>()
+			//	};
+
+			//	CountriesList.Add(country);
+			//}
+
 		}
 
 		public Country GetByCountryName(string countryName)
@@ -1308,13 +1307,6 @@ namespace Gloobster.DomainModels.Services
 
 
 		}
-	}
-
-	public class Country
-	{
-		public string CountryCode { get; set; }
-		public string CountryName { get; set; }
-		public string IsoAlpha3 { get; set; }
 	}
 }
 

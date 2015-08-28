@@ -1,27 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Gloobster.DomainModels.Services;
+using Gloobster.DomainModels.Services.GeonamesService;
+using Gloobster.DomainModels.Services.GeoService;
 using Gloobster.SocialLogin.Facebook.Communication;
 
-namespace Gloobster.DomainModels
+namespace Gloobster.DomainModels.Services.TaggedPlacesExtractor
 {
-	public interface IFacebookTaggedPlacesExtractor
-	{
-		void SetUserData(string accessToken, string userId);
-		void ExtractAll();
-
-		List<FoundPlace> ExtractedPlaces { get; set; }
-		List<FoundPlace> UniquePlaces { get; set; }
-		List<string> UniqueCountries { get; set; }
-	}
-
 	public class FacebookTaggedPlacesExtractor: IFacebookTaggedPlacesExtractor
 	{
 		public string AccessToken;
 		public string UserId;
 		public IFacebookService FBService;
-		public IGeoService GeoService;
+		public ICountryService CountryService;
+		public IGeoNamesService GeoNamesService;
 
 		private const string UserQueryBase = "/{0}/tagged_places";
 		private const string UserQueryNext = UserQueryBase + "/?after={1}";
@@ -31,10 +23,11 @@ namespace Gloobster.DomainModels
 		public List<string> UniqueCountries { get; set; }
 
 
-		public FacebookTaggedPlacesExtractor(IFacebookService fbService, IGeoService geoService)
+		public FacebookTaggedPlacesExtractor(IFacebookService fbService, ICountryService countryService, IGeoNamesService geoNamesService)
 		{
 			FBService = fbService;
-			GeoService = geoService;
+			CountryService = countryService;
+			GeoNamesService = geoNamesService;
 		}
 
 		public void SetUserData(string accessToken, string userId)
@@ -54,14 +47,32 @@ namespace Gloobster.DomainModels
 
 			ExtractedPlaces.ForEach(i =>
 			{
-				i.CountryCode2 = GeoService.GetByCountryName(i.Country).CountryCode;
-				i.CountryCode3 = GeoService.GetByCountryName(i.Country).IsoAlpha3;
+				i.CountryCode2 = CountryService.GetByCountryName(i.Country).CountryCode;
+				i.CountryCode3 = CountryService.GetByCountryName(i.Country).IsoAlpha3;
 			});
 			
 			UniquePlaces = PlacesDistinct(ExtractedPlaces);
 
+			//AddLatLong();			`
+
 			UniqueCountries = UniquePlaces.Select(p => p.Country).Distinct().ToList();
 		}
+
+		//private async void AddLatLong()
+		//{
+		//	foreach (var place in UniquePlaces)
+		//	{
+		//		var foundCities = await GeoNamesService.GetCityAsync(place.City, place.CountryCode2, 1);
+		//		if (!foundCities.GeoNames.Any())
+		//		{
+		//			continue;
+		//		}
+		//		var foundCity = foundCities.GeoNames.First();
+
+		//		place.Latitude = foundCity.Latitude;
+		//		place.Longitude = foundCity.Longitude;
+		//	}			
+  //      }
 
 		private List<FoundPlace> PlacesDistinct(List<FoundPlace> input)
 		{
@@ -86,7 +97,9 @@ namespace Gloobster.DomainModels
 				City = i.Place.Location.City,
 				Country = i.Place.Location.Country,
 				CheckinId = i.Id,
-				Time = DateTime.Parse(i.CreatedTime)
+				Time = DateTime.Parse(i.CreatedTime),
+				Latitude = i.Place.Location.Latitude,
+				Longitude = i.Place.Location.Longitude,
 			});
 			foundPlaces.AddRange(currentFoundPlaces);
 
@@ -96,22 +109,5 @@ namespace Gloobster.DomainModels
 				Extract(nextQuery, foundPlaces);
 			}
 		}		
-	}
-
-	public class FoundPlace : IEquatable<FoundPlace>
-	{
-		public string CheckinId { get; set; }
-
-		public DateTime Time { get; set; }
-
-		public string City { get; set; }
-		public string Country { get; set; }
-		public string CountryCode2 { get; set; }
-		public string CountryCode3 { get; set; }
-
-		public bool Equals(FoundPlace other)
-		{
-			return this.Country == other.Country && this.City == other.City;
-		}
 	}
 }

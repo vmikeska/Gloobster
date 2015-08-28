@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using Facebook;
 using Gloobster.Common;
 using Gloobster.Common.DbEntity;
-using Gloobster.DomainModelsCommon.User;
+using Gloobster.DomainModels.Services.TaggedPlacesExtractor;
+using Gloobster.DomainModelsCommon.DO;
+using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.Mappers;
 using Gloobster.SocialLogin.Facebook.Communication;
 using MongoDB.Bson;
@@ -17,13 +19,15 @@ namespace Gloobster.DomainModels
 		public IDbOperations DB;
 		public IFacebookService FBService;
 		public IFacebookTaggedPlacesExtractor TaggedPlacesExtractor;
+		public IPortalUserVisitedPlacesDomain VisitedPlacesDomain;
 
 
-		public FacebookUserDomain(IDbOperations db, IFacebookService fbService, IFacebookTaggedPlacesExtractor taggedPlacesExtractor)
+		public FacebookUserDomain(IDbOperations db, IFacebookService fbService, IFacebookTaggedPlacesExtractor taggedPlacesExtractor, IPortalUserVisitedPlacesDomain visitedPlacesDomain)
 		{
 			DB = db;
 			FBService = fbService;
 			TaggedPlacesExtractor = taggedPlacesExtractor;
+			VisitedPlacesDomain = visitedPlacesDomain;
 		}
 
 		public bool LogInFacebookUser(FacebookUserAuthenticationDO facebookUser)
@@ -66,9 +70,10 @@ namespace Gloobster.DomainModels
 			FBService.SetAccessToken(fbUserAuthentication.AccessToken);
 			var userCallResult = FBService.Get<FacebookUserFO>("/me");
 			var resultEntity = userCallResult.ToEntity();
-
+			
 			var userEntity = new PortalUserEntity
 			{
+				id = ObjectId.GenerateNewId(),
 				DisplayName = resultEntity.Name,
 				Mail = resultEntity.Email,
 				Password = GeneratePassword(),
@@ -88,15 +93,19 @@ namespace Gloobster.DomainModels
 		{
 			var result = new UserLoggedResultDO {IsFacebook = true, IsStandardUser = false, RegisteredNewUser = false};
 
+			string dbUserId;
+
 			var fbExistResult = await FacebookUserExists(fbAuth.UserID);
 
 			if (!fbExistResult.UserExists)
 			{
-				await CreateFacebookUser(fbAuth);
+				var newUser = await CreateFacebookUser(fbAuth);
+				dbUserId = newUser.CreatedUser.DbUserId;
 				result.RegisteredNewUser = true;
 			}
 			else
 			{
+				dbUserId = fbExistResult.PortalUser.DbUserId;
 				UpdateFacebookUserAuth(fbAuth);
 			}
 
@@ -112,7 +121,7 @@ namespace Gloobster.DomainModels
 			//}
 
 
-			ExtractVisitedCountries(fbAuth);
+			ExtractVisitedCountries(fbAuth, dbUserId);
 
 
 			return result;
@@ -132,15 +141,34 @@ namespace Gloobster.DomainModels
 			
 		}
 
-		private void ExtractVisitedCountries(FacebookUserAuthenticationDO fbAuth)
+		private void ExtractVisitedCountries(FacebookUserAuthenticationDO fbAuth, string dbUserId)
 		{
 
 			TaggedPlacesExtractor.SetUserData(fbAuth.AccessToken, fbAuth.UserID);
 
 			TaggedPlacesExtractor.ExtractAll();
-
 			
+			var newPlaces = TaggedPlacesExtractor.UniquePlaces.Select(p => FacebookPlaceToVisitedPlace(p, dbUserId)).ToList();
 
+			VisitedPlacesDomain.AddNewPlaces(newPlaces, dbUserId);
+
+		}
+
+		private VisitedPlaceDO FacebookPlaceToVisitedPlace(FoundPlace fbPlace, string portalUserId)
+		{
+			var localPlace = new VisitedPlaceDO
+			{
+				City = fbPlace.CheckinId,
+				CountryCode = fbPlace.CountryCode2,
+				PlaceLatitude = fbPlace.Latitude,
+				PlaceLongitude = fbPlace.Longitude,
+				SourceType = SourceTypeDO.Facebook,
+				PortalUserId = portalUserId
+
+				//todo: add fb object id
+				//SourceId = fbPlace.
+			};
+			return localPlace;
 		}
 
 		private string GeneratePassword()

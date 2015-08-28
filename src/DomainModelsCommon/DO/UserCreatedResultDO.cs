@@ -1,6 +1,6 @@
 ﻿using Gloobster.Common.DbEntity;
 
-namespace Gloobster.DomainModelsCommon.User
+namespace Gloobster.DomainModelsCommon.DO
 {
     public class UserCreatedResultDO
     {

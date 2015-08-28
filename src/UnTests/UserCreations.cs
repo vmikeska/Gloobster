@@ -1,24 +1,15 @@
 ﻿using System.Threading.Tasks;
-using Gloobster.Common;
 using Gloobster.Common.DbEntity;
-using Gloobster.DomainModelsCommon.User;
+using Gloobster.DomainModelsCommon.DO;
 using Gloobster.SocialLogin.Facebook.Communication;
+using MongoDB.Bson;
 
 namespace Gloobster.UnitTests
 {
-	public class UserCreations
+	public class UserCreations: CreationsBase
 	{
-		public static IDbOperations DB;
-
 		static UserCreations()
 		{
-			var config = new GloobsterConfig
-			{
-				MongoConnectionString = "mongodb://localhost:27017/GloobsterTest"
-			};
-
-			DB = new DbOperations(config);
-			
 			FavoriteTeams1 = new[] { new IdNameFO { Id = "444", Name = "Ein" }, new IdNameFO { Id = "555", Name = "Ein2" }};
 			Languages1 = new[] { new IdNameFO { Id = "55", Name = "English" }, new IdNameFO { Id = "66", Name = "German" } };
 			HomeTown1 = new IdNameFO {Id = "22", Name = "Frankfurt, Germany"};
@@ -92,6 +83,7 @@ namespace Gloobster.UnitTests
 		{
 			var user = new PortalUserEntity
 			{
+				id = ObjectId.GenerateNewId(),
 				DisplayName = DisplayName1,
 				Mail = Mail1,
 				Password = Password1
