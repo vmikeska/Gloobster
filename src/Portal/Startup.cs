@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using Gloobster.Common;
+﻿using Gloobster.Common;
 using Gloobster.DomainModels;
-using Gloobster.DomainModels.Services;
+using Gloobster.DomainModels.Services.CountryService;
 using Gloobster.DomainModels.Services.GeonamesService;
-using Gloobster.DomainModels.Services.GeoService;
 using Gloobster.DomainModels.Services.TaggedPlacesExtractor;
 using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.SocialLogin.Facebook.Communication;
-using Microsoft.AspNet.Authentication.Facebook;
-using Microsoft.AspNet.Authentication.MicrosoftAccount;
 using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Diagnostics.Entity;
 using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.Data.Entity;
 using Microsoft.Framework.Configuration;
 using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
@@ -69,11 +61,9 @@ namespace Gloobster.Portal
 		{
 			services.AddTransient<IPortalUserDomain, PortalUserDomain>();
 			services.AddTransient<IFacebookUserDomain, FacebookUserDomain>();
-			services.AddTransient<IPortalUserVisitedPlacesDomain, PortalUserVisitedPlacesDomain>();
-
+			services.AddTransient<IVisitedPlacesDomain, VisitedPlacesDomain>();
+			services.AddTransient<IVisitedCountriesDomain, VisitedCountriesDomain>();
 			
-
-
 			services.AddTransient<IDbOperations, DbOperations>();
 			services.AddTransient<IFacebookService, FacebookService>();
 
@@ -82,6 +72,8 @@ namespace Gloobster.Portal
 			services.AddInstance<ICountryService>(new CountryService());
 
 			services.AddTransient<IGeoNamesService, GeoNamesService>();
+
+
 		}
 
 		// Configure is called after ConfigureServices is called.

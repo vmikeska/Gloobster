@@ -21,8 +21,10 @@ var MapsBaseOperation3d = (function () {
             fillColor: polygonConfig.fillColor,
             fillOpacity: polygonConfig.fillOpacity
         }).addTo(this.earth);
+        //polygon.on('click', function() { alert('test'); });
     };
-    MapsBaseOperation3d.prototype.drawPin = function () {
+    MapsBaseOperation3d.prototype.drawPin = function (lat, lng) {
+        WE.marker([lat, lng]).addTo(this.earth);
     };
     return MapsBaseOperation3d;
 })();
@@ -30,7 +32,7 @@ var MapsOperations3d = (function () {
     function MapsOperations3d(baseOperations) {
         this.baseOperations = baseOperations;
     }
-    MapsOperations3d.prototype.drawContry = function (countryParts, countryConfig) {
+    MapsOperations3d.prototype.drawCountry = function (countryParts, countryConfig) {
         var _this = this;
         if (!countryParts) {
             return;
@@ -40,8 +42,18 @@ var MapsOperations3d = (function () {
         });
     };
     MapsOperations3d.prototype.drawCountries = function (countries, color) {
+        var self = this;
         countries.forEach(function (country) {
-            this.drawCountry(country, color);
+            self.drawCountry(country, color);
+        });
+    };
+    MapsOperations3d.prototype.drawPlace = function (lat, lng) {
+        this.baseOperations.drawPin(lat, lng);
+    };
+    MapsOperations3d.prototype.drawPlaces = function (places) {
+        var self = this;
+        places.forEach(function (place) {
+            self.drawPlace(place.lat, place.lng);
         });
     };
     return MapsOperations3d;

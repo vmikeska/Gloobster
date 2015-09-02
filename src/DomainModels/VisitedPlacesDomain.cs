@@ -11,11 +11,11 @@ using MongoDB.Bson;
 
 namespace Gloobster.DomainModels
 {
-	public class PortalUserVisitedPlacesDomain: IPortalUserVisitedPlacesDomain
+	public class VisitedPlacesDomain: IVisitedPlacesDomain
 	{
 		public IDbOperations DB;
 
-	    public PortalUserVisitedPlacesDomain(IDbOperations db)
+	    public VisitedPlacesDomain(IDbOperations db)
 	    {
 		    DB = db;
 	    }
@@ -42,16 +42,24 @@ namespace Gloobster.DomainModels
 
 			if (newPlaces.Any())
 			{
-				var savedNewPlaces = await DB.SaveManyAsync(newPlaces);
-
-				var newPlacesDO = savedNewPlaces.Select(e => e.ToDO()).ToList();
-				return newPlacesDO;
+				await DB.SaveManyAsync(newPlaces);
 			}
 
-			return null;
+			var newPlacesDO = newPlaces.Select(e => e.ToDO()).ToList();
+			return newPlacesDO;			
 	    }
-    }
 
-	
+		public async Task<List<VisitedPlaceDO>> GetPlacesByUserId(string userId)
+		{
+			var query = $@"{{""PortalUser_id"": ObjectId(""{userId}"")}}";
+			var places = await DB.FindAsync<VisitedPlaceEntity>(query);
+
+			var placesDO = places.Select(p => p.ToDO()).ToList();
+			return placesDO;
+		}
+	}
+
+
+
 
 }

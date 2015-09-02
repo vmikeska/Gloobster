@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Gloobster.DomainModels.Services.GeonamesService;
 
-namespace Gloobster.DomainModels.Services.GeoService
+namespace Gloobster.DomainModels.Services.CountryService
 {
 	public class CountryService: ICountryService
 	{
@@ -43,6 +43,12 @@ namespace Gloobster.DomainModels.Services.GeoService
 
 			}
 
+			return country;
+		}
+
+		public Country GetCountryByCountryCode2(string countryCode2)
+		{
+			var country = CountriesList.FirstOrDefault(c => c.CountryCode.Equals(countryCode2));
 			return country;
 		}
 

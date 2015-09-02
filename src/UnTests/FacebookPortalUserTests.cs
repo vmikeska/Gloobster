@@ -2,8 +2,8 @@
 using Gloobster.Common.DbEntity;
 using Gloobster.DomainModels;
 using Gloobster.DomainModels.Services;
+using Gloobster.DomainModels.Services.CountryService;
 using Gloobster.DomainModels.Services.GeonamesService;
-using Gloobster.DomainModels.Services.GeoService;
 using Gloobster.DomainModels.Services.TaggedPlacesExtractor;
 using Gloobster.DomainModelsCommon.DO;
 using Gloobster.SocialLogin.Facebook.Communication;
@@ -27,11 +27,12 @@ namespace Gloobster.UnitTests
 
 			var countryService = new CountryService();
 			var geoNamesService = new GeoNamesService();
-			var visitedPlacesDomain = new PortalUserVisitedPlacesDomain(DBOper);
+			var visitedPlacesDomain = new VisitedPlacesDomain(DBOper);
 
 			var taggedPlaces = new FacebookTaggedPlacesExtractor(FacebookServiceMock.Object, countryService, geoNamesService);
+			var visitedCountries = new VisitedCountriesDomain(DBOper);
 
-			FBUserDomain = new FacebookUserDomain(DBOper, FacebookServiceMock.Object, taggedPlaces, visitedPlacesDomain);
+			FBUserDomain = new FacebookUserDomain(DBOper, FacebookServiceMock.Object, taggedPlaces, visitedPlacesDomain, visitedCountries);
 		}
 		
 		public FacebookUserDomain FBUserDomain { get; set; }
@@ -119,7 +120,7 @@ namespace Gloobster.UnitTests
 		//	var extractor = new FacebookTaggedPlacesExtractor(new FacebookService(), geoService);
 		//	extractor.AccessToken =
 		//		"CAAVlse7iUKoBAJZCwNszsZCvgOR6i36lWCfZCVDkP4taDh2NWsabfZA0XfWqzvWvZAGswJ2MHzCr1xt9KmRQPnUYMbjNvQHRmurE6C8VZBUB3WoG9ZBu7S3m8ql0i9d4Gr9QTo90F3GQeB7PuVQbcVDEHBCj4m7umPgDgHZBNUMvunWsvJOjntspWSvyPt199AsBaErcJIuRZBwZDZD";
-		//	extractor.UserId = "10202803343824427";
+		//	extractor.PortalUser_id = "10202803343824427";
 
 		//	extractor.ExtractAll();
 		//}

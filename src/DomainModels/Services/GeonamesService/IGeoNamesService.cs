@@ -8,6 +8,7 @@ namespace Gloobster.DomainModels.Services.GeonamesService
 	{
 		Task<CitySearchResponse> GetCityAsync(string cityName, string countryCode, int maxRows);
 		Task<T> GetResponseAsync<T>(Dictionary<string, string> prms) where T : GeoNamesResponseBase;
+		Task<CitySearchResponse> GetCityQueryAsync(string query, int maxRows);
 	}
 
 	[DataContract]

@@ -37,7 +37,23 @@ namespace Gloobster.DomainModels.Services.GeonamesService
 			var cities = await GetResponseAsync<CitySearchResponse>(prms);
 			return cities;
 		}
-		
+
+		public async Task<CitySearchResponse> GetCityQueryAsync(string query, int maxRows)
+		{
+			var prms = new Dictionary<string, string>
+			{
+				{"name", query},
+				//{"name_startsWith", query},
+				{"maxRows", maxRows.ToString()},
+				//{"fuzzy", "0.9" },				
+                {"orderby", "population" },
+				{"featureClass", "P" }
+			};
+
+			var cities = await GetResponseAsync<CitySearchResponse>(prms);
+			return cities;
+		}
+
 		public async Task<T> GetResponseAsync<T>(Dictionary<string, string> prms) where T: GeoNamesResponseBase
 		{
 			AppendBaseParams(prms);

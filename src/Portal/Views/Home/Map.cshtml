@@ -13,46 +13,76 @@
     <script type="text/javascript" src="@Url.Content("~/js/CountryCodes.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/js/MapsDisplayer.js")"></script>
 		<script type="text/javascript" src="@Url.Content("~/js/MapsCreator.js")"></script>
+		<script type="text/javascript" src="@Url.Content("~/js/ViewBase.js")"></script>
+		<script type="text/javascript" src="@Url.Content("~/js/PinBoardView.js")"></script>
+		
 
 
 		
     <script>
-        function initialize() {
+	    function initialize() {
+		    var pinBoardView = new PinBoardView();
+		    pinBoardView.initialize();
 
-        		var mapsCreator = new MapsCreator('earth_div');
-        		mapsCreator.initializeGlobe(MapTypes.OSM);
+		    $("#countriesAutocomplet").on("input", function() {
+			    var placeName = $("#countriesAutocomplet").val();
 
-        		var mapsBaseOperations = new MapsBaseOperation3d(mapsCreator.earth);
-        		var mapsOperations = new MapsOperations3d(mapsBaseOperations);
-            
-        		var countryShapes = new CountryShapes();
+			    var url = '/api/place?placeName=' + placeName;
 
-        		var rusCoordinates = countryShapes.getCoordinatesByCountry('RUS');
+			    makeApiCall(url, function(response) {
 
-        		var countryConfig = new PolygonConfig();
-        		//borderColor: string;
-        		//borderOpacity: number;
-        		//borderWeight: number;
+			    	var htmlContent = '';
+				    response.forEach(function(item) {
 
-        		//fillColor: string;
-        		//fillOpacity: number;
+				    		if (item.population > 0) {
+				    				htmlContent += getItemHtml(item);
+								}								
+				    });
 
-        		mapsOperations.drawContry(rusCoordinates, countryConfig);
+				    $("#countriesResult").html(htmlContent);
+				    $(".cityMenuItem").unbind();
+				    $(".cityMenuItem").click(function (item) {
+				    		var geoId = $(item.currentTarget).data('id');
 
-            //drawOneCountry("RUS", earth);
-            //drawAllCountries(earth);
+				    		var dataRecord = _.find(response, { 'geonameId': geoId });
 
-            //earth.setView([48, 6], 5);
+				    		pinBoardView.setView(dataRecord.lat, dataRecord.lng);
+				    });
 
-        }
+			    });
 
-        
+			    
+		    });
 
-        
+		    
+	    }
 
+				function getItemHtml(item) {
+						return '<div class="cityMenuItem" data-id="' + item.geonameId + '">' + item.name + ', ' + item.countryName + ' (pop: ' + item.population + ')' + '</div>';
+				}
+
+	    function makeApiCall(url, callback) {
+		    $.ajax({
+			    type: 'GET',
+			    url: url,
+			    success(response) {
+				    callback(response);
+			    },
+			    error(res) {
+
+				    //todo: some universal error handler
+				    alert(JSON.stringify(res));
+			    }
+		    });
+	    }
 
     </script>
 </head>
 <body onload="initialize()">
-    <div id="earth_div" style="width:800px;height:600px; border: 1px solid black;"></div>
+
+		<input type="text" id="countriesAutocomplet"/>
+		<div id="countriesResult" style="border: 1px solid red"></div>
+
+
+		<div id="earth_div" style="width: 800px; height: 600px; border: 1px solid black;"></div>
 </body>

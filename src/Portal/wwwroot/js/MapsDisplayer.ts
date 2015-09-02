@@ -1,5 +1,5 @@
 ﻿
-declare var WE: any;
+
 
 
 interface IMapsBaseOperation {
@@ -8,8 +8,10 @@ interface IMapsBaseOperation {
 }
 
 interface IMapsOperations {
-		drawContry: Function;
-		drawCountries: Function;
+		drawCountry: Function;
+		drawCountries: Function;		
+		drawPlace: Function;
+		drawPlaces: Function;
 }
 
 class PolygonConfig {
@@ -34,6 +36,7 @@ class PolygonConfig {
 }
 
 
+
 class MapsBaseOperation3d implements IMapsBaseOperation {
 
 		public earth: any;
@@ -52,10 +55,12 @@ class MapsBaseOperation3d implements IMapsBaseOperation {
 						fillOpacity: polygonConfig.fillOpacity
 						
 				}).addTo(this.earth);
+
+				//polygon.on('click', function() { alert('test'); });
 		}
 
-		public drawPin() {
-				
+		public drawPin(lat: number, lng: number) {
+				WE.marker([lat, lng]).addTo(this.earth);
 		}
 
 }
@@ -71,7 +76,7 @@ class MapsOperations3d implements IMapsOperations {
 				this.baseOperations = baseOperations;
 		}
 
-		drawContry(countryParts, countryConfig: PolygonConfig) {
+		drawCountry(countryParts, countryConfig: PolygonConfig) {
 				
 				if (!countryParts) {
 						return;
@@ -83,10 +88,21 @@ class MapsOperations3d implements IMapsOperations {
 		}
 
 		drawCountries(countries, color) {
-				countries.forEach(function (country) {
-						this.drawCountry(country, color);
+			var self = this;
+			countries.forEach(function (country) {
+						self.drawCountry(country, color);
 				});
-				
 		}
 
+		drawPlace(lat: number, lng: number) {
+				this.baseOperations.drawPin(lat, lng);	
+		}
+
+		drawPlaces(places) {
+
+				var self = this;
+				places.forEach(function (place) {
+						self.drawPlace(place.lat, place.lng);
+				});				
+		}
 }

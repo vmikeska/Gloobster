@@ -87,8 +87,7 @@ namespace Gloobster.Mappers
 				FirstName = fo.FirstName,
 				Gender = fo.Gender,
 				HomeTown = fo.HomeTown.ToEntity(),
-				UserId = fo.Id,
-				Languages = fo.Languages.Select(i => i.ToEntity()).ToArray(),
+				UserId = fo.Id,				
 				LastName = fo.LastName,
 				Link = fo.Link,
 				Locale = fo.Locale,
@@ -98,6 +97,11 @@ namespace Gloobster.Mappers
 				UpdatedTime = fo.UpdatedTime,
 				Verified = fo.Verified
 			};
+
+			if (fo.Languages != null)
+			{
+				entity.Languages = fo.Languages.Select(i => i.ToEntity()).ToArray();
+			}
 
 			return entity;
 

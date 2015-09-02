@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Facebook;
@@ -19,16 +20,20 @@ namespace Gloobster.DomainModels
 		public IDbOperations DB;
 		public IFacebookService FBService;
 		public IFacebookTaggedPlacesExtractor TaggedPlacesExtractor;
-		public IPortalUserVisitedPlacesDomain VisitedPlacesDomain;
+		public IVisitedPlacesDomain VisitedPlacesDomain;
+		public IVisitedCountriesDomain VisitedCountries;
 
-
-		public FacebookUserDomain(IDbOperations db, IFacebookService fbService, IFacebookTaggedPlacesExtractor taggedPlacesExtractor, IPortalUserVisitedPlacesDomain visitedPlacesDomain)
+		public FacebookUserDomain(IDbOperations db, IFacebookService fbService, IFacebookTaggedPlacesExtractor taggedPlacesExtractor, IVisitedPlacesDomain visitedPlacesDomain,
+			IVisitedCountriesDomain visitedCountriesDomain)
 		{
 			DB = db;
 			FBService = fbService;
 			TaggedPlacesExtractor = taggedPlacesExtractor;
 			VisitedPlacesDomain = visitedPlacesDomain;
+			VisitedCountries = visitedCountriesDomain;
 		}
+
+		
 
 		public bool LogInFacebookUser(FacebookUserAuthenticationDO facebookUser)
 		{
@@ -131,26 +136,30 @@ namespace Gloobster.DomainModels
 		{
 			var fbAuthEntity = fbAuth.ToEntity();
 
-			var filter = Builders<BsonDocument>.Filter.Eq("Facebook.Authentication.UserId", fbAuth.UserID);
+			var filter = Builders<BsonDocument>.Filter.Eq("Facebook.Authentication.PortalUser_id", fbAuth.UserID);
 			var update = Builders<BsonDocument>.Update
 				.Set("Facebook.Authentication.AccessToken", fbAuth.AccessToken)
-				.Set("Facebook.Authentication.UserId", fbAuth.UserID);
+				.Set("Facebook.Authentication.PortalUser_id", fbAuth.UserID);
 				//todo: possibly remove SignedRequest and ExpiresIn at all
 			var result = await DB.UpdateAsync<PortalUserEntity>(update, filter);
 
 			
 		}
 
-		private void ExtractVisitedCountries(FacebookUserAuthenticationDO fbAuth, string dbUserId)
+		private async void ExtractVisitedCountries(FacebookUserAuthenticationDO fbAuth, string dbUserId)
 		{
 
 			TaggedPlacesExtractor.SetUserData(fbAuth.AccessToken, fbAuth.UserID);
 
 			TaggedPlacesExtractor.ExtractAll();
 			
-			var newPlaces = TaggedPlacesExtractor.UniquePlaces.Select(p => FacebookPlaceToVisitedPlace(p, dbUserId)).ToList();
+			var extractedPlaces = TaggedPlacesExtractor.UniquePlaces.Select(p => FacebookPlaceToVisitedPlace(p, dbUserId)).ToList();
 
-			VisitedPlacesDomain.AddNewPlaces(newPlaces, dbUserId);
+			List<VisitedPlaceDO> newPlaces = await VisitedPlacesDomain.AddNewPlaces(extractedPlaces, dbUserId);
+			var newCountriesList = newPlaces.Select(p => p.CountryCode).Distinct();
+			var newCountriesDO = newCountriesList.Select(c => new VisitedCountryDO {CountryCode2 = c}).ToList();
+
+			var newAddedCountries = await VisitedCountries.AddNewCountries(newCountriesDO, dbUserId);
 
 		}
 
@@ -158,15 +167,15 @@ namespace Gloobster.DomainModels
 		{
 			var localPlace = new VisitedPlaceDO
 			{
-				City = fbPlace.CheckinId,
+				City = fbPlace.City,
 				CountryCode = fbPlace.CountryCode2,
 				PlaceLatitude = fbPlace.Latitude,
 				PlaceLongitude = fbPlace.Longitude,
-				SourceType = SourceTypeDO.Facebook,
-				PortalUserId = portalUserId
+				
+				PortalUserId = portalUserId,
 
-				//todo: add fb object id
-				//SourceId = fbPlace.
+				SourceType = SourceTypeDO.Facebook,
+				SourceId = fbPlace.CheckinId
 			};
 			return localPlace;
 		}

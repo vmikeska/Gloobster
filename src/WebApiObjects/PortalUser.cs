@@ -20,7 +20,4 @@ namespace Gloobster.WebApiObjects
 		public int expiresIn { get; set; }
 		public string signedRequest { get; set; }
 	}
-
-
-	
 }

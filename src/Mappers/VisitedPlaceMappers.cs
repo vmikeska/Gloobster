@@ -1,6 +1,7 @@
 ﻿using System;
 using Gloobster.Common.DbEntity;
 using Gloobster.DomainModelsCommon.DO;
+using Gloobster.WebApiObjects;
 using MongoDB.Bson;
 
 namespace Gloobster.Mappers
@@ -51,6 +52,26 @@ namespace Gloobster.Mappers
 			}
 			
 			return entity;
+		}
+
+		public static VisitedPlaceResponseItem ToResponse(this VisitedPlaceDO dObj)
+		{
+			if (dObj == null)
+			{
+				return null;
+			}
+
+			var response = new VisitedPlaceResponseItem
+			{
+				City = dObj.City,
+				CountryCode = dObj.CountryCode,
+				PlaceLatitude = dObj.PlaceLatitude,
+				PlaceLongitude = dObj.PlaceLongitude,
+				SourceId = dObj.SourceId,
+				SourceType = dObj.SourceType.ToString()
+			};
+			
+			return response;
 		}
 	}
 

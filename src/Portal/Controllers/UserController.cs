@@ -11,7 +11,6 @@ using Gloobster.Mappers;
 
 namespace Gloobster.Portal.Controllers
 {
-	
 	[Route("api/[controller]")]
     public class UserController : Controller
         //PortalBaseController
