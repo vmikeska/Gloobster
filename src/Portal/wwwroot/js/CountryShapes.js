@@ -1,5 +1,6 @@
 var CountryShapes = (function () {
     function CountryShapes() {
+        this.skipLevel = 2;
         this.countriesList = this.getCountries();
     }
     CountryShapes.prototype.getCoordinatesByCountry = function (iso3CountryCode) {

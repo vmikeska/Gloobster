@@ -2,17 +2,18 @@
 class CountryShapes {
 
 		constructor() {
-				this.countriesList = this.getCountries();
+				this.countriesList = this.getCountries();			
 		}
 
-		public countriesList: any[];
+		public skipLevel = 2;
+		public countriesList: any[];				
 
 		getCoordinatesByCountry(iso3CountryCode: string) {
 				for (var actCountry = 0; actCountry <= this.countriesList.length - 1; actCountry++) {
 						var currentCountry = this.countriesList[actCountry];
 
-						if (currentCountry.name === iso3CountryCode) {
-								return currentCountry.coordinates;
+						if (currentCountry.name === iso3CountryCode) {								
+								return currentCountry.coordinates;								
 						}
 				}
 				return null;

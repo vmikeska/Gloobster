@@ -9,41 +9,42 @@ var PinBoardView = (function (_super) {
     function PinBoardView() {
         _super.apply(this, arguments);
     }
+    //public countryShapes: CountryShapes;
     PinBoardView.prototype.initialize = function () {
-        this.mapsCreator = new MapsCreator('earth_div');
-        this.mapsCreator.initializeGlobe(MapTypes.MQCDN1);
-        this.mapsBaseOperations = new MapsBaseOperation3d(this.mapsCreator.earth);
-        this.mapsOperations = new MapsOperations3d(this.mapsBaseOperations);
-        this.countryShapes = new CountryShapes();
+        //this.mapsCreator = new MapsCreator('earth_div');
+        //this.mapsCreator.initializeGlobe(MapTypes.MQCDN1);
+        this.mapsManager = new MapsManager();
+        this.mapsManager.switchToView(Maps.ViewType.D3);
+        //this.mapsBaseOperations = new MapsBaseOperation3D(this.mapsCreator.earth);
+        //this.mapsOperations = new MapsOperations3D(this.mapsBaseOperations);
+        //this.countryShapes = new CountryShapes();
         this.getVisitedCountries();
         this.getVisitedPlaces();
     };
     Object.defineProperty(PinBoardView.prototype, "countryConfig", {
         get: function () {
-            var countryConfig = new PolygonConfig();
-            countryConfig.fillColor = '#009900';
+            var countryConfig = new Maps.PolygonConfig();
+            countryConfig.fillColor = "#009900";
             return countryConfig;
         },
         enumerable: true,
         configurable: true
     });
-    PinBoardView.prototype.setView = function (lat, lng) {
-        this.mapsCreator.earth.setView([lat, lng], 3);
-    };
+    //public setView(lat, lng) {
+    //		this.mapsCreator.earth.setView([lat, lng], 3);
+    //}
     PinBoardView.prototype.displayVisitedCountries = function () {
-        var _this = this;
-        this.clearDisplayedCountries();
-        var countryConf = this.countryConfig;
-        this.visitedCountries.forEach(function (countryCode) {
-            var countryCoordinates = _this.countryShapes.getCoordinatesByCountry(countryCode);
-            _this.mapsOperations.drawCountry(countryCoordinates, countryConf);
-        });
+        //this.clearDisplayedCountries();
+        //var countryConf = this.countryConfig;
+        //this.visitedCountries.forEach(countryCode => {
+        //	var countryCoordinates = this.countryShapes.getCoordinatesByCountry(countryCode);
+        //	this.mapsOperations.drawCountry(countryCoordinates, countryConf);
+        //});
     };
     PinBoardView.prototype.displayVisitedPlaces = function () {
-        var _this = this;
-        this.visitedPlaces.forEach(function (place) {
-            _this.mapsOperations.drawPlace(place.PlaceLatitude, place.PlaceLongitude);
-        });
+        //this.visitedPlaces.forEach(place => {
+        //	this.mapsOperations.drawPlace(place.PlaceLatitude, place.PlaceLongitude);
+        //});
     };
     PinBoardView.prototype.clearDisplayedCountries = function () {
     };
@@ -51,7 +52,8 @@ var PinBoardView = (function (_super) {
         return '55e0b1d7ff89d0435456e6f5';
     };
     PinBoardView.prototype.onVisitedCountriesResponse = function (visitedCountries) {
-        this.visitedCountries = visitedCountries;
+        this.mapsManager.countries =
+            this.visitedCountries = visitedCountries;
         this.displayVisitedCountries();
     };
     PinBoardView.prototype.getVisitedPlaces = function () {

@@ -7,19 +7,31 @@
 
 
 <head>
-    <script src="http://www.webglearth.com/v2/api.js"></script>
+	<script src="http://www.webglearth.com/v2/api.js"></script>
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css"/>
+		<script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
 
     <script type="text/javascript" src="@Url.Content("~/js/CountryShapes.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/js/CountryCodes.js")"></script>
-    <script type="text/javascript" src="@Url.Content("~/js/MapsDisplayer.js")"></script>
-		<script type="text/javascript" src="@Url.Content("~/js/MapsCreator.js")"></script>
+
+
+
+		<script type="text/javascript" src="@Url.Content("~/js/Maps/MapsInterfaces.js")"></script>			
+		<script type="text/javascript" src="@Url.Content("~/js/Maps/MapsBaseOperation3D.js")"></script>
+		<script type="text/javascript" src="@Url.Content("~/js/Maps/MapsOperations3D.js")"></script>
+
+		<script type="text/javascript" src="@Url.Content("~/js/Maps/MapsCreator.js")"></script>
+		<script type="text/javascript" src="@Url.Content("~/js/Maps/MapsManager.js")"></script>
+
+
 		<script type="text/javascript" src="@Url.Content("~/js/ViewBase.js")"></script>
-		<script type="text/javascript" src="@Url.Content("~/js/PinBoardView.js")"></script>
+		<script type="text/javascript" src="@Url.Content("~/js/Views/PinBoardView.js")"></script>
+
 		
 
 
-		
-    <script>
+
+	<script>
 	    function initialize() {
 		    var pinBoardView = new PinBoardView();
 		    pinBoardView.initialize();
@@ -31,35 +43,35 @@
 
 			    makeApiCall(url, function(response) {
 
-			    	var htmlContent = '';
+				    var htmlContent = '';
 				    response.forEach(function(item) {
 
-				    		if (item.population > 0) {
-				    				htmlContent += getItemHtml(item);
-								}								
+					    if (item.population > 0) {
+						    htmlContent += getItemHtml(item);
+					    }
 				    });
 
 				    $("#countriesResult").html(htmlContent);
 				    $(".cityMenuItem").unbind();
-				    $(".cityMenuItem").click(function (item) {
-				    		var geoId = $(item.currentTarget).data('id');
+				    $(".cityMenuItem").click(function(item) {
+					    var geoId = $(item.currentTarget).data('id');
 
-				    		var dataRecord = _.find(response, { 'geonameId': geoId });
+					    var dataRecord = _.find(response, { 'geonameId': geoId });
 
-				    		pinBoardView.setView(dataRecord.lat, dataRecord.lng);
+					    pinBoardView.setView(dataRecord.lat, dataRecord.lng);
 				    });
 
 			    });
 
-			    
+
 		    });
 
-		    
+
 	    }
 
-				function getItemHtml(item) {
-						return '<div class="cityMenuItem" data-id="' + item.geonameId + '">' + item.name + ', ' + item.countryName + ' (pop: ' + item.population + ')' + '</div>';
-				}
+	    function getItemHtml(item) {
+		    return '<div class="cityMenuItem" data-id="' + item.geonameId + '">' + item.name + ', ' + item.countryName + ' (pop: ' + item.population + ')' + '</div>';
+	    }
 
 	    function makeApiCall(url, callback) {
 		    $.ajax({
@@ -76,6 +88,20 @@
 		    });
 	    }
 
+
+				//tabs -----
+
+	    setTimeout(function() {
+		    $('.tabContent_item').hide();
+	    }, 1000);
+
+
+	    function buttonClicked(viewType) {
+	    		$('.tabContent_item').hide();
+	    		$('#tab' + viewType).show();
+	    }
+
+
     </script>
 </head>
 <body onload="initialize()">
@@ -83,6 +109,20 @@
 		<input type="text" id="countriesAutocomplet"/>
 		<div id="countriesResult" style="border: 1px solid red"></div>
 
+		<div class="tabMenu">
+			<button class="tabMenu_button" type="button" onclick="buttonClicked('3D')">3D</button>
+			<button class="tabMenu_button" type="button" onclick="buttonClicked('2D')">2D</button>
+			<button class="tabMenu_button" type="button" onclick="buttonClicked('1D')">1D</button>
+		</div>
+		<div class="tabContent">
+			<div id="tab3D" class="tabContent_item">
+					<div id="earth_div" style="width: 800px; height: 600px; border: 1px solid black;"></div>
+			</div>
+			<div id="tab2D" class="tabContent_item">
+					<div id="map"  style="width: 800px; height: 600px; border: 1px solid black;"></div>
+			</div>
+			<div id="tab1D" class="tabContent_item"></div>
+		</div>
 
-		<div id="earth_div" style="width: 800px; height: 600px; border: 1px solid black;"></div>
+		
 </body>
