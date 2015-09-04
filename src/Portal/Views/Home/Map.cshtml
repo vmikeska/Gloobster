@@ -7,11 +7,16 @@
 
 
 <head>
-	<script src="http://www.webglearth.com/v2/api.js"></script>
-	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css"/>
+		<script src="http://www.webglearth.com/v2/api.js"></script>
+
+		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css"/>
 		<script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
 
-		<script type="text/javascript" src="@Url.Content("~/js/Maps/MapsInterfaces.js")"></script>			
+		<script src='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.js'></script>
+		<link href='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.css' rel='stylesheet' />
+
+
+	<script type="text/javascript" src="@Url.Content("~/js/Maps/MapsInterfaces.js")"></script>			
 
 		<script type="text/javascript" src="@Url.Content("~/js/CountryShapes.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/js/CountryCodes.js")"></script>
@@ -23,89 +28,96 @@
 		<script type="text/javascript" src="@Url.Content("~/js/Maps/BaseMapsOperation2D.js")"></script>
 		<script type="text/javascript" src="@Url.Content("~/js/Maps/MapsOperations.js")"></script>
 
-		<script type="text/javascript" src="@Url.Content("~/js/Maps/MapsCreator.js")"></script>
+		<script type="text/javascript" src="@Url.Content("~/js/Maps/MapsCreatorGlobe3D.js")"></script>
+		<script type="text/javascript" src="@Url.Content("~/js/Maps/MapsCreatorMapBox2D.js")"></script>
+		
 		<script type="text/javascript" src="@Url.Content("~/js/Maps/MapsManager.js")"></script>
 
 
 		<script type="text/javascript" src="@Url.Content("~/js/ViewBase.js")"></script>
 		<script type="text/javascript" src="@Url.Content("~/js/Views/PinBoardView.js")"></script>
 
-		
+
 
 
 
 	<script>
-	    function initialize() {
-		    var pinBoardView = new PinBoardView();
-		    pinBoardView.initialize();
 
-		    $("#countriesAutocomplet").on("input", function() {
-			    var placeName = $("#countriesAutocomplet").val();
+		var pinBoardView;
 
-			    var url = '/api/place?placeName=' + placeName;
+		function initialize() {
+			pinBoardView = new PinBoardView();
+			pinBoardView.initialize();
 
-			    makeApiCall(url, function(response) {
+			$("#countriesAutocomplet").on("input", function() {
+				var placeName = $("#countriesAutocomplet").val();
 
-				    var htmlContent = '';
-				    response.forEach(function(item) {
+				var url = '/api/place?placeName=' + placeName;
 
-					    if (item.population > 0) {
-						    htmlContent += getItemHtml(item);
-					    }
-				    });
+				makeApiCall(url, function(response) {
 
-				    $("#countriesResult").html(htmlContent);
-				    $(".cityMenuItem").unbind();
-				    $(".cityMenuItem").click(function(item) {
-					    var geoId = $(item.currentTarget).data('id');
+					var htmlContent = '';
+					response.forEach(function(item) {
 
-					    var dataRecord = _.find(response, { 'geonameId': geoId });
+						if (item.population > 0) {
+							htmlContent += getItemHtml(item);
+						}
+					});
 
-					    pinBoardView.setView(dataRecord.lat, dataRecord.lng);
-				    });
+					$("#countriesResult").html(htmlContent);
+					$(".cityMenuItem").unbind();
+					$(".cityMenuItem").click(function(item) {
+						var geoId = $(item.currentTarget).data('id');
 
-			    });
+						var dataRecord = _.find(response, { 'geonameId': geoId });
 
+						pinBoardView.setView(dataRecord.lat, dataRecord.lng);
+					});
 
-		    });
-
-
-	    }
-
-	    function getItemHtml(item) {
-		    return '<div class="cityMenuItem" data-id="' + item.geonameId + '">' + item.name + ', ' + item.countryName + ' (pop: ' + item.population + ')' + '</div>';
-	    }
-
-	    function makeApiCall(url, callback) {
-		    $.ajax({
-			    type: 'GET',
-			    url: url,
-			    success(response) {
-				    callback(response);
-			    },
-			    error(res) {
-
-				    //todo: some universal error handler
-				    alert(JSON.stringify(res));
-			    }
-		    });
-	    }
+				});
 
 
-				//tabs -----
-
-	    setTimeout(function() {
-		    $('.tabContent_item').hide();
-	    }, 1000);
+			});
 
 
-	    function buttonClicked(viewType) {
-	    		$('.tabContent_item').hide();
-	    		$('#tab' + viewType).show();
-	    }
+		}
+
+		function getItemHtml(item) {
+			return '<div class="cityMenuItem" data-id="' + item.geonameId + '">' + item.name + ', ' + item.countryName + ' (pop: ' + item.population + ')' + '</div>';
+		}
+
+		function makeApiCall(url, callback) {
+			$.ajax({
+				type: 'GET',
+				url: url,
+				success(response) {
+					callback(response);
+				},
+				error(res) {
+
+					//todo: some universal error handler
+					alert(JSON.stringify(res));
+				}
+			});
+		}
 
 
-    </script>
+		//tabs -----
+
+		setTimeout(function() {
+			$('.tabContent_item').hide();
+		}, 1000);
+
+
+		function buttonClicked(viewType) {
+			//$('.tabContent_item').hide();
+			//$('#tab' + viewType).show();
+
+				pinBoardView.mapsManager.switchToView(viewType);
+		}
+
+
+	</script>
 </head>
 <body onload="initialize()">
 
@@ -113,19 +125,20 @@
 		<div id="countriesResult" style="border: 1px solid red"></div>
 
 		<div class="tabMenu">
-			<button class="tabMenu_button" type="button" onclick="buttonClicked('3D')">3D</button>
-			<button class="tabMenu_button" type="button" onclick="buttonClicked('2D')">2D</button>
-			<button class="tabMenu_button" type="button" onclick="buttonClicked('1D')">1D</button>
+			<button class="tabMenu_button" type="button" onclick="buttonClicked(Maps.ViewType.D3)">3D</button>
+			<button class="tabMenu_button" type="button" onclick="buttonClicked(Maps.ViewType.D2)">2D</button>
+			<button class="tabMenu_button" type="button" onclick="buttonClicked(Maps.ViewType.D1)">1D</button>
 		</div>
-		<div class="tabContent">
-			<div id="tab3D" class="tabContent_item">
+<div class="tabContent">
+		<div id="map" style="width: 800px; height: 600px; border: 1px solid black;"></div>
+	@*<div id="tab3D" class="tabContent_item">
 					<div id="earth_div" style="width: 800px; height: 600px; border: 1px solid black;"></div>
 			</div>
 			<div id="tab2D" class="tabContent_item">
 					<div id="map"  style="width: 800px; height: 600px; border: 1px solid black;"></div>
 			</div>
-			<div id="tab1D" class="tabContent_item"></div>
-		</div>
+			<div id="tab1D" class="tabContent_item"></div>*@
+</div>
 
 		
 </body>

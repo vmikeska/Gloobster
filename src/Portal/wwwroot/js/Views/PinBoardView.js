@@ -11,7 +11,7 @@ var PinBoardView = (function (_super) {
     }
     PinBoardView.prototype.initialize = function () {
         this.mapsManager = new MapsManager();
-        this.mapsManager.switchToView(Maps.ViewType.D3);
+        this.mapsManager.switchToView(Maps.ViewType.D2);
         this.getVisitedCountries();
         this.getVisitedPlaces();
     };
@@ -24,8 +24,6 @@ var PinBoardView = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    PinBoardView.prototype.clearDisplayedCountries = function () {
-    };
     PinBoardView.prototype.getUserId = function () {
         return '55e0b1d7ff89d0435456e6f5';
     };

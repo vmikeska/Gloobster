@@ -1,5 +1,7 @@
 var BaseMapsOperation3D = (function () {
     function BaseMapsOperation3D() {
+        this.markers = [];
+        this.polygons = [];
     }
     BaseMapsOperation3D.prototype.drawPolygon = function (polygonCoordinates, polygonConfig) {
         var polygon = WE.polygon(polygonCoordinates, {
@@ -15,6 +17,10 @@ var BaseMapsOperation3D = (function () {
     };
     BaseMapsOperation3D.prototype.setMapObj = function (mapObj) {
         this.mapObj = mapObj;
+    };
+    BaseMapsOperation3D.prototype.destroyAll = function () {
+        this.markers.forEach(function (marker) { marker.destroy(); });
+        this.polygons.forEach(function (marker) { marker.destroy(); });
     };
     return BaseMapsOperation3D;
 })();

@@ -14,13 +14,11 @@
 	 
 		public initialize() {
 			this.mapsManager = new MapsManager();
-			this.mapsManager.switchToView(Maps.ViewType.D3);		 
+			this.mapsManager.switchToView(Maps.ViewType.D2);		 
 			this.getVisitedCountries();
 			this.getVisitedPlaces();
-
 		}
-
-
+	 
 		get countryConfig(): Maps.PolygonConfig {
 			var countryConfig = new Maps.PolygonConfig();
 			countryConfig.fillColor = "#009900";
@@ -28,10 +26,6 @@
 			return countryConfig;
 		}
 	 
-		public clearDisplayedCountries() {
-
-		}
-
 		private getUserId() {
 			return '55e0b1d7ff89d0435456e6f5';
 		}

@@ -1,7 +1,11 @@
 ﻿
-class BaseMapsOperation3D implements Maps.IMapsBaseOperation {
+class BaseMapsOperation3D implements Maps.IMapsDriver {
 
-				public mapObj: any;
+ public mapObj: any;
+
+ private markers = [];
+ private polygons = [];
+ 
 				
 				public drawPolygon(polygonCoordinates: any, polygonConfig: Maps.PolygonConfig) {
 								var polygon = WE.polygon(polygonCoordinates, {
@@ -18,8 +22,13 @@ class BaseMapsOperation3D implements Maps.IMapsBaseOperation {
 								var marker = WE.marker([place.lat, place.lng]).addTo(this.mapObj);
 				}
 				
-				setMapObj(mapObj) {
+				public setMapObj(mapObj) {
 								this.mapObj = mapObj;
+				}
+
+				public destroyAll() {
+				 this.markers.forEach(function (marker) { marker.destroy(); });
+				 this.polygons.forEach(function (marker) { marker.destroy(); });
 				}
 				
 }

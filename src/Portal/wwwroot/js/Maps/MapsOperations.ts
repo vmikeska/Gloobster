@@ -1,6 +1,6 @@
 class MapsOperations implements Maps.IMapsOperations {
 
-	public baseMapsOperations: Maps.IMapsBaseOperation;
+	public mapsDriver: Maps.IMapsDriver;
 	public countryShapes: CountryShapes;
 
 
@@ -8,8 +8,8 @@ class MapsOperations implements Maps.IMapsOperations {
 		this.countryShapes = countryShapes;
 	}
 
-	public setBaseMapsOperations(baseMapsOperations: Maps.IMapsBaseOperation) {
-		this.baseMapsOperations = baseMapsOperations;
+	public setBaseMapsOperations(baseMapsOperations: Maps.IMapsDriver) {
+	 this.mapsDriver = baseMapsOperations;
 	}
 
 	public drawCountry(country: Maps.CountryHighligt) {
@@ -23,7 +23,7 @@ class MapsOperations implements Maps.IMapsOperations {
 
 		var self = this;
 		countryParts.forEach(function(countryPart) {
-			self.baseMapsOperations.drawPolygon(countryPart, country.countryConfig);
+		 self.mapsDriver.drawPolygon(countryPart, country.countryConfig);
 		});
 	}
 
@@ -34,7 +34,7 @@ class MapsOperations implements Maps.IMapsOperations {
 	}
 
 	public drawPlace(place: Maps.PlaceMarker) {
-		this.baseMapsOperations.drawPin(place);
+	 this.mapsDriver.drawPin(place);
 	}
 
 	public drawPlaces(places: Maps.PlaceMarker[]) {

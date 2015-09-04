@@ -33,10 +33,11 @@ module Maps {
 	}
 
 
-	export interface IMapsBaseOperation {
+	export interface IMapsDriver {
 		drawPolygon(polygonCoordinates: any, polygonConfig: PolygonConfig);
 		drawPin(place: PlaceMarker);		
-		setMapObj(mapObj: any);		
+		setMapObj(mapObj: any);
+		destroyAll();
 	}
 
 	export interface IMapsOperations {
@@ -44,7 +45,7 @@ module Maps {
 		drawCountries(countries: CountryHighligt[]);
 		drawPlace(place: PlaceMarker);
 		drawPlaces(places: PlaceMarker[]);
-		setBaseMapsOperations(baseMapsOperations: IMapsBaseOperation);
+		setBaseMapsOperations(mapsDriver: IMapsDriver);
 	}
 
 		export enum ViewType { D3, D2, D1 }
