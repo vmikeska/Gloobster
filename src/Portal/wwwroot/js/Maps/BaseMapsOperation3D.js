@@ -1,20 +1,22 @@
-var MapsBaseOperation3D = (function () {
-    function MapsBaseOperation3D(earth) {
-        this.earth = earth;
+var BaseMapsOperation3D = (function () {
+    function BaseMapsOperation3D() {
     }
-    MapsBaseOperation3D.prototype.drawPolygon = function (polygonCoordinates, polygonConfig) {
+    BaseMapsOperation3D.prototype.drawPolygon = function (polygonCoordinates, polygonConfig) {
         var polygon = WE.polygon(polygonCoordinates, {
             color: polygonConfig.borderColor,
             opacity: polygonConfig.borderOpacity,
             weight: polygonConfig.borderWeight,
             fillColor: polygonConfig.fillColor,
             fillOpacity: polygonConfig.fillOpacity
-        }).addTo(this.earth);
+        }).addTo(this.mapObj);
     };
-    MapsBaseOperation3D.prototype.drawPin = function (lat, lng) {
-        var marker = WE.marker([lat, lng]).addTo(this.earth);
+    BaseMapsOperation3D.prototype.drawPin = function (place) {
+        var marker = WE.marker([place.lat, place.lng]).addTo(this.mapObj);
     };
-    return MapsBaseOperation3D;
+    BaseMapsOperation3D.prototype.setMapObj = function (mapObj) {
+        this.mapObj = mapObj;
+    };
+    return BaseMapsOperation3D;
 })();
 //polygon.onClick(function(e) {
 //	 alert('poly!');
@@ -23,4 +25,4 @@ var MapsBaseOperation3D = (function () {
 //		//polygon.setFillColor(polygonConfig.fillColor, polygonConfig.fillOpacity);
 //		polygon.destroy();
 //}, 5000); 
-//# sourceMappingURL=MapsBaseOperation3D.js.map
+//# sourceMappingURL=BaseMapsOperation3D.js.map

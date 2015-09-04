@@ -8,14 +8,34 @@
 
 	public countryShapes: CountryShapes;
 
-  public countries: Maps.CountryHighligt[];
+	public countries: Maps.CountryHighligt[];
+ public places: Maps.PlaceMarker[];
 
-	public redraw() {
-		this.mapsOperations.drawCountries(this.countries);
+	public redrawAll() {
+		this.redrawCountries();
+		this.redrawPlaces();
+	}
+
+	public redrawPlaces() {
+	 this.mapsOperations.drawPlaces(this.places);
+	}
+
+	public redrawCountries() {
+		this.mapsOperations.drawCountries(this.countries); 
 	}
 
 	constructor() {
 		this.countryShapes = new CountryShapes();
+	}
+
+  public setVisitedCountries(countries: Maps.CountryHighligt[]) {
+		this.countries = countries;
+		this.redrawCountries();
+	}
+
+	public setVisitedPlaces(places: Maps.PlaceMarker[]) {
+		this.places = places;
+		this.redrawPlaces();
 	}
 		
 	public switchToView(viewType: Maps.ViewType) {
@@ -31,6 +51,7 @@
 		}
 
 		this.currentMaps.show();
+		this.mapsBaseOperations.setMapObj(this.currentMaps.mapObj);
 	}
 
 	private init3D() {
@@ -38,7 +59,7 @@
 		this.currentMaps.setMapType('MQCDN1');
 		this.currentMaps.setRootElement('earth_div');
 
-		this.mapsBaseOperations = new MapsBaseOperation3D(this.currentMaps.mapObj);
+		this.mapsBaseOperations = new BaseMapsOperation3D();
 		this.mapsOperations = new MapsOperations3D(this.mapsBaseOperations, this.countryShapes);
 	}
 }

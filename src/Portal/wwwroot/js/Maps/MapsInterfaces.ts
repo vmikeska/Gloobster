@@ -4,6 +4,11 @@ module Maps {
 	export class CountryHighligt {
 			countryCode: string;
 			countryConfig: PolygonConfig;
+				}
+
+	export class PlaceMarker {
+					lat: number;
+					lng: number;
 	}
 
 	export class PolygonConfig {
@@ -29,15 +34,16 @@ module Maps {
 
 
 	export interface IMapsBaseOperation {
-		drawPolygon: Function;
-		drawPin: Function;
+		drawPolygon(polygonCoordinates: any, polygonConfig: PolygonConfig);
+		drawPin(place: PlaceMarker);		
+		setMapObj(mapObj: any);
 	}
 
 	export interface IMapsOperations {
-		drawCountry: Function;
-		drawCountries: Function;
-		drawPlace: Function;
-		drawPlaces: Function;
+  drawCountry(country: CountryHighligt);
+		drawCountries(countries: CountryHighligt[]);
+		drawPlace(place: PlaceMarker);
+		drawPlaces(places: PlaceMarker[]);
 	}
 
 		export enum ViewType { D3, D2, D1 }
@@ -52,3 +58,5 @@ module Maps {
 			hide();
 		}				
 }
+
+

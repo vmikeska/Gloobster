@@ -1,29 +1,33 @@
 var MapsOperations3D = (function () {
-    function MapsOperations3D(baseOperations) {
+    function MapsOperations3D(baseOperations, countryShapes) {
         this.baseOperations = baseOperations;
+        this.countryShapes = countryShapes;
     }
-    MapsOperations3D.prototype.drawCountry = function (countryParts, countryConfig) {
-        var _this = this;
+    //(countryParts, countryConfig: Maps.PolygonConfig)
+    MapsOperations3D.prototype.drawCountry = function (country) {
+        var countryParts = this.countryShapes.getCoordinatesByCountry(country.countryCode);
         if (!countryParts) {
+            console.log("missing country with code: " + country.countryCode);
             return;
         }
-        countryParts.forEach(function (countryPart) {
-            _this.baseOperations.drawPolygon(countryPart, countryConfig);
-        });
-    };
-    MapsOperations3D.prototype.drawCountries = function (countries, color) {
         var self = this;
-        countries.forEach(function (country) {
-            self.drawCountry(country, color);
+        countryParts.forEach(function (countryPart) {
+            self.baseOperations.drawPolygon(countryPart, country.countryConfig);
         });
     };
-    MapsOperations3D.prototype.drawPlace = function (lat, lng) {
-        this.baseOperations.drawPin(lat, lng);
+    MapsOperations3D.prototype.drawCountries = function (countries) {
+        var _this = this;
+        countries.forEach(function (country) {
+            _this.drawCountry(country);
+        });
+    };
+    MapsOperations3D.prototype.drawPlace = function (place) {
+        this.baseOperations.drawPin(place);
     };
     MapsOperations3D.prototype.drawPlaces = function (places) {
         var self = this;
         places.forEach(function (place) {
-            self.drawPlace(place.lat, place.lng);
+            self.drawPlace(place);
         });
     };
     return MapsOperations3D;

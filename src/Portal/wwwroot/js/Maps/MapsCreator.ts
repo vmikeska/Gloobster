@@ -1,14 +1,6 @@
 ﻿
 //enum MapTypes { OSM, MQCDN, MQCDN1 };
 
-module Maps {
-			
-}
-
-
-
-
-
 
 class MapsCreatorGlobe3D implements Maps.IMapsCreator {
 

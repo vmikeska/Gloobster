@@ -1,13 +1,4 @@
 //enum MapTypes { OSM, MQCDN, MQCDN1 };
-var Maps;
-(function (Maps) {
-    (function (ViewType) {
-        ViewType[ViewType["D3"] = 0] = "D3";
-        ViewType[ViewType["D2"] = 1] = "D2";
-        ViewType[ViewType["D1"] = 2] = "D1";
-    })(Maps.ViewType || (Maps.ViewType = {}));
-    var ViewType = Maps.ViewType;
-})(Maps || (Maps = {}));
 var MapsCreatorGlobe3D = (function () {
     function MapsCreatorGlobe3D() {
     }

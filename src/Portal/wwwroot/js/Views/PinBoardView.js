@@ -9,15 +9,9 @@ var PinBoardView = (function (_super) {
     function PinBoardView() {
         _super.apply(this, arguments);
     }
-    //public countryShapes: CountryShapes;
     PinBoardView.prototype.initialize = function () {
-        //this.mapsCreator = new MapsCreator('earth_div');
-        //this.mapsCreator.initializeGlobe(MapTypes.MQCDN1);
         this.mapsManager = new MapsManager();
         this.mapsManager.switchToView(Maps.ViewType.D3);
-        //this.mapsBaseOperations = new MapsBaseOperation3D(this.mapsCreator.earth);
-        //this.mapsOperations = new MapsOperations3D(this.mapsBaseOperations);
-        //this.countryShapes = new CountryShapes();
         this.getVisitedCountries();
         this.getVisitedPlaces();
     };
@@ -30,37 +24,36 @@ var PinBoardView = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    //public setView(lat, lng) {
-    //		this.mapsCreator.earth.setView([lat, lng], 3);
-    //}
-    PinBoardView.prototype.displayVisitedCountries = function () {
-        //this.clearDisplayedCountries();
-        //var countryConf = this.countryConfig;
-        //this.visitedCountries.forEach(countryCode => {
-        //	var countryCoordinates = this.countryShapes.getCoordinatesByCountry(countryCode);
-        //	this.mapsOperations.drawCountry(countryCoordinates, countryConf);
-        //});
-    };
-    PinBoardView.prototype.displayVisitedPlaces = function () {
-        //this.visitedPlaces.forEach(place => {
-        //	this.mapsOperations.drawPlace(place.PlaceLatitude, place.PlaceLongitude);
-        //});
-    };
     PinBoardView.prototype.clearDisplayedCountries = function () {
     };
     PinBoardView.prototype.getUserId = function () {
         return '55e0b1d7ff89d0435456e6f5';
     };
     PinBoardView.prototype.onVisitedCountriesResponse = function (visitedCountries) {
-        this.mapsManager.countries =
-            this.visitedCountries = visitedCountries;
-        this.displayVisitedCountries();
+        this.visitedCountries = visitedCountries;
+        var countryConf = this.countryConfig;
+        var mappedCountries = _.map(this.visitedCountries, function (countryCode) {
+            var country = new Maps.CountryHighligt();
+            country.countryCode = countryCode;
+            country.countryConfig = countryConf;
+            return country;
+        });
+        this.mapsManager.setVisitedCountries(mappedCountries);
+    };
+    PinBoardView.prototype.onVisitedPlacesResponse = function (response) {
+        this.visitedPlaces = response.Places;
+        var mappedPlaces = _.map(this.visitedPlaces, function (place) {
+            var marker = new Maps.PlaceMarker();
+            marker.lat = place.PlaceLatitude;
+            marker.lng = place.PlaceLongitude;
+            return marker;
+        });
+        this.mapsManager.setVisitedPlaces(mappedPlaces);
     };
     PinBoardView.prototype.getVisitedPlaces = function () {
         var self = this;
         _super.prototype.apiGet.call(this, "visitedPlace", [["userId", this.getUserId()]], function (response) {
-            self.visitedPlaces = response.Places;
-            self.displayVisitedPlaces();
+            self.onVisitedPlacesResponse(response);
         });
     };
     PinBoardView.prototype.getVisitedCountries = function () {

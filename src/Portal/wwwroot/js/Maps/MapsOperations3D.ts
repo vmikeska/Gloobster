@@ -10,10 +10,17 @@ class MapsOperations3D implements Maps.IMapsOperations {
 		
 		//(countryParts, countryConfig: Maps.PolygonConfig)
 		drawCountry(country: Maps.CountryHighligt) {
+
 				var countryParts = this.countryShapes.getCoordinatesByCountry(country.countryCode);
-				
-				countryParts.forEach((countryPart) => {
-						this.baseOperations.drawPolygon(countryPart, country.countryConfig);
+
+			if (!countryParts) {
+							console.log("missing country with code: " + country.countryCode);
+				return;
+			}
+
+			var self = this;
+				countryParts.forEach(function(countryPart) {
+						self.baseOperations.drawPolygon(countryPart, country.countryConfig);
 				});														
 		}
 
@@ -23,15 +30,18 @@ class MapsOperations3D implements Maps.IMapsOperations {
 			});
 	}
 
-	drawPlace(lat: number, lng: number) {
-		//this.baseOperations.drawPin(lat, lng);	
+		drawPlace(place: Maps.PlaceMarker) {
+		this.baseOperations.drawPin(place);	
 	}
 
-	drawPlaces(places) {
+	drawPlaces(places: Maps.PlaceMarker[]) {
 
-		//var self = this;
-		//places.forEach(function (place) {
-		//	self.drawPlace(place.lat, place.lng);
-		//});				
+		var self = this;
+		places.forEach(function (place) {
+			self.drawPlace(place);
+		});				
 	}
 }
+
+
+

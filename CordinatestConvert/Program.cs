@@ -33,8 +33,8 @@ namespace CoordinatesConvertor
 
         static void Main(string[] args)
         {
-            var inputDir = @"D:\S\MapShapes\world.geo.json\countries";
-            var outputDir = @"D:\S\MapShapes\world.geo.json\countriesReverse";
+            var inputDir = @"C:\S\world.geo.json\countries";
+            var outputDir = @"C:\S\world.geo.json\countriesReverse";
 
             if (!Directory.Exists(outputDir))
             {
@@ -60,9 +60,18 @@ namespace CoordinatesConvertor
                     JObject jsonObj = JObject.Parse(fileText);
                     var features = jsonObj.GetValue("features");
                     var feature = features.First;
-                    countryId = feature["id"].ToString();
 
-                    var geometry = feature["geometry"];
+	                try
+	                {
+		                countryId = feature["id"].ToString();
+	                }
+	                catch
+	                {
+						logs.Add(inputFileName);
+						continue;		                
+	                }
+
+	                var geometry = feature["geometry"];
                     var geometryType = geometry["type"].ToString();
 
                     types.Add(geometryType);
