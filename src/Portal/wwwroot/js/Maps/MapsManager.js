@@ -1,6 +1,7 @@
 var MapsManager = (function () {
     function MapsManager() {
-        this.countryShapes = new CountryShapes();
+        var countryShapes = new CountryShapes();
+        this.mapsOperations = new MapsOperations(countryShapes);
     }
     MapsManager.prototype.redrawAll = function () {
         this.redrawCountries();
@@ -29,14 +30,14 @@ var MapsManager = (function () {
             this.init3D();
         }
         this.currentMaps.show();
-        this.mapsBaseOperations.setMapObj(this.currentMaps.mapObj);
+        this.baseMapsOperations.setMapObj(this.currentMaps.mapObj);
+        this.mapsOperations.setBaseMapsOperations(this.baseMapsOperations);
     };
     MapsManager.prototype.init3D = function () {
         this.currentMaps = new MapsCreatorGlobe3D();
         this.currentMaps.setMapType('MQCDN1');
         this.currentMaps.setRootElement('earth_div');
-        this.mapsBaseOperations = new BaseMapsOperation3D();
-        this.mapsOperations = new MapsOperations3D(this.mapsBaseOperations, this.countryShapes);
+        this.baseMapsOperations = new BaseMapsOperation3D();
     };
     return MapsManager;
 })();

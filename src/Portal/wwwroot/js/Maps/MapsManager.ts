@@ -2,14 +2,12 @@
 	
 	public currentViewType: Maps.ViewType;
 	public currentMaps: Maps.IMapsCreator;
-
-	public mapsBaseOperations: Maps.IMapsBaseOperation;
+ 
+	public baseMapsOperations: Maps.IMapsBaseOperation; 
 	public mapsOperations: Maps.IMapsOperations;
-
-	public countryShapes: CountryShapes;
-
+ 
 	public countries: Maps.CountryHighligt[];
- public places: Maps.PlaceMarker[];
+	public places: Maps.PlaceMarker[];
 
 	public redrawAll() {
 		this.redrawCountries();
@@ -24,8 +22,9 @@
 		this.mapsOperations.drawCountries(this.countries); 
 	}
 
-	constructor() {
-		this.countryShapes = new CountryShapes();
+	constructor() {	 
+	 var countryShapes = new CountryShapes();
+	 this.mapsOperations = new MapsOperations(countryShapes);
 	}
 
   public setVisitedCountries(countries: Maps.CountryHighligt[]) {
@@ -50,16 +49,18 @@
 			this.init3D();
 		}
 
-		this.currentMaps.show();
-		this.mapsBaseOperations.setMapObj(this.currentMaps.mapObj);
+		this.currentMaps.show();	 
+
+		this.baseMapsOperations.setMapObj(this.currentMaps.mapObj);
+		this.mapsOperations.setBaseMapsOperations(this.baseMapsOperations);
 	}
 
 	private init3D() {
 		this.currentMaps = new MapsCreatorGlobe3D();
 		this.currentMaps.setMapType('MQCDN1');
 		this.currentMaps.setRootElement('earth_div');
-
-		this.mapsBaseOperations = new BaseMapsOperation3D();
-		this.mapsOperations = new MapsOperations3D(this.mapsBaseOperations, this.countryShapes);
+	 
+		this.baseMapsOperations = new BaseMapsOperation3D();		
 	}
 }
+

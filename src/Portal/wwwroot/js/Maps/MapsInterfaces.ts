@@ -36,14 +36,15 @@ module Maps {
 	export interface IMapsBaseOperation {
 		drawPolygon(polygonCoordinates: any, polygonConfig: PolygonConfig);
 		drawPin(place: PlaceMarker);		
-		setMapObj(mapObj: any);
+		setMapObj(mapObj: any);		
 	}
 
 	export interface IMapsOperations {
-  drawCountry(country: CountryHighligt);
+	  drawCountry(country: CountryHighligt);
 		drawCountries(countries: CountryHighligt[]);
 		drawPlace(place: PlaceMarker);
 		drawPlaces(places: PlaceMarker[]);
+		setBaseMapsOperations(baseMapsOperations: IMapsBaseOperation);
 	}
 
 		export enum ViewType { D3, D2, D1 }
@@ -58,5 +59,6 @@ module Maps {
 			hide();
 		}				
 }
+
 
 

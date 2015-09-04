@@ -10,13 +10,14 @@
 		public mapsManager: MapsManager;
 
 		public mapsBaseOperations: BaseMapsOperation3D;
-		public mapsOperations: MapsOperations3D;
+		public mapsOperations: MapsOperations;
 	 
 		public initialize() {
 			this.mapsManager = new MapsManager();
 			this.mapsManager.switchToView(Maps.ViewType.D3);		 
 			this.getVisitedCountries();
 			this.getVisitedPlaces();
+
 		}
 
 
