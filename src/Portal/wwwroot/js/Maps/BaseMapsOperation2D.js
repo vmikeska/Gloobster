@@ -17,6 +17,9 @@ var BaseMapsOperation2D = (function () {
         this.mapObj = mapObj;
     };
     BaseMapsOperation2D.prototype.destroyAll = function () { };
+    BaseMapsOperation2D.prototype.setView = function (lat, lng, zoom) {
+        this.mapObj.setView([lat, lng], zoom);
+    };
     return BaseMapsOperation2D;
 })();
 //# sourceMappingURL=BaseMapsOperation2D.js.map

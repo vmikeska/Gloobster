@@ -71,7 +71,7 @@
 
 						var dataRecord = _.find(response, { 'geonameId': geoId });
 
-						pinBoardView.setView(dataRecord.lat, dataRecord.lng);
+						pinBoardView.mapsManager.mapsOperations.setView(dataRecord.lat, dataRecord.lng, 5);
 					});
 
 				});
@@ -104,15 +104,8 @@
 
 		//tabs -----
 
-		setTimeout(function() {
-			$('.tabContent_item').hide();
-		}, 1000);
-
 
 		function buttonClicked(viewType) {
-			//$('.tabContent_item').hide();
-			//$('#tab' + viewType).show();
-
 				pinBoardView.mapsManager.switchToView(viewType);
 		}
 
@@ -131,13 +124,6 @@
 		</div>
 <div class="tabContent">
 		<div id="map" style="width: 800px; height: 600px; border: 1px solid black;"></div>
-	@*<div id="tab3D" class="tabContent_item">
-					<div id="earth_div" style="width: 800px; height: 600px; border: 1px solid black;"></div>
-			</div>
-			<div id="tab2D" class="tabContent_item">
-					<div id="map"  style="width: 800px; height: 600px; border: 1px solid black;"></div>
-			</div>
-			<div id="tab1D" class="tabContent_item"></div>*@
 </div>
 
 		

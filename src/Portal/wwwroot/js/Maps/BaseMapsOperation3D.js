@@ -22,6 +22,9 @@ var BaseMapsOperation3D = (function () {
         this.markers.forEach(function (marker) { marker.destroy(); });
         this.polygons.forEach(function (marker) { marker.destroy(); });
     };
+    BaseMapsOperation3D.prototype.setView = function (lat, lng, zoom) {
+        this.mapObj.setView([lat, lng], zoom);
+    };
     return BaseMapsOperation3D;
 })();
 //polygon.onClick(function(e) {

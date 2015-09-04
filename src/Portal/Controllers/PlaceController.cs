@@ -20,8 +20,6 @@ namespace Gloobster.Portal.Controllers
 			CitySearchResponse results = await GeoNames.GetCityQueryAsync(placeName, 30);
 
 			return new ObjectResult(results.GeoNames);
-		}
-
-
+		}		
 	}
 }

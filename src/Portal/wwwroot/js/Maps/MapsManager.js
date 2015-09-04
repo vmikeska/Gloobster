@@ -50,7 +50,6 @@ var MapsManager = (function () {
     MapsManager.prototype.init3D = function () {
         this.currentMaps = new MapsCreatorGlobe3D();
         this.currentMaps.setMapType('MQCDN1');
-        //this.currentMaps.setRootElement('earth_div');
         this.currentMaps.setRootElement('map');
         this.mapsDriver = new BaseMapsOperation3D();
     };

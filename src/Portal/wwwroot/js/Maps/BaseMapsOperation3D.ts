@@ -30,9 +30,12 @@ class BaseMapsOperation3D implements Maps.IMapsDriver {
 				 this.markers.forEach(function (marker) { marker.destroy(); });
 				 this.polygons.forEach(function (marker) { marker.destroy(); });
 				}
-				
-}
 
+				public setView(lat: number, lng: number, zoom: number) {
+				 this.mapObj.setView([lat, lng], zoom);
+				}
+ 
+}
 
 
 

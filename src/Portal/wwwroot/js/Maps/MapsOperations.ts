@@ -44,6 +44,10 @@ class MapsOperations implements Maps.IMapsOperations {
 			self.drawPlace(place);
 		});
 	}
+
+	setView(lat: number, lng: number, zoom: number) {
+		this.mapsDriver.setView(lat, lng, zoom);
+	}
 }
 
 

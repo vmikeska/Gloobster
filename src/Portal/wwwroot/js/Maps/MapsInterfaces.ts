@@ -38,6 +38,7 @@ module Maps {
 		drawPin(place: PlaceMarker);		
 		setMapObj(mapObj: any);
 		destroyAll();
+		setView(lat: number, lng: number, zoom: number);
 	}
 
 	export interface IMapsOperations {
@@ -46,6 +47,7 @@ module Maps {
 		drawPlace(place: PlaceMarker);
 		drawPlaces(places: PlaceMarker[]);
 		setBaseMapsOperations(mapsDriver: IMapsDriver);
+		setView(lat: number, lng: number, zoom: number);
 	}
 
 		export enum ViewType { D3, D2, D1 }

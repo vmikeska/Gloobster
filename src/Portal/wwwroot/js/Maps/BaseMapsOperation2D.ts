@@ -24,4 +24,8 @@ class BaseMapsOperation2D implements Maps.IMapsDriver {
  }
 
 	public destroyAll() {}
+
+	public setView(lat: number, lng: number, zoom: number) {
+	 this.mapObj.setView([lat, lng], zoom);
+	}
 }

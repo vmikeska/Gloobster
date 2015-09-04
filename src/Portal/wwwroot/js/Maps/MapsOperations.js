@@ -3,7 +3,7 @@ var MapsOperations = (function () {
         this.countryShapes = countryShapes;
     }
     MapsOperations.prototype.setBaseMapsOperations = function (baseMapsOperations) {
-        this.baseMapsOperations = baseMapsOperations;
+        this.mapsDriver = baseMapsOperations;
     };
     MapsOperations.prototype.drawCountry = function (country) {
         var countryParts = this.countryShapes.getCoordinatesByCountry(country.countryCode);
@@ -13,7 +13,7 @@ var MapsOperations = (function () {
         }
         var self = this;
         countryParts.forEach(function (countryPart) {
-            self.baseMapsOperations.drawPolygon(countryPart, country.countryConfig);
+            self.mapsDriver.drawPolygon(countryPart, country.countryConfig);
         });
     };
     MapsOperations.prototype.drawCountries = function (countries) {
@@ -23,13 +23,16 @@ var MapsOperations = (function () {
         });
     };
     MapsOperations.prototype.drawPlace = function (place) {
-        this.baseMapsOperations.drawPin(place);
+        this.mapsDriver.drawPin(place);
     };
     MapsOperations.prototype.drawPlaces = function (places) {
         var self = this;
         places.forEach(function (place) {
             self.drawPlace(place);
         });
+    };
+    MapsOperations.prototype.setView = function (lat, lng, zoom) {
+        this.mapsDriver.setView(lat, lng, zoom);
     };
     return MapsOperations;
 })();

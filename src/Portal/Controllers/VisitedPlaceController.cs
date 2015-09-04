@@ -33,5 +33,11 @@ namespace Gloobster.Portal.Controllers
 			return new ObjectResult(response);
 		}
 
+		[HttpPost]
+		public async Task<IActionResult> Post(VisitedPlaceRequest place)
+		{
+			return new ObjectResult(null);
+		}
+
 	}
 }
