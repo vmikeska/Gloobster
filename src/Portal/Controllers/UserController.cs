@@ -4,6 +4,8 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
+using System.Web.Security;
 using Gloobster.Common.DbEntity;
 using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.WebApiObjects;
@@ -37,20 +39,21 @@ namespace Gloobster.Portal.Controllers
             return "value";
         }
 
-        // POST api/values
+        
         [HttpPost]
-		public async void Post([FromBody]PortalUserRequest request)
+		public async Task<IActionResult> Post([FromBody]PortalUserRequest request)
 		{
 			var portalUserDO = request.ToDoFromRequest();
 
-			await UserDomain.ValidateOrCreateUser(portalUserDO);
-
-
-
-
-			//var result  = await UserDomain.CreateUserBase(mail, password);
-
-			//todo: handle results
+			var result = await UserDomain.ValidateOrCreateUser(portalUserDO);
+			
+	        var response = new LoggedResponse
+	        {
+		        encodedToken = result.EncodedToken,
+				status = result.Status.ToString()				
+			};
+			
+			return new ObjectResult(response);
 		}
 
 		// PUT api/values/5

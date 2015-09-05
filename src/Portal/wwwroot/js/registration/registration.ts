@@ -1,6 +1,7 @@
 ﻿
 interface ICreateUser {		
-		sendUserRegistrationData: Function;
+ sendUserRegistrationData: Function;
+ storeCookieWithToken(token: string);
 }
 
 class PortalUser {
@@ -26,25 +27,30 @@ class FacebookUser {
 
 class CreateUserBase implements ICreateUser {
 
-		createUserEndpoint = '/api/user';
-		
-		onSuccess(response) {
+	createUserEndpoint = '/api/user';
 
-		}
+	onSuccess = (response) => {
+	 alert(JSON.stringify(response.encodedToken));
+	 this.storeCookieWithToken(response.encodedToken);
+	}
 
-		onError(response) {
+	onError = (response) => {
 
-		}
+	}
 
-		sendUserRegistrationData(newUser: PortalUser) {
-				//var serializedData = JSON.stringify(newUser); //$(newUser).serialize()
 
-				var request = new RequestSender(this.createUserEndpoint, newUser);
-				request.serializeData();
-				request.onSuccess = this.onSuccess;
-				request.onError = this.onError;
-				request.post();				
-		}
+	storeCookieWithToken(token: string) {	 
+	 $.cookie("token", token);
+	 //todo: set other stuff, like domain and so
+	}
+
+	sendUserRegistrationData(newUser: PortalUser) {
+		var request = new RequestSender(this.createUserEndpoint, newUser);
+		request.serializeData();
+		request.onSuccess = this.onSuccess;
+		request.onError = this.onError;
+		request.sentPost();
+	}
 }
 
 class CreateUserFacebook extends CreateUserBase {
@@ -78,48 +84,3 @@ class CreateUserLocal extends CreateUserBase {
 		}
 }
 
-interface ResponseCallback {
-    (request: any): void;
-}
-
-class RequestSender {
-		
-		constructor(endPoint: string, data: any) {
-				this.endPoint = endPoint;
-				this.data = data;
-				this.dataToSend = data;
-		}
-
-		endPoint: string;
-		data: any;
-		dataToSend: any;
-
-		onSuccess: ResponseCallback;
-		onError: ResponseCallback;
-		
-		serializeData() {
-				this.dataToSend = JSON.stringify(this.data)
-		}
-
-		post() {
-				$.ajax({
-						type: 'POST',
-						url: this.endPoint,
-						data: this.dataToSend,
-						success: function (response) {
-								if (this.onSuccess) {
-										this.onSuccess(response);
-								}
-						},
-						error: function (response) {
-								if (this.onError) {
-										this.onError(response);
-								}
-						},
-						dataType: 'json',
-						contentType: 'application/json; charset=utf-8'
-
-				});
-		}
-
-}

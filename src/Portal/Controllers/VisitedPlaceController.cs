@@ -36,6 +36,15 @@ namespace Gloobster.Portal.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Post(VisitedPlaceRequest place)
 		{
+			//todo: userId from Token. Make for entire application
+
+			//var placeDO = new VisitedPlaceDO
+			//{
+			//	City = place.City,
+			//	CountryCode = place.CountryCode,
+				
+			//}
+
 			return new ObjectResult(null);
 		}
 

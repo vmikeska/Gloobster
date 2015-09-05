@@ -16,9 +16,11 @@
 		<link href='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.css' rel='stylesheet' />
 
 
-	<script type="text/javascript" src="@Url.Content("~/js/Maps/MapsInterfaces.js")"></script>			
+	<script type="text/javascript" src="@Url.Content("~/js/Maps/MapsInterfaces.js")"></script>
 
-		<script type="text/javascript" src="@Url.Content("~/js/CountryShapes.js")"></script>
+		<script type="text/javascript" src="@Url.Content("~/js/Common/RequestSender.js")"></script>
+
+	<script type="text/javascript" src="@Url.Content("~/js/CountryShapes.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/js/CountryCodes.js")"></script>
 
 
@@ -34,7 +36,7 @@
 		<script type="text/javascript" src="@Url.Content("~/js/Maps/MapsManager.js")"></script>
 
 
-		<script type="text/javascript" src="@Url.Content("~/js/ViewBase.js")"></script>
+		<script type="text/javascript" src="@Url.Content("~/js/Views/ViewBase.js")"></script>
 		<script type="text/javascript" src="@Url.Content("~/js/Views/PinBoardView.js")"></script>
 
 
@@ -59,9 +61,9 @@
 					var htmlContent = '';
 					response.forEach(function(item) {
 
-						if (item.population > 0) {
+						//if (item.population > 0) {
 							htmlContent += getItemHtml(item);
-						}
+						//}
 					});
 
 					$("#countriesResult").html(htmlContent);

@@ -11,5 +11,5 @@ namespace Gloobster.DomainModelsCommon.DO
 		public SourceTypeDO SourceType { get; set; }
 	}
 
-	public enum SourceTypeDO { Facebook }
+	public enum SourceTypeDO { Facebook, GeoNames }
 }

@@ -1,7 +1,9 @@
 ﻿using System.IO;
 using System.Net;
+using Gloobster.Common;
 using Gloobster.DomainModels.Services;
 using Gloobster.DomainModels.Services.GeonamesService;
+using Newtonsoft.Json.Linq;
 using Xunit;
 
 namespace Gloobster.UnitTests
@@ -11,22 +13,23 @@ namespace Gloobster.UnitTests
 	{
 
 
-		//[Fact]
+		[Fact]
 		public async void TestTheThing()
 		{
+			var secret = "asdffd";
 			
+			var jObject = JObject.Parse(@"{""test"": ""myTest""}");
 
-			var cityName = "Brno";
-			var country = "CZ";
+			var encodedStr = JsonWebToken.Encode(jObject, secret, JwtHashAlgorithm.HS512);
+			var decodedStr = JsonWebToken.Decode(encodedStr, secret, true);
 
-			var geoNames = new GeoNamesService();
-			geoNames.Initialize("demo1");
 
-			var result = await geoNames.GetCityAsync(cityName, country, 1);
 
 		}
 
 		
 		
 	}
+
+	
 }

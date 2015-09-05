@@ -20,19 +20,25 @@ var FacebookUser = (function () {
 })();
 var CreateUserBase = (function () {
     function CreateUserBase() {
+        var _this = this;
         this.createUserEndpoint = '/api/user';
+        this.onSuccess = function (response) {
+            alert(JSON.stringify(response.encodedToken));
+            _this.storeCookieWithToken(response.encodedToken);
+        };
+        this.onError = function (response) {
+        };
     }
-    CreateUserBase.prototype.onSuccess = function (response) {
-    };
-    CreateUserBase.prototype.onError = function (response) {
+    CreateUserBase.prototype.storeCookieWithToken = function (token) {
+        $.cookie("token", token);
+        //todo: set other stuff, like domain and so
     };
     CreateUserBase.prototype.sendUserRegistrationData = function (newUser) {
-        //var serializedData = JSON.stringify(newUser); //$(newUser).serialize()
         var request = new RequestSender(this.createUserEndpoint, newUser);
         request.serializeData();
         request.onSuccess = this.onSuccess;
         request.onError = this.onError;
-        request.post();
+        request.sentPost();
     };
     return CreateUserBase;
 })();
@@ -64,34 +70,4 @@ var CreateUserLocal = (function (_super) {
     };
     return CreateUserLocal;
 })(CreateUserBase);
-var RequestSender = (function () {
-    function RequestSender(endPoint, data) {
-        this.endPoint = endPoint;
-        this.data = data;
-        this.dataToSend = data;
-    }
-    RequestSender.prototype.serializeData = function () {
-        this.dataToSend = JSON.stringify(this.data);
-    };
-    RequestSender.prototype.post = function () {
-        $.ajax({
-            type: 'POST',
-            url: this.endPoint,
-            data: this.dataToSend,
-            success: function (response) {
-                if (this.onSuccess) {
-                    this.onSuccess(response);
-                }
-            },
-            error: function (response) {
-                if (this.onError) {
-                    this.onError(response);
-                }
-            },
-            dataType: 'json',
-            contentType: 'application/json; charset=utf-8'
-        });
-    };
-    return RequestSender;
-})();
 //# sourceMappingURL=registration.js.map

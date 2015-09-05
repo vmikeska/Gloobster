@@ -9,28 +9,14 @@
 		<script type="text/javascript" src="@Url.Content("~/js/FacebookInit.js")"></script>
 		<script type="text/javascript" src="@Url.Content("~/js/FacebookLogin.js")"></script>
 		<script type="text/javascript" src="@Url.Content("~/js/FacebookExecutor.js")"></script>
-		<script type="text/javascript" src="@Url.Content("~/js/registration/registration.js")"></script>
+	<script type="text/javascript" src="@Url.Content("~/js/registration/registration.js")"></script>
+		<script type="text/javascript" src="@Url.Content("~/js/Common/RequestSender.js")"></script>
 
     <script>
 
 				var exec = new FacebookLoginExecutor();
 				exec.execute();
 				fbLogin = exec.fbLogin;
-
-        function register() {
-            $.ajax({
-                type: 'POST',
-                url: '/api/user',
-                data: $('#registerUserForm').serialize(),
-                success: function(res) {
-                    alert(JSON.stringify(res));
-                },
-                error: function(res) {
-                    alert(JSON.stringify(res));
-                }
-                //,dataType: dataType
-            });
-        }
     </script>
 
 

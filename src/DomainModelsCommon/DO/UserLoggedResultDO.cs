@@ -6,5 +6,6 @@
 		public bool RegisteredNewUser { get; set; }
 		public bool IsStandardUser { get; set; }
 		public bool IsFacebook { get; set; }
+		public string EncodedToken { get; set; }
 	}
 }

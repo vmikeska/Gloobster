@@ -11,7 +11,9 @@ using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.Mappers;
 using Gloobster.SocialLogin.Facebook.Communication;
 using MongoDB.Bson;
+using MongoDB.Bson.IO;
 using MongoDB.Driver;
+using Newtonsoft.Json.Linq;
 
 namespace Gloobster.DomainModels
 {
@@ -120,16 +122,38 @@ namespace Gloobster.DomainModels
 			{
 				result.Status = UserLogged.Successful;
 			}
-			//else
-			//{
-			//	result.Status = UserLogged.UnknownFailure;
-			//}
+			else
+			{
+				//todo: implement other login types
+				//todo: implement check on validity of token
+			}
 
+			var theSecret = "safdasfdasdfasdf";
+
+			//since here user is valid, lets create the token
+			var tokenObj = new AuthorizationToken(dbUserId);
+			var tokenStr = Newtonsoft.Json.JsonConvert.SerializeObject(tokenObj);
+			var tokenJson = JObject.Parse(tokenStr);
+
+			result.EncodedToken = JsonWebToken.Encode(tokenJson, theSecret, JwtHashAlgorithm.RS256);
 
 			ExtractVisitedCountries(fbAuth, dbUserId);
 
 
 			return result;
+		}
+
+		public class AuthorizationToken
+		{
+			public AuthorizationToken() { }
+
+			public AuthorizationToken(string userId)
+			{
+				UserId = userId;
+			}
+
+			public string UserId { get; set; }
+
 		}
 
 		public async void UpdateFacebookUserAuth(FacebookUserAuthenticationDO fbAuth)
