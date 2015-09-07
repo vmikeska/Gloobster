@@ -1,6 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
+using Facebook;
 using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.Mappers;
@@ -20,6 +24,7 @@ namespace Gloobster.Portal.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public async Task<IActionResult> Get(string userId)
 		{
 			List<VisitedPlaceDO> places = await VisitedPlaces.GetPlacesByUserId(userId);
@@ -34,18 +39,28 @@ namespace Gloobster.Portal.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Post(VisitedPlaceRequest place)
+		[Authorize]
+		public async Task<IActionResult> Post([FromBody]VisitedPlaceItem place, string userId)
 		{
-			//todo: userId from Token. Make for entire application
+			var placeDO = new VisitedPlaceDO
+			{
+				City = place.City,
+				CountryCode = place.CountryCode,
+				PlaceLatitude = place.PlaceLatitude,
+				PlaceLongitude = place.PlaceLongitude,
+				PortalUserId = userId,
+				SourceId = place.SourceId
+			};
 
-			//var placeDO = new VisitedPlaceDO
-			//{
-			//	City = place.City,
-			//	CountryCode = place.CountryCode,
-				
-			//}
+			if (!string.IsNullOrEmpty(place.SourceType))
+			{
+				placeDO.SourceType = (SourceTypeDO) Enum.Parse(typeof (SourceTypeDO), place.SourceType);
+			}
 
-			return new ObjectResult(null);
+			var places = new List<VisitedPlaceDO> {placeDO};
+			var result = await VisitedPlaces.AddNewPlaces(places, userId);
+			
+			return new ObjectResult(result);
 		}
 
 	}

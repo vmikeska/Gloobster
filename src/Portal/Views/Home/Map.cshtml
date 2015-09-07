@@ -40,7 +40,9 @@
 		<script type="text/javascript" src="@Url.Content("~/js/Views/PinBoardView.js")"></script>
 
 
-
+	<style>
+		
+	</style>
 
 
 	<script>
@@ -58,6 +60,7 @@
 
 				makeApiCall(url, function(response) {
 
+						$("#countriesResult").show();
 					var htmlContent = '';
 					response.forEach(function(item) {
 
@@ -73,7 +76,20 @@
 
 						var dataRecord = _.find(response, { 'geonameId': geoId });
 
-						pinBoardView.mapsManager.mapsOperations.setView(dataRecord.lat, dataRecord.lng, 5);
+						//pinBoardView.mapsManager.mapsOperations.setView(dataRecord.lat, dataRecord.lng, 5);
+
+						var newPlaceRequest = {
+								"CountryCode": dataRecord.countryCode,
+								"City":  dataRecord.name,
+								"PlaceLatitude": dataRecord.lat,
+								"PlaceLongitude": dataRecord.lng,
+								"SourceId": dataRecord.geonameId,
+								"SourceType": "GeoNames"
+						};
+
+						$("#countriesResult").hide();
+
+						pinBoardView.saveNewPlace(newPlaceRequest);
 					});
 
 				});

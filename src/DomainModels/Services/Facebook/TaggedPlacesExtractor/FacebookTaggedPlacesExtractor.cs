@@ -5,7 +5,7 @@ using Gloobster.DomainModels.Services.CountryService;
 using Gloobster.DomainModels.Services.GeonamesService;
 using Gloobster.SocialLogin.Facebook.Communication;
 
-namespace Gloobster.DomainModels.Services.TaggedPlacesExtractor
+namespace Gloobster.DomainModels.Services.Facebook.TaggedPlacesExtractor
 {
 	public class FacebookTaggedPlacesExtractor: IFacebookTaggedPlacesExtractor
 	{

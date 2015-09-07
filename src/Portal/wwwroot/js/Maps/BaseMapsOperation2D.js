@@ -20,6 +20,16 @@ var BaseMapsOperation2D = (function () {
     BaseMapsOperation2D.prototype.setView = function (lat, lng, zoom) {
         this.mapObj.setView([lat, lng], zoom);
     };
+    BaseMapsOperation2D.prototype.moveToAnimated = function (lat, lng, zoom) {
+        this.mapObj.setView([lat, lng], zoom, { animation: true });
+        //this.mapObj.panTo([lat, lng]);
+    };
+    BaseMapsOperation2D.prototype.getPosition = function () {
+        return this.mapObj.getCenter();
+    };
+    BaseMapsOperation2D.prototype.getZoom = function () {
+        return this.mapObj.getZoom();
+    };
     return BaseMapsOperation2D;
 })();
 //# sourceMappingURL=BaseMapsOperation2D.js.map

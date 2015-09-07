@@ -26,14 +26,12 @@ namespace Gloobster.Common
 
 	public class DbOperations: IDbOperations
     {
-		public DbOperations(IGloobsterConfig config)
+		public DbOperations()
 		{
-			Config = config;
-
+			
 			Database = GetDatabase();
 		}
-
-		public IGloobsterConfig Config;
+		
 		//$"mongodb://{"GloobsterConnector"}:{"Gloobster007"}@{"ds036178.mongolab.com"}:{"36178"}/Gloobster";
 		
         public IMongoClient Client { get; set; }
@@ -42,14 +40,14 @@ namespace Gloobster.Common
         public IMongoClient GetClient()
         {
             //var connectionString = Configuration["Data:DefaultConnection:ConnectionString"];
-            var client = new MongoClient(Config.MongoConnectionString);
+            var client = new MongoClient(GloobsterConfig.MongoConnectionString);
             return client;
         }
 
         public IMongoDatabase GetDatabase()
         {
             Client = GetClient();
-            var database = Client.GetDatabase(Config.DatabaseName);
+            var database = Client.GetDatabase(GloobsterConfig.DatabaseName);
             return database;
         }
 
@@ -122,11 +120,19 @@ namespace Gloobster.Common
 
 		public async Task<T[]> FindAsync<T>(string query) where T : EntityBase
         {
-			var collectionName = GetCollectionName<T>();
-			var collection = Database.GetCollection<T>(collectionName);
-            
-            var result =  await collection.Find(query).ToListAsync();
-            return result.ToArray();
+			try
+			{
+				var collectionName = GetCollectionName<T>();
+				var collection = Database.GetCollection<T>(collectionName);
+
+				var result = await collection.Find(query).ToListAsync();
+				return result.ToArray();
+			}
+			catch (Exception exc)
+			{
+
+				throw exc;
+			}
         }
         
 

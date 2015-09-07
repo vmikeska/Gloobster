@@ -23,7 +23,6 @@ var CreateUserBase = (function () {
         var _this = this;
         this.createUserEndpoint = '/api/user';
         this.onSuccess = function (response) {
-            alert(JSON.stringify(response.encodedToken));
             _this.storeCookieWithToken(response.encodedToken);
         };
         this.onError = function (response) {

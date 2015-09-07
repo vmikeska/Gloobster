@@ -4,6 +4,7 @@ using Gloobster.Common.DbEntity;
 using System;
 using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
+using Newtonsoft.Json.Linq;
 
 namespace Gloobster.DomainModels
 {
@@ -20,29 +21,44 @@ namespace Gloobster.DomainModels
 
 		public async Task<UserLoggedResultDO> ValidateOrCreateUser(PortalUserDO portalUser)
 		{
+			UserLoggedResultDO result = null;
+
 			bool isFromFacebook = portalUser.Facebook?.Authentication != null;
 			bool isFromTwitter = false;
 			bool isFromFoursquare = false;
 
 			if (isFromFacebook)
 			{
-				UserLoggedResultDO res = await FbUserDomain.ValidateFacebookUser(portalUser.Facebook.Authentication);
-				return res;
+				result = await FbUserDomain.ValidateFacebookUser(portalUser.Facebook.Authentication);
+				
 			}
 			else if (isFromTwitter)
 			{
-
+				result = new UserLoggedResultDO();
 			}
 			else if (isFromFoursquare)
 			{
+				result = new UserLoggedResultDO();
 			}
 			//is standart user
 			else
 			{
-				
+				result = new UserLoggedResultDO();
 			}
 
-			return null;
+			//todo: should it be here ?
+			if (result.Status == UserLogged.Successful)
+			{
+				//since here user is valid, lets create the token
+				var tokenObj = new AuthorizationToken(result.UserId);
+				var tokenStr = Newtonsoft.Json.JsonConvert.SerializeObject(tokenObj);
+				var tokenJson = JObject.Parse(tokenStr);
+
+				result.EncodedToken = JsonWebToken.Encode(tokenJson, GloobsterConfig.AppSecret, JwtHashAlgorithm.RS256);
+			}
+
+
+			return result;
 		}
 		
 		public async Task<UserCreatedResultDO> CreateUserBase(PortalUserDO user)

@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using Facebook;
 using Gloobster.Common;
 using Gloobster.Common.DbEntity;
-using Gloobster.DomainModels.Services.TaggedPlacesExtractor;
+using Gloobster.DomainModels.Services.Facebook.TaggedPlacesExtractor;
 using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.Mappers;
@@ -17,6 +18,15 @@ using Newtonsoft.Json.Linq;
 
 namespace Gloobster.DomainModels
 {
+	[DataContract]
+	public class FacebookPermanentToken
+	{
+		[DataMember(Name = "access_token")]
+		public string AccessToken { get; set; }
+		[DataMember(Name = "expires")]
+		public int SecondsToExpire { get; set; }
+	}
+
 	public class FacebookUserDomain : IFacebookUserDomain
 	{
 		public IDbOperations DB;
@@ -66,7 +76,7 @@ namespace Gloobster.DomainModels
 
 		public async Task<CreateFacebookUserResultDO> CreateFacebookUser(FacebookUserAuthenticationDO fbUserAuthentication)
 		{
-			var fbUserExists = await FacebookUserExists(fbUserAuthentication.UserID);
+			var fbUserExists = await FacebookUserExists(fbUserAuthentication.UserId);
 			if (fbUserExists.UserExists)
 			{
 				return new CreateFacebookUserResultDO {Status = UserCreated.UserExists};
@@ -74,6 +84,8 @@ namespace Gloobster.DomainModels
 
 			//todo: check if email exists in the system already
 
+			var permenentToken = IssueNewPermanentAccessToken(fbUserAuthentication.AccessToken);
+			
 			FBService.SetAccessToken(fbUserAuthentication.AccessToken);
 			var userCallResult = FBService.Get<FacebookUserFO>("/me");
 			var resultEntity = userCallResult.ToEntity();
@@ -86,7 +98,12 @@ namespace Gloobster.DomainModels
 				Password = GeneratePassword(),
 				Facebook = new FacebookGroupEntity
 				{
-					Authentication = fbUserAuthentication.ToEntity(),
+					Authentication = new FacebookUserAuthenticationEntity
+					{
+						AccessToken = permenentToken.AccessToken,
+						ExpiresAt = permenentToken.ExpiresAt,
+						UserId = fbUserAuthentication.UserId
+					},
 					FacebookUser = resultEntity
 				}
 			};
@@ -96,25 +113,55 @@ namespace Gloobster.DomainModels
 			return new CreateFacebookUserResultDO {Status = UserCreated.Successful, CreatedUser = savedEntity.ToDO()};
 		}
 
+		private FacebookUserAuthenticationDO IssueNewPermanentAccessToken(string accessToken)
+		{
+			int expireToleranceInSeconds = 60;
+
+			var url =
+				string.Format("/oauth/access_token?grant_type=fb_exchange_token&client_id={0}&client_secret={1}&fb_exchange_token={2}",
+					GloobsterConfig.FacebookAppId, GloobsterConfig.FacebookAppSecret, accessToken);
+
+			FBService.SetAccessToken(accessToken);
+			var permanentToken = FBService.Get<FacebookPermanentToken>(url);
+
+			var newExpireTime = DateTime.UtcNow.AddSeconds(permanentToken.SecondsToExpire - expireToleranceInSeconds);
+
+			var result = new FacebookUserAuthenticationDO
+			{
+				AccessToken = permanentToken.AccessToken,
+				ExpiresAt = newExpireTime
+			};
+
+			return result;
+		}
+
 		public async Task<UserLoggedResultDO> ValidateFacebookUser(FacebookUserAuthenticationDO fbAuth)
 		{
 			var result = new UserLoggedResultDO {IsFacebook = true, IsStandardUser = false, RegisteredNewUser = false};
 
 			string dbUserId;
 
-			var fbExistResult = await FacebookUserExists(fbAuth.UserID);
+			var fbExistResult = await FacebookUserExists(fbAuth.UserId);
 
 			if (!fbExistResult.UserExists)
 			{
 				var newUser = await CreateFacebookUser(fbAuth);
 				dbUserId = newUser.CreatedUser.DbUserId;
-				result.RegisteredNewUser = true;
+				result.RegisteredNewUser = true;				
 			}
 			else
 			{
 				dbUserId = fbExistResult.PortalUser.DbUserId;
-				UpdateFacebookUserAuth(fbAuth);
+				
+				bool expired = fbExistResult.PortalUser.Facebook.Authentication.ExpiresAt < DateTime.UtcNow;
+				if (expired)
+				{
+					var newPermanentToken = IssueNewPermanentAccessToken(fbAuth.AccessToken);					
+					UpdateFacebookUserAuth(dbUserId, newPermanentToken.AccessToken, newPermanentToken.ExpiresAt);
+				}				
 			}
+
+			result.UserId = dbUserId;
 
 			//todo: implement some login service
 			bool fbLogged = LogInFacebookUser(fbAuth);
@@ -127,53 +174,35 @@ namespace Gloobster.DomainModels
 				//todo: implement other login types
 				//todo: implement check on validity of token
 			}
-
-			var theSecret = "safdasfdasdfasdf";
-
-			//since here user is valid, lets create the token
-			var tokenObj = new AuthorizationToken(dbUserId);
-			var tokenStr = Newtonsoft.Json.JsonConvert.SerializeObject(tokenObj);
-			var tokenJson = JObject.Parse(tokenStr);
-
-			result.EncodedToken = JsonWebToken.Encode(tokenJson, theSecret, JwtHashAlgorithm.RS256);
+			
 
 			ExtractVisitedCountries(fbAuth, dbUserId);
 
 
 			return result;
 		}
-
-		public class AuthorizationToken
+		
+		public async void UpdateFacebookUserAuth(string dbUserId, string accessToken, DateTime expiresAt)
 		{
-			public AuthorizationToken() { }
-
-			public AuthorizationToken(string userId)
-			{
-				UserId = userId;
-			}
-
-			public string UserId { get; set; }
-
-		}
-
-		public async void UpdateFacebookUserAuth(FacebookUserAuthenticationDO fbAuth)
-		{
-			var fbAuthEntity = fbAuth.ToEntity();
-
-			var filter = Builders<BsonDocument>.Filter.Eq("Facebook.Authentication.PortalUser_id", fbAuth.UserID);
+			var filter = Builders<BsonDocument>.Filter.Eq("_id", new ObjectId(dbUserId) );
 			var update = Builders<BsonDocument>.Update
-				.Set("Facebook.Authentication.AccessToken", fbAuth.AccessToken)
-				.Set("Facebook.Authentication.PortalUser_id", fbAuth.UserID);
-				//todo: possibly remove SignedRequest and ExpiresIn at all
+				.Set("Facebook.Authentication.AccessToken", accessToken)				
+				.Set("Facebook.Authentication.ExpiresAt", expiresAt);
+				
+			//todo: remove ExpiresIn at all
 			var result = await DB.UpdateAsync<PortalUserEntity>(update, filter);
 
-			
+			if (result.MatchedCount == 0)
+			{
+				//todo: make it nice here
+				throw new Exception("something went wrong with update");
+			}
 		}
 
 		private async void ExtractVisitedCountries(FacebookUserAuthenticationDO fbAuth, string dbUserId)
 		{
 
-			TaggedPlacesExtractor.SetUserData(fbAuth.AccessToken, fbAuth.UserID);
+			TaggedPlacesExtractor.SetUserData(fbAuth.AccessToken, fbAuth.UserId);
 
 			TaggedPlacesExtractor.ExtractAll();
 			

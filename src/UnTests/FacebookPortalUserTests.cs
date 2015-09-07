@@ -3,8 +3,8 @@ using Gloobster.Common.DbEntity;
 using Gloobster.DomainModels;
 using Gloobster.DomainModels.Services;
 using Gloobster.DomainModels.Services.CountryService;
+using Gloobster.DomainModels.Services.Facebook.TaggedPlacesExtractor;
 using Gloobster.DomainModels.Services.GeonamesService;
-using Gloobster.DomainModels.Services.TaggedPlacesExtractor;
 using Gloobster.DomainModelsCommon.DO;
 using Gloobster.SocialLogin.Facebook.Communication;
 using Moq;
@@ -46,7 +46,7 @@ namespace Gloobster.UnitTests
 
 			var userDo1 = UserCreations.CreatePortalUserDO1(true);
 
-			var fbResult = await FBUserDomain.FacebookUserExists(userDo1.Facebook.Authentication.UserID);
+			var fbResult = await FBUserDomain.FacebookUserExists(userDo1.Facebook.Authentication.UserId);
 
 			Assert.True(fbResult.UserExists);
 		}

@@ -21,6 +21,7 @@ namespace Gloobster.Portal.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public async Task<IActionResult> Get(string userId)
 		{
 			var visitedCountriesDO = await VisitedCountries.GetVisitedCountriesByUserId(userId);

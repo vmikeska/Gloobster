@@ -21,7 +21,7 @@ namespace Gloobster.DomainModels
 	    }
 
 		public async Task<List<VisitedPlaceDO>> AddNewPlaces(List<VisitedPlaceDO> inputPlaces, string userId)
-	    {			
+	    {		
 			var query = $@"{{""PortalUser_id"": ObjectId(""{userId}"")}}";
 			var alreadySavedPlaces = await DB.FindAsync<VisitedPlaceEntity>(query);
 			

@@ -5,15 +5,22 @@ using System.Threading.Tasks;
 
 namespace Gloobster.Common
 {
-	public interface IGloobsterConfig
-	{
-		string MongoConnectionString { get; set; }
-		string DatabaseName { get; set; }
-	}
+	//public interface IGloobsterConfig
+	//{
+	//	string MongoConnectionString { get; set; }
+	//	string DatabaseName { get; set; }
+	//	string AppSecret { get; set; }
+	//}
 
-	public class GloobsterConfig : IGloobsterConfig
+	public static class GloobsterConfig 
+		//: IGloobsterConfig
 	{
-		public string MongoConnectionString { get; set; }
-		public string DatabaseName { get; set; }
+		public static string MongoConnectionString { get; set; }
+		public static string DatabaseName { get; set; }
+		public static string AppSecret { get; set; }
+
+
+		public static string FacebookAppId { get; set; }
+		public static string FacebookAppSecret { get; set; }
 	}
 }

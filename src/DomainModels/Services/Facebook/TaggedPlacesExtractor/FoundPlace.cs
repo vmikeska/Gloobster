@@ -1,6 +1,6 @@
 using System;
 
-namespace Gloobster.DomainModels.Services.TaggedPlacesExtractor
+namespace Gloobster.DomainModels.Services.Facebook.TaggedPlacesExtractor
 {
 	public class FoundPlace : IEquatable<FoundPlace>
 	{

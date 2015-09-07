@@ -1,10 +1,11 @@
 ﻿
 
 using Gloobster.Common;
+using Microsoft.AspNet.Mvc;
 
 namespace Gloobster.Portal.Controllers
 {
-    public class PortalBaseController
+    public class PortalBaseController: Controller
     {
         public PortalBaseController(IDbOperations db)
         {

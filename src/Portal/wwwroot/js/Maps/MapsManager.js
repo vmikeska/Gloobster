@@ -5,6 +5,7 @@ var MapsManager = (function () {
         var countryShapes = new CountryShapes();
         this.mapsOperations = new MapsOperations(countryShapes);
     }
+    //public savedPosition: any;
     MapsManager.prototype.redrawAll = function () {
         this.redrawCountries();
         this.redrawPlaces();
@@ -26,6 +27,12 @@ var MapsManager = (function () {
         this.placesInitialized = true;
     };
     MapsManager.prototype.switchToView = function (viewType) {
+        var savedPosition;
+        var savedZoom = 1;
+        if (this.mapsDriver) {
+            savedPosition = this.mapsDriver.getPosition();
+            savedZoom = this.mapsDriver.getZoom();
+        }
         if (this.currentMaps) {
             this.currentMaps.hide();
             this.mapsDriver.destroyAll();
@@ -46,6 +53,15 @@ var MapsManager = (function () {
         if (this.countriesInitialized) {
             this.redrawCountries();
         }
+        if (savedPosition) {
+            var roundedZoom = Math.round(savedZoom);
+            console.log("savedZoom: " + roundedZoom);
+            this.mapsDriver.setView(savedPosition.lat, savedPosition.lng, roundedZoom);
+        }
+        //var self = this;
+        //setTimeout(function () {
+        //	alert(self.mapsDriver.mapObj.getZoom());
+        //}, 3000);
     };
     MapsManager.prototype.init3D = function () {
         this.currentMaps = new MapsCreatorGlobe3D();

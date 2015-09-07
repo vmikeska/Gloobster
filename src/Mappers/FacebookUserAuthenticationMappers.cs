@@ -16,9 +16,8 @@ namespace Gloobster.Mappers
 			var dObj = new FacebookUserAuthenticationDO
 			{
 				AccessToken = authenticationEntity.AccessToken,
-				ExpiresIn = authenticationEntity.ExpiresIn,
-				SignedRequest = authenticationEntity.SignedRequest,
-				UserID = authenticationEntity.UserId
+				ExpiresAt = authenticationEntity.ExpiresAt,
+				UserId = authenticationEntity.UserId
 			};
 
 			return dObj;
@@ -34,9 +33,8 @@ namespace Gloobster.Mappers
 			var entity = new FacebookUserAuthenticationEntity
 			{
 				AccessToken = dObj.AccessToken,
-				ExpiresIn = dObj.ExpiresIn,
-				SignedRequest = dObj.SignedRequest,
-				UserId = dObj.UserID
+				ExpiresAt = dObj.ExpiresAt,				
+				UserId = dObj.UserId
 			};
 
 			return entity;
@@ -52,9 +50,8 @@ namespace Gloobster.Mappers
 			var dObj = new FacebookUserAuthenticationDO
 			{
 				AccessToken = request.accessToken,
-				ExpiresIn = request.expiresIn,
-				SignedRequest = request.signedRequest,
-				UserID = request.userID
+				//ExpiresAt = request.expiresIn,
+				UserId = request.userID
 			};
 
 			return dObj;

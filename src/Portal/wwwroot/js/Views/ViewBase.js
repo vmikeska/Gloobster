@@ -11,6 +11,14 @@ var Views;
             request.onError = function (response) { alert('error'); };
             request.sendGet();
         };
+        ViewBase.prototype.apiPost = function (endpointName, data, callback) {
+            var endpoint = '/api/' + endpointName;
+            var request = new RequestSender(endpoint, data, true);
+            request.serializeData();
+            request.onSuccess = callback;
+            request.onError = function (response) { alert('error'); };
+            request.sentPost();
+        };
         return ViewBase;
     })();
     Views.ViewBase = ViewBase;

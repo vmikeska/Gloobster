@@ -3,18 +3,6 @@ using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
-//using System.Security.Claims;
-//using System.Web.Security;
-//using Microsoft.AspNet.Authentication.Cookies;
-//using Microsoft.AspNet.Http;
-
-//using System.Security.Claims;
-//using Microsoft.AspNet.Builder;
-//using Microsoft.AspNet.Http;
-//using Microsoft.AspNet.Http.Authentication;
-//using Microsoft.AspNet.Identity;
-//using Microsoft.AspNet.Security.Cookies;
-//using Microsoft.Owin;
 
 namespace Gloobster.Portal.Controllers
 {
@@ -50,16 +38,16 @@ namespace Gloobster.Portal.Controllers
             return View();
         }
 
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
+        //public IActionResult Contact()
+        //{
+        //    ViewData["Message"] = "Your contact page.";
 
-            return View();
-        }
+        //    return View();
+        //}
 
-        public IActionResult Error()
-        {
-            return View("~/Views/Shared/Error.cshtml");
-        }
+        //public IActionResult Error()
+        //{
+        //    return View("~/Views/Shared/Error.cshtml");
+        //}
     }
 }

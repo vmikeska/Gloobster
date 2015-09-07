@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Gloobster.DomainModels.Services.TaggedPlacesExtractor
+namespace Gloobster.DomainModels.Services.Facebook.TaggedPlacesExtractor
 {
 	public interface IFacebookTaggedPlacesExtractor
 	{

@@ -1,8 +1,8 @@
 ﻿using Gloobster.Common;
 using Gloobster.DomainModels;
 using Gloobster.DomainModels.Services.CountryService;
+using Gloobster.DomainModels.Services.Facebook.TaggedPlacesExtractor;
 using Gloobster.DomainModels.Services.GeonamesService;
-using Gloobster.DomainModels.Services.TaggedPlacesExtractor;
 using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.SocialLogin.Facebook.Communication;
 using Microsoft.AspNet.Builder;
@@ -41,14 +41,22 @@ namespace Gloobster.Portal
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-			var config = new GloobsterConfig
-			{
-				MongoConnectionString = Configuration["Data:DefaultConnection:ConnectionString"],
-				DatabaseName = Configuration["Data:DefaultConnection:DatabaseName"]
-			};
+			//var config = new GloobsterConfig
+			//{
+			//	MongoConnectionString = Configuration["Data:DefaultConnection:ConnectionString"],
+			//	DatabaseName = Configuration["Data:DefaultConnection:DatabaseName"],
+			//	AppSecret = Configuration["AppSecret"]
+			//};
 
-			services.AddInstance<IGloobsterConfig>(config);
+			//services.AddInstance<IGloobsterConfig>(config);
 
+	        GloobsterConfig.MongoConnectionString = Configuration["Data:DefaultConnection:ConnectionString"];
+	        GloobsterConfig.DatabaseName = Configuration["Data:DefaultConnection:DatabaseName"];
+	        GloobsterConfig.AppSecret = Configuration["AppSecret"];
+
+			GloobsterConfig.FacebookAppId = Configuration["Facebook:AppId"];
+			GloobsterConfig.FacebookAppSecret = Configuration["Facebook:AppSecret"];
+			
 			RegisterApplicationStuff(services);
 			
 			

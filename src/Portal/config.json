@@ -2,7 +2,12 @@
   "Data": {
     "DefaultConnection": {
       "ConnectionString": "mongodb://localhost:27017/Gloobster",
-      "DatabaseName":  "Gloobster"
+      "DatabaseName": "Gloobster"
     }
+  },
+  "AppSecret": "ThisIsAppSecret",
+  "Facebook": {
+    "AppId": "1519189774979242",
+	  "AppSecret": "72a327fb0e9f24d236995b29e5fe7512"
   }
 }

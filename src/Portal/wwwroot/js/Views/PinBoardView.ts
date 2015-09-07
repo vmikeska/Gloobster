@@ -8,9 +8,6 @@
 		public visitedPlaces: any;
 	 
 		public mapsManager: MapsManager;
-
-		public mapsBaseOperations: BaseMapsOperation3D;
-		public mapsOperations: MapsOperations;
 	 
 		public initialize() {
 			this.mapsManager = new MapsManager();
@@ -26,10 +23,6 @@
 			return countryConfig;
 		}
 	 
-		private getUserId() {
-			return '55e0b1d7ff89d0435456e6f5';
-		}
-
 		private onVisitedCountriesResponse(visitedCountries) {
 			this.visitedCountries = visitedCountries;
 
@@ -49,25 +42,40 @@
 			this.visitedPlaces = response.Places;
 
 			var mappedPlaces = _.map(this.visitedPlaces, place => {
-				var marker = new Maps.PlaceMarker();
-				marker.lat = place.PlaceLatitude;
-				marker.lng = place.PlaceLongitude;
-				return marker;
+			 var marker = new Maps.PlaceMarker(place.PlaceLatitude, place.PlaceLongitude);
+			 return marker;
 			});
 
 			this.mapsManager.setVisitedPlaces(mappedPlaces);
 		}
 
+		public saveNewPlace(dataRecord) {
+			var self = this;
+			super.apiPost("visitedPlace", dataRecord, function(response) {
+
+				var placeAdded = response.length > 0;
+				if (placeAdded) {
+				 var place = response[0];
+				 var newMarker = new Maps.PlaceMarker(place.PlaceLatitude, place.PlaceLongitude);
+				 self.mapsManager.places.push(newMarker);
+				 self.mapsManager.mapsOperations.drawPlace(newMarker); 
+				}
+			 
+				self.mapsManager.mapsDriver.moveToAnimated(dataRecord.PlaceLatitude, dataRecord.PlaceLongitude, 5);
+			});
+		}
+
 		public getVisitedPlaces() {
 			var self = this;
-			super.apiGet("visitedPlace", [["userId", this.getUserId()]], function(response) {
+			super.apiGet("visitedPlace", null, function(response) {
 				self.onVisitedPlacesResponse(response);
 			});
 		}
 
 		public getVisitedCountries() {
-			var self = this;
-			super.apiGet("visitedCountry", [["userId", this.getUserId()]], function(response) {
+		 var self = this;
+		 //[["userId", this.getUserId()]]
+			super.apiGet("visitedCountry", null, function(response) {
 				self.onVisitedCountriesResponse(response.Countries3);
 			});
 		}

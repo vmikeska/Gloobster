@@ -9,6 +9,8 @@
 	public countries: Maps.CountryHighligt[];
 	public places: Maps.PlaceMarker[];
 
+	//public savedPosition: any;
+
 	public redrawAll() {
 		this.redrawCountries();
 		this.redrawPlaces();
@@ -41,14 +43,20 @@
 		this.redrawPlaces();
 		this.placesInitialized = true;
 	}
-		
+
 	public switchToView(viewType: Maps.ViewType) {
+		var savedPosition;
+		var savedZoom = 1;
+		if (this.mapsDriver) {
+			savedPosition = this.mapsDriver.getPosition();
+			savedZoom = this.mapsDriver.getZoom();
+		}
 
 		if (this.currentMaps) {
-		 this.currentMaps.hide();
-		 this.mapsDriver.destroyAll();
+			this.currentMaps.hide();
+			this.mapsDriver.destroyAll();
 		}
-				
+
 		this.currentViewType = viewType;
 
 		if (viewType === Maps.ViewType.D3) {
@@ -56,21 +64,31 @@
 		}
 
 		if (viewType === Maps.ViewType.D2) {
-		 this.init2D();
+			this.init2D();
 		}
-	 
-		this.currentMaps.show();	 
+
+		this.currentMaps.show();
 
 		this.mapsDriver.setMapObj(this.currentMaps.mapObj);
 		this.mapsOperations.setBaseMapsOperations(this.mapsDriver);
 
-	 if (this.placesInitialized) {
-		 this.redrawPlaces();
+		if (this.placesInitialized) {
+			this.redrawPlaces();
 		}
 
-	 if (this.countriesInitialized) {
-		this.redrawCountries();
-	 }
+		if (this.countriesInitialized) {
+			this.redrawCountries();
+		}
+
+		if (savedPosition) {
+			var roundedZoom = Math.round(savedZoom);
+			console.log("savedZoom: " + roundedZoom);
+			this.mapsDriver.setView(savedPosition.lat, savedPosition.lng, roundedZoom);
+		}
+		//var self = this;
+		//setTimeout(function () {
+		//	alert(self.mapsDriver.mapObj.getZoom());
+		//}, 3000);
 	}
 
 	private init3D() {

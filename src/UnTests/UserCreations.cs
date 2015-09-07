@@ -58,8 +58,8 @@ namespace Gloobster.UnitTests
 			var fbUserEntity = new FacebookUserAuthenticationEntity
 			{
 				AccessToken = AccessToken1,
-				ExpiresIn = ExpiresIn1,
-				SignedRequest = SignedRequest1,
+				//ExpiresAt = Expires,
+				//SignedRequest = SignedRequest1,
 				UserId = UserId1
 			};
 			
@@ -71,9 +71,9 @@ namespace Gloobster.UnitTests
 			var fbUserEntity = new FacebookUserAuthenticationDO
 			{
 				AccessToken = AccessToken1,
-				ExpiresIn = ExpiresIn1,
-				SignedRequest = SignedRequest1,
-				UserID = UserId1
+				//ExpiresIn = ExpiresIn1,
+				//SignedRequest = SignedRequest1,
+				UserId = UserId1
 			};
 
 			return fbUserEntity;
@@ -134,9 +134,9 @@ namespace Gloobster.UnitTests
 			var fbUser = new FacebookUserAuthenticationDO
 			{
 				AccessToken = AccessToken1,
-				ExpiresIn = ExpiresIn1,
-				SignedRequest = SignedRequest1,
-				UserID = UserId1
+				//ExpiresIn = ExpiresIn1,
+				//SignedRequest = SignedRequest1,
+				UserId = UserId1
 			};
 			return fbUser;
 		}

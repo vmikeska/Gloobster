@@ -8,13 +8,12 @@ namespace Gloobster.UnitTests
 
 		static CreationsBase()
 		{
-			var config = new GloobsterConfig
-			{
-				MongoConnectionString = "mongodb://localhost:27017/GloobsterTest",
-				DatabaseName = "GloobsterTest"
-			};
+			GloobsterConfig.MongoConnectionString = "mongodb://localhost:27017/GloobsterTest";
+			GloobsterConfig.DatabaseName = "GloobsterTest";
+			GloobsterConfig.AppSecret = "ASDF";
 
-			DB = new DbOperations(config);
+
+			DB = new DbOperations();
 		}
 	}
 }

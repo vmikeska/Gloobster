@@ -7,7 +7,9 @@ var Maps;
     })();
     Maps.CountryHighligt = CountryHighligt;
     var PlaceMarker = (function () {
-        function PlaceMarker() {
+        function PlaceMarker(lat, lng) {
+            this.lat = lat;
+            this.lng = lng;
         }
         return PlaceMarker;
     })();

@@ -30,7 +30,6 @@ class CreateUserBase implements ICreateUser {
 	createUserEndpoint = '/api/user';
 
 	onSuccess = (response) => {
-	 alert(JSON.stringify(response.encodedToken));
 	 this.storeCookieWithToken(response.encodedToken);
 	}
 

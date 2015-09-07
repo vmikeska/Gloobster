@@ -7,8 +7,14 @@ module Maps {
 				}
 
 	export class PlaceMarker {
-					lat: number;
-					lng: number;
+			 
+	 constructor(lat: number, lng: number) {
+		this.lat = lat;
+		 this.lng = lng;
+	 }
+
+		lat: number;
+		lng: number;
 	}
 
 	export class PolygonConfig {
@@ -34,11 +40,18 @@ module Maps {
 
 
 	export interface IMapsDriver {
+
+		mapObj: any;
+
 		drawPolygon(polygonCoordinates: any, polygonConfig: PolygonConfig);
 		drawPin(place: PlaceMarker);		
 		setMapObj(mapObj: any);
 		destroyAll();
+
 		setView(lat: number, lng: number, zoom: number);
+		moveToAnimated(lat: number, lng: number, zoom: number);
+		getPosition();
+		getZoom();
 	}
 
 	export interface IMapsOperations {

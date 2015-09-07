@@ -54,14 +54,14 @@ namespace Gloobster.Mappers
 			return entity;
 		}
 
-		public static VisitedPlaceResponseItem ToResponse(this VisitedPlaceDO dObj)
+		public static VisitedPlaceItem ToResponse(this VisitedPlaceDO dObj)
 		{
 			if (dObj == null)
 			{
 				return null;
 			}
 
-			var response = new VisitedPlaceResponseItem
+			var response = new VisitedPlaceItem
 			{
 				City = dObj.City,
 				CountryCode = dObj.CountryCode,

@@ -24,9 +24,6 @@ var PinBoardView = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    PinBoardView.prototype.getUserId = function () {
-        return '55e0b1d7ff89d0435456e6f5';
-    };
     PinBoardView.prototype.onVisitedCountriesResponse = function (visitedCountries) {
         this.visitedCountries = visitedCountries;
         var countryConf = this.countryConfig;
@@ -41,22 +38,34 @@ var PinBoardView = (function (_super) {
     PinBoardView.prototype.onVisitedPlacesResponse = function (response) {
         this.visitedPlaces = response.Places;
         var mappedPlaces = _.map(this.visitedPlaces, function (place) {
-            var marker = new Maps.PlaceMarker();
-            marker.lat = place.PlaceLatitude;
-            marker.lng = place.PlaceLongitude;
+            var marker = new Maps.PlaceMarker(place.PlaceLatitude, place.PlaceLongitude);
             return marker;
         });
         this.mapsManager.setVisitedPlaces(mappedPlaces);
     };
+    PinBoardView.prototype.saveNewPlace = function (dataRecord) {
+        var self = this;
+        _super.prototype.apiPost.call(this, "visitedPlace", dataRecord, function (response) {
+            var placeAdded = response.length > 0;
+            if (placeAdded) {
+                var place = response[0];
+                var newMarker = new Maps.PlaceMarker(place.PlaceLatitude, place.PlaceLongitude);
+                self.mapsManager.places.push(newMarker);
+                self.mapsManager.mapsOperations.drawPlace(newMarker);
+            }
+            self.mapsManager.mapsDriver.moveToAnimated(dataRecord.PlaceLatitude, dataRecord.PlaceLongitude, 5);
+        });
+    };
     PinBoardView.prototype.getVisitedPlaces = function () {
         var self = this;
-        _super.prototype.apiGet.call(this, "visitedPlace", [["userId", this.getUserId()]], function (response) {
+        _super.prototype.apiGet.call(this, "visitedPlace", null, function (response) {
             self.onVisitedPlacesResponse(response);
         });
     };
     PinBoardView.prototype.getVisitedCountries = function () {
         var self = this;
-        _super.prototype.apiGet.call(this, "visitedCountry", [["userId", this.getUserId()]], function (response) {
+        //[["userId", this.getUserId()]]
+        _super.prototype.apiGet.call(this, "visitedCountry", null, function (response) {
             self.onVisitedCountriesResponse(response.Countries3);
         });
     };
