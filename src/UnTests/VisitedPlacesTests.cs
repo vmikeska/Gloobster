@@ -4,7 +4,6 @@ using Gloobster.DomainModels;
 using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
 using Xunit;
-using VisitedPlacesDomain = Gloobster.DomainModels.VisitedPlacesDomain;
 
 namespace Gloobster.UnitTests
 {

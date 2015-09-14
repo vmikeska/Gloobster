@@ -1,9 +1,5 @@
 ﻿using Gloobster.Common.DbEntity;
 using Gloobster.DomainModels;
-using Microsoft.AspNet.Hosting;
-using Microsoft.Framework.Configuration;
-using Microsoft.Framework.Runtime;
-using System;
 using Gloobster.DomainModelsCommon.DO;
 using Xunit;
 

@@ -51,6 +51,14 @@ namespace Gloobster.UnitTests
 			Assert.True(fbResult.UserExists);
 		}
 
+		//"xunit": "2.1.0-rc1-build3168",
+		//"xunit.runner.dnx": "2.1.0-beta5-build169",
+		//"DomainModels": "1.0.0-*",
+		//"Microsoft.Framework.Configuration.Json": "1.0.0-beta7",
+		//"Microsoft.Framework.Configuration.EnvironmentVariables": "1.0.0-beta7",
+		//"Moq": "4.2.1507.118",
+		//"TweetSharp": "2.3.1"
+
 		[Fact]
 		public async void should_create_facebook_user()
 		{

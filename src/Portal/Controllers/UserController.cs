@@ -1,19 +1,9 @@
 ﻿using Microsoft.AspNet.Mvc;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Runtime.Serialization;
 using System.Threading.Tasks;
-using System.Web.Security;
-using Gloobster.Common;
-using Gloobster.Common.DbEntity;
 using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.WebApiObjects;
 using Gloobster.Mappers;
-using Gloobster.SocialLogin.Facebook.Communication;
 
 namespace Gloobster.Portal.Controllers
 {

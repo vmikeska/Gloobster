@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web.UI.WebControls;
 using Gloobster.Common;
 using Gloobster.DomainModels.Services.Facebook.FriendsExtractor;
 using Gloobster.SocialLogin.Facebook.Communication;
