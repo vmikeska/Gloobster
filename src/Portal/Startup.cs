@@ -3,6 +3,7 @@ using Gloobster.DomainModels;
 using Gloobster.DomainModels.Services.CountryService;
 using Gloobster.DomainModels.Services.Facebook.TaggedPlacesExtractor;
 using Gloobster.DomainModels.Services.GeonamesService;
+using Gloobster.DomainModels.Services.Twitter;
 using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.SocialLogin.Facebook.Communication;
 using Microsoft.AspNet.Builder;
@@ -41,6 +42,18 @@ namespace Gloobster.Portal
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+	        LoadConfigFile();
+
+	        RegisterApplicationStuff(services);
+			
+			
+
+			// Add MVC services to the services container.
+			services.AddMvc();
+		}
+
+		private void LoadConfigFile()
+		{
 			//var config = new GloobsterConfig
 			//{
 			//	MongoConnectionString = Configuration["Data:DefaultConnection:ConnectionString"],
@@ -50,19 +63,18 @@ namespace Gloobster.Portal
 
 			//services.AddInstance<IGloobsterConfig>(config);
 
-	        GloobsterConfig.MongoConnectionString = Configuration["Data:DefaultConnection:ConnectionString"];
-	        GloobsterConfig.DatabaseName = Configuration["Data:DefaultConnection:DatabaseName"];
-	        GloobsterConfig.AppSecret = Configuration["AppSecret"];
+			GloobsterConfig.MongoConnectionString = Configuration["Data:DefaultConnection:ConnectionString"];
+			GloobsterConfig.DatabaseName = Configuration["Data:DefaultConnection:DatabaseName"];
+			GloobsterConfig.AppSecret = Configuration["AppSecret"];
 
 			GloobsterConfig.FacebookAppId = Configuration["Facebook:AppId"];
 			GloobsterConfig.FacebookAppSecret = Configuration["Facebook:AppSecret"];
-			
-			RegisterApplicationStuff(services);
-			
-			
 
-			// Add MVC services to the services container.
-			services.AddMvc();
+			GloobsterConfig.TwitterConsumerKey = Configuration["Twitter:ConsumerKey"];
+			GloobsterConfig.TwitterConsumerSecret = Configuration["Twitter:ConsumerSecret"];
+			GloobsterConfig.TwitterAccessToken = Configuration["Twitter:AccessToken"];
+			GloobsterConfig.TwitterAccessTokenSecret = Configuration["Twitter:AccessTokenSecret"];
+
 		}
 
 		private void RegisterApplicationStuff(IServiceCollection services)
@@ -73,7 +85,9 @@ namespace Gloobster.Portal
 			services.AddTransient<IVisitedCountriesDomain, VisitedCountriesDomain>();
 			
 			services.AddTransient<IDbOperations, DbOperations>();
+
 			services.AddTransient<IFacebookService, FacebookService>();
+			services.AddTransient<IMyTwitterService, MyTwitterService>();
 
 			services.AddTransient<IFacebookTaggedPlacesExtractor, FacebookTaggedPlacesExtractor>();
 

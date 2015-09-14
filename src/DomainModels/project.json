@@ -7,15 +7,12 @@
   "licenseUrl": "",
 
   "dependencies": {
-
-
     "DomainModelsCommon": "1.0.0-*",
     "Mappers": "1.0.0-*",
     "SocialLogin": "1.0.0-*",
-
     "Facebook": "7.0.6",
-
-      "System.Net.Http": "4.0.0.0"
+    "System.Net.Http": "4.0.0.0",
+    "TweetSharp": "2.3.1"
   },
 
   "frameworks": {

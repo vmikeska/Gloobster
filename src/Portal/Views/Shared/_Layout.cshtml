@@ -25,12 +25,22 @@
                     <a asp-controller="Home" asp-action="Index" class="navbar-brand">Goobster</a>
                 </div>
                 <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a asp-controller="Home" asp-action="Index">Home</a></li>
-                        <li><a asp-controller="Home" asp-action="Map">Map</a></li>
-                        <li><a asp-controller="Friends" asp-action="Friends">Friends</a></li>
-                    </ul>
-                    
+	                <ul class="nav navbar-nav">
+		                <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+		                <li><a asp-controller="Home" asp-action="Map">Map</a></li>
+		                <li><a asp-controller="Home" asp-action="Authorize">Authorize</a></li>
+		                <li><a asp-controller="Friends" asp-action="Friends">Friends</a></li>
+		                <li><a href="javascript:clickAuthorize()" id="authorize">Authorize new window</a></li>
+	                </ul>
+
+	                <script>
+
+                		function clickAuthorize() {
+                			var url = '/Twitter/Authorize';
+                			var wnd = window.open(url);
+                		}
+                	</script>
+
                 </div>
             </div>
         </div>
@@ -38,7 +48,7 @@
             @RenderBody()
             <hr />
             <footer>
-                <p>&copy; 2015 - Goobster</p>
+                <p>&copy; 2015 - Gloobster</p>
             </footer>
         </div>
 

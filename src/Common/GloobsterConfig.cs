@@ -22,5 +22,12 @@ namespace Gloobster.Common
 
 		public static string FacebookAppId { get; set; }
 		public static string FacebookAppSecret { get; set; }
-	}
+
+		public static string TwitterConsumerKey { get; set; }
+		public static string TwitterConsumerSecret { get; set; }
+
+		public static string TwitterAccessToken { get; set; }
+		public static string TwitterAccessTokenSecret { get; set; }
+
+    }
 }
