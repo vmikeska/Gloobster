@@ -5,10 +5,6 @@ var FacebookLoginExecutor = (function () {
         var onFacebookConnected = function (authResponse) {
             var facebookUser = new CreateUserFacebook();
             facebookUser.handleRoughResponse(authResponse);
-            FB.api('/me', function (response) {
-                var strResponse = JSON.stringify(response);
-                $('#status').html(strResponse);
-            });
         };
         //this.fbLogin = new FacebookLogin(loginConfig);			
         this.fbLogin = new FacebookLogin();

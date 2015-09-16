@@ -11,5 +11,6 @@ namespace Gloobster.Common.DbEntity
         public string Password { get; set; }
         public string Mail { get; set; }
         public FacebookGroupEntity Facebook { get; set; }
-    }
+		public TwitterUserEntity Twitter { get; set; }
+	}
 }

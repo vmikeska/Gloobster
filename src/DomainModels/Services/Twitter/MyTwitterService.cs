@@ -6,7 +6,7 @@ namespace Gloobster.DomainModels.Services.Twitter
 {
 	public class MyTwitterService: IMyTwitterService
 	{
-		public string CallbackUrl = "http://localhost:4441/Twitter/AuthCallback";
+		public string CallbackUrl = "http://localhost:4441/TwitterUser/AuthCallback";
 
 		public TwitterService TwitterSvc { get; set; }
 

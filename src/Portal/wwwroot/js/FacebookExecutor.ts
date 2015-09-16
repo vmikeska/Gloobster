@@ -8,13 +8,7 @@
 				var onFacebookConnected = function (authResponse) {
 
 						var facebookUser = new CreateUserFacebook();
-						facebookUser.handleRoughResponse(authResponse);
-
-
-						FB.api('/me', function (response) {
-								var strResponse = JSON.stringify(response);
-							$('#status').html(strResponse);
-						});
+						facebookUser.handleRoughResponse(authResponse);				 
 				}
         
 				//this.fbLogin = new FacebookLogin(loginConfig);			

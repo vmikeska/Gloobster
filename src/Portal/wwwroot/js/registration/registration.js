@@ -21,7 +21,7 @@ var FacebookUser = (function () {
 var CreateUserBase = (function () {
     function CreateUserBase() {
         var _this = this;
-        this.createUserEndpoint = '/api/user';
+        this.createUserEndpoint = 'notImpolemented';
         this.onSuccess = function (response) {
             _this.storeCookieWithToken(response.encodedToken);
         };
@@ -45,13 +45,15 @@ var CreateUserFacebook = (function (_super) {
     __extends(CreateUserFacebook, _super);
     function CreateUserFacebook() {
         _super.apply(this, arguments);
+        //todo: rename
+        this.createUserEndpoint = '/api/FacebookUser';
     }
     CreateUserFacebook.prototype.handleRoughResponse = function (jsonRequest) {
         var fbUser = new FacebookUser(jsonRequest.accessToken, jsonRequest.userID, jsonRequest.expiresIn, jsonRequest.signedRequest);
-        var baseUser = new PortalUser();
-        //baseUser.displayName = 'test';
-        baseUser.facebookUser = fbUser;
-        _super.prototype.sendUserRegistrationData.call(this, baseUser);
+        _super.prototype.sendUserRegistrationData.call(this, fbUser);
+        //var baseUser = new PortalUser();				
+        //baseUser.facebookUser = fbUser;
+        //super.sendUserRegistrationData(baseUser);
     };
     return CreateUserFacebook;
 })(CreateUserBase);

@@ -117,6 +117,7 @@
           "Common": "1.0.0",
           "DomainModelsCommon": "1.0.0",
           "SocialLogin": "1.0.0",
+          "TweetSharp": "2.3.1",
           "WebApiObjects": "1.0.0"
         }
       },

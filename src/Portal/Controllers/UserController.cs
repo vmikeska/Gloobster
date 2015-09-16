@@ -1,78 +1,48 @@
 ﻿using Microsoft.AspNet.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Gloobster.Common;
+using Gloobster.DomainModels;
+using Gloobster.DomainModels.Services.Accounts;
 using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.WebApiObjects;
 using Gloobster.Mappers;
+using Gloobster.SocialLogin.Facebook.Communication;
 
 namespace Gloobster.Portal.Controllers
 {
 	[Route("api/[controller]")]
-    public class UserController : Controller
-        //PortalBaseController
-    {
-        public IPortalUserDomain UserDomain;
+	public class UserController : Controller
+	{
+		public IUserService UserService;
 
-		public UserController(IPortalUserDomain userDomain)
+		public UserController(IUserService userService)
 		{
-			UserDomain = userDomain;
+			UserService = userService;
 		}
 
-
-		// GET: api/values
-		[HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        
-        [HttpPost]
-		public async Task<IActionResult> Post([FromBody]PortalUserRequest request)
+		[HttpPost]
+		public async Task<IActionResult> Post([FromBody] FacebookUserAuthenticationRequest request)
 		{
-			var portalUserDO = request.ToDoFromRequest();
-			
-			var result = await UserDomain.ValidateOrCreateUser(portalUserDO);
-			
-	        var response = new LoggedResponse
-	        {
-		        encodedToken = result.EncodedToken,
-				status = result.Status.ToString()				
-			};
-			
-			return new ObjectResult(response);
+			//var facebookAuthRequest = request.ToDoFromRequest();
+
+			//var accountDriver = new FacebookAccountDriver
+			//{
+			//	DB = new DbOperations(),
+			//	FBService = new FacebookService()
+			//};
+			//UserService.AccountDriver = accountDriver;
+
+			//var result = await UserService.Validate(facebookAuthRequest);
+
+			//var response = new LoggedResponse
+			//{
+			//	encodedToken = result.EncodedToken,
+			//	status = result.Status.ToString()
+			//};
+
+			//return new ObjectResult(response);
+			return null;
 		}
-
-		
-
-		// PUT api/values/5
-		[HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-		
-    }
-
-	
-
-
-
+	}
 }
-
-
-//debug
-//([FromBody] JObject json)
-//var tst2 = new StreamReader(Request.Body).ReadToEndAsync().Result;

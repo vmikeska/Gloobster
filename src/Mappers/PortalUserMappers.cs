@@ -31,6 +31,11 @@ namespace Gloobster.Mappers
 				};
 			}
 
+			if (entity.Twitter != null)
+			{
+				//dObj.
+            }
+
 			return dObj;
 		}
 
@@ -55,6 +60,11 @@ namespace Gloobster.Mappers
 					FacebookUser = dObj.Facebook.FacebookUser.ToEntity(),
 					Authentication = dObj.Facebook.Authentication.ToEntity()
 				};					
+			}
+
+			if (entity.Twitter != null)
+			{
+
 			}
 
 			return entity;

@@ -2,13 +2,13 @@
 interface ICreateUser {		
  sendUserRegistrationData: Function;
  storeCookieWithToken(token: string);
+ createUserEndpoint: string;
 }
 
 class PortalUser {
 		displayName: string;
     password: string;
     mail: string;
-    facebookUser: FacebookUser;
 }
 
 class FacebookUser {				
@@ -27,7 +27,7 @@ class FacebookUser {
 
 class CreateUserBase implements ICreateUser {
 
-	createUserEndpoint = '/api/user';
+	createUserEndpoint = 'notImpolemented';
 
 	onSuccess = (response) => {
 	 this.storeCookieWithToken(response.encodedToken);
@@ -43,7 +43,7 @@ class CreateUserBase implements ICreateUser {
 	 //todo: set other stuff, like domain and so
 	}
 
-	sendUserRegistrationData(newUser: PortalUser) {
+	sendUserRegistrationData(newUser) {
 		var request = new RequestSender(this.createUserEndpoint, newUser);
 		request.serializeData();
 		request.onSuccess = this.onSuccess;
@@ -54,6 +54,9 @@ class CreateUserBase implements ICreateUser {
 
 class CreateUserFacebook extends CreateUserBase {
 
+	//todo: rename
+	createUserEndpoint = '/api/FacebookUser';
+
 		handleRoughResponse(jsonRequest) {
 
 				var fbUser = new FacebookUser(
@@ -62,11 +65,12 @@ class CreateUserFacebook extends CreateUserBase {
 						jsonRequest.expiresIn,
 						jsonRequest.signedRequest);
 				
-				var baseUser = new PortalUser();
-				//baseUser.displayName = 'test';
-				baseUser.facebookUser = fbUser;
+				super.sendUserRegistrationData(fbUser);
 
-				super.sendUserRegistrationData(baseUser);
+				//var baseUser = new PortalUser();				
+				//baseUser.facebookUser = fbUser;
+
+				//super.sendUserRegistrationData(baseUser);
 		}
 
 }

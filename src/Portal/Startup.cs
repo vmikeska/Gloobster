@@ -1,5 +1,6 @@
 ﻿using Gloobster.Common;
 using Gloobster.DomainModels;
+using Gloobster.DomainModels.Services.Accounts;
 using Gloobster.DomainModels.Services.CountryService;
 using Gloobster.DomainModels.Services.Facebook.TaggedPlacesExtractor;
 using Gloobster.DomainModels.Services.GeonamesService;
@@ -79,8 +80,9 @@ namespace Gloobster.Portal
 
 		private void RegisterApplicationStuff(IServiceCollection services)
 		{
-			services.AddTransient<IPortalUserDomain, PortalUserDomain>();
-			services.AddTransient<IFacebookUserDomain, FacebookUserDomain>();
+			services.AddTransient<IUserService, UserService>(); 
+			
+			
 			services.AddTransient<IVisitedPlacesDomain, VisitedPlacesDomain>();
 			services.AddTransient<IVisitedCountriesDomain, VisitedCountriesDomain>();
 			
@@ -95,7 +97,7 @@ namespace Gloobster.Portal
 
 			services.AddTransient<IGeoNamesService, GeoNamesService>();
 
-
+			services.AddTransient<IFacebookDomain, FacebookDomain>();
 		}
 
 		// Configure is called after ConfigureServices is called.
