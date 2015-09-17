@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Gloobster.DomainModels.Services.CountryService;
-using Gloobster.DomainModels.Services.GeonamesService;
 using Gloobster.DomainModelsCommon.BaseClasses;
 using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.SocialLogin.Facebook.Communication;
@@ -25,13 +23,7 @@ namespace Gloobster.DomainModels.Services.Facebook.TaggedPlacesExtractor
 		public List<string> UniqueCountries { get; set; }
 
 
-		//public FacebookTaggedPlacesExtractor(IFacebookService fbService, ICountryService countryService, IGeoNamesService geoNamesService)
-		//{
-		//	FBService = fbService;
-		//	CountryService = countryService;
-		//	GeoNamesService = geoNamesService;
-		//}
-
+		
 		public void SetUserData(string accessToken, string userId)
 		{
 			AccessToken = accessToken;

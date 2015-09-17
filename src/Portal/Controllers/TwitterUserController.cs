@@ -14,13 +14,15 @@ namespace Gloobster.Portal.Controllers
 {
     public class TwitterUserController : Controller
     {
-	    public IMyTwitterService TwitterSvc;
-	    public IUserService UserService;
-		
-		public TwitterUserController(IMyTwitterService twitterService, IUserService userService)
+	    public IMyTwitterService TwitterSvc { get; set; }
+	    public IUserService UserService { get; set; }
+		public IDbOperations DB { get; set; }
+
+		public TwitterUserController(IMyTwitterService twitterService, IUserService userService, IDbOperations db)
 		{
 			TwitterSvc = twitterService;
 			UserService = userService;
+			DB = db;
 		}
 
 	    public ActionResult Authorize()
@@ -32,20 +34,12 @@ namespace Gloobster.Portal.Controllers
 		
 		public async Task<ActionResult> AuthCallback(string oauth_token, string oauth_verifier)
 		{
-			TwitterUser user = TwitterSvc.VerifyCredintial(oauth_token, oauth_verifier);
-
-			var userDO = user.ToDO();
-			userDO.OauthToken = oauth_token;
-			userDO.OauthVerifier = oauth_verifier;
-
-			var accountDriver = new FacebookAccountDriver
-			{
-				DB = new DbOperations(),
-				FBService = new FacebookService()
-			};
+			var auth = TwitterSvc.VerifyCredintial(oauth_token, oauth_verifier);
+			
+			var accountDriver = new TwitterAccountDriver {DB = DB};
 			UserService.AccountDriver = accountDriver;
 
-			var result = await UserService.Validate(userDO);
+			var result = await UserService.Validate(auth);
 
 			var response = new LoggedResponse
 			{
@@ -53,7 +47,7 @@ namespace Gloobster.Portal.Controllers
 				status = result.Status.ToString()
 			};
 
-			return new ObjectResult(response);
+			return View(response);
 		}
 	}
 }

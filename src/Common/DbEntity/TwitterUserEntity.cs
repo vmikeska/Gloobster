@@ -18,8 +18,5 @@ namespace Gloobster.Common.DbEntity
 		public int StatusesCount { get; set; }
 		public string Language { get; set; }
 		public DateTime CreatedDate { get; set; }
-
-		public string OauthToken { get; set; }
-		public string OauthVerifier { get; set; }
 	}
 }

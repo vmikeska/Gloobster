@@ -1,20 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Facebook;
-using Gloobster.Common;
-using Gloobster.Common.DbEntity;
-using Gloobster.DomainModels.Services.Facebook.TaggedPlacesExtractor;
 using Gloobster.DomainModelsCommon.BaseClasses;
 using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
-using Gloobster.Mappers;
-using Gloobster.SocialLogin.Facebook.Communication;
-using MongoDB.Bson;
-using MongoDB.Bson.IO;
-using MongoDB.Driver;
-using Newtonsoft.Json.Linq;
 
 namespace Gloobster.DomainModels
 {

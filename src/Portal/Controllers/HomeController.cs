@@ -28,20 +28,6 @@ namespace Gloobster.Portal.Controllers
 
         public IActionResult Index()
         {
-
-			var twitterSvc = new TwitterService(GloobsterConfig.TwitterConsumerKey, GloobsterConfig.TwitterConsumerSecret);
-
-			var options = new ListTweetsOnUserTimelineOptions
-			{
-				ExcludeReplies = true,
-				Count = 200,
-				//UserId = 
-			};
-
-			var tweets = twitterSvc.ListTweetsOnUserTimeline(options);
-
-
-
 			return View();
         }
         

@@ -1,6 +1,8 @@
 ﻿using System;
 using Gloobster.Common;
+using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
+using Gloobster.Mappers;
 using TweetSharp;
 
 namespace Gloobster.DomainModels.Services.Twitter
@@ -27,17 +29,21 @@ namespace Gloobster.DomainModels.Services.Twitter
 			return uri;
 		}
 
-		public TwitterUser VerifyCredintial(string oauthToken, string oauthVerifier)
+		public TwitterUserAuthenticationDO VerifyCredintial(string oauthToken, string oauthVerifier)
 		{
 			var requestToken = new OAuthRequestToken { Token = oauthToken };
 
 			// Step 3 - Exchange the Request Token for an Access Token			
 			OAuthAccessToken accessToken = TwitterSvc.GetAccessToken(requestToken, oauthVerifier);
 
-			// Step 4 - User authenticates using the Access Token
-			TwitterSvc.AuthenticateWith(accessToken.Token, accessToken.TokenSecret);
-			TwitterUser user = TwitterSvc.VerifyCredentials(new VerifyCredentialsOptions { IncludeEntities = true });
-			return user;
+			var auth = new TwitterUserAuthenticationDO
+			{
+				TokenSecret = accessToken.TokenSecret,
+				Token = accessToken.Token,
+				TwUserId = accessToken.UserId
+			};
+
+			return auth;
 		}
 
 

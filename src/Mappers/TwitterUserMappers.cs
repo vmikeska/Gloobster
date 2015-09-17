@@ -8,7 +8,6 @@ namespace Gloobster.Mappers
 {
 	public static class TwitterUserMappers
 	{
-		
 		public static TwitterUserEntity ToEntity(this TwitterUser obj)
 		{
 			if (obj == null)

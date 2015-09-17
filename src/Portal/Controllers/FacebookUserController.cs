@@ -26,9 +26,7 @@ namespace Gloobster.Portal.Controllers
 		public async Task<IActionResult> Post([FromBody] FacebookUserAuthenticationRequest request)
 		{
 			var facebookAuthRequest = request.ToDoFromRequest();
-
-
-
+			
 			var accountDriver = new FacebookAccountDriver
 			{
 				DB = new DbOperations(),

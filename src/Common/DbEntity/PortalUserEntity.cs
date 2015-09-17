@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Gloobster.Common.DbEntity
+﻿namespace Gloobster.Common.DbEntity
 {
     public class PortalUserEntity : EntityBase
     {
@@ -11,6 +6,6 @@ namespace Gloobster.Common.DbEntity
         public string Password { get; set; }
         public string Mail { get; set; }
         public FacebookGroupEntity Facebook { get; set; }
-		public TwitterUserEntity Twitter { get; set; }
+		public TwitterGroupEntity Twitter { get; set; }
 	}
 }

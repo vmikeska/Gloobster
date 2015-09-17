@@ -55,7 +55,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 
 		public async Task<PortalUserDO> Load(object user)
 		{
-			FacebookUserAuthenticationDO auth = GetTypedUser(user);
+			var auth = GetTypedUser(user);
 
 			var query = $"{{ 'Facebook.FacebookUser.UserId': '{auth.UserId}' }}";
 			var results = await DB.FindAsync<PortalUserEntity>(query);

@@ -6,6 +6,7 @@ using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.Mappers;
 using MongoDB.Bson;
+using TweetSharp;
 
 namespace Gloobster.DomainModels.Services.Accounts
 {
@@ -13,10 +14,22 @@ namespace Gloobster.DomainModels.Services.Accounts
 	{
 		public IDbOperations DB { get; set; }
 		public PortalUserDO PortalUser { get; set; }
-		public async Task<PortalUserDO> Create(object userObj)
-		{
-			var user = GetTypedUser(userObj);
+		public TwitterService TwitterSvc { get; set; }
 
+
+		public TwitterAccountDriver()
+		{
+			TwitterSvc = new TwitterService(GloobsterConfig.TwitterConsumerKey, GloobsterConfig.TwitterConsumerSecret);
+		}
+
+		public async Task<PortalUserDO> Create(object authObj)
+		{
+			var auth = GetTypedUser(authObj);
+
+			TwitterSvc.AuthenticateWith(auth.Token, auth.TokenSecret);
+
+			TwitterUser user = TwitterSvc.VerifyCredentials(new VerifyCredentialsOptions { IncludeEntities = true });
+			
 			//todo: make additional step to provide email
 			var email = "twitter";
 
@@ -26,7 +39,11 @@ namespace Gloobster.DomainModels.Services.Accounts
 				DisplayName = user.ScreenName,
 				Mail = email,
 				Password = AccountUtils.GeneratePassword(),
-				Twitter = user.ToEntity()
+				Twitter = new TwitterGroupEntity
+				{
+					TwitterUser = user.ToEntity(),
+					Authentication = auth.ToEntity()
+				}
 			};
 
 			var savedEntity = await DB.SaveAsync(userEntity);
@@ -64,13 +81,14 @@ namespace Gloobster.DomainModels.Services.Accounts
 
 		public void OnUserSuccessfulyLogged(PortalUserDO portalUser)
 		{
-			
+			var extractor = new TwitterPlacesExtractor();
+			extractor.Extract(portalUser.Twitter.Authentication);
 		}
 
 
-		private TwitterUserDO GetTypedUser(object user)
+		private TwitterUserAuthenticationDO GetTypedUser(object user)
 		{
-			var auth = (TwitterUserDO)user;
+			var auth = (TwitterUserAuthenticationDO)user;
 			return auth;
 		}
 	}

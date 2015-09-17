@@ -1,11 +1,11 @@
 ﻿using System;
-using TweetSharp;
+using Gloobster.DomainModelsCommon.DO;
 
 namespace Gloobster.DomainModelsCommon.Interfaces
 {
 	public interface IMyTwitterService
 	{
 		Uri BuildAuthorizationUri();
-		TwitterUser VerifyCredintial(string oauthToken, string oauthVerifier);
+		TwitterUserAuthenticationDO VerifyCredintial(string oauthToken, string oauthVerifier);
 	}
 }

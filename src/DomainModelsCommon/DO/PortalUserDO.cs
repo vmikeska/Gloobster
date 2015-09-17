@@ -7,5 +7,6 @@
 		public string Password { get; set; }
 		public string Mail { get; set; }
 		public FacebookGroupDO Facebook { get; set; }
+		public TwitterGroupDO Twitter { get; set; }
 	}
 }

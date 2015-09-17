@@ -1,4 +1,3 @@
-
 using Gloobster.Common.DbEntity;
 using Gloobster.DomainModelsCommon.DO;
 using Gloobster.WebApiObjects;
@@ -33,8 +32,12 @@ namespace Gloobster.Mappers
 
 			if (entity.Twitter != null)
 			{
-				//dObj.
-            }
+				dObj.Twitter = new TwitterGroupDO
+				{
+					Authentication = entity.Twitter.Authentication.ToDO(),
+					TwitterUser = entity.Twitter.TwitterUser.ToDO()
+				};					
+			}
 
 			return dObj;
 		}
@@ -53,7 +56,7 @@ namespace Gloobster.Mappers
 				Password = dObj.Password
 			};
 
-			if (entity.Facebook != null)
+			if (dObj.Facebook != null)
 			{
 				entity.Facebook = new FacebookGroupEntity
 				{
@@ -62,9 +65,13 @@ namespace Gloobster.Mappers
 				};					
 			}
 
-			if (entity.Twitter != null)
-			{
-
+			if (dObj.Twitter != null)
+			{				
+                entity.Twitter = new TwitterGroupEntity
+				{
+					Authentication = dObj.Twitter.Authentication.ToEntity(),
+					TwitterUser = dObj.Twitter.TwitterUser.ToEntity()
+				};
 			}
 
 			return entity;
@@ -83,16 +90,7 @@ namespace Gloobster.Mappers
 				Mail = request.mail,
 				Password = request.password
 			};
-
-			if (request.facebookUser != null)
-			{
-				dObj.Facebook = new FacebookGroupDO
-				{
-					Authentication = request.facebookUser.ToDoFromRequest()
-				};
-			}
-
-
+			
 			return dObj;
 
 		}
