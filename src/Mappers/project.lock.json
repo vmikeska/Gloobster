@@ -13,8 +13,12 @@
       "DomainModelsCommon/1.0.0": {
         "type": "project",
         "dependencies": {
-          "Common": "1.0.0"
-        }
+          "Common": "1.0.0",
+          "TweetSharp": "2.3.1"
+        },
+        "frameworkAssemblies": [
+          "System.Runtime.Serialization"
+        ]
       },
       "Facebook/7.0.6": {
         "type": "package",

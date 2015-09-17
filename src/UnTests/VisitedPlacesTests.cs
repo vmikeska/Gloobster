@@ -13,7 +13,7 @@ namespace Gloobster.UnitTests
 
 		public VisitedPlacesTests()
 		{
-			VisitedPlaceDomain = new VisitedPlacesDomain(DBOper);
+			VisitedPlaceDomain = new VisitedPlacesDomain();
 		}
 
 		[Fact]
@@ -57,7 +57,7 @@ namespace Gloobster.UnitTests
 
 		public VisitedCountriesTests()
 		{
-			CountriesDomain = new VisitedCountriesDomain(DBOper);
+			CountriesDomain = new VisitedCountriesDomain();
 		}
 
 		[Fact]

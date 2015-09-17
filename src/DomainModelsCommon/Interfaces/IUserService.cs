@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Gloobster.DomainModelsCommon.DO;
 
-namespace Gloobster.DomainModels.Services.Accounts
+namespace Gloobster.DomainModelsCommon.Interfaces
 {
 	public interface IUserService
 	{

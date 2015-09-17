@@ -3,6 +3,42 @@
   "version": 1,
   "targets": {
     "DNX,Version=v4.5.1": {
+      "Autofac/4.0.0-beta7-130": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/dnx451/Autofac.dll": {}
+        },
+        "runtime": {
+          "lib/dnx451/Autofac.dll": {}
+        }
+      },
+      "Autofac.Framework.DependencyInjection/4.0.0-beta7-130": {
+        "type": "package",
+        "dependencies": {
+          "Autofac": "4.0.0-beta7-130",
+          "Microsoft.Framework.DependencyInjection.Abstractions": "1.0.0-beta7"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/dnx451/Autofac.dll": {},
+          "lib/dnx451/Autofac.Framework.DependencyInjection.dll": {}
+        },
+        "runtime": {
+          "lib/dnx451/Autofac.dll": {},
+          "lib/dnx451/Autofac.Framework.DependencyInjection.dll": {}
+        }
+      },
       "Common/1.0.0": {
         "type": "project",
         "dependencies": {
@@ -24,8 +60,12 @@
       "DomainModelsCommon/1.0.0": {
         "type": "project",
         "dependencies": {
-          "Common": "1.0.0"
-        }
+          "Common": "1.0.0",
+          "TweetSharp": "2.3.1"
+        },
+        "frameworkAssemblies": [
+          "System.Runtime.Serialization"
+        ]
       },
       "EntityFramework.Core/7.0.0-beta7": {
         "type": "package",
@@ -1909,6 +1949,46 @@
       "type": "project",
       "path": "../WebApiObjects/project.json"
     },
+    "Autofac/4.0.0-beta7-130": {
+      "type": "package",
+      "sha512": "MIk/KgibBjrjDX1vM/iIjPvYfu1pHbP8vvsHmpmZwf6Q7alvHdrCQrfDXAf2LsF2rEueZjx/KJKIF2XhDybX6w==",
+      "files": [
+        "Autofac.4.0.0-beta7-130.nupkg",
+        "Autofac.4.0.0-beta7-130.nupkg.sha512",
+        "Autofac.nuspec",
+        "lib/dnx451/Autofac.dll",
+        "lib/dnx451/Autofac.xml",
+        "lib/dotnet/Autofac.dll",
+        "lib/dotnet/Autofac.xml",
+        "lib/net45/Autofac.dll",
+        "lib/net45/Autofac.xml",
+        "lib/win/Autofac.dll",
+        "lib/win/Autofac.xml",
+        "repo.json"
+      ]
+    },
+    "Autofac.Framework.DependencyInjection/4.0.0-beta7-130": {
+      "type": "package",
+      "sha512": "qJx3mbPc/o2sGfCCuoAf3GhzqIvRVr2n506wZLiBuDq0VivOBEm+r9UCBfhCw5HEMGUj4BnBgXn6yjwD8p216A==",
+      "files": [
+        "Autofac.Framework.DependencyInjection.4.0.0-beta7-130.nupkg",
+        "Autofac.Framework.DependencyInjection.4.0.0-beta7-130.nupkg.sha512",
+        "Autofac.Framework.DependencyInjection.nuspec",
+        "lib/dnx451/Autofac.dll",
+        "lib/dnx451/Autofac.Framework.DependencyInjection.dll",
+        "lib/dnx451/Autofac.Framework.DependencyInjection.xml",
+        "lib/dnx451/Autofac.xml",
+        "lib/dotnet/Autofac.dll",
+        "lib/dotnet/Autofac.Framework.DependencyInjection.dll",
+        "lib/dotnet/Autofac.Framework.DependencyInjection.xml",
+        "lib/dotnet/Autofac.xml",
+        "lib/net45/Autofac.dll",
+        "lib/net45/Autofac.Framework.DependencyInjection.dll",
+        "lib/net45/Autofac.Framework.DependencyInjection.xml",
+        "lib/net45/Autofac.xml",
+        "repo.json"
+      ]
+    },
     "EntityFramework.Core/7.0.0-beta7": {
       "type": "package",
       "serviceable": true,
@@ -3616,7 +3696,10 @@
       "DomainModelsCommon >= 1.0.0-*",
       "Mappers >= 1.0.0-*",
       "WebApiObjects >= 1.0.0-*",
-      "TweetSharp >= 2.3.1"
+      "TweetSharp >= 2.3.1",
+      "Autofac >= 4.0.0-beta7-130",
+      "Autofac.Framework.DependencyInjection >= 4.0.0-beta7-130",
+      "Microsoft.Framework.DependencyInjection.Abstractions >= 1.0.0-beta7"
     ],
     "DNX,Version=v4.5.1": []
   }

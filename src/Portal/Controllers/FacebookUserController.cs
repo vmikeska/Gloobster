@@ -13,8 +13,8 @@ namespace Gloobster.Portal.Controllers
 	[Route("api/[controller]")]
 	public class FacebookUserController : Controller
 	{
-		public IUserService UserService;
-		public IFacebookDomain FBDomain;
+		public IUserService UserService { get; set; }
+		public IFacebookDomain FBDomain { get; set; }
 
 		public FacebookUserController(IUserService userService, IFacebookDomain fbDomain)
 		{

@@ -1,6 +1,4 @@
-using Gloobster.DomainModels.Services.GeonamesService;
-
-namespace Gloobster.DomainModels.Services.CountryService
+namespace Gloobster.DomainModelsCommon.Interfaces
 {
 	public interface ICountryService
 	{

@@ -13,12 +13,12 @@ namespace Gloobster.DomainModels
 {
 	public class VisitedPlacesDomain: IVisitedPlacesDomain
 	{
-		public IDbOperations DB;
+		public IDbOperations DB { get; set; }
 
-	    public VisitedPlacesDomain(IDbOperations db)
-	    {
-		    DB = db;
-	    }
+	    //public VisitedPlacesDomain(IDbOperations db)
+	    //{
+		   // DB = db;
+	    //}
 
 		public async Task<List<VisitedPlaceDO>> AddNewPlaces(List<VisitedPlaceDO> inputPlaces, string userId)
 	    {		

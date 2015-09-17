@@ -1,7 +1,7 @@
 ﻿using System;
 using TweetSharp;
 
-namespace Gloobster.DomainModels.Services.Twitter
+namespace Gloobster.DomainModelsCommon.Interfaces
 {
 	public interface IMyTwitterService
 	{

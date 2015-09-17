@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
+using Gloobster.DomainModelsCommon.BaseClasses;
 
-namespace Gloobster.DomainModels.Services.GeonamesService
+namespace Gloobster.DomainModelsCommon.Interfaces
 {
 	public interface IGeoNamesService
 	{

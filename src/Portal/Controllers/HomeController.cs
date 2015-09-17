@@ -9,13 +9,13 @@ namespace Gloobster.Portal.Controllers
 {
     public class HomeController : Controller
     {
-        public HomeController(IDbOperations db)
-        {
-            DB = db;
-        }
+		public HomeController(IDbOperations db)
+		{
+			DB = db;
+		}
 
 
-        public IDbOperations DB;
+		public IDbOperations DB;
 
         public BsonDocument GenerateDoc()
         {

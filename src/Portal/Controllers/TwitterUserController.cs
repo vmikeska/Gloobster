@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Gloobster.Common;
 using Gloobster.DomainModels.Services.Accounts;
 using Gloobster.DomainModels.Services.Twitter;
+using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.Mappers;
 using Gloobster.SocialLogin.Facebook.Communication;
 using Gloobster.WebApiObjects;

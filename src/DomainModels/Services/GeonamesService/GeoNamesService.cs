@@ -4,6 +4,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Gloobster.DomainModelsCommon.BaseClasses;
+using Gloobster.DomainModelsCommon.Interfaces;
 
 namespace Gloobster.DomainModels.Services.GeonamesService
 {

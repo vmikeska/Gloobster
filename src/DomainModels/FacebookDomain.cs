@@ -6,6 +6,7 @@ using Facebook;
 using Gloobster.Common;
 using Gloobster.Common.DbEntity;
 using Gloobster.DomainModels.Services.Facebook.TaggedPlacesExtractor;
+using Gloobster.DomainModelsCommon.BaseClasses;
 using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.Mappers;
@@ -19,10 +20,10 @@ namespace Gloobster.DomainModels
 {
 	public class FacebookDomain: IFacebookDomain
 	{
-		public IVisitedCountriesDomain VisitedCountries;
-		public IFacebookTaggedPlacesExtractor TaggedPlacesExtractor;
-		public IVisitedPlacesDomain VisitedPlacesDomain;
-		
+		public IVisitedCountriesDomain VisitedCountries { get; set; }
+		public IFacebookTaggedPlacesExtractor TaggedPlacesExtractor { get; set; }
+		public IVisitedPlacesDomain VisitedPlacesDomain { get; set; }
+
 
 		public async void UpdateVisitedPlaces(string fbUserId, string dbUserId, string accessToken)
 		{

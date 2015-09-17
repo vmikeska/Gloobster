@@ -1,5 +1,6 @@
 ﻿using System;
 using Gloobster.Common;
+using Gloobster.DomainModelsCommon.Interfaces;
 using TweetSharp;
 
 namespace Gloobster.DomainModels.Services.Twitter

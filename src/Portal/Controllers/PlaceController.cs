@@ -1,5 +1,7 @@
 using System.Threading.Tasks;
 using Gloobster.DomainModels.Services.GeonamesService;
+using Gloobster.DomainModelsCommon.BaseClasses;
+using Gloobster.DomainModelsCommon.Interfaces;
 using Microsoft.AspNet.Mvc;
 
 namespace Gloobster.Portal.Controllers

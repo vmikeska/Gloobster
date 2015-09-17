@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace Gloobster.DomainModels.Services.GeonamesService
+namespace Gloobster.DomainModelsCommon.BaseClasses
 {
 	[DataContract]
 	public class GeoNamesResponseBase

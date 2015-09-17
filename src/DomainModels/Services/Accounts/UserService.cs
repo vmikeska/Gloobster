@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Gloobster.Common;
 using Gloobster.DomainModelsCommon.DO;
+using Gloobster.DomainModelsCommon.Interfaces;
 using Newtonsoft.Json.Linq;
 
 namespace Gloobster.DomainModels.Services.Accounts

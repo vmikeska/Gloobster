@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Gloobster.Common;
 using Gloobster.Common.DbEntity;
 using Gloobster.DomainModelsCommon.DO;
+using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.Mappers;
 using MongoDB.Bson;
 

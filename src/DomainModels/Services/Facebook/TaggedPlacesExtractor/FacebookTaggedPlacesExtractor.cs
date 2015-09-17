@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Gloobster.DomainModels.Services.CountryService;
 using Gloobster.DomainModels.Services.GeonamesService;
+using Gloobster.DomainModelsCommon.BaseClasses;
+using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.SocialLogin.Facebook.Communication;
 
 namespace Gloobster.DomainModels.Services.Facebook.TaggedPlacesExtractor
@@ -11,9 +13,9 @@ namespace Gloobster.DomainModels.Services.Facebook.TaggedPlacesExtractor
 	{
 		public string AccessToken;
 		public string UserId;
-		public IFacebookService FBService;
-		public ICountryService CountryService;
-		public IGeoNamesService GeoNamesService;
+		public IFacebookService FBService { get; set; }
+		public ICountryService CountryService { get; set; }
+		public IGeoNamesService GeoNamesService { get; set; }
 
 		private const string UserQueryBase = "/{0}/tagged_places";
 		private const string UserQueryNext = UserQueryBase + "/?after={1}";
@@ -23,12 +25,12 @@ namespace Gloobster.DomainModels.Services.Facebook.TaggedPlacesExtractor
 		public List<string> UniqueCountries { get; set; }
 
 
-		public FacebookTaggedPlacesExtractor(IFacebookService fbService, ICountryService countryService, IGeoNamesService geoNamesService)
-		{
-			FBService = fbService;
-			CountryService = countryService;
-			GeoNamesService = geoNamesService;
-		}
+		//public FacebookTaggedPlacesExtractor(IFacebookService fbService, ICountryService countryService, IGeoNamesService geoNamesService)
+		//{
+		//	FBService = fbService;
+		//	CountryService = countryService;
+		//	GeoNamesService = geoNamesService;
+		//}
 
 		public void SetUserData(string accessToken, string userId)
 		{
