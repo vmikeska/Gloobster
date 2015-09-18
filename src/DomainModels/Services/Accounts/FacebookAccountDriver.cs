@@ -1,8 +1,11 @@
 using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Autofac;
 using Gloobster.Common;
 using Gloobster.Common.DbEntity;
+using Gloobster.DomainModels.Services.Places;
 using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.Mappers;
@@ -15,8 +18,10 @@ namespace Gloobster.DomainModels.Services.Accounts
 	public class FacebookAccountDriver : IAccountDriver
 	{
 		public IDbOperations DB { get; set; }
-		public IFacebookService FBService;
-		public IFacebookDomain FBDomain;
+		public IFacebookService FBService { get; set; }		
+		public IComponentContext ComponentContext { get; set; }
+
+		public IPlacesExtractor PlacesExtractor { get; set; }
 
 		public PortalUserDO PortalUser { get; set; }
 
@@ -80,10 +85,12 @@ namespace Gloobster.DomainModels.Services.Accounts
 			UpdateTokenIfNeeded(portalUser);			
 		}
 
-		public void OnUserSuccessfulyLogged(PortalUserDO portalUser)
+		public async void OnUserSuccessfulyLogged(PortalUserDO portalUser)
 		{
-			var fb = portalUser.Facebook;
-			FBDomain.UpdateVisitedPlaces(fb.FacebookUser.Id, portalUser.DbUserId, fb.Authentication.AccessToken);
+			PlacesExtractor.Driver = ComponentContext.ResolveKeyed<IPlacesExtractorDriver>("Facebook");
+            
+			await PlacesExtractor.ExtractNewAsync(portalUser.DbUserId, portalUser.Facebook.Authentication);
+			PlacesExtractor.SaveAsync();			
 		}
 		
 

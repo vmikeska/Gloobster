@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Autofac;
 using Gloobster.Common;
 using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
@@ -9,6 +10,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 	public class UserService: IUserService
 	{
 		public IAccountDriver AccountDriver { get; set; }
+		public IComponentContext ComponentContext { get; set; }
 		public async Task<UserLoggedResultDO> Validate(object user)
 		{
 			var result = new UserLoggedResultDO();

@@ -49,6 +49,7 @@
       "DomainModels/1.0.0": {
         "type": "project",
         "dependencies": {
+          "Autofac": "4.0.0-beta7-130",
           "DomainModelsCommon": "1.0.0",
           "Facebook": "7.0.6",
           "Mappers": "1.0.0",
@@ -60,6 +61,7 @@
       "DomainModelsCommon/1.0.0": {
         "type": "project",
         "dependencies": {
+          "Autofac": "4.0.0-beta7-130",
           "Common": "1.0.0",
           "TweetSharp": "2.3.1"
         },

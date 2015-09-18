@@ -3,6 +3,21 @@
   "version": 1,
   "targets": {
     "DNX,Version=v4.5.1": {
+      "Autofac/4.0.0-beta7-130": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/dnx451/Autofac.dll": {}
+        },
+        "runtime": {
+          "lib/dnx451/Autofac.dll": {}
+        }
+      },
       "Common/1.0.0": {
         "type": "project",
         "dependencies": {
@@ -13,6 +28,7 @@
       "DomainModelsCommon/1.0.0": {
         "type": "project",
         "dependencies": {
+          "Autofac": "4.0.0-beta7-130",
           "Common": "1.0.0",
           "TweetSharp": "2.3.1"
         },
@@ -1168,6 +1184,24 @@
     "WebApiObjects/1.0.0": {
       "type": "project",
       "path": "../WebApiObjects/project.json"
+    },
+    "Autofac/4.0.0-beta7-130": {
+      "type": "package",
+      "sha512": "MIk/KgibBjrjDX1vM/iIjPvYfu1pHbP8vvsHmpmZwf6Q7alvHdrCQrfDXAf2LsF2rEueZjx/KJKIF2XhDybX6w==",
+      "files": [
+        "Autofac.4.0.0-beta7-130.nupkg",
+        "Autofac.4.0.0-beta7-130.nupkg.sha512",
+        "Autofac.nuspec",
+        "lib/dnx451/Autofac.dll",
+        "lib/dnx451/Autofac.xml",
+        "lib/dotnet/Autofac.dll",
+        "lib/dotnet/Autofac.xml",
+        "lib/net45/Autofac.dll",
+        "lib/net45/Autofac.xml",
+        "lib/win/Autofac.dll",
+        "lib/win/Autofac.xml",
+        "repo.json"
+      ]
     },
     "Facebook/7.0.6": {
       "type": "package",

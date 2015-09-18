@@ -1,6 +1,8 @@
+using System;
+
 namespace Gloobster.DomainModelsCommon.DO
 {
-	public class VisitedPlaceDO
+	public class VisitedPlaceDO : IEquatable<VisitedPlaceDO>
 	{
 		public string PortalUserId { get; set; }
 		public string CountryCode { get; set; }
@@ -9,7 +11,12 @@ namespace Gloobster.DomainModelsCommon.DO
 		public double PlaceLongitude { get; set; }
 		public string SourceId { get; set; }
 		public SourceTypeDO SourceType { get; set; }
+
+		public bool Equals(VisitedPlaceDO other)
+		{
+			return this.CountryCode == other.CountryCode && this.City == other.City;
+		}
 	}
 
-	public enum SourceTypeDO { None, Facebook, GeoNames }
+	public enum SourceTypeDO { None, Facebook, GeoNames, Twitter }
 }

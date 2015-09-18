@@ -61,7 +61,15 @@ namespace Gloobster.DomainModels.Services.GeonamesService
 			AppendBaseParams(prms);
 			var serviceUrl = BuildUrl(prms);
 
-			HttpResponseMessage response = await _client.GetAsync(serviceUrl);
+			//try
+			//{
+				var response = await _client.GetAsync(serviceUrl);
+			//}
+			//catch (Exception exc)
+			//{
+			//	throw exc;
+			//}
+
 			if (response.IsSuccessStatusCode)
 			{
 				string strResponse = await response.Content.ReadAsStringAsync();

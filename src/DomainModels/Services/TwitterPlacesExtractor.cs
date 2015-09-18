@@ -8,24 +8,44 @@ using TweetSharp;
 
 namespace Gloobster.DomainModels.Services
 {
-    public class TwitterPlacesExtractor
-    {
+	public class TwitterPlacesExtractor
+	{
+	
 
-	    public void Extract(TwitterUserAuthenticationDO auth)
-	    {
-			var twitterSvc = new TwitterService(GloobsterConfig.TwitterConsumerKey, GloobsterConfig.TwitterConsumerSecret);
-			twitterSvc.AuthenticateWith(auth.Token, auth.TokenSecret);
+	 //   private const int PageSize = 200;
+
+
+		//public long? lastExtractedId = null;
+
+		//public List<TwitterStatus> AllTweets;
+		////public List<TwitterStatus> TweetsWithPlace;
+
+		//public TwitterPlacesExtractor()
+	 //   {
+		//	TwitterSvc = new TwitterService(GloobsterConfig.TwitterConsumerKey, GloobsterConfig.TwitterConsumerSecret);
+		//}
+
+	 //   public void Extract(TwitterUserAuthenticationDO auth)
+	 //   {
+		//	TwitterSvc.AuthenticateWith(auth.Token, auth.TokenSecret);
+
+		//    AllTweets = ExtractAllTweets(auth.TwUserId);
+
+		//    lastExtractedId = AllTweets.Max(t => t.Id);
 			
-			var options = new ListTweetsOnUserTimelineOptions
-			{
-				ExcludeReplies = true,
-				Count = 200,
-				UserId = auth.TwUserId
-			};
-
-			var tweets = twitterSvc.ListTweetsOnUserTimeline(options);
+		// //   var  = AllTweets.Where(t => t.Place != null).ToList();
 
 
-		}
-	}
+		//	//SaveLastCheckedId(topId);
+	 //   }
+
+
+
+	 //   private void SaveLastCheckedId(long id)
+	 //   {
+
+		//}
+
+	    
+    }
 }

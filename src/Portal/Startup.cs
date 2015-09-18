@@ -1,5 +1,6 @@
 ﻿using System;
 using Autofac;
+using Autofac.Builder;
 using Autofac.Framework.DependencyInjection;
 using Gloobster.Common;
 using Gloobster.DomainModels;
@@ -7,6 +8,7 @@ using Gloobster.DomainModels.Services.Accounts;
 using Gloobster.DomainModels.Services.CountryService;
 using Gloobster.DomainModels.Services.Facebook.TaggedPlacesExtractor;
 using Gloobster.DomainModels.Services.GeonamesService;
+using Gloobster.DomainModels.Services.Places;
 using Gloobster.DomainModels.Services.Twitter;
 using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.Portal.Controllers;
@@ -54,6 +56,8 @@ namespace Gloobster.Portal
 	        return serviceProvider;
         }
 
+		
+
 		private IServiceProvider InitalizeAutofac(IServiceCollection services)
 		{
 			var builder = new ContainerBuilder();
@@ -93,28 +97,6 @@ namespace Gloobster.Portal
 
 		}
 
-		//private void RegisterApplicationStuff(IServiceCollection services)
-		//{
-		//	services.AddTransient<IUserService, UserService>(); 
-			
-			
-		//	services.AddTransient<IVisitedPlacesDomain, VisitedPlacesDomain>();
-		//	services.AddTransient<IVisitedCountriesDomain, VisitedCountriesDomain>();
-			
-		//	services.AddTransient<IDbOperations, DbOperations>();
-
-		//	services.AddTransient<IFacebookService, FacebookService>();
-		//	services.AddTransient<IMyTwitterService, MyTwitterService>();
-
-		//	services.AddTransient<IFacebookTaggedPlacesExtractor, FacebookTaggedPlacesExtractor>();
-
-		//	services.AddInstance<ICountryService>(new CountryService());
-
-		//	services.AddTransient<IGeoNamesService, GeoNamesService>();
-
-		//	services.AddTransient<IFacebookDomain, FacebookDomain>();
-		//}
-
 		// Configure is called after ConfigureServices is called.
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
@@ -134,8 +116,10 @@ namespace Gloobster.Portal
 	{
 		protected override void Load(ContainerBuilder builder)
 		{
-			builder.AddTransient<IFacebookDomain, FacebookDomain>();				
 			builder.AddTransient<IUserService, UserService>();
+			builder.AddTransient<IAccountDriver, FacebookAccountDriver>().Keyed<IAccountDriver>("Facebook");
+			builder.AddTransient<IAccountDriver, TwitterAccountDriver>().Keyed<IAccountDriver>("Twitter");
+			
 			builder.AddTransient<IVisitedPlacesDomain, VisitedPlacesDomain>();
 			builder.AddTransient<IVisitedCountriesDomain, VisitedCountriesDomain>();
 			builder.AddTransient<IDbOperations, DbOperations>();
@@ -143,20 +127,30 @@ namespace Gloobster.Portal
 			builder.AddTransient<IMyTwitterService, MyTwitterService>();
 			builder.AddTransient<IFacebookTaggedPlacesExtractor, FacebookTaggedPlacesExtractor>();
 			builder.AddTransient<IGeoNamesService, GeoNamesService>();
-			
+
+			builder.AddTransient<IPlacesExtractor, PlacesExtractor>();
+
+			builder.AddTransient<IPlacesExtractorDriver, TwitterPlacesDriver>().Keyed<IPlacesExtractorDriver>("Twitter");
+			builder.AddTransient<IPlacesExtractorDriver, FacebookPlacesDriver>().Keyed<IPlacesExtractorDriver>("Facebook");
+
+
+
+
 			builder.AddInstance<ICountryService>(new CountryService());
 		}		
 	}
 
 	public static class Exts
 	{
-		public static void AddTransient<I, T>(this ContainerBuilder builder) where T : new()
+		public static IRegistrationBuilder<T, ConcreteReflectionActivatorData, SingleRegistrationStyle> AddTransient<I, T>(this ContainerBuilder builder) where T : new()
 		{
 
-			builder.RegisterType<T>()
+			var reg = builder.RegisterType<T>()
 				   .As<I>()
-				   .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
+				   .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)				   
 				   .InstancePerLifetimeScope();
+
+			return reg;
 
 			//builder
 			//	.Register(c => new T())

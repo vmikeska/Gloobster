@@ -1,7 +1,9 @@
 using System.Linq;
 using System.Threading.Tasks;
+using Autofac;
 using Gloobster.Common;
 using Gloobster.Common.DbEntity;
+using Gloobster.DomainModels.Services.Places;
 using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.Mappers;
@@ -12,10 +14,11 @@ namespace Gloobster.DomainModels.Services.Accounts
 {
 	public class TwitterAccountDriver : IAccountDriver
 	{
+		public IComponentContext ComponentContext { get; set; }
 		public IDbOperations DB { get; set; }
 		public PortalUserDO PortalUser { get; set; }
 		public TwitterService TwitterSvc { get; set; }
-
+		public IPlacesExtractor PlacesExtractor { get; set; }
 
 		public TwitterAccountDriver()
 		{
@@ -56,7 +59,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 		{
 			var user = GetTypedUser(userObj);
 
-			var query = $"{{ 'Twitter.TwUserId': '{user.TwUserId}' }}";
+			var query = $"{{ 'Twitter.TwitterUser.TwUserId': {user.TwUserId} }}";
 			var results = await DB.FindAsync<PortalUserEntity>(query);
 
 			if (!results.Any())
@@ -79,10 +82,12 @@ namespace Gloobster.DomainModels.Services.Accounts
 			
 		}
 
-		public void OnUserSuccessfulyLogged(PortalUserDO portalUser)
+		public async void OnUserSuccessfulyLogged(PortalUserDO portalUser)
 		{
-			var extractor = new TwitterPlacesExtractor();
-			extractor.Extract(portalUser.Twitter.Authentication);
+			PlacesExtractor.Driver = ComponentContext.ResolveKeyed<IPlacesExtractorDriver>("Twitter");
+
+			await PlacesExtractor.ExtractNewAsync(portalUser.DbUserId, portalUser.Twitter.Authentication);
+			PlacesExtractor.SaveAsync();
 		}
 
 

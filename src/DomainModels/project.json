@@ -12,7 +12,8 @@
     "SocialLogin": "1.0.0-*",
     "Facebook": "7.0.6",
     "System.Net.Http": "4.0.0.0",
-    "TweetSharp": "2.3.1"
+    "TweetSharp": "2.3.1",
+    "Autofac": "4.0.0-beta7-130"
   },
 
   "frameworks": {

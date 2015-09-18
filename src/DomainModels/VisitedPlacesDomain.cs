@@ -15,11 +15,6 @@ namespace Gloobster.DomainModels
 	{
 		public IDbOperations DB { get; set; }
 
-	    //public VisitedPlacesDomain(IDbOperations db)
-	    //{
-		   // DB = db;
-	    //}
-
 		public async Task<List<VisitedPlaceDO>> AddNewPlaces(List<VisitedPlaceDO> inputPlaces, string userId)
 	    {		
 			var query = $@"{{""PortalUser_id"": ObjectId(""{userId}"")}}";

@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Autofac;
 using Gloobster.Common;
 using Gloobster.Common.DbEntity;
 using Gloobster.DomainModelsCommon.DO;
@@ -10,6 +11,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 {
 	public class AccountDriver: IAccountDriver
 	{
+		public IComponentContext ComponentContext { get; set; }
 		public IDbOperations DB { get; set; }
 		public PortalUserDO PortalUser { get; set; }
 		public async Task<PortalUserDO> Create(object user)
