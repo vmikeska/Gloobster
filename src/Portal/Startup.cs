@@ -7,6 +7,7 @@ using Gloobster.DomainModels;
 using Gloobster.DomainModels.Services.Accounts;
 using Gloobster.DomainModels.Services.CountryService;
 using Gloobster.DomainModels.Services.Facebook.TaggedPlacesExtractor;
+using Gloobster.DomainModels.Services.Foursquare;
 using Gloobster.DomainModels.Services.GeonamesService;
 using Gloobster.DomainModels.Services.Places;
 using Gloobster.DomainModels.Services.Twitter;
@@ -95,6 +96,9 @@ namespace Gloobster.Portal
 			GloobsterConfig.TwitterAccessToken = Configuration["Twitter:AccessToken"];
 			GloobsterConfig.TwitterAccessTokenSecret = Configuration["Twitter:AccessTokenSecret"];
 
+			GloobsterConfig.FoursquareClientId = Configuration["Foursquare:ClientId"];
+			GloobsterConfig.FoursquareClientSecret = Configuration["Foursquare:ClientSecret"];
+			
 		}
 
 		// Configure is called after ConfigureServices is called.
@@ -133,7 +137,10 @@ namespace Gloobster.Portal
 			builder.AddTransient<IPlacesExtractorDriver, TwitterPlacesDriver>().Keyed<IPlacesExtractorDriver>("Twitter");
 			builder.AddTransient<IPlacesExtractorDriver, FacebookPlacesDriver>().Keyed<IPlacesExtractorDriver>("Facebook");
 
-
+			var foursquareService = new FoursquareService();
+			foursquareService.Initialize(GloobsterConfig.FoursquareClientId, GloobsterConfig.FoursquareClientSecret);
+			
+			builder.AddInstance<IFoursquareService>(foursquareService);
 
 
 			builder.AddInstance<ICountryService>(new CountryService());

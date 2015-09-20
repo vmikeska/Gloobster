@@ -16,6 +16,9 @@
     "dnx451": {
       "frameworkAssemblies": {
         "System.Runtime.Serialization": "4.0.0.0"
+      },
+      "dependencies": {
+        "SharpSquare": "1.0.0-*"
       }
     }
   }

@@ -19,7 +19,9 @@
   "frameworks": {
     "dnx451": {
       "frameworkAssemblies": {
-        
+      },
+      "dependencies": {
+        "SharpSquare": "1.0.0-*"
       }
     }
   }

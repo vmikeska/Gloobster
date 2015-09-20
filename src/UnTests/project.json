@@ -7,21 +7,18 @@
   "licenseUrl": "",
 
   "dependencies": {
-    
-  
-
     "Common": "1.0.0-*",
     "DomainModels": "1.0.0-*",
     "DomainModelsCommon": "1.0.0-*",
     "Mappers": "1.0.0-*",
     "SocialLogin": "1.0.0-*",
     "WebApiObjects": "1.0.0-*",
-
     "MongoDB.Driver": "2.0.1",
-    "Moq": "4.2.1507.118",    
-    "TweetSharp": "2.3.1",    
+    "Moq": "4.2.1507.118",
+    "TweetSharp": "2.3.1",
     "xunit": "2.1.0-rc1-build3168",
-    "xunit.runner.dnx": "2.1.0-beta5-build169"
+    "xunit.runner.dnx": "2.1.0-beta5-build169",    
+    "Newtonsoft.Json": "7.0.1"
   },
    
   "commands": {
@@ -31,7 +28,9 @@
 
   "frameworks": {
     "dnx451": {
-
+      "dependencies": {
+        "SharpSquare": "1.0.0-*"
+      }
     }
 
   }

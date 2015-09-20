@@ -29,5 +29,7 @@ namespace Gloobster.Common
 		public static string TwitterAccessToken { get; set; }
 		public static string TwitterAccessTokenSecret { get; set; }
 
-    }
+		public static string FoursquareClientId { get; set; }
+		public static string FoursquareClientSecret { get; set; }
+	}
 }

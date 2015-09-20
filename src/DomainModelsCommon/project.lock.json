@@ -1097,6 +1097,9 @@
           "lib/net45/Newtonsoft.Json.dll": {}
         }
       },
+      "SharpSquare/1.0.0": {
+        "type": "project"
+      },
       "System.Collections.Immutable/1.1.36": {
         "type": "package",
         "compile": {
@@ -1140,6 +1143,10 @@
     "Common/1.0.0": {
       "type": "project",
       "path": "../Common/project.json"
+    },
+    "SharpSquare/1.0.0": {
+      "type": "project",
+      "path": "../../wrap/SharpSquare/project.json"
     },
     "Autofac/4.0.0-beta7-130": {
       "type": "package",
@@ -2185,6 +2192,7 @@
       "TweetSharp >= 2.3.1"
     ],
     "DNX,Version=v4.5.1": [
+      "SharpSquare >= 1.0.0-*",
       "fx/System.Runtime.Serialization >= 4.0.0.0"
     ]
   }

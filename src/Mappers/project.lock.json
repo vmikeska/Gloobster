@@ -30,6 +30,7 @@
         "dependencies": {
           "Autofac": "4.0.0-beta7-130",
           "Common": "1.0.0",
+          "SharpSquare": "1.0.0",
           "TweetSharp": "2.3.1"
         },
         "frameworkAssemblies": [
@@ -1117,6 +1118,9 @@
           "lib/net45/Newtonsoft.Json.dll": {}
         }
       },
+      "SharpSquare/1.0.0": {
+        "type": "project"
+      },
       "SocialLogin/1.0.0": {
         "type": "project",
         "dependencies": {
@@ -1176,6 +1180,10 @@
     "DomainModelsCommon/1.0.0": {
       "type": "project",
       "path": "../DomainModelsCommon/project.json"
+    },
+    "SharpSquare/1.0.0": {
+      "type": "project",
+      "path": "../../wrap/SharpSquare/project.json"
     },
     "SocialLogin/1.0.0": {
       "type": "project",

@@ -25,6 +25,8 @@ namespace Gloobster.SocialLogin.Facebook.Communication
 		public string Zip { get; set; }
 		[DataMember(Name = "located_in")]
 		public string LocatedIn { get; set; }
+		[DataMember(Name = "state")]
+		public string State { get; set; }
 	}
 
 	[DataContract]
@@ -75,6 +77,35 @@ namespace Gloobster.SocialLogin.Facebook.Communication
 		[DataMember(Name = "paging")]
 		public PagingFO Paging { get; set; }
 	}
+	
+
+
+
+	[DataContract]
+	public class SearchedPlacesFO
+	{
+		[DataMember(Name = "data")]
+		public SearchPlaceFO[] Data { get; set; }
+		[DataMember(Name = "paging")]
+		public PagingFO Paging { get; set; }
+	}
+
+
+
+	public class SearchPlaceFO
+	{
+		[DataMember(Name = "category")]
+		public string Category { get; set; }
+		[DataMember(Name = "category_list")]
+		public List<IdNameFO> CategoryList { get; set; }
+		[DataMember(Name = "location")]
+		public LocationFO Location { get; set; }
+		[DataMember(Name = "name")]
+		public string Name { get; set; }
+		[DataMember(Name = "id")]
+		public string Id { get; set; }
+	}
+
 
 
 }

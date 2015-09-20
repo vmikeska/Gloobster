@@ -15,6 +15,9 @@
     "ConsumerSecret": "sQURat6s73ApQbuQplogDY5jLJ9JSo57xE6qfZ7b81itxmWqJj",
     "AccessToken": "1228562882-DaM75urty2GqQmLZ0T2nBqJQ5CL7iZcxVPHszi0",
     "AccessTokenSecret": "qEAUzZnbvdtFJj51gAO0szMVlzCeCHenPBLEp3RRsj3zC"
-
+  },
+  "Foursquare": {
+    "ClientId": "RW5T0GSXYHMN5W2P4DLPYEOR1UYXXKGIFDMNBBM15XE0MQZ1",
+		"ClientSecret": "HHHLCEDL3YSQAM5BNCT4HZXQ2BVLRGROMS5IUHMITIDAROWJ"
   }
 }

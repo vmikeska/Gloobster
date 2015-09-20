@@ -32,6 +32,7 @@
           "DomainModelsCommon": "1.0.0",
           "Facebook": "7.0.6",
           "Mappers": "1.0.0",
+          "SharpSquare": "1.0.0",
           "SocialLogin": "1.0.0",
           "System.Net.Http": "4.0.0.0",
           "TweetSharp": "2.3.1"
@@ -42,6 +43,7 @@
         "dependencies": {
           "Autofac": "4.0.0-beta7-130",
           "Common": "1.0.0",
+          "SharpSquare": "1.0.0",
           "TweetSharp": "2.3.1"
         },
         "frameworkAssemblies": [
@@ -1252,6 +1254,9 @@
           "lib/net45/Newtonsoft.Json.dll": {}
         }
       },
+      "SharpSquare/1.0.0": {
+        "type": "project"
+      },
       "SocialLogin/1.0.0": {
         "type": "project",
         "dependencies": {
@@ -1437,6 +1442,10 @@
     "Mappers/1.0.0": {
       "type": "project",
       "path": "../Mappers/project.json"
+    },
+    "SharpSquare/1.0.0": {
+      "type": "project",
+      "path": "../../wrap/SharpSquare/project.json"
     },
     "SocialLogin/1.0.0": {
       "type": "project",
@@ -2809,8 +2818,11 @@
       "Moq >= 4.2.1507.118",
       "TweetSharp >= 2.3.1",
       "xunit >= 2.1.0-rc1-build3168",
-      "xunit.runner.dnx >= 2.1.0-beta5-build169"
+      "xunit.runner.dnx >= 2.1.0-beta5-build169",
+      "Newtonsoft.Json >= 7.0.1"
     ],
-    "DNX,Version=v4.5.1": []
+    "DNX,Version=v4.5.1": [
+      "SharpSquare >= 1.0.0-*"
+    ]
   }
 }

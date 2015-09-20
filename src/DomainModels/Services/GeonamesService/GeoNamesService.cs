@@ -9,8 +9,7 @@ using Gloobster.DomainModelsCommon.Interfaces;
 
 namespace Gloobster.DomainModels.Services.GeonamesService
 {
-	public class GeoNamesService: IGeoNamesService
-		//, IDisposable
+	public class GeoNamesService: IGeoNamesService		
 	{
 		const string UrlBase = "http://api.geonames.org/";
 
@@ -60,16 +59,9 @@ namespace Gloobster.DomainModels.Services.GeonamesService
 		{
 			AppendBaseParams(prms);
 			var serviceUrl = BuildUrl(prms);
-
-			//try
-			//{
-				var response = await _client.GetAsync(serviceUrl);
-			//}
-			//catch (Exception exc)
-			//{
-			//	throw exc;
-			//}
-
+			
+			var response = await _client.GetAsync(serviceUrl);
+			
 			if (response.IsSuccessStatusCode)
 			{
 				string strResponse = await response.Content.ReadAsStringAsync();
