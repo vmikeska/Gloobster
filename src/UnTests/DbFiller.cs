@@ -6,9 +6,12 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Autofac.Core;
 using FourSquare.SharpSquare.Core;
 using FourSquare.SharpSquare.Entities;
+using Gloobster.Common;
 using Gloobster.Common.DbEntity;
+using Gloobster.DomainModels.Services.CountryService;
 using Gloobster.DomainModels.Services.GeonamesService;
 using Gloobster.DomainModels.Services.PlaceSearch;
 using Gloobster.DomainModelsCommon.BaseClasses;
@@ -16,6 +19,7 @@ using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.SocialLogin.Facebook.Communication;
 using Xunit;
 using Gloobster.DomainModels.Services.Foursquare;
+using Gloobster.DomainModelsCommon.DO;
 using Gloobster.Mappers;
 using Newtonsoft.Json;
 
@@ -39,6 +43,7 @@ namespace Gloobster.UnitTests
 			//"search?q=coffee&type=place&center=37.76,122.427&distance=1000";
 
 			var result = fb.Get<SearchedPlacesFO>(query);
+			var resultTxt = fb.Get(query);
 
 			var ser = JsonConvert.SerializeObject(result);
 
@@ -65,11 +70,13 @@ namespace Gloobster.UnitTests
 		[Fact]
 		public async void Search()
 		{
-			var service = new SearchService();
+			var service = new SearchService(null);
 
-			PortalUserEntity[] portalUserEntity = await DBOper.FindAsync<PortalUserEntity>("");
+			var queryObj = new SearchServiceQuery {Query = "Praha"};
+
+			PortalUserEntity[] portalUserEntity = await DBOper.FindAsync<PortalUserEntity>("{'Mail': 'vmikeska@hotmail.com'}");
 			var portalUser = portalUserEntity.First().ToDO();
-			service.PortalUser = portalUser;
+			queryObj.PortalUser = portalUser;
 
 			string clientId = "RW5T0GSXYHMN5W2P4DLPYEOR1UYXXKGIFDMNBBM15XE0MQZ1";
 			string clientSecret = "HHHLCEDL3YSQAM5BNCT4HZXQ2BVLRGROMS5IUHMITIDAROWJ";
@@ -87,15 +94,22 @@ namespace Gloobster.UnitTests
 				Service = new GeoNamesService()
 			};
 
+			var fbProvider = new FacebookSearchProvider
+			{
+				Service = new FacebookService(),
+				CountrySvc = new CountryService()
+			};
+
 			service.SearchProviders = new List<ISearchProvider>
 			{
 				gnSearchProvider,
-				foursquareProvider
+				foursquareProvider,
+				fbProvider
 			};
 
-			var coord = new LatLng {Lat = "50.0833", Lng = "14.4167"};
+			var coord = new LatLng {Lat = 50.0833, Lng = 14.4167};
 
-			var places = await service.SearchAsync("Praha");
+			var places = await service.SearchAsync(queryObj);
 		}
 
 		

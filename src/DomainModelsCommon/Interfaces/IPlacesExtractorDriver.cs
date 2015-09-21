@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Gloobster.DomainModelsCommon.DO;
 
-namespace Gloobster.DomainModels.Services.Places
+namespace Gloobster.DomainModelsCommon.Interfaces
 {
 	public interface IPlacesExtractorDriver
 	{

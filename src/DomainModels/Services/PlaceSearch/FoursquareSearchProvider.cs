@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FourSquare.SharpSquare.Entities;
+using Gloobster.Common;
 using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
 
@@ -10,25 +11,27 @@ namespace Gloobster.DomainModels.Services.PlaceSearch
 	public class FoursquareSearchProvider : ISearchProvider
 	{
 		public IFoursquareService Service { get; set; }
+		
+		public bool CanBeUsed(SearchServiceQuery queryObj)
+		{
+			return true;
+		}
 
-		public bool CanBeUsed => true;
-
-		public PortalUserDO PortalUser { get; set; }
-
-		public async Task<List<Place>> SearchAsync(string query, LatLng coordinates = null)
+		public async Task<List<Place>> SearchAsync(SearchServiceQuery queryObj)
 		{
 			var prms = new Dictionary<string, string>
 			{
-				{"query", query}
+				{"query", queryObj.Query},
+				{"limit", queryObj.LimitPerProvider.ToString() }
 			};
 
-			if (coordinates != null)
+			if (queryObj.Coordinates != null)
 			{
-				prms.Add("ll", $"{coordinates.Lat},{coordinates.Lng}");
+				prms.Add("ll", $"{queryObj.Coordinates.Lat},{queryObj.Coordinates.Lng}");
 			}
 			else
 			{
-				prms.Add("intent", "global");
+				prms.Add("intent", "global");				
 			}
 
 			List<Venue> venues = Service.Client.SearchVenues(prms);
@@ -45,7 +48,7 @@ namespace Gloobster.DomainModels.Services.PlaceSearch
 				Name = originalPlace.name,
 				City = originalPlace.location.city,
 				CountryCode = originalPlace.location.cc,
-				Coordinates = new LatLng { Lat = originalPlace.location.lat.ToString(), Lng = originalPlace.location.lng.ToString() }
+				Coordinates = new LatLng { Lat = originalPlace.location.lat, Lng = originalPlace.location.lng }
 			};
 			return place;
 		}

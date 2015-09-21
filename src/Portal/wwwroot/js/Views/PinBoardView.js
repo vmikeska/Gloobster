@@ -56,6 +56,40 @@ var PinBoardView = (function (_super) {
             self.mapsManager.mapsDriver.moveToAnimated(dataRecord.PlaceLatitude, dataRecord.PlaceLongitude, 5);
         });
     };
+    PinBoardView.prototype.searchPlaces = function (placeName) {
+        var minChars = 3;
+        if (placeName.length < minChars) {
+            return;
+        }
+        var params = [["placeName", placeName]];
+        var self = this;
+        _super.prototype.apiGet.call(this, "place", params, function (response) {
+            $("#countriesResult").show();
+            var htmlContent = '';
+            response.forEach(function (item) {
+                htmlContent += self.getItemHtml(item);
+            });
+            $("#countriesResult").html(htmlContent);
+            $(".cityMenuItem").unbind();
+            $(".cityMenuItem").click(function (item) {
+                var geoId = $(item.currentTarget).data('id');
+                var dataRecord = _.find(response, { 'geonameId': geoId });
+                var newPlaceRequest = {
+                    "CountryCode": dataRecord.countryCode,
+                    "City": dataRecord.name,
+                    "PlaceLatitude": dataRecord.lat,
+                    "PlaceLongitude": dataRecord.lng,
+                    "SourceId": dataRecord.geonameId,
+                    "SourceType": "GeoNames"
+                };
+                $("#countriesResult").hide();
+                self.saveNewPlace(newPlaceRequest);
+            });
+        });
+    };
+    PinBoardView.prototype.getItemHtml = function (item) {
+        return '<div class="cityMenuItem" data-id="' + item.SourceId + '" data-type="' + item.SourceType + '">' + item.Name + ', ' + item.CountryCode + ' (pop: ' + item.population + ')' + '</div>';
+    };
     PinBoardView.prototype.getVisitedPlaces = function () {
         var self = this;
         _super.prototype.apiGet.call(this, "visitedPlace", null, function (response) {

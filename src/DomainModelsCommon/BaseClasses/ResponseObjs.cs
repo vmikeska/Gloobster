@@ -44,7 +44,7 @@ namespace Gloobster.DomainModelsCommon.BaseClasses
 		[DataMember(Name = "countryCode")]
 		public string CountryCode { get; set; }
 		[DataMember(Name = "lng")]
-		public string Longitude { get; set; }
+		public float Longitude { get; set; }
 		[DataMember(Name = "fcodeName")]
 		public string FCodeName { get; set; }
 		[DataMember(Name = "toponymName")]
@@ -58,7 +58,7 @@ namespace Gloobster.DomainModelsCommon.BaseClasses
 		[DataMember(Name = "geonameId")]
 		public int GeonameId { get; set; }
 		[DataMember(Name = "lat")]
-		public string Latitude { get; set; }
+		public float Latitude { get; set; }
 		[DataMember(Name = "adminName1")]
 		public string AdminName1 { get; set; }
 		[DataMember(Name = "population")]

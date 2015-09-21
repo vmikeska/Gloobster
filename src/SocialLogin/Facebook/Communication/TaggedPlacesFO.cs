@@ -16,9 +16,9 @@ namespace Gloobster.SocialLogin.Facebook.Communication
 		[DataMember(Name = "country")]
 		public string Country { get; set; }
 		[DataMember(Name = "latitude")]
-		public double Latitude { get; set; }
+		public float Latitude { get; set; }
 		[DataMember(Name = "longitude")]
-		public double Longitude { get; set; }
+		public float Longitude { get; set; }
 		[DataMember(Name = "street")]
 		public string Street { get; set; }
 		[DataMember(Name = "zip")]
@@ -90,8 +90,7 @@ namespace Gloobster.SocialLogin.Facebook.Communication
 		public PagingFO Paging { get; set; }
 	}
 
-
-
+	[DataContract]
 	public class SearchPlaceFO
 	{
 		[DataMember(Name = "category")]

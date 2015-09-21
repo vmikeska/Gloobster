@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Gloobster.DomainModels.Services.Places
+namespace Gloobster.DomainModelsCommon.Interfaces
 {
 	public interface IPlacesExtractor
 	{

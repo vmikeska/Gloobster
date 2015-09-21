@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Gloobster.DomainModels.Services.PlaceSearch
+namespace Gloobster.Common
 {
 	public class QueryBuilder
 	{

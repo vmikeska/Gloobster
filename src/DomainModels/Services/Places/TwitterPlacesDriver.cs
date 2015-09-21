@@ -4,6 +4,7 @@ using Gloobster.Common;
 using Gloobster.DomainModelsCommon.DO;
 using TweetSharp;
 using System.Linq;
+using Gloobster.DomainModelsCommon.Interfaces;
 
 namespace Gloobster.DomainModels.Services.Places
 {

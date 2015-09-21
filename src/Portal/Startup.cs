@@ -10,7 +10,9 @@ using Gloobster.DomainModels.Services.Facebook.TaggedPlacesExtractor;
 using Gloobster.DomainModels.Services.Foursquare;
 using Gloobster.DomainModels.Services.GeonamesService;
 using Gloobster.DomainModels.Services.Places;
+using Gloobster.DomainModels.Services.PlaceSearch;
 using Gloobster.DomainModels.Services.Twitter;
+using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.Portal.Controllers;
 using Gloobster.SocialLogin.Facebook.Communication;
@@ -130,12 +132,27 @@ namespace Gloobster.Portal
 			builder.AddTransient<IFacebookService, FacebookService>();
 			builder.AddTransient<IMyTwitterService, MyTwitterService>();
 			builder.AddTransient<IFacebookTaggedPlacesExtractor, FacebookTaggedPlacesExtractor>();
-			builder.AddTransient<IGeoNamesService, GeoNamesService>();
-
+			
+			
 			builder.AddTransient<IPlacesExtractor, PlacesExtractor>();
 
 			builder.AddTransient<IPlacesExtractorDriver, TwitterPlacesDriver>().Keyed<IPlacesExtractorDriver>("Twitter");
 			builder.AddTransient<IPlacesExtractorDriver, FacebookPlacesDriver>().Keyed<IPlacesExtractorDriver>("Facebook");
+
+
+			builder.AddInstance2<ISearchService, SearchService>();
+			builder.AddInstance2<ISearchProvider, GeoNamesSearchProvider>().Keyed<ISearchProvider>(SourceType.GN);
+			builder.AddInstance2<ISearchProvider, FacebookSearchProvider>().Keyed<ISearchProvider>(SourceType.FB);
+			builder.AddInstance2<ISearchProvider, FoursquareSearchProvider>().Keyed<ISearchProvider>(SourceType.S4);
+
+			//builder.AddInstance<ISearchService>(new SearchService());
+			//         builder.AddInstance<ISearchProvider>(new GeoNamesSearchProvider()).Keyed<ISearchProvider>(SourceType.GN);
+			//builder.AddInstance<ISearchProvider>(new FacebookSearchProvider()).Keyed<ISearchProvider>(SourceType.FB);
+			//builder.AddInstance<ISearchProvider>(new FoursquareSearchProvider()).Keyed<ISearchProvider>(SourceType.S4);
+
+
+
+			builder.AddInstance<IGeoNamesService>(new GeoNamesService());
 
 			var foursquareService = new FoursquareService();
 			foursquareService.Initialize(GloobsterConfig.FoursquareClientId, GloobsterConfig.FoursquareClientSecret);
@@ -152,7 +169,8 @@ namespace Gloobster.Portal
 		public static IRegistrationBuilder<T, ConcreteReflectionActivatorData, SingleRegistrationStyle> AddTransient<I, T>(this ContainerBuilder builder) where T : new()
 		{
 
-			var reg = builder.RegisterType<T>()
+			var reg = builder
+					.RegisterType<T>()
 				   .As<I>()
 				   .PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)				   
 				   .InstancePerLifetimeScope();
@@ -165,12 +183,26 @@ namespace Gloobster.Portal
 			//	.InstancePerLifetimeScope();
 		}
 
-		public static void AddInstance<I>(this ContainerBuilder builder, object instance)
+		public static IRegistrationBuilder<object, SimpleActivatorData, SingleRegistrationStyle> AddInstance<I>(this ContainerBuilder builder, object instance)
 		{
-			builder
+			var  reg = builder
 				.Register(c => instance)
 				.As<I>()
+				.PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
 				.SingleInstance();
+
+			return reg;
+		}
+
+		public static IRegistrationBuilder<T, ConcreteReflectionActivatorData, SingleRegistrationStyle> AddInstance2<I, T>(this ContainerBuilder builder)
+		{
+			var reg = builder
+				.RegisterType<T>()
+				.As<I>()
+				.PropertiesAutowired(PropertyWiringOptions.AllowCircularDependencies)
+				.SingleInstance();
+
+			return reg;
 		}
 	}
 }

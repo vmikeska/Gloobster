@@ -62,8 +62,8 @@ namespace Gloobster.DomainModels.Services.Places
 		    }
 		    var foundCity = foundCities.GeoNames.First();
 
-		    place.PlaceLatitude = double.Parse(foundCity.Latitude, CultureInfo.InvariantCulture);
-		    place.PlaceLongitude = double.Parse(foundCity.Longitude, CultureInfo.InvariantCulture);
+		    place.PlaceLatitude = foundCity.Latitude;
+		    place.PlaceLongitude = foundCity.Longitude;
 		    return true;
         }
 

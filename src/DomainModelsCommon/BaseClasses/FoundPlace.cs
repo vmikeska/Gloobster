@@ -13,8 +13,8 @@ namespace Gloobster.DomainModelsCommon.BaseClasses
 		public string CountryCode2 { get; set; }
 		public string CountryCode3 { get; set; }
 
-		public double Latitude { get; set; }
-		public double Longitude { get; set; }
+		public float Latitude { get; set; }
+		public float Longitude { get; set; }
 
 		public bool Equals(FoundPlace other)
 		{

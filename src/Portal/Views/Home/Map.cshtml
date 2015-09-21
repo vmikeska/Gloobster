@@ -56,69 +56,9 @@
 			$("#countriesAutocomplet").on("input", function() {
 				var placeName = $("#countriesAutocomplet").val();
 
-				var url = '/api/place?placeName=' + placeName;
-
-				makeApiCall(url, function(response) {
-
-						$("#countriesResult").show();
-					var htmlContent = '';
-					response.forEach(function(item) {
-
-						//if (item.population > 0) {
-							htmlContent += getItemHtml(item);
-						//}
-					});
-
-					$("#countriesResult").html(htmlContent);
-					$(".cityMenuItem").unbind();
-					$(".cityMenuItem").click(function(item) {
-						var geoId = $(item.currentTarget).data('id');
-
-						var dataRecord = _.find(response, { 'geonameId': geoId });
-
-						//pinBoardView.mapsManager.mapsOperations.setView(dataRecord.lat, dataRecord.lng, 5);
-
-						var newPlaceRequest = {
-								"CountryCode": dataRecord.countryCode,
-								"City":  dataRecord.name,
-								"PlaceLatitude": dataRecord.lat,
-								"PlaceLongitude": dataRecord.lng,
-								"SourceId": dataRecord.geonameId,
-								"SourceType": "GeoNames"
-						};
-
-						$("#countriesResult").hide();
-
-						pinBoardView.saveNewPlace(newPlaceRequest);
-					});
-
-				});
-
-
-			});
-
-
-		}
-
-		function getItemHtml(item) {
-			return '<div class="cityMenuItem" data-id="' + item.geonameId + '">' + item.name + ', ' + item.countryName + ' (pop: ' + item.population + ')' + '</div>';
-		}
-
-		function makeApiCall(url, callback) {
-			$.ajax({
-				type: 'GET',
-				url: url,
-				success(response) {
-					callback(response);
-				},
-				error(res) {
-
-					//todo: some universal error handler
-					alert(JSON.stringify(res));
-				}
+				pinBoardView.searchPlaces(placeName);
 			});
 		}
-
 
 		//tabs -----
 

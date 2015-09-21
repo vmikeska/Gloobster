@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Gloobster.Common;
 
-namespace Gloobster.DomainModels.Services.PlaceSearch
+namespace Gloobster.DomainModelsCommon.DO
 {
 	public class Place
 	{
@@ -10,13 +10,5 @@ namespace Gloobster.DomainModels.Services.PlaceSearch
 		public LatLng Coordinates { get; set; }
 		public string SourceId { get; set; }
 		public SourceType SourceType { get; set; }
-	}
-
-	public enum SourceType { FB, S4, GN }
-
-	public class LatLng
-	{
-		public string Lat { get; set; }
-		public string Lng { get; set; }
 	}
 }
