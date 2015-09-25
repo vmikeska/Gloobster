@@ -7,5 +7,6 @@
         public string Mail { get; set; }
         public FacebookGroupEntity Facebook { get; set; }
 		public TwitterGroupEntity Twitter { get; set; }
+		public GoogleGroupEntity Google { get; set; }
 	}
 }

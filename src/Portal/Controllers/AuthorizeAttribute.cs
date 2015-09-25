@@ -19,7 +19,7 @@ namespace Gloobster.Portal.Controllers
 			{
 				decodedStr = JsonWebToken.Decode(authorizationToken, GloobsterConfig.AppSecret, true);
 			}
-			catch (Exception exception)
+			catch
 			{
 				context.HttpContext.Response.StatusCode = 401;
 				return;

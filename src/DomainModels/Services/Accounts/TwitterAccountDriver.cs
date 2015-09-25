@@ -18,6 +18,10 @@ namespace Gloobster.DomainModels.Services.Accounts
 		public IDbOperations DB { get; set; }
 		public PortalUserDO PortalUser { get; set; }
 		public TwitterService TwitterSvc { get; set; }
+
+		public object UserObj { get; set; }
+		private TwitterUserAuthenticationDO User => (TwitterUserAuthenticationDO)UserObj;
+
 		public IPlacesExtractor PlacesExtractor { get; set; }
 
 		public TwitterAccountDriver()
@@ -25,11 +29,11 @@ namespace Gloobster.DomainModels.Services.Accounts
 			TwitterSvc = new TwitterService(GloobsterConfig.TwitterConsumerKey, GloobsterConfig.TwitterConsumerSecret);
 		}
 
-		public async Task<PortalUserDO> Create(object authObj)
-		{
-			var auth = GetTypedUser(authObj);
 
-			TwitterSvc.AuthenticateWith(auth.Token, auth.TokenSecret);
+
+		public async Task<PortalUserDO> Create()
+		{
+			TwitterSvc.AuthenticateWith(User.Token, User.TokenSecret);
 
 			TwitterUser user = TwitterSvc.VerifyCredentials(new VerifyCredentialsOptions { IncludeEntities = true });
 			
@@ -45,7 +49,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 				Twitter = new TwitterGroupEntity
 				{
 					TwitterUser = user.ToEntity(),
-					Authentication = auth.ToEntity()
+					Authentication = User.ToEntity()
 				}
 			};
 
@@ -55,11 +59,9 @@ namespace Gloobster.DomainModels.Services.Accounts
 			return createdUser;
 		}
 
-		public async Task<PortalUserDO> Load(object userObj)
+		public async Task<PortalUserDO> Load()
 		{
-			var user = GetTypedUser(userObj);
-
-			var query = $"{{ 'Twitter.TwitterUser.TwUserId': {user.TwUserId} }}";
+			var query = $"{{ 'Twitter.TwitterUser.TwUserId': {User.TwUserId} }}";
 			var results = await DB.FindAsync<PortalUserEntity>(query);
 
 			if (!results.Any())
@@ -72,7 +74,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 
 		}
 
-		public string GetEmail(object user)
+		public string GetEmail()
 		{
 			return "unique";
 		}
@@ -88,13 +90,6 @@ namespace Gloobster.DomainModels.Services.Accounts
 
 			await PlacesExtractor.ExtractNewAsync(portalUser.DbUserId, portalUser.Twitter.Authentication);
 			PlacesExtractor.SaveAsync();
-		}
-
-
-		private TwitterUserAuthenticationDO GetTypedUser(object user)
-		{
-			var auth = (TwitterUserAuthenticationDO)user;
-			return auth;
 		}
 	}
 }

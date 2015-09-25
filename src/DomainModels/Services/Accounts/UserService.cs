@@ -11,23 +11,25 @@ namespace Gloobster.DomainModels.Services.Accounts
 	{
 		public IAccountDriver AccountDriver { get; set; }
 		public IComponentContext ComponentContext { get; set; }
-		public async Task<UserLoggedResultDO> Validate(object user)
+		
+		public async Task<UserLoggedResultDO> Validate(object userObj)
 		{
+			AccountDriver.UserObj = userObj;
 			var result = new UserLoggedResultDO();
 
-			PortalUserDO portalUser = await AccountDriver.Load(user);
+			PortalUserDO portalUser = await AccountDriver.Load();
 
 			bool userExists = portalUser != null;
 			if (!userExists)						
 			{
-				string email = AccountDriver.GetEmail(user);
+				string email = AccountDriver.GetEmail();
 				bool emailExists = EmailAlreadyExistsInSystem(email);
 				if (emailExists)
 				{
-					//todo: stop registration
+					//todo: stop registration, ask for pairing
 				}
 				
-				portalUser = await AccountDriver.Create(user);
+				portalUser = await AccountDriver.Create();
 			}
 			else
 			{

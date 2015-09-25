@@ -122,10 +122,11 @@ namespace Gloobster.Portal
 	{
 		protected override void Load(ContainerBuilder builder)
 		{
-			builder.AddTransient<IUserService, UserService>();
-			builder.AddTransient<IAccountDriver, FacebookAccountDriver>().Keyed<IAccountDriver>("Facebook");
+			builder.AddTransient<IUserService, UserService>();			
+            builder.AddTransient<IAccountDriver, FacebookAccountDriver>().Keyed<IAccountDriver>("Facebook");
 			builder.AddTransient<IAccountDriver, TwitterAccountDriver>().Keyed<IAccountDriver>("Twitter");
-			
+			builder.AddTransient<IAccountDriver, GoogleAccountDriver>().Keyed<IAccountDriver>("Google");
+
 			builder.AddTransient<IVisitedPlacesDomain, VisitedPlacesDomain>();
 			builder.AddTransient<IVisitedCountriesDomain, VisitedCountriesDomain>();
 			builder.AddTransient<IDbOperations, DbOperations>();

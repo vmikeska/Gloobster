@@ -1,6 +1,7 @@
 using Gloobster.Common.DbEntity;
 using Gloobster.DomainModelsCommon.DO;
 using Gloobster.WebApiObjects;
+using Gloobster.WebApiObjects.Facebook;
 
 namespace Gloobster.Mappers
 {

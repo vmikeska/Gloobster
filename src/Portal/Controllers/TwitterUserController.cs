@@ -10,6 +10,7 @@ using Gloobster.SocialLogin.Facebook.Communication;
 using Gloobster.WebApiObjects;
 using Microsoft.AspNet.Mvc;
 using TweetSharp;
+using LoggedResponse = Gloobster.Portal.ReqRes.LoggedResponse;
 
 namespace Gloobster.Portal.Controllers
 {

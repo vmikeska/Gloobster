@@ -10,19 +10,25 @@
 		<script type="text/javascript" src="@Url.Content("~/js/FacebookLogin.js")"></script>
 		<script type="text/javascript" src="@Url.Content("~/js/FacebookExecutor.js")"></script>
 	<script type="text/javascript" src="@Url.Content("~/js/registration/registration.js")"></script>
-		<script type="text/javascript" src="@Url.Content("~/js/Common/RequestSender.js")"></script>
+	<script type="text/javascript" src="@Url.Content("~/js/Common/RequestSender.js")"></script>
 
-    <script>
+		<script type="text/javascript" src="@Url.Content("~/js/Views/ViewBase.js")"></script>
+		<script type="text/javascript" src="@Url.Content("~/js/Views/HomePageView.js")"></script>
+
+	<script>
 
 	    var exec = new FacebookLoginExecutor();
 	    exec.execute();
 	    fbLogin = exec.fbLogin;
 
-	    function register() {
+	    
+	    homePageView = new HomePageView();
+	    homePageView.initialize();
 
-	    		var req = new RequestSender();
-					
-	    }
+	    
+
+
+
     </script>
 
 
@@ -51,7 +57,36 @@
 
 
 
-        <div id="status">
-        </div>
+	<div id="status">
+	</div>
 
-    </div>
+		<meta name="google-signin-client_id" content="430126253289-14tdcfe4noqm6p201jrugpi9dsies2at.apps.googleusercontent.com">
+
+
+		<div id="my-signin2"></div>
+		<script>
+    function onSuccess(googleUser) {
+    		console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+
+    		homePageView.googleUserLogged(googleUser);
+    }
+    function onFailure(error) {
+      console.log(error);
+    }
+    function renderButton() {
+      gapi.signin2.render('my-signin2', {
+        'scope': 'https://www.googleapis.com/auth/plus.login',
+        'width': 200,
+        'height': 50,
+        'longtitle': true,
+        'theme': 'dark',
+        'onsuccess': onSuccess,
+        'onfailure': onFailure
+      });
+    }
+		</script>
+
+		<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+
+
+</div>

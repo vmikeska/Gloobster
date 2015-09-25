@@ -8,6 +8,7 @@ using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.WebApiObjects;
 using Gloobster.Mappers;
 using Gloobster.SocialLogin.Facebook.Communication;
+using Gloobster.WebApiObjects.Facebook;
 
 namespace Gloobster.Portal.Controllers
 {
@@ -22,7 +23,7 @@ namespace Gloobster.Portal.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Post([FromBody] FacebookUserAuthenticationRequest request)
+		public Task<IActionResult> Post([FromBody] PortalUserRequest request)
 		{
 			//var facebookAuthRequest = request.ToDoFromRequest();
 

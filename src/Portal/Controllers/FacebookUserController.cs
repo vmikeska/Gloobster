@@ -7,7 +7,9 @@ using Gloobster.DomainModels.Services.Accounts;
 using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.WebApiObjects;
 using Gloobster.Mappers;
+using Gloobster.Portal.ReqRes;
 using Gloobster.SocialLogin.Facebook.Communication;
+using Gloobster.WebApiObjects.Facebook;
 
 namespace Gloobster.Portal.Controllers
 {

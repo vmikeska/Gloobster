@@ -14,15 +14,17 @@ namespace Gloobster.DomainModels.Services.Accounts
 		public IComponentContext ComponentContext { get; set; }
 		public IDbOperations DB { get; set; }
 		public PortalUserDO PortalUser { get; set; }
-		public async Task<PortalUserDO> Create(object user)
-		{
-			var portalUser = (PortalUserDO) user;
+		public object UserObj { get; set; }
+		private PortalUserDO User => (PortalUserDO)UserObj;
 
+
+		public async Task<PortalUserDO> Create()
+		{			
 			var newUser = new PortalUserEntity
 			{
-				Mail = portalUser.Mail,
-				Password = portalUser.Password,
-				DisplayName = portalUser.DisplayName
+				Mail = User.Mail,
+				Password = User.Password,
+				DisplayName = User.DisplayName
 			};
 
 			var userEntity = await DB.SaveAsync(newUser);
@@ -30,12 +32,12 @@ namespace Gloobster.DomainModels.Services.Accounts
 			return result;
 		}
 
-		public Task<PortalUserDO> Load(object user)
+		public Task<PortalUserDO> Load()
 		{
 			throw new NotImplementedException();
 		}
 
-		public string GetEmail(object user)
+		public string GetEmail()
 		{
 			throw new NotImplementedException();
 		}

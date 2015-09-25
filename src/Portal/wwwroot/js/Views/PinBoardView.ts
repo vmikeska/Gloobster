@@ -1,8 +1,4 @@
-﻿
-
-
-
-	class PinBoardView extends Views.ViewBase {
+﻿class PinBoardView extends Views.ViewBase {
 
 		public visitedCountries: any;
 		public visitedPlaces: any;

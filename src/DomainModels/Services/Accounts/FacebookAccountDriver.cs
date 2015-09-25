@@ -25,12 +25,15 @@ namespace Gloobster.DomainModels.Services.Accounts
 
 		public PortalUserDO PortalUser { get; set; }
 
-		public async Task<PortalUserDO> Create(object user)
-		{
-			FacebookUserAuthenticationDO auth = GetTypedUser(user);
-			var permenentToken = IssueNewPermanentAccessToken(auth.AccessToken);
+		public object UserObj { get; set; }
+		private FacebookUserAuthenticationDO User => (FacebookUserAuthenticationDO)UserObj;
 
-			FBService.SetAccessToken(auth.AccessToken);
+
+		public async Task<PortalUserDO> Create()
+		{			
+			var permenentToken = IssueNewPermanentAccessToken(User.AccessToken);
+
+			FBService.SetAccessToken(User.AccessToken);
 			var userCallResult = FBService.Get<FacebookUserFO>("/me");
 			var resultEntity = userCallResult.ToEntity();
 
@@ -46,7 +49,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 					{
 						AccessToken = permenentToken.AccessToken,
 						ExpiresAt = permenentToken.ExpiresAt,
-						UserId = auth.UserId
+						UserId = User.UserId
 					},
 					FacebookUser = resultEntity
 				}
@@ -58,11 +61,9 @@ namespace Gloobster.DomainModels.Services.Accounts
 			return createdUser;
 		}
 
-		public async Task<PortalUserDO> Load(object user)
+		public async Task<PortalUserDO> Load()
 		{
-			var auth = GetTypedUser(user);
-
-			var query = $"{{ 'Facebook.FacebookUser.UserId': '{auth.UserId}' }}";
+			var query = $"{{ 'Facebook.FacebookUser.UserId': '{User.UserId}' }}";
 			var results = await DB.FindAsync<PortalUserEntity>(query);
 
 			if (!results.Any())
@@ -74,7 +75,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 			return result;
 		}
 
-		public string GetEmail(object user)
+		public string GetEmail()
 		{
 			//todo: implement
 			return "unique";
@@ -121,13 +122,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 				throw new Exception("something went wrong with update");
 			}
 		}
-
-		private FacebookUserAuthenticationDO GetTypedUser(object user)
-		{
-			var auth = (FacebookUserAuthenticationDO)user;
-			return auth;
-		}
-
+		
 		private FacebookUserAuthenticationDO IssueNewPermanentAccessToken(string accessToken)
 		{
 			int expireToleranceInSeconds = 60;

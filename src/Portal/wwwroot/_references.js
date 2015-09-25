@@ -15,6 +15,7 @@
 /// <reference path="js/maps/mapsmanager.js" />
 /// <reference path="js/maps/mapsoperations.js" />
 /// <reference path="js/registration/registration.js" />
+/// <reference path="js/views/homepageview.js" />
 /// <reference path="js/views/pinboardview.js" />
 /// <reference path="js/views/viewbase.js" />
 /// <reference path="old/BingMapsOld.js" />

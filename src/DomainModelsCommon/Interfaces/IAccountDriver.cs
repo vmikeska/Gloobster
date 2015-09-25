@@ -7,12 +7,13 @@ namespace Gloobster.DomainModelsCommon.Interfaces
 {
 	public interface IAccountDriver
 	{
+		object UserObj { get; set; }
 		IComponentContext ComponentContext { get; set; }
 		IDbOperations DB { get; set; }
         PortalUserDO PortalUser { get; set; }
-		Task<PortalUserDO> Create(object user);
-		Task<PortalUserDO> Load(object user);
-		string GetEmail(object user);
+		Task<PortalUserDO> Create();
+		Task<PortalUserDO> Load();
+		string GetEmail();
 		void OnUserExists(PortalUserDO portalUser);
 		void OnUserSuccessfulyLogged(PortalUserDO portalUser);
 
