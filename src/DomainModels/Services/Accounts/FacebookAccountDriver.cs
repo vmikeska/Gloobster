@@ -180,20 +180,18 @@ namespace Gloobster.DomainModels.Services.Accounts
 			if (expired)
 			{
 				var newPermanentToken = IssueNewPermanentAccessToken(account.Authentication.AccessToken);
-				UpdateFacebookUserAuth(portalUser.UserId, SocialNetworkType.Facebook, newPermanentToken.AccessToken, newPermanentToken.ExpiresAt);
+				UpdateFacebookUserAuth(portalUser, newPermanentToken.AccessToken, newPermanentToken.ExpiresAt);
 			}
 		}
 		
-		public async void UpdateFacebookUserAuth(string dbUserId, SocialNetworkType networkType, string accessToken, DateTime expiresAt)
+		public async void UpdateFacebookUserAuth(PortalUserDO portalUser, string accessToken, DateTime expiresAt)
 		{
-			var builder = Builders<BsonDocument>.Filter;
-            var filter = builder.Eq("_id", new ObjectId(dbUserId)) & builder.Eq("SocialAccounts.NetworkType", ((int)networkType));
-			
-			var update = Builders<BsonDocument>.Update
-				.Set("SocialAccounts.Authentication.AccessToken", accessToken)
-				.Set("SocialAccounts.Authentication.ExpiresAt", expiresAt);
-			
-			var result = await DB.UpdateAsync<PortalUserEntity>(update, filter);
+			var portalUserEntity = portalUser.ToEntity();
+			var socialAccount = portalUserEntity.SocialAccounts.First(a => a.NetworkType == SocialNetworkType.Facebook);
+			socialAccount.Authentication.AccessToken = accessToken;
+			socialAccount.Authentication.ExpiresAt = expiresAt;
+
+			var result = await DB.ReplaceOneAsync(portalUserEntity);
 
 			if (result.MatchedCount == 0)
 			{

@@ -31,9 +31,7 @@ namespace Gloobster.Portal.Controllers
 		}
 		
 		public async Task<ActionResult> AuthCallback(string oauth_token, string oauth_verifier)
-		{
-			return null;
-
+		{			
 			var auth = TwitterSvc.VerifyCredintial(oauth_token, oauth_verifier);
 
 			var accountDriver = ComponentContext.ResolveKeyed<IAccountDriver>("Twitter");

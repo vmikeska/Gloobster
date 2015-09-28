@@ -90,6 +90,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 			var portalUserEntity = portalUser.ToEntity();
 			var socialAccount = portalUserEntity.SocialAccounts.First(a => a.NetworkType == SocialNetworkType.Google);
 			socialAccount.Authentication.AccessToken = accessToken;
+			socialAccount.Authentication.ExpiresAt = expiresAt;
 			
 			var result = await DB.ReplaceOneAsync(portalUserEntity);
 
