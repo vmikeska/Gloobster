@@ -10,6 +10,7 @@ using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.Mappers;
 using Gloobster.SocialLogin.Facebook.Communication;
+using Microsoft.CodeAnalysis.CSharp;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -77,27 +78,20 @@ namespace Gloobster.DomainModels.Services.Accounts
 
 		public void OnUserExists(PortalUserDO portalUser)
 		{
-			UpdateGoogleUserAuth(portalUser.UserId, SocialNetworkType.Google, Authentication.AccessToken, Authentication.ExpiresAt);
+			UpdateGoogleUserAuth(portalUser, Authentication.AccessToken, Authentication.ExpiresAt);
 		}
 
 		public void OnUserSuccessfulyLogged(PortalUserDO portalUser)
 		{
 		}
-		
-		//todo
-		private async void UpdateGoogleUserAuth(string dbUserId, SocialNetworkType networkType, string accessToken, DateTime expiresAt)
+				
+		private async void UpdateGoogleUserAuth(PortalUserDO portalUser, string accessToken, DateTime expiresAt)
 		{
-			var builder = Builders<BsonDocument>.Filter;
-			var filter = builder.Eq("_id", new ObjectId(dbUserId)) & builder.Eq("SocialAccounts.NetworkType", ((int)networkType));
-
-			var update = Builders<BsonDocument>.Update				
-				.Set("Mail", "mikeska@gmail.com")
-				.Set("SocialAccounts.Authentication.AccessToken", accessToken)
-				.Set("SocialAccounts.Specifics", new GoogleUserSE());
-			//.Set("SocialAccounts.Authentication.AccessToken", accessToken)
-			//.Set("SocialAccounts.Authentication.ExpiresAt", expiresAt);
-
-			var result = await DB.UpdateAsync<PortalUserEntity>(update, filter);
+			var portalUserEntity = portalUser.ToEntity();
+			var socialAccount = portalUserEntity.SocialAccounts.First(a => a.NetworkType == SocialNetworkType.Google);
+			socialAccount.Authentication.AccessToken = accessToken;
+			
+			var result = await DB.ReplaceOneAsync(portalUserEntity);
 
 			if (result.MatchedCount == 0)
 			{

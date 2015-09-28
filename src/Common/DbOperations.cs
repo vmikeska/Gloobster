@@ -116,7 +116,20 @@ namespace Gloobster.Common
 			return result;
 		}
 
-		
+		public async Task<ReplaceOneResult> ReplaceOneAsync<T>(T doc) where T : EntityBase
+		{
+			var builder = Builders<BsonDocument>.Filter;
+			var filter = builder.Eq("_id", doc.id);
+			
+			var collectionName = GetCollectionName<T>();
+			var collection = Database.GetCollection<BsonDocument>(collectionName);
+
+			var docBson = doc.ToBsonDocument();
+
+			ReplaceOneResult result = await collection.ReplaceOneAsync(filter, docBson);
+			return result;
+		}
+
 
 		public async Task<T[]> FindAsync<T>(string query) where T : EntityBase
         {

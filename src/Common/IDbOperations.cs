@@ -8,7 +8,9 @@ namespace Gloobster.Common
 {
     public interface IDbOperations
     {
-        Task<T> SaveAsync<T>(T entity) where T: EntityBase;
+	    Task<ReplaceOneResult> ReplaceOneAsync<T>(T doc) where T : EntityBase;
+
+		Task<T> SaveAsync<T>(T entity) where T: EntityBase;
 	    Task<IEnumerable<T>> SaveManyAsync<T>(IEnumerable<T> entities) where T : EntityBase;
 
 		Task<T[]> FindAsync<T>(string query) where T : EntityBase;
