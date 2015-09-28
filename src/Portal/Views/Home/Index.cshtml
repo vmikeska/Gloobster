@@ -38,20 +38,20 @@
 		<fb:login-button scope="user_tagged_places,user_likes,publish_actions,user_location,user_hometown,email,user_status,user_friends" onlogin="fbLogin.refreshLoginStatus();">
 		</fb:login-button>
 
-		<form id="registerUserForm" style="border: 1px solid black">
+		<div id="registerUserForm" style="border: 1px solid black">
 
 			<div>
-				<label for="ContactName">Mail</label>
-				<input type="text" name="mail" value=""/>
+				<label for="inputMail">Mail</label>
+				<input id="inputMail" type="text" name="mail" value=""/>
 			</div>
 
 			<div>
-				<label for="ContactName">Password</label>
-				<input type="text" name="password" value=""/>
+				<label for="inputPass">Password</label>
+				<input id="inputPass" type="text" name="password" value=""/>
 			</div>
 
-			<button onclick="register()">Register</button>
-		</form>
+			<button onclick="homePageView.registerNormal($('#inputMail').val(), $('#inputPass').val())">Register</button>
+		</div>
 
 	</div>
 

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Gloobster.Common.CommonEnums
 {
-	public enum SocialNetworkType { Facebook, Google, Twitter }
+	public enum SocialNetworkType { Facebook, Google, Twitter, Base }
 
 	public enum Gender { M, F, N }
 }

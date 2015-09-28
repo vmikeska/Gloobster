@@ -11,9 +11,15 @@ var HomePageView = (function (_super) {
     }
     HomePageView.prototype.initialize = function () {
     };
+    HomePageView.prototype.registerNormal = function (mail, password) {
+        var data = { "mail": mail, "password": password };
+        _super.prototype.apiPost.call(this, "User", data, function (response) {
+            alert("user registred");
+        });
+    };
     HomePageView.prototype.googleUserLogged = function (user) {
         _super.prototype.apiPost.call(this, "GoogleUser", user, function (response) {
-            alert('response;');
+            //alert('response;');
         });
     };
     return HomePageView;

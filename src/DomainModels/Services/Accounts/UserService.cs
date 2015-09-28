@@ -24,7 +24,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 
 			var result = new UserLoggedResultDO();
 
-			PortalUserDO portalUser = await Load(AccountDriver.NetworkType, authentication.UserId);
+			PortalUserDO portalUser = await Load();
 
 			bool userExists = portalUser != null;
 			if (!userExists)						
@@ -49,9 +49,22 @@ namespace Gloobster.DomainModels.Services.Accounts
 			return result;
 		}
 
-		public async Task<PortalUserDO> Load(SocialNetworkType networkType, string userId)
+		public async Task<PortalUserDO> Load()
 		{
-			var query = $"{{ 'SocialAccounts.NetworkType': {(int)networkType}, 'SocialAccounts.Authentication.UserId': '{userId}' }}";
+			string query;
+
+			if (AccountDriver.NetworkType == SocialNetworkType.Base)
+			{
+				var user = (BaseUserDO) AccountDriver.UserObj;
+				var mail = user.Mail.Trim();
+				query = $"{{ 'Mail': '{mail}' }}";				
+			}
+			else
+			{			
+				string userId = AccountDriver.Authentication.UserId;
+				query = $"{{ 'SocialAccounts.NetworkType': {(int)AccountDriver.NetworkType}, 'SocialAccounts.Authentication.UserId': '{userId}' }}";				
+			}
+
 			var results = await DB.FindAsync<PortalUserEntity>(query);
 
 			if (!results.Any())
@@ -61,7 +74,6 @@ namespace Gloobster.DomainModels.Services.Accounts
 
 			var result = results.First().ToDO();
 			return result;
-
 		}
 
 

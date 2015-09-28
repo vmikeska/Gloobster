@@ -126,6 +126,7 @@ namespace Gloobster.Portal
             builder.AddTransient<IAccountDriver, FacebookAccountDriver>().Keyed<IAccountDriver>("Facebook");
 			builder.AddTransient<IAccountDriver, TwitterAccountDriver>().Keyed<IAccountDriver>("Twitter");
 			builder.AddTransient<IAccountDriver, GoogleAccountDriver>().Keyed<IAccountDriver>("Google");
+			builder.AddTransient<IAccountDriver, AccountDriver>().Keyed<IAccountDriver>("Base");
 
 			builder.AddTransient<IVisitedPlacesDomain, VisitedPlacesDomain>();
 			builder.AddTransient<IVisitedCountriesDomain, VisitedCountriesDomain>();

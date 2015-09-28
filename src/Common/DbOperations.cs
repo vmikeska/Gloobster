@@ -9,20 +9,20 @@ using MongoDB.Driver;
 
 namespace Gloobster.Common
 {
-	public class EmptyEntityIdException : Exception
-	{
-		private const string ExceptionMessageBase = "Id of '{0}' is empty";
+	//public class EmptyEntityIdException : Exception
+	//{
+	//	private const string ExceptionMessageBase = "Id of '{0}' is empty";
 
-		public EmptyEntityIdException() {}
+	//	public EmptyEntityIdException() {}
 
-		public EmptyEntityIdException(EntityBase entity): base(BuildMessage(entity)) {}
-		private static string BuildMessage(EntityBase entity)
-		{
-			var message = string.Format(ExceptionMessageBase, entity.GetType().Name);
-			return message;
-		}
+	//	public EmptyEntityIdException(EntityBase entity): base(BuildMessage(entity)) {}
+	//	private static string BuildMessage(EntityBase entity)
+	//	{
+	//		var message = string.Format(ExceptionMessageBase, entity.GetType().Name);
+	//		return message;
+	//	}
 
-	}
+	//}
 
 	public class DbOperations: IDbOperations
     {
@@ -59,13 +59,11 @@ namespace Gloobster.Common
 		
 	    public async Task<T> SaveAsync<T>(T entity) where T: EntityBase
 	    {
-		    TestEntityForId(entity);
+		    AddEntityIdIfMissing(entity);
 
 			var collectionName = GetCollectionName<T>();
             var collection = Database.GetCollection<BsonDocument>(collectionName);
-
-            entity.id = ObjectId.GenerateNewId();
-
+			
             var bsonDoc = entity.ToBsonDocument();
 
             await collection.InsertOneAsync(bsonDoc);
@@ -82,10 +80,10 @@ namespace Gloobster.Common
 				return null;
 			}
 
+			entitiesList.ForEach(e => AddEntityIdIfMissing(e));
+			
 			var collectionName = GetCollectionName<T>();
 			var collection = Database.GetCollection<BsonDocument>(collectionName);
-
-			entitiesList.ForEach(e => e.id = ObjectId.GenerateNewId());
 			
 			var bsonDocs = entitiesList.Select(e => e.ToBsonDocument());
 
@@ -96,7 +94,7 @@ namespace Gloobster.Common
 
 		public async Task<UpdateResult> UpdateAsync<T>(T entity, FilterDefinition<BsonDocument> filter) where T : EntityBase
 		{			
-			TestEntityForId(entity);
+			AddEntityIdIfMissing(entity);
 
 			var collectionName = GetCollectionName<T>();
 			var collection = Database.GetCollection<BsonDocument>(collectionName);
@@ -171,11 +169,11 @@ namespace Gloobster.Common
 			return collectionName;
 		}
 
-		private void TestEntityForId(EntityBase entity)
+		private void AddEntityIdIfMissing(EntityBase entity)
 		{
 			if (entity.id == ObjectId.Empty)
 			{
-				throw new EmptyEntityIdException(entity);
+				entity.id = ObjectId.GenerateNewId();
 			}
 		}
     }

@@ -16,10 +16,10 @@ namespace Gloobster.DomainModels.Services.Accounts
 		public IComponentContext ComponentContext { get; set; }
 		public IDbOperations DB { get; set; }
 		public PortalUserDO PortalUser { get; set; }
-		public SocialNetworkType NetworkType => SocialNetworkType.Twitter;
+		public SocialNetworkType NetworkType => SocialNetworkType.Base;
 		public SocAuthenticationDO Authentication { get; set; }
 		public object UserObj { get; set; }
-		private PortalUserDO User => (PortalUserDO)UserObj;
+		private BaseUserDO User => (BaseUserDO)UserObj;
 
 
 		public async Task<PortalUserDO> Create()
@@ -27,8 +27,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 			var newUser = new PortalUserEntity
 			{
 				Mail = User.Mail,
-				Password = User.Password,
-				DisplayName = User.DisplayName
+				Password = User.Password				
 			};
 
 			var userEntity = await DB.SaveAsync(newUser);
@@ -36,24 +35,19 @@ namespace Gloobster.DomainModels.Services.Accounts
 			return result;
 		}
 
-		public Task<PortalUserDO> Load()
-		{
-			throw new NotImplementedException();
-		}
-
 		public string GetEmail()
 		{
-			throw new NotImplementedException();
+			return "unique";
 		}
 
 		public void OnUserExists(PortalUserDO portalUser)
 		{
-			throw new NotImplementedException();
+			
 		}
 
 		public void OnUserSuccessfulyLogged(PortalUserDO portalUser)
 		{
-			throw new NotImplementedException();
+			
 		}
 	}
 }
