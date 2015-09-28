@@ -9,7 +9,7 @@ namespace Gloobster.DomainModels.Services.Twitter
 {
 	public class MyTwitterService: IMyTwitterService
 	{
-		public string CallbackUrl = "http://localhost:4441/TwitterUser/AuthCallback";
+		public string CallbackUrl = "http://localhost:4441/TwitterUser/AuthCallback?mail={0}";
 
 		public TwitterService TwitterSvc { get; set; }
 
@@ -18,11 +18,13 @@ namespace Gloobster.DomainModels.Services.Twitter
 			TwitterSvc = new TwitterService(GloobsterConfig.TwitterConsumerKey, GloobsterConfig.TwitterConsumerSecret);
 		}
 
-		public Uri BuildAuthorizationUri()
+		public Uri BuildAuthorizationUri(string mail)
 		{
+			var url = string.Format(CallbackUrl, mail);
+
 			// Step 1 - Retrieve an OAuth Request Token			
 			// This is the registered callback URL
-			OAuthRequestToken requestToken = TwitterSvc.GetRequestToken(CallbackUrl);
+			OAuthRequestToken requestToken = TwitterSvc.GetRequestToken(url);
 
 			// Step 2 - Redirect to the OAuth Authorization URL
 			Uri uri = TwitterSvc.GetAuthorizationUri(requestToken);

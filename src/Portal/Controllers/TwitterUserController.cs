@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Autofac;
 using Gloobster.Common;
+using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.Portal.ReqRes;
 using Microsoft.AspNet.Mvc;
@@ -23,21 +24,31 @@ namespace Gloobster.Portal.Controllers
 			ComponentContext = componentContext;
 		}
 
-	    public ActionResult Authorize()
+	    public ActionResult MailStep()
 	    {
-		    Uri uri = TwitterSvc.BuildAuthorizationUri();
+		    return View();
+	    }
 
+	    public ActionResult Authorize(string mail)
+	    {
+		    Uri uri = TwitterSvc.BuildAuthorizationUri(mail);
+			
 			return new RedirectResult(uri.ToString(), false /*permanent*/);
 		}
 		
-		public async Task<ActionResult> AuthCallback(string oauth_token, string oauth_verifier)
+		public async Task<ActionResult> AuthCallback(string mail, string oauth_token, string oauth_verifier)
 		{			
 			var auth = TwitterSvc.VerifyCredintial(oauth_token, oauth_verifier);
 
 			var accountDriver = ComponentContext.ResolveKeyed<IAccountDriver>("Twitter");
 			UserService.AccountDriver = accountDriver;
 
-			var result = await UserService.Validate(auth, null);
+			var addInfo = new TwitterUserAddtionalInfoDO
+			{
+				Mail = mail
+			};
+
+			var result = await UserService.Validate(auth, addInfo);
 
 			var response = new LoggedResponse
 			{

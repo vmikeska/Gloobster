@@ -29,7 +29,8 @@
     "TweetSharp": "2.3.1",
     "Autofac": "4.0.0-beta7-130",
     "Autofac.Framework.DependencyInjection": "4.0.0-beta7-130",
-    "Microsoft.Framework.DependencyInjection.Abstractions": "1.0.0-beta7"
+    "Microsoft.Framework.DependencyInjection.Abstractions": "1.0.0-beta7",
+    "Microsoft.AspNet.Tooling.Razor": "1.0.0-beta7"
   },
 
     "commands": {

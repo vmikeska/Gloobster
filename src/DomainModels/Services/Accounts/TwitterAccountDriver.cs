@@ -24,6 +24,8 @@ namespace Gloobster.DomainModels.Services.Accounts
 		public SocAuthenticationDO Authentication { get; set; }
 		public object UserObj { get; set; }
 
+		public TwitterUserAddtionalInfoDO InFormInfo => (TwitterUserAddtionalInfoDO) UserObj;
+
 		public IComponentContext ComponentContext { get; set; }
 		public IDbOperations DB { get; set; }
 		public PortalUserDO PortalUser { get; set; }
@@ -45,9 +47,6 @@ namespace Gloobster.DomainModels.Services.Accounts
 
 			TwitterUser user = TwitterSvc.VerifyCredentials(new VerifyCredentialsOptions { IncludeEntities = true });
 			
-			//todo: make additional step to provide email
-			var email = "twitter";
-
 			var twitterAccount = new SocialAccountSE
 			{
 				Authentication = Authentication.ToEntity(),
@@ -71,7 +70,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 			{
 				id = ObjectId.GenerateNewId(),
 				DisplayName = user.ScreenName,
-				Mail = email,
+				Mail = InFormInfo.Mail,
 				Password = AccountUtils.GeneratePassword(),				
 				Languages = ParseLanguage(user.Language),
 				CurrentLocation = await ParseLocation(user.Location),

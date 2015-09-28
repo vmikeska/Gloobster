@@ -30,13 +30,13 @@
 		                <li><a asp-controller="Home" asp-action="Map">Map</a></li>
 		                <li><a asp-controller="Home" asp-action="Authorize">Authorize</a></li>
 		                <li><a asp-controller="Friends" asp-action="Friends">Friends</a></li>
-		                <li><a href="javascript:clickAuthorize()" id="authorize">Authorize new window</a></li>
+		                <li><a href="javascript:clickAuthorize()" id="authorize">Authorize Twitter</a></li>
 	                </ul>
 
 	                <script>
 
                 		function clickAuthorize() {
-                			var url = '/TwitterUser/Authorize';
+                			var url = '/TwitterUser/MailStep';
                 			var wnd = window.open(url);
                 		}
                 	</script>
