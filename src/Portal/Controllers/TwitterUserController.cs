@@ -2,15 +2,9 @@
 using System.Threading.Tasks;
 using Autofac;
 using Gloobster.Common;
-using Gloobster.DomainModels.Services.Accounts;
-using Gloobster.DomainModels.Services.Twitter;
 using Gloobster.DomainModelsCommon.Interfaces;
-using Gloobster.Mappers;
-using Gloobster.SocialLogin.Facebook.Communication;
-using Gloobster.WebApiObjects;
+using Gloobster.Portal.ReqRes;
 using Microsoft.AspNet.Mvc;
-using TweetSharp;
-using LoggedResponse = Gloobster.Portal.ReqRes.LoggedResponse;
 
 namespace Gloobster.Portal.Controllers
 {
@@ -38,12 +32,14 @@ namespace Gloobster.Portal.Controllers
 		
 		public async Task<ActionResult> AuthCallback(string oauth_token, string oauth_verifier)
 		{
+			return null;
+
 			var auth = TwitterSvc.VerifyCredintial(oauth_token, oauth_verifier);
 
 			var accountDriver = ComponentContext.ResolveKeyed<IAccountDriver>("Twitter");
 			UserService.AccountDriver = accountDriver;
 
-			var result = await UserService.Validate(auth);
+			var result = await UserService.Validate(auth, null);
 
 			var response = new LoggedResponse
 			{

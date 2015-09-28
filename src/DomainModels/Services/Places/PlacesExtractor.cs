@@ -25,7 +25,7 @@ namespace Gloobster.DomainModels.Services.Places
 
 		public string DbUserId;
 
-		public async Task<bool> ExtractNewAsync(string dbUserId, object auth)
+		public async Task<bool> ExtractNewAsync(string dbUserId, SocAuthenticationDO auth)
 		{
 			DbUserId = dbUserId;
 
@@ -66,7 +66,7 @@ namespace Gloobster.DomainModels.Services.Places
 		    place.PlaceLongitude = foundCity.Longitude;
 		    return true;
         }
-
+		
 	    public async void SaveAsync()
 	    {
 			NewVisitedPlaces = await VisitedPlaces.AddNewPlaces(NewFoundUniquePlaces, DbUserId);

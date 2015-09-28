@@ -5,6 +5,6 @@ namespace Gloobster.DomainModelsCommon.Interfaces
 {
 	public interface IPlacesExtractorDriver
 	{
-		List<VisitedPlaceDO> ExtractNewVisitedPlaces(string dbUserId, object auth);
+		List<VisitedPlaceDO> ExtractNewVisitedPlaces(string dbUserId, SocAuthenticationDO auth);
 	}
 }

@@ -46,7 +46,7 @@
 
 //			var userDo1 = UserCreations.CreatePortalUserDO1(true);
 
-//			var fbResult = await FBUserDomain.FacebookUserExists(userDo1.Facebook.Authentication.UserId);
+//			var fbResult = await FBUserDomain.FacebookUserExists(userDo1.Facebook.AuthenticationSE.UserId);
 
 //			Assert.True(fbResult.UserExists);
 //		}

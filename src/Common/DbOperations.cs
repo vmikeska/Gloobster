@@ -111,7 +111,7 @@ namespace Gloobster.Common
 		{
 			var collectionName = GetCollectionName<T>();
 			var collection = Database.GetCollection<BsonDocument>(collectionName);
-			
+		
 			UpdateResult result = await collection.UpdateOneAsync(filter, update);
 			return result;
 		}
@@ -125,12 +125,12 @@ namespace Gloobster.Common
 				var collectionName = GetCollectionName<T>();
 				var collection = Database.GetCollection<T>(collectionName);
 
-				var result = await collection.Find(query).ToListAsync();
+				var res = collection.Find(query);
+                var result = await res.ToListAsync();
 				return result.ToArray();
 			}
 			catch (Exception exc)
 			{
-
 				throw exc;
 			}
         }

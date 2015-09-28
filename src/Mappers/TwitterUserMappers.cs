@@ -8,22 +8,22 @@ namespace Gloobster.Mappers
 {
 	public static class TwitterUserMappers
 	{
-		public static TwitterUserEntity ToEntity(this TwitterUser obj)
+		public static TwitterUserSE ToEntity(this TwitterUser obj)
 		{
 			if (obj == null)
 			{
 				return null;
 			}
 
-			var entity = new TwitterUserEntity
+			var entity = new TwitterUserSE
 			{
 				CreatedDate = obj.CreatedDate,
 				FollowersCount = obj.FollowersCount,
 				FriendsCount = obj.FriendsCount,
-				TwUserId = obj.Id,
-				Language = obj.Language,
-				Location = obj.Location,
-				Name = obj.Name,
+				//UserId = obj.Id,
+				//Language = obj.Language,
+				//LocationMappers = obj.LocationMappers,
+				//Name = obj.Name,
 				ProfileImageUrl = obj.ProfileImageUrl,
 				ScreenName = obj.ScreenName,
 				StatusesCount = obj.StatusesCount,
@@ -62,22 +62,22 @@ namespace Gloobster.Mappers
 			return entity;
 		}
 
-		public static TwitterUserEntity ToEntity(this TwitterUserDO obj)
+		public static TwitterUserSE ToEntity(this TwitterUserDO obj)
 		{
 			if (obj == null)
 			{
 				return null;
 			}
 
-			var entity = new TwitterUserEntity
+			var entity = new TwitterUserSE
 			{
 				CreatedDate = obj.CreatedDate,
 				FollowersCount = obj.FollowersCount,
 				FriendsCount = obj.FriendsCount,
-				TwUserId = obj.TwUserId,
-				Language = obj.Language,
-				Location = obj.Location,
-				Name = obj.Name,
+				//UserId = obj.UserId,
+				//Language = obj.Language,
+				//LocationMappers = obj.LocationMappers,
+				//Name = obj.Name,
 				ProfileImageUrl = obj.ProfileImageUrl,
 				ScreenName = obj.ScreenName,
 				StatusesCount = obj.StatusesCount,
@@ -89,7 +89,7 @@ namespace Gloobster.Mappers
 			return entity;
 		}
 
-		public static TwitterUserDO ToDO(this TwitterUserEntity entity)
+		public static TwitterUserDO ToDO(this TwitterUserSE entity)
 		{
 			if (entity == null)
 			{
@@ -101,10 +101,10 @@ namespace Gloobster.Mappers
 				CreatedDate = entity.CreatedDate,
 				FollowersCount = entity.FollowersCount,
 				FriendsCount = entity.FriendsCount,
-				TwUserId = entity.TwUserId,
-				Language = entity.Language,
-				Location = entity.Location,
-				Name = entity.Name,
+				//UserId = entity.UserId,
+				//Language = entity.Language,
+				//LocationMappers = entity.LocationMappers,
+				//Name = entity.Name,
 				ProfileImageUrl = entity.ProfileImageUrl,
 				ScreenName = entity.ScreenName,
 				StatusesCount = entity.StatusesCount,

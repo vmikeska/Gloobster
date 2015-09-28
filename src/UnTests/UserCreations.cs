@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Gloobster.Common.DbEntity;
+using Gloobster.Common.DbEntity.PortalUser;
 using Gloobster.DomainModelsCommon.DO;
 using Gloobster.SocialLogin.Facebook.Communication;
 using MongoDB.Bson;
@@ -42,33 +43,33 @@ namespace Gloobster.UnitTests
 		public static IdNameFO Location1;
 
 
-		public static FacebookGroupEntity CreateFacebookGroupEntity1()
-		{
-			var entity = new FacebookGroupEntity
-			{
-				Authentication = CreateFacebookUserAuthenticationEntity1(),
-				FacebookUser = CreateFacebookUserEntity1()
-			};
+		//public static FacebookGroupEntity CreateFacebookGroupEntity1()
+		//{
+		//	var entity = new FacebookGroupEntity
+		//	{
+		//		Authentication = CreateFacebookUserAuthenticationEntity1(),
+		//		FacebookUser = CreateFacebookUserEntity1()
+		//	};
 
-			return entity;
-		}
+		//	return entity;
+		//}
 
-		public static FacebookUserAuthenticationEntity CreateFacebookUserAuthenticationEntity1()
-		{
-			var fbUserEntity = new FacebookUserAuthenticationEntity
-			{
-				AccessToken = AccessToken1,
-				//ExpiresAt = Expires,
-				//SignedRequest = SignedRequest1,
-				UserId = UserId1
-			};
+		//public static FacebookUserAuthenticationEntity CreateFacebookUserAuthenticationEntity1()
+		//{
+		//	var fbUserEntity = new FacebookUserAuthenticationEntity
+		//	{
+		//		AccessToken = AccessToken1,
+		//		//ExpiresAt = Expires,
+		//		//SignedRequest = SignedRequest1,
+		//		UserId = UserId1
+		//	};
 			
-			return fbUserEntity;
-		}
+		//	return fbUserEntity;
+		//}
 
-		public static FacebookUserAuthenticationDO CreateFacebookUserAuthenticationDO()
+		public static SocAuthenticationDO CreateFacebookUserAuthenticationDO()
 		{
-			var fbUserEntity = new FacebookUserAuthenticationDO
+			var fbUserEntity = new SocAuthenticationDO
 			{
 				AccessToken = AccessToken1,
 				//ExpiresIn = ExpiresIn1,
@@ -91,7 +92,7 @@ namespace Gloobster.UnitTests
 
 			if (withFacebook)
 			{
-				user.Facebook = CreateFacebookGroupEntity1();
+				//user.Facebook = CreateFacebookGroupEntity1();
 			}
 
 			if (save)
@@ -113,25 +114,16 @@ namespace Gloobster.UnitTests
 
 			if (withFacebook)
 			{
-				user.Facebook = CreateFacebookGroupDO1();
+				//user.Facebook = CreateFacebookGroupDO1();
 			}						
 
 			return user;
 		}
 
-		public static FacebookGroupDO CreateFacebookGroupDO1()
-		{
-			var entity = new FacebookGroupDO
-			{
-				Authentication = CreateFacebookUserDO1()				
-			};
 
-			return entity;
-		}
-
-		public static FacebookUserAuthenticationDO CreateFacebookUserDO1()
+		public static SocAuthenticationDO CreateFacebookUserDO1()
 		{
-			var fbUser = new FacebookUserAuthenticationDO
+			var fbUser = new SocAuthenticationDO
 			{
 				AccessToken = AccessToken1,
 				//ExpiresIn = ExpiresIn1,
@@ -164,26 +156,26 @@ namespace Gloobster.UnitTests
 			return fbUser;
 		}
 
-		public static FacebookUserEntity CreateFacebookUserEntity1()
+		public static FacebookUserSE CreateFacebookUserEntity1()
 		{
-			var fbUser = new FacebookUserEntity
+			var fbUser = new FacebookUserSE
 			{
-				Name = Name1,
-				UserId = Id1,
+				//Name = Name1,
+				//UserId = Id1,
 				//todo: fix these
 				//Languages = Languages1,
 				//Location = Location1,
 				//HomeTown = HomeTown1,
-				Email = Email1,
-				Gender = Gender1,
-				FirstName = FirstName1,
+				//Email = Email1,
+				//Gender = Gender1,
+				//FirstName = FirstName1,
 				TimeZone = TimeZone1,
 				Verified = Verified1,
 				Locale = Locale1,
 				Link = Link1,
 				UpdatedTime = UpdatedTime1,
 				//FavoriteTeams = FavoriteTeams1,
-				LastName = LastName1
+				//LastName = LastName1
 			};
 			return fbUser;
 		}

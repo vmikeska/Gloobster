@@ -29,18 +29,18 @@ namespace Gloobster.DomainModels.Services.Twitter
 			return uri;
 		}
 
-		public TwitterUserAuthenticationDO VerifyCredintial(string oauthToken, string oauthVerifier)
+		public SocAuthenticationDO VerifyCredintial(string oauthToken, string oauthVerifier)
 		{
 			var requestToken = new OAuthRequestToken { Token = oauthToken };
 
 			// Step 3 - Exchange the Request Token for an Access Token			
 			OAuthAccessToken accessToken = TwitterSvc.GetAccessToken(requestToken, oauthVerifier);
 
-			var auth = new TwitterUserAuthenticationDO
+			var auth = new SocAuthenticationDO
 			{
 				TokenSecret = accessToken.TokenSecret,
-				Token = accessToken.Token,
-				TwUserId = accessToken.UserId
+				AccessToken = accessToken.Token,
+				UserId = accessToken.UserId.ToString()
 			};
 
 			return auth;

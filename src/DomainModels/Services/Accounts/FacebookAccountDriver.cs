@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using Gloobster.Common;
+using Gloobster.Common.CommonEnums;
 using Gloobster.Common.DbEntity;
+using Gloobster.Common.DbEntity.PortalUser;
 using Gloobster.DomainModels.Services.Places;
 using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
@@ -17,42 +19,67 @@ namespace Gloobster.DomainModels.Services.Accounts
 {
 	public class FacebookAccountDriver : IAccountDriver
 	{
+		public SocialNetworkType NetworkType => SocialNetworkType.Facebook;
+
 		public IDbOperations DB { get; set; }
-		public IFacebookService FBService { get; set; }		
+		public IFacebookService FBService { get; set; }
+		public SocAuthenticationDO Authentication { get; set; }
 		public IComponentContext ComponentContext { get; set; }
+		public IGeoNamesService GNService { get; set; }
+		public ICountryService CountryService { get; set; }
+
+
 
 		public IPlacesExtractor PlacesExtractor { get; set; }
 
 		public PortalUserDO PortalUser { get; set; }
 
 		public object UserObj { get; set; }
-		private FacebookUserAuthenticationDO User => (FacebookUserAuthenticationDO)UserObj;
-
-
+		
 		public async Task<PortalUserDO> Create()
 		{			
-			var permenentToken = IssueNewPermanentAccessToken(User.AccessToken);
+			var permTokenResult = IssueNewPermanentAccessToken(Authentication.AccessToken);
 
-			FBService.SetAccessToken(User.AccessToken);
-			var userCallResult = FBService.Get<FacebookUserFO>("/me");
-			var resultEntity = userCallResult.ToEntity();
+			FBService.SetAccessToken(Authentication.AccessToken);
+			var fbUser = FBService.Get<FacebookUserFO>("/me");
+			
+			var facebookAccount = new SocialAccountSE
+			{
+				Authentication = new SocAuthenticationSE
+				{
+					UserId = Authentication.UserId,
+					AccessToken = permTokenResult.AccessToken,
+					ExpiresAt = permTokenResult.ExpiresAt
 
+				},
+				NetworkType = SocialNetworkType.Facebook,
+				Specifics = new FacebookUserSE
+				{
+					TimeZone = fbUser.TimeZone,
+					FavoriteTeams = fbUser.FavoriteTeams.Select(i => i.ToEntity()).ToArray(),
+					Link = fbUser.Link,
+					Locale = fbUser.Locale,
+					UpdatedTime = fbUser.UpdatedTime,
+					Verified = fbUser.Verified
+				}
+			};
+			
 			var userEntity = new PortalUserEntity
 			{
 				id = ObjectId.GenerateNewId(),
-				DisplayName = resultEntity.Name,
-				Mail = resultEntity.Email,
-				Password = AccountUtils.GeneratePassword(),
-				Facebook = new FacebookGroupEntity
-				{
-					Authentication = new FacebookUserAuthenticationEntity
-					{
-						AccessToken = permenentToken.AccessToken,
-						ExpiresAt = permenentToken.ExpiresAt,
-						UserId = User.UserId
-					},
-					FacebookUser = resultEntity
-				}
+				DisplayName = fbUser.Name,
+                Mail = fbUser.Email,				
+				Password = AccountUtils.GeneratePassword(),								
+				Languages = ParseLanguages(fbUser.Languages),
+				Gender = ParseGender(fbUser.Gender),
+				CurrentLocation = await ParseLocationAsync(fbUser.Location),
+				HomeLocation = await ParseLocationAsync(fbUser.HomeTown),
+				FirstName = fbUser.FirstName,
+				LastName = fbUser.LastName,
+
+				ProfileImage = AccountUtils.DownloadAndStoreTheProfilePicture(""),
+
+				SocialAccounts = new[] { facebookAccount }
 			};
 
 			var savedEntity = await DB.SaveAsync(userEntity);
@@ -61,20 +88,63 @@ namespace Gloobster.DomainModels.Services.Accounts
 			return createdUser;
 		}
 
-		public async Task<PortalUserDO> Load()
+		private async Task<CityLocationSE> ParseLocationAsync(IdNameFO location)
 		{
-			var query = $"{{ 'Facebook.FacebookUser.UserId': '{User.UserId}' }}";
-			var results = await DB.FindAsync<PortalUserEntity>(query);
-
-			if (!results.Any())
+			var prms = location.Name.Split(',');
+			bool isValid = prms.Count() == 2;
+			if (!isValid)
+			{
+				return null;
+			}
+			var cityName = prms[0].Trim();
+			var countryName = prms[1].Trim();
+			var country = CountryService.GetByCountryName(countryName);
+			if (country == null)
 			{
 				return null;
 			}
 
-			var result = results.First().ToDO();
-			return result;
+			var gnResult = await GNService.GetCityAsync(cityName, country.CountryCode, 1);
+			if (gnResult.GeoNames.Count() != 1)
+			{
+				return null;
+			}
+
+			var gnCity = gnResult.GeoNames.First();
+			var resultLoc = new CityLocationSE
+			{
+				CountryCode = country.CountryCode,
+				City = cityName,
+				GeoNamesId = gnCity.GeonameId
+			};
+			
+			return resultLoc;
 		}
 
+		private Gender ParseGender(string gender)
+		{
+			if (gender.ToLower() == "male")
+			{
+				return Gender.M;
+			}
+
+			if (gender.ToLower() == "female")
+			{
+				return Gender.F;
+			}
+
+			return Gender.N;
+		}
+
+		private LanguageSE[] ParseLanguages(IdNameFO[] languages)
+		{
+			//todo: implement language reference system
+
+			var langs = languages.Select(l => new LanguageSE {Name = l.Name, LanguageId = 0}).ToArray();
+			
+			return langs;			
+		}
+		
 		public string GetEmail()
 		{
 			//todo: implement
@@ -89,8 +159,10 @@ namespace Gloobster.DomainModels.Services.Accounts
 		public async void OnUserSuccessfulyLogged(PortalUserDO portalUser)
 		{
 			PlacesExtractor.Driver = ComponentContext.ResolveKeyed<IPlacesExtractorDriver>("Facebook");
-            
-			await PlacesExtractor.ExtractNewAsync(portalUser.DbUserId, portalUser.Facebook.Authentication);
+
+			var fbAcccount = portalUser.GetAccount(SocialNetworkType.Facebook);
+			
+			await PlacesExtractor.ExtractNewAsync(portalUser.UserId, fbAcccount.Authentication);
 			PlacesExtractor.SaveAsync();			
 		}
 		
@@ -98,22 +170,29 @@ namespace Gloobster.DomainModels.Services.Accounts
 
 		private void UpdateTokenIfNeeded(PortalUserDO portalUser)
 		{
-			bool expired = portalUser.Facebook.Authentication.ExpiresAt < DateTime.UtcNow;
+			var account = portalUser.SocialAccounts.FirstOrDefault(a => a.NetworkType == SocialNetworkType.Facebook);
+			if (account == null)
+			{
+				return;
+			}
+			
+			bool expired = account.Authentication.ExpiresAt < DateTime.UtcNow;
 			if (expired)
 			{
-				var newPermanentToken = IssueNewPermanentAccessToken(portalUser.Facebook.Authentication.AccessToken);
-				UpdateFacebookUserAuth(portalUser.DbUserId, newPermanentToken.AccessToken, newPermanentToken.ExpiresAt);
+				var newPermanentToken = IssueNewPermanentAccessToken(account.Authentication.AccessToken);
+				UpdateFacebookUserAuth(portalUser.UserId, SocialNetworkType.Facebook, newPermanentToken.AccessToken, newPermanentToken.ExpiresAt);
 			}
 		}
-
-		private async void UpdateFacebookUserAuth(string dbUserId, string accessToken, DateTime expiresAt)
+		
+		public async void UpdateFacebookUserAuth(string dbUserId, SocialNetworkType networkType, string accessToken, DateTime expiresAt)
 		{
-			var filter = Builders<BsonDocument>.Filter.Eq("_id", new ObjectId(dbUserId));
+			var builder = Builders<BsonDocument>.Filter;
+            var filter = builder.Eq("_id", new ObjectId(dbUserId)) & builder.Eq("SocialAccounts.NetworkType", ((int)networkType));
+			
 			var update = Builders<BsonDocument>.Update
-				.Set("Facebook.Authentication.AccessToken", accessToken)
-				.Set("Facebook.Authentication.ExpiresAt", expiresAt);
-
-			//todo: remove ExpiresIn at all
+				.Set("SocialAccounts.Authentication.AccessToken", accessToken)
+				.Set("SocialAccounts.Authentication.ExpiresAt", expiresAt);
+			
 			var result = await DB.UpdateAsync<PortalUserEntity>(update, filter);
 
 			if (result.MatchedCount == 0)
@@ -122,21 +201,20 @@ namespace Gloobster.DomainModels.Services.Accounts
 				throw new Exception("something went wrong with update");
 			}
 		}
-		
-		private FacebookUserAuthenticationDO IssueNewPermanentAccessToken(string accessToken)
+
+		private SocAuthenticationDO IssueNewPermanentAccessToken(string accessToken)
 		{
 			int expireToleranceInSeconds = 60;
 
 			var url =
-				string.Format("/oauth/access_token?grant_type=fb_exchange_token&client_id={0}&client_secret={1}&fb_exchange_token={2}",
-					GloobsterConfig.FacebookAppId, GloobsterConfig.FacebookAppSecret, accessToken);
+				$"/oauth/access_token?grant_type=fb_exchange_token&client_id={GloobsterConfig.FacebookAppId}&client_secret={GloobsterConfig.FacebookAppSecret}&fb_exchange_token={accessToken}";
 
 			FBService.SetAccessToken(accessToken);
 			var permanentToken = FBService.Get<FacebookPermanentToken>(url);
 
 			var newExpireTime = DateTime.UtcNow.AddSeconds(permanentToken.SecondsToExpire - expireToleranceInSeconds);
 
-			var result = new FacebookUserAuthenticationDO
+			var result = new SocAuthenticationDO
 			{
 				AccessToken = permanentToken.AccessToken,
 				ExpiresAt = newExpireTime

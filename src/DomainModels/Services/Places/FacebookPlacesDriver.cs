@@ -14,14 +14,14 @@ namespace Gloobster.DomainModels.Services.Places
 		public ICountryService CountryService { get; set; }
 
 		public string DbUserId;
-		public FacebookUserAuthenticationDO Authentication;
+		public SocAuthenticationDO Authentication;
 
 		private const string UserQueryBase = "/{0}/tagged_places";
 		private const string UserQueryNext = UserQueryBase + "/?after={1}";
 		
-		public List<VisitedPlaceDO> ExtractNewVisitedPlaces(string dbUserId, object auth)
+		public List<VisitedPlaceDO> ExtractNewVisitedPlaces(string dbUserId, SocAuthenticationDO auth)
 		{
-			Authentication = (FacebookUserAuthenticationDO) auth;			
+			Authentication = auth;			
 			DbUserId = dbUserId;
 
 			var taggedPlacesQuery = string.Format(UserQueryBase, Authentication.UserId);
@@ -79,5 +79,6 @@ namespace Gloobster.DomainModels.Services.Places
 				Extract(nextQuery, foundPlaces);
 			}
 		}
+		
 	}
 }

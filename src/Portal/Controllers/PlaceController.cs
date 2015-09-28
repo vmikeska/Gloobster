@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Autofac;
 using Gloobster.Common;
 using Gloobster.Common.DbEntity;
+using Gloobster.Common.DbEntity.PortalUser;
 using Gloobster.DomainModels.Services.GeonamesService;
 using Gloobster.DomainModelsCommon.BaseClasses;
 using Gloobster.DomainModelsCommon.DO;

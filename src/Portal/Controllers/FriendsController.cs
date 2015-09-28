@@ -6,6 +6,7 @@ using Gloobster.DomainModels.Services.Facebook.FriendsExtractor;
 using Gloobster.SocialLogin.Facebook.Communication;
 using Microsoft.AspNet.Mvc;
 using Gloobster.Common.DbEntity;
+using Gloobster.Common.DbEntity.PortalUser;
 
 //http://stackoverflow.com/questions/23417356/facebook-graph-api-v2-0-me-friends-returns-empty-or-only-friends-who-also-u
 
@@ -30,7 +31,7 @@ namespace Gloobster.Portal.Controllers
 
 		    var fbService = new FacebookService();
 
-		    fbService.SetAccessToken(portalUser.Facebook.Authentication.AccessToken);
+		    //fbService.SetAccessToken(portalUser.Facebook.Authentication.AccessToken);
 		    var fbFriendsService = new FacebookFriendsService(fbService);
 
 		    var friends = fbFriendsService.GetFriendsByFbUserId();

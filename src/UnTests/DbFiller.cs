@@ -11,6 +11,7 @@ using FourSquare.SharpSquare.Core;
 using FourSquare.SharpSquare.Entities;
 using Gloobster.Common;
 using Gloobster.Common.DbEntity;
+using Gloobster.Common.DbEntity.PortalUser;
 using Gloobster.DomainModels.Services.CountryService;
 using Gloobster.DomainModels.Services.GeonamesService;
 using Gloobster.DomainModels.Services.PlaceSearch;
@@ -74,7 +75,7 @@ namespace Gloobster.UnitTests
 
 			var queryObj = new SearchServiceQuery {Query = "Praha"};
 
-			PortalUserEntity[] portalUserEntity = await DBOper.FindAsync<PortalUserEntity>("{'Mail': 'vmikeska@hotmail.com'}");
+			var portalUserEntity = await DBOper.FindAsync<PortalUserEntity>("{'Mail': 'vmikeska@hotmail.com'}");
 			var portalUser = portalUserEntity.First().ToDO();
 			queryObj.PortalUser = portalUser;
 

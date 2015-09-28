@@ -1,14 +1,10 @@
-﻿using Microsoft.AspNet.Mvc;
+﻿using System;
+using Microsoft.AspNet.Mvc;
 using System.Threading.Tasks;
 using Autofac;
-using Gloobster.Common;
-using Gloobster.DomainModels;
-using Gloobster.DomainModels.Services.Accounts;
+using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
-using Gloobster.WebApiObjects;
-using Gloobster.Mappers;
 using Gloobster.Portal.ReqRes;
-using Gloobster.SocialLogin.Facebook.Communication;
 using Gloobster.WebApiObjects.Facebook;
 
 namespace Gloobster.Portal.Controllers
@@ -27,14 +23,19 @@ namespace Gloobster.Portal.Controllers
 
 		[HttpPost]
 		public async Task<IActionResult> Post([FromBody] FacebookUserAuthenticationRequest request)
-		{
-			var facebookAuthRequest = request.ToDoFromRequest();
+		{			
+			var facebookAuthRequest = new SocAuthenticationDO
+			{
+				AccessToken = request.accessToken,
+				UserId = request.userID,
+				ExpiresAt = DateTime.UtcNow.AddSeconds(request.expiresIn)
+			}; 
 
 			var accountDriver = ComponentContext.ResolveKeyed<IAccountDriver>("Facebook");
 			
 			UserService.AccountDriver = accountDriver;
 
-			var result = await UserService.Validate(facebookAuthRequest);
+			var result = await UserService.Validate(facebookAuthRequest, null);
 
 			var response = new LoggedResponse
 			{

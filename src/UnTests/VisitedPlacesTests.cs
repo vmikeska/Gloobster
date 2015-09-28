@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Gloobster.Common.DbEntity;
+using Gloobster.Common.DbEntity.PortalUser;
 using Gloobster.DomainModels;
 using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;

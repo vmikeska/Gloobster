@@ -29,7 +29,7 @@ namespace Gloobster.DomainModels.Services
 	 //   {
 		//	TwitterSvc.AuthenticateWith(auth.Token, auth.TokenSecret);
 
-		//    AllTweets = ExtractAllTweets(auth.TwUserId);
+		//    AllTweets = ExtractAllTweets(auth.UserId);
 
 		//    lastExtractedId = AllTweets.Max(t => t.Id);
 			

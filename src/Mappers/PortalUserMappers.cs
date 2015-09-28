@@ -1,6 +1,9 @@
+using System.Linq;
 using Gloobster.Common.DbEntity;
+using Gloobster.Common.DbEntity.PortalUser;
 using Gloobster.DomainModelsCommon.DO;
 using Gloobster.WebApiObjects;
+using MongoDB.Bson;
 
 namespace Gloobster.Mappers
 {
@@ -18,27 +21,25 @@ namespace Gloobster.Mappers
 				DisplayName = entity.DisplayName,
 				Mail = entity.Mail,
 				Password = entity.Password,
-				DbUserId = entity.id.ToString()
+				UserId = entity.id.ToString(),
+				Gender = entity.Gender,								
+				FirstName = entity.FirstName,
+				LastName = entity.LastName,
+				ProfileImage = entity.ProfileImage,
+				HomeLocation = entity.HomeLocation.ToDO(),
+				CurrentLocation = entity.CurrentLocation.ToDO()
 			};
 
-			if (entity.Facebook != null)
+			if (entity.SocialAccounts != null)
 			{
-				dObj.Facebook = new FacebookGroupDO
-				{
-					Authentication = entity.Facebook.Authentication.ToDO(),
-					FacebookUser = entity.Facebook.FacebookUser.ToDO()
-				};
+				dObj.SocialAccounts = entity.SocialAccounts.Select(a => a.ToDO()).ToArray();
 			}
 
-			if (entity.Twitter != null)
+			if (entity.Languages != null)
 			{
-				dObj.Twitter = new TwitterGroupDO
-				{
-					Authentication = entity.Twitter.Authentication.ToDO(),
-					TwitterUser = entity.Twitter.TwitterUser.ToDO()
-				};					
+				dObj.Languages = entity.Languages.Select(l => l.ToDO()).ToArray();
 			}
-
+			
 			return dObj;
 		}
 
@@ -53,48 +54,28 @@ namespace Gloobster.Mappers
 			{
 				DisplayName = dObj.DisplayName,
 				Mail = dObj.Mail,
-				Password = dObj.Password
+				Password = dObj.Password,
+				id = new ObjectId(dObj.UserId),
+				Gender = dObj.Gender,
+				FirstName = dObj.FirstName,
+				LastName = dObj.LastName,
+				ProfileImage = dObj.ProfileImage,
+				HomeLocation = dObj.HomeLocation.ToEntity(),
+				CurrentLocation = dObj.CurrentLocation.ToEntity()
 			};
 
-			if (dObj.Facebook != null)
+			if (dObj.SocialAccounts != null)
 			{
-				entity.Facebook = new FacebookGroupEntity
-				{
-					FacebookUser = dObj.Facebook.FacebookUser.ToEntity(),
-					Authentication = dObj.Facebook.Authentication.ToEntity()
-				};					
+				entity.SocialAccounts = dObj.SocialAccounts.Select(a => a.ToEntity()).ToArray();
 			}
 
-			if (dObj.Twitter != null)
-			{				
-                entity.Twitter = new TwitterGroupEntity
-				{
-					Authentication = dObj.Twitter.Authentication.ToEntity(),
-					TwitterUser = dObj.Twitter.TwitterUser.ToEntity()
-				};
+			if (dObj.Languages != null)
+			{
+				entity.Languages = dObj.Languages.Select(l => l.ToEntity()).ToArray();
 			}
 
 			return entity;
 		}
-
-		public static PortalUserDO ToDoFromRequest(this PortalUserRequest request)
-		{
-			if (request == null)
-			{
-				return null;
-			}
-
-			var dObj = new PortalUserDO
-			{
-				DisplayName = request.displayName,
-				Mail = request.mail,
-				Password = request.password
-			};
-			
-			return dObj;
-
-		}
-
 
 	}
 }

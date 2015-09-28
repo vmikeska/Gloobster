@@ -1,9 +1,13 @@
 using System.Threading.Tasks;
 using Autofac;
 using Gloobster.Common;
+using Gloobster.Common.CommonEnums;
+using Gloobster.Common.DbEntity.PortalUser;
 using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
 using Newtonsoft.Json.Linq;
+using System.Linq;
+using Gloobster.Mappers;
 
 namespace Gloobster.DomainModels.Services.Accounts
 {
@@ -11,13 +15,16 @@ namespace Gloobster.DomainModels.Services.Accounts
 	{
 		public IAccountDriver AccountDriver { get; set; }
 		public IComponentContext ComponentContext { get; set; }
+		public IDbOperations DB { get; set; }
 		
-		public async Task<UserLoggedResultDO> Validate(object userObj)
+		public async Task<UserLoggedResultDO> Validate(SocAuthenticationDO authentication, object userObj)
 		{
+			AccountDriver.Authentication = authentication;
 			AccountDriver.UserObj = userObj;
+
 			var result = new UserLoggedResultDO();
 
-			PortalUserDO portalUser = await AccountDriver.Load();
+			PortalUserDO portalUser = await Load(AccountDriver.NetworkType, authentication.UserId);
 
 			bool userExists = portalUser != null;
 			if (!userExists)						
@@ -36,12 +43,27 @@ namespace Gloobster.DomainModels.Services.Accounts
 				AccountDriver.OnUserExists(portalUser);
 			}
 
-			result.EncodedToken = LogIn(portalUser.DbUserId);
+			result.EncodedToken = LogIn(portalUser.UserId);
 			result.Status = UserLogged.Successful;
 			AccountDriver.OnUserSuccessfulyLogged(portalUser);
 			return result;
 		}
-		
+
+		public async Task<PortalUserDO> Load(SocialNetworkType networkType, string userId)
+		{
+			var query = $"{{ 'SocialAccounts.NetworkType': {(int)networkType}, 'SocialAccounts.Authentication.UserId': '{userId}' }}";
+			var results = await DB.FindAsync<PortalUserEntity>(query);
+
+			if (!results.Any())
+			{
+				return null;
+			}
+
+			var result = results.First().ToDO();
+			return result;
+
+		}
+
 
 		private bool EmailAlreadyExistsInSystem(string email)
 		{

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FourSquare.SharpSquare.Entities;
 using Gloobster.Common;
+using Gloobster.Common.CommonEnums;
 using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.SocialLogin.Facebook.Communication;
@@ -17,13 +18,15 @@ namespace Gloobster.DomainModels.Services.PlaceSearch
 		
 		public bool CanBeUsed(SearchServiceQuery queryObj)
 		{
-			bool hasFacebookUser = queryObj.PortalUser != null && queryObj.PortalUser.Facebook != null;
+			bool hasFacebookUser = queryObj.PortalUser != null && queryObj.PortalUser.GetAccount(SocialNetworkType.Facebook) != null;
 			return hasFacebookUser;
 		}
 
 		public async Task<List<Place>> SearchAsync(SearchServiceQuery queryObj)
 		{
-			Service.SetAccessToken(queryObj.PortalUser.Facebook.Authentication.AccessToken);
+			var account = queryObj.PortalUser.GetAccount(SocialNetworkType.Facebook);
+
+			Service.SetAccessToken(account.Authentication.AccessToken);
 
 			var queryBuilder = new QueryBuilder()
 				.Endpoint("search")

@@ -12,18 +12,19 @@ namespace Gloobster.DomainModels.Services.Places
 	{
 		public TwitterService TwitterSvc;
 
-		public TwitterUserAuthenticationDO Authentication;
+		public SocAuthenticationDO Authentication;
 
 		private const int PageSize = 200;
 
-		public List<VisitedPlaceDO> ExtractNewVisitedPlaces(string dbUserId, object auth)
+		public List<VisitedPlaceDO> ExtractNewVisitedPlaces(string dbUserId, SocAuthenticationDO auth)
 		{
-			Authentication = (TwitterUserAuthenticationDO) auth;
+			Authentication = (SocAuthenticationDO) auth;
 
 			TwitterSvc = new TwitterService(GloobsterConfig.TwitterConsumerKey, GloobsterConfig.TwitterConsumerSecret);
-			TwitterSvc.AuthenticateWith(Authentication.Token, Authentication.TokenSecret);
+			TwitterSvc.AuthenticateWith(Authentication.AccessToken, Authentication.TokenSecret);
 
-			var allTweets = ExtractAllTweets(Authentication.TwUserId);
+			long userId = long.Parse(Authentication.UserId);
+			var allTweets = ExtractAllTweets(userId);
 
 			long lastExtractedId = allTweets.Max(t => t.Id);
 

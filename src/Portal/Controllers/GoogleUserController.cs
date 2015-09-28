@@ -3,9 +3,7 @@ using System.Threading.Tasks;
 using Autofac;
 using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
-using Gloobster.Mappers;
 using Gloobster.Portal.ReqRes;
-using Gloobster.WebApiObjects;
 using Gloobster.WebApiObjects.Google;
 using Microsoft.AspNet.Mvc;
 
@@ -29,11 +27,15 @@ namespace Gloobster.Portal.Controllers
 			//todo: find what does it mean
 			DateTime expiresAt = new DateTime(request.wc.expires_at);
 
-			var userDo = new GoogleUserRegistrationDO
+			var auth = new SocAuthenticationDO
 			{
 				AccessToken = request.wc.access_token,
 				ExpiresAt = expiresAt,
 				UserId = request.El,
+			};
+
+			var userDo = new GoogleUserRegistrationDO
+			{				
 				DisplayName = request.Ld.ye,
 				ProfileLink = request.Ld.Ei,
 				Mail = request.Ld.Ld
@@ -43,7 +45,7 @@ namespace Gloobster.Portal.Controllers
 
 			UserService.AccountDriver = accountDriver;
 
-			var result = await UserService.Validate(userDo);
+			var result = await UserService.Validate(auth, userDo);
 
 			var response = new LoggedResponse
 			{
