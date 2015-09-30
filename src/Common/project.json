@@ -7,17 +7,16 @@
   "licenseUrl": "",
 
   "dependencies": {
-   
-    
     "MongoDB.Driver": "2.0.1",
-    "Microsoft.AspNet.Mvc": "6.0.0-beta7"
-
-
+    "Microsoft.AspNet.Mvc": "6.0.0-beta7",
+    "Facebook": "7.0.6"
   },
 
   "frameworks": {
     "dnx451": {
-
+      "frameworkAssemblies": {
+        "System.Web": "4.0.0.0"
+      }
     }
   }
 }

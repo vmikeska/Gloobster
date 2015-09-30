@@ -22,7 +22,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 			AccountDriver.Authentication = authentication;
 			AccountDriver.UserObj = userObj;
 
-			var result = new UserLoggedResultDO();
+			
 
 			PortalUserDO portalUser = await Load();
 
@@ -33,7 +33,10 @@ namespace Gloobster.DomainModels.Services.Accounts
 				bool emailExists = EmailAlreadyExistsInSystem(email);
 				if (emailExists)
 				{
-					//todo: stop registration, ask for pairing
+					return new UserLoggedResultDO
+					{
+						Status = UserLogged.MailAlreadyExists
+					};
 				}
 				
 				portalUser = await AccountDriver.Create();
@@ -43,9 +46,14 @@ namespace Gloobster.DomainModels.Services.Accounts
 				AccountDriver.OnUserExists(portalUser);
 			}
 
-			result.EncodedToken = LogIn(portalUser.UserId);
-			result.Status = UserLogged.Successful;
+			var result = new UserLoggedResultDO
+			{
+				EncodedToken = LogIn(portalUser.UserId),
+				Status = UserLogged.Successful
+			};
+
 			AccountDriver.OnUserSuccessfulyLogged(portalUser);
+
 			return result;
 		}
 

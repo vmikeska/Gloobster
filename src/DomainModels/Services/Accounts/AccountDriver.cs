@@ -37,7 +37,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 
 		public string GetEmail()
 		{
-			return "unique";
+			return User.Mail;
 		}
 
 		public void OnUserExists(PortalUserDO portalUser)

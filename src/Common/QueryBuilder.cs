@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 
 namespace Gloobster.Common
 {
@@ -9,6 +10,7 @@ namespace Gloobster.Common
 		private bool _withQuestionMark = false;
 		private string _endpoint;
 		private string _baseUrl;
+		private bool _encodeParams = false;
 
 		public string Build()
 		{
@@ -25,7 +27,7 @@ namespace Gloobster.Common
 				result += _endpoint;
 			}
 
-			var pairedParams = Parameters.Select(p => $"{p.Key}={p.Value}");
+			var pairedParams = Parameters.Select(p => $"{p.Key}={(_encodeParams ? HttpUtility.UrlEncode(p.Value) : p.Value)}");
 			var queryStr = string.Join("&", pairedParams);
 			
 			bool hasParams = Parameters.Any();
@@ -36,6 +38,12 @@ namespace Gloobster.Common
 			}
 
 			return result;
+		}
+
+		public QueryBuilder EncodeParams()
+		{
+			_encodeParams = true;
+			return this;
 		}
 
 		public QueryBuilder Param(string key, string value)

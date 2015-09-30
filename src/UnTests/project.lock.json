@@ -21,9 +21,13 @@
       "Common/1.0.0": {
         "type": "project",
         "dependencies": {
+          "Facebook": "7.0.6",
           "Microsoft.AspNet.Mvc": "6.0.0-beta7",
           "MongoDB.Driver": "2.0.1"
-        }
+        },
+        "frameworkAssemblies": [
+          "System.Web"
+        ]
       },
       "DomainModels/1.0.0": {
         "type": "project",
@@ -57,6 +61,15 @@
         },
         "runtime": {
           "lib/net45/Facebook.dll": {}
+        }
+      },
+      "Gloobster.Sharing/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "Common": "1.0.0",
+          "DomainModelsCommon": "1.0.0",
+          "Facebook": "7.0.6",
+          "TweetSharp": "2.3.1"
         }
       },
       "Mappers/1.0.0": {
@@ -1439,6 +1452,10 @@
       "type": "project",
       "path": "../DomainModelsCommon/project.json"
     },
+    "Gloobster.Sharing/1.0.0": {
+      "type": "project",
+      "path": "../Gloobster.Sharing/project.json"
+    },
     "Mappers/1.0.0": {
       "type": "project",
       "path": "../Mappers/project.json"
@@ -2819,7 +2836,8 @@
       "TweetSharp >= 2.3.1",
       "xunit >= 2.1.0-rc1-build3168",
       "xunit.runner.dnx >= 2.1.0-beta5-build169",
-      "Newtonsoft.Json >= 7.0.1"
+      "Newtonsoft.Json >= 7.0.1",
+      "Gloobster.Sharing >= 1.0.0-*"
     ],
     "DNX,Version=v4.5.1": [
       "SharpSquare >= 1.0.0-*"

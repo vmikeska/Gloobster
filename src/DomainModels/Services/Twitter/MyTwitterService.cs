@@ -48,6 +48,13 @@ namespace Gloobster.DomainModels.Services.Twitter
 			return auth;
 		}
 
+		public ITwitterService GetAuthenticatedService(string accessToken, string accessTokenSecret)
+		{
+			TwitterSvc.AuthenticateWith(accessToken, accessTokenSecret);
+			return TwitterSvc;
+		}
+
+
 
 	}
 }

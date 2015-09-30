@@ -1,4 +1,6 @@
-﻿namespace Gloobster.DomainModelsCommon.DO
+﻿using Gloobster.Common.CommonEnums;
+
+namespace Gloobster.DomainModelsCommon.DO
 {
 	public class UserLoggedResultDO
 	{

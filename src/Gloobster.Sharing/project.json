@@ -1,0 +1,18 @@
+{
+  "version": "1.0.0-*",
+  "description": "Gloobster.Sharing Class Library",
+  "authors": [ "vmike_000" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+  "frameworks": {
+    "dnx451": { }
+  },
+  "dependencies": {
+    "Common": "1.0.0-*",
+    "DomainModelsCommon": "1.0.0-*",
+    "Facebook": "7.0.6",
+    "TweetSharp": "2.3.1"
+  }
+}
+

@@ -42,9 +42,13 @@
       "Common/1.0.0": {
         "type": "project",
         "dependencies": {
+          "Facebook": "7.0.6",
           "Microsoft.AspNet.Mvc": "6.0.0-beta7",
           "MongoDB.Driver": "2.0.1"
-        }
+        },
+        "frameworkAssemblies": [
+          "System.Web"
+        ]
       },
       "DomainModels/1.0.0": {
         "type": "project",

@@ -136,7 +136,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 
 		public string GetEmail()
 		{
-			return "unique";
+			return InFormInfo.Mail;
 		}
 
 		public void OnUserExists(PortalUserDO portalUser)

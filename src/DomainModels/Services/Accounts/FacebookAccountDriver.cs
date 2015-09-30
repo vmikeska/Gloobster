@@ -35,13 +35,15 @@ namespace Gloobster.DomainModels.Services.Accounts
 		public PortalUserDO PortalUser { get; set; }
 
 		public object UserObj { get; set; }
-		
+
+		private FacebookUserFO _fbUser;
+
 		public async Task<PortalUserDO> Create()
 		{			
 			var permTokenResult = IssueNewPermanentAccessToken(Authentication.AccessToken);
 
 			FBService.SetAccessToken(Authentication.AccessToken);
-			var fbUser = FBService.Get<FacebookUserFO>("/me");
+			_fbUser = FBService.Get<FacebookUserFO>("/me");
 			
 			var facebookAccount = new SocialAccountSE
 			{
@@ -55,27 +57,27 @@ namespace Gloobster.DomainModels.Services.Accounts
 				NetworkType = SocialNetworkType.Facebook,
 				Specifics = new FacebookUserSE
 				{
-					TimeZone = fbUser.TimeZone,
-					FavoriteTeams = fbUser.FavoriteTeams.Select(i => i.ToEntity()).ToArray(),
-					Link = fbUser.Link,
-					Locale = fbUser.Locale,
-					UpdatedTime = fbUser.UpdatedTime,
-					Verified = fbUser.Verified
+					TimeZone = _fbUser.TimeZone,
+					FavoriteTeams = _fbUser.FavoriteTeams.Select(i => i.ToEntity()).ToArray(),
+					Link = _fbUser.Link,
+					Locale = _fbUser.Locale,
+					UpdatedTime = _fbUser.UpdatedTime,
+					Verified = _fbUser.Verified
 				}
 			};
 			
 			var userEntity = new PortalUserEntity
 			{
 				id = ObjectId.GenerateNewId(),
-				DisplayName = fbUser.Name,
-                Mail = fbUser.Email,				
+				DisplayName = _fbUser.Name,
+                Mail = _fbUser.Email,				
 				Password = AccountUtils.GeneratePassword(),								
-				Languages = ParseLanguages(fbUser.Languages),
-				Gender = ParseGender(fbUser.Gender),
-				CurrentLocation = await ParseLocationAsync(fbUser.Location),
-				HomeLocation = await ParseLocationAsync(fbUser.HomeTown),
-				FirstName = fbUser.FirstName,
-				LastName = fbUser.LastName,
+				Languages = ParseLanguages(_fbUser.Languages),
+				Gender = ParseGender(_fbUser.Gender),
+				CurrentLocation = await ParseLocationAsync(_fbUser.Location),
+				HomeLocation = await ParseLocationAsync(_fbUser.HomeTown),
+				FirstName = _fbUser.FirstName,
+				LastName = _fbUser.LastName,
 
 				ProfileImage = AccountUtils.DownloadAndStoreTheProfilePicture(""),
 
@@ -147,8 +149,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 		
 		public string GetEmail()
 		{
-			//todo: implement
-			return "unique";
+			return _fbUser.Email;
 		}
 
 		public void OnUserExists(PortalUserDO portalUser)

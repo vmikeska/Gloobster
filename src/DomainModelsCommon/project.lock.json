@@ -21,8 +21,21 @@
       "Common/1.0.0": {
         "type": "project",
         "dependencies": {
+          "Facebook": "7.0.6",
           "Microsoft.AspNet.Mvc": "6.0.0-beta7",
           "MongoDB.Driver": "2.0.1"
+        },
+        "frameworkAssemblies": [
+          "System.Web"
+        ]
+      },
+      "Facebook/7.0.6": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Facebook.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Facebook.dll": {}
         }
       },
       "Microsoft.AspNet.Antiforgery/1.0.0-beta7": {
@@ -1164,6 +1177,36 @@
         "lib/win/Autofac.dll",
         "lib/win/Autofac.xml",
         "repo.json"
+      ]
+    },
+    "Facebook/7.0.6": {
+      "type": "package",
+      "sha512": "D9nlWZb88S4U+eh1pUDQ+AkSkiht6m0eFpxKFddZnQSSFTnncvDMBEnNODy4fOIOjWQIiOXRVbuY04jCPyWqkw==",
+      "files": [
+        "Facebook.7.0.6.nupkg",
+        "Facebook.7.0.6.nupkg.sha512",
+        "Facebook.nuspec",
+        "lib/net35-client/Facebook.dll",
+        "lib/net35-client/Facebook.xml",
+        "lib/net40-client/Facebook.dll",
+        "lib/net40-client/Facebook.xml",
+        "lib/net45/Facebook.dll",
+        "lib/net45/Facebook.xml",
+        "lib/portable-win81+wpa81/Facebook.dll",
+        "lib/portable-win81+wpa81/Facebook.xml",
+        "lib/sl5/Facebook.dll",
+        "lib/sl5/Facebook.xml",
+        "lib/win8/Facebook.dll",
+        "lib/win8/Facebook.xml",
+        "lib/wp71/Facebook.dll",
+        "lib/wp71/Facebook.xml",
+        "lib/wp8/Facebook.dll",
+        "lib/wp8/Facebook.xml",
+        "lib/wp81/Facebook.dll",
+        "lib/wp81/Facebook.xml",
+        "LICENSE.txt",
+        "readme.txt",
+        "serializers/JsonNetSerializer.cs"
       ]
     },
     "Microsoft.AspNet.Antiforgery/1.0.0-beta7": {
