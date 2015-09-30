@@ -7,10 +7,8 @@ var __extends = (this && this.__extends) || function (d, b) {
 var HomePageView = (function (_super) {
     __extends(HomePageView, _super);
     function HomePageView() {
-        _super.apply(this, arguments);
+        _super.call(this);
     }
-    HomePageView.prototype.initialize = function () {
-    };
     HomePageView.prototype.registerNormal = function (mail, password) {
         var data = { "mail": mail, "password": password };
         _super.prototype.apiPost.call(this, "User", data, function (response) {

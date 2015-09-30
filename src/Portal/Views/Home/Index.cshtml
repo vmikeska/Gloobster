@@ -6,10 +6,9 @@
 
 <div class="row">
 
-		<script type="text/javascript" src="@Url.Content("~/js/FacebookInit.js")"></script>
-		<script type="text/javascript" src="@Url.Content("~/js/FacebookLogin.js")"></script>
-		<script type="text/javascript" src="@Url.Content("~/js/FacebookExecutor.js")"></script>
+		@*<script type="text/javascript" src="@Url.Content("~/js/FacebookInit.js")"></script>*@		
 	<script type="text/javascript" src="@Url.Content("~/js/registration/registration.js")"></script>
+		<script type="text/javascript" src="@Url.Content("~/js/registration/GoogleInit.js")"></script>
 	<script type="text/javascript" src="@Url.Content("~/js/Common/RequestSender.js")"></script>
 
 		<script type="text/javascript" src="@Url.Content("~/js/Views/ViewBase.js")"></script>
@@ -17,25 +16,23 @@
 
 	<script>
 
-	    var exec = new FacebookLoginExecutor();
-	    exec.execute();
-	    fbLogin = exec.fbLogin;
 
-	    
-	    homePageView = new HomePageView();
-	    homePageView.initialize();
+		currentView = new HomePageView();
 
-	    
+
+		function onFacebookLogin() {
+				currentView.onFacebookButtonPressed();
+		}
 
 
 
-    </script>
+	</script>
 
 
 	<div>
 
 			@*<div class="fb-login-button" data-size="xlarge" data-show-faces="false" data-auto-logout-link="false"></div>*@
-		<fb:login-button scope="user_tagged_places,user_likes,publish_actions,user_location,user_hometown,email,user_status,user_friends" onlogin="fbLogin.refreshLoginStatus();">
+		<fb:login-button scope="user_tagged_places,user_likes,publish_actions,user_location,user_hometown,email,user_status,user_friends" onlogin="onFacebookLogin()">
 		</fb:login-button>
 
 		<div id="registerUserForm" style="border: 1px solid black">
@@ -50,40 +47,40 @@
 				<input id="inputPass" type="text" name="password" value=""/>
 			</div>
 
-			<button onclick="homePageView.registerNormal($('#inputMail').val(), $('#inputPass').val())">Register</button>
+			<button onclick="currentView.registerNormal($('#inputMail').val(), $('#inputPass').val())">Register</button>
 		</div>
 
 	</div>
 
-
-
-	<div id="status">
-	</div>
 
 		<meta name="google-signin-client_id" content="430126253289-14tdcfe4noqm6p201jrugpi9dsies2at.apps.googleusercontent.com">
 
 
 		<div id="my-signin2"></div>
 		<script>
-    function onSuccess(googleUser) {
-    		console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+			//function onSuccess(googleUser) {
+			//		console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
 
-    		homePageView.googleUserLogged(googleUser);
-    }
-    function onFailure(error) {
-      console.log(error);
-    }
-    function renderButton() {
-      gapi.signin2.render('my-signin2', {
-        'scope': 'https://www.googleapis.com/auth/plus.login',
-        'width': 200,
-        'height': 50,
-        'longtitle': true,
-        'theme': 'dark',
-        'onsuccess': onSuccess,
-        'onfailure': onFailure
-      });
-    }
+			//		currentView.googleUserLogged(googleUser);
+			//}
+			//function onFailure(error) {
+			//  console.log(error);
+			//}
+			//function renderButton() {
+			//  gapi.signin2.render('my-signin2', {
+			//    'scope': 'https://www.googleapis.com/auth/plus.login',
+			//    'width': 200,
+			//    'height': 50,
+			//    'longtitle': true,
+			//    'theme': 'dark',
+			//    'onsuccess': onSuccess,
+			//    'onfailure': onFailure
+			//  });
+			//}
+
+			
+
+
 		</script>
 
 		<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>

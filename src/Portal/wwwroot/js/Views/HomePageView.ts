@@ -1,7 +1,7 @@
 ﻿class HomePageView extends Views.ViewBase {
 
-	public initialize() {
-		
+	constructor() {		
+		super();
 	}
 
 	public registerNormal(mail: string, password: string) {

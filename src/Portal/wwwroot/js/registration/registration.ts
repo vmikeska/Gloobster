@@ -52,26 +52,35 @@ class CreateUserBase implements ICreateUser {
 	}
 }
 
+class CreateUserGoogle extends CreateUserBase {
+
+	//todo: rename
+	createUserEndpoint = '/api/GoogleUser';
+
+		handleRoughResponse(jsonRequest) {
+
+				
+				
+				super.sendUserRegistrationData(jsonRequest);
+		}
+
+}
+
 class CreateUserFacebook extends CreateUserBase {
 
 	//todo: rename
 	createUserEndpoint = '/api/FacebookUser';
 
-		handleRoughResponse(jsonRequest) {
+ handleRoughResponse(jsonRequest) {
 
-				var fbUser = new FacebookUser(
-						jsonRequest.accessToken,
-						jsonRequest.userID,
-						jsonRequest.expiresIn,
-						jsonRequest.signedRequest);
-				
-				super.sendUserRegistrationData(fbUser);
+	var fbUser = new FacebookUser(
+	 jsonRequest.accessToken,
+	 jsonRequest.userID,
+	 jsonRequest.expiresIn,
+	 jsonRequest.signedRequest);
 
-				//var baseUser = new PortalUser();				
-				//baseUser.facebookUser = fbUser;
-
-				//super.sendUserRegistrationData(baseUser);
-		}
+	super.sendUserRegistrationData(fbUser);
+ }
 
 }
 

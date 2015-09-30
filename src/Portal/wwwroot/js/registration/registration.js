@@ -41,6 +41,18 @@ var CreateUserBase = (function () {
     };
     return CreateUserBase;
 })();
+var CreateUserGoogle = (function (_super) {
+    __extends(CreateUserGoogle, _super);
+    function CreateUserGoogle() {
+        _super.apply(this, arguments);
+        //todo: rename
+        this.createUserEndpoint = '/api/GoogleUser';
+    }
+    CreateUserGoogle.prototype.handleRoughResponse = function (jsonRequest) {
+        _super.prototype.sendUserRegistrationData.call(this, jsonRequest);
+    };
+    return CreateUserGoogle;
+})(CreateUserBase);
 var CreateUserFacebook = (function (_super) {
     __extends(CreateUserFacebook, _super);
     function CreateUserFacebook() {
@@ -51,9 +63,6 @@ var CreateUserFacebook = (function (_super) {
     CreateUserFacebook.prototype.handleRoughResponse = function (jsonRequest) {
         var fbUser = new FacebookUser(jsonRequest.accessToken, jsonRequest.userID, jsonRequest.expiresIn, jsonRequest.signedRequest);
         _super.prototype.sendUserRegistrationData.call(this, fbUser);
-        //var baseUser = new PortalUser();				
-        //baseUser.facebookUser = fbUser;
-        //super.sendUserRegistrationData(baseUser);
     };
     return CreateUserFacebook;
 })(CreateUserBase);
