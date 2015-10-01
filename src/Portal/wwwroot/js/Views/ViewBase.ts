@@ -1,28 +1,36 @@
 module Views {
 
+	class LoginManager {
+		
+	}
+
 	export class ViewBase {
 
-	 public facebookUserCreator: CreateUserFacebook;
-	 public googleUserCreator: CreateUserGoogle;
+		public facebookUserCreator: CreateUserFacebook;
+		public googleUserCreator: CreateUserGoogle;
 
 		public googleInit: GoogleInit;
 
 		constructor() {
-			this.initializeFacebook();
 			this.initializeGoogle();
+			this.initializeFacebook();
 		}
 
-		private initializeGoogle() {		 
-		 this.googleInit = new GoogleInit();
+		private initializeGoogle() {
+			var self = this;
 
-			
-		 this.googleInit.onSuccess = (googleUser) => {
-			this.googleUserCreator.registerOrLogin(googleUser);
-		 }
+			this.googleUserCreator = new CreateUserGoogle();
 
-		 this.googleInit.onFailure = (error) => {
-			 //todo: display general dialog
-		 }
+			this.googleInit = new GoogleInit();
+
+
+			this.googleInit.onSuccess = (googleUser) => {
+				self.googleUserCreator.registerOrLogin(googleUser);
+			}
+
+			this.googleInit.onFailure = (error) => {
+				//todo: display general dialog
+			}
 
 		}
 
@@ -32,17 +40,16 @@ module Views {
 			this.facebookUserCreator = new CreateUserFacebook();
 
 			var fbInit = new FacebookInit();
-			
+
 			fbInit.onFacebookInitialized = () => {
-			 self.facebookUserCreator.registerOrLogin();
+				self.facebookUserCreator.registerOrLogin();
 			}
 
 			fbInit.initialize();
 		}
 
-	 
 
-		//		googleInit.onSuccess = function onSuccess(googleUser) {
+//		googleInit.onSuccess = function onSuccess(googleUser) {
 
 		//			var dbgStr = 'Logged in as: ' + googleUser.getBasicProfile().getName();
 		//			console.log(dbgStr);

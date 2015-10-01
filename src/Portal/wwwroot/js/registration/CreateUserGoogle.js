@@ -7,9 +7,10 @@ var __extends = (this && this.__extends) || function (d, b) {
 var CreateUserGoogle = (function (_super) {
     __extends(CreateUserGoogle, _super);
     function CreateUserGoogle() {
-        _super.apply(this, arguments);
+        _super.call(this);
         //todo: rename
         this.createUserEndpoint = '/api/GoogleUser';
+        this.loginType = NetworkType.Google;
     }
     CreateUserGoogle.prototype.registerOrLogin = function (googleUser) {
         _super.prototype.sendUserRegistrationData.call(this, googleUser);

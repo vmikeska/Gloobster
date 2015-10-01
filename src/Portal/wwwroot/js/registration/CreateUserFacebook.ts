@@ -1,5 +1,10 @@
 class CreateUserFacebook extends CreateUserBase {
 
+ constructor() {
+	 super();
+	 this.loginType = NetworkType.Facebook;
+ }
+
 	//todo: rename
 	createUserEndpoint = '/api/FacebookUser';
 

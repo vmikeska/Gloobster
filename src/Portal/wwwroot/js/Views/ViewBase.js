@@ -1,15 +1,21 @@
 var Views;
 (function (Views) {
+    var LoginManager = (function () {
+        function LoginManager() {
+        }
+        return LoginManager;
+    })();
     var ViewBase = (function () {
         function ViewBase() {
-            this.initializeFacebook();
             this.initializeGoogle();
+            this.initializeFacebook();
         }
         ViewBase.prototype.initializeGoogle = function () {
-            var _this = this;
+            var self = this;
+            this.googleUserCreator = new CreateUserGoogle();
             this.googleInit = new GoogleInit();
             this.googleInit.onSuccess = function (googleUser) {
-                _this.googleUserCreator.registerOrLogin(googleUser);
+                self.googleUserCreator.registerOrLogin(googleUser);
             };
             this.googleInit.onFailure = function (error) {
                 //todo: display general dialog

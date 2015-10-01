@@ -1,21 +1,21 @@
 ﻿
-interface ICreateUser {		
- sendUserRegistrationData: Function;
- storeCookieWithToken(token: string);
- createUserEndpoint: string;
+//interface ICreateUser {		
+// sendUserRegistrationData: Function;
+// storeCookieWithToken(token: string);
+// createUserEndpoint: string;
+//}
+//implements ICreateUser
+
+
+enum NetworkType {
+	Local, Facebook, Twitter, Google
 }
 
-class PortalUser {
-		displayName: string;
-    password: string;
-    mail: string;
-}
+class CreateUserBase {
 
+	createUserEndpoint = '';
 
-
-class CreateUserBase implements ICreateUser {
-
-	createUserEndpoint = 'notImpolemented';
+	loginType: NetworkType;
 
 	onSuccess = (response) => {
 	 this.storeCookieWithToken(response.encodedToken);
@@ -28,7 +28,8 @@ class CreateUserBase implements ICreateUser {
 
 	storeCookieWithToken(token: string) {	 
 	 $.cookie("token", token);
-	 //todo: set other stuff, like domain and so
+		console.log("token received: " + this.loginType);
+		//todo: set other stuff, like domain and so
 	}
 
 	sendUserRegistrationData(newUser) {
@@ -39,16 +40,3 @@ class CreateUserBase implements ICreateUser {
 		request.sentPost();
 	}
 }
-
-class CreateUserLocal extends CreateUserBase {
-
-		createUser(displayName: string, mail: string, password: string) {
-				var baseUser = new PortalUser();
-				baseUser.displayName = displayName;
-				baseUser.mail = mail;
-				baseUser.password = password;
-
-				super.sendUserRegistrationData(baseUser);
-		}
-}
-

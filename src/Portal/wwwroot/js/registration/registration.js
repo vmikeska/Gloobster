@@ -1,27 +1,20 @@
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
-var PortalUser = (function () {
-    function PortalUser() {
-    }
-    return PortalUser;
-})();
-var FacebookUser = (function () {
-    function FacebookUser(accessToken, userId, expiresIn, signedRequest) {
-        this.accessToken = accessToken;
-        this.userId = userId;
-        this.expiresIn = expiresIn;
-        this.signedRequest = signedRequest;
-    }
-    return FacebookUser;
-})();
+//interface ICreateUser {		
+// sendUserRegistrationData: Function;
+// storeCookieWithToken(token: string);
+// createUserEndpoint: string;
+//}
+//implements ICreateUser
+var NetworkType;
+(function (NetworkType) {
+    NetworkType[NetworkType["Local"] = 0] = "Local";
+    NetworkType[NetworkType["Facebook"] = 1] = "Facebook";
+    NetworkType[NetworkType["Twitter"] = 2] = "Twitter";
+    NetworkType[NetworkType["Google"] = 3] = "Google";
+})(NetworkType || (NetworkType = {}));
 var CreateUserBase = (function () {
     function CreateUserBase() {
         var _this = this;
-        this.createUserEndpoint = 'notImpolemented';
+        this.createUserEndpoint = '';
         this.onSuccess = function (response) {
             _this.storeCookieWithToken(response.encodedToken);
         };
@@ -31,6 +24,7 @@ var CreateUserBase = (function () {
     }
     CreateUserBase.prototype.storeCookieWithToken = function (token) {
         $.cookie("token", token);
+        console.log("token received: " + this.loginType);
         //todo: set other stuff, like domain and so
     };
     CreateUserBase.prototype.sendUserRegistrationData = function (newUser) {
@@ -42,56 +36,4 @@ var CreateUserBase = (function () {
     };
     return CreateUserBase;
 })();
-var CreateUserGoogle = (function (_super) {
-    __extends(CreateUserGoogle, _super);
-    function CreateUserGoogle() {
-        _super.apply(this, arguments);
-        //todo: rename
-        this.createUserEndpoint = '/api/GoogleUser';
-    }
-    CreateUserGoogle.prototype.handleRoughResponse = function (jsonRequest) {
-        _super.prototype.sendUserRegistrationData.call(this, jsonRequest);
-    };
-    return CreateUserGoogle;
-})(CreateUserBase);
-var CreateUserFacebook = (function (_super) {
-    __extends(CreateUserFacebook, _super);
-    function CreateUserFacebook() {
-        var _this = this;
-        _super.apply(this, arguments);
-        //todo: rename
-        this.createUserEndpoint = '/api/FacebookUser';
-        this.statusChangeCallback = function (response) {
-            if (response.status === 'connected') {
-                _this.handleRoughResponse(response.authResponse);
-            }
-            else if (response.status === 'not_authorized') {
-            }
-            else {
-            }
-        };
-    }
-    CreateUserFacebook.prototype.registerOrLogin = function () {
-        FB.getLoginStatus(this.statusChangeCallback);
-    };
-    CreateUserFacebook.prototype.handleRoughResponse = function (jsonRequest) {
-        var fbUser = new FacebookUser(jsonRequest.accessToken, jsonRequest.userID, jsonRequest.expiresIn, jsonRequest.signedRequest);
-        _super.prototype.sendUserRegistrationData.call(this, fbUser);
-    };
-    return CreateUserFacebook;
-})(CreateUserBase);
-var CreateUserLocal = (function (_super) {
-    __extends(CreateUserLocal, _super);
-    function CreateUserLocal() {
-        _super.apply(this, arguments);
-    }
-    CreateUserLocal.prototype.createUser = function (displayName, mail, password) {
-        var baseUser = new PortalUser();
-        baseUser.displayName = displayName;
-        baseUser.mail = mail;
-        baseUser.password = password;
-        _super.prototype.sendUserRegistrationData.call(this, baseUser);
-    };
-    return CreateUserLocal;
-})(CreateUserBase);
 //# sourceMappingURL=registration.js.map

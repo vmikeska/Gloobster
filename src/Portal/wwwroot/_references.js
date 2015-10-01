@@ -16,6 +16,7 @@
 /// <reference path="js/maps/mapsoperations.js" />
 /// <reference path="js/registration/createuserfacebook.js" />
 /// <reference path="js/registration/createusergoogle.js" />
+/// <reference path="js/registration/createuserlocal.js" />
 /// <reference path="js/registration/facebookinit.js" />
 /// <reference path="js/registration/googleinit.js" />
 /// <reference path="js/registration/registration.js" />

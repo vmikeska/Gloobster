@@ -8,7 +8,7 @@ var CreateUserFacebook = (function (_super) {
     __extends(CreateUserFacebook, _super);
     function CreateUserFacebook() {
         var _this = this;
-        _super.apply(this, arguments);
+        _super.call(this);
         //todo: rename
         this.createUserEndpoint = '/api/FacebookUser';
         this.statusChangeCallback = function (response) {
@@ -20,6 +20,7 @@ var CreateUserFacebook = (function (_super) {
             else {
             }
         };
+        this.loginType = NetworkType.Facebook;
     }
     CreateUserFacebook.prototype.registerOrLogin = function () {
         FB.getLoginStatus(this.statusChangeCallback);
