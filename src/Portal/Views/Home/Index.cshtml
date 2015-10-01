@@ -6,9 +6,16 @@
 
 <div class="row">
 
-		<script type="text/javascript" src="@Url.Content("~/js/registration/FacebookInit.js")"></script>		
+		<script src="https://apis.google.com/js/platform.js?onload=onGoogleScriptsLoaded" async defer></script>
+
+	<script type="text/javascript" src="@Url.Content("~/js/registration/FacebookInit.js")"></script>
 	<script type="text/javascript" src="@Url.Content("~/js/registration/registration.js")"></script>
-		<script type="text/javascript" src="@Url.Content("~/js/registration/GoogleInit.js")"></script>
+	<script type="text/javascript" src="@Url.Content("~/js/registration/CreateUserGoogle.js")"></script>
+		<script type="text/javascript" src="@Url.Content("~/js/registration/CreateUserFacebook.js")"></script>
+		
+
+
+	<script type="text/javascript" src="@Url.Content("~/js/registration/GoogleInit.js")"></script>
 	<script type="text/javascript" src="@Url.Content("~/js/Common/RequestSender.js")"></script>
 
 		<script type="text/javascript" src="@Url.Content("~/js/Views/ViewBase.js")"></script>
@@ -19,6 +26,9 @@
 
 		currentView = new HomePageView();
 
+		function onGoogleScriptsLoaded() {
+			currentView.googleInit.initialize();
+		}
 
 
 	</script>
@@ -27,7 +37,7 @@
 	<div>
 
 			@*<div class="fb-login-button" data-size="xlarge" data-show-faces="false" data-auto-logout-link="false"></div>*@
-		<fb:login-button scope="user_tagged_places,user_likes,publish_actions,user_location,user_hometown,email,user_status,user_friends" onlogin="currentView.facebookUser.registerOrLogin()">
+		<fb:login-button scope="user_tagged_places,user_likes,publish_actions,user_location,user_hometown,email,user_status,user_friends" onlogin="currentView.facebookUserCreator.registerOrLogin()">
 		</fb:login-button>
 
 		<div id="registerUserForm" style="border: 1px solid black">
@@ -78,7 +88,7 @@
 
 		</script>
 
-		<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+		
 
 
 </div>

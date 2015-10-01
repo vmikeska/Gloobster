@@ -2,7 +2,8 @@ module Views {
 
 	export class ViewBase {
 
-		public facebookUser: CreateUserFacebook;
+	 public facebookUserCreator: CreateUserFacebook;
+	 public googleUserCreator: CreateUserGoogle;
 
 		public googleInit: GoogleInit;
 
@@ -11,19 +12,29 @@ module Views {
 			this.initializeGoogle();
 		}
 
-		private initializeGoogle() {
-			this.googleInit = new GoogleInit();
+		private initializeGoogle() {		 
+		 this.googleInit = new GoogleInit();
+
+			
+		 this.googleInit.onSuccess = (googleUser) => {
+			this.googleUserCreator.registerOrLogin(googleUser);
+		 }
+
+		 this.googleInit.onFailure = (error) => {
+			 //todo: display general dialog
+		 }
+
 		}
 
 		private initializeFacebook() {
 			var self = this;
 
-			this.facebookUser = new CreateUserFacebook();
+			this.facebookUserCreator = new CreateUserFacebook();
 
 			var fbInit = new FacebookInit();
 			
 			fbInit.onFacebookInitialized = () => {
-			 self.facebookUser.registerOrLogin();
+			 self.facebookUserCreator.registerOrLogin();
 			}
 
 			fbInit.initialize();

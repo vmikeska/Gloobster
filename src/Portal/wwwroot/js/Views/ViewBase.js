@@ -6,14 +6,21 @@ var Views;
             this.initializeGoogle();
         }
         ViewBase.prototype.initializeGoogle = function () {
+            var _this = this;
             this.googleInit = new GoogleInit();
+            this.googleInit.onSuccess = function (googleUser) {
+                _this.googleUserCreator.registerOrLogin(googleUser);
+            };
+            this.googleInit.onFailure = function (error) {
+                //todo: display general dialog
+            };
         };
         ViewBase.prototype.initializeFacebook = function () {
             var self = this;
-            this.facebookUser = new CreateUserFacebook();
+            this.facebookUserCreator = new CreateUserFacebook();
             var fbInit = new FacebookInit();
             fbInit.onFacebookInitialized = function () {
-                self.facebookUser.registerOrLogin();
+                self.facebookUserCreator.registerOrLogin();
             };
             fbInit.initialize();
         };
