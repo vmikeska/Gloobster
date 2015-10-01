@@ -6,7 +6,7 @@
 
 <div class="row">
 
-		@*<script type="text/javascript" src="@Url.Content("~/js/FacebookInit.js")"></script>*@		
+		<script type="text/javascript" src="@Url.Content("~/js/registration/FacebookInit.js")"></script>		
 	<script type="text/javascript" src="@Url.Content("~/js/registration/registration.js")"></script>
 		<script type="text/javascript" src="@Url.Content("~/js/registration/GoogleInit.js")"></script>
 	<script type="text/javascript" src="@Url.Content("~/js/Common/RequestSender.js")"></script>
@@ -20,11 +20,6 @@
 		currentView = new HomePageView();
 
 
-		function onFacebookLogin() {
-				currentView.onFacebookButtonPressed();
-		}
-
-
 
 	</script>
 
@@ -32,7 +27,7 @@
 	<div>
 
 			@*<div class="fb-login-button" data-size="xlarge" data-show-faces="false" data-auto-logout-link="false"></div>*@
-		<fb:login-button scope="user_tagged_places,user_likes,publish_actions,user_location,user_hometown,email,user_status,user_friends" onlogin="onFacebookLogin()">
+		<fb:login-button scope="user_tagged_places,user_likes,publish_actions,user_location,user_hometown,email,user_status,user_friends" onlogin="currentView.facebookUser.registerOrLogin()">
 		</fb:login-button>
 
 		<div id="registerUserForm" style="border: 1px solid black">

@@ -34,7 +34,7 @@ class CreateUserBase implements ICreateUser {
 	}
 
 	onError = (response) => {
-
+	 //todo: show some general error dialog
 	}
 
 
@@ -71,16 +71,30 @@ class CreateUserFacebook extends CreateUserBase {
 	//todo: rename
 	createUserEndpoint = '/api/FacebookUser';
 
- handleRoughResponse(jsonRequest) {
+	registerOrLogin() {
+		FB.getLoginStatus(this.statusChangeCallback);
+	}
 
-	var fbUser = new FacebookUser(
-	 jsonRequest.accessToken,
-	 jsonRequest.userID,
-	 jsonRequest.expiresIn,
-	 jsonRequest.signedRequest);
+	private statusChangeCallback = (response) => {
+		if (response.status === 'connected') {
+			this.handleRoughResponse(response.authResponse);
+		} else if (response.status === 'not_authorized') {
+			//possibly problems with authorization
+		} else {
+			//zero state
+		}
+	}
 
-	super.sendUserRegistrationData(fbUser);
- }
+	handleRoughResponse(jsonRequest) {
+
+		var fbUser = new FacebookUser(
+			jsonRequest.accessToken,
+			jsonRequest.userID,
+			jsonRequest.expiresIn,
+			jsonRequest.signedRequest);
+
+		super.sendUserRegistrationData(fbUser);
+	}
 
 }
 
