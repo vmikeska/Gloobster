@@ -11,12 +11,5 @@
 			alert("user registred");
 		});
 	}
-
-	public googleUserLogged(user) {
-	 
-	 super.apiPost("GoogleUser", user, response => {
-			//alert('response;');
-		});
-	}
-
+ 
 }

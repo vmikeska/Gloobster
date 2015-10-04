@@ -15,11 +15,6 @@ var HomePageView = (function (_super) {
             alert("user registred");
         });
     };
-    HomePageView.prototype.googleUserLogged = function (user) {
-        _super.prototype.apiPost.call(this, "GoogleUser", user, function (response) {
-            //alert('response;');
-        });
-    };
     return HomePageView;
 })(Views.ViewBase);
 //# sourceMappingURL=HomePageView.js.map

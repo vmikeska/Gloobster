@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Gloobster</title>
+
+	@*<link rel="shortcut icon" href="images/favicon.html">*@
+	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,700">
+	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:400,700">
+	<link href="http://ga.cz/2015/gloobster/css/style.css" rel="stylesheet">
+
+	<link rel="stylesheet" href="~/css/site.css"/>
+
+	<script src="~/lib/jquery/dist/jquery.js"></script>
+	<script src="~/lib/jquery.cookie/jquery.cookie.js"></script>
+	<script src="~/lib/lodash/lodash.js"></script>
+
+		<script type="text/javascript" src="@Url.Content("~/js/globals.js")"></script>
+
+	<script type="text/javascript" src="@Url.Content("~/js/Views/ViewBase.js")"></script>
+	<script type="text/javascript" src="@Url.Content("~/js/Common/RequestSender.js")"></script>
+
+		<script type="text/javascript" src="@Url.Content("~/js/registration/LoginManager.js")"></script>
+
+	<script type="text/javascript" src="@Url.Content("~/js/registration/FacebookInit.js")"></script>
+	<script type="text/javascript" src="@Url.Content("~/js/registration/GoogleInit.js")"></script>
+
+	<script type="text/javascript" src="@Url.Content("~/js/registration/CreateUserBase.js")"></script>
+	<script type="text/javascript" src="@Url.Content("~/js/registration/CreateUserGoogle.js")"></script>
+	<script type="text/javascript" src="@Url.Content("~/js/registration/CreateUserFacebook.js")"></script>
+
+
+</head>
+<body onload="onBodyLoad()" class="" id="top">
+		<header class="header">
+				<div class="wrapper">
+					<h1><a asp-controller="Home" asp-action="HomePage" class="logo-header">Gloobster</a></h1>
+						<div class="menu-holder table">
+								<div class="cell">
+									<ul id="menu" class="menu-header table">
+											@*<li><a class="active" href="#">Menu</a></li>*@
+										
+										<li><a href="/Home/PinBoard">Pin board</a></li>
+										<li><a href="#">Menu</a></li>
+										
+									</ul>
+								</div>
+								<div class="cell">
+										<div class="dropdown">
+												<span class="selected">English</span>
+												<span class="notification">5</span>                    <ul>
+														<li>English <span class="notification">3</span></li>
+														<li>Czech</li>
+												</ul>
+												<input type="hidden">
+										</div>
+								</div>
+						</div>
+						<a href="#" class="hamburger" data-target="#menu"><span></span></a>
+				</div>
+</header>
+
+		<div class="blue-line margin2"></div>
+		@RenderBody()
+
+<ul>
+	
+	<li><a asp-controller="Home" asp-action="Map">Map</a></li>	
+	<li><a href="javascript:clickAuthorize()" id="authorize">Authorize Twitter</a></li>
+</ul>
+				@Html.Partial("_Footer")
+
+
+		<script src="http://ga.cz/2015/gloobster/js/jquery.countto.js"></script>
+		<script src="http://ga.cz/2015/gloobster/js/script.js"></script>
+		@RenderSection("scripts", required: false)
+</body>
+</html>
+
+
+
+
+
+		                
+	         
+

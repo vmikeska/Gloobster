@@ -5,13 +5,19 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>@ViewData["Title"] - Goobster</title>
 
-        <environment names="Development">
-            <link rel="stylesheet" href="~/css/site.css" />
-        </environment>
-        <environment names="Staging,Production">
+        
+        <link rel="stylesheet" href="~/css/site.css" />
 
-            <link rel="stylesheet" href="~/css/site.css" asp-file-version="true" />
-        </environment>
+	    <script src="~/lib/jquery/dist/jquery.js"></script>
+				<script src="~/lib/jquery.cookie/jquery.cookie.js"></script>
+				<script src="~/lib/lodash/lodash.js"></script>
+				
+
+
+				@*<script src="//ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.4.min.js"
+								asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+								asp-fallback-test="window.jQuery">
+				</script>*@
     </head>
     <body>
         <div class="navbar navbar-inverse navbar-fixed-top">
@@ -33,14 +39,6 @@
 		                <li><a href="javascript:clickAuthorize()" id="authorize">Authorize Twitter</a></li>
 	                </ul>
 
-	                <script>
-
-                		function clickAuthorize() {
-                			var url = '/TwitterUser/MailStep';
-                			var wnd = window.open(url);
-                		}
-                	</script>
-
                 </div>
             </div>
         </div>
@@ -52,18 +50,7 @@
             </footer>
         </div>
 
-        <environment names="Development">
-	        <script src="~/lib/jquery/dist/jquery.js"></script>
-	        <script src="~/lib/lodash/lodash.js"></script>
-	        <script src="~/lib/jquery.cookie/jquery.cookie.js"></script>
-        </environment>
-        <environment names="Staging,Production">
-            <script src="//ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.4.min.js"
-                    asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                    asp-fallback-test="window.jQuery">
-            </script>
-
-        </environment>
+        
 
         @RenderSection("scripts", required: false)
     </body>

@@ -26,7 +26,12 @@ namespace Gloobster.Portal.Controllers
             };
         }
 
-        public IActionResult Index()
+	    public IActionResult HomePage()
+	    {
+			return View();
+		}
+
+	    public IActionResult Index()
         {
 			return View();
         }
@@ -38,6 +43,11 @@ namespace Gloobster.Portal.Controllers
 
             return View();
         }
-		
-	}
+
+
+	    public IActionResult PinBoard()
+	    {
+			return View();
+		}
+    }
 }

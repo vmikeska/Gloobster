@@ -10,7 +10,7 @@ var CreateUserFacebook = (function (_super) {
         var _this = this;
         _super.call(this);
         //todo: rename
-        this.createUserEndpoint = '/api/FacebookUser';
+        this.endpoint = '/api/FacebookUser';
         this.statusChangeCallback = function (response) {
             if (response.status === 'connected') {
                 _this.handleRoughResponse(response.authResponse);

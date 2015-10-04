@@ -8,7 +8,7 @@ var MapsCreatorGlobe3D = (function () {
     MapsCreatorGlobe3D.prototype.setMapType = function (mapType) {
         this.mapType = mapType;
     };
-    MapsCreatorGlobe3D.prototype.show = function () {
+    MapsCreatorGlobe3D.prototype.show = function (mapsLoadedCallback) {
         var mapOptions = {};
         var layerOptions = {};
         var mapUrl = '';
@@ -31,6 +31,7 @@ var MapsCreatorGlobe3D = (function () {
         }
         this.mapObj = new WE.map(this.rootElement, mapOptions);
         WE.tileLayer(mapUrl, layerOptions).addTo(this.mapObj);
+        mapsLoadedCallback();
     };
     MapsCreatorGlobe3D.prototype.hide = function () {
         $("#" + this.rootElement).empty();

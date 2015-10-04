@@ -8,10 +8,11 @@ var RequestSender = (function () {
         this.addLocalAuthentication = addLocalAuthentication;
     }
     RequestSender.prototype.addAuthentication = function (reqObj) {
-        var cookieToken = $.cookie("token");
-        if (cookieToken) {
+        var cookieStr = $.cookie(Constants.cookieName);
+        if (cookieStr) {
+            var cookieObj = JSON.parse(cookieStr);
             var headers = {};
-            headers["Authorization"] = cookieToken;
+            headers["Authorization"] = cookieObj.encodedToken;
             reqObj.headers = headers;
         }
         else {

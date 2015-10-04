@@ -69,7 +69,7 @@ module Maps {
 
 			mapObj: any;
 
-			show();
+			show(mapsLoadedCallback);
 			setRootElement(rootElement: string);
 			setMapType(mapType);
 			hide();

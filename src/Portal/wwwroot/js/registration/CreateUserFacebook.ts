@@ -6,7 +6,7 @@ class CreateUserFacebook extends CreateUserBase {
  }
 
 	//todo: rename
-	createUserEndpoint = '/api/FacebookUser';
+	endpoint = '/api/FacebookUser';
 
 	registerOrLogin() {
 		FB.getLoginStatus(this.statusChangeCallback);

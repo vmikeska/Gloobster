@@ -1,21 +1,23 @@
 var Views;
 (function (Views) {
-    var LoginManager = (function () {
-        function LoginManager() {
-        }
-        return LoginManager;
-    })();
     var ViewBase = (function () {
         function ViewBase() {
-            this.initializeGoogle();
-            this.initializeFacebook();
+            this.loginManager = new LoginManager;
+            var useCookie = true;
+            var isAlreadyLogged = this.loginManager.isAlreadyLogged() && useCookie;
+            if (isAlreadyLogged) {
+                console.log("isAlreadyLogged with " + this.loginManager.cookieLogin.networkType);
+            }
+            if (!isAlreadyLogged) {
+                this.initializeGoogle();
+                this.initializeFacebook();
+            }
         }
         ViewBase.prototype.initializeGoogle = function () {
             var self = this;
-            this.googleUserCreator = new CreateUserGoogle();
             this.googleInit = new GoogleInit();
             this.googleInit.onSuccess = function (googleUser) {
-                self.googleUserCreator.registerOrLogin(googleUser);
+                self.loginManager.googleUserCreator.registerOrLogin(googleUser);
             };
             this.googleInit.onFailure = function (error) {
                 //todo: display general dialog
@@ -23,24 +25,15 @@ var Views;
         };
         ViewBase.prototype.initializeFacebook = function () {
             var self = this;
-            this.facebookUserCreator = new CreateUserFacebook();
             var fbInit = new FacebookInit();
             fbInit.onFacebookInitialized = function () {
-                self.facebookUserCreator.registerOrLogin();
+                self.loginManager.facebookUserCreator.registerOrLogin();
             };
             fbInit.initialize();
         };
-        //		googleInit.onSuccess = function onSuccess(googleUser) {
-        //			var dbgStr = 'Logged in as: ' + googleUser.getBasicProfile().getName();
-        //			console.log(dbgStr);
-        //			alert(dbgStr);
-        //			currentView.googleUserLogged(googleUser);
-        //		}
-        //		function renderButton() {
-        //googleInit.renderButton();
-        //}
         ViewBase.prototype.apiGet = function (endpointName, params, callback) {
             var endpoint = '/api/' + endpointName;
+            console.log("getting: " + endpoint);
             var request = new RequestSender(endpoint, null, true);
             request.params = params;
             request.onSuccess = callback;
@@ -49,6 +42,7 @@ var Views;
         };
         ViewBase.prototype.apiPost = function (endpointName, data, callback) {
             var endpoint = '/api/' + endpointName;
+            console.log("posting: " + endpoint);
             var request = new RequestSender(endpoint, data, true);
             request.serializeData();
             request.onSuccess = callback;

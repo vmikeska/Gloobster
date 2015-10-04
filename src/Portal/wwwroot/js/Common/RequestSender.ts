@@ -17,11 +17,15 @@ class RequestSender {
 	onSuccess: Function;
 	onError: Function;
 
+
 	private addAuthentication(reqObj) {
-	 var cookieToken = $.cookie("token");
-	 if (cookieToken) {
-		var headers = {};
-		headers["Authorization"] = cookieToken;
+	 var cookieStr = $.cookie(Constants.cookieName);	 
+	 if (cookieStr) {
+
+		var cookieObj = JSON.parse(cookieStr);
+		
+		var headers = {};		
+		headers["Authorization"] = cookieObj.encodedToken;
 		 reqObj.headers = headers;
 
 	 } else {

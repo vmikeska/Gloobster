@@ -1,0 +1,212 @@
+﻿@*<script src='../../../api.mapbox.com/mapbox.js/v2.2.2/mapbox.js'></script>
+		<link href='../../../api.mapbox.com/mapbox.js/v2.2.2/mapbox.css' rel='stylesheet' />*@
+
+@*<script src='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.js'></script>*@
+<link href='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.css' rel='stylesheet' />
+
+<script src="http://www.webglearth.com/v2/api.js"></script>
+
+@*<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" />*@
+@*<script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>*@
+
+@*<link rel="stylesheet" href="@Url.Content("~/lib/leaflet/dist/leaflet.css")" />
+<script type="text/javascript" src="@Url.Content("~/lib/leaflet/dist/leaflet-src.js")"></script>*@
+
+<script type="text/javascript" src="@Url.Content("~/js/Maps/MapsInterfaces.js")"></script>
+
+<script type="text/javascript" src="@Url.Content("~/js/CountryShapes.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/CountryCodes.js")"></script>
+
+<script type="text/javascript" src="@Url.Content("~/js/Maps/BaseMapsOperation3D.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Maps/BaseMapsOperation2D.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Maps/MapsOperations.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Maps/MapsCreatorGlobe3D.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Maps/MapsCreatorMapBox2D.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Maps/MapsManager.js")"></script>
+
+
+<script type="text/javascript" src="@Url.Content("~/js/Views/PinBoardView.js")"></script>
+
+
+
+
+<script>
+
+	var pinBoardView;
+
+	function onBodyLoad() {
+		pinBoardView = new PinBoardView();
+		pinBoardView.initialize();
+
+		$("#countriesAutocomplet").on("input", function() {
+			var placeName = $("#countriesAutocomplet").val();
+
+			pinBoardView.searchPlaces(placeName);
+		});
+	}
+
+		
+</script>
+
+
+<!-- MapBox -->
+<section class="wrapper margin3">
+<div class="hint margin">
+		<span class="icon-amplion white middle"></span>
+		Hey, if you connect your map with Facebook, you can get more visitors!
+		<a class="icon-cross" href="#">Close</a>
+</div>
+<div class="table row col2 margin">
+		<div class="cell">
+				<div class="table row">
+						<div class="cell middle">
+								<h2>Pin Board</h2>
+						</div>
+					<div class="cell middle">
+						<div id="mapType" class="dropdown">
+							<span class="selected">2D map</span>
+							<ul>
+								<li data-value="D2">2D map</li>
+								<li data-value="D3">3D map</li>
+							</ul>
+							<input id="mapTypeValue" type="hidden">
+						</div>
+					</div>
+				</div>
+		</div>
+		<div class="cell middle tright">
+				<a class="noneline strong" href="#">Invite Friends</a>
+				&nbsp;
+				<span class="color2">&bull;</span>
+				&nbsp;
+				<a class="noneline strong" href="#">Share map</a>
+		</div>
+</div>
+	<form class="" action="#" method="post">
+		<div class="dropdown left">
+			<input class="inputed" type="text" placeholder="City name">
+			<ul>
+				<li class="disabled">Cities</li>
+				<li data-value="New York"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New York<span class="color2">, USA</span></li>
+				<li data-value="New Jersey"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New Jersey<span class="color2">, USA</span></li>
+				<li data-value="New Dili"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New Dili<span class="color2">, India</span></li>
+				<li class="disabled">Cities 2</li>
+				<li data-value="New York"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New York2<span class="color2">, USA</span></li>
+				<li data-value="New Jersey"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New Jersey2<span class="color2">, USA</span></li>
+				<li data-value="New Dili"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New Dili2<span class="color2">, India</span></li>
+			</ul>
+		</div>
+		<input class="left" type="submit" value="Add">
+		<div class="dropdown right">
+			<span class="selected">Just mine</span>
+			<ul>
+				<li data-value="New Item">Dropdown Menu Item</li>
+				<li data-value="New Another">Another Item</li>
+				<li data-value="New Last">The Last One</li>
+			</ul>
+			<input type="hidden">
+		</div>
+		<div class="dropdown right">
+			<span class="selected">All places</span>
+			<ul>
+				<li data-value="Item 1">Dropdown Menu Item</li>
+				<li data-value="Item 2">Another Item <span class="color2">&bull; PRG</span></li>
+				<li data-value="Item 3">The Last One</li>
+				<li class="disabled">Cities</li>
+				<li data-value="New York"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New York<span class="color2">, USA</span></li>
+				<li data-value="New Jersey"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New Jersey<span class="color2">, USA</span></li>
+				<li data-value="New Dili"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New Dili<span class="color2">, India</span></li>
+				<li class="disabled">Cities 2</li>
+				<li data-value="New York"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New York2<span class="color2">, USA</span></li>
+				<li data-value="New Jersey"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New Jersey2<span class="color2">, USA</span></li>
+				<li data-value="New Dili"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New Dili2<span class="color2">, India</span></li>
+			</ul>
+			<input type="hidden">
+		</div>
+	</form>
+
+	<div class="map margin" id="map">
+		<div class="legend">
+			<a class="icon-tosee nohidetext" href="#">To See</a>
+			<a class="icon-visited nohidetext" href="#">Visited</a>
+			<a class="icon-favorite nohidetext" href="#">Favorite</a>
+		</div>
+	</div>
+
+	<div class="squares table row margin2">
+		<div class="cell">
+			<div class="square"><strong class="countto" data-from="0" data-to="90">0</strong> Cities
+			</div>
+		</div>
+		<div class="cell">
+			<div class="square"><strong class="countto" data-from="0" data-to="23">0</strong> Countries
+			</div>
+		</div>
+		<div class="cell">
+			<div class="square">
+				<strong>
+					<span class="countto" data-from="0" data-to="15">0</span>
+					%
+				</strong> of the World
+			</div>
+		</div>
+		<div class="cell">
+			<div class="square"><strong class="countto" data-from="0" data-to="17">0</strong> Badges
+			</div>
+		</div>
+		<div class="cell">
+			<div class="square"><strong class="countto" data-from="0" data-to="46">0</strong> Friends
+			</div>
+		</div>
+		<div class="cell">
+			<div class="square"><strong class="countto" data-from="0" data-to="24000">0</strong> Miles total
+			</div>
+		</div>
+	</div>
+
+
+	<script>
+			$("#mapType li").click(function (evnt) {
+
+				var value = $(evnt.target).data("value");					
+					var parsedVal  = Maps.ViewType[value];
+					pinBoardView.mapsManager.switchToView(parsedVal);
+			});
+	</script>
+
+
+	@*<div class="table row col2 margin">
+		<div class="cell baseline">
+				<h3>Collected badges</h3>
+		</div>
+		<div class="cell baseline tright">
+				<a class="" href="#">Show all badges</a>
+		</div>
+</div>
+<div class="badges grid margin2">
+		<div class="cell"><a class="badge active" href="#"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Asia<span class="icon-visited"></span></a></div>
+		<div class="cell"><a class="badge active" href="#"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Australia<span class="icon-visited"></span></a></div>
+		<div class="cell"><a class="badge active" href="#"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Africa<span class="icon-favorite"></span></a></div>
+		<div class="cell"><a class="badge" href="#"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Europe<span class="icon-visited"></span></a></div>
+		<div class="cell"><a class="badge" href="#"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New York<span class="icon-favorite"></span></a></div>
+		<div class="cell"><a class="badge" href="#"><span class="thumbnail"><img src="images/samples/sample11.png"></span>South America<span class="icon-visited"></span></a></div>
+		<div class="cell"><a class="badge" href="#"><span class="thumbnail"><img src="images/samples/sample11.png"></span>North America<span class="icon-visited"></span></a></div>
+		<div class="cell"><a class="badge" href="#"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Antarctica<span class="icon-visited"></span></a></div>
+		<div class="cell"><a class="badge" href="#"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Beijing</a></div>
+		<div class="cell"><span class="badge"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Mexico City</span></span></div>
+		<div class="cell"><span class="badge"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Prague</span></span></div>
+		<div class="cell"><span class="badge"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Paris</span></span></div>
+		<div class="cell"><span class="badge"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Berlin</span></span></div>
+		<div class="cell"><span class="badge"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Prague</span></span></div>
+		<div class="cell"><span class="badge"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Moscow</span></span></div>
+		<div class="cell"><span class="badge"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Lisbon</span></span></div>
+		<div class="cell"><span class="badge"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Madrid</span></span></div>
+		<div class="cell"><span class="badge"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Barcelona</span></span></div>
+</div>*@
+</section>
+<!-- MapBox -->
+@*<script>
+		L.mapbox.accessToken = 'pk.eyJ1IjoiZ2xvb2JzdGVyIiwiYSI6ImQxZWY5MjRkZjU1NDk2MGU3OWI2OGRiM2U3NTM0MGYxIn0.nCG7hOsSQzb0c-_qzfTCRQ';
+		var map = L.mapbox.map('map', 'gloobster.afeef633');
+</script>*@
+<!-- MapBox -->

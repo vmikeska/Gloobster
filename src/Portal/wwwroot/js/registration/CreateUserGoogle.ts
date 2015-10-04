@@ -8,7 +8,7 @@
 	
 
 	//todo: rename
-	createUserEndpoint = '/api/GoogleUser';
+	endpoint = '/api/GoogleUser';
 
 	registerOrLogin(googleUser) {		
 	 super.sendUserRegistrationData(googleUser);

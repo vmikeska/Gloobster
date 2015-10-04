@@ -17,7 +17,7 @@ class MapsCreatorGlobe3D implements Maps.IMapsCreator {
 			this.mapType = mapType;
 		}
 		
-		show() {
+		show(mapsLoadedCallback) {
 				var mapOptions = {};
         var layerOptions = {};
         var mapUrl = '';
@@ -44,6 +44,8 @@ class MapsCreatorGlobe3D implements Maps.IMapsCreator {
 				
         this.mapObj = new WE.map(this.rootElement, mapOptions);
         WE.tileLayer(mapUrl, layerOptions).addTo(this.mapObj);
+
+			mapsLoadedCallback();
 		}
 
 	hide() {	 

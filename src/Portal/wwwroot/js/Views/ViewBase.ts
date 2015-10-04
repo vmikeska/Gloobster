@@ -1,69 +1,58 @@
 module Views {
 
-	class LoginManager {
-		
-	}
+	
 
 	export class ViewBase {
 
-		public facebookUserCreator: CreateUserFacebook;
-		public googleUserCreator: CreateUserGoogle;
+		public loginManager: LoginManager;
 
 		public googleInit: GoogleInit;
 
 		constructor() {
-			this.initializeGoogle();
-			this.initializeFacebook();
+		 this.loginManager = new LoginManager;
+
+			var useCookie = true;
+			var isAlreadyLogged = this.loginManager.isAlreadyLogged() && useCookie;
+			if (isAlreadyLogged) {
+				console.log("isAlreadyLogged with " + this.loginManager.cookieLogin.networkType);
+			}
+
+			if (!isAlreadyLogged) {
+				this.initializeGoogle();
+				this.initializeFacebook();
+			}
 		}
 
 		private initializeGoogle() {
 			var self = this;
-
-			this.googleUserCreator = new CreateUserGoogle();
-
+		 
 			this.googleInit = new GoogleInit();
-
-
+		 
 			this.googleInit.onSuccess = (googleUser) => {
-				self.googleUserCreator.registerOrLogin(googleUser);
+			 self.loginManager.googleUserCreator.registerOrLogin(googleUser);
 			}
 
 			this.googleInit.onFailure = (error) => {
 				//todo: display general dialog
 			}
-
 		}
 
 		private initializeFacebook() {
 			var self = this;
-
-			this.facebookUserCreator = new CreateUserFacebook();
-
+		 
 			var fbInit = new FacebookInit();
 
 			fbInit.onFacebookInitialized = () => {
-				self.facebookUserCreator.registerOrLogin();
+			 self.loginManager.facebookUserCreator.registerOrLogin();
 			}
 
 			fbInit.initialize();
 		}
 
-
-//		googleInit.onSuccess = function onSuccess(googleUser) {
-
-		//			var dbgStr = 'Logged in as: ' + googleUser.getBasicProfile().getName();
-		//			console.log(dbgStr);
-		//			alert(dbgStr);
-		//			currentView.googleUserLogged(googleUser);
-		//		}
-
-		//		function renderButton() {
-		//googleInit.renderButton();
-		//}
-
 		public apiGet(endpointName: string, params: string[][], callback: Function) {
 
 			var endpoint = '/api/' + endpointName;
+			console.log("getting: " + endpoint);
 
 			var request = new RequestSender(endpoint, null, true);
 			request.params = params;
@@ -75,6 +64,7 @@ module Views {
 		public apiPost(endpointName: string, data: any, callback: Function) {
 
 			var endpoint = '/api/' + endpointName;
+			console.log("posting: " + endpoint);
 
 			var request = new RequestSender(endpoint, data, true);
 			request.serializeData();

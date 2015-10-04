@@ -1,8 +1,11 @@
-﻿namespace Gloobster.Portal.ReqRes
+﻿using Gloobster.Common.CommonEnums;
+
+namespace Gloobster.Portal.ReqRes
 {
     public class LoggedResponse
     {
 		public string encodedToken { get; set; }
 		public string status { get; set; }
+	    public SocialNetworkType networkType { get; set; }
     }
 }

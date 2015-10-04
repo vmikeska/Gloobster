@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Autofac;
+using Gloobster.Common.CommonEnums;
 using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.Portal.ReqRes;
@@ -50,7 +51,8 @@ namespace Gloobster.Portal.Controllers
 			var response = new LoggedResponse
 			{
 				encodedToken = result.EncodedToken,
-				status = result.Status.ToString()
+				status = result.Status.ToString(),
+				networkType = SocialNetworkType.Google
 			};
 
 			return new ObjectResult(response);

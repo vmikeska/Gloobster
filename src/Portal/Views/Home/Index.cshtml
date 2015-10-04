@@ -10,8 +10,7 @@
 
 	<script type="text/javascript" src="@Url.Content("~/js/registration/FacebookInit.js")"></script>
 	<script type="text/javascript" src="@Url.Content("~/js/registration/GoogleInit.js")"></script>
-
-	<script type="text/javascript" src="@Url.Content("~/js/registration/registration.js")"></script>
+	
 	<script type="text/javascript" src="@Url.Content("~/js/registration/CreateUserGoogle.js")"></script>
 		<script type="text/javascript" src="@Url.Content("~/js/registration/CreateUserFacebook.js")"></script>
 		
@@ -27,9 +26,13 @@
 
 
 		currentView = new HomePageView();
+		var a = "t";
 
 		function onGoogleScriptsLoaded() {
-			currentView.googleInit.initialize();
+			var isAlreadyLogged = currentView.loginManager.isAlreadyLogged();
+			if (!isAlreadyLogged) {
+				currentView.googleInit.initialize();
+			}
 		}
 
 
@@ -64,33 +67,5 @@
 
 
 		<div id="my-signin2"></div>
-		<script>
-			//function onSuccess(googleUser) {
-			//		console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
-
-			//		currentView.googleUserLogged(googleUser);
-			//}
-			//function onFailure(error) {
-			//  console.log(error);
-			//}
-			//function renderButton() {
-			//  gapi.signin2.render('my-signin2', {
-			//    'scope': 'https://www.googleapis.com/auth/plus.login',
-			//    'width': 200,
-			//    'height': 50,
-			//    'longtitle': true,
-			//    'theme': 'dark',
-			//    'onsuccess': onSuccess,
-			//    'onfailure': onFailure
-			//  });
-			//}
-
-			
-
-
-		</script>
-
-		
-
-
+	
 </div>
