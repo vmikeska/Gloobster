@@ -1,40 +1,40 @@
 module Views {
-
-	
+ 
+ export enum PageType {HomePage, PinBoard, TripList}
 
 	export class ViewBase {
 
 		public loginManager: LoginManager;
 
-		public googleInit: GoogleInit;
+		//public googleInit: GoogleInit;
+		//public pageType: PageType;
+		get pageType(): PageType { return null; }
 
-		constructor() {
-		 this.loginManager = new LoginManager;
 
-			var useCookie = true;
-			var isAlreadyLogged = this.loginManager.isAlreadyLogged() && useCookie;
-			if (isAlreadyLogged) {
-				console.log("isAlreadyLogged with " + this.loginManager.cookieLogin.networkType);
-			}
-
+		constructor() {		 
+		 this.loginManager = new LoginManager();
+			
+			var isAlreadyLogged = this.loginManager.isAlreadyLogged();			
 			if (!isAlreadyLogged) {
 				this.initializeGoogle();
 				this.initializeFacebook();
+				$("#loginSection").show();
+			} else {
+				console.log("isAlreadyLogged with " + this.loginManager.cookieLogin.networkType);								
 			}
 		}
 
-		private initializeGoogle() {
-			var self = this;
+		private initializeGoogle() {		 
+		 var self = this;
 		 
-			this.googleInit = new GoogleInit();
-		 
-			this.googleInit.onSuccess = (googleUser) => {
-			 self.loginManager.googleUserCreator.registerOrLogin(googleUser);
-			}
+			var btnGoogle = new GoogleButton();
+			btnGoogle.successfulCallback = (googleUser) => {
+			 self.loginManager.googleUserCreator.registerOrLogin(googleUser);			 
+			};
 
-			this.googleInit.onFailure = (error) => {
-				//todo: display general dialog
-			}
+			var btnName = (this.pageType === PageType.HomePage) ? "googleLoginBtnHome" : "googleLoginBtn";
+			btnGoogle.elementId = btnName;
+			btnGoogle.initialize();
 		}
 
 		private initializeFacebook() {

@@ -24,7 +24,7 @@ namespace Gloobster.DomainModels
 			foreach (VisitedPlaceDO place in inputPlaces)
 		    {
 				bool isNewPlace =
-					!alreadySavedPlaces.Any(p => p.City.Equals(place.City) && p.CountryCode.Equals(place.CountryCode));
+					!alreadySavedPlaces.Any(p => p.City == place.City && p.CountryCode == place.CountryCode);
 
 			    if (isNewPlace)
 			    {

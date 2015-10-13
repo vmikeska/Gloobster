@@ -7,6 +7,7 @@ class CreateUserBase {
 
 	onSuccess = (response) => {
 	 this.storeCookieWithToken(response.encodedToken, response.networkType);
+		$(".popup").hide();
 	}
 
 	onError = (response) => {
@@ -20,7 +21,12 @@ class CreateUserBase {
 		var cookieStr = JSON.stringify(cookieObj);
 		$.cookie(Constants.cookieName, cookieStr);
 
-		console.log("token received: " + this.loginType);		
+		var firstRedirectUrl = 'Home/PinBoard';
+	 
+		console.log("token received: " + this.loginType);
+
+		return;
+		window.location.href = firstRedirectUrl;
 	}
 
 	sendUserRegistrationData(newUser) {

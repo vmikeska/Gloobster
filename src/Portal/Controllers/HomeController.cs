@@ -3,6 +3,7 @@ using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
+using Gloobster.Common.DbEntity;
 using TweetSharp;
 
 namespace Gloobster.Portal.Controllers
@@ -26,7 +27,7 @@ namespace Gloobster.Portal.Controllers
             };
         }
 
-	    public IActionResult HomePage()
+	    public IActionResult TripsList()
 	    {
 			return View();
 		}
@@ -35,19 +36,53 @@ namespace Gloobster.Portal.Controllers
         {
 			return View();
         }
-        
 
-        public IActionResult Map()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-
-	    public IActionResult PinBoard()
+	    public IActionResult Test()
 	    {
-			return View();
+		    return View();
+	    }
+
+	    [Authorize]
+	    public IActionResult PinBoard(string userId)
+	    {
+			var pinBoardViewModel = new PinBoardViewModel(DB);
+			pinBoardViewModel.Initialize(userId);
+
+			return View(pinBoardViewModel);
 		}
     }
+
+	public class PinBoardViewModel
+	{
+		public PinBoardViewModel(IDbOperations db)
+		{ 
+			DB = db;
+		}
+
+
+		public IDbOperations DB;
+
+		public void Initialize(string userId)
+		{
+			CalculateCities(userId);
+		}
+
+
+		public async void CalculateCities(string userId)
+		{
+			var query = $@"{{""PortalUser_id"": ObjectId(""{userId}"")}}";
+			long countriesCount = await DB.GetCountAsync<VisitedCountryEntity>();
+			Countries = (int)countriesCount;
+
+
+
+		}
+
+
+		public int Cities { get; set; }
+		public int Countries { get; set; }
+		public int WorldTraveled { get; set; }
+		public int Badges { get; set; }
+		public int TotalDistanceTraveled { get; set; }
+	}
 }

@@ -1093,6 +1093,15 @@
           "lib/portable-net45+win8+wp8+wpa81/System.Collections.Immutable.dll": {}
         }
       },
+      "System.Linq.Queryable/4.0.1-beta-23225": {
+        "type": "package",
+        "compile": {
+          "ref/net45/_._": {}
+        },
+        "runtime": {
+          "lib/net45/_._": {}
+        }
+      },
       "System.Reflection.Metadata/1.1.0-alpha-00009": {
         "type": "package",
         "dependencies": {
@@ -2079,6 +2088,28 @@
         "System.Collections.Immutable.nuspec"
       ]
     },
+    "System.Linq.Queryable/4.0.1-beta-23225": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "4uRF87Z8b0IqoVeXN3JfduhchGB+AWAsHvxJeW6zypQfVZyyOkb/P/W+3GeqjdCvVLWy4Gt2T73syFeVrf3wVw==",
+      "files": [
+        "lib/dotnet/System.Linq.Queryable.dll",
+        "lib/net45/_._",
+        "lib/netcore50/System.Linq.Queryable.dll",
+        "lib/win8/_._",
+        "lib/wp80/_._",
+        "lib/wpa81/_._",
+        "ref/dotnet/System.Linq.Queryable.dll",
+        "ref/net45/_._",
+        "ref/netcore50/System.Linq.Queryable.dll",
+        "ref/win8/_._",
+        "ref/wp80/_._",
+        "ref/wpa81/_._",
+        "System.Linq.Queryable.4.0.1-beta-23225.nupkg",
+        "System.Linq.Queryable.4.0.1-beta-23225.nupkg.sha512",
+        "System.Linq.Queryable.nuspec"
+      ]
+    },
     "System.Reflection.Metadata/1.1.0-alpha-00009": {
       "type": "package",
       "serviceable": true,
@@ -2097,7 +2128,8 @@
     "": [
       "MongoDB.Driver >= 2.0.1",
       "Microsoft.AspNet.Mvc >= 6.0.0-beta7",
-      "Facebook >= 7.0.6"
+      "Facebook >= 7.0.6",
+      "System.Linq.Queryable >= 4.0.1-beta-23225"
     ],
     "DNX,Version=v4.5.1": [
       "fx/System.Web >= 4.0.0.0"

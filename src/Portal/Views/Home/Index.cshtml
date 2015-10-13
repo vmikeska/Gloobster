@@ -1,71 +1,184 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+		ViewData["Title"] = "Home Page";
+		Layout = "";
 }
+<html>
+<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+
+		<!-- custom meta -->
+		<meta name="google-signin-client_id" content="430126253289-14tdcfe4noqm6p201jrugpi9dsies2at.apps.googleusercontent.com">
+		<!-- custom meta end -->
+
+		<title>Gloobster</title>
+		<!--<meta name="author" content="Martin Matějů, martin@mateju.cz, www.martin.mateju.cz">-->
+		<link href="./images/favicon.png" rel="shortcut icon">
+		<link href="//fonts.googleapis.com/css?family=PT+Sans:400,700" rel="stylesheet">
+		<link href="//fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
+		<link href="http://ga.cz/2015/gloobster/css/style.css" rel="stylesheet">
+</head>
+<body class="homepage" id="top">
 
 
 
-<div class="row">
+		<header class="header">
+				<div class="wrapper">
+						<h1><a href=".html" class="logo-header">Gloobster</a></h1>
+						<div class="menu-holder table">
+								<div class="cell">
+										<ul id="menu" class="menu-header table">
+											@*<li><a class="active" href="#">Menu</a></li>*@
+												<li><a asp-controller="Home" asp-action="PinBoard">Pin board</a></li>
+												<li><a href="#">Places to visit</a></li>
+												<li><a href="#">Trip planner</a></li>
+										</ul>
+								</div>
+								<div class="cell">
+										<ul class="menu-login table">
+												<li><a class="popup-target" data-target="#popup-login" href="#">Join</a></li>
+												<li><a class="popup-target" data-target="#popup-join" href="#">Login</a></li>
+										</ul>
+								</div>
+								<div class="cell">
+										<div class="dropdown">
+												<span class="selected">English</span>
+												<ul>
+														<li>English <span class="notification">3</span></li>
+														<li>Czech</li>
+												</ul>
+												<input type="hidden">
+										</div>
+								</div>
+						</div>
+						<a class="hamburger" data-target="#menu" href="#"><span></span></a>
+				</div>
+				<!-- scripts -->
 
-		<script src="https://apis.google.com/js/platform.js?onload=onGoogleScriptsLoaded" async defer></script>
+				@*<script src="https://apis.google.com/js/platform.js?onload=onGoogleScriptsLoaded" async defer></script>*@
 
-	<script type="text/javascript" src="@Url.Content("~/js/registration/FacebookInit.js")"></script>
-	<script type="text/javascript" src="@Url.Content("~/js/registration/GoogleInit.js")"></script>
-	
-	<script type="text/javascript" src="@Url.Content("~/js/registration/CreateUserGoogle.js")"></script>
-		<script type="text/javascript" src="@Url.Content("~/js/registration/CreateUserFacebook.js")"></script>
-		
+				<script src="~/lib/jquery/dist/jquery.js"></script>
+				<script src="~/lib/jquery.cookie/jquery.cookie.js"></script>
 
+				<script src="~/lib/lodash/lodash.js"></script>
 
-	
-	<script type="text/javascript" src="@Url.Content("~/js/Common/RequestSender.js")"></script>
-
-		<script type="text/javascript" src="@Url.Content("~/js/Views/ViewBase.js")"></script>
-		<script type="text/javascript" src="@Url.Content("~/js/Views/HomePageView.js")"></script>
-
-	<script>
+				@Html.Partial("_GlobalScripts")
 
 
-		currentView = new HomePageView();
-		var a = "t";
+				<script type="text/javascript" src="@Url.Content("~/js/Views/HomePageView.js")"></script>
+			
+		<script>
+			//todo: remove after testing
+			$.cookie(Constants.cookieName, {}, { path: '/' });
 
-		function onGoogleScriptsLoaded() {
-			var isAlreadyLogged = currentView.loginManager.isAlreadyLogged();
-			if (!isAlreadyLogged) {
-				currentView.googleInit.initialize();
+			currentView = new HomePageView();
+
+			//function onGoogleScriptsLoaded() {
+			//	var isAlreadyLogged = currentView.loginManager.isAlreadyLogged();
+			//	if (!isAlreadyLogged) {
+			//		currentView.googleInit.initialize();
+			//	}
+			//}
+
+			function clickAuthorize() {
+				var url = '/TwitterUser/MailStep';
+				var wnd = window.open(url);
 			}
-		}
+		</script>
+
+				<!-- scripts end -->
+
+		</header>
+
+		<div class="maskots margin">
+				<div class="wrapper">
+						<h1>The only portal you'll need to travel the world</h1>
+						<div class="logins">
+								<div class="margin">
 
 
-	</script>
+										@*<li><a href="javascript:clickAuthorize()" id="authorize">Authorize Twitter</a></li>*@
+										@*<div class="fb-login-button" data-size="xlarge" data-show-faces="false" data-auto-logout-link="false"></div>*@
+										@*<fb:login-button scope="user_tagged_places,user_likes,publish_actions,user_location,user_hometown,email,user_status,user_friends" onlogin="currentView.facebookUserCreator.registerOrLogin()">
+												</fb:login-button>*@
 
+										<a class="facebook" href="#">Sign in with Facebook</a>
+										<a class="twitter" href="#">Sign in with Twitter</a>
+										<a id="googleLoginBtnHome" class="google" href="#">Sign in with Google</a>
 
-	<div>
-
-			@*<div class="fb-login-button" data-size="xlarge" data-show-faces="false" data-auto-logout-link="false"></div>*@
-		<fb:login-button scope="user_tagged_places,user_likes,publish_actions,user_location,user_hometown,email,user_status,user_friends" onlogin="currentView.facebookUserCreator.registerOrLogin()">
-		</fb:login-button>
-
-		<div id="registerUserForm" style="border: 1px solid black">
-
-			<div>
-				<label for="inputMail">Mail</label>
-				<input id="inputMail" type="text" name="mail" value=""/>
-			</div>
-
-			<div>
-				<label for="inputPass">Password</label>
-				<input id="inputPass" type="text" name="password" value=""/>
-			</div>
-
-			<button onclick="currentView.registerNormal($('#inputMail').val(), $('#inputPass').val())">Register</button>
+								</div>
+								<span class="email">
+										Connect with popular networks or
+										<a href="#">Sign Up with email</a>
+										.
+								</span>
+						</div>
+						<div class="buttons">
+								<a class="button maskot" href="#">Check out the Globe</a>
+						</div>
+						<div class="bubble1">Let us help you travel! Setup is simple as 1-2-3 and youre set...Setup is simple as 1-2-3 and youre set...</div>
+						<div class="bubble2">...eg. pick your future destionations. So we can deliver deals!</div>
+				</div>
 		</div>
 
-	</div>
+		<section class="wrapper margin3">
+				@*<div class="hint margin">
+						<span class="icon-amplion white middle"></span>
+						Hey, if you connect your map with Facebook, you can get more visitors!
+						<a class="icon-cross" href="#">Close</a>
+				</div>*@
+				<h2 class="h3 tcenter margin3">Why travelers choose Gloobster</h2>
+				<div class="table row col3 margin2">
+						<div class="cell">
+								<div class="box plan tcenter">
+										<h3>Keep track of your journeys</h3>
+										<p class="tleft">Ever wanted to have one place to store all your past travels? Gloobster makes this easy and for free.</p>
+										<a class="button" href="#">How It Works</a>
+								</div>
+						</div>
+						<div class="cell">
+								<div class="box green plan tcenter">
+										<h3>Plan your next trip in under 3 minutes</h3>
+										<p class="tleft">Gloobster makes it simple and fast to create itinerary. And stores all important data for you so you dont have to.</p>
+										<a class="button" href="#">Try It Now</a>
+								</div>
+						</div>
+						<div class="cell">
+								<div class="box orange share tcenter">
+										<h3>Share your journeys day by day with ease</h3>
+										<p class="tleft">Share trips via Gloobster and colaborate on itinerary together. Simple yet powerful tool for any traveler.</p>
+										<a class="button" href="#">See Journals</a>
+								</div>
+						</div>
+				</div>
 
 
-		<meta name="google-signin-client_id" content="430126253289-14tdcfe4noqm6p201jrugpi9dsies2at.apps.googleusercontent.com">
+		</section>
+
+		@Html.Partial("_Footer")
+		@Html.Partial("_DialogLogin")
+		@Html.Partial("_DialogRegister")
 
 
-		<div id="my-signin2"></div>
-	
-</div>
+		@*<script src="http://ga.cz/2015/gloobster/js/jquery.1.11.1.min.js"></script>*@
+		<script src="http://ga.cz/2015/gloobster/js/jquery.countto.js"></script>
+		<script src="http://ga.cz/2015/gloobster/js/script.js"></script>
+
+
+<script>	
+	var btnGoogle = new GoogleButton();
+	btnGoogle.successfulCallback = (googleUser) => {
+		currentView.loginManager.googleUserCreator.registerOrLogin(googleUser);				
+	};
+	btnGoogle.elementId = "googleLoginBtnHome";
+	btnGoogle.initialize();
+</script>
+
+</body>
+</html>
+
+
+
+
+
+

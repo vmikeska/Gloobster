@@ -16,67 +16,84 @@
 	<script src="~/lib/jquery.cookie/jquery.cookie.js"></script>
 	<script src="~/lib/lodash/lodash.js"></script>
 
-		<script type="text/javascript" src="@Url.Content("~/js/globals.js")"></script>
 
-	<script type="text/javascript" src="@Url.Content("~/js/Views/ViewBase.js")"></script>
-	<script type="text/javascript" src="@Url.Content("~/js/Common/RequestSender.js")"></script>
-
-		<script type="text/javascript" src="@Url.Content("~/js/registration/LoginManager.js")"></script>
-
-	<script type="text/javascript" src="@Url.Content("~/js/registration/FacebookInit.js")"></script>
-	<script type="text/javascript" src="@Url.Content("~/js/registration/GoogleInit.js")"></script>
-
-	<script type="text/javascript" src="@Url.Content("~/js/registration/CreateUserBase.js")"></script>
-	<script type="text/javascript" src="@Url.Content("~/js/registration/CreateUserGoogle.js")"></script>
-	<script type="text/javascript" src="@Url.Content("~/js/registration/CreateUserFacebook.js")"></script>
-
+	@Html.Partial("_GlobalScripts")
 
 </head>
 <body onload="onBodyLoad()" class="" id="top">
-		<header class="header">
-				<div class="wrapper">
-					<h1><a asp-controller="Home" asp-action="HomePage" class="logo-header">Gloobster</a></h1>
-						<div class="menu-holder table">
-								<div class="cell">
-									<ul id="menu" class="menu-header table">
-											@*<li><a class="active" href="#">Menu</a></li>*@
-										
-										<li><a href="/Home/PinBoard">Pin board</a></li>
-										<li><a href="#">Menu</a></li>
-										
-									</ul>
-								</div>
-								<div class="cell">
-										<div class="dropdown">
-												<span class="selected">English</span>
-												<span class="notification">5</span>                    <ul>
-														<li>English <span class="notification">3</span></li>
-														<li>Czech</li>
-												</ul>
-												<input type="hidden">
-										</div>
-								</div>
-						</div>
-						<a href="#" class="hamburger" data-target="#menu"><span></span></a>
+<header class="header">
+	<div class="wrapper">
+		<h1><a asp-controller="Home" asp-action="HomePage" class="logo-header">Gloobster</a>
+		</h1>
+		<div class="menu-holder table">
+			<div class="cell">
+				<ul id="menu" class="menu-header table">
+					@*<li><a class="active" href="#">Menu</a></li>*@
+
+					<li><a asp-controller="Home" asp-action="PinBoard">Pin board</a></li>
+					<li><a href="#">Menu</a></li>
+
+				</ul>
+			</div>
+			<div id="loginSection" class="cell" style="display: none">
+				<ul class="menu-login table">
+					<li><a class="popup-target" data-target="#popup-login" href="#">Join</a></li>
+					<li><a class="popup-target" data-target="#popup-join" href="#">Login</a></li>
+				</ul>
+			</div>
+			<div class="cell">
+				<div id="userMenu" class="dropdown">
+					<span class="selected">English</span>
+					<span class="notification">5</span>                    
+					<ul>
+						<li data-value="logout">Logout</li>
+
+						<li>English <span class="notification">3</span></li>
+						<li>Czech</li>
+
+					</ul>
+					<input type="hidden">
 				</div>
+			</div>
+		</div>
+		<a href="#" class="hamburger" data-target="#menu"><span></span></a>
+	</div>
 </header>
 
-		<div class="blue-line margin2"></div>
-		@RenderBody()
-
-<ul>
-	
-	<li><a asp-controller="Home" asp-action="Map">Map</a></li>	
-	<li><a href="javascript:clickAuthorize()" id="authorize">Authorize Twitter</a></li>
-</ul>
-				@Html.Partial("_Footer")
+<div class="blue-line margin2"></div>
+@RenderBody()
 
 
-		<script src="http://ga.cz/2015/gloobster/js/jquery.countto.js"></script>
-		<script src="http://ga.cz/2015/gloobster/js/script.js"></script>
-		@RenderSection("scripts", required: false)
+
+
+@Html.Partial("_Footer")
+@Html.Partial("_DialogLogin")
+@Html.Partial("_DialogRegister")
+
+
+<script src="http://ga.cz/2015/gloobster/js/jquery.countto.js"></script>
+<script src="http://ga.cz/2015/gloobster/js/script.js"></script>
+@*@RenderSection("scripts", required: false)*@
+
+<script type="text/javascript">
+
+	$("#userMenu li").click(function(evnt) {
+
+		var value = $(evnt.target).data("value");
+
+		if (value === "logout") {
+			currentView.loginManager.logout();
+		}
+
+
+	});
+
+</script>
+
 </body>
 </html>
+
+
 
 
 

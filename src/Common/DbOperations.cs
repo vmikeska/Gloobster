@@ -145,9 +145,10 @@ namespace Gloobster.Common
 				throw exc;
 			}
         }
-        
 
-        public async Task<long> GetCount<T>(string query = null) where T : EntityBase
+
+
+		public async Task<long> GetCountAsync<T>(string query = null) where T : EntityBase
         {
 			var collectionName = GetCollectionName<T>();
 			var collection = Database.GetCollection<T>(collectionName);

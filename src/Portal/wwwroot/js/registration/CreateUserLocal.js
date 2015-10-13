@@ -7,11 +7,12 @@ var __extends = (this && this.__extends) || function (d, b) {
 var CreateUserLocal = (function (_super) {
     __extends(CreateUserLocal, _super);
     function CreateUserLocal() {
-        _super.apply(this, arguments);
+        _super.call(this);
+        this.endpoint = "/api/User";
+        this.loginType = NetworkType.Base;
     }
-    CreateUserLocal.prototype.createUser = function (displayName, mail, password) {
+    CreateUserLocal.prototype.registerOrLogin = function (mail, password) {
         var baseUser = new PortalUser();
-        baseUser.displayName = displayName;
         baseUser.mail = mail;
         baseUser.password = password;
         _super.prototype.sendUserRegistrationData.call(this, baseUser);

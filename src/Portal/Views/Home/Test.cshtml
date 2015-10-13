@@ -1,0 +1,68 @@
+﻿@{
+		ViewData["Title"] = "Home Page";
+		Layout = "";
+}
+<html>
+<head>
+		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+		<script src="https://apis.google.com/js/api:client.js"></script>
+		<script type="text/javascript" src="@Url.Content("~/js/registration/GoogleButton.js")"></script>
+	
+				<script>
+
+						var btnGoogle = new GoogleButton();						
+						btnGoogle.successfulCallback = (googleUser) => {
+							alert(JSON.stringify(googleUser));
+						};
+						btnGoogle.elementId = "googleLoginBtn";
+						btnGoogle.initialize();
+
+		</script>
+
+</head>
+<body>
+
+<!-- In the callback, you would hide the gSignInWrapper element on a
+successful sign in -->
+
+<style>
+	.logins .facebook, .logins .twitter, .logins .google {
+		-webkit-transition: all 0.3s;
+		-moz-transition: all 0.3s;
+		transition: all 0.3s;
+		border-radius: 4px;
+		box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.6);
+		color: #fff;
+		display: inline-block;
+		margin: 0 5px;
+		padding: 15px 10px;
+		text-decoration: none; }
+	.logins .facebook:hover, .logins .twitter:hover, .logins .google:hover {
+		box-shadow: none; }
+
+	.logins .google {
+		background: #ea4538 url("../images/google.png") 10px center no-repeat;
+		padding-left: 53px; }
+
+
+	.logins .facebook {
+		background: #4360a0 url("../images/facebook.png") 10px center no-repeat;
+		padding-left: 44px; }
+	.logins .twitter {
+		background: #55acee url("../images/twitter.png") 10px center no-repeat;
+		padding-left: 44px; }
+
+</style>
+
+
+
+
+<div class="logins">
+	<a class="facebook" href="#">Sign in with Facebook</a>
+	<a class="twitter" href="#">Sign in with Twitter</a>
+	<a id="googleLoginBtn" class="google" style="font-family: 'Roboto', sans-serif;" href="#">Sign in with Google</a>
+</div>
+
+
+</body>
+</html>

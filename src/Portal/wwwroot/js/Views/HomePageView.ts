@@ -1,8 +1,10 @@
 ﻿class HomePageView extends Views.ViewBase {
 
 	constructor() {		
-		super();
+	 super();	 
 	}
+
+	get pageType(): Views.PageType { return Views.PageType.HomePage; }
 
 	public registerNormal(mail: string, password: string) {
 

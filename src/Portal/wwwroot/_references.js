@@ -16,6 +16,7 @@
 /// <reference path="js/registration/createusergoogle.js" />
 /// <reference path="js/registration/createuserlocal.js" />
 /// <reference path="js/registration/facebookinit.js" />
+/// <reference path="js/registration/googlebutton.js" />
 /// <reference path="js/registration/googleinit.js" />
 /// <reference path="js/registration/loginmanager.js" />
 /// <reference path="js/views/homepageview.js" />

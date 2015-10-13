@@ -9,13 +9,12 @@ var CreateUserFacebook = (function (_super) {
     function CreateUserFacebook() {
         var _this = this;
         _super.call(this);
-        //todo: rename
-        this.endpoint = '/api/FacebookUser';
+        this.endpoint = "/api/FacebookUser";
         this.statusChangeCallback = function (response) {
-            if (response.status === 'connected') {
+            if (response.status === "connected") {
                 _this.handleRoughResponse(response.authResponse);
             }
-            else if (response.status === 'not_authorized') {
+            else if (response.status === "not_authorized") {
             }
             else {
             }

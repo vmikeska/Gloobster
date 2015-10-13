@@ -8,8 +8,7 @@ var CreateUserGoogle = (function (_super) {
     __extends(CreateUserGoogle, _super);
     function CreateUserGoogle() {
         _super.call(this);
-        //todo: rename
-        this.endpoint = '/api/GoogleUser';
+        this.endpoint = "/api/GoogleUser";
         this.loginType = NetworkType.Google;
     }
     CreateUserGoogle.prototype.registerOrLogin = function (googleUser) {

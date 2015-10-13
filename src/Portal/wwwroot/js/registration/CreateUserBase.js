@@ -4,6 +4,7 @@ var CreateUserBase = (function () {
         this.endpoint = "";
         this.onSuccess = function (response) {
             _this.storeCookieWithToken(response.encodedToken, response.networkType);
+            $(".popup").hide();
         };
         this.onError = function (response) {
             //todo: show some general error dialog
@@ -13,7 +14,10 @@ var CreateUserBase = (function () {
         var cookieObj = { "encodedToken": encodedToken, "networkType": networkType };
         var cookieStr = JSON.stringify(cookieObj);
         $.cookie(Constants.cookieName, cookieStr);
+        var firstRedirectUrl = 'Home/PinBoard';
         console.log("token received: " + this.loginType);
+        return;
+        window.location.href = firstRedirectUrl;
     };
     CreateUserBase.prototype.sendUserRegistrationData = function (newUser) {
         var request = new RequestSender(this.endpoint, newUser);

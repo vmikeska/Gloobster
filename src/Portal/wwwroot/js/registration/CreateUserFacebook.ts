@@ -5,17 +5,16 @@ class CreateUserFacebook extends CreateUserBase {
 	 this.loginType = NetworkType.Facebook;
  }
 
-	//todo: rename
-	endpoint = '/api/FacebookUser';
+	endpoint = "/api/FacebookUser";
 
 	registerOrLogin() {
 		FB.getLoginStatus(this.statusChangeCallback);
 	}
 
 	private statusChangeCallback = (response) => {
-		if (response.status === 'connected') {
+		if (response.status === "connected") {
 			this.handleRoughResponse(response.authResponse);
-		} else if (response.status === 'not_authorized') {
+		} else if (response.status === "not_authorized") {
 			//possibly problems with authorization
 		} else {
 			//zero state

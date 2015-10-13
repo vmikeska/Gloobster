@@ -1,27 +1,40 @@
 var Views;
 (function (Views) {
+    (function (PageType) {
+        PageType[PageType["HomePage"] = 0] = "HomePage";
+        PageType[PageType["PinBoard"] = 1] = "PinBoard";
+        PageType[PageType["TripList"] = 2] = "TripList";
+    })(Views.PageType || (Views.PageType = {}));
+    var PageType = Views.PageType;
     var ViewBase = (function () {
         function ViewBase() {
-            this.loginManager = new LoginManager;
-            var useCookie = true;
-            var isAlreadyLogged = this.loginManager.isAlreadyLogged() && useCookie;
-            if (isAlreadyLogged) {
-                console.log("isAlreadyLogged with " + this.loginManager.cookieLogin.networkType);
-            }
+            this.loginManager = new LoginManager();
+            var isAlreadyLogged = this.loginManager.isAlreadyLogged();
             if (!isAlreadyLogged) {
                 this.initializeGoogle();
                 this.initializeFacebook();
+                $("#loginSection").show();
+            }
+            else {
+                console.log("isAlreadyLogged with " + this.loginManager.cookieLogin.networkType);
             }
         }
+        Object.defineProperty(ViewBase.prototype, "pageType", {
+            //public googleInit: GoogleInit;
+            //public pageType: PageType;
+            get: function () { return null; },
+            enumerable: true,
+            configurable: true
+        });
         ViewBase.prototype.initializeGoogle = function () {
             var self = this;
-            this.googleInit = new GoogleInit();
-            this.googleInit.onSuccess = function (googleUser) {
+            var btnGoogle = new GoogleButton();
+            btnGoogle.successfulCallback = function (googleUser) {
                 self.loginManager.googleUserCreator.registerOrLogin(googleUser);
             };
-            this.googleInit.onFailure = function (error) {
-                //todo: display general dialog
-            };
+            var btnName = (this.pageType === PageType.HomePage) ? "googleLoginBtnHome" : "googleLoginBtn";
+            btnGoogle.elementId = btnName;
+            btnGoogle.initialize();
         };
         ViewBase.prototype.initializeFacebook = function () {
             var self = this;

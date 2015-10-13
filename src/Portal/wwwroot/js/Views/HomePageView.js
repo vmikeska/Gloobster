@@ -9,6 +9,11 @@ var HomePageView = (function (_super) {
     function HomePageView() {
         _super.call(this);
     }
+    Object.defineProperty(HomePageView.prototype, "pageType", {
+        get: function () { return Views.PageType.HomePage; },
+        enumerable: true,
+        configurable: true
+    });
     HomePageView.prototype.registerNormal = function (mail, password) {
         var data = { "mail": mail, "password": password };
         _super.prototype.apiPost.call(this, "User", data, function (response) {

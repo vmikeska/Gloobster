@@ -4,11 +4,8 @@
 	 super();
 	 this.loginType = NetworkType.Google;	 
  }
-
-	
-
-	//todo: rename
-	endpoint = '/api/GoogleUser';
+ 
+	endpoint = "/api/GoogleUser";
 
 	registerOrLogin(googleUser) {		
 	 super.sendUserRegistrationData(googleUser);

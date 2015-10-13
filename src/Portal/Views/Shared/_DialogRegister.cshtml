@@ -1,0 +1,40 @@
+﻿<div class="popup" id="popup-login">
+	<div>
+		<h3 class="margin2">Join Gloobster</h3>
+		<div class="table">
+			<div class="cell">
+				<form id="registrationForm" class="margin">
+					<label class="h4" for="email_s">E-mail</label>
+					<input id="email_s" type="text" placeholder="E-mail">
+					<label class="h4" for="password_s">Password</label>
+					<input id="password_s" type="password">
+					<p class="small">
+						By creating an account you accept the
+						<a href="#">Terms of service</a>
+					</p>
+					<input id="btnRegister" class="right" type="button" value="Join Now">
+				</form>
+				Already a member?
+				<a href="#">Sign In</a>
+			</div>
+			<div class="cell">
+				<div class="logins">
+					<a class="facebook" href="#">Sign Up with Facebook</a>
+					<a class="twitter" href="#">Sign Up with Twitter</a>
+					<a id="googleLoginBtn" class="google" style="font-family: 'Roboto', sans-serif;" href="#">Sign in with Google</a>
+				</div>
+			</div>
+		</div>
+		<a class="close" href="#">Close</a>
+	</div>
+</div>
+
+<script>
+	$("#btnRegister").click(function () {
+		var mail = $("#email_s").val();
+		var password = $("#password_s").val();
+		currentView.loginManager.localUserCreator.registerOrLogin(mail, password);
+	});
+
+		
+</script>

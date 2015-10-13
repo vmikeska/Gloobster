@@ -4,11 +4,12 @@ var LoginManager = (function () {
         if (!this.isAlreadyLogged()) {
             this.facebookUserCreator = new CreateUserFacebook();
             this.googleUserCreator = new CreateUserGoogle();
+            this.localUserCreator = new CreateUserLocal();
         }
     }
     LoginManager.prototype.loadCookies = function () {
         var cookieLogStr = $.cookie(Constants.cookieName);
-        if ($.isEmptyObject(cookieLogStr)) {
+        if (!cookieLogStr.startsWith("{")) {
             return;
         }
         var cookieLogObj = JSON.parse(cookieLogStr);
@@ -21,6 +22,10 @@ var LoginManager = (function () {
             return true;
         }
         return false;
+    };
+    LoginManager.prototype.logout = function () {
+        $.cookie(Constants.cookieName, {}, { path: '/' });
+        window.location.href = "/";
     };
     return LoginManager;
 })();

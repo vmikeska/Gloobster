@@ -1,8 +1,14 @@
 ﻿class CreateUserLocal extends CreateUserBase {
 
-	createUser(displayName: string, mail: string, password: string) {
-		var baseUser = new PortalUser();
-		baseUser.displayName = displayName;
+ constructor() {
+	 super();
+	 this.loginType = NetworkType.Base;
+ }
+
+ endpoint = "/api/User";
+ 
+	registerOrLogin(mail: string, password: string) {
+		var baseUser = new PortalUser();		
 		baseUser.mail = mail;
 		baseUser.password = password;
 
@@ -11,7 +17,6 @@
 }
 
 class PortalUser {
- displayName: string;
  password: string;
  mail: string;
 }

@@ -2,6 +2,8 @@
  
 		public mapsManager: MapsManager;
 	 
+		get pageType(): Views.PageType { return Views.PageType.PinBoard; }
+
 		public initialize() {
 			this.mapsManager = new MapsManager(this);
 			this.mapsManager.switchToView(Maps.ViewType.D2);
@@ -24,6 +26,7 @@
 		}
 
 		public searchPlaces(placeName: string) {
+			//var self = this;
 			var minChars = 3;
 
 			if (placeName.length < minChars) {
@@ -31,42 +34,47 @@
 			}
 
 			var params = [["placeName", placeName]];
-			var self = this;
-			super.apiGet("place", params, function(response) {
+			super.apiGet("place", params, response => {
 
-				$("#countriesResult").show();
+				$("#cities ul").show();
 				var htmlContent = '';
-				response.forEach(function(item) {
-					htmlContent += self.getItemHtml(item);
+				response.forEach(item => {
+					htmlContent += this.getItemHtml(item);
 				});
 
-				$("#countriesResult").html(htmlContent);
+				$("#cities ul").html(htmlContent);
 
-				$(".cityMenuItem").unbind();
-				$(".cityMenuItem").click(function(item) {
-					var geoId = $(item.currentTarget).data('id');
+				$("#cities li").unbind();
+				$("#cities li").click(item => {
+					var geoId = $(item.currentTarget).data("value");
 
-					var dataRecord = _.find(response, { 'geonameId': geoId });
+					var dataRecord = _.find(response, { "SourceId": geoId.toString() });
 
 					var newPlaceRequest = {
-						"CountryCode": dataRecord.countryCode,
-						"City": dataRecord.name,
-						"PlaceLatitude": dataRecord.lat,
-						"PlaceLongitude": dataRecord.lng,
-						"SourceId": dataRecord.geonameId,
-						"SourceType": "GeoNames"
+						"CountryCode": dataRecord.CountryCode,
+						"City": dataRecord.City,						
+						"SourceId": dataRecord.SourceId,
+						"SourceType": dataRecord.SourceType
 					};
 
-					$("#countriesResult").hide();
+				 if (dataRecord.Coordinates) {
+					newPlaceRequest["PlaceLatitude"] = dataRecord.Coordinates.Lat;
+					newPlaceRequest["PlaceLongitude"] = dataRecord.Coordinates.Lng;
+				 }
+					
+					$("#cities ul").hide();
 
-					self.saveNewPlace(newPlaceRequest);
+					this.saveNewPlace(newPlaceRequest);
 				});
 
 			});
 		}
 	 
 		getItemHtml(item) {
-		 return '<div class="cityMenuItem" data-id="' + item.SourceId + '" data-type="' + item.SourceType + '">' + item.Name + ', ' + item.CountryCode + ' (pop: ' + item.population + ')' + '</div>';
+
+			var imgUrl = 'images/samples/sample11.png';
+		 return '<li data-value="' + item.SourceId + '" data-type="' + item.SourceType + '"><span class="thumbnail"><img src="'+ imgUrl + '"></span>' + item.Name + '<span class="color2">, ' + item.CountryCode + '</span></li>';
+		 //'<div class="cityMenuItem" data-id="' + item.SourceId + '" data-type="' + item.SourceType + '">' + item.Name + ', ' + item.CountryCode + ' (pop: ' + item.population + ')' + '</div>';
 		}
   		
 	}
