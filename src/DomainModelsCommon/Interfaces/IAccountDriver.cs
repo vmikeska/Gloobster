@@ -8,6 +8,8 @@ namespace Gloobster.DomainModelsCommon.Interfaces
 {
 	public interface IAccountDriver
 	{
+		bool CheckCredintials(object authObject, PortalUserDO portalUser);
+
 		SocialNetworkType NetworkType { get; }
 
 		SocAuthenticationDO Authentication { get; set; }

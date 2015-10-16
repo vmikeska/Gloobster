@@ -8,18 +8,24 @@ using Gloobster.DomainModelsCommon.Interfaces;
 
 namespace Gloobster.DomainModels.Services.Places
 {
+	
+
 	public class TwitterPlacesDriver: IPlacesExtractorDriver
 	{
 		public TwitterService TwitterSvc;
 
+		public string DbUserId;
 		public SocAuthenticationDO Authentication;
 
 		private const int PageSize = 200;
 
-		public List<VisitedPlaceDO> ExtractNewVisitedPlaces(string dbUserId, SocAuthenticationDO auth)
+		public PlacesExtractionResults ExtractVisitedPlaces(string dbUserId, SocAuthenticationDO auth)
 		{
-			Authentication = (SocAuthenticationDO) auth;
+			DbUserId = dbUserId;
+			Authentication = auth;
 
+			var result = new PlacesExtractionResults();
+			
 			TwitterSvc = new TwitterService(GloobsterConfig.TwitterConsumerKey, GloobsterConfig.TwitterConsumerSecret);
 			TwitterSvc.AuthenticateWith(Authentication.AccessToken, Authentication.TokenSecret);
 
@@ -28,28 +34,47 @@ namespace Gloobster.DomainModels.Services.Places
 
 			long lastExtractedId = allTweets.Max(t => t.Id);
 
-			var tweetsWithPlaces = allTweets.Where(t => t.Place != null && t.Place.PlaceType == TwitterPlaceType.City);
-			//todo: maybe add extraction for Countries as well
-			var tweetPlaces = tweetsWithPlaces.Select(t => t.Place).ToList();
-
-			var visitedPlaces = tweetPlaces.Select(p => FacebookPlaceToVisitedPlace(p, dbUserId)).ToList();
+			var tweetsWithCities = allTweets.Where(t => t.Place != null && t.Place.PlaceType == TwitterPlaceType.City);
+			result.VisitedCities = tweetsWithCities.Select(t => TweetToVisitedCity(t, dbUserId)).ToList();
 			
-			return visitedPlaces;
+			var tweetsWithCountries = allTweets.Where(t => t.Place != null && t.Place.PlaceType == TwitterPlaceType.Country);
+			result.VisitedCountries = tweetsWithCountries.Select(c => TweetToVisitedCountry(c, dbUserId)).ToList();
+			
+			return result;
 		}
 
-		private VisitedPlaceDO FacebookPlaceToVisitedPlace(TwitterPlace twPlace, string portalUserId)
+		private VisitedCityDO TweetToVisitedCity(TwitterStatus tweet, string portalUserId)
 		{
-			var localPlace = new VisitedPlaceDO
+			var twPlace = tweet.Place;
+
+			LatLng location = null;
+			if (tweet.Location != null && tweet.Location.Coordinates != null)
+			{
+				bool hasEmptyCoordinates = tweet.Location.Coordinates.Latitude == 0 && tweet.Location.Coordinates.Longitude == 0;
+                if (!hasEmptyCoordinates)
+				{
+					location = new LatLng {Lat = tweet.Location.Coordinates.Latitude, Lng = tweet.Location.Coordinates.Longitude};
+				}
+			}
+			
+			var localPlace = new VisitedCityDO
 			{
 				City = twPlace.Name,
 				CountryCode = twPlace.CountryCode,
-				//PlaceLatitude = twPlace.Latitude,
-				//PlaceLongitude = twPlace.Longitude,
+				Dates = new List<DateTime> { tweet.CreatedDate},
+				Location = location,				
+				PortalUserId = portalUserId,				
+			};
+			return localPlace;
+		}
 
-				PortalUserId = portalUserId,
-
-				SourceType = SourceTypeDO.Twitter,
-				SourceId = twPlace.Id
+		private VisitedCountryDO TweetToVisitedCountry(TwitterStatus tweet, string portalUserId)
+		{
+			var localPlace = new VisitedCountryDO
+			{
+				CountryCode2 = tweet.Place.CountryCode,
+				Dates = new List<DateTime> { tweet.CreatedDate },
+				PortalUserId = portalUserId				
 			};
 			return localPlace;
 		}

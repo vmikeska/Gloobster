@@ -7,6 +7,7 @@ using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.Portal.ReqRes;
 using Gloobster.WebApiObjects.Facebook;
+using Microsoft.AspNet.Http;
 
 namespace Gloobster.Portal.Controllers
 {
@@ -37,6 +38,8 @@ namespace Gloobster.Portal.Controllers
 			UserService.AccountDriver = accountDriver;
 
 			var result = await UserService.Validate(facebookAuthRequest, null);
+
+			Context.Session.SetString(PortalConstants.UserSessionId, result.UserId);
 
 			var response = new LoggedResponse
 			{

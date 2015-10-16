@@ -55,12 +55,7 @@
 				</div>
 				<!-- scripts -->
 
-				@*<script src="https://apis.google.com/js/platform.js?onload=onGoogleScriptsLoaded" async defer></script>*@
-
-				<script src="~/lib/jquery/dist/jquery.js"></script>
-				<script src="~/lib/jquery.cookie/jquery.cookie.js"></script>
-
-				<script src="~/lib/lodash/lodash.js"></script>
+				
 
 				@Html.Partial("_GlobalScripts")
 
@@ -72,13 +67,6 @@
 			$.cookie(Constants.cookieName, {}, { path: '/' });
 
 			currentView = new HomePageView();
-
-			//function onGoogleScriptsLoaded() {
-			//	var isAlreadyLogged = currentView.loginManager.isAlreadyLogged();
-			//	if (!isAlreadyLogged) {
-			//		currentView.googleInit.initialize();
-			//	}
-			//}
 
 			function clickAuthorize() {
 				var url = '/TwitterUser/MailStep';
@@ -97,13 +85,9 @@
 								<div class="margin">
 
 
-										@*<li><a href="javascript:clickAuthorize()" id="authorize">Authorize Twitter</a></li>*@
-										@*<div class="fb-login-button" data-size="xlarge" data-show-faces="false" data-auto-logout-link="false"></div>*@
-										@*<fb:login-button scope="user_tagged_places,user_likes,publish_actions,user_location,user_hometown,email,user_status,user_friends" onlogin="currentView.facebookUserCreator.registerOrLogin()">
-												</fb:login-button>*@
-
-										<a class="facebook" href="#">Sign in with Facebook</a>
-										<a class="twitter" href="#">Sign in with Twitter</a>
+									@*faked this way, have to check if legal: http://stackoverflow.com/questions/9810335/how-to-change-facebook-login-button-with-my-custom-image*@
+										<a class="facebook" href="javascript:currentView.loginManager.facebookUserCreator.login()">Sign in with Facebook</a>
+										<a class="twitter" href="javascript:clickAuthorize()">Sign in with Twitter</a>
 										<a id="googleLoginBtnHome" class="google" href="#">Sign in with Google</a>
 
 								</div>

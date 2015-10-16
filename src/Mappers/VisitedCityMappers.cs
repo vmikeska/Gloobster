@@ -1,57 +1,53 @@
-﻿using System;
 using System.Linq;
 using Gloobster.Common.DbEntity;
 using Gloobster.DomainModelsCommon.DO;
-using Gloobster.WebApiObjects;
 using MongoDB.Bson;
 
 namespace Gloobster.Mappers
 {
-	public static class VisitedPlaceMappers
+	public static class VisitedCityMappers
 	{
-		public static VisitedPlaceDO ToDO(this VisitedPlaceEntity entity)
+		public static VisitedCityDO ToDO(this VisitedCityEntity entity)
 		{
 			if (entity == null)
 			{
 				return null;
 			}
-
-			var dObj = new VisitedPlaceDO
-			{				
+			
+			var dObj = new VisitedCityDO
+			{
 				PortalUserId = entity.PortalUser_id.ToString(),
 				City = entity.City,
 				CountryCode = entity.CountryCode,
-				Dates = entity.Dates.ToList(),
-				Location = entity.Location,				
-				SourceId = entity.SourceId,
-				SourceType = (SourceTypeDO)entity.SourceType
+				Dates = entity.Dates.ToList(),				
+				Location = entity.Location,
+				GeoNamesId = entity.GeoNamesId				
 			};
-
+			
 			return dObj;
 		}
 
-		public static VisitedPlaceEntity ToEntity(this VisitedPlaceDO dObj)
+		public static VisitedCityEntity ToEntity(this VisitedCityDO dObj)
 		{
 			if (dObj == null)
 			{
 				return null;
 			}
 
-			var entity = new VisitedPlaceEntity
-			{				
+			var entity = new VisitedCityEntity
+			{					
 				City = dObj.City,
 				CountryCode = dObj.CountryCode,
-				Dates = dObj.Dates.ToArray(),
 				Location = dObj.Location,
-				SourceId = dObj.SourceId,
-				SourceType = (int)dObj.SourceType,				
+				Dates = dObj.Dates.ToArray(),
+				GeoNamesId = dObj.GeoNamesId
 			};
 
 			if (!string.IsNullOrEmpty(dObj.PortalUserId))
 			{
 				entity.PortalUser_id = new ObjectId(dObj.PortalUserId);
 			}
-
+			
 			return entity;
 		}
 
@@ -71,10 +67,8 @@ namespace Gloobster.Mappers
 		//		SourceId = dObj.SourceId,
 		//		SourceType = dObj.SourceType.ToString()
 		//	};
-
+			
 		//	return response;
 		//}
 	}
-
-
 }

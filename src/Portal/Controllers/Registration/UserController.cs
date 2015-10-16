@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Web;
 using Autofac;
 using Gloobster.Common;
 using Gloobster.DomainModels;
@@ -12,6 +13,7 @@ using Gloobster.Mappers;
 using Gloobster.Portal.ReqRes;
 using Gloobster.SocialLogin.Facebook.Communication;
 using Gloobster.WebApiObjects.Facebook;
+using Microsoft.AspNet.Http;
 
 namespace Gloobster.Portal.Controllers
 {
@@ -41,6 +43,7 @@ namespace Gloobster.Portal.Controllers
 			UserService.AccountDriver = accountDriver;
 
 			var result = await UserService.Validate(null, baseUser);
+			Context.Session.SetString(PortalConstants.UserSessionId, result.UserId);
 
 			var response = new LoggedResponse
 			{

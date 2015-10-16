@@ -28,6 +28,9 @@ var CreateUserFacebook = (function (_super) {
         var fbUser = new FacebookUser(jsonRequest.accessToken, jsonRequest.userID, jsonRequest.expiresIn, jsonRequest.signedRequest);
         _super.prototype.sendUserRegistrationData.call(this, fbUser);
     };
+    CreateUserFacebook.prototype.login = function () {
+        FB.login(this.statusChangeCallback);
+    };
     return CreateUserFacebook;
 })(CreateUserBase);
 var FacebookUser = (function () {

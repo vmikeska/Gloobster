@@ -16,23 +16,23 @@ namespace Gloobster.Portal.Controllers
 	[Route("api/[controller]")]
 	public class VisitedPlaceController : Controller
 	{
-		public IVisitedPlacesDomain VisitedPlaces;
+		public IVisitedCitiesDomain VisitedCities;
 
-		public VisitedPlaceController(IVisitedPlacesDomain visitedPlaces)
+		public VisitedPlaceController(IVisitedCitiesDomain visitedCities)
 		{
-			VisitedPlaces = visitedPlaces;
+			VisitedCities = visitedCities;
 		}
 
 		[HttpGet]
 		[Authorize]
 		public async Task<IActionResult> Get(string userId)
 		{
-			List<VisitedPlaceDO> places = await VisitedPlaces.GetPlacesByUserId(userId);
+			List<VisitedCityDO> places = await VisitedCities.GetCitiesByUserId(userId);
 
-			var response = new VisitedPlaceResponse
+			var response = new VisitedPlacesRequest
 			{
 				UserId = userId,
-				Places = places.Select(p => p.ToResponse()).ToArray()
+				//Places = places.Select(p => p.ToResponse()).ToArray()
 			};
 
 			return new ObjectResult(response);
@@ -40,27 +40,30 @@ namespace Gloobster.Portal.Controllers
 
 		[HttpPost]
 		[Authorize]
-		public async Task<IActionResult> Post([FromBody]VisitedPlaceItem place, string userId)
+		public async Task<IActionResult> Post([FromBody]VisitedPlaceRequest place, string userId)
 		{
 			var placeDO = new VisitedPlaceDO
 			{
 				City = place.City,
 				CountryCode = place.CountryCode,
-				PlaceLatitude = place.PlaceLatitude,
-				PlaceLongitude = place.PlaceLongitude,
+				Location = place.Location,				
 				PortalUserId = userId,
-				SourceId = place.SourceId
+				Dates = place.Dates,
+				SourceId = place.SourceId,
+				SourceType = (SourceTypeDO)place.SourceType				
 			};
 
-			if (!string.IsNullOrEmpty(place.SourceType))
-			{
-				placeDO.SourceType = (SourceTypeDO) Enum.Parse(typeof (SourceTypeDO), place.SourceType);
-			}
+			//if (!string.IsNullOrEmpty(place.SourceType))
+			//{
+			//	placeDO.SourceType = (SourceTypeDO) Enum.Parse(typeof (SourceTypeDO), place.SourceType);
+			//}
 
-			var places = new List<VisitedPlaceDO> {placeDO};
-			var result = await VisitedPlaces.AddNewPlaces(places, userId);
+			//todo: implement logic for adding each SourceType
+
+			//var places = new List<VisitedCityDO> {placeDO};
+			//var result = await VisitedCities.AddNewCities(places, userId);
 			
-			return new ObjectResult(result);
+			return new ObjectResult(null);
 		}
 
 	}

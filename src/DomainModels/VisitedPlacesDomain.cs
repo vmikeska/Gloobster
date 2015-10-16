@@ -1,4 +1,3 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,29 +10,29 @@ using MongoDB.Bson;
 
 namespace Gloobster.DomainModels
 {
-	public class VisitedPlacesDomain: IVisitedPlacesDomain
+	public class VisitedPlacesDomain : IVisitedPlacesDomain
 	{
 		public IDbOperations DB { get; set; }
 
 		public async Task<List<VisitedPlaceDO>> AddNewPlaces(List<VisitedPlaceDO> inputPlaces, string userId)
-	    {		
+		{
 			var query = $@"{{""PortalUser_id"": ObjectId(""{userId}"")}}";
 			var alreadySavedPlaces = await DB.FindAsync<VisitedPlaceEntity>(query);
-			
-			var newPlaces = new List<VisitedPlaceEntity>();
-			foreach (VisitedPlaceDO place in inputPlaces)
-		    {
-				bool isNewPlace =
-					!alreadySavedPlaces.Any(p => p.City == place.City && p.CountryCode == place.CountryCode);
 
-			    if (isNewPlace)
-			    {
-				    var newPlaceEntity = place.ToEntity();
+			var newPlaces = new List<VisitedPlaceEntity>();
+			foreach (var place in inputPlaces)
+			{
+				bool isNewPlace =
+					!alreadySavedPlaces.Any(p => p.SourceId == place.SourceId && p.SourceType == (int)place.SourceType);
+
+				if (isNewPlace)
+				{
+					var newPlaceEntity = place.ToEntity();
 					newPlaceEntity.PortalUser_id = new ObjectId(userId);
 					newPlaceEntity.id = ObjectId.GenerateNewId();
 					newPlaces.Add(newPlaceEntity);
-			    }
-		    }
+				}
+			}
 
 			if (newPlaces.Any())
 			{
@@ -41,8 +40,8 @@ namespace Gloobster.DomainModels
 			}
 
 			var newPlacesDO = newPlaces.Select(e => e.ToDO()).ToList();
-			return newPlacesDO;			
-	    }
+			return newPlacesDO;
+		}
 
 		public async Task<List<VisitedPlaceDO>> GetPlacesByUserId(string userId)
 		{
@@ -53,8 +52,4 @@ namespace Gloobster.DomainModels
 			return placesDO;
 		}
 	}
-
-
-
-
 }

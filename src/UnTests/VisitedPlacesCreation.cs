@@ -33,46 +33,46 @@ namespace Gloobster.UnitTests
 		private const float PlaceLongitude3 = 9.99f;
 		private const float PlaceLatitude3 = 8.88f;
 
-		public static VisitedPlaceDO CreateVisitedPlaceDO1()
+		public static VisitedCityDO CreateVisitedPlaceDO1()
 		{
-			var dObj = new VisitedPlaceDO
+			var dObj = new VisitedCityDO
 			{
 				City = City1,
-				SourceType = SourceType1,				
-				SourceId = SourceId1,
-				CountryCode = CountryCode1,
-				PlaceLongitude = PlaceLongitude1,
-				PlaceLatitude = PlaceLatitude1
+				//SourceType = SourceType1,				
+				//SourceId = SourceId1,
+				//CountryCode = CountryCode1,
+				//Longitude = PlaceLongitude1,
+				//Latitude = PlaceLatitude1
 			};
 
 			return dObj;
 		}
 
-		public static VisitedPlaceDO CreateVisitedPlaceDO2()
+		public static VisitedCityDO CreateVisitedPlaceDO2()
 		{
-			var dObj = new VisitedPlaceDO
+			var dObj = new VisitedCityDO
 			{
 				City = City2,
-				SourceType = SourceType2,
-				SourceId = SourceId2,
-				CountryCode = CountryCode2,
-				PlaceLongitude = PlaceLongitude2,
-				PlaceLatitude = PlaceLatitude2
+				//SourceType = SourceType2,
+				//SourceId = SourceId2,
+				//CountryCode = CountryCode2,
+				//Longitude = PlaceLongitude2,
+				//Latitude = PlaceLatitude2
 			};
 
 			return dObj;
 		}
 
-		public static VisitedPlaceDO CreateVisitedPlaceDO3()
+		public static VisitedCityDO CreateVisitedPlaceDO3()
 		{
-			var dObj = new VisitedPlaceDO
+			var dObj = new VisitedCityDO
 			{
 				City = City3,
-				SourceType = SourceType3,
-				SourceId = SourceId3,
-				CountryCode = CountryCode3,
-				PlaceLongitude = PlaceLongitude3,
-				PlaceLatitude = PlaceLatitude3
+				//SourceType = SourceType3,
+				//SourceId = SourceId3,
+				//CountryCode = CountryCode3,
+				//Longitude = PlaceLongitude3,
+				//Latitude = PlaceLatitude3
 			};
 
 			return dObj;
@@ -85,11 +85,11 @@ namespace Gloobster.UnitTests
 				id = ObjectId.GenerateNewId(),
 				PortalUser_id = portalUserEntityId,
 				City = City1,
-				SourceType = SourceType1.ToString(),				
+				//SourceType = SourceType1.ToString(),				
 				SourceId = SourceId1,
 				CountryCode = CountryCode1,
-				PlaceLongitude = PlaceLongitude1,
-				PlaceLatitude = PlaceLatitude1
+				//PlaceLongitude = PlaceLongitude1,
+				//PlaceLatitude = PlaceLatitude1
 			};
 
 			if (save)
@@ -107,11 +107,11 @@ namespace Gloobster.UnitTests
 				id = ObjectId.GenerateNewId(),
 				PortalUser_id = portalUserEntityId,
 				City = City2,
-				SourceType = SourceType2.ToString(),
+				//SourceType = SourceType2.ToString(),
 				SourceId = SourceId2,
 				CountryCode = CountryCode2,
-				PlaceLongitude = PlaceLongitude2,
-				PlaceLatitude = PlaceLatitude2
+				//PlaceLongitude = PlaceLongitude2,
+				//PlaceLatitude = PlaceLatitude2
 			};
 
 			if (save)
@@ -129,11 +129,11 @@ namespace Gloobster.UnitTests
 				id = ObjectId.GenerateNewId(),
 				PortalUser_id = portalUserEntityId,
 				City = City3,
-				SourceType = SourceType3.ToString(),
+				//SourceType = SourceType3.ToString(),
 				SourceId = SourceId3,
 				CountryCode = CountryCode3,
-				PlaceLongitude = PlaceLongitude3,
-				PlaceLatitude = PlaceLatitude3
+				//PlaceLongitude = PlaceLongitude3,
+				//PlaceLatitude = PlaceLatitude3
 			};
 
 			if (save)

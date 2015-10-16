@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Gloobster.Common;
 using Gloobster.DomainModelsCommon.BaseClasses;
 using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
@@ -18,13 +19,13 @@ namespace Gloobster.DomainModels.Services.Places
 
 		private const string UserQueryBase = "/{0}/tagged_places";
 		private const string UserQueryNext = UserQueryBase + "/?after={1}";
-		
-		public List<VisitedPlaceDO> ExtractNewVisitedPlaces(string dbUserId, SocAuthenticationDO auth)
-		{
-			Authentication = auth;			
-			DbUserId = dbUserId;
 
-			var taggedPlacesQuery = string.Format(UserQueryBase, Authentication.UserId);
+		public PlacesExtractionResults ExtractVisitedPlaces(string dbUserId, SocAuthenticationDO auth)        
+		{			
+			DbUserId = dbUserId;
+			Authentication = auth;
+
+			var taggedPlacesQuery = string.Format(UserQueryBase, auth.UserId);
 
 			FBService.SetAccessToken(Authentication.AccessToken);
 
@@ -38,7 +39,7 @@ namespace Gloobster.DomainModels.Services.Places
 			});
 
 			var extractedPlacesDO = extractedPlaces.Select(p => FacebookPlaceToVisitedPlace(p, DbUserId)).ToList();
-			return extractedPlacesDO;
+			return new PlacesExtractionResults {VisitedPlaces = extractedPlacesDO};
 		}
 
 		private VisitedPlaceDO FacebookPlaceToVisitedPlace(FoundPlace fbPlace, string portalUserId)
@@ -47,10 +48,9 @@ namespace Gloobster.DomainModels.Services.Places
 			{
 				City = fbPlace.City,
 				CountryCode = fbPlace.CountryCode2,
-				PlaceLatitude = fbPlace.Latitude,
-				PlaceLongitude = fbPlace.Longitude,
-
+				Location = new LatLng { Lat = fbPlace.Latitude, Lng = fbPlace.Longitude },
 				PortalUserId = portalUserId,
+				Dates = new List<DateTime> { fbPlace.Time},
 
 				SourceType = SourceTypeDO.Facebook,
 				SourceId = fbPlace.CheckinId

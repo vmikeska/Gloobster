@@ -32,6 +32,10 @@ class CreateUserFacebook extends CreateUserBase {
 		super.sendUserRegistrationData(fbUser);
 	}
 
+ login() {
+	 FB.login(this.statusChangeCallback);
+ }
+
 }
 
 class FacebookUser {

@@ -13,6 +13,13 @@ namespace Gloobster.DomainModels.Services.Accounts
 {
 	public class AccountDriver: IAccountDriver
 	{
+		public bool CheckCredintials(object authObject, PortalUserDO portalUser)
+		{
+			var userRequest = (BaseUserDO)authObject;
+			bool valid = (userRequest.Password == portalUser.Password);
+			return valid;
+		}
+
 		public IComponentContext ComponentContext { get; set; }
 		public IDbOperations DB { get; set; }
 		public PortalUserDO PortalUser { get; set; }

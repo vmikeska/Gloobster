@@ -17,6 +17,8 @@ var Views;
             }
             else {
                 console.log("isAlreadyLogged with " + this.loginManager.cookieLogin.networkType);
+                //todo: delete when testing is over
+                $("#loginSection").show();
             }
         }
         Object.defineProperty(ViewBase.prototype, "pageType", {

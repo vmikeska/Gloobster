@@ -4,19 +4,18 @@ using Gloobster.Common;
 
 namespace Gloobster.DomainModelsCommon.DO
 {
-	public class VisitedPlaceDO : IEquatable<VisitedPlaceDO>
+	public class VisitedCityDO : IEquatable<VisitedCityDO>
 	{
 		public List<DateTime> Dates { get; set; }
 		public string PortalUserId { get; set; }
 		public string CountryCode { get; set; }
 		public string City { get; set; }
 		public LatLng Location { get; set; }
-		public string SourceId { get; set; }
-		public SourceTypeDO SourceType { get; set; }
+		public int GeoNamesId { get; set; }
 
-		public bool Equals(VisitedPlaceDO other)
+		public bool Equals(VisitedCityDO other)
 		{
-			return this.SourceType == other.SourceType && this.SourceId == SourceId;				
+			return this.CountryCode == other.CountryCode && this.City == other.City;
 		}
 	}
 }

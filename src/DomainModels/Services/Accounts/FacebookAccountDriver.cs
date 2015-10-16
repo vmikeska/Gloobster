@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
+using Facebook;
 using Gloobster.Common;
 using Gloobster.Common.CommonEnums;
 using Gloobster.Common.DbEntity;
@@ -19,6 +20,16 @@ namespace Gloobster.DomainModels.Services.Accounts
 {
 	public class FacebookAccountDriver : IAccountDriver
 	{
+		public bool CheckCredintials(object authObject, PortalUserDO portalUser)
+		{
+			var socAuth = (SocAuthenticationDO) authObject;
+
+			FBService.SetAccessToken(socAuth.AccessToken);
+			bool tokenValid = FBService.ValidateToken();
+			
+			return tokenValid;
+		}
+
 		public SocialNetworkType NetworkType => SocialNetworkType.Facebook;
 
 		public IDbOperations DB { get; set; }
@@ -38,12 +49,23 @@ namespace Gloobster.DomainModels.Services.Accounts
 
 		private FacebookUserFO _fbUser;
 
+		public FacebookUserFO FbUser
+		{
+			get
+			{
+				if (_fbUser == null)
+				{
+					FBService.SetAccessToken(Authentication.AccessToken);
+					_fbUser = FBService.Get<FacebookUserFO>("/me");
+				}
+
+				return _fbUser;
+			}
+		}
+
 		public async Task<PortalUserDO> Create()
 		{			
 			var permTokenResult = IssueNewPermanentAccessToken(Authentication.AccessToken);
-
-			FBService.SetAccessToken(Authentication.AccessToken);
-			_fbUser = FBService.Get<FacebookUserFO>("/me");
 			
 			var facebookAccount = new SocialAccountSE
 			{
@@ -59,25 +81,25 @@ namespace Gloobster.DomainModels.Services.Accounts
 				{
 					TimeZone = _fbUser.TimeZone,
 					FavoriteTeams = _fbUser.FavoriteTeams.Select(i => i.ToEntity()).ToArray(),
-					Link = _fbUser.Link,
-					Locale = _fbUser.Locale,
-					UpdatedTime = _fbUser.UpdatedTime,
-					Verified = _fbUser.Verified
+					Link = FbUser.Link,
+					Locale = FbUser.Locale,
+					UpdatedTime = FbUser.UpdatedTime,
+					Verified = FbUser.Verified
 				}
 			};
 			
 			var userEntity = new PortalUserEntity
 			{
 				id = ObjectId.GenerateNewId(),
-				DisplayName = _fbUser.Name,
-                Mail = _fbUser.Email,				
+				DisplayName = FbUser.Name,
+                Mail = FbUser.Email,				
 				Password = AccountUtils.GeneratePassword(),								
-				Languages = ParseLanguages(_fbUser.Languages),
-				Gender = ParseGender(_fbUser.Gender),
-				CurrentLocation = await ParseLocationAsync(_fbUser.Location),
-				HomeLocation = await ParseLocationAsync(_fbUser.HomeTown),
-				FirstName = _fbUser.FirstName,
-				LastName = _fbUser.LastName,
+				Languages = ParseLanguages(FbUser.Languages),
+				Gender = ParseGender(FbUser.Gender),
+				CurrentLocation = await ParseLocationAsync(FbUser.Location),
+				HomeLocation = await ParseLocationAsync(FbUser.HomeTown),
+				FirstName = FbUser.FirstName,
+				LastName = FbUser.LastName,
 
 				ProfileImage = AccountUtils.DownloadAndStoreTheProfilePicture(""),
 
@@ -149,7 +171,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 		
 		public string GetEmail()
 		{
-			return _fbUser.Email;
+			return FbUser.Email;
 		}
 
 		public void OnUserExists(PortalUserDO portalUser)

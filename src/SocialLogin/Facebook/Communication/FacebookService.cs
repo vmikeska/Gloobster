@@ -18,6 +18,20 @@ namespace Gloobster.SocialLogin.Facebook.Communication
 			var result = FbClient.Get(query);
 			return result;
 		}
+
+		public bool ValidateToken()
+		{
+			try
+			{
+				var me = Get("me");
+			}
+			catch (FacebookOAuthException)
+			{
+				return false;
+			}
+
+			return true;
+		}
 		
 		public void SetAccessToken(string accessToken)
 		{

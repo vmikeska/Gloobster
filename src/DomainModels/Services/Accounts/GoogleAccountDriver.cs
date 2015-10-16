@@ -18,6 +18,12 @@ namespace Gloobster.DomainModels.Services.Accounts
 {
 	public class GoogleAccountDriver : IAccountDriver
 	{
+		public bool CheckCredintials(object authObject, PortalUserDO portalUser)
+		{
+			//todo: implement
+			return true;
+		}
+
 		public SocialNetworkType NetworkType => SocialNetworkType.Google;
 
 		public IDbOperations DB { get; set; }

@@ -2,67 +2,36 @@
 		ViewData["Title"] = "Home Page";
 		Layout = "";
 }
-<html>
-<head>
-		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-		<script src="https://apis.google.com/js/api:client.js"></script>
-		<script type="text/javascript" src="@Url.Content("~/js/registration/GoogleButton.js")"></script>
-	
-				<script>
 
-						var btnGoogle = new GoogleButton();						
-						btnGoogle.successfulCallback = (googleUser) => {
-							alert(JSON.stringify(googleUser));
-						};
-						btnGoogle.elementId = "googleLoginBtn";
-						btnGoogle.initialize();
+@Html.Partial("_GlobalScripts")
 
-		</script>
-
-</head>
-<body>
-
-<!-- In the callback, you would hide the gSignInWrapper element on a
-successful sign in -->
-
-<style>
-	.logins .facebook, .logins .twitter, .logins .google {
-		-webkit-transition: all 0.3s;
-		-moz-transition: all 0.3s;
-		transition: all 0.3s;
-		border-radius: 4px;
-		box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.6);
-		color: #fff;
-		display: inline-block;
-		margin: 0 5px;
-		padding: 15px 10px;
-		text-decoration: none; }
-	.logins .facebook:hover, .logins .twitter:hover, .logins .google:hover {
-		box-shadow: none; }
-
-	.logins .google {
-		background: #ea4538 url("../images/google.png") 10px center no-repeat;
-		padding-left: 53px; }
-
-
-	.logins .facebook {
-		background: #4360a0 url("../images/facebook.png") 10px center no-repeat;
-		padding-left: 44px; }
-	.logins .twitter {
-		background: #55acee url("../images/twitter.png") 10px center no-repeat;
-		padding-left: 44px; }
-
-</style>
-
-
-
+<link href="http://ga.cz/2015/gloobster/css/style.css" rel="stylesheet">
 
 <div class="logins">
-	<a class="facebook" href="#">Sign in with Facebook</a>
-	<a class="twitter" href="#">Sign in with Twitter</a>
-	<a id="googleLoginBtn" class="google" style="font-family: 'Roboto', sans-serif;" href="#">Sign in with Google</a>
+		<div class="margin">
+
+
+				
+
+				<a class="facebook" href="#">Sign in with Facebook</a>
+				<a class="twitter" href="javascript:clickAuthorize()">Sign in with Twitter</a>
+				<a id="googleLoginBtnHome" class="google" href="#">Sign in with Google</a>
+
+		</div>		
 </div>
 
 
-</body>
-</html>
+
+<div class="fb-login-button fb_iframe_widget"
+     style="margin-left: 5px; width: 210px; height: 100px; border: 1px solid red;"
+     data-max-rows="1"
+     data-size="xlarge"
+     data-show-faces="false"
+     data-auto-logout-link="false"
+     login_text=""
+     fb-xfbml-state="rendered"
+     fb-iframe-plugin-query="app_id=1519189774979242&amp;auto_logout_link=false&amp;container_width=940&amp;locale=en_US&amp;max_rows=1&amp;sdk=joey&amp;show_faces=false&amp;size=xlarge">
+	<span style="vertical-align: bottom; width: 123px; height: 39px;">
+				<iframe id="fbiFrame" name="f37e1c2da" width="1000px" height="1000px" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" title="fb:login_button Facebook Social Plugin" src="http://www.facebook.com/v2.2/plugins/login_button.php?app_id=1519189774979242&amp;auto_logout_link=false&amp;channel=http%3A%2F%2Fstatic.ak.facebook.com%2Fconnect%2Fxd_arbiter%2Fjb3BUxkAISL.js%3Fversion%3D41%23cb%3Df117b45aec%26domain%3Dlocalhost%26origin%3Dhttp%253A%252F%252Flocalhost%253A4441%252Ff3f316a0bc%26relation%3Dparent.parent&amp;container_width=940&amp;locale=en_US&amp;max_rows=1&amp;sdk=joey&amp;show_faces=false&amp;size=xlarge" style="border: 1px solid black; visibility: visible; width: 210px; height: 50px;" class=""></iframe>
+		</span>
+</div>

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Gloobster.Common.DbEntity;
+﻿using Gloobster.Common.DbEntity;
 using Gloobster.DomainModelsCommon.DO;
-using Gloobster.WebApiObjects;
 using MongoDB.Bson;
 
 namespace Gloobster.Mappers
@@ -20,7 +15,8 @@ namespace Gloobster.Mappers
 
 			var dObj = new VisitedCountryDO
 			{
-				CountryCode2 = entity.CountryCode2
+				CountryCode2 = entity.CountryCode2,
+				Dates = entity.Dates
 			};
 
 			return dObj;
@@ -35,13 +31,14 @@ namespace Gloobster.Mappers
 
 			var entity = new VisitedCountryEntity
 			{
-				CountryCode2 = dObj.CountryCode2
+				CountryCode2 = dObj.CountryCode2,
+				Dates = dObj.Dates
 			};
 
-			//if (!string.IsNullOrEmpty(dObj.PortalUserId))
-			//{
-			//	entity.PortalUser_id = new ObjectId(dObj.PortalUserId);
-			//}
+			if (!string.IsNullOrEmpty(dObj.PortalUserId))
+			{
+				entity.PortalUser_id = new ObjectId(dObj.PortalUserId);
+			}
 
 			return entity;
 		}		

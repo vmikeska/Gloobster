@@ -30,7 +30,9 @@
     "Autofac": "4.0.0-beta7-130",
     "Autofac.Framework.DependencyInjection": "4.0.0-beta7-130",
     "Microsoft.Framework.DependencyInjection.Abstractions": "1.0.0-beta7",
-    "Microsoft.AspNet.Tooling.Razor": "1.0.0-beta7"
+    "Microsoft.AspNet.Tooling.Razor": "1.0.0-beta7",
+    "Microsoft.AspNet.Session": "1.0.0-beta7",
+    "Facebook": "7.0.6"
   },
 
     "commands": {

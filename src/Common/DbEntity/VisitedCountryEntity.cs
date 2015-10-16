@@ -1,4 +1,6 @@
-﻿using MongoDB.Bson;
+﻿using System;
+using System.Collections.Generic;
+using MongoDB.Bson;
 
 namespace Gloobster.Common.DbEntity
 {
@@ -6,5 +8,6 @@ namespace Gloobster.Common.DbEntity
 	{
 		public ObjectId PortalUser_id { get; set; }
 		public string CountryCode2 { get; set; }
+		public List<DateTime> Dates { get; set; }
 	}
 }

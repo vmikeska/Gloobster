@@ -1204,7 +1204,10 @@
         }
       },
       "WebApiObjects/1.0.0": {
-        "type": "project"
+        "type": "project",
+        "dependencies": {
+          "Common": "1.0.0"
+        }
       }
     }
   },

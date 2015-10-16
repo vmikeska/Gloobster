@@ -30,6 +30,7 @@ namespace Gloobster.Portal
         public Startup(IHostingEnvironment env, IApplicationEnvironment appEnv)
         {
             // Setup configuration sources.
+			
 
             var builder = new ConfigurationBuilder(appEnv.ApplicationBasePath)
                 .AddJsonFile("config.json")
@@ -54,7 +55,9 @@ namespace Gloobster.Portal
         {
 	        LoadConfigFile();
 			services.AddMvc();
-
+	        services.AddSession();
+	        services.AddCaching();
+			
 	        var serviceProvider = InitalizeAutofac(services);
 	        return serviceProvider;
         }
@@ -107,6 +110,9 @@ namespace Gloobster.Portal
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
 			app.UseStaticFiles();
+			app.UseSession();
+		
+			
 
 			// Add MVC to the request pipeline.
 			app.UseMvc(routes =>
@@ -127,8 +133,9 @@ namespace Gloobster.Portal
 			builder.AddTransient<IAccountDriver, TwitterAccountDriver>().Keyed<IAccountDriver>("Twitter");
 			builder.AddTransient<IAccountDriver, GoogleAccountDriver>().Keyed<IAccountDriver>("Google");
 			builder.AddTransient<IAccountDriver, AccountDriver>().Keyed<IAccountDriver>("Base");
-
-			builder.AddTransient<IVisitedPlacesDomain, VisitedPlacesDomain>();
+			
+            builder.AddTransient<IVisitedPlacesDomain, VisitedPlacesDomain>();
+			builder.AddTransient<IVisitedCitiesDomain, VisitedCitiesDomain>();
 			builder.AddTransient<IVisitedCountriesDomain, VisitedCountriesDomain>();
 			builder.AddTransient<IDbOperations, DbOperations>();
 			builder.AddTransient<IFacebookService, FacebookService>();

@@ -12,11 +12,6 @@
 
 	<link rel="stylesheet" href="~/css/site.css"/>
 
-	<script src="~/lib/jquery/dist/jquery.js"></script>
-	<script src="~/lib/jquery.cookie/jquery.cookie.js"></script>
-	<script src="~/lib/lodash/lodash.js"></script>
-
-
 	@Html.Partial("_GlobalScripts")
 
 </head>
@@ -36,10 +31,10 @@
 				</ul>
 			</div>
 			<div id="loginSection" class="cell" style="display: none">
-				<ul class="menu-login table">
-					<li><a class="popup-target" data-target="#popup-login" href="#">Join</a></li>
-					<li><a class="popup-target" data-target="#popup-join" href="#">Login</a></li>
-				</ul>
+					<ul class="menu-header separator table">
+							<li><a class="popup-target" data-target="#popup-login" href="#">Login</a></li>
+							<li><a class="popup-target" data-target="#popup-join" href="#">Join</a></li>
+					</ul>				
 			</div>
 			<div class="cell">
 				<div id="userMenu" class="dropdown">

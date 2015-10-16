@@ -8,9 +8,12 @@ using Gloobster.DomainModelsCommon.Interfaces;
 using Newtonsoft.Json.Linq;
 using System.Linq;
 using Gloobster.Mappers;
+using Microsoft.AspNet.Http;
 
 namespace Gloobster.DomainModels.Services.Accounts
 {
+	
+
 	public class UserService: IUserService
 	{
 		public IAccountDriver AccountDriver { get; set; }
@@ -21,13 +24,11 @@ namespace Gloobster.DomainModels.Services.Accounts
 		{
 			AccountDriver.Authentication = authentication;
 			AccountDriver.UserObj = userObj;
-
 			
-
 			PortalUserDO portalUser = await Load();
-
+			
 			bool userExists = portalUser != null;
-			if (!userExists)						
+			if (!userExists)
 			{
 				string email = AccountDriver.GetEmail();
 				bool emailExists = EmailAlreadyExistsInSystem(email);
@@ -43,18 +44,40 @@ namespace Gloobster.DomainModels.Services.Accounts
 			}
 			else
 			{
+				bool validCredintials = CheckCredintials(authentication, portalUser);
+				if (!validCredintials)
+				{
+					return new UserLoggedResultDO
+					{
+						Status = UserLogged.BadCredintials
+					};
+				}
+
 				AccountDriver.OnUserExists(portalUser);
 			}
 
 			var result = new UserLoggedResultDO
 			{
 				EncodedToken = LogIn(portalUser.UserId),
-				Status = UserLogged.Successful
+				Status = UserLogged.Successful,
+				UserId = portalUser.UserId
 			};
 
 			AccountDriver.OnUserSuccessfulyLogged(portalUser);
 
 			return result;
+		}
+
+		private bool CheckCredintials(SocAuthenticationDO socAuthentication, PortalUserDO portalUser)
+		{
+			if (AccountDriver.NetworkType == SocialNetworkType.Base)
+			{
+				return AccountDriver.CheckCredintials(AccountDriver.UserObj, portalUser);
+			}
+			else
+			{
+				return AccountDriver.CheckCredintials(socAuthentication, portalUser);
+			}
 		}
 
 		public async Task<PortalUserDO> Load()

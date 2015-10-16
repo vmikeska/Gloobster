@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Web;
 using Autofac;
 using Gloobster.Common;
 using Gloobster.Common.CommonEnums;
 using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.Portal.ReqRes;
+using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 
 namespace Gloobster.Portal.Controllers
@@ -50,6 +52,7 @@ namespace Gloobster.Portal.Controllers
 			};
 
 			var result = await UserService.Validate(auth, addInfo);
+			Context.Session.SetString(PortalConstants.UserSessionId, result.UserId);
 
 			var response = new LoggedResponse
 			{

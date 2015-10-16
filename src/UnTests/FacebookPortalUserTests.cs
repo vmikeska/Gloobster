@@ -27,7 +27,7 @@
 
 //			var countryService = new CountryService();
 //			var geoNamesService = new GeoNamesService();
-//			var visitedPlacesDomain = new VisitedPlacesDomain(DBOper);
+//			var visitedPlacesDomain = new VisitedCitiesDomain(DBOper);
 
 //			var taggedPlaces = new FacebookTaggedPlacesExtractor(FacebookServiceMock.Object, countryService, geoNamesService);
 //			var visitedCountries = new VisitedCountriesDomain(DBOper);

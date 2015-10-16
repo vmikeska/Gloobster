@@ -20,7 +20,10 @@ module Views {
 				this.initializeFacebook();
 				$("#loginSection").show();
 			} else {
-				console.log("isAlreadyLogged with " + this.loginManager.cookieLogin.networkType);								
+			 console.log("isAlreadyLogged with " + this.loginManager.cookieLogin.networkType);								
+
+			 //todo: delete when testing is over
+			 $("#loginSection").show();
 			}
 		}
 

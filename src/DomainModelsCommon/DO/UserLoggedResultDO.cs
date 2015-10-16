@@ -6,5 +6,7 @@ namespace Gloobster.DomainModelsCommon.DO
 	{
 		public UserLogged Status { get; set; }		
 		public string EncodedToken { get; set; }		
+
+		public string UserId { get; set; }
 	}
 }
