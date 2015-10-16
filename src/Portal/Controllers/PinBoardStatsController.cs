@@ -1,6 +1,10 @@
+using System.Linq;
 using System.Threading.Tasks;
+using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.WebApiObjects;
+using Gloobster.WebApiObjects.PinBoard;
 using Microsoft.AspNet.Mvc;
+using Gloobster.Mappers;
 
 namespace Gloobster.Portal.Controllers
 {
@@ -21,109 +25,49 @@ namespace Gloobster.Portal.Controllers
 		public VisitedPlaceRequest[] Places { get; set; }
 	}
 
-	public class VisitedCountryItem
-	{
-		public string CountryCode2 { get; set; }
-		public string CountryCode3 { get; set; }
-		public int ColorId { get; set; }
-	}
-
-	public class VisitedPlaceItem2
-	{
-		public string CountryCode { get; set; }
-		public string City { get; set; }
-		public float PlaceLatitude { get; set; }
-		public float PlaceLongitude { get; set; }
-		public string SourceId { get; set; }
-		public string SourceType { get; set; }
-	}
-
-	public class VisitedCityItem
-	{
-		public string CountryCode { get; set; }
-		public string City { get; set; }
-		public float PlaceLatitude { get; set; }
-		public float PlaceLongitude { get; set; }
-		public string PlaceId { get; set; }
-		
-	}
-
-	public class PinBoardStatResponse
-	{
-		public VisitedCityItem[] VisitedCities { get; set; }
-		public VisitedPlaceItem2[] VisitedPlaces { get; set; }
-		public VisitedCountryItem[] VisitedCountry { get; set; }
-	}
-
-
+	
 	[Route("api/[controller]")]
 	public class PinBoardStatsController : Controller
 	{
+
+		public IVisitedPlacesDomain VisitedPlaces { get; set; }
+		public IVisitedCitiesDomain VisitedCities { get; set; }
+		public IVisitedCountriesDomain VisitedCountries { get; set; }
+
+		public ICountryService CountryService { get; set; }
+
 		[HttpGet]
 		[Authorize]
 		public async Task<IActionResult> Get([FromBody]PinBoardStatRequest request, string userId)
 		{
-			
+			PinBoardStatResponse result = null;
 
-			return new ObjectResult(null);
+			if (request.pluginType == PluginType.MyPlacesVisited)
+			{
+				result = await GetMyPlacesVisited(userId);
+			}
+
+			return new ObjectResult(result);
 		}
 
 
-		private void GetMyPlacesVisited()
+		private async Task<PinBoardStatResponse> GetMyPlacesVisited(string userId)
 		{
-			//List<VisitedCityDO> places = await VisitedCities.GetCitiesByUserId(userId);
+			var result = new PinBoardStatResponse();
+
+			var visitedPlaces = await VisitedPlaces.GetPlacesByUserId(userId);
+            result.VisitedPlaces = visitedPlaces.Select(p => p.ToResponse()).ToArray();
+
+			var visitedCities = await VisitedCities.GetCitiesByUserId(userId);
+			result.VisitedCities = visitedCities.Select(c => c.ToResponse()).ToArray();
+
+			var visitedCountries = await VisitedCountries.GetVisitedCountriesByUserId(userId);
+			var visitedCountriesResponse = visitedCountries.Select(c => c.ToResponse()).ToList();
+			visitedCountriesResponse.ForEach(c => c.CountryCode3 = CountryService.GetCountryByCountryCode2(c.CountryCode2).IsoAlpha3);
+			result.VisitedCountries = visitedCountriesResponse.ToArray();
+
+			return result;
 		}
-
-
-
-
-
-		//public IVisitedCitiesDomain VisitedCities;
-
-		//public PinBoardStatsController(IVisitedCitiesDomain VisitedCities)
-		//{
-		//	VisitedCities = VisitedCities;
-		//}
-
-		//[HttpGet]
-		//[Authorize]
-		//public async Task<IActionResult> Get(string userId)
-		//{
-		//	List<VisitedCityDO> places = await VisitedCities.GetCitiesByUserId(userId);
-
-		//	var response = new VisitedPlacesRequest
-		//	{
-		//		UserId = userId,
-		//		Places = places.Select(p => p.ToResponse()).ToArray()
-		//	};
-
-		//	return new ObjectResult(response);
-		//}
-
-		//[HttpPost]
-		//[Authorize]
-		//public async Task<IActionResult> Post([FromBody]VisitedPlaceRequest place, string userId)
-		//{
-		//	var placeDO = new VisitedCityDO
-		//	{
-		//		City = place.City,
-		//		CountryCode = place.CountryCode,
-		//		Latitude = place.Latitude,
-		//		Longitude = place.Longitude,
-		//		PortalUserId = userId,
-		//		SourceId = place.SourceId
-		//	};
-
-		//	if (!string.IsNullOrEmpty(place.SourceType))
-		//	{
-		//		placeDO.SourceType = (SourceTypeDO) Enum.Parse(typeof (SourceTypeDO), place.SourceType);
-		//	}
-
-		//	var places = new List<VisitedCityDO> {placeDO};
-		//	var result = await VisitedCities.AddNewCities(places, userId);
-
-		//	return new ObjectResult(result);
-		//}
 
 	}
 }

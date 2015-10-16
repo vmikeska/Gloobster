@@ -36,7 +36,8 @@ namespace Gloobster.DomainModels
 	                {
 						id = ObjectId.GenerateNewId(),
 						CountryCode2 = country.CountryCode2,
-						PortalUser_id = new ObjectId(userId)
+						PortalUser_id = new ObjectId(country.PortalUserId),
+						Dates = country.Dates
 	                }; 
 					newCountries.Add(newCountry);
 				}

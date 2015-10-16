@@ -1,6 +1,8 @@
 using System.Linq;
 using Gloobster.Common.DbEntity;
 using Gloobster.DomainModelsCommon.DO;
+using Gloobster.WebApiObjects;
+using Gloobster.WebApiObjects.PinBoard;
 using MongoDB.Bson;
 
 namespace Gloobster.Mappers
@@ -51,24 +53,24 @@ namespace Gloobster.Mappers
 			return entity;
 		}
 
-		//public static VisitedPlaceRequest ToResponse(this VisitedCityDO dObj)
-		//{
-		//	if (dObj == null)
-		//	{
-		//		return null;
-		//	}
+		public static VisitedCityItemResponse ToResponse(this VisitedCityDO dObj)
+		{
+			if (dObj == null)
+			{
+				return null;
+			}
 
-		//	var response = new VisitedPlaceRequest
-		//	{
-		//		City = dObj.City,
-		//		CountryCode = dObj.CountryCode,
-		//		PlaceLatitude = dObj.Latitude,
-		//		PlaceLongitude = dObj.Longitude,
-		//		SourceId = dObj.SourceId,
-		//		SourceType = dObj.SourceType.ToString()
-		//	};
-			
-		//	return response;
-		//}
+			var response = new VisitedCityItemResponse
+			{
+				City = dObj.City,
+				CountryCode = dObj.CountryCode,
+				Dates = dObj.Dates,
+				Location = dObj.Location,
+				PortalUserId = dObj.PortalUserId,
+				GeoNamesId = dObj.GeoNamesId
+			};
+
+			return response;
+		}
 	}
 }

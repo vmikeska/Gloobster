@@ -124,7 +124,8 @@ namespace Gloobster.DomainModels.Services.Places
 				var country = new VisitedCountryDO
 				{
 					Dates = allDates,
-					CountryCode2 = groupedCountry.First().CountryCode
+					CountryCode2 = groupedCountry.First().CountryCode,
+					PortalUserId = DbUserId
 				};
 
 				countries.Add(country);

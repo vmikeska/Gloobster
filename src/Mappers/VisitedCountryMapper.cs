@@ -1,5 +1,6 @@
 ﻿using Gloobster.Common.DbEntity;
 using Gloobster.DomainModelsCommon.DO;
+using Gloobster.WebApiObjects.PinBoard;
 using MongoDB.Bson;
 
 namespace Gloobster.Mappers
@@ -41,6 +42,23 @@ namespace Gloobster.Mappers
 			}
 
 			return entity;
-		}		
-    }
+		}
+
+		public static VisitedCountryItemResponse ToResponse(this VisitedCountryDO dObj)
+		{
+			if (dObj == null)
+			{
+				return null;
+			}
+
+			var response = new VisitedCountryItemResponse
+			{
+				PortalUserId = dObj.PortalUserId,
+				Dates = dObj.Dates,
+				CountryCode2 = dObj.CountryCode2,				
+			};
+
+			return response;
+		}
+	}
 }
