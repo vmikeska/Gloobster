@@ -63,8 +63,9 @@
 				<script type="text/javascript" src="@Url.Content("~/js/Views/HomePageView.js")"></script>
 			
 		<script>
-			//todo: remove after testing
-			$.cookie(Constants.cookieName, {}, { path: '/' });
+				//todo: remove after testing
+				$.removeCookie(Constants.cookieName);
+			//$.cookie(Constants.cookieName, {}, { path: '/' });
 
 			currentView = new HomePageView();
 

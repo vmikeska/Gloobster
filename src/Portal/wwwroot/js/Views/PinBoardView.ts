@@ -10,19 +10,20 @@
 		}
 	
 		public saveNewPlace(dataRecord) {
-			var self = this;
-			super.apiPost("visitedPlace", dataRecord, function(response) {
+			//todo: rework
+		 //var self = this;
+			//super.apiPost("visitedPlace", dataRecord, function(response) {
 
-				var placeAdded = response.length > 0;
-				if (placeAdded) {
-				 var place = response[0];
-				 var newMarker = new Maps.PlaceMarker(place.PlaceLatitude, place.PlaceLongitude);
-				 self.mapsManager.places.push(newMarker);
-				 self.mapsManager.mapsOperations.drawPlace(newMarker); 
-				}
+			//	var placeAdded = response.length > 0;
+			//	if (placeAdded) {
+			//	 var place = response[0];
+			//	 var newMarker = new Maps.PlaceMarker(place.PlaceLatitude, place.PlaceLongitude);
+			//	 self.mapsManager.places.push(newMarker);
+			//	 self.mapsManager.mapsOperations.drawPlace(newMarker); 
+			//	}
 			 
-				self.mapsManager.mapsDriver.moveToAnimated(dataRecord.PlaceLatitude, dataRecord.PlaceLongitude, 5);
-			});
+			//	self.mapsManager.mapsDriver.moveToAnimated(dataRecord.PlaceLatitude, dataRecord.PlaceLongitude, 5);
+			//});
 		}
 
 		public searchPlaces(placeName: string) {

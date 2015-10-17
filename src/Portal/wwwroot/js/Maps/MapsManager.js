@@ -1,46 +1,98 @@
-var MapsManager = (function () {
-    function MapsManager(owner) {
-        this.mapLoaded = false;
-        this.placesInitialized = false;
-        this.countriesInitialized = false;
-        this.owner = owner;
-        this.getVisitedCountries();
-        this.getVisitedPlaces();
-        var countryShapes = new CountryShapes();
-        this.mapsOperations = new MapsOperations(countryShapes);
+var PluginType;
+(function (PluginType) {
+    PluginType[PluginType["MyPlacesVisited"] = 0] = "MyPlacesVisited";
+    PluginType[PluginType["MyFriendsVisited"] = 1] = "MyFriendsVisited";
+    PluginType[PluginType["MyFriendsDesired"] = 2] = "MyFriendsDesired";
+})(PluginType || (PluginType = {}));
+var DisplayEntity;
+(function (DisplayEntity) {
+    DisplayEntity[DisplayEntity["Pin"] = 0] = "Pin";
+    DisplayEntity[DisplayEntity["Countries"] = 1] = "Countries";
+    DisplayEntity[DisplayEntity["Heat"] = 2] = "Heat";
+})(DisplayEntity || (DisplayEntity = {}));
+var Places = (function () {
+    function Places() {
     }
-    Object.defineProperty(MapsManager.prototype, "countryConfig", {
-        get: function () {
-            var countryConfig = new Maps.PolygonConfig();
-            countryConfig.fillColor = "#009900";
-            return countryConfig;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MapsManager.prototype.redrawAll = function () {
-        this.redrawCountries();
-        this.redrawPlaces();
+    return Places;
+})();
+var PlacesDisplay = (function () {
+    function PlacesDisplay() {
+    }
+    return PlacesDisplay;
+})();
+var MapsDataLoader = (function () {
+    function MapsDataLoader(owner) {
+        this.owner = owner;
+    }
+    MapsDataLoader.prototype.getPluginData = function (pluginType, displayEntity) {
+        var _this = this;
+        var request = [["pluginType", pluginType.toString()], ["displayEntity", displayEntity.toString()]];
+        this.owner.apiGet("PinBoardStats", request, function (response) {
+            _this.places = new Places();
+            _this.viewPlaces = new PlacesDisplay();
+            _this.places.places = response.VisitedPlaces;
+            _this.places.cities = response.VisitedCities;
+            _this.places.countries = response.VisitedCountries;
+            _this.executePlugin(pluginType);
+            _this.dataLoadedCallback();
+        });
     };
-    MapsManager.prototype.redrawPlaces = function () {
-        if (this.mapLoaded && this.placesInitialized) {
-            this.mapsOperations.drawPlaces(this.places);
+    MapsDataLoader.prototype.executePlugin = function (pluginType) {
+        if (pluginType === PluginType.MyPlacesVisited) {
+            var singleColorConfig = new Maps.PolygonConfig();
+            singleColorConfig.fillColor = "#009900";
+            var countries = _.map(this.places.countries, function (country) {
+                var countryOut = new Maps.CountryHighligt();
+                countryOut.countryCode = country.CountryCode3;
+                countryOut.countryConfig = singleColorConfig;
+                return countryOut;
+            });
+            this.viewPlaces.countries = countries;
+            var cities = _.map(this.places.cities, function (city) {
+                var marker = new Maps.PlaceMarker(city.Location.Lat, city.Location.Lng);
+                return marker;
+            });
+            this.viewPlaces.cities = cities;
         }
+    };
+    return MapsDataLoader;
+})();
+var MapsManager = (function () {
+    //private placesInitialized = false;
+    //private countriesInitialized = false;
+    function MapsManager(owner) {
+        var _this = this;
+        this.mapLoaded = false;
+        //var self = this;
+        this.owner = owner;
+        this.mapsDataLoader = new MapsDataLoader(owner);
+        this.mapsDataLoader.dataLoadedCallback = function () { _this.dataLoadedCallback(); };
+        this.mapsOperations = new MapsOperations();
+    }
+    MapsManager.prototype.getPluginData = function (pluginType, displayEntity) {
+        this.currentDisplayEntity = displayEntity;
+        this.currentPluginType = pluginType;
+        this.mapsDataLoader.getPluginData(pluginType, displayEntity);
+    };
+    MapsManager.prototype.dataLoadedCallback = function () {
+        if (this.currentDisplayEntity === DisplayEntity.Pin) {
+            this.redrawCities();
+        }
+        if (this.currentDisplayEntity === DisplayEntity.Countries) {
+            this.redrawCountries();
+        }
+    };
+    MapsManager.prototype.redrawCities = function () {
+        //if (this.mapLoaded) {
+        this.mapsDriver.destroyAll();
+        this.mapsOperations.drawCities(this.mapsDataLoader.viewPlaces.cities);
+        //}
     };
     MapsManager.prototype.redrawCountries = function () {
-        if (this.mapLoaded && this.countriesInitialized) {
-            this.mapsOperations.drawCountries(this.countries);
-        }
-    };
-    MapsManager.prototype.setVisitedCountries = function (countries) {
-        this.countries = countries;
-        this.redrawCountries();
-        this.countriesInitialized = true;
-    };
-    MapsManager.prototype.setVisitedPlaces = function (places) {
-        this.places = places;
-        this.redrawPlaces();
-        this.placesInitialized = true;
+        //if (this.mapLoaded) {
+        this.mapsDriver.destroyAll();
+        this.mapsOperations.drawCountries(this.mapsDataLoader.viewPlaces.countries);
+        //}
     };
     MapsManager.prototype.switchToView = function (viewType) {
         var _this = this;
@@ -79,43 +131,11 @@ var MapsManager = (function () {
         }
     };
     MapsManager.prototype.displayData = function (savedPosition, savedZoom) {
-        this.redrawAll();
         if (savedPosition) {
             var roundedZoom = Math.round(savedZoom);
             console.log("savedZoom: " + roundedZoom);
             this.mapsDriver.setView(savedPosition.lat, savedPosition.lng, roundedZoom);
         }
-    };
-    MapsManager.prototype.getVisitedPlaces = function () {
-        var _this = this;
-        this.owner.apiGet("visitedPlace", null, function (response) {
-            _this.onVisitedPlacesResponse(response);
-        });
-    };
-    MapsManager.prototype.getVisitedCountries = function () {
-        var _this = this;
-        this.owner.apiGet("visitedCountry", null, function (response) {
-            _this.onVisitedCountriesResponse(response.Countries3);
-        });
-    };
-    MapsManager.prototype.onVisitedCountriesResponse = function (visitedCountries) {
-        this.visitedCountries = visitedCountries;
-        var countryConf = this.countryConfig;
-        var mappedCountries = _.map(this.visitedCountries, function (countryCode) {
-            var country = new Maps.CountryHighligt();
-            country.countryCode = countryCode;
-            country.countryConfig = countryConf;
-            return country;
-        });
-        this.setVisitedCountries(mappedCountries);
-    };
-    MapsManager.prototype.onVisitedPlacesResponse = function (response) {
-        this.visitedPlaces = response.Places;
-        var mappedPlaces = _.map(this.visitedPlaces, function (place) {
-            var marker = new Maps.PlaceMarker(place.PlaceLatitude, place.PlaceLongitude);
-            return marker;
-        });
-        this.setVisitedPlaces(mappedPlaces);
     };
     MapsManager.prototype.init3D = function () {
         this.currentMaps = new MapsCreatorGlobe3D();
@@ -130,4 +150,33 @@ var MapsManager = (function () {
     };
     return MapsManager;
 })();
+//public setVisitedCountries(countries: Maps.CountryHighligt[]) {
+// this.countries = countries;
+// this.redrawCountries();
+// this.countriesInitialized = true;
+//}
+//public setVisitedPlaces(places: Maps.PlaceMarker[]) {
+// this.places = places;
+// this.redrawPlaces();
+// this.placesInitialized = true;
+//}
+//private onVisitedCountriesResponse(visitedCountries) {
+// this.visitedCountries = visitedCountries;
+// var countryConf = this.countryConfig;
+// var mappedCountries = _.map(this.visitedCountries, countryCode => {
+// var country = new Maps.CountryHighligt();
+// country.countryCode = countryCode;
+// country.countryConfig = countryConf;
+// return country;
+// });
+// this.setVisitedCountries(mappedCountries);
+//}
+//private onVisitedPlacesResponse(response) {
+// this.visitedPlaces = response.Places;
+// var mappedPlaces = _.map(this.visitedPlaces, place => {
+// var marker = new Maps.PlaceMarker(place.PlaceLatitude, place.PlaceLongitude);
+// return marker;
+// });
+// this.setVisitedPlaces(mappedPlaces);
+//}
 //# sourceMappingURL=MapsManager.js.map

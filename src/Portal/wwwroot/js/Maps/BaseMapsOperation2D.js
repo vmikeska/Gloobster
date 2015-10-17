@@ -1,5 +1,7 @@
 var BaseMapsOperation2D = (function () {
     function BaseMapsOperation2D() {
+        this.polygons = [];
+        this.markers = [];
     }
     BaseMapsOperation2D.prototype.drawPolygon = function (polygonCoordinates, polygonConfig) {
         var polygon = L.polygon(polygonCoordinates, {
@@ -9,14 +11,26 @@ var BaseMapsOperation2D = (function () {
             fillColor: polygonConfig.fillColor,
             fillOpacity: polygonConfig.fillOpacity
         }).addTo(this.mapObj);
+        this.markers.push(polygon);
     };
     BaseMapsOperation2D.prototype.drawPin = function (place) {
         var marker = L.marker([place.lat, place.lng]).addTo(this.mapObj);
+        this.markers.push(marker);
     };
     BaseMapsOperation2D.prototype.setMapObj = function (mapObj) {
         this.mapObj = mapObj;
     };
-    BaseMapsOperation2D.prototype.destroyAll = function () { };
+    BaseMapsOperation2D.prototype.destroyAll = function () {
+        var _this = this;
+        this.markers.forEach(function (marker) {
+            _this.mapObj.removeLayer(marker);
+        });
+        this.markers = [];
+        this.polygons.forEach(function (polygon) {
+            _this.mapObj.removeLayer(polygon);
+        });
+        this.polygons = [];
+    };
     BaseMapsOperation2D.prototype.setView = function (lat, lng, zoom) {
         this.mapObj.setView([lat, lng], zoom);
     };

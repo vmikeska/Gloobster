@@ -9,7 +9,8 @@ var LoginManager = (function () {
     }
     LoginManager.prototype.loadCookies = function () {
         var cookieLogStr = $.cookie(Constants.cookieName);
-        if (!cookieLogStr.startsWith("{")) {
+        //!cookieLogStr.startsWith("{")
+        if (!cookieLogStr) {
             return;
         }
         var cookieLogObj = JSON.parse(cookieLogStr);
@@ -24,7 +25,8 @@ var LoginManager = (function () {
         return false;
     };
     LoginManager.prototype.logout = function () {
-        $.cookie(Constants.cookieName, {}, { path: '/' });
+        //$.cookie(Constants.cookieName, {}, { path: '/' });
+        $.removeCookie(Constants.cookieName);
         window.location.href = "/";
     };
     return LoginManager;

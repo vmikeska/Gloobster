@@ -20,7 +20,8 @@ class LoginManager {
 	public loadCookies() {
 		var cookieLogStr = $.cookie(Constants.cookieName);
 
-		if (!cookieLogStr.startsWith("{")) {
+	 //!cookieLogStr.startsWith("{")
+		if (!cookieLogStr) {
 			return;
 		}
 
@@ -41,7 +42,8 @@ class LoginManager {
 
 	public logout() {
 
-		$.cookie(Constants.cookieName, {}, { path: '/' });
+		//$.cookie(Constants.cookieName, {}, { path: '/' });
+	 $.removeCookie(Constants.cookieName);
 		window.location.href = "/";
 	}
 

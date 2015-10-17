@@ -9,22 +9,28 @@ var PinBoardView = (function (_super) {
     function PinBoardView() {
         _super.apply(this, arguments);
     }
+    Object.defineProperty(PinBoardView.prototype, "pageType", {
+        get: function () { return Views.PageType.PinBoard; },
+        enumerable: true,
+        configurable: true
+    });
     PinBoardView.prototype.initialize = function () {
         this.mapsManager = new MapsManager(this);
         this.mapsManager.switchToView(Maps.ViewType.D2);
     };
     PinBoardView.prototype.saveNewPlace = function (dataRecord) {
-        var self = this;
-        _super.prototype.apiPost.call(this, "visitedPlace", dataRecord, function (response) {
-            var placeAdded = response.length > 0;
-            if (placeAdded) {
-                var place = response[0];
-                var newMarker = new Maps.PlaceMarker(place.PlaceLatitude, place.PlaceLongitude);
-                self.mapsManager.places.push(newMarker);
-                self.mapsManager.mapsOperations.drawPlace(newMarker);
-            }
-            self.mapsManager.mapsDriver.moveToAnimated(dataRecord.PlaceLatitude, dataRecord.PlaceLongitude, 5);
-        });
+        //todo: rework
+        //var self = this;
+        //super.apiPost("visitedPlace", dataRecord, function(response) {
+        //	var placeAdded = response.length > 0;
+        //	if (placeAdded) {
+        //	 var place = response[0];
+        //	 var newMarker = new Maps.PlaceMarker(place.PlaceLatitude, place.PlaceLongitude);
+        //	 self.mapsManager.places.push(newMarker);
+        //	 self.mapsManager.mapsOperations.drawPlace(newMarker); 
+        //	}
+        //	self.mapsManager.mapsDriver.moveToAnimated(dataRecord.PlaceLatitude, dataRecord.PlaceLongitude, 5);
+        //});
     };
     PinBoardView.prototype.searchPlaces = function (placeName) {
         var _this = this;

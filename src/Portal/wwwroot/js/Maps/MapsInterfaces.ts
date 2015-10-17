@@ -54,14 +54,14 @@ module Maps {
 		getZoom();
 	}
 
-	export interface IMapsOperations {
-	  drawCountry(country: CountryHighligt);
-		drawCountries(countries: CountryHighligt[]);
-		drawPlace(place: PlaceMarker);
-		drawPlaces(places: PlaceMarker[]);
-		setBaseMapsOperations(mapsDriver: IMapsDriver);
-		setView(lat: number, lng: number, zoom: number);
-	}
+	//export interface IMapsOperations {
+	//  drawCountry(country: CountryHighligt);
+	//	drawCountries(countries: CountryHighligt[]);
+	//	drawPlace(place: PlaceMarker);
+	//	drawPlaces(places: PlaceMarker[]);
+	//	setBaseMapsOperations(mapsDriver: IMapsDriver);
+	//	setView(lat: number, lng: number, zoom: number);
+	//}
 
 		export enum ViewType { D3, D2, D1 }
 

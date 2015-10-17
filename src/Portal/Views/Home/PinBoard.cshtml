@@ -49,11 +49,6 @@
 
 <!-- MapBox -->
 <section class="wrapper margin3">
-@*<div class="hint margin">
-		<span class="icon-amplion white middle"></span>
-		Hey, if you connect your map with Facebook, you can get more visitors!
-		<a class="icon-cross" href="#">Close</a>
-</div>*@
 	<div class="table row col2 margin">
 		<div class="cell">
 			<div class="table row">
@@ -96,22 +91,22 @@
 			</ul>
 		</div>
 		<input class="left" type="submit" value="Add">
-		<div class="dropdown right">
-			<span class="selected">Just mine</span>
+		<div id="pluginType" class="dropdown right">
+			<span class="selected">My places</span>
 			<ul>
-				<li data-value="1">Just mine</li>
+				<li data-value="0">My places</li>
 				<li data-value="2">My friends</li>				
 			</ul>
-			<input type="hidden">
+			<input type="hidden" value="0">
 		</div>
-		<div class="dropdown right">
-			<span class="selected">All places</span>
+		<div id="projectionType" class="dropdown right">
+			<span class="selected">Cities</span>
 			<ul>
-				<li data-value="1">All places</li>
-				<li data-value="2">Cities</li>
-				<li data-value="3">Countries</li>								
+				<li data-value="0">Cities</li>
+				<li data-value="1">Countries</li>
+				<li data-value="2">Heat map</li>								
 			</ul>
-			<input type="hidden">
+			<input type="hidden" value="0">
 		</div>
 	</form>
 
@@ -158,10 +153,26 @@
 	<script>
 		$("#mapType li").click(function (evnt) {
 
-			var value = $(evnt.target).data("value");					
+			var value = $(evnt.target).data("value");
 			var parsedVal  = Maps.ViewType[value];
 			currentView.mapsManager.switchToView(parsedVal);
 		});
+
+		$("#pluginType li").click(function (evnt) {
+				var pluginType = $(evnt.target).data("value");
+				var projectionType = parseInt($("#projectionType input").val());
+				currentView.mapsManager.getPluginData(pluginType, projectionType);
+		});
+
+		$("#projectionType li").click(function (evnt) {
+				var pluginType = parseInt($("#pluginType input").val());
+				var projectionType = $(evnt.target).data("value");
+				currentView.mapsManager.getPluginData(pluginType, projectionType);
+		});
+
+		
+
+		
 
 		$("#cities").on("input", function () {
 			var placeName = $("#cities input").val();
@@ -200,9 +211,3 @@
 		<div class="cell"><span class="badge"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Barcelona</span></span></div>
 </div>*@
 </section>
-<!-- MapBox -->
-@*<script>
-		L.mapbox.accessToken = 'pk.eyJ1IjoiZ2xvb2JzdGVyIiwiYSI6ImQxZWY5MjRkZjU1NDk2MGU3OWI2OGRiM2U3NTM0MGYxIn0.nCG7hOsSQzb0c-_qzfTCRQ';
-		var map = L.mapbox.map('map', 'gloobster.afeef633');
-</script>*@
-<!-- MapBox -->

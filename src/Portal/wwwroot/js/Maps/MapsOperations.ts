@@ -1,11 +1,12 @@
-class MapsOperations implements Maps.IMapsOperations {
+//implements Maps.IMapsOperations
+class MapsOperations  {
 
 	public mapsDriver: Maps.IMapsDriver;
 	public countryShapes: CountryShapes;
 
 
-	constructor(countryShapes: CountryShapes) {
-		this.countryShapes = countryShapes;
+	constructor() {	 
+	 this.countryShapes = new CountryShapes();
 	}
 
 	public setBaseMapsOperations(baseMapsOperations: Maps.IMapsDriver) {
@@ -33,15 +34,13 @@ class MapsOperations implements Maps.IMapsOperations {
 		});
 	}
 
-	public drawPlace(place: Maps.PlaceMarker) {
+	public drawCity(place: Maps.PlaceMarker) {
 	 this.mapsDriver.drawPin(place);
 	}
 
-	public drawPlaces(places: Maps.PlaceMarker[]) {
-
-		var self = this;
-		places.forEach(function(place) {
-			self.drawPlace(place);
+	public drawCities(places: Maps.PlaceMarker[]) {
+		places.forEach(place => {
+			this.drawCity(place);
 		});
 	}
 

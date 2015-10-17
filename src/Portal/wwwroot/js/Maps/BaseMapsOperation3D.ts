@@ -30,11 +30,11 @@ class BaseMapsOperation3D implements Maps.IMapsDriver {
 	}
 
 	public destroyAll() {
-		this.markers.forEach(function(marker) {
-			 $(marker.element).remove();
+		this.markers.forEach(marker => {
+			$(marker.element).remove();
 		});
-		this.polygons.forEach(function(polygon) {
-			 polygon.destroy();
+		this.polygons.forEach(polygon => {
+			polygon.destroy();
 		});
 
 		this.markers = [];

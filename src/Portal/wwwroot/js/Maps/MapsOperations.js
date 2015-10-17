@@ -1,6 +1,7 @@
+//implements Maps.IMapsOperations
 var MapsOperations = (function () {
-    function MapsOperations(countryShapes) {
-        this.countryShapes = countryShapes;
+    function MapsOperations() {
+        this.countryShapes = new CountryShapes();
     }
     MapsOperations.prototype.setBaseMapsOperations = function (baseMapsOperations) {
         this.mapsDriver = baseMapsOperations;
@@ -22,13 +23,13 @@ var MapsOperations = (function () {
             _this.drawCountry(country);
         });
     };
-    MapsOperations.prototype.drawPlace = function (place) {
+    MapsOperations.prototype.drawCity = function (place) {
         this.mapsDriver.drawPin(place);
     };
-    MapsOperations.prototype.drawPlaces = function (places) {
-        var self = this;
+    MapsOperations.prototype.drawCities = function (places) {
+        var _this = this;
         places.forEach(function (place) {
-            self.drawPlace(place);
+            _this.drawCity(place);
         });
     };
     MapsOperations.prototype.setView = function (lat, lng, zoom) {

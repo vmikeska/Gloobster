@@ -15,15 +15,9 @@ namespace Gloobster.Portal.Controllers
 	public class PinBoardStatRequest
 	{
 		public PluginType pluginType { get; set; }
-		public DisplayEntity[] displayEntities { get; set; }
-
+		public DisplayEntity displayEntity { get; set; }
 	}
-
-	public class VisitedPlaceResponse2
-	{
-		public string UserId { get; set; }
-		public VisitedPlaceRequest[] Places { get; set; }
-	}
+	
 
 	
 	[Route("api/[controller]")]
@@ -36,9 +30,19 @@ namespace Gloobster.Portal.Controllers
 
 		public ICountryService CountryService { get; set; }
 
+		public PinBoardStatsController(IVisitedPlacesDomain visitedPlaces, IVisitedCitiesDomain visitedCities, 
+			IVisitedCountriesDomain visitedCountries, ICountryService countryService)
+		{
+			VisitedPlaces = visitedPlaces;
+			VisitedCities = visitedCities;
+			VisitedCountries = visitedCountries;
+			CountryService = countryService;
+		}
+
+
 		[HttpGet]
 		[Authorize]
-		public async Task<IActionResult> Get([FromBody]PinBoardStatRequest request, string userId)
+		public async Task<IActionResult> Get(PinBoardStatRequest request, string userId)
 		{
 			PinBoardStatResponse result = null;
 
