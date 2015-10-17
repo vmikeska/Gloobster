@@ -8,6 +8,7 @@
 /// <reference path="js/maps/basemapsoperation3d.js" />
 /// <reference path="js/maps/mapscreatorglobe3d.js" />
 /// <reference path="js/maps/mapscreatormapbox2d.js" />
+/// <reference path="js/maps/mapsdataloader.js" />
 /// <reference path="js/maps/mapsinterfaces.js" />
 /// <reference path="js/maps/mapsmanager.js" />
 /// <reference path="js/maps/mapsoperations.js" />

@@ -1,4 +1,3 @@
-//implements Maps.IMapsOperations
 class MapsOperations  {
 
 	public mapsDriver: Maps.IMapsDriver;

@@ -17,6 +17,7 @@ module Maps {
 		lng: number;
 	}
 
+
 	export class PolygonConfig {
 
 		constructor() {
@@ -38,6 +39,18 @@ module Maps {
 		fillOpacity: number;
 	}
 
+	export class Places {
+	 public places: any;
+	 public cities: any;
+	 public countries: any;
+	}
+
+	export class PlacesDisplay {
+	 public places: PlaceMarker[];
+	 public countries: CountryHighligt[];
+	 public cities: PlaceMarker[];
+	}
+
 
 	export interface IMapsDriver {
 
@@ -53,17 +66,10 @@ module Maps {
 		getPosition();
 		getZoom();
 	}
-
-	//export interface IMapsOperations {
-	//  drawCountry(country: CountryHighligt);
-	//	drawCountries(countries: CountryHighligt[]);
-	//	drawPlace(place: PlaceMarker);
-	//	drawPlaces(places: PlaceMarker[]);
-	//	setBaseMapsOperations(mapsDriver: IMapsDriver);
-	//	setView(lat: number, lng: number, zoom: number);
-	//}
-
+	
 		export enum ViewType { D3, D2, D1 }
+		export enum PluginType { MyPlacesVisited, MyFriendsVisited, MyFriendsDesired }
+		export enum DisplayEntity { Pin, Countries, Heat }
 
 		export interface IMapsCreator {
 
@@ -74,6 +80,8 @@ module Maps {
 			setMapType(mapType);
 			hide();
 		}				
+
+
 }
 
 

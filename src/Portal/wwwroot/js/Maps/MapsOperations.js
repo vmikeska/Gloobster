@@ -1,4 +1,3 @@
-//implements Maps.IMapsOperations
 var MapsOperations = (function () {
     function MapsOperations() {
         this.countryShapes = new CountryShapes();
