@@ -89,6 +89,10 @@
 		this.mapsOperations.setBaseMapsOperations(this.mapsDriver);
 		this.mapsDriver.setMapObj(this.currentMaps.mapObj);
 
+		if (!this.owner.loginManager.isAlreadyLogged()) {
+			return;
+		}
+
 		this.displayData(savedPosition, savedZoom);
 	}
 

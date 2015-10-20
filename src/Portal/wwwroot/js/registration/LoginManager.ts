@@ -45,7 +45,7 @@ class LoginManager {
 			});
 		});
 
-	 } else if (this.cookieLogin.networkType === NetworkType.Twitter) {
+	 } else {
 		window.location.href = "/";
 	 }
 

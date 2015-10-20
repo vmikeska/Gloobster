@@ -12,10 +12,11 @@ var GoogleButton = (function () {
     };
     GoogleButton.prototype.onLoaded = function () {
         // Retrieve the singleton for the GoogleAuth library and set up the client.
+        //this.auth2 = gapi.auth2.getAuthInstance();
+        //if (!this.auth2) {
         this.auth2 = gapi.auth2.init(this.config);
+        //}
         var element = document.getElementById(this.elementId);
-        //$(this.buttonsSelector).forEach(function(element) {
-        //});
         this.attachSignin(element);
     };
     GoogleButton.prototype.errorHandler = function (error) {

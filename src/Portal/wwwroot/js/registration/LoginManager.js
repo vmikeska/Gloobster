@@ -27,7 +27,7 @@ var LoginManager = (function () {
                 });
             });
         }
-        else if (this.cookieLogin.networkType === NetworkType.Twitter) {
+        else {
             window.location.href = "/";
         }
     };

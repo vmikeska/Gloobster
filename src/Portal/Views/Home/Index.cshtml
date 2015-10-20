@@ -59,16 +59,16 @@
 						<a class="hamburger" data-target="#menu" href="#"><span></span></a>
 				</div>
 				<!-- scripts -->
-
-				
-
 				@Html.Partial("_GlobalScripts")
-
-
 				<script type="text/javascript" src="@Url.Content("~/js/Views/HomePageView.js")"></script>
 
 			<script>
 				currentView = new HomePageView();
+
+				var loginCookie = currentView.cookieManager.getJson(Constants.cookieName);
+				if (loginCookie) {
+						window.location = Constants.firstRedirectUrl;
+				}
 
 				function clickAuthorize() {
 					twitterLoginWatch();
@@ -76,15 +76,13 @@
 					var wnd = window.open(url, "Twitter authentication", "height=500px,width=400px");
 				}
 
-				var cookieManager = new CookieManager();
-
 				var twInterval = null;
 				function twitterLoginWatch() {
 					twInterval = setInterval(function() {
-						var cookieVal = cookieManager.getJson(Constants.cookieName);
+						var cookieVal = currentView.cookieManager.getJson(Constants.cookieName);
 						if (cookieVal) {
 							clearInterval(twInterval);
-							window.location = "/home/pinboard";
+							window.location = Constants.firstRedirectUrl;
 						}
 						console.log("checking: " + JSON.stringify(cookieVal));
 					}, 500);
@@ -172,12 +170,12 @@
 
 
 <script>	
-	//var btnGoogle = new GoogleButton();
-	//btnGoogle.successfulCallback = (googleUser) => {
-	//	currentView.loginManager.googleUserCreator.registerOrLogin(googleUser);				
-	//};
-	//btnGoogle.elementId = "googleLoginBtnHome";
-	//btnGoogle.initialize();
+	var btnGoogle = new GoogleButton();
+	btnGoogle.successfulCallback = (googleUser) => {
+		currentView.loginManager.googleUserCreator.registerOrLogin(googleUser);				
+	};
+	btnGoogle.elementId = "googleLoginBtnHome";
+	btnGoogle.initialize();
 </script>
 <button onclick="$.removeCookie('loginCookie', { path: '/' })">Delete cookie</button>
 </body>

@@ -4,12 +4,14 @@ module Views {
 
 	export class ViewBase {
 
-		public loginManager: LoginManager;
+	 public loginManager: LoginManager;
+	 public cookieManager: CookieManager;
 
 		get pageType(): PageType { return null; }
 
 
 		constructor() {		 
+		 this.cookieManager = new CookieManager();
 		 this.loginManager = new LoginManager();
 			
 			var isAlreadyLogged = this.loginManager.isAlreadyLogged();			
@@ -22,10 +24,7 @@ module Views {
 
 			 if (this.loginManager.cookieLogin.networkType === NetworkType.Facebook) {
 				this.initializeFacebook();
-			 }
-
-			 //todo: delete when testing is over
-			 $("#loginSection").show();
+			 }			 
 			}
 		}
 

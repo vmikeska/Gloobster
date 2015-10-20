@@ -9,6 +9,7 @@ var Views;
     var PageType = Views.PageType;
     var ViewBase = (function () {
         function ViewBase() {
+            this.cookieManager = new CookieManager();
             this.loginManager = new LoginManager();
             var isAlreadyLogged = this.loginManager.isAlreadyLogged();
             if (!isAlreadyLogged) {
@@ -21,8 +22,6 @@ var Views;
                 if (this.loginManager.cookieLogin.networkType === NetworkType.Facebook) {
                     this.initializeFacebook();
                 }
-                //todo: delete when testing is over
-                $("#loginSection").show();
             }
         }
         Object.defineProperty(ViewBase.prototype, "pageType", {
