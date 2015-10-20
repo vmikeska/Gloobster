@@ -7,8 +7,10 @@ using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
 using Newtonsoft.Json.Linq;
 using System.Linq;
+using Gloobster.Common.DbEntity;
 using Gloobster.Mappers;
 using Microsoft.AspNet.Http;
+using MongoDB.Bson;
 
 namespace Gloobster.DomainModels.Services.Accounts
 {
@@ -18,6 +20,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 	{
 		public IAccountDriver AccountDriver { get; set; }
 		public IComponentContext ComponentContext { get; set; }
+		public IFriendsDomain FriendsService { get; set; }
 		public IDbOperations DB { get; set; }
 		
 		public async Task<UserLoggedResultDO> Validate(SocAuthenticationDO authentication, object userObj)
@@ -41,6 +44,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 				}
 				
 				portalUser = await AccountDriver.Create();
+				CreateCommonAsync(portalUser);
 			}
 			else
 			{
@@ -65,7 +69,15 @@ namespace Gloobster.DomainModels.Services.Accounts
 
 			AccountDriver.OnUserSuccessfulyLogged(portalUser);
 
+			//todo: remove later
+			await FriendsService.AddEverbodyToMyFriends(portalUser.UserId);
+
 			return result;
+		}
+
+		private async void CreateCommonAsync(PortalUserDO portalUser)
+		{
+			await FriendsService.CreateFriendsObj(portalUser.UserId);
 		}
 
 		private bool CheckCredintials(SocAuthenticationDO socAuthentication, PortalUserDO portalUser)

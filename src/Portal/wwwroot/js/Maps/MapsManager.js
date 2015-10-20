@@ -18,6 +18,13 @@ var MapsManager = (function () {
         if (this.currentDisplayEntity === Maps.DisplayEntity.Countries) {
             this.redrawCountries();
         }
+        if (this.currentDisplayEntity === Maps.DisplayEntity.Heat) {
+            this.redrawPlaces();
+        }
+    };
+    MapsManager.prototype.redrawPlaces = function () {
+        this.mapsDriver.destroyAll();
+        this.mapsOperations.drawPlaces(this.mapsDataLoader.viewPlaces.places);
     };
     MapsManager.prototype.redrawCities = function () {
         this.mapsDriver.destroyAll();

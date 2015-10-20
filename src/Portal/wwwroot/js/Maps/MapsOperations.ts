@@ -33,14 +33,24 @@ class MapsOperations  {
 		});
 	}
 
-	public drawCity(place: Maps.PlaceMarker) {
-	 this.mapsDriver.drawPin(place);
+	public drawCity(city: Maps.PlaceMarker) {
+	 this.mapsDriver.drawPin(city);
 	}
 
-	public drawCities(places: Maps.PlaceMarker[]) {
-		places.forEach(place => {
-			this.drawCity(place);
+	public drawCities(cities: Maps.PlaceMarker[]) {
+	 cities.forEach(city => {
+			this.drawCity(city);
 		});
+	}
+
+	public drawPlace(place: Maps.PlaceMarker) {
+	 this.mapsDriver.drawPoint(place);
+	}
+
+	public drawPlaces(places: Maps.PlaceMarker[]) {
+	 places.forEach(place => {
+		this.drawPlace(place);
+	 });
 	}
 
 	public setView(lat: number, lng: number, zoom: number) {

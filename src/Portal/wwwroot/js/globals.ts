@@ -7,6 +7,7 @@ declare var gapi: any;
 
 module Constants {
  export var cookieName = "loginCookie";
+ export var firstRedirectUrl = "/Home/PinBoard";	
 }
 
 

@@ -11,7 +11,8 @@
     "DomainModelsCommon": "1.0.0-*",
     "WebApiObjects": "1.0.0-*",
     "SocialLogin": "1.0.0-*",
-    "TweetSharp": "2.3.1"
+    "TweetSharp": "2.3.1",
+    "MongoDB.Driver": "2.1.0-rc1"
   },
 
     "frameworks": {

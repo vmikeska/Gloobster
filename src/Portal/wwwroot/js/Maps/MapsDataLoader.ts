@@ -28,19 +28,54 @@ class MapsDataLoader {
 			this.dataLoadedCallback();
 		});
 	}
+	
+	private getColorByNumber(num) {
+		if (num <= 1) {
+			return "#0026BF";
+		} else if (num <= 2) {
+			return "#1300C2";
+		} else if (num <= 3) {
+			return "#4F00C6";
+		} else if (num <= 4) {
+			return "#8D00CA";
+		} else if (num <= 5) {
+			return "#CE00CE";
+		} else if (num <= 6) {
+			return "#D20092";
+		} else if (num <= 7) {
+			return "#D50055";
+		} else if (num <= 8) {
+			return "#D90015";
+		} else if (num <= 9) {
+			return "#DD2C00";
+		} else if (num <= 10) {
+			return "#E17000";
+		} else {
+			return "#E5B600";
+		}
+	}
+
 
 	private executePlugin(pluginType: Maps.PluginType) {
 		
-		if (pluginType === Maps.PluginType.MyPlacesVisited) {
-
-			var singleColorConfig = new Maps.PolygonConfig();
-			singleColorConfig.fillColor = "#009900";
+		//if (pluginType === Maps.PluginType.MyPlacesVisited) {
+		 
+			var places = _.map(this.places.places, place => {
+			 var point = new Maps.PlaceMarker(place.Location.Lat, place.Location.Lng);
+			 return point;
+			});
+			this.viewPlaces.places = places;
 
 			var countries = _.map(this.places.countries, country => {
 
+			 var colorConfig = new Maps.PolygonConfig();
+			 var countryVisits = country.Dates.length;
+			 colorConfig.fillColor = this.getColorByNumber(countryVisits);
+			 
 				var countryOut = new Maps.CountryHighligt();
 				countryOut.countryCode = country.CountryCode3;
-				countryOut.countryConfig = singleColorConfig;
+				countryOut.countryConfig = colorConfig;
+			 
 				return countryOut;
 
 			});
@@ -52,7 +87,7 @@ class MapsDataLoader {
 			});
 			this.viewPlaces.cities = cities;
 
-		}
+		//}
 
 	}
 }

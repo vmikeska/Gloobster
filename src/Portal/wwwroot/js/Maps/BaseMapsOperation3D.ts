@@ -58,6 +58,8 @@ class BaseMapsOperation3D implements Maps.IMapsDriver {
 	getZoom() {
 	 return this.mapObj.getZoom();
 	}
+
+	drawPoint(point: Maps.PlaceMarker) {}
 }
 
 

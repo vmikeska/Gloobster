@@ -6,7 +6,7 @@
 		<link href='../../../api.mapbox.com/mapbox.js/v2.2.2/mapbox.css' rel='stylesheet' />*@
 
 @*<script src='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.js'></script>*@
-<link href='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.css' rel='stylesheet' />
+<link href='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.css' rel='stylesheet'/>
 
 <script src="http://www.webglearth.com/v2/api.js"></script>
 
@@ -15,6 +15,8 @@
 
 @*<link rel="stylesheet" href="@Url.Content("~/lib/leaflet/dist/leaflet.css")" />
 <script type="text/javascript" src="@Url.Content("~/lib/leaflet/dist/leaflet-src.js")"></script>*@
+
+@Html.Partial("_GlobalScripts")
 
 <script type="text/javascript" src="@Url.Content("~/js/Maps/MapsInterfaces.js")"></script>
 
@@ -95,7 +97,7 @@
 			<span class="selected">My places</span>
 			<ul>
 				<li data-value="0">My places</li>
-				<li data-value="2">My friends</li>				
+				<li data-value="1">My friends</li>				
 			</ul>
 			<input type="hidden" value="0">
 		</div>

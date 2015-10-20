@@ -48,24 +48,47 @@ namespace Gloobster.Portal.Controllers
 
 			if (request.pluginType == PluginType.MyPlacesVisited)
 			{
-				result = await GetMyPlacesVisited(userId);
+				result = await GetMyPlacesVisitedAsync(userId);
+			}
+
+			if (request.pluginType == PluginType.MyFriendsVisited)
+			{
+				result = GetMyFriendsVisited(userId);
 			}
 
 			return new ObjectResult(result);
 		}
 
+		private PinBoardStatResponse GetMyFriendsVisited(string userId)
+		{
+			var result = new PinBoardStatResponse();
+			
+			var visitedPlaces = VisitedPlaces.GetPlacesOfMyFriendsByUserId(userId);
+			result.VisitedPlaces = visitedPlaces.Select(p => p.ToResponse()).ToArray();
 
-		private async Task<PinBoardStatResponse> GetMyPlacesVisited(string userId)
+			var visitedCities = VisitedCities.GetCitiesOfMyFriendsByUserId(userId);
+			result.VisitedCities = visitedCities.Select(c => c.ToResponse()).ToArray();
+
+			var visitedCountries = VisitedCountries.GetCountriesOfMyFriendsByUserId(userId);
+			var visitedCountriesResponse = visitedCountries.Select(c => c.ToResponse()).ToList();
+			visitedCountriesResponse.ForEach(c => c.CountryCode3 = CountryService.GetCountryByCountryCode2(c.CountryCode2).IsoAlpha3);
+			result.VisitedCountries = visitedCountriesResponse.ToArray();
+
+			return result;
+		}
+
+
+		private async Task<PinBoardStatResponse> GetMyPlacesVisitedAsync(string userId)
 		{
 			var result = new PinBoardStatResponse();
 
-			var visitedPlaces = await VisitedPlaces.GetPlacesByUserId(userId);
+			var visitedPlaces = await VisitedPlaces.GetPlacesByUserIdAsync(userId);
             result.VisitedPlaces = visitedPlaces.Select(p => p.ToResponse()).ToArray();
 
-			var visitedCities = await VisitedCities.GetCitiesByUserId(userId);
+			var visitedCities = await VisitedCities.GetCitiesByUserIdAsync(userId);
 			result.VisitedCities = visitedCities.Select(c => c.ToResponse()).ToArray();
 
-			var visitedCountries = await VisitedCountries.GetVisitedCountriesByUserId(userId);
+			var visitedCountries = await VisitedCountries.GetVisitedCountriesByUserIdAsync(userId);
 			var visitedCountriesResponse = visitedCountries.Select(c => c.ToResponse()).ToList();
 			visitedCountriesResponse.ForEach(c => c.CountryCode3 = CountryService.GetCountryByCountryCode2(c.CountryCode2).IsoAlpha3);
 			result.VisitedCountries = visitedCountriesResponse.ToArray();

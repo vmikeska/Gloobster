@@ -4,6 +4,7 @@ var Views;
         PageType[PageType["HomePage"] = 0] = "HomePage";
         PageType[PageType["PinBoard"] = 1] = "PinBoard";
         PageType[PageType["TripList"] = 2] = "TripList";
+        PageType[PageType["TwitterAuth"] = 3] = "TwitterAuth";
     })(Views.PageType || (Views.PageType = {}));
     var PageType = Views.PageType;
     var ViewBase = (function () {
@@ -17,13 +18,14 @@ var Views;
             }
             else {
                 console.log("isAlreadyLogged with " + this.loginManager.cookieLogin.networkType);
+                if (this.loginManager.cookieLogin.networkType === NetworkType.Facebook) {
+                    this.initializeFacebook();
+                }
                 //todo: delete when testing is over
                 $("#loginSection").show();
             }
         }
         Object.defineProperty(ViewBase.prototype, "pageType", {
-            //public googleInit: GoogleInit;
-            //public pageType: PageType;
             get: function () { return null; },
             enumerable: true,
             configurable: true

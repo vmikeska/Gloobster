@@ -2,34 +2,28 @@
 class LoginManager {
 
 	cookieLogin: CookieLogin;
-
+	cookieManager: CookieManager;
+ 
 	constructor() {
+		this.cookieManager = new CookieManager();
 		this.loadCookies();
 
 		if (!this.isAlreadyLogged()) {
 			this.facebookUserCreator = new CreateUserFacebook();
 			this.googleUserCreator = new CreateUserGoogle();
 			this.localUserCreator = new CreateUserLocal();
+			
 		}
+		this.twitterUserCreator = new CreateUserTwitter();
 	}
 
 	public facebookUserCreator: CreateUserFacebook;
 	public googleUserCreator: CreateUserGoogle;
 	public localUserCreator: CreateUserLocal;
+	public twitterUserCreator: CreateUserTwitter;
 
-	public loadCookies() {
-		var cookieLogStr = $.cookie(Constants.cookieName);
-
-	 //!cookieLogStr.startsWith("{")
-		if (!cookieLogStr) {
-			return;
-		}
-
-		var cookieLogObj = JSON.parse(cookieLogStr);
-
-		this.cookieLogin = new CookieLogin();
-		this.cookieLogin.encodedToken = cookieLogObj.encodedToken;
-		this.cookieLogin.networkType = cookieLogObj.networkType;
+	public loadCookies() {	 
+		this.cookieLogin = this.cookieManager.getJson(Constants.cookieName);
 	}
 
 	public isAlreadyLogged() {
@@ -41,10 +35,20 @@ class LoginManager {
 	}
 
 	public logout() {
+		
+	 this.cookieManager.removeCookie(Constants.cookieName);
+	 
+	 if (this.cookieLogin.networkType === NetworkType.Facebook) {
+		FB.getLoginStatus(() => {
+			FB.logout(() => {
+				window.location.href = "/";
+			});
+		});
 
-		//$.cookie(Constants.cookieName, {}, { path: '/' });
-	 $.removeCookie(Constants.cookieName);
+	 } else if (this.cookieLogin.networkType === NetworkType.Twitter) {
 		window.location.href = "/";
+	 }
+
 	}
 
 
@@ -52,6 +56,6 @@ class LoginManager {
 
 class CookieLogin {
  public encodedToken: string;
- public networkType: string;
+ public networkType: NetworkType;
 }
 

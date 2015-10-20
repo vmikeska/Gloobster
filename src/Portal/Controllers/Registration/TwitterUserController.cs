@@ -1,54 +1,47 @@
 ﻿using System;
 using System.Threading.Tasks;
-using System.Web;
 using Autofac;
-using Gloobster.Common;
 using Gloobster.Common.CommonEnums;
 using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.Portal.ReqRes;
-using Microsoft.AspNet.Http;
+using Gloobster.WebApiObjects.Facebook;
 using Microsoft.AspNet.Mvc;
+using Microsoft.AspNet.Http;
 
-namespace Gloobster.Portal.Controllers
+
+
+namespace Gloobster.Portal.Controllers.Registration
 {
-    public class TwitterUserController : Controller
-    {
-	    public IMyTwitterService TwitterSvc { get; set; }
-	    public IUserService UserService { get; set; }
-		public IDbOperations DB { get; set; }
+	[Route("api/[controller]")]
+	public class TwitterUserController : Controller
+	{
+		public IUserService UserService { get; set; }		
 		public IComponentContext ComponentContext { get; set; }
 
-		public TwitterUserController(IMyTwitterService twitterService, IUserService userService, IDbOperations db, IComponentContext componentContext)
+		public TwitterUserController(IUserService userService, IComponentContext componentContext)
 		{
-			TwitterSvc = twitterService;
-			UserService = userService;
-			DB = db;
+			UserService = userService;			
 			ComponentContext = componentContext;
 		}
 
-	    public ActionResult MailStep()
-	    {
-		    return View();
-	    }
-
-	    public ActionResult Authorize(string mail)
-	    {
-		    Uri uri = TwitterSvc.BuildAuthorizationUri(mail);
-			
-			return new RedirectResult(uri.ToString(), false /*permanent*/);
-		}
-		
-		public async Task<ActionResult> AuthCallback(string mail, string oauth_token, string oauth_verifier)
-		{			
-			var auth = TwitterSvc.VerifyCredintial(oauth_token, oauth_verifier);
-
+		[HttpPost]
+		public async Task<IActionResult> Post([FromBody] TwitterUserAuthenticationRequest request)
+		{
 			var accountDriver = ComponentContext.ResolveKeyed<IAccountDriver>("Twitter");
 			UserService.AccountDriver = accountDriver;
 
 			var addInfo = new TwitterUserAddtionalInfoDO
 			{
-				Mail = mail
+				Mail = request.mail
+			};
+
+			var auth = new SocAuthenticationDO
+			{
+				AccessToken = request.accessToken,
+				UserId = request.userId,
+				TokenSecret = request.tokenSecret,
+				ExpiresAt = DateTime.Parse(request.expiresAt)
 			};
 
 			var result = await UserService.Validate(auth, addInfo);
@@ -61,7 +54,32 @@ namespace Gloobster.Portal.Controllers
 				networkType = SocialNetworkType.Twitter
 			};
 
-			return View(response);
+			return new ObjectResult(response);
+
+
+			//var facebookAuthRequest = new SocAuthenticationDO
+			//{
+			//	AccessToken = request.accessToken,
+			//	UserId = request.userID,
+			//	ExpiresAt = DateTime.UtcNow.AddSeconds(request.expiresIn)
+			//}; 
+
+			//var accountDriver = ComponentContext.ResolveKeyed<IAccountDriver>("Facebook");
+
+			//UserService.AccountDriver = accountDriver;
+
+			//var result = await UserService.Validate(facebookAuthRequest, null);
+
+			//Context.Session.SetString(PortalConstants.UserSessionId, result.UserId);
+
+			//var response = new LoggedResponse
+			//{
+			//	encodedToken = result.EncodedToken,
+			//	status = result.Status.ToString(),                
+			//	networkType = SocialNetworkType.Facebook
+			//};
+
+			return new ObjectResult(response);
 		}
 	}
 }

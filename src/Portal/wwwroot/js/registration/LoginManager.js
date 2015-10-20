@@ -1,22 +1,16 @@
 var LoginManager = (function () {
     function LoginManager() {
+        this.cookieManager = new CookieManager();
         this.loadCookies();
         if (!this.isAlreadyLogged()) {
             this.facebookUserCreator = new CreateUserFacebook();
             this.googleUserCreator = new CreateUserGoogle();
             this.localUserCreator = new CreateUserLocal();
         }
+        this.twitterUserCreator = new CreateUserTwitter();
     }
     LoginManager.prototype.loadCookies = function () {
-        var cookieLogStr = $.cookie(Constants.cookieName);
-        //!cookieLogStr.startsWith("{")
-        if (!cookieLogStr) {
-            return;
-        }
-        var cookieLogObj = JSON.parse(cookieLogStr);
-        this.cookieLogin = new CookieLogin();
-        this.cookieLogin.encodedToken = cookieLogObj.encodedToken;
-        this.cookieLogin.networkType = cookieLogObj.networkType;
+        this.cookieLogin = this.cookieManager.getJson(Constants.cookieName);
     };
     LoginManager.prototype.isAlreadyLogged = function () {
         if (this.cookieLogin) {
@@ -25,9 +19,17 @@ var LoginManager = (function () {
         return false;
     };
     LoginManager.prototype.logout = function () {
-        //$.cookie(Constants.cookieName, {}, { path: '/' });
-        $.removeCookie(Constants.cookieName);
-        window.location.href = "/";
+        this.cookieManager.removeCookie(Constants.cookieName);
+        if (this.cookieLogin.networkType === NetworkType.Facebook) {
+            FB.getLoginStatus(function () {
+                FB.logout(function () {
+                    window.location.href = "/";
+                });
+            });
+        }
+        else if (this.cookieLogin.networkType === NetworkType.Twitter) {
+            window.location.href = "/";
+        }
     };
     return LoginManager;
 })();

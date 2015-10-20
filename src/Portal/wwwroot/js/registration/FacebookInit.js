@@ -3,10 +3,11 @@ var FacebookInit = (function () {
         var _this = this;
         this.asyncInit = function () {
             FB.init({
-                appId: '1519189774979242',
+                //appId: '1519189774979242',
+                appId: '1717433995154818',
                 cookie: true,
                 xfbml: true,
-                version: 'v2.2'
+                version: 'v2.1'
             });
             _this.onFacebookInitialized();
         };

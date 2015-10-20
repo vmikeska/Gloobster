@@ -57,7 +57,8 @@ module Maps {
 		mapObj: any;
 
 		drawPolygon(polygonCoordinates: any, polygonConfig: PolygonConfig);
-		drawPin(place: PlaceMarker);		
+		drawPin(place: PlaceMarker);
+		drawPoint(point: PlaceMarker);		
 		setMapObj(mapObj: any);
 		destroyAll();
 

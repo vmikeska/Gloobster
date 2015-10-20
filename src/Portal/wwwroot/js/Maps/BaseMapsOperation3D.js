@@ -44,6 +44,7 @@ var BaseMapsOperation3D = (function () {
     BaseMapsOperation3D.prototype.getZoom = function () {
         return this.mapObj.getZoom();
     };
+    BaseMapsOperation3D.prototype.drawPoint = function (point) { };
     return BaseMapsOperation3D;
 })();
 //polygon.onClick(function(e) {

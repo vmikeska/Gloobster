@@ -29,10 +29,11 @@ class FacebookInit {
 
 	asyncInit = () => {
 		FB.init({
-			appId: '1519189774979242',
+			//appId: '1519189774979242',
+			appId: '1717433995154818',		 
 			cookie: true, // enable cookies to allow the server to access the session
 			xfbml: true, // parse social plugins on this page
-			version: 'v2.2'
+			version: 'v2.1'
 		});
 
 

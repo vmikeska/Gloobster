@@ -11,8 +11,10 @@ var MapsCreatorMapBox2D = (function () {
         var self = this;
         this.loadScript("http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js", function () {
             self.loadScript("https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.js", function () {
-                self.loadMap();
-                mapsLoadedCallback();
+                self.loadScript("https://api.mapbox.com/mapbox.js/plugins/leaflet-heat/v0.1.3/leaflet-heat.js", function () {
+                    self.loadMap();
+                    mapsLoadedCallback();
+                });
             });
         });
     };

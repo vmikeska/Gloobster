@@ -4,29 +4,35 @@ class CreateUserBase {
 	endpoint = "";
 
 	loginType: NetworkType;
+	cookieManager: CookieManager;
+ 
+	constructor() {
+		this.cookieManager = new CookieManager();
+	}
 
 	onSuccess = (response) => {
-	 this.storeCookieWithToken(response.encodedToken, response.networkType);
+		console.log("storing cookie: " + response.encodedToken);
+
+		this.storeCookieWithToken(response.encodedToken, response.networkType);
 		$(".popup").hide();
 	}
 
 	onError = (response) => {
-	 //todo: show some general error dialog
+		//todo: show some general error dialog
 	}
-
 
 	storeCookieWithToken(encodedToken: string, networkType: string) {
 
-	 var cookieObj = { "encodedToken": encodedToken, "networkType": networkType };
-		var cookieStr = JSON.stringify(cookieObj);
-		$.cookie(Constants.cookieName, cookieStr);
-
-		var firstRedirectUrl = 'Home/PinBoard';
+		var cookieObj = new CookieLogin();
+		cookieObj.encodedToken = encodedToken;
+		cookieObj.networkType = parseInt(networkType);
+		this.cookieManager.setJson(Constants.cookieName, cookieObj);
 	 
 		console.log("token received: " + this.loginType);
 
-		return;
-		window.location.href = firstRedirectUrl;
+		if (cookieObj.networkType !== NetworkType.Twitter) {
+			window.location.href = Constants.firstRedirectUrl;
+		}
 	}
 
 	sendUserRegistrationData(newUser) {
@@ -41,13 +47,3 @@ class CreateUserBase {
 enum NetworkType {
 	Facebook, Google, Twitter, Base
 }
-
-//interface ICreateUser {		
-// sendUserRegistrationData: Function;
-// storeCookieWithToken(token: string);
-// endpoint: string;
-//}
-//implements ICreateUser
-
-
-

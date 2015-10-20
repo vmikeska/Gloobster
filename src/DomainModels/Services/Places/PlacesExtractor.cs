@@ -81,11 +81,11 @@ namespace Gloobster.DomainModels.Services.Places
 		
 	    public async void SaveAsync()
 	    {
-			NewVisitedPlaces = await VisitedPlaces.AddNewPlaces(NewFoundUniquePlaces, DbUserId);
+			NewVisitedPlaces = await VisitedPlaces.AddNewPlacesAsync(NewFoundUniquePlaces, DbUserId);
 
-			NewVisitedCities = await VisitedCities.AddNewCities(NewFoundUniqueCities, DbUserId);
+			NewVisitedCities = await VisitedCities.AddNewCitiesAsync(NewFoundUniqueCities, DbUserId);
 			
-			NewVisitedCountries = await VisitedCountries.AddNewCountries(NewFoundUniqueCountries, DbUserId);
+			NewVisitedCountries = await VisitedCountries.AddNewCountriesAsync(NewFoundUniqueCountries, DbUserId);
 		}
 		
 	    private async Task<List<VisitedPlaceDO>> GetPlacesWithFixedLocations(List<VisitedPlaceDO> inputPlaces)

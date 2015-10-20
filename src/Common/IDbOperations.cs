@@ -3,18 +3,21 @@ using System.Threading.Tasks;
 using Gloobster.Common.DbEntity;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 
 namespace Gloobster.Common
 {
     public interface IDbOperations
     {
-		
+
+	    IMongoQueryable<T> C<T>() where T : EntityBase;
+
         Task<ReplaceOneResult> ReplaceOneAsync<T>(T doc) where T : EntityBase;
 
 		Task<T> SaveAsync<T>(T entity) where T: EntityBase;
 	    Task<IEnumerable<T>> SaveManyAsync<T>(IEnumerable<T> entities) where T : EntityBase;
 
-		Task<T[]> FindAsync<T>(string query) where T : EntityBase;
+		Task<T[]> FindAsync<T>(string query = "{}") where T : EntityBase;
 
         Task<long> GetCountAsync<T>(string query = null) where T : EntityBase;
 

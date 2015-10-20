@@ -1,5 +1,38 @@
-﻿<script>
-	
+﻿@model Gloobster.Portal.Controllers.TwitterResponse
+@{
+		Layout = "";
+}
 
-	close();
+@Html.Partial("_GlobalScripts")
+<script type="text/javascript" src="@Url.Content("~/js/Views/TwitterAuthView.js")"></script>
+
+<script>
+
+	//function onBodyLoad() {
+		var response = {
+			"userId": "@Model.userId",
+			"accessToken": "@Model.accessToken",
+			"expiresAt": "@Model.expiresAt",
+			"mail": "@Model.mail",
+			"tokenSecret": "@Model.tokenSecret"
+		};
+
+		var view = new TwitterAuthView();
+		view.loginManager.twitterUserCreator.handleRoughResponse(response);
+	//}
+
+		var cookieManager = new CookieManager();
+
+		var twInterval = null;
+		function twitterLoginWatch() {
+				twInterval = setInterval(function () {
+						var cookieVal = cookieManager.getJson(Constants.cookieName);
+						if (cookieVal) {
+								clearInterval(twInterval);
+								close();;
+						}
+						console.log("checking: " + JSON.stringify(cookieVal));
+				}, 500);
+		}
+
 </script>

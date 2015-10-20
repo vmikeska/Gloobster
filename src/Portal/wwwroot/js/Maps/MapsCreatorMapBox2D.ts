@@ -14,14 +14,17 @@ class MapsCreatorMapBox2D implements Maps.IMapsCreator {
  setMapType(mapType) {
 	this.mapType = mapType;
  }
+ 
 
-	show(mapsLoadedCallback) {
+ show(mapsLoadedCallback) {
 		var self = this;
 
 		this.loadScript("http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js", () => {
 			self.loadScript("https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.js", () => {
-			 self.loadMap();
-				mapsLoadedCallback();
+			 self.loadScript("https://api.mapbox.com/mapbox.js/plugins/leaflet-heat/v0.1.3/leaflet-heat.js", () => {
+					self.loadMap();
+					mapsLoadedCallback();
+				});
 			});
 		});
 	}

@@ -7,8 +7,10 @@
   },
   "AppSecret": "ThisIsAppSecret",
   "Facebook": {
-    "AppId": "1519189774979242",
-    "AppSecret": "72a327fb0e9f24d236995b29e5fe7512"
+    //"AppId": "1519189774979242",
+    //"AppSecret": "72a327fb0e9f24d236995b29e5fe7512"
+    "AppId": "1717433995154818",
+    "AppSecret": "be78899641f3c7cc42b5931c8a390974"
   },
   "Twitter": {
     "ConsumerKey": "0gvTaCaKc4acKcMh1m1ah4tR6",

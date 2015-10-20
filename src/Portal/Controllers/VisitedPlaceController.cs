@@ -27,7 +27,7 @@ namespace Gloobster.Portal.Controllers
 		[Authorize]
 		public async Task<IActionResult> Get(string userId)
 		{
-			List<VisitedCityDO> places = await VisitedCities.GetCitiesByUserId(userId);
+			List<VisitedCityDO> places = await VisitedCities.GetCitiesByUserIdAsync(userId);
 
 			var response = new VisitedPlacesRequest
 			{

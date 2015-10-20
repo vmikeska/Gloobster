@@ -17,8 +17,13 @@ var BaseMapsOperation2D = (function () {
         var marker = L.marker([place.lat, place.lng]).addTo(this.mapObj);
         this.markers.push(marker);
     };
+    BaseMapsOperation2D.prototype.drawPoint = function (point) {
+        var latLng = L.latLng(point.lat, point.lng);
+        this.heat.addLatLng(latLng);
+    };
     BaseMapsOperation2D.prototype.setMapObj = function (mapObj) {
         this.mapObj = mapObj;
+        this.createHeatLayer();
     };
     BaseMapsOperation2D.prototype.destroyAll = function () {
         var _this = this;
@@ -30,6 +35,11 @@ var BaseMapsOperation2D = (function () {
             _this.mapObj.removeLayer(polygon);
         });
         this.polygons = [];
+        this.mapObj.removeLayer(this.heat);
+        this.createHeatLayer();
+    };
+    BaseMapsOperation2D.prototype.createHeatLayer = function () {
+        this.heat = L.heatLayer([], { maxZoom: 12 }).addTo(this.mapObj);
     };
     BaseMapsOperation2D.prototype.setView = function (lat, lng, zoom) {
         this.mapObj.setView([lat, lng], zoom);

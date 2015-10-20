@@ -30,7 +30,7 @@ namespace Gloobster.UnitTests
 
 			var newPlaces = new List<VisitedCityDO> {VisitedPlacesCreation.CreateVisitedPlaceDO3()};
 
-			var addedPlaces = await VisitedCityDomain.AddNewCities(newPlaces, portalUserEntity.id.ToString());
+			var addedPlaces = await VisitedCityDomain.AddNewCitiesAsync(newPlaces, portalUserEntity.id.ToString());
 			Assert.Equal(addedPlaces.Count, 1);
 		}
 
@@ -47,7 +47,7 @@ namespace Gloobster.UnitTests
 
 			var newPlaces = new List<VisitedCityDO> { VisitedPlacesCreation.CreateVisitedPlaceDO2() };
 
-			var addedPlaces = await VisitedCityDomain.AddNewCities(newPlaces, portalUserEntity.id.ToString());
+			var addedPlaces = await VisitedCityDomain.AddNewCitiesAsync(newPlaces, portalUserEntity.id.ToString());
 			Assert.Null(addedPlaces);
 		}
 	}
@@ -75,7 +75,7 @@ namespace Gloobster.UnitTests
 
 			var newCountries = new List<VisitedCountryDO> { VisitedCountriesCreation.CreateVisitedCountry3(), VisitedCountriesCreation.CreateVisitedCountry2() };
 
-			var addedCountries = await CountriesDomain.AddNewCountries(newCountries, portalUserEntity.id.ToString());
+			var addedCountries = await CountriesDomain.AddNewCountriesAsync(newCountries, portalUserEntity.id.ToString());
 			Assert.Equal(addedCountries.Count, 1);
 		}
 
@@ -92,7 +92,7 @@ namespace Gloobster.UnitTests
 
 			var newCountries = new List<VisitedCountryDO> { VisitedCountriesCreation.CreateVisitedCountry2(), VisitedCountriesCreation.CreateVisitedCountry3() };
 
-			var addedCountries = await CountriesDomain.AddNewCountries(newCountries, portalUserEntity.id.ToString());
+			var addedCountries = await CountriesDomain.AddNewCountriesAsync(newCountries, portalUserEntity.id.ToString());
 			Assert.Empty(addedCountries);
 		}
 	}

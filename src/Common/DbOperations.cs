@@ -6,6 +6,7 @@ using Gloobster.Common.DbEntity;
 using Microsoft.Framework.Configuration;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 
 namespace Gloobster.Common
 {
@@ -129,7 +130,7 @@ namespace Gloobster.Common
 		}
 
 
-		public async Task<T[]> FindAsync<T>(string query) where T : EntityBase
+		public async Task<T[]> FindAsync<T>(string query = "{}") where T : EntityBase
         {
 			try
 			{
@@ -146,7 +147,14 @@ namespace Gloobster.Common
 			}
         }
 
+		public IMongoQueryable<T> C<T>() where T : EntityBase
+		{
+			var collectionName = GetCollectionName<T>();
+			var collection = Database.GetCollection<T>(collectionName);
+			var collectionQueryable = collection.AsQueryable();
 
+			return collectionQueryable;
+		}
 
 		public async Task<long> GetCountAsync<T>(string query = null) where T : EntityBase
         {

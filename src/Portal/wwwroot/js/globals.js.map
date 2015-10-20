@@ -1,1 +1,1 @@
-{"version":3,"file":"globals.js","sourceRoot":"","sources":["globals.ts"],"names":["Constants"],"mappings":"AAOA,IAAO,SAAS,CAEf;AAFD,WAAO,SAAS,EAAC,CAAC;IACNA,oBAAUA,GAAGA,aAAaA,CAACA;AACvCA,CAACA,EAFM,SAAS,KAAT,SAAS,QAEf"}
+{"version":3,"file":"globals.js","sourceRoot":"","sources":["globals.ts"],"names":["Constants"],"mappings":"AAOA,IAAO,SAAS,CAGf;AAHD,WAAO,SAAS,EAAC,CAAC;IACNA,oBAAUA,GAAGA,aAAaA,CAACA;IAC3BA,0BAAgBA,GAAGA,gBAAgBA,CAACA;AAChDA,CAACA,EAHM,SAAS,KAAT,SAAS,QAGf"}

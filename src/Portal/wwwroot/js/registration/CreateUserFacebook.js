@@ -29,7 +29,7 @@ var CreateUserFacebook = (function (_super) {
         _super.prototype.sendUserRegistrationData.call(this, fbUser);
     };
     CreateUserFacebook.prototype.login = function () {
-        FB.login(this.statusChangeCallback);
+        FB.login(this.statusChangeCallback, { scope: 'email,user_tagged_places,publish_actions,user_location,user_hometown' });
     };
     return CreateUserFacebook;
 })(CreateUserBase);

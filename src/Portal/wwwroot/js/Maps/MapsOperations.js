@@ -22,13 +22,22 @@ var MapsOperations = (function () {
             _this.drawCountry(country);
         });
     };
-    MapsOperations.prototype.drawCity = function (place) {
-        this.mapsDriver.drawPin(place);
+    MapsOperations.prototype.drawCity = function (city) {
+        this.mapsDriver.drawPin(city);
     };
-    MapsOperations.prototype.drawCities = function (places) {
+    MapsOperations.prototype.drawCities = function (cities) {
+        var _this = this;
+        cities.forEach(function (city) {
+            _this.drawCity(city);
+        });
+    };
+    MapsOperations.prototype.drawPlace = function (place) {
+        this.mapsDriver.drawPoint(place);
+    };
+    MapsOperations.prototype.drawPlaces = function (places) {
         var _this = this;
         places.forEach(function (place) {
-            _this.drawCity(place);
+            _this.drawPlace(place);
         });
     };
     MapsOperations.prototype.setView = function (lat, lng, zoom) {

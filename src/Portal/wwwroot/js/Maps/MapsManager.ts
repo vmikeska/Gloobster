@@ -35,6 +35,15 @@
 		if (this.currentDisplayEntity === Maps.DisplayEntity.Countries) {
 			this.redrawCountries();
 		}
+
+		if (this.currentDisplayEntity === Maps.DisplayEntity.Heat) {
+		 this.redrawPlaces();
+		}
+	}
+
+	public redrawPlaces() {
+	 this.mapsDriver.destroyAll();
+	 this.mapsOperations.drawPlaces(this.mapsDataLoader.viewPlaces.places);
 	}
 
 	public redrawCities() {

@@ -14,13 +14,8 @@ namespace Gloobster.DomainModels
 	public class VisitedCountriesDomain: IVisitedCountriesDomain
 	{
 		public IDbOperations DB { get; set; }
-
-		//public VisitedCountriesDomain(IDbOperations db)
-		//{
-		//	DB = db;
-		//}
-
-		public async Task<List<VisitedCountryDO>> AddNewCountries(List<VisitedCountryDO> inputCountries, string userId)
+		
+		public async Task<List<VisitedCountryDO>> AddNewCountriesAsync(List<VisitedCountryDO> inputCountries, string userId)
 		{
 			var query = $@"{{""PortalUser_id"": ObjectId(""{userId}"")}}";
 			var savedCountries = await DB.FindAsync<VisitedCountryEntity>(query);
@@ -48,13 +43,35 @@ namespace Gloobster.DomainModels
 			return newCountriesResult;
 		}
 
-		public async Task<List<VisitedCountryDO>> GetVisitedCountriesByUserId(string userId)
+		public async Task<List<VisitedCountryDO>> GetVisitedCountriesByUserIdAsync(string userId)
 		{
 			var query = $@"{{""PortalUser_id"": ObjectId(""{userId}"")}}";
 			var visitedCountriesEntity = await DB.FindAsync<VisitedCountryEntity>(query);
 
 			var visitedCountriesDO = visitedCountriesEntity.Select(c => c.ToDO()).ToList();
 			return visitedCountriesDO;
+		}
+
+		public List<VisitedCountryDO> GetCountriesOfMyFriendsByUserId(string userId)
+		{
+			var userIdObj = new ObjectId(userId);
+			var friends = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == userIdObj);
+
+			var friendsId = new List<ObjectId> { userIdObj };
+			friendsId.AddRange(friends.Friends);
+
+			var visitedCountries = DB.C<VisitedCountryEntity>().Where(p => friendsId.Contains(p.PortalUser_id)).ToList();
+			
+			var vcGrouped = visitedCountries.GroupBy(g => g.CountryCode2).ToList();
+			var vcList = vcGrouped.Select(g =>
+			{
+				var outCountry = g.First().ToDO();
+				outCountry.PortalUserId = null;
+				outCountry.Dates = g.SelectMany(d => d.Dates).ToList();
+				return outCountry;
+			});
+
+			return vcList.ToList();
 		}
 	}
 }

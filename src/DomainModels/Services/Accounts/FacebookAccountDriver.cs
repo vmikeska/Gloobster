@@ -38,7 +38,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 		public IComponentContext ComponentContext { get; set; }
 		public IGeoNamesService GNService { get; set; }
 		public ICountryService CountryService { get; set; }
-
+		//public IFriendsDomain FriendsService { get; set; }
 
 
 		public IPlacesExtractor PlacesExtractor { get; set; }
@@ -66,7 +66,21 @@ namespace Gloobster.DomainModels.Services.Accounts
 		public async Task<PortalUserDO> Create()
 		{			
 			var permTokenResult = IssueNewPermanentAccessToken(Authentication.AccessToken);
-			
+
+			var specifics = new FacebookUserSE
+			{
+				TimeZone = _fbUser.TimeZone,
+				Link = FbUser.Link,
+				Locale = FbUser.Locale,
+				UpdatedTime = FbUser.UpdatedTime,
+				Verified = FbUser.Verified
+			};
+
+			if (_fbUser.FavoriteTeams != null)
+			{
+				specifics.FavoriteTeams = _fbUser.FavoriteTeams.Select(i => i.ToEntity()).ToArray();
+			}
+
 			var facebookAccount = new SocialAccountSE
 			{
 				Authentication = new SocAuthenticationSE
@@ -77,15 +91,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 
 				},
 				NetworkType = SocialNetworkType.Facebook,
-				Specifics = new FacebookUserSE
-				{
-					TimeZone = _fbUser.TimeZone,
-					FavoriteTeams = _fbUser.FavoriteTeams.Select(i => i.ToEntity()).ToArray(),
-					Link = FbUser.Link,
-					Locale = FbUser.Locale,
-					UpdatedTime = FbUser.UpdatedTime,
-					Verified = FbUser.Verified
-				}
+				Specifics = specifics
 			};
 			
 			var userEntity = new PortalUserEntity
@@ -114,6 +120,11 @@ namespace Gloobster.DomainModels.Services.Accounts
 
 		private async Task<CityLocationSE> ParseLocationAsync(IdNameFO location)
 		{
+			if (location == null)
+			{
+				return null;
+			}
+
 			var prms = location.Name.Split(',');
 			bool isValid = prms.Count() == 2;
 			if (!isValid)
@@ -162,6 +173,11 @@ namespace Gloobster.DomainModels.Services.Accounts
 
 		private LanguageSE[] ParseLanguages(IdNameFO[] languages)
 		{
+			if (languages == null)
+			{
+				return null;
+			}
+
 			//todo: implement language reference system
 
 			var langs = languages.Select(l => new LanguageSE {Name = l.Name, LanguageId = 0}).ToArray();
@@ -225,23 +241,30 @@ namespace Gloobster.DomainModels.Services.Accounts
 
 		private SocAuthenticationDO IssueNewPermanentAccessToken(string accessToken)
 		{
-			int expireToleranceInSeconds = 60;
-
-			var url =
-				$"/oauth/access_token?grant_type=fb_exchange_token&client_id={GloobsterConfig.FacebookAppId}&client_secret={GloobsterConfig.FacebookAppSecret}&fb_exchange_token={accessToken}";
-
-			FBService.SetAccessToken(accessToken);
-			var permanentToken = FBService.Get<FacebookPermanentToken>(url);
-
-			var newExpireTime = DateTime.UtcNow.AddSeconds(permanentToken.SecondsToExpire - expireToleranceInSeconds);
-
-			var result = new SocAuthenticationDO
+			try
 			{
-				AccessToken = permanentToken.AccessToken,
-				ExpiresAt = newExpireTime
-			};
+				int expireToleranceInSeconds = 60;
 
-			return result;
+				var url =
+					$"/oauth/access_token?grant_type=fb_exchange_token&client_id={GloobsterConfig.FacebookAppId}&client_secret={GloobsterConfig.FacebookAppSecret}&fb_exchange_token={accessToken}";
+
+				FBService.SetAccessToken(accessToken);
+				var permanentToken = FBService.Get<FacebookPermanentToken>(url);
+
+				var newExpireTime = DateTime.UtcNow.AddSeconds(permanentToken.SecondsToExpire - expireToleranceInSeconds);
+
+				var result = new SocAuthenticationDO
+				{
+					AccessToken = permanentToken.AccessToken,
+					ExpiresAt = newExpireTime
+				};
+
+				return result;
+			}
+			catch (Exception exc)
+			{
+				throw;
+			}
 		}
 	}
 }

@@ -7,6 +7,7 @@ using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.Mappers;
 using MongoDB.Bson;
+using MongoDB.Driver.Linq;
 
 namespace Gloobster.DomainModels
 {
@@ -14,7 +15,9 @@ namespace Gloobster.DomainModels
 	{
 		public IDbOperations DB { get; set; }
 
-		public async Task<List<VisitedPlaceDO>> AddNewPlaces(List<VisitedPlaceDO> inputPlaces, string userId)
+		public IFriendsDomain FriendsService { get; set; }
+
+		public async Task<List<VisitedPlaceDO>> AddNewPlacesAsync(List<VisitedPlaceDO> inputPlaces, string userId)
 		{
 			var query = $@"{{""PortalUser_id"": ObjectId(""{userId}"")}}";
 			var alreadySavedPlaces = await DB.FindAsync<VisitedPlaceEntity>(query);
@@ -28,7 +31,7 @@ namespace Gloobster.DomainModels
 				if (isNewPlace)
 				{
 					var newPlaceEntity = place.ToEntity();
-					newPlaceEntity.PortalUser_id = new ObjectId(userId);
+					newPlaceEntity.PortalUser_id =  new ObjectId(userId);
 					newPlaceEntity.id = ObjectId.GenerateNewId();
 					newPlaces.Add(newPlaceEntity);
 				}
@@ -43,7 +46,7 @@ namespace Gloobster.DomainModels
 			return newPlacesDO;
 		}
 
-		public async Task<List<VisitedPlaceDO>> GetPlacesByUserId(string userId)
+		public async Task<List<VisitedPlaceDO>> GetPlacesByUserIdAsync(string userId)
 		{
 			var query = $@"{{""PortalUser_id"": ObjectId(""{userId}"")}}";
 			var places = await DB.FindAsync<VisitedPlaceEntity>(query);
@@ -51,5 +54,20 @@ namespace Gloobster.DomainModels
 			var placesDO = places.Select(p => p.ToDO()).ToList();
 			return placesDO;
 		}
+
+		public List<VisitedPlaceDO> GetPlacesOfMyFriendsByUserId(string userId)
+		{
+			var userIdObj = new ObjectId(userId);
+			var friends = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == userIdObj);
+
+			var friendsId = new List<ObjectId> { userIdObj };
+			friendsId.AddRange(friends.Friends);
+
+			var visitedPlaces = DB.C<VisitedPlaceEntity>().Where(p => friendsId.Contains(p.PortalUser_id)).ToList();
+			var visitedPlacesDO = visitedPlaces.Select(p => p.ToDO()).ToList();
+
+			return visitedPlacesDO;			
+		}
 	}
+
 }

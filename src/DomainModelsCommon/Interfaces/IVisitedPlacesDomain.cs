@@ -6,7 +6,8 @@ namespace Gloobster.DomainModelsCommon.Interfaces
 {
 	public interface IVisitedPlacesDomain
 	{
-		Task<List<VisitedPlaceDO>> AddNewPlaces(List<VisitedPlaceDO> inputPlaces, string userId);
-		Task<List<VisitedPlaceDO>> GetPlacesByUserId(string userId);
+		List<VisitedPlaceDO> GetPlacesOfMyFriendsByUserId(string userId);
+        Task<List<VisitedPlaceDO>> AddNewPlacesAsync(List<VisitedPlaceDO> inputPlaces, string userId);
+		Task<List<VisitedPlaceDO>> GetPlacesByUserIdAsync(string userId);
 	}
 }

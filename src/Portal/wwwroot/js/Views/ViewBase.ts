@@ -1,13 +1,11 @@
 module Views {
  
- export enum PageType {HomePage, PinBoard, TripList}
+ export enum PageType {HomePage, PinBoard, TripList, TwitterAuth}
 
 	export class ViewBase {
 
 		public loginManager: LoginManager;
 
-		//public googleInit: GoogleInit;
-		//public pageType: PageType;
 		get pageType(): PageType { return null; }
 
 
@@ -21,6 +19,10 @@ module Views {
 				$("#loginSection").show();
 			} else {
 			 console.log("isAlreadyLogged with " + this.loginManager.cookieLogin.networkType);								
+
+			 if (this.loginManager.cookieLogin.networkType === NetworkType.Facebook) {
+				this.initializeFacebook();
+			 }
 
 			 //todo: delete when testing is over
 			 $("#loginSection").show();

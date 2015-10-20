@@ -24,7 +24,7 @@ namespace Gloobster.Portal.Controllers
 		[Authorize]
 		public async Task<IActionResult> Get(string userId)
 		{
-			var visitedCountriesDO = await VisitedCountries.GetVisitedCountriesByUserId(userId);
+			var visitedCountriesDO = await VisitedCountries.GetVisitedCountriesByUserIdAsync(userId);
 
 			var countryCodes2 = visitedCountriesDO.Select(c => c.CountryCode2).ToArray();
 			var countries = countryCodes2.Select(c => CountryService.GetCountryByCountryCode2(c)).ToList();

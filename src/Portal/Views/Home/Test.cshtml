@@ -3,35 +3,44 @@
 		Layout = "";
 }
 
+
 @Html.Partial("_GlobalScripts")
 
-<link href="http://ga.cz/2015/gloobster/css/style.css" rel="stylesheet">
+<div>
+	<script>
+		var cookieName = "TheCookie";
+		var myDomain = null;
+		//$.cookie.json = true;
 
-<div class="logins">
-		<div class="margin">
+		var cookieObj = { "encodedToken": "TheText"};
+		var cookieStr = JSON.stringify(cookieObj);
+
+		window.TheValue = "";
+
+		setInterval(function() {
+				var cookieVal = $.cookie(cookieName);
+				console.log("TheCookie: " + cookieVal);
+		}, 5000);
+
+		function openNew() {
+			var url = "/home/test";
+			var wnd = window.open(url, "Twitter authentication", "height=500px,width=400px");
+		}
+
+		function setValue() {
+				$.cookie(cookieName, cookieStr, { "domain": myDomain, "path": "/" });
+		}
+
+		function removeCookie() {
+				$.removeCookie(cookieName, { path: '/' });
+		}
 
 
-				
+	</script>
 
-				<a class="facebook" href="#">Sign in with Facebook</a>
-				<a class="twitter" href="javascript:clickAuthorize()">Sign in with Twitter</a>
-				<a id="googleLoginBtnHome" class="google" href="#">Sign in with Google</a>
-
-		</div>		
-</div>
+	<button onclick="openNew()">open new</button>
+	<button onclick="setValue()">set value</button>
+	<button onclick="removeCookie()">remove cookie</button>
 
 
-
-<div class="fb-login-button fb_iframe_widget"
-     style="margin-left: 5px; width: 210px; height: 100px; border: 1px solid red;"
-     data-max-rows="1"
-     data-size="xlarge"
-     data-show-faces="false"
-     data-auto-logout-link="false"
-     login_text=""
-     fb-xfbml-state="rendered"
-     fb-iframe-plugin-query="app_id=1519189774979242&amp;auto_logout_link=false&amp;container_width=940&amp;locale=en_US&amp;max_rows=1&amp;sdk=joey&amp;show_faces=false&amp;size=xlarge">
-	<span style="vertical-align: bottom; width: 123px; height: 39px;">
-				<iframe id="fbiFrame" name="f37e1c2da" width="1000px" height="1000px" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" title="fb:login_button Facebook Social Plugin" src="http://www.facebook.com/v2.2/plugins/login_button.php?app_id=1519189774979242&amp;auto_logout_link=false&amp;channel=http%3A%2F%2Fstatic.ak.facebook.com%2Fconnect%2Fxd_arbiter%2Fjb3BUxkAISL.js%3Fversion%3D41%23cb%3Df117b45aec%26domain%3Dlocalhost%26origin%3Dhttp%253A%252F%252Flocalhost%253A4441%252Ff3f316a0bc%26relation%3Dparent.parent&amp;container_width=940&amp;locale=en_US&amp;max_rows=1&amp;sdk=joey&amp;show_faces=false&amp;size=xlarge" style="border: 1px solid black; visibility: visible; width: 210px; height: 50px;" class=""></iframe>
-		</span>
 </div>

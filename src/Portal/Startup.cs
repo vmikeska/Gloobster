@@ -141,9 +141,11 @@ namespace Gloobster.Portal
 			builder.AddTransient<IFacebookService, FacebookService>();
 			builder.AddTransient<IMyTwitterService, MyTwitterService>();
 			builder.AddTransient<IFacebookTaggedPlacesExtractor, FacebookTaggedPlacesExtractor>();
+
+
+			builder.AddTransient<IFriendsDomain, FriendsDomain>();
 			
-			
-			builder.AddTransient<IPlacesExtractor, PlacesExtractor>();
+            builder.AddTransient<IPlacesExtractor, PlacesExtractor>();
 
 			builder.AddTransient<IPlacesExtractorDriver, TwitterPlacesDriver>().Keyed<IPlacesExtractorDriver>("Twitter");
 			builder.AddTransient<IPlacesExtractorDriver, FacebookPlacesDriver>().Keyed<IPlacesExtractorDriver>("Facebook");

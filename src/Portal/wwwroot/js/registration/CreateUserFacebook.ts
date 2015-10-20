@@ -8,10 +8,10 @@ class CreateUserFacebook extends CreateUserBase {
 	endpoint = "/api/FacebookUser";
 
 	registerOrLogin() {
-		FB.getLoginStatus(this.statusChangeCallback);
+	 FB.getLoginStatus(this.statusChangeCallback);
 	}
 
-	private statusChangeCallback = (response) => {
+	public statusChangeCallback = (response) => {
 		if (response.status === "connected") {
 			this.handleRoughResponse(response.authResponse);
 		} else if (response.status === "not_authorized") {
@@ -33,7 +33,7 @@ class CreateUserFacebook extends CreateUserBase {
 	}
 
  login() {
-	 FB.login(this.statusChangeCallback);
+	 FB.login(this.statusChangeCallback, { scope: 'email,user_tagged_places,publish_actions,user_location,user_hometown'});
  }
 
 }

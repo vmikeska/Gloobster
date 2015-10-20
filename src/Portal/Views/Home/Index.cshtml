@@ -26,30 +26,35 @@
 				<div class="wrapper">
 						<h1><a href=".html" class="logo-header">Gloobster</a></h1>
 						<div class="menu-holder table">
-								<div class="cell">
-										<ul id="menu" class="menu-header table">
-											@*<li><a class="active" href="#">Menu</a></li>*@
-												<li><a asp-controller="Home" asp-action="PinBoard">Pin board</a></li>
-												<li><a href="#">Places to visit</a></li>
-												<li><a href="#">Trip planner</a></li>
-										</ul>
+							<div class="cell">
+								<ul id="menu" class="menu-header table">
+									@*<li><a class="active" href="#">Menu</a></li>*@
+									<li><a asp-controller="Home" asp-action="PinBoard">Pin board</a></li>
+									<li><a href="#">Places to visit</a></li>
+									<li><a href="#">Trip planner</a></li>
+								</ul>
+							</div>
+							<div class="cell">
+								<ul class="menu-header separator table">
+									<li><a class="popup-target" data-target="#popup-login" href="#">Login</a></li>
+									<li><a class="popup-target" data-target="#popup-join" href="#">Join</a></li>
+								</ul>
+							</div>
+
+							<div class="cell">
+								<div class="dropdown">
+									<span class="selected">English</span>
+									<ul>
+										<li>English <span class="notification">3</span></li>
+										<li>Czech</li>
+									</ul>
+									<input type="hidden">
 								</div>
-								<div class="cell">
-										<ul class="menu-login table">
-												<li><a class="popup-target" data-target="#popup-login" href="#">Join</a></li>
-												<li><a class="popup-target" data-target="#popup-join" href="#">Login</a></li>
-										</ul>
-								</div>
-								<div class="cell">
-										<div class="dropdown">
-												<span class="selected">English</span>
-												<ul>
-														<li>English <span class="notification">3</span></li>
-														<li>Czech</li>
-												</ul>
-												<input type="hidden">
-										</div>
-								</div>
+							</div>
+
+							
+
+
 						</div>
 						<a class="hamburger" data-target="#menu" href="#"><span></span></a>
 				</div>
@@ -61,19 +66,31 @@
 
 
 				<script type="text/javascript" src="@Url.Content("~/js/Views/HomePageView.js")"></script>
-			
-		<script>
-				//todo: remove after testing
-				$.removeCookie(Constants.cookieName);
-			//$.cookie(Constants.cookieName, {}, { path: '/' });
 
-			currentView = new HomePageView();
+			<script>
+				currentView = new HomePageView();
 
-			function clickAuthorize() {
-				var url = '/TwitterUser/MailStep';
-				var wnd = window.open(url);
-			}
-		</script>
+				function clickAuthorize() {
+					twitterLoginWatch();
+					var url = '/TwitterUser/MailStep';
+					var wnd = window.open(url, "Twitter authentication", "height=500px,width=400px");
+				}
+
+				var cookieManager = new CookieManager();
+
+				var twInterval = null;
+				function twitterLoginWatch() {
+					twInterval = setInterval(function() {
+						var cookieVal = cookieManager.getJson(Constants.cookieName);
+						if (cookieVal) {
+							clearInterval(twInterval);
+							window.location = "/home/pinboard";
+						}
+						console.log("checking: " + JSON.stringify(cookieVal));
+					}, 500);
+				}
+
+			</script>
 
 				<!-- scripts end -->
 
@@ -90,6 +107,10 @@
 										<a class="facebook" href="javascript:currentView.loginManager.facebookUserCreator.login()">Sign in with Facebook</a>
 										<a class="twitter" href="javascript:clickAuthorize()">Sign in with Twitter</a>
 										<a id="googleLoginBtnHome" class="google" href="#">Sign in with Google</a>
+
+
+										@*<fb:login-button scope="user_tagged_places,user_likes,publish_actions,user_location,user_hometown,email,user_status" onlogin="FB.refreshLoginStatus();">
+										</fb:login-button>*@
 
 								</div>
 								<span class="email">
@@ -151,14 +172,14 @@
 
 
 <script>	
-	var btnGoogle = new GoogleButton();
-	btnGoogle.successfulCallback = (googleUser) => {
-		currentView.loginManager.googleUserCreator.registerOrLogin(googleUser);				
-	};
-	btnGoogle.elementId = "googleLoginBtnHome";
-	btnGoogle.initialize();
+	//var btnGoogle = new GoogleButton();
+	//btnGoogle.successfulCallback = (googleUser) => {
+	//	currentView.loginManager.googleUserCreator.registerOrLogin(googleUser);				
+	//};
+	//btnGoogle.elementId = "googleLoginBtnHome";
+	//btnGoogle.initialize();
 </script>
-
+<button onclick="$.removeCookie('loginCookie', { path: '/' })">Delete cookie</button>
 </body>
 </html>
 

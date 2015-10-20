@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.AspNet.Mvc;
 using System.Threading.Tasks;
 using Autofac;
 using Gloobster.Common.CommonEnums;
@@ -8,8 +7,9 @@ using Gloobster.DomainModelsCommon.Interfaces;
 using Gloobster.Portal.ReqRes;
 using Gloobster.WebApiObjects.Facebook;
 using Microsoft.AspNet.Http;
+using Microsoft.AspNet.Mvc;
 
-namespace Gloobster.Portal.Controllers
+namespace Gloobster.Portal.Controllers.Registration
 {
 	[Route("api/[controller]")]
 	public class FacebookUserController : Controller
