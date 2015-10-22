@@ -11,13 +11,17 @@ var MapsDataLoader = (function () {
             _this.places.places = response.VisitedPlaces;
             _this.places.cities = response.VisitedCities;
             _this.places.countries = response.VisitedCountries;
-            _this.executePlugin(pluginType);
+            _this.mapToViewData();
             _this.dataLoadedCallback();
         });
     };
     MapsDataLoader.prototype.getColorByNumber = function (num) {
+        var firstColor = "#0026BF";
+        if (!num) {
+            return firstColor;
+        }
         if (num <= 1) {
-            return "#0026BF";
+            return firstColor;
         }
         else if (num <= 2) {
             return "#1300C2";
@@ -46,12 +50,9 @@ var MapsDataLoader = (function () {
         else if (num <= 10) {
             return "#E17000";
         }
-        else {
-            return "#E5B600";
-        }
+        return "#E5B600";
     };
-    MapsDataLoader.prototype.executePlugin = function (pluginType) {
-        //if (pluginType === Maps.PluginType.MyPlacesVisited) {
+    MapsDataLoader.prototype.mapToViewData = function () {
         var _this = this;
         var places = _.map(this.places.places, function (place) {
             var point = new Maps.PlaceMarker(place.Location.Lat, place.Location.Lng);
@@ -60,7 +61,10 @@ var MapsDataLoader = (function () {
         this.viewPlaces.places = places;
         var countries = _.map(this.places.countries, function (country) {
             var colorConfig = new Maps.PolygonConfig();
-            var countryVisits = country.Dates.length;
+            var countryVisits = null;
+            if (country.Dates) {
+                countryVisits = country.Dates.length;
+            }
             colorConfig.fillColor = _this.getColorByNumber(countryVisits);
             var countryOut = new Maps.CountryHighligt();
             countryOut.countryCode = country.CountryCode3;
@@ -73,7 +77,6 @@ var MapsDataLoader = (function () {
             return marker;
         });
         this.viewPlaces.cities = cities;
-        //}
     };
     return MapsDataLoader;
 })();

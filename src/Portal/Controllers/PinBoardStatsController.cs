@@ -85,7 +85,7 @@ namespace Gloobster.Portal.Controllers
 			var visitedPlaces = await VisitedPlaces.GetPlacesByUserIdAsync(userId);
             result.VisitedPlaces = visitedPlaces.Select(p => p.ToResponse()).ToArray();
 
-			var visitedCities = await VisitedCities.GetCitiesByUserIdAsync(userId);
+			var visitedCities = VisitedCities.GetCitiesByUserId(userId);
 			result.VisitedCities = visitedCities.Select(c => c.ToResponse()).ToArray();
 
 			var visitedCountries = await VisitedCountries.GetVisitedCountriesByUserIdAsync(userId);

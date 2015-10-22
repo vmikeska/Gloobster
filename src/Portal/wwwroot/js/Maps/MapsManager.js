@@ -3,15 +3,21 @@ var MapsManager = (function () {
         var _this = this;
         this.owner = owner;
         this.mapsDataLoader = new MapsDataLoader(owner);
-        this.mapsDataLoader.dataLoadedCallback = function () { _this.dataLoadedCallback(); };
+        this.mapsDataLoader.dataLoadedCallback = function () { _this.redrawDataCallback(); };
         this.mapsOperations = new MapsOperations();
     }
     MapsManager.prototype.getPluginData = function (pluginType, displayEntity) {
+        var isSamePlugin = this.currentPluginType === pluginType;
         this.currentDisplayEntity = displayEntity;
         this.currentPluginType = pluginType;
-        this.mapsDataLoader.getPluginData(pluginType, displayEntity);
+        if (isSamePlugin) {
+            this.redrawDataCallback();
+        }
+        else {
+            this.mapsDataLoader.getPluginData(pluginType, displayEntity);
+        }
     };
-    MapsManager.prototype.dataLoadedCallback = function () {
+    MapsManager.prototype.redrawDataCallback = function () {
         if (this.currentDisplayEntity === Maps.DisplayEntity.Pin) {
             this.redrawCities();
         }

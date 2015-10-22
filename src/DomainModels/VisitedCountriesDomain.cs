@@ -67,7 +67,7 @@ namespace Gloobster.DomainModels
 			{
 				var outCountry = g.First().ToDO();
 				outCountry.PortalUserId = null;
-				outCountry.Dates = g.SelectMany(d => d.Dates).ToList();
+				outCountry.Dates = g.Where(d => d.Dates != null).SelectMany(d => d.Dates).ToList();
 				return outCountry;
 			});
 

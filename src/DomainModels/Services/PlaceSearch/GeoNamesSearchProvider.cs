@@ -30,7 +30,7 @@ namespace Gloobster.DomainModels.Services.PlaceSearch
 		{
 			var place = new Place
 			{
-				SourceType = SourceType.GN,
+				SourceType = SourceType.City,
 				SourceId = originalPlace.GeonameId.ToString(),
 				Name = originalPlace.Name,
 				City = originalPlace.Name,

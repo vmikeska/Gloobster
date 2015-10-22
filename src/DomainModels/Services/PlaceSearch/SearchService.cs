@@ -9,7 +9,7 @@ namespace Gloobster.DomainModels.Services.PlaceSearch
 	public class SearchService: ISearchService
 	{		
 
-		private SourceType[] DefaultProviders = { SourceType.FB, SourceType.GN, SourceType.S4 };
+		private SourceType[] DefaultProviders = { SourceType.FB, SourceType.City, SourceType.Country, SourceType.S4 };
 
 		public List<ISearchProvider> SearchProviders = new List<ISearchProvider>();
 
@@ -31,6 +31,8 @@ namespace Gloobster.DomainModels.Services.PlaceSearch
 		{
 			//todo: custom providers
 
+			queryObj.LimitPerProvider = 3;
+			
 			var places = new List<Place>();
 			foreach (var provider in SearchProviders)
 			{

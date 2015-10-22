@@ -20,11 +20,15 @@ namespace Gloobster.Mappers
 			{
 				PortalUserId = entity.PortalUser_id.ToString(),
 				City = entity.City,
-				CountryCode = entity.CountryCode,
-				Dates = entity.Dates.ToList(),				
+				CountryCode = entity.CountryCode,				
 				Location = entity.Location,
 				GeoNamesId = entity.GeoNamesId				
 			};
+
+			if (entity.Dates != null)
+			{
+				dObj.Dates = entity.Dates.ToList();
+			}
 			
 			return dObj;
 		}
@@ -40,8 +44,7 @@ namespace Gloobster.Mappers
 			{					
 				City = dObj.City,
 				CountryCode = dObj.CountryCode,
-				Location = dObj.Location,
-				Dates = dObj.Dates.ToArray(),
+				Location = dObj.Location,				
 				GeoNamesId = dObj.GeoNamesId
 			};
 
@@ -49,7 +52,12 @@ namespace Gloobster.Mappers
 			{
 				entity.PortalUser_id = new ObjectId(dObj.PortalUserId);
 			}
-			
+
+			if (dObj.Dates != null)
+			{
+				entity.Dates = dObj.Dates.ToArray();
+			}
+
 			return entity;
 		}
 

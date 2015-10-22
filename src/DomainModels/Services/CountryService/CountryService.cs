@@ -7,7 +7,7 @@ namespace Gloobster.DomainModels.Services.CountryService
 {
 	public class CountryService: ICountryService
 	{
-		public List<Country> CountriesList;
+		public List<Country> CountriesList { get; set; }
 
 		public CountryService()
 		{

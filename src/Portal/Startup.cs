@@ -152,16 +152,13 @@ namespace Gloobster.Portal
 
 
 			builder.AddInstance2<ISearchService, SearchService>();
-			builder.AddInstance2<ISearchProvider, GeoNamesSearchProvider>().Keyed<ISearchProvider>(SourceType.GN);
+			builder.AddInstance2<ISearchProvider, GeoNamesSearchProvider>().Keyed<ISearchProvider>(SourceType.City);
+			builder.AddInstance2<ISearchProvider, CountrySearchProvider>().Keyed<ISearchProvider>(SourceType.Country);
 			builder.AddInstance2<ISearchProvider, FacebookSearchProvider>().Keyed<ISearchProvider>(SourceType.FB);
 			builder.AddInstance2<ISearchProvider, FoursquareSearchProvider>().Keyed<ISearchProvider>(SourceType.S4);
 
-			//builder.AddInstance<ISearchService>(new SearchService());
-			//         builder.AddInstance<ISearchProvider>(new GeoNamesSearchProvider()).Keyed<ISearchProvider>(SourceType.GN);
-			//builder.AddInstance<ISearchProvider>(new FacebookSearchProvider()).Keyed<ISearchProvider>(SourceType.FB);
-			//builder.AddInstance<ISearchProvider>(new FoursquareSearchProvider()).Keyed<ISearchProvider>(SourceType.S4);
-
-
+			builder.AddTransient<ICheckinPlaceDomain, CheckinPlaceDomain>();
+			
 
 			builder.AddInstance<IGeoNamesService>(new GeoNamesService());
 

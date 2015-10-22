@@ -11,3 +11,4 @@ module Constants {
 }
 
 
+enum SourceType { FB, S4, City, Country }

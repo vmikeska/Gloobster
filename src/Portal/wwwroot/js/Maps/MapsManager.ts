@@ -16,18 +16,25 @@
 	constructor(owner: Views.ViewBase) {
 		this.owner = owner;
 		this.mapsDataLoader = new MapsDataLoader(owner);
-		this.mapsDataLoader.dataLoadedCallback = () => { this.dataLoadedCallback() };
+		this.mapsDataLoader.dataLoadedCallback = () => { this.redrawDataCallback() };
 		this.mapsOperations = new MapsOperations();
 	}
 
 	public getPluginData(pluginType: Maps.PluginType, displayEntity: Maps.DisplayEntity) {
+
+		var isSamePlugin = this.currentPluginType === pluginType;
+
 		this.currentDisplayEntity = displayEntity;
 		this.currentPluginType = pluginType;
-		this.mapsDataLoader.getPluginData(pluginType, displayEntity);
+
+	 if (isSamePlugin) {
+		 this.redrawDataCallback();
+	 } else {
+		this.mapsDataLoader.getPluginData(pluginType, displayEntity); 
+	 }	 
 	}
 
-
-	private dataLoadedCallback() {
+	public redrawDataCallback() {
 		if (this.currentDisplayEntity === Maps.DisplayEntity.Pin) {
 			this.redrawCities();
 		}

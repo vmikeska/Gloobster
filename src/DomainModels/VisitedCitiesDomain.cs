@@ -19,27 +19,36 @@ namespace Gloobster.DomainModels
 
 		public async Task<List<VisitedCityDO>> AddNewCitiesAsync(List<VisitedCityDO> inputCities, string userId)
 	    {		
-			var query = $@"{{""PortalUser_id"": ObjectId(""{userId}"")}}";
-			var alreadySavedCities = await DB.FindAsync<VisitedCityEntity>(query);
+			var userIdObj = new ObjectId(userId);
+			var alreadySavedCities = DB.C<VisitedCityEntity>().Where(c => c.PortalUser_id == userIdObj).ToList();				
 			
 			var newCities = new List<VisitedCityEntity>();
 			foreach (VisitedCityDO city in inputCities)
-		    {
-				bool isNewCity =
-					!alreadySavedCities.Any(p => p.City == city.City && p.CountryCode == city.CountryCode);
-
+			{
+				bool isNewCity = !IsAlreadySavedCity(alreadySavedCities, city);
 			    if (isNewCity)
 			    {
 					var newPlaceEntity = city.ToEntity();
 					newPlaceEntity.PortalUser_id = new ObjectId(userId);
 					newPlaceEntity.id = ObjectId.GenerateNewId();
 
-					var geoNamesCities = await GeoNamesService.GetCityAsync(city.City, city.CountryCode, 1);
-					if (geoNamesCities.GeoNames.Any())
-					{
-						var geoNamesCity = geoNamesCities.GeoNames.First();
-						newPlaceEntity.GeoNamesId = geoNamesCity.GeonameId;
-						newPlaceEntity.Location = new LatLng { Lat = geoNamesCity.Latitude, Lng = geoNamesCity.Longitude };
+				    if (city.GeoNamesId != 0)
+				    {
+					    var geoNameCity = await GeoNamesService.GetCityByIdAsync(city.GeoNamesId);
+						newPlaceEntity.GeoNamesId = geoNameCity.GeonameId;
+						newPlaceEntity.Location = new LatLng { Lat = geoNameCity.Lat, Lng = geoNameCity.Lng };
+					    newPlaceEntity.City = geoNameCity.Name;
+					    newPlaceEntity.CountryCode = geoNameCity.CountryCode;
+				    }
+				    else
+				    {
+						var geoNamesCities = await GeoNamesService.GetCityAsync(city.City, city.CountryCode, 1);
+						if (geoNamesCities.GeoNames.Any())
+						{
+							var geoNamesCity = geoNamesCities.GeoNames.First();
+							newPlaceEntity.GeoNamesId = geoNamesCity.GeonameId;
+							newPlaceEntity.Location = new LatLng { Lat = geoNamesCity.Latitude, Lng = geoNamesCity.Longitude };
+						}
 					}
 					
 					newCities.Add(newPlaceEntity);
@@ -54,11 +63,23 @@ namespace Gloobster.DomainModels
 			var newPlacesDO = newCities.Select(e => e.ToDO()).ToList();
 			return newPlacesDO;			
 	    }
-		
-		public async Task<List<VisitedCityDO>> GetCitiesByUserIdAsync(string userId)
+
+		private bool IsAlreadySavedCity(List<VisitedCityEntity> visited, VisitedCityDO currentCity)
 		{
-			var query = $@"{{""PortalUser_id"": ObjectId(""{userId}"")}}";
-			var cities = await DB.FindAsync<VisitedCityEntity>(query);
+			if (currentCity.GeoNamesId != 0)
+			{
+				bool exist = visited.Any(c => c.GeoNamesId == currentCity.GeoNamesId);
+				return exist;
+			}
+			
+			bool exist2 = visited.Any(p => (p.City == currentCity.City && p.CountryCode == currentCity.CountryCode));
+			return exist2;
+		}
+
+		public List<VisitedCityDO> GetCitiesByUserId(string userId)
+		{
+			var userIdObj = new ObjectId(userId);
+			var cities = DB.C<VisitedCityEntity>().Where(c => c.PortalUser_id == userIdObj).ToList();
 
 			var citiesDO = cities.Select(p => p.ToDO()).ToList();
 			return citiesDO;
@@ -82,7 +103,7 @@ namespace Gloobster.DomainModels
 			{
 				var outCity = g.First().ToDO();
 				outCity.PortalUserId = null;
-				outCity.Dates = g.SelectMany(d => d.Dates).ToList();
+				outCity.Dates = g.Where(d => d.Dates != null).SelectMany(d => d.Dates).ToList();
 				return outCity;
 			});
 			

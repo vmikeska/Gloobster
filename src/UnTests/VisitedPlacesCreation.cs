@@ -13,21 +13,21 @@ namespace Gloobster.UnitTests
 		}
 
 		private const string City1 = "Brno";
-		private const SourceTypeDO SourceType1 = SourceTypeDO.Facebook;		
+		private const SourceTypeDO SourceType1 = SourceTypeDO.FB;		
 		private const string SourceId1 = "1111";
 		private const string CountryCode1 = "CZ";
 		private const float PlaceLongitude1 = 9.99f;
 		private const float PlaceLatitude1 = 8.88f;
 
 		private const string City2 = "Prague";
-		private const SourceTypeDO SourceType2 = SourceTypeDO.Facebook;
+		private const SourceTypeDO SourceType2 = SourceTypeDO.FB;
 		private const string SourceId2 = "2222";
 		private const string CountryCode2 = "DE";
 		private const float PlaceLongitude2 = 9.99f;
 		private const float PlaceLatitude2 = 8.88f;
 
 		private const string City3 = "Ostrava";
-		private const SourceTypeDO SourceType3 = SourceTypeDO.Facebook;
+		private const SourceTypeDO SourceType3 = SourceTypeDO.FB;
 		private const string SourceId3 = "3333";
 		private const string CountryCode3 = "EE";
 		private const float PlaceLongitude3 = 9.99f;

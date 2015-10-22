@@ -52,7 +52,7 @@ namespace Gloobster.DomainModels.Services.Places
 				PortalUserId = portalUserId,
 				Dates = new List<DateTime> { fbPlace.Time},
 
-				SourceType = SourceTypeDO.Facebook,
+				SourceType = SourceTypeDO.FB,
 				SourceId = fbPlace.CheckinId
 			};
 			return localPlace;

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
+using Gloobster.Common;
 using Gloobster.DomainModelsCommon.BaseClasses;
 
 namespace Gloobster.DomainModelsCommon.Interfaces
@@ -8,8 +9,9 @@ namespace Gloobster.DomainModelsCommon.Interfaces
 	public interface IGeoNamesService
 	{
 		Task<CitySearchResponse> GetCityAsync(string cityName, string countryCode, int maxRows);
-		Task<T> GetResponseAsync<T>(Dictionary<string, string> prms) where T : GeoNamesResponseBase;
+		Task<T> GetResponseAsync<T>(QueryBuilder queryBuilder) where T : new();
 		Task<CitySearchResponse> GetCityQueryAsync(string query, int maxRows);
+		Task<GeoNameIdResponse> GetCityByIdAsync(long id);
 	}
 
 	[DataContract]
