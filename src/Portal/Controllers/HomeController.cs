@@ -2,38 +2,19 @@
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Gloobster.Common.CommonEnums;
 using Gloobster.Common.DbEntity;
 using Microsoft.AspNet.Http;
-using TweetSharp;
 
 namespace Gloobster.Portal.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : PortalBaseController
     {
-	    public string UserId
-	    {
-		    get
-		    {
-				var userIdSession = Context.Session.GetString(PortalConstants.UserSessionId);			    
-			    return userIdSession;
-		    }
-	    }
-
-	    //public bool IsUserLogged => !string.IsNullOrEmpty(UserId);s
-
-
-	    public HomeController(IDbOperations db)
+		public HomeController(IDbOperations db) : base(db)
 		{
-			DB = db;
 		}
 
-
-		public IDbOperations DB;
-
-        public BsonDocument GenerateDoc()
+		public BsonDocument GenerateDoc()
         {
             return new BsonDocument
             {
@@ -64,6 +45,8 @@ namespace Gloobster.Portal.Controllers
 
 			return View(pinBoardViewModel);
 		}
+
+	    
     }
 
 	public class PinBoardViewModel

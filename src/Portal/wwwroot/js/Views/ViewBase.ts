@@ -1,6 +1,6 @@
 module Views {
  
- export enum PageType {HomePage, PinBoard, TripList, TwitterAuth}
+ export enum PageType {HomePage, PinBoard, TripList, TwitterAuth, Friends}
 
 	export class ViewBase {
 

@@ -12,7 +12,7 @@ namespace Gloobster.Common.DbEntity.PortalUser
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
 		public string ProfileImage { get; set; }
-
+		
 		public CityLocationSE HomeLocation { get; set; }
 		public CityLocationSE CurrentLocation { get; set; }
 		public LanguageSE[] Languages { get; set; }

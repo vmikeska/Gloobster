@@ -33,7 +33,7 @@ class CreateUserFacebook extends CreateUserBase {
 	}
 
  login() {
-	 FB.login(this.statusChangeCallback, { scope: 'email,user_tagged_places,publish_actions,user_location,user_hometown'});
+	 FB.login(this.statusChangeCallback, { scope: 'user_tagged_places,publish_actions,user_location,user_hometown,user_friends,email'});
  }
 
 }

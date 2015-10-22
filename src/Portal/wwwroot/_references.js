@@ -21,6 +21,7 @@
 /// <reference path="js/registration/facebookinit.js" />
 /// <reference path="js/registration/googlebutton.js" />
 /// <reference path="js/registration/loginmanager.js" />
+/// <reference path="js/views/friendsview.js" />
 /// <reference path="js/views/homepageview.js" />
 /// <reference path="js/views/pinboardview.js" />
 /// <reference path="js/views/twitterauthview.js" />

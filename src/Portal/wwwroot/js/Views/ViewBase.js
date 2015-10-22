@@ -5,6 +5,7 @@ var Views;
         PageType[PageType["PinBoard"] = 1] = "PinBoard";
         PageType[PageType["TripList"] = 2] = "TripList";
         PageType[PageType["TwitterAuth"] = 3] = "TwitterAuth";
+        PageType[PageType["Friends"] = 4] = "Friends";
     })(Views.PageType || (Views.PageType = {}));
     var PageType = Views.PageType;
     var ViewBase = (function () {

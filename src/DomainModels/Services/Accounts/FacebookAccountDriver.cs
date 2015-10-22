@@ -215,12 +215,13 @@ namespace Gloobster.DomainModels.Services.Accounts
 				return;
 			}
 			
-			bool expired = account.Authentication.ExpiresAt < DateTime.UtcNow;
-			if (expired)
-			{
+			//possibly should update all the time. New permissions, etc...
+			//bool expired = account.Authentication.ExpiresAt < DateTime.UtcNow;
+			//if (expired)
+			//{
 				var newPermanentToken = IssueNewPermanentAccessToken(account.Authentication.AccessToken);
 				UpdateFacebookUserAuth(portalUser, newPermanentToken.AccessToken, newPermanentToken.ExpiresAt);
-			}
+			//}
 		}
 		
 		public async void UpdateFacebookUserAuth(PortalUserDO portalUser, string accessToken, DateTime expiresAt)

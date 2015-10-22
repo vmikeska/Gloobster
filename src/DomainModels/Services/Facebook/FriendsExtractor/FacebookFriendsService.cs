@@ -18,6 +18,8 @@ namespace Gloobster.DomainModels.Services.Facebook.FriendsExtractor
 			var fbQuery = "/me/friends";
 			var friendsResponse = FbService.Get<FacebookFriendsResponse>(fbQuery);
 
+			//todo: extract recurively
+
 			return friendsResponse.data.ToList();
 		}
 	}

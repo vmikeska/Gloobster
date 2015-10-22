@@ -8,5 +8,6 @@ namespace Gloobster.Portal
     public class PortalConstants
     {
 	    public const string UserSessionId = "UserId";
+	    public const string LoginCookieName = "loginCookie";
     }
 }

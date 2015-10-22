@@ -62,7 +62,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 
 			var result = new UserLoggedResultDO
 			{
-				EncodedToken = LogIn(portalUser.UserId),
+				EncodedToken = IssueToken(portalUser.UserId),
 				Status = UserLogged.Successful,
 				UserId = portalUser.UserId
 			};
@@ -124,12 +124,6 @@ namespace Gloobster.DomainModels.Services.Accounts
 		{
 			//todo:
 			return false;
-		}
-
-		private string LogIn(string portalUserId)
-		{
-			var token = IssueToken(portalUserId);
-			return token;
 		}
 		
 		private string IssueToken(string portalUserId)
