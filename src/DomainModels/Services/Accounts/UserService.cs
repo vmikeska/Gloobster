@@ -70,7 +70,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 			AccountDriver.OnUserSuccessfulyLogged(portalUser);
 
 			//todo: remove later
-			await FriendsService.AddEverbodyToMyFriends(portalUser.UserId);
+			//await FriendsService.AddEverbodyToMyFriends(portalUser.UserId);
 
 			return result;
 		}

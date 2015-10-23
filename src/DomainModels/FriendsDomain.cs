@@ -60,7 +60,13 @@ namespace Gloobster.DomainModels
 		public async Task<bool> AddEverbodyToMyFriends(string dbUserId)
 	    {
 			var myId = new ObjectId(dbUserId);
-			var myEntity = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == myId);			
+			var myEntity = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == myId);
+
+			if (myEntity == null)
+			{
+				myEntity = (await CreateFriendsObj(dbUserId)).ToEntity();
+			}
+					
 			var allUsers = await DB.FindAsync<PortalUserEntity>();
 			var allUsersExceptMe = allUsers.Where(u => u.id != myEntity.PortalUser_id).ToList();
 

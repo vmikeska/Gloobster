@@ -16,6 +16,7 @@ namespace Gloobster.Mappers
 
 			var dObj = new FriendsDO
 			{
+				id = entity.id.ToString(),
 				UserId = entity.PortalUser_id.ToString(),
 				Friends = entity.Friends.Select(f => f.ToString()).ToList(),
 				AwaitingConfirmation = entity.AwaitingConfirmation.Select(f => f.ToString()).ToList(),

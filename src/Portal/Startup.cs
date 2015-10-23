@@ -6,6 +6,7 @@ using Gloobster.Common;
 using Gloobster.DomainModels;
 using Gloobster.DomainModels.Services.Accounts;
 using Gloobster.DomainModels.Services.CountryService;
+using Gloobster.DomainModels.Services.Facebook.FriendsExtractor;
 using Gloobster.DomainModels.Services.Facebook.TaggedPlacesExtractor;
 using Gloobster.DomainModels.Services.Foursquare;
 using Gloobster.DomainModels.Services.GeonamesService;
@@ -158,8 +159,8 @@ namespace Gloobster.Portal
 			builder.AddInstance2<ISearchProvider, FoursquareSearchProvider>().Keyed<ISearchProvider>(SourceType.S4);
 
 			builder.AddTransient<ICheckinPlaceDomain, CheckinPlaceDomain>();
+			builder.AddTransient<IFacebookFriendsService, FacebookFriendsService>();
 			
-
 			builder.AddInstance<IGeoNamesService>(new GeoNamesService());
 
 			var foursquareService = new FoursquareService();

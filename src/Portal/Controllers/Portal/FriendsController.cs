@@ -36,32 +36,7 @@ namespace Gloobster.Portal.Controllers
 			return View();
 		}
 
-	    private void DoFbThing()
-	    {
-			var portalUser = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == DBUserId);
-			var fbSocAuth = portalUser.SocialAccounts.FirstOrDefault(s => s.NetworkType == SocialNetworkType.Facebook);
-
-			bool hasFacebook = fbSocAuth != null;
-			if (hasFacebook)
-			{
-
-			}
-
-			var fbService = new FacebookService();
-			fbService.SetAccessToken(fbSocAuth.Authentication.AccessToken);
-
-			var fbFriendsService = new FacebookFriendsService(fbService);
-
-			var friends = fbFriendsService.GetFriendsByFbUserId();
-
-			friends = new List<FacebookUser> { new FacebookUser { id = "1031646796870176", name = "Bina Sabrina" } };
-
-			var viewModel = new FriendsViewModel
-			{
-				AppFriends = friends
-			};
-
-		}
+	    
 
 		
 

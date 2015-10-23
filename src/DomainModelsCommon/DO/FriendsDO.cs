@@ -4,6 +4,7 @@ namespace Gloobster.DomainModelsCommon.DO
 {
 	public class FriendsDO
 	{
+		public string id { get; set; }
 		public string UserId { get; set; }
 
 		public List<string> Friends { get; set; }
