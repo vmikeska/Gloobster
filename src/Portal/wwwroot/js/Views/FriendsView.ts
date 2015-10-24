@@ -4,6 +4,7 @@ enum FriendshipState { None, Friends, Proposed, AwaitingConfirmation, Blocked }
 
 class Friend {
 	friendId: string;
+	displayName: string;
 	state: FriendshipState;
 	photoUrl: string;
 }
@@ -14,31 +15,124 @@ class FriendsView extends Views.ViewBase {
 		super();
 	}
 
+	get pageType(): Views.PageType { return Views.PageType.Friends; }
+
 	public initialize() {
 		var self = this;
 		this.apiGet("Friends", null, friendsResponse => {
 			var allSectionsHtml = self.generateAllSections(friendsResponse);
 			$(".friendsContainer").html(allSectionsHtml);
+			self.registerButtonActions();
+		});
+
+		$("#friendsSearch").on("input", () => {
+		 var searchQuery = $("#friendsSearch input").val();
+		 self.searchUsers(searchQuery);
 		});
 	}
 
-	get pageType(): Views.PageType { return Views.PageType.Friends; }
+	public searchUsers(searchQuery: string) {
+	 var minChars = 3;
+
+	 if (searchQuery.length < minChars) {
+		return;
+	 }
+
+	 var params = [["searchQuery", searchQuery]];
+	 super.apiGet("usersSearch", params, users => { this.fillUsersSearchBoxHtml(users); });
+
+	}
+ 
+	fillUsersSearchBoxHtml(users) {
+		$("#friendsSearch ul").show();
+		var htmlContent = "";
+		users.forEach(item => { htmlContent += this.getItemHtml(item); });
+
+		$("#friendsSearch li").unbind();
+		$("#friendsSearch ul").html(htmlContent);
+
+		$("#friendsSearch li").click(clickedUser => {
+			this.requestUser(clickedUser, users);
+			$("#friendsSearch input").val("");
+		});
+	}
+
+	requestUser(clickedUser, places) {
+		var self = this;
+		var userId = $(clickedUser.currentTarget).data("value");
+
+		$("#friendsSearch ul").hide();
+
+		var data = { "friendId": userId, "action": FriendActionType.Request };
+		this.apiPost("Friends", data, response => {
+			self.userStateChanged(response);
+		});
+	}
+
+	getItemHtml(item) {
+
+	 var photoUrl = "../images/sampleFace.jpg";
+	 return '<li data-value="' + item.FriendId + '"><span class="thumbnail"><img src="' + photoUrl + '"></span>' + item.DisplayName + '</li>';
+	}
+
+
+
+
+
+
+
+
+
+
 
 	public generateAllSections(friendsResponse) {
 
 		var allSectionsHtml = "";
 
-		var sectionTitleFriends = "Friends";
-		var friends = this.convertFriends(friendsResponse.Friends, FriendshipState.Friends);
-		var friendsSectionHtml = this.generateSection(sectionTitleFriends, friends);
-		allSectionsHtml += friendsSectionHtml;
+		if (friendsResponse.Friends.length > 0) {
+			var titleFriends = "Friends";
+			var friends = this.convertFriends(friendsResponse.Friends, FriendshipState.Friends);
+			allSectionsHtml += this.generateSection(titleFriends, friends);
+		}
 
-		var sectionTitleFacebookRecommended = "Recommended by Facebook";
-		var facebookRecommended = this.convertFriends(friendsResponse.FacebookRecommended, FriendshipState.None);
-		var fbRecSectionHtml = this.generateSection(sectionTitleFacebookRecommended, facebookRecommended);
-		allSectionsHtml += fbRecSectionHtml;
+		if (friendsResponse.AwaitingConfirmation.length > 0) {
+			var titleAwaiting = "Awaiting confirmation";
+			var friendsAwaiting = this.convertFriends(friendsResponse.AwaitingConfirmation, FriendshipState.AwaitingConfirmation);
+			allSectionsHtml += this.generateSection(titleAwaiting, friendsAwaiting);
+		}
 
+		if (friendsResponse.FacebookRecommended.length > 0) {
+
+			var titleFbRecommended = "Recommended by Facebook";
+			var friendsFbRec = this.convertFriends(friendsResponse.FacebookRecommended, FriendshipState.None);
+			allSectionsHtml += this.generateSection(titleFbRecommended, friendsFbRec);
+		}
+
+		if (friendsResponse.Proposed.length > 0) {
+			var titleProposed = "Already proposed friendship";
+			var friendsProposed = this.convertFriends(friendsResponse.Proposed, FriendshipState.Proposed);
+			allSectionsHtml += this.generateSection(titleProposed, friendsProposed);
+		}
 		return allSectionsHtml;
+	}
+
+	private registerButtonActions() {
+		var self = this;
+
+		$(".actionButton").click(evnt => {
+			var friendId = $(evnt.target).data("value");
+			var action = $(evnt.target).data("action");
+
+			var data = { "friendId": friendId, "action": action };
+			self.apiPost("Friends", data, response => {
+				self.userStateChanged(response);
+			});
+
+		});
+	}
+
+	private userStateChanged(response) {
+
 	}
 
 	private convertFriends(friendsResponse, state: FriendshipState) {
@@ -54,21 +148,20 @@ class FriendsView extends Views.ViewBase {
 		friend.photoUrl = friendResponse.PhotoUrl;
 		friend.friendId = friendResponse.FriendId;
 		friend.state = state;
+		friend.displayName = friendResponse.DisplayName;
 		return friend;
 	}
 
-	private generateSection(sectionTitle: string, friends: Friend[]): string {		
+	private generateSection(sectionTitle: string, friends: Friend[]): string {
 		var friendsHtml = '';
 		friends.forEach(friend => {
-			var photoUrl = "../images/sampleFace.jpg";
-
 			var actions = this.getActionsByState(friend.state);
 
-			var friendHtml = this.generateOneFriendItem(photoUrl, friend.friendId, actions);
+			var friendHtml = this.generateOneFriendItem(friend, actions);
 			friendsHtml += friendHtml;
 		});
 
-		var sectionHtml = '<div class="friendSection"><div>' + sectionTitle + '</div>' + friendsHtml + '</div>';
+		var sectionHtml = '<div class="friendSection"><div style="font-size: 30px">' + sectionTitle + '</div>' + friendsHtml + '</div>';
 
 		return sectionHtml;
 	}
@@ -88,14 +181,22 @@ class FriendsView extends Views.ViewBase {
 		}
 
 		if (friendshipState === FriendshipState.None) {
-		 return [FriendActionType.Request];
+			return [FriendActionType.Request];
 		}
 
 		return [];
 	}
 
-	private generateOneFriendItem(photoUrl: string, friendId: string, actions: FriendActionType[]) {
+	private generateOneFriendItem(friend: Friend, actions: FriendActionType[]) {
+		var actionsHtml = this.generateActions(friend.friendId, actions);
 
+		var photoUrl = "../images/sampleFace.jpg";
+
+		var itemHtml = '<div class="friend"><img src="' + photoUrl + '" /><br/><span>' + friend.displayName + '</span>' + actionsHtml + '</div>';
+		return itemHtml;
+	}
+
+	private generateActions(friendId: string, actions: FriendActionType[]) {
 		var actionsHtml = '';
 		actions.forEach(action => {
 
@@ -105,7 +206,6 @@ class FriendsView extends Views.ViewBase {
 			actionsHtml += actionHtml;
 		});
 
-		var itemHtml = '<div class="friend"><img src="' + photoUrl + '" />'+ actionsHtml + '</div>';
-		return itemHtml;
+		return actionsHtml;
 	}
 }

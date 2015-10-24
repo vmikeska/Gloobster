@@ -5,6 +5,7 @@ using Gloobster.Common;
 using Gloobster.Common.DbEntity;
 using Gloobster.Common.DbEntity.PortalUser;
 using Gloobster.DomainModels.Services.Facebook.FriendsExtractor;
+using Gloobster.DomainModelsCommon.Interfaces;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 
@@ -13,10 +14,12 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 	public class FriendsController : BaseApiController
 	{
 		public IFacebookFriendsService FbFriendsService { get; set; }
+		public IFriendsDomain FriendsDoimain { get; set; }
 
-		public FriendsController(IFacebookFriendsService fbFriendsService, IDbOperations db) : base(db)
+		public FriendsController(IFacebookFriendsService fbFriendsService, IFriendsDomain friendsDoimain, IDbOperations db) : base(db)
 		{
 			FbFriendsService = fbFriendsService;
+			FriendsDoimain = friendsDoimain;
 		}
 
 		[HttpGet]
@@ -32,7 +35,11 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 			var friends = DB.C<PortalUserEntity>().Where(u => allInvolvedUserIds.Contains(u.id)).ToList();
 			
 			var fbFriends = FbFriendsService.GetFriends(userId);
-			var fbFriendsNotYetFriends = fbFriends.Where(f => !friendsEntity.Friends.Contains(new ObjectId(f.UserId))).ToList();
+			var fbFriendsFiltered = fbFriends.Where(f => 
+				!friendsEntity.Friends.Contains(new ObjectId(f.UserId)) &&
+				!friendsEntity.Proposed.Contains(new ObjectId(f.UserId)) &&
+				!friendsEntity.AwaitingConfirmation.Contains(new ObjectId(f.UserId)) 
+			).ToList();
 			
 			var response = new FriendsResponse
 			{
@@ -40,11 +47,39 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 				AwaitingConfirmation = friendsEntity.AwaitingConfirmation.Select(f => ConvertResponse(f, friends)).ToList(),
 				Blocked = friendsEntity.Blocked.Select(f => ConvertResponse(f, friends)).ToList(),
 				Proposed = friendsEntity.Proposed.Select(f => ConvertResponse(f, friends)).ToList(),
-				FacebookRecommended = fbFriendsNotYetFriends.Select(f => new FriendResponse { FriendId = f.UserId, PhotoUrl = f.ProfileImage}).ToList()				
+				FacebookRecommended = fbFriendsFiltered.Select(f => new FriendResponse { FriendId = f.UserId, PhotoUrl = f.ProfileImage, DisplayName = f.DisplayName}).ToList()				
 			};
 			
 			return new ObjectResult(response);
 		}
+
+		[HttpPost]
+		[Authorize]
+		public IActionResult Post([FromBody] FriendActionRequest request, string userId)
+		{			
+			if (request.action == FriendActionType.Request)
+			{
+				FriendsDoimain.RequestFriendship(userId, request.friendId);
+			}
+
+			if (request.action == FriendActionType.Confirm)
+			{
+				FriendsDoimain.ConfirmFriendship(userId, request.friendId);
+			}
+
+			if (request.action == FriendActionType.Unfriend)
+			{
+				FriendsDoimain.Unfriend(userId, request.friendId);
+			}
+
+			//todo: cancel request
+			//todo: block
+
+			return new ObjectResult(true);
+		}
+
+
+
 
 		private List<ObjectId> GetAllInvolvedUserIds(FriendsEntity friendsEntity)
 		{
@@ -64,11 +99,21 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 			var friend = new FriendResponse
 			{
 				FriendId = friendId.ToString(),
-				PhotoUrl = portalUser.ProfileImage
+				PhotoUrl = portalUser.ProfileImage,
+				DisplayName = portalUser.DisplayName
 			};
 
 			return friend;
 		}
 		
 	}
+
+	public enum FriendActionType { Confirm, Request, Unfriend, Block, CancelRequest }
+
+	public class FriendActionRequest
+	{
+		public string friendId { get; set; }
+		public FriendActionType action { get; set; }
+	}
+
 }

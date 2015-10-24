@@ -15,11 +15,27 @@ namespace Gloobster.DomainModels
 	public class FriendsDomain: IFriendsDomain
 	{
 		public IDbOperations DB { get; set; }
-		
+
+		public async Task<bool> Unfriend(string myDbUserId, string friendDbUserId)
+		{
+			var myId = new ObjectId(myDbUserId);
+			var friendsId = new ObjectId(friendDbUserId);
+			var myEntity = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == myId);
+			var friendEntity = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == friendsId);
+			
+			friendEntity.Friends.Remove(myId);
+			await DB.ReplaceOneAsync(friendEntity);
+
+			myEntity.Friends.Remove(friendsId);
+			await DB.ReplaceOneAsync(myEntity);
+
+			return true;
+		}
+
 		public async Task<bool> RequestFriendship(string myDbUserId, string friendDbUserId)
 		{
 			var myId = new ObjectId(myDbUserId);
-			var friendsId = new ObjectId(myDbUserId);
+			var friendsId = new ObjectId(friendDbUserId);
 			var myEntity = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == myId);
 			var friendEntity = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == friendsId);
 			
@@ -29,14 +45,53 @@ namespace Gloobster.DomainModels
 				return false;
 			}
 
-			bool isAlreadyRequested = friendEntity.AwaitingConfirmation.Contains(myEntity.PortalUser_id);
+			bool isAlreadyRequested = friendEntity.Proposed.Contains(myEntity.PortalUser_id);
 			if (isAlreadyRequested)
 			{
 				return true;
 			}
 
-			friendEntity.AwaitingConfirmation.Add(myEntity.PortalUser_id);
+			friendEntity.AwaitingConfirmation.Add(myId);
 			await DB.ReplaceOneAsync(friendEntity);
+
+			myEntity.Proposed.Add(friendsId);
+			await DB.ReplaceOneAsync(myEntity);
+
+			return true;
+		}
+
+		public async Task<bool> ConfirmFriendship(string myDbUserId, string friendDbUserId)
+		{
+			var myId = new ObjectId(myDbUserId);
+			var friendsId = new ObjectId(friendDbUserId);
+			var myEntity = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == myId);
+			var friendEntity = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == friendsId);
+
+			bool blocked = friendEntity.Blocked.Contains(myEntity.PortalUser_id);
+			if (blocked)
+			{
+				return false;
+			}
+
+			bool areAlreadyFriends = friendEntity.Friends.Contains(myEntity.PortalUser_id);
+			if (areAlreadyFriends)
+			{
+				return true;
+			}
+
+			bool wasProposed = myEntity.AwaitingConfirmation.Contains(friendsId) && friendEntity.Proposed.Contains(myId);
+			if (!wasProposed)
+			{
+				return false;
+			}
+
+			friendEntity.Proposed.Remove(myId);
+			friendEntity.Friends.Add(myId);
+			await DB.ReplaceOneAsync(friendEntity);
+
+			myEntity.AwaitingConfirmation.Remove(friendsId);
+			myEntity.Friends.Add(friendsId);
+			await DB.ReplaceOneAsync(myEntity);
 
 			return true;
 		}
@@ -56,6 +111,8 @@ namespace Gloobster.DomainModels
 			var friendsDo = friendsObj.ToDO();
 			return friendsDo;
 		}
+
+
 
 		public async Task<bool> AddEverbodyToMyFriends(string dbUserId)
 	    {
