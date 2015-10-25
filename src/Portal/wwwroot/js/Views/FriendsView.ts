@@ -19,11 +19,8 @@ class FriendsView extends Views.ViewBase {
 
 	public initialize() {
 		var self = this;
-		this.apiGet("Friends", null, friendsResponse => {
-			var allSectionsHtml = self.generateAllSections(friendsResponse);
-			$(".friendsContainer").html(allSectionsHtml);
-			self.registerButtonActions();
-		});
+		this.getUsersAndDisplay();
+
 
 		$("#friendsSearch").on("input", () => {
 		 var searchQuery = $("#friendsSearch input").val();
@@ -31,18 +28,30 @@ class FriendsView extends Views.ViewBase {
 		});
 	}
 
+ public getUsersAndDisplay() {
+	var self = this;
+
+	 $(".actionButton").unbind();
+
+	this.apiGet("Friends", null, friendsResponse => {
+			var allSectionsHtml = self.generateAllSections(friendsResponse);
+			$(".friendsContainer").html(allSectionsHtml);
+			self.registerButtonActions();
+		});
+ }
+
 	public searchUsers(searchQuery: string) {
-	 var minChars = 3;
+		var minChars = 2;
 
-	 if (searchQuery.length < minChars) {
-		return;
-	 }
+		if (searchQuery.length < minChars) {
+			return;
+		}
 
-	 var params = [["searchQuery", searchQuery]];
-	 super.apiGet("usersSearch", params, users => { this.fillUsersSearchBoxHtml(users); });
+		var params = [["searchQuery", searchQuery]];
+		super.apiGet("usersSearch", params, users => { this.fillUsersSearchBoxHtml(users); });
 
 	}
- 
+
 	fillUsersSearchBoxHtml(users) {
 		$("#friendsSearch ul").show();
 		var htmlContent = "";
@@ -52,6 +61,10 @@ class FriendsView extends Views.ViewBase {
 		$("#friendsSearch ul").html(htmlContent);
 
 		$("#friendsSearch li").click(clickedUser => {
+			//todo: to user detial
+		});
+
+		$("#friendsSearch button").click(clickedUser => {
 			this.requestUser(clickedUser, users);
 			$("#friendsSearch input").val("");
 		});
@@ -72,7 +85,7 @@ class FriendsView extends Views.ViewBase {
 	getItemHtml(item) {
 
 	 var photoUrl = "../images/sampleFace.jpg";
-	 return '<li data-value="' + item.FriendId + '"><span class="thumbnail"><img src="' + photoUrl + '"></span>' + item.DisplayName + '</li>';
+	 return '<li data-value="' + item.FriendId + '"><span class="thumbnail"><img src="' + photoUrl + '"></span>' + item.DisplayName + ' <button data-value="' + item.FriendId + '">Request</button></li>';
 	}
 
 
@@ -131,8 +144,12 @@ class FriendsView extends Views.ViewBase {
 		});
 	}
 
-	private userStateChanged(response) {
+	private userStateChanged(friendsResponse) {
+		$(".actionButton").unbind();
 
+		var allSectionsHtml = this.generateAllSections(friendsResponse);
+		$(".friendsContainer").html(allSectionsHtml);
+		this.registerButtonActions();
 	}
 
 	private convertFriends(friendsResponse, state: FriendshipState) {

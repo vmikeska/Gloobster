@@ -26,33 +26,11 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 		[Authorize]
 		public IActionResult Get(string userId)
 		{
-			var userIdObj = new ObjectId(userId);
-
-			var friendsEntity = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == userIdObj);
-
-			var allInvolvedUserIds = GetAllInvolvedUserIds(friendsEntity);
-
-			var friends = DB.C<PortalUserEntity>().Where(u => allInvolvedUserIds.Contains(u.id)).ToList();
-			
-			var fbFriends = FbFriendsService.GetFriends(userId);
-			var fbFriendsFiltered = fbFriends.Where(f => 
-				!friendsEntity.Friends.Contains(new ObjectId(f.UserId)) &&
-				!friendsEntity.Proposed.Contains(new ObjectId(f.UserId)) &&
-				!friendsEntity.AwaitingConfirmation.Contains(new ObjectId(f.UserId)) 
-			).ToList();
-			
-			var response = new FriendsResponse
-			{
-				Friends = friendsEntity.Friends.Select(f => ConvertResponse(f, friends)).ToList(),
-				AwaitingConfirmation = friendsEntity.AwaitingConfirmation.Select(f => ConvertResponse(f, friends)).ToList(),
-				Blocked = friendsEntity.Blocked.Select(f => ConvertResponse(f, friends)).ToList(),
-				Proposed = friendsEntity.Proposed.Select(f => ConvertResponse(f, friends)).ToList(),
-				FacebookRecommended = fbFriendsFiltered.Select(f => new FriendResponse { FriendId = f.UserId, PhotoUrl = f.ProfileImage, DisplayName = f.DisplayName}).ToList()				
-			};
+			var response = GetFriends(userId);
 			
 			return new ObjectResult(response);
 		}
-
+		
 		[HttpPost]
 		[Authorize]
 		public IActionResult Post([FromBody] FriendActionRequest request, string userId)
@@ -74,10 +52,41 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 
 			//todo: cancel request
 			//todo: block
+			
+			var response = GetFriends(userId);
 
-			return new ObjectResult(true);
+			return new ObjectResult(response);
 		}
 
+
+		private FriendsResponse GetFriends(string userId)
+		{
+			var userIdObj = new ObjectId(userId);
+
+			var friendsEntity = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == userIdObj);
+
+			var allInvolvedUserIds = GetAllInvolvedUserIds(friendsEntity);
+
+			var friends = DB.C<PortalUserEntity>().Where(u => allInvolvedUserIds.Contains(u.id)).ToList();
+
+			var fbFriends = FbFriendsService.GetFriends(userId);
+			var fbFriendsFiltered = fbFriends.Where(f =>
+				!friendsEntity.Friends.Contains(new ObjectId(f.UserId)) &&
+				!friendsEntity.Proposed.Contains(new ObjectId(f.UserId)) &&
+				!friendsEntity.AwaitingConfirmation.Contains(new ObjectId(f.UserId))
+			).ToList();
+
+			var response = new FriendsResponse
+			{
+				Friends = friendsEntity.Friends.Select(f => ConvertResponse(f, friends)).ToList(),
+				AwaitingConfirmation = friendsEntity.AwaitingConfirmation.Select(f => ConvertResponse(f, friends)).ToList(),
+				Blocked = friendsEntity.Blocked.Select(f => ConvertResponse(f, friends)).ToList(),
+				Proposed = friendsEntity.Proposed.Select(f => ConvertResponse(f, friends)).ToList(),
+				FacebookRecommended = fbFriendsFiltered.Select(f => new FriendResponse { FriendId = f.UserId, PhotoUrl = f.ProfileImage, DisplayName = f.DisplayName }).ToList()
+			};
+
+			return response;
+		}
 
 
 

@@ -37,19 +37,24 @@ var FriendsView = (function (_super) {
     });
     FriendsView.prototype.initialize = function () {
         var self = this;
-        this.apiGet("Friends", null, function (friendsResponse) {
-            var allSectionsHtml = self.generateAllSections(friendsResponse);
-            $(".friendsContainer").html(allSectionsHtml);
-            self.registerButtonActions();
-        });
+        this.getUsersAndDisplay();
         $("#friendsSearch").on("input", function () {
             var searchQuery = $("#friendsSearch input").val();
             self.searchUsers(searchQuery);
         });
     };
+    FriendsView.prototype.getUsersAndDisplay = function () {
+        var self = this;
+        $(".actionButton").unbind();
+        this.apiGet("Friends", null, function (friendsResponse) {
+            var allSectionsHtml = self.generateAllSections(friendsResponse);
+            $(".friendsContainer").html(allSectionsHtml);
+            self.registerButtonActions();
+        });
+    };
     FriendsView.prototype.searchUsers = function (searchQuery) {
         var _this = this;
-        var minChars = 3;
+        var minChars = 2;
         if (searchQuery.length < minChars) {
             return;
         }
@@ -64,6 +69,9 @@ var FriendsView = (function (_super) {
         $("#friendsSearch li").unbind();
         $("#friendsSearch ul").html(htmlContent);
         $("#friendsSearch li").click(function (clickedUser) {
+            //todo: to user detial
+        });
+        $("#friendsSearch button").click(function (clickedUser) {
             _this.requestUser(clickedUser, users);
             $("#friendsSearch input").val("");
         });
@@ -79,7 +87,7 @@ var FriendsView = (function (_super) {
     };
     FriendsView.prototype.getItemHtml = function (item) {
         var photoUrl = "../images/sampleFace.jpg";
-        return '<li data-value="' + item.FriendId + '"><span class="thumbnail"><img src="' + photoUrl + '"></span>' + item.DisplayName + '</li>';
+        return '<li data-value="' + item.FriendId + '"><span class="thumbnail"><img src="' + photoUrl + '"></span>' + item.DisplayName + ' <button data-value="' + item.FriendId + '">Request</button></li>';
     };
     FriendsView.prototype.generateAllSections = function (friendsResponse) {
         var allSectionsHtml = "";
@@ -116,7 +124,11 @@ var FriendsView = (function (_super) {
             });
         });
     };
-    FriendsView.prototype.userStateChanged = function (response) {
+    FriendsView.prototype.userStateChanged = function (friendsResponse) {
+        $(".actionButton").unbind();
+        var allSectionsHtml = this.generateAllSections(friendsResponse);
+        $(".friendsContainer").html(allSectionsHtml);
+        this.registerButtonActions();
     };
     FriendsView.prototype.convertFriends = function (friendsResponse, state) {
         var self = this;
