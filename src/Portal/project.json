@@ -33,7 +33,8 @@
     "Microsoft.AspNet.Tooling.Razor": "1.0.0-beta7",
     "Microsoft.AspNet.Session": "1.0.0-beta7",
     "Facebook": "7.0.6",
-    "MongoDB.Driver": "2.1.0-rc1"
+    "MongoDB.Driver": "2.1.0-rc1",
+    "BlobFileSystem.Azure": "0.0.6"
   },
 
     "commands": {

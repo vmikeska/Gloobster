@@ -1,0 +1,160 @@
+﻿@{
+    // ViewBag.Title = "Home Page";
+}
+
+<script type="text/javascript" src="@Url.Content("~/js/Uploadifive/jquery.uploadifive.js")"></script>
+<link href='@Url.Content("~/js/Uploadifive/uploadifive.css")' rel='stylesheet' />
+
+<form action="UploadProfilePicture" id="fileForm" method="post" enctype="multipart/form-data">
+	<input type="file" name="files" id="files" multiple/>
+	<input type="submit" value="submit"/>
+</form>
+
+
+
+<script>
+	
+		var $form = null;
+		var files = null;
+		var file = null;
+
+		var bytesPerRequest = 100;
+		var lastEnd = 0;
+		var currentStart = 0;
+		var currentEnd = bytesPerRequest;
+		var reachedEnd = false;
+
+	function onBodyLoad() {
+
+		$("#fileForm").submit(function (e) {						
+			e.preventDefault();
+
+			$form = $(e.target);
+			files = $form.find('[name="files"]')[0].files;
+			file = files[0];
+
+			readAndSend(true);
+		});
+
+	}
+
+	function readAndSend(isInitialCall) {
+		
+			if (reachedEnd) {
+					console.log("transfere complete");
+					console.log("file length: " + file.size);
+					return;
+			}
+
+			if (!isInitialCall) {
+					currentStart = lastEnd;
+					currentEnd = currentStart + bytesPerRequest;
+			}
+
+			//todo: secure currentStart
+			if (currentEnd > file.size) {
+					currentEnd = file.size;
+						reachedEnd = true;
+			}
+
+			var reader = createReader();
+			console.log("reading: " + currentStart + ".." + currentEnd);
+			var blob = file.slice(currentStart, currentEnd);
+			reader.readAsDataURL(blob);
+
+		lastEnd = currentEnd;
+	}
+
+	function createReader() {
+		var reader = new FileReader();
+		reader.onloadend = function (evnt) {
+			onBlobLoad(evnt);
+		}
+		return reader;
+	}
+
+	function onBlobLoad(evnt) {
+		var dataBlob = evnt.target.result;
+
+		if (evnt.target.readyState === FileReader.DONE) {
+			var dataToSend = dataBlob;
+
+			var callObj = {
+				type: 'POST',
+				url: "ReceiveFileBlob",
+				data: dataToSend,
+				success(response) {
+						readAndSend(false);
+				},
+				error(response) {
+					alert("error");
+				},
+				dataType: 'text',							
+				contentType: false
+			}
+
+			$.ajax(callObj);
+		}
+	}
+
+
+
+
+
+
+	//function onBodyLoad() {
+
+	//	$("#fileForm").submit(function(e) {
+	//		// Prevent form submission
+	//		e.preventDefault();
+
+	//		var $form = $(e.target);
+	//		var files = $form.find('[name="files"]')[0].files;
+
+	//		var file = files[0];
+
+	//		var reader = new FileReader();
+	//		reader.onloadend = function(evnt) {
+	//			onBlobLoad(evnt);
+	//		}
+
+	//		var start = 0;
+	//		var stop = file.size;
+
+	//		var blob = file.slice(start, stop);
+	//		reader.readAsDataURL(blob);
+	//	});
+
+	//}
+
+	//function onBlobLoad(evnt) {
+	//	var dataBlob = evnt.target.result;
+
+	//	if (evnt.target.readyState === FileReader.DONE) {
+	//		var dataToSend = dataBlob;//{ "fileData": dataBlob }
+
+	//		var callObj = {
+	//			type: 'POST',
+	//			url: "ReceiveFileBlob",
+	//			data: dataToSend,
+	//			success(response) {
+
+	//			},
+	//			error(response) {
+
+	//			},
+	//			dataType: 'text',
+	//			//dataType: 'json',
+	//			//contentType: 'application/json; charset=utf-8'
+
+	//			//processData: false,
+	//			contentType: false
+
+	//		}
+
+	//		$.ajax(callObj);
+	//	}
+	//}
+
+
+</script>
