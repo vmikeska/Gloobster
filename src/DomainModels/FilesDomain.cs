@@ -13,31 +13,37 @@ namespace Gloobster.DomainModels
 {
 	public class FilesDomain: IFilesDomain
 	{
+		public const string EnvRoot = @"C:\S\Gloobster\src\Portal\wwwroot";
+		public const string RepositoryDirectory = "FileRepository";
+		public const string TempFolder = "TempFolder";
+
+		private string TempFolderPath => Storage.Combine(TempFolder, UserId);
 
 		public FilesDomain()
-		{
-			var envPath = @"C:\S\Gloobster\src\Portal\wwwroot";
-			var basePath = Path.Combine(envPath, "FileRepository");
+		{			
+			var basePath = Path.Combine(EnvRoot, RepositoryDirectory);
 			Storage = new FileSystemStorageProvider(basePath);			
 		}
 
 		public IStorageProvider Storage { get; set; }
 
 		public string TargetDirectory { get; set; }
-		public string TargetFileName { get; set; }
+		public string OriginaFileName { get; set; }
+		public string CustomFileName { get; set; }
 		public string UserId { get; set; }
 
 		public void WriteFilePart(WriteFilePartDO filePart)
 		{
 			UserId = filePart.UserId;
-			TargetDirectory = "Test";
-			TargetFileName = filePart.FileName;
+			TargetDirectory = filePart.FileLocation;
+			OriginaFileName = filePart.FileName;
+			CustomFileName = filePart.CustomFileName;
 
 			var dataObj = SplitData(filePart.Data);
 			
 			if (filePart.FilePart == FilePartType.First)
 			{
-				DeleteFilePartsCache();	
+				CleanFilePartsCache();	
 				SaveFilePart(dataObj.Data);
 			}
 
@@ -49,7 +55,7 @@ namespace Gloobster.DomainModels
 			if (filePart.FilePart == FilePartType.Last)
 			{
 				JoinAllFileParts(dataObj.Data);
-				DeleteFilePartsCache();
+				CleanFilePartsCache();
 			}
 		}
 
@@ -66,16 +72,16 @@ namespace Gloobster.DomainModels
 			return data;
 		}
 
-		private string FolderName => Storage.Combine("Uploads", UserId);
+		
 
 		private void JoinAllFileParts(string lastData)
 		{			
 			var stringParts = new List<string>();
 			
-			var files = Storage.ListFiles(FolderName).OrderBy(f => f.GetName());
+			var files = Storage.ListFiles(TempFolderPath).OrderBy(f => f.GetName());
 			foreach (var file in files)
 			{
-				string filePath = Storage.Combine(FolderName, file.GetName());
+				string filePath = Storage.Combine(TempFolderPath, file.GetName());
 				using (var reader = new StreamReader(Storage.GetFile(filePath).OpenRead()))
 				{
 					var stringPart = reader.ReadToEnd();
@@ -86,21 +92,48 @@ namespace Gloobster.DomainModels
 			stringParts.Add(lastData);
 
 			var allBytes = stringParts.SelectMany(Convert.FromBase64String).ToArray();
-			
-			var targetFilePath = Storage.Combine(TargetDirectory, TargetFileName);
+
+
+
+			string fileName = BuildFileName();
+
+			var targetFilePath = Storage.Combine(TargetDirectory, fileName);
 			var inputFileStream = Storage.CreateFile(targetFilePath).OpenWrite();			
 			using (var writer = new BinaryWriter(inputFileStream))
 			{
 				writer.Write(allBytes);
 				writer.Flush();					
 			}
+
+			var onFileSavedArgs = new OnFileSavedArgs
+			{
+				FileName = fileName,
+				Directory = TargetDirectory
+			};
+			OnFileSaved.Invoke(this, onFileSavedArgs);
 		}
-		
+
+		public event EventHandler OnFileSaved = delegate {  };
+
+
+		private string BuildFileName()
+		{
+			bool hasCustomName = !string.IsNullOrEmpty(CustomFileName);
+			if (hasCustomName)
+			{
+				var fileExt = Path.GetExtension(OriginaFileName);
+				var fileName = $"{CustomFileName}{fileExt}";
+				return fileName;
+			}
+
+			return OriginaFileName;
+		}
+
 		private void SaveFilePart(string data)
 		{			
 			long newFilePartNo = DateTime.UtcNow.Ticks;
 
-			var filePath = Storage.Combine(FolderName, newFilePartNo.ToString());
+			var filePath = Storage.Combine(TempFolderPath, newFilePartNo.ToString());
 					
 			using (var writer = new StreamWriter(Storage.CreateFile(filePath).OpenWrite()))
 			{			
@@ -108,9 +141,9 @@ namespace Gloobster.DomainModels
 			}		
 		}
 
-		private void DeleteFilePartsCache()
+		private void CleanFilePartsCache()
 		{
-			var files = Storage.ListFiles(FolderName).ToList();
+			var files = Storage.ListFiles(TempFolderPath).ToList();
 			files.ForEach(f => Storage.DeleteFile(f.GetPath()));
 		}
 
@@ -119,5 +152,11 @@ namespace Gloobster.DomainModels
 			public string Data;
 			public string Metadata;
 		}
+	}
+
+	public class OnFileSavedArgs : EventArgs
+	{
+		public string Directory { get; set; }
+		public string FileName { get; set; }
 	}
 }

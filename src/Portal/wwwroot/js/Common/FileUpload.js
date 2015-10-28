@@ -7,7 +7,7 @@ var FileUpload = (function () {
         this.currentEnd = 0;
         this.reachedEnd = false;
         this.firstSent = false;
-        this.endpoint = "UploadFile";
+        this.endpoint = "UploadAvatar";
         this.owner = owner;
         this.currentEnd = this.bytesPerRequest;
         $("#" + inputId).change(function (e) {

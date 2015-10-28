@@ -1,7 +1,7 @@
 using Gloobster.Common;
 using Microsoft.AspNet.Mvc;
 
-namespace Gloobster.Portal.Controllers
+namespace Gloobster.Portal.Controllers.Base
 {
 	[Route("api/[controller]")]
 	public class BaseApiController: Controller

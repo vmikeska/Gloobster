@@ -6,6 +6,7 @@ using Gloobster.Common.DbEntity;
 using Gloobster.Common.DbEntity.PortalUser;
 using Gloobster.DomainModels.Services.Facebook.FriendsExtractor;
 using Gloobster.DomainModelsCommon.Interfaces;
+using Gloobster.Portal.Controllers.Base;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 

@@ -10,7 +10,7 @@
 	private currentEnd = 0;
 	private reachedEnd = false;
 	private firstSent = false;
-	private endpoint = "UploadFile";
+	private endpoint = "UploadAvatar";
 
 	private onProgressChanged: Function;
 
