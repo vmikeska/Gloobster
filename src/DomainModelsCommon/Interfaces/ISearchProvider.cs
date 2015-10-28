@@ -7,7 +7,7 @@ namespace Gloobster.DomainModelsCommon.Interfaces
 {
 	public interface ISearchProvider
 	{
-		bool CanBeUsed(SearchServiceQuery queryObj);
-		Task<List<Place>> SearchAsync(SearchServiceQuery queryObj);
+		bool CanBeUsed(SearchServiceQueryDO queryObj);
+		Task<List<Place>> SearchAsync(SearchServiceQueryDO queryObj);
 	}
 }

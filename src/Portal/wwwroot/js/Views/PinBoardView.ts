@@ -1,12 +1,16 @@
 ﻿class PinBoardView extends Views.ViewBase {
 
 	public mapsManager: MapsManager;
+  private placeSearch: PlaceSearchBox;
 
 	get pageType(): Views.PageType { return Views.PageType.PinBoard; }
 
 	public initialize() {
 		this.mapsManager = new MapsManager(this);
 		this.mapsManager.switchToView(Maps.ViewType.D2);
+
+		this.placeSearch = new PlaceSearchBox(this, "cities", "0,1,2,3");
+		this.placeSearch.onPlaceSelected = (request) => this.saveNewPlace(request);
 	}
 
 	public saveNewPlace(request) {
@@ -44,20 +48,56 @@
 		});
 	}
 
-	public searchPlaces(placeName: string) {		
+	
+
+
+	
+
+}
+
+class PlaceSearchBox {
+
+	public owner: Views.ViewBase;
+	public providers: string;
+	public onPlaceSelected: Function;
+
+	constructor(owner: Views.ViewBase, elementId: string, providers: string) {
+		this.owner = owner;
+		this.registerHandler(elementId);
+		this.providers = providers;
+	}
+
+	public searchPlaces(placeName: string) {
 		var minChars = 3;
 
 		if (placeName.length < minChars) {
 			return;
 		}
 
-		var params = [["placeName", placeName]];
-		super.apiGet("place", params, places => { this.fillPlacesSearchBoxHtml(places) });
+		var params = [["placeName", placeName], ["types", this.providers]];
+		this.owner.apiGet("place", params, places => { this.fillPlacesSearchBoxHtml(places) });
 
 	}
 
+	private registerHandler(elementId: string) {
+		//var elemId = "#" + elementId;
+		//$(elemId).on("input", () => {
+		//	var placeName = $(elemId + " input").val();
 
-	fillPlacesSearchBoxHtml(places) {
+		//	this.searchPlaces(placeName);
+		//});
+
+	 var $elem = $("#" + elementId);
+	 $elem.on("input", () => {
+		var placeName = $elem.find("input").val();
+
+			this.searchPlaces(placeName);
+		});
+
+
+	}
+
+	private fillPlacesSearchBoxHtml(places) {
 		$("#cities ul").show();
 		var htmlContent = '';
 		places.forEach(item => {
@@ -73,7 +113,7 @@
 		});
 	}
 
-	placeAdd(clickedPlace, places) {
+	private placeAdd(clickedPlace, places) {
 		var sourceId = $(clickedPlace.currentTarget).data("value");
 		var sourceTypeStr = $(clickedPlace.currentTarget).data("type");
 		var sourceType = parseInt(sourceTypeStr);
@@ -85,36 +125,33 @@
 
 		$("#cities ul").hide();
 
-		this.saveNewPlace(newPlaceRequest);
+		this.onPlaceSelected(newPlaceRequest);
+
+		//this.saveNewPlace(newPlaceRequest);
 	}
 
 	getIconForSearch(sourceType: SourceType) {
-		var link = "../images/PlaceSearch/";
 
 		switch (sourceType) {
 		case SourceType.FB:
-			link += "FB.png";
-			break;
+			return "icon-facebook";
 		case SourceType.City:
-			link += "Ci.png";
-			break;
+			return "icon-city";
 		case SourceType.Country:
-			link += "Co.png";
-			break;
+			return "icon-country";
 		case SourceType.S4:
-			link += "4S.png";
-			break;
+			return "icon-foursquare";
 		}
 
-		return link;
+		return "";
 	}
 
 	getItemHtml(item) {
 
-		var imgUrl = this.getIconForSearch(item.SourceType);
-		return '<li data-value="' + item.SourceId + '" data-type="' + item.SourceType + '"><span class="thumbnail"><img src="' + imgUrl + '"></span>' + item.Name + '<span class="color2">, ' + item.CountryCode + '</span></li>';
-	}
+		var icoClass = this.getIconForSearch(item.SourceType);
 
+		return '<li data-value="' + item.SourceId + '" data-type="' + item.SourceType + '"><span class="' + icoClass + ' left mright10"></span>' + item.Name + '<span class="color2">, ' + item.CountryCode + '</span></li>';
+	}
 }
 
 

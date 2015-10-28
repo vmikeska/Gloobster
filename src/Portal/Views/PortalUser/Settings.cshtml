@@ -4,10 +4,57 @@
 
 <script type="text/javascript" src="@Url.Content("~/js/Views/SettingsView.js")"></script>
 
-<input type="file" name="files" id="files" multiple/>
+
+<div>
+	<h1>Public info</h1>
+
+	<div>
+			<input type="file" name="files" id="files" multiple />
+			<span id="progressBar" style="font-size: 20px; font-weight: bold"></span>%
+	</div>
+
+	<div>
+			<span>Display name</span>
+			<input id="displayName" type="text" /><input class="left" type="button" value="Change">	
+	</div>
+
+	<div>
+			<span>Gender</span>
+			<div id="pluginType" class="dropdown left">
+					<span class="selected">Male</span>
+					<ul>
+							<li data-value="0">N/A</li>
+							<li data-value="1">Male</li>
+							<li data-value="2">Female</li>
+					</ul>
+					<input type="hidden" value="0">
+			</div>	
+	</div>
+
+	
+
+	<div style="display: none" id="genderDropDown" class="dropdown left">
+				<input class="inputed" type="text" placeholder="Gender">
+			<ul>
+				
+
+				@*<li class="disabled">Cities</li>
+						<li data-value="New York"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New York<span class="color2">, USA</span></li>
+								<li data-value="New Jersey"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New Jersey<span class="color2">, USA</span></li>
+								<li data-value="New Dili"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New Dili<span class="color2">, India</span></li>
+								<li class="disabled">Cities 2</li>
+								<li data-value="New York"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New York2<span class="color2">, USA</span></li>
+								<li data-value="New Jersey"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New Jersey2<span class="color2">, USA</span></li>
+								<li data-value="New Dili"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New Dili2<span class="color2">, India</span></li>*@
+			</ul>
+		</div>
 
 
-<span id="progressBar" style="font-size: 20px; font-weight: bold"></span>%
+
+
+</div>
+
+
 
 
 <script>

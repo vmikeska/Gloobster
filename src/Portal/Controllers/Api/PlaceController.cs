@@ -29,20 +29,30 @@ namespace Gloobster.Portal.Controllers
 
 		[HttpGet]
 		[Authorize]
-		public async Task<IActionResult> Get(string placeName, string userId)
+		public async Task<IActionResult> Get(string placeName, string types, string userId)
 		{
+			var typesCol = ParseTypes(types);
+
+			//todo: this is possibly just because of FB access token, keep this token on client, not to query it every time
 			var userIdObj = new ObjectId(userId);
 			var user = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == userIdObj);
 			var userDO = user.ToDO();
 			
-			var queryObj = new SearchServiceQuery
+			var queryObj = new SearchServiceQueryDO
 			{
 				Query = placeName,
-				PortalUser = userDO
+				PortalUser = userDO,
+				CustomProviders = typesCol
 			};
 
 			List<Place> result = await SearchSvc.SearchAsync(queryObj);
 			return new ObjectResult(result);			
-		}		
+		}
+
+		private SourceType[] ParseTypes(string typesStr)
+		{
+			var types = typesStr.Split(',').Select(t => (SourceType) int.Parse(t)).ToArray();
+			return types;
+		}
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using Gloobster.DomainModelsCommon.DO;
@@ -7,34 +8,37 @@ using Gloobster.DomainModelsCommon.Interfaces;
 namespace Gloobster.DomainModels.Services.PlaceSearch
 {
 	public class SearchService: ISearchService
-	{		
+	{
 
-		private SourceType[] DefaultProviders = { SourceType.FB, SourceType.City, SourceType.Country, SourceType.S4 };
+		private readonly SourceType[] _defaultProviders = { SourceType.FB, SourceType.City, SourceType.Country, SourceType.S4 };
 
-		public List<ISearchProvider> SearchProviders = new List<ISearchProvider>();
+		public Dictionary<SourceType, ISearchProvider> SearchProviders = new Dictionary<SourceType, ISearchProvider>();
 
 		public IComponentContext ComponentContext { get; set; }
 		
 		public SearchService(IComponentContext componentContext)
 		{
-			ComponentContext = componentContext;
-
-			foreach (SourceType providerType in DefaultProviders)
-			{
-				var providerInstance = ComponentContext.ResolveKeyed<ISearchProvider>(providerType);
-				SearchProviders.Add(providerInstance);
-			}
+			ComponentContext = componentContext;			
+			SetSearchProviders(_defaultProviders);
 		}
 
-
-		public async Task<List<Place>> SearchAsync(SearchServiceQuery queryObj)
+		private void SetSearchProviders(SourceType[] providers)
 		{
-			//todo: custom providers
-
+			foreach (SourceType providerType in providers)
+			{
+				var providerInstance = ComponentContext.ResolveKeyed<ISearchProvider>(providerType);
+				SearchProviders.Add(providerType, providerInstance);
+			}
+		}
+		
+		public async Task<List<Place>> SearchAsync(SearchServiceQueryDO queryObj)
+		{
+			var searchProviders = SearchProviders.Where(p => queryObj.CustomProviders.Contains(p.Key)).Select(p => p.Value);
+			
 			queryObj.LimitPerProvider = 3;
 			
 			var places = new List<Place>();
-			foreach (var provider in SearchProviders)
+			foreach (var provider in searchProviders)
 			{
 				bool canBeUsed = provider.CanBeUsed(queryObj);
 				if (!canBeUsed)

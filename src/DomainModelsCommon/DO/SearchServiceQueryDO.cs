@@ -2,9 +2,9 @@ using Gloobster.Common;
 
 namespace Gloobster.DomainModelsCommon.DO
 {
-	public class SearchServiceQuery
+	public class SearchServiceQueryDO
 	{
-		public SearchServiceQuery()
+		public SearchServiceQueryDO()
 		{
 			LimitPerProvider = 10;
 		}

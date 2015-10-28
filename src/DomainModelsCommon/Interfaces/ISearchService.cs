@@ -7,6 +7,6 @@ namespace Gloobster.DomainModelsCommon.Interfaces
 {
 	public interface ISearchService
 	{		
-		Task<List<Place>> SearchAsync(SearchServiceQuery queryObj);		
+		Task<List<Place>> SearchAsync(SearchServiceQueryDO queryObj);		
 	}
 }

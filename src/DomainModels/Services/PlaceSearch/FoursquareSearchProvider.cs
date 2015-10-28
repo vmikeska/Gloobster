@@ -12,12 +12,12 @@ namespace Gloobster.DomainModels.Services.PlaceSearch
 	{
 		public IFoursquareService Service { get; set; }
 		
-		public bool CanBeUsed(SearchServiceQuery queryObj)
+		public bool CanBeUsed(SearchServiceQueryDO queryObj)
 		{
 			return true;
 		}
 
-		public async Task<List<Place>> SearchAsync(SearchServiceQuery queryObj)
+		public async Task<List<Place>> SearchAsync(SearchServiceQueryDO queryObj)
 		{
 			var prms = new Dictionary<string, string>
 			{

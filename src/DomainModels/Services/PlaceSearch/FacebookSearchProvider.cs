@@ -16,13 +16,13 @@ namespace Gloobster.DomainModels.Services.PlaceSearch
 		public ICountryService CountrySvc { get; set; }
 
 		
-		public bool CanBeUsed(SearchServiceQuery queryObj)
+		public bool CanBeUsed(SearchServiceQueryDO queryObj)
 		{
 			bool hasFacebookUser = queryObj.PortalUser != null && queryObj.PortalUser.GetAccount(SocialNetworkType.Facebook) != null;
 			return hasFacebookUser;
 		}
 
-		public async Task<List<Place>> SearchAsync(SearchServiceQuery queryObj)
+		public async Task<List<Place>> SearchAsync(SearchServiceQueryDO queryObj)
 		{
 			var account = queryObj.PortalUser.GetAccount(SocialNetworkType.Facebook);
 

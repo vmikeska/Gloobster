@@ -80,16 +80,20 @@
 	<form class="blue-form" action="#" method="post">
 		<div id="cities" class="dropdown left">
 			<input class="inputed" type="text" placeholder="City name">
-			<ul>
-				@*<li class="disabled">Cities</li>*@
-				@*<li data-value="New York"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New York<span class="color2">, USA</span></li>
-				<li data-value="New Jersey"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New Jersey<span class="color2">, USA</span></li>
-				<li data-value="New Dili"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New Dili<span class="color2">, India</span></li>
-				<li class="disabled">Cities 2</li>
-				<li data-value="New York"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New York2<span class="color2">, USA</span></li>
-				<li data-value="New Jersey"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New Jersey2<span class="color2">, USA</span></li>
-				<li data-value="New Dili"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New Dili2<span class="color2">, India</span></li>*@
-			</ul>
+				<ul>
+						@*<li data-value=""><span class="icon-foursquare left mright10"></span>Foursquare</li>
+						<li data-value=""><span class="icon-facebook left mright10"></span>Facebook</li>
+						<li data-value=""><span class="icon-city left mright10"></span>City</li>
+						<li data-value=""><span class="icon-country left mright10"></span>Country</li>
+						<li class="disabled">Cities</li>
+						<li data-value="New York"><span class="thumbnail"><img src="./images/samples/sample11.jpg"></span>New York<span class="color2">, USA</span></li>
+						<li data-value="New Jersey"><span class="thumbnail"><img src="./images/samples/sample11.jpg"></span>New Jersey<span class="color2">, USA</span></li>
+						<li data-value="New Dili"><span class="thumbnail"><img src="./images/samples/sample11.jpg"></span>New Dili<span class="color2">, India</span></li>
+						<li class="disabled">Cities 2</li>
+						<li data-value="New York"><span class="thumbnail"><img src="./images/samples/sample11.jpg"></span>New York2<span class="color2">, USA</span></li>
+						<li data-value="New Jersey"><span class="thumbnail"><img src="./images/samples/sample11.jpg"></span>New Jersey2<span class="color2">, USA</span></li>
+						<li data-value="New Dili"><span class="thumbnail"><img src="./images/samples/sample11.jpg"></span>New Dili2<span class="color2">, India</span></li>*@
+				</ul>
 		</div>
 		<input class="left" type="submit" value="Add">
 		<div id="pluginType" class="dropdown right">
@@ -175,11 +179,11 @@
 
 		
 
-		$("#cities").on("input", function () {
-			var placeName = $("#cities input").val();
+		//$("#cities").on("input", function () {
+		//	var placeName = $("#cities input").val();
 
-			currentView.searchPlaces(placeName);
-		});
+		//	currentView.searchPlaces(placeName);
+		//});
 	</script>
 
 
