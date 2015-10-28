@@ -67,6 +67,7 @@
         "type": "project",
         "dependencies": {
           "Autofac": "4.0.0-beta7-130",
+          "BlobFileSystem.Azure": "0.0.6",
           "DomainModelsCommon": "1.0.0",
           "Facebook": "7.0.6",
           "Mappers": "1.0.0",

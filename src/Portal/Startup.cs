@@ -1,7 +1,9 @@
 ﻿using System;
+using System.IO;
 using Autofac;
 using Autofac.Builder;
 using Autofac.Framework.DependencyInjection;
+using AzureBlobFileSystem;
 using Gloobster.Common;
 using Gloobster.DomainModels;
 using Gloobster.DomainModels.Services.Accounts;
@@ -145,6 +147,9 @@ namespace Gloobster.Portal
 
 
 			builder.AddTransient<IFriendsDomain, FriendsDomain>();
+
+			
+			builder.AddTransient<IFilesDomain, FilesDomain>();
 			
             builder.AddTransient<IPlacesExtractor, PlacesExtractor>();
 
@@ -170,7 +175,9 @@ namespace Gloobster.Portal
 
 
 			builder.AddInstance<ICountryService>(new CountryService());
-		}		
+		}
+
+		
 	}
 
 	public static class Exts
