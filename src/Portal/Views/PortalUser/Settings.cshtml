@@ -4,52 +4,53 @@
 
 <script type="text/javascript" src="@Url.Content("~/js/Views/SettingsView.js")"></script>
 
+<style>
+	
+.lineItem {
+	width: 700px;
+	height: 70px;
+	border: 1px solid red;
+}
+
+</style>
+
 
 <div>
 	<h1>Public info</h1>
 
-	<div>
-			<input type="file" name="files" id="files" multiple />
-			<span id="progressBar" style="font-size: 20px; font-weight: bold"></span>%
+	<div class="lineItem">
+		<input type="file" name="files" id="files" multiple/>
+		<span id="progressBar" style="font-size: 20px; font-weight: bold"></span>%
 	</div>
 
-	<div>
-			<span>Display name</span>
-			<input id="displayName" type="text" /><input class="left" type="button" value="Change">	
+	<div class="lineItem">
+		<span>Display name</span>
+		<input id="displayName" type="text"/><input class="left" type="button" value="Change">
 	</div>
 
-	<div>
-			<span>Gender</span>
-			<div id="pluginType" class="dropdown left">
-					<span class="selected">Male</span>
-					<ul>
-							<li data-value="0">N/A</li>
-							<li data-value="1">Male</li>
-							<li data-value="2">Female</li>
-					</ul>
-					<input type="hidden" value="0">
-			</div>	
-	</div>
-
-	
-
-	<div style="display: none" id="genderDropDown" class="dropdown left">
-				<input class="inputed" type="text" placeholder="Gender">
+	<div class="lineItem">
+		<span>Gender</span>
+		<div id="pluginType" class="dropdown left">
+			<span class="selected">Male</span>
 			<ul>
-				
+				<li data-value="0">N/A</li>
+				<li data-value="1">Male</li>
+				<li data-value="2">Female</li>
+			</ul>
+			<input type="hidden" value="0">
+		</div>
+	</div>
 
-				@*<li class="disabled">Cities</li>
-						<li data-value="New York"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New York<span class="color2">, USA</span></li>
-								<li data-value="New Jersey"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New Jersey<span class="color2">, USA</span></li>
-								<li data-value="New Dili"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New Dili<span class="color2">, India</span></li>
-								<li class="disabled">Cities 2</li>
-								<li data-value="New York"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New York2<span class="color2">, USA</span></li>
-								<li data-value="New Jersey"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New Jersey2<span class="color2">, USA</span></li>
-								<li data-value="New Dili"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New Dili2<span class="color2">, India</span></li>*@
+
+	<div class="lineItem">
+
+		<div id="homeCity" class="dropdown left">
+			<input class="inputed" type="text" placeholder="City name">
+			<ul>
 			</ul>
 		</div>
 
-
+	</div>
 
 
 </div>
@@ -67,6 +68,20 @@
 			fileUpload.onProgressChanged = (percent) => {
 				$("#progressBar").text(percent);
 			}
+
+
+
+			var searchConfig = new PlaceSearchConfig();
+			searchConfig.owner = currentView;
+			searchConfig.providers = "2";
+			searchConfig.elementId = "homeCity";
+			searchConfig.minCharsToSearch = 2;
+			searchConfig.clearAfterSearch = false;
+
+			this.placeSearch = new PlaceSearchBox(searchConfig);
+			this.placeSearch.onPlaceSelected = (request) => {
+				 //alert("selected")
+			};
 		}
 
 
