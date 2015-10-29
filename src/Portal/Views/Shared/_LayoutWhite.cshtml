@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using System.Threading.Tasks
+@using Gloobster.Portal.ViewModels
+@model Gloobster.Portal.ViewModels.ViewModelBase
+
+<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8">
@@ -26,7 +30,7 @@
 					@*<li><a class="active" href="#">Menu</a></li>*@
 					<li><a asp-controller="Home" asp-action="PinBoard">Pin board</a></li>
 					<li><a asp-controller="Friends" asp-action="List">Friends</a></li>
-						<li><a asp-controller="PortalUser" asp-action="Settings">Settings</a></li>
+						@*<li><a asp-controller="PortalUser" asp-action="Settings">Settings</a></li>*@
 				</ul>
 			</div>
 			<div id="loginSection" class="cell" style="display: none">
@@ -37,13 +41,14 @@
 			</div>
 			<div class="cell">
 				<div id="userMenu" class="dropdown">
-					<span class="selected">English</span>
+					<span class="selected">@Model.PortalUser.DisplayName</span>
 					<span class="notification">5</span>                    
 					<ul>
 						<li data-value="logout">Logout</li>
+						<li data-value="settings">Settings</li>
 
-						<li>English<span class="notification">3</span></li>
-						<li>Czech</li>
+						@*<li>English<span class="notification">3</span></li>
+						<li>Czech</li>*@
 
 					</ul>
 					<input type="hidden">
@@ -77,6 +82,10 @@
 
 		if (value === "logout") {
 			currentView.loginManager.logout();
+		}
+
+		if (value === "settings") {
+			window.location = "/PortalUser/Settings";
 		}
 
 

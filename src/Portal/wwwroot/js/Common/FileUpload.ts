@@ -19,8 +19,8 @@ class FileUpload {
 	private firstSent = false;
 	
 
-	private onProgressChanged: Function;
-	private onUploadFinished: Function;
+	public onProgressChanged: Function;
+	public onUploadFinished: Function;
 
   private owner: Views.ViewBase;
 	private config: FileUploadConfig;

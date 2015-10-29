@@ -7,6 +7,6 @@
     "jquery-validation-unobtrusive": "3.2.2",
     "jquery.cookie": "jquery-cookie#~1.4.1",
     "leaflet": "~0.7.5",
-    "lodash": "~3.10.1",
+    "lodash": "~3.10.1"
   }
 }

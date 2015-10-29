@@ -1,4 +1,5 @@
-﻿@model Gloobster.Portal.Controllers.Portal.SettingsViewModel
+﻿@using Gloobster.Portal.ViewModels
+@model Gloobster.Portal.ViewModels.SettingsViewModel
 
 <script type="text/javascript" src="@Url.Content("~/js/Views/SettingsView.js")"></script>
 
@@ -10,42 +11,39 @@
 .avatarItem {
 	width: 700px;
 	height: 300px;
-	border: 1px solid red;
+	
 }
 	
 .lineItem {
 	width: 700px;
 	height: 70px;
-	border: 1px solid red;
+	
 }
 
 </style>
 
 
-<div>
+
 	<h1>Public info</h1>
 
 	<div class="avatarItem">
-
-			
-
-
-		<img id="avatar" src="@Model.AvatarLink" style="width: 200px; height: 200px" />
-		<input type="file" id="avatarFile" />
-		<span id="progressBar" style="font-size: 20px; font-weight: bold"></span>%
+		<img id="avatar" src="@Model.AvatarLink" style="width: 200px; height: 200px"/>
+		<input type="file" id="avatarFile"/>
+		<br/>
+		<span id="progressBar" style="font-size: 20px; font-weight: bold">0</span>%
 	</div>
 
 	<div class="lineItem">
-		<span>Display name</span>
-		<input id="displayName" type="text"/><input class="left" type="button" value="Change">
+		<span class="left">Display name</span>
+		<input id="displayName" type="text" value="@Model.DisplayName"/>
 	</div>
 
 	<div class="lineItem">
-		<span>Gender</span>
-		<div id="pluginType" class="dropdown left">
-			<span class="selected">Male</span>
+		<span class="left">Gender</span>
+		<div id="gender" class="dropdown left">
+			<span class="selected">@Model.Gender</span>
 			<ul>
-				<li data-value="0">N/A</li>
+				@*<li data-value="0">N/A</li>*@
 				<li data-value="1">Male</li>
 				<li data-value="2">Female</li>
 			</ul>
@@ -55,68 +53,34 @@
 
 
 	<div class="lineItem">
+		<span class="left">Home city</span>
 
 		<div id="homeCity" class="dropdown left">
-			<input class="inputed" type="text" placeholder="City name">
+			<input class="inputed" type="text" placeholder="City name" value="@Model.HomeLocation">
 			<ul>
 			</ul>
 		</div>
 
 	</div>
 
+	<div class="lineItem">
+		<span class="left">Current city</span>
 
-</div>
+		<div id="currentCity" class="dropdown left">
+			<input class="inputed" type="text" placeholder="City name" value="@Model.CurrentLocation">
+			<ul></ul>
+		</div>
+
+	</div>
 
 
 
 
 <script>
 
-		function onBodyLoad() {
-
-			currentView = new SettingsView();
-
-			var avatarUploadConfig = new FileUploadConfig(); 			
-			avatarUploadConfig.inputId = "avatarFile";
-			//todo: try remove
-			avatarUploadConfig.owner = currentView;
-			avatarUploadConfig.endpoint = "UploadAvatar";
-			avatarUploadConfig.getAsBase64AfterUpload = true;
-					
-
-			
-
-			var fileUpload = new FileUpload(avatarUploadConfig);
-			fileUpload.onProgressChanged = (percent) => {
-				$("#progressBar").text(percent);
-			}
-				fileUpload.onUploadFinished = (file) => {
-
-						var fileReader = new FileReader();
-						fileReader.onload = function (evnt) {								
-								$("#avatar").attr("src", evnt.target.result);
-						};
-
-						fileReader.readAsDataURL(file);
-				}
-
-
-
-			var searchConfig = new PlaceSearchConfig();
-			searchConfig.owner = currentView;
-			searchConfig.providers = "2";
-			searchConfig.elementId = "homeCity";
-			searchConfig.minCharsToSearch = 2;
-			searchConfig.clearAfterSearch = false;
-
-			this.placeSearch = new PlaceSearchBox(searchConfig);
-			this.placeSearch.onPlaceSelected = (request) => {
-					var data = { propertyName: "HomeLocation", values: {sourceId: request.SourceId, sourceType: request.SourceType} };
-					currentView.apiPost("UserProperty", data, function() {
-						alert("updated");
-					});
-			};
-		}
+	function onBodyLoad() {
+		currentView = new SettingsView();
+	}
 
 
 </script>

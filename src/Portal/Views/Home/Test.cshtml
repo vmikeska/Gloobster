@@ -7,40 +7,30 @@
 @Html.Partial("_GlobalScripts")
 
 <div>
-	<script>
-		var cookieName = "TheCookie";
-		var myDomain = null;
-		//$.cookie.json = true;
-
-		var cookieObj = { "encodedToken": "TheText"};
-		var cookieStr = JSON.stringify(cookieObj);
-
-		window.TheValue = "";
-
-		setInterval(function() {
-				var cookieVal = $.cookie(cookieName);
-				console.log("TheCookie: " + cookieVal);
-		}, 5000);
-
-		function openNew() {
-			var url = "/home/test";
-			var wnd = window.open(url, "Twitter authentication", "height=500px,width=400px");
-		}
-
-		function setValue() {
-				$.cookie(cookieName, cookieStr, { "domain": myDomain, "path": "/" });
-		}
-
-		function removeCookie() {
-				$.removeCookie(cookieName, { path: '/' });
-		}
-
-
-	</script>
-
-	<button onclick="openNew()">open new</button>
-	<button onclick="setValue()">set value</button>
-	<button onclick="removeCookie()">remove cookie</button>
+		<input id="myInput" type="text"/>
 
 
 </div>
+
+<script>
+
+	var timeoutId = null;
+	var delay = 1000;
+
+	$("#myInput").keydown(function() {
+
+		if (timeoutId) {
+			clearTimeout(timeoutId);
+			timeoutId = null;
+			//console.log("cleared");
+		}
+		timeoutId = setTimeout(function() {
+				timeoutId = null;
+				console.log("stoped");
+
+		}, delay);
+
+	});
+
+
+</script>

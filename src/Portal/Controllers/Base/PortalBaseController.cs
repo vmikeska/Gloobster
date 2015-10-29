@@ -1,13 +1,14 @@
-﻿
-
+﻿using System.Linq;
 using Gloobster.Common;
+using Gloobster.Common.DbEntity.PortalUser;
 using Gloobster.DomainModels;
 using Gloobster.Portal.ReqRes;
-using Microsoft.AspNet.Mvc;
+using Gloobster.Portal.ViewModels;
 using Microsoft.AspNet.Http;
+using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 
-namespace Gloobster.Portal.Controllers
+namespace Gloobster.Portal.Controllers.Base
 {
     public class PortalBaseController: Controller
     {
@@ -69,10 +70,46 @@ namespace Gloobster.Portal.Controllers
 
 		public bool IsUserLogged => !string.IsNullOrEmpty(UserId);
 
+	    private PortalUserEntity _portalUser;
+		public PortalUserEntity PortalUser
+	    {
+		    get
+		    {
+			    if (!IsUserLogged)
+			    {
+				    return null;
+			    }
+
+			    if (_portalUser != null)
+			    {
+				    return _portalUser;
+			    }
+
+			    _portalUser = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == DBUserId);
+
+			    if (_portalUser == null)
+			    {
+				    //throw
+			    }
+
+			    return _portalUser;
+		    }    
+	    }
+
 		public PortalBaseController(IDbOperations db)
         {
             DB = db;
         }
+
+	    public T CreateViewModelInstance<T>() where T : ViewModelBase, new()
+	    {
+		    var instance = new T
+		    {
+			    PortalUser = PortalUser,
+				DB = DB
+		    };
+		    return instance;
+	    }
 
 
         public IDbOperations DB;

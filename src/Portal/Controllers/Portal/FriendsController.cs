@@ -1,14 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Common;
-using Gloobster.Common.CommonEnums;
 using Gloobster.DomainModels.Services.Facebook.FriendsExtractor;
-using Gloobster.SocialLogin.Facebook.Communication;
+using Gloobster.Portal.Controllers.Base;
+using Gloobster.Portal.ViewModels;
 using Microsoft.AspNet.Mvc;
-using Gloobster.Common.DbEntity;
-using Gloobster.Common.DbEntity.PortalUser;
-using Gloobster.DomainModelsCommon.Interfaces;
 
 //http://stackoverflow.com/questions/23417356/facebook-graph-api-v2-0-me-friends-returns-empty-or-only-friends-who-also-u
 //https://www.sammyk.me/optimizing-request-queries-to-the-facebook-graph-api
@@ -19,7 +15,7 @@ using Gloobster.DomainModelsCommon.Interfaces;
 //retreive permissions
 //https://graph.facebook.com/me/permissions?access_token=CAAYZAZC0M01YIBAJ5v1XtsIUw8hjiKx8ZCwLosGjWvnbbpzZAcn7m92FDUp3VdgOZBoMITxKnynDm4DtL2Li8DY6R7XAaJ2P8zSxtHDV4RIuaCbEihLmIBnbqZBtipQheDHiQZA5PGjLNbkGsZAUSr9Gg7OzTN8DVi5kgxYym3DLE4E9iFoZCmIkx
 
-namespace Gloobster.Portal.Controllers
+namespace Gloobster.Portal.Controllers.Portal
 {
     public class FriendsController: PortalBaseController
     {
@@ -28,12 +24,12 @@ namespace Gloobster.Portal.Controllers
 		}
 
 		public async Task<IActionResult> List()
-	    {		    		    
-		    
+		{
+
+			var viewModel = CreateViewModelInstance<ViewModelBase>();
 
 
-
-			return View();
+			return View(viewModel);
 		}
 
 	    
@@ -42,10 +38,10 @@ namespace Gloobster.Portal.Controllers
 
 	}
 
-	public class FriendsViewModel
-	{
-		public List<FacebookUser> AppFriends { get; set; }
-	}
+	//public class FriendsViewModel
+	//{
+	//	public List<FacebookUser> AppFriends { get; set; }
+	//}
 
 
 }
