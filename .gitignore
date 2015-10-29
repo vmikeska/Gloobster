@@ -8,3 +8,4 @@ obj
 .vs
 *.map
 /packages
+/src/Portal/wwwroot/FileRepository

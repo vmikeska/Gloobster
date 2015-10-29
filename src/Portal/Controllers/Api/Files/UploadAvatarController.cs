@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading;
+using System.Web.UI.WebControls;
 using Gloobster.Common;
 using Gloobster.Common.DbEntity.PortalUser;
 using Gloobster.DomainModels;
@@ -17,25 +18,40 @@ namespace Gloobster.Portal.Controllers.Api.Files
 {
 	public class UploadAvatarController: BaseApiController
 	{		
-		public IFilesDomain FileDomain { get; set; }
+		public FilesDomain FileDomain { get; set; }
 
 		public UploadAvatarController(IFilesDomain filesDomain, IDbOperations db) : base(db)
 		{			
-			FileDomain = filesDomain;
+			FileDomain = (FilesDomain)filesDomain;
 		}
 
 		[HttpPost]
 		[Authorize]
 		public IActionResult Post([FromBody] FileRequest request, string userId)
 		{
+			var fileLocation = "Avatars";
+
+			var userIdObj = new ObjectId(userId);
+
 			FileDomain.OnFileSaved += (sender, args) =>
 			{
 				var argsObj = (OnFileSavedArgs) args;
 				
-				var userIdObj = new ObjectId(userId);
 				var portalUser = DB.C<PortalUserEntity>().First(u => u.id == userIdObj);
 				portalUser.ProfileImage = argsObj.FileName;
 				DB.ReplaceOneAsync(portalUser);				
+			};
+
+			FileDomain.OnBeforeCreate += (sender, args) =>
+			{
+				var portalUser = DB.C<PortalUserEntity>().First(u => u.id == userIdObj);
+
+				var pathToDelete = FileDomain.Storage.Combine(fileLocation, portalUser.ProfileImage);
+				bool fileExists = FileDomain.Storage.FileExists(pathToDelete);
+				if (fileExists)
+				{
+					FileDomain.Storage.DeleteFile(pathToDelete);
+				}
 			};
 
 			var filePartDo = new WriteFilePartDO
@@ -45,7 +61,7 @@ namespace Gloobster.Portal.Controllers.Api.Files
 				FileName = request.fileName,
 				FilePart = request.filePartType,
 				CustomFileName = userId,
-				FileLocation = "Avatars"
+				FileLocation = fileLocation
 			};
 
 			FileDomain.WriteFilePart(filePartDo);

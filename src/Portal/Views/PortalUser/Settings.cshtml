@@ -1,10 +1,17 @@
-﻿@{
-    // ViewBag.Title = "Home Page";
-}
+﻿@model Gloobster.Portal.Controllers.Portal.SettingsViewModel
 
 <script type="text/javascript" src="@Url.Content("~/js/Views/SettingsView.js")"></script>
 
+
+
+
 <style>
+
+.avatarItem {
+	width: 700px;
+	height: 300px;
+	border: 1px solid red;
+}
 	
 .lineItem {
 	width: 700px;
@@ -18,8 +25,13 @@
 <div>
 	<h1>Public info</h1>
 
-	<div class="lineItem">
-		<input type="file" name="files" id="files" multiple/>
+	<div class="avatarItem">
+
+			
+
+
+		<img id="avatar" src="@Model.AvatarLink" style="width: 200px; height: 200px" />
+		<input type="file" id="avatarFile" />
 		<span id="progressBar" style="font-size: 20px; font-weight: bold"></span>%
 	</div>
 
@@ -64,10 +76,29 @@
 
 			currentView = new SettingsView();
 
-			var fileUpload = new FileUpload("files", currentView);
+			var avatarUploadConfig = new FileUploadConfig(); 			
+			avatarUploadConfig.inputId = "avatarFile";
+			//todo: try remove
+			avatarUploadConfig.owner = currentView;
+			avatarUploadConfig.endpoint = "UploadAvatar";
+			avatarUploadConfig.getAsBase64AfterUpload = true;
+					
+
+			
+
+			var fileUpload = new FileUpload(avatarUploadConfig);
 			fileUpload.onProgressChanged = (percent) => {
 				$("#progressBar").text(percent);
 			}
+				fileUpload.onUploadFinished = (file) => {
+
+						var fileReader = new FileReader();
+						fileReader.onload = function (evnt) {								
+								$("#avatar").attr("src", evnt.target.result);
+						};
+
+						fileReader.readAsDataURL(file);
+				}
 
 
 
@@ -80,7 +111,10 @@
 
 			this.placeSearch = new PlaceSearchBox(searchConfig);
 			this.placeSearch.onPlaceSelected = (request) => {
-				 //alert("selected")
+					var data = { propertyName: "HomeLocation", values: {sourceId: request.SourceId, sourceType: request.SourceType} };
+					currentView.apiPost("UserProperty", data, function() {
+						alert("updated");
+					});
 			};
 		}
 

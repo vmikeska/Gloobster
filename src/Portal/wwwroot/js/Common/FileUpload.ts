@@ -1,51 +1,79 @@
-﻿class FileUpload {
+﻿
+class FileUploadConfig {
+	public bytesPerRequest = 102400;
+	public inputId: string;
+  public owner: Views.ViewBase;
+	public endpoint: string;
+	public getAsBase64AfterUpload = false;
+}
+
+class FileUpload {
 
 	private files: any[];
 	private currentFile: any;
-
-	private bytesPerRequest = 102400;
-
+ 
 	private lastEnd = 0;
 	private currentStart = 0;
 	private currentEnd = 0;
 	private reachedEnd = false;
 	private firstSent = false;
-	private endpoint = "UploadAvatar";
+	
 
 	private onProgressChanged: Function;
+	private onUploadFinished: Function;
 
   private owner: Views.ViewBase;
+	private config: FileUploadConfig;
+	private $input: any;
  
-	constructor(inputId: string, owner: Views.ViewBase) {
-		this.owner = owner;
-		this.currentEnd = this.bytesPerRequest;
+	constructor(config: FileUploadConfig) {
+		this.config = config;
+		this.owner = config.owner;		
 
-		$("#" + inputId).change(e => {
+		this.$input = $("#" + this.config.inputId);
+
+		this.$input.change(e => {
 
 			this.files = e.target.files;
 			this.currentFile = this.files[0];
 
 			this.sendBlobToServer(true);
 		});
-
 	}
 
+	private resetValues() {
+		this.lastEnd = 0;
+		this.currentStart = 0;
+		this.currentEnd = 0;
+		this.reachedEnd = false;
+		this.firstSent = false;
+		this.$input.val("");
+	}
 
 	private sendBlobToServer(isInitialCall) {
 
 		if (this.reachedEnd) {
 			console.log("transfere complete");
 			console.log("file length: " + this.currentFile.size);
+
+			if (this.onUploadFinished) {
+			 this.onUploadFinished(this.currentFile);
+			}
+
+			this.resetValues();
+			
 			return;
 		}
 
 		if (!isInitialCall) {
 			this.currentStart = this.lastEnd;
-			this.currentEnd = this.currentStart + this.bytesPerRequest;
+			this.currentEnd = this.currentStart + this.config.bytesPerRequest;
+		} else {
+		 this.currentEnd = this.config.bytesPerRequest;
 		}
 
 		//todo: secure currentStart
-		if (this.currentEnd > this.currentFile.size) {
+		if (this.currentEnd >= this.currentFile.size) {
 			this.currentEnd = this.currentFile.size;
 			this.reachedEnd = true;
 		}
@@ -83,12 +111,12 @@
 	}
 
 	private getFilePartType() {
-		if (!this.firstSent) {
-			return "First";
-	 } else if (this.firstSent && !this.reachedEnd) {
-			return "Middle";
-		} else if (this.reachedEnd) {
+		if (this.reachedEnd) {
 			return "Last";
+		} else if (!this.firstSent) {
+			return "First";
+		} else if (this.firstSent) {
+			return "Middle";
 		}
 	}
 
@@ -97,32 +125,8 @@
 
 		var dataToSend = { data: dataBlob, filePartType: this.getFilePartType(), fileName: this.currentFile.name};
 
-		this.owner.apiPost(this.endpoint, dataToSend, () => {
+		this.owner.apiPost(this.config.endpoint, dataToSend, () => {
 			this.onSuccessBlobUpload();
 		});
-
-		//dunno meaning of this. If it's actually not in the state, all transaction is corrupted anyway
-		//if (evnt.target.readyState === FileReader.prototype.DONE) {
-		//	var dataToSend = dataBlob;
-
-		//	var callObj = {
-		//		type: "POST",
-		//		url: "ReceiveFileBlob",
-		//		data: dataToSend,
-		//		success(response) {
-		//			self.onSuccessBlobUpload();
-
-		//		},
-		//		error(response) {
-		//			//todo: add error handler
-		//			alert("error");
-		//		},
-		//		dataType: "text",
-		//		contentType: false
-		//	}
-
-		//	$.ajax(callObj);
-	 //}
-
 	}
 }

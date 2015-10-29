@@ -3,16 +3,24 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using AzureBlobFileSystem;
+using Gloobster.Common;
 using Gloobster.Common.CommonEnums;
+using Gloobster.Common.DbEntity.PortalUser;
 using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
 using Microsoft.AspNet.Hosting;
 using Microsoft.Dnx.Runtime;
+using MongoDB.Bson;
 
 namespace Gloobster.DomainModels
 {
 	public class FilesDomain: IFilesDomain
 	{
+		public IDbOperations DB { get; set; }
+
+		public event EventHandler OnFileSaved = delegate { };
+		public event EventHandler OnBeforeCreate = delegate { };
+
 		public const string EnvRoot = @"C:\S\Gloobster\src\Portal\wwwroot";
 		public const string RepositoryDirectory = "FileRepository";
 		public const string TempFolder = "TempFolder";
@@ -95,9 +103,21 @@ namespace Gloobster.DomainModels
 
 
 
-			string fileName = BuildFileName();
-
+			string fileName = BuildFileName();			
 			var targetFilePath = Storage.Combine(TargetDirectory, fileName);
+
+			OnBeforeCreate.Invoke(this, null);
+
+			//var userIdObj = new ObjectId(UserId);
+			//var portalUser = DB.C<PortalUserEntity>().First(u => u.id == userIdObj);
+
+			//var pathToDelete = Storage.Combine(TargetDirectory, portalUser.ProfileImage);
+			//bool fileExists = Storage.FileExists(pathToDelete);
+			//if (fileExists)
+			//{				
+			//	Storage.DeleteFile(pathToDelete);
+			//}
+
 			var inputFileStream = Storage.CreateFile(targetFilePath).OpenWrite();			
 			using (var writer = new BinaryWriter(inputFileStream))
 			{
@@ -113,7 +133,7 @@ namespace Gloobster.DomainModels
 			OnFileSaved.Invoke(this, onFileSavedArgs);
 		}
 
-		public event EventHandler OnFileSaved = delegate {  };
+		
 
 
 		private string BuildFileName()
