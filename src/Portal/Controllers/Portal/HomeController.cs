@@ -1,5 +1,6 @@
 ﻿using System;
 using Gloobster.Common;
+using Gloobster.Database;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.Portal.ViewModels;
 using Microsoft.AspNet.Mvc;

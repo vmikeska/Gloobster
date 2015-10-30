@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Gloobster.Common.DbEntity;
+using Gloobster.Entities;
 using Gloobster.Portal.Controllers.Base;
 
 namespace Gloobster.Portal.ViewModels

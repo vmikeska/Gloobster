@@ -4,10 +4,11 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Facebook;
-using Gloobster.DomainModelsCommon.DO;
-using Gloobster.DomainModelsCommon.Interfaces;
+using Gloobster.DomainInterfaces;
+using Gloobster.DomainObjects;
 using Gloobster.Mappers;
 using Gloobster.WebApiObjects;
+using Gloobster.WebApiObjects.MoveOut;
 using Gloobster.WebApiObjects.PinBoard;
 using Microsoft.AspNet.Mvc;
 

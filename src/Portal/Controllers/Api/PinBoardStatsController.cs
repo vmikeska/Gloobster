@@ -1,6 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
-using Gloobster.DomainModelsCommon.Interfaces;
+using Gloobster.DomainInterfaces;
 using Gloobster.WebApiObjects;
 using Gloobster.WebApiObjects.PinBoard;
 using Microsoft.AspNet.Mvc;

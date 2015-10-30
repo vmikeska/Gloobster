@@ -1,4 +1,5 @@
-using Gloobster.Common.CommonEnums;
+
+using Gloobster.Enums;
 using Gloobster.Portal.Controllers.Api.Files;
 
 namespace Gloobster.Portal.ReqRes.Files

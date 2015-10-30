@@ -1,5 +1,6 @@
 ﻿using Gloobster.Common;
-using Gloobster.Common.DbEntity.PortalUser;
+using Gloobster.Database;
+using Gloobster.Entities;
 
 namespace Gloobster.Portal.ViewModels
 {

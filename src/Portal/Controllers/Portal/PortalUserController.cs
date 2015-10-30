@@ -1,9 +1,10 @@
 ﻿using Gloobster.Common;
-using Gloobster.Common.DbEntity.PortalUser;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using System.Linq;
-using Gloobster.Common.CommonEnums;
+using Gloobster.Database;
+using Gloobster.Entities;
+using Gloobster.Enums;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.Portal.ViewModels;
 

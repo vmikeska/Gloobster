@@ -2,10 +2,9 @@
 using System.Threading.Tasks;
 using System.Web;
 using Autofac;
-using Gloobster.Common;
-using Gloobster.Common.CommonEnums;
-using Gloobster.DomainModelsCommon.DO;
-using Gloobster.DomainModelsCommon.Interfaces;
+using Gloobster.Database;
+using Gloobster.DomainInterfaces;
+using Gloobster.DomainObjects;
 using Gloobster.Portal.ReqRes;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;

@@ -1,8 +1,9 @@
 ﻿using System.Linq;
 using Gloobster.Common;
-using Gloobster.Common.CommonEnums;
-using Gloobster.Common.DbEntity.PortalUser;
+using Gloobster.Database;
 using Gloobster.DomainModels;
+using Gloobster.Entities;
+using Gloobster.Enums;
 using Gloobster.Portal.ReqRes;
 using Gloobster.Portal.ViewModels;
 using Microsoft.AspNet.Http;

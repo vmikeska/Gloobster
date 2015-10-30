@@ -1,4 +1,5 @@
 using Gloobster.Common;
+using Gloobster.Database;
 using Microsoft.AspNet.Mvc;
 
 namespace Gloobster.Portal.Controllers.Base
