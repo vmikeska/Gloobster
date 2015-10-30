@@ -1,7 +1,8 @@
 ﻿@using System.Globalization
 @using System.Threading.Tasks
 @using Gloobster.Portal.Controllers.Portal
-@model TripItemViewModel
+@using Gloobster.Portal.ViewModels
+@model Gloobster.Portal.ViewModels.TripItemViewModel
 
 <div class="cell">
 	<a class="trip edit" asp-controller="Trip" asp-action="Detail" asp-route-id="@Model.Id">				

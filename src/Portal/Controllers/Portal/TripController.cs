@@ -90,30 +90,4 @@ namespace Gloobster.Portal.Controllers.Portal
 		}
 
 	}
-
-	public class TripItemViewModel
-	{
-		public string Id { get; set; }
-
-		public string Name { get; set; }
-
-		public bool IsLocked { get; set; }
-		public string ImageBig { get; set; }
-
-		public DateTime Date { get; set; }
-
-		public string DisplayDateBig
-		{
-			get { return string.Empty; }
-		}
-	}
-
-	public class ViewModelTrips : ViewModelBase
-	{
-		public List<TripItemViewModel> Trips { get; set; }
-	}
-
-	public class ViewModelDetail : ViewModelBase
-	{
-	}
 }
