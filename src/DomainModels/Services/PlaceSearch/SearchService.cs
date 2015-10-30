@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
-using Gloobster.DomainModelsCommon.DO;
-using Gloobster.DomainModelsCommon.Interfaces;
+using Gloobster.DomainInterfaces;
+using Gloobster.DomainObjects;
 
 namespace Gloobster.DomainModels.Services.PlaceSearch
 {

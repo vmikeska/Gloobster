@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels.Services.GeonamesService;
-using Gloobster.DomainModelsCommon.Interfaces;
+
 
 namespace Gloobster.DomainModels.Services.CountryService
 {

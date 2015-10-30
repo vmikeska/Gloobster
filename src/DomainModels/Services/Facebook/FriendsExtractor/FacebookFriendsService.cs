@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Gloobster.Common;
-using Gloobster.Common.CommonEnums;
-using Gloobster.Common.DbEntity;
-using Gloobster.Common.DbEntity.PortalUser;
-using Gloobster.DomainModelsCommon.DO;
+using Gloobster.Database;
+using Gloobster.DomainInterfaces;
+using Gloobster.DomainObjects;
+using Gloobster.Entities;
+using Gloobster.Enums;
 using Gloobster.Mappers;
 using Gloobster.SocialLogin.Facebook.Communication;
 using MongoDB.Bson;

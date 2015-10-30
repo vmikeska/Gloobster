@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gloobster.Common;
-using Gloobster.DomainModelsCommon.BaseClasses;
-using Gloobster.DomainModelsCommon.DO;
-using Gloobster.DomainModelsCommon.Interfaces;
+using Gloobster.DomainInterfaces;
+using Gloobster.DomainObjects;
+using Gloobster.DomainObjects.BaseClasses;
 using Gloobster.SocialLogin.Facebook.Communication;
 
 namespace Gloobster.DomainModels.Services.Places

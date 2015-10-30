@@ -3,9 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using FourSquare.SharpSquare.Entities;
 using Gloobster.Common;
-using Gloobster.Common.CommonEnums;
-using Gloobster.DomainModelsCommon.DO;
-using Gloobster.DomainModelsCommon.Interfaces;
+using Gloobster.DomainInterfaces;
+using Gloobster.DomainObjects;
+using Gloobster.Enums;
 using Gloobster.SocialLogin.Facebook.Communication;
 
 namespace Gloobster.DomainModels.Services.PlaceSearch

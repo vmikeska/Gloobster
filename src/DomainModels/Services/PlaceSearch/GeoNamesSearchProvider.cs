@@ -3,9 +3,9 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Common;
-using Gloobster.DomainModelsCommon.BaseClasses;
-using Gloobster.DomainModelsCommon.DO;
-using Gloobster.DomainModelsCommon.Interfaces;
+using Gloobster.DomainInterfaces;
+using Gloobster.DomainObjects;
+using Gloobster.DomainObjects.BaseClasses;
 
 namespace Gloobster.DomainModels.Services.PlaceSearch
 {

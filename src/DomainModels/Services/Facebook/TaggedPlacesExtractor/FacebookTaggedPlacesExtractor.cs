@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Gloobster.DomainModelsCommon.BaseClasses;
-using Gloobster.DomainModelsCommon.Interfaces;
+using Gloobster.DomainInterfaces;
+using Gloobster.DomainObjects.BaseClasses;
 using Gloobster.SocialLogin.Facebook.Communication;
 
 namespace Gloobster.DomainModels.Services.Facebook.TaggedPlacesExtractor

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FourSquare.SharpSquare.Core;
 using FourSquare.SharpSquare.Entities;
-using Gloobster.DomainModelsCommon.Interfaces;
+using Gloobster.DomainInterfaces;
 
 namespace Gloobster.DomainModels.Services.Foursquare
 {

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using AzureBlobFileSystem;
-using Gloobster.Common;
-using Gloobster.Common.CommonEnums;
-using Gloobster.Common.DbEntity.PortalUser;
-using Gloobster.DomainModelsCommon.DO;
-using Gloobster.DomainModelsCommon.Interfaces;
+
+using Gloobster.Database;
+using Gloobster.DomainInterfaces;
+using Gloobster.DomainObjects;
+using Gloobster.Enums;
 using Microsoft.AspNet.Hosting;
 using Microsoft.Dnx.Runtime;
 using MongoDB.Bson;

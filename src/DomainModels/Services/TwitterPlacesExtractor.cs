@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Common;
-using Gloobster.DomainModelsCommon.DO;
+
 using TweetSharp;
 
 namespace Gloobster.DomainModels.Services

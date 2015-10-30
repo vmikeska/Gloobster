@@ -4,11 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using FourSquare.SharpSquare.Entities;
 using Gloobster.Common;
-using Gloobster.Common.CommonEnums;
-using Gloobster.Common.DbEntity.PortalUser;
-using Gloobster.DomainModelsCommon.BaseClasses;
-using Gloobster.DomainModelsCommon.DO;
-using Gloobster.DomainModelsCommon.Interfaces;
+
+using Gloobster.Database;
+using Gloobster.DomainInterfaces;
+using Gloobster.DomainObjects;
+using Gloobster.Entities;
+using Gloobster.Enums;
 using Gloobster.SocialLogin.Facebook.Communication;
 using MongoDB.Bson;
 

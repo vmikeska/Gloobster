@@ -1,7 +1,7 @@
 ﻿using System;
 using Gloobster.Common;
-using Gloobster.DomainModelsCommon.DO;
-using Gloobster.DomainModelsCommon.Interfaces;
+using Gloobster.DomainInterfaces;
+using Gloobster.DomainObjects;
 using Gloobster.Mappers;
 using TweetSharp;
 

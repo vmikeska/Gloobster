@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Gloobster.Common;
-using Gloobster.DomainModelsCommon.DO;
-using TweetSharp;
 using System.Linq;
-using Gloobster.DomainModelsCommon.Interfaces;
+using Gloobster.DomainInterfaces;
+using Gloobster.DomainObjects;
+using TweetSharp;
 
 namespace Gloobster.DomainModels.Services.Places
 {
