@@ -1,5 +1,6 @@
-﻿using Gloobster.Common.DbEntity;
-using Gloobster.DomainModelsCommon.DO;
+﻿
+using Gloobster.DomainObjects;
+using Gloobster.Entities;
 using Gloobster.WebApiObjects.PinBoard;
 using MongoDB.Bson;
 

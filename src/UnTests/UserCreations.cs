@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Gloobster.Common.DbEntity;
-using Gloobster.Common.DbEntity.PortalUser;
-using Gloobster.DomainModelsCommon.DO;
+using Gloobster.DomainObjects;
+using Gloobster.Entities;
 using Gloobster.SocialLogin.Facebook.Communication;
 using MongoDB.Bson;
 

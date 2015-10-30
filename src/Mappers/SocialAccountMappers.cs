@@ -1,5 +1,6 @@
-using Gloobster.Common.DbEntity.PortalUser;
-using Gloobster.DomainModelsCommon.DO;
+
+using Gloobster.DomainObjects;
+using Gloobster.Entities;
 
 namespace Gloobster.Mappers
 {

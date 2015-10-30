@@ -1,7 +1,6 @@
-using System.Linq;
-using Gloobster.Common.DbEntity;
-using Gloobster.DomainModelsCommon.DO;
-using Gloobster.SocialLogin.Facebook.Communication;
+
+using Gloobster.DomainObjects;
+using Gloobster.Entities;
 using TweetSharp;
 
 namespace Gloobster.Mappers

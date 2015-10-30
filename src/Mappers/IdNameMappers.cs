@@ -1,6 +1,8 @@
-using Gloobster.Common.DbEntity;
-using Gloobster.DomainModelsCommon.DO;
+
+using Gloobster.DomainObjects;
+using Gloobster.Entities;
 using Gloobster.SocialLogin.Facebook.Communication;
+
 
 namespace Gloobster.Mappers
 {

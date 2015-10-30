@@ -1,4 +1,5 @@
 ﻿using Gloobster.Common;
+using Gloobster.Database;
 
 namespace Gloobster.UnitTests
 {

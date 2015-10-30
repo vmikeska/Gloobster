@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Gloobster.Common;
-using Gloobster.Common.DbEntity;
-using Gloobster.DomainModelsCommon.DO;
+using Gloobster.DomainObjects;
+using Gloobster.Entities;
 using MongoDB.Bson;
 
 namespace Gloobster.UnitTests

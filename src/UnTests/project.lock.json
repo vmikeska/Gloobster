@@ -33,14 +33,24 @@
       "Common/1.0.0": {
         "type": "project",
         "dependencies": {
+          "Enums": "1.0.0",
           "Facebook": "7.0.6",
           "Microsoft.AspNet.Mvc": "6.0.0-beta7",
-          "MongoDB.Driver": "2.1.0-rc1",
+          "MongoDB.Bson": "2.1.0",
+          "MongoDB.Driver": "2.1.0",
           "System.Linq.Queryable": "4.0.1-beta-23225"
         },
         "frameworkAssemblies": [
           "System.Web"
         ]
+      },
+      "Database/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "Common": "1.0.0",
+          "MongoDB.Bson": "2.1.0",
+          "MongoDB.Driver": "2.1.0"
+        }
       },
       "DomainModels/1.0.0": {
         "type": "project",
@@ -50,7 +60,7 @@
           "DomainModelsCommon": "1.0.0",
           "Facebook": "7.0.6",
           "Mappers": "1.0.0",
-          "MongoDB.Driver": "2.1.0-rc1",
+          "MongoDB.Driver": "2.1.0",
           "SharpSquare": "1.0.0",
           "SocialLogin": "1.0.0",
           "System.Net.Http": "4.0.0.0",
@@ -62,10 +72,23 @@
         "dependencies": {
           "Autofac": "4.0.0-beta7-130",
           "Common": "1.0.0",
+          "Database": "1.0.0",
+          "DomainObjects": "1.0.0",
           "Enums": "1.0.0",
-          "MongoDB.Driver": "2.1.0-rc1",
+          "MongoDB.Bson": "2.1.0",
+          "MongoDB.Driver": "2.1.0",
           "SharpSquare": "1.0.0",
           "TweetSharp": "2.3.1"
+        },
+        "frameworkAssemblies": [
+          "System.Runtime.Serialization"
+        ]
+      },
+      "DomainObjects/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "Common": "1.0.0",
+          "Enums": "1.0.0"
         },
         "frameworkAssemblies": [
           "System.Runtime.Serialization"
@@ -74,6 +97,8 @@
       "Entities/1.0.0": {
         "type": "project",
         "dependencies": {
+          "Common": "1.0.0",
+          "Database": "1.0.0",
           "Enums": "1.0.0",
           "MongoDB.Driver": "2.1.0"
         }
@@ -96,7 +121,7 @@
           "Common": "1.0.0",
           "DomainModelsCommon": "1.0.0",
           "Facebook": "7.0.6",
-          "MongoDB.Driver": "2.1.0-rc1",
+          "MongoDB.Driver": "2.1.0",
           "TweetSharp": "2.3.1"
         }
       },
@@ -106,7 +131,7 @@
           "Common": "1.0.0",
           "DomainModelsCommon": "1.0.0",
           "Entities": "1.0.0",
-          "MongoDB.Driver": "2.1.0-rc1",
+          "MongoDB.Driver": "2.1.0",
           "SocialLogin": "1.0.0",
           "TweetSharp": "2.3.1",
           "WebApiObjects": "1.0.0"
@@ -1375,7 +1400,7 @@
           "lib/net35-full/Microsoft.WindowsAzure.Configuration.dll": {}
         }
       },
-      "MongoDB.Bson/2.1.0-rc1": {
+      "MongoDB.Bson/2.1.0": {
         "type": "package",
         "compile": {
           "lib/net45/MongoDB.Bson.dll": {}
@@ -1384,11 +1409,11 @@
           "lib/net45/MongoDB.Bson.dll": {}
         }
       },
-      "MongoDB.Driver/2.1.0-rc1": {
+      "MongoDB.Driver/2.1.0": {
         "type": "package",
         "dependencies": {
-          "MongoDB.Bson": "2.1.0-rc1",
-          "MongoDB.Driver.Core": "2.1.0-rc1"
+          "MongoDB.Bson": "2.1.0",
+          "MongoDB.Driver.Core": "2.1.0"
         },
         "compile": {
           "lib/net45/MongoDB.Driver.dll": {}
@@ -1397,10 +1422,10 @@
           "lib/net45/MongoDB.Driver.dll": {}
         }
       },
-      "MongoDB.Driver.Core/2.1.0-rc1": {
+      "MongoDB.Driver.Core/2.1.0": {
         "type": "package",
         "dependencies": {
-          "MongoDB.Bson": "2.1.0-rc1"
+          "MongoDB.Bson": "2.1.0"
         },
         "compile": {
           "lib/net45/MongoDB.Driver.Core.dll": {}
@@ -1434,7 +1459,7 @@
         "type": "project",
         "dependencies": {
           "Facebook": "7.0.6",
-          "MongoDB.Driver": "2.1.0-rc1"
+          "MongoDB.Driver": "2.1.0"
         },
         "frameworkAssemblies": [
           "System.Runtime.Serialization"
@@ -1540,7 +1565,7 @@
         "type": "project",
         "dependencies": {
           "Common": "1.0.0",
-          "MongoDB.Driver": "2.1.0-rc1"
+          "MongoDB.Driver": "2.1.0"
         }
       },
       "WindowsAzure.Storage/3.1.0.1": {
@@ -1676,6 +1701,10 @@
       "type": "project",
       "path": "../Common/project.json"
     },
+    "Database/1.0.0": {
+      "type": "project",
+      "path": "../Database/project.json"
+    },
     "DomainModels/1.0.0": {
       "type": "project",
       "path": "../DomainModels/project.json"
@@ -1683,6 +1712,10 @@
     "DomainModelsCommon/1.0.0": {
       "type": "project",
       "path": "../DomainModelsCommon/project.json"
+    },
+    "DomainObjects/1.0.0": {
+      "type": "project",
+      "path": "../DomainObjects/project.json"
     },
     "Entities/1.0.0": {
       "type": "project",
@@ -2851,38 +2884,38 @@
         "Microsoft.WindowsAzure.ConfigurationManager.nuspec"
       ]
     },
-    "MongoDB.Bson/2.1.0-rc1": {
+    "MongoDB.Bson/2.1.0": {
       "type": "package",
-      "sha512": "W0g6Yp4unAvMQ1jXmRG8U9m7FnPa4oJ7uLfNGgXgG+fIGfzi9jHmzyPP0W6cJkpLGvDvbiCVNswYvDbkCqxwQw==",
+      "sha512": "SU3ADn6QNRy4xOqMDRrhQWpNHhZxBOSDaKtvUknTji2HuSuqYmq4HQUjU/9asFXjRqIVSs/s0fLwOpNhfs61fA==",
       "files": [
         "lib/net45/MongoDB.Bson.dll",
         "lib/net45/MongoDB.Bson.XML",
         "License.rtf",
-        "MongoDB.Bson.2.1.0-rc1.nupkg",
-        "MongoDB.Bson.2.1.0-rc1.nupkg.sha512",
+        "MongoDB.Bson.2.1.0.nupkg",
+        "MongoDB.Bson.2.1.0.nupkg.sha512",
         "MongoDB.Bson.nuspec"
       ]
     },
-    "MongoDB.Driver/2.1.0-rc1": {
+    "MongoDB.Driver/2.1.0": {
       "type": "package",
-      "sha512": "6MiFJlaO0oGY4KYh8BWxa+vyAmL62RqdX6sB5AA5EYAVVR09pZZ96TNBZPbeRMllF1Z3l4LLaxVlkSsuabdLSA==",
+      "sha512": "tcJBzkHJvrnAqjFfMNdDdQmR1sn/tQx22eH0a59tBfdDS9Bu0hcPTfU7zI1Xglq+8BJtiGwBbzZvZcLBgkOT+A==",
       "files": [
         "lib/net45/MongoDB.Driver.dll",
         "lib/net45/MongoDB.Driver.XML",
         "License.rtf",
-        "MongoDB.Driver.2.1.0-rc1.nupkg",
-        "MongoDB.Driver.2.1.0-rc1.nupkg.sha512",
+        "MongoDB.Driver.2.1.0.nupkg",
+        "MongoDB.Driver.2.1.0.nupkg.sha512",
         "MongoDB.Driver.nuspec"
       ]
     },
-    "MongoDB.Driver.Core/2.1.0-rc1": {
+    "MongoDB.Driver.Core/2.1.0": {
       "type": "package",
-      "sha512": "ayCpp4ioA3Yp1VI2xKntFKcK3qobiUMswQBafC1CPBi84ulJ7gQmeX9PaW84YsTC9UjSYUSjaowKMzDs//TofA==",
+      "sha512": "0Qu3jWifZ6r/7qWYtnxRaSN1MgFSXNTJNK7jfMn2QpG85ez8K3DNu847TZn3Qu1ZKdv2YFZBNGFMnPuYQomgjg==",
       "files": [
         "lib/net45/MongoDB.Driver.Core.dll",
         "License.rtf",
-        "MongoDB.Driver.Core.2.1.0-rc1.nupkg",
-        "MongoDB.Driver.Core.2.1.0-rc1.nupkg.sha512",
+        "MongoDB.Driver.Core.2.1.0.nupkg",
+        "MongoDB.Driver.Core.2.1.0.nupkg.sha512",
         "MongoDB.Driver.Core.nuspec"
       ]
     },
@@ -3292,7 +3325,7 @@
       "Mappers >= 1.0.0-*",
       "SocialLogin >= 1.0.0-*",
       "WebApiObjects >= 1.0.0-*",
-      "MongoDB.Driver >= 2.1.0-rc1",
+      "MongoDB.Driver >= 2.1.0",
       "Moq >= 4.2.1507.118",
       "TweetSharp >= 2.3.1",
       "xunit >= 2.1.0-rc1-build3168",

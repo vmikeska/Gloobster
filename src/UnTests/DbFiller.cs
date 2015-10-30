@@ -1,7 +1,6 @@
 ﻿using Gloobster.Common;
+using Gloobster.DomainObjects;
 //using Xunit;
-using Gloobster.DomainModels.Services.Twitter;
-using Gloobster.DomainModelsCommon.DO;
 using Gloobster.Sharing.Twitter;
 
 namespace Gloobster.UnitTests
@@ -23,7 +22,7 @@ namespace Gloobster.UnitTests
 
 			var driver = new TwitterShare
 			{
-				MyTwitterSvc = new MyTwitterService()
+				//MyTwitterSvc = new MyTwitterService()
 			};
 			
 			var options = new TwitterShareOptionsDO

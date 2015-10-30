@@ -1,7 +1,7 @@
 using System.Linq;
-using Gloobster.Common.DbEntity;
-using Gloobster.Common.DbEntity.PortalUser;
-using Gloobster.DomainModelsCommon.DO;
+
+using Gloobster.DomainObjects;
+using Gloobster.Entities;
 using Gloobster.WebApiObjects;
 using MongoDB.Bson;
 
