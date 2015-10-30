@@ -3,16 +3,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using Gloobster.Common;
-using Gloobster.Common.CommonEnums;
 using Gloobster.Common.DbEntity;
 using Gloobster.Common.DbEntity.PortalUser;
 using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
+using Gloobster.Enums;
 using Gloobster.Mappers;
 using Gloobster.SocialLogin.Facebook.Communication;
-using Microsoft.CodeAnalysis.CSharp;
 using MongoDB.Bson;
-using MongoDB.Driver;
 
 namespace Gloobster.DomainModels.Services.Accounts
 {

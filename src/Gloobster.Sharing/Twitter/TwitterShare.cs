@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Gloobster.DomainModelsCommon.DO;
-using Gloobster.DomainModelsCommon.Interfaces;
+using Gloobster.DomainInterfaces;
+using Gloobster.DomainObjects;
 using TweetSharp;
 
 namespace Gloobster.Sharing.Twitter

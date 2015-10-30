@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Facebook;
-using Gloobster.DomainModelsCommon.DO;
+using Gloobster.DomainObjects;
 
-namespace Gloobster.Sharing
+namespace Gloobster.Sharing.Facebook
 {
 	public class FacebookShare
 	{

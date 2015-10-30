@@ -9,7 +9,11 @@
   "dependencies": {
     "Autofac": "4.0.0-beta7-130",
     "Common": "1.0.0-*",
-    "MongoDB.Driver": "2.1.0-rc1",
+    "Database": "1.0.0-*",
+    "DomainObjects": "1.0.0-*",
+    "Enums": "1.0.0-*",
+    "MongoDB.Bson": "2.1.0",
+    "MongoDB.Driver": "2.1.0",
     "TweetSharp": "2.3.1"
   },
 

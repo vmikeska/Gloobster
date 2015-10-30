@@ -1,4 +1,4 @@
-﻿namespace Gloobster.WebApiObjects
+﻿namespace Gloobster.WebApiObjects.MoveOut
 {
 	public class VisitedCountryResponse
 	{

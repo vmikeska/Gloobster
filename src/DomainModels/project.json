@@ -14,7 +14,7 @@
     "System.Net.Http": "4.0.0.0",
     "TweetSharp": "2.3.1",
     "Autofac": "4.0.0-beta7-130",
-    "MongoDB.Driver": "2.1.0-rc1",
+    "MongoDB.Driver": "2.1.0",
     "BlobFileSystem.Azure": "0.0.6"
   },
 

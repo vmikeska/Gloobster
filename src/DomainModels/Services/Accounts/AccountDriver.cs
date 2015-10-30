@@ -7,6 +7,7 @@ using Gloobster.Common.DbEntity;
 using Gloobster.Common.DbEntity.PortalUser;
 using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
+using Gloobster.Enums;
 using Gloobster.Mappers;
 
 namespace Gloobster.DomainModels.Services.Accounts

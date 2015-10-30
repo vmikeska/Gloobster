@@ -11,6 +11,7 @@ using Gloobster.Common.DbEntity.PortalUser;
 using Gloobster.DomainModels.Services.Places;
 using Gloobster.DomainModelsCommon.DO;
 using Gloobster.DomainModelsCommon.Interfaces;
+using Gloobster.Enums;
 using Gloobster.Mappers;
 using Gloobster.SocialLogin.Facebook.Communication;
 using MongoDB.Bson;

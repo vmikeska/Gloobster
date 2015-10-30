@@ -1,4 +1,4 @@
-﻿using Gloobster.Common.CommonEnums;
+﻿using Gloobster.Enums;
 
 namespace Gloobster.Portal.ReqRes
 {

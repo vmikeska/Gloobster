@@ -1,4 +1,4 @@
-﻿namespace Gloobster.Sharing
+﻿namespace Gloobster.Sharing.Facebook
 {
 	public class FacebookShareOptionsDO
 	{

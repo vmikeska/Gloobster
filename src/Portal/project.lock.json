@@ -83,6 +83,7 @@
         "dependencies": {
           "Autofac": "4.0.0-beta7-130",
           "Common": "1.0.0",
+          "Enums": "1.0.0",
           "MongoDB.Driver": "2.1.0-rc1",
           "SharpSquare": "1.0.0",
           "TweetSharp": "2.3.1"
@@ -90,6 +91,13 @@
         "frameworkAssemblies": [
           "System.Runtime.Serialization"
         ]
+      },
+      "Entities/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "Enums": "1.0.0",
+          "MongoDB.Driver": "2.1.0"
+        }
       },
       "EntityFramework.Core/7.0.0-beta7": {
         "type": "package",
@@ -153,6 +161,9 @@
           "lib/net45/EntityFramework.Relational.dll": {}
         }
       },
+      "Enums/1.0.0": {
+        "type": "project"
+      },
       "Facebook/7.0.6": {
         "type": "package",
         "compile": {
@@ -180,6 +191,7 @@
         "dependencies": {
           "Common": "1.0.0",
           "DomainModelsCommon": "1.0.0",
+          "Entities": "1.0.0",
           "MongoDB.Driver": "2.1.0-rc1",
           "SocialLogin": "1.0.0",
           "TweetSharp": "2.3.1",
@@ -2206,6 +2218,14 @@
     "DomainModelsCommon/1.0.0": {
       "type": "project",
       "path": "../DomainModelsCommon/project.json"
+    },
+    "Entities/1.0.0": {
+      "type": "project",
+      "path": "../Entities/project.json"
+    },
+    "Enums/1.0.0": {
+      "type": "project",
+      "path": "../Enums/project.json"
     },
     "Mappers/1.0.0": {
       "type": "project",

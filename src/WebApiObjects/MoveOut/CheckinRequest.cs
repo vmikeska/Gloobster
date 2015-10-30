@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Gloobster.Common;
-
-namespace Gloobster.WebApiObjects
+﻿namespace Gloobster.WebApiObjects.MoveOut
 {
 
 	public class CheckinRequest

@@ -13,7 +13,7 @@
     "Mappers": "1.0.0-*",
     "SocialLogin": "1.0.0-*",
     "WebApiObjects": "1.0.0-*",
-    "MongoDB.Driver": "2.1.0-rc1",
+    "MongoDB.Driver": "2.1.0",
     "Moq": "4.2.1507.118",
     "TweetSharp": "2.3.1",
     "xunit": "2.1.0-rc1-build3168",

@@ -1,5 +1,5 @@
 ﻿using Gloobster.Common;
-using Xunit;
+//using Xunit;
 using Gloobster.DomainModels.Services.Twitter;
 using Gloobster.DomainModelsCommon.DO;
 using Gloobster.Sharing.Twitter;
@@ -9,13 +9,13 @@ namespace Gloobster.UnitTests
 
 	public class DbFiller : TestBase
 	{
-		[Fact]
+		//[Fact]
 		public async void TestTheThing2()
 		{
 		
 		}
 
-		[Fact]
+		//[Fact]
 		public async void TestTheThing()
 		{
 			GloobsterConfig.TwitterConsumerKey = "0gvTaCaKc4acKcMh1m1ah4tR6";
