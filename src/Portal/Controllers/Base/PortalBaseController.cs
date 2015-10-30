@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Gloobster.Common;
+using Gloobster.Common.CommonEnums;
 using Gloobster.Common.DbEntity.PortalUser;
 using Gloobster.DomainModels;
 using Gloobster.Portal.ReqRes;
@@ -96,7 +97,30 @@ namespace Gloobster.Portal.Controllers.Base
 		    }    
 	    }
 
-		public PortalBaseController(IDbOperations db)
+	    public string GetSocNetworkStr()
+	    {
+		    var socNetwork = PortalUser.SocialAccounts?.FirstOrDefault();
+		    if (socNetwork == null)
+		    {
+			    return string.Empty;
+		    }
+
+		    switch (socNetwork.NetworkType)
+		    {
+			    case SocialNetworkType.Facebook:
+				    return "F";
+			    case SocialNetworkType.Twitter:
+				    return "T";
+			    case SocialNetworkType.Google:
+				    return "G";
+			    case SocialNetworkType.Base:
+				    return "B";
+		    }
+
+		    return string.Empty;
+	    }
+
+	    public PortalBaseController(IDbOperations db)
         {
             DB = db;
         }
@@ -106,8 +130,9 @@ namespace Gloobster.Portal.Controllers.Base
 		    var instance = new T
 		    {
 			    PortalUser = PortalUser,
-				DB = DB
-		    };
+				DB = DB,
+				SocialNetwork = GetSocNetworkStr()
+			};
 		    return instance;
 	    }
 

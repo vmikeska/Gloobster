@@ -27,6 +27,8 @@ namespace Gloobster.Portal.Controllers.Portal
 			var portalUser = DB.C<PortalUserEntity>().First(p => p.id == DBUserId);
 			var avatarsDir = "~/FileRepository/Avatars/";
 
+			
+
 			var viewModel = CreateViewModelInstance<SettingsViewModel>();			
 			viewModel.AvatarLink = avatarsDir + portalUser.ProfileImage;
 			viewModel.DisplayName = portalUser.DisplayName;
@@ -41,6 +43,8 @@ namespace Gloobster.Portal.Controllers.Portal
 		{
 			return $"{city.City}, {city.CountryCode}";
 		}
+
+	
 
 		private string GetGenderStr(Gender gender)
 		{

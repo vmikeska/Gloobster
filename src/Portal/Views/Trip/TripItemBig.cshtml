@@ -1,0 +1,19 @@
+﻿@using System.Globalization
+@using System.Threading.Tasks
+@using Gloobster.Portal.Controllers.Portal
+@model TripItemViewModel
+
+<div class="cell">
+	<a class="trip edit" asp-controller="Trip" asp-action="Detail" asp-route-id="@Model.Id">				
+		<h3>@Model.Name</h3>
+		<p>
+			@if (Model.IsLocked)
+			{
+				<span class="icon-lock"></span>
+			}
+			@Model.Date.ToString("MMM yyyy", CultureInfo.InvariantCulture)<span class="button">Detail</span>
+		</p>
+		<span class="icon-wheel"></span>
+		<img src="@Model.ImageBig">
+	</a>
+</div>
