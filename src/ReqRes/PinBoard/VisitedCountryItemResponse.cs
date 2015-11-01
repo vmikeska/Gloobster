@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Gloobster.WebApiObjects.PinBoard
+namespace Gloobster.ReqRes.PinBoard
 {
 	public class VisitedCountryItemResponse
 	{

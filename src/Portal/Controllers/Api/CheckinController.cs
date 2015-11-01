@@ -7,9 +7,8 @@ using Facebook;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
 using Gloobster.Mappers;
-using Gloobster.WebApiObjects;
-using Gloobster.WebApiObjects.MoveOut;
-using Gloobster.WebApiObjects.PinBoard;
+using Gloobster.ReqRes.MoveOut;
+using Gloobster.ReqRes.PinBoard;
 using Microsoft.AspNet.Mvc;
 
 namespace Gloobster.Portal.Controllers

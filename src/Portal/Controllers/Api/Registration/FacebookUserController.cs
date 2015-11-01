@@ -4,8 +4,8 @@ using Autofac;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
 using Gloobster.Enums;
-using Gloobster.Portal.ReqRes;
-using Gloobster.WebApiObjects.Facebook;
+using Gloobster.ReqRes;
+using Gloobster.ReqRes.Facebook;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 

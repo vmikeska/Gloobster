@@ -1,4 +1,4 @@
-﻿namespace Gloobster.WebApiObjects.PinBoard
+﻿namespace Gloobster.ReqRes.PinBoard
 {
 	public class PinBoardStatResponse
 	{

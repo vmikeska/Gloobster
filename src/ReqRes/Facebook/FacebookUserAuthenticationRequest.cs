@@ -1,4 +1,4 @@
-﻿namespace Gloobster.WebApiObjects.Facebook
+﻿namespace Gloobster.ReqRes.Facebook
 {
 	public class FacebookUserAuthenticationRequest
 	{

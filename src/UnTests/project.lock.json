@@ -132,6 +132,7 @@
           "DomainModelsCommon": "1.0.0",
           "Entities": "1.0.0",
           "MongoDB.Driver": "2.1.0",
+          "ReqRes": "1.0.0",
           "SocialLogin": "1.0.0",
           "TweetSharp": "2.3.1",
           "WebApiObjects": "1.0.0"
@@ -1452,6 +1453,13 @@
           "lib/net45/Newtonsoft.Json.dll": {}
         }
       },
+      "ReqRes/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "Common": "1.0.0",
+          "Enums": "1.0.0"
+        }
+      },
       "SharpSquare/1.0.0": {
         "type": "project"
       },
@@ -1732,6 +1740,10 @@
     "Mappers/1.0.0": {
       "type": "project",
       "path": "../Mappers/project.json"
+    },
+    "ReqRes/1.0.0": {
+      "type": "project",
+      "path": "../ReqRes/project.json"
     },
     "SharpSquare/1.0.0": {
       "type": "project",

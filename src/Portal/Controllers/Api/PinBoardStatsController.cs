@@ -1,10 +1,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.DomainInterfaces;
-using Gloobster.WebApiObjects;
-using Gloobster.WebApiObjects.PinBoard;
 using Microsoft.AspNet.Mvc;
 using Gloobster.Mappers;
+using Gloobster.ReqRes.PinBoard;
 
 namespace Gloobster.Portal.Controllers
 {

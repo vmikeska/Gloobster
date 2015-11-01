@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Gloobster.Common;
 
-namespace Gloobster.WebApiObjects.PinBoard
+namespace Gloobster.ReqRes.PinBoard
 {
 	public class VisitedCityItemResponse
 	{

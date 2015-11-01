@@ -6,6 +6,7 @@ using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.Entities;
 using Gloobster.Portal.Controllers.Base;
+using Gloobster.ReqRes.Friends;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Gloobster.Portal.Controllers
+namespace Gloobster.ReqRes.Friends
 {
 	public class FriendsResponse
 	{

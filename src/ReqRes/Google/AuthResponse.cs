@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Gloobster.WebApiObjects.Google
+﻿namespace Gloobster.ReqRes.Google
 {
 	public class ExtraQueryParams
 	{

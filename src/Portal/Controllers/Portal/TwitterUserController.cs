@@ -5,7 +5,6 @@ using Autofac;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
-using Gloobster.Portal.ReqRes;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 

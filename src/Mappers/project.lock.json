@@ -1160,6 +1160,13 @@
           "lib/net45/Newtonsoft.Json.dll": {}
         }
       },
+      "ReqRes/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "Common": "1.0.0",
+          "Enums": "1.0.0"
+        }
+      },
       "SharpSquare/1.0.0": {
         "type": "project"
       },
@@ -1252,6 +1259,10 @@
     "Enums/1.0.0": {
       "type": "project",
       "path": "../Enums/project.json"
+    },
+    "ReqRes/1.0.0": {
+      "type": "project",
+      "path": "../ReqRes/project.json"
     },
     "SharpSquare/1.0.0": {
       "type": "project",
@@ -2362,7 +2373,8 @@
       "SocialLogin >= 1.0.0-*",
       "TweetSharp >= 2.3.1",
       "MongoDB.Driver >= 2.1.0",
-      "Entities >= 1.0.0-*"
+      "Entities >= 1.0.0-*",
+      "ReqRes >= 1.0.0-*"
     ],
     "DNX,Version=v4.5.1": []
   }

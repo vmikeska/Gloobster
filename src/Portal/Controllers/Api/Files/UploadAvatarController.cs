@@ -9,7 +9,7 @@ using Gloobster.DomainObjects;
 using Gloobster.Entities;
 using Gloobster.Portal.Controllers.Api.Friends;
 using Gloobster.Portal.Controllers.Base;
-using Gloobster.Portal.ReqRes.Files;
+using Gloobster.ReqRes.Files;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Dnx.Runtime;

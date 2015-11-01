@@ -1,4 +1,4 @@
-﻿namespace Gloobster.WebApiObjects.MoveOut
+﻿namespace Gloobster.ReqRes.MoveOut
 {
 
 	public class CheckinRequest

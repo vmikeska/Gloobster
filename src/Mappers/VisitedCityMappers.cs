@@ -1,8 +1,7 @@
 using System.Linq;
 using Gloobster.DomainObjects;
 using Gloobster.Entities;
-using Gloobster.WebApiObjects;
-using Gloobster.WebApiObjects.PinBoard;
+using Gloobster.ReqRes.PinBoard;
 using MongoDB.Bson;
 
 namespace Gloobster.Mappers

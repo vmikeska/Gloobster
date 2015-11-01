@@ -1,8 +1,7 @@
 
 using Gloobster.Enums;
-using Gloobster.Portal.Controllers.Api.Files;
 
-namespace Gloobster.Portal.ReqRes.Files
+namespace Gloobster.ReqRes.Files
 {
 	public class FileRequest
 	{

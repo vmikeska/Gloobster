@@ -1,6 +1,6 @@
 ﻿using Gloobster.Enums;
 
-namespace Gloobster.Portal.ReqRes
+namespace Gloobster.ReqRes
 {
     public class LoggedResponse
     {

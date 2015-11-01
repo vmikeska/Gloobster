@@ -5,8 +5,8 @@ using Autofac;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
 using Gloobster.Enums;
-using Gloobster.Portal.ReqRes;
-using Gloobster.WebApiObjects.Google;
+using Gloobster.ReqRes;
+using Gloobster.ReqRes.Google;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 

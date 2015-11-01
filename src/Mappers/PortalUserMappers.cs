@@ -2,7 +2,6 @@ using System.Linq;
 
 using Gloobster.DomainObjects;
 using Gloobster.Entities;
-using Gloobster.WebApiObjects;
 using MongoDB.Bson;
 
 namespace Gloobster.Mappers

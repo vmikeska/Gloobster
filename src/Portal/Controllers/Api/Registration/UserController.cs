@@ -6,11 +6,8 @@ using Autofac;
 using Gloobster.Common;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
-using Gloobster.WebApiObjects;
-using Gloobster.Mappers;
-using Gloobster.Portal.ReqRes;
+using Gloobster.ReqRes;
 using Gloobster.SocialLogin.Facebook.Communication;
-using Gloobster.WebApiObjects.Facebook;
 using Microsoft.AspNet.Http;
 
 namespace Gloobster.Portal.Controllers
