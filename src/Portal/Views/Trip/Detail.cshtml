@@ -3,12 +3,402 @@
 @using Gloobster.Portal.ViewModels
 @model Gloobster.Portal.ViewModels.ViewModelDetail
 
+<script type="text/javascript" src="@Url.Content("~/js/Views/TripDetailView.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Trip/Comments.js")"></script>
 
-This is trip detail
+
+<section class="line margin padding">
+	<div class="wrapper">
+		<div class="table margin width100">
+			<div class="cell middle">
+				<input class="heading middle" type="text" placeholder="Edit this" value="My Euro Tri">
+				<a class="button border mleft10" href="#">Add photo</a>
+			</div>
+			<div class="cell middle tright">
+				<a class="button border popup-target" data-target="#popup-share" href="#">Share trip</a>
+				<a class="icon-wheel blue middle mleft20" href="#">Settings</a>
+			</div>
+		</div>
+
+		<p class="color1">My Own Personal trip Description that I can write and edit anytime. This text would be used as default copy for sharing and for any other off site interaction so be careful. In the future it could have a feature allowing theme photo being pre-generated and possibly replaced by my photo of choice.</p>
+
+		<h3>Day by Day Plan</h3>
+		<div class="daybyday table margin">
+			<div class="cell">
+				<div class="destination">Prague</div>
+				<div class="timeline">22.6.</div>
+				<div class="timeline green">V Praze je blaze ...</div>
+			</div>
+			<div class="cell">
+				<div class="transport">
+					<span class="icon-plane"></span>
+				</div>
+				<div class="timeline green falldown"></div>
+			</div>
+			<div class="cell">
+				<div class="destination active">
+					Frankfurt
+					<span class="tab">arrival Mon 23.6.</span>
+				</div>
+				<div class="timeline green"></div>
+				<div class="timeline">4.5.</div>
+			</div>
+			<div class="cell">
+				<div class="transport active">
+					<span class="icon-train"></span>
+					<span class="tab"></span>
+				</div>
+				<div class="timeline"></div>
+			</div>
+			<div class="cell">
+				<div class="destination">Vienna</div>
+				<div class="timeline"></div>
+				<div class="timeline green">1.1.</div>
+			</div>
+			<div class="cell">
+				<div class="transport">
+					<span class="icon-boat"></span>
+				</div>
+				<div class="timeline green">22.6.</div>
+			</div>
+			<div class="cell">
+				<div class="destination">New York</div>
+				<div class="timeline green"></div>
+				<div class="timeline">25.10.</div>
+			</div>
+			<div class="cell">
+				<div class="transport">
+					<span class="icon-bike"></span>
+				</div>
+				<div class="timeline"></div>
+			</div>
+		</div>
+
+		@*@{await Html.RenderPartialAsync("TravelDetail"); }*@
+		<div class="daybyday table margin">
+			<div class="cell">
+				<div class="destination">Brno</div>
+				<div class="timeline"></div>
+				<div class="timeline green">25.10.</div>
+			</div>
+			<div class="cell">
+				<div class="transport">
+					<span class="icon-car"></span>
+				</div>
+				<div class="timeline green"></div>
+			</div>
+			<div class="cell">
+				<div class="destination active2">
+					Frankfurt
+					<span class="tab">arrival Mon 23.6.</span>
+				</div>
+				<div class="timeline green">22.6.</div>
+			</div>
+			<div class="cell">
+				<div class="transport">
+					<span class="icon-plane"></span>
+				</div>
+				<div class="timeline green"></div>
+			</div>
+			<div class="cell">
+				<div class="destination orange">Budapest</div>
+				<div class="timeline green"></div>
+				<div class="timeline">22.6.</div>
+			</div>
+			<div class="cell">
+				<div class="transport orange">
+					<span class="icon-walk"></span>
+				</div>
+				<div class="timeline"></div>
+			</div>
+			<div class="cell">
+				<div class="destination orange">Graz</div>
+				<div class="timeline"></div>
+				<div class="timeline green">30.7.</div>
+			</div>
+			<div class="cell">
+				<a class="create" href="#"></a>
+			</div>
+		</div>
+
+		@*@{await Html.RenderPartialAsync("PlaceDetail"); }*@
+	</div>
+</section>
+
+<section class="line margin padding">
+	<div class="wrapper">
+		<h3>Comments</h3>
+		<div class="form">
+			<div class="table row margin">
+				<div class="cell">
+					<input id="commentInput" class="width700" type="text" placeholder="Your comment...">
+				</div>
+				<div class="cell">
+					<input id="commentSubmit" type="button" value="Add comment">
+				</div>
+			</div>
+		</div>
+
+		<div id="commentsContainer" class="comments table">
+
+			
+
+		</div>
+	</div>
+
+
+</section>
+
+<section class="wrapper margin">
+		<h3>Shared documents</h3>
+		<div class="documents bordered grid col7">
+				<div class="cell">
+						<div class="document">
+								<a class="file doc" href="#file">Ticket 20156 Ryanair.docx</a>
+								<a class="delete" href="#delete">Delete</a>
+						</div>
+				</div>
+				<div class="cell">
+						<div class="document">
+								<a class="file pdf" href="#">Cost Summary Team.pdf</a>
+								<a class="delete" href="#">Delete</a>
+						</div>
+				</div>
+				<div class="cell">
+						<div class="document">
+								<a class="file html" href="#">Ticket 20156 Ryanair.html</a>
+								<a class="delete" href="#">Delete</a>
+						</div>
+				</div>
+				<div class="cell">
+						<div class="document">
+								<a class="file xml" href="#">Cost Summary Team.pdf</a>
+								<a class="delete" href="#">Delete</a>
+						</div>
+				</div>
+				<div class="cell">
+						<div class="document">
+								<a class="file doc" href="#">Ticket 20156 Ryanair.html</a>
+								<a class="delete" href="#">Delete</a>
+						</div>
+				</div>
+				<div class="cell">
+						<div class="document">
+								<a class="file pdf" href="#">Cost Summary Team.pdf</a>
+								<a class="delete" href="#">Delete</a>
+						</div>
+				</div>
+				<div class="cell">
+						<div class="document">
+								<a class="file html" href="#">Ticket 20156 Ryanair.html</a>
+								<a class="delete" href="#">Delete</a>
+						</div>
+				</div>
+				<div class="cell">
+						<div class="document">
+								<a class="file xml" href="#">Cost Summary Team.pdf</a>
+								<a class="delete" href="#">Delete</a>
+						</div>
+				</div>
+				<div class="cell">
+						<div class="document">
+								<a class="create" href="#">Přidat další</a>
+						</div>
+				</div>
+				<div class="cell">
+						<div class="document">
+								<a class="create" href="#"></a>
+						</div>
+				</div>
+		</div>
+</section>
+<section class="bggray margin">
+		<div class="wrapper">
+				<h3>Team</h3>
+				<div class="team grid col5">
+						<div class="cell">
+								<div class="table">
+										<div class="cell">
+												<span class="thumbnail">
+														<img src="~/images/samples/sample12.jpg">
+												</span>
+										</div>
+										<div class="cell">Václav Petrklíč</div>
+								</div>
+						</div>
+						<div class="cell">
+								<div class="table">
+										<div class="cell">
+												<span class="thumbnail">
+														<img src="~/images/samples/sample12.jpg">
+												</span>
+										</div>
+										<div class="cell">Vítězslav Válka</div>
+								</div>
+						</div>
+						<div class="cell">
+								<div class="table">
+										<div class="cell">
+												<span class="thumbnail">
+														<img src="~/images/samples/sample12.jpg">
+												</span>
+										</div>
+										<div class="cell">Mirek Dušín</div>
+								</div>
+						</div>
+						<div class="cell">
+								<div class="table">
+										<div class="cell">
+												<span class="thumbnail">
+														<img src="~/images/samples/sample12.jpg">
+												</span>
+										</div>
+										<div class="cell">Václav Petrklíč</div>
+								</div>
+						</div>
+						<div class="cell">
+								<div class="table">
+										<div class="cell">
+												<span class="thumbnail">
+														<img src="~/images/samples/sample12.jpg">
+												</span>
+										</div>
+										<div class="cell">Vítězslav Válka</div>
+								</div>
+						</div>
+						<div class="cell">
+								<div class="table">
+										<div class="cell">
+												<span class="thumbnail">
+														<img src="~/images/samples/sample12.jpg">
+												</span>
+										</div>
+										<div class="cell">Mirek Dušín</div>
+								</div>
+						</div>
+						<div class="cell">
+								<div class="table">
+										<div class="cell">
+												<span class="thumbnail">
+														<img src="~/images/samples/sample12.jpg">
+												</span>
+										</div>
+										<div class="cell">Václav Petrklíč</div>
+								</div>
+						</div>
+						<div class="cell">
+								<div class="table">
+										<div class="cell">
+												<span class="thumbnail">
+														<img src="~/images/samples/sample12.jpg">
+												</span>
+										</div>
+										<div class="cell">Mirek Dušín</div>
+								</div>
+						</div>
+						<div class="cell">
+								<a class="create" href="#">Přidat další</a>
+						</div>
+				</div>
+		</div>
+</section>
+<section class="wrapper margin3">
+		<div class="table row margin">
+				<div class="cell">
+						<h3 class="margin0">Notes</h3>
+				</div>
+				<div class="cell bottom">
+						<input id="public" type="checkbox">
+						<label class="color1" for="public">Public</label>
+				</div>
+		</div>
+		<p class="color1">My Own Personal trip Description that I can write and edit anytime. This text would be used as default copy for sharing and for any other off site interaction so be careful. In the future it could have a feature allowing theme photo being pre-generated and possibly replaced by my photo of choice.</p>
+</section>
+
+
+@Html.Partial("ShareDialog")
+
+<script id="comment-template" type="text/x-handlebars-template">
+		
+		<div class="row">
+				<div class="cell">
+						<span class="thumbnail">
+								<img src="/images/samples/sample12.jpg">
+								@*{{photoUrl}}*@
+						</span>
+				</div>
+				<div class="cell">
+						<div class="author">
+								<a href="#"><strong>{{displayName}}</strong></a>								
+								<span> • {{displayDate}}</span>
+						</div>
+						<div class="bubble">
+								{{text}}
+						</div>
+				</div>
+		</div>
+
+</script>
+
 
 <script>
 	function onBodyLoad() {
-		
+		currentView = new TripDetailView();
+		var urlParams = window.location.pathname.split("/");
+		var id = urlParams[urlParams.length - 1];
+
+		currentView.initialize(id);
 	}
 
 </script>
+
+@*<div class="row">
+			<div class="cell">
+				<span class="thumbnail">
+											<img src="~/images/samples/sample12.jpg">
+									</span>
+			</div>
+			<div class="cell">
+				<div class="author">
+					<strong>Adam Zbiejczuk</strong>
+					<span> • 15 June 2015 (10:15)</span>
+				</div>
+				<div class="bubble">
+					Hey guys, I have finally planned the trip for ya all.
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="cell">
+				<span class="thumbnail">
+											<img src="~/images/samples/sample12.jpg">
+									</span>
+			</div>
+			<div class="cell">
+				<div class="author">
+					<a href="#"><strong>Marcus Lemonis</strong></a>
+					<span> • 15 June 2015 (10:15)</span>
+				</div>
+				<div class="bubble">
+					Perfect! And remember guys, dont forget to take enough clean underwear as the trip is going to be difficult logistically and we might need lots of it. This text is showing what happens if theres more than one line of text.
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="cell">
+				<span class="thumbnail">
+											<img src="~/images/samples/sample12.jpg">
+									</span>
+			</div>
+			<div class="cell">
+				<div class="author">
+					<strong>Jiří Pavlík</strong>
+					<span> • 15 June 2015 (10:15)</span>
+				</div>
+				<div class="bubble">
+					Got it. I am ready for it so lets go as you planned!
+				</div>
+			</div>
+		</div>*@

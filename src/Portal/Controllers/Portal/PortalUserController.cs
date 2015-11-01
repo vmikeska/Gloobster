@@ -40,13 +40,14 @@ namespace Gloobster.Portal.Controllers.Portal
 			return View(viewModel);
 		}
 
+
+
+
 		private string FormatCityStr(CityLocationSE city)
 		{
 			return $"{city.City}, {city.CountryCode}";
 		}
-
-	
-
+		
 		private string GetGenderStr(Gender gender)
 		{
 			if (gender == Gender.M)

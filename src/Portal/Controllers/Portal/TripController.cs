@@ -29,6 +29,31 @@ namespace Gloobster.Portal.Controllers.Portal
 			
 			return View(viewModel);
 		}
+		public async Task<IActionResult> CreateNewTrip(string id)
+		{
+			var tripEntity = new TripEntity
+			{
+				id = ObjectId.GenerateNewId(),
+				CreatedDate = DateTime.UtcNow,
+				Name = id,
+				PortalUser_id = DBUserId
+			};
+
+			await DB.SaveAsync(tripEntity);
+
+			return RedirectToAction("Detail", "Trip", tripEntity.id);
+		}
+
+		public IActionResult Detail()
+		{
+			var viewModel = CreateViewModelInstance<ViewModelDetail>();
+
+			return View(viewModel);
+		}
+
+
+
+
 
 		private List<TripItemViewModel> GetDummyTrips()
 		{
@@ -65,29 +90,14 @@ namespace Gloobster.Portal.Controllers.Portal
 				IsLocked = true
 			};
 			return vm;
-		}
-
-		public async Task<IActionResult> CreateNewTrip(string id)
-		{
-			var tripEntity = new TripEntity
-			{
-				id = ObjectId.GenerateNewId(),
-				CreatedDate = DateTime.UtcNow,
-				Name = id,
-				PortalUser_id = DBUserId
-			};
-
-			await DB.SaveAsync(tripEntity);
-
-			return RedirectToAction("Detail", "Trip", tripEntity.id);
-		}
-
-		public IActionResult Detail()
-		{
-			var viewModel = CreateViewModelInstance<ViewModelDetail>();
-			
-			return View(viewModel);
-		}
-
+		}		
 	}
+
+	public class CommentsRequest
+	{
+		
+	}
+
+	
+
 }
