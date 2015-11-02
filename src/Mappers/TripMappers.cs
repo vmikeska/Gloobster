@@ -35,7 +35,24 @@ namespace Gloobster.Mappers
 				request.comments = entity.Comments.Select(c => c.ToResponse()).ToList();
 			}
 
+			if (entity.Files != null)
+			{
+				request.files = entity.Files.Select(c => c.ToResponse()).ToList();
+			}
+
 			return request;
+		}
+
+		public static FileResponse ToResponse(this FileSE entity)
+		{
+			var response = new FileResponse
+			{
+				originalFileName = entity.OriginalFileName,
+				savedFileName = entity.SavedFileName,
+				ownerId = entity.PortalUser_id.ToString()
+			};
+
+			return response;
 		}
 
 		public static CommentResponse ToResponse(this CommentSE entity)

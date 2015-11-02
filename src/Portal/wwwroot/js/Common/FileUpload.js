@@ -1,7 +1,6 @@
 var FileUploadConfig = (function () {
     function FileUploadConfig() {
         this.bytesPerRequest = 102400;
-        this.getAsBase64AfterUpload = false;
     }
     return FileUploadConfig;
 })();
@@ -35,7 +34,7 @@ var FileUpload = (function () {
             console.log("transfere complete");
             console.log("file length: " + this.currentFile.size);
             if (this.onUploadFinished) {
-                this.onUploadFinished(this.currentFile);
+                this.onUploadFinished(this.currentFile, this.finalResponse);
             }
             this.resetValues();
             return;
@@ -92,8 +91,15 @@ var FileUpload = (function () {
     FileUpload.prototype.onBlobLoad = function (evnt) {
         var _this = this;
         var dataBlob = evnt.target.result;
-        var dataToSend = { data: dataBlob, filePartType: this.getFilePartType(), fileName: this.currentFile.name };
-        this.owner.apiPost(this.config.endpoint, dataToSend, function () {
+        var dataToSend = {
+            data: dataBlob,
+            filePartType: this.getFilePartType(),
+            fileName: this.currentFile.name,
+            customId: this.customId,
+            type: this.currentFile.type
+        };
+        this.owner.apiPost(this.config.endpoint, dataToSend, function (finalResponse) {
+            _this.finalResponse = finalResponse;
             _this.onSuccessBlobUpload();
         });
     };

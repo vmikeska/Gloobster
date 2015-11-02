@@ -16,5 +16,7 @@ namespace Gloobster.ReqRes.Trip
 		public List<TripUsersResponse> users { get; set; } 
 
 		public List<CommentResponse> comments { get; set; }
+
+		public List<FileResponse> files { get; set; }
 	}
 }

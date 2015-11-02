@@ -39,6 +39,24 @@ namespace Gloobster.DomainModels
 		public string OriginaFileName { get; set; }
 		public string CustomFileName { get; set; }
 		public string UserId { get; set; }
+		public string FileType { get; set; }
+
+		public Stream GetFile(string fileDirectory, string fileName)
+		{
+			string storageFilePath = Storage.Combine(fileDirectory, fileName);
+			var stream = Storage.GetFile(storageFilePath).OpenRead();
+			return stream;
+			//using (var reader = new StreamReader())
+			//{
+			//	var stringPart = reader.ReadToEnd();
+			//	stringParts.Add(stringPart);
+			//}
+		}
+
+		public void DeleteFile(string filePath)
+		{
+			Storage.DeleteFile(filePath);			
+		}
 
 		public void WriteFilePart(WriteFilePartDO filePart)
 		{
@@ -46,6 +64,7 @@ namespace Gloobster.DomainModels
 			TargetDirectory = filePart.FileLocation;
 			OriginaFileName = filePart.FileName;
 			CustomFileName = filePart.CustomFileName;
+			FileType = filePart.FileType;
 
 			var dataObj = SplitData(filePart.Data);
 			
@@ -79,9 +98,7 @@ namespace Gloobster.DomainModels
 
 			return data;
 		}
-
 		
-
 		private void JoinAllFileParts(string lastData)
 		{			
 			var stringParts = new List<string>();
@@ -128,14 +145,12 @@ namespace Gloobster.DomainModels
 			var onFileSavedArgs = new OnFileSavedArgs
 			{
 				FileName = fileName,
-				Directory = TargetDirectory
+				Directory = TargetDirectory,
+				FileType = FileType
 			};
 			OnFileSaved.Invoke(this, onFileSavedArgs);
 		}
-
 		
-
-
 		private string BuildFileName()
 		{
 			bool hasCustomName = !string.IsNullOrEmpty(CustomFileName);
@@ -167,7 +182,7 @@ namespace Gloobster.DomainModels
 			files.ForEach(f => Storage.DeleteFile(f.GetPath()));
 		}
 
-		public class DataObj
+		private class DataObj
 		{
 			public string Data;
 			public string Metadata;
@@ -178,5 +193,6 @@ namespace Gloobster.DomainModels
 	{
 		public string Directory { get; set; }
 		public string FileName { get; set; }
+		public string FileType { get; set; }
 	}
 }

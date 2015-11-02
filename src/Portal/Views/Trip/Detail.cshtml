@@ -5,6 +5,7 @@
 
 <script type="text/javascript" src="@Url.Content("~/js/Views/TripDetailView.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Trip/Comments.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Trip/Files.js")"></script>
 
 
 <section class="line margin padding">
@@ -151,65 +152,8 @@
 
 <section class="wrapper margin">
 		<h3>Shared documents</h3>
-		<div class="documents bordered grid col7">
-				<div class="cell">
-						<div class="document">
-								<a class="file doc" href="#file">Ticket 20156 Ryanair.docx</a>
-								<a class="delete" href="#delete">Delete</a>
-						</div>
-				</div>
-				<div class="cell">
-						<div class="document">
-								<a class="file pdf" href="#">Cost Summary Team.pdf</a>
-								<a class="delete" href="#">Delete</a>
-						</div>
-				</div>
-				<div class="cell">
-						<div class="document">
-								<a class="file html" href="#">Ticket 20156 Ryanair.html</a>
-								<a class="delete" href="#">Delete</a>
-						</div>
-				</div>
-				<div class="cell">
-						<div class="document">
-								<a class="file xml" href="#">Cost Summary Team.pdf</a>
-								<a class="delete" href="#">Delete</a>
-						</div>
-				</div>
-				<div class="cell">
-						<div class="document">
-								<a class="file doc" href="#">Ticket 20156 Ryanair.html</a>
-								<a class="delete" href="#">Delete</a>
-						</div>
-				</div>
-				<div class="cell">
-						<div class="document">
-								<a class="file pdf" href="#">Cost Summary Team.pdf</a>
-								<a class="delete" href="#">Delete</a>
-						</div>
-				</div>
-				<div class="cell">
-						<div class="document">
-								<a class="file html" href="#">Ticket 20156 Ryanair.html</a>
-								<a class="delete" href="#">Delete</a>
-						</div>
-				</div>
-				<div class="cell">
-						<div class="document">
-								<a class="file xml" href="#">Cost Summary Team.pdf</a>
-								<a class="delete" href="#">Delete</a>
-						</div>
-				</div>
-				<div class="cell">
-						<div class="document">
-								<a class="create" href="#">Přidat další</a>
-						</div>
-				</div>
-				<div class="cell">
-						<div class="document">
-								<a class="create" href="#"></a>
-						</div>
-				</div>
+		<div id="filesContainer" class="documents bordered grid col7">
+
 		</div>
 </section>
 <section class="bggray margin">
@@ -317,6 +261,7 @@
 
 
 @Html.Partial("ShareDialog")
+@Html.Partial("ConfirmDeleteDialog")
 
 <script id="comment-template" type="text/x-handlebars-template">
 		
@@ -340,6 +285,30 @@
 
 </script>
 
+<script id="file-template" type="text/x-handlebars-template">		
+		<div class="cell">
+				<div class="document">
+						<a class="file {{fileType}}" href="/Trip/GetFile?fileId={{fileId}}&tripId={{tripId}}">{{fileName}}</a>
+						<a class="delete popup-target" data-target="#popup-delete" data-id="{{fileId}}" href="#">Share trip</a>
+						@*<a class="delete" href="javascript: void(0)" data-id="{{fileId}}">Delete</a>*@
+				</div>
+		</div>				
+</script>
+
+<script id="fileCreate-template" type="text/x-handlebars-template">
+		<div class="cell">
+				<div class="document">
+						<a class="create" href="#">Add file</a>
+				</div>
+		</div>		
+				
+		<input id="fileInput" type="file" style="" />
+		<br />
+		<span id="progressBar" style="font-size: 20px; font-weight: bold">0</span>%
+</script>
+
+
+
 
 <script>
 	function onBodyLoad() {
@@ -350,55 +319,47 @@
 		currentView.initialize(id);
 	}
 
+
 </script>
 
-@*<div class="row">
-			<div class="cell">
-				<span class="thumbnail">
-											<img src="~/images/samples/sample12.jpg">
-									</span>
-			</div>
-			<div class="cell">
-				<div class="author">
-					<strong>Adam Zbiejczuk</strong>
-					<span> • 15 June 2015 (10:15)</span>
-				</div>
-				<div class="bubble">
-					Hey guys, I have finally planned the trip for ya all.
-				</div>
-			</div>
-		</div>
 
-		<div class="row">
-			<div class="cell">
-				<span class="thumbnail">
-											<img src="~/images/samples/sample12.jpg">
-									</span>
-			</div>
-			<div class="cell">
-				<div class="author">
-					<a href="#"><strong>Marcus Lemonis</strong></a>
-					<span> • 15 June 2015 (10:15)</span>
-				</div>
-				<div class="bubble">
-					Perfect! And remember guys, dont forget to take enough clean underwear as the trip is going to be difficult logistically and we might need lots of it. This text is showing what happens if theres more than one line of text.
-				</div>
-			</div>
-		</div>
 
-		<div class="row">
-			<div class="cell">
-				<span class="thumbnail">
-											<img src="~/images/samples/sample12.jpg">
-									</span>
-			</div>
-			<div class="cell">
-				<div class="author">
-					<strong>Jiří Pavlík</strong>
-					<span> • 15 June 2015 (10:15)</span>
-				</div>
-				<div class="bubble">
-					Got it. I am ready for it so lets go as you planned!
-				</div>
+@*<div class="cell">
+							<div class="document">
+									<a class="file doc" href="#file">Ticket 20156 Ryanair.docx</a>
+									<a class="delete" href="#delete">Delete</a>
+							</div>
+					</div>
+					<div class="cell">
+							<div class="document">
+									<a class="file pdf" href="#">ThisIsALongFileName.pdf</a>
+									<a class="delete" href="#">Delete</a>
+							</div>
+					</div>
+					<div class="cell">
+							<div class="document">
+									<a class="file html" href="#">Ticket 20156 Ryanair.html</a>
+									<a class="delete" href="#">Delete</a>
+							</div>
+					</div>
+					<div class="cell">
+							<div class="document">
+									<a class="file xml" href="#">Cost Summary Team.pdf</a>
+									<a class="delete" href="#">Delete</a>
+							</div>
+					</div>
+					<div class="cell">
+							<div class="document">
+									<a class="file doc" href="#">Ticket 20156 Ryanair.html</a>
+									<a class="delete" href="#">Delete</a>
+							</div>
+					</div>
+
+
+
+
+		<div class="cell">
+			<div class="document">
+				<a class="create" href="#">Add file</a>
 			</div>
 		</div>*@

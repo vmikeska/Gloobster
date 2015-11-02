@@ -102,6 +102,43 @@ class RequestSender {
 		}
 
 		$.ajax(callObj);
+	}
+
+	public sendDelete() {
+
+	 var urlQuery = "";
+	 if (this.params) {
+		urlQuery = "?";
+
+		this.params.forEach(param => {
+		 urlQuery += param[0] + "=" + param[1] + "&";
+		});
+
+		urlQuery = urlQuery.substring(0, urlQuery.length - 1);
+	 }
+
+	 var self = this;
+
+	 var callObj = {
+		type: 'DELETE',
+		url: this.endPoint + urlQuery,
+		success(response) {
+		 if (self.onSuccess) {
+			self.onSuccess(response);
+		 }
+		},
+		error(response) {
+		 if (self.onError) {
+			self.onError(response);
+		 }
+		}
+	 };
+
+	 if (this.addLocalAuthentication) {
+		this.addAuthentication(callObj);
+	 }
+
+	 $.ajax(callObj);
 
 	}
 

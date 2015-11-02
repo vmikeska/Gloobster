@@ -8,13 +8,19 @@ using Gloobster.Portal.Controllers.Base;
 using Gloobster.Portal.ViewModels;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
+using System.IO;
+using Gloobster.DomainInterfaces;
+using Gloobster.DomainModels;
 
 namespace Gloobster.Portal.Controllers.Portal
 {
 	public class TripController : PortalBaseController
 	{
-		public TripController(IDbOperations db) : base(db)
+		public FilesDomain FileDomain { get; set; }
+
+		public TripController(IFilesDomain filesDomain, IDbOperations db) : base(db)
 		{
+			FileDomain = (FilesDomain)filesDomain;
 		}
 
 		public IActionResult List()
@@ -50,8 +56,39 @@ namespace Gloobster.Portal.Controllers.Portal
 
 			return View(viewModel);
 		}
+		
+		public IActionResult GetFile(string fileId, string tripId)
+		{
+			var tripIdObj = new ObjectId(tripId);			
+			var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
+
+			if (trip == null)
+			{
+				//throw not exists
+				throw new Exception();
+			}
+
+			if (trip.Files == null)
+			{
+				//throw not exists
+				throw new Exception();
+			}
+
+			//todo: check rights				
+			var fileToReturn = trip.Files.FirstOrDefault(f => f.SavedFileName == fileId);
+
+			if (fileToReturn == null)
+			{
+				//thorw not found
+				throw new Exception();
+			}
+
+			var dir = Path.Combine("Trips", tripId);
+			var fileStream = FileDomain.GetFile(dir, fileToReturn.SavedFileName);
 
 
+			return File(fileStream, fileToReturn.Type, fileToReturn.OriginalFileName);
+		}
 
 
 

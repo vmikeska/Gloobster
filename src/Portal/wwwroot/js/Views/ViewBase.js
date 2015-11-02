@@ -66,6 +66,15 @@ var Views;
             request.onError = function (response) { alert('error'); };
             request.sentPost();
         };
+        ViewBase.prototype.apiDelete = function (endpointName, params, callback) {
+            var endpoint = '/api/' + endpointName;
+            console.log("deleting: " + endpoint);
+            var request = new RequestSender(endpoint, null, true);
+            request.params = params;
+            request.onSuccess = callback;
+            request.onError = function (response) { alert('error'); };
+            request.sendDelete();
+        };
         return ViewBase;
     })();
     Views.ViewBase = ViewBase;

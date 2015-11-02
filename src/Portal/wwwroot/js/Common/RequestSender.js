@@ -76,6 +76,35 @@ var RequestSender = (function () {
         }
         $.ajax(callObj);
     };
+    RequestSender.prototype.sendDelete = function () {
+        var urlQuery = "";
+        if (this.params) {
+            urlQuery = "?";
+            this.params.forEach(function (param) {
+                urlQuery += param[0] + "=" + param[1] + "&";
+            });
+            urlQuery = urlQuery.substring(0, urlQuery.length - 1);
+        }
+        var self = this;
+        var callObj = {
+            type: 'DELETE',
+            url: this.endPoint + urlQuery,
+            success: function (response) {
+                if (self.onSuccess) {
+                    self.onSuccess(response);
+                }
+            },
+            error: function (response) {
+                if (self.onError) {
+                    self.onError(response);
+                }
+            }
+        };
+        if (this.addLocalAuthentication) {
+            this.addAuthentication(callObj);
+        }
+        $.ajax(callObj);
+    };
     return RequestSender;
 })();
 //# sourceMappingURL=RequestSender.js.map

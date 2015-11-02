@@ -3,8 +3,7 @@ class FileUploadConfig {
 	public bytesPerRequest = 102400;
 	public inputId: string;
   public owner: Views.ViewBase;
-	public endpoint: string;
-	public getAsBase64AfterUpload = false;
+	public endpoint: string;	
 }
 
 class FileUpload {
@@ -18,6 +17,8 @@ class FileUpload {
 	private reachedEnd = false;
 	private firstSent = false;
 	
+	public customId: string;
+  private finalResponse: any;
 
 	public onProgressChanged: Function;
 	public onUploadFinished: Function;
@@ -41,6 +42,7 @@ class FileUpload {
 		});
 	}
 
+
 	private resetValues() {
 		this.lastEnd = 0;
 		this.currentStart = 0;
@@ -57,7 +59,7 @@ class FileUpload {
 			console.log("file length: " + this.currentFile.size);
 
 			if (this.onUploadFinished) {
-			 this.onUploadFinished(this.currentFile);
+			 this.onUploadFinished(this.currentFile, this.finalResponse);
 			}
 
 			this.resetValues();
@@ -94,7 +96,6 @@ class FileUpload {
 		return reader;
 	}
  
-
 	private recalculateUpdateProgress() {
 		var percents = (this.currentEnd / this.currentFile.size) * 100;
 		var percentsRounded = Math.round(percents);
@@ -123,10 +124,17 @@ class FileUpload {
 	private onBlobLoad(evnt) {
 		var dataBlob = evnt.target.result;
 
-		var dataToSend = { data: dataBlob, filePartType: this.getFilePartType(), fileName: this.currentFile.name};
+		var dataToSend = {
+		 data: dataBlob,
+		 filePartType: this.getFilePartType(),
+		 fileName: this.currentFile.name,
+		 customId: this.customId,
+		 type: this.currentFile.type
+		};
 
-		this.owner.apiPost(this.config.endpoint, dataToSend, () => {
-			this.onSuccessBlobUpload();
+		this.owner.apiPost(this.config.endpoint, dataToSend, (finalResponse) => {
+			this.finalResponse = finalResponse;
+		 this.onSuccessBlobUpload();
 		});
 	}
 }

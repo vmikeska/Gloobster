@@ -1,18 +1,12 @@
 using System.Linq;
-using System.Threading;
-using System.Web.UI.WebControls;
-using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels;
 using Gloobster.DomainObjects;
 using Gloobster.Entities;
-using Gloobster.Portal.Controllers.Api.Friends;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.Files;
-using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Mvc;
-using Microsoft.Dnx.Runtime;
 using MongoDB.Bson;
 
 namespace Gloobster.Portal.Controllers.Api.Files
@@ -62,7 +56,8 @@ namespace Gloobster.Portal.Controllers.Api.Files
 				FileName = request.fileName,
 				FilePart = request.filePartType,
 				CustomFileName = userId,
-				FileLocation = fileLocation
+				FileLocation = fileLocation,
+				FileType = request.type
 			};
 
 			FileDomain.WriteFilePart(filePartDo);

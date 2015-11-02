@@ -77,6 +77,18 @@ module Views {
 			request.sentPost();
 		}
 
+		public apiDelete(endpointName: string, params: string[][], callback: Function) {
+
+		 var endpoint = '/api/' + endpointName;
+		 console.log("deleting: " + endpoint);
+
+		 var request = new RequestSender(endpoint, null, true);
+		 request.params = params;
+		 request.onSuccess = callback;
+		 request.onError = response => { alert('error') };
+		 request.sendDelete();
+		}
+
 
 	}
 }
