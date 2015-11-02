@@ -18,7 +18,7 @@ var SettingsView = (function (_super) {
     }
     SettingsView.prototype.displayNameCallback = function (value) {
         var data = { propertyName: "DisplayName", values: { name: value } };
-        this.apiPost("UserProperty", data, function () {
+        this.apiPut("UserProperty", data, function () {
             //alert("updated");
         });
     };

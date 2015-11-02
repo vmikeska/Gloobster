@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Common;
@@ -7,6 +6,7 @@ using Gloobster.DomainInterfaces;
 using Gloobster.Entities;
 using Gloobster.Enums;
 using Gloobster.Portal.Controllers.Base;
+using Gloobster.ReqRes;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 
@@ -23,7 +23,7 @@ namespace Gloobster.Portal.Controllers.Api.User
 		}
 
 		//todo: change to put
-		[HttpPost]
+		[HttpPut]
 		[Authorize]
 		public async Task<IActionResult> Put([FromBody] PropertyUpdateRequest request, string userId)
 		{
@@ -71,11 +71,5 @@ namespace Gloobster.Portal.Controllers.Api.User
 			return location;
 		}
 
-	}
-
-	public class PropertyUpdateRequest
-	{
-		public string propertyName { get; set; }
-		public Dictionary<string, string> values { get; set; }
 	}
 }

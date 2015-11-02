@@ -26,43 +26,7 @@ namespace Gloobster.Portal.Controllers.Api.Files
 		{			
 			FileDomain = (FilesDomain)filesDomain;
 		}
-
-		//[HttpGet]
-		//[Authorize]
-		//public IActionResult Get(string fileId, string tripId, string userId)
-		//{
-		//	var tripIdObj = new ObjectId(tripId);
-		//	var userIdObj = new ObjectId(userId);
-		//	var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
-
-		//	if (trip == null)
-		//	{
-		//		//throw not exists
-		//		throw new Exception();
-		//	}
-
-		//	if (trip.Files == null)
-		//	{
-		//		//throw not exists
-		//		throw new Exception();
-		//	}
-
-		//	//todo: check rights				
-		//	var fileToReturn = trip.Files.FirstOrDefault(f => f.SavedFileName == fileId);
-
-		//	if (fileToReturn == null)
-		//	{
-		//		//thorw not found
-		//		throw new Exception();
-		//	}
-
-		//	var dir = Path.Combine("Trips", tripId);
-		//	var fileStream = FileDomain.GetFile(dir, fileToReturn.SavedFileName);
-
-
-		//	return File(fileStream, fileToReturn.Type);
-		//}
-
+		
 		[HttpPost]
 		[Authorize]
 		public IActionResult Post([FromBody] FileRequest request, string userId)

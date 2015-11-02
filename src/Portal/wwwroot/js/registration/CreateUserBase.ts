@@ -40,7 +40,7 @@ class CreateUserBase {
 		request.serializeData();
 		request.onSuccess = this.onSuccess;
 		request.onError = this.onError;
-		request.sentPost();
+		request.sendPost();
 	}
 }
 

@@ -64,7 +64,16 @@ var Views;
             request.serializeData();
             request.onSuccess = callback;
             request.onError = function (response) { alert('error'); };
-            request.sentPost();
+            request.sendPost();
+        };
+        ViewBase.prototype.apiPut = function (endpointName, data, callback) {
+            var endpoint = '/api/' + endpointName;
+            console.log("putting: " + endpoint);
+            var request = new RequestSender(endpoint, data, true);
+            request.serializeData();
+            request.onSuccess = callback;
+            request.onError = function (response) { alert('error'); };
+            request.sendPut();
         };
         ViewBase.prototype.apiDelete = function (endpointName, params, callback) {
             var endpoint = '/api/' + endpointName;

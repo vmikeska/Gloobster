@@ -38,7 +38,7 @@ class RequestSender {
 		this.dataToSend = JSON.stringify(this.data);
 	}
 
-	public sentPost() {
+	public sendPost() {
 		var self = this;
 
 		var callObj = {
@@ -140,6 +140,35 @@ class RequestSender {
 
 	 $.ajax(callObj);
 
+	}
+
+	public sendPut() {
+	 var self = this;
+
+	 var callObj = {
+		type: 'PUT',
+		url: this.endPoint,
+		data: this.dataToSend,
+		success(response) {
+		 if (self.onSuccess) {
+			self.onSuccess(response);
+		 }
+		},
+		error(response) {
+		 if (self.onError) {
+			self.onError(response);
+		 }
+		},
+		dataType: 'json',
+		contentType: 'application/json; charset=utf-8'
+
+	 }
+
+	 if (this.addLocalAuthentication) {
+		this.addAuthentication(callObj);
+	 }
+
+	 $.ajax(callObj);
 	}
 
 }

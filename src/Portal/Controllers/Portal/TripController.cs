@@ -29,10 +29,8 @@ namespace Gloobster.Portal.Controllers.Portal
 
 			var trips = DB.C<TripEntity>().Where(t => t.PortalUser_id == DBUserId).ToList();
 
-			viewModel.Trips = new List<TripItemViewModel>();
-			viewModel.Trips.AddRange(GetDummyTrips());
-			viewModel.Trips.AddRange(trips.Select(TripToViewModel).ToList());
-			
+			viewModel.Trips = trips.Select(TripToViewModel).ToList();
+
 			return View(viewModel);
 		}
 		public async Task<IActionResult> CreateNewTrip(string id)
@@ -50,9 +48,14 @@ namespace Gloobster.Portal.Controllers.Portal
 			return RedirectToAction("Detail", "Trip", tripEntity.id);
 		}
 
-		public IActionResult Detail()
+		public IActionResult Detail(string id)
 		{
-			var viewModel = CreateViewModelInstance<ViewModelDetail>();
+			var tripIdObj = new ObjectId(id);
+
+			var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
+
+			var viewModel = CreateViewModelInstance<ViewModelTripDetail>();
+			viewModel.Name = trip.Name;
 
 			return View(viewModel);
 		}
@@ -89,31 +92,7 @@ namespace Gloobster.Portal.Controllers.Portal
 
 			return File(fileStream, fileToReturn.Type, fileToReturn.OriginalFileName);
 		}
-
-
-
-		private List<TripItemViewModel> GetDummyTrips()
-		{
-			return new List<TripItemViewModel>
-			{
-				new TripItemViewModel
-				{
-					Id = "myId2",
-					Date = DateTime.UtcNow,
-					Name = "Canary island with Ryan in June",
-					ImageBig = "~/images/samples/sample01.jpg",
-					IsLocked = false
-				},
-						 new TripItemViewModel
-				{
-					Id = "myId",
-					Date = DateTime.UtcNow,
-					Name = "My super trip",
-					ImageBig = "~/images/samples/sample05.jpg",
-					IsLocked = true
-				}
-			};
-		}
+		
 
 		private TripItemViewModel TripToViewModel(TripEntity trip)
 		{

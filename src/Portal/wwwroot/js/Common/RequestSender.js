@@ -105,6 +105,30 @@ var RequestSender = (function () {
         }
         $.ajax(callObj);
     };
+    RequestSender.prototype.sendPut = function () {
+        var self = this;
+        var callObj = {
+            type: 'PUT',
+            url: this.endPoint,
+            data: this.dataToSend,
+            success: function (response) {
+                if (self.onSuccess) {
+                    self.onSuccess(response);
+                }
+            },
+            error: function (response) {
+                if (self.onError) {
+                    self.onError(response);
+                }
+            },
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8'
+        };
+        if (this.addLocalAuthentication) {
+            this.addAuthentication(callObj);
+        }
+        $.ajax(callObj);
+    };
     return RequestSender;
 })();
 //# sourceMappingURL=RequestSender.js.map

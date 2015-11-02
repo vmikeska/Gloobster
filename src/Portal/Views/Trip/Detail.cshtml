@@ -1,7 +1,7 @@
 ﻿@using System.Threading.Tasks
 @using Gloobster.Portal.Controllers.Portal
 @using Gloobster.Portal.ViewModels
-@model Gloobster.Portal.ViewModels.ViewModelDetail
+@model Gloobster.Portal.ViewModels.ViewModelTripDetail
 
 <script type="text/javascript" src="@Url.Content("~/js/Views/TripDetailView.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Trip/Comments.js")"></script>
@@ -12,7 +12,7 @@
 	<div class="wrapper">
 		<div class="table margin width100">
 			<div class="cell middle">
-				<input class="heading middle" type="text" placeholder="Edit this" value="My Euro Tri">
+				<input id="nameInput" class="heading middle" type="text" placeholder="Edit this" value="@Model.Name">
 				<a class="button border mleft10" href="#">Add photo</a>
 			</div>
 			<div class="cell middle tright">
@@ -319,47 +319,12 @@
 		currentView.initialize(id);
 	}
 
+	var nameDelayedCallback = new DelayedCallback("nameInput");
+	nameDelayedCallback.callback = (name) => {
+		var data = { propertyName:  "Name", values: {id: currentView.trip.tripId, name: name}}
+		currentView.apiPut("tripProperty", data, function() {
+
+		});
+	}
 
 </script>
-
-
-
-@*<div class="cell">
-							<div class="document">
-									<a class="file doc" href="#file">Ticket 20156 Ryanair.docx</a>
-									<a class="delete" href="#delete">Delete</a>
-							</div>
-					</div>
-					<div class="cell">
-							<div class="document">
-									<a class="file pdf" href="#">ThisIsALongFileName.pdf</a>
-									<a class="delete" href="#">Delete</a>
-							</div>
-					</div>
-					<div class="cell">
-							<div class="document">
-									<a class="file html" href="#">Ticket 20156 Ryanair.html</a>
-									<a class="delete" href="#">Delete</a>
-							</div>
-					</div>
-					<div class="cell">
-							<div class="document">
-									<a class="file xml" href="#">Cost Summary Team.pdf</a>
-									<a class="delete" href="#">Delete</a>
-							</div>
-					</div>
-					<div class="cell">
-							<div class="document">
-									<a class="file doc" href="#">Ticket 20156 Ryanair.html</a>
-									<a class="delete" href="#">Delete</a>
-							</div>
-					</div>
-
-
-
-
-		<div class="cell">
-			<div class="document">
-				<a class="create" href="#">Add file</a>
-			</div>
-		</div>*@

@@ -13,7 +13,7 @@
 
 	private displayNameCallback(value: string) {
 		var data = { propertyName: "DisplayName", values: { name: value } };
-		this.apiPost("UserProperty", data, () => {
+		this.apiPut("UserProperty", data, () => {
 			//alert("updated");
 		});
 	}
