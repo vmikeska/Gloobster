@@ -9,7 +9,10 @@ namespace Gloobster.Database
     public interface IDbOperations
     {
 
-	    IMongoQueryable<T> C<T>() where T : EntityBase;
+	    FilterDefinitionBuilder<T> F<T>();
+	    UpdateDefinitionBuilder<T> U<T>();
+
+		IMongoQueryable<T> C<T>() where T : EntityBase;
 
         Task<ReplaceOneResult> ReplaceOneAsync<T>(T doc) where T : EntityBase;
 
@@ -20,8 +23,7 @@ namespace Gloobster.Database
 
         Task<long> GetCountAsync<T>(string query = null) where T : EntityBase;
 
-	    Task<UpdateResult> UpdateAsync<T>(T entity, FilterDefinition<BsonDocument> filter) where T : EntityBase;
-	    Task<UpdateResult> UpdateAsync<T>(UpdateDefinition<BsonDocument> update, FilterDefinition<BsonDocument> filter);
+		Task<UpdateResult> UpdateAsync<T>(FilterDefinition<T> filter, UpdateDefinition<T> update) where T : EntityBase;
 
 		IMongoClient Client { get; set; }
         IMongoDatabase Database { get; set; }

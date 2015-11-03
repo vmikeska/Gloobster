@@ -1,29 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Gloobster.Common;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 
 namespace Gloobster.Database
 {
-	//public class EmptyEntityIdException : Exception
-	//{
-	//	private const string ExceptionMessageBase = "Id of '{0}' is empty";
-
-	//	public EmptyEntityIdException() {}
-
-	//	public EmptyEntityIdException(EntityBase entity): base(BuildMessage(entity)) {}
-	//	private static string BuildMessage(EntityBase entity)
-	//	{
-	//		var message = string.Format(ExceptionMessageBase, entity.GetType().Name);
-	//		return message;
-	//	}
-
-	//}
-
 	public class DbOperations: IDbOperations
     {
 		public DbOperations()
@@ -50,7 +37,7 @@ namespace Gloobster.Database
             var database = Client.GetDatabase(GloobsterConfig.DatabaseName);
             return database;
         }
-
+		
 		public async void DropCollection<T>()
 		{
 			var collectionName = GetCollectionName<T>();
@@ -80,7 +67,7 @@ namespace Gloobster.Database
 				return null;
 			}
 
-			entitiesList.ForEach(e => AddEntityIdIfMissing(e));
+			entitiesList.ForEach(AddEntityIdIfMissing);
 			
 			var collectionName = GetCollectionName<T>();
 			var collection = Database.GetCollection<BsonDocument>(collectionName);
@@ -92,28 +79,35 @@ namespace Gloobster.Database
 			return entitiesList;			
 		}
 
-		public async Task<UpdateResult> UpdateAsync<T>(T entity, FilterDefinition<BsonDocument> filter) where T : EntityBase
-		{			
-			AddEntityIdIfMissing(entity);
-
-			var collectionName = GetCollectionName<T>();
-			var collection = Database.GetCollection<BsonDocument>(collectionName);
-			
-			var bsonDoc = entity.ToBsonDocument();
-
-		    UpdateResult result = await collection.UpdateOneAsync(filter, bsonDoc);
-		    return result;
-		}
-
-		public async Task<UpdateResult> UpdateAsync<T>(UpdateDefinition<BsonDocument> update, FilterDefinition<BsonDocument> filter)
+		public IMongoQueryable<T> C<T>() where T : EntityBase
 		{
 			var collectionName = GetCollectionName<T>();
-			var collection = Database.GetCollection<BsonDocument>(collectionName);
-		
-			UpdateResult result = await collection.UpdateOneAsync(filter, update);
-			return result;
+			var collection = Database.GetCollection<T>(collectionName);
+
+			var collectionQueryable = collection.AsQueryable();
+
+			return collectionQueryable;
 		}
 
+		public FilterDefinitionBuilder<T> F<T>()
+		{
+			 return Builders<T>.Filter;
+		}
+
+		public UpdateDefinitionBuilder<T> U<T>()
+		{
+			return Builders<T>.Update;
+		}		
+		
+		public async Task<UpdateResult> UpdateAsync<T>(FilterDefinition<T> filter, UpdateDefinition<T> update) where T: EntityBase
+		{			
+			var collectionName = GetCollectionName<T>();
+			var collection = Database.GetCollection<T>(collectionName);
+			
+			var result = await collection.UpdateOneAsync(filter, update);
+			return result;
+		}
+		
 		public async Task<ReplaceOneResult> ReplaceOneAsync<T>(T doc) where T : EntityBase
 		{
 			var builder = Builders<BsonDocument>.Filter;
@@ -145,16 +139,7 @@ namespace Gloobster.Database
 				throw exc;
 			}
         }
-
-		public IMongoQueryable<T> C<T>() where T : EntityBase
-		{
-			var collectionName = GetCollectionName<T>();
-			var collection = Database.GetCollection<T>(collectionName);
-			var collectionQueryable = collection.AsQueryable();
-
-			return collectionQueryable;
-		}
-
+		
 		public async Task<long> GetCountAsync<T>(string query = null) where T : EntityBase
         {
 			var collectionName = GetCollectionName<T>();

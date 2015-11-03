@@ -23,7 +23,7 @@ var RequestSender = (function () {
     RequestSender.prototype.serializeData = function () {
         this.dataToSend = JSON.stringify(this.data);
     };
-    RequestSender.prototype.sentPost = function () {
+    RequestSender.prototype.sendPost = function () {
         var self = this;
         var callObj = {
             type: 'POST',

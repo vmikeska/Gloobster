@@ -46,7 +46,7 @@ var SettingsView = (function (_super) {
         $root.find("li").click(function (evnt) {
             var gender = $(evnt.target).data("value");
             var data = { propertyName: "Gender", values: { gender: gender } };
-            _this.apiPost("UserProperty", data, function () {
+            _this.apiPut("UserProperty", data, function () {
                 //alert("updated");
             });
         });
@@ -58,7 +58,7 @@ var SettingsView = (function (_super) {
         var box = new PlaceSearchBox(homeConf);
         box.onPlaceSelected = function (request) {
             var data = { propertyName: propertyName, values: { sourceId: request.SourceId, sourceType: request.SourceType } };
-            _this.apiPost("UserProperty", data, function () {
+            _this.apiPut("UserProperty", data, function () {
                 //alert("updated");
             });
         };

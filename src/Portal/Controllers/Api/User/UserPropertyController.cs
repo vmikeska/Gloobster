@@ -9,6 +9,7 @@ using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace Gloobster.Portal.Controllers.Api.User
 {
@@ -21,38 +22,44 @@ namespace Gloobster.Portal.Controllers.Api.User
 		{
 			GeoNamesSvc = geoNamesService;
 		}
-
-		//todo: change to put
+		
 		[HttpPut]
 		[Authorize]
 		public async Task<IActionResult> Put([FromBody] PropertyUpdateRequest request, string userId)
 		{
 			var userIdObj = new ObjectId(userId);
-			var portalUser = DB.C<PortalUserEntity>().First(p => p.id == userIdObj);
+			
+			var filter = DB.F<PortalUserEntity>().Eq(p => p.id, userIdObj);
+			UpdateDefinition<PortalUserEntity> update = null;
 
 			if (request.propertyName == "HomeLocation")
 			{
-				portalUser.HomeLocation = await GetLocationSubEntity(request.values["sourceId"]);
+				var location = await GetLocationSubEntity(request.values["sourceId"]);
+				update = DB.U<PortalUserEntity>().Set(p => p.HomeLocation, location);			
 			}
 
 			if (request.propertyName == "CurrentLocation")
 			{
-				portalUser.CurrentLocation = await GetLocationSubEntity(request.values["sourceId"]);
+				var location = await GetLocationSubEntity(request.values["sourceId"]);
+				update = DB.U<PortalUserEntity>().Set(p => p.CurrentLocation, location);				
 			}
 
 			if (request.propertyName == "Gender")
 			{
 				var gender = (Gender)int.Parse(request.values["gender"]);
-				portalUser.Gender = gender;
+				update = DB.U<PortalUserEntity>().Set(p => p.Gender, gender);				
 			}
 
 			if (request.propertyName == "DisplayName")
 			{
 				var name = request.values["name"];
-				portalUser.DisplayName = name;
+				update = DB.U<PortalUserEntity>().Set(p => p.DisplayName, name);				
 			}
 
-			await DB.ReplaceOneAsync(portalUser);
+			if (update != null)
+			{
+				await DB.UpdateAsync(filter, update);
+			}			
 			
 			return new ObjectResult(null);
 		}

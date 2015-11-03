@@ -48,7 +48,7 @@
 			var gender = $(evnt.target).data("value");
 
 			var data = { propertyName: "Gender", values: { gender: gender } };
-			this.apiPost("UserProperty", data, () => {
+			this.apiPut("UserProperty", data, () => {
 				//alert("updated");
 			});
 
@@ -62,7 +62,7 @@
 		var box = new PlaceSearchBox(homeConf);
 		box.onPlaceSelected = (request) => {
 			var data = { propertyName: propertyName, values: { sourceId: request.SourceId, sourceType: request.SourceType } };
-			this.apiPost("UserProperty", data, () => {
+			this.apiPut("UserProperty", data, () => {
 				//alert("updated");
 			});
 		};

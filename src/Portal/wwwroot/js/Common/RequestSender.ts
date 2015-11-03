@@ -17,7 +17,6 @@ class RequestSender {
 	onSuccess: Function;
 	onError: Function;
 
-
 	private addAuthentication(reqObj) {
 	 var cookieStr = $.cookie(Constants.cookieName);	 
 	 if (cookieStr) {
