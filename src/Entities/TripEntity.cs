@@ -11,6 +11,8 @@ namespace Gloobster.Entities
 
 		public string Name { get; set; }
 
+		public string Picture { get; set; }
+
 		public DateTime CreatedDate { get; set; }
 
 		public List<CommentSE> Comments { get; set; }

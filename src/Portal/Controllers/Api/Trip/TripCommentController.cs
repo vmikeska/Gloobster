@@ -24,8 +24,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 		[HttpPost]
 		[Authorize]
 		public async Task<IActionResult> Post([FromBody]NewCommentRequest request, string userId)
-		{
-			//todo: change to $push
+		{			
 			var tripIdObj = new ObjectId(request.tripId);
 			var userIdObj = new ObjectId(userId);
 			
@@ -43,19 +42,20 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 				PostDate = DateTime.UtcNow,
 				Text = request.text
 			};
-
-			if (trip.Comments == null)
+			
+			var filter = DB.F<TripEntity>().Eq(p => p.id, tripIdObj);
+			var update = DB.U<TripEntity>().Push(p => p.Comments, newComment);
+			await DB.UpdateAsync(filter, update);
+			
+			var comments = new List<CommentSE> {newComment};
+			if (trip.Comments != null)
 			{
-				trip.Comments = new List<CommentSE>();
+				comments.AddRange(trip.Comments);
 			}
-
-			trip.Comments.Add(newComment);
-
-			await DB.ReplaceOneAsync(trip);
-
+			
 			var response = new NewCommentResponse
 			{
-				comments = trip.Comments.Select(c => c.ToResponse()).OrderByDescending(c => c.postDate).ToList(),
+				comments = comments.Select(c => c.ToResponse()).OrderByDescending(c => c.postDate).ToList(),
 				users = TripDomain.GetCommentsUsers(trip.Comments, DB)
 			};
 			

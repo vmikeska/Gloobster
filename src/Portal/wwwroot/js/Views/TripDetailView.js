@@ -29,6 +29,22 @@ var TripDetailView = (function (_super) {
         this.comments.comments = this.trip.comments;
         this.comments.users = this.trip.users;
         this.comments.displayComments();
+        this.registerPhotoUpload();
+    };
+    TripDetailView.prototype.registerPhotoUpload = function () {
+        var config = new FileUploadConfig();
+        config.inputId = "photoInput";
+        config.owner = this;
+        config.endpoint = "TripPhoto";
+        this.pictureUpload = new FileUpload(config);
+        this.pictureUpload.customId = this.trip.tripId;
+        this.pictureUpload.onProgressChanged = function (percent) {
+            //$("#progressBar").text(percent);
+        };
+        this.pictureUpload.onUploadFinished = function (file, files) {
+            //this.files = files;
+            //this.displayFiles();
+        };
     };
     return TripDetailView;
 })(Views.ViewBase);

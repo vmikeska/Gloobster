@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels;
@@ -11,11 +12,11 @@ using MongoDB.Bson;
 
 namespace Gloobster.Portal.Controllers.Api.Files
 {
-	public class UploadAvatarController: BaseApiController
+	public class TripPhotoController : BaseApiController
 	{		
 		public FilesDomain FileDomain { get; set; }
 
-		public UploadAvatarController(IFilesDomain filesDomain, IDbOperations db) : base(db)
+		public TripPhotoController(IFilesDomain filesDomain, IDbOperations db) : base(db)
 		{			
 			FileDomain = (FilesDomain)filesDomain;
 		}
@@ -24,24 +25,28 @@ namespace Gloobster.Portal.Controllers.Api.Files
 		[Authorize]
 		public IActionResult Post([FromBody] FileRequest request, string userId)
 		{
-			var fileLocation = "Avatars";
+			var fileLocation = "TripProfilePhoto";
 
 			var userIdObj = new ObjectId(userId);
 
+			var tripId = request.customId;
+			var tripIdObj = new ObjectId(tripId);
+
 			FileDomain.OnFileSaved += (sender, args) =>
 			{
-				var argsObj = (OnFileSavedArgs) args;
+				var argsObj = (OnFileSavedArgs)args;
 
-				var filter = DB.F<PortalUserEntity>().Eq(p => p.id, userIdObj);
-				var update = DB.U<PortalUserEntity>().Set(p => p.ProfileImage, argsObj.FileName);
+				var filter = DB.F<TripEntity>().Eq(p => p.id, tripIdObj);
+				var update = DB.U<TripEntity>().Set(p => p.Picture, argsObj.FileName);
+
 				DB.UpdateAsync(filter, update);				
 			};
 
 			FileDomain.OnBeforeCreate += (sender, args) =>
 			{
-				var portalUser = DB.C<PortalUserEntity>().First(u => u.id == userIdObj);
+				var trip = DB.C<TripEntity>().First(u => u.id == tripIdObj);
 
-				var pathToDelete = FileDomain.Storage.Combine(fileLocation, portalUser.ProfileImage);
+				var pathToDelete = FileDomain.Storage.Combine(fileLocation, trip.Picture);
 				bool fileExists = FileDomain.Storage.FileExists(pathToDelete);
 				if (fileExists)
 				{
@@ -55,7 +60,7 @@ namespace Gloobster.Portal.Controllers.Api.Files
 				UserId = userId,
 				FileName = request.fileName,
 				FilePart = request.filePartType,
-				CustomFileName = userId,
+				CustomFileName = tripId,
 				FileLocation = fileLocation,
 				FileType = request.type
 			};
