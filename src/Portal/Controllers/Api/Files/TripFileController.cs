@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection.Emit;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels;
@@ -50,11 +51,11 @@ namespace Gloobster.Portal.Controllers.Api.Files
 				}
 
 				//todo: check rights to upload file
-
-				if (trip.Files == null)
-				{
-					trip.Files = new List<FileSE>();
-				}
+				
+				//if (trip.Files == null)
+				//{
+				//	trip.Files = new List<FileSE>();
+				//}
 
 				var newFile = new FileSE
 				{
@@ -64,10 +65,12 @@ namespace Gloobster.Portal.Controllers.Api.Files
 					Type = argsObj.FileType
 				};
 
-				trip.Files.Add(newFile);
-				
-				//todo: just update
-				DB.ReplaceOneAsync(trip);				
+				var filter = DB.F<TripEntity>().Eq(p => p.id, tripIdObj);
+				var update = DB.U<TripEntity>().Push(p => p.Files, newFile);
+				DB.UpdateAsync(filter, update);
+
+				//trip.Files.Add(newFile);								
+				//DB.ReplaceOneAsync(trip);				
 			};
 
 			var filePartDo = new WriteFilePartDO
@@ -111,9 +114,7 @@ namespace Gloobster.Portal.Controllers.Api.Files
 			List<FileResponse> filesResponse = null;
             if (trip.Files != null)
 			{
-				//todo: check rights
-				//todo: delete without update entire entity
-
+				//todo: check rights				
 				var fileToDelete = trip.Files.FirstOrDefault(f => f.SavedFileName == fileId);
 
 				if (fileToDelete == null)
@@ -122,11 +123,14 @@ namespace Gloobster.Portal.Controllers.Api.Files
 					throw new Exception();
 				}
 
+				var filter = DB.F<TripEntity>().Eq(p => p.id, tripIdObj);
+				var update = DB.U<TripEntity>().Pull(p => p.Files, fileToDelete);
+				await DB.UpdateAsync(filter, update);
+				
 				var fileLocation = Path.Combine("Trips", tripId, fileToDelete.SavedFileName);
 				FileDomain.DeleteFile(fileLocation);
 
-				trip.Files.Remove(fileToDelete);
-				await DB.ReplaceOneAsync(trip);
+				trip.Files.Remove(fileToDelete);				
 
 				filesResponse = trip.Files.Select(f => f.ToResponse()).ToList();
 			}
