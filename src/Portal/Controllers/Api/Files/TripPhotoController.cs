@@ -23,12 +23,10 @@ namespace Gloobster.Portal.Controllers.Api.Files
 
 		[HttpPost]
 		[Authorize]
-		public IActionResult Post([FromBody] FileRequest request, string userId)
+		public IActionResult Post([FromBody] FileRequest request)
 		{
 			var fileLocation = "TripProfilePhoto";
-
-			var userIdObj = new ObjectId(userId);
-
+			
 			var tripId = request.customId;
 			var tripIdObj = new ObjectId(tripId);
 
@@ -57,7 +55,7 @@ namespace Gloobster.Portal.Controllers.Api.Files
 			var filePartDo = new WriteFilePartDO
 			{
 				Data = request.data,
-				UserId = userId,
+				UserId = UserId,
 				FileName = request.fileName,
 				FilePart = request.filePartType,
 				CustomFileName = tripId,

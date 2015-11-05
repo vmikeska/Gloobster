@@ -3,6 +3,7 @@ using Gloobster.DomainObjects;
 using Gloobster.Entities;
 using Gloobster.ReqRes.Trip;
 using MongoDB.Bson;
+using Gloobster.Enums;
 
 namespace Gloobster.Mappers
 {
@@ -19,6 +20,35 @@ namespace Gloobster.Mappers
 
 			return request;
 		}
+		
+
+		public static ParticipantDO ToDO(this ParticipantRequest request, ParticipantState? state = null)
+		{
+			if (!state.HasValue)
+			{
+				state = ParticipantState.Invited;
+			}
+
+			return new ParticipantDO
+			{
+				UserId = request.userId,
+				IsAdmin = request.isAdmin,
+				State = state.Value
+			};
+		}
+
+		public static ParticipantSE ToEntity(this ParticipantDO dObj)
+		{
+			var entity = new ParticipantSE
+			{
+				PortalUser_id = new ObjectId(dObj.UserId),
+				State = dObj.State,
+				IsAdmin = dObj.IsAdmin
+			};
+
+			return entity;
+		}
+
 
 		public static TripResponse ToResponse(this TripEntity entity)
 		{

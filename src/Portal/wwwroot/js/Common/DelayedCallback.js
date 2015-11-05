@@ -1,9 +1,15 @@
 var DelayedCallback = (function () {
-    function DelayedCallback(inputId) {
+    function DelayedCallback(input) {
         var _this = this;
         this.delay = 1000;
         this.timeoutId = null;
-        this.$input = $("#" + inputId);
+        var isId = (typeof input === "string");
+        if (isId) {
+            this.$input = $("#" + input);
+        }
+        else {
+            this.$input = input;
+        }
         this.$input.keydown(function () { _this.keyPressed(); });
     }
     DelayedCallback.prototype.keyPressed = function () {

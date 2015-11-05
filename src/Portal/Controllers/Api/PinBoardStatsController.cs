@@ -1,11 +1,13 @@
 using System.Linq;
 using System.Threading.Tasks;
+using Gloobster.Database;
 using Gloobster.DomainInterfaces;
-using Microsoft.AspNet.Mvc;
 using Gloobster.Mappers;
+using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.PinBoard;
+using Microsoft.AspNet.Mvc;
 
-namespace Gloobster.Portal.Controllers
+namespace Gloobster.Portal.Controllers.Api
 {
 	public enum PluginType { MyPlacesVisited, MyFriendsVisited, MyFriendsDesired}
 
@@ -20,7 +22,7 @@ namespace Gloobster.Portal.Controllers
 
 	
 	[Route("api/[controller]")]
-	public class PinBoardStatsController : Controller
+	public class PinBoardStatsController : BaseApiController
 	{
 
 		public IVisitedPlacesDomain VisitedPlaces { get; set; }
@@ -30,7 +32,7 @@ namespace Gloobster.Portal.Controllers
 		public ICountryService CountryService { get; set; }
 
 		public PinBoardStatsController(IVisitedPlacesDomain visitedPlaces, IVisitedCitiesDomain visitedCities, 
-			IVisitedCountriesDomain visitedCountries, ICountryService countryService)
+			IVisitedCountriesDomain visitedCountries, ICountryService countryService, IDbOperations db) : base(db)
 		{
 			VisitedPlaces = visitedPlaces;
 			VisitedCities = visitedCities;
@@ -41,18 +43,18 @@ namespace Gloobster.Portal.Controllers
 
 		[HttpGet]
 		[Authorize]
-		public async Task<IActionResult> Get(PinBoardStatRequest request, string userId)
+		public async Task<IActionResult> Get(PinBoardStatRequest request)
 		{
 			PinBoardStatResponse result = null;
 
 			if (request.pluginType == PluginType.MyPlacesVisited)
 			{
-				result = await GetMyPlacesVisitedAsync(userId);
+				result = await GetMyPlacesVisitedAsync(UserId);
 			}
 
 			if (request.pluginType == PluginType.MyFriendsVisited)
 			{
-				result = GetMyFriendsVisited(userId);
+				result = GetMyFriendsVisited(UserId);
 			}
 
 			return new ObjectResult(result);

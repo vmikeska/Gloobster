@@ -2,20 +2,21 @@
 class TripDetailView extends Views.ViewBase
 {
 	trip: any; 
-	comments: Comments;
+	//comments: Comments;
 	files: Files;
 	pictureUpload: FileUpload;
+	shareDialogView: ShareDialogView;
 
 	initialize(id: string) {
-		var self = this;
+		//var self = this;
 
-		this.files = new Files(this);
+		this.files = new Files(this, true);
 
 	 this.getTrip(id);
 
-		$("#commentSubmit").click(() => {
-			self.comments.postComment(self.trip.tripId);
-	 });		
+		//$("#commentSubmit").click(() => {
+		//	self.comments.postComment(self.trip.tripId);
+	 //});		
 	}
 
 
@@ -25,19 +26,19 @@ class TripDetailView extends Views.ViewBase
   }
 
 	private onTripLoaded(request) {
-	 this.trip = request;
+		this.trip = request;
 
 		this.files.setTrip(this.trip);
 
-	 this.comments = new Comments(this);
-	 this.comments.comments = this.trip.comments;
-		this.comments.users = this.trip.users;		
+		//this.comments = new Comments(this);
+		//this.comments.comments = this.trip.comments;
+		//this.comments.users = this.trip.users;
 
-		this.comments.displayComments();
+		//this.comments.displayComments();
 		this.registerPhotoUpload();
 	}
 
-  
+
 	private registerPhotoUpload() {
 	 var config = new FileUploadConfig();
 	 config.inputId = "photoInput";

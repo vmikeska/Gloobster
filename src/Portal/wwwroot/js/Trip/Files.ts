@@ -1,54 +1,62 @@
 ﻿
 class Files {
 
- public owner: Views.ViewBase;	
- public trip: any;
- private template: any;
- private createTemplate: any;
- public fileUpload: FileUpload;
- public files: any[];
- public lastIdToDelete: string;
+	public owner: Views.ViewBase;
+	public trip: any;
+	private template: any;
+	private createTemplate: any;
+	public fileUpload: FileUpload;
+	public files: any[];
+	public lastIdToDelete: string;
+	private editable: boolean;
 
- constructor(owner: Views.ViewBase) {
-	 this.owner = owner;
+	constructor(owner: Views.ViewBase, editable: boolean) {
+		this.owner = owner;
+		this.editable = editable;
 
-	 var source = $("#file-template").html();
-	 this.template = Handlebars.compile(source);
+		var source = $("#file-template").html();
+		this.template = Handlebars.compile(source);
 
-	 var sourceCrt = $("#fileCreate-template").html();
-	 this.createTemplate = Handlebars.compile(sourceCrt);
-	
-	 $("#deleteFileConfirm").click(() => {
-		this.callDelete(this.lastIdToDelete);
-		 $("#popup-delete").hide();
-	 });
- }
+		if (this.editable) {
+			var sourceCrt = $("#fileCreate-template").html();
+			this.createTemplate = Handlebars.compile(sourceCrt);
+		}
 
- public setTrip(trip) {
-	 this.trip = trip;	 
-	 this.files = trip.files;
+		$("#deleteFileConfirm").click(() => {
+			this.callDelete(this.lastIdToDelete);
+			$("#popup-delete").hide();
+		});
+	}
 
-	 this.onTripSet();
- }
+	public setTrip(trip) {
+		this.trip = trip;
+		this.files = trip.files;
 
- private onTripSet() {
-	 this.displayFiles();
- }
+		this.onTripSet();
+	}
 
- private displayFiles() {
-	 var filesHtml = this.generateFiles();
-	 var createFileHtml = this.createTemplate();
-	 filesHtml += createFileHtml;
-	
-	 $("#filesContainer").html(filesHtml);
+	private onTripSet() {
+		this.displayFiles();
+	}
 
-	$(".delete").click((evnt) => {
-	 this.lastIdToDelete = $(evnt.target).data("id");		
-	});
+	private displayFiles() {
+		var filesHtml = this.generateFiles();
 
-	 
+		if (this.editable) {
+			var createFileHtml = this.createTemplate();
+			filesHtml += createFileHtml;
+		}
+		$("#filesContainer").html(filesHtml);
 
-	 this.registerFileUpload();	 
+		if (this.editable) {
+			$(".delete").click((evnt) => {
+				this.lastIdToDelete = $(evnt.target).data("id");
+		 });
+
+			this.registerFileUpload();	 
+		} else {
+			$(".delete").hide();
+		}	
  }
 
  private callDelete(fileId: string) {

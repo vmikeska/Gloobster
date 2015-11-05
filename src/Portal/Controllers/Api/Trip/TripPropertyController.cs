@@ -23,9 +23,8 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 		
 		[HttpPut]
 		[Authorize]
-		public async Task<IActionResult> Put([FromBody] PropertyUpdateRequest request, string userId)
+		public async Task<IActionResult> Put([FromBody] PropertyUpdateRequest request)
 		{
-			var userIdObj = new ObjectId(userId);
 			var tripIdObj = new ObjectId(request.values["id"]);
 			var filter = DB.F<TripEntity>().Eq(p => p.id, tripIdObj);
 			UpdateDefinition<TripEntity> update = null;
@@ -33,6 +32,22 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 			if (request.propertyName == "Name")
 			{				
 				update = DB.U<TripEntity>().Set(p => p.Name, request.values["name"]);				
+			}
+
+			if (request.propertyName == "Description")
+			{
+				update = DB.U<TripEntity>().Set(p => p.Description, request.values["description"]);
+			}
+
+			if (request.propertyName == "Notes")
+			{
+				update = DB.U<TripEntity>().Set(p => p.Notes, request.values["notes"]);
+			}
+
+			if (request.propertyName == "NotesPublic")
+			{
+				bool isPublic = bool.Parse(request.values["isPublic"]);
+				update = DB.U<TripEntity>().Set(p => p.NotesPublic, isPublic);
 			}
 
 			if (update != null)

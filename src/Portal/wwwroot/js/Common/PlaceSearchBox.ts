@@ -3,14 +3,24 @@ class PlaceSearchBox {
 	public owner: Views.ViewBase;
 	public config: PlaceSearchConfig;	
 	public onPlaceSelected: Function;	
-
+  
+  private delayedCallback: DelayedCallback;
 	private $root: any;
+	private $input: any;
+
+	private template: any;
 
 	constructor(config: PlaceSearchConfig) {
 		this.config = config;
 		this.$root = $("#" + config.elementId);
-		this.owner = config.owner;
-		this.registerHandler();		
+		this.$input = this.$root.find("input");
+		this.owner = config.owner;		
+
+		var source = $("#placeItem-template").html();
+		this.template = Handlebars.compile(source);
+
+		this.delayedCallback = new DelayedCallback(this.$input);
+		this.delayedCallback.callback = (placeName) => this.searchPlaces(placeName);
 	}
 
 	public searchPlaces(placeName: string) {	
@@ -21,15 +31,7 @@ class PlaceSearchBox {
 		var params = [["placeName", placeName], ["types", this.config.providers]];
 		this.owner.apiGet("place", params, places => { this.fillPlacesSearchBoxHtml(places) });
 	}
-
-	private registerHandler() {		 
-		this.$root.on("input", () => {
-			var placeName = this.$root.find("input").val();
-
-			this.searchPlaces(placeName);
-		});	 
-	}
-
+ 
 	private fillPlacesSearchBoxHtml(places) {
 		this.$root.find("ul").show();
 		var htmlContent = "";
@@ -51,7 +53,6 @@ class PlaceSearchBox {
 		var sourceType = parseInt(sourceTypeStr);
 		var clickedPlaceObj = _.find(places, place => (place.SourceId === sourceId.toString() && place.SourceType === sourceType));
 
-
 		var newPlaceRequest = {
 			"SourceId": sourceId,
 			"SourceType": sourceType
@@ -60,7 +61,7 @@ class PlaceSearchBox {
 		this.$root.find("ul").hide();
 
 		if (this.config.clearAfterSearch) {
-		 this.$root.find("input").val("");
+			this.$root.find("input").val("");
 		} else {
 			var selectedCaption = clickedPlaceObj.City + ", " + clickedPlaceObj.CountryCode;
 			this.$root.find("input").val(selectedCaption);
@@ -69,7 +70,7 @@ class PlaceSearchBox {
 		this.onPlaceSelected(newPlaceRequest);
 	}
 
-	getIconForSearch(sourceType: SourceType) {
+	private getIconForSearch(sourceType: SourceType) {
 
 		switch (sourceType) {
 		case SourceType.FB:
@@ -85,18 +86,25 @@ class PlaceSearchBox {
 		return "";
 	}
 
-	getItemHtml(item) {
-		var icoClass = this.getIconForSearch(item.SourceType);
-		return '<li data-value="' + item.SourceId + '" data-type="' + item.SourceType + '"><span class="' + icoClass + ' left mright10"></span>' + item.Name + '<span class="color2">, ' + item.CountryCode + '</span></li>';
+	private getItemHtml(item) {
+
+		var context = {
+			sourceId: item.SourceId,
+			sourceType: item.SourceType,
+			icoClass: this.getIconForSearch(item.SourceType),
+			name: item.Name,
+			countryCode: item.CountryCode
+		}
+
+		var html = this.template(context);
+		return html;
 	}
 }
 
 class PlaceSearchConfig {
 	owner: Views.ViewBase;
- elementId: string;
+	elementId: string;
 	providers: string;
 	minCharsToSearch: number;
- clearAfterSearch: boolean;
- //todo: implement
-	searchDelayMs: number;
+	clearAfterSearch: boolean;
 }

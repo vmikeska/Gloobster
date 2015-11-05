@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
+using Gloobster.DomainObjects;
 using Gloobster.Entities;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.Friends;
@@ -21,40 +23,40 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 		{
 			FbFriendsService = fbFriendsService;
 			FriendsDoimain = friendsDoimain;
-		}
+		}		
 
 		[HttpGet]
 		[Authorize]
-		public IActionResult Get(string userId)
+		public IActionResult Get()
 		{
-			var response = GetFriends(userId);
-			
+			var response = GetFriends(UserId);
+
 			return new ObjectResult(response);
 		}
-		
+
 		[HttpPost]
 		[Authorize]
-		public IActionResult Post([FromBody] FriendActionRequest request, string userId)
+		public IActionResult Post([FromBody] FriendActionRequest request)
 		{			
 			if (request.action == FriendActionType.Request)
 			{
-				FriendsDoimain.RequestFriendship(userId, request.friendId);
+				FriendsDoimain.RequestFriendship(UserId, request.friendId);
 			}
 
 			if (request.action == FriendActionType.Confirm)
 			{
-				FriendsDoimain.ConfirmFriendship(userId, request.friendId);
+				FriendsDoimain.ConfirmFriendship(UserId, request.friendId);
 			}
 
 			if (request.action == FriendActionType.Unfriend)
 			{
-				FriendsDoimain.Unfriend(userId, request.friendId);
+				FriendsDoimain.Unfriend(UserId, request.friendId);
 			}
 
 			//todo: cancel request
 			//todo: block
 			
-			var response = GetFriends(userId);
+			var response = GetFriends(UserId);
 
 			return new ObjectResult(response);
 		}
@@ -70,12 +72,7 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 
 			var friends = DB.C<PortalUserEntity>().Where(u => allInvolvedUserIds.Contains(u.id)).ToList();
 
-			var fbFriends = FbFriendsService.GetFriends(userId);
-			var fbFriendsFiltered = fbFriends.Where(f =>
-				!friendsEntity.Friends.Contains(new ObjectId(f.UserId)) &&
-				!friendsEntity.Proposed.Contains(new ObjectId(f.UserId)) &&
-				!friendsEntity.AwaitingConfirmation.Contains(new ObjectId(f.UserId))
-			).ToList();
+			var fbFriendsFiltered = GetFbFriends(userId, friendsEntity);
 
 			var response = new FriendsResponse
 			{
@@ -83,10 +80,27 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 				AwaitingConfirmation = friendsEntity.AwaitingConfirmation.Select(f => ConvertResponse(f, friends)).ToList(),
 				Blocked = friendsEntity.Blocked.Select(f => ConvertResponse(f, friends)).ToList(),
 				Proposed = friendsEntity.Proposed.Select(f => ConvertResponse(f, friends)).ToList(),
-				FacebookRecommended = fbFriendsFiltered.Select(f => new FriendResponse { FriendId = f.UserId, PhotoUrl = f.ProfileImage, DisplayName = f.DisplayName }).ToList()
+				FacebookRecommended = fbFriendsFiltered.Select(f => new FriendResponse { friendId = f.UserId, photoUrl = f.ProfileImage, displayName = f.DisplayName }).ToList()
 			};
 
 			return response;
+		}
+
+		private List<PortalUserDO> GetFbFriends(string userId, FriendsEntity friends)
+		{
+			var result = new List<PortalUserDO>();
+
+			var fbFriends = FbFriendsService.GetFriends(userId);
+			if (fbFriends != null)
+			{
+				List<PortalUserDO> r = fbFriends.Where(f =>
+					!friends.Friends.Contains(new ObjectId(f.UserId)) &&
+					!friends.Proposed.Contains(new ObjectId(f.UserId)) &&
+					!friends.AwaitingConfirmation.Contains(new ObjectId(f.UserId))
+					).ToList();
+			}
+
+			return result;
 		}
 
 
@@ -108,9 +122,9 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 
 			var friend = new FriendResponse
 			{
-				FriendId = friendId.ToString(),
-				PhotoUrl = portalUser.ProfileImage,
-				DisplayName = portalUser.DisplayName
+				friendId = friendId.ToString(),
+				photoUrl = portalUser.ProfileImage,
+				displayName = portalUser.DisplayName
 			};
 
 			return friend;

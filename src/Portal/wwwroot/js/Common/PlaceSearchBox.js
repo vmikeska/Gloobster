@@ -1,9 +1,14 @@
 var PlaceSearchBox = (function () {
     function PlaceSearchBox(config) {
+        var _this = this;
         this.config = config;
         this.$root = $("#" + config.elementId);
+        this.$input = this.$root.find("input");
         this.owner = config.owner;
-        this.registerHandler();
+        var source = $("#placeItem-template").html();
+        this.template = Handlebars.compile(source);
+        this.delayedCallback = new DelayedCallback(this.$input);
+        this.delayedCallback.callback = function (placeName) { return _this.searchPlaces(placeName); };
     }
     PlaceSearchBox.prototype.searchPlaces = function (placeName) {
         var _this = this;
@@ -12,13 +17,6 @@ var PlaceSearchBox = (function () {
         }
         var params = [["placeName", placeName], ["types", this.config.providers]];
         this.owner.apiGet("place", params, function (places) { _this.fillPlacesSearchBoxHtml(places); });
-    };
-    PlaceSearchBox.prototype.registerHandler = function () {
-        var _this = this;
-        this.$root.on("input", function () {
-            var placeName = _this.$root.find("input").val();
-            _this.searchPlaces(placeName);
-        });
     };
     PlaceSearchBox.prototype.fillPlacesSearchBoxHtml = function (places) {
         var _this = this;
@@ -66,8 +64,15 @@ var PlaceSearchBox = (function () {
         return "";
     };
     PlaceSearchBox.prototype.getItemHtml = function (item) {
-        var icoClass = this.getIconForSearch(item.SourceType);
-        return '<li data-value="' + item.SourceId + '" data-type="' + item.SourceType + '"><span class="' + icoClass + ' left mright10"></span>' + item.Name + '<span class="color2">, ' + item.CountryCode + '</span></li>';
+        var context = {
+            sourceId: item.SourceId,
+            sourceType: item.SourceType,
+            icoClass: this.getIconForSearch(item.SourceType),
+            name: item.Name,
+            countryCode: item.CountryCode
+        };
+        var html = this.template(context);
+        return html;
     };
     return PlaceSearchBox;
 })();

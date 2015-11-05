@@ -13,7 +13,7 @@
 		searchConfig.owner = this;
 		searchConfig.providers = "0,1,2,3";
 		searchConfig.elementId = "cities";
-		searchConfig.minCharsToSearch = 3;
+		searchConfig.minCharsToSearch = 1;
 		searchConfig.clearAfterSearch = true;
 
 		this.placeSearch = new PlaceSearchBox(searchConfig);

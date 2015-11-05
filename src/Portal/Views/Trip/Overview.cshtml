@@ -1,0 +1,169 @@
+﻿@using System.Threading.Tasks
+@using Gloobster.Portal.Controllers.Portal
+@using Gloobster.Portal.ViewModels
+@model Gloobster.Portal.ViewModels.ViewModelTripDetail
+
+<script type="text/javascript" src="@Url.Content("~/js/Views/TripViewView.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Trip/Comments.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Trip/Files.js")"></script>
+
+
+<section class="adventure-background line margin padding">
+	<div class="wrapper">
+		<div class="table margin width100">
+			<div class="cell middle">
+				<h1 class="margin0">@Model.Name</h1>
+			</div>
+			<div class="cell middle tright">
+				<strong>By</strong> @Model.OwnerDisplayName
+				<span class="thumbnail disc60 middle mleft10">
+										<img src="~/images/samples/sample12.jpg">
+								</span>
+			</div>
+		</div>
+		<p class="h4">@Model.Description</p>
+		<h3>Day by Day Plan</h3>
+
+		<div class="daybyday table margin">
+			<div class="cell">
+				<div class="destination">Prague</div>
+				<div class="timeline">22.6.</div>
+				<div class="timeline green">V Praze je blaze ...</div>
+			</div>
+			<div class="cell">
+				<div class="transport">
+					<span class="icon-plane"></span>
+				</div>
+				<div class="timeline green falldown"></div>
+			</div>
+			<div class="cell">
+				<div class="destination active">
+					Frankfurt
+					<span class="tab">arrival Mon 23.6.</span>
+				</div>
+				<div class="timeline green"></div>
+				<div class="timeline">4.5.</div>
+			</div>
+			<div class="cell">
+				<div class="transport active">
+					<span class="icon-train"></span>
+					<span class="tab"></span>
+				</div>
+				<div class="timeline"></div>
+			</div>
+			<div class="cell">
+				<div class="destination">Vienna</div>
+				<div class="timeline"></div>
+				<div class="timeline green">1.1.</div>
+			</div>
+			<div class="cell">
+				<div class="transport">
+					<span class="icon-boat"></span>
+				</div>
+				<div class="timeline green">22.6.</div>
+			</div>
+			<div class="cell">
+				<div class="destination">New York</div>
+				<div class="timeline green"></div>
+				<div class="timeline">25.10.</div>
+			</div>
+			<div class="cell">
+				<div class="transport">
+					<span class="icon-bike"></span>
+				</div>
+				<div class="timeline"></div>
+			</div>
+		</div>
+
+		@*@Html.Partial("PlaceDetailView")*@
+
+		<div class="daybyday table margin">
+			<div class="cell">
+				<div class="destination">Brno</div>
+				<div class="timeline"></div>
+				<div class="timeline green">25.10.</div>
+			</div>
+			<div class="cell">
+				<div class="transport">
+					<span class="icon-car"></span>
+				</div>
+				<div class="timeline green"></div>
+			</div>
+			<div class="cell">
+				<div class="destination active2">
+					Frankfurt
+					<span class="tab">arrival Mon 23.6.</span>
+				</div>
+				<div class="timeline green">22.6.</div>
+			</div>
+			<div class="cell">
+				<div class="transport">
+					<span class="icon-plane"></span>
+				</div>
+				<div class="timeline green"></div>
+			</div>
+			<div class="cell">
+				<div class="destination orange">Budapest</div>
+				<div class="timeline green"></div>
+				<div class="timeline">22.6.</div>
+			</div>
+			<div class="cell">
+				<div class="transport orange">
+					<span class="icon-walk"></span>
+				</div>
+				<div class="timeline"></div>
+			</div>
+			<div class="cell">
+				<div class="destination orange">Graz</div>
+				<div class="timeline"></div>
+				<div class="timeline green">30.7.</div>
+			</div>
+			<div class="cell">
+				<a class="create" href="#"></a>
+			</div>
+		</div>
+
+		<div class="adventure-buttons">
+			<a class="button accept" href="#"><span class="icon-visited middle mright5"></span> Accept invite</a>
+			
+
+		@if (Model.IsUserAdmin)
+		{
+			<a class="button share popup-target" data-target="#popup-share" href="#">Share trip</a>
+			<a class="button share" href="/Trip/Detail/@Model.TripId">Edit trip</a>
+		}
+		</div>
+
+	</div>
+</section>
+
+@Html.Partial("Comments")
+
+@Html.Partial("Files")
+
+@Html.Partial("Participants")
+
+@if (Model.NotesPublic)
+{
+	<section class="wrapper margin3 color1">
+		<strong>Notes:</strong>
+		@Model.Notes
+	</section>
+}
+
+@Html.Partial("Templates")
+@Html.Partial("ShareDialog")
+
+<script>
+	
+
+		function onBodyLoad() {
+			$("body").addClass("tripview");
+			currentView = new TripViewView();
+			var urlParams = window.location.pathname.split("/");
+			var id = urlParams[urlParams.length - 1];
+						
+			currentView.initialize(id);
+	}
+
+</script>

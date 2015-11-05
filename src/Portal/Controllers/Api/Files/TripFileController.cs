@@ -30,14 +30,13 @@ namespace Gloobster.Portal.Controllers.Api.Files
 		
 		[HttpPost]
 		[Authorize]
-		public IActionResult Post([FromBody] FileRequest request, string userId)
+		public IActionResult Post([FromBody] FileRequest request)
 		{
 			var tripId = request.customId;
 			var tripIdObj = new ObjectId(tripId);
 			var fileLocation = Path.Combine("Trips", tripId);
 			var savedFileName = Guid.NewGuid().ToString().Replace("-", string.Empty);
-			var userIdObj = new ObjectId(userId);
-
+			
 			FileDomain.OnFileSaved += (sender, args) =>
 			{
 				var argsObj = (OnFileSavedArgs) args;
@@ -59,7 +58,7 @@ namespace Gloobster.Portal.Controllers.Api.Files
 
 				var newFile = new FileSE
 				{
-					PortalUser_id = userIdObj,
+					PortalUser_id = UserIdObj,
 					OriginalFileName = request.fileName,
 					SavedFileName = argsObj.FileName,
 					Type = argsObj.FileType
@@ -76,7 +75,7 @@ namespace Gloobster.Portal.Controllers.Api.Files
 			var filePartDo = new WriteFilePartDO
 			{
 				Data = request.data,
-				UserId = userId,
+				UserId = UserId,
 				FileName = request.fileName,
 				FilePart = request.filePartType,
 				CustomFileName = savedFileName,
@@ -99,10 +98,9 @@ namespace Gloobster.Portal.Controllers.Api.Files
 
 		[HttpDelete]
 		[Authorize]
-		public async Task<IActionResult> Delete(string fileId, string tripId, string userId)
+		public async Task<IActionResult> Delete(string fileId, string tripId)
 		{
-			var tripIdObj = new ObjectId(tripId);
-			var userIdObj = new ObjectId(userId);
+			var tripIdObj = new ObjectId(tripId);			
 			var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
 
 			if (trip == null)

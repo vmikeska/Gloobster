@@ -11,6 +11,7 @@ using MongoDB.Bson;
 using System.IO;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels;
+using Gloobster.Enums;
 
 namespace Gloobster.Portal.Controllers.Portal
 {
@@ -53,11 +54,86 @@ namespace Gloobster.Portal.Controllers.Portal
 			var tripIdObj = new ObjectId(id);
 
 			var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
+			
+			var viewModel = CreateViewModelInstance<ViewModelTripDetail>();
+			viewModel.Name = trip.Name;			
+            viewModel.TripId = trip.id.ToString();
+			viewModel.Description = trip.Description;
+			viewModel.Notes = trip.Notes;
+			viewModel.NotesPublic = trip.NotesPublic;
+			
+			return View(viewModel);
+		}
+
+		public IActionResult Overview(string id)
+		{
+			var tripIdObj = new ObjectId(id);
+			
+			var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
+
+			var owner = DB.C<PortalUserEntity>().First(u => u.id == trip.PortalUser_id);
 
 			var viewModel = CreateViewModelInstance<ViewModelTripDetail>();
 			viewModel.Name = trip.Name;
+			viewModel.IsUserAdmin = IsUserAdmin(trip);
+			viewModel.OwnerDisplayName = owner.DisplayName;
+			viewModel.TripId = trip.id.ToString();
+			viewModel.Description = trip.Description;
+			viewModel.Notes = trip.Notes;
+			viewModel.NotesPublic = trip.NotesPublic;
+
+			if (trip.Participants != null)
+			{
+				var participantIds = trip.Participants.Select(p => p.PortalUser_id);
+				var participantUsers = DB.C<PortalUserEntity>().Where(u => participantIds.Contains(u.id)).ToList();
+
+				viewModel.Participants = participantUsers.Select(p => new TripParticipantViewModel
+				{
+					DisplayName = p.DisplayName,
+					PhotoUrl = "~/images/samples/sample12.jpg"
+				}).ToList();
+			}
 
 			return View(viewModel);
+		}
+
+		private ParticipantSE GetParticipant(TripEntity trip, ObjectId userId)
+		{
+			if (trip.Participants == null)
+			{
+				return null;
+			}
+
+			var participant = trip.Participants.FirstOrDefault(p => p.PortalUser_id == DBUserId);
+			return participant;
+		}
+
+		private bool AlreadyJoined(TripEntity trip, ObjectId userId)
+		{
+			if (IsUserAdmin(trip))
+			{
+				return true;
+			}
+
+			var participant = GetParticipant(trip, DBUserId);
+			return participant.State == ParticipantState.Joined;
+		}
+
+		private bool IsUserAdmin(TripEntity trip)
+		{
+			bool isOwner = trip.PortalUser_id == DBUserId;
+			if (isOwner)
+			{
+				return true;
+			}
+
+			var participant = GetParticipant(trip, DBUserId);
+			if (participant == null)
+			{
+				return false;
+			}
+
+			return participant.IsAdmin;
 		}
 		
 		public IActionResult GetFile(string fileId, string tripId)

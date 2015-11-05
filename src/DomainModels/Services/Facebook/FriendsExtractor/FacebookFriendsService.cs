@@ -23,14 +23,15 @@ namespace Gloobster.DomainModels.Services.Facebook.FriendsExtractor
 
 			var portalUser = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == userIdObj);
 			var fbSocAuth = portalUser.SocialAccounts.FirstOrDefault(s => s.NetworkType == SocialNetworkType.Facebook);
-			FbService.SetAccessToken(fbSocAuth.Authentication.AccessToken);
-
+			
 			bool hasFacebook = fbSocAuth != null;
 			if (!hasFacebook)
 			{
 				return null;
 			}
-			
+
+			FbService.SetAccessToken(fbSocAuth.Authentication.AccessToken);
+
 			List<FacebookUser> fbFriends = GetFriends();
 			List<string> friendsFBIds = fbFriends.Select(f => f.id).ToList();
 

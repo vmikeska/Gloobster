@@ -7,8 +7,15 @@ class DelayedCallback {
 	private timeoutId = null;
 	private $input: any;
 
-	constructor(inputId: string) {
-		this.$input = $("#" + inputId);
+	constructor(input: string) {
+		var isId = (typeof input === "string");
+	 if (isId) {
+		 this.$input = $("#" + input);
+	 } else {
+		 this.$input = input;
+	 }
+
+		
 		this.$input.keydown(() => { this.keyPressed() }); 
 	}
 

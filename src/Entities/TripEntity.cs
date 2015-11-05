@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Gloobster.Database;
+using Gloobster.Enums;
 using MongoDB.Bson;
 
 namespace Gloobster.Entities
@@ -11,6 +12,11 @@ namespace Gloobster.Entities
 
 		public string Name { get; set; }
 
+		public string Description { get; set; }
+		public string Notes { get; set; }
+
+		public bool NotesPublic { get; set; }
+
 		public string Picture { get; set; }
 
 		public DateTime CreatedDate { get; set; }
@@ -18,6 +24,15 @@ namespace Gloobster.Entities
 		public List<CommentSE> Comments { get; set; }
 
 		public List<FileSE> Files { get; set; }
+
+		public List<ParticipantSE> Participants { get; set; } 
+	}
+
+	public class ParticipantSE
+	{
+		public ObjectId PortalUser_id { get; set; }
+		public bool IsAdmin { get; set; }
+		public ParticipantState State { get; set; }
 	}
 
 	public class CommentSE

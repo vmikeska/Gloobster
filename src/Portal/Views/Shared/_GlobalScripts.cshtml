@@ -10,6 +10,7 @@
 
 <script type="text/javascript" src="@Url.Content("~/js/globals.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Views/ViewBase.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Views/ShareDialogView.js")"></script>
 
 <script type="text/javascript" src="@Url.Content("~/js/registration/LoginManager.js")"></script>
 
@@ -28,4 +29,13 @@
 <script type="text/javascript" src="@Url.Content("~/js/Common/FileUpload.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Common/PlaceSearchBox.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Common/DelayedCallback.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Common/UserSearchBox.js")"></script>
+
+<script id="placeItem-template" type="text/x-handlebars-template">				
+		<li data-value="{{sourceId}}" data-type="{{sourceType}}"><span class="{{icoClass}} left mright10"></span>{{name}}<span class="color2">, {{countryCode}}</span></li>
+</script>
+
+<script id="userItem-template" type="text/x-handlebars-template">
+		<li data-value="{{userId}}"><span class="thumbnail"><img src="{{photoUrl}}"></span>{{displayName}}</li>
+</script>
 

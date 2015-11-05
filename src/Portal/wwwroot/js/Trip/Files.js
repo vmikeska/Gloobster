@@ -1,11 +1,14 @@
 var Files = (function () {
-    function Files(owner) {
+    function Files(owner, editable) {
         var _this = this;
         this.owner = owner;
+        this.editable = editable;
         var source = $("#file-template").html();
         this.template = Handlebars.compile(source);
-        var sourceCrt = $("#fileCreate-template").html();
-        this.createTemplate = Handlebars.compile(sourceCrt);
+        if (this.editable) {
+            var sourceCrt = $("#fileCreate-template").html();
+            this.createTemplate = Handlebars.compile(sourceCrt);
+        }
         $("#deleteFileConfirm").click(function () {
             _this.callDelete(_this.lastIdToDelete);
             $("#popup-delete").hide();
@@ -22,13 +25,20 @@ var Files = (function () {
     Files.prototype.displayFiles = function () {
         var _this = this;
         var filesHtml = this.generateFiles();
-        var createFileHtml = this.createTemplate();
-        filesHtml += createFileHtml;
+        if (this.editable) {
+            var createFileHtml = this.createTemplate();
+            filesHtml += createFileHtml;
+        }
         $("#filesContainer").html(filesHtml);
-        $(".delete").click(function (evnt) {
-            _this.lastIdToDelete = $(evnt.target).data("id");
-        });
-        this.registerFileUpload();
+        if (this.editable) {
+            $(".delete").click(function (evnt) {
+                _this.lastIdToDelete = $(evnt.target).data("id");
+            });
+            this.registerFileUpload();
+        }
+        else {
+            $(".delete").hide();
+        }
     };
     Files.prototype.callDelete = function (fileId) {
         var _this = this;

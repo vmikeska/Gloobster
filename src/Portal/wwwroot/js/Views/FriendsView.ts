@@ -85,7 +85,7 @@ class FriendsView extends Views.ViewBase {
 	getItemHtml(item) {
 
 	 var photoUrl = "../images/sampleFace.jpg";
-	 return '<li data-value="' + item.FriendId + '"><span class="thumbnail"><img src="' + photoUrl + '"></span>' + item.DisplayName + ' <button data-value="' + item.FriendId + '">Request</button></li>';
+	 return '<li data-value="' + item.friendId + '"><span class="thumbnail"><img src="' + photoUrl + '"></span>' + item.displayName + ' <button data-value="' + item.friendId + '">Request</button></li>';
 	}
 
 
@@ -162,10 +162,10 @@ class FriendsView extends Views.ViewBase {
 
 	private convertFriend(friendResponse, state: FriendshipState) {
 		var friend = new Friend();
-		friend.photoUrl = friendResponse.PhotoUrl;
-		friend.friendId = friendResponse.FriendId;
+		friend.photoUrl = friendResponse.photoUrl;
+		friend.friendId = friendResponse.friendId;
 		friend.state = state;
-		friend.displayName = friendResponse.DisplayName;
+		friend.displayName = friendResponse.displayName;
 		return friend;
 	}
 

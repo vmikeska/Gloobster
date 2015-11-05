@@ -24,10 +24,8 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 
 		[HttpGet]
 		[Authorize]
-		public IActionResult Get(string userId, string searchQuery)
+		public IActionResult Get(string searchQuery)
 		{
-			var userIdObj = new ObjectId(userId);
-
 			//todo: remove already friends ?
 			//var friendsEntity = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == userIdObj);
 
@@ -43,9 +41,9 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 		{			
 			var friend = new FriendResponse
 			{
-				FriendId = user.id.ToString(),
-				PhotoUrl = user.ProfileImage,
-				DisplayName = user.DisplayName
+				friendId = user.id.ToString(),
+				photoUrl = user.ProfileImage,
+				displayName = user.DisplayName
 			};
 
 			return friend;

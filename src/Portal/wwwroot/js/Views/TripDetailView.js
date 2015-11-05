@@ -10,12 +10,12 @@ var TripDetailView = (function (_super) {
         _super.apply(this, arguments);
     }
     TripDetailView.prototype.initialize = function (id) {
-        var self = this;
-        this.files = new Files(this);
+        //var self = this;
+        this.files = new Files(this, true);
         this.getTrip(id);
-        $("#commentSubmit").click(function () {
-            self.comments.postComment(self.trip.tripId);
-        });
+        //$("#commentSubmit").click(() => {
+        //	self.comments.postComment(self.trip.tripId);
+        //});		
     };
     TripDetailView.prototype.getTrip = function (id) {
         var _this = this;
@@ -25,10 +25,10 @@ var TripDetailView = (function (_super) {
     TripDetailView.prototype.onTripLoaded = function (request) {
         this.trip = request;
         this.files.setTrip(this.trip);
-        this.comments = new Comments(this);
-        this.comments.comments = this.trip.comments;
-        this.comments.users = this.trip.users;
-        this.comments.displayComments();
+        //this.comments = new Comments(this);
+        //this.comments.comments = this.trip.comments;
+        //this.comments.users = this.trip.users;
+        //this.comments.displayComments();
         this.registerPhotoUpload();
     };
     TripDetailView.prototype.registerPhotoUpload = function () {

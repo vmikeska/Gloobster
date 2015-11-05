@@ -1,6 +1,7 @@
 using System;
 using Gloobster.Common;
 using Gloobster.DomainModels;
+using Gloobster.Portal.Controllers.Base;
 using Microsoft.AspNet.Mvc;
 
 namespace Gloobster.Portal.Controllers
@@ -26,8 +27,10 @@ namespace Gloobster.Portal.Controllers
 			}
 			
 			var tokenObj = Newtonsoft.Json.JsonConvert.DeserializeObject<AuthorizationToken>(decodedStr);
-			
-			context.ActionArguments.Add("userId", tokenObj.UserId);
+
+			((BaseApiController)context.Controller).UserId = tokenObj.UserId;
+
+			//context.ActionArguments.Add("userId", tokenObj.UserId);
 
 			base.OnActionExecuting(context);
 		}

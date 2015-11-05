@@ -1,6 +1,7 @@
 using Gloobster.Common;
 using Gloobster.Database;
 using Microsoft.AspNet.Mvc;
+using MongoDB.Bson;
 
 namespace Gloobster.Portal.Controllers.Base
 {
@@ -13,6 +14,9 @@ namespace Gloobster.Portal.Controllers.Base
 		{
 			DB = db;
 		}
-		
+
+		public string UserId { get; set; }
+
+		public ObjectId UserIdObj => new ObjectId(UserId);
 	}
 }

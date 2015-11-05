@@ -1,0 +1,42 @@
+﻿<script id="comment-template" type="text/x-handlebars-template">
+
+		<div class="row">
+				<div class="cell">
+						<span class="thumbnail">
+								<img src="/images/samples/sample12.jpg">
+								@*{{photoUrl}}*@
+						</span>
+				</div>
+				<div class="cell">
+						<div class="author">
+								<a href="#"><strong>{{displayName}}</strong></a>
+								<span> • {{displayDate}}</span>
+						</div>
+						<div class="bubble">
+								{{text}}
+						</div>
+				</div>
+		</div>
+
+</script>
+
+<script id="file-template" type="text/x-handlebars-template">
+		<div class="cell">
+				<div class="document">
+						<a class="file {{fileType}}" href="/Trip/GetFile?fileId={{fileId}}&tripId={{tripId}}">{{fileName}}</a>
+						<a class="delete popup-target" data-target="#popup-delete" data-id="{{fileId}}" href="#">Share trip</a>						
+				</div>
+		</div>
+</script>
+
+<script id="fileCreate-template" type="text/x-handlebars-template">
+		<div class="cell">
+				<div class="document">
+						<a class="create" href="#">Add file</a>
+				</div>
+		</div>
+
+		<input id="fileInput" type="file" style="" />
+		<br />
+		<span id="progressBar" style="font-size: 20px; font-weight: bold">0</span>%
+</script>

@@ -23,10 +23,9 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 
 		[HttpPost]
 		[Authorize]
-		public async Task<IActionResult> Post([FromBody]NewCommentRequest request, string userId)
+		public async Task<IActionResult> Post([FromBody]NewCommentRequest request)
 		{			
 			var tripIdObj = new ObjectId(request.tripId);
-			var userIdObj = new ObjectId(userId);
 			
 			var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
 
@@ -38,7 +37,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 
 			var newComment = new CommentSE
 			{
-				PortalUser_id = userIdObj,
+				PortalUser_id = UserIdObj,
 				PostDate = DateTime.UtcNow,
 				Text = request.text
 			};
