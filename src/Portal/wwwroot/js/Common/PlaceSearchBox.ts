@@ -67,7 +67,7 @@ class PlaceSearchBox {
 			this.$root.find("input").val(selectedCaption);
 		}
 
-		this.onPlaceSelected(newPlaceRequest);
+		this.onPlaceSelected(newPlaceRequest, clickedPlaceObj);
 	}
 
 	private getIconForSearch(sourceType: SourceType) {

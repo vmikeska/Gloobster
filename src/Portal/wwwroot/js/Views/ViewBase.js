@@ -84,6 +84,10 @@ var Views;
             request.onError = function (response) { alert('error'); };
             request.sendDelete();
         };
+        ViewBase.prototype.registerTemplate = function (name) {
+            var source = $("#" + name).html();
+            return Handlebars.compile(source);
+        };
         return ViewBase;
     })();
     Views.ViewBase = ViewBase;

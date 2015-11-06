@@ -4,9 +4,15 @@
 		@using Gloobster.Portal.ViewModels
 		@mode Gloobster.Portal.ViewModels.TripItemViewModell*@
 
-<form class="daybyday-form margin" action="#" method="post">
+<div class="daybyday-form margin form" action="#" method="post">
 		<div class="table row">
-				<div class="cell baseline"><h3>Frankfurkt</h3></div>
+			<div class="cell baseline">
+				<div id="cities" class="dropdown left">
+							<input class="inputed" type="text" placeholder="Place name">
+							<ul></ul>
+					</div>				
+				@*<h3>Frankfurkt</h3>*@
+			</div>
 				<div class="cell baseline color1">June averages: Day 32°C • Night 16°C</div>
 		</div>
 		<textarea placeholder="Description or related files"></textarea>
@@ -156,4 +162,4 @@
 				<span class="rating pct70 bottom"></span>
 		</div>
 		<a class="close" href="#">Close</a>
-</form>
+</div>

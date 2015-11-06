@@ -27,6 +27,7 @@ module Views {
 			}
 		}
 
+
 		private initializeGoogle() {
 			var self = this;
 
@@ -101,6 +102,10 @@ module Views {
 			request.sendDelete();
 		}
 
+		public registerTemplate(name: string) {
+		 var source = $("#" + name).html();
+		 return Handlebars.compile(source);
+		}
 
 	}
 }

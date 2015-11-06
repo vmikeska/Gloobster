@@ -1,26 +1,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Autofac;
-using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
-using Gloobster.DomainModels.Services.GeonamesService;
 using Gloobster.DomainObjects;
 using Gloobster.Entities;
 using Gloobster.Mappers;
+using Gloobster.Portal.Controllers.Base;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 
-namespace Gloobster.Portal.Controllers
+namespace Gloobster.Portal.Controllers.Api
 {
 	[Route("api/[controller]")]
-	public class PlaceController : Controller
+	public class PlaceController : BaseApiController
 	{				
 		public ISearchService SearchSvc { get; set; }
 		public IDbOperations DB { get; set; }
 
-		public PlaceController(ISearchService searchService, IDbOperations db)
+		public PlaceController(ISearchService searchService, IDbOperations db) : base(db)
 		{
 			SearchSvc = searchService;
 			DB = db;
@@ -28,13 +26,12 @@ namespace Gloobster.Portal.Controllers
 
 		[HttpGet]
 		[Authorize]
-		public async Task<IActionResult> Get(string placeName, string types, string userId)
+		public async Task<IActionResult> Get(string placeName, string types)
 		{
 			var typesCol = ParseTypes(types);
 
-			//todo: this is possibly just because of FB access token, keep this token on client, not to query it every time
-			var userIdObj = new ObjectId(userId);
-			var user = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == userIdObj);
+			//todo: this is possibly just because of FB access token, keep this token on client, not to query it every time			
+			var user = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == UserIdObj);
 			var userDO = user.ToDO();
 			
 			var queryObj = new SearchServiceQueryDO
@@ -53,5 +50,8 @@ namespace Gloobster.Portal.Controllers
 			var types = typesStr.Split(',').Select(t => (SourceType) int.Parse(t)).ToArray();
 			return types;
 		}
+
+
+		
 	}
 }

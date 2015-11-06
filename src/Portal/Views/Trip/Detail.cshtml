@@ -6,6 +6,7 @@
 <script type="text/javascript" src="@Url.Content("~/js/Views/TripDetailView.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Trip/Comments.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Trip/Files.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Trip/Planner.js")"></script>
 
 
 <section class="line margin padding">
@@ -27,8 +28,8 @@
 			<textarea class="color1" style="width: 900px;" id="description" placeholder="write trip description...">@Model.Description</textarea>
 
 		<h3>Day by Day Plan</h3>
-		<div class="daybyday table margin">
-			<div class="cell">
+		<div id="plannerCont1" class="daybyday table margin">
+			@*<div class="cell">
 				<div class="destination">Prague</div>
 				<div class="timeline">22.6.</div>
 				<div class="timeline green">V Praze je blaze ...</div>
@@ -75,10 +76,11 @@
 					<span class="icon-bike"></span>
 				</div>
 				<div class="timeline"></div>
-			</div>
+			</div>*@
 		</div>
 
-		@*@{await Html.RenderPartialAsync("TravelDetail"); }*@
+			@*@{await Html.RenderPartialAsync("PlaceDetail"); }*@
+		
 		<div class="daybyday table margin">
 			<div class="cell">
 				<div class="destination">Brno</div>
@@ -121,11 +123,11 @@
 				<div class="timeline green">30.7.</div>
 			</div>
 			<div class="cell">
-				<a class="create" href="#"></a>
+				<a id="addPlace" class="create" href="#"></a>
 			</div>
 		</div>
 
-		@*@{await Html.RenderPartialAsync("PlaceDetail"); }*@
+		@{await Html.RenderPartialAsync("TravelDetail"); }
 	</div>
 </section>
 
@@ -154,6 +156,7 @@
 @Html.Partial("ConfirmDeleteDialog")
 
 @Html.Partial("Templates")
+@Html.Partial("PlannerTemplates")
 
 
 

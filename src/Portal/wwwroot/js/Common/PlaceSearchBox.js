@@ -48,7 +48,7 @@ var PlaceSearchBox = (function () {
             var selectedCaption = clickedPlaceObj.City + ", " + clickedPlaceObj.CountryCode;
             this.$root.find("input").val(selectedCaption);
         }
-        this.onPlaceSelected(newPlaceRequest);
+        this.onPlaceSelected(newPlaceRequest, clickedPlaceObj);
     };
     PlaceSearchBox.prototype.getIconForSearch = function (sourceType) {
         switch (sourceType) {

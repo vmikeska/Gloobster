@@ -27,6 +27,7 @@
 /// <reference path="js/registration/loginmanager.js" />
 /// <reference path="js/trip/comments.js" />
 /// <reference path="js/trip/files.js" />
+/// <reference path="js/trip/planner.js" />
 /// <reference path="js/views/friendsview.js" />
 /// <reference path="js/views/homepageview.js" />
 /// <reference path="js/views/pinboardview.js" />
