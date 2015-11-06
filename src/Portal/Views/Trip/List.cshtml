@@ -57,10 +57,11 @@
 
 <script>
 	function onBodyLoad() {
-		
+			currentView = new Views.ViewBase();
 	}
 
 	function createNewTrip() {
+
 			var tripName = $("#newTrip").val();		
 			if (tripName === "") {
 				return;
