@@ -5,6 +5,7 @@ using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
 using Gloobster.Entities;
+using Gloobster.Entities.Trip;
 using Gloobster.Mappers;
 using MongoDB.Bson;
 

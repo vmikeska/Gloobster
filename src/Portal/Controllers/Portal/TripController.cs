@@ -11,6 +11,7 @@ using MongoDB.Bson;
 using System.IO;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels;
+using Gloobster.Entities.Trip;
 using Gloobster.Enums;
 
 namespace Gloobster.Portal.Controllers.Portal
@@ -18,10 +19,12 @@ namespace Gloobster.Portal.Controllers.Portal
 	public class TripController : PortalBaseController
 	{
 		public FilesDomain FileDomain { get; set; }
+		public ITripPlannerDomain TripPlanner { get; set; }
 
-		public TripController(IFilesDomain filesDomain, IDbOperations db) : base(db)
+		public TripController(ITripPlannerDomain tripPlanner, IFilesDomain filesDomain, IDbOperations db) : base(db)
 		{
 			FileDomain = (FilesDomain)filesDomain;
+			TripPlanner = tripPlanner;
 		}
 
 		public IActionResult List()
@@ -36,21 +39,62 @@ namespace Gloobster.Portal.Controllers.Portal
 		}
 		public async Task<IActionResult> CreateNewTrip(string id)
 		{
+
+			var travel = new TripTravelSE
+			{
+				Id = NewId(),
+				Type = TravelType.Plane
+			};
+
+			var firstPlace = new TripPlaceSE
+			{
+				Id = NewId(),
+				ArrivingId = null,
+				LeavingId = travel.Id,
+				OrderNo = 1,
+				SourceType = SourceType.City,
+				SourceId = "2643743",
+				SelectedName = "London, GB"
+			};
+
+			var secondPlace = new TripPlaceSE
+			{
+				Id = NewId(),
+				ArrivingId = travel.Id,
+				LeavingId = null,
+				OrderNo = 2,
+				SourceType = SourceType.City,
+				SourceId = "5128581",
+				SelectedName = "New York, US"
+			};
+
 			var tripEntity = new TripEntity
 			{
 				id = ObjectId.GenerateNewId(),
 				CreatedDate = DateTime.UtcNow,
 				Name = id,
-				PortalUser_id = DBUserId
+				PortalUser_id = DBUserId,
+				Comments = new List<CommentSE>(),
+				Files = new List<FileSE>(),
+				Travels = new List<TripTravelSE> { travel},
+				Places = new List<TripPlaceSE> { firstPlace, secondPlace},
+				Participants = new List<ParticipantSE>(),				
 			};
+
+
 
 			await DB.SaveAsync(tripEntity);
 
-			return RedirectToAction("Detail", "Trip", tripEntity.id);
+			return RedirectToAction("Detail", "Trip", new {id = tripEntity.id.ToString() } );
+		}
+
+		private string NewId()
+		{
+			return Guid.NewGuid().ToString().Replace("-", string.Empty);
 		}
 
 		public IActionResult Detail(string id)
-		{
+		{			
 			var tripIdObj = new ObjectId(id);
 
 			var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);

@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Gloobster.Common;
 using Gloobster.DomainObjects;
 using Gloobster.Entities;
+using Gloobster.Enums;
 using MongoDB.Bson;
 
 namespace Gloobster.UnitTests
@@ -13,21 +14,21 @@ namespace Gloobster.UnitTests
 		}
 
 		private const string City1 = "Brno";
-		private const SourceTypeDO SourceType1 = SourceTypeDO.FB;		
+		private const SourceType SourceType1 = SourceType.FB;		
 		private const string SourceId1 = "1111";
 		private const string CountryCode1 = "CZ";
 		private const float PlaceLongitude1 = 9.99f;
 		private const float PlaceLatitude1 = 8.88f;
 
 		private const string City2 = "Prague";
-		private const SourceTypeDO SourceType2 = SourceTypeDO.FB;
+		private const SourceType SourceType2 = SourceType.FB;
 		private const string SourceId2 = "2222";
 		private const string CountryCode2 = "DE";
 		private const float PlaceLongitude2 = 9.99f;
 		private const float PlaceLatitude2 = 8.88f;
 
 		private const string City3 = "Ostrava";
-		private const SourceTypeDO SourceType3 = SourceTypeDO.FB;
+		private const SourceType SourceType3 = SourceType.FB;
 		private const string SourceId3 = "3333";
 		private const string CountryCode3 = "EE";
 		private const float PlaceLongitude3 = 9.99f;

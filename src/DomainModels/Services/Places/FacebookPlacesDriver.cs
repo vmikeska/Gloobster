@@ -5,6 +5,7 @@ using Gloobster.Common;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
 using Gloobster.DomainObjects.BaseClasses;
+using Gloobster.Enums;
 using Gloobster.SocialLogin.Facebook.Communication;
 
 namespace Gloobster.DomainModels.Services.Places
@@ -52,7 +53,7 @@ namespace Gloobster.DomainModels.Services.Places
 				PortalUserId = portalUserId,
 				Dates = new List<DateTime> { fbPlace.Time},
 
-				SourceType = SourceTypeDO.FB,
+				SourceType = SourceType.FB,
 				SourceId = fbPlace.CheckinId
 			};
 			return localPlace;

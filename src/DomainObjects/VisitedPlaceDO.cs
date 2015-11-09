@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Gloobster.Common;
+using Gloobster.Enums;
 
 namespace Gloobster.DomainObjects
 {
@@ -12,7 +13,7 @@ namespace Gloobster.DomainObjects
 		public string City { get; set; }
 		public LatLng Location { get; set; }
 		public string SourceId { get; set; }
-		public SourceTypeDO SourceType { get; set; }
+		public SourceType SourceType { get; set; }
 
 		public bool Equals(VisitedPlaceDO other)
 		{

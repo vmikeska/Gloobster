@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainModels.Services.Trip;
 using Gloobster.Entities;
+using Gloobster.Entities.Trip;
 using Gloobster.Mappers;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.Trip;

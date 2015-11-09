@@ -1,6 +1,7 @@
 using System.Linq;
 using Gloobster.DomainObjects;
 using Gloobster.Entities;
+using Gloobster.Entities.Trip;
 using Gloobster.ReqRes.Trip;
 using MongoDB.Bson;
 using Gloobster.Enums;
@@ -52,7 +53,7 @@ namespace Gloobster.Mappers
 
 		public static TripResponse ToResponse(this TripEntity entity)
 		{
-			var request = new TripResponse
+			var response = new TripResponse
 			{
 				tripId = entity.id.ToString(),
 				name = entity.Name,
@@ -62,15 +63,50 @@ namespace Gloobster.Mappers
 
 			if (entity.Comments != null)
 			{
-				request.comments = entity.Comments.Select(c => c.ToResponse()).ToList();
+				response.comments = entity.Comments.Select(c => c.ToResponse()).ToList();
 			}
 
 			if (entity.Files != null)
 			{
-				request.files = entity.Files.Select(c => c.ToResponse()).ToList();
+				response.files = entity.Files.Select(c => c.ToResponse()).ToList();
 			}
 
-			return request;
+			if (entity.Travels != null)
+			{
+				response.travels = entity.Travels.Select(t => t.ToResponse()).ToList();
+			}
+
+			if (entity.Places != null)
+			{
+				response.places = entity.Places.Select(t => t.ToResponse()).ToList();
+			}
+
+			return response;
+		}
+
+		public static TripPlaceResponse ToResponse(this TripPlaceSE entity)
+		{
+			var response = new TripPlaceResponse
+			{
+				id = entity.Id,
+				sourceId = entity.SourceId,
+				sourceType = entity.SourceType,
+				arrivingId = entity.ArrivingId,
+				leavingId = entity.LeavingId,
+				orderNo = entity.OrderNo,
+				selectedName = entity.SelectedName
+			};
+			return response;
+		}
+
+		public static TripTravelResponse ToResponse(this TripTravelSE entity)
+		{
+			var response = new TripTravelResponse
+			{
+				id = entity.Id,
+				type = entity.Type
+			};
+			return response;
 		}
 
 		public static FileResponse ToResponse(this FileSE entity)

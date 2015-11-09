@@ -9,8 +9,7 @@ class TripDetailView extends Views.ViewBase
 
 	initialize(id: string) {
 		//var self = this;
-
-		this.planner = new Planner(this);
+	 
 		this.files = new Files(this, true);
 
 	 this.getTrip(id);
@@ -27,6 +26,7 @@ class TripDetailView extends Views.ViewBase
 
 		this.files.setTrip(this.trip);
 		this.registerPhotoUpload();
+		this.planner = new Planner(this, this.trip);
 	}
 
 

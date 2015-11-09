@@ -5,6 +5,7 @@ using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels;
 using Gloobster.DomainObjects;
 using Gloobster.Entities;
+using Gloobster.Entities.Trip;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.Files;
 using Microsoft.AspNet.Mvc;

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Autofac;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
+using Gloobster.Enums;
 
 namespace Gloobster.DomainModels.Services.PlaceSearch
 {

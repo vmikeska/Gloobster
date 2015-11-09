@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Gloobster.DomainObjects;
+using Gloobster.Enums;
 
 namespace Gloobster.DomainInterfaces
 {

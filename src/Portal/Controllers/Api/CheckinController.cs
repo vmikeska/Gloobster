@@ -1,17 +1,13 @@
-using System;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
-using Facebook;
 using Gloobster.DomainInterfaces;
-using Gloobster.DomainObjects;
+using Gloobster.Enums;
 using Gloobster.Mappers;
 using Gloobster.ReqRes.MoveOut;
 using Gloobster.ReqRes.PinBoard;
 using Microsoft.AspNet.Mvc;
 
-namespace Gloobster.Portal.Controllers
+namespace Gloobster.Portal.Controllers.Api
 {
 	[Route("api/[controller]")]
 	public class CheckinController : Controller

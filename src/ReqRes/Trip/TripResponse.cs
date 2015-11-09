@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Gloobster.Enums;
 
 namespace Gloobster.ReqRes.Trip
 {
@@ -18,5 +19,26 @@ namespace Gloobster.ReqRes.Trip
 		public List<CommentResponse> comments { get; set; }
 
 		public List<FileResponse> files { get; set; }
+
+		public List<TripPlaceResponse>  places { get; set; }
+		public List<TripTravelResponse> travels { get; set; }
+		
+	}
+
+	public class TripPlaceResponse
+	{
+		public string id { get; set; }
+		public int orderNo { get; set; }
+		public string arrivingId { get; set; }
+		public string leavingId { get; set; }
+		public string sourceId { get; set; }
+		public SourceType sourceType { get; set; }
+		public string selectedName { get; set; }
+	}
+
+	public class TripTravelResponse
+	{
+		public string id { get; set; }
+		public TravelType type { get; set; }
 	}
 }

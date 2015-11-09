@@ -13,6 +13,7 @@ using Gloobster.ReqRes.Files;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using System.Threading.Tasks;
+using Gloobster.Entities.Trip;
 using Gloobster.Enums;
 using Gloobster.Mappers;
 using Gloobster.ReqRes.Trip;

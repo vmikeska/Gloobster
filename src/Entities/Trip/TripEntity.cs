@@ -4,7 +4,7 @@ using Gloobster.Database;
 using Gloobster.Enums;
 using MongoDB.Bson;
 
-namespace Gloobster.Entities
+namespace Gloobster.Entities.Trip
 {
 	public class TripEntity : EntityBase
 	{
@@ -26,29 +26,25 @@ namespace Gloobster.Entities
 		public List<FileSE> Files { get; set; }
 
 		public List<ParticipantSE> Participants { get; set; } 
+
+		public List<TripPlaceSE> Places { get; set; }
+		public List<TripTravelSE> Travels { get; set; }
 	}
 
-	public class ParticipantSE
+	public class TripPlaceSE
 	{
-		public ObjectId PortalUser_id { get; set; }
-		public bool IsAdmin { get; set; }
-		public ParticipantState State { get; set; }
+		public string Id { get; set; }		
+		public int OrderNo { get; set; }
+		public string ArrivingId { get; set; }
+		public string LeavingId { get; set; }
+		public string SourceId { get; set; }
+		public SourceType SourceType { get; set; }
+		public string SelectedName { get; set; }
 	}
 
-	public class CommentSE
+	public class TripTravelSE
 	{
-		public ObjectId PortalUser_id { get; set; }
-		public DateTime PostDate { get; set; }
-		public string Text { get; set; }
-	}
-
-	public class FileSE
-	{
-		public ObjectId PortalUser_id { get; set; }
-		public string OriginalFileName { get; set; }
-		public string SavedFileName { get; set; }
-		public string Type { get; set; }
-
-		//day or travel specific id
+		public string Id { get; set; }
+		public TravelType Type { get; set; }
 	}
 }

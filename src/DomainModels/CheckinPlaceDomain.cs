@@ -80,7 +80,7 @@ namespace Gloobster.DomainModels
 			}
 
 			var latLng = new LatLng {Lat = location.lat, Lng = location.lng};
-			var result = await AddPlace(userId, venueId, SourceTypeDO.S4, venue.location.city, venue.location.cc, latLng);
+			var result = await AddPlace(userId, venueId, SourceType.S4, venue.location.city, venue.location.cc, latLng);
 			return result;
 		}
 
@@ -145,11 +145,11 @@ namespace Gloobster.DomainModels
 
 			var latLng = new LatLng {Lat = location.Latitude, Lng = location.Longitude};
 			var country = CountryService.GetByCountryName(fbPlace.Location.Country);
-			var result = await AddPlace(userId, sourceId, SourceTypeDO.FB, fbPlace.Location.City, country.CountryCode, latLng);
+			var result = await AddPlace(userId, sourceId, SourceType.FB, fbPlace.Location.City, country.CountryCode, latLng);
 			return result;			
 		}
 
-		private async Task<AddedPlacesResultDO> AddPlace(string userId, string sourceId, SourceTypeDO sourceType, string city, string countryCode, LatLng latLng)
+		private async Task<AddedPlacesResultDO> AddPlace(string userId, string sourceId, SourceType sourceType, string city, string countryCode, LatLng latLng)
 		{
 			var result = new AddedPlacesResultDO();
 

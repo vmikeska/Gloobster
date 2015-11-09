@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Gloobster.Database;
 using Gloobster.Entities;
+using Gloobster.Entities.Trip;
 using Gloobster.Mappers;
 using Gloobster.ReqRes.Trip;
 

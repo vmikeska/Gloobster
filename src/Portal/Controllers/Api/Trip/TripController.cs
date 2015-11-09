@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainModels.Services.Trip;
 using Gloobster.Entities;
+using Gloobster.Entities.Trip;
 using Gloobster.Portal.Controllers.Base;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;

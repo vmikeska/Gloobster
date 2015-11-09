@@ -1,4 +1,4 @@
-namespace Gloobster.DomainObjects
+namespace Gloobster.Enums
 {
 	public enum SourceType { FB, S4, City, Country }
 }

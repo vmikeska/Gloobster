@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Autofac;
+﻿using Autofac;
 using Autofac.Builder;
 using Gloobster.Common;
 using Gloobster.Database;
@@ -18,7 +14,7 @@ using Gloobster.DomainModels.Services.Places;
 using Gloobster.DomainModels.Services.PlaceSearch;
 using Gloobster.DomainModels.Services.Trip;
 using Gloobster.DomainModels.Services.Twitter;
-using Gloobster.DomainObjects;
+using Gloobster.Enums;
 using Gloobster.SocialLogin.Facebook.Communication;
 
 namespace Gloobster.Portal
@@ -43,7 +39,7 @@ namespace Gloobster.Portal
 
 
 			builder.AddTransient<IFriendsDomain, FriendsDomain>();
-
+			builder.AddTransient<ITripPlannerDomain, TripPlannerDomain>();
 
 			builder.AddTransient<IFilesDomain, FilesDomain>();
 

@@ -11,7 +11,6 @@ var TripDetailView = (function (_super) {
     }
     TripDetailView.prototype.initialize = function (id) {
         //var self = this;
-        this.planner = new Planner(this);
         this.files = new Files(this, true);
         this.getTrip(id);
     };
@@ -24,6 +23,7 @@ var TripDetailView = (function (_super) {
         this.trip = request;
         this.files.setTrip(this.trip);
         this.registerPhotoUpload();
+        this.planner = new Planner(this, this.trip);
     };
     TripDetailView.prototype.registerPhotoUpload = function () {
         var config = new FileUploadConfig();

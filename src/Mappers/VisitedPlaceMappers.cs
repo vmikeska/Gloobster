@@ -2,6 +2,7 @@
 using System.Linq;
 using Gloobster.DomainObjects;
 using Gloobster.Entities;
+using Gloobster.Enums;
 using Gloobster.ReqRes.PinBoard;
 using MongoDB.Bson;
 
@@ -23,7 +24,7 @@ namespace Gloobster.Mappers
 				CountryCode = entity.CountryCode,				
 				Location = entity.Location,				
 				SourceId = entity.SourceId,
-				SourceType = (SourceTypeDO)entity.SourceType
+				SourceType = (SourceType)entity.SourceType
 			};
 
 			if (entity.Dates != null)

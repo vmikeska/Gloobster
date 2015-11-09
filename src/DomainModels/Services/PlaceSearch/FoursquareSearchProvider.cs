@@ -5,6 +5,7 @@ using FourSquare.SharpSquare.Entities;
 using Gloobster.Common;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
+using Gloobster.Enums;
 
 namespace Gloobster.DomainModels.Services.PlaceSearch
 {
