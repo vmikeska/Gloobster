@@ -10,6 +10,7 @@ class PlaceSearchBox {
   private lastText: string;
 
 	private template: any;
+  private coordinates: any;
 
 	constructor(config: PlaceSearchConfig) {
 		this.config = config;
@@ -36,12 +37,21 @@ class PlaceSearchBox {
 		this.$root.find("input").val(text);
 	}
 
+  public setCoordinates(lat, lng) {
+	  this.coordinates = { lat: lat, lng: lng };
+  }
+
 	public searchPlaces(placeName: string) {
 		if (placeName.length < this.config.minCharsToSearch) {
 			return;
 		}
 
-		var params = [["placeName", placeName], ["types", this.config.providers]];
+		var params = [["placeName", placeName], ["types", this.config.providers]];	 
+	  if (this.coordinates) {
+		 params.push(["lat", this.coordinates.lat]);
+		 params.push(["lng", this.coordinates.lng]);
+	  }
+
 		this.owner.apiGet("place", params, places => { this.fillPlacesSearchBoxHtml(places) });
 	}
 

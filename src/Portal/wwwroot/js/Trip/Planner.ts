@@ -58,6 +58,8 @@ class PlaceDialog  {
 		this.buildTemplate();
 		this.createNameSearch(data.place.selectedName);
 
+	  //todo: load saved coordinates
+
 		var addressName = "";
 		if (data.address) {
 			addressName = data.address.selectedName;
@@ -168,6 +170,9 @@ class PlaceDialog  {
  }
 
 	private onPlaceSelected(req, place) {
+
+	 this.addressSearch.setCoordinates(place.Coordinates.Lat, place.Coordinates.Lng);
+
 	 var name = place.City + ", " + place.CountryCode;
 	 $(".active .name").text(name);
 

@@ -36,8 +36,8 @@ namespace Gloobster.DomainModels.Services.PlaceSearch
 
 			if (queryObj.Coordinates != null)
 			{
-				queryBuilder.Param("center", $"{queryObj.Coordinates.Lat},{queryObj.Coordinates.Lng}");
-			}
+				queryBuilder.Param("center", $"{queryObj.Coordinates.Lat.ToString("0.000").Replace(",",".")},{queryObj.Coordinates.Lng.ToString("0.000").Replace(",", ".")}");				
+            }
 
 			var url = queryBuilder.Build();
 			

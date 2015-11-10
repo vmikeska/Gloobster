@@ -20,12 +20,19 @@ var PlaceSearchBox = (function () {
         this.lastText = text;
         this.$root.find("input").val(text);
     };
+    PlaceSearchBox.prototype.setCoordinates = function (lat, lng) {
+        this.coordinates = { lat: lat, lng: lng };
+    };
     PlaceSearchBox.prototype.searchPlaces = function (placeName) {
         var _this = this;
         if (placeName.length < this.config.minCharsToSearch) {
             return;
         }
         var params = [["placeName", placeName], ["types", this.config.providers]];
+        if (this.coordinates) {
+            params.push(["lat", this.coordinates.lat]);
+            params.push(["lng", this.coordinates.lng]);
+        }
         this.owner.apiGet("place", params, function (places) { _this.fillPlacesSearchBoxHtml(places); });
     };
     PlaceSearchBox.prototype.fillPlacesSearchBoxHtml = function (places) {

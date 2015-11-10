@@ -39,6 +39,7 @@ var PlaceDialog = (function () {
     PlaceDialog.prototype.create = function (data) {
         this.buildTemplate();
         this.createNameSearch(data.place.selectedName);
+        //todo: load saved coordinates
         var addressName = "";
         if (data.address) {
             addressName = data.address.selectedName;
@@ -128,6 +129,7 @@ var PlaceDialog = (function () {
         });
     };
     PlaceDialog.prototype.onPlaceSelected = function (req, place) {
+        this.addressSearch.setCoordinates(place.Coordinates.Lat, place.Coordinates.Lng);
         var name = place.City + ", " + place.CountryCode;
         $(".active .name").text(name);
         var data = {
