@@ -1,12 +1,13 @@
 class PlaceSearchBox {
 
 	public owner: Views.ViewBase;
-	public config: PlaceSearchConfig;	
-	public onPlaceSelected: Function;	
-  
-  private delayedCallback: DelayedCallback;
+	public config: PlaceSearchConfig;
+	public onPlaceSelected: Function;
+
+	private delayedCallback: DelayedCallback;
 	private $root: any;
 	private $input: any;
+  private lastText: string;
 
 	private template: any;
 
@@ -14,16 +15,28 @@ class PlaceSearchBox {
 		this.config = config;
 		this.$root = $("#" + config.elementId);
 		this.$input = this.$root.find("input");
-		this.owner = config.owner;		
+		this.owner = config.owner;
 
 		var source = $("#placeItem-template").html();
 		this.template = Handlebars.compile(source);
+
+		this.$input.focus((e) => {
+			$(e.target).val("");
+		});
+		this.$input.focusout(() => {
+			this.setText(this.lastText);
+		});
 
 		this.delayedCallback = new DelayedCallback(this.$input);
 		this.delayedCallback.callback = (placeName) => this.searchPlaces(placeName);
 	}
 
-	public searchPlaces(placeName: string) {	
+	public setText(text: string) {
+		this.lastText = text;
+		this.$root.find("input").val(text);
+	}
+
+	public searchPlaces(placeName: string) {
 		if (placeName.length < this.config.minCharsToSearch) {
 			return;
 		}
@@ -31,7 +44,7 @@ class PlaceSearchBox {
 		var params = [["placeName", placeName], ["types", this.config.providers]];
 		this.owner.apiGet("place", params, places => { this.fillPlacesSearchBoxHtml(places) });
 	}
- 
+
 	private fillPlacesSearchBoxHtml(places) {
 		this.$root.find("ul").show();
 		var htmlContent = "";
@@ -43,7 +56,7 @@ class PlaceSearchBox {
 		this.$root.find("ul").html(htmlContent);
 
 		this.$root.find("li").click(clickedPlace => {
-		 this.selectPlace(clickedPlace, places);			
+			this.selectPlace(clickedPlace, places);
 		});
 	}
 
@@ -61,13 +74,21 @@ class PlaceSearchBox {
 		this.$root.find("ul").hide();
 
 		if (this.config.clearAfterSearch) {
-			this.$root.find("input").val("");
+			this.setText("");
 		} else {
-			var selectedCaption = clickedPlaceObj.City + ", " + clickedPlaceObj.CountryCode;
-			this.$root.find("input").val(selectedCaption);
+			//var selectedCaption = clickedPlaceObj.City + ", " + clickedPlaceObj.CountryCode;
+			var selectedCaption = this.getCaption(clickedPlaceObj);
+			if (this.config.customSelectedFormat) {
+				selectedCaption = this.config.customSelectedFormat(clickedPlaceObj);
+			}
+			this.setText(selectedCaption);
 		}
 
 		this.onPlaceSelected(newPlaceRequest, clickedPlaceObj);
+	}
+
+	private getCaption(place) {
+		return place.City + ", " + place.CountryCode;
 	}
 
 	private getIconForSearch(sourceType: SourceType) {
@@ -107,4 +128,5 @@ class PlaceSearchConfig {
 	providers: string;
 	minCharsToSearch: number;
 	clearAfterSearch: boolean;
+  customSelectedFormat: Function;  
 }

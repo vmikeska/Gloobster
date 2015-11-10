@@ -11,5 +11,6 @@ namespace Gloobster.DomainObjects
 		public LatLng Coordinates { get; set; }
 		public string SourceId { get; set; }
 		public SourceType SourceType { get; set; }
+		public string Address { get; set; }
 	}
 }

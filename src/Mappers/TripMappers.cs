@@ -84,19 +84,40 @@ namespace Gloobster.Mappers
 			return response;
 		}
 
-		public static TripPlaceResponse ToResponse(this TripPlaceSE entity)
+		public static TripPlaceResponse ToResponse(this TripPlaceSE e)
 		{
-			var response = new TripPlaceResponse
+			var r = new TripPlaceResponse
 			{
-				id = entity.Id,
-				sourceId = entity.SourceId,
-				sourceType = entity.SourceType,
-				arrivingId = entity.ArrivingId,
-				leavingId = entity.LeavingId,
-				orderNo = entity.OrderNo,
-				selectedName = entity.SelectedName
+				id = e.Id,
+				description = e.Description,				
+				arrivingId = e.ArrivingId,
+				leavingId = e.LeavingId,
+				orderNo = e.OrderNo,
+				addressText = e.AddressText
 			};
-			return response;
+
+			if (e.Place != null)
+			{
+				 r.place = e.Place.ToResponse();
+			}
+
+			if (e.Address != null)
+			{
+				r.address = e.Address.ToResponse();
+			}
+			
+			return r;
+		}
+
+		public static PlaceResponse ToResponse(this PlaceSE e)
+		{
+			var r = new PlaceResponse
+			{
+				selectedName = e.SelectedName,
+				sourceId = e.SourceId,
+				sourceType = e.SourceType
+			};
+			return r;
 		}
 
 		public static TripTravelResponse ToResponse(this TripTravelSE entity)

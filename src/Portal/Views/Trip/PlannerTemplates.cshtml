@@ -17,7 +17,7 @@
 
 
 <script id="place-template" type="text/x-handlebars-template">
-		<div class="cell">
+		<div id="{{id}}" class="cell">
 								
 		{{#if isActive}}
 				<div class="destination active">
@@ -48,14 +48,14 @@
 				<div class="table row">
 						<div class="cell baseline">
 								<div id="cities" class="dropdown left">
-										<input id="citiesInput" class="inputed" type="text" placeholder="Place name">
+										<input class="inputed" type="text" placeholder="Place name">
 										<ul></ul>
 								</div>
 								@*<h3>Frankfurkt</h3>*@
 						</div>
 						<div class="cell baseline color1">June averages: Day 32°C • Night 16°C</div>
 				</div>
-				<textarea placeholder="Description or related files"></textarea>
+				<textarea id="dialogDescription" placeholder="Description or related files"></textarea>
 				<div class="documents grid col3 margin">
 						<div class="cell">
 								<div class="document">
@@ -76,9 +76,12 @@
 										Address
 										<span class="slim">where I stay</span>
 								</h4>
-								<div class="dropdown">
-										<input class="inputed" type="text" placeholder="Type your address">										
+								<div id="stayPlace" class="dropdown">
+										<input class="inputed" type="text" placeholder="Search for place">
+										<ul>											
+										</ul>
 								</div>
+								<input id="stayAddress" class="inputed" type="text" placeholder="Text address">
 								<a class="create" href="#">Add a personal note</a>
 						</div>
 						<div class="cell places">
@@ -99,53 +102,9 @@
 										<a class="more" href="#">More</a>
 										<a class="delete" href="#">Delete</a>
 								</div>
-								<div class="dropdown">
+								<div id="placeToVisit" class="dropdown">
 										<input class="inputed" type="text" placeholder="+ Pubs, Restaurants, Museums...">
-										<ul>
-												<li class="disabled">Cities</li>
-												<li data-value="New York">
-														<span class="thumbnail">
-																<img src="~/images/samples/sample11.jpg">
-														</span>
-														New York
-														<span class="color2">, USA</span>
-												</li>
-												<li data-value="New Jersey">
-														<span class="thumbnail">
-																<img src="~/images/samples/sample11.jpg">
-														</span>
-														New Jersey
-														<span class="color2">, USA</span>
-												</li>
-												<li data-value="New Dili">
-														<span class="thumbnail">
-																<img src="~/images/samples/sample11.jpg">
-														</span>
-														New Dili
-														<span class="color2">, India</span>
-												</li>
-												<li class="disabled">Cities 2</li>
-												<li data-value="New York">
-														<span class="thumbnail">
-																<img src="~/images/samples/sample11.jpg">
-														</span>
-														New York2
-														<span class="color2">, USA</span>
-												</li>
-												<li data-value="New Jersey">
-														<span class="thumbnail">
-																<img src="~/images/samples/sample11.jpg">
-														</span>
-														New Jersey2
-														<span class="color2">, USA</span>
-												</li>
-												<li data-value="New Dili">
-														<span class="thumbnail">
-																<img src="~/images/samples/sample11.jpg">
-														</span>
-														New Dili2
-														<span class="color2">, India</span>
-												</li>
+										<ul>												
 										</ul>
 								</div>
 								<input type="submit" value="Add place">

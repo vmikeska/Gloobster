@@ -8,6 +8,7 @@ using Gloobster.Entities.Trip;
 using Gloobster.Enums;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using System.Collections.Generic;
 
 namespace Gloobster.DomainModels
 {
@@ -30,41 +31,59 @@ namespace Gloobster.DomainModels
 
 			LoadTrip();						
 		}
+		
 
-		//public void AddInitialData()
-		//{
-		//	bool initialized = (Trip.Places != null) && Trip.Places.Any();
-		//	if (initialized)
-		//	{
-		//		return;
-		//	}
+		public async void UpdateProperty(string propertyName, Dictionary<string, string> values)
+		{
+			var tripId = values["tripId"];			
+			var tripIdObj = new ObjectId(tripId);
 
-		//	var travel = new TripTravelSE
-		//	{
-		//		Id = NewId(),
-		//		Type = TravelType.Walk
-		//	};
+			if (propertyName == "place")
+			{
+				var place = new PlaceSE
+				{
+					SourceType = (SourceType) int.Parse(values["sourceType"]),
+					SourceId = values["sourceId"],
+					SelectedName = values["selectedName"]
+				};
 
-		//	var firstPlace = new TripPlaceSE
-		//	{
-		//		Id = NewId(),
-		//		ArrivingId = null,
-		//		LeavingId = travel.Id,
-		//		OrderNo = 1
-		//	};
+				var placeId = values["placeId"];
+				
+				await UpdatePlaceProperty(tripIdObj, placeId, "Place", place);
+			}
 
-		//	var secondPlace = new TripPlaceSE
-		//	{
-		//		Id = NewId(),
-		//		ArrivingId = travel.Id,
-		//		LeavingId = null,
-		//		OrderNo = 2
-		//	};
+			if (propertyName == "address")
+			{
+				var address = new PlaceSE
+				{
+					SourceType = (SourceType)int.Parse(values["sourceType"]),
+					SourceId = values["sourceId"],
+					SelectedName = values["selectedName"]
+				};
 
-		//	PushTravel(travel);
-		//	PushPlace(firstPlace);
-		//	PushPlace(secondPlace);
-		//}
+				var placeId = values["placeId"];
+				var addressText = values["address"];				
+
+				await UpdatePlaceProperty(tripIdObj, placeId, "Address", address);
+				await UpdatePlaceProperty(tripIdObj, placeId, "AddressText", addressText);				
+            }
+
+			if (propertyName == "description")
+			{
+				var placeId = values["placeId"];
+				var description = values["description"];
+				await UpdatePlaceProperty(tripIdObj, placeId, "Description", description);
+			}
+		}
+		
+		private async Task<bool> UpdatePlaceProperty(ObjectId tripIdObj, string placeId, string propName, object value)
+		{
+			var filter = DB.F<TripEntity>().Eq(p => p.id, tripIdObj) & DB.F<TripEntity>().Eq("Places._id", placeId);
+			var update = DB.U<TripEntity>().Set("Places.$." + propName, value);
+
+			var res = await DB.UpdateAsync(filter, update);
+			return res.ModifiedCount == 1;			
+		}
 
 		public AddPlaceResultDO AddPlace(NewPlaceDO newPlace)
 		{

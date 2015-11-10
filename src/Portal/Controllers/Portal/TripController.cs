@@ -52,9 +52,12 @@ namespace Gloobster.Portal.Controllers.Portal
 				ArrivingId = null,
 				LeavingId = travel.Id,
 				OrderNo = 1,
-				SourceType = SourceType.City,
-				SourceId = "2643743",
-				SelectedName = "London, GB"
+				Place = new PlaceSE
+				{
+					SourceType = SourceType.City,
+					SourceId = "2643743",
+					SelectedName = "London, GB"
+				}				
 			};
 
 			var secondPlace = new TripPlaceSE
@@ -63,9 +66,12 @@ namespace Gloobster.Portal.Controllers.Portal
 				ArrivingId = travel.Id,
 				LeavingId = null,
 				OrderNo = 2,
-				SourceType = SourceType.City,
-				SourceId = "5128581",
-				SelectedName = "New York, US"
+				Place = new PlaceSE
+				{ 
+					SourceType = SourceType.City,
+					SourceId = "5128581",
+					SelectedName = "New York, US"
+				}
 			};
 
 			var tripEntity = new TripEntity

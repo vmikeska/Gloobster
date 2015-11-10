@@ -1,7 +1,183 @@
+var DialogManager = (function () {
+    function DialogManager(owner, planner) {
+        this.$currentContainer = $("#plannerCont1");
+        this.owner = owner;
+        this.planner = planner;
+        this.placeDetailTemplate = this.owner.registerTemplate("placeDetail-template");
+        this.travelDetailTemplate = this.owner.registerTemplate("travelDetail-template");
+    }
+    DialogManager.prototype.closeDialog = function () {
+        $(".daybyday-form").remove();
+    };
+    DialogManager.prototype.regClose = function ($html) {
+        var _this = this;
+        $html.find(".close").click(function () {
+            _this.closeDialog();
+            _this.deactivate();
+        });
+    };
+    DialogManager.prototype.deactivate = function () {
+        $(".destination.active").removeClass("active");
+        var $trans = $(".transport.active");
+        $trans.removeClass("active");
+        $trans.find(".tab").remove();
+    };
+    return DialogManager;
+})();
+var PlaceDialog = (function () {
+    function PlaceDialog(dialogManager) {
+        this.dialogManager = dialogManager;
+    }
+    PlaceDialog.prototype.display = function () {
+        var _this = this;
+        this.dialogManager.closeDialog();
+        var prms = [["dialogType", "place"], ["tripId", this.dialogManager.planner.trip.tripId], ["id", this.dialogManager.selectedId]];
+        this.dialogManager.owner.apiGet("TripPlannerProperty", prms, function (response) {
+            _this.create(response);
+        });
+    };
+    PlaceDialog.prototype.create = function (data) {
+        this.buildTemplate();
+        this.createNameSearch(data.place.selectedName);
+        var addressName = "";
+        if (data.address) {
+            addressName = data.address.selectedName;
+        }
+        $("#stayAddress").val(data.addressText);
+        this.createAddressSearch(addressName);
+        this.createPlaceToVisitSearch();
+        this.initDescription(data.description);
+    };
+    PlaceDialog.prototype.createNameSearch = function (selectedName) {
+        var _this = this;
+        var c = new PlaceSearchConfig();
+        c.owner = this.dialogManager.owner;
+        c.providers = "0,1,2,3";
+        c.elementId = "cities";
+        c.minCharsToSearch = 1;
+        c.clearAfterSearch = false;
+        this.placeSearch = new PlaceSearchBox(c);
+        this.placeSearch.onPlaceSelected = function (req, place) { return _this.onPlaceSelected(req, place); };
+        this.placeSearch.setText(selectedName);
+    };
+    PlaceDialog.prototype.createPlaceToVisitSearch = function () {
+        var _this = this;
+        var c = new PlaceSearchConfig();
+        c.owner = this.dialogManager.owner;
+        c.providers = "1,0";
+        c.elementId = "placeToVisit";
+        c.minCharsToSearch = 1;
+        c.clearAfterSearch = true;
+        //c.customSelectedFormat = (place) => {
+        //return place.Name;
+        //}
+        this.placeToVisitSearch = new PlaceSearchBox(c);
+        this.placeToVisitSearch.onPlaceSelected = function (req, place) { return _this.onPlaceToVisitSelected(req, place); };
+    };
+    PlaceDialog.prototype.createAddressSearch = function (selectedName) {
+        var _this = this;
+        var c = new PlaceSearchConfig();
+        c.owner = this.dialogManager.owner;
+        c.providers = "1,0";
+        c.elementId = "stayPlace";
+        c.minCharsToSearch = 1;
+        c.clearAfterSearch = false;
+        c.customSelectedFormat = function (place) {
+            return place.Name;
+        };
+        this.addressSearch = new PlaceSearchBox(c);
+        this.addressSearch.onPlaceSelected = function (req, place) { return _this.onAddressSelected(req, place); };
+        this.addressSearch.setText(selectedName);
+    };
+    PlaceDialog.prototype.buildTemplate = function () {
+        var html = this.dialogManager.placeDetailTemplate();
+        var $html = $(html);
+        this.dialogManager.regClose($html);
+        this.dialogManager.$currentContainer.after($html);
+    };
+    PlaceDialog.prototype.onPlaceToVisitSelected = function (req, place) {
+        //$("#stayAddress").val(place.Address);
+        //var data = {
+        // propertyName: "address",
+        // values: {
+        //	 tripId: this.dialogManager.planner.trip.tripId,
+        //	 placeId: this.dialogManager.selectedId,
+        //	 sourceId: req.SourceId,
+        //	 sourceType: req.SourceType,
+        //	 selectedName: place.Name,
+        //	 address: place.Address
+        // }
+        //};
+        //this.dialogManager.owner.apiPut("tripPlannerProperty", data, (response) => {
+        //});
+    };
+    PlaceDialog.prototype.onAddressSelected = function (req, place) {
+        $("#stayAddress").val(place.Address);
+        var data = {
+            propertyName: "address",
+            values: {
+                tripId: this.dialogManager.planner.trip.tripId,
+                placeId: this.dialogManager.selectedId,
+                sourceId: req.SourceId,
+                sourceType: req.SourceType,
+                selectedName: place.Name,
+                address: place.Address
+            }
+        };
+        this.dialogManager.owner.apiPut("tripPlannerProperty", data, function (response) {
+        });
+    };
+    PlaceDialog.prototype.onPlaceSelected = function (req, place) {
+        var name = place.City + ", " + place.CountryCode;
+        $(".active .name").text(name);
+        var data = {
+            propertyName: "place",
+            values: {
+                tripId: this.dialogManager.planner.trip.tripId,
+                placeId: this.dialogManager.selectedId,
+                sourceId: req.SourceId,
+                sourceType: req.SourceType,
+                selectedName: name
+            }
+        };
+        this.dialogManager.owner.apiPut("tripPlannerProperty", data, function (response) {
+        });
+    };
+    PlaceDialog.prototype.initDescription = function (text) {
+        var _this = this;
+        $("#dialogDescription").val(text);
+        var d = new DelayedCallback("dialogDescription");
+        d.callback = function (description) {
+            var data = { propertyName: "description", values: {
+                    dialogType: "place",
+                    placeId: _this.dialogManager.selectedId,
+                    tripId: _this.dialogManager.planner.trip.tripId,
+                    description: description
+                } };
+            _this.dialogManager.owner.apiPut("TripPlannerProperty", data, function () {
+            });
+        };
+    };
+    return PlaceDialog;
+})();
+var TravelDialog = (function () {
+    function TravelDialog() {
+    }
+    TravelDialog.prototype.displayTravelDetail = function () {
+        this.dialogUtils.closeDialog();
+        var html = this.dialogUtils.travelDetailTemplate();
+        var $html = $(html);
+        this.dialogUtils.regClose($html);
+        this.dialogUtils.$currentContainer.after($html);
+    };
+    return TravelDialog;
+})();
 var Planner = (function () {
     function Planner(owner, trip) {
         this.$currentContainer = $("#plannerCont1");
         this.owner = owner;
+        this.dialogManager = new DialogManager(owner, this);
+        this.placeDialog = new PlaceDialog(this.dialogManager);
         this.trip = trip;
         this.registerTemplates();
         this.addAdder();
@@ -14,10 +190,11 @@ var Planner = (function () {
         var orderedPlaces = _.sortBy(this.placesMgr.places, "orderNo");
         orderedPlaces.forEach(function (place) {
             var name = "Empty";
-            if (place.selectedName) {
-                name = place.selectedName;
+            if (place.place) {
+                name = place.place.selectedName;
             }
             var placeContext = {
+                id: place.id,
                 isActive: false,
                 name: name,
                 arrivalDateLong: "1.1.2000"
@@ -28,49 +205,6 @@ var Planner = (function () {
                 _this.addTravel(travel.id, travel.type);
             }
         });
-    };
-    Planner.prototype.closeDialog = function () {
-        $(".daybyday-form").remove();
-    };
-    Planner.prototype.deactivate = function () {
-        $(".destination.active").removeClass("active");
-        var $trans = $(".transport.active");
-        $trans.removeClass("active");
-        $trans.find(".tab").remove();
-    };
-    Planner.prototype.regClose = function ($html) {
-        var _this = this;
-        $html.find(".close").click(function () {
-            _this.closeDialog();
-            _this.deactivate();
-        });
-    };
-    Planner.prototype.displayPlaceDetail = function () {
-        var _this = this;
-        this.closeDialog();
-        var html = this.placeDetailTemplate();
-        var $html = $(html);
-        this.regClose($html);
-        this.$currentContainer.after($html);
-        var searchConfig = new PlaceSearchConfig();
-        searchConfig.owner = this.owner;
-        searchConfig.providers = "0,1,2,3";
-        searchConfig.elementId = "cities";
-        searchConfig.minCharsToSearch = 1;
-        searchConfig.clearAfterSearch = false;
-        this.placeSearch = new PlaceSearchBox(searchConfig);
-        this.placeSearch.onPlaceSelected = function (req, place) { return _this.onPlaceSelected(req, place); };
-    };
-    Planner.prototype.displayTravelDetail = function () {
-        this.closeDialog();
-        var html = this.travelDetailTemplate();
-        var $html = $(html);
-        this.regClose($html);
-        this.$currentContainer.after($html);
-    };
-    Planner.prototype.onPlaceSelected = function (req, place) {
-        var name = place.City + ", " + place.CountryCode;
-        $(".active .name").text(name);
     };
     Planner.prototype.addAdder = function () {
         var _this = this;
@@ -86,13 +220,11 @@ var Planner = (function () {
         this.addPlaceTemplate = this.owner.registerTemplate("addPlace-template");
         this.travelTemplate = this.owner.registerTemplate("travel-template");
         this.placeTemplate = this.owner.registerTemplate("place-template");
-        this.placeDetailTemplate = this.owner.registerTemplate("placeDetail-template");
-        this.travelDetailTemplate = this.owner.registerTemplate("travelDetail-template");
     };
     Planner.prototype.addEnd = function () {
         var _this = this;
-        this.closeDialog();
-        this.deactivate();
+        this.dialogManager.closeDialog();
+        this.dialogManager.deactivate();
         var lastPlace = this.placesMgr.getLastPlace();
         var data = { selectorId: lastPlace.id, position: NewPlacePosition.ToRight, tripId: this.trip.tripId };
         this.owner.apiPost("tripPlanner", data, function (response) {
@@ -116,7 +248,7 @@ var Planner = (function () {
                 arrivalDateLong: "1.1.2000"
             };
             _this.addPlace(placeContext);
-            _this.displayPlaceDetail();
+            _this.placeDialog.display();
         });
     };
     Planner.prototype.getTravelIcon = function (travelType) {
@@ -153,41 +285,27 @@ var Planner = (function () {
         });
         this.$lastCell.before($html);
     };
+    Planner.prototype.setActiveTravel = function ($elem) {
+        this.dialogManager.deactivate();
+        $elem.addClass("active");
+        $elem.append($('<span class="tab"></span>'));
+        this.placeDialog.display();
+    };
     Planner.prototype.addPlace = function (context) {
-        var _this = this;
+        var self = this;
         var html = this.placeTemplate(context);
         var $html = $(html);
         $html.find(".destination").click(function (e) {
-            _this.deactivate();
+            self.dialogManager.deactivate();
             $(e.target).addClass("active");
-            _this.displayPlaceDetail();
+            self.dialogManager.selectedId = $(e.target).parent().attr("id");
+            self.placeDialog.display();
         });
         this.$lastCell.before($html);
         //this.displayPlaceDetail();	 
     };
-    Planner.prototype.setActiveTravel = function ($elem) {
-        this.deactivate();
-        $elem.addClass("active");
-        $elem.append($('<span class="tab"></span>'));
-        this.displayTravelDetail();
-    };
     return Planner;
 })();
-var NewPlacePosition;
-(function (NewPlacePosition) {
-    NewPlacePosition[NewPlacePosition["ToLeft"] = 0] = "ToLeft";
-    NewPlacePosition[NewPlacePosition["ToRight"] = 1] = "ToRight";
-})(NewPlacePosition || (NewPlacePosition = {}));
-var TravelType;
-(function (TravelType) {
-    TravelType[TravelType["Walk"] = 0] = "Walk";
-    TravelType[TravelType["Plane"] = 1] = "Plane";
-    TravelType[TravelType["Car"] = 2] = "Car";
-    TravelType[TravelType["Bus"] = 3] = "Bus";
-    TravelType[TravelType["Train"] = 4] = "Train";
-    TravelType[TravelType["Ship"] = 5] = "Ship";
-    TravelType[TravelType["Bike"] = 6] = "Bike";
-})(TravelType || (TravelType = {}));
 var PlacesManager = (function () {
     function PlacesManager(tripId, owner) {
         this.places = [];
@@ -201,9 +319,7 @@ var PlacesManager = (function () {
             var placeObj = new Place();
             placeObj.id = place.id;
             placeObj.orderNo = place.orderNo;
-            placeObj.selectedName = place.selectedName;
-            placeObj.sourceId = place.sourceId;
-            placeObj.sourceType = place.sourceType;
+            placeObj.place = place.place;
             if (place.arrivingId) {
                 placeObj.arriving = _this.getOrCreateTravelById(place.arrivingId, travels);
                 placeObj.arriving.to = placeObj;
@@ -231,19 +347,6 @@ var PlacesManager = (function () {
         this.travels.push(newTravelObj);
         return newTravel;
     };
-    //public addNewPlaceEnd() {
-    //	var lastPlace = this.getLastPlace();
-    //	this.callAddPlace(lastPlace.id, NewPlacePosition.ToRight, (response) => {
-    //		var t = new Travel();
-    //		t.id = response.travel.id;
-    //		t.from = lastPlace;
-    //		var p = new Place();
-    //		p.id = response.place.id;
-    //		p.arriving = t;
-    //		p.leaving = null;
-    //		t.to = p;
-    //	});
-    //}
     PlacesManager.prototype.getTravelById = function (id) {
         return _.find(this.travels, function (travel) { return travel.id === id; });
     };
@@ -253,10 +356,30 @@ var PlacesManager = (function () {
     };
     return PlacesManager;
 })();
+var NewPlacePosition;
+(function (NewPlacePosition) {
+    NewPlacePosition[NewPlacePosition["ToLeft"] = 0] = "ToLeft";
+    NewPlacePosition[NewPlacePosition["ToRight"] = 1] = "ToRight";
+})(NewPlacePosition || (NewPlacePosition = {}));
+var TravelType;
+(function (TravelType) {
+    TravelType[TravelType["Walk"] = 0] = "Walk";
+    TravelType[TravelType["Plane"] = 1] = "Plane";
+    TravelType[TravelType["Car"] = 2] = "Car";
+    TravelType[TravelType["Bus"] = 3] = "Bus";
+    TravelType[TravelType["Train"] = 4] = "Train";
+    TravelType[TravelType["Ship"] = 5] = "Ship";
+    TravelType[TravelType["Bike"] = 6] = "Bike";
+})(TravelType || (TravelType = {}));
 var Place = (function () {
     function Place() {
     }
     return Place;
+})();
+var PlaceLocation = (function () {
+    function PlaceLocation() {
+    }
+    return PlaceLocation;
 })();
 var Travel = (function () {
     function Travel() {

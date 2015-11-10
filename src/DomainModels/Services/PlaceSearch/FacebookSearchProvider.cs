@@ -52,19 +52,23 @@ namespace Gloobster.DomainModels.Services.PlaceSearch
 			var countryCode = string.Empty;
 			var latLng = new LatLng();			
 			var city = string.Empty;
+			var address = string.Empty;
 
-			if (originalPlace.Location != null)
+			var location = originalPlace.Location;
+			if (location != null)
 			{
-				var country = CountrySvc.GetByCountryName(originalPlace.Location.Country);
+				var country = CountrySvc.GetByCountryName(location.Country);
 				if (country != null)
 				{
 					countryCode = country.CountryCode;
 				}
 
-				city = originalPlace.Location.City;
+				city = location.City;
 
-				latLng.Lat = originalPlace.Location.Latitude;
-				latLng.Lng = originalPlace.Location.Longitude;
+				latLng.Lat = location.Latitude;
+				latLng.Lng = location.Longitude;
+
+				address = $"{location.Street}, {location.City}, {location.Zip}";
 			}
 
 			var place = new Place
@@ -75,7 +79,8 @@ namespace Gloobster.DomainModels.Services.PlaceSearch
 				City = city,
 				
 				CountryCode = countryCode,
-				Coordinates = latLng
+				Coordinates = latLng,
+				Address = address
 			};
 			return place;
 		}

@@ -42,6 +42,9 @@ namespace Gloobster.DomainModels.Services.PlaceSearch
 
 		private Place Convert(Venue originalPlace)
 		{
+			var location = originalPlace.location;
+			var address = $"{location.address}, {location.city}, {location.postalCode}";
+
 			var place = new Place
 			{
 				SourceType = SourceType.S4,
@@ -49,8 +52,11 @@ namespace Gloobster.DomainModels.Services.PlaceSearch
 				Name = originalPlace.name,
 				City = originalPlace.location.city,
 				CountryCode = originalPlace.location.cc,
-				Coordinates = new LatLng { Lat = originalPlace.location.lat, Lng = originalPlace.location.lng }
+				Coordinates = new LatLng { Lat = originalPlace.location.lat, Lng = originalPlace.location.lng },
+				Address = address
 			};
+
+
 			return place;
 		}
 	}

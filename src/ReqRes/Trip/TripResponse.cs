@@ -28,9 +28,17 @@ namespace Gloobster.ReqRes.Trip
 	public class TripPlaceResponse
 	{
 		public string id { get; set; }
+		public string description { get; set; }
 		public int orderNo { get; set; }
 		public string arrivingId { get; set; }
-		public string leavingId { get; set; }
+		public string leavingId { get; set; }		
+		public PlaceResponse place { get; set; }	
+		public PlaceResponse address { get; set; }
+		public string addressText { get; set; }
+	}
+
+	public class PlaceResponse
+	{
 		public string sourceId { get; set; }
 		public SourceType sourceType { get; set; }
 		public string selectedName { get; set; }
