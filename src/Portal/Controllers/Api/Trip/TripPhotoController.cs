@@ -1,17 +1,15 @@
 using System.Linq;
-using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels;
 using Gloobster.DomainObjects;
-using Gloobster.Entities;
 using Gloobster.Entities.Trip;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.Files;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 
-namespace Gloobster.Portal.Controllers.Api.Files
+namespace Gloobster.Portal.Controllers.Api.Trip
 {
 	public class TripPhotoController : BaseApiController
 	{		

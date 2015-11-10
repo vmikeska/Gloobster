@@ -2,23 +2,21 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection.Emit;
+using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels;
 using Gloobster.DomainObjects;
-using Gloobster.Entities;
-using Gloobster.Portal.Controllers.Base;
-using Gloobster.ReqRes.Files;
-using Microsoft.AspNet.Mvc;
-using MongoDB.Bson;
-using System.Threading.Tasks;
 using Gloobster.Entities.Trip;
 using Gloobster.Enums;
 using Gloobster.Mappers;
+using Gloobster.Portal.Controllers.Base;
+using Gloobster.ReqRes.Files;
 using Gloobster.ReqRes.Trip;
+using Microsoft.AspNet.Mvc;
+using MongoDB.Bson;
 
-namespace Gloobster.Portal.Controllers.Api.Files
+namespace Gloobster.Portal.Controllers.Api.Trip
 {
 	public class TripFileController : BaseApiController
 	{		

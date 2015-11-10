@@ -7,9 +7,8 @@ using Gloobster.Entities;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.Files;
 using Microsoft.AspNet.Mvc;
-using MongoDB.Bson;
 
-namespace Gloobster.Portal.Controllers.Api.Files
+namespace Gloobster.Portal.Controllers.Api.User
 {
 	public class UploadAvatarController: BaseApiController
 	{		

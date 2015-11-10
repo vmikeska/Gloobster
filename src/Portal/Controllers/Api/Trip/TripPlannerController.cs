@@ -1,12 +1,11 @@
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
-using Gloobster.DomainModels;
 using Gloobster.DomainObjects;
+using Gloobster.Enums;
 using Gloobster.Portal.Controllers.Base;
 using Microsoft.AspNet.Mvc;
-using Gloobster.Enums;
 
-namespace Gloobster.Portal.Controllers.Api.Files
+namespace Gloobster.Portal.Controllers.Api.Trip
 {
 	public class TripPlannerController : BaseApiController
 	{		
