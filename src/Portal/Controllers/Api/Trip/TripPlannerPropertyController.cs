@@ -6,6 +6,7 @@ using Gloobster.Entities.Trip;
 using Gloobster.Mappers;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes;
+using Gloobster.ReqRes.Trip;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -57,12 +58,4 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 		}
 		
 	}
-
-	public class DialogRequest
-	{
-		public string dialogType { get; set; }
-		public string tripId { get; set; }
-		public string id { get; set; }
-	}
-
 }

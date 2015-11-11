@@ -1,8 +1,8 @@
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
-using Gloobster.Enums;
 using Gloobster.Portal.Controllers.Base;
+using Gloobster.ReqRes.Trip;
 using Microsoft.AspNet.Mvc;
 
 namespace Gloobster.Portal.Controllers.Api.Trip
@@ -49,39 +49,5 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 
 			return new ObjectResult(response);
 		}		
-	}
-
-
-	public class NewPlaceRequest
-	{
-		public string selectorId { get; set; }
-        public NewPlacePosition position { get; set; }
-
-		public string tripId { get; set; }
-				
-	}
-
-	public class NewPlaceResponse
-	{
-		public NewPlacePosition position { get; set; }
-
-		public PlaceLiteResponse place { get; set; }
-
-		public TravelLiteResponse travel { get; set; }
-	}
-
-	public class PlaceLiteResponse
-	{
-		public string id { get; set; }
-		public string arrivingId { get; set; }
-		public string leavingId { get; set; }
-		public int orderNo { get; set; }
-	}
-
-	public class TravelLiteResponse
-	{
-		public string id { get; set; }
-
-		public TravelType type { get; set; }
 	}
 }

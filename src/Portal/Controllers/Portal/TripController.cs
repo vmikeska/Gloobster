@@ -239,11 +239,6 @@ namespace Gloobster.Portal.Controllers.Portal
 		}		
 	}
 
-	public class CommentsRequest
-	{
-		
-	}
-
 	
 
 }
