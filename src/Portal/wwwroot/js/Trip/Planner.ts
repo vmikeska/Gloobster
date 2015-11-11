@@ -2,6 +2,7 @@
 class DialogManager {
 	public placeDetailTemplate: any;
 	public travelDetailTemplate: any;
+  public visitedItemTemplate: any;
   public selectedId: string;
 
 	public owner: Views.ViewBase;
@@ -9,18 +10,20 @@ class DialogManager {
   public $currentContainer = $("#plannerCont1");
 
 	constructor(owner: Views.ViewBase, planner: Planner) {
-	 this.owner = owner;
+		this.owner = owner;
 		this.planner = planner;
-	 this.placeDetailTemplate = this.owner.registerTemplate("placeDetail-template");
-	 this.travelDetailTemplate = this.owner.registerTemplate("travelDetail-template");  
-  }
- 
+		this.placeDetailTemplate = this.owner.registerTemplate("placeDetail-template");
+		this.travelDetailTemplate = this.owner.registerTemplate("travelDetail-template");
+		this.visitedItemTemplate = this.owner.registerTemplate("visitItem-template");
+	}
+
 	public closeDialog() {
 		$(".daybyday-form").remove();
 	}
 
 	public regClose($html) {
-	 $html.find(".close").click(() => {
+	 $html.find(".close").click((e) => {
+		e.preventDefault();
 		this.closeDialog();
 		this.deactivate();
 	 });
@@ -57,19 +60,19 @@ class PlaceDialog  {
 	private create(data) {	 
 		this.buildTemplate();
 		this.createNameSearch(data.place.selectedName);
-
-	  //todo: load saved coordinates
-
-		var addressName = "";
-		if (data.address) {
-			addressName = data.address.selectedName;
-		}
-
+	 
 		$("#stayAddress").val(data.addressText);
 
-		this.createAddressSearch(addressName);
-		this.createPlaceToVisitSearch();
+		this.createAddressSearch(data);
+		
+		this.createPlaceToVisitSearch(data);
 		this.initDescription(data.description);
+
+	  if (data.wantVisit) {
+		  data.wantVisit.forEach((place) => {
+			 this.addPlaceToVisit(place.id, place.selectedName, place.sourceType);
+		  });
+	  }
 	}
 
  private createNameSearch(selectedName) {
@@ -86,23 +89,24 @@ class PlaceDialog  {
 		this.placeSearch.setText(selectedName);
  }
 
- private createPlaceToVisitSearch() {
+ private createPlaceToVisitSearch(data) {
 	 var c = new PlaceSearchConfig();
 	 c.owner = this.dialogManager.owner;
 	 c.providers = "1,0";
 	 c.elementId = "placeToVisit";
 	 c.minCharsToSearch = 1;
 	 c.clearAfterSearch = true;
-	 //c.customSelectedFormat = (place) => {
-		//return place.Name;
-	 //}
-
+	
 	 this.placeToVisitSearch = new PlaceSearchBox(c);
 	 this.placeToVisitSearch.onPlaceSelected = (req, place) => this.onPlaceToVisitSelected(req, place);	
+
+	 if (data.place.coordinates) {
+		this.placeToVisitSearch.setCoordinates(data.place.coordinates.Lat, data.place.coordinates.Lng);
+	 }	
  }
 
- private createAddressSearch(selectedName) {	 
-	 var c = new PlaceSearchConfig();
+ private createAddressSearch(data) {	 	
+	var c = new PlaceSearchConfig();
 	 c.owner = this.dialogManager.owner;
 	 c.providers = "1,0";
 	 c.elementId = "stayPlace";
@@ -115,8 +119,15 @@ class PlaceDialog  {
 	 this.addressSearch = new PlaceSearchBox(c);
 	 this.addressSearch.onPlaceSelected = (req, place) => this.onAddressSelected(req, place);
 	 
+	 var addressName = "";
+	 if (data.address) {
+		addressName = data.address.selectedName;
+	 }
+	 this.addressSearch.setText(addressName);
 
-	 this.addressSearch.setText(selectedName);
+	 if (data.place.coordinates) {
+		this.addressSearch.setCoordinates(data.place.coordinates.Lat, data.place.coordinates.Lng);
+	 }	
  }
 
 
@@ -128,23 +139,22 @@ class PlaceDialog  {
  }
  
  private onPlaceToVisitSelected(req, place) {
+	
+	 var data = {
+		 propertyName: "placeToVisit",
+		 values: {
+			 tripId: this.dialogManager.planner.trip.tripId,
+			 placeId: this.dialogManager.selectedId,
+			 sourceId: req.SourceId,
+			 sourceType: req.SourceType,
+			 selectedName: place.Name			 
+		 }
+	 };
 
-	 //$("#stayAddress").val(place.Address);
-
-	 //var data = {
-		// propertyName: "address",
-		// values: {
-		//	 tripId: this.dialogManager.planner.trip.tripId,
-		//	 placeId: this.dialogManager.selectedId,
-		//	 sourceId: req.SourceId,
-		//	 sourceType: req.SourceType,
-		//	 selectedName: place.Name,
-		//	 address: place.Address
-		// }
-	 //};
-	 //this.dialogManager.owner.apiPut("tripPlannerProperty", data, (response) => {
-
-	 //});
+	 this.dialogManager.owner.apiPut("tripPlannerProperty", data, (response) => {
+		 var id = response.Result;
+		 this.addPlaceToVisit(id, place.Name, req.SourceType);
+	 });
 
  }
   
@@ -160,7 +170,9 @@ class PlaceDialog  {
 			 sourceId: req.SourceId,
 			 sourceType: req.SourceType,
 			 selectedName: place.Name,
-			 address: place.Address
+			 address: place.Address,
+			 lat: place.Coordinates.Lat,
+			 lng: place.Coordinates.Lng
 		 }
 	 };
 	 this.dialogManager.owner.apiPut("tripPlannerProperty", data, (response) => {
@@ -183,13 +195,59 @@ class PlaceDialog  {
 		 placeId: this.dialogManager.selectedId,
 		 sourceId: req.SourceId,
 		 sourceType: req.SourceType,
-		 selectedName: name
+		 selectedName: name,
+		 lat: place.Coordinates.Lat,
+		 lng: place.Coordinates.Lng		
 		}
 	 };
 	 this.dialogManager.owner.apiPut("tripPlannerProperty", data, (response) => {
 
 	 });
 
+	}
+
+	private addPlaceToVisit(id: string, name: string, sourceType: SourceType) {
+		var self = this;
+		var iconClass = this.getIcon(sourceType);
+
+		var context = { id: id, icon: iconClass, name: name };
+
+		var html = this.dialogManager.visitedItemTemplate(context);
+		var $html = $(html);
+		
+		$html.find(".delete").click((e) => {
+		 e.preventDefault();
+		 var $item = $(e.target);
+
+			var data = {
+				propertyName: "placeToVisitRemove",
+				values: {
+					tripId: this.dialogManager.planner.trip.tripId,
+					placeId: this.dialogManager.selectedId,
+					id: $item.parent().data("id")
+				}
+			};
+			self.dialogManager.owner.apiPut("tripPlannerProperty", data, (response) => {});
+			$html.remove();
+		});
+
+		$("#placeToVisit").before($html);
+	}
+
+	private getIcon(sourceType: SourceType) {
+
+	 switch (sourceType) {
+		case SourceType.FB:
+		 return "icon-facebook";
+		//case SourceType.City:
+		// return "icon-city";
+		//case SourceType.Country:
+		// return "icon-country";
+		case SourceType.S4:
+		 return "icon-foursquare";
+	 }
+
+	 return "";
 	}
 
 	private initDescription(text) {
@@ -288,7 +346,8 @@ class Planner {
 		this.$currentContainer.append(html);
 		this.$adder = $("#addPlace");
 		this.$lastCell = $("#lastCell");
-		this.$adder.click(() => {
+		this.$adder.click((e) => {
+		  e.preventDefault();
 			this.addEnd();
 		});
 	}

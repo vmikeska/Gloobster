@@ -105,7 +105,24 @@ namespace Gloobster.Mappers
 			{
 				r.address = e.Address.ToResponse();
 			}
+
+			if (e.WantVisit != null)
+			{
+				r.wantVisit = e.WantVisit.Select(w => w.ToResponse()).ToList();
+			}
 			
+			return r;
+		}
+
+		public static PlaceIdResponse ToResponse(this PlaceIdSE e)
+		{
+			var r = new PlaceIdResponse
+			{
+				id = e.id,
+				selectedName = e.SelectedName,
+				sourceId = e.SourceId,
+				sourceType = e.SourceType				
+			};
 			return r;
 		}
 
@@ -115,7 +132,8 @@ namespace Gloobster.Mappers
 			{
 				selectedName = e.SelectedName,
 				sourceId = e.SourceId,
-				sourceType = e.SourceType
+				sourceType = e.SourceType,
+				coordinates = e.Coordinates
 			};
 			return r;
 		}

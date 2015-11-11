@@ -5,13 +5,15 @@ var DialogManager = (function () {
         this.planner = planner;
         this.placeDetailTemplate = this.owner.registerTemplate("placeDetail-template");
         this.travelDetailTemplate = this.owner.registerTemplate("travelDetail-template");
+        this.visitedItemTemplate = this.owner.registerTemplate("visitItem-template");
     }
     DialogManager.prototype.closeDialog = function () {
         $(".daybyday-form").remove();
     };
     DialogManager.prototype.regClose = function ($html) {
         var _this = this;
-        $html.find(".close").click(function () {
+        $html.find(".close").click(function (e) {
+            e.preventDefault();
             _this.closeDialog();
             _this.deactivate();
         });
@@ -37,17 +39,18 @@ var PlaceDialog = (function () {
         });
     };
     PlaceDialog.prototype.create = function (data) {
+        var _this = this;
         this.buildTemplate();
         this.createNameSearch(data.place.selectedName);
-        //todo: load saved coordinates
-        var addressName = "";
-        if (data.address) {
-            addressName = data.address.selectedName;
-        }
         $("#stayAddress").val(data.addressText);
-        this.createAddressSearch(addressName);
-        this.createPlaceToVisitSearch();
+        this.createAddressSearch(data);
+        this.createPlaceToVisitSearch(data);
         this.initDescription(data.description);
+        if (data.wantVisit) {
+            data.wantVisit.forEach(function (place) {
+                _this.addPlaceToVisit(place.id, place.selectedName, place.sourceType);
+            });
+        }
     };
     PlaceDialog.prototype.createNameSearch = function (selectedName) {
         var _this = this;
@@ -61,7 +64,7 @@ var PlaceDialog = (function () {
         this.placeSearch.onPlaceSelected = function (req, place) { return _this.onPlaceSelected(req, place); };
         this.placeSearch.setText(selectedName);
     };
-    PlaceDialog.prototype.createPlaceToVisitSearch = function () {
+    PlaceDialog.prototype.createPlaceToVisitSearch = function (data) {
         var _this = this;
         var c = new PlaceSearchConfig();
         c.owner = this.dialogManager.owner;
@@ -69,13 +72,13 @@ var PlaceDialog = (function () {
         c.elementId = "placeToVisit";
         c.minCharsToSearch = 1;
         c.clearAfterSearch = true;
-        //c.customSelectedFormat = (place) => {
-        //return place.Name;
-        //}
         this.placeToVisitSearch = new PlaceSearchBox(c);
         this.placeToVisitSearch.onPlaceSelected = function (req, place) { return _this.onPlaceToVisitSelected(req, place); };
+        if (data.place.coordinates) {
+            this.placeToVisitSearch.setCoordinates(data.place.coordinates.Lat, data.place.coordinates.Lng);
+        }
     };
-    PlaceDialog.prototype.createAddressSearch = function (selectedName) {
+    PlaceDialog.prototype.createAddressSearch = function (data) {
         var _this = this;
         var c = new PlaceSearchConfig();
         c.owner = this.dialogManager.owner;
@@ -88,7 +91,14 @@ var PlaceDialog = (function () {
         };
         this.addressSearch = new PlaceSearchBox(c);
         this.addressSearch.onPlaceSelected = function (req, place) { return _this.onAddressSelected(req, place); };
-        this.addressSearch.setText(selectedName);
+        var addressName = "";
+        if (data.address) {
+            addressName = data.address.selectedName;
+        }
+        this.addressSearch.setText(addressName);
+        if (data.place.coordinates) {
+            this.addressSearch.setCoordinates(data.place.coordinates.Lat, data.place.coordinates.Lng);
+        }
     };
     PlaceDialog.prototype.buildTemplate = function () {
         var html = this.dialogManager.placeDetailTemplate();
@@ -97,20 +107,21 @@ var PlaceDialog = (function () {
         this.dialogManager.$currentContainer.after($html);
     };
     PlaceDialog.prototype.onPlaceToVisitSelected = function (req, place) {
-        //$("#stayAddress").val(place.Address);
-        //var data = {
-        // propertyName: "address",
-        // values: {
-        //	 tripId: this.dialogManager.planner.trip.tripId,
-        //	 placeId: this.dialogManager.selectedId,
-        //	 sourceId: req.SourceId,
-        //	 sourceType: req.SourceType,
-        //	 selectedName: place.Name,
-        //	 address: place.Address
-        // }
-        //};
-        //this.dialogManager.owner.apiPut("tripPlannerProperty", data, (response) => {
-        //});
+        var _this = this;
+        var data = {
+            propertyName: "placeToVisit",
+            values: {
+                tripId: this.dialogManager.planner.trip.tripId,
+                placeId: this.dialogManager.selectedId,
+                sourceId: req.SourceId,
+                sourceType: req.SourceType,
+                selectedName: place.Name
+            }
+        };
+        this.dialogManager.owner.apiPut("tripPlannerProperty", data, function (response) {
+            var id = response.Result;
+            _this.addPlaceToVisit(id, place.Name, req.SourceType);
+        });
     };
     PlaceDialog.prototype.onAddressSelected = function (req, place) {
         $("#stayAddress").val(place.Address);
@@ -122,7 +133,9 @@ var PlaceDialog = (function () {
                 sourceId: req.SourceId,
                 sourceType: req.SourceType,
                 selectedName: place.Name,
-                address: place.Address
+                address: place.Address,
+                lat: place.Coordinates.Lat,
+                lng: place.Coordinates.Lng
             }
         };
         this.dialogManager.owner.apiPut("tripPlannerProperty", data, function (response) {
@@ -139,11 +152,49 @@ var PlaceDialog = (function () {
                 placeId: this.dialogManager.selectedId,
                 sourceId: req.SourceId,
                 sourceType: req.SourceType,
-                selectedName: name
+                selectedName: name,
+                lat: place.Coordinates.Lat,
+                lng: place.Coordinates.Lng
             }
         };
         this.dialogManager.owner.apiPut("tripPlannerProperty", data, function (response) {
         });
+    };
+    PlaceDialog.prototype.addPlaceToVisit = function (id, name, sourceType) {
+        var _this = this;
+        var self = this;
+        var iconClass = this.getIcon(sourceType);
+        var context = { id: id, icon: iconClass, name: name };
+        var html = this.dialogManager.visitedItemTemplate(context);
+        var $html = $(html);
+        $html.find(".delete").click(function (e) {
+            e.preventDefault();
+            var $item = $(e.target);
+            var data = {
+                propertyName: "placeToVisitRemove",
+                values: {
+                    tripId: _this.dialogManager.planner.trip.tripId,
+                    placeId: _this.dialogManager.selectedId,
+                    id: $item.parent().data("id")
+                }
+            };
+            self.dialogManager.owner.apiPut("tripPlannerProperty", data, function (response) { });
+            $html.remove();
+        });
+        $("#placeToVisit").before($html);
+    };
+    PlaceDialog.prototype.getIcon = function (sourceType) {
+        switch (sourceType) {
+            case SourceType.FB:
+                return "icon-facebook";
+            //case SourceType.City:
+            // return "icon-city";
+            //case SourceType.Country:
+            // return "icon-country";
+            case SourceType.S4:
+                return "icon-foursquare";
+        }
+        return "";
     };
     PlaceDialog.prototype.initDescription = function (text) {
         var _this = this;
@@ -214,7 +265,8 @@ var Planner = (function () {
         this.$currentContainer.append(html);
         this.$adder = $("#addPlace");
         this.$lastCell = $("#lastCell");
-        this.$adder.click(function () {
+        this.$adder.click(function (e) {
+            e.preventDefault();
             _this.addEnd();
         });
     };

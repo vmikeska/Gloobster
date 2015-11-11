@@ -57,7 +57,9 @@ namespace Gloobster.Portal.Controllers.Portal
 					SourceType = SourceType.City,
 					SourceId = "2643743",
 					SelectedName = "London, GB"
-				}				
+				},
+				Description = "",
+				WantVisit = new List<PlaceIdSE>(),				
 			};
 
 			var secondPlace = new TripPlaceSE
@@ -71,7 +73,9 @@ namespace Gloobster.Portal.Controllers.Portal
 					SourceType = SourceType.City,
 					SourceId = "5128581",
 					SelectedName = "New York, US"
-				}
+				},
+				Description = "",
+				WantVisit = new List<PlaceIdSE>(),
 			};
 
 			var tripEntity = new TripEntity

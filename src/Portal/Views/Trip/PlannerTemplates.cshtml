@@ -34,7 +34,15 @@
 </script>
 
 
+<script id="visitItem-template" type="text/x-handlebars-template">
+		<div data-id="{{id}}" class="place">
+				<span class="{{icon}} left mright10"></span>
 
+				{{name}}
+				<a class="more" href="#">More</a>
+				<a class="delete" href="#">Delete</a>
+		</div>
+</script>
 
 @*<div class="cell">
 		
@@ -86,28 +94,13 @@
 						</div>
 						<div class="cell places">
 								<h4>Places to visit</h4>
-								<div class="place">
-										<span class="thumbnail">
-												<img src="~/images/samples/sample11.jpg">
-										</span>
-										Eis Cafe Frankfurkt
-										<a class="more" href="#">More</a>
-										<a class="delete" href="#">Delete</a>
-								</div>
-								<div class="place">
-										<span class="thumbnail">
-												<img src="~/images/samples/sample11.jpg">
-										</span>
-										Pub 99 Beers On Tap
-										<a class="more" href="#">More</a>
-										<a class="delete" href="#">Delete</a>
-								</div>
+
 								<div id="placeToVisit" class="dropdown">
 										<input class="inputed" type="text" placeholder="+ Pubs, Restaurants, Museums...">
 										<ul>												
 										</ul>
 								</div>
-								<input type="submit" value="Add place">
+								@*<input type="submit" value="Add place">*@
 						</div>
 				</div>
 				<div class="rating-holder">

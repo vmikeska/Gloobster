@@ -51,9 +51,9 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 		[Authorize]
 		public async Task<IActionResult> Put([FromBody] PropertyUpdateRequest request)
 		{
-			TripPlanner.UpdateProperty(request.propertyName, request.values);
+			var result = TripPlanner.UpdateProperty(request.propertyName, request.values);
 		
-			return new ObjectResult(null);
+			return new ObjectResult(result);
 		}
 		
 	}

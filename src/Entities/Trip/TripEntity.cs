@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.Enums;
 using MongoDB.Bson;
@@ -36,6 +37,7 @@ namespace Gloobster.Entities.Trip
 		public string SourceId { get; set; }
 		public SourceType SourceType { get; set; }
 		public string SelectedName { get; set; }		
+		public LatLng Coordinates { get; set; }
 	}
 
 	public class PlaceIdSE

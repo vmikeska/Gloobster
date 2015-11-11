@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Gloobster.DomainObjects;
 
 namespace Gloobster.DomainInterfaces
@@ -7,6 +8,6 @@ namespace Gloobster.DomainInterfaces
 	{
 		void Initialize(string tripId, string userId);
 		AddPlaceResultDO AddPlace(NewPlaceDO newPlace);
-		void UpdateProperty(string propertyName, Dictionary<string, string> values);
+		Task<object> UpdateProperty(string propertyName, Dictionary<string, string> values);
 	}
 }
