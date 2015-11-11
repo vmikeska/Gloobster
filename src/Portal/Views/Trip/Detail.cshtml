@@ -26,109 +26,17 @@
 		</div>
 
 		@*<p class="color1">My Own Personal trip Description that I can write and edit anytime. This text would be used as default copy for sharing and for any other off site interaction so be careful. In the future it could have a feature allowing theme photo being pre-generated and possibly replaced by my photo of choice.</p>*@
-			<textarea class="color1" style="width: 900px;" id="description" placeholder="write trip description...">@Model.Description</textarea>
+		<textarea class="color1" style="width: 900px;" id="description" placeholder="write trip description...">@Model.Description</textarea>
 
 		<h3>Day by Day Plan</h3>
-		<div id="plannerCont1" class="daybyday table margin">
-			@*<div class="cell">
-				<div class="destination">Prague</div>
-				<div class="timeline">22.6.</div>
-				<div class="timeline green">V Praze je blaze ...</div>
-			</div>
-			<div class="cell">
-				<div class="transport">
-					<span class="icon-plane"></span>
-				</div>
-				<div class="timeline green falldown"></div>
-			</div>
-			<div class="cell">
-				<div class="destination active">
-					Frankfurt
-					<span class="tab">arrival Mon 23.6.</span>
-				</div>
-				<div class="timeline green"></div>
-				<div class="timeline">4.5.</div>
-			</div>
-			<div class="cell">
-				<div class="transport active">
-					<span class="icon-train"></span>
-					<span class="tab"></span>
-				</div>
-				<div class="timeline"></div>
-			</div>
-			<div class="cell">
-				<div class="destination">Vienna</div>
-				<div class="timeline"></div>
-				<div class="timeline green">1.1.</div>
-			</div>
-			<div class="cell">
-				<div class="transport">
-					<span class="icon-boat"></span>
-				</div>
-				<div class="timeline green">22.6.</div>
-			</div>
-			<div class="cell">
-				<div class="destination">New York</div>
-				<div class="timeline green"></div>
-				<div class="timeline">25.10.</div>
-			</div>
-			<div class="cell">
-				<div class="transport">
-					<span class="icon-bike"></span>
-				</div>
-				<div class="timeline"></div>
-			</div>*@
+		<div id="plannerCont1" class="daybyday table margin">		
 		</div>
 
-			@*@{await Html.RenderPartialAsync("PlaceDetail"); }*@
+		@*<div class="daybyday table margin">
 		
-		<div class="daybyday table margin">
-			<div class="cell">
-				<div class="destination">Brno</div>
-				<div class="timeline"></div>
-				<div class="timeline green">25.10.</div>
-			</div>
-			<div class="cell">
-				<div class="transport">
-					<span class="icon-car"></span>
-				</div>
-				<div class="timeline green"></div>
-			</div>
-			<div class="cell">
-				<div class="destination active2">
-					Frankfurt
-					<span class="tab">arrival Mon 23.6.</span>
-				</div>
-				<div class="timeline green">22.6.</div>
-			</div>
-			<div class="cell">
-				<div class="transport">
-					<span class="icon-plane"></span>
-				</div>
-				<div class="timeline green"></div>
-			</div>
-			<div class="cell">
-				<div class="destination orange">Budapest</div>
-				<div class="timeline green"></div>
-				<div class="timeline">22.6.</div>
-			</div>
-			<div class="cell">
-				<div class="transport orange">
-					<span class="icon-walk"></span>
-				</div>
-				<div class="timeline"></div>
-			</div>
-			<div class="cell">
-				<div class="destination orange">Graz</div>
-				<div class="timeline"></div>
-				<div class="timeline green">30.7.</div>
-			</div>
-			<div class="cell">
-				<a id="addPlace" class="create" href="#"></a>
-			</div>
-		</div>
+		</div>*@
 
-		@*@{await Html.RenderPartialAsync("TravelDetail"); }*@
+		
 	</div>
 </section>
 

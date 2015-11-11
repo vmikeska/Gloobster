@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
@@ -18,7 +19,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 		
 		[HttpPost]
 		[Authorize]
-		public IActionResult Post([FromBody] NewPlaceRequest request)
+		public async Task<IActionResult> Post([FromBody] NewPlaceRequest request)
 		{
 			var newPlaceDO = new NewPlaceDO
 			{
@@ -28,7 +29,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 
 			TripPlanner.Initialize(request.tripId, UserId);
 
-			AddPlaceResultDO addResult = TripPlanner.AddPlace(newPlaceDO);
+			AddPlaceResultDO addResult = await TripPlanner.AddPlace(newPlaceDO);
 
 			var response = new NewPlaceResponse
 			{

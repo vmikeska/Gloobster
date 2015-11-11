@@ -41,7 +41,7 @@ var PlaceDialog = (function () {
     PlaceDialog.prototype.create = function (data) {
         var _this = this;
         this.buildTemplate();
-        this.createNameSearch(data.place.selectedName);
+        this.createNameSearch(data);
         $("#stayAddress").val(data.addressText);
         this.createAddressSearch(data);
         this.createPlaceToVisitSearch(data);
@@ -52,7 +52,7 @@ var PlaceDialog = (function () {
             });
         }
     };
-    PlaceDialog.prototype.createNameSearch = function (selectedName) {
+    PlaceDialog.prototype.createNameSearch = function (data) {
         var _this = this;
         var c = new PlaceSearchConfig();
         c.owner = this.dialogManager.owner;
@@ -62,7 +62,9 @@ var PlaceDialog = (function () {
         c.clearAfterSearch = false;
         this.placeSearch = new PlaceSearchBox(c);
         this.placeSearch.onPlaceSelected = function (req, place) { return _this.onPlaceSelected(req, place); };
-        this.placeSearch.setText(selectedName);
+        if (data.place) {
+            this.placeSearch.setText(data.place.selectedName);
+        }
     };
     PlaceDialog.prototype.createPlaceToVisitSearch = function (data) {
         var _this = this;
@@ -74,7 +76,7 @@ var PlaceDialog = (function () {
         c.clearAfterSearch = true;
         this.placeToVisitSearch = new PlaceSearchBox(c);
         this.placeToVisitSearch.onPlaceSelected = function (req, place) { return _this.onPlaceToVisitSelected(req, place); };
-        if (data.place.coordinates) {
+        if (data.place && data.place.coordinates) {
             this.placeToVisitSearch.setCoordinates(data.place.coordinates.Lat, data.place.coordinates.Lng);
         }
     };
@@ -96,7 +98,7 @@ var PlaceDialog = (function () {
             addressName = data.address.selectedName;
         }
         this.addressSearch.setText(addressName);
-        if (data.place.coordinates) {
+        if (data.place && data.place.coordinates) {
             this.addressSearch.setCoordinates(data.place.coordinates.Lat, data.place.coordinates.Lng);
         }
     };
@@ -143,6 +145,7 @@ var PlaceDialog = (function () {
     };
     PlaceDialog.prototype.onPlaceSelected = function (req, place) {
         this.addressSearch.setCoordinates(place.Coordinates.Lat, place.Coordinates.Lng);
+        this.placeToVisitSearch.setCoordinates(place.Coordinates.Lat, place.Coordinates.Lng);
         var name = place.City + ", " + place.CountryCode;
         $(".active .name").text(name);
         var data = {
@@ -228,12 +231,14 @@ var TravelDialog = (function () {
 var Planner = (function () {
     function Planner(owner, trip) {
         this.$currentContainer = $("#plannerCont1");
+        this.lastRowNo = 1;
+        this.placesPerRow = 4;
+        this.contBaseName = "plannerCont";
         this.owner = owner;
         this.dialogManager = new DialogManager(owner, this);
         this.placeDialog = new PlaceDialog(this.dialogManager);
         this.trip = trip;
         this.registerTemplates();
-        this.addAdder();
         this.placesMgr = new PlacesManager(trip.id, owner);
         this.placesMgr.setData(trip.travels, trip.places);
         this.redrawAll();
@@ -241,7 +246,9 @@ var Planner = (function () {
     Planner.prototype.redrawAll = function () {
         var _this = this;
         var orderedPlaces = _.sortBy(this.placesMgr.places, "orderNo");
+        var placeCount = 0;
         orderedPlaces.forEach(function (place) {
+            placeCount++;
             var name = "Empty";
             if (place.place) {
                 name = place.place.selectedName;
@@ -252,12 +259,36 @@ var Planner = (function () {
                 name: name,
                 arrivalDateLong: "1.1.2000"
             };
+            _this.manageRows(placeCount);
             _this.addPlace(placeContext);
             if (place.leaving) {
                 var travel = place.leaving;
                 _this.addTravel(travel.id, travel.type);
             }
         });
+        this.addAdder();
+    };
+    Planner.prototype.manageRows = function (placeCount) {
+        var currentRow = Math.floor(placeCount / this.placesPerRow);
+        var rest = placeCount % this.placesPerRow;
+        if (rest > 0) {
+            currentRow++;
+        }
+        if (currentRow > this.lastRowNo) {
+            this.addRowContainer();
+            if (this.$lastCell) {
+                this.$lastCell.appendTo(this.$currentContainer);
+            }
+        }
+    };
+    Planner.prototype.addRowContainer = function () {
+        var newRowNo = this.lastRowNo + 1;
+        var newRowId = this.contBaseName + newRowNo;
+        var html = "<div id=\"" + newRowId + "\" class=\"daybyday table margin\"></div>";
+        var $html = $(html);
+        this.$currentContainer.after($html);
+        this.$currentContainer = $html;
+        this.lastRowNo = newRowNo;
     };
     Planner.prototype.addAdder = function () {
         var _this = this;
@@ -285,7 +316,7 @@ var Planner = (function () {
             var t = new Travel();
             _this.placesMgr.travels.push(t);
             t.id = response.travel.id;
-            t.type = response.travel.id;
+            t.type = response.travel.type;
             lastPlace.leaving = t;
             t.from = lastPlace;
             var p = new Place();
@@ -295,14 +326,17 @@ var Planner = (function () {
             p.leaving = null;
             p.orderNo = response.place.orderNo;
             t.to = p;
+            _this.manageRows(_this.placesMgr.places.length);
             _this.addTravel(t.id, t.type);
             var placeContext = {
+                id: p.id,
                 isActive: true,
                 name: "Empty",
                 arrivalDateLong: "1.1.2000"
             };
             _this.addPlace(placeContext);
-            _this.placeDialog.display();
+            _this.dialogManager.selectedId = response.place.id;
+            //this.placeDialog.display();
         });
     };
     Planner.prototype.getTravelIcon = function (travelType) {
@@ -337,7 +371,15 @@ var Planner = (function () {
             var $elem = $(e.target);
             _this.setActiveTravel($elem);
         });
-        this.$lastCell.before($html);
+        this.appendToTimeline($html);
+    };
+    Planner.prototype.appendToTimeline = function ($html) {
+        if (this.$adder) {
+            this.$lastCell.before($html);
+        }
+        else {
+            this.$currentContainer.append($html);
+        }
     };
     Planner.prototype.setActiveTravel = function ($elem) {
         this.dialogManager.deactivate();
@@ -355,8 +397,7 @@ var Planner = (function () {
             self.dialogManager.selectedId = $(e.target).parent().attr("id");
             self.placeDialog.display();
         });
-        this.$lastCell.before($html);
-        //this.displayPlaceDetail();	 
+        this.appendToTimeline($html);
     };
     return Planner;
 })();

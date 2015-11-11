@@ -7,7 +7,7 @@ class DialogManager {
 
 	public owner: Views.ViewBase;
   public planner: Planner;
-  public $currentContainer = $("#plannerCont1");
+  
 
 	constructor(owner: Views.ViewBase, planner: Planner) {
 		this.owner = owner;
@@ -58,8 +58,9 @@ class PlaceDialog  {
  }
 
 	private create(data) {	 
-		this.buildTemplate();
-		this.createNameSearch(data.place.selectedName);
+	 this.buildTemplate();
+
+	 this.createNameSearch(data);
 	 
 		$("#stayAddress").val(data.addressText);
 
@@ -75,7 +76,7 @@ class PlaceDialog  {
 	  }
 	}
 
- private createNameSearch(selectedName) {
+ private createNameSearch(data) {
 	 var c = new PlaceSearchConfig();
 		c.owner = this.dialogManager.owner;
 		c.providers = "0,1,2,3";
@@ -86,7 +87,9 @@ class PlaceDialog  {
 		this.placeSearch = new PlaceSearchBox(c);
 		this.placeSearch.onPlaceSelected = (req, place) => this.onPlaceSelected(req, place);
 
-		this.placeSearch.setText(selectedName);
+		if (data.place) {
+		 this.placeSearch.setText(data.place.selectedName);
+		}	
  }
 
  private createPlaceToVisitSearch(data) {
@@ -100,42 +103,42 @@ class PlaceDialog  {
 	 this.placeToVisitSearch = new PlaceSearchBox(c);
 	 this.placeToVisitSearch.onPlaceSelected = (req, place) => this.onPlaceToVisitSelected(req, place);	
 
-	 if (data.place.coordinates) {
+	 if (data.place && data.place.coordinates) {
 		this.placeToVisitSearch.setCoordinates(data.place.coordinates.Lat, data.place.coordinates.Lng);
 	 }	
  }
 
- private createAddressSearch(data) {	 	
-	var c = new PlaceSearchConfig();
-	 c.owner = this.dialogManager.owner;
-	 c.providers = "1,0";
-	 c.elementId = "stayPlace";
-	 c.minCharsToSearch = 1;
-	 c.clearAfterSearch = false;
-	 c.customSelectedFormat = (place) => {
-		return place.Name;
-	 }
+	private createAddressSearch(data) {
+		var c = new PlaceSearchConfig();
+		c.owner = this.dialogManager.owner;
+		c.providers = "1,0";
+		c.elementId = "stayPlace";
+		c.minCharsToSearch = 1;
+		c.clearAfterSearch = false;
+		c.customSelectedFormat = (place) => {
+			return place.Name;
+		}
 
-	 this.addressSearch = new PlaceSearchBox(c);
-	 this.addressSearch.onPlaceSelected = (req, place) => this.onAddressSelected(req, place);
-	 
-	 var addressName = "";
-	 if (data.address) {
-		addressName = data.address.selectedName;
-	 }
-	 this.addressSearch.setText(addressName);
+		this.addressSearch = new PlaceSearchBox(c);
+		this.addressSearch.onPlaceSelected = (req, place) => this.onAddressSelected(req, place);
 
-	 if (data.place.coordinates) {
-		this.addressSearch.setCoordinates(data.place.coordinates.Lat, data.place.coordinates.Lng);
-	 }	
- }
+		var addressName = "";
+		if (data.address) {
+			addressName = data.address.selectedName;
+		}
+		this.addressSearch.setText(addressName);
+
+		if (data.place && data.place.coordinates) {
+			this.addressSearch.setCoordinates(data.place.coordinates.Lat, data.place.coordinates.Lng);
+		}
+	}
 
 
- private buildTemplate() {
+	private buildTemplate() {
 	 var html = this.dialogManager.placeDetailTemplate();
 		var $html = $(html);
 		this.dialogManager.regClose($html);
-		this.dialogManager.$currentContainer.after($html);
+	  this.dialogManager.planner.$currentContainer.after($html);
  }
  
  private onPlaceToVisitSelected(req, place) {
@@ -184,6 +187,7 @@ class PlaceDialog  {
 	private onPlaceSelected(req, place) {
 
 	 this.addressSearch.setCoordinates(place.Coordinates.Lat, place.Coordinates.Lng);
+	 this.placeToVisitSearch.setCoordinates(place.Coordinates.Lat, place.Coordinates.Lng);
 
 	 var name = place.City + ", " + place.CountryCode;
 	 $(".active .name").text(name);
@@ -296,7 +300,12 @@ class Planner {
 	private placeTemplate: any;
 	
 
-	private $currentContainer = $("#plannerCont1");
+	public $currentContainer = $("#plannerCont1");
+  private lastRowNo = 1; 
+  private placesPerRow = 4;
+  private contBaseName = "plannerCont";
+  
+
 	private $adder: any;
 	private $lastCell: any;
  
@@ -307,38 +316,70 @@ class Planner {
 		this.trip = trip;
 
 		this.registerTemplates();
-		this.addAdder();
-
-
+	
 		this.placesMgr = new PlacesManager(trip.id, owner);
 		this.placesMgr.setData(trip.travels, trip.places);
 		this.redrawAll();
 	}
 
 	private redrawAll() {
-	  var orderedPlaces = _.sortBy(this.placesMgr.places, "orderNo");
-	  orderedPlaces.forEach((place) => {
+		var orderedPlaces = _.sortBy(this.placesMgr.places, "orderNo");
 
-		  var name = "Empty";
+		var placeCount = 0;
+		orderedPlaces.forEach((place) => {
+			placeCount++;
+
+			var name = "Empty";
 			if (place.place) {
 				name = place.place.selectedName;
 			}
-		 
+
 			var placeContext = {
-			 id: place.id,
-			 isActive: false,
-			 name: name,
-			 arrivalDateLong: "1.1.2000"
+				id: place.id,
+				isActive: false,
+				name: name,
+				arrivalDateLong: "1.1.2000"
 			}
 		 
-		 this.addPlace(placeContext);	 
+		  this.manageRows(placeCount);
+			this.addPlace(placeContext);
 
-		 if (place.leaving) {
-			 var travel = place.leaving;
-			 this.addTravel(travel.id, travel.type);
-		 }
-		 
-	  });
+			if (place.leaving) {
+				var travel = place.leaving;
+				this.addTravel(travel.id, travel.type);
+			}
+
+		});
+
+		this.addAdder();
+	}
+
+	private manageRows(placeCount) {
+		var currentRow = Math.floor(placeCount / this.placesPerRow);
+		var rest = placeCount % this.placesPerRow;
+		if (rest > 0) {
+			currentRow++;
+		}
+		if (currentRow > this.lastRowNo) {
+			this.addRowContainer();
+
+			if (this.$lastCell) {
+				this.$lastCell.appendTo(this.$currentContainer);
+			}
+		}
+	}
+
+	private addRowContainer() {	
+	  var newRowNo = this.lastRowNo + 1;
+		var newRowId = this.contBaseName + newRowNo;
+		var html = `<div id="${newRowId}" class="daybyday table margin"></div>`;
+	  var $html = $(html);
+
+		this.$currentContainer.after($html);
+
+		this.$currentContainer = $html;
+	  this.lastRowNo = newRowNo;
+
   }
  
 	private addAdder() {
@@ -370,7 +411,7 @@ class Planner {
 			var t = new Travel();
 			this.placesMgr.travels.push(t);
 			t.id = response.travel.id;
-			t.type = response.travel.id;
+			t.type = response.travel.type;
 
 			lastPlace.leaving = t;
 			t.from = lastPlace;
@@ -383,17 +424,22 @@ class Planner {
 			p.orderNo = response.place.orderNo;
 
 			t.to = p;
+		  
+			this.manageRows(this.placesMgr.places.length);
 
 			this.addTravel(t.id, t.type);
 
 			var placeContext = {
+			  id: p.id,
 				isActive: true,
 				name: "Empty",
 				arrivalDateLong: "1.1.2000"
 			}
+			
 			this.addPlace(placeContext);
 
-			this.placeDialog.display();
+			this.dialogManager.selectedId = response.place.id;
+			//this.placeDialog.display();
 		});	 
 	}
 
@@ -432,8 +478,16 @@ class Planner {
 			this.setActiveTravel($elem);
 		});
 
-		this.$lastCell.before($html);
+		this.appendToTimeline($html);
 	}
+
+  private appendToTimeline($html) {
+	  if (this.$adder) {
+		this.$lastCell.before($html);
+	 } else {
+		this.$currentContainer.append($html);
+	 }
+  }
 
 	private setActiveTravel($elem) {
 	 this.dialogManager.deactivate();
@@ -456,9 +510,7 @@ class Planner {
 			self.placeDialog.display();
 		});
 
-		this.$lastCell.before($html);
-
-		//this.displayPlaceDetail();	 
+		this.appendToTimeline($html); 
 	} 
 }
 

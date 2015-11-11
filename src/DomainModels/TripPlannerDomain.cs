@@ -142,6 +142,15 @@ namespace Gloobster.DomainModels
 			return res.ModifiedCount == 1;			
 		}
 
+		//private async Task<bool> UpdateTravelProperty(ObjectId travelIdObj, string travelId, string propName, object value)
+		//{
+		//	var filter = DB.F<TripEntity>().Eq(p => p.id, travelIdObj) & DB.F<TripEntity>().Eq("Travels._id", travelId);
+		//	var update = DB.U<TripEntity>().Set("Travels.$." + propName, value);
+
+		//	var res = await DB.UpdateAsync(filter, update);
+		//	return res.ModifiedCount == 1;
+		//}
+
 		private async Task<bool> DeletePlaceToVisit(ObjectId tripIdObj, string placeId, string id)
 		{
 			 var placeToVisit = DB.C<TripEntity>().First(t => t.id == tripIdObj)
@@ -155,7 +164,7 @@ namespace Gloobster.DomainModels
 			return res.ModifiedCount == 1;
 		}
 
-		public AddPlaceResultDO AddPlace(NewPlaceDO newPlace)
+		public async Task<AddPlaceResultDO> AddPlace(NewPlaceDO newPlace)
 		{
 			TripPlaceSE lastPlace = GetLastPlace();
 			
@@ -169,8 +178,9 @@ namespace Gloobster.DomainModels
 				};
 				PushTravel(travel);
 				
-				UpdatePlaceArriving(lastPlace, travel.Id);
-
+				var tripIdObj = new ObjectId(TripId);
+				await UpdatePlaceProperty(tripIdObj, lastPlace.Id, "LeavingId", travel.Id);
+				
 				var place = new TripPlaceSE
 				{
 					Id = NewId(),
@@ -248,22 +258,7 @@ namespace Gloobster.DomainModels
 			var update = DB.U<TripEntity>().Push(p => p.Places, place);
 			UpdateResult result = await DB.UpdateAsync(filter, update);			
 		}
-
-		private async void UpdatePlaceArriving(TripPlaceSE place, string newLeavingId)
-		{
-			//todo: try to fix without delete
-			var filterDel = DB.F<TripEntity>().Eq(t => t.id, Trip.id);
-			var updateDel = DB.U<TripEntity>().Pull(t => t.Places, place);
-			UpdateResult resultDel = await DB.UpdateAsync(filterDel, updateDel);
-
-			place.LeavingId = newLeavingId;
-
-			var filter = DB.F<TripEntity>().Eq(t => t.id, Trip.id);
-			var update = DB.U<TripEntity>().Push(t => t.Places, place);
-			UpdateResult result = await DB.UpdateAsync(filter, update);
-		}
-
-
+		
 		private TripPlaceSE GetLastPlace()
 		{
 			if (Trip.Places == null || !Trip.Places.Any())
