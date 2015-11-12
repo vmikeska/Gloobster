@@ -4,6 +4,16 @@ var FileUploadConfig = (function () {
     }
     return FileUploadConfig;
 })();
+var TripEntityType;
+(function (TripEntityType) {
+    TripEntityType[TripEntityType["Place"] = 0] = "Place";
+    TripEntityType[TripEntityType["Travel"] = 1] = "Travel";
+})(TripEntityType || (TripEntityType = {}));
+var TripFileCustom = (function () {
+    function TripFileCustom() {
+    }
+    return TripFileCustom;
+})();
 var FileUpload = (function () {
     function FileUpload(config) {
         var _this = this;
@@ -12,6 +22,7 @@ var FileUpload = (function () {
         this.currentEnd = 0;
         this.reachedEnd = false;
         this.firstSent = false;
+        this.customConfig = {};
         this.config = config;
         this.owner = config.owner;
         this.$input = $("#" + this.config.inputId);
@@ -91,13 +102,13 @@ var FileUpload = (function () {
     FileUpload.prototype.onBlobLoad = function (evnt) {
         var _this = this;
         var dataBlob = evnt.target.result;
-        var dataToSend = {
+        var dataToSend = $.extend(this.customConfig, {
             data: dataBlob,
             filePartType: this.getFilePartType(),
             fileName: this.currentFile.name,
             customId: this.customId,
             type: this.currentFile.type
-        };
+        });
         this.owner.apiPost(this.config.endpoint, dataToSend, function (finalResponse) {
             _this.finalResponse = finalResponse;
             _this.onSuccessBlobUpload();

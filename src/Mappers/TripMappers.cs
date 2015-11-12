@@ -154,7 +154,8 @@ namespace Gloobster.Mappers
 			{
 				originalFileName = entity.OriginalFileName,
 				savedFileName = entity.SavedFileName,
-				ownerId = entity.PortalUser_id.ToString()
+				ownerId = entity.PortalUser_id.ToString(),
+				entityId = entity.EntityId
 			};
 
 			return response;

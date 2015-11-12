@@ -36,7 +36,8 @@ namespace Gloobster.ReqRes.Trip
 		public PlaceResponse place { get; set; }	
 		public PlaceResponse address { get; set; }
 		public string addressText { get; set; }
-		public List<PlaceIdResponse> wantVisit { get; set; } 
+		public List<PlaceIdResponse> wantVisit { get; set; }
+		public List<FileResponse> files { get; set; }
 	}
 
 	public class PlaceResponse

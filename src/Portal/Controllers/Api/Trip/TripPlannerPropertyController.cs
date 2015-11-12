@@ -36,7 +36,15 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 			if (request.dialogType == "place")
 			{
 				var place = trip.Places.FirstOrDefault(p => p.Id == request.id);
-				objToReturn = place.ToResponse();
+				var response = place.ToResponse();
+
+				if (trip.Files != null)
+				{
+					var entityFiles = trip.Files.Where(f => f.EntityId == request.id).ToList();
+					response.files = entityFiles.Select(f => f.ToResponse()).ToList();
+				}
+
+				objToReturn = response;
 			}
 
 			if (request.dialogType == "travel")

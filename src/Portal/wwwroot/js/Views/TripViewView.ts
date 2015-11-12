@@ -7,7 +7,14 @@
 	initialize(id: string) {
 	 var self = this;
 
-	 this.files = new Files(this, false);
+	 var filesConfig = new FilesConfig();
+	 filesConfig.containerId = "filesContainer";
+	 filesConfig.inputId = "fileInput";
+	 filesConfig.editable = false;
+	 filesConfig.addAdder = true;
+	 filesConfig.templateId = "file-template";
+
+	 this.files = new Files(this, filesConfig);
 
 	 this.getTrip(id);
 
@@ -21,10 +28,16 @@
 	  super.apiGet("trip", prms, (request) => this.onTripLoaded(request));
   }
 
+	private setFilesCustomConfig(tripId: string) {
+	 var customData = new TripFileCustom();
+	 customData.tripId = tripId;
+	 this.files.fileUpload.customConfig = customData;
+	}
+
 	private onTripLoaded(request) {
 	 this.trip = request;
 
-	 this.files.setTrip(this.trip);
+	 this.files.setFiles(this.trip.files, this.trip.tripId);
 
 	 this.comments = new Comments(this);
 	 this.comments.comments = this.trip.comments;

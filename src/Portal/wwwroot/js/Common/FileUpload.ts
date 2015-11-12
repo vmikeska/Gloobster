@@ -6,30 +6,39 @@ class FileUploadConfig {
 	public endpoint: string;	
 }
 
+enum TripEntityType { Place, Travel }
+
+class TripFileCustom {
+	public tripId: string;
+	public entityType: TripEntityType;
+  public entityId: string;
+}
+
 class FileUpload {
 
 	private files: any[];
 	private currentFile: any;
- 
+
 	private lastEnd = 0;
 	private currentStart = 0;
 	private currentEnd = 0;
 	private reachedEnd = false;
 	private firstSent = false;
-	
+
+  public customConfig = {};
 	public customId: string;
-  private finalResponse: any;
+	private finalResponse: any;
 
 	public onProgressChanged: Function;
 	public onUploadFinished: Function;
 
-  private owner: Views.ViewBase;
+	private owner: Views.ViewBase;
 	private config: FileUploadConfig;
 	private $input: any;
- 
+
 	constructor(config: FileUploadConfig) {
 		this.config = config;
-		this.owner = config.owner;		
+		this.owner = config.owner;
 
 		this.$input = $("#" + this.config.inputId);
 
@@ -59,11 +68,11 @@ class FileUpload {
 			console.log("file length: " + this.currentFile.size);
 
 			if (this.onUploadFinished) {
-			 this.onUploadFinished(this.currentFile, this.finalResponse);
+				this.onUploadFinished(this.currentFile, this.finalResponse);
 			}
 
 			this.resetValues();
-			
+
 			return;
 		}
 
@@ -71,7 +80,7 @@ class FileUpload {
 			this.currentStart = this.lastEnd;
 			this.currentEnd = this.currentStart + this.config.bytesPerRequest;
 		} else {
-		 this.currentEnd = this.config.bytesPerRequest;
+			this.currentEnd = this.config.bytesPerRequest;
 		}
 
 		//todo: secure currentStart
@@ -95,7 +104,7 @@ class FileUpload {
 		}
 		return reader;
 	}
- 
+
 	private recalculateUpdateProgress() {
 		var percents = (this.currentEnd / this.currentFile.size) * 100;
 		var percentsRounded = Math.round(percents);
@@ -107,7 +116,7 @@ class FileUpload {
 
 	private onSuccessBlobUpload() {
 		this.firstSent = true;
-	 this.sendBlobToServer(false);
+		this.sendBlobToServer(false);
 		this.recalculateUpdateProgress();
 	}
 
@@ -124,17 +133,17 @@ class FileUpload {
 	private onBlobLoad(evnt) {
 		var dataBlob = evnt.target.result;
 
-		var dataToSend = {
-		 data: dataBlob,
-		 filePartType: this.getFilePartType(),
-		 fileName: this.currentFile.name,
-		 customId: this.customId,
-		 type: this.currentFile.type
-		};
-
+		var dataToSend = $.extend(this.customConfig, {
+			data: dataBlob,
+			filePartType: this.getFilePartType(),
+			fileName: this.currentFile.name,
+			customId: this.customId,
+			type: this.currentFile.type
+		});
+	 
 		this.owner.apiPost(this.config.endpoint, dataToSend, (finalResponse) => {
 			this.finalResponse = finalResponse;
-		 this.onSuccessBlobUpload();
+			this.onSuccessBlobUpload();
 		});
 	}
 }

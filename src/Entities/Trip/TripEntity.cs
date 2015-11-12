@@ -58,8 +58,7 @@ namespace Gloobster.Entities.Trip
 		public PlaceSE Place { get; set; }
 		public PlaceSE Address { get; set; }
 		public string AddressText { get; set; }
-		public List<PlaceIdSE> WantVisit { get; set; }
-
+		public List<PlaceIdSE> WantVisit { get; set; }		
 	}
 
 	public class TripTravelSE

@@ -24,17 +24,17 @@
 		<div class="cell">
 				<div class="document">
 						<a class="file {{fileType}}" href="/Trip/GetFile?fileId={{fileId}}&tripId={{tripId}}">{{fileName}}</a>
-						<a class="delete popup-target" data-target="#popup-delete" data-id="{{fileId}}" href="#">Share trip</a>						
+						<a class="delete popup-target" data-target="#popup-delete" data-id="{{fileId}}" href="#">Delete file</a>						
 				</div>
 		</div>
 </script>
 
 <script id="fileCreate-template" type="text/x-handlebars-template">
-		<div class="cell">
+		@*<div class="cell">
 				<div class="document">
 						<a class="create" href="#">Add file</a>
 				</div>
-		</div>
+		</div>*@
 
 		<input id="fileInput" type="file" style="" />
 		<br />

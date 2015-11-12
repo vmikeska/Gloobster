@@ -11,7 +11,13 @@ var TripViewView = (function (_super) {
     }
     TripViewView.prototype.initialize = function (id) {
         var self = this;
-        this.files = new Files(this, false);
+        var filesConfig = new FilesConfig();
+        filesConfig.containerId = "filesContainer";
+        filesConfig.inputId = "fileInput";
+        filesConfig.editable = false;
+        filesConfig.addAdder = true;
+        filesConfig.templateId = "file-template";
+        this.files = new Files(this, filesConfig);
         this.getTrip(id);
         $("#commentSubmit").click(function () {
             self.comments.postComment(self.trip.tripId);
@@ -24,7 +30,7 @@ var TripViewView = (function (_super) {
     };
     TripViewView.prototype.onTripLoaded = function (request) {
         this.trip = request;
-        this.files.setTrip(this.trip);
+        this.files.setFiles(this.trip.fiiles);
         this.comments = new Comments(this);
         this.comments.comments = this.trip.comments;
         this.comments.users = this.trip.users;

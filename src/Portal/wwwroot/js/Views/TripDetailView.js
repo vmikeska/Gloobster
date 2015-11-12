@@ -10,9 +10,22 @@ var TripDetailView = (function (_super) {
         _super.apply(this, arguments);
     }
     TripDetailView.prototype.initialize = function (id) {
-        //var self = this;
-        this.files = new Files(this, true);
+        var filesConfig = new FilesConfig();
+        filesConfig.containerId = "filesContainer";
+        filesConfig.inputId = "fileInput";
+        filesConfig.templateId = "file-template";
+        filesConfig.editable = true;
+        filesConfig.addAdder = true;
+        filesConfig.isMasterFile = true;
+        this.files = new Files(this, filesConfig);
+        //this.planner.masterFiles = this.files;
+        this.setFilesCustomConfig(id);
         this.getTrip(id);
+    };
+    TripDetailView.prototype.setFilesCustomConfig = function (tripId) {
+        var customData = new TripFileCustom();
+        customData.tripId = tripId;
+        this.files.fileUpload.customConfig = customData;
     };
     TripDetailView.prototype.getTrip = function (id) {
         var _this = this;
@@ -21,7 +34,7 @@ var TripDetailView = (function (_super) {
     };
     TripDetailView.prototype.onTripLoaded = function (request) {
         this.trip = request;
-        this.files.setTrip(this.trip);
+        this.files.setFiles(this.trip.files, this.trip.tripId);
         this.registerPhotoUpload();
         this.planner = new Planner(this, this.trip);
     };

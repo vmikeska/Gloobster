@@ -7,8 +7,7 @@ class DialogManager {
 
 	public owner: Views.ViewBase;
   public planner: Planner;
-  
-
+ 
 	constructor(owner: Views.ViewBase, planner: Planner) {
 		this.owner = owner;
 		this.planner = planner;
@@ -16,6 +15,28 @@ class DialogManager {
 		this.travelDetailTemplate = this.owner.registerTemplate("travelDetail-template");
 		this.visitedItemTemplate = this.owner.registerTemplate("visitItem-template");
 	}
+
+	public createFilesInstance(entityId: string, entityType: TripEntityType): Files {
+		var filesConfig = new FilesConfig();
+		filesConfig.containerId = "entityDocs";
+		filesConfig.inputId = "entityFileInput";
+		filesConfig.templateId = "fileItem-template";
+		filesConfig.editable = true;
+		filesConfig.addAdder = true;
+		filesConfig.entityId = entityId;
+
+		var customData = new TripFileCustom();
+		customData.tripId = this.planner.trip.tripId;
+		customData.entityId = entityId;
+		customData.entityType = entityType;
+
+		var files = new Files(this.owner, filesConfig);
+
+		files.fileUpload.customConfig = customData;
+
+		return files;
+	}
+
 
 	public closeDialog() {
 		$(".daybyday-form").remove();
@@ -44,6 +65,8 @@ class PlaceDialog  {
  private addressSearch: PlaceSearchBox;
  private placeToVisitSearch: PlaceSearchBox;
 
+ private files: Files;
+
  constructor(dialogManager: DialogManager) {
 	 this.dialogManager = dialogManager;	
  }
@@ -57,8 +80,9 @@ class PlaceDialog  {
 	 });	
  }
 
-	private create(data) {	 
-	 this.buildTemplate();
+	private create(data) {
+		var $rowCont = $("#" + data.id).parent();
+	 this.buildTemplate($rowCont);
 
 	 this.createNameSearch(data);
 	 
@@ -73,7 +97,10 @@ class PlaceDialog  {
 		  data.wantVisit.forEach((place) => {
 			 this.addPlaceToVisit(place.id, place.selectedName, place.sourceType);
 		  });
-	  }
+		}
+	 
+		this.files = this.dialogManager.createFilesInstance(data.id, TripEntityType.Place);
+		this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId);
 	}
 
  private createNameSearch(data) {
@@ -134,11 +161,12 @@ class PlaceDialog  {
 	}
 
 
-	private buildTemplate() {
+	private buildTemplate($row) {
 	 var html = this.dialogManager.placeDetailTemplate();
 		var $html = $(html);
 		this.dialogManager.regClose($html);
-	  this.dialogManager.planner.$currentContainer.after($html);
+	 
+		$row.after($html);
  }
  
  private onPlaceToVisitSelected(req, place) {
@@ -281,7 +309,7 @@ class TravelDialog {
 	 var html = this.dialogUtils.travelDetailTemplate();
 		var $html = $(html);
 		this.dialogUtils.regClose($html);
-		this.dialogUtils.$currentContainer.after($html);
+		//this.dialogUtils.$currentContainer.after($html);
 	}
 }
 
@@ -290,6 +318,7 @@ class Planner {
 
   public trip: any; 
 	public owner: Views.ViewBase;
+  //public masterFiles: Files;
 
   private placesMgr: PlacesManager;
 	private dialogManager: DialogManager;
@@ -338,7 +367,8 @@ class Planner {
 				id: place.id,
 				isActive: false,
 				name: name,
-				arrivalDateLong: "1.1.2000"
+				arrivalDateLong: "1.1.2000",
+				rowNo: this.lastRowNo
 			}
 		 
 		  this.manageRows(placeCount);
@@ -433,7 +463,8 @@ class Planner {
 			  id: p.id,
 				isActive: true,
 				name: "Empty",
-				arrivalDateLong: "1.1.2000"
+				arrivalDateLong: "1.1.2000",
+				rowNo: this.lastRowNo
 			}
 			
 			this.addPlace(placeContext);
@@ -473,7 +504,7 @@ class Planner {
 
 		var html = this.travelTemplate(context);
 		var $html = $(html);
-		$html.find(".transport").click((e) => {
+		$html.find(".transport").click("*", (e) => {
 			var $elem = $(e.target);
 			this.setActiveTravel($elem);
 		});
@@ -503,10 +534,12 @@ class Planner {
 	 var html = this.placeTemplate(context);
 		var $html = $(html);
 
-		$html.find(".destination").click((e) => {
-			self.dialogManager.deactivate();
-			$(e.target).addClass("active");
-			self.dialogManager.selectedId = $(e.target).parent().attr("id");
+		//$html.find(".destination").on("click", "*", (e) => {
+		$html.find(".destination").click("*", (e) => {
+		 self.dialogManager.deactivate();
+		 var $elem = $(e.delegateTarget);			
+			$elem.addClass("active");
+			self.dialogManager.selectedId = $elem.parent().attr("id");
 			self.placeDialog.display();
 		});
 

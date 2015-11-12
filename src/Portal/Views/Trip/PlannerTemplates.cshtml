@@ -17,7 +17,7 @@
 
 
 <script id="place-template" type="text/x-handlebars-template">
-		<div id="{{id}}" class="cell">
+		<div id="{{id}}" data-row="{{rowNo}}" class="cell">
 								
 		{{#if isActive}}
 				<div class="destination active">
@@ -44,6 +44,20 @@
 		</div>
 </script>
 
+@*docType fileName
+doc xml html pdf*@
+<script id="fileItem-template" type="text/x-handlebars-template">
+		<div class="cell">
+				<div class="document">						
+						<a class="file {{fileType}}" href="#file">{{fileName}}</a>
+						@*<a class="delete" href="#delete">Delete</a>*@
+						<a class="delete popup-target" data-target="#popup-delete" data-id="{{fileId}}" href="#">d</a>
+				</div>
+		</div>
+</script>
+
+
+
 @*<div class="cell">
 		
 		<div class="timeline">22.6.</div>
@@ -64,19 +78,23 @@
 						<div class="cell baseline color1">June averages: Day 32°C • Night 16°C</div>
 				</div>
 				<textarea id="dialogDescription" placeholder="Description or related files"></textarea>
-				<div class="documents grid col3 margin">
-						<div class="cell">
+				<div id="entityDocs" class="documents grid col3 margin">
+						
+						@*<div class="cell">
 								<div class="document">
 										<a class="file doc" href="#file">Hotel Ritz Reservation.doc</a>
 										<a class="delete" href="#delete">Delete</a>
 								</div>
 						</div>
+
 						<div class="cell">
 								<div class="document">
 										<a class="file pdf" href="#">Hotel Ritz Reservation.pdf</a>
 										<a class="delete" href="#">Delete</a>
 								</div>
-						</div>
+						</div>*@
+
+						<input id="entityFileInput" type="file" />
 				</div>
 				<div class="table row">
 						<div class="cell address">

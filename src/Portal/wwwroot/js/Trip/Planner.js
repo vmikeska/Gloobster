@@ -1,12 +1,27 @@
 var DialogManager = (function () {
     function DialogManager(owner, planner) {
-        this.$currentContainer = $("#plannerCont1");
         this.owner = owner;
         this.planner = planner;
         this.placeDetailTemplate = this.owner.registerTemplate("placeDetail-template");
         this.travelDetailTemplate = this.owner.registerTemplate("travelDetail-template");
         this.visitedItemTemplate = this.owner.registerTemplate("visitItem-template");
     }
+    DialogManager.prototype.createFilesInstance = function (entityId, entityType) {
+        var filesConfig = new FilesConfig();
+        filesConfig.containerId = "entityDocs";
+        filesConfig.inputId = "entityFileInput";
+        filesConfig.templateId = "fileItem-template";
+        filesConfig.editable = true;
+        filesConfig.addAdder = true;
+        filesConfig.entityId = entityId;
+        var customData = new TripFileCustom();
+        customData.tripId = this.planner.trip.tripId;
+        customData.entityId = entityId;
+        customData.entityType = entityType;
+        var files = new Files(this.owner, filesConfig);
+        files.fileUpload.customConfig = customData;
+        return files;
+    };
     DialogManager.prototype.closeDialog = function () {
         $(".daybyday-form").remove();
     };
@@ -40,7 +55,8 @@ var PlaceDialog = (function () {
     };
     PlaceDialog.prototype.create = function (data) {
         var _this = this;
-        this.buildTemplate();
+        var $rowCont = $("#" + data.id).parent();
+        this.buildTemplate($rowCont);
         this.createNameSearch(data);
         $("#stayAddress").val(data.addressText);
         this.createAddressSearch(data);
@@ -51,6 +67,8 @@ var PlaceDialog = (function () {
                 _this.addPlaceToVisit(place.id, place.selectedName, place.sourceType);
             });
         }
+        this.files = this.dialogManager.createFilesInstance(data.id, TripEntityType.Place);
+        this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId);
     };
     PlaceDialog.prototype.createNameSearch = function (data) {
         var _this = this;
@@ -102,11 +120,11 @@ var PlaceDialog = (function () {
             this.addressSearch.setCoordinates(data.place.coordinates.Lat, data.place.coordinates.Lng);
         }
     };
-    PlaceDialog.prototype.buildTemplate = function () {
+    PlaceDialog.prototype.buildTemplate = function ($row) {
         var html = this.dialogManager.placeDetailTemplate();
         var $html = $(html);
         this.dialogManager.regClose($html);
-        this.dialogManager.$currentContainer.after($html);
+        $row.after($html);
     };
     PlaceDialog.prototype.onPlaceToVisitSelected = function (req, place) {
         var _this = this;
@@ -224,7 +242,7 @@ var TravelDialog = (function () {
         var html = this.dialogUtils.travelDetailTemplate();
         var $html = $(html);
         this.dialogUtils.regClose($html);
-        this.dialogUtils.$currentContainer.after($html);
+        //this.dialogUtils.$currentContainer.after($html);
     };
     return TravelDialog;
 })();
@@ -257,7 +275,8 @@ var Planner = (function () {
                 id: place.id,
                 isActive: false,
                 name: name,
-                arrivalDateLong: "1.1.2000"
+                arrivalDateLong: "1.1.2000",
+                rowNo: _this.lastRowNo
             };
             _this.manageRows(placeCount);
             _this.addPlace(placeContext);
@@ -332,7 +351,8 @@ var Planner = (function () {
                 id: p.id,
                 isActive: true,
                 name: "Empty",
-                arrivalDateLong: "1.1.2000"
+                arrivalDateLong: "1.1.2000",
+                rowNo: _this.lastRowNo
             };
             _this.addPlace(placeContext);
             _this.dialogManager.selectedId = response.place.id;
@@ -367,7 +387,7 @@ var Planner = (function () {
         };
         var html = this.travelTemplate(context);
         var $html = $(html);
-        $html.find(".transport").click(function (e) {
+        $html.find(".transport").click("*", function (e) {
             var $elem = $(e.target);
             _this.setActiveTravel($elem);
         });
@@ -391,10 +411,12 @@ var Planner = (function () {
         var self = this;
         var html = this.placeTemplate(context);
         var $html = $(html);
-        $html.find(".destination").click(function (e) {
+        //$html.find(".destination").on("click", "*", (e) => {
+        $html.find(".destination").click("*", function (e) {
             self.dialogManager.deactivate();
-            $(e.target).addClass("active");
-            self.dialogManager.selectedId = $(e.target).parent().attr("id");
+            var $elem = $(e.delegateTarget);
+            $elem.addClass("active");
+            self.dialogManager.selectedId = $elem.parent().attr("id");
             self.placeDialog.display();
         });
         this.appendToTimeline($html);

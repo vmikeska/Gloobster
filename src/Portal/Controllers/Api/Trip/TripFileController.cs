@@ -29,11 +29,10 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 		
 		[HttpPost]
 		[Authorize]
-		public IActionResult Post([FromBody] FileRequest request)
-		{
-			var tripId = request.customId;
-			var tripIdObj = new ObjectId(tripId);
-			var fileLocation = Path.Combine("Trips", tripId);
+		public IActionResult Post([FromBody] TripFileRequest request)
+		{			
+			var tripIdObj = new ObjectId(request.tripId);
+			var fileLocation = Path.Combine("Trips", request.tripId);
 			var savedFileName = Guid.NewGuid().ToString().Replace("-", string.Empty);
 			
 			FileDomain.OnFileSaved += (sender, args) =>
@@ -50,25 +49,19 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 
 				//todo: check rights to upload file
 				
-				//if (trip.Files == null)
-				//{
-				//	trip.Files = new List<FileSE>();
-				//}
-
 				var newFile = new FileSE
 				{
 					PortalUser_id = UserIdObj,
 					OriginalFileName = request.fileName,
 					SavedFileName = argsObj.FileName,
-					Type = argsObj.FileType
+					Type = argsObj.FileType,
+					EntityId = request.entityId,
+					EntityType = request.entityType
 				};
 
 				var filter = DB.F<TripEntity>().Eq(p => p.id, tripIdObj);
 				var update = DB.U<TripEntity>().Push(p => p.Files, newFile);
-				DB.UpdateAsync(filter, update);
-
-				//trip.Files.Add(newFile);								
-				//DB.ReplaceOneAsync(trip);				
+				DB.UpdateAsync(filter, update);		
 			};
 
 			var filePartDo = new WriteFilePartDO
@@ -89,14 +82,16 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 			if (request.filePartType == FilePartType.Last)
 			{
 				var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
-				response = trip.Files.Select(f => f.ToResponse()).ToList();
-			}
 
+				response = GetResponse(trip.Files);
+			}
+			
 			return new ObjectResult(response);
 		}
 
 		[HttpDelete]
 		[Authorize]
+		//, string entityId
 		public async Task<IActionResult> Delete(string fileId, string tripId)
 		{
 			var tripIdObj = new ObjectId(tripId);			
@@ -127,14 +122,28 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 				var fileLocation = Path.Combine("Trips", tripId, fileToDelete.SavedFileName);
 				FileDomain.DeleteFile(fileLocation);
 
-				trip.Files.Remove(fileToDelete);				
+				trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
 
-				filesResponse = trip.Files.Select(f => f.ToResponse()).ToList();
+				filesResponse = GetResponse(trip.Files);
 			}
-
 			
-
 			return new ObjectResult(filesResponse);
+		}
+
+		private List<FileResponse> GetResponse(List<FileSE> files, string entityId = null)
+		{
+			List<FileResponse> response;
+
+			//if (string.IsNullOrEmpty(entityId))
+			//{
+				response = files.Select(f => f.ToResponse()).ToList();
+			//}
+			//else
+			//{
+			//	response = files.Where(f => f.EntityId == entityId).Select(f => f.ToResponse()).ToList();
+			//}
+
+			return response;			
 		}
 
 		

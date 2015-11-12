@@ -1,3 +1,4 @@
+using Gloobster.Enums;
 using MongoDB.Bson;
 
 namespace Gloobster.Entities.Trip
@@ -8,7 +9,7 @@ namespace Gloobster.Entities.Trip
 		public string OriginalFileName { get; set; }
 		public string SavedFileName { get; set; }
 		public string Type { get; set; }
-
-		//day or travel specific id
+		public TripEntityType EntityType { get; set; }
+		public string EntityId { get; set; }
 	}
 }
