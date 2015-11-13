@@ -60,5 +60,7 @@ namespace Gloobster.ReqRes.Trip
 	{
 		public string id { get; set; }
 		public TravelType type { get; set; }
+		public string description { get; set; }
+		public List<FileResponse> files { get; set; }
 	}
 }

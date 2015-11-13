@@ -138,14 +138,16 @@ namespace Gloobster.Mappers
 			return r;
 		}
 
-		public static TripTravelResponse ToResponse(this TripTravelSE entity)
+		public static TripTravelResponse ToResponse(this TripTravelSE e)
 		{
-			var response = new TripTravelResponse
+			var r = new TripTravelResponse
 			{
-				id = entity.Id,
-				type = entity.Type
+				id = e.Id,
+				type = e.Type,
+				description = e.Description
+
 			};
-			return response;
+			return r;
 		}
 
 		public static FileResponse ToResponse(this FileSE entity)

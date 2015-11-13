@@ -22,6 +22,30 @@ var DialogManager = (function () {
         files.fileUpload.customConfig = customData;
         return files;
     };
+    DialogManager.prototype.initDescription = function (text, entityType) {
+        var _this = this;
+        $("#dialogDescription").val(text);
+        var d = new DelayedCallback("dialogDescription");
+        d.callback = function (description) {
+            var data = {
+                propertyName: "description",
+                values: {
+                    entityType: entityType,
+                    entityId: _this.selectedId,
+                    tripId: _this.planner.trip.tripId,
+                    description: description
+                }
+            };
+            _this.owner.apiPut("TripPlannerProperty", data, function () {
+            });
+        };
+    };
+    DialogManager.prototype.getDialogData = function (dialogType, callback) {
+        var prms = [["dialogType", dialogType], ["tripId", this.planner.trip.tripId], ["id", this.selectedId]];
+        this.owner.apiGet("TripPlannerProperty", prms, function (response) {
+            callback(response);
+        });
+    };
     DialogManager.prototype.closeDialog = function () {
         $(".daybyday-form").remove();
     };
@@ -48,10 +72,7 @@ var PlaceDialog = (function () {
     PlaceDialog.prototype.display = function () {
         var _this = this;
         this.dialogManager.closeDialog();
-        var prms = [["dialogType", "place"], ["tripId", this.dialogManager.planner.trip.tripId], ["id", this.dialogManager.selectedId]];
-        this.dialogManager.owner.apiGet("TripPlannerProperty", prms, function (response) {
-            _this.create(response);
-        });
+        this.dialogManager.getDialogData(TripEntityType.Place, function (response) { return _this.create(response); });
     };
     PlaceDialog.prototype.create = function (data) {
         var _this = this;
@@ -61,7 +82,7 @@ var PlaceDialog = (function () {
         $("#stayAddress").val(data.addressText);
         this.createAddressSearch(data);
         this.createPlaceToVisitSearch(data);
-        this.initDescription(data.description);
+        this.dialogManager.initDescription(data.description, TripEntityType.Place);
         if (data.wantVisit) {
             data.wantVisit.forEach(function (place) {
                 _this.addPlaceToVisit(place.id, place.selectedName, place.sourceType);
@@ -217,32 +238,29 @@ var PlaceDialog = (function () {
         }
         return "";
     };
-    PlaceDialog.prototype.initDescription = function (text) {
-        var _this = this;
-        $("#dialogDescription").val(text);
-        var d = new DelayedCallback("dialogDescription");
-        d.callback = function (description) {
-            var data = { propertyName: "description", values: {
-                    dialogType: "place",
-                    placeId: _this.dialogManager.selectedId,
-                    tripId: _this.dialogManager.planner.trip.tripId,
-                    description: description
-                } };
-            _this.dialogManager.owner.apiPut("TripPlannerProperty", data, function () {
-            });
-        };
-    };
     return PlaceDialog;
 })();
 var TravelDialog = (function () {
-    function TravelDialog() {
+    function TravelDialog(dialogManager) {
+        this.dialogManager = dialogManager;
     }
-    TravelDialog.prototype.displayTravelDetail = function () {
-        this.dialogUtils.closeDialog();
-        var html = this.dialogUtils.travelDetailTemplate();
+    TravelDialog.prototype.display = function () {
+        var _this = this;
+        this.dialogManager.closeDialog();
+        this.dialogManager.getDialogData(TripEntityType.Travel, function (response) { return _this.create(response); });
+    };
+    TravelDialog.prototype.create = function (data) {
+        var $rowCont = $("#" + data.id).parent();
+        this.buildTemplate($rowCont);
+        this.dialogManager.initDescription(data.description, TripEntityType.Travel);
+        this.files = this.dialogManager.createFilesInstance(data.id, TripEntityType.Travel);
+        this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId);
+    };
+    TravelDialog.prototype.buildTemplate = function ($row) {
+        var html = this.dialogManager.travelDetailTemplate();
         var $html = $(html);
-        this.dialogUtils.regClose($html);
-        //this.dialogUtils.$currentContainer.after($html);
+        this.dialogManager.regClose($html);
+        $row.after($html);
     };
     return TravelDialog;
 })();
@@ -255,6 +273,7 @@ var Planner = (function () {
         this.owner = owner;
         this.dialogManager = new DialogManager(owner, this);
         this.placeDialog = new PlaceDialog(this.dialogManager);
+        this.travelDialog = new TravelDialog(this.dialogManager);
         this.trip = trip;
         this.registerTemplates();
         this.placesMgr = new PlacesManager(trip.id, owner);
@@ -388,7 +407,7 @@ var Planner = (function () {
         var html = this.travelTemplate(context);
         var $html = $(html);
         $html.find(".transport").click("*", function (e) {
-            var $elem = $(e.target);
+            var $elem = $(e.delegateTarget);
             _this.setActiveTravel($elem);
         });
         this.appendToTimeline($html);
@@ -405,13 +424,13 @@ var Planner = (function () {
         this.dialogManager.deactivate();
         $elem.addClass("active");
         $elem.append($('<span class="tab"></span>'));
-        this.placeDialog.display();
+        this.dialogManager.selectedId = $elem.parent().attr("id");
+        this.travelDialog.display();
     };
     Planner.prototype.addPlace = function (context) {
         var self = this;
         var html = this.placeTemplate(context);
         var $html = $(html);
-        //$html.find(".destination").on("click", "*", (e) => {
         $html.find(".destination").click("*", function (e) {
             self.dialogManager.deactivate();
             var $elem = $(e.delegateTarget);

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.Entities.Trip;
+using Gloobster.Enums;
 using Gloobster.Mappers;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes;
@@ -33,7 +34,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 
 			var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
 
-			if (request.dialogType == "place")
+			if (request.dialogType == TripEntityType.Place)
 			{
 				var place = trip.Places.FirstOrDefault(p => p.Id == request.id);
 				var response = place.ToResponse();
@@ -47,10 +48,18 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 				objToReturn = response;
 			}
 
-			if (request.dialogType == "travel")
+			if (request.dialogType == TripEntityType.Travel)
 			{
 				var travel = trip.Travels.FirstOrDefault(p => p.Id == request.id);
-				objToReturn = travel.ToResponse();
+				var response = travel.ToResponse();
+
+				if (trip.Files != null)
+				{
+					var entityFiles = trip.Files.Where(f => f.EntityId == request.id).ToList();
+					response.files = entityFiles.Select(f => f.ToResponse()).ToList();
+				}
+
+				objToReturn = response;
 			}
 
 			return new ObjectResult(objToReturn);

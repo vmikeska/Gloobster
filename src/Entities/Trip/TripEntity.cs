@@ -65,5 +65,6 @@ namespace Gloobster.Entities.Trip
 	{
 		public string Id { get; set; }
 		public TravelType Type { get; set; }
+		public string Description { get; set; }
 	}
 }

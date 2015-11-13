@@ -44,8 +44,6 @@
 		</div>
 </script>
 
-@*docType fileName
-doc xml html pdf*@
 <script id="fileItem-template" type="text/x-handlebars-template">
 		<div class="cell">
 				<div class="document">						
@@ -80,20 +78,6 @@ doc xml html pdf*@
 				<textarea id="dialogDescription" placeholder="Description or related files"></textarea>
 				<div id="entityDocs" class="documents grid col3 margin">
 						
-						@*<div class="cell">
-								<div class="document">
-										<a class="file doc" href="#file">Hotel Ritz Reservation.doc</a>
-										<a class="delete" href="#delete">Delete</a>
-								</div>
-						</div>
-
-						<div class="cell">
-								<div class="document">
-										<a class="file pdf" href="#">Hotel Ritz Reservation.pdf</a>
-										<a class="delete" href="#">Delete</a>
-								</div>
-						</div>*@
-
 						<input id="entityFileInput" type="file" />
 				</div>
 				<div class="table row">
@@ -136,62 +120,9 @@ doc xml html pdf*@
 						<div class="cell baseline"><h3>PRG → VIE</h3></div>
 						<div class="cell baseline color1">Delta Air Flight 2560 from Prague to Vienna • Distance 1200 km</div>
 				</div>
-				<textarea placeholder="Description or related files"></textarea>
-				<div class="documents grid col3 margin">
-						<div class="cell">
-								<div class="document">
-										<a class="file doc" href="#file">Hotel Ritz Reservation.doc</a>
-										<a class="delete" href="#delete">Delete</a>
-								</div>
-						</div>
-						<div class="cell">
-								<div class="document">
-										<a class="file pdf" href="#">Hotel Ritz Reservation.pdf</a>
-										<a class="delete" href="#">Delete</a>
-								</div>
-						</div>
-						<div class="cell">
-								<div class="document">
-										<a class="file html" href="#">Hotel Ritz Reservation.doc</a>
-										<a class="delete" href="#">Delete</a>
-								</div>
-						</div>
-						<div class="cell">
-								<div class="document">
-										<a class="file xml" href="#">Hotel Ritz Reservation.pdf</a>
-										<a class="delete" href="#">Delete</a>
-								</div>
-						</div>
-						<div class="cell">
-								<div class="document">
-										<a class="file doc" href="#">Hotel Ritz Reservation.doc</a>
-										<a class="delete" href="#">Delete</a>
-								</div>
-						</div>
-						<div class="cell">
-								<div class="document">
-										<a class="file pdf" href="#">Hotel Ritz Reservation.pdf</a>
-										<a class="delete" href="#">Delete</a>
-								</div>
-						</div>
-						<div class="cell">
-								<div class="document">
-										<a class="file xml" href="#">Hotel Ritz Reservation.pdf</a>
-										<a class="delete" href="#">Delete</a>
-								</div>
-						</div>
-						<div class="cell">
-								<div class="document">
-										<a class="file doc" href="#">Hotel Ritz Reservation.doc</a>
-										<a class="delete" href="#">Delete</a>
-								</div>
-						</div>
-						<div class="cell">
-								<div class="document">
-										<a class="file pdf" href="#">Hotel Ritz Reservation.pdf</a>
-										<a class="delete" href="#">Delete</a>
-								</div>
-						</div>
+				<textarea id="dialogDescription" placeholder="Description or related files"></textarea>
+				<div id="entityDocs" class="documents grid col3 margin">
+						<input id="entityFileInput" type="file" />											
 				</div>
 				<p class="blue-info color1">This information has been imported from uploaded files. Feel free to edit it.</p>
 				<div class="dropdown">

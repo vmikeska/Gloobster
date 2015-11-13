@@ -92,9 +92,18 @@ namespace Gloobster.DomainModels
 
 			if (propertyName == "description")
 			{
-				var placeId = values["placeId"];
+				var entityId = values["entityId"];
 				var description = values["description"];
-				await UpdatePlaceProperty(tripIdObj, placeId, "Description", description);
+				var entityType = (TripEntityType)int.Parse(values["entityType"]);
+
+				if (entityType == TripEntityType.Travel)
+				{
+					await UpdateTravelProperty(tripIdObj, entityId, "Description", description);
+				}
+				if (entityType == TripEntityType.Place)
+				{
+					await UpdatePlaceProperty(tripIdObj, entityId, "Description", description);
+				}				
 			}
 
 			if (propertyName == "placeToVisit")
@@ -142,14 +151,14 @@ namespace Gloobster.DomainModels
 			return res.ModifiedCount == 1;			
 		}
 
-		//private async Task<bool> UpdateTravelProperty(ObjectId travelIdObj, string travelId, string propName, object value)
-		//{
-		//	var filter = DB.F<TripEntity>().Eq(p => p.id, travelIdObj) & DB.F<TripEntity>().Eq("Travels._id", travelId);
-		//	var update = DB.U<TripEntity>().Set("Travels.$." + propName, value);
+		private async Task<bool> UpdateTravelProperty(ObjectId travelIdObj, string travelId, string propName, object value)
+		{
+			var filter = DB.F<TripEntity>().Eq(p => p.id, travelIdObj) & DB.F<TripEntity>().Eq("Travels._id", travelId);
+			var update = DB.U<TripEntity>().Set("Travels.$." + propName, value);
 
-		//	var res = await DB.UpdateAsync(filter, update);
-		//	return res.ModifiedCount == 1;
-		//}
+			var res = await DB.UpdateAsync(filter, update);
+			return res.ModifiedCount == 1;
+		}
 
 		private async Task<bool> DeletePlaceToVisit(ObjectId tripIdObj, string placeId, string id)
 		{
