@@ -27,15 +27,10 @@ var DialogManager = (function () {
         $("#dialogDescription").val(text);
         var d = new DelayedCallback("dialogDescription");
         d.callback = function (description) {
-            var data = {
-                propertyName: "description",
-                values: {
-                    entityType: entityType,
-                    entityId: _this.selectedId,
-                    tripId: _this.planner.trip.tripId,
-                    description: description
-                }
-            };
+            var data = _this.getPropRequest("description", {
+                entityType: entityType,
+                description: description
+            });
             _this.owner.apiPut("TripPlannerProperty", data, function () {
             });
         };
@@ -62,6 +57,17 @@ var DialogManager = (function () {
         var $trans = $(".transport.active");
         $trans.removeClass("active");
         $trans.find(".tab").remove();
+    };
+    DialogManager.prototype.getPropRequest = function (propName, customValues) {
+        var data = {
+            propertyName: propName,
+            values: {
+                tripId: this.planner.trip.tripId,
+                entityId: this.selectedId
+            }
+        };
+        data.values = $.extend(data.values, customValues);
+        return data;
     };
     return DialogManager;
 })();
@@ -149,16 +155,11 @@ var PlaceDialog = (function () {
     };
     PlaceDialog.prototype.onPlaceToVisitSelected = function (req, place) {
         var _this = this;
-        var data = {
-            propertyName: "placeToVisit",
-            values: {
-                tripId: this.dialogManager.planner.trip.tripId,
-                placeId: this.dialogManager.selectedId,
-                sourceId: req.SourceId,
-                sourceType: req.SourceType,
-                selectedName: place.Name
-            }
-        };
+        var data = this.dialogManager.getPropRequest("placeToVisit", {
+            sourceId: req.SourceId,
+            sourceType: req.SourceType,
+            selectedName: place.Name
+        });
         this.dialogManager.owner.apiPut("tripPlannerProperty", data, function (response) {
             var id = response.Result;
             _this.addPlaceToVisit(id, place.Name, req.SourceType);
@@ -166,19 +167,14 @@ var PlaceDialog = (function () {
     };
     PlaceDialog.prototype.onAddressSelected = function (req, place) {
         $("#stayAddress").val(place.Address);
-        var data = {
-            propertyName: "address",
-            values: {
-                tripId: this.dialogManager.planner.trip.tripId,
-                placeId: this.dialogManager.selectedId,
-                sourceId: req.SourceId,
-                sourceType: req.SourceType,
-                selectedName: place.Name,
-                address: place.Address,
-                lat: place.Coordinates.Lat,
-                lng: place.Coordinates.Lng
-            }
-        };
+        var data = this.dialogManager.getPropRequest("address", {
+            sourceId: req.SourceId,
+            sourceType: req.SourceType,
+            selectedName: place.Name,
+            address: place.Address,
+            lat: place.Coordinates.Lat,
+            lng: place.Coordinates.Lng
+        });
         this.dialogManager.owner.apiPut("tripPlannerProperty", data, function (response) {
         });
     };
@@ -187,18 +183,13 @@ var PlaceDialog = (function () {
         this.placeToVisitSearch.setCoordinates(place.Coordinates.Lat, place.Coordinates.Lng);
         var name = place.City + ", " + place.CountryCode;
         $(".active .name").text(name);
-        var data = {
-            propertyName: "place",
-            values: {
-                tripId: this.dialogManager.planner.trip.tripId,
-                placeId: this.dialogManager.selectedId,
-                sourceId: req.SourceId,
-                sourceType: req.SourceType,
-                selectedName: name,
-                lat: place.Coordinates.Lat,
-                lng: place.Coordinates.Lng
-            }
-        };
+        var data = this.dialogManager.getPropRequest("place", {
+            sourceId: req.SourceId,
+            sourceType: req.SourceType,
+            selectedName: name,
+            lat: place.Coordinates.Lat,
+            lng: place.Coordinates.Lng
+        });
         this.dialogManager.owner.apiPut("tripPlannerProperty", data, function (response) {
         });
     };
@@ -212,14 +203,9 @@ var PlaceDialog = (function () {
         $html.find(".delete").click(function (e) {
             e.preventDefault();
             var $item = $(e.target);
-            var data = {
-                propertyName: "placeToVisitRemove",
-                values: {
-                    tripId: _this.dialogManager.planner.trip.tripId,
-                    placeId: _this.dialogManager.selectedId,
-                    id: $item.parent().data("id")
-                }
-            };
+            var data = _this.dialogManager.getPropRequest("placeToVisitRemove", {
+                id: $item.parent().data("id")
+            });
             self.dialogManager.owner.apiPut("tripPlannerProperty", data, function (response) { });
             $html.remove();
         });
@@ -252,9 +238,29 @@ var TravelDialog = (function () {
     TravelDialog.prototype.create = function (data) {
         var $rowCont = $("#" + data.id).parent();
         this.buildTemplate($rowCont);
+        this.initTravelType(data.type);
         this.dialogManager.initDescription(data.description, TripEntityType.Travel);
         this.files = this.dialogManager.createFilesInstance(data.id, TripEntityType.Travel);
         this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId);
+    };
+    TravelDialog.prototype.initTravelType = function (initTravelType) {
+        var _this = this;
+        var $combo = $("#travelType");
+        var $input = $combo.find("input");
+        $input.val(initTravelType);
+        var $initIcon = $combo.find("li[data-value='" + initTravelType + "']");
+        var cls = $initIcon.data("cls");
+        var cap = $initIcon.data("cap");
+        $combo.find(".selected").html("<span class=\"" + cls + " black left mright5\"></span>" + cap);
+        $combo.find("li").click(function (evnt) {
+            var travelType = $(evnt.target).data("value");
+            var data = _this.dialogManager.getPropRequest("travelType", { travelType: travelType });
+            _this.dialogManager.owner.apiPut("tripPlannerProperty", data, function (response) {
+                var $currentIcon = $combo.find("li[data-value='" + travelType + "']");
+                var currentCls = $currentIcon.data("cls");
+                $(".active").children().first().attr("class", currentCls);
+            });
+        });
     };
     TravelDialog.prototype.buildTemplate = function ($row) {
         var html = this.dialogManager.travelDetailTemplate();

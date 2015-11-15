@@ -39,8 +39,10 @@ namespace Gloobster.DomainModels
 		{
 			object result = null;
 
-			var tripId = values["tripId"];			
+			var tripId = values["tripId"];
 			var tripIdObj = new ObjectId(tripId);
+			var entityId = values["entityId"];
+			
 
 			if (propertyName == "place")
 			{
@@ -59,10 +61,14 @@ namespace Gloobster.DomainModels
 						Lng = float.Parse(values["lng"], CultureInfo.InvariantCulture)
 					};
 				}
-
-				var placeId = values["placeId"];
 				
-				await UpdatePlaceProperty(tripIdObj, placeId, "Place", place);
+				await UpdatePlaceProperty(tripIdObj, entityId, "Place", place);
+			}
+
+			if (propertyName == "travelType")
+			{
+				var travelType = (TravelType) int.Parse(values["travelType"]);
+				await UpdateTravelProperty(tripIdObj, entityId, "Type", travelType);
 			}
 
 			if (propertyName == "address")
@@ -82,17 +88,16 @@ namespace Gloobster.DomainModels
 						Lng = float.Parse(values["lng"], CultureInfo.InvariantCulture)
 					};
 				}
-
-				var placeId = values["placeId"];
+				
 				var addressText = values["address"];				
 
-				await UpdatePlaceProperty(tripIdObj, placeId, "Address", address);
-				await UpdatePlaceProperty(tripIdObj, placeId, "AddressText", addressText);				
+				await UpdatePlaceProperty(tripIdObj, entityId, "Address", address);
+				await UpdatePlaceProperty(tripIdObj, entityId, "AddressText", addressText);				
             }
 
 			if (propertyName == "description")
 			{
-				var entityId = values["entityId"];
+				//var entityId = values["entityId"];
 				var description = values["description"];
 				var entityType = (TripEntityType)int.Parse(values["entityType"]);
 
@@ -116,18 +121,14 @@ namespace Gloobster.DomainModels
 					SelectedName = values["selectedName"]
 				};
 				
-				var placeId = values["placeId"];
-
-				await PushPlaceProperty(tripIdObj, placeId, "WantVisit", place);
+				await PushPlaceProperty(tripIdObj, entityId, "WantVisit", place);
 				result = place.id;
 			}
 
 			if (propertyName == "placeToVisitRemove")
-			{
-				var placeId = values["placeId"];
-				var id = values["id"];
-				
-				result = await DeletePlaceToVisit(tripIdObj, placeId, id);				
+			{				
+				var id = values["id"];				
+				result = await DeletePlaceToVisit(tripIdObj, entityId, id);				
 			}
 
 			return result;			

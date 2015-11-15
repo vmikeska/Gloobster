@@ -42,17 +42,11 @@ class DialogManager {
 
 		var d = new DelayedCallback("dialogDescription");
 		d.callback = (description) => {
-			var data = {
-				propertyName: "description",
-				values: {
-				 entityType: entityType,
-					entityId: this.selectedId,
-					tripId: this.planner.trip.tripId,
-					description: description
-				}
-			};
+			var data = this.getPropRequest("description", {
+				entityType: entityType,
+				description: description
+			});
 			this.owner.apiPut("TripPlannerProperty", data, () => {
-
 			});
 		}
 	}
@@ -84,6 +78,18 @@ class DialogManager {
 	 $trans.removeClass("active");
 	 $trans.find(".tab").remove();
 	}
+
+  public getPropRequest(propName: string, customValues) {
+	  var data = {
+		 propertyName: propName,
+			 values: {
+				tripId: this.planner.trip.tripId,
+				entityId: this.selectedId		 
+				}
+			};
+		data.values = $.extend(data.values, customValues);
+	  return data;
+  }
 }
 
 class PlaceDialog  {
@@ -194,18 +200,13 @@ class PlaceDialog  {
  }
  
  private onPlaceToVisitSelected(req, place) {
-	
-	 var data = {
-		 propertyName: "placeToVisit",
-		 values: {
-			 tripId: this.dialogManager.planner.trip.tripId,
-			 placeId: this.dialogManager.selectedId,
-			 sourceId: req.SourceId,
-			 sourceType: req.SourceType,
-			 selectedName: place.Name			 
-		 }
-	 };
 
+	 var data = this.dialogManager.getPropRequest("placeToVisit", {
+		 sourceId: req.SourceId,
+		 sourceType: req.SourceType,
+		 selectedName: place.Name
+	 });
+	
 	 this.dialogManager.owner.apiPut("tripPlannerProperty", data, (response) => {
 		 var id = response.Result;
 		 this.addPlaceToVisit(id, place.Name, req.SourceType);
@@ -216,24 +217,18 @@ class PlaceDialog  {
  private onAddressSelected(req, place) {
 
 	 $("#stayAddress").val(place.Address);
-	
-	 var data = {
-		 propertyName: "address",
-		 values: {
-			 tripId: this.dialogManager.planner.trip.tripId,
-			 placeId: this.dialogManager.selectedId,
-			 sourceId: req.SourceId,
-			 sourceType: req.SourceType,
-			 selectedName: place.Name,
-			 address: place.Address,
-			 lat: place.Coordinates.Lat,
-			 lng: place.Coordinates.Lng
-		 }
-	 };
-	 this.dialogManager.owner.apiPut("tripPlannerProperty", data, (response) => {
 
+	 var data = this.dialogManager.getPropRequest("address", {
+		 sourceId: req.SourceId,
+		 sourceType: req.SourceType,
+		 selectedName: place.Name,
+		 address: place.Address,
+		 lat: place.Coordinates.Lat,
+		 lng: place.Coordinates.Lng
 	 });
-
+	 
+	 this.dialogManager.owner.apiPut("tripPlannerProperty", data, (response) => {
+	 });
  }
 
 	private onPlaceSelected(req, place) {
@@ -244,20 +239,15 @@ class PlaceDialog  {
 	 var name = place.City + ", " + place.CountryCode;
 	 $(".active .name").text(name);
 
-	 var data = {
-		propertyName: "place",
-		values: {
-		 tripId: this.dialogManager.planner.trip.tripId,
-		 placeId: this.dialogManager.selectedId,
-		 sourceId: req.SourceId,
-		 sourceType: req.SourceType,
-		 selectedName: name,
-		 lat: place.Coordinates.Lat,
-		 lng: place.Coordinates.Lng		
-		}
-	 };
+		var data = this.dialogManager.getPropRequest("place", {
+			sourceId: req.SourceId,
+			sourceType: req.SourceType,
+			selectedName: name,
+			lat: place.Coordinates.Lat,
+			lng: place.Coordinates.Lng
+		});
+	
 	 this.dialogManager.owner.apiPut("tripPlannerProperty", data, (response) => {
-
 	 });
 
 	}
@@ -270,19 +260,15 @@ class PlaceDialog  {
 
 		var html = this.dialogManager.visitedItemTemplate(context);
 		var $html = $(html);
-		
-		$html.find(".delete").click((e) => {
-		 e.preventDefault();
-		 var $item = $(e.target);
 
-			var data = {
-				propertyName: "placeToVisitRemove",
-				values: {
-					tripId: this.dialogManager.planner.trip.tripId,
-					placeId: this.dialogManager.selectedId,
-					id: $item.parent().data("id")
-				}
-			};
+		$html.find(".delete").click((e) => {
+			e.preventDefault();
+			var $item = $(e.target);
+
+			var data = this.dialogManager.getPropRequest("placeToVisitRemove", {
+				id: $item.parent().data("id")
+			});
+
 			self.dialogManager.owner.apiPut("tripPlannerProperty", data, (response) => {});
 			$html.remove();
 		});
@@ -326,12 +312,36 @@ class TravelDialog {
 		var $rowCont = $("#" + data.id).parent();
 		this.buildTemplate($rowCont);
 
+		this.initTravelType(data.type);
+
 		this.dialogManager.initDescription(data.description, TripEntityType.Travel);
 
 		this.files = this.dialogManager.createFilesInstance(data.id, TripEntityType.Travel);
 		this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId);
 	}
-
+  
+  private initTravelType(initTravelType: TravelType) {
+	  var $combo = $("#travelType");
+		var $input = $combo.find("input");
+		$input.val(initTravelType);
+		var $initIcon = $combo.find(`li[data-value='${initTravelType}']`);
+		var cls = $initIcon.data("cls");
+		var cap = $initIcon.data("cap");
+	 
+		$combo.find(".selected").html(`<span class="${cls} black left mright5"></span>${cap}`);
+	 
+		$combo.find("li").click(evnt => {
+			var travelType = $(evnt.target).data("value");			
+			var data = this.dialogManager.getPropRequest("travelType", { travelType: travelType });		 
+			this.dialogManager.owner.apiPut("tripPlannerProperty", data, (response) => {
+			 var $currentIcon = $combo.find(`li[data-value='${travelType}']`);
+			 var currentCls = $currentIcon.data("cls");
+			 $(".active").children().first().attr("class", currentCls);
+			});
+			
+		});		
+  }
+ 
 	private buildTemplate($row) {
 		var html = this.dialogManager.travelDetailTemplate();
 		var $html = $(html);
@@ -340,6 +350,7 @@ class TravelDialog {
 		$row.after($html);
 	}
 
+
 }
 
 
@@ -347,7 +358,6 @@ class Planner {
 
   public trip: any; 
 	public owner: Views.ViewBase;
-  //public masterFiles: Files;
 
   private placesMgr: PlacesManager;
 	private dialogManager: DialogManager;

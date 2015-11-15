@@ -116,94 +116,107 @@
 
 <script id="travelDetail-template" type="text/x-handlebars-template">
 		<div class="daybyday-form margin form" action="#" method="post">
-				<div class="table row">
+				<div class="table row" style="display: none">						
 						<div class="cell baseline"><h3>PRG → VIE</h3></div>
 						<div class="cell baseline color1">Delta Air Flight 2560 from Prague to Vienna • Distance 1200 km</div>
 				</div>
-				<textarea id="dialogDescription" placeholder="Description or related files"></textarea>
-				<div id="entityDocs" class="documents grid col3 margin">
-						<input id="entityFileInput" type="file" />											
+				<div class="margin">
+						<div id="travelType" class="dropdown">
+								<span class="selected">
+										@*<span class="icon-plane black left mright5"></span>
+										Flight*@
+								</span>
+								<ul>
+										<li data-value="6" data-cls="icon-bike" data-cap="Bike">
+												<span class="icon-bike black left mright5"></span>
+												Bike
+										</li>
+										<li data-value="5" data-cls="icon-boat" data-cap="Ship">
+												<span class="icon-boat black left mright5"></span>
+												Ship
+										</li>
+										<li data-value="2" data-cls="icon-car" data-cap="Car">
+												<span class="icon-car black left mright5"></span>
+												Car
+										</li>
+										<li data-value="1" data-cls="icon-plane" data-cap="Plane">
+												<span class="icon-plane black left mright5"></span>
+												Plane
+										</li>
+										<li data-value="4" data-cls="icon-train" data-cap="Train">
+												<span class="icon-train black left mright5"></span>
+												Train
+										</li>
+										<li data-value="3" data-cls="icon-train" data-cap="Bus">
+												<span class="icon-train black left mright5"></span>
+												Bus
+										</li>
+										<li data-value="0" data-cls="icon-walk" data-cap="Walk">
+												<span class="icon-walk black left mright5"></span>
+												Walk
+										</li>
+								</ul>
+								<input type="hidden">
+						</div>
 				</div>
-				<p class="blue-info color1">This information has been imported from uploaded files. Feel free to edit it.</p>
-				<div class="dropdown">
-						<span class="selected">Flight</span>
-						<ul>
-								<li data-value="">
-										<span class="icon-bike black left mright5"></span>
-										Bike
-								</li>
-								<li data-value="">
-										<span class="icon-boat black left mright5"></span>
-										Boat
-								</li>
-								<li data-value="">
-										<span class="icon-car black left mright5"></span>
-										Car
-								</li>
-								<li data-value="">
-										<span class="icon-plane black left mright5"></span>
-										Plane
-								</li>
-								<li data-value="">
-										<span class="icon-train black left mright5"></span>
-										Train
-								</li>
-								<li data-value="">
-										<span class="icon-walk black left mright5"></span>
-										Walk
-								</li>
-						</ul>
-						<input type="hidden">
-				</div>
-				<div class="dropdown">
-						<input class="inputed" type="text" placeholder="From">
-						<ul>
-								<li data-value="Prague">
-										Prague
-										<span class="color2">• PRG</span>
-								</li>
-								<li data-value="Prodigy City">
-										Prodigy City
-										<span class="color2">• PCI</span>
-								</li>
-								<li data-value="Preston Town">
-										Preston Town
-										<span class="color2">• PTW</span>
-								</li>
-								<li data-value="Probe Village">
-										Probe Village
-										<span class="color2">• PRV</span>
-								</li>
-						</ul>
-				</div>
-				<div class="dropdown">
-						<input class="inputed" type="text" placeholder="To">
-						<ul>
-								<li data-value="Prague">
-										Prague
-										<span class="color2">• PRG</span>
-								</li>
-								<li data-value="Prodigy City">
-										Prodigy City
-										<span class="color2">• PCI</span>
-								</li>
-								<li data-value="Preston Town">
-										Preston Town
-										<span class="color2">• PTW</span>
-								</li>
-								<li data-value="Probe Village">
-										Probe Village
-										<span class="color2">• PRV</span>
-								</li>
-						</ul>
-				</div>
-				<div class="datepicker">
-						24.6.
-				</div>
-				<div class="datepicker">
-						24.6.
+				<div class="margin">
+								
+						<div class="dropdown">
+								<input class="inputed" type="text" placeholder="From">
+								<ul>
+										<li data-value="Prague">
+												Prague
+												<span class="color2">• PRG</span>
+										</li>
+										<li data-value="Prodigy City">
+												Prodigy City
+												<span class="color2">• PCI</span>
+										</li>
+										<li data-value="Preston Town">
+												Preston Town
+												<span class="color2">• PTW</span>
+										</li>
+										<li data-value="Probe Village">
+												Probe Village
+												<span class="color2">• PRV</span>
+										</li>
+								</ul>
+						</div>
+						<div class="dropdown">
+								<input class="inputed" type="text" placeholder="To">
+								<ul>
+										<li data-value="Prague">
+												Prague
+												<span class="color2">• PRG</span>
+										</li>
+										<li data-value="Prodigy City">
+												Prodigy City
+												<span class="color2">• PCI</span>
+										</li>
+										<li data-value="Preston Town">
+												Preston Town
+												<span class="color2">• PTW</span>
+										</li>
+										<li data-value="Probe Village">
+												Probe Village
+												<span class="color2">• PRV</span>
+										</li>
+								</ul>
+						</div>
+						<div class="datepicker">
+								24.6.
+						</div>
+						<div class="datepicker">
+								24.6.
+						</div>
 				</div>
 				<a class="close" href="#">Close</a>
+				<textarea id="dialogDescription" placeholder="Description or related files"></textarea>
+				<div id="entityDocs" class="documents grid col3 margin">
+						<input id="entityFileInput" type="file" />
+				</div>
+				<p class="blue-info color1">This information has been imported from uploaded files. Feel free to edit it.</p>
+
 		</div>
 
 </script>
