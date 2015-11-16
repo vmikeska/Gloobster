@@ -1,0 +1,1 @@
+mongoimport --db Gloobster --collection Airport --type json --file "C:\S\Gloobster\DBScripts\airports.json" --jsonArray

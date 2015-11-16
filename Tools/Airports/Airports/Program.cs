@@ -1,12 +1,229 @@
+ï»¿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using Gloobster.DomainInterfaces;
-using Gloobster.DomainModels.Services.GeonamesService;
+using System.Text;
+using System.Threading.Tasks;
+using System.IO;
+using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
+//http://openflights.org/
 
-namespace Gloobster.DomainModels.Services.CountryService
+namespace Airports
 {
-	public class CountryService: ICountryService
+	class Program
+	{
+		static void Main(string[] args)
+		{
+			var fileName = "airports.dat";
+			var roughAirports = ProcessFile(fileName);
+			var airports = ParseData(roughAirports);
+			ConvertToJson(airports);
+		}
+
+		public static void ConvertToJson(List<Airport> airports)
+		{
+			var fileName = "airports.json";
+			var jsonStr = JsonConvert.SerializeObject(airports, Formatting.Indented);
+			File.WriteAllText(fileName, jsonStr);
+		}
+
+		public static List<Airport> ParseData(List<AirportRow> inputAirports)
+		{
+			var countryService = new CountryService();
+			
+			var outputAirports = new List<Airport>();
+			var mc = new List<string>();
+
+			foreach (var inputAirport in inputAirports)
+			{
+				if (inputAirport.Country == "Korea")
+				{
+					inputAirport.Country = "North Korea";
+				}
+
+				var country = countryService.GetByCountryName(inputAirport.Country);
+				
+				if (country == null)
+				{
+					if (!mc.Contains(inputAirport.Country))
+					{
+						mc.Add(inputAirport.Country);
+					}
+				}
+
+
+
+				var outputAirport = new Airport
+				{
+					id = int.Parse(inputAirport.AirportId),
+					Name = inputAirport.Name,
+					City = inputAirport.City,
+					Country = inputAirport.Country,					
+					IataFaa = inputAirport.IataFaa,
+					Icao = inputAirport.ICAO,
+					Coord = new LatLng
+					{
+						Lat = float.Parse(inputAirport.Latitude, CultureInfo.InvariantCulture),
+						Lng = float.Parse(inputAirport.Longitude, CultureInfo.InvariantCulture)
+					},
+					Alt = FeetsToMeters(inputAirport.Altitude)
+				};
+
+				if (country != null)
+				{
+					outputAirport.CountryCode = country.CountryCode;
+				}
+
+				outputAirports.Add(outputAirport);
+			}
+
+			return outputAirports;
+		}
+
+		public static int FeetsToMeters(string feetsStr)
+		{
+			float feetsF = float.Parse(feetsStr, CultureInfo.InvariantCulture);
+			float oneFoot = 0.3048f;
+
+			int meters = (int)(feetsF * oneFoot);
+			return meters;
+		}
+
+		public static List<AirportRow> ProcessFile(string fileName)
+		{
+			int counter = 0;
+			var airports = new List<AirportRow>();
+
+			using (var file = new StreamReader(fileName))
+			{
+				string line;
+				while (true)
+				{
+					line = file.ReadLine();
+					
+					if (string.IsNullOrEmpty(line))
+					{
+						break;
+					}
+
+					var p = line.Replace("\"", string.Empty).Split(',');
+
+					var airport = new AirportRow
+					{
+						AirportId = p[0],
+						Name = p[1],
+						City = p[2],
+						Country = p[3],
+						IataFaa = p[4],
+						ICAO = p[5],
+						Latitude = p[6],
+						Longitude = p[7],
+						Altitude = p[8],
+						Timezone = p[9],
+						DST = p[10],
+						TzTimezone = p[11]
+					};
+
+					airports.Add(airport);
+					
+					counter++;
+				}
+			}
+
+			return airports;
+		}
+	}
+
+	public class Airport
+	{		
+		public int id { get; set; }
+		
+		public string Name { get; set; }
+		
+		public string City { get; set; }
+		
+		public string Country { get; set; }
+		public string CountryCode { get; set; }
+
+		public string IataFaa { get; set; }
+		
+		public string Icao { get; set; }
+
+		public LatLng Coord { get; set; }
+		
+		public int Alt { get; set; }
+		
+		//public string Timezone { get; set; }
+		
+		//public string DST { get; set; }
+		
+		//public string TzTimezone { get; set; }
+	}
+
+	public class LatLng
+	{
+		public double Lat { get; set; }
+		public double Lng { get; set; }
+	}
+
+	public class AirportRow
+	{
+		/// <summary>
+		/// Unique OpenFlights identifier for this airport
+		/// </summary>
+		public string AirportId { get; set; }
+		/// <summary>
+		/// Name of airport. May or may not contain the City name
+		/// </summary>
+		public string Name { get; set; }
+		/// <summary>
+		/// Main city served by airport. May be spelled differently from Name
+		/// </summary>
+		public string City { get; set; }
+		/// <summary>
+		/// Country or territory where airport is located
+		/// </summary>
+		public string Country { get; set; }
+		/// <summary>
+		/// 3-letter FAA code, for airports located in Country "United States of America".
+		///3-letter IATA code, for all other airports.
+		///Blank if not assigned.
+		/// </summary>
+		public string IataFaa { get; set; }
+		/// <summary>
+		/// 4-letter ICAO code.
+		/// Blank if not assigned.
+		/// </summary>
+		public string ICAO { get; set; }
+		/// <summary>
+		/// Decimal degrees, usually to six significant digits. Negative is South, positive is North
+		/// </summary>
+		public string Latitude { get; set; }
+		/// <summary>
+		/// Decimal degrees, usually to six significant digits. Negative is West, positive is East
+		/// </summary>
+		public string Longitude { get; set; }
+		/// <summary>
+		/// In feet
+		/// </summary>
+		public string Altitude { get; set; }
+		/// <summary>
+		/// Hours offset from UTC. Fractional hours are expressed as decimals, eg. India is 5.5
+		/// </summary>
+		public string Timezone { get; set; }
+		/// <summary>
+		/// Daylight savings time. One of E (Europe), A (US/Canada), S (South America), O (Australia), Z (New Zealand), N (None) or U (Unknown)
+		/// </summary>
+		public string DST { get; set; }
+		/// <summary>
+		/// Timezone in "tz" (Olson) format, eg. "America/Los_Angeles"
+		/// </summary>
+		public string TzTimezone { get; set; }
+	}
+
+	public class CountryService
 	{
 		public List<Country> CountriesList { get; set; }
 
@@ -37,9 +254,69 @@ namespace Gloobster.DomainModels.Services.CountryService
 
 		private string GetCountriesJson()
 		{
+			
+
 			return @"
 				{					
-						""countries"": [
+						""countries"": [	
+							{
+								""countryCode"": ""NO"",	
+								""countryName"": ""Svalbard"",
+								""isoAlpha3"": """"
+							},
+							{
+								""countryCode"": ""MM"",	
+								""countryName"": ""Myanmar"",
+								""isoAlpha3"": """"
+							},
+							{
+								""countryCode"": ""GB"",	
+								""countryName"": ""South Georgia and the Islands"",
+								""isoAlpha3"": """"
+							},
+							{
+								""countryCode"": ""AU"",	
+								""countryName"": ""Cocos (Keeling) Islands"",
+								""isoAlpha3"": """"
+							},
+							{
+								""countryCode"": ""CN"",	
+								""countryName"": ""Macau"",
+								""isoAlpha3"": """"
+							},
+							{
+								""countryCode"": ""NL"",	
+								""countryName"": ""Netherlands Antilles"",
+								""isoAlpha3"": """"
+							},
+							{
+								""countryCode"": ""US"",	
+								""countryName"": ""Virgin Islands"",
+								""isoAlpha3"": """"
+							},
+							{
+								""countryCode"": ""US"",	
+								""countryName"": ""Midway Islands"",
+								""isoAlpha3"": """"
+							},	
+							{
+								""countryCode"": ""US"",	
+								""countryName"": ""Johnston Atoll"",
+								""isoAlpha3"": """"
+							},		
+							{
+								""countryCode"": ""US"",	
+								""countryName"": ""Wake Island"",
+								""isoAlpha3"": """"
+							},
+							{
+								""countryCode"": ""IL"",	
+								""countryName"": ""West Bank"",
+								""isoAlpha3"": """"
+							},
+
+
+
 							{
 								""countryCode"": ""AD"",
 								""countryName"": ""Andorra"",
@@ -112,7 +389,7 @@ namespace Gloobster.DomainModels.Services.CountryService
 							},
 							{
 								""countryCode"": ""AX"",
-								""countryName"": ""Åland"",
+								""countryName"": ""Ã…land"",
 								""isoAlpha3"": ""ALA""
 							},
 							{
@@ -167,7 +444,7 @@ namespace Gloobster.DomainModels.Services.CountryService
 							},
 							{
 								""countryCode"": ""BL"",
-								""countryName"": ""Saint Barthélemy"",
+								""countryName"": ""Saint BarthÃ©lemy"",
 								""isoAlpha3"": ""BLM""
 							},
 							{
@@ -237,7 +514,7 @@ namespace Gloobster.DomainModels.Services.CountryService
 							},
 							{
 								""countryCode"": ""CD"",
-								""countryName"": ""Democratic Republic of the Congo"",
+								""countryName"": ""Congo (Kinshasa)"",
 								""isoAlpha3"": ""COD""
 							},
 							{
@@ -247,7 +524,7 @@ namespace Gloobster.DomainModels.Services.CountryService
 							},
 							{
 								""countryCode"": ""CG"",
-								""countryName"": ""Republic of the Congo"",
+								""countryName"": ""Congo (Brazzaville)"",
 								""isoAlpha3"": ""COG""
 							},
 							{
@@ -257,7 +534,7 @@ namespace Gloobster.DomainModels.Services.CountryService
 							},
 							{
 								""countryCode"": ""CI"",
-								""countryName"": ""Ivory Coast"",
+								""countryName"": ""Cote d'Ivoire"",
 								""isoAlpha3"": ""CIV""
 							},
 							{
@@ -767,7 +1044,7 @@ namespace Gloobster.DomainModels.Services.CountryService
 							},
 							{
 								""countryCode"": ""MM"",
-								""countryName"": ""Myanmar [Burma]"",
+								""countryName"": ""Burma"",
 								""isoAlpha3"": ""MMR""
 							},
 							{
@@ -977,7 +1254,7 @@ namespace Gloobster.DomainModels.Services.CountryService
 							},
 							{
 								""countryCode"": ""RE"",
-								""countryName"": ""Réunion"",
+								""countryName"": ""Reunion"",
 								""isoAlpha3"": ""REU""
 							},
 							{
@@ -1082,7 +1359,7 @@ namespace Gloobster.DomainModels.Services.CountryService
 							},
 							{
 								""countryCode"": ""ST"",
-								""countryName"": ""São Tomé and Príncipe"",
+								""countryName"": ""Sao Tome and Principe"",
 								""isoAlpha3"": ""STP""
 							},
 							{
@@ -1297,6 +1574,24 @@ namespace Gloobster.DomainModels.Services.CountryService
 
 		}
 	}
-}
 
-//countries table generated from: http://peric.github.io/GetCountries/
+	[DataContract]
+	public class CountriesRoot
+	{
+		[DataMember(Name = "countries")]
+		public List<Country> Countries { get; set; }
+	}
+
+	[DataContract]
+	public class Country
+	{
+		[DataMember(Name = "countryCode")]
+		public string CountryCode { get; set; }
+		[DataMember(Name = "countryName")]
+		public string CountryName { get; set; }
+		[DataMember(Name = "isoAlpha3")]
+		public string IsoAlpha3 { get; set; }
+	}
+
+
+}
