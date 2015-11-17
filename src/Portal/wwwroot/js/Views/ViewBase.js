@@ -10,6 +10,7 @@ var Views;
     var PageType = Views.PageType;
     var ViewBase = (function () {
         function ViewBase() {
+            ViewBase.currentView = this;
             this.cookieManager = new CookieManager();
             this.loginManager = new LoginManager();
             var isAlreadyLogged = this.loginManager.isAlreadyLogged();

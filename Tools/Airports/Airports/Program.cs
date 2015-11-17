@@ -57,10 +57,10 @@ namespace Airports
 
 				var outputAirport = new Airport
 				{
-					id = int.Parse(inputAirport.AirportId),
+					OrigId = int.Parse(inputAirport.AirportId),
 					Name = inputAirport.Name,
 					City = inputAirport.City,
-					Country = inputAirport.Country,					
+					//Country = inputAirport.Country,					
 					IataFaa = inputAirport.IataFaa,
 					Icao = inputAirport.ICAO,
 					Coord = new LatLng
@@ -68,13 +68,10 @@ namespace Airports
 						Lat = float.Parse(inputAirport.Latitude, CultureInfo.InvariantCulture),
 						Lng = float.Parse(inputAirport.Longitude, CultureInfo.InvariantCulture)
 					},
-					Alt = FeetsToMeters(inputAirport.Altitude)
+					Alt = FeetsToMeters(inputAirport.Altitude),
+					CountryCode = country.CountryCode
 				};
-
-				if (country != null)
-				{
-					outputAirport.CountryCode = country.CountryCode;
-				}
+				
 
 				outputAirports.Add(outputAirport);
 			}
@@ -138,13 +135,13 @@ namespace Airports
 
 	public class Airport
 	{		
-		public int id { get; set; }
+		public int OrigId { get; set; }
 		
 		public string Name { get; set; }
 		
 		public string City { get; set; }
 		
-		public string Country { get; set; }
+		//public string Country { get; set; }
 		public string CountryCode { get; set; }
 
 		public string IataFaa { get; set; }

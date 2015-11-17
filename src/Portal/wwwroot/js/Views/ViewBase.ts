@@ -4,12 +4,15 @@ module Views {
 
 	export class ViewBase {
 
+	  public static currentView: ViewBase;
+
 		public loginManager: LoginManager;
 		public cookieManager: CookieManager;
 
 		get pageType(): PageType { return null; }
 
 		constructor() {
+			ViewBase.currentView = this;
 			this.cookieManager = new CookieManager();
 			this.loginManager = new LoginManager();
 

@@ -69,6 +69,8 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 		[Authorize]
 		public async Task<IActionResult> Put([FromBody] PropertyUpdateRequest request)
 		{
+			var tripId = request.values["tripId"];
+			TripPlanner.Initialize(tripId, UserId);
 			var result = TripPlanner.UpdateProperty(request.propertyName, request.values);
 		
 			return new ObjectResult(result);

@@ -165,7 +165,7 @@ class PlaceDialog  {
 	 }	
  }
 
-	private createAddressSearch(data) {
+ private createAddressSearch(data) {
 		var c = new PlaceSearchConfig();
 		c.owner = this.dialogManager.owner;
 		c.providers = "1,0";
@@ -191,7 +191,7 @@ class PlaceDialog  {
 	}
 
 
-	private buildTemplate($row) {
+ private buildTemplate($row) {
 	 var html = this.dialogManager.placeDetailTemplate();
 		var $html = $(html);
 		this.dialogManager.regClose($html);
@@ -294,6 +294,94 @@ class PlaceDialog  {
  
 }
 
+class AirportCombo {
+	private $combo: any;
+	private $cont: any;
+	private $input: any;
+	private limit = 10;
+	private lastText: string;
+
+	public onSelected: Function;
+
+	constructor(comboId: string) {
+		this.$combo = $("#" + comboId);
+		this.$cont = this.$combo.find("ul");
+		this.$input = this.$combo.find("input");
+		this.registerInput();
+		this.registerInOut();
+	}
+
+	public setText(text) {
+		this.lastText = text;
+		this.$input.val(text);
+	}
+
+	private registerInOut() {
+		this.$input.focus((e) => {
+			$(e.target).val("");
+		});
+		this.$input.focusout(() => {
+			this.setText(this.lastText);
+		});
+	}
+
+	private registerInput() {
+		var d = new DelayedCallback(this.$input);
+		d.callback = (str) => {
+			var data = [["query", str], ["limit", this.limit]];
+			Views.ViewBase.currentView.apiGet("airport", data, (items) => this.onResult(items));
+		}
+	}
+
+	private onResult(items) {
+		this.displayResults(items);
+	}
+
+	private displayResults(items) {
+		if (!items) {
+			return;
+		}
+
+		this.$cont.html("");
+
+		items.forEach((item) => {
+			var itemHtml = this.getItemHtml(item);
+			this.$cont.append(itemHtml);
+		});
+		this.registerClick();
+	}
+
+	private registerClick() {
+		this.$cont.find("li").click((evnt) => {
+			var $t = $(evnt.target);
+			this.onClick($t);
+		});
+	}
+
+	private onClick($item) {
+		var selName = $item.data("value");
+		var selId = $item.data("id");
+		this.$input.val(selName);
+
+		this.$cont.html("");
+
+		var data = { id: selId, name: selName };
+		this.onSelected(data);
+	}
+
+	private getItemHtml(item) {
+		var code = item.iataFaa;
+		if (code === "") {
+			code = item.icao;
+		}
+
+		var displayName = `${item.name} (${item.city})`;
+		var displayNameSel = `${item.city} (${code})`;
+
+		return `<li data-value="${displayNameSel}" data-id="${item.id}">${displayName}<span class="color2">• ${code}</span></li>`;
+	}
+}
+
 class TravelDialog {
 	public dialogManager: DialogManager;
 
@@ -318,30 +406,151 @@ class TravelDialog {
 
 		this.files = this.dialogManager.createFilesInstance(data.id, TripEntityType.Travel);
 		this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId);
+
+		this.initAirport(data.flightFrom, "airportFrom", "flightFrom");
+		this.initAirport(data.flightTo, "airportTo", "flightTo");
+
+		this.initDatePicker("leavingDate", "leavingDateTime", data.leavingDateTime);
+		this.initDatePicker("arrivingDate", "arrivingDateTime", data.arrivingDateTime);
+
+		this.initTimePicker("leavingHours", "leavingMinutes", "leavingDateTime", data.leavingDateTime);
+		this.initTimePicker("arrivingHours", "arrivingMinutes", "arrivingDateTime", data.arrivingDateTime);
 	}
-  
-  private initTravelType(initTravelType: TravelType) {
+
+	private initTimePicker(hrsElementId, minElementId, propName, curDateStr) {
+		var $hrs = $("#" + hrsElementId);
+		var $min = $("#" + minElementId);
+
+		if (curDateStr) {
+		 var date = new Date(curDateStr);		 
+			$hrs.val(date.getUTCHours());
+			$min.val(date.getUTCMinutes());
+		}
+
+		var dHrs = new DelayedCallback($hrs);
+		dHrs.callback = () => {
+		 this.onTimeChanged($hrs, $min, propName);
+		}
+
+		var mHrs = new DelayedCallback($min);
+		mHrs.callback = () => {
+		 this.onTimeChanged($hrs, $min, propName);
+		}
+	 
+	}
+
+	private onTimeChanged($hrs, $min, propName) {
+	  var hrs = $hrs.val();
+			if (hrs === "") {
+				hrs = "0";
+			}
+			var min = $min.val();
+			if (min === "") {
+				min = "0";
+			}
+
+			var time = { hour: hrs, minute: min };
+			this.updateDateTime(null, time, propName);
+  }
+
+	private initDatePicker(elementId, propertyName, curDateStr) {
+		var dpConfig = this.datePickerConfig();
+		var $datePicker = $("#" + elementId);
+
+		$datePicker.datepicker(dpConfig);
+
+		if (curDateStr) {
+			var date = new Date(curDateStr);
+			$datePicker.datepicker("setDate", date);
+		}
+
+		$datePicker.change((e) => {
+			var $this = $(e.target);
+			var date = $this.datepicker("getDate");
+			var datePrms = this.getDatePrms(date);
+			this.updateDateTime(datePrms, null, propertyName);
+		});
+	}
+
+	private getDatePrms(date) {
+		var datePrms = {
+			year: date.getUTCFullYear() + 1900,
+			month: date.getUTCMonth() + 1,
+			day: date.getUTCDate() + 1
+		}
+		return datePrms;
+	}
+
+  private updateDateTime(date, time, propName) {
+	  var fullDateTime = {};
+	 if (date) {
+		 fullDateTime = $.extend(fullDateTime, date);
+		}
+	 if (time) {
+		fullDateTime = $.extend(fullDateTime, time);
+	 }
+
+	  var data = this.dialogManager.getPropRequest(propName, fullDateTime);
+	  Views.ViewBase.currentView.apiPut("tripPlannerProperty", data, (response) => {
+		  
+	  });
+  }
+
+	private datePickerConfig() {
+	  return {
+		  dateFormat: "dd.mm.yy"
+	  };
+  }
+
+	private initAirport(flight, comboId, propName) {
+		var airportFrom = new AirportCombo(comboId);
+		airportFrom.onSelected = (evntData) => {
+			var data = this.dialogManager.getPropRequest(propName,
+			{
+				id: evntData.id,
+				name: evntData.name
+			});
+			this.dialogManager.owner.apiPut("tripPlannerProperty", data, (response) => {});		 
+		}
+	  if (flight) {
+		 airportFrom.setText(flight.selectedName);
+		}
+	}
+
+	private initTravelType(initTravelType: TravelType) {
+		this.showHideTravelDetails(initTravelType);
 	  var $combo = $("#travelType");
 		var $input = $combo.find("input");
 		$input.val(initTravelType);
 		var $initIcon = $combo.find(`li[data-value='${initTravelType}']`);
 		var cls = $initIcon.data("cls");
 		var cap = $initIcon.data("cap");
-	 
+
 		$combo.find(".selected").html(`<span class="${cls} black left mright5"></span>${cap}`);
-	 
+
 		$combo.find("li").click(evnt => {
-			var travelType = $(evnt.target).data("value");			
-			var data = this.dialogManager.getPropRequest("travelType", { travelType: travelType });		 
+			var travelType = $(evnt.target).data("value");
+			this.showHideTravelDetails(travelType);
+			var data = this.dialogManager.getPropRequest("travelType", { travelType: travelType });
 			this.dialogManager.owner.apiPut("tripPlannerProperty", data, (response) => {
-			 var $currentIcon = $combo.find(`li[data-value='${travelType}']`);
-			 var currentCls = $currentIcon.data("cls");
-			 $(".active").children().first().attr("class", currentCls);
+				var $currentIcon = $combo.find(`li[data-value='${travelType}']`);
+				var currentCls = $currentIcon.data("cls");
+				$(".active").children().first().attr("class", currentCls);
 			});
-			
-		});		
-  }
- 
+
+		});
+	}
+
+	private showHideTravelDetails(travelType: TravelType) {
+		var $flightDetails = $("#flightDetails");
+
+		$flightDetails.hide();
+
+		if (travelType === TravelType.Plane) {
+			$flightDetails.show();
+		}
+	}
+
 	private buildTemplate($row) {
 		var html = this.dialogManager.travelDetailTemplate();
 		var $html = $(html);

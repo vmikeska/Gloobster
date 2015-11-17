@@ -62,5 +62,15 @@ namespace Gloobster.ReqRes.Trip
 		public TravelType type { get; set; }
 		public string description { get; set; }
 		public List<FileResponse> files { get; set; }
+		public FlightResponse flightFrom { get; set; }
+		public FlightResponse flightTo { get; set; }
+		public DateTime? leavingDateTime { get; set; }
+		public DateTime? arrivingDateTime { get; set; }
+	}
+
+	public class FlightResponse
+	{
+		public string id { get; set; }
+		public string selectedName { get; set; }
 	}
 }

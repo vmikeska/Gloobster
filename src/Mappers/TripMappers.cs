@@ -138,15 +138,38 @@ namespace Gloobster.Mappers
 			return r;
 		}
 
+		public static FlightResponse ToResponse(this FlightSE e)
+		{
+			var r = new FlightResponse
+			{
+				id = e.Airport_id.ToString(),
+				selectedName = e.SelectedName
+			};
+
+			return r;
+		}
+
 		public static TripTravelResponse ToResponse(this TripTravelSE e)
 		{
 			var r = new TripTravelResponse
 			{
 				id = e.Id,
 				type = e.Type,
-				description = e.Description
-
+				description = e.Description,
+				leavingDateTime = e.LeavingDateTime,
+				arrivingDateTime = e.ArrivingDateTime
 			};
+
+			if (e.FlightFrom != null)
+			{
+				r.flightFrom = e.FlightFrom.ToResponse();				
+			}
+
+			if (e.FlightTo != null)
+			{			
+				r.flightTo = e.FlightTo.ToResponse();
+			}
+			
 			return r;
 		}
 

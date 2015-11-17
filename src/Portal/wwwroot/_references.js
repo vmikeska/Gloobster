@@ -1,5 +1,7 @@
 ﻿/// <autosync enabled="true" />
 /// <reference path="../gulpfile.js" />
+/// <reference path="FileRepository/Trips/56439d46f9cc3665ac7c6544/36ceb37fb40f4a718efed26567a06497.js" />
+/// <reference path="FileRepository/Trips/56439d46f9cc3665ac7c6544/fc4dad4947294dc191448227e4f50c3b.js" />
 /// <reference path="js/common/cookiemanager.js" />
 /// <reference path="js/common/delayedcallback.js" />
 /// <reference path="js/common/fileupload.js" />

@@ -65,6 +65,46 @@ namespace Gloobster.DomainModels
 				await UpdatePlaceProperty(tripIdObj, entityId, "Place", place);
 			}
 
+			if (propertyName == "flightFrom")
+			{
+				var airportId = values["id"];
+				var airportName = values["name"];
+
+				var flight = new FlightSE
+				{
+					Airport_id = new ObjectId(airportId),
+					SelectedName = airportName
+				};
+
+				await UpdateTravelProperty(tripIdObj, entityId, "FlightFrom", flight);
+			}
+
+			if (propertyName == "flightTo")
+			{
+				var airportId = values["id"];
+				var airportName = values["name"];
+
+				var flight = new FlightSE
+				{
+					Airport_id = new ObjectId(airportId),
+					SelectedName = airportName
+				};
+
+				await UpdateTravelProperty(tripIdObj, entityId, "FlightTo", flight);
+			}
+
+			if (propertyName == "leavingDateTime")
+			{
+				var travel = Trip.Travels.FirstOrDefault(t => t.Id == entityId);
+				UpdateDate(travel.LeavingDateTime, "LeavingDateTime", tripIdObj, entityId, values);				
+			}
+
+			if (propertyName == "arrivingDateTime")
+			{
+				var travel = Trip.Travels.FirstOrDefault(t => t.Id == entityId);
+				UpdateDate(travel.ArrivingDateTime, "ArrivingDateTime", tripIdObj, entityId, values);
+			}
+			
 			if (propertyName == "travelType")
 			{
 				var travelType = (TravelType) int.Parse(values["travelType"]);
@@ -134,6 +174,38 @@ namespace Gloobster.DomainModels
 			return result;			
 		}
 
+		private async void UpdateDate(DateTime? oldDate, string propName, ObjectId tripIdObj, string entityId, Dictionary<string, string> values)
+		{
+			int day = 0, month = 0, year = 0, hour = 0, minute = 0;
+
+			if (oldDate.HasValue)
+			{
+				day = oldDate.Value.Day;
+				month = oldDate.Value.Month;
+				year = oldDate.Value.Year;
+				hour = oldDate.Value.Hour;
+				minute = oldDate.Value.Minute;
+			}
+			
+			if (values.ContainsKey("day") && values.ContainsKey("month") && values.ContainsKey("year"))
+			{
+				day = int.Parse(values["day"]);
+				month = int.Parse(values["month"]);
+				year = int.Parse(values["year"]);				
+			}
+
+			if (values.ContainsKey("hour") && values.ContainsKey("minute"))
+			{
+				hour = int.Parse(values["hour"]);
+				minute = int.Parse(values["minute"]);				
+			}
+
+			//it's actually not UTC time, but rough. If it's not UTC set, DB recalculates it.
+			var newDate = new DateTime(year, month, day, hour, minute, 0, DateTimeKind.Utc);
+
+			await UpdateTravelProperty(tripIdObj, entityId, propName, newDate);
+		}
+		
 		private async Task<bool> PushPlaceProperty(ObjectId tripIdObj, string placeId, string propName, object value)
 		{
 			var filter = DB.F<TripEntity>().Eq(p => p.id, tripIdObj) & DB.F<TripEntity>().Eq("Places._id", placeId);

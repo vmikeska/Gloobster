@@ -226,6 +226,77 @@ var PlaceDialog = (function () {
     };
     return PlaceDialog;
 })();
+var AirportCombo = (function () {
+    function AirportCombo(comboId) {
+        this.limit = 10;
+        this.$combo = $("#" + comboId);
+        this.$cont = this.$combo.find("ul");
+        this.$input = this.$combo.find("input");
+        this.registerInput();
+        this.registerInOut();
+    }
+    AirportCombo.prototype.setText = function (text) {
+        this.lastText = text;
+        this.$input.val(text);
+    };
+    AirportCombo.prototype.registerInOut = function () {
+        var _this = this;
+        this.$input.focus(function (e) {
+            $(e.target).val("");
+        });
+        this.$input.focusout(function () {
+            _this.setText(_this.lastText);
+        });
+    };
+    AirportCombo.prototype.registerInput = function () {
+        var _this = this;
+        var d = new DelayedCallback(this.$input);
+        d.callback = function (str) {
+            var data = [["query", str], ["limit", _this.limit]];
+            Views.ViewBase.currentView.apiGet("airport", data, function (items) { return _this.onResult(items); });
+        };
+    };
+    AirportCombo.prototype.onResult = function (items) {
+        this.displayResults(items);
+    };
+    AirportCombo.prototype.displayResults = function (items) {
+        var _this = this;
+        if (!items) {
+            return;
+        }
+        this.$cont.html("");
+        items.forEach(function (item) {
+            var itemHtml = _this.getItemHtml(item);
+            _this.$cont.append(itemHtml);
+        });
+        this.registerClick();
+    };
+    AirportCombo.prototype.registerClick = function () {
+        var _this = this;
+        this.$cont.find("li").click(function (evnt) {
+            var $t = $(evnt.target);
+            _this.onClick($t);
+        });
+    };
+    AirportCombo.prototype.onClick = function ($item) {
+        var selName = $item.data("value");
+        var selId = $item.data("id");
+        this.$input.val(selName);
+        this.$cont.html("");
+        var data = { id: selId, name: selName };
+        this.onSelected(data);
+    };
+    AirportCombo.prototype.getItemHtml = function (item) {
+        var code = item.iataFaa;
+        if (code === "") {
+            code = item.icao;
+        }
+        var displayName = item.name + " (" + item.city + ")";
+        var displayNameSel = item.city + " (" + code + ")";
+        return "<li data-value=\"" + displayNameSel + "\" data-id=\"" + item.id + "\">" + displayName + "<span class=\"color2\">\u2022 " + code + "</span></li>";
+    };
+    return AirportCombo;
+})();
 var TravelDialog = (function () {
     function TravelDialog(dialogManager) {
         this.dialogManager = dialogManager;
@@ -242,9 +313,101 @@ var TravelDialog = (function () {
         this.dialogManager.initDescription(data.description, TripEntityType.Travel);
         this.files = this.dialogManager.createFilesInstance(data.id, TripEntityType.Travel);
         this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId);
+        this.initAirport(data.flightFrom, "airportFrom", "flightFrom");
+        this.initAirport(data.flightTo, "airportTo", "flightTo");
+        this.initDatePicker("leavingDate", "leavingDateTime", data.leavingDateTime);
+        this.initDatePicker("arrivingDate", "arrivingDateTime", data.arrivingDateTime);
+        this.initTimePicker("leavingHours", "leavingMinutes", "leavingDateTime", data.leavingDateTime);
+        this.initTimePicker("arrivingHours", "arrivingMinutes", "arrivingDateTime", data.arrivingDateTime);
+    };
+    TravelDialog.prototype.initTimePicker = function (hrsElementId, minElementId, propName, curDateStr) {
+        var _this = this;
+        var $hrs = $("#" + hrsElementId);
+        var $min = $("#" + minElementId);
+        if (curDateStr) {
+            var date = new Date(curDateStr);
+            $hrs.val(date.getUTCHours());
+            $min.val(date.getUTCMinutes());
+        }
+        var dHrs = new DelayedCallback($hrs);
+        dHrs.callback = function () {
+            _this.onTimeChanged($hrs, $min, propName);
+        };
+        var mHrs = new DelayedCallback($min);
+        mHrs.callback = function () {
+            _this.onTimeChanged($hrs, $min, propName);
+        };
+    };
+    TravelDialog.prototype.onTimeChanged = function ($hrs, $min, propName) {
+        var hrs = $hrs.val();
+        if (hrs === "") {
+            hrs = "0";
+        }
+        var min = $min.val();
+        if (min === "") {
+            min = "0";
+        }
+        var time = { hour: hrs, minute: min };
+        this.updateDateTime(null, time, propName);
+    };
+    TravelDialog.prototype.initDatePicker = function (elementId, propertyName, curDateStr) {
+        var _this = this;
+        var dpConfig = this.datePickerConfig();
+        var $datePicker = $("#" + elementId);
+        $datePicker.datepicker(dpConfig);
+        if (curDateStr) {
+            var date = new Date(curDateStr);
+            $datePicker.datepicker("setDate", date);
+        }
+        $datePicker.change(function (e) {
+            var $this = $(e.target);
+            var date = $this.datepicker("getDate");
+            var datePrms = _this.getDatePrms(date);
+            _this.updateDateTime(datePrms, null, propertyName);
+        });
+    };
+    TravelDialog.prototype.getDatePrms = function (date) {
+        var datePrms = {
+            year: date.getUTCFullYear() + 1900,
+            month: date.getUTCMonth() + 1,
+            day: date.getUTCDate() + 1
+        };
+        return datePrms;
+    };
+    TravelDialog.prototype.updateDateTime = function (date, time, propName) {
+        var fullDateTime = {};
+        if (date) {
+            fullDateTime = $.extend(fullDateTime, date);
+        }
+        if (time) {
+            fullDateTime = $.extend(fullDateTime, time);
+        }
+        var data = this.dialogManager.getPropRequest(propName, fullDateTime);
+        Views.ViewBase.currentView.apiPut("tripPlannerProperty", data, function (response) {
+        });
+    };
+    TravelDialog.prototype.datePickerConfig = function () {
+        return {
+            dateFormat: "dd.mm.yy"
+        };
+    };
+    TravelDialog.prototype.initAirport = function (flight, comboId, propName) {
+        var _this = this;
+        var airportFrom = new AirportCombo(comboId);
+        airportFrom.onSelected = function (evntData) {
+            var data = _this.dialogManager.getPropRequest(propName, {
+                id: evntData.id,
+                name: evntData.name
+            });
+            _this.dialogManager.owner.apiPut("tripPlannerProperty", data, function (response) { });
+        };
+        if (flight) {
+            airportFrom.setText(flight.selectedName);
+        }
     };
     TravelDialog.prototype.initTravelType = function (initTravelType) {
         var _this = this;
+        this.showHideTravelDetails(initTravelType);
         var $combo = $("#travelType");
         var $input = $combo.find("input");
         $input.val(initTravelType);
@@ -254,6 +417,7 @@ var TravelDialog = (function () {
         $combo.find(".selected").html("<span class=\"" + cls + " black left mright5\"></span>" + cap);
         $combo.find("li").click(function (evnt) {
             var travelType = $(evnt.target).data("value");
+            _this.showHideTravelDetails(travelType);
             var data = _this.dialogManager.getPropRequest("travelType", { travelType: travelType });
             _this.dialogManager.owner.apiPut("tripPlannerProperty", data, function (response) {
                 var $currentIcon = $combo.find("li[data-value='" + travelType + "']");
@@ -261,6 +425,13 @@ var TravelDialog = (function () {
                 $(".active").children().first().attr("class", currentCls);
             });
         });
+    };
+    TravelDialog.prototype.showHideTravelDetails = function (travelType) {
+        var $flightDetails = $("#flightDetails");
+        $flightDetails.hide();
+        if (travelType === TravelType.Plane) {
+            $flightDetails.show();
+        }
     };
     TravelDialog.prototype.buildTemplate = function ($row) {
         var html = this.dialogManager.travelDetailTemplate();
