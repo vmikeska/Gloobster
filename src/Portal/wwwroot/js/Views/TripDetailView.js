@@ -56,7 +56,7 @@ var TripDetailView = (function (_super) {
         this.trip = request;
         this.files.setFiles(this.trip.files, this.trip.tripId);
         this.registerPhotoUpload();
-        this.planner = new Planner(this.trip);
+        this.planner = new Planner(this.trip, true);
     };
     TripDetailView.prototype.registerPhotoUpload = function () {
         var config = new FileUploadConfig();

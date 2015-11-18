@@ -1,16 +1,33 @@
 class DialogManager {
 	public placeDetailTemplate: any;
+  public travelDetailViewTemplate: any;
 	public travelDetailTemplate: any;
 	public visitedItemTemplate: any;
+  public placeDisplayItemTemplate: any;
+
 	public selectedId: string;
 
 	public planner: Planner;
  
 	constructor(planner: Planner) {		
-		this.planner = planner;
-		this.placeDetailTemplate =  Views.ViewBase.currentView.registerTemplate("placeDetail-template");
+	 this.planner = planner;
+	 	 	  
+		this.placeDetailTemplate = Views.ViewBase.currentView.registerTemplate("placeDetail-template");
+		this.travelDetailViewTemplate = Views.ViewBase.currentView.registerTemplate("travelDetailView-template");
 		this.travelDetailTemplate = Views.ViewBase.currentView.registerTemplate("travelDetail-template");
 		this.visitedItemTemplate = Views.ViewBase.currentView.registerTemplate("visitItem-template");
+	}
+
+	public createFilesInstanceView(entityId: string, entityType: TripEntityType): Files {
+	 var filesConfig = new FilesConfig();
+	 filesConfig.containerId = "entityDocs";
+	 filesConfig.templateId = "fileItem-template";
+	 filesConfig.editable = false;
+	 filesConfig.addAdder = false;
+	 filesConfig.entityId = entityId;
+	 var files = new Files(filesConfig);
+
+	 return files;
 	}
 
 	public createFilesInstance(entityId: string, entityType: TripEntityType): Files {
@@ -56,7 +73,8 @@ class DialogManager {
   
 
 	public closeDialog() {
-		$(".daybyday-form").remove();
+	 $(".daybyday-form").remove();
+		$(".daybyday-view").remove();
 	}
 
 	public regClose($html) {

@@ -2,9 +2,20 @@ var DialogManager = (function () {
     function DialogManager(planner) {
         this.planner = planner;
         this.placeDetailTemplate = Views.ViewBase.currentView.registerTemplate("placeDetail-template");
+        this.travelDetailViewTemplate = Views.ViewBase.currentView.registerTemplate("travelDetailView-template");
         this.travelDetailTemplate = Views.ViewBase.currentView.registerTemplate("travelDetail-template");
         this.visitedItemTemplate = Views.ViewBase.currentView.registerTemplate("visitItem-template");
     }
+    DialogManager.prototype.createFilesInstanceView = function (entityId, entityType) {
+        var filesConfig = new FilesConfig();
+        filesConfig.containerId = "entityDocs";
+        filesConfig.templateId = "fileItem-template";
+        filesConfig.editable = false;
+        filesConfig.addAdder = false;
+        filesConfig.entityId = entityId;
+        var files = new Files(filesConfig);
+        return files;
+    };
     DialogManager.prototype.createFilesInstance = function (entityId, entityType) {
         var filesConfig = new FilesConfig();
         filesConfig.containerId = "entityDocs";
@@ -41,6 +52,7 @@ var DialogManager = (function () {
     };
     DialogManager.prototype.closeDialog = function () {
         $(".daybyday-form").remove();
+        $(".daybyday-view").remove();
     };
     DialogManager.prototype.regClose = function ($html) {
         var _this = this;

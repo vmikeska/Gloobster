@@ -45,7 +45,7 @@
 	 this.comments.users = this.trip.users;
 	 this.comments.displayComments();
 
-	 this.planner = new Planner(this.trip);	
+	 this.planner = new Planner(this.trip, false);		
 	}
 
 

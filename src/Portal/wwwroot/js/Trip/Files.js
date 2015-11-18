@@ -97,14 +97,15 @@ var Files = (function () {
             fileName: this.getShortFileName(file.originalFileName),
             fileId: file.savedFileName,
             fileType: this.getFileType(file.originalFileName),
-            tripId: this.tripId
+            tripId: this.tripId,
+            editable: this.config.editable
         };
         var html = this.template(context);
         return html;
     };
     Files.prototype.getFileType = function (fileName) {
         var prms = fileName.split(".");
-        var fileType = prms[1];
+        var fileType = prms[prms.length - 1];
         var recognizedTypes = ["doc", "docx", "xml", "html", "pdf"];
         var isRecognized = _.contains(recognizedTypes, fileType);
         if (isRecognized) {
@@ -120,7 +121,7 @@ var Files = (function () {
             return fileName;
         }
         var prms = fileName.split(".");
-        return prms[0].substring(0, 20) + "... ." + prms[1];
+        return prms[0].substring(0, 20) + "... ." + prms[prms.length - 1];
     };
     Files.prototype.registerFileUpload = function () {
         var _this = this;

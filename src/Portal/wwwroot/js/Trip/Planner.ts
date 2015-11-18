@@ -13,6 +13,8 @@
 	
 
 	public $currentContainer = $("#plannerCont1");
+  public editable: boolean;
+
   private lastRowNo = 1; 
   private placesPerRow = 4;
   private contBaseName = "plannerCont";
@@ -22,7 +24,8 @@
 	private $adder: any;
 	private $lastCell: any;
  
-	constructor(trip: any) {
+	constructor(trip: any, editable: boolean) {
+		this.editable = editable;
 		this.dialogManager = new DialogManager(this);
 		this.placeDialog = new PlaceDialog(this.dialogManager);
 		this.travelDialog = new TravelDialog(this.dialogManager);
@@ -54,7 +57,9 @@
 
 		});
 
-		this.addAdder();
+		if (this.editable) {
+			this.addAdder();
+		}
 	}
 
 	private manageRows(placeCount) {

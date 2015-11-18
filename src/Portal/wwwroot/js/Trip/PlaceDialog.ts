@@ -6,6 +6,8 @@ class PlaceDialog  {
 
 	private files: Files;
 
+  private $rowCont;
+
 	constructor(dialogManager: DialogManager) {
 		this.dialogManager = dialogManager;	
 	}
@@ -13,12 +15,27 @@ class PlaceDialog  {
 	public display() {
 		this.dialogManager.closeDialog();
 
-		this.dialogManager.getDialogData(TripEntityType.Place, (response) => this.create(response));	
+		this.dialogManager.getDialogData(TripEntityType.Place, (data) => {
+			this.$rowCont = $("#" + data.id).parent();
+
+			if (this.dialogManager.planner.editable) {
+				this.createEdit(data);
+			} else {
+				this.createView(data);
+			}
+		});
 	}
 
-	private create(data) {
-		var $rowCont = $("#" + data.id).parent();
-		this.buildTemplate($rowCont);
+	private createView(data) {
+	 this.buildTemplateView(this.$rowCont, data);
+	 
+	 this.files = this.dialogManager.createFilesInstanceView(data.id, TripEntityType.Place);
+	 this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId);
+	}
+
+	private createEdit(data) {
+		
+	 this.buildTemplateEdit(this.$rowCont);
 
 		this.createNameSearch(data);
 	 
@@ -92,9 +109,34 @@ class PlaceDialog  {
 			this.addressSearch.setCoordinates(data.place.coordinates.Lat, data.place.coordinates.Lng);
 		}
 	}
+ 
+	private buildTemplateView($row, data) {
+	 var name = "Empty";
+	 if (data.place) {
+		name = data.place.selectedName;
+	 }
 
+	 var context = {
+		  name: name,
+			description: data.description,
+			wantVisit: []			
+	  }
 
-	private buildTemplate($row) {
+	 context.wantVisit = _.map(data.wantVisit, (item) => {
+		 return {
+			name: item.selectedName,
+			icon: this.getIcon(item.sourceType)			
+		 }
+		});
+
+	 var html = this.dialogManager.travelDetailViewTemplate(context);
+	 var $html = $(html);
+	 this.dialogManager.regClose($html);
+
+	 $row.after($html);
+	}
+
+	private buildTemplateEdit($row) {	 
 		var html = this.dialogManager.placeDetailTemplate();
 		var $html = $(html);
 		this.dialogManager.regClose($html);

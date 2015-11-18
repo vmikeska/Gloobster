@@ -41,6 +41,7 @@ var TripViewView = (function (_super) {
         this.comments.users = this.trip.users;
         this.comments.displayComments();
         this.planner = new Planner(this.trip);
+        this.planner.editable = false;
     };
     TripViewView.prototype.generateButtons = function () {
     };

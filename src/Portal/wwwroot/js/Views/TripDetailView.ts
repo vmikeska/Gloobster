@@ -61,7 +61,7 @@ class TripDetailView extends Views.ViewBase
 
 		this.files.setFiles(this.trip.files, this.trip.tripId);
 		this.registerPhotoUpload();
-		this.planner = new Planner(this.trip);	 
+		this.planner = new Planner(this.trip, true);	 
 	}
 
 

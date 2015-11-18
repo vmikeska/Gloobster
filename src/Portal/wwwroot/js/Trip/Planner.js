@@ -1,10 +1,11 @@
 var Planner = (function () {
-    function Planner(trip) {
+    function Planner(trip, editable) {
         this.$currentContainer = $("#plannerCont1");
         this.lastRowNo = 1;
         this.placesPerRow = 4;
         this.contBaseName = "plannerCont";
         this.inverseColor = false;
+        this.editable = editable;
         this.dialogManager = new DialogManager(this);
         this.placeDialog = new PlaceDialog(this.dialogManager);
         this.travelDialog = new TravelDialog(this.dialogManager);
@@ -28,7 +29,9 @@ var Planner = (function () {
             }
             _this.inverseColor = !_this.inverseColor;
         });
-        this.addAdder();
+        if (this.editable) {
+            this.addAdder();
+        }
     };
     Planner.prototype.manageRows = function (placeCount) {
         var currentRow = Math.floor(placeCount / this.placesPerRow);

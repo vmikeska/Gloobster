@@ -5,12 +5,24 @@ var PlaceDialog = (function () {
     PlaceDialog.prototype.display = function () {
         var _this = this;
         this.dialogManager.closeDialog();
-        this.dialogManager.getDialogData(TripEntityType.Place, function (response) { return _this.create(response); });
+        this.dialogManager.getDialogData(TripEntityType.Place, function (data) {
+            _this.$rowCont = $("#" + data.id).parent();
+            if (_this.dialogManager.planner.editable) {
+                _this.createEdit(data);
+            }
+            else {
+                _this.createView(data);
+            }
+        });
     };
-    PlaceDialog.prototype.create = function (data) {
+    PlaceDialog.prototype.createView = function (data) {
+        this.buildTemplateView(this.$rowCont, data);
+        this.files = this.dialogManager.createFilesInstanceView(data.id, TripEntityType.Place);
+        this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId);
+    };
+    PlaceDialog.prototype.createEdit = function (data) {
         var _this = this;
-        var $rowCont = $("#" + data.id).parent();
-        this.buildTemplate($rowCont);
+        this.buildTemplateEdit(this.$rowCont);
         this.createNameSearch(data);
         $("#stayAddress").val(data.addressText);
         this.createAddressSearch(data);
@@ -71,7 +83,29 @@ var PlaceDialog = (function () {
             this.addressSearch.setCoordinates(data.place.coordinates.Lat, data.place.coordinates.Lng);
         }
     };
-    PlaceDialog.prototype.buildTemplate = function ($row) {
+    PlaceDialog.prototype.buildTemplateView = function ($row, data) {
+        var _this = this;
+        var name = "Empty";
+        if (data.place) {
+            name = data.place.selectedName;
+        }
+        var context = {
+            name: name,
+            description: data.description,
+            wantVisit: []
+        };
+        context.wantVisit = _.map(data.wantVisit, function (item) {
+            return {
+                name: item.selectedName,
+                icon: _this.getIcon(item.sourceType)
+            };
+        });
+        var html = this.dialogManager.travelDetailViewTemplate(context);
+        var $html = $(html);
+        this.dialogManager.regClose($html);
+        $row.after($html);
+    };
+    PlaceDialog.prototype.buildTemplateEdit = function ($row) {
         var html = this.dialogManager.placeDetailTemplate();
         var $html = $(html);
         this.dialogManager.regClose($html);
