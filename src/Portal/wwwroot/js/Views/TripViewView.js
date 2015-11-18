@@ -17,7 +17,7 @@ var TripViewView = (function (_super) {
         filesConfig.editable = false;
         filesConfig.addAdder = true;
         filesConfig.templateId = "file-template";
-        this.files = new Files(this, filesConfig);
+        this.files = new Files(filesConfig);
         this.getTrip(id);
         $("#commentSubmit").click(function () {
             self.comments.postComment(self.trip.tripId);
@@ -36,11 +36,11 @@ var TripViewView = (function (_super) {
     TripViewView.prototype.onTripLoaded = function (request) {
         this.trip = request;
         this.files.setFiles(this.trip.files, this.trip.tripId);
-        this.comments = new Comments(this);
+        this.comments = new Comments();
         this.comments.comments = this.trip.comments;
         this.comments.users = this.trip.users;
         this.comments.displayComments();
-        this.planner = new Planner(this, this.trip);
+        this.planner = new Planner(this.trip);
     };
     TripViewView.prototype.generateButtons = function () {
     };

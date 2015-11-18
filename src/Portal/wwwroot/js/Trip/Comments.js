@@ -1,6 +1,5 @@
 var Comments = (function () {
-    function Comments(owner) {
-        this.owner = owner;
+    function Comments() {
         var source = $("#comment-template").html();
         this.template = Handlebars.compile(source);
     }
@@ -20,7 +19,7 @@ var Comments = (function () {
         var $input = $("#commentInput");
         var text = $input.val();
         var request = { text: text, tripId: tripId };
-        this.owner.apiPost("tripComment", request, function (response) {
+        Views.ViewBase.currentView.apiPost("tripComment", request, function (response) {
             _this.comments = response.comments;
             _this.users = response.users;
             _this.displayComments();

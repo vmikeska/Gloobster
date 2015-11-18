@@ -6,11 +6,10 @@
 	get pageType(): Views.PageType { return Views.PageType.PinBoard; }
 
 	public initialize() {
-		this.mapsManager = new MapsManager(this);
+		this.mapsManager = new MapsManager();
 		this.mapsManager.switchToView(Maps.ViewType.D2);
 
-		var searchConfig = new PlaceSearchConfig();
-		searchConfig.owner = this;
+		var searchConfig = new PlaceSearchConfig();		
 		searchConfig.providers = "0,1,2,3";
 		searchConfig.elementId = "cities";
 		searchConfig.minCharsToSearch = 1;

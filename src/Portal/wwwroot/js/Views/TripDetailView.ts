@@ -16,7 +16,7 @@ class TripDetailView extends Views.ViewBase
 		filesConfig.addAdder = true;
 		filesConfig.isMasterFile = true;
 
-		this.files = new Files(this, filesConfig);				
+		this.files = new Files(filesConfig);				
 		this.setFilesCustomConfig(id);
 		this.getTrip(id);
 
@@ -61,14 +61,13 @@ class TripDetailView extends Views.ViewBase
 
 		this.files.setFiles(this.trip.files, this.trip.tripId);
 		this.registerPhotoUpload();
-		this.planner = new Planner(this, this.trip);	 
+		this.planner = new Planner(this.trip);	 
 	}
 
 
 	private registerPhotoUpload() {
 	 var config = new FileUploadConfig();
-	 config.inputId = "photoInput";
-	 config.owner = this;
+	 config.inputId = "photoInput";	 
 	 config.endpoint = "TripPhoto";
 
 	 this.pictureUpload = new FileUpload(config);

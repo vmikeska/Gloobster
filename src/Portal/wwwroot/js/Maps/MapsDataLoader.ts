@@ -1,20 +1,14 @@
 class MapsDataLoader {	
-	public owner: Views.ViewBase;
-
 	public places: Maps.Places;
 	public viewPlaces: Maps.PlacesDisplay;
 
 	public dataLoadedCallback: Function;
-
-	constructor(owner: Views.ViewBase) {
-		this.owner = owner;		
-	}
-
+ 
 	public getPluginData(pluginType: Maps.PluginType, displayEntity: Maps.DisplayEntity) {
 
 		var request = [["pluginType", pluginType.toString()], ["displayEntity", displayEntity.toString()]];
 
-		this.owner.apiGet("PinBoardStats", request, response => {
+		Views.ViewBase.currentView.apiGet("PinBoardStats", request, response => {
 
 			this.places = new Maps.Places();
 			this.viewPlaces = new Maps.PlacesDisplay();
@@ -28,6 +22,7 @@ class MapsDataLoader {
 			this.dataLoadedCallback();
 		});
 	}
+
 
 	private getColorByNumber(num) {
 		var firstColor = "#0026BF";

@@ -25,7 +25,6 @@ var SettingsView = (function (_super) {
     SettingsView.prototype.registerAvatarFileUpload = function () {
         var avatarUploadConfig = new FileUploadConfig();
         avatarUploadConfig.inputId = "avatarFile";
-        avatarUploadConfig.owner = this;
         avatarUploadConfig.endpoint = "UploadAvatar";
         var fileUpload = new FileUpload(avatarUploadConfig);
         fileUpload.onProgressChanged = function (percent) {
@@ -65,7 +64,6 @@ var SettingsView = (function (_super) {
     };
     SettingsView.prototype.getLocationBaseConfig = function () {
         var c = new PlaceSearchConfig();
-        c.owner = this;
         c.providers = "2";
         c.minCharsToSearch = 2;
         c.clearAfterSearch = false;

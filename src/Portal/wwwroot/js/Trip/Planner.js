@@ -1,10 +1,9 @@
 var DialogManager = (function () {
-    function DialogManager(owner, planner) {
-        this.owner = owner;
+    function DialogManager(planner) {
         this.planner = planner;
-        this.placeDetailTemplate = this.owner.registerTemplate("placeDetail-template");
-        this.travelDetailTemplate = this.owner.registerTemplate("travelDetail-template");
-        this.visitedItemTemplate = this.owner.registerTemplate("visitItem-template");
+        this.placeDetailTemplate = Views.ViewBase.currentView.registerTemplate("placeDetail-template");
+        this.travelDetailTemplate = Views.ViewBase.currentView.registerTemplate("travelDetail-template");
+        this.visitedItemTemplate = Views.ViewBase.currentView.registerTemplate("visitItem-template");
     }
     DialogManager.prototype.createFilesInstance = function (entityId, entityType) {
         var filesConfig = new FilesConfig();
@@ -18,7 +17,7 @@ var DialogManager = (function () {
         customData.tripId = this.planner.trip.tripId;
         customData.entityId = entityId;
         customData.entityType = entityType;
-        var files = new Files(this.owner, filesConfig);
+        var files = new Files(filesConfig);
         files.fileUpload.customConfig = customData;
         return files;
     };
@@ -31,13 +30,13 @@ var DialogManager = (function () {
                 entityType: entityType,
                 description: description
             });
-            _this.owner.apiPut("TripPlannerProperty", data, function () {
+            Views.ViewBase.currentView.apiPut("TripPlannerProperty", data, function () {
             });
         };
     };
     DialogManager.prototype.getDialogData = function (dialogType, callback) {
         var prms = [["dialogType", dialogType], ["tripId", this.planner.trip.tripId], ["id", this.selectedId]];
-        this.owner.apiGet("TripPlannerProperty", prms, function (response) {
+        Views.ViewBase.currentView.apiGet("TripPlannerProperty", prms, function (response) {
             callback(response);
         });
     };
@@ -100,7 +99,6 @@ var PlaceDialog = (function () {
     PlaceDialog.prototype.createNameSearch = function (data) {
         var _this = this;
         var c = new PlaceSearchConfig();
-        c.owner = this.dialogManager.owner;
         c.providers = "0,1,2,3";
         c.elementId = "cities";
         c.minCharsToSearch = 1;
@@ -114,7 +112,6 @@ var PlaceDialog = (function () {
     PlaceDialog.prototype.createPlaceToVisitSearch = function (data) {
         var _this = this;
         var c = new PlaceSearchConfig();
-        c.owner = this.dialogManager.owner;
         c.providers = "1,0";
         c.elementId = "placeToVisit";
         c.minCharsToSearch = 1;
@@ -128,7 +125,6 @@ var PlaceDialog = (function () {
     PlaceDialog.prototype.createAddressSearch = function (data) {
         var _this = this;
         var c = new PlaceSearchConfig();
-        c.owner = this.dialogManager.owner;
         c.providers = "1,0";
         c.elementId = "stayPlace";
         c.minCharsToSearch = 1;
@@ -160,7 +156,7 @@ var PlaceDialog = (function () {
             sourceType: req.SourceType,
             selectedName: place.Name
         });
-        this.dialogManager.owner.apiPut("tripPlannerProperty", data, function (response) {
+        Views.ViewBase.currentView.apiPut("tripPlannerProperty", data, function (response) {
             var id = response.Result;
             _this.addPlaceToVisit(id, place.Name, req.SourceType);
         });
@@ -175,7 +171,7 @@ var PlaceDialog = (function () {
             lat: place.Coordinates.Lat,
             lng: place.Coordinates.Lng
         });
-        this.dialogManager.owner.apiPut("tripPlannerProperty", data, function (response) {
+        Views.ViewBase.currentView.apiPut("tripPlannerProperty", data, function (response) {
         });
     };
     PlaceDialog.prototype.onPlaceSelected = function (req, place) {
@@ -190,7 +186,7 @@ var PlaceDialog = (function () {
             lat: place.Coordinates.Lat,
             lng: place.Coordinates.Lng
         });
-        this.dialogManager.owner.apiPut("tripPlannerProperty", data, function (response) {
+        Views.ViewBase.currentView.apiPut("tripPlannerProperty", data, function (response) {
         });
     };
     PlaceDialog.prototype.addPlaceToVisit = function (id, name, sourceType) {
@@ -206,7 +202,7 @@ var PlaceDialog = (function () {
             var data = _this.dialogManager.getPropRequest("placeToVisitRemove", {
                 id: $item.parent().data("id")
             });
-            self.dialogManager.owner.apiPut("tripPlannerProperty", data, function (response) { });
+            Views.ViewBase.currentView.apiPut("tripPlannerProperty", data, function (response) { });
             $html.remove();
         });
         $("#placeToVisit").before($html);
@@ -406,7 +402,7 @@ var TravelDialog = (function () {
                 id: evntData.id,
                 name: evntData.name
             });
-            _this.dialogManager.owner.apiPut("tripPlannerProperty", data, function (response) { });
+            Views.ViewBase.currentView.apiPut("tripPlannerProperty", data, function (response) { });
         };
         if (flight) {
             airportFrom.setText(flight.selectedName);
@@ -426,7 +422,7 @@ var TravelDialog = (function () {
             var travelType = $(evnt.target).data("value");
             _this.showHideTravelDetails(travelType);
             var data = _this.dialogManager.getPropRequest("travelType", { travelType: travelType });
-            _this.dialogManager.owner.apiPut("tripPlannerProperty", data, function (response) {
+            Views.ViewBase.currentView.apiPut("tripPlannerProperty", data, function (response) {
                 var $currentIcon = $combo.find("li[data-value='" + travelType + "']");
                 var currentCls = $currentIcon.data("cls");
                 $(".active").children().first().attr("class", currentCls);
@@ -466,19 +462,18 @@ var Utils = (function () {
     return Utils;
 })();
 var Planner = (function () {
-    function Planner(owner, trip) {
+    function Planner(trip) {
         this.$currentContainer = $("#plannerCont1");
         this.lastRowNo = 1;
         this.placesPerRow = 4;
         this.contBaseName = "plannerCont";
         this.inverseColor = false;
-        this.owner = owner;
-        this.dialogManager = new DialogManager(owner, this);
+        this.dialogManager = new DialogManager(this);
         this.placeDialog = new PlaceDialog(this.dialogManager);
         this.travelDialog = new TravelDialog(this.dialogManager);
         this.trip = trip;
         this.registerTemplates();
-        this.placesMgr = new PlacesManager(trip.id, owner);
+        this.placesMgr = new PlacesManager(trip.id);
         this.placesMgr.setData(trip.travels, trip.places);
         this.redrawAll();
     }
@@ -532,9 +527,9 @@ var Planner = (function () {
         });
     };
     Planner.prototype.registerTemplates = function () {
-        this.addPlaceTemplate = this.owner.registerTemplate("addPlace-template");
-        this.travelTemplate = this.owner.registerTemplate("travel-template");
-        this.placeTemplate = this.owner.registerTemplate("place-template");
+        this.addPlaceTemplate = Views.ViewBase.currentView.registerTemplate("addPlace-template");
+        this.travelTemplate = Views.ViewBase.currentView.registerTemplate("travel-template");
+        this.placeTemplate = Views.ViewBase.currentView.registerTemplate("place-template");
     };
     Planner.prototype.addEnd = function () {
         var _this = this;
@@ -542,7 +537,7 @@ var Planner = (function () {
         this.dialogManager.deactivate();
         var lastPlace = this.placesMgr.getLastPlace();
         var data = { selectorId: lastPlace.id, position: NewPlacePosition.ToRight, tripId: this.trip.tripId };
-        this.owner.apiPost("tripPlanner", data, function (response) {
+        Views.ViewBase.currentView.apiPost("tripPlanner", data, function (response) {
             var t = _this.placesMgr.mapTravel(response.travel, lastPlace, null);
             lastPlace.leaving = t;
             _this.placesMgr.travels.push(t);
@@ -669,10 +664,9 @@ var Planner = (function () {
     return Planner;
 })();
 var PlacesManager = (function () {
-    function PlacesManager(tripId, owner) {
+    function PlacesManager(tripId) {
         this.places = [];
         this.travels = [];
-        this.owner = owner;
         this.tripId = tripId;
     }
     PlacesManager.prototype.mapTravel = function (resp, from, to) {

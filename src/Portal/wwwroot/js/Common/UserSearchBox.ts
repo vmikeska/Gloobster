@@ -1,6 +1,5 @@
 class UserSearchBox {
-
-	public owner: Views.ViewBase;
+	
 	public config: UserSearchConfig;	
 	public onUserSelected: Function;	
   
@@ -14,7 +13,6 @@ class UserSearchBox {
 		this.config = config;
 		this.$root = $("#" + config.elementId);
 		this.$input = this.$root.find("input");
-		this.owner = config.owner;		
 
 		var source = $("#userItem-template").html();
 		this.template = Handlebars.compile(source);
@@ -25,7 +23,7 @@ class UserSearchBox {
 
 	public searchUsers(name: string) {		
 	 var params = [["name", name]];
-		this.owner.apiGet(this.config.endpoint, params, places => { this.fillSearchBoxHtml(places) });
+	 Views.ViewBase.currentView.apiGet(this.config.endpoint, params, places => { this.fillSearchBoxHtml(places) });
 	}
  
 	private fillSearchBoxHtml(users) {
@@ -76,8 +74,8 @@ class UserSearchBox {
 	}
 }
 
-class UserSearchConfig {
-	owner: Views.ViewBase;
+
+class UserSearchConfig {	
 	elementId: string;		
 	clearAfterSearch: boolean;
 	endpoint: string;

@@ -5,15 +5,14 @@ class DialogManager {
   public visitedItemTemplate: any;
   public selectedId: string;
 
-	public owner: Views.ViewBase;
+	
   public planner: Planner;
  
-	constructor(owner: Views.ViewBase, planner: Planner) {
-		this.owner = owner;
+	constructor(planner: Planner) {		
 		this.planner = planner;
-		this.placeDetailTemplate = this.owner.registerTemplate("placeDetail-template");
-		this.travelDetailTemplate = this.owner.registerTemplate("travelDetail-template");
-		this.visitedItemTemplate = this.owner.registerTemplate("visitItem-template");
+		this.placeDetailTemplate =  Views.ViewBase.currentView.registerTemplate("placeDetail-template");
+		this.travelDetailTemplate = Views.ViewBase.currentView.registerTemplate("travelDetail-template");
+		this.visitedItemTemplate = Views.ViewBase.currentView.registerTemplate("visitItem-template");
 	}
 
 	public createFilesInstance(entityId: string, entityType: TripEntityType): Files {
@@ -30,7 +29,7 @@ class DialogManager {
 		customData.entityId = entityId;
 		customData.entityType = entityType;
 
-		var files = new Files(this.owner, filesConfig);
+		var files = new Files(filesConfig);
 
 		files.fileUpload.customConfig = customData;
 
@@ -46,14 +45,14 @@ class DialogManager {
 				entityType: entityType,
 				description: description
 			});
-			this.owner.apiPut("TripPlannerProperty", data, () => {
+			Views.ViewBase.currentView.apiPut("TripPlannerProperty", data, () => {
 			});
 		}
 	}
 
   public getDialogData(dialogType: TripEntityType, callback: Function) {
 	  var prms = [["dialogType", dialogType], ["tripId", this.planner.trip.tripId], ["id", this.selectedId]];
-	 this.owner.apiGet("TripPlannerProperty", prms, (response) => {
+		Views.ViewBase.currentView.apiGet("TripPlannerProperty", prms, (response) => {
 		callback(response);
 	 });
 	}
@@ -134,8 +133,7 @@ class PlaceDialog  {
 	}
 
  private createNameSearch(data) {
-	 var c = new PlaceSearchConfig();
-		c.owner = this.dialogManager.owner;
+	 var c = new PlaceSearchConfig();		
 		c.providers = "0,1,2,3";
 		c.elementId = "cities";
 		c.minCharsToSearch = 1;
@@ -150,8 +148,7 @@ class PlaceDialog  {
  }
 
  private createPlaceToVisitSearch(data) {
-	 var c = new PlaceSearchConfig();
-	 c.owner = this.dialogManager.owner;
+	 var c = new PlaceSearchConfig();	 
 	 c.providers = "1,0";
 	 c.elementId = "placeToVisit";
 	 c.minCharsToSearch = 1;
@@ -166,8 +163,7 @@ class PlaceDialog  {
  }
 
  private createAddressSearch(data) {
-		var c = new PlaceSearchConfig();
-		c.owner = this.dialogManager.owner;
+		var c = new PlaceSearchConfig();		
 		c.providers = "1,0";
 		c.elementId = "stayPlace";
 		c.minCharsToSearch = 1;
@@ -207,7 +203,7 @@ class PlaceDialog  {
 		 selectedName: place.Name
 	 });
 	
-	 this.dialogManager.owner.apiPut("tripPlannerProperty", data, (response) => {
+	 Views.ViewBase.currentView.apiPut("tripPlannerProperty", data, (response) => {
 		 var id = response.Result;
 		 this.addPlaceToVisit(id, place.Name, req.SourceType);
 	 });
@@ -227,7 +223,7 @@ class PlaceDialog  {
 		 lng: place.Coordinates.Lng
 	 });
 	 
-	 this.dialogManager.owner.apiPut("tripPlannerProperty", data, (response) => {
+	 Views.ViewBase.currentView.apiPut("tripPlannerProperty", data, (response) => {
 	 });
  }
 
@@ -247,7 +243,7 @@ class PlaceDialog  {
 			lng: place.Coordinates.Lng
 		});
 	
-	 this.dialogManager.owner.apiPut("tripPlannerProperty", data, (response) => {
+		Views.ViewBase.currentView.apiPut("tripPlannerProperty", data, (response) => {
 	 });
 
 	}
@@ -269,7 +265,7 @@ class PlaceDialog  {
 				id: $item.parent().data("id")
 			});
 
-			self.dialogManager.owner.apiPut("tripPlannerProperty", data, (response) => {});
+			Views.ViewBase.currentView.apiPut("tripPlannerProperty", data, (response) => {});
 			$html.remove();
 		});
 
@@ -523,7 +519,7 @@ class TravelDialog {
 				id: evntData.id,
 				name: evntData.name
 			});
-			this.dialogManager.owner.apiPut("tripPlannerProperty", data, (response) => {});		 
+			Views.ViewBase.currentView.apiPut("tripPlannerProperty", data, (response) => {});		 
 		}
 	  if (flight) {
 		 airportFrom.setText(flight.selectedName);
@@ -545,7 +541,7 @@ class TravelDialog {
 			var travelType = $(evnt.target).data("value");
 			this.showHideTravelDetails(travelType);
 			var data = this.dialogManager.getPropRequest("travelType", { travelType: travelType });
-			this.dialogManager.owner.apiPut("tripPlannerProperty", data, (response) => {
+			Views.ViewBase.currentView.apiPut("tripPlannerProperty", data, (response) => {
 				var $currentIcon = $combo.find(`li[data-value='${travelType}']`);
 				var currentCls = $currentIcon.data("cls");
 				$(".active").children().first().attr("class", currentCls);
@@ -594,7 +590,6 @@ class Utils {
 class Planner {
 
   public trip: any; 
-	public owner: Views.ViewBase;
 
   public placesMgr: PlacesManager;
 	private dialogManager: DialogManager;
@@ -616,16 +611,15 @@ class Planner {
 	private $adder: any;
 	private $lastCell: any;
  
-	constructor(owner: Views.ViewBase, trip: any) {
-		this.owner = owner;
-		this.dialogManager = new DialogManager(owner, this);
+	constructor(trip: any) {
+		this.dialogManager = new DialogManager(this);
 		this.placeDialog = new PlaceDialog(this.dialogManager);
 		this.travelDialog = new TravelDialog(this.dialogManager);
 		this.trip = trip;
 
 		this.registerTemplates();
 	
-		this.placesMgr = new PlacesManager(trip.id, owner);
+		this.placesMgr = new PlacesManager(trip.id);
 		this.placesMgr.setData(trip.travels, trip.places);
 		this.redrawAll();
 	}
@@ -692,9 +686,9 @@ class Planner {
 	}
 
 	private registerTemplates() {
-		this.addPlaceTemplate = this.owner.registerTemplate("addPlace-template");
-		this.travelTemplate = this.owner.registerTemplate("travel-template");
-		this.placeTemplate = this.owner.registerTemplate("place-template");		
+	 this.addPlaceTemplate = Views.ViewBase.currentView.registerTemplate("addPlace-template");
+	 this.travelTemplate = Views.ViewBase.currentView.registerTemplate("travel-template");
+	 this.placeTemplate = Views.ViewBase.currentView.registerTemplate("place-template");		
 	}
 
 	public addEnd() {
@@ -704,7 +698,7 @@ class Planner {
 		var lastPlace = this.placesMgr.getLastPlace();
 		var data = { selectorId: lastPlace.id, position: NewPlacePosition.ToRight, tripId: this.trip.tripId };
 
-		this.owner.apiPost("tripPlanner", data, (response) => {		 
+		Views.ViewBase.currentView.apiPost("tripPlanner", data, (response) => {		 
 			var t = this.placesMgr.mapTravel(response.travel, lastPlace, null);
 			lastPlace.leaving = t;
 			this.placesMgr.travels.push(t);
@@ -858,10 +852,8 @@ class PlacesManager {
   private tripId: string;
 	public places = [];
   public travels = [];
-  private owner: Views.ViewBase;
 
-	constructor(tripId: string, owner: Views.ViewBase) {
-		this.owner = owner;
+	constructor(tripId: string) {
 		this.tripId = tripId;
 	}
 

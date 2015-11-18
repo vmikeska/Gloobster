@@ -5,17 +5,14 @@
 
 	public mapsDriver: Maps.IMapsDriver;
 	public mapsOperations: MapsOperations;
-
-	public owner: Views.ViewBase;
-
+ 
 	public mapsDataLoader: MapsDataLoader;
 
 	public currentPluginType: Maps.PluginType;
 	public currentDisplayEntity: Maps.DisplayEntity;
 
-	constructor(owner: Views.ViewBase) {
-		this.owner = owner;
-		this.mapsDataLoader = new MapsDataLoader(owner);
+	constructor() {		
+		this.mapsDataLoader = new MapsDataLoader();
 		this.mapsDataLoader.dataLoadedCallback = () => { this.redrawDataCallback() };
 		this.mapsOperations = new MapsOperations();
 	}
@@ -96,7 +93,7 @@
 		this.mapsOperations.setBaseMapsOperations(this.mapsDriver);
 		this.mapsDriver.setMapObj(this.currentMaps.mapObj);
 
-		if (!this.owner.loginManager.isAlreadyLogged()) {
+		if (!Views.ViewBase.currentView.loginManager.isAlreadyLogged()) {
 			return;
 		}
 

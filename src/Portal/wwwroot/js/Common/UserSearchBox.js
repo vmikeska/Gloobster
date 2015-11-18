@@ -4,7 +4,6 @@ var UserSearchBox = (function () {
         this.config = config;
         this.$root = $("#" + config.elementId);
         this.$input = this.$root.find("input");
-        this.owner = config.owner;
         var source = $("#userItem-template").html();
         this.template = Handlebars.compile(source);
         this.delayedCallback = new DelayedCallback(this.$input);
@@ -13,7 +12,7 @@ var UserSearchBox = (function () {
     UserSearchBox.prototype.searchUsers = function (name) {
         var _this = this;
         var params = [["name", name]];
-        this.owner.apiGet(this.config.endpoint, params, function (places) { _this.fillSearchBoxHtml(places); });
+        Views.ViewBase.currentView.apiGet(this.config.endpoint, params, function (places) { _this.fillSearchBoxHtml(places); });
     };
     UserSearchBox.prototype.fillSearchBoxHtml = function (users) {
         var _this = this;

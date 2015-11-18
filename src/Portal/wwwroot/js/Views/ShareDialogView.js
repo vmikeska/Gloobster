@@ -1,9 +1,7 @@
 var ShareDialogView = (function () {
-    function ShareDialogView(currentView) {
+    function ShareDialogView() {
         var _this = this;
-        this.owner = currentView;
         var config = new UserSearchConfig();
-        config.owner = currentView;
         config.elementId = "friends";
         config.clearAfterSearch = true;
         config.endpoint = "FriendsSearch";
@@ -29,10 +27,10 @@ var ShareDialogView = (function () {
         });
         var data = {
             caption: $("#caption").val(),
-            tripId: this.owner.trip.tripId,
+            tripId: Views.ViewBase.currentView["trip"].tripId,
             users: users
         };
-        this.owner.apiPost("tripShare", data, function (response) {
+        Views.ViewBase.currentView.apiPost("tripShare", data, function (response) {
         });
     };
     ShareDialogView.prototype.onUserSelected = function (user) {

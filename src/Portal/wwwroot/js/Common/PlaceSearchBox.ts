@@ -1,6 +1,5 @@
 class PlaceSearchBox {
-
-	public owner: Views.ViewBase;
+	
 	public config: PlaceSearchConfig;
 	public onPlaceSelected: Function;
 
@@ -15,8 +14,7 @@ class PlaceSearchBox {
 	constructor(config: PlaceSearchConfig) {
 		this.config = config;
 		this.$root = $("#" + config.elementId);
-		this.$input = this.$root.find("input");
-		this.owner = config.owner;
+		this.$input = this.$root.find("input");		
 
 		var source = $("#placeItem-template").html();
 		this.template = Handlebars.compile(source);
@@ -52,7 +50,7 @@ class PlaceSearchBox {
 		 params.push(["lng", this.coordinates.lng]);
 	  }
 
-		this.owner.apiGet("place", params, places => { this.fillPlacesSearchBoxHtml(places) });
+		Views.ViewBase.currentView.apiGet("place", params, places => { this.fillPlacesSearchBoxHtml(places) });
 	}
 
 	private fillPlacesSearchBoxHtml(places) {
@@ -132,8 +130,7 @@ class PlaceSearchBox {
 	}
 }
 
-class PlaceSearchConfig {
-	owner: Views.ViewBase;
+class PlaceSearchConfig {	
 	elementId: string;
 	providers: string;
 	minCharsToSearch: number;

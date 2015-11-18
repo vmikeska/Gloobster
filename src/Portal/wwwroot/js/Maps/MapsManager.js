@@ -1,8 +1,7 @@
 var MapsManager = (function () {
-    function MapsManager(owner) {
+    function MapsManager() {
         var _this = this;
-        this.owner = owner;
-        this.mapsDataLoader = new MapsDataLoader(owner);
+        this.mapsDataLoader = new MapsDataLoader();
         this.mapsDataLoader.dataLoadedCallback = function () { _this.redrawDataCallback(); };
         this.mapsOperations = new MapsOperations();
     }
@@ -64,7 +63,7 @@ var MapsManager = (function () {
     MapsManager.prototype.onMapsLoaded = function (savedPosition, savedZoom) {
         this.mapsOperations.setBaseMapsOperations(this.mapsDriver);
         this.mapsDriver.setMapObj(this.currentMaps.mapObj);
-        if (!this.owner.loginManager.isAlreadyLogged()) {
+        if (!Views.ViewBase.currentView.loginManager.isAlreadyLogged()) {
             return;
         }
         this.displayData(savedPosition, savedZoom);

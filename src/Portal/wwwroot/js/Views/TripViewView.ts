@@ -15,7 +15,7 @@
 	 filesConfig.addAdder = true;
 	 filesConfig.templateId = "file-template";
 
-	 this.files = new Files(this, filesConfig);
+	 this.files = new Files(filesConfig);
 
 	 this.getTrip(id);
 
@@ -40,12 +40,12 @@
 
 	 this.files.setFiles(this.trip.files, this.trip.tripId);
 
-	 this.comments = new Comments(this);
+	 this.comments = new Comments();
 	 this.comments.comments = this.trip.comments;
 	 this.comments.users = this.trip.users;
 	 this.comments.displayComments();
 
-	 this.planner = new Planner(this, this.trip);	
+	 this.planner = new Planner(this.trip);	
 	}
 
 

@@ -18,7 +18,7 @@ var TripDetailView = (function (_super) {
         filesConfig.editable = true;
         filesConfig.addAdder = true;
         filesConfig.isMasterFile = true;
-        this.files = new Files(this, filesConfig);
+        this.files = new Files(filesConfig);
         this.setFilesCustomConfig(id);
         this.getTrip(id);
         var ndc = new DelayedCallback("nameInput");
@@ -56,12 +56,11 @@ var TripDetailView = (function (_super) {
         this.trip = request;
         this.files.setFiles(this.trip.files, this.trip.tripId);
         this.registerPhotoUpload();
-        this.planner = new Planner(this, this.trip);
+        this.planner = new Planner(this.trip);
     };
     TripDetailView.prototype.registerPhotoUpload = function () {
         var config = new FileUploadConfig();
         config.inputId = "photoInput";
-        config.owner = this;
         config.endpoint = "TripPhoto";
         this.pictureUpload = new FileUpload(config);
         this.pictureUpload.customId = this.trip.tripId;

@@ -11,9 +11,7 @@ class FilesConfig {
 }
 
 class Files {
-	public static masterFiles: Files;
-  
-	public owner: Views.ViewBase;
+	public static masterFiles: Files;  
 	public tripId: string;
 
 	private template: any;
@@ -27,13 +25,12 @@ class Files {
   private $container: any;
   private $adder: any;
   
-	constructor(owner: Views.ViewBase, config: FilesConfig) {
+	constructor(config: FilesConfig) {
 
 		if (config.isMasterFile) {
 			Files.masterFiles = this;
 	 }
-
-		this.owner = owner;
+	 
 	 this.config = config;
 		this.$container = $("#" + config.containerId);
 	 
@@ -95,7 +92,7 @@ class Files {
 
 	private callDelete(fileId: string) {
 		var prms = [["fileId", fileId], ["tripId", this.tripId]];
-		this.owner.apiDelete("tripFile", prms, (files) => {
+		Views.ViewBase.currentView.apiDelete("tripFile", prms, (files) => {
 		  this.filterFiles(files);			
 		});
 	}
@@ -171,7 +168,6 @@ class Files {
  private registerFileUpload() {
 		var config = new FileUploadConfig();
 		config.inputId = this.config.inputId;
-		config.owner = this.owner;
 		config.endpoint = "TripFile";		
 	
 		this.fileUpload = new FileUpload(config);

@@ -24,7 +24,6 @@ var FileUpload = (function () {
         this.firstSent = false;
         this.customConfig = {};
         this.config = config;
-        this.owner = config.owner;
         this.$input = $("#" + this.config.inputId);
         this.$input.change(function (e) {
             _this.files = e.target.files;
@@ -109,7 +108,7 @@ var FileUpload = (function () {
             customId: this.customId,
             type: this.currentFile.type
         });
-        this.owner.apiPost(this.config.endpoint, dataToSend, function (finalResponse) {
+        Views.ViewBase.currentView.apiPost(this.config.endpoint, dataToSend, function (finalResponse) {
             _this.finalResponse = finalResponse;
             _this.onSuccessBlobUpload();
         });

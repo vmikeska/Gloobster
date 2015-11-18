@@ -16,10 +16,9 @@ var PinBoardView = (function (_super) {
     });
     PinBoardView.prototype.initialize = function () {
         var _this = this;
-        this.mapsManager = new MapsManager(this);
+        this.mapsManager = new MapsManager();
         this.mapsManager.switchToView(Maps.ViewType.D2);
         var searchConfig = new PlaceSearchConfig();
-        searchConfig.owner = this;
         searchConfig.providers = "0,1,2,3";
         searchConfig.elementId = "cities";
         searchConfig.minCharsToSearch = 1;

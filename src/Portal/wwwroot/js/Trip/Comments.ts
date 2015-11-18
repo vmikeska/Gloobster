@@ -1,15 +1,12 @@
 ﻿
 class Comments {
-
- public owner: Views.ViewBase;	
-
+ 
  public comments: any[];
  public users: any[];
 
  private template;
 
- constructor(owner: Views.ViewBase) {
-	 this.owner = owner;
+ constructor() {	 
 	 var source = $("#comment-template").html();
 	 this.template = Handlebars.compile(source);
  }
@@ -31,7 +28,7 @@ class Comments {
 		var text = $input.val();
 
 		var request = { text: text, tripId: tripId };
-		this.owner.apiPost("tripComment", request, response => {
+		Views.ViewBase.currentView.apiPost("tripComment", request, response => {
 			this.comments = response.comments;
 			this.users = response.users;
 			this.displayComments();

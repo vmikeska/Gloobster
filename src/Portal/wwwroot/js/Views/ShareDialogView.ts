@@ -1,16 +1,12 @@
 ﻿class ShareDialogView {
 	
- private userSearchBox: UserSearchBox;
- //private selectedUsers = [];
+ private userSearchBox: UserSearchBox; 
  private template: any;
  private $htmlContainer: any;
- private owner: TripDetailView;
-
- constructor(currentView) {
-	 this.owner = currentView;
-
-	 var config = new UserSearchConfig();
-		config.owner = currentView;
+ 
+ constructor() {
+	 
+	 var config = new UserSearchConfig();		
 		config.elementId = "friends";
 		config.clearAfterSearch = true;
 		config.endpoint = "FriendsSearch";
@@ -24,7 +20,6 @@
 		this.template = Handlebars.compile(source);
 	
 		$("#share").click(() => this.share());
-
  }
 
 	private share() {
@@ -42,13 +37,15 @@
 			}
 		});
 
+
+		
 		var data = {
 			caption: $("#caption").val(),
-			tripId: this.owner.trip.tripId,
+			tripId: Views.ViewBase.currentView["trip"].tripId,
 			users: users
 		}
 
-	 this.owner.apiPost("tripShare", data, response => {
+		Views.ViewBase.currentView.apiPost("tripShare", data, response => {
 		 
 	 });
 	}
@@ -113,5 +110,6 @@
  private removeUser(friendId) {	
 	 $("#" + friendId).remove();
  }
+
 
 }

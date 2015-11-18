@@ -4,12 +4,11 @@ var FilesConfig = (function () {
     return FilesConfig;
 })();
 var Files = (function () {
-    function Files(owner, config) {
+    function Files(config) {
         var _this = this;
         if (config.isMasterFile) {
             Files.masterFiles = this;
         }
-        this.owner = owner;
         this.config = config;
         this.$container = $("#" + config.containerId);
         var source = $("#" + config.templateId).html();
@@ -59,7 +58,7 @@ var Files = (function () {
     Files.prototype.callDelete = function (fileId) {
         var _this = this;
         var prms = [["fileId", fileId], ["tripId", this.tripId]];
-        this.owner.apiDelete("tripFile", prms, function (files) {
+        Views.ViewBase.currentView.apiDelete("tripFile", prms, function (files) {
             _this.filterFiles(files);
         });
     };
@@ -127,7 +126,6 @@ var Files = (function () {
         var _this = this;
         var config = new FileUploadConfig();
         config.inputId = this.config.inputId;
-        config.owner = this.owner;
         config.endpoint = "TripFile";
         this.fileUpload = new FileUpload(config);
         this.fileUpload.onProgressChanged = function (percent) {

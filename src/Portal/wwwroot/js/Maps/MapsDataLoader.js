@@ -1,11 +1,10 @@
 var MapsDataLoader = (function () {
-    function MapsDataLoader(owner) {
-        this.owner = owner;
+    function MapsDataLoader() {
     }
     MapsDataLoader.prototype.getPluginData = function (pluginType, displayEntity) {
         var _this = this;
         var request = [["pluginType", pluginType.toString()], ["displayEntity", displayEntity.toString()]];
-        this.owner.apiGet("PinBoardStats", request, function (response) {
+        Views.ViewBase.currentView.apiGet("PinBoardStats", request, function (response) {
             _this.places = new Maps.Places();
             _this.viewPlaces = new Maps.PlacesDisplay();
             _this.places.places = response.VisitedPlaces;

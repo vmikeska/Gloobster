@@ -4,7 +4,6 @@ var PlaceSearchBox = (function () {
         this.config = config;
         this.$root = $("#" + config.elementId);
         this.$input = this.$root.find("input");
-        this.owner = config.owner;
         var source = $("#placeItem-template").html();
         this.template = Handlebars.compile(source);
         this.$input.focus(function (e) {
@@ -33,7 +32,7 @@ var PlaceSearchBox = (function () {
             params.push(["lat", this.coordinates.lat]);
             params.push(["lng", this.coordinates.lng]);
         }
-        this.owner.apiGet("place", params, function (places) { _this.fillPlacesSearchBoxHtml(places); });
+        Views.ViewBase.currentView.apiGet("place", params, function (places) { _this.fillPlacesSearchBoxHtml(places); });
     };
     PlaceSearchBox.prototype.fillPlacesSearchBoxHtml = function (places) {
         var _this = this;

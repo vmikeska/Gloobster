@@ -1,8 +1,7 @@
 ﻿
 class FileUploadConfig {
 	public bytesPerRequest = 102400;
-	public inputId: string;
-  public owner: Views.ViewBase;
+	public inputId: string;  
 	public endpoint: string;	
 }
 
@@ -31,15 +30,12 @@ class FileUpload {
 
 	public onProgressChanged: Function;
 	public onUploadFinished: Function;
-
-	private owner: Views.ViewBase;
+ 
 	private config: FileUploadConfig;
 	private $input: any;
 
 	constructor(config: FileUploadConfig) {
 		this.config = config;
-		this.owner = config.owner;
-
 		this.$input = $("#" + this.config.inputId);
 
 		this.$input.change(e => {
@@ -141,7 +137,7 @@ class FileUpload {
 			type: this.currentFile.type
 		});
 	 
-		this.owner.apiPost(this.config.endpoint, dataToSend, (finalResponse) => {
+		Views.ViewBase.currentView.apiPost(this.config.endpoint, dataToSend, (finalResponse) => {
 			this.finalResponse = finalResponse;
 			this.onSuccessBlobUpload();
 		});

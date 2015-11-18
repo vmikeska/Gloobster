@@ -20,8 +20,7 @@
 
 	private registerAvatarFileUpload() {
 		var avatarUploadConfig = new FileUploadConfig();
-		avatarUploadConfig.inputId = "avatarFile";
-		avatarUploadConfig.owner = this;
+		avatarUploadConfig.inputId = "avatarFile";		
 		avatarUploadConfig.endpoint = "UploadAvatar";
 
 		var fileUpload = new FileUpload(avatarUploadConfig);
@@ -69,12 +68,12 @@
 	}
 
 	private getLocationBaseConfig() {
-		var c = new PlaceSearchConfig();
-		c.owner = this;
+		var c = new PlaceSearchConfig();		
 		c.providers = "2";
 		c.minCharsToSearch = 2;
 		c.clearAfterSearch = false;
 		return c;
 	}
+
 
 }
