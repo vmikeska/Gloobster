@@ -307,6 +307,7 @@ var TravelDialog = (function () {
         this.dialogManager.getDialogData(TripEntityType.Travel, function (response) { return _this.create(response); });
     };
     TravelDialog.prototype.create = function (data) {
+        this.data = data;
         var $rowCont = $("#" + data.id).parent();
         this.buildTemplate($rowCont);
         this.initTravelType(data.type);
@@ -325,18 +326,16 @@ var TravelDialog = (function () {
         var $hrs = $("#" + hrsElementId);
         var $min = $("#" + minElementId);
         if (curDateStr) {
-            var date = new Date(curDateStr);
-            $hrs.val(date.getUTCHours());
-            $min.val(date.getUTCMinutes());
+            var utcTime = Utils.dateStringToUtcDate(curDateStr);
+            $hrs.val(utcTime.getUTCHours());
+            $min.val(utcTime.getUTCMinutes());
         }
         var dHrs = new DelayedCallback($hrs);
-        dHrs.callback = function () {
-            _this.onTimeChanged($hrs, $min, propName);
-        };
+        dHrs.callback = function () { _this.onTimeChanged($hrs, $min, propName); };
+        $hrs.change(function () { _this.onTimeChanged($hrs, $min, propName); });
         var mHrs = new DelayedCallback($min);
-        mHrs.callback = function () {
-            _this.onTimeChanged($hrs, $min, propName);
-        };
+        mHrs.callback = function () { _this.onTimeChanged($hrs, $min, propName); };
+        $min.change(function () { _this.onTimeChanged($hrs, $min, propName); });
     };
     TravelDialog.prototype.onTimeChanged = function ($hrs, $min, propName) {
         var hrs = $hrs.val();
@@ -356,22 +355,30 @@ var TravelDialog = (function () {
         var $datePicker = $("#" + elementId);
         $datePicker.datepicker(dpConfig);
         if (curDateStr) {
-            var date = new Date(curDateStr);
-            $datePicker.datepicker("setDate", date);
+            var utcTime = Utils.dateStringToUtcDate(curDateStr);
+            $datePicker.datepicker("setDate", utcTime);
         }
         $datePicker.change(function (e) {
             var $this = $(e.target);
             var date = $this.datepicker("getDate");
             var datePrms = _this.getDatePrms(date);
             _this.updateDateTime(datePrms, null, propertyName);
+            var travel = _this.dialogManager.planner.placesMgr.getTravelById(_this.data.id);
+            var placeId = elementId === "arrivingDate" ? travel.to.id : travel.from.id;
+            var utcDate = Utils.dateToUtcDate(date);
+            _this.dialogManager.planner.updateRibbonDate(placeId, elementId, utcDate);
         });
     };
     TravelDialog.prototype.getDatePrms = function (date) {
         var datePrms = {
-            year: date.getUTCFullYear() + 1900,
+            year: date.getUTCFullYear(),
             month: date.getUTCMonth() + 1,
             day: date.getUTCDate() + 1
         };
+        if (datePrms.day === 32) {
+            datePrms.day = 1;
+            datePrms.month = datePrms.month + 1;
+        }
         return datePrms;
     };
     TravelDialog.prototype.updateDateTime = function (date, time, propName) {
@@ -441,12 +448,30 @@ var TravelDialog = (function () {
     };
     return TravelDialog;
 })();
+var Utils = (function () {
+    function Utils() {
+    }
+    Utils.dateStringToUtcDate = function (dateStr) {
+        var dateLocal = new Date(Date.parse(dateStr));
+        var userOffset = dateLocal.getTimezoneOffset() * 60000;
+        var utcTime = new Date(dateLocal.getTime() + userOffset);
+        return utcTime;
+    };
+    Utils.dateToUtcDate = function (dateLocal) {
+        var userOffset = dateLocal.getTimezoneOffset() * 60000;
+        var localUtcTime = new Date(dateLocal.getTime() - userOffset);
+        var utcDate = new Date(Date.UTC(localUtcTime.getUTCFullYear(), localUtcTime.getUTCMonth(), localUtcTime.getUTCDate()));
+        return utcDate;
+    };
+    return Utils;
+})();
 var Planner = (function () {
     function Planner(owner, trip) {
         this.$currentContainer = $("#plannerCont1");
         this.lastRowNo = 1;
         this.placesPerRow = 4;
         this.contBaseName = "plannerCont";
+        this.inverseColor = false;
         this.owner = owner;
         this.dialogManager = new DialogManager(owner, this);
         this.placeDialog = new PlaceDialog(this.dialogManager);
@@ -463,23 +488,13 @@ var Planner = (function () {
         var placeCount = 0;
         orderedPlaces.forEach(function (place) {
             placeCount++;
-            var name = "Empty";
-            if (place.place) {
-                name = place.place.selectedName;
-            }
-            var placeContext = {
-                id: place.id,
-                isActive: false,
-                name: name,
-                arrivalDateLong: "1.1.2000",
-                rowNo: _this.lastRowNo
-            };
             _this.manageRows(placeCount);
-            _this.addPlace(placeContext);
+            _this.addPlace(place, _this.inverseColor);
             if (place.leaving) {
                 var travel = place.leaving;
-                _this.addTravel(travel.id, travel.type);
+                _this.addTravel(travel, _this.inverseColor);
             }
+            _this.inverseColor = !_this.inverseColor;
         });
         this.addAdder();
     };
@@ -528,32 +543,23 @@ var Planner = (function () {
         var lastPlace = this.placesMgr.getLastPlace();
         var data = { selectorId: lastPlace.id, position: NewPlacePosition.ToRight, tripId: this.trip.tripId };
         this.owner.apiPost("tripPlanner", data, function (response) {
-            var t = new Travel();
-            _this.placesMgr.travels.push(t);
-            t.id = response.travel.id;
-            t.type = response.travel.type;
+            var t = _this.placesMgr.mapTravel(response.travel, lastPlace, null);
             lastPlace.leaving = t;
-            t.from = lastPlace;
-            var p = new Place();
-            _this.placesMgr.places.push(p);
-            p.id = response.place.id;
-            p.arriving = t;
-            p.leaving = null;
-            p.orderNo = response.place.orderNo;
+            _this.placesMgr.travels.push(t);
+            var p = _this.placesMgr.mapPlace(response.place, t, null);
             t.to = p;
+            _this.placesMgr.places.push(p);
             _this.manageRows(_this.placesMgr.places.length);
-            _this.addTravel(t.id, t.type);
-            var placeContext = {
-                id: p.id,
-                isActive: true,
-                name: "Empty",
-                arrivalDateLong: "1.1.2000",
-                rowNo: _this.lastRowNo
-            };
-            _this.addPlace(placeContext);
+            //$("#" + lastPlace.id).find(".leaving").text(this.formatShortDateTime(t.leavingDateTime));
+            _this.updateRibbonDate(lastPlace.id, "leavingDate", t.leavingDateTime);
+            _this.addTravel(t, !_this.inverseColor);
+            _this.addPlace(p, _this.inverseColor);
+            _this.inverseColor = !_this.inverseColor;
             _this.dialogManager.selectedId = response.place.id;
-            //this.placeDialog.display();
         });
+    };
+    Planner.prototype.updateRibbonDate = function (placeId, livingArriving, date) {
+        $("#" + placeId).find("." + livingArriving).text(this.formatShortDateTime(date));
     };
     Planner.prototype.getTravelIcon = function (travelType) {
         switch (travelType) {
@@ -575,12 +581,19 @@ var Planner = (function () {
                 return "";
         }
     };
-    Planner.prototype.addTravel = function (id, travelType) {
+    Planner.prototype.addTravel = function (travel, inverseColor) {
         var _this = this;
         var context = {
-            id: id,
-            icon: this.getTravelIcon(travelType)
+            id: travel.id,
+            icon: this.getTravelIcon(travel.type),
+            colorClass: ""
         };
+        if (inverseColor) {
+            context.colorClass = "";
+        }
+        else {
+            context.colorClass = "green";
+        }
         var html = this.travelTemplate(context);
         var $html = $(html);
         $html.find(".transport").click("*", function (e) {
@@ -604,8 +617,41 @@ var Planner = (function () {
         this.dialogManager.selectedId = $elem.parent().attr("id");
         this.travelDialog.display();
     };
-    Planner.prototype.addPlace = function (context) {
+    Planner.prototype.addPlace = function (place, inverseColor) {
         var self = this;
+        var name = "Empty";
+        if (place.place) {
+            name = place.place.selectedName;
+        }
+        var context = {
+            id: place.id,
+            isActive: false,
+            name: name,
+            arrivingDate: "",
+            leavingDate: "",
+            arrivalDateLong: "",
+            rowNo: this.lastRowNo,
+            isFirstDay: (place.arriving == null),
+            colorClassArriving: "",
+            colorClassLeaving: ""
+        };
+        if (place.arriving != null) {
+            var da = place.arriving.arrivingDateTime;
+            context.arrivingDate = this.formatShortDateTime(da);
+            context.arrivalDateLong = this.formatShortDateTime(da) + ("" + da.getUTCFullYear());
+        }
+        if (place.leaving != null) {
+            var dl = place.leaving.leavingDateTime;
+            context.leavingDate = this.formatShortDateTime(dl);
+        }
+        if (inverseColor) {
+            context.colorClassArriving = "green";
+            context.colorClassLeaving = "";
+        }
+        else {
+            context.colorClassArriving = "";
+            context.colorClassLeaving = "green";
+        }
         var html = this.placeTemplate(context);
         var $html = $(html);
         $html.find(".destination").click("*", function (e) {
@@ -617,6 +663,9 @@ var Planner = (function () {
         });
         this.appendToTimeline($html);
     };
+    Planner.prototype.formatShortDateTime = function (dt) {
+        return dt.getUTCDate() + "." + (dt.getUTCMonth() + 1) + ".";
+    };
     return Planner;
 })();
 var PlacesManager = (function () {
@@ -626,22 +675,38 @@ var PlacesManager = (function () {
         this.owner = owner;
         this.tripId = tripId;
     }
+    PlacesManager.prototype.mapTravel = function (resp, from, to) {
+        var t = new Travel();
+        t.id = resp.id;
+        t.type = resp.type;
+        t.arrivingDateTime = Utils.dateStringToUtcDate(resp.arrivingDateTime);
+        t.leavingDateTime = Utils.dateStringToUtcDate(resp.leavingDateTime);
+        t.from = from;
+        t.to = to;
+        return t;
+    };
+    PlacesManager.prototype.mapPlace = function (resp, arriving, leaving) {
+        var p = new Place();
+        p.id = resp.id;
+        p.orderNo = resp.orderNo;
+        p.place = resp.place;
+        p.arriving = arriving;
+        p.leaving = leaving;
+        return p;
+    };
     PlacesManager.prototype.setData = function (travels, places) {
         var _this = this;
         places.forEach(function (place) {
-            var placeObj = new Place();
-            placeObj.id = place.id;
-            placeObj.orderNo = place.orderNo;
-            placeObj.place = place.place;
+            var p = _this.mapPlace(place, null, null);
             if (place.arrivingId) {
-                placeObj.arriving = _this.getOrCreateTravelById(place.arrivingId, travels);
-                placeObj.arriving.to = placeObj;
+                p.arriving = _this.getOrCreateTravelById(place.arrivingId, travels);
+                p.arriving.to = p;
             }
             if (place.leavingId) {
-                placeObj.leaving = _this.getOrCreateTravelById(place.leavingId, travels);
-                placeObj.leaving.from = placeObj;
+                p.leaving = _this.getOrCreateTravelById(place.leavingId, travels);
+                p.leaving.from = p;
             }
-            _this.places.push(placeObj);
+            _this.places.push(p);
         });
     };
     PlacesManager.prototype.getOrCreateTravelById = function (travelId, travelsInput) {
@@ -654,11 +719,9 @@ var PlacesManager = (function () {
         var newTravel = _.find(travelsInput, function (travel) {
             return travel.id === travelId;
         });
-        var newTravelObj = new Travel();
-        newTravelObj.id = newTravel.id;
-        newTravelObj.type = newTravel.type;
+        var newTravelObj = this.mapTravel(newTravel, null, null);
         this.travels.push(newTravelObj);
-        return newTravel;
+        return newTravelObj;
     };
     PlacesManager.prototype.getTravelById = function (id) {
         return _.find(this.travels, function (travel) { return travel.id === id; });

@@ -114,6 +114,48 @@ namespace Gloobster.Mappers
 			return r;
 		}
 
+		public static TripPlaceResponse ToResponse(this TripPlaceDO d)
+		{
+			var r = new TripPlaceResponse
+			{
+				id = d.Id,
+				description = d.Description,
+				arrivingId = d.ArrivingId,
+				leavingId = d.LeavingId,
+				orderNo = d.OrderNo,
+				addressText = d.AddressText,				
+			};
+
+			if (d.Place != null)
+			{
+				r.place = d.Place.ToResponse();
+			}
+
+			if (d.Address != null)
+			{
+				r.address = d.Address.ToResponse();
+			}
+
+			if (d.WantVisit != null)
+			{
+				r.wantVisit = d.WantVisit.Select(w => w.ToResponse()).ToList();
+			}
+
+			return r;
+		}
+
+		public static PlaceIdResponse ToResponse(this PlaceIdDO d)
+		{
+			var r = new PlaceIdResponse
+			{
+				id = d.Id,
+				selectedName = d.SelectedName,
+				sourceId = d.SourceId,
+				sourceType = d.SourceType				
+			};
+			return r;
+		}
+
 		public static PlaceIdResponse ToResponse(this PlaceIdSE e)
 		{
 			var r = new PlaceIdResponse
@@ -122,6 +164,18 @@ namespace Gloobster.Mappers
 				selectedName = e.SelectedName,
 				sourceId = e.SourceId,
 				sourceType = e.SourceType				
+			};
+			return r;
+		}
+
+		public static PlaceResponse ToResponse(this PlaceDO d)
+		{
+			var r = new PlaceResponse
+			{
+				selectedName = d.SelectedName,
+				sourceId = d.SourceId,
+				sourceType = d.SourceType,
+				coordinates = d.Coordinates
 			};
 			return r;
 		}
@@ -149,6 +203,17 @@ namespace Gloobster.Mappers
 			return r;
 		}
 
+		public static FlightResponse ToResponse(this FlightDO d)
+		{
+			var r = new FlightResponse
+			{
+				id = d.AirportId,
+				selectedName = d.SelectedName
+			};
+
+			return r;
+		}
+
 		public static TripTravelResponse ToResponse(this TripTravelSE e)
 		{
 			var r = new TripTravelResponse
@@ -159,7 +224,7 @@ namespace Gloobster.Mappers
 				leavingDateTime = e.LeavingDateTime,
 				arrivingDateTime = e.ArrivingDateTime
 			};
-
+			
 			if (e.FlightFrom != null)
 			{
 				r.flightFrom = e.FlightFrom.ToResponse();				
@@ -170,6 +235,32 @@ namespace Gloobster.Mappers
 				r.flightTo = e.FlightTo.ToResponse();
 			}
 			
+			return r;
+		}
+
+		public static TripTravelResponse ToResponse(this TripTravelDO d)
+		{
+			var r = new TripTravelResponse
+			{
+				id = d.Id,
+				type = d.Type,
+				description = d.Description,
+				leavingDateTime = d.LeavingDateTime,
+				arrivingDateTime = d.ArrivingDateTime,				
+			};
+
+
+
+			if (d.FlightFrom != null)
+			{
+				r.flightFrom = d.FlightFrom.ToResponse();
+			}
+
+			if (d.FlightTo != null)
+			{
+				r.flightTo = d.FlightTo.ToResponse();
+			}
+
 			return r;
 		}
 
@@ -197,43 +288,96 @@ namespace Gloobster.Mappers
 			return request;
 		}
 
-		//public static FriendsDO ToDO(this FriendsEntity entity)
-		//{
-		//	if (entity == null)
-		//	{
-		//		return null;
-		//	}
+		public static PlaceDO ToDO(this PlaceSE e)
+		{
+			var d = new PlaceDO
+			{
+				SourceType = e.SourceType,
+				SourceId = e.SourceId,
+				Coordinates = e.Coordinates,
+				SelectedName = e.SelectedName
+			};
 
-		//	var dObj = new FriendsDO
-		//	{
-		//		id = entity.id.ToString(),
-		//		UserId = entity.PortalUser_id.ToString(),
-		//		Friends = entity.Friends.Select(f => f.ToString()).ToList(),
-		//		AwaitingConfirmation = entity.AwaitingConfirmation.Select(f => f.ToString()).ToList(),
-		//		Proposed = entity.Proposed.Select(f => f.ToString()).ToList(),
-		//		Blocked = entity.Blocked.Select(f => f.ToString()).ToList()
-		//	};
+			return d;
+		}
 
-		//	return dObj;
-		//}
+		public static PlaceIdDO ToDO(this PlaceIdSE e)
+		{
+			var d = new PlaceIdDO
+			{
+				Id = e.id,
+				SourceType = e.SourceType,
+				SourceId = e.SourceId,				
+				SelectedName = e.SelectedName				
+			};
 
-		//public static FriendsEntity ToEntity(this FriendsDO dObj)
-		//{
-		//	if (dObj == null)
-		//	{
-		//		return null;
-		//	}
+			return d;
+		}
 
-		//	var entity = new FriendsEntity
-		//	{
-		//		PortalUser_id = new ObjectId(dObj.UserId),
-		//		Friends = dObj.Friends.Select(f => new ObjectId(f)).ToList(),
-		//		AwaitingConfirmation = dObj.AwaitingConfirmation.Select(f => new ObjectId(f)).ToList(),
-		//		Proposed = dObj.Proposed.Select(f => new ObjectId(f)).ToList(),
-		//		Blocked = dObj.Blocked.Select(f => new ObjectId(f)).ToList()
-		//	};
+		public static FlightDO ToDO(this FlightSE e)
+		{
+			var d = new FlightDO
+			{
+				SelectedName = e.SelectedName,
+				AirportId = e.Airport_id.ToString()
+			};
 
-		//	return entity;
-		//}
+			return d;
+		}
+
+		public static TripTravelDO ToDO(this TripTravelSE e)
+		{
+			var d = new TripTravelDO
+			{
+				Id = e.Id,
+				LeavingDateTime = e.LeavingDateTime,
+				ArrivingDateTime = e.ArrivingDateTime,
+				Description = e.Description,				
+				Type = e.Type
+			};
+
+			if (e.FlightTo != null)
+			{
+				d.FlightTo = e.FlightTo.ToDO();
+			}
+
+			if (e.FlightFrom != null)
+			{
+				d.FlightFrom = e.FlightFrom.ToDO();
+			}
+
+			return d;
+		}
+
+		public static TripPlaceDO ToDO(this TripPlaceSE e)
+		{
+			var d = new TripPlaceDO
+			{
+				AddressText = e.AddressText,
+				ArrivingId = e.ArrivingId,
+				Id = e.Id,
+				Description = e.Description,
+				LeavingId = e.LeavingId,
+				OrderNo = e.OrderNo
+			};
+
+			if (e.Place != null)
+			{
+				d.Place = e.Place.ToDO();
+			}
+
+			if (e.WantVisit != null)
+			{
+				d.WantVisit = e.WantVisit.Select(w => w.ToDO()).ToList();
+			}
+
+			if (e.Address != null)
+			{
+				d.Address = e.Address.ToDO();
+			}
+
+			return d;
+		}
+
 	}
 }

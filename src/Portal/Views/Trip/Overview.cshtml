@@ -6,6 +6,7 @@
 <script type="text/javascript" src="@Url.Content("~/js/Views/TripViewView.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Trip/Comments.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Trip/Files.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Trip/Planner.js")"></script>
 
 
 <section class="adventure-background line margin padding">
@@ -23,104 +24,7 @@
 		</div>
 		<p class="h4">@Model.Description</p>
 		<h3>Day by Day Plan</h3>
-
-		<div class="daybyday table margin">
-			<div class="cell">
-				<div class="destination">Prague</div>
-				<div class="timeline">22.6.</div>
-				<div class="timeline green">V Praze je blaze ...</div>
-			</div>
-			<div class="cell">
-				<div class="transport">
-					<span class="icon-plane"></span>
-				</div>
-				<div class="timeline green falldown"></div>
-			</div>
-			<div class="cell">
-				<div class="destination active">
-					Frankfurt
-					<span class="tab">arrival Mon 23.6.</span>
-				</div>
-				<div class="timeline green"></div>
-				<div class="timeline">4.5.</div>
-			</div>
-			<div class="cell">
-				<div class="transport active">
-					<span class="icon-train"></span>
-					<span class="tab"></span>
-				</div>
-				<div class="timeline"></div>
-			</div>
-			<div class="cell">
-				<div class="destination">Vienna</div>
-				<div class="timeline"></div>
-				<div class="timeline green">1.1.</div>
-			</div>
-			<div class="cell">
-				<div class="transport">
-					<span class="icon-boat"></span>
-				</div>
-				<div class="timeline green">22.6.</div>
-			</div>
-			<div class="cell">
-				<div class="destination">New York</div>
-				<div class="timeline green"></div>
-				<div class="timeline">25.10.</div>
-			</div>
-			<div class="cell">
-				<div class="transport">
-					<span class="icon-bike"></span>
-				</div>
-				<div class="timeline"></div>
-			</div>
-		</div>
-
-		@*@Html.Partial("PlaceDetailView")*@
-
-		<div class="daybyday table margin">
-			<div class="cell">
-				<div class="destination">Brno</div>
-				<div class="timeline"></div>
-				<div class="timeline green">25.10.</div>
-			</div>
-			<div class="cell">
-				<div class="transport">
-					<span class="icon-car"></span>
-				</div>
-				<div class="timeline green"></div>
-			</div>
-			<div class="cell">
-				<div class="destination active2">
-					Frankfurt
-					<span class="tab">arrival Mon 23.6.</span>
-				</div>
-				<div class="timeline green">22.6.</div>
-			</div>
-			<div class="cell">
-				<div class="transport">
-					<span class="icon-plane"></span>
-				</div>
-				<div class="timeline green"></div>
-			</div>
-			<div class="cell">
-				<div class="destination orange">Budapest</div>
-				<div class="timeline green"></div>
-				<div class="timeline">22.6.</div>
-			</div>
-			<div class="cell">
-				<div class="transport orange">
-					<span class="icon-walk"></span>
-				</div>
-				<div class="timeline"></div>
-			</div>
-			<div class="cell">
-				<div class="destination orange">Graz</div>
-				<div class="timeline"></div>
-				<div class="timeline green">30.7.</div>
-			</div>
-			<div class="cell">
-				<a class="create" href="#"></a>
-			</div>
+		<div id="plannerCont1" class="daybyday table margin">
 		</div>
 
 		<div class="adventure-buttons">
@@ -152,6 +56,7 @@
 }
 
 @Html.Partial("Templates")
+@Html.Partial("PlannerTemplates")
 @Html.Partial("ShareDialog")
 
 <script>

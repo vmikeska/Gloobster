@@ -10,6 +10,7 @@ var TripDetailView = (function (_super) {
         _super.apply(this, arguments);
     }
     TripDetailView.prototype.initialize = function (id) {
+        var _this = this;
         var filesConfig = new FilesConfig();
         filesConfig.containerId = "filesContainer";
         filesConfig.inputId = "fileInput";
@@ -18,9 +19,28 @@ var TripDetailView = (function (_super) {
         filesConfig.addAdder = true;
         filesConfig.isMasterFile = true;
         this.files = new Files(this, filesConfig);
-        //this.planner.masterFiles = this.files;
         this.setFilesCustomConfig(id);
         this.getTrip(id);
+        var ndc = new DelayedCallback("nameInput");
+        ndc.callback = function (name) {
+            var data = { propertyName: "Name", values: { id: _this.trip.tripId, name: name } };
+            _this.apiPut("tripProperty", data, function () { });
+        };
+        var ddc = new DelayedCallback("description");
+        ddc.callback = function (description) {
+            var data = { propertyName: "Description", values: { id: _this.trip.tripId, description: description } };
+            _this.apiPut("tripProperty", data, function () { });
+        };
+        var ntdc = new DelayedCallback("notes");
+        ntdc.callback = function (notes) {
+            var data = { propertyName: "Notes", values: { id: _this.trip.tripId, notes: notes } };
+            _this.apiPut("tripProperty", data, function () { });
+        };
+        $("#public").change(function (e) {
+            var isPublic = $(e.target).prop("checked");
+            var data = { propertyName: "NotesPublic", values: { id: _this.trip.tripId, isPublic: isPublic } };
+            _this.apiPut("tripProperty", data, function () { });
+        });
     };
     TripDetailView.prototype.setFilesCustomConfig = function (tripId) {
         var customData = new TripFileCustom();

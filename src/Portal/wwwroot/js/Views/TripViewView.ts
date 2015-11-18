@@ -3,6 +3,7 @@
 	comments: Comments;
 	files: Files;
 	shareDialogView: ShareDialogView;
+	planner: Planner;
 
 	initialize(id: string) {
 	 var self = this;
@@ -42,9 +43,9 @@
 	 this.comments = new Comments(this);
 	 this.comments.comments = this.trip.comments;
 	 this.comments.users = this.trip.users;
-
 	 this.comments.displayComments();
-	 //this.registerPhotoUpload();
+
+	 this.planner = new Planner(this, this.trip);	
 	}
 
 

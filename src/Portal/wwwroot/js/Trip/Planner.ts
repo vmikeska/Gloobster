@@ -386,6 +386,7 @@ class TravelDialog {
 	public dialogManager: DialogManager;
 
 	private files: Files;
+  private data: any;
 	constructor(dialogManager: DialogManager) {
 		this.dialogManager = dialogManager;
 	}
@@ -397,7 +398,8 @@ class TravelDialog {
 	}
 
 	private create(data) {
-		var $rowCont = $("#" + data.id).parent();
+		this.data = data;
+	  var $rowCont = $("#" + data.id).parent();
 		this.buildTemplate($rowCont);
 
 		this.initTravelType(data.type);
@@ -422,21 +424,19 @@ class TravelDialog {
 		var $min = $("#" + minElementId);
 
 		if (curDateStr) {
-		 var date = new Date(curDateStr);		 
-			$hrs.val(date.getUTCHours());
-			$min.val(date.getUTCMinutes());
+		 var utcTime = Utils.dateStringToUtcDate(curDateStr);
+		 $hrs.val(utcTime.getUTCHours());
+		 $min.val(utcTime.getUTCMinutes());
 		}
 
 		var dHrs = new DelayedCallback($hrs);
-		dHrs.callback = () => {
-		 this.onTimeChanged($hrs, $min, propName);
-		}
-
+		dHrs.callback = () => { this.onTimeChanged($hrs, $min, propName); }
+		$hrs.change(() => { this.onTimeChanged($hrs, $min, propName); });
+		
 		var mHrs = new DelayedCallback($min);
-		mHrs.callback = () => {
-		 this.onTimeChanged($hrs, $min, propName);
-		}
-	 
+		mHrs.callback = () => { this.onTimeChanged($hrs, $min, propName); }
+		$min.change(() => { this.onTimeChanged($hrs, $min, propName); });
+
 	}
 
 	private onTimeChanged($hrs, $min, propName) {
@@ -460,8 +460,8 @@ class TravelDialog {
 		$datePicker.datepicker(dpConfig);
 
 		if (curDateStr) {
-			var date = new Date(curDateStr);
-			$datePicker.datepicker("setDate", date);
+			var utcTime = Utils.dateStringToUtcDate(curDateStr);			
+			$datePicker.datepicker("setDate", utcTime);
 		}
 
 		$datePicker.change((e) => {
@@ -469,32 +469,45 @@ class TravelDialog {
 			var date = $this.datepicker("getDate");
 			var datePrms = this.getDatePrms(date);
 			this.updateDateTime(datePrms, null, propertyName);
+
+			var travel = this.dialogManager.planner.placesMgr.getTravelById(this.data.id);
+			var placeId = elementId === "arrivingDate" ? travel.to.id : travel.from.id;
+		  
+			var utcDate = Utils.dateToUtcDate(date);
+			this.dialogManager.planner.updateRibbonDate(placeId, elementId, utcDate);			
 		});
 	}
+ 
 
 	private getDatePrms(date) {
 		var datePrms = {
-			year: date.getUTCFullYear() + 1900,
+			year: date.getUTCFullYear(),
 			month: date.getUTCMonth() + 1,
 			day: date.getUTCDate() + 1
+	 }
+
+		if (datePrms.day === 32) {
+			datePrms.day = 1;
+			datePrms.month = datePrms.month + 1;
 		}
+
 		return datePrms;
 	}
 
-  private updateDateTime(date, time, propName) {
-	  var fullDateTime = {};
-	 if (date) {
-		 fullDateTime = $.extend(fullDateTime, date);
+	private updateDateTime(date, time, propName) {
+		var fullDateTime = {};
+		if (date) {
+			fullDateTime = $.extend(fullDateTime, date);
 		}
-	 if (time) {
-		fullDateTime = $.extend(fullDateTime, time);
-	 }
+		if (time) {
+			fullDateTime = $.extend(fullDateTime, time);
+		}
 
-	  var data = this.dialogManager.getPropRequest(propName, fullDateTime);
-	  Views.ViewBase.currentView.apiPut("tripPlannerProperty", data, (response) => {
-		  
-	  });
-  }
+		var data = this.dialogManager.getPropRequest(propName, fullDateTime);
+		Views.ViewBase.currentView.apiPut("tripPlannerProperty", data, (response) => {
+			
+		});
+	}
 
 	private datePickerConfig() {
 	  return {
@@ -558,8 +571,23 @@ class TravelDialog {
 
 		$row.after($html);
 	}
+}
 
+class Utils {
+	public static dateStringToUtcDate(dateStr: string): Date {
+		var dateLocal = new Date(Date.parse(dateStr));
+		var userOffset = dateLocal.getTimezoneOffset() * 60000;
+		var utcTime = new Date(dateLocal.getTime() + userOffset);
+		return utcTime;				
+	}
 
+	public static dateToUtcDate(dateLocal: Date): Date {	 
+	 var userOffset = dateLocal.getTimezoneOffset() * 60000;
+	 var localUtcTime = new Date(dateLocal.getTime() - userOffset);
+
+	 var utcDate = new Date(Date.UTC(localUtcTime.getUTCFullYear(), localUtcTime.getUTCMonth(), localUtcTime.getUTCDate()));	 
+	 return utcDate;
+	}
 }
 
 
@@ -568,7 +596,7 @@ class Planner {
   public trip: any; 
 	public owner: Views.ViewBase;
 
-  private placesMgr: PlacesManager;
+  public placesMgr: PlacesManager;
 	private dialogManager: DialogManager;
   private placeDialog: PlaceDialog;
 	private travelDialog: TravelDialog;
@@ -583,6 +611,7 @@ class Planner {
   private placesPerRow = 4;
   private contBaseName = "plannerCont";
   
+  private inverseColor = false;
 
 	private $adder: any;
 	private $lastCell: any;
@@ -603,31 +632,20 @@ class Planner {
 
 	private redrawAll() {
 		var orderedPlaces = _.sortBy(this.placesMgr.places, "orderNo");
-
+	 
 		var placeCount = 0;
 		orderedPlaces.forEach((place) => {
 			placeCount++;
-
-			var name = "Empty";
-			if (place.place) {
-				name = place.place.selectedName;
-			}
-
-			var placeContext = {
-				id: place.id,
-				isActive: false,
-				name: name,
-				arrivalDateLong: "1.1.2000",
-				rowNo: this.lastRowNo
-			}
 		 
-		  this.manageRows(placeCount);
-			this.addPlace(placeContext);
+			this.manageRows(placeCount);
+			this.addPlace(place, this.inverseColor);
 
 			if (place.leaving) {
-				var travel = place.leaving;
-				this.addTravel(travel.id, travel.type);
+				var travel = place.leaving;			
+				this.addTravel(travel, this.inverseColor);
 			}
+
+			this.inverseColor = !this.inverseColor;
 
 		});
 
@@ -686,43 +704,32 @@ class Planner {
 		var lastPlace = this.placesMgr.getLastPlace();
 		var data = { selectorId: lastPlace.id, position: NewPlacePosition.ToRight, tripId: this.trip.tripId };
 
-		this.owner.apiPost("tripPlanner", data, (response) => {
-
-			var t = new Travel();
-			this.placesMgr.travels.push(t);
-			t.id = response.travel.id;
-			t.type = response.travel.type;
-
+		this.owner.apiPost("tripPlanner", data, (response) => {		 
+			var t = this.placesMgr.mapTravel(response.travel, lastPlace, null);
 			lastPlace.leaving = t;
-			t.from = lastPlace;
-
-			var p = new Place();
-			this.placesMgr.places.push(p);
-			p.id = response.place.id;
-			p.arriving = t;
-			p.leaving = null;
-			p.orderNo = response.place.orderNo;
-
+			this.placesMgr.travels.push(t);
+		 
+			var p = this.placesMgr.mapPlace(response.place, t, null);
 			t.to = p;
-		  
+			this.placesMgr.places.push(p);
+			 
 			this.manageRows(this.placesMgr.places.length);
 
-			this.addTravel(t.id, t.type);
+			//$("#" + lastPlace.id).find(".leaving").text(this.formatShortDateTime(t.leavingDateTime));
+			this.updateRibbonDate(lastPlace.id, "leavingDate", t.leavingDateTime);
 
-			var placeContext = {
-			  id: p.id,
-				isActive: true,
-				name: "Empty",
-				arrivalDateLong: "1.1.2000",
-				rowNo: this.lastRowNo
-			}
-			
-			this.addPlace(placeContext);
+			this.addTravel(t, !this.inverseColor);		 
+			this.addPlace(p, this.inverseColor);
 
-			this.dialogManager.selectedId = response.place.id;
-			//this.placeDialog.display();
+			this.inverseColor = !this.inverseColor;
+
+			this.dialogManager.selectedId = response.place.id;			
 		});	 
 	}
+
+  public updateRibbonDate(placeId: string, livingArriving: string, date: Date) {
+	  $("#" + placeId).find("." + livingArriving).text(this.formatShortDateTime(date));
+  }
 
 	private getTravelIcon(travelType) {
 		switch (travelType) {
@@ -745,12 +752,19 @@ class Planner {
 		}
 	}
  
-	public addTravel(id, travelType) {
+	public addTravel(travel: Travel, inverseColor: boolean) {
 
 		var context = {
-			id: id,
-			icon: this.getTravelIcon(travelType)
-		};
+			id: travel.id,
+			icon: this.getTravelIcon(travel.type),
+			colorClass: ""
+	 };
+
+		if (inverseColor) {
+		 context.colorClass = "";
+		} else {
+		 context.colorClass = "green";		 
+		}
 
 		var html = this.travelTemplate(context);
 		var $html = $(html);
@@ -778,23 +792,66 @@ class Planner {
 
 	 this.dialogManager.selectedId = $elem.parent().attr("id");
 	 this.travelDialog.display();
-	} 
+	}
 
-	public addPlace(context) {
+	public addPlace(place: Place, inverseColor: boolean) {
 		var self = this;
-	 var html = this.placeTemplate(context);
+
+		var name = "Empty";
+		if (place.place) {
+			name = place.place.selectedName;
+		}
+
+		var context = {
+			id: place.id,
+			isActive: false,
+			name: name,
+			arrivingDate: "",
+			leavingDate: "",
+			arrivalDateLong: "",
+			rowNo: this.lastRowNo,
+			isFirstDay: (place.arriving == null),
+			colorClassArriving: "",
+			colorClassLeaving: ""
+		}
+
+		if (place.arriving != null) {
+			var da = place.arriving.arrivingDateTime;
+			context.arrivingDate = this.formatShortDateTime(da);
+			context.arrivalDateLong = this.formatShortDateTime(da) + `${da.getUTCFullYear()}`;
+		}
+
+		if (place.leaving != null) {
+			var dl = place.leaving.leavingDateTime;
+			context.leavingDate = this.formatShortDateTime(dl);
+		}
+
+		if (inverseColor) {
+		 context.colorClassArriving = "green";
+		 context.colorClassLeaving = "";
+		} else {
+		 context.colorClassArriving = "";
+		 context.colorClassLeaving = "green";
+		}
+
+		var html = this.placeTemplate(context);
 		var $html = $(html);
-		
+
 		$html.find(".destination").click("*", (e) => {
-		 self.dialogManager.deactivate();
-		 var $elem = $(e.delegateTarget);			
+			self.dialogManager.deactivate();
+			var $elem = $(e.delegateTarget);
 			$elem.addClass("active");
 			self.dialogManager.selectedId = $elem.parent().attr("id");
 			self.placeDialog.display();
 		});
 
-		this.appendToTimeline($html); 
-	} 
+		this.appendToTimeline($html);
+	}
+  
+  private formatShortDateTime(dt) {
+	  return `${dt.getUTCDate() }.${dt.getUTCMonth() + 1}.`;
+  }
+  
 }
 
 class PlacesManager {
@@ -808,28 +865,44 @@ class PlacesManager {
 		this.tripId = tripId;
 	}
 
-  public setData(travels, places) {
-	 
-	  places.forEach((place) => {
-
-		  var placeObj = new Place();
-		  placeObj.id = place.id;
-			placeObj.orderNo = place.orderNo;
-		  placeObj.place = place.place;
-
-		  if (place.arrivingId) {
-			  placeObj.arriving = this.getOrCreateTravelById(place.arrivingId, travels);
-			  placeObj.arriving.to = placeObj;
-			}
-
-		  if (place.leavingId) {
-			  placeObj.leaving = this.getOrCreateTravelById(place.leavingId, travels);
-			  placeObj.leaving.from = placeObj;
-			}
-			this.places.push(placeObj);
-	  });
-
+  public mapTravel(resp, from: Place, to: Place): Travel {
+	  var t = new Travel();	 
+		t.id = resp.id;
+		t.type = resp.type;
+		t.arrivingDateTime = Utils.dateStringToUtcDate(resp.arrivingDateTime);
+		t.leavingDateTime = Utils.dateStringToUtcDate(resp.leavingDateTime);
+		t.from = from;
+	  t.to = to;
+		return t;
   }
+
+	public mapPlace(resp, arriving: Travel, leaving: Travel): Place {
+		var p = new Place();
+		p.id = resp.id;
+		p.orderNo = resp.orderNo;
+		p.place = resp.place;
+		p.arriving = arriving;
+		p.leaving = leaving;
+	 
+		return p;
+	}
+
+	public setData(travels, places) {
+		places.forEach((place) => {
+			var p = this.mapPlace(place, null, null);
+
+			if (place.arrivingId) {
+				p.arriving = this.getOrCreateTravelById(place.arrivingId, travels);
+				p.arriving.to = p;
+			}
+
+			if (place.leavingId) {
+				p.leaving = this.getOrCreateTravelById(place.leavingId, travels);
+				p.leaving.from = p;
+			}
+			this.places.push(p);
+		});
+	}
 
 	private getOrCreateTravelById(travelId, travelsInput) {
 	 
@@ -844,16 +917,14 @@ class PlacesManager {
 		var newTravel = _.find(travelsInput, (travel) => {
 		 return travel.id === travelId;
 		});
-
-		var newTravelObj = new Travel();
-		newTravelObj.id = newTravel.id;
-		newTravelObj.type = newTravel.type;
+	 
+		var newTravelObj = this.mapTravel(newTravel, null, null);
 		this.travels.push(newTravelObj);
 
-		return newTravel;
+		return newTravelObj;
 	}
 
-	private getTravelById(id: string) {
+	public getTravelById(id: string): Travel {
 	  return _.find(this.travels, (travel) => { return travel.id === id});
   }
 
@@ -888,4 +959,8 @@ class Travel {
 
 	public from: Place;
 	public to: Place;
+
+  public arrivingDateTime: Date;
+	public leavingDateTime: Date;
+ 
 }

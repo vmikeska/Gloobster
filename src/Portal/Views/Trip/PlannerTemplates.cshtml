@@ -11,7 +11,7 @@
 				<div class="transport">
 						<span class="{{icon}}"></span>
 				</div>
-				<div class="timeline green falldown"></div>
+				<div class="timeline falldown {{colorClass}}"></div>
 		</div>
 </script>
 
@@ -27,8 +27,14 @@
 						<span class="name">{{name}}</span>
 								<span class="tab">arrival {{arrivalDateLong}}</span>
 						</div>
-				<div class="timeline green"></div>
-				<div class="timeline">4.5.</div>
+												
+				{{#if isFirstDay}}
+						<div class="timeline green" style="text-align: center">{{leavingDate}}</div>
+				{{else}}
+						<div class="timeline {{colorClassArriving}} arrivingDate">{{arrivingDate}}</div>
+						<div class="timeline {{colorClassLeaving}} leavingDate">{{leavingDate}}</div>
+				{{/if}}
+				
 		</div>
 
 </script>
@@ -185,12 +191,12 @@
 
 				<div class="margin">
 						Leaving: <input id="leavingDate" type="text" size="10" />-						
-						<input id="leavingHours" type="text" pattern="\d*" maxlength="2" />:<input id="leavingMinutes" type="text" pattern="/^[0-9]+$/" maxlength="2" />
+						<input id="leavingHours" type="number" min="0" max="23" step="1" />:<input id="leavingMinutes" type="number" min="0" max="59" step="1"  />
 				</div>
 								
 				<div class="margin">						
 						Arriving: <input id="arrivingDate" type="text" size="10" />-
-						<input id="arrivingHours" type="text" pattern="\d*" maxlength="2" />:<input id="arrivingMinutes"  type="text" pattern="/^[0-9]+$/" maxlength="2" />
+						<input id="arrivingHours" type="number" min="0" max="23" step="1" />:<input id="arrivingMinutes"  type="number" min="0" max="59" step="1"  />
 				</div>
 
 				<a class="close" href="#">Close</a>

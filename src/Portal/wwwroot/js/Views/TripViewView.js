@@ -28,14 +28,19 @@ var TripViewView = (function (_super) {
         var prms = [["id", id]];
         _super.prototype.apiGet.call(this, "trip", prms, function (request) { return _this.onTripLoaded(request); });
     };
+    TripViewView.prototype.setFilesCustomConfig = function (tripId) {
+        var customData = new TripFileCustom();
+        customData.tripId = tripId;
+        this.files.fileUpload.customConfig = customData;
+    };
     TripViewView.prototype.onTripLoaded = function (request) {
         this.trip = request;
-        this.files.setFiles(this.trip.fiiles);
+        this.files.setFiles(this.trip.files, this.trip.tripId);
         this.comments = new Comments(this);
         this.comments.comments = this.trip.comments;
         this.comments.users = this.trip.users;
         this.comments.displayComments();
-        //this.registerPhotoUpload();
+        this.planner = new Planner(this, this.trip);
     };
     TripViewView.prototype.generateButtons = function () {
     };

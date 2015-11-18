@@ -32,19 +32,10 @@
 		<div id="plannerCont1" class="daybyday table margin">		
 		</div>
 
-		@*<div class="daybyday table margin">
-		
-		</div>*@
-
-		
 	</div>
 </section>
 
-@*@Html.Partial("Comments")*@
-
 @Html.Partial("Files")
-
-@*@Html.Partial("Participants")*@
 
 <section class="wrapper margin3">
 	<div class="table row margin">
@@ -79,39 +70,5 @@
 		currentView.initialize(id);
 		onShareDialogLoad(currentView);
 	}
-
-	var nameDelayedCallback = new DelayedCallback("nameInput");
-	nameDelayedCallback.callback = (name) => {
-		var data = { propertyName: "Name", values: { id: currentView.trip.tripId, name: name } };
-		currentView.apiPut("tripProperty", data, function() {
-
-		});
-	}
-
-	var descriptionDelayedCallback = new DelayedCallback("description");
-	descriptionDelayedCallback.callback = (description) => {
-		var data = { propertyName: "Description", values: { id: currentView.trip.tripId, description: description } };
-			currentView.apiPut("tripProperty", data, function () {
-
-			});
-	}
-
-	var descriptionDelayedCallback = new DelayedCallback("notes");
-	descriptionDelayedCallback.callback = (notes) => {
-		var data = { propertyName: "Notes", values: { id: currentView.trip.tripId, notes: notes } };
-			currentView.apiPut("tripProperty", data, function () {
-
-			});
-	}
-
-	$("#public").change((e) => {
-			var isPublic = $(e.target).prop("checked");
-			var data = { propertyName: "NotesPublic", values: { id: currentView.trip.tripId, isPublic: isPublic } };
-			currentView.apiPut("tripProperty", data, function () {
-
-			});
-	});
-
-
 
 </script>

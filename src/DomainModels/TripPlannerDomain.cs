@@ -11,6 +11,7 @@ using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Globalization;
 using Gloobster.Common;
+using Gloobster.Mappers;
 
 namespace Gloobster.DomainModels
 {
@@ -249,6 +250,7 @@ namespace Gloobster.DomainModels
 		public async Task<AddPlaceResultDO> AddPlace(NewPlaceDO newPlace)
 		{
 			TripPlaceSE lastPlace = GetLastPlace();
+			var travelToLastPlace = Trip.Travels.First(t => t.Id == lastPlace.ArrivingId);
 			
 			bool addAtTheEnd = (lastPlace.Id == newPlace.SelectorId) && newPlace.Position == NewPlacePosition.ToRight;
 			if (addAtTheEnd)
@@ -256,7 +258,9 @@ namespace Gloobster.DomainModels
 				var travel = new TripTravelSE
 				{
 					Id = NewId(),
-					Type = TravelType.Walk
+					Type = TravelType.Walk,
+					LeavingDateTime = travelToLastPlace.ArrivingDateTime.Value.AddDays(1),
+					ArrivingDateTime = travelToLastPlace.ArrivingDateTime.Value.AddDays(2)
 				};
 				PushTravel(travel);
 				
@@ -276,50 +280,57 @@ namespace Gloobster.DomainModels
 				var result = new AddPlaceResultDO
 				{
 					Position = newPlace.Position,
-					Place = new PlaceLiteDO
-					{
-						Id = place.Id,
-						OrderNo = place.OrderNo,
-						LeavingId = null,
-						ArrivingId = travel.Id
-					},
-					Travel = new TravelLiteDO
-					{
-						Id = travel.Id,
-						Type = travel.Type
-					}
+					Place = place.ToDO(),
+					Travel = travel.ToDO()
 				};
+
+				//var resultO = new AddPlaceResultDO
+				//{
+				//	Position = newPlace.Position,
+				//	Place = new PlaceLiteDO
+				//	{
+				//		Id = place.Id,
+				//		OrderNo = place.OrderNo,
+				//		LeavingId = null,
+				//		ArrivingId = travel.Id
+				//	},
+				//	Travel = new TravelLiteDO
+				//	{
+				//		Id = travel.Id,
+				//		Type = travel.Type
+				//	}
+				//};
 				return result;
 			}
 
 			return null;
 		}
 		
-		public TripPlannerStructureLiteDO GetStructureLite(bool refresh)
-		{
-			if (refresh)
-			{
-				LoadTrip();
-			}
+		//public TripPlannerStructureLiteDO GetStructureLite(bool refresh)
+		//{
+		//	if (refresh)
+		//	{
+		//		LoadTrip();
+		//	}
 
-			var structure = new TripPlannerStructureLiteDO
-			{
-				Places = Trip.Places.Select(p => new PlaceLiteDO
-				{
-					Id = p.Id,
-					LeavingId = p.LeavingId,
-					ArrivingId = p.ArrivingId,
-					OrderNo = p.OrderNo
-				}).ToList(),
-				Travels = Trip.Travels.Select(p => new TravelLiteDO
-				{
-					Id = p.Id,
-				}).ToList()
+		//	var structure = new TripPlannerStructureLiteDO
+		//	{
+		//		Places = Trip.Places.Select(p => new PlaceLiteDO
+		//		{
+		//			Id = p.Id,
+		//			LeavingId = p.LeavingId,
+		//			ArrivingId = p.ArrivingId,
+		//			OrderNo = p.OrderNo
+		//		}).ToList(),
+		//		Travels = Trip.Travels.Select(p => new TravelLiteDO
+		//		{
+		//			Id = p.Id,
+		//		}).ToList()
 
-			};
+		//	};
 
-			return structure;
-		}
+		//	return structure;
+		//}
 
 		private void LoadTrip()
 		{

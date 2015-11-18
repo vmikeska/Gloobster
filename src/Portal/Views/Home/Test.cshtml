@@ -2,35 +2,18 @@
 		ViewData["Title"] = "Home Page";
 		Layout = "";
 }
-
+<link href="~/lib/dropzone/dist/dropzone.css" rel="stylesheet" />
+<link href="~/lib/dropzone/dist/basic.css" rel="stylesheet" />
 
 @Html.Partial("_GlobalScripts")
 
-<div>
-		<input id="myInput" type="text"/>
 
+		<div id="myId" class="fallback">
+				<input name="file" type="file" multiple />
+		</div>
 
-</div>
 
 <script>
 
-	var timeoutId = null;
-	var delay = 1000;
-
-	$("#myInput").keydown(function() {
-
-		if (timeoutId) {
-			clearTimeout(timeoutId);
-			timeoutId = null;
-			//console.log("cleared");
-		}
-		timeoutId = setTimeout(function() {
-				timeoutId = null;
-				console.log("stoped");
-
-		}, delay);
-
-	});
-
-
+		var myDropzone = new Dropzone("div#myId", { url: "/file/post" });
 </script>

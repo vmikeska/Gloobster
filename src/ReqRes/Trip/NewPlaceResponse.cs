@@ -6,8 +6,8 @@ namespace Gloobster.ReqRes.Trip
 	{
 		public NewPlacePosition position { get; set; }
 
-		public PlaceLiteResponse place { get; set; }
+		public TripPlaceResponse place { get; set; }
 
-		public TravelLiteResponse travel { get; set; }
+		public TripTravelResponse travel { get; set; }
 	}
 }

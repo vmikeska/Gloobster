@@ -9,6 +9,7 @@ using Gloobster.Portal.ViewModels;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using System.IO;
+using Gloobster.Common;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels;
 using Gloobster.Entities.Trip;
@@ -43,7 +44,10 @@ namespace Gloobster.Portal.Controllers.Portal
 			var travel = new TripTravelSE
 			{
 				Id = NewId(),
-				Type = TravelType.Plane
+				Type = TravelType.Plane,
+				LeavingDateTime = DateTime.UtcNow,
+				ArrivingDateTime = DateTime.UtcNow.AddDays(1),
+				Description = "Here you can place notes for your travel"				
 			};
 
 			var firstPlace = new TripPlaceSE
@@ -56,10 +60,11 @@ namespace Gloobster.Portal.Controllers.Portal
 				{
 					SourceType = SourceType.City,
 					SourceId = "2643743",
-					SelectedName = "London, GB"
+					SelectedName = "London, GB",
+					Coordinates = new LatLng { Lat = 51.50853, Lng = -0.12574 }
 				},
 				Description = "",
-				WantVisit = new List<PlaceIdSE>(),				
+				WantVisit = new List<PlaceIdSE>()
 			};
 
 			var secondPlace = new TripPlaceSE
@@ -72,7 +77,8 @@ namespace Gloobster.Portal.Controllers.Portal
 				{ 
 					SourceType = SourceType.City,
 					SourceId = "5128581",
-					SelectedName = "New York, US"
+					SelectedName = "New York, US",
+					Coordinates = new LatLng { Lat = 40.71427, Lng = -74.00597 }
 				},
 				Description = "",
 				WantVisit = new List<PlaceIdSE>(),
