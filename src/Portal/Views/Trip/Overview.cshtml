@@ -1,4 +1,8 @@
-﻿@using System.Threading.Tasks
+﻿@{
+		ViewBag.BodyClass = "tripview";
+}
+
+@using System.Threading.Tasks
 @using Gloobster.Portal.Controllers.Portal
 @using Gloobster.Portal.ViewModels
 @model Gloobster.Portal.ViewModels.ViewModelTripDetail
@@ -69,8 +73,7 @@
 <script>
 	
 
-		function onBodyLoad() {
-			$("body").addClass("tripview");
+		function onBodyLoad() {			
 			currentView = new TripViewView();
 			var urlParams = window.location.pathname.split("/");
 			var id = urlParams[urlParams.length - 1];

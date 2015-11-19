@@ -25,7 +25,7 @@
 	@Html.Partial("_GlobalScripts")
 
 </head>
-<body onload="onBodyLoad()" class="" id="top">
+<body onload="onBodyLoad()" class="@ViewBag.BodyClass" id="top">
 <header class="header">
 	<div class="wrapper">
 		<h1><a asp-controller="Home" asp-action="Index" class="logo-header">Gloobster</a>
@@ -37,6 +37,7 @@
 					<li><a asp-controller="Home" asp-action="PinBoard">Pin board</a></li>
 					<li><a asp-controller="Friends" asp-action="List">Friends</a></li>
 					<li><a asp-controller="Trip" asp-action="List">Trips</a></li>
+					<li><a asp-controller="Destination" asp-action="Planning">Planning</a></li>
 				</ul>
 			</div>
 			<div id="loginSection" class="cell" style="display: none">
