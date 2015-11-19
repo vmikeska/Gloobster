@@ -61,7 +61,6 @@ var PlaceSearchBox = (function () {
             this.setText("");
         }
         else {
-            //var selectedCaption = clickedPlaceObj.City + ", " + clickedPlaceObj.CountryCode;
             var selectedCaption = this.getCaption(clickedPlaceObj);
             if (this.config.customSelectedFormat) {
                 selectedCaption = this.config.customSelectedFormat(clickedPlaceObj);
@@ -71,7 +70,18 @@ var PlaceSearchBox = (function () {
         this.onPlaceSelected(newPlaceRequest, clickedPlaceObj);
     };
     PlaceSearchBox.prototype.getCaption = function (place) {
-        return place.City + ", " + place.CountryCode;
+        var name = "";
+        var isSocNetworkPlace = (place.SourceType === SourceType.FB) || (place.SourceType === SourceType.S4);
+        if (isSocNetworkPlace) {
+            name = place.Name + ", " + place.City;
+        }
+        if (place.SourceType === SourceType.Country) {
+            name = place.Name;
+        }
+        if (place.SourceType === SourceType.City) {
+            name = place.City + ", " + place.CountryCode;
+        }
+        return name;
     };
     PlaceSearchBox.prototype.getIconForSearch = function (sourceType) {
         switch (sourceType) {

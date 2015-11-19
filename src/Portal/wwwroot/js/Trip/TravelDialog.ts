@@ -3,6 +3,9 @@ class TravelDialog {
 
 	private files: Files;
 	private data: any;
+
+	private $rowCont;
+
 	constructor(dialogManager: DialogManager) {
 		this.dialogManager = dialogManager;
 	}
@@ -10,13 +13,65 @@ class TravelDialog {
 	public display() {
 		this.dialogManager.closeDialog();
 
-		this.dialogManager.getDialogData(TripEntityType.Travel, (response) => this.create(response));	 
+		this.dialogManager.getDialogData(TripEntityType.Travel, (data) => {
+		 this.data = data;
+		 this.$rowCont = $("#" + data.id).parent();
+
+		 if (this.dialogManager.planner.editable) {
+			this.createEdit(data);
+		 } else {
+			this.createView(data);
+		 }
+		});
+	 
+	}
+  
+  private createView(data) {
+	  this.buildTemplateView(data);
+
+		this.files = this.dialogManager.createFilesInstanceView(data.id, TripEntityType.Travel);
+		this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId);
+  }
+
+	private buildTemplateView(data) {
+
+		var context = {
+			description: data.description,
+			isFlight: false
+		};
+
+
+		if (data.type === TravelType.Plane) {
+			context.isFlight = true;
+			var contextFlight = {
+				from: "",
+				to: "",
+
+				flightDetails: "Delta Air Flight 2560 from Prague to Vienna"
+			};
+
+			if (data.flightFrom) {
+				contextFlight.from = data.flightFrom.selectedName;
+			}
+			if (data.flightTo) {
+				contextFlight.to = data.flightTo.selectedName;
+			}
+
+			context = $.extend(context, contextFlight);
+		}
+
+
+		var html = this.dialogManager.travelDetailViewTemplate(context);
+		var $html = $(html);
+		this.dialogManager.regClose($html);
+
+		this.$rowCont.after($html);
 	}
 
-	private create(data) {
-		this.data = data;
-		var $rowCont = $("#" + data.id).parent();
-		this.buildTemplate($rowCont);
+	private createEdit(data) {
+		
+		
+	 this.buildTemplateEdit(this.$rowCont);
 
 		this.initTravelType(data.type);
 
@@ -178,7 +233,7 @@ class TravelDialog {
 		}
 	}
 
-	private buildTemplate($row) {
+	private buildTemplateEdit($row) {
 		var html = this.dialogManager.travelDetailTemplate();
 		var $html = $(html);
 		this.dialogManager.regClose($html);

@@ -48,7 +48,7 @@ class PlaceDialog  {
 
 		if (data.wantVisit) {
 			data.wantVisit.forEach((place) => {
-				this.addPlaceToVisit(place.id, place.selectedName, place.sourceType);
+				this.addPlaceToVisit(place.id, place.selectedName, place.sourceType, place.sourceId);
 			});
 		}
 	 
@@ -116,24 +116,39 @@ class PlaceDialog  {
 		name = data.place.selectedName;
 	 }
 
-	 var context = {
-		  name: name,
+		var context = {
+			name: name,
 			description: data.description,
-			wantVisit: []			
-	  }
+			wantVisit: [],
+			hasNoWantVisit: true
+	}
 
-	 context.wantVisit = _.map(data.wantVisit, (item) => {
+	 context.wantVisit = _.map(data.wantVisit, (item) => {		
 		 return {
-			name: item.selectedName,
-			icon: this.getIcon(item.sourceType)			
-		 }
-		});
-
-	 var html = this.dialogManager.travelDetailViewTemplate(context);
+			 name: item.selectedName,
+			 icon: this.getIcon(item.sourceType),
+			 link: this.getSocLink(item.sourceType, item.sourceId)
+		 };
+	 });
+	 
+	 context.hasNoWantVisit = (context.wantVisit.length === 0);
+	 
+	 var html = this.dialogManager.placeDetailViewTemplate(context);
 	 var $html = $(html);
 	 this.dialogManager.regClose($html);
 
 	 $row.after($html);
+	}
+
+	private getSocLink(sourceType: SourceType, sourceId: string) {
+		var link = "";
+		if (sourceType === SourceType.FB) {
+			link = "http://facebook.com/" + sourceId;
+		}
+		if (sourceType === SourceType.S4) {
+			link = "http://foursquare.com/v/" + sourceId;
+		}
+		return link;
 	}
 
 	private buildTemplateEdit($row) {	 
@@ -154,7 +169,7 @@ class PlaceDialog  {
 
 		this.dialogManager.updateProp(data, (response) => {
 			var id = response.Result;
-			this.addPlaceToVisit(id, place.Name, req.SourceType);
+			this.addPlaceToVisit(id, place.Name, req.SourceType, req.SourceId);
 		});	
 	}
   
@@ -174,30 +189,39 @@ class PlaceDialog  {
 		this.dialogManager.updateProp(data, (response) => { });
 	}
 
-	private onPlaceSelected(req, place) {
-
-		this.addressSearch.setCoordinates(place.Coordinates.Lat, place.Coordinates.Lng);
-		this.placeToVisitSearch.setCoordinates(place.Coordinates.Lat, place.Coordinates.Lng);
-
-		var name = place.City + ", " + place.CountryCode;
-		$(".active .name").text(name);
+	private onPlaceSelected(req, place) {	 
+		$(".active .name").text(this.placeSearch.lastText);
 
 		var data = this.dialogManager.getPropRequest("place", {
 			sourceId: req.SourceId,
 			sourceType: req.SourceType,
-			selectedName: name,
-			lat: place.Coordinates.Lat,
-			lng: place.Coordinates.Lng
+			selectedName: name
 		});
+
+		var coord = place.Coordinates;
+		if (coord) {
+		 this.addressSearch.setCoordinates(coord.Lat, coord.Lng);
+		 this.placeToVisitSearch.setCoordinates(coord.Lat, coord.Lng);
+
+		 data.values["lat"] = coord.Lat;
+		 data.values["lng"] = coord.Lng;
+		}
+
+	  
 	
 		this.dialogManager.updateProp(data, (response) => { });
 
 	}
 
-	private addPlaceToVisit(id: string, name: string, sourceType: SourceType) {		
+	private addPlaceToVisit(id: string, name: string, sourceType: SourceType, sourceId: string) {		
 		var iconClass = this.getIcon(sourceType);
 
-		var context = { id: id, icon: iconClass, name: name };
+		var context = {
+		 id: id,
+		 icon: iconClass,
+		 name: name,
+		 link: this.getSocLink(sourceType, sourceId)
+		};
 
 		var html = this.dialogManager.visitedItemTemplate(context);
 		var $html = $(html);

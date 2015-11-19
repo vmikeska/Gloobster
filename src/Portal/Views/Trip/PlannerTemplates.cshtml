@@ -45,7 +45,7 @@
 				<span class="{{icon}} left mright10"></span>
 
 				{{name}}
-				<a class="more" href="#">More</a>
+				<a class="more" href="javascript:window.open('{{link}}')">More</a>
 				<a class="delete" href="#">Delete</a>
 		</div>
 </script>
@@ -53,7 +53,7 @@
 <script id="fileItem-template" type="text/x-handlebars-template">
 		<div class="cell">
 				<div class="document">						
-						<a class="file {{fileType}}" href="#file">{{fileName}}</a>
+						<a class="file {{fileType}}" href="/Trip/GetFile?fileId={{fileId}}&tripId={{tripId}}">{{fileName}}</a>
 						@*<a class="delete" href="#delete">Delete</a>*@
 						{{#if editable}}
 						<a class="delete popup-target" data-target="#popup-delete" data-id="{{fileId}}" href="#">d</a>
@@ -91,7 +91,7 @@
 										</ul>
 								</div>
 								<input id="stayAddress" class="inputed" type="text" placeholder="Text address">
-								<a class="create" href="#">Add a personal note</a>
+								@*<a class="create" href="#">Add a personal note</a>*@
 						</div>
 						<div class="cell places">
 								<h4>Places to visit</h4>
@@ -104,16 +104,16 @@
 								@*<input type="submit" value="Add place">*@
 						</div>
 				</div>
-				<div class="rating-holder">
+				@*<div class="rating-holder">
 						Rating
 						<span class="rating pct70 bottom"></span>
-				</div>
+				</div>*@
 				<a class="close" href="#">Close</a>
 		</div>
 
 </script>
 
-<script id="travelDetailView-template" type="text/x-handlebars-template">
+<script id="placeDetailView-template" type="text/x-handlebars-template">
 		<div class="daybyday-view margin form">
 				<div class="table row">
 						<div class="cell baseline">
@@ -122,69 +122,51 @@
 						<div class="cell baseline color1">June averages: Day 32°C • Night 16°C</div>
 				</div>
 				<p>{{description}}</p>
-				<div id="entityDocs" class="documents grid col3 margin">
-						
-						@*<div class="cell">
-								<div class="document">
-										<a class="file doc" href="#file">Hotel Ritz Reservation.doc</a>
-								</div>
-						</div>
-						<div class="cell">
-								<div class="document">
-										<a class="file pdf" href="#">Hotel Ritz Reservation.pdf</a>
-								</div>
-						</div>*@
-
+				<div id="entityDocs" class="documents grid col3 margin">					
 				</div>
 				<div class="table row">
 						<div class="cell places">
 								<h4>Going to visit</h4>
+								{{#if hasNoWantVisit}}
+								<div class="place">
+										<span class="icon-facebook left mright10"></span>										
+										A place to visit										
+										<span class="description">Here you can save the places you would like to visit</span>
+								</div>
+								{{/if}}
 								{{#each wantVisit}}
 										<div class="place">
 												<span class="{{icon}} left mright10"></span>
 												@*<span class="thumbnail"><img src="~/images/samples/sample11.jpg"></span>*@
 												{{name}}
-												<a class="more" href="#">More</a>
+												<a class="more" href="javascript:window.open('{{link}}')">More</a>
 												@*<span class="description">Description that I can write and edit anytime. That I can write and edit anytime. I can write and edit anytime.</span>*@
 										</div>
 								{{/each}}								
 						</div>
 						<div class="cell places">
-								<h4>Recommended places to visit</h4>
+								<h4>Places we would like to recommend</h4>
 								<div class="place">
-										<span class="thumbnail">
-												<img src="./images/samples/sample11.jpg">
-										</span>
+										<span class="icon-facebook left mright10"></span>
 										Eis Cafe Frankfurkt
 										<a class="more" href="#">More</a>
 								</div>
 								<div class="place">
-										<span class="thumbnail">
-												<img src="./images/samples/sample11.jpg">
-										</span>
+										<span class="icon-foursquare left mright10"></span>
 										Pub 99 Beers On Tap
 										<a class="more" href="#">More</a>
 								</div>
 								<div class="place">
-										<span class="thumbnail">
-												<img src="./images/samples/sample11.jpg">
-										</span>
-										Pub 99 Beers On Tap
-										<a class="more" href="#">More</a>
-								</div>
-								<div class="place">
-										<span class="thumbnail">
-												<img src="./images/samples/sample11.jpg">
-										</span>
-										Pub 99 Beers On Tap
+										<span class="icon-facebook left mright10"></span>
+										The last place
 										<a class="more" href="#">More</a>
 								</div>
 						</div>
 				</div>
-				<div class="rating-holder">
+				@*<div class="rating-holder">
 						Rating
 						<span class="rating pct70 bottom"></span>
-				</div>
+				</div>*@
 				<a class="close" href="#">Close</a>
 		</div>
 </script>
@@ -273,8 +255,29 @@
 				<div id="entityDocs" class="documents grid col3 margin">
 						<input id="entityFileInput" type="file" />
 				</div>
-				<p class="blue-info color1">This information has been imported from uploaded files. Feel free to edit it.</p>
+				@*<p class="blue-info color1">This information has been imported from uploaded files. Feel free to edit it.</p>*@
 
 		</div>
 
+</script>
+
+<script id="travelDetailView-template" type="text/x-handlebars-template">
+		<div class="daybyday-view margin form">
+				
+{{#if isFlight}}
+		<div class="table row">
+				<div class="cell baseline"><h3>{{from}} → {{to}}</h3></div>
+				<div class="cell baseline color1">{{flightDetails}}</div>
+		</div>
+{{/if}}
+					
+				<p>{{description}}</p>
+				<div id="entityDocs" class="documents grid col3 margin">
+				</div>
+				<div class="table row">
+				
+				</div>
+			
+				<a class="close" href="#">Close</a>
+		</div>
 </script>

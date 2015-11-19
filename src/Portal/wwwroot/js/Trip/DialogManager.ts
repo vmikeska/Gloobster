@@ -1,9 +1,10 @@
 class DialogManager {
 	public placeDetailTemplate: any;
-  public travelDetailViewTemplate: any;
+  public placeDetailViewTemplate: any;
 	public travelDetailTemplate: any;
 	public visitedItemTemplate: any;
   public placeDisplayItemTemplate: any;
+  public travelDetailViewTemplate: any;
 
 	public selectedId: string;
 
@@ -13,8 +14,11 @@ class DialogManager {
 	 this.planner = planner;
 	 	 	  
 		this.placeDetailTemplate = Views.ViewBase.currentView.registerTemplate("placeDetail-template");
-		this.travelDetailViewTemplate = Views.ViewBase.currentView.registerTemplate("travelDetailView-template");
+		this.placeDetailViewTemplate = Views.ViewBase.currentView.registerTemplate("placeDetailView-template");
+
 		this.travelDetailTemplate = Views.ViewBase.currentView.registerTemplate("travelDetail-template");
+		this.travelDetailViewTemplate = Views.ViewBase.currentView.registerTemplate("travelDetailView-template");
+		
 		this.visitedItemTemplate = Views.ViewBase.currentView.registerTemplate("visitItem-template");
 	}
 

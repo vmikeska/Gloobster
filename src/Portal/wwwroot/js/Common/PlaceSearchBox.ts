@@ -6,7 +6,7 @@ class PlaceSearchBox {
 	private delayedCallback: DelayedCallback;
 	private $root: any;
 	private $input: any;
-  private lastText: string;
+  public lastText: string;
 
 	private template: any;
   private coordinates: any;
@@ -83,8 +83,7 @@ class PlaceSearchBox {
 
 		if (this.config.clearAfterSearch) {
 			this.setText("");
-		} else {
-			//var selectedCaption = clickedPlaceObj.City + ", " + clickedPlaceObj.CountryCode;
+		} else {			
 			var selectedCaption = this.getCaption(clickedPlaceObj);
 			if (this.config.customSelectedFormat) {
 				selectedCaption = this.config.customSelectedFormat(clickedPlaceObj);
@@ -96,7 +95,22 @@ class PlaceSearchBox {
 	}
 
 	private getCaption(place) {
-		return place.City + ", " + place.CountryCode;
+		var name = "";
+
+		var isSocNetworkPlace = (place.SourceType === SourceType.FB) || (place.SourceType === SourceType.S4);
+		if (isSocNetworkPlace) {
+			name = `${place.Name}, ${place.City}`;
+		}
+
+		if (place.SourceType === SourceType.Country) {
+			name = place.Name;
+		}
+
+		if (place.SourceType === SourceType.City) {
+		 name = place.City + ", " + place.CountryCode;
+		}
+
+		return name;
 	}
 
 	private getIconForSearch(sourceType: SourceType) {

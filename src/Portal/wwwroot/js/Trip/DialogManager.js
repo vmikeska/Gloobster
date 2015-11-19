@@ -2,8 +2,9 @@ var DialogManager = (function () {
     function DialogManager(planner) {
         this.planner = planner;
         this.placeDetailTemplate = Views.ViewBase.currentView.registerTemplate("placeDetail-template");
-        this.travelDetailViewTemplate = Views.ViewBase.currentView.registerTemplate("travelDetailView-template");
+        this.placeDetailViewTemplate = Views.ViewBase.currentView.registerTemplate("placeDetailView-template");
         this.travelDetailTemplate = Views.ViewBase.currentView.registerTemplate("travelDetail-template");
+        this.travelDetailViewTemplate = Views.ViewBase.currentView.registerTemplate("travelDetailView-template");
         this.visitedItemTemplate = Views.ViewBase.currentView.registerTemplate("visitItem-template");
     }
     DialogManager.prototype.createFilesInstanceView = function (entityId, entityType) {

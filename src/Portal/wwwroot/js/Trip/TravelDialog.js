@@ -5,12 +5,49 @@ var TravelDialog = (function () {
     TravelDialog.prototype.display = function () {
         var _this = this;
         this.dialogManager.closeDialog();
-        this.dialogManager.getDialogData(TripEntityType.Travel, function (response) { return _this.create(response); });
+        this.dialogManager.getDialogData(TripEntityType.Travel, function (data) {
+            _this.data = data;
+            _this.$rowCont = $("#" + data.id).parent();
+            if (_this.dialogManager.planner.editable) {
+                _this.createEdit(data);
+            }
+            else {
+                _this.createView(data);
+            }
+        });
     };
-    TravelDialog.prototype.create = function (data) {
-        this.data = data;
-        var $rowCont = $("#" + data.id).parent();
-        this.buildTemplate($rowCont);
+    TravelDialog.prototype.createView = function (data) {
+        this.buildTemplateView(data);
+        this.files = this.dialogManager.createFilesInstanceView(data.id, TripEntityType.Travel);
+        this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId);
+    };
+    TravelDialog.prototype.buildTemplateView = function (data) {
+        var context = {
+            description: data.description,
+            isFlight: false
+        };
+        if (data.type === TravelType.Plane) {
+            context.isFlight = true;
+            var contextFlight = {
+                from: "",
+                to: "",
+                flightDetails: "Delta Air Flight 2560 from Prague to Vienna"
+            };
+            if (data.flightFrom) {
+                contextFlight.from = data.flightFrom.selectedName;
+            }
+            if (data.flightTo) {
+                contextFlight.to = data.flightTo.selectedName;
+            }
+            context = $.extend(context, contextFlight);
+        }
+        var html = this.dialogManager.travelDetailViewTemplate(context);
+        var $html = $(html);
+        this.dialogManager.regClose($html);
+        this.$rowCont.after($html);
+    };
+    TravelDialog.prototype.createEdit = function (data) {
+        this.buildTemplateEdit(this.$rowCont);
         this.initTravelType(data.type);
         this.dialogManager.initDescription(data.description, TripEntityType.Travel);
         this.files = this.dialogManager.createFilesInstance(data.id, TripEntityType.Travel);
@@ -140,7 +177,7 @@ var TravelDialog = (function () {
             $flightDetails.show();
         }
     };
-    TravelDialog.prototype.buildTemplate = function ($row) {
+    TravelDialog.prototype.buildTemplateEdit = function ($row) {
         var html = this.dialogManager.travelDetailTemplate();
         var $html = $(html);
         this.dialogManager.regClose($html);

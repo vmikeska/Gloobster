@@ -30,7 +30,7 @@ var PlaceDialog = (function () {
         this.dialogManager.initDescription(data.description, TripEntityType.Place);
         if (data.wantVisit) {
             data.wantVisit.forEach(function (place) {
-                _this.addPlaceToVisit(place.id, place.selectedName, place.sourceType);
+                _this.addPlaceToVisit(place.id, place.selectedName, place.sourceType, place.sourceId);
             });
         }
         this.files = this.dialogManager.createFilesInstance(data.id, TripEntityType.Place);
@@ -92,18 +92,31 @@ var PlaceDialog = (function () {
         var context = {
             name: name,
             description: data.description,
-            wantVisit: []
+            wantVisit: [],
+            hasNoWantVisit: true
         };
         context.wantVisit = _.map(data.wantVisit, function (item) {
             return {
                 name: item.selectedName,
-                icon: _this.getIcon(item.sourceType)
+                icon: _this.getIcon(item.sourceType),
+                link: _this.getSocLink(item.sourceType, item.sourceId)
             };
         });
-        var html = this.dialogManager.travelDetailViewTemplate(context);
+        context.hasNoWantVisit = (context.wantVisit.length === 0);
+        var html = this.dialogManager.placeDetailViewTemplate(context);
         var $html = $(html);
         this.dialogManager.regClose($html);
         $row.after($html);
+    };
+    PlaceDialog.prototype.getSocLink = function (sourceType, sourceId) {
+        var link = "";
+        if (sourceType === SourceType.FB) {
+            link = "http://facebook.com/" + sourceId;
+        }
+        if (sourceType === SourceType.S4) {
+            link = "http://foursquare.com/v/" + sourceId;
+        }
+        return link;
     };
     PlaceDialog.prototype.buildTemplateEdit = function ($row) {
         var html = this.dialogManager.placeDetailTemplate();
@@ -120,7 +133,7 @@ var PlaceDialog = (function () {
         });
         this.dialogManager.updateProp(data, function (response) {
             var id = response.Result;
-            _this.addPlaceToVisit(id, place.Name, req.SourceType);
+            _this.addPlaceToVisit(id, place.Name, req.SourceType, req.SourceId);
         });
     };
     PlaceDialog.prototype.onAddressSelected = function (req, place) {
@@ -136,23 +149,30 @@ var PlaceDialog = (function () {
         this.dialogManager.updateProp(data, function (response) { });
     };
     PlaceDialog.prototype.onPlaceSelected = function (req, place) {
-        this.addressSearch.setCoordinates(place.Coordinates.Lat, place.Coordinates.Lng);
-        this.placeToVisitSearch.setCoordinates(place.Coordinates.Lat, place.Coordinates.Lng);
-        var name = place.City + ", " + place.CountryCode;
-        $(".active .name").text(name);
+        $(".active .name").text(this.placeSearch.lastText);
         var data = this.dialogManager.getPropRequest("place", {
             sourceId: req.SourceId,
             sourceType: req.SourceType,
-            selectedName: name,
-            lat: place.Coordinates.Lat,
-            lng: place.Coordinates.Lng
+            selectedName: name
         });
+        var coord = place.Coordinates;
+        if (coord) {
+            this.addressSearch.setCoordinates(coord.Lat, coord.Lng);
+            this.placeToVisitSearch.setCoordinates(coord.Lat, coord.Lng);
+            data.values["lat"] = coord.Lat;
+            data.values["lng"] = coord.Lng;
+        }
         this.dialogManager.updateProp(data, function (response) { });
     };
-    PlaceDialog.prototype.addPlaceToVisit = function (id, name, sourceType) {
+    PlaceDialog.prototype.addPlaceToVisit = function (id, name, sourceType, sourceId) {
         var _this = this;
         var iconClass = this.getIcon(sourceType);
-        var context = { id: id, icon: iconClass, name: name };
+        var context = {
+            id: id,
+            icon: iconClass,
+            name: name,
+            link: this.getSocLink(sourceType, sourceId)
+        };
         var html = this.dialogManager.visitedItemTemplate(context);
         var $html = $(html);
         $html.find(".delete").click(function (e) {
