@@ -9,13 +9,13 @@
 		this.mapsManager = new MapsManager();
 		this.mapsManager.switchToView(Maps.ViewType.D2);
 
-		var searchConfig = new PlaceSearchConfig();		
-		searchConfig.providers = "0,1,2,3";
-		searchConfig.elementId = "cities";
-		searchConfig.minCharsToSearch = 1;
-		searchConfig.clearAfterSearch = true;
+		var c = new PlaceSearchConfig();		
+		c.providers = "0,1,2,3";
+		c.elementId = "cities";
+		c.minCharsToSearch = 1;
+		c.clearAfterSearch = true;
 
-		this.placeSearch = new PlaceSearchBox(searchConfig);
+		this.placeSearch = new PlaceSearchBox(c);
 		this.placeSearch.onPlaceSelected = (request) => this.saveNewPlace(request);
 	}
 

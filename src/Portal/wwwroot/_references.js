@@ -39,6 +39,7 @@
 /// <reference path="js/views/friendsview.js" />
 /// <reference path="js/views/homepageview.js" />
 /// <reference path="js/views/pinboardview.js" />
+/// <reference path="js/views/planningview.js" />
 /// <reference path="js/views/settingsview.js" />
 /// <reference path="js/views/sharedialogview.js" />
 /// <reference path="js/views/tripdetailview.js" />

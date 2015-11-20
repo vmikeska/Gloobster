@@ -35,6 +35,12 @@ namespace Gloobster.DomainModels.Services.CountryService
 			return country;
 		}
 
+		public Country GetCountryByCountryCode3(string countryCode3)
+		{
+			var country = CountriesList.FirstOrDefault(c => c.IsoAlpha3.Equals(countryCode3));
+			return country;
+		}
+		
 		private string GetCountriesJson()
 		{
 			return @"

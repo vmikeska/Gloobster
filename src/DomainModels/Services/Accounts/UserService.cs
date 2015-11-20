@@ -22,7 +22,8 @@ namespace Gloobster.DomainModels.Services.Accounts
 		public IComponentContext ComponentContext { get; set; }
 		public IFriendsDomain FriendsService { get; set; }
 		public IDbOperations DB { get; set; }
-		
+		public IPlanningDomain PlanningDomain { get; set; }
+
 		public async Task<UserLoggedResultDO> Validate(SocAuthenticationDO authentication, object userObj)
 		{
 			AccountDriver.Authentication = authentication;
@@ -78,6 +79,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 		private async void CreateCommonAsync(PortalUserDO portalUser)
 		{
 			await FriendsService.CreateFriendsObj(portalUser.UserId);
+			PlanningDomain.CreateDBStructure(portalUser.UserId);
 		}
 
 		private bool CheckCredintials(SocAuthenticationDO socAuthentication, PortalUserDO portalUser)

@@ -6,14 +6,14 @@ var MapsOperations = (function () {
         this.mapsDriver = baseMapsOperations;
     };
     MapsOperations.prototype.drawCountry = function (country) {
+        var _this = this;
         var countryParts = this.countryShapes.getCoordinatesByCountry(country.countryCode);
         if (!countryParts) {
             console.log("missing country with code: " + country.countryCode);
             return;
         }
-        var self = this;
         countryParts.forEach(function (countryPart) {
-            self.mapsDriver.drawPolygon(countryPart, country.countryConfig);
+            _this.mapsDriver.drawPolygon(countryPart, country.countryConfig);
         });
     };
     MapsOperations.prototype.drawCountries = function (countries) {

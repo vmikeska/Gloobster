@@ -38,7 +38,9 @@ namespace Gloobster.Portal
 			builder.AddTransient<IFacebookTaggedPlacesExtractor, FacebookTaggedPlacesExtractor>();
 
 
-			builder.AddTransient<IFriendsDomain, FriendsDomain>();
+			builder.AddTransient<IPlanningDomain, PlanningDomain>();
+			
+            builder.AddTransient<IFriendsDomain, FriendsDomain>();
 			builder.AddTransient<ITripPlannerDomain, TripPlannerDomain>();
 
 			builder.AddTransient<IFilesDomain, FilesDomain>();

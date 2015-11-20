@@ -20,10 +20,8 @@ class MapsOperations  {
 			console.log("missing country with code: " + country.countryCode);
 			return;
 		}
-
-		var self = this;
-		countryParts.forEach(function(countryPart) {
-		 self.mapsDriver.drawPolygon(countryPart, country.countryConfig);
+		countryParts.forEach(countryPart => {
+			this.mapsDriver.drawPolygon(countryPart, country.countryConfig);
 		});
 	}
 

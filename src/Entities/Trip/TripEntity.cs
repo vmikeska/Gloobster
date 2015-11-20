@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Gloobster.Common;
 using Gloobster.Database;
-using Gloobster.Enums;
 using MongoDB.Bson;
 
 namespace Gloobster.Entities.Trip
@@ -30,51 +28,5 @@ namespace Gloobster.Entities.Trip
 
 		public List<TripPlaceSE> Places { get; set; }
 		public List<TripTravelSE> Travels { get; set; }
-	}
-
-	public class PlaceSE
-	{
-		public string SourceId { get; set; }
-		public SourceType SourceType { get; set; }
-		public string SelectedName { get; set; }		
-		public LatLng Coordinates { get; set; }
-	}
-
-	public class PlaceIdSE
-	{
-		public string id { get; set; }
-		public string SourceId { get; set; }
-		public SourceType SourceType { get; set; }
-		public string SelectedName { get; set; }
-	}
-
-	public class TripPlaceSE
-	{
-		public string Id { get; set; }		
-		public string Description { get; set; }
-		public int OrderNo { get; set; }
-		public string ArrivingId { get; set; }
-		public string LeavingId { get; set; }
-		public PlaceSE Place { get; set; }
-		public PlaceSE Address { get; set; }
-		public string AddressText { get; set; }
-		public List<PlaceIdSE> WantVisit { get; set; }		
-	}
-
-	public class TripTravelSE
-	{
-		public string Id { get; set; }
-		public TravelType Type { get; set; }
-		public string Description { get; set; }
-		public FlightSE FlightFrom { get; set; }
-		public FlightSE FlightTo { get; set; }
-		public DateTime? LeavingDateTime { get; set; }
-		public DateTime? ArrivingDateTime { get; set; }
-	}
-
-	public class FlightSE
-	{
-		public ObjectId Airport_id { get; set; }		
-		public string SelectedName { get; set; }
 	}
 }

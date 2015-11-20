@@ -7,5 +7,6 @@ namespace Gloobster.DomainInterfaces
 		List<Country> CountriesList { get; set; }
 		Country GetByCountryName(string countryName);
 		Country GetCountryByCountryCode2(string countryCode2);
+		Country GetCountryByCountryCode3(string countryCode2);
 	}
 }

@@ -8,12 +8,13 @@ var MapsCreatorMapBox2D = (function () {
         this.mapType = mapType;
     };
     MapsCreatorMapBox2D.prototype.show = function (mapsLoadedCallback) {
+        var _this = this;
         var self = this;
         this.loadScript("http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js", function () {
             self.loadScript("https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.js", function () {
                 self.loadScript("https://api.mapbox.com/mapbox.js/plugins/leaflet-heat/v0.1.3/leaflet-heat.js", function () {
                     self.loadMap();
-                    mapsLoadedCallback();
+                    mapsLoadedCallback(_this.mapObj);
                 });
             });
         });
@@ -29,7 +30,6 @@ var MapsCreatorMapBox2D = (function () {
         });
     };
     MapsCreatorMapBox2D.prototype.hide = function () {
-        //$("#" + this.rootElement).empty();
         this.mapObj.remove();
     };
     return MapsCreatorMapBox2D;
