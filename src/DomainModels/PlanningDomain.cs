@@ -42,7 +42,33 @@ namespace Gloobster.DomainModels
 		    return false;
 	    }
 
-	    public void ChangeWeekendDuration()
+		public async Task<bool> ChangeCitySelection(string userId, int gid, bool selected)
+		{
+			var userIdObj = new ObjectId(userId);
+			var anytime = DB.C<PlanningAnytimeEntity>().FirstOrDefault(u => u.PortalUser_id == userIdObj);
+
+			bool hasCity = anytime.Cites.Contains(gid);
+
+			if (selected && !hasCity)
+			{
+				var filter = DB.F<PlanningAnytimeEntity>().Eq(p => p.PortalUser_id, userIdObj);
+				var update = DB.U<PlanningAnytimeEntity>().Push(p => p.Cites, gid);
+				var res = await DB.UpdateAsync(filter, update);
+				return res.ModifiedCount == 1;
+			}
+
+			if (!selected && hasCity)
+			{
+				var filter = DB.F<PlanningAnytimeEntity>().Eq(p => p.PortalUser_id, userIdObj);
+				var update = DB.U<PlanningAnytimeEntity>().Pull(p => p.Cites, gid);
+				var res = await DB.UpdateAsync(filter, update);
+				return res.ModifiedCount == 1;
+			}
+
+			return false;
+		}
+
+		public void ChangeWeekendDuration()
 	    {
 		    
 	    }
@@ -71,7 +97,8 @@ namespace Gloobster.DomainModels
 				{
 					id = ObjectId.GenerateNewId(),
 					PortalUser_id = userIdObj,
-					CountryCodes = new List<string>()
+					CountryCodes = new List<string>(),
+					Cites = new List<int>()
 				};
 				await DB.SaveAsync(anytime);
 			}

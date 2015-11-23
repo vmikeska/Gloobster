@@ -12,6 +12,8 @@ namespace Gloobster.Entities
 		
 		public string CountryCode { get; set; }
 
+		public int GeoNamesId { get; set; }
+
 		public string IataFaa { get; set; }
 
 		public string Icao { get; set; }

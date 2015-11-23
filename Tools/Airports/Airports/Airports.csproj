@@ -40,6 +40,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,8 +49,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GeoNamesClasses.cs" />
+    <Compile Include="ParsingClasses.cs" />
+    <Compile Include="ToolsForGettingGeoNamesId.cs" />
+    <Compile Include="CountryService.cs" />
+    <Compile Include="RoughConert.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="airports.dat">

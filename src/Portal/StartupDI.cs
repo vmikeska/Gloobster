@@ -4,6 +4,7 @@ using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels;
+using Gloobster.DomainModels.Services;
 using Gloobster.DomainModels.Services.Accounts;
 using Gloobster.DomainModels.Services.CountryService;
 using Gloobster.DomainModels.Services.Facebook.FriendsExtractor;
@@ -36,7 +37,8 @@ namespace Gloobster.Portal
 			builder.AddTransient<IFacebookService, FacebookService>();
 			builder.AddTransient<IMyTwitterService, MyTwitterService>();
 			builder.AddTransient<IFacebookTaggedPlacesExtractor, FacebookTaggedPlacesExtractor>();
-
+			
+            builder.AddInstance2<IAirportGroupService, AirportGroupService>();
 
 			builder.AddTransient<IPlanningDomain, PlanningDomain>();
 			

@@ -1,1 +1,3 @@
-mongoimport --db Gloobster --collection Airport --type json --file "C:\S\Gloobster\DBScripts\airports.json" --jsonArray
+mongoimport --db Gloobster --collection Airport --type json --file "C:\S\Gloobster\DBScripts\airports2.json" --jsonArray
+
+mongoimport --db Gloobster --collection City --type json --file "C:\S\Gloobster\DBScripts\Cities.json" --jsonArray

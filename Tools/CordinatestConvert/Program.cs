@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using CordinatestConvert;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -33,7 +34,9 @@ namespace CoordinatesConvertor
 
         static void Main(string[] args)
         {
-            var inputDir = @"C:\S\world.geo.json\countries";
+	        var countryService = new CountryService();
+
+			var inputDir = @"C:\S\world.geo.json\countries";
             var outputDir = @"C:\S\world.geo.json\countriesReverse";
 
             if (!Directory.Exists(outputDir))
@@ -63,8 +66,11 @@ namespace CoordinatesConvertor
 
 	                try
 	                {
-		                countryId = feature["id"].ToString();
-	                }
+						//countryId = feature["id"].ToString();						
+						var fileName = Path.GetFileName(inputFileName);
+						var fileNamePrms = fileName.Split('.');
+						countryId = fileNamePrms[0];
+					}
 	                catch
 	                {
 						logs.Add(inputFileName);
@@ -80,28 +86,27 @@ namespace CoordinatesConvertor
                     JToken coordinates = geometry["coordinates"];
                     JToken coordinatesResult = coordinates;
 
-                    //if (coordinates.Length == 1)
-                    //{
-                    //	coordinatesResult = coordinates[0].ToArray();
-                    // }
 
-                    var country = new Country
-                    {
-                        name = countryId
-                    };
+					//var country = new Country
+					//{
+					//    name = countryId
+					//};
 
+	                var cntry = countryService.GetCountryByCountryCode3(countryId);
 
-                    if (geometryType == "MultiPolygon")
+					var country = new Country
+					{
+						name = cntry.CountryCode
+					};
+					
+					if (geometryType == "MultiPolygon")
                     {
                         //string test = coordinatesResult.ToString();
                         var temp = new List<float[][]>();
                         foreach (var subSet1 in coordinatesResult.ToArray())
                         {
                             JToken subSet2 = subSet1.First;
-                            //if (subField.Count() == 1)
-                            //{
-                            //	field = subField.First();
-                            //}
+                          
 
                             var single = WriteDataArray(subSet2.ToArray());
                             temp.Add(single);
@@ -109,27 +114,6 @@ namespace CoordinatesConvertor
                         country.coordinates = temp.ToArray();
                     }
 
-                    //float validFloat;
-                    //bool isValidFloat = float.TryParse(coordinatesResult.First().First().ToString(), out validFloat);
-
-                    //if (!isValidFloat)
-                    //{
-                    //	var temp = new List<float[][]>();
-
-                    //	foreach (var subField in coordinatesResult)
-                    //	{
-                    //		JToken field = subField;
-                    //		if (subField.Count() == 1)
-                    //		{
-                    //			field = subField.First();
-                    //		}
-
-                    //		var single = WriteDataArray(field.ToArray());
-                    //		temp.Add(single);
-                    //	}
-                    //	country.coordinates = temp.ToArray();
-                    //}
-                    //else
                     if (geometryType == "Polygon")
                     {
                         var items = coordinatesResult.First.ToArray();

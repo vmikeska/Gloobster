@@ -1,7 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
-using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.Portal.ViewModels;
@@ -9,6 +7,8 @@ using Hammock.Serialization;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using Newtonsoft.Json;
+using System.Windows;
+using Gloobster.DomainInterfaces;
 
 namespace Gloobster.Portal.Controllers.Portal
 {
@@ -33,7 +33,14 @@ namespace Gloobster.Portal.Controllers.Portal
 		}
 
 	    public IActionResult Index()
-        {
+	    {
+			
+
+
+		 //   var creator = new AirportGroupCreator();
+		 //   creator.DB = DB;
+		 //creator.Execute();
+
 			return View();
         }
 
@@ -51,5 +58,5 @@ namespace Gloobster.Portal.Controllers.Portal
 		}
 
 	    
-    }	
+    }
 }

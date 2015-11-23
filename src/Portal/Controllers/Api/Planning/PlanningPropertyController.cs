@@ -39,13 +39,22 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 
 			if (req.planningType == PlanningType.Anytime)
 			{
-				var countryCode3 = GV("countryCode");
-				var country = CountryService.GetCountryByCountryCode3(countryCode3);
-				bool selected = bool.Parse(GV("selected"));
-				Planning.ChangeCountrySelection(UserId, country.CountryCode, selected);
+				if (req.propertyName == "cities")
+				{
+					var gid = int.Parse(GV("gid"));
+					bool selected = bool.Parse(GV("selected"));
+					Planning.ChangeCitySelection(UserId, gid, selected);
+				}
+
+				if (req.propertyName == "countries")
+				{
+					var countryCode = GV("countryCode");
+					bool selected = bool.Parse(GV("selected"));
+					Planning.ChangeCountrySelection(UserId, countryCode, selected);
+				}
 			}
-			
-            return new ObjectResult(null);
+
+			return new ObjectResult(null);
 		}
 
 		[HttpGet]
@@ -64,18 +73,8 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 				{
 					return null;
 				}
-
-				var resp = new PlanningAnytimeResponse
-				{
-					countryCodes = anytime.CountryCodes.Select(c =>
-					{
-						var country = CountryService.GetCountryByCountryCode2(c);
-						return country.IsoAlpha3;
-					}).ToList()
-				};
-
-				response = resp;
-				//anytime.ToResponse();
+				
+				response = anytime.ToResponse();
 			}
 
 			return new ObjectResult(response);

@@ -97,16 +97,7 @@ namespace Gloobster.DomainModels.Services.GeonamesService
 			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 			return client;
 		}
-
-		//private string BuildUrlSearch(string serviceName, Dictionary<string, string> prms)
-		//{
-		//	var serviceName = "searchJSON?";
-		//	var query = string.Join("&", prms.Select(i => $"{i.Key}={i.Value}"));
-		//	var url = serviceName + query;
-
-		//	return url;
-		//}
-
+		
 		public void Dispose()
 		{
 			_client.Dispose();

@@ -9,3 +9,4 @@ obj
 *.map
 /packages
 /src/Portal/wwwroot/FileRepository
+/DBScripts/Cities.json
