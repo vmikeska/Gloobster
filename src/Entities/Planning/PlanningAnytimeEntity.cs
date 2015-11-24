@@ -21,6 +21,7 @@ namespace Gloobster.Entities.Planning
 		public ObjectId PortalUser_id { get; set; }
 		public int LongWeekend { get; set; }
 		public List<string> CountryCodes { get; set; }
+		public List<int> Cites { get; set; }
 	}
 
 	public class PlanningCustomEntity : EntityBase

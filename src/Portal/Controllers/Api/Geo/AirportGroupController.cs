@@ -44,9 +44,17 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 
 			if (req.planningType.HasValue)
 			{
-				var anytime = DB.C<PlanningAnytimeEntity>().FirstOrDefault(p => p.PortalUser_id == UserIdObj);
+				if (req.planningType.Value == PlanningType.Anytime)
+				{
+					var anytime = DB.C<PlanningAnytimeEntity>().FirstOrDefault(p => p.PortalUser_id == UserIdObj);
+					cities.ForEach(c => c.selected = anytime.Cites.Contains(c.gid));
+				}
 
-				cities.ForEach(c => c.selected = anytime.Cites.Contains(c.gid));
+				if (req.planningType.Value == PlanningType.Weekend)
+				{
+					var weekend = DB.C<PlanningWeekendEntity>().FirstOrDefault(p => p.PortalUser_id == UserIdObj);
+					cities.ForEach(c => c.selected = weekend.Cites.Contains(c.gid));
+				}
 			}
 
 			return new ObjectResult(cities);

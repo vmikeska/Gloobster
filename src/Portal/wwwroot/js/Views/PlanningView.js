@@ -9,13 +9,46 @@ var PlanningView = (function (_super) {
     function PlanningView() {
         _super.call(this);
         this.initialize();
+        this.registerTabEvents();
     }
     PlanningView.prototype.initialize = function () {
+        var _this = this;
         this.maps = new MapsCreatorMapBox2D();
         this.maps.setRootElement("map");
         this.maps.show(function (map) {
-            var mapOper = new PlanningMap(PlanningType.Anytime, map);
+            _this.mapsOperations = new PlanningMap(map);
+            _this.mapsOperations.loadCategory(PlanningType.Anytime);
         });
+    };
+    PlanningView.prototype.registerTabEvents = function () {
+        var _this = this;
+        this.anytimeTabTemplate = Views.ViewBase.currentView.registerTemplate("anytime-template");
+        this.weekendTabTemplate = Views.ViewBase.currentView.registerTemplate("weekend-template");
+        this.customTabTemplate = Views.ViewBase.currentView.registerTemplate("custom-template");
+        var $tabsRoot = $(".tabs");
+        var $tabs = $tabsRoot.find(".tab");
+        $tabs.click(function (e) { _this.switchTab($(e.delegateTarget), $tabs); });
+    };
+    PlanningView.prototype.switchTab = function ($target, $tabs) {
+        $tabs.removeClass("active");
+        $target.addClass("active");
+        var tabType = parseInt($target.data("type"));
+        var tabHtml = "";
+        if (tabType === PlanningType.Anytime) {
+            tabHtml = this.anytimeTabTemplate();
+        }
+        if (tabType === PlanningType.Weekend) {
+            tabHtml = this.weekendTabTemplate();
+        }
+        if (tabType === PlanningType.Custom) {
+            tabHtml = this.customTabTemplate();
+        }
+        var $tabContent = $("#tabContent");
+        $tabContent.html(tabHtml);
+        this.onTabSwitched(tabType);
+    };
+    PlanningView.prototype.onTabSwitched = function (tabType) {
+        this.mapsOperations.loadCategory(tabType);
     };
     return PlanningView;
 })(Views.ViewBase);
@@ -37,107 +70,18 @@ var DelayedCallbackMap = (function () {
     };
     return DelayedCallbackMap;
 })();
-var PlanningMap = (function () {
-    function PlanningMap(planningType, map) {
+var GraphicConfig = (function () {
+    function GraphicConfig() {
         this.borderColor = "#000000";
         this.fillColorUnselected = "#CFCAC8";
         this.fillColorSelected = "#57CF5F";
         this.fillColorHover = "#57CF9D";
-        this.citiesLayerGroup = L.layerGroup();
-        this.map = map;
-        this.map.addLayer(this.citiesLayerGroup);
-        this.countryShapes = new CountryShapes2();
-        this.initConfigs();
-        this.initCountries(planningType);
-        this.initCities();
         this.cityIcon = this.getCityIcon();
         this.focusIcon = this.getCityIconFocus();
         this.selectedIcon = this.getSelectedIcon();
+        this.initConfigs();
     }
-    PlanningMap.prototype.initCities = function () {
-        var _this = this;
-        this.delayedZoomCallback = new DelayedCallbackMap();
-        this.delayedZoomCallback.callback = function () {
-            console.log("zoom finished master");
-            var bounds = _this.map.getBounds();
-            var zoom = _this.map.getZoom();
-            var population = _this.getPopulationFromZoom(zoom);
-            console.log("pop: " + population);
-            var prms = [
-                ["latSouth", bounds._southWest.lat],
-                ["lngWest", bounds._southWest.lng],
-                ["latNorth", bounds._northEast.lat],
-                ["lngEast", bounds._northEast.lng],
-                ["minPopulation", population],
-                ["planningType", PlanningType.Anytime.toString()]
-            ];
-            Views.ViewBase.currentView.apiGet("airportGroup", prms, function (response) {
-                _this.onCitiesResponse(response);
-            });
-        };
-        this.map.on("zoomend", function (e) {
-            _this.delayedZoomCallback.receiveEvent();
-        });
-        this.map.on("moveend", function (e) {
-            _this.delayedZoomCallback.receiveEvent();
-        });
-    };
-    PlanningMap.prototype.onCitiesResponse = function (cities) {
-        this.createCities(cities);
-        console.log("received cities: " + cities.length);
-    };
-    PlanningMap.prototype.createCities = function (cities) {
-        var _this = this;
-        var filteredCities = _.filter(cities, function (city) {
-            return !_.contains(_this.selectedCountries, city.countryCode);
-        });
-        this.cityPairMarker = [];
-        this.citiesLayerGroup.clearLayers();
-        filteredCities.forEach(function (city) {
-            var cityMarker = _this.createCity(city);
-            _this.cityPairMarker.push({ city: city, marker: cityMarker });
-        });
-    };
-    PlanningMap.prototype.getCitesMarkersByCountry = function (countryCode) {
-        var pairs = _.filter(this.cityPairMarker, function (pair) { return pair.city.countryCode === countryCode; });
-        return pairs;
-    };
-    PlanningMap.prototype.createCity = function (city) {
-        var _this = this;
-        var icon = city.selected ? this.selectedIcon : this.cityIcon;
-        var marker = L.marker([city.coord.Lat, city.coord.Lng], { icon: icon });
-        marker.selected = city.selected;
-        marker.gid = city.gid;
-        marker.on("mouseover", function (e) {
-            e.target.setIcon(_this.focusIcon);
-        });
-        marker.on("mouseout", function (e) {
-            if (!e.target.selected) {
-                e.target.setIcon(_this.cityIcon);
-            }
-            else {
-                e.target.setIcon(_this.selectedIcon);
-            }
-        });
-        marker.on("click", function (e) {
-            _this.callChangeCitySelection(PlanningType.Anytime, e.target.gid, !e.target.selected, function (res) {
-                e.target.setIcon(_this.selectedIcon);
-                e.target.selected = !e.target.selected;
-            });
-        });
-        marker.addTo(this.citiesLayerGroup);
-        return marker;
-    };
-    PlanningMap.prototype.callChangeCitySelection = function (planningType, gid, selected, callback) {
-        var data = this.createRequest(PlanningType.Anytime, "cities", {
-            gid: gid,
-            selected: selected
-        });
-        Views.ViewBase.currentView.apiPut("PlanningProperty", data, function (response) {
-            callback(response);
-        });
-    };
-    PlanningMap.prototype.getCityIcon = function () {
+    GraphicConfig.prototype.getCityIcon = function () {
         var icon = L.icon({
             iconUrl: '../../images/MapIcons/CityNormal.png',
             //shadowUrl: 'leaf-shadow.png',
@@ -147,7 +91,7 @@ var PlanningMap = (function () {
         });
         return icon;
     };
-    PlanningMap.prototype.getSelectedIcon = function () {
+    GraphicConfig.prototype.getSelectedIcon = function () {
         var icon = L.icon({
             iconUrl: '../../images/MapIcons/CitySelected.png',
             iconSize: [16, 16],
@@ -155,13 +99,111 @@ var PlanningMap = (function () {
         });
         return icon;
     };
-    PlanningMap.prototype.getCityIconFocus = function () {
+    GraphicConfig.prototype.getCityIconFocus = function () {
         var icon = L.icon({
             iconUrl: '../../images/MapIcons/CityFocus.png',
             iconSize: [20, 20],
             iconAnchor: [10, 10]
         });
         return icon;
+    };
+    GraphicConfig.prototype.initConfigs = function () {
+        var sc = new PolygonConfig();
+        sc.fillColor = this.fillColorSelected;
+        sc.borderColor = this.borderColor;
+        this.selectedConfig = sc;
+        var uc = new PolygonConfig();
+        uc.fillColor = this.fillColorUnselected;
+        uc.borderColor = this.borderColor;
+        this.unselectedConfig = uc;
+    };
+    return GraphicConfig;
+})();
+var PolygonConfig = (function () {
+    function PolygonConfig() {
+        var defaultColor = '#2F81DE';
+        this.borderColor = defaultColor;
+        this.borderOpacity = 1;
+        this.borderWeight = 1;
+        this.fillColor = defaultColor;
+        this.fillOpacity = 0.5;
+    }
+    PolygonConfig.prototype.convert = function () {
+        return {
+            color: this.borderColor,
+            opacity: this.borderOpacity,
+            weight: this.borderWeight,
+            fillColor: this.fillColor,
+            fillOpacity: this.fillOpacity
+        };
+    };
+    return PolygonConfig;
+})();
+var PlanningMap = (function () {
+    function PlanningMap(map) {
+        this.map = map;
+        this.graph = new GraphicConfig();
+        this.citiesManager = new CitiesManager(map, this.graph);
+        this.countriesManager = new CountriesManager(map, this.graph);
+        this.citiesManager.countriesManager = this.countriesManager;
+        this.countriesManager.citiesManager = this.citiesManager;
+    }
+    PlanningMap.prototype.loadCategory = function (planningType) {
+        this.currentPlanningType = planningType;
+        this.initCategory();
+        this.loadCitiesInRange();
+        this.delayedZoomCallback.receiveEvent();
+    };
+    PlanningMap.prototype.loadCitiesInRange = function () {
+        var _this = this;
+        this.delayedZoomCallback = new DelayedCallbackMap();
+        this.delayedZoomCallback.callback = function () {
+            _this.callToLoadCities();
+        };
+        this.map.on("zoomend", function (e) {
+            _this.delayedZoomCallback.receiveEvent();
+        });
+        this.map.on("moveend", function (e) {
+            _this.delayedZoomCallback.receiveEvent();
+        });
+    };
+    PlanningMap.prototype.callToLoadCities = function () {
+        var _this = this;
+        var bounds = this.map.getBounds();
+        var zoom = this.map.getZoom();
+        var population = this.getPopulationFromZoom(zoom);
+        var prms = [
+            ["latSouth", bounds._southWest.lat],
+            ["lngWest", bounds._southWest.lng],
+            ["latNorth", bounds._northEast.lat],
+            ["lngEast", bounds._northEast.lng],
+            ["minPopulation", population],
+            ["planningType", this.currentPlanningType.toString()]
+        ];
+        Views.ViewBase.currentView.apiGet("airportGroup", prms, function (response) {
+            _this.onCitiesResponse(response);
+        });
+    };
+    PlanningMap.prototype.initCategory = function () {
+        var _this = this;
+        this.getTabData(this.currentPlanningType, function (data) {
+            _this.viewData = data;
+            if (_this.currentPlanningType === PlanningType.Anytime) {
+                _this.countriesManager.createCountries(_this.viewData.countryCodes, _this.currentPlanningType);
+            }
+            if (_this.currentPlanningType === PlanningType.Weekend) {
+                _this.countriesManager.createCountries(_this.viewData.countryCodes, _this.currentPlanningType);
+            }
+        });
+    };
+    PlanningMap.prototype.getTabData = function (planningType, callback) {
+        var prms = [["planningType", planningType.toString()]];
+        Views.ViewBase.currentView.apiGet("PlanningProperty", prms, function (response) {
+            callback(response);
+        });
+    };
+    PlanningMap.prototype.onCitiesResponse = function (cities) {
+        this.citiesManager.createCities(cities, this.currentPlanningType);
     };
     PlanningMap.prototype.getPopulationFromZoom = function (zoom) {
         if (zoom < 3) {
@@ -184,92 +226,61 @@ var PlanningMap = (function () {
         }
         return 1;
     };
-    PlanningMap.prototype.initCountries = function (planningType) {
+    return PlanningMap;
+})();
+var CountriesManager = (function () {
+    function CountriesManager(map, graph) {
+        this.selectedCountries = [];
+        this.graph = graph;
+        this.map = map;
+        this.countriesLayerGroup = L.layerGroup();
+        this.map.addLayer(this.countriesLayerGroup);
+        this.countryShapes = new CountryShapes2();
+    }
+    CountriesManager.prototype.createCountries = function (selectedCountries, planningType) {
         var _this = this;
-        this.getTabData(planningType, function (data) {
-            _this.viewData = data;
-            _this.createCountries(_this.viewData.countryCodes);
-        });
-    };
-    PlanningMap.prototype.initConfigs = function () {
-        var sc = new PolygonConfig();
-        sc.fillColor = this.fillColorSelected;
-        sc.borderColor = this.borderColor;
-        this.selectedConfig = sc;
-        var uc = new PolygonConfig();
-        uc.fillColor = this.fillColorUnselected;
-        uc.borderColor = this.borderColor;
-        this.unselectedConfig = uc;
-    };
-    PlanningMap.prototype.createCountries = function (selectedCountries) {
-        var _this = this;
+        this.currentPlanningType = planningType;
+        this.countriesLayerGroup.clearLayers();
         this.selectedCountries = selectedCountries;
         this.countryShapes.countriesList.forEach(function (country) {
             var selected = _.contains(selectedCountries, country.name);
-            var config = selected ? _this.selectedConfig : _this.unselectedConfig;
-            _this.drawCountry(country, config);
+            var config = selected ? _this.graph.selectedConfig : _this.graph.unselectedConfig;
+            _this.createCountry(country, config);
         });
     };
-    PlanningMap.prototype.drawCountry = function (country, polygonConfig) {
+    CountriesManager.prototype.createCountry = function (country, polygonConfig) {
         var _this = this;
-        var polygon = L.polygon(country.coordinates, {
-            color: polygonConfig.borderColor,
-            opacity: polygonConfig.borderOpacity,
-            weight: polygonConfig.borderWeight,
-            fillColor: polygonConfig.fillColor,
-            fillOpacity: polygonConfig.fillOpacity
-        }).addTo(this.map);
+        var polygon = L.polygon(country.coordinates, polygonConfig.convert());
+        polygon.addTo(this.countriesLayerGroup);
         polygon.countryCode = country.name;
         polygon.on("click", function (e) {
             var countryCode = e.target.countryCode;
             var wasSelected = _.contains(_this.selectedCountries, countryCode);
-            var newFillColor = wasSelected ? _this.fillColorUnselected : _this.fillColorSelected;
-            _this.callChangeCountrySelection(PlanningType.Anytime, countryCode, !wasSelected, function (response) {
+            var newFillColor = wasSelected ? _this.graph.fillColorUnselected : _this.graph.fillColorSelected;
+            _this.callChangeCountrySelection(_this.currentPlanningType, countryCode, !wasSelected, function (response) {
                 e.target.setStyle({ fillColor: newFillColor });
                 if (wasSelected) {
                     _this.selectedCountries = _.reject(_this.selectedCountries, function (cntry) { return cntry === countryCode; });
-                    _this.showCityMarkersByCountry(countryCode);
+                    _this.citiesManager.showCityMarkersByCountry(countryCode);
                 }
                 else {
                     _this.selectedCountries.push(countryCode);
-                    _this.hideCityMarkersByCountry(countryCode);
+                    _this.citiesManager.hideCityMarkersByCountry(countryCode);
                 }
             });
         });
         polygon.on("mouseover", function (e) {
-            e.target.setStyle({ fillColor: _this.fillColorHover });
+            e.target.setStyle({ fillColor: _this.graph.fillColorHover });
         });
         polygon.on("mouseout", function (e) {
             var countryCode = e.target.countryCode;
             var selected = _.contains(_this.selectedCountries, countryCode);
-            var fillColor = selected ? _this.fillColorSelected : _this.fillColorUnselected;
+            var fillColor = selected ? _this.graph.fillColorSelected : _this.graph.fillColorUnselected;
             e.target.setStyle({ fillColor: fillColor });
         });
     };
-    PlanningMap.prototype.hideCityMarkersByCountry = function (countryCode) {
-        var _this = this;
-        var cityMarkerPairs = this.getCitesMarkersByCountry(countryCode);
-        cityMarkerPairs.forEach(function (pair) {
-            _this.citiesLayerGroup.removeLayer(pair.marker);
-            pair.marker = null;
-        });
-    };
-    PlanningMap.prototype.showCityMarkersByCountry = function (countryCode) {
-        var _this = this;
-        var cityMarkerPairs = this.getCitesMarkersByCountry(countryCode);
-        cityMarkerPairs.forEach(function (pair) {
-            var cityMarker = _this.createCity(pair.city);
-            pair.marker = cityMarker;
-        });
-    };
-    PlanningMap.prototype.getTabData = function (planningType, callback) {
-        var prms = [["planningType", planningType.toString()]];
-        Views.ViewBase.currentView.apiGet("PlanningProperty", prms, function (response) {
-            callback(response);
-        });
-    };
-    PlanningMap.prototype.callChangeCountrySelection = function (planningType, countryCode, selected, callback) {
-        var data = this.createRequest(PlanningType.Anytime, "countries", {
+    CountriesManager.prototype.callChangeCountrySelection = function (planningType, countryCode, selected, callback) {
+        var data = this.createRequest(planningType, "countries", {
             countryCode: countryCode,
             selected: selected
         });
@@ -277,11 +288,103 @@ var PlanningMap = (function () {
             callback(response);
         });
     };
-    PlanningMap.prototype.createRequest = function (planningType, propertyName, values) {
+    CountriesManager.prototype.createRequest = function (planningType, propertyName, values) {
         var request = { planningType: planningType, propertyName: propertyName, values: values };
         return request;
     };
-    return PlanningMap;
+    return CountriesManager;
+})();
+var CitiesManager = (function () {
+    function CitiesManager(map, graph) {
+        this.cities = [];
+        this.citiesToMarkers = [];
+        this.graph = graph;
+        this.map = map;
+        this.citiesLayerGroup = L.layerGroup();
+        this.map.addLayer(this.citiesLayerGroup);
+    }
+    CitiesManager.prototype.createCities = function (cities, planningType) {
+        var _this = this;
+        this.currentPlanningType = planningType;
+        this.cities = cities;
+        var filteredCities = _.filter(cities, function (city) {
+            return !_.contains(_this.countriesManager.selectedCountries, city.countryCode);
+        });
+        this.citiesToMarkers = [];
+        this.citiesLayerGroup.clearLayers();
+        filteredCities.forEach(function (city) {
+            var cityMarker = _this.createCity(city);
+            _this.addCityToMarker(city, cityMarker);
+        });
+    };
+    CitiesManager.prototype.hideCityMarkersByCountry = function (countryCode) {
+        var _this = this;
+        var cityMarkerPairs = this.getCitesMarkersByCountry(countryCode);
+        cityMarkerPairs.forEach(function (pair) {
+            _this.citiesLayerGroup.removeLayer(pair.marker);
+            pair = null;
+        });
+        this.citiesToMarkers = _.reject(this.citiesToMarkers, function (i) { return i === null; });
+    };
+    CitiesManager.prototype.showCityMarkersByCountry = function (countryCode) {
+        var _this = this;
+        var cities = this.getCitesByCountry(countryCode);
+        cities.forEach(function (city) {
+            var cityMarker = _this.createCity(city);
+            _this.addCityToMarker(city, cityMarker);
+        });
+    };
+    CitiesManager.prototype.addCityToMarker = function (city, marker) {
+        this.citiesToMarkers.push({ city: city, marker: marker });
+    };
+    CitiesManager.prototype.getCitesMarkersByCountry = function (countryCode) {
+        var pairs = _.filter(this.citiesToMarkers, function (pair) { return pair.city.countryCode === countryCode; });
+        return pairs;
+    };
+    CitiesManager.prototype.getCitesByCountry = function (countryCode) {
+        var cities = _.filter(this.cities, function (city) { return city.countryCode === countryCode; });
+        return cities;
+    };
+    CitiesManager.prototype.createCity = function (city) {
+        var _this = this;
+        var icon = city.selected ? this.graph.selectedIcon : this.graph.cityIcon;
+        var marker = L.marker([city.coord.Lat, city.coord.Lng], { icon: icon });
+        marker.selected = city.selected;
+        marker.gid = city.gid;
+        marker.on("mouseover", function (e) {
+            e.target.setIcon(_this.graph.focusIcon);
+        });
+        marker.on("mouseout", function (e) {
+            if (!e.target.selected) {
+                e.target.setIcon(_this.graph.cityIcon);
+            }
+            else {
+                e.target.setIcon(_this.graph.selectedIcon);
+            }
+        });
+        marker.on("click", function (e) {
+            _this.callChangeCitySelection(_this.currentPlanningType, e.target.gid, !e.target.selected, function (res) {
+                e.target.setIcon(_this.graph.selectedIcon);
+                e.target.selected = !e.target.selected;
+            });
+        });
+        marker.addTo(this.citiesLayerGroup);
+        return marker;
+    };
+    CitiesManager.prototype.callChangeCitySelection = function (planningType, gid, selected, callback) {
+        var data = this.createRequest(planningType, "cities", {
+            gid: gid,
+            selected: selected
+        });
+        Views.ViewBase.currentView.apiPut("PlanningProperty", data, function (response) {
+            callback(response);
+        });
+    };
+    CitiesManager.prototype.createRequest = function (planningType, propertyName, values) {
+        var request = { planningType: planningType, propertyName: propertyName, values: values };
+        return request;
+    };
+    return CitiesManager;
 })();
 var PlanningType;
 (function (PlanningType) {
@@ -289,27 +392,4 @@ var PlanningType;
     PlanningType[PlanningType["Weekend"] = 1] = "Weekend";
     PlanningType[PlanningType["Custom"] = 2] = "Custom";
 })(PlanningType || (PlanningType = {}));
-var PolygonConfig = (function () {
-    function PolygonConfig() {
-        var defaultColor = '#2F81DE';
-        this.borderColor = defaultColor;
-        this.borderOpacity = 1;
-        this.borderWeight = 1;
-        this.fillColor = defaultColor;
-        this.fillOpacity = 0.5;
-    }
-    return PolygonConfig;
-})();
-var PlanningBaseMapsOperations = (function () {
-    function PlanningBaseMapsOperations() {
-        this.polygons = [];
-        this.markers = [];
-    }
-    return PlanningBaseMapsOperations;
-})();
-var PlanningMapsOperations = (function () {
-    function PlanningMapsOperations() {
-    }
-    return PlanningMapsOperations;
-})();
 //# sourceMappingURL=PlanningView.js.map

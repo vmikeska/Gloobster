@@ -37,23 +37,33 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 		{
 			Req = req;
 
-			if (req.planningType == PlanningType.Anytime)
+			if (req.planningType == PlanningType.Anytime || req.planningType == PlanningType.Weekend)
 			{
 				if (req.propertyName == "cities")
 				{
-					var gid = int.Parse(GV("gid"));
-					bool selected = bool.Parse(GV("selected"));
-					Planning.ChangeCitySelection(UserId, gid, selected);
+					var selection = new CitySelectionDO
+					{
+						UserId = UserId,
+						GID = int.Parse(GV("gid")),
+						Selected = bool.Parse(GV("selected")),
+						PlanningType = req.planningType
+					};
+					Planning.ChangeCitySelection(selection);
 				}
 
 				if (req.propertyName == "countries")
-				{
-					var countryCode = GV("countryCode");
-					bool selected = bool.Parse(GV("selected"));
-					Planning.ChangeCountrySelection(UserId, countryCode, selected);
+				{										
+					var selection = new CountrySelectionDO
+					{
+						UserId = UserId,
+						CountryCode = GV("countryCode"),
+                        Selected = bool.Parse(GV("selected")),
+						PlanningType = req.planningType
+					};
+					Planning.ChangeCountrySelection(selection);
 				}
 			}
-
+			
 			return new ObjectResult(null);
 		}
 
@@ -75,6 +85,17 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 				}
 				
 				response = anytime.ToResponse();
+			}
+
+			if (planningType == PlanningType.Weekend)
+			{
+				var weekend = DB.C<PlanningWeekendEntity>().FirstOrDefault(p => p.PortalUser_id == UserIdObj);
+				if (weekend == null)
+				{
+					return null;
+				}
+
+				response = weekend.ToResponse();
 			}
 
 			return new ObjectResult(response);

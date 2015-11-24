@@ -8,8 +8,8 @@ namespace Gloobster.DomainInterfaces
 {
 	public interface IPlanningDomain
 	{
-		Task<bool> ChangeCountrySelection(string userId, string countryCode, bool selected);
-		Task<bool> ChangeCitySelection(string userId, int gid, bool selected);
+		Task<bool> ChangeCountrySelection(CountrySelectionDO selection);
+		Task<bool> ChangeCitySelection(CitySelectionDO selection);
         void CreateDBStructure(string userId);
 	}
 }

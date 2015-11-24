@@ -13,5 +13,14 @@ namespace Gloobster.Mappers
 			};
 			return r;
 		}
+
+		public static PlanningWeekendResponse ToResponse(this PlanningWeekendEntity e)
+		{
+			var r = new PlanningWeekendResponse
+			{
+				countryCodes = e.CountryCodes
+			};
+			return r;
+		}
 	}
 }

@@ -7,11 +7,6 @@
 @using Gloobster.Portal.ViewModels
 @model Gloobster.Portal.ViewModels.ViewModelPlanning
 
-<!-- MapBox -->
-@*<script src='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.js'></script>
-<link href='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.css' rel='stylesheet' />*@
-<!-- MapBox -->
-
 <link href='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.css' rel='stylesheet' />
 
 <script type="text/javascript" src="@Url.Content("~/js/Views/PlanningView.js")"></script>
@@ -21,74 +16,63 @@
 <div class="blue-line margin2"></div>
 
 <section class="wrapper margin3">
-		<div class="table right">
-				<div class="cell bottom">
-						<span class="icon-home mright5"></span>
-				</div>
-				<div class="cell h4 middle">
-						<small class="display-block">Hometown</small>
-						<strong>Greenwald</strong>, Germany
-				</div>
-				<div class="cell bottom">
-						<span class="icon-plane2 mright5 mleft10"></span>
-				</div>
-				<div class="cell h4 middle">
-						<small class="display-block">Home Airport</small>
-						FRA, HHN, PRG
-				</div>
-				<div class="cell bottom">
-						<a class="icon-wheel blue mleft10 popup-target" data-target="#popup-future" href="#"></a>
-				</div>
+	<div class="table right">
+		<div class="cell bottom">
+			<span class="icon-home mright5"></span>
 		</div>
-		<h1 class="margin2">Planning</h1>
-
-		<div class="hint orange margin">
-				<span class="icon-amplion orange middle mright5"></span>
-				Our search engine is now in beta. So bear with us until next release to be out in
-				<strong>37 days, 5 hours and 32 minutes</strong>.
-				<a class="close" href="#">Close</a>
+		<div class="cell h4 middle">
+			<small class="display-block">Hometown</small>
+			<strong>Greenwald</strong>, Germany
 		</div>
+		<div class="cell bottom">
+			<span class="icon-plane2 mright5 mleft10"></span>
+		</div>
+		<div class="cell h4 middle">
+			<small class="display-block">Home Airport</small>
+			FRA, HHN, PRG
+		</div>
+		<div class="cell bottom">
+			<a class="icon-wheel blue mleft10 popup-target" data-target="#popup-future" href="#"></a>
+		</div>
+	</div>
+	<h1 class="margin2">Planning</h1>
 
-<div class="table width100">
+	<div class="hint orange margin">
+		<span class="icon-amplion orange middle mright5"></span>
+		Our search engine is now in beta. So bear with us until next release to be out in
+		<strong>37 days, 5 hours and 32 minutes</strong>.
+		<a class="close" href="#">Close</a>
+	</div>
+
+	<div class="table width100">
+		<div class="cell">
+			<div class="tabs table row">
 				<div class="cell">
-						<div class="tabs table row">
-								<div class="cell">
-										<a class="tab active" href="#" data-target="#anytime">Anytime</a>
-								</div>
-								<div class="cell">
-										<a class="tab" href="#" data-target="#weekend">Weekend</a>
-								</div>
-								<div class="cell">
-										<a class="tab" href="#" data-target="#custom">Custom</a>
-								</div>
-						</div>
+					<a class="tab active" data-type="0" href="#">Anytime</a>
 				</div>
-				<div class="cell middle tright">
-						<a class="icon-filter textnohide textleft noneline" href="#">Fine Filter</a>
-						<a class="icon-map textnohide textleft noneline mleft10" href="#">Map</a>
+				<div class="cell">
+					<a class="tab" data-type="1" href="#">Weekend</a>
 				</div>
+				<div class="cell">
+					<a class="tab" data-type="2" href="#">Custom</a>
+				</div>
+			</div>
 		</div>
-		@Html.Partial("TabAnytime")
-		@Html.Partial("TabWeekend")
-		@Html.Partial("TabCustom")
-
-		<div class="map margin" id="map"></div>
 		
-	
-	
+	</div>
+
+	<div id="tabContent"></div>
+
+	<div class="map margin" id="map"></div>
+
 </section>
+
 @Html.Partial("LocationSettingsDialog")
-<!-- MapBox -->
-@*<script>
-    L.mapbox.accessToken = 'pk.eyJ1IjoiZ2xvb2JzdGVyIiwiYSI6ImQxZWY5MjRkZjU1NDk2MGU3OWI2OGRiM2U3NTM0MGYxIn0.nCG7hOsSQzb0c-_qzfTCRQ';
-    var map = L.mapbox.map('map', 'gloobster.afeef633');
-</script>*@
-<!-- MapBox -->
+@Html.Partial("DestinationTemplates")
 
 <script>
 	function onBodyLoad() {
 			currentView = new PlanningView();
-
 	}
 
 </script>

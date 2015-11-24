@@ -2,22 +2,67 @@
 class PlanningView extends Views.ViewBase {
 
  private maps: MapsCreatorMapBox2D;
- private mapsDriver: PlanningMapsOperations;
   
+ public mapsOperations: PlanningMap;
+
+ private anytimeTabTemplate: any;
+ private weekendTabTemplate: any;
+ private customTabTemplate: any;
+
  constructor() {
 	 super();
 	
 	 this.initialize();
+	 this.registerTabEvents();
  }
 
 	public initialize() {
 		this.maps = new MapsCreatorMapBox2D();
 		this.maps.setRootElement("map");
 		this.maps.show((map) => {
-		 var mapOper = new PlanningMap(PlanningType.Anytime, map);			
+		 this.mapsOperations = new PlanningMap(map);
+		 this.mapsOperations.loadCategory(PlanningType.Anytime);
 		});
 
 	}
+
+  private registerTabEvents() {
+	 this.anytimeTabTemplate = Views.ViewBase.currentView.registerTemplate("anytime-template");
+	 this.weekendTabTemplate = Views.ViewBase.currentView.registerTemplate("weekend-template");
+	 this.customTabTemplate = Views.ViewBase.currentView.registerTemplate("custom-template");
+
+	  var $tabsRoot = $(".tabs");
+	  var $tabs = $tabsRoot.find(".tab");
+		$tabs.click((e) => { this.switchTab($(e.delegateTarget), $tabs); });
+  }
+
+	private switchTab($target, $tabs) {
+		$tabs.removeClass("active");
+		$target.addClass("active");
+
+
+		var tabType = parseInt($target.data("type"));
+		var tabHtml = "";
+		if (tabType === PlanningType.Anytime) {
+			tabHtml = this.anytimeTabTemplate();
+		}
+		if (tabType === PlanningType.Weekend) {
+			tabHtml = this.weekendTabTemplate();
+		}
+		if (tabType === PlanningType.Custom) {
+			tabHtml = this.customTabTemplate();
+		}
+
+		var $tabContent = $("#tabContent");
+		$tabContent.html(tabHtml);
+
+		this.onTabSwitched(tabType);
+	}
+
+	private onTabSwitched(tabType: PlanningType) {
+		this.mapsOperations.loadCategory(tabType);
+	}
+
 }
 
 class DelayedCallbackMap {
@@ -42,325 +87,70 @@ class DelayedCallbackMap {
 	}
 }
 
-class PlanningMap {
-	
- private borderColor = "#000000";
- private fillColorUnselected = "#CFCAC8";
- private fillColorSelected = "#57CF5F";
- private fillColorHover = "#57CF9D";
+class GraphicConfig {
+	public borderColor = "#000000";
+	public fillColorUnselected = "#CFCAC8";
+	public fillColorSelected = "#57CF5F";
+	public fillColorHover = "#57CF9D";
 
- private selectedConfig: PolygonConfig;
- private unselectedConfig: PolygonConfig;
+  constructor() {
+	  this.cityIcon = this.getCityIcon();
+	 this.focusIcon = this.getCityIconFocus();
+	 this.selectedIcon = this.getSelectedIcon();
+	 this.initConfigs();
+  }
 
- private delayedZoomCallback: DelayedCallbackMap;
+	public selectedConfig: PolygonConfig;
+	public unselectedConfig: PolygonConfig;
 
- private viewData: any;
-
- private citiesLayerGroup: any;
- 
-	constructor(planningType: PlanningType, map) {
-		this.citiesLayerGroup = L.layerGroup();
-		this.map = map;
-		this.map.addLayer(this.citiesLayerGroup);
-
-		this.countryShapes = new CountryShapes2();
-		this.initConfigs();
-		this.initCountries(planningType);
-		this.initCities();
-
-		this.cityIcon = this.getCityIcon();
-		this.focusIcon = this.getCityIconFocus();
-		this.selectedIcon = this.getSelectedIcon();
-	}
-
-	public countryShapes: CountryShapes2;
- public map: any;
- 
- private selectedCountries: any;
-
- private cityIcon: any;
- private focusIcon: any;
- private selectedIcon: any;
-
- private initCities() {
-	 this.delayedZoomCallback = new DelayedCallbackMap();
-	 this.delayedZoomCallback.callback = () => {
-		 console.log("zoom finished master");
-		 var bounds = this.map.getBounds();
-
-		 var zoom = this.map.getZoom();
-		 var population = this.getPopulationFromZoom(zoom);
-		 console.log("pop: " + population);
-
-
-		 var prms = [
-			 ["latSouth", bounds._southWest.lat],
-			 ["lngWest", bounds._southWest.lng],
-			 ["latNorth", bounds._northEast.lat],
-			 ["lngEast", bounds._northEast.lng],
-			 ["minPopulation", population],
-			 ["planningType", PlanningType.Anytime.toString()]
-		 ];
-
-		 Views.ViewBase.currentView.apiGet("airportGroup", prms, (response) => {
-			this.onCitiesResponse(response);						
-		 });
-
-	 };
-
-	 this.map.on("zoomend", e => {
-		 this.delayedZoomCallback.receiveEvent();
-	 });
-	 this.map.on("moveend", e => {
-		 this.delayedZoomCallback.receiveEvent();
-	 });
-	 
- }
-
-	private onCitiesResponse(cities) {
-		this.createCities(cities);
-
-		console.log("received cities: " + cities.length);
-	}
-
-	private createCities(cities) {
-	 var filteredCities = _.filter(cities, (city) => {
-		 return !_.contains(this.selectedCountries, city.countryCode);
-	 });
-
-	 this.cityPairMarker = [];
-
-	 this.citiesLayerGroup.clearLayers();
-	
-	 filteredCities.forEach((city) => {
-		var cityMarker = this.createCity(city);
-		this.cityPairMarker.push({ city: city, marker: cityMarker });
-	 });
- }
-
- private cityPairMarker: any;
-
- private getCitesMarkersByCountry(countryCode: string) {
-	 var pairs = _.filter(this.cityPairMarker, (pair) => { return pair.city.countryCode === countryCode });
-	 return pairs;
- }
-
-	private createCity(city) {
-
-		var icon = city.selected ? this.selectedIcon : this.cityIcon;
-
-		var marker = L.marker([city.coord.Lat, city.coord.Lng], { icon: icon });
-		marker.selected = city.selected;
-		marker.gid = city.gid;
-
-		marker.on("mouseover", (e) => {
-			e.target.setIcon(this.focusIcon);
-		});
-		marker.on("mouseout", (e) => {
-			if (!e.target.selected) {
-				e.target.setIcon(this.cityIcon);
-			} else {
-			 e.target.setIcon(this.selectedIcon);
-			}
-		});
-
-		marker.on("click", (e) => {
-		 this.callChangeCitySelection(PlanningType.Anytime, e.target.gid, !e.target.selected, (res) => {
-			 e.target.setIcon(this.selectedIcon);
-			 e.target.selected = !e.target.selected;
-			});		 
-		});
-	 
-		marker.addTo(this.citiesLayerGroup);
-
-		return marker;
-	}
-
-	private callChangeCitySelection(planningType: PlanningType, gid: string, selected: boolean, callback: Function) {
-	 var data = this.createRequest(PlanningType.Anytime, "cities", {
-		gid: gid,
-		selected: selected
-	 });
-
-	 Views.ViewBase.currentView.apiPut("PlanningProperty", data, (response) => {
-		callback(response);
-	 });
-	}
+	public cityIcon: any;
+	public focusIcon: any;
+	public selectedIcon: any;
 
 	private getCityIcon() {
 	 var icon = L.icon({
-	 iconUrl: '../../images/MapIcons/CityNormal.png',
-	 //shadowUrl: 'leaf-shadow.png',
+		iconUrl: '../../images/MapIcons/CityNormal.png',
+		//shadowUrl: 'leaf-shadow.png',
 
-	 iconSize: [16, 16], // size of the icon
-	 //shadowSize: [50, 64], // size of the shadow
-	 iconAnchor: [8, 8], // point of the icon which will correspond to marker's location
-	 //shadowAnchor: [4, 62],  // the same for the shadow
-	 //popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
-	});
+		iconSize: [16, 16], // size of the icon
+		//shadowSize: [50, 64], // size of the shadow
+		iconAnchor: [8, 8], // point of the icon which will correspond to marker's location
+		//shadowAnchor: [4, 62],  // the same for the shadow
+		//popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+	 });
 	 return icon;
 	}
 
 	private getSelectedIcon() {
 	 var icon = L.icon({
-		iconUrl: '../../images/MapIcons/CitySelected.png',		
+		iconUrl: '../../images/MapIcons/CitySelected.png',
 		iconSize: [16, 16],
-		iconAnchor: [8, 8]		
+		iconAnchor: [8, 8]
 	 });
 	 return icon;
 	}
 
- private getCityIconFocus() {
+	private getCityIconFocus() {
 	 var icon = L.icon({
-		 iconUrl: '../../images/MapIcons/CityFocus.png',
-		 iconSize: [20, 20],
-		 iconAnchor: [10, 10]
+		iconUrl: '../../images/MapIcons/CityFocus.png',
+		iconSize: [20, 20],
+		iconAnchor: [10, 10]
 	 });
 	 return icon;
- }
+	}
 
- private getPopulationFromZoom(zoom) {
-	 if (zoom < 3) {		 
-		 return 2000000;
-	 }
-	 if (zoom === 3) {
-		return 800000;
-	 }
-	 if (zoom === 4) {
-		return 600000;
-	 }
-	 if (zoom === 5) {
-		return 400000;
-	 }
-	 if (zoom === 6) {
-		return 200000;
-	 }
-
-	 if (zoom === 7) {
-		return 50000;
-	 }
-
-	 return 1;
- }
-
- private initCountries(planningType: PlanningType) {
-	 this.getTabData(planningType, (data) => {
-		 this.viewData = data;
-		 this.createCountries(this.viewData.countryCodes);
-	 });
- }
-
- private initConfigs() {
-	var sc = new PolygonConfig();
-	sc.fillColor = this.fillColorSelected;
-	sc.borderColor = this.borderColor;
+	private initConfigs() {
+	 var sc = new PolygonConfig();
+	 sc.fillColor = this.fillColorSelected;
+	 sc.borderColor = this.borderColor;
 	 this.selectedConfig = sc;
 
 	 var uc = new PolygonConfig();
 	 uc.fillColor = this.fillColorUnselected;
 	 uc.borderColor = this.borderColor;
 	 this.unselectedConfig = uc;
- }
-
- public createCountries(selectedCountries) {
-
-	 this.selectedCountries = selectedCountries;
-
-	 this.countryShapes.countriesList.forEach((country) => {
-		 var selected = _.contains(selectedCountries, country.name);
-		 var config = selected ? this.selectedConfig : this.unselectedConfig;
-
-		 this.drawCountry(country, config);
-	 });
-	
- }
- 
- public drawCountry(country: any, polygonConfig: PolygonConfig) {
-	
-	var polygon = L.polygon(country.coordinates, {
-	 color: polygonConfig.borderColor,
-	 opacity: polygonConfig.borderOpacity,
-	 weight: polygonConfig.borderWeight,
-
-	 fillColor: polygonConfig.fillColor,
-	 fillOpacity: polygonConfig.fillOpacity
-	}).addTo(this.map);
-	 polygon.countryCode = country.name;
-
-	polygon.on("click", (e) => {
-	 var countryCode = e.target.countryCode;
-	 var wasSelected = _.contains(this.selectedCountries, countryCode);
-	 var newFillColor = wasSelected ? this.fillColorUnselected : this.fillColorSelected;
-
-		this.callChangeCountrySelection(PlanningType.Anytime, countryCode, !wasSelected, (response) => {
-			e.target.setStyle({ fillColor: newFillColor });
-			if (wasSelected) {
-			 this.selectedCountries = _.reject(this.selectedCountries, (cntry) => { return cntry === countryCode; });
-				this.showCityMarkersByCountry(countryCode);
-			} else {
-				this.selectedCountries.push(countryCode);
-				this.hideCityMarkersByCountry(countryCode);
-			}
-
-		});
-	 });
-	
-	polygon.on("mouseover", (e) => {	 
-	 e.target.setStyle({ fillColor: this.fillColorHover });
-	});
-
-	polygon.on("mouseout", (e) => {
-		var countryCode = e.target.countryCode;
-		var selected = _.contains(this.selectedCountries, countryCode);
-	  var fillColor = selected ? this.fillColorSelected : this.fillColorUnselected;
-	
-		e.target.setStyle({ fillColor: fillColor });
-	});
-	
- }
-
-	private hideCityMarkersByCountry(countryCode: string) {
-		var cityMarkerPairs = this.getCitesMarkersByCountry(countryCode);
-		cityMarkerPairs.forEach((pair) => {
-		 this.citiesLayerGroup.removeLayer(pair.marker);
-			pair.marker = null;
-		});
 	}
-
-	private showCityMarkersByCountry(countryCode: string) {
-		var cityMarkerPairs = this.getCitesMarkersByCountry(countryCode);
-		cityMarkerPairs.forEach((pair) => {
-		 var cityMarker = this.createCity(pair.city);
-			pair.marker = cityMarker;			
-		});
-	}
-
-	private getTabData(planningType: PlanningType, callback) {
-	 var prms = [["planningType", planningType.toString()]];
-	 Views.ViewBase.currentView.apiGet("PlanningProperty", prms, (response) => {
-		 callback(response);
-	 });
- } 
-
- private callChangeCountrySelection(planningType: PlanningType, countryCode: string, selected: boolean, callback: Function) {
-	 var data = this.createRequest(PlanningType.Anytime, "countries", {
-		 countryCode: countryCode,
-		 selected: selected
-	 });
-	
-	 Views.ViewBase.currentView.apiPut("PlanningProperty", data, (response) => {
-		 callback(response);
-	 });
- }
-
- private createRequest(planningType: PlanningType, propertyName: string, values) {
-	 var request = { planningType: planningType, propertyName: propertyName, values: values };
-	 return request;
- }
-
 }
-
-enum PlanningType { Anytime, Weekend, Custom}
 
 class PolygonConfig {
 
@@ -372,7 +162,7 @@ class PolygonConfig {
 	this.borderWeight = 1;
 
 	this.fillColor = defaultColor;
-	this.fillOpacity = 0.5;
+	this.fillOpacity = 0.5;	
  }
 
  borderColor: string;
@@ -381,140 +171,355 @@ class PolygonConfig {
 
  fillColor: string;
  fillOpacity: number;
+
+ public convert() {
+	 return {
+		 color: this.borderColor,
+		 opacity: this.borderOpacity,
+		 weight: this.borderWeight,
+
+		 fillColor: this.fillColor,
+		 fillOpacity: this.fillOpacity
+		}
+ }
 }
 
-
-class PlanningBaseMapsOperations  {
-
+class PlanningMap {
  
-
- private polygons = [];
- private markers = [];
-
+	private delayedZoomCallback: DelayedCallbackMap;
+  private graph: GraphicConfig;
  
+	public map: any;
 
+	private viewData: any;
+  private currentPlanningType: PlanningType;
+ 
+  private citiesManager: CitiesManager;
+  private countriesManager: CountriesManager;
 
- //public heat: any;
+	constructor(map) {
+		this.map = map;
+		this.graph = new GraphicConfig();
 
+		this.citiesManager = new CitiesManager(map, this.graph);
+		this.countriesManager = new CountriesManager(map, this.graph);
+		this.citiesManager.countriesManager = this.countriesManager;
+		this.countriesManager.citiesManager = this.citiesManager;
+	}
 
- //public drawPolygon(polygonCoordinates: any, polygonConfig: Maps.PolygonConfig) {
-	//var polygon = L.polygon(polygonCoordinates, {
-	// color: polygonConfig.borderColor,
-	// opacity: polygonConfig.borderOpacity,
-	// weight: polygonConfig.borderWeight,
+	public loadCategory(planningType: PlanningType) {
+		this.currentPlanningType = planningType;
+		this.initCategory();
+		this.loadCitiesInRange();
+		this.delayedZoomCallback.receiveEvent();
+	}
 
-	// fillColor: polygonConfig.fillColor,
-	// fillOpacity: polygonConfig.fillOpacity
-	//}).addTo(this.mapObj);
-	//this.markers.push(polygon);
- //}
+	private loadCitiesInRange() {
+		this.delayedZoomCallback = new DelayedCallbackMap();
+		this.delayedZoomCallback.callback = () => {
+			this.callToLoadCities();
+		};
 
-	//public drawPin(place: Maps.PlaceMarker) {
-	//	var marker = L.marker([place.lat, place.lng]).addTo(this.mapObj);
-	//	this.markers.push(marker);
-	//}
+		this.map.on("zoomend", e => {
+			this.delayedZoomCallback.receiveEvent();
+		});
+		this.map.on("moveend", e => {
+			this.delayedZoomCallback.receiveEvent();
+		});
 
-	//public drawPoint(point: Maps.PlaceMarker) {
-	// var latLng = L.latLng(point.lat, point.lng);
-	// this.heat.addLatLng(latLng);
-	//}
+	}
 
+  private callToLoadCities() {
+	  var bounds = this.map.getBounds();
+			var zoom = this.map.getZoom();
+			var population = this.getPopulationFromZoom(zoom);
 
-	//public setMapObj(mapObj) {
-	// this.mapObj = mapObj;
-	// this.createHeatLayer();
- //}
+			var prms = [
+				["latSouth", bounds._southWest.lat],
+				["lngWest", bounds._southWest.lng],
+				["latNorth", bounds._northEast.lat],
+				["lngEast", bounds._northEast.lng],
+				["minPopulation", population],
+				["planningType", this.currentPlanningType.toString()]
+			];
 
-	//public destroyAll() {
+			Views.ViewBase.currentView.apiGet("airportGroup", prms, (response) => {
+				this.onCitiesResponse(response);
+			});
+  }
 
-	//	this.markers.forEach(marker => {
-	//		this.mapObj.removeLayer(marker);
-	//	});
-	//	this.markers = [];
+	private initCategory() {
+	 this.getTabData(this.currentPlanningType, (data) => {
 
-	//	this.polygons.forEach(polygon => {
-	//		this.mapObj.removeLayer(polygon);
-	//	});
-	//	this.polygons = [];
+		 this.viewData = data;
 
-	//	this.mapObj.removeLayer(this.heat);
-	//	this.createHeatLayer();
-	//}
+		 if (this.currentPlanningType === PlanningType.Anytime) {				
+				this.countriesManager.createCountries(this.viewData.countryCodes, this.currentPlanningType);
+		 }
 
-	//private createHeatLayer() {
-	// this.heat = L.heatLayer([], { maxZoom: 12 }).addTo(this.mapObj);
-	//}
+		 if (this.currentPlanningType === PlanningType.Weekend) {			 
+			this.countriesManager.createCountries(this.viewData.countryCodes, this.currentPlanningType);
+			}
 
-	//public setView(lat: number, lng: number, zoom: number) {
-	// this.mapObj.setView([lat, lng], zoom);
-	//}
+		});
+	}
 
-	//public moveToAnimated(lat: number, lng: number, zoom: number) {
-	// this.mapObj.setView([lat, lng], zoom, { animation: true });	 
-	//}
+	private getTabData(planningType: PlanningType, callback) {
+	 var prms = [["planningType", planningType.toString()]];
+	 Views.ViewBase.currentView.apiGet("PlanningProperty", prms, (response) => {
+		callback(response);
+	 });
+	}
 
-	//public getPosition() {
-	//	return this.mapObj.getCenter();
-	//}
+	private onCitiesResponse(cities) {
+	 this.citiesManager.createCities(cities, this.currentPlanningType);
+	}
+ 
+	private getPopulationFromZoom(zoom) {
+		if (zoom < 3) {
+			return 2000000;
+		}
+		if (zoom === 3) {
+			return 800000;
+		}
+		if (zoom === 4) {
+			return 600000;
+		}
+		if (zoom === 5) {
+			return 400000;
+		}
+		if (zoom === 6) {
+			return 200000;
+		}
 
-	//getZoom() {
-	//	return this.mapObj.getZoom();
-	//}
+		if (zoom === 7) {
+			return 50000;
+		}
 
+		return 1;
+	}
+ 
 }
 
-class PlanningMapsOperations {
+class CountriesManager {
+	public selectedCountries = [];
+  public citiesManager: CitiesManager;
 
-	//public mapsDriver: Maps.IMapsDriver;
+	private countryShapes: CountryShapes2;
+
+	private map: any;
+	private graph: GraphicConfig;
+	private countriesLayerGroup: any;
+
+  private currentPlanningType: PlanningType;
+
+	constructor(map, graph: GraphicConfig) {
+		this.graph = graph;
+	 this.map = map;
+
+	 this.countriesLayerGroup = L.layerGroup();
+	 this.map.addLayer(this.countriesLayerGroup);
+
+	 this.countryShapes = new CountryShapes2();
+	}
+
+
+	public createCountries(selectedCountries, planningType: PlanningType) {
+		this.currentPlanningType = planningType;
+
+	  this.countriesLayerGroup.clearLayers();
+
+	 this.selectedCountries = selectedCountries;
+
+	 this.countryShapes.countriesList.forEach((country) => {
+		var selected = _.contains(selectedCountries, country.name);
+		var config = selected ? this.graph.selectedConfig : this.graph.unselectedConfig;
+
+		this.createCountry(country, config);
+	 });
+
+	}
+
+	public createCountry(country: any, polygonConfig: PolygonConfig) {
+
+	 var polygon = L.polygon(country.coordinates, polygonConfig.convert());
+	 polygon.addTo(this.countriesLayerGroup);
+
+	 polygon.countryCode = country.name;
+
+	 polygon.on("click", (e) => {
+		var countryCode = e.target.countryCode;
+		var wasSelected = _.contains(this.selectedCountries, countryCode);
+		var newFillColor = wasSelected ? this.graph.fillColorUnselected : this.graph.fillColorSelected;
+
+		this.callChangeCountrySelection(this.currentPlanningType, countryCode, !wasSelected, (response) => {
+		 e.target.setStyle({ fillColor: newFillColor });
+		 if (wasSelected) {
+			this.selectedCountries = _.reject(this.selectedCountries, (cntry) => { return cntry === countryCode; });
+			this.citiesManager.showCityMarkersByCountry(countryCode);
+		 } else {
+			this.selectedCountries.push(countryCode);
+			this.citiesManager.hideCityMarkersByCountry(countryCode);
+		 }
+
+		});
+	 });
+
+	 polygon.on("mouseover", (e) => {
+		e.target.setStyle({ fillColor: this.graph.fillColorHover });
+	 });
+
+	 polygon.on("mouseout", (e) => {
+		var countryCode = e.target.countryCode;
+		var selected = _.contains(this.selectedCountries, countryCode);
+		var fillColor = selected ? this.graph.fillColorSelected : this.graph.fillColorUnselected;
+
+		e.target.setStyle({ fillColor: fillColor });
+	 });
+
+	}
+
+	private callChangeCountrySelection(planningType: PlanningType, countryCode: string, selected: boolean, callback: Function) {
+	 var data = this.createRequest(planningType, "countries", {
+		countryCode: countryCode,
+		selected: selected
+	 });
+
+	 Views.ViewBase.currentView.apiPut("PlanningProperty", data, (response) => {
+		callback(response);
+	 });
+	}
+
+	private createRequest(planningType: PlanningType, propertyName: string, values) {
+	 var request = { planningType: planningType, propertyName: propertyName, values: values };
+	 return request;
+	}
+
 	
+}
 
-	//public setBaseMapsOperations(baseMapsOperations: Maps.IMapsDriver) {
-	// this.mapsDriver = baseMapsOperations;
-	//}
+class CitiesManager {
 
-	//public drawCountry(country: Maps.CountryHighligt) {
+ public citiesLayerGroup: any;
+ public countriesManager: CountriesManager;
 
-	//	var countryParts = this.countryShapes.getCoordinatesByCountry(country.countryCode);
+ private map: any;
+ private graph: GraphicConfig;
 
-	//	if (!countryParts) {
-	//		console.log("missing country with code: " + country.countryCode);
-	//		return;
-	//	}
-	//	countryParts.forEach(countryPart => {
-	//		this.mapsDriver.drawPolygon(countryPart, country.countryConfig);
-	//	});
-	//}
+ private cities = [];
+ private citiesToMarkers = [];
 
-	//public drawCountries(countries: Maps.CountryHighligt[]) {
-	//	countries.forEach(country => {
-	//		this.drawCountry(country);
-	//	});
-	//}
+ private currentPlanningType: PlanningType;
 
-	//public drawCity(city: Maps.PlaceMarker) {
-	// this.mapsDriver.drawPin(city);
-	//}
+	constructor(map, graph: GraphicConfig) {
+		this.graph = graph;
+		this.map = map;
 
-	//public drawCities(cities: Maps.PlaceMarker[]) {
-	// cities.forEach(city => {
-	//		this.drawCity(city);
-	//	});
-	//}
+		this.citiesLayerGroup = L.layerGroup();
+		this.map.addLayer(this.citiesLayerGroup);
+	}
 
-	//public drawPlace(place: Maps.PlaceMarker) {
-	// this.mapsDriver.drawPoint(place);
-	//}
+	public createCities(cities, planningType: PlanningType) {
+		this.currentPlanningType = planningType;
 
-	//public drawPlaces(places: Maps.PlaceMarker[]) {
-	// places.forEach(place => {
-	// this.drawPlace(place);
-	// });
-	//}
+		this.cities = cities;
 
-	//public setView(lat: number, lng: number, zoom: number) {
-	//	this.mapsDriver.setView(lat, lng, zoom);
-	//}
+		var filteredCities = _.filter(cities, (city) => {
+			return !_.contains(this.countriesManager.selectedCountries, city.countryCode);
+		});
+
+		this.citiesToMarkers = [];
+
+		this.citiesLayerGroup.clearLayers();
+
+		filteredCities.forEach((city) => {
+			var cityMarker = this.createCity(city);
+			this.addCityToMarker(city, cityMarker);
+		});
+
+	}
+
+	public hideCityMarkersByCountry(countryCode: string) {
+		var cityMarkerPairs = this.getCitesMarkersByCountry(countryCode);
+		cityMarkerPairs.forEach((pair) => {
+			this.citiesLayerGroup.removeLayer(pair.marker);		  
+			pair = null;
+		});
+		this.citiesToMarkers = _.reject(this.citiesToMarkers, (i) => { return i === null });
+	}
+
+	public showCityMarkersByCountry(countryCode: string) {
+		var cities = this.getCitesByCountry(countryCode);
+
+		cities.forEach((city) => {
+			var cityMarker = this.createCity(city);
+			this.addCityToMarker(city, cityMarker);
+		});
+	}
+
+	private addCityToMarker(city, marker) {
+	 this.citiesToMarkers.push({ city: city, marker: marker});
+	}
+
+	private getCitesMarkersByCountry(countryCode: string) {
+	 var pairs = _.filter(this.citiesToMarkers, (pair) => { return pair.city.countryCode === countryCode });
+	 return pairs;
+	}
+
+	private getCitesByCountry(countryCode: string) {
+	 var cities = _.filter(this.cities, (city) => { return city.countryCode === countryCode });
+	 return cities;
+	}
+
+	private createCity(city) {
+
+	 var icon = city.selected ? this.graph.selectedIcon : this.graph.cityIcon;
+
+	 var marker = L.marker([city.coord.Lat, city.coord.Lng], { icon: icon });
+	 marker.selected = city.selected;
+	 marker.gid = city.gid;
+
+	 marker.on("mouseover", (e) => {
+		e.target.setIcon(this.graph.focusIcon);
+	 });
+	 marker.on("mouseout", (e) => {
+		if (!e.target.selected) {
+		 e.target.setIcon(this.graph.cityIcon);
+		} else {
+		 e.target.setIcon(this.graph.selectedIcon);
+		}
+	 });
+
+	 marker.on("click", (e) => {
+		this.callChangeCitySelection(this.currentPlanningType, e.target.gid, !e.target.selected, (res) => {
+		 e.target.setIcon(this.graph.selectedIcon);
+		 e.target.selected = !e.target.selected;
+		});
+	 });
+
+	 marker.addTo(this.citiesLayerGroup);
+
+	 return marker;
+	}
+
+	private callChangeCitySelection(planningType: PlanningType, gid: string, selected: boolean, callback: Function) {
+	 var data = this.createRequest(planningType, "cities", {
+		gid: gid,
+		selected: selected
+	 });
+
+	 Views.ViewBase.currentView.apiPut("PlanningProperty", data, (response) => {
+		callback(response);
+	 });
+	}
+
+	private createRequest(planningType: PlanningType, propertyName: string, values) {
+	 var request = { planningType: planningType, propertyName: propertyName, values: values };
+	 return request;
+	}
+ 
 }
 
 
 
+enum PlanningType { Anytime, Weekend, Custom}
