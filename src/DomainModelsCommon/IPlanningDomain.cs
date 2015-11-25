@@ -10,6 +10,8 @@ namespace Gloobster.DomainInterfaces
 	{
 		Task<bool> ChangeCountrySelection(CountrySelectionDO selection);
 		Task<bool> ChangeCitySelection(CitySelectionDO selection);
+
+		Task<bool> ChangeWeekendExtraDaysLength(string userId, int daysLength);
         void CreateDBStructure(string userId);
 	}
 }

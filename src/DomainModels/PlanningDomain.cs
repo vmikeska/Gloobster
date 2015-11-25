@@ -163,10 +163,14 @@ namespace Gloobster.DomainModels
 			return false;
 		}
 
-		public void ChangeWeekendDuration()
+		public async Task<bool> ChangeWeekendExtraDaysLength(string userId, int daysLength)
 	    {
-		    
-	    }
+			var userIdObj = new ObjectId(userId);
+			var filter = DB.F<PlanningWeekendEntity>().Eq(p => p.PortalUser_id, userIdObj);
+			var update = DB.U<PlanningWeekendEntity>().Set(p => p.ExtraDaysLength, daysLength);
+			var res = await DB.UpdateAsync(filter, update);
+			return res.ModifiedCount == 1;
+		}
 		
 		public async void CreateDBStructure(string userId)
 	    {
@@ -179,7 +183,7 @@ namespace Gloobster.DomainModels
 			    {
 				    id = ObjectId.GenerateNewId(),
 				    PortalUser_id = userIdObj,
-					LongWeekend = 0,
+					ExtraDaysLength = 0,
 					CountryCodes = new List<string>(),
 					Cites = new List<int>()
 			    };

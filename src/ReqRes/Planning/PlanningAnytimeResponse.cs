@@ -9,7 +9,7 @@ namespace Gloobster.ReqRes.Planning
 
 	public class PlanningWeekendResponse
 	{
-		public int longWeekend { get; set; }
+		public int extraDaysLength { get; set; }
 		public List<string> countryCodes { get; set; }
 	}
 	

@@ -4,7 +4,7 @@ class PlanningView extends Views.ViewBase {
  private maps: MapsCreatorMapBox2D;
   
  public mapsOperations: PlanningMap;
-
+ 
  private anytimeTabTemplate: any;
  private weekendTabTemplate: any;
  private customTabTemplate: any;
@@ -35,7 +35,7 @@ class PlanningView extends Views.ViewBase {
 	  var $tabs = $tabsRoot.find(".tab");
 		$tabs.click((e) => { this.switchTab($(e.delegateTarget), $tabs); });
   }
-
+ 
 	private switchTab($target, $tabs) {
 		$tabs.removeClass("active");
 		$target.addClass("active");
@@ -47,7 +47,7 @@ class PlanningView extends Views.ViewBase {
 			tabHtml = this.anytimeTabTemplate();
 		}
 		if (tabType === PlanningType.Weekend) {
-			tabHtml = this.weekendTabTemplate();
+		 tabHtml = this.weekendTabTemplate();		 
 		}
 		if (tabType === PlanningType.Custom) {
 			tabHtml = this.customTabTemplate();
@@ -63,6 +63,58 @@ class PlanningView extends Views.ViewBase {
 		this.mapsOperations.loadCategory(tabType);
 	}
 
+}
+
+class WeekendForm {
+ private $plus1: any;
+ private $plus2: any;
+
+	constructor(data) {
+		this.$plus1 = $("#plus1");
+		this.$plus2 = $("#plus2");
+
+		this.setDaysCheckboxes(data.extraDaysLength);
+
+		this.$plus1.click((e) => {
+			var checked = this.$plus1.prop("checked");
+			if (checked) {
+				this.extraDaysClicked(1);
+			} else {
+				this.extraDaysClicked(0);
+			}
+		});
+		this.$plus2.click((e) => {
+			var checked = this.$plus2.prop("checked");
+			if (checked) {
+				this.extraDaysClicked(2);
+			} else {
+				this.extraDaysClicked(1);
+			}
+		});
+	}
+
+	private setDaysCheckboxes(length) {
+		if (length === 0) {
+			this.$plus1.prop("checked", false);
+			this.$plus2.prop("checked", false);
+		}
+		if (length === 1) {
+			this.$plus1.prop("checked", true);
+			this.$plus2.prop("checked", false);
+		}
+		if (length === 2) {
+			this.$plus1.prop("checked", true);
+			this.$plus2.prop("checked", true);
+		}
+	}
+
+	private extraDaysClicked(length) {
+	 var data = PlanningSender.createRequest(PlanningType.Weekend, "ExtraDaysLength", { length: length });
+	 PlanningSender.updateProp(data, (response) => {
+		 this.setDaysCheckboxes(length);
+	 });
+	}
+	
 }
 
 class DelayedCallbackMap {
@@ -197,6 +249,8 @@ class PlanningMap {
   private citiesManager: CitiesManager;
   private countriesManager: CountriesManager;
 
+	private weekendForm: WeekendForm;
+
 	constructor(map) {
 		this.map = map;
 		this.graph = new GraphicConfig();
@@ -259,7 +313,8 @@ class PlanningMap {
 
 		 if (this.currentPlanningType === PlanningType.Weekend) {			 
 			this.countriesManager.createCountries(this.viewData.countryCodes, this.currentPlanningType);
-			}
+			 this.weekendForm = new WeekendForm(data);
+		 }
 
 		});
 	}
@@ -380,22 +435,30 @@ class CountriesManager {
 	}
 
 	private callChangeCountrySelection(planningType: PlanningType, countryCode: string, selected: boolean, callback: Function) {
-	 var data = this.createRequest(planningType, "countries", {
+	 var data = PlanningSender.createRequest(planningType, "countries", {
 		countryCode: countryCode,
 		selected: selected
 	 });
 
-	 Views.ViewBase.currentView.apiPut("PlanningProperty", data, (response) => {
+	 PlanningSender.updateProp(data, (response) => {
 		callback(response);
 	 });
 	}
+ 
+}
 
-	private createRequest(planningType: PlanningType, propertyName: string, values) {
-	 var request = { planningType: planningType, propertyName: propertyName, values: values };
-	 return request;
+class PlanningSender {
+
+	public static updateProp(data, callback) {
+		Views.ViewBase.currentView.apiPut("PlanningProperty", data, (response) => {
+			callback(response);
+		});
 	}
 
-	
+	public static createRequest(planningType: PlanningType, propertyName: string, values) {
+		var request = { planningType: planningType, propertyName: propertyName, values: values };
+		return request;
+	}
 }
 
 class CitiesManager {
@@ -503,21 +566,15 @@ class CitiesManager {
 	}
 
 	private callChangeCitySelection(planningType: PlanningType, gid: string, selected: boolean, callback: Function) {
-	 var data = this.createRequest(planningType, "cities", {
+	 var data = PlanningSender.createRequest(planningType, "cities", {
 		gid: gid,
 		selected: selected
 	 });
 
-	 Views.ViewBase.currentView.apiPut("PlanningProperty", data, (response) => {
+	 PlanningSender.updateProp(data, (response) => {
 		callback(response);
 	 });
-	}
-
-	private createRequest(planningType: PlanningType, propertyName: string, values) {
-	 var request = { planningType: planningType, propertyName: propertyName, values: values };
-	 return request;
-	}
- 
+	} 
 }
 
 

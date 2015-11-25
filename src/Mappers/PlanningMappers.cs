@@ -18,7 +18,8 @@ namespace Gloobster.Mappers
 		{
 			var r = new PlanningWeekendResponse
 			{
-				countryCodes = e.CountryCodes
+				countryCodes = e.CountryCodes,
+				extraDaysLength = e.ExtraDaysLength
 			};
 			return r;
 		}

@@ -20,22 +20,30 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 	{				
 		public IDbOperations DB { get; set; }
 		public IPlanningDomain Planning { get; set; }
-		public ICountryService CountryService { get; set; }
-
-		public PlanningPropertyController(ICountryService countryService, IPlanningDomain planning, IDbOperations db) : base(db)
+		
+		public PlanningPropertyController(IPlanningDomain planning, IDbOperations db) : base(db)
 		{			
 			DB = db;
-			Planning = planning;
-			CountryService = countryService;
+			Planning = planning;			
 		}
 
 		private PlanningPropRequest Req;
 
 		[HttpPut]
 		[Authorize]
-		public IActionResult Put([FromBody]PlanningPropRequest req)
+		public async Task<IActionResult> Put([FromBody]PlanningPropRequest req)
 		{
 			Req = req;
+
+			if (req.planningType == PlanningType.Weekend)
+			{
+				if (req.propertyName == "ExtraDaysLength")
+				{
+					int length = int.Parse(GV("length"));
+                    var success = await Planning.ChangeWeekendExtraDaysLength(UserId, length);
+					return new ObjectResult(success);
+				}	
+			}
 
 			if (req.planningType == PlanningType.Anytime || req.planningType == PlanningType.Weekend)
 			{
@@ -48,7 +56,8 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 						Selected = bool.Parse(GV("selected")),
 						PlanningType = req.planningType
 					};
-					Planning.ChangeCitySelection(selection);
+					bool success = await Planning.ChangeCitySelection(selection);
+					return new ObjectResult(success);
 				}
 
 				if (req.propertyName == "countries")
@@ -60,7 +69,8 @@ namespace Gloobster.Portal.Controllers.Api.Planning
                         Selected = bool.Parse(GV("selected")),
 						PlanningType = req.planningType
 					};
-					Planning.ChangeCountrySelection(selection);
+					bool success = await Planning.ChangeCountrySelection(selection);
+					return new ObjectResult(success);
 				}
 			}
 			

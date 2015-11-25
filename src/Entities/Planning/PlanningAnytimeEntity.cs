@@ -19,7 +19,7 @@ namespace Gloobster.Entities.Planning
 	public class PlanningWeekendEntity : EntityBase
 	{
 		public ObjectId PortalUser_id { get; set; }
-		public int LongWeekend { get; set; }
+		public int ExtraDaysLength { get; set; }
 		public List<string> CountryCodes { get; set; }
 		public List<int> Cites { get; set; }
 	}
