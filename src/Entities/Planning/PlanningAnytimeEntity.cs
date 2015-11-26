@@ -33,19 +33,20 @@ namespace Gloobster.Entities.Planning
 
 	public class CustomSearchSE
 	{
+		public ObjectId id { get; set; }
 		public string SearchName { get; set; }
 
 		public List<FlightSE> FromAirports { get; set; }
-		public List<string> FromCountries { get; set; }
 
-		public List<string> ToCountries { get; set; }
+
+		public List<string> CountryCodes { get; set; }
+		public List<int> Cites { get; set; }
 
 		public List<int> Years { get; set; }
 		public List<int> Months { get; set; }
 		public DateTime? From { get; set; }
 		public DateTime? To { get; set; }
 
-		public int? RoughlyDays { get; set; }
-		public int? MinDays { get; set; }
+		public int RoughlyDays { get; set; }
 	}
 }

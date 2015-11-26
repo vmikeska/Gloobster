@@ -29,20 +29,65 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 
 		private PlanningPropRequest Req;
 
+		[HttpPost]
+		[Authorize]
+		public async Task<IActionResult> Post([FromBody] PlanningPropRequest req)
+		{
+			Req = req;
+
+			if (req.planningType == PlanningType.Custom)
+			{
+				if (req.propertyName == "time")
+				{
+					string kind = GV("kind");
+					string value = GV("value");
+					string searchId = GV("id");
+
+					if (kind == "year")
+					{
+						bool success = await Planning.PushCustomProperty(UserId, searchId, "Years", value);
+						return new ObjectResult(success);
+					}
+
+					if (kind == "month")
+					{
+						bool success = await Planning.PushCustomProperty(UserId, searchId, "Months", value);
+						return new ObjectResult(success);
+					}
+				}
+			}
+
+			return new ObjectResult(null);
+		}
+		
+
 		[HttpPut]
 		[Authorize]
 		public async Task<IActionResult> Put([FromBody]PlanningPropRequest req)
 		{
 			Req = req;
-
-			if (req.planningType == PlanningType.Weekend)
+			
+			if (req.propertyName == "ExtraDaysLength")
 			{
-				if (req.propertyName == "ExtraDaysLength")
-				{
-					int length = int.Parse(GV("length"));
-                    var success = await Planning.ChangeWeekendExtraDaysLength(UserId, length);
-					return new ObjectResult(success);
-				}	
+				int length = int.Parse(GV("length"));
+                var success = await Planning.ChangeWeekendExtraDaysLength(UserId, length);
+				return new ObjectResult(success);
+			}
+
+			if (req.propertyName == "roughlyDays")
+			{
+				int days = int.Parse(GV("days"));
+				string searchId = GV("id");
+				var success = await Planning.UpdateCustomProperty(UserId, searchId, "RoughlyDays", days);
+				return new ObjectResult(success);
+			}
+
+			if (req.propertyName == "renameSearch")
+			{
+				string searchName = GV("searchName");
+				string searchId = GV("id");
+				var success = await Planning.UpdateCustomProperty(UserId, searchId, "SearchName", searchName);
+				return new ObjectResult(success);
 			}
 
 			if (req.planningType == PlanningType.Anytime || req.planningType == PlanningType.Weekend)
@@ -106,6 +151,17 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 				}
 
 				response = weekend.ToResponse();
+			}
+
+			if (planningType == PlanningType.Custom)
+			{
+				var custom = DB.C<PlanningCustomEntity>().FirstOrDefault(p => p.PortalUser_id == UserIdObj);
+				if (custom == null)
+				{
+					return null;
+				}
+
+				response = custom.ToResponse();
 			}
 
 			return new ObjectResult(response);

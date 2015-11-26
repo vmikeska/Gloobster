@@ -100,6 +100,214 @@ var WeekendForm = (function () {
     };
     return WeekendForm;
 })();
+var TaggingField = (function () {
+    function TaggingField(containerId, itemsRange, selectedItems) {
+        this.itemsRange = itemsRange;
+        this.taggerTemplate = Views.ViewBase.currentView.registerTemplate("tagger-template");
+        this.$cont = $("#" + containerId);
+        this.$tagger = this.createTagger(itemsRange);
+        this.$cont.prepend(this.$tagger);
+        this.initTags(selectedItems);
+    }
+    TaggingField.prototype.initTags = function (selectedItems) {
+        var _this = this;
+        selectedItems.forEach(function (selectedItem) {
+            var item = _.find(_this.itemsRange, function (i) { return i.kind === selectedItem.kind && i.value === selectedItem.value; });
+            if (item) {
+                var $html = _this.createTag(item.text, item.value, item.kind);
+                _this.$cont.prepend($html);
+            }
+        });
+    };
+    TaggingField.prototype.createTag = function (text, value, kind) {
+        var html = "<a class=\"tag\" href=\"#\" data-vl=\"" + value + "\" data-kd=\"" + kind + "\">" + text + "</a>";
+        var $html = $(html);
+        return $html;
+    };
+    TaggingField.prototype.createTagger = function (items) {
+        var _this = this;
+        var html = this.taggerTemplate();
+        var $html = $(html);
+        var $input = $html.find("input");
+        var $ul = $html.find("ul");
+        $input.keyup(function (e) {
+            _this.fillTagger($input, items, $ul);
+        });
+        $input.focus(function (e) {
+            _this.fillTagger($input, items, $ul);
+            $ul.show();
+        });
+        $input.focusout(function (e) {
+            setTimeout(function () {
+                $input.val("");
+                $ul.hide();
+            }, 250);
+        });
+        return $html;
+    };
+    TaggingField.prototype.fillTagger = function ($input, items, $ul) {
+        var _this = this;
+        $ul.html("");
+        items.forEach(function (item) {
+            var inputVal = $input.val();
+            var strMatch = (inputVal === "") || (item.text.indexOf(inputVal) > -1);
+            if (strMatch) {
+                var $item = _this.createTaggerItem(item.text, item.value, item.kind);
+                $ul.append($item);
+            }
+        });
+    };
+    TaggingField.prototype.createTaggerItem = function (text, value, kind) {
+        var _this = this;
+        var html = "<li data-vl=\"" + value + "\" data-kd=\"" + kind + "\">" + text + "</li>";
+        var $html = $(html);
+        $html.click(function (e) {
+            var $target = $(e.target);
+            _this.onItemClicked($target);
+        });
+        return $html;
+    };
+    TaggingField.prototype.onItemClicked = function ($target) {
+        var val = $target.data("vl");
+        var kind = $target.data("kd");
+        var text = $target.text();
+        var $tag = this.createTag(text, val, kind);
+        this.$tagger.before($tag);
+    };
+    return TaggingField;
+})();
+var CustomForm = (function () {
+    function CustomForm(data) {
+        this.data = data;
+        this.namesList = new NamesList(data.searches);
+        this.initDuration(this.namesList.currentSearch.roughlyDays);
+        this.registerDuration();
+        this.initTimeTagger();
+    }
+    CustomForm.prototype.initTimeTagger = function () {
+        var itemsRange = [
+            { text: "july", value: 7, kind: "month" },
+            { text: "december", value: 12, kind: "month" },
+            { text: "year 2016", value: 2016, kind: "year" }
+        ];
+        var selectedItems = [{ value: 12, kind: "month" }, { value: 2016, kind: "year" }];
+        var timeTagger = new TaggingField("timeTagger", itemsRange, selectedItems);
+    };
+    CustomForm.prototype.initDuration = function (days) {
+        if (days === 0) {
+            this.setRadio(1, true);
+        }
+        else if (days === 3) {
+            this.setRadio(2, true);
+        }
+        else if (days === 7) {
+            this.setRadio(3, true);
+        }
+        else if (days === 14) {
+            this.setRadio(4, true);
+        }
+        else {
+            this.setRadio(5, true);
+            $("#customLength").show();
+            $("#customLength").val(days);
+        }
+    };
+    CustomForm.prototype.setRadio = function (no, val) {
+        $("#radio" + no).prop("checked", val);
+    };
+    CustomForm.prototype.registerDuration = function () {
+        var _this = this;
+        var dc = new DelayedCallback("customLength");
+        dc.callback = function (val) {
+            var intVal = parseInt(val);
+            if (intVal) {
+                _this.callUpdateMinLength(intVal);
+            }
+        };
+        var $lengthRadio = $("input[type=radio][name=radio]");
+        var $customLength = $("#customLength");
+        $lengthRadio.change(function (e) {
+            var $target = $(e.target);
+            var val = $target.data("vl");
+            if (val === "custom") {
+                $customLength.show();
+            }
+            else {
+                $customLength.hide();
+                _this.callUpdateMinLength(parseInt(val));
+            }
+        });
+    };
+    CustomForm.prototype.callUpdateMinLength = function (roughlyDays) {
+        var data = PlanningSender.createRequest(PlanningType.Custom, "roughlyDays", {
+            id: this.namesList.currentSearch.id,
+            days: roughlyDays
+        });
+        PlanningSender.updateProp(data, function (res) {
+        });
+    };
+    return CustomForm;
+})();
+var NamesList = (function () {
+    function NamesList(searches) {
+        var _this = this;
+        this.searches = [];
+        this.isEditMode = false;
+        this.searches = searches;
+        this.$nameInput = $("#nameInput");
+        this.$nameSaveBtn = $("#nameSaveBtn");
+        this.$nameEditBtn = $("#nameEditBtn");
+        this.$selectedSpan = $("#selectedSpan");
+        this.$searchesList = $("#searchesList");
+        this.$addNewItem = $("#addNewItem");
+        this.$nameEditBtn.click(function () { return _this.editClick(); });
+        this.$nameSaveBtn.click(function () { return _this.saveClick(); });
+        this.fillList();
+    }
+    NamesList.prototype.fillList = function () {
+        var _this = this;
+        this.searches.forEach(function (search) {
+            var itemHtml = "<li id=\"" + search.id + "\">" + search.searchName + "<button>del</button></li>";
+            var $item = $(itemHtml);
+            _this.$addNewItem.after($item);
+            $item.click(function (e) {
+                _this.itemClick($item);
+            });
+        });
+        this.currentSearch = this.searches[0];
+        this.$selectedSpan.text(this.currentSearch.searchName);
+    };
+    NamesList.prototype.itemClick = function ($item) {
+    };
+    NamesList.prototype.saveClick = function () {
+        var _this = this;
+        var newName = this.$nameInput.val();
+        var data = PlanningSender.createRequest(PlanningType.Custom, "renameSearch", {
+            id: this.currentSearch.id,
+            searchName: newName
+        });
+        PlanningSender.updateProp(data, function (res) {
+            _this.currentSearch.searchName = newName;
+            _this.$nameInput.hide();
+            _this.$selectedSpan.show();
+            //this.$searchesList.show();
+            _this.$nameEditBtn.show();
+            _this.$nameSaveBtn.hide();
+            _this.isEditMode = false;
+            _this.$selectedSpan.text(newName);
+        });
+    };
+    NamesList.prototype.editClick = function () {
+        this.$nameInput.show();
+        this.$nameInput.val(this.currentSearch.searchName);
+        this.$selectedSpan.hide();
+        //this.$searchesList.hide();
+        this.$nameEditBtn.hide();
+        this.$nameSaveBtn.show();
+        this.isEditMode = true;
+    };
+    return NamesList;
+})();
 var DelayedCallbackMap = (function () {
     function DelayedCallbackMap() {
         this.delay = 600;
@@ -242,6 +450,9 @@ var PlanningMap = (function () {
             if (_this.currentPlanningType === PlanningType.Weekend) {
                 _this.countriesManager.createCountries(_this.viewData.countryCodes, _this.currentPlanningType);
                 _this.weekendForm = new WeekendForm(data);
+            }
+            if (_this.currentPlanningType === PlanningType.Custom) {
+                _this.customForm = new CustomForm(data);
             }
         });
     };

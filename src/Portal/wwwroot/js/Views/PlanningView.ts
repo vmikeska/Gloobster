@@ -117,6 +117,274 @@ class WeekendForm {
 	
 }
 
+class TaggingField {
+
+ private taggerTemplate: any;
+ private $cont: any;
+ private itemsRange: any;
+ private $tagger: any;
+
+ constructor(containerId, itemsRange, selectedItems) {
+
+	this.itemsRange = itemsRange;
+	 this.taggerTemplate = Views.ViewBase.currentView.registerTemplate("tagger-template");
+	 this.$cont = $("#" + containerId);
+
+	 this.$tagger = this.createTagger(itemsRange);
+	 this.$cont.prepend(this.$tagger);
+
+	 this.initTags(selectedItems);
+ }
+
+	private initTags(selectedItems) {
+		selectedItems.forEach((selectedItem) => {
+			var item = _.find(this.itemsRange, (i) => { return i.kind === selectedItem.kind && i.value === selectedItem.value });
+			if (item) {
+				var $html = this.createTag(item.text, item.value, item.kind);
+				this.$cont.prepend($html);
+			}
+		});
+	}
+
+	private createTag(text, value, kind) {
+	 var html = `<a class="tag" href="#" data-vl="${value}" data-kd="${kind}">${text}</a>`;
+		var $html = $(html);
+		return $html;
+	}
+
+	private createTagger(items) {
+		var html = this.taggerTemplate();
+		var $html = $(html);
+
+		var $input = $html.find("input");
+
+		var $ul = $html.find("ul");
+
+		$input.keyup((e) => {
+			this.fillTagger($input, items, $ul);
+		});
+
+		$input.focus((e) => {
+			this.fillTagger($input, items, $ul);
+			$ul.show();
+		});
+
+		$input.focusout((e) => {
+			setTimeout(() => {
+				$input.val("");
+				$ul.hide();
+			}, 250);
+		});
+
+		return $html;
+	}
+
+	private fillTagger($input, items, $ul) {
+		$ul.html("");
+		items.forEach((item) => {
+			var inputVal = $input.val();
+			var strMatch = (inputVal === "") || (item.text.indexOf(inputVal) > -1);
+			if (strMatch) {
+				var $item = this.createTaggerItem(item.text, item.value, item.kind);
+				$ul.append($item);
+			}
+		});	 
+	}
+
+	private createTaggerItem(text, value, kind) {
+	 var html = `<li data-vl="${value}" data-kd="${kind}">${text}</li>`;	 
+	 var $html = $(html);
+
+	 $html.click((e) => {			
+			var $target = $(e.target);
+			this.onItemClicked($target);
+		 });
+	
+	 return $html;
+ }
+
+ private onItemClicked($target) {
+	 var val = $target.data("vl");
+	 var kind = $target.data("kd");
+	 var text = $target.text();
+	 var $tag = this.createTag(text, val, kind);
+	 this.$tagger.before($tag);
+ }
+
+ 
+
+}
+
+
+class CustomForm {
+
+ private namesList: NamesList;
+
+ public data: any;
+
+ constructor(data) {
+	 this.data = data;
+	 this.namesList = new NamesList(data.searches);
+
+	 this.initDuration(this.namesList.currentSearch.roughlyDays);	
+	 this.registerDuration();
+
+	 this.initTimeTagger();
+ }
+ 
+ private initTimeTagger() {
+	 var itemsRange = [
+		{ text: "july", value: 7, kind: "month" },
+		{ text: "december", value: 12, kind: "month" },
+		{ text: "year 2016", value: 2016, kind: "year" }
+	 ];
+	 var selectedItems = [{ value: 12, kind: "month" }, { value: 2016, kind: "year" }];
+	 var timeTagger = new TaggingField("timeTagger", itemsRange, selectedItems);
+ }
+
+
+	private initDuration(days) {
+
+		if (days === 0) {
+			this.setRadio(1, true);
+		} else if (days === 3) {
+			this.setRadio(2, true);
+		} else if (days === 7) {
+			this.setRadio(3, true);
+		} else if (days === 14) {
+			this.setRadio(4, true);
+		} else {
+			this.setRadio(5, true);
+			$("#customLength").show();
+			$("#customLength").val(days);
+		}
+
+	}
+
+	private setRadio(no, val) {
+	 $("#radio" + no).prop("checked", val);	
+ }
+
+  private registerDuration() {
+	 
+	 var dc = new DelayedCallback("customLength");
+	 dc.callback = (val) => {
+		var intVal = parseInt(val);
+		if (intVal) {
+			this.callUpdateMinLength(intVal);
+		}
+	 }
+	 
+	 var $lengthRadio = $("input[type=radio][name=radio]");
+	  var $customLength = $("#customLength");
+	  $lengthRadio.change((e) => {
+
+		 var $target = $(e.target);
+		 var val = $target.data("vl");
+		  if (val === "custom") {
+			  $customLength.show();
+			} else {
+			 $customLength.hide();
+			 this.callUpdateMinLength(parseInt(val));
+		  }
+
+	  });
+ }
+
+	private callUpdateMinLength(roughlyDays) {
+	var data = PlanningSender.createRequest(PlanningType.Custom, "roughlyDays", {
+			id: this.namesList.currentSearch.id,
+			days: roughlyDays
+		});
+
+		PlanningSender.updateProp(data, (res) => {
+			
+		});
+	}
+
+
+}
+
+class NamesList {
+	$nameInput: any;
+	$nameSaveBtn: any;
+	$nameEditBtn: any;
+	$selectedSpan: any;
+	$searchesList: any;
+	$addNewItem: any;
+
+	private searches = [];
+	public currentSearch;
+
+	private isEditMode = false;
+
+	constructor(searches) {
+		this.searches = searches;
+
+		this.$nameInput = $("#nameInput");
+		this.$nameSaveBtn = $("#nameSaveBtn");
+		this.$nameEditBtn = $("#nameEditBtn");	 
+		this.$selectedSpan = $("#selectedSpan");
+		this.$searchesList = $("#searchesList");
+		this.$addNewItem = $("#addNewItem");
+
+		this.$nameEditBtn.click(() => this.editClick());
+		this.$nameSaveBtn.click(() => this.saveClick());
+
+		this.fillList();
+	}
+
+	private fillList() {
+		this.searches.forEach((search) => {
+			var itemHtml = `<li id="${search.id}">${search.searchName}<button>del</button></li>`;
+			var $item = $(itemHtml);
+			this.$addNewItem.after($item);
+
+			$item.click((e) => {
+				this.itemClick($item);
+			});
+		});
+
+		this.currentSearch = this.searches[0];
+		this.$selectedSpan.text(this.currentSearch.searchName);
+	}
+
+	private itemClick($item) {
+
+	}
+
+	public saveClick() {
+		var newName = this.$nameInput.val();
+		var data = PlanningSender.createRequest(PlanningType.Custom, "renameSearch", {
+			id: this.currentSearch.id,
+			searchName: newName
+		});
+
+		PlanningSender.updateProp(data, (res) => {
+			this.currentSearch.searchName = newName;
+		  this.$nameInput.hide();
+			this.$selectedSpan.show();
+			//this.$searchesList.show();
+			this.$nameEditBtn.show();
+			this.$nameSaveBtn.hide();
+			this.isEditMode = false;
+
+			this.$selectedSpan.text(newName);
+		});
+	}
+
+	public editClick() {
+		this.$nameInput.show();
+		this.$nameInput.val(this.currentSearch.searchName);
+		this.$selectedSpan.hide();
+		//this.$searchesList.hide();
+		this.$nameEditBtn.hide();
+		this.$nameSaveBtn.show();
+		this.isEditMode = true;
+	}
+
+}
+
 class DelayedCallbackMap {
 
 	public callback: Function;
@@ -250,6 +518,7 @@ class PlanningMap {
   private countriesManager: CountriesManager;
 
 	private weekendForm: WeekendForm;
+  private customForm: CustomForm;
 
 	constructor(map) {
 		this.map = map;
@@ -314,6 +583,10 @@ class PlanningMap {
 		 if (this.currentPlanningType === PlanningType.Weekend) {			 
 			this.countriesManager.createCountries(this.viewData.countryCodes, this.currentPlanningType);
 			 this.weekendForm = new WeekendForm(data);
+		 }
+
+		 if (this.currentPlanningType === PlanningType.Custom) {
+			 this.customForm = new CustomForm(data);
 		 }
 
 		});

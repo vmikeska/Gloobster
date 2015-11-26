@@ -5,6 +5,7 @@ using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
 using Gloobster.Entities.Planning;
+using Gloobster.Entities.Trip;
 using Gloobster.Enums;
 using MongoDB.Bson;
 
@@ -171,6 +172,17 @@ namespace Gloobster.DomainModels
 			var res = await DB.UpdateAsync(filter, update);
 			return res.ModifiedCount == 1;
 		}
+
+		public async Task<bool> UpdateCustomProperty(string userId, string searchId, string propName, object value)
+		{
+			var userIdObj = new ObjectId(userId);
+			var searchIdObj = new ObjectId(searchId);
+			var filter = DB.F<PlanningCustomEntity>().Eq(p => p.PortalUser_id, userIdObj) 
+				& DB.F<PlanningCustomEntity>().Eq("Searches._id", searchIdObj);
+			var update = DB.U<PlanningCustomEntity>().Set("Searches.$." + propName, value);
+			var res = await DB.UpdateAsync(filter, update);
+			return res.ModifiedCount == 1;
+		}
 		
 		public async void CreateDBStructure(string userId)
 	    {
@@ -201,6 +213,30 @@ namespace Gloobster.DomainModels
 					Cites = new List<int>()
 				};
 				await DB.SaveAsync(anytime);
+			}
+
+			var custom = DB.C<PlanningCustomEntity>().FirstOrDefault(e => e.PortalUser_id == userIdObj);
+			if (custom == null)
+			{
+				var search1 = new CustomSearchSE
+				{
+					id = ObjectId.GenerateNewId(),
+					SearchName = "My summer holiday search",					
+					RoughlyDays = 7,
+					Months = new List<int> {3, 4},
+					Years = new List<int> {2016, 2017},
+					CountryCodes = new List<string> {"cz", "de"},
+					Cites = new List<int> {2950159, 2911298, 3067696},
+					FromAirports = new List<FlightSE>(),
+				};
+
+				custom = new PlanningCustomEntity
+				{
+					id = ObjectId.GenerateNewId(),
+					PortalUser_id = userIdObj,
+					Searches = new List<CustomSearchSE> {search1}
+				};
+				await DB.SaveAsync(custom);
 			}
 		}
 		
