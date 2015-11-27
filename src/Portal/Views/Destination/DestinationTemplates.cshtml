@@ -28,7 +28,7 @@
 		</div>
 </script>
 
-		<script id="custom-template" type="text/x-handlebars-template">
+<script id="custom-template" type="text/x-handlebars-template">
 
 				<div class="blue-form margin form">
 						<div class="table future-table">
@@ -36,14 +36,15 @@
 										<span class="future-label"></span>
 								</div>
 								<div class="cell">
+										<button id="addNewItem">[+]</button>
 										<input id="nameInput" style="display: none" />
+										
 										<button id="nameSaveBtn" style="display: none">[s]</button>
 										<div class="dropdown future-select-full">
 
 												<span id="selectedSpan" class="selected"></span>
 												<button id="nameEditBtn">[e]</button>
-												<ul id="searchesList">
-														<li id="addNewItem">[Add new item]</li>
+												<ul id="searchesList">														
 												</ul>
 												<input type="hidden">
 										</div>

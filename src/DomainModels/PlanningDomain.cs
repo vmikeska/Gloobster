@@ -7,6 +7,7 @@ using Gloobster.DomainObjects;
 using Gloobster.Entities.Planning;
 using Gloobster.Entities.Trip;
 using Gloobster.Enums;
+using Gloobster.Mappers;
 using MongoDB.Bson;
 
 namespace Gloobster.DomainModels
@@ -169,6 +170,40 @@ namespace Gloobster.DomainModels
 			var userIdObj = new ObjectId(userId);
 			var filter = DB.F<PlanningWeekendEntity>().Eq(p => p.PortalUser_id, userIdObj);
 			var update = DB.U<PlanningWeekendEntity>().Set(p => p.ExtraDaysLength, daysLength);
+			var res = await DB.UpdateAsync(filter, update);
+			return res.ModifiedCount == 1;
+		}
+
+		public async Task<CustomSearchDO> CreateNewEmptySearch(string userId, string name)
+		{
+			var newSearch = new CustomSearchSE
+			{
+				id = ObjectId.GenerateNewId(),
+				Cites = new List<int>(),
+				CountryCodes = new List<string>(),
+				Months = new List<int>(),
+				SearchName = name,
+				FromAirports = new List<FlightSE>(),
+				Years = new List<int>(),
+				RoughlyDays = 0
+			};
+
+			var userIdObj = new ObjectId(userId);			
+			var filter = DB.F<PlanningCustomEntity>().Eq(p => p.PortalUser_id, userIdObj);				
+			var update = DB.U<PlanningCustomEntity>().Push(p => p.Searches, newSearch);
+			var res = await DB.UpdateAsync(filter, update);
+
+			CustomSearchDO nsDO = newSearch.ToDO();
+            return nsDO;
+		}
+
+		public async Task<bool> PushCustomProperty(string userId, string searchId, string propName, object value)
+		{
+			var userIdObj = new ObjectId(userId);
+			var searchIdObj = new ObjectId(searchId);
+			var filter = DB.F<PlanningCustomEntity>().Eq(p => p.PortalUser_id, userIdObj)
+				& DB.F<PlanningCustomEntity>().Eq("Searches._id", searchIdObj);
+			var update = DB.U<PlanningCustomEntity>().Push("Searches.$." + propName, value);
 			var res = await DB.UpdateAsync(filter, update);
 			return res.ModifiedCount == 1;
 		}

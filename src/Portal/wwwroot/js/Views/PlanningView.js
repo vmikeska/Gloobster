@@ -101,16 +101,21 @@ var WeekendForm = (function () {
     return WeekendForm;
 })();
 var TaggingField = (function () {
-    function TaggingField(containerId, itemsRange, selectedItems) {
+    function TaggingField(customId, containerId, itemsRange) {
+        this.customId = customId;
         this.itemsRange = itemsRange;
         this.taggerTemplate = Views.ViewBase.currentView.registerTemplate("tagger-template");
         this.$cont = $("#" + containerId);
         this.$tagger = this.createTagger(itemsRange);
         this.$cont.prepend(this.$tagger);
-        this.initTags(selectedItems);
     }
+    TaggingField.prototype.setSelectedItems = function (selectedItems) {
+        this.selectedItems = selectedItems;
+        this.initTags(selectedItems);
+    };
     TaggingField.prototype.initTags = function (selectedItems) {
         var _this = this;
+        this.$cont.find(".tag").remove();
         selectedItems.forEach(function (selectedItem) {
             var item = _.find(_this.itemsRange, function (i) { return i.kind === selectedItem.kind && i.value === selectedItem.value; });
             if (item) {
@@ -151,7 +156,8 @@ var TaggingField = (function () {
         items.forEach(function (item) {
             var inputVal = $input.val();
             var strMatch = (inputVal === "") || (item.text.indexOf(inputVal) > -1);
-            if (strMatch) {
+            var alreadySelected = _.find(_this.selectedItems, function (i) { return i.kind === item.kind && i.value === item.value; });
+            if (strMatch && !alreadySelected) {
                 var $item = _this.createTaggerItem(item.text, item.value, item.kind);
                 $ul.append($item);
             }
@@ -168,30 +174,78 @@ var TaggingField = (function () {
         return $html;
     };
     TaggingField.prototype.onItemClicked = function ($target) {
+        var _this = this;
         var val = $target.data("vl");
         var kind = $target.data("kd");
         var text = $target.text();
-        var $tag = this.createTag(text, val, kind);
-        this.$tagger.before($tag);
+        this.onItemClickedCustom($target, function () {
+            var $tag = _this.createTag(text, val, kind);
+            _this.$tagger.before($tag);
+            _this.selectedItems.push({ value: val, kind: kind });
+        });
     };
     return TaggingField;
 })();
 var CustomForm = (function () {
     function CustomForm(data) {
+        var _this = this;
         this.data = data;
         this.namesList = new NamesList(data.searches);
-        this.initDuration(this.namesList.currentSearch.roughlyDays);
+        this.namesList.onSearchChanged = function (search) { return _this.onSearchChanged(search); };
         this.registerDuration();
-        this.initTimeTagger();
+        this.initTimeTagger(this.namesList.currentSearch);
+        this.fillForm(this.namesList.currentSearch);
     }
-    CustomForm.prototype.initTimeTagger = function () {
+    CustomForm.prototype.onSearchChanged = function (search) {
+        this.fillForm(search);
+    };
+    CustomForm.prototype.fillForm = function (search) {
+        var timeSelectedItems = this.getTimeTaggerSelectedItems(search);
+        this.timeTagger.setSelectedItems(timeSelectedItems);
+        this.initDuration(search.roughlyDays);
+    };
+    CustomForm.prototype.initTimeTagger = function (search) {
+        var _this = this;
         var itemsRange = [
-            { text: "july", value: 7, kind: "month" },
-            { text: "december", value: 12, kind: "month" },
+            { text: "January", value: 1, kind: "month" },
+            { text: "February", value: 2, kind: "month" },
+            { text: "March", value: 3, kind: "month" },
+            { text: "April", value: 4, kind: "month" },
+            { text: "May", value: 5, kind: "month" },
+            { text: "June", value: 6, kind: "month" },
+            { text: "July", value: 7, kind: "month" },
+            { text: "August", value: 8, kind: "month" },
+            { text: "September", value: 9, kind: "month" },
+            { text: "October", value: 10, kind: "month" },
+            { text: "November", value: 11, kind: "month" },
+            { text: "December", value: 12, kind: "month" },
+            { text: "year 2015", value: 2015, kind: "year" },
             { text: "year 2016", value: 2016, kind: "year" }
         ];
-        var selectedItems = [{ value: 12, kind: "month" }, { value: 2016, kind: "year" }];
-        var timeTagger = new TaggingField("timeTagger", itemsRange, selectedItems);
+        this.timeTagger = new TaggingField(search.id, "timeTagger", itemsRange);
+        this.timeTagger.onItemClickedCustom = function ($target, callback) {
+            var val = $target.data("vl");
+            var kind = $target.data("kd");
+            var text = $target.text();
+            var data = PlanningSender.createRequest(PlanningType.Custom, "time", {
+                kind: kind,
+                value: val,
+                id: _this.namesList.currentSearch.id
+            });
+            PlanningSender.pushProp(data, function (res) {
+                callback(res);
+            });
+        };
+    };
+    CustomForm.prototype.getTimeTaggerSelectedItems = function (search) {
+        var selectedItems = [];
+        search.months.forEach(function (month) {
+            selectedItems.push({ value: month, kind: "month" });
+        });
+        search.years.forEach(function (year) {
+            selectedItems.push({ value: year, kind: "year" });
+        });
+        return selectedItems;
     };
     CustomForm.prototype.initDuration = function (days) {
         if (days === 0) {
@@ -262,14 +316,25 @@ var NamesList = (function () {
         this.$addNewItem = $("#addNewItem");
         this.$nameEditBtn.click(function () { return _this.editClick(); });
         this.$nameSaveBtn.click(function () { return _this.saveClick(); });
+        this.$addNewItem.click(function () {
+            var data = PlanningSender.createRequest(PlanningType.Custom, "createNewSearch", {
+                searchName: 'new search'
+            });
+            PlanningSender.pushProp(data, function (newSearch) {
+                searches.push(newSearch);
+                _this.currentSearch = newSearch;
+                _this.onSearchChanged(newSearch);
+            });
+        });
         this.fillList();
     }
     NamesList.prototype.fillList = function () {
         var _this = this;
+        this.$searchesList.html("");
         this.searches.forEach(function (search) {
-            var itemHtml = "<li id=\"" + search.id + "\">" + search.searchName + "<button>del</button></li>";
+            var itemHtml = "<li data-si=\"" + search.id + "\">" + search.searchName + "<button>del</button></li>";
             var $item = $(itemHtml);
-            _this.$addNewItem.after($item);
+            _this.$searchesList.append($item);
             $item.click(function (e) {
                 _this.itemClick($item);
             });
@@ -278,6 +343,12 @@ var NamesList = (function () {
         this.$selectedSpan.text(this.currentSearch.searchName);
     };
     NamesList.prototype.itemClick = function ($item) {
+        var searchId = $item.data("si");
+        var search = _.find(this.searches, function (search) { return search.id === searchId; });
+        this.currentSearch = search;
+        this.onSearchChanged(search);
+    };
+    NamesList.prototype.setForm = function (search) {
     };
     NamesList.prototype.saveClick = function () {
         var _this = this;
@@ -295,6 +366,8 @@ var NamesList = (function () {
             _this.$nameSaveBtn.hide();
             _this.isEditMode = false;
             _this.$selectedSpan.text(newName);
+            _this.$searchesList.find("li[data-si='" + _this.currentSearch.id + "']").text(newName);
+            //this.fillList();
         });
     };
     NamesList.prototype.editClick = function () {
@@ -555,6 +628,11 @@ var PlanningSender = (function () {
     }
     PlanningSender.updateProp = function (data, callback) {
         Views.ViewBase.currentView.apiPut("PlanningProperty", data, function (response) {
+            callback(response);
+        });
+    };
+    PlanningSender.pushProp = function (data, callback) {
+        Views.ViewBase.currentView.apiPost("PlanningProperty", data, function (response) {
             callback(response);
         });
     };

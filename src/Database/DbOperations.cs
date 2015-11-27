@@ -100,12 +100,20 @@ namespace Gloobster.Database
 		}		
 		
 		public async Task<UpdateResult> UpdateAsync<T>(FilterDefinition<T> filter, UpdateDefinition<T> update) where T: EntityBase
-		{			
-			var collectionName = GetCollectionName<T>();
-			var collection = Database.GetCollection<T>(collectionName);
-			
-			var result = await collection.UpdateOneAsync(filter, update);
-			return result;
+		{
+			try
+			{
+
+				var collectionName = GetCollectionName<T>();
+				var collection = Database.GetCollection<T>(collectionName);
+
+				var result = await collection.UpdateOneAsync(filter, update);
+				return result;
+			}
+			catch (Exception exc)
+			{
+				throw exc;
+			}
 		}
 		
 		public async Task<ReplaceOneResult> ReplaceOneAsync<T>(T doc) where T : EntityBase

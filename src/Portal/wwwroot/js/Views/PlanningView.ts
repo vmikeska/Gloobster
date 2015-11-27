@@ -122,21 +122,29 @@ class TaggingField {
  private taggerTemplate: any;
  private $cont: any;
  private itemsRange: any;
+ private selectedItems: any;
  private $tagger: any;
+ public customId: string;
 
- constructor(containerId, itemsRange, selectedItems) {
-
-	this.itemsRange = itemsRange;
+ constructor(customId, containerId, itemsRange) {
+	 this.customId = customId;
+	 
+	 this.itemsRange = itemsRange;
 	 this.taggerTemplate = Views.ViewBase.currentView.registerTemplate("tagger-template");
 	 this.$cont = $("#" + containerId);
 
 	 this.$tagger = this.createTagger(itemsRange);
-	 this.$cont.prepend(this.$tagger);
+	 this.$cont.prepend(this.$tagger);	
+	 
+ }
 
+ public setSelectedItems(selectedItems) {
+	 this.selectedItems = selectedItems;
 	 this.initTags(selectedItems);
  }
 
 	private initTags(selectedItems) {
+		this.$cont.find(".tag").remove();
 		selectedItems.forEach((selectedItem) => {
 			var item = _.find(this.itemsRange, (i) => { return i.kind === selectedItem.kind && i.value === selectedItem.value });
 			if (item) {
@@ -184,7 +192,9 @@ class TaggingField {
 		items.forEach((item) => {
 			var inputVal = $input.val();
 			var strMatch = (inputVal === "") || (item.text.indexOf(inputVal) > -1);
-			if (strMatch) {
+			var alreadySelected = _.find(this.selectedItems, (i) => { return i.kind === item.kind && i.value === item.value });
+			
+			if (strMatch && !alreadySelected) {
 				var $item = this.createTaggerItem(item.text, item.value, item.kind);
 				$ul.append($item);
 			}
@@ -202,16 +212,21 @@ class TaggingField {
 	
 	 return $html;
  }
-
- private onItemClicked($target) {
-	 var val = $target.data("vl");
-	 var kind = $target.data("kd");
-	 var text = $target.text();
-	 var $tag = this.createTag(text, val, kind);
-	 this.$tagger.before($tag);
- }
-
  
+ public onItemClickedCustom: Function;
+
+	private onItemClicked($target) {
+		var val = $target.data("vl");
+		var kind = $target.data("kd");
+		var text = $target.text();
+
+		this.onItemClickedCustom($target, () => {
+		 var $tag = this.createTag(text, val, kind);
+		 this.$tagger.before($tag);
+		 this.selectedItems.push({ value: val, kind: kind });
+		});	 	 
+	}
+
 
 }
 
@@ -219,29 +234,77 @@ class TaggingField {
 class CustomForm {
 
  private namesList: NamesList;
+ private timeTagger: TaggingField;
 
  public data: any;
 
  constructor(data) {
 	 this.data = data;
 	 this.namesList = new NamesList(data.searches);
-
-	 this.initDuration(this.namesList.currentSearch.roughlyDays);	
+	 this.namesList.onSearchChanged = (search) => this.onSearchChanged(search);
+	 
 	 this.registerDuration();
+	 this.initTimeTagger(this.namesList.currentSearch);
 
-	 this.initTimeTagger();
+	 this.fillForm(this.namesList.currentSearch);
+ }
+
+ private onSearchChanged(search) {
+	 this.fillForm(search);
+ }
+
+ private fillForm(search) {
+	 var timeSelectedItems = this.getTimeTaggerSelectedItems(search);
+	 this.timeTagger.setSelectedItems(timeSelectedItems);
+	 this.initDuration(search.roughlyDays);	
  }
  
- private initTimeTagger() {
+ private initTimeTagger(search) {
 	 var itemsRange = [
-		{ text: "july", value: 7, kind: "month" },
-		{ text: "december", value: 12, kind: "month" },
+		{ text: "January", value: 1, kind: "month" },
+		{ text: "February", value: 2, kind: "month" },
+		{ text: "March", value: 3, kind: "month" },
+		{ text: "April", value: 4, kind: "month" },
+		{ text: "May", value: 5, kind: "month" },
+		{ text: "June", value: 6, kind: "month" },
+		{ text: "July", value: 7, kind: "month" },
+		{ text: "August", value: 8, kind: "month" },
+		{ text: "September", value: 9, kind: "month" },
+		{ text: "October", value: 10, kind: "month" },
+		{ text: "November", value: 11, kind: "month" },
+		{ text: "December", value: 12, kind: "month" },
+		{ text: "year 2015", value: 2015, kind: "year" },
 		{ text: "year 2016", value: 2016, kind: "year" }
 	 ];
-	 var selectedItems = [{ value: 12, kind: "month" }, { value: 2016, kind: "year" }];
-	 var timeTagger = new TaggingField("timeTagger", itemsRange, selectedItems);
- }
+	
+	 this.timeTagger = new TaggingField(search.id, "timeTagger", itemsRange);
+	 this.timeTagger.onItemClickedCustom = ($target, callback) => {
+		var val = $target.data("vl");
+		var kind = $target.data("kd");
+		var text = $target.text();
 
+		var data = PlanningSender.createRequest(PlanningType.Custom, "time", {
+		 kind: kind,
+		 value: val,
+		 id: this.namesList.currentSearch.id
+		});
+
+		PlanningSender.pushProp(data, (res) => {
+			callback(res);
+		});
+	 }
+	}
+
+	private getTimeTaggerSelectedItems(search) {
+		var selectedItems = [];
+		search.months.forEach((month) => {
+			selectedItems.push({ value: month, kind: "month" });
+		});
+		search.years.forEach((year) => {
+			selectedItems.push({ value: year, kind: "year" });
+		});
+		return selectedItems;
+	}
 
 	private initDuration(days) {
 
@@ -265,40 +328,40 @@ class CustomForm {
 	 $("#radio" + no).prop("checked", val);	
  }
 
-  private registerDuration() {
-	 
-	 var dc = new DelayedCallback("customLength");
-	 dc.callback = (val) => {
-		var intVal = parseInt(val);
-		if (intVal) {
-			this.callUpdateMinLength(intVal);
+	private registerDuration() {
+
+		var dc = new DelayedCallback("customLength");
+		dc.callback = (val) => {
+			var intVal = parseInt(val);
+			if (intVal) {
+				this.callUpdateMinLength(intVal);
+			}
 		}
-	 }
-	 
-	 var $lengthRadio = $("input[type=radio][name=radio]");
-	  var $customLength = $("#customLength");
-	  $lengthRadio.change((e) => {
 
-		 var $target = $(e.target);
-		 var val = $target.data("vl");
-		  if (val === "custom") {
-			  $customLength.show();
+		var $lengthRadio = $("input[type=radio][name=radio]");
+		var $customLength = $("#customLength");
+		$lengthRadio.change((e) => {
+
+			var $target = $(e.target);
+			var val = $target.data("vl");
+			if (val === "custom") {
+				$customLength.show();
 			} else {
-			 $customLength.hide();
-			 this.callUpdateMinLength(parseInt(val));
-		  }
+				$customLength.hide();
+				this.callUpdateMinLength(parseInt(val));
+			}
 
-	  });
- }
+		});
+	}
 
 	private callUpdateMinLength(roughlyDays) {
-	var data = PlanningSender.createRequest(PlanningType.Custom, "roughlyDays", {
+		var data = PlanningSender.createRequest(PlanningType.Custom, "roughlyDays", {
 			id: this.namesList.currentSearch.id,
 			days: roughlyDays
 		});
 
 		PlanningSender.updateProp(data, (res) => {
-			
+
 		});
 	}
 
@@ -318,6 +381,8 @@ class NamesList {
 
 	private isEditMode = false;
 
+  public onSearchChanged: Function;
+
 	constructor(searches) {
 		this.searches = searches;
 
@@ -331,14 +396,28 @@ class NamesList {
 		this.$nameEditBtn.click(() => this.editClick());
 		this.$nameSaveBtn.click(() => this.saveClick());
 
+		this.$addNewItem.click(() => {
+		 var data = PlanningSender.createRequest(PlanningType.Custom, "createNewSearch", {			
+			searchName: 'new search'
+		 });
+
+		 PlanningSender.pushProp(data, (newSearch) => {
+			 searches.push(newSearch);
+			 this.currentSearch = newSearch;
+			 this.onSearchChanged(newSearch);
+		 });
+		});
+
 		this.fillList();
 	}
 
 	private fillList() {
-		this.searches.forEach((search) => {
-			var itemHtml = `<li id="${search.id}">${search.searchName}<button>del</button></li>`;
+		this.$searchesList.html("");
+
+	 this.searches.forEach((search) => {
+			var itemHtml = `<li data-si="${search.id}">${search.searchName}<button>del</button></li>`;
 			var $item = $(itemHtml);
-			this.$addNewItem.after($item);
+			this.$searchesList.append($item);
 
 			$item.click((e) => {
 				this.itemClick($item);
@@ -350,8 +429,15 @@ class NamesList {
 	}
 
 	private itemClick($item) {
-
+	 var searchId = $item.data("si");
+	 var search = _.find(this.searches, (search) => { return search.id === searchId; });
+		this.currentSearch = search;
+	 this.onSearchChanged(search);
 	}
+
+  private setForm(search) {
+	  
+  }
 
 	public saveClick() {
 		var newName = this.$nameInput.val();
@@ -370,6 +456,8 @@ class NamesList {
 			this.isEditMode = false;
 
 			this.$selectedSpan.text(newName);
+			this.$searchesList.find(`li[data-si='${this.currentSearch.id}']`).text(newName);
+			//this.fillList();
 		});
 	}
 
@@ -726,6 +814,12 @@ class PlanningSender {
 		Views.ViewBase.currentView.apiPut("PlanningProperty", data, (response) => {
 			callback(response);
 		});
+	}
+
+	public static pushProp(data, callback) {
+	 Views.ViewBase.currentView.apiPost("PlanningProperty", data, (response) => {
+		callback(response);
+	 });
 	}
 
 	public static createRequest(planningType: PlanningType, propertyName: string, values) {

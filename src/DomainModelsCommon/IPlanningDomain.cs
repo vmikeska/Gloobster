@@ -16,5 +16,7 @@ namespace Gloobster.DomainInterfaces
 
 		Task<bool> UpdateCustomProperty(string userId, string searchId, string propName, object value);
 		Task<bool> PushCustomProperty(string userId, string searchId, string propName, object value);
+
+		Task<CustomSearchDO> CreateNewEmptySearch(string userId, string name);
 	}
 }

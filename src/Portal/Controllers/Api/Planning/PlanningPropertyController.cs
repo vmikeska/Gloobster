@@ -40,7 +40,7 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 				if (req.propertyName == "time")
 				{
 					string kind = GV("kind");
-					string value = GV("value");
+					int value = int.Parse(GV("value"));
 					string searchId = GV("id");
 
 					if (kind == "year")
@@ -54,6 +54,14 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 						bool success = await Planning.PushCustomProperty(UserId, searchId, "Months", value);
 						return new ObjectResult(success);
 					}
+				}
+
+				if (req.propertyName == "createNewSearch")
+				{
+					string name = GV("searchName");
+					var searchDo = await Planning.CreateNewEmptySearch(UserId, name);
+					var searchResponse = searchDo.ToResponse();
+					return new ObjectResult(searchResponse);
 				}
 			}
 
