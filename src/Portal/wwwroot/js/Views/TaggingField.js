@@ -1,0 +1,87 @@
+var TaggingField = (function () {
+    function TaggingField(customId, containerId, itemsRange) {
+        this.customId = customId;
+        this.itemsRange = itemsRange;
+        this.taggerTemplate = Views.ViewBase.currentView.registerTemplate("tagger-template");
+        this.$cont = $("#" + containerId);
+        this.$tagger = this.createTagger(itemsRange);
+        this.$cont.prepend(this.$tagger);
+    }
+    TaggingField.prototype.setSelectedItems = function (selectedItems) {
+        this.selectedItems = selectedItems;
+        this.initTags(selectedItems);
+    };
+    TaggingField.prototype.initTags = function (selectedItems) {
+        var _this = this;
+        this.$cont.find(".tag").remove();
+        selectedItems.forEach(function (selectedItem) {
+            var item = _.find(_this.itemsRange, function (i) { return i.kind === selectedItem.kind && i.value === selectedItem.value; });
+            if (item) {
+                var $html = _this.createTag(item.text, item.value, item.kind);
+                _this.$cont.prepend($html);
+            }
+        });
+    };
+    TaggingField.prototype.createTag = function (text, value, kind) {
+        var html = "<a class=\"tag\" href=\"#\" data-vl=\"" + value + "\" data-kd=\"" + kind + "\">" + text + "</a>";
+        var $html = $(html);
+        return $html;
+    };
+    TaggingField.prototype.createTagger = function (items) {
+        var _this = this;
+        var html = this.taggerTemplate();
+        var $html = $(html);
+        var $input = $html.find("input");
+        var $ul = $html.find("ul");
+        $input.keyup(function (e) {
+            _this.fillTagger($input, items, $ul);
+        });
+        $input.focus(function (e) {
+            _this.fillTagger($input, items, $ul);
+            $ul.show();
+        });
+        $input.focusout(function (e) {
+            setTimeout(function () {
+                $input.val("");
+                $ul.hide();
+            }, 250);
+        });
+        return $html;
+    };
+    TaggingField.prototype.fillTagger = function ($input, items, $ul) {
+        var _this = this;
+        $ul.html("");
+        items.forEach(function (item) {
+            var inputVal = $input.val();
+            var strMatch = (inputVal === "") || (item.text.indexOf(inputVal) > -1);
+            var alreadySelected = _.find(_this.selectedItems, function (i) { return i.kind === item.kind && i.value === item.value; });
+            if (strMatch && !alreadySelected) {
+                var $item = _this.createTaggerItem(item.text, item.value, item.kind);
+                $ul.append($item);
+            }
+        });
+    };
+    TaggingField.prototype.createTaggerItem = function (text, value, kind) {
+        var _this = this;
+        var html = "<li data-vl=\"" + value + "\" data-kd=\"" + kind + "\">" + text + "</li>";
+        var $html = $(html);
+        $html.click(function (e) {
+            var $target = $(e.target);
+            _this.onItemClicked($target);
+        });
+        return $html;
+    };
+    TaggingField.prototype.onItemClicked = function ($target) {
+        var _this = this;
+        var val = $target.data("vl");
+        var kind = $target.data("kd");
+        var text = $target.text();
+        this.onItemClickedCustom($target, function () {
+            var $tag = _this.createTag(text, val, kind);
+            _this.$tagger.before($tag);
+            _this.selectedItems.push({ value: val, kind: kind });
+        });
+    };
+    return TaggingField;
+})();
+//# sourceMappingURL=TaggingField.js.map

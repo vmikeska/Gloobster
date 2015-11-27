@@ -8,6 +8,6 @@ namespace Gloobster.DomainObjects
 		public string UserId { get; set; }
 		public string CountryCode { get; set; }
 		public bool Selected { get; set; }
-		public int CustomId { get; set; }
+		public string CustomId { get; set; }
 	}
 }

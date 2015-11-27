@@ -65,6 +65,7 @@ class PlanningView extends Views.ViewBase {
 
 }
 
+
 class WeekendForm {
  private $plus1: any;
  private $plus2: any;
@@ -115,362 +116,6 @@ class WeekendForm {
 	 });
 	}
 	
-}
-
-class TaggingField {
-
- private taggerTemplate: any;
- private $cont: any;
- private itemsRange: any;
- private selectedItems: any;
- private $tagger: any;
- public customId: string;
-
- constructor(customId, containerId, itemsRange) {
-	 this.customId = customId;
-	 
-	 this.itemsRange = itemsRange;
-	 this.taggerTemplate = Views.ViewBase.currentView.registerTemplate("tagger-template");
-	 this.$cont = $("#" + containerId);
-
-	 this.$tagger = this.createTagger(itemsRange);
-	 this.$cont.prepend(this.$tagger);	
-	 
- }
-
- public setSelectedItems(selectedItems) {
-	 this.selectedItems = selectedItems;
-	 this.initTags(selectedItems);
- }
-
-	private initTags(selectedItems) {
-		this.$cont.find(".tag").remove();
-		selectedItems.forEach((selectedItem) => {
-			var item = _.find(this.itemsRange, (i) => { return i.kind === selectedItem.kind && i.value === selectedItem.value });
-			if (item) {
-				var $html = this.createTag(item.text, item.value, item.kind);
-				this.$cont.prepend($html);
-			}
-		});
-	}
-
-	private createTag(text, value, kind) {
-	 var html = `<a class="tag" href="#" data-vl="${value}" data-kd="${kind}">${text}</a>`;
-		var $html = $(html);
-		return $html;
-	}
-
-	private createTagger(items) {
-		var html = this.taggerTemplate();
-		var $html = $(html);
-
-		var $input = $html.find("input");
-
-		var $ul = $html.find("ul");
-
-		$input.keyup((e) => {
-			this.fillTagger($input, items, $ul);
-		});
-
-		$input.focus((e) => {
-			this.fillTagger($input, items, $ul);
-			$ul.show();
-		});
-
-		$input.focusout((e) => {
-			setTimeout(() => {
-				$input.val("");
-				$ul.hide();
-			}, 250);
-		});
-
-		return $html;
-	}
-
-	private fillTagger($input, items, $ul) {
-		$ul.html("");
-		items.forEach((item) => {
-			var inputVal = $input.val();
-			var strMatch = (inputVal === "") || (item.text.indexOf(inputVal) > -1);
-			var alreadySelected = _.find(this.selectedItems, (i) => { return i.kind === item.kind && i.value === item.value });
-			
-			if (strMatch && !alreadySelected) {
-				var $item = this.createTaggerItem(item.text, item.value, item.kind);
-				$ul.append($item);
-			}
-		});	 
-	}
-
-	private createTaggerItem(text, value, kind) {
-	 var html = `<li data-vl="${value}" data-kd="${kind}">${text}</li>`;	 
-	 var $html = $(html);
-
-	 $html.click((e) => {			
-			var $target = $(e.target);
-			this.onItemClicked($target);
-		 });
-	
-	 return $html;
- }
- 
- public onItemClickedCustom: Function;
-
-	private onItemClicked($target) {
-		var val = $target.data("vl");
-		var kind = $target.data("kd");
-		var text = $target.text();
-
-		this.onItemClickedCustom($target, () => {
-		 var $tag = this.createTag(text, val, kind);
-		 this.$tagger.before($tag);
-		 this.selectedItems.push({ value: val, kind: kind });
-		});	 	 
-	}
-
-
-}
-
-
-class CustomForm {
-
- private namesList: NamesList;
- private timeTagger: TaggingField;
-
- public data: any;
-
- constructor(data) {
-	 this.data = data;
-	 this.namesList = new NamesList(data.searches);
-	 this.namesList.onSearchChanged = (search) => this.onSearchChanged(search);
-	 
-	 this.registerDuration();
-	 this.initTimeTagger(this.namesList.currentSearch);
-
-	 this.fillForm(this.namesList.currentSearch);
- }
-
- private onSearchChanged(search) {
-	 this.fillForm(search);
- }
-
- private fillForm(search) {
-	 var timeSelectedItems = this.getTimeTaggerSelectedItems(search);
-	 this.timeTagger.setSelectedItems(timeSelectedItems);
-	 this.initDuration(search.roughlyDays);	
- }
- 
- private initTimeTagger(search) {
-	 var itemsRange = [
-		{ text: "January", value: 1, kind: "month" },
-		{ text: "February", value: 2, kind: "month" },
-		{ text: "March", value: 3, kind: "month" },
-		{ text: "April", value: 4, kind: "month" },
-		{ text: "May", value: 5, kind: "month" },
-		{ text: "June", value: 6, kind: "month" },
-		{ text: "July", value: 7, kind: "month" },
-		{ text: "August", value: 8, kind: "month" },
-		{ text: "September", value: 9, kind: "month" },
-		{ text: "October", value: 10, kind: "month" },
-		{ text: "November", value: 11, kind: "month" },
-		{ text: "December", value: 12, kind: "month" },
-		{ text: "year 2015", value: 2015, kind: "year" },
-		{ text: "year 2016", value: 2016, kind: "year" }
-	 ];
-	
-	 this.timeTagger = new TaggingField(search.id, "timeTagger", itemsRange);
-	 this.timeTagger.onItemClickedCustom = ($target, callback) => {
-		var val = $target.data("vl");
-		var kind = $target.data("kd");
-		var text = $target.text();
-
-		var data = PlanningSender.createRequest(PlanningType.Custom, "time", {
-		 kind: kind,
-		 value: val,
-		 id: this.namesList.currentSearch.id
-		});
-
-		PlanningSender.pushProp(data, (res) => {
-			callback(res);
-		});
-	 }
-	}
-
-	private getTimeTaggerSelectedItems(search) {
-		var selectedItems = [];
-		search.months.forEach((month) => {
-			selectedItems.push({ value: month, kind: "month" });
-		});
-		search.years.forEach((year) => {
-			selectedItems.push({ value: year, kind: "year" });
-		});
-		return selectedItems;
-	}
-
-	private initDuration(days) {
-
-		if (days === 0) {
-			this.setRadio(1, true);
-		} else if (days === 3) {
-			this.setRadio(2, true);
-		} else if (days === 7) {
-			this.setRadio(3, true);
-		} else if (days === 14) {
-			this.setRadio(4, true);
-		} else {
-			this.setRadio(5, true);
-			$("#customLength").show();
-			$("#customLength").val(days);
-		}
-
-	}
-
-	private setRadio(no, val) {
-	 $("#radio" + no).prop("checked", val);	
- }
-
-	private registerDuration() {
-
-		var dc = new DelayedCallback("customLength");
-		dc.callback = (val) => {
-			var intVal = parseInt(val);
-			if (intVal) {
-				this.callUpdateMinLength(intVal);
-			}
-		}
-
-		var $lengthRadio = $("input[type=radio][name=radio]");
-		var $customLength = $("#customLength");
-		$lengthRadio.change((e) => {
-
-			var $target = $(e.target);
-			var val = $target.data("vl");
-			if (val === "custom") {
-				$customLength.show();
-			} else {
-				$customLength.hide();
-				this.callUpdateMinLength(parseInt(val));
-			}
-
-		});
-	}
-
-	private callUpdateMinLength(roughlyDays) {
-		var data = PlanningSender.createRequest(PlanningType.Custom, "roughlyDays", {
-			id: this.namesList.currentSearch.id,
-			days: roughlyDays
-		});
-
-		PlanningSender.updateProp(data, (res) => {
-
-		});
-	}
-
-
-}
-
-class NamesList {
-	$nameInput: any;
-	$nameSaveBtn: any;
-	$nameEditBtn: any;
-	$selectedSpan: any;
-	$searchesList: any;
-	$addNewItem: any;
-
-	private searches = [];
-	public currentSearch;
-
-	private isEditMode = false;
-
-  public onSearchChanged: Function;
-
-	constructor(searches) {
-		this.searches = searches;
-
-		this.$nameInput = $("#nameInput");
-		this.$nameSaveBtn = $("#nameSaveBtn");
-		this.$nameEditBtn = $("#nameEditBtn");	 
-		this.$selectedSpan = $("#selectedSpan");
-		this.$searchesList = $("#searchesList");
-		this.$addNewItem = $("#addNewItem");
-
-		this.$nameEditBtn.click(() => this.editClick());
-		this.$nameSaveBtn.click(() => this.saveClick());
-
-		this.$addNewItem.click(() => {
-		 var data = PlanningSender.createRequest(PlanningType.Custom, "createNewSearch", {			
-			searchName: 'new search'
-		 });
-
-		 PlanningSender.pushProp(data, (newSearch) => {
-			 searches.push(newSearch);
-			 this.currentSearch = newSearch;
-			 this.onSearchChanged(newSearch);
-		 });
-		});
-
-		this.fillList();
-	}
-
-	private fillList() {
-		this.$searchesList.html("");
-
-	 this.searches.forEach((search) => {
-			var itemHtml = `<li data-si="${search.id}">${search.searchName}<button>del</button></li>`;
-			var $item = $(itemHtml);
-			this.$searchesList.append($item);
-
-			$item.click((e) => {
-				this.itemClick($item);
-			});
-		});
-
-		this.currentSearch = this.searches[0];
-		this.$selectedSpan.text(this.currentSearch.searchName);
-	}
-
-	private itemClick($item) {
-	 var searchId = $item.data("si");
-	 var search = _.find(this.searches, (search) => { return search.id === searchId; });
-		this.currentSearch = search;
-	 this.onSearchChanged(search);
-	}
-
-  private setForm(search) {
-	  
-  }
-
-	public saveClick() {
-		var newName = this.$nameInput.val();
-		var data = PlanningSender.createRequest(PlanningType.Custom, "renameSearch", {
-			id: this.currentSearch.id,
-			searchName: newName
-		});
-
-		PlanningSender.updateProp(data, (res) => {
-			this.currentSearch.searchName = newName;
-		  this.$nameInput.hide();
-			this.$selectedSpan.show();
-			//this.$searchesList.show();
-			this.$nameEditBtn.show();
-			this.$nameSaveBtn.hide();
-			this.isEditMode = false;
-
-			this.$selectedSpan.text(newName);
-			this.$searchesList.find(`li[data-si='${this.currentSearch.id}']`).text(newName);
-			//this.fillList();
-		});
-	}
-
-	public editClick() {
-		this.$nameInput.show();
-		this.$nameInput.val(this.currentSearch.searchName);
-		this.$selectedSpan.hide();
-		//this.$searchesList.hide();
-		this.$nameEditBtn.hide();
-		this.$nameSaveBtn.show();
-		this.isEditMode = true;
-	}
-
 }
 
 class DelayedCallbackMap {
@@ -653,13 +298,18 @@ class PlanningMap {
 				["minPopulation", population],
 				["planningType", this.currentPlanningType.toString()]
 			];
-
+	    
+			if (this.currentPlanningType === PlanningType.Custom) {
+				prms.push(["customId", this.customForm.namesList.currentSearch.id]);
+			}   
+	 
 			Views.ViewBase.currentView.apiGet("airportGroup", prms, (response) => {
 				this.onCitiesResponse(response);
 			});
   }
 
 	private initCategory() {
+	 
 	 this.getTabData(this.currentPlanningType, (data) => {
 
 		 this.viewData = data;
@@ -682,6 +332,11 @@ class PlanningMap {
 
 	private getTabData(planningType: PlanningType, callback) {
 	 var prms = [["planningType", planningType.toString()]];
+	 
+	 //if (planningType === PlanningType.Custom) {
+		//prms.push(["customId", this.customForm.namesList.currentSearch.id]);
+	 //}
+
 	 Views.ViewBase.currentView.apiGet("PlanningProperty", prms, (response) => {
 		callback(response);
 	 });

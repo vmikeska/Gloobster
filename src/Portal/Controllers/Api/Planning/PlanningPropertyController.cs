@@ -67,18 +67,18 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 
 			return new ObjectResult(null);
 		}
-		
+
 
 		[HttpPut]
 		[Authorize]
-		public async Task<IActionResult> Put([FromBody]PlanningPropRequest req)
+		public async Task<IActionResult> Put([FromBody] PlanningPropRequest req)
 		{
 			Req = req;
-			
+
 			if (req.propertyName == "ExtraDaysLength")
 			{
 				int length = int.Parse(GV("length"));
-                var success = await Planning.ChangeWeekendExtraDaysLength(UserId, length);
+				var success = await Planning.ChangeWeekendExtraDaysLength(UserId, length);
 				return new ObjectResult(success);
 			}
 
@@ -98,33 +98,43 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 				return new ObjectResult(success);
 			}
 
-			if (req.planningType == PlanningType.Anytime || req.planningType == PlanningType.Weekend)
+
+			if (req.propertyName == "cities")
 			{
-				if (req.propertyName == "cities")
+				var selection = new CitySelectionDO
 				{
-					var selection = new CitySelectionDO
-					{
-						UserId = UserId,
-						GID = int.Parse(GV("gid")),
-						Selected = bool.Parse(GV("selected")),
-						PlanningType = req.planningType
-					};
-					bool success = await Planning.ChangeCitySelection(selection);
-					return new ObjectResult(success);
+					UserId = UserId,
+					GID = int.Parse(GV("gid")),
+					Selected = bool.Parse(GV("selected")),
+					PlanningType = req.planningType
+				};
+
+				if (req.planningType == PlanningType.Custom)
+				{
+					selection.CustomId = GV("customId");
 				}
 
-				if (req.propertyName == "countries")
-				{										
-					var selection = new CountrySelectionDO
-					{
-						UserId = UserId,
-						CountryCode = GV("countryCode"),
-                        Selected = bool.Parse(GV("selected")),
-						PlanningType = req.planningType
-					};
-					bool success = await Planning.ChangeCountrySelection(selection);
-					return new ObjectResult(success);
+				bool success = await Planning.ChangeCitySelection(selection);
+				return new ObjectResult(success);
+			}
+
+			if (req.propertyName == "countries")
+			{
+				var selection = new CountrySelectionDO
+				{
+					UserId = UserId,
+					CountryCode = GV("countryCode"),
+					Selected = bool.Parse(GV("selected")),
+					PlanningType = req.planningType
+				};
+
+				if (req.planningType == PlanningType.Custom)
+				{
+					selection.CustomId = GV("customId");
 				}
+
+				bool success = await Planning.ChangeCountrySelection(selection);
+				return new ObjectResult(success);
 			}
 			
 			return new ObjectResult(null);

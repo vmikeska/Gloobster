@@ -33,64 +33,13 @@ namespace Gloobster.DomainModels
 
 			if (selection.PlanningType == PlanningType.Custom)
 			{
-
+				bool changed = await ChangeCountrySelectionCustom(selection);
+				return changed;
 			}
 
 			return false;
 		}
 
-		private async Task<bool> ChangeCountrySelectionAnytime(CountrySelectionDO selection)
-		{
-			var userIdObj = new ObjectId(selection.UserId);
-			var anytime = DB.C<PlanningAnytimeEntity>().FirstOrDefault(u => u.PortalUser_id == userIdObj);
-
-			bool hasCountry = anytime.CountryCodes.Contains(selection.CountryCode);
-
-			if (selection.Selected && !hasCountry)
-			{
-				var filter = DB.F<PlanningAnytimeEntity>().Eq(p => p.PortalUser_id, userIdObj);
-				var update = DB.U<PlanningAnytimeEntity>().Push(p => p.CountryCodes, selection.CountryCode);
-				var res = await DB.UpdateAsync(filter, update);
-				return res.ModifiedCount == 1;
-			}
-
-			if (!selection.Selected && hasCountry)
-			{
-				var filter = DB.F<PlanningAnytimeEntity>().Eq(p => p.PortalUser_id, userIdObj);
-				var update = DB.U<PlanningAnytimeEntity>().Pull(p => p.CountryCodes, selection.CountryCode);
-				var res = await DB.UpdateAsync(filter, update);
-				return res.ModifiedCount == 1;
-			}
-
-			return false;
-		}
-
-		private async Task<bool> ChangeCountrySelectionWeekend(CountrySelectionDO selection)
-		{
-			var userIdObj = new ObjectId(selection.UserId);
-			var weekend = DB.C<PlanningWeekendEntity>().FirstOrDefault(u => u.PortalUser_id == userIdObj);
-
-			bool hasCountry = weekend.CountryCodes.Contains(selection.CountryCode);
-
-			if (selection.Selected && !hasCountry)
-			{
-				var filter = DB.F<PlanningWeekendEntity>().Eq(p => p.PortalUser_id, userIdObj);
-				var update = DB.U<PlanningWeekendEntity>().Push(p => p.CountryCodes, selection.CountryCode);
-				var res = await DB.UpdateAsync(filter, update);
-				return res.ModifiedCount == 1;
-			}
-
-			if (!selection.Selected && hasCountry)
-			{
-				var filter = DB.F<PlanningWeekendEntity>().Eq(p => p.PortalUser_id, userIdObj);
-				var update = DB.U<PlanningWeekendEntity>().Pull(p => p.CountryCodes, selection.CountryCode);
-				var res = await DB.UpdateAsync(filter, update);
-				return res.ModifiedCount == 1;
-			}
-
-			return false;
-		}
-		
 		public async Task<bool> ChangeCitySelection(CitySelectionDO selection)
 		{
 			if (selection.PlanningType == PlanningType.Anytime)
@@ -107,7 +56,131 @@ namespace Gloobster.DomainModels
 
 			if (selection.PlanningType == PlanningType.Custom)
 			{
+				bool changed = await ChangeCitySelectionCustom(selection);
+				return changed;
+			}
 
+			return false;
+		}
+
+
+		private async Task<bool> ChangeCountrySelectionAnytime(CountrySelectionDO selection)
+		{
+			var userIdObj = new ObjectId(selection.UserId);
+			var anytime = DB.C<PlanningAnytimeEntity>().FirstOrDefault(u => u.PortalUser_id == userIdObj);
+
+			bool hasCountry = anytime.CountryCodes.Contains(selection.CountryCode);
+
+			var filter = DB.F<PlanningAnytimeEntity>().Eq(p => p.PortalUser_id, userIdObj);
+
+			if (selection.Selected && !hasCountry)
+			{				
+				var update = DB.U<PlanningAnytimeEntity>().Push(p => p.CountryCodes, selection.CountryCode);
+				var res = await DB.UpdateAsync(filter, update);
+				return res.ModifiedCount == 1;
+			}
+
+			if (!selection.Selected && hasCountry)
+			{				
+				var update = DB.U<PlanningAnytimeEntity>().Pull(p => p.CountryCodes, selection.CountryCode);
+				var res = await DB.UpdateAsync(filter, update);
+				return res.ModifiedCount == 1;
+			}
+
+			return false;
+		}
+
+		private async Task<bool> ChangeCountrySelectionWeekend(CountrySelectionDO selection)
+		{
+			var userIdObj = new ObjectId(selection.UserId);
+			var weekend = DB.C<PlanningWeekendEntity>().FirstOrDefault(u => u.PortalUser_id == userIdObj);
+
+			bool hasCountry = weekend.CountryCodes.Contains(selection.CountryCode);
+
+			var filter = DB.F<PlanningWeekendEntity>().Eq(p => p.PortalUser_id, userIdObj);
+
+			if (selection.Selected && !hasCountry)
+			{				
+				var update = DB.U<PlanningWeekendEntity>().Push(p => p.CountryCodes, selection.CountryCode);
+				var res = await DB.UpdateAsync(filter, update);
+				return res.ModifiedCount == 1;
+			}
+
+			if (!selection.Selected && hasCountry)
+			{			
+				var update = DB.U<PlanningWeekendEntity>().Pull(p => p.CountryCodes, selection.CountryCode);
+				var res = await DB.UpdateAsync(filter, update);
+				return res.ModifiedCount == 1;
+			}
+
+			return false;
+		}
+		
+		
+		private async Task<bool> ChangeCountrySelectionCustom(CountrySelectionDO selection)
+		{
+			var userIdObj = new ObjectId(selection.UserId);
+			var customIdObj = new ObjectId(selection.CustomId);
+			var custom = DB.C<PlanningCustomEntity>().FirstOrDefault(u => u.PortalUser_id == userIdObj);
+			var customSearch = custom.Searches.FirstOrDefault(s => s.id == customIdObj);
+
+			if (customSearch == null)
+			{
+				//throw
+			}
+
+			bool hasCountry = customSearch.CountryCodes.Contains(selection.CountryCode);
+
+			var filter = DB.F<PlanningCustomEntity>().Eq(p => p.PortalUser_id, userIdObj)
+				& DB.F<PlanningCustomEntity>().Eq("Searches._id", customIdObj);
+
+			if (selection.Selected && !hasCountry)
+			{
+				var update = DB.U<PlanningCustomEntity>().Push("Searches.$.CountryCodes", selection.CountryCode);
+				var res = await DB.UpdateAsync(filter, update);
+				return res.ModifiedCount == 1;
+			}
+
+			if (!selection.Selected && hasCountry)
+			{
+				var update = DB.U<PlanningCustomEntity>().Pull("Searches.$.CountryCodes", selection.CountryCode);
+				var res = await DB.UpdateAsync(filter, update);
+				return res.ModifiedCount == 1;
+			}
+
+			return false;
+		}
+
+		private async Task<bool> ChangeCitySelectionCustom(CitySelectionDO selection)
+		{
+			var userIdObj = new ObjectId(selection.UserId);
+			var customIdObj = new ObjectId(selection.CustomId);
+			var custom = DB.C<PlanningCustomEntity>().FirstOrDefault(u => u.PortalUser_id == userIdObj);
+			
+			var customSearch = custom.Searches.FirstOrDefault(s => s.id == customIdObj);
+
+			if (customSearch == null)
+			{
+				//throw
+			}
+
+			bool hasCity = customSearch.Cites.Contains(selection.GID);
+
+			var filter = DB.F<PlanningCustomEntity>().Eq(p => p.PortalUser_id, userIdObj)
+					& DB.F<PlanningCustomEntity>().Eq("Searches._id", customIdObj);
+
+			if (selection.Selected && !hasCity)
+			{				
+				var update = DB.U<PlanningCustomEntity>().Push("Searches.$.Cites", selection.GID);
+				var res = await DB.UpdateAsync(filter, update);
+				return res.ModifiedCount == 1;
+			}
+
+			if (!selection.Selected && hasCity)
+			{				
+				var update = DB.U<PlanningCustomEntity>().Pull("Searches.$.Cites", selection.GID);
+				var res = await DB.UpdateAsync(filter, update);
+				return res.ModifiedCount == 1;
 			}
 
 			return false;
@@ -120,17 +193,17 @@ namespace Gloobster.DomainModels
 
 			bool hasCity = anytime.Cites.Contains(selection.GID);
 
+			var filter = DB.F<PlanningAnytimeEntity>().Eq(p => p.PortalUser_id, userIdObj);
+
 			if (selection.Selected && !hasCity)
-			{
-				var filter = DB.F<PlanningAnytimeEntity>().Eq(p => p.PortalUser_id, userIdObj);
+			{				
 				var update = DB.U<PlanningAnytimeEntity>().Push(p => p.Cites, selection.GID);
 				var res = await DB.UpdateAsync(filter, update);
 				return res.ModifiedCount == 1;
 			}
 
 			if (!selection.Selected && hasCity)
-			{
-				var filter = DB.F<PlanningAnytimeEntity>().Eq(p => p.PortalUser_id, userIdObj);
+			{			
 				var update = DB.U<PlanningAnytimeEntity>().Pull(p => p.Cites, selection.GID);
 				var res = await DB.UpdateAsync(filter, update);
 				return res.ModifiedCount == 1;
@@ -146,17 +219,17 @@ namespace Gloobster.DomainModels
 
 			bool hasCity = anytime.Cites.Contains(selection.GID);
 
+			var filter = DB.F<PlanningWeekendEntity>().Eq(p => p.PortalUser_id, userIdObj);
+
 			if (selection.Selected && !hasCity)
-			{
-				var filter = DB.F<PlanningWeekendEntity>().Eq(p => p.PortalUser_id, userIdObj);
+			{				
 				var update = DB.U<PlanningWeekendEntity>().Push(p => p.Cites, selection.GID);
 				var res = await DB.UpdateAsync(filter, update);
 				return res.ModifiedCount == 1;
 			}
 
 			if (!selection.Selected && hasCity)
-			{
-				var filter = DB.F<PlanningWeekendEntity>().Eq(p => p.PortalUser_id, userIdObj);
+			{			
 				var update = DB.U<PlanningWeekendEntity>().Pull(p => p.Cites, selection.GID);
 				var res = await DB.UpdateAsync(filter, update);
 				return res.ModifiedCount == 1;
