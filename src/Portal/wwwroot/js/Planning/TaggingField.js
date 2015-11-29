@@ -52,8 +52,8 @@ var TaggingField = (function () {
         var _this = this;
         $ul.html("");
         items.forEach(function (item) {
-            var inputVal = $input.val();
-            var strMatch = (inputVal === "") || (item.text.indexOf(inputVal) > -1);
+            var inputVal = $input.val().toLowerCase();
+            var strMatch = (inputVal === "") || (item.text.toLowerCase().indexOf(inputVal) > -1);
             var alreadySelected = _.find(_this.selectedItems, function (i) { return i.kind === item.kind && i.value === item.value; });
             if (strMatch && !alreadySelected) {
                 var $item = _this.createTaggerItem(item.text, item.value, item.kind);

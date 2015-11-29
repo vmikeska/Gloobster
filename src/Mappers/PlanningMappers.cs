@@ -41,7 +41,6 @@ namespace Gloobster.Mappers
 			{
 				id = e.id.ToString(),
 				countryCodes = e.CountryCodes,
-				cites = e.Cites,
 				from = e.From,				
 				months = e.Months,
 				roughlyDays = e.RoughlyDays,
@@ -58,7 +57,6 @@ namespace Gloobster.Mappers
 			{
 				id = d.Id,
 				countryCodes = d.CountryCodes,
-				cites = d.Cites,
 				from = d.From,
 				months = d.Months,
 				roughlyDays = d.RoughlyDays,
@@ -75,7 +73,7 @@ namespace Gloobster.Mappers
 			{
 				Id = e.id.ToString(),
 				CountryCodes = e.CountryCodes,
-				Cites = e.Cites,
+				Cities = e.Cities,
 				From = e.From,
 				Months = e.Months,
 				RoughlyDays = e.RoughlyDays,

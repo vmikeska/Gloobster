@@ -10,11 +10,7 @@ namespace Gloobster.ReqRes.Airport
 		public double lngEast { get; set; }
 		public int? minPopulation { get; set; }
 		public PlanningType? planningType { get; set; }
-
-		//public string latNorth { get; set; }
-		//public string lngWest { get; set; }
-		//public string latSouth { get; set; }
-		//public string lngEast { get; set; }
-		//public string minPopulation { get; set; }
+		
+		public string customId { get; set; }
 	}
 }

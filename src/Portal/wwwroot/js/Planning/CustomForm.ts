@@ -2,18 +2,20 @@ class CustomForm {
 
 	public namesList: NamesList;
 	private timeTagger: TaggingField;
+	public planningMap: PlanningMap;
 
 	public data: any;
 
-	constructor(data) {
+	constructor(data, planningMap: PlanningMap) {
+		this.planningMap = planningMap;
 		this.data = data;
 		this.namesList = new NamesList(data.searches);
 		this.namesList.onSearchChanged = (search) => this.onSearchChanged(search);
 	 
 		this.registerDuration();
-		this.initTimeTagger(this.namesList.currentSearch);
+		this.initTimeTagger(NamesList.selectedSearch);
 
-		this.fillForm(this.namesList.currentSearch);
+		this.fillForm(NamesList.selectedSearch);
 	}
 
 	private onSearchChanged(search) {
@@ -24,6 +26,8 @@ class CustomForm {
 		var timeSelectedItems = this.getTimeTaggerSelectedItems(search);
 		this.timeTagger.setSelectedItems(timeSelectedItems);
 		this.initDuration(search.roughlyDays);	
+		this.planningMap.countriesManager.createCountries(search.countryCodes, PlanningType.Custom);		
+		this.planningMap.delayedZoomCallback.receiveEvent();
 	}
  
 	private initTimeTagger(search) {
@@ -53,7 +57,7 @@ class CustomForm {
 			var data = PlanningSender.createRequest(PlanningType.Custom, "time", {
 				kind: kind,
 				value: val,
-				id: this.namesList.currentSearch.id
+				id: NamesList.selectedSearch.id
 			});
 
 			PlanningSender.pushProp(data, (res) => {
@@ -123,7 +127,7 @@ class CustomForm {
 
 	private callUpdateMinLength(roughlyDays) {
 		var data = PlanningSender.createRequest(PlanningType.Custom, "roughlyDays", {
-			id: this.namesList.currentSearch.id,
+		 id: NamesList.selectedSearch.id,
 			days: roughlyDays
 		});
 

@@ -7,14 +7,17 @@ class NamesList {
 	$addNewItem: any;
 
 	private searches = [];
-	public currentSearch;
+	public currentSearchDeleteThisShit;
 
 	private isEditMode = false;
 
 	public onSearchChanged: Function;
 
+  public static selectedSearch;
+
 	constructor(searches) {
-		this.searches = searches;
+	 this.searches = searches;
+		NamesList.selectedSearch = this.searches[0];
 
 		this.$nameInput = $("#nameInput");
 		this.$nameSaveBtn = $("#nameSaveBtn");
@@ -37,7 +40,7 @@ class NamesList {
 
 			PlanningSender.pushProp(data, (newSearch) => {
 				searches.push(newSearch);
-				this.currentSearch = newSearch;
+				NamesList.selectedSearch = newSearch;
 				this.addItem(newSearch);
 				this.setToEditMode();
 				this.onSearchChanged(newSearch);				
@@ -54,8 +57,8 @@ class NamesList {
 			this.addItem(search);
 		});
 
-		this.currentSearch = this.searches[0];
-		this.$selectedSpan.text(this.currentSearch.searchName);
+		NamesList.selectedSearch = this.searches[0];
+		this.$selectedSpan.text(NamesList.selectedSearch.searchName);
 	}
 
   private addItem(search) {
@@ -71,7 +74,7 @@ class NamesList {
 	private itemClick($item) {
 		var searchId = $item.data("si");
 		var search = _.find(this.searches, (search) => { return search.id === searchId; });
-		this.currentSearch = search;
+		NamesList.selectedSearch = search;
 		this.onSearchChanged(search);
 	}
  
@@ -86,12 +89,12 @@ class NamesList {
  private saveNewName() {
 	 var newName = this.$nameInput.val();
 		var data = PlanningSender.createRequest(PlanningType.Custom, "renameSearch", {
-			id: this.currentSearch.id,
+		 id: NamesList.selectedSearch.id,
 			searchName: newName
 		});
 
 		PlanningSender.updateProp(data, (res) => {
-			this.currentSearch.searchName = newName;
+		 NamesList.selectedSearch.searchName = newName;
 			this.$nameInput.hide();
 			this.$selectedSpan.show();
 			this.$nameEditBtn.show();
@@ -99,13 +102,13 @@ class NamesList {
 			this.isEditMode = false;
 
 			this.$selectedSpan.text(newName);
-			this.$searchesList.find(`li[data-si='${this.currentSearch.id}']`).text(newName);
+			this.$searchesList.find(`li[data-si='${NamesList.selectedSearch.id}']`).text(newName);
 		});
  }
 
  private setToEditMode() {
 	 this.$nameInput.show();
-		this.$nameInput.val(this.currentSearch.searchName);
+	 this.$nameInput.val(NamesList.selectedSearch.searchName);
 		this.$selectedSpan.hide();
 		this.$nameEditBtn.hide();
 		this.$nameSaveBtn.show();

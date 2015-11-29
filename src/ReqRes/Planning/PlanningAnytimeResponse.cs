@@ -19,13 +19,17 @@ namespace Gloobster.ReqRes.Planning
 		public List<CustomSearchResponse> searches { get; set; }
 	}
 
+	//public class PlanningCustomLiteListResponse
+	//{
+	//	public List<CustomSearchResponse> searches { get; set; }
+	//}
+
 	public class CustomSearchResponse
 	{
 		public string id { get; set; }
 		public string searchName { get; set; }
 
 		public List<string> countryCodes { get; set; }
-		public List<int> cites { get; set; }
 
 		public List<int> years { get; set; }
 		public List<int> months { get; set; }

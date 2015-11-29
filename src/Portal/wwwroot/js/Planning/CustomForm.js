@@ -1,12 +1,13 @@
 var CustomForm = (function () {
-    function CustomForm(data) {
+    function CustomForm(data, planningMap) {
         var _this = this;
+        this.planningMap = planningMap;
         this.data = data;
         this.namesList = new NamesList(data.searches);
         this.namesList.onSearchChanged = function (search) { return _this.onSearchChanged(search); };
         this.registerDuration();
-        this.initTimeTagger(this.namesList.currentSearch);
-        this.fillForm(this.namesList.currentSearch);
+        this.initTimeTagger(NamesList.selectedSearch);
+        this.fillForm(NamesList.selectedSearch);
     }
     CustomForm.prototype.onSearchChanged = function (search) {
         this.fillForm(search);
@@ -15,9 +16,10 @@ var CustomForm = (function () {
         var timeSelectedItems = this.getTimeTaggerSelectedItems(search);
         this.timeTagger.setSelectedItems(timeSelectedItems);
         this.initDuration(search.roughlyDays);
+        this.planningMap.countriesManager.createCountries(search.countryCodes, PlanningType.Custom);
+        this.planningMap.delayedZoomCallback.receiveEvent();
     };
     CustomForm.prototype.initTimeTagger = function (search) {
-        var _this = this;
         var itemsRange = [
             { text: "January", value: 1, kind: "month" },
             { text: "February", value: 2, kind: "month" },
@@ -42,7 +44,7 @@ var CustomForm = (function () {
             var data = PlanningSender.createRequest(PlanningType.Custom, "time", {
                 kind: kind,
                 value: val,
-                id: _this.namesList.currentSearch.id
+                id: NamesList.selectedSearch.id
             });
             PlanningSender.pushProp(data, function (res) {
                 callback(res);
@@ -106,7 +108,7 @@ var CustomForm = (function () {
     };
     CustomForm.prototype.callUpdateMinLength = function (roughlyDays) {
         var data = PlanningSender.createRequest(PlanningType.Custom, "roughlyDays", {
-            id: this.namesList.currentSearch.id,
+            id: NamesList.selectedSearch.id,
             days: roughlyDays
         });
         PlanningSender.updateProp(data, function (res) {

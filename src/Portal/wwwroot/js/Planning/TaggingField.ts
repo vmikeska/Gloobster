@@ -71,8 +71,8 @@ class TaggingField {
 	private fillTagger($input, items, $ul) {
 		$ul.html("");
 		items.forEach((item) => {
-			var inputVal = $input.val();
-			var strMatch = (inputVal === "") || (item.text.indexOf(inputVal) > -1);
+		  var inputVal = $input.val().toLowerCase();
+			var strMatch = (inputVal === "") || (item.text.toLowerCase().indexOf(inputVal) > -1);
 			var alreadySelected = _.find(this.selectedItems, (i) => { return i.kind === item.kind && i.value === item.value });
 			
 			if (strMatch && !alreadySelected) {

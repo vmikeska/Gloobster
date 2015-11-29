@@ -14,6 +14,7 @@ using Gloobster.ReqRes.Airport;
 using Microsoft.AspNet.Mvc;
 using Gloobster.Common;
 using Gloobster.Entities.Planning;
+using MongoDB.Bson;
 
 namespace Gloobster.Portal.Controllers.Api.Geo
 {
@@ -47,13 +48,28 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 				if (req.planningType.Value == PlanningType.Anytime)
 				{
 					var anytime = DB.C<PlanningAnytimeEntity>().FirstOrDefault(p => p.PortalUser_id == UserIdObj);
-					cities.ForEach(c => c.selected = anytime.Cites.Contains(c.gid));
+					cities.ForEach(c => c.selected = anytime.Cities.Contains(c.gid));
 				}
 
 				if (req.planningType.Value == PlanningType.Weekend)
 				{
 					var weekend = DB.C<PlanningWeekendEntity>().FirstOrDefault(p => p.PortalUser_id == UserIdObj);
-					cities.ForEach(c => c.selected = weekend.Cites.Contains(c.gid));
+					cities.ForEach(c => c.selected = weekend.Cities.Contains(c.gid));
+				}
+
+				if (req.planningType.Value == PlanningType.Custom)
+				{
+					var customIdObj = new ObjectId(req.customId);
+
+					var custom = DB.C<PlanningCustomEntity>().FirstOrDefault(p => p.PortalUser_id == UserIdObj);
+					var selectedSearch = custom.Searches.FirstOrDefault(c => c.id == customIdObj);
+
+					if (selectedSearch == null)
+					{
+						return new ObjectResult(null);
+					}
+
+					cities.ForEach(c => c.selected = selectedSearch.Cities.Contains(c.gid));
 				}
 			}
 

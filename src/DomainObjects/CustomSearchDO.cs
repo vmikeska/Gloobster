@@ -12,7 +12,7 @@ namespace Gloobster.DomainObjects
 
 
 		public List<string> CountryCodes { get; set; }
-		public List<int> Cites { get; set; }
+		public List<int> Cities { get; set; }
 
 		public List<int> Years { get; set; }
 		public List<int> Months { get; set; }

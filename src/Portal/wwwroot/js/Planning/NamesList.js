@@ -4,6 +4,7 @@ var NamesList = (function () {
         this.searches = [];
         this.isEditMode = false;
         this.searches = searches;
+        NamesList.selectedSearch = this.searches[0];
         this.$nameInput = $("#nameInput");
         this.$nameSaveBtn = $("#nameSaveBtn");
         this.$nameEditBtn = $("#nameEditBtn");
@@ -21,7 +22,7 @@ var NamesList = (function () {
             });
             PlanningSender.pushProp(data, function (newSearch) {
                 searches.push(newSearch);
-                _this.currentSearch = newSearch;
+                NamesList.selectedSearch = newSearch;
                 _this.addItem(newSearch);
                 _this.setToEditMode();
                 _this.onSearchChanged(newSearch);
@@ -35,8 +36,8 @@ var NamesList = (function () {
         this.searches.forEach(function (search) {
             _this.addItem(search);
         });
-        this.currentSearch = this.searches[0];
-        this.$selectedSpan.text(this.currentSearch.searchName);
+        NamesList.selectedSearch = this.searches[0];
+        this.$selectedSpan.text(NamesList.selectedSearch.searchName);
     };
     NamesList.prototype.addItem = function (search) {
         var _this = this;
@@ -50,7 +51,7 @@ var NamesList = (function () {
     NamesList.prototype.itemClick = function ($item) {
         var searchId = $item.data("si");
         var search = _.find(this.searches, function (search) { return search.id === searchId; });
-        this.currentSearch = search;
+        NamesList.selectedSearch = search;
         this.onSearchChanged(search);
     };
     NamesList.prototype.saveClick = function () {
@@ -63,23 +64,23 @@ var NamesList = (function () {
         var _this = this;
         var newName = this.$nameInput.val();
         var data = PlanningSender.createRequest(PlanningType.Custom, "renameSearch", {
-            id: this.currentSearch.id,
+            id: NamesList.selectedSearch.id,
             searchName: newName
         });
         PlanningSender.updateProp(data, function (res) {
-            _this.currentSearch.searchName = newName;
+            NamesList.selectedSearch.searchName = newName;
             _this.$nameInput.hide();
             _this.$selectedSpan.show();
             _this.$nameEditBtn.show();
             _this.$nameSaveBtn.hide();
             _this.isEditMode = false;
             _this.$selectedSpan.text(newName);
-            _this.$searchesList.find("li[data-si='" + _this.currentSearch.id + "']").text(newName);
+            _this.$searchesList.find("li[data-si='" + NamesList.selectedSearch.id + "']").text(newName);
         });
     };
     NamesList.prototype.setToEditMode = function () {
         this.$nameInput.show();
-        this.$nameInput.val(this.currentSearch.searchName);
+        this.$nameInput.val(NamesList.selectedSearch.searchName);
         this.$selectedSpan.hide();
         this.$nameEditBtn.hide();
         this.$nameSaveBtn.show();

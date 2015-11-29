@@ -164,21 +164,21 @@ namespace Gloobster.DomainModels
 				//throw
 			}
 
-			bool hasCity = customSearch.Cites.Contains(selection.GID);
+			bool hasCity = customSearch.Cities.Contains(selection.GID);
 
 			var filter = DB.F<PlanningCustomEntity>().Eq(p => p.PortalUser_id, userIdObj)
 					& DB.F<PlanningCustomEntity>().Eq("Searches._id", customIdObj);
 
 			if (selection.Selected && !hasCity)
 			{				
-				var update = DB.U<PlanningCustomEntity>().Push("Searches.$.Cites", selection.GID);
+				var update = DB.U<PlanningCustomEntity>().Push("Searches.$.Cities", selection.GID);
 				var res = await DB.UpdateAsync(filter, update);
 				return res.ModifiedCount == 1;
 			}
 
 			if (!selection.Selected && hasCity)
 			{				
-				var update = DB.U<PlanningCustomEntity>().Pull("Searches.$.Cites", selection.GID);
+				var update = DB.U<PlanningCustomEntity>().Pull("Searches.$.Cities", selection.GID);
 				var res = await DB.UpdateAsync(filter, update);
 				return res.ModifiedCount == 1;
 			}
@@ -191,20 +191,20 @@ namespace Gloobster.DomainModels
 			var userIdObj = new ObjectId(selection.UserId);
 			var anytime = DB.C<PlanningAnytimeEntity>().FirstOrDefault(u => u.PortalUser_id == userIdObj);
 
-			bool hasCity = anytime.Cites.Contains(selection.GID);
+			bool hasCity = anytime.Cities.Contains(selection.GID);
 
 			var filter = DB.F<PlanningAnytimeEntity>().Eq(p => p.PortalUser_id, userIdObj);
 
 			if (selection.Selected && !hasCity)
 			{				
-				var update = DB.U<PlanningAnytimeEntity>().Push(p => p.Cites, selection.GID);
+				var update = DB.U<PlanningAnytimeEntity>().Push(p => p.Cities, selection.GID);
 				var res = await DB.UpdateAsync(filter, update);
 				return res.ModifiedCount == 1;
 			}
 
 			if (!selection.Selected && hasCity)
 			{			
-				var update = DB.U<PlanningAnytimeEntity>().Pull(p => p.Cites, selection.GID);
+				var update = DB.U<PlanningAnytimeEntity>().Pull(p => p.Cities, selection.GID);
 				var res = await DB.UpdateAsync(filter, update);
 				return res.ModifiedCount == 1;
 			}
@@ -217,20 +217,20 @@ namespace Gloobster.DomainModels
 			var userIdObj = new ObjectId(selection.UserId);
 			var anytime = DB.C<PlanningWeekendEntity>().FirstOrDefault(u => u.PortalUser_id == userIdObj);
 
-			bool hasCity = anytime.Cites.Contains(selection.GID);
+			bool hasCity = anytime.Cities.Contains(selection.GID);
 
 			var filter = DB.F<PlanningWeekendEntity>().Eq(p => p.PortalUser_id, userIdObj);
 
 			if (selection.Selected && !hasCity)
 			{				
-				var update = DB.U<PlanningWeekendEntity>().Push(p => p.Cites, selection.GID);
+				var update = DB.U<PlanningWeekendEntity>().Push(p => p.Cities, selection.GID);
 				var res = await DB.UpdateAsync(filter, update);
 				return res.ModifiedCount == 1;
 			}
 
 			if (!selection.Selected && hasCity)
 			{			
-				var update = DB.U<PlanningWeekendEntity>().Pull(p => p.Cites, selection.GID);
+				var update = DB.U<PlanningWeekendEntity>().Pull(p => p.Cities, selection.GID);
 				var res = await DB.UpdateAsync(filter, update);
 				return res.ModifiedCount == 1;
 			}
@@ -252,7 +252,7 @@ namespace Gloobster.DomainModels
 			var newSearch = new CustomSearchSE
 			{
 				id = ObjectId.GenerateNewId(),
-				Cites = new List<int>(),
+				Cities = new List<int>(),
 				CountryCodes = new List<string>(),
 				Months = new List<int>(),
 				SearchName = name,
@@ -305,7 +305,7 @@ namespace Gloobster.DomainModels
 				    PortalUser_id = userIdObj,
 					ExtraDaysLength = 0,
 					CountryCodes = new List<string>(),
-					Cites = new List<int>()
+					Cities = new List<int>()
 			    };
 			    await DB.SaveAsync(weekend);
 		    }
@@ -318,7 +318,7 @@ namespace Gloobster.DomainModels
 					id = ObjectId.GenerateNewId(),
 					PortalUser_id = userIdObj,
 					CountryCodes = new List<string>(),
-					Cites = new List<int>()
+					Cities = new List<int>()
 				};
 				await DB.SaveAsync(anytime);
 			}
@@ -333,8 +333,8 @@ namespace Gloobster.DomainModels
 					RoughlyDays = 7,
 					Months = new List<int> {3, 4},
 					Years = new List<int> {2016, 2017},
-					CountryCodes = new List<string> {"cz", "de"},
-					Cites = new List<int> {2950159, 2911298, 3067696},
+					CountryCodes = new List<string> {"CZ", "DE"},
+					Cities = new List<int> {2950159, 2911298, 3067696},
 					FromAirports = new List<FlightSE>(),
 				};
 
