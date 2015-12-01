@@ -1,6 +1,14 @@
+var AirportComboConfig = (function () {
+    function AirportComboConfig() {
+        this.clearAfterSelection = false;
+    }
+    return AirportComboConfig;
+})();
 var AirportCombo = (function () {
-    function AirportCombo(comboId) {
+    function AirportCombo(comboId, config) {
+        if (config === void 0) { config = new AirportComboConfig; }
         this.limit = 10;
+        this.config = config;
         this.$combo = $("#" + comboId);
         this.$cont = this.$combo.find("ul");
         this.$input = this.$combo.find("input");
@@ -53,7 +61,12 @@ var AirportCombo = (function () {
     AirportCombo.prototype.onClick = function ($item) {
         var selName = $item.data("value");
         var selId = $item.data("id");
-        this.$input.val(selName);
+        if (this.config.clearAfterSelection) {
+            this.$input.val("");
+        }
+        else {
+            this.$input.val(selName);
+        }
         this.$cont.html("");
         var data = { id: selId, name: selName };
         this.onSelected(data);

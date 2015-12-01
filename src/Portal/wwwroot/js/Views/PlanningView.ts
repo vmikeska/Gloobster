@@ -24,6 +24,7 @@ class PlanningView extends Views.ViewBase {
 		 this.mapsOperations.loadCategory(PlanningType.Anytime);
 		});
 
+		var locationDialog = new LocationSettingsDialog();
 	}
 
   private registerTabEvents() {
@@ -64,4 +65,3 @@ class PlanningView extends Views.ViewBase {
 	}
 
 }
-

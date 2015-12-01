@@ -1,7 +1,9 @@
 using Gloobster.Common;
 using Gloobster.Database;
+using Gloobster.Entities;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
+using System.Linq;
 
 namespace Gloobster.Portal.Controllers.Base
 {
@@ -18,5 +20,33 @@ namespace Gloobster.Portal.Controllers.Base
 		public string UserId { get; set; }
 
 		public ObjectId UserIdObj => new ObjectId(UserId);
+
+		public bool IsUserLogged => !string.IsNullOrEmpty(UserId);
+
+		private PortalUserEntity _portalUser;
+		public PortalUserEntity PortalUser
+		{
+			get
+			{
+				if (!IsUserLogged)
+				{
+					return null;
+				}
+
+				if (_portalUser != null)
+				{
+					return _portalUser;
+				}
+
+				_portalUser = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == UserIdObj);
+
+				if (_portalUser == null)
+				{
+					//throw
+				}
+
+				return _portalUser;
+			}
+		}
 	}
 }

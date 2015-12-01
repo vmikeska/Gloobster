@@ -1,15 +1,14 @@
 ﻿using Gloobster.Common;
-using Gloobster.Database;
 
-namespace Gloobster.Entities
+namespace Gloobster.DomainObjects
 {
-	public class AirportEntity: EntityBase
+	public class AirportDO
 	{
 		public int OrigId { get; set; }
 		public string Name { get; set; }
 
 		public string City { get; set; }
-		
+
 		public string CountryCode { get; set; }
 
 		public int GeoNamesId { get; set; }
@@ -21,7 +20,5 @@ namespace Gloobster.Entities
 		public LatLng Coord { get; set; }
 
 		public int Alt { get; set; }
-
-		public int IncomingFlights { get; set; }
-    }	
+	}
 }

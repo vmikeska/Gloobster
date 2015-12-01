@@ -39,6 +39,9 @@ namespace Gloobster.Portal
 			builder.AddTransient<IFacebookTaggedPlacesExtractor, FacebookTaggedPlacesExtractor>();
 			
             builder.AddInstance2<IAirportGroupService, AirportGroupService>();
+			builder.AddInstance2<IAirportService, AirportService>();
+
+			
 
 			builder.AddTransient<IPlanningDomain, PlanningDomain>();
 			

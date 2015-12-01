@@ -65,7 +65,10 @@
           "SocialLogin": "1.0.0",
           "System.Net.Http": "4.0.0.0",
           "TweetSharp": "2.3.1"
-        }
+        },
+        "frameworkAssemblies": [
+          "System.Device"
+        ]
       },
       "DomainModelsCommon/1.0.0": {
         "type": "project",

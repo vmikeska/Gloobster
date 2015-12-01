@@ -61,8 +61,7 @@
 		var box = new PlaceSearchBox(homeConf);
 		box.onPlaceSelected = (request) => {
 			var data = { propertyName: propertyName, values: { sourceId: request.SourceId, sourceType: request.SourceType } };
-			this.apiPut("UserProperty", data, () => {
-				//alert("updated");
+			this.apiPut("UserProperty", data, () => {				
 			});
 		};
 	}

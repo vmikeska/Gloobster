@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using Gloobster.Common;
+using Gloobster.DomainObjects;
 using Gloobster.DomainObjects.BaseClasses;
 
 namespace Gloobster.DomainInterfaces
@@ -12,6 +13,7 @@ namespace Gloobster.DomainInterfaces
 		Task<T> GetResponseAsync<T>(QueryBuilder queryBuilder) where T : new();
 		Task<CitySearchResponse> GetCityQueryAsync(string query, int maxRows);
 		Task<GeoNameIdResponse> GetCityByIdAsync(long id);
+		CityDO GetCityById(long id);
 	}
 
 	[DataContract]

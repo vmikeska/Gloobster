@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Gloobster.Common;
 using Gloobster.Database;
-using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
 using Gloobster.Entities;
 using Gloobster.Enums;
@@ -51,4 +51,5 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 			return new ObjectResult(airportsResponse);
 		}		
 	}
+	
 }

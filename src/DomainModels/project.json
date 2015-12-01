@@ -21,6 +21,7 @@
   "frameworks": {
     "dnx451": {
       "frameworkAssemblies": {
+        "System.Device": "4.0.0.0"
       },
       "dependencies": {
         "SharpSquare": "1.0.0-*"

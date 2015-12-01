@@ -58,7 +58,6 @@ var SettingsView = (function (_super) {
         box.onPlaceSelected = function (request) {
             var data = { propertyName: propertyName, values: { sourceId: request.SourceId, sourceType: request.SourceType } };
             _this.apiPut("UserProperty", data, function () {
-                //alert("updated");
             });
         };
     };

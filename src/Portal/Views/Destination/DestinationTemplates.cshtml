@@ -1,4 +1,12 @@
 ﻿
+<script id="homeAirportItem-template" type="text/x-handlebars-template">
+		<div id="{{id}}" class="place">
+				{{name}}				
+				<a class="delete" href="#">Delete</a>
+		</div>
+
+</script>
+
 <script id="anytime-template" type="text/x-handlebars-template">
 		
 		
@@ -75,11 +83,7 @@
 										<span class="future-label">Time</span>
 								</div>
 								<div class="cell">
-										<div id="timeTagger" class="tags future-tags-full">
-												@*<a class="tag" href="#">Frankfurt &bull; FRA</a>
-												<a class="tag" href="#">Barcelona &bull; BCN</a>
-												<a class="tag" href="#">Frankfurt &bull; FRA</a>
-												<a class="tag" href="#">Barcelona &bull; BCN</a>*@
+										<div id="timeTagger" class="tags future-tags-full">								
 												<a class="close" href="#">Close</a>
 										</div>
 								</div>

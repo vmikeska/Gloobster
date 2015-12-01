@@ -13,5 +13,6 @@ namespace Gloobster.Entities
 		public LatLng Coord { get; set; }
 		//public MongoPoint CityCoord { get; set; }
 		public int Population { get; set; }
+		public int TotalFlights { get; set; }
 	}
 }

@@ -33,6 +33,8 @@ namespace Airports
 		//public string TzTimezone { get; set; }
 
 		public int GeoNamesId { get; set; }
+
+		public int IncomingFlights { get; set; }
 	}
 
 	public class LatLng

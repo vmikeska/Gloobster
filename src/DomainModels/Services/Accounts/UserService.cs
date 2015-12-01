@@ -23,6 +23,9 @@ namespace Gloobster.DomainModels.Services.Accounts
 		public IFriendsDomain FriendsService { get; set; }
 		public IDbOperations DB { get; set; }
 		public IPlanningDomain PlanningDomain { get; set; }
+		public IAirportService AirportSvc { get; set; }
+		public IGeoNamesService GNService { get; set; }
+
 
 		public async Task<UserLoggedResultDO> Validate(SocAuthenticationDO authentication, object userObj)
 		{
@@ -80,6 +83,15 @@ namespace Gloobster.DomainModels.Services.Accounts
 		{
 			await FriendsService.CreateFriendsObj(portalUser.UserId);
 			PlanningDomain.CreateDBStructure(portalUser.UserId);
+
+			//todo: maybe in this case try to get location by IP
+			if (portalUser.CurrentLocation != null)
+			{
+				CityDO city = GNService.GetCityById(portalUser.CurrentLocation.GeoNamesId);
+
+				var airports = AirportSvc.GetAirportsInRange(city.Coordinates, 100);
+				await AirportSvc.SaveAirportsInRange(portalUser.UserId, airports);
+			}
 		}
 
 		private bool CheckCredintials(SocAuthenticationDO socAuthentication, PortalUserDO portalUser)

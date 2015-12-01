@@ -23,9 +23,9 @@ namespace Gloobster.Portal.Controllers.Portal
 			foreach (var cityGroup in airportsGroupedByCity)
 			{
 				var cityGroupList = cityGroup.ToList();
-				int gid = int.Parse(cityGroup.Key.ToString());
+				string gid = cityGroup.Key.ToString();
 
-				var geoNamesCity = DB.C<CityEntity>().FirstOrDefault(c => int.Parse(c.GID) == gid);
+				var geoNamesCity = DB.C<CityEntity>().FirstOrDefault(c => c.GID == gid);
 
 				if (geoNamesCity == null)
 				{
@@ -39,8 +39,9 @@ namespace Gloobster.Portal.Controllers.Portal
 					City = geoNamesCity.Name,
 					Coord = new LatLng { Lng = geoNamesCity.Coordinates.Lng, Lat = geoNamesCity.Coordinates.Lat },
 					CountryCode = geoNamesCity.CountryCode,
-					GID = gid,
-					Population = geoNamesCity.Population
+					GID = int.Parse(gid),
+					Population = geoNamesCity.Population,
+					TotalFlights = cityGroupList.Sum(s => s.IncomingFlights)
 				};
 				airportsGroup.Add(airportGroup);
 			}

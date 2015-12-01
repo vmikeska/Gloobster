@@ -16,11 +16,6 @@ namespace Gloobster.DomainModels.Services
 
 		private List<AirportGroupEntity> Cities { get; set; }
 
-		public AirportGroupService()
-		{
-			
-		}
-		
 		public List<AirportGroupDO> GetCitiesInRange(RectDO rectDO, int? minPopulation)
 	    {
 			if (Cities == null)

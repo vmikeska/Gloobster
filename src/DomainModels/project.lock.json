@@ -2837,7 +2837,8 @@
       "BlobFileSystem.Azure >= 0.0.6"
     ],
     "DNX,Version=v4.5.1": [
-      "SharpSquare >= 1.0.0-*"
+      "SharpSquare >= 1.0.0-*",
+      "fx/System.Device >= 4.0.0.0"
     ]
   }
 }

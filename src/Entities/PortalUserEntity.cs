@@ -1,4 +1,6 @@
-﻿using Gloobster.Database;
+﻿using System.Collections.Generic;
+using Gloobster.Database;
+using Gloobster.Entities.Trip;
 using Gloobster.Enums;
 
 namespace Gloobster.Entities
@@ -20,6 +22,11 @@ namespace Gloobster.Entities
 		public Gender Gender { get; set; }
 
 		public SocialAccountSE[] SocialAccounts { get; set; }		
+
+		public List<AirportSaveSE> HomeAirports { get; set; }
+
+		//+age, birth day ? At least Age
+		//
 	}
 
 	

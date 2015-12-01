@@ -1,3 +1,7 @@
+class AirportComboConfig {
+	public clearAfterSelection = false;
+}
+
 class AirportCombo {
 	private $combo: any;
 	private $cont: any;
@@ -6,8 +10,10 @@ class AirportCombo {
 	private lastText: string;
 
 	public onSelected: Function;
+  private config: AirportComboConfig;
 
-	constructor(comboId: string) {
+	constructor(comboId: string, config = new AirportComboConfig) {
+		this.config = config;
 		this.$combo = $("#" + comboId);
 		this.$cont = this.$combo.find("ul");
 		this.$input = this.$combo.find("input");
@@ -65,8 +71,13 @@ class AirportCombo {
 	private onClick($item) {
 		var selName = $item.data("value");
 		var selId = $item.data("id");
-		this.$input.val(selName);
 
+		if (this.config.clearAfterSelection) {
+		 this.$input.val("");
+		} else {
+		 this.$input.val(selName);	
+		}
+	
 		this.$cont.html("");
 
 		var data = { id: selId, name: selName };

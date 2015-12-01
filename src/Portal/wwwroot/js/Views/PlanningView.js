@@ -19,6 +19,7 @@ var PlanningView = (function (_super) {
             _this.mapsOperations = new PlanningMap(map);
             _this.mapsOperations.loadCategory(PlanningType.Anytime);
         });
+        var locationDialog = new LocationSettingsDialog();
     };
     PlanningView.prototype.registerTabEvents = function () {
         var _this = this;

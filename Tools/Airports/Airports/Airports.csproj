@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="GeoNamesClasses.cs" />
     <Compile Include="ParsingClasses.cs" />
+    <Compile Include="Routes.cs" />
     <Compile Include="ToolsForGettingGeoNamesId.cs" />
     <Compile Include="CountryService.cs" />
     <Compile Include="RoughConert.cs" />

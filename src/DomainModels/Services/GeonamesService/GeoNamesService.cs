@@ -5,8 +5,12 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Gloobster.Common;
+using Gloobster.Database;
 using Gloobster.DomainInterfaces;
+using Gloobster.DomainObjects;
 using Gloobster.DomainObjects.BaseClasses;
+using Gloobster.Entities;
+using Gloobster.Mappers;
 
 namespace Gloobster.DomainModels.Services.GeonamesService
 {
@@ -16,6 +20,7 @@ namespace Gloobster.DomainModels.Services.GeonamesService
 
 		private HttpClient _client;
 		private string _userName = "gloobster";
+		public IDbOperations DB { get; set; }
 
 		public GeoNamesService()
 		{
@@ -32,12 +37,22 @@ namespace Gloobster.DomainModels.Services.GeonamesService
 			var qb = new QueryBuilder();
 			qb
 				.BaseUrl(UrlBase)
-				.Endpoint("getJSON")				
+				.Endpoint("getJSON")
 				.Param("geonameId", id.ToString());
 
 			var city = await GetResponseAsync<GeoNameIdResponse>(qb);
-			return city;
+			return city;			
 		}
+
+		public CityDO GetCityById(long id)
+		{			
+			var city = DB.C<CityEntity>().FirstOrDefault(c => c.GID == id.ToString());
+
+			var cityDO = city.ToDO();
+			return cityDO;
+		}
+
+
 
 		public async Task<CitySearchResponse> GetCityAsync(string cityName, string countryCode, int maxRows)
 		{

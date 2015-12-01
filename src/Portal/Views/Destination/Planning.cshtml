@@ -10,6 +10,9 @@
 <link href='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.css' rel='stylesheet' />
 
 <script type="text/javascript" src="@Url.Content("~/js/Views/PlanningView.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Trip/AirportCombo.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Views/LocationSettingsDialog.js")"></script>
+
 <script type="text/javascript" src="@Url.Content("~/js/Planning/NamesList.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Planning/CustomForm.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Planning/TaggingField.js")"></script>
@@ -29,16 +32,16 @@
 		<div class="cell bottom">
 			<span class="icon-home mright5"></span>
 		</div>
-		<div class="cell h4 middle">
-			<small class="display-block">Hometown</small>
-			<strong>Greenwald</strong>, Germany
+		<div id="currentLocation" class="cell h4 middle">
+			<small class="display-block">Current location</small>
+			<strong>@Model.CityName</strong>, <span>@Model.CountryName</span>
 		</div>
 		<div class="cell bottom">
 			<span class="icon-plane2 mright5 mleft10"></span>
 		</div>
 		<div class="cell h4 middle">
 			<small class="display-block">Home Airport</small>
-			FRA, HHN, PRG
+			@Model.AirportsStr
 		</div>
 		<div class="cell bottom">
 			<a class="icon-wheel blue mleft10 popup-target" data-target="#popup-future" href="#"></a>
@@ -76,7 +79,7 @@
 
 </section>
 
-@Html.Partial("LocationSettingsDialog")
+@Html.Partial("LocationSettingsDialog", Model)
 @Html.Partial("DestinationTemplates")
 
 <script>
