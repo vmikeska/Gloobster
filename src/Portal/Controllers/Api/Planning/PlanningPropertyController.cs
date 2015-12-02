@@ -6,6 +6,7 @@ using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
 using Gloobster.Entities.Planning;
+using Gloobster.Entities.Trip;
 using Gloobster.Enums;
 using Gloobster.Mappers;
 using Gloobster.Portal.Controllers.Base;
@@ -54,6 +55,22 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 						bool success = await Planning.PushCustomProperty(UserId, searchId, "Months", value);
 						return new ObjectResult(success);
 					}
+				}
+
+				if (req.propertyName == "fromAirports")
+				{
+					string searchId = GV("id");
+					int value = int.Parse(GV("value"));
+					string text = GV("text");
+
+					var airport = new AirportSaveSE
+					{
+						OrigId = value,
+						SelectedName = text
+					};
+
+					bool success = await Planning.PushCustomProperty(UserId, searchId, "FromAirports", airport);
+					return new ObjectResult(success);
 				}
 
 				if (req.propertyName == "createNewSearch")

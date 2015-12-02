@@ -8,7 +8,7 @@ namespace Gloobster.DomainObjects
 		public string Id { get; set; }
 		public string SearchName { get; set; }
 
-		public List<FlightDO> FromAirports { get; set; }
+		public List<AirportSaveDO> FromAirports { get; set; }
 
 
 		public List<string> CountryCodes { get; set; }

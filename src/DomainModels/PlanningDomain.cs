@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
+using Gloobster.Entities;
 using Gloobster.Entities.Planning;
 using Gloobster.Entities.Trip;
 using Gloobster.Enums;
@@ -249,19 +250,21 @@ namespace Gloobster.DomainModels
 
 		public async Task<CustomSearchDO> CreateNewEmptySearch(string userId, string name)
 		{
+			var userIdObj = new ObjectId(userId);
+			var user = DB.C<PortalUserEntity>().FirstOrDefault(e => e.id == userIdObj);
+
 			var newSearch = new CustomSearchSE
 			{
 				id = ObjectId.GenerateNewId(),
 				Cities = new List<int>(),
 				CountryCodes = new List<string>(),
 				Months = new List<int>(),
-				SearchName = name,
-				FromAirports = new List<FlightSE>(),
+				SearchName = name,				
 				Years = new List<int>(),
-				RoughlyDays = 0
-			};
-
-			var userIdObj = new ObjectId(userId);			
+				RoughlyDays = 0,
+				FromAirports = user.HomeAirports
+            };
+			
 			var filter = DB.F<PlanningCustomEntity>().Eq(p => p.PortalUser_id, userIdObj);				
 			var update = DB.U<PlanningCustomEntity>().Push(p => p.Searches, newSearch);
 			var res = await DB.UpdateAsync(filter, update);
@@ -295,8 +298,9 @@ namespace Gloobster.DomainModels
 		public async void CreateDBStructure(string userId)
 	    {
 			var userIdObj = new ObjectId(userId);
+			var user = DB.C<PortalUserEntity>().FirstOrDefault(e => e.id == userIdObj);
 
-		    var weekend = DB.C<PlanningWeekendEntity>().FirstOrDefault(e => e.PortalUser_id == userIdObj);
+			var weekend = DB.C<PlanningWeekendEntity>().FirstOrDefault(e => e.PortalUser_id == userIdObj);
 		    if (weekend == null)
 		    {
 			    weekend = new PlanningWeekendEntity
@@ -334,10 +338,18 @@ namespace Gloobster.DomainModels
 					Months = new List<int> {3, 4},
 					Years = new List<int> {2016, 2017},
 					CountryCodes = new List<string> {"CZ", "DE"},
-					Cities = new List<int> {2950159, 2911298, 3067696},
-					FromAirports = new List<FlightSE>(),
+					Cities = new List<int> {2950159, 2911298, 3067696},					
 				};
 
+				if (user.HomeAirports != null)
+				{
+					search1.FromAirports = user.HomeAirports;
+				}
+				else
+				{
+					search1.FromAirports = new List<AirportSaveSE>();
+				}
+				
 				custom = new PlanningCustomEntity
 				{
 					id = ObjectId.GenerateNewId(),

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Gloobster.ReqRes.Airport;
 
 namespace Gloobster.ReqRes.Planning
 {
@@ -37,6 +38,8 @@ namespace Gloobster.ReqRes.Planning
 		public DateTime? to { get; set; }
 
 		public int roughlyDays { get; set; }
+
+		public List<AirportSaveResponse> fromAirports { get; set; }
 	}
 
 }

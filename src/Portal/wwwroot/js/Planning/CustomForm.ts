@@ -1,8 +1,10 @@
 class CustomForm {
 
-	public namesList: NamesList;
-	private timeTagger: TaggingField;
+	public namesList: NamesList;	
 	public planningMap: PlanningMap;
+
+	private timeTagger: TaggingField;
+  private airportTagger: TaggingField;
 
 	public data: any;
 
@@ -13,9 +15,11 @@ class CustomForm {
 		this.namesList.onSearchChanged = (search) => this.onSearchChanged(search);
 	 
 		this.registerDuration();
-		this.initTimeTagger(NamesList.selectedSearch);
 
-		this.fillForm(NamesList.selectedSearch);
+		this.initTimeTagger(NamesList.selectedSearch);
+		this.initAirportTagger(NamesList.selectedSearch);
+
+		this.fillForm(NamesList.selectedSearch);	 
 	}
 
 	private onSearchChanged(search) {
@@ -25,11 +29,45 @@ class CustomForm {
 	private fillForm(search) {
 		var timeSelectedItems = this.getTimeTaggerSelectedItems(search);
 		this.timeTagger.setSelectedItems(timeSelectedItems);
+
+		var airportSelectedItems = this.getAirportTaggerSelectedItems(search);
+		this.airportTagger.setSelectedItems(airportSelectedItems);
+
 		this.initDuration(search.roughlyDays);	
 		this.planningMap.countriesManager.createCountries(search.countryCodes, PlanningType.Custom);		
 		this.planningMap.delayedZoomCallback.receiveEvent();
+	 
 	}
- 
+
+	private initAirportTagger(search) {
+		var config = new TaggingFieldConfig();
+		config.customId = search.id;
+		config.containerId = "fromAirportsTagger";
+		config.localValues = false;
+		config.listSource = "TaggerAirports";
+
+
+		this.airportTagger = new TaggingField(config);
+		this.airportTagger.onItemClickedCustom = ($target, callback) => {
+			var val = $target.data("vl");
+			var kind = $target.data("kd");
+			var text = $target.text();
+
+			var values = {
+				text: text,
+				value: val,
+				id: NamesList.selectedSearch.id
+			};
+
+			var data = PlanningSender.createRequest(PlanningType.Custom, "fromAirports", values);
+
+			PlanningSender.pushProp(data, (res) => {
+			 NamesList.selectedSearch.fromAirports.push({ origId: val, selectedName: text });
+				callback(res);
+			});
+		}
+	}
+
 	private initTimeTagger(search) {
 		var itemsRange = [
 			{ text: "January", value: 1, kind: "month" },
@@ -47,8 +85,14 @@ class CustomForm {
 			{ text: "year 2015", value: 2015, kind: "year" },
 			{ text: "year 2016", value: 2016, kind: "year" }
 		];
-	
-		this.timeTagger = new TaggingField(search.id, "timeTagger", itemsRange);
+
+		var config = new TaggingFieldConfig();
+		config.itemsRange = itemsRange;
+		config.customId = search.id;
+		config.containerId = "timeTagger";
+		config.localValues = true;
+
+		this.timeTagger = new TaggingField(config);
 		this.timeTagger.onItemClickedCustom = ($target, callback) => {
 			var val = $target.data("vl");
 			var kind = $target.data("kd");
@@ -61,9 +105,26 @@ class CustomForm {
 			});
 
 			PlanningSender.pushProp(data, (res) => {
+			 if (kind === "year") {
+				 NamesList.selectedSearch.years.push(val);
+			 }
+			 if (kind === "month") {
+				NamesList.selectedSearch.months.push(val);
+			 }
+
+			 
 				callback(res);
 			});
 		}
+	}
+
+	private getAirportTaggerSelectedItems(search) {
+		var selectedItems = [];
+		search.fromAirports.forEach((airport) => {
+			selectedItems.push({kind: "airport", value: airport.origId, text: airport.selectedName});
+		});
+
+		return selectedItems;
 	}
 
 	private getTimeTaggerSelectedItems(search) {

@@ -48,6 +48,12 @@ namespace Gloobster.Mappers
 				to = e.To,
 				years = e.Years
 			};
+
+			if (e.FromAirports != null)
+			{
+				r.fromAirports = e.FromAirports.Select(a => a.ToResponse()).ToList();
+			}
+
 			return r;
 		}
 
@@ -79,9 +85,15 @@ namespace Gloobster.Mappers
 				RoughlyDays = e.RoughlyDays,
 				SearchName = e.SearchName,
 				To = e.To,
-				Years = e.Years
+				Years = e.Years,				
 			};
+
+			if (e.FromAirports != null)
+			{
+				r.FromAirports = e.FromAirports.Select(a => a.ToDO()).ToList();
+			}
 			
+
 			return r;
 		}
 

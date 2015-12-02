@@ -7,6 +7,7 @@ var CustomForm = (function () {
         this.namesList.onSearchChanged = function (search) { return _this.onSearchChanged(search); };
         this.registerDuration();
         this.initTimeTagger(NamesList.selectedSearch);
+        this.initAirportTagger(NamesList.selectedSearch);
         this.fillForm(NamesList.selectedSearch);
     }
     CustomForm.prototype.onSearchChanged = function (search) {
@@ -15,9 +16,34 @@ var CustomForm = (function () {
     CustomForm.prototype.fillForm = function (search) {
         var timeSelectedItems = this.getTimeTaggerSelectedItems(search);
         this.timeTagger.setSelectedItems(timeSelectedItems);
+        var airportSelectedItems = this.getAirportTaggerSelectedItems(search);
+        this.airportTagger.setSelectedItems(airportSelectedItems);
         this.initDuration(search.roughlyDays);
         this.planningMap.countriesManager.createCountries(search.countryCodes, PlanningType.Custom);
         this.planningMap.delayedZoomCallback.receiveEvent();
+    };
+    CustomForm.prototype.initAirportTagger = function (search) {
+        var config = new TaggingFieldConfig();
+        config.customId = search.id;
+        config.containerId = "fromAirportsTagger";
+        config.localValues = false;
+        config.listSource = "TaggerAirports";
+        this.airportTagger = new TaggingField(config);
+        this.airportTagger.onItemClickedCustom = function ($target, callback) {
+            var val = $target.data("vl");
+            var kind = $target.data("kd");
+            var text = $target.text();
+            var values = {
+                text: text,
+                value: val,
+                id: NamesList.selectedSearch.id
+            };
+            var data = PlanningSender.createRequest(PlanningType.Custom, "fromAirports", values);
+            PlanningSender.pushProp(data, function (res) {
+                NamesList.selectedSearch.fromAirports.push({ origId: val, selectedName: text });
+                callback(res);
+            });
+        };
     };
     CustomForm.prototype.initTimeTagger = function (search) {
         var itemsRange = [
@@ -36,7 +62,12 @@ var CustomForm = (function () {
             { text: "year 2015", value: 2015, kind: "year" },
             { text: "year 2016", value: 2016, kind: "year" }
         ];
-        this.timeTagger = new TaggingField(search.id, "timeTagger", itemsRange);
+        var config = new TaggingFieldConfig();
+        config.itemsRange = itemsRange;
+        config.customId = search.id;
+        config.containerId = "timeTagger";
+        config.localValues = true;
+        this.timeTagger = new TaggingField(config);
         this.timeTagger.onItemClickedCustom = function ($target, callback) {
             var val = $target.data("vl");
             var kind = $target.data("kd");
@@ -47,9 +78,22 @@ var CustomForm = (function () {
                 id: NamesList.selectedSearch.id
             });
             PlanningSender.pushProp(data, function (res) {
+                if (kind === "year") {
+                    NamesList.selectedSearch.years.push(val);
+                }
+                if (kind === "month") {
+                    NamesList.selectedSearch.months.push(val);
+                }
                 callback(res);
             });
         };
+    };
+    CustomForm.prototype.getAirportTaggerSelectedItems = function (search) {
+        var selectedItems = [];
+        search.fromAirports.forEach(function (airport) {
+            selectedItems.push({ kind: "airport", value: airport.origId, text: airport.selectedName });
+        });
+        return selectedItems;
     };
     CustomForm.prototype.getTimeTaggerSelectedItems = function (search) {
         var selectedItems = [];

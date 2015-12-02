@@ -36,9 +36,8 @@ namespace Gloobster.Entities.Planning
 		public ObjectId id { get; set; }
 		public string SearchName { get; set; }
 
-		public List<FlightSE> FromAirports { get; set; }
-
-
+		public List<AirportSaveSE> FromAirports { get; set; }
+		
 		public List<string> CountryCodes { get; set; }
 		public List<int> Cities { get; set; }
 

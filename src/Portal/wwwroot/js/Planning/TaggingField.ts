@@ -1,22 +1,27 @@
-class TaggingField {
-
-	private taggerTemplate: any;
-	private $cont: any;
-	private itemsRange: any;
-	private selectedItems: any;
-	private $tagger: any;
+class TaggingFieldConfig {
 	public customId: string;
+	public containerId: string;
+	public itemsRange: any[];
+  public localValues: boolean;
+  public listSource: string;
+} 
 
-	constructor(customId, containerId, itemsRange) {
-		this.customId = customId;
+class TaggingField {
+	private $tagger: any;
+	private $cont: any;
+ 
+	private taggerTemplate: any;
+	private selectedItems: any;
+	private config: TaggingFieldConfig;
+
+	constructor(config: TaggingFieldConfig) {
+		this.config = config;
 	 
-		this.itemsRange = itemsRange;
 		this.taggerTemplate = Views.ViewBase.currentView.registerTemplate("tagger-template");
-		this.$cont = $("#" + containerId);
+		this.$cont = $("#" + this.config.containerId);
 
-		this.$tagger = this.createTagger(itemsRange);
-		this.$cont.prepend(this.$tagger);	
-	 
+		this.$tagger = this.createTagger();
+		this.$cont.prepend(this.$tagger);		 
 	}
 
 	public setSelectedItems(selectedItems) {
@@ -26,8 +31,17 @@ class TaggingField {
 
 	private initTags(selectedItems) {
 		this.$cont.find(".tag").remove();
+
 		selectedItems.forEach((selectedItem) => {
-			var item = _.find(this.itemsRange, (i) => { return i.kind === selectedItem.kind && i.value === selectedItem.value });
+
+			var item = null;
+
+			if (this.config.localValues) {
+				item = _.find(this.config.itemsRange, (i) => { return i.kind === selectedItem.kind && i.value === selectedItem.value });
+			} else {
+				item = selectedItem;
+			}
+
 			if (item) {
 				var $html = this.createTag(item.text, item.value, item.kind);
 				this.$cont.prepend($html);
@@ -41,7 +55,7 @@ class TaggingField {
 		return $html;
 	}
 
-	private createTagger(items) {
+	private createTagger() {
 		var html = this.taggerTemplate();
 		var $html = $(html);
 
@@ -50,11 +64,11 @@ class TaggingField {
 		var $ul = $html.find("ul");
 
 		$input.keyup((e) => {
-			this.fillTagger($input, items, $ul);
+			this.fillTagger($input, $ul);
 		});
 
 		$input.focus((e) => {
-			this.fillTagger($input, items, $ul);
+			this.fillTagger($input, $ul);
 			$ul.show();
 		});
 
@@ -68,19 +82,37 @@ class TaggingField {
 		return $html;
 	}
 
-	private fillTagger($input, items, $ul) {
+	private fillTagger($input, $ul) {
 		$ul.html("");
-		items.forEach((item) => {
-		  var inputVal = $input.val().toLowerCase();
-			var strMatch = (inputVal === "") || (item.text.toLowerCase().indexOf(inputVal) > -1);
-			var alreadySelected = _.find(this.selectedItems, (i) => { return i.kind === item.kind && i.value === item.value });
-			
-			if (strMatch && !alreadySelected) {
-				var $item = this.createTaggerItem(item.text, item.value, item.kind);
-				$ul.append($item);
-			}
-		});	 
+
+		var inputVal = $input.val().toLowerCase();
+
+		this.getItemsRange(inputVal, (items) => {
+			items.forEach((item) => {
+
+				var strMatch = (inputVal === "") || (item.text.toLowerCase().indexOf(inputVal) > -1);
+				var alreadySelected = _.find(this.selectedItems, (i) => { return i.kind === item.kind && i.value === item.value });
+
+				if (strMatch && !alreadySelected) {
+					var $item = this.createTaggerItem(item.text, item.value, item.kind);
+					$ul.append($item);
+				}
+			});
+		});
 	}
+
+	private getItemsRange(query, callback) {
+	  var itemsRange = null;
+	  if (this.config.localValues) {
+		  callback(this.config.itemsRange);
+	  } else {
+		 var prms = [["query", query]];
+		 Views.ViewBase.currentView.apiGet(this.config.listSource, prms, (items) => {
+			 callback(items);
+		 });
+			 
+	  }
+  }
 
 	private createTaggerItem(text, value, kind) {
 		var html = `<li data-vl="${value}" data-kd="${kind}">${text}</li>`;	 

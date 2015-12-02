@@ -1,10 +1,14 @@
+var TaggingFieldConfig = (function () {
+    function TaggingFieldConfig() {
+    }
+    return TaggingFieldConfig;
+})();
 var TaggingField = (function () {
-    function TaggingField(customId, containerId, itemsRange) {
-        this.customId = customId;
-        this.itemsRange = itemsRange;
+    function TaggingField(config) {
+        this.config = config;
         this.taggerTemplate = Views.ViewBase.currentView.registerTemplate("tagger-template");
-        this.$cont = $("#" + containerId);
-        this.$tagger = this.createTagger(itemsRange);
+        this.$cont = $("#" + this.config.containerId);
+        this.$tagger = this.createTagger();
         this.$cont.prepend(this.$tagger);
     }
     TaggingField.prototype.setSelectedItems = function (selectedItems) {
@@ -15,7 +19,13 @@ var TaggingField = (function () {
         var _this = this;
         this.$cont.find(".tag").remove();
         selectedItems.forEach(function (selectedItem) {
-            var item = _.find(_this.itemsRange, function (i) { return i.kind === selectedItem.kind && i.value === selectedItem.value; });
+            var item = null;
+            if (_this.config.localValues) {
+                item = _.find(_this.config.itemsRange, function (i) { return i.kind === selectedItem.kind && i.value === selectedItem.value; });
+            }
+            else {
+                item = selectedItem;
+            }
             if (item) {
                 var $html = _this.createTag(item.text, item.value, item.kind);
                 _this.$cont.prepend($html);
@@ -27,17 +37,17 @@ var TaggingField = (function () {
         var $html = $(html);
         return $html;
     };
-    TaggingField.prototype.createTagger = function (items) {
+    TaggingField.prototype.createTagger = function () {
         var _this = this;
         var html = this.taggerTemplate();
         var $html = $(html);
         var $input = $html.find("input");
         var $ul = $html.find("ul");
         $input.keyup(function (e) {
-            _this.fillTagger($input, items, $ul);
+            _this.fillTagger($input, $ul);
         });
         $input.focus(function (e) {
-            _this.fillTagger($input, items, $ul);
+            _this.fillTagger($input, $ul);
             $ul.show();
         });
         $input.focusout(function (e) {
@@ -48,18 +58,32 @@ var TaggingField = (function () {
         });
         return $html;
     };
-    TaggingField.prototype.fillTagger = function ($input, items, $ul) {
+    TaggingField.prototype.fillTagger = function ($input, $ul) {
         var _this = this;
         $ul.html("");
-        items.forEach(function (item) {
-            var inputVal = $input.val().toLowerCase();
-            var strMatch = (inputVal === "") || (item.text.toLowerCase().indexOf(inputVal) > -1);
-            var alreadySelected = _.find(_this.selectedItems, function (i) { return i.kind === item.kind && i.value === item.value; });
-            if (strMatch && !alreadySelected) {
-                var $item = _this.createTaggerItem(item.text, item.value, item.kind);
-                $ul.append($item);
-            }
+        var inputVal = $input.val().toLowerCase();
+        this.getItemsRange(inputVal, function (items) {
+            items.forEach(function (item) {
+                var strMatch = (inputVal === "") || (item.text.toLowerCase().indexOf(inputVal) > -1);
+                var alreadySelected = _.find(_this.selectedItems, function (i) { return i.kind === item.kind && i.value === item.value; });
+                if (strMatch && !alreadySelected) {
+                    var $item = _this.createTaggerItem(item.text, item.value, item.kind);
+                    $ul.append($item);
+                }
+            });
         });
+    };
+    TaggingField.prototype.getItemsRange = function (query, callback) {
+        var itemsRange = null;
+        if (this.config.localValues) {
+            callback(this.config.itemsRange);
+        }
+        else {
+            var prms = [["query", query]];
+            Views.ViewBase.currentView.apiGet(this.config.listSource, prms, function (items) {
+                callback(items);
+            });
+        }
     };
     TaggingField.prototype.createTaggerItem = function (text, value, kind) {
         var _this = this;
