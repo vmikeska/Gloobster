@@ -1,67 +1,68 @@
-﻿
-class PlanningView extends Views.ViewBase {
+﻿module Views {
+	export class PlanningView extends ViewBase {
 
- private maps: Maps.MapsCreatorMapBox2D;
-  
- public mapsOperations: Planning.PlanningMap;
- 
- private anytimeTabTemplate: any;
- private weekendTabTemplate: any;
- private customTabTemplate: any;
+		private maps: Maps.MapsCreatorMapBox2D;
 
- constructor() {
-	 super();
-	
-	 this.initialize();
-	 this.registerTabEvents();
- }
+		public mapsOperations: Planning.PlanningMap;
 
-	public initialize() {
-		this.maps = new Maps.MapsCreatorMapBox2D();
-		this.maps.setRootElement("map");
-		this.maps.show((map) => {
-		 this.mapsOperations = new Planning.PlanningMap(map);
-		 this.mapsOperations.loadCategory(Planning.PlanningType.Anytime);
-		});
+		private anytimeTabTemplate: any;
+		private weekendTabTemplate: any;
+		private customTabTemplate: any;
 
-		var locationDialog = new Views.LocationSettingsDialog();
-	}
+		constructor() {
+			super();
 
-  private registerTabEvents() {
-	 this.anytimeTabTemplate = Views.ViewBase.currentView.registerTemplate("anytime-template");
-	 this.weekendTabTemplate = Views.ViewBase.currentView.registerTemplate("weekend-template");
-	 this.customTabTemplate = Views.ViewBase.currentView.registerTemplate("custom-template");
-
-	  var $tabsRoot = $(".tabs");
-	  var $tabs = $tabsRoot.find(".tab");
-		$tabs.click((e) => { this.switchTab($(e.delegateTarget), $tabs); });
-  }
- 
-	private switchTab($target, $tabs) {
-		$tabs.removeClass("active");
-		$target.addClass("active");
-
-
-		var tabType = parseInt($target.data("type"));
-		var tabHtml = "";
-		if (tabType === Planning.PlanningType.Anytime) {
-			tabHtml = this.anytimeTabTemplate();
-		}
-		if (tabType === Planning.PlanningType.Weekend) {
-		 tabHtml = this.weekendTabTemplate();		 
-		}
-		if (tabType === Planning.PlanningType.Custom) {
-			tabHtml = this.customTabTemplate();
+			this.initialize();
+			this.registerTabEvents();
 		}
 
-		var $tabContent = $("#tabContent");
-		$tabContent.html(tabHtml);
+		public initialize() {
+			this.maps = new Maps.MapsCreatorMapBox2D();
+			this.maps.setRootElement("map");
+			this.maps.show((map) => {
+				this.mapsOperations = new Planning.PlanningMap(map);
+				this.mapsOperations.loadCategory(Planning.PlanningType.Anytime);
+			});
 
-		this.onTabSwitched(tabType);
+			var locationDialog = new Views.LocationSettingsDialog();
+		}
+
+		private registerTabEvents() {
+			this.anytimeTabTemplate = Views.ViewBase.currentView.registerTemplate("anytime-template");
+			this.weekendTabTemplate = Views.ViewBase.currentView.registerTemplate("weekend-template");
+			this.customTabTemplate = Views.ViewBase.currentView.registerTemplate("custom-template");
+
+			var $tabsRoot = $(".tabs");
+			var $tabs = $tabsRoot.find(".tab");
+			$tabs.click((e) => { this.switchTab($(e.delegateTarget), $tabs); });
+		}
+
+		private switchTab($target, $tabs) {
+			$tabs.removeClass("active");
+			$target.addClass("active");
+
+
+			var tabType = parseInt($target.data("type"));
+			var tabHtml = "";
+			if (tabType === Planning.PlanningType.Anytime) {
+				tabHtml = this.anytimeTabTemplate();
+			}
+			if (tabType === Planning.PlanningType.Weekend) {
+				tabHtml = this.weekendTabTemplate();
+			}
+			if (tabType === Planning.PlanningType.Custom) {
+				tabHtml = this.customTabTemplate();
+			}
+
+			var $tabContent = $("#tabContent");
+			$tabContent.html(tabHtml);
+
+			this.onTabSwitched(tabType);
+		}
+
+		private onTabSwitched(tabType: Planning.PlanningType) {
+			this.mapsOperations.loadCategory(tabType);
+		}
+
 	}
-
-	private onTabSwitched(tabType: Planning.PlanningType) {
-		this.mapsOperations.loadCategory(tabType);
-	}
-
 }

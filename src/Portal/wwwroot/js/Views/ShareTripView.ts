@@ -1,5 +1,5 @@
 ﻿module Views {
-	export class PlanningView extends Views.ViewBase {
+	export class ShareTripView extends Views.ViewBase {
 
 		private maps: Maps.MapsCreatorMapBox2D;
 

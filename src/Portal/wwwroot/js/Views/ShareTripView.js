@@ -5,13 +5,13 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Views;
 (function (Views) {
-    var PlanningView = (function (_super) {
-        __extends(PlanningView, _super);
-        function PlanningView() {
+    var ShareTripView = (function (_super) {
+        __extends(ShareTripView, _super);
+        function ShareTripView() {
             _super.call(this);
             this.initialize();
         }
-        PlanningView.prototype.initialize = function () {
+        ShareTripView.prototype.initialize = function () {
             this.maps = new Maps.MapsCreatorMapBox2D();
             this.maps.setRootElement("map");
             this.maps.show(function (map) {
@@ -19,8 +19,8 @@ var Views;
                 //this.mapsOperations.loadCategory(PlanningType.Anytime);
             });
         };
-        return PlanningView;
+        return ShareTripView;
     })(Views.ViewBase);
-    Views.PlanningView = PlanningView;
+    Views.ShareTripView = ShareTripView;
 })(Views || (Views = {}));
 //# sourceMappingURL=ShareTripView.js.map

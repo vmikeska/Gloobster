@@ -21,8 +21,8 @@
 
 <script type="text/javascript" src="@Url.Content("~/js/Maps/MapsInterfaces.js")"></script>
 
-<script type="text/javascript" src="@Url.Content("~/js/CountryShapes.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/js/CountryCodes.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Common/CountryShapes.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Common/CountryCodes.js")"></script>
 
 <script type="text/javascript" src="@Url.Content("~/js/Maps/BaseMapsOperation3D.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Maps/BaseMapsOperation2D.js")"></script>
@@ -41,7 +41,7 @@
 
 	function onBodyLoad() {
 		
-		currentView = new PinBoardView();
+		currentView = new Views.PinBoardView();
 		currentView.initialize();
 
 	}
