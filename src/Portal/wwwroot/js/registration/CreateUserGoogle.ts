@@ -1,14 +1,16 @@
-﻿class CreateUserGoogle extends CreateUserBase {
+﻿module Reg {
+	export class CreateUserGoogle extends CreateUserBase {
 
- constructor() {
-	 super();
-	 this.loginType = NetworkType.Google;	 
- }
- 
-	endpoint = "/api/GoogleUser";
+		constructor() {
+			super();
+			this.loginType = NetworkType.Google;
+		}
 
-	registerOrLogin(googleUser) {		
-	 super.sendUserRegistrationData(googleUser);
+		endpoint = "/api/GoogleUser";
+
+		registerOrLogin(googleUser) {
+			super.sendUserRegistrationData(googleUser);
+		}
+
 	}
- 	
 }

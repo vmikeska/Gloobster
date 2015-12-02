@@ -28,6 +28,12 @@ namespace Gloobster.Portal.Controllers.Portal
 			TripPlanner = tripPlanner;
 		}
 
+		public IActionResult Share()
+		{
+			var viewModel = CreateViewModelInstance<ViewModelShareTrip>();
+			return View(viewModel);
+		}
+
 		public IActionResult List()
 		{
 			var viewModel = CreateViewModelInstance<ViewModelTrips>();

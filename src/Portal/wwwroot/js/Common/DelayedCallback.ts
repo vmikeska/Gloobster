@@ -1,35 +1,38 @@
-class DelayedCallback {	
+module Common {
 
-	public callback: Function;
+	export class DelayedCallback {
 
-	public delay = 1000;
+		public callback: Function;
 
-	private timeoutId = null;
-	private $input: any;
+		public delay = 1000;
 
-	constructor(input: string) {
-		var isId = (typeof input === "string");
-	 if (isId) {
-		 this.$input = $("#" + input);
-	 } else {
-		 this.$input = input;
-	 }
+		private timeoutId = null;
+		private $input: any;
 
-		
-		this.$input.keydown(() => { this.keyPressed() }); 
-	}
+		constructor(input: string) {
+			var isId = (typeof input === "string");
+			if (isId) {
+				this.$input = $("#" + input);
+			} else {
+				this.$input = input;
+			}
 
-	private keyPressed() {
-	
-		if (this.timeoutId) {
-			clearTimeout(this.timeoutId);
-			this.timeoutId = null;		
+
+			this.$input.keydown(() => { this.keyPressed() });
 		}
-		this.timeoutId = setTimeout(() => {
-			this.timeoutId = null;
-			var val = this.$input.val();
-			this.callback(val);
 
-		}, this.delay);
-	}  
+		private keyPressed() {
+
+			if (this.timeoutId) {
+				clearTimeout(this.timeoutId);
+				this.timeoutId = null;
+			}
+			this.timeoutId = setTimeout(() => {
+				this.timeoutId = null;
+				var val = this.$input.val();
+				this.callback(val);
+
+			}, this.delay);
+		}
+	}
 }

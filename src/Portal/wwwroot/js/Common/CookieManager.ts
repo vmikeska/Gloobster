@@ -1,37 +1,40 @@
-﻿class CookieManager {
+﻿module Common {
+	export class CookieManager {
 
-	//todo: change in production
-	private domain = null;
- 
-	public getString(cookieName: string) {	 
-	 var value = $.cookie(cookieName);
-	 console.log("getting: " + cookieName + ": " + value);
-		return value;
-	}
+		//todo: change in production
+		private domain = null;
 
-	public getJson(cookieName: string) {
-		var valStr = this.getString(cookieName);
+		public getString(cookieName: string) {
+			var value = $.cookie(cookieName);
+			console.log("getting: " + cookieName + ": " + value);
+			return value;
+		}
 
-	 if (!valStr) {
-		 return null;
-	 }
+		public getJson(cookieName: string) {
+			var valStr = this.getString(cookieName);
 
-		var valObj = JSON.parse(valStr);
-		return valObj;
-	}
+			if (!valStr) {
+				return null;
+			}
 
-	public setString(cookieName: string, cookieValue: string) {
-		console.log("setting: " + cookieName + ": " + cookieValue);
-		$.cookie(cookieName, cookieValue, { "domain": this.domain, "path": "/" });
-	}
+			var valObj = JSON.parse(valStr);
+			return valObj;
+		}
 
-	public setJson(cookieName: string, cookieValue) {
+		public setString(cookieName: string, cookieValue: string) {
+			console.log("setting: " + cookieName + ": " + cookieValue);
+			$.cookie(cookieName, cookieValue, { "domain": this.domain, "path": "/" });
+		}
 
-		var valStr = JSON.stringify(cookieValue);
-		this.setString(cookieName, valStr);
-	}
+		public setJson(cookieName: string, cookieValue) {
 
-	public removeCookie(cookieName: string) {
-		$.removeCookie(cookieName, { path: "/" });
+			var valStr = JSON.stringify(cookieValue);
+			this.setString(cookieName, valStr);
+		}
+
+		public removeCookie(cookieName: string) {
+			$.removeCookie(cookieName, { path: "/" });
+		}
 	}
 }
+

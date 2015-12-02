@@ -1,41 +1,46 @@
-var LoginManager = (function () {
-    function LoginManager() {
-        this.cookieManager = new CookieManager();
-        this.loadCookies();
-        if (!this.isAlreadyLogged()) {
-            this.facebookUserCreator = new CreateUserFacebook();
-            this.googleUserCreator = new CreateUserGoogle();
-            this.localUserCreator = new CreateUserLocal();
+var Reg;
+(function (Reg) {
+    var LoginManager = (function () {
+        function LoginManager() {
+            this.cookieManager = new Common.CookieManager();
+            this.loadCookies();
+            if (!this.isAlreadyLogged()) {
+                this.facebookUserCreator = new Reg.CreateUserFacebook();
+                this.googleUserCreator = new Reg.CreateUserGoogle();
+                this.localUserCreator = new Reg.CreateUserLocal();
+            }
+            this.twitterUserCreator = new Reg.CreateUserTwitter();
         }
-        this.twitterUserCreator = new CreateUserTwitter();
-    }
-    LoginManager.prototype.loadCookies = function () {
-        this.cookieLogin = this.cookieManager.getJson(Constants.cookieName);
-    };
-    LoginManager.prototype.isAlreadyLogged = function () {
-        if (this.cookieLogin) {
-            return true;
-        }
-        return false;
-    };
-    LoginManager.prototype.logout = function () {
-        this.cookieManager.removeCookie(Constants.cookieName);
-        if (this.cookieLogin.networkType === NetworkType.Facebook) {
-            FB.getLoginStatus(function () {
-                FB.logout(function () {
-                    window.location.href = "/";
+        LoginManager.prototype.loadCookies = function () {
+            this.cookieLogin = this.cookieManager.getJson(Constants.cookieName);
+        };
+        LoginManager.prototype.isAlreadyLogged = function () {
+            if (this.cookieLogin) {
+                return true;
+            }
+            return false;
+        };
+        LoginManager.prototype.logout = function () {
+            this.cookieManager.removeCookie(Constants.cookieName);
+            if (this.cookieLogin.networkType === Reg.NetworkType.Facebook) {
+                FB.getLoginStatus(function () {
+                    FB.logout(function () {
+                        window.location.href = "/";
+                    });
                 });
-            });
+            }
+            else {
+                window.location.href = "/";
+            }
+        };
+        return LoginManager;
+    })();
+    Reg.LoginManager = LoginManager;
+    var CookieLogin = (function () {
+        function CookieLogin() {
         }
-        else {
-            window.location.href = "/";
-        }
-    };
-    return LoginManager;
-})();
-var CookieLogin = (function () {
-    function CookieLogin() {
-    }
-    return CookieLogin;
-})();
+        return CookieLogin;
+    })();
+    Reg.CookieLogin = CookieLogin;
+})(Reg || (Reg = {}));
 //# sourceMappingURL=LoginManager.js.map

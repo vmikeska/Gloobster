@@ -1,0 +1,86 @@
+﻿@{
+		ViewData["Title"] = "Home Page";
+		Layout = "";
+}
+<!DOCTYPE html>
+<html>
+<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		<title>Gloobster</title>
+		
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,700">
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700">
+		<link href="http://ga.cz/2015/gloobster/css/style.css" rel="stylesheet">
+</head>
+<body class="shared" id="top">
+		<!-- MapBox -->
+		<script src='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.js'></script>
+		<link href='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.css' rel='stylesheet' />
+		<!-- MapBox -->    <section class="map-holder margin">
+				<div class="wrapper">
+						<div class="map" id="map"></div>
+						<div class="map-logo"></div>
+						<div class="map-info">
+								<div class="table row">
+										<div class="cell middle">
+												<span class="thumbnail disc60">
+														<img src="~/images/samples/sample12.jpg">
+												</span>
+										</div>
+										<div class="cell h4 middle">
+												Joe Superstar plans a trip
+												<small class="display-block">21. June to 28. June 2015</small>
+										</div>
+								</div>
+								<h1>Guys! Going to Košice for a trip around the city. Join me and share it as well!</h1>
+						</div>
+						<div class="map-share table">
+								@*<div class="cell">
+										Share
+										<img class="opacity5 middle mleft10" src="images/share-facebook.png">
+										<img class="opacity5 middle mleft10" src="images/share-4s.png">
+										<img class="opacity5 middle mleft10" src="images/share-twitter.png">
+										<img class="opacity5 middle mleft10" src="images/share-google.png">
+								</div>*@
+								<div class="cell middle tright">
+										<a class="button share h4 strong" href="#">Join to comment</a>
+								</div>
+						</div>
+				</div>
+		</section>
+		<section class="margin padding">
+				<div class="wrapper">
+						<h3 class="slim">Travellers who joined already</h3>
+						<div class="team grid col5 margin2">
+								<div class="cell">
+										<div class="table">
+												<div class="cell">
+														<span class="thumbnail">
+																<img src="~/images/samples/sample12.jpg">
+														</span>
+												</div>
+												<div class="cell">Václav Petrklíč</div>
+										</div>
+								</div>
+								
+						</div>
+						<div class="table row center">
+								<div class="cell color2">Copyright Gloobster 2015</div>
+								<div class="cell"><a href="#">Privacy Policy</a></div>
+								<div class="cell"><a href="#">What is Gloobster</a></div>
+								<div class="cell"><a href="#">Unsubscribe</a></div>
+						</div>
+				</div>
+		</section>
+		<!-- MapBox -->
+		<script>
+    L.mapbox.accessToken = 'pk.eyJ1IjoiZ2xvb2JzdGVyIiwiYSI6ImQxZWY5MjRkZjU1NDk2MGU3OWI2OGRiM2U3NTM0MGYxIn0.nCG7hOsSQzb0c-_qzfTCRQ';
+    var map = L.mapbox.map('map', 'gloobster.afeef633');
+		</script>
+		<!-- MapBox -->
+</body>
+</html>
+
+
+

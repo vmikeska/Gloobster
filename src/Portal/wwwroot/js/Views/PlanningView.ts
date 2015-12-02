@@ -1,9 +1,9 @@
 ﻿
 class PlanningView extends Views.ViewBase {
 
- private maps: MapsCreatorMapBox2D;
+ private maps: Maps.MapsCreatorMapBox2D;
   
- public mapsOperations: PlanningMap;
+ public mapsOperations: Planning.PlanningMap;
  
  private anytimeTabTemplate: any;
  private weekendTabTemplate: any;
@@ -17,14 +17,14 @@ class PlanningView extends Views.ViewBase {
  }
 
 	public initialize() {
-		this.maps = new MapsCreatorMapBox2D();
+		this.maps = new Maps.MapsCreatorMapBox2D();
 		this.maps.setRootElement("map");
 		this.maps.show((map) => {
-		 this.mapsOperations = new PlanningMap(map);
-		 this.mapsOperations.loadCategory(PlanningType.Anytime);
+		 this.mapsOperations = new Planning.PlanningMap(map);
+		 this.mapsOperations.loadCategory(Planning.PlanningType.Anytime);
 		});
 
-		var locationDialog = new LocationSettingsDialog();
+		var locationDialog = new Views.LocationSettingsDialog();
 	}
 
   private registerTabEvents() {
@@ -44,13 +44,13 @@ class PlanningView extends Views.ViewBase {
 
 		var tabType = parseInt($target.data("type"));
 		var tabHtml = "";
-		if (tabType === PlanningType.Anytime) {
+		if (tabType === Planning.PlanningType.Anytime) {
 			tabHtml = this.anytimeTabTemplate();
 		}
-		if (tabType === PlanningType.Weekend) {
+		if (tabType === Planning.PlanningType.Weekend) {
 		 tabHtml = this.weekendTabTemplate();		 
 		}
-		if (tabType === PlanningType.Custom) {
+		if (tabType === Planning.PlanningType.Custom) {
 			tabHtml = this.customTabTemplate();
 		}
 
@@ -60,7 +60,7 @@ class PlanningView extends Views.ViewBase {
 		this.onTabSwitched(tabType);
 	}
 
-	private onTabSwitched(tabType: PlanningType) {
+	private onTabSwitched(tabType: Planning.PlanningType) {
 		this.mapsOperations.loadCategory(tabType);
 	}
 

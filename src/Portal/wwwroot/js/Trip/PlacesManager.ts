@@ -1,108 +1,111 @@
-enum NewPlacePosition { ToLeft, ToRight }
-enum TravelType { Walk, Plane, Car, Bus, Train, Ship, Bike }
+module Trip {
+	export enum NewPlacePosition { ToLeft, ToRight }
 
-class Place {
- public id: string;
- public orderNo: number;
+	export enum TravelType { Walk, Plane, Car, Bus, Train, Ship, Bike }
 
-	public place: PlaceLocation;
+	export class Place {
+		public id: string;
+		public orderNo: number;
 
-	public arriving: Travel;
-	public leaving: Travel;
-}
+		public place: PlaceLocation;
 
-class PlaceLocation {
-	public sourceId: string;
-	public sourceType: SourceType;
-	public selectedName: string;
-}
-
-class Travel {
-	public id: string;
- public type: TravelType;
-
-	public from: Place;
-	public to: Place;
-
- public arrivingDateTime: Date;
-	public leavingDateTime: Date;
-
-}
-
-class PlacesManager {
-	private tripId: string;
-	public places = [];
-	public travels = [];
-
-	constructor(tripId: string) {
-		this.tripId = tripId;
+		public arriving: Travel;
+		public leaving: Travel;
 	}
 
-	public mapTravel(resp, from: Place, to: Place): Travel {
-		var t = new Travel();	 
-		t.id = resp.id;
-		t.type = resp.type;
-		t.arrivingDateTime = Utils.dateStringToUtcDate(resp.arrivingDateTime);
-		t.leavingDateTime = Utils.dateStringToUtcDate(resp.leavingDateTime);
-		t.from = from;
-		t.to = to;
-		return t;
+	export class PlaceLocation {
+		public sourceId: string;
+		public sourceType: SourceType;
+		public selectedName: string;
 	}
 
-	public mapPlace(resp, arriving: Travel, leaving: Travel): Place {
-		var p = new Place();
-		p.id = resp.id;
-		p.orderNo = resp.orderNo;
-		p.place = resp.place;
-		p.arriving = arriving;
-		p.leaving = leaving;
-	 
-		return p;
+	export class Travel {
+		public id: string;
+		public type: TravelType;
+
+		public from: Place;
+		public to: Place;
+
+		public arrivingDateTime: Date;
+		public leavingDateTime: Date;
+
 	}
 
-	public setData(travels, places) {
-		places.forEach((place) => {
-			var p = this.mapPlace(place, null, null);
+	export class PlacesManager {
+		private tripId: string;
+		public places = [];
+		public travels = [];
 
-			if (place.arrivingId) {
-				p.arriving = this.getOrCreateTravelById(place.arrivingId, travels);
-				p.arriving.to = p;
-			}
-
-			if (place.leavingId) {
-				p.leaving = this.getOrCreateTravelById(place.leavingId, travels);
-				p.leaving.from = p;
-			}
-			this.places.push(p);
-		});
-	}
-
-	private getOrCreateTravelById(travelId, travelsInput) {
-	 
-		var cachedTravel = _.find(this.travels, (travel) => {
-			return travel.id === travelId;
-		});
-
-		if (cachedTravel) {
-			return cachedTravel;
+		constructor(tripId: string) {
+			this.tripId = tripId;
 		}
 
-		var newTravel = _.find(travelsInput, (travel) => {
-			return travel.id === travelId;
-		});
-	 
-		var newTravelObj = this.mapTravel(newTravel, null, null);
-		this.travels.push(newTravelObj);
+		public mapTravel(resp, from: Place, to: Place): Travel {
+			var t = new Travel();
+			t.id = resp.id;
+			t.type = resp.type;
+			t.arrivingDateTime = Utils.dateStringToUtcDate(resp.arrivingDateTime);
+			t.leavingDateTime = Utils.dateStringToUtcDate(resp.leavingDateTime);
+			t.from = from;
+			t.to = to;
+			return t;
+		}
 
-		return newTravelObj;
-	}
+		public mapPlace(resp, arriving: Travel, leaving: Travel): Place {
+			var p = new Place();
+			p.id = resp.id;
+			p.orderNo = resp.orderNo;
+			p.place = resp.place;
+			p.arriving = arriving;
+			p.leaving = leaving;
 
-	public getTravelById(id: string): Travel {
-		return _.find(this.travels, (travel) => { return travel.id === id});
-	}
+			return p;
+		}
 
-	public getLastPlace(): Place {
-		var lastPlace = _.max(this.places, (place) => { return place.orderNo });
-		return lastPlace;
+		public setData(travels, places) {
+			places.forEach((place) => {
+				var p = this.mapPlace(place, null, null);
+
+				if (place.arrivingId) {
+					p.arriving = this.getOrCreateTravelById(place.arrivingId, travels);
+					p.arriving.to = p;
+				}
+
+				if (place.leavingId) {
+					p.leaving = this.getOrCreateTravelById(place.leavingId, travels);
+					p.leaving.from = p;
+				}
+				this.places.push(p);
+			});
+		}
+
+		private getOrCreateTravelById(travelId, travelsInput) {
+
+			var cachedTravel = _.find(this.travels, (travel) => {
+				return travel.id === travelId;
+			});
+
+			if (cachedTravel) {
+				return cachedTravel;
+			}
+
+			var newTravel = _.find(travelsInput, (travel) => {
+				return travel.id === travelId;
+			});
+
+			var newTravelObj = this.mapTravel(newTravel, null, null);
+			this.travels.push(newTravelObj);
+
+			return newTravelObj;
+		}
+
+		public getTravelById(id: string): Travel {
+			return _.find(this.travels, (travel) => { return travel.id === id });
+		}
+
+		public getLastPlace(): Place {
+			var lastPlace = _.max(this.places, (place) => { return place.orderNo });
+			return lastPlace;
+		}
 	}
 }

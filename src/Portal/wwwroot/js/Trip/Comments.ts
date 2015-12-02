@@ -1,73 +1,70 @@
-﻿
-class Comments {
- 
- public comments: any[];
- public users: any[];
+﻿module Trip {
+	export class Comments {
 
- private template;
+		public comments: any[];
+		public users: any[];
 
- constructor() {	 
-	 var source = $("#comment-template").html();
-	 this.template = Handlebars.compile(source);
- }
+		private template;
 
- public generateComments() {
-	 var html = "";
-	 if (!this.comments) {
-		 return "";
-	 }
+		constructor() {
+			var source = $("#comment-template").html();
+			this.template = Handlebars.compile(source);
+		}
 
-	 this.comments.forEach(comment => {
-		 html += this.generateComment(comment);
-	 });
-	 return html;
- }
+		public generateComments() {
+			var html = "";
+			if (!this.comments) {
+				return "";
+			}
 
- public postComment(tripId: string) {
-	 var $input = $("#commentInput");
-		var text = $input.val();
+			this.comments.forEach(comment => {
+				html += this.generateComment(comment);
+			});
+			return html;
+		}
 
-		var request = { text: text, tripId: tripId };
-		Views.ViewBase.currentView.apiPost("tripComment", request, response => {
-			this.comments = response.comments;
-			this.users = response.users;
-			this.displayComments();
-		});
+		public postComment(tripId: string) {
+			var $input = $("#commentInput");
+			var text = $input.val();
 
-		$input.val("");
+			var request = { text: text, tripId: tripId };
+			Views.ViewBase.currentView.apiPost("tripComment", request, response => {
+				this.comments = response.comments;
+				this.users = response.users;
+				this.displayComments();
+			});
+
+			$input.val("");
+		}
+
+		public displayComments() {
+			var commentsHtml = this.generateComments();
+			$("#commentsContainer").html(commentsHtml);
+		}
+
+		private generateComment(comment) {
+			var context = this.addUserData(comment);
+
+			var html = this.template(context);
+			return html;
+		}
+
+		private addUserData(comment) {
+			var user = this.getUserById(comment.userId);
+
+			var postDate = new Date(comment.postDate);
+			comment["displayDate"] = postDate.getDate() + "." + postDate.getMonth() + "." + postDate.getFullYear() + " (" + postDate.getHours() + ":" + postDate.getMinutes() + ")";
+			comment["displayName"] = user.displayName;
+			comment["photoUrl"] = user.photoUrl;
+			return comment;
+		}
+
+		private getUserById(id) {
+			var user = _.find(this.users, (user) => {
+				return user.id === id;
+			});
+			return user;
+		}
+
 	}
-
- public displayComments() {
-	 var commentsHtml = this.generateComments();
-	 $("#commentsContainer").html(commentsHtml);
- }
-
- private generateComment(comment) {
-	 var context = this.addUserData(comment);	
-	
-	var html = this.template(context);
-	return html;
- }
- 
- private addUserData(comment) {
-	 var user = this.getUserById(comment.userId);
-
-	 var postDate = new Date(comment.postDate);
-	 comment["displayDate"] = postDate.getDate() + "." + postDate.getMonth() + "." + postDate.getFullYear() + " (" + postDate.getHours() + ":" + postDate.getMinutes() + ")";
-	 comment["displayName"] = user.displayName;
-	 comment["photoUrl"] = user.photoUrl;
-	 return comment;
- }
-
- private getUserById(id) {
-	 var user = _.find(this.users, (user) => {
-		 return user.id === id;
-	 });
-	 return user;
- }
-
-
-
- 
-
 }

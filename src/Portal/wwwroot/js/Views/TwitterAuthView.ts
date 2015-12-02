@@ -1,9 +1,13 @@
-﻿class TwitterAuthView extends Views.ViewBase {
+﻿module Views
+{
 
-	constructor() {
-	 super();
+	export class TwitterAuthView extends ViewBase {
+
+		constructor() {
+			super();
+		}
+
+		get pageType(): Views.PageType { return PageType.TwitterAuth; }
+
 	}
-
-	get pageType(): Views.PageType { return Views.PageType.TwitterAuth; }
- 
 }

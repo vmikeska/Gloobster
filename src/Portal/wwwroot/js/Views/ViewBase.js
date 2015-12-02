@@ -11,8 +11,8 @@ var Views;
     var ViewBase = (function () {
         function ViewBase() {
             ViewBase.currentView = this;
-            this.cookieManager = new CookieManager();
-            this.loginManager = new LoginManager();
+            this.cookieManager = new Common.CookieManager();
+            this.loginManager = new Reg.LoginManager();
             var isAlreadyLogged = this.loginManager.isAlreadyLogged();
             if (!isAlreadyLogged) {
                 this.initializeGoogle();
@@ -21,7 +21,7 @@ var Views;
             }
             else {
                 console.log("isAlreadyLogged with " + this.loginManager.cookieLogin.networkType);
-                if (this.loginManager.cookieLogin.networkType === NetworkType.Facebook) {
+                if (this.loginManager.cookieLogin.networkType === Reg.NetworkType.Facebook) {
                     this.initializeFacebook();
                 }
             }
@@ -33,7 +33,7 @@ var Views;
         });
         ViewBase.prototype.initializeGoogle = function () {
             var self = this;
-            var btnGoogle = new GoogleButton();
+            var btnGoogle = new Reg.GoogleButton();
             btnGoogle.successfulCallback = function (googleUser) {
                 self.loginManager.googleUserCreator.registerOrLogin(googleUser);
             };
@@ -43,7 +43,7 @@ var Views;
         };
         ViewBase.prototype.initializeFacebook = function () {
             var self = this;
-            var fbInit = new FacebookInit();
+            var fbInit = new Reg.FacebookInit();
             fbInit.onFacebookInitialized = function () {
                 self.loginManager.facebookUserCreator.registerOrLogin();
             };
@@ -52,7 +52,7 @@ var Views;
         ViewBase.prototype.apiGet = function (endpointName, params, callback) {
             var endpoint = '/api/' + endpointName;
             console.log("getting: " + endpoint);
-            var request = new RequestSender(endpoint, null, true);
+            var request = new Common.RequestSender(endpoint, null, true);
             request.params = params;
             request.onSuccess = callback;
             request.onError = function (response) { alert('error'); };
@@ -61,7 +61,7 @@ var Views;
         ViewBase.prototype.apiPost = function (endpointName, data, callback) {
             var endpoint = '/api/' + endpointName;
             console.log("posting: " + endpoint);
-            var request = new RequestSender(endpoint, data, true);
+            var request = new Common.RequestSender(endpoint, data, true);
             request.serializeData();
             request.onSuccess = callback;
             request.onError = function (response) { alert('error'); };
@@ -70,7 +70,7 @@ var Views;
         ViewBase.prototype.apiPut = function (endpointName, data, callback) {
             var endpoint = '/api/' + endpointName;
             console.log("putting: " + endpoint);
-            var request = new RequestSender(endpoint, data, true);
+            var request = new Common.RequestSender(endpoint, data, true);
             request.serializeData();
             request.onSuccess = callback;
             request.onError = function (response) { alert('error'); };
@@ -79,7 +79,7 @@ var Views;
         ViewBase.prototype.apiDelete = function (endpointName, params, callback) {
             var endpoint = '/api/' + endpointName;
             console.log("deleting: " + endpoint);
-            var request = new RequestSender(endpoint, null, true);
+            var request = new Common.RequestSender(endpoint, null, true);
             request.params = params;
             request.onSuccess = callback;
             request.onError = function (response) { alert('error'); };

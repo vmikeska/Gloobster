@@ -1,8 +1,7 @@
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var PlanningView = (function (_super) {
     __extends(PlanningView, _super);
@@ -13,13 +12,13 @@ var PlanningView = (function (_super) {
     }
     PlanningView.prototype.initialize = function () {
         var _this = this;
-        this.maps = new MapsCreatorMapBox2D();
+        this.maps = new Maps.MapsCreatorMapBox2D();
         this.maps.setRootElement("map");
         this.maps.show(function (map) {
-            _this.mapsOperations = new PlanningMap(map);
-            _this.mapsOperations.loadCategory(PlanningType.Anytime);
+            _this.mapsOperations = new Planning.PlanningMap(map);
+            _this.mapsOperations.loadCategory(Planning.PlanningType.Anytime);
         });
-        var locationDialog = new LocationSettingsDialog();
+        var locationDialog = new Views.LocationSettingsDialog();
     };
     PlanningView.prototype.registerTabEvents = function () {
         var _this = this;
@@ -35,13 +34,13 @@ var PlanningView = (function (_super) {
         $target.addClass("active");
         var tabType = parseInt($target.data("type"));
         var tabHtml = "";
-        if (tabType === PlanningType.Anytime) {
+        if (tabType === Planning.PlanningType.Anytime) {
             tabHtml = this.anytimeTabTemplate();
         }
-        if (tabType === PlanningType.Weekend) {
+        if (tabType === Planning.PlanningType.Weekend) {
             tabHtml = this.weekendTabTemplate();
         }
-        if (tabType === PlanningType.Custom) {
+        if (tabType === Planning.PlanningType.Custom) {
             tabHtml = this.customTabTemplate();
         }
         var $tabContent = $("#tabContent");

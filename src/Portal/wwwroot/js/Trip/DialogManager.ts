@@ -1,115 +1,118 @@
-class DialogManager {
-	public placeDetailTemplate: any;
-  public placeDetailViewTemplate: any;
-	public travelDetailTemplate: any;
-	public visitedItemTemplate: any;
-  public placeDisplayItemTemplate: any;
-  public travelDetailViewTemplate: any;
+module Trip {
 
-	public selectedId: string;
+	export class DialogManager {
+		public placeDetailTemplate: any;
+		public placeDetailViewTemplate: any;
+		public travelDetailTemplate: any;
+		public visitedItemTemplate: any;
+		public placeDisplayItemTemplate: any;
+		public travelDetailViewTemplate: any;
 
-	public planner: Planner;
- 
-	constructor(planner: Planner) {		
-	 this.planner = planner;
-	 	 	  
-		this.placeDetailTemplate = Views.ViewBase.currentView.registerTemplate("placeDetail-template");
-		this.placeDetailViewTemplate = Views.ViewBase.currentView.registerTemplate("placeDetailView-template");
+		public selectedId: string;
 
-		this.travelDetailTemplate = Views.ViewBase.currentView.registerTemplate("travelDetail-template");
-		this.travelDetailViewTemplate = Views.ViewBase.currentView.registerTemplate("travelDetailView-template");
-		
-		this.visitedItemTemplate = Views.ViewBase.currentView.registerTemplate("visitItem-template");
-	}
+		public planner: Planner;
 
-	public createFilesInstanceView(entityId: string, entityType: TripEntityType): Files {
-	 var filesConfig = new FilesConfig();
-	 filesConfig.containerId = "entityDocs";
-	 filesConfig.templateId = "fileItem-template";
-	 filesConfig.editable = false;
-	 filesConfig.addAdder = false;
-	 filesConfig.entityId = entityId;
-	 var files = new Files(filesConfig);
+		constructor(planner: Planner) {
+			this.planner = planner;
 
-	 return files;
-	}
+			this.placeDetailTemplate = Views.ViewBase.currentView.registerTemplate("placeDetail-template");
+			this.placeDetailViewTemplate = Views.ViewBase.currentView.registerTemplate("placeDetailView-template");
 
-	public createFilesInstance(entityId: string, entityType: TripEntityType): Files {
-		var filesConfig = new FilesConfig();
-		filesConfig.containerId = "entityDocs";
-		filesConfig.inputId = "entityFileInput";
-		filesConfig.templateId = "fileItem-template";
-		filesConfig.editable = true;
-		filesConfig.addAdder = true;
-		filesConfig.entityId = entityId;
+			this.travelDetailTemplate = Views.ViewBase.currentView.registerTemplate("travelDetail-template");
+			this.travelDetailViewTemplate = Views.ViewBase.currentView.registerTemplate("travelDetailView-template");
 
-		var customData = new TripFileCustom();
-		customData.tripId = this.planner.trip.tripId;
-		customData.entityId = entityId;
-		customData.entityType = entityType;
-
-		var files = new Files(filesConfig);
-
-		files.fileUpload.customConfig = customData;
-
-		return files;
-	}
-
-	public initDescription(text: string, entityType: TripEntityType) {
-		$("#dialogDescription").val(text);
-
-		var d = new DelayedCallback("dialogDescription");
-		d.callback = (description) => {
-			var data = this.getPropRequest("description", {
-				entityType: entityType,
-				description: description
-			});
-			this.updateProp(data, (response) => { });
+			this.visitedItemTemplate = Views.ViewBase.currentView.registerTemplate("visitItem-template");
 		}
-	}
 
-	public getDialogData(dialogType: TripEntityType, callback: Function) {
-		var prms = [["dialogType", dialogType], ["tripId", this.planner.trip.tripId], ["id", this.selectedId]];
-		Views.ViewBase.currentView.apiGet("TripPlannerProperty", prms, (response) => {
-			callback(response);
-		});
-	}
-  
+		public createFilesInstanceView(entityId: string, entityType: Common.TripEntityType): Files {
+			var filesConfig = new FilesConfig();
+			filesConfig.containerId = "entityDocs";
+			filesConfig.templateId = "fileItem-template";
+			filesConfig.editable = false;
+			filesConfig.addAdder = false;
+			filesConfig.entityId = entityId;
+			var files = new Files(filesConfig);
 
-	public closeDialog() {
-	 $(".daybyday-form").remove();
-		$(".daybyday-view").remove();
-	}
+			return files;
+		}
 
-	public regClose($html) {
-		$html.find(".close").click((e) => {
-			e.preventDefault();
-			this.closeDialog();
-			this.deactivate();
-		});
-	}
+		public createFilesInstance(entityId: string, entityType: Common.TripEntityType): Files {
+			var filesConfig = new FilesConfig();
+			filesConfig.containerId = "entityDocs";
+			filesConfig.inputId = "entityFileInput";
+			filesConfig.templateId = "fileItem-template";
+			filesConfig.editable = true;
+			filesConfig.addAdder = true;
+			filesConfig.entityId = entityId;
 
-	public deactivate() {
-		$(".destination.active").removeClass("active");
+			var customData = new Common.TripFileCustom();
+			customData.tripId = this.planner.trip.tripId;
+			customData.entityId = entityId;
+			customData.entityType = entityType;
 
-		var $trans = $(".transport.active");
-		$trans.removeClass("active");
-		$trans.find(".tab").remove();
-	}
+			var files = new Files(filesConfig);
 
-	public getPropRequest(propName: string, customValues) {
-		var data = {
-			propertyName: propName,
-			values: {
-				tripId: this.planner.trip.tripId,
-				entityId: this.selectedId		 
+			files.fileUpload.customConfig = customData;
+
+			return files;
+		}
+
+		public initDescription(text: string, entityType: Common.TripEntityType) {
+			$("#dialogDescription").val(text);
+
+			var d = new Common.DelayedCallback("dialogDescription");
+			d.callback = (description) => {
+				var data = this.getPropRequest("description", {
+					entityType: entityType,
+					description: description
+				});
+				this.updateProp(data, (response) => {});
 			}
-		};
-		data.values = $.extend(data.values, customValues);
-		return data;
-	}
+		}
 
-	public updateProp(data, callback) {
-		Views.ViewBase.currentView.apiPut("tripPlannerProperty", data, (response) => callback(response));
+		public getDialogData(dialogType: Common.TripEntityType, callback: Function) {
+			var prms = [["dialogType", dialogType], ["tripId", this.planner.trip.tripId], ["id", this.selectedId]];
+			Views.ViewBase.currentView.apiGet("TripPlannerProperty", prms, (response) => {
+				callback(response);
+			});
+		}
+
+
+		public closeDialog() {
+			$(".daybyday-form").remove();
+			$(".daybyday-view").remove();
+		}
+
+		public regClose($html) {
+			$html.find(".close").click((e) => {
+				e.preventDefault();
+				this.closeDialog();
+				this.deactivate();
+			});
+		}
+
+		public deactivate() {
+			$(".destination.active").removeClass("active");
+
+			var $trans = $(".transport.active");
+			$trans.removeClass("active");
+			$trans.find(".tab").remove();
+		}
+
+		public getPropRequest(propName: string, customValues) {
+			var data = {
+				propertyName: propName,
+				values: {
+					tripId: this.planner.trip.tripId,
+					entityId: this.selectedId
+				}
+			};
+			data.values = $.extend(data.values, customValues);
+			return data;
+		}
+
+		public updateProp(data, callback) {
+			Views.ViewBase.currentView.apiPut("tripPlannerProperty", data, (response) => callback(response));
+		}
 	}
 }

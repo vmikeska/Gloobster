@@ -1,3 +1,4 @@
+
 module Views {
 
 	export enum PageType {HomePage, PinBoard, TripList, TwitterAuth, Friends}
@@ -6,15 +7,15 @@ module Views {
 
 	  public static currentView: ViewBase;
 
-		public loginManager: LoginManager;
-		public cookieManager: CookieManager;
+		public loginManager: Reg.LoginManager;
+		public cookieManager: Common.CookieManager;
 
 		get pageType(): PageType { return null; }
 
 		constructor() {
 			ViewBase.currentView = this;
-			this.cookieManager = new CookieManager();
-			this.loginManager = new LoginManager();
+			this.cookieManager = new Common.CookieManager();
+			this.loginManager = new Reg.LoginManager();
 
 			var isAlreadyLogged = this.loginManager.isAlreadyLogged();
 			if (!isAlreadyLogged) {
@@ -24,7 +25,7 @@ module Views {
 			} else {
 				console.log("isAlreadyLogged with " + this.loginManager.cookieLogin.networkType);
 
-				if (this.loginManager.cookieLogin.networkType === NetworkType.Facebook) {
+				if (this.loginManager.cookieLogin.networkType === Reg.NetworkType.Facebook) {
 					this.initializeFacebook();
 				}
 			}
@@ -34,7 +35,7 @@ module Views {
 		private initializeGoogle() {
 			var self = this;
 
-			var btnGoogle = new GoogleButton();
+			var btnGoogle = new Reg.GoogleButton();
 			btnGoogle.successfulCallback = (googleUser) => {
 				self.loginManager.googleUserCreator.registerOrLogin(googleUser);
 			};
@@ -47,7 +48,7 @@ module Views {
 		private initializeFacebook() {
 			var self = this;
 
-			var fbInit = new FacebookInit();
+			var fbInit = new Reg.FacebookInit();
 
 			fbInit.onFacebookInitialized = () => {
 				self.loginManager.facebookUserCreator.registerOrLogin();
@@ -62,7 +63,7 @@ module Views {
 			var endpoint = '/api/' + endpointName;
 			console.log("getting: " + endpoint);
 
-			var request = new RequestSender(endpoint, null, true);
+			var request = new Common.RequestSender(endpoint, null, true);
 			request.params = params;
 			request.onSuccess = callback;
 			request.onError = response => { alert('error') };
@@ -74,7 +75,7 @@ module Views {
 			var endpoint = '/api/' + endpointName;
 			console.log("posting: " + endpoint);
 
-			var request = new RequestSender(endpoint, data, true);
+			var request = new Common.RequestSender(endpoint, data, true);
 			request.serializeData();
 			request.onSuccess = callback;
 			request.onError = response => { alert('error') };
@@ -86,7 +87,7 @@ module Views {
 			var endpoint = '/api/' + endpointName;
 			console.log("putting: " + endpoint);
 
-			var request = new RequestSender(endpoint, data, true);
+			var request = new Common.RequestSender(endpoint, data, true);
 			request.serializeData();
 			request.onSuccess = callback;
 			request.onError = response => { alert('error') };
@@ -98,7 +99,7 @@ module Views {
 			var endpoint = '/api/' + endpointName;
 			console.log("deleting: " + endpoint);
 
-			var request = new RequestSender(endpoint, null, true);
+			var request = new Common.RequestSender(endpoint, null, true);
 			request.params = params;
 			request.onSuccess = callback;
 			request.onError = response => { alert('error') };

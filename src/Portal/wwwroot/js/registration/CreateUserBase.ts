@@ -1,49 +1,53 @@
-﻿
-class CreateUserBase {
+﻿module Reg {
+	export class CreateUserBase {
 
-	endpoint = "";
+		endpoint = "";
 
-	loginType: NetworkType;
-	cookieManager: CookieManager;
- 
-	constructor() {
-		this.cookieManager = new CookieManager();
-	}
+		loginType: NetworkType;
+		cookieManager: Common.CookieManager;
 
-	onSuccess = (response) => {
-		console.log("storing cookie: " + response.encodedToken);
+		constructor() {
+		 this.cookieManager = new Common.CookieManager();
+		}
 
-		this.storeCookieWithToken(response.encodedToken, response.networkType);
-		$(".popup").hide();
-	}
+		onSuccess = (response) => {
+			console.log("storing cookie: " + response.encodedToken);
 
-	onError = (response) => {
-		//todo: show some general error dialog
-	}
+			this.storeCookieWithToken(response.encodedToken, response.networkType);
+			$(".popup").hide();
+		}
 
-	storeCookieWithToken(encodedToken: string, networkType: string) {
+		onError = (response) => {
+			//todo: show some general error dialog
+		}
 
-		var cookieObj = new CookieLogin();
-		cookieObj.encodedToken = encodedToken;
-		cookieObj.networkType = parseInt(networkType);
-		this.cookieManager.setJson(Constants.cookieName, cookieObj);
-	 
-		console.log("token received: " + this.loginType);
+		storeCookieWithToken(encodedToken: string, networkType: string) {
 
-		if (cookieObj.networkType !== NetworkType.Twitter) {
-			window.location.href = Constants.firstRedirectUrl;
+			var cookieObj = new CookieLogin();
+			cookieObj.encodedToken = encodedToken;
+			cookieObj.networkType = parseInt(networkType);
+			this.cookieManager.setJson(Constants.cookieName, cookieObj);
+
+			console.log("token received: " + this.loginType);
+
+			if (cookieObj.networkType !== NetworkType.Twitter) {
+				window.location.href = Constants.firstRedirectUrl;
+			}
+		}
+
+		sendUserRegistrationData(newUser) {
+		 var request = new Common.RequestSender(this.endpoint, newUser);
+			request.serializeData();
+			request.onSuccess = this.onSuccess;
+			request.onError = this.onError;
+			request.sendPost();
 		}
 	}
 
-	sendUserRegistrationData(newUser) {
-		var request = new RequestSender(this.endpoint, newUser);
-		request.serializeData();
-		request.onSuccess = this.onSuccess;
-		request.onError = this.onError;
-		request.sendPost();
+	export enum NetworkType {
+		Facebook,
+		Google,
+		Twitter,
+		Base
 	}
-}
-
-enum NetworkType {
-	Facebook, Google, Twitter, Base
 }
