@@ -8,8 +8,9 @@
 
   "dependencies": {
     "Facebook": "7.0.6",
-    "MongoDB.Driver": "2.1.0"
+    "MongoDB.Driver": "2.2.0-rc0"
   },
+
 
     "frameworks": {
         "dnx451": {

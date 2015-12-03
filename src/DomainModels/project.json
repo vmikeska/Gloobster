@@ -13,9 +13,10 @@
     "Facebook": "7.0.6",
     "System.Net.Http": "4.0.0.0",
     "TweetSharp": "2.3.1",
-    "Autofac": "4.0.0-beta7-130",
-    "MongoDB.Driver": "2.1.0",
-    "BlobFileSystem.Azure": "0.0.6"
+    "MongoDB.Driver": "2.2.0-rc0",
+    "BlobFileSystem.Azure": "0.0.6",
+    "Autofac": "4.0.0-rc1-177",
+    "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-177"
   },
 
   "frameworks": {
