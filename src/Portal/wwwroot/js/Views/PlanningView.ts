@@ -24,13 +24,13 @@
 				this.mapsOperations.loadCategory(Planning.PlanningType.Anytime);
 			});
 
-			var locationDialog = new Views.LocationSettingsDialog();
+			var locationDialog = new LocationSettingsDialog();
 		}
 
 		private registerTabEvents() {
-			this.anytimeTabTemplate = Views.ViewBase.currentView.registerTemplate("anytime-template");
-			this.weekendTabTemplate = Views.ViewBase.currentView.registerTemplate("weekend-template");
-			this.customTabTemplate = Views.ViewBase.currentView.registerTemplate("custom-template");
+			this.anytimeTabTemplate = ViewBase.currentView.registerTemplate("anytime-template");
+			this.weekendTabTemplate = ViewBase.currentView.registerTemplate("weekend-template");
+			this.customTabTemplate = ViewBase.currentView.registerTemplate("custom-template");
 
 			var $tabsRoot = $(".tabs");
 			var $tabs = $tabsRoot.find(".tab");

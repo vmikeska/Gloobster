@@ -1,5 +1,5 @@
 ﻿module Views {
-	export class ShareTripView extends Views.ViewBase {
+	export class ShareTripView extends ViewBase {
 
 		private maps: Maps.MapsCreatorMapBox2D;
 
@@ -13,6 +13,7 @@
 		 this.maps = new Maps.MapsCreatorMapBox2D();
 			this.maps.setRootElement("map");
 			this.maps.show((map) => {
+				
 				//this.mapsOperations = new PlanningMap(map);
 				//this.mapsOperations.loadCategory(PlanningType.Anytime);
 			});

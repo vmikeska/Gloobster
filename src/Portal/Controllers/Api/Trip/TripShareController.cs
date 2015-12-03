@@ -15,9 +15,9 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 	{
 		public ITripShareDomain ShareDomain { get; set; }
 
-		public TripShareController(IDbOperations db) : base(db)
+		public TripShareController(ITripShareDomain tripShareDom, IDbOperations db) : base(db)
 		{
-
+			ShareDomain = tripShareDom;
 		}
 
 		[HttpPost]
