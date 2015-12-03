@@ -22,10 +22,9 @@ namespace Gloobster.ReqRes.Trip
 		public List<FileResponse> files { get; set; }
 
 		public List<TripPlaceResponse>  places { get; set; }
-		public List<TripTravelResponse> travels { get; set; }
-		
+		public List<TripTravelResponse> travels { get; set; }		
 	}
-
+	
 	public class TripPlaceResponse
 	{
 		public string id { get; set; }
@@ -66,11 +65,5 @@ namespace Gloobster.ReqRes.Trip
 		public FlightResponse flightTo { get; set; }
 		public DateTime? leavingDateTime { get; set; }
 		public DateTime? arrivingDateTime { get; set; }
-	}
-
-	public class FlightResponse
-	{
-		public string id { get; set; }
-		public string selectedName { get; set; }
 	}
 }

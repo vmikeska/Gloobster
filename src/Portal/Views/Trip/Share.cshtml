@@ -83,15 +83,14 @@
 						</div>
 				</div>
 		</section>
-		<!-- MapBox -->
+		
 <script>
 
-	currentView = new Views.ShareTripView();
-
-	//L.mapbox.accessToken = 'pk.eyJ1IjoiZ2xvb2JzdGVyIiwiYSI6ImQxZWY5MjRkZjU1NDk2MGU3OWI2OGRiM2U3NTM0MGYxIn0.nCG7hOsSQzb0c-_qzfTCRQ';
-	//var map = L.mapbox.map('map', 'gloobster.afeef633');
+	var urlParams = window.location.pathname.split("/");
+  var id = urlParams[urlParams.length - 1];
+	currentView = new Views.ShareTripView(id);	
 </script>
-		<!-- MapBox -->
+		
 </body>
 </html>
 
