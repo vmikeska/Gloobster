@@ -39,7 +39,7 @@ namespace Gloobster.Portal.Controllers.Registration
 
 			var result = await UserService.Validate(facebookAuthRequest, null);
 
-			Context.Session.SetString(PortalConstants.UserSessionId, result.UserId);
+			Request.HttpContext.Session.SetString(PortalConstants.UserSessionId, result.UserId);
 
 			var response = new LoggedResponse
 			{

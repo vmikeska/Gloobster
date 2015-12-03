@@ -38,7 +38,7 @@ namespace Gloobster.Portal.Controllers
 			UserService.AccountDriver = accountDriver;
 
 			var result = await UserService.Validate(null, baseUser);
-			Context.Session.SetString(PortalConstants.UserSessionId, result.UserId);
+			Request.HttpContext.Session.SetString(PortalConstants.UserSessionId, result.UserId);
 
 			var response = new LoggedResponse
 			{

@@ -3,6 +3,7 @@ using Gloobster.Common;
 using Gloobster.DomainModels;
 using Gloobster.Portal.Controllers.Base;
 using Microsoft.AspNet.Mvc;
+using Microsoft.AspNet.Mvc.Filters;
 
 namespace Gloobster.Portal.Controllers
 {

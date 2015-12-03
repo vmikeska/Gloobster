@@ -24,7 +24,7 @@ namespace Gloobster.Portal.Controllers.Base
 					return _userId;
 				}
 
-				string userId = Context.Session.GetString(PortalConstants.UserSessionId);
+				string userId = Request.HttpContext.Session.GetString(PortalConstants.UserSessionId);
 				if (!string.IsNullOrEmpty(userId))
 				{
 					return userId;
@@ -36,7 +36,7 @@ namespace Gloobster.Portal.Controllers.Base
 					return string.Empty;
 				}
 
-				Context.Session.SetString(PortalConstants.UserSessionId, authToken.UserId);
+				Request.HttpContext.Session.SetString(PortalConstants.UserSessionId, authToken.UserId);
 				_userId = authToken.UserId;
 				
 				return _userId;
@@ -45,7 +45,7 @@ namespace Gloobster.Portal.Controllers.Base
 
 	    private AuthorizationToken GetAuthorizationTokenFromCookie()
 	    {
-			string cookieValue = Context.Request.Cookies[PortalConstants.LoginCookieName];
+			string cookieValue = Request.HttpContext.Request.Cookies[PortalConstants.LoginCookieName];
 
 			if (string.IsNullOrEmpty(cookieValue))
 			{
