@@ -1,118 +1,30 @@
 ﻿module Views {
 	export class ShareDialogView {
 
-	 private userSearchBox: Common.UserSearchBox;
-		private template: any;
-		private $htmlContainer: any;
+		private shareButtons: Common.ShareButtons;
+		private $dialog: any;
 
 		constructor() {
-
-			var config = new Common.UserSearchConfig();
-			config.elementId = "friends";
-			config.clearAfterSearch = true;
-			config.endpoint = "FriendsSearch";
-
-			this.$htmlContainer = $("#shareFreindsContainer");
-
-			this.userSearchBox = new Common.UserSearchBox(config);
-			this.userSearchBox.onUserSelected = (user) => this.onUserSelected(user);
-
-			var source = $("#shareDialogUser-template").html();
-			this.template = Handlebars.compile(source);
-
+			this.$dialog = $("#popup-share");
+			this.shareButtons = new Common.ShareButtons($("#shareCont"), "Share on social media");
 			$("#share").click(() => this.share());
 		}
 
 		private share() {
-			var users = [];
-			this.$htmlContainer.children().each((i, elm) => {
-				var isUser = elm.id !== "";
-				if (isUser) {
-					var isAdmin = $(elm).find("input[type=checkbox]").prop("checked");
-
-					var user = {
-						userId: elm.id,
-						isAdmin: isAdmin
-					}
-					users.push(user);
-				}
-			});
-
+			var networks = this.shareButtons.getSelectedNetworks();
 
 			var data = {
-				caption: $("#caption").val(),
-				tripId: Views.ViewBase.currentView["trip"].tripId,
-				users: users
+				message: $("#message").val(),
+				tripId: ViewBase.currentView["trip"].tripId,
+				networks: networks,
+				allowRequestJoin: $("#allowRequestJoin").prop("checked")
 			}
-
-			ViewBase.currentView.apiPost("tripShare", data, response => {
-
+		 
+			ViewBase.currentView.apiPost("TripSocNetworks", data, response => {
+				this.$dialog.hide();
 			});
 		}
-
-		private onUserSelected(user) {
-			this.addUser(user);
-		}
-
-		private reregisterEvents() {
-			var $delete = $(".userDelete");
-
-			$delete.unbind();
-
-			$delete.click((evnt) => {
-				var friendId = $(evnt.target).data("value");
-				this.removeUser(friendId);
-			});
-
-		}
-
-		private isAreadyAdded(userId) {
-			var result = false;
-			this.$htmlContainer.children().each((i, elm) => {
-
-				if (elm.id === userId) {
-					result = true;
-				}
-
-			});
-			return result;
-		}
-
-		private addUser(user) {
-			var isAdded = this.isAreadyAdded(user.friendId);
-			if (isAdded) {
-				return;
-			}
-
-			var canEdit = $("#isAdmin").prop("checked");
-
-			var context = {
-				photoUrl: "/images/samples/sample11.jpg", //user.photoUrl,
-				displayName: user.displayName,
-				userId: user.friendId,
-				checked: this.getChecked(canEdit)
-			}
-
-			var html = this.template(context);
-			this.$htmlContainer.prepend(html);
-
-			this.reregisterEvents();
-		}
-
-		private getChecked(checked) {
-			if (checked) {
-				return "checked";
-			}
-
-			return "";
-		}
-
-		private removeUser(friendId) {
-			$("#" + friendId).remove();
-		}
-
 
 	}
-
 
 }

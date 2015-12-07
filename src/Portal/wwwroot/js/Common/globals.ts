@@ -11,5 +11,6 @@ module Constants {
  export var firstRedirectUrl = "/Home/PinBoard";	
 }
 
-
 enum SourceType { FB, S4, City, Country }
+
+enum SocialNetworkType { Facebook, Google, Twitter, Base, Foursquare, GeoNames }

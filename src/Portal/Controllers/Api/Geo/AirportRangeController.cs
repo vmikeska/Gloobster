@@ -66,6 +66,11 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 		[Authorize]
 		public IActionResult Get()
 		{
+			if (PortalUser.HomeAirports == null)
+			{
+				return new ObjectResult(new object[0]);
+			}
+
 			var airportsResponse = PortalUser.HomeAirports.Select(a => a.ToResponse()).ToList();
 			return new ObjectResult(airportsResponse);
 		}

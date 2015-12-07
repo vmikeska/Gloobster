@@ -1,11 +1,13 @@
 using System.Collections.Generic;
+using Gloobster.Enums;
 
 namespace Gloobster.ReqRes.Trip
 {
 	public class ShareRequest
 	{
-		public string caption { get; set; }
+		public string message { get; set; }
 		public string tripId { get; set; }
-		public List<ParticipantRequest> users { get; set; }
+		public List<SocialNetworkType> networks { get; set; }
+		public bool allowRequestJoin { get; set; }
 	}
 }

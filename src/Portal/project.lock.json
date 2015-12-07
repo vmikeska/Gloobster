@@ -82,6 +82,7 @@
           "BlobFileSystem.Azure": "0.0.6",
           "DomainModelsCommon": "1.0.0",
           "Facebook": "7.0.6",
+          "Gloobster.Sharing": "1.0.0",
           "Mappers": "1.0.0",
           "MongoDB.Driver": "2.2.0-rc0",
           "SharpSquare": "1.0.0",
@@ -207,6 +208,17 @@
         },
         "runtime": {
           "lib/net45/Facebook.dll": {}
+        }
+      },
+      "Gloobster.Sharing/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
+        "dependencies": {
+          "Common": "1.0.0",
+          "DomainModelsCommon": "1.0.0",
+          "Facebook": "7.0.6",
+          "MongoDB.Driver": "2.2.0-rc0",
+          "TweetSharp": "2.3.1"
         }
       },
       "Ix-Async/1.2.5": {
@@ -2498,6 +2510,7 @@
           "BlobFileSystem.Azure": "0.0.6",
           "DomainModelsCommon": "1.0.0",
           "Facebook": "7.0.6",
+          "Gloobster.Sharing": "1.0.0",
           "Mappers": "1.0.0",
           "MongoDB.Driver": "2.2.0-rc0",
           "SharpSquare": "1.0.0",
@@ -2623,6 +2636,17 @@
         },
         "runtime": {
           "lib/net45/Facebook.dll": {}
+        }
+      },
+      "Gloobster.Sharing/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
+        "dependencies": {
+          "Common": "1.0.0",
+          "DomainModelsCommon": "1.0.0",
+          "Facebook": "7.0.6",
+          "MongoDB.Driver": "2.2.0-rc0",
+          "TweetSharp": "2.3.1"
         }
       },
       "Ix-Async/1.2.5": {
@@ -4917,6 +4941,7 @@
           "BlobFileSystem.Azure": "0.0.6",
           "DomainModelsCommon": "1.0.0",
           "Facebook": "7.0.6",
+          "Gloobster.Sharing": "1.0.0",
           "Mappers": "1.0.0",
           "MongoDB.Driver": "2.2.0-rc0",
           "SharpSquare": "1.0.0",
@@ -5042,6 +5067,17 @@
         },
         "runtime": {
           "lib/net45/Facebook.dll": {}
+        }
+      },
+      "Gloobster.Sharing/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
+        "dependencies": {
+          "Common": "1.0.0",
+          "DomainModelsCommon": "1.0.0",
+          "Facebook": "7.0.6",
+          "MongoDB.Driver": "2.2.0-rc0",
+          "TweetSharp": "2.3.1"
         }
       },
       "Ix-Async/1.2.5": {
@@ -7285,6 +7321,10 @@
     "Enums/1.0.0": {
       "type": "project",
       "path": "../Enums/project.json"
+    },
+    "Gloobster.Sharing/1.0.0": {
+      "type": "project",
+      "path": "../Gloobster.Sharing/project.json"
     },
     "Mappers/1.0.0": {
       "type": "project",

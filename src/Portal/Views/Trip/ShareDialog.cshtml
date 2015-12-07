@@ -1,63 +1,25 @@
-﻿<div class="popup trip-share" id="popup-share">
-	<div>
-		<h3><span class="slim">Share</span> My Euro Trip
-		</h3>
-		<textarea id="caption" class="margin" placeholder="Message..."></textarea>
-		<div class="color1">Share with friends</div>
-
-		<div id="shareFreindsContainer"  class="share-friends table margin">
-
-			<div class="row">
-				<div class="cell">
-					<!-- <input type="text" placeholder="Friend name or email..."> -->
-					<div id="friends" class="dropdown gray">
-						<input class="inputed" type="text" placeholder="Friend name or email...">
-						<ul>
-						</ul>
-					</div>
-				</div>
-				<div class="cell color1"><input id="isAdmin" type="checkbox"><label for="isAdmin"><span>Can edit</span></label>
-				</div>
-				<div class="cell"></div>
-				<div class="cell"></div>
-			</div>
-
-		</div>
-		<div class="right">
-			<p class="color1">
-				Share on social media<br>
-				<img class="opacity5 middle" src="~/images/share-facebook.png">
-				<img class="opacity5 middle mleft10" src="~/images/share-4s.png">
-				<img class="opacity5 middle mleft10" src="~/images/share-twitter.png">
-				<img class="opacity5 middle mleft10" src="~/images/share-google.png">
-			</p>
-			<a id="share" class="button right" href="#">Share</a>
-		</div>
-		<a class="close" href="#">Close</a>
-	</div>
-</div>
-
-<script>
-
-	function onShareDialogLoad(currentView) {
-
-		currentView.shareDialogView = new Views.ShareDialogView(currentView);
+﻿
+<style>
+	.active {
+		border: 2px solid green;
 	}
-</script>
+</style>
 
-<script id="shareDialogUser-template" type="text/x-handlebars-template">
-		<div id="{{userId}}" class="row">
+<div class="popup trip-share" id="popup-share">
+		<div>
+				<h3>
+						<span class="slim">Share</span> My Euro Trip
+				</h3>
+
+				<textarea id="message" class="margin" placeholder="Message..."></textarea>
+				
 				<div class="cell">
-						<span class="thumbnail"><img src="{{photoUrl}}"></span>{{displayName}}
+						<input id="allowRequestJoin" type="checkbox" /><label for="allowRequestJoin"><span>Allow to request join</span></label>						
 				</div>
-				<div class="cell color1">
-						<input id="checkbox{{userId}}" type="checkbox" {{checked}}><label for="checkbox{{userId}}"><span>Is admin</span></label>
+
+				<div id="shareCont" class="right">
+						<a id="share" class="button right" href="#">Share</a>
 				</div>
-				<div class="cell small color1">Sharing 5 trips</div>
-				<div class="cell">
-						<a class="delete userDelete" data-value="{{userId}}" href="#"></a>
-				</div>
+				<a class="close" href="#">Close</a>
 		</div>
-</script>
-
-
+</div>

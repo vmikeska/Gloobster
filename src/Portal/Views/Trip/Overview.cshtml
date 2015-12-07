@@ -8,6 +8,7 @@
 @model Gloobster.Portal.ViewModels.ViewModelTripDetail
 
 <script type="text/javascript" src="@Url.Content("~/js/Views/TripViewView.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/common/ShareButtons.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Trip/Comments.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Trip/Files.js")"></script>
 
@@ -29,8 +30,8 @@
 			<div class="cell middle tright">
 				<strong>By</strong> @Model.OwnerDisplayName
 				<span class="thumbnail disc60 middle mleft10">
-										<img src="~/images/samples/sample12.jpg">
-								</span>
+						<img src="~/images/samples/sample12.jpg">
+				</span>
 			</div>
 		</div>
 		<p class="h4">@Model.Description</p>
@@ -45,6 +46,7 @@
 		@if (Model.IsUserAdmin)
 		{
 			<a class="button share popup-target" data-target="#popup-share" href="#">Share trip</a>
+		  <a class="button share popup-target" data-target="#popup-invite" href="#">Invite people</a>
 			<a class="button share" href="/Trip/Detail/@Model.TripId">Edit trip</a>
 		}
 		</div>
@@ -69,6 +71,7 @@
 @Html.Partial("Templates")
 @Html.Partial("PlannerTemplates")
 @Html.Partial("ShareDialog")
+@Html.Partial("InviteDialog")
 
 <script>
 	
@@ -79,7 +82,6 @@
 			var id = urlParams[urlParams.length - 1];
 						
 			currentView.initialize(id);
-			onShareDialogLoad(currentView);
 	}
 
 </script>

@@ -6,15 +6,17 @@ using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
 using Gloobster.Entities;
 using Gloobster.Entities.Trip;
+using Gloobster.Enums;
 using Gloobster.Mappers;
+using Gloobster.Sharing;
 using MongoDB.Bson;
 
 namespace Gloobster.DomainModels.Services.Trip
 {
-	public class TripShareDomain: ITripShareDomain
+	public class TripInviteDomain: ITripInviteDomain
 	{
 		public IDbOperations DB { get; set; }
-
+		
 		public async void InvitePaticipants(List<ParticipantDO> newParticipants, string tripId)
 		{
 			var tripIdObj = new ObjectId(tripId);
@@ -37,6 +39,7 @@ namespace Gloobster.DomainModels.Services.Trip
 
 					//todo: add notification
 					//todo: send emails and such a stuff
+
 				}
 			}
 		}

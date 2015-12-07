@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels.Services.Trip;
@@ -17,11 +16,8 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 {
 	public class TripShareController : BaseApiController
 	{
-		public ITripShareDomain ShareDomain { get; set; }
-
-		public TripShareController(ITripShareDomain tripShareDom, IDbOperations db) : base(db)
-		{
-			ShareDomain = tripShareDom;
+		public TripShareController(IDbOperations db) : base(db)
+		{			
 		}
 
 		[HttpGet]
@@ -101,22 +97,6 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 			}).ToList();
 
 			return participantsRes;
-		}
-
-		[HttpPost]
-		[Authorize]
-		public async Task<IActionResult> Post([FromBody]ShareRequest request)
-		{
-			
-			//todo: check rights for this tripId
-
-			var participants = request.users.Select(u => u.ToDO()).ToList();
-			ShareDomain.InvitePaticipants(participants, request.tripId);
-			
-			return new ObjectResult(null);
-		}
-
-		
-
-	}
+		}		
+	}	
 }

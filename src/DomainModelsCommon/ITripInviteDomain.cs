@@ -4,8 +4,8 @@ using Gloobster.Enums;
 
 namespace Gloobster.DomainInterfaces
 {
-	public interface ITripShareDomain
+	public interface ITripInviteDomain
 	{
-		void ShareTrip(ShareTripDO tripShare);
+		void InvitePaticipants(List<ParticipantDO> newParticipants, string tripId);
 	}
 }

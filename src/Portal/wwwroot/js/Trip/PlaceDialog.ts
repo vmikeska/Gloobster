@@ -192,11 +192,11 @@ module Trip {
 
 		private onPlaceSelected(req, place) {
 			$(".active .name").text(this.placeSearch.lastText);
-
+		 
 			var data = this.dialogManager.getPropRequest("place", {
 				sourceId: req.SourceId,
 				sourceType: req.SourceType,
-				selectedName: name
+				selectedName: this.placeSearch.lastText
 			});
 
 			var coord = place.Coordinates;

@@ -3,11 +3,15 @@
 		trip: any;
 		comments: Trip.Comments;
 		files: Trip.Files;
+		inviteDialogView: InviteDialogView;
 		shareDialogView: ShareDialogView;
 		planner: Trip.Planner;
 
 		initialize(id: string) {
 			var self = this;
+
+			this.inviteDialogView = new InviteDialogView();
+			this.shareDialogView = new ShareDialogView();
 
 			var filesConfig = new Trip.FilesConfig();
 			filesConfig.containerId = "filesContainer";

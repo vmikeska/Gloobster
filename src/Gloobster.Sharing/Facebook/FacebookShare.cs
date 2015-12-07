@@ -6,7 +6,7 @@ namespace Gloobster.Sharing.Facebook
 {
 	public class FacebookShare
 	{
-		public void Share(FacebookShareOptionsDO sharingOptions, SocAuthenticationDO authentication)
+		public void Share(FacebookShareOptionsDO so, SocAuthenticationDO authentication)
 		{
 			var endpoint = "/me/feed";
 			//og.follows
@@ -15,21 +15,54 @@ namespace Gloobster.Sharing.Facebook
 			
 			var args = new Dictionary<string, object>
 			{
-				{"message", sharingOptions.Message },
-				{"picture", sharingOptions.Picture},
-				{"name", sharingOptions.Name}, 
-				{"description", sharingOptions.Description},
-				{"caption", sharingOptions.Caption},				
-				{"link", sharingOptions.Link} 
+				{"message", so.Message },
+				{"picture", so.Picture},
+				{"name", so.Name}, 
+				{"description", so.Description},
+				{"caption", so.Caption},				
+				{"link", so.Link} 
 			};
-
-			//todo: privacy
+			
+			var privacy = BuildPrivacyDict(so);
+			args.Add("privacy", privacy);
 
 			client.Post(endpoint, args);
 		}
 		
+		///https://developers.facebook.com/docs/graph-api/reference/v2.5/post 		
+		private Dictionary<string, object> BuildPrivacyDict(FacebookShareOptionsDO so)
+		{
+			var privacy = new Dictionary<string, object>
+			{
+				{"description", so.Privacy.Description },
+				{"value", so.Privacy.Value.ToString()}
+			};
+
+			if (so.Privacy.Value == FacebookPrivacyLevel.CUSTOM)
+			{
+				if (so.Privacy.Friends.HasValue)
+				{
+					privacy.Add("friends", so.Privacy.Allow.ToString());
+				}
+
+				if (!string.IsNullOrEmpty(so.Privacy.Allow))
+				{
+					privacy.Add("allow", so.Privacy.Allow);
+				}
+
+				if (!string.IsNullOrEmpty(so.Privacy.Deny))
+				{
+					privacy.Add("deny", so.Privacy.Deny);
+				}
+			}
+
+			return privacy;
+		}
+
 	}
+	
 }
+
 
 //https://developers.facebook.com/docs/sharing/opengraph/using-actions
 //https://developers.facebook.com/docs/sharing/web

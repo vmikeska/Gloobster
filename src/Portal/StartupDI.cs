@@ -41,7 +41,7 @@ namespace Gloobster.Portal
             builder.AddInstance2<IAirportGroupService, AirportGroupService>();
 			builder.AddInstance2<IAirportService, AirportService>();
 
-			
+			builder.AddTransient<ITripShareDomain, TripShareDomain>();
 
 			builder.AddTransient<IPlanningDomain, PlanningDomain>();
 			
@@ -55,7 +55,7 @@ namespace Gloobster.Portal
 			builder.AddTransient<IPlacesExtractorDriver, TwitterPlacesDriver>().Keyed<IPlacesExtractorDriver>("Twitter");
 			builder.AddTransient<IPlacesExtractorDriver, FacebookPlacesDriver>().Keyed<IPlacesExtractorDriver>("Facebook");
 
-			builder.AddTransient<ITripShareDomain, TripShareDomain>();
+			builder.AddTransient<ITripInviteDomain, TripInviteDomain>();
 
 			builder.AddInstance2<ISearchService, SearchService>();
 			builder.AddInstance2<ISearchProvider, GeoNamesSearchProvider>().Keyed<ISearchProvider>(SourceType.City);

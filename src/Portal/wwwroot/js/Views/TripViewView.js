@@ -12,6 +12,8 @@ var Views;
         }
         TripViewView.prototype.initialize = function (id) {
             var self = this;
+            this.inviteDialogView = new Views.InviteDialogView();
+            this.shareDialogView = new Views.ShareDialogView();
             var filesConfig = new Trip.FilesConfig();
             filesConfig.containerId = "filesContainer";
             filesConfig.inputId = "fileInput";

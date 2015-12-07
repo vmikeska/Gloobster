@@ -1,0 +1,55 @@
+﻿
+<div class="popup trip-share" id="popup-invite">
+	<div>
+		<h3><span class="slim">Invite</span> To do add trip name
+		</h3>
+
+		<textarea id="caption" class="margin" placeholder="Message..."></textarea>
+		<div class="color1">Invite friends</div>
+
+		<div id="inviteFriendsCont" class="share-friends table margin">
+
+			<div class="row">
+				<div class="cell">					
+					<div id="friends" class="dropdown gray">
+						<input class="inputed" type="text" placeholder="Friend name...">
+						<ul></ul>
+					</div>
+				</div>
+				<div class="cell color1">
+					<input id="isAdmin" type="checkbox"><label for="isAdmin"><span>Can edit</span></label>
+				</div>
+				<div class="cell"></div>
+				<div class="cell"></div>
+			</div>
+		</div>
+
+		<div class="right">
+			<a id="invite" class="button right" href="#">Invite</a>
+		</div>
+
+		<div class="cell">
+			<input id="shareLinkCheck" type="checkbox"/><label for="shareLinkCheck"><span>Who receives link can join</span></label>
+			<input class="inputed" type="text" value="http://gloobster.com/sharethething">
+		</div>
+
+		<a class="close" href="#">Close</a>
+	</div>
+</div>
+
+<script id="inviteDialogUser-template" type="text/x-handlebars-template">
+		<div id="{{userId}}" class="row">
+				<div class="cell">
+						<span class="thumbnail"><img src="{{photoUrl}}"></span>{{displayName}}
+				</div>
+				<div class="cell color1">
+						<input id="checkbox{{userId}}" type="checkbox" {{checked}}><label for="checkbox{{userId}}"><span>Is admin</span></label>
+				</div>
+				<div class="cell small color1">Sharing 5 trips</div>
+				<div class="cell">
+						<a class="delete userDelete" data-value="{{userId}}" href="#"></a>
+				</div>
+		</div>
+</script>
+
+
