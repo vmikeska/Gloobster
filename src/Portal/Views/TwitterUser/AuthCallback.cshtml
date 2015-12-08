@@ -8,20 +8,24 @@
 
 <script>
 
-	//function onBodyLoad() {
-		var response = {
-			"userId": "@Model.userId",
-			"accessToken": "@Model.accessToken",
-			"expiresAt": "@Model.expiresAt",
-			"mail": "@Model.mail",
-			"tokenSecret": "@Model.tokenSecret"
-		};
+	var cookieManager = null;
 
-		var view = new TwitterAuthView();
-		view.loginManager.twitterUserCreator.handleRoughResponse(response);
-	//}
+		$(document).ready(function () {				
 
-		var cookieManager = new CookieManager();
+				cookieManager = new Common.CookieManager();
+
+				var response = {
+						"userId": "@Model.userId",
+						"accessToken": "@Model.accessToken",
+						"expiresAt": "@Model.expiresAt",
+						"mail": "@Model.mail",
+						"tokenSecret": "@Model.tokenSecret"
+				};
+
+				var view = new Views.TwitterAuthView();
+				view.loginManager.twitterUserCreator.handleRoughResponse(response);
+				twitterLoginWatch();
+		});
 
 		var twInterval = null;
 		function twitterLoginWatch() {
@@ -29,7 +33,7 @@
 						var cookieVal = cookieManager.getJson(Constants.cookieName);
 						if (cookieVal) {
 								clearInterval(twInterval);
-								close();;
+								close();
 						}
 						console.log("checking: " + JSON.stringify(cookieVal));
 				}, 500);

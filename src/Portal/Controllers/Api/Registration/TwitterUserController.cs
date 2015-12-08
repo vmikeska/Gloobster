@@ -6,12 +6,10 @@ using Gloobster.DomainObjects;
 using Gloobster.Enums;
 using Gloobster.ReqRes;
 using Gloobster.ReqRes.Facebook;
-using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Http;
+using Microsoft.AspNet.Mvc;
 
-
-
-namespace Gloobster.Portal.Controllers.Registration
+namespace Gloobster.Portal.Controllers.Api.Registration
 {
 	[Route("api/[controller]")]
 	public class TwitterUserController : Controller
@@ -54,32 +52,7 @@ namespace Gloobster.Portal.Controllers.Registration
 				networkType = SocialNetworkType.Twitter
 			};
 
-			return new ObjectResult(response);
-
-
-			//var facebookAuthRequest = new SocAuthenticationDO
-			//{
-			//	AccessToken = request.accessToken,
-			//	UserId = request.userID,
-			//	ExpiresAt = DateTime.UtcNow.AddSeconds(request.expiresIn)
-			//}; 
-
-			//var accountDriver = ComponentContext.ResolveKeyed<IAccountDriver>("Facebook");
-
-			//UserService.AccountDriver = accountDriver;
-
-			//var result = await UserService.Validate(facebookAuthRequest, null);
-
-			//Context.Session.SetString(PortalConstants.UserSessionId, result.UserId);
-
-			//var response = new LoggedResponse
-			//{
-			//	encodedToken = result.EncodedToken,
-			//	status = result.Status.ToString(),                
-			//	networkType = SocialNetworkType.Facebook
-			//};
-
-			return new ObjectResult(response);
+			return new ObjectResult(response);			
 		}
 	}
 }

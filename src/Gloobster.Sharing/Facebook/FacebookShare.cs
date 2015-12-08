@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using Facebook;
+using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
 
 namespace Gloobster.Sharing.Facebook
-{
-	public class FacebookShare
+{	
+	public class FacebookShare: IFacebookShare
 	{
 		public void Share(FacebookShareOptionsDO so, SocAuthenticationDO authentication)
 		{

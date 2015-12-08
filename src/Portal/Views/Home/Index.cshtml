@@ -169,7 +169,7 @@
 
 
 <script>	
-	var btnGoogle = new Views.GoogleButton();
+	var btnGoogle = new Reg.GoogleButton();
 	btnGoogle.successfulCallback = (googleUser) => {
 		currentView.loginManager.googleUserCreator.registerOrLogin(googleUser);				
 	};

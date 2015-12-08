@@ -1,4 +1,4 @@
-﻿namespace Gloobster.Sharing.Twitter
+﻿namespace Gloobster.DomainObjects
 {
 	public class TwitterShareOptionsDO
 	{

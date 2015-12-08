@@ -34,11 +34,8 @@ namespace Gloobster.Portal.Controllers.Portal
 
 		public IActionResult SharedMapImage(string id)
 		{
-			//new FileStream(path, FileMode.Open)
-
-			var mapStream = SharedImgDomain.GetMap(id);
-
-			return new FileStreamResult(mapStream, "image/png");
+			var mapStream = SharedImgDomain.GetMap(id);			
+			return new FileStreamResult(mapStream, "image/png");		
 		}
 
 		public IActionResult Share()

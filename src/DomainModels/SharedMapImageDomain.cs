@@ -40,8 +40,8 @@ namespace Gloobster.DomainModels
 			var cfg = new BuildMapConfigDO
 			{
 				MapId = "mapbox.streets",
-				Height = 1200,
-				Width = 900,
+				Height = 900,
+				Width = 1200,
 				AutoFit = true,
 				Features = new List<FeatureBaseDO>
 				{

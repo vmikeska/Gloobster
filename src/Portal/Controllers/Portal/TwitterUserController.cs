@@ -51,24 +51,6 @@ namespace Gloobster.Portal.Controllers
 			};
 
 			return View(response);
-
-			//var accountDriver = ComponentContext.ResolveKeyed<IAccountDriver>("Twitter");
-			//UserService.AccountDriver = accountDriver;
-
-			
-
-			//var result = await UserService.Validate(auth, addInfo);
-			//Context.Session.SetString(PortalConstants.UserSessionId, result.UserId);
-
-			//var response = new LoggedResponse
-			//{
-			//	encodedToken = result.EncodedToken,
-			//	status = result.Status.ToString(),
-			//	networkType = SocialNetworkType.Twitter
-			//};
-
-			//return View(response);
-
 		}
 
 		

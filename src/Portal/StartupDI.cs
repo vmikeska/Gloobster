@@ -16,6 +16,8 @@ using Gloobster.DomainModels.Services.PlaceSearch;
 using Gloobster.DomainModels.Services.Trip;
 using Gloobster.DomainModels.Services.Twitter;
 using Gloobster.Enums;
+using Gloobster.Sharing.Facebook;
+using Gloobster.Sharing.Twitter;
 using Gloobster.SocialLogin.Facebook.Communication;
 
 namespace Gloobster.Portal
@@ -42,6 +44,10 @@ namespace Gloobster.Portal
 			builder.AddInstance2<IAirportService, AirportService>();
 
 			builder.AddTransient<ITripShareDomain, TripShareDomain>();
+			builder.AddTransient<ITwitterShare, TwitterShare> ();
+			builder.AddTransient <IFacebookShare, FacebookShare> ();
+			
+
 
 			builder.AddTransient<IPlanningDomain, PlanningDomain>();
 			
