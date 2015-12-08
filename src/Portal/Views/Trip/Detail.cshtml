@@ -4,6 +4,7 @@
 @model Gloobster.Portal.ViewModels.ViewModelTripDetail
 
 <script type="text/javascript" src="@Url.Content("~/js/Views/TripDetailView.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/common/ShareButtons.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Trip/Comments.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Trip/Files.js")"></script>
 
@@ -62,6 +63,7 @@
 
 
 @Html.Partial("ShareDialog")
+@Html.Partial("InviteDialog")
 @Html.Partial("ConfirmDeleteDialog")
 
 @Html.Partial("Templates")

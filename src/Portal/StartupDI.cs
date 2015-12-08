@@ -55,6 +55,8 @@ namespace Gloobster.Portal
 			builder.AddTransient<IPlacesExtractorDriver, TwitterPlacesDriver>().Keyed<IPlacesExtractorDriver>("Twitter");
 			builder.AddTransient<IPlacesExtractorDriver, FacebookPlacesDriver>().Keyed<IPlacesExtractorDriver>("Facebook");
 
+			builder.AddTransient<ISharedMapImageDomain, SharedMapImageDomain>(); 
+			builder.AddTransient<IMapBoxImgCreator, MapBoxImgCreator>(); 
 			builder.AddTransient<ITripInviteDomain, TripInviteDomain>();
 
 			builder.AddInstance2<ISearchService, SearchService>();

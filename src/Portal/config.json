@@ -2,11 +2,15 @@
   "Data": {
     "DefaultConnection": {
       "ConnectionString": "mongodb://localhost:27017/Gloobster",
-      "DatabaseName": "Gloobster"
+      "DatabaseName": "Gloobster"      
     }
   },
+  "Environment": {
+    "Domain": "localhost:54485",
+    "IsDebug": "true"
+  },
   "AppSecret": "ThisIsAppSecret",
-  "Facebook": {    
+  "Facebook": {
     "AppId": "1717433995154818",
     "AppSecret": "be78899641f3c7cc42b5931c8a390974"
   },
@@ -18,6 +22,11 @@
   },
   "Foursquare": {
     "ClientId": "RW5T0GSXYHMN5W2P4DLPYEOR1UYXXKGIFDMNBBM15XE0MQZ1",
-		"ClientSecret": "HHHLCEDL3YSQAM5BNCT4HZXQ2BVLRGROMS5IUHMITIDAROWJ"
+    "ClientSecret": "HHHLCEDL3YSQAM5BNCT4HZXQ2BVLRGROMS5IUHMITIDAROWJ"
+  },
+  "Mapbox": {
+    "Secret": "pk.eyJ1IjoiZ2xvb2JzdGVyIiwiYSI6ImQxZWY5MjRkZjU1NDk2MGU3OWI2OGRiM2U3NTM0MGYxIn0.nCG7hOsSQzb0c-_qzfTCRQ"
   }
+
+
 }

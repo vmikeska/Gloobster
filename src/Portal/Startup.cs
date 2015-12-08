@@ -52,12 +52,6 @@ namespace Gloobster.Portal
 		// Configure is called after ConfigureServices is called.
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-			//var listener = app.ServerFeatures.Get<WebListener>();
-			//if (listener != null)
-			//{
-			//	listener.AuthenticationManager.AuthenticationSchemes = AuthenticationSchemes.None;
-			//}
-
 			loggerFactory.AddConsole(Configuration.GetSection("Logging"));
 			loggerFactory.AddDebug();
 
@@ -70,17 +64,6 @@ namespace Gloobster.Portal
 			else
 			{
 				app.UseExceptionHandler("/Home/Error");
-
-				// For more details on creating database during deployment see http://go.microsoft.com/fwlink/?LinkID=615859
-				//try
-				//{
-				//	using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-				//	{
-				//		serviceScope.ServiceProvider.GetService<ApplicationDbContext>()
-				//			 .Database.Migrate();
-				//	}
-				//}
-				//catch { }
 			}
 
 			app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
@@ -128,6 +111,9 @@ namespace Gloobster.Portal
 
 			GloobsterConfig.MongoConnectionString = Configuration["Data:DefaultConnection:ConnectionString"];
 			GloobsterConfig.DatabaseName = Configuration["Data:DefaultConnection:DatabaseName"];
+			GloobsterConfig.Domain = Configuration["Environment:Domain"];
+			GloobsterConfig.IsDebug = bool.Parse(Configuration["Environment:IsDebug"]);
+
 			GloobsterConfig.AppSecret = Configuration["AppSecret"];
 
 			GloobsterConfig.FacebookAppId = Configuration["Facebook:AppId"];
@@ -140,6 +126,8 @@ namespace Gloobster.Portal
 
 			GloobsterConfig.FoursquareClientId = Configuration["Foursquare:ClientId"];
 			GloobsterConfig.FoursquareClientSecret = Configuration["Foursquare:ClientSecret"];
+
+			GloobsterConfig.MapBoxSecret = Configuration["Mapbox:Secret"];
 
 		}
 

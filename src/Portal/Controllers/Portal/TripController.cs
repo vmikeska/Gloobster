@@ -22,10 +22,23 @@ namespace Gloobster.Portal.Controllers.Portal
 		public FilesDomain FileDomain { get; set; }
 		public ITripPlannerDomain TripPlanner { get; set; }
 
-		public TripController(ITripPlannerDomain tripPlanner, IFilesDomain filesDomain, IDbOperations db) : base(db)
+		public ISharedMapImageDomain SharedImgDomain { get; set; }
+
+		public TripController(ISharedMapImageDomain sharedImgDomain, ITripPlannerDomain tripPlanner, IFilesDomain filesDomain, 
+			IDbOperations db) : base(db)
 		{
 			FileDomain = (FilesDomain)filesDomain;
 			TripPlanner = tripPlanner;
+			SharedImgDomain = sharedImgDomain;
+		}
+
+		public IActionResult SharedMapImage(string id)
+		{
+			//new FileStream(path, FileMode.Open)
+
+			var mapStream = SharedImgDomain.GetMap(id);
+
+			return new FileStreamResult(mapStream, "image/png");
 		}
 
 		public IActionResult Share()

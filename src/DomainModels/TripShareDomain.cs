@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
@@ -7,6 +6,7 @@ using Gloobster.Enums;
 using Gloobster.Sharing.Facebook;
 using System.Linq;
 using Gloobster.Common;
+using Gloobster.Entities.Trip;
 using Gloobster.Mappers;
 using MongoDB.Bson;
 
@@ -14,62 +14,29 @@ namespace Gloobster.DomainModels
 {
 	public class TripShareDomain : ITripShareDomain
 	{
-		public const string MapBoxKey =
-			"pk.eyJ1IjoiZ2xvb2JzdGVyIiwiYSI6ImQxZWY5MjRkZjU1NDk2MGU3OWI2OGRiM2U3NTM0MGYxIn0.nCG7hOsSQzb0c-_qzfTCRQ";
-
-
-		public TripShareDomain()
-		{
-			MapImgCreator = new MapBoxImgCreator();
-		}
-
 		public IDbOperations DB { get; set; }
 
-		public MapBoxImgCreator MapImgCreator { get; set; }
-
-		private string GenerateImage()
-		{
-			var cfg = new BuildMapConfig
-			{
-				MapId = "mapbox.streets",
-				Height = 500,
-				Width = 500,
-				MapCenter = new LatLng
-				{
-					Lat = 50.1,
-					Lng = 8.8
-				},
-				Zoom = 13,
-				Features = new List<FeatureBase>
-				{
-					new FeaturePath
-					{
-						Points = new Dictionary<int, LatLng>
-						{
-							{1, new LatLng {Lat = 50.09482, Lng = 8.76674}},
-							{2, new LatLng {Lat = 50.09052, Lng = 8.78906}},
-							{3, new LatLng {Lat = 50.08534, Lng = 8.77121}}
-						}
-					}
-				}
-			};
-
-			var mapLink = MapImgCreator.BuildMap(cfg, MapBoxKey);
-			return mapLink;
-		}
+		public ISharedMapImageDomain ShareMapImage { get; set; }
 
 		public void ShareTrip(ShareTripDO share)
 		{
-			var mapPictureLink = GenerateImage();
+
 
 			var userIdObj = new ObjectId(share.UserId);
 			var sharingUser = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == userIdObj);
 
+			var tripIdObj = new ObjectId(share.TripId);
+			var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
+
 			var fbAuth = sharingUser.SocialAccounts.FirstOrDefault(s => s.NetworkType == SocialNetworkType.Facebook);
+
+			var orderedPlaces = trip.Places.OrderBy(p => p.OrderNo);
+
+			TripPlaceSE firstPlace = orderedPlaces.First();
+			TripPlaceSE lastPlace = orderedPlaces.Last();
+
 			bool userFbAuthenticated = fbAuth != null;
-			
 			bool shareToFb = share.Networks.Contains(SocialNetworkType.Facebook);
-			
 			if (shareToFb && userFbAuthenticated)
 			{
 				var fbShare = new FacebookShare();
@@ -77,16 +44,15 @@ namespace Gloobster.DomainModels
 				var opts = new FacebookShareOptionsDO
 				{
 					Message = share.Message,
-					Picture = mapPictureLink,
-					//"http://img.ihned.cz/attachment.php/390/48636390/WUDJghnwcE96i4uCA8OSpVtvz2r1GqI3/SVOZI013.jpg",
+					Picture = GetImageLink(share.TripId),
 
-					Name = "I am going for a trip to somewhere",
-					Description = "Join me on my super gorgeous mega trip",
+					Name = GetName(firstPlace, lastPlace),
+					Description = "See the trip of this guy",
 
-					Caption = "Oh yes, I am really going there",
+					Caption = "Join Gloobster.com, web for travelers",
 
-					Link = "https://www.mapbox.com/mapbox.js/example/v1.0.0/",
-					
+					Link = GetSharePageLink(share.TripId),
+
 					Privacy = new FacebookPrivacyDO
 					{
 						Description = "This is debug, only I can see it",
@@ -98,10 +64,45 @@ namespace Gloobster.DomainModels
 
 				fbShare.Share(opts, fbAuthDO);
 			}
-
-
-
-
 		}
+
+		private string GetName(TripPlaceSE firstPlace, TripPlaceSE lastPlace)
+		{
+			if (firstPlace.Place != null && lastPlace.Place != null)
+			{
+				return $"I am traveling from {firstPlace.Place.SelectedName} to {lastPlace.Place.SelectedName}";
+			}
+			
+			return "I am traveling somewhere";			
+		}
+
+		private string GetImageLink (string tripId)
+		{
+			string link;
+
+			if (GloobsterConfig.IsDebug)
+			{
+				link = ShareMapImage.GenerateMapLink(tripId);
+			}
+			else
+			{
+				var protocol = "http";
+				link = $"{protocol}://{GloobsterConfig.Domain}/Trip/SharedMapImage/{tripId}";
+			}
+
+			return link;
+		}
+
+		private string GetSharePageLink(string tripId)
+		{
+			var protocol = "http";
+			var link = $"{protocol}://{GloobsterConfig.Domain}/Trip/Share/{tripId}";
+			return link;
+		}
+
 	}
+
+
+
+
 }
