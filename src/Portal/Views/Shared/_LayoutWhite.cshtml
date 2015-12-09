@@ -49,14 +49,11 @@
 			<div class="cell">
 				<div id="userMenu" class="dropdown">
 					<span class="selected">@Model.PortalUser.DisplayName, @Model.SocialNetwork</span>
-					<span class="notification">5</span>                    
+					<span class="notification">@Model.NotificationCount</span>                    
 					<ul>
 						<li data-value="logout">Logout</li>
-						<li data-value="settings">Settings</li>
-
-						@*<li>English<span class="notification">3</span></li>
-						<li>Czech</li>*@
-
+						<li data-value="settings">Settings</li>							
+						<li data-value="notifications">Notifications<span class="notification">@Model.NotificationCount</span></li>						
 					</ul>
 					<input type="hidden">
 				</div>
@@ -93,6 +90,10 @@
 
 		if (value === "settings") {
 			window.location = "/PortalUser/Settings";
+		}
+
+		if (value === "notifications") {
+				window.location = "/PortalUser/Notifications";
 		}
 
 

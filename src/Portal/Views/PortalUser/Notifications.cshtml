@@ -1,0 +1,20 @@
+﻿@using Gloobster.Portal.ViewModels
+@model Gloobster.Portal.ViewModels.NotificationsViewModel
+
+
+@foreach (var notif in Model.Notifications.Notifications)
+{
+		<div style="border: 1px solid red">
+				<h1>@notif.Title</h1>
+				<p>@notif.Content</p>
+		</div>
+}
+
+<script>
+
+	function onBodyLoad() {
+		//currentView = new Views.SettingsView();
+	}
+
+
+</script>

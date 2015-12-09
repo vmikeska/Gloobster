@@ -26,6 +26,8 @@ namespace Gloobster.DomainModels.Services.Accounts
 		public IAirportService AirportSvc { get; set; }
 		public IGeoNamesService GNService { get; set; }
 
+		public INotificationsDomain NotificationDomain { get; set; }
+
 
 		public async Task<UserLoggedResultDO> Validate(SocAuthenticationDO authentication, object userObj)
 		{
@@ -92,6 +94,10 @@ namespace Gloobster.DomainModels.Services.Accounts
 				var airports = AirportSvc.GetAirportsInRange(city.Coordinates, 100);
 				await AirportSvc.SaveAirportsInRange(portalUser.UserId, airports);
 			}
+
+			var notifications = new Notifications();
+			var notification = notifications.NewAccountNotification(portalUser.UserId);
+			NotificationDomain.AddNotification(notification);
 		}
 
 		private bool CheckCredintials(SocAuthenticationDO socAuthentication, PortalUserDO portalUser)

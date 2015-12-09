@@ -9,5 +9,7 @@ namespace Gloobster.Portal.ViewModels
 		public PortalUserEntity PortalUser { get; set; }
 		public IDbOperations DB { get; set; }
 		public string SocialNetwork { get; set; }
+		public int NotificationCount { get; set; }
+
 	}
 }

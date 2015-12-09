@@ -46,7 +46,8 @@ namespace Gloobster.Portal
 			builder.AddTransient<ITripShareDomain, TripShareDomain>();
 			builder.AddTransient<ITwitterShare, TwitterShare> ();
 			builder.AddTransient <IFacebookShare, FacebookShare> ();
-			
+
+			builder.AddTransient<INotificationsDomain, NotificationsDomain>();
 
 
 			builder.AddTransient<IPlanningDomain, PlanningDomain>();

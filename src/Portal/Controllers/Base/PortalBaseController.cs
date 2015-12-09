@@ -14,7 +14,9 @@ namespace Gloobster.Portal.Controllers.Base
 {
     public class PortalBaseController: Controller
     {
-	    private string _userId;
+		public IDbOperations DB;
+
+		private string _userId;
 		public string UserId
 		{
 			get
@@ -128,16 +130,24 @@ namespace Gloobster.Portal.Controllers.Base
 
 	    public T CreateViewModelInstance<T>() where T : ViewModelBase, new()
 	    {
+		    var notifications = DB.C<NotificationsEntity>().FirstOrDefault(n => n.PortalUser_id == DBUserId);
+		    int notifsCount = 0;
+		    if (notifications != null)
+		    {
+			    notifsCount = notifications.Notifications.Count;
+		    }
+
 		    var instance = new T
 		    {
 			    PortalUser = PortalUser,
 				DB = DB,
-				SocialNetwork = GetSocNetworkStr()
+				SocialNetwork = GetSocNetworkStr(),
+				NotificationCount = notifsCount
 			};
 		    return instance;
 	    }
+		
 
-
-        public IDbOperations DB;
+        
     }
 }

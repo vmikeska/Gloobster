@@ -40,6 +40,16 @@ namespace Gloobster.Portal.Controllers.Portal
 			return View(viewModel);
 		}
 
+		public IActionResult Notifications()
+		{
+			var notifs = DB.C<NotificationsEntity>().First(p => p.PortalUser_id == DBUserId);
+			
+			var viewModel = CreateViewModelInstance<NotificationsViewModel>();
+			viewModel.Notifications = notifs;
+			
+			return View(viewModel);
+		}
+
 
 
 

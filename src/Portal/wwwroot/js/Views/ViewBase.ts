@@ -30,7 +30,8 @@ module Views {
 				}
 			}
 		}
-
+	  
+	 
 
 		private initializeGoogle() {
 			var self = this;
