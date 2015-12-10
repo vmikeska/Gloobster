@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2A345503-3703-48D8-8CA5-CCAFBEB40FE8}"
 EndProject
@@ -41,6 +41,21 @@ EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ReqRes", "src\ReqRes\ReqRes.xproj", "{BBE9F737-564C-405F-98CC-23A66364401F}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "WebApiObjects", "src\WebApiObjects\WebApiObjects.xproj", "{2217162A-2F87-4AB5-833C-5D123003DA15}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CitiesService", "src\CitiesService\CitiesService.xproj", "{E9AFFBC4-B59D-4CC8-B70E-07E862619D7E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PublishScripts", "PublishScripts", "{3D73D2B8-F179-468C-A754-BA8AB266834A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{79D35104-00D7-413E-9118-A2E99A1CB6FB}"
+	ProjectSection(SolutionItems) = preProject
+		PublishScripts\Scripts\Deploy-AzureResourceGroup.ps1 = PublishScripts\Scripts\Deploy-AzureResourceGroup.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{76B68D25-F4DE-476E-A970-FB314C86F49C}"
+	ProjectSection(SolutionItems) = preProject
+		PublishScripts\Templates\CitiesService.json = PublishScripts\Templates\CitiesService.json
+		PublishScripts\Templates\CitiesService.param.dev.json = PublishScripts\Templates\CitiesService.param.dev.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -108,6 +123,10 @@ Global
 		{2217162A-2F87-4AB5-833C-5D123003DA15}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2217162A-2F87-4AB5-833C-5D123003DA15}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2217162A-2F87-4AB5-833C-5D123003DA15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9AFFBC4-B59D-4CC8-B70E-07E862619D7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9AFFBC4-B59D-4CC8-B70E-07E862619D7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9AFFBC4-B59D-4CC8-B70E-07E862619D7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9AFFBC4-B59D-4CC8-B70E-07E862619D7E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -129,5 +148,8 @@ Global
 		{6820AC62-B81C-4553-93B1-45E399A7BFA4} = {2A345503-3703-48D8-8CA5-CCAFBEB40FE8}
 		{BBE9F737-564C-405F-98CC-23A66364401F} = {2A345503-3703-48D8-8CA5-CCAFBEB40FE8}
 		{2217162A-2F87-4AB5-833C-5D123003DA15} = {2A345503-3703-48D8-8CA5-CCAFBEB40FE8}
+		{E9AFFBC4-B59D-4CC8-B70E-07E862619D7E} = {2A345503-3703-48D8-8CA5-CCAFBEB40FE8}
+		{79D35104-00D7-413E-9118-A2E99A1CB6FB} = {3D73D2B8-F179-468C-A754-BA8AB266834A}
+		{76B68D25-F4DE-476E-A970-FB314C86F49C} = {3D73D2B8-F179-468C-A754-BA8AB266834A}
 	EndGlobalSection
 EndGlobal

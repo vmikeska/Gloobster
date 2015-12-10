@@ -51,7 +51,7 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 
 			//todo: no loc throw
 			
-			var curCity = GeoNames.GetCityById(loc.GeoNamesId);
+			var curCity = await GeoNames.GetCityByIdAsync(loc.GeoNamesId);
 			//var coord = new LatLng {Lat = curCity.Coordinates.L, Lng = curLocation.Lng};
 			
 			var airports = AirService.GetAirportsInRange(curCity.Coordinates, req.distance);

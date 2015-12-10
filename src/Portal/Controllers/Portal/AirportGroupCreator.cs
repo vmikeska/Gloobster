@@ -23,7 +23,7 @@ namespace Gloobster.Portal.Controllers.Portal
 			foreach (var cityGroup in airportsGroupedByCity)
 			{
 				var cityGroupList = cityGroup.ToList();
-				string gid = cityGroup.Key.ToString();
+				int gid = cityGroup.Key;
 
 				var geoNamesCity = DB.C<CityEntity>().FirstOrDefault(c => c.GID == gid);
 
@@ -39,7 +39,7 @@ namespace Gloobster.Portal.Controllers.Portal
 					City = geoNamesCity.Name,
 					Coord = new LatLng { Lng = geoNamesCity.Coordinates.Lng, Lat = geoNamesCity.Coordinates.Lat },
 					CountryCode = geoNamesCity.CountryCode,
-					GID = int.Parse(gid),
+					GID = gid,
 					Population = geoNamesCity.Population,
 					TotalFlights = cityGroupList.Sum(s => s.IncomingFlights)
 				};

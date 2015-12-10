@@ -70,13 +70,13 @@ namespace Gloobster.DomainModels.Services.Places
 	    private async Task<LatLng> GetLatLongAsync(string city, string countryCode)
         {
 		    var foundCities = await GeoNamesService.GetCityAsync(city, countryCode, 1);
-		    if (!foundCities.GeoNames.Any())
+		    if (!foundCities.Any())
 		    {
 			    return null;
 		    }
 
-		    var foundCity = foundCities.GeoNames.First();			
-		    return new LatLng {Lat = foundCity.Latitude, Lng = foundCity.Longitude};
+		    var foundCity = foundCities.First();
+		    return foundCity.Coordinates;		    
         }
 		
 	    public async void SaveAsync()

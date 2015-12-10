@@ -75,7 +75,8 @@ namespace Gloobster.Portal
 			builder.AddTransient<ICheckinPlaceDomain, CheckinPlaceDomain>();
 			builder.AddTransient<IFacebookFriendsService, FacebookFriendsService>();
 
-			builder.AddInstance<IGeoNamesService>(new GeoNamesService());
+			//builder.AddInstance<IGeoNamesService>(new GeoNamesService());
+			builder.AddInstance2<IGeoNamesService, GeoNamesService>();
 
 			var foursquareService = new FoursquareService();
 			foursquareService.Initialize(GloobsterConfig.FoursquareClientId, GloobsterConfig.FoursquareClientSecret);

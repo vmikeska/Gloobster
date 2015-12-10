@@ -14,8 +14,11 @@ namespace Gloobster.Portal.Controllers.Portal
 {
     public class HomeController : PortalBaseController
     {
-		public HomeController(IDbOperations db) : base(db)
+		public IGeoNamesService GeoNames { get; set; }
+
+		public HomeController(IGeoNamesService geoNames, IDbOperations db) : base(db)
 		{
+			GeoNames = geoNames;
 		}
 
 		public BsonDocument GenerateDoc()
@@ -34,7 +37,7 @@ namespace Gloobster.Portal.Controllers.Portal
 
 	    public IActionResult Index()
 	    {
-
+		    
 
 
 			//var creator = new AirportGroupCreator();
@@ -46,7 +49,9 @@ namespace Gloobster.Portal.Controllers.Portal
 
 	    public IActionResult Test()
 	    {
-		    return View();
+			var city = GeoNames.GetCityByIdAsync(1120483);
+
+			return View();
 	    }
 	    
 	    public IActionResult PinBoard()

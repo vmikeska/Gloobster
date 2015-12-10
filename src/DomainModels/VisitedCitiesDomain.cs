@@ -36,19 +36,19 @@ namespace Gloobster.DomainModels
 				    if (city.GeoNamesId != 0)
 				    {
 					    var geoNameCity = await GeoNamesService.GetCityByIdAsync(city.GeoNamesId);
-						newPlaceEntity.GeoNamesId = geoNameCity.GeonameId;
-						newPlaceEntity.Location = new LatLng { Lat = geoNameCity.Lat, Lng = geoNameCity.Lng };
+						newPlaceEntity.GeoNamesId = geoNameCity.GID;
+						newPlaceEntity.Location = geoNameCity.Coordinates;
 					    newPlaceEntity.City = geoNameCity.Name;
 					    newPlaceEntity.CountryCode = geoNameCity.CountryCode;
 				    }
 				    else
 				    {
 						var geoNamesCities = await GeoNamesService.GetCityAsync(city.City, city.CountryCode, 1);
-						if (geoNamesCities.GeoNames.Any())
+						if (geoNamesCities.Any())
 						{
-							var geoNamesCity = geoNamesCities.GeoNames.First();
-							newPlaceEntity.GeoNamesId = geoNamesCity.GeonameId;
-							newPlaceEntity.Location = new LatLng { Lat = geoNamesCity.Latitude, Lng = geoNamesCity.Longitude };
+							var geoNamesCity = geoNamesCities.First();
+							newPlaceEntity.GeoNamesId = geoNamesCity.GID;
+							newPlaceEntity.Location = geoNamesCity.Coordinates;
 						}
 					}
 					

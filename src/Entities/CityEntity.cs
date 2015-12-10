@@ -1,11 +1,13 @@
-﻿using Gloobster.Common;
+﻿using System;
+using Gloobster.Common;
 using Gloobster.Database;
 
 namespace Gloobster.Entities
 {
+	[Serializable]
 	public class CityEntity : EntityBase
 	{
-		public string GID { get; set; }
+		public int GID { get; set; }
 		public string Name { get; set; }
 		public string AsciiName { get; set; }
 		public string AlternateNames { get; set; }

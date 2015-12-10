@@ -21,26 +21,22 @@ namespace Gloobster.DomainModels.Services.PlaceSearch
 		public async Task<List<Place>> SearchAsync(SearchServiceQueryDO queryObj)
 		{
 			var geoNamesResult = await Service.GetCityQueryAsync(queryObj.Query, queryObj.LimitPerProvider);
-			List<GeoName> gnPlaces = geoNamesResult.GeoNames;
+			var gnPlaces = geoNamesResult;
 			List<Place> places = gnPlaces.Select(Convert).ToList();
 			return places;
 		}
 
 
-		private Place Convert(GeoName originalPlace)
+		private Place Convert(CityDO originalPlace)
 		{
 			var place = new Place
 			{
 				SourceType = SourceType.City,
-				SourceId = originalPlace.GeonameId.ToString(),
+				SourceId = originalPlace.GID.ToString(),
 				Name = originalPlace.Name,
 				City = originalPlace.Name,
 				CountryCode = originalPlace.CountryCode,
-				Coordinates = new LatLng
-				{
-					Lat = originalPlace.Latitude,
-					Lng = originalPlace.Longitude
-				}
+				Coordinates = originalPlace.Coordinates
 			};
 			return place;
 		}

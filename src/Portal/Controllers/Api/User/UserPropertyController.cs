@@ -32,14 +32,14 @@ namespace Gloobster.Portal.Controllers.Api.User
 
 			if (request.propertyName == "HomeLocation")
 			{
-				var location = GetLocationSubEntity(request.values["sourceId"]);
-				update = DB.U<PortalUserEntity>().Set(p => p.HomeLocation, location);			
+				var location = await GetLocationSubEntity(request.values["sourceId"]);
+				update = DB.U<PortalUserEntity>().Set(p => p.HomeLocation, location);
 			}
 
 			if (request.propertyName == "CurrentLocation")
 			{
-				var location = GetLocationSubEntity(request.values["sourceId"]);
-				update = DB.U<PortalUserEntity>().Set(p => p.CurrentLocation, location);				
+				var location = await GetLocationSubEntity(request.values["sourceId"]);
+				update = DB.U<PortalUserEntity>().Set(p => p.CurrentLocation, location);
 			}
 
 			if (request.propertyName == "Gender")
@@ -62,16 +62,16 @@ namespace Gloobster.Portal.Controllers.Api.User
 			return new ObjectResult(null);
 		}
 
-		private CityLocationSE GetLocationSubEntity(string sourceId)
+		private async Task<CityLocationSE> GetLocationSubEntity(string sourceId)
 		{
-			long geoNameId = long.Parse(sourceId);
-			var city = GeoNamesSvc.GetCityById(geoNameId);
+			int geoNameId = int.Parse(sourceId);
+			var city = await GeoNamesSvc.GetCityByIdAsync(geoNameId);
 
 			var location = new CityLocationSE
 			{
 				City = city.Name,
 				CountryCode = city.CountryCode,
-				GeoNamesId = int.Parse(city.GID)
+				GeoNamesId = city.GID
 			};
 			return location;
 		}

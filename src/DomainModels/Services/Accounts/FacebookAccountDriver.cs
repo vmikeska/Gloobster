@@ -140,17 +140,17 @@ namespace Gloobster.DomainModels.Services.Accounts
 			}
 
 			var gnResult = await GNService.GetCityAsync(cityName, country.CountryCode, 1);
-			if (gnResult.GeoNames.Count() != 1)
+			if (gnResult.Count != 1)
 			{
 				return null;
 			}
 
-			var gnCity = gnResult.GeoNames.First();
+			var gnCity = gnResult.First();
 			var resultLoc = new CityLocationSE
 			{
 				CountryCode = country.CountryCode,
 				City = cityName,
-				GeoNamesId = gnCity.GeonameId
+				GeoNamesId = gnCity.GID
 			};
 			
 			return resultLoc;

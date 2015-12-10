@@ -1,5 +1,7 @@
-﻿namespace Gloobster.Common
-{
+﻿using System;
+
+namespace Gloobster.Common
+{	
 	public class LatLng
 	{
 		public double Lat { get; set; }

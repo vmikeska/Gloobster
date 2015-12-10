@@ -57,7 +57,7 @@ namespace Gloobster.DomainModels
 		{
 			var result = new AddedPlacesResultDO();
 
-			long id = long.Parse(sourceId);
+			int id = int.Parse(sourceId);
 			result.Cities = await AddCity(id, userId);
 			var city = result.Cities.FirstOrDefault();
 
@@ -174,10 +174,10 @@ namespace Gloobster.DomainModels
 			}
 			
 			var gnCities = await GNService.GetCityAsync(city, countryCode, 1);
-			if (gnCities.GeoNames.Any())
+			if (gnCities.Any())
 			{
-				var gnCity = gnCities.GeoNames.First();
-				result.Cities = await AddCity(gnCity.GeonameId, userId);
+				var gnCity = gnCities.First();
+				result.Cities = await AddCity(gnCity.GID, userId);
 			}
 
 			result.Countries = await AddCountry(countryCode, userId);
@@ -185,12 +185,12 @@ namespace Gloobster.DomainModels
 			return result;
 		}
 
-		private async Task<List<VisitedCityDO>> AddCity(long gnId, string userId)
+		private async Task<List<VisitedCityDO>> AddCity(int gnId, string userId)
 		{			
 			var city = await GNService.GetCityByIdAsync(gnId);
 			var cityDO = new VisitedCityDO
 			{
-				GeoNamesId = city.GeonameId,
+				GeoNamesId = city.GID,
 				PortalUserId = userId,
 				Dates = new List<DateTime> { DateTime.UtcNow}
 			};

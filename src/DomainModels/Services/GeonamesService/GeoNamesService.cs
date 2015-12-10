@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -11,85 +10,66 @@ using Gloobster.DomainObjects;
 using Gloobster.DomainObjects.BaseClasses;
 using Gloobster.Entities;
 using Gloobster.Mappers;
+using System.Collections.Generic;
+using Gloobster.ReqRes.CitiesService;
 
 namespace Gloobster.DomainModels.Services.GeonamesService
 {
-	public class GeoNamesService: IGeoNamesService		
+	public class GeoNamesService: IGeoNamesService
 	{
-		const string UrlBase = "http://api.geonames.org/";
-
 		private HttpClient _client;
-		private string _userName = "gloobster";
-		public IDbOperations DB { get; set; }
+
+		private LinkQueryBuilder GetLinkBuilderBase()
+		{
+			var lqb = new LinkQueryBuilder();
+			lqb
+				.Url("http://citiesservice1.azurewebsites.net")
+				.Endpoint("api/City");
+			return lqb;
+		}
 
 		public GeoNamesService()
 		{
 			_client = InitClient();
 		}
-		
-		public void Initialize(string userName)
+
+		public async Task<CityDO> GetCityByIdAsync(int id)
 		{
-			_userName = userName;
-		}
-
-		public async Task<GeoNameIdResponse> GetCityByIdAsync(long id)
-		{
-			var qb = new QueryBuilder();
-			qb
-				.BaseUrl(UrlBase)
-				.Endpoint("getJSON")
-				.Param("geonameId", id.ToString());
-
-			var city = await GetResponseAsync<GeoNameIdResponse>(qb);
-			return city;			
-		}
-
-		public CityDO GetCityById(long id)
-		{			
-			var city = DB.C<CityEntity>().FirstOrDefault(c => c.GID == id.ToString());
-
-			var cityDO = city.ToDO();
+			var lqb = GetLinkBuilderBase();
+			lqb.Param("id", id);
+			var link = lqb.Build();
+			var cityResp = await GetResponseAsync<CityResponse>(link);
+			var cityDO = cityResp.ToDO();
 			return cityDO;
 		}
-
-
-
-		public async Task<CitySearchResponse> GetCityAsync(string cityName, string countryCode, int maxRows)
+		
+		public async Task<List<CityDO>> GetCityAsync(string cityName, string countryCode, int maxRows)
 		{
-			var qb = new QueryBuilder();
-			qb.BaseUrl(UrlBase)
-				.Endpoint("searchJSON")
-				.Param("name", cityName)
-				.Param("country", countryCode)
-				.Param("maxRows", maxRows.ToString());
-            
-			var cities = await GetResponseAsync<CitySearchResponse>(qb);
-			return cities;
+			var lqb = GetLinkBuilderBase();
+			lqb.Param("name", cityName);
+			lqb.Param("cc", countryCode);
+			lqb.Param("r", maxRows);
+			var link = lqb.Build();
+			var citiesResp = await GetResponseAsync<List<CityResponse>>(link);
+			var citiesDO = citiesResp.Select(c => c.ToDO()).ToList();
+			return citiesDO;			
 		}
 
-		public async Task<CitySearchResponse> GetCityQueryAsync(string query, int maxRows)
+		public async Task<List<CityDO>> GetCityQueryAsync(string query, int maxRows)
 		{
-			var qb = new QueryBuilder();
-			qb.BaseUrl(UrlBase)
-				.Endpoint("searchJSON")
-				.Param("name", query)
-				.Param("maxRows", maxRows.ToString())
-				.Param("orderby", "population")
-				.Param("featureClass", "P");
-				//{"name_startsWith", query},				
-				//{"fuzzy", "0.9" },				
-
-			var cities = await GetResponseAsync<CitySearchResponse>(qb);
-			return cities;
+			var lqb = GetLinkBuilderBase();
+			lqb.Param("q", query);			
+			lqb.Param("r", maxRows);
+			var link = lqb.Build();
+			var citiesResp = await GetResponseAsync<List<CityResponse>>(link);
+			var citiesDO = citiesResp.Select(c => c.ToDO()).ToList();
+			return citiesDO;
 		}
 
-		public async Task<T> GetResponseAsync<T>(QueryBuilder queryBuilder) where T : new()
-		{
-			AppendBaseParams(queryBuilder);
-			var serviceUrl = queryBuilder.Build();
-			
-			var response = await _client.GetAsync(serviceUrl);
-			
+		private async Task<T> GetResponseAsync<T>(string link) where T : new()
+		{						
+			var response = await _client.GetAsync(link);
+
 			if (response.IsSuccessStatusCode)
 			{
 				string strResponse = await response.Content.ReadAsStringAsync();
@@ -100,22 +80,73 @@ namespace Gloobster.DomainModels.Services.GeonamesService
 			return new T();
 		}
 
-		private void AppendBaseParams(QueryBuilder queryBuilder)
-		{
-			queryBuilder.Param("username", _userName);
-		}
+
 
 		private HttpClient InitClient()
 		{
-			var client = new HttpClient {BaseAddress = new Uri(UrlBase)};
+			var client = new HttpClient
+			{
+				//BaseAddress = new Uri(UrlBase)
+			};
 			client.DefaultRequestHeaders.Accept.Clear();
 			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 			return client;
 		}
-		
+
 		public void Dispose()
 		{
 			_client.Dispose();
 		}
+
 	}
 }
+
+
+//public async Task<T> GetResponseAsync<T>(QueryBuilder queryBuilder) where T : new()
+//{
+//	AppendBaseParams(queryBuilder);
+//	var serviceUrl = queryBuilder.Build();
+
+//	var response = await _client.GetAsync(serviceUrl);
+
+//	if (response.IsSuccessStatusCode)
+//	{
+//		string strResponse = await response.Content.ReadAsStringAsync();
+//		var objResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(strResponse);
+//		return objResponse;
+//	}
+
+//	return new T();
+//}
+
+//private void AppendBaseParams(QueryBuilder queryBuilder)
+//{
+//	queryBuilder.Param("username", _userName);
+//}
+
+//private HttpClient InitClient()
+//{
+//	var client = new HttpClient { BaseAddress = new Uri(UrlBase) };
+//	client.DefaultRequestHeaders.Accept.Clear();
+//	client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+//	return client;
+//}
+
+//public void Dispose()
+//{
+//	_client.Dispose();
+//}
+
+//const string UrlBase = "http://api.geonames.org/";
+//private HttpClient _client;
+//private string _userName = "gloobster";
+
+//public GeoNamesService()
+//{
+//	_client = InitClient();
+//}
+
+//public void Initialize(string userName)
+//{
+//	_userName = userName;
+//}

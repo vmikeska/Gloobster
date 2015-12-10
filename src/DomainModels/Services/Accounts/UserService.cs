@@ -89,7 +89,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 			//todo: maybe in this case try to get location by IP
 			if (portalUser.CurrentLocation != null)
 			{
-				CityDO city = GNService.GetCityById(portalUser.CurrentLocation.GeoNamesId);
+				CityDO city = await GNService.GetCityByIdAsync(portalUser.CurrentLocation.GeoNamesId);
 
 				var airports = AirportSvc.GetAirportsInRange(city.Coordinates, 100);
 				await AirportSvc.SaveAirportsInRange(portalUser.UserId, airports);

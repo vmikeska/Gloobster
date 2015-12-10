@@ -96,19 +96,19 @@ namespace Gloobster.DomainModels.Services.Accounts
 		}
 
 		private async Task<CityLocationSE> ParseLocation(string query)
-		{
-			CitySearchResponse results = await GNService.GetCityQueryAsync(query, 1);
+		{			
+			var results = await GNService.GetCityQueryAsync(query, 1);
 
-			if (results.GeoNames.Any())
+			if (results.Any())
 			{
-				var result = results.GeoNames.First();
+				var result = results.First();
 
 				//todo: check on it
 				var location = new CityLocationSE
 				{
-					CountryCode = result.FCode,
+					CountryCode = result.CountryCode,
 					City = result.Name,
-					GeoNamesId = result.GeonameId
+					GeoNamesId = result.GID
 				};
 				return location;				
 			}

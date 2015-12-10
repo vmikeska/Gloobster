@@ -18,10 +18,10 @@ namespace Airports
 	{
 		static void Main(string[] args)
 		{
-			//ProcessGeoNamesFile();
+			ProcessGeoNamesFile();
 
-			Routes.Run();
-        }
+			//Routes.Run();
+		}
 
 		public static void ProcessGeoNamesFile()
 		{
@@ -29,7 +29,7 @@ namespace Airports
 			int cityCounter = 0;
 			string line;
 
-			var path = @"C:\Users\vmike_000\Downloads\allCountries\allCountries.txt";
+			var path = @"C:\S\DBScripts\cities1000.txt";
             var file = new StreamReader(path);
 
 			AppendOutputText("[");
@@ -65,7 +65,7 @@ namespace Airports
 
 				var city = new GeoNamesCity
 				{
-					GID = parsedItem.GeonameId,
+					GID = int.Parse(parsedItem.GeonameId),
 					CountryCode = parsedItem.CountryCode,
 					AlternateCountryCode = parsedItem.AlternateCountryCode,
 					AsciiName = parsedItem.AsciiName,
@@ -92,7 +92,7 @@ namespace Airports
 					}
 					catch (Exception)
 					{
-						errors.Add(city.GID);					
+						errors.Add(city.GID.ToString());					
 					}
 					
 					cityCounter++;
@@ -128,7 +128,7 @@ namespace Airports
 
 		public static void AppendOutputText(string line)
 		{
-			var outPath = @"C:\S\Gloobster\DBScripts\Cities.json";
+			var outPath = @"C:\S\DBScripts\Cities1000.json";
 
 			using (var sw = File.AppendText(outPath))
 			{
@@ -141,7 +141,7 @@ namespace Airports
 
 	public class GeoNamesCity
 	{
-		public string GID { get; set; }
+		public int GID { get; set; }
 		public string Name { get; set; }
 		public string AsciiName { get; set; }
 		public string AlternateNames { get; set; }

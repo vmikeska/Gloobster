@@ -18,23 +18,38 @@ namespace Gloobster.Database
 			
 			Database = GetDatabase();
 		}
-		
+
+		public DbOperations(string connectionString, string dbName)
+		{
+
+			Database = GetDatabase(dbName, connectionString);
+		}
+
 		//$"mongodb://{"GloobsterConnector"}:{"Gloobster007"}@{"ds036178.mongolab.com"}:{"36178"}/Gloobster";
-		
-        public IMongoClient Client { get; set; }
+
+		public IMongoClient Client { get; set; }
         public IMongoDatabase Database { get; set; }
 
-        public IMongoClient GetClient()
+        public IMongoClient GetClient(string connectionString)
         {
-            //var connectionString = Configuration["Data:DefaultConnection:ConnectionString"];
-            var client = new MongoClient(GloobsterConfig.MongoConnectionString);
+            var client = new MongoClient(connectionString);
             return client;
         }
 
-        public IMongoDatabase GetDatabase()
+        public IMongoDatabase GetDatabase(string dbName = null, string connectionString = null)
         {
-            Client = GetClient();
-            var database = Client.GetDatabase(GloobsterConfig.DatabaseName);
+	        if (dbName == null)
+	        {
+		        dbName = GloobsterConfig.DatabaseName;
+	        }
+
+			if (connectionString == null)
+			{
+				connectionString = GloobsterConfig.MongoConnectionString;
+			}
+
+			Client = GetClient(connectionString);
+            var database = Client.GetDatabase(dbName);
             return database;
         }
 		

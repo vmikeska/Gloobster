@@ -4,7 +4,7 @@ namespace Gloobster.DomainObjects
 {
 	public class CityDO
 	{
-		public string GID { get; set; }
+		public int GID { get; set; }
 		public string Name { get; set; }
 		public string AsciiName { get; set; }
 		public string AlternateNames { get; set; }
