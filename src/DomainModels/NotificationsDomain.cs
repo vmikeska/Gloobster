@@ -6,7 +6,6 @@ using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
 using Gloobster.Entities;
-using Gloobster.Enums;
 using Gloobster.Mappers;
 using MongoDB.Bson;
 
@@ -15,8 +14,10 @@ namespace Gloobster.DomainModels
 	public class NotificationsDomain: INotificationsDomain
 	{
 		public IDbOperations DB { get; set; }
+		
+		public INotifications Messages { get; set; }
 
-	    public async void AddNotification(NotificationDO notification)
+		public async void AddNotification(NotificationDO notification)
 	    {
 		    var userIdObj = new ObjectId(notification.UserId);
 		    var notifications = DB.C<NotificationsEntity>().FirstOrDefault(e => e.PortalUser_id == userIdObj);
@@ -50,24 +51,4 @@ namespace Gloobster.DomainModels
 			await DB.SaveAsync(e);
 		}
     }
-
-	public class Notifications
-	{
-		public NotificationDO NewAccountNotification(string userId)
-		{
-			return new NotificationDO
-			{
-				Title = "You are now registered",
-				Content = "Welcome on our portal",
-				ContentType = ContentType.Text,
-				UserId = userId,
-				Status = NotificationStatus.Created				
-			};
-		}
-		
-	}
-
-	
-	
-	
 }

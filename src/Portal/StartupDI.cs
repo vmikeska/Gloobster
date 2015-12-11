@@ -48,7 +48,8 @@ namespace Gloobster.Portal
 			builder.AddTransient <IFacebookShare, FacebookShare> ();
 
 			builder.AddTransient<INotificationsDomain, NotificationsDomain>();
-
+			builder.AddTransient<INotifications, Notifications>();
+			
 
 			builder.AddTransient<IPlanningDomain, PlanningDomain>();
 			

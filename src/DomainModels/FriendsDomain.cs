@@ -16,6 +16,8 @@ namespace Gloobster.DomainModels
 	{
 		public IDbOperations DB { get; set; }
 
+		public INotificationsDomain Notification { get; set; }
+
 		public async Task<bool> Unfriend(string myDbUserId, string friendDbUserId)
 		{
 			var myId = new ObjectId(myDbUserId);
@@ -56,6 +58,9 @@ namespace Gloobster.DomainModels
 
 			myEntity.Proposed.Add(friendsId);
 			await DB.ReplaceOneAsync(myEntity);
+
+			var msg = Notification.Messages.FriendshipRequested(myDbUserId, friendDbUserId);
+			Notification.AddNotification(msg);
 
 			return true;
 		}
