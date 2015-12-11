@@ -37,13 +37,6 @@ namespace Gloobster.Portal.Controllers.Portal
 
 	    public IActionResult Index()
 	    {
-		    
-
-
-			//var creator = new AirportGroupCreator();
-			//creator.DB = DB;
-			//creator.Execute();
-
 			return View();
         }
 

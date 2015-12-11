@@ -1,13 +1,15 @@
 ﻿using System.Threading.Tasks;
 using Gloobster.Entities;
 using Gloobster.Portal.Controllers.Base;
+using System.Linq;
+using MongoDB.Bson;
 
 namespace Gloobster.Portal.ViewModels
 {
 	public class PinBoardViewModel: ViewModelBase
 	{
 		
-		public async void Initialize(string userId)
+		public void Initialize(string userId)
 		{
 			bool isUserLogged = !string.IsNullOrEmpty(userId);
 			if (!isUserLogged)
@@ -15,24 +17,22 @@ namespace Gloobster.Portal.ViewModels
 				return;
 			}
 			
-			Countries = await CalculateCountries(userId);
-			Cities = await CalculatePlaces(userId);
+			Countries = CalculateCountries(userId);
+			Cities = CalculatePlaces(userId);
 			WorldTraveled = CalculatePercentOfWorldTraveled(Countries);
 		}
 
 
-		private async Task<int> CalculateCountries(string userId)
+		private int CalculateCountries(string userId)
 		{
-			var query = $@"{{""PortalUser_id"": ObjectId(""{userId}"")}}";
-			long countriesCount = await DB.GetCountAsync<VisitedCountryEntity>(query);
-			return (int)countriesCount;			
+			int count = DB.C<VisitedCountryEntity>().Count(v => v.PortalUser_id == new ObjectId(userId));			
+			return count;			
 		}
 
-		private async Task<int> CalculatePlaces(string userId)
+		private int CalculatePlaces(string userId)
 		{
-			var query = $@"{{""PortalUser_id"": ObjectId(""{userId}"")}}";
-			long placesCount = await DB.GetCountAsync<VisitedPlaceEntity>(query);
-			return (int)placesCount;
+			int count = DB.C<VisitedPlaceEntity>().Count(v => v.PortalUser_id == new ObjectId(userId));			
+			return count;
 		}
 
 		private int CalculatePercentOfWorldTraveled(int countriesVisited)

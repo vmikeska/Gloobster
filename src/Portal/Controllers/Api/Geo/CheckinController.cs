@@ -25,11 +25,11 @@ namespace Gloobster.Portal.Controllers.Api
 		
 		[HttpPost]
 		[Authorize]
-		public async Task<IActionResult> Post([FromBody]CheckinRequest place, string userId)
+		public async Task<IActionResult> Post([FromBody]CheckinRequest place)
 		{
 			var sourceType = (SourceType)place.SourceType;
 			
-			var checkedPlacesDO = await CheckinDomain.CheckinPlace(place.SourceId, sourceType, userId);
+			var checkedPlacesDO = await CheckinDomain.CheckinPlace(place.SourceId, sourceType, UserId);
 
 			var checkedPlacesResponse = new PinBoardStatResponse();
 
