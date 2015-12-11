@@ -8,55 +8,50 @@ namespace Gloobster.Mappers
 {
     public static class VisitedCountryMapper
     {
-		public static VisitedCountryDO ToDO(this VisitedCountryEntity entity)
+		public static VisitedCountryDO ToDO(this VisitedCountrySE e)
 		{
-			if (entity == null)
+			if (e == null)
 			{
 				return null;
 			}
 
-			var dObj = new VisitedCountryDO
+			var d = new VisitedCountryDO
 			{
-				CountryCode2 = entity.CountryCode2,
-				Dates = entity.Dates
+				CountryCode2 = e.CountryCode2,
+				Dates = e.Dates
 			};
 
-			return dObj;
+			return d;
 		}
 
-		public static VisitedCountryEntity ToEntity(this VisitedCountryDO dObj)
+		public static VisitedCountrySE ToEntity(this VisitedCountryDO d)
 		{
-			if (dObj == null)
+			if (d == null)
 			{
 				return null;
 			}
 
-			var entity = new VisitedCountryEntity
+			var entity = new VisitedCountrySE
 			{
-				CountryCode2 = dObj.CountryCode2,
-				Dates = dObj.Dates
+				CountryCode2 = d.CountryCode2,
+				Dates = d.Dates
 			};
-
-			if (!string.IsNullOrEmpty(dObj.PortalUserId))
-			{
-				entity.PortalUser_id = new ObjectId(dObj.PortalUserId);
-			}
-
+			
 			return entity;
 		}
 
-		public static VisitedCountryItemResponse ToResponse(this VisitedCountryDO dObj)
+		public static VisitedCountryItemResponse ToResponse(this VisitedCountryDO d)
 		{
-			if (dObj == null)
+			if (d == null)
 			{
 				return null;
 			}
 
 			var response = new VisitedCountryItemResponse
 			{
-				PortalUserId = dObj.PortalUserId,
-				Dates = dObj.Dates,
-				CountryCode2 = dObj.CountryCode2,				
+				PortalUserId = d.PortalUserId,
+				Dates = d.Dates,
+				CountryCode2 = d.CountryCode2,				
 			};
 
 			return response;

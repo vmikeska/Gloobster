@@ -24,25 +24,12 @@ namespace Gloobster.Portal.Controllers.Portal
 		{
 		}
 
-		public async Task<IActionResult> List()
+		public IActionResult List()
 		{
-
-			var viewModel = CreateViewModelInstance<ViewModelBase>();
-
-
+			var viewModel = CreateViewModelInstance<ViewModelBase>();			
 			return View(viewModel);
 		}
-
-	    
-
 		
-
 	}
-
-	//public class FriendsViewModel
-	//{
-	//	public List<FacebookUser> AppFriends { get; set; }
-	//}
-
 
 }

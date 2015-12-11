@@ -16,23 +16,13 @@ namespace Gloobster.Portal.ViewModels
 			{
 				return;
 			}
-			
-			Countries = CalculateCountries(userId);
-			Cities = CalculatePlaces(userId);
+
+			var userIdObj = new ObjectId(userId);
+			var visited = DB.C<VisitedEntity>().FirstOrDefault(u => u.PortalUser_id == userIdObj);
+
+			Countries = visited.Countries.Count;
+			Cities = visited.Cities.Count;
 			WorldTraveled = CalculatePercentOfWorldTraveled(Countries);
-		}
-
-
-		private int CalculateCountries(string userId)
-		{
-			int count = DB.C<VisitedCountryEntity>().Count(v => v.PortalUser_id == new ObjectId(userId));			
-			return count;			
-		}
-
-		private int CalculatePlaces(string userId)
-		{
-			int count = DB.C<VisitedPlaceEntity>().Count(v => v.PortalUser_id == new ObjectId(userId));			
-			return count;
 		}
 
 		private int CalculatePercentOfWorldTraveled(int countriesVisited)

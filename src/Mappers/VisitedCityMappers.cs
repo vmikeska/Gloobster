@@ -8,7 +8,7 @@ namespace Gloobster.Mappers
 {
 	public static class VisitedCityMappers
 	{
-		public static VisitedCityDO ToDO(this VisitedCityEntity entity)
+		public static VisitedCityDO ToDO(this VisitedCitySE entity)
 		{
 			if (entity == null)
 			{
@@ -16,8 +16,7 @@ namespace Gloobster.Mappers
 			}
 			
 			var dObj = new VisitedCityDO
-			{
-				PortalUserId = entity.PortalUser_id.ToString(),
+			{				
 				City = entity.City,
 				CountryCode = entity.CountryCode,				
 				Location = entity.Location,
@@ -32,26 +31,21 @@ namespace Gloobster.Mappers
 			return dObj;
 		}
 
-		public static VisitedCityEntity ToEntity(this VisitedCityDO dObj)
+		public static VisitedCitySE ToEntity(this VisitedCityDO dObj)
 		{
 			if (dObj == null)
 			{
 				return null;
 			}
 
-			var entity = new VisitedCityEntity
+			var entity = new VisitedCitySE
 			{					
 				City = dObj.City,
 				CountryCode = dObj.CountryCode,
 				Location = dObj.Location,				
 				GeoNamesId = dObj.GeoNamesId
 			};
-
-			if (!string.IsNullOrEmpty(dObj.PortalUserId))
-			{
-				entity.PortalUser_id = new ObjectId(dObj.PortalUserId);
-			}
-
+			
 			if (dObj.Dates != null)
 			{
 				entity.Dates = dObj.Dates.ToArray();

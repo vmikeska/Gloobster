@@ -38,7 +38,7 @@ namespace Gloobster.Portal.Controllers.Api
 
 			if (request.pluginType == PluginType.MyPlacesVisited)
 			{
-				result = await GetMyPlacesVisitedAsync(UserId);
+				result = GetMyPlacesVisited(UserId);
 			}
 
 			if (request.pluginType == PluginType.MyFriendsVisited)
@@ -68,17 +68,17 @@ namespace Gloobster.Portal.Controllers.Api
 		}
 
 
-		private async Task<PinBoardStatResponse> GetMyPlacesVisitedAsync(string userId)
+		private PinBoardStatResponse GetMyPlacesVisited(string userId)
 		{
 			var result = new PinBoardStatResponse();
 
-			var visitedPlaces = await VisitedPlaces.GetPlacesByUserIdAsync(userId);
+			var visitedPlaces = VisitedPlaces.GetPlacesByUserId(userId);
             result.VisitedPlaces = visitedPlaces.Select(p => p.ToResponse()).ToArray();
 
 			var visitedCities = VisitedCities.GetCitiesByUserId(userId);
 			result.VisitedCities = visitedCities.Select(c => c.ToResponse()).ToArray();
 
-			var visitedCountries = await VisitedCountries.GetVisitedCountriesByUserIdAsync(userId);
+			var visitedCountries = VisitedCountries.GetVisitedCountriesByUserId(userId);
 			var visitedCountriesResponse = visitedCountries.Select(c => c.ToResponse()).ToList();
 			visitedCountriesResponse.ForEach(c => c.CountryCode3 = CountryService.GetCountryByCountryCode2(c.CountryCode2).IsoAlpha3);
 			result.VisitedCountries = visitedCountriesResponse.ToArray();

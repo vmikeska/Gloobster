@@ -21,18 +21,15 @@ namespace Gloobster.DomainModels
 		public async Task<List<VisitedPlaceDO>> AddNewPlacesAsync(List<VisitedPlaceDO> inputPlaces, string userId)
 		{
 			var userIdObj = new ObjectId(userId);			
-			var alreadySavedPlaces = DB.C<VisitedPlaceEntity>().Where(p => p.PortalUser_id == userIdObj).ToList();
+			var visited = DB.C<VisitedEntity>().FirstOrDefault(p => p.PortalUser_id == userIdObj);
 
-			var newPlaces = new List<VisitedPlaceEntity>();
+			var newPlaces = new List<VisitedPlaceSE>();
 			foreach (var place in inputPlaces)
 			{
-				bool isNewPlace =
-					!alreadySavedPlaces.Any(p => p.SourceId == place.SourceId && p.SourceType == (int)place.SourceType);
-
+				bool isNewPlace = !visited.Places.Any(p => p.SourceId == place.SourceId && p.SourceType == (int)place.SourceType);
 				if (isNewPlace)
 				{
-					var newPlaceEntity = place.ToEntity();
-					newPlaceEntity.PortalUser_id =  new ObjectId(userId);
+					var newPlaceEntity = place.ToEntity();					
 					newPlaceEntity.id = ObjectId.GenerateNewId();
 					newPlaces.Add(newPlaceEntity);
 				}
@@ -40,19 +37,27 @@ namespace Gloobster.DomainModels
 
 			if (newPlaces.Any())
 			{
-				await DB.SaveManyAsync(newPlaces);
+				await PushPlaces(userIdObj, newPlaces);
 			}
 
 			var newPlacesDO = newPlaces.Select(e => e.ToDO()).ToList();
 			return newPlacesDO;
 		}
 
-		public async Task<List<VisitedPlaceDO>> GetPlacesByUserIdAsync(string userId)
+		private async Task<bool> PushPlaces(ObjectId userIdObj, List<VisitedPlaceSE> value)
 		{
-			var query = $@"{{""PortalUser_id"": ObjectId(""{userId}"")}}";
-			var places = await DB.FindAsync<VisitedPlaceEntity>(query);
+			var filter = DB.F<VisitedEntity>().Eq(v => v.PortalUser_id, userIdObj);
+			var update = DB.U<VisitedEntity>().PushEach(v => v.Places, value);
 
-			var placesDO = places.Select(p => p.ToDO()).ToList();
+			var res = await DB.UpdateAsync(filter, update);
+			return res.ModifiedCount == 1;
+		}
+
+		public List<VisitedPlaceDO> GetPlacesByUserId(string userId)
+		{
+			var visited = DB.C<VisitedEntity>().FirstOrDefault(v => v.PortalUser_id == new ObjectId(userId));
+
+			var placesDO = visited.Places.Select(p => p.ToDO()).ToList();
 			return placesDO;
 		}
 
@@ -64,7 +69,9 @@ namespace Gloobster.DomainModels
 			var friendsId = new List<ObjectId> { userIdObj };
 			friendsId.AddRange(friends.Friends);
 
-			var visitedPlaces = DB.C<VisitedPlaceEntity>().Where(p => friendsId.Contains(p.PortalUser_id)).ToList();
+			var visitedFriends = DB.C<VisitedEntity>().Where(v => friendsId.Contains(v.PortalUser_id)).ToList();
+
+			var visitedPlaces = visitedFriends.SelectMany(f => f.Places);
 			var visitedPlacesDO = visitedPlaces.Select(p => p.ToDO()).ToList();
 
 			return visitedPlacesDO;			

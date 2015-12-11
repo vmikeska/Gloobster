@@ -10,7 +10,7 @@ namespace Gloobster.Mappers
 {
 	public static class VisitedPlaceMappers
 	{
-		public static VisitedPlaceDO ToDO(this VisitedPlaceEntity entity)
+		public static VisitedPlaceDO ToDO(this VisitedPlaceSE entity)
 		{
 			if (entity == null)
 			{
@@ -18,8 +18,7 @@ namespace Gloobster.Mappers
 			}
 
 			var dObj = new VisitedPlaceDO
-			{				
-				PortalUserId = entity.PortalUser_id.ToString(),
+			{								
 				City = entity.City,
 				CountryCode = entity.CountryCode,				
 				Location = entity.Location,				
@@ -35,14 +34,14 @@ namespace Gloobster.Mappers
 			return dObj;
 		}
 
-		public static VisitedPlaceEntity ToEntity(this VisitedPlaceDO dObj)
+		public static VisitedPlaceSE ToEntity(this VisitedPlaceDO dObj)
 		{
 			if (dObj == null)
 			{
 				return null;
 			}
 
-			var entity = new VisitedPlaceEntity
+			var entity = new VisitedPlaceSE
 			{				
 				City = dObj.City,
 				CountryCode = dObj.CountryCode,				
@@ -55,12 +54,7 @@ namespace Gloobster.Mappers
 			{
 				entity.Dates = dObj.Dates.ToArray();
 			}
-
-			if (!string.IsNullOrEmpty(dObj.PortalUserId))
-			{
-				entity.PortalUser_id = new ObjectId(dObj.PortalUserId);
-			}
-
+			
 			return entity;
 		}
 

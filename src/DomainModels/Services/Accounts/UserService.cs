@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Autofac;
 using Gloobster.Common;
@@ -98,6 +99,15 @@ namespace Gloobster.DomainModels.Services.Accounts
 			var notifications = new Notifications();
 			var notification = notifications.NewAccountNotification(portalUser.UserId);
 			NotificationDomain.AddNotification(notification);
+
+			var visited = new VisitedEntity
+			{
+				PortalUser_id = new ObjectId(portalUser.UserId),
+				Places = new List<VisitedPlaceSE>(),
+				Cities = new List<VisitedCitySE>(),
+				Countries = new List<VisitedCountrySE>()
+			};
+			await DB.SaveAsync(visited);
 		}
 
 		private bool CheckCredintials(SocAuthenticationDO socAuthentication, PortalUserDO portalUser)
