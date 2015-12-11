@@ -4,7 +4,7 @@ using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.Entities;
 
-namespace Gloobster.Portal.Controllers.Portal
+namespace Gloobster.Portal.Utils
 {
 	public class AirportGroupCreator
 	{

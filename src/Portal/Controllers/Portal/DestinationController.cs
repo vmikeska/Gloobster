@@ -43,6 +43,11 @@ namespace Gloobster.Portal.Controllers.Portal
 
 		private string FormatCityStr(CityLocationSE city)
 		{
+			if (city == null)
+			{
+				return string.Empty;
+			}
+
 			return $"{city.City}, {city.CountryCode}";
 		}
 

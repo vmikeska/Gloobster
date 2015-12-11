@@ -7,6 +7,7 @@ using Gloobster.DomainObjects;
 using Gloobster.Entities;
 using Gloobster.Mappers;
 using Gloobster.Portal.Controllers.Base;
+using Gloobster.ReqRes.Airport;
 using Microsoft.AspNet.Mvc;
 
 namespace Gloobster.Portal.Controllers.Api.Geo
@@ -76,14 +77,5 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 		}
 
 
-	}
-	public class AirportsInRangeRequest
-	{		
-		public int distance { get; set; }
-	}
-
-	public class NewHomeAirportRequest
-	{
-		public string airportId { get; set; }
-    }
+	}	
 }

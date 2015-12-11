@@ -3,6 +3,7 @@ using Gloobster.Database;
 using Gloobster.Entities;
 using Gloobster.Enums;
 using Gloobster.Portal.Controllers.Base;
+using Gloobster.ReqRes.Airport;
 using Microsoft.AspNet.Mvc;
 
 namespace Gloobster.Portal.Controllers.Api.Planning
@@ -47,22 +48,6 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 			});
 
 			return new ObjectResult(airportsResponse);
-		}
-
-
-		
-
-	}
-
-	public class AirportTaggerRequest
-	{
-		public string query { get; set; }	
-	}
-
-	public class AirportTaggerResponse
-	{
-		public string kind { get; set; }
-		public string text { get; set; }
-		public string value { get; set; }
-	}
+		}		
+	}	
 }

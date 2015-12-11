@@ -1,31 +1,30 @@
-﻿using Microsoft.AspNet.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Web;
+﻿using System.Threading.Tasks;
 using Autofac;
-using Gloobster.Common;
+using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
+using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes;
-using Gloobster.SocialLogin.Facebook.Communication;
+using Gloobster.ReqRes.User;
 using Microsoft.AspNet.Http;
+using Microsoft.AspNet.Mvc;
 
-namespace Gloobster.Portal.Controllers
+namespace Gloobster.Portal.Controllers.Api.Registration
 {
 	[Route("api/[controller]")]
-	public class UserController : Controller
+	public class UserController : BaseApiController
 	{
 		public IUserService UserService { get; set; }
 		public IComponentContext ComponentContext { get; set; }
-
-		public UserController(IUserService userService, IComponentContext componentContext)
+		
+		public UserController(IUserService userService, IComponentContext componentContext, IDbOperations db) : base(db)
 		{
 			UserService = userService;
 			ComponentContext = componentContext;
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Post([FromBody] req reg)
+		public async Task<IActionResult> Post([FromBody] UserRegistrationRequest reg)
 		{
 			var baseUser = new BaseUserDO
 			{
@@ -49,11 +48,7 @@ namespace Gloobster.Portal.Controllers
 			return new ObjectResult(response);
 		}
 
-		public class req
-		{
-			public string mail { get; set; }
-			public string password { get; set; }
-		}
+		
 
 
 	}

@@ -1,0 +1,13 @@
+﻿<ul id="menu" class="menu-header table">	
+	<li><a id="MenuPinBoard" asp-controller="Home" asp-action="PinBoard">Pin board</a></li>
+	<li><a id="MenuFriends" asp-controller="Friends" asp-action="List">Friends</a></li>
+	<li><a id="MenuTrip" asp-controller="Trip" asp-action="List">Trips</a></li>
+	<li><a id="MenuPlanning" asp-controller="Destination" asp-action="Planning">Planning</a></li>
+</ul>
+
+<script>	
+	var name = "@ViewBag.MenuGroup";
+	$("#Menu" + name).addClass("active");
+</script>
+
+

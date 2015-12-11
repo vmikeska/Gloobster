@@ -7,6 +7,7 @@ using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
 using Gloobster.Entities;
+using Gloobster.Enums;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.Friends;
 using Microsoft.AspNet.Mvc;
@@ -130,14 +131,5 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 			return friend;
 		}
 		
-	}
-
-	public enum FriendActionType { Confirm, Request, Unfriend, Block, CancelRequest }
-
-	public class FriendActionRequest
-	{
-		public string friendId { get; set; }
-		public FriendActionType action { get; set; }
-	}
-
+	}	
 }

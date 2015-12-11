@@ -1,8 +1,10 @@
 using System.Linq;
 using System.Threading.Tasks;
+using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.Enums;
 using Gloobster.Mappers;
+using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.MoveOut;
 using Gloobster.ReqRes.PinBoard;
 using Microsoft.AspNet.Mvc;
@@ -10,12 +12,12 @@ using Microsoft.AspNet.Mvc;
 namespace Gloobster.Portal.Controllers.Api
 {
 	[Route("api/[controller]")]
-	public class CheckinController : Controller
+	public class CheckinController : BaseApiController
 	{
 		public ICheckinPlaceDomain CheckinDomain { get; set; }
 		public ICountryService CountryService { get; set; }
 
-		public CheckinController(ICheckinPlaceDomain checkinDomain, ICountryService countryService)
+		public CheckinController(ICheckinPlaceDomain checkinDomain, ICountryService countryService, IDbOperations db) : base(db)
 		{
 			CheckinDomain = checkinDomain;
 			CountryService = countryService;
@@ -52,6 +54,8 @@ namespace Gloobster.Portal.Controllers.Api
 			}
 			
 			return new ObjectResult(checkedPlacesResponse);
-		}		
+		}
+
+		
 	}
 }

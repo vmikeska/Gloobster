@@ -10,10 +10,10 @@ using Gloobster.Entities;
 using Gloobster.Enums;
 using Gloobster.Mappers;
 using Gloobster.Portal.Controllers.Base;
+using Gloobster.ReqRes;
 using Microsoft.AspNet.Mvc;
-using MongoDB.Bson;
 
-namespace Gloobster.Portal.Controllers.Api
+namespace Gloobster.Portal.Controllers.Api.Geo
 {
 	[Route("api/[controller]")]
 	public class PlaceController : BaseApiController
@@ -62,15 +62,5 @@ namespace Gloobster.Portal.Controllers.Api
 
 
 		
-	}
-
-	public class SearchRequest
-	{
-		public string placeName { get; set; }
-		public string types { get; set; }
-		public string lat { get; set; }
-		public string lng { get; set; }
-	}
-	
-
+	}	
 }

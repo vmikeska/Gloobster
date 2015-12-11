@@ -1,18 +1,12 @@
-using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
-using Gloobster.Entities;
 using Gloobster.Enums;
-using Gloobster.Mappers;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.Airport;
 using Microsoft.AspNet.Mvc;
-using Gloobster.Common;
 using Gloobster.Entities.Planning;
 using MongoDB.Bson;
 
@@ -88,17 +82,5 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 			};
 			return r;
 		}
-	}
-
-	public class AirportGroupResponse
-	{
-		public string city { get; set; }
-		public string countryCode { get; set; }
-		public int gid { get; set; }
-		public LatLng coord { get; set; }
-		public int population { get; set; }
-		public bool selected { get; set; }
-	}
-
-
+	}	
 }

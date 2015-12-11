@@ -2,25 +2,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
+using Gloobster.Enums;
 using Gloobster.Mappers;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.PinBoard;
 using Microsoft.AspNet.Mvc;
 
 namespace Gloobster.Portal.Controllers.Api
-{
-	public enum PluginType { MyPlacesVisited, MyFriendsVisited, MyFriendsDesired}
-
-	public enum DisplayEntity { Pin, Heat, Countries}
-
-	public class PinBoardStatRequest
-	{
-		public PluginType pluginType { get; set; }
-		public DisplayEntity displayEntity { get; set; }
-	}
-	
-
-	
+{	
 	[Route("api/[controller]")]
 	public class PinBoardStatsController : BaseApiController
 	{
