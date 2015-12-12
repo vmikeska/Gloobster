@@ -157,6 +157,7 @@ namespace Gloobster.Portal.Controllers.Portal
 			viewModel.Description = trip.Description;
 			viewModel.Notes = trip.Notes;
 			viewModel.NotesPublic = trip.NotesPublic;
+			viewModel.IsOwner = (trip.PortalUser_id == DBUserId);
 
 			if (trip.Participants != null)
 			{
@@ -184,16 +185,16 @@ namespace Gloobster.Portal.Controllers.Portal
 			return participant;
 		}
 
-		private bool AlreadyJoined(TripEntity trip, ObjectId userId)
-		{
-			if (IsUserAdmin(trip))
-			{
-				return true;
-			}
+		//private bool AlreadyJoined(TripEntity trip, ObjectId userId)
+		//{
+		//	if (IsUserAdmin(trip))
+		//	{
+		//		return true;
+		//	}
 
-			var participant = GetParticipant(trip, DBUserId);
-			return participant.State == ParticipantState.Joined;
-		}
+		//	var participant = GetParticipant(trip, DBUserId);
+		//	return participant.State == ParticipantState.Accepted;
+		//}
 
 		private bool IsUserAdmin(TripEntity trip)
 		{

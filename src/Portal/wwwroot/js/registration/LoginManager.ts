@@ -1,6 +1,8 @@
 module Reg {
 	export class LoginManager {
 
+	 public static currentUserId: string;
+
 		cookieLogin: CookieLogin;
 		cookieManager: Common.CookieManager;
 

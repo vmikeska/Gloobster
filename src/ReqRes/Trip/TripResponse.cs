@@ -22,9 +22,18 @@ namespace Gloobster.ReqRes.Trip
 		public List<FileResponse> files { get; set; }
 
 		public List<TripPlaceResponse>  places { get; set; }
-		public List<TripTravelResponse> travels { get; set; }		
+		public List<TripTravelResponse> travels { get; set; }
+
+		public List<ParticipantResponse> participants { get; set; }
 	}
-	
+
+	public class ParticipantResponse
+	{
+		public string userId { get; set; }
+		public bool isAdmin { get; set; }
+		public ParticipantState state { get; set; }
+	}
+
 	public class TripPlaceResponse
 	{
 		public string id { get; set; }

@@ -1,4 +1,6 @@
 ﻿namespace Gloobster.Enums
 {
-	public enum ParticipantState { Joined, Invited, Refused, Maybe}
+	public enum ParticipantState { Invited, Accepted, Maybe, Refused }
+
+	
 }

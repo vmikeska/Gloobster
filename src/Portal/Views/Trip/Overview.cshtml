@@ -13,6 +13,7 @@
 <script type="text/javascript" src="@Url.Content("~/js/Trip/Comments.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Trip/Files.js")"></script>
 
+<script type="text/javascript" src="@Url.Content("~/js/Trip/AcceptCombo.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Trip/Planner.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Trip/DialogManager.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Trip/PlaceDialog.js")"></script>
@@ -41,15 +42,30 @@
 		</div>
 
 		<div class="adventure-buttons">
-			<a class="button accept" href="#"><span class="icon-visited middle mright5"></span> Accept invite</a>
 			
+			@*<a class="button accept" href="#"><span class="icon-visited middle mright5"></span> Accept invite</a>*@
 
-		@if (Model.IsUserAdmin)
-		{
-			<a class="button share popup-target" data-target="#popup-share" href="#">Share trip</a>
-		  <a class="button share popup-target" data-target="#popup-invite" href="#">Invite people</a>
-			<a class="button share" href="/Trip/Detail/@Model.TripId">Edit trip</a>
-		}
+
+			@if (Model.IsUserAdmin)
+			{
+				<a class="button share popup-target" data-target="#popup-share" href="#">Share trip</a>
+				<a class="button share popup-target" data-target="#popup-invite" href="#">Invite people</a>
+				<a class="button share" href="/Trip/Detail/@Model.TripId">Edit trip</a>
+			}
+			
+			@if (!Model.IsOwner)
+			{
+				<div id="invitationState" class="dropdown" style="display: none;">
+					<span class="selected"></span>
+					<ul>
+						<li data-value="0"  style="display: none;"><span class="icon-visited middle mright5"></span> Invited</li>
+						<li data-value="1"><span class="icon-visited middle mright5"></span> Accepted</li>
+						<li data-value="2"><span class="icon-visited middle mright5"></span> Maybe</li>
+						<li data-value="3"><span class="icon-visited middle mright5"></span> Refused</li>
+					</ul>
+					<input type="hidden">
+				</div>
+			}
 		</div>
 
 	</div>

@@ -6,7 +6,7 @@ module Views {
 	export class ViewBase {
 
 	  public static currentView: ViewBase;
-
+	 
 		public loginManager: Reg.LoginManager;
 		public cookieManager: Common.CookieManager;
 

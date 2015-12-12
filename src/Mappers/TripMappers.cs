@@ -81,7 +81,23 @@ namespace Gloobster.Mappers
 				response.places = entity.Places.Select(t => t.ToResponse()).ToList();
 			}
 
+			if (entity.Participants != null)
+			{
+				response.participants = entity.Participants.Select(a => a.ToResponse()).ToList();
+			}
+
 			return response;
+		}
+
+		public static ParticipantResponse ToResponse(this ParticipantSE e)
+		{
+			var r = new ParticipantResponse
+			{
+				userId = e.PortalUser_id.ToString(),
+				isAdmin = e.IsAdmin,
+				state = e.State
+			};
+			return r;
 		}
 
 		public static TripPlaceResponse ToResponse(this TripPlaceSE e)

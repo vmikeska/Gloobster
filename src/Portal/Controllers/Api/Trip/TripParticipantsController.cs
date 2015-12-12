@@ -27,7 +27,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 			//todo: check rights for this tripId
 
 			var participants = request.users.Select(u => u.ToDO()).ToList();
-			InviteDomain.InvitePaticipants(participants, request.tripId);
+			InviteDomain.InvitePaticipants(participants, UserId, request.tripId);
 			
 			return new ObjectResult(null);
 		}

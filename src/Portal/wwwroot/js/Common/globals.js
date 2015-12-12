@@ -19,4 +19,11 @@ var SocialNetworkType;
     SocialNetworkType[SocialNetworkType["Foursquare"] = 4] = "Foursquare";
     SocialNetworkType[SocialNetworkType["GeoNames"] = 5] = "GeoNames";
 })(SocialNetworkType || (SocialNetworkType = {}));
+var ParticipantState;
+(function (ParticipantState) {
+    ParticipantState[ParticipantState["Invited"] = 0] = "Invited";
+    ParticipantState[ParticipantState["Accepted"] = 1] = "Accepted";
+    ParticipantState[ParticipantState["Maybe"] = 2] = "Maybe";
+    ParticipantState[ParticipantState["Refused"] = 3] = "Refused";
+})(ParticipantState || (ParticipantState = {}));
 //# sourceMappingURL=globals.js.map

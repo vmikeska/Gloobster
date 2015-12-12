@@ -18,5 +18,7 @@ namespace Gloobster.Portal.ViewModels
 
 		public bool IsUserAdmin { get; set; }
 
+		public bool IsOwner { get; set; }
+
 	}
 }

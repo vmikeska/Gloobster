@@ -36,8 +36,22 @@ var Views;
             customData.tripId = tripId;
             this.files.fileUpload.customConfig = customData;
         };
+        TripViewView.prototype.initAcceptCombo = function () {
+            var isOwner = this.trip.ownerId === Reg.LoginManager.currentUserId;
+            if (!isOwner) {
+                var thisParticipant = _.find(this.trip.participants, function (p) { return p.userId === Reg.LoginManager.currentUserId; });
+                var acConfig = {
+                    comboId: "invitationState",
+                    initialState: thisParticipant.state,
+                    tripId: this.trip.tripId
+                };
+                this.acceptCombo = new Trip.AcceptCombo(acConfig);
+                $("#invitationState").show();
+            }
+        };
         TripViewView.prototype.onTripLoaded = function (request) {
             this.trip = request;
+            this.initAcceptCombo();
             this.files.setFiles(this.trip.files, this.trip.tripId);
             this.comments = new Trip.Comments();
             this.comments.comments = this.trip.comments;

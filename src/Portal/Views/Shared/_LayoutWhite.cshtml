@@ -47,7 +47,7 @@
 					<ul>
 						<li data-value="logout">Logout</li>
 						<li data-value="settings">Settings</li>							
-						<li data-value="notifications">Notifications<span class="notification">@Model.NotificationCount</span></li>						
+						<li data-value="notifications">Notifications<span class="notification">@Model.NotificationCount</span></li>
 					</ul>
 					<input type="hidden">
 				</div>
@@ -92,6 +92,8 @@
 
 
 	});
+
+	Reg.LoginManager.currentUserId = "@Model.PortalUser.id.ToString()";
 
 </script>
 

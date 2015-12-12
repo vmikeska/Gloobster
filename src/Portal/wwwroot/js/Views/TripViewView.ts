@@ -6,10 +6,11 @@
 		inviteDialogView: InviteDialogView;
 		shareDialogView: ShareDialogView;
 		planner: Trip.Planner;
+	  acceptCombo: Trip.AcceptCombo;
 
 		initialize(id: string) {
 			var self = this;
-
+		 
 			this.inviteDialogView = new InviteDialogView();
 			this.shareDialogView = new ShareDialogView();
 
@@ -40,8 +41,25 @@
 			this.files.fileUpload.customConfig = customData;
 		}
 
+		private initAcceptCombo() {
+			var isOwner = this.trip.ownerId === Reg.LoginManager.currentUserId;
+			if (!isOwner) {
+				var thisParticipant = _.find(this.trip.participants, (p) => { return p.userId === Reg.LoginManager.currentUserId });
+				var acConfig = {
+					comboId: "invitationState",
+					initialState: thisParticipant.state,
+					tripId: this.trip.tripId
+				};
+
+				this.acceptCombo = new Trip.AcceptCombo(acConfig);
+				$("#invitationState").show();
+			}
+		}
+
 		private onTripLoaded(request) {
 			this.trip = request;
+
+			this.initAcceptCombo();
 
 			this.files.setFiles(this.trip.files, this.trip.tripId);
 
