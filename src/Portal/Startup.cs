@@ -17,11 +17,12 @@ namespace Gloobster.Portal
         public Startup(IHostingEnvironment env)
         {
 			// Setup configuration sources.			
-			var builder = new ConfigurationBuilder()
-                .AddJsonFile("config.json")
-                .AddJsonFile($"config.{env.EnvironmentName}.json", optional: true);
+	        var builder = new ConfigurationBuilder()
+		        .AddJsonFile("configRemote.json");
+				//.AddJsonFile("configLocal.json");
+			//.AddJsonFile($"config.{env.EnvironmentName}.json", optional: true);
 
-            if (env.IsDevelopment())
+			if (env.IsDevelopment())
             {
                 // This reads the configuration keys from the secret store.
                 // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709

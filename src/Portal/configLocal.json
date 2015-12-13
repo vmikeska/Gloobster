@@ -1,8 +1,8 @@
 {
   "Data": {
     "DefaultConnection": {
-      "ConnectionString": "mongodb://localhost:27017/Gloobster",
-      "DatabaseName": "Gloobster"      
+      "ConnectionString": "mongodb://localhost:27017/Gloobster",      
+      "DatabaseName": "Gloobster"
     }
   },
   "Environment": {

@@ -38,19 +38,13 @@
 
 <script type="text/javascript" src="@Url.Content("~/js/Views/PinBoardView.js")"></script>
 
-
-
-
 <script>
-
 	function onBodyLoad() {
 		
 		currentView = new Views.PinBoardView();
 		currentView.initialize();
 
 	}
-
-		
 </script>
 
 <div class="blue-line margin2"></div>
@@ -67,8 +61,8 @@
 					<div id="mapType" class="dropdown">
 						<span class="selected">2D map</span>
 						<ul>
-							<li data-value="D2">2D map</li>
-							<li data-value="D3">3D map</li>
+							<li data-value="1">2D map</li>
+							<li data-value="0">3D map</li>
 						</ul>
 						<input id="mapTypeValue" type="hidden">
 					</div>
@@ -120,67 +114,34 @@
 
 	<div class="squares table row margin2">
 		<div class="cell">
-			<div class="square"><strong class="countto" data-from="0" data-to="@Model.Cities">0</strong> Cities
+			<div class="square"><strong id="CitiesCount" class="countto" data-from="0" data-to="@Model.Cities">0</strong> Cities
 			</div>
 		</div>
 		<div class="cell">
-			<div class="square"><strong class="countto" data-from="0" data-to="@Model.Countries">0</strong> Countries
+			<div class="square"><strong id="CountriesCount" class="countto" data-from="0" data-to="@Model.Countries">0</strong> Countries
 			</div>
 		</div>
 		<div class="cell">
 			<div class="square">
 				<strong>
-					<span class="countto" data-from="0" data-to="@Model.WorldTraveled">0</span>
+					<span id="TraveledPercent" class="countto" data-from="0" data-to="@Model.WorldTraveled">0</span>
 					%
 				</strong> of the World
 			</div>
 		</div>
 		<div class="cell">
-			<div class="square"><strong class="countto" data-from="0" data-to="@Model.Badges">0</strong> Badges
+			<div class="square"><strong id="BadgesCount" class="countto" data-from="0" data-to="@Model.Badges">0</strong> Badges
 			</div>
 		</div>
 		<div class="cell">
-			<div class="square"><strong class="countto" data-from="0" data-to="0">0</strong> Friends
+			<div class="square"><strong id="FriendsCount" class="countto" data-from="0" data-to="0">0</strong> Friends
 			</div>
 		</div>
 		<div class="cell">
-			<div class="square"><strong class="countto" data-from="0" data-to="@Model.TotalDistanceTraveled">0</strong> Miles total
+			<div class="square"><strong id="DistanceLength" class="countto" data-from="0" data-to="@Model.TotalDistanceTraveled">0</strong> Miles total
 			</div>
 		</div>
 	</div>
-
-
-	<script>
-		$("#mapType li").click(function (evnt) {
-
-			var value = $(evnt.target).data("value");
-			var parsedVal  = Maps.ViewType[value];
-			currentView.mapsManager.switchToView(parsedVal);
-		});
-
-		$("#pluginType li").click(function (evnt) {
-				var pluginType = $(evnt.target).data("value");
-				var projectionType = parseInt($("#projectionType input").val());
-				currentView.mapsManager.getPluginData(pluginType, projectionType);
-		});
-
-		$("#projectionType li").click(function (evnt) {
-				var pluginType = parseInt($("#pluginType input").val());
-				var projectionType = $(evnt.target).data("value");
-				currentView.mapsManager.getPluginData(pluginType, projectionType);
-		});
-
-		
-
-		
-
-		//$("#cities").on("input", function () {
-		//	var placeName = $("#cities input").val();
-
-		//	currentView.searchPlaces(placeName);
-		//});
-	</script>
-
 
 	@*<div class="table row col2 margin">
 		<div class="cell baseline">

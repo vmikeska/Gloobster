@@ -9,9 +9,9 @@ var Maps;
             Views.ViewBase.currentView.apiGet("PinBoardStats", request, function (response) {
                 _this.places = new Maps.Places();
                 _this.viewPlaces = new Maps.PlacesDisplay();
-                _this.places.places = response.VisitedPlaces;
-                _this.places.cities = response.VisitedCities;
-                _this.places.countries = response.VisitedCountries;
+                _this.places.places = response.visitedPlaces;
+                _this.places.cities = response.visitedCities;
+                _this.places.countries = response.visitedCountries;
                 _this.mapToViewData();
                 _this.dataLoadedCallback();
             });
@@ -68,7 +68,7 @@ var Maps;
                 }
                 colorConfig.fillColor = _this.getColorByNumber(countryVisits);
                 var countryOut = new Maps.CountryHighligt();
-                countryOut.countryCode = country.CountryCode3;
+                countryOut.countryCode = country.CountryCode2;
                 countryOut.countryConfig = colorConfig;
                 return countryOut;
             });

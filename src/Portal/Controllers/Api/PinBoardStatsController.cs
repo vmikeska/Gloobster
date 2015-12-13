@@ -54,15 +54,13 @@ namespace Gloobster.Portal.Controllers.Api
 			var result = new PinBoardStatResponse();
 			
 			var visitedPlaces = VisitedPlaces.GetPlacesOfMyFriendsByUserId(userId);
-			result.VisitedPlaces = visitedPlaces.Select(p => p.ToResponse()).ToArray();
+			result.visitedPlaces = visitedPlaces.Select(p => p.ToResponse()).ToArray();
 
 			var visitedCities = VisitedCities.GetCitiesOfMyFriendsByUserId(userId);
-			result.VisitedCities = visitedCities.Select(c => c.ToResponse()).ToArray();
+			result.visitedCities = visitedCities.Select(c => c.ToResponse()).ToArray();
 
 			var visitedCountries = VisitedCountries.GetCountriesOfMyFriendsByUserId(userId);
-			var visitedCountriesResponse = visitedCountries.Select(c => c.ToResponse()).ToList();
-			visitedCountriesResponse.ForEach(c => c.CountryCode3 = CountryService.GetCountryByCountryCode2(c.CountryCode2).IsoAlpha3);
-			result.VisitedCountries = visitedCountriesResponse.ToArray();
+			result.visitedCountries = visitedCountries.Select(c => c.ToResponse()).ToArray();
 
 			return result;
 		}
@@ -73,15 +71,13 @@ namespace Gloobster.Portal.Controllers.Api
 			var result = new PinBoardStatResponse();
 
 			var visitedPlaces = VisitedPlaces.GetPlacesByUserId(userId);
-            result.VisitedPlaces = visitedPlaces.Select(p => p.ToResponse()).ToArray();
+            result.visitedPlaces = visitedPlaces.Select(p => p.ToResponse()).ToArray();
 
 			var visitedCities = VisitedCities.GetCitiesByUserId(userId);
-			result.VisitedCities = visitedCities.Select(c => c.ToResponse()).ToArray();
+			result.visitedCities = visitedCities.Select(c => c.ToResponse()).ToArray();
 
-			var visitedCountries = VisitedCountries.GetVisitedCountriesByUserId(userId);
-			var visitedCountriesResponse = visitedCountries.Select(c => c.ToResponse()).ToList();
-			visitedCountriesResponse.ForEach(c => c.CountryCode3 = CountryService.GetCountryByCountryCode2(c.CountryCode2).IsoAlpha3);
-			result.VisitedCountries = visitedCountriesResponse.ToArray();
+			var visitedCountries = VisitedCountries.GetVisitedCountriesByUserId(userId);			
+			result.visitedCountries = visitedCountries.Select(c => c.ToResponse()).ToArray();
 
 			return result;
 		}

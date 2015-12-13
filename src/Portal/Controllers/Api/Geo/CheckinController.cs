@@ -2,14 +2,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
+using Gloobster.Entities;
 using Gloobster.Enums;
 using Gloobster.Mappers;
 using Gloobster.Portal.Controllers.Base;
+using Gloobster.Portal.ViewModels;
 using Gloobster.ReqRes.MoveOut;
 using Gloobster.ReqRes.PinBoard;
 using Microsoft.AspNet.Mvc;
 
-namespace Gloobster.Portal.Controllers.Api
+namespace Gloobster.Portal.Controllers.Api.Geo
 {
 	[Route("api/[controller]")]
 	public class CheckinController : BaseApiController
@@ -29,31 +31,31 @@ namespace Gloobster.Portal.Controllers.Api
 		{
 			var sourceType = (SourceType)place.SourceType;
 			
-			var checkedPlacesDO = await CheckinDomain.CheckinPlace(place.SourceId, sourceType, UserId);
+			var checkedDO = await CheckinDomain.CheckinPlace(place.SourceId, sourceType, UserId);
 
-			var checkedPlacesResponse = new PinBoardStatResponse();
+			var response = new PinBoardStatResponse();
 
-			if (checkedPlacesDO.Countries != null)
+			if (checkedDO.Countries != null)
 			{				
-				checkedPlacesResponse.VisitedCountries = checkedPlacesDO.Countries.Select(c =>
-				{
-					var resp = c.ToResponse();
-					resp.CountryCode3 = CountryService.GetCountryByCountryCode2(c.CountryCode2).IsoAlpha3;
-					return resp;
-				}).ToArray();				
+				response.visitedCountries = checkedDO.Countries.Select(c => c.ToResponse()).ToArray();				
 			}
 
-			if (checkedPlacesDO.Cities != null)
+			if (checkedDO.Cities != null)
 			{
-				checkedPlacesResponse.VisitedCities = checkedPlacesDO.Cities.Select(c => c.ToResponse()).ToArray();
+				response.visitedCities = checkedDO.Cities.Select(c => c.ToResponse()).ToArray();
 			}
 
-			if (checkedPlacesDO.Places != null)
+			if (checkedDO.Places != null)
 			{
-				checkedPlacesResponse.VisitedPlaces = checkedPlacesDO.Places.Select(c => c.ToResponse()).ToArray();				
+				response.visitedPlaces = checkedDO.Places.Select(c => c.ToResponse()).ToArray();				
 			}
-			
-			return new ObjectResult(checkedPlacesResponse);
+
+			var visited = DB.C<VisitedEntity>().FirstOrDefault(v => v.PortalUser_id == UserIdObj);
+			response.citiesCount = visited.Cities.Count;
+			response.countriesCount = visited.Countries.Count;
+			response.worldTraveledPercent = PinBoardUtils.CalculatePercentOfWorldTraveled(visited.Countries.Count);			
+
+			return new ObjectResult(response);
 		}
 
 		

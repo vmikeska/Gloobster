@@ -2,9 +2,9 @@
 	export class MapsManager {
 
 		public currentViewType: Maps.ViewType;
-		public currentMaps: Maps.IMapsCreator;
+		public currentMaps: IMapsCreator;
 
-		public mapsDriver: Maps.IMapsDriver;
+		public mapsDriver: IMapsDriver;
 		public mapsOperations: MapsOperations;
 
 		public mapsDataLoader: MapsDataLoader;
@@ -33,15 +33,15 @@
 		}
 
 		public redrawDataCallback() {
-			if (this.currentDisplayEntity === Maps.DisplayEntity.Pin) {
+			if (this.currentDisplayEntity === DisplayEntity.Pin) {
 				this.redrawCities();
 			}
 
-			if (this.currentDisplayEntity === Maps.DisplayEntity.Countries) {
+			if (this.currentDisplayEntity === DisplayEntity.Countries) {
 				this.redrawCountries();
 			}
 
-			if (this.currentDisplayEntity === Maps.DisplayEntity.Heat) {
+			if (this.currentDisplayEntity === DisplayEntity.Heat) {
 				this.redrawPlaces();
 			}
 		}
@@ -102,18 +102,18 @@
 		}
 
 		private initView(viewType: Maps.ViewType) {
-			if (viewType === Maps.ViewType.D3) {
+			if (viewType === ViewType.D3) {
 				this.init3D();
 			}
 
-			if (viewType === Maps.ViewType.D2) {
+			if (viewType === ViewType.D2) {
 				this.init2D();
 			}
 		}
 
 		private displayData(savedPosition, savedZoom) {
 
-			this.getPluginData(Maps.PluginType.MyPlacesVisited, Maps.DisplayEntity.Pin);
+			this.getPluginData(PluginType.MyPlacesVisited, DisplayEntity.Pin);
 
 			if (savedPosition) {
 				var roundedZoom = Math.round(savedZoom);

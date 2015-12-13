@@ -7,7 +7,7 @@ var Planning;
             this.map = map;
             this.countriesLayerGroup = L.layerGroup();
             this.map.addLayer(this.countriesLayerGroup);
-            this.countryShapes = new Common.CountryShapes2();
+            this.countryShapes = new Common.CountryShapes();
         }
         CountriesManager.prototype.createCountries = function (selectedCountries, planningType) {
             var _this = this;

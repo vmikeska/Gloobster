@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Autofac;
 using Gloobster.Common;
@@ -20,15 +19,9 @@ namespace Gloobster.DomainModels.Services.Accounts
 	public class UserService: IUserService
 	{
 		public IAccountDriver AccountDriver { get; set; }
-		public IComponentContext ComponentContext { get; set; }
-		public IFriendsDomain FriendsService { get; set; }
-		public IDbOperations DB { get; set; }
-		public IPlanningDomain PlanningDomain { get; set; }
-		public IAirportService AirportSvc { get; set; }
-		public IGeoNamesService GNService { get; set; }
-
-		public INotificationsDomain NotificationDomain { get; set; }
-
+		public IComponentContext ComponentContext { get; set; }		
+		public IDbOperations DB { get; set; }		
+		public ICreateUserData UserData { get; set; }
 
 		public async Task<UserLoggedResultDO> Validate(SocAuthenticationDO authentication, object userObj)
 		{
@@ -51,7 +44,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 				}
 				
 				portalUser = await AccountDriver.Create();
-				CreateCommonAsync(portalUser);
+				await CreateCommonAsync(portalUser);
 			}
 			else
 			{
@@ -75,39 +68,14 @@ namespace Gloobster.DomainModels.Services.Accounts
 			};
 
 			AccountDriver.OnUserSuccessfulyLogged(portalUser);
-
-			//todo: remove later
-			//await FriendsService.AddEverbodyToMyFriends(portalUser.UserId);
-
+			
 			return result;
 		}
 
-		private async void CreateCommonAsync(PortalUserDO portalUser)
+		private async Task<bool> CreateCommonAsync(PortalUserDO portalUser)
 		{
-			await FriendsService.CreateFriendsObj(portalUser.UserId);
-			PlanningDomain.CreateDBStructure(portalUser.UserId);
-
-			//todo: maybe in this case try to get location by IP
-			if (portalUser.CurrentLocation != null)
-			{
-				CityDO city = await GNService.GetCityByIdAsync(portalUser.CurrentLocation.GeoNamesId);
-
-				var airports = AirportSvc.GetAirportsInRange(city.Coordinates, 100);
-				await AirportSvc.SaveAirportsInRange(portalUser.UserId, airports);
-			}
-
-			var notifications = new Notifications();
-			var notification = notifications.NewAccountNotification(portalUser.UserId);
-			NotificationDomain.AddNotification(notification);
-
-			var visited = new VisitedEntity
-			{
-				PortalUser_id = new ObjectId(portalUser.UserId),
-				Places = new List<VisitedPlaceSE>(),
-				Cities = new List<VisitedCitySE>(),
-				Countries = new List<VisitedCountrySE>()
-			};
-			await DB.SaveAsync(visited);
+			await UserData.Create(portalUser);
+			return true;
 		}
 
 		private bool CheckCredintials(SocAuthenticationDO socAuthentication, PortalUserDO portalUser)
@@ -123,33 +91,28 @@ namespace Gloobster.DomainModels.Services.Accounts
 		}
 
 		public async Task<PortalUserDO> Load()
-		{
-			string query;
-
+		{			
 			if (AccountDriver.NetworkType == SocialNetworkType.Base)
 			{
 				var user = (BaseUserDO) AccountDriver.UserObj;
 				var mail = user.Mail.Trim();
-				query = $"{{ 'Mail': '{mail}' }}";				
+				var dbUser = DB.C<PortalUserEntity>().FirstOrDefault(u => u.Mail == mail);
+				return dbUser.ToDO();
 			}
-			else
-			{			
-				string userId = AccountDriver.Authentication.UserId;
-				query = $"{{ 'SocialAccounts.NetworkType': {(int)AccountDriver.NetworkType}, 'SocialAccounts.Authentication.UserId': '{userId}' }}";				
-			}
-
+	
+			string userId = AccountDriver.Authentication.UserId;				
+			var query = $"{{ 'SocialAccounts.NetworkType': {(int)AccountDriver.NetworkType}, 'SocialAccounts.Authentication.UserId': '{userId}' }}";
 			var results = await DB.FindAsync<PortalUserEntity>(query);
 
 			if (!results.Any())
 			{
 				return null;
 			}
-
+				
 			var result = results.First().ToDO();
 			return result;
 		}
-
-
+		
 		private bool EmailAlreadyExistsInSystem(string email)
 		{
 			//todo:

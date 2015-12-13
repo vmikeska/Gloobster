@@ -26,31 +26,56 @@ var Views;
             c.clearAfterSearch = true;
             this.placeSearch = new Common.PlaceSearchBox(c);
             this.placeSearch.onPlaceSelected = function (request) { return _this.saveNewPlace(request); };
+            $("#mapType li").click(function (e) {
+                var value = $(e.target).data("value");
+                var parsedVal = parseInt(value);
+                _this.mapsManager.switchToView(parsedVal);
+            });
+            $("#pluginType li").click(function (e) {
+                var pluginType = $(e.target).data("value");
+                var projectionType = parseInt($("#projectionType input").val());
+                _this.mapsManager.getPluginData(pluginType, projectionType);
+            });
+            $("#projectionType li").click(function (e) {
+                var pluginType = parseInt($("#pluginType input").val());
+                var projectionType = $(e.target).data("value");
+                _this.mapsManager.getPluginData(pluginType, projectionType);
+            });
+        };
+        PinBoardView.prototype.setStatsRibbon = function (citiesCount, countriesCount, worldTraveledPercent) {
+            $("#CitiesCount").text(citiesCount);
+            $("#CountriesCount").text(countriesCount);
+            $("#TraveledPercent").text(worldTraveledPercent);
+            //DistanceLength
+            //FriendsCount
+            //BadgesCount		 
         };
         PinBoardView.prototype.saveNewPlace = function (request) {
+            var _this = this;
             var self = this;
-            _super.prototype.apiPost.call(this, "checkin", request, function (places) {
+            this.apiPost("checkin", request, function (req) {
                 var moveToLocation = null;
-                if (places.VisitedCities) {
-                    places.VisitedCities.forEach(function (city) {
+                if (req.visitedCities) {
+                    req.visitedCities.forEach(function (city) {
                         self.mapsManager.mapsDataLoader.places.cities.push(city);
                         moveToLocation = city.Location;
                     });
                 }
-                if (places.VisitedPlaces) {
-                    places.VisitedPlaces.forEach(function (place) {
+                if (req.visitedPlaces) {
+                    req.visitedPlaces.forEach(function (place) {
                         self.mapsManager.mapsDataLoader.places.places.push(place);
                         moveToLocation = place.Location;
                     });
                 }
-                if (places.VisitedCountries) {
-                    places.VisitedCountries.forEach(function (country) {
+                if (req.visitedCountries) {
+                    req.visitedCountries.forEach(function (country) {
                         self.mapsManager.mapsDataLoader.places.countries.push(country);
                     });
                 }
                 if (moveToLocation) {
                     self.mapsManager.mapsDriver.moveToAnimated(moveToLocation.Lat, moveToLocation.Lng, 5);
                 }
+                _this.setStatsRibbon(req.citiesCount, req.countriesCount, req.worldTraveledPercent);
                 self.mapsManager.mapsDataLoader.mapToViewData();
                 self.mapsManager.redrawDataCallback();
             });

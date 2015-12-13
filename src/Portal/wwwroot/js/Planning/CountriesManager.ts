@@ -3,7 +3,7 @@ module Planning {
 		public selectedCountries = [];
 		public citiesManager: CitiesManager;
 
-		private countryShapes: Common.CountryShapes2;
+		private countryShapes: Common.CountryShapes;
 
 		private map: any;
 		private graph: GraphicConfig;
@@ -18,7 +18,7 @@ module Planning {
 			this.countriesLayerGroup = L.layerGroup();
 			this.map.addLayer(this.countriesLayerGroup);
 
-			this.countryShapes = new Common.CountryShapes2();
+			this.countryShapes = new Common.CountryShapes();
 		}
 
 

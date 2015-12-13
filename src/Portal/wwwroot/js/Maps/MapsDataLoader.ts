@@ -1,7 +1,7 @@
 module Maps {
 	export class MapsDataLoader {
-		public places: Maps.Places;
-		public viewPlaces: Maps.PlacesDisplay;
+		public places: Places;
+		public viewPlaces: PlacesDisplay;
 
 		public dataLoadedCallback: Function;
 
@@ -11,12 +11,12 @@ module Maps {
 
 			Views.ViewBase.currentView.apiGet("PinBoardStats", request, response => {
 
-				this.places = new Maps.Places();
-				this.viewPlaces = new Maps.PlacesDisplay();
+				this.places = new Places();
+				this.viewPlaces = new PlacesDisplay();
 
-				this.places.places = response.VisitedPlaces;
-				this.places.cities = response.VisitedCities;
-				this.places.countries = response.VisitedCountries;
+				this.places.places = response.visitedPlaces;
+				this.places.cities = response.visitedCities;
+				this.places.countries = response.visitedCountries;
 
 				this.mapToViewData();
 
@@ -59,14 +59,14 @@ module Maps {
 		public mapToViewData() {
 
 			var places = _.map(this.places.places, place => {
-				var point = new Maps.PlaceMarker(place.Location.Lat, place.Location.Lng);
+				var point = new PlaceMarker(place.Location.Lat, place.Location.Lng);
 				return point;
 			});
 			this.viewPlaces.places = places;
 
 			var countries = _.map(this.places.countries, country => {
 
-				var colorConfig = new Maps.PolygonConfig();
+				var colorConfig = new PolygonConfig();
 				var countryVisits = null;
 				if (country.Dates) {
 					countryVisits = country.Dates.length;
@@ -74,8 +74,8 @@ module Maps {
 
 				colorConfig.fillColor = this.getColorByNumber(countryVisits);
 
-				var countryOut = new Maps.CountryHighligt();
-				countryOut.countryCode = country.CountryCode3;
+				var countryOut = new CountryHighligt();
+				countryOut.countryCode = country.CountryCode2;
 				countryOut.countryConfig = colorConfig;
 
 				return countryOut;
@@ -84,7 +84,7 @@ module Maps {
 			this.viewPlaces.countries = countries;
 
 			var cities = _.map(this.places.cities, city => {
-				var marker = new Maps.PlaceMarker(city.Location.Lat, city.Location.Lng);
+				var marker = new PlaceMarker(city.Location.Lat, city.Location.Lng);
 				return marker;
 			});
 			this.viewPlaces.cities = cities;

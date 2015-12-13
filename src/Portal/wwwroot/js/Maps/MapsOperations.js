@@ -9,7 +9,7 @@ var Maps;
         };
         MapsOperations.prototype.drawCountry = function (country) {
             var _this = this;
-            var countryParts = this.countryShapes.getCoordinatesByCountry(country.countryCode);
+            var countryParts = this.countryShapes.getCoordinatesByCountryCode(country.countryCode);
             if (!countryParts) {
                 console.log("missing country with code: " + country.countryCode);
                 return;

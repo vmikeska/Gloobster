@@ -9,13 +9,13 @@ module Maps {
 		 this.countryShapes = new Common.CountryShapes();
 		}
 
-		public setBaseMapsOperations(baseMapsOperations: Maps.IMapsDriver) {
+		public setBaseMapsOperations(baseMapsOperations: IMapsDriver) {
 			this.mapsDriver = baseMapsOperations;
 		}
 
-		public drawCountry(country: Maps.CountryHighligt) {
+		public drawCountry(country: CountryHighligt) {
 
-			var countryParts = this.countryShapes.getCoordinatesByCountry(country.countryCode);
+			var countryParts = this.countryShapes.getCoordinatesByCountryCode(country.countryCode);
 
 			if (!countryParts) {
 				console.log("missing country with code: " + country.countryCode);
@@ -26,27 +26,27 @@ module Maps {
 			});
 		}
 
-		public drawCountries(countries: Maps.CountryHighligt[]) {
+		public drawCountries(countries: CountryHighligt[]) {
 			countries.forEach(country => {
 				this.drawCountry(country);
 			});
 		}
 
-		public drawCity(city: Maps.PlaceMarker) {
+		public drawCity(city: PlaceMarker) {
 			this.mapsDriver.drawPin(city);
 		}
 
-		public drawCities(cities: Maps.PlaceMarker[]) {
+		public drawCities(cities: PlaceMarker[]) {
 			cities.forEach(city => {
 				this.drawCity(city);
 			});
 		}
 
-		public drawPlace(place: Maps.PlaceMarker) {
+		public drawPlace(place: PlaceMarker) {
 			this.mapsDriver.drawPoint(place);
 		}
 
-		public drawPlaces(places: Maps.PlaceMarker[]) {
+		public drawPlaces(places: PlaceMarker[]) {
 			places.forEach(place => {
 				this.drawPlace(place);
 			});

@@ -59,6 +59,8 @@ namespace Gloobster.Portal
 			builder.AddTransient<IFilesDomain, FilesDomain>();
 
 			builder.AddTransient<IPlacesExtractor, PlacesExtractor>();
+			builder.AddTransient<ICreateUserData, CreateUserData>();
+			
 
 			builder.AddTransient<IPlacesExtractorDriver, TwitterPlacesDriver>().Keyed<IPlacesExtractorDriver>("Twitter");
 			builder.AddTransient<IPlacesExtractorDriver, FacebookPlacesDriver>().Keyed<IPlacesExtractorDriver>("Facebook");
