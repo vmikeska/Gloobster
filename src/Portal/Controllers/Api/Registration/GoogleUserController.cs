@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using Autofac;
 using Gloobster.Database;
@@ -27,22 +28,22 @@ namespace Gloobster.Portal.Controllers.Api.Registration
 
 		[HttpPost]
 		public async Task<IActionResult> Post([FromBody] GoogleAuthRequest request)
+		//public async Task<IActionResult> Post([FromBody] dynamic request)
 		{
-			//todo: find what does it mean
-			DateTime expiresAt = new DateTime(request.wc.expires_at);
+			DateTime expiresAt = DateTime.UtcNow.AddSeconds(request.po.expires_in);
 
 			var auth = new SocAuthenticationDO
 			{
-				AccessToken = request.wc.access_token,
+				AccessToken = request.po.access_token,
 				ExpiresAt = expiresAt,
 				UserId = request.El,
 			};
 
 			var userDo = new GoogleUserRegistrationDO
-			{				
-				DisplayName = request.Ld.ye,
-				ProfileLink = request.Ld.Ei,
-				Mail = request.Ld.Ld
+			{
+				DisplayName = request.zt.zt,
+				ProfileLink = request.zt.Ei,
+				Mail = request.zt.po
 			};
 
 			var accountDriver = ComponentContext.ResolveKeyed<IAccountDriver>("Google");

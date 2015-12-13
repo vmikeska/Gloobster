@@ -18,10 +18,15 @@ namespace Gloobster.DomainModels.Services.Accounts
 {
 	public class TwitterAccountDriver : IAccountDriver
 	{
+		
 		public bool CheckCredintials(object authObject, PortalUserDO portalUser)
 		{
-			//todo: implement
-			return true;
+			var auth = (SocAuthenticationDO) authObject;
+			TwitterSvc.AuthenticateWith(auth.AccessToken, auth.TokenSecret);
+
+			TwitterUser user = TwitterSvc.VerifyCredentials(new VerifyCredentialsOptions());
+			bool valid = user != null;
+			return valid;
 		}
 
 		public SocialNetworkType NetworkType => SocialNetworkType.Twitter;

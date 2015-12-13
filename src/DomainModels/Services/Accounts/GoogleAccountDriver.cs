@@ -1,15 +1,19 @@
 using System;
+using System.Collections.Specialized;
 using System.Linq;
+using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using Autofac;
-using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
 using Gloobster.Entities;
 using Gloobster.Enums;
 using Gloobster.Mappers;
+using Gloobster.ReqRes.Google;
 using Gloobster.SocialLogin.Facebook.Communication;
+using Hammock.Serialization;
 using MongoDB.Bson;
 
 namespace Gloobster.DomainModels.Services.Accounts
@@ -18,8 +22,26 @@ namespace Gloobster.DomainModels.Services.Accounts
 	{
 		public bool CheckCredintials(object authObject, PortalUserDO portalUser)
 		{
-			//todo: implement
-			return true;
+			var socAuth = (SocAuthenticationDO)authObject;
+			var url = "https://www.googleapis.com/oauth2/v1/tokeninfo";
+
+			try
+			{
+				using (var client = new WebClient())
+				{
+					var values = new NameValueCollection {["access_token"] = socAuth.AccessToken};
+					byte[] response = client.UploadValues(url, values);
+					var resp = Encoding.Default.GetString(response);
+					var authObj = JsonParser.Deserialize<GoogleAuthValidation>(resp);
+
+					bool verified = !string.IsNullOrEmpty(authObj.email);
+					return verified;
+				}
+			}
+			catch (Exception exc)
+			{
+				return false;
+			}
 		}
 
 		public SocialNetworkType NetworkType => SocialNetworkType.Google;
@@ -103,5 +125,17 @@ namespace Gloobster.DomainModels.Services.Accounts
 				throw new Exception("something went wrong with update");
 			}
 		}
+	}
+
+	public class GoogleAuthValidation
+	{
+		public string issued_to { get; set; }
+		public string audience { get; set; }
+		public string user_id { get; set; }
+		public string scope { get; set; }
+		public int expires_in { get; set; }
+		public string email { get; set; }
+		public bool verified_email { get; set; }
+		public string access_type { get; set; }
 	}
 }

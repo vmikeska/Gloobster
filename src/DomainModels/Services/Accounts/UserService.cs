@@ -84,10 +84,8 @@ namespace Gloobster.DomainModels.Services.Accounts
 			{
 				return AccountDriver.CheckCredintials(AccountDriver.UserObj, portalUser);
 			}
-			else
-			{
-				return AccountDriver.CheckCredintials(socAuthentication, portalUser);
-			}
+
+			return AccountDriver.CheckCredintials(socAuthentication, portalUser);
 		}
 
 		public async Task<PortalUserDO> Load()
@@ -113,10 +111,10 @@ namespace Gloobster.DomainModels.Services.Accounts
 			return result;
 		}
 		
-		private bool EmailAlreadyExistsInSystem(string email)
+		private bool EmailAlreadyExistsInSystem(string mail)
 		{
-			//todo:
-			return false;
+			var user = DB.C<PortalUserEntity>().FirstOrDefault(u => u.Mail == mail);
+			return user != null;
 		}
 		
 		private string IssueToken(string portalUserId)

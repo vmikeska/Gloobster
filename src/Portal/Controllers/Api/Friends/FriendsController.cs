@@ -94,7 +94,7 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 			var fbFriends = FbFriendsService.GetFriends(userId);
 			if (fbFriends != null)
 			{
-				List<PortalUserDO> r = fbFriends.Where(f =>
+				result = fbFriends.Where(f =>
 					!friends.Friends.Contains(new ObjectId(f.UserId)) &&
 					!friends.Proposed.Contains(new ObjectId(f.UserId)) &&
 					!friends.AwaitingConfirmation.Contains(new ObjectId(f.UserId))
