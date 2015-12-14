@@ -46,14 +46,6 @@ namespace Gloobster.Portal.Controllers.Portal
 
 			return View();
 	    }
-	    
-	    public IActionResult PinBoard()
-	    {
-			var pinBoardViewModel = CreateViewModelInstance<PinBoardViewModel>();			
-			pinBoardViewModel.Initialize(UserId);
-			
-			return View(pinBoardViewModel);
-		}
 
 	    
     }

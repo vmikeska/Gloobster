@@ -8,7 +8,7 @@ declare var Handlebars: any;
 
 module Constants {
  export var cookieName = "loginCookie";
- export var firstRedirectUrl = "/Home/PinBoard";	
+ export var firstRedirectUrl = "/PinBoard/Pins";	
 }
 
 enum SourceType { FB, S4, City, Country }

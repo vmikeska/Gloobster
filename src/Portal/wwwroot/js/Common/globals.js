@@ -1,7 +1,7 @@
 var Constants;
 (function (Constants) {
     Constants.cookieName = "loginCookie";
-    Constants.firstRedirectUrl = "/Home/PinBoard";
+    Constants.firstRedirectUrl = "/PinBoard/Pins";
 })(Constants || (Constants = {}));
 var SourceType;
 (function (SourceType) {

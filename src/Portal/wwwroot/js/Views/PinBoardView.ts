@@ -4,11 +4,15 @@
 		public mapsManager: Maps.MapsManager;
 		private placeSearch: Common.PlaceSearchBox;
 
+		private shareDialogView:  ShareDialogPinsView;
+
 		get pageType(): Views.PageType { return PageType.PinBoard; }
 
 		public initialize() {
 			this.mapsManager = new Maps.MapsManager();
 			this.mapsManager.switchToView(Maps.ViewType.D2);
+
+			this.shareDialogView = new ShareDialogPinsView();
 
 			var c = new Common.PlaceSearchConfig();
 			c.providers = "0,1,2,3";

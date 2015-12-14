@@ -7,6 +7,7 @@ using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
+using Gloobster.Entities;
 using Gloobster.Entities.Trip;
 using MongoDB.Bson;
 
@@ -23,6 +24,41 @@ namespace Gloobster.DomainModels
 			var link = GenerateMapLink(tripId);
 			var mapImgStream = GetFile(link);
 			return mapImgStream;
+		}
+
+		public Stream GetPinBoardMap(string userId)
+		{
+			var link = GeneratePinBoardMapLink(userId);
+			var mapImgStream = GetFile(link);
+			return mapImgStream;
+		}
+
+		public string GeneratePinBoardMapLink(string userId)
+		{
+			var userIdObj = new ObjectId(userId);
+			var visited = DB.C<VisitedEntity>().FirstOrDefault(v => v.PortalUser_id == userIdObj);
+			
+			if (visited == null)
+			{
+				//throw
+			}
+
+			var markers = GetPinBoardMarkers(visited);
+
+			var features = new List<FeatureBaseDO>();
+			features.AddRange(markers);
+			
+			var cfg = new BuildMapConfigDO
+			{
+				MapId = "mapbox.streets",
+				Height = 900,
+				Width = 1200,
+				AutoFit = true,
+				Features = features
+			};
+
+			var mapLink = ImageCreator.BuildMapLink(cfg, GloobsterConfig.MapBoxSecret);
+			return mapLink;
 		}
 		
 		public string GenerateMapLink(string tripId)
@@ -77,6 +113,18 @@ namespace Gloobster.DomainModels
 			}
 
 			return pathFeature;
+		}
+
+		private List<FeatureMarkerDO> GetPinBoardMarkers(VisitedEntity visited)
+		{
+			var list = visited.Cities.Select(city => new FeatureMarkerDO
+			{
+				PinType = "town",
+				PinSize = 1,
+				Color = "666699",
+				Coord = city.Location
+			}).ToList();
+			return list;
 		}
 	}
 }

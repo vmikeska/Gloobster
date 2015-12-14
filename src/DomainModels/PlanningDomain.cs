@@ -13,7 +13,6 @@ using MongoDB.Bson;
 
 namespace Gloobster.DomainModels
 {
-	
 	public class PlanningDomain: IPlanningDomain
 	{
 		public IDbOperations DB { get; set; }

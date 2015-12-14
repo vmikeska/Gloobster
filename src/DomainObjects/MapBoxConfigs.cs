@@ -29,4 +29,14 @@ namespace Gloobster.DomainObjects
 	{
 		public Dictionary<int, LatLng> Points { get; set; }
 	}
+
+	public class FeatureMarkerDO : FeatureBaseDO
+	{
+		public int PinSize { get; set; }
+		public string PinType { get; set; }
+		public string Color { get; set; }
+		public LatLng Coord { get; set; }
+	}
+
+	
 }

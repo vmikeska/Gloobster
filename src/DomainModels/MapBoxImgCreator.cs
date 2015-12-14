@@ -19,14 +19,22 @@ namespace Gloobster.DomainModels
 			string veryBaseUrl = $"https://api.mapbox.com/v4/{config.MapId}";
 			urlParams.Add(veryBaseUrl);
 
+			var featuresStr = new List<string>();
 			foreach (var feature in config.Features)
 			{
+				string featureStr = string.Empty;
 				if (feature is FeaturePathDO)
 				{
-					var fRes = BuildPathFeature(feature as FeaturePathDO);					
-					urlParams.Add(fRes);
-				}				
+					featureStr = BuildPathFeature(feature as FeaturePathDO);
+					
+				}
+				if (feature is FeatureMarkerDO)
+				{
+					featureStr = BuildMarkerFeature(feature as FeatureMarkerDO);
+				}
+				featuresStr.Add(featureStr);
 			}
+			urlParams.Add(string.Join(",", featuresStr));
 
 			if (config.AutoFit)
 			{
@@ -65,6 +73,20 @@ namespace Gloobster.DomainModels
 			var encodedPath = GooglePoints.Encode(feature.Points.Values);
 			var encodedPathHttpEncoded = HttpUtility.UrlEncode(encodedPath);
 			return $"{pathDef}({encodedPathHttpEncoded})";
+		}
+
+		private string BuildMarkerFeature(FeatureMarkerDO feature)
+		{
+			string size;
+			switch (feature.PinSize)
+			{
+				case 1: size = "pin-s"; break;
+				case 2: size = "pin-m"; break;
+				case 3: size = "pin-l"; break;
+				default: size = "pin-l"; break;
+			}
+			
+			return $"{size}-{feature.PinType}+{feature.Color}({DoubleToStr(feature.Coord.Lng, 2)},{DoubleToStr(feature.Coord.Lat, 2)})";
 		}
 		
 	}

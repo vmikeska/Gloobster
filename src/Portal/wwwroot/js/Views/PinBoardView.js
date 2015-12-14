@@ -19,6 +19,7 @@ var Views;
             var _this = this;
             this.mapsManager = new Maps.MapsManager();
             this.mapsManager.switchToView(Maps.ViewType.D2);
+            this.shareDialogView = new Views.ShareDialogPinsView();
             var c = new Common.PlaceSearchConfig();
             c.providers = "0,1,2,3";
             c.elementId = "cities";
