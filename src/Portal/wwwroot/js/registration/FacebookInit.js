@@ -6,10 +6,11 @@ var Reg;
             this.asyncInit = function () {
                 FB.init({
                     //appId: '1519189774979242',
-                    appId: '1717433995154818',
+                    //appId: '1717433995154818',
+                    appId: '1733987536832797',
                     cookie: true,
                     xfbml: true,
-                    version: 'v2.1'
+                    version: 'v2.5'
                 });
                 _this.onFacebookInitialized();
             };
@@ -22,7 +23,8 @@ var Reg;
             var scriptElementName = 'script';
             var scriptElementId = 'facebook-jssdk';
             var src = "//connect.facebook.net/en_US/sdk.js";
-            var isSdkAlreadyLoaded = doc.getElementById(scriptElementId);
+            var scriptElem = doc.getElementById(scriptElementId);
+            var isSdkAlreadyLoaded = scriptElem != null;
             if (isSdkAlreadyLoaded)
                 return;
             //create SCRIPT element for SDK

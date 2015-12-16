@@ -52,6 +52,7 @@ module Views {
 			var fbInit = new Reg.FacebookInit();
 
 			fbInit.onFacebookInitialized = () => {
+				console.log("fb initialized");
 				self.loginManager.facebookUserCreator.registerOrLogin();
 			}
 

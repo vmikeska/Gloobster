@@ -33,8 +33,8 @@ module Reg {
 			super.sendUserRegistrationData(fbUser);
 		}
 
-		login() {
-			FB.login(this.statusChangeCallback, { scope: 'user_tagged_places,publish_actions,user_location,user_hometown,user_friends,email' });
+		login() {		 
+		 FB.login(this.statusChangeCallback, { scope: 'user_tagged_places,publish_actions,user_location,user_hometown,user_friends,email' });
 		}
 
 	}

@@ -3,34 +3,59 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using AzureBlobFileSystem;
-
+using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
 using Gloobster.Enums;
 using Microsoft.AspNet.Hosting;
-using Microsoft.Dnx.Runtime;
-using MongoDB.Bson;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Auth;
 
 namespace Gloobster.DomainModels
 {
+	//https://github.com/pofider/AzureBlobFileSystem
 	public class FilesDomain: IFilesDomain
 	{
-		public IDbOperations DB { get; set; }
+		public IDbOperations DB { get; set; }		
 
 		public event EventHandler OnFileSaved = delegate { };
 		public event EventHandler OnBeforeCreate = delegate { };
 
-		public const string EnvRoot = @"C:\S\Gloobster\src\Portal\wwwroot";
+		
 		public const string RepositoryDirectory = "FileRepository";
 		public const string TempFolder = "TempFolder";
 
 		private string TempFolderPath => Storage.Combine(TempFolder, UserId);
 
 		public FilesDomain()
-		{			
+		{
+			if (GloobsterConfig.IsLocal)
+			{
+				Storage = GetLocal();
+			}
+			else
+			{
+				Storage = GetAzure();
+			}		
+		}
+
+		private IStorageProvider GetAzure()
+		{
+			var cred = new StorageCredentials("gloobster");			
+			var account = new CloudStorageAccount(cred, false);
+			
+			var storage = new AzureBlobStorageProvider(account);
+			return storage;
+		}
+
+		private IStorageProvider GetLocal()
+		{
+			string EnvRoot = @"C:\S\Gloobster\src\Portal\wwwroot";
+
 			var basePath = Path.Combine(EnvRoot, RepositoryDirectory);
-			Storage = new FileSystemStorageProvider(basePath);			
+			var storage = new FileSystemStorageProvider(basePath);
+			return storage;
 		}
 
 		public IStorageProvider Storage { get; set; }

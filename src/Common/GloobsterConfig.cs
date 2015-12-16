@@ -34,6 +34,6 @@ namespace Gloobster.Common
 		public static string FoursquareClientSecret { get; set; }
 
 		public static string MapBoxSecret { get; set; }
-		public static bool IsDebug { get; set; }
+		public static bool IsLocal { get; set; }
 	}
 }

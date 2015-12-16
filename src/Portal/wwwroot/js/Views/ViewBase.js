@@ -45,6 +45,7 @@ var Views;
             var self = this;
             var fbInit = new Reg.FacebookInit();
             fbInit.onFacebookInitialized = function () {
+                console.log("fb initialized");
                 self.loginManager.facebookUserCreator.registerOrLogin();
             };
             fbInit.initialize();

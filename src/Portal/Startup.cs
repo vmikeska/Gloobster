@@ -4,6 +4,7 @@ using Autofac.Extensions.DependencyInjection;
 using Gloobster.Common;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
+using Microsoft.Data.Entity.Query;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,10 +17,21 @@ namespace Gloobster.Portal
     {
         public Startup(IHostingEnvironment env)
         {
-			// Setup configuration sources.			
-	        var builder = new ConfigurationBuilder()
-		        .AddJsonFile("configRemote.json");
-				//.AddJsonFile("configLocal.json");
+			//http://stackoverflow.com/questions/28258227/how-to-set-ihostingenvironment-environmentname-in-vnext-application
+				 // Setup configuration sources.			
+			var builder = new ConfigurationBuilder();
+
+	        if (env.IsDevelopment())
+	        {
+				builder.AddJsonFile("configLocal.json");
+			}
+
+			if (env.IsProduction())
+			{
+				builder.AddJsonFile("configRemote.json");
+			}
+			
+			//.AddJsonFile("configLocal.json");
 			//.AddJsonFile($"config.{env.EnvironmentName}.json", optional: true);
 
 			if (env.IsDevelopment())
@@ -35,9 +47,10 @@ namespace Gloobster.Portal
         }
 
         public IConfiguration Configuration { get; set; }
+		
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+		// This method gets called by the runtime. Use this method to add services to the container.
+		public IServiceProvider ConfigureServices(IServiceCollection services)
         {
 	        LoadConfigFile();
 			
@@ -52,8 +65,10 @@ namespace Gloobster.Portal
 		
 		// Configure is called after ConfigureServices is called.
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
-        {
-			loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+		{
+			var logging = Configuration.GetSection("Logging");
+
+			loggerFactory.AddConsole(logging);
 			loggerFactory.AddDebug();
 
 			if (env.IsDevelopment())
@@ -113,7 +128,7 @@ namespace Gloobster.Portal
 			GloobsterConfig.MongoConnectionString = Configuration["Data:DefaultConnection:ConnectionString"];
 			GloobsterConfig.DatabaseName = Configuration["Data:DefaultConnection:DatabaseName"];
 			GloobsterConfig.Domain = Configuration["Environment:Domain"];
-			GloobsterConfig.IsDebug = bool.Parse(Configuration["Environment:IsDebug"]);
+			GloobsterConfig.IsLocal = bool.Parse(Configuration["Environment:IsLocal"]);
 
 			GloobsterConfig.AppSecret = Configuration["AppSecret"];
 

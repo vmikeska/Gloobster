@@ -82,7 +82,7 @@ namespace Gloobster.DomainModels
 		{
 			string link;
 
-			if (GloobsterConfig.IsDebug)
+			if (GloobsterConfig.IsLocal)
 			{
 				link = ShareMapImage.GeneratePinBoardMapLink(userId);
 			}

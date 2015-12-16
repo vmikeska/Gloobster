@@ -1,13 +1,13 @@
 {
   "Data": {
     "DefaultConnection": {
-      "ConnectionString": "mongodb://localhost:27017/Gloobster",      
+      "ConnectionString": "mongodb://localhost:27017/Gloobster",
       "DatabaseName": "Gloobster"
     }
   },
   "Environment": {
     "Domain": "localhost:54485",
-    "IsDebug": "true"
+    "IsLocal": "true"
   },
   "AppSecret": "ThisIsAppSecret",
   "Facebook": {
@@ -26,6 +26,14 @@
   },
   "Mapbox": {
     "Secret": "pk.eyJ1IjoiZ2xvb2JzdGVyIiwiYSI6ImQxZWY5MjRkZjU1NDk2MGU3OWI2OGRiM2U3NTM0MGYxIn0.nCG7hOsSQzb0c-_qzfTCRQ"
+  },
+  "Logging": {
+    "IncludeScopes": false,
+    "LogLevel": {
+      "Default": "Verbose",
+      "System": "Information",
+      "Microsoft": "Information"
+    }
   }
 
 

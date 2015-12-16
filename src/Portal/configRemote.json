@@ -1,24 +1,24 @@
 {
   "Data": {
-    "DefaultConnection": {      
+    "DefaultConnection": {
       "ConnectionString": "mongodb://GloobsterConnector:Gloobster007@ds036178.mongolab.com:36178/Gloobster",
       "DatabaseName": "Gloobster"
     }
   },
   "Environment": {
-    "Domain": "localhost:54485",
-    "IsDebug": "true"
+    "Domain": "gloob999.azurewebsites.net",
+    "IsLocal": "false"
   },
   "AppSecret": "ThisIsAppSecret",
   "Facebook": {
-    "AppId": "1717433995154818",
-    "AppSecret": "be78899641f3c7cc42b5931c8a390974"
+    "AppId": "1733987536832797",
+    "AppSecret": "f611db8cf677126506b87303d00d8422"
   },
   "Twitter": {
-    "ConsumerKey": "0gvTaCaKc4acKcMh1m1ah4tR6",
-    "ConsumerSecret": "sQURat6s73ApQbuQplogDY5jLJ9JSo57xE6qfZ7b81itxmWqJj",
-    "AccessToken": "1228562882-DaM75urty2GqQmLZ0T2nBqJQ5CL7iZcxVPHszi0",
-    "AccessTokenSecret": "qEAUzZnbvdtFJj51gAO0szMVlzCeCHenPBLEp3RRsj3zC"
+    "ConsumerKey": "fXLA4LSexOgjNH7QG6v5WKthZ",
+    "ConsumerSecret": "i7r2iTx5HpqORSMEIxdSmNnXMLcDR0PCKnw1WXSRhC7Hqx8M7w",
+    "AccessToken": "1228562882-mQkYBlZmXmbAUvsecbXeRbntW9lv9SXacAtjG3s",
+    "AccessTokenSecret": "3k5VSWAO2FHOtk21LlcEAAyWTw7dGBLeQNagXDot67mei"
   },
   "Foursquare": {
     "ClientId": "RW5T0GSXYHMN5W2P4DLPYEOR1UYXXKGIFDMNBBM15XE0MQZ1",
@@ -26,6 +26,14 @@
   },
   "Mapbox": {
     "Secret": "pk.eyJ1IjoiZ2xvb2JzdGVyIiwiYSI6ImQxZWY5MjRkZjU1NDk2MGU3OWI2OGRiM2U3NTM0MGYxIn0.nCG7hOsSQzb0c-_qzfTCRQ"
+  },
+  "Logging": {
+    "IncludeScopes": false,
+    "LogLevel": {
+      "Default": "Verbose",
+      "System": "Information",
+      "Microsoft": "Information"
+    }
   }
 
 
