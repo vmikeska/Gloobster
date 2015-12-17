@@ -15,28 +15,33 @@ using Gloobster.ReqRes.Files;
 using Gloobster.ReqRes.Trip;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
+using Newtonsoft.Json;
+using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.Trip
 {
 	public class TripFileController : BaseApiController
 	{		
-		public FilesDomain FileDomain { get; set; }
+		public IFilesDomain FileDomain { get; set; }
+		public ILogger Log { get; set; }
 
-		public TripFileController(IFilesDomain filesDomain, IDbOperations db) : base(db)
+		public TripFileController(ILogger log, IFilesDomain filesDomain, IDbOperations db) : base(db)
 		{			
-			FileDomain = (FilesDomain)filesDomain;
+			FileDomain = filesDomain;
+			Log = log;
 		}
 		
 		[HttpPost]
 		[Authorize]
 		public IActionResult Post([FromBody] TripFileRequest request)
-		{			
+		{
+			
 			var tripIdObj = new ObjectId(request.tripId);
-			var fileLocation = Path.Combine("Trips", request.tripId);
+			var fileLocation = FileDomain.Storage.Combine("trips", request.tripId);
 			var savedFileName = Guid.NewGuid().ToString().Replace("-", string.Empty);
 			
 			FileDomain.OnFileSaved += (sender, args) =>
-			{
+			{			
 				var argsObj = (OnFileSavedArgs) args;
 				
 				var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
@@ -61,7 +66,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 
 				var filter = DB.F<TripEntity>().Eq(p => p.id, tripIdObj);
 				var update = DB.U<TripEntity>().Push(p => p.Files, newFile);
-				DB.UpdateAsync(filter, update);		
+				DB.UpdateAsync(filter, update);
 			};
 
 			var filePartDo = new WriteFilePartDO
@@ -74,18 +79,18 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 				FileLocation = fileLocation,
 				FileType = request.type
 			};
-
+			
 			FileDomain.WriteFilePart(filePartDo);
 
 			List<FileResponse> response = null;
 
+			//todo: move to event above ?
 			if (request.filePartType == FilePartType.Last)
 			{
-				var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
-
+				var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);				
 				response = GetResponse(trip.Files);
 			}
-			
+
 			return new ObjectResult(response);
 		}
 

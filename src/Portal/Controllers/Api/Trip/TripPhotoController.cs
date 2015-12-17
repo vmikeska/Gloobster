@@ -24,7 +24,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 		[Authorize]
 		public IActionResult Post([FromBody] FileRequest request)
 		{
-			var fileLocation = "TripProfilePhoto";
+			var fileLocation = "tpf";
 			
 			var tripId = request.customId;
 			var tripIdObj = new ObjectId(tripId);
@@ -43,11 +43,15 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 			{
 				var trip = DB.C<TripEntity>().First(u => u.id == tripIdObj);
 
-				var pathToDelete = FileDomain.Storage.Combine(fileLocation, trip.Picture);
-				bool fileExists = FileDomain.Storage.FileExists(pathToDelete);
-				if (fileExists)
+				bool fileExists1 = (trip.Picture != null);
+				if (fileExists1)
 				{
-					FileDomain.Storage.DeleteFile(pathToDelete);
+					var pathToDelete = FileDomain.Storage.Combine(fileLocation, trip.Picture);
+					bool fileExists2 = FileDomain.Storage.FileExists(pathToDelete);
+					if (fileExists2)
+					{
+						FileDomain.Storage.DeleteFile(pathToDelete);
+					}
 				}
 			};
 

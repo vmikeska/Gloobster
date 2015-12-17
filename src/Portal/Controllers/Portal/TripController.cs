@@ -19,7 +19,7 @@ namespace Gloobster.Portal.Controllers.Portal
 {
 	public class TripController : PortalBaseController
 	{
-		public FilesDomain FileDomain { get; set; }
+		public IFilesDomain FileDomain { get; set; }
 		public ITripPlannerDomain TripPlanner { get; set; }
 
 		public ISharedMapImageDomain SharedImgDomain { get; set; }
@@ -27,7 +27,7 @@ namespace Gloobster.Portal.Controllers.Portal
 		public TripController(ISharedMapImageDomain sharedImgDomain, ITripPlannerDomain tripPlanner, IFilesDomain filesDomain, 
 			IDbOperations db) : base(db)
 		{
-			FileDomain = (FilesDomain)filesDomain;
+			FileDomain = filesDomain;
 			TripPlanner = tripPlanner;
 			SharedImgDomain = sharedImgDomain;
 		}
@@ -120,6 +120,7 @@ namespace Gloobster.Portal.Controllers.Portal
 			return RedirectToAction("Detail", "Trip", new {id = tripEntity.id.ToString() } );
 		}
 
+		//todo: change to normal ObjectId
 		private string NewId()
 		{
 			return Guid.NewGuid().ToString().Replace("-", string.Empty);
@@ -184,18 +185,7 @@ namespace Gloobster.Portal.Controllers.Portal
 			var participant = trip.Participants.FirstOrDefault(p => p.PortalUser_id == DBUserId);
 			return participant;
 		}
-
-		//private bool AlreadyJoined(TripEntity trip, ObjectId userId)
-		//{
-		//	if (IsUserAdmin(trip))
-		//	{
-		//		return true;
-		//	}
-
-		//	var participant = GetParticipant(trip, DBUserId);
-		//	return participant.State == ParticipantState.Accepted;
-		//}
-
+	
 		private bool IsUserAdmin(TripEntity trip)
 		{
 			bool isOwner = trip.PortalUser_id == DBUserId;
@@ -239,7 +229,7 @@ namespace Gloobster.Portal.Controllers.Portal
 				throw new Exception();
 			}
 
-			var dir = Path.Combine("Trips", tripId);
+			var dir = Path.Combine("trips", tripId);
 			var fileStream = FileDomain.GetFile(dir, fileToReturn.SavedFileName);
 
 

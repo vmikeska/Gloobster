@@ -37,6 +37,19 @@
           "lib/net451/Autofac.Extensions.DependencyInjection.dll": {}
         }
       },
+      "AutofacSerilogIntegration/1.0.10": {
+        "type": "package",
+        "dependencies": {
+          "Autofac": "3.5.2",
+          "Serilog": "1.5.7"
+        },
+        "compile": {
+          "lib/portable-net45+dnxcore50+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10/AutofacSerilogIntegration.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+dnxcore50+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10/AutofacSerilogIntegration.dll": {}
+        }
+      },
       "BlobFileSystem.Azure/0.0.6": {
         "type": "package",
         "dependencies": {
@@ -85,6 +98,7 @@
           "Gloobster.Sharing": "1.0.0",
           "Mappers": "1.0.0",
           "MongoDB.Driver": "2.2.0-rc0",
+          "Serilog.Framework.Logging": "1.0.0-rc1-final-10071",
           "SharpSquare": "1.0.0",
           "SocialLogin": "1.0.0",
           "System.Net.Http": "4.0.0",
@@ -100,6 +114,7 @@
         "dependencies": {
           "Autofac": "4.0.0-rc1-177",
           "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-177",
+          "BlobFileSystem.Azure": "0.0.6",
           "Common": "1.0.0",
           "Database": "1.0.0",
           "DomainObjects": "1.0.0",
@@ -232,6 +247,28 @@
         },
         "runtime": {
           "lib/net45/System.Interactive.Async.dll": {}
+        }
+      },
+      "loggly-csharp/4.5.1.7": {
+        "type": "package",
+        "dependencies": {
+          "loggly-csharp-config": "4.5.1.7",
+          "Newtonsoft.Json": "6.0.8"
+        },
+        "compile": {
+          "lib/net45/Loggly.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Loggly.dll": {}
+        }
+      },
+      "loggly-csharp-config/4.5.1.7": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Loggly.Config.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Loggly.Config.dll": {}
         }
       },
       "Mappers/1.0.0": {
@@ -2074,7 +2111,7 @@
           "lib/net45/MongoDB.Driver.Core.dll": {}
         }
       },
-      "Newtonsoft.Json/6.0.6": {
+      "Newtonsoft.Json/6.0.8": {
         "type": "package",
         "compile": {
           "lib/net45/Newtonsoft.Json.dll": {}
@@ -2098,6 +2135,50 @@
         "dependencies": {
           "Common": "1.0.0",
           "Enums": "1.0.0"
+        }
+      },
+      "Serilog/1.5.11": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Serilog.dll": {},
+          "lib/net45/Serilog.FullNetFx.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Serilog.dll": {},
+          "lib/net45/Serilog.FullNetFx.dll": {}
+        }
+      },
+      "Serilog.Framework.Logging/1.0.0-rc1-final-10071": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
+          "Serilog": "1.5.11"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core",
+          "System.Runtime"
+        ],
+        "compile": {
+          "lib/dnx451/Serilog.Framework.Logging.dll": {}
+        },
+        "runtime": {
+          "lib/dnx451/Serilog.Framework.Logging.dll": {}
+        }
+      },
+      "Serilog.Sinks.Loggly/2.0.7": {
+        "type": "package",
+        "dependencies": {
+          "loggly-csharp": "4.5.0.4",
+          "Serilog": "1.5.9"
+        },
+        "compile": {
+          "lib/net45/Serilog.Sinks.Loggly.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Serilog.Sinks.Loggly.dll": {}
         }
       },
       "SharpSquare/1.0.0": {
@@ -2465,6 +2546,19 @@
           "lib/net451/Autofac.Extensions.DependencyInjection.dll": {}
         }
       },
+      "AutofacSerilogIntegration/1.0.10": {
+        "type": "package",
+        "dependencies": {
+          "Autofac": "3.5.2",
+          "Serilog": "1.5.7"
+        },
+        "compile": {
+          "lib/portable-net45+dnxcore50+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10/AutofacSerilogIntegration.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+dnxcore50+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10/AutofacSerilogIntegration.dll": {}
+        }
+      },
       "BlobFileSystem.Azure/0.0.6": {
         "type": "package",
         "dependencies": {
@@ -2513,6 +2607,7 @@
           "Gloobster.Sharing": "1.0.0",
           "Mappers": "1.0.0",
           "MongoDB.Driver": "2.2.0-rc0",
+          "Serilog.Framework.Logging": "1.0.0-rc1-final-10071",
           "SharpSquare": "1.0.0",
           "SocialLogin": "1.0.0",
           "System.Net.Http": "4.0.0",
@@ -2528,6 +2623,7 @@
         "dependencies": {
           "Autofac": "4.0.0-rc1-177",
           "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-177",
+          "BlobFileSystem.Azure": "0.0.6",
           "Common": "1.0.0",
           "Database": "1.0.0",
           "DomainObjects": "1.0.0",
@@ -2660,6 +2756,28 @@
         },
         "runtime": {
           "lib/net45/System.Interactive.Async.dll": {}
+        }
+      },
+      "loggly-csharp/4.5.1.7": {
+        "type": "package",
+        "dependencies": {
+          "loggly-csharp-config": "4.5.1.7",
+          "Newtonsoft.Json": "6.0.8"
+        },
+        "compile": {
+          "lib/net45/Loggly.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Loggly.dll": {}
+        }
+      },
+      "loggly-csharp-config/4.5.1.7": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Loggly.Config.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Loggly.Config.dll": {}
         }
       },
       "Mappers/1.0.0": {
@@ -4505,7 +4623,7 @@
           "lib/net45/MongoDB.Driver.Core.dll": {}
         }
       },
-      "Newtonsoft.Json/6.0.6": {
+      "Newtonsoft.Json/6.0.8": {
         "type": "package",
         "compile": {
           "lib/net45/Newtonsoft.Json.dll": {}
@@ -4529,6 +4647,50 @@
         "dependencies": {
           "Common": "1.0.0",
           "Enums": "1.0.0"
+        }
+      },
+      "Serilog/1.5.11": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Serilog.dll": {},
+          "lib/net45/Serilog.FullNetFx.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Serilog.dll": {},
+          "lib/net45/Serilog.FullNetFx.dll": {}
+        }
+      },
+      "Serilog.Framework.Logging/1.0.0-rc1-final-10071": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
+          "Serilog": "1.5.11"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core",
+          "System.Runtime"
+        ],
+        "compile": {
+          "lib/dnx451/Serilog.Framework.Logging.dll": {}
+        },
+        "runtime": {
+          "lib/dnx451/Serilog.Framework.Logging.dll": {}
+        }
+      },
+      "Serilog.Sinks.Loggly/2.0.7": {
+        "type": "package",
+        "dependencies": {
+          "loggly-csharp": "4.5.0.4",
+          "Serilog": "1.5.9"
+        },
+        "compile": {
+          "lib/net45/Serilog.Sinks.Loggly.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Serilog.Sinks.Loggly.dll": {}
         }
       },
       "SharpSquare/1.0.0": {
@@ -4896,6 +5058,19 @@
           "lib/net451/Autofac.Extensions.DependencyInjection.dll": {}
         }
       },
+      "AutofacSerilogIntegration/1.0.10": {
+        "type": "package",
+        "dependencies": {
+          "Autofac": "3.5.2",
+          "Serilog": "1.5.7"
+        },
+        "compile": {
+          "lib/portable-net45+dnxcore50+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10/AutofacSerilogIntegration.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+dnxcore50+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10/AutofacSerilogIntegration.dll": {}
+        }
+      },
       "BlobFileSystem.Azure/0.0.6": {
         "type": "package",
         "dependencies": {
@@ -4944,6 +5119,7 @@
           "Gloobster.Sharing": "1.0.0",
           "Mappers": "1.0.0",
           "MongoDB.Driver": "2.2.0-rc0",
+          "Serilog.Framework.Logging": "1.0.0-rc1-final-10071",
           "SharpSquare": "1.0.0",
           "SocialLogin": "1.0.0",
           "System.Net.Http": "4.0.0",
@@ -4959,6 +5135,7 @@
         "dependencies": {
           "Autofac": "4.0.0-rc1-177",
           "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-177",
+          "BlobFileSystem.Azure": "0.0.6",
           "Common": "1.0.0",
           "Database": "1.0.0",
           "DomainObjects": "1.0.0",
@@ -5091,6 +5268,28 @@
         },
         "runtime": {
           "lib/net45/System.Interactive.Async.dll": {}
+        }
+      },
+      "loggly-csharp/4.5.1.7": {
+        "type": "package",
+        "dependencies": {
+          "loggly-csharp-config": "4.5.1.7",
+          "Newtonsoft.Json": "6.0.8"
+        },
+        "compile": {
+          "lib/net45/Loggly.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Loggly.dll": {}
+        }
+      },
+      "loggly-csharp-config/4.5.1.7": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Loggly.Config.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Loggly.Config.dll": {}
         }
       },
       "Mappers/1.0.0": {
@@ -6936,7 +7135,7 @@
           "lib/net45/MongoDB.Driver.Core.dll": {}
         }
       },
-      "Newtonsoft.Json/6.0.6": {
+      "Newtonsoft.Json/6.0.8": {
         "type": "package",
         "compile": {
           "lib/net45/Newtonsoft.Json.dll": {}
@@ -6960,6 +7159,50 @@
         "dependencies": {
           "Common": "1.0.0",
           "Enums": "1.0.0"
+        }
+      },
+      "Serilog/1.5.11": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Serilog.dll": {},
+          "lib/net45/Serilog.FullNetFx.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Serilog.dll": {},
+          "lib/net45/Serilog.FullNetFx.dll": {}
+        }
+      },
+      "Serilog.Framework.Logging/1.0.0-rc1-final-10071": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
+          "Serilog": "1.5.11"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core",
+          "System.Runtime"
+        ],
+        "compile": {
+          "lib/dnx451/Serilog.Framework.Logging.dll": {}
+        },
+        "runtime": {
+          "lib/dnx451/Serilog.Framework.Logging.dll": {}
+        }
+      },
+      "Serilog.Sinks.Loggly/2.0.7": {
+        "type": "package",
+        "dependencies": {
+          "loggly-csharp": "4.5.0.4",
+          "Serilog": "1.5.9"
+        },
+        "compile": {
+          "lib/net45/Serilog.Sinks.Loggly.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Serilog.Sinks.Loggly.dll": {}
         }
       },
       "SharpSquare/1.0.0": {
@@ -7378,6 +7621,16 @@
         "lib/netcore50/Autofac.Extensions.DependencyInjection.xml"
       ]
     },
+    "AutofacSerilogIntegration/1.0.10": {
+      "type": "package",
+      "sha512": "bRUzIzRSAAijqWg7ldLrZoQc/Mi6k8QwNxEgR5PE2DultcA6gBqEq1RYB/EHRbmQU0NAPOzlphwz+dLvNtIajQ==",
+      "files": [
+        "AutofacSerilogIntegration.1.0.10.nupkg",
+        "AutofacSerilogIntegration.1.0.10.nupkg.sha512",
+        "AutofacSerilogIntegration.nuspec",
+        "lib/portable-net45+dnxcore50+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10/AutofacSerilogIntegration.dll"
+      ]
+    },
     "BlobFileSystem.Azure/0.0.6": {
       "type": "package",
       "sha512": "61YPN8dFsh1sfzvURtMEA7Svv1f5KwR8UKNyG9x6H1OnUR9HqOyCnRWPIbNUl67BSfnDHANJzDXFCnWpSyP8Fw==",
@@ -7465,6 +7718,28 @@
         "lib/net45/System.Interactive.Async.XML",
         "lib/portable-windows8+net45+wp8/System.Interactive.Async.dll",
         "lib/portable-windows8+net45+wp8/System.Interactive.Async.XML"
+      ]
+    },
+    "loggly-csharp/4.5.1.7": {
+      "type": "package",
+      "sha512": "RHAWc/tqVNldNY4gu19gnNeC9a17vsT4azMlpH14tkyCF/uAekhj5BMlj5ZBJgY8WfpGJ5pVt5xFoZ+5QFtY6w==",
+      "files": [
+        "lib/net45/Loggly.dll",
+        "lib/net45/Loggly.pdb",
+        "loggly-csharp.4.5.1.7.nupkg",
+        "loggly-csharp.4.5.1.7.nupkg.sha512",
+        "loggly-csharp.nuspec"
+      ]
+    },
+    "loggly-csharp-config/4.5.1.7": {
+      "type": "package",
+      "sha512": "TBvtjzLbJOOlJ7obo4qfHCXC8NFMI9l7Uq24QdXpdv6n5zHO7F4dvnCYmyR6YXiSSbEg409FC7324ZeIm2V1oA==",
+      "files": [
+        "lib/net45/Loggly.Config.dll",
+        "lib/net45/Loggly.Config.pdb",
+        "loggly-csharp-config.4.5.1.7.nupkg",
+        "loggly-csharp-config.4.5.1.7.nupkg.sha512",
+        "loggly-csharp-config.nuspec"
       ]
     },
     "Microsoft.AspNet.Antiforgery/1.0.0-rc1-final": {
@@ -8944,9 +9219,9 @@
         "MongoDB.Driver.Core.nuspec"
       ]
     },
-    "Newtonsoft.Json/6.0.6": {
+    "Newtonsoft.Json/6.0.8": {
       "type": "package",
-      "sha512": "w26uZNyCG5VeoKiEOJ4+9/o8koSofLKwHl7WLreIcp0U6r57L7WiRXmjp8MTKFw6dYNZ9AE0lw69WYbIhUsU9Q==",
+      "sha512": "7ut47NDedTW19EbL0JpFDYUP62fcuz27hJrehCDNajdCS5NtqL+E39+7Um3OkNc2wl2ym7K8Ln5eNuLus6mVGQ==",
       "files": [
         "lib/net20/Newtonsoft.Json.dll",
         "lib/net20/Newtonsoft.Json.xml",
@@ -8962,8 +9237,8 @@
         "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.xml",
         "lib/portable-net45+wp80+win8+wpa81+aspnetcore50/Newtonsoft.Json.dll",
         "lib/portable-net45+wp80+win8+wpa81+aspnetcore50/Newtonsoft.Json.xml",
-        "Newtonsoft.Json.6.0.6.nupkg",
-        "Newtonsoft.Json.6.0.6.nupkg.sha512",
+        "Newtonsoft.Json.6.0.8.nupkg",
+        "Newtonsoft.Json.6.0.8.nupkg.sha512",
         "Newtonsoft.Json.nuspec",
         "tools/install.ps1"
       ]
@@ -8983,6 +9258,54 @@
         "Remotion.Linq.2.0.1.nupkg",
         "Remotion.Linq.2.0.1.nupkg.sha512",
         "Remotion.Linq.nuspec"
+      ]
+    },
+    "Serilog/1.5.11": {
+      "type": "package",
+      "sha512": "XNMHuP9eRWk7ffNtEAtACoBqqrSGfioQnEbeK/boi/qtamh3ZgYXvUwH9/PytJdg3LGOIT0quyTiCNaqYlJUuQ==",
+      "files": [
+        "lib/net40/Serilog.dll",
+        "lib/net40/Serilog.FullNetFx.dll",
+        "lib/net40/Serilog.FullNetFx.pdb",
+        "lib/net40/Serilog.FullNetFx.XML",
+        "lib/net40/Serilog.pdb",
+        "lib/net40/Serilog.XML",
+        "lib/net45/Serilog.dll",
+        "lib/net45/Serilog.FullNetFx.dll",
+        "lib/net45/Serilog.FullNetFx.pdb",
+        "lib/net45/Serilog.FullNetFx.XML",
+        "lib/net45/Serilog.pdb",
+        "lib/net45/Serilog.XML",
+        "lib/portable-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10/Serilog.dll",
+        "lib/portable-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10/Serilog.pdb",
+        "lib/portable-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10/Serilog.XML",
+        "Serilog.1.5.11.nupkg",
+        "Serilog.1.5.11.nupkg.sha512",
+        "Serilog.nuspec"
+      ]
+    },
+    "Serilog.Framework.Logging/1.0.0-rc1-final-10071": {
+      "type": "package",
+      "sha512": "RyB8mv2eL0xYISh7v2+62as9Whdx8WOeqfSPXcac3mRLIW3XHY0LCbKDGwIA1pDbn+AAmAa6IR7+6wmI7mI93g==",
+      "files": [
+        "lib/dnx451/Serilog.Framework.Logging.dll",
+        "lib/dnx451/Serilog.Framework.Logging.xml",
+        "lib/dnxcore50/Serilog.Framework.Logging.dll",
+        "lib/dnxcore50/Serilog.Framework.Logging.xml",
+        "Serilog.Framework.Logging.1.0.0-rc1-final-10071.nupkg",
+        "Serilog.Framework.Logging.1.0.0-rc1-final-10071.nupkg.sha512",
+        "Serilog.Framework.Logging.nuspec"
+      ]
+    },
+    "Serilog.Sinks.Loggly/2.0.7": {
+      "type": "package",
+      "sha512": "KJ2uZYTqdM5xy8/gtz8qtAD1VTQYJteqd7ugLQIxS2I1VjGudRjSTxZkp6YFJ2121dL8tH6fg14f4W8m5WkEug==",
+      "files": [
+        "lib/net45/Serilog.Sinks.Loggly.dll",
+        "lib/net45/Serilog.Sinks.Loggly.xml",
+        "Serilog.Sinks.Loggly.2.0.7.nupkg",
+        "Serilog.Sinks.Loggly.2.0.7.nupkg.sha512",
+        "Serilog.Sinks.Loggly.nuspec"
       ]
     },
     "System.Collections/4.0.0": {
@@ -9984,7 +10307,11 @@
       "WebApiObjects >= 1.0.0-*",
       "ReqRes >= 1.0.0-*",
       "Autofac >= 4.0.0-rc1-177",
-      "Autofac.Extensions.DependencyInjection >= 4.0.0-rc1-177"
+      "Autofac.Extensions.DependencyInjection >= 4.0.0-rc1-177",
+      "Serilog.Framework.Logging >= 1.0.0-rc1-final-10071",
+      "Serilog.Sinks.Loggly >= 2.0.7",
+      "loggly-csharp >= 4.5.1.7",
+      "AutofacSerilogIntegration >= 1.0.10"
     ],
     "DNX,Version=v4.5.1": []
   }

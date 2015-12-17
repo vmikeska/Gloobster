@@ -1,8 +1,10 @@
-﻿using Gloobster.Common;
+﻿using System.IO;
+using Gloobster.Common;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using System.Linq;
 using Gloobster.Database;
+using Gloobster.DomainInterfaces;
 using Gloobster.Entities;
 using Gloobster.Enums;
 using Gloobster.Portal.Controllers.Base;
@@ -12,10 +14,11 @@ namespace Gloobster.Portal.Controllers.Portal
 {
 	public class PortalUserController : PortalBaseController
 	{
-		
-		public PortalUserController(IDbOperations db) : base(db)
+		public IFilesDomain FileDomain { get; set; }
+
+		public PortalUserController(IFilesDomain filesDomain, IDbOperations db) : base(db)
 		{
-		
+			FileDomain = filesDomain;
 		}
 		
 		public IActionResult Detail()
@@ -24,21 +27,31 @@ namespace Gloobster.Portal.Controllers.Portal
 		}
 
 		public IActionResult Settings()
-		{			
-			var portalUser = DB.C<PortalUserEntity>().First(p => p.id == DBUserId);
-			var avatarsDir = "~/FileRepository/Avatars/";
+		{
+			var viewModel = CreateViewModelInstance<SettingsViewModel>();
+			viewModel.AvatarLink = "/PortalUser/ProfilePicture";				
+			viewModel.DisplayName = PortalUser.DisplayName;
+			viewModel.Gender = GetGenderStr(PortalUser.Gender);
+			viewModel.CurrentLocation = FormatCityStr(PortalUser.CurrentLocation);
+			viewModel.HomeLocation = FormatCityStr(PortalUser.HomeLocation);
 
-			
-
-			var viewModel = CreateViewModelInstance<SettingsViewModel>();			
-			viewModel.AvatarLink = avatarsDir + portalUser.ProfileImage;
-			viewModel.DisplayName = portalUser.DisplayName;
-			viewModel.Gender = GetGenderStr(portalUser.Gender);
-			viewModel.CurrentLocation = FormatCityStr(portalUser.CurrentLocation);
-			viewModel.HomeLocation = FormatCityStr(portalUser.HomeLocation);
-			
 			return View(viewModel);
 		}
+
+		public IActionResult ProfilePicture()
+		{
+			var fileLocation = "avatars";
+			var filePath = FileDomain.Storage.Combine(fileLocation, PortalUser.ProfileImage);
+			bool exists = FileDomain.Storage.FileExists(filePath);
+			if (exists)
+			{
+				var fileStream = FileDomain.GetFile(fileLocation, PortalUser.ProfileImage);				
+				return new FileStreamResult(fileStream, "image/jpeg");
+			}
+
+			return new ObjectResult("");
+		}
+	
 
 		public IActionResult Notifications()
 		{
@@ -55,6 +68,11 @@ namespace Gloobster.Portal.Controllers.Portal
 
 		private string FormatCityStr(CityLocationSE city)
 		{
+			if (city == null)
+			{
+				return "";
+			}
+
 			return $"{city.City}, {city.CountryCode}";
 		}
 		

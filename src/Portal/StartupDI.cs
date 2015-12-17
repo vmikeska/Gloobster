@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Builder;
+using AzureBlobFileSystem;
 using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
@@ -26,6 +27,11 @@ namespace Gloobster.Portal
 	{
 		protected override void Load(ContainerBuilder builder)
 		{
+			var storageCreation = new StorageCreation();			
+			var storage = storageCreation.GetInstance(GloobsterConfig.IsLocal);
+			builder.AddInstance<IStorageProvider>(storage);
+
+
 			builder.AddTransient<IUserService, UserService>();
 			builder.AddTransient<IAccountDriver, FacebookAccountDriver>().Keyed<IAccountDriver>("Facebook");
 			builder.AddTransient<IAccountDriver, TwitterAccountDriver>().Keyed<IAccountDriver>("Twitter");
@@ -91,8 +97,7 @@ namespace Gloobster.Portal
 
 			builder.AddInstance<ICountryService>(new CountryService());
 		}
-
-
+		
 	}
 
 	public static class Exts

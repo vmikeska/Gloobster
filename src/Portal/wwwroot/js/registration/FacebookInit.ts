@@ -8,11 +8,10 @@ module Reg {
 			this.sdkLoad(document);
 		}
 
-
 		sdkLoad(doc) {
 			var scriptElementName = 'script';
 			var scriptElementId = 'facebook-jssdk';
-			var src = "//connect.facebook.net/en_US/sdk.js";
+			var src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5";
 
 			var scriptElem = doc.getElementById(scriptElementId);
 			var isSdkAlreadyLoaded = scriptElem != null;

@@ -38,7 +38,11 @@
     "WebApiObjects": "1.0.0-*",
     "ReqRes": "1.0.0-*",
     "Autofac": "4.0.0-rc1-177",
-    "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-177"
+    "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-177",
+    "Serilog.Framework.Logging": "1.0.0-rc1-final-10071",
+    "Serilog.Sinks.Loggly": "2.0.7",
+    "loggly-csharp": "4.5.1.7",
+    "AutofacSerilogIntegration": "1.0.10"
   },
 
 

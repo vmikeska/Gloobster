@@ -85,6 +85,7 @@
           "Gloobster.Sharing": "1.0.0",
           "Mappers": "1.0.0",
           "MongoDB.Driver": "2.2.0-rc0",
+          "Serilog.Framework.Logging": "1.0.0-rc1-final-10071",
           "SharpSquare": "1.0.0",
           "SocialLogin": "1.0.0",
           "System.Net.Http": "4.0.0",
@@ -100,6 +101,7 @@
         "dependencies": {
           "Autofac": "4.0.0-rc1-177",
           "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-177",
+          "BlobFileSystem.Azure": "0.0.6",
           "Common": "1.0.0",
           "Database": "1.0.0",
           "DomainObjects": "1.0.0",
@@ -1470,6 +1472,37 @@
         "dependencies": {
           "Common": "1.0.0",
           "Enums": "1.0.0"
+        }
+      },
+      "Serilog/1.5.11": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Serilog.dll": {},
+          "lib/net45/Serilog.FullNetFx.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Serilog.dll": {},
+          "lib/net45/Serilog.FullNetFx.dll": {}
+        }
+      },
+      "Serilog.Framework.Logging/1.0.0-rc1-final-10071": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
+          "Serilog": "1.5.11"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core",
+          "System.Runtime"
+        ],
+        "compile": {
+          "lib/dnx451/Serilog.Framework.Logging.dll": {}
+        },
+        "runtime": {
+          "lib/dnx451/Serilog.Framework.Logging.dll": {}
         }
       },
       "SharpSquare/1.0.0": {
@@ -1985,6 +2018,7 @@
           "Gloobster.Sharing": "1.0.0",
           "Mappers": "1.0.0",
           "MongoDB.Driver": "2.2.0-rc0",
+          "Serilog.Framework.Logging": "1.0.0-rc1-final-10071",
           "SharpSquare": "1.0.0",
           "SocialLogin": "1.0.0",
           "System.Net.Http": "4.0.0",
@@ -2000,6 +2034,7 @@
         "dependencies": {
           "Autofac": "4.0.0-rc1-177",
           "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-177",
+          "BlobFileSystem.Azure": "0.0.6",
           "Common": "1.0.0",
           "Database": "1.0.0",
           "DomainObjects": "1.0.0",
@@ -3370,6 +3405,37 @@
         "dependencies": {
           "Common": "1.0.0",
           "Enums": "1.0.0"
+        }
+      },
+      "Serilog/1.5.11": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Serilog.dll": {},
+          "lib/net45/Serilog.FullNetFx.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Serilog.dll": {},
+          "lib/net45/Serilog.FullNetFx.dll": {}
+        }
+      },
+      "Serilog.Framework.Logging/1.0.0-rc1-final-10071": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
+          "Serilog": "1.5.11"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core",
+          "System.Runtime"
+        ],
+        "compile": {
+          "lib/dnx451/Serilog.Framework.Logging.dll": {}
+        },
+        "runtime": {
+          "lib/dnx451/Serilog.Framework.Logging.dll": {}
         }
       },
       "SharpSquare/1.0.0": {
@@ -3885,6 +3951,7 @@
           "Gloobster.Sharing": "1.0.0",
           "Mappers": "1.0.0",
           "MongoDB.Driver": "2.2.0-rc0",
+          "Serilog.Framework.Logging": "1.0.0-rc1-final-10071",
           "SharpSquare": "1.0.0",
           "SocialLogin": "1.0.0",
           "System.Net.Http": "4.0.0",
@@ -3900,6 +3967,7 @@
         "dependencies": {
           "Autofac": "4.0.0-rc1-177",
           "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-177",
+          "BlobFileSystem.Azure": "0.0.6",
           "Common": "1.0.0",
           "Database": "1.0.0",
           "DomainObjects": "1.0.0",
@@ -5270,6 +5338,37 @@
         "dependencies": {
           "Common": "1.0.0",
           "Enums": "1.0.0"
+        }
+      },
+      "Serilog/1.5.11": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Serilog.dll": {},
+          "lib/net45/Serilog.FullNetFx.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Serilog.dll": {},
+          "lib/net45/Serilog.FullNetFx.dll": {}
+        }
+      },
+      "Serilog.Framework.Logging/1.0.0-rc1-final-10071": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
+          "Serilog": "1.5.11"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core",
+          "System.Runtime"
+        ],
+        "compile": {
+          "lib/dnx451/Serilog.Framework.Logging.dll": {}
+        },
+        "runtime": {
+          "lib/dnx451/Serilog.Framework.Logging.dll": {}
         }
       },
       "SharpSquare/1.0.0": {
@@ -6899,6 +6998,43 @@
         "Newtonsoft.Json.7.0.1.nupkg.sha512",
         "Newtonsoft.Json.nuspec",
         "tools/install.ps1"
+      ]
+    },
+    "Serilog/1.5.11": {
+      "type": "package",
+      "sha512": "XNMHuP9eRWk7ffNtEAtACoBqqrSGfioQnEbeK/boi/qtamh3ZgYXvUwH9/PytJdg3LGOIT0quyTiCNaqYlJUuQ==",
+      "files": [
+        "lib/net40/Serilog.dll",
+        "lib/net40/Serilog.FullNetFx.dll",
+        "lib/net40/Serilog.FullNetFx.pdb",
+        "lib/net40/Serilog.FullNetFx.XML",
+        "lib/net40/Serilog.pdb",
+        "lib/net40/Serilog.XML",
+        "lib/net45/Serilog.dll",
+        "lib/net45/Serilog.FullNetFx.dll",
+        "lib/net45/Serilog.FullNetFx.pdb",
+        "lib/net45/Serilog.FullNetFx.XML",
+        "lib/net45/Serilog.pdb",
+        "lib/net45/Serilog.XML",
+        "lib/portable-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10/Serilog.dll",
+        "lib/portable-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10/Serilog.pdb",
+        "lib/portable-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10/Serilog.XML",
+        "Serilog.1.5.11.nupkg",
+        "Serilog.1.5.11.nupkg.sha512",
+        "Serilog.nuspec"
+      ]
+    },
+    "Serilog.Framework.Logging/1.0.0-rc1-final-10071": {
+      "type": "package",
+      "sha512": "RyB8mv2eL0xYISh7v2+62as9Whdx8WOeqfSPXcac3mRLIW3XHY0LCbKDGwIA1pDbn+AAmAa6IR7+6wmI7mI93g==",
+      "files": [
+        "lib/dnx451/Serilog.Framework.Logging.dll",
+        "lib/dnx451/Serilog.Framework.Logging.xml",
+        "lib/dnxcore50/Serilog.Framework.Logging.dll",
+        "lib/dnxcore50/Serilog.Framework.Logging.xml",
+        "Serilog.Framework.Logging.1.0.0-rc1-final-10071.nupkg",
+        "Serilog.Framework.Logging.1.0.0-rc1-final-10071.nupkg.sha512",
+        "Serilog.Framework.Logging.nuspec"
       ]
     },
     "System.Collections/4.0.0": {

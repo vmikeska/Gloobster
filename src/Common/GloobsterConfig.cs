@@ -35,5 +35,8 @@ namespace Gloobster.Common
 
 		public static string MapBoxSecret { get; set; }
 		public static bool IsLocal { get; set; }
+
+		public static string StorageConnectionString { get; set; }
+		public static string StorageRootDir { get; set; }
 	}
 }

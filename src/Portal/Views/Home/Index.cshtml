@@ -102,12 +102,24 @@
 
 
 									@*faked this way, have to check if legal: http://stackoverflow.com/questions/9810335/how-to-change-facebook-login-button-with-my-custom-image*@
-										<a class="facebook" href="javascript:currentView.loginManager.facebookUserCreator.login()">Sign in with Facebook</a>
+
+										<div id="fb-root"></div>
+									<div
+										onlogin="currentView.loginManager.facebookUserCreator.registerOrLogin()"
+										class="fb-login-button"
+										data-scope="user_tagged_places,publish_actions,user_location,user_hometown,public_profile,user_friends,email"
+										data-max-rows="1"
+										data-size="xlarge"
+										data-show-faces="false"
+										data-auto-logout-link="false">
+										
+									</div>
+
+									@*<a class="facebook" href="javascript:currentView.loginManager.facebookUserCreator.login()">Sign in with Facebook</a>*@
+
+									
 										<a class="twitter" href="javascript:clickAuthorize()">Sign in with Twitter</a>
 										<a id="googleLoginBtnHome" class="google" href="#">Sign in with Google</a>
-
-										@*<fb:login-button scope="user_tagged_places,publish_actions,user_location,user_hometown,user_friends,email" onlogin="FB.refreshLoginStatus();">
-										</fb:login-button>*@
 
 								</div>
 								<span class="email">

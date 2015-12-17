@@ -23,7 +23,7 @@ namespace Gloobster.Portal.Controllers.Api.User
 		[Authorize]
 		public IActionResult Post([FromBody] FileRequest request)
 		{
-			var fileLocation = "Avatars";
+			var fileLocation = "avatars";
 			
 			FileDomain.OnFileSaved += (sender, args) =>
 			{

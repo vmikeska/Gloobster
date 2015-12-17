@@ -1,24 +1,26 @@
 ﻿using System;
 using Autofac;
-using Autofac.Extensions.DependencyInjection;
 using Gloobster.Common;
+using Serilog;
+using Loggly.Config;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
-using Microsoft.Data.Entity.Query;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
-
-
+using Microsoft.Extensions.Logging;
+using AutofacSerilogIntegration;
+using Autofac.Extensions.DependencyInjection;
 
 namespace Gloobster.Portal
 {
 	public class Startup
     {
-        public Startup(IHostingEnvironment env)
-        {
+		public IConfiguration Configuration { get; set; }
+
+		public Startup(IHostingEnvironment env)
+		{
 			//http://stackoverflow.com/questions/28258227/how-to-set-ihostingenvironment-environmentname-in-vnext-application
-				 // Setup configuration sources.			
+			// Setup configuration sources.			
 			var builder = new ConfigurationBuilder();
 
 	        if (env.IsDevelopment())
@@ -29,6 +31,21 @@ namespace Gloobster.Portal
 			if (env.IsProduction())
 			{
 				builder.AddJsonFile("configRemote.json");
+				
+				Log.Logger = new LoggerConfiguration()
+				.MinimumLevel.Debug()
+				.WriteTo.Loggly()
+				.CreateLogger();
+				//https://github.com/neutmute/loggly-csharp
+				LogglyConfig.Instance.ApplicationName = "gloobster";
+				LogglyConfig.Instance.CustomerToken = "5be61d53-19c9-4e23-ad50-1300065b591a";
+				LogglyConfig.Instance.Transport = new TransportConfiguration
+				{
+					EndpointHostname = "logs-01.loggly.com",
+					EndpointPort = 443,
+					LogTransport = LogTransport.Https
+				};
+				LogglyConfig.Instance.ThrowExceptions = true;				
 			}
 			
 			//.AddJsonFile("configLocal.json");
@@ -41,14 +58,9 @@ namespace Gloobster.Portal
                 builder.AddUserSecrets();
             }
             builder.AddEnvironmentVariables();
-            Configuration = builder.Build();
-
-			
+            Configuration = builder.Build();			
         }
-
-        public IConfiguration Configuration { get; set; }
 		
-
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public IServiceProvider ConfigureServices(IServiceCollection services)
         {
@@ -66,10 +78,11 @@ namespace Gloobster.Portal
 		// Configure is called after ConfigureServices is called.
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
 		{
-			var logging = Configuration.GetSection("Logging");
+			loggerFactory.AddSerilog();
 
-			loggerFactory.AddConsole(logging);
-			loggerFactory.AddDebug();
+			//var logging = Configuration.GetSection("Logging");
+			//loggerFactory.AddConsole(logging);
+			//loggerFactory.AddDebug();
 
 			if (env.IsDevelopment())
 			{
@@ -104,6 +117,10 @@ namespace Gloobster.Portal
 		private IServiceProvider InitalizeAutofac(IServiceCollection services)
 		{
 			var builder = new ContainerBuilder();
+			
+			//https://github.com/nblumhardt/autofac-serilog-integration
+			builder.RegisterLogger();
+			
 			// Add any Autofac modules or registrations.
 			builder.RegisterModule(new AutofacModule());
 			// Populate the services.			
@@ -116,15 +133,6 @@ namespace Gloobster.Portal
 
 		private void LoadConfigFile()
 		{
-			//var config = new GloobsterConfig
-			//{
-			//	MongoConnectionString = Configuration["Data:DefaultConnection:ConnectionString"],
-			//	DatabaseName = Configuration["Data:DefaultConnection:DatabaseName"],
-			//	AppSecret = Configuration["AppSecret"]
-			//};
-
-			//services.AddInstance<IGloobsterConfig>(config);
-
 			GloobsterConfig.MongoConnectionString = Configuration["Data:DefaultConnection:ConnectionString"];
 			GloobsterConfig.DatabaseName = Configuration["Data:DefaultConnection:DatabaseName"];
 			GloobsterConfig.Domain = Configuration["Environment:Domain"];
@@ -144,6 +152,9 @@ namespace Gloobster.Portal
 			GloobsterConfig.FoursquareClientSecret = Configuration["Foursquare:ClientSecret"];
 
 			GloobsterConfig.MapBoxSecret = Configuration["Mapbox:Secret"];
+
+			GloobsterConfig.StorageConnectionString = Configuration["Storage:ConnectionString"];
+			GloobsterConfig.StorageRootDir = Configuration["Storage:RootDir"];
 
 		}
 

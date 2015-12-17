@@ -8,64 +8,32 @@ using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
 using Gloobster.Enums;
-using Microsoft.AspNet.Hosting;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
+using Serilog;
 
 namespace Gloobster.DomainModels
 {
 	//https://github.com/pofider/AzureBlobFileSystem
 	public class FilesDomain: IFilesDomain
 	{
-		public IDbOperations DB { get; set; }		
-
-		public event EventHandler OnFileSaved = delegate { };
-		public event EventHandler OnBeforeCreate = delegate { };
-
-		
-		public const string RepositoryDirectory = "FileRepository";
-		public const string TempFolder = "TempFolder";
-
-		private string TempFolderPath => Storage.Combine(TempFolder, UserId);
-
-		public FilesDomain()
-		{
-			if (GloobsterConfig.IsLocal)
-			{
-				Storage = GetLocal();
-			}
-			else
-			{
-				Storage = GetAzure();
-			}		
-		}
-
-		private IStorageProvider GetAzure()
-		{
-			var cred = new StorageCredentials("gloobster");			
-			var account = new CloudStorageAccount(cred, false);
-			
-			var storage = new AzureBlobStorageProvider(account);
-			return storage;
-		}
-
-		private IStorageProvider GetLocal()
-		{
-			string EnvRoot = @"C:\S\Gloobster\src\Portal\wwwroot";
-
-			var basePath = Path.Combine(EnvRoot, RepositoryDirectory);
-			var storage = new FileSystemStorageProvider(basePath);
-			return storage;
-		}
-
+		public IDbOperations DB { get; set; }
+		public ILogger Log { get; set; }
 		public IStorageProvider Storage { get; set; }
-
+		
 		public string TargetDirectory { get; set; }
 		public string OriginaFileName { get; set; }
 		public string CustomFileName { get; set; }
 		public string UserId { get; set; }
 		public string FileType { get; set; }
 
+		public event EventHandler OnFileSaved = delegate { };
+		public event EventHandler OnBeforeCreate = delegate { };
+		
+		public const string TempFolder = "tempfolder";
+
+		private string TempFolderPath => Storage.Combine(TempFolder, UserId);
+		
 		public Stream GetFile(string fileDirectory, string fileName)
 		{
 			string storageFilePath = Storage.Combine(fileDirectory, fileName);
@@ -85,31 +53,41 @@ namespace Gloobster.DomainModels
 
 		public void WriteFilePart(WriteFilePartDO filePart)
 		{
-			UserId = filePart.UserId;
-			TargetDirectory = filePart.FileLocation;
-			OriginaFileName = filePart.FileName;
-			CustomFileName = filePart.CustomFileName;
-			FileType = filePart.FileType;
-
-			var dataObj = SplitData(filePart.Data);
-			
-			if (filePart.FilePart == FilePartType.First)
+			try
 			{
-				CleanFilePartsCache();	
-				SaveFilePart(dataObj.Data);
+				UserId = filePart.UserId;
+				TargetDirectory = filePart.FileLocation;
+				OriginaFileName = filePart.FileName;
+				CustomFileName = filePart.CustomFileName;
+				FileType = filePart.FileType;
+
+				var dataObj = SplitData(filePart.Data);
+
+				if (filePart.FilePart == FilePartType.First)
+				{
+					CleanFilePartsCache();
+					SaveFilePart(dataObj.Data);
+				}
+
+				if (filePart.FilePart == FilePartType.Middle)
+				{
+					SaveFilePart(dataObj.Data);
+				}
+
+				if (filePart.FilePart == FilePartType.Last)
+				{
+					JoinAllFileParts(dataObj.Data);
+					CleanFilePartsCache();
+				}
 			}
-
-			if (filePart.FilePart == FilePartType.Middle)
+			catch (Exception exc)
 			{
-				SaveFilePart(dataObj.Data);
-			}
-
-			if (filePart.FilePart == FilePartType.Last)
-			{
-				JoinAllFileParts(dataObj.Data);
-				CleanFilePartsCache();
+				Log.Error($"Exception: {exc.Message}");
+				throw;
 			}
 		}
+
+
 
 		private DataObj SplitData(string inputData)
 		{
@@ -192,19 +170,42 @@ namespace Gloobster.DomainModels
 		private void SaveFilePart(string data)
 		{			
 			long newFilePartNo = DateTime.UtcNow.Ticks;
+			
+			//CreatePathIfNotExists(TempFolder);
 
 			var filePath = Storage.Combine(TempFolderPath, newFilePartNo.ToString());
-					
-			using (var writer = new StreamWriter(Storage.CreateFile(filePath).OpenWrite()))
+
+			var fileStream = Storage.CreateFile(filePath).OpenWrite();
+			using (var writer = new StreamWriter(fileStream))
 			{			
 				writer.Write(data);		
 			}		
 		}
 
+		//private void CreatePathIfNotExists(string path)
+		//{
+		//	bool exists = Storage.ListFolders(path).Any();
+		//	if (!exists)
+		//	{
+		//		Storage.CreateFolder(path);
+		//	}
+		//}
+
 		private void CleanFilePartsCache()
 		{
-			var files = Storage.ListFiles(TempFolderPath).ToList();
-			files.ForEach(f => Storage.DeleteFile(f.GetPath()));
+			Log.Debug("FIDO: before files listed");
+			try
+			{
+				//Storage.
+				var files = Storage.ListFiles(TempFolderPath).ToList();
+				Log.Debug("FIDO: files listed");
+				files.ForEach(f => Storage.DeleteFile(f.GetPath()));
+				Log.Debug("FIDO: files delted");
+			}
+			catch (Exception exc)
+			{
+				Log.Debug("FIDO: exception: " + exc.Message);
+			}
 		}
 
 		private class DataObj

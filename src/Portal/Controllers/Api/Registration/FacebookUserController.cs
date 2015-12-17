@@ -31,7 +31,7 @@ namespace Gloobster.Portal.Controllers.Api.Registration
 			var facebookAuthRequest = new SocAuthenticationDO
 			{
 				AccessToken = request.accessToken,
-				UserId = request.userID,
+				UserId = request.userId,
 				ExpiresAt = DateTime.UtcNow.AddSeconds(request.expiresIn)
 			}; 
 

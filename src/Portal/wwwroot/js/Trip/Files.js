@@ -36,8 +36,11 @@ var Trip;
             //this.createTemplate = Handlebars.compile(sourceCrt);
             //var adderHtml = this.createTemplate();
             var adderHtml = "<input id=\"" + this.config.inputId + "\" type=\"file\" />";
-            this.$adder = $(adderHtml);
+            var progressBarHtml = '<span id="progressBar" style="color: red;">0</span><span>%</span>';
+            this.$adder = $(adderHtml + progressBarHtml);
             this.$container.html(this.$adder);
+            //var $pbh = $(progressBarHtml);
+            //this.$adder.after($pbh);
         };
         Files.prototype.setFiles = function (files, tripId) {
             this.files = files;

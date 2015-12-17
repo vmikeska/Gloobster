@@ -34,6 +34,10 @@
       "System": "Information",
       "Microsoft": "Information"
     }
+  },
+  "Storage": {
+    "ConnectionString": "DefaultEndpointsProtocol=https;AccountName=gloobster;AccountKey=UhtElEWs1ZJc4d69+ww/YGP2hbGXxfTcWyThTb2jS/6ZxgkV+a1aARpRI5r9bELvIthZTubyfv8pOVY7zAIllA==",
+    "RootDir": "c:\\s\\gloobster\\src\\portal\\wwwroot"
   }
 
 
