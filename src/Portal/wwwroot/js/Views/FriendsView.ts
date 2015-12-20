@@ -41,7 +41,7 @@ class FriendsView extends Views.ViewBase {
  }
 
 	public searchUsers(searchQuery: string) {
-		var minChars = 2;
+		var minChars = 1;
 
 		if (searchQuery.length < minChars) {
 			return;

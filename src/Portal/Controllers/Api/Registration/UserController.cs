@@ -29,7 +29,8 @@ namespace Gloobster.Portal.Controllers.Api.Registration
 			var baseUser = new BaseUserDO
 			{
 				Mail = reg.mail,
-				Password = reg.password
+				Password = reg.password,
+				Action = reg.action
 			};
 
 			var accountDriver = ComponentContext.ResolveKeyed<IAccountDriver>("Base");

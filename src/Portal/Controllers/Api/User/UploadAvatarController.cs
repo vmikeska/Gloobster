@@ -38,11 +38,16 @@ namespace Gloobster.Portal.Controllers.Api.User
 			{
 				var portalUser = DB.C<PortalUserEntity>().First(u => u.id == UserIdObj);
 
-				var pathToDelete = FileDomain.Storage.Combine(fileLocation, portalUser.ProfileImage);
-				bool fileExists = FileDomain.Storage.FileExists(pathToDelete);
-				if (fileExists)
+				bool hasAlreadyFile = (portalUser.ProfileImage != null);
+				if (hasAlreadyFile)
 				{
-					FileDomain.Storage.DeleteFile(pathToDelete);
+					var pathToDelete = FileDomain.Storage.Combine(fileLocation, portalUser.ProfileImage);
+								
+					bool fileExists = FileDomain.Storage.FileExists(pathToDelete);
+					if (fileExists)
+					{
+						FileDomain.Storage.DeleteFile(pathToDelete);
+					}
 				}
 			};
 

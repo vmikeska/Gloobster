@@ -12,10 +12,11 @@ var Reg;
             this.endpoint = "/api/User";
             this.loginType = Reg.NetworkType.Base;
         }
-        CreateUserLocal.prototype.registerOrLogin = function (mail, password) {
+        CreateUserLocal.prototype.registerOrLogin = function (mail, password, action) {
             var baseUser = new PortalUser();
             baseUser.mail = mail;
             baseUser.password = password;
+            baseUser.action = action;
             _super.prototype.sendUserRegistrationData.call(this, baseUser);
         };
         return CreateUserLocal;

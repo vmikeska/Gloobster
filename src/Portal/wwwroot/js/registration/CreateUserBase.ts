@@ -7,7 +7,7 @@
 		cookieManager: Common.CookieManager;
 
 		constructor() {
-		 this.cookieManager = new Common.CookieManager();
+		 this.cookieManager = new Common.CookieManager();		 
 		}
 
 		onSuccess = (response) => {

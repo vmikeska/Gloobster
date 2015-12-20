@@ -5,9 +5,7 @@ var Reg;
             var _this = this;
             this.asyncInit = function () {
                 FB.init({
-                    //appId: '1519189774979242',
-                    //appId: '1717433995154818',
-                    appId: '1733987536832797',
+                    appId: document["facebookId"],
                     cookie: true,
                     xfbml: true,
                     version: 'v2.5'

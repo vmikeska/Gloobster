@@ -53,7 +53,6 @@ module Reg {
 
 		}
 
-
 	}
 
 	export class CookieLogin {

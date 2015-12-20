@@ -3,21 +3,21 @@
 		<h3 class="margin2">Login</h3>
 		<div class="table">
 			<div class="cell">
-				<form class="margin" action="#" method="post">
+				<div class="margin form" action="#" method="post">
 					<label class="h4" for="email">E-mail</label>
 					<input id="email" type="text" placeholder="E-mail">
 					<a class="noneline small right" href="#">Forgotten password</a>
 					<label class="h4" for="password">Password</label>
-					<input id="password" type="password">
-					<input class="right" type="submit" value="Sign In">
-				</form>
+					<input id="password" type="password">					
+					<input id="btnLogin" class="right" type="button" value="Sign In">
+				</div>
 				Don't have an account?
 				<a href="#">Sign-Up Now</a>
 			</div>
 			<div class="cell">
 				<div class="logins">
 					<a class="facebook" href="#">Sign in with Facebook</a>
-					<a class="twitter" href="#">Sign in with Twitter</a>					
+					<a class="twitter" href="#">Sign in with Twitter</a>
 					<a class="google" href="#">Sign in with Google</a>
 				</div>
 			</div>
@@ -25,3 +25,14 @@
 		<a class="close" href="#">Close</a>
 	</div>
 </div>
+
+<script>
+		$("#btnLogin").click((e) => {
+		e.preventDefault();
+		var mail = $("#email").val();
+		var password = $("#password").val();
+		currentView.loginManager.localUserCreator.registerOrLogin(mail, password, UserActionType.Login);
+	});
+
+
+</script>

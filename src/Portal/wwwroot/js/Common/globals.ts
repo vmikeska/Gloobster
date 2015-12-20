@@ -16,3 +16,5 @@ enum SourceType { FB, S4, City, Country }
 enum SocialNetworkType { Facebook, Google, Twitter, Base, Foursquare, GeoNames }
 
 enum ParticipantState { Invited, Accepted, Maybe, Refused }
+
+enum UserActionType { Login, Register }

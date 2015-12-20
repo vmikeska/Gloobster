@@ -3,7 +3,7 @@
 		<h3 class="margin2">Join Gloobster</h3>
 		<div class="table">
 			<div class="cell">
-				<form id="registrationForm" class="margin">
+				<div id="registrationForm" class="margin form">
 					<label class="h4" for="email_s">E-mail</label>
 					<input id="email_s" type="text" placeholder="E-mail">
 					<label class="h4" for="password_s">Password</label>
@@ -13,7 +13,7 @@
 						<a href="#">Terms of service</a>
 					</p>
 					<input id="btnRegister" class="right" type="button" value="Join Now">
-				</form>
+				</div>
 				Already a member?
 				<a href="#">Sign In</a>
 			</div>
@@ -30,10 +30,11 @@
 </div>
 
 <script>
-	$("#btnRegister").click(function () {
+		$("#btnRegister").click((e) => {
+		e.preventDefault();
 		var mail = $("#email_s").val();
 		var password = $("#password_s").val();
-		currentView.loginManager.localUserCreator.registerOrLogin(mail, password);
+		currentView.loginManager.localUserCreator.registerOrLogin(mail, password, UserActionType.Register);
 	});
 
 		

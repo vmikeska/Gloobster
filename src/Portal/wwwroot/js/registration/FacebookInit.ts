@@ -26,18 +26,15 @@ module Reg {
 			var fjs = doc.getElementsByTagName(scriptElementName)[0];
 			fjs.parentNode.insertBefore(js, fjs);
 		}
-
-		asyncInit = () => {
-			FB.init({
-				//appId: '1519189774979242',
-				//appId: '1717433995154818',
-			 appId: '1733987536832797',
-				cookie: true, // enable cookies to allow the server to access the session
-				xfbml: true, // parse social plugins on this page
-				version: 'v2.5'
-			});
-
-
+	 
+		asyncInit = () => {			
+		 FB.init({
+			 appId: document["facebookId"],
+			 cookie: true, // enable cookies to allow the server to access the session
+			 xfbml: true, // parse social plugins on this page
+			 version: 'v2.5'
+		 });
+		 
 			this.onFacebookInitialized();
 
 		}

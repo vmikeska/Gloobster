@@ -11,6 +11,8 @@ using Gloobster.Enums;
 using Gloobster.Mappers;
 using Microsoft.AspNet.Http;
 using MongoDB.Bson;
+using Newtonsoft.Json;
+using Serilog;
 
 namespace Gloobster.DomainModels.Services.Accounts
 {
@@ -23,14 +25,29 @@ namespace Gloobster.DomainModels.Services.Accounts
 		public IDbOperations DB { get; set; }		
 		public ICreateUserData UserData { get; set; }
 
+		public ILogger Log { get; set; }
+
 		public async Task<UserLoggedResultDO> Validate(SocAuthenticationDO authentication, object userObj)
 		{
 			AccountDriver.Authentication = authentication;
 			AccountDriver.UserObj = userObj;
 			
 			PortalUserDO portalUser = await Load();
+
+			if (AccountDriver.NetworkType == SocialNetworkType.Base)
+			{
+				var user = (BaseUserDO)AccountDriver.UserObj;
+				bool invalidLogin = (user.Action == UserActionType.Login) && (portalUser == null);
+				if (invalidLogin)
+				{
+					return new UserLoggedResultDO
+					{
+						Status = UserLogged.BadCredintials
+					};
+				}
+			}
 			
-			bool userExists = portalUser != null;
+			bool userExists = portalUser != null;			
 			if (!userExists)
 			{
 				string email = AccountDriver.GetEmail();
@@ -121,7 +138,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 		{
 			//since here user is valid, lets create the token
 			var tokenObj = new AuthorizationToken(portalUserId);
-			var tokenStr = Newtonsoft.Json.JsonConvert.SerializeObject(tokenObj);
+			var tokenStr = JsonConvert.SerializeObject(tokenObj);
 			var tokenJson = JObject.Parse(tokenStr);
 
 			var encodedToken = JsonWebToken.Encode(tokenJson, GloobsterConfig.AppSecret, JwtHashAlgorithm.RS256);

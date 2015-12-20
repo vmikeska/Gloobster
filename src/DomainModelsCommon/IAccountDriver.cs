@@ -21,6 +21,5 @@ namespace Gloobster.DomainInterfaces
 		string GetEmail();
 		void OnUserExists(PortalUserDO portalUser);
 		void OnUserSuccessfulyLogged(PortalUserDO portalUser);
-
 	}
 }

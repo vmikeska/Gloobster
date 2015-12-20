@@ -53,7 +53,7 @@ var FriendsView = (function (_super) {
     };
     FriendsView.prototype.searchUsers = function (searchQuery) {
         var _this = this;
-        var minChars = 2;
+        var minChars = 1;
         if (searchQuery.length < minChars) {
             return;
         }

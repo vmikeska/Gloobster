@@ -41,6 +41,12 @@ namespace Gloobster.Portal.Controllers.Portal
 		public IActionResult ProfilePicture()
 		{
 			var fileLocation = "avatars";
+
+			if (PortalUser.ProfileImage == null)
+			{
+				return new ObjectResult("");
+			}
+
 			var filePath = FileDomain.Storage.Combine(fileLocation, PortalUser.ProfileImage);
 			bool exists = FileDomain.Storage.FileExists(filePath);
 			if (exists)

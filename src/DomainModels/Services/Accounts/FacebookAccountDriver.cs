@@ -15,11 +15,14 @@ using Gloobster.Mappers;
 using Gloobster.SocialLogin.Facebook.Communication;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using Serilog;
 
 namespace Gloobster.DomainModels.Services.Accounts
 {
 	public class FacebookAccountDriver : IAccountDriver
 	{
+		public ILogger Log { get; set; }
+
 		public bool CheckCredintials(object authObject, PortalUserDO portalUser)
 		{
 			var socAuth = (SocAuthenticationDO) authObject;
@@ -64,9 +67,9 @@ namespace Gloobster.DomainModels.Services.Accounts
 		}
 
 		public async Task<PortalUserDO> Create()
-		{			
+		{
 			var permTokenResult = IssueNewPermanentAccessToken(Authentication.AccessToken);
-
+			
 			var specifics = new FacebookUserSE
 			{
 				TimeZone = _fbUser.TimeZone,
@@ -75,12 +78,12 @@ namespace Gloobster.DomainModels.Services.Accounts
 				UpdatedTime = FbUser.UpdatedTime,
 				Verified = FbUser.Verified
 			};
-
+			
 			if (_fbUser.FavoriteTeams != null)
-			{
+			{			
 				specifics.FavoriteTeams = _fbUser.FavoriteTeams.Select(i => i.ToEntity()).ToArray();
 			}
-
+			
 			var facebookAccount = new SocialAccountSE
 			{
 				Authentication = new SocAuthenticationSE
@@ -111,9 +114,9 @@ namespace Gloobster.DomainModels.Services.Accounts
 
 				SocialAccounts = new[] { facebookAccount }
 			};
-
+			
 			var savedEntity = await DB.SaveAsync(userEntity);
-
+			
 			var createdUser = savedEntity.ToDO();
 			return createdUser;
 		}
