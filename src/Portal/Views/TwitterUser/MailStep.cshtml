@@ -2,10 +2,13 @@
 		Layout = "";
 }
 
-<form asp-controller="TwitterUser" asp-action="Authorize" method="POST">
+<p>Twitter don't allow us to get your mail address directly. Please fill in a valid email address.</p>
+<p>If you are already registered, leave the field empty and and proceed to another step</p>
+<p>In future versions this step will be possibly removed and user will be asked for email in the application</p>
+
+<form asp-controller="TwitterUser" asp-action="Authorize" method="POST">	
 	<span>Mail: </span>
 	<input type="text" name="mail"/>
-
-				<button type="submit">Proceed to authorization step</button>
+	<button type="submit">Proceed to authorization step</button>
 </form>
 

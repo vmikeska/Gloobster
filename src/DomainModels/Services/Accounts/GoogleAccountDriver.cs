@@ -78,7 +78,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 				DisplayName = User.DisplayName,
 				Mail = User.Mail,
 				Password = AccountUtils.GeneratePassword(),
-				ProfileImage = AccountUtils.DownloadAndStoreTheProfilePicture(User.ProfileLink),
+				ProfileImage = null,//AccountUtils.DownloadAndStoreTheProfilePicture(User.ProfileLink),
 				
 				SocialAccounts = new[] {googleAccount},
 

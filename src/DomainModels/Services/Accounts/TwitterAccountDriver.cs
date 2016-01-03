@@ -84,7 +84,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 				Password = AccountUtils.GeneratePassword(),				
 				Languages = ParseLanguage(user.Language),
 				CurrentLocation = await ParseLocation(user.Location),
-				ProfileImage = AccountUtils.DownloadAndStoreTheProfilePicture(user.ProfileImageUrl),				
+				ProfileImage = "",//AccountUtils.DownloadAndStoreTheProfilePicture(user.ProfileImageUrl),				
 				FirstName = AccountUtils.TryExtractFirstName(user.Name),
 				LastName = AccountUtils.TryExtractLastName(user.Name),
 				
