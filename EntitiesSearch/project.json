@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0-*",
+  "description": "EntitiesSearch Class Library",
+  "authors": [ "vmike_000" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+  "frameworks": {
+    "dnx451": { }
+  },
+  "dependencies": {
+    "Database": "1.0.0-*"
+  }
+}

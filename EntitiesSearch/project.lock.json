@@ -3,52 +3,6 @@
   "version": 2,
   "targets": {
     "DNX,Version=v4.5.1": {
-      "Autofac/4.0.0-rc1-177": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/net45/Autofac.dll": {}
-        },
-        "runtime": {
-          "lib/net45/Autofac.dll": {}
-        }
-      },
-      "Autofac.Extensions.DependencyInjection/4.0.0-rc1-177": {
-        "type": "package",
-        "dependencies": {
-          "Autofac": "4.0.0-rc1-177",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc1-final"
-        },
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/net451/Autofac.Extensions.DependencyInjection.dll": {}
-        },
-        "runtime": {
-          "lib/net451/Autofac.Extensions.DependencyInjection.dll": {}
-        }
-      },
-      "BlobFileSystem.Azure/0.0.6": {
-        "type": "package",
-        "dependencies": {
-          "WindowsAzure.Storage": "3.1.0.1"
-        },
-        "compile": {
-          "lib/net45/AzureBlobFileSystem.dll": {}
-        },
-        "runtime": {
-          "lib/net45/AzureBlobFileSystem.dll": {}
-        }
-      },
       "Common/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
@@ -73,69 +27,6 @@
           "MongoDB.Driver": "2.2.0-rc0"
         }
       },
-      "DomainModels/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Autofac": "4.0.0-rc1-177",
-          "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-177",
-          "BlobFileSystem.Azure": "0.0.6",
-          "DomainModelsCommon": "1.0.0",
-          "Facebook": "7.0.6",
-          "Gloobster.Sharing": "1.0.0",
-          "Mappers": "1.0.0",
-          "MongoDB.Driver": "2.2.0-rc0",
-          "Serilog.Framework.Logging": "1.0.0-rc1-final-10071",
-          "SharpSquare": "1.0.0",
-          "SocialLogin": "1.0.0",
-          "System.Net.Http": "4.0.0",
-          "TweetSharp": "2.3.1"
-        },
-        "frameworkAssemblies": [
-          "System.Device"
-        ]
-      },
-      "DomainModelsCommon/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Autofac": "4.0.0-rc1-177",
-          "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-177",
-          "BlobFileSystem.Azure": "0.0.6",
-          "Common": "1.0.0",
-          "Database": "1.0.0",
-          "DomainObjects": "1.0.0",
-          "Enums": "1.0.0",
-          "MongoDB.Bson": "2.2.0-rc0",
-          "MongoDB.Driver": "2.2.0-rc0",
-          "SharpSquare": "1.0.0",
-          "TweetSharp": "2.3.1"
-        },
-        "frameworkAssemblies": [
-          "System.Runtime.Serialization"
-        ]
-      },
-      "DomainObjects/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Common": "1.0.0",
-          "Enums": "1.0.0"
-        },
-        "frameworkAssemblies": [
-          "System.Runtime.Serialization"
-        ]
-      },
-      "Entities/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Common": "1.0.0",
-          "Database": "1.0.0",
-          "Enums": "1.0.0",
-          "MongoDB.Driver": "2.2.0-rc0"
-        }
-      },
       "Enums/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1"
@@ -147,40 +38,6 @@
         },
         "runtime": {
           "lib/net45/Facebook.dll": {}
-        }
-      },
-      "FlightsSearch/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Common": "1.0.0",
-          "MongoDB.Driver": "2.2.0",
-          "Newtonsoft.Json": "7.0.1"
-        }
-      },
-      "Gloobster.Sharing/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Common": "1.0.0",
-          "DomainModelsCommon": "1.0.0",
-          "Facebook": "7.0.6",
-          "MongoDB.Driver": "2.2.0-rc0",
-          "TweetSharp": "2.3.1"
-        }
-      },
-      "Mappers/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Common": "1.0.0",
-          "DomainModelsCommon": "1.0.0",
-          "Entities": "1.0.0",
-          "MongoDB.Driver": "2.2.0-rc0",
-          "ReqRes": "1.0.0",
-          "SocialLogin": "1.0.0",
-          "TweetSharp": "2.3.1",
-          "WebApiObjects": "1.0.0"
         }
       },
       "Microsoft.AspNet.Antiforgery/1.0.0-rc1-final": {
@@ -871,127 +728,6 @@
           "lib/net45/Microsoft.CodeAnalysis.CSharp.dll": {}
         }
       },
-      "Microsoft.Data.Edm/5.6.0": {
-        "type": "package",
-        "compile": {
-          "lib/net40/Microsoft.Data.Edm.dll": {}
-        },
-        "runtime": {
-          "lib/net40/Microsoft.Data.Edm.dll": {}
-        },
-        "resource": {
-          "lib/net40/de/Microsoft.Data.Edm.resources.dll": {
-            "locale": "de"
-          },
-          "lib/net40/es/Microsoft.Data.Edm.resources.dll": {
-            "locale": "es"
-          },
-          "lib/net40/fr/Microsoft.Data.Edm.resources.dll": {
-            "locale": "fr"
-          },
-          "lib/net40/it/Microsoft.Data.Edm.resources.dll": {
-            "locale": "it"
-          },
-          "lib/net40/ja/Microsoft.Data.Edm.resources.dll": {
-            "locale": "ja"
-          },
-          "lib/net40/ko/Microsoft.Data.Edm.resources.dll": {
-            "locale": "ko"
-          },
-          "lib/net40/ru/Microsoft.Data.Edm.resources.dll": {
-            "locale": "ru"
-          },
-          "lib/net40/zh-Hans/Microsoft.Data.Edm.resources.dll": {
-            "locale": "zh-Hans"
-          },
-          "lib/net40/zh-Hant/Microsoft.Data.Edm.resources.dll": {
-            "locale": "zh-Hant"
-          }
-        }
-      },
-      "Microsoft.Data.OData/5.6.0": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Data.Edm": "[5.6.0]",
-          "System.Spatial": "[5.6.0]"
-        },
-        "compile": {
-          "lib/net40/Microsoft.Data.OData.dll": {}
-        },
-        "runtime": {
-          "lib/net40/Microsoft.Data.OData.dll": {}
-        },
-        "resource": {
-          "lib/net40/de/Microsoft.Data.OData.resources.dll": {
-            "locale": "de"
-          },
-          "lib/net40/es/Microsoft.Data.OData.resources.dll": {
-            "locale": "es"
-          },
-          "lib/net40/fr/Microsoft.Data.OData.resources.dll": {
-            "locale": "fr"
-          },
-          "lib/net40/it/Microsoft.Data.OData.resources.dll": {
-            "locale": "it"
-          },
-          "lib/net40/ja/Microsoft.Data.OData.resources.dll": {
-            "locale": "ja"
-          },
-          "lib/net40/ko/Microsoft.Data.OData.resources.dll": {
-            "locale": "ko"
-          },
-          "lib/net40/ru/Microsoft.Data.OData.resources.dll": {
-            "locale": "ru"
-          },
-          "lib/net40/zh-Hans/Microsoft.Data.OData.resources.dll": {
-            "locale": "zh-Hans"
-          },
-          "lib/net40/zh-Hant/Microsoft.Data.OData.resources.dll": {
-            "locale": "zh-Hant"
-          }
-        }
-      },
-      "Microsoft.Data.Services.Client/5.6.0": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Data.OData": "[5.6.0]"
-        },
-        "compile": {
-          "lib/net40/Microsoft.Data.Services.Client.dll": {}
-        },
-        "runtime": {
-          "lib/net40/Microsoft.Data.Services.Client.dll": {}
-        },
-        "resource": {
-          "lib/net40/de/Microsoft.Data.Services.Client.resources.dll": {
-            "locale": "de"
-          },
-          "lib/net40/es/Microsoft.Data.Services.Client.resources.dll": {
-            "locale": "es"
-          },
-          "lib/net40/fr/Microsoft.Data.Services.Client.resources.dll": {
-            "locale": "fr"
-          },
-          "lib/net40/it/Microsoft.Data.Services.Client.resources.dll": {
-            "locale": "it"
-          },
-          "lib/net40/ja/Microsoft.Data.Services.Client.resources.dll": {
-            "locale": "ja"
-          },
-          "lib/net40/ko/Microsoft.Data.Services.Client.resources.dll": {
-            "locale": "ko"
-          },
-          "lib/net40/ru/Microsoft.Data.Services.Client.resources.dll": {
-            "locale": "ru"
-          },
-          "lib/net40/zh-Hans/Microsoft.Data.Services.Client.resources.dll": {
-            "locale": "zh-Hans"
-          },
-          "lib/net40/zh-Hant/Microsoft.Data.Services.Client.resources.dll": {
-            "locale": "zh-Hant"
-          }
-        }
-      },
       "Microsoft.Dnx.Compilation.Abstractions/1.0.0-rc1-final": {
         "type": "package",
         "dependencies": {
@@ -1048,44 +784,6 @@
         },
         "runtime": {
           "lib/net451/Microsoft.Dnx.Compilation.CSharp.Common.dll": {}
-        }
-      },
-      "Microsoft.Dnx.TestHost/1.0.0-rc1-final": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Dnx.Compilation.Abstractions": "1.0.0-rc1-final",
-          "Microsoft.Dnx.Testing.Abstractions": "1.0.0-rc1-final",
-          "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
-          "Newtonsoft.Json": "6.0.6"
-        },
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core",
-          "System.Runtime",
-          "System.Threading.Tasks"
-        ],
-        "compile": {
-          "lib/dnx451/Microsoft.Dnx.TestHost.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/Microsoft.Dnx.TestHost.dll": {}
-        }
-      },
-      "Microsoft.Dnx.Testing.Abstractions/1.0.0-rc1-final": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/net451/Microsoft.Dnx.Testing.Abstractions.dll": {}
-        },
-        "runtime": {
-          "lib/net451/Microsoft.Dnx.Testing.Abstractions.dll": {}
         }
       },
       "Microsoft.Extensions.Caching.Abstractions/1.0.0-rc1-final": {
@@ -1264,26 +962,6 @@
           "lib/net451/Microsoft.Extensions.Localization.Abstractions.dll": {}
         }
       },
-      "Microsoft.Extensions.Logging/1.0.0-rc1-final": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc1-final",
-          "Microsoft.Extensions.Logging.Abstractions": "1.0.0-rc1-final"
-        },
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Collections.Concurrent",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/net451/Microsoft.Extensions.Logging.dll": {}
-        },
-        "runtime": {
-          "lib/net451/Microsoft.Extensions.Logging.dll": {}
-        }
-      },
       "Microsoft.Extensions.Logging.Abstractions/1.0.0-rc1-final": {
         "type": "package",
         "frameworkAssemblies": [
@@ -1414,15 +1092,6 @@
           "lib/net451/Microsoft.Net.Http.Headers.dll": {}
         }
       },
-      "Microsoft.WindowsAzure.ConfigurationManager/1.8.0": {
-        "type": "package",
-        "compile": {
-          "lib/net35-full/Microsoft.WindowsAzure.Configuration.dll": {}
-        },
-        "runtime": {
-          "lib/net35-full/Microsoft.WindowsAzure.Configuration.dll": {}
-        }
-      },
       "MongoDB.Bson/2.2.0-rc0": {
         "type": "package",
         "compile": {
@@ -1457,16 +1126,7 @@
           "lib/net45/MongoDB.Driver.Core.dll": {}
         }
       },
-      "Moq/4.2.1507.118": {
-        "type": "package",
-        "compile": {
-          "lib/net40/Moq.dll": {}
-        },
-        "runtime": {
-          "lib/net40/Moq.dll": {}
-        }
-      },
-      "Newtonsoft.Json/7.0.1": {
+      "Newtonsoft.Json/6.0.6": {
         "type": "package",
         "compile": {
           "lib/net45/Newtonsoft.Json.dll": {}
@@ -1474,60 +1134,6 @@
         "runtime": {
           "lib/net45/Newtonsoft.Json.dll": {}
         }
-      },
-      "ReqRes/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Common": "1.0.0",
-          "Enums": "1.0.0"
-        }
-      },
-      "Serilog/1.5.11": {
-        "type": "package",
-        "compile": {
-          "lib/net45/Serilog.dll": {},
-          "lib/net45/Serilog.FullNetFx.dll": {}
-        },
-        "runtime": {
-          "lib/net45/Serilog.dll": {},
-          "lib/net45/Serilog.FullNetFx.dll": {}
-        }
-      },
-      "Serilog.Framework.Logging/1.0.0-rc1-final-10071": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
-          "Serilog": "1.5.11"
-        },
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core",
-          "System.Runtime"
-        ],
-        "compile": {
-          "lib/dnx451/Serilog.Framework.Logging.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/Serilog.Framework.Logging.dll": {}
-        }
-      },
-      "SharpSquare/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1"
-      },
-      "SocialLogin/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Facebook": "7.0.6",
-          "MongoDB.Driver": "2.2.0-rc0"
-        },
-        "frameworkAssemblies": [
-          "System.Runtime.Serialization"
-        ]
       },
       "System.Collections/4.0.0": {
         "type": "package",
@@ -1625,18 +1231,6 @@
           "lib/net45/_._": {}
         }
       },
-      "System.Net.Http/4.0.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System.Net.Http"
-        ],
-        "compile": {
-          "ref/net45/_._": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
-        }
-      },
       "System.Reflection/4.0.0": {
         "type": "package",
         "compile": {
@@ -1725,44 +1319,6 @@
           "lib/net45/_._": {}
         }
       },
-      "System.Spatial/5.6.0": {
-        "type": "package",
-        "compile": {
-          "lib/net40/System.Spatial.dll": {}
-        },
-        "runtime": {
-          "lib/net40/System.Spatial.dll": {}
-        },
-        "resource": {
-          "lib/net40/de/System.Spatial.resources.dll": {
-            "locale": "de"
-          },
-          "lib/net40/es/System.Spatial.resources.dll": {
-            "locale": "es"
-          },
-          "lib/net40/fr/System.Spatial.resources.dll": {
-            "locale": "fr"
-          },
-          "lib/net40/it/System.Spatial.resources.dll": {
-            "locale": "it"
-          },
-          "lib/net40/ja/System.Spatial.resources.dll": {
-            "locale": "ja"
-          },
-          "lib/net40/ko/System.Spatial.resources.dll": {
-            "locale": "ko"
-          },
-          "lib/net40/ru/System.Spatial.resources.dll": {
-            "locale": "ru"
-          },
-          "lib/net40/zh-Hans/System.Spatial.resources.dll": {
-            "locale": "zh-Hans"
-          },
-          "lib/net40/zh-Hant/System.Spatial.resources.dll": {
-            "locale": "zh-Hant"
-          }
-        }
-      },
       "System.Text.Encoding/4.0.0": {
         "type": "package",
         "compile": {
@@ -1788,209 +1344,10 @@
         },
         "runtime": {
           "lib/net45/_._": {}
-        }
-      },
-      "TweetSharp/2.3.1": {
-        "type": "package",
-        "dependencies": {
-          "Newtonsoft.Json": "5.0.6"
-        },
-        "compile": {
-          "lib/4.0/Hammock.ClientProfile.dll": {},
-          "lib/4.0/Newtonsoft.Json.dll": {},
-          "lib/4.0/TweetSharp.dll": {}
-        },
-        "runtime": {
-          "lib/4.0/Hammock.ClientProfile.dll": {},
-          "lib/4.0/Newtonsoft.Json.dll": {},
-          "lib/4.0/TweetSharp.dll": {}
-        }
-      },
-      "WebApiObjects/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Common": "1.0.0",
-          "MongoDB.Driver": "2.2.0-rc0"
-        }
-      },
-      "WindowsAzure.Storage/3.1.0.1": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Data.OData": "5.6.0",
-          "Microsoft.Data.Services.Client": "5.6.0",
-          "Microsoft.WindowsAzure.ConfigurationManager": "1.8.0",
-          "Newtonsoft.Json": "5.0.6"
-        },
-        "frameworkAssemblies": [
-          "System.Data",
-          "System.Xml",
-          "System.Xml.Linq"
-        ],
-        "compile": {
-          "lib/net40/Microsoft.WindowsAzure.Storage.dll": {}
-        },
-        "runtime": {
-          "lib/net40/Microsoft.WindowsAzure.Storage.dll": {}
-        }
-      },
-      "xunit/2.2.0-beta1-build3239": {
-        "type": "package",
-        "dependencies": {
-          "xunit.assert": "[2.2.0-beta1-build3239]",
-          "xunit.core": "[2.2.0-beta1-build3239]"
-        }
-      },
-      "xunit.abstractions/2.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/net35/xunit.abstractions.dll": {}
-        },
-        "runtime": {
-          "lib/net35/xunit.abstractions.dll": {}
-        }
-      },
-      "xunit.assert/2.2.0-beta1-build3239": {
-        "type": "package",
-        "compile": {
-          "lib/dotnet/xunit.assert.dll": {}
-        },
-        "runtime": {
-          "lib/dotnet/xunit.assert.dll": {}
-        }
-      },
-      "xunit.core/2.2.0-beta1-build3239": {
-        "type": "package",
-        "dependencies": {
-          "xunit.extensibility.core": "[2.2.0-beta1-build3239]",
-          "xunit.extensibility.execution": "[2.2.0-beta1-build3239]"
-        }
-      },
-      "xunit.extensibility.core/2.2.0-beta1-build3239": {
-        "type": "package",
-        "dependencies": {
-          "xunit.abstractions": "[2.0.0]"
-        },
-        "compile": {
-          "lib/dotnet/xunit.core.dll": {}
-        },
-        "runtime": {
-          "lib/dotnet/xunit.core.dll": {},
-          "lib/dotnet/xunit.runner.tdnet.dll": {},
-          "lib/dotnet/xunit.runner.utility.desktop.dll": {}
-        }
-      },
-      "xunit.extensibility.execution/2.2.0-beta1-build3239": {
-        "type": "package",
-        "dependencies": {
-          "xunit.extensibility.core": "[2.2.0-beta1-build3239]"
-        },
-        "compile": {
-          "lib/dnx451/xunit.execution.dotnet.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/xunit.execution.dotnet.dll": {}
-        }
-      },
-      "xunit.runner.dnx/2.1.0-rc1-build204": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Dnx.TestHost": "1.0.0-rc1-final",
-          "Microsoft.Dnx.Testing.Abstractions": "1.0.0-rc1-final",
-          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
-          "xunit.runner.reporters": "2.1.0"
-        },
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Collections",
-          "System.Core",
-          "System.Threading",
-          "System.Xml",
-          "System.Xml.Linq",
-          "System.Xml.XDocument"
-        ],
-        "compile": {
-          "lib/dnx451/xunit.runner.dnx.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/xunit.runner.dnx.dll": {}
-        }
-      },
-      "xunit.runner.reporters/2.1.0": {
-        "type": "package",
-        "dependencies": {
-          "Newtonsoft.Json": "7.0.1",
-          "xunit.runner.utility": "[2.1.0]"
-        },
-        "compile": {
-          "lib/dnx451/xunit.runner.reporters.dotnet.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/xunit.runner.reporters.dotnet.dll": {}
-        }
-      },
-      "xunit.runner.utility/2.1.0": {
-        "type": "package",
-        "dependencies": {
-          "xunit.abstractions": "[2.0.0]"
-        },
-        "compile": {
-          "lib/dnx451/xunit.runner.utility.dotnet.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/xunit.runner.utility.dotnet.dll": {}
         }
       }
     },
     "DNX,Version=v4.5.1/win7-x86": {
-      "Autofac/4.0.0-rc1-177": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/net45/Autofac.dll": {}
-        },
-        "runtime": {
-          "lib/net45/Autofac.dll": {}
-        }
-      },
-      "Autofac.Extensions.DependencyInjection/4.0.0-rc1-177": {
-        "type": "package",
-        "dependencies": {
-          "Autofac": "4.0.0-rc1-177",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc1-final"
-        },
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/net451/Autofac.Extensions.DependencyInjection.dll": {}
-        },
-        "runtime": {
-          "lib/net451/Autofac.Extensions.DependencyInjection.dll": {}
-        }
-      },
-      "BlobFileSystem.Azure/0.0.6": {
-        "type": "package",
-        "dependencies": {
-          "WindowsAzure.Storage": "3.1.0.1"
-        },
-        "compile": {
-          "lib/net45/AzureBlobFileSystem.dll": {}
-        },
-        "runtime": {
-          "lib/net45/AzureBlobFileSystem.dll": {}
-        }
-      },
       "Common/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
@@ -2015,69 +1372,6 @@
           "MongoDB.Driver": "2.2.0-rc0"
         }
       },
-      "DomainModels/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Autofac": "4.0.0-rc1-177",
-          "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-177",
-          "BlobFileSystem.Azure": "0.0.6",
-          "DomainModelsCommon": "1.0.0",
-          "Facebook": "7.0.6",
-          "Gloobster.Sharing": "1.0.0",
-          "Mappers": "1.0.0",
-          "MongoDB.Driver": "2.2.0-rc0",
-          "Serilog.Framework.Logging": "1.0.0-rc1-final-10071",
-          "SharpSquare": "1.0.0",
-          "SocialLogin": "1.0.0",
-          "System.Net.Http": "4.0.0",
-          "TweetSharp": "2.3.1"
-        },
-        "frameworkAssemblies": [
-          "System.Device"
-        ]
-      },
-      "DomainModelsCommon/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Autofac": "4.0.0-rc1-177",
-          "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-177",
-          "BlobFileSystem.Azure": "0.0.6",
-          "Common": "1.0.0",
-          "Database": "1.0.0",
-          "DomainObjects": "1.0.0",
-          "Enums": "1.0.0",
-          "MongoDB.Bson": "2.2.0-rc0",
-          "MongoDB.Driver": "2.2.0-rc0",
-          "SharpSquare": "1.0.0",
-          "TweetSharp": "2.3.1"
-        },
-        "frameworkAssemblies": [
-          "System.Runtime.Serialization"
-        ]
-      },
-      "DomainObjects/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Common": "1.0.0",
-          "Enums": "1.0.0"
-        },
-        "frameworkAssemblies": [
-          "System.Runtime.Serialization"
-        ]
-      },
-      "Entities/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Common": "1.0.0",
-          "Database": "1.0.0",
-          "Enums": "1.0.0",
-          "MongoDB.Driver": "2.2.0-rc0"
-        }
-      },
       "Enums/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1"
@@ -2089,40 +1383,6 @@
         },
         "runtime": {
           "lib/net45/Facebook.dll": {}
-        }
-      },
-      "FlightsSearch/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Common": "1.0.0",
-          "MongoDB.Driver": "2.2.0",
-          "Newtonsoft.Json": "7.0.1"
-        }
-      },
-      "Gloobster.Sharing/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Common": "1.0.0",
-          "DomainModelsCommon": "1.0.0",
-          "Facebook": "7.0.6",
-          "MongoDB.Driver": "2.2.0-rc0",
-          "TweetSharp": "2.3.1"
-        }
-      },
-      "Mappers/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Common": "1.0.0",
-          "DomainModelsCommon": "1.0.0",
-          "Entities": "1.0.0",
-          "MongoDB.Driver": "2.2.0-rc0",
-          "ReqRes": "1.0.0",
-          "SocialLogin": "1.0.0",
-          "TweetSharp": "2.3.1",
-          "WebApiObjects": "1.0.0"
         }
       },
       "Microsoft.AspNet.Antiforgery/1.0.0-rc1-final": {
@@ -2813,127 +2073,6 @@
           "lib/net45/Microsoft.CodeAnalysis.CSharp.dll": {}
         }
       },
-      "Microsoft.Data.Edm/5.6.0": {
-        "type": "package",
-        "compile": {
-          "lib/net40/Microsoft.Data.Edm.dll": {}
-        },
-        "runtime": {
-          "lib/net40/Microsoft.Data.Edm.dll": {}
-        },
-        "resource": {
-          "lib/net40/de/Microsoft.Data.Edm.resources.dll": {
-            "locale": "de"
-          },
-          "lib/net40/es/Microsoft.Data.Edm.resources.dll": {
-            "locale": "es"
-          },
-          "lib/net40/fr/Microsoft.Data.Edm.resources.dll": {
-            "locale": "fr"
-          },
-          "lib/net40/it/Microsoft.Data.Edm.resources.dll": {
-            "locale": "it"
-          },
-          "lib/net40/ja/Microsoft.Data.Edm.resources.dll": {
-            "locale": "ja"
-          },
-          "lib/net40/ko/Microsoft.Data.Edm.resources.dll": {
-            "locale": "ko"
-          },
-          "lib/net40/ru/Microsoft.Data.Edm.resources.dll": {
-            "locale": "ru"
-          },
-          "lib/net40/zh-Hans/Microsoft.Data.Edm.resources.dll": {
-            "locale": "zh-Hans"
-          },
-          "lib/net40/zh-Hant/Microsoft.Data.Edm.resources.dll": {
-            "locale": "zh-Hant"
-          }
-        }
-      },
-      "Microsoft.Data.OData/5.6.0": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Data.Edm": "[5.6.0]",
-          "System.Spatial": "[5.6.0]"
-        },
-        "compile": {
-          "lib/net40/Microsoft.Data.OData.dll": {}
-        },
-        "runtime": {
-          "lib/net40/Microsoft.Data.OData.dll": {}
-        },
-        "resource": {
-          "lib/net40/de/Microsoft.Data.OData.resources.dll": {
-            "locale": "de"
-          },
-          "lib/net40/es/Microsoft.Data.OData.resources.dll": {
-            "locale": "es"
-          },
-          "lib/net40/fr/Microsoft.Data.OData.resources.dll": {
-            "locale": "fr"
-          },
-          "lib/net40/it/Microsoft.Data.OData.resources.dll": {
-            "locale": "it"
-          },
-          "lib/net40/ja/Microsoft.Data.OData.resources.dll": {
-            "locale": "ja"
-          },
-          "lib/net40/ko/Microsoft.Data.OData.resources.dll": {
-            "locale": "ko"
-          },
-          "lib/net40/ru/Microsoft.Data.OData.resources.dll": {
-            "locale": "ru"
-          },
-          "lib/net40/zh-Hans/Microsoft.Data.OData.resources.dll": {
-            "locale": "zh-Hans"
-          },
-          "lib/net40/zh-Hant/Microsoft.Data.OData.resources.dll": {
-            "locale": "zh-Hant"
-          }
-        }
-      },
-      "Microsoft.Data.Services.Client/5.6.0": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Data.OData": "[5.6.0]"
-        },
-        "compile": {
-          "lib/net40/Microsoft.Data.Services.Client.dll": {}
-        },
-        "runtime": {
-          "lib/net40/Microsoft.Data.Services.Client.dll": {}
-        },
-        "resource": {
-          "lib/net40/de/Microsoft.Data.Services.Client.resources.dll": {
-            "locale": "de"
-          },
-          "lib/net40/es/Microsoft.Data.Services.Client.resources.dll": {
-            "locale": "es"
-          },
-          "lib/net40/fr/Microsoft.Data.Services.Client.resources.dll": {
-            "locale": "fr"
-          },
-          "lib/net40/it/Microsoft.Data.Services.Client.resources.dll": {
-            "locale": "it"
-          },
-          "lib/net40/ja/Microsoft.Data.Services.Client.resources.dll": {
-            "locale": "ja"
-          },
-          "lib/net40/ko/Microsoft.Data.Services.Client.resources.dll": {
-            "locale": "ko"
-          },
-          "lib/net40/ru/Microsoft.Data.Services.Client.resources.dll": {
-            "locale": "ru"
-          },
-          "lib/net40/zh-Hans/Microsoft.Data.Services.Client.resources.dll": {
-            "locale": "zh-Hans"
-          },
-          "lib/net40/zh-Hant/Microsoft.Data.Services.Client.resources.dll": {
-            "locale": "zh-Hant"
-          }
-        }
-      },
       "Microsoft.Dnx.Compilation.Abstractions/1.0.0-rc1-final": {
         "type": "package",
         "dependencies": {
@@ -2990,44 +2129,6 @@
         },
         "runtime": {
           "lib/net451/Microsoft.Dnx.Compilation.CSharp.Common.dll": {}
-        }
-      },
-      "Microsoft.Dnx.TestHost/1.0.0-rc1-final": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Dnx.Compilation.Abstractions": "1.0.0-rc1-final",
-          "Microsoft.Dnx.Testing.Abstractions": "1.0.0-rc1-final",
-          "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
-          "Newtonsoft.Json": "6.0.6"
-        },
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core",
-          "System.Runtime",
-          "System.Threading.Tasks"
-        ],
-        "compile": {
-          "lib/dnx451/Microsoft.Dnx.TestHost.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/Microsoft.Dnx.TestHost.dll": {}
-        }
-      },
-      "Microsoft.Dnx.Testing.Abstractions/1.0.0-rc1-final": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/net451/Microsoft.Dnx.Testing.Abstractions.dll": {}
-        },
-        "runtime": {
-          "lib/net451/Microsoft.Dnx.Testing.Abstractions.dll": {}
         }
       },
       "Microsoft.Extensions.Caching.Abstractions/1.0.0-rc1-final": {
@@ -3206,26 +2307,6 @@
           "lib/net451/Microsoft.Extensions.Localization.Abstractions.dll": {}
         }
       },
-      "Microsoft.Extensions.Logging/1.0.0-rc1-final": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc1-final",
-          "Microsoft.Extensions.Logging.Abstractions": "1.0.0-rc1-final"
-        },
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Collections.Concurrent",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/net451/Microsoft.Extensions.Logging.dll": {}
-        },
-        "runtime": {
-          "lib/net451/Microsoft.Extensions.Logging.dll": {}
-        }
-      },
       "Microsoft.Extensions.Logging.Abstractions/1.0.0-rc1-final": {
         "type": "package",
         "frameworkAssemblies": [
@@ -3356,15 +2437,6 @@
           "lib/net451/Microsoft.Net.Http.Headers.dll": {}
         }
       },
-      "Microsoft.WindowsAzure.ConfigurationManager/1.8.0": {
-        "type": "package",
-        "compile": {
-          "lib/net35-full/Microsoft.WindowsAzure.Configuration.dll": {}
-        },
-        "runtime": {
-          "lib/net35-full/Microsoft.WindowsAzure.Configuration.dll": {}
-        }
-      },
       "MongoDB.Bson/2.2.0-rc0": {
         "type": "package",
         "compile": {
@@ -3399,16 +2471,7 @@
           "lib/net45/MongoDB.Driver.Core.dll": {}
         }
       },
-      "Moq/4.2.1507.118": {
-        "type": "package",
-        "compile": {
-          "lib/net40/Moq.dll": {}
-        },
-        "runtime": {
-          "lib/net40/Moq.dll": {}
-        }
-      },
-      "Newtonsoft.Json/7.0.1": {
+      "Newtonsoft.Json/6.0.6": {
         "type": "package",
         "compile": {
           "lib/net45/Newtonsoft.Json.dll": {}
@@ -3416,60 +2479,6 @@
         "runtime": {
           "lib/net45/Newtonsoft.Json.dll": {}
         }
-      },
-      "ReqRes/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Common": "1.0.0",
-          "Enums": "1.0.0"
-        }
-      },
-      "Serilog/1.5.11": {
-        "type": "package",
-        "compile": {
-          "lib/net45/Serilog.dll": {},
-          "lib/net45/Serilog.FullNetFx.dll": {}
-        },
-        "runtime": {
-          "lib/net45/Serilog.dll": {},
-          "lib/net45/Serilog.FullNetFx.dll": {}
-        }
-      },
-      "Serilog.Framework.Logging/1.0.0-rc1-final-10071": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
-          "Serilog": "1.5.11"
-        },
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core",
-          "System.Runtime"
-        ],
-        "compile": {
-          "lib/dnx451/Serilog.Framework.Logging.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/Serilog.Framework.Logging.dll": {}
-        }
-      },
-      "SharpSquare/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1"
-      },
-      "SocialLogin/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Facebook": "7.0.6",
-          "MongoDB.Driver": "2.2.0-rc0"
-        },
-        "frameworkAssemblies": [
-          "System.Runtime.Serialization"
-        ]
       },
       "System.Collections/4.0.0": {
         "type": "package",
@@ -3567,18 +2576,6 @@
           "lib/net45/_._": {}
         }
       },
-      "System.Net.Http/4.0.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System.Net.Http"
-        ],
-        "compile": {
-          "ref/net45/_._": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
-        }
-      },
       "System.Reflection/4.0.0": {
         "type": "package",
         "compile": {
@@ -3667,44 +2664,6 @@
           "lib/net45/_._": {}
         }
       },
-      "System.Spatial/5.6.0": {
-        "type": "package",
-        "compile": {
-          "lib/net40/System.Spatial.dll": {}
-        },
-        "runtime": {
-          "lib/net40/System.Spatial.dll": {}
-        },
-        "resource": {
-          "lib/net40/de/System.Spatial.resources.dll": {
-            "locale": "de"
-          },
-          "lib/net40/es/System.Spatial.resources.dll": {
-            "locale": "es"
-          },
-          "lib/net40/fr/System.Spatial.resources.dll": {
-            "locale": "fr"
-          },
-          "lib/net40/it/System.Spatial.resources.dll": {
-            "locale": "it"
-          },
-          "lib/net40/ja/System.Spatial.resources.dll": {
-            "locale": "ja"
-          },
-          "lib/net40/ko/System.Spatial.resources.dll": {
-            "locale": "ko"
-          },
-          "lib/net40/ru/System.Spatial.resources.dll": {
-            "locale": "ru"
-          },
-          "lib/net40/zh-Hans/System.Spatial.resources.dll": {
-            "locale": "zh-Hans"
-          },
-          "lib/net40/zh-Hant/System.Spatial.resources.dll": {
-            "locale": "zh-Hant"
-          }
-        }
-      },
       "System.Text.Encoding/4.0.0": {
         "type": "package",
         "compile": {
@@ -3730,209 +2689,10 @@
         },
         "runtime": {
           "lib/net45/_._": {}
-        }
-      },
-      "TweetSharp/2.3.1": {
-        "type": "package",
-        "dependencies": {
-          "Newtonsoft.Json": "5.0.6"
-        },
-        "compile": {
-          "lib/4.0/Hammock.ClientProfile.dll": {},
-          "lib/4.0/Newtonsoft.Json.dll": {},
-          "lib/4.0/TweetSharp.dll": {}
-        },
-        "runtime": {
-          "lib/4.0/Hammock.ClientProfile.dll": {},
-          "lib/4.0/Newtonsoft.Json.dll": {},
-          "lib/4.0/TweetSharp.dll": {}
-        }
-      },
-      "WebApiObjects/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Common": "1.0.0",
-          "MongoDB.Driver": "2.2.0-rc0"
-        }
-      },
-      "WindowsAzure.Storage/3.1.0.1": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Data.OData": "5.6.0",
-          "Microsoft.Data.Services.Client": "5.6.0",
-          "Microsoft.WindowsAzure.ConfigurationManager": "1.8.0",
-          "Newtonsoft.Json": "5.0.6"
-        },
-        "frameworkAssemblies": [
-          "System.Data",
-          "System.Xml",
-          "System.Xml.Linq"
-        ],
-        "compile": {
-          "lib/net40/Microsoft.WindowsAzure.Storage.dll": {}
-        },
-        "runtime": {
-          "lib/net40/Microsoft.WindowsAzure.Storage.dll": {}
-        }
-      },
-      "xunit/2.2.0-beta1-build3239": {
-        "type": "package",
-        "dependencies": {
-          "xunit.assert": "[2.2.0-beta1-build3239]",
-          "xunit.core": "[2.2.0-beta1-build3239]"
-        }
-      },
-      "xunit.abstractions/2.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/net35/xunit.abstractions.dll": {}
-        },
-        "runtime": {
-          "lib/net35/xunit.abstractions.dll": {}
-        }
-      },
-      "xunit.assert/2.2.0-beta1-build3239": {
-        "type": "package",
-        "compile": {
-          "lib/dotnet/xunit.assert.dll": {}
-        },
-        "runtime": {
-          "lib/dotnet/xunit.assert.dll": {}
-        }
-      },
-      "xunit.core/2.2.0-beta1-build3239": {
-        "type": "package",
-        "dependencies": {
-          "xunit.extensibility.core": "[2.2.0-beta1-build3239]",
-          "xunit.extensibility.execution": "[2.2.0-beta1-build3239]"
-        }
-      },
-      "xunit.extensibility.core/2.2.0-beta1-build3239": {
-        "type": "package",
-        "dependencies": {
-          "xunit.abstractions": "[2.0.0]"
-        },
-        "compile": {
-          "lib/dotnet/xunit.core.dll": {}
-        },
-        "runtime": {
-          "lib/dotnet/xunit.core.dll": {},
-          "lib/dotnet/xunit.runner.tdnet.dll": {},
-          "lib/dotnet/xunit.runner.utility.desktop.dll": {}
-        }
-      },
-      "xunit.extensibility.execution/2.2.0-beta1-build3239": {
-        "type": "package",
-        "dependencies": {
-          "xunit.extensibility.core": "[2.2.0-beta1-build3239]"
-        },
-        "compile": {
-          "lib/dnx451/xunit.execution.dotnet.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/xunit.execution.dotnet.dll": {}
-        }
-      },
-      "xunit.runner.dnx/2.1.0-rc1-build204": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Dnx.TestHost": "1.0.0-rc1-final",
-          "Microsoft.Dnx.Testing.Abstractions": "1.0.0-rc1-final",
-          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
-          "xunit.runner.reporters": "2.1.0"
-        },
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Collections",
-          "System.Core",
-          "System.Threading",
-          "System.Xml",
-          "System.Xml.Linq",
-          "System.Xml.XDocument"
-        ],
-        "compile": {
-          "lib/dnx451/xunit.runner.dnx.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/xunit.runner.dnx.dll": {}
-        }
-      },
-      "xunit.runner.reporters/2.1.0": {
-        "type": "package",
-        "dependencies": {
-          "Newtonsoft.Json": "7.0.1",
-          "xunit.runner.utility": "[2.1.0]"
-        },
-        "compile": {
-          "lib/dnx451/xunit.runner.reporters.dotnet.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/xunit.runner.reporters.dotnet.dll": {}
-        }
-      },
-      "xunit.runner.utility/2.1.0": {
-        "type": "package",
-        "dependencies": {
-          "xunit.abstractions": "[2.0.0]"
-        },
-        "compile": {
-          "lib/dnx451/xunit.runner.utility.dotnet.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/xunit.runner.utility.dotnet.dll": {}
         }
       }
     },
     "DNX,Version=v4.5.1/win7-x64": {
-      "Autofac/4.0.0-rc1-177": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/net45/Autofac.dll": {}
-        },
-        "runtime": {
-          "lib/net45/Autofac.dll": {}
-        }
-      },
-      "Autofac.Extensions.DependencyInjection/4.0.0-rc1-177": {
-        "type": "package",
-        "dependencies": {
-          "Autofac": "4.0.0-rc1-177",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc1-final"
-        },
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/net451/Autofac.Extensions.DependencyInjection.dll": {}
-        },
-        "runtime": {
-          "lib/net451/Autofac.Extensions.DependencyInjection.dll": {}
-        }
-      },
-      "BlobFileSystem.Azure/0.0.6": {
-        "type": "package",
-        "dependencies": {
-          "WindowsAzure.Storage": "3.1.0.1"
-        },
-        "compile": {
-          "lib/net45/AzureBlobFileSystem.dll": {}
-        },
-        "runtime": {
-          "lib/net45/AzureBlobFileSystem.dll": {}
-        }
-      },
       "Common/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
@@ -3957,69 +2717,6 @@
           "MongoDB.Driver": "2.2.0-rc0"
         }
       },
-      "DomainModels/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Autofac": "4.0.0-rc1-177",
-          "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-177",
-          "BlobFileSystem.Azure": "0.0.6",
-          "DomainModelsCommon": "1.0.0",
-          "Facebook": "7.0.6",
-          "Gloobster.Sharing": "1.0.0",
-          "Mappers": "1.0.0",
-          "MongoDB.Driver": "2.2.0-rc0",
-          "Serilog.Framework.Logging": "1.0.0-rc1-final-10071",
-          "SharpSquare": "1.0.0",
-          "SocialLogin": "1.0.0",
-          "System.Net.Http": "4.0.0",
-          "TweetSharp": "2.3.1"
-        },
-        "frameworkAssemblies": [
-          "System.Device"
-        ]
-      },
-      "DomainModelsCommon/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Autofac": "4.0.0-rc1-177",
-          "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-177",
-          "BlobFileSystem.Azure": "0.0.6",
-          "Common": "1.0.0",
-          "Database": "1.0.0",
-          "DomainObjects": "1.0.0",
-          "Enums": "1.0.0",
-          "MongoDB.Bson": "2.2.0-rc0",
-          "MongoDB.Driver": "2.2.0-rc0",
-          "SharpSquare": "1.0.0",
-          "TweetSharp": "2.3.1"
-        },
-        "frameworkAssemblies": [
-          "System.Runtime.Serialization"
-        ]
-      },
-      "DomainObjects/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Common": "1.0.0",
-          "Enums": "1.0.0"
-        },
-        "frameworkAssemblies": [
-          "System.Runtime.Serialization"
-        ]
-      },
-      "Entities/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Common": "1.0.0",
-          "Database": "1.0.0",
-          "Enums": "1.0.0",
-          "MongoDB.Driver": "2.2.0-rc0"
-        }
-      },
       "Enums/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1"
@@ -4031,40 +2728,6 @@
         },
         "runtime": {
           "lib/net45/Facebook.dll": {}
-        }
-      },
-      "FlightsSearch/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Common": "1.0.0",
-          "MongoDB.Driver": "2.2.0",
-          "Newtonsoft.Json": "7.0.1"
-        }
-      },
-      "Gloobster.Sharing/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Common": "1.0.0",
-          "DomainModelsCommon": "1.0.0",
-          "Facebook": "7.0.6",
-          "MongoDB.Driver": "2.2.0-rc0",
-          "TweetSharp": "2.3.1"
-        }
-      },
-      "Mappers/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Common": "1.0.0",
-          "DomainModelsCommon": "1.0.0",
-          "Entities": "1.0.0",
-          "MongoDB.Driver": "2.2.0-rc0",
-          "ReqRes": "1.0.0",
-          "SocialLogin": "1.0.0",
-          "TweetSharp": "2.3.1",
-          "WebApiObjects": "1.0.0"
         }
       },
       "Microsoft.AspNet.Antiforgery/1.0.0-rc1-final": {
@@ -4755,127 +3418,6 @@
           "lib/net45/Microsoft.CodeAnalysis.CSharp.dll": {}
         }
       },
-      "Microsoft.Data.Edm/5.6.0": {
-        "type": "package",
-        "compile": {
-          "lib/net40/Microsoft.Data.Edm.dll": {}
-        },
-        "runtime": {
-          "lib/net40/Microsoft.Data.Edm.dll": {}
-        },
-        "resource": {
-          "lib/net40/de/Microsoft.Data.Edm.resources.dll": {
-            "locale": "de"
-          },
-          "lib/net40/es/Microsoft.Data.Edm.resources.dll": {
-            "locale": "es"
-          },
-          "lib/net40/fr/Microsoft.Data.Edm.resources.dll": {
-            "locale": "fr"
-          },
-          "lib/net40/it/Microsoft.Data.Edm.resources.dll": {
-            "locale": "it"
-          },
-          "lib/net40/ja/Microsoft.Data.Edm.resources.dll": {
-            "locale": "ja"
-          },
-          "lib/net40/ko/Microsoft.Data.Edm.resources.dll": {
-            "locale": "ko"
-          },
-          "lib/net40/ru/Microsoft.Data.Edm.resources.dll": {
-            "locale": "ru"
-          },
-          "lib/net40/zh-Hans/Microsoft.Data.Edm.resources.dll": {
-            "locale": "zh-Hans"
-          },
-          "lib/net40/zh-Hant/Microsoft.Data.Edm.resources.dll": {
-            "locale": "zh-Hant"
-          }
-        }
-      },
-      "Microsoft.Data.OData/5.6.0": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Data.Edm": "[5.6.0]",
-          "System.Spatial": "[5.6.0]"
-        },
-        "compile": {
-          "lib/net40/Microsoft.Data.OData.dll": {}
-        },
-        "runtime": {
-          "lib/net40/Microsoft.Data.OData.dll": {}
-        },
-        "resource": {
-          "lib/net40/de/Microsoft.Data.OData.resources.dll": {
-            "locale": "de"
-          },
-          "lib/net40/es/Microsoft.Data.OData.resources.dll": {
-            "locale": "es"
-          },
-          "lib/net40/fr/Microsoft.Data.OData.resources.dll": {
-            "locale": "fr"
-          },
-          "lib/net40/it/Microsoft.Data.OData.resources.dll": {
-            "locale": "it"
-          },
-          "lib/net40/ja/Microsoft.Data.OData.resources.dll": {
-            "locale": "ja"
-          },
-          "lib/net40/ko/Microsoft.Data.OData.resources.dll": {
-            "locale": "ko"
-          },
-          "lib/net40/ru/Microsoft.Data.OData.resources.dll": {
-            "locale": "ru"
-          },
-          "lib/net40/zh-Hans/Microsoft.Data.OData.resources.dll": {
-            "locale": "zh-Hans"
-          },
-          "lib/net40/zh-Hant/Microsoft.Data.OData.resources.dll": {
-            "locale": "zh-Hant"
-          }
-        }
-      },
-      "Microsoft.Data.Services.Client/5.6.0": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Data.OData": "[5.6.0]"
-        },
-        "compile": {
-          "lib/net40/Microsoft.Data.Services.Client.dll": {}
-        },
-        "runtime": {
-          "lib/net40/Microsoft.Data.Services.Client.dll": {}
-        },
-        "resource": {
-          "lib/net40/de/Microsoft.Data.Services.Client.resources.dll": {
-            "locale": "de"
-          },
-          "lib/net40/es/Microsoft.Data.Services.Client.resources.dll": {
-            "locale": "es"
-          },
-          "lib/net40/fr/Microsoft.Data.Services.Client.resources.dll": {
-            "locale": "fr"
-          },
-          "lib/net40/it/Microsoft.Data.Services.Client.resources.dll": {
-            "locale": "it"
-          },
-          "lib/net40/ja/Microsoft.Data.Services.Client.resources.dll": {
-            "locale": "ja"
-          },
-          "lib/net40/ko/Microsoft.Data.Services.Client.resources.dll": {
-            "locale": "ko"
-          },
-          "lib/net40/ru/Microsoft.Data.Services.Client.resources.dll": {
-            "locale": "ru"
-          },
-          "lib/net40/zh-Hans/Microsoft.Data.Services.Client.resources.dll": {
-            "locale": "zh-Hans"
-          },
-          "lib/net40/zh-Hant/Microsoft.Data.Services.Client.resources.dll": {
-            "locale": "zh-Hant"
-          }
-        }
-      },
       "Microsoft.Dnx.Compilation.Abstractions/1.0.0-rc1-final": {
         "type": "package",
         "dependencies": {
@@ -4932,44 +3474,6 @@
         },
         "runtime": {
           "lib/net451/Microsoft.Dnx.Compilation.CSharp.Common.dll": {}
-        }
-      },
-      "Microsoft.Dnx.TestHost/1.0.0-rc1-final": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Dnx.Compilation.Abstractions": "1.0.0-rc1-final",
-          "Microsoft.Dnx.Testing.Abstractions": "1.0.0-rc1-final",
-          "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
-          "Newtonsoft.Json": "6.0.6"
-        },
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core",
-          "System.Runtime",
-          "System.Threading.Tasks"
-        ],
-        "compile": {
-          "lib/dnx451/Microsoft.Dnx.TestHost.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/Microsoft.Dnx.TestHost.dll": {}
-        }
-      },
-      "Microsoft.Dnx.Testing.Abstractions/1.0.0-rc1-final": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/net451/Microsoft.Dnx.Testing.Abstractions.dll": {}
-        },
-        "runtime": {
-          "lib/net451/Microsoft.Dnx.Testing.Abstractions.dll": {}
         }
       },
       "Microsoft.Extensions.Caching.Abstractions/1.0.0-rc1-final": {
@@ -5148,26 +3652,6 @@
           "lib/net451/Microsoft.Extensions.Localization.Abstractions.dll": {}
         }
       },
-      "Microsoft.Extensions.Logging/1.0.0-rc1-final": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0-rc1-final",
-          "Microsoft.Extensions.Logging.Abstractions": "1.0.0-rc1-final"
-        },
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Collections.Concurrent",
-          "System.Core"
-        ],
-        "compile": {
-          "lib/net451/Microsoft.Extensions.Logging.dll": {}
-        },
-        "runtime": {
-          "lib/net451/Microsoft.Extensions.Logging.dll": {}
-        }
-      },
       "Microsoft.Extensions.Logging.Abstractions/1.0.0-rc1-final": {
         "type": "package",
         "frameworkAssemblies": [
@@ -5298,15 +3782,6 @@
           "lib/net451/Microsoft.Net.Http.Headers.dll": {}
         }
       },
-      "Microsoft.WindowsAzure.ConfigurationManager/1.8.0": {
-        "type": "package",
-        "compile": {
-          "lib/net35-full/Microsoft.WindowsAzure.Configuration.dll": {}
-        },
-        "runtime": {
-          "lib/net35-full/Microsoft.WindowsAzure.Configuration.dll": {}
-        }
-      },
       "MongoDB.Bson/2.2.0-rc0": {
         "type": "package",
         "compile": {
@@ -5341,16 +3816,7 @@
           "lib/net45/MongoDB.Driver.Core.dll": {}
         }
       },
-      "Moq/4.2.1507.118": {
-        "type": "package",
-        "compile": {
-          "lib/net40/Moq.dll": {}
-        },
-        "runtime": {
-          "lib/net40/Moq.dll": {}
-        }
-      },
-      "Newtonsoft.Json/7.0.1": {
+      "Newtonsoft.Json/6.0.6": {
         "type": "package",
         "compile": {
           "lib/net45/Newtonsoft.Json.dll": {}
@@ -5358,60 +3824,6 @@
         "runtime": {
           "lib/net45/Newtonsoft.Json.dll": {}
         }
-      },
-      "ReqRes/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Common": "1.0.0",
-          "Enums": "1.0.0"
-        }
-      },
-      "Serilog/1.5.11": {
-        "type": "package",
-        "compile": {
-          "lib/net45/Serilog.dll": {},
-          "lib/net45/Serilog.FullNetFx.dll": {}
-        },
-        "runtime": {
-          "lib/net45/Serilog.dll": {},
-          "lib/net45/Serilog.FullNetFx.dll": {}
-        }
-      },
-      "Serilog.Framework.Logging/1.0.0-rc1-final-10071": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
-          "Serilog": "1.5.11"
-        },
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Core",
-          "System.Runtime"
-        ],
-        "compile": {
-          "lib/dnx451/Serilog.Framework.Logging.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/Serilog.Framework.Logging.dll": {}
-        }
-      },
-      "SharpSquare/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1"
-      },
-      "SocialLogin/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Facebook": "7.0.6",
-          "MongoDB.Driver": "2.2.0-rc0"
-        },
-        "frameworkAssemblies": [
-          "System.Runtime.Serialization"
-        ]
       },
       "System.Collections/4.0.0": {
         "type": "package",
@@ -5509,18 +3921,6 @@
           "lib/net45/_._": {}
         }
       },
-      "System.Net.Http/4.0.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System.Net.Http"
-        ],
-        "compile": {
-          "ref/net45/_._": {}
-        },
-        "runtime": {
-          "lib/net45/_._": {}
-        }
-      },
       "System.Reflection/4.0.0": {
         "type": "package",
         "compile": {
@@ -5609,44 +4009,6 @@
           "lib/net45/_._": {}
         }
       },
-      "System.Spatial/5.6.0": {
-        "type": "package",
-        "compile": {
-          "lib/net40/System.Spatial.dll": {}
-        },
-        "runtime": {
-          "lib/net40/System.Spatial.dll": {}
-        },
-        "resource": {
-          "lib/net40/de/System.Spatial.resources.dll": {
-            "locale": "de"
-          },
-          "lib/net40/es/System.Spatial.resources.dll": {
-            "locale": "es"
-          },
-          "lib/net40/fr/System.Spatial.resources.dll": {
-            "locale": "fr"
-          },
-          "lib/net40/it/System.Spatial.resources.dll": {
-            "locale": "it"
-          },
-          "lib/net40/ja/System.Spatial.resources.dll": {
-            "locale": "ja"
-          },
-          "lib/net40/ko/System.Spatial.resources.dll": {
-            "locale": "ko"
-          },
-          "lib/net40/ru/System.Spatial.resources.dll": {
-            "locale": "ru"
-          },
-          "lib/net40/zh-Hans/System.Spatial.resources.dll": {
-            "locale": "zh-Hans"
-          },
-          "lib/net40/zh-Hant/System.Spatial.resources.dll": {
-            "locale": "zh-Hant"
-          }
-        }
-      },
       "System.Text.Encoding/4.0.0": {
         "type": "package",
         "compile": {
@@ -5672,159 +4034,6 @@
         },
         "runtime": {
           "lib/net45/_._": {}
-        }
-      },
-      "TweetSharp/2.3.1": {
-        "type": "package",
-        "dependencies": {
-          "Newtonsoft.Json": "5.0.6"
-        },
-        "compile": {
-          "lib/4.0/Hammock.ClientProfile.dll": {},
-          "lib/4.0/Newtonsoft.Json.dll": {},
-          "lib/4.0/TweetSharp.dll": {}
-        },
-        "runtime": {
-          "lib/4.0/Hammock.ClientProfile.dll": {},
-          "lib/4.0/Newtonsoft.Json.dll": {},
-          "lib/4.0/TweetSharp.dll": {}
-        }
-      },
-      "WebApiObjects/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Common": "1.0.0",
-          "MongoDB.Driver": "2.2.0-rc0"
-        }
-      },
-      "WindowsAzure.Storage/3.1.0.1": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Data.OData": "5.6.0",
-          "Microsoft.Data.Services.Client": "5.6.0",
-          "Microsoft.WindowsAzure.ConfigurationManager": "1.8.0",
-          "Newtonsoft.Json": "5.0.6"
-        },
-        "frameworkAssemblies": [
-          "System.Data",
-          "System.Xml",
-          "System.Xml.Linq"
-        ],
-        "compile": {
-          "lib/net40/Microsoft.WindowsAzure.Storage.dll": {}
-        },
-        "runtime": {
-          "lib/net40/Microsoft.WindowsAzure.Storage.dll": {}
-        }
-      },
-      "xunit/2.2.0-beta1-build3239": {
-        "type": "package",
-        "dependencies": {
-          "xunit.assert": "[2.2.0-beta1-build3239]",
-          "xunit.core": "[2.2.0-beta1-build3239]"
-        }
-      },
-      "xunit.abstractions/2.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/net35/xunit.abstractions.dll": {}
-        },
-        "runtime": {
-          "lib/net35/xunit.abstractions.dll": {}
-        }
-      },
-      "xunit.assert/2.2.0-beta1-build3239": {
-        "type": "package",
-        "compile": {
-          "lib/dotnet/xunit.assert.dll": {}
-        },
-        "runtime": {
-          "lib/dotnet/xunit.assert.dll": {}
-        }
-      },
-      "xunit.core/2.2.0-beta1-build3239": {
-        "type": "package",
-        "dependencies": {
-          "xunit.extensibility.core": "[2.2.0-beta1-build3239]",
-          "xunit.extensibility.execution": "[2.2.0-beta1-build3239]"
-        }
-      },
-      "xunit.extensibility.core/2.2.0-beta1-build3239": {
-        "type": "package",
-        "dependencies": {
-          "xunit.abstractions": "[2.0.0]"
-        },
-        "compile": {
-          "lib/dotnet/xunit.core.dll": {}
-        },
-        "runtime": {
-          "lib/dotnet/xunit.core.dll": {},
-          "lib/dotnet/xunit.runner.tdnet.dll": {},
-          "lib/dotnet/xunit.runner.utility.desktop.dll": {}
-        }
-      },
-      "xunit.extensibility.execution/2.2.0-beta1-build3239": {
-        "type": "package",
-        "dependencies": {
-          "xunit.extensibility.core": "[2.2.0-beta1-build3239]"
-        },
-        "compile": {
-          "lib/dnx451/xunit.execution.dotnet.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/xunit.execution.dotnet.dll": {}
-        }
-      },
-      "xunit.runner.dnx/2.1.0-rc1-build204": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Dnx.TestHost": "1.0.0-rc1-final",
-          "Microsoft.Dnx.Testing.Abstractions": "1.0.0-rc1-final",
-          "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final",
-          "xunit.runner.reporters": "2.1.0"
-        },
-        "frameworkAssemblies": [
-          "Microsoft.CSharp",
-          "mscorlib",
-          "System",
-          "System.Collections",
-          "System.Core",
-          "System.Threading",
-          "System.Xml",
-          "System.Xml.Linq",
-          "System.Xml.XDocument"
-        ],
-        "compile": {
-          "lib/dnx451/xunit.runner.dnx.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/xunit.runner.dnx.dll": {}
-        }
-      },
-      "xunit.runner.reporters/2.1.0": {
-        "type": "package",
-        "dependencies": {
-          "Newtonsoft.Json": "7.0.1",
-          "xunit.runner.utility": "[2.1.0]"
-        },
-        "compile": {
-          "lib/dnx451/xunit.runner.reporters.dotnet.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/xunit.runner.reporters.dotnet.dll": {}
-        }
-      },
-      "xunit.runner.utility/2.1.0": {
-        "type": "package",
-        "dependencies": {
-          "xunit.abstractions": "[2.0.0]"
-        },
-        "compile": {
-          "lib/dnx451/xunit.runner.utility.dotnet.dll": {}
-        },
-        "runtime": {
-          "lib/dnx451/xunit.runner.utility.dotnet.dll": {}
         }
       }
     }
@@ -5832,101 +4041,15 @@
   "libraries": {
     "Common/1.0.0": {
       "type": "project",
-      "path": "../Common/project.json"
+      "path": "../src/Common/project.json"
     },
     "Database/1.0.0": {
       "type": "project",
-      "path": "../Database/project.json"
-    },
-    "DomainModels/1.0.0": {
-      "type": "project",
-      "path": "../DomainModels/project.json"
-    },
-    "DomainModelsCommon/1.0.0": {
-      "type": "project",
-      "path": "../DomainModelsCommon/project.json"
-    },
-    "DomainObjects/1.0.0": {
-      "type": "project",
-      "path": "../DomainObjects/project.json"
-    },
-    "Entities/1.0.0": {
-      "type": "project",
-      "path": "../Entities/project.json"
+      "path": "../src/Database/project.json"
     },
     "Enums/1.0.0": {
       "type": "project",
-      "path": "../Enums/project.json"
-    },
-    "FlightsSearch/1.0.0": {
-      "type": "project",
-      "path": "../FlightsSearch/project.json"
-    },
-    "Gloobster.Sharing/1.0.0": {
-      "type": "project",
-      "path": "../Gloobster.Sharing/project.json"
-    },
-    "Mappers/1.0.0": {
-      "type": "project",
-      "path": "../Mappers/project.json"
-    },
-    "ReqRes/1.0.0": {
-      "type": "project",
-      "path": "../ReqRes/project.json"
-    },
-    "SharpSquare/1.0.0": {
-      "type": "project",
-      "path": "../../wrap/SharpSquare/project.json"
-    },
-    "SocialLogin/1.0.0": {
-      "type": "project",
-      "path": "../SocialLogin/project.json"
-    },
-    "WebApiObjects/1.0.0": {
-      "type": "project",
-      "path": "../WebApiObjects/project.json"
-    },
-    "Autofac/4.0.0-rc1-177": {
-      "type": "package",
-      "sha512": "cTSfTca0qWl3Zd68iMl2bH8e4RyGL/Q7EUT0PmAzCSoitSlrHu4zmByhP/f+KGGSuRqWHFYoMEEOanvTviEr4g==",
-      "files": [
-        "Autofac.4.0.0-rc1-177.nupkg",
-        "Autofac.4.0.0-rc1-177.nupkg.sha512",
-        "Autofac.nuspec",
-        "lib/dnxcore50/Autofac.dll",
-        "lib/dnxcore50/Autofac.xml",
-        "lib/dotnet5.2/Autofac.dll",
-        "lib/dotnet5.2/Autofac.xml",
-        "lib/net45/Autofac.dll",
-        "lib/net45/Autofac.xml",
-        "lib/win/Autofac.dll",
-        "lib/win/Autofac.xml"
-      ]
-    },
-    "Autofac.Extensions.DependencyInjection/4.0.0-rc1-177": {
-      "type": "package",
-      "sha512": "FEmKbGpwAza4MW3Az8v+8V42wuRYDFX+8LpTl8XzLi9VcdLNlWvErdk2q74u4+a4UHbvpAQ62tfh5ctMnDa9yA==",
-      "files": [
-        "Autofac.Extensions.DependencyInjection.4.0.0-rc1-177.nupkg",
-        "Autofac.Extensions.DependencyInjection.4.0.0-rc1-177.nupkg.sha512",
-        "Autofac.Extensions.DependencyInjection.nuspec",
-        "lib/dotnet5.4/Autofac.Extensions.DependencyInjection.dll",
-        "lib/dotnet5.4/Autofac.Extensions.DependencyInjection.xml",
-        "lib/net451/Autofac.Extensions.DependencyInjection.dll",
-        "lib/net451/Autofac.Extensions.DependencyInjection.xml",
-        "lib/netcore50/Autofac.Extensions.DependencyInjection.dll",
-        "lib/netcore50/Autofac.Extensions.DependencyInjection.xml"
-      ]
-    },
-    "BlobFileSystem.Azure/0.0.6": {
-      "type": "package",
-      "sha512": "61YPN8dFsh1sfzvURtMEA7Svv1f5KwR8UKNyG9x6H1OnUR9HqOyCnRWPIbNUl67BSfnDHANJzDXFCnWpSyP8Fw==",
-      "files": [
-        "BlobFileSystem.Azure.0.0.6.nupkg",
-        "BlobFileSystem.Azure.0.0.6.nupkg.sha512",
-        "BlobFileSystem.Azure.nuspec",
-        "lib/net45/AzureBlobFileSystem.dll"
-      ]
+      "path": "../src/Enums/project.json"
     },
     "Facebook/7.0.6": {
       "type": "package",
@@ -6464,132 +4587,6 @@
         "ThirdPartyNotices.rtf"
       ]
     },
-    "Microsoft.Data.Edm/5.6.0": {
-      "type": "package",
-      "sha512": "85HVRPZznEBFLnkbNqBeZUAD7q5h+KdWDO0Beqs9fH/0DWtFX8p02jKIftY3vii7uUoWOdu4K6Kd/p7Xtz3TsA==",
-      "files": [
-        "lib/net40/de/Microsoft.Data.Edm.resources.dll",
-        "lib/net40/es/Microsoft.Data.Edm.resources.dll",
-        "lib/net40/fr/Microsoft.Data.Edm.resources.dll",
-        "lib/net40/it/Microsoft.Data.Edm.resources.dll",
-        "lib/net40/ja/Microsoft.Data.Edm.resources.dll",
-        "lib/net40/ko/Microsoft.Data.Edm.resources.dll",
-        "lib/net40/Microsoft.Data.Edm.dll",
-        "lib/net40/Microsoft.Data.Edm.xml",
-        "lib/net40/ru/Microsoft.Data.Edm.resources.dll",
-        "lib/net40/zh-Hans/Microsoft.Data.Edm.resources.dll",
-        "lib/net40/zh-Hant/Microsoft.Data.Edm.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/de/Microsoft.Data.Edm.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/es/Microsoft.Data.Edm.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/fr/Microsoft.Data.Edm.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/it/Microsoft.Data.Edm.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/ja/Microsoft.Data.Edm.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/ko/Microsoft.Data.Edm.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/Microsoft.Data.Edm.Portable.dll",
-        "lib/portable-net40+sl5+wp8+win8/Microsoft.Data.Edm.Portable.xml",
-        "lib/portable-net40+sl5+wp8+win8/ru/Microsoft.Data.Edm.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/zh-Hans/Microsoft.Data.Edm.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/zh-Hant/Microsoft.Data.Edm.Portable.resources.dll",
-        "lib/sl4/de/Microsoft.Data.Edm.SL.resources.dll",
-        "lib/sl4/es/Microsoft.Data.Edm.SL.resources.dll",
-        "lib/sl4/fr/Microsoft.Data.Edm.SL.resources.dll",
-        "lib/sl4/it/Microsoft.Data.Edm.SL.resources.dll",
-        "lib/sl4/ja/Microsoft.Data.Edm.SL.resources.dll",
-        "lib/sl4/ko/Microsoft.Data.Edm.SL.resources.dll",
-        "lib/sl4/Microsoft.Data.Edm.SL.dll",
-        "lib/sl4/Microsoft.Data.Edm.SL.xml",
-        "lib/sl4/ru/Microsoft.Data.Edm.SL.resources.dll",
-        "lib/sl4/zh-Hans/Microsoft.Data.Edm.SL.resources.dll",
-        "lib/sl4/zh-Hant/Microsoft.Data.Edm.SL.resources.dll",
-        "Microsoft.Data.Edm.5.6.0.nupkg",
-        "Microsoft.Data.Edm.5.6.0.nupkg.sha512",
-        "Microsoft.Data.Edm.nuspec"
-      ]
-    },
-    "Microsoft.Data.OData/5.6.0": {
-      "type": "package",
-      "sha512": "Lt+w1eHXe3+HOl0S4XrfO8AW2ALvKFBZtRfb9ZcmTahmE02HIlbaa3cy/jBTwNoFihfQ5vaBjNl4xspSmVcPRw==",
-      "files": [
-        "lib/net40/de/Microsoft.Data.OData.resources.dll",
-        "lib/net40/es/Microsoft.Data.OData.resources.dll",
-        "lib/net40/fr/Microsoft.Data.OData.resources.dll",
-        "lib/net40/it/Microsoft.Data.OData.resources.dll",
-        "lib/net40/ja/Microsoft.Data.OData.resources.dll",
-        "lib/net40/ko/Microsoft.Data.OData.resources.dll",
-        "lib/net40/Microsoft.Data.OData.dll",
-        "lib/net40/Microsoft.Data.OData.xml",
-        "lib/net40/ru/Microsoft.Data.OData.resources.dll",
-        "lib/net40/zh-Hans/Microsoft.Data.OData.resources.dll",
-        "lib/net40/zh-Hant/Microsoft.Data.OData.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/de/Microsoft.Data.OData.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/es/Microsoft.Data.OData.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/fr/Microsoft.Data.OData.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/it/Microsoft.Data.OData.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/ja/Microsoft.Data.OData.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/ko/Microsoft.Data.OData.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/Microsoft.Data.OData.Portable.dll",
-        "lib/portable-net40+sl5+wp8+win8/Microsoft.Data.OData.Portable.xml",
-        "lib/portable-net40+sl5+wp8+win8/ru/Microsoft.Data.OData.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/zh-Hans/Microsoft.Data.OData.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/zh-Hant/Microsoft.Data.OData.Portable.resources.dll",
-        "lib/sl4/de/Microsoft.Data.OData.SL.resources.dll",
-        "lib/sl4/es/Microsoft.Data.OData.SL.resources.dll",
-        "lib/sl4/fr/Microsoft.Data.OData.SL.resources.dll",
-        "lib/sl4/it/Microsoft.Data.OData.SL.resources.dll",
-        "lib/sl4/ja/Microsoft.Data.OData.SL.resources.dll",
-        "lib/sl4/ko/Microsoft.Data.OData.SL.resources.dll",
-        "lib/sl4/Microsoft.Data.OData.SL.dll",
-        "lib/sl4/Microsoft.Data.OData.SL.xml",
-        "lib/sl4/ru/Microsoft.Data.OData.SL.resources.dll",
-        "lib/sl4/zh-Hans/Microsoft.Data.OData.SL.resources.dll",
-        "lib/sl4/zh-Hant/Microsoft.Data.OData.SL.resources.dll",
-        "Microsoft.Data.OData.5.6.0.nupkg",
-        "Microsoft.Data.OData.5.6.0.nupkg.sha512",
-        "Microsoft.Data.OData.nuspec"
-      ]
-    },
-    "Microsoft.Data.Services.Client/5.6.0": {
-      "type": "package",
-      "sha512": "OPXiTugmoZNO4X5RrLEKyIKhXMBBGNNM7szgtAyQ42snJFTcC2pStIYtQXaSAd1gHx/MNvTYcNN8vn7o64cFgA==",
-      "files": [
-        "lib/net40/de/Microsoft.Data.Services.Client.resources.dll",
-        "lib/net40/es/Microsoft.Data.Services.Client.resources.dll",
-        "lib/net40/fr/Microsoft.Data.Services.Client.resources.dll",
-        "lib/net40/it/Microsoft.Data.Services.Client.resources.dll",
-        "lib/net40/ja/Microsoft.Data.Services.Client.resources.dll",
-        "lib/net40/ko/Microsoft.Data.Services.Client.resources.dll",
-        "lib/net40/Microsoft.Data.Services.Client.dll",
-        "lib/net40/Microsoft.Data.Services.Client.xml",
-        "lib/net40/ru/Microsoft.Data.Services.Client.resources.dll",
-        "lib/net40/zh-Hans/Microsoft.Data.Services.Client.resources.dll",
-        "lib/net40/zh-Hant/Microsoft.Data.Services.Client.resources.dll",
-        "lib/portable-net45+sl5+wp8+win8/de/Microsoft.Data.Services.Client.Portable.resources.dll",
-        "lib/portable-net45+sl5+wp8+win8/es/Microsoft.Data.Services.Client.Portable.resources.dll",
-        "lib/portable-net45+sl5+wp8+win8/fr/Microsoft.Data.Services.Client.Portable.resources.dll",
-        "lib/portable-net45+sl5+wp8+win8/it/Microsoft.Data.Services.Client.Portable.resources.dll",
-        "lib/portable-net45+sl5+wp8+win8/ja/Microsoft.Data.Services.Client.Portable.resources.dll",
-        "lib/portable-net45+sl5+wp8+win8/ko/Microsoft.Data.Services.Client.Portable.resources.dll",
-        "lib/portable-net45+sl5+wp8+win8/Microsoft.Data.Services.Client.Portable.dll",
-        "lib/portable-net45+sl5+wp8+win8/Microsoft.Data.Services.Client.Portable.xml",
-        "lib/portable-net45+sl5+wp8+win8/ru/Microsoft.Data.Services.Client.Portable.resources.dll",
-        "lib/portable-net45+sl5+wp8+win8/zh-Hans/Microsoft.Data.Services.Client.Portable.resources.dll",
-        "lib/portable-net45+sl5+wp8+win8/zh-Hant/Microsoft.Data.Services.Client.Portable.resources.dll",
-        "lib/sl4/de/Microsoft.Data.Services.Client.SL.resources.dll",
-        "lib/sl4/es/Microsoft.Data.Services.Client.SL.resources.dll",
-        "lib/sl4/fr/Microsoft.Data.Services.Client.SL.resources.dll",
-        "lib/sl4/it/Microsoft.Data.Services.Client.SL.resources.dll",
-        "lib/sl4/ja/Microsoft.Data.Services.Client.SL.resources.dll",
-        "lib/sl4/ko/Microsoft.Data.Services.Client.SL.resources.dll",
-        "lib/sl4/Microsoft.Data.Services.Client.SL.dll",
-        "lib/sl4/Microsoft.Data.Services.Client.SL.xml",
-        "lib/sl4/ru/Microsoft.Data.Services.Client.SL.resources.dll",
-        "lib/sl4/zh-Hans/Microsoft.Data.Services.Client.SL.resources.dll",
-        "lib/sl4/zh-Hant/Microsoft.Data.Services.Client.SL.resources.dll",
-        "Microsoft.Data.Services.Client.5.6.0.nupkg",
-        "Microsoft.Data.Services.Client.5.6.0.nupkg.sha512",
-        "Microsoft.Data.Services.Client.nuspec"
-      ]
-    },
     "Microsoft.Dnx.Compilation.Abstractions/1.0.0-rc1-final": {
       "type": "package",
       "serviceable": true,
@@ -6630,35 +4627,6 @@
         "Microsoft.Dnx.Compilation.CSharp.Common.1.0.0-rc1-final.nupkg",
         "Microsoft.Dnx.Compilation.CSharp.Common.1.0.0-rc1-final.nupkg.sha512",
         "Microsoft.Dnx.Compilation.CSharp.Common.nuspec"
-      ]
-    },
-    "Microsoft.Dnx.TestHost/1.0.0-rc1-final": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "f5lDXCh4tLXXWHcuNpiyQLiOuV8HB+UjWeL70hrHyaBcssA6Oxa7KB3R/arddVwXuaXeBuGm+HVheuyhQCYGig==",
-      "files": [
-        "app/project.json",
-        "lib/dnx451/Microsoft.Dnx.TestHost.dll",
-        "lib/dnx451/Microsoft.Dnx.TestHost.xml",
-        "lib/dnxcore50/Microsoft.Dnx.TestHost.dll",
-        "lib/dnxcore50/Microsoft.Dnx.TestHost.xml",
-        "Microsoft.Dnx.TestHost.1.0.0-rc1-final.nupkg",
-        "Microsoft.Dnx.TestHost.1.0.0-rc1-final.nupkg.sha512",
-        "Microsoft.Dnx.TestHost.nuspec"
-      ]
-    },
-    "Microsoft.Dnx.Testing.Abstractions/1.0.0-rc1-final": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "AKeTdr5IdJQaXWw5jMyFOmmWicXt6V6WNQ7l67yBpSLsrJwYjtPg++XMmDGZVTd2CHcjzgMwz3iQfhCtMR76NQ==",
-      "files": [
-        "lib/dotnet5.4/Microsoft.Dnx.Testing.Abstractions.dll",
-        "lib/dotnet5.4/Microsoft.Dnx.Testing.Abstractions.xml",
-        "lib/net451/Microsoft.Dnx.Testing.Abstractions.dll",
-        "lib/net451/Microsoft.Dnx.Testing.Abstractions.xml",
-        "Microsoft.Dnx.Testing.Abstractions.1.0.0-rc1-final.nupkg",
-        "Microsoft.Dnx.Testing.Abstractions.1.0.0-rc1-final.nupkg.sha512",
-        "Microsoft.Dnx.Testing.Abstractions.nuspec"
       ]
     },
     "Microsoft.Extensions.Caching.Abstractions/1.0.0-rc1-final": {
@@ -6815,22 +4783,6 @@
         "Microsoft.Extensions.Localization.Abstractions.nuspec"
       ]
     },
-    "Microsoft.Extensions.Logging/1.0.0-rc1-final": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "anegHH4XHjaCmC557A0uvnJzprT44MOKr669yfiQLtITA+lQrM3aMijxjjdCREnxE8ftXuSz+6wViCvkgcAOhA==",
-      "files": [
-        "lib/dotnet5.4/Microsoft.Extensions.Logging.dll",
-        "lib/dotnet5.4/Microsoft.Extensions.Logging.xml",
-        "lib/net451/Microsoft.Extensions.Logging.dll",
-        "lib/net451/Microsoft.Extensions.Logging.xml",
-        "lib/netcore50/Microsoft.Extensions.Logging.dll",
-        "lib/netcore50/Microsoft.Extensions.Logging.xml",
-        "Microsoft.Extensions.Logging.1.0.0-rc1-final.nupkg",
-        "Microsoft.Extensions.Logging.1.0.0-rc1-final.nupkg.sha512",
-        "Microsoft.Extensions.Logging.nuspec"
-      ]
-    },
     "Microsoft.Extensions.Logging.Abstractions/1.0.0-rc1-final": {
       "type": "package",
       "serviceable": true,
@@ -6949,16 +4901,6 @@
         "Microsoft.Net.Http.Headers.nuspec"
       ]
     },
-    "Microsoft.WindowsAzure.ConfigurationManager/1.8.0": {
-      "type": "package",
-      "sha512": "a6b+9C3kZ3YtyqlxDfMSEYnqARFpr/BQcCqZFCgqBAEHDUZNr2/GOL9gC2gialM0SMOSJ5PXic4NirF19HtMwQ==",
-      "files": [
-        "lib/net35-full/Microsoft.WindowsAzure.Configuration.dll",
-        "Microsoft.WindowsAzure.ConfigurationManager.1.8.0.nupkg",
-        "Microsoft.WindowsAzure.ConfigurationManager.1.8.0.nupkg.sha512",
-        "Microsoft.WindowsAzure.ConfigurationManager.nuspec"
-      ]
-    },
     "MongoDB.Bson/2.2.0-rc0": {
       "type": "package",
       "sha512": "V6EU/ACsUqRAwmU3Xju748gqyCPz/udNdjS+5gHVJ9LwI0jveZGEtLLHmEOpOssXZ6n0yWqwSP+vZcTDuINllg==",
@@ -6994,24 +4936,9 @@
         "MongoDB.Driver.Core.nuspec"
       ]
     },
-    "Moq/4.2.1507.118": {
+    "Newtonsoft.Json/6.0.6": {
       "type": "package",
-      "sha512": "QfnD/kZcaV6mX1cWHta3yMn/d9ly9Q62yNmHQVArKaZcFcuFb4USYeHR/4XoA258WeJ2XfrGMPVQVIURRCoyNw==",
-      "files": [
-        "lib/net35/Moq.dll",
-        "lib/net35/Moq.xml",
-        "lib/net40/Moq.dll",
-        "lib/net40/Moq.xml",
-        "lib/sl5/Moq.Silverlight.dll",
-        "lib/sl5/Moq.Silverlight.xml",
-        "Moq.4.2.1507.118.nupkg",
-        "Moq.4.2.1507.118.nupkg.sha512",
-        "Moq.nuspec"
-      ]
-    },
-    "Newtonsoft.Json/7.0.1": {
-      "type": "package",
-      "sha512": "q3V4KLetMLnt1gpAVWgtXnHjKs0UG/RalBc29u2ZKxd5t5Ze4JBL5WiiYIklJyK/5CRiIiNwigVQUo0FgbsuWA==",
+      "sha512": "w26uZNyCG5VeoKiEOJ4+9/o8koSofLKwHl7WLreIcp0U6r57L7WiRXmjp8MTKFw6dYNZ9AE0lw69WYbIhUsU9Q==",
       "files": [
         "lib/net20/Newtonsoft.Json.dll",
         "lib/net20/Newtonsoft.Json.xml",
@@ -7021,51 +4948,16 @@
         "lib/net40/Newtonsoft.Json.xml",
         "lib/net45/Newtonsoft.Json.dll",
         "lib/net45/Newtonsoft.Json.xml",
+        "lib/netcore45/Newtonsoft.Json.dll",
+        "lib/netcore45/Newtonsoft.Json.xml",
         "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.dll",
         "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.xml",
-        "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll",
-        "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.xml",
-        "Newtonsoft.Json.7.0.1.nupkg",
-        "Newtonsoft.Json.7.0.1.nupkg.sha512",
+        "lib/portable-net45+wp80+win8+wpa81+aspnetcore50/Newtonsoft.Json.dll",
+        "lib/portable-net45+wp80+win8+wpa81+aspnetcore50/Newtonsoft.Json.xml",
+        "Newtonsoft.Json.6.0.6.nupkg",
+        "Newtonsoft.Json.6.0.6.nupkg.sha512",
         "Newtonsoft.Json.nuspec",
         "tools/install.ps1"
-      ]
-    },
-    "Serilog/1.5.11": {
-      "type": "package",
-      "sha512": "XNMHuP9eRWk7ffNtEAtACoBqqrSGfioQnEbeK/boi/qtamh3ZgYXvUwH9/PytJdg3LGOIT0quyTiCNaqYlJUuQ==",
-      "files": [
-        "lib/net40/Serilog.dll",
-        "lib/net40/Serilog.FullNetFx.dll",
-        "lib/net40/Serilog.FullNetFx.pdb",
-        "lib/net40/Serilog.FullNetFx.XML",
-        "lib/net40/Serilog.pdb",
-        "lib/net40/Serilog.XML",
-        "lib/net45/Serilog.dll",
-        "lib/net45/Serilog.FullNetFx.dll",
-        "lib/net45/Serilog.FullNetFx.pdb",
-        "lib/net45/Serilog.FullNetFx.XML",
-        "lib/net45/Serilog.pdb",
-        "lib/net45/Serilog.XML",
-        "lib/portable-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10/Serilog.dll",
-        "lib/portable-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10/Serilog.pdb",
-        "lib/portable-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10/Serilog.XML",
-        "Serilog.1.5.11.nupkg",
-        "Serilog.1.5.11.nupkg.sha512",
-        "Serilog.nuspec"
-      ]
-    },
-    "Serilog.Framework.Logging/1.0.0-rc1-final-10071": {
-      "type": "package",
-      "sha512": "RyB8mv2eL0xYISh7v2+62as9Whdx8WOeqfSPXcac3mRLIW3XHY0LCbKDGwIA1pDbn+AAmAa6IR7+6wmI7mI93g==",
-      "files": [
-        "lib/dnx451/Serilog.Framework.Logging.dll",
-        "lib/dnx451/Serilog.Framework.Logging.xml",
-        "lib/dnxcore50/Serilog.Framework.Logging.dll",
-        "lib/dnxcore50/Serilog.Framework.Logging.xml",
-        "Serilog.Framework.Logging.1.0.0-rc1-final-10071.nupkg",
-        "Serilog.Framework.Logging.1.0.0-rc1-final-10071.nupkg.sha512",
-        "Serilog.Framework.Logging.nuspec"
       ]
     },
     "System.Collections/4.0.0": {
@@ -7409,37 +5301,6 @@
         "System.Linq.Queryable.nuspec"
       ]
     },
-    "System.Net.Http/4.0.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "mZuAl7jw/mFY8jUq4ITKECxVBh9a8SJt9BC/+lJbmo7cRKspxE3PsITz+KiaCEsexN5WYPzwBOx0oJH/0HlPyQ==",
-      "files": [
-        "lib/DNXCore50/System.Net.Http.dll",
-        "lib/net45/_._",
-        "lib/netcore50/System.Net.Http.dll",
-        "lib/win8/_._",
-        "lib/wpa81/_._",
-        "ref/dotnet/de/System.Net.Http.xml",
-        "ref/dotnet/es/System.Net.Http.xml",
-        "ref/dotnet/fr/System.Net.Http.xml",
-        "ref/dotnet/it/System.Net.Http.xml",
-        "ref/dotnet/ja/System.Net.Http.xml",
-        "ref/dotnet/ko/System.Net.Http.xml",
-        "ref/dotnet/ru/System.Net.Http.xml",
-        "ref/dotnet/System.Net.Http.dll",
-        "ref/dotnet/System.Net.Http.xml",
-        "ref/dotnet/zh-hans/System.Net.Http.xml",
-        "ref/dotnet/zh-hant/System.Net.Http.xml",
-        "ref/net45/_._",
-        "ref/netcore50/System.Net.Http.dll",
-        "ref/netcore50/System.Net.Http.xml",
-        "ref/win8/_._",
-        "ref/wpa81/_._",
-        "System.Net.Http.4.0.0.nupkg",
-        "System.Net.Http.4.0.0.nupkg.sha512",
-        "System.Net.Http.nuspec"
-      ]
-    },
     "System.Reflection/4.0.0": {
       "type": "package",
       "sha512": "g96Rn8XuG7y4VfxPj/jnXroRJdQ8L3iN3k3zqsuzk4k3Nq4KMXARYiIO4BLW4GwX06uQpuYwRMcAC/aF117knQ==",
@@ -7746,48 +5607,6 @@
         "System.Runtime.InteropServices.nuspec"
       ]
     },
-    "System.Spatial/5.6.0": {
-      "type": "package",
-      "sha512": "O5hFsuKD1vUwXw9TrsbQ7XMlkL5qWHNJYSEchsaCmxFI60ffa3FSHnqvOBHKzLplaiA3enVPufDPgv9xSrp11A==",
-      "files": [
-        "lib/net40/de/System.Spatial.resources.dll",
-        "lib/net40/es/System.Spatial.resources.dll",
-        "lib/net40/fr/System.Spatial.resources.dll",
-        "lib/net40/it/System.Spatial.resources.dll",
-        "lib/net40/ja/System.Spatial.resources.dll",
-        "lib/net40/ko/System.Spatial.resources.dll",
-        "lib/net40/ru/System.Spatial.resources.dll",
-        "lib/net40/System.Spatial.dll",
-        "lib/net40/System.Spatial.xml",
-        "lib/net40/zh-Hans/System.Spatial.resources.dll",
-        "lib/net40/zh-Hant/System.Spatial.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/de/System.Spatial.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/es/System.Spatial.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/fr/System.Spatial.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/it/System.Spatial.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/ja/System.Spatial.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/ko/System.Spatial.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/ru/System.Spatial.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/System.Spatial.Portable.dll",
-        "lib/portable-net40+sl5+wp8+win8/System.Spatial.Portable.xml",
-        "lib/portable-net40+sl5+wp8+win8/zh-Hans/System.Spatial.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/zh-Hant/System.Spatial.Portable.resources.dll",
-        "lib/sl4/de/System.Spatial.SL.resources.dll",
-        "lib/sl4/es/System.Spatial.SL.resources.dll",
-        "lib/sl4/fr/System.Spatial.SL.resources.dll",
-        "lib/sl4/it/System.Spatial.SL.resources.dll",
-        "lib/sl4/ja/System.Spatial.SL.resources.dll",
-        "lib/sl4/ko/System.Spatial.SL.resources.dll",
-        "lib/sl4/ru/System.Spatial.SL.resources.dll",
-        "lib/sl4/System.Spatial.SL.dll",
-        "lib/sl4/System.Spatial.SL.xml",
-        "lib/sl4/zh-Hans/System.Spatial.SL.resources.dll",
-        "lib/sl4/zh-Hant/System.Spatial.SL.resources.dll",
-        "System.Spatial.5.6.0.nupkg",
-        "System.Spatial.5.6.0.nupkg.sha512",
-        "System.Spatial.nuspec"
-      ]
-    },
     "System.Text.Encoding/4.0.0": {
       "type": "package",
       "sha512": "AMxFNOXpA6Ab8swULbXuJmoT2K5w6TnV3ObF5wsmEcIHQUJghoZtDVfVHb08O2wW15mOSI1i9Wg0Dx0pY13o8g==",
@@ -7931,265 +5750,12 @@
         "System.Threading.4.0.0.nupkg.sha512",
         "System.Threading.nuspec"
       ]
-    },
-    "TweetSharp/2.3.1": {
-      "type": "package",
-      "sha512": "0iN3kZ+idHMZ2L9F1Hxnt4kCO4s53hfLu+erANQhP3chwsRrEgGjCpjo9OOM27sHCKNHd9e9iSrymQ9EtXlUOQ==",
-      "files": [
-        "lib/2.0/Hammock.dll",
-        "lib/2.0/Hammock.pdb",
-        "lib/2.0/Newtonsoft.Json.dll",
-        "lib/2.0/Newtonsoft.Json.xml",
-        "lib/2.0/TweetSharp.dll",
-        "lib/2.0/TweetSharp.pdb",
-        "lib/3.5/Hammock.ClientProfile.dll",
-        "lib/3.5/Hammock.ClientProfile.pdb",
-        "lib/3.5/Newtonsoft.Json.dll",
-        "lib/3.5/Newtonsoft.Json.xml",
-        "lib/3.5/TweetSharp.dll",
-        "lib/3.5/TweetSharp.pdb",
-        "lib/4.0/Hammock.ClientProfile.dll",
-        "lib/4.0/Hammock.ClientProfile.pdb",
-        "lib/4.0/Newtonsoft.Json.dll",
-        "lib/4.0/Newtonsoft.Json.xml",
-        "lib/4.0/TweetSharp.dll",
-        "lib/4.0/TweetSharp.pdb",
-        "lib/sl4/de/System.Xml.Linq.resources.dll",
-        "lib/sl4/es/System.Xml.Linq.resources.dll",
-        "lib/sl4/fr/System.Xml.Linq.resources.dll",
-        "lib/sl4/Hammock.Silverlight.dll",
-        "lib/sl4/Hammock.Silverlight.pdb",
-        "lib/sl4/ICSharpCode.SharpZipLib.Silverlight.dll",
-        "lib/sl4/ICSharpCode.SharpZipLib.Silverlight.pdb",
-        "lib/sl4/it/System.Xml.Linq.resources.dll",
-        "lib/sl4/ja/System.Xml.Linq.resources.dll",
-        "lib/sl4/ko/System.Xml.Linq.resources.dll",
-        "lib/sl4/Newtonsoft.Json.dll",
-        "lib/sl4/Newtonsoft.Json.xml",
-        "lib/sl4/ru/System.Xml.Linq.resources.dll",
-        "lib/sl4/System.Xml.Linq.dll",
-        "lib/sl4/System.Xml.Linq.xml",
-        "lib/sl4/TweetSharp.Silverlight.dll",
-        "lib/sl4/TweetSharp.Silverlight.pdb",
-        "lib/sl4/zh-Hans/System.Xml.Linq.resources.dll",
-        "lib/sl4/zh-Hant/System.Xml.Linq.resources.dll",
-        "lib/sl4-wp/Hammock.WindowsPhone.dll",
-        "lib/sl4-wp/Hammock.WindowsPhone.pdb",
-        "lib/sl4-wp/ICSharpCode.SharpZipLib.WindowsPhone.dll",
-        "lib/sl4-wp/ICSharpCode.SharpZipLib.WindowsPhone.pdb",
-        "lib/sl4-wp/Newtonsoft.Json.dll",
-        "lib/sl4-wp/Newtonsoft.Json.xml",
-        "lib/sl4-wp/TweetSharp.WindowsPhone.dll",
-        "lib/sl4-wp/TweetSharp.WindowsPhone.pdb",
-        "lib/sl4-wp71/Hammock.WindowsPhone.Mango.dll",
-        "lib/sl4-wp71/Hammock.WindowsPhone.Mango.pdb",
-        "lib/sl4-wp71/ICSharpCode.SharpZipLib.WindowsPhone.dll",
-        "lib/sl4-wp71/ICSharpCode.SharpZipLib.WindowsPhone.pdb",
-        "lib/sl4-wp71/Newtonsoft.Json.dll",
-        "lib/sl4-wp71/Newtonsoft.Json.xml",
-        "lib/sl4-wp71/TweetSharp.WindowsPhone.Mango.dll",
-        "lib/sl4-wp71/TweetSharp.WindowsPhone.Mango.pdb",
-        "LICENSE.md",
-        "README.md",
-        "TweetSharp.2.3.1.nupkg",
-        "TweetSharp.2.3.1.nupkg.sha512",
-        "TweetSharp.nuspec"
-      ]
-    },
-    "WindowsAzure.Storage/3.1.0.1": {
-      "type": "package",
-      "sha512": "/6UnKf8zWJXS3TOvzAjq5yAsjDOd9t714+GIi5L6Vj6c7KmPs1jBGBx6UufDt+KVAxTrsV2Wdlbapp7z7LV+cw==",
-      "files": [
-        "lib/net40/Microsoft.WindowsAzure.Storage.dll",
-        "lib/net40/Microsoft.WindowsAzure.Storage.xml",
-        "WindowsAzure.Storage.3.1.0.1.nupkg",
-        "WindowsAzure.Storage.3.1.0.1.nupkg.sha512",
-        "WindowsAzure.Storage.nuspec"
-      ]
-    },
-    "xunit/2.2.0-beta1-build3239": {
-      "type": "package",
-      "sha512": "j/MqJK2vBsTqdcGQCrMw0pQKbwQF1o9BeFRZ1BNlHe2W1/5ixqJFon/dr55MAnFgQrb4Euabonmn5JNluK4qeQ==",
-      "files": [
-        "xunit.2.2.0-beta1-build3239.nupkg",
-        "xunit.2.2.0-beta1-build3239.nupkg.sha512",
-        "xunit.nuspec"
-      ]
-    },
-    "xunit.abstractions/2.0.0": {
-      "type": "package",
-      "sha512": "NAdxKQRzuLnCZ0g++x6i87/8rMBpQoRiRlRNLAqfODm2zJPbteHRoSER3DXfxnqrHXyBJT8rFaZ8uveBeQyaMA==",
-      "files": [
-        "lib/net35/xunit.abstractions.dll",
-        "lib/net35/xunit.abstractions.xml",
-        "lib/portable-net45+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS/xunit.abstractions.dll",
-        "lib/portable-net45+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS/xunit.abstractions.xml",
-        "xunit.abstractions.2.0.0.nupkg",
-        "xunit.abstractions.2.0.0.nupkg.sha512",
-        "xunit.abstractions.nuspec"
-      ]
-    },
-    "xunit.assert/2.2.0-beta1-build3239": {
-      "type": "package",
-      "sha512": "fczO1r6zCqUCAw8DOBIrylzC038gDAxyb98h1S8BQIJTzM1LWlYIAa60z5YMl/himWzAw9NQGoju3QTyH+OsWQ==",
-      "files": [
-        "lib/dotnet/xunit.assert.dll",
-        "lib/dotnet/xunit.assert.pdb",
-        "lib/dotnet/xunit.assert.xml",
-        "lib/portable-net45+win8+wp8+wpa81/xunit.assert.dll",
-        "lib/portable-net45+win8+wp8+wpa81/xunit.assert.pdb",
-        "lib/portable-net45+win8+wp8+wpa81/xunit.assert.xml",
-        "xunit.assert.2.2.0-beta1-build3239.nupkg",
-        "xunit.assert.2.2.0-beta1-build3239.nupkg.sha512",
-        "xunit.assert.nuspec"
-      ]
-    },
-    "xunit.core/2.2.0-beta1-build3239": {
-      "type": "package",
-      "sha512": "Ejolxzd5yln1UxoL8U6C9d2qyIkdLxJdsTy6igRIyp+5RnSq16BfiCLjyyapBO5hzuqTTUK27buXnKcpR1lqfQ==",
-      "files": [
-        "build/_desktop/xunit.execution.desktop.dll",
-        "build/dnx451/_._",
-        "build/monoandroid/_._",
-        "build/monotouch/_._",
-        "build/net45/_._",
-        "build/portable-net45+win8+wp8+wpa81/xunit.core.props",
-        "build/win8/_._",
-        "build/win81/xunit.core.props",
-        "build/wp8/_._",
-        "build/wpa81/xunit.core.props",
-        "build/xamarinios/_._",
-        "xunit.core.2.2.0-beta1-build3239.nupkg",
-        "xunit.core.2.2.0-beta1-build3239.nupkg.sha512",
-        "xunit.core.nuspec"
-      ]
-    },
-    "xunit.extensibility.core/2.2.0-beta1-build3239": {
-      "type": "package",
-      "sha512": "jdTnfYPo5ArIVnb0Q5Br44ygr3rD9ubfWVC5O+/Fky1i5ORGXueEmrxI/vunR05vhmcorr8N2ZhxtfREVwcSVg==",
-      "files": [
-        "lib/dotnet/xunit.core.dll",
-        "lib/dotnet/xunit.core.dll.tdnet",
-        "lib/dotnet/xunit.core.pdb",
-        "lib/dotnet/xunit.core.xml",
-        "lib/dotnet/xunit.runner.tdnet.dll",
-        "lib/dotnet/xunit.runner.utility.desktop.dll",
-        "lib/portable-net45+win8+wp8+wpa81/xunit.core.dll",
-        "lib/portable-net45+win8+wp8+wpa81/xunit.core.dll.tdnet",
-        "lib/portable-net45+win8+wp8+wpa81/xunit.core.pdb",
-        "lib/portable-net45+win8+wp8+wpa81/xunit.core.xml",
-        "lib/portable-net45+win8+wp8+wpa81/xunit.runner.tdnet.dll",
-        "lib/portable-net45+win8+wp8+wpa81/xunit.runner.utility.desktop.dll",
-        "xunit.extensibility.core.2.2.0-beta1-build3239.nupkg",
-        "xunit.extensibility.core.2.2.0-beta1-build3239.nupkg.sha512",
-        "xunit.extensibility.core.nuspec"
-      ]
-    },
-    "xunit.extensibility.execution/2.2.0-beta1-build3239": {
-      "type": "package",
-      "sha512": "lBMxtY9e3De3H1gG3mVf1esSuQZ8ugQYSekd3FSDzttM9Uml4wcEEjttiy5SJK7rhsFH9X87AoH9yrCOvt0nfg==",
-      "files": [
-        "lib/dnx451/xunit.execution.dotnet.dll",
-        "lib/dnx451/xunit.execution.dotnet.pdb",
-        "lib/dnx451/xunit.execution.dotnet.xml",
-        "lib/dotnet/xunit.execution.dotnet.dll",
-        "lib/dotnet/xunit.execution.dotnet.pdb",
-        "lib/dotnet/xunit.execution.dotnet.xml",
-        "lib/monoandroid/xunit.execution.dotnet.dll",
-        "lib/monoandroid/xunit.execution.dotnet.pdb",
-        "lib/monoandroid/xunit.execution.dotnet.xml",
-        "lib/monotouch/xunit.execution.dotnet.dll",
-        "lib/monotouch/xunit.execution.dotnet.pdb",
-        "lib/monotouch/xunit.execution.dotnet.xml",
-        "lib/net45/xunit.execution.desktop.dll",
-        "lib/net45/xunit.execution.desktop.pdb",
-        "lib/net45/xunit.execution.desktop.xml",
-        "lib/portable-net45+win8+wp8+wpa81/xunit.execution.dotnet.dll",
-        "lib/portable-net45+win8+wp8+wpa81/xunit.execution.dotnet.pdb",
-        "lib/portable-net45+win8+wp8+wpa81/xunit.execution.dotnet.xml",
-        "lib/win8/xunit.execution.dotnet.dll",
-        "lib/win8/xunit.execution.dotnet.pdb",
-        "lib/win8/xunit.execution.dotnet.xml",
-        "lib/wp8/xunit.execution.dotnet.dll",
-        "lib/wp8/xunit.execution.dotnet.pdb",
-        "lib/wp8/xunit.execution.dotnet.xml",
-        "lib/wpa81/xunit.execution.dotnet.dll",
-        "lib/wpa81/xunit.execution.dotnet.pdb",
-        "lib/wpa81/xunit.execution.dotnet.xml",
-        "lib/xamarinios/xunit.execution.dotnet.dll",
-        "lib/xamarinios/xunit.execution.dotnet.pdb",
-        "lib/xamarinios/xunit.execution.dotnet.xml",
-        "xunit.extensibility.execution.2.2.0-beta1-build3239.nupkg",
-        "xunit.extensibility.execution.2.2.0-beta1-build3239.nupkg.sha512",
-        "xunit.extensibility.execution.nuspec"
-      ]
-    },
-    "xunit.runner.dnx/2.1.0-rc1-build204": {
-      "type": "package",
-      "sha512": "GUtWIQN3h7QGJdp5RTgvbPVjdWC7tXIRZhzpW8txNDC9nbMph4/TWbVEZKCGUOsLvE5BZg3icRGb6JR3ZwBADA==",
-      "files": [
-        "lib/dnx451/xunit.runner.dnx.dll",
-        "lib/dnx451/xunit.runner.dnx.xml",
-        "lib/dnxcore50/xunit.runner.dnx.dll",
-        "lib/dnxcore50/xunit.runner.dnx.xml",
-        "xunit.runner.dnx.2.1.0-rc1-build204.nupkg",
-        "xunit.runner.dnx.2.1.0-rc1-build204.nupkg.sha512",
-        "xunit.runner.dnx.nuspec"
-      ]
-    },
-    "xunit.runner.reporters/2.1.0": {
-      "type": "package",
-      "sha512": "ja0kJrvwSiho2TRFpfHfa+6tGJI5edcyD8fdekTkjn7Us17PbGqglIihRe8sR9YFAmS4ipEC8+7CXOM/b69ENQ==",
-      "files": [
-        "lib/dnx451/xunit.runner.reporters.dotnet.dll",
-        "lib/dotnet/xunit.runner.reporters.dotnet.dll",
-        "lib/net45/xunit.runner.reporters.desktop.dll",
-        "xunit.runner.reporters.2.1.0.nupkg",
-        "xunit.runner.reporters.2.1.0.nupkg.sha512",
-        "xunit.runner.reporters.nuspec"
-      ]
-    },
-    "xunit.runner.utility/2.1.0": {
-      "type": "package",
-      "sha512": "jJJHROwskIhdQuYw7exe7KaW20dOCa+lzV/lY7Zdh1ZZzdUPpScMi9ReJIutqiyjhemGF8V/GaMIPrcjyZ4ioQ==",
-      "files": [
-        "lib/dnx451/xunit.runner.utility.dotnet.dll",
-        "lib/dnx451/xunit.runner.utility.dotnet.pdb",
-        "lib/dnx451/xunit.runner.utility.dotnet.xml",
-        "lib/dotnet/xunit.runner.utility.dotnet.dll",
-        "lib/dotnet/xunit.runner.utility.dotnet.pdb",
-        "lib/dotnet/xunit.runner.utility.dotnet.xml",
-        "lib/net35/xunit.runner.utility.desktop.dll",
-        "lib/net35/xunit.runner.utility.desktop.pdb",
-        "lib/net35/xunit.runner.utility.desktop.xml",
-        "lib/portable-net45+win8+wp8+wpa81/xunit.runner.utility.dotnet.dll",
-        "lib/portable-net45+win8+wp8+wpa81/xunit.runner.utility.dotnet.pdb",
-        "lib/portable-net45+win8+wp8+wpa81/xunit.runner.utility.dotnet.xml",
-        "xunit.runner.utility.2.1.0.nupkg",
-        "xunit.runner.utility.2.1.0.nupkg.sha512",
-        "xunit.runner.utility.nuspec"
-      ]
     }
   },
   "projectFileDependencyGroups": {
     "": [
-      "Common >= 1.0.0-*",
-      "DomainModels >= 1.0.0-*",
-      "DomainModelsCommon >= 1.0.0-*",
-      "Mappers >= 1.0.0-*",
-      "SocialLogin >= 1.0.0-*",
-      "WebApiObjects >= 1.0.0-*",
-      "MongoDB.Driver >= 2.2.0-rc0",
-      "Moq >= 4.2.1507.118",
-      "TweetSharp >= 2.3.1",
-      "xunit >= 2.2.0-beta1-build3239",
-      "xunit.runner.dnx >= 2.1.0-rc1-build204",
-      "Newtonsoft.Json >= 7.0.1",
-      "Gloobster.Sharing >= 1.0.0-*",
-      "FlightsSearch >= 1.0.0-*"
+      "Database >= 1.0.0-*"
     ],
-    "DNX,Version=v4.5.1": [
-      "SharpSquare >= 1.0.0-*"
-    ]
+    "DNX,Version=v4.5.1": []
   }
 }

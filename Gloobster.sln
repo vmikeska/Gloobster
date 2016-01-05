@@ -57,6 +57,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{
 		PublishScripts\Templates\CitiesService.param.dev.json = PublishScripts\Templates\CitiesService.param.dev.json
 	EndProjectSection
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "FlightsSearch", "src\FlightsSearch\FlightsSearch.xproj", "{85D40145-1B37-4A99-9911-DFB59DD44848}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "FlightApp", "src\ConsoleApp1\FlightApp.xproj", "{817D71CD-B5C8-4668-8603-FDF01CD0BD4A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -127,6 +131,14 @@ Global
 		{E9AFFBC4-B59D-4CC8-B70E-07E862619D7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9AFFBC4-B59D-4CC8-B70E-07E862619D7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9AFFBC4-B59D-4CC8-B70E-07E862619D7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85D40145-1B37-4A99-9911-DFB59DD44848}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85D40145-1B37-4A99-9911-DFB59DD44848}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85D40145-1B37-4A99-9911-DFB59DD44848}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85D40145-1B37-4A99-9911-DFB59DD44848}.Release|Any CPU.Build.0 = Release|Any CPU
+		{817D71CD-B5C8-4668-8603-FDF01CD0BD4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{817D71CD-B5C8-4668-8603-FDF01CD0BD4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{817D71CD-B5C8-4668-8603-FDF01CD0BD4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{817D71CD-B5C8-4668-8603-FDF01CD0BD4A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -151,5 +163,7 @@ Global
 		{E9AFFBC4-B59D-4CC8-B70E-07E862619D7E} = {2A345503-3703-48D8-8CA5-CCAFBEB40FE8}
 		{79D35104-00D7-413E-9118-A2E99A1CB6FB} = {3D73D2B8-F179-468C-A754-BA8AB266834A}
 		{76B68D25-F4DE-476E-A970-FB314C86F49C} = {3D73D2B8-F179-468C-A754-BA8AB266834A}
+		{85D40145-1B37-4A99-9911-DFB59DD44848} = {2A345503-3703-48D8-8CA5-CCAFBEB40FE8}
+		{817D71CD-B5C8-4668-8603-FDF01CD0BD4A} = {2A345503-3703-48D8-8CA5-CCAFBEB40FE8}
 	EndGlobalSection
 EndGlobal

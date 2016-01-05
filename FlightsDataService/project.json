@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0-*",
+  "description": "FlightsDataService Class Library",
+  "authors": [ "vmike_000" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+  "frameworks": {
+    "dnx451": { }
+  },
+  "dependencies": {
+    "Database": "1.0.0-*",
+    "Newtonsoft.Json": "7.0.1"
+  }
+}

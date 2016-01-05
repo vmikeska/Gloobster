@@ -13,8 +13,8 @@ using Gloobster.Enums;
 using Gloobster.Mappers;
 using Gloobster.ReqRes.Google;
 using Gloobster.SocialLogin.Facebook.Communication;
-using Hammock.Serialization;
 using MongoDB.Bson;
+using Newtonsoft.Json;
 
 namespace Gloobster.DomainModels.Services.Accounts
 {
@@ -32,7 +32,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 					var values = new NameValueCollection {["access_token"] = socAuth.AccessToken};
 					byte[] response = client.UploadValues(url, values);
 					var resp = Encoding.Default.GetString(response);
-					var authObj = JsonParser.Deserialize<GoogleAuthValidation>(resp);
+					var authObj = JsonConvert.DeserializeObject<GoogleAuthValidation>(resp);
 
 					bool verified = !string.IsNullOrEmpty(authObj.email);
 					return verified;
