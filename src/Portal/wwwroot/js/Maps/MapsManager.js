@@ -7,15 +7,17 @@ var Maps;
             this.mapsDataLoader.dataLoadedCallback = function () { _this.redrawDataCallback(); };
             this.mapsOperations = new Maps.MapsOperations();
         }
-        MapsManager.prototype.getPluginData = function (pluginType, displayEntity) {
+        MapsManager.prototype.getPluginData = function (pluginType, displayEntity, force) {
+            if (force === void 0) { force = false; }
             var isSamePlugin = this.currentPluginType === pluginType;
             this.currentDisplayEntity = displayEntity;
             this.currentPluginType = pluginType;
-            if (isSamePlugin) {
-                this.redrawDataCallback();
+            var reloadData = !isSamePlugin || force;
+            if (reloadData) {
+                this.mapsDataLoader.getPluginData(pluginType, displayEntity);
             }
             else {
-                this.mapsDataLoader.getPluginData(pluginType, displayEntity);
+                this.redrawDataCallback();
             }
         };
         MapsManager.prototype.redrawDataCallback = function () {

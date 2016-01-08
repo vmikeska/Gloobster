@@ -7,6 +7,6 @@ namespace Gloobster.DomainInterfaces
 	{
 		IPlacesExtractorDriver Driver { get; set; }
 		Task<bool> ExtractNewAsync(string dbUserId, SocAuthenticationDO auth);
-		void SaveAsync();
+        Task<bool> SaveAsync();
 	}
 }

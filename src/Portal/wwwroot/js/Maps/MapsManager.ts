@@ -18,17 +18,20 @@
 			this.mapsOperations = new MapsOperations();
 		}
 
-		public getPluginData(pluginType: Maps.PluginType, displayEntity: Maps.DisplayEntity) {
+
+		public getPluginData(pluginType: Maps.PluginType, displayEntity: Maps.DisplayEntity, force = false) {
 
 			var isSamePlugin = this.currentPluginType === pluginType;
 
 			this.currentDisplayEntity = displayEntity;
 			this.currentPluginType = pluginType;
 
-			if (isSamePlugin) {
-				this.redrawDataCallback();
+			var reloadData = !isSamePlugin || force;
+
+			if (reloadData) {
+			 this.mapsDataLoader.getPluginData(pluginType, displayEntity);			 
 			} else {
-				this.mapsDataLoader.getPluginData(pluginType, displayEntity);
+			 this.redrawDataCallback();
 			}
 		}
 

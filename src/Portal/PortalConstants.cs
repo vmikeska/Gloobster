@@ -9,5 +9,6 @@ namespace Gloobster.Portal
     {
 	    public const string UserSessionId = "UserId";
 	    public const string LoginCookieName = "loginCookie";
+        public const string NetworkTypes = "NetworkTypes";
     }
 }

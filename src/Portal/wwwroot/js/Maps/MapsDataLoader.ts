@@ -11,6 +11,8 @@ module Maps {
 
 			Views.ViewBase.currentView.apiGet("PinBoardStats", request, response => {
 
+				console.log("newCit: " + response.visitedCities.length);
+
 				this.places = new Places();
 				this.viewPlaces = new PlacesDisplay();
 

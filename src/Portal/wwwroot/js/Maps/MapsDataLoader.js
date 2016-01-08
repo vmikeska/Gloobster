@@ -7,6 +7,7 @@ var Maps;
             var _this = this;
             var request = [["pluginType", pluginType.toString()], ["displayEntity", displayEntity.toString()]];
             Views.ViewBase.currentView.apiGet("PinBoardStats", request, function (response) {
+                console.log("newCit: " + response.visitedCities.length);
                 _this.places = new Maps.Places();
                 _this.viewPlaces = new Maps.PlacesDisplay();
                 _this.places.places = response.visitedPlaces;

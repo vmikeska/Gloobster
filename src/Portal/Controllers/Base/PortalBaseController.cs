@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainModels;
@@ -38,7 +39,7 @@ namespace Gloobster.Portal.Controllers.Base
 					return string.Empty;
 				}
 
-				Request.HttpContext.Session.SetString(PortalConstants.UserSessionId, authToken.UserId);
+                Request.HttpContext.Session.SetString(PortalConstants.UserSessionId, authToken.UserId);
 				_userId = authToken.UserId;
 				
 				return _userId;
@@ -102,25 +103,37 @@ namespace Gloobster.Portal.Controllers.Base
 
 	    public string GetSocNetworkStr()
 	    {
-		    var socNetwork = PortalUser.SocialAccounts?.FirstOrDefault();
-		    if (socNetwork == null)
-		    {
-			    return string.Empty;
-		    }
+	        var networks = new List<string>();
+            if (PortalUser.SocialAccounts != null && PortalUser.SocialAccounts.Any())
+	        {
+	            foreach (var account in PortalUser.SocialAccounts)
+	            {
+	                if (account.NetworkType == SocialNetworkType.Facebook)
+	                {
+	                    networks.Add("F");
+	                }
 
-		    switch (socNetwork.NetworkType)
-		    {
-			    case SocialNetworkType.Facebook:
-				    return "F";
-			    case SocialNetworkType.Twitter:
-				    return "T";
-			    case SocialNetworkType.Google:
-				    return "G";
-			    case SocialNetworkType.Base:
-				    return "B";
-		    }
+	                if (account.NetworkType == SocialNetworkType.Twitter)
+	                {
+	                    networks.Add("T");
+	                }
 
-		    return string.Empty;
+	                if (account.NetworkType == SocialNetworkType.Google)
+	                {
+	                    networks.Add("G");
+	                }
+	            }
+	        }
+	        else
+	        {
+                networks.Add("B");                
+	        }
+            
+            var netStr = string.Join(",", networks);
+
+            HttpContext.Response.Cookies.Append(PortalConstants.NetworkTypes, netStr);
+
+            return netStr;
 	    }
 
 	    public PortalBaseController(IDbOperations db)

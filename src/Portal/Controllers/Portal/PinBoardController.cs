@@ -5,6 +5,7 @@ using Gloobster.Portal.ViewModels;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using Gloobster.DomainInterfaces;
+using Microsoft.AspNet.Http;
 
 namespace Gloobster.Portal.Controllers.Portal
 {
@@ -21,8 +22,8 @@ namespace Gloobster.Portal.Controllers.Portal
 	    {
 			var pinBoardViewModel = CreateViewModelInstance<PinBoardViewModel>();			
 			pinBoardViewModel.Initialize(UserId);
-			
-			return View(pinBoardViewModel);
+            
+            return View(pinBoardViewModel);
 		}
 
 		public IActionResult SharedMapImage(string id)

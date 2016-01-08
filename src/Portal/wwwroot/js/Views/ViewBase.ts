@@ -31,7 +31,24 @@ module Views {
 			}
 		}
 	  
-	 
+		public hasSocNetwork(net: Reg.NetworkType) {
+		 var netTypesStr = this.cookieManager.getString(Constants.networkTypes);
+		 var prms = netTypesStr.split(",");
+
+		 if (net === Reg.NetworkType.Facebook && _.contains(prms, "F")) {
+			 return true;
+		 }
+
+		 if (net === Reg.NetworkType.Google && _.contains(prms, "G")) {
+			return true;
+		 }
+
+		 if (net === Reg.NetworkType.Twitter && _.contains(prms, "T")) {
+			return true;
+		 }
+
+			return false;
+		}
 
 		private initializeGoogle() {
 			var self = this;

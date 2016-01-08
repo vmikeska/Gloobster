@@ -2,6 +2,7 @@ var Constants;
 (function (Constants) {
     Constants.cookieName = "loginCookie";
     Constants.firstRedirectUrl = "/PinBoard/Pins";
+    Constants.networkTypes = "NetworkTypes";
 })(Constants || (Constants = {}));
 var SourceType;
 (function (SourceType) {
@@ -31,4 +32,4 @@ var UserActionType;
     UserActionType[UserActionType["Login"] = 0] = "Login";
     UserActionType[UserActionType["Register"] = 1] = "Register";
 })(UserActionType || (UserActionType = {}));
-//# sourceMappingURL=globals.js.map
+//# sourceMappingURL=Globals.js.map

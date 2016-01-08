@@ -79,14 +79,16 @@ namespace Gloobster.DomainModels.Services.Places
 		    return foundCity.Coordinates;		    
         }
 		
-	    public async void SaveAsync()
+	    public async Task<bool> SaveAsync()
 	    {
 			NewVisitedPlaces = await VisitedPlaces.AddNewPlacesAsync(NewFoundUniquePlaces, DbUserId);
 
 			NewVisitedCities = await VisitedCities.AddNewCitiesAsync(NewFoundUniqueCities, DbUserId);
 			
 			NewVisitedCountries = await VisitedCountries.AddNewCountriesAsync(NewFoundUniqueCountries, DbUserId);
-		}
+
+	        return true;
+	    }
 		
 	    private async Task<List<VisitedPlaceDO>> GetPlacesWithFixedLocations(List<VisitedPlaceDO> inputPlaces)
 	    {

@@ -238,12 +238,12 @@ namespace Gloobster.DomainModels.Services.Accounts
 
 		public async void OnUserSuccessfulyLogged(PortalUserDO portalUser)
 		{
-			PlacesExtractor.Driver = ComponentContext.ResolveKeyed<IPlacesExtractorDriver>("Facebook");
+			//PlacesExtractor.Driver = ComponentContext.ResolveKeyed<IPlacesExtractorDriver>("Facebook");
 
-			var fbAcccount = portalUser.GetAccount(SocialNetworkType.Facebook);
+			//var fbAcccount = portalUser.GetAccount(SocialNetworkType.Facebook);
 			
-			await PlacesExtractor.ExtractNewAsync(portalUser.UserId, fbAcccount.Authentication);
-			PlacesExtractor.SaveAsync();			
+			//await PlacesExtractor.ExtractNewAsync(portalUser.UserId, fbAcccount.Authentication);
+			//PlacesExtractor.SaveAsync();			
 		}
 		
 

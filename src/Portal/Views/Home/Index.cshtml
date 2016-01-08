@@ -103,11 +103,11 @@
 
 									@*faked this way, have to check if legal: http://stackoverflow.com/questions/9810335/how-to-change-facebook-login-button-with-my-custom-image*@
 
-										<div id="fb-root"></div>
+									<div id="fb-root"></div>
 									<div
 										onlogin="currentView.loginManager.facebookUserCreator.registerOrLogin()"
 										class="fb-login-button"
-										data-scope="user_tagged_places,publish_actions,user_location,user_hometown,public_profile,user_friends,email"
+										data-scope=",publish_actions,user_location,user_hometown,public_profile,user_friends,email"
 										data-max-rows="1"
 										data-size="xlarge"
 										data-show-faces="false"

@@ -19,7 +19,24 @@ var Views;
             var _this = this;
             this.mapsManager = new Maps.MapsManager();
             this.mapsManager.switchToView(Maps.ViewType.D2);
+            this.fbPermissions = new Common.FacebookPermissions();
             this.shareDialogView = new Views.ShareDialogPinsView();
+            this.initPlaceSearch();
+            $("#mapType li").click(function (e) {
+                var value = $(e.target).data("value");
+                var parsedVal = parseInt(value);
+                _this.mapsManager.switchToView(parsedVal);
+            });
+            $("#pluginType li").click(function () {
+                _this.refreshData(false);
+            });
+            $("#projectionType li").click(function () {
+                _this.refreshData(false);
+            });
+            this.setTagPlacesVisibility();
+        };
+        PinBoardView.prototype.initPlaceSearch = function () {
+            var _this = this;
             var c = new Common.PlaceSearchConfig();
             c.providers = "0,1,2,3";
             c.elementId = "cities";
@@ -27,21 +44,36 @@ var Views;
             c.clearAfterSearch = true;
             this.placeSearch = new Common.PlaceSearchBox(c);
             this.placeSearch.onPlaceSelected = function (request) { return _this.saveNewPlace(request); };
-            $("#mapType li").click(function (e) {
-                var value = $(e.target).data("value");
-                var parsedVal = parseInt(value);
-                _this.mapsManager.switchToView(parsedVal);
+        };
+        PinBoardView.prototype.refreshData = function (force) {
+            var pluginType = parseInt($("#pluginType input").val());
+            var projectionType = parseInt($("#projectionType input").val());
+            this.mapsManager.getPluginData(pluginType, projectionType, force);
+        };
+        PinBoardView.prototype.getTaggedPlacesPermissions = function () {
+            var _this = this;
+            this.fbPermissions.requestPermissions("user_tagged_places", function (resp) {
+                $("#taggedPlacesPerm").hide();
+                _this.apiPost("FbTaggedPlacesPermission", null, function (resp) {
+                    _this.refreshData(true);
+                });
             });
-            $("#pluginType li").click(function (e) {
-                var pluginType = $(e.target).data("value");
-                var projectionType = parseInt($("#projectionType input").val());
-                _this.mapsManager.getPluginData(pluginType, projectionType);
-            });
-            $("#projectionType li").click(function (e) {
-                var pluginType = parseInt($("#pluginType input").val());
-                var projectionType = $(e.target).data("value");
-                _this.mapsManager.getPluginData(pluginType, projectionType);
-            });
+        };
+        PinBoardView.prototype.setTagPlacesVisibility = function () {
+            var _this = this;
+            var hasFb = this.hasSocNetwork(Reg.NetworkType.Facebook);
+            if (hasFb) {
+                this.fbPermissions.initFb(function () {
+                    _this.fbPermissions.hasPermission("user_tagged_places", function (hasPerm) {
+                        if (!hasPerm) {
+                            $("#taggedPlacesPerm").show();
+                        }
+                        else {
+                            $("#taggedPlacesPerm").hide();
+                        }
+                    });
+                });
+            }
         };
         PinBoardView.prototype.setStatsRibbon = function (citiesCount, countriesCount, worldTraveledPercent) {
             $("#CitiesCount").text(citiesCount);

@@ -29,6 +29,7 @@
 
 <script type="text/javascript" src="@Url.Content("~/js/Common/CountryShapes.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Common/CountryCodes.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Common/FacebookPermissions.js")"></script>
 
 <script type="text/javascript" src="@Url.Content("~/js/Maps/BaseMapsOperation3D.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Maps/BaseMapsOperation2D.js")"></script>
@@ -47,6 +48,10 @@
 		currentView = new Views.PinBoardView();
 		currentView.initialize();
 
+	}
+
+	function getTaggedPlacesPermissions() {
+	    currentView.getTaggedPlacesPermissions();
 	}
 </script>
 
@@ -82,7 +87,19 @@
 		</div>
 	</div>
 
-	<form class="blue-form" action="#" method="post">
+    <div id="taggedPlacesPerm" class="table row col2 margin" style="border-top: 1px solid black; border-bottom: 1px solid black; padding: 3px; display: none;">
+        <div class="cell margin3">
+            <div id="fb-root"></div>
+           
+            <button onclick="getTaggedPlacesPermissions()">Import checkins</button>
+        </div>
+
+        <div class="cell middle tright">
+            <strong>Authorize us to import your facebook checked in places and pair your tagged places with your local account</strong>
+        </div>
+    </div>
+
+    <form class="blue-form" action="#" method="post">
 		<div id="cities" class="dropdown left">
 			<input id="citiesInput" class="inputed" type="text" placeholder="Place name">
 				<ul>
