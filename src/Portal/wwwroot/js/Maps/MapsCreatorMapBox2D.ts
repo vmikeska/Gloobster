@@ -39,9 +39,9 @@ module Maps {
 
 		private loadMap() {
 			L.mapbox.accessToken = 'pk.eyJ1IjoiZ2xvb2JzdGVyIiwiYSI6ImQxZWY5MjRkZjU1NDk2MGU3OWI2OGRiM2U3NTM0MGYxIn0.nCG7hOsSQzb0c-_qzfTCRQ';
-			this.mapObj = L.mapbox.map(this.rootElement, 'gloobster.afeef633', this.options);
+			this.mapObj = L.mapbox.map(this.rootElement, 'gloobster.afeef633', this.options);			
 		}
-
+	 
 		private loadScript(scriptUrl: string, callback: Function) {
 			$.getScript(scriptUrl, (data, textStatus, jqxhr) => {
 				console.log("Loaded: " + scriptUrl);

@@ -24,7 +24,7 @@ var Maps;
         };
         BaseMapsOperation3D.prototype.destroyAll = function () {
             this.markers.forEach(function (marker) {
-                $(marker.element).remove();
+                marker.detach();
             });
             this.polygons.forEach(function (polygon) {
                 polygon.destroy();

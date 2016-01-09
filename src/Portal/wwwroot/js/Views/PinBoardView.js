@@ -26,6 +26,7 @@ var Views;
                 var value = $(e.target).data("value");
                 var parsedVal = parseInt(value);
                 _this.mapsManager.switchToView(parsedVal);
+                _this.setSupportedProjections(parsedVal);
             });
             $("#pluginType li").click(function () {
                 _this.refreshData(false);
@@ -34,6 +35,15 @@ var Views;
                 _this.refreshData(false);
             });
             this.setTagPlacesVisibility();
+        };
+        PinBoardView.prototype.setSupportedProjections = function (mapType) {
+            var $heatMapOpt = $("#pt2");
+            if (mapType === 1) {
+                $heatMapOpt.show();
+            }
+            if (mapType === 0) {
+                $heatMapOpt.hide();
+            }
         };
         PinBoardView.prototype.initPlaceSearch = function () {
             var _this = this;
@@ -46,9 +56,25 @@ var Views;
             this.placeSearch.onPlaceSelected = function (request) { return _this.saveNewPlace(request); };
         };
         PinBoardView.prototype.refreshData = function (force) {
-            var pluginType = parseInt($("#pluginType input").val());
-            var projectionType = parseInt($("#projectionType input").val());
-            this.mapsManager.getPluginData(pluginType, projectionType, force);
+            var _this = this;
+            setTimeout(function () {
+                var pluginType = parseInt($("#pluginType input").val());
+                var projectionType = parseInt($("#projectionType input").val());
+                _this.mapsManager.getPluginData(pluginType, projectionType, force);
+                _this.displayLegend(projectionType);
+            }, 10);
+        };
+        PinBoardView.prototype.displayLegend = function (pluginType) {
+            if (this.currentLegend) {
+                this.currentLegend.hide();
+                this.currentLegend = null;
+            }
+            if (pluginType === Maps.DisplayEntity.Countries) {
+                this.currentLegend = $("#countriesLegend");
+            }
+            if (this.currentLegend) {
+                this.currentLegend.show();
+            }
         };
         PinBoardView.prototype.getTaggedPlacesPermissions = function () {
             var _this = this;

@@ -7,6 +7,7 @@
 
 		private shareDialogView: ShareDialogPinsView;
 		private fbPermissions: Common.FacebookPermissions;
+		private currentLegend: any;
 	
 		get pageType(): Views.PageType { return PageType.PinBoard; }
 
@@ -23,6 +24,7 @@
 				var value = $(e.target).data("value");
 				var parsedVal = parseInt(value);
 				this.mapsManager.switchToView(parsedVal);
+				this.setSupportedProjections(parsedVal);
 			});
 
 			$("#pluginType li").click(() => {
@@ -34,9 +36,23 @@
 			});
 
 			this.setTagPlacesVisibility();
+		 
 		}
 
-	  private initPlaceSearch() {
+		
+
+		private setSupportedProjections(mapType: number) {
+			var $heatMapOpt = $("#pt2");
+
+			if (mapType === 1) {
+				$heatMapOpt.show();
+			}
+			if (mapType === 0) {
+				$heatMapOpt.hide();
+			}
+		}
+
+		private initPlaceSearch() {
 		 var c = new Common.PlaceSearchConfig();
 		 c.providers = "0,1,2,3";
 		 c.elementId = "cities";
@@ -48,9 +64,27 @@
 	  }
 
 		private refreshData(force: boolean) {
-			var pluginType = parseInt($("#pluginType input").val());
-			var projectionType = parseInt($("#projectionType input").val());
-			this.mapsManager.getPluginData(pluginType, projectionType, force);
+			setTimeout(() => {
+				var pluginType = parseInt($("#pluginType input").val());
+				var projectionType = parseInt($("#projectionType input").val());
+				this.mapsManager.getPluginData(pluginType, projectionType, force);
+				this.displayLegend(projectionType);
+			}, 10);
+		}
+	 
+		private displayLegend(pluginType: Maps.DisplayEntity) {
+			if (this.currentLegend) {
+				this.currentLegend.hide();
+				this.currentLegend = null;
+			}
+
+			if (pluginType === Maps.DisplayEntity.Countries) {
+				this.currentLegend = $("#countriesLegend");
+			}
+
+			if (this.currentLegend) {
+				this.currentLegend.show();
+			}
 		}
 
 		public getTaggedPlacesPermissions() {

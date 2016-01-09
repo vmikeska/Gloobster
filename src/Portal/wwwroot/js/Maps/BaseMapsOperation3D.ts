@@ -1,5 +1,5 @@
 ﻿module Maps {
-	export class BaseMapsOperation3D implements Maps.IMapsDriver {
+	export class BaseMapsOperation3D implements IMapsDriver {
 
 		public mapObj: any;
 
@@ -7,7 +7,7 @@
 		private polygons = [];
 
 
-		public drawPolygon(polygonCoordinates: any, polygonConfig: Maps.PolygonConfig) {
+		public drawPolygon(polygonCoordinates: any, polygonConfig: PolygonConfig) {
 			var polygon = WE.polygon(polygonCoordinates, {
 				color: polygonConfig.borderColor,
 				opacity: polygonConfig.borderOpacity,
@@ -20,7 +20,7 @@
 			this.polygons.push(polygon);
 		}
 
-		public drawPin(place: Maps.PlaceMarker) {
+		public drawPin(place: PlaceMarker) {
 			var marker = WE.marker([place.lat, place.lng]).addTo(this.mapObj);
 			this.markers.push(marker);
 		}
@@ -30,8 +30,8 @@
 		}
 
 		public destroyAll() {
-			this.markers.forEach(marker => {
-				$(marker.element).remove();
+			this.markers.forEach(marker => {				
+				marker.detach();
 			});
 			this.polygons.forEach(polygon => {
 				polygon.destroy();
@@ -59,6 +59,6 @@
 			return this.mapObj.getZoom();
 		}
 
-		drawPoint(point: Maps.PlaceMarker) {}
+		drawPoint(point: PlaceMarker) {}
 	}
 }

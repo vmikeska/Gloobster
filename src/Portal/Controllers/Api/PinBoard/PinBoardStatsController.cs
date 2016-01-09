@@ -8,7 +8,7 @@ using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.PinBoard;
 using Microsoft.AspNet.Mvc;
 
-namespace Gloobster.Portal.Controllers.Api
+namespace Gloobster.Portal.Controllers.Api.PinBoard
 {	
 	[Route("api/[controller]")]
 	public class PinBoardStatsController : BaseApiController

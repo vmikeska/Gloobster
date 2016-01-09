@@ -117,23 +117,26 @@
 		<div id="projectionType" class="dropdown right">
 			<span class="selected">Cities</span>
 			<ul>
-				<li data-value="0">Cities</li>
-				<li data-value="1">Countries</li>
-				<li data-value="2">Heat map</li>								
+				<li id="pt0" data-value="0">Cities</li>
+				<li id="pt1" data-value="1">Countries</li>
+				<li id="pt2" data-value="2">Heat map</li>								
 			</ul>
 			<input type="hidden" value="0">
 		</div>
 	</form>
 
-	<div class="map margin" id="map">
-			<div class="legend">
+    <div class="map margin" id="map">
+        @*<div class="legend">
 					<a class="icon-tosee textnohide" href="#">To See</a>
 					<a class="icon-visited textnohide" href="#">Visited</a>
 					<a class="icon-favorite textnohide" href="#">Favorite</a>
-			</div>
-	</div>
+			</div>*@
 
-	<div class="squares table row margin2">
+        @Html.Partial("CountriesLegend");
+    </div>
+
+
+    <div class="squares table row margin2">
 		<div class="cell">
 			<div class="square"><strong id="CitiesCount" class="countto" data-from="0" data-to="@Model.Cities">0</strong> Cities
 			</div>
