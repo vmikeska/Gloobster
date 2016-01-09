@@ -1,6 +1,6 @@
 ﻿
 module Maps {
-	export class MapsCreatorMapBox2D implements Maps.IMapsCreator {
+	export class MapsCreatorMapBox2D implements IMapsCreator {
 
 		public rootElement: string;
 		public mapType: any;

@@ -9,10 +9,7 @@ module Maps {
 
 			var request = [["pluginType", pluginType.toString()], ["displayEntity", displayEntity.toString()]];
 
-			Views.ViewBase.currentView.apiGet("PinBoardStats", request, response => {
-
-				console.log("newCit: " + response.visitedCities.length);
-
+			Views.ViewBase.currentView.apiGet("PinBoardStats", request, response => {			 
 				this.places = new Places();
 				this.viewPlaces = new PlacesDisplay();
 
@@ -61,7 +58,9 @@ module Maps {
 		public mapToViewData() {
 
 			var places = _.map(this.places.places, place => {
-				var point = new PlaceMarker(place.Location.Lat, place.Location.Lng);
+			 var point = new PlaceMarker();
+			 point.lat = place.Location.Lat;
+			 point.lng = place.Location.Lng;
 				return point;
 			});
 			this.viewPlaces.places = places;
@@ -75,6 +74,7 @@ module Maps {
 				}
 
 				colorConfig.fillColor = this.getColorByNumber(countryVisits);
+				colorConfig.countryCode = country.CountryCode2;
 
 				var countryOut = new CountryHighligt();
 				countryOut.countryCode = country.CountryCode2;
@@ -86,7 +86,12 @@ module Maps {
 			this.viewPlaces.countries = countries;
 
 			var cities = _.map(this.places.cities, city => {
-				var marker = new PlaceMarker(city.Location.Lat, city.Location.Lng);
+				var marker = new PlaceMarker();
+				marker.city = city.City;
+				marker.dates = city.Dates;
+				marker.lat = city.Location.Lat;
+				marker.lng = city.Location.Lng;
+				marker.geoNamesId = city.GeoNamesId;
 				return marker;
 			});
 			this.viewPlaces.cities = cities;

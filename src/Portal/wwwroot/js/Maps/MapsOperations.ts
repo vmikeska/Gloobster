@@ -1,7 +1,7 @@
 module Maps {
 	export class MapsOperations {
 
-		public mapsDriver: Maps.IMapsDriver;
+		public mapsDriver: IMapsDriver;
 		public countryShapes: Common.CountryShapes;
 
 
@@ -33,9 +33,14 @@ module Maps {
 		}
 
 		public drawCity(city: PlaceMarker) {
-			this.mapsDriver.drawPin(city);
+			var marker = this.mapsDriver.drawPin(city);
+			this.mapsDriver.drawPopUp(marker, city);
 		}
 
+	  public removeCity(gid) {
+		  this.mapsDriver.removePin(gid);
+		}
+	 
 		public drawCities(cities: PlaceMarker[]) {
 			cities.forEach(city => {
 				this.drawCity(city);

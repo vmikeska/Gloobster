@@ -49,6 +49,20 @@
 			}
 		}
 
+		public removeCity(gid, countryCode = null) {
+			this.mapsOperations.removeCity(gid);
+
+			this.mapsDataLoader.viewPlaces.cities = _.reject(this.mapsDataLoader.viewPlaces.cities, (c) => {
+				return c.geoNamesId === gid;
+			});
+
+			if (countryCode) {
+				this.mapsDataLoader.viewPlaces.countries = _.reject(this.mapsDataLoader.viewPlaces.countries, (pol) => {
+					return pol.countryCode === countryCode;
+				});
+			}
+		}
+
 		public redrawPlaces() {
 			this.mapsDriver.destroyAll();
 			this.mapsOperations.drawPlaces(this.mapsDataLoader.viewPlaces.places);

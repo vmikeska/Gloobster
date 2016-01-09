@@ -7,7 +7,6 @@ var Maps;
             var _this = this;
             var request = [["pluginType", pluginType.toString()], ["displayEntity", displayEntity.toString()]];
             Views.ViewBase.currentView.apiGet("PinBoardStats", request, function (response) {
-                console.log("newCit: " + response.visitedCities.length);
                 _this.places = new Maps.Places();
                 _this.viewPlaces = new Maps.PlacesDisplay();
                 _this.places.places = response.visitedPlaces;
@@ -57,7 +56,9 @@ var Maps;
         MapsDataLoader.prototype.mapToViewData = function () {
             var _this = this;
             var places = _.map(this.places.places, function (place) {
-                var point = new Maps.PlaceMarker(place.Location.Lat, place.Location.Lng);
+                var point = new Maps.PlaceMarker();
+                point.lat = place.Location.Lat;
+                point.lng = place.Location.Lng;
                 return point;
             });
             this.viewPlaces.places = places;
@@ -68,6 +69,7 @@ var Maps;
                     countryVisits = country.Dates.length;
                 }
                 colorConfig.fillColor = _this.getColorByNumber(countryVisits);
+                colorConfig.countryCode = country.CountryCode2;
                 var countryOut = new Maps.CountryHighligt();
                 countryOut.countryCode = country.CountryCode2;
                 countryOut.countryConfig = colorConfig;
@@ -75,7 +77,12 @@ var Maps;
             });
             this.viewPlaces.countries = countries;
             var cities = _.map(this.places.cities, function (city) {
-                var marker = new Maps.PlaceMarker(city.Location.Lat, city.Location.Lng);
+                var marker = new Maps.PlaceMarker();
+                marker.city = city.City;
+                marker.dates = city.Dates;
+                marker.lat = city.Location.Lat;
+                marker.lng = city.Location.Lng;
+                marker.geoNamesId = city.GeoNamesId;
                 return marker;
             });
             this.viewPlaces.cities = cities;

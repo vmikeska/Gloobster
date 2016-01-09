@@ -31,6 +31,18 @@ var Maps;
                 this.redrawPlaces();
             }
         };
+        MapsManager.prototype.removeCity = function (gid, countryCode) {
+            if (countryCode === void 0) { countryCode = null; }
+            this.mapsOperations.removeCity(gid);
+            this.mapsDataLoader.viewPlaces.cities = _.reject(this.mapsDataLoader.viewPlaces.cities, function (c) {
+                return c.geoNamesId === gid;
+            });
+            if (countryCode) {
+                this.mapsDataLoader.viewPlaces.countries = _.reject(this.mapsDataLoader.viewPlaces.countries, function (pol) {
+                    return pol.countryCode === countryCode;
+                });
+            }
+        };
         MapsManager.prototype.redrawPlaces = function () {
             this.mapsDriver.destroyAll();
             this.mapsOperations.drawPlaces(this.mapsDataLoader.viewPlaces.places);

@@ -130,7 +130,9 @@ module Common {
 					if (self.onError) {
 						self.onError(response);
 					}
-				}
+				},
+				dataType: 'json',
+				contentType: 'application/json; charset=utf-8'
 			};
 
 			if (this.addLocalAuthentication) {

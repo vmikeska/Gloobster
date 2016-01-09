@@ -4,6 +4,8 @@ var Maps;
         function BaseMapsOperation3D() {
             this.markers = [];
             this.polygons = [];
+            var source = $("#cityPopup-template").html();
+            this.cityPopupTemplate = Handlebars.compile(source);
         }
         BaseMapsOperation3D.prototype.drawPolygon = function (polygonCoordinates, polygonConfig) {
             var polygon = WE.polygon(polygonCoordinates, {
@@ -15,9 +17,27 @@ var Maps;
             }).addTo(this.mapObj);
             this.polygons.push(polygon);
         };
+        BaseMapsOperation3D.prototype.drawPopUp = function (marker, city) {
+            var popupContent = this.cityPopupTemplate(city);
+            marker.bindPopup(popupContent, {
+                closeButton: true,
+                minWidth: 200
+            });
+        };
+        BaseMapsOperation3D.prototype.removePin = function (gid) {
+            var m = _.find(this.markers, function (marker) {
+                return marker.gid === gid;
+            });
+            m.detach();
+            this.markers = _.reject(this.markers, function (marker) {
+                return marker.gid === gid;
+            });
+        };
         BaseMapsOperation3D.prototype.drawPin = function (place) {
             var marker = WE.marker([place.lat, place.lng]).addTo(this.mapObj);
+            marker.gid = place.geoNamesId;
             this.markers.push(marker);
+            return marker;
         };
         BaseMapsOperation3D.prototype.setMapObj = function (mapObj) {
             this.mapObj = mapObj;

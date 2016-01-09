@@ -6,6 +6,12 @@
 		private markers = [];
 		private polygons = [];
 
+		private cityPopupTemplate: any;
+
+		constructor() {
+		 var source = $("#cityPopup-template").html();
+		 this.cityPopupTemplate = Handlebars.compile(source);
+		}
 
 		public drawPolygon(polygonCoordinates: any, polygonConfig: PolygonConfig) {
 			var polygon = WE.polygon(polygonCoordinates, {
@@ -17,12 +23,33 @@
 				fillOpacity: polygonConfig.fillOpacity
 			}).addTo(this.mapObj);
 
-			this.polygons.push(polygon);
+			this.polygons.push(polygon);		 
+		}
+
+		public drawPopUp(marker, city) {
+		 var popupContent = this.cityPopupTemplate(city);
+
+		 marker.bindPopup(popupContent, {
+			closeButton: true,
+			minWidth: 200
+		 });
+		}
+
+		public removePin(gid) {
+			var m = _.find(this.markers, (marker) => {
+				return marker.gid === gid;
+			});
+			m.detach();
+			this.markers = _.reject(this.markers, (marker) => {
+				return marker.gid === gid;
+			});
 		}
 
 		public drawPin(place: PlaceMarker) {
 			var marker = WE.marker([place.lat, place.lng]).addTo(this.mapObj);
+			marker.gid = place.geoNamesId;
 			this.markers.push(marker);
+			return marker;
 		}
 
 		public setMapObj(mapObj) {

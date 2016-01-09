@@ -39,7 +39,14 @@
 		 
 		}
 
-		
+		public deletePin(gid) {
+			var prms = [["gid", gid]];
+			this.apiDelete("VisitedCity", prms, (r) => {			 
+			 this.mapsManager.removeCity(r.gid, r.countryCode);
+			 //this.mapsManager.mapsOperations.removeCity(r.gid);
+				//this.mapsManager.mapsOperations.removeCountry(r.countryCode);
+			});
+		}
 
 		private setSupportedProjections(mapType: number) {
 			var $heatMapOpt = $("#pt2");

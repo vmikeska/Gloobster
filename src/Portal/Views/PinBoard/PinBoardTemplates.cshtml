@@ -1,0 +1,16 @@
+﻿
+<script id="cityPopup-template" type="text/x-handlebars-template">
+    <div>
+        <h1>{{city}}</h1>
+        
+        <b>Dates</b>
+        <br />
+        {{#each dates}}
+            {{this}}
+        <br />
+        {{/each}}
+        
+        <br />
+        <a href="javascript:deletePin({{geoNamesId}})">Delete</a>
+    </div>        
+</script>

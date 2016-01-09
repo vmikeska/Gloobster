@@ -1,6 +1,13 @@
 ﻿module Maps {
 
-	export class BaseMapsOperation2D implements Maps.IMapsDriver {
+	export class BaseMapsOperation2D implements IMapsDriver {
+
+	 private cityPopupTemplate: any;
+
+	 constructor() {
+		var source = $("#cityPopup-template").html();
+		this.cityPopupTemplate = Handlebars.compile(source);
+	 }
 
 		public mapObj: any;
 
@@ -10,7 +17,7 @@
 		public heat: any;
 
 
-		public drawPolygon(polygonCoordinates: any, polygonConfig: Maps.PolygonConfig) {
+		public drawPolygon(polygonCoordinates: any, polygonConfig: PolygonConfig) {
 			var polygon = L.polygon(polygonCoordinates, {
 				color: polygonConfig.borderColor,
 				opacity: polygonConfig.borderOpacity,
@@ -22,12 +29,33 @@
 			this.markers.push(polygon);
 		}
 
-		public drawPin(place: Maps.PlaceMarker) {
+		public drawPin(place: PlaceMarker) {
 			var marker = L.marker([place.lat, place.lng]).addTo(this.mapObj);
+			marker.gid = place.geoNamesId;
 			this.markers.push(marker);
+			return marker;
 		}
 
-		public drawPoint(point: Maps.PlaceMarker) {
+		public removePin(gid) {
+			var m = _.find(this.markers, (marker) => {
+				return marker.gid === gid;
+			});
+			this.mapObj.removeLayer(m);
+			this.markers = _.reject(this.markers, (marker) => {
+				return marker.gid === gid;
+			});
+		}
+
+		public drawPopUp(marker, city) {
+			var popupContent = this.cityPopupTemplate(city);
+
+			marker.bindPopup(popupContent, {
+				closeButton: true,
+				minWidth: 200
+			});
+		}
+
+		public drawPoint(point: PlaceMarker) {
 			var latLng = L.latLng(point.lat, point.lng);
 			this.heat.addLatLng(latLng);
 		}

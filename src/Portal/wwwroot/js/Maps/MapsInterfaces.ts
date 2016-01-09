@@ -8,13 +8,16 @@ module Maps {
 
 	export class PlaceMarker {
 			 
-	 constructor(lat: number, lng: number) {
-		this.lat = lat;
-		 this.lng = lng;
-	 }
-
+	 //constructor(lat: number, lng: number) {
+		//this.lat = lat;
+		// this.lng = lng;
+	 //}
+	 
 		lat: number;
 		lng: number;
+		city: string;
+		dates: string[];
+		geoNamesId: string;
 	}
 
 
@@ -37,6 +40,8 @@ module Maps {
 
 		fillColor: string;
 		fillOpacity: number;
+
+	  countryCode: string;
 	}
 
 	export class Places {
@@ -66,6 +71,8 @@ module Maps {
 		moveToAnimated(lat: number, lng: number, zoom: number);
 		getPosition();
 		getZoom();
+		drawPopUp(marker, city);
+		removePin(gid);
 	}
 	
 		export enum ViewType { D3, D2, D1 }

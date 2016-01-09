@@ -25,7 +25,11 @@ var Maps;
             });
         };
         MapsOperations.prototype.drawCity = function (city) {
-            this.mapsDriver.drawPin(city);
+            var marker = this.mapsDriver.drawPin(city);
+            this.mapsDriver.drawPopUp(marker, city);
+        };
+        MapsOperations.prototype.removeCity = function (gid) {
+            this.mapsDriver.removePin(gid);
         };
         MapsOperations.prototype.drawCities = function (cities) {
             var _this = this;
