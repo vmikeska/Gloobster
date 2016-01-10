@@ -42,10 +42,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 		public IGeoNamesService GNService { get; set; }
 		public ICountryService CountryService { get; set; }
 		public IFilesDomain FileDomain { get; set; }
-
-
-		public IPlacesExtractor PlacesExtractor { get; set; }
-
+        
 		public PortalUserDO PortalUser { get; set; }
 
 		public object UserObj { get; set; }
@@ -238,12 +235,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 
 		public async void OnUserSuccessfulyLogged(PortalUserDO portalUser)
 		{
-			//PlacesExtractor.Driver = ComponentContext.ResolveKeyed<IPlacesExtractorDriver>("Facebook");
-
-			//var fbAcccount = portalUser.GetAccount(SocialNetworkType.Facebook);
-			
-			//await PlacesExtractor.ExtractNewAsync(portalUser.UserId, fbAcccount.Authentication);
-			//PlacesExtractor.SaveAsync();			
+		    	
 		}
 		
 

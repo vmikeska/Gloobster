@@ -35,14 +35,14 @@
 		 });
 		}
 
-		public removePin(gid) {
-			var m = _.find(this.markers, (marker) => {
-				return marker.gid === gid;
-			});
-			m.detach();
-			this.markers = _.reject(this.markers, (marker) => {
-				return marker.gid === gid;
-			});
+		public removePin(gid) {			
+				var m = _.find(this.markers, (marker) => {
+					return marker.gid === gid;
+				});
+				m.removeFrom(this.mapObj);
+				this.markers = _.reject(this.markers, (marker) => {
+					return marker.gid === gid;
+				});			
 		}
 
 		public drawPin(place: PlaceMarker) {

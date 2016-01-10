@@ -41,8 +41,6 @@ var Views;
             var prms = [["gid", gid]];
             this.apiDelete("VisitedCity", prms, function (r) {
                 _this.mapsManager.removeCity(r.gid, r.countryCode);
-                //this.mapsManager.mapsOperations.removeCity(r.gid);
-                //this.mapsManager.mapsOperations.removeCountry(r.countryCode);
             });
         };
         PinBoardView.prototype.setSupportedProjections = function (mapType) {

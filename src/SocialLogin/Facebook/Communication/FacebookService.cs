@@ -1,4 +1,5 @@
-﻿using Facebook;
+﻿using System.Linq;
+using Facebook;
 
 namespace Gloobster.SocialLogin.Facebook.Communication
 {
@@ -51,5 +52,25 @@ namespace Gloobster.SocialLogin.Facebook.Communication
 				throw;
 			}
 		}
+
+	    public bool HasPermissions(string name)
+	    {
+            var perms = Get<FacebookPermissionsFO>("/me/permissions");
+
+	        var perm = perms.data.FirstOrDefault(p => p.permission == name);
+	        if (perm == null)
+	        {
+	            return false;
+	        }
+
+	        if (perm.status == "granted")
+	        {
+	            return true;
+	        }
+
+	        return false;
+	    }
 	}
+
+    
 }

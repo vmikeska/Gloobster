@@ -28,7 +28,7 @@ var Maps;
             var m = _.find(this.markers, function (marker) {
                 return marker.gid === gid;
             });
-            m.detach();
+            m.removeFrom(this.mapObj);
             this.markers = _.reject(this.markers, function (marker) {
                 return marker.gid === gid;
             });

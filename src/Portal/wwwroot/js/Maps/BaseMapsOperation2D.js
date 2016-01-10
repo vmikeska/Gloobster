@@ -28,6 +28,7 @@ var Maps;
                 return marker.gid === gid;
             });
             this.mapObj.removeLayer(m);
+            $(m).remove();
             this.markers = _.reject(this.markers, function (marker) {
                 return marker.gid === gid;
             });
