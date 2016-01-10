@@ -65,141 +65,222 @@
 
 <!-- MapBox -->
 <section class="wrapper margin3">
-	<div class="table row col2 margin">
-		<div class="cell">
-			<div class="table row">
-				<div class="cell middle">
-					<h2>Pin Board</h2>
-				</div>
-				<div class="cell middle">
-					<div id="mapType" class="dropdown">
-						<span class="selected">2D map</span>
-						<ul>
-							<li data-value="1">2D map</li>
-							<li data-value="0">3D map</li>
-						</ul>
-						<input id="mapTypeValue" type="hidden">
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="cell middle tright">
-			@*<a class="noneline strong" href="#">Invite Friends</a>
+<div class="table row col2 margin">
+    <div class="cell">
+        <div class="table row">
+            <div class="cell middle">
+                <h2>Pin Board</h2>
+            </div>
+            <div class="cell middle">
+                <div id="mapType" class="dropdown">
+                    <span class="selected">2D map</span>
+                    <ul>
+                        <li data-value="1">2D map</li>
+                        <li data-value="0">3D map</li>
+                    </ul>
+                    <input id="mapTypeValue" type="hidden">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="cell middle tright">
+        @*<a class="noneline strong" href="#">Invite Friends</a>
 			&nbsp;
 			<span class="color2">&bull;</span>
 			&nbsp;*@
-				@*<a class="button share popup-target" data-target="#popup-share" href="#">Share trip</a>*@
-			<a id="shareMap" class="noneline strong popup-target" data-target="#popup-share" href="#">Share map</a>
-		</div>
-	</div>
+        @*<a class="button share popup-target" data-target="#popup-share" href="#">Share trip</a>*@
+        <a id="shareMap" class="noneline strong popup-target" data-target="#popup-share" href="#">Share map</a>
+    </div>
+</div>
 
-    <div id="taggedPlacesPerm" class="table row col2 margin" style="border-top: 1px solid black; border-bottom: 1px solid black; padding: 3px; display: none;">
-        <div class="cell margin3">
-            <div id="fb-root"></div>
-           
-            <button onclick="getTaggedPlacesPermissions()">Import checkins</button>
-        </div>
+<div id="taggedPlacesPerm" class="table row col2 margin" style="border-top: 1px solid black; border-bottom: 1px solid black; padding: 3px; display: none;">
+    <div class="cell margin3">
+        <div id="fb-root"></div>
 
-        <div class="cell middle tright">
-            <strong>Authorize us to import your facebook checked in places and pair your tagged places with your local account</strong>
-        </div>
+        <button onclick="getTaggedPlacesPermissions()">Import checkins</button>
     </div>
 
-    <form class="blue-form" action="#" method="post">
-		<div id="cities" class="dropdown left">
-			<input id="citiesInput" class="inputed" type="text" placeholder="Place name">
-				<ul>
-				</ul>
-		</div>
-		
-		<div id="pluginType" class="dropdown right">
-			<span class="selected">My places</span>
-			<ul>
-				<li data-value="0">My places</li>
-				<li data-value="1">My friends</li>				
-			</ul>
-			<input type="hidden" value="0">
-		</div>
-		<div id="projectionType" class="dropdown right">
-			<span class="selected">Cities</span>
-			<ul>
-				<li id="pt0" data-value="0">Cities</li>
-				<li id="pt1" data-value="1">Countries</li>
-				<li id="pt2" data-value="2">Heat map</li>								
-			</ul>
-			<input type="hidden" value="0">
-		</div>
-	</form>
+    <div class="cell middle tright">
+        <strong>Authorize us to import your facebook checked in places and pair your tagged places with your local account</strong>
+    </div>
+</div>
 
-    <div class="map margin" id="map">
-        @*<div class="legend">
+<form class="blue-form" action="#" method="post">
+    <div id="cities" class="dropdown left">
+        <input id="citiesInput" class="inputed" type="text" placeholder="Place name">
+        <ul>
+        </ul>
+    </div>
+
+    <div id="pluginType" class="dropdown right">
+        <span class="selected">My places</span>
+        <ul>
+            <li data-value="0">My places</li>
+            <li data-value="1">My friends</li>
+        </ul>
+        <input type="hidden" value="0">
+    </div>
+    <div id="projectionType" class="dropdown right">
+        <span class="selected">Cities</span>
+        <ul>
+            <li id="pt0" data-value="0">Cities</li>
+            <li id="pt1" data-value="1">Countries</li>
+            <li id="pt2" data-value="2">Heat map</li>
+        </ul>
+        <input type="hidden" value="0">
+    </div>
+</form>
+
+<div class="map margin" id="map">
+    @*<div class="legend">
 					<a class="icon-tosee textnohide" href="#">To See</a>
 					<a class="icon-visited textnohide" href="#">Visited</a>
 					<a class="icon-favorite textnohide" href="#">Favorite</a>
 			</div>*@
 
-        @Html.Partial("CountriesLegend")
+    @Html.Partial("CountriesLegend")
+</div>
+
+<div class="squares table row margin2">
+    <div class="cell">
+        <div class="square"><strong id="CitiesCount" class="countto" data-from="0" data-to="@Model.Cities">0</strong> Cities
+        </div>
     </div>
+    <div class="cell">
+        <div class="square"><strong id="CountriesCount" class="countto" data-from="0" data-to="@Model.Countries">0</strong> Countries
+        </div>
+    </div>
+    <div class="cell">
+        <div class="square">
+            <strong>
+                <span id="TraveledPercent" class="countto" data-from="0" data-to="@Model.WorldTraveled">0</span>
+                %
+            </strong> of the World
+        </div>
+    </div>
+    <div class="cell">
+        <div class="square"><strong id="BadgesCount" class="countto" data-from="0" data-to="@Model.Badges">0</strong> Badges
+        </div>
+    </div>
+    <div class="cell">
+        <div class="square"><strong id="FriendsCount" class="countto" data-from="0" data-to="0">0</strong> Friends
+        </div>
+    </div>
+    <div class="cell">
+        <div class="square"><strong id="DistanceLength" class="countto" data-from="0" data-to="@Model.TotalDistanceTraveled">0</strong> Miles total
+        </div>
+    </div>
+</div>
 
-    <div class="squares table row margin2">
-		<div class="cell">
-			<div class="square"><strong id="CitiesCount" class="countto" data-from="0" data-to="@Model.Cities">0</strong> Cities
-			</div>
-		</div>
-		<div class="cell">
-			<div class="square"><strong id="CountriesCount" class="countto" data-from="0" data-to="@Model.Countries">0</strong> Countries
-			</div>
-		</div>
-		<div class="cell">
-			<div class="square">
-				<strong>
-					<span id="TraveledPercent" class="countto" data-from="0" data-to="@Model.WorldTraveled">0</span>
-					%
-				</strong> of the World
-			</div>
-		</div>
-		<div class="cell">
-			<div class="square"><strong id="BadgesCount" class="countto" data-from="0" data-to="@Model.Badges">0</strong> Badges
-			</div>
-		</div>
-		<div class="cell">
-			<div class="square"><strong id="FriendsCount" class="countto" data-from="0" data-to="0">0</strong> Friends
-			</div>
-		</div>
-		<div class="cell">
-			<div class="square"><strong id="DistanceLength" class="countto" data-from="0" data-to="@Model.TotalDistanceTraveled">0</strong> Miles total
-			</div>
-		</div>
-	</div>
-
-	@*<div class="table row col2 margin">
-		<div class="cell baseline">
-				<h3>Collected badges</h3>
-		</div>
-		<div class="cell baseline tright">
-				<a class="" href="#">Show all badges</a>
-		</div>
+<div class="table row col2 margin">
+    <div class="cell baseline">
+        <h3>Collected badges</h3>
+    </div>
+    <div class="cell baseline tright">
+        <a class="" href="#">Show all badges</a>
+    </div>
 </div>
 <div class="badges grid margin2">
-		<div class="cell"><a class="badge active" href="#"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Asia<span class="icon-visited"></span></a></div>
-		<div class="cell"><a class="badge active" href="#"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Australia<span class="icon-visited"></span></a></div>
-		<div class="cell"><a class="badge active" href="#"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Africa<span class="icon-favorite"></span></a></div>
-		<div class="cell"><a class="badge" href="#"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Europe<span class="icon-visited"></span></a></div>
-		<div class="cell"><a class="badge" href="#"><span class="thumbnail"><img src="images/samples/sample11.png"></span>New York<span class="icon-favorite"></span></a></div>
-		<div class="cell"><a class="badge" href="#"><span class="thumbnail"><img src="images/samples/sample11.png"></span>South America<span class="icon-visited"></span></a></div>
-		<div class="cell"><a class="badge" href="#"><span class="thumbnail"><img src="images/samples/sample11.png"></span>North America<span class="icon-visited"></span></a></div>
-		<div class="cell"><a class="badge" href="#"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Antarctica<span class="icon-visited"></span></a></div>
-		<div class="cell"><a class="badge" href="#"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Beijing</a></div>
-		<div class="cell"><span class="badge"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Mexico City</span></span></div>
-		<div class="cell"><span class="badge"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Prague</span></span></div>
-		<div class="cell"><span class="badge"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Paris</span></span></div>
-		<div class="cell"><span class="badge"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Berlin</span></span></div>
-		<div class="cell"><span class="badge"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Prague</span></span></div>
-		<div class="cell"><span class="badge"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Moscow</span></span></div>
-		<div class="cell"><span class="badge"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Lisbon</span></span></div>
-		<div class="cell"><span class="badge"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Madrid</span></span></div>
-		<div class="cell"><span class="badge"><span class="thumbnail"><img src="images/samples/sample11.png"></span>Barcelona</span></span></div>
-</div>*@
+    <div class="cell"><a class="badge active" href="#"><span class="thumbnail"><img src="~/images/samples/sample11.jpg"></span>Asia<span class="icon-visited"></span></a>
+    </div>
+    <div class="cell"><a class="badge active" href="#"><span class="thumbnail"><img src="~/images/samples/sample11.jpg"></span>Australia<span class="icon-visited"></span></a>
+    </div>
+    <div class="cell"><a class="badge active" href="#"><span class="thumbnail"><img src="~/images/samples/sample11.jpg"></span>Africa<span class="icon-favorite"></span></a>
+    </div>
+    <div class="cell"><a class="badge" href="#"><span class="thumbnail"><img src="~/images/samples/sample11.jpg"></span>Europe<span class="icon-visited"></span></a>
+    </div>
+    <div class="cell"><a class="badge" href="#"><span class="thumbnail"><img src="~/images/samples/sample11.jpg"></span>New York<span class="icon-favorite"></span></a>
+    </div>
+    <div class="cell"><a class="badge" href="#"><span class="thumbnail"><img src="~/images/samples/sample11.jpg"></span>South America<span class="icon-visited"></span></a>
+    </div>
+    <div class="cell"><a class="badge" href="#"><span class="thumbnail"><img src="~/images/samples/sample11.jpg"></span>North America<span class="icon-visited"></span></a>
+    </div>
+    <div class="cell"><a class="badge" href="#"><span class="thumbnail"><img src="~/images/samples/sample11.jpg"></span>Antarctica<span class="icon-visited"></span></a>
+    </div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/samples/sample11.jpg"></span>Mexico City</span></div>
+</div>
+<h2>Badge status</h2>
+<div class="badges grid margin2">
+    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/collected1.png"></span>Collected</span></div>
+    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/collected2.png"></span>Collected</span></div>
+    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/step1.png"></span>Almost complete</span></div>
+    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/step4.png"></span>Just started</span></div>
+    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/incomplete.png"></span>Incomplete</span></div>
+</div>
+<h2>Continents</h2>
+<div class="badges grid margin2">
+    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/africa.png"></span>Africa</span></div>
+    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/europe.png"></span>Europe</span></div>
+    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/asia.png"></span>Asia</span></div>
+    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/australia.png"></span>Australia</span></div>
+    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/north-amecica.png"></span>North America</span></div>
+    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/south-america.png"></span>South America</span></div>
+</div>
+<h2>States visited in US and EU</h2>
+<div class="badges grid margin2">
+    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/states-us.png"></span>States US</span></div>
+    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/states-eu.png"></span>States EU</span></div>
+</div>
+<h2>Top 9 cities — Europe</h2>
+<div class="badges grid margin2">
+    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/london.png"></span>London</span></div>
+    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/barcelona.png"></span>Barcelona</span></div>
+    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/paris.png"></span>Paris</span></div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/badges/rome.png"></span>Rome</span></div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/badges/prague.png"></span>Prague</span></div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/badges/amsterdam.png"></span>Amsterdam</span></div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/badges/berlin.png"></span>Berlin</span></div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/badges/budapest.png"></span>Budapest</span></div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/badges/istanbul.png"></span>Istambul</span></div>
+</div>
+<h2>Top 9 cities — Asia</h2>
+<div class="badges grid margin2">
+    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/bangkok.png"></span>Bangkok</span></div>
+    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/dubai.png"></span>Dubai</span></div>
+    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/tokyo.png"></span>Tokyo</span></div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/badges/hong-kong.png"></span>Hong Kong</span></div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/badges/seoul.png"></span>Seoul</span></div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/badges/kuala-lumpur.png"></span>Kuala Lumpur</span></div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/badges/singapore.png"></span>Singapore</span></div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/badges/shanghai.png"></span>Shanghai</span></div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/badges/taipei.png"></span>Taipei</span></div>
+</div>
+<h2>Top 9 cities — North America</h2>
+<div class="badges grid margin2">
+    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/new-york.png"></span>New York</span></div>
+    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/miami.png"></span>Miami</span></div>
+    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/los-angeles.png"></span>Los Angeles</span></div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/badges/orlando.png"></span>Orlando</span></div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/badges/san-francisco.png"></span>San Francisco</span></div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/badges/las-vegas.png"></span>Las Vegas</span></div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/badges/honolulu.png"></span>Honolulu</span></div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/badges/washington.png"></span>Washington</span></div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/badges/chicago.png"></span>Chicago</span></div>
+</div>
+<h2>Top 9 cities — South and Central America</h2>
+<div class="badges grid margin2">
+    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/mexico-city.png"></span>Mexico City</span></div>
+    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/buenos-aires.png"></span>Buenos Aires</span></div>
+    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/sao-paulo.png"></span>Sao Paulo</span></div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/badges/lima.png"></span>Lima</span></div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/badges/san-jose.png"></span>San Jose</span></div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/badges/bogota.png"></span>Bogota</span></div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/badges/montevideo.png"></span>Montevideo</span></div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/badges/rio-de-janeiro.png"></span>Rio de Janeiro</span></div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/badges/santiago-de-chile.png"></span>Santiago de Chile</span></div>
+</div>
+<h2>Top 9 cities — Africa</h2>
+<div class="badges grid margin2">
+    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/johannesburg.png"></span>Johannesburg</span></div>
+    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/cape-town.png"></span>Cape Town</span></div>
+    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/cairo.png"></span>Cairo</span></div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/badges/casablanca.png"></span>Casablanca</span></div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/badges/tunis.png"></span>Tunis</span></div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/badges/durban.png"></span>Durban</span></div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/badges/lagos.png"></span>Lagos</span></div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/badges/nairobi.png"></span>Nairobi</span></div>
+    <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/badges/accra.png"></span>Accra</span></div>
+</div>
 </section>
 
 
