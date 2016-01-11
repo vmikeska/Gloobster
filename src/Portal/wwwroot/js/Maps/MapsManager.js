@@ -30,6 +30,7 @@ var Maps;
             if (this.currentDisplayEntity === Maps.DisplayEntity.Heat) {
                 this.redrawPlaces();
             }
+            this.onDataChanged();
         };
         MapsManager.prototype.removeCity = function (gid, countryCode) {
             if (countryCode === void 0) { countryCode = null; }

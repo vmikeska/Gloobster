@@ -12,6 +12,8 @@
 		public currentPluginType: Maps.PluginType;
 		public currentDisplayEntity: Maps.DisplayEntity;
 
+	  public onDataChanged: Function;
+
 		constructor() {
 			this.mapsDataLoader = new MapsDataLoader();
 			this.mapsDataLoader.dataLoadedCallback = () => { this.redrawDataCallback() };
@@ -47,6 +49,8 @@
 			if (this.currentDisplayEntity === DisplayEntity.Heat) {
 				this.redrawPlaces();
 			}
+
+			this.onDataChanged();
 		}
 
 		public removeCity(gid, countryCode = null) {

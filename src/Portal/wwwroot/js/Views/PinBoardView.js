@@ -5,6 +5,98 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Views;
 (function (Views) {
+    var PinBoardBadges = (function () {
+        function PinBoardBadges() {
+        }
+        Object.defineProperty(PinBoardBadges.prototype, "mapsDataLoader", {
+            get: function () {
+                var mdl = Views.ViewBase.currentView["mapsManager"].mapsDataLoader;
+                return mdl;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        PinBoardBadges.prototype.refresh = function () {
+            this.aggregateCountries();
+            this.generateOverview();
+        };
+        PinBoardBadges.prototype.aggregateCountries = function () {
+            var countries = _.map(this.mapsDataLoader.places.countries, function (c) { return c.CountryCode2; });
+            this.aggegatedCountries = new AggregatedCountries();
+            this.aggegatedCountries.aggregate(countries);
+        };
+        PinBoardBadges.prototype.generateOverview = function () {
+            var afrHtml = this.genOverviewItem("africa.png", this.aggegatedCountries.africaVisited, this.aggegatedCountries.africaTotal, "Africa");
+            var eurHtml = this.genOverviewItem("europe.png", this.aggegatedCountries.europeVisited, this.aggegatedCountries.europeTotal, "Europe");
+            var asiHtml = this.genOverviewItem("asia.png", this.aggegatedCountries.asiaVisited, this.aggegatedCountries.asiaTotal, "Asia");
+            var ausHtml = this.genOverviewItem("australia.png", this.aggegatedCountries.australiaVisited, this.aggegatedCountries.australiaTotal, "Australia");
+            var naHtml = this.genOverviewItem("north-amecica.png", this.aggegatedCountries.northAmericaVisited, this.aggegatedCountries.northAmericaTotal, "North America");
+            var saHtml = this.genOverviewItem("south-america.png", this.aggegatedCountries.southAmericaVisited, this.aggegatedCountries.southAmericaTotal, "South America");
+            var html = afrHtml + eurHtml + asiHtml + ausHtml + naHtml + saHtml;
+            $("#badgesOverview").html(html);
+        };
+        PinBoardBadges.prototype.genOverviewItem = function (img, visitedCnt, totalCnt, name) {
+            var imgLink = "../images/badges/" + img;
+            return "<div class=\"cell\"><span class=\"badge active\"><span class=\"thumbnail\"><img src=\"" + imgLink + "\"></span>" + visitedCnt + "/" + totalCnt + " <b>" + name + "</b></span></div>";
+        };
+        return PinBoardBadges;
+    })();
+    Views.PinBoardBadges = PinBoardBadges;
+    var AggregatedCountries = (function () {
+        function AggregatedCountries() {
+            this.africa = ["DZ", "AO", "BJ", "BW", "BF", "BI", "CM", "CV", "CF", "TD", "KM", "CG", "DJ", "EG", "GQ", "ER", "ET", "GA", "GM", "GH", "GW", "GN", "CI", "KE", "LS", "LR", "LY", "MG", "MW", "ML", "MR", "MU", "MA", "MZ", "NA", "NE", "NG", "RW", "ST", "SN", "SC", "SL", "SO", "ZA", "SD", "SZ", "TZ", "TG", "TN", "UG", "ZM", "TZ", "ZW", "SS", "CD"];
+            this.europe = ["AL", "AD", "AT", "BY", "BE", "BA", "BG", "HR", "CY", "CZ", "DK", "EE", "FO", "FI", "FR", "DE", "GR", "HU", "IS", "IE", "IT", "LV", "LI", "LT", "LU", "MK", "MT", "MD", "MC", "NL", "NO", "PL", "PT", "RO", "RU", "SM", "RS", "SK", "SI", "ES", "SE", "CH", "UA", "GB", "ME"];
+            this.asia = ["AF", "AM", "AZ", "BH", "BD", "BT", "BN", "KH", "CN", "GE", "IN", "ID", "IR", "IQ", "IL", "JP", "JO", "KZ", "KP", "KR", "KW", "KG", "LA", "LB", "MY", "MV", "MN", "MM", "NP", "OM", "PK", "PH", "QA", "SA", "SG", "LK", "SY", "TJ", "TH", "TR", "TM", "AE", "UZ", "VN", "YE"];
+            this.austraila = ["AU", "FJ", "KI", "MH", "FM", "NR", "NZ", "PW", "PG", "SB", "TO", "TV", "VU", "WS", "TL"];
+            this.northAmerica = ["AG", "BS", "BB", "BZ", "CA", "CR", "CU", "DM", "DO", "SV", "GT", "HT", "HN", "JM", "MX", "NI", "PA", "KN", "LC", "VC", "TT", "US"];
+            this.southAmerica = ["AR", "BO", "BR", "CL", "CO", "EC", "GY", "PY", "PE", "SR", "UY", "VE"];
+            //todo: one extra country ? Find out which
+            this.africaTotal = 55;
+            this.europeTotal = 45;
+            this.asiaTotal = 45;
+            this.australiaTotal = 15;
+            this.northAmericaTotal = 22;
+            this.southAmericaTotal = 12;
+            this.africaVisited = 0;
+            this.europeVisited = 0;
+            this.asiaVisited = 0;
+            this.australiaVisited = 0;
+            this.northAmericaVisited = 0;
+            this.southAmericaVisited = 0;
+        }
+        AggregatedCountries.prototype.aggregate = function (countries) {
+            var _this = this;
+            this.africaVisited = 0;
+            countries.forEach(function (c) {
+                var af = _.contains(_this.africa, c);
+                if (af) {
+                    _this.africaVisited++;
+                }
+                var eur = _.contains(_this.europe, c);
+                if (eur) {
+                    _this.europeVisited++;
+                }
+                var asi = _.contains(_this.asia, c);
+                if (asi) {
+                    _this.asiaVisited++;
+                }
+                var aus = _.contains(_this.austraila, c);
+                if (aus) {
+                    _this.australiaVisited++;
+                }
+                var na = _.contains(_this.northAmerica, c);
+                if (na) {
+                    _this.northAmericaVisited++;
+                }
+                var sa = _.contains(_this.southAmerica, c);
+                if (sa) {
+                    _this.southAmericaVisited++;
+                }
+            });
+        };
+        return AggregatedCountries;
+    })();
+    Views.AggregatedCountries = AggregatedCountries;
     var PinBoardView = (function (_super) {
         __extends(PinBoardView, _super);
         function PinBoardView() {
@@ -18,8 +110,12 @@ var Views;
         PinBoardView.prototype.initialize = function () {
             var _this = this;
             this.mapsManager = new Maps.MapsManager();
+            this.mapsManager.onDataChanged = function () {
+                _this.pinBoardBadges.refresh();
+            };
             this.mapsManager.switchToView(Maps.ViewType.D2);
             this.fbPermissions = new Common.FacebookPermissions();
+            this.pinBoardBadges = new PinBoardBadges();
             this.shareDialogView = new Views.ShareDialogPinsView();
             this.initPlaceSearch();
             $("#mapType li").click(function (e) {
