@@ -19,11 +19,18 @@ var Views;
         PinBoardBadges.prototype.refresh = function () {
             this.aggregateCountries();
             this.generateOverview();
+            this.aggregateCities();
+            this.generateCities();
         };
         PinBoardBadges.prototype.aggregateCountries = function () {
             var countries = _.map(this.mapsDataLoader.places.countries, function (c) { return c.CountryCode2; });
             this.aggegatedCountries = new AggregatedCountries();
             this.aggegatedCountries.aggregate(countries);
+        };
+        PinBoardBadges.prototype.aggregateCities = function () {
+            this.aggreagatedCities = _.map(this.mapsDataLoader.places.cities, function (c) {
+                return c.GeoNamesId;
+            });
         };
         PinBoardBadges.prototype.generateOverview = function () {
             var afrHtml = this.genOverviewItem("africa.png", this.aggegatedCountries.africaVisited, this.aggegatedCountries.africaTotal, "Africa");
@@ -32,8 +39,91 @@ var Views;
             var ausHtml = this.genOverviewItem("australia.png", this.aggegatedCountries.australiaVisited, this.aggegatedCountries.australiaTotal, "Australia");
             var naHtml = this.genOverviewItem("north-amecica.png", this.aggegatedCountries.northAmericaVisited, this.aggegatedCountries.northAmericaTotal, "North America");
             var saHtml = this.genOverviewItem("south-america.png", this.aggegatedCountries.southAmericaVisited, this.aggegatedCountries.southAmericaTotal, "South America");
-            var html = afrHtml + eurHtml + asiHtml + ausHtml + naHtml + saHtml;
+            var euHtml = this.genOverviewItem("states-eu.png", this.aggegatedCountries.euVisited, this.aggegatedCountries.euTotal, "EU");
+            var html = afrHtml + eurHtml + asiHtml + ausHtml + naHtml + saHtml + euHtml;
             $("#badgesOverview").html(html);
+        };
+        PinBoardBadges.prototype.generateCities = function () {
+            $(".citiesCont").remove();
+            var europeCities = [
+                { i: "london.png", n: "London", g: 2643743 },
+                { i: "barcelona.png", n: "Barcelona", g: 3128760 },
+                { i: "paris.png", n: "Paris", g: 2988507 },
+                { i: "rome.png", n: "Rome", g: 3169070 },
+                { i: "prague.png", n: "Prague", g: 3067696 },
+                { i: "amsterdam.png", n: "Amsterdam", g: 2759794 },
+                { i: "berlin.png", n: "Berlin", g: 2950159 },
+                { i: "budapest.png", n: "Budapest", g: 3054643 },
+                { i: "istanbul.png", n: "Istanbul", g: 745044 }
+            ];
+            var asiaCities = [
+                { i: "bangkok.png", n: "Bangkok", g: 1609350 },
+                { i: "tokyo.png", n: "Tokyo", g: 1850147 },
+                { i: "dubai.png", n: "Dubai", g: 292223 },
+                { i: "hong-kong.png", n: "Hong Kong", g: 1819729 },
+                { i: "seoul.png", n: "Seoul", g: 1835848 },
+                { i: "kuala-lumpur.png", n: "Kuala Lumpur", g: 1735161 },
+                { i: "singapore.png", n: "Singapore", g: 1880252 },
+                { i: "shanghai.png", n: "Shanghai", g: 1796236 },
+                { i: "taipei.png", n: "Taipei", g: 1668341 }
+            ];
+            var naCities = [
+                { i: "new-york.png", n: "New York", g: 5128581 },
+                { i: "miami.png", n: "Miami", g: 4164138 },
+                { i: "los-angeles.png", n: "Los Angeles", g: 5368361 },
+                { i: "orlando.png", n: "Orlando", g: 4167147 },
+                { i: "san-francisco.png", n: "San Francisco", g: 5391959 },
+                { i: "las-vegas.png", n: "Las Vegas", g: 5506956 },
+                { i: "honolulu.png", n: "Honolulu", g: 5856195 },
+                { i: "washington.png", n: "Washington", g: 4140963 },
+                { i: "chicago.png", n: "Chicago", g: 4887398 }
+            ];
+            var saCities = [
+                { i: "mexico-city.png", n: "Mexico City", g: 3530597 },
+                { i: "buenos-aires.png", n: "Buenos Aires", g: 3435910 },
+                { i: "sao-paulo.png", n: "Sao Paulo", g: 3448439 },
+                { i: "lima.png", n: "Lima", g: 3936456 },
+                { i: "san-jose.png", n: "San Jose", g: 3621849 },
+                { i: "bogota.png", n: "Bogota", g: 3688689 },
+                { i: "montevideo.png", n: "Montevideo", g: 3441575 },
+                { i: "rio-de-janeiro.png", n: "Rio de Janeiro", g: 3451190 },
+                { i: "santiago-de-chile.png", n: "Santiago de Chile", g: 3871336 }
+            ];
+            var afCities = [
+                { i: "johannesburg.png", n: "Johannesburg", g: 993800 },
+                { i: "cape-town.png", n: "Cape Town", g: 3369157 },
+                { i: "cairo.png", n: "Cairo", g: 360630 },
+                { i: "casablanca.png", n: "Casablanca", g: 2553604 },
+                { i: "tunis.png", n: "Tunis", g: 2464470 },
+                { i: "durban.png", n: "Durban", g: 1007311 },
+                { i: "lagos.png", n: "Lagos", g: 2332459 },
+                { i: "nairobi.png", n: "Nairobi", g: 184745 },
+                { i: "accra.png", n: "Accra", g: 2306104 }
+            ];
+            var eurHtml = this.genContCitiesSection("Top 9 cities — Europe", europeCities);
+            var asiHtml = this.genContCitiesSection("Top 9 cities — Asia", asiaCities);
+            var naHtml = this.genContCitiesSection("Top 9 cities — North America", naCities);
+            var saHtml = this.genContCitiesSection("Top 9 cities — South and Central America", saCities);
+            var afHtml = this.genContCitiesSection("Top 9 cities — Africa", afCities);
+            var html = eurHtml + asiHtml + naHtml + saHtml + afHtml;
+            $("#badgesOverview").after(html);
+        };
+        PinBoardBadges.prototype.genContCitiesSection = function (continentName, cities) {
+            var _this = this;
+            var vHtml = "";
+            var uHtml = "";
+            cities.forEach(function (city) {
+                var visited = _.contains(_this.aggreagatedCities, city.g);
+                if (visited) {
+                    vHtml += "<div class=\"cell\"><span class=\"badge active\"><span class=\"thumbnail\"><img src=\"../images/badges/" + city.i + "\"></span>" + city.n + "</span></div>";
+                }
+                else {
+                    uHtml += "<div class=\"cell\"><span class=\"badge\" style=\"opacity: 0.5\"><span class=\"thumbnail\"><img src=\"../images/badges/" + city.i + "\"></span>" + city.n + "</span></div>";
+                }
+            });
+            var cHtml = vHtml + uHtml;
+            var html = "<h2 class=\"citiesCont\">" + continentName + "</h2><div class=\"badges grid margin2 citiesCont\">" + cHtml + "</div>";
+            return html;
         };
         PinBoardBadges.prototype.genOverviewItem = function (img, visitedCnt, totalCnt, name) {
             var imgLink = "../images/badges/" + img;
@@ -42,27 +132,35 @@ var Views;
         return PinBoardBadges;
     })();
     Views.PinBoardBadges = PinBoardBadges;
+    var AggregatedCities = (function () {
+        function AggregatedCities() {
+        }
+        return AggregatedCities;
+    })();
+    Views.AggregatedCities = AggregatedCities;
     var AggregatedCountries = (function () {
         function AggregatedCountries() {
-            this.africa = ["DZ", "AO", "BJ", "BW", "BF", "BI", "CM", "CV", "CF", "TD", "KM", "CG", "DJ", "EG", "GQ", "ER", "ET", "GA", "GM", "GH", "GW", "GN", "CI", "KE", "LS", "LR", "LY", "MG", "MW", "ML", "MR", "MU", "MA", "MZ", "NA", "NE", "NG", "RW", "ST", "SN", "SC", "SL", "SO", "ZA", "SD", "SZ", "TZ", "TG", "TN", "UG", "ZM", "TZ", "ZW", "SS", "CD"];
+            this.africa = ["DZ", "AO", "BJ", "BW", "BF", "BI", "CM", "CV", "CF", "TD", "KM", "CG", "DJ", "EG", "GQ", "ER", "ET", "GA", "GM", "GH", "GW", "GN", "CI", "KE", "LS", "LR", "LY", "MG", "MW", "ML", "MR", "MU", "MA", "MZ", "NA", "NE", "NG", "RW", "ST", "SN", "SC", "SL", "SO", "ZA", "SD", "SZ", "TG", "TN", "UG", "ZM", "TZ", "ZW", "SS", "CD"];
             this.europe = ["AL", "AD", "AT", "BY", "BE", "BA", "BG", "HR", "CY", "CZ", "DK", "EE", "FO", "FI", "FR", "DE", "GR", "HU", "IS", "IE", "IT", "LV", "LI", "LT", "LU", "MK", "MT", "MD", "MC", "NL", "NO", "PL", "PT", "RO", "RU", "SM", "RS", "SK", "SI", "ES", "SE", "CH", "UA", "GB", "ME"];
             this.asia = ["AF", "AM", "AZ", "BH", "BD", "BT", "BN", "KH", "CN", "GE", "IN", "ID", "IR", "IQ", "IL", "JP", "JO", "KZ", "KP", "KR", "KW", "KG", "LA", "LB", "MY", "MV", "MN", "MM", "NP", "OM", "PK", "PH", "QA", "SA", "SG", "LK", "SY", "TJ", "TH", "TR", "TM", "AE", "UZ", "VN", "YE"];
             this.austraila = ["AU", "FJ", "KI", "MH", "FM", "NR", "NZ", "PW", "PG", "SB", "TO", "TV", "VU", "WS", "TL"];
             this.northAmerica = ["AG", "BS", "BB", "BZ", "CA", "CR", "CU", "DM", "DO", "SV", "GT", "HT", "HN", "JM", "MX", "NI", "PA", "KN", "LC", "VC", "TT", "US"];
             this.southAmerica = ["AR", "BO", "BR", "CL", "CO", "EC", "GY", "PY", "PE", "SR", "UY", "VE"];
-            //todo: one extra country ? Find out which
-            this.africaTotal = 55;
+            this.eu = ["BE", "BG", "CZ", "DK", "DE", "EE", "IE", "EL", "ES", "FR", "HR", "IT", "CY", "LV", "LT", "LU", "HU", "MT", "NL", "AT", "PL", "PT", "RO", "SI", "SK", "FI", "SE", "UK"];
+            this.africaTotal = 54;
             this.europeTotal = 45;
             this.asiaTotal = 45;
             this.australiaTotal = 15;
             this.northAmericaTotal = 22;
             this.southAmericaTotal = 12;
+            this.euTotal = 28;
             this.africaVisited = 0;
             this.europeVisited = 0;
             this.asiaVisited = 0;
             this.australiaVisited = 0;
             this.northAmericaVisited = 0;
             this.southAmericaVisited = 0;
+            this.euVisited = 0;
         }
         AggregatedCountries.prototype.aggregate = function (countries) {
             var _this = this;
@@ -91,6 +189,10 @@ var Views;
                 var sa = _.contains(_this.southAmerica, c);
                 if (sa) {
                     _this.southAmericaVisited++;
+                }
+                var eu = _.contains(_this.eu, c);
+                if (eu) {
+                    _this.euVisited++;
                 }
             });
         };
