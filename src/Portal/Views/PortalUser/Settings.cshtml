@@ -5,79 +5,91 @@
 
 <style>
 
-.avatarItem {
-	width: 700px;
-	height: 300px;
-	
-}
-	
-.lineItem {
-	width: 700px;
-	height: 70px;
-	
+.titleName {
+    font-weight: bold;
 }
 
 </style>
 
 <div class="blue-line margin2"></div>
 
-	<h1>Public info</h1>
+<section class="wrapper margin3">
+    <div class="table row col2 margin">
+        <div class="cell">
+            <div class="table row">
+                <div class="cell middle">
+                    <h2>Settings</h2>
+                </div>
 
-	<div class="avatarItem">
-		<img id="avatar" src="@Model.AvatarLink" style="width: 200px; height: 200px"/>
-		<input type="file" id="avatarFile"/>
-		<br/>
-		<span id="progressBar" style="font-size: 20px; font-weight: bold">0</span>%
-	</div>
+            </div>
+        </div>
 
-	<div class="lineItem">
-		<span class="left">Display name</span>
-		<input id="displayName" type="text" value="@Model.DisplayName"/>
-	</div>
+    </div>
 
-	<div class="lineItem">
-		<span class="left">Gender</span>
-		<div id="gender" class="dropdown left">
-			<span class="selected">@Model.Gender</span>
-			<ul>
-				@*<li data-value="0">N/A</li>*@
-				<li data-value="1">Male</li>
-				<li data-value="2">Female</li>
-			</ul>
-			<input type="hidden" value="0">
-		</div>
-	</div>
+    <table>
+        <tr>
+            <td colspan="2">
+                <img id="avatar" src="@Model.AvatarLink" style="width: 200px; height: 200px" />
+                <br />
+                <input type="file" id="avatarFile" />
+                <br />
+                <span id="progressBar" style="font-size: 20px; font-weight: bold">0</span>%
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="titleName">Display name</span>
+            </td>
+            <td>
+                <input id="displayName" type="text" value="@Model.DisplayName" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="titleName">Gender</span>
+            </td>
+            <td>
+                <div id="gender" class="dropdown left">
+                    <span class="selected">@Model.Gender</span>
+                    <ul>
+                        @*<li data-value="0">N/A</li>*@
+                        <li data-value="1">Male</li>
+                        <li data-value="2">Female</li>
+                    </ul>
+                    <input type="hidden" value="0">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="titleName">Home city</span>
+            </td>
+            <td>
+                <div id="homeCity" class="dropdown left">
+                    <input class="inputed" type="text" placeholder="City name" value="@Model.HomeLocation">
+                    <ul></ul>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="titleName">Current city</span>
+            </td>
+            <td>
+                <div id="currentCity" class="dropdown left">
+                    <input class="inputed" type="text" placeholder="City name" value="@Model.CurrentLocation">
+                    <ul></ul>
+                </div>
+            </td>
+        </tr>
+    </table>
 
+</section>
 
-	<div class="lineItem">
-		<span class="left">Home city</span>
+    <script>
 
-		<div id="homeCity" class="dropdown left">
-			<input class="inputed" type="text" placeholder="City name" value="@Model.HomeLocation">
-			<ul>
-			</ul>
-		</div>
+        function onBodyLoad() {
+            currentView = new Views.SettingsView();
+        }
 
-	</div>
-
-	<div class="lineItem">
-		<span class="left">Current city</span>
-
-		<div id="currentCity" class="dropdown left">
-			<input class="inputed" type="text" placeholder="City name" value="@Model.CurrentLocation">
-			<ul></ul>
-		</div>
-
-	</div>
-
-
-
-
-<script>
-
-	function onBodyLoad() {
-		currentView = new Views.SettingsView();
-	}
-
-
-</script>
+    </script>

@@ -18,7 +18,7 @@ module Reg {
 			} else if (response.status === "not_authorized") {
 				//possibly problems with authorization
 			} else {
-				//zero state
+				this.login();
 			}
 		}
 
@@ -33,9 +33,9 @@ module Reg {
 			super.sendUserRegistrationData(fbUser);
 		}
 
-		//login() {		 
-		// FB.login(this.statusChangeCallback, { scope: 'user_tagged_places,publish_actions,user_location,user_hometown,user_friends,email' });
-		//}
+		login() {		 
+		 FB.login(this.statusChangeCallback, { scope: 'publish_actions,user_location,user_hometown,user_friends,email' });
+	 }
 
 	}
 

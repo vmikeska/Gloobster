@@ -18,6 +18,7 @@ var Reg;
                 else if (response.status === "not_authorized") {
                 }
                 else {
+                    _this.login();
                 }
             };
             this.loginType = Reg.NetworkType.Facebook;
@@ -28,6 +29,9 @@ var Reg;
         CreateUserFacebook.prototype.handleRoughResponse = function (jsonRequest) {
             var fbUser = new FacebookUser(jsonRequest.accessToken, jsonRequest.userID, jsonRequest.expiresIn, jsonRequest.signedRequest);
             _super.prototype.sendUserRegistrationData.call(this, fbUser);
+        };
+        CreateUserFacebook.prototype.login = function () {
+            FB.login(this.statusChangeCallback, { scope: 'publish_actions,user_location,user_hometown,user_friends,email' });
         };
         return CreateUserFacebook;
     })(Reg.CreateUserBase);
