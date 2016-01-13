@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Facebook;
 
 namespace Gloobster.SocialLogin.Facebook.Communication
@@ -23,6 +24,12 @@ namespace Gloobster.SocialLogin.Facebook.Communication
 			var result = FbClient.Get(query);
 			return result;
 		}
+
+	    public object Post(string path, object data)
+	    {
+	        var response = FbClient.Post(path, data);
+	        return response;	        
+	    }
 
 		public bool ValidateToken()
 		{

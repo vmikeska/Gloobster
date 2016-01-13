@@ -36,8 +36,6 @@ namespace Gloobster.DomainModels.Services.PlaceSearch
 		{
 			var searchProviders = SearchProviders.Where(p => queryObj.CustomProviders.Contains(p.Key)).Select(p => p.Value);
 			
-			queryObj.LimitPerProvider = 3;
-			
 			var places = new List<Place>();
 			foreach (var provider in searchProviders)
 			{

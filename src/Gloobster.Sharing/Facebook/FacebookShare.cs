@@ -1,13 +1,66 @@
 ﻿using System.Collections.Generic;
 using Facebook;
+using Gloobster.Common;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
+using Gloobster.Enums;
 
 namespace Gloobster.Sharing.Facebook
 {	
 	public class FacebookShare: IFacebookShare
 	{
-		public void Share(FacebookShareOptionsDO so, SocAuthenticationDO authentication)
+	    private FacebookPrivacyDO GetDefaultPrivacy()
+	    {
+	        if (GloobsterConfig.IsLocal)
+	        {
+	            return new FacebookPrivacyDO
+	            {
+	                Description = "This is debug, only I can see it",
+	                Value = FacebookPrivacyLevel.SELF
+	            };
+	        }
+	        else
+	        {
+                return new FacebookPrivacyDO
+                {
+                    Description = "Sharing with Friends",
+                    Value = FacebookPrivacyLevel.FRIENDS_OF_FRIENDS
+                };
+            }            
+        }
+
+	    public void Checkin(FacebookCheckinDO checkin, SocAuthenticationDO authentication)
+	    {
+	        var endpoint = "/me/feed";
+
+	        var client = new FacebookClient(authentication.AccessToken);
+
+	        var args = new Dictionary<string, object>();
+
+	        if (!string.IsNullOrEmpty(checkin.Place))
+	        {
+	            args.Add("place", checkin.Place);
+	        }
+
+	        if (!string.IsNullOrEmpty(checkin.Message))
+	        {
+	            args.Add("message", checkin.Message);
+	        }
+
+	        if (!string.IsNullOrEmpty(checkin.Link))
+	        {
+	            args.Add("link", checkin.Link);
+	        }
+
+	        var p = checkin.Privacy ?? GetDefaultPrivacy();
+	        var privacy = BuildPrivacyDict(p);
+	        args.Add("privacy", privacy);
+
+	        client.Post(endpoint, args);
+	    }
+
+
+	    public void Share(FacebookShareOptionsDO so, SocAuthenticationDO authentication)
 		{
 			var endpoint = "/me/feed";
 			//og.follows
@@ -23,37 +76,38 @@ namespace Gloobster.Sharing.Facebook
 				{"caption", so.Caption},				
 				{"link", so.Link} 
 			};
-			
-			var privacy = BuildPrivacyDict(so);
+
+            var p = so.Privacy ?? GetDefaultPrivacy();
+            var privacy = BuildPrivacyDict(p);
 			args.Add("privacy", privacy);
 
 			client.Post(endpoint, args);
 		}
 		
 		///https://developers.facebook.com/docs/graph-api/reference/v2.5/post 		
-		private Dictionary<string, object> BuildPrivacyDict(FacebookShareOptionsDO so)
+		private Dictionary<string, object> BuildPrivacyDict(FacebookPrivacyDO priv)
 		{
 			var privacy = new Dictionary<string, object>
 			{
-				{"description", so.Privacy.Description },
-				{"value", so.Privacy.Value.ToString()}
+				{"description", priv.Description },
+				{"value", priv.Value.ToString()}
 			};
 
-			if (so.Privacy.Value == FacebookPrivacyLevel.CUSTOM)
+			if (priv.Value == FacebookPrivacyLevel.CUSTOM)
 			{
-				if (so.Privacy.Friends.HasValue)
+				if (priv.Friends.HasValue)
 				{
-					privacy.Add("friends", so.Privacy.Allow.ToString());
+					privacy.Add("friends", priv.Allow);
 				}
 
-				if (!string.IsNullOrEmpty(so.Privacy.Allow))
+				if (!string.IsNullOrEmpty(priv.Allow))
 				{
-					privacy.Add("allow", so.Privacy.Allow);
+					privacy.Add("allow", priv.Allow);
 				}
 
-				if (!string.IsNullOrEmpty(so.Privacy.Deny))
+				if (!string.IsNullOrEmpty(priv.Deny))
 				{
-					privacy.Add("deny", so.Privacy.Deny);
+					privacy.Add("deny", priv.Deny);
 				}
 			}
 

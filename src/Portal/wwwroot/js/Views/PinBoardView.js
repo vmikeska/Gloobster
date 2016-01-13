@@ -132,12 +132,6 @@ var Views;
         return PinBoardBadges;
     })();
     Views.PinBoardBadges = PinBoardBadges;
-    var AggregatedCities = (function () {
-        function AggregatedCities() {
-        }
-        return AggregatedCities;
-    })();
-    Views.AggregatedCities = AggregatedCities;
     var AggregatedCountries = (function () {
         function AggregatedCountries() {
             this.africa = ["DZ", "AO", "BJ", "BW", "BF", "BI", "CM", "CV", "CF", "TD", "KM", "CG", "DJ", "EG", "GQ", "ER", "ET", "GA", "GM", "GH", "GW", "GN", "CI", "KE", "LS", "LR", "LY", "MG", "MW", "ML", "MR", "MU", "MA", "MZ", "NA", "NE", "NG", "RW", "ST", "SN", "SC", "SL", "SO", "ZA", "SD", "SZ", "TG", "TN", "UG", "ZM", "TZ", "ZW", "SS", "CD"];

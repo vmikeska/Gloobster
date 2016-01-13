@@ -1,4 +1,6 @@
-﻿namespace Gloobster.DomainObjects
+﻿using Gloobster.Enums;
+
+namespace Gloobster.DomainObjects
 {
 	public class FacebookShareOptionsDO
 	{
@@ -36,20 +38,6 @@
 		public string Deny { get; set; }
 	}
 
-	public enum FacebookPrivacyLevel
-	{
-		EVERYONE,
-		ALL_FRIENDS,
-		FRIENDS_OF_FRIENDS,
-		SELF,
-		CUSTOM
-	}
-
-	public enum FacebookCustomPrivacyLevel
-	{
-		ALL_FRIENDS,
-		FRIENDS_OF_FRIENDS,
-		SOME_FRIENDS
-	}
+	
 	
 }

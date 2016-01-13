@@ -84,13 +84,7 @@ namespace Gloobster.DomainModels
 
 				Caption = "Join Gloobster.com, web for travelers",
 
-				Link = GetSharePageLink(share.TripId),
-
-				Privacy = new FacebookPrivacyDO
-				{
-					Description = "This is debug, only I can see it",
-					Value = FacebookPrivacyLevel.SELF
-				}
+				Link = GetSharePageLink(share.TripId)
 			};
 
 			var fbAuthDO = fbAuth.Authentication.ToDO();

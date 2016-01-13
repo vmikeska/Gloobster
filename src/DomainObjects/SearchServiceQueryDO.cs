@@ -15,6 +15,7 @@ namespace Gloobster.DomainObjects
 		public LatLng Coordinates { get; set; }	
 		public SourceType[] CustomProviders { get; set; }
 		public PortalUserDO PortalUser { get; set; }
-
-	}
+	    public bool MustHaveCity = false;
+        public bool MustHaveCountry = false;
+    }
 }

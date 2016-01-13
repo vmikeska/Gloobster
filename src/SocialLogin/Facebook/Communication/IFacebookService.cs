@@ -10,5 +10,7 @@ namespace Gloobster.SocialLogin.Facebook.Communication
 		object Get(string query);
         void SetAccessToken(string accessToken);
 	    bool HasPermissions(string name);
+	    object Post(string path, object data);
+
 	}
 }

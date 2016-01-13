@@ -41,7 +41,10 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 			{
 				Query = req.placeName,
 				PortalUser = userDO,
-				CustomProviders = typesCol,				
+				CustomProviders = typesCol,
+                MustHaveCity = true,
+                MustHaveCountry = true,
+                LimitPerProvider = 5
 			};
 
 			bool hasCoordinates = !string.IsNullOrEmpty(req.lat) && !string.IsNullOrEmpty(req.lng);

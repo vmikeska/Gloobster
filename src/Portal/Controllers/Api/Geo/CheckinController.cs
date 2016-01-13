@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
+using Gloobster.DomainObjects;
 using Gloobster.Entities;
 using Gloobster.Enums;
 using Gloobster.Mappers;
@@ -9,6 +10,7 @@ using Gloobster.Portal.Controllers.Base;
 using Gloobster.Portal.ViewModels;
 using Gloobster.ReqRes.MoveOut;
 using Gloobster.ReqRes.PinBoard;
+using Gloobster.SocialLogin.Facebook.Communication;
 using Microsoft.AspNet.Mvc;
 
 namespace Gloobster.Portal.Controllers.Api.Geo
@@ -18,11 +20,15 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 	{
 		public ICheckinPlaceDomain CheckinDomain { get; set; }
 		public ICountryService CountryService { get; set; }
-
-		public CheckinController(ICheckinPlaceDomain checkinDomain, ICountryService countryService, IDbOperations db) : base(db)
+        public IFacebookService FBService { get; set; }
+        public IFacebookShare FBShare { get; set; }
+        
+        public CheckinController(IFacebookShare fbShare, IFacebookService fbService, ICheckinPlaceDomain checkinDomain, ICountryService countryService, IDbOperations db) : base(db)
 		{
 			CheckinDomain = checkinDomain;
 			CountryService = countryService;
+		    FBService = fbService;
+            FBShare = fbShare;
 		}
 		
 		[HttpPost]
@@ -32,6 +38,24 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 			var sourceType = (SourceType)place.SourceType;
 			
 			var checkedDO = await CheckinDomain.CheckinPlace(place.SourceId, sourceType, UserId);
+
+		    if (sourceType == SourceType.FB)
+		    {
+                //https://developers.facebook.com/docs/graph-api/reference/v2.5/user/feed/
+		        
+		        var usrDO = PortalUser.ToDO();
+		        var fb = usrDO.GetAccount(SocialNetworkType.Facebook);
+		        if (fb != null)
+		        {
+		            var checkin = new FacebookCheckinDO
+		            {
+		                Message = "Pinned by Gloobster.com",
+		                Place = place.SourceId		                
+		            };
+
+                    FBShare.Checkin(checkin, fb.Authentication);
+                }                
+		    }
 
 			var response = new PinBoardStatResponse();
 

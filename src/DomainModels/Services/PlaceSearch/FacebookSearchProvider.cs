@@ -44,7 +44,17 @@ namespace Gloobster.DomainModels.Services.PlaceSearch
 			var result = Service.Get<SearchedPlacesFO>(url);
 			var resultConverted = result.Data.Select(Convert).ToList();
 
-			return resultConverted;
+		    if (queryObj.MustHaveCity)
+		    {
+		        resultConverted = resultConverted.Where(c => !string.IsNullOrEmpty(c.City)).ToList();
+		    }
+
+            if (queryObj.MustHaveCountry)
+            {
+                resultConverted = resultConverted.Where(c => !string.IsNullOrEmpty(c.CountryCode)).ToList();
+            }
+
+            return resultConverted;
 		}
 
 		private Place Convert(SearchPlaceFO originalPlace)
