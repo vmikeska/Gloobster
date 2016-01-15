@@ -37,27 +37,34 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 
 		[HttpPost]
 		[Authorize]
-		public IActionResult Post([FromBody] FriendActionRequest request)
+		public async Task<IActionResult> Post([FromBody] FriendActionRequest request)
 		{			
 			if (request.action == FriendActionType.Request)
 			{
-				FriendsDoimain.RequestFriendship(UserId, request.friendId);
+				await FriendsDoimain.RequestFriendship(UserId, request.friendId);
 			}
 
 			if (request.action == FriendActionType.Confirm)
 			{
-				FriendsDoimain.ConfirmFriendship(UserId, request.friendId);
+                await FriendsDoimain.ConfirmFriendship(UserId, request.friendId);
 			}
 
 			if (request.action == FriendActionType.Unfriend)
 			{
-				FriendsDoimain.Unfriend(UserId, request.friendId);
+                await FriendsDoimain.Unfriend(UserId, request.friendId);
 			}
 
-			//todo: cancel request
-			//todo: block
-			
-			var response = GetFriends(UserId);
+		    if (request.action == FriendActionType.CancelRequest)
+		    {
+                await FriendsDoimain.CancelRequest(UserId, request.friendId);
+		    }
+
+            if (request.action == FriendActionType.Block)
+            {
+                await FriendsDoimain.Block(UserId, request.friendId);
+            }
+
+            var response = GetFriends(UserId);
 
 			return new ObjectResult(response);
 		}
@@ -81,7 +88,7 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 				AwaitingConfirmation = friendsEntity.AwaitingConfirmation.Select(f => ConvertResponse(f, friends)).ToList(),
 				Blocked = friendsEntity.Blocked.Select(f => ConvertResponse(f, friends)).ToList(),
 				Proposed = friendsEntity.Proposed.Select(f => ConvertResponse(f, friends)).ToList(),
-				FacebookRecommended = fbFriendsFiltered.Select(f => new FriendResponse { friendId = f.UserId, photoUrl = f.ProfileImage, displayName = f.DisplayName }).ToList()
+				FacebookRecommended = fbFriendsFiltered.Select(f => new FriendResponse { friendId = f.UserId, displayName = f.DisplayName }).ToList()
 			};
 
 			return response;
@@ -123,8 +130,7 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 
 			var friend = new FriendResponse
 			{
-				friendId = friendId.ToString(),
-				photoUrl = portalUser.ProfileImage,
+				friendId = friendId.ToString(),				
 				displayName = portalUser.DisplayName
 			};
 

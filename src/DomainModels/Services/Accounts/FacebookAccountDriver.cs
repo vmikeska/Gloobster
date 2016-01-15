@@ -107,7 +107,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 				FirstName = FbUser.FirstName,
 				LastName = FbUser.LastName,
 
-				ProfileImage = null,//AccountUtils.DownloadAndStoreTheProfilePicture(""),
+				ProfileImage = null,
 
 				SocialAccounts = new[] { facebookAccount }
 			};
@@ -117,44 +117,13 @@ namespace Gloobster.DomainModels.Services.Accounts
 			var createdUser = savedEntity.ToDO();
 
 			var profileLink = $"http://graph.facebook.com/{Authentication.UserId}/picture?type=large";
-			var picResult = AccountUtils.DownloadPicture(profileLink);
-			SaveProfilePicture(picResult.Data, picResult.ContentType, savedEntity.id.ToString());
+			DownloadPictureResult picResult = AccountUtils.DownloadPicture(profileLink);
+            AccountUtils.SaveProfilePicture(picResult.Data, picResult.ContentType, savedEntity.id.ToString(), FileDomain, DB);
 
 			return createdUser;
 		}
 
-		private void SaveProfilePicture(string data, string contentType, string userId)
-		{
-			try
-			{
-				FileDomain.OnFileSaved += (sender, args) =>
-				{
-					var argsObj = (OnFileSavedArgs)args;
-
-					var userIdObj = new ObjectId(userId);
-					var filter = DB.F<PortalUserEntity>().Eq(p => p.id, userIdObj);
-					var update = DB.U<PortalUserEntity>().Set(p => p.ProfileImage, argsObj.FileName);
-					DB.UpdateAsync(filter, update);
-				};
-
-				var filePart = new WriteFilePartDO
-				{
-					Data = data,
-					UserId = userId,
-					FileLocation = "avatars",					
-					FilePart = FilePartType.Last,
-					FileType = contentType,
-					CustomFileName = userId,
-					FileName = "any.jpg"
-				};
-
-				FileDomain.WriteFilePart(filePart);				
-			}
-			catch (Exception exc)
-			{
-				//todo: log
-			}
-		}
+		
 
 		private async Task<CityLocationSE> ParseLocationAsync(IdNameFO location)
 		{

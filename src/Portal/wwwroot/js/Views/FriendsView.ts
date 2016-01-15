@@ -20,8 +20,7 @@ class FriendsView extends Views.ViewBase {
 	public initialize() {
 		var self = this;
 		this.getUsersAndDisplay();
-
-
+	 
 		$("#friendsSearch").on("input", () => {
 		 var searchQuery = $("#friendsSearch input").val();
 		 self.searchUsers(searchQuery);
@@ -44,18 +43,27 @@ class FriendsView extends Views.ViewBase {
 		var minChars = 1;
 
 		if (searchQuery.length < minChars) {
-			return;
+			this.clearSearchBox();
+		 return;
 		}
 
 		var params = [["searchQuery", searchQuery]];
-		super.apiGet("usersSearch", params, users => { this.fillUsersSearchBoxHtml(users); });
+		this.apiGet("usersSearch", params, users => {
+			this.fillUsersSearchBoxHtml(users);
+		});
 
 	}
 
-	fillUsersSearchBoxHtml(users) {
+  private clearSearchBox() {
+	  $("#friendsSearch ul").html("");
+  }
+
+	private fillUsersSearchBoxHtml(users) {
 		$("#friendsSearch ul").show();
 		var htmlContent = "";
-		users.forEach(item => { htmlContent += this.getItemHtml(item); });
+		users.forEach(item => {
+			 htmlContent += this.getItemHtml(item);
+		});
 
 		$("#friendsSearch li").unbind();
 		$("#friendsSearch ul").html(htmlContent);
@@ -64,16 +72,23 @@ class FriendsView extends Views.ViewBase {
 			//todo: to user detial
 		});
 
-		$("#friendsSearch button").click(clickedUser => {
-			this.requestUser(clickedUser, users);
+		$("#friendsSearch button").click(e => {
+			e.preventDefault();
+
+		 var userId = $(e.currentTarget).data("value");
+		 this.requestUser(userId, users);
 			$("#friendsSearch input").val("");
 		});
 	}
 
-	requestUser(clickedUser, places) {
-		var self = this;
-		var userId = $(clickedUser.currentTarget).data("value");
+	private getItemHtml(item) {
+	 var photoUrl = "/PortalUser/ProfilePicture/" + item.friendId;
+	 return `<li data-value="${item.friendId}"><span class="thumbnail"><img src="${photoUrl}"></span>${item.displayName} <button data-value="${item.friendId}">Request</button></li>`;
+	}
 
+	requestUser(userId, places) {
+		var self = this;
+	
 		$("#friendsSearch ul").hide();
 
 		var data = { "friendId": userId, "action": FriendActionType.Request };
@@ -81,23 +96,7 @@ class FriendsView extends Views.ViewBase {
 			self.userStateChanged(response);
 		});
 	}
-
-	getItemHtml(item) {
-
-	 var photoUrl = "../images/sampleFace.jpg";
-	 return '<li data-value="' + item.friendId + '"><span class="thumbnail"><img src="' + photoUrl + '"></span>' + item.displayName + ' <button data-value="' + item.friendId + '">Request</button></li>';
-	}
-
-
-
-
-
-
-
-
-
-
-
+ 
 	public generateAllSections(friendsResponse) {
 
 		var allSectionsHtml = "";
@@ -132,9 +131,10 @@ class FriendsView extends Views.ViewBase {
 	private registerButtonActions() {
 		var self = this;
 
-		$(".actionButton").click(evnt => {
-			var friendId = $(evnt.target).data("value");
-			var action = $(evnt.target).data("action");
+		$(".actionButton").click(e => {
+			e.preventDefault();
+			var friendId = $(e.target).data("value");
+			var action = $(e.target).data("action");
 
 			var data = { "friendId": friendId, "action": action };
 			self.apiPost("Friends", data, response => {
@@ -178,8 +178,7 @@ class FriendsView extends Views.ViewBase {
 			friendsHtml += friendHtml;
 		});
 
-		var sectionHtml = '<div class="friendSection"><div style="font-size: 30px">' + sectionTitle + '</div>' + friendsHtml + '</div>';
-
+		var sectionHtml = `<div class="friendSection"><div style="font-size: 30px">${sectionTitle}</div>${friendsHtml}</div>`;
 		return sectionHtml;
 	}
 
@@ -206,10 +205,9 @@ class FriendsView extends Views.ViewBase {
 
 	private generateOneFriendItem(friend: Friend, actions: FriendActionType[]) {
 		var actionsHtml = this.generateActions(friend.friendId, actions);
-
-		var photoUrl = "../images/sampleFace.jpg";
-
-		var itemHtml = '<div class="friend"><img src="' + photoUrl + '" /><br/><span>' + friend.displayName + '</span>' + actionsHtml + '</div>';
+		
+		var photoUrl = "/PortalUser/ProfilePicture/" + friend.friendId;
+		var itemHtml = `<div class="friend"><img src="${photoUrl}" style="width: 80px;" /><br/><span>${friend.displayName}</span>${actionsHtml}</div>`;
 		return itemHtml;
 	}
 

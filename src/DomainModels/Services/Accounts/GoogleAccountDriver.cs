@@ -47,11 +47,10 @@ namespace Gloobster.DomainModels.Services.Accounts
 		public SocialNetworkType NetworkType => SocialNetworkType.Google;
 
 		public IDbOperations DB { get; set; }
-		public IFacebookService FBService { get; set; }
-		
+		public IFacebookService FBService { get; set; }		
 		public IComponentContext ComponentContext { get; set; }
-
-		public IPlacesExtractor PlacesExtractor { get; set; }
+        public IFilesDomain FileDomain { get; set; }
+        public IPlacesExtractor PlacesExtractor { get; set; }
 		
 		public PortalUserDO PortalUser { get; set; }
 
@@ -78,7 +77,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 				DisplayName = User.DisplayName,
 				Mail = User.Mail,
 				Password = AccountUtils.GeneratePassword(),
-				ProfileImage = null,//AccountUtils.DownloadAndStoreTheProfilePicture(User.ProfileLink),
+				ProfileImage = null,
 				
 				SocialAccounts = new[] {googleAccount},
 
@@ -91,9 +90,12 @@ namespace Gloobster.DomainModels.Services.Accounts
 			};
 
 			var savedEntity = await DB.SaveAsync(userEntity);
-
 			var createdUser = savedEntity.ToDO();
-			return createdUser;
+            
+            DownloadPictureResult picResult = AccountUtils.DownloadPicture(User.ProfileLink);
+            AccountUtils.SaveProfilePicture(picResult.Data, picResult.ContentType, savedEntity.id.ToString(), FileDomain, DB);
+
+            return createdUser;
 		}
 		
 		public string GetEmail()

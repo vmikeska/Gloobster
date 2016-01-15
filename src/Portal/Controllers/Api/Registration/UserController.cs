@@ -3,6 +3,7 @@ using Autofac;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
+using Gloobster.Enums;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes;
 using Gloobster.ReqRes.User;
@@ -43,8 +44,9 @@ namespace Gloobster.Portal.Controllers.Api.Registration
 			var response = new LoggedResponse
 			{
 				encodedToken = result.EncodedToken,
-				status = result.Status.ToString()
-			};
+				status = result.Status.ToString(),
+                networkType = SocialNetworkType.Base
+            };
 
 			return new ObjectResult(response);
 		}

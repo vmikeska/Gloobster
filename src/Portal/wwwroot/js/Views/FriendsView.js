@@ -55,38 +55,47 @@ var FriendsView = (function (_super) {
         var _this = this;
         var minChars = 1;
         if (searchQuery.length < minChars) {
+            this.clearSearchBox();
             return;
         }
         var params = [["searchQuery", searchQuery]];
-        _super.prototype.apiGet.call(this, "usersSearch", params, function (users) { _this.fillUsersSearchBoxHtml(users); });
+        this.apiGet("usersSearch", params, function (users) {
+            _this.fillUsersSearchBoxHtml(users);
+        });
+    };
+    FriendsView.prototype.clearSearchBox = function () {
+        $("#friendsSearch ul").html("");
     };
     FriendsView.prototype.fillUsersSearchBoxHtml = function (users) {
         var _this = this;
         $("#friendsSearch ul").show();
         var htmlContent = "";
-        users.forEach(function (item) { htmlContent += _this.getItemHtml(item); });
+        users.forEach(function (item) {
+            htmlContent += _this.getItemHtml(item);
+        });
         $("#friendsSearch li").unbind();
         $("#friendsSearch ul").html(htmlContent);
         $("#friendsSearch li").click(function (clickedUser) {
             //todo: to user detial
         });
-        $("#friendsSearch button").click(function (clickedUser) {
-            _this.requestUser(clickedUser, users);
+        $("#friendsSearch button").click(function (e) {
+            e.preventDefault();
+            var userId = $(e.currentTarget).data("value");
+            _this.requestUser(userId, users);
             $("#friendsSearch input").val("");
         });
     };
-    FriendsView.prototype.requestUser = function (clickedUser, places) {
+    FriendsView.prototype.getItemHtml = function (item) {
+        var photoUrl = "/PortalUser/ProfilePicture/" + item.friendId;
+        return "<li data-value=\"" + item.friendId + "\"><span class=\"thumbnail\"><img src=\"" + photoUrl + "\"></span>" + item.displayName + " <button data-value=\"" + item.friendId + "\">Request</button></li>";
+    };
+    FriendsView.prototype.requestUser = function (userId, places) {
         var self = this;
-        var userId = $(clickedUser.currentTarget).data("value");
         $("#friendsSearch ul").hide();
         var data = { "friendId": userId, "action": FriendActionType.Request };
         this.apiPost("Friends", data, function (response) {
             self.userStateChanged(response);
         });
-    };
-    FriendsView.prototype.getItemHtml = function (item) {
-        var photoUrl = "../images/sampleFace.jpg";
-        return '<li data-value="' + item.friendId + '"><span class="thumbnail"><img src="' + photoUrl + '"></span>' + item.displayName + ' <button data-value="' + item.friendId + '">Request</button></li>';
     };
     FriendsView.prototype.generateAllSections = function (friendsResponse) {
         var allSectionsHtml = "";
@@ -114,9 +123,10 @@ var FriendsView = (function (_super) {
     };
     FriendsView.prototype.registerButtonActions = function () {
         var self = this;
-        $(".actionButton").click(function (evnt) {
-            var friendId = $(evnt.target).data("value");
-            var action = $(evnt.target).data("action");
+        $(".actionButton").click(function (e) {
+            e.preventDefault();
+            var friendId = $(e.target).data("value");
+            var action = $(e.target).data("action");
             var data = { "friendId": friendId, "action": action };
             self.apiPost("Friends", data, function (response) {
                 self.userStateChanged(response);
@@ -152,7 +162,7 @@ var FriendsView = (function (_super) {
             var friendHtml = _this.generateOneFriendItem(friend, actions);
             friendsHtml += friendHtml;
         });
-        var sectionHtml = '<div class="friendSection"><div style="font-size: 30px">' + sectionTitle + '</div>' + friendsHtml + '</div>';
+        var sectionHtml = "<div class=\"friendSection\"><div style=\"font-size: 30px\">" + sectionTitle + "</div>" + friendsHtml + "</div>";
         return sectionHtml;
     };
     FriendsView.prototype.getActionsByState = function (friendshipState) {
@@ -172,8 +182,8 @@ var FriendsView = (function (_super) {
     };
     FriendsView.prototype.generateOneFriendItem = function (friend, actions) {
         var actionsHtml = this.generateActions(friend.friendId, actions);
-        var photoUrl = "../images/sampleFace.jpg";
-        var itemHtml = '<div class="friend"><img src="' + photoUrl + '" /><br/><span>' + friend.displayName + '</span>' + actionsHtml + '</div>';
+        var photoUrl = "/PortalUser/ProfilePicture/" + friend.friendId;
+        var itemHtml = "<div class=\"friend\"><img src=\"" + photoUrl + "\" style=\"width: 80px;\" /><br/><span>" + friend.displayName + "</span>" + actionsHtml + "</div>";
         return itemHtml;
     };
     FriendsView.prototype.generateActions = function (friendId, actions) {

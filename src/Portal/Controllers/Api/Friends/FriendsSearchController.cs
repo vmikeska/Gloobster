@@ -59,8 +59,7 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 		{			
 			var friend = new FriendResponse
 			{
-				friendId = portalUser.id.ToString(),
-				photoUrl = portalUser.ProfileImage,
+				friendId = portalUser.id.ToString(),				
 				displayName = portalUser.DisplayName
 			};
 

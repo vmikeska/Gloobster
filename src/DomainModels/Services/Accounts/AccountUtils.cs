@@ -5,6 +5,11 @@ using MongoDB.Driver;
 using System.Linq;
 using System.Net;
 using System.Text;
+using Gloobster.Database;
+using Gloobster.DomainInterfaces;
+using Gloobster.DomainObjects;
+using Gloobster.Entities;
+using Gloobster.Enums;
 using Hammock.Serialization;
 
 namespace Gloobster.DomainModels.Services.Accounts
@@ -35,7 +40,40 @@ namespace Gloobster.DomainModels.Services.Accounts
 			};
 		}
 
-		public static string TryExtractFirstName(string fullName)
+        public static void SaveProfilePicture(string data, string contentType, string userId, IFilesDomain fileDomain, IDbOperations db)
+        {
+            try
+            {
+                fileDomain.OnFileSaved += (sender, args) =>
+                {
+                    var argsObj = (OnFileSavedArgs)args;
+
+                    var userIdObj = new ObjectId(userId);
+                    var filter = db.F<PortalUserEntity>().Eq(p => p.id, userIdObj);
+                    var update = db.U<PortalUserEntity>().Set(p => p.ProfileImage, argsObj.FileName);
+                    db.UpdateAsync(filter, update);
+                };
+
+                var filePart = new WriteFilePartDO
+                {
+                    Data = data,
+                    UserId = userId,
+                    FileLocation = "avatars",
+                    FilePart = FilePartType.Last,
+                    FileType = contentType,
+                    CustomFileName = userId,
+                    FileName = "any.jpg"
+                };
+
+                fileDomain.WriteFilePart(filePart);
+            }
+            catch (Exception exc)
+            {
+                //todo: log
+            }
+        }
+
+        public static string TryExtractFirstName(string fullName)
 		{
 			var prms = fullName.Split(' ');
 			if (prms.Length < 2)

@@ -14,9 +14,8 @@ module Reg {
 				this.facebookUserCreator = new CreateUserFacebook();
 				this.googleUserCreator = new CreateUserGoogle();
 				this.localUserCreator = new CreateUserLocal();
-
-			}
-			this.twitterUserCreator = new CreateUserTwitter();
+				this.twitterUserCreator = new CreateUserTwitter();
+			}			
 		}
 
 		public facebookUserCreator: CreateUserFacebook;

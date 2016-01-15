@@ -41,8 +41,9 @@ namespace Gloobster.DomainModels.Services.Accounts
 		public PortalUserDO PortalUser { get; set; }
 		public TwitterService TwitterSvc { get; set; }
 		public IGeoNamesService GNService { get; set; }
-		
-		public IPlacesExtractor PlacesExtractor { get; set; }
+        public IFilesDomain FileDomain { get; set; }
+
+        public IPlacesExtractor PlacesExtractor { get; set; }
 
 		public TwitterAccountDriver()
 		{
@@ -84,7 +85,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 				Password = AccountUtils.GeneratePassword(),				
 				Languages = ParseLanguage(user.Language),
 				CurrentLocation = await ParseLocation(user.Location),
-				ProfileImage = "",//AccountUtils.DownloadAndStoreTheProfilePicture(user.ProfileImageUrl),				
+				ProfileImage = null,
 				FirstName = AccountUtils.TryExtractFirstName(user.Name),
 				LastName = AccountUtils.TryExtractLastName(user.Name),
 				
@@ -95,10 +96,20 @@ namespace Gloobster.DomainModels.Services.Accounts
 			};
 
 			var savedEntity = await DB.SaveAsync(userEntity);
-
 			var createdUser = savedEntity.ToDO();
-			return createdUser;
+
+		    var imageUrl = GetImageUrl(user.ProfileImageUrl);
+            DownloadPictureResult picResult = AccountUtils.DownloadPicture(imageUrl);
+            AccountUtils.SaveProfilePicture(picResult.Data, picResult.ContentType, savedEntity.id.ToString(), FileDomain, DB);
+
+            return createdUser;
 		}
+
+	    private string GetImageUrl(string roughUrl)
+	    {
+	        var url = roughUrl.Replace("_normal", "");
+	        return url;
+	    }
 
 		private async Task<CityLocationSE> ParseLocation(string query)
 		{			

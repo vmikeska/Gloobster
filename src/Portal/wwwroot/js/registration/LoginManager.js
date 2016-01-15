@@ -8,8 +8,8 @@ var Reg;
                 this.facebookUserCreator = new Reg.CreateUserFacebook();
                 this.googleUserCreator = new Reg.CreateUserGoogle();
                 this.localUserCreator = new Reg.CreateUserLocal();
+                this.twitterUserCreator = new Reg.CreateUserTwitter();
             }
-            this.twitterUserCreator = new Reg.CreateUserTwitter();
         }
         LoginManager.prototype.loadCookies = function () {
             this.cookieLogin = this.cookieManager.getJson(Constants.cookieName);

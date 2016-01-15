@@ -71,9 +71,9 @@
 
 
 						        @*faked this way, have to check if legal: http://stackoverflow.com/questions/9810335/how-to-change-facebook-login-button-with-my-custom-image*@
-						        <a id="facebookLoginBtnHome" class="facebook" href="#">Sign in with Facebook</a>
+						        @*<a id="facebookLoginBtnHome" class="facebook" href="#">Sign in with Facebook</a>*@
 
-						        @*<div id="fb-root"></div>
+						        <div id="fb-root"></div>
 						        <div
 						            onlogin="currentView.loginManager.facebookUserCreator.registerOrLogin()"
 						            class="fb-login-button"
@@ -83,7 +83,7 @@
 						            data-show-faces="false"
 						            data-auto-logout-link="false">
 						            Facebook
-						        </div>*@
+						        </div>
 
 						        <a id="twitterLoginBtnHome" class="twitter" href="#">Sign in with Twitter</a>
 						        <a id="googleLoginBtnHome" class="google" href="#">Sign in with Google</a>
@@ -91,12 +91,12 @@
 						    </div>
 							<span class="email">
 									Connect with popular networks or
-									<a href="#">Sign Up with email</a>
+									<a class="popup-target" data-target="#popup-join" href="#">Sign Up with email</a>
 									.
 							</span>
 						</div>
 						<div class="buttons">
-								<a class="button maskot" href="#">Check out the Globe</a>
+								@*<a class="button maskot" href="#">Check out the Globe</a>*@
 						</div>
 						<div class="bubble1">Let us help you travel! Setup is simple as 1-2-3 and youre set...Setup is simple as 1-2-3 and youre set...</div>
 						<div class="bubble2">...eg. pick your future destionations. So we can deliver deals!</div>
@@ -138,8 +138,8 @@
 		</section>
 
 		@Html.Partial("_Footer")
-		@Html.Partial("_DialogLogin")
-		@Html.Partial("_DialogRegister")
+		@Html.Partial("DialogLogin")
+		@Html.Partial("DialogRegister")
 
 
     <script>

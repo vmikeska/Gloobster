@@ -3,44 +3,39 @@
 }
 
 <script type="text/javascript" src="@Url.Content("~/js/Views/FriendsView.js")"></script>
+<script>
+        function onBodyLoad() {
+            currentView = new FriendsView();
+            currentView.initialize();
+        }
+</script>
 
 <div class="blue-line margin2"></div>
 
 <section class="wrapper margin3">
-		<div class="table row col2 margin">
-				<div class="cell">
-						<div class="table row">
-								<div class="cell middle">
-										<h2>Friends</h2>
-								</div>
-					
-						</div>
-				</div>
-	
-		</div>
+    <div class="table row col2 margin">
+        <div class="cell">
+            <div class="table row">
+                <div class="cell middle">
+                    <h2>Friends</h2>
+                </div>
 
-	<form class="blue-form" action="#" method="post">
-		<div id="friendsSearch" class="dropdown left">
-			<input class="inputed" type="text" placeholder="Friend name">
-			<ul>				
-			</ul>
-		</div>
+            </div>
+        </div>
 
-	</form>
+    </div>
 
-	<div class="friendsContainer">
-		
-	</div>
+    <form class="blue-form" action="#" method="post">
+        <div id="friendsSearch" class="dropdown left">
+            <input class="inputed" type="text" placeholder="Friend name">
+            <ul>
+            </ul>
+        </div>
 
+    </form>
 
+    <div class="friendsContainer">
 
-	<script>
-			function onBodyLoad() {
-
-					currentView = new FriendsView();
-					currentView.initialize();
-
-			}
-	</script>
+    </div>
 
 </section>

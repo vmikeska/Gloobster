@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Gloobster.Common;
 using Gloobster.Database;
@@ -22,19 +24,36 @@ namespace Gloobster.DomainModels
 		{
 			var myId = new ObjectId(myDbUserId);
 			var friendsId = new ObjectId(friendDbUserId);
-			var myEntity = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == myId);
-			var friendEntity = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == friendsId);
 			
-			friendEntity.Friends.Remove(myId);
-			await DB.ReplaceOneAsync(friendEntity);
-
-			myEntity.Friends.Remove(friendsId);
-			await DB.ReplaceOneAsync(myEntity);
-
-			return true;
+            bool f1 = await PullId(myId, friendsId, f => f.Friends);
+            bool f2 = await PullId(friendsId, myId, f => f.Friends);
+            
+			return f1 && f2;
 		}
 
-		public async Task<bool> RequestFriendship(string myDbUserId, string friendDbUserId)
+        public async Task<bool> Block(string myDbUserId, string friendDbUserId)
+        {
+            var myId = new ObjectId(myDbUserId);
+            var friendsId = new ObjectId(friendDbUserId);
+
+            bool unfriend = await Unfriend(myDbUserId, friendDbUserId);
+            bool block = await AddId(myId, friendsId, f => f.Blocked);
+
+            return unfriend && block;
+        }
+
+        public async Task<bool> CancelRequest(string myDbUserId, string friendDbUserId)
+	    {
+            var myId = new ObjectId(myDbUserId);
+            var friendsId = new ObjectId(friendDbUserId);
+
+            bool propRes = await PullId(myId, friendsId, f => f.Proposed);
+            bool awRes = await PullId(friendsId, myId, f => f.AwaitingConfirmation);
+
+	        return propRes && awRes;
+	    }
+
+        public async Task<bool> RequestFriendship(string myDbUserId, string friendDbUserId)
 		{
 			var myId = new ObjectId(myDbUserId);
 			var friendsId = new ObjectId(friendDbUserId);
@@ -47,22 +66,19 @@ namespace Gloobster.DomainModels
 				return false;
 			}
 
-			bool isAlreadyRequested = friendEntity.Proposed.Contains(myEntity.PortalUser_id);
+			bool isAlreadyRequested = myEntity.Proposed.Contains(myEntity.PortalUser_id);
 			if (isAlreadyRequested)
 			{
 				return true;
 			}
 
-			friendEntity.AwaitingConfirmation.Add(myId);
-			await DB.ReplaceOneAsync(friendEntity);
-
-			myEntity.Proposed.Add(friendsId);
-			await DB.ReplaceOneAsync(myEntity);
-
+            bool awRes = await AddId(friendsId, myId, f => f.AwaitingConfirmation);
+            bool propRes = await AddId(myId, friendsId, f => f.Proposed);
+            
 			var msg = Notification.Messages.FriendshipRequested(myDbUserId, friendDbUserId);
 			Notification.AddNotification(msg);
 
-			return true;
+			return awRes && propRes;
 		}
 
 		public async Task<bool> ConfirmFriendship(string myDbUserId, string friendDbUserId)
@@ -90,18 +106,34 @@ namespace Gloobster.DomainModels
 				return false;
 			}
 
-			friendEntity.Proposed.Remove(myId);
-			friendEntity.Friends.Add(myId);
-			await DB.ReplaceOneAsync(friendEntity);
+		    bool f1 = await PullId(myId, friendsId, f => f.AwaitingConfirmation);            
+            bool f3 = await PullId(friendsId, myId, f => f.Proposed);
 
-			myEntity.AwaitingConfirmation.Remove(friendsId);
-			myEntity.Friends.Add(friendsId);
-			await DB.ReplaceOneAsync(myEntity);
-
-			return true;
+            bool f2 = await AddId(myId, friendsId, f => f.Friends);
+            bool f4 = await AddId(friendsId, myId, f => f.Friends);
+            
+			return f1 && f2 && f3 && f4;
 		}
 
-		public async Task<FriendsDO> CreateFriendsObj(string dbUserId)
+	    private async Task<bool> PullId(ObjectId userId, ObjectId friendId, Expression<Func<FriendsEntity, IEnumerable<ObjectId>>> field)
+	    {
+            var filter = DB.F<FriendsEntity>().Eq(f => f.PortalUser_id, userId);
+            var update = DB.U<FriendsEntity>().Pull(field, friendId);
+            var res = await DB.UpdateAsync(filter, update);
+	        bool successful = res.ModifiedCount == 1;
+	        return successful;
+	    }
+        
+        private async Task<bool> AddId(ObjectId userId, ObjectId friendId, Expression<Func<FriendsEntity, IEnumerable<ObjectId>>> field)
+        {
+            var filter = DB.F<FriendsEntity>().Eq(f => f.PortalUser_id, userId);
+            var update = DB.U<FriendsEntity>().Push(field, friendId);
+            var res = await DB.UpdateAsync(filter, update);
+            bool successful = res.ModifiedCount == 1;
+            return successful;
+        }
+
+        public async Task<FriendsDO> CreateFriendsObj(string dbUserId)
 		{
 			var friendsObj = new FriendsEntity
 			{

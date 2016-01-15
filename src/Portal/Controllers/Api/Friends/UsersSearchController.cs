@@ -1,15 +1,10 @@
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
-using Gloobster.DomainModels.Services.Facebook.FriendsExtractor;
 using Gloobster.Entities;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.Friends;
 using Microsoft.AspNet.Mvc;
-using MongoDB.Bson;
 
 namespace Gloobster.Portal.Controllers.Api.Friends
 {
@@ -26,30 +21,38 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 		[Authorize]
 		public IActionResult Get(string searchQuery)
 		{
-			//todo: remove already friends ?
-			//var friendsEntity = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == userIdObj);
+		    var q = searchQuery.ToLower();
+            
+		    var friendsRes = DB.C<PortalUserEntity>()
+                .Where(u => u.DisplayName.ToLower().StartsWith(q))
+                .Select(u => new 
+		            {
+		                DisplayName = u.DisplayName,
+		                Id = u.id		                
+		            })
+                .ToList();
 
-			//todo: fix to server query
-			//var allFriends = DB.C<PortalUserEntity>().ToList();
-			var friends = DB.C<PortalUserEntity>().Where(u => u.DisplayName.ToLower().Contains(searchQuery)).ToList();
-			
-			var friendsResponse = friends.Select(ConvertResponse).ToList();
-			return new ObjectResult(friendsResponse);
-		}
-		
-		private FriendResponse ConvertResponse(PortalUserEntity user)
-		{			
-			var friend = new FriendResponse
-			{
-				friendId = user.id.ToString(),
-				photoUrl = user.ProfileImage,
-				displayName = user.DisplayName
-			};
+		    var friends = friendsRes.Select(f => new FriendResponse
+		        {
+		            friendId = f.Id.ToString(),		            
+		            displayName = f.DisplayName
+		        });
 
-			return friend;
+            var friendsEntity = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == UserIdObj);
+
+            //remove user itself            
+            friends = friends.Where(u => u.friendId != UserId).ToList();
+            
+            //remove already firends		    
+		    var friendsIds = friendsEntity.Friends.Select(f => f.ToString());            
+            friends = friends.Where(f => !friendsIds.Contains(f.friendId)).ToList();
+            //remove requested friends            
+            var propoesdIds = friendsEntity.Proposed.Select(f => f.ToString());
+            friends = friends.Where(f => !propoesdIds.Contains(f.friendId)).ToList();
+
+            return new ObjectResult(friends);
 		}
 		
 	}
-	
 
 }

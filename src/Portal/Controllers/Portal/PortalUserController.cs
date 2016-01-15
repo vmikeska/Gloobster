@@ -38,20 +38,34 @@ namespace Gloobster.Portal.Controllers.Portal
 			return View(viewModel);
 		}
 
-		public IActionResult ProfilePicture()
+		public IActionResult ProfilePicture(string id = null)
 		{
-			var fileLocation = "avatars";
+            var fileLocation = "avatars";
 
+            PortalUserEntity portalUser;
+		    if (!string.IsNullOrEmpty(id))
+		    {
+		        portalUser = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == new ObjectId(id));
+		        if (portalUser == null)
+		        {
+                    return new ObjectResult("");
+                }
+		    }
+		    else
+		    {
+		        portalUser = PortalUser;
+		    }
+            
 			if (PortalUser.ProfileImage == null)
 			{
 				return new ObjectResult("");
 			}
 
-			var filePath = FileDomain.Storage.Combine(fileLocation, PortalUser.ProfileImage);
+			var filePath = FileDomain.Storage.Combine(fileLocation, portalUser.ProfileImage);
 			bool exists = FileDomain.Storage.FileExists(filePath);
 			if (exists)
 			{
-				var fileStream = FileDomain.GetFile(fileLocation, PortalUser.ProfileImage);				
+				var fileStream = FileDomain.GetFile(fileLocation, portalUser.ProfileImage);				
 				return new FileStreamResult(fileStream, "image/jpeg");
 			}
 
