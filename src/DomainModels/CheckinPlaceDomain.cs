@@ -13,6 +13,7 @@ using Gloobster.Enums;
 using Gloobster.SocialLogin.Facebook.Communication;
 using MongoDB.Bson;
 
+//vor allem moechte ich sagen, dass ich dich liebe und dich unterstuetze          ! Du schaffst es!! 
 namespace Gloobster.DomainModels
 {
 	public class CheckinPlaceDomain: ICheckinPlaceDomain
@@ -25,8 +26,8 @@ namespace Gloobster.DomainModels
 		public IFacebookService FBService { get; set; }
 		public IDbOperations DB { get; set; }
 		public IFoursquareService Service { get; set; }
-
-		public async Task<AddedPlacesResultDO> CheckinPlace(string sourceId, SourceType sourceType, string userId)
+        
+        public async Task<AddedPlacesResultDO> CheckinPlace(string sourceId, SourceType sourceType, string userId)
 		{
 			if (sourceType == SourceType.FB)
 			{
@@ -83,51 +84,7 @@ namespace Gloobster.DomainModels
 			var result = await AddPlace(userId, venueId, SourceType.S4, venue.location.city, venue.location.cc, latLng);
 			return result;
 		}
-
-		//private async void AddFromFB(string userId, string sourceId)
-		//{
-		//	var userIdObj = new ObjectId(userId);
-		//	var user = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == userIdObj);
-		//	var fbAuth = user.SocialAccounts.FirstOrDefault(s => s.NetworkType == SocialNetworkType.Facebook);
-
-		//	FBService.SetAccessToken(fbAuth.Authentication.AccessToken);
-		//	var fbPlace = FBService.Get<PlaceFO>(sourceId);
-
-		//	var location = fbPlace.Location;
-		//	if (location != null)
-		//	{
-		//		var country = CountryService.GetByCountryName(fbPlace.Location.Country);
-
-		//		bool hasCoordinates = location.Latitude != 0 && location.Longitude != 0;
-		//		if (hasCoordinates)
-		//		{
-		//			var places = new List<VisitedPlaceDO> { new VisitedPlaceDO
-		//				{
-		//					City = location.City,
-		//					CountryCode = country.CountryCode,
-		//					SourceId = sourceId,
-		//					PortalUserId = userId,
-		//					SourceType = SourceTypeDO.Facebook,
-		//					Location = new LatLng {Lat = location.Latitude, Lng = location.Longitude}
-		//				}};
-
-		//			await VisitedPlaces.AddNewPlacesAsync(places, userId);
-		//		}
-
-		//		if (country != null)
-		//		{
-		//			var gnCities = await GNService.GetCityAsync(fbPlace.Location.City, country.CountryCode, 1);
-		//			if (gnCities.GeoNames.Any())
-		//			{
-		//				var gnCity = gnCities.GeoNames.First();
-		//				await AddCity(gnCity.GeonameId, userId);
-		//			}
-
-		//			AddCountry(country.CountryCode, userId);
-		//		}
-		//	}
-		//}
-
+        
 		private async Task<AddedPlacesResultDO> AddFromFB(string userId, string sourceId)
 		{
 			var userIdObj = new ObjectId(userId);
@@ -217,5 +174,7 @@ namespace Gloobster.DomainModels
 
 			return null;
 		}
+
+	    
 	}
 }

@@ -9,5 +9,6 @@ namespace Gloobster.ReqRes.PinBoard
 		public List<DateTime> Dates { get; set; }
 		public string CountryCode2 { get; set; }				
 		public int ColorId { get; set; }
-	}
+        public int Count { get; set; }
+    }
 }

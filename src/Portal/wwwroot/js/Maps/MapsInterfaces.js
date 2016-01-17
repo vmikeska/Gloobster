@@ -42,17 +42,22 @@ var Maps;
         ViewType[ViewType["D1"] = 2] = "D1";
     })(Maps.ViewType || (Maps.ViewType = {}));
     var ViewType = Maps.ViewType;
-    (function (PluginType) {
-        PluginType[PluginType["MyPlacesVisited"] = 0] = "MyPlacesVisited";
-        PluginType[PluginType["MyFriendsVisited"] = 1] = "MyFriendsVisited";
-        PluginType[PluginType["MyFriendsDesired"] = 2] = "MyFriendsDesired";
-    })(Maps.PluginType || (Maps.PluginType = {}));
-    var PluginType = Maps.PluginType;
+    (function (DataType) {
+        DataType[DataType["Visited"] = 0] = "Visited";
+        DataType[DataType["Interested"] = 1] = "Interested";
+    })(Maps.DataType || (Maps.DataType = {}));
+    var DataType = Maps.DataType;
     (function (DisplayEntity) {
         DisplayEntity[DisplayEntity["Pin"] = 0] = "Pin";
         DisplayEntity[DisplayEntity["Countries"] = 1] = "Countries";
         DisplayEntity[DisplayEntity["Heat"] = 2] = "Heat";
     })(Maps.DisplayEntity || (Maps.DisplayEntity = {}));
     var DisplayEntity = Maps.DisplayEntity;
+    var PeopleSelection = (function () {
+        function PeopleSelection() {
+        }
+        return PeopleSelection;
+    })();
+    Maps.PeopleSelection = PeopleSelection;
 })(Maps || (Maps = {}));
 //# sourceMappingURL=MapsInterfaces.js.map

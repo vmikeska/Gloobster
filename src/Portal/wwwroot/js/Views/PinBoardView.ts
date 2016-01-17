@@ -219,6 +219,7 @@
 		private shareDialogView: ShareDialogPinsView;
 		private fbPermissions: Common.FacebookPermissions;
 		private currentLegend: any;
+		public peopleFilter: PeopleFilter;
 
 		private pinBoardBadges: PinBoardBadges;
 	
@@ -245,15 +246,19 @@
 			});
 
 			$("#pluginType li").click(() => {
-				this.refreshData(false);
+				this.refreshData();
 			});
 
 			$("#projectionType li").click(() => {
-				this.refreshData(false);
+				this.refreshData();
 			});
 
 			this.setTagPlacesVisibility();
 
+			this.peopleFilter = new PeopleFilter();
+			this.peopleFilter.onSelectionChanged = (selection) => {
+				this.refreshData();
+			};
 		}
 
 		public deletePin(gid) {
@@ -285,11 +290,12 @@
 		 this.placeSearch.onPlaceSelected = (request) => this.saveNewPlace(request);
 	  }
 
-		private refreshData(force: boolean) {
+		private refreshData() {
 			setTimeout(() => {
-				var pluginType = parseInt($("#pluginType input").val());
+				var dataType = parseInt($("#dataType input").val());
 				var projectionType = parseInt($("#projectionType input").val());
-				this.mapsManager.getPluginData(pluginType, projectionType, force);
+				var people = this.peopleFilter.getSelection();
+				this.mapsManager.getPluginData(dataType, projectionType, people);				
 				this.displayLegend(projectionType);				
 			}, 10);
 		}
@@ -313,7 +319,7 @@
 		 this.fbPermissions.requestPermissions("user_tagged_places", (resp) => {
 			$("#taggedPlacesPerm").hide();
 			this.apiPost("FbTaggedPlacesPermission", null, (resp) => {
-			 this.refreshData(true);
+			 this.refreshData();
 			});
 		 });		 
 		}

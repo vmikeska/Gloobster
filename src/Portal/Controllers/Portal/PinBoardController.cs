@@ -8,10 +8,13 @@ using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels.Services.Places;
+using Gloobster.Entities;
 using Gloobster.Enums;
 using Gloobster.Mappers;
 using Gloobster.SocialLogin.Facebook.Communication;
 using Microsoft.AspNet.Http;
+using MongoDB.Driver;
+using System.Linq;
 
 namespace Gloobster.Portal.Controllers.Portal
 {
@@ -35,8 +38,16 @@ namespace Gloobster.Portal.Controllers.Portal
 	    {
 	        await ImportNewFbPins();
             
-            var pinBoardViewModel = CreateViewModelInstance<PinBoardViewModel>();			
+            var pinBoardViewModel = CreateViewModelInstance<PinBoardViewModel>();			           
 			pinBoardViewModel.Initialize(UserId);
+
+	        var friendsEntity = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == DBUserId);
+	        var friends = DB.C<PortalUserEntity>().Where(f => friendsEntity.Friends.Contains(f.id)).ToList();
+	        pinBoardViewModel.Friends = friends.Select(f => new Friend
+	        {
+	            DisplayName = f.DisplayName,
+                Id = f.id.ToString()
+	        }).ToList();
             
             return View(pinBoardViewModel);
 		}

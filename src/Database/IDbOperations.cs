@@ -20,7 +20,7 @@ namespace Gloobster.Database
 	    Task<IEnumerable<T>> SaveManyAsync<T>(IEnumerable<T> entities) where T : EntityBase;
 
 		Task<T[]> FindAsync<T>(string query = "{}") where T : EntityBase;
-
+        
         Task<long> GetCountAsync<T>(string query = null) where T : EntityBase;
 
 		Task<UpdateResult> UpdateAsync<T>(FilterDefinition<T> filter, UpdateDefinition<T> update) where T : EntityBase;
@@ -29,5 +29,6 @@ namespace Gloobster.Database
         IMongoDatabase Database { get; set; }
 
 		void DropCollection<T>();
+        void CreateCollection<T>() where T : EntityBase;
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Database;
@@ -10,11 +11,12 @@ using MongoDB.Bson;
 
 namespace Gloobster.DomainModels
 {
-	public class VisitedCountriesDomain: IVisitedCountriesDomain
+    public class VisitedCountriesDomain: IVisitedCountriesDomain
 	{
 		public IDbOperations DB { get; set; }
-		
-		public async Task<List<VisitedCountryDO>> AddNewCountriesAsync(List<VisitedCountryDO> inputCountries, string userId)
+        public IVisitedAggregationDomain AggDomain { get; set; }
+
+        public async Task<List<VisitedCountryDO>> AddNewCountriesAsync(List<VisitedCountryDO> inputCountries, string userId)
 		{
 			var userIdObj = new ObjectId(userId);
 			var visited = DB.C<VisitedEntity>().FirstOrDefault(v => v.PortalUser_id == userIdObj);
@@ -38,6 +40,10 @@ namespace Gloobster.DomainModels
 				}
 			}
 			await PushCountries(userIdObj, newCountries);
+            foreach (var country in newCountries)
+            {
+                await AggDomain.AddCountry(country.CountryCode2, userId);
+            }
 			
 			var newCountriesResult = newCountries.Select(c => c.ToDO()).ToList();
 			return newCountriesResult;
@@ -51,37 +57,44 @@ namespace Gloobster.DomainModels
 			var res = await DB.UpdateAsync(filter, update);
 			return res.ModifiedCount == 1;
 		}
+        
+		public List<VisitedCountryDO> GetCountriesByUsers(List<string> ids, string meId)
+        {
+            bool isMe = ids.Count == 1 && ids[0] == meId;
 
-		public List<VisitedCountryDO> GetVisitedCountriesByUserId(string userId)
-		{
-			var visited = DB.C<VisitedEntity>().FirstOrDefault(v => v.PortalUser_id == new ObjectId(userId));
-
-			var visitedCountriesDO = visited.Countries.Select(c => c.ToDO()).ToList();
-			return visitedCountriesDO;
-		}
-
-		public List<VisitedCountryDO> GetCountriesOfMyFriendsByUserId(string userId)
-		{
-			var userIdObj = new ObjectId(userId);
-			var friends = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == userIdObj);
-
-			var friendsId = new List<ObjectId> { userIdObj };
-			friendsId.AddRange(friends.Friends);
-
-			var visitedFriends = DB.C<VisitedEntity>().Where(p => friendsId.Contains(p.PortalUser_id)).ToList();
-
-			var visitedCountries = visitedFriends.SelectMany(v => v.Countries);
+            var idsObj = ids.Select(i => new ObjectId(i));
+            var visiteds = DB.C<VisitedEntity>().Where(v => idsObj.Contains(v.PortalUser_id)).ToList();
+            
+			var visitedCountries = visiteds.SelectMany(v => v.Countries);
 
 			var vcGrouped = visitedCountries.GroupBy(g => g.CountryCode2).ToList();
 			var vcList = vcGrouped.Select(g =>
 			{
 				var outCountry = g.First().ToDO();
 				outCountry.PortalUserId = null;
-				outCountry.Dates = g.Where(d => d.Dates != null).SelectMany(d => d.Dates).ToList();
-				return outCountry;
+			    outCountry.Count = g.Count();
+
+			    if (isMe)
+			    {
+			        outCountry.Dates = g.Where(d => d.Dates != null).SelectMany(d => d.Dates).ToList();
+			    }
+			    
+                return outCountry;
 			});
 
 			return vcList.ToList();
 		}
-	}
+
+        public List<VisitedCountryDO> GetCountriesOverall()
+        {
+            var countriesAgg = DB.C<VisitedCountryAggregatedEntity>().ToList();
+            var cs = countriesAgg.Select(country => new VisitedCountryDO
+            {
+                CountryCode2 = country.CountryCode,
+                Dates = new List<DateTime>(),
+                Count = country.Visitors.Count
+            }).ToList();
+            return cs;
+        }
+    }
 }

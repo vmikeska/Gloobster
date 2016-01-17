@@ -9,5 +9,6 @@ namespace Gloobster.ReqRes.PinBoard
 		public List<DateTime> Dates { get; set; }
 		public string PortalUserId { get; set; }		
 		public LatLng Location { get; set; }
-	}
+        public int Count { get; set; }
+    }
 }

@@ -22,7 +22,7 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 		public ICountryService CountryService { get; set; }
         public IFacebookService FBService { get; set; }
         public IFacebookShare FBShare { get; set; }
-        
+
         public CheckinController(IFacebookShare fbShare, IFacebookService fbService, ICheckinPlaceDomain checkinDomain, ICountryService countryService, IDbOperations db) : base(db)
 		{
 			CheckinDomain = checkinDomain;
@@ -59,9 +59,9 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 
 			var response = new PinBoardStatResponse();
 
-			if (checkedDO.Countries != null)
+			if (checkedDO.Countries != null )
 			{				
-				response.visitedCountries = checkedDO.Countries.Select(c => c.ToResponse()).ToArray();				
+				response.visitedCountries = checkedDO.Countries.Select(c => c.ToResponse()).ToArray();                
 			}
 
 			if (checkedDO.Cities != null)

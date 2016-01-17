@@ -76,7 +76,7 @@ module Maps {
 	}
 	
 		export enum ViewType { D3, D2, D1 }
-		export enum PluginType { MyPlacesVisited, MyFriendsVisited, MyFriendsDesired }
+		export enum DataType { Visited, Interested }
 		export enum DisplayEntity { Pin, Countries, Heat }
 
 		export interface IMapsCreator {
@@ -88,6 +88,13 @@ module Maps {
 			setMapType(mapType);
 			hide();
 		}				
+
+	export class PeopleSelection {
+	 public me: boolean;
+	 public friends: boolean;
+	 public everybody: boolean;
+	 public singleFriends: string[];
+	}
 
 
 }

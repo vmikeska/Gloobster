@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
 using Gloobster.Entities;
+using Gloobster.Enums;
 using Gloobster.Mappers;
 using MongoDB.Bson;
 using MongoDB.Driver.Linq;
@@ -15,8 +17,8 @@ namespace Gloobster.DomainModels
 	public class VisitedPlacesDomain : IVisitedPlacesDomain
 	{
 		public IDbOperations DB { get; set; }
-
-		public IFriendsDomain FriendsService { get; set; }
+        public IVisitedAggregationDomain AggDomain { get; set; }
+        public IFriendsDomain FriendsService { get; set; }
 
 		public async Task<List<VisitedPlaceDO>> AddNewPlacesAsync(List<VisitedPlaceDO> inputPlaces, string userId)
 		{
@@ -38,6 +40,10 @@ namespace Gloobster.DomainModels
 			if (newPlaces.Any())
 			{
 				await PushPlaces(userIdObj, newPlaces);
+			    foreach (var place in newPlaces)
+			    {
+                    await AggDomain.AddPlace((SourceType)place.SourceType, place.SourceId, place.Location, userId);
+                }
 			}
 
 			var newPlacesDO = newPlaces.Select(e => e.ToDO()).ToList();
@@ -52,30 +58,31 @@ namespace Gloobster.DomainModels
 			var res = await DB.UpdateAsync(filter, update);
 			return res.ModifiedCount == 1;
 		}
-
-		public List<VisitedPlaceDO> GetPlacesByUserId(string userId)
-		{
-			var visited = DB.C<VisitedEntity>().FirstOrDefault(v => v.PortalUser_id == new ObjectId(userId));
-
-			var placesDO = visited.Places.Select(p => p.ToDO()).ToList();
-			return placesDO;
-		}
-
-		public List<VisitedPlaceDO> GetPlacesOfMyFriendsByUserId(string userId)
-		{
-			var userIdObj = new ObjectId(userId);
-			var friends = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == userIdObj);
-
-			var friendsId = new List<ObjectId> { userIdObj };
-			friendsId.AddRange(friends.Friends);
-
-			var visitedFriends = DB.C<VisitedEntity>().Where(v => friendsId.Contains(v.PortalUser_id)).ToList();
-
-			var visitedPlaces = visitedFriends.SelectMany(f => f.Places);
+        
+		public List<VisitedPlaceDO> GetPlacesByUsers(List<string> ids, string meId)
+        {            
+            var idsObj = ids.Select(i => new ObjectId(i));
+            var visiteds = DB.C<VisitedEntity>().Where(v => idsObj.Contains(v.PortalUser_id)).ToList();
+            
+			var visitedPlaces = visiteds.SelectMany(f => f.Places);
 			var visitedPlacesDO = visitedPlaces.Select(p => p.ToDO()).ToList();
 
 			return visitedPlacesDO;			
 		}
-	}
+
+        public List<VisitedPlaceDO> GetPlacesOverall()
+        {
+            var placesAgg = DB.C<VisitedPlaceAggregatedEntity>().ToList();
+            var cs = placesAgg.Select(country => new VisitedPlaceDO
+            {
+                Count = country.Visitors.Count,
+                Location = country.Location,
+                SourceId = country.SourceId,
+                SourceType = (SourceType)country.SourceType,
+                Dates = new List<DateTime>()
+            }).ToList();
+            return cs;
+        }
+    }
 
 }

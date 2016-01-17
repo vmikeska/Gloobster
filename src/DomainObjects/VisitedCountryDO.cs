@@ -7,6 +7,7 @@ namespace Gloobster.DomainObjects
 	{
 		public string PortalUserId { get; set; }
 		public List<DateTime> Dates { get; set; }
+        public int Count { get; set; }
 
 		public string CountryCode2 { get; set; }
 		public bool Equals(VisitedCountryDO other)

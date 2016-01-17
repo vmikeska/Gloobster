@@ -54,21 +54,23 @@ namespace Gloobster.Mappers
 			return entity;
 		}
 
-		public static VisitedCityItemResponse ToResponse(this VisitedCityDO dObj)
+		public static VisitedCityItemResponse ToResponse(this VisitedCityDO d)
 		{
-			if (dObj == null)
+			if (d == null)
 			{
 				return null;
 			}
 
 			var response = new VisitedCityItemResponse
 			{
-				City = dObj.City,
-				CountryCode = dObj.CountryCode,
-				Dates = dObj.Dates,
-				Location = dObj.Location,
-				PortalUserId = dObj.PortalUserId,
-				GeoNamesId = dObj.GeoNamesId
+				City = d.City,
+				CountryCode = d.CountryCode,
+				Dates = d.Dates,
+				Location = d.Location,
+				PortalUserId = d.PortalUserId,
+				GeoNamesId = d.GeoNamesId,
+                Count = d.Count
+
 			};
 
 			return response;

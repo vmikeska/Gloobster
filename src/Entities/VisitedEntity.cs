@@ -5,8 +5,8 @@ using Gloobster.Database;
 using MongoDB.Bson;
 
 namespace Gloobster.Entities
-{
-	public class VisitedEntity : EntityBase
+{    
+    public class VisitedEntity : EntityBase
 	{
 		public ObjectId PortalUser_id { get; set; }
 

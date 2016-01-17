@@ -51,7 +51,8 @@ namespace Gloobster.Mappers
 			{
 				PortalUserId = d.PortalUserId,
 				Dates = d.Dates,
-				CountryCode2 = d.CountryCode2,				
+				CountryCode2 = d.CountryCode2,
+                Count = d.Count
 			};
 
 			return response;

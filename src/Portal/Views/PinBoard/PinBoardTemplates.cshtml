@@ -3,8 +3,11 @@
     <div>
         <h1>{{city}}</h1>
         
+        {{#if dates}}
         <b>Dates</b>
         <br />
+        {{/if}}
+        
         {{#each dates}}
             {{this}}
         <br />

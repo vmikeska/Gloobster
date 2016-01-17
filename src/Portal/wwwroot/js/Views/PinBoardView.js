@@ -221,12 +221,16 @@ var Views;
                 _this.setSupportedProjections(parsedVal);
             });
             $("#pluginType li").click(function () {
-                _this.refreshData(false);
+                _this.refreshData();
             });
             $("#projectionType li").click(function () {
-                _this.refreshData(false);
+                _this.refreshData();
             });
             this.setTagPlacesVisibility();
+            this.peopleFilter = new Views.PeopleFilter();
+            this.peopleFilter.onSelectionChanged = function (selection) {
+                _this.refreshData();
+            };
         };
         PinBoardView.prototype.deletePin = function (gid) {
             var _this = this;
@@ -254,12 +258,13 @@ var Views;
             this.placeSearch = new Common.PlaceSearchBox(c);
             this.placeSearch.onPlaceSelected = function (request) { return _this.saveNewPlace(request); };
         };
-        PinBoardView.prototype.refreshData = function (force) {
+        PinBoardView.prototype.refreshData = function () {
             var _this = this;
             setTimeout(function () {
-                var pluginType = parseInt($("#pluginType input").val());
+                var dataType = parseInt($("#dataType input").val());
                 var projectionType = parseInt($("#projectionType input").val());
-                _this.mapsManager.getPluginData(pluginType, projectionType, force);
+                var people = _this.peopleFilter.getSelection();
+                _this.mapsManager.getPluginData(dataType, projectionType, people);
                 _this.displayLegend(projectionType);
             }, 10);
         };
@@ -280,7 +285,7 @@ var Views;
             this.fbPermissions.requestPermissions("user_tagged_places", function (resp) {
                 $("#taggedPlacesPerm").hide();
                 _this.apiPost("FbTaggedPlacesPermission", null, function (resp) {
-                    _this.refreshData(true);
+                    _this.refreshData();
                 });
             });
         };

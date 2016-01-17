@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Autofac;
 using Gloobster.Common;
 using Serilog;
@@ -10,6 +11,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using AutofacSerilogIntegration;
 using Autofac.Extensions.DependencyInjection;
+using Gloobster.Database;
+using Gloobster.Entities;
+using System.Linq;
+using MongoDB.Bson;
 
 namespace Gloobster.Portal
 {
@@ -65,17 +70,26 @@ namespace Gloobster.Portal
 		public IServiceProvider ConfigureServices(IServiceCollection services)
         {
 	        LoadConfigFile();
-			
-			
-			services.AddMvc();
+		    InitDB();
+            
+            services.AddMvc();
 			services.AddSession();
 			services.AddCaching();
 
 			var serviceProvider = InitalizeAutofac(services);
 	        return serviceProvider;
         }
-		
-		// Configure is called after ConfigureServices is called.
+
+	    private void InitDB()
+	    {
+            var db = new DbOperations();
+	        
+	        db.CreateCollection<VisitedCountryAggregatedEntity>();
+            db.CreateCollection<VisitedCityAggregatedEntity>();
+            db.CreateCollection<VisitedPlaceAggregatedEntity>();
+        }
+
+	    // Configure is called after ConfigureServices is called.
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
 		{
 			loggerFactory.AddSerilog();

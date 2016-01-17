@@ -3,9 +3,16 @@ var Maps;
     var MapsDataLoader = (function () {
         function MapsDataLoader() {
         }
-        MapsDataLoader.prototype.getPluginData = function (pluginType, displayEntity) {
+        MapsDataLoader.prototype.getPluginData = function (dataType, displayEntity, people) {
             var _this = this;
-            var request = [["pluginType", pluginType.toString()], ["displayEntity", displayEntity.toString()]];
+            var request = [
+                ["dataType", dataType.toString()],
+                ["displayEntity", displayEntity.toString()],
+                ["me", people.me.toString()],
+                ["friends", people.friends.toString()],
+                ["everybody", people.everybody.toString()],
+                ["singleFriends", people.singleFriends.join()]
+            ];
             Views.ViewBase.currentView.apiGet("PinBoardStats", request, function (response) {
                 _this.places = new Maps.Places();
                 _this.viewPlaces = new Maps.PlacesDisplay();
@@ -64,11 +71,7 @@ var Maps;
             this.viewPlaces.places = places;
             var countries = _.map(this.places.countries, function (country) {
                 var colorConfig = new Maps.PolygonConfig();
-                var countryVisits = null;
-                if (country.Dates) {
-                    countryVisits = country.Dates.length;
-                }
-                colorConfig.fillColor = _this.getColorByNumber(countryVisits);
+                colorConfig.fillColor = _this.getColorByNumber(country.Count);
                 colorConfig.countryCode = country.CountryCode2;
                 var countryOut = new Maps.CountryHighligt();
                 countryOut.countryCode = country.CountryCode2;

@@ -58,18 +58,19 @@ namespace Gloobster.Mappers
 			return entity;
 		}
 
-		public static VisitedPlaceItemResponse ToResponse(this VisitedPlaceDO dObj)
+		public static VisitedPlaceItemResponse ToResponse(this VisitedPlaceDO d)
 		{
-			if (dObj == null)
+			if (d == null)
 			{
 				return null;
 			}
 
 			var response = new VisitedPlaceItemResponse
 			{
-				Dates = dObj.Dates,
-				Location = dObj.Location,
-				PortalUserId = dObj.PortalUserId				
+				Dates = d.Dates,
+				Location = d.Location,
+				PortalUserId = d.PortalUserId,
+                Count = d.Count
 			};
 
 			return response;

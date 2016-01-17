@@ -14,8 +14,7 @@ namespace Gloobster.Database
 	public class DbOperations: IDbOperations
     {
 		public DbOperations()
-		{
-			
+		{			
 			Database = GetDatabase();
 		}
 
@@ -58,8 +57,22 @@ namespace Gloobster.Database
 			var collectionName = GetCollectionName<T>();
 			await Database.DropCollectionAsync(collectionName);
         }
-		
-	    public async Task<T> SaveAsync<T>(T entity) where T: EntityBase
+
+        public async void CreateCollection<T>() where T : EntityBase
+        {
+            bool exists = C<T>().Any();
+            if (!exists)
+            {
+                try
+                {
+                    var collectionName = GetCollectionName<T>();
+                    await Database.CreateCollectionAsync(collectionName);
+                }
+                catch {}
+            }
+        }
+        
+        public async Task<T> SaveAsync<T>(T entity) where T: EntityBase
 	    {
 		    AddEntityIdIfMissing(entity);
 
@@ -162,8 +175,8 @@ namespace Gloobster.Database
 				throw exc;
 			}
         }
-		
-		public async Task<long> GetCountAsync<T>(string query = null) where T : EntityBase
+        
+        public async Task<long> GetCountAsync<T>(string query = null) where T : EntityBase
         {
 			var collectionName = GetCollectionName<T>();
 			var collection = Database.GetCollection<T>(collectionName);

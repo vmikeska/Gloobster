@@ -6,6 +6,8 @@
 @using Gloobster.Portal.Controllers
 @using Gloobster.Portal.Controllers.Portal
 @using Gloobster.Portal.ViewModels
+@using Newtonsoft.Json
+@using Microsoft.AspNet.Mvc.ViewFeatures
 @model Gloobster.Portal.ViewModels.PinBoardViewModel
 
 @*<script src='../../../api.mapbox.com/mapbox.js/v2.2.2/mapbox.js'></script>
@@ -41,6 +43,7 @@
 
 <script type="text/javascript" src="@Url.Content("~/js/Views/PinBoardView.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Views/ShareDialogPinsView.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Views/PeopleFilter.js")"></script>
 
 @Html.Partial("PinBoardTemplates")
 
@@ -50,6 +53,9 @@
 		currentView = new Views.PinBoardView();
 		currentView.initialize();
 
+		var friends = @Html.Raw(JsonConvert.SerializeObject(Model.Friends));
+		var f = _.map(friends, function(i) { return {id: i.Id, displayName: i.DisplayName};});
+		currentView.peopleFilter.initFriends(f);
 	}
 
 	function getTaggedPlacesPermissions() {
@@ -58,7 +64,8 @@
 
 	function deletePin(gid) {
 	    currentView.deletePin(gid);
-    }
+	}
+
 </script>
 
 <div class="blue-line margin2"></div>
@@ -112,11 +119,13 @@
         </ul>
     </div>
 
-    <div id="pluginType" class="dropdown right">
-        <span class="selected">My places</span>
+    @Html.Partial("PeopleFilterComponent")
+
+    <div id="dataType" class="dropdown right">
+        <span class="selected">Visited</span>
         <ul>
-            <li data-value="0">My places</li>
-            <li data-value="1">My friends</li>
+            <li data-value="0">Visited</li>
+            @*<li data-value="1">Interested</li>*@
         </ul>
         <input type="hidden" value="0">
     </div>
@@ -159,13 +168,13 @@
         </div>
     </div>
     <div class="cell">
-        <div class="square"><strong id="BadgesCount" class="countto" data-from="0" data-to="@Model.Badges">0</strong> Badges
+        <div class="square"><strong id="BadgesCount" class="countto" data-from="0" data-to="@Model.Badges">0</strong> Top cities
         </div>
     </div>
-    <div class="cell">
+    @*<div class="cell">
         <div class="square"><strong id="FriendsCount" class="countto" data-from="0" data-to="0">0</strong> Friends
         </div>
-    </div>
+    </div>*@
     <div class="cell">
         <div class="square"><strong id="DistanceLength" class="countto" data-from="0" data-to="@Model.TotalDistanceTraveled">0</strong> Miles total
         </div>
@@ -178,62 +187,6 @@
 </div>
 
 </section>
-
-@*<div class="table row col2 margin">
-        <div class="cell baseline">
-            <h3>Collected badges</h3>
-        </div>
-        <div class="cell baseline tright">
-            <a class="" href="#">Show all badges</a>
-        </div>
-    </div>
-
-    <div class="badges grid margin2">
-        <div class="cell"><a class="badge active" href="#"><span class="thumbnail"><img src="~/images/samples/sample11.jpg"></span>Asia<span class="icon-visited"></span></a>
-        </div>
-        <div class="cell"><a class="badge active" href="#"><span class="thumbnail"><img src="~/images/samples/sample11.jpg"></span>Australia<span class="icon-visited"></span></a>
-        </div>
-        <div class="cell"><a class="badge active" href="#"><span class="thumbnail"><img src="~/images/samples/sample11.jpg"></span>Africa<span class="icon-favorite"></span></a>
-        </div>
-        <div class="cell"><a class="badge" href="#"><span class="thumbnail"><img src="~/images/samples/sample11.jpg"></span>Europe<span class="icon-visited"></span></a>
-        </div>
-        <div class="cell"><a class="badge" href="#"><span class="thumbnail"><img src="~/images/samples/sample11.jpg"></span>New York<span class="icon-favorite"></span></a>
-        </div>
-        <div class="cell"><a class="badge" href="#"><span class="thumbnail"><img src="~/images/samples/sample11.jpg"></span>South America<span class="icon-visited"></span></a>
-        </div>
-        <div class="cell"><a class="badge" href="#"><span class="thumbnail"><img src="~/images/samples/sample11.jpg"></span>North America<span class="icon-visited"></span></a>
-        </div>
-        <div class="cell"><a class="badge" href="#"><span class="thumbnail"><img src="~/images/samples/sample11.jpg"></span>Antarctica<span class="icon-visited"></span></a>
-        </div>
-        <div class="cell"><span class="badge"><span class="thumbnail"><img src="~/images/samples/sample11.jpg"></span>Mexico City</span></div>
-    </div>*@
-
-@*<h2>Badge status</h2>
-    <div class="badges grid margin2">
-        <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/collected1.png"></span>Collected</span></div>
-        <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/collected2.png"></span>Collected</span></div>
-        <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/step1.png"></span>Almost complete</span></div>
-        <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/step4.png"></span>Just started</span></div>
-        <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/incomplete.png"></span>Incomplete</span></div>
-    </div>*@
-@*<h2>Continents</h2>
-    <div class="badges grid margin2">
-        <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/africa.png"></span>Africa</span></div>
-        <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/europe.png"></span>Europe</span></div>
-        <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/asia.png"></span>Asia</span></div>
-        <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/australia.png"></span>Australia</span></div>
-        <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/north-amecica.png"></span>North America</span></div>
-        <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/south-america.png"></span>South America</span></div>
-    </div>*@
-
-@*<div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/africa.png"></span>10/50 <b>Africa</b></span></div>
-    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/europe.png"></span>Europe</span></div>
-    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/asia.png"></span>Asia</span></div>
-    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/australia.png"></span>Australia</span></div>
-    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/north-amecica.png"></span>North America</span></div>
-    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/south-america.png"></span>South America</span></div>
-    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/states-us.png"></span>States US</span></div>
-    <div class="cell"><span class="badge active"><span class="thumbnail"><img src="~/images/badges/states-eu.png"></span>States EU</span></div>*@
 
 
 @Html.Partial("ShareDialogPins")

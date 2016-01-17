@@ -45,11 +45,11 @@ namespace Gloobster.Portal
 			builder.AddTransient<IFacebookService, FacebookService>();
 			builder.AddTransient<IMyTwitterService, MyTwitterService>();
 			builder.AddTransient<IFacebookTaggedPlacesExtractor, FacebookTaggedPlacesExtractor>();
-			
+            builder.AddTransient<IVisitedAggregationDomain, VisitedAggregationDomain>();
+            
             builder.AddInstance2<IAirportGroupService, AirportGroupService>();
 			builder.AddInstance2<IAirportService, AirportService>();
-
-			
+            
 			builder.AddTransient<IShareMapDomain, ShareMapDomain>();
 			builder.AddTransient<ITripShareDomain, TripShareDomain>();
 			builder.AddTransient<ITwitterShare, TwitterShare> ();

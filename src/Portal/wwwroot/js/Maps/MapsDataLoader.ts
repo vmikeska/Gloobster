@@ -5,10 +5,17 @@ module Maps {
 
 		public dataLoadedCallback: Function;
 
-		public getPluginData(pluginType: Maps.PluginType, displayEntity: Maps.DisplayEntity) {
+		public getPluginData(dataType: DataType, displayEntity: DisplayEntity, people: PeopleSelection) {
 
-			var request = [["pluginType", pluginType.toString()], ["displayEntity", displayEntity.toString()]];
-
+		 var request = [
+			["dataType", dataType.toString()],
+			["displayEntity", displayEntity.toString()],
+			["me", people.me.toString()],
+			["friends", people.friends.toString()],
+			["everybody", people.everybody.toString()],
+			["singleFriends", people.singleFriends.join()]
+		 ];
+		 
 			Views.ViewBase.currentView.apiGet("PinBoardStats", request, response => {			 
 				this.places = new Places();
 				this.viewPlaces = new PlacesDisplay();
@@ -68,12 +75,8 @@ module Maps {
 			var countries = _.map(this.places.countries, country => {
 
 				var colorConfig = new PolygonConfig();
-				var countryVisits = null;
-				if (country.Dates) {
-					countryVisits = country.Dates.length;
-				}
-
-				colorConfig.fillColor = this.getColorByNumber(countryVisits);
+			
+				colorConfig.fillColor = this.getColorByNumber(country.Count);
 				colorConfig.countryCode = country.CountryCode2;
 
 				var countryOut = new CountryHighligt();

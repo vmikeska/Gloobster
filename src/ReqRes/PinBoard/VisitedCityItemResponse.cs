@@ -11,6 +11,7 @@ namespace Gloobster.ReqRes.PinBoard
 		public string CountryCode { get; set; }
 		public string City { get; set; }
 		public LatLng Location { get; set; }
-		public int GeoNamesId { get; set; }		
+		public int GeoNamesId { get; set; }	
+        public int Count { get; set; }	
 	}
 }

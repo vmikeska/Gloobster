@@ -9,7 +9,7 @@
 
 		public mapsDataLoader: MapsDataLoader;
 
-		public currentPluginType: Maps.PluginType;
+		public currentDataType: Maps.DataType;
 		public currentDisplayEntity: Maps.DisplayEntity;
 
 	  public onDataChanged: Function;
@@ -21,20 +21,12 @@
 		}
 
 
-		public getPluginData(pluginType: Maps.PluginType, displayEntity: Maps.DisplayEntity, force = false) {
-
-			var isSamePlugin = this.currentPluginType === pluginType;
+		public getPluginData(dataType: DataType, displayEntity: DisplayEntity, people: PeopleSelection) {
 
 			this.currentDisplayEntity = displayEntity;
-			this.currentPluginType = pluginType;
+			this.currentDataType = dataType;
 
-			var reloadData = !isSamePlugin || force;
-
-			if (reloadData) {
-			 this.mapsDataLoader.getPluginData(pluginType, displayEntity);			 
-			} else {
-			 this.redrawDataCallback();
-			}
+			this.mapsDataLoader.getPluginData(dataType, displayEntity, people);
 		}
 
 		public redrawDataCallback() {
@@ -133,8 +125,13 @@
 		}
 
 		private displayData(savedPosition, savedZoom) {
+			var people = new PeopleSelection();
+			people.me = true;
+			people.everybody = false;
+			people.friends = false;
+			people.singleFriends = [];
 
-			this.getPluginData(PluginType.MyPlacesVisited, DisplayEntity.Pin);
+			this.getPluginData(DataType.Visited, DisplayEntity.Pin, people);
 
 			if (savedPosition) {
 				var roundedZoom = Math.round(savedZoom);

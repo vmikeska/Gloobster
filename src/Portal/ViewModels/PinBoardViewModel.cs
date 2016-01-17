@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Gloobster.Entities;
 using Gloobster.Portal.Controllers.Base;
 using System.Linq;
@@ -32,7 +33,15 @@ namespace Gloobster.Portal.ViewModels
 		public int WorldTraveled { get; set; }
 		public int Badges { get; set; }
 		public int TotalDistanceTraveled { get; set; }
+
+        public List<Friend> Friends { get; set; }
 	}
+
+    public class Friend
+    {
+        public string Id { get; set; }
+        public string DisplayName { get; set; }
+    }
 
 	public class PinBoardUtils
 	{

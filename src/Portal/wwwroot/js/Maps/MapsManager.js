@@ -7,18 +7,10 @@ var Maps;
             this.mapsDataLoader.dataLoadedCallback = function () { _this.redrawDataCallback(); };
             this.mapsOperations = new Maps.MapsOperations();
         }
-        MapsManager.prototype.getPluginData = function (pluginType, displayEntity, force) {
-            if (force === void 0) { force = false; }
-            var isSamePlugin = this.currentPluginType === pluginType;
+        MapsManager.prototype.getPluginData = function (dataType, displayEntity, people) {
             this.currentDisplayEntity = displayEntity;
-            this.currentPluginType = pluginType;
-            var reloadData = !isSamePlugin || force;
-            if (reloadData) {
-                this.mapsDataLoader.getPluginData(pluginType, displayEntity);
-            }
-            else {
-                this.redrawDataCallback();
-            }
+            this.currentDataType = dataType;
+            this.mapsDataLoader.getPluginData(dataType, displayEntity, people);
         };
         MapsManager.prototype.redrawDataCallback = function () {
             if (this.currentDisplayEntity === Maps.DisplayEntity.Pin) {
@@ -94,7 +86,12 @@ var Maps;
             }
         };
         MapsManager.prototype.displayData = function (savedPosition, savedZoom) {
-            this.getPluginData(Maps.PluginType.MyPlacesVisited, Maps.DisplayEntity.Pin);
+            var people = new Maps.PeopleSelection();
+            people.me = true;
+            people.everybody = false;
+            people.friends = false;
+            people.singleFriends = [];
+            this.getPluginData(Maps.DataType.Visited, Maps.DisplayEntity.Pin, people);
             if (savedPosition) {
                 var roundedZoom = Math.round(savedZoom);
                 console.log("savedZoom: " + roundedZoom);
