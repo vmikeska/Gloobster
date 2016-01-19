@@ -74,12 +74,19 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 				response.visitedPlaces = checkedDO.Places.Select(c => c.ToResponse()).ToArray();				
 			}
 
-			var visited = DB.C<VisitedEntity>().FirstOrDefault(v => v.PortalUser_id == UserIdObj);
-			response.citiesCount = visited.Cities.Count;
-			response.countriesCount = visited.Countries.Count;
-			response.worldTraveledPercent = PinBoardUtils.CalculatePercentOfWorldTraveled(visited.Countries.Count);			
+		    if (checkedDO.States != null)
+		    {
+		        response.visitedStates = checkedDO.States.Select(s => s.ToResponse()).ToArray();
+		    }
 
-			return new ObjectResult(response);
+		    var visited = DB.C<VisitedEntity>().FirstOrDefault(v => v.PortalUser_id == UserIdObj);
+
+		    response.citiesCount = visited.Cities.Count;
+		    response.countriesCount = visited.Countries.Count;
+		    response.worldTraveledPercent = PinBoardUtils.CalculatePercentOfWorldTraveled(visited.Countries.Count);
+		    response.statesCount = visited.States.Count;
+
+            return new ObjectResult(response);
 		}
 
 		

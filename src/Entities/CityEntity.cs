@@ -3,8 +3,7 @@ using Gloobster.Common;
 using Gloobster.Database;
 
 namespace Gloobster.Entities
-{
-	[Serializable]
+{	
 	public class CityEntity : EntityBase
 	{
 		public int GID { get; set; }
@@ -17,5 +16,6 @@ namespace Gloobster.Entities
 		public int Population { get; set; }
 		public string Elevation { get; set; }
 		public string TimeZone { get; set; }
+        public string UsState { get; set; }
 	}
 }

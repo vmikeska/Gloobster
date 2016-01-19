@@ -8,7 +8,23 @@ namespace Gloobster.Mappers
 {
     public static class VisitedCountryMapper
     {
-		public static VisitedCountryDO ToDO(this VisitedCountrySE e)
+        public static VisitedStateDO ToDO(this VisitedStateSE e)
+        {
+            if (e == null)
+            {
+                return null;
+            }
+
+            var d = new VisitedStateDO
+            {
+                StateCode= e.StateCode,
+                Dates = e.Dates
+            };
+
+            return d;
+        }
+
+        public static VisitedCountryDO ToDO(this VisitedCountrySE e)
 		{
 			if (e == null)
 			{
@@ -40,7 +56,25 @@ namespace Gloobster.Mappers
 			return entity;
 		}
 
-		public static VisitedCountryItemResponse ToResponse(this VisitedCountryDO d)
+        public static VisitedStateItemResponse ToResponse(this VisitedStateDO d)
+        {
+            if (d == null)
+            {
+                return null;
+            }
+
+            var response = new VisitedStateItemResponse
+            {
+                PortalUserId = d.PortalUserId,
+                Dates = d.Dates,
+                StateCode = d.StateCode,
+                Count = d.Count
+            };
+
+            return response;
+        }
+
+        public static VisitedCountryItemResponse ToResponse(this VisitedCountryDO d)
 		{
 			if (d == null)
 			{

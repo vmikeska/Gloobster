@@ -23,6 +23,7 @@ module Maps {
 				this.places.places = response.visitedPlaces;
 				this.places.cities = response.visitedCities;
 				this.places.countries = response.visitedCountries;
+				this.places.states = response.visitedStates;
 
 				this.mapToViewData();
 
@@ -87,6 +88,22 @@ module Maps {
 
 			});
 			this.viewPlaces.countries = countries;
+
+			var states = _.map(this.places.states, state => {
+
+			 var colorConfig = new PolygonConfig();
+
+			 colorConfig.fillColor = this.getColorByNumber(state.Count);
+			 colorConfig.countryCode = state.StateCode;
+
+			 var stateOut = new CountryHighligt();
+			 stateOut.countryCode = state.StateCode;
+			 stateOut.countryConfig = colorConfig;
+
+			 return stateOut;
+
+			});
+			this.viewPlaces.states = states;
 
 			var cities = _.map(this.places.cities, city => {
 				var marker = new PlaceMarker();

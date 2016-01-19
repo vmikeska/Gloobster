@@ -22,7 +22,8 @@ namespace Gloobster.DomainModels
 		public IVisitedPlacesDomain VisitedPlaces { get; set; }
 		public IVisitedCitiesDomain VisitedCities { get; set; }
 		public IVisitedCountriesDomain VisitedCountries { get; set; }
-		public ICountryService CountryService { get; set; }
+        public IVisitedStatesDomain VisitedStates { get; set; }
+        public ICountryService CountryService { get; set; }
 		public IFacebookService FBService { get; set; }
 		public IDbOperations DB { get; set; }
 		public IFoursquareService Service { get; set; }
@@ -65,6 +66,12 @@ namespace Gloobster.DomainModels
 			if (city != null)
 			{
 				result.Countries = await AddCountry(city.CountryCode, userId);
+
+			    if (city.CountryCode == "US")
+			    {
+			        var gnCity = await GNService.GetCityByIdAsync(city.GeoNamesId);
+			        result.States = await AddState(gnCity.UsState, userId);
+			    }
 			}
 
 			return result;
@@ -106,6 +113,10 @@ namespace Gloobster.DomainModels
 			return result;			
 		}
 
+
+
+
+
 		private async Task<AddedPlacesResultDO> AddPlace(string userId, string sourceId, SourceType sourceType, string city, string countryCode, LatLng latLng)
 		{
 			var result = new AddedPlacesResultDO();
@@ -135,25 +146,26 @@ namespace Gloobster.DomainModels
 			{
 				var gnCity = gnCities.First();
 				result.Cities = await AddCity(gnCity.GID, userId);
-			}
+
+                if (gnCity.CountryCode == "US")
+                {                    
+                    result.States = await AddState(gnCity.UsState, userId);
+                }
+            }
 
 			result.Countries = await AddCountry(countryCode, userId);
-
-			return result;
+            
+            return result;
 		}
 
-		private async Task<List<VisitedCityDO>> AddCity(int gnId, string userId)
-		{			
-			var city = await GNService.GetCityByIdAsync(gnId);
-			var cityDO = new VisitedCityDO
-			{
-				GeoNamesId = city.GID,
-				PortalUserId = userId,
-				Dates = new List<DateTime> { DateTime.UtcNow}
-			};
-
-			var cities = new List<VisitedCityDO> { cityDO };
-			var addedCities = await VisitedCities.AddNewCitiesAsync(cities, userId);
+		private async Task<List<VisitedCityDO>> AddCity(int gid, string userId)
+		{						
+		    var cities = new List<GidDateDO> {new GidDateDO
+		    {
+		        GID = gid,
+                Dates = new List<DateTime> {DateTime.UtcNow}
+		    }};
+		    var addedCities = await VisitedCities.AddNewCitiesByGIDAsync(cities, userId);                
 
 			return addedCities;
 		}
@@ -175,6 +187,28 @@ namespace Gloobster.DomainModels
 			return null;
 		}
 
-	    
-	}
+        private async Task<List<VisitedStateDO>> AddState(string stateCode, string userId)
+        {
+            //todo: check if state exists
+            bool countryExists = true;
+            if (countryExists)
+            {
+                var states = new List<VisitedStateDO>
+                {
+                    new VisitedStateDO
+                    {
+                        StateCode = stateCode,
+                        PortalUserId = userId,
+                        Dates = new List<DateTime> { DateTime.UtcNow}
+                    }
+                };
+                var addedStates = await VisitedStates.AddNewStatesAsync(states, userId);
+                return addedStates;
+            }
+
+            return null;
+        }
+
+
+    }
 }

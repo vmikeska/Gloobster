@@ -9,5 +9,6 @@ namespace Gloobster.DomainInterfaces
         Task<bool> AddCountry(string countryCode, string userId);
         Task<bool> AddPlace(SourceType sourceType, string sourceId, LatLng coord, string userId);
         Task<bool> AddCity(int gid, string userId);
+        Task<bool> AddState(string stateCode, string userId);
     }
 }

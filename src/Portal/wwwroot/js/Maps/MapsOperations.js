@@ -3,6 +3,7 @@ var Maps;
     var MapsOperations = (function () {
         function MapsOperations() {
             this.countryShapes = new Common.CountryShapes();
+            this.usShapes = new Common.UsStates();
         }
         MapsOperations.prototype.setBaseMapsOperations = function (baseMapsOperations) {
             this.mapsDriver = baseMapsOperations;
@@ -16,6 +17,23 @@ var Maps;
             }
             countryParts.forEach(function (countryPart) {
                 _this.mapsDriver.drawPolygon(countryPart, country.countryConfig);
+            });
+        };
+        MapsOperations.prototype.drawUsState = function (state) {
+            var _this = this;
+            var stateParts = this.usShapes.getCoordinatesByStateCode(state.countryCode);
+            if (!stateParts) {
+                console.log("missing state with code: " + state.countryCode);
+                return;
+            }
+            stateParts.forEach(function (statePart) {
+                _this.mapsDriver.drawPolygon(statePart, state.countryConfig);
+            });
+        };
+        MapsOperations.prototype.drawUsStates = function (states) {
+            var _this = this;
+            states.forEach(function (state) {
+                _this.drawUsState(state);
             });
         };
         MapsOperations.prototype.drawCountries = function (countries) {

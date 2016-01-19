@@ -18,9 +18,12 @@ namespace Airports
 	{
 		static void Main(string[] args)
 		{
-			ProcessGeoNamesFile();
+		    AddingUSstate.Execute();
+            
 
-			//Routes.Run();
+		    //ProcessGeoNamesFile();
+
+		    //Routes.Run();
 		}
 
 		public static void ProcessGeoNamesFile()

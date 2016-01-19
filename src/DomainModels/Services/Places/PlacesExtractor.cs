@@ -10,27 +10,30 @@ using Microsoft.AspNet.WebUtilities;
 
 namespace Gloobster.DomainModels.Services.Places
 {
-
-
     public class PlacesExtractor: IPlacesExtractor
 	{
 		public IVisitedPlacesDomain VisitedPlaces { get; set; }
 		public IVisitedCitiesDomain VisitedCities { get; set; }
 		public IVisitedCountriesDomain VisitedCountries { get; set; }
+        public IVisitedStatesDomain VisitedStates { get; set; }
 
 		public IPlacesExtractorDriver Driver { get; set; }
 
 		public IGeoNamesService GeoNamesService { get; set; }
 
-	    public List<VisitedPlaceDO> NewFoundUniquePlaces = new List<VisitedPlaceDO>();
-		public List<VisitedCityDO> NewFoundUniqueCities = new List<VisitedCityDO>();
-	    public List<VisitedCountryDO> NewFoundUniqueCountries = new List<VisitedCountryDO>();
+        public List<VisitedCityDO> NewFoundUniqueCities = new List<VisitedCityDO>();
+        public List<VisitedCityDO> NewFoundUniqueCitiesWithGID = new List<VisitedCityDO>();
 
-		public List<VisitedPlaceDO> NewVisitedPlaces = new List<VisitedPlaceDO>();
+        public List<VisitedPlaceDO> NewFoundUniquePlaces = new List<VisitedPlaceDO>();		
+	    public List<VisitedCountryDO> NewFoundUniqueCountries = new List<VisitedCountryDO>();
+        public List<VisitedStateDO> NewFoundUniqueStates = new List<VisitedStateDO>();
+
+        public List<VisitedPlaceDO> NewVisitedPlaces = new List<VisitedPlaceDO>();
 		public List<VisitedCityDO> NewVisitedCities = new List<VisitedCityDO>();
 	    public List<VisitedCountryDO> NewVisitedCountries = new List<VisitedCountryDO>();
-		
-		public string DbUserId;
+        public List<VisitedStateDO> NewVisitedStates = new List<VisitedStateDO>();
+
+        public string DbUserId;
 
 		public async Task<bool> ExtractNewAsync(string dbUserId, SocAuthenticationDO auth)
 		{
@@ -44,8 +47,12 @@ namespace Gloobster.DomainModels.Services.Places
 				NewFoundUniquePlaces = await GetPlacesWithFixedLocations(newFoundUniquePlaces);
 
 				NewFoundUniqueCities = GetUniqueCities(NewFoundUniquePlaces);
+                NewFoundUniqueCitiesWithGID = await GetCitiesWithGid(NewFoundUniqueCities);
+                
+                NewFoundUniqueCountries = GetUniqueCountries(NewFoundUniqueCities);
 
-				NewFoundUniqueCountries = GetUniqueCountries(NewFoundUniqueCities);
+                var usCities = NewFoundUniqueCitiesWithGID.Where(c => c.CountryCode == "US").ToList();
+                NewFoundUniqueStates = GetUniqueStates(usCities);               
 			}
 
 			if (extractedPlaces.VisitedCities != null)
@@ -56,6 +63,9 @@ namespace Gloobster.DomainModels.Services.Places
 				var newCountries = GetUniqueCountries(newCities);
 				var newUniqueCountries = newCountries.Where(c => !NewFoundUniqueCountries.Contains(c));
 				NewFoundUniqueCountries.AddRange(newUniqueCountries);
+
+                var usCities = NewFoundUniqueCitiesWithGID.Where(c => c.CountryCode == "US").ToList();
+                NewFoundUniqueStates = GetUniqueStates(usCities);
             }
 
 			if (extractedPlaces.VisitedCountries != null)
@@ -67,7 +77,59 @@ namespace Gloobster.DomainModels.Services.Places
 			return true;
 		}
 
-	    private async Task<LatLng> GetLatLongAsync(string city, string countryCode)
+        public async Task<bool> SaveAsync()
+        {
+            NewVisitedPlaces = await VisitedPlaces.AddNewPlacesAsync(NewFoundUniquePlaces, DbUserId);
+
+            NewVisitedCities = await VisitedCities.AddNewCitiesWithGidAsync(NewFoundUniqueCitiesWithGID, DbUserId);
+            
+            NewVisitedCountries = await VisitedCountries.AddNewCountriesAsync(NewFoundUniqueCountries, DbUserId);
+            
+            NewVisitedStates = await VisitedStates.AddNewStatesAsync(NewFoundUniqueStates, DbUserId);
+
+            return true;
+        }
+
+        private async Task<List<VisitedCityDO>> GetCitiesWithGid(List<VisitedCityDO> cities)
+        {
+            var res = new List<VisitedCityDO>();
+            foreach (var city in cities)
+            {
+                var c = await TryIdentifyCity(city.CountryCode, city.City, city.Dates);
+                if (c != null)
+                {
+                    res.Add(c);
+                }
+            }
+            return res;
+        }
+
+        private async Task<VisitedCityDO> TryIdentifyCity(string countryCode, string city, List<DateTime> dates)
+        {
+            var gnCities = await GeoNamesService.GetCityAsync(city, countryCode, 1);
+            var gnCity = gnCities.FirstOrDefault();
+            if (gnCity == null)
+            {
+                return null;
+            }
+
+            var cityDo = new VisitedCityDO
+            {
+                City = gnCity.Name,
+                CountryCode = gnCity.CountryCode,
+                GeoNamesId = gnCity.GID,
+                Location = gnCity.Coordinates,
+                UsState = gnCity.UsState,
+                Dates = dates,
+                Count = dates.Count
+            };
+
+            return cityDo;
+        } 
+
+
+
+        private async Task<LatLng> GetLatLongAsync(string city, string countryCode)
         {
 		    var foundCities = await GeoNamesService.GetCityAsync(city, countryCode, 1);
 		    if (!foundCities.Any())
@@ -79,16 +141,7 @@ namespace Gloobster.DomainModels.Services.Places
 		    return foundCity.Coordinates;		    
         }
 		
-	    public async Task<bool> SaveAsync()
-	    {
-			NewVisitedPlaces = await VisitedPlaces.AddNewPlacesAsync(NewFoundUniquePlaces, DbUserId);
-
-			NewVisitedCities = await VisitedCities.AddNewCitiesAsync(NewFoundUniqueCities, DbUserId);
-			
-			NewVisitedCountries = await VisitedCountries.AddNewCountriesAsync(NewFoundUniqueCountries, DbUserId);
-
-	        return true;
-	    }
+	    
 		
 	    private async Task<List<VisitedPlaceDO>> GetPlacesWithFixedLocations(List<VisitedPlaceDO> inputPlaces)
 	    {
@@ -136,8 +189,29 @@ namespace Gloobster.DomainModels.Services.Places
 			return countries;
 		}
 
+        private List<VisitedStateDO> GetUniqueStates(List<VisitedCityDO> inputCities)
+        {
+            var groupedCities = inputCities.GroupBy(g => g.UsState).ToList();
 
-	    private List<VisitedPlaceDO> GetUniquePlaces(List<VisitedPlaceDO> inputPlaces)
+            var states = new List<VisitedStateDO>();
+            foreach (var groupedCity in groupedCities)
+            {
+                List<DateTime> allDates = groupedCity.SelectMany(g => g.Dates).ToList();
+                var state = new VisitedStateDO
+                {
+                    Dates = allDates,
+                    StateCode = groupedCity.First().UsState,
+                    PortalUserId = DbUserId
+                };
+
+                states.Add(state);
+            }
+
+            return states;
+        }
+
+
+        private List<VisitedPlaceDO> GetUniquePlaces(List<VisitedPlaceDO> inputPlaces)
 		{
 			var output = new Dictionary<string, VisitedPlaceDO>();
 			foreach (VisitedPlaceDO place in inputPlaces)

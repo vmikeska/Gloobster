@@ -13,10 +13,17 @@ namespace Gloobster.DomainObjects
 		public string City { get; set; }
 		public LatLng Location { get; set; }
 		public int GeoNamesId { get; set; }
+        public string UsState { get; set; }
 
 		public bool Equals(VisitedCityDO other)
 		{
 			return this.CountryCode == other.CountryCode && this.City == other.City;
 		}
 	}
+
+    public class GidDateDO
+    {
+        public int GID { get; set; }
+        public List<DateTime> Dates { get; set; }
+    }
 }

@@ -46,7 +46,19 @@ var Maps;
         };
         MapsManager.prototype.redrawCountries = function () {
             this.mapsDriver.destroyAll();
-            this.mapsOperations.drawCountries(this.mapsDataLoader.viewPlaces.countries);
+            var countries = this.mapsDataLoader.viewPlaces.countries;
+            var doUsThing = true;
+            if (doUsThing) {
+                var us = _.find(countries, function (c) {
+                    return c.countryCode === "US";
+                });
+                var hasUs = us != null;
+                if (hasUs) {
+                    countries = _.reject(countries, function (c) { return c === us; });
+                    this.mapsOperations.drawUsStates(this.mapsDataLoader.viewPlaces.states);
+                }
+            }
+            this.mapsOperations.drawCountries(countries);
         };
         MapsManager.prototype.switchToView = function (viewType) {
             var _this = this;

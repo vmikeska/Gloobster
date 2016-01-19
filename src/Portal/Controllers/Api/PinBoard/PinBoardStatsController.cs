@@ -20,16 +20,19 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
 		public IVisitedPlacesDomain VisitedPlaces { get; set; }
 		public IVisitedCitiesDomain VisitedCities { get; set; }
 		public IVisitedCountriesDomain VisitedCountries { get; set; }
+        public IVisitedStatesDomain VisitedStates { get; set; }
 
 		public ICountryService CountryService { get; set; }
 
-		public PinBoardStatsController(IVisitedPlacesDomain visitedPlaces, IVisitedCitiesDomain visitedCities, 
+		public PinBoardStatsController(IVisitedStatesDomain visitedStates, IVisitedPlacesDomain visitedPlaces, IVisitedCitiesDomain visitedCities, 
 			IVisitedCountriesDomain visitedCountries, ICountryService countryService, IDbOperations db) : base(db)
 		{
 			VisitedPlaces = visitedPlaces;
 			VisitedCities = visitedCities;
 			VisitedCountries = visitedCountries;
 			CountryService = countryService;
+		    VisitedStates = visitedStates;
+
 		}
 
 
@@ -63,12 +66,18 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
                     if (request.everybody)
                     {
                         var visitedCountries = VisitedCountries.GetCountriesOverall();
-                        result.visitedCountries = visitedCountries.Select(c => c.ToResponse()).ToArray();                        
+                        result.visitedCountries = visitedCountries.Select(c => c.ToResponse()).ToArray();
+
+                        var visitedStates = VisitedStates.GetStatesOverall();
+                        result.visitedStates = visitedStates.Select(s => s.ToResponse()).ToArray();
                     }
                     else
                     {                        
                         var visitedCountries = VisitedCountries.GetCountriesByUsers(ids, UserId);
                         result.visitedCountries = visitedCountries.Select(c => c.ToResponse()).ToArray();
+
+                        var visitedStates = VisitedStates.GetStatesByUsers(ids, UserId);
+                        result.visitedStates = visitedStates.Select(s => s.ToResponse()).ToArray();
                     }
                 }
 
@@ -92,7 +101,7 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
             {
 
             }
-            
+
             return new ObjectResult(result);
 		}
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Facebook;
 using Gloobster.Common;
 using Gloobster.DomainInterfaces;
@@ -29,34 +30,42 @@ namespace Gloobster.Sharing.Facebook
             }            
         }
 
-	    public void Checkin(FacebookCheckinDO checkin, SocAuthenticationDO authentication)
+	    public bool Checkin(FacebookCheckinDO checkin, SocAuthenticationDO authentication)
 	    {
-	        var endpoint = "/me/feed";
-
-	        var client = new FacebookClient(authentication.AccessToken);
-
-	        var args = new Dictionary<string, object>();
-
-	        if (!string.IsNullOrEmpty(checkin.Place))
+	        try
 	        {
-	            args.Add("place", checkin.Place);
-	        }
+	            var endpoint = "/me/feed";
 
-	        if (!string.IsNullOrEmpty(checkin.Message))
+	            var client = new FacebookClient(authentication.AccessToken);
+
+	            var args = new Dictionary<string, object>();
+
+	            if (!string.IsNullOrEmpty(checkin.Place))
+	            {
+	                args.Add("place", checkin.Place);
+	            }
+
+	            if (!string.IsNullOrEmpty(checkin.Message))
+	            {
+	                args.Add("message", checkin.Message);
+	            }
+
+	            if (!string.IsNullOrEmpty(checkin.Link))
+	            {
+	                args.Add("link", checkin.Link);
+	            }
+
+	            var p = checkin.Privacy ?? GetDefaultPrivacy();
+	            var privacy = BuildPrivacyDict(p);
+	            args.Add("privacy", privacy);
+
+	            client.Post(endpoint, args);
+	            return true;
+	        }
+	        catch (Exception exc)
 	        {
-	            args.Add("message", checkin.Message);
+	            return false;
 	        }
-
-	        if (!string.IsNullOrEmpty(checkin.Link))
-	        {
-	            args.Add("link", checkin.Link);
-	        }
-
-	        var p = checkin.Privacy ?? GetDefaultPrivacy();
-	        var privacy = BuildPrivacyDict(p);
-	        args.Add("privacy", privacy);
-
-	        client.Post(endpoint, args);
 	    }
 
 

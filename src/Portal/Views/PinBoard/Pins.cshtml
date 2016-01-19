@@ -30,6 +30,7 @@
 <script type="text/javascript" src="@Url.Content("~/js/common/ShareButtons.js")"></script>
 
 <script type="text/javascript" src="@Url.Content("~/js/Common/CountryShapes.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Common/UsStates.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Common/CountryCodes.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Common/FacebookPermissions.js")"></script>
 
@@ -44,6 +45,8 @@
 <script type="text/javascript" src="@Url.Content("~/js/Views/PinBoardView.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Views/ShareDialogPinsView.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Views/PeopleFilter.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Views/AggregatedCountries.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Views/PinBoardBadges.js")"></script>
 
 @Html.Partial("PinBoardTemplates")
 
@@ -150,7 +153,8 @@
     @Html.Partial("CountriesLegend")
 </div>
 
-<div class="squares table row margin2">
+
+    <div class="squares table row margin2">
     <div class="cell">
         <div class="square"><strong id="CitiesCount" class="countto" data-from="0" data-to="@Model.Cities">0</strong> Cities
         </div>
@@ -167,24 +171,22 @@
             </strong> of the World
         </div>
     </div>
-    <div class="cell">
-        <div class="square"><strong id="BadgesCount" class="countto" data-from="0" data-to="@Model.Badges">0</strong> Top cities
-        </div>
-    </div>
     @*<div class="cell">
-        <div class="square"><strong id="FriendsCount" class="countto" data-from="0" data-to="0">0</strong> Friends
+        <div class="square">            
+            <strong id="TopCitiesCount">0</strong> Top cities
         </div>
-    </div>*@
+    </div>*@    
     <div class="cell">
-        <div class="square"><strong id="DistanceLength" class="countto" data-from="0" data-to="@Model.TotalDistanceTraveled">0</strong> Miles total
+        <div class="square"><strong id="StatesCount" class="countto" data-from="0" data-to="@Model.UsStates">0</strong> US States
         </div>
     </div>
 </div>
 
-
-<h2>Badges</h2>
-<div id="badgesOverview" class="badges grid margin2">    
-</div>
+    <div id="bdgs">
+        
+    </div>
+    @*<div id="badgesOverview" class="badges grid margin2">    
+</div>*@
 
 </section>
 

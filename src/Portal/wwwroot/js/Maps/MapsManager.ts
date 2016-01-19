@@ -71,7 +71,24 @@
 
 		public redrawCountries() {
 			this.mapsDriver.destroyAll();
-			this.mapsOperations.drawCountries(this.mapsDataLoader.viewPlaces.countries);
+		 
+			var countries = this.mapsDataLoader.viewPlaces.countries;			
+			
+			var doUsThing = true;
+			if (doUsThing) {
+				var us = _.find(countries, (c) => {
+					return c.countryCode === "US";
+				});
+				var hasUs = us != null;
+				if (hasUs) {
+				 countries = _.reject(countries, (c) => { return c === us; });
+				 this.mapsOperations.drawUsStates(this.mapsDataLoader.viewPlaces.states);
+				}
+			 			 
+			}
+
+			this.mapsOperations.drawCountries(countries);
+		 
 		}
 
 

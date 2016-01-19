@@ -14,5 +14,8 @@ namespace Gloobster.DomainObjects
 		public int Population { get; set; }
 		public string Elevation { get; set; }
 		public string TimeZone { get; set; }
-	}
+        public string UsState { get; set; }
+
+
+    }
 }

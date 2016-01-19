@@ -5,6 +5,6 @@ namespace Gloobster.DomainInterfaces
 	public interface IFacebookShare
 	{
 		void Share(FacebookShareOptionsDO so, SocAuthenticationDO authentication);
-	    void Checkin(FacebookCheckinDO checkin, SocAuthenticationDO authentication);
+        bool Checkin(FacebookCheckinDO checkin, SocAuthenticationDO authentication);
 	}    
 }

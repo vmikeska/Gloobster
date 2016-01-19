@@ -9,17 +9,23 @@ using Newtonsoft.Json.Linq;
 
 namespace CoordinatesConvertor
 {
-    
-
-    public class Programx
+    public class Program
     {
+        public static float Convert(string origNum)
+        {
+            float numParsed1 = float.Parse(origNum);
+            string cut = numParsed1.ToString("0.000");
+            float numParsed2 = float.Parse(cut);
+            return numParsed2;
+        }
+
         public static float[][] WriteDataArray(JToken[] input)
         {
             var outCoordinatesList = new List<float[]>();
             foreach (var coordinate in input)
             {
-                var cor1 = float.Parse(coordinate[1].ToString());
-                var cor2 = float.Parse(coordinate[0].ToString());
+                var cor1 = Convert(coordinate[1].ToString());
+                var cor2 = Convert(coordinate[0].ToString());
 
                 outCoordinatesList.Add(new[] { cor1, cor2 });
             }
@@ -27,12 +33,12 @@ namespace CoordinatesConvertor
             return outCoordinatesList.ToArray();
         }
 
-        static void Mainx(string[] args)
+        static void Main(string[] args)
         {
 	        var countryService = new CountryService();
 
-			var inputDir = @"C:\S\world.geo.json\countries";
-            var outputDir = @"C:\S\world.geo.json\countriesReverse";
+			var inputDir = @"C:\S\world.geo.json\countries\USA";
+            var outputDir = @"C:\S\world.geo.json\";
 
             if (!Directory.Exists(outputDir))
             {
@@ -82,16 +88,10 @@ namespace CoordinatesConvertor
                     JToken coordinatesResult = coordinates;
 
 
-					//var country = new Country
-					//{
-					//    name = countryId
-					//};
-
-	                var cntry = countryService.GetCountryByCountryCode3(countryId);
-
+					
 					var country = new Country
 					{
-						name = cntry.CountryCode
+						name = countryId
 					};
 					
 					if (geometryType == "MultiPolygon")
@@ -125,27 +125,17 @@ namespace CoordinatesConvertor
                 }
             }
 
-            string json = JsonConvert.SerializeObject(outputCountries.ToArray());
+            var outStr = "[";
+            foreach (var c in outputCountries)
+            {
+                var str = JsonConvert.SerializeObject(c) ;
+                outStr += str + "," + Environment.NewLine;
+            }
+            var final = outStr + "]";
+            File.WriteAllText(outputDir + "build.json", final); 
+
+            //string json = JsonConvert.SerializeObject(outputCountries.ToArray());
 
         }
     }
 }
-
-
-
-////{
-////	"type":"FeatureCollection",
-////"features":[
-////	{
-////		"type":"Feature",
-////		"id":"CZE",
-////		"properties":
-////		{
-////			"name":"Czech Republic"
-////		},
-////		"geometry":
-////		{
-////			"type":"Polygon",
-////			"coordinates":[[[16.960288,48.596982],[16.499283,48.785808],]]
-////		}}]
-////}

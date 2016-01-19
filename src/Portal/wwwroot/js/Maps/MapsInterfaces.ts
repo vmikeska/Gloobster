@@ -48,11 +48,13 @@ module Maps {
 	 public places: any;
 	 public cities: any;
 	 public countries: any;
+	 public states: any;
 	}
 
 	export class PlacesDisplay {
 	 public places: PlaceMarker[];
 	 public countries: CountryHighligt[];
+	 public states: CountryHighligt[];
 	 public cities: PlaceMarker[];
 	}
 

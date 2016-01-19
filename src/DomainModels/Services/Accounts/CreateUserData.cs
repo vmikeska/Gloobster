@@ -42,7 +42,8 @@ namespace Gloobster.DomainModels.Services.Accounts
 				PortalUser_id = new ObjectId(PortalUser.UserId),
 				Places = new List<VisitedPlaceSE>(),
 				Cities = new List<VisitedCitySE>(),
-				Countries = new List<VisitedCountrySE>()
+				Countries = new List<VisitedCountrySE>(),
+                States = new List<VisitedStateSE>()
 			};
 			await DB.SaveAsync(visited);
 			return true;

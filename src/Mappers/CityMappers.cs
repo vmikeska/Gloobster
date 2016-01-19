@@ -19,7 +19,8 @@ namespace Gloobster.Mappers
 				AlternateNames = e.AlternateNames,
 				AsciiName = e.AsciiName,
 				Elevation = e.Elevation,
-				Population = e.Population
+				Population = e.Population,
+                UsState = e.UsState
 			};
 
 			return d;
@@ -43,7 +44,8 @@ namespace Gloobster.Mappers
 				gid = d.GID,
 				name = d.Name,
 				population = d.Population,
-				timeZone = d.TimeZone
+				timeZone = d.TimeZone,
+                usState = d.UsState
 			};
 			return r;
 		}
@@ -66,7 +68,8 @@ namespace Gloobster.Mappers
 				GID = r.gid,
 				Name = r.name,
 				Population = r.population,
-				TimeZone = r.timeZone
+				TimeZone = r.timeZone,
+                UsState = r.usState                
 			};
 			return d;
 		}

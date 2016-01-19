@@ -19,6 +19,7 @@ var Maps;
                 _this.places.places = response.visitedPlaces;
                 _this.places.cities = response.visitedCities;
                 _this.places.countries = response.visitedCountries;
+                _this.places.states = response.visitedStates;
                 _this.mapToViewData();
                 _this.dataLoadedCallback();
             });
@@ -79,6 +80,16 @@ var Maps;
                 return countryOut;
             });
             this.viewPlaces.countries = countries;
+            var states = _.map(this.places.states, function (state) {
+                var colorConfig = new Maps.PolygonConfig();
+                colorConfig.fillColor = _this.getColorByNumber(state.Count);
+                colorConfig.countryCode = state.StateCode;
+                var stateOut = new Maps.CountryHighligt();
+                stateOut.countryCode = state.StateCode;
+                stateOut.countryConfig = colorConfig;
+                return stateOut;
+            });
+            this.viewPlaces.states = states;
             var cities = _.map(this.places.cities, function (city) {
                 var marker = new Maps.PlaceMarker();
                 marker.city = city.City;

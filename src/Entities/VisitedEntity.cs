@@ -13,6 +13,7 @@ namespace Gloobster.Entities
 		public List<VisitedCitySE> Cities { get; set; }
 		public List<VisitedCountrySE> Countries { get; set; }
 		public List<VisitedPlaceSE> Places { get; set; }
+        public List<VisitedStateSE> States { get; set; }
 	}
 
 
@@ -24,6 +25,7 @@ namespace Gloobster.Entities
 		public string City { get; set; }
 		public DateTime[] Dates { get; set; }
 		public int GeoNamesId { get; set; }
+        public string UsState { get; set; }
 	}
 
 
@@ -34,7 +36,14 @@ namespace Gloobster.Entities
 		public List<DateTime> Dates { get; set; }
 	}
 
-	public class VisitedPlaceSE
+    public class VisitedStateSE
+    {
+        public ObjectId id { get; set; }
+        public string StateCode { get; set; }
+        public List<DateTime> Dates { get; set; }
+    }
+
+    public class VisitedPlaceSE
 	{
 		public ObjectId id { get; set; }
 		public LatLng Location { get; set; }

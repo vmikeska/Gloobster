@@ -3,10 +3,11 @@ module Maps {
 
 		public mapsDriver: IMapsDriver;
 		public countryShapes: Common.CountryShapes;
-
+	  public usShapes: Common.UsStates;
 
 		constructor() {
-		 this.countryShapes = new Common.CountryShapes();
+			this.countryShapes = new Common.CountryShapes();
+			this.usShapes = new Common.UsStates();
 		}
 
 		public setBaseMapsOperations(baseMapsOperations: IMapsDriver) {
@@ -26,12 +27,31 @@ module Maps {
 			});
 		}
 
+		public drawUsState(state: CountryHighligt) {
+		 var stateParts = this.usShapes.getCoordinatesByStateCode(state.countryCode);
+
+		 if (!stateParts) {
+			console.log("missing state with code: " + state.countryCode);
+			return;
+		 }
+
+		 stateParts.forEach(statePart => {
+			this.mapsDriver.drawPolygon(statePart, state.countryConfig);
+		 });
+		}
+
+		public drawUsStates(states: CountryHighligt[]) {
+		 states.forEach(state => {
+			this.drawUsState(state);
+		 });
+		}
+
 		public drawCountries(countries: CountryHighligt[]) {
 			countries.forEach(country => {
 				this.drawCountry(country);
 			});
 		}
-
+	 
 		public drawCity(city: PlaceMarker) {
 			var marker = this.mapsDriver.drawPin(city);
 			this.mapsDriver.drawPopUp(marker, city);

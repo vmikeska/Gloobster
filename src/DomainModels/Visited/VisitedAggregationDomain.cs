@@ -36,7 +36,29 @@ namespace Gloobster.DomainModels
             await DB.SaveAsync(country);
             return true;
         }
-        
+
+        public async Task<bool> AddState(string stateCode, string userId)
+        {
+            bool exists = DB.C<VisitedStatesAggregatedEntity>().Any(c => c.StateCode == stateCode);
+            if (exists)
+            {
+                var filter = DB.F<VisitedStatesAggregatedEntity>().Eq(c => c.StateCode, stateCode);
+                var update = DB.U<VisitedStatesAggregatedEntity>().Push(c => c.Visitors, userId);
+
+                var res = await DB.UpdateAsync(filter, update);
+                return res.ModifiedCount == 1;
+            }
+
+            var state = new VisitedStatesAggregatedEntity
+            {
+                id = ObjectId.GenerateNewId(),
+                StateCode = stateCode,                
+                Visitors = new List<string> { userId }
+            };
+            await DB.SaveAsync(state);
+            return true;
+        }
+
         public async Task<bool> AddCity(int gid, string userId)
         {
             bool exists = DB.C<VisitedCityAggregatedEntity>().Any(c => c.GID == gid);

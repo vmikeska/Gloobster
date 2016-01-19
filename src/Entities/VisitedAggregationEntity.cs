@@ -28,4 +28,10 @@ namespace Gloobster.Entities
         public string CountryCode { get; set; }
         public List<string> Visitors { get; set; }
     }
+
+    public class VisitedStatesAggregatedEntity : EntityBase
+    {
+        public string StateCode { get; set; }
+        public List<string> Visitors { get; set; }
+    }
 }

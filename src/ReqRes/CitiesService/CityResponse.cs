@@ -14,5 +14,6 @@ namespace Gloobster.ReqRes.CitiesService
 		public int population { get; set; }
 		public string elevation { get; set; }
 		public string timeZone { get; set; }
+        public string usState { get; set; }
 	}
 }

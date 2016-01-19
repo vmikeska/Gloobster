@@ -24,15 +24,15 @@ namespace Gloobster.Portal.ViewModels
 			Countries = visited.Countries.Count;
 			Cities = visited.Cities.Count;
 			WorldTraveled = PinBoardUtils.CalculatePercentOfWorldTraveled(Countries);
+		    UsStates = visited.States.Count;            
 		}
 
 		
 
 		public int Cities { get; set; }
 		public int Countries { get; set; }
-		public int WorldTraveled { get; set; }
-		public int Badges { get; set; }
-		public int TotalDistanceTraveled { get; set; }
+		public int WorldTraveled { get; set; }		
+		public int UsStates { get; set; }
 
         public List<Friend> Friends { get; set; }
 	}
