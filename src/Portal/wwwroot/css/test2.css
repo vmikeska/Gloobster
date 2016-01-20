@@ -1,51 +1,26 @@
 ﻿
-.box
+.dndBox
 {
+    
     height: 80px;
     width: 100%;
-    text-align: center;
-    font-size: 1.25rem; /* 20 */
+    text-align: center;    
     background-color: #c8dadf;
     padding: 10px 0 0 0;
     outline: 2px dashed #92b0b3;
     outline-offset: -10px;
     -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
     transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    border-radius: 5px;
+    margin-top: 3px;
+    font-size: 2em;
 }
 
-.box.is-dragover
+.dndBox.is-dragover
 {
     outline-offset: -20px;
     outline-color: #c8dadf;
     background-color: #fff;
-}
-
-.box .box__dragndrop
-{
-	display: inline;
-}
-/*.box .box__icon
-{
-	width: 100%;
-	height: 40px;
-	fill: #92b0b3;
-	display: block;
-	margin-bottom: 5px;
-}*/
-
-
-@-webkit-keyframes appear-from-inside
-{
-	from	{ -webkit-transform: translateY( -50% ) scale( 0 ); }
-	75%		{ -webkit-transform: translateY( -50% ) scale( 1.1 ); }
-	to		{ -webkit-transform: translateY( -50% ) scale( 1 ); }
-}
-
-@keyframes appear-from-inside
-{
-	from	{ transform: translateY( -50% ) scale( 0 ); }
-	75%		{ transform: translateY( -50% ) scale( 1.1 ); }
-	to		{ transform: translateY( -50% ) scale( 1 ); }
 }
 
 .box__file
@@ -59,12 +34,11 @@
 }
 .box__file + label
 {
-	max-width: 80%;
-	text-overflow: ellipsis;
-	/*white-space: nowrap;*/
-	cursor: pointer;
-	display: inline-block;
-	overflow: hidden;
+  cursor: pointer;
+
+  height: 70px;
+  line-height: 70px;
+  white-space: nowrap;
 }
 
 .box__file + label:hover strong,
@@ -72,11 +46,4 @@
 .box__file.has-focus + label strong
 {
 	color: #39bfd3;
-}
-
-.box__file:focus + label,
-.box__file.has-focus + label
-{
-	outline: 1px dotted #000;
-	outline: -webkit-focus-ring-color auto 5px;
 }

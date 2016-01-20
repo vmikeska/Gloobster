@@ -24,7 +24,7 @@ module Common {
 			//Firefox focus bugfix for file input
 			$input
 				.on("focus", () => { $input.addClass("has-focus"); })
-				.on('blur', () => { $input.removeClass("has-focus"); });
+				.on("blur", () => { $input.removeClass("has-focus"); });
 
 			// drag&drop files if the feature is available
 			if (this.isAdvancedUpload()) {
