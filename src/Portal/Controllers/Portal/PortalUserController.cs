@@ -21,15 +21,22 @@ namespace Gloobster.Portal.Controllers.Portal
 			FileDomain = filesDomain;
 		}
 		
-		public IActionResult Detail()
+		public IActionResult Detail(string id)
 		{
-			return View();
+            var viewModel = CreateViewModelInstance<UserDetailViewModel>();
+            viewModel.AvatarLink = "/PortalUser/ProfilePicture/" + id;
+            viewModel.DisplayName = PortalUser.DisplayName;
+            viewModel.Gender = GetGenderStr(PortalUser.Gender);
+            viewModel.CurrentLocation = FormatCityStr(PortalUser.CurrentLocation);
+            viewModel.HomeLocation = FormatCityStr(PortalUser.HomeLocation);
+
+            return View(viewModel);
 		}
 
 		public IActionResult Settings()
 		{
 			var viewModel = CreateViewModelInstance<SettingsViewModel>();
-			viewModel.AvatarLink = "/PortalUser/ProfilePicture";				
+			viewModel.AvatarLink = "/PortalUser/ProfilePicture";
 			viewModel.DisplayName = PortalUser.DisplayName;
 			viewModel.Gender = GetGenderStr(PortalUser.Gender);
 			viewModel.CurrentLocation = FormatCityStr(PortalUser.CurrentLocation);

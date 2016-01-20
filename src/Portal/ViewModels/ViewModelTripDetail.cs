@@ -7,8 +7,9 @@ namespace Gloobster.Portal.ViewModels
 		public string TripId { get; set; }
 
 		public string OwnerDisplayName { get; set; }
+        public string OwnerId { get; set; }
 
-		public string Name { get; set; }
+        public string Name { get; set; }
 		public string Description { get; set; }
 		public string Notes { get; set; }
 
@@ -18,7 +19,6 @@ namespace Gloobster.Portal.ViewModels
 
 		public bool IsUserAdmin { get; set; }
 
-		public bool IsOwner { get; set; }
-
+		public bool IsOwner { get; set; }        
 	}
 }

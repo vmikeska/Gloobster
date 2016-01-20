@@ -154,6 +154,7 @@ namespace Gloobster.Portal.Controllers.Portal
 			viewModel.Name = trip.Name;
 			viewModel.IsUserAdmin = IsUserAdmin(trip);
 			viewModel.OwnerDisplayName = owner.DisplayName;
+		    viewModel.OwnerId = owner.id.ToString();
 			viewModel.TripId = trip.id.ToString();
 			viewModel.Description = trip.Description;
 			viewModel.Notes = trip.Notes;

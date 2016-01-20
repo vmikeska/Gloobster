@@ -1,6 +1,43 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-    // ViewBag.Title = "Home Page";
-}
+﻿@using Gloobster.Portal.ViewModels
+@model Gloobster.Portal.ViewModels.UserDetailViewModel
+
+<table>
+    <tr>
+        <td colspan="2">
+            <img id="avatar" src="@Model.AvatarLink" style="width: 200px; height: 200px" />
+            <br />            
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span class="titleName">Display name</span>
+        </td>
+        <td>
+            <span>@Model.DisplayName</span>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span class="titleName">Gender</span>
+        </td>
+        <td>            
+            <span>@Model.Gender</span>                            
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span class="titleName">Home city</span>
+        </td>
+        <td>
+            <span>@Model.HomeLocation</span>                
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span class="titleName">Current city</span>
+        </td>
+        <td>
+            <span>@Model.CurrentLocation</span>            
+        </td>
+    </tr>
+</table>

@@ -3,13 +3,12 @@
 		<div class="row">
 				<div class="cell">
 						<span class="thumbnail">
-								<img src="/images/samples/sample12.jpg">
-								@*{{photoUrl}}*@
+							<img src="{{photoUrl}}">								
 						</span>
 				</div>
 				<div class="cell">
 						<div class="author">
-								<a href="#"><strong>{{displayName}}</strong></a>
+								<a href="/PortalUser/Detail/{{id}}"><strong>{{displayName}}</strong></a>
 								<span> • {{displayDate}}</span>
 						</div>
 						<div class="bubble">
@@ -30,13 +29,13 @@
 </script>
 
 <script id="fileCreate-template" type="text/x-handlebars-template">
-		@*<div class="cell">
+		 @*<div class="cell">
 				<div class="document">
 						<a class="create" href="#">Add file</a>
 				</div>
 		</div>*@
 
-		<input id="fileInput" type="file" style="" />
+		@*<input id="fileInput" type="file" style="" />
 		<br />
-		<span id="progressBar" style="font-size: 20px; font-weight: bold">0</span>%
+		<span id="progressBar" style="font-size: 20px; font-weight: bold">0</span>%*@
 </script>

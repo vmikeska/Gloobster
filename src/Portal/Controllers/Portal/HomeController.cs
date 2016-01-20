@@ -42,6 +42,13 @@ namespace Gloobster.Portal.Controllers.Portal
 			return View();
 	    }
 
-	    
+        public IActionResult Test2()
+        {
+            var city = GeoNames.GetCityByIdAsync(1120483);
+
+            return View();
+        }
+
+
     }
 }

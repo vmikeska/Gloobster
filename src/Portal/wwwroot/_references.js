@@ -7,6 +7,7 @@
 /// <reference path="js/common/countryshapes.js" />
 /// <reference path="js/common/delayedcallback.js" />
 /// <reference path="js/common/facebookpermissions.js" />
+/// <reference path="js/common/filedad.js" />
 /// <reference path="js/common/fileupload.js" />
 /// <reference path="js/common/globals.js" />
 /// <reference path="js/common/placesearchbox.js" />
