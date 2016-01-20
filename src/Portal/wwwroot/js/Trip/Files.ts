@@ -8,6 +8,7 @@
 		public inputId: string;
 		public entityId: string;
 		public isMasterFile: boolean;
+		public adderContainer: string;
 	}
 
 	export class Files {
@@ -17,12 +18,14 @@
 		private template: any;
 		private createTemplate: any;
 		public fileUpload: Common.FileUpload;
+		public fileDaD: Common.FileDaD;
 		public files: any[];
 		public static lastIdToDelete: string;
 
 		private config: FilesConfig;
 
 		private $container: any;
+	  private $adderContainer: any;
 		private $adder: any;
 
 		constructor(config: FilesConfig) {
@@ -33,6 +36,10 @@
 
 			this.config = config;
 			this.$container = $("#" + config.containerId);
+
+		  if (config.addAdder) {
+			  this.$adderContainer = $("#" + config.adderContainer);
+		  }
 
 			var source = $("#" + config.templateId).html();
 			this.template = Handlebars.compile(source);
@@ -57,18 +64,9 @@
 		}
 
 		private addAdder() {
-			// var sourceCrt = $("#fileCreate-template").html();
-			//this.createTemplate = Handlebars.compile(sourceCrt);
-			//var adderHtml = this.createTemplate();
-
-		 var adderHtml = `<input id="${this.config.inputId}" type="file" />`;
-		 var progressBarHtml = '<span id="progressBar" style="color: red;">0</span><span>%</span>';
-			this.$adder = $(adderHtml + progressBarHtml);
-			this.$container.html(this.$adder);
-
-			
-			//var $pbh = $(progressBarHtml);
-			//this.$adder.after($pbh);
+		 this.fileDaD = new Common.FileDaD(this.config.inputId);			
+		 this.$adder = this.fileDaD.$instance;		 
+		 this.$adderContainer.html(this.$adder);		 
 		}
 
 		public setFiles(files, tripId) {
@@ -177,6 +175,9 @@
 			config.endpoint = "TripFile";
 
 			this.fileUpload = new Common.FileUpload(config);
+			this.fileDaD.onFiles = (files) => {
+				this.fileUpload.filesEvent(files);
+			};
 
 			this.fileUpload.onProgressChanged = (percent) => {
 				$("#progressBar").text(percent);

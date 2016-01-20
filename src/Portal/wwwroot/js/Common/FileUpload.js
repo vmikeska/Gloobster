@@ -30,11 +30,14 @@ var Common;
             this.config = config;
             this.$input = $("#" + this.config.inputId);
             this.$input.change(function (e) {
-                _this.files = e.target.files;
-                _this.currentFile = _this.files[0];
-                _this.sendBlobToServer(true);
+                _this.filesEvent(e.target.files);
             });
         }
+        FileUpload.prototype.filesEvent = function (files) {
+            this.files = files;
+            this.currentFile = this.files[0];
+            this.sendBlobToServer(true);
+        };
         FileUpload.prototype.resetValues = function () {
             this.lastEnd = 0;
             this.currentStart = 0;

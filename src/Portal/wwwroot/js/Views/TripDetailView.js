@@ -21,6 +21,7 @@ var Views;
             filesConfig.editable = true;
             filesConfig.addAdder = true;
             filesConfig.isMasterFile = true;
+            filesConfig.adderContainer = "filesPickerBox";
             this.files = new Trip.Files(filesConfig);
             this.setFilesCustomConfig(id);
             this.getTrip(id);

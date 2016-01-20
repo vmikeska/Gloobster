@@ -39,14 +39,16 @@
 			this.$input = $("#" + this.config.inputId);
 
 			this.$input.change(e => {
-
-				this.files = e.target.files;
-				this.currentFile = this.files[0];
-
-				this.sendBlobToServer(true);
+				this.filesEvent(e.target.files);
 			});
 		}
 
+	  public filesEvent(files) {
+		 this.files = files;
+		 this.currentFile = this.files[0];
+
+		 this.sendBlobToServer(true);
+	  }
 
 		private resetValues() {
 			this.lastEnd = 0;

@@ -14,6 +14,9 @@ var Trip;
             }
             this.config = config;
             this.$container = $("#" + config.containerId);
+            if (config.addAdder) {
+                this.$adderContainer = $("#" + config.adderContainer);
+            }
             var source = $("#" + config.templateId).html();
             this.template = Handlebars.compile(source);
             if (config.addAdder) {
@@ -32,15 +35,9 @@ var Trip;
             });
         }
         Files.prototype.addAdder = function () {
-            // var sourceCrt = $("#fileCreate-template").html();
-            //this.createTemplate = Handlebars.compile(sourceCrt);
-            //var adderHtml = this.createTemplate();
-            var adderHtml = "<input id=\"" + this.config.inputId + "\" type=\"file\" />";
-            var progressBarHtml = '<span id="progressBar" style="color: red;">0</span><span>%</span>';
-            this.$adder = $(adderHtml + progressBarHtml);
-            this.$container.html(this.$adder);
-            //var $pbh = $(progressBarHtml);
-            //this.$adder.after($pbh);
+            this.fileDaD = new Common.FileDaD(this.config.inputId);
+            this.$adder = this.fileDaD.$instance;
+            this.$adderContainer.html(this.$adder);
         };
         Files.prototype.setFiles = function (files, tripId) {
             this.files = files;
@@ -135,6 +132,9 @@ var Trip;
             config.inputId = this.config.inputId;
             config.endpoint = "TripFile";
             this.fileUpload = new Common.FileUpload(config);
+            this.fileDaD.onFiles = function (files) {
+                _this.fileUpload.filesEvent(files);
+            };
             this.fileUpload.onProgressChanged = function (percent) {
                 $("#progressBar").text(percent);
             };

@@ -26,6 +26,7 @@ var Trip;
             filesConfig.templateId = "fileItem-template";
             filesConfig.editable = true;
             filesConfig.addAdder = true;
+            filesConfig.adderContainer = "filesPickerBoxDialog";
             filesConfig.entityId = entityId;
             var customData = new Common.TripFileCustom();
             customData.tripId = this.planner.trip.tripId;
