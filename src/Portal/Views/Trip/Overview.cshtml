@@ -22,8 +22,14 @@
 <script type="text/javascript" src="@Url.Content("~/js/Trip/Utils.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Trip/PlacesManager.js")"></script>
 
+<style>    
+    .noFiles {
+        word-spacing: 0;
+    }
+</style>
 
-<section class="adventure-background line margin padding">
+
+<section id="bckPhoto" class="adventure-background line margin padding">
 	<div class="wrapper">
 		<div class="table margin width100">
 			<div class="cell middle">
@@ -71,6 +77,23 @@
 	</div>
 </section>
 
+
+
+
+<style>
+    #bckPhoto {    
+        @if (Model.Photo != null)
+        {
+            @Html.Raw($"background: transparent url('../../Trip/TripPicture/{Model.TripId}') center top no-repeat")
+        }
+        else
+        {
+            @Html.Raw("background: transparent url('../../images/samples/sample13.jpg') center top no-repeat")        
+        }
+    }
+
+</style>
+
 @Html.Partial("Comments")
 
 @Html.Partial("Files")
@@ -93,12 +116,12 @@
 <script>
 	
 
-		function onBodyLoad() {			
-			currentView = new Views.TripViewView();
-			var urlParams = window.location.pathname.split("/");
-			var id = urlParams[urlParams.length - 1];
+    function onBodyLoad() {			
+        currentView = new Views.TripViewView();
+        var urlParams = window.location.pathname.split("/");
+        var id = urlParams[urlParams.length - 1];
 						
-			currentView.initialize(id);
-	}
+        currentView.initialize(id);
+    }
 
 </script>

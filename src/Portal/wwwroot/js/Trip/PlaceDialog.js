@@ -20,7 +20,7 @@ var Trip;
         PlaceDialog.prototype.createView = function (data) {
             this.buildTemplateView(this.$rowCont, data);
             this.files = this.dialogManager.createFilesInstanceView(data.id, Common.TripEntityType.Place);
-            this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId);
+            this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);
         };
         PlaceDialog.prototype.createEdit = function (data) {
             var _this = this;
@@ -36,7 +36,7 @@ var Trip;
                 });
             }
             this.files = this.dialogManager.createFilesInstance(data.id, Common.TripEntityType.Place);
-            this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId);
+            this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);
         };
         PlaceDialog.prototype.createNameSearch = function (data) {
             var _this = this;

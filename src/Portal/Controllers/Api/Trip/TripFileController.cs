@@ -34,8 +34,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 		[HttpPost]
 		[Authorize]
 		public IActionResult Post([FromBody] TripFileRequest request)
-		{
-			
+		{			
 			var tripIdObj = new ObjectId(request.tripId);
 			var fileLocation = FileDomain.Storage.Combine("trips", request.tripId);
 			var savedFileName = Guid.NewGuid().ToString().Replace("-", string.Empty);
@@ -56,6 +55,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 				
 				var newFile = new FileSE
 				{
+                    id = ObjectId.GenerateNewId(),
 					PortalUser_id = UserIdObj,
 					OriginalFileName = request.fileName,
 					SavedFileName = argsObj.FileName,
@@ -64,10 +64,20 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 					EntityType = request.entityType
 				};
 
-				var filter = DB.F<TripEntity>().Eq(p => p.id, tripIdObj);
-				var update = DB.U<TripEntity>().Push(p => p.Files, newFile);
-				DB.UpdateAsync(filter, update);
-			};
+			    var newPublic = new FilePublicSE
+			    {
+			        File_id = newFile.id,
+			        IsPublic = false
+			    };
+
+				var f1 = DB.F<TripEntity>().Eq(p => p.id, tripIdObj);
+				var u1 = DB.U<TripEntity>().Push(p => p.Files, newFile);
+				DB.UpdateAsync(f1, u1);
+
+                var f2 = DB.F<TripEntity>().Eq(p => p.id, tripIdObj);
+                var u2 = DB.U<TripEntity>().Push(p => p.FilesPublic, newPublic);
+                DB.UpdateAsync(f2, u2);
+            };
 
 			var filePartDo = new WriteFilePartDO
 			{
@@ -112,7 +122,10 @@ namespace Gloobster.Portal.Controllers.Api.Trip
             if (trip.Files != null)
 			{
 				//todo: check rights				
-				var fileToDelete = trip.Files.FirstOrDefault(f => f.SavedFileName == fileId);
+
+			    var id = new ObjectId(fileId);
+                var fileToDelete = trip.Files.FirstOrDefault(f => f.id == id);
+			    var publicInfoToDelete = trip.FilesPublic.FirstOrDefault(f => f.File_id == id);
 
 				if (fileToDelete == null)
 				{
@@ -120,11 +133,15 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 					throw new Exception();
 				}
 
-				var filter = DB.F<TripEntity>().Eq(p => p.id, tripIdObj);
-				var update = DB.U<TripEntity>().Pull(p => p.Files, fileToDelete);
-				await DB.UpdateAsync(filter, update);
-				
-				var fileLocation = Path.Combine("Trips", tripId, fileToDelete.SavedFileName);
+				var f1 = DB.F<TripEntity>().Eq(p => p.id, tripIdObj);
+				var u1 = DB.U<TripEntity>().Pull(p => p.Files, fileToDelete);
+				await DB.UpdateAsync(f1, u1);
+
+                var f2 = DB.F<TripEntity>().Eq(p => p.id, tripIdObj);
+                var u2 = DB.U<TripEntity>().Pull(p => p.FilesPublic, publicInfoToDelete);
+                await DB.UpdateAsync(f2, u2);
+
+                var fileLocation = Path.Combine("Trips", tripId, fileToDelete.SavedFileName);
 				FileDomain.DeleteFile(fileLocation);
 
 				trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);

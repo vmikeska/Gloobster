@@ -53,10 +53,12 @@
 <script id="fileItem-template" type="text/x-handlebars-template">
 		<div class="cell">
 				<div class="document">						
-						<a class="file {{fileType}}" href="/Trip/GetFile?fileId={{fileId}}&tripId={{tripId}}">{{fileName}}</a>
-						@*<a class="delete" href="#delete">Delete</a>*@
+						<a class="file {{fileType}}" href="/Trip/GetFile?fileId={{id}}&tripId={{tripId}}">{{fileName}}</a>
+						
 						{{#if editable}}
-						<a class="delete popup-target" data-target="#popup-delete" data-id="{{fileId}}" href="#">d</a>
+						<a class="delete popup-target" data-target="#popup-delete" data-id="{{id}}" href="#">d</a>
+                        <input id="filePublic{{id}}" type="checkbox" />
+                        <label class="mleft10" for="filePublic{{id}}">Public</label>
 						{{/if}}
 				</div>
 		</div>
@@ -75,9 +77,8 @@
 						<div class="cell baseline color1">June averages: Day 32°C • Night 16°C</div>
 				</div>
 				<textarea id="dialogDescription" placeholder="Description or related files"></textarea>
-				<div id="entityDocs" class="documents grid col3 margin">
-						
-						@*<input id="entityFileInput" type="file" />*@
+				<div id="entityDocs" class="documents grid col3 margin">						
+                    <span class="noFiles">No files has been added yet</span>
 				</div>
                 <div id="filesPickerBoxDialog"></div>
 				<div class="table row">
@@ -254,7 +255,7 @@
 				<a class="close" href="#">Close</a>
 				<textarea id="dialogDescription" placeholder="Description or related files"></textarea>
 				<div id="entityDocs" class="documents grid col3 margin">
-						@*<input id="entityFileInput" type="file" />*@
+                    <span class="noFiles">No files has been added yet</span>
 				</div>
                 <div id="filesPickerBoxDialog"></div>
 				@*<p class="blue-info color1">This information has been imported from uploaded files. Feel free to edit it.</p>*@

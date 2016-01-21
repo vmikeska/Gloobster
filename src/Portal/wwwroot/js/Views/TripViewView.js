@@ -52,7 +52,7 @@ var Views;
         TripViewView.prototype.onTripLoaded = function (request) {
             this.trip = request;
             this.initAcceptCombo();
-            this.files.setFiles(this.trip.files, this.trip.tripId);
+            this.files.setFiles(this.trip.files, this.trip.tripId, this.trip.filesPublic);
             this.comments = new Trip.Comments();
             this.comments.comments = this.trip.comments;
             this.comments.users = this.trip.users;

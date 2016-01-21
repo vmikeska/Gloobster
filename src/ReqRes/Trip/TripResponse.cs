@@ -20,8 +20,9 @@ namespace Gloobster.ReqRes.Trip
 		public List<CommentResponse> comments { get; set; }
 
 		public List<FileResponse> files { get; set; }
+        public List<FilePublicResponse> filesPublic { get; set; }
 
-		public List<TripPlaceResponse>  places { get; set; }
+        public List<TripPlaceResponse>  places { get; set; }
 		public List<TripTravelResponse> travels { get; set; }
 
 		public List<ParticipantResponse> participants { get; set; }
@@ -46,7 +47,8 @@ namespace Gloobster.ReqRes.Trip
 		public string addressText { get; set; }
 		public List<PlaceIdResponse> wantVisit { get; set; }
 		public List<FileResponse> files { get; set; }
-	}
+        public List<FilePublicResponse> filesPublic { get; set; }
+    }
 
 	public class PlaceResponse
 	{
@@ -70,7 +72,8 @@ namespace Gloobster.ReqRes.Trip
 		public TravelType type { get; set; }
 		public string description { get; set; }
 		public List<FileResponse> files { get; set; }
-		public FlightResponse flightFrom { get; set; }
+        public List<FilePublicResponse> filesPublic { get; set; }
+        public FlightResponse flightFrom { get; set; }
 		public FlightResponse flightTo { get; set; }
 		public DateTime? leavingDateTime { get; set; }
 		public DateTime? arrivingDateTime { get; set; }

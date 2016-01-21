@@ -14,6 +14,7 @@ var Trip;
             }
             this.config = config;
             this.$container = $("#" + config.containerId);
+            this.$noFiles = this.$container.find(".noFiles");
             if (config.addAdder) {
                 this.$adderContainer = $("#" + config.adderContainer);
             }
@@ -39,7 +40,8 @@ var Trip;
             this.$adder = this.fileDaD.$instance;
             this.$adderContainer.html(this.$adder);
         };
-        Files.prototype.setFiles = function (files, tripId) {
+        Files.prototype.setFiles = function (files, tripId, filesPublic) {
+            this.filesPublic = filesPublic;
             this.files = files;
             this.tripId = tripId;
             this.onFilesSet();
@@ -48,14 +50,20 @@ var Trip;
             this.displayFiles();
         };
         Files.prototype.displayFiles = function () {
+            var _this = this;
             this.generateFiles();
             if (this.config.editable) {
                 $(".delete").click(function (evnt) {
                     Files.lastIdToDelete = $(evnt.target).data("id");
                 });
-            }
-            else {
-                $(".delete").hide();
+                $(".filePublic").change(function (e) {
+                    var $target = $(e.target);
+                    var fileId = $target.data("id");
+                    var state = $target.prop("checked");
+                    var prms = { fileId: fileId, tripId: _this.tripId, state: state };
+                    Views.ViewBase.currentView.apiPut("tripFilePublic", prms, function (res) {
+                    });
+                });
             }
         };
         Files.prototype.callDelete = function (fileId) {
@@ -86,19 +94,29 @@ var Trip;
         };
         Files.prototype.generateFiles = function () {
             var _this = this;
-            this.$container.children().not(this.$adder).remove();
-            if (this.files) {
+            this.$container.children().not(this.$adder).not(this.$noFiles).remove();
+            if (this.files && this.files.length > 0) {
+                this.$noFiles.hide();
                 this.files.forEach(function (file) {
+                    var filePublic = _.find(_this.filesPublic, function (f) {
+                        return f.fileId === file.id;
+                    });
                     var html = _this.generateFile(file);
-                    _this.$container.prepend(html);
+                    var $html = $(html);
+                    $html.find("#filePublic" + file.id).prop("checked", filePublic.isPublic);
+                    _this.$container.prepend($html);
                 });
+            }
+            else {
+                this.$noFiles.show();
             }
         };
         //doc xml html pdf
         Files.prototype.generateFile = function (file) {
             var context = {
                 fileName: this.getShortFileName(file.originalFileName),
-                fileId: file.savedFileName,
+                //fileId: file.savedFileName,
+                id: file.id,
                 fileType: this.getFileType(file.originalFileName),
                 tripId: this.tripId,
                 editable: this.config.editable
@@ -148,7 +166,6 @@ var Trip;
                 _this.fileUpload.filesEvent(files);
             };
             this.fileUpload.onProgressChanged = function (percent) {
-                //$("#progressBar").text(percent);
                 $(".pb_all").show();
                 $(".pb_percent").text(percent + "%");
                 $(".pb_inner").css("width", percent + "%");

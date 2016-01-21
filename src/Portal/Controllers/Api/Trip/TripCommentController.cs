@@ -37,7 +37,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 			}
 
 			var newComment = new CommentSE
-			{
+			{                
 				PortalUser_id = UserIdObj,
 				PostDate = DateTime.UtcNow,
 				Text = request.text
@@ -46,16 +46,12 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 			var filter = DB.F<TripEntity>().Eq(p => p.id, tripIdObj);
 			var update = DB.U<TripEntity>().Push(p => p.Comments, newComment);
 			await DB.UpdateAsync(filter, update);
-			
-			var comments = new List<CommentSE> {newComment};
-			if (trip.Comments != null)
+            
+            trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
+            
+            var response = new NewCommentResponse
 			{
-				comments.AddRange(trip.Comments);
-			}
-			
-			var response = new NewCommentResponse
-			{
-				comments = comments.Select(c => c.ToResponse()).OrderByDescending(c => c.postDate).ToList(),
+				comments = trip.Comments.Select(c => c.ToResponse()).OrderByDescending(c => c.postDate).ToList(),
 				users = TripDomain.GetCommentsUsers(trip.Comments, DB)
 			};
 			

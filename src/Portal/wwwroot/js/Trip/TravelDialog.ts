@@ -30,8 +30,8 @@ module Trip {
 		private createView(data) {
 			this.buildTemplateView(data);
 
-			this.files = this.dialogManager.createFilesInstanceView(data.id, Common.TripEntityType.Travel);
-			this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId);
+			this.files = this.dialogManager.createFilesInstanceView(data.id, Common.TripEntityType.Travel);			
+			this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);
 		}
 
 		private buildTemplateView(data) {
@@ -78,8 +78,8 @@ module Trip {
 
 			this.dialogManager.initDescription(data.description, Common.TripEntityType.Travel);
 
-			this.files = this.dialogManager.createFilesInstance(data.id, Common.TripEntityType.Travel);
-			this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId);
+			this.files = this.dialogManager.createFilesInstance(data.id, Common.TripEntityType.Travel);			
+			this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);
 
 			this.initAirport(data.flightFrom, "airportFrom", "flightFrom");
 			this.initAirport(data.flightTo, "airportTo", "flightTo");

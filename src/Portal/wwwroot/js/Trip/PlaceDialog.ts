@@ -30,8 +30,8 @@ module Trip {
 		private createView(data) {
 			this.buildTemplateView(this.$rowCont, data);
 
-			this.files = this.dialogManager.createFilesInstanceView(data.id, Common.TripEntityType.Place);
-			this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId);
+			this.files = this.dialogManager.createFilesInstanceView(data.id, Common.TripEntityType.Place);			
+			this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);
 		}
 
 		private createEdit(data) {
@@ -53,8 +53,8 @@ module Trip {
 				});
 			}
 
-			this.files = this.dialogManager.createFilesInstance(data.id, Common.TripEntityType.Place);
-			this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId);
+			this.files = this.dialogManager.createFilesInstance(data.id, Common.TripEntityType.Place);			
+			this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);
 		}
 
 		private createNameSearch(data) {

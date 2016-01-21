@@ -4,7 +4,7 @@
 				<div class="team grid col5">
 						@foreach (var participant in Model.Participants)
 						{
-								await Html.RenderPartialAsync("Participant", (object)participant);
+							await Html.RenderPartialAsync("Participant", (object)participant);
 						}
 
 						@*<div class="cell">

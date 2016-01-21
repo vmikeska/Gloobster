@@ -21,7 +21,7 @@ var Trip;
         TravelDialog.prototype.createView = function (data) {
             this.buildTemplateView(data);
             this.files = this.dialogManager.createFilesInstanceView(data.id, Common.TripEntityType.Travel);
-            this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId);
+            this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);
         };
         TravelDialog.prototype.buildTemplateView = function (data) {
             var context = {
@@ -53,7 +53,7 @@ var Trip;
             this.initTravelType(data.type);
             this.dialogManager.initDescription(data.description, Common.TripEntityType.Travel);
             this.files = this.dialogManager.createFilesInstance(data.id, Common.TripEntityType.Travel);
-            this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId);
+            this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);
             this.initAirport(data.flightFrom, "airportFrom", "flightFrom");
             this.initAirport(data.flightTo, "airportTo", "flightTo");
             this.initDatePicker("leavingDate", "leavingDateTime", data.leavingDateTime);

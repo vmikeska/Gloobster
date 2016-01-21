@@ -58,7 +58,7 @@ var Views;
         };
         TripDetailView.prototype.onTripLoaded = function (request) {
             this.trip = request;
-            this.files.setFiles(this.trip.files, this.trip.tripId);
+            this.files.setFiles(this.trip.files, this.trip.tripId, this.trip.filesPublic);
             this.registerPhotoUpload();
             this.planner = new Trip.Planner(this.trip, true);
         };

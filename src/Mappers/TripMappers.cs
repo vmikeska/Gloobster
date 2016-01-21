@@ -71,7 +71,12 @@ namespace Gloobster.Mappers
 				response.files = entity.Files.Select(c => c.ToResponse()).ToList();
 			}
 
-			if (entity.Travels != null)
+            if (entity.FilesPublic != null)
+            {
+                response.filesPublic = entity.FilesPublic.Select(c => c.ToResponse()).ToList();
+            }
+
+            if (entity.Travels != null)
 			{
 				response.travels = entity.Travels.Select(t => t.ToResponse()).ToList();
 			}
@@ -284,6 +289,7 @@ namespace Gloobster.Mappers
 		{
 			var response = new FileResponse
 			{
+                id = entity.id.ToString(),
 				originalFileName = entity.OriginalFileName,
 				savedFileName = entity.SavedFileName,
 				ownerId = entity.PortalUser_id.ToString(),
@@ -293,7 +299,18 @@ namespace Gloobster.Mappers
 			return response;
 		}
 
-		public static CommentResponse ToResponse(this CommentSE entity)
+        public static FilePublicResponse ToResponse(this FilePublicSE e)
+        {
+            var r = new FilePublicResponse
+            {
+                fileId = e.File_id.ToString(),
+                isPublic = e.IsPublic
+            };
+
+            return r;
+        }
+
+        public static CommentResponse ToResponse(this CommentSE entity)
 		{
 			var request = new CommentResponse
 			{

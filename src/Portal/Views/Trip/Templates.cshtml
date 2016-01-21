@@ -22,8 +22,15 @@
 <script id="file-template" type="text/x-handlebars-template">
 		<div class="cell">
 				<div class="document">
-						<a class="file {{fileType}}" href="/Trip/GetFile?fileId={{fileId}}&tripId={{tripId}}">{{fileName}}</a>
-						<a class="delete popup-target" data-target="#popup-delete" data-id="{{fileId}}" href="#">Delete file</a>						
+						<a class="file {{fileType}}" href="/Trip/GetFile?fileId={{id}}&tripId={{tripId}}">{{fileName}}</a>
+					
+                    {{#if editable}}
+                    <a class="delete popup-target" data-target="#popup-delete" data-id="{{id}}" href="#">Delete file</a>
+                    <input id="filePublic{{id}}" class="filePublic" data-id="{{id}}" type="checkbox" />
+                    <label class="mleft10" for="filePublic{{id}}">Public</label>
+                    {{/if}}
+                    
+                    
 				</div>
 		</div>
 </script>

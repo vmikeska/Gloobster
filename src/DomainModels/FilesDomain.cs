@@ -2,14 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using AzureBlobFileSystem;
 using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
+using Gloobster.Entities.Trip;
 using Gloobster.Enums;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
+using MongoDB.Bson;
 using Serilog;
 
 namespace Gloobster.DomainModels
@@ -39,11 +42,6 @@ namespace Gloobster.DomainModels
 			string storageFilePath = Storage.Combine(fileDirectory, fileName);
 			var stream = Storage.GetFile(storageFilePath).OpenRead();
 			return stream;
-			//using (var reader = new StreamReader())
-			//{
-			//	var stringPart = reader.ReadToEnd();
-			//	stringParts.Add(stringPart);
-			//}
 		}
 
 		public void DeleteFile(string filePath)
@@ -87,8 +85,19 @@ namespace Gloobster.DomainModels
 			}
 		}
 
+	    public async Task<bool> ChangeFilePublic(string tripId, string fileId, bool state)
+	    {
+	        var tripIdObj = new ObjectId(tripId);
+	        var fileIdObj = new ObjectId(fileId);
 
-
+            var f = DB.F<TripEntity>().Eq(p => p.id, tripIdObj) 
+                & DB.F<TripEntity>().Eq("FilesPublic.File_id", fileIdObj);
+            var u = DB.U<TripEntity>().Set("FilesPublic.$.IsPublic", state);
+            var res = await DB.UpdateAsync(f, u);
+            
+	        return res.ModifiedCount == 1;
+	    }
+        
 		private DataObj SplitData(string inputData)
 		{
 			var requestParams = inputData.Split(',');
@@ -181,16 +190,7 @@ namespace Gloobster.DomainModels
 				writer.Write(data);		
 			}		
 		}
-
-		//private void CreatePathIfNotExists(string path)
-		//{
-		//	bool exists = Storage.ListFolders(path).Any();
-		//	if (!exists)
-		//	{
-		//		Storage.CreateFolder(path);
-		//	}
-		//}
-
+        
 		private void CleanFilePartsCache()
 		{
 			Log.Debug("FIDO: before files listed");

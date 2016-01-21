@@ -110,7 +110,8 @@ namespace Gloobster.Portal.Controllers.Portal
 				Files = new List<FileSE>(),
 				Travels = new List<TripTravelSE> { travel},
 				Places = new List<TripPlaceSE> { firstPlace, secondPlace},
-				Participants = new List<ParticipantSE>(),				
+				Participants = new List<ParticipantSE>(),
+                FilesPublic = new List<FilePublicSE>()
 			};
 
 
@@ -160,23 +161,47 @@ namespace Gloobster.Portal.Controllers.Portal
 			viewModel.Notes = trip.Notes;
 			viewModel.NotesPublic = trip.NotesPublic;
 			viewModel.IsOwner = (trip.PortalUser_id == DBUserId);
+		    viewModel.Photo = trip.Picture;
 
 			if (trip.Participants != null)
 			{
-				var participantIds = trip.Participants.Select(p => p.PortalUser_id);
-				var participantUsers = DB.C<PortalUserEntity>().Where(u => participantIds.Contains(u.id)).ToList();
+				var participantIds = trip.Participants.Select(p => p.PortalUser_id).ToList();
+			    participantIds.Add(DBUserId);
+                var participantUsers = DB.C<PortalUserEntity>().Where(u => participantIds.Contains(u.id)).ToList();
 
 				viewModel.Participants = participantUsers.Select(p => new TripParticipantViewModel
 				{
 					DisplayName = p.DisplayName,
-					PhotoUrl = "~/images/samples/sample12.jpg"
-				}).ToList();
+					PhotoUrl = "/PortalUser/ProfilePicture/" + p.id
+                }).ToList();
 			}
 
 			return View(viewModel);
 		}
 
-		private ParticipantSE GetParticipant(TripEntity trip, ObjectId userId)
+        public IActionResult TripPicture(string id = null)
+        {
+            var fileLocation = "tpf";
+            var tripIdObj = new ObjectId(id);
+            var trip = DB.C<TripEntity>().FirstOrDefault(u => u.id == tripIdObj);
+
+            if (trip.Picture == null)
+            {
+                return new ObjectResult("");
+            }
+
+            var filePath = FileDomain.Storage.Combine(fileLocation, trip.Picture);
+            bool exists = FileDomain.Storage.FileExists(filePath);
+            if (exists)
+            {
+                var fileStream = FileDomain.GetFile(fileLocation, trip.Picture);
+                return new FileStreamResult(fileStream, "image/jpeg");
+            }
+
+            return new ObjectResult("");
+        }
+
+        private ParticipantSE GetParticipant(TripEntity trip, ObjectId userId)
 		{
 			if (trip.Participants == null)
 			{

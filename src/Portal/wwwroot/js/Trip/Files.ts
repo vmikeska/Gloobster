@@ -20,13 +20,15 @@
 		public fileUpload: Common.FileUpload;
 		public fileDaD: Common.FileDaD;
 		public files: any[];
+		public filesPublic: any[];
 		public static lastIdToDelete: string;
 
 		private config: FilesConfig;
 
 		private $container: any;
-	  private $adderContainer: any;
+		private $adderContainer: any;
 		private $adder: any;
+		private $noFiles: any;
 
 		constructor(config: FilesConfig) {
 
@@ -36,10 +38,11 @@
 
 			this.config = config;
 			this.$container = $("#" + config.containerId);
+			this.$noFiles = this.$container.find(".noFiles");
 
-		  if (config.addAdder) {
-			  this.$adderContainer = $("#" + config.adderContainer);
-		  }
+			if (config.addAdder) {
+				this.$adderContainer = $("#" + config.adderContainer);
+			}
 
 			var source = $("#" + config.templateId).html();
 			this.template = Handlebars.compile(source);
@@ -64,12 +67,13 @@
 		}
 
 		private addAdder() {
-		 this.fileDaD = new Common.FileDaD(this.config.inputId);			
-		 this.$adder = this.fileDaD.$instance;		 
-		 this.$adderContainer.html(this.$adder);		 
+			this.fileDaD = new Common.FileDaD(this.config.inputId);
+			this.$adder = this.fileDaD.$instance;
+			this.$adderContainer.html(this.$adder);
 		}
 
-		public setFiles(files, tripId) {
+		public setFiles(files, tripId, filesPublic) {
+			this.filesPublic = filesPublic;
 			this.files = files;
 			this.tripId = tripId;
 
@@ -88,8 +92,15 @@
 					Files.lastIdToDelete = $(evnt.target).data("id");
 				});
 
-			} else {
-				$(".delete").hide();
+				$(".filePublic").change((e) => {
+					var $target = $(e.target);
+					var fileId = $target.data("id");
+					var state = $target.prop("checked");
+					var prms = { fileId: fileId, tripId: this.tripId, state: state };
+					Views.ViewBase.currentView.apiPut("tripFilePublic", prms, (res) => {
+						
+					});
+				});
 			}
 		}
 
@@ -122,12 +133,20 @@
 		}
 
 		private generateFiles() {
-			this.$container.children().not(this.$adder).remove();
-			if (this.files) {
+			this.$container.children().not(this.$adder).not(this.$noFiles).remove();
+			if (this.files && this.files.length > 0) {
+				this.$noFiles.hide();
 				this.files.forEach((file) => {
+					var filePublic = _.find(this.filesPublic, (f) => {
+					 return f.fileId === file.id;
+					});
 					var html = this.generateFile(file);
-					this.$container.prepend(html);
+					var $html = $(html);
+					$html.find("#filePublic" + file.id).prop("checked", filePublic.isPublic);
+					this.$container.prepend($html);
 				});
+			} else {
+				this.$noFiles.show();
 			}
 		}
 
@@ -135,7 +154,8 @@
 		private generateFile(file) {
 			var context = {
 				fileName: this.getShortFileName(file.originalFileName),
-				fileId: file.savedFileName,
+				//fileId: file.savedFileName,
+			  id: file.id,
 				fileType: this.getFileType(file.originalFileName),
 				tripId: this.tripId,
 				editable: this.config.editable
@@ -168,15 +188,15 @@
 			var act = 0;
 			var outName = "";
 			fileName.split("").forEach((char) => {
-			 if (outName.length > 30) {
-				return;
-			 }				
-			  act++;
+				if (outName.length > 30) {
+					return;
+				}
+				act++;
 				outName += char;
 				if (act === 10) {
 					outName += "-";
 					act = 0;
-				}				
+				}
 			});
 
 			return outName;
@@ -193,15 +213,14 @@
 			};
 
 			this.fileUpload.onProgressChanged = (percent) => {
-			 //$("#progressBar").text(percent);
 				$(".pb_all").show();
-			 $(".pb_percent").text(percent + "%");
+				$(".pb_percent").text(percent + "%");
 				$(".pb_inner").css("width", percent + "%");
-
 			}
+
 			this.fileUpload.onUploadFinished = (file, files) => {
-			 $(".pb_all").hide();
-			 this.filterFiles(files);
+				$(".pb_all").hide();
+				this.filterFiles(files);
 			}
 		}
 

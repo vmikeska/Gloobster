@@ -43,6 +43,10 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 				{
 					var entityFiles = trip.Files.Where(f => f.EntityId == request.id).ToList();
 					response.files = entityFiles.Select(f => f.ToResponse()).ToList();
+                    var fileIds = entityFiles.Select(f => f.id).ToList();
+				    response.filesPublic = trip.FilesPublic
+                        .Where(fp => fileIds.Contains(fp.File_id))
+                        .Select(f => f.ToResponse()).ToList();
 				}
 
 				objToReturn = response;
@@ -57,7 +61,11 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 				{
 					var entityFiles = trip.Files.Where(f => f.EntityId == request.id).ToList();
 					response.files = entityFiles.Select(f => f.ToResponse()).ToList();
-				}
+                    var fileIds = entityFiles.Select(f => f.id).ToList();
+                    response.filesPublic = trip.FilesPublic
+                        .Where(fp => fileIds.Contains(fp.File_id))
+                        .Select(f => f.ToResponse()).ToList();
+                }
 
 				objToReturn = response;
 			}

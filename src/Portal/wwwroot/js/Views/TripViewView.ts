@@ -61,7 +61,7 @@
 
 			this.initAcceptCombo();
 
-			this.files.setFiles(this.trip.files, this.trip.tripId);
+			this.files.setFiles(this.trip.files, this.trip.tripId, this.trip.filesPublic);
 
 			this.comments = new Trip.Comments();
 			this.comments.comments = this.trip.comments;

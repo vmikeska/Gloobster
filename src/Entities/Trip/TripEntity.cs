@@ -23,6 +23,7 @@ namespace Gloobster.Entities.Trip
 		public List<CommentSE> Comments { get; set; }
 
 		public List<FileSE> Files { get; set; }
+        public List<FilePublicSE> FilesPublic { get; set; }
 
 		public List<ParticipantSE> Participants { get; set; } 
 
