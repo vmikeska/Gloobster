@@ -161,12 +161,25 @@
 		}
 
 		private getShortFileName(fileName) {
-			if (fileName.length <= 24) {
+			if (fileName.length <= 13) {
 				return fileName;
 			}
 
-			var prms = fileName.split(".");
-			return prms[0].substring(0, 20) + "... ." + prms[prms.length - 1];
+			var act = 0;
+			var outName = "";
+			fileName.split("").forEach((char) => {
+			 if (outName.length > 30) {
+				return;
+			 }				
+			  act++;
+				outName += char;
+				if (act === 10) {
+					outName += "-";
+					act = 0;
+				}				
+			});
+
+			return outName;
 		}
 
 		private registerFileUpload() {
@@ -180,10 +193,15 @@
 			};
 
 			this.fileUpload.onProgressChanged = (percent) => {
-				$("#progressBar").text(percent);
+			 //$("#progressBar").text(percent);
+				$(".pb_all").show();
+			 $(".pb_percent").text(percent + "%");
+				$(".pb_inner").css("width", percent + "%");
+
 			}
 			this.fileUpload.onUploadFinished = (file, files) => {
-				this.filterFiles(files);
+			 $(".pb_all").hide();
+			 this.filterFiles(files);
 			}
 		}
 

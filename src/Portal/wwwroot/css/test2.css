@@ -32,12 +32,13 @@
 	position: absolute;
 	z-index: -1;
 }
+
 .dndBoxFile + label
 {
   cursor: pointer;
 
-  height: 70px;
-  line-height: 70px;
+  height: 40px;
+  line-height: 40px;
   white-space: nowrap;
 }
 
@@ -46,4 +47,26 @@
 .dndBoxFile.has-focus + label strong
 {
 	color: #39bfd3;
+}
+
+
+.pb_all {
+    height: 16px;
+    margin-left: 20px;
+    margin-right: 20px;
+    border:1px solid #6BCE70;    
+    background-color: #B4E5B6;
+}
+
+.pb_white {
+    border:1px solid white;
+}
+
+.pb_inner {
+    font-size: 12px;
+    text-align: center;
+    font-weight: bold;
+    height: 14px;
+    width: 0;
+    background-color: #6BCE70;
 }

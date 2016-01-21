@@ -20,6 +20,21 @@
 <script type="text/javascript" src="@Url.Content("~/js/Trip/Utils.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Trip/PlacesManager.js")"></script>
 
+<style>
+    .photoButton input {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+
+    .photoButton label {
+        cursor: pointer;
+    }
+</style>
+
 
 <div class="blue-line margin2"></div>
 
@@ -29,8 +44,14 @@
 			<div class="cell middle">
 				<input id="nameInput" class="heading middle" type="text" placeholder="Edit this" value="@Model.Name">
 					@*http://markusslima.github.io/jquery-filestyle/*@
-										<a class="button border mleft10" href="#">Add photo</a>
-					<input id="photoInput" type="file"  />
+			    <a class="button border mleft10 photoButton" href="#">
+			        <input id="photoInput" type="file" />
+
+                    <label for="photoInput" >
+                        Add photo
+                    </label>			        
+			    </a>
+					
 			</div>
 			<div class="cell middle tright">
 				<a class="button border popup-target" data-target="#popup-share" href="#">Share trip</a>

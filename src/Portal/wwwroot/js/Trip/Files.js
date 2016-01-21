@@ -120,11 +120,23 @@ var Trip;
             return "xml";
         };
         Files.prototype.getShortFileName = function (fileName) {
-            if (fileName.length <= 24) {
+            if (fileName.length <= 13) {
                 return fileName;
             }
-            var prms = fileName.split(".");
-            return prms[0].substring(0, 20) + "... ." + prms[prms.length - 1];
+            var act = 0;
+            var outName = "";
+            fileName.split("").forEach(function (char) {
+                if (outName.length > 30) {
+                    return;
+                }
+                act++;
+                outName += char;
+                if (act === 10) {
+                    outName += "-";
+                    act = 0;
+                }
+            });
+            return outName;
         };
         Files.prototype.registerFileUpload = function () {
             var _this = this;
@@ -136,9 +148,13 @@ var Trip;
                 _this.fileUpload.filesEvent(files);
             };
             this.fileUpload.onProgressChanged = function (percent) {
-                $("#progressBar").text(percent);
+                //$("#progressBar").text(percent);
+                $(".pb_all").show();
+                $(".pb_percent").text(percent + "%");
+                $(".pb_inner").css("width", percent + "%");
             };
             this.fileUpload.onUploadFinished = function (file, files) {
+                $(".pb_all").hide();
                 _this.filterFiles(files);
             };
         };
