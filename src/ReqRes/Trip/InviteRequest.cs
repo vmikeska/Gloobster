@@ -6,6 +6,13 @@ namespace Gloobster.ReqRes.Trip
 	{
 		public string caption { get; set; }
 		public string tripId { get; set; }
-		public List<ParticipantRequest> users { get; set; }		
+		public List<string> users { get; set; }		
 	}
+
+    public class IsAdminRequest
+    {
+        public string id { get; set; }
+        public string tripId { get; set; }
+        public bool isAdmin { get; set; }
+    }
 }

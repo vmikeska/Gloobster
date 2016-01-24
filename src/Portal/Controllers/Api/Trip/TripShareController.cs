@@ -54,13 +54,13 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 			{
 				var plc = new TripPlaceShareResponse
 				{
-					id = place.Id,
+					id = place.id.ToString(),
 					orderNo = place.OrderNo,
 					place = place.Place.ToResponse(),					
 				};
 
-				bool hasLeaving = !string.IsNullOrEmpty(place.LeavingId);
-				bool hasArriving = !string.IsNullOrEmpty(place.ArrivingId);
+				bool hasLeaving = place.LeavingId != ObjectId.Empty;
+				bool hasArriving = place.ArrivingId != ObjectId.Empty;
 
 				if (hasLeaving)
 				{
@@ -80,9 +80,9 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 			return places;
 		}
 
-		private TripTravelSE GetTravel(TripEntity trip, string travelId)
+		private TripTravelSE GetTravel(TripEntity trip, ObjectId travelId)
 		{
-			return trip.Travels.FirstOrDefault(t => t.Id == travelId);
+			return trip.Travels.FirstOrDefault(t => t.id == travelId);
 		}
 
 		private List<TripUsersResponse> GetParticipants(TripEntity trip)

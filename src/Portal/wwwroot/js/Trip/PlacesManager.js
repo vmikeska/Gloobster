@@ -62,11 +62,11 @@ var Trip;
             var _this = this;
             places.forEach(function (place) {
                 var p = _this.mapPlace(place, null, null);
-                if (place.arrivingId) {
+                if (place.arrivingId !== Constants.emptyId) {
                     p.arriving = _this.getOrCreateTravelById(place.arrivingId, travels);
                     p.arriving.to = p;
                 }
-                if (place.leavingId) {
+                if (place.leavingId !== Constants.emptyId) {
                     p.leaving = _this.getOrCreateTravelById(place.leavingId, travels);
                     p.leaving.from = p;
                 }

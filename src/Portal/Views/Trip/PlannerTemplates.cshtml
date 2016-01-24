@@ -57,8 +57,8 @@
 						
 						{{#if editable}}
 						<a class="delete popup-target" data-target="#popup-delete" data-id="{{id}}" href="#">d</a>
-                        <input id="filePublic{{id}}" type="checkbox" />
-                        <label class="mleft10" for="filePublic{{id}}">Public</label>
+                        <input class="filePublic filePublic{{id}}" id="filePublic{{id}}_a" data-id="{{id}}" type="checkbox" />
+                        <label class="mleft10" for="filePublic{{id}}_a">Public</label>
 						{{/if}}
 				</div>
 		</div>

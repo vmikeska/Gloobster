@@ -4,13 +4,12 @@
 		files: Trip.Files;
 		pictureUpload: Common.FileUpload;
 		inviteDialogView: InviteDialogView;
-		shareDialogView: ShareDialogView;
+	 
 		planner: Trip.Planner;
 
 		initialize(id: string) {
 
-		 this.inviteDialogView = new InviteDialogView();
-		 this.shareDialogView = new ShareDialogView();
+		 this.inviteDialogView = new InviteDialogView();		
 
 		 var filesConfig = new Trip.FilesConfig();
 			filesConfig.containerId = "filesContainer";

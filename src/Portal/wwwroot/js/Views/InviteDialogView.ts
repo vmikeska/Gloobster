@@ -2,7 +2,6 @@
 	export class InviteDialogView {
 
 	 private userSearchBox: Common.UserSearchBox;
-	 private shareButtons: Common.ShareButtons;
 		private template: any;
 		private $htmlContainer: any;
 
@@ -45,7 +44,7 @@
 				users: users		
 			}
 
-			ViewBase.currentView.apiPost("TripParticipants", data, response => {
+			ViewBase.currentView.apiPost("TripParticipants", data, r => {
 
 			});
 		}

@@ -63,7 +63,7 @@ namespace Gloobster.Portal.Controllers.Portal
 		        portalUser = PortalUser;
 		    }
             
-			if (PortalUser.ProfileImage == null)
+			if (portalUser.ProfileImage == null)
 			{
 				return new ObjectResult("");
 			}

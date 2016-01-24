@@ -5,17 +5,18 @@ using Gloobster.Entities;
 using Gloobster.Entities.Trip;
 using Gloobster.Mappers;
 using Gloobster.ReqRes.Trip;
+using MongoDB.Bson;
 
 namespace Gloobster.DomainModels.Services.Trip
 {
 	public class TripDomain
 	{
-		public static List<TripUsersResponse> GetCommentsUsers(List<CommentSE> comments, IDbOperations db)
-		{
-			var commentsUsersIds = comments.Select(c => c.PortalUser_id);
-			var commentsUsers = db.C<PortalUserEntity>().Where(u => commentsUsersIds.Contains(u.id)).ToList();
+		public static List<TripUsersResponse> GetUsers(List<ObjectId> ids, IDbOperations db)
+		{			
+			var commentsUsers = db.C<PortalUserEntity>().Where(u => ids.Contains(u.id)).ToList();
 			var commentsUsersResponse = commentsUsers.Select(u => u.ToResponse()).ToList();
 			return commentsUsersResponse;
 		}
-	}
+        
+    }
 }

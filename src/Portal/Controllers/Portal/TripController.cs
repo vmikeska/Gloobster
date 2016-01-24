@@ -12,6 +12,7 @@ using System.IO;
 using Gloobster.Common;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels;
+using Gloobster.DomainModels.Services.Accounts;
 using Gloobster.Entities.Trip;
 using Gloobster.Enums;
 
@@ -56,77 +57,13 @@ namespace Gloobster.Portal.Controllers.Portal
 		}
 		public async Task<IActionResult> CreateNewTrip(string id)
 		{
-
-			var travel = new TripTravelSE
-			{
-				Id = NewId(),
-				Type = TravelType.Plane,
-				LeavingDateTime = DateTime.UtcNow,
-				ArrivingDateTime = DateTime.UtcNow.AddDays(1),
-				Description = "Here you can place notes for your travel"				
-			};
-
-			var firstPlace = new TripPlaceSE
-			{
-				Id = NewId(),
-				ArrivingId = null,
-				LeavingId = travel.Id,
-				OrderNo = 1,
-				Place = new PlaceSE
-				{
-					SourceType = SourceType.City,
-					SourceId = "2643743",
-					SelectedName = "London, GB",
-					Coordinates = new LatLng { Lat = 51.50853, Lng = -0.12574 }
-				},
-				Description = "",
-				WantVisit = new List<PlaceIdSE>()
-			};
-
-			var secondPlace = new TripPlaceSE
-			{
-				Id = NewId(),
-				ArrivingId = travel.Id,
-				LeavingId = null,
-				OrderNo = 2,
-				Place = new PlaceSE
-				{ 
-					SourceType = SourceType.City,
-					SourceId = "5128581",
-					SelectedName = "New York, US",
-					Coordinates = new LatLng { Lat = 40.71427, Lng = -74.00597 }
-				},
-				Description = "",
-				WantVisit = new List<PlaceIdSE>(),
-			};
-
-			var tripEntity = new TripEntity
-			{
-				id = ObjectId.GenerateNewId(),
-				CreatedDate = DateTime.UtcNow,
-				Name = id,
-				PortalUser_id = DBUserId,
-				Comments = new List<CommentSE>(),
-				Files = new List<FileSE>(),
-				Travels = new List<TripTravelSE> { travel},
-				Places = new List<TripPlaceSE> { firstPlace, secondPlace},
-				Participants = new List<ParticipantSE>(),
-                FilesPublic = new List<FilePublicSE>()
-			};
-
-
-
-			await DB.SaveAsync(tripEntity);
+		    var tripEntity = CreateUserData.GetInitialTripEntity(id, UserId);
+            
+            await DB.SaveAsync(tripEntity);
 
 			return RedirectToAction("Detail", "Trip", new {id = tripEntity.id.ToString() } );
 		}
-
-		//todo: change to normal ObjectId
-		private string NewId()
-		{
-			return Guid.NewGuid().ToString().Replace("-", string.Empty);
-		}
-
+        
 		public IActionResult Detail(string id)
 		{			
 			var tripIdObj = new ObjectId(id);
@@ -142,42 +79,104 @@ namespace Gloobster.Portal.Controllers.Portal
 			
 			return View(viewModel);
 		}
-
-		public IActionResult Overview(string id)
-		{
-			var tripIdObj = new ObjectId(id);
+        
+		public IActionResult Overview(OverviewRequest req)
+		{		    
+			var tripIdObj = new ObjectId(req.id);
 			
 			var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
 
 			var owner = DB.C<PortalUserEntity>().First(u => u.id == trip.PortalUser_id);
+            
+            //permissions part		    
+            if (!trip.JustForInvited)
+            {
+                var vm = CretateOverviewVM(trip, owner);
+                return View(vm);
+            }
 
-			var viewModel = CreateViewModelInstance<ViewModelTripDetail>();
-			viewModel.Name = trip.Name;
-			viewModel.IsUserAdmin = IsUserAdmin(trip);
-			viewModel.OwnerDisplayName = owner.DisplayName;
-		    viewModel.OwnerId = owner.id.ToString();
-			viewModel.TripId = trip.id.ToString();
-			viewModel.Description = trip.Description;
-			viewModel.Notes = trip.Notes;
-			viewModel.NotesPublic = trip.NotesPublic;
-			viewModel.IsOwner = (trip.PortalUser_id == DBUserId);
-		    viewModel.Photo = trip.Picture;
+            bool isOwner = owner.id == DBUserId;
+            if (isOwner)
+            {
+                var vm = CretateOverviewVM(trip, owner);
+                return View(vm);
+            }
 
-			if (trip.Participants != null)
-			{
-				var participantIds = trip.Participants.Select(p => p.PortalUser_id).ToList();
-			    participantIds.Add(DBUserId);
-                var participantUsers = DB.C<PortalUserEntity>().Where(u => participantIds.Contains(u.id)).ToList();
+            var thisUserParticipant = trip.Participants.FirstOrDefault(p => p.PortalUser_id == DBUserId);
+            bool thisUserInvited = thisUserParticipant != null;
+            if (thisUserInvited)
+            {
+                var vm = CretateOverviewVM(trip, owner);
+                return View(vm);
+            }
 
-				viewModel.Participants = participantUsers.Select(p => new TripParticipantViewModel
-				{
-					DisplayName = p.DisplayName,
-					PhotoUrl = "/PortalUser/ProfilePicture/" + p.id
-                }).ToList();
-			}
+		    bool sharingByCodeAllowed = !string.IsNullOrEmpty(trip.SharingCode);
+		    if (sharingByCodeAllowed)
+		    {
+		        bool codeMatch = trip.SharingCode == req.sc;
+		        if (codeMatch)
+		        {
+                    var vm = CretateOverviewVM(trip, owner);
+                    return View(vm);
+                }
+		    }
 
-			return View(viewModel);
+            if (!trip.JustForInvited && trip.AllowToRequestJoin)
+            {
+                return RedirectToAction("RequestJoin", "Trip", req.id);
+            }
+            
+            //trip is completly private
+            return RedirectToAction("PrivateTrip", "Trip");
 		}
+
+	    public IActionResult PrivateTrip()
+	    {
+            var viewModel = CreateViewModelInstance<ViewModelTripPrivate>();
+            return View(viewModel);            
+        }
+
+        public IActionResult RequestJoin(string id)
+        {
+            var viewModel = CreateViewModelInstance<ViewModelTripRequestJoin>();
+            return View(viewModel);
+        }
+
+
+        private ViewModelTripDetail CretateOverviewVM(TripEntity trip, PortalUserEntity owner)
+	    {
+            var viewModel = CreateViewModelInstance<ViewModelTripDetail>();
+            viewModel.Name = trip.Name;
+            viewModel.IsUserAdmin = IsUserAdmin(trip);
+            viewModel.OwnerDisplayName = owner.DisplayName;
+            viewModel.OwnerId = owner.id.ToString();
+            viewModel.TripId = trip.id.ToString();
+            viewModel.Description = trip.Description;
+            viewModel.Notes = trip.Notes;
+            viewModel.NotesPublic = trip.NotesPublic;
+            viewModel.IsOwner = (trip.PortalUser_id == DBUserId);
+            viewModel.Photo = trip.Picture;
+            viewModel.Participants = GetParticipantsView(trip.Participants, owner.id);
+
+	        return viewModel;
+	    }
+
+        
+
+        private List<TripParticipantViewModel> GetParticipantsView(List<ParticipantSE> participants, ObjectId ownerId)
+	    {
+            var participantIds = participants.Select(p => p.PortalUser_id).ToList();
+            participantIds.Add(ownerId);
+            var participantUsers = DB.C<PortalUserEntity>().Where(u => participantIds.Contains(u.id)).ToList();
+
+            var prtcs = participantUsers.Select(p => new TripParticipantViewModel
+            {
+                DisplayName = p.DisplayName,
+                PhotoUrl = "/PortalUser/ProfilePicture/" + p.id
+            }).ToList();
+
+	        return prtcs;
+	    }
 
         public IActionResult TripPicture(string id = null)
         {
@@ -231,8 +230,9 @@ namespace Gloobster.Portal.Controllers.Portal
 		
 		public IActionResult GetFile(string fileId, string tripId)
 		{
-			var tripIdObj = new ObjectId(tripId);			
-			var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
+			var tripIdObj = new ObjectId(tripId);
+            var fileIdObj = new ObjectId(fileId);
+            var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
 
 			if (trip == null)
 			{
@@ -247,7 +247,7 @@ namespace Gloobster.Portal.Controllers.Portal
 			}
 
 			//todo: check rights				
-			var fileToReturn = trip.Files.FirstOrDefault(f => f.SavedFileName == fileId);
+			var fileToReturn = trip.Files.FirstOrDefault(f => f.id == fileIdObj);
 
 			if (fileToReturn == null)
 			{
@@ -278,6 +278,10 @@ namespace Gloobster.Portal.Controllers.Portal
 		}		
 	}
 
-	
+    public class OverviewRequest
+    {
+        public string id { get; set; }
+        public string sc { get; set; }
+    }
 
 }

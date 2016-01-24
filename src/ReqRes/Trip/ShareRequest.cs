@@ -8,6 +8,5 @@ namespace Gloobster.ReqRes.Trip
 		public string message { get; set; }
 		public string tripId { get; set; }
 		public List<SocialNetworkType> networks { get; set; }
-		public bool allowRequestJoin { get; set; }
 	}
 }

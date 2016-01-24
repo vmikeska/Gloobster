@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using MongoDB.Bson;
 
 namespace Gloobster.ReqRes.Trip
@@ -15,5 +16,11 @@ namespace Gloobster.ReqRes.Trip
     {
         public string fileId { get; set; }
         public bool isPublic { get; set; }
+    }
+
+    public class NewFileResponse
+    {
+        public List<FileResponse> files { get; set; }
+        public List<FilePublicResponse> filesPublic { get; set; }
     }
 }

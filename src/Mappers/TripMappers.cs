@@ -23,20 +23,20 @@ namespace Gloobster.Mappers
 		}
 		
 
-		public static ParticipantDO ToDO(this ParticipantRequest request, ParticipantState? state = null)
-		{
-			if (!state.HasValue)
-			{
-				state = ParticipantState.Invited;
-			}
+		//public static ParticipantDO ToDO(this ParticipantRequest request, ParticipantState? state = null)
+		//{
+		//	if (!state.HasValue)
+		//	{
+		//		state = ParticipantState.Invited;
+		//	}
 
-			return new ParticipantDO
-			{
-				UserId = request.userId,
-				IsAdmin = request.isAdmin,
-				State = state.Value
-			};
-		}
+		//	return new ParticipantDO
+		//	{
+		//		UserId = request.userId,
+		//		IsAdmin = request.isAdmin,
+		//		State = state.Value
+		//	};
+		//}
 
 		public static ParticipantSE ToEntity(this ParticipantDO dObj)
 		{
@@ -58,7 +58,10 @@ namespace Gloobster.Mappers
 				tripId = entity.id.ToString(),
 				name = entity.Name,
 				createdDate = entity.CreatedDate,
-				ownerId = entity.PortalUser_id.ToString()
+				ownerId = entity.PortalUser_id.ToString(),
+                allowToRequestJoin = entity.AllowToRequestJoin,
+                justForInvited = entity.JustForInvited,
+                sharingCode = entity.SharingCode
 			};
 
 			if (entity.Comments != null)
@@ -109,10 +112,10 @@ namespace Gloobster.Mappers
 		{
 			var r = new TripPlaceResponse
 			{
-				id = e.Id,
+				id = e.id.ToString(),
 				description = e.Description,				
-				arrivingId = e.ArrivingId,
-				leavingId = e.LeavingId,
+				arrivingId = e.ArrivingId.ToString(),
+				leavingId = e.LeavingId.ToString(),
 				orderNo = e.OrderNo,
 				addressText = e.AddressText
 			};
@@ -239,7 +242,7 @@ namespace Gloobster.Mappers
 		{
 			var r = new TripTravelResponse
 			{
-				id = e.Id,
+				id = e.id.ToString(),
 				type = e.Type,
 				description = e.Description,
 				leavingDateTime = e.LeavingDateTime,
@@ -362,7 +365,7 @@ namespace Gloobster.Mappers
 		{
 			var d = new TripTravelDO
 			{
-				Id = e.Id,
+				Id = e.id.ToString(),
 				LeavingDateTime = e.LeavingDateTime,
 				ArrivingDateTime = e.ArrivingDateTime,
 				Description = e.Description,				
@@ -387,10 +390,10 @@ namespace Gloobster.Mappers
 			var d = new TripPlaceDO
 			{
 				AddressText = e.AddressText,
-				ArrivingId = e.ArrivingId,
-				Id = e.Id,
+				ArrivingId = e.ArrivingId.ToString(),
+				Id = e.id.ToString(),
 				Description = e.Description,
-				LeavingId = e.LeavingId,
+				LeavingId = e.LeavingId.ToString(),
 				OrderNo = e.OrderNo
 			};
 

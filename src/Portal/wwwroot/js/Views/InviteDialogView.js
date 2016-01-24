@@ -32,7 +32,7 @@ var Views;
                 tripId: Views.ViewBase.currentView["trip"].tripId,
                 users: users
             };
-            Views.ViewBase.currentView.apiPost("TripParticipants", data, function (response) {
+            Views.ViewBase.currentView.apiPost("TripParticipants", data, function (r) {
             });
         };
         InviteDialogView.prototype.onUserSelected = function (user) {

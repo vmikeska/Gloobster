@@ -1,59 +1,125 @@
 ﻿<script id="comment-template" type="text/x-handlebars-template">
 
-		<div class="row">
-				<div class="cell">
-						<span class="thumbnail">
-							<img src="{{photoUrl}}">								
-						</span>
-				</div>
-				<div class="cell">
-						<div class="author">
-								<a href="/PortalUser/Detail/{{id}}"><strong>{{displayName}}</strong></a>
-								<span> • {{displayDate}}</span>
-						</div>
-						<div class="bubble">
-								{{text}}
-						</div>
-				</div>
-		</div>
+    <div class="row">
+        <div class="cell">
+            <span class="thumbnail">
+                <img src="{{photoUrl}}">
+            </span>
+        </div>
+        <div class="cell">
+            <div class="author">
+                <a href="/PortalUser/Detail/{{id}}"><strong>{{displayName}}</strong></a>
+                <span> • {{displayDate}}</span>
+            </div>
+            <div class="bubble">
+                {{text}}
+            </div>
+        </div>
+    </div>
 
 </script>
 
 <script id="file-template" type="text/x-handlebars-template">
-		<div class="cell">
-				<div class="document">
-						<a class="file {{fileType}}" href="/Trip/GetFile?fileId={{id}}&tripId={{tripId}}">{{fileName}}</a>
-					
-                    {{#if editable}}
-                    <a class="delete popup-target" data-target="#popup-delete" data-id="{{id}}" href="#">Delete file</a>
-                    <input id="filePublic{{id}}" class="filePublic" data-id="{{id}}" type="checkbox" />
-                    <label class="mleft10" for="filePublic{{id}}">Public</label>
-                    {{/if}}
-                    
-                    
-				</div>
-		</div>
+    <div class="cell">
+        <div class="document">
+            <a class="file {{fileType}}" href="/Trip/GetFile?fileId={{id}}&tripId={{tripId}}">{{fileName}}</a>
+
+            {{#if editable}}
+            <a class="delete popup-target" data-target="#popup-delete" data-id="{{id}}" href="#">d</a>
+            <input id="filePublic{{id}}_b" class="filePublic filePublic{{id}}" data-id="{{id}}" type="checkbox" />
+            <label class="mleft10" for="filePublic{{id}}_b">Public</label>
+            {{/if}}
+
+
+        </div>
+    </div>
 </script>
 
-<script id="fileCreate-template" type="text/x-handlebars-template">
-        <div class="dndBox">
-            <div class="dndBoxInput">              
-                <input type="file" id="{{id}}" class="dndBoxFile" multiple="">
+<script id="participants-template" type="text/x-handlebars-template">
+    <div>        
+        <textarea id="caption" class="margin" placeholder="Message...">            
+            Hi, I would like to invite you to my trip...
+        </textarea>
 
-                <label for="{{id}}">
-                    <strong>Click</strong> or drag
-                </label>
+        <table id="participantsTable" border="1">
+
+        </table>
+        
+        <div id="friends" class="dropdown gray">
+            <input class="inputed" type="text" placeholder="Friend name...">
+            <ul></ul>
+        </div>
+    </div>
+</script>
+
+<script id="participant-template" type="text/x-handlebars-template">
+    <tr id="{{id}}">
+        <td>
+            {{name}}
+        </td>
+        <td>
+            <input id="isAdmin{{id}}" data-id="{{id}}" class="isAdmin" type="checkbox" {{checked}} />
+            <label for="isAdmin{{id}}"><span>Is Admin</span></label>
+        </td>
+        <td>
+            State: {{state}}
+        </td>
+        <td>
+            <button class="del" data-id="{{id}}">Delete</button>
+        </td>
+    </tr>
+</script>
+
+<script id="menuPrivacy-template" type="text/x-handlebars-template">
+            <div>
+                <input id="justForInvited" type="checkbox" checked />
+                <label for="justForInvited"><span>Just for invited</span></label>
+                <br />
+                <input id="allowRequestJoin" type="checkbox" />
+                <label for="allowRequestJoin"><span>Allow to request join</span></label>
+                <br />
+                <input id="shareByCode" type="checkbox" />
+                <label for="shareByCode"><span>Who receives link can join</span></label>
+                <input id="sharingCode" class="inputed" type="text" disabled value="http://gloobster.com/sharethething">
+                <br />
             </div>
-            
-            <div class="pb_all" style="display: none;"> 
-                <div class="pb_white">
-                    <div class="pb_inner">
-                        <span class="pb_percent">0%</span>
+        </script>
+
+        <script id="menuShare-template" type="text/x-handlebars-template">
+            <style>
+                img.active {
+                    border: 2px solid green;
+                }
+            </style>
+
+            <div>
+                <textarea id="message" class="margin right" placeholder="Message..."></textarea>
+
+                <div id="shareCont" class="right">
+                    <a id="share" class="button right" href="#">Share</a>
+                </div>
+            </div>
+        </script>
+
+        <script id="fileCreate-template" type="text/x-handlebars-template">
+            <div class="dndBox">
+                <div class="dndBoxInput">
+                    <input type="file" id="{{id}}" class="dndBoxFile" multiple="">
+
+                    <label for="{{id}}">
+                        <strong>Click</strong> or drag
+                    </label>
+                </div>
+
+                <div class="pb_all" style="display: none;">
+                    <div class="pb_white">
+                        <div class="pb_inner">
+                            <span class="pb_percent">0%</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    
-        
 
-</script>
+
+
+        </script>

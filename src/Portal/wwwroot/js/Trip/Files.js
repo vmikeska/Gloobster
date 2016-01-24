@@ -47,49 +47,34 @@ var Trip;
             this.onFilesSet();
         };
         Files.prototype.onFilesSet = function () {
-            this.displayFiles();
-        };
-        Files.prototype.displayFiles = function () {
-            var _this = this;
             this.generateFiles();
-            if (this.config.editable) {
-                $(".delete").click(function (evnt) {
-                    Files.lastIdToDelete = $(evnt.target).data("id");
-                });
-                $(".filePublic").change(function (e) {
-                    var $target = $(e.target);
-                    var fileId = $target.data("id");
-                    var state = $target.prop("checked");
-                    var prms = { fileId: fileId, tripId: _this.tripId, state: state };
-                    Views.ViewBase.currentView.apiPut("tripFilePublic", prms, function (res) {
-                    });
-                });
-            }
         };
         Files.prototype.callDelete = function (fileId) {
             var _this = this;
             var prms = [["fileId", fileId], ["tripId", this.tripId]];
-            Views.ViewBase.currentView.apiDelete("tripFile", prms, function (files) {
-                _this.filterFiles(files);
+            Views.ViewBase.currentView.apiDelete("tripFile", prms, function (res) {
+                _this.filterFiles(res.files, res.filesPublic);
             });
         };
-        Files.prototype.filterFiles = function (files) {
+        Files.prototype.filterFiles = function (files, filesPublic) {
             var _this = this;
             if (!files) {
                 return;
             }
+            this.filesPublic = filesPublic;
             if (this.config.entityId) {
                 var entityFiles = _.filter(files, function (file) { return file.entityId === _this.config.entityId; });
                 this.files = entityFiles;
-                this.displayFiles();
+                this.generateFiles();
             }
             else {
                 this.files = files;
-                this.displayFiles();
+                this.generateFiles();
             }
             if (Files.masterFiles && (!this.config.isMasterFile)) {
                 Files.masterFiles.files = files;
-                Files.masterFiles.displayFiles();
+                Files.masterFiles.filesPublic = filesPublic;
+                Files.masterFiles.generateFiles();
             }
         };
         Files.prototype.generateFiles = function () {
@@ -98,13 +83,13 @@ var Trip;
             if (this.files && this.files.length > 0) {
                 this.$noFiles.hide();
                 this.files.forEach(function (file) {
-                    var filePublic = _.find(_this.filesPublic, function (f) {
-                        return f.fileId === file.id;
-                    });
-                    var html = _this.generateFile(file);
-                    var $html = $(html);
-                    $html.find("#filePublic" + file.id).prop("checked", filePublic.isPublic);
-                    _this.$container.prepend($html);
+                    var isOwner = file.ownerId === Reg.LoginManager.currentUserId;
+                    var filePublic = _this.getFilePublic(file.id);
+                    var displayFile = isOwner || filePublic.isPublic;
+                    if (displayFile) {
+                        var $html = _this.generateFile(file);
+                        _this.$container.prepend($html);
+                    }
                 });
             }
             else {
@@ -113,16 +98,41 @@ var Trip;
         };
         //doc xml html pdf
         Files.prototype.generateFile = function (file) {
+            var _this = this;
             var context = {
                 fileName: this.getShortFileName(file.originalFileName),
-                //fileId: file.savedFileName,
                 id: file.id,
                 fileType: this.getFileType(file.originalFileName),
                 tripId: this.tripId,
                 editable: this.config.editable
             };
+            var filePublic = this.getFilePublic(file.id);
             var html = this.template(context);
-            return html;
+            var $html = $(html);
+            var $filePublic = $html.find(".filePublic");
+            $filePublic.prop("checked", filePublic.isPublic);
+            if (this.config.editable) {
+                $filePublic.change(function (e) {
+                    var $target = $(e.target);
+                    var fileId = $target.data("id");
+                    var state = $target.prop("checked");
+                    var prms = { fileId: fileId, tripId: _this.tripId, state: state };
+                    Views.ViewBase.currentView.apiPut("tripFilePublic", prms, function (res) {
+                        var $sisterChecks = $(".filePublic" + fileId);
+                        $sisterChecks.prop("checked", state);
+                    });
+                });
+                $html.find(".delete").click(function (e) {
+                    Files.lastIdToDelete = $(e.target).data("id");
+                });
+            }
+            return $html;
+        };
+        Files.prototype.getFilePublic = function (fileId) {
+            var filePublic = _.find(this.filesPublic, function (f) {
+                return f.fileId === fileId;
+            });
+            return filePublic;
         };
         Files.prototype.getFileType = function (fileName) {
             var prms = fileName.split(".");
@@ -170,9 +180,9 @@ var Trip;
                 $(".pb_percent").text(percent + "%");
                 $(".pb_inner").css("width", percent + "%");
             };
-            this.fileUpload.onUploadFinished = function (file, files) {
+            this.fileUpload.onUploadFinished = function (file, res) {
                 $(".pb_all").hide();
-                _this.filterFiles(files);
+                _this.filterFiles(res.files, res.filesPublic);
             };
         };
         return Files;

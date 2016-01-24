@@ -66,12 +66,12 @@ module Trip {
 			places.forEach((place) => {
 				var p = this.mapPlace(place, null, null);
 
-				if (place.arrivingId) {
+				if (place.arrivingId !== Constants.emptyId) {
 					p.arriving = this.getOrCreateTravelById(place.arrivingId, travels);
 					p.arriving.to = p;
 				}
 
-				if (place.leavingId) {
+				if (place.leavingId !== Constants.emptyId) {
 					p.leaving = this.getOrCreateTravelById(place.leavingId, travels);
 					p.leaving.from = p;
 				}

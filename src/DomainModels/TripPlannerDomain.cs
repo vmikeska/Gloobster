@@ -43,8 +43,8 @@ namespace Gloobster.DomainModels
 			var tripId = values["tripId"];
 			var tripIdObj = new ObjectId(tripId);
 			var entityId = values["entityId"];
+		    var entityIdObj = new ObjectId(entityId);
 			
-
 			if (propertyName == "place")
 			{
 				var place = new PlaceSE
@@ -63,7 +63,7 @@ namespace Gloobster.DomainModels
 					};
 				}
 				
-				await UpdatePlaceProperty(tripIdObj, entityId, "Place", place);
+				await UpdatePlaceProperty(tripIdObj, entityIdObj, "Place", place);
 			}
 
 			if (propertyName == "flightFrom")
@@ -77,7 +77,7 @@ namespace Gloobster.DomainModels
 					SelectedName = airportName
 				};
 
-				await UpdateTravelProperty(tripIdObj, entityId, "FlightFrom", flight);
+				await UpdateTravelProperty(tripIdObj, entityIdObj, "FlightFrom", flight);
 			}
 
 			if (propertyName == "flightTo")
@@ -91,25 +91,25 @@ namespace Gloobster.DomainModels
 					SelectedName = airportName
 				};
 
-				await UpdateTravelProperty(tripIdObj, entityId, "FlightTo", flight);
+				await UpdateTravelProperty(tripIdObj, entityIdObj, "FlightTo", flight);
 			}
 
 			if (propertyName == "leavingDateTime")
 			{
-				var travel = Trip.Travels.FirstOrDefault(t => t.Id == entityId);
-				UpdateDate(travel.LeavingDateTime, "LeavingDateTime", tripIdObj, entityId, values);				
+				var travel = Trip.Travels.FirstOrDefault(t => t.id == new ObjectId(entityId));
+				UpdateDate(travel.LeavingDateTime, "LeavingDateTime", tripIdObj, entityIdObj, values);				
 			}
 
 			if (propertyName == "arrivingDateTime")
 			{
-				var travel = Trip.Travels.FirstOrDefault(t => t.Id == entityId);
-				UpdateDate(travel.ArrivingDateTime, "ArrivingDateTime", tripIdObj, entityId, values);
+				var travel = Trip.Travels.FirstOrDefault(t => t.id == new ObjectId(entityId));
+				UpdateDate(travel.ArrivingDateTime, "ArrivingDateTime", tripIdObj, entityIdObj, values);
 			}
 			
 			if (propertyName == "travelType")
 			{
 				var travelType = (TravelType) int.Parse(values["travelType"]);
-				await UpdateTravelProperty(tripIdObj, entityId, "Type", travelType);
+				await UpdateTravelProperty(tripIdObj, entityIdObj, "Type", travelType);
 			}
 
 			if (propertyName == "address")
@@ -132,8 +132,8 @@ namespace Gloobster.DomainModels
 				
 				var addressText = values["address"];				
 
-				await UpdatePlaceProperty(tripIdObj, entityId, "Address", address);
-				await UpdatePlaceProperty(tripIdObj, entityId, "AddressText", addressText);				
+				await UpdatePlaceProperty(tripIdObj, entityIdObj, "Address", address);
+				await UpdatePlaceProperty(tripIdObj, entityIdObj, "AddressText", addressText);				
             }
 
 			if (propertyName == "description")
@@ -144,11 +144,11 @@ namespace Gloobster.DomainModels
 
 				if (entityType == TripEntityType.Travel)
 				{
-					await UpdateTravelProperty(tripIdObj, entityId, "Description", description);
+					await UpdateTravelProperty(tripIdObj, entityIdObj, "Description", description);
 				}
 				if (entityType == TripEntityType.Place)
 				{
-					await UpdatePlaceProperty(tripIdObj, entityId, "Description", description);
+					await UpdatePlaceProperty(tripIdObj, entityIdObj, "Description", description);
 				}				
 			}
 
@@ -175,7 +175,7 @@ namespace Gloobster.DomainModels
 			return result;			
 		}
 
-		private async void UpdateDate(DateTime? oldDate, string propName, ObjectId tripIdObj, string entityId, Dictionary<string, string> values)
+		private async void UpdateDate(DateTime? oldDate, string propName, ObjectId tripIdObj, ObjectId entityIdObj, Dictionary<string, string> values)
 		{
 			int day = 0, month = 0, year = 0, hour = 0, minute = 0;
 
@@ -204,7 +204,7 @@ namespace Gloobster.DomainModels
 			//it's actually not UTC time, but rough. If it's not UTC set, DB recalculates it.
 			var newDate = new DateTime(year, month, day, hour, minute, 0, DateTimeKind.Utc);
 
-			await UpdateTravelProperty(tripIdObj, entityId, propName, newDate);
+			await UpdateTravelProperty(tripIdObj, entityIdObj, propName, newDate);
 		}
 		
 		private async Task<bool> PushPlaceProperty(ObjectId tripIdObj, string placeId, string propName, object value)
@@ -216,18 +216,18 @@ namespace Gloobster.DomainModels
 			return res.ModifiedCount == 1;
 		}
 
-		private async Task<bool> UpdatePlaceProperty(ObjectId tripIdObj, string placeId, string propName, object value)
+		private async Task<bool> UpdatePlaceProperty(ObjectId tripIdObj, ObjectId placeIdObj, string propName, object value)
 		{
-			var filter = DB.F<TripEntity>().Eq(p => p.id, tripIdObj) & DB.F<TripEntity>().Eq("Places._id", placeId);
+			var filter = DB.F<TripEntity>().Eq(p => p.id, tripIdObj) & DB.F<TripEntity>().Eq("Places._id", placeIdObj);
 			var update = DB.U<TripEntity>().Set("Places.$." + propName, value);
 
 			var res = await DB.UpdateAsync(filter, update);
 			return res.ModifiedCount == 1;			
 		}
 
-		private async Task<bool> UpdateTravelProperty(ObjectId travelIdObj, string travelId, string propName, object value)
+		private async Task<bool> UpdateTravelProperty(ObjectId tripIdObj, ObjectId travelIdObj, string propName, object value)
 		{
-			var filter = DB.F<TripEntity>().Eq(p => p.id, travelIdObj) & DB.F<TripEntity>().Eq("Travels._id", travelId);
+			var filter = DB.F<TripEntity>().Eq(p => p.id, tripIdObj) & DB.F<TripEntity>().Eq("Travels._id", travelIdObj);
 			var update = DB.U<TripEntity>().Set("Travels.$." + propName, value);
 
 			var res = await DB.UpdateAsync(filter, update);
@@ -237,7 +237,7 @@ namespace Gloobster.DomainModels
 		private async Task<bool> DeletePlaceToVisit(ObjectId tripIdObj, string placeId, string id)
 		{
 			 var placeToVisit = DB.C<TripEntity>().First(t => t.id == tripIdObj)
-				.Places.First(p => p.Id == placeId)
+				.Places.First(p => p.id == new ObjectId(placeId))
 				.WantVisit.First(w => w.id == id);
 
 			var filter = DB.F<TripEntity>().Eq(p => p.id, tripIdObj) & DB.F<TripEntity>().Eq("Places._id", placeId);
@@ -250,14 +250,14 @@ namespace Gloobster.DomainModels
 		public async Task<AddPlaceResultDO> AddPlace(NewPlaceDO newPlace)
 		{
 			TripPlaceSE lastPlace = GetLastPlace();
-			var travelToLastPlace = Trip.Travels.First(t => t.Id == lastPlace.ArrivingId);
+			var travelToLastPlace = Trip.Travels.First(t => t.id == lastPlace.ArrivingId);
 			
-			bool addAtTheEnd = (lastPlace.Id == newPlace.SelectorId) && newPlace.Position == NewPlacePosition.ToRight;
+			bool addAtTheEnd = (lastPlace.id == new ObjectId(newPlace.SelectorId)) && newPlace.Position == NewPlacePosition.ToRight;
 			if (addAtTheEnd)
 			{
 				var travel = new TripTravelSE
 				{
-					Id = NewId(),
+					id = ObjectId.GenerateNewId(),
 					Type = TravelType.Walk,
 					LeavingDateTime = travelToLastPlace.ArrivingDateTime.Value.AddDays(1),
 					ArrivingDateTime = travelToLastPlace.ArrivingDateTime.Value.AddDays(2)
@@ -265,13 +265,13 @@ namespace Gloobster.DomainModels
 				PushTravel(travel);
 				
 				var tripIdObj = new ObjectId(TripId);
-				await UpdatePlaceProperty(tripIdObj, lastPlace.Id, "LeavingId", travel.Id);
+				await UpdatePlaceProperty(tripIdObj, lastPlace.id, "LeavingId", travel.id);
 				
 				var place = new TripPlaceSE
 				{
-					Id = NewId(),
-					ArrivingId = travel.Id,
-					LeavingId = null,
+					id = ObjectId.GenerateNewId(),
+					ArrivingId = travel.id,
+					LeavingId = ObjectId.Empty,
 					OrderNo =  lastPlace.OrderNo + 1,
 					WantVisit = new List<PlaceIdSE>()					
 				};
@@ -376,19 +376,19 @@ namespace Gloobster.DomainModels
 			return result;
 		}
 
-		private TripPlaceSE GetPlaceById(string id)
-		{
-			if (Trip.Places == null || !Trip.Places.Any())
-			{
-				return null;
-			}
+		//private TripPlaceSE GetPlaceById(string id)
+		//{
+		//	if (Trip.Places == null || !Trip.Places.Any())
+		//	{
+		//		return null;
+		//	}
 
-			var place = Trip.Places.FirstOrDefault(p => p.Id == id);
+		//	var place = Trip.Places.FirstOrDefault(p => p.id == new id);
 
-			//todo: throw if not found ?
+		//	//todo: throw if not found ?
 
-			return place;
-		}
+		//	return place;
+		//}
 
 		private string NewId()
 		{

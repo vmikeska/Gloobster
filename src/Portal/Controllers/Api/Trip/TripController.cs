@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Database;
@@ -34,13 +35,27 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 			}
 
 			var tripResponse = trip.ToResponse();
-			
+
+		    var userIds = new List<ObjectId>();
+
 			if (trip.Comments != null)
 			{
 				tripResponse.comments = tripResponse.comments.OrderByDescending(c => c.postDate).ToList();
-				tripResponse.users = TripDomain.GetCommentsUsers(trip.Comments, DB);
+			    userIds.AddRange(trip.Comments.Select(i => i.PortalUser_id));			    
 			}
-			
+
+		    if (trip.Participants != null)
+		    {
+                tripResponse.participants.ForEach(p =>
+                {
+                    var usr = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == new ObjectId(p.userId));
+                    p.name = usr.DisplayName;
+                });
+                userIds.AddRange(trip.Participants.Select(i => i.PortalUser_id));
+            }
+            
+		    tripResponse.users = TripDomain.GetUsers(userIds, DB);
+
 			return new ObjectResult(tripResponse);
 		}
 		

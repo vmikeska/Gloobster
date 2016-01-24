@@ -10,6 +10,7 @@ module Constants {
 	export var cookieName = "loginCookie";
 	export var firstRedirectUrl = "/PinBoard/Pins";
 	export var networkTypes = "NetworkTypes";
+	export var emptyId = "000000000000000000000000";
 }
 
 enum SourceType { FB, S4, City, Country }

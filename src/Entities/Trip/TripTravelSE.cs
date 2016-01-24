@@ -1,11 +1,12 @@
 using System;
 using Gloobster.Enums;
+using MongoDB.Bson;
 
 namespace Gloobster.Entities.Trip
 {
 	public class TripTravelSE
 	{
-		public string Id { get; set; }
+		public ObjectId id { get; set; }
 		public TravelType Type { get; set; }
 		public string Description { get; set; }
 		public FlightSE FlightFrom { get; set; }

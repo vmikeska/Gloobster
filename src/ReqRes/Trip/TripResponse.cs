@@ -26,11 +26,16 @@ namespace Gloobster.ReqRes.Trip
 		public List<TripTravelResponse> travels { get; set; }
 
 		public List<ParticipantResponse> participants { get; set; }
-	}
+
+        public bool justForInvited { get; set; }
+        public bool allowToRequestJoin { get; set; }
+        public string sharingCode { get; set; }
+    }
 
 	public class ParticipantResponse
 	{
 		public string userId { get; set; }
+        public string name { get; set; }        
 		public bool isAdmin { get; set; }
 		public ParticipantState state { get; set; }
 	}

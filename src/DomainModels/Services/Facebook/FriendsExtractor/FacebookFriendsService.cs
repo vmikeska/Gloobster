@@ -22,7 +22,13 @@ namespace Gloobster.DomainModels.Services.Facebook.FriendsExtractor
 			var userIdObj = new ObjectId(userId);
 
 			var portalUser = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == userIdObj);
-			var fbSocAuth = portalUser.SocialAccounts.FirstOrDefault(s => s.NetworkType == SocialNetworkType.Facebook);
+
+		    if (portalUser.SocialAccounts == null)
+		    {
+		        return null;
+		    }
+
+            var fbSocAuth = portalUser.SocialAccounts.FirstOrDefault(s => s.NetworkType == SocialNetworkType.Facebook);
 			
 			bool hasFacebook = fbSocAuth != null;
 			if (!hasFacebook)

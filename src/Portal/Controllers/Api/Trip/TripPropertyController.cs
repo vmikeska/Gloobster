@@ -29,6 +29,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 			var tripIdObj = new ObjectId(request.values["id"]);
 			var filter = DB.F<TripEntity>().Eq(p => p.id, tripIdObj);
 			UpdateDefinition<TripEntity> update = null;
+		    object response = null;
 			
 			if (request.propertyName == "Name")
 			{				
@@ -51,12 +52,37 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 				update = DB.U<TripEntity>().Set(p => p.NotesPublic, isPublic);
 			}
 
-			if (update != null)
+            if (request.propertyName == "JustForInvited")
+            {
+                bool state = bool.Parse(request.values["state"]);
+                update = DB.U<TripEntity>().Set(p => p.JustForInvited, state);
+            }
+
+            if (request.propertyName == "AllowToRequestJoin")
+            {
+                bool state = bool.Parse(request.values["state"]);
+                update = DB.U<TripEntity>().Set(p => p.AllowToRequestJoin, state);
+            }
+
+            if (request.propertyName == "ShareByCode")
+            {
+                bool state = bool.Parse(request.values["state"]);
+                string code = null;
+                if (state)
+                {
+                    code = Guid.NewGuid().ToString().Replace("-", "");
+                }
+
+                update = DB.U<TripEntity>().Set(p => p.SharingCode, code);
+                response = code;
+            }
+            
+            if (update != null)
 			{
 				var res = await DB.UpdateAsync(filter, update);
 			}
 
-			return new ObjectResult(null);
+			return new ObjectResult(response);
 		}
 		
 	}

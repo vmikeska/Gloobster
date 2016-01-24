@@ -29,6 +29,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 		public IActionResult Get(DialogRequest request)
 		{
 			object objToReturn = null;
+		    var entityIdObj = new ObjectId(request.id);
 
 			var tripIdObj = new ObjectId(request.tripId);
 
@@ -36,7 +37,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 
 			if (request.dialogType == TripEntityType.Place)
 			{
-				var place = trip.Places.FirstOrDefault(p => p.Id == request.id);
+				var place = trip.Places.FirstOrDefault(p => p.id == entityIdObj);
 				var response = place.ToResponse();
 
 				if (trip.Files != null)
@@ -54,7 +55,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 
 			if (request.dialogType == TripEntityType.Travel)
 			{
-				var travel = trip.Travels.FirstOrDefault(p => p.Id == request.id);
+				var travel = trip.Travels.FirstOrDefault(p => p.id == entityIdObj);
 				var response = travel.ToResponse();
 
 				if (trip.Files != null)

@@ -92,13 +92,13 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 			
 			FileDomain.WriteFilePart(filePartDo);
 
-			List<FileResponse> response = null;
+            NewFileResponse response = null;
 
 			//todo: move to event above ?
 			if (request.filePartType == FilePartType.Last)
 			{
-				var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);				
-				response = GetResponse(trip.Files);
+				var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
+			    response = GetResponse(trip);
 			}
 
 			return new ObjectResult(response);
@@ -118,7 +118,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 				throw new NullReferenceException();
 			}
 
-			List<FileResponse> filesResponse = null;
+			NewFileResponse filesResponse = null;
             if (trip.Files != null)
 			{
 				//todo: check rights				
@@ -145,30 +145,21 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 				FileDomain.DeleteFile(fileLocation);
 
 				trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
-
-				filesResponse = GetResponse(trip.Files);
+				filesResponse = GetResponse(trip);
 			}
 			
 			return new ObjectResult(filesResponse);
 		}
 
-		private List<FileResponse> GetResponse(List<FileSE> files, string entityId = null)
-		{
-			List<FileResponse> response;
-
-			//if (string.IsNullOrEmpty(entityId))
-			//{
-				response = files.Select(f => f.ToResponse()).ToList();
-			//}
-			//else
-			//{
-			//	response = files.Where(f => f.EntityId == entityId).Select(f => f.ToResponse()).ToList();
-			//}
-
-			return response;			
-		}
-
-		
+	    private NewFileResponse GetResponse(TripEntity trip)
+	    {
+            var response = new NewFileResponse
+            {
+                files = trip.Files.Select(f => f.ToResponse()).ToList(),
+                filesPublic = trip.FilesPublic.Select(f => f.ToResponse()).ToList()
+            };
+	        return response;
+	    }
 
 	}
 }

@@ -9,7 +9,7 @@ using Microsoft.AspNet.Mvc;
 
 namespace Gloobster.Portal.Controllers.Api.Trip
 {
-	public class TripSocNetworksController : BaseApiController
+    public class TripSocNetworksController : BaseApiController
 	{
 		public ITripShareDomain ShareDomain { get; set; }
 
@@ -29,7 +29,6 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 				TripId = req.tripId,
 				Message = req.message,
 				Networks = req.networks,
-				AllowRequestJoin = req.allowRequestJoin,
 				UserId = UserId
 			};
 

@@ -81,69 +81,55 @@
 		}
 
 		private onFilesSet() {
-			this.displayFiles();
+		 this.generateFiles();
 		}
-
-		private displayFiles() {
-			this.generateFiles();
-
-			if (this.config.editable) {
-				$(".delete").click((evnt) => {
-					Files.lastIdToDelete = $(evnt.target).data("id");
-				});
-
-				$(".filePublic").change((e) => {
-					var $target = $(e.target);
-					var fileId = $target.data("id");
-					var state = $target.prop("checked");
-					var prms = { fileId: fileId, tripId: this.tripId, state: state };
-					Views.ViewBase.currentView.apiPut("tripFilePublic", prms, (res) => {
-						
-					});
-				});
-			}
-		}
-
+	 
 		private callDelete(fileId: string) {
 			var prms = [["fileId", fileId], ["tripId", this.tripId]];
-			Views.ViewBase.currentView.apiDelete("tripFile", prms, (files) => {
-				this.filterFiles(files);
+			Views.ViewBase.currentView.apiDelete("tripFile", prms, (res) => {			 
+			 this.filterFiles(res.files, res.filesPublic);
 			});
 		}
 
-		private filterFiles(files) {
+		private filterFiles(files, filesPublic) {
 			if (!files) {
 				return;
-			}
+		 }
+		 
+			this.filesPublic = filesPublic;
 
 			if (this.config.entityId) {
 				var entityFiles = _.filter(files, (file) => { return file.entityId === this.config.entityId; });
-				this.files = entityFiles;
-				this.displayFiles();
+				this.files = entityFiles;				
+				this.generateFiles();
 			} else {
 				this.files = files;
-				this.displayFiles();
+				this.generateFiles();
 			}
 
 			if (Files.masterFiles && (!this.config.isMasterFile)) {
-				Files.masterFiles.files = files;
-				Files.masterFiles.displayFiles();
+			 Files.masterFiles.files = files;
+			 Files.masterFiles.filesPublic = filesPublic;
+				Files.masterFiles.generateFiles();
 			}
 
 		}
 
 		private generateFiles() {
-			this.$container.children().not(this.$adder).not(this.$noFiles).remove();
+		 this.$container.children().not(this.$adder).not(this.$noFiles).remove();
+
 			if (this.files && this.files.length > 0) {
 				this.$noFiles.hide();
 				this.files.forEach((file) => {
-					var filePublic = _.find(this.filesPublic, (f) => {
-					 return f.fileId === file.id;
-					});
-					var html = this.generateFile(file);
-					var $html = $(html);
-					$html.find("#filePublic" + file.id).prop("checked", filePublic.isPublic);
-					this.$container.prepend($html);
+				 
+				 var isOwner = file.ownerId === Reg.LoginManager.currentUserId;
+				 var filePublic = this.getFilePublic(file.id);
+				 var displayFile = isOwner || filePublic.isPublic;
+
+				 if (displayFile) {
+						var $html = this.generateFile(file);
+						this.$container.prepend($html);
+					}
 				});
 			} else {
 				this.$noFiles.show();
@@ -154,15 +140,49 @@
 		private generateFile(file) {
 			var context = {
 				fileName: this.getShortFileName(file.originalFileName),
-				//fileId: file.savedFileName,
-			  id: file.id,
+				id: file.id,
 				fileType: this.getFileType(file.originalFileName),
 				tripId: this.tripId,
 				editable: this.config.editable
 			};
 
+			var filePublic = this.getFilePublic(file.id);
+
 			var html = this.template(context);
-			return html;
+			var $html = $(html);
+
+			var $filePublic = $html.find(".filePublic");
+
+			$filePublic.prop("checked", filePublic.isPublic);
+
+			if (this.config.editable) {
+
+				$filePublic.change((e) => {
+					var $target = $(e.target);
+					var fileId = $target.data("id");
+					var state = $target.prop("checked");
+					var prms = { fileId: fileId, tripId: this.tripId, state: state };
+					Views.ViewBase.currentView.apiPut("tripFilePublic", prms, (res) => {
+
+						var $sisterChecks = $(".filePublic" + fileId);
+						$sisterChecks.prop("checked", state);
+
+					});
+				});
+
+				$html.find(".delete").click((e) => {
+					Files.lastIdToDelete = $(e.target).data("id");
+				});
+			}
+
+			return $html;
+		}
+
+		private getFilePublic(fileId: string) {
+			var filePublic = _.find(this.filesPublic, (f) => {
+				return f.fileId === fileId;
+			});
+			return filePublic;
 		}
 
 		private getFileType(fileName) {
@@ -218,9 +238,9 @@
 				$(".pb_inner").css("width", percent + "%");
 			}
 
-			this.fileUpload.onUploadFinished = (file, files) => {
+			this.fileUpload.onUploadFinished = (file, res) => {
 				$(".pb_all").hide();
-				this.filterFiles(files);
+				this.filterFiles(res.files, res.filesPublic);
 			}
 		}
 

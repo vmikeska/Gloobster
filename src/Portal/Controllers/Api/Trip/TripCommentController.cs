@@ -52,7 +52,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
             var response = new NewCommentResponse
 			{
 				comments = trip.Comments.Select(c => c.ToResponse()).OrderByDescending(c => c.postDate).ToList(),
-				users = TripDomain.GetCommentsUsers(trip.Comments, DB)
+				users = TripDomain.GetUsers(trip.Comments.Select(u => u.PortalUser_id).ToList(), DB)
 			};
 			
 			return new ObjectResult(response);

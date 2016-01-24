@@ -3,6 +3,7 @@ var Constants;
     Constants.cookieName = "loginCookie";
     Constants.firstRedirectUrl = "/PinBoard/Pins";
     Constants.networkTypes = "NetworkTypes";
+    Constants.emptyId = "000000000000000000000000";
 })(Constants || (Constants = {}));
 var SourceType;
 (function (SourceType) {
