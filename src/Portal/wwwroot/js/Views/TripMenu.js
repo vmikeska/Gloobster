@@ -29,19 +29,14 @@ var Views;
             $("#sharingCode").val(text);
         };
         TripMenu.prototype.createPrivacyContent = function (trip) {
-            var _this = this;
             var $html = $(this.privacyTemplate());
-            $html.find("#justForInvited").prop("checked", trip.justForInvited);
+            $html.find("#friendsPublic").prop("checked", trip.friendsPublic);
             $html.find("#allowRequestJoin").prop("checked", trip.allowToRequestJoin);
-            if (trip.sharingCode) {
-                $html.find("#shareByCode").prop("checked", trip.sharingCode != null);
-                this.setCode(trip.sharingCode);
-            }
-            $html.find("#justForInvited").change(function (e) {
+            $html.find("#friendsPublic").change(function (e) {
                 var state = $(e.target).prop("checked");
-                var data = { propertyName: "JustForInvited", values: { id: trip.tripId, state: state } };
+                var data = { propertyName: "FriendsPublic", values: { id: trip.tripId, state: state } };
                 Views.ViewBase.currentView.apiPut("tripProperty", data, function () {
-                    trip.justForInvited = state;
+                    trip.friendsPublic = state;
                 });
             });
             $html.find("#allowRequestJoin").change(function (e) {
@@ -49,14 +44,6 @@ var Views;
                 var data = { propertyName: "AllowToRequestJoin", values: { id: trip.tripId, state: state } };
                 Views.ViewBase.currentView.apiPut("tripProperty", data, function () {
                     trip.allowToRequestJoin = state;
-                });
-            });
-            $html.find("#shareByCode").change(function (e) {
-                var state = $(e.target).prop("checked");
-                var data = { propertyName: "ShareByCode", values: { id: trip.tripId, state: state } };
-                Views.ViewBase.currentView.apiPut("tripProperty", data, function (code) {
-                    _this.setCode(code);
-                    trip.sharingCode = code;
                 });
             });
             this.container.html($html);

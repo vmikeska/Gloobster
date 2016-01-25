@@ -142,7 +142,7 @@ namespace Gloobster.DomainModels.Services.Accounts
                 Participants = new List<ParticipantSE>(),
                 FilesPublic = new List<FilePublicSE>(),
                 NotesPublic = false,
-                JustForInvited = false,
+                FriendsPublic = true,
                 AllowToRequestJoin = false,
                 SharingCode = null,
                 Notes = "",

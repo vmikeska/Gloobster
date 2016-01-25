@@ -92,7 +92,7 @@ namespace Gloobster.Portal.Controllers.Portal
 			var owner = DB.C<PortalUserEntity>().First(u => u.id == trip.PortalUser_id);
             
             //permissions part
-            if (!trip.JustForInvited)
+            if (trip.FriendsPublic)
             {
                 var vm = CretateOverviewVM(trip, owner);
                 return View(vm);
@@ -124,7 +124,7 @@ namespace Gloobster.Portal.Controllers.Portal
                 }
 		    }
 
-            if (!trip.JustForInvited && trip.AllowToRequestJoin)
+            if (trip.AllowToRequestJoin)
             {
                 return RedirectToAction("RequestJoin", "Trip", req.id);
             }

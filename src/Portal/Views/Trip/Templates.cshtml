@@ -36,11 +36,11 @@
 </script>
 
 <script id="participants-template" type="text/x-handlebars-template">
-    <div>        
-        <textarea id="caption" class="margin" placeholder="Message...">            
-            Hi, I would like to invite you to my trip...
-        </textarea>
-
+    <div style="border: 1px solid red">
+        Everbody who is invited into the trip will be able to see all information (except private files). Who has "Can edit" permission can on top of that edit all information.
+    </div>
+    
+    <div>                
         <table id="participantsTable" border="1">
 
         </table>
@@ -53,53 +53,59 @@
 </script>
 
 <script id="participant-template" type="text/x-handlebars-template">
-    <tr id="{{id}}">
-        <td>
-            {{name}}
-        </td>
-        <td>
-            <input id="isAdmin{{id}}" data-id="{{id}}" class="isAdmin" type="checkbox" {{checked}} />
-            <label for="isAdmin{{id}}"><span>Is Admin</span></label>
-        </td>
-        <td>
-            State: {{state}}
-        </td>
-        <td>
-            <button class="del" data-id="{{id}}">Uninvite</button>
-        </td>
-    </tr>
+    
+
+        <tr id="{{id}}">
+            <td>
+                {{name}}
+            </td>
+            <td>
+                <input id="isAdmin{{id}}" data-id="{{id}}" class="isAdmin" type="checkbox" {{checked}} />
+                <label for="isAdmin{{id}}"><span>Can edit</span></label>
+            </td>
+            <td>
+                State: {{state}}
+            </td>
+            <td>
+                <button class="del" data-id="{{id}}">Uninvite</button>
+            </td>
+        </tr>
 </script>
- 
+
 <script id="menuPrivacy-template" type="text/x-handlebars-template">
-            <div>
-                <input id="justForInvited" type="checkbox" checked />
-                <label for="justForInvited"><span>Just for invited</span></label>
+    <div style="border: 1px solid red">
+        Set privacy of you trip. In participants menu you can select admins of the trip.
+    </div>        
+    
+    <div>
+                <input id="friendsPublic" type="checkbox" checked />
+                <label for="friendsPublic"><span>Friends can see basic info of the trip, even they are not invited</span></label>
                 <br />
                 <input id="allowRequestJoin" type="checkbox" />
-                <label for="allowRequestJoin"><span>Allow to request join</span></label>
-                <br />
-                <input id="shareByCode" type="checkbox" />
-                <label for="shareByCode"><span>Who receives link can join</span></label>
-                <input id="sharingCode" class="inputed" type="text" disabled value="http://gloobster.com/sharethething">
-                <br />
+                <label for="allowRequestJoin"><span>Friends can request to join</span></label>                
             </div>
         </script>
 
-        <script id="menuShare-template" type="text/x-handlebars-template">
-            <style>
-                img.active {
-                    border: 2px solid green;
-                }
-            </style>
+<script id="menuShare-template" type="text/x-handlebars-template">
+    <div style="border: 1px solid red">
+        Share your trip to social networks and make your friends aware of your trip. This will not give anybody permission to manipulate with your trip, or see your sensitive data. Just basic trip overview will be displayed.
+    </div>
+    
+    <style>
+            img.active {
+                border: 2px solid green;
+            }
+        </style>
 
-            <div>
-                <textarea id="message" class="margin right" placeholder="Message..."></textarea>
+        <div>
+            <textarea id="message" class="margin right" placeholder="Message..."></textarea>
 
-                <div id="shareCont" class="right">
-                    <a id="share" class="button right" href="#">Share</a>
-                </div>
+            <div id="shareCont" class="right">
+                <a id="share" class="button right" href="#">Share</a>
             </div>
-        </script>
+        </div>
+    
+</script>
 
         <script id="fileCreate-template" type="text/x-handlebars-template">
             <div class="dndBox">

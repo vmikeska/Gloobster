@@ -14,7 +14,7 @@ namespace Gloobster.Entities.Trip
 		public string Description { get; set; }
 		public string Notes { get; set; }
 
-        public bool JustForInvited { get; set; }
+        public bool FriendsPublic { get; set; }
 		public bool NotesPublic { get; set; }
         public bool AllowToRequestJoin { get; set; }
         public string SharingCode { get; set; } 

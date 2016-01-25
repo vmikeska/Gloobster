@@ -52,10 +52,10 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 				update = DB.U<TripEntity>().Set(p => p.NotesPublic, isPublic);
 			}
 
-            if (request.propertyName == "JustForInvited")
+            if (request.propertyName == "FriendsPublic")
             {
                 bool state = bool.Parse(request.values["state"]);
-                update = DB.U<TripEntity>().Set(p => p.JustForInvited, state);
+                update = DB.U<TripEntity>().Set(p => p.FriendsPublic, state);
             }
 
             if (request.propertyName == "AllowToRequestJoin")

@@ -43,18 +43,14 @@ module Views {
 		private createPrivacyContent(trip) {
 			var $html = $(this.privacyTemplate());
 
-			$html.find("#justForInvited").prop("checked", trip.justForInvited);
+			$html.find("#friendsPublic").prop("checked", trip.friendsPublic);
 			$html.find("#allowRequestJoin").prop("checked", trip.allowToRequestJoin);
-			if (trip.sharingCode) {
-				$html.find("#shareByCode").prop("checked", trip.sharingCode != null);
-				this.setCode(trip.sharingCode);
-			}
-
-			$html.find("#justForInvited").change((e) => {
+		
+			$html.find("#friendsPublic").change((e) => {
 				var state = $(e.target).prop("checked");
-				var data = { propertyName: "JustForInvited", values: { id: trip.tripId, state: state } };
+				var data = { propertyName: "FriendsPublic", values: { id: trip.tripId, state: state } };
 				ViewBase.currentView.apiPut("tripProperty", data, () => {
-					trip.justForInvited = state;
+				 trip.friendsPublic = state;
 				});
 			});
 
@@ -63,15 +59,6 @@ module Views {
 				var data = { propertyName: "AllowToRequestJoin", values: { id: trip.tripId, state: state } };
 				ViewBase.currentView.apiPut("tripProperty", data, () => {
 					trip.allowToRequestJoin = state;
-				});
-			});
-
-			$html.find("#shareByCode").change((e) => {
-				var state = $(e.target).prop("checked");
-				var data = { propertyName: "ShareByCode", values: { id: trip.tripId, state: state } };
-				ViewBase.currentView.apiPut("tripProperty", data, (code) => {
-					this.setCode(code);
-					trip.sharingCode = code;
 				});
 			});
 

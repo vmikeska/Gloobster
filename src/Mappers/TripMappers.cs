@@ -60,7 +60,7 @@ namespace Gloobster.Mappers
 				createdDate = entity.CreatedDate,
 				ownerId = entity.PortalUser_id.ToString(),
                 allowToRequestJoin = entity.AllowToRequestJoin,
-                justForInvited = entity.JustForInvited,
+                friendsPublic = entity.FriendsPublic,
                 sharingCode = entity.SharingCode
 			};
 
