@@ -43,15 +43,18 @@
 		private initAcceptCombo() {
 			var isOwner = this.trip.ownerId === Reg.LoginManager.currentUserId;
 			if (!isOwner) {
-				var thisParticipant = _.find(this.trip.participants, (p) => { return p.userId === Reg.LoginManager.currentUserId });
-				var acConfig = {
-					comboId: "invitationState",
-					initialState: thisParticipant.state,
-					tripId: this.trip.tripId
-				};
+			 var thisParticipant = _.find(this.trip.participants, (p) => { return p.userId === Reg.LoginManager.currentUserId });
+			 var wasInvited = thisParticipant != null;
+				if (wasInvited) {
+					var acConfig = {
+						comboId: "invitationState",
+						initialState: thisParticipant.state,
+						tripId: this.trip.tripId
+					};
 
-				this.acceptCombo = new Trip.AcceptCombo(acConfig);
-				$("#invitationState").show();
+					this.acceptCombo = new Trip.AcceptCombo(acConfig);
+					$("#invitationState").show();
+				}
 			}
 		}
 

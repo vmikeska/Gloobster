@@ -17,10 +17,10 @@ module Trip {
 			this.dialogManager.getDialogData(Common.TripEntityType.Travel, (data) => {
 				this.data = data;
 				this.$rowCont = $("#" + data.id).parent();
-
+			 
 				if (this.dialogManager.planner.editable) {
 					this.createEdit(data);
-				} else {
+				} else {				 
 					this.createView(data);
 				}
 			});
@@ -34,44 +34,62 @@ module Trip {
 			this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);
 		}
 
-		private buildTemplateView(data) {
+		private extendContextForFlight(context, data) {
+			context.isFlight = true;
+			var contextFlight = {
+				from: "",
+				to: "",
 
-			var context = {
-				description: data.description,
-				isFlight: false
+				flightDetails: "-"
 			};
 
+			if (data.flightFrom) {
+				contextFlight.from = data.flightFrom.selectedName;
+			}
+			if (data.flightTo) {
+				contextFlight.to = data.flightTo.selectedName;
+			}
+			var newContext = $.extend(context, contextFlight);
+			return newContext;
+		}
 
-			if (data.type === TravelType.Plane) {
-				context.isFlight = true;
-				var contextFlight = {
-					from: "",
-					to: "",
+		private buildTemplateView(data) {
+			var html = "";
 
-					flightDetails: "Delta Air Flight 2560 from Prague to Vienna"
+			if (this.dialogManager.planner.isInvited || this.dialogManager.planner.isOwner) {
+
+				var contextInvited = {
+					arrivingDateTime: data.arrivingDateTime,
+					leavingDateTime: data.leavingDateTime,
+					description: data.description,
+					isFlight: false
 				};
 
-				if (data.flightFrom) {
-					contextFlight.from = data.flightFrom.selectedName;
-				}
-				if (data.flightTo) {
-					contextFlight.to = data.flightTo.selectedName;
+				if (data.type === TravelType.Plane) {
+					contextInvited = this.extendContextForFlight(contextInvited, data);
 				}
 
-				context = $.extend(context, contextFlight);
+				html = this.dialogManager.travelDetailViewTemplate(contextInvited);
+			} else {
+				var contextNonInvited = {
+					arrivingDateTime: data.arrivingDateTime,
+					leavingDateTime: data.leavingDateTime,
+					isFlight: false
+				};
+				if (data.type === TravelType.Plane) {
+					contextNonInvited = this.extendContextForFlight(contextNonInvited, data);
+				}
+
+				html = this.dialogManager.travelDetailViewFriends(contextNonInvited);
 			}
 
-
-			var html = this.dialogManager.travelDetailViewTemplate(context);
 			var $html = $(html);
 			this.dialogManager.regClose($html);
 
 			this.$rowCont.after($html);
 		}
 
-		private createEdit(data) {
-
-
+		private createEdit(data) {		 
 			this.buildTemplateEdit(this.$rowCont);
 
 			this.initTravelType(data.type);

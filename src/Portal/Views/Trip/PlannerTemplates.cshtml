@@ -120,8 +120,7 @@
 				<div class="table row">
 						<div class="cell baseline">
 								<h3>{{name}}</h3>
-						</div>
-						<div class="cell baseline color1">June averages: Day 32°C • Night 16°C</div>
+						</div>						
 				</div>
 				<p>{{description}}</p>
 				<div id="entityDocs" class="documents grid col3 margin">					
@@ -130,47 +129,71 @@
 						<div class="cell places">
 								<h4>Going to visit</h4>
 								{{#if hasNoWantVisit}}
-								<div class="place">
-										<span class="icon-facebook left mright10"></span>										
-										A place to visit										
-										<span class="description">Here you can save the places you would like to visit</span>
+								<div class="place">										
+										No planes so far										
 								</div>
 								{{/if}}
 								{{#each wantVisit}}
 										<div class="place">
-												<span class="{{icon}} left mright10"></span>
-												@*<span class="thumbnail"><img src="~/images/samples/sample11.jpg"></span>*@
+												<span class="{{icon}} left mright10"></span>												
 												{{name}}
-												<a class="more" href="javascript:window.open('{{link}}')">More</a>
-												@*<span class="description">Description that I can write and edit anytime. That I can write and edit anytime. I can write and edit anytime.</span>*@
+												<a class="more" href="javascript:window.open('{{link}}')">More</a>												
 										</div>
 								{{/each}}								
 						</div>
-						<div class="cell places">
-								<h4>Places we would like to recommend</h4>
+						
+                    {{#if hasAddress}}
+                        <div class="cell places">
+								<h4>Address of the stay</h4>
 								<div class="place">
-										<span class="icon-facebook left mright10"></span>
-										Eis Cafe Frankfurkt
-										<a class="more" href="#">More</a>
+										<span class="{{stayIco}} left mright10"></span>
+										{{stayName}}
+										<a class="more" href="javascript:window.open('{{stayLink}}')">Link</a>
 								</div>
-								<div class="place">
-										<span class="icon-foursquare left mright10"></span>
-										Pub 99 Beers On Tap
-										<a class="more" href="#">More</a>
+								<div class="place">										
+										{{stayAddress}}
+                                         @*todo: implement map*@
+										<a class="more" href="#">Map</a>
 								</div>
-								<div class="place">
-										<span class="icon-facebook left mright10"></span>
-										The last place
-										<a class="more" href="#">More</a>
-								</div>
+								
 						</div>
+                    {{/if}}
 				</div>
-				@*<div class="rating-holder">
-						Rating
-						<span class="rating pct70 bottom"></span>
-				</div>*@
+				
+
 				<a class="close" href="#">Close</a>
 		</div>
+</script>
+
+<script id="placeDetailViewFriends-template" type="text/x-handlebars-template">
+    <div class="daybyday-view margin form">
+        <div class="table row">
+            <div class="cell baseline">
+                <h3>{{name}}</h3>
+            </div>            
+        </div>        
+        
+        <div class="table row">
+            <div class="cell places">
+                <h4>Going to visit</h4>
+                {{#if hasNoWantVisit}}
+                <div class="place">        
+                    No planes so far
+                </div>
+                {{/if}}
+                {{#each wantVisit}}
+                <div class="place">
+                    <span class="{{icon}} left mright10"></span>
+                    {{name}}
+                    <a class="more" href="javascript:window.open('{{link}}')">More</a>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+
+
+        <a class="close" href="#">Close</a>
+    </div>
 </script>
 
 <script id="travelDetail-template" type="text/x-handlebars-template">
@@ -268,19 +291,39 @@
 		<div class="daybyday-view margin form">
 				
 {{#if isFlight}}
-		<div class="table row">
-				<div class="cell baseline"><h3>{{from}} → {{to}}</h3></div>
-				<div class="cell baseline color1">{{flightDetails}}</div>
-		</div>
+	<div class="table row">
+		<div class="cell baseline"><h3>{{from}} → {{to}}</h3></div>
+		@*<div class="cell baseline color1">{{flightDetails}}</div>*@
+        @*todo: when data extraction from flight implemented*@
+	</div>
 {{/if}}
-					
-				<p>{{description}}</p>
-				<div id="entityDocs" class="documents grid col3 margin">
-				</div>
-				<div class="table row">
+    @*todo: format date time*@
+    <p>{{arrivingDateTime}} - {{leavingDateTime}}</p>
 				
-				</div>
+    <p>{{description}}</p>
+    <div id="entityDocs" class="documents grid col3 margin">
+    </div>
+    <div class="table row">
+				
+    </div>
 			
-				<a class="close" href="#">Close</a>
+    <a class="close" href="#">Close</a>
 		</div>
+</script>
+
+
+<script id="travelDetailViewFriends-template" type="text/x-handlebars-template">
+    <div class="daybyday-view margin form">
+        
+        {{#if isFlight}}
+        <div class="table row">
+            <div class="cell baseline"><h3>{{from}} → {{to}}</h3></div>           
+        </div>
+        {{/if}}
+
+        @*todo: format date time*@
+        <p>{{arrivingDateTime}} - {{leavingDateTime}}</p>
+
+        <a class="close" href="#">Close</a>
+    </div>
 </script>

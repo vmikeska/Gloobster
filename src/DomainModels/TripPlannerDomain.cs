@@ -162,14 +162,14 @@ namespace Gloobster.DomainModels
 					SelectedName = values["selectedName"]
 				};
 				
-				await PushPlaceProperty(tripIdObj, entityId, "WantVisit", place);
+				await PushPlaceProperty(tripIdObj, entityIdObj, "WantVisit", place);
 				result = place.id;
 			}
 
 			if (propertyName == "placeToVisitRemove")
 			{				
 				var id = values["id"];				
-				result = await DeletePlaceToVisit(tripIdObj, entityId, id);				
+				result = await DeletePlaceToVisit(tripIdObj, entityIdObj, id);				
 			}
 
 			return result;			
@@ -207,7 +207,7 @@ namespace Gloobster.DomainModels
 			await UpdateTravelProperty(tripIdObj, entityIdObj, propName, newDate);
 		}
 		
-		private async Task<bool> PushPlaceProperty(ObjectId tripIdObj, string placeId, string propName, object value)
+		private async Task<bool> PushPlaceProperty(ObjectId tripIdObj, ObjectId placeId, string propName, object value)
 		{
 			var filter = DB.F<TripEntity>().Eq(p => p.id, tripIdObj) & DB.F<TripEntity>().Eq("Places._id", placeId);
 			var update = DB.U<TripEntity>().Push("Places.$." + propName, value);
@@ -234,10 +234,10 @@ namespace Gloobster.DomainModels
 			return res.ModifiedCount == 1;
 		}
 
-		private async Task<bool> DeletePlaceToVisit(ObjectId tripIdObj, string placeId, string id)
+		private async Task<bool> DeletePlaceToVisit(ObjectId tripIdObj, ObjectId placeId, string id)
 		{
 			 var placeToVisit = DB.C<TripEntity>().First(t => t.id == tripIdObj)
-				.Places.First(p => p.id == new ObjectId(placeId))
+				.Places.First(p => p.id == placeId)
 				.WantVisit.First(w => w.id == id);
 
 			var filter = DB.F<TripEntity>().Eq(p => p.id, tripIdObj) & DB.F<TripEntity>().Eq("Places._id", placeId);

@@ -131,7 +131,10 @@
 
 @Html.Partial("Comments")
 
-@Html.Partial("Files")
+@if (Model.IsOwner || Model.ThisUserInvited)
+{
+    @Html.Partial("Files")
+}
 
 @Html.Partial("Participants")
 

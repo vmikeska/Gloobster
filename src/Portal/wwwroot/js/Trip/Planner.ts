@@ -3,6 +3,9 @@
 
 		public trip: any;
 
+		public isOwner: boolean;
+		public isInvited: boolean;
+
 		public placesMgr: PlacesManager;
 		private dialogManager: DialogManager;
 		private placeDialog: PlaceDialog;
@@ -26,6 +29,11 @@
 		private $lastCell: any;
 
 		constructor(trip: any, editable: boolean) {
+
+		 var thisParticipant = _.find(trip.participants, (p) => { return p.userId === Reg.LoginManager.currentUserId });
+		 this.isInvited = (thisParticipant != null);
+			this.isOwner = trip.ownerId === Reg.LoginManager.currentUserId;
+
 			this.editable = editable;
 			this.dialogManager = new DialogManager(this);
 			this.placeDialog = new PlaceDialog(this.dialogManager);

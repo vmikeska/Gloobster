@@ -87,13 +87,9 @@ var Trip;
         };
         PlaceDialog.prototype.buildTemplateView = function ($row, data) {
             var _this = this;
-            var name = "Empty";
-            if (data.place) {
-                name = data.place.selectedName;
-            }
+            var html = "";
             var context = {
-                name: name,
-                description: data.description,
+                name: "Empty",
                 wantVisit: [],
                 hasNoWantVisit: true
             };
@@ -105,7 +101,31 @@ var Trip;
                 };
             });
             context.hasNoWantVisit = (context.wantVisit.length === 0);
-            var html = this.dialogManager.placeDetailViewTemplate(context);
+            if (data.place) {
+                context.name = data.place.selectedName;
+            }
+            if (this.dialogManager.planner.isInvited || this.dialogManager.planner.isOwner) {
+                var stayName = "";
+                if (data.address) {
+                    stayName = data.address.selectedName;
+                }
+                context = $.extend(context, {
+                    stayAddress: data.addressText,
+                    description: data.description,
+                    stayName: stayName
+                });
+                if (data.address) {
+                    context = $.extend(context, {
+                        stayIco: this.getIcon(data.address.sourceType),
+                        stayLink: this.getSocLink(data.address.sourceType, data.address.sourceId),
+                        hasAddress: true
+                    });
+                }
+                html = this.dialogManager.placeDetailViewTemplate(context);
+            }
+            else {
+                html = this.dialogManager.placeDetailViewFriends(context);
+            }
             var $html = $(html);
             this.dialogManager.regClose($html);
             $row.after($html);

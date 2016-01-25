@@ -160,8 +160,10 @@ namespace Gloobster.Portal.Controllers.Portal
             viewModel.IsOwner = (trip.PortalUser_id == DBUserId);
             viewModel.Photo = trip.Picture;
             viewModel.Participants = GetParticipantsView(trip.Participants, owner.id);
+            var thisUserParticipant = trip.Participants.FirstOrDefault(p => p.PortalUser_id == DBUserId);
+            viewModel.ThisUserInvited = thisUserParticipant != null;
 
-	        return viewModel;
+            return viewModel;
 	    }
 
         

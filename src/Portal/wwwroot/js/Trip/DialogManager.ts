@@ -7,6 +7,8 @@ module Trip {
 		public visitedItemTemplate: any;
 		public placeDisplayItemTemplate: any;
 		public travelDetailViewTemplate: any;
+		public travelDetailViewFriends: any;
+		public placeDetailViewFriends: any;
 
 		public selectedId: string;
 
@@ -22,6 +24,9 @@ module Trip {
 			this.travelDetailViewTemplate = Views.ViewBase.currentView.registerTemplate("travelDetailView-template");
 
 			this.visitedItemTemplate = Views.ViewBase.currentView.registerTemplate("visitItem-template");
+			this.travelDetailViewFriends = Views.ViewBase.currentView.registerTemplate("travelDetailViewFriends-template");
+
+			this.placeDetailViewFriends = Views.ViewBase.currentView.registerTemplate("placeDetailViewFriends-template");
 		}
 
 		public createFilesInstanceView(entityId: string, entityType: Common.TripEntityType): Files {

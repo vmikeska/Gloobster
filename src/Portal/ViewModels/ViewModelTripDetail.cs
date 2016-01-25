@@ -15,6 +15,7 @@ namespace Gloobster.Portal.ViewModels
 		public List<TripParticipantViewModel> Participants { get; set; }
 		public bool IsUserAdmin { get; set; }
 		public bool IsOwner { get; set; }
+        public bool ThisUserInvited { get; set; }
     }
 
     public class ViewModelTripPrivate : ViewModelBase

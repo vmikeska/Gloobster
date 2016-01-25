@@ -8,6 +8,8 @@ var Trip;
             this.travelDetailTemplate = Views.ViewBase.currentView.registerTemplate("travelDetail-template");
             this.travelDetailViewTemplate = Views.ViewBase.currentView.registerTemplate("travelDetailView-template");
             this.visitedItemTemplate = Views.ViewBase.currentView.registerTemplate("visitItem-template");
+            this.travelDetailViewFriends = Views.ViewBase.currentView.registerTemplate("travelDetailViewFriends-template");
+            this.placeDetailViewFriends = Views.ViewBase.currentView.registerTemplate("placeDetailViewFriends-template");
         }
         DialogManager.prototype.createFilesInstanceView = function (entityId, entityType) {
             var filesConfig = new Trip.FilesConfig();

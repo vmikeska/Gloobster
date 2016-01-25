@@ -38,7 +38,8 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 			if (request.dialogType == TripEntityType.Place)
 			{
 				var place = trip.Places.FirstOrDefault(p => p.id == entityIdObj);
-				var response = place.ToResponse();
+                //todo: permission, should send just appropriate data
+                var response = place.ToResponse();
 
 				if (trip.Files != null)
 				{
@@ -55,7 +56,8 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 
 			if (request.dialogType == TripEntityType.Travel)
 			{
-				var travel = trip.Travels.FirstOrDefault(p => p.id == entityIdObj);
+				TripTravelSE travel = trip.Travels.FirstOrDefault(p => p.id == entityIdObj);
+                //todo: permission, should send just appropriate data
 				var response = travel.ToResponse();
 
 				if (trip.Files != null)
