@@ -55,10 +55,10 @@
 				<div class="document">						
 						<a class="file {{fileType}}" href="/Trip/GetFile?fileId={{id}}&tripId={{tripId}}">{{fileName}}</a>
 						
-						{{#if editable}}
+						{{#if canManipulate}}
 						<a class="delete popup-target" data-target="#popup-delete" data-id="{{id}}" href="#">d</a>
                         <input class="filePublic filePublic{{id}}" id="filePublic{{id}}_a" data-id="{{id}}" type="checkbox" />
-                        <label class="mleft10" for="filePublic{{id}}_a">Public</label>
+                        <label class="mleft10" for="filePublic{{id}}_a">Shr. invited</label>
 						{{/if}}
 				</div>
 		</div>

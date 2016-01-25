@@ -48,18 +48,25 @@
 			<div class="cell middle">
 				<input id="nameInput" class="heading middle" type="text" placeholder="Edit this" value="@Model.Name">
 					@*http://markusslima.github.io/jquery-filestyle/*@
-			    <a class="button border mleft10 photoButton" href="#">
+			    @*<a class="button border mleft10 photoButton" href="#">
 			        <input id="photoInput" type="file" />
 
                     <label for="photoInput" >
                         Add title photo
                     </label>			        
-			    </a>
+			    </a>*@
 					
 			</div>
 			<div class="cell middle tright">
-				<a class="button border popup-target" data-target="#popup-share" href="#">Share trip</a>
-					<a class="button border" href="/Trip/Overview/@Model.TripId">See view</a>
+                <a class="button border mleft10 photoButton" href="#">
+                    <input id="photoInput" type="file" />
+
+                    <label for="photoInput">
+                        Add title photo
+                    </label>
+                </a>
+			                    
+					<a class="button border" href="/Trip/Overview/@Model.TripId">Switch to preview</a>
 				@*<a class="icon-wheel blue middle mleft20" href="#">Settings</a>*@
 			</div>
 		</div>
@@ -91,7 +98,6 @@
 </section>
 
 
-@Html.Partial("InviteDialog")
 @Html.Partial("ConfirmDeleteDialog")
 
 @Html.Partial("Templates")

@@ -9,6 +9,7 @@
 @model Gloobster.Portal.ViewModels.ViewModelTripDetail
 
 <script type="text/javascript" src="@Url.Content("~/js/Views/TripViewView.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Views/TripMenu.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/common/ShareButtons.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Trip/Comments.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Trip/Files.js")"></script>
@@ -22,12 +23,24 @@
 <script type="text/javascript" src="@Url.Content("~/js/Trip/Utils.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Trip/PlacesManager.js")"></script>
 
-<style>    
+<style>
+    .photoButton input {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+
+    .photoButton label {
+        cursor: pointer;
+    }
+
     .noFiles {
         word-spacing: 0;
     }
 </style>
-
 
 <section id="bckPhoto" class="adventure-background line margin padding">
 	<div class="wrapper">
@@ -55,11 +68,17 @@
 
 	        @if (Model.IsUserAdmin)
             {
+                <a class="button share photoButton" href="#">
+                    <input id="photoInput" type="file" />
+
+                    <label for="photoInput">
+                        Add title photo
+                    </label>
+                </a>
+
                 <a data-tmp="menuPrivacy-template" class="button share tripMenuButton" href="#">Set privacy</a>
                 <a data-tmp="menuShare-template" class="button share tripMenuButton" href="#">Share trip</a>
-                <a data-tmp="participants-template" class="button share tripMenuButton" href="#">Participants</a>
-
-	            <a class="button share popup-target" data-target="#popup-invite" href="#">Invite people</a>
+                <a data-tmp="participants-template" class="button share tripMenuButton" href="#">Participants</a>	            
 	            <a class="button share" href="/Trip/Detail/@Model.TripId">Edit trip</a>
 	        }
 
@@ -126,7 +145,6 @@
 
 @Html.Partial("Templates")
 @Html.Partial("PlannerTemplates")
-@Html.Partial("InviteDialog")
 
 <script>
 	

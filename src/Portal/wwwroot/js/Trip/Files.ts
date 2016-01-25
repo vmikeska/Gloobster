@@ -116,18 +116,29 @@
 		}
 
 		private generateFiles() {
-		 this.$container.children().not(this.$adder).not(this.$noFiles).remove();
+			this.$container.children().not(this.$adder).not(this.$noFiles).remove();
 
 			if (this.files && this.files.length > 0) {
 				this.$noFiles.hide();
 				this.files.forEach((file) => {
-				 
-				 var isOwner = file.ownerId === Reg.LoginManager.currentUserId;
-				 var filePublic = this.getFilePublic(file.id);
-				 var displayFile = isOwner || filePublic.isPublic;
 
-				 if (displayFile) {
-						var $html = this.generateFile(file);
+					var isOwner = file.ownerId === Reg.LoginManager.currentUserId;
+					var filePublic = this.getFilePublic(file.id);
+					var displayFile = isOwner || filePublic.isPublic;
+
+					if (displayFile) {
+
+						var context = {
+							fileName: this.getShortFileName(file.originalFileName),
+							id: file.id,
+							fileType: this.getFileType(file.originalFileName),
+							tripId: this.tripId,
+							editable: this.config.editable,
+							isOwner: isOwner,
+							canManipulate: this.config.editable && isOwner
+						};
+					 
+						var $html = this.generateFile(context);
 						this.$container.prepend($html);
 					}
 				});
@@ -137,16 +148,8 @@
 		}
 
 		//doc xml html pdf
-		private generateFile(file) {
-			var context = {
-				fileName: this.getShortFileName(file.originalFileName),
-				id: file.id,
-				fileType: this.getFileType(file.originalFileName),
-				tripId: this.tripId,
-				editable: this.config.editable
-			};
-
-			var filePublic = this.getFilePublic(file.id);
+		private generateFile(context) {			
+		 var filePublic = this.getFilePublic(context.id);
 
 			var html = this.template(context);
 			var $html = $(html);

@@ -45,15 +45,18 @@ namespace Gloobster.Portal.Controllers.Portal
 			return View(viewModel);
 		}
 
-		public IActionResult List()
+		public async Task<IActionResult> List()
 		{
-			var viewModel = CreateViewModelInstance<ViewModelTrips>();
+            var trips = DB.C<TripEntity>().Where(t => t.PortalUser_id == DBUserId).ToList();
 
-			var trips = DB.C<TripEntity>().Where(t => t.PortalUser_id == DBUserId).ToList();
+            var query = $"{{ 'Participants.PortalUser_id': ObjectId('{UserId}')}}";
+		    var invitedTrips = await DB.FindAsync<TripEntity>(query);
 
+            var viewModel = CreateViewModelInstance<ViewModelTrips>();            
 			viewModel.Trips = trips.Select(TripToViewModel).ToList();
-
-			return View(viewModel);
+            viewModel.InvitedTrips = invitedTrips.Select(TripToViewModel).ToList();
+            
+            return View(viewModel);
 		}
 		public async Task<IActionResult> CreateNewTrip(string id)
 		{
@@ -88,7 +91,7 @@ namespace Gloobster.Portal.Controllers.Portal
 
 			var owner = DB.C<PortalUserEntity>().First(u => u.id == trip.PortalUser_id);
             
-            //permissions part		    
+            //permissions part
             if (!trip.JustForInvited)
             {
                 var vm = CretateOverviewVM(trip, owner);
@@ -165,7 +168,7 @@ namespace Gloobster.Portal.Controllers.Portal
 
         private List<TripParticipantViewModel> GetParticipantsView(List<ParticipantSE> participants, ObjectId ownerId)
 	    {
-            var participantIds = participants.Select(p => p.PortalUser_id).ToList();
+            var participantIds = participants.Where(p=> p.State == ParticipantState.Accepted).Select(p => p.PortalUser_id).ToList();
             participantIds.Add(ownerId);
             var participantUsers = DB.C<PortalUserEntity>().Where(u => participantIds.Contains(u.id)).ToList();
 

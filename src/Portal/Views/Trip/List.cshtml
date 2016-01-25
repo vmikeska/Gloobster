@@ -9,7 +9,7 @@
 <section class="wrapper margin3">
 	<div class="table row col2 margin">
 		<div class="cell middle">
-			<h2>Trips</h2>
+			<h2>My trips</h2>
 		</div>
 		<div class="cell middle tright">
 			<div class="blue-holder">
@@ -27,9 +27,7 @@
 			await Html.RenderPartialAsync("TripItemBig", (object) trip);
 		}
 
-		@*@{await Html.RenderPartialAsync("TripItemBig"); }*@
-
-		<div class="cell">
+	    <div class="cell">
 			<div class="trip new">
 				<textarea id="newTrip" placeholder="New trip name..."></textarea>
 				<a class="create" href="javascript:createNewTrip();">Create</a>
@@ -37,10 +35,39 @@
 		</div>
 
 	</div>
-	<div class="tcenter margin">
-		<a class="button" href="#">Show 3 Archived Trips</a>
-	</div>
-	<div class="table row margin2 box gray">
+    <div class="tcenter margin">
+        <a class="button" href="#">Show 3 Archived Trips</a>
+    </div>
+
+@if (Model.InvitedTrips.Any())
+{
+
+    <div class="table row col2 margin">
+        <div class="cell middle">
+            <h2>Trips I am invited to</h2>
+        </div>
+        <div class="cell middle tright">
+            <div class="blue-holder">
+                <a class="icon-grid" href="#">Grid</a>
+                <a class="icon-list" href="#">List</a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="trips grid col3 margin">
+
+        @foreach (var trip in Model.InvitedTrips)
+        {
+            await Html.RenderPartialAsync("TripItemBig", (object) trip);
+        }
+
+    </div>
+    <div class="tcenter margin">
+        <a class="button" href="#">Show 3 Archived Trips</a>
+    </div>
+}
+    @*<div class="table row margin2 box gray">
 		<div class="cell">
 			<h3>Gloobster allows you to collect resources into one place. For free.</h3>
 			<p>Make your travels even more enjoyable with data saved at Gloobster. From flying tickets to booking confirmations and photos, everything in one place and easy to share with friends.</p>
@@ -49,7 +76,7 @@
 		<div class="cell tright">
 			<img src="~/images/samples/sample10.jpg">
 		</div>
-	</div>
+	</div>*@
 </section>
 
 

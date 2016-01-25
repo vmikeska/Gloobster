@@ -87,7 +87,16 @@ var Trip;
                     var filePublic = _this.getFilePublic(file.id);
                     var displayFile = isOwner || filePublic.isPublic;
                     if (displayFile) {
-                        var $html = _this.generateFile(file);
+                        var context = {
+                            fileName: _this.getShortFileName(file.originalFileName),
+                            id: file.id,
+                            fileType: _this.getFileType(file.originalFileName),
+                            tripId: _this.tripId,
+                            editable: _this.config.editable,
+                            isOwner: isOwner,
+                            canManipulate: _this.config.editable && isOwner
+                        };
+                        var $html = _this.generateFile(context);
                         _this.$container.prepend($html);
                     }
                 });
@@ -97,16 +106,9 @@ var Trip;
             }
         };
         //doc xml html pdf
-        Files.prototype.generateFile = function (file) {
+        Files.prototype.generateFile = function (context) {
             var _this = this;
-            var context = {
-                fileName: this.getShortFileName(file.originalFileName),
-                id: file.id,
-                fileType: this.getFileType(file.originalFileName),
-                tripId: this.tripId,
-                editable: this.config.editable
-            };
-            var filePublic = this.getFilePublic(file.id);
+            var filePublic = this.getFilePublic(context.id);
             var html = this.template(context);
             var $html = $(html);
             var $filePublic = $html.find(".filePublic");

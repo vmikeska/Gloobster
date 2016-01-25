@@ -65,6 +65,7 @@
 /// <reference path="js/views/sharedialogview.js" />
 /// <reference path="js/views/sharetripview.js" />
 /// <reference path="js/views/tripdetailview.js" />
+/// <reference path="js/views/tripmenu.js" />
 /// <reference path="js/views/tripviewview.js" />
 /// <reference path="js/views/twitterauthview.js" />
 /// <reference path="js/views/viewbase.js" />

@@ -24,10 +24,10 @@
         <div class="document">
             <a class="file {{fileType}}" href="/Trip/GetFile?fileId={{id}}&tripId={{tripId}}">{{fileName}}</a>
 
-            {{#if editable}}
+            {{#if canManipulate}}
             <a class="delete popup-target" data-target="#popup-delete" data-id="{{id}}" href="#">d</a>
             <input id="filePublic{{id}}_b" class="filePublic filePublic{{id}}" data-id="{{id}}" type="checkbox" />
-            <label class="mleft10" for="filePublic{{id}}_b">Public</label>
+            <label class="mleft10" for="filePublic{{id}}_b">Shr. invited</label>
             {{/if}}
 
 
@@ -65,11 +65,11 @@
             State: {{state}}
         </td>
         <td>
-            <button class="del" data-id="{{id}}">Delete</button>
+            <button class="del" data-id="{{id}}">Uninvite</button>
         </td>
     </tr>
 </script>
-
+ 
 <script id="menuPrivacy-template" type="text/x-handlebars-template">
             <div>
                 <input id="justForInvited" type="checkbox" checked />
