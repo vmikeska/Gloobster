@@ -23,6 +23,11 @@ namespace Gloobster.Portal.ViewModels
         
     }
 
+    public class ViewModelNoAdminRights : ViewModelBase
+    {
+
+    }
+
     public class ViewModelTripRequestJoin : ViewModelBase
     {
 

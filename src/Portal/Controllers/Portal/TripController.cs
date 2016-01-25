@@ -72,18 +72,42 @@ namespace Gloobster.Portal.Controllers.Portal
 			var tripIdObj = new ObjectId(id);
 
 			var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
-			
-			var viewModel = CreateViewModelInstance<ViewModelTripDetail>();
-			viewModel.Name = trip.Name;			
-            viewModel.TripId = trip.id.ToString();
-			viewModel.Description = trip.Description;
-			viewModel.Notes = trip.Notes;
-			viewModel.NotesPublic = trip.NotesPublic;
-			
-			return View(viewModel);
+            var owner = DB.C<PortalUserEntity>().First(u => u.id == trip.PortalUser_id);
+
+            //permissions part            
+            bool isOwner = owner.id == DBUserId;
+            if (isOwner)
+            {
+                var vm = CreateDetailVM(trip);
+                return View(vm);
+            }
+
+            var thisUserParticipant = trip.Participants.FirstOrDefault(p => p.PortalUser_id == DBUserId);
+            bool thisUserIsAdmin = (thisUserParticipant != null) && thisUserParticipant.IsAdmin;
+            if (thisUserIsAdmin)
+            {
+                var vm = CreateDetailVM(trip);
+                return View(vm);
+            }
+
+
+            //user has no admin righs
+            return RedirectToAction("NoAdminRights", "Trip");            
 		}
-        
-		public IActionResult Overview(OverviewRequest req)
+
+	    private ViewModelTripDetail CreateDetailVM(TripEntity trip)
+	    {
+            var viewModel = CreateViewModelInstance<ViewModelTripDetail>();
+            viewModel.Name = trip.Name;
+            viewModel.TripId = trip.id.ToString();
+            viewModel.Description = trip.Description;
+            viewModel.Notes = trip.Notes;
+            viewModel.NotesPublic = trip.NotesPublic;
+
+	        return viewModel;
+	    }
+
+        public IActionResult Overview(OverviewRequest req)
 		{		    
 			var tripIdObj = new ObjectId(req.id);
 			
@@ -133,7 +157,13 @@ namespace Gloobster.Portal.Controllers.Portal
             return RedirectToAction("PrivateTrip", "Trip");
 		}
 
-	    public IActionResult PrivateTrip()
+        public IActionResult NoAdminRights()
+        {
+            var viewModel = CreateViewModelInstance<ViewModelNoAdminRights>();
+            return View(viewModel);
+        }
+
+        public IActionResult PrivateTrip()
 	    {
             var viewModel = CreateViewModelInstance<ViewModelTripPrivate>();
             return View(viewModel);            
