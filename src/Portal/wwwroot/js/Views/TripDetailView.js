@@ -35,6 +35,7 @@ var Views;
                 var data = { propertyName: "NotesPublic", values: { id: _this.trip.tripId, isPublic: isPublic } };
                 _this.apiPut("tripProperty", data, function () { });
             });
+            this.tripMenu = new Views.TripMenu();
         };
         TripDetailView.prototype.createFilesConfig = function () {
             var filesConfig = new Trip.FilesConfig();

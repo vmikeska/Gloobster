@@ -3,6 +3,8 @@
 		trip: any;
 		files: Trip.Files;
 		pictureUpload: Common.FileUpload;
+
+		tripMenu: TripMenu;
 		
 		planner: Trip.Planner;
 
@@ -35,6 +37,8 @@
 				var data = { propertyName: "NotesPublic", values: { id: this.trip.tripId, isPublic: isPublic } };
 				this.apiPut("tripProperty", data, () => {});
 			});
+
+			this.tripMenu = new TripMenu();
 		}
 
 	 private createFilesConfig() {

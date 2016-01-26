@@ -12,6 +12,14 @@ var Views;
         }
         TripViewView.prototype.initialize = function (id) {
             var self = this;
+            this.createFilesConfig();
+            this.getTrip(id);
+            $("#commentSubmit").click(function () {
+                self.comments.postComment(self.trip.tripId);
+            });
+            this.tripMenu = new Views.TripMenu();
+        };
+        TripViewView.prototype.createFilesConfig = function () {
             var filesConfig = new Trip.FilesConfig();
             filesConfig.containerId = "filesContainer";
             filesConfig.inputId = "fileInput";
@@ -19,11 +27,6 @@ var Views;
             filesConfig.addAdder = true;
             filesConfig.templateId = "file-template";
             this.files = new Trip.Files(filesConfig);
-            this.getTrip(id);
-            $("#commentSubmit").click(function () {
-                self.comments.postComment(self.trip.tripId);
-            });
-            this.tripMenu = new Views.TripMenu();
         };
         TripViewView.prototype.registerPhotoUpload = function () {
             var _this = this;

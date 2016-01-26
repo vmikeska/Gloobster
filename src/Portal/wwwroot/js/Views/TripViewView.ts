@@ -11,16 +11,8 @@
 
 		initialize(id: string) {
 			var self = this;
-		 
-			var filesConfig = new Trip.FilesConfig();
-			filesConfig.containerId = "filesContainer";
-			filesConfig.inputId = "fileInput";
-			filesConfig.editable = false;
-			filesConfig.addAdder = true;
-			filesConfig.templateId = "file-template";
 
-			this.files = new Trip.Files(filesConfig);
-
+			this.createFilesConfig();
 			this.getTrip(id);
 
 			$("#commentSubmit").click(() => {
@@ -28,6 +20,16 @@
 			});
 
 			this.tripMenu = new TripMenu();
+		}
+
+		private createFilesConfig() {
+		 var filesConfig = new Trip.FilesConfig();
+		 filesConfig.containerId = "filesContainer";
+		 filesConfig.inputId = "fileInput";
+		 filesConfig.editable = false;
+		 filesConfig.addAdder = true;
+		 filesConfig.templateId = "file-template";
+		 this.files = new Trip.Files(filesConfig);
 		}
 
 		private registerPhotoUpload() {
