@@ -39,10 +39,29 @@ namespace Gloobster.Portal.Controllers.Portal
 			return new FileStreamResult(mapStream, "image/png");		
 		}
 
-		public IActionResult Share()
+		public IActionResult Share(string id)
 		{
-			var viewModel = CreateViewModelInstance<ViewModelShareTrip>();
-			return View(viewModel);
+		    var tripIdObj = new ObjectId(id);            
+		    var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
+
+		    var ordredPlaces = trip.Places.OrderBy(t => t.OrderNo);
+		    var firstPlace = ordredPlaces.First();
+            var lastPlace = ordredPlaces.Last();
+		    var firstTravel = trip.Travels.FirstOrDefault(t => t.id == firstPlace.LeavingId);
+            var lastTravel = trip.Travels.FirstOrDefault(t => t.id == lastPlace.ArrivingId);
+		    var fromDate = firstTravel.LeavingDateTime.Value;
+		    var toDate = lastTravel.ArrivingDateTime.Value;
+		    var dateStr = $"{fromDate.Day}.{fromDate.Month}. to {toDate.Day}.{toDate.Month}. {toDate.Year}";
+
+            var owner = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == trip.PortalUser_id);
+
+            var viewModel = CreateViewModelInstance<ViewModelShareTrip>();
+		    viewModel.Id = id;
+            viewModel.Participants = GetParticipantsView(trip.Participants, trip.PortalUser_id);
+		    viewModel.OwnerId = trip.PortalUser_id.ToString();
+		    viewModel.OwnerDisplayName = owner.DisplayName;
+		    viewModel.DateRangeStr = dateStr;
+            return View(viewModel);
 		}
 
 		public async Task<IActionResult> List()

@@ -25,6 +25,23 @@ var Views;
             });
             this.tripMenu = new Views.TripMenu();
         };
+        TripViewView.prototype.registerPhotoUpload = function () {
+            var _this = this;
+            var config = new Common.FileUploadConfig();
+            config.inputId = "photoInput";
+            config.endpoint = "TripPhoto";
+            this.pictureUpload = new Common.FileUpload(config);
+            this.pictureUpload.customId = this.trip.tripId;
+            this.pictureUpload.onProgressChanged = function (percent) {
+            };
+            this.pictureUpload.onUploadFinished = function (file, files) {
+                _this.refreshBackground(_this.trip.tripId);
+            };
+        };
+        TripViewView.prototype.refreshBackground = function (tripId) {
+            $("#bckPhoto").css("background", "");
+            $("#bckPhoto").css("background", "transparent url('../../Trip/TripPicture/" + tripId + "') center top no-repeat");
+        };
         TripViewView.prototype.getTrip = function (id) {
             var _this = this;
             var prms = [["id", id]];
@@ -60,6 +77,7 @@ var Views;
             this.comments.users = this.trip.users;
             this.comments.displayComments();
             this.planner = new Trip.Planner(this.trip, false);
+            this.registerPhotoUpload();
         };
         TripViewView.prototype.generateButtons = function () {
         };

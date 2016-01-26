@@ -7,17 +7,8 @@
 		planner: Trip.Planner;
 
 		initialize(id: string) {
-		 
-		 var filesConfig = new Trip.FilesConfig();
-			filesConfig.containerId = "filesContainer";
-			filesConfig.inputId = "fileInput";
-			filesConfig.templateId = "file-template";
-			filesConfig.editable = true;
-			filesConfig.addAdder = true;
-			filesConfig.isMasterFile = true;
-			filesConfig.adderContainer = "filesPickerBox";
 
-			this.files = new Trip.Files(filesConfig);
+			this.createFilesConfig();
 			this.setFilesCustomConfig(id);
 			this.getTrip(id);
 
@@ -46,6 +37,19 @@
 			});
 		}
 
+	 private createFilesConfig() {
+		var filesConfig = new Trip.FilesConfig();
+		filesConfig.containerId = "filesContainer";
+		filesConfig.inputId = "fileInput";
+		filesConfig.templateId = "file-template";
+		filesConfig.editable = true;
+		filesConfig.addAdder = true;
+		filesConfig.isMasterFile = true;
+		filesConfig.adderContainer = "filesPickerBox";
+
+		this.files = new Trip.Files(filesConfig);
+	 }
+
 		private setFilesCustomConfig(tripId: string) {
 			var customData = new Common.TripFileCustom();
 			customData.tripId = tripId;
@@ -60,29 +64,9 @@
 		private onTripLoaded(request) {
 			this.trip = request;
 
-			this.files.setFiles(this.trip.files, this.trip.tripId, this.trip.filesPublic);
-			this.registerPhotoUpload();
+			this.files.setFiles(this.trip.files, this.trip.tripId, this.trip.filesPublic);			
 			this.planner = new Trip.Planner(this.trip, true);
 		}
-
-
-		private registerPhotoUpload() {
-		 var config = new Common.FileUploadConfig();
-			config.inputId = "photoInput";
-			config.endpoint = "TripPhoto";
-
-			this.pictureUpload = new Common.FileUpload(config);
-			this.pictureUpload.customId = this.trip.tripId;
-
-			this.pictureUpload.onProgressChanged = (percent) => {
-				//$("#progressBar").text(percent);
-			}
-			this.pictureUpload.onUploadFinished = (file, files) => {
-				//this.files = files;
-				//this.displayFiles();
-			}
-		}
-
-
+	 
 	}
 }

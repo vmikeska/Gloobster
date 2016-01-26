@@ -7,6 +7,7 @@
 		planner: Trip.Planner;
 		acceptCombo: Trip.AcceptCombo;
 		tripMenu: TripMenu;
+		pictureUpload: Common.FileUpload;
 
 		initialize(id: string) {
 			var self = this;
@@ -28,6 +29,26 @@
 
 			this.tripMenu = new TripMenu();
 		}
+
+		private registerPhotoUpload() {
+		 var config = new Common.FileUploadConfig();
+		 config.inputId = "photoInput";
+		 config.endpoint = "TripPhoto";
+
+		 this.pictureUpload = new Common.FileUpload(config);
+		 this.pictureUpload.customId = this.trip.tripId;
+
+		 this.pictureUpload.onProgressChanged = (percent) => {
+		 }
+		 this.pictureUpload.onUploadFinished = (file, files) => {
+			 this.refreshBackground(this.trip.tripId);
+		 }
+		}
+	  
+		private refreshBackground(tripId) {
+		 $("#bckPhoto").css("background", "");
+		  $("#bckPhoto").css("background", `transparent url('../../Trip/TripPicture/${tripId}') center top no-repeat`);
+	  }
 
 		private getTrip(id: string) {
 			var prms = [["id", id]];
@@ -71,6 +92,8 @@
 			this.comments.displayComments();
 
 			this.planner = new Trip.Planner(this.trip, false);
+
+			this.registerPhotoUpload();
 		}
 
 

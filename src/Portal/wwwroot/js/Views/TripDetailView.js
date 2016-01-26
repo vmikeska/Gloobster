@@ -12,15 +12,7 @@ var Views;
         }
         TripDetailView.prototype.initialize = function (id) {
             var _this = this;
-            var filesConfig = new Trip.FilesConfig();
-            filesConfig.containerId = "filesContainer";
-            filesConfig.inputId = "fileInput";
-            filesConfig.templateId = "file-template";
-            filesConfig.editable = true;
-            filesConfig.addAdder = true;
-            filesConfig.isMasterFile = true;
-            filesConfig.adderContainer = "filesPickerBox";
-            this.files = new Trip.Files(filesConfig);
+            this.createFilesConfig();
             this.setFilesCustomConfig(id);
             this.getTrip(id);
             var ndc = new Common.DelayedCallback("nameInput");
@@ -44,6 +36,17 @@ var Views;
                 _this.apiPut("tripProperty", data, function () { });
             });
         };
+        TripDetailView.prototype.createFilesConfig = function () {
+            var filesConfig = new Trip.FilesConfig();
+            filesConfig.containerId = "filesContainer";
+            filesConfig.inputId = "fileInput";
+            filesConfig.templateId = "file-template";
+            filesConfig.editable = true;
+            filesConfig.addAdder = true;
+            filesConfig.isMasterFile = true;
+            filesConfig.adderContainer = "filesPickerBox";
+            this.files = new Trip.Files(filesConfig);
+        };
         TripDetailView.prototype.setFilesCustomConfig = function (tripId) {
             var customData = new Common.TripFileCustom();
             customData.tripId = tripId;
@@ -57,22 +60,7 @@ var Views;
         TripDetailView.prototype.onTripLoaded = function (request) {
             this.trip = request;
             this.files.setFiles(this.trip.files, this.trip.tripId, this.trip.filesPublic);
-            this.registerPhotoUpload();
             this.planner = new Trip.Planner(this.trip, true);
-        };
-        TripDetailView.prototype.registerPhotoUpload = function () {
-            var config = new Common.FileUploadConfig();
-            config.inputId = "photoInput";
-            config.endpoint = "TripPhoto";
-            this.pictureUpload = new Common.FileUpload(config);
-            this.pictureUpload.customId = this.trip.tripId;
-            this.pictureUpload.onProgressChanged = function (percent) {
-                //$("#progressBar").text(percent);
-            };
-            this.pictureUpload.onUploadFinished = function (file, files) {
-                //this.files = files;
-                //this.displayFiles();
-            };
         };
         return TripDetailView;
     })(Views.ViewBase);

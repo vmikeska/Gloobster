@@ -2,6 +2,12 @@
 		ViewData["Title"] = "Home Page";
 		Layout = "";
 }
+
+@using System.Threading.Tasks
+@using Gloobster.Portal.Controllers.Portal
+@using Gloobster.Portal.ViewModels
+@model Gloobster.Portal.ViewModels.ViewModelShareTrip
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,13 +17,11 @@
 		
 		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,700">
 		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700">
-	<link href="http://ga.cz/2015/gloobster/css/style.css" rel="stylesheet">
+	    <link href="http://ga.cz/2015/gloobster/css/style.css" rel="stylesheet">
 
 		@Html.Partial("_GlobalScripts")
-	<script type="text/javascript" src="@Url.Content("~/js/Views/ShareTripView.js")"></script>
+	    <script type="text/javascript" src="@Url.Content("~/js/Views/ShareTripView.js")"></script>
 		<script type="text/javascript" src="@Url.Content("~/js/Maps/MapsCreatorMapBox2D.js")"></script>
-
-
 </head>
 <body class="shared" id="top">
 		<!-- MapBox -->
@@ -35,60 +39,47 @@
 					<div class="table row">
 						<div class="cell middle">
 							<span class="thumbnail disc60">
-														<img src="~/images/samples/sample12.jpg">
+														<img src="/PortalUser/ProfilePicture/@Model.OwnerId">
 												</span>
 						</div>
 						<div class="cell h4 middle">
-							Joe Superstar plans a trip
-							<small class="display-block">21. June to 28. June 2015</small>
+							@Model.OwnerDisplayName plans a trip
+						    <small class="display-block">
+                                @Model.DateRangeStr
+						        @*21. June to 28. June 2015*@
+						    </small>
 						</div>
 					</div>
 					<h1>Guys! Going to Košice for a trip around the city. Join me and share it as well!</h1>
 				</div>
-				<div class="map-share table">
-					@*<div class="cell">
-										Share
-										<img class="opacity5 middle mleft10" src="images/share-facebook.png">
-										<img class="opacity5 middle mleft10" src="images/share-4s.png">
-										<img class="opacity5 middle mleft10" src="images/share-twitter.png">
-										<img class="opacity5 middle mleft10" src="images/share-google.png">
-								</div>*@
-					<div class="cell middle tright">
-						<a class="button share h4 strong" href="#">Join to comment</a>
-					</div>
+				<div class="map-share table">			
+				    <div class="cell middle tright">
+                        <a class="button share h4 strong" href="/Trip/Overview/@Model.Id">I am already registered</a>
+				        <a class="button share h4 strong" href="/">Join Gloobster.com to see details of the trip</a>
+				    </div>
 				</div>
 			</div>
 		</section>
 		<section class="margin padding">
 				<div class="wrapper">
 						<h3 class="slim">Travellers who joined already</h3>
-						<div class="team grid col5 margin2">
-								<div class="cell">
-										<div class="table">
-												<div class="cell">
-														<span class="thumbnail">
-																<img src="~/images/samples/sample12.jpg">
-														</span>
-												</div>
-												<div class="cell">Václav Petrklíč</div>
-										</div>
-								</div>
-								
-						</div>
-						<div class="table row center">
+				    <div class="team grid col5 margin2">
+				        @foreach (var participant in Model.Participants)
+                        {
+                            await Html.RenderPartialAsync("Participant", (object)participant);
+                        }				   
+				    </div>
+						@*<div class="table row center">
 								<div class="cell color2">Copyright Gloobster 2015</div>
 								<div class="cell"><a href="#">Privacy Policy</a></div>
 								<div class="cell"><a href="#">What is Gloobster</a></div>
 								<div class="cell"><a href="#">Unsubscribe</a></div>
-						</div>
+						</div>*@
 				</div>
 		</section>
 		
 <script>
-
-	var urlParams = window.location.pathname.split("/");
-  var id = urlParams[urlParams.length - 1];
-	currentView = new Views.ShareTripView(id);	
+    currentView = new Views.ShareTripView('@Model.Id');	
 </script>
 		
 </body>

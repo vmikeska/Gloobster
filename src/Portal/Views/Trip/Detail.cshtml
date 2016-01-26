@@ -20,20 +20,7 @@
 <script type="text/javascript" src="@Url.Content("~/js/Trip/Utils.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Trip/PlacesManager.js")"></script>
 
-<style>
-    .photoButton input {
-        width: 0.1px;
-        height: 0.1px;
-        opacity: 0;
-        overflow: hidden;
-        position: absolute;
-        z-index: -1;
-    }
-
-    .photoButton label {
-        cursor: pointer;
-    }
-
+<style>  
     .noFiles {
         word-spacing: 0;
     }
@@ -46,33 +33,21 @@
 	<div class="wrapper">
 		<div class="table margin width100">
 			<div class="cell middle">
-				<input id="nameInput" class="heading middle" type="text" placeholder="Edit this" value="@Model.Name">
-					@*http://markusslima.github.io/jquery-filestyle/*@
-			    @*<a class="button border mleft10 photoButton" href="#">
-			        <input id="photoInput" type="file" />
-
-                    <label for="photoInput" >
-                        Add title photo
-                    </label>			        
-			    </a>*@
-					
+				<input id="nameInput" class="heading middle" type="text" placeholder="Edit this" value="@Model.Name">					
 			</div>
-			<div class="cell middle tright">
-                <a class="button border mleft10 photoButton" href="#">
-                    <input id="photoInput" type="file" />
+		    <div class="cell middle tright">
+                <a data-tmp="menuPrivacy-template" class="button border tripMenuButton" href="#">Set privacy</a>                
+		        <a data-tmp="participants-template" class="button border tripMenuButton" href="#">Participants</a>
 
-                    <label for="photoInput">
-                        Add title photo
-                    </label>
-                </a>
-			                    
-					<a class="button border" href="/Trip/Overview/@Model.TripId">Switch to preview</a>
-				@*<a class="icon-wheel blue middle mleft20" href="#">Settings</a>*@
-			</div>
+		        <a class="button border" href="/Trip/Overview/@Model.TripId">Switch to preview</a>
+		    </div>
 		</div>
 
-		@*<p class="color1">My Own Personal trip Description that I can write and edit anytime. This text would be used as default copy for sharing and for any other off site interaction so be careful. In the future it could have a feature allowing theme photo being pre-generated and possibly replaced by my photo of choice.</p>*@
-		<textarea class="color1" style="width: 900px;" id="description" placeholder="write trip description...">@Model.Description</textarea>
+        <div class="menuItemContent" style="display: none;">
+
+        </div>
+
+	    <textarea class="color1" style="width: 900px;" id="description" placeholder="write trip description...">@Model.Description</textarea>
 
 		<h3>Day by Day Plan</h3>
 		<div id="plannerCont1" class="daybyday table margin">		
