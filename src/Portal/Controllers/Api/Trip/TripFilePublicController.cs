@@ -10,9 +10,9 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 	public class TripFilePublicController : BaseApiController
 	{		
 		public IFilesDomain FileDomain { get; set; }
-		public ILogger Log { get; set; }
+		
 
-		public TripFilePublicController(IFilesDomain filesDomain, IDbOperations db) : base(db)
+		public TripFilePublicController(IFilesDomain filesDomain, ILogger log, IDbOperations db) : base(log, db)
 		{			
 			FileDomain = filesDomain;			
 		}

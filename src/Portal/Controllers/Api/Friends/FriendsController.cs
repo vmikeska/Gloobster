@@ -20,13 +20,11 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 	{
 		public IFacebookFriendsService FbFriendsService { get; set; }
 		public IFriendsDomain FriendsDoimain { get; set; }
-        public ILogger Log { get; set; }
-
-        public FriendsController(ILogger log, IFacebookFriendsService fbFriendsService, IFriendsDomain friendsDoimain, IDbOperations db) : base(db)
+        
+        public FriendsController(IFacebookFriendsService fbFriendsService, IFriendsDomain friendsDoimain, ILogger log, IDbOperations db) : base(log, db)
 		{
 			FbFriendsService = fbFriendsService;
-			FriendsDoimain = friendsDoimain;
-            Log = log;
+			FriendsDoimain = friendsDoimain;            
         }		
 
 		[HttpGet]

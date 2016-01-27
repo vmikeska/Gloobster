@@ -9,6 +9,7 @@ using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.Trip;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
+using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.Trip
 {
@@ -16,7 +17,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 	{
 		public ITripInviteDomain InviteDomain { get; set; }
 
-		public TripParticipantsController(ITripInviteDomain tripInviteDom, IDbOperations db) : base(db)
+		public TripParticipantsController(ITripInviteDomain tripInviteDom, ILogger log, IDbOperations db) : base(log, db)
 		{
 			InviteDomain = tripInviteDom;
 		}

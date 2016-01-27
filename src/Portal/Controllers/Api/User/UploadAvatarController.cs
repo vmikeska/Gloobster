@@ -7,6 +7,7 @@ using Gloobster.Entities;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.Files;
 using Microsoft.AspNet.Mvc;
+using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.User
 {
@@ -14,7 +15,7 @@ namespace Gloobster.Portal.Controllers.Api.User
 	{		
 		public FilesDomain FileDomain { get; set; }
 
-		public UploadAvatarController(IFilesDomain filesDomain, IDbOperations db) : base(db)
+		public UploadAvatarController(IFilesDomain filesDomain, ILogger log, IDbOperations db) : base(log, db)
 		{			
 			FileDomain = (FilesDomain)filesDomain;
 		}

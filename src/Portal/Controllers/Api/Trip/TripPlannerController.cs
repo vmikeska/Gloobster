@@ -6,6 +6,7 @@ using Gloobster.Mappers;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.Trip;
 using Microsoft.AspNet.Mvc;
+using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.Trip
 {
@@ -13,7 +14,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 	{
 		public ITripPlannerDomain TripPlanner { get; set; }
 		
-		public TripPlannerController(ITripPlannerDomain plannerDomain, IDbOperations db) : base(db)
+		public TripPlannerController(ITripPlannerDomain plannerDomain, ILogger log, IDbOperations db) : base(log, db)
 		{
 			TripPlanner = plannerDomain;
 		}

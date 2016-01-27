@@ -9,6 +9,7 @@ using Gloobster.ReqRes.Airport;
 using Microsoft.AspNet.Mvc;
 using Gloobster.Entities.Planning;
 using MongoDB.Bson;
+using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.Geo
 {
@@ -17,7 +18,7 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 	{						
 		public IAirportGroupService AirportGroupDomain { get; set; }
 
-		public AirportGroupController(IAirportGroupService agd, IDbOperations db) : base(db)
+		public AirportGroupController(IAirportGroupService agd, ILogger log, IDbOperations db) : base(log, db)
 		{						
 			AirportGroupDomain = agd;
 		}

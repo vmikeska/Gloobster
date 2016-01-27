@@ -6,6 +6,7 @@ using Gloobster.Enums;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.Trip;
 using Microsoft.AspNet.Mvc;
+using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.Trip
 {
@@ -13,7 +14,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 	{
 		public ITripShareDomain ShareDomain { get; set; }
 
-		public TripSocNetworksController(ITripShareDomain shareDomain, IDbOperations db) : base(db)
+		public TripSocNetworksController(ITripShareDomain shareDomain, ILogger log, IDbOperations db) : base(log, db)
 		{			
 			ShareDomain = shareDomain;
 		}

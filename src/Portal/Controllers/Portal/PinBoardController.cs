@@ -25,11 +25,9 @@ namespace Gloobster.Portal.Controllers.Portal
         public IFacebookService FBService { get; set; }
         public IComponentContext ComponentContext { get; set; }
         public IPlacesExtractor PlacesExtractor { get; set; }
-
-        public ILogger Log { get; set; }
-
-        public PinBoardController(ILogger log, IPlacesExtractor placesExtractor, IComponentContext componentContext, IFacebookService fbService, 
-            ISharedMapImageDomain sharedImgDomain, IDbOperations db) : base(db)
+        
+        public PinBoardController(IPlacesExtractor placesExtractor, IComponentContext componentContext, IFacebookService fbService, 
+            ISharedMapImageDomain sharedImgDomain,ILogger log,  IDbOperations db) : base(log, db)
 		{
             SharedImgDomain = sharedImgDomain;
             FBService = fbService;

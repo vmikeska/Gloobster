@@ -10,6 +10,7 @@ using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.PinBoard;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
+using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.PinBoard
 {	
@@ -23,7 +24,7 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
 
 		public ICountryService CountryService { get; set; }
 
-		public VisitedCityController(IDbOperations db) : base(db)
+		public VisitedCityController(ILogger log, IDbOperations db) : base(log, db)
 		{
 			
 		}

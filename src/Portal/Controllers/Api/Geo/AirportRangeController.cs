@@ -9,17 +9,17 @@ using Gloobster.Mappers;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.Airport;
 using Microsoft.AspNet.Mvc;
+using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.Geo
 {
 	[Route("api/[controller]")]
 	public class AirportRangeController : BaseApiController
-	{
-		public IDbOperations DB { get; set; }
+	{		
 		public IAirportService AirService {get; set; }
 		public IGeoNamesService GeoNames { get; set; }
 
-		public AirportRangeController(IGeoNamesService geoNames, IAirportService airportService, IDbOperations db) : base(db)
+		public AirportRangeController(IGeoNamesService geoNames, IAirportService airportService, ILogger log, IDbOperations db) : base(log, db)
 		{
 			DB = db;
 			AirService = airportService;

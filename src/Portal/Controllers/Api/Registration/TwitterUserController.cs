@@ -10,6 +10,7 @@ using Gloobster.ReqRes;
 using Gloobster.ReqRes.Facebook;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
+using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.Registration
 {
@@ -19,7 +20,7 @@ namespace Gloobster.Portal.Controllers.Api.Registration
 		public IUserService UserService { get; set; }		
 		public IComponentContext ComponentContext { get; set; }
 	
-		public TwitterUserController(IUserService userService, IComponentContext componentContext, IDbOperations db) : base(db)
+		public TwitterUserController(IUserService userService, IComponentContext componentContext, ILogger log, IDbOperations db) : base(log, db)
 		{
 			UserService = userService;
 			ComponentContext = componentContext;

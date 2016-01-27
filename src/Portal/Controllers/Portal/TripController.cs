@@ -15,6 +15,7 @@ using Gloobster.DomainModels;
 using Gloobster.DomainModels.Services.Accounts;
 using Gloobster.Entities.Trip;
 using Gloobster.Enums;
+using Serilog;
 
 namespace Gloobster.Portal.Controllers.Portal
 {
@@ -25,8 +26,8 @@ namespace Gloobster.Portal.Controllers.Portal
 
 		public ISharedMapImageDomain SharedImgDomain { get; set; }
 
-		public TripController(ISharedMapImageDomain sharedImgDomain, ITripPlannerDomain tripPlanner, IFilesDomain filesDomain, 
-			IDbOperations db) : base(db)
+		public TripController(ISharedMapImageDomain sharedImgDomain, ITripPlannerDomain tripPlanner, IFilesDomain filesDomain,
+            ILogger log, IDbOperations db) : base(log, db)
 		{
 			FileDomain = filesDomain;
 			TripPlanner = tripPlanner;

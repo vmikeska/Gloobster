@@ -13,16 +13,16 @@ using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.Planning;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
+using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.Planning
 {
 	[Route("api/[controller]")]
 	public class PlanningPropertyController : BaseApiController
-	{				
-		public IDbOperations DB { get; set; }
+	{						
 		public IPlanningDomain Planning { get; set; }
 		
-		public PlanningPropertyController(IPlanningDomain planning, IDbOperations db) : base(db)
+		public PlanningPropertyController(IPlanningDomain planning, ILogger log, IDbOperations db) : base(log, db)
 		{			
 			DB = db;
 			Planning = planning;			

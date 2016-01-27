@@ -1,26 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
-using Gloobster.Common;
 using Gloobster.Database;
-using Gloobster.DomainObjects;
 using Gloobster.Entities;
-using Gloobster.Enums;
 using Gloobster.Mappers;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.Airport;
 using Microsoft.AspNet.Mvc;
+using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.Geo
 {
 	[Route("api/[controller]")]
 	public class AirportController : BaseApiController
-	{				
-		public IDbOperations DB { get; set; }
-
-		public AirportController(IDbOperations db) : base(db)
+	{						
+		public AirportController(ILogger log, IDbOperations db) : base(log, db)
 		{			
 			DB = db;
 		}

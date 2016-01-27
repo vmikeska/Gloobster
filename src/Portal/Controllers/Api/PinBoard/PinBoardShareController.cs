@@ -8,6 +8,7 @@ using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.PinBoard;
 using Gloobster.ReqRes.Trip;
 using Microsoft.AspNet.Mvc;
+using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.PinBoard
 {	
@@ -16,7 +17,7 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
 	{
 		public IShareMapDomain ShareDomain { get; set; }
 
-		public PinBoardShareController(IShareMapDomain shareDomain, IDbOperations db) : base(db)
+		public PinBoardShareController(IShareMapDomain shareDomain, ILogger log, IDbOperations db) : base(log, db)
 		{
 			ShareDomain = shareDomain;
 		}

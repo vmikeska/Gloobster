@@ -4,6 +4,7 @@ using Gloobster.Portal.Controllers.Base;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using Gloobster.DomainInterfaces;
+using Serilog;
 
 namespace Gloobster.Portal.Controllers.Portal
 {
@@ -11,7 +12,7 @@ namespace Gloobster.Portal.Controllers.Portal
     {
 		public IGeoNamesService GeoNames { get; set; }
 
-		public HomeController(IGeoNamesService geoNames, IDbOperations db) : base(db)
+		public HomeController(IGeoNamesService geoNames, ILogger log, IDbOperations db) : base(log, db)
 		{
 			GeoNames = geoNames;
 		}

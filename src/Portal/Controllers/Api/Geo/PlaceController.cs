@@ -19,11 +19,9 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 	[Route("api/[controller]")]
 	public class PlaceController : BaseApiController
 	{				
-		public ISearchService SearchSvc { get; set; }
-		public IDbOperations DB { get; set; }
-        public ILogger Log { get; set; }
-
-        public PlaceController(ILogger log, ISearchService searchService, IDbOperations db) : base(db)
+		public ISearchService SearchSvc { get; set; }		
+        
+        public PlaceController(ISearchService searchService, ILogger log, IDbOperations db) : base(log, db)
 		{
 			SearchSvc = searchService;
 			DB = db;

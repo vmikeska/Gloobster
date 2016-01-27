@@ -12,6 +12,7 @@ using Gloobster.ReqRes.MoveOut;
 using Gloobster.ReqRes.PinBoard;
 using Gloobster.SocialLogin.Facebook.Communication;
 using Microsoft.AspNet.Mvc;
+using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.Geo
 {
@@ -23,7 +24,7 @@ namespace Gloobster.Portal.Controllers.Api.Geo
         public IFacebookService FBService { get; set; }
         public IFacebookShare FBShare { get; set; }
 
-        public CheckinController(IFacebookShare fbShare, IFacebookService fbService, ICheckinPlaceDomain checkinDomain, ICountryService countryService, IDbOperations db) : base(db)
+        public CheckinController(IFacebookShare fbShare, IFacebookService fbService, ICheckinPlaceDomain checkinDomain, ICountryService countryService, ILogger log, IDbOperations db) : base(log, db)
 		{
 			CheckinDomain = checkinDomain;
 			CountryService = countryService;

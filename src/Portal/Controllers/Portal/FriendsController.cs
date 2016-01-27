@@ -6,6 +6,7 @@ using Gloobster.DomainModels.Services.Facebook.FriendsExtractor;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.Portal.ViewModels;
 using Microsoft.AspNet.Mvc;
+using Serilog;
 
 //http://stackoverflow.com/questions/23417356/facebook-graph-api-v2-0-me-friends-returns-empty-or-only-friends-who-also-u
 //https://www.sammyk.me/optimizing-request-queries-to-the-facebook-graph-api
@@ -20,7 +21,7 @@ namespace Gloobster.Portal.Controllers.Portal
 {
     public class FriendsController: PortalBaseController
     {
-		public FriendsController(IDbOperations db) : base(db)
+		public FriendsController(ILogger log, IDbOperations db) : base(log, db)
 		{
 		}
 

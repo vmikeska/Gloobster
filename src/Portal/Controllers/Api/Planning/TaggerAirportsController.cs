@@ -5,15 +5,15 @@ using Gloobster.Enums;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.Airport;
 using Microsoft.AspNet.Mvc;
+using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.Planning
 {
 	[Route("api/[controller]")]
 	public class TaggerAirportsController : BaseApiController
 	{				
-		public IDbOperations DB { get; set; }
 		
-		public TaggerAirportsController(IDbOperations db) : base(db)
+		public TaggerAirportsController(ILogger log, IDbOperations db) : base(log, db)
 		{			
 			DB = db;	
 		}

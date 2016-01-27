@@ -22,10 +22,9 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 {
 	public class TripFileController : BaseApiController
 	{		
-		public IFilesDomain FileDomain { get; set; }
-		public ILogger Log { get; set; }
+		public IFilesDomain FileDomain { get; set; }		
 
-		public TripFileController(ILogger log, IFilesDomain filesDomain, IDbOperations db) : base(db)
+		public TripFileController(IFilesDomain filesDomain,ILogger log,  IDbOperations db) : base(log, db)
 		{			
 			FileDomain = filesDomain;
 			Log = log;

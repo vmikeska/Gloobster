@@ -20,9 +20,9 @@ namespace Gloobster.Portal.Controllers.Api.Registration
 	{
 		public IUserService UserService { get; set; }		
 		public IComponentContext ComponentContext { get; set; }
-		public ILogger Log { get; set; }
+		
 
-		public FacebookUserController(ILogger log, IUserService userService, IComponentContext componentContext, IDbOperations db) : base(db)
+		public FacebookUserController(IUserService userService, IComponentContext componentContext, ILogger log, IDbOperations db) : base(log, db)
 		{
 			Log = log;
 			UserService = userService;

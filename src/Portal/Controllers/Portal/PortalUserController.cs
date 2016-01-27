@@ -16,9 +16,9 @@ namespace Gloobster.Portal.Controllers.Portal
 	public class PortalUserController : PortalBaseController
 	{
 		public IFilesDomain FileDomain { get; set; }
-        public ILogger Log { get; set; }
+        
 
-        public PortalUserController(ILogger log, IFilesDomain filesDomain, IDbOperations db) : base(db)
+        public PortalUserController(IFilesDomain filesDomain,ILogger log,  IDbOperations db) : base(log, db)
 		{
 			FileDomain = filesDomain;
             Log = log;

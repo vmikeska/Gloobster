@@ -10,6 +10,7 @@ using Gloobster.ReqRes;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.User
 {
@@ -18,7 +19,7 @@ namespace Gloobster.Portal.Controllers.Api.User
 		public IGeoNamesService GeoNamesSvc { get; set; } 
 
 		
-		public UserPropertyController(IGeoNamesService geoNamesService, IDbOperations db) : base(db)
+		public UserPropertyController(IGeoNamesService geoNamesService, ILogger log, IDbOperations db) : base(log, db)
 		{
 			GeoNamesSvc = geoNamesService;
 		}

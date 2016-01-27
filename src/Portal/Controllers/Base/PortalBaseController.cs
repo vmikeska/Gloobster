@@ -10,14 +10,18 @@ using Gloobster.ReqRes;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
+using Serilog;
 
 namespace Gloobster.Portal.Controllers.Base
 {
     public class PortalBaseController: Controller
     {
-		public IDbOperations DB;
+		public IDbOperations DB { get; set; }
+        public ILogger Log { get; set; }
+        public ObjectId DBUserId => new ObjectId(UserId);
+        public bool IsUserLogged => !string.IsNullOrEmpty(UserId);
 
-		private string _userId;
+        private string _userId;
 		public string UserId
 		{
 			get
@@ -46,7 +50,40 @@ namespace Gloobster.Portal.Controllers.Base
 			}
 		}
 
-	    private AuthorizationToken GetAuthorizationTokenFromCookie()
+        private PortalUserEntity _portalUser;
+        public PortalUserEntity PortalUser
+        {
+            get
+            {
+                if (!IsUserLogged)
+                {
+                    return null;
+                }
+
+                if (_portalUser != null)
+                {
+                    return _portalUser;
+                }
+
+                _portalUser = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == DBUserId);
+
+                if (_portalUser == null)
+                {
+                    //throw
+                }
+
+                return _portalUser;
+            }
+        }
+
+
+        public PortalBaseController(ILogger log, IDbOperations db)
+        {
+            DB = db;
+            Log = log;
+        }
+        
+        private AuthorizationToken GetAuthorizationTokenFromCookie()
 	    {
 			string cookieValue = Request.HttpContext.Request.Cookies[PortalConstants.LoginCookieName];
 
@@ -70,37 +107,7 @@ namespace Gloobster.Portal.Controllers.Base
 				return null;
 			}
 		}
-
-		public ObjectId DBUserId => new ObjectId(UserId);
-
-		public bool IsUserLogged => !string.IsNullOrEmpty(UserId);
-
-	    private PortalUserEntity _portalUser;
-		public PortalUserEntity PortalUser
-	    {
-		    get
-		    {
-			    if (!IsUserLogged)
-			    {
-				    return null;
-			    }
-
-			    if (_portalUser != null)
-			    {
-				    return _portalUser;
-			    }
-
-			    _portalUser = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == DBUserId);
-
-			    if (_portalUser == null)
-			    {
-				    //throw
-			    }
-
-			    return _portalUser;
-		    }    
-	    }
-
+        
 	    public string GetSocNetworkStr()
 	    {
 	        var networks = new List<string>();
@@ -136,11 +143,7 @@ namespace Gloobster.Portal.Controllers.Base
             return netStr;
 	    }
 
-	    public PortalBaseController(IDbOperations db)
-        {
-            DB = db;
-        }
-
+	    
 	    public T CreateViewModelInstance<T>() where T : ViewModelBase, new()
 	    {
 		    var notifications = DB.C<NotificationsEntity>().FirstOrDefault(n => n.PortalUser_id == DBUserId);

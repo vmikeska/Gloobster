@@ -8,6 +8,7 @@ using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.Files;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
+using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.Trip
 {
@@ -15,7 +16,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 	{		
 		public FilesDomain FileDomain { get; set; }
 
-		public TripPhotoController(IFilesDomain filesDomain, IDbOperations db) : base(db)
+		public TripPhotoController(IFilesDomain filesDomain, ILogger log, IDbOperations db) : base(log, db)
 		{			
 			FileDomain = (FilesDomain)filesDomain;
 		}

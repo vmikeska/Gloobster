@@ -12,15 +12,13 @@ using Gloobster.ReqRes;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.Trip
 {
 	public class TripPropertyController: BaseApiController
 	{
 		
-		public TripPropertyController(IDbOperations db) : base(db)
-		{			
-		}
 		
 		[HttpPut]
 		[Authorize]
@@ -84,7 +82,10 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 
 			return new ObjectResult(response);
 		}
-		
+
+	    public TripPropertyController(ILogger log, IDbOperations db) : base(log, db)
+	    {
+	    }
 	}
 
 }

@@ -11,12 +11,13 @@ using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.Trip;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
+using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.Trip
 {
 	public class TripShareController : BaseApiController
 	{
-		public TripShareController(IDbOperations db) : base(db)
+		public TripShareController(ILogger log, IDbOperations db) : base(log, db)
 		{			
 		}
 

@@ -10,6 +10,7 @@ using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.PinBoard;
 using Gloobster.ReqRes.Trip;
 using Microsoft.AspNet.Mvc;
+using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.PinBoard
 {	
@@ -19,7 +20,7 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
         public IPlacesExtractor PlacesExtractor { get; set; }
         public IComponentContext ComponentContext { get; set; }
 
-        public FbTaggedPlacesPermissionController(IComponentContext componentContext, IPlacesExtractor placesExtractor, IDbOperations db) : base(db)
+        public FbTaggedPlacesPermissionController(IComponentContext componentContext, IPlacesExtractor placesExtractor, ILogger log, IDbOperations db) : base(log, db)
         {
             PlacesExtractor = placesExtractor;
             ComponentContext = componentContext;

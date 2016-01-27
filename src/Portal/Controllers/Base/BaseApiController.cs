@@ -4,6 +4,7 @@ using Gloobster.Entities;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using System.Linq;
+using Serilog;
 
 namespace Gloobster.Portal.Controllers.Base
 {
@@ -11,10 +12,12 @@ namespace Gloobster.Portal.Controllers.Base
 	public class BaseApiController: Controller
 	{
 		public IDbOperations DB { get; set; }
+        public ILogger Log { get; set; }
 
-		public BaseApiController(IDbOperations db)
+        public BaseApiController(ILogger log, IDbOperations db)
 		{
 			DB = db;
+            Log = log;
 		}
 
 		public string UserId { get; set; }

@@ -5,6 +5,7 @@ using Gloobster.Entities;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.Friends;
 using Microsoft.AspNet.Mvc;
+using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.Friends
 {
@@ -12,7 +13,7 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 	{		
 		public IFriendsDomain FriendsDoimain { get; set; }
 
-		public UsersSearchController(IFriendsDomain friendsDoimain, IDbOperations db) : base(db)
+		public UsersSearchController(IFriendsDomain friendsDoimain, ILogger log, IDbOperations db) : base(log, db)
 		{			
 			FriendsDoimain = friendsDoimain;
 		}

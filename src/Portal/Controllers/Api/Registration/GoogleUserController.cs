@@ -14,6 +14,7 @@ using Gloobster.ReqRes.Google;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 using Newtonsoft.Json;
+using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.Registration
 {
@@ -23,7 +24,7 @@ namespace Gloobster.Portal.Controllers.Api.Registration
 		public IUserService UserService { get; set; }
 		public IComponentContext ComponentContext { get; set; }
 		
-		public GoogleUserController(IUserService userService, IComponentContext componentContext, IDbOperations db) : base(db)
+		public GoogleUserController(IUserService userService, IComponentContext componentContext, ILogger log, IDbOperations db) : base(log, db)
 		{
 			UserService = userService;
 			ComponentContext = componentContext;
