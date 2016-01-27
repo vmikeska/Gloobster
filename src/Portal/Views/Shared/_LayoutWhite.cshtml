@@ -43,12 +43,20 @@
 			</div>
 			<div class="cell">
 				<div id="userMenu" class="dropdown">
-					<span class="selected">@Model.PortalUser.DisplayName, @Model.SocialNetwork</span>
-					<span class="notification">@Model.NotificationCount</span>                    
-					<ul>
+					<span class="selected">@Model.PortalUser.DisplayName, @Model.SocialNetwork</span>				    
+                    @if (Model.NotificationCount > 0)
+                    {
+                        <span class="notification">@Model.NotificationCount</span>
+                    }
+				    <ul>
 						<li data-value="logout">Logout</li>
-						<li data-value="settings">Settings</li>							
-						<li data-value="notifications">Notifications<span class="notification">@Model.NotificationCount</span></li>
+					    <li data-value="settings">Settings</li>
+					    <li data-value="notifications">Notifications
+					        @if (Model.NotificationCount > 0)
+					        {
+					            <span class="notification">@Model.NotificationCount</span>
+					        }
+                        </li>
 					</ul>
 					<input type="hidden">
 				</div>

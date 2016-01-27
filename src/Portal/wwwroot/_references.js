@@ -56,6 +56,7 @@
 /// <reference path="js/views/homepageview.js" />
 /// <reference path="js/views/invitedialogview.js" />
 /// <reference path="js/views/locationsettingsdialog.js" />
+/// <reference path="js/views/notificationsview.js" />
 /// <reference path="js/views/peoplefilter.js" />
 /// <reference path="js/views/pinboardbadges.js" />
 /// <reference path="js/views/pinboardview.js" />

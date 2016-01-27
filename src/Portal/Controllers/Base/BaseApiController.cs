@@ -9,6 +9,7 @@ using Serilog;
 namespace Gloobster.Portal.Controllers.Base
 {
 	[Route("api/[controller]")]
+    
 	public class BaseApiController: Controller
 	{
 		public IDbOperations DB { get; set; }

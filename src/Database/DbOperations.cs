@@ -134,7 +134,7 @@ namespace Gloobster.Database
 
 				var collectionName = GetCollectionName<T>();
 				var collection = Database.GetCollection<T>(collectionName);
-
+                
 				var result = await collection.UpdateOneAsync(filter, update);
 				return result;
 			}
@@ -143,8 +143,25 @@ namespace Gloobster.Database
 				throw exc;
 			}
 		}
-		
-		public async Task<ReplaceOneResult> ReplaceOneAsync<T>(T doc) where T : EntityBase
+
+        public async Task<UpdateResult> UpdateManyAsync<T>(FilterDefinition<T> filter, UpdateDefinition<T> update) where T : EntityBase
+        {
+            try
+            {
+
+                var collectionName = GetCollectionName<T>();
+                var collection = Database.GetCollection<T>(collectionName);
+
+                var result = await collection.UpdateManyAsync(filter, update);
+                return result;
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+        }
+
+        public async Task<ReplaceOneResult> ReplaceOneAsync<T>(T doc) where T : EntityBase
 		{
 			var builder = Builders<BsonDocument>.Filter;
 			var filter = builder.Eq("_id", doc.id);

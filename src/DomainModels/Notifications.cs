@@ -5,6 +5,7 @@ using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
 using Gloobster.Entities;
+using Gloobster.Entities.Trip;
 using Gloobster.Enums;
 using MongoDB.Bson;
 
@@ -18,8 +19,8 @@ namespace Gloobster.DomainModels
 		{
 			return new NotificationDO
 			{
-				Title = "You are now registered",
-				Content = "Welcome on our portal",
+				Title = "Welcome on our portal",
+				Content = "Hope you will have fun with our travel components",
 				ContentType = ContentType.Text,
 				UserId = userId,
 				Status = NotificationStatus.Created				
@@ -34,7 +35,9 @@ namespace Gloobster.DomainModels
 			return new NotificationDO
 			{
 				Title = $"{requestingUser.DisplayName} want to be your friend",
-				Content = "Confirm it",
+				Content = "If you know him/her, I guess you would like to confirm it",
+                Link = "Friends/List",
+                LinkText = "Go to Friends page",
 				ContentType = ContentType.Text,
 				UserId = receiverId,
 				Status = NotificationStatus.Created
@@ -45,16 +48,19 @@ namespace Gloobster.DomainModels
 		{
 			var fromUser = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == new ObjectId(fromUserId));
 
-			var protocol = "http";
-			var link = $"{protocol}://{GloobsterConfig.Domain}/Trip/Overview/{tripId}";
+		    var tripIdObj = new ObjectId(tripId);
+		    var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
 
 			var notif = new NotificationDO
 			{
 				Title = $"{fromUser.DisplayName} invited you to join a trip",
 				UserId = toUserId,
 				Status = NotificationStatus.Created,
-				Content = $"You are invited for a trip from {fromUser.DisplayName} to <a href=\"{link}\">{link}</a>",
-				ContentType = ContentType.Html
+                Link = $"Trip/Overview/{tripId}",
+                LinkText = "See detail of the trip",
+
+                Content = $"You are invited to be part of '{trip.Name}' trip from {fromUser.DisplayName}. {trip.Description}",
+				ContentType = ContentType.Text
 			};
 
 			return notif;

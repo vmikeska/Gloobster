@@ -1,19 +1,82 @@
-﻿@using Gloobster.Portal.ViewModels
+﻿@using Gloobster.Common
+@using Gloobster.Portal.ViewModels
 @model Gloobster.Portal.ViewModels.NotificationsViewModel
 
+<script type="text/javascript" src="@Url.Content("~/js/Views/NotificationsView.js")"></script>
 
-@foreach (var notif in Model.Notifications.Notifications)
-{
-		<div style="border: 1px solid red">
-				<h1>@notif.Title</h1>
-				<p>@notif.Content</p>
-		</div>
-}
+<style>
+    .notif_item {
+        padding-bottom: 20px;
+    }
+
+    .notif_header {
+        border-bottom: 2px solid #57c1db;
+    }
+
+    .notif_body {
+        border-bottom: 1px solid #57c1db;
+    }
+    
+    .notif_foot {
+        padding-top: 2px;
+    }
+</style>
+
+<div class="blue-line margin2"></div>
+
+<section class="wrapper margin3">
+    <div class="table row col2 margin">
+        <div class="cell">
+            <div class="table row">
+                <div class="cell middle">
+                    <h2>Notifications</h2>
+                    @if (Model.Notifications.Notifications.Any())
+                    {
+                        <button id="deleteAll">Delete all</button>
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="notifCont">
+        @if (Model.Notifications.Notifications.Any())
+        {
+             foreach (var notif in Model.Notifications.Notifications)
+             {
+                 <div class="notif_item" id="@notif.id">
+                     <div class="notif_header">
+                         <h4>@notif.Title</h4>
+                     </div>
+                     <div class="notif_body">
+                         <p>@notif.Content</p>
+                         @if (!string.IsNullOrEmpty(notif.Link))
+                         {
+                             <a href="https://@GloobsterConfig.Domain/@notif.Link">@notif.LinkText</a>
+                         }
+                     </div>
+                     <div class="notif_foot">
+                         <button class="notif_delete" data-notifId="@notif.id">Delete</button>
+                     </div>
+                 </div>
+             }
+        }
+        else
+        {
+            <div>You have no new notifications</div>
+        }
+    </div>
+
+</section>
+
+
+
 
 <script>
 
 	function onBodyLoad() {
-		//currentView = new Views.SettingsView();
+		currentView = new Views.NotificationsView();
 	}
 
 

@@ -150,7 +150,7 @@ namespace Gloobster.Portal.Controllers.Base
 		    int notifsCount = 0;
 		    if (notifications != null)
 		    {
-			    notifsCount = notifications.Notifications.Count;
+			    notifsCount = notifications.Notifications.Count(n => n.Status == NotificationStatus.Created);
 		    }
 
 		    var instance = new T

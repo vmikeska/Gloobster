@@ -3,6 +3,7 @@ using Gloobster.Common;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using System.Linq;
+using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.Entities;
@@ -16,13 +17,14 @@ namespace Gloobster.Portal.Controllers.Portal
 	public class PortalUserController : PortalBaseController
 	{
 		public IFilesDomain FileDomain { get; set; }
-        
+        public INotificationsDomain NotificationsDomain { get; set; }
 
-        public PortalUserController(IFilesDomain filesDomain,ILogger log,  IDbOperations db) : base(log, db)
+        public PortalUserController(INotificationsDomain notifs, IFilesDomain filesDomain,ILogger log,  IDbOperations db) : base(log, db)
 		{
 			FileDomain = filesDomain;
             Log = log;
-        }
+            NotificationsDomain = notifs;
+		}
 		
 		public IActionResult Detail(string id)
 		{
@@ -89,13 +91,15 @@ namespace Gloobster.Portal.Controllers.Portal
 		}
 	
 
-		public IActionResult Notifications()
+		public async Task<IActionResult> Notifications()
 		{
-			var notifs = DB.C<NotificationsEntity>().First(p => p.PortalUser_id == DBUserId);
+            await NotificationsDomain.SetAllNotificationsToSeen(UserId);
+
+            var notifs = DB.C<NotificationsEntity>().First(p => p.PortalUser_id == DBUserId);
 			
 			var viewModel = CreateViewModelInstance<NotificationsViewModel>();
 			viewModel.Notifications = notifs;
-			
+            
 			return View(viewModel);
 		}
 

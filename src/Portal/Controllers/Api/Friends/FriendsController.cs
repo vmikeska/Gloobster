@@ -92,6 +92,8 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 				FacebookRecommended = fbFriendsFiltered.Select(f => new FriendResponse { friendId = f.UserId, displayName = f.DisplayName }).ToList()
 			};
 
+		    Log.Debug($"FriendsResponseTest: {response.Friends.Count}, {response.AwaitingConfirmation.Count}, {response.FacebookRecommended.Count}");
+
 			return response;
 		}
 
@@ -105,10 +107,12 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 		        if (fbFriends != null)
 		        {
 		            result = fbFriends.Where(f =>
-		                !friends.Friends.Contains(new ObjectId(f.UserId)) &&
-		                !friends.Proposed.Contains(new ObjectId(f.UserId)) &&
-		                !friends.AwaitingConfirmation.Contains(new ObjectId(f.UserId))
-		                ).ToList();
+		            {
+		                var userIdObj = new ObjectId(f.UserId);
+		                return !friends.Friends.Contains(userIdObj) &&
+		                       !friends.Proposed.Contains(userIdObj) &&
+		                       !friends.AwaitingConfirmation.Contains(userIdObj);
+		            }).ToList();
 		        }                
 		    }
 		    catch (Exception exc)

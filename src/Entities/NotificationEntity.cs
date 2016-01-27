@@ -16,7 +16,9 @@ namespace Gloobster.Entities
 		public ObjectId id { get; set; }
 		public string Title { get; set; }
 		public string Content { get; set; }
-		public ContentType ContentType { get; set; }
+        public string Link { get; set; }
+        public string LinkText { get; set; }
+        public ContentType ContentType { get; set; }
 		public NotificationStatus Status { get; set; }
 	}
 }

@@ -83,6 +83,7 @@ module Common {
 
 			var callObj = {
 				type: 'GET',
+				cache: false,
 				url: this.endPoint + urlQuery,
 				success(response) {
 					if (self.onSuccess) {

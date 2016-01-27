@@ -28,69 +28,78 @@ namespace Gloobster.DomainModels.Services.Accounts
 
 		public ILogger Log { get; set; }
 
-		public async Task<UserLoggedResultDO> Validate(SocAuthenticationDO authentication, object userObj)            
-        {
-            
-			AccountDriver.Authentication = authentication;
-			AccountDriver.UserObj = userObj;
-			
-			PortalUserDO portalUser = await Load();
-            
-            if (AccountDriver.NetworkType == SocialNetworkType.Base)
-			{                
-                var user = (BaseUserDO)AccountDriver.UserObj;
-				bool invalidLogin = (user.Action == UserActionType.Login) && (portalUser == null);                
-                if (invalidLogin)
-				{
-					return new UserLoggedResultDO
-					{
-						Status = UserLogged.BadCredintials
-					};
-				}
-			}
-            
-            bool userExists = portalUser != null;			
-			if (!userExists)
-			{                
-                string email = AccountDriver.GetEmail();                
-                bool emailExists = EmailAlreadyExistsInSystem(email);                
-                if (emailExists)
-				{
-					return new UserLoggedResultDO
-					{
-						Status = UserLogged.MailAlreadyExists
-					};
-				}                
-                portalUser = await AccountDriver.Create();                
-                await CreateCommonAsync(portalUser);                
-            }
-			else
-			{                
-                bool validCredintials = CheckCredintials(authentication, portalUser);                
-                if (!validCredintials)
-				{
-					return new UserLoggedResultDO
-					{
-						Status = UserLogged.BadCredintials
-					};
-				}
-                
-                AccountDriver.OnUserExists(portalUser);                
-            }
+        private static object _accountCreationLock = new object();
 
-			var result = new UserLoggedResultDO
-			{
-				EncodedToken = IssueToken(portalUser.UserId),
-				Status = UserLogged.Successful,
-				UserId = portalUser.UserId
-			};
-            
-            AccountDriver.OnUserSuccessfulyLogged(portalUser);
-            
-            return result;
+        public Task<UserLoggedResultDO> Validate(SocAuthenticationDO authentication, object userObj)            
+        {
+            lock (_accountCreationLock)
+            {
+                return ValidateBody(authentication, userObj);
+            }
 		}
 
-		private async Task<bool> CreateCommonAsync(PortalUserDO portalUser)
+        private async Task<UserLoggedResultDO> ValidateBody(SocAuthenticationDO authentication, object userObj)
+        {
+            AccountDriver.Authentication = authentication;
+            AccountDriver.UserObj = userObj;
+
+            PortalUserDO portalUser = await Load();
+
+            if (AccountDriver.NetworkType == SocialNetworkType.Base)
+            {
+                var user = (BaseUserDO)AccountDriver.UserObj;
+                bool invalidLogin = (user.Action == UserActionType.Login) && (portalUser == null);
+                if (invalidLogin)
+                {
+                    return new UserLoggedResultDO
+                    {
+                        Status = UserLogged.BadCredintials
+                    };
+                }
+            }
+
+            bool userExists = portalUser != null;
+            if (!userExists)
+            {
+                string email = AccountDriver.GetEmail();
+                bool emailExists = EmailAlreadyExistsInSystem(email);
+                if (emailExists)
+                {
+                    return new UserLoggedResultDO
+                    {
+                        Status = UserLogged.MailAlreadyExists
+                    };
+                }
+                portalUser = await AccountDriver.Create();
+                await CreateCommonAsync(portalUser);
+            }
+            else
+            {
+                bool validCredintials = CheckCredintials(authentication, portalUser);
+                if (!validCredintials)
+                {
+                    return new UserLoggedResultDO
+                    {
+                        Status = UserLogged.BadCredintials
+                    };
+                }
+
+                AccountDriver.OnUserExists(portalUser);
+            }
+
+            var result = new UserLoggedResultDO
+            {
+                EncodedToken = IssueToken(portalUser.UserId),
+                Status = UserLogged.Successful,
+                UserId = portalUser.UserId
+            };
+
+            AccountDriver.OnUserSuccessfulyLogged(portalUser);
+
+            return result;
+        }
+
+        private async Task<bool> CreateCommonAsync(PortalUserDO portalUser)
 		{
 			await UserData.Create(portalUser);
 			return true;

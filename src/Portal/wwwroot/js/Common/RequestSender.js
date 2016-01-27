@@ -61,6 +61,7 @@ var Common;
             var self = this;
             var callObj = {
                 type: 'GET',
+                cache: false,
                 url: this.endPoint + urlQuery,
                 success: function (response) {
                     if (self.onSuccess) {

@@ -12,7 +12,9 @@ namespace Gloobster.Mappers
 				Status = d.Status,
 				Content = d.Content,
 				ContentType = d.ContentType,
-				Title = d.Title
+				Title = d.Title,
+                Link = d.Link,
+                LinkText = d.LinkText
 			};
 
 			return e;

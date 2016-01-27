@@ -25,7 +25,10 @@ namespace Gloobster.Database
 
 		Task<UpdateResult> UpdateAsync<T>(FilterDefinition<T> filter, UpdateDefinition<T> update) where T : EntityBase;
 
-		IMongoClient Client { get; set; }
+        Task<UpdateResult> UpdateManyAsync<T>(FilterDefinition<T> filter, UpdateDefinition<T> update) where T : EntityBase;
+
+
+        IMongoClient Client { get; set; }
         IMongoDatabase Database { get; set; }
 
 		void DropCollection<T>();
