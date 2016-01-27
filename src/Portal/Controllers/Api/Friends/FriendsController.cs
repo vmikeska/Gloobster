@@ -12,6 +12,7 @@ using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.Friends;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
+using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.Friends
 {
@@ -19,12 +20,14 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 	{
 		public IFacebookFriendsService FbFriendsService { get; set; }
 		public IFriendsDomain FriendsDoimain { get; set; }
+        public ILogger Log { get; set; }
 
-		public FriendsController(IFacebookFriendsService fbFriendsService, IFriendsDomain friendsDoimain, IDbOperations db) : base(db)
+        public FriendsController(ILogger log, IFacebookFriendsService fbFriendsService, IFriendsDomain friendsDoimain, IDbOperations db) : base(db)
 		{
 			FbFriendsService = fbFriendsService;
 			FriendsDoimain = friendsDoimain;
-		}		
+            Log = log;
+        }		
 
 		[HttpGet]
 		[Authorize]
@@ -98,18 +101,25 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 		{
 			var result = new List<PortalUserDO>();
 
-			var fbFriends = FbFriendsService.GetFriends(userId);
-			if (fbFriends != null)
-			{
-				result = fbFriends.Where(f =>
-					!friends.Friends.Contains(new ObjectId(f.UserId)) &&
-					!friends.Proposed.Contains(new ObjectId(f.UserId)) &&
-					!friends.AwaitingConfirmation.Contains(new ObjectId(f.UserId))
-					).ToList();
-			}
+		    try
+		    {                
+		        var fbFriends = FbFriendsService.GetFriends(userId);
+		        if (fbFriends != null)
+		        {
+		            result = fbFriends.Where(f =>
+		                !friends.Friends.Contains(new ObjectId(f.UserId)) &&
+		                !friends.Proposed.Contains(new ObjectId(f.UserId)) &&
+		                !friends.AwaitingConfirmation.Contains(new ObjectId(f.UserId))
+		                ).ToList();
+		        }                
+		    }
+		    catch (Exception exc)
+		    {
+		        Log.Error("GetFbFriends: " + exc.Message);
+		    }
 
-			return result;
-		}
+            return result;
+        }
 
 
 

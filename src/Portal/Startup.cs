@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Autofac;
 using Gloobster.Common;
 using Serilog;
@@ -13,8 +12,6 @@ using AutofacSerilogIntegration;
 using Autofac.Extensions.DependencyInjection;
 using Gloobster.Database;
 using Gloobster.Entities;
-using System.Linq;
-using MongoDB.Bson;
 
 namespace Gloobster.Portal
 {

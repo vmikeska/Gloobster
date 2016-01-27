@@ -15,6 +15,7 @@ using Gloobster.SocialLogin.Facebook.Communication;
 using Microsoft.AspNet.Http;
 using MongoDB.Driver;
 using System.Linq;
+using Serilog;
 
 namespace Gloobster.Portal.Controllers.Portal
 {
@@ -25,13 +26,16 @@ namespace Gloobster.Portal.Controllers.Portal
         public IComponentContext ComponentContext { get; set; }
         public IPlacesExtractor PlacesExtractor { get; set; }
 
-        public PinBoardController(IPlacesExtractor placesExtractor, IComponentContext componentContext, IFacebookService fbService, 
+        public ILogger Log { get; set; }
+
+        public PinBoardController(ILogger log, IPlacesExtractor placesExtractor, IComponentContext componentContext, IFacebookService fbService, 
             ISharedMapImageDomain sharedImgDomain, IDbOperations db) : base(db)
 		{
             SharedImgDomain = sharedImgDomain;
             FBService = fbService;
             PlacesExtractor = placesExtractor;
-            ComponentContext = componentContext;            
+            ComponentContext = componentContext;
+            Log = log;
         }
     
 	    public async Task<IActionResult> Pins()
@@ -54,24 +58,32 @@ namespace Gloobster.Portal.Controllers.Portal
 
         private async Task<bool> ImportNewFbPins()
         {
-            var user = PortalUser.ToDO();
-            var facebook = user.GetAccount(SocialNetworkType.Facebook);
-
-            bool isFbUser = (facebook != null);
-            if (isFbUser)
+            try
             {
-                FBService.SetAccessToken(facebook.Authentication.AccessToken);
-                bool hasPermissions = FBService.HasPermissions("user_tagged_places");
-                if (hasPermissions)
-                {                    
-                    PlacesExtractor.Driver = ComponentContext.ResolveKeyed<IPlacesExtractorDriver>("Facebook");
-                    
-                    await PlacesExtractor.ExtractNewAsync(user.UserId, facebook.Authentication);
-                    await PlacesExtractor.SaveAsync();
-                }
-            }
+                var user = PortalUser.ToDO();
+                var facebook = user.GetAccount(SocialNetworkType.Facebook);
 
-            return true;
+                bool isFbUser = (facebook != null);
+                if (isFbUser)
+                {
+                    FBService.SetAccessToken(facebook.Authentication.AccessToken);
+                    bool hasPermissions = FBService.HasPermissions("user_tagged_places");
+                    if (hasPermissions)
+                    {
+                        PlacesExtractor.Driver = ComponentContext.ResolveKeyed<IPlacesExtractorDriver>("Facebook");
+
+                        await PlacesExtractor.ExtractNewAsync(user.UserId, facebook.Authentication);
+                        await PlacesExtractor.SaveAsync();
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception exc)
+            {
+                Log.Error("ImportNewFbPins: " + exc.Message);
+                return false;
+            }
         }
 
         public IActionResult SharedMapImage(string id)

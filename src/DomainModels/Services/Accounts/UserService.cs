@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Autofac;
 using Gloobster.Common;
@@ -27,18 +28,19 @@ namespace Gloobster.DomainModels.Services.Accounts
 
 		public ILogger Log { get; set; }
 
-		public async Task<UserLoggedResultDO> Validate(SocAuthenticationDO authentication, object userObj)
-		{
+		public async Task<UserLoggedResultDO> Validate(SocAuthenticationDO authentication, object userObj)            
+        {
+            
 			AccountDriver.Authentication = authentication;
 			AccountDriver.UserObj = userObj;
 			
 			PortalUserDO portalUser = await Load();
-
-			if (AccountDriver.NetworkType == SocialNetworkType.Base)
-			{
-				var user = (BaseUserDO)AccountDriver.UserObj;
-				bool invalidLogin = (user.Action == UserActionType.Login) && (portalUser == null);
-				if (invalidLogin)
+            
+            if (AccountDriver.NetworkType == SocialNetworkType.Base)
+			{                
+                var user = (BaseUserDO)AccountDriver.UserObj;
+				bool invalidLogin = (user.Action == UserActionType.Login) && (portalUser == null);                
+                if (invalidLogin)
 				{
 					return new UserLoggedResultDO
 					{
@@ -46,36 +48,35 @@ namespace Gloobster.DomainModels.Services.Accounts
 					};
 				}
 			}
-			
-			bool userExists = portalUser != null;			
+            
+            bool userExists = portalUser != null;			
 			if (!userExists)
-			{
-				string email = AccountDriver.GetEmail();
-				bool emailExists = EmailAlreadyExistsInSystem(email);
-				if (emailExists)
+			{                
+                string email = AccountDriver.GetEmail();                
+                bool emailExists = EmailAlreadyExistsInSystem(email);                
+                if (emailExists)
 				{
 					return new UserLoggedResultDO
 					{
 						Status = UserLogged.MailAlreadyExists
 					};
-				}
-				
-				portalUser = await AccountDriver.Create();
-				await CreateCommonAsync(portalUser);
-			}
+				}                
+                portalUser = await AccountDriver.Create();                
+                await CreateCommonAsync(portalUser);                
+            }
 			else
-			{
-				bool validCredintials = CheckCredintials(authentication, portalUser);
-				if (!validCredintials)
+			{                
+                bool validCredintials = CheckCredintials(authentication, portalUser);                
+                if (!validCredintials)
 				{
 					return new UserLoggedResultDO
 					{
 						Status = UserLogged.BadCredintials
 					};
 				}
-
-				AccountDriver.OnUserExists(portalUser);
-			}
+                
+                AccountDriver.OnUserExists(portalUser);                
+            }
 
 			var result = new UserLoggedResultDO
 			{
@@ -83,10 +84,10 @@ namespace Gloobster.DomainModels.Services.Accounts
 				Status = UserLogged.Successful,
 				UserId = portalUser.UserId
 			};
-
-			AccountDriver.OnUserSuccessfulyLogged(portalUser);
-			
-			return result;
+            
+            AccountDriver.OnUserSuccessfulyLogged(portalUser);
+            
+            return result;
 		}
 
 		private async Task<bool> CreateCommonAsync(PortalUserDO portalUser)
@@ -97,12 +98,21 @@ namespace Gloobster.DomainModels.Services.Accounts
 
 		private bool CheckCredintials(SocAuthenticationDO socAuthentication, PortalUserDO portalUser)
 		{
-			if (AccountDriver.NetworkType == SocialNetworkType.Base)
-			{
-				return AccountDriver.CheckCredintials(AccountDriver.UserObj, portalUser);
-			}
+		    try
+		    {
+		        if (AccountDriver.NetworkType == SocialNetworkType.Base)
+		        {
+		            return AccountDriver.CheckCredintials(AccountDriver.UserObj, portalUser);
+		        }
 
-			return AccountDriver.CheckCredintials(socAuthentication, portalUser);
+		        return AccountDriver.CheckCredintials(socAuthentication, portalUser);
+		    }
+		    catch (Exception exc)
+		    {
+                Log.Error("CheckCredintials: " + exc.Message);
+
+                return false;
+		    }
 		}
 
 		public async Task<PortalUserDO> Load()

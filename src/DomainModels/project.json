@@ -14,11 +14,11 @@
     "System.Net.Http": "4.0.0.0",
     "TweetSharp": "2.3.1",
     "MongoDB.Driver": "2.2.0-rc0",
-    "BlobFileSystem.Azure": "0.0.6",
     "Autofac": "4.0.0-rc1-177",
     "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-177",
     "Gloobster.Sharing": "1.0.0-*",
-    "Serilog.Framework.Logging": "1.0.0-rc1-final-10071"
+    "Serilog.Framework.Logging": "1.0.0-rc1-final-10071",
+    "BlobFileSystem.Azure": "0.0.7"
   },
 
   "frameworks": {

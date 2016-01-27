@@ -39,9 +39,21 @@ namespace Gloobster.DomainModels
 		
 		public Stream GetFile(string fileDirectory, string fileName)
 		{
-			string storageFilePath = Storage.Combine(fileDirectory, fileName);
-			var stream = Storage.GetFile(storageFilePath).OpenRead();
-			return stream;
+		    try
+		    {
+                
+                string storageFilePath = Storage.Combine(fileDirectory, fileName);
+                
+                var file = Storage.GetFile(storageFilePath);                
+                var stream = file.OpenRead();
+                Log.Debug("GetFileLog: after get");
+                return stream;
+		    }
+		    catch (Exception exc)
+		    {
+		        Log.Error("GetFileLog: " + exc.Message);
+		        throw;
+		    }
 		}
 
 		public void DeleteFile(string filePath)

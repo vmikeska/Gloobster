@@ -32,29 +32,33 @@ namespace Gloobster.Portal.Controllers.Api.Registration
 		[HttpPost]
 		public async Task<IActionResult> Post([FromBody] FacebookUserAuthenticationRequest request)
 		{
-			var facebookAuthRequest = new SocAuthenticationDO
+            Log.Debug("FacebookUser: IN");
+
+            var facebookAuthRequest = new SocAuthenticationDO
 			{
 				AccessToken = request.accessToken,
 				UserId = request.userId,
 				ExpiresAt = DateTime.UtcNow.AddSeconds(request.expiresIn)
 			};
 
-			var accountDriver = ComponentContext.ResolveKeyed<IAccountDriver>("Facebook");		
+            var accountDriver = ComponentContext.ResolveKeyed<IAccountDriver>("Facebook");
 
-			UserService.AccountDriver = accountDriver;
+            UserService.AccountDriver = accountDriver;
 
-			UserLoggedResultDO result = await UserService.Validate(facebookAuthRequest, null);
-			
-			Request.HttpContext.Session.SetString(PortalConstants.UserSessionId, result.UserId);
+            UserLoggedResultDO result = await UserService.Validate(facebookAuthRequest, null);
 
-			var response = new LoggedResponse
+            Log.Debug("FacebookUser: " + facebookAuthRequest.AccessToken);
+            
+            Request.HttpContext.Session.SetString(PortalConstants.UserSessionId, result.UserId);
+            
+            var response = new LoggedResponse
 			{
 				encodedToken = result.EncodedToken,
 				status = result.Status.ToString(),
 				networkType = SocialNetworkType.Facebook
 			};
-
-			return new ObjectResult(response);			
+            
+            return new ObjectResult(response);			
 		}
 	}
 }

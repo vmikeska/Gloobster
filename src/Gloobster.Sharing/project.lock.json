@@ -37,7 +37,7 @@
           "lib/net451/Autofac.Extensions.DependencyInjection.dll": {}
         }
       },
-      "BlobFileSystem.Azure/0.0.6": {
+      "BlobFileSystem.Azure/0.0.7": {
         "type": "package",
         "dependencies": {
           "WindowsAzure.Storage": "3.1.0.1"
@@ -79,7 +79,7 @@
         "dependencies": {
           "Autofac": "4.0.0-rc1-177",
           "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-177",
-          "BlobFileSystem.Azure": "0.0.6",
+          "BlobFileSystem.Azure": "0.0.7",
           "Common": "1.0.0",
           "Database": "1.0.0",
           "DomainObjects": "1.0.0",
@@ -1667,7 +1667,7 @@
           "lib/net451/Autofac.Extensions.DependencyInjection.dll": {}
         }
       },
-      "BlobFileSystem.Azure/0.0.6": {
+      "BlobFileSystem.Azure/0.0.7": {
         "type": "package",
         "dependencies": {
           "WindowsAzure.Storage": "3.1.0.1"
@@ -1709,7 +1709,7 @@
         "dependencies": {
           "Autofac": "4.0.0-rc1-177",
           "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-177",
-          "BlobFileSystem.Azure": "0.0.6",
+          "BlobFileSystem.Azure": "0.0.7",
           "Common": "1.0.0",
           "Database": "1.0.0",
           "DomainObjects": "1.0.0",
@@ -3297,7 +3297,7 @@
           "lib/net451/Autofac.Extensions.DependencyInjection.dll": {}
         }
       },
-      "BlobFileSystem.Azure/0.0.6": {
+      "BlobFileSystem.Azure/0.0.7": {
         "type": "package",
         "dependencies": {
           "WindowsAzure.Storage": "3.1.0.1"
@@ -3339,7 +3339,7 @@
         "dependencies": {
           "Autofac": "4.0.0-rc1-177",
           "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-177",
-          "BlobFileSystem.Azure": "0.0.6",
+          "BlobFileSystem.Azure": "0.0.7",
           "Common": "1.0.0",
           "Database": "1.0.0",
           "DomainObjects": "1.0.0",
@@ -4950,12 +4950,12 @@
         "lib/netcore50/Autofac.Extensions.DependencyInjection.xml"
       ]
     },
-    "BlobFileSystem.Azure/0.0.6": {
+    "BlobFileSystem.Azure/0.0.7": {
       "type": "package",
-      "sha512": "61YPN8dFsh1sfzvURtMEA7Svv1f5KwR8UKNyG9x6H1OnUR9HqOyCnRWPIbNUl67BSfnDHANJzDXFCnWpSyP8Fw==",
+      "sha512": "6QlwnzFM3EibkErZFBpQjTn2keLWhgWCca3kzjX8lA4TiNFuUVE3r61CSdiqn3uQ6+Jzgo89Jwe53r+PGgeKgw==",
       "files": [
-        "BlobFileSystem.Azure.0.0.6.nupkg",
-        "BlobFileSystem.Azure.0.0.6.nupkg.sha512",
+        "BlobFileSystem.Azure.0.0.7.nupkg",
+        "BlobFileSystem.Azure.0.0.7.nupkg.sha512",
         "BlobFileSystem.Azure.nuspec",
         "lib/net45/AzureBlobFileSystem.dll"
       ]

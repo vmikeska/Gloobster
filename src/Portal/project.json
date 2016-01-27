@@ -30,7 +30,6 @@
     "Facebook": "7.0.6",
     "TweetSharp": "2.3.1",
     "MongoDB.Driver": "2.2.0-rc0",
-    "BlobFileSystem.Azure": "0.0.6",
     "Common": "1.0.0-*",
     "DomainModels": "1.0.0-*",
     "DomainModelsCommon": "1.0.0-*",
@@ -42,7 +41,8 @@
     "Serilog.Framework.Logging": "1.0.0-rc1-final-10071",
     "Serilog.Sinks.Loggly": "2.0.7",
     "loggly-csharp": "4.5.1.7",
-    "AutofacSerilogIntegration": "1.0.10"
+    "AutofacSerilogIntegration": "1.0.10",
+    "BlobFileSystem.Azure": "0.0.7"
   },
 
 

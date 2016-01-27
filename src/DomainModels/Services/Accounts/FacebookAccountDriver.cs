@@ -207,23 +207,29 @@ namespace Gloobster.DomainModels.Services.Accounts
 		    	
 		}
 		
-
-
 		private void UpdateTokenIfNeeded(PortalUserDO portalUser)
 		{
-			var account = portalUser.SocialAccounts.FirstOrDefault(a => a.NetworkType == SocialNetworkType.Facebook);
-			if (account == null)
-			{
-				return;
-			}
-			
-			//possibly should update all the time. New permissions, etc...
-			//bool expired = account.Authentication.ExpiresAt < DateTime.UtcNow;
-			//if (expired)
-			//{
-				var newPermanentToken = IssueNewPermanentAccessToken(account.Authentication.AccessToken);
-				UpdateFacebookUserAuth(portalUser, newPermanentToken.AccessToken, newPermanentToken.ExpiresAt);
-			//}
+		    try
+		    {
+		        var account = portalUser.SocialAccounts.FirstOrDefault(a => a.NetworkType == SocialNetworkType.Facebook);
+		        if (account == null)
+		        {
+		            return;
+		        }
+
+		        //TODO: possibly should update all the time ?
+		        bool expired = account.Authentication.ExpiresAt < DateTime.UtcNow;
+                Log.Debug("UpdateTokenIfNeeded: Session expired: " + expired);
+                if (expired)
+                {
+                    var newPermanentToken = IssueNewPermanentAccessToken(account.Authentication.AccessToken);
+		            UpdateFacebookUserAuth(portalUser, newPermanentToken.AccessToken, newPermanentToken.ExpiresAt);
+                }
+            }
+		    catch (Exception exc)
+		    {
+		        Log.Error("UpdateTokenIfNeeded: " + exc.Message);
+		    }
 		}
 		
 		public async void UpdateFacebookUserAuth(PortalUserDO portalUser, string accessToken, DateTime expiresAt)

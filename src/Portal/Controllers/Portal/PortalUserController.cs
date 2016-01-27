@@ -9,17 +9,20 @@ using Gloobster.Entities;
 using Gloobster.Enums;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.Portal.ViewModels;
+using Serilog;
 
 namespace Gloobster.Portal.Controllers.Portal
 {
 	public class PortalUserController : PortalBaseController
 	{
 		public IFilesDomain FileDomain { get; set; }
+        public ILogger Log { get; set; }
 
-		public PortalUserController(IFilesDomain filesDomain, IDbOperations db) : base(db)
+        public PortalUserController(ILogger log, IFilesDomain filesDomain, IDbOperations db) : base(db)
 		{
 			FileDomain = filesDomain;
-		}
+            Log = log;
+        }
 		
 		public IActionResult Detail(string id)
 		{
@@ -47,6 +50,7 @@ namespace Gloobster.Portal.Controllers.Portal
 
 		public IActionResult ProfilePicture(string id = null)
 		{
+		    Log.Debug("ProfilePictureD: ");
             var fileLocation = "avatars";
 
             PortalUserEntity portalUser;
@@ -62,18 +66,23 @@ namespace Gloobster.Portal.Controllers.Portal
 		    {
 		        portalUser = PortalUser;
 		    }
-            
-			if (portalUser.ProfileImage == null)
+            Log.Debug("ProfilePictureD: ID: " + portalUser.id);
+
+            if (portalUser.ProfileImage == null)
 			{
-				return new ObjectResult("");
+                Log.Debug("ProfilePictureD: NoProfileImage ");
+                return new ObjectResult("");
 			}
 
 			var filePath = FileDomain.Storage.Combine(fileLocation, portalUser.ProfileImage);
-			bool exists = FileDomain.Storage.FileExists(filePath);
-			if (exists)
+            Log.Debug("ProfilePictureD: FilePath: " + filePath);
+            bool exists = FileDomain.Storage.FileExists(filePath);
+            Log.Debug("ProfilePictureD: exists: " + exists);
+            if (exists)
 			{
-				var fileStream = FileDomain.GetFile(fileLocation, portalUser.ProfileImage);				
-				return new FileStreamResult(fileStream, "image/jpeg");
+				var fileStream = FileDomain.GetFile(fileLocation, portalUser.ProfileImage);
+                Log.Debug("ProfilePictureD: after get file");
+                return new FileStreamResult(fileStream, "image/jpeg");
 			}
 
 			return new ObjectResult("");
