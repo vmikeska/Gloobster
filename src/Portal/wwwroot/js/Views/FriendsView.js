@@ -36,11 +36,14 @@ var FriendsView = (function (_super) {
     });
     FriendsView.prototype.initialize = function () {
         var self = this;
+        this.$usersTable = $("#usersTable");
         this.getUsersAndDisplay();
         $("#friendsSearch").on("input", function () {
             var searchQuery = $("#friendsSearch input").val();
             self.searchUsers(searchQuery);
         });
+        this.friendItemTemplate = this.registerTemplate("friendItem-template");
+        this.friendMenuTemplate = this.registerTemplate("friendMenu-template");
     };
     FriendsView.prototype.getUsersAndDisplay = function () {
         var self = this;
@@ -98,28 +101,27 @@ var FriendsView = (function (_super) {
         });
     };
     FriendsView.prototype.generateAllSections = function (friendsResponse) {
-        var allSectionsHtml = "";
+        this.$usersTable.html('<tr><td colspan="3"></td></tr>');
         if (friendsResponse.Friends.length > 0) {
             var titleFriends = "Friends";
             var friends = this.convertFriends(friendsResponse.Friends, FriendshipState.Friends);
-            allSectionsHtml += this.generateSection(titleFriends, friends);
+            this.generateSection(titleFriends, friends);
         }
         if (friendsResponse.AwaitingConfirmation.length > 0) {
             var titleAwaiting = "Awaiting confirmation";
             var friendsAwaiting = this.convertFriends(friendsResponse.AwaitingConfirmation, FriendshipState.AwaitingConfirmation);
-            allSectionsHtml += this.generateSection(titleAwaiting, friendsAwaiting);
+            this.generateSection(titleAwaiting, friendsAwaiting);
         }
         if (friendsResponse.FacebookRecommended.length > 0) {
             var titleFbRecommended = "Recommended by Facebook";
             var friendsFbRec = this.convertFriends(friendsResponse.FacebookRecommended, FriendshipState.None);
-            allSectionsHtml += this.generateSection(titleFbRecommended, friendsFbRec);
+            this.generateSection(titleFbRecommended, friendsFbRec);
         }
         if (friendsResponse.Proposed.length > 0) {
             var titleProposed = "Already proposed friendship";
             var friendsProposed = this.convertFriends(friendsResponse.Proposed, FriendshipState.Proposed);
-            allSectionsHtml += this.generateSection(titleProposed, friendsProposed);
+            this.generateSection(titleProposed, friendsProposed);
         }
-        return allSectionsHtml;
     };
     FriendsView.prototype.registerButtonActions = function () {
         var self = this;
@@ -156,14 +158,11 @@ var FriendsView = (function (_super) {
     };
     FriendsView.prototype.generateSection = function (sectionTitle, friends) {
         var _this = this;
-        var friendsHtml = '';
+        var title = "<tr><td colspan=\"3\"><h4>" + sectionTitle + "</h4></td></tr>";
+        this.addRow(title);
         friends.forEach(function (friend) {
-            var actions = _this.getActionsByState(friend.state);
-            var friendHtml = _this.generateOneFriendItem(friend, actions);
-            friendsHtml += friendHtml;
+            _this.generateOneFriendItem(friend);
         });
-        var sectionHtml = "<div class=\"friendSection\"><div style=\"font-size: 30px\">" + sectionTitle + "</div>" + friendsHtml + "</div>";
-        return sectionHtml;
     };
     FriendsView.prototype.getActionsByState = function (friendshipState) {
         if (friendshipState === FriendshipState.Friends) {
@@ -180,17 +179,43 @@ var FriendsView = (function (_super) {
         }
         return [];
     };
-    FriendsView.prototype.generateOneFriendItem = function (friend, actions) {
-        var actionsHtml = this.generateActions(friend.friendId, actions);
-        var photoUrl = "/PortalUser/ProfilePicture/" + friend.friendId;
-        var itemHtml = "<div class=\"friend\"><img src=\"" + photoUrl + "\" style=\"width: 80px;\" /><br/><span>" + friend.displayName + "</span>" + actionsHtml + "</div>";
-        return itemHtml;
+    FriendsView.prototype.generateOneFriendItem = function (friend) {
+        var actions = this.getActionsByState(friend.state);
+        var actionsHtml = friend.state === FriendshipState.Friends ?
+            this.generateFriendAction(friend.friendId) :
+            this.generateActions(friend.friendId, actions);
+        var context = {
+            id: friend.friendId,
+            name: friend.displayName,
+            actionsHtml: actionsHtml
+        };
+        var itemHtml = this.friendItemTemplate(context);
+        var $itemHtml = $(itemHtml);
+        $itemHtml.find(".actions").html(actionsHtml);
+        this.addRow($itemHtml);
+    };
+    FriendsView.prototype.addRow = function (html) {
+        $("#usersTable tr:last").after(html);
+    };
+    FriendsView.prototype.generateFriendAction = function (friendId) {
+        var _this = this;
+        var html = this.friendMenuTemplate({ id: friendId });
+        var $html = $(html);
+        $html.find(".unfriend").click(function (e) {
+            e.preventDefault();
+            var friendId = $(e.target).data("fid");
+            var data = { "friendId": friendId, "action": FriendActionType.Unfriend };
+            _this.apiPost("Friends", data, function (response) {
+                _this.userStateChanged(response);
+            });
+        });
+        return $html;
     };
     FriendsView.prototype.generateActions = function (friendId, actions) {
-        var actionsHtml = '';
+        var actionsHtml = "";
         actions.forEach(function (action) {
             var actionText = FriendActionType[action];
-            var actionHtml = '<button class="actionButton" data-value="' + friendId + '" data-action="' + action + '">' + actionText + '</button>';
+            var actionHtml = "<button class=\"actionButton\" data-value=\"" + friendId + "\" data-action=\"" + action + "\">" + actionText + "</button>";
             actionsHtml += actionHtml;
         });
         return actionsHtml;

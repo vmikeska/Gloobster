@@ -10,6 +10,30 @@
         }
 </script>
 
+<style>
+    .friendDropDown {
+        font-size: 12px;
+        margin: 0 10px 0 10px;
+        width: 150px;        
+    }
+
+    .actionButton {
+        font-size: 12px;
+        width: 150px;
+        margin: 0 10px 0 10px;
+    }
+
+    #usersTable {
+        margin-top: 30px;
+    }
+
+    #usersTable h4{
+        margin-top: 30px;   
+    }
+
+
+</style>
+
 <div class="blue-line margin2"></div>
 
 <section class="wrapper margin3">
@@ -33,8 +57,34 @@
 
     </form>
 
-    <div class="friendsContainer">
-
+    <div class="team">
+        <table id="usersTable"></table>
     </div>
 
 </section>
+
+
+<script id="friendItem-template" type="text/x-handlebars-template">
+    <tr>
+        <td>
+            <span class="thumbnail">
+                <img src="/PortalUser/ProfilePicture/{{id}}">
+            </span>
+        </td>
+        <td>
+            <span><a href="/PortalUser/Detail/{{id}}">{{name}}</a></span>
+        </td>
+        <td class="actions">           
+        </td>
+    </tr>
+</script>
+
+<script id="friendMenu-template" type="text/x-handlebars-template">
+    <div class="dropdown friendDropDown">
+        <span class="selected">Actions</span>
+        <ul>
+            <li class="unfriend" data-fid="{{id}}">Unfriend</li>            
+        </ul>
+        <input type="hidden">
+    </div>
+</script>
