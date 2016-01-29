@@ -18,7 +18,19 @@ namespace Gloobster.Portal.Controllers.Base
     {
 		public IDbOperations DB { get; set; }
         public ILogger Log { get; set; }
-        public ObjectId DBUserId => new ObjectId(UserId);
+
+        public ObjectId? UserIdObj
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(UserId))
+                {
+                    return null;
+                }
+                return new ObjectId(UserId);
+            }
+        }
+            
         public bool IsUserLogged => !string.IsNullOrEmpty(UserId);
 
         private string _userId;
@@ -65,7 +77,7 @@ namespace Gloobster.Portal.Controllers.Base
                     return _portalUser;
                 }
 
-                _portalUser = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == DBUserId);
+                _portalUser = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == UserIdObj);
 
                 if (_portalUser == null)
                 {
@@ -75,12 +87,38 @@ namespace Gloobster.Portal.Controllers.Base
                 return _portalUser;
             }
         }
-
-
+        
         public PortalBaseController(ILogger log, IDbOperations db)
         {
             DB = db;
             Log = log;
+        }
+
+        public T CreateViewModelInstance<T>() where T : ViewModelBase, new()
+        {
+            int notifsCount = 0;
+            string socNetStr = "";
+
+            if (IsUserLogged)
+            {
+                var notifications = DB.C<NotificationsEntity>().FirstOrDefault(n => n.PortalUser_id == UserIdObj.Value);
+                if (notifications != null)
+                {
+                    notifsCount = notifications.Notifications.Count(n => n.Status == NotificationStatus.Created);
+                }
+
+                socNetStr = GetSocNetworkStr();
+                HttpContext.Response.Cookies.Append(PortalConstants.NetworkTypes, socNetStr);
+            }
+
+            var instance = new T
+            {
+                PortalUser = PortalUser,
+                DB = DB,
+                SocialNetwork = socNetStr,
+                NotificationCount = notifsCount
+            };
+            return instance;
         }
         
         private AuthorizationToken GetAuthorizationTokenFromCookie()
@@ -108,7 +146,7 @@ namespace Gloobster.Portal.Controllers.Base
 			}
 		}
         
-	    public string GetSocNetworkStr()
+	    private string GetSocNetworkStr()
 	    {
 	        var networks = new List<string>();
             if (PortalUser.SocialAccounts != null && PortalUser.SocialAccounts.Any())
@@ -136,34 +174,8 @@ namespace Gloobster.Portal.Controllers.Base
                 networks.Add("B");                
 	        }
             
-            var netStr = string.Join(",", networks);
-
-            HttpContext.Response.Cookies.Append(PortalConstants.NetworkTypes, netStr);
-
+            var netStr = string.Join(",", networks);            
             return netStr;
-	    }
-
-	    
-	    public T CreateViewModelInstance<T>() where T : ViewModelBase, new()
-	    {
-		    var notifications = DB.C<NotificationsEntity>().FirstOrDefault(n => n.PortalUser_id == DBUserId);
-		    int notifsCount = 0;
-		    if (notifications != null)
-		    {
-			    notifsCount = notifications.Notifications.Count(n => n.Status == NotificationStatus.Created);
-		    }
-
-		    var instance = new T
-		    {
-			    PortalUser = PortalUser,
-				DB = DB,
-				SocialNetwork = GetSocNetworkStr(),
-				NotificationCount = notifsCount
-			};
-		    return instance;
-	    }
-		
-
-        
+	    }        
     }
 }

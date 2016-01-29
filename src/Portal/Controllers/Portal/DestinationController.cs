@@ -17,7 +17,7 @@ namespace Gloobster.Portal.Controllers.Portal
 
 		public IActionResult Planning()
 		{
-			var portalUser = DB.C<PortalUserEntity>().First(p => p.id == DBUserId);
+			var portalUser = DB.C<PortalUserEntity>().First(p => p.id == UserIdObj);
 
 			var viewModel = CreateViewModelInstance<ViewModelPlanning>();
 			viewModel.InitCurrentLocation = FormatCityStr(portalUser.CurrentLocation);

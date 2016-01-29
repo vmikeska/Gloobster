@@ -5,16 +5,10 @@ using Gloobster.Database;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.Portal.ViewModels;
 using Microsoft.AspNet.Mvc;
-using MongoDB.Bson;
 using Gloobster.DomainInterfaces;
-using Gloobster.DomainModels.Services.Places;
-using Gloobster.Entities;
 using Gloobster.Enums;
 using Gloobster.Mappers;
 using Gloobster.SocialLogin.Facebook.Communication;
-using Microsoft.AspNet.Http;
-using MongoDB.Driver;
-using System.Linq;
 using Serilog;
 
 namespace Gloobster.Portal.Controllers.Portal
@@ -38,22 +32,21 @@ namespace Gloobster.Portal.Controllers.Portal
     
 	    public async Task<IActionResult> Pins()
 	    {
-	        await ImportNewFbPins();
-            
-            var pinBoardViewModel = CreateViewModelInstance<PinBoardViewModel>();			           
-			pinBoardViewModel.Initialize(UserId);
-
-	        var friendsEntity = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == DBUserId);
-	        var friends = DB.C<PortalUserEntity>().Where(f => friendsEntity.Friends.Contains(f.id)).ToList();
-	        pinBoardViewModel.Friends = friends.Select(f => new Friend
+	        PinBoardViewModel vm = CreateViewModelInstance<PinBoardViewModel>();
+            if (IsUserLogged)
 	        {
-	            DisplayName = f.DisplayName,
-                Id = f.id.ToString()
-	        }).ToList();
+                vm.InitializeLogged(UserId);
+                await ImportNewFbPins();
+            }
+	        else
+	        {
+	            vm.InitializeNotLogged();                
+            }
             
-            return View(pinBoardViewModel);
+            return View(vm);
 		}
-
+        
+        //todo: move somewhere
         private async Task<bool> ImportNewFbPins()
         {
             try

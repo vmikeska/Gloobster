@@ -9,6 +9,12 @@ namespace Gloobster.Portal.Controllers
 {
 	public class AuthorizeAttribute : ActionFilterAttribute
 	{
+        public bool ExplicitAuth { get; set; }
+        
+        public AuthorizeAttribute(bool explicitAuth = false)
+        {
+            ExplicitAuth = explicitAuth;
+        }
 
 		public override void OnActionExecuting(ActionExecutingContext context)
 		{
@@ -23,16 +29,18 @@ namespace Gloobster.Portal.Controllers
 			}
 			catch
 			{
-				context.HttpContext.Response.StatusCode = 401;
-				return;
+                //context.HttpContext.Response.StatusCode = 401;
+			    if (!ExplicitAuth)
+			    {
+			        context.Result = new HttpStatusCodeResult(401);
+			    }
+			    return;
 			}
 			
 			var tokenObj = Newtonsoft.Json.JsonConvert.DeserializeObject<AuthorizationToken>(decodedStr);
 
 			((BaseApiController)context.Controller).UserId = tokenObj.UserId;
-
-			//context.ActionArguments.Add("userId", tokenObj.UserId);
-
+            
 			base.OnActionExecuting(context);
 		}
 	}

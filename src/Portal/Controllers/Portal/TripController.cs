@@ -9,9 +9,7 @@ using Gloobster.Portal.ViewModels;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using System.IO;
-using Gloobster.Common;
 using Gloobster.DomainInterfaces;
-using Gloobster.DomainModels;
 using Gloobster.DomainModels.Services.Accounts;
 using Gloobster.Entities.Trip;
 using Gloobster.Enums;
@@ -67,7 +65,7 @@ namespace Gloobster.Portal.Controllers.Portal
 
 		public async Task<IActionResult> List()
 		{
-            var trips = DB.C<TripEntity>().Where(t => t.PortalUser_id == DBUserId).ToList();
+            var trips = DB.C<TripEntity>().Where(t => t.PortalUser_id == UserIdObj).ToList();
 
             var query = $"{{ 'Participants.PortalUser_id': ObjectId('{UserId}')}}";
 		    var invitedTrips = await DB.FindAsync<TripEntity>(query);
@@ -95,14 +93,14 @@ namespace Gloobster.Portal.Controllers.Portal
             var owner = DB.C<PortalUserEntity>().First(u => u.id == trip.PortalUser_id);
 
             //permissions part            
-            bool isOwner = owner.id == DBUserId;
+            bool isOwner = owner.id == UserIdObj;
             if (isOwner)
             {
                 var vm = CreateDetailVM(trip);
                 return View(vm);
             }
 
-            var thisUserParticipant = trip.Participants.FirstOrDefault(p => p.PortalUser_id == DBUserId);
+            var thisUserParticipant = trip.Participants.FirstOrDefault(p => p.PortalUser_id == UserIdObj);
             bool thisUserIsAdmin = (thisUserParticipant != null) && thisUserParticipant.IsAdmin;
             if (thisUserIsAdmin)
             {
@@ -142,14 +140,14 @@ namespace Gloobster.Portal.Controllers.Portal
                 return View(vm);
             }
 
-            bool isOwner = owner.id == DBUserId;
+            bool isOwner = owner.id == UserIdObj;
             if (isOwner)
             {
                 var vm = CretateOverviewVM(trip, owner);
                 return View(vm);
             }
 
-            var thisUserParticipant = trip.Participants.FirstOrDefault(p => p.PortalUser_id == DBUserId);
+            var thisUserParticipant = trip.Participants.FirstOrDefault(p => p.PortalUser_id == UserIdObj);
             bool thisUserInvited = thisUserParticipant != null;
             if (thisUserInvited)
             {
@@ -207,10 +205,10 @@ namespace Gloobster.Portal.Controllers.Portal
             viewModel.Description = trip.Description;
             viewModel.Notes = trip.Notes;
             viewModel.NotesPublic = trip.NotesPublic;
-            viewModel.IsOwner = (trip.PortalUser_id == DBUserId);
+            viewModel.IsOwner = (trip.PortalUser_id == UserIdObj);
             viewModel.Photo = trip.Picture;
             viewModel.Participants = GetParticipantsView(trip.Participants, owner.id);
-            var thisUserParticipant = trip.Participants.FirstOrDefault(p => p.PortalUser_id == DBUserId);
+            var thisUserParticipant = trip.Participants.FirstOrDefault(p => p.PortalUser_id == UserIdObj);
             viewModel.ThisUserInvited = thisUserParticipant != null;
 
             return viewModel;
@@ -262,19 +260,19 @@ namespace Gloobster.Portal.Controllers.Portal
 				return null;
 			}
 
-			var participant = trip.Participants.FirstOrDefault(p => p.PortalUser_id == DBUserId);
+			var participant = trip.Participants.FirstOrDefault(p => p.PortalUser_id == UserIdObj);
 			return participant;
 		}
 	
 		private bool IsUserAdmin(TripEntity trip)
 		{
-			bool isOwner = trip.PortalUser_id == DBUserId;
+			bool isOwner = trip.PortalUser_id == UserIdObj;
 			if (isOwner)
 			{
 				return true;
 			}
 
-			var participant = GetParticipant(trip, DBUserId);
+			var participant = GetParticipant(trip, UserIdObj.Value);
 			if (participant == null)
 			{
 				return false;

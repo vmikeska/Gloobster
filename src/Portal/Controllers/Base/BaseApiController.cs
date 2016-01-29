@@ -8,8 +8,7 @@ using Serilog;
 
 namespace Gloobster.Portal.Controllers.Base
 {
-	[Route("api/[controller]")]
-    
+	[Route("api/[controller]")]    
 	public class BaseApiController: Controller
 	{
 		public IDbOperations DB { get; set; }
@@ -23,9 +22,19 @@ namespace Gloobster.Portal.Controllers.Base
 
 		public string UserId { get; set; }
 
-		public ObjectId UserIdObj => new ObjectId(UserId);
+        public ObjectId? UserIdObj
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(UserId))
+                {
+                    return null;
+                }
+                return new ObjectId(UserId);
+            }
+        }
 
-		public bool IsUserLogged => !string.IsNullOrEmpty(UserId);
+        public bool IsUserLogged => !string.IsNullOrEmpty(UserId);
 
 		private PortalUserEntity _portalUser;
 		public PortalUserEntity PortalUser

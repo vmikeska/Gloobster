@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
 using Facebook;
+using System.Threading.Tasks;
 
 namespace Gloobster.SocialLogin.Facebook.Communication
 {
 	//retreive permissions
 	//https://graph.facebook.com/me/permissions?access_token=CAAYZAZC0M01YIBAJ5v1XtsIUw8hjiKx8ZCwLosGjWvnbbpzZAcn7m92FDUp3VdgOZBoMITxKnynDm4DtL2Li8DY6R7XAaJ2P8zSxtHDV4RIuaCbEihLmIBnbqZBtipQheDHiQZA5PGjLNbkGsZAUSr9Gg7OzTN8DVi5kgxYym3DLE4E9iFoZCmIkx
-
-
+    
 	public class FacebookService: IFacebookService
 	{
 

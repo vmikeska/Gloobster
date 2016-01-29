@@ -10,6 +10,5 @@ namespace Gloobster.DomainModels
 		}
 
 		public string UserId { get; set; }
-
 	}
 }

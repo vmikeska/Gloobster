@@ -33,6 +33,10 @@ module Views {
 	  
 		public hasSocNetwork(net: Reg.NetworkType) {
 		 var netTypesStr = this.cookieManager.getString(Constants.networkTypes);
+		 if (!netTypesStr) {
+			 return false;
+		 }
+
 		 var prms = netTypesStr.split(",");
 
 		 if (net === Reg.NetworkType.Facebook && _.contains(prms, "F")) {
@@ -79,7 +83,7 @@ module Views {
 
 		public apiGet(endpointName: string, params: string[][], callback: Function) {
 
-			var endpoint = '/api/' + endpointName;
+			var endpoint = "/api/" + endpointName;
 			console.log("getting: " + endpoint);
 
 			var request = new Common.RequestSender(endpoint, null, true);

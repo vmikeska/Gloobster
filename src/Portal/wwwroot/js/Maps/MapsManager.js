@@ -84,9 +84,6 @@ var Maps;
         MapsManager.prototype.onMapsLoaded = function (savedPosition, savedZoom) {
             this.mapsOperations.setBaseMapsOperations(this.mapsDriver);
             this.mapsDriver.setMapObj(this.currentMaps.mapObj);
-            if (!Views.ViewBase.currentView.loginManager.isAlreadyLogged()) {
-                return;
-            }
             this.displayData(savedPosition, savedZoom);
         };
         MapsManager.prototype.initView = function (viewType) {

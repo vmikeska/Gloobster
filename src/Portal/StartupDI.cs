@@ -17,6 +17,7 @@ using Gloobster.DomainModels.Services.PlaceSearch;
 using Gloobster.DomainModels.Services.Trip;
 using Gloobster.DomainModels.Services.Twitter;
 using Gloobster.Enums;
+using Gloobster.Portal.Controllers.Api.PinBoard;
 using Gloobster.Sharing.Facebook;
 using Gloobster.Sharing.Twitter;
 using Gloobster.SocialLogin.Facebook.Communication;
@@ -58,9 +59,12 @@ namespace Gloobster.Portal
 
 			builder.AddTransient<INotificationsDomain, NotificationsDomain>();
 			builder.AddTransient<INotifications, Notifications>();
-			
 
-			builder.AddTransient<IPlanningDomain, PlanningDomain>();
+            builder.AddTransient<IPinBoardStatRequestCreator, PinBoardStatRequestCreator>();
+            
+
+
+            builder.AddTransient<IPlanningDomain, PlanningDomain>();
 			
             builder.AddTransient<IFriendsDomain, FriendsDomain>();
 			builder.AddTransient<ITripPlannerDomain, TripPlannerDomain>();

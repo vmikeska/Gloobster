@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Gloobster.Enums;
+﻿using Gloobster.Enums;
 
 namespace Gloobster.ReqRes.PinBoard
 {

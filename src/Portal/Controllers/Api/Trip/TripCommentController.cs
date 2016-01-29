@@ -34,7 +34,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 
 			var newComment = new CommentSE
 			{                
-				PortalUser_id = UserIdObj,
+				PortalUser_id = UserIdObj.Value,
 				PostDate = DateTime.UtcNow,
 				Text = request.text
 			};

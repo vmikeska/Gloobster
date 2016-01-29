@@ -123,11 +123,7 @@
 
 			this.mapsOperations.setBaseMapsOperations(this.mapsDriver);
 			this.mapsDriver.setMapObj(this.currentMaps.mapObj);
-
-			if (!Views.ViewBase.currentView.loginManager.isAlreadyLogged()) {
-				return;
-			}
-
+		 
 			this.displayData(savedPosition, savedZoom);
 		}
 

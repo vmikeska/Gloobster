@@ -90,7 +90,7 @@ var FriendsView = (function (_super) {
     };
     FriendsView.prototype.getItemHtml = function (item) {
         var photoUrl = "/PortalUser/ProfilePicture/" + item.friendId;
-        return "<li data-value=\"" + item.friendId + "\"><span class=\"thumbnail\"><img src=\"" + photoUrl + "\"></span>" + item.displayName + " <button data-value=\"" + item.friendId + "\">Request</button></li>";
+        return "<li data-value=\"" + item.friendId + "\"><span class=\"thumbnail\"><img src=\"" + photoUrl + "\"></span>" + item.displayName + " <button class=\"requestButton\" data-value=\"" + item.friendId + "\">Request</button></li>";
     };
     FriendsView.prototype.requestUser = function (userId, places) {
         var self = this;

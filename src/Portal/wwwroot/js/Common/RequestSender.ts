@@ -27,10 +27,11 @@ module Common {
 				headers["Authorization"] = cookieObj.encodedToken;
 				reqObj.headers = headers;
 
-			} else {
-				//todo: handle error message
-				alert("no token found in cookies");
 			}
+			//else {
+			//	//todo: handle error message
+			//	alert("no token found in cookies");
+			//}
 		}
 
 		public serializeData() {

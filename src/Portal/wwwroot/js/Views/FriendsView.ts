@@ -92,7 +92,7 @@ class FriendsView extends Views.ViewBase {
 
 	private getItemHtml(item) {
 	 var photoUrl = "/PortalUser/ProfilePicture/" + item.friendId;
-	 return `<li data-value="${item.friendId}"><span class="thumbnail"><img src="${photoUrl}"></span>${item.displayName} <button data-value="${item.friendId}">Request</button></li>`;
+	 return `<li data-value="${item.friendId}"><span class="thumbnail"><img src="${photoUrl}"></span>${item.displayName} <button class="requestButton" data-value="${item.friendId}">Request</button></li>`;
 	}
 
 	requestUser(userId, places) {

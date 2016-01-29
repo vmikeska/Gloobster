@@ -1,6 +1,4 @@
-﻿using System.IO;
-using Gloobster.Common;
-using Microsoft.AspNet.Mvc;
+﻿using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using System.Linq;
 using System.Threading.Tasks;
@@ -38,6 +36,7 @@ namespace Gloobster.Portal.Controllers.Portal
             return View(viewModel);
 		}
 
+        [Authorize]
 		public IActionResult Settings()
 		{
 			var viewModel = CreateViewModelInstance<SettingsViewModel>();
@@ -51,8 +50,7 @@ namespace Gloobster.Portal.Controllers.Portal
 		}
 
 		public IActionResult ProfilePicture(string id = null)
-		{
-		    Log.Debug("ProfilePictureD: ");
+		{		    
             var fileLocation = "avatars";
 
             PortalUserEntity portalUser;
@@ -67,45 +65,36 @@ namespace Gloobster.Portal.Controllers.Portal
 		    else
 		    {
 		        portalUser = PortalUser;
-		    }
-            Log.Debug("ProfilePictureD: ID: " + portalUser.id);
+		    }         
 
             if (portalUser.ProfileImage == null)
-			{
-                Log.Debug("ProfilePictureD: NoProfileImage ");
+			{             
                 return new ObjectResult("");
 			}
 
-			var filePath = FileDomain.Storage.Combine(fileLocation, portalUser.ProfileImage);
-            Log.Debug("ProfilePictureD: FilePath: " + filePath);
-            bool exists = FileDomain.Storage.FileExists(filePath);
-            Log.Debug("ProfilePictureD: exists: " + exists);
+			var filePath = FileDomain.Storage.Combine(fileLocation, portalUser.ProfileImage);            
+            bool exists = FileDomain.Storage.FileExists(filePath);            
             if (exists)
 			{
-				var fileStream = FileDomain.GetFile(fileLocation, portalUser.ProfileImage);
-                Log.Debug("ProfilePictureD: after get file");
+				var fileStream = FileDomain.GetFile(fileLocation, portalUser.ProfileImage);                
                 return new FileStreamResult(fileStream, "image/jpeg");
 			}
 
 			return new ObjectResult("");
 		}
 	
-
 		public async Task<IActionResult> Notifications()
 		{
             await NotificationsDomain.SetAllNotificationsToSeen(UserId);
 
-            var notifs = DB.C<NotificationsEntity>().First(p => p.PortalUser_id == DBUserId);
+            var notifs = DB.C<NotificationsEntity>().First(p => p.PortalUser_id == UserIdObj);
 			
 			var viewModel = CreateViewModelInstance<NotificationsViewModel>();
 			viewModel.Notifications = notifs;
             
 			return View(viewModel);
 		}
-
-
-
-
+        
 		private string FormatCityStr(CityLocationSE city)
 		{
 			if (city == null)

@@ -17,10 +17,10 @@ var Common;
                 headers["Authorization"] = cookieObj.encodedToken;
                 reqObj.headers = headers;
             }
-            else {
-                //todo: handle error message
-                alert("no token found in cookies");
-            }
+            //else {
+            //	//todo: handle error message
+            //	alert("no token found in cookies");
+            //}
         };
         RequestSender.prototype.serializeData = function () {
             this.dataToSend = JSON.stringify(this.data);

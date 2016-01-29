@@ -34,33 +34,39 @@
 		<div class="menu-holder table">
 			<div class="cell">
 				@Html.Partial("_Menu")
-			</div>
-			<div id="loginSection" class="cell" style="display: none">
-					<ul class="menu-header separator table">
-							<li><a class="popup-target" data-target="#popup-login" href="#">Login</a></li>
-							<li><a class="popup-target" data-target="#popup-join" href="#">Join</a></li>
-					</ul>				
-			</div>
-			<div class="cell">
-				<div id="userMenu" class="dropdown">
-					<span class="selected">@Model.PortalUser.DisplayName, @Model.SocialNetwork</span>				    
-                    @if (Model.NotificationCount > 0)
-                    {
-                        <span class="notification">@Model.NotificationCount</span>
-                    }
-				    <ul>
-						<li data-value="logout">Logout</li>
-					    <li data-value="settings">Settings</li>
-					    <li data-value="notifications">Notifications
-					        @if (Model.NotificationCount > 0)
-					        {
-					            <span class="notification">@Model.NotificationCount</span>
-					        }
-                        </li>
-					</ul>
-					<input type="hidden">
-				</div>
-			</div>
+			</div>		    
+            @if (Model.IsUserLogged)
+            {
+                <div class="cell">
+                    <div id="userMenu" class="dropdown">
+                        <span class="selected">@Model.PortalUser.DisplayName, @Model.SocialNetwork</span>				    
+                        @if (Model.NotificationCount > 0)
+                        {
+                            <span class="notification">@Model.NotificationCount</span>
+                        }
+                        <ul>
+                            <li data-value="logout">Logout</li>
+                            <li data-value="settings">Settings</li>
+                            <li data-value="notifications">Notifications
+                                @if (Model.NotificationCount > 0)
+                                {
+                                    <span class="notification">@Model.NotificationCount</span>
+                                }
+                            </li>
+                        </ul>
+                        <input type="hidden">
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="cell" id="loginSection" style="display: none">
+                    <ul class="menu-header separator table">
+                        <li><a class="popup-target" data-target="#popup-login" href="#">Login</a></li>
+                        <li><a class="popup-target" data-target="#popup-join" href="#">Join</a></li>
+                    </ul>
+                </div>
+            }
 		</div>
 		<a href="#" class="hamburger" data-target="#menu"><span></span></a>
 	</div>
@@ -83,26 +89,30 @@
 
 <script type="text/javascript">
 
-	$("#userMenu li").click(function(evnt) {
+    $("#userMenu li").click((e) => {
 
-		var value = $(evnt.target).data("value");
+        var value = $(e.target).data("value");
 
-		if (value === "logout") {
-			currentView.loginManager.logout();
-		}
+        if (value === "logout") {
+            currentView.loginManager.logout();
+        }
 
-		if (value === "settings") {
-			window.location = "/PortalUser/Settings";
-		}
+        if (value === "settings") {
+            window.location = "/PortalUser/Settings";
+        }
 
-		if (value === "notifications") {
-				window.location = "/PortalUser/Notifications";
-		}
+        if (value === "notifications") {
+            window.location = "/PortalUser/Notifications";
+        }
+    });
 
+    Reg.LoginManager.currentUserId = null;
 
-	});
+    @if (Model.IsUserLogged)
+    {
+        @Html.Raw($"Reg.LoginManager.currentUserId = '{Model.PortalUser.id}';")
+    }
 
-	Reg.LoginManager.currentUserId = "@Model.PortalUser.id.ToString()";
 
 </script>
 

@@ -18,7 +18,7 @@ module Reg {
 			} else if (response.status === "not_authorized") {
 				//possibly problems with authorization
 			} else {
-				this.login();
+				//this.login();
 			}
 		}
 

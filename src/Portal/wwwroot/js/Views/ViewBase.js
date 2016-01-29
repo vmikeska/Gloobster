@@ -33,6 +33,9 @@ var Views;
         });
         ViewBase.prototype.hasSocNetwork = function (net) {
             var netTypesStr = this.cookieManager.getString(Constants.networkTypes);
+            if (!netTypesStr) {
+                return false;
+            }
             var prms = netTypesStr.split(",");
             if (net === Reg.NetworkType.Facebook && _.contains(prms, "F")) {
                 return true;
@@ -65,7 +68,7 @@ var Views;
             fbInit.initialize();
         };
         ViewBase.prototype.apiGet = function (endpointName, params, callback) {
-            var endpoint = '/api/' + endpointName;
+            var endpoint = "/api/" + endpointName;
             console.log("getting: " + endpoint);
             var request = new Common.RequestSender(endpoint, null, true);
             request.params = params;

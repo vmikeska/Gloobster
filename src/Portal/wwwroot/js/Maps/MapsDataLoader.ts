@@ -7,16 +7,22 @@ module Maps {
 
 		public getPluginData(dataType: DataType, displayEntity: DisplayEntity, people: PeopleSelection) {
 
-		 var request = [
-			["dataType", dataType.toString()],
-			["displayEntity", displayEntity.toString()],
-			["me", people.me.toString()],
-			["friends", people.friends.toString()],
-			["everybody", people.everybody.toString()],
-			["singleFriends", people.singleFriends.join()]
-		 ];
-		 
-			Views.ViewBase.currentView.apiGet("PinBoardStats", request, response => {			 
+			var request = [
+				["dataType", dataType.toString()],
+				["displayEntity", displayEntity.toString()]
+			];
+
+			var isLogged = Views.ViewBase.currentView.loginManager.isAlreadyLogged();
+			if (isLogged) {
+				request = $.merge(request, [
+					["me", people.me.toString()],
+					["friends", people.friends.toString()],
+					["everybody", people.everybody.toString()],
+					["singleFriends", people.singleFriends.join()]
+				]);
+			}
+
+			Views.ViewBase.currentView.apiGet("PinBoardStats", request, response => {
 				this.places = new Places();
 				this.viewPlaces = new PlacesDisplay();
 

@@ -13,9 +13,19 @@ var Views;
             this.initBase();
         }
         PeopleFilter.prototype.initBase = function () {
-            var html = this.itemTemplate({ id: "Me", displayName: "Me", checked: true }) +
-                this.itemTemplate({ id: "Friends", displayName: "Friends" }) +
-                this.itemTemplate({ id: "Everybody", displayName: "Everybody" });
+            var html = "";
+            var isLogged = Views.ViewBase.currentView.loginManager.isAlreadyLogged();
+            if (isLogged) {
+                html +=
+                    this.itemTemplate({ id: "Me", displayName: "Me", checked: true }) +
+                        this.itemTemplate({ id: "Friends", displayName: "Friends" }) +
+                        this.itemTemplate({ id: "Everybody", displayName: "Everybody" });
+            }
+            else {
+                var $h = $(this.itemTemplate({ id: "Everybody", displayName: "Everybody", checked: true }));
+                $h.find("input").prop("disabled", true);
+                html = $h;
+            }
             this.$userFilterContent.prepend(html);
         };
         PeopleFilter.prototype.initFriends = function (friends) {

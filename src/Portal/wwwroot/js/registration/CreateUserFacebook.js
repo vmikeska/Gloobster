@@ -18,7 +18,6 @@ var Reg;
                 else if (response.status === "not_authorized") {
                 }
                 else {
-                    _this.login();
                 }
             };
             this.loginType = Reg.NetworkType.Facebook;
