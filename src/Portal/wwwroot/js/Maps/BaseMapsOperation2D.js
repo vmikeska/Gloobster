@@ -33,8 +33,8 @@ var Maps;
                 return marker.gid === gid;
             });
         };
-        BaseMapsOperation2D.prototype.drawPopUp = function (marker, city) {
-            var popupContent = this.cityPopupTemplate(city);
+        BaseMapsOperation2D.prototype.drawPopUp = function (marker, context) {
+            var popupContent = this.cityPopupTemplate(context);
             marker.bindPopup(popupContent, {
                 closeButton: true,
                 minWidth: 200

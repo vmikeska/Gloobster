@@ -20,6 +20,11 @@
 			this.initBase();
 		}
 
+	  public justMeSelected() {
+		 var sel = this.getSelection();
+		  return sel.me && !sel.everybody && !sel.friends && (sel.singleFriends.length === 0);
+	  }
+
 		private initBase() {
 			var html = "";
 

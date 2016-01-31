@@ -31,19 +31,103 @@ var Views;
                 var value = $(e.target).data("value");
                 var parsedVal = parseInt(value);
                 _this.mapsManager.switchToView(parsedVal);
-                _this.setSupportedProjections(parsedVal);
+                _this.setMenuControls();
+                _this.setInfo();
             });
-            $("#pluginType li").click(function () {
+            $("#dataType li").click(function () {
                 _this.refreshData();
+                _this.setMenuControls();
+                _this.setInfo();
             });
             $("#projectionType li").click(function () {
                 _this.refreshData();
+                _this.setMenuControls();
+                _this.setInfo();
             });
             this.setTagPlacesVisibility();
             this.peopleFilter = new Views.PeopleFilter();
             this.peopleFilter.onSelectionChanged = function (selection) {
                 _this.refreshData();
             };
+            this.setInfo();
+            this.onLogin = function () {
+                _this.setInfo();
+            };
+        };
+        PinBoardView.prototype.setInfo = function () {
+            var _this = this;
+            this.getFormState(function (dataType, entity, mapType) {
+                var userLogged = _this.loginManager.isAlreadyLogged();
+                var $messageNotLogged = $("#messageNotLogged");
+                var $messageCitiesVisited = $("#messageCitiesVisited");
+                var $messageCountriesVisited = $("#messageCountriesVisited");
+                var $messagePlaces = $("#messagePlaces");
+                var $messageCitiesInterested = $("#messageCitiesInterested");
+                var $messageCountriesInterested = $("#messageCountriesInterested");
+                $(".infoMessage").hide();
+                if (!userLogged) {
+                    $messageNotLogged.show();
+                    return;
+                }
+                if (dataType === Maps.DataType.Visited) {
+                    if (entity === Maps.DisplayEntity.Pin) {
+                        $messageCitiesVisited.show();
+                    }
+                    if (entity === Maps.DisplayEntity.Countries) {
+                        $messageCountriesVisited.show();
+                    }
+                    if (entity === Maps.DisplayEntity.Heat) {
+                        $messagePlaces.show();
+                    }
+                }
+                if (dataType === Maps.DataType.Interested) {
+                    if (entity === Maps.DisplayEntity.Pin) {
+                        $messageCitiesInterested.show();
+                    }
+                    if (entity === Maps.DisplayEntity.Countries) {
+                        $messageCountriesInterested.show();
+                    }
+                }
+            });
+        };
+        PinBoardView.prototype.getFormState = function (callback) {
+            setTimeout(function () {
+                var dataType = parseInt($("#dataType input").val());
+                var entity = parseInt($("#projectionType input").val());
+                var mapType = parseInt($("#mapType input").val());
+                callback(dataType, entity, mapType);
+            }, 10);
+        };
+        PinBoardView.prototype.setMenuControls = function () {
+            var _this = this;
+            this.getFormState(function (dataType, entity, mapType) {
+                var $city = $("#pt0");
+                var $country = $("#pt1");
+                var $place = $("#pt2");
+                var $visited = $("#dt0");
+                var $interested = $("#dt1");
+                $city.show();
+                $country.show();
+                $place.show();
+                $visited.show();
+                $interested.show();
+                if (mapType === Maps.ViewType.D3) {
+                    $place.hide();
+                    if (entity === Maps.DisplayEntity.Heat) {
+                        $("#projectionType input").val(1);
+                        $("#projectionType span").text($country.text());
+                        _this.refreshData();
+                    }
+                }
+                if (dataType === Maps.DataType.Interested) {
+                    $place.hide();
+                    if (entity === Maps.DisplayEntity.Heat) {
+                        $("#projectionType input").val(1);
+                        $("#projectionType span").text($country.text());
+                        _this.refreshData();
+                    }
+                }
+            });
         };
         PinBoardView.prototype.deletePin = function (gid) {
             var _this = this;
@@ -51,15 +135,6 @@ var Views;
             this.apiDelete("VisitedCity", prms, function (r) {
                 _this.mapsManager.removeCity(r.gid, r.countryCode);
             });
-        };
-        PinBoardView.prototype.setSupportedProjections = function (mapType) {
-            var $heatMapOpt = $("#pt2");
-            if (mapType === 1) {
-                $heatMapOpt.show();
-            }
-            if (mapType === 0) {
-                $heatMapOpt.hide();
-            }
         };
         PinBoardView.prototype.initPlaceSearch = function () {
             var _this = this;
@@ -73,13 +148,11 @@ var Views;
         };
         PinBoardView.prototype.refreshData = function () {
             var _this = this;
-            setTimeout(function () {
-                var dataType = parseInt($("#dataType input").val());
-                var projectionType = parseInt($("#projectionType input").val());
+            this.getFormState(function (dataType, entity, mapType) {
                 var people = _this.peopleFilter.getSelection();
-                _this.mapsManager.getPluginData(dataType, projectionType, people);
-                _this.displayLegend(projectionType);
-            }, 10);
+                _this.mapsManager.getPluginData(dataType, entity, people);
+                _this.displayLegend(entity);
+            });
         };
         PinBoardView.prototype.displayLegend = function (pluginType) {
             if (this.currentLegend) {

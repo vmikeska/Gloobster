@@ -17,8 +17,8 @@ var Maps;
             }).addTo(this.mapObj);
             this.polygons.push(polygon);
         };
-        BaseMapsOperation3D.prototype.drawPopUp = function (marker, city) {
-            var popupContent = this.cityPopupTemplate(city);
+        BaseMapsOperation3D.prototype.drawPopUp = function (marker, context) {
+            var popupContent = this.cityPopupTemplate(context);
             marker.bindPopup(popupContent, {
                 closeButton: true,
                 minWidth: 200

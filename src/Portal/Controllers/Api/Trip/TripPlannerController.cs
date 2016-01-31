@@ -20,7 +20,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 		}
 		
 		[HttpPost]
-		[Authorize]
+		[AuthorizeAttributeApi]
 		public async Task<IActionResult> Post([FromBody] NewPlaceRequest request)
 		{
 			var newPlaceDO = new NewPlaceDO

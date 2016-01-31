@@ -18,7 +18,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 		}
 		
 		[HttpPut]
-		[Authorize]
+		[AuthorizeAttributeApi]
 		public async Task<IActionResult> Put([FromBody] TripFilePublicRequest req)
 		{
 		    bool res = await FileDomain.ChangeFilePublic(req.tripId, req.fileId, req.state);

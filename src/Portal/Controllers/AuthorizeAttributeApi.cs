@@ -4,14 +4,15 @@ using Gloobster.DomainModels;
 using Gloobster.Portal.Controllers.Base;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Filters;
+using Newtonsoft.Json;
 
 namespace Gloobster.Portal.Controllers
 {
-	public class AuthorizeAttribute : ActionFilterAttribute
+    public class AuthorizeAttributeApi : ActionFilterAttribute
 	{
         public bool ExplicitAuth { get; set; }
         
-        public AuthorizeAttribute(bool explicitAuth = false)
+        public AuthorizeAttributeApi(bool explicitAuth = false)
         {
             ExplicitAuth = explicitAuth;
         }
@@ -20,8 +21,8 @@ namespace Gloobster.Portal.Controllers
 		{
 			var controller = (Controller)context.Controller;
 			string authorizationToken = controller.Request.Headers["Authorization"];
-
-			string decodedStr = string.Empty;
+            
+            string decodedStr = string.Empty;
 
 			try
 			{
@@ -37,7 +38,7 @@ namespace Gloobster.Portal.Controllers
 			    return;
 			}
 			
-			var tokenObj = Newtonsoft.Json.JsonConvert.DeserializeObject<AuthorizationToken>(decodedStr);
+			var tokenObj = JsonConvert.DeserializeObject<AuthorizationToken>(decodedStr);
 
 			((BaseApiController)context.Controller).UserId = tokenObj.UserId;
             

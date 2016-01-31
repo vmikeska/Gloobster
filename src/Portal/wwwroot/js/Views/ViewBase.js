@@ -24,13 +24,35 @@ var Views;
                 if (this.loginManager.cookieLogin.networkType === Reg.NetworkType.Facebook) {
                     this.initializeFacebook();
                 }
+                if (this.onLogin) {
+                    this.onLogin();
+                }
             }
+            this.regUserMenu();
         }
         Object.defineProperty(ViewBase.prototype, "pageType", {
             get: function () { return null; },
             enumerable: true,
             configurable: true
         });
+        ViewBase.prototype.regUserMenu = function () {
+            var _this = this;
+            $("#userMenu li").click(function (e) {
+                var value = $(e.target).data("value");
+                if (value === "logout") {
+                    _this.loginManager.logout();
+                }
+                if (value === "settings") {
+                    window.location.href = "/PortalUser/Settings";
+                }
+                if (value === "notifications") {
+                    window.location.href = "/PortalUser/Notifications";
+                }
+                if (value === "friends") {
+                    window.location.href = "/Friends/List";
+                }
+            });
+        };
         ViewBase.prototype.hasSocNetwork = function (net) {
             var netTypesStr = this.cookieManager.getString(Constants.networkTypes);
             if (!netTypesStr) {

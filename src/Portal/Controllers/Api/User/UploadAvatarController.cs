@@ -21,7 +21,7 @@ namespace Gloobster.Portal.Controllers.Api.User
 		}
 
 		[HttpPost]
-		[Authorize]
+		[AuthorizeAttributeApi]
 		public IActionResult Post([FromBody] FileRequest request)
 		{
 			var fileLocation = "avatars";

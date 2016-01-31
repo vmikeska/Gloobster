@@ -60,10 +60,15 @@ module Maps {
 	  public removeCity(gid) {
 		  this.mapsDriver.removePin(gid);
 		}
-	 
+
 		public drawCities(cities: PlaceMarker[]) {
+
+			var pvm = <Views.PinBoardView> Views.ViewBase.currentView;
+
+			var contBase = { isJustMe: pvm.peopleFilter.justMeSelected() };
 			cities.forEach(city => {
-				this.drawCity(city);
+				var context = $.extend(contBase, city);
+				this.drawCity(context);
 			});
 		}
 

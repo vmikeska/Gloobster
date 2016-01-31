@@ -27,7 +27,7 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 		}
 
 		[HttpDelete]
-		[Authorize]
+		[AuthorizeAttributeApi]
 		public async Task<IActionResult> Delete(int id)
 		{
 			bool success = await AirService.RemoveAirportInRange(UserId, id);			
@@ -35,7 +35,7 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 		}
 
 		[HttpPost]
-		[Authorize]
+		[AuthorizeAttributeApi]
 		public async Task<IActionResult> Post([FromBody] NewHomeAirportRequest req)
 		{
 			var airportsDO = await AirService.SaveAirportInRange(UserId, req.airportId);
@@ -45,7 +45,7 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 		}
 
 		[HttpPut]
-		[Authorize]
+		[AuthorizeAttributeApi]
 		public async Task<IActionResult> Put([FromBody] AirportsInRangeRequest req)
 		{
 			var loc = PortalUser.CurrentLocation;
@@ -64,7 +64,7 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 		}
 
 		[HttpGet]
-		[Authorize]
+		[AuthorizeAttributeApi]
 		public IActionResult Get()
 		{
 			if (PortalUser.HomeAirports == null)

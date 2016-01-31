@@ -21,7 +21,7 @@ namespace Gloobster.Portal.Controllers.Api.Notification
         }
 		
         [HttpDelete]
-        [Authorize]
+        [AuthorizeAttributeApi]
         public async Task<IActionResult> Delete(NotificationDeleteRequest req)
         {
             if (req.deleteAll.HasValue && req.deleteAll.Value)

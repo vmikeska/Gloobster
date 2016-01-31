@@ -17,10 +17,7 @@
     <link rel="stylesheet" href="/css/test2.css">
 		@*<link href="~/css/style.css" rel="stylesheet">*@
 	<link href="~/lib/jquery-ui/themes/ui-lightness/jquery-ui.css" rel="stylesheet"/>
-
-		<link href="~/lib/dropzone/dist/dropzone.css" rel="stylesheet" />
-		<link href="~/lib/dropzone/dist/basic.css" rel="stylesheet" />
-
+	
 	<link rel="stylesheet" href="~/css/site.css"/>
 
 	@Html.Partial("_GlobalScripts")
@@ -38,24 +35,7 @@
             @if (Model.IsUserLogged)
             {
                 <div class="cell">
-                    <div id="userMenu" class="dropdown">
-                        <span class="selected">@Model.PortalUser.DisplayName, @Model.SocialNetwork</span>				    
-                        @if (Model.NotificationCount > 0)
-                        {
-                            <span class="notification">@Model.NotificationCount</span>
-                        }
-                        <ul>
-                            <li data-value="logout">Logout</li>
-                            <li data-value="settings">Settings</li>
-                            <li data-value="notifications">Notifications
-                                @if (Model.NotificationCount > 0)
-                                {
-                                    <span class="notification">@Model.NotificationCount</span>
-                                }
-                            </li>
-                        </ul>
-                        <input type="hidden">
-                    </div>
+                    @Html.Partial("_UserMenu")                    
                 </div>
             }
             else
@@ -88,32 +68,12 @@
 @*@RenderSection("scripts", required: false)*@
 
 <script type="text/javascript">
-
-    $("#userMenu li").click((e) => {
-
-        var value = $(e.target).data("value");
-
-        if (value === "logout") {
-            currentView.loginManager.logout();
-        }
-
-        if (value === "settings") {
-            window.location = "/PortalUser/Settings";
-        }
-
-        if (value === "notifications") {
-            window.location = "/PortalUser/Notifications";
-        }
-    });
-
     Reg.LoginManager.currentUserId = null;
 
     @if (Model.IsUserLogged)
     {
         @Html.Raw($"Reg.LoginManager.currentUserId = '{Model.PortalUser.id}';")
     }
-
-
 </script>
 
 </body>

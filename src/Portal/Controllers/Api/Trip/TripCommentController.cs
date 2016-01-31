@@ -19,7 +19,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 	{
         
 		[HttpPost]
-		[Authorize]
+		[AuthorizeAttributeApi]
 		public async Task<IActionResult> Post([FromBody]NewCommentRequest request)
 		{			
 			var tripIdObj = new ObjectId(request.tripId);

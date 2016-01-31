@@ -31,7 +31,7 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 		private PlanningPropRequest Req;
 
 		[HttpPost]
-		[Authorize]
+		[AuthorizeAttributeApi]
 		public async Task<IActionResult> Post([FromBody] PlanningPropRequest req)
 		{
 			Req = req;
@@ -87,7 +87,7 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 
 
 		[HttpPut]
-		[Authorize]
+		[AuthorizeAttributeApi]
 		public async Task<IActionResult> Put([FromBody] PlanningPropRequest req)
 		{
 			Req = req;
@@ -158,7 +158,7 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 		}
 
 		[HttpGet]
-		[Authorize]
+		[AuthorizeAttributeApi]
 		public IActionResult Get(PlanningType planningType)
 		{
 			//todo: temp remove then

@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Gloobster.Common;
-using Gloobster.Database;
-using Gloobster.DomainModels.Services.Facebook.FriendsExtractor;
+﻿using Gloobster.Database;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.Portal.ViewModels;
 using Microsoft.AspNet.Mvc;
@@ -25,6 +21,7 @@ namespace Gloobster.Portal.Controllers.Portal
 		{
 		}
 
+        [AuthorizeAttributeWeb]
 		public IActionResult List()
 		{
 			var viewModel = CreateViewModelInstance<ViewModelBase>();			

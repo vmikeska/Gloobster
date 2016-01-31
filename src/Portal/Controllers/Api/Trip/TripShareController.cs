@@ -22,7 +22,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 		}
 
 		[HttpGet]
-		[Authorize]
+		[AuthorizeAttributeApi]
 		public IActionResult Get(string tripId)
 		{
 			var tripIdObj = new ObjectId(tripId);

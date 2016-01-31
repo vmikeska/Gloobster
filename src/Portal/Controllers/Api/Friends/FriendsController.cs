@@ -28,7 +28,7 @@ namespace Gloobster.Portal.Controllers.Api.Friends
         }		
 
 		[HttpGet]
-		[Authorize]
+		[AuthorizeAttributeApi]
 		public IActionResult Get()
 		{
 			var response = GetFriends(UserId);
@@ -37,7 +37,7 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 		}
 
 		[HttpPost]
-		[Authorize]
+		[AuthorizeAttributeApi]
 		public async Task<IActionResult> Post([FromBody] FriendActionRequest request)
 		{			
 			if (request.action == FriendActionType.Request)

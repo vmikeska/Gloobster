@@ -26,7 +26,7 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 
 
 		[HttpGet]
-		[Authorize]
+		[AuthorizeAttributeApi]
 		public IActionResult Get(string name)
 		{
 			var friendsResponse = new List<FriendResponse>();

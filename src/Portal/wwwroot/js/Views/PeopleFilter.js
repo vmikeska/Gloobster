@@ -12,6 +12,10 @@ var Views;
             });
             this.initBase();
         }
+        PeopleFilter.prototype.justMeSelected = function () {
+            var sel = this.getSelection();
+            return sel.me && !sel.everybody && !sel.friends && (sel.singleFriends.length === 0);
+        };
         PeopleFilter.prototype.initBase = function () {
             var html = "";
             var isLogged = Views.ViewBase.currentView.loginManager.isAlreadyLogged();

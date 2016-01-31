@@ -24,7 +24,7 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 		}
 
 		[HttpGet]
-		[Authorize]
+		[AuthorizeAttributeApi]
 		public IActionResult Get(AirportGroupRequest req)
 		{
 			var rect = new RectDO

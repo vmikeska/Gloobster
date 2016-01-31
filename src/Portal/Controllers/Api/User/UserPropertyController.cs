@@ -25,7 +25,7 @@ namespace Gloobster.Portal.Controllers.Api.User
 		}
 		
 		[HttpPut]
-		[Authorize]
+		[AuthorizeAttributeApi]
 		public async Task<IActionResult> Put([FromBody] PropertyUpdateRequest request)
 		{			
 			var filter = DB.F<PortalUserEntity>().Eq(p => p.id, UserIdObj);

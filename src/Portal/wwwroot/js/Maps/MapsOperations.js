@@ -51,8 +51,11 @@ var Maps;
         };
         MapsOperations.prototype.drawCities = function (cities) {
             var _this = this;
+            var pvm = Views.ViewBase.currentView;
+            var contBase = { isJustMe: pvm.peopleFilter.justMeSelected() };
             cities.forEach(function (city) {
-                _this.drawCity(city);
+                var context = $.extend(contBase, city);
+                _this.drawCity(context);
             });
         };
         MapsOperations.prototype.drawPlace = function (place) {

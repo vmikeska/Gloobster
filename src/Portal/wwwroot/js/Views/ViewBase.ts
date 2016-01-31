@@ -10,6 +10,8 @@ module Views {
 		public loginManager: Reg.LoginManager;
 		public cookieManager: Common.CookieManager;
 
+	  public onLogin: Function;
+
 		get pageType(): PageType { return null; }
 
 		constructor() {
@@ -28,8 +30,37 @@ module Views {
 				if (this.loginManager.cookieLogin.networkType === Reg.NetworkType.Facebook) {
 					this.initializeFacebook();
 				}
+
+				if (this.onLogin) {
+					this.onLogin();
+				} 
 			}
+
+			this.regUserMenu();
 		}
+
+	  private regUserMenu() {
+		 $("#userMenu li").click((e) => {
+
+			var value = $(e.target).data("value");
+
+			if (value === "logout") {
+			 this.loginManager.logout();
+			}
+
+			if (value === "settings") {
+			 window.location.href = "/PortalUser/Settings";
+			}
+
+			if (value === "notifications") {
+			 window.location.href = "/PortalUser/Notifications";
+			}
+
+			if (value === "friends") {
+			 window.location.href = "/Friends/List";
+			}
+		 });
+	  }
 	  
 		public hasSocNetwork(net: Reg.NetworkType) {
 		 var netTypesStr = this.cookieManager.getString(Constants.networkTypes);

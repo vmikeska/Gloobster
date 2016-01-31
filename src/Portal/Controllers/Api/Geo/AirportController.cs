@@ -18,7 +18,7 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 		}
 
 		[HttpGet]
-		[Authorize]
+		[AuthorizeAttributeApi]
 		public IActionResult Get(AirportRequest req)
 		{
 			if (string.IsNullOrEmpty(req.query))

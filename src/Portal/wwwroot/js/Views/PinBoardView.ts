@@ -30,16 +30,21 @@
 			$("#mapType li").click((e) => {
 				var value = $(e.target).data("value");
 				var parsedVal = parseInt(value);
-				this.mapsManager.switchToView(parsedVal);
-				this.setSupportedProjections(parsedVal);
+				this.mapsManager.switchToView(parsedVal);				
+				this.setMenuControls();
+				this.setInfo();
 			});
 
-			$("#pluginType li").click(() => {
-				this.refreshData();
+			$("#dataType li").click(() => {
+			 this.refreshData();
+			 this.setMenuControls();
+			 this.setInfo();
 			});
 
 			$("#projectionType li").click(() => {
-				this.refreshData();
+			 this.refreshData();
+			 this.setMenuControls();
+			 this.setInfo();
 			});
 
 			this.setTagPlacesVisibility();
@@ -48,6 +53,101 @@
 			this.peopleFilter.onSelectionChanged = (selection) => {
 				this.refreshData();
 			};
+
+			this.setInfo();
+
+		  this.onLogin =()=> {
+			 this.setInfo();
+		  }
+		}
+	 
+	 private setInfo() {
+		this.getFormState((dataType, entity, mapType) => {					 
+			 var userLogged = this.loginManager.isAlreadyLogged();
+
+			 var $messageNotLogged = $("#messageNotLogged");
+			 var $messageCitiesVisited = $("#messageCitiesVisited");
+			 var $messageCountriesVisited = $("#messageCountriesVisited");
+			 var $messagePlaces = $("#messagePlaces");
+			 var $messageCitiesInterested = $("#messageCitiesInterested");
+			 var $messageCountriesInterested = $("#messageCountriesInterested");
+
+			 $(".infoMessage").hide();
+
+			 if (!userLogged) {
+				$messageNotLogged.show();
+				 return;
+			 }
+
+			 if (dataType === Maps.DataType.Visited) {
+				if (entity === Maps.DisplayEntity.Pin) {
+					$messageCitiesVisited.show();
+				}
+				if (entity === Maps.DisplayEntity.Countries) {
+				 $messageCountriesVisited.show();
+				}
+				if (entity === Maps.DisplayEntity.Heat) {
+				 $messagePlaces.show();
+				}
+			 }
+
+			 if (dataType === Maps.DataType.Interested) {
+				if (entity === Maps.DisplayEntity.Pin) {
+				 $messageCitiesInterested.show();
+				}
+				if (entity === Maps.DisplayEntity.Countries) {
+				 $messageCountriesInterested.show();
+				}
+			 }
+
+		 });
+	 }
+
+		private getFormState(callback) {
+			setTimeout(() => {
+				var dataType = parseInt($("#dataType input").val());
+				var entity = parseInt($("#projectionType input").val());
+				var mapType = parseInt($("#mapType input").val());
+				callback(dataType, entity, mapType);
+			}, 10);
+		}
+
+		private setMenuControls() {
+		 this.getFormState((dataType, entity, mapType) => {			
+				var $city = $("#pt0");
+				var $country = $("#pt1");
+				var $place = $("#pt2");
+
+				var $visited = $("#dt0");
+				var $interested = $("#dt1");
+			 
+				$city.show();
+				$country.show();
+				$place.show();
+				$visited.show();
+				$interested.show();
+
+				if (mapType === Maps.ViewType.D3) {
+				 $place.hide();
+
+				 if (entity === Maps.DisplayEntity.Heat) {
+					$("#projectionType input").val(1);
+					$("#projectionType span").text($country.text());
+					this.refreshData();
+				 }
+				}
+
+				if (dataType === Maps.DataType.Interested) {
+				 $place.hide();
+
+				 if (entity === Maps.DisplayEntity.Heat) {
+					$("#projectionType input").val(1);
+					$("#projectionType span").text($country.text());
+					 this.refreshData();
+				 }
+				 
+				}			 			 
+			});
 		}
 
 		public deletePin(gid) {
@@ -55,17 +155,6 @@
 			this.apiDelete("VisitedCity", prms, (r) => {
 				this.mapsManager.removeCity(r.gid, r.countryCode);
 			});
-		}
-
-		private setSupportedProjections(mapType: number) {
-			var $heatMapOpt = $("#pt2");
-
-			if (mapType === 1) {
-				$heatMapOpt.show();
-			}
-			if (mapType === 0) {
-				$heatMapOpt.hide();
-			}
 		}
 
 		private initPlaceSearch() {
@@ -80,13 +169,11 @@
 		}
 
 		private refreshData() {
-			setTimeout(() => {
-				var dataType = parseInt($("#dataType input").val());
-				var projectionType = parseInt($("#projectionType input").val());
+		 this.getFormState((dataType, entity, mapType) => {					
 				var people = this.peopleFilter.getSelection();
-				this.mapsManager.getPluginData(dataType, projectionType, people);
-				this.displayLegend(projectionType);
-			}, 10);
+				this.mapsManager.getPluginData(dataType, entity, people);
+				this.displayLegend(entity);
+			});
 		}
 
 		private displayLegend(pluginType: Maps.DisplayEntity) {

@@ -84,7 +84,7 @@ namespace Gloobster.Common
 
 				if (decodedCrypto != decodedSignature)
 				{
-					throw new ApplicationException(string.Format("Invalid signature. Expected {0} got {1}", decodedCrypto, decodedSignature));
+					throw new ApplicationException($"Invalid signature. Expected {decodedCrypto} got {decodedSignature}");
 				}
 			}
 

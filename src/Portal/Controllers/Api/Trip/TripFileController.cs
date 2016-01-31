@@ -31,7 +31,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 		}
 		
 		[HttpPost]
-		[Authorize]
+		[AuthorizeAttributeApi]
 		public IActionResult Post([FromBody] TripFileRequest request)
 		{			
 			var tripIdObj = new ObjectId(request.tripId);
@@ -104,7 +104,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 		}
 
 		[HttpDelete]
-		[Authorize]
+		[AuthorizeAttributeApi]
 		//, string entityId
 		public async Task<IActionResult> Delete(string fileId, string tripId)
 		{

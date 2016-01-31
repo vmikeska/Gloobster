@@ -36,7 +36,7 @@ namespace Gloobster.Portal.Controllers.Portal
             return View(viewModel);
 		}
 
-        [Authorize]
+        [AuthorizeAttributeApi]
 		public IActionResult Settings()
 		{
 			var viewModel = CreateViewModelInstance<SettingsViewModel>();

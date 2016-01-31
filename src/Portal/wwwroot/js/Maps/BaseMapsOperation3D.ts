@@ -26,8 +26,8 @@
 			this.polygons.push(polygon);		 
 		}
 
-		public drawPopUp(marker, city) {
-		 var popupContent = this.cityPopupTemplate(city);
+		public drawPopUp(marker, context) {
+		 var popupContent = this.cityPopupTemplate(context);
 
 		 marker.bindPopup(popupContent, {
 			closeButton: true,

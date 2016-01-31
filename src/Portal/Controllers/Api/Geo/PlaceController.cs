@@ -29,7 +29,7 @@ namespace Gloobster.Portal.Controllers.Api.Geo
         }
 
 		[HttpGet]
-		[Authorize]
+		[AuthorizeAttributeApi]
 		public async Task<IActionResult> Get(SearchRequest req)
 		{
             Log.Debug("PlaceLog: 1");
