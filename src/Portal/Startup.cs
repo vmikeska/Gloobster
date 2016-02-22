@@ -167,7 +167,11 @@ namespace Gloobster.Portal
 			GloobsterConfig.StorageConnectionString = Configuration["Storage:ConnectionString"];
 			GloobsterConfig.StorageRootDir = Configuration["Storage:RootDir"];
 
-		}
+            GloobsterConfig.YelpAccessToken = Configuration["Yelp:AccessToken"];
+            GloobsterConfig.YelpConsumerKey = Configuration["Yelp:ConsumerKey"];
+            GloobsterConfig.YelpAccessTokenSecret = Configuration["Yelp:AccessTokenSecret"];
+            GloobsterConfig.YelpConsumerSecret = Configuration["Yelp:ConsumerSecret"];
+        }
 
 	}
 

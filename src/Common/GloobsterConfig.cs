@@ -32,8 +32,13 @@ namespace Gloobster.Common
 
 		public static string FoursquareClientId { get; set; }
 		public static string FoursquareClientSecret { get; set; }
+    
+        public static string YelpAccessToken { get; set; }
+        public static string YelpAccessTokenSecret { get; set; }
+        public static string YelpConsumerKey { get; set; }
+        public static string YelpConsumerSecret { get; set; }
 
-		public static string MapBoxSecret { get; set; }
+        public static string MapBoxSecret { get; set; }
 		public static bool IsLocal { get; set; }
 
 		public static string StorageConnectionString { get; set; }

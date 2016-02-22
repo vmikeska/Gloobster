@@ -58,7 +58,11 @@
 
 		  this.onLogin =()=> {
 			 this.setInfo();
-		  }
+			}
+
+			this.mapsManager.onCenterChanged = (center) => {
+			 this.placeSearch.setCoordinates(center.lat, center.lng);
+			}
 		}
 	 
 	 private setInfo() {
@@ -159,7 +163,7 @@
 
 		private initPlaceSearch() {
 			var c = new Common.PlaceSearchConfig();
-			c.providers = "0,1,2,3";
+			c.providers = "0,1,2,3,4";
 			c.elementId = "cities";
 			c.minCharsToSearch = 1;
 			c.clearAfterSearch = true;

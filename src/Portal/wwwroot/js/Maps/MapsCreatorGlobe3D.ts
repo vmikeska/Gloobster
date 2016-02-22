@@ -43,11 +43,18 @@ module Maps {
 			this.mapObj = new WE.map(this.rootElement, mapOptions);
 			WE.tileLayer(mapUrl, layerOptions).addTo(this.mapObj);
 
+		  //doesn't work
+			//this.mapObj.on("move", (e) => {
+			//	console.log("from 3d");
+			//});
+
 			mapsLoadedCallback();
 		}
 
 		hide() {
 			$("#" + this.rootElement).empty();
 		}
+
+		onCenterChanged: Function;
 	}
 }

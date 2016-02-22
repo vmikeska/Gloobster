@@ -28,7 +28,7 @@ namespace Gloobster.DomainModels.Services.PlaceSearch
 
 			if (queryObj.Coordinates != null)
 			{
-				prms.Add("ll", $"{queryObj.Coordinates.Lat.ToString("0.000").Replace(",", ".")},{queryObj.Coordinates.Lng.ToString("0.000").Replace(",", ".")}");								
+				prms.Add("ll", $"{queryObj.Coordinates.Lat.ToString("0.000").Replace(",", ".")},{queryObj.Coordinates.Lng.ToString("0.000").Replace(",", ".")}");
             }
 			else
 			{

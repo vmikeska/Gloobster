@@ -102,7 +102,8 @@
           "SharpSquare": "1.0.0",
           "SocialLogin": "1.0.0",
           "System.Net.Http": "4.0.0",
-          "TweetSharp": "2.3.1"
+          "TweetSharp": "2.3.1",
+          "YelpSharp": "1.2.1"
         },
         "frameworkAssemblies": [
           "System.Device"
@@ -2137,6 +2138,15 @@
           "Enums": "1.0.0"
         }
       },
+      "RestSharp/104.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/net4/RestSharp.dll": {}
+        },
+        "runtime": {
+          "lib/net4/RestSharp.dll": {}
+        }
+      },
       "Serilog/1.5.11": {
         "type": "package",
         "compile": {
@@ -2509,6 +2519,19 @@
         "runtime": {
           "lib/net40/Microsoft.WindowsAzure.Storage.dll": {}
         }
+      },
+      "YelpSharp/1.2.1": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "4.5.11",
+          "RestSharp": "104.1.0"
+        },
+        "compile": {
+          "lib/net4/YelpSharp.dll": {}
+        },
+        "runtime": {
+          "lib/net4/YelpSharp.dll": {}
+        }
       }
     },
     "DNX,Version=v4.5.1/win7-x86": {
@@ -2611,7 +2634,8 @@
           "SharpSquare": "1.0.0",
           "SocialLogin": "1.0.0",
           "System.Net.Http": "4.0.0",
-          "TweetSharp": "2.3.1"
+          "TweetSharp": "2.3.1",
+          "YelpSharp": "1.2.1"
         },
         "frameworkAssemblies": [
           "System.Device"
@@ -4649,6 +4673,15 @@
           "Enums": "1.0.0"
         }
       },
+      "RestSharp/104.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/net4/RestSharp.dll": {}
+        },
+        "runtime": {
+          "lib/net4/RestSharp.dll": {}
+        }
+      },
       "Serilog/1.5.11": {
         "type": "package",
         "compile": {
@@ -5021,6 +5054,19 @@
         "runtime": {
           "lib/net40/Microsoft.WindowsAzure.Storage.dll": {}
         }
+      },
+      "YelpSharp/1.2.1": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "4.5.11",
+          "RestSharp": "104.1.0"
+        },
+        "compile": {
+          "lib/net4/YelpSharp.dll": {}
+        },
+        "runtime": {
+          "lib/net4/YelpSharp.dll": {}
+        }
       }
     },
     "DNX,Version=v4.5.1/win7-x64": {
@@ -5123,7 +5169,8 @@
           "SharpSquare": "1.0.0",
           "SocialLogin": "1.0.0",
           "System.Net.Http": "4.0.0",
-          "TweetSharp": "2.3.1"
+          "TweetSharp": "2.3.1",
+          "YelpSharp": "1.2.1"
         },
         "frameworkAssemblies": [
           "System.Device"
@@ -7161,6 +7208,15 @@
           "Enums": "1.0.0"
         }
       },
+      "RestSharp/104.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/net4/RestSharp.dll": {}
+        },
+        "runtime": {
+          "lib/net4/RestSharp.dll": {}
+        }
+      },
       "Serilog/1.5.11": {
         "type": "package",
         "compile": {
@@ -7532,6 +7588,19 @@
         },
         "runtime": {
           "lib/net40/Microsoft.WindowsAzure.Storage.dll": {}
+        }
+      },
+      "YelpSharp/1.2.1": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "4.5.11",
+          "RestSharp": "104.1.0"
+        },
+        "compile": {
+          "lib/net4/YelpSharp.dll": {}
+        },
+        "runtime": {
+          "lib/net4/YelpSharp.dll": {}
         }
       }
     }
@@ -9260,6 +9329,28 @@
         "Remotion.Linq.nuspec"
       ]
     },
+    "RestSharp/104.1.0": {
+      "type": "package",
+      "sha512": "dlimMbhHZ7T2saCYJDcuonz7XSpnUUAe7RxN1O5ETi7xPnfAwA20Uf5Iy9XYOm+tV4FLM0GIQiVFxkjR7NJI8A==",
+      "files": [
+        "lib/net35/RestSharp.dll",
+        "lib/net35/RestSharp.xml",
+        "lib/net35-client/RestSharp.dll",
+        "lib/net35-client/RestSharp.xml",
+        "lib/net4/RestSharp.dll",
+        "lib/net4/RestSharp.xml",
+        "lib/net4-client/RestSharp.dll",
+        "lib/net4-client/RestSharp.xml",
+        "lib/sl4/RestSharp.Silverlight.dll",
+        "lib/sl4/RestSharp.Silverlight.xml",
+        "lib/sl4-wp71/RestSharp.WindowsPhone.dll",
+        "lib/sl4-wp71/RestSharp.WindowsPhone.xml",
+        "readme.txt",
+        "RestSharp.104.1.0.nupkg",
+        "RestSharp.104.1.0.nupkg.sha512",
+        "RestSharp.nuspec"
+      ]
+    },
     "Serilog/1.5.11": {
       "type": "package",
       "sha512": "XNMHuP9eRWk7ffNtEAtACoBqqrSGfioQnEbeK/boi/qtamh3ZgYXvUwH9/PytJdg3LGOIT0quyTiCNaqYlJUuQ==",
@@ -10270,6 +10361,17 @@
         "WindowsAzure.Storage.3.1.0.1.nupkg",
         "WindowsAzure.Storage.3.1.0.1.nupkg.sha512",
         "WindowsAzure.Storage.nuspec"
+      ]
+    },
+    "YelpSharp/1.2.1": {
+      "type": "package",
+      "sha512": "HjWuIlXyGC9atpO3sV+xWBIIaB3grtn5bPwhsgh4HcuG6B7GZOf8ZKf/caJdOWRRuXF265d4l4PL2fplKjbBVg==",
+      "files": [
+        "lib/net4/YelpSharp.dll",
+        "lib/windowsphone8/YelpSharp.WindowsPhone.dll",
+        "YelpSharp.1.2.1.nupkg",
+        "YelpSharp.1.2.1.nupkg.sha512",
+        "YelpSharp.nuspec"
       ]
     }
   },

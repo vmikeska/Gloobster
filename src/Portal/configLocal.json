@@ -24,6 +24,12 @@
     "ClientId": "RW5T0GSXYHMN5W2P4DLPYEOR1UYXXKGIFDMNBBM15XE0MQZ1",
     "ClientSecret": "HHHLCEDL3YSQAM5BNCT4HZXQ2BVLRGROMS5IUHMITIDAROWJ"
   },
+  "Yelp": {
+    "AccessToken": "OiHUS6wAFNybNtvqI3eounf2BxIy31W6",
+    "AccessTokenSecret": "idVsj8dfwTptyqH5-HN7tqVQHMg",
+    "ConsumerKey": "Tg6yDQ3tFphahJQlitxc-w",
+    "ConsumerSecret": "2LVpeUFMntvSpTWpfCYIjylGibI"
+  },
   "Mapbox": {
     "Secret": "pk.eyJ1IjoiZ2xvb2JzdGVyIiwiYSI6ImQxZWY5MjRkZjU1NDk2MGU3OWI2OGRiM2U3NTM0MGYxIn0.nCG7hOsSQzb0c-_qzfTCRQ"
   },

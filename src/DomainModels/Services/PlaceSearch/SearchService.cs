@@ -11,7 +11,7 @@ namespace Gloobster.DomainModels.Services.PlaceSearch
 	public class SearchService: ISearchService
 	{
 
-		private readonly SourceType[] _defaultProviders = { SourceType.FB, SourceType.City, SourceType.Country, SourceType.S4 };
+		private readonly SourceType[] _defaultProviders = { SourceType.FB, SourceType.City, SourceType.Country, SourceType.S4, SourceType.Yelp };
 
 		public Dictionary<SourceType, ISearchProvider> SearchProviders = new Dictionary<SourceType, ISearchProvider>();
 

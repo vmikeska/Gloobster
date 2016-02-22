@@ -41,7 +41,7 @@ var Trip;
         PlaceDialog.prototype.createNameSearch = function (data) {
             var _this = this;
             var c = new Common.PlaceSearchConfig();
-            c.providers = "0,1,2,3";
+            c.providers = "0,1,2,3,4";
             c.elementId = "cities";
             c.minCharsToSearch = 1;
             c.clearAfterSearch = false;
@@ -54,7 +54,7 @@ var Trip;
         PlaceDialog.prototype.createPlaceToVisitSearch = function (data) {
             var _this = this;
             var c = new Common.PlaceSearchConfig();
-            c.providers = "1,0";
+            c.providers = "1,0,4";
             c.elementId = "placeToVisit";
             c.minCharsToSearch = 1;
             c.clearAfterSearch = true;
@@ -67,7 +67,7 @@ var Trip;
         PlaceDialog.prototype.createAddressSearch = function (data) {
             var _this = this;
             var c = new Common.PlaceSearchConfig();
-            c.providers = "1,0";
+            c.providers = "1,0,4";
             c.elementId = "stayPlace";
             c.minCharsToSearch = 1;
             c.clearAfterSearch = false;

@@ -12,6 +12,11 @@ namespace Gloobster.Portal.Controllers
             var controller = (Controller)context.Controller;
             
             var loginJson = controller.Request.Cookies["loginCookie"];
+            if (loginJson.Count == 0)
+            {
+                context.HttpContext.Response.StatusCode = 401;
+                return;                
+            }
             var loginJsonObj = JsonConvert.DeserializeObject<dynamic>(loginJson);
 
             var authorizationToken = loginJsonObj.encodedToken.ToString();

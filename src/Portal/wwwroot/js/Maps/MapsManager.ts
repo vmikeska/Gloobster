@@ -12,7 +12,9 @@
 		public currentDataType: Maps.DataType;
 		public currentDisplayEntity: Maps.DisplayEntity;
 
-	  public onDataChanged: Function;
+		public onDataChanged: Function;
+
+	  public onCenterChanged: Function;
 
 		constructor() {
 			this.mapsDataLoader = new MapsDataLoader();
@@ -163,8 +165,14 @@
 
 		private init2D() {
 			this.currentMaps = new MapsCreatorMapBox2D();
-			this.currentMaps.setRootElement('map');
+			this.currentMaps.setRootElement("map");
 
+			this.currentMaps.onCenterChanged = (center) => {
+			 if (this.onCenterChanged) {
+				 this.onCenterChanged(center);
+			 }			 
+			};
+			
 			this.mapsDriver = new BaseMapsOperation2D();
 		}
 

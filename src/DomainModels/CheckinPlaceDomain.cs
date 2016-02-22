@@ -27,7 +27,8 @@ namespace Gloobster.DomainModels
 		public IFacebookService FBService { get; set; }
 		public IDbOperations DB { get; set; }
 		public IFoursquareService Service { get; set; }
-        
+        public IYelpSearchService YelpService { get; set; }
+
         public async Task<AddedPlacesResultDO> CheckinPlace(string sourceId, SourceType sourceType, string userId)
 		{
 			if (sourceType == SourceType.FB)
@@ -51,6 +52,11 @@ namespace Gloobster.DomainModels
 				var result = await AddFromFoursquare(sourceId, userId);
 				return result;
 			}
+            if (sourceType == SourceType.Yelp)
+            {
+                var result = await AddFromYelp(sourceId, userId);
+                return result;
+            }
 
 			return null;
 		}
@@ -77,7 +83,22 @@ namespace Gloobster.DomainModels
 			return result;
 		}
 
-		private async Task<AddedPlacesResultDO> AddFromFoursquare(string venueId, string userId)
+        private async Task<AddedPlacesResultDO> AddFromYelp(string businessId, string userId)
+        {
+            var business = await YelpService.GetById(businessId);
+            
+            var location = business.location;
+            if (location == null)
+            {
+                return null;
+            }
+
+            var latLng = new LatLng { Lat = location.coordinate.latitude, Lng = location.coordinate.longitude };
+            var result = await AddPlace(userId, businessId, SourceType.Yelp, business.location.city, business.location.country_code, latLng);
+            return result;
+        }
+
+        private async Task<AddedPlacesResultDO> AddFromFoursquare(string venueId, string userId)
 		{
 			Venue venue = Service.Client.GetVenue(venueId);
 

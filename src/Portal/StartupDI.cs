@@ -36,8 +36,8 @@ namespace Gloobster.Portal
 			builder.AddTransient<IUserService, UserService>();
 			builder.AddTransient<IAccountDriver, FacebookAccountDriver>().Keyed<IAccountDriver>("Facebook");
 			builder.AddTransient<IAccountDriver, TwitterAccountDriver>().Keyed<IAccountDriver>("Twitter");
-			builder.AddTransient<IAccountDriver, GoogleAccountDriver>().Keyed<IAccountDriver>("Google");
-			builder.AddTransient<IAccountDriver, AccountDriver>().Keyed<IAccountDriver>("Base");
+			builder.AddTransient<IAccountDriver, GoogleAccountDriver>().Keyed<IAccountDriver>("Google");            
+            builder.AddTransient<IAccountDriver, AccountDriver>().Keyed<IAccountDriver>("Base");
 
 			builder.AddTransient<IVisitedPlacesDomain, VisitedPlacesDomain>();
 			builder.AddTransient<IVisitedCitiesDomain, VisitedCitiesDomain>();
@@ -87,8 +87,11 @@ namespace Gloobster.Portal
 			builder.AddInstance2<ISearchProvider, CountrySearchProvider>().Keyed<ISearchProvider>(SourceType.Country);
 			builder.AddInstance2<ISearchProvider, FacebookSearchProvider>().Keyed<ISearchProvider>(SourceType.FB);
 			builder.AddInstance2<ISearchProvider, FoursquareSearchProvider>().Keyed<ISearchProvider>(SourceType.S4);
+            builder.AddInstance2<ISearchProvider, YelpSearchProvider>().Keyed<ISearchProvider>(SourceType.Yelp);
 
-			builder.AddTransient<ICheckinPlaceDomain, CheckinPlaceDomain>();
+            builder.AddInstance2<IYelpSearchService, YelpSearchService>();
+            
+            builder.AddTransient<ICheckinPlaceDomain, CheckinPlaceDomain>();
 			builder.AddTransient<IFacebookFriendsService, FacebookFriendsService>();
 
 			//builder.AddInstance<IGeoNamesService>(new GeoNamesService());

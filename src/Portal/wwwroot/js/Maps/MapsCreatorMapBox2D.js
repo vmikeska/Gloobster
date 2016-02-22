@@ -30,8 +30,15 @@ var Maps;
             });
         };
         MapsCreatorMapBox2D.prototype.loadMap = function () {
-            L.mapbox.accessToken = 'pk.eyJ1IjoiZ2xvb2JzdGVyIiwiYSI6ImQxZWY5MjRkZjU1NDk2MGU3OWI2OGRiM2U3NTM0MGYxIn0.nCG7hOsSQzb0c-_qzfTCRQ';
+            var _this = this;
+            L.mapbox.accessToken = "pk.eyJ1IjoiZ2xvb2JzdGVyIiwiYSI6ImQxZWY5MjRkZjU1NDk2MGU3OWI2OGRiM2U3NTM0MGYxIn0.nCG7hOsSQzb0c-_qzfTCRQ";
             this.mapObj = L.mapbox.map(this.rootElement, 'gloobster.afeef633', this.options);
+            this.mapObj.on("move", function (e) {
+                if (_this.onCenterChanged) {
+                    var c = _this.mapObj.getCenter();
+                    _this.onCenterChanged(c);
+                }
+            });
         };
         MapsCreatorMapBox2D.prototype.loadScript = function (scriptUrl, callback) {
             $.getScript(scriptUrl, function (data, textStatus, jqxhr) {

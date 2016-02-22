@@ -59,7 +59,7 @@ module Trip {
 
 		private createNameSearch(data) {
 		 var c = new Common.PlaceSearchConfig();
-			c.providers = "0,1,2,3";
+			c.providers = "0,1,2,3,4";
 			c.elementId = "cities";
 			c.minCharsToSearch = 1;
 			c.clearAfterSearch = false;
@@ -74,7 +74,7 @@ module Trip {
 
 		private createPlaceToVisitSearch(data) {
 		 var c = new Common.PlaceSearchConfig();
-			c.providers = "1,0";
+			c.providers = "1,0,4";
 			c.elementId = "placeToVisit";
 			c.minCharsToSearch = 1;
 			c.clearAfterSearch = true;
@@ -89,7 +89,7 @@ module Trip {
 
 		private createAddressSearch(data) {
 		 var c = new Common.PlaceSearchConfig();
-			c.providers = "1,0";
+			c.providers = "1,0,4";
 			c.elementId = "stayPlace";
 			c.minCharsToSearch = 1;
 			c.clearAfterSearch = false;

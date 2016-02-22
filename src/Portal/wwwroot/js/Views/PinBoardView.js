@@ -53,6 +53,9 @@ var Views;
             this.onLogin = function () {
                 _this.setInfo();
             };
+            this.mapsManager.onCenterChanged = function (center) {
+                _this.placeSearch.setCoordinates(center.lat, center.lng);
+            };
         };
         PinBoardView.prototype.setInfo = function () {
             var _this = this;
@@ -139,7 +142,7 @@ var Views;
         PinBoardView.prototype.initPlaceSearch = function () {
             var _this = this;
             var c = new Common.PlaceSearchConfig();
-            c.providers = "0,1,2,3";
+            c.providers = "0,1,2,3,4";
             c.elementId = "cities";
             c.minCharsToSearch = 1;
             c.clearAfterSearch = true;

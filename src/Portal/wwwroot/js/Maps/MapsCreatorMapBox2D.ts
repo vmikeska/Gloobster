@@ -38,10 +38,17 @@ module Maps {
 		}
 
 		private loadMap() {
-			L.mapbox.accessToken = 'pk.eyJ1IjoiZ2xvb2JzdGVyIiwiYSI6ImQxZWY5MjRkZjU1NDk2MGU3OWI2OGRiM2U3NTM0MGYxIn0.nCG7hOsSQzb0c-_qzfTCRQ';
-			this.mapObj = L.mapbox.map(this.rootElement, 'gloobster.afeef633', this.options);			
+			L.mapbox.accessToken = "pk.eyJ1IjoiZ2xvb2JzdGVyIiwiYSI6ImQxZWY5MjRkZjU1NDk2MGU3OWI2OGRiM2U3NTM0MGYxIn0.nCG7hOsSQzb0c-_qzfTCRQ";
+			this.mapObj = L.mapbox.map(this.rootElement, 'gloobster.afeef633', this.options);
+
+			this.mapObj.on("move", (e) => {
+				if (this.onCenterChanged) {
+					var c = this.mapObj.getCenter();
+					this.onCenterChanged(c);
+				}
+			});
 		}
-	 
+
 		private loadScript(scriptUrl: string, callback: Function) {
 			$.getScript(scriptUrl, (data, textStatus, jqxhr) => {
 				console.log("Loaded: " + scriptUrl);
@@ -52,5 +59,7 @@ module Maps {
 		public hide() {
 			this.mapObj.remove();
 		}
+
+		onCenterChanged: Function;
 	}
 }

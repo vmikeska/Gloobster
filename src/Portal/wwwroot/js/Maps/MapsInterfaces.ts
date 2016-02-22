@@ -74,7 +74,7 @@ module Maps {
 		getPosition();
 		getZoom();
 		drawPopUp(marker, city);
-		removePin(gid);
+		removePin(gid);	  
 	}
 	
 		export enum ViewType { D3, D2, D1 }
@@ -89,6 +89,8 @@ module Maps {
 			setRootElement(rootElement: string);
 			setMapType(mapType);
 			hide();
+
+			onCenterChanged: Function;
 		}				
 
 	export class PeopleSelection {

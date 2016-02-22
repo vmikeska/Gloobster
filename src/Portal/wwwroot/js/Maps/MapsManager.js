@@ -114,8 +114,14 @@ var Maps;
             this.mapsDriver = new Maps.BaseMapsOperation3D();
         };
         MapsManager.prototype.init2D = function () {
+            var _this = this;
             this.currentMaps = new Maps.MapsCreatorMapBox2D();
-            this.currentMaps.setRootElement('map');
+            this.currentMaps.setRootElement("map");
+            this.currentMaps.onCenterChanged = function (center) {
+                if (_this.onCenterChanged) {
+                    _this.onCenterChanged(center);
+                }
+            };
             this.mapsDriver = new Maps.BaseMapsOperation2D();
         };
         return MapsManager;
