@@ -33,7 +33,7 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 		}
 		
 		[HttpPost]
-		[AuthorizeAttributeApi]
+		[AuthorizeApi]
 		public async Task<IActionResult> Post([FromBody]CheckinRequest place)
 		{
 			var sourceType = (SourceType)place.SourceType;

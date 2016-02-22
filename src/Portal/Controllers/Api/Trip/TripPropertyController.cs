@@ -21,7 +21,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 		
 		
 		[HttpPut]
-		[AuthorizeAttributeApi]
+		[AuthorizeApi]
 		public async Task<IActionResult> Put([FromBody] PropertyUpdateRequest request)
 		{
 			var tripIdObj = new ObjectId(request.values["id"]);

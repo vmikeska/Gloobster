@@ -20,7 +20,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 		}
 
 		[HttpPut]
-		[AuthorizeAttributeApi]
+		[AuthorizeApi]
 		public async Task<IActionResult> Put([FromBody]ChangeInvitationStateRequest req)
 		{
 			//todo: check rights for this tripId

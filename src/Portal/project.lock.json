@@ -10415,6 +10415,8 @@
       "AutofacSerilogIntegration >= 1.0.10",
       "BlobFileSystem.Azure >= 0.0.7"
     ],
-    "DNX,Version=v4.5.1": []
+    "DNX,Version=v4.5.1": [
+      "fx/System.Drawing >= 4.0.0"
+    ]
   }
 }

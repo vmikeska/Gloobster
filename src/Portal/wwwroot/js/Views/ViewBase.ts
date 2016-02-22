@@ -39,29 +39,29 @@ module Views {
 			this.regUserMenu();
 		}
 
-	  private regUserMenu() {
-		 $("#userMenu li").click((e) => {
+		private regUserMenu() {
 
-			var value = $(e.target).data("value");
+			$("#userMenu input").change((e) => {
+				var value = $(e.target).val();
 
-			if (value === "logout") {
-			 this.loginManager.logout();
-			}
+				if (value === "logout") {
+					this.loginManager.logout();
+				}
 
-			if (value === "settings") {
-			 window.location.href = "/PortalUser/Settings";
-			}
+				if (value === "settings") {
+					window.location.href = "/PortalUser/Settings";
+				}
 
-			if (value === "notifications") {
-			 window.location.href = "/PortalUser/Notifications";
-			}
+				if (value === "notifications") {
+					window.location.href = "/PortalUser/Notifications";
+				}
 
-			if (value === "friends") {
-			 window.location.href = "/Friends/List";
-			}
-		 });
-	  }
-	  
+				if (value === "friends") {
+					window.location.href = "/Friends/List";
+				}
+			});
+		}
+
 		public hasSocNetwork(net: Reg.NetworkType) {
 		 var netTypesStr = this.cookieManager.getString(Constants.networkTypes);
 		 if (!netTypesStr) {
@@ -120,7 +120,7 @@ module Views {
 			var request = new Common.RequestSender(endpoint, null, true);
 			request.params = params;
 			request.onSuccess = callback;
-			request.onError = response => { alert('error') };
+			request.onError = response => { alert("error") };
 			request.sendGet();
 		}
 

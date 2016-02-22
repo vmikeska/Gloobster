@@ -23,7 +23,7 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
 		}
 		
 		[HttpPost]
-		[AuthorizeAttributeApi]
+		[AuthorizeApi]
 		public IActionResult Post([FromBody]MapShareRequest req)
 		{
 			//todo: check rights for this share

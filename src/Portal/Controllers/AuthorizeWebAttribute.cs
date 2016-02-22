@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Gloobster.Portal.Controllers
 {
-    public class AuthorizeAttributeWeb : ActionFilterAttribute
+    public class AuthorizeWebAttribute : ActionFilterAttribute
     {       
         public override void OnActionExecuting(ActionExecutingContext context)
         {

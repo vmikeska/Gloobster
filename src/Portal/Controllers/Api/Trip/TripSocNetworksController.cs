@@ -20,7 +20,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 		}
 
 		[HttpPost]
-		[AuthorizeAttributeApi]
+		[AuthorizeApi]
 		public IActionResult Post([FromBody]ShareRequest req)
 		{
 			//todo: check rights for this tripId

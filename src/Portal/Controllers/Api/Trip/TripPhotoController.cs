@@ -22,7 +22,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 		}
 
 		[HttpPost]
-		[AuthorizeAttributeApi]
+		[AuthorizeApi]
 		public IActionResult Post([FromBody] FileRequest request)
 		{
 			var fileLocation = "tpf";

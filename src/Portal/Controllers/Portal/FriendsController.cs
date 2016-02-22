@@ -21,7 +21,7 @@ namespace Gloobster.Portal.Controllers.Portal
 		{
 		}
 
-        [AuthorizeAttributeWeb]
+        [AuthorizeWeb]
 		public IActionResult List()
 		{
 			var viewModel = CreateViewModelInstance<ViewModelBase>();			

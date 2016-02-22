@@ -42,7 +42,7 @@ var Trip;
             var postDate = new Date(comment.postDate);
             comment["displayDate"] = postDate.getDate() + "." + postDate.getMonth() + "." + postDate.getFullYear() + " (" + postDate.getHours() + ":" + postDate.getMinutes() + ")";
             comment["displayName"] = user.displayName;
-            comment["photoUrl"] = "/PortalUser/ProfilePicture/" + user.id;
+            comment["photoUrl"] = "/PortalUser/ProfilePicture_s/" + user.id;
             comment["id"] = user.id;
             return comment;
         };

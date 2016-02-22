@@ -89,7 +89,7 @@ var FriendsView = (function (_super) {
         });
     };
     FriendsView.prototype.getItemHtml = function (item) {
-        var photoUrl = "/PortalUser/ProfilePicture/" + item.friendId;
+        var photoUrl = "/PortalUser/ProfilePicture_s/" + item.friendId;
         return "<li data-value=\"" + item.friendId + "\"><span class=\"thumbnail\"><img src=\"" + photoUrl + "\"></span>" + item.displayName + " <button class=\"requestButton\" data-value=\"" + item.friendId + "\">Request</button></li>";
     };
     FriendsView.prototype.requestUser = function (userId, places) {

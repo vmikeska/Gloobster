@@ -37,8 +37,8 @@ var Views;
         });
         ViewBase.prototype.regUserMenu = function () {
             var _this = this;
-            $("#userMenu li").click(function (e) {
-                var value = $(e.target).data("value");
+            $("#userMenu input").change(function (e) {
+                var value = $(e.target).val();
                 if (value === "logout") {
                     _this.loginManager.logout();
                 }
@@ -95,7 +95,7 @@ var Views;
             var request = new Common.RequestSender(endpoint, null, true);
             request.params = params;
             request.onSuccess = callback;
-            request.onError = function (response) { alert('error'); };
+            request.onError = function (response) { alert("error"); };
             request.sendGet();
         };
         ViewBase.prototype.apiPost = function (endpointName, data, callback) {

@@ -36,7 +36,7 @@ namespace Gloobster.Portal.Controllers.Portal
             return View(viewModel);
 		}
 
-        [AuthorizeAttributeApi]
+        [AuthorizeWeb]
 		public IActionResult Settings()
 		{
 			var viewModel = CreateViewModelInstance<SettingsViewModel>();
@@ -49,41 +49,61 @@ namespace Gloobster.Portal.Controllers.Portal
 			return View(viewModel);
 		}
 
-		public IActionResult ProfilePicture(string id = null)
-		{		    
-            var fileLocation = "avatars";
-
+	    private FileStreamResult GetProfilePicture(string id, string fileName)
+	    {
             PortalUserEntity portalUser;
-		    if (!string.IsNullOrEmpty(id))
-		    {
-		        portalUser = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == new ObjectId(id));
-		        if (portalUser == null)
-		        {
-                    return new ObjectResult("");
+            if (!string.IsNullOrEmpty(id))
+            {
+                portalUser = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == new ObjectId(id));
+                if (portalUser == null)
+                {
+                    return null;
                 }
-		    }
-		    else
-		    {
-		        portalUser = PortalUser;
-		    }         
-
+            }
+            else
+            {
+                portalUser = PortalUser;
+            }
+            
             if (portalUser.ProfileImage == null)
-			{             
-                return new ObjectResult("");
-			}
+            {
+                return null;
+            }
 
-			var filePath = FileDomain.Storage.Combine(fileLocation, portalUser.ProfileImage);            
-            bool exists = FileDomain.Storage.FileExists(filePath);            
+            var fileLocation = FileDomain.Storage.Combine("avatars", portalUser.id.ToString());
+
+            var filePath = FileDomain.Storage.Combine(fileLocation, fileName);
+            bool exists = FileDomain.Storage.FileExists(filePath);
             if (exists)
-			{
-				var fileStream = FileDomain.GetFile(fileLocation, portalUser.ProfileImage);                
+            {
+                var fileStream = FileDomain.GetFile(fileLocation, fileName);
                 return new FileStreamResult(fileStream, "image/jpeg");
-			}
+            }
 
-			return new ObjectResult("");
+            return null;
+        }
+
+
+
+		public IActionResult ProfilePicture(string id = null)
+		{
+		    var pic = GetProfilePicture(id, "profile.jpg");
+			return pic;
 		}
-	
-		public async Task<IActionResult> Notifications()
+
+        public IActionResult ProfilePicture_s(string id = null)
+        {
+            var pic = GetProfilePicture(id, "profile_s.jpg");
+            return pic;
+        }
+
+        public IActionResult ProfilePicture_xs(string id = null)
+        {
+            var pic = GetProfilePicture(id, "profile_xs.jpg");
+            return pic;
+        }
+        
+        public async Task<IActionResult> Notifications()
 		{
             await NotificationsDomain.SetAllNotificationsToSeen(UserId);
 

@@ -26,7 +26,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 		}
 
 		[HttpGet]
-		[AuthorizeAttributeApi]
+		[AuthorizeApi]
 		public IActionResult Get(DialogRequest request)
 		{
 			object objToReturn = null;
@@ -78,7 +78,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 		}
 
 		[HttpPut]
-		[AuthorizeAttributeApi]
+		[AuthorizeApi]
 		public async Task<IActionResult> Put([FromBody] PropertyUpdateRequest request)
 		{
 			var tripId = request.values["tripId"];

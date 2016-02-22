@@ -20,7 +20,7 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 
 
 		[HttpGet]
-		[AuthorizeAttributeApi]
+		[AuthorizeApi]
 		public IActionResult Get(AirportTaggerRequest req)
 		{
 			if (string.IsNullOrEmpty(req.query))

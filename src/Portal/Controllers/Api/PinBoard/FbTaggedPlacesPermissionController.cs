@@ -27,7 +27,7 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
         }
 		
 		[HttpPost]
-		[AuthorizeAttributeApi]
+		[AuthorizeApi]
 		public async Task<IActionResult> Post()
 		{
             PlacesExtractor.Driver = ComponentContext.ResolveKeyed<IPlacesExtractorDriver>("Facebook");

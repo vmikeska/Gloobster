@@ -18,7 +18,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
         }
 
         [HttpPut]
-        [AuthorizeAttributeApi]
+        [AuthorizeApi]
         public async Task<IActionResult> Put([FromBody]IsAdminRequest request)
         {
             //todo: check rights for this tripId

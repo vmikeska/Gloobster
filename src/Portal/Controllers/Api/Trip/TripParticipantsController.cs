@@ -23,7 +23,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 		}
 
         [HttpDelete]
-        [AuthorizeAttributeApi]
+        [AuthorizeApi]
         public async Task<IActionResult> Delete(string tripId, string id)
         {
             //todo: check rights for this tripId
@@ -34,7 +34,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
         }
 
         [HttpPost]
-		[AuthorizeAttributeApi]
+		[AuthorizeApi]
 		public async Task<IActionResult> Post([FromBody]InviteRequest request)
 		{
 			

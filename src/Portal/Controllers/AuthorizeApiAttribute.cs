@@ -8,11 +8,11 @@ using Newtonsoft.Json;
 
 namespace Gloobster.Portal.Controllers
 {
-    public class AuthorizeAttributeApi : ActionFilterAttribute
+    public class AuthorizeApiAttribute : ActionFilterAttribute
 	{
         public bool ExplicitAuth { get; set; }
         
-        public AuthorizeAttributeApi(bool explicitAuth = false)
+        public AuthorizeApiAttribute(bool explicitAuth = false)
         {
             ExplicitAuth = explicitAuth;
         }

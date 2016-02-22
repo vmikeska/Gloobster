@@ -29,7 +29,7 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
 
 
         [HttpGet]
-		[AuthorizeAttributeApi(true)]
+		[AuthorizeApi(true)]
 		public IActionResult Get(PinBoardStatRequest request)
 		{
 		    PinBoardStatResponse result;

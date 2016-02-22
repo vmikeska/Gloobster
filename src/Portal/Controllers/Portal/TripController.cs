@@ -225,7 +225,7 @@ namespace Gloobster.Portal.Controllers.Portal
             var prtcs = participantUsers.Select(p => new TripParticipantViewModel
             {
                 DisplayName = p.DisplayName,
-                PhotoUrl = "/PortalUser/ProfilePicture/" + p.id
+                PhotoUrl = "/PortalUser/ProfilePicture_s/" + p.id
             }).ToList();
 
 	        return prtcs;

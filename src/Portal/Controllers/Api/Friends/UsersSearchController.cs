@@ -19,7 +19,7 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 		}
 
 		[HttpGet]
-		[AuthorizeAttributeApi]
+		[AuthorizeApi]
 		public IActionResult Get(string searchQuery)
 		{
 		    var q = searchQuery.ToLower();

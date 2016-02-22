@@ -31,7 +31,7 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
 
 
 		[HttpDelete]
-		[AuthorizeAttributeApi]
+		[AuthorizeApi]
 		public async Task<IActionResult> Delete(int gid)
 		{
             var resp = new RemovedCityResponse

@@ -1,5 +1,5 @@
 ﻿module Views {
-	export class SettingsView extends Views.ViewBase {
+	export class SettingsView extends ViewBase {
 
 		constructor() {
 			super();
