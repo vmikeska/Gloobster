@@ -8,6 +8,8 @@
 			{ type: SocialNetworkType.Twitter, iconName: "twitter" }
 		];
 
+		private activeTag = '<span class="icon-visited"></span>';
+
 		constructor($owner) {
 			this.$owner = $owner;
 
@@ -43,7 +45,7 @@
 			var pos = isFirst ? "" : " mleft10";			
 			var soc = this.getByType(type);
 
-			var $itemDiv = $(`<div data-t="${type}" class="icon-holder minus"><img class="opacity5 middle${pos}" src="../../images/share-${soc.iconName}.png"></div>`);
+			var $itemDiv = $(`<div data-t="${type}" class="icon-holder minus"><img class="opacity5 middle${pos}" src="../../images/share-${soc.iconName}.png">${this.activeTag}</div>`);
 		 
 			$itemDiv.click((e) => {			 
 			 var active = this.isActive($itemDiv);
@@ -51,7 +53,7 @@
 				 var span = $itemDiv.find(".icon-visited");
 					span.remove();
 				} else {
-				 $itemDiv.append('<span class="icon-visited"></span>');
+				 $itemDiv.append(this.activeTag);
 				}
 			});
 

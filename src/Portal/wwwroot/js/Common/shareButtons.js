@@ -6,6 +6,7 @@ var Common;
                 { type: SocialNetworkType.Facebook, iconName: "facebook" },
                 { type: SocialNetworkType.Twitter, iconName: "twitter" }
             ];
+            this.activeTag = '<span class="icon-visited"></span>';
             this.$owner = $owner;
             this.createHtml();
         }
@@ -36,7 +37,7 @@ var Common;
             var _this = this;
             var pos = isFirst ? "" : " mleft10";
             var soc = this.getByType(type);
-            var $itemDiv = $("<div data-t=\"" + type + "\" class=\"icon-holder minus\"><img class=\"opacity5 middle" + pos + "\" src=\"../../images/share-" + soc.iconName + ".png\"></div>");
+            var $itemDiv = $("<div data-t=\"" + type + "\" class=\"icon-holder minus\"><img class=\"opacity5 middle" + pos + "\" src=\"../../images/share-" + soc.iconName + ".png\">" + this.activeTag + "</div>");
             $itemDiv.click(function (e) {
                 var active = _this.isActive($itemDiv);
                 if (active) {
@@ -44,7 +45,7 @@ var Common;
                     span.remove();
                 }
                 else {
-                    $itemDiv.append('<span class="icon-visited"></span>');
+                    $itemDiv.append(_this.activeTag);
                 }
             });
             return $itemDiv;

@@ -84,33 +84,41 @@
 
 <!-- MapBox -->
 <section class="wrapper margin3">
-<div class="table row col2 margin">
-    <div class="cell">
-        <div class="table row">
-            <div class="cell middle">
-                <h2>Pin Board</h2>
-            </div>
-            <div class="cell middle">
-                <div id="mapType" class="dropdown">
-                    <span class="selected">2D map</span>
-                    <ul>
-                        <li data-value="1">2D map</li>
-                        <li data-value="0">3D map</li>
-                    </ul>
-                    <input id="mapTypeValue" type="hidden" value="1">
+    <div class="table row col2 margin">
+        <div class="cell">
+            <div class="table row">
+                <div class="cell middle">
+                    <h2>Pin Board</h2>
+                </div>
+                <div class="cell middle">
+                    <div id="mapType" class="dropdown">
+                        <span class="selected">2D map</span>
+                        <ul>
+                            <li data-value="1">2D map</li>
+                            <li data-value="0">3D map</li>
+                        </ul>
+                        <input id="mapTypeValue" type="hidden" value="1">
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="cell middle tright">
+            <a class="icon-share textnohide noneline strong popup2-target" data-target="#popup-share" href="#">Share map</a>            
+        </div>
     </div>
-    <div class="cell middle tright">
-        @*<a class="noneline strong" href="#">Invite Friends</a>
-			&nbsp;
-			<span class="color2">&bull;</span>
-			&nbsp;*@
-        @*<a class="button share popup-target" data-target="#popup-share" href="#">Share trip</a>*@
-        <a id="shareMap" class="noneline strong popup-target" data-target="#popup-share" href="#">Share map</a>
+    <div class="popup2 margin" id="popup-share">
+        <h3><span class="slim">Share</span> My Euro Trip</h3>
+        <textarea id="message" class="margin" placeholder="Message..."></textarea>
+        <span class="color1 mright20"><strong>Share on social media</strong></span>
+        <div class="table width100">
+            <div id="shareCont" class="cell middle">               
+            </div>
+            <div class="cell middle tright">
+                <a id="share" class="button" href="#">Share</a>
+            </div>
+        </div>
+        <a class="close" href="#">Close</a>
     </div>
-</div>
 
 <div id="taggedPlacesPerm" class="table row col2 margin" style="border-top: 1px solid black; border-bottom: 1px solid black; padding: 3px; display: none;">
     <div class="cell margin3">
@@ -195,6 +203,3 @@
 
     <div id="bdgs"></div>
 </section>
-
-
-@Html.Partial("ShareDialogPins")
