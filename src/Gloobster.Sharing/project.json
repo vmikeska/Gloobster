@@ -12,7 +12,7 @@
     "Common": "1.0.0-*",
     "DomainModelsCommon": "1.0.0-*",
     "Facebook": "7.0.6",
-    "MongoDB.Driver": "2.2.0-rc0",
+    "MongoDB.Driver": "2.2.3",
     "TweetSharp": "2.3.1"
   }
 }

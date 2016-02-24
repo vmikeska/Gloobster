@@ -32,19 +32,16 @@ var Views;
                 $("#progressBar").text(percent);
             };
             fileUpload.onUploadFinished = function (file) {
-                var fileReader = new FileReader();
-                fileReader.onload = function (evnt) {
-                    var base64Img = evnt.target["result"];
-                    $("#avatar").attr("src", base64Img);
-                };
-                fileReader.readAsDataURL(file);
+                var d = new Date();
+                $("#avatar").attr("src", "/PortalUser/ProfilePicture?d=" + d.getTime());
             };
         };
         SettingsView.prototype.registerGenderCombo = function () {
             var _this = this;
             var $root = $("#gender");
-            $root.find("li").click(function (evnt) {
-                var gender = $(evnt.target).data("value");
+            var $val = $root.find("input");
+            $val.change(function (e) {
+                var gender = $val.val();
                 var data = { propertyName: "Gender", values: { gender: gender } };
                 _this.apiPut("UserProperty", data, function () {
                     //alert("updated");

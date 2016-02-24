@@ -9,6 +9,31 @@
     font-weight: bold;
 }
 
+.avatar {
+    width: 240px;
+    height: 240px;
+    border:1px solid black;
+}
+
+.avatarFile input
+{
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.avatarFile label {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.controls {
+    margin-top: 15px;
+}
+
 </style>
 
 <div class="blue-line margin2"></div>
@@ -26,16 +51,19 @@
 
     </div>
 
-    <table>
-        <tr>
-            <td colspan="2">
-                <img id="avatar" src="@Model.AvatarLink" style="width: 240px; height: 240px" />
-                <br />
-                <input type="file" id="avatarFile" />
-                <br />
-                <span id="progressBar" style="font-size: 20px; font-weight: bold">0</span>%
-            </td>
-        </tr>
+    <div>
+        <img id="avatar" class="avatar" src="@Model.AvatarLink" />
+        <br />
+        <a class="button avatarFile" href="#">
+            <input type="file" id="avatarFile" />
+
+            <label for="avatarFile">
+                <span>Change photo</span>
+            </label>
+        </a>
+    </div>
+
+    <table class="controls">       
         <tr>
             <td>
                 <span class="titleName">Display name</span>

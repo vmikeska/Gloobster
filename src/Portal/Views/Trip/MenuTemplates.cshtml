@@ -1,0 +1,134 @@
+﻿<script id="participants-template" type="text/x-handlebars-template">
+  
+    <div class="popup2 with-padding-right margin" id="popup-participants">
+        <div class="table width100">
+            <div class="cell popcont-holder">
+                <h3 class="slim">Participants</h3>
+                Everbody who is invited into the trip will be able to see all information (except private files). Who has "Can edit" permission can on top of that edit all information.
+            </div>
+            <div class="cell middle">
+                <div class="color1">Share with friends</div>
+                <div id="participantsTable" class="share-friends">
+                  
+                    <div class="line">
+                        <div class="cell">                  
+                            <div id="friends" class="dropdown gray">
+                                <input class="inputed" type="text" placeholder="Friend name...">
+                                <ul>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="cell color1">
+                            @*<input id="checkbox4" type="checkbox"><label for="checkbox4"><span>Can edit</span></label>*@
+                        </div>
+                        <div class="cell"></div>
+                        <div class="cell"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <a class="close" href="#">Close</a>
+    </div>
+    
+</script>
+
+<script id="participant-template" type="text/x-handlebars-template">
+    
+    <div class="line" id="{{id}}">
+        <div class="cell"><span class="thumbnail"><img src="/PortalUser/ProfilePicture_xs/{{id}}"></span>{{name}}</div>
+        <div class="cell color1 nowrap"><input id="isAdmin{{id}}" class="isAdmin" data-id="{{id}}" type="checkbox" {{checked}}><label for="isAdmin{{id}}"><span>Can edit</span></label></div>
+        <div class="cell small color1">State: {{state}}</div>
+        <div class="cell"><a class="delete del" data-id="{{id}}" href="#"></a></div>
+    </div>
+
+</script>
+
+<script id="menuPrivacy-template" type="text/x-handlebars-template">
+   
+    <div class="popup2 with-padding-right margin" id="popup-privacy">
+        <div class="table width100">
+            <div class="cell popcont-holder with-line">
+                <h3 class="slim">Privacy Settings</h3>
+                Set privacy of your trip. In participants menu you can select admins of the trip.
+            </div>
+            <div class="cell middle">
+                <input type="checkbox" id="friendsPublic" checked>
+                <!--<label for="privacy1" class="h4">Any friend can access basic trip info</label>-->
+                <label for="friendsPublic">Friends can see basic info of the trip, even they are not invited</label>
+                <br>
+                <input type="checkbox" id="allowRequestJoin">
+                <!--<label for="privacy2" class="h4">Friend can request participation</label>-->
+                <label for="allowRequestJoin">Friends can request to join</label>
+            </div>
+        </div>
+        <a class="close" href="#">Close</a>
+    </div>
+
+</script>
+
+<script id="menuShare-template" type="text/x-handlebars-template">
+    
+    @*<div style="border: 1px solid red">
+        Share your trip to social networks and make your friends aware of your trip. This will not give anybody permission to manipulate with your trip, or see your sensitive data. Just basic trip overview will be displayed.
+    </div>
+    
+    <style>
+        img.active {
+            border: 2px solid green;
+        }
+    </style>
+
+    <div>
+        <textarea id="message" class="margin right" placeholder="Message..."></textarea>
+
+        <div id="shareCont" class="right">
+            <a id="share" class="button right" href="#">Share</a>
+        </div>
+    </div>*@
+    
+    <div class="popup2 with-padding-right" id="popup-share">
+        <div class="table width100">
+            <div class="cell popcont-holder with-line">
+                <h3 class="slim">Share Trip</h3>
+                Share your trip to social networks and make your friends aware of your trip. This will not give anybody permission to manipulate with your trip, or see your sensitive data. Just basic trip overview will be displayed.
+            </div>
+            <div class="cell">
+                <textarea id="message" class="margin" placeholder="Message..."></textarea>
+                <div class="table width100">
+                    <div class="cell middle">
+                        <div class="table">
+                            <div class="cell middle">
+                                <span class="color1 mright20">Share on<br> social media</span>
+                            </div>
+                            <div id="shareCont" class="cell middle">
+                                @*<div class="icon-holder minus">
+                                    <img class="opacity5 middle" src="images/share-facebook.png">
+                                    <span class="icon-visited"></span>
+                                </div>
+                                <div class="icon-holder minus">
+                                    <img class="opacity5 middle mleft10" src="images/share-foursquare.png">
+                                    <span class="icon-visited"></span>
+                                </div>
+                                <div class="icon-holder minus">
+                                    <img class="opacity5 middle mleft10" src="images/share-twitter.png">
+                                    <span class="icon-visited"></span>
+                                </div>
+                                <div class="icon-holder minus">
+                                    <img class="opacity5 middle mleft10" src="images/share-google.png">
+                                    <span class="icon-visited"></span>
+                                </div>*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cell middle tright">
+                        <a id="share" class="button" href="#">Share</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a class="close" href="#">Close</a>
+    </div>
+    
+</script>
+

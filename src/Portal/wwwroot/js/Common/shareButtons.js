@@ -1,53 +1,57 @@
 var Common;
 (function (Common) {
     var ShareButtons = (function () {
-        function ShareButtons($owner, text) {
+        function ShareButtons($owner) {
             this.socNetworks = [
                 { type: SocialNetworkType.Facebook, iconName: "facebook" },
                 { type: SocialNetworkType.Twitter, iconName: "twitter" }
             ];
             this.$owner = $owner;
-            this.createHtml(text);
+            this.createHtml();
         }
         ShareButtons.prototype.getSelectedNetworks = function () {
+            var _this = this;
             var selected = [];
-            this.$owner.find("img").toArray().forEach(function (i) {
-                var $i = $(i);
-                if ($i.hasClass("active")) {
-                    selected.push(parseInt($i.data("t")));
+            this.$owner.find("div").toArray().forEach(function (div) {
+                var $div = $(div);
+                if (_this.isActive($div)) {
+                    selected.push(parseInt($div.data("t")));
                 }
             });
             return selected;
         };
-        ShareButtons.prototype.createHtml = function (text) {
+        ShareButtons.prototype.createHtml = function () {
             var _this = this;
-            var $p = $("<p class=\"color1\">" + text + "<br/></p>");
             var isFirst = true;
             this.socNetworks.forEach(function (net) {
-                var $img = _this.getItemHtml(isFirst, true, net.type);
-                $p.append($img);
+                var $div = _this.getItemHtml(isFirst, true, net.type);
+                _this.$owner.append($div);
                 isFirst = false;
             });
-            this.$owner.prepend($p);
         };
         ShareButtons.prototype.getByType = function (type) {
             return _.find(this.socNetworks, function (net) { return net.type === type; });
         };
         ShareButtons.prototype.getItemHtml = function (isFirst, active, type) {
+            var _this = this;
             var pos = isFirst ? "" : " mleft10";
-            var act = active ? "active " : "";
             var soc = this.getByType(type);
-            var $img = $("<img data-t=\"" + type + "\" class=\"" + act + "opacity5 middle" + pos + "\" src= \"../../images/share/share-" + soc.iconName + ".png\">");
-            $img.click(function (e) {
-                var active = $img.hasClass("active");
+            var $itemDiv = $("<div data-t=\"" + type + "\" class=\"icon-holder minus\"><img class=\"opacity5 middle" + pos + "\" src=\"../../images/share-" + soc.iconName + ".png\"></div>");
+            $itemDiv.click(function (e) {
+                var active = _this.isActive($itemDiv);
                 if (active) {
-                    $img.removeClass("active");
+                    var span = $itemDiv.find(".icon-visited");
+                    span.remove();
                 }
                 else {
-                    $img.addClass("active");
+                    $itemDiv.append('<span class="icon-visited"></span>');
                 }
             });
-            return $img;
+            return $itemDiv;
+        };
+        ShareButtons.prototype.isActive = function ($div) {
+            var visitedSpan = $div.find(".icon-visited");
+            return visitedSpan.length === 1;
         };
         return ShareButtons;
     })();

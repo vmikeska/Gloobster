@@ -13,7 +13,7 @@
     "Facebook": "7.0.6",
     "System.Net.Http": "4.0.0.0",
     "TweetSharp": "2.3.1",
-    "MongoDB.Driver": "2.2.0-rc0",
+    "MongoDB.Driver": "2.2.3",
     "Autofac": "4.0.0-rc1-177",
     "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-177",
     "Gloobster.Sharing": "1.0.0-*",

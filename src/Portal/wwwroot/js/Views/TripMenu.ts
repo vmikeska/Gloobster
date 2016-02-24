@@ -22,16 +22,7 @@ module Views {
 			this.participantsTemplate = ViewBase.currentView.registerTemplate("participants-template");		
 			this.participantTemplate = ViewBase.currentView.registerTemplate("participant-template");
 		}
-
-		private registerEvents() {
-			var btns = $(".tripMenuButton");
-			btns.click((e) => {
-				var $btn = $(e.target);
-				var tmp = $btn.data("tmp");
-				this.displayContent(tmp);
-			});
-		}
-
+	 
 		private setCode(code) {		 
 			var text = "";
 			if (code) {
@@ -68,7 +59,7 @@ module Views {
 		private createShareContent() {
 			var $html = $(this.shareTemplate());
 
-			var shareButtons = new Common.ShareButtons($html.find("#shareCont"), "Share on social media");
+			var shareButtons = new Common.ShareButtons($html.find("#shareCont"));
 			$html.find("#share").click(() => {
 				var networks = shareButtons.getSelectedNetworks();
 
@@ -166,7 +157,7 @@ module Views {
 				});
 			});
 
-			$table.append($html);
+			$table.prepend($html);
 		}
 
 		private getTextState(state: ParticipantState) {
@@ -198,8 +189,17 @@ module Views {
 			trip.participants.push(part);
 		}
 
+		private registerEvents() {
+		 var btns = $(".tripMenuButton");
+		 btns.click((e) => {
+			var $btn = $(e.target);
+			var tmp = $btn.data("tmp");
+			this.displayContent(tmp);
+		 });
+		}
+
 		public displayContent(tmp) {
-			this.container.toggle();
+			this.container.show();
 			var trip = ViewBase.currentView["trip"];
 			
 			if (tmp === "menuPrivacy-template") {
@@ -213,7 +213,6 @@ module Views {
 			if (tmp === "participants-template") {
 				this.createParticipantsContent(trip);			 
 			}
-		 
 		}
 
 	}

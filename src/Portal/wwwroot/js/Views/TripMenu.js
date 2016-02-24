@@ -12,15 +12,6 @@ var Views;
             this.participantsTemplate = Views.ViewBase.currentView.registerTemplate("participants-template");
             this.participantTemplate = Views.ViewBase.currentView.registerTemplate("participant-template");
         };
-        TripMenu.prototype.registerEvents = function () {
-            var _this = this;
-            var btns = $(".tripMenuButton");
-            btns.click(function (e) {
-                var $btn = $(e.target);
-                var tmp = $btn.data("tmp");
-                _this.displayContent(tmp);
-            });
-        };
         TripMenu.prototype.setCode = function (code) {
             var text = "";
             if (code) {
@@ -51,7 +42,7 @@ var Views;
         TripMenu.prototype.createShareContent = function () {
             var _this = this;
             var $html = $(this.shareTemplate());
-            var shareButtons = new Common.ShareButtons($html.find("#shareCont"), "Share on social media");
+            var shareButtons = new Common.ShareButtons($html.find("#shareCont"));
             $html.find("#share").click(function () {
                 var networks = shareButtons.getSelectedNetworks();
                 var data = {
@@ -134,7 +125,7 @@ var Views;
                     par.isAdmin = isAdmin;
                 });
             });
-            $table.append($html);
+            $table.prepend($html);
         };
         TripMenu.prototype.getTextState = function (state) {
             if (state === ParticipantState.Invited) {
@@ -161,8 +152,17 @@ var Views;
             };
             trip.participants.push(part);
         };
+        TripMenu.prototype.registerEvents = function () {
+            var _this = this;
+            var btns = $(".tripMenuButton");
+            btns.click(function (e) {
+                var $btn = $(e.target);
+                var tmp = $btn.data("tmp");
+                _this.displayContent(tmp);
+            });
+        };
         TripMenu.prototype.displayContent = function (tmp) {
-            this.container.toggle();
+            this.container.show();
             var trip = Views.ViewBase.currentView["trip"];
             if (tmp === "menuPrivacy-template") {
                 this.createPrivacyContent(trip);

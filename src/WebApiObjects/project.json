@@ -8,7 +8,7 @@
 
   "dependencies": {
     "Common": "1.0.0-*",
-    "MongoDB.Driver": "2.2.0-rc0"
+    "MongoDB.Driver": "2.2.3"
   },
 
   "frameworks": {

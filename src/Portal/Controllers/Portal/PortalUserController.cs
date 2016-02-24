@@ -82,10 +82,8 @@ namespace Gloobster.Portal.Controllers.Portal
 
             return null;
         }
-
-
-
-		public IActionResult ProfilePicture(string id = null)
+        
+        public IActionResult ProfilePicture(string id = null)
 		{
 		    var pic = GetProfilePicture(id, "profile.jpg");
 			return pic;

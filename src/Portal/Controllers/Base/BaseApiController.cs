@@ -22,14 +22,14 @@ namespace Gloobster.Portal.Controllers.Base
 
 		public string UserId { get; set; }
 
-        public ObjectId? UserIdObj
+        public ObjectId UserIdObj
         {
             get
             {
-                if (string.IsNullOrEmpty(UserId))
-                {
-                    return null;
-                }
+                //if (string.IsNullOrEmpty(UserId))
+                //{
+                //    return null;
+                //}
                 return new ObjectId(UserId);
             }
         }

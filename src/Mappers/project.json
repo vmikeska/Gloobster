@@ -12,7 +12,7 @@
     "WebApiObjects": "1.0.0-*",
     "SocialLogin": "1.0.0-*",
     "TweetSharp": "2.3.1",
-    "MongoDB.Driver": "2.2.0-rc0",
+    "MongoDB.Driver": "2.2.3",
     "Entities": "1.0.0-*",
     "ReqRes": "1.0.0-*"
   },

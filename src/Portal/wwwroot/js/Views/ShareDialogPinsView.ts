@@ -6,7 +6,7 @@
 
 		constructor() {
 			this.$dialog = $("#popup-share");
-			this.shareButtons = new Common.ShareButtons($("#shareCont"), "Share on social media");
+			this.shareButtons = new Common.ShareButtons($("#shareCont"));
 			$("#share").click(() => this.share());
 		}
 

@@ -8,34 +8,31 @@
 			{ type: SocialNetworkType.Twitter, iconName: "twitter" }
 		];
 
-		constructor($owner, text) {
+		constructor($owner) {
 			this.$owner = $owner;
 
-		  this.createHtml(text);
+		  this.createHtml();
 		}
 
 
 		public getSelectedNetworks() {
 			var selected = [];
-			this.$owner.find("img").toArray().forEach((i) => {
-				var $i = $(i);
-				if ($i.hasClass("active")) {
-					selected.push(parseInt($i.data("t")));
+			this.$owner.find("div").toArray().forEach((div) => {
+				var $div = $(div);
+				if (this.isActive($div)) {
+					selected.push(parseInt($div.data("t")));
 				}
 			});
 			return selected;
 		}
 
-		private createHtml(text) {
-			var $p = $(`<p class="color1">${text}<br/></p>`);
+		private createHtml() {						
 			var isFirst = true;
 			this.socNetworks.forEach((net) => {
-				var $img = this.getItemHtml(isFirst, true, net.type);
-				$p.append($img);
+				var $div = this.getItemHtml(isFirst, true, net.type);
+				this.$owner.append($div);
 				isFirst = false;
-			});
-
-			this.$owner.prepend($p);
+			});		 
 		}
 
 		private getByType(type: SocialNetworkType) {
@@ -43,20 +40,27 @@
 		}
 
 		private getItemHtml(isFirst: boolean, active: boolean, type: SocialNetworkType) {
-			var pos = isFirst ? "" : " mleft10";
-			var act = active ? "active " : "";
+			var pos = isFirst ? "" : " mleft10";			
 			var soc = this.getByType(type);
-			var $img = $(`<img data-t="${type}" class="${act}opacity5 middle${pos}" src= "../../images/share/share-${soc.iconName}.png">`);
 
-			$img.click((e) => {
-				var active = $img.hasClass("active");
+			var $itemDiv = $(`<div data-t="${type}" class="icon-holder minus"><img class="opacity5 middle${pos}" src="../../images/share-${soc.iconName}.png"></div>`);
+		 
+			$itemDiv.click((e) => {			 
+			 var active = this.isActive($itemDiv);
 				if (active) {
-					$img.removeClass("active");
+				 var span = $itemDiv.find(".icon-visited");
+					span.remove();
 				} else {
-					$img.addClass("active");
+				 $itemDiv.append('<span class="icon-visited"></span>');
 				}
 			});
-			return $img;
+
+			return $itemDiv;
+		}
+
+		private isActive($div) {
+			var visitedSpan = $div.find(".icon-visited");
+			return visitedSpan.length === 1;
 		}
 
 	}

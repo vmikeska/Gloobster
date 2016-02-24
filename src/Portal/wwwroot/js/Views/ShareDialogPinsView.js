@@ -4,7 +4,7 @@ var Views;
         function ShareDialogPinsView() {
             var _this = this;
             this.$dialog = $("#popup-share");
-            this.shareButtons = new Common.ShareButtons($("#shareCont"), "Share on social media");
+            this.shareButtons = new Common.ShareButtons($("#shareCont"));
             $("#share").click(function () { return _this.share(); });
         }
         ShareDialogPinsView.prototype.share = function () {

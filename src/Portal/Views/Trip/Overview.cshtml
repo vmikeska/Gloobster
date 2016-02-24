@@ -40,94 +40,102 @@
     .noFiles {
         word-spacing: 0;
     }
-</style>
 
-<section id="bckPhoto" class="adventure-background line margin padding">
-	<div class="wrapper">
-		<div class="table margin width100">
-			<div class="cell middle">
-				<h1 class="margin0">@Model.Name</h1>
-			</div>
-			<div class="cell middle tright">
-				<strong>By</strong> @Model.OwnerDisplayName
-				<span class="thumbnail disc60 middle mleft10">
-					<img src="/PortalUser/ProfilePicture_s/@Model.OwnerId">
-				</span>
-			</div>
-		</div>
-		<p class="h4">@Model.Description</p>
-		<h3>Day by Day Plan</h3>
-		<div id="plannerCont1" class="daybyday table margin">
-		</div>
-
-	    <div class="adventure-buttons">
-
-	        @*<a class="button accept" href="#"><span class="icon-visited middle mright5"></span> Accept invite</a>*@
-
-	        
-
-	        @if (Model.IsUserAdmin)
-            {
-                <a class="button share photoButton" href="#">
-                    <input id="photoInput" type="file" />
-
-                    <label for="photoInput">
-                        Add title photo
-                    </label>
-                </a>
-
-                <a data-tmp="menuPrivacy-template" class="button share tripMenuButton" href="#">Set privacy</a>
-                <a data-tmp="menuShare-template" class="button share tripMenuButton" href="#">Share trip</a>
-                <a data-tmp="participants-template" class="button share tripMenuButton" href="#">Participants</a>	            
-	            <a class="button share" href="/Trip/Detail/@Model.TripId">Edit trip</a>
-	        }
-
-	        @if (!Model.IsOwner)
-	        {
-	            <div id="invitationState" class="dropdown" style="display: none;">
-	                <span class="selected"></span>
-	                <ul>
-	                    <li data-value="0" style="display: none;"><span class="icon-visited middle mright5"></span> Invited</li>
-	                    <li data-value="1"><span class="icon-visited middle mright5"></span> Accepted</li>
-	                    <li data-value="2"><span class="icon-visited middle mright5"></span> Maybe</li>
-	                    <li data-value="3"><span class="icon-visited middle mright5"></span> Refused</li>
-	                </ul>
-	                <input type="hidden">
-	            </div>
-	        }
-	    </div>
-
-	    <div class="menuItemContent" style="display: none;">
-	        
-	    </div>
-
-	</div>
-</section>
-
-<style>
-    
     .menuItemContent {
-        position: absolute;
+        /*position: absolute;
         top: -155px;
         right: 0;
         width: 980px;
         height: 150px;
         background: rgba(255, 255, 255, 0.9);
         border-bottom-left-radius: 4px;
-        border-bottom-right-radius: 4px;
+        border-bottom-right-radius: 4px;*/
     }
+</style>
 
-     #bckPhoto {    
+<style>
+     #bckPhoto {
          @if (Model.Photo != null)
         {
             @Html.Raw($"background: transparent url('../../Trip/TripPicture/{Model.TripId}') center top no-repeat")
         }
         else
         {
-            @Html.Raw("background: transparent url('../../images/samples/sample13.jpg') center top no-repeat")        
+            @Html.Raw("background: transparent url('../../images/samples/sample13.jpg') center top no-repeat")
         }
      }
 </style>
+
+
+<section id="bckPhoto" class="adventure-background line margin padding">
+    <div class="wrapper with-subnav">
+        <div class="subnav-holder margin">
+            <div class="table width100">
+                <div class="cell">
+                    @if (Model.IsUserAdmin) {
+                        <a class="button blue-trans photoButton" href="#">
+                            <input id="photoInput" type="file"/>
+                            <label for="photoInput">
+                                <span class="icon-photo middle mright5"></span>
+                                Title Photo
+                            </label>                            
+                        </a>
+                    }
+
+                    
+                </div>
+                <div class="cell tright">
+                    
+                    @if (!Model.IsOwner) {
+                        @Html.Partial("InviteCombo")
+                    }
+
+                    @if (Model.IsUserAdmin) {
+                        <a data-tmp="menuPrivacy-template" class="button blue-trans popup2-target tripMenuButton" data-target="#popup-privacy" href="#">
+                            <span class="icon-globe middle mright5"></span>
+                            Privacy
+                        </a>
+                        <a data-tmp="participants-template"class="button blue-trans popup2-target tripMenuButton" data-target="#popup-participants" href="#">
+                            <span class="icon-people middle mright5"></span>
+                            Participants
+                        </a>
+                        <a data-tmp="menuShare-template" class="button blue-trans popup2-target tripMenuButton" data-target="#popup-share" href="#">
+                            <span class="icon-share middle mright5"></span>
+                            Share trip
+                        </a>
+                        <a class="button blue-trans" href="/Trip/Detail/@Model.TripId">
+                            <span class="icon-edit middle mright5"></span>
+                            Edit
+                        </a>
+                    }
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="menuItemContent" style="display: none;">
+
+        </div>
+    </div>
+    <div class="wrapper with-bgwhite">
+        <div class="table margin width100">
+            <div class="cell middle">
+                <h1 class="margin0">@Model.Name</h1>
+            </div>
+            <div class="cell middle tright">
+                by @Model.OwnerDisplayName
+                <span class="thumbnail disc60 middle mleft10">
+                    <img src="/PortalUser/ProfilePicture_s/@Model.OwnerId">
+                </span>
+            </div>
+        </div>
+        <p class="h4">@Model.Description</p>
+        <h3>Day by Day Plan</h3>
+        <div id="plannerCont1" class="daybyday table margin">
+        </div>
+    </div>
+</section>
 
 @Html.Partial("Comments")
 
@@ -147,6 +155,7 @@
 }
 
 @Html.Partial("Templates")
+@Html.Partial("MenuTemplates")
 @Html.Partial("PlannerTemplates")
 
 <script>

@@ -13,12 +13,13 @@ var Trip;
             this.$combo = $("#" + config.comboId);
             this.$ul = this.$combo.find("ul");
             this.$selected = this.$combo.find(".selected");
+            this.$input = this.$combo.find("input");
             this.initState(config.initialState);
-            this.$ul.find("li").click(function (e) { return _this.onClick(e); });
+            //this.$ul.find("li").click((e) => this.onClick(e));
+            this.$input.change(function (e) { return _this.onChange(e); });
         }
-        AcceptCombo.prototype.onClick = function (e) {
-            var $li = $(e.target);
-            var val = $li.data("value");
+        AcceptCombo.prototype.onChange = function (e) {
+            var val = this.$input.val();
             var data = {
                 tripId: this.config.tripId,
                 newState: parseInt(val)

@@ -27,7 +27,7 @@
     }
 
     .menuItemContent {
-        border: 1px solid red;
+      
     }
 </style>
 
@@ -35,18 +35,43 @@
 <div class="blue-line margin2"></div>
 
 <section class="line margin padding">
-	<div class="wrapper">
-		<div class="table margin width100">
-			<div class="cell middle">
-				<input id="nameInput" class="heading middle" type="text" placeholder="Edit this" value="@Model.Name">					
-			</div>
-		    <div class="cell middle tright">
-                <a data-tmp="menuPrivacy-template" class="button border tripMenuButton" href="#">Set privacy</a>                
-		        <a data-tmp="participants-template" class="button border tripMenuButton" href="#">Participants</a>
+    <div class="wrapper">
 
-		        <a class="button border" href="/Trip/Overview/@Model.TripId">Switch to preview</a>
-		    </div>
-		</div>
+        @*<div class="table margin width100">
+            <div class="cell middle">
+                <input id="nameInput" class="heading middle" type="text" placeholder="Edit this" value="@Model.Name">
+            </div>
+            <div class="cell middle tright">
+                <a data-tmp="menuPrivacy-template" class="button border tripMenuButton" href="#">Set privacy</a>
+                <a data-tmp="participants-template" class="button border tripMenuButton" href="#">Participants</a>
+
+                <a class="button border" href="/Trip/Overview/@Model.TripId">Switch to preview</a>
+            </div>
+        </div>*@
+
+        <div class="table margin width100">
+            <div class="cell middle">
+                <input id="nameInput" class="heading middle" type="text" placeholder="Give it a name" value="@Model.Name">
+                @*<a class="button border" href="#">
+                    <span class="icon-photo middle">Add photo</span>
+                </a>*@
+            </div>
+            <div class="cell middle tright">                
+                <a data-tmp="menuPrivacy-template" class="button blue-trans tripMenuButton popup2-target" data-target="#popup-privacy" href="#">
+                    <span class="icon-globe middle mright5"></span>
+                    Privacy
+                </a>
+                <a data-tmp="participants-template" class="button blue-trans tripMenuButton popup2-target" data-target="#popup-participants" href="#">
+                    <span class="icon-people middle mright5"></span>
+                    Participants
+                </a>               
+                <a class="button blue-trans" href="/Trip/Overview/@Model.TripId">
+                    <span class="icon-preview middle mright5"></span>
+                    Preview
+                </a>                
+            </div>
+        </div>
+
 
         <div class="menuItemContent" style="display: none;">
 
@@ -81,6 +106,7 @@
 @Html.Partial("ConfirmDeleteDialog")
 
 @Html.Partial("Templates")
+@Html.Partial("MenuTemplates")
 @Html.Partial("PlannerTemplates")
 
 

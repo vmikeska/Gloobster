@@ -112,6 +112,9 @@ namespace Gloobster.Portal.Controllers.Api.User
             var path = FileDomain.Storage.Combine(FileLocation, fileName);
 
             FileDomain.Storage.SaveStream(path, newJpgStream);
+
+            newBmp.Dispose();
+            newJpgStream.Dispose();
         }
 
         [HttpPost]
@@ -132,22 +135,27 @@ namespace Gloobster.Portal.Controllers.Api.User
                 var filter = DB.F<PortalUserEntity>().Eq(p => p.id, UserIdObj);
                 var update = DB.U<PortalUserEntity>().Set(p => p.ProfileImage, argsObj.FileName);
                 DB.UpdateAsync(filter, update);
+                
+			    var originalFile = FileDomain.GetFile(FileLocation, argsObj.FileName);
 
-                var originalFile = FileDomain.GetFile(FileLocation, argsObj.FileName);
-
-                //create base rectangle cut
-                var origBmp = new Bitmap(originalFile);
+			    //create base rectangle cut
+			    var origBmp = new Bitmap(originalFile);
 			    var rect = CalculateBestImgCut(origBmp.Width, origBmp.Height);
 			    var cutBmp = GetBitmapPart(origBmp, rect);
-                var jpgStream = ConvertImgToJpg(cutBmp, 90);
+			    var jpgStream = ConvertImgToJpg(cutBmp, 90);
 
-                //save base rect cut
-                var profilePath = FileDomain.Storage.Combine(FileLocation, fileName);
-                FileDomain.Storage.SaveStream(profilePath, jpgStream);
+			    //save base rect cut
+			    var profilePath = FileDomain.Storage.Combine(FileLocation, fileName);
+			    FileDomain.Storage.SaveStream(profilePath, jpgStream);
 
 			    CreateThumbnail(cutBmp, 60, fileName_s);
-                CreateThumbnail(cutBmp, 26, fileName_xs);  
-            };
+			    CreateThumbnail(cutBmp, 26, fileName_xs);
+			    
+                originalFile.Dispose();
+                origBmp.Dispose();
+                cutBmp.Dispose();
+                jpgStream.Dispose();                
+			};
 
 			FileDomain.OnBeforeCreate += (sender, args) =>
 			{
@@ -156,22 +164,12 @@ namespace Gloobster.Portal.Controllers.Api.User
 			    foreach (var file in filesInFolder)
 			    {
 			        var path = file.GetPath();
-                    FileDomain.Storage.DeleteFile(path);
-                }
-
-			    //var portalUser = DB.C<PortalUserEntity>().First(u => u.id == UserIdObj);
-
-			    //bool hasAlreadyFile = (portalUser.ProfileImage != null);
-			    //if (hasAlreadyFile)
-			    //{
-			    //	var pathToDelete = FileDomain.Storage.Combine(fileLocation, portalUser.ProfileImage);
-
-			    //	bool fileExists = FileDomain.Storage.FileExists(pathToDelete);
-			    //	if (fileExists)
-			    //	{
-			    //		FileDomain.Storage.DeleteFile(pathToDelete);
-			    //	}
-			    //}
+                    bool fileExists = FileDomain.Storage.FileExists(path);
+                    if (fileExists)
+                    {
+                        FileDomain.Storage.DeleteFile(path);
+                    }                    
+                }                
 			};
 
 			var filePartDo = new WriteFilePartDO

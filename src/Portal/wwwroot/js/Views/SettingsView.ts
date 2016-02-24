@@ -29,23 +29,18 @@
 			fileUpload.onProgressChanged = (percent) => {
 				$("#progressBar").text(percent);
 			}
-			fileUpload.onUploadFinished = (file) => {
-
-				var fileReader = new FileReader();
-				fileReader.onload = evnt => {
-					var base64Img = evnt.target["result"];
-					$("#avatar").attr("src", base64Img);
-				};
-
-				fileReader.readAsDataURL(file);
+			fileUpload.onUploadFinished = (file) => {			 
+				var d = new Date();			
+				$("#avatar").attr("src", `/PortalUser/ProfilePicture?d=${d.getTime()}`);			 
 			}
 		}
 
 		private registerGenderCombo() {
-			var $root = $("#gender");
+		 var $root = $("#gender");
+			var $val = $root.find("input");
 
-			$root.find("li").click(evnt => {
-				var gender = $(evnt.target).data("value");
+			$val.change(e => {
+				var gender = $val.val();
 
 				var data = { propertyName: "Gender", values: { gender: gender } };
 				this.apiPut("UserProperty", data, () => {
