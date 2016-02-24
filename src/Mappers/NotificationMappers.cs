@@ -14,7 +14,8 @@ namespace Gloobster.Mappers
 				ContentType = d.ContentType,
 				Title = d.Title,
                 Link = d.Link,
-                LinkText = d.LinkText
+                LinkText = d.LinkText,
+                Created = d.Created
 			};
 
 			return e;

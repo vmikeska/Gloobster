@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Gloobster.Database;
 using Gloobster.Enums;
 using MongoDB.Bson;
@@ -20,5 +21,6 @@ namespace Gloobster.Entities
         public string LinkText { get; set; }
         public ContentType ContentType { get; set; }
 		public NotificationStatus Status { get; set; }
+        public DateTime Created { get; set; }
 	}
 }

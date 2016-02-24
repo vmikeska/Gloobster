@@ -154,9 +154,10 @@ var Views;
         };
         TripMenu.prototype.registerEvents = function () {
             var _this = this;
-            var btns = $(".tripMenuButton");
-            btns.click(function (e) {
+            var $btns = $(".tripMenuButton");
+            $btns.click(function (e) {
                 var $btn = $(e.target);
+                $btns.not($btn).removeClass("popup-open");
                 var tmp = $btn.data("tmp");
                 _this.displayContent(tmp);
             });

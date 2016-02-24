@@ -1,4 +1,5 @@
-﻿using Gloobster.Enums;
+﻿using System;
+using Gloobster.Enums;
 
 namespace Gloobster.DomainObjects
 {
@@ -12,5 +13,6 @@ namespace Gloobster.DomainObjects
         public string LinkText { get; set; }
         public ContentType ContentType { get; set; }
 		public NotificationStatus Status { get; set; }
-	}
+        public DateTime Created { get; set; }
+    }
 }

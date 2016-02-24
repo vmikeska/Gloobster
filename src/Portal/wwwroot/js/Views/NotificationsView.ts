@@ -10,7 +10,7 @@
 		private registerDelButtons() {
 			$(".notif_delete").click((e) => {
 				e.preventDefault();
-				var $btn = $(e.target);
+				var $btn = $(e.delegateTarget);
 				var notifId = $btn.data("notifid");
 				var prms = [["id", notifId]];
 				this.apiDelete("notification", prms, (r) => {
@@ -35,7 +35,7 @@
 
 		private setForm(notifCnt) {
 			if (notifCnt === 0) {
-				$("#notifCont").html("<div>You have no new notifications</div>");
+				$("#noNotifs").show();
 				$("#deleteAll").hide();
 			}
 		}

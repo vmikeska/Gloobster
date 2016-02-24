@@ -16,7 +16,7 @@ var Views;
             var _this = this;
             $(".notif_delete").click(function (e) {
                 e.preventDefault();
-                var $btn = $(e.target);
+                var $btn = $(e.delegateTarget);
                 var notifId = $btn.data("notifid");
                 var prms = [["id", notifId]];
                 _this.apiDelete("notification", prms, function (r) {
@@ -40,7 +40,7 @@ var Views;
         };
         NotificationsView.prototype.setForm = function (notifCnt) {
             if (notifCnt === 0) {
-                $("#notifCont").html("<div>You have no new notifications</div>");
+                $("#noNotifs").show();
                 $("#deleteAll").hide();
             }
         };

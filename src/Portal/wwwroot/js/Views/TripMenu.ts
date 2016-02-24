@@ -190,12 +190,13 @@ module Views {
 		}
 
 		private registerEvents() {
-		 var btns = $(".tripMenuButton");
-		 btns.click((e) => {
-			var $btn = $(e.target);
-			var tmp = $btn.data("tmp");
-			this.displayContent(tmp);
-		 });
+			var $btns = $(".tripMenuButton");
+			$btns.click((e) => {
+				var $btn = $(e.target);
+				$btns.not($btn).removeClass("popup-open");
+				var tmp = $btn.data("tmp");
+				this.displayContent(tmp);
+			});
 		}
 
 		public displayContent(tmp) {

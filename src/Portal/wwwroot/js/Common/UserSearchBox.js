@@ -6,8 +6,7 @@ var Common;
             this.config = config;
             this.$root = $("#" + config.elementId);
             this.$input = this.$root.find("input");
-            var source = $("#userItem-template").html();
-            this.template = Handlebars.compile(source);
+            this.template = Views.ViewBase.currentView.registerTemplate("userItem-template");
             this.delayedCallback = new Common.DelayedCallback(this.$input);
             this.delayedCallback.callback = function (placeName) { return _this.searchUsers(placeName); };
         }
@@ -46,7 +45,7 @@ var Common;
         };
         UserSearchBox.prototype.getItemHtml = function (item) {
             var context = {
-                photoUrl: "/images/samples/sample11.jpg",
+                photoUrl: "/PortalUser/ProfilePicture_xs/" + item.friendId,
                 userId: item.friendId,
                 displayName: item.displayName
             };

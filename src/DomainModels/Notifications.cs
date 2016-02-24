@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gloobster.Common;
@@ -23,7 +24,8 @@ namespace Gloobster.DomainModels
 				Content = "Hope you will have fun with our travel components",
 				ContentType = ContentType.Text,
 				UserId = userId,
-				Status = NotificationStatus.Created				
+				Status = NotificationStatus.Created,
+                Created = DateTime.UtcNow
 			};
 		}
 
@@ -40,8 +42,9 @@ namespace Gloobster.DomainModels
                 LinkText = "Go to Friends page",
 				ContentType = ContentType.Text,
 				UserId = receiverId,
-				Status = NotificationStatus.Created
-			};
+				Status = NotificationStatus.Created,
+                Created = DateTime.UtcNow
+            };
 		}
 
 		public NotificationDO TripInvitation(string fromUserId, string toUserId, string tripId)
@@ -60,8 +63,9 @@ namespace Gloobster.DomainModels
                 LinkText = "See detail of the trip",
 
                 Content = $"You are invited to be part of '{trip.Name}' trip from {fromUser.DisplayName}. {trip.Description}",
-				ContentType = ContentType.Text
-			};
+				ContentType = ContentType.Text,
+                Created = DateTime.UtcNow
+            };
 
 			return notif;
 		}

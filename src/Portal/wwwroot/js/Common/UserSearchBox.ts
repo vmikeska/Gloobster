@@ -14,10 +14,9 @@ module Common {
 			this.config = config;
 			this.$root = $("#" + config.elementId);
 			this.$input = this.$root.find("input");
-
-			var source = $("#userItem-template").html();
-			this.template = Handlebars.compile(source);
-
+		 
+			this.template = Views.ViewBase.currentView.registerTemplate("userItem-template");
+			
 			this.delayedCallback = new DelayedCallback(this.$input);
 			this.delayedCallback.callback = (placeName) => this.searchUsers(placeName);
 		}
@@ -65,7 +64,7 @@ module Common {
 		private getItemHtml(item) {
 
 			var context = {
-				photoUrl: "/images/samples/sample11.jpg",
+				photoUrl: `/PortalUser/ProfilePicture_xs/${item.friendId}`,
 				userId: item.friendId,
 				displayName: item.displayName
 			};
