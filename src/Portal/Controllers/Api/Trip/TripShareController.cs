@@ -37,8 +37,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 				owner = new TripUsersResponse
 				{
 					id = owner.id.ToString(), 
-					displayName = owner.DisplayName,
-					photoUrl = owner.ProfileImage
+					displayName = owner.DisplayName
 				},
 				participants = GetParticipants(trip),
 				places = GetPlaces(trip)
@@ -93,8 +92,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 			var participantsRes = participants.Select(u => new TripUsersResponse
 			{
 				id = u.id.ToString(),
-				displayName = u.DisplayName,
-				photoUrl = u.ProfileImage
+				displayName = u.DisplayName
 			}).ToList();
 
 			return participantsRes;

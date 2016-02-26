@@ -11,9 +11,11 @@ using MongoDB.Bson;
 using System.IO;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels.Services.Accounts;
+using Gloobster.DomainModels.Services.Trip;
 using Gloobster.Entities.Trip;
 using Gloobster.Enums;
 using Serilog;
+using Gloobster.Portal.Controllers.Api.Trip;
 
 namespace Gloobster.Portal.Controllers.Portal
 {
@@ -43,13 +45,10 @@ namespace Gloobster.Portal.Controllers.Portal
 		    var tripIdObj = new ObjectId(id);            
 		    var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
 
-		    var ordredPlaces = trip.Places.OrderBy(t => t.OrderNo);
-		    var firstPlace = ordredPlaces.First();
-            var lastPlace = ordredPlaces.Last();
-		    var firstTravel = trip.Travels.FirstOrDefault(t => t.id == firstPlace.LeavingId);
-            var lastTravel = trip.Travels.FirstOrDefault(t => t.id == lastPlace.ArrivingId);
-		    var fromDate = firstTravel.LeavingDateTime.Value;
-		    var toDate = lastTravel.ArrivingDateTime.Value;
+		    var tripFromTo = GetTripFromTo(trip);
+            var fromDate = tripFromTo.Item1;
+            var toDate = tripFromTo.Item2;
+
 		    var dateStr = $"{fromDate.Day}.{fromDate.Month}. to {toDate.Day}.{toDate.Month}. {toDate.Year}";
 
             var owner = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == trip.PortalUser_id);
@@ -63,19 +62,39 @@ namespace Gloobster.Portal.Controllers.Portal
             return View(viewModel);
 		}
 
-		public async Task<IActionResult> List()
+	    private Tuple<DateTime, DateTime> GetTripFromTo(TripEntity trip)
+	    {
+            var ordredPlaces = trip.Places.OrderBy(t => t.OrderNo);
+            var firstPlace = ordredPlaces.First();
+            var lastPlace = ordredPlaces.Last();
+            var firstTravel = trip.Travels.FirstOrDefault(t => t.id == firstPlace.LeavingId);
+            var lastTravel = trip.Travels.FirstOrDefault(t => t.id == lastPlace.ArrivingId);
+            var fromDate = firstTravel.LeavingDateTime.Value;
+            var toDate = lastTravel.ArrivingDateTime.Value;
+
+            return new Tuple<DateTime, DateTime>(fromDate, toDate);
+        }
+
+		public async Task<IActionResult> List(string id)
 		{
-            var trips = DB.C<TripEntity>().Where(t => t.PortalUser_id == UserIdObj).ToList();
+            var viewModel = CreateViewModelInstance<ViewModelTrips>();           
+		    viewModel.DisplayType = string.IsNullOrEmpty(id) || (id == "grid");
+
+            var tripsEntity = DB.C<TripEntity>().Where(t => t.PortalUser_id == UserIdObj).ToList();
 
             var query = $"{{ 'Participants.PortalUser_id': ObjectId('{UserId}')}}";
-		    var invitedTrips = await DB.FindAsync<TripEntity>(query);
-
-            var viewModel = CreateViewModelInstance<ViewModelTrips>();            
-			viewModel.Trips = trips.Select(TripToViewModel).ToList();
-            viewModel.InvitedTrips = invitedTrips.Select(TripToViewModel).ToList();
+		    var invitedTripsEntity = await DB.FindAsync<TripEntity>(query);
+            
+			var myTrips = tripsEntity.Select(TripToViewModel).ToList();
+            var invitedTrips = invitedTripsEntity.Select(TripToViewModel).ToList();
+            
+            viewModel.Trips = new List<TripItemViewModel>();
+            viewModel.Trips.AddRange(myTrips);
+            viewModel.Trips.AddRange(invitedTrips);
             
             return View(viewModel);
 		}
+
 		public async Task<IActionResult> CreateNewTrip(string id)
 		{
 		    var tripEntity = CreateUserData.GetInitialTripEntity(id, UserId);
@@ -206,7 +225,7 @@ namespace Gloobster.Portal.Controllers.Portal
             viewModel.Notes = trip.Notes;
             viewModel.NotesPublic = trip.NotesPublic;
             viewModel.IsOwner = (trip.PortalUser_id == UserIdObj);
-            viewModel.Photo = trip.Picture;
+            viewModel.HasBigPicture = trip.HasBigPicture;
             viewModel.Participants = GetParticipantsView(trip.Participants, owner.id);
             var thisUserParticipant = trip.Participants.FirstOrDefault(p => p.PortalUser_id == UserIdObj);
             viewModel.ThisUserInvited = thisUserParticipant != null;
@@ -216,42 +235,60 @@ namespace Gloobster.Portal.Controllers.Portal
 
         
 
-        private List<TripParticipantViewModel> GetParticipantsView(List<ParticipantSE> participants, ObjectId ownerId)
+        private List<UserViewModel> GetParticipantsView(List<ParticipantSE> participants, ObjectId ownerId)
 	    {
             var participantIds = participants.Where(p=> p.State == ParticipantState.Accepted).Select(p => p.PortalUser_id).ToList();
             participantIds.Add(ownerId);
             var participantUsers = DB.C<PortalUserEntity>().Where(u => participantIds.Contains(u.id)).ToList();
 
-            var prtcs = participantUsers.Select(p => new TripParticipantViewModel
+            var prtcs = participantUsers.Select(p => new UserViewModel
             {
-                DisplayName = p.DisplayName,
-                PhotoUrl = "/PortalUser/ProfilePicture_s/" + p.id
+                Name = p.DisplayName,
+                Id = p.id.ToString()                
             }).ToList();
 
 	        return prtcs;
 	    }
 
-        public IActionResult TripPicture(string id = null)
+        public IActionResult TripPicture(string id)
         {
-            var fileLocation = "tpf";
-            var tripIdObj = new ObjectId(id);
-            var trip = DB.C<TripEntity>().FirstOrDefault(u => u.id == tripIdObj);
+            var stream = GetPicture(id, TripFileConstants.BigPicNameExt);
+            return stream;
+        }
 
-            if (trip.Picture == null)
+        public IActionResult TripPictureSmall_s(string id)
+        {
+            var stream = GetPicture(id, TripFileConstants.SmallPicNameExt_s);
+            return stream;            
+        }
+
+        public IActionResult TripPictureSmall_xs(string id)
+        {
+            var stream = GetPicture(id, TripFileConstants.SmallPicNameExt_xs);
+            return stream;
+        }
+
+        private FileStreamResult GetPicture(string tripId, string picName)
+	    {
+            var tripIdObj = new ObjectId(tripId);
+            var trip = DB.C<TripEntity>().FirstOrDefault(u => u.id == tripIdObj);
+            var tripDir = FileDomain.Storage.Combine(TripFileConstants.FileLocation, trip.id.ToString());
+
+            if (!trip.HasSmallPicture)
             {
-                return new ObjectResult("");
+                return null;
             }
 
-            var filePath = FileDomain.Storage.Combine(fileLocation, trip.Picture);
+            var filePath = FileDomain.Storage.Combine(tripDir, picName);
             bool exists = FileDomain.Storage.FileExists(filePath);
             if (exists)
             {
-                var fileStream = FileDomain.GetFile(fileLocation, trip.Picture);
+                var fileStream = FileDomain.GetFile(tripDir, picName);
                 return new FileStreamResult(fileStream, "image/jpeg");
             }
 
-            return new ObjectResult("");
-        }
+            return null;
+	    }
 
         private ParticipantSE GetParticipant(TripEntity trip, ObjectId userId)
 		{
@@ -318,13 +355,25 @@ namespace Gloobster.Portal.Controllers.Portal
 
 		private TripItemViewModel TripToViewModel(TripEntity trip)
 		{
-			var vm = new TripItemViewModel
+            var tripFromTo = GetTripFromTo(trip);
+            var fromDate = tripFromTo.Item1;
+            var toDate = tripFromTo.Item2;
+
+		    var owner = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == trip.PortalUser_id);
+
+            var vm = new TripItemViewModel
 			{
 				Id = trip.id.ToString(),
-				Date = trip.CreatedDate,
+                FromDate = fromDate,
+                ToDate = toDate,                
 				Name = trip.Name,
+                Participants = GetParticipantsView(trip.Participants, trip.PortalUser_id),
+                HasSmallPicture = trip.HasSmallPicture,
 
-				ImageBig = "~/images/samples/sample05.jpg",
+                IsOwner = trip.PortalUser_id == UserIdObj.Value,
+                OwnerName = owner.DisplayName,
+                OwnerId = trip.PortalUser_id.ToString(),
+
 				IsLocked = true
 			};
 			return vm;

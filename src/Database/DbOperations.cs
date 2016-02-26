@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Gloobster.Common;
 using MongoDB.Bson;
@@ -86,7 +87,18 @@ namespace Gloobster.Database
             return entity;
         }
 
-		public async Task<IEnumerable<T>> SaveManyAsync<T>(IEnumerable<T> entities) where T : EntityBase
+        public async Task<bool> DeleteAsync<T>(ObjectId id) where T : EntityBase
+        {            
+            var collectionName = GetCollectionName<T>();
+            var collection = Database.GetCollection<T>(collectionName);
+
+            var filter = Builders<T>.Filter.Eq("id", id);            
+            await collection.DeleteOneAsync(filter);
+
+            return true;
+        }
+
+        public async Task<IEnumerable<T>> SaveManyAsync<T>(IEnumerable<T> entities) where T : EntityBase
 		{
 			var entitiesList = entities.ToList();
 			
@@ -111,8 +123,8 @@ namespace Gloobster.Database
 		{
 			var collectionName = GetCollectionName<T>();
 			var collection = Database.GetCollection<T>(collectionName);
-
-			var collectionQueryable = collection.AsQueryable();
+            
+            var collectionQueryable = collection.AsQueryable();
 
 			return collectionQueryable;
 		}

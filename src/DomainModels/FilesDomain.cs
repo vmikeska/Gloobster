@@ -23,8 +23,12 @@ namespace Gloobster.DomainModels
 		public IDbOperations DB { get; set; }
 		public ILogger Log { get; set; }
 		public IStorageProvider Storage { get; set; }
-		
-		public string TargetDirectory { get; set; }
+
+	    public byte[] AllBytes;
+        public bool DoNotSave = false;
+
+
+        public string TargetDirectory { get; set; }
 		public string OriginaFileName { get; set; }
 		public string CustomFileName { get; set; }
 		public string UserId { get; set; }
@@ -41,7 +45,6 @@ namespace Gloobster.DomainModels
 		{
 		    try
 		    {
-                
                 string storageFilePath = Storage.Combine(fileDirectory, fileName);
                 
                 var file = Storage.GetFile(storageFilePath);                
@@ -61,7 +64,19 @@ namespace Gloobster.DomainModels
 			Storage.DeleteFile(filePath);			
 		}
 
-		public void WriteFilePart(WriteFilePartDO filePart)
+        public void DeleteFolder(string folderPath)
+        {
+            try
+            {
+                Storage.DeleteFolder(folderPath);
+            }
+            catch
+            {
+                
+            }            
+        }
+
+        public void WriteFilePart(WriteFilePartDO filePart)
 		{
 			try
 			{
@@ -140,33 +155,24 @@ namespace Gloobster.DomainModels
 
 			stringParts.Add(lastData);
 
-			var allBytes = stringParts.SelectMany(Convert.FromBase64String).ToArray();
-
-
-
+            AllBytes = stringParts.SelectMany(Convert.FromBase64String).ToArray();
+            
 			string fileName = BuildFileName();			
 			var targetFilePath = Storage.Combine(TargetDirectory, fileName);
 
 			OnBeforeCreate.Invoke(this, null);
 
-			//var userIdObj = new ObjectId(UserId);
-			//var portalUser = DB.C<PortalUserEntity>().First(u => u.id == userIdObj);
+		    if (!DoNotSave)
+		    {
+		        var inputFileStream = Storage.CreateFile(targetFilePath).OpenWrite();
+		        using (var writer = new BinaryWriter(inputFileStream))
+		        {
+		            writer.Write(AllBytes);
+		            writer.Flush();
+		        }
+		    }
 
-			//var pathToDelete = Storage.Combine(TargetDirectory, portalUser.ProfileImage);
-			//bool fileExists = Storage.FileExists(pathToDelete);
-			//if (fileExists)
-			//{				
-			//	Storage.DeleteFile(pathToDelete);
-			//}
-
-			var inputFileStream = Storage.CreateFile(targetFilePath).OpenWrite();			
-			using (var writer = new BinaryWriter(inputFileStream))
-			{
-				writer.Write(allBytes);
-				writer.Flush();					
-			}
-
-			var onFileSavedArgs = new OnFileSavedArgs
+		    var onFileSavedArgs = new OnFileSavedArgs
 			{
 				FileName = fileName,
 				Directory = TargetDirectory,

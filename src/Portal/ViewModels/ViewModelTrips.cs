@@ -4,8 +4,8 @@ namespace Gloobster.Portal.ViewModels
 {
 	public class ViewModelTrips : ViewModelBase
 	{
-		public List<TripItemViewModel> Trips { get; set; }
+        public bool DisplayType { get; set; }
 
-        public List<TripItemViewModel> InvitedTrips { get; set; }        
+		public List<TripItemViewModel> Trips { get; set; }
 	}
 }

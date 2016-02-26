@@ -74,6 +74,7 @@
           "System.Linq.Queryable": "4.0.1-beta-23516"
         },
         "frameworkAssemblies": [
+          "System.Drawing",
           "System.Web"
         ]
       },
@@ -2606,6 +2607,7 @@
           "System.Linq.Queryable": "4.0.1-beta-23516"
         },
         "frameworkAssemblies": [
+          "System.Drawing",
           "System.Web"
         ]
       },
@@ -5141,6 +5143,7 @@
           "System.Linq.Queryable": "4.0.1-beta-23516"
         },
         "frameworkAssemblies": [
+          "System.Drawing",
           "System.Web"
         ]
       },

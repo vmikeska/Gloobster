@@ -19,9 +19,10 @@ namespace Gloobster.Entities.Trip
         public bool AllowToRequestJoin { get; set; }
         public string SharingCode { get; set; } 
 
-		public string Picture { get; set; }
+		public bool HasBigPicture { get; set; }
+        public bool HasSmallPicture { get; set; }
 
-		public DateTime CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; }
 
 		public List<CommentSE> Comments { get; set; }
 

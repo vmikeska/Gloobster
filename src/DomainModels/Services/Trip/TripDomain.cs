@@ -1,22 +1,33 @@
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Gloobster.Database;
-using Gloobster.Entities;
+using Gloobster.DomainInterfaces;
 using Gloobster.Entities.Trip;
-using Gloobster.Mappers;
-using Gloobster.ReqRes.Trip;
 using MongoDB.Bson;
 
 namespace Gloobster.DomainModels.Services.Trip
 {
-	public class TripDomain
-	{
-		public static List<TripUsersResponse> GetUsers(List<ObjectId> ids, IDbOperations db)
-		{			
-			var commentsUsers = db.C<PortalUserEntity>().Where(u => ids.Contains(u.id)).ToList();
-			var commentsUsersResponse = commentsUsers.Select(u => u.ToResponse()).ToList();
-			return commentsUsersResponse;
-		}
-        
+    public class TripDomain : ITripDomain
+    {
+        public IDbOperations DB { get; set; }
+        public IFilesDomain FileDomain { get; set; }
+
+        public async Task<bool> DeleteTripAsync(string tripId, string userId)
+        {
+            //todo: check if user has permissions
+
+            var tripPhotoFilesDir = FileDomain.Storage.Combine(TripFileConstants.FileLocation, tripId);
+            FileDomain.DeleteFolder(tripPhotoFilesDir);            
+
+            var tripFilesDir = FileDomain.Storage.Combine(TripFileConstants.TripFilesDir, tripId);
+            FileDomain.DeleteFolder(tripFilesDir);
+
+            var tripIdObj = new ObjectId(tripId);            
+            await DB.DeleteAsync<TripEntity>(tripIdObj);
+
+            return true;
+        }
     }
 }

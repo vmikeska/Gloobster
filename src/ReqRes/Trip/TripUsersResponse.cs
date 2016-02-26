@@ -4,6 +4,5 @@ namespace Gloobster.ReqRes.Trip
 	{
 		public string id { get; set; }
 		public string displayName { get; set; }
-		public string photoUrl { get; set; }
 	}
 }

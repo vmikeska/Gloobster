@@ -5682,6 +5682,7 @@
       "MongoDB.Bson >= 2.2.3"
     ],
     "DNX,Version=v4.5.1": [
+      "fx/System.Drawing >= 4.0.0",
       "fx/System.Web >= 4.0.0"
     ]
   }

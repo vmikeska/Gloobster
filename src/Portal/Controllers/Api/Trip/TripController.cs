@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Database;
+using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels.Services.Trip;
 using Gloobster.Entities;
 using Gloobster.Entities.Trip;
@@ -16,15 +17,36 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 {
 	public class TripController : BaseApiController
 	{
+        public ITripDomain TripDomain { get; set; }
 
-		public TripController(ILogger log, IDbOperations db) : base(log, db)
-		{
-			
-		}
+        public TripController(ITripDomain tripDomain, ILogger log, IDbOperations db) : base(log, db)
+        {
+            TripDomain = tripDomain;
+        }
 
-		[HttpGet]
+	    [HttpDelete]
+	    [AuthorizeApi]
+	    public async Task<IActionResult> Delete(string id)
+	    {
+	        bool res = true;
+
+	        try
+	        {
+	            await TripDomain.DeleteTripAsync(id, UserId);
+	        }
+	        catch (Exception exc)
+	        {
+                //todo: log
+	            res = false;
+	        }
+	        
+            return new ObjectResult(res);
+        }
+
+
+	    [HttpGet]
 		[AuthorizeApi]
-		public async Task<IActionResult> Get(string id)
+		public IActionResult Get(string id)
 		{
 			var tripIdObj = new ObjectId(id);
 			var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
@@ -55,7 +77,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
                 userIds.AddRange(trip.Participants.Select(i => i.PortalUser_id));
             }
             
-		    tripResponse.users = TripDomain.GetUsers(userIds, DB);
+		    tripResponse.users = TripHelper.GetUsers(userIds, DB);
 
 			return new ObjectResult(tripResponse);
 		}

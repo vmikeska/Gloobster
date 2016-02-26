@@ -61,9 +61,9 @@ namespace Gloobster.Portal
 			builder.AddTransient<INotifications, Notifications>();
 
             builder.AddTransient<IPinBoardStatRequestCreator, PinBoardStatRequestCreator>();
+
+            builder.AddTransient<ITripDomain, TripDomain>();
             
-
-
             builder.AddTransient<IPlanningDomain, PlanningDomain>();
 			
             builder.AddTransient<IFriendsDomain, FriendsDomain>();

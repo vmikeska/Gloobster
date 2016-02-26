@@ -9,6 +9,7 @@ namespace Gloobster.DomainInterfaces
 	public interface IFilesDomain
 	{
 		void DeleteFile(string filePath);
+	    void DeleteFolder(string folderPath);
         void WriteFilePart(WriteFilePartDO filePart);
 		Stream GetFile(string fileDirectory, string fileName);
 		event EventHandler OnFileSaved;

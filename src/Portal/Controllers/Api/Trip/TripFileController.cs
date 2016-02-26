@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels;
+using Gloobster.DomainModels.Services.Trip;
 using Gloobster.DomainObjects;
 using Gloobster.Entities.Trip;
 using Gloobster.Enums;
@@ -35,7 +36,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 		public IActionResult Post([FromBody] TripFileRequest request)
 		{			
 			var tripIdObj = new ObjectId(request.tripId);
-			var fileLocation = FileDomain.Storage.Combine("trips", request.tripId);
+			var fileLocation = FileDomain.Storage.Combine(TripFileConstants.TripFilesDir, request.tripId);
 			var savedFileName = Guid.NewGuid().ToString().Replace("-", string.Empty);
 			
 			FileDomain.OnFileSaved += (sender, args) =>
@@ -105,7 +106,6 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 
 		[HttpDelete]
 		[AuthorizeApi]
-		//, string entityId
 		public async Task<IActionResult> Delete(string fileId, string tripId)
 		{
 			var tripIdObj = new ObjectId(tripId);			
@@ -140,7 +140,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
                 var u2 = DB.U<TripEntity>().Pull(p => p.FilesPublic, publicInfoToDelete);
                 await DB.UpdateAsync(f2, u2);
 
-                var fileLocation = Path.Combine("Trips", tripId, fileToDelete.SavedFileName);
+                var fileLocation = Path.Combine(TripFileConstants.TripFilesDir, tripId, fileToDelete.SavedFileName);
 				FileDomain.DeleteFile(fileLocation);
 
 				trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);

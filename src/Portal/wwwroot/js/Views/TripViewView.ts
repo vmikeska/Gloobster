@@ -46,11 +46,11 @@
 			 this.refreshBackground(this.trip.tripId);
 		 }
 		}
-	  
+
 		private refreshBackground(tripId) {
-		 $("#bckPhoto").css("background", "");
-		  $("#bckPhoto").css("background", `transparent url('../../Trip/TripPicture/${tripId}') center top no-repeat`);
-	  }
+			$("#bckPhoto").css("background", "");
+			$("#bckPhoto").css("background", `transparent url('../../Trip/TripPicture/${tripId}') center top no-repeat`);
+		}
 
 		private getTrip(id: string) {
 			var prms = [["id", id]];

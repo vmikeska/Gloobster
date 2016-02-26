@@ -15,8 +15,7 @@ namespace Gloobster.Mappers
 			var request = new TripUsersResponse
 			{
 				id = entity.id.ToString(),
-				displayName = entity.DisplayName,
-				photoUrl = entity.ProfileImage
+				displayName = entity.DisplayName
 			};
 
 			return request;

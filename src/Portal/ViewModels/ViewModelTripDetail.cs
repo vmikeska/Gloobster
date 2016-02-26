@@ -10,9 +10,9 @@ namespace Gloobster.Portal.ViewModels
         public string Name { get; set; }
 		public string Description { get; set; }
 		public string Notes { get; set; }
-        public string Photo { get; set; }
+        public bool HasBigPicture { get; set; }
 		public bool NotesPublic { get; set; }
-		public List<TripParticipantViewModel> Participants { get; set; }
+		public List<UserViewModel> Participants { get; set; }
 		public bool IsUserAdmin { get; set; }
 		public bool IsOwner { get; set; }
         public bool ThisUserInvited { get; set; }

@@ -4,95 +4,126 @@
 
 @model Gloobster.Portal.ViewModels.ViewModelTrips
 
+<script type="text/javascript" src="@Url.Content("~/js/Views/TripListView.js")"></script>
+
+<style>
+    .photoButton input {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+
+    .photoButton label {
+        cursor: pointer;
+    }
+    /*todo: delete this workaround later*/
+    .trip-menu {
+        position: absolute;
+        top: 50px;
+        right: 10px;
+        background-color: rgba(77, 77, 77, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 4px;
+        color: #fff;
+        display: none;
+        margin: 0;
+        padding: 0; }
+    .trip-menu li {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+        display: block; }
+    .trip-menu li:last-child {
+        border-bottom: none; }
+    .trip-menu a {
+        color: inherit;
+        display: block;
+        padding: 5px 10px;
+        text-decoration: none; }
+    .trip-menu a:hover {
+        background-color: rgba(255, 255, 255, 0.5); }
+</style>
+
 <div class="blue-line margin2"></div>
 
 <section class="wrapper margin3">
-	<div class="table row col2 margin">
-		<div class="cell middle">
-			<h2>My trips</h2>
-		</div>
-		<div class="cell middle tright">
-			<div class="blue-holder">
-				<a class="icon-grid" href="#">Grid</a>
-				<a class="icon-list" href="#">List</a>
-			</div>
-		</div>
-	</div>
-
-
-	<div class="trips grid col3 margin">
-
-		@foreach (var trip in Model.Trips)
-		{
-			await Html.RenderPartialAsync("TripItemBig", (object) trip);
-		}
-
-	    <div class="cell">
-			<div class="trip new">
-				<textarea id="newTrip" placeholder="New trip name..."></textarea>
-				<a class="create" href="javascript:createNewTrip();">Create</a>
-			</div>
-		</div>
-
-	</div>
-    <div class="tcenter margin">
-        <a class="button" href="#">Show 3 Archived Trips</a>
-    </div>
-
-@if (Model.InvitedTrips.Any())
-{
-
     <div class="table row col2 margin">
         <div class="cell middle">
-            <h2>Trips I am invited to</h2>
+            <h2>Trips</h2>
         </div>
         <div class="cell middle tright">
             <div class="blue-holder">
-                <a class="icon-grid" href="#">Grid</a>
-                <a class="icon-list" href="#">List</a>
+                <a class="icon-grid @(Model.DisplayType ? "active" : string.Empty)" href="?id=grid">Grid</a>
+                <a class="icon-list @(!Model.DisplayType ? "active" : string.Empty)" href="?id=tile">List</a>
             </div>
+            @*<a class="disc-create mleft20 right" href="#"></a>*@
         </div>
     </div>
 
+    @if (!Model.DisplayType)
+    {
+        <div class="trips list margin">
+            <div class="row nohover">
+                <div class="cell"></div>
+                <div class="cell">Name</div>
+                <div class="cell">Term</div>
+                <div class="cell">Team</div>
+                <div class="cell">Owner</div>
+                <div class="cell"></div>
+            </div>
 
-    <div class="trips grid col3 margin">
+            @foreach (var trip in Model.Trips)
+            {
+                await Html.RenderPartialAsync("TripItemRow", (object) trip);
+            }
 
-        @foreach (var trip in Model.InvitedTrips)
-        {
-            await Html.RenderPartialAsync("TripItemBig", (object) trip);
-        }
+            <div class="row nohover">
+                <div class="cell">
+                    <div class="photo create"></div>
+                </div>
+                <div class="cell">
+                    <textarea id="newTrip" placeholder="New trip name..."></textarea>
+                </div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell tright">
+                    <a class="button white-blue" href="javascript:currentView.createNewTrip();">Create</a>
+                </div>
+            </div>
 
-    </div>
+        </div>
+    }
+    else
+    {
+        <div class="trips grid col3 margin">
+
+            @foreach (var trip in Model.Trips)
+            {
+                await Html.RenderPartialAsync("TripItemBig", (object)trip);
+            }
+
+            <div class="cell">
+                <div class="trip new">
+                    <textarea id="newTrip" placeholder="New trip name..."></textarea>
+                    <a class="create" href="javascript:currentView.createNewTrip();">Create</a>
+                </div>
+            </div>
+
+        </div>
+    }
+
     <div class="tcenter margin">
         <a class="button" href="#">Show 3 Archived Trips</a>
     </div>
-}
-    @*<div class="table row margin2 box gray">
-		<div class="cell">
-			<h3>Gloobster allows you to collect resources into one place. For free.</h3>
-			<p>Make your travels even more enjoyable with data saved at Gloobster. From flying tickets to booking confirmations and photos, everything in one place and easy to share with friends.</p>
-			<a class="button" href="#">Visit Help Center</a>
-		</div>
-		<div class="cell tright">
-			<img src="~/images/samples/sample10.jpg">
-		</div>
-	</div>*@
+
 </section>
 
+@Html.Partial("ConfirmTripDeleteDialog")
 
 <script>
-	function onBodyLoad() {
-			currentView = new Views.ViewBase();
-	}
-
-	function createNewTrip() {
-
-			var tripName = $("#newTrip").val();		
-			if (tripName === "") {
-				return;
-			}
-
-		window.location = "/Trip/CreateNewTrip/" + tripName;
-	}
-
+    function onBodyLoad() {
+        currentView = new Views.TripListView();
+    }
 </script>

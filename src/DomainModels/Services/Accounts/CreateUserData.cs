@@ -147,7 +147,7 @@ namespace Gloobster.DomainModels.Services.Accounts
                 SharingCode = null,
                 Notes = "",
                 Description = "",
-                Picture = null                 
+                HasBigPicture = false                 
             };
 
 	        return tripEntity;

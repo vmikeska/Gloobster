@@ -2,19 +2,46 @@
 @using System.Threading.Tasks
 @using Gloobster.Portal.Controllers.Portal
 @using Gloobster.Portal.ViewModels
-@model Gloobster.Portal.ViewModels.TripItemViewModel
+@model TripItemViewModel
 
-<div class="cell">
-	<a class="trip edit" asp-controller="Trip" asp-action="Overview" asp-route-id="@Model.Id">				
-		<h3>@Model.Name</h3>
-		<p>
-			@if (Model.IsLocked)
-			{
-				<span class="icon-lock"></span>
-			}
-			@Model.Date.ToString("MMM yyyy", CultureInfo.InvariantCulture)<span class="button">Detail</span>
-		</p>
-		<span class="icon-wheel"></span>
-		<img src="@Model.ImageBig">
-	</a>
+<div class="cell" id="@Model.Id">
+  
+
+    <div class="trip-holder">
+        <a class="trip edit" asp-controller="Trip" asp-action="Overview" asp-route-id="@Model.Id">
+            @if (Model.IsOwner)
+            {
+                <h3>@Model.Name</h3>
+            }
+            else
+            {
+                <h3>@Model.Name - by @Model.OwnerName</h3>
+            }
+
+            <p>
+                @*@if (Model.IsLocked)
+                {
+                    <span class="icon-lock"></span>
+                }*@
+                @Model.FromDate.ToString("MMM yyyy", CultureInfo.InvariantCulture)<span class="button">Detail</span>
+            </p>
+            @if (Model.IsOwner)
+            {
+                <span class="icon-wheel"></span>
+            }
+            @if (Model.HasSmallPicture)
+            {
+                <img id="tripImg_@Model.Id" src="/Trip/TripPictureSmall_s/@Model.Id">
+            }
+            else
+            {
+                <img id="tripImg_@Model.Id" src="~/images/samples/sample05.jpg">
+            }
+
+        </a>
+        @Html.Partial("TripsItemMenu")
+        
+    </div>
+     
+
 </div>
