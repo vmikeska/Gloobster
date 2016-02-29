@@ -27,19 +27,19 @@ var Views;
             this.pinBoardBadges = new Views.PinBoardBadges();
             this.shareDialogView = new Views.ShareDialogPinsView();
             this.initPlaceSearch();
-            $("#mapType li").click(function (e) {
+            $("#mapType input").change(function (e) {
                 var value = $(e.target).data("value");
                 var parsedVal = parseInt(value);
                 _this.mapsManager.switchToView(parsedVal);
                 _this.setMenuControls();
                 _this.setInfo();
             });
-            $("#dataType li").click(function () {
+            $("#dataType input").change(function () {
                 _this.refreshData();
                 _this.setMenuControls();
                 _this.setInfo();
             });
-            $("#projectionType li").click(function () {
+            $("#projectionType input").change(function () {
                 _this.refreshData();
                 _this.setMenuControls();
                 _this.setInfo();

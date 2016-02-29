@@ -273,12 +273,7 @@ namespace Gloobster.Portal.Controllers.Portal
             var tripIdObj = new ObjectId(tripId);
             var trip = DB.C<TripEntity>().FirstOrDefault(u => u.id == tripIdObj);
             var tripDir = FileDomain.Storage.Combine(TripFileConstants.FileLocation, trip.id.ToString());
-
-            if (!trip.HasSmallPicture)
-            {
-                return null;
-            }
-
+            
             var filePath = FileDomain.Storage.Combine(tripDir, picName);
             bool exists = FileDomain.Storage.FileExists(filePath);
             if (exists)

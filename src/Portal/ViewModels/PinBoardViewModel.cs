@@ -5,7 +5,7 @@ using MongoDB.Bson;
 
 namespace Gloobster.Portal.ViewModels
 {
-	public class PinBoardViewModel: ViewModelBase
+    public class PinBoardViewModel: ViewModelBase
 	{				
 		public int Cities { get; set; }
 		public int Countries { get; set; }

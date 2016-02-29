@@ -1,0 +1,43 @@
+﻿@using Microsoft.AspNet.Mvc.ViewFeatures
+<div class="blue-border margin">
+    <div class="table row col3 margin">
+        <div class="cell">
+            <img class="radius mhalf" src="/images/samples/sample17.jpg">
+            <div class="table width100">
+                <div class="cell">
+                    @*, new {CustomClass = "evaluate-right" }*@
+                    @Html.Partial("Rating")
+                </div>
+                <div class="cell middle tright">
+                    <a class="icon-flag textnohide textleft noneline" href="#">Report</a>
+                </div>
+            </div>
+        </div>
+        <div class="cell">
+            <img class="radius mhalf" src="/images/samples/sample17.jpg">
+            <div class="table width100">
+                <div class="cell">
+                    @Html.Partial("Rating")
+                </div>
+                <div class="cell middle tright">
+                    <a class="icon-flag textnohide textleft noneline" href="#">Report</a>
+                </div>
+            </div>
+        </div>
+        <div class="cell">
+            <img class="radius mhalf" src="/images/samples/sample17.jpg">
+            <div class="table width100">
+                <div class="cell">
+                    @Html.Partial("Rating")
+                </div>
+                <div class="cell middle tright">
+                    <a class="icon-flag textnohide textleft noneline" href="#">Report</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tright">
+        <a href="#">Terms and conditions for adding photos</a>
+        <a class="button mleft10" href="#">Recommend a Photo</a>
+    </div>
+</div>

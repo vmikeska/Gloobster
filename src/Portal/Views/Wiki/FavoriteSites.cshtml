@@ -1,0 +1,21 @@
+﻿@using System.Threading.Tasks
+@using Gloobster.Entities
+@using Gloobster.Portal.ViewModels
+@model WikiCityViewModel
+
+
+<div class="table width100 margin">
+    <div class="cell middle">
+        <h3 class="margin0">Favorite sites</h3>
+    </div>
+    <div class="cell">
+        @Html.Partial("Rating")
+    </div>
+</div>
+<ul>
+    @foreach (var site in Model.Article.Sites)
+    {
+        <li>@site.Name</li>
+    }    
+</ul>
+<p class="h4">Make your travels even more enjoyable with data saved at Gloobster. From flying tickets to booking confirmations and photos, everything in one place and easy to share with friends. Make your travels even more enjoyable with data saved at Gloobster. From flying tickets to booking.</p>

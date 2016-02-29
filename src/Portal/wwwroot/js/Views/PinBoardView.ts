@@ -27,7 +27,7 @@
 
 			this.initPlaceSearch();
 
-			$("#mapType li").click((e) => {
+			$("#mapType input").change((e) => {
 				var value = $(e.target).data("value");
 				var parsedVal = parseInt(value);
 				this.mapsManager.switchToView(parsedVal);				
@@ -35,13 +35,13 @@
 				this.setInfo();
 			});
 
-			$("#dataType li").click(() => {
+			$("#dataType input").change(() => {
 			 this.refreshData();
 			 this.setMenuControls();
 			 this.setInfo();
 			});
 
-			$("#projectionType li").click(() => {
+			$("#projectionType input").change(() => {
 			 this.refreshData();
 			 this.setMenuControls();
 			 this.setInfo();
