@@ -1,0 +1,33 @@
+﻿@using System.Threading.Tasks
+@using Gloobster.Entities
+@using Gloobster.Portal.ViewModels
+@model DoDontsVM
+
+
+<div class="table row col2 margin">
+    <div class="cell places">
+        <h3>Try this</h3>
+        @foreach (var item in Model.Dos)
+        {            
+            <div class="place">
+                @Html.Partial("PlusMinus")
+                @item.Text
+            </div>
+        }
+        
+        @Html.Partial("DoDontAdder")
+    </div>
+
+    <div class="cell places">
+        <h3>Don't try that</h3>
+        @foreach (var item in Model.Donts)
+        {
+            <div class="place">
+                @Html.Partial("PlusMinus")
+                @item.Text
+            </div>
+        }
+        
+        @Html.Partial("DoDontAdder")
+    </div>
+</div>

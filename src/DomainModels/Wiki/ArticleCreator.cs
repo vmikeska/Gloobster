@@ -4,6 +4,7 @@ using System.Web.UI.WebControls;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.Entities;
+using Gloobster.Entities.Wiki;
 using MongoDB.Bson;
 
 namespace Gloobster.DomainModels.Wiki
@@ -34,7 +35,7 @@ namespace Gloobster.DomainModels.Wiki
 
         public async void CreateInitialData()
         {
-            var entitiesCount = await DB.GetCountAsync<WikiArticleEntity>();
+            var entitiesCount = await DB.GetCountAsync<WikiCountryEntity>();
 
             if (entitiesCount == 0)
             {
@@ -65,24 +66,26 @@ namespace Gloobster.DomainModels.Wiki
         }
 
 
-        private WikiArticleEntity CreateCountry(Continent continent, string countryCode, string title, string linkName)
+        private WikiCountryEntity CreateCountry(Continent continent, string countryCode, string title, string linkName)
         {
             var baseSectionId = ObjectId.GenerateNewId();
             var articleId = ObjectId.GenerateNewId();
 
-            var entity = new WikiArticleEntity
+            var entity = new WikiCountryEntity
             {
                 id = articleId,
                 //Type = WikiArticleType.Country,
-                Parent_id = ObjectId.Empty,
-                Continent = continent,
-                CountryCode = countryCode,
-                Country_id = ObjectId.Empty,
+                
+                Continent = continent,                
                 Sections = new List<SectionSE>
                 {
                     new SectionSE {id = baseSectionId}
                 },
                 Links = new List<LinkSE>(),
+                Data = new CountryDataSE
+                {
+                    CountryCode = countryCode,
+                }
                 //Photos = new List<PhotoSE>()
             };
             DB.SaveAsync(entity);
@@ -92,8 +95,8 @@ namespace Gloobster.DomainModels.Wiki
                 Section_id = baseSectionId,
                 BaseText = "Country",
                 Title = title,
-                Dislikes = 0,
-                Likes = 0
+                Dislikes = new List<ObjectId>(),
+                Likes = new List<ObjectId>()
             };
 
             var textsEntity = new WikiTextsEntity
@@ -109,18 +112,18 @@ namespace Gloobster.DomainModels.Wiki
             return entity;
         }
 
-        private WikiArticleEntity CreateContinent(Continent continent, string title, string linkName)
+        private WikiCountryEntity CreateContinent(Continent continent, string title, string linkName)
         {
             var baseSectionId = ObjectId.GenerateNewId();
             var articleId = ObjectId.GenerateNewId();
 
-            var entity = new WikiArticleEntity
+            var entity = new WikiCountryEntity
             {
                 id = articleId,
                 //Type = WikiArticleType.Continent,
-                Parent_id = ObjectId.Empty,
+                
                 Continent = continent,
-                Country_id = ObjectId.Empty,
+                
                 Sections = new List<SectionSE>
                 {
                     new SectionSE {id = baseSectionId}
@@ -137,8 +140,8 @@ namespace Gloobster.DomainModels.Wiki
                 Section_id = baseSectionId,
                 BaseText = "Continent",
                 Title = title,
-                Dislikes = 0,
-                Likes = 0
+                Dislikes = new List<ObjectId>(),
+                Likes = new List<ObjectId>()
             };
 
             var textsEntity = new WikiTextsEntity
@@ -159,7 +162,7 @@ namespace Gloobster.DomainModels.Wiki
     {
         public void CreateCityArticle()
         {
-            var articleEntity = new WikiArticleEntity
+            var articleEntity = new WikiCountryEntity
             {
                 id = ObjectId.GenerateNewId(),
                 //Type = WikiArticleType.Country

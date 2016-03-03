@@ -1,0 +1,27 @@
+﻿@using System.Threading.Tasks
+@using Gloobster.Portal.ViewModels
+@model LinksVM
+
+
+<div class="table width100 margin">
+    <div class="cell middle">
+        <h4 class="margin0">@Model.Type</h4>
+    </div>
+    <div class="cell">
+        @Html.Partial("Rating")
+    </div>
+</div>
+
+@foreach (var item in Model.Items)
+{
+    <div class="favItem">
+        <b>@item.Name</b>
+        @if (item.Links != null)
+        {
+            foreach (var link in item.Links)
+            {
+                <a href="#"><img class="opacity5 middle" src="/images/@(Model.GetLinkIco(link.Type)).png"></a>
+            }
+        }
+    </div>
+}

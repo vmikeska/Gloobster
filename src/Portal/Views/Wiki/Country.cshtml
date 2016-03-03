@@ -1,0 +1,44 @@
+﻿@using Gloobster.Portal.ViewModels
+@model WikiCountryViewModel
+
+@{
+    ViewBag.BodyClass = "page";
+    //ViewBag.MenuGroup = "Planning";
+}
+
+
+<div class="blue-line margin"></div>
+
+<section class="wrapper margin3">
+    @Html.Partial("Breadcrumb")
+    <h2>@Model.BaseTexts.Title</h2>
+    @Html.Partial("Languages")
+
+    <div class="margin">
+        <img class="radius" src="/images/samples/sample16.jpg">
+    </div>
+
+    @Html.Partial("StandardBlock", @Model.Section("AboutPeople"))
+
+    @Html.Partial("DoDont", Model.DoDonts())
+
+    @Html.Partial("StandardBlock", @Model.Section("Languages"))
+
+    @Html.Partial("StandardBlock", @Model.Section("Safety"))
+
+    @Html.Partial("StandardBlock", @Model.Section("Marihuana"))
+
+    @Html.Partial("StandardBlock", @Model.Section("Gay"))
+
+    @Html.Partial("StandardBlock", @Model.Section("Transport"))
+
+    @Html.Partial("StandardBlock", @Model.Section("Restaurants"))
+
+    @Html.Partial("StandardBlock", @Model.Section("Tipping"))
+
+    @Html.Partial("StandardBlock", @Model.Section("Accommodation"))
+
+
+
+</section>
+

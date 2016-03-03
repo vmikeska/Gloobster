@@ -1,11 +1,25 @@
 ﻿
+@using System.Threading.Tasks
+@using Gloobster.Portal.Controllers.Portal
 @using Gloobster.Portal.ViewModels
 @model WikiCityViewModel
 
 @{
     ViewBag.BodyClass = "page";
     //ViewBag.MenuGroup = "Planning";
+
+    
 }
+
+<style>
+    .favItem {
+        border: 1px solid #009DC4; 
+        display: inline-block; 
+        padding: 4px; 
+        margin: 4px; 
+        border-radius: 5px;
+    }
+</style>
 
 <div class="blue-line margin"></div>
 
@@ -17,51 +31,23 @@
     <div class="margin">
         <img class="radius" src="/images/samples/sample16.jpg">
     </div>
+
+    @Html.Partial("BaseDescriptionCity")
+
+    @Html.Partial("StandardBlock", Model.Section("AboutPeople"))
     
-    @Html.Partial("BaseDescription")
-    
-    @Html.Partial("AboutPeople")
+    @Html.Partial("TagsBlock", Model.Sights())    
 
+    @Html.Partial("DoDont", Model.DoDonts())
 
+    @Html.Partial("StandardBlock", Model.Section("NightLife"))
+    @Html.Partial("Table3Block", Model.NightLife())
+    @Html.Partial("TagsBlock", Model.BarDistricts())
 
-    <div class="table width100 margin">
-        <div class="cell middle">
-            <h3 class="margin0">Favorite sites</h3>
-        </div>
-        <div class="cell">
-            @Html.Partial("Rating")
-        </div>
-    </div>
-    <ul>
-        <li>Colosseum one of the biggest ancient anphitheatre in the world</li>
-        <li>Fori Imperiali, ancient complex of ruins and monuments from the roman empire</li>
-        <li>Pantheon</li>
-        <li>Fontana di Trevi</li>
-        <li>Piazza di Spagna</li>
-        <li>Vaticano and Piazza S. Pietro</li>
-        <li>Piazza Navona</li>
-    </ul>
-    <p class="h4">Make your travels even more enjoyable with data saved at Gloobster. From flying tickets to booking confirmations and photos, everything in one place and easy to share with friends. Make your travels even more enjoyable with data saved at Gloobster. From flying tickets to booking.</p>
+    @Html.Partial("Table1Block", Model.Restaurant())
 
+    @Html.Partial("Table1Block", Model.Transport())
 
-    
-
-    @Html.Partial("Photos")
-
-    @Html.Partial("BlockWithBlue")
-
-    @Html.Partial("BlockStandart")
-
-    @Html.Partial("TextAndTable")
-
-    @Html.Partial("DoDonts")
-
-    @Html.Partial("PriceTable")
-
-    @Html.Partial("Map")
-
-    @Html.Partial("PlacesLinks")
-
-    @Html.Partial("GeoLinks")
+    @Html.Partial("Table1Block", Model.Accommodation())
 
 </section>

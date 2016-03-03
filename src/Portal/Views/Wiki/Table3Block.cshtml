@@ -1,0 +1,41 @@
+﻿@using System.Threading.Tasks
+@using Gloobster.Portal.ViewModels
+@model BlockVM
+
+
+<div class="table width100 margin">
+    <div class="cell middle">
+        <h4 class="margin0">@Model.Type</h4>        
+        <table class="margin2 width100">
+            <tr>
+                <th></th>
+                <th>@Model.Headers[0]</th>
+                <th>@Model.Headers[1]</th>
+                <th>@Model.Headers[2]</th>
+            </tr>
+
+            @foreach (var item in Model.TableItems)
+            {
+                <tr>
+                    <td>@item.Name</td>                    
+                    <td>                        
+                        €@item.Price1.ToString("0.00")
+                        @Html.Partial("PlusMinus")
+                    </td>
+                    <td>                        
+                        €@item.Price2.ToString("0.00")
+                        @Html.Partial("PlusMinus")
+                    </td>
+                    <td>                        
+                        €@item.Price3.ToString("0.00")
+                        @Html.Partial("PlusMinus")
+                    </td>
+                </tr>
+            }
+        </table>
+       
+    </div>
+    <div class="cell">
+        @Html.Partial("Rating")
+    </div>
+</div>

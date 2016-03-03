@@ -12,19 +12,33 @@ namespace Gloobster.Entities
         public ObjectId Article_id { get; set; }
         public string Language { get; set; }
 
+        public SectionTextsCommonSE BaseTexts { get; set; }
+
         public List<SectionTextsSE> Texts { get; set; }
 
+        public List<DoDontTextSE> DoDontTexts { get; set; }
+        
         public string LinkName { get; set; }
+    }
+
+    public class DoDontTextSE
+    {
+        public ObjectId DoDont_id { get; set; }
+
+        public string Text { get; set; }
+
+        public List<ObjectId> Likes { get; set; }
+        public List<ObjectId> Dislikes { get; set; }
     }
 
     public class SectionTextsSE
     {
         public ObjectId Section_id { get; set; }
 
-        public string Text { get; set; }
+        public string Text { get; set; } 
 
-        public int Likes { get; set; }
-        public int Dislikes { get; set; }
+        public List<ObjectId> Likes { get; set; }
+        public List<ObjectId> Dislikes { get; set; }
     }
 
     public class SectionTextsCommonSE : SectionTextsSE
