@@ -25,14 +25,14 @@
 
 <section class="wrapper margin3">
     @Html.Partial("Breadcrumb")
-    <h2>@Model.Title</h2>
+    <h2>@Model.Texts.Title</h2>
     @Html.Partial("Languages")
     
     <div class="margin">
         <img class="radius" src="/images/samples/sample16.jpg">
     </div>
 
-    @Html.Partial("BaseDescriptionCity")
+    @Html.Partial("BaseDescription", Model.Section("Base"))
 
     @Html.Partial("StandardBlock", Model.Section("AboutPeople"))
     

@@ -114,10 +114,22 @@ namespace Gloobster.Portal
 			// To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
 			app.UseMvc(routes =>
 			{
-				routes.MapRoute(
-					name: "default",
-					template: "{controller=Home}/{action=Index}/{id?}");
-			});
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapRoute(
+			        name: "wikiShort",
+			        template: "wiki/{id}",
+                    defaults: new { controller = "Wiki", action = "Page" }
+                    );
+
+                routes.MapRoute(
+                    name: "wikiFull",
+                    template: "wiki/{lang}/{id}",
+                    defaults: new { controller = "Wiki", action = "PageRegular" }
+                    );
+            });
 		}
 
 		// Entry point for the application.

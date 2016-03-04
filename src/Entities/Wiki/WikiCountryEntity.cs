@@ -5,12 +5,14 @@ using MongoDB.Bson;
 
 namespace Gloobster.Entities.Wiki
 {
-    public enum ReligionType { RomanCatolic, Hinduism, Islam}
-    public enum HDI { VeryLow, Low, High, VeryHigh}
-    public enum SocketType { V220HZ50 }
-
+    public enum ReligionType { NA, RomanCatolic, Hinduism, Islam}
+    public enum HDI { NA, Low, Medium, High, VeryHigh}
+    public enum SocketType { NA, V220HZ50 }
+    
     public class WikiCountryEntity : EntityBase
-    {   
+    {
+        public int GID { get; set; }
+
         public Continent Continent { get; set; }
         
         public List<LinkSE> Links { get; set; }
@@ -29,8 +31,9 @@ namespace Gloobster.Entities.Wiki
         public ReligionType Religion { get; set; }
         public string CountryCode { get; set; }
         public int Population { get; set; }
+        public double Area { get; set; }
         public string CapitalName { get; set; }
-        public string CapitalId { get; set; }
+        public int CapitalId { get; set; }
         public List<string> Languages { get; set; }
         public HDI HDI { get; set; }
         public string CallingCode { get; set; }

@@ -16,6 +16,7 @@ using Gloobster.DomainModels.Services.Places;
 using Gloobster.DomainModels.Services.PlaceSearch;
 using Gloobster.DomainModels.Services.Trip;
 using Gloobster.DomainModels.Services.Twitter;
+using Gloobster.DomainModels.Wiki;
 using Gloobster.Enums;
 using Gloobster.Portal.Controllers.Api.PinBoard;
 using Gloobster.Sharing.Facebook;
@@ -31,8 +32,7 @@ namespace Gloobster.Portal
 			var storageCreation = new StorageCreation();			
 			var storage = storageCreation.GetInstance(GloobsterConfig.IsLocal);
 			builder.AddInstance<IStorageProvider>(storage);
-
-
+            
 			builder.AddTransient<IUserService, UserService>();
 			builder.AddTransient<IAccountDriver, FacebookAccountDriver>().Keyed<IAccountDriver>("Facebook");
 			builder.AddTransient<IAccountDriver, TwitterAccountDriver>().Keyed<IAccountDriver>("Twitter");
@@ -104,7 +104,10 @@ namespace Gloobster.Portal
 
 
 			builder.AddInstance<ICountryService>(new CountryService());
-		}
+            builder.AddTransient<IInitialDataCreator, InitialDataCreator>();
+            
+
+        }
 		
 	}
 

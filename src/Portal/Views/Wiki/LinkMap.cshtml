@@ -1,0 +1,35 @@
+﻿@using Gloobster.Portal.ViewModels
+@model WikiLinkMapViewModel
+
+@{
+    ViewBag.BodyClass = "page";
+    //ViewBag.MenuGroup = "Planning";
+}
+
+
+<div class="blue-line margin"></div>
+
+
+@foreach (var lang in Model.Languages)
+{
+    <h2>@lang.Language</h2>
+
+    <h3>Continents</h3>
+    foreach (var continent in lang.Continents)
+    {
+        <a href="/wiki/continent/@continent.Link">@continent.Title</a>
+    }
+
+    <h3>Countries</h3>
+    foreach (var country in lang.Countries)
+    {
+        <h4><a href="/wiki/country/@country.Country.Link">@country.Country.Title</a></h4>
+        
+        foreach (var city in country.Cities)
+        {
+            <a href="/wiki/city/@city.Link">@city.Title</a>
+        }
+
+
+    }
+}

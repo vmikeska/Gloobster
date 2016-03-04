@@ -1,7 +1,6 @@
 ﻿@using System.Threading.Tasks
-@using Gloobster.Entities
 @using Gloobster.Portal.ViewModels
-@model WikiCityViewModel
+@model BlockVM
 
 <style>
     .box.blue table {
@@ -25,7 +24,8 @@
                             <b>Population</b>
                         </td>
                         <td>
-                            @Model.Article.Data.PopulationCity
+                            100000000
+                            @*@Model.Article.Data.PopulationCity*@
                         </td>
                     </tr>
                     <tr>
@@ -33,7 +33,8 @@
                             <b>Metro</b>
                         </td>
                         <td>
-                            @Model.Article.Data.PopulationMetro
+                            100000000
+                            @*@Model.Article.Data.PopulationMetro*@
                         </td>
                     </tr>
                 </table>
@@ -41,7 +42,7 @@
         </div>
     </div>
     <div class="cell">
-        <p class="h3">@Model.BaseTexts.BaseText</p>
+        <p class="h3">@Model.Text</p>
     </div>
     <div class="cell">
         @Html.Partial("Rating")

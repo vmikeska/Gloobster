@@ -4,17 +4,18 @@ using Gloobster.Portal.Controllers.Base;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using Gloobster.DomainInterfaces;
+using Gloobster.DomainModels.Wiki;
 using Serilog;
 
 namespace Gloobster.Portal.Controllers.Portal
 {
     public class HomeController : PortalBaseController
     {
-		public IGeoNamesService GeoNames { get; set; }
+		public IInitialDataCreator DataCreator { get; set; }
 
-		public HomeController(IGeoNamesService geoNames, ILogger log, IDbOperations db) : base(log, db)
+		public HomeController(IInitialDataCreator dataCreator, ILogger log, IDbOperations db) : base(log, db)
 		{
-			GeoNames = geoNames;
+            DataCreator = dataCreator;
 		}
 
 		public BsonDocument GenerateDoc()
@@ -38,15 +39,15 @@ namespace Gloobster.Portal.Controllers.Portal
 
 	    public IActionResult Test()
 	    {
-			var city = GeoNames.GetCityByIdAsync(1120483);
+            DataCreator.CreateInitialData();
 
-			return View();
+
+            return View();
 	    }
 
         public IActionResult Test2()
         {
-            var city = GeoNames.GetCityByIdAsync(1120483);
-
+            
             return View();
         }
 

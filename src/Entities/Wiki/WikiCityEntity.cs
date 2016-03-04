@@ -7,6 +7,8 @@ namespace Gloobster.Entities.Wiki
     public class WikiCityEntity : EntityBase
     {
         public ObjectId Country_id { get; set; }
+
+        public int GID { get; set; }
         
         public List<LinkSE> Links { get; set; }
 
