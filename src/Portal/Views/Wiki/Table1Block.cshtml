@@ -4,7 +4,7 @@
 
 
 <div class="table width100 margin">
-    <div class="cell middle">
+    <div data-id="@Model.SectionId" class="cell middle adminCase">
         <h3 class="margin0">@Model.Type</h3>
     </div>
     <div class="cell">
@@ -24,4 +24,4 @@
         </tr>
     }    
 </table>
-<p class="h4">@Model.Text</p>
+<p id="text_@Model.SectionId" class="h4">@Model.Text</p>

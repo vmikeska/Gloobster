@@ -1,0 +1,16 @@
+﻿
+<style>
+    .editTxt {
+        width: 100%;
+    }
+</style>
+
+<script id="blockEdit-template" type="text/x-handlebars-template">
+    <div id="edit_{{id}}">
+        <textarea class="editTxt">{{text}}</textarea>
+        <div>
+            <button data-id="{{id}}" class="cancel">Cancel</button>
+            <button data-id="{{id}}" class="save">Save</button>
+        </div>
+    </div>
+</script>

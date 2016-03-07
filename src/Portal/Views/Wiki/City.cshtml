@@ -1,15 +1,16 @@
-﻿
-@using System.Threading.Tasks
+﻿@using System.Threading.Tasks
 @using Gloobster.Portal.Controllers.Portal
 @using Gloobster.Portal.ViewModels
 @model WikiCityViewModel
 
 @{
     ViewBag.BodyClass = "page";
-    //ViewBag.MenuGroup = "Planning";
-
-    
+    //ViewBag.MenuGroup = "Planning";    
 }
+
+<script type="text/javascript" src="@Url.Content("~/js/Views/WikiPageView.js")"></script>
+
+@Html.Partial("AdminTemplates")
 
 <style>
     .favItem {
@@ -24,10 +25,14 @@
 <div class="blue-line margin"></div>
 
 <section class="wrapper margin3">
+    @if (Model.IsAdmin) { 
+        <input id="adminMode" type="checkbox"><label for="adminMode" class="mright10">Admin mode</label>
+    }
+
     @Html.Partial("Breadcrumb")
     <h2>@Model.Texts.Title</h2>
     @Html.Partial("Languages")
-    
+
     <div class="margin">
         <img class="radius" src="/images/samples/sample16.jpg">
     </div>
@@ -35,8 +40,8 @@
     @Html.Partial("BaseDescription", Model.Section("Base"))
 
     @Html.Partial("StandardBlock", Model.Section("AboutPeople"))
-    
-    @Html.Partial("TagsBlock", Model.Sights())    
+
+    @Html.Partial("TagsBlock", Model.Sights())
 
     @Html.Partial("DoDont", Model.DoDonts())
 
@@ -51,3 +56,11 @@
     @Html.Partial("Table1Block", Model.Accommodation())
 
 </section>
+
+<script>
+	function onBodyLoad() {
+	    currentView = new Views.WikiPageView();
+	    currentView.articleId = '@Model.ArticleId';
+	}
+
+</script>

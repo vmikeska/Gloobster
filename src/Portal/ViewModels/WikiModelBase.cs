@@ -6,13 +6,40 @@ using MongoDB.Bson;
 
 namespace Gloobster.Portal.ViewModels
 {
+    public class LangVersionVM
+    {
+        public string Language { get; set; }
+        public string LinkName { get; set; }
+    }
+
     public abstract class WikiModelBase : ViewModelBase
-    {        
+    {   
+        public string ArticleId { get; set; }
+
+        public bool IsAdmin { get; set; }
+
         public WikiTextsEntity Texts { get; set; }
         public abstract List<SectionSE> Sections { get; }
 
         public abstract List<ObjectId> Dos { get; }
         public abstract List<ObjectId> Donts { get; }
+
+        public List<LangVersionVM> LangVersions { get; set; }
+
+        public string GetLangName(string langCode)
+        {
+            if (langCode == "en")
+            {
+                return "English";
+            }
+
+            if (langCode == "de")
+            {
+                return "Deutsch";
+            }
+
+            return null;
+        }
 
         public BlockVM BaseText()
         {
@@ -52,7 +79,12 @@ namespace Gloobster.Portal.ViewModels
             var section = FindSectionByType(type);
             var text = GetTexts<SectionTextsSE>(section.id);
 
-            return new BlockVM { Text = text.Text, Type = type };
+            return new BlockVM
+            {
+                SectionId = section.id.ToString(),
+                Text = text.Text,
+                Type = type
+            };
         }
 
         public T GetSectionText<T>(string type) where T : SectionTextsSE

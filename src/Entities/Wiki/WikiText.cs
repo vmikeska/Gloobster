@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Database;
+using Gloobster.Enums;
 using MongoDB.Bson;
 
 namespace Gloobster.Entities
 {
-    public enum ArticleType { Continent, Country, City}
-
     public class WikiTextsEntity : EntityBase
     {
         public ObjectId Article_id { get; set; }

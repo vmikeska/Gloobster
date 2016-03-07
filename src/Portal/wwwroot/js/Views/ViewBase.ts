@@ -23,7 +23,7 @@ module Views {
 			if (!isAlreadyLogged) {
 				this.initializeGoogle();
 				this.initializeFacebook();
-				$("#loginSection").show();
+				$(".loginSection").show();
 			} else {
 				console.log("isAlreadyLogged with " + this.loginManager.cookieLogin.networkType);
 

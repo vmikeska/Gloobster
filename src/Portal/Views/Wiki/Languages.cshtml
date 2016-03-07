@@ -1,6 +1,10 @@
-﻿<div class="tags margin">
-    <a class="tag" href="#">English</a>
-    <a class="tag" href="#">German</a>
-    <a class="tag" href="#">Spanish</a>
-    <a class="tag" href="#">Czech</a>
+﻿@using System.Threading.Tasks
+@using Gloobster.Portal.ViewModels
+@model WikiModelBase
+
+<div class="tags margin">
+    @foreach (var item in Model.LangVersions)
+    {
+        <a class="tag" href="@($"/wiki/{item.Language}/{item.LinkName}")">@Model.GetLangName(item.Language)</a>
+    }
 </div>

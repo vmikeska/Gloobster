@@ -29,14 +29,10 @@ namespace Gloobster.Portal.Controllers.Portal
 
         public IActionResult PageRegular(string id, string lang)
         {
-            //var dCountry = new DemoCountry();
-            //var vm = CreateViewModelInstance<WikiCountryViewModel>();
-            //vm.Article = dCountry.Country;
-            //vm.Texts = dCountry.Texts;
-
             WikiModelBase vm = null;
             string template = string.Empty;
             var text = DB.C<WikiTextsEntity>().FirstOrDefault(i => i.LinkName == id && i.Language == lang);
+            
             if (text.Type == ArticleType.Country)
             {
                 vm = GetCountryVM(text);
@@ -47,6 +43,17 @@ namespace Gloobster.Portal.Controllers.Portal
                 vm = GetCityVM(text);
                 template = "City";
             }
+
+            vm.IsAdmin = true;
+            vm.ArticleId = text.Article_id.ToString();
+
+            var langVers = DB.C<WikiTextsEntity>()
+                .Where(i => i.Article_id == text.Article_id)
+                .Select(a => new {a.Language, a.LinkName})
+                .ToList();
+
+            vm.LangVersions = 
+                langVers.Select(i => new LangVersionVM {Language = i.Language, LinkName = i.LinkName}).ToList();
             
             return View(template, vm);
         }

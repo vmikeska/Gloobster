@@ -25,31 +25,32 @@
 </head>
 <body onload="onBodyLoad()" class="@ViewBag.BodyClass" id="top">
 <header class="header">
-	<div class="wrapper">
-		<h1><a asp-controller="Home" asp-action="Index" class="logo-header">Gloobster</a>
-		</h1>
-		<div class="menu-holder table">
-			<div class="cell">
-				@Html.Partial("_Menu")
-			</div>		    
-            @if (Model.IsUserLogged)
-            {
-                <div class="cell">
-                    @Html.Partial("_UserMenu")                    
-                </div>
-            }
-            else
-            {
-                <div class="cell" id="loginSection" style="display: none">
-                    <ul class="menu-header separator table">
-                        <li><a class="popup-target" data-target="#popup-login" href="#">Login</a></li>
-                        <li><a class="popup-target" data-target="#popup-join" href="#">Join</a></li>
+
+
+    <div class="wrapper">
+        <h1><a asp-controller="Home" asp-action="Index" class="logo-header">Gloobster</a></h1>
+
+        <div class="menu-holder">
+            <div class="tright mhalf">
+                <div class="dropdown">
+                    <span class="selected">English</span>
+                    <ul>
+                        <li>English</li>                        
                     </ul>
-                </div>
-            }
-		</div>
-		<a href="#" class="hamburger" data-target="#menu"><span></span></a>
-	</div>
+                    <input type="hidden">
+                </div>                
+                @if (Model.IsUserLogged)
+                {                    
+                        @Html.Partial("_UserMenu")                    
+                }                
+            </div>
+            @Html.Partial("_Menu")            
+        </div>
+
+        <a class="hamburger" data-target="#menu" href="#"><span></span></a>
+    </div>
+
+
 </header>
 
 
@@ -64,7 +65,8 @@
 
 
 <script src="http://ga.cz/2015/gloobster/js/jquery.countto.js"></script>
-<script src="http://ga.cz/2015/gloobster/js/script.js"></script>
+@*<script src="http://ga.cz/2015/gloobster/js/script.js"></script>*@
+<script type="text/javascript" src="@Url.Content("~/js/script.js")"></script>
 @*@RenderSection("scripts", required: false)*@
 
 <script type="text/javascript">
