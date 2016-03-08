@@ -76,12 +76,27 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             var f2 = DB.F<WikiCityEntity>().Eq(p => p.id, articleIdObj);
             var u2 = DB.U<WikiCityEntity>().Push(p => p.PlacesLinks, linkEntity);
             var r2 = await DB.UpdateAsync(f2, u2);
-
-            bool updated = r2.ModifiedCount == 1;
-            return new ObjectResult(updated);
+            
+            var linkRes = GetResponse(linkEntity);
+            return new ObjectResult(linkRes);
         }
 
-
+	    private dynamic GetResponse(LinkObjectSE l)
+	    {
+            var linkRes = new
+            {
+                name = l.Name,
+                id = l.id.ToString(),
+                links = l.Links.Select(i => new
+                {
+                    id = i.id.ToString(),
+                    type = (int)i.Type,
+                    sourceId = i.SourceId
+                })
+            };
+	        return linkRes;
+	    }
+        
         [HttpPut]
 		[AuthorizeApi]
 		public async Task<IActionResult> Put([FromBody] UpdateLinkRequest req)
@@ -117,8 +132,8 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             var u2 = DB.U<WikiCityEntity>().Push(p => p.PlacesLinks, linkEntity);
             var r2 = await DB.UpdateAsync(f2, u2);
 
-            bool updated = r2.ModifiedCount == 1;
-            return new ObjectResult(updated);
+            var linkRes = GetResponse(linkEntity);
+            return new ObjectResult(linkRes);
 		}
         
 	}

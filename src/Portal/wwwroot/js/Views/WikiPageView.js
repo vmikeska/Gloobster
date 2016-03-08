@@ -10,28 +10,38 @@ var Views;
             this.articleId = articleId;
             this.linksTemplate = Views.ViewBase.currentView.registerTemplate("linkItem-template");
             this.linkItemLinkTemplate = Views.ViewBase.currentView.registerTemplate("linkItemLink-template");
+            this.favLink = Views.ViewBase.currentView.registerTemplate("favLink-template");
+            this.favLinkLink = Views.ViewBase.currentView.registerTemplate("favLinkLink-template");
         }
+        LinksAdmin.prototype.removeAdminLinks = function () {
+            $(".editLink").remove();
+            $(".adminAdder").remove();
+        };
         LinksAdmin.prototype.createItemEditButtons = function (sectionId) {
             var _this = this;
-            var $root = $("#Links_" + sectionId);
-            var links = $root.find(".favItem").toArray();
+            var $cont = $("#Links_" + sectionId);
+            var links = $cont.find(".favItem").toArray();
             links.forEach(function (link) {
                 var $link = $(link);
-                var id = $link.data("id");
-                var name = $link.data("name");
-                var $html = $("<a href=\"#\" class=\"editLink\" data-id=\"" + id + "\">Edit</a>");
-                $html.click(function (e) {
-                    e.preventDefault();
-                    _this.createItemEditForm(name, id, sectionId);
-                });
-                $link.append($html);
+                _this.createItemEditButton($link, sectionId);
             });
             this.createAddNewItemButton(sectionId);
+        };
+        LinksAdmin.prototype.createItemEditButton = function ($link, sectionId) {
+            var _this = this;
+            var id = $link.data("id");
+            var name = $link.data("name");
+            var $html = $("<a href=\"#\" class=\"editLink\" data-id=\"" + id + "\">Edit</a>");
+            $html.click(function (e) {
+                e.preventDefault();
+                _this.createItemEditForm(name, id, sectionId);
+            });
+            $link.append($html);
         };
         LinksAdmin.prototype.createAddNewItemButton = function (sectionId) {
             var _this = this;
             var $cont = $("#Links_" + sectionId);
-            var $html = $("<a href=\"#\" data-sectionid=\"" + sectionId + "\">Add item</a>");
+            var $html = $("<a class=\"adminAdder\" id=\"addNew_" + sectionId + "\" href=\"#\" data-sectionid=\"" + sectionId + "\">Add item</a>");
             $html.click(function (e) { return _this.showNewItemForm(e, sectionId); });
             $cont.append($html);
         };
@@ -44,14 +54,14 @@ var Views;
             if (this.$form) {
                 this.$form.remove();
             }
-            var $root = $("#Links_" + sectionId);
+            var $cont = $("#Links_" + sectionId);
             var context = { name: name, id: id };
             var $html = $(this.linksTemplate(context));
             $html.find(".cancel").click(function (e) { return _this.cancelEdit(e, sectionId); });
             $html.find(".add").click(function (e) { return _this.addLinkToItem(e, $html); });
             $html.find(".save").click(function (e) { return _this.saveItem(e, sectionId); });
-            $html.find(".delete").click(function (e) { return _this.itemDelete(e); });
-            $root.before($html);
+            $html.find(".delete").click(function (e) { return _this.itemDelete(e, sectionId); });
+            $cont.before($html);
             this.$form = $html;
             var $link = $("#faviItem_" + id);
             var $socLinks = $link.find(".socLink");
@@ -81,10 +91,6 @@ var Views;
                 return "Yelp";
             }
         };
-        //private hideLinksAdmin(id, sectionId) {
-        //	$(`#linksEdit_${id}`).remove();
-        //	$(`#Links_${sectionId}`).find(".editLink").remove();
-        //}
         LinksAdmin.prototype.getLinkDataToUpdate = function (linkId, sectionId) {
             var $cont = $("#Links_" + sectionId);
             var $adminRoot = $("#linksEdit_" + linkId);
@@ -130,13 +136,64 @@ var Views;
             if (id === "Temp") {
                 Views.ViewBase.currentView.apiPost("WikiLink", data, function (r) {
                     _this.$form.remove();
+                    _this.addNewTag(r, sectionId);
                 });
             }
             else {
                 Views.ViewBase.currentView.apiPut("WikiLink", data, function (r) {
                     _this.$form.remove();
+                    _this.removeTag(id, sectionId);
+                    _this.addNewTag(r, sectionId);
                 });
             }
+        };
+        LinksAdmin.prototype.getLinkIco = function (t) {
+            if (t === SourceType.S4) {
+                return "disc-foursquare";
+            }
+            if (t === SourceType.FB) {
+                return "disc-facebook";
+            }
+            //todo: change
+            if (t === SourceType.Yelp) {
+                return "disc-google";
+            }
+        };
+        LinksAdmin.prototype.getLink = function (t, sid) {
+            if (t === SourceType.S4) {
+                return "https://foursquare.com/v/" + sid;
+            }
+            if (t === SourceType.FB) {
+                return "https://www.facebook.com/" + sid;
+            }
+            if (t === SourceType.Yelp) {
+                return "https://www.yelp.com/biz/" + sid;
+            }
+        };
+        LinksAdmin.prototype.removeTag = function (id, sectionId) {
+            var $cont = $("#Links_" + sectionId);
+            $cont.find("#faviItem_" + id).remove();
+        };
+        LinksAdmin.prototype.addNewTag = function (r, sectionId) {
+            var _this = this;
+            var context = {
+                id: r.id,
+                name: r.name
+            };
+            var $html = $(this.favLink(context));
+            r.links.forEach(function (l) {
+                var cx = {
+                    link: _this.getLink(l.type, l.sourceId),
+                    type: l.type,
+                    id: l.id,
+                    sid: l.sourceId,
+                    ico: _this.getLinkIco(l.type)
+                };
+                var $h = $(_this.favLinkLink(cx));
+                $html.find(".txt").after($h);
+            });
+            this.createItemEditButton($html, sectionId);
+            $("#addNew_" + sectionId).before($html);
         };
         LinksAdmin.prototype.createSingleLinkEdit = function ($cont, context) {
             var _this = this;
@@ -144,11 +201,13 @@ var Views;
             $lHtml.find(".delete").click(function (e) { return _this.linkDelete(e); });
             $cont.append($lHtml);
         };
-        LinksAdmin.prototype.itemDelete = function (e) {
+        LinksAdmin.prototype.itemDelete = function (e, sectionId) {
+            var _this = this;
             e.preventDefault();
             var id = $(e.target).data("id");
             Views.ViewBase.currentView.apiDelete("WikiLink", [["linkId", id], ["articleId", this.articleId]], function (r) {
-                $("#faviItem_" + id).remove();
+                _this.removeTag(id, sectionId);
+                _this.$form.remove();
             });
         };
         LinksAdmin.prototype.linkDelete = function (e) {
@@ -280,6 +339,7 @@ var Views;
         };
         WikiPageView.prototype.destroyBlocks = function () {
             $(".editSection").remove();
+            this.linksAdmin.removeAdminLinks();
         };
         WikiPageView.prototype.drawAdminBlocks = function ($block, id, adminType) {
             var adminTypes = adminType.split(",");

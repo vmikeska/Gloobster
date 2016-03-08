@@ -11,6 +11,7 @@ var SourceType;
     SourceType[SourceType["S4"] = 1] = "S4";
     SourceType[SourceType["City"] = 2] = "City";
     SourceType[SourceType["Country"] = 3] = "Country";
+    SourceType[SourceType["Yelp"] = 4] = "Yelp";
 })(SourceType || (SourceType = {}));
 var SocialNetworkType;
 (function (SocialNetworkType) {

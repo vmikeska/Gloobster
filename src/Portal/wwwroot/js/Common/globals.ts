@@ -13,7 +13,7 @@ module Constants {
 	export var emptyId = "000000000000000000000000";
 }
 
-enum SourceType { FB, S4, City, Country }
+enum SourceType { FB, S4, City, Country, Yelp }
 
 enum SocialNetworkType { Facebook, Google, Twitter, Base, Foursquare, GeoNames }
 

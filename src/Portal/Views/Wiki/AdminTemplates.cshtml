@@ -47,3 +47,15 @@
         <button data-id="{{id}}" class="delete">Delete</button>
     </div>       
 </script>
+
+
+<script id="favLink-template" type="text/x-handlebars-template">
+    <div id="faviItem_{{id}}" class="favItem" data-id="{{id}}" data-name="{{name}}">
+        <b class="txt">{{name}}</b>        
+    </div>
+</script>
+
+<script id="favLinkLink-template" type="text/x-handlebars-template">
+    <a href="{{link}}" target="_blank"><img data-type="{{type}}" data-id="{{id}}" data-sid="{{sid}}" class="opacity5 middle socLink" src="/images/{{ico}}.png"></a>
+</script>
+
