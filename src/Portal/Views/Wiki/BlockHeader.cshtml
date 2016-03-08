@@ -1,0 +1,12 @@
+﻿@using System.Threading.Tasks
+@using Gloobster.Portal.ViewModels
+@model BlockVM
+
+<div data-id="@Model.SectionId" class="table width100 margin adminBlock" data-at="@Model.Admin">
+    <div class="cell middle">
+        <h@(Model.Size) class="margin0">@Model.Type</h@(Model.Size)>
+    </div>
+    <div class="cell">
+        @Html.Partial("Rating")
+    </div>
+</div>

@@ -74,7 +74,7 @@ namespace Gloobster.Portal.ViewModels
             return item;
         }
 
-        public BlockVM Section(string type)
+        public BlockVM Section(string type, string admin = "standard", int size = 3)
         {
             var section = FindSectionByType(type);
             var text = GetTexts<SectionTextsSE>(section.id);
@@ -83,9 +83,13 @@ namespace Gloobster.Portal.ViewModels
             {
                 SectionId = section.id.ToString(),
                 Text = text.Text,
-                Type = type
+                Type = type,
+                Size = size,
+                Admin = admin
             };
         }
+
+        
 
         public T GetSectionText<T>(string type) where T : SectionTextsSE
         {

@@ -64,7 +64,10 @@ namespace Gloobster.DomainModels.Wiki
             var transportId = ObjectId.GenerateNewId();
             var accommodationId = ObjectId.GenerateNewId();
             var tippingId = ObjectId.GenerateNewId();
-            
+            var sightsId = ObjectId.GenerateNewId();
+            var nightlifePricesId = ObjectId.GenerateNewId();
+            var barDistrictsId = ObjectId.GenerateNewId();
+
             var votingUserOne = ObjectId.GenerateNewId();
 
             City = new WikiCityEntity
@@ -81,6 +84,17 @@ namespace Gloobster.DomainModels.Wiki
                     },
                     new SectionSE
                     {
+                        Type = "BarDistricts",
+                        id = barDistrictsId
+                    },
+                    
+                    new SectionSE
+                    {
+                        Type = "FavoriteSites",
+                        id = sightsId
+                    },                    
+                    new SectionSE
+                    {
                         Type = "AboutPeople",
                         id = aboutPoeopleId
                     },
@@ -89,6 +103,16 @@ namespace Gloobster.DomainModels.Wiki
                         Type = "NightLife",
                         id = nightlifeId
                     },
+                    new SectionSE
+                    {
+                        Type = "NightLife",
+                        id = nightlifeId
+                    },
+                    new SectionSE
+                    {
+                        Type = "NightlifePrices",
+                        id = nightlifePricesId
+                    },                    
                     new SectionSE
                     {
                         Type = "Restaurant",
@@ -118,62 +142,103 @@ namespace Gloobster.DomainModels.Wiki
                     PopulationMetro = 2484897,
                 },
 
-                Sights = new List<SiteSE>
+                PlacesLinks = new List<LinkObjectSE>
                 {
-                    new SiteSE
+                    new LinkObjectSE
                     {
                         id = ObjectId.GenerateNewId(),
+                        Category = "BarDistricts",
+                        Name = "Žižkov",
+                        Links = new List<LinkItemSE>
+                        {
+                            new LinkItemSE
+                            {
+                                id = ObjectId.GenerateNewId(),
+                                SourceId = "4e57b97645dd1de4d98a9a3d",
+                                Type = SourceType.S4,
+                            }
+                        }
+                    },
+                    new LinkObjectSE
+                    {
+                        id = ObjectId.GenerateNewId(),
+                        Category = "BarDistricts",
+                        Name = "Náplavka",
+                        Links = new List<LinkItemSE>()
+                    },
+                    new LinkObjectSE
+                    {
+                        id = ObjectId.GenerateNewId(),
+                        Category = "BarDistricts",
+                        Name = "Nové město",
+                        Links = new List<LinkItemSE>()
+                    },
+
+                    new LinkObjectSE
+                    {
+                        id = ObjectId.GenerateNewId(),
+                        Category = "Sights",
                         Name = "Colosseum",
                         Links = new List<LinkItemSE>
                         {
                             new LinkItemSE
                             {
+                                id = ObjectId.GenerateNewId(),
                                 SourceId = "4adcdac6f964a520355321e3",
                                 Type = SourceType.S4
                             },
                             new LinkItemSE
                             {
+                                id = ObjectId.GenerateNewId(),
                                 SourceId = "colosseo-roma",
                                 Type = SourceType.Yelp
                             },
                             new LinkItemSE
                             {
+                                id = ObjectId.GenerateNewId(),
                                 SourceId = "106151256083561",
                                 Type = SourceType.FB
                             },
                         }
                     },
-                    new SiteSE
+                    new LinkObjectSE
                     {
                         id = ObjectId.GenerateNewId(),
+                        Category = "Sights",
                         Name = "Fori Imperiali"
                     },
-                    new SiteSE
+                    new LinkObjectSE
                     {
                         id = ObjectId.GenerateNewId(),
+                        Category = "Sights",
                         Name = "Pantheon "
                     },
-                    new SiteSE
+                    new LinkObjectSE
                     {
                         id = ObjectId.GenerateNewId(),
+                        Category = "Sights",
                         Name = "Fontana di Trevi"
                     },
-                    new SiteSE
+                    new LinkObjectSE
                     {
                         id = ObjectId.GenerateNewId(),
+                        Category = "Sights",
                         Name = "Piazza di Spagna"
                     },
-                    new SiteSE
+                    new LinkObjectSE
                     {
                         id = ObjectId.GenerateNewId(),
+                        Category = "Sights",
                         Name = "Vaticano and Piazza S. Pietro "
                     },
-                    new SiteSE
+                    new LinkObjectSE
                     {
                         id = ObjectId.GenerateNewId(),
+                        Category = "Sights",
                         Name = "Piazza Navona"
                     },
                 },
+
 
                 PubItems = new List<PubItemSE>
                 {
@@ -303,36 +368,7 @@ namespace Gloobster.DomainModels.Wiki
                         }
                     },
                 },
-
-                BarDistricts = new List<BarDistrictSE>
-                {
-                    new BarDistrictSE
-                    {
-                        id = ObjectId.GenerateNewId(),
-                        Name = "Žižkov",
-                        Links = new List<LinkItemSE>
-                        {
-                            new LinkItemSE
-                            {
-                                SourceId = "4e57b97645dd1de4d98a9a3d",
-                                Type = SourceType.S4
-                            }
-                        }
-                    },
-                    new BarDistrictSE
-                    {
-                        id = ObjectId.GenerateNewId(),
-                        Name = "Náplavka",
-                        Links = new List<LinkItemSE>()
-                    },
-                    new BarDistrictSE
-                    {
-                        id = ObjectId.GenerateNewId(),
-                        Name = "Nové město",
-                        Links = new List<LinkItemSE>()
-                    }
-                },
-
+                
                 TransportItems = new List<PriceItemSE>
                 {
                     new PriceItemSE
@@ -452,6 +488,28 @@ namespace Gloobster.DomainModels.Wiki
             
             var texts = new List<SectionTextsSE>
             {
+                new SectionTextsSE
+                {
+                    Section_id = sightsId,
+                    Text = "",
+                    Dislikes = new List<ObjectId>(),
+                    Likes = new List<ObjectId>()
+                },
+                new SectionTextsSE
+                {
+                    Section_id = nightlifePricesId,
+                    Text = "",
+                    Dislikes = new List<ObjectId>(),
+                    Likes = new List<ObjectId>()
+                },
+                new SectionTextsSE
+                {
+                    Section_id = barDistrictsId,
+                    Text = "",
+                    Dislikes = new List<ObjectId>(),
+                    Likes = new List<ObjectId>()
+                },
+
                 new SectionTextsSE
                 {
                     Section_id = baseId,

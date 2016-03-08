@@ -4,7 +4,7 @@
     <li><a id="MenuWiki" asp-controller="Wiki" asp-action="Home">Wiki</a></li>
     <li><a id="MenuPlanning" asp-controller="Destination" asp-action="Planning">Planning</a></li>
 
-    @if (!Model.IsUserLogged)
+    @if ((Model != null) && !Model.IsUserLogged)
     {
         <li><a class="popup-target loginSection" data-target="#popup-login" href="#" style="display: none">Login</a></li>
         <li><a class="popup-target loginSection" data-target="#popup-join" href="#" style="display: none">Join</a></li>

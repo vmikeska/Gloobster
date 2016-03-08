@@ -14,3 +14,36 @@
         </div>
     </div>
 </script>
+
+<script id="linkItem-template" type="text/x-handlebars-template">
+    <div id="linksEdit_{{id}}">
+        <input id="name" type="text" value="{{name}}" />
+        <div class="links">
+           
+        </div>
+        <div class="buttons">
+            <button class="add">Add</button>
+            <button data-id="{{id}}" class="cancel">Cancel</button>
+            <button data-id="{{id}}" class="save">Save</button>
+            <button data-id="{{id}}" class="delete">Delete</button>
+        </div>
+    </div>    
+</script>
+
+<script id="linkItemLink-template" type="text/x-handlebars-template">   
+    <div id="linkItem_{{id}}" data-id="{{id}}" class="linkItem" style="border: 1px solid black;">
+        <div class="dropdown">
+            <span class="selected">{{selectedName}}</span>
+            <ul>
+                <li data-value="0">FB</li>
+                <li data-value="1">Foursquare</li>
+                <li data-value="4">Yelp</li>                
+            </ul>
+            <input class="selectedValue" type="hidden" value="{{selectedValue}}">
+        </div>
+        <br />
+        <input class="sid" type="text" value="{{sid}}" />
+        <br />        
+        <button data-id="{{id}}" class="delete">Delete</button>
+    </div>       
+</script>

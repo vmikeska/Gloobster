@@ -28,7 +28,7 @@ namespace Gloobster.DomainModels.Wiki
 
             return res.ModifiedCount == 1;
         }
-
+        
         public async Task<bool> AddRating(string articleId, string sectionId, string language, string userId, bool like)
         {
             ObjectId articleIdObj = new ObjectId(articleId);

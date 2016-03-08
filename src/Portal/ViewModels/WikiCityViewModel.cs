@@ -9,25 +9,17 @@ namespace Gloobster.Portal.ViewModels
 {
     public class BlockVM
     {
+        public int Size { get; set; }
+        public string Admin { get; set; }
+
+        public string Category { get; set; }
         public string SectionId { get; set; }
         public string Text { get; set; }
         public string Type { get; set; }
         public List<string> Headers { get; set; }
         public List<TableItemVM> TableItems { get; set; }
-    }
 
-    public class LinkVM
-    {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public List<LinkItemSE> Links { get; set; }
-    }
-
-    public class LinksVM
-    {
-        public string Type { get; set; }
-
-        public List<LinkVM> Items { get; set; }
+        public List<LinkVM> LinkItems { get; set; }
 
         public string GetLinkIco(SourceType type)
         {
@@ -47,7 +39,36 @@ namespace Gloobster.Portal.ViewModels
 
             return string.Empty;
         }
+
+        public string GetLink(SourceType type, string sid)
+        {
+            var template = "";
+
+            if (type == SourceType.S4)
+            {
+                template = "https://foursquare.com/v/{0}";
+            }
+            if (type == SourceType.FB)
+            {
+                template = "https://www.facebook.com/{0}";
+            }
+            if (type == SourceType.Yelp)
+            {
+                template = "https://www.yelp.com/biz/{0}";
+            }
+            
+            return string.Format(template, sid);
+        }
     }
+
+    public class LinkVM
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public List<LinkItemSE> Links { get; set; }
+    }
+
+    
     
     public class TableItemVM
     {
@@ -78,25 +99,49 @@ namespace Gloobster.Portal.ViewModels
         public override List<ObjectId> Dos => Article.Dos;
         public override List<ObjectId> Donts => Article.Donts;
 
-        public LinksVM BarDistricts()
+        public List<LinkObjectSE> GetLinksByCategory(string category)
         {
-            var res = new LinksVM
-            {
-                Type = "BarDistricts",
-                Items = Article.BarDistricts.Select(b => new LinkVM
-                {
-                    Name = b.Name,
-                    Id = b.id.ToString(),
-                    Links = b.Links
-                }).ToList()                
-            };
-
-            return res;
+            var links = Article.PlacesLinks.Where(c => c.Category == category).ToList();
+            return links;
         }
-        
+
+        public BlockVM BarDistricts()
+        {
+            var cat = "BarDistricts";
+
+            var block = Section("BarDistricts", "links");
+            var links = GetLinksByCategory(cat);
+            block.Category = cat;
+            block.LinkItems = links.Select(b => new LinkVM
+            {
+                Name = b.Name,
+                Id = b.id.ToString(),
+                Links = b.Links
+            }).ToList();
+            
+            return block;
+        }
+
+        public BlockVM Sights()
+        {
+            var cat = "Sights";
+
+            var block = Section("FavoriteSites", "links");
+            var links = GetLinksByCategory(cat);
+            block.Category = cat;
+            block.LinkItems = links.Select(b => new LinkVM
+            {
+                Name = b.Name,
+                Id = b.id.ToString(),
+                Links = b.Links
+            }).ToList();
+
+            return block;
+        }
+
         public BlockVM Accommodation()
         {
-            var block = Section("Accommodation");
+            var block = Section("Accommodation", "standard,price1", 3);
             block.TableItems = Article.AccommodationItems.Select(i => new TableItemVM
             {
                 Name = i.Type,
@@ -108,7 +153,7 @@ namespace Gloobster.Portal.ViewModels
 
         public BlockVM Transport()
         {
-            var block = Section("Transport");
+            var block = Section("Transport", "standard,price1", 3);
             block.TableItems = Article.TransportItems.Select(i => new TableItemVM
             {
                 Name = i.Type,
@@ -120,7 +165,7 @@ namespace Gloobster.Portal.ViewModels
 
         public BlockVM Restaurant()
         {
-            var block = Section("Restaurant");
+            var block = Section("Restaurant", "standard,price1", 3);
             block.TableItems = Article.RestaurantItems.Select(i => new TableItemVM
             {
                 Name = i.Type,
@@ -130,40 +175,25 @@ namespace Gloobster.Portal.ViewModels
             return block;
         }
 
-        public LinksVM Sights()
-        {
-            var res = new LinksVM
-            {
-                Type = "FavoriteSites",
-                Items = Article.Sights.Select(b => new LinkVM
-                {
-                    Name = b.Name,
-                    Id = b.id.ToString(),
-                    Links = b.Links
-                }).ToList()
-            };
-
-            return res;
-        }
         
-        public BlockVM NightLife()
+        
+        public BlockVM NightLifePrices()
         {
-            var block = new BlockVM
+            var block = Section("NightlifePrices", "strandard,price3", 4);
+            block.TableItems = Article.PubItems.Select(i => new TableItemVM
             {
-                Type = "Prices",
-                TableItems = Article.PubItems.Select(i => new TableItemVM
-                {
-                    Name = i.Type,
-                    Price1 = i.PricePub.CurrentPrice,
-                    Price2 = i.PriceBar.CurrentPrice,
-                    Price3 = i.PriceClub.CurrentPrice
-                }).ToList(),
-                Headers = new List<string>
-                {
-                    "Pub", "Bar", "Club"
-                }
-
+                Name = i.Type,
+                Price1 = i.PricePub.CurrentPrice,
+                Price2 = i.PriceBar.CurrentPrice,
+                Price3 = i.PriceClub.CurrentPrice
+            }).ToList();
+            block.Headers = new List<string>
+            {
+                "Pub",
+                "Bar",
+                "Club"
             };
+            
             return block;
         }        
     }

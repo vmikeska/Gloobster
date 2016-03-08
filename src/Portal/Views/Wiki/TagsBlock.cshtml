@@ -1,27 +1,25 @@
 ﻿@using System.Threading.Tasks
+@using Gloobster.Enums
 @using Gloobster.Portal.ViewModels
-@model LinksVM
+@model BlockVM
 
 
-<div class="table width100 margin">
-    <div class="cell middle">
-        <h4 class="margin0">@Model.Type</h4>
-    </div>
-    <div class="cell">
-        @*@Html.Partial("Rating")*@
-    </div>
-</div>
+@Html.Partial("BlockHeader")
 
-@foreach (var item in Model.Items)
-{
-    <div class="favItem">
-        <b>@item.Name</b>
-        @if (item.Links != null)
-        {
-            foreach (var link in item.Links)
+
+
+<div id="Links_@Model.SectionId" data-category="@Model.Category">
+    @foreach (var item in Model.LinkItems)
+    {
+        <div id="faviItem_@item.Id"  class="favItem" data-id="@item.Id" data-name="@item.Name">
+            <b>@item.Name</b>
+            @if (item.Links != null)
             {
-                <a href="#"><img class="opacity5 middle" src="/images/@(Model.GetLinkIco(link.Type)).png"></a>
+                foreach (var link in item.Links)
+                {
+                    <a href="@Model.GetLink(link.Type, link.SourceId)" target="_blank"><img data-type="@((int)link.Type)" data-id="@link.id.ToString()" data-sid="@link.SourceId" class="opacity5 middle socLink" src="/images/@(Model.GetLinkIco(link.Type)).png"></a>
+                }
             }
-        }
-    </div>
-}
+        </div>
+    }
+</div>

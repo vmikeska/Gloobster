@@ -18,7 +18,7 @@ namespace Gloobster.Entities.Wiki
 
         public CityDataSE Data { get; set; }
 
-        public List<SiteSE> Sights { get; set; }
+        public List<LinkObjectSE> PlacesLinks { get; set; }
 
         public List<PubItemSE> PubItems { get; set; }
 
@@ -27,8 +27,6 @@ namespace Gloobster.Entities.Wiki
         public List<PriceItemSE> TransportItems { get; set; }
 
         public List<PriceItemSE> AccommodationItems { get; set; }
-        
-        public List<BarDistrictSE> BarDistricts { get; set; }
         
         public List<ObjectId> Dos { get; set; }
 
@@ -42,13 +40,14 @@ namespace Gloobster.Entities.Wiki
         public int PopulationMetro { get; set; }
     }
 
-    public class BarDistrictSE
+    public class LinkObjectSE
     {
         public ObjectId id { get; set; }
+        public string Category { get; set; }
         public string Name { get; set; }
         public List<LinkItemSE> Links { get; set; }
     }
-
+    
     public class PubItemSE
     {
         public string Type { get; set; }
@@ -72,10 +71,5 @@ namespace Gloobster.Entities.Wiki
         public List<ObjectId> Minus { get; set; }
     }
 
-    public class SiteSE
-    {
-        public ObjectId id { get; set; }
-        public string Name { get; set; }
-        public List<LinkItemSE> Links { get; set; }
-    }
+    
 }

@@ -9,6 +9,7 @@ namespace Gloobster.Entities.Wiki
 {
     public class LinkItemSE
     {
+        public ObjectId id { get;set; }
         public SourceType Type { get; set; }
         public string SourceId { get; set; }
     }

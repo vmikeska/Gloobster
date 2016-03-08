@@ -46,7 +46,7 @@
     @Html.Partial("DoDont", Model.DoDonts())
 
     @Html.Partial("StandardBlock", Model.Section("NightLife"))
-    @Html.Partial("Table3Block", Model.NightLife())
+    @Html.Partial("Table3Block", Model.NightLifePrices())
     @Html.Partial("TagsBlock", Model.BarDistricts())
 
     @Html.Partial("Table1Block", Model.Restaurant())
@@ -59,8 +59,7 @@
 
 <script>
 	function onBodyLoad() {
-	    currentView = new Views.WikiPageView();
-	    currentView.articleId = '@Model.ArticleId';
+	    currentView = new Views.WikiPageView('@Model.ArticleId');	 
 	}
 
 </script>
