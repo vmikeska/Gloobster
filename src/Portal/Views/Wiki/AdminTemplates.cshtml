@@ -59,3 +59,20 @@
     <a href="{{link}}" target="_blank"><img data-type="{{type}}" data-id="{{id}}" data-sid="{{sid}}" class="opacity5 middle socLink" src="/images/{{ico}}.png"></a>
 </script>
 
+
+<script id="doDontAdmin-template" type="text/x-handlebars-template">
+    <textarea placeholder="Add or edit..." style="width: 100%">{{text}}</textarea>
+    <br />
+    <input type="button" class="save" value="Save">
+    <input type="button" class="cancel" value="Cancel">
+    <input type="button" class="delete" value="Delete">
+</script>
+
+<script id="doDontItem-template" type="text/x-handlebars-template">
+    <div data-id="{{id}}" data-t="{{type}}" class="place">
+        @Html.Partial("PlusMinus")
+        <span>{{text}}</span>
+    </div>
+</script>
+
+

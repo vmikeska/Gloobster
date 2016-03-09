@@ -5,6 +5,133 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Views;
 (function (Views) {
+    var DoDontAdmin = (function () {
+        function DoDontAdmin(articleId, lang) {
+            this.articleId = articleId;
+            this.language = lang;
+            this.$cont = $(".doDont");
+            this.editTemplate = Views.ViewBase.currentView.registerTemplate("doDontAdmin-template");
+            this.itemTemplate = Views.ViewBase.currentView.registerTemplate("doDontItem-template");
+        }
+        DoDontAdmin.prototype.generateAdmin = function () {
+            var _this = this;
+            var $places = this.$cont.find(".place");
+            var places = $places.toArray();
+            places.forEach(function (place) {
+                var $place = $(place);
+                var id = $place.data("id");
+                var $html = _this.editButton(id);
+                $place.append($html);
+            });
+            $(".admindo").after(this.generateAdder("do"));
+            $(".admindont").after(this.generateAdder("dont"));
+        };
+        DoDontAdmin.prototype.editButton = function (id) {
+            var _this = this;
+            var $html = $("<a href=\"#\" data-id=\"" + id + "\">edit</a>");
+            $html.click(function (e) { return _this.edit(e); });
+            return $html;
+        };
+        DoDontAdmin.prototype.generateAdder = function (type) {
+            var _this = this;
+            var $html = $("<button class=\"doDontAdder\" data-type=\"" + type + "\">Add new</button>");
+            $html.click(function (e) { return _this.setToCreatingNew(e); });
+            return $html;
+        };
+        DoDontAdmin.prototype.setToCreatingNew = function (e) {
+            var _this = this;
+            e.preventDefault();
+            if (this.$form) {
+                this.$form.empty();
+            }
+            var $target = $(e.target);
+            var type = $target.data("type");
+            var context = {
+                text: ""
+            };
+            var $html = $(this.editTemplate(context));
+            this.$form = this.$cont.find(".admin" + type);
+            this.$form.html($html);
+            this.$form.find(".cancel").click(function (e) { return _this.cancel(e); });
+            this.$form.find(".save").click(function (e) { return _this.saveNew(e, type); });
+            this.$form.find(".delete").hide();
+        };
+        DoDontAdmin.prototype.saveNew = function (e, type) {
+            var _this = this;
+            e.preventDefault();
+            var text = this.$form.find("textarea").val();
+            var data = {
+                articleId: this.articleId,
+                language: this.language,
+                text: text,
+                type: type
+            };
+            Views.ViewBase.currentView.apiPost("WikiDoDont", data, function (r) {
+                var context = {
+                    id: r,
+                    text: _this.$form.find("textarea").val(),
+                    type: type
+                };
+                var $newItem = $(_this.itemTemplate(context));
+                var $editBtn = _this.editButton(context.id);
+                $newItem.append($editBtn);
+                $(".admin" + type).before($newItem);
+                _this.$form.empty();
+            });
+        };
+        DoDontAdmin.prototype.edit = function (e) {
+            var _this = this;
+            e.preventDefault();
+            var $target = $(e.target);
+            var $parent = $target.parent();
+            this.$edited = $parent;
+            var type = $parent.data("t");
+            if (this.$form) {
+                this.$form.empty();
+            }
+            var context = {
+                text: $parent.find("span").text()
+            };
+            var $html = $(this.editTemplate(context));
+            this.$form = this.$cont.find(".admin" + type);
+            this.$form.html($html);
+            this.$form.find(".cancel").click(function (e) { return _this.cancel(e); });
+            this.$form.find(".save").click(function (e) { return _this.save(e); });
+            this.$form.find(".delete").click(function (e) { return _this.delete(e); });
+        };
+        DoDontAdmin.prototype.delete = function (e) {
+            var _this = this;
+            e.preventDefault();
+            var data = [["articleId", this.articleId], ["id", this.$edited.data("id")], ["type", this.$edited.data("t")]];
+            Views.ViewBase.currentView.apiDelete("WikiDoDont", data, function (r) {
+                _this.$form.empty();
+                _this.$edited.remove();
+                _this.$edited = null;
+            });
+        };
+        DoDontAdmin.prototype.cancel = function (e) {
+            e.preventDefault();
+            this.$form.empty();
+            this.$edited = null;
+        };
+        DoDontAdmin.prototype.save = function (e) {
+            var _this = this;
+            e.preventDefault();
+            var data = {
+                articleId: this.articleId,
+                language: this.language,
+                id: this.$edited.data("id"),
+                text: this.$form.find("textarea").val(),
+                type: this.$edited.data("t")
+            };
+            Views.ViewBase.currentView.apiPut("WikiDoDont", data, function (r) {
+                _this.$form.empty();
+                _this.$edited.find("span").text(data.text);
+            });
+        };
+        return DoDontAdmin;
+    })();
+    Views.DoDontAdmin = DoDontAdmin;
     var LinksAdmin = (function () {
         function LinksAdmin(articleId) {
             this.articleId = articleId;
@@ -280,6 +407,7 @@ var Views;
             this.langVersion = this.getLangVersion();
             this.linksAdmin = new LinksAdmin(articleId);
             this.blockAdmin = new BlockAdmin(articleId, this.langVersion);
+            this.doDontAdmin = new DoDontAdmin(articleId, this.langVersion);
             this.$adminMode = $("#adminMode");
             this.regAdminMode();
             this.regRating();
@@ -336,6 +464,7 @@ var Views;
                 var adminType = $block.data("at");
                 _this.drawAdminBlocks($block, id, adminType);
             });
+            this.doDontAdmin.generateAdmin();
         };
         WikiPageView.prototype.destroyBlocks = function () {
             $(".editSection").remove();

@@ -3,31 +3,40 @@
 @using Gloobster.Portal.ViewModels
 @model DoDontsVM
 
+<style>
+    /*todo: fix in main script*/
+     .doDont button {
+         border-radius: 5px;        
+     }
+</style>
 
-<div class="table row col2 margin">
+<div class="table row col2 margin doDont">
+    
     <div class="cell places">
         <h3>Try this</h3>
         @foreach (var item in Model.Dos)
-        {            
-            <div class="place">
+        {
+            <div data-id="@item.Id" data-t="do" class="place">
                 @Html.Partial("PlusMinus")
-                @item.Text
+                <span>@item.Text</span>
             </div>
+
         }
-        
-        @Html.Partial("DoDontAdder")
+        <div class="admindo">
+
+        </div>        
     </div>
 
     <div class="cell places">
         <h3>Don't try that</h3>
         @foreach (var item in Model.Donts)
         {
-            <div class="place">
+            <div data-id="@item.Id" data-t="dont" class="place">
                 @Html.Partial("PlusMinus")
-                @item.Text
+                <span>@item.Text</span>
             </div>
         }
-        
-        @Html.Partial("DoDontAdder")
+        <div class="admindont">
+        </div>
     </div>
 </div>

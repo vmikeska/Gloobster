@@ -1,4 +1,155 @@
 ﻿module Views {
+
+	export class DoDontAdmin {
+
+	 private articleId;
+	 private language;
+	 private $edited;
+		private $cont;
+		private $form;
+
+		private editTemplate;
+		private itemTemplate;
+
+		constructor(articleId, lang) {
+		 this.articleId = articleId;
+			this.language = lang;
+			this.$cont = $(".doDont");
+			this.editTemplate = ViewBase.currentView.registerTemplate("doDontAdmin-template");
+			this.itemTemplate = ViewBase.currentView.registerTemplate("doDontItem-template");		 
+		}
+
+		public generateAdmin() {
+			var $places = this.$cont.find(".place");
+			var places = $places.toArray();
+			places.forEach((place) => {
+				var $place = $(place);
+				var id = $place.data("id");			 
+				var $html = this.editButton(id);
+				$place.append($html);
+			});
+
+			$(".admindo").after(this.generateAdder("do"));
+			$(".admindont").after(this.generateAdder("dont"));			
+		}
+
+		private editButton(id) {
+			var $html = $(`<a href="#" data-id="${id}">edit</a>`);
+			$html.click((e) => this.edit(e));
+			return $html;
+		}
+
+		private generateAdder(type) {
+			var $html = $(`<button class="doDontAdder" data-type="${type}">Add new</button>`);
+			$html.click((e) => this.setToCreatingNew(e));
+			return $html;
+		}
+
+		private setToCreatingNew(e) {
+			e.preventDefault();
+
+			if (this.$form) {
+				this.$form.empty();
+			}
+
+			var $target = $(e.target);
+			var type = $target.data("type");
+
+			var context = {
+				text: ""
+			};
+			var $html = $(this.editTemplate(context));
+			this.$form = this.$cont.find(".admin" + type);
+			this.$form.html($html);
+			this.$form.find(".cancel").click((e) => this.cancel(e));
+			this.$form.find(".save").click((e) => this.saveNew(e, type));
+			this.$form.find(".delete").hide();
+		}
+
+		private saveNew(e, type) {
+			e.preventDefault();
+
+			var text = this.$form.find("textarea").val();
+
+			var data = {
+				articleId: this.articleId,
+				language: this.language,
+				text: text,
+				type: type
+			};
+
+			ViewBase.currentView.apiPost("WikiDoDont", data, (r) => {
+				var context = {
+					id: r,
+					text: this.$form.find("textarea").val(),
+					type: type
+				};
+				var $newItem = $(this.itemTemplate(context));
+				var $editBtn = this.editButton(context.id);
+				$newItem.append($editBtn);
+				$(".admin" + type).before($newItem);
+				this.$form.empty();
+			});
+		}
+
+		private edit(e) {
+			e.preventDefault();
+			var $target = $(e.target);
+			var $parent = $target.parent();
+			this.$edited = $parent;
+			var type = $parent.data("t");
+			if (this.$form) {
+				this.$form.empty();
+			}
+
+			var context = {
+				text: $parent.find("span").text()
+			};
+			var $html = $(this.editTemplate(context));
+			this.$form = this.$cont.find(".admin" + type);
+			this.$form.html($html);
+			this.$form.find(".cancel").click((e) => this.cancel(e));
+			this.$form.find(".save").click((e) => this.save(e));
+			this.$form.find(".delete").click((e) => this.delete(e));
+		}
+
+		private delete(e) {
+			e.preventDefault();
+
+			var data = [["articleId", this.articleId], ["id", this.$edited.data("id")], ["type", this.$edited.data("t")]];
+
+			ViewBase.currentView.apiDelete("WikiDoDont", data, (r) => {
+				this.$form.empty();
+				this.$edited.remove();
+				this.$edited = null;
+			});
+
+		}
+
+		private cancel(e) {
+			e.preventDefault();
+			this.$form.empty();
+			this.$edited = null;
+		}
+
+		private save(e) {
+			e.preventDefault();
+
+			var data = {
+				articleId: this.articleId,
+				language: this.language,
+				id: this.$edited.data("id"),
+				text: this.$form.find("textarea").val(),
+				type: this.$edited.data("t")
+			};
+
+			ViewBase.currentView.apiPut("WikiDoDont", data, (r) => {
+				this.$form.empty();
+				this.$edited.find("span").text(data.text);
+			});
+		}
+	}
+
 	export class LinksAdmin {
 
 		public articleId: string;
@@ -331,6 +482,7 @@
 
 		private linksAdmin: LinksAdmin;
 		private blockAdmin: BlockAdmin;
+		private doDontAdmin: DoDontAdmin;
 
 		constructor(articleId) {
 			super();
@@ -339,6 +491,7 @@
 
 			this.linksAdmin = new LinksAdmin(articleId);
 			this.blockAdmin = new BlockAdmin(articleId, this.langVersion);
+			this.doDontAdmin = new DoDontAdmin(articleId, this.langVersion);
 
 			this.$adminMode = $("#adminMode");
 			this.regAdminMode();
@@ -395,15 +548,17 @@
 		}
 
 		private generateBlocks() {
-		 var adminBlocks = $(".adminBlock").toArray();
+			var adminBlocks = $(".adminBlock").toArray();
 
-		 adminBlocks.forEach((block) => {
-			var $block = $(block);
-			var id = $block.data("id");
-			var adminType = $block.data("at");
+			adminBlocks.forEach((block) => {
+				var $block = $(block);
+				var id = $block.data("id");
+				var adminType = $block.data("at");
 
-			this.drawAdminBlocks($block, id, adminType);
-		 });
+				this.drawAdminBlocks($block, id, adminType);
+			});
+
+			this.doDontAdmin.generateAdmin();
 
 		}
 

@@ -17,6 +17,15 @@ namespace Gloobster.ReqRes
         public string linkId { get; set; }
         public string articleId { get; set; }       
     }
+    
+    public class UpdateDoDontRequest
+    {
+        public string articleId { get; set; }        
+        public string language { get; set; }
+        public string id { get; set; }
+        public string text { get; set; }
+        public string type { get; set; }
+    }
 
 
     public class SocLinkRequest
