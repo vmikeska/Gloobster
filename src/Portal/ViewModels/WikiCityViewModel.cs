@@ -72,7 +72,9 @@ namespace Gloobster.Portal.ViewModels
     
     public class TableItemVM
     {
-        public string Id { get; set; }
+        public string Id1 { get; set; }
+        public string Id2 { get; set; }
+        public string Id3 { get; set; }
         public string Name { get; set; }
         public decimal Price1 { get; set; }
         public decimal Price2 { get; set; }
@@ -115,7 +117,7 @@ namespace Gloobster.Portal.ViewModels
         {
             var res = new TableItemVM
             {
-                Id = priceItem.id.ToString(),
+                Id1 = priceItem.id.ToString(),
                 Name = priceItem.Type,
                 Price1 = priceItem.Price.CurrentPrice
             };
@@ -180,18 +182,37 @@ namespace Gloobster.Portal.ViewModels
             return block;
         }
 
-        
-        
+        private PriceItemSE GetPriceBySubCat(List<PriceItemSE> prices, string subCat)
+        {
+            return prices.FirstOrDefault(c => c.SubCategory == subCat);
+        }
+
         public BlockVM NightLifePrices()
         {
             var block = Section("NightlifePrices", "strandard,price3", 4);
-            block.TableItems = Article.PubItems.Select(i => new TableItemVM
+            var prices = GetPricesByCategory("Nightlife").ToList();
+            
+            var groups = prices.GroupBy(p => p.Type).ToList();
+            
+            block.TableItems = groups.Select(i =>
             {
-                Name = i.Type,
-                Price1 = i.PricePub.CurrentPrice,
-                Price2 = i.PriceBar.CurrentPrice,
-                Price3 = i.PriceClub.CurrentPrice
+                List<PriceItemSE> items = i.ToList();
+                var pub = GetPriceBySubCat(items, "Pub");
+                var bar = GetPriceBySubCat(items, "Bar");
+                var club = GetPriceBySubCat(items, "Club");
+
+                return new TableItemVM
+                {
+                    Name = i.Key,
+                    Price1 = pub.Price.CurrentPrice,
+                    Id1 = pub.id.ToString(),
+                    Price2 = bar.Price.CurrentPrice,
+                    Id2 = bar.id.ToString(),
+                    Price3 = club.Price.CurrentPrice,
+                    Id3 = club.id.ToString(),
+                };
             }).ToList();
+
             block.Headers = new List<string>
             {
                 "Pub",

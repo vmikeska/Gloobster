@@ -13,40 +13,44 @@
 		}
 
 		public generateAdmin() {
-			var $trs = $(".priceItemAdmin");
-			var trs = $trs.toArray();
-			trs.forEach((tr) => this.generateAdminItem(tr));
+			var $tds = $(".priceItemAdmin");
+			var tds = $tds.toArray();
+			tds.forEach((td) => this.generateAdminItem(td));
 		}
 
-		private generateAdminItem(tr) {
-			var $tr = $(tr);
-			var $td = $tr.children().first();
-			var id = $tr.data("id");
-			$td.append(this.getEditButton(id, $tr));
+	  public clean() {
+		  $(".priceEdit").remove();
+	  }
+
+		private generateAdminItem(td) {
+			var $td = $(td);			
+			var id = $td.data("id");
+			$td.append(this.getEditButton(id));
 		}
 
-		private getEditButton(id, $tr) {
+		private getEditButton(id) {
 			var $edit = $(`<a href="#" class="priceEdit" data-id="${id}">Edit</a>`);
-			$edit.click((e) => this.edit(e, $tr));
+			$edit.click((e) => this.edit(e));
 			return $edit;
 		}
 
-		private edit(e, $tr) {
+		private edit(e) {
+		 e.preventDefault();
+			var $target = $(e.target);
+			this.$edited = $target.parent();
+
 			if (this.$form) {
 				this.$form.remove();
 			}
-			this.$edited = $tr;
-			e.preventDefault();
-			var $e = $(e.target);
-
+			
 			var context = {
-				id: $e.data("id"),
-				value: $tr.find(".price").text()
+				id: this.$edited.data("id"),
+				value: this.$edited.find(".price").text()
 			};
 			this.$form = $(this.priceEditTemplate(context));
 			this.$form.find("button").click((e) => this.save(e));
 
-			$tr.before(this.$form);
+			this.$edited.parent().before(this.$form);
 		}
 
 		private save(e) {
@@ -89,6 +93,11 @@
 			this.itemTemplate = ViewBase.currentView.registerTemplate("doDontItem-template");		 
 		}
 
+		public clean() {
+		 $(".ddEditButton").remove();
+		 $(".doDontAdder").remove();
+		}
+
 		public generateAdmin() {
 			var $places = this.$cont.find(".place");
 			var places = $places.toArray();
@@ -104,7 +113,7 @@
 		}
 
 		private editButton(id) {
-			var $html = $(`<a href="#" data-id="${id}">edit</a>`);
+			var $html = $(`<a class="ddEditButton" href="#" data-id="${id}">edit</a>`);
 			$html.click((e) => this.edit(e));
 			return $html;
 		}
@@ -637,7 +646,9 @@
 
 		private destroyBlocks() {
 		 $(".editSection").remove();
-			this.linksAdmin.removeAdminLinks();
+		 this.linksAdmin.removeAdminLinks();
+		 this.priceAdmin.clean();
+		 this.doDontAdmin.clean();
 		}
 
 		

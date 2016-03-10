@@ -17,9 +17,9 @@
     
     @foreach (var item in Model.TableItems)
     {
-        <tr id="tr_" class="priceItemAdmin" data-id="@item.Id">
+        <tr>
             <td>@item.Name</td>
-            <td>
+            <td class="priceItemAdmin" data-id="@item.Id1">
                 €<span class="price">@item.Price1.ToString("0.00", CultureInfo.InvariantCulture)</span>
                 @Html.Partial("PlusMinus")
             </td>

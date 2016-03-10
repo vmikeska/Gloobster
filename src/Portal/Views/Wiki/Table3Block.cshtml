@@ -1,4 +1,5 @@
-﻿@using System.Threading.Tasks
+﻿@using System.Globalization
+@using System.Threading.Tasks
 @using Gloobster.Portal.ViewModels
 @model BlockVM
 
@@ -18,16 +19,16 @@
             {
                 <tr>
                     <td>@item.Name</td>                    
-                    <td>                        
-                        €@item.Price1.ToString("0.00")
+                    <td class="priceItemAdmin" data-id="@item.Id1">
+                        €<span class="price">@item.Price1.ToString("0.00", CultureInfo.InvariantCulture)</span>
                         @Html.Partial("PlusMinus")
                     </td>
-                    <td>                        
-                        €@item.Price2.ToString("0.00")
+                    <td class="priceItemAdmin" data-id="@item.Id2">
+                        €<span class="price">@item.Price2.ToString("0.00", CultureInfo.InvariantCulture)</span>
                         @Html.Partial("PlusMinus")
                     </td>
-                    <td>                        
-                        €@item.Price3.ToString("0.00")
+                    <td class="priceItemAdmin" data-id="@item.Id3">
+                        €<span class="price">@item.Price3.ToString("0.00", CultureInfo.InvariantCulture)</span>
                         @Html.Partial("PlusMinus")
                     </td>
                 </tr>

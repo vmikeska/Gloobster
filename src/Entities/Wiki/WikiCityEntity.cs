@@ -19,13 +19,8 @@ namespace Gloobster.Entities.Wiki
         public CityDataSE Data { get; set; }
 
         public List<LinkObjectSE> PlacesLinks { get; set; }
-
-        public List<PubItemSE> PubItems { get; set; }
-
+        
         public List<PriceItemSE> Prices { get; set; }
-        //public List<PriceItemSE> RestaurantItems { get; set; }
-        //public List<PriceItemSE> TransportItems { get; set; }
-        //public List<PriceItemSE> AccommodationItems { get; set; }
         
         public List<ObjectId> Dos { get; set; }
 
@@ -47,15 +42,15 @@ namespace Gloobster.Entities.Wiki
         public List<LinkItemSE> Links { get; set; }
     }
     
-    public class PubItemSE
-    {
-        public string Type { get; set; }
-        public string Category { get; set; }
+    //public class PubItemSE
+    //{
+    //    public string Type { get; set; }
+    //    public string Category { get; set; }
 
-        public PriceSE PricePub { get; set; }
-        public PriceSE PriceBar { get; set; }
-        public PriceSE PriceClub { get; set; }
-    }
+    //    public PriceSE PricePub { get; set; }
+    //    public PriceSE PriceBar { get; set; }
+    //    public PriceSE PriceClub { get; set; }
+    //}
 
     public class PriceItemSE
     {

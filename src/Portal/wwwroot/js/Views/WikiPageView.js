@@ -12,37 +12,39 @@ var Views;
         }
         PriceAdmin.prototype.generateAdmin = function () {
             var _this = this;
-            var $trs = $(".priceItemAdmin");
-            var trs = $trs.toArray();
-            trs.forEach(function (tr) { return _this.generateAdminItem(tr); });
+            var $tds = $(".priceItemAdmin");
+            var tds = $tds.toArray();
+            tds.forEach(function (td) { return _this.generateAdminItem(td); });
         };
-        PriceAdmin.prototype.generateAdminItem = function (tr) {
-            var $tr = $(tr);
-            var $td = $tr.children().first();
-            var id = $tr.data("id");
-            $td.append(this.getEditButton(id, $tr));
+        PriceAdmin.prototype.clean = function () {
+            $(".priceEdit").remove();
         };
-        PriceAdmin.prototype.getEditButton = function (id, $tr) {
+        PriceAdmin.prototype.generateAdminItem = function (td) {
+            var $td = $(td);
+            var id = $td.data("id");
+            $td.append(this.getEditButton(id));
+        };
+        PriceAdmin.prototype.getEditButton = function (id) {
             var _this = this;
             var $edit = $("<a href=\"#\" class=\"priceEdit\" data-id=\"" + id + "\">Edit</a>");
-            $edit.click(function (e) { return _this.edit(e, $tr); });
+            $edit.click(function (e) { return _this.edit(e); });
             return $edit;
         };
-        PriceAdmin.prototype.edit = function (e, $tr) {
+        PriceAdmin.prototype.edit = function (e) {
             var _this = this;
+            e.preventDefault();
+            var $target = $(e.target);
+            this.$edited = $target.parent();
             if (this.$form) {
                 this.$form.remove();
             }
-            this.$edited = $tr;
-            e.preventDefault();
-            var $e = $(e.target);
             var context = {
-                id: $e.data("id"),
-                value: $tr.find(".price").text()
+                id: this.$edited.data("id"),
+                value: this.$edited.find(".price").text()
             };
             this.$form = $(this.priceEditTemplate(context));
             this.$form.find("button").click(function (e) { return _this.save(e); });
-            $tr.before(this.$form);
+            this.$edited.parent().before(this.$form);
         };
         PriceAdmin.prototype.save = function (e) {
             var _this = this;
@@ -75,6 +77,10 @@ var Views;
             this.editTemplate = Views.ViewBase.currentView.registerTemplate("doDontAdmin-template");
             this.itemTemplate = Views.ViewBase.currentView.registerTemplate("doDontItem-template");
         }
+        DoDontAdmin.prototype.clean = function () {
+            $(".ddEditButton").remove();
+            $(".doDontAdder").remove();
+        };
         DoDontAdmin.prototype.generateAdmin = function () {
             var _this = this;
             var $places = this.$cont.find(".place");
@@ -90,7 +96,7 @@ var Views;
         };
         DoDontAdmin.prototype.editButton = function (id) {
             var _this = this;
-            var $html = $("<a href=\"#\" data-id=\"" + id + "\">edit</a>");
+            var $html = $("<a class=\"ddEditButton\" href=\"#\" data-id=\"" + id + "\">edit</a>");
             $html.click(function (e) { return _this.edit(e); });
             return $html;
         };
@@ -533,6 +539,8 @@ var Views;
         WikiPageView.prototype.destroyBlocks = function () {
             $(".editSection").remove();
             this.linksAdmin.removeAdminLinks();
+            this.priceAdmin.clean();
+            this.doDontAdmin.clean();
         };
         WikiPageView.prototype.drawAdminBlocks = function ($block, id, adminType) {
             var adminTypes = adminType.split(",");
