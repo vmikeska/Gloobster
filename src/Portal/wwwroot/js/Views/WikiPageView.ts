@@ -1,5 +1,75 @@
 ﻿module Views {
 
+	export class PriceAdmin {
+
+		private priceEditTemplate;
+		private articleId;
+		private $form;
+		private $edited;
+
+		constructor(articleId) {
+			this.articleId = articleId;
+			this.priceEditTemplate = ViewBase.currentView.registerTemplate("priceEdit-template");
+		}
+
+		public generateAdmin() {
+			var $trs = $(".priceItemAdmin");
+			var trs = $trs.toArray();
+			trs.forEach((tr) => this.generateAdminItem(tr));
+		}
+
+		private generateAdminItem(tr) {
+			var $tr = $(tr);
+			var $td = $tr.children().first();
+			var id = $tr.data("id");
+			$td.append(this.getEditButton(id, $tr));
+		}
+
+		private getEditButton(id, $tr) {
+			var $edit = $(`<a href="#" class="priceEdit" data-id="${id}">Edit</a>`);
+			$edit.click((e) => this.edit(e, $tr));
+			return $edit;
+		}
+
+		private edit(e, $tr) {
+			if (this.$form) {
+				this.$form.remove();
+			}
+			this.$edited = $tr;
+			e.preventDefault();
+			var $e = $(e.target);
+
+			var context = {
+				id: $e.data("id"),
+				value: $tr.find(".price").text()
+			};
+			this.$form = $(this.priceEditTemplate(context));
+			this.$form.find("button").click((e) => this.save(e));
+
+			$tr.before(this.$form);
+		}
+
+		private save(e) {
+			var $target = $(e.target);
+
+			var val = this.$form.find("input").val();
+			var parsedVal = parseFloat(val);
+			if (parsedVal) {
+				var data = {
+				 articleId: this.articleId,
+				 price: parsedVal,
+				 priceId: this.$edited.data("id")
+				};
+				ViewBase.currentView.apiPut("WikiPrice", data, (r) => {
+					this.$form.remove();
+					this.$edited.find(".price").text(parsedVal);
+				});
+			} else {
+				alert("Incorret format, make it 0.0 format");
+			}
+		}
+	}
+
 	export class DoDontAdmin {
 
 	 private articleId;
@@ -483,6 +553,7 @@
 		private linksAdmin: LinksAdmin;
 		private blockAdmin: BlockAdmin;
 		private doDontAdmin: DoDontAdmin;
+		private priceAdmin: PriceAdmin;
 
 		constructor(articleId) {
 			super();
@@ -492,6 +563,7 @@
 			this.linksAdmin = new LinksAdmin(articleId);
 			this.blockAdmin = new BlockAdmin(articleId, this.langVersion);
 			this.doDontAdmin = new DoDontAdmin(articleId, this.langVersion);
+			this.priceAdmin = new PriceAdmin(articleId);
 
 			this.$adminMode = $("#adminMode");
 			this.regAdminMode();
@@ -559,6 +631,7 @@
 			});
 
 			this.doDontAdmin.generateAdmin();
+		  this.priceAdmin.generateAdmin();
 
 		}
 

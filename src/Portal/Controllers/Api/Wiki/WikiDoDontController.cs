@@ -14,7 +14,7 @@ using System.Linq;
 
 namespace Gloobster.Portal.Controllers.Api.Wiki
 {
-	public class WikiDoDontController: BaseApiController
+    public class WikiDoDontController: BaseApiController
 	{        
         public WikiDoDontController(ILogger log, IDbOperations db) : base(log, db)
         {

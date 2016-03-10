@@ -50,6 +50,275 @@ namespace Gloobster.DomainModels.Wiki
             Create("en", countryId);
         }
 
+        private List<PriceItemSE> GetPrices(ObjectId votingUserOne)
+        {
+            var prices = new List<PriceItemSE>();
+
+            prices.AddRange(new List<PriceItemSE>
+            {
+                new PriceItemSE
+                {            
+                    id = ObjectId.GenerateNewId(),
+                    Type = "Taxi",
+                    Category = "Transport",
+                    Price = new PriceSE
+                    {
+                        CurrentPrice = 6.1m,
+                        DefaultPrice = 6m,
+                        Plus = new List<ObjectId> {votingUserOne},
+                        Minus = new List<ObjectId>()
+                    }
+                },
+                new PriceItemSE
+                {
+                    id = ObjectId.GenerateNewId(),
+                    Type = "PublicTransport",
+                    Category = "Transport",
+                    Price = new PriceSE
+                    {
+                        CurrentPrice = 6.1m,
+                        DefaultPrice = 6m,
+                        Plus = new List<ObjectId> {votingUserOne},
+                        Minus = new List<ObjectId>()
+                    }
+                },
+            });
+
+            prices.AddRange(new List<PriceItemSE>
+            {
+                new PriceItemSE
+                {
+                    id = ObjectId.GenerateNewId(),
+                    Type = "Salad",
+                    Category = "Restaurant",
+                    Price = new PriceSE
+                    {
+                        CurrentPrice = 6.1m,
+                        DefaultPrice = 6m,
+                        Plus = new List<ObjectId> {votingUserOne},
+                        Minus = new List<ObjectId>()
+                    }
+                },
+                new PriceItemSE
+                {
+                    id = ObjectId.GenerateNewId(),
+                    Type = "Steak",
+                    Category = "Restaurant",
+                    Price = new PriceSE
+                    {
+                        CurrentPrice = 8.1m,
+                        DefaultPrice = 8m,
+                        Plus = new List<ObjectId> {votingUserOne},
+                        Minus = new List<ObjectId>()
+                    }
+                },
+                new PriceItemSE
+                {
+                    id = ObjectId.GenerateNewId(),
+                    Type = "Local",
+                    Category = "Restaurant",
+                    Price = new PriceSE
+                    {
+                        CurrentPrice = 4.1m,
+                        DefaultPrice = 4m,
+                        Plus = new List<ObjectId> {votingUserOne},
+                        Minus = new List<ObjectId>()
+                    }
+                },
+                new PriceItemSE
+                {
+                    id = ObjectId.GenerateNewId(),
+                    Type = "Pizza",
+                    Category = "Restaurant",
+                    Price = new PriceSE
+                    {
+                        CurrentPrice = 5.1m,
+                        DefaultPrice = 5m,
+                        Plus = new List<ObjectId> {votingUserOne},
+                        Minus = new List<ObjectId>()
+                    }
+                },
+
+            });
+
+            prices.AddRange(new List<PriceItemSE>
+            {
+                new PriceItemSE
+                {
+                    id = ObjectId.GenerateNewId(),
+                    Type = "Hostel",
+                    Category = "Accommodation",
+                    Price = new PriceSE
+                    {
+                        CurrentPrice = 15.1m,
+                        DefaultPrice = 15m,
+                        Plus = new List<ObjectId> {votingUserOne},
+                        Minus = new List<ObjectId>()
+                    }
+                },
+                new PriceItemSE
+                {
+                    id = ObjectId.GenerateNewId(),
+                    Type = "Star3",
+                    Category = "Accommodation",
+                    Price = new PriceSE
+                    {
+                        CurrentPrice = 40.1m,
+                        DefaultPrice = 40m,
+                        Plus = new List<ObjectId> {votingUserOne},
+                        Minus = new List<ObjectId>()
+                    }
+                },
+                new PriceItemSE
+                {
+                    id = ObjectId.GenerateNewId(),
+                    Type = "Star4",
+                    Category = "Accommodation",
+                    Price = new PriceSE
+                    {
+                        CurrentPrice = 60.1m,
+                        DefaultPrice = 60m,
+                        Plus = new List<ObjectId> {votingUserOne},
+                        Minus = new List<ObjectId>()
+                    }
+                },
+            });
+
+            return prices;
+        }
+
+        private List<PubItemSE> GetPubItems(ObjectId votingUserOne)
+        {
+            return new List<PubItemSE>
+            {
+                new PubItemSE
+                {
+                    Type = "Beer",
+                    PriceBar = new PriceSE
+                    {
+                        DefaultPrice = 2.0m,
+                        CurrentPrice = 2.2m,
+                        Minus = new List<ObjectId> {votingUserOne},
+                        Plus = new List<ObjectId>()
+                    },
+                    PriceClub = new PriceSE
+                    {
+                        DefaultPrice = 2.0m,
+                        CurrentPrice = 2.1m,
+                        Minus = new List<ObjectId> {votingUserOne},
+                        Plus = new List<ObjectId>()
+                    },
+                    PricePub = new PriceSE
+                    {
+                        DefaultPrice = 2.0m,
+                        CurrentPrice = 2.1m,
+                        Minus = new List<ObjectId> {votingUserOne},
+                        Plus = new List<ObjectId>()
+                    }
+                },
+                new PubItemSE
+                {
+                    Type = "Wine",
+                    PriceBar = new PriceSE
+                    {
+                        DefaultPrice = 2.0m,
+                        CurrentPrice = 2.1m,
+                        Minus = new List<ObjectId> {votingUserOne},
+                        Plus = new List<ObjectId>()
+                    },
+                    PriceClub = new PriceSE
+                    {
+                        DefaultPrice = 2.0m,
+                        CurrentPrice = 2.1m,
+                        Minus = new List<ObjectId> {votingUserOne},
+                        Plus = new List<ObjectId>()
+                    },
+                    PricePub = new PriceSE
+                    {
+                        DefaultPrice = 2.0m,
+                        CurrentPrice = 2.1m,
+                        Minus = new List<ObjectId> {votingUserOne},
+                        Plus = new List<ObjectId>()
+                    }
+                },
+                new PubItemSE
+                {
+                    Type = "Whiskey",
+                    PriceBar = new PriceSE
+                    {
+                        DefaultPrice = 2.0m,
+                        CurrentPrice = 2.1m,
+                        Minus = new List<ObjectId> {votingUserOne},
+                        Plus = new List<ObjectId>()
+                    },
+                    PriceClub = new PriceSE
+                    {
+                        DefaultPrice = 2.0m,
+                        CurrentPrice = 2.1m,
+                        Minus = new List<ObjectId> {votingUserOne},
+                        Plus = new List<ObjectId>()
+                    },
+                    PricePub = new PriceSE
+                    {
+                        DefaultPrice = 2.0m,
+                        CurrentPrice = 2.1m,
+                        Minus = new List<ObjectId> {votingUserOne},
+                        Plus = new List<ObjectId>()
+                    }
+                },
+                new PubItemSE
+                {
+                    Type = "Vodka",
+                    PriceBar = new PriceSE
+                    {
+                        DefaultPrice = 2.0m,
+                        CurrentPrice = 2.1m,
+                        Minus = new List<ObjectId> {votingUserOne},
+                        Plus = new List<ObjectId>()
+                    },
+                    PriceClub = new PriceSE
+                    {
+                        DefaultPrice = 2.0m,
+                        CurrentPrice = 2.1m,
+                        Minus = new List<ObjectId> {votingUserOne},
+                        Plus = new List<ObjectId>()
+                    },
+                    PricePub = new PriceSE
+                    {
+                        DefaultPrice = 2.0m,
+                        CurrentPrice = 2.1m,
+                        Minus = new List<ObjectId> {votingUserOne},
+                        Plus = new List<ObjectId>()
+                    }
+                },
+                new PubItemSE
+                {
+                    Type = "Cigarettes",
+                    PriceBar = new PriceSE
+                    {
+                        DefaultPrice = 2.0m,
+                        CurrentPrice = 2.1m,
+                        Minus = new List<ObjectId> {votingUserOne},
+                        Plus = new List<ObjectId>()
+                    },
+                    PriceClub = new PriceSE
+                    {
+                        DefaultPrice = 2.0m,
+                        CurrentPrice = 2.1m,
+                        Minus = new List<ObjectId> {votingUserOne},
+                        Plus = new List<ObjectId>()
+                    },
+                    PricePub = new PriceSE
+                    {
+                        DefaultPrice = 2.0m,
+                        CurrentPrice = 2.1m,
+                        Minus = new List<ObjectId> {votingUserOne},
+                        Plus = new List<ObjectId>()
+                    }
+                },
+            };
+        }
+
         public void Create(string lang, ObjectId countryId)
         {
             var do1Id = ObjectId.GenerateNewId();
@@ -69,12 +338,13 @@ namespace Gloobster.DomainModels.Wiki
             var barDistrictsId = ObjectId.GenerateNewId();
 
             var votingUserOne = ObjectId.GenerateNewId();
-
+            
             City = new WikiCityEntity
             {
                 id = ObjectId.GenerateNewId(),
                 Dos = new List<ObjectId> { do1Id, do2Id },
                 Donts = new List<ObjectId> { dont1Id, dont2Id },
+                Prices = GetPrices(votingUserOne),
                 Sections = new List<SectionSE>
                 {                    
                     new SectionSE
@@ -207,279 +477,10 @@ namespace Gloobster.DomainModels.Wiki
                         Category = "Sights",
                         Name = "Fori Imperiali"
                     },
-                    new LinkObjectSE
-                    {
-                        id = ObjectId.GenerateNewId(),
-                        Category = "Sights",
-                        Name = "Pantheon "
-                    },
-                    new LinkObjectSE
-                    {
-                        id = ObjectId.GenerateNewId(),
-                        Category = "Sights",
-                        Name = "Fontana di Trevi"
-                    },
-                    new LinkObjectSE
-                    {
-                        id = ObjectId.GenerateNewId(),
-                        Category = "Sights",
-                        Name = "Piazza di Spagna"
-                    },
-                    new LinkObjectSE
-                    {
-                        id = ObjectId.GenerateNewId(),
-                        Category = "Sights",
-                        Name = "Vaticano and Piazza S. Pietro "
-                    },
-                    new LinkObjectSE
-                    {
-                        id = ObjectId.GenerateNewId(),
-                        Category = "Sights",
-                        Name = "Piazza Navona"
-                    },
-                },
-
-
-                PubItems = new List<PubItemSE>
-                {
-                    new PubItemSE
-                    {
-                        Type = "Beer",
-                        PriceBar = new PriceSE
-                        {
-                            DefaultPrice = 2.0m,
-                            CurrentPrice = 2.2m,
-                            Minus = new List<ObjectId> {votingUserOne},
-                            Plus = new List<ObjectId>()
-                        },
-                        PriceClub = new PriceSE
-                        {
-                            DefaultPrice = 2.0m,
-                            CurrentPrice = 2.1m,
-                            Minus = new List<ObjectId> {votingUserOne},
-                            Plus = new List<ObjectId>()
-                        },
-                        PricePub = new PriceSE
-                        {
-                            DefaultPrice = 2.0m,
-                            CurrentPrice = 2.1m,
-                            Minus = new List<ObjectId> {votingUserOne},
-                            Plus = new List<ObjectId>()
-                        }
-                    },
-                    new PubItemSE
-                    {
-                        Type = "Wine",
-                        PriceBar = new PriceSE
-                        {
-                            DefaultPrice = 2.0m,
-                            CurrentPrice = 2.1m,
-                            Minus = new List<ObjectId> {votingUserOne},
-                            Plus = new List<ObjectId>()
-                        },
-                        PriceClub = new PriceSE
-                        {
-                            DefaultPrice = 2.0m,
-                            CurrentPrice = 2.1m,
-                            Minus = new List<ObjectId> {votingUserOne},
-                            Plus = new List<ObjectId>()
-                        },
-                        PricePub = new PriceSE
-                        {
-                            DefaultPrice = 2.0m,
-                            CurrentPrice = 2.1m,
-                            Minus = new List<ObjectId> {votingUserOne},
-                            Plus = new List<ObjectId>()
-                        }
-                    },
-                    new PubItemSE
-                    {
-                        Type = "Whiskey",
-                        PriceBar = new PriceSE
-                        {
-                            DefaultPrice = 2.0m,
-                            CurrentPrice = 2.1m,
-                            Minus = new List<ObjectId> {votingUserOne},
-                            Plus = new List<ObjectId>()
-                        },
-                        PriceClub = new PriceSE
-                        {
-                            DefaultPrice = 2.0m,
-                            CurrentPrice = 2.1m,
-                            Minus = new List<ObjectId> {votingUserOne},
-                            Plus = new List<ObjectId>()
-                        },
-                        PricePub = new PriceSE
-                        {
-                            DefaultPrice = 2.0m,
-                            CurrentPrice = 2.1m,
-                            Minus = new List<ObjectId> {votingUserOne},
-                            Plus = new List<ObjectId>()
-                        }
-                    },
-                    new PubItemSE
-                    {
-                        Type = "Vodka",
-                        PriceBar = new PriceSE
-                        {
-                            DefaultPrice = 2.0m,
-                            CurrentPrice = 2.1m,
-                            Minus = new List<ObjectId> {votingUserOne},
-                            Plus = new List<ObjectId>()
-                        },
-                        PriceClub = new PriceSE
-                        {
-                            DefaultPrice = 2.0m,
-                            CurrentPrice = 2.1m,
-                            Minus = new List<ObjectId> {votingUserOne},
-                            Plus = new List<ObjectId>()
-                        },
-                        PricePub = new PriceSE
-                        {
-                            DefaultPrice = 2.0m,
-                            CurrentPrice = 2.1m,
-                            Minus = new List<ObjectId> {votingUserOne},
-                            Plus = new List<ObjectId>()
-                        }
-                    },
-                    new PubItemSE
-                    {
-                        Type = "Cigarettes",
-                        PriceBar = new PriceSE
-                        {
-                            DefaultPrice = 2.0m,
-                            CurrentPrice = 2.1m,
-                            Minus = new List<ObjectId> {votingUserOne},
-                            Plus = new List<ObjectId>()
-                        },
-                        PriceClub = new PriceSE
-                        {
-                            DefaultPrice = 2.0m,
-                            CurrentPrice = 2.1m,
-                            Minus = new List<ObjectId> {votingUserOne},
-                            Plus = new List<ObjectId>()
-                        },
-                        PricePub = new PriceSE
-                        {
-                            DefaultPrice = 2.0m,
-                            CurrentPrice = 2.1m,
-                            Minus = new List<ObjectId> {votingUserOne},
-                            Plus = new List<ObjectId>()
-                        }
-                    },
                 },
                 
-                TransportItems = new List<PriceItemSE>
-                {
-                    new PriceItemSE
-                    {
-                        Type = "Taxi",
-                        Price = new PriceSE
-                        {
-                            CurrentPrice = 6.1m,
-                            DefaultPrice = 6m,
-                            Plus = new List<ObjectId> {votingUserOne },
-                            Minus = new List<ObjectId>()
-                        }
-                    },
-                    new PriceItemSE
-                    {
-                        Type = "PublicTransport",
-                        Price = new PriceSE
-                        {
-                            CurrentPrice = 6.1m,
-                            DefaultPrice = 6m,
-                            Plus = new List<ObjectId> {votingUserOne },
-                            Minus = new List<ObjectId>()
-                        }
-                    },
-                },
-
-                RestaurantItems = new List<PriceItemSE>
-                {
-                    new PriceItemSE
-                    {
-                        Type = "Salad",
-                        Price = new PriceSE
-                        {
-                            CurrentPrice = 6.1m,
-                            DefaultPrice = 6m,
-                            Plus = new List<ObjectId> {votingUserOne },
-                            Minus = new List<ObjectId>()
-                        }
-                    },
-                    new PriceItemSE
-                    {
-                        Type = "Steak",
-                        Price = new PriceSE
-                        {
-                            CurrentPrice = 8.1m,
-                            DefaultPrice = 8m,
-                            Plus = new List<ObjectId> {votingUserOne },
-                            Minus = new List<ObjectId>()
-                        }
-                    },
-                    new PriceItemSE
-                    {
-                        Type = "Local",
-                        Price = new PriceSE
-                        {
-                            CurrentPrice = 4.1m,
-                            DefaultPrice = 4m,
-                            Plus = new List<ObjectId> {votingUserOne },
-                            Minus = new List<ObjectId>()
-                        }
-                    },
-                    new PriceItemSE
-                    {
-                        Type = "Pizza",
-                        Price = new PriceSE
-                        {
-                            CurrentPrice = 5.1m,
-                            DefaultPrice = 5m,
-                            Plus = new List<ObjectId> {votingUserOne },
-                            Minus = new List<ObjectId>()
-                        }
-                    },
-
-                },
-
-                AccommodationItems = new List<PriceItemSE>
-                {
-                    new PriceItemSE
-                    {
-                        Type = "Hostel",
-                        Price = new PriceSE
-                        {
-                            CurrentPrice = 15.1m,
-                            DefaultPrice = 15m,
-                            Plus = new List<ObjectId> {votingUserOne },
-                            Minus = new List<ObjectId>()
-                        }
-                    },
-                    new PriceItemSE
-                    {
-                        Type = "Star3",
-                        Price = new PriceSE
-                        {
-                            CurrentPrice = 40.1m,
-                            DefaultPrice = 40m,
-                            Plus = new List<ObjectId> {votingUserOne },
-                            Minus = new List<ObjectId>()
-                        }
-                    },
-                    new PriceItemSE
-                    {
-                        Type = "Star4",
-                        Price = new PriceSE
-                        {
-                            CurrentPrice = 60.1m,
-                            DefaultPrice = 60m,
-                            Plus = new List<ObjectId> {votingUserOne },
-                            Minus = new List<ObjectId>()
-                        }
-                    },
-                },
+                PubItems = GetPubItems(votingUserOne),
+                
                 GID = 5464563,
                 Country_id = countryId,
                 Links = new List<LinkSE>(),

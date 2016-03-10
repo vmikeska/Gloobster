@@ -17,7 +17,14 @@ namespace Gloobster.ReqRes
         public string linkId { get; set; }
         public string articleId { get; set; }       
     }
-    
+
+    public class UpdatePriceRequest
+    {
+        public string priceId { get; set; }
+        public string articleId { get; set; }
+        public decimal price { get; set; }
+    }
+
     public class UpdateDoDontRequest
     {
         public string articleId { get; set; }        

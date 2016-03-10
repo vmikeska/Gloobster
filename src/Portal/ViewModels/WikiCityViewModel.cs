@@ -72,6 +72,7 @@ namespace Gloobster.Portal.ViewModels
     
     public class TableItemVM
     {
+        public string Id { get; set; }
         public string Name { get; set; }
         public decimal Price1 { get; set; }
         public decimal Price2 { get; set; }
@@ -103,6 +104,22 @@ namespace Gloobster.Portal.ViewModels
         {
             var links = Article.PlacesLinks.Where(c => c.Category == category).ToList();
             return links;
+        }
+
+        public List<PriceItemSE> GetPricesByCategory(string category)
+        {
+            return Article.Prices.Where(p => p.Category == category).ToList();
+        }
+
+        public TableItemVM ConvertTableItem(PriceItemSE priceItem)
+        {
+            var res = new TableItemVM
+            {
+                Id = priceItem.id.ToString(),
+                Name = priceItem.Type,
+                Price1 = priceItem.Price.CurrentPrice
+            };
+            return res;
         }
 
         public BlockVM BarDistricts()
@@ -142,11 +159,7 @@ namespace Gloobster.Portal.ViewModels
         public BlockVM Accommodation()
         {
             var block = Section("Accommodation", "standard,price1", 3);
-            block.TableItems = Article.AccommodationItems.Select(i => new TableItemVM
-            {
-                Name = i.Type,
-                Price1 = i.Price.CurrentPrice
-            }).ToList();
+            block.TableItems =  GetPricesByCategory("Accommodation").Select(ConvertTableItem).ToList();
 
             return block;
         }
@@ -154,11 +167,7 @@ namespace Gloobster.Portal.ViewModels
         public BlockVM Transport()
         {
             var block = Section("Transport", "standard,price1", 3);
-            block.TableItems = Article.TransportItems.Select(i => new TableItemVM
-            {
-                Name = i.Type,
-                Price1 = i.Price.CurrentPrice
-            }).ToList();
+            block.TableItems = GetPricesByCategory("Transport").Select(ConvertTableItem).ToList();
 
             return block;
         }
@@ -166,11 +175,7 @@ namespace Gloobster.Portal.ViewModels
         public BlockVM Restaurant()
         {
             var block = Section("Restaurant", "standard,price1", 3);
-            block.TableItems = Article.RestaurantItems.Select(i => new TableItemVM
-            {
-                Name = i.Type,
-                Price1 = i.Price.CurrentPrice
-            }).ToList();
+            block.TableItems = GetPricesByCategory("Restaurant").Select(ConvertTableItem).ToList();
 
             return block;
         }
