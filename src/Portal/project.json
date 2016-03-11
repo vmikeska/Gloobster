@@ -1,4 +1,5 @@
-{  
+{
+  "webroot": "wwwroot",
   "userSecretsId": "aspnet5-Portal6-31028462-3390-42e4-925d-5de71e131837",
   "version": "1.0.0-*",
   "compilationOptions": {
@@ -45,9 +46,7 @@
     "BlobFileSystem.Azure": "0.0.7"
   },
 
-
-
-  "commands": {    
+  "commands": {
     "web": "Microsoft.AspNet.Server.Kestrel"
   },
 
