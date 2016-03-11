@@ -1,0 +1,43 @@
+.display-block {
+    display: block;
+}
+
+.display-none {
+    display: none;
+}
+
+.panel-block {
+    @include desktop-over {
+        display: block !important;
+    }
+}
+
+.panel-none {
+    @include desktop-over {
+        display: none !important;
+    }
+}
+
+.tablet-block {
+    @include tablet {
+        display: block !important;
+    }
+}
+
+.tablet-none {
+    @include tablet {
+        display: none !important;
+    }
+}
+
+.mobile-block {
+    @include mobile {
+        display: block !important;
+    }
+}
+
+.mobile-none {
+    @include mobile {
+        display: none !important;
+    }
+}

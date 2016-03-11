@@ -1,0 +1,15 @@
+.header {
+    @include size(auto 136px);
+    background-color: $white;
+    border-top: 4px solid $color6;
+    h1 {
+        margin: 0;
+    }
+    .logo-header {
+        float: left;
+    }
+    .menu-holder {
+        float: right;
+        margin: 23px 0;
+    }
+}

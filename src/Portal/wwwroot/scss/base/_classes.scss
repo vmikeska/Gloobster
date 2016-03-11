@@ -1,0 +1,194 @@
+/* Global */
+
+h1, h2, h3, h4, h5, h6, p, ul {
+    margin: 0 0 $margin 0;
+}
+
+a {
+    outline: none;
+    &.noneline {
+        text-decoration: none;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+img {
+    border: none;
+    &.left, &.alignleft {
+        margin-right: $margin;
+    }
+    &.right, &.alignright {
+        margin-left: $margin;
+    }
+    &.center, &.aligncenter {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    @include mobile {
+        @include size(100% auto);
+    }
+}
+
+table {
+    border-collapse: collapse;
+}
+
+input, select, textarea {
+    outline: none;
+}
+
+/* Classes */
+
+.clearfix {
+    @include clearfix;
+}
+
+.center, .aligncenter {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.left, .alignleft {
+    float: left;
+}
+
+.right, .alignright {
+    float: right;
+}
+
+.tcenter {
+    text-align: center;
+}
+
+.tleft {
+    text-align: left;
+}
+
+.tright {
+    text-align: right;
+}
+
+.bottom {
+    vertical-align: bottom;
+}
+
+.middle {
+    vertical-align: middle;
+}
+
+.top {
+    vertical-align: top;
+}
+
+.tlower {
+    text-transform: lowercase;
+}
+
+.tupper {
+    text-transform: uppercase;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+.slim {
+    font-weight: $slim-weight;
+}
+
+.strong {
+    font-weight: $strong-weight;
+}
+
+.border {
+    border: $border-height solid $border-color;
+}
+
+.line {
+    border-bottom: $line-height solid $line-color;
+}
+
+.radius {
+    border-radius: $radius;
+}
+
+.sizeauto {
+    @include size(auto);
+}
+
+.width100 {
+    @include size(100% auto);
+}
+
+.widthfull {
+    // https://css-tricks.com/full-browser-width-bars/ ... html, body { overflow-x: hidden; }
+    @include margin(null -100rem);
+    @include padding(null 100rem);
+}
+
+/* Center */
+
+.center-vertical {
+    //https://css-tricks.com/centering-in-the-unknown/
+    &:before {
+        content: "";
+        display: inline-block;
+        height: 100%;
+        //margin-right: -0.25em;
+        vertical-align: middle;
+    }
+    .centered {
+        display: inline-block;
+        vertical-align: middle;
+    }
+}
+
+.center-absolute {
+    @include position(absolute, null null null 50%);
+    @include transform(translateX(-50%));
+}
+
+.image-centered {
+    @include position(relative);
+    overflow: hidden;
+    & > img {
+        @include position(absolute, 50% null null 50%);
+        @include transform(translateX(-50%) translateY(-50%));
+    }
+    &.cover > img {
+        @include position(absolute, 0 null null 50%);
+        @include transform(null translateX(-50%));
+        height: 100%;
+        width: auto;
+    }
+}
+
+/* Caption */
+
+.caption {
+    @include calc(max-width, "100% - #{2 * $margin + 2}");
+    background-color: $caption-background;
+    border: 1px solid $caption-border;
+    border-radius: $caption-radius;
+    color: $caption-color;
+    margin-bottom: $margin;
+    padding: $margin;
+    text-align: center;
+    img {
+        border: none;
+        display: block;
+        height: auto;
+        margin: 0 auto;
+        max-width: 100%;
+        padding: 0;
+        width: auto;
+    }
+    .caption-text {
+        display: block;
+        margin: 10px 0 -10px 0;
+    }
+}
+

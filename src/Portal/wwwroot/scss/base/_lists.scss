@@ -1,0 +1,41 @@
+//ol {
+//    list-style: none;
+//    margin: 0 0 $margin 0;
+//    padding: 0 0 0 40px;
+//    li {
+//        @include position(relative);
+//        counter-increment: index;
+//        margin-bottom: $margin;
+//        &:before {
+//            @include position(absolute, -8px null null -56px);
+//            background-color: #e6df45;
+//            border-bottom-left-radius: $radius;
+//            border-top-left-radius: $radius;
+//            color: #fff;
+//            content: counter(index);
+//            display: block;
+//            height: 32px;
+//            line-height: 32px;
+//            padding-left: 6px;
+//            text-align: center;
+//            width: 30px;
+//        }
+//        &:after {
+//            @include position(absolute, -8px null null -20px);
+//            @include triangle(32px 10px, #e6df45, right);
+//            content: "";
+//        }
+//    }
+//}
+//
+//ul.lines {
+//    padding: 0;
+//    li {
+//        border-bottom: 1px solid rgba(255, 255, 255, .2);
+//        display: block;
+//        padding: 10px;
+//        &:first-child {
+//            border-top: 1px solid rgba(255, 255, 255, .2);
+//        }
+//    }
+//}

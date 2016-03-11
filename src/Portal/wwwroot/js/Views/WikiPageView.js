@@ -5,6 +5,36 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Views;
 (function (Views) {
+    var PhotoAdmin = (function () {
+        function PhotoAdmin(articleId) {
+            this.articleId = articleId;
+            this.buttonTemplate = Views.ViewBase.currentView.registerTemplate("photoEdit-template");
+        }
+        PhotoAdmin.prototype.generateAdmin = function () {
+            var $html = $(this.buttonTemplate());
+            $(".titlePhoto").prepend($html);
+            this.registerPhotoUpload(this.articleId, "titlePhotoInput");
+        };
+        PhotoAdmin.prototype.clean = function () {
+            $(".photoButton").remove();
+        };
+        PhotoAdmin.prototype.registerPhotoUpload = function (articleId, inputId) {
+            var _this = this;
+            var config = new Common.FileUploadConfig();
+            config.inputId = inputId;
+            config.endpoint = "WikiTitlePhoto";
+            var picUpload = new Common.FileUpload(config);
+            picUpload.customId = articleId;
+            picUpload.onProgressChanged = function (percent) {
+            };
+            picUpload.onUploadFinished = function (file, files) {
+                var d = new Date();
+                $(".titlePhoto img").attr("src", "/wiki/ArticleTitlePhoto/" + _this.articleId + "?d=" + d.getDate());
+            };
+        };
+        return PhotoAdmin;
+    })();
+    Views.PhotoAdmin = PhotoAdmin;
     var PriceAdmin = (function () {
         function PriceAdmin(articleId) {
             this.articleId = articleId;
@@ -477,6 +507,7 @@ var Views;
             this.blockAdmin = new BlockAdmin(articleId, this.langVersion);
             this.doDontAdmin = new DoDontAdmin(articleId, this.langVersion);
             this.priceAdmin = new PriceAdmin(articleId);
+            this.photoAdmin = new PhotoAdmin(articleId);
             this.$adminMode = $("#adminMode");
             this.regAdminMode();
             this.regRating();
@@ -535,12 +566,14 @@ var Views;
             });
             this.doDontAdmin.generateAdmin();
             this.priceAdmin.generateAdmin();
+            this.photoAdmin.generateAdmin();
         };
         WikiPageView.prototype.destroyBlocks = function () {
             $(".editSection").remove();
             this.linksAdmin.removeAdminLinks();
             this.priceAdmin.clean();
             this.doDontAdmin.clean();
+            this.photoAdmin.clean();
         };
         WikiPageView.prototype.drawAdminBlocks = function ($block, id, adminType) {
             var adminTypes = adminType.split(",");

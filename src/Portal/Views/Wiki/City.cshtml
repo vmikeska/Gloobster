@@ -10,6 +10,30 @@
 
 <script type="text/javascript" src="@Url.Content("~/js/Views/WikiPageView.js")"></script>
 
+<style>
+    /*todo: multiple duplicities in the app*/
+     .photoButton input {
+         width: 0.1px;
+         height: 0.1px;
+         opacity: 0;
+         overflow: hidden;
+         position: absolute;
+         z-index: -1;
+     }
+
+    .photoButton label {
+        cursor: pointer;
+    }
+</style>
+
+@{
+    string titleLink = "/images/samples/sample16.jpg";
+    if (Model.Article.HasTitlePhoto)
+    {
+        titleLink = $"/wiki/ArticleTitlePhoto/{Model.Article.id}";
+    }
+}
+
 @Html.Partial("AdminTemplates")
 
 <style>
@@ -33,8 +57,8 @@
     <h2>@Model.Texts.Title</h2>
     @Html.Partial("Languages")
 
-    <div class="margin">
-        <img class="radius" src="/images/samples/sample16.jpg">
+    <div class="titlePhoto margin">        
+        <img class="radius" src="@titleLink">
     </div>
 
     @Html.Partial("BaseDescription", Model.Section("Base"))

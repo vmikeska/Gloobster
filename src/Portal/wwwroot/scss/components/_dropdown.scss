@@ -1,0 +1,83 @@
+$dropdown-background: $white;
+$dropdown-border: rgba($color6, .5);
+$dropdown-color: $color5;
+$dropdown-hover: rgba($color6, .2);
+$dropdown-padding: 9px 19px;
+$dropdown-radius: $radius;
+$dropdown-speed: $speed;
+
+.dropdown {
+    @include position(relative);
+    display: inline-block;
+    .selected, .inputed {
+        @include position(relative);
+        background-color: $dropdown-background;
+        border: 1px solid $dropdown-border;
+        border-radius: $dropdown-radius;
+        color: $dropdown-color;
+        cursor: pointer;
+        display: inline-block;
+        margin: 0;
+        padding: $dropdown-padding;
+    }
+    .selected {
+        padding-right: 29px !important;
+        &:after {
+            @include size(10px 5px);
+            @include position(absolute, 50% 10px null null);
+            background: transparent url("../images/arrow-blue.png") left top no-repeat;
+            content: "";
+            display: block;
+            margin-top: -2px;
+        }
+    }
+    .inputed {
+        &:focus,
+        &:active {
+            background-color: $dropdown-background;
+            border-color: $dropdown-border;
+        }
+    }
+    ul {
+        @include position(absolute, 39px null null 0);
+        @include border-bottom-radius($dropdown-radius);
+        background-color: $dropdown-background;
+        border: 1px solid $dropdown-border;
+        color: $dropdown-color;
+        cursor: pointer;
+        display: none;
+        margin: 0;
+        padding: 0;
+        white-space: nowrap;
+        z-index: 99999;
+        li {
+            border-bottom: 1px solid $dropdown-border;
+            list-style: none;
+            padding: $dropdown-padding;
+            &.disabled {
+                color: $color1;
+                cursor: default;
+            }
+            &:hover:not(.disabled) {
+                background-color: $dropdown-hover;
+            }
+            &:last-child {
+                @include border-bottom-radius($dropdown-radius);
+                border-bottom-color: transparent;
+            }
+        }
+    }
+    &.dropdown-open {
+        .selected, .inputed {
+            @include border-bottom-radius(0);
+        }
+        .selected {
+            &:after {
+                background-position: left bottom;
+            }
+        }
+        ul {
+            display: block;
+        }
+    }
+}

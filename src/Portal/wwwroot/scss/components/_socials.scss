@@ -1,0 +1,46 @@
+$socials-icons: facebook google linkedin twitter youtube;
+$socials-images: colors;
+$socials-margin: 5px;
+$socials-margin-first: 10px;
+$socials-scale: .8;
+$socials-size: 32px;
+$socials-slit: 10px;
+$socials-speed: $speedily;
+
+.socials {
+    &, ul, li, a {
+        @include margin(0 null 0 null);
+        @include padding(null 0 null 0);
+        display: inline-block;
+    }
+    a {
+        @include size($socials-size);
+        @include transition(all $socials-speed);
+        @include hide-text;
+        background: transparent url("../images/socials-#{nth($socials-images, 1)}.png") left top no-repeat;
+        margin-left: $socials-margin;
+        opacity: .5;
+        vertical-align: middle;
+        &:hover {
+            @include transform(scale($socials-scale));
+            opacity: 1;
+        }
+        @each $icon in $socials-icons {
+            $left: ($socials-size + $socials-slit) * -(index($socials-icons, $icon) - 1);
+            &[href*="#{$icon}"] {
+                background-position: $left 0;
+            }
+        }
+    }
+    li:first-child a,
+    & > a:first-child {
+        margin-left: $socials-margin-first;
+    }
+    @each $image in $socials-images {
+        &.#{$image} {
+            a {
+                background-image: url("../images/socials-#{$image}.png");
+            }
+        }
+    }
+}

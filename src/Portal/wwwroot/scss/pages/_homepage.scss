@@ -1,0 +1,68 @@
+.homepage {
+    .header {
+        background-color: $color6;
+        border-top-color: $color5;
+        .logo-header {
+            @extend .logo-homepage;
+        }
+        .menu-header {
+            @extend .menu-homepage;
+        }
+        .dropdown {
+            .selected, ul, ul li {
+                background-color: $color6;
+                border-color: rgba($white, .5);
+                color: $white;
+            }
+            .selected:after {
+                background-image: url("../images/arrow-white.png");
+            }
+            ul li:hover {
+                background-color: rgba($white, .2);
+            }
+        }
+    }
+    .maskots {
+        background: transparent url("../images/globe2.png") center top no-repeat;
+        color: $white;
+        height: 370px;
+        h1 {
+            //font-size: 40px;
+            margin: 15px 0 0 0;
+            text-align: center;
+            text-shadow: 0 1px $color5;
+        }
+        //.bubble1 {
+        //    @include size(160px 60px);
+        //    @include position(absolute, 95px null null -72px);
+        //    overflow: hidden;
+        //}
+        //.bubble2 {
+        //    @include size(160px 60px);
+        //    @include position(absolute, 95px null null 840px);
+        //    overflow: hidden;
+        //}
+        .logins {
+            @include position(absolute, 132px 0 null 0);
+            text-align: center;
+            .email {
+                background-color: rgba($white, .8);
+                border-radius: $radius;
+                color: $black;
+                display: inline-block;
+                padding: 10px 30px;
+            }
+        }
+        .buttons {
+            @include position(absolute, 286px 0 null 0);
+            text-align: center;
+        }
+    }
+    @include tablet {
+        .maskots {
+            //.bubble1, .bubble2 {
+            //    display: none;
+            //}
+        }
+    }
+}

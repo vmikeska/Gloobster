@@ -1,0 +1,48 @@
+.footer {
+    background-color: $white;
+    border-top: 1px solid rgba($color2, .3);
+    color: $color1;
+    a {
+        @extend a.noneline;
+        color: inherit;
+    }
+    .logo-footer {
+        float: left;
+        margin-right: 40px;
+    }
+    .menu-footer {
+        margin: 40px 0 40px -5px;
+    }
+    .copyright {
+        color: $color2;
+        font-size: 14px;
+        height: 50px;
+        line-height: 50px;
+        margin: 40px 0;
+    }
+    .socials {
+        @extend .socials.colors;
+        color: $color1;
+        float: right;
+    }
+    .widgets {
+        .widget :last-child {
+            //margin-bottom: 0;
+        }
+        a {
+            color: $color5;
+        }
+        h3 {
+            color: $color1;
+            font-size: 16px;
+            font-weight: bold;
+            //min-height: 40px;
+        }
+        ul {
+            padding: 0;
+            li {
+                display: block;
+            }
+        }
+    }
+}

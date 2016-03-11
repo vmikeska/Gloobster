@@ -1,0 +1,28 @@
+$logos: (//image, size
+    header: (colors, 287px 136px), //49px
+    footer: (blue, 287px 49px),
+    homepage: (white, 287px 136px), //49px
+);
+$logo-move: 2px 0 0 0;
+$logo-speed: $speedily;
+
+%logo {
+    @include position(relative, 0 0 0 0);
+    @include transition(all $logo-speed);
+    @include hide-text;
+    background-color: transparent;
+    background-position: left center;
+    background-repeat: no-repeat;
+    display: block;
+    &:hover {
+        @include position(relative, $logo-move);
+    }
+}
+
+@each $logo, $image in $logos {
+    .logo-#{$logo} {
+        @extend %logo;
+        @include size(nth($image, 2));
+        background-image: url("../images/logo-#{nth($image, 1)}.png");
+    }
+}

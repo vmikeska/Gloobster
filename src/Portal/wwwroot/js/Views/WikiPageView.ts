@@ -1,5 +1,46 @@
 ﻿module Views {
 
+	export class PhotoAdmin {
+	 private buttonTemplate;
+
+	 private articleId;
+
+	 constructor(articleId) {
+		 this.articleId = articleId;
+		 this.buttonTemplate = ViewBase.currentView.registerTemplate("photoEdit-template");
+	 }
+
+	 public generateAdmin() {
+		var $html = $(this.buttonTemplate());		
+		$(".titlePhoto").prepend($html);
+
+		this.registerPhotoUpload(this.articleId, "titlePhotoInput");
+	 }
+
+	 public clean() {
+		 $(".photoButton").remove();
+	 }
+
+	 private registerPhotoUpload(articleId, inputId) {
+		var config = new Common.FileUploadConfig();
+		config.inputId = inputId;
+		config.endpoint = "WikiTitlePhoto";
+
+		var picUpload = new Common.FileUpload(config);
+		picUpload.customId = articleId;
+
+		picUpload.onProgressChanged = (percent) => {
+		}
+
+		picUpload.onUploadFinished = (file, files) => {
+		 var d = new Date();
+		 
+		 $(".titlePhoto img").attr("src", `/wiki/ArticleTitlePhoto/${this.articleId}?d=${d.getDate()}`);
+		 
+		}
+	 }
+	}
+
 	export class PriceAdmin {
 
 		private priceEditTemplate;
@@ -563,6 +604,7 @@
 		private blockAdmin: BlockAdmin;
 		private doDontAdmin: DoDontAdmin;
 		private priceAdmin: PriceAdmin;
+		private photoAdmin: PhotoAdmin;
 
 		constructor(articleId) {
 			super();
@@ -573,6 +615,7 @@
 			this.blockAdmin = new BlockAdmin(articleId, this.langVersion);
 			this.doDontAdmin = new DoDontAdmin(articleId, this.langVersion);
 			this.priceAdmin = new PriceAdmin(articleId);
+			this.photoAdmin = new PhotoAdmin(articleId);
 
 			this.$adminMode = $("#adminMode");
 			this.regAdminMode();
@@ -641,7 +684,7 @@
 
 			this.doDontAdmin.generateAdmin();
 		  this.priceAdmin.generateAdmin();
-
+		  this.photoAdmin.generateAdmin();
 		}
 
 		private destroyBlocks() {
@@ -649,6 +692,7 @@
 		 this.linksAdmin.removeAdminLinks();
 		 this.priceAdmin.clean();
 		 this.doDontAdmin.clean();
+			this.photoAdmin.clean();
 		}
 
 		

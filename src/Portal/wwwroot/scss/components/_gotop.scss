@@ -1,0 +1,34 @@
+$gotop-background: #57c1db;
+$gotop-color: #fff;
+$gotop-move: -25px 0 null null;
+$gotop-position: -20px 0 null null;
+$gotop-radius: $radius;
+$gotop-size: 60px;
+$gotop-speed: $speedily;
+
+.gotop {
+    @include size($gotop-size);
+    @include position(absolute, $gotop-position);
+    @include transition(all $gotop-speed);
+    //@include hide-text;
+    background-color: $gotop-background;
+    border-radius: $radius;
+    line-height: 0;
+    overflow: hidden;
+    text-indent: 9999px;
+    white-space: nowrap;
+    &:hover {
+        @include position(absolute, $gotop-move);
+    }
+    &:before, &:after {
+        content: "";
+    }
+    &:before {
+        @include position(absolute, $gotop-size / 3 null null $gotop-size / 6);
+        @include triangle($gotop-size * 2 / 3, $gotop-color, up);
+    }
+    &:after {
+        @include position(absolute, 2 + $gotop-size / 3 null null $gotop-size / 6);
+        @include triangle($gotop-size * 2 / 3, $gotop-background, up);
+    }
+}

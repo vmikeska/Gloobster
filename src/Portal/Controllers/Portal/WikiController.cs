@@ -17,14 +17,17 @@ using Serilog;
 using System.Linq;
 using FourSquare.SharpSquare.Entities;
 using Gloobster.DomainModels.Wiki;
+using Gloobster.Portal.Controllers.Api.Wiki;
 
 namespace Gloobster.Portal.Controllers.Portal
 {
     public class WikiController : PortalBaseController
     {
-        public WikiController(ILogger log,  IDbOperations db) : base(log, db)
-		{
-            
+        public IFilesDomain FileDomain { get; set; }
+
+        public WikiController(IFilesDomain filesDomain, ILogger log,  IDbOperations db) : base(log, db)
+        {
+            FileDomain = filesDomain;
         }
 
         public IActionResult PageRegular(string id, string lang)
@@ -78,6 +81,27 @@ namespace Gloobster.Portal.Controllers.Portal
             vm.Article = article;
 
             return vm;
+        }
+
+        public IActionResult ArticleTitlePhoto(string id)
+        {
+            var stream = GetPicture(id, WikiFileConstants.TitlePhotoNameExt);
+            return stream;
+        }
+        
+        private FileStreamResult GetPicture(string articleId, string picName)
+        {
+            var tripDir = FileDomain.Storage.Combine(WikiFileConstants.FileLocation, articleId);
+
+            var filePath = FileDomain.Storage.Combine(tripDir, picName);
+            bool exists = FileDomain.Storage.FileExists(filePath);
+            if (exists)
+            {
+                var fileStream = FileDomain.GetFile(tripDir, picName);
+                return new FileStreamResult(fileStream, "image/jpeg");
+            }
+
+            return null;
         }
 
         public IActionResult Page(string id)

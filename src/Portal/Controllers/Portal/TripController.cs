@@ -126,8 +126,7 @@ namespace Gloobster.Portal.Controllers.Portal
                 var vm = CreateDetailVM(trip);
                 return View(vm);
             }
-
-
+            
             //user has no admin righs
             return RedirectToAction("NoAdminRights", "Trip");            
 		}
@@ -270,9 +269,9 @@ namespace Gloobster.Portal.Controllers.Portal
 
         private FileStreamResult GetPicture(string tripId, string picName)
 	    {
-            var tripIdObj = new ObjectId(tripId);
-            var trip = DB.C<TripEntity>().FirstOrDefault(u => u.id == tripIdObj);
-            var tripDir = FileDomain.Storage.Combine(TripFileConstants.FileLocation, trip.id.ToString());
+            //var tripIdObj = new ObjectId(tripId);
+            //var trip = DB.C<TripEntity>().FirstOrDefault(u => u.id == tripIdObj);
+            var tripDir = FileDomain.Storage.Combine(TripFileConstants.FileLocation, tripId);
             
             var filePath = FileDomain.Storage.Combine(tripDir, picName);
             bool exists = FileDomain.Storage.FileExists(filePath);

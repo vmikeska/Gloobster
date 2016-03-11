@@ -1,0 +1,39 @@
+.dashboard {
+    .wrapper {
+        @include position(relative);
+    }
+    .header {
+        background-color: rgba($color6, .15);
+        .menu-header {
+            @extend .menu-dashboard;
+        }
+        .dropdown {
+            .selected, ul, ul li {
+                background-color: rgba($white, .5);
+                border-color: rgba($color6, .5);
+                color: $color5;
+            }
+            .selected:after {
+                //background-image: url("../images/arrow-white.png");
+            }
+            ul li:hover {
+                background-color: rgba($white, .5);
+            }
+        }
+    }
+    .globe {
+        background-color: rgba($color6, .15);
+        .wrapper {
+            background: transparent url("../images/globe.png") right bottom no-repeat;
+            padding-bottom: 170px;
+        }
+        & + section {
+            margin-top: -140px;//-150
+        }
+    }
+    .showall {
+        @extend .center-absolute;
+        padding: 6px 9px;
+        top: -57px;
+    }
+}

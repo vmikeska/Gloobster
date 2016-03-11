@@ -1,0 +1,170 @@
+/* Wrapper */
+
+.wrapper {
+    @include size($wrapper-desktop auto);
+    @include position(relative);
+    @include margin(null auto null auto);
+    @include clearfix;
+    &:before {
+        content: "";
+        display: table;
+    }
+    & > :last-child {
+        margin-bottom: 0;
+    }
+    @include tablet {
+        @include size($wrapper-tablet auto);
+    }
+    @include mobile {
+        @include size($wrapper-mobile auto);
+    }
+}
+
+/* Grid */
+
+.grid {
+    @include margin(0 null 0 null);
+    @include padding(0);
+    display: table;
+    table-layout: fixed;
+    word-spacing: -2em;
+    @include cell {
+        //http://www.alsacreations.com/astuce/lire/1432-display-inline-block-espaces-indesirables.html
+        //https://css-tricks.com/fighting-the-space-between-inline-block-elements/
+        display: inline-block;
+        vertical-align: top;
+        word-spacing: normal;
+        &.baseline {
+            vertical-align: baseline;
+        }
+        &.bottom {
+            vertical-align: bottom;
+        }
+        &.middle {
+            vertical-align: middle;
+        }
+    }
+    @for $i from 2 through length($grid-desktop) {
+        $margin: nth($grid-desktop, $i);
+        $width: ($wrapper-desktop - $margin * ($i - 1)) / $i;
+        @include cell("&.col#{$i}") {
+            @include grid($wrapper-desktop, $width, $margin, 0, padding);
+            width: $width;
+        }
+    }
+    @include tablet {
+        @for $i from 2 through length($grid-tablet) {
+            $margin: nth($grid-tablet, $i);
+            $width: ($wrapper-tablet - $margin * ($i - 1)) / $i;
+            @include cell("&.col#{$i}") {
+                @include grid($wrapper-tablet, $width, $margin, 0, padding);
+                width: $width;
+            }
+        }
+    }
+    @include mobile {
+        $cols: "&";
+        @for $i from 2 through length($grid-desktop) {
+            $cols: $cols ", &.col#{$i}";
+        }
+        display: block;
+        @include cell($cols) {
+            display: block;
+            padding-bottom: $grid-mobile;
+            padding-right: 0;
+            width: auto;
+            &:last-of-type {
+                padding-bottom: 0 !important;
+            }
+        }
+    }
+}
+
+/* Table */
+
+.table {
+    //&, & > li, & > .cell {
+    //    @include margin(0 null 0 null);
+    //    @include padding(null 0 null 0);
+    //}
+    @include margin(0 null 0 null);
+    @include padding(0);
+    //@include padding(null 0 null 0);
+    display: table;
+    @include cell("&, &.row, & > .row") {
+        //@include margin(0 null 0 null);
+        //@include padding(null 0 null 0);
+        display: table-cell;
+        vertical-align: top;
+        &.baseline {
+            vertical-align: baseline;
+        }
+        &.bottom {
+            vertical-align: bottom;
+        }
+        &.middle {
+            vertical-align: middle;
+        }
+    }
+    & > .row {
+        display: table-row;
+        @include cell {
+            padding-bottom: nth($table-desktop, 1);
+        }
+        @include cell("&:last-of-type") {
+            padding-bottom: 0 !important;
+        }
+    }
+    &.row, & > .row {
+        @include cell {
+            padding-right: nth($table-desktop, 1);
+            &:last-of-type {
+                padding-right: 0 !important;
+            }
+            & > :last-child {
+                margin-bottom: 0;
+            }
+        }
+        @for $i from 2 through length($table-desktop) {
+            $margin: nth($table-desktop, $i);
+            $width: ($wrapper-desktop - $margin * ($i - 1)) / $i;
+            @include cell("&.col#{$i}") {
+                padding-right: $margin;
+                width: $width;
+            }
+        }
+    }
+    @include tablet {
+        &.row, & > .row {
+            @include cell {
+                padding-right: nth($table-tablet, 1);
+            }
+            @for $i from 2 through length($table-tablet) {
+                $margin: nth($table-tablet, $i);
+                $width: ($wrapper-tablet - $margin * ($i - 1)) / $i;
+                @include cell("&.col#{$i}") {
+                    padding-right: $margin;
+                    width: $width;
+                }
+            }
+        }
+    }
+    @include mobile {
+        &.row, & > .row {
+            $cols: "&";
+            @for $i from 2 through length($table-desktop) {
+                $cols: $cols ", &.col#{$i}";
+            }
+            display: block;
+            @include cell($cols) {
+                display: block;
+                padding-bottom: $table-mobile;
+                padding-right: 0;
+                width: auto;
+                &:last-of-type {
+                    padding-bottom: 0 !important;
+                }
+            }
+        }
+    }
+}
