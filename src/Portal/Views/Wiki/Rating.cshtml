@@ -2,10 +2,29 @@
 @using Gloobster.Portal.ViewModels
 @model BlockVM
 
+@{    
+    bool? liked = Model.Liked;
+
+    var likeClass = "icon-heart";
+    var dislikeClass = "icon-nosmile";
+    if (liked.HasValue)
+    {
+        if (liked.Value)
+        {
+            likeClass += "Red";
+        }
+        else
+        {
+            dislikeClass += "Red";
+        }
+    }
+
+}
+
 <div data-id="@Model.SectionId" class="evaluate evaluate-open2 evaluate-right">
     <ul class="buttons table">
-        <li><a class="icon-heart" href="#">Like</a></li>
-        <li><a class="icon-nosmile" href="#">No like</a></li>
+        <li><a class="@likeClass ratingBtn" data-like="true" href="#">Like</a></li>
+        <li><a class="@dislikeClass ratingBtn" data-like="false" href="#">No like</a></li>
         <li><a class="icon-flag" href="#">Report</a></li>
     </ul>
     <div class="bubble">

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.Entities;
+using Gloobster.Entities.Wiki;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -28,7 +29,66 @@ namespace Gloobster.DomainModels.Wiki
 
             return res.ModifiedCount == 1;
         }
-        
+
+        public async Task<decimal> AddPriceRating(string articleId, string priceId, string userId, bool plus)
+        {
+            ObjectId articleIdObj = new ObjectId(articleId);
+            ObjectId priceIdObj = new ObjectId(priceId);
+            ObjectId userIdObj = new ObjectId(userId);
+            
+            var prices = DB.C<WikiCityEntity>()
+                .Where(c => c.id == articleIdObj)
+                .Select(c => c.Prices)
+                .First();
+
+            var price = prices.First(p => p.id == priceIdObj).Price;
+            
+            //unrate first if rated
+            price.Minus.Remove(userIdObj);
+            price.Plus.Remove(userIdObj);
+
+            if (plus)
+            {                
+                price.Plus.Add(userIdObj);
+            }
+            else
+            {
+                price.Minus.Add(userIdObj);                
+            }
+
+            price.CurrentPrice = RecalculatePrices(price.DefaultPrice, price.Plus.Count, price.Minus.Count);
+            
+            var filter =
+                DB.F<WikiCityEntity>().Eq(p => p.id, articleIdObj) &
+                DB.F<WikiCityEntity>().Eq("Prices.id", priceIdObj);
+
+            var update = DB.U<WikiCityEntity>().Set("Prices.$.Price", price);
+            var res = await DB.UpdateAsync(filter, update);
+
+            return price.CurrentPrice;
+        }
+
+        private decimal RecalculatePrices(decimal defaultPrice, int plusCnt, int minusCnt)
+        {
+            decimal onePercent = defaultPrice/100;
+
+            if (plusCnt > minusCnt)
+            {
+                int cnt = plusCnt - minusCnt;
+                decimal newVal = defaultPrice + (onePercent*cnt);
+                return newVal;
+            }
+
+            if (minusCnt > plusCnt)
+            {
+                var cnt = minusCnt - plusCnt;
+                decimal newVal = defaultPrice - (onePercent * cnt);
+                return newVal;
+            }
+
+            return defaultPrice;
+        }
+
         public async Task<bool> AddRating(string articleId, string sectionId, string language, string userId, bool like)
         {
             ObjectId articleIdObj = new ObjectId(articleId);
@@ -48,12 +108,21 @@ namespace Gloobster.DomainModels.Wiki
 
             return res.ModifiedCount == 1;
         }
-
+        
         private string RatingObjName(bool like)
         {
             string objName = like ? "Texts.$.Likes" : "Texts.$.Dislikes";
             return objName;
         }
+
+        //private FilterDefinition<WikiCityEntity> PriceRatingFilter(ObjectId articleIdObj, ObjectId priceIdObj)
+        //{
+        //    FilterDefinition<WikiCityEntity> filter = 
+        //        DB.F<WikiCityEntity>().Eq(p => p.id, articleIdObj) &                         
+        //        DB.F<WikiCityEntity>().Eq("Prices.id", priceIdObj);
+
+        //    return filter;
+        //}
 
         private FilterDefinition<WikiTextsEntity> RatingFilter(ObjectId articleIdObj, ObjectId sectionIdObj, string language)
         {

@@ -2252,3 +2252,13 @@ input.heading {
         padding: 6px 9px;
     }
 }
+
+
+/*custom*/
+.buttons a:hover {
+    /*-webkit-filter: brightness(50%);
+    -moz-filter: brightness(50%);
+    -o-filter: brightness(50%);
+    filter: brightness(50%);*/
+    opacity: 0.7
+}

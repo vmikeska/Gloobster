@@ -496,6 +496,82 @@ var Views;
         return BlockAdmin;
     })();
     Views.BlockAdmin = BlockAdmin;
+    var Rating = (function () {
+        function Rating(articleId, langVersion) {
+            this.regReport();
+            this.regRating();
+            this.regRatingDD();
+            this.regRatingPrice();
+            this.articleId = articleId;
+            this.langVersion = langVersion;
+        }
+        Rating.prototype.regReport = function () {
+            $(".icon-flag").click(function (e) {
+                e.preventDefault();
+                $(e.target).closest('.evaluate').toggleClass('evaluate-open');
+            });
+        };
+        Rating.prototype.regRatingDD = function () {
+            var _this = this;
+            this.regRatingBase("pmBtn", "place", "WikiRating", function (c) {
+                _this.setLikeDislike(c.$cont, c.like, !c.like, "pmBtn", "icon-plus", "icon-minus");
+            });
+        };
+        Rating.prototype.regRatingPrice = function () {
+            var _this = this;
+            this.regRatingBase("priceBtn", "priceItemAdmin", "WikiPriceRating", function (c) {
+                _this.setLikeDislike(c.$cont, c.like, !c.like, "priceBtn", "icon-plus", "icon-minus");
+                c.$cont.find(".price").text(c.res);
+            });
+        };
+        Rating.prototype.regRatingBase = function (btnClass, contClass, endpoint, callback) {
+            var _this = this;
+            $("." + btnClass).click(function (e) {
+                e.preventDefault();
+                var $btn = $(e.target);
+                var like = $btn.data("like");
+                var $cont = $btn.closest("." + contClass);
+                var id = $cont.data("id");
+                var data = {
+                    articleId: _this.articleId,
+                    sectionId: id,
+                    language: _this.langVersion,
+                    like: like
+                };
+                Views.ViewBase.currentView.apiPut(endpoint, data, function (r) {
+                    callback({ $cont: $cont, like: like, res: r });
+                });
+            });
+        };
+        Rating.prototype.regRating = function () {
+            var _this = this;
+            this.regRatingBase("ratingBtn", "evaluate", "WikiRating", function (c) {
+                _this.setLikeDislike(c.$cont, c.like, !c.like, "ratingBtn", "icon-heart", "icon-nosmile");
+            });
+        };
+        Rating.prototype.setLikeDislike = function ($cont, like, dislike, btnClass, likeClass, dislikeClass) {
+            var $btns = $cont.find("." + btnClass);
+            var btns = $btns.toArray();
+            btns.forEach(function (btn) {
+                var $btn = $(btn);
+                var isLike = $btn.data("like");
+                if (isLike) {
+                    var lc = likeClass + "Red";
+                    $btn.removeClass(likeClass);
+                    $btn.removeClass(lc);
+                    $btn.addClass(like ? lc : likeClass);
+                }
+                else {
+                    var dc = dislikeClass + "Red";
+                    $btn.removeClass(dislikeClass);
+                    $btn.removeClass(dc);
+                    $btn.addClass(dislike ? dc : dislikeClass);
+                }
+            });
+        };
+        return Rating;
+    })();
+    Views.Rating = Rating;
     var WikiPageView = (function (_super) {
         __extends(WikiPageView, _super);
         function WikiPageView(articleId) {
@@ -508,34 +584,10 @@ var Views;
             this.doDontAdmin = new DoDontAdmin(articleId, this.langVersion);
             this.priceAdmin = new PriceAdmin(articleId);
             this.photoAdmin = new PhotoAdmin(articleId);
+            this.rating = new Rating(articleId, this.langVersion);
             this.$adminMode = $("#adminMode");
             this.regAdminMode();
-            this.regRating();
         }
-        WikiPageView.prototype.regRating = function () {
-            var _this = this;
-            $(".icon-flag").click(function (e) {
-                e.preventDefault();
-                $(e.target).closest('.evaluate').toggleClass('evaluate-open');
-            });
-            $(".icon-heart").click(function (e) {
-                e.preventDefault();
-                var $btn = $(e.target);
-                var $cont = $btn.closest(".evaluate");
-                var id = $cont.data("id");
-                var data = {
-                    articleId: _this.articleId,
-                    sectionId: id,
-                    language: _this.langVersion,
-                    like: true
-                };
-                _this.apiPut("WikiRating", data, function (r) {
-                    //$(`#edit_${id}`).remove();
-                    //$(`#text_${id}`).text(data.newText);
-                    //$(`#editSection_${id}`).show();
-                });
-            });
-        };
         WikiPageView.prototype.regAdminMode = function () {
             var _this = this;
             this.$adminMode.change(function () {

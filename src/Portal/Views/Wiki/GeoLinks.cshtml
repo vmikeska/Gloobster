@@ -1,7 +1,12 @@
-﻿<h3>Section with links</h3>
+﻿
+@using System.Threading.Tasks
+@using Gloobster.Portal.ViewModels
+@model WikiModelBase
+
+<h3>Related links</h3>
 <div class="tags">
-    <a class="tag" href="#">Prague</a>
-    <a class="tag" href="#">Brno</a>
-    <a class="tag" href="#">South Moravia</a>
-    <a class="tag" href="#">Zlin Region</a>
+    @foreach (var link in Model.GetRelatedLinks())
+    {
+        <a class="tag" href="@link.Link">@link.Name</a>
+    }
 </div>

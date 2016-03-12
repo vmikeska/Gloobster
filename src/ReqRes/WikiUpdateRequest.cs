@@ -60,4 +60,20 @@ namespace Gloobster.ReqRes
 
         public bool like { get; set; }        
     }
+
+    public class WikiPriceRatingRequest
+    {
+        public string articleId { get; set; }
+        public string priceId { get; set; }
+
+        public bool plus { get; set; }
+    }
+
+    public class WikiSearchResult
+    {
+        public string title { get; set; }
+        public string id { get; set; }
+        public string language { get; set; }
+        public string link { get; set; }
+    }
 }

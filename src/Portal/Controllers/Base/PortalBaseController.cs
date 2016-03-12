@@ -116,7 +116,8 @@ namespace Gloobster.Portal.Controllers.Base
                 PortalUser = PortalUser,
                 DB = DB,
                 SocialNetwork = socNetStr,
-                NotificationCount = notifsCount
+                NotificationCount = notifsCount,
+                UserId = UserId
             };
             return instance;
         }

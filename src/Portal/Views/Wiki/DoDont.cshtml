@@ -14,25 +14,23 @@
     
     <div class="cell places">
         <h3>Try this</h3>
-        @foreach (var item in Model.Dos)
+        @foreach (DdVM item in Model.Dos)
         {
             <div data-id="@item.Id" data-t="do" class="place">
-                @Html.Partial("PlusMinus")
+                @Html.Partial("PlusMinusDD", item)
                 <span>@item.Text</span>
             </div>
-
         }
         <div class="admindo">
-
         </div>        
     </div>
 
     <div class="cell places">
         <h3>Don't try that</h3>
-        @foreach (var item in Model.Donts)
+        @foreach (DdVM item in Model.Donts)
         {
             <div data-id="@item.Id" data-t="dont" class="place">
-                @Html.Partial("PlusMinus")
+                @Html.Partial("PlusMinusDD", item)
                 <span>@item.Text</span>
             </div>
         }

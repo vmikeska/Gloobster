@@ -113,16 +113,8 @@ namespace Gloobster.Portal.Controllers.Portal
                 return HttpNotFound();
             }
 
-            WikiTextsEntity selectedText;
             WikiTextsEntity englishText = texts.FirstOrDefault(i => i.Language == "en");
-            if (englishText == null)
-            {
-                selectedText = texts.First();
-            }
-            else
-            {
-                selectedText = englishText;
-            }
+            var selectedText = englishText ?? texts.First();
 
             var url = $"/wiki/{selectedText.Language}/{selectedText.LinkName}";
             return RedirectPermanent(url);
@@ -184,41 +176,48 @@ namespace Gloobster.Portal.Controllers.Portal
             return langItem;
         }
 
-        public IActionResult Continent()
+        public IActionResult Home()
         {
-            var vm = CreateViewModelInstance<WikiContinentViewModel>();
+            var vm = CreateViewModelInstance<WikiHomeViewModel>();
+
+            return View(vm);
+        }
+
+  //      public IActionResult Continent()
+  //      {
+  //          var vm = CreateViewModelInstance<WikiContinentViewModel>();
             
-            return View(vm);
-        }
+  //          return View(vm);
+  //      }
 
-        public IActionResult Country(string id)
-        {
-            var link = id;
+  //      public IActionResult Country(string id)
+  //      {
+  //          var link = id;
 
-            //var texts = DB.C<WikiTextsEntity>()
+  //          //var texts = DB.C<WikiTextsEntity>()
 
-            var vm = CreateViewModelInstance<WikiCountryViewModel>();
-            //vm.Article = DB.C<WikiCountryEntity>().FirstOrDefault(i => i.id ==)
-            //vm.Texts = dCountry.Texts;
+  //          var vm = CreateViewModelInstance<WikiCountryViewModel>();
+  //          //vm.Article = DB.C<WikiCountryEntity>().FirstOrDefault(i => i.id ==)
+  //          //vm.Texts = dCountry.Texts;
 
-            //var dCountry = new DemoCountry();
-            //var vm = CreateViewModelInstance<WikiCountryViewModel>();
-            //vm.Article = dCountry.Country;            
-            //vm.Texts = dCountry.Texts;
+  //          //var dCountry = new DemoCountry();
+  //          //var vm = CreateViewModelInstance<WikiCountryViewModel>();
+  //          //vm.Article = dCountry.Country;            
+  //          //vm.Texts = dCountry.Texts;
 
-            return View(vm);
-        }
+  //          return View(vm);
+  //      }
         
-        public IActionResult City()
-	    {
-            var dCity = new DemoCity(ObjectId.GenerateNewId());
+  //      public IActionResult City()
+	 //   {
+  //          var dCity = new DemoCity(ObjectId.GenerateNewId());
 
-            var vm = CreateViewModelInstance<WikiCityViewModel>();
-            vm.Article = dCity.City;
-            vm.Texts = dCity.Texts;
+  //          var vm = CreateViewModelInstance<WikiCityViewModel>();
+  //          vm.Article = dCity.City;
+  //          vm.Texts = dCity.Texts;
 
-            return View(vm);
-		}
+  //          return View(vm);
+		//}
         
     
 

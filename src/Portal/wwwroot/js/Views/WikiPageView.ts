@@ -592,6 +592,93 @@
 	 
 	}
 
+	export class Rating {
+
+		private articleId;
+		private langVersion;
+
+		constructor(articleId, langVersion) {
+			this.regReport();
+			this.regRating();
+			this.regRatingDD();
+			this.regRatingPrice();
+
+			this.articleId = articleId;
+			this.langVersion = langVersion;
+		}
+
+		private regReport() {
+			$(".icon-flag").click((e) => {
+				e.preventDefault();
+				$(e.target).closest('.evaluate').toggleClass('evaluate-open');
+			});
+		}
+
+		private regRatingDD() {
+		 this.regRatingBase("pmBtn", "place", "WikiRating", (c) => {
+			this.setLikeDislike(c.$cont, c.like, !c.like, "pmBtn", "icon-plus", "icon-minus");			
+		 });		 
+		}
+
+		private regRatingPrice() {
+		 this.regRatingBase("priceBtn", "priceItemAdmin", "WikiPriceRating", (c) => {
+			this.setLikeDislike(c.$cont, c.like, !c.like, "priceBtn", "icon-plus", "icon-minus");
+			 c.$cont.find(".price").text(c.res);
+		 });
+		}
+
+		private regRatingBase(btnClass, contClass, endpoint, callback) {
+			$(`.${btnClass}`).click((e) => {
+				e.preventDefault();
+				var $btn = $(e.target);
+				var like = $btn.data("like");
+				var $cont = $btn.closest(`.${contClass}`);
+				var id = $cont.data("id");
+
+				var data = {
+					articleId: this.articleId,
+					sectionId: id,
+					language: this.langVersion,
+
+					like: like
+				};
+
+				ViewBase.currentView.apiPut(endpoint, data, (r) => {
+					callback({$cont: $cont, like: like, res: r});
+				});
+			});
+		}
+
+		private regRating() {
+		 this.regRatingBase("ratingBtn", "evaluate", "WikiRating", (c) => {
+			 this.setLikeDislike(c.$cont, c.like, !c.like, "ratingBtn", "icon-heart", "icon-nosmile");
+			});
+		}
+
+		private setLikeDislike($cont, like, dislike, btnClass, likeClass, dislikeClass) {
+			var $btns = $cont.find(`.${btnClass}`);
+			var btns = $btns.toArray();
+			btns.forEach((btn) => {
+				var $btn = $(btn);
+				var isLike = $btn.data("like");
+				if (isLike) {
+					var lc = `${likeClass}Red`;
+				 $btn.removeClass(likeClass);
+				 $btn.removeClass(lc);
+
+				 $btn.addClass(like ? lc : likeClass);
+				} else {
+				 var dc = `${dislikeClass}Red`;
+				 $btn.removeClass(dislikeClass);
+				 $btn.removeClass(dc);
+
+				 $btn.addClass(dislike ? dc : dislikeClass);
+				}
+			});
+
+		}
+	}
+ 
 	export class WikiPageView extends ViewBase {
 
 		public articleId: string;
@@ -605,6 +692,7 @@
 		private doDontAdmin: DoDontAdmin;
 		private priceAdmin: PriceAdmin;
 		private photoAdmin: PhotoAdmin;
+		private rating: Rating;
 
 		constructor(articleId) {
 			super();
@@ -617,40 +705,12 @@
 			this.priceAdmin = new PriceAdmin(articleId);
 			this.photoAdmin = new PhotoAdmin(articleId);
 
+			this.rating = new Rating(articleId, this.langVersion);
+
 			this.$adminMode = $("#adminMode");
-			this.regAdminMode();
-
-			this.regRating();
+			this.regAdminMode();		 
 		}
-
-		private regRating() {
-			$(".icon-flag").click((e) => {
-				e.preventDefault();
-				$(e.target).closest('.evaluate').toggleClass('evaluate-open');
-			});
-
-			$(".icon-heart").click((e) => {
-				e.preventDefault();
-				var $btn = $(e.target);
-				var $cont = $btn.closest(".evaluate");
-				var id = $cont.data("id");
-
-				var data = {
-					articleId: this.articleId,
-					sectionId: id,
-					language: this.langVersion,
-
-					like: true
-				};
-
-				this.apiPut("WikiRating", data, (r) => {
-					//$(`#edit_${id}`).remove();
-					//$(`#text_${id}`).text(data.newText);
-					//$(`#editSection_${id}`).show();
-				});
-			});
-		}
-
+	 
 		private regAdminMode() {
 			this.$adminMode.change(() => {
 				this.isAdminMode = this.$adminMode.prop("checked");
@@ -688,14 +748,13 @@
 		}
 
 		private destroyBlocks() {
-		 $(".editSection").remove();
-		 this.linksAdmin.removeAdminLinks();
-		 this.priceAdmin.clean();
-		 this.doDontAdmin.clean();
+			$(".editSection").remove();
+			this.linksAdmin.removeAdminLinks();
+			this.priceAdmin.clean();
+			this.doDontAdmin.clean();
 			this.photoAdmin.clean();
 		}
 
-		
 
 		private drawAdminBlocks($block, id, adminType) {
 			var adminTypes = adminType.split(",");

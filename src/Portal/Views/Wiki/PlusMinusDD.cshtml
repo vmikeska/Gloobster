@@ -1,9 +1,9 @@
 ﻿@using System.Threading.Tasks
 @using Gloobster.Portal.ViewModels
-@model TableItemVM
+@model DdVM
 
 @{
-    bool? liked = Model.Liked1;
+    bool? liked = Model.Liked;
 
     var likeClass = "icon-plus";
     var dislikeClass = "icon-minus";
@@ -21,5 +21,5 @@
 
 }
 
-<a class="button-icon @likeClass priceBtn" data-like="true" href="#">Plus</a>
-<a class="button-icon @dislikeClass priceBtn" data-like="false" href="#">Minus</a>
+<a class="button-icon @likeClass pmBtn" data-like="true" href="#">Plus</a>
+<a class="button-icon @dislikeClass pmBtn" data-like="false" href="#">Minus</a>

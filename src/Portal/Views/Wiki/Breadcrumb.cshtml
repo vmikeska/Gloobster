@@ -1,9 +1,35 @@
-﻿<div class="breadcrumb h4 margin2">
-    <a href="#">Gloobster</a>
+﻿
+@using System.Threading.Tasks
+@using Gloobster.Portal.ViewModels
+@model WikiModelBase
+
+<div class="breadcrumb h4 margin2">
+
+    @{
+        var bc = Model.GetBreadcrumb();
+        var cnt = bc.Count;
+    }
+    
+    @for (int act = 0; act <= cnt - 1; act++)
+    {
+        var item = bc[act];
+        bool isLast = act == (cnt - 1);
+        if (isLast)
+        {            
+            <strong>@item.Name</strong>
+        }
+        else
+        {
+            <a href="@item.Link">@item.Name</a>
+            @: &gt;
+        }
+    }
+
+    @*<a href="#">Gloobster</a>
     &gt;
     <a href="#">Wikiplaces</a>
     &gt;
     <a href="#">Europe</a>
     &gt;
-    <strong>Prague</strong>
+    <strong>Prague</strong>*@
 </div>

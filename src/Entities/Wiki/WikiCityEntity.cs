@@ -60,7 +60,7 @@ namespace Gloobster.Entities.Wiki
         public string Category { get; set; }
         public string SubCategory { get; set; }
         public string Type { get; set; }
-        public PriceSE Price { get; set; }
+        public PriceSE Price { get; set; }        
     }
 
     public class PriceSE

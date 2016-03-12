@@ -9,6 +9,8 @@ namespace Gloobster.Portal.ViewModels
 {
     public class BlockVM
     {
+        public bool? Liked { get; set; }
+
         public int Size { get; set; }
         public string Admin { get; set; }
 
@@ -67,11 +69,13 @@ namespace Gloobster.Portal.ViewModels
         public string Name { get; set; }
         public List<LinkItemSE> Links { get; set; }
     }
-
-    
     
     public class TableItemVM
     {
+        public bool? Liked1 { get; set; }
+        public bool? Liked3 { get; set; }
+        public bool? Liked2 { get; set; }
+
         public string Id1 { get; set; }
         public string Id2 { get; set; }
         public string Id3 { get; set; }
@@ -84,13 +88,15 @@ namespace Gloobster.Portal.ViewModels
     public class DoDontsVM
     {
         public List<DdVM> Dos { get; set; }
-        public List<DdVM> Donts { get; set; }
+        public List<DdVM> Donts { get; set; }        
     }
 
     public class DdVM
     {        
         public string Id { get; set; }
         public string Text { get; set; }
+
+        public bool? Liked { get; set; }
     }
 
 
@@ -101,6 +107,49 @@ namespace Gloobster.Portal.ViewModels
         public override List<SectionSE> Sections => Article.Sections;
         public override List<ObjectId> Dos => Article.Dos;
         public override List<ObjectId> Donts => Article.Donts;
+
+
+        public override List<Breadcrumb> GetBreadcrumb()
+        {
+            var bc = base.GetBreadcrumb();
+            
+            var countryTexts = DB.C<WikiTextsEntity>().FirstOrDefault(i => i.Article_id == Article.Country_id && i.Language == Texts.Language);
+            var countryArticle = DB.C<WikiCountryEntity>().FirstOrDefault(i => i.id == Article.Country_id);
+
+            var contName = GetNameFromContinent(countryArticle.Continent);
+
+            //continent
+            //bc.Add(                
+            //    new Breadcrumb
+            //    {
+            //        Id = ((int)countryArticle.Continent).ToString(),
+            //        Name = contName,
+            //        Link = $"/wiki/{Texts.Language}/{contName}"
+            //    }
+            //);
+
+            //country
+            bc.Add(
+                new Breadcrumb
+                {
+                    Id = countryArticle.id.ToString(),
+                    Name = countryTexts.Title,
+                    Link = $"/wiki/{Texts.Language}/{countryTexts.LinkName}"
+                }
+            );
+
+            //city
+            bc.Add(
+                new Breadcrumb
+                {
+                    Id = Article.id.ToString(),
+                    Name = Texts.Title,
+                    Link = $"/wiki/{Texts.Language}/{Texts.LinkName}"
+                }
+            );
+
+            return bc;
+        }
 
         public List<LinkObjectSE> GetLinksByCategory(string category)
         {
@@ -119,9 +168,35 @@ namespace Gloobster.Portal.ViewModels
             {
                 Id1 = priceItem.id.ToString(),
                 Name = priceItem.Type,
-                Price1 = priceItem.Price.CurrentPrice
+                Price1 = priceItem.Price.CurrentPrice,
+                Liked1 = WasLikedPrice(priceItem)
             };
             return res;
+        }
+
+        private bool? WasLikedPrice(PriceItemSE price)
+        {
+            if (string.IsNullOrEmpty(UserId))
+            {
+                return null;
+            }
+
+            var userIdObj = new ObjectId(UserId);
+
+            bool liked = price.Price.Plus.Contains(userIdObj);
+            bool disliked = price.Price.Minus.Contains(userIdObj);
+
+            bool? wasLiked = null;
+            if (liked)
+            {
+                wasLiked = true;
+            }
+            if (disliked)
+            {
+                wasLiked = false;
+            }
+
+            return wasLiked;
         }
 
         public BlockVM BarDistricts()
