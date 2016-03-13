@@ -1,9 +1,9 @@
 ﻿@using System.Threading.Tasks
 @using Gloobster.Portal.ViewModels
-@model TableItemVM
+@model bool?
 
 @{
-    bool? liked = Model.Liked1;
+    bool? liked = Model;
 
     var likeClass = "icon-plus";
     var dislikeClass = "icon-minus";

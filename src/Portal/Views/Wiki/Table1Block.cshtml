@@ -4,14 +4,7 @@
 @model BlockVM
 
 
-<div class="table width100 margin">
-    <div data-id="@Model.SectionId" class="cell middle adminCase">
-        <h3 class="margin0">@Model.Type</h3>
-    </div>
-    <div class="cell">
-        @Html.Partial("Rating")
-    </div>
-</div>
+@Html.Partial("BlockHeader")
 
 <table class="left mright20">
     
@@ -21,7 +14,7 @@
             <td>@item.Name</td>
             <td class="priceItemAdmin" data-id="@item.Id1">
                 €<span class="price">@item.Price1.ToString("0.00", CultureInfo.InvariantCulture)</span>
-                @Html.Partial("PlusMinus", item)
+                @Html.Partial("PlusMinus", item.Liked1)
             </td>
         </tr>
     }

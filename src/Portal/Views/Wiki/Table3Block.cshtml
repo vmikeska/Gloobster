@@ -21,15 +21,15 @@
                     <td>@item.Name</td>                    
                     <td class="priceItemAdmin" data-id="@item.Id1">
                         €<span class="price">@item.Price1.ToString("0.00", CultureInfo.InvariantCulture)</span>
-                        @*@Html.Partial("PlusMinus")*@
+                        @Html.Partial("PlusMinus", item.Liked1)
                     </td>
                     <td class="priceItemAdmin" data-id="@item.Id2">
                         €<span class="price">@item.Price2.ToString("0.00", CultureInfo.InvariantCulture)</span>
-                        @*@Html.Partial("PlusMinus")*@
+                        @Html.Partial("PlusMinus", item.Liked2)
                     </td>
                     <td class="priceItemAdmin" data-id="@item.Id3">
                         €<span class="price">@item.Price3.ToString("0.00", CultureInfo.InvariantCulture)</span>
-                        @*@Html.Partial("PlusMinus")*@
+                        @Html.Partial("PlusMinus", item.Liked3)
                     </td>
                 </tr>
             }

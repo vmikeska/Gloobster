@@ -232,6 +232,7 @@ namespace Gloobster.DomainModels.Wiki
                         DefaultPrice = 2.0m,
                         CurrentPrice = 2.1m,
                         Minus = new List<ObjectId> {votingUserOne},
+                        Plus = new List<ObjectId>()
                     }
                 },
             };
