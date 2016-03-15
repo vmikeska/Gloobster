@@ -208,5 +208,14 @@ namespace Gloobster.Portal.ViewModels
 
             return text as T;
         }
+
+        public List<List<T>> SplitBy<T>(List<T> source, int count)
+        {
+            return source
+                .Select((x, i) => new { Index = i, Value = x })
+                .GroupBy(x => x.Index / count)
+                .Select(x => x.Select(v => v.Value).ToList())
+                .ToList();
+        }
     }
 }

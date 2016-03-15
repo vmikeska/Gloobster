@@ -67,29 +67,70 @@ namespace Gloobster.Common
 
         public static Rectangle CalculateBestImgCut(int width, int height, float rateWidth, float rateHeight)
         {
-            int outWidth = 0;
-            int outHeight = 0;
-            int outTop;
-            int outLeft;
+            int lastWidth = 1;
+            int lastHeight = 1;
+            bool run = true;
 
-            if (rateWidth == 1)
+            int index = 1;
+            while (run)
             {
-                outWidth = width;
-                outHeight = (int)(width * rateHeight);
+                index++;
+                int currentWidth = (int)(index * rateWidth);
+                int currentHeight = (int) (index * rateHeight);
+
+                if ((currentWidth > width) || (currentHeight > height))
+                {
+                    run = false;
+                }
+                else
+                {
+                    lastWidth = currentWidth;
+                    lastHeight = currentHeight;
+                }
             }
 
-            if (rateHeight == 1)
-            {
-                outWidth = (int)(height * rateWidth);
-                outHeight = height;
-            }
+            int outTop = (height - lastHeight) / 2;
+            int outLeft = (width - lastWidth) / 2;
 
-            outTop = (height - outHeight)/2;
-            outLeft = (width - outWidth) / 2;
-            
-            var r = new Rectangle(outLeft, outTop, outWidth, outHeight);
+            var r = new Rectangle(outLeft, outTop, lastWidth, lastHeight);
             return r;
         }
+
+        //public static Rectangle CalculateBestImgCut(int width, int height, float rateWidth, float rateHeight)
+        //{
+        //    int outWidth = 0;
+        //    int outHeight = 0;
+        //    int outTop;
+        //    int outLeft;
+
+        //    if (rateWidth == 1)
+        //    {
+        //        outWidth = width;
+        //        outHeight = (int)(width * rateHeight);
+
+        //        if (outHeight > height)
+        //        {
+        //            outHeight = height;
+
+        //            float rate = (rateWidth / rateHeight);
+        //            outWidth = (int)(outHeight * rate);
+        //        }
+        //    }
+
+
+
+        //    if (rateHeight == 1)
+        //    {
+        //        outWidth = (int)(height * rateWidth);
+        //        outHeight = height;
+        //    }
+
+        //    outTop = (height - outHeight)/2;
+        //    outLeft = (width - outWidth) / 2;
+            
+        //    var r = new Rectangle(outLeft, outTop, outWidth, outHeight);
+        //    return r;
+        //}
 
         public static Rectangle CalculateBestImgCutRectangleShape(int width, int height)
         {

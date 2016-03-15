@@ -572,6 +572,138 @@ var Views;
         return Rating;
     })();
     Views.Rating = Rating;
+    var PhotosAdmin = (function () {
+        function PhotosAdmin(articleId) {
+            this.articleId = articleId;
+            this.adminTemplate = Views.ViewBase.currentView.registerTemplate("photosAdmin-template");
+            this.$cont = $("#photos");
+        }
+        PhotosAdmin.prototype.createAdmin = function () {
+            this.$cont.before(this.adminTemplate());
+            this.registerPhotoUpload(this.articleId, "galleryPhotoInput");
+            this.showPhotos(true);
+            this.addActions();
+        };
+        PhotosAdmin.prototype.clean = function () {
+            this.$cont.find(".delete").remove();
+            this.$cont.find(".confirm").remove();
+        };
+        PhotosAdmin.prototype.addActions = function () {
+            var _this = this;
+            var $photos = this.$cont.find(".cell");
+            var photos = $photos.toArray();
+            photos.forEach(function (photo) {
+                var $photo = $(photo);
+                var $del = $("<a href=\"#\" class=\"delete\">Delete</a> &nbsp;&nbsp;");
+                $del.click(function (e) {
+                    e.preventDefault();
+                    var confirmDialog = new Common.ConfirmDialog();
+                    confirmDialog.create("Delete", "Do you want to permanently delete this photo ?", "Cancel", "Ok", function ($dialog) {
+                        var photoId = $photo.attr("id");
+                        Views.ViewBase.currentView.apiDelete("WikiPhotoGallery", [["articleId", _this.articleId], ["photoId", photoId]], function (r) {
+                            $dialog.remove();
+                            $photo.remove();
+                        });
+                    });
+                });
+                $photo.prepend($del);
+                if ($photo.hasClass("unconfirmedPhoto")) {
+                    var $conf = $("<a href=\"#\" class=\"confirm\">Confirm</a> &nbsp;&nbsp;");
+                    $conf.click(function (e) {
+                        e.preventDefault();
+                        var photoId = $photo.attr("id");
+                        var data = {
+                            articleId: _this.articleId,
+                            photoId: photoId
+                        };
+                        Views.ViewBase.currentView.apiPut("WikiPhotoGallery", data, function (r) {
+                            $conf.remove();
+                        });
+                    });
+                    $photo.prepend($conf);
+                }
+            });
+        };
+        PhotosAdmin.prototype.showPhotos = function (show) {
+            var ps = $(".unconfirmedPhoto");
+            if (show) {
+                ps.show();
+            }
+            else {
+                ps.hide();
+            }
+        };
+        PhotosAdmin.prototype.registerPhotoUpload = function (articleId, inputId) {
+            var _this = this;
+            var config = new Common.FileUploadConfig();
+            config.inputId = inputId;
+            config.endpoint = "WikiPhotoGallery";
+            var picUpload = new Common.FileUpload(config);
+            picUpload.customId = articleId;
+            picUpload.onProgressChanged = function (percent) {
+            };
+            picUpload.onUploadFinished = function (file, fileId) {
+                _this.addPhotoToPage(fileId, articleId);
+            };
+        };
+        PhotosAdmin.prototype.addPhotoToPage = function (photoId, articleId) {
+            var thumbLink = "/Wiki/ArticlePhotoThumb?photoId=" + photoId + "&articleId=" + articleId;
+            var link = "/Wiki/ArticlePhoto?photoId=" + photoId + "&articleId=" + articleId;
+            var photo = "<div class=\"cell\"><a href=\"" + link + "\" target=\"_blank\"> <img class=\"radius mhalf\" src=\"" + thumbLink + "\"></a></div>";
+            var lastFrame = $("#photos").find(".table").last();
+            var cellsCnt = lastFrame.find(".cell").length;
+            if (cellsCnt < 3) {
+                lastFrame.append(photo);
+            }
+            else {
+                var $frame = $("<div class=\"table row col3 margin\">" + photo + "</div>");
+                lastFrame.after($frame);
+            }
+        };
+        return PhotosAdmin;
+    })();
+    Views.PhotosAdmin = PhotosAdmin;
+    var WikiPhotosUser = (function () {
+        function WikiPhotosUser(articleId) {
+            this.articleId = articleId;
+            $("#recommendPhoto").click(function (e) {
+                e.preventDefault();
+                $("#photosForm").show();
+                $("#recommendPhoto").hide();
+            });
+            $("#photosForm .cancel").click(function (e) {
+                e.preventDefault();
+                $("#photosForm").hide();
+                $("#recommendPhoto").show();
+            });
+            var $terms = $("#photosForm #cid");
+            $terms.change(function (e) {
+                e.preventDefault();
+                var checked = $terms.prop("checked");
+                if (checked) {
+                    $(".photoButton").show();
+                }
+                else {
+                    $(".photoButton").hide();
+                }
+            });
+            this.registerPhotoUpload(this.articleId, "galleryInput");
+        }
+        WikiPhotosUser.prototype.registerPhotoUpload = function (articleId, inputId) {
+            var config = new Common.FileUploadConfig();
+            config.inputId = inputId;
+            config.endpoint = "WikiPhotoGallery";
+            var picUpload = new Common.FileUpload(config);
+            picUpload.customId = articleId;
+            picUpload.onProgressChanged = function (percent) {
+            };
+            picUpload.onUploadFinished = function (file, fileId) {
+                alert("Thank you, photo was uploaded! Will be displayed when one of our Admins validate the photo.");
+            };
+        };
+        return WikiPhotosUser;
+    })();
+    Views.WikiPhotosUser = WikiPhotosUser;
     var WikiPageView = (function (_super) {
         __extends(WikiPageView, _super);
         function WikiPageView(articleId) {
@@ -584,6 +716,8 @@ var Views;
             this.doDontAdmin = new DoDontAdmin(articleId, this.langVersion);
             this.priceAdmin = new PriceAdmin(articleId);
             this.photoAdmin = new PhotoAdmin(articleId);
+            this.photosAdmin = new PhotosAdmin(articleId);
+            this.photos = new WikiPhotosUser(articleId);
             this.rating = new Rating(articleId, this.langVersion);
             this.$adminMode = $("#adminMode");
             this.regAdminMode();
@@ -619,6 +753,7 @@ var Views;
             this.doDontAdmin.generateAdmin();
             this.priceAdmin.generateAdmin();
             this.photoAdmin.generateAdmin();
+            this.photosAdmin.createAdmin();
         };
         WikiPageView.prototype.destroyBlocks = function () {
             $(".editSection").remove();
@@ -626,6 +761,7 @@ var Views;
             this.priceAdmin.clean();
             this.doDontAdmin.clean();
             this.photoAdmin.clean();
+            this.photosAdmin.clean();
         };
         WikiPageView.prototype.drawAdminBlocks = function ($block, id, adminType) {
             var adminTypes = adminType.split(",");

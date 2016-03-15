@@ -17,13 +17,7 @@ namespace Gloobster.Entities.Wiki
     //public enum WikiArticleType { Continent, Country, City, Place, Region }
 
     public enum Continent { Europe, Australia, Africa, Antarctica, SouthAmerica, NorthAmerica, Asia }
-
-    public class PhotoSE
-    {
-        public string PhotoId { get; set; }
-        public string UploaderId { get; set; }
-    }
-
+    
     public enum LinkType { Facebook, WIKI }
 
     public class LinkSE

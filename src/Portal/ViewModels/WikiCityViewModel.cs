@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Gloobster.Entities;
 using System.Linq;
 using Gloobster.Entities.Wiki;
@@ -7,6 +8,7 @@ using MongoDB.Bson;
 
 namespace Gloobster.Portal.ViewModels
 {
+    
     public class BlockVM
     {
         public bool? Liked { get; set; }
@@ -100,6 +102,16 @@ namespace Gloobster.Portal.ViewModels
     }
 
 
+    public class PhotoVM
+    {
+        public string Id { get; set; }
+        public string OwnerId { get; set; }
+        public string OwnerName { get; set; }
+        public bool Confirmed { get; set; }
+        public DateTime Inserted { get; set; }
+        public string Description { get; set; }
+    }
+
     public class WikiCityViewModel : WikiModelBase
     {        
         public WikiCityEntity Article { get; set; }
@@ -108,6 +120,41 @@ namespace Gloobster.Portal.ViewModels
         public override List<ObjectId> Dos => Article.Dos;
         public override List<ObjectId> Donts => Article.Donts;
 
+        private List<PhotoVM> photos;
+        public List<PhotoVM> Photos
+        {
+            get
+            {
+                if (photos == null)
+                {
+                    var userIds = Article.Photos.Select(p => p.Owner_id).Distinct().ToList();
+                    var users = DB.C<PortalUserEntity>().Where(u => userIds.Contains(u.id)).ToList();
+
+                    photos = Article.Photos.Select(p =>
+                    {
+                        string ownerName = "NotKnown";
+                        var owner = users.FirstOrDefault(u => u.id == p.Owner_id);
+                        if (owner != null)
+                        {
+                            ownerName = owner.DisplayName;
+                        }
+
+                        var item = new PhotoVM
+                        {
+                            Id = p.id.ToString(),
+                            Description = p.Description,
+                            OwnerName = ownerName,
+                            OwnerId = p.Owner_id.ToString(),
+                            Confirmed = p.Confirmed,
+                            Inserted = p.Inserted
+                        };
+                        return item;
+                    }).ToList();
+                }
+
+                return photos;
+            }
+        }
 
         public override List<Breadcrumb> GetBreadcrumb()
         {

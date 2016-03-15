@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Gloobster.Database;
 using MongoDB.Bson;
 
@@ -6,6 +7,9 @@ namespace Gloobster.Entities.Wiki
 {
     public class WikiCityEntity : EntityBase
     {
+        public DateTime Created { get; set; }
+        public DateTime? Updated { get; set; }
+
         public ObjectId Country_id { get; set; }
 
         public int GID { get; set; }
@@ -13,9 +17,7 @@ namespace Gloobster.Entities.Wiki
         public List<LinkSE> Links { get; set; }
 
         public List<SectionSE> Sections { get; set; }
-
-        public List<PhotoSE> Photos { get; set; }
-
+        
         public CityDataSE Data { get; set; }
 
         public List<LinkObjectSE> PlacesLinks { get; set; }
@@ -27,6 +29,17 @@ namespace Gloobster.Entities.Wiki
         public List<ObjectId> Donts { get; set; }
 
         public bool HasTitlePhoto { get; set; }
+
+        public List<WikiPhotoSE> Photos { get; set; }
+    }
+
+    public class WikiPhotoSE
+    {
+        public ObjectId id { get; set; }
+        public ObjectId Owner_id { get; set; }
+        public bool Confirmed { get; set; }
+        public DateTime Inserted { get; set; }
+        public string Description { get; set; }
     }
 
     public class CityDataSE

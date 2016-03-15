@@ -413,7 +413,7 @@ namespace Gloobster.DomainModels.Wiki
                 GID = 5464563,
                 Country_id = countryId,
                 Links = new List<LinkSE>(),
-                Photos = new List<PhotoSE>()
+                Photos = new List<WikiPhotoSE>()
             };
             
             var texts = new List<SectionTextsSE>

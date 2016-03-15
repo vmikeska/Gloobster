@@ -88,16 +88,36 @@ namespace Gloobster.Portal.Controllers.Portal
             var stream = GetPicture(id, WikiFileConstants.TitlePhotoNameExt);
             return stream;
         }
-        
-        private FileStreamResult GetPicture(string articleId, string picName)
-        {
-            var tripDir = FileDomain.Storage.Combine(WikiFileConstants.FileLocation, articleId);
 
-            var filePath = FileDomain.Storage.Combine(tripDir, picName);
+        public IActionResult ArticlePhoto(string photoId, string articleId)
+        {
+            var name = $"{photoId}.jpg";
+            var stream = GetPicture(articleId, name, WikiFileConstants.GalleryDir);
+            return stream;
+        }
+
+        public IActionResult ArticlePhotoThumb(string photoId, string articleId)
+        {
+            var name = $"{photoId}_thumb.jpg";            
+            var stream = GetPicture(articleId, name, WikiFileConstants.GalleryDir);
+            return stream;
+        }
+
+        private FileStreamResult GetPicture(string articleId, string picName, string customDir = null)
+        {
+            var articleDir = FileDomain.Storage.Combine(WikiFileConstants.FileLocation, articleId);
+            var finalDir = articleDir;
+            
+            if (!string.IsNullOrEmpty(customDir))
+            {
+                finalDir = FileDomain.Storage.Combine(articleDir, customDir);
+            }
+            
+            var filePath = FileDomain.Storage.Combine(finalDir, picName);
             bool exists = FileDomain.Storage.FileExists(filePath);
             if (exists)
             {
-                var fileStream = FileDomain.GetFile(tripDir, picName);
+                var fileStream = FileDomain.GetFile(finalDir, picName);
                 return new FileStreamResult(fileStream, "image/jpeg");
             }
 

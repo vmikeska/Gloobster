@@ -679,6 +679,169 @@
 		}
 	}
  
+	export class PhotosAdmin {
+	 private articleId;
+
+	 private adminTemplate;
+	 private $cont;
+
+	 constructor(articleId) {
+		this.articleId = articleId;
+
+		this.adminTemplate = ViewBase.currentView.registerTemplate("photosAdmin-template");
+		this.$cont = $("#photos");
+	 }
+
+	 public createAdmin() {
+		this.$cont.before(this.adminTemplate());
+		this.registerPhotoUpload(this.articleId, "galleryPhotoInput");
+
+		this.showPhotos(true);
+		this.addActions();
+	 }
+
+	 public clean() {
+		this.$cont.find(".delete").remove();
+		this.$cont.find(".confirm").remove();
+	 }
+
+		private addActions() {
+			var $photos = this.$cont.find(".cell");
+			var photos = $photos.toArray();
+			photos.forEach((photo) => {
+				var $photo = $(photo);
+				var $del = $(`<a href="#" class="delete">Delete</a> &nbsp;&nbsp;`);
+				$del.click((e) => {
+					e.preventDefault();
+
+					var confirmDialog = new Common.ConfirmDialog();
+					confirmDialog.create("Delete", "Do you want to permanently delete this photo ?", "Cancel", "Ok", ($dialog) => {
+						var photoId = $photo.attr("id");
+						ViewBase.currentView.apiDelete("WikiPhotoGallery", [["articleId", this.articleId], ["photoId", photoId]], (r) => {
+							$dialog.remove();
+							$photo.remove();
+						});
+					});
+				});
+				$photo.prepend($del);
+
+				if ($photo.hasClass("unconfirmedPhoto")) {
+					var $conf = $(`<a href="#" class="confirm">Confirm</a> &nbsp;&nbsp;`);
+					$conf.click((e) => {
+						e.preventDefault();
+						var photoId = $photo.attr("id");
+						var data = {
+							articleId: this.articleId,
+							photoId: photoId
+						};
+						ViewBase.currentView.apiPut("WikiPhotoGallery", data, (r) => {
+							$conf.remove();
+						});
+					});
+					$photo.prepend($conf);
+				}
+			});
+		}
+
+		private showPhotos(show) {
+			var ps = $(".unconfirmedPhoto");
+			if (show) {
+				ps.show();
+			} else {
+				ps.hide();
+			}
+		}
+
+		private registerPhotoUpload(articleId, inputId) {
+		var config = new Common.FileUploadConfig();
+		config.inputId = inputId;
+		config.endpoint = "WikiPhotoGallery";
+
+		var picUpload = new Common.FileUpload(config);
+		picUpload.customId = articleId;
+
+		picUpload.onProgressChanged = (percent) => {
+		}
+
+		picUpload.onUploadFinished = (file, fileId) => {
+		 this.addPhotoToPage(fileId, articleId);
+		}
+	 }
+
+		private addPhotoToPage(photoId, articleId) {
+			var thumbLink = `/Wiki/ArticlePhotoThumb?photoId=${photoId}&articleId=${articleId}`;
+			var link = `/Wiki/ArticlePhoto?photoId=${photoId}&articleId=${articleId}`;
+
+			var photo = `<div class="cell"><a href="${link}" target="_blank"> <img class="radius mhalf" src="${thumbLink}"></a></div>`;
+
+			var lastFrame = $("#photos").find(".table").last();
+
+			var cellsCnt = lastFrame.find(".cell").length;
+			if (cellsCnt < 3) {
+				lastFrame.append(photo);
+			} else {
+				var $frame = $(`<div class="table row col3 margin">${photo}</div>`);
+
+				lastFrame.after($frame);
+			}
+
+		}
+
+	}
+
+	export class WikiPhotosUser {
+
+	 private articleId;
+
+		constructor(articleId) {
+
+			this.articleId = articleId;
+
+			$("#recommendPhoto").click((e) => {
+				e.preventDefault();
+				$("#photosForm").show();
+				$("#recommendPhoto").hide();
+			});
+
+			$("#photosForm .cancel").click((e) => {
+				e.preventDefault();
+				$("#photosForm").hide();
+				$("#recommendPhoto").show();
+			});
+
+			var $terms = $("#photosForm #cid");
+			$terms.change((e) => {
+				e.preventDefault();
+
+				var checked = $terms.prop("checked");
+				if (checked) {
+					$(".photoButton").show();
+				} else {
+					$(".photoButton").hide();
+				}
+			});
+
+			this.registerPhotoUpload(this.articleId, "galleryInput");
+		}
+
+
+		private registerPhotoUpload(articleId, inputId) {
+		 var config = new Common.FileUploadConfig();
+		 config.inputId = inputId;
+		 config.endpoint = "WikiPhotoGallery";
+
+		 var picUpload = new Common.FileUpload(config);
+		 picUpload.customId = articleId;
+
+		 picUpload.onProgressChanged = (percent) => {
+		 }
+
+		 picUpload.onUploadFinished = (file, fileId) => {
+			 alert("Thank you, photo was uploaded! Will be displayed when one of our Admins validate the photo.");
+		 }
+		}
+	}
+
 	export class WikiPageView extends ViewBase {
 
 		public articleId: string;
@@ -692,7 +855,9 @@
 		private doDontAdmin: DoDontAdmin;
 		private priceAdmin: PriceAdmin;
 		private photoAdmin: PhotoAdmin;
+		private photosAdmin: PhotosAdmin;
 		private rating: Rating;
+		private photos: WikiPhotosUser;
 
 		constructor(articleId) {
 			super();
@@ -704,6 +869,9 @@
 			this.doDontAdmin = new DoDontAdmin(articleId, this.langVersion);
 			this.priceAdmin = new PriceAdmin(articleId);
 			this.photoAdmin = new PhotoAdmin(articleId);
+			this.photosAdmin = new PhotosAdmin(articleId);
+
+			this.photos = new WikiPhotosUser(articleId);
 
 			this.rating = new Rating(articleId, this.langVersion);
 
@@ -744,7 +912,8 @@
 
 			this.doDontAdmin.generateAdmin();
 		  this.priceAdmin.generateAdmin();
-		  this.photoAdmin.generateAdmin();
+			this.photoAdmin.generateAdmin();
+		  this.photosAdmin.createAdmin();
 		}
 
 		private destroyBlocks() {
@@ -753,6 +922,7 @@
 			this.priceAdmin.clean();
 			this.doDontAdmin.clean();
 			this.photoAdmin.clean();
+			this.photosAdmin.clean();
 		}
 
 
