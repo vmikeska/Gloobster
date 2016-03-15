@@ -48,7 +48,7 @@ namespace Gloobster.Portal.ViewModels
             var rl = new List<RelatedLink>();
 
             var citiesArticles = DB.C<WikiCityEntity>()
-                .Where(c => c.Country_id == Article.id)
+                .Where(c => c.CountryCode == Article.CountryCode)
                 .ToList();
             var citiesIds = citiesArticles
                 .Select(c => c.id)

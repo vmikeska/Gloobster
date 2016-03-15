@@ -11,9 +11,9 @@ namespace Gloobster.Portal.Controllers.Portal
 {
     public class HomeController : PortalBaseController
     {
-		public IInitialDataCreator DataCreator { get; set; }
+		public IInitialWikiDataCreator DataCreator { get; set; }
 
-		public HomeController(IInitialDataCreator dataCreator, ILogger log, IDbOperations db) : base(log, db)
+		public HomeController(IInitialWikiDataCreator dataCreator, ILogger log, IDbOperations db) : base(log, db)
 		{
             DataCreator = dataCreator;
 		}

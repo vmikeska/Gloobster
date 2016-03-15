@@ -159,9 +159,10 @@ namespace Gloobster.Portal.ViewModels
         public override List<Breadcrumb> GetBreadcrumb()
         {
             var bc = base.GetBreadcrumb();
+
+            var countryArticle = DB.C<WikiCountryEntity>().FirstOrDefault(i => i.CountryCode == Article.CountryCode);
+            var countryTexts = DB.C<WikiTextsEntity>().FirstOrDefault(i => i.Article_id == countryArticle.id && i.Language == Texts.Language);
             
-            var countryTexts = DB.C<WikiTextsEntity>().FirstOrDefault(i => i.Article_id == Article.Country_id && i.Language == Texts.Language);
-            var countryArticle = DB.C<WikiCountryEntity>().FirstOrDefault(i => i.id == Article.Country_id);
 
             var contName = GetNameFromContinent(countryArticle.Continent);
 

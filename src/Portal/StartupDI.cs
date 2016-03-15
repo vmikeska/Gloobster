@@ -104,10 +104,13 @@ namespace Gloobster.Portal
 
 
 			builder.AddInstance<ICountryService>(new CountryService());
-            builder.AddTransient<IInitialDataCreator, InitialDataCreator>();
+            builder.AddTransient<IInitialWikiDataCreator, InitialWikiDataCreator>();
 
             builder.AddTransient<IWikiUpdateDomain, WikiUpdateDomain>();
+            builder.AddTransient<IWikiArticleDomain, WikiArticleDomain>();
             
+
+
         }
 		
 	}

@@ -1,4 +1,5 @@
 ﻿using Gloobster.Database;
+using Gloobster.Enums;
 
 namespace Gloobster.Entities.Wiki
 {

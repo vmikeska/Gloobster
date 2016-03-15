@@ -176,7 +176,7 @@ namespace Gloobster.Portal.Controllers.Portal
 
             foreach (var countryE in countriesE)
             {
-                var countryCities = citiesE.Where(c => c.Country_id == countryE.id).ToList();
+                var countryCities = citiesE.Where(c => c.CountryCode == countryE.CountryCode).ToList();
 
                 var countryLink = new WikiCountryVM
                 {

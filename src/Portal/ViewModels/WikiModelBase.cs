@@ -2,6 +2,7 @@
 using System.Linq;
 using Gloobster.Entities;
 using Gloobster.Entities.Wiki;
+using Gloobster.Enums;
 using MongoDB.Bson;
 
 namespace Gloobster.Portal.ViewModels

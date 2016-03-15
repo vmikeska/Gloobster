@@ -13,6 +13,11 @@
 <div class="blue-line margin"></div>
 
 <section class="wrapper margin3">
+    @if (Model.IsAdmin)
+    {
+        <input id="adminMode" type="checkbox"><label for="adminMode" class="mright10">Admin mode</label>
+    }
+
     @Html.Partial("Breadcrumb")
     <h2>@Model.Texts.Title</h2>
     @Html.Partial("Languages")
