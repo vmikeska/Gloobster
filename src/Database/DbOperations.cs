@@ -137,13 +137,12 @@ namespace Gloobster.Database
 		public UpdateDefinitionBuilder<T> U<T>()
 		{
 			return Builders<T>.Update;
-		}		
-		
-		public async Task<UpdateResult> UpdateAsync<T>(FilterDefinition<T> filter, UpdateDefinition<T> update) where T: EntityBase
+		}
+        
+        public async Task<UpdateResult> UpdateAsync<T>(FilterDefinition<T> filter, UpdateDefinition<T> update) where T: EntityBase
 		{
 			try
 			{
-
 				var collectionName = GetCollectionName<T>();
 				var collection = Database.GetCollection<T>(collectionName);
                 

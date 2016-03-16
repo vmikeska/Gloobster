@@ -12,10 +12,7 @@ namespace Gloobster.Entities.Wiki
 
         public List<LinkObjectSE> PlacesLinks { get; set; }
         
-        public List<PriceItemSE> Prices { get; set; }
-        
-        public List<ObjectId> Dos { get; set; }
-        public List<ObjectId> Donts { get; set; }        
+        public List<PriceItemSE> Prices { get; set; }     
     }
 
     public class CityDataSE

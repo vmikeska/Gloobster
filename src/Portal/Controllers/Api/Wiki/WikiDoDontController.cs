@@ -11,6 +11,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using Serilog;
 using System.Linq;
+using Gloobster.Enums;
 
 namespace Gloobster.Portal.Controllers.Api.Wiki
 {
@@ -27,24 +28,41 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 	    {
             var articleIdObj = new ObjectId(req.articleId);
             var idObj = new ObjectId(req.id);
-            
-	        var target = req.type == "do" ? "Dos" : "Donts";
-            var f1 = DB.F<WikiCityEntity>().Eq(p => p.id, articleIdObj);
-            var u1 = DB.U<WikiCityEntity>().Pull(target, idObj);            
-            var r1 = await DB.UpdateAsync(f1, u1);
 
+            var texts = DB.C<WikiTextsEntity>().FirstOrDefault(t => t.Article_id == articleIdObj);
+
+            if (texts.Type == ArticleType.City)
+            {
+                await Delete<WikiCityEntity>(req.type, articleIdObj, idObj);
+            }
+
+            if (texts.Type == ArticleType.Country)
+            {
+                await Delete<WikiCountryEntity>(req.type, articleIdObj, idObj);
+            }
+            
             //todo: delete texts
 	        
-            bool deleted = r1.ModifiedCount == 1;
-            return new ObjectResult(deleted);	        
+            return new ObjectResult(true);
 	    }
+
+        private async Task<bool> Delete<T>(string type, ObjectId articleIdObj, ObjectId idObj) where T : WikiArticleBaseEntity
+        {
+            var target = type == "do" ? "Dos" : "Donts";
+            var f1 = DB.F<WikiCityEntity>().Eq(p => p.id, articleIdObj);
+            var u1 = DB.U<WikiCityEntity>().Pull(target, idObj);
+            var r1 = await DB.UpdateAsync(f1, u1);
+            return r1.ModifiedCount == 1;
+        }
 
         [HttpPost]
         [AuthorizeApi]
         public async Task<IActionResult> Post([FromBody] UpdateDoDontRequest req)
         {
             var articleIdObj = new ObjectId(req.articleId);
-            
+
+            var texts = DB.C<WikiTextsEntity>().FirstOrDefault(t=>t.Article_id == articleIdObj);
+               
             var text = new SectionTextsSE
             {
                 Likes = new List<ObjectId>(),
@@ -58,12 +76,26 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             var u2 = DB.U<WikiTextsEntity>().Push(e => e.Texts, text);
             var r2 = await DB.UpdateAsync(f2, u2);
 
-            var target = req.type == "do" ? "Dos" : "Donts";
-            var f1 = DB.F<WikiCityEntity>().Eq(p => p.id, articleIdObj);
-            var u1 = DB.U<WikiCityEntity>().Push(target, text.Section_id);
-            var r1 = await DB.UpdateAsync(f1, u1);
+            if (texts.Type == ArticleType.City)
+            {
+                await Save<WikiCityEntity>(req.type, articleIdObj, text.Section_id);
+            }
+
+            if (texts.Type == ArticleType.Country)
+            {
+                await Save<WikiCountryEntity>(req.type, articleIdObj, text.Section_id);
+            }
             
             return new ObjectResult(text.Section_id.ToString());
+        }
+
+        private async Task<bool> Save<T>(string type, ObjectId articleIdObj, ObjectId sectionId) where T : WikiArticleBaseEntity
+        {
+            var target = type == "do" ? "Dos" : "Donts";
+            var f1 = DB.F<T>().Eq(p => p.id, articleIdObj);
+            var u1 = DB.U<T>().Push(target, sectionId);
+            var r1 = await DB.UpdateAsync(f1, u1);
+            return r1.ModifiedCount == 1;
         }
         
         [HttpPut]

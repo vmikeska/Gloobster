@@ -10,11 +10,7 @@ namespace Gloobster.Entities.Wiki
         public Continent Continent { get; set; }
         public string CountryCode { get; set; }
 
-        public CountryDataSE Data { get; set; }
-
-        public List<ObjectId> Dos { get; set; }
-        public List<ObjectId> Donts { get; set; }
-        
+        public CountryDataSE Data { get; set; }        
     }
 
     public class CountryDataSE

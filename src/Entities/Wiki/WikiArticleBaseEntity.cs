@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Gloobster.Database;
+using MongoDB.Bson;
 
 namespace Gloobster.Entities.Wiki
 {
@@ -16,5 +17,8 @@ namespace Gloobster.Entities.Wiki
         public bool HasTitlePhoto { get; set; }
 
         public List<WikiPhotoSE> Photos { get; set; }
+
+        public List<ObjectId> Dos { get; set; }
+        public List<ObjectId> Donts { get; set; }
     }
 }
