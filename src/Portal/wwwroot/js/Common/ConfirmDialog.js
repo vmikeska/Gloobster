@@ -24,6 +24,9 @@ var Common;
             $("body").append(this.$html);
             this.$html.fadeIn();
         };
+        ConfirmDialog.prototype.hide = function () {
+            this.$html.hide();
+        };
         return ConfirmDialog;
     })();
     Common.ConfirmDialog = ConfirmDialog;

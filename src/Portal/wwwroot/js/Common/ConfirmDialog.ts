@@ -29,5 +29,9 @@
 			this.$html.fadeIn();
 		}
 
+	  public hide() {
+		  this.$html.hide();
+	  }
+
 	}
 }

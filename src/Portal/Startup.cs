@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Autofac;
 using Gloobster.Common;
 using Serilog;
@@ -12,6 +13,9 @@ using AutofacSerilogIntegration;
 using Autofac.Extensions.DependencyInjection;
 using Gloobster.Database;
 using Gloobster.Entities;
+using Gloobster.Entities.Wiki;
+using System.Linq;
+using MongoDB.Bson;
 
 namespace Gloobster.Portal
 {
@@ -77,13 +81,32 @@ namespace Gloobster.Portal
 	        return serviceProvider;
         }
 
-	    private void InitDB()
+	    private async void InitDB()
 	    {
             var db = new DbOperations();
 	        
 	        db.CreateCollection<VisitedCountryAggregatedEntity>();
             db.CreateCollection<VisitedCityAggregatedEntity>();
             db.CreateCollection<VisitedPlaceAggregatedEntity>();
+
+            bool existsPerm = db.C<WikiPermissionEntity>().Any();
+	        if (!existsPerm)
+	        {
+	            var users = db.C<PortalUserEntity>()
+	                .Where(u => (u.Mail == "mikeska@gmail.com") || (u.Mail == "vmikeska@hotmail.com"))
+	                .ToList();
+
+	            var masterAdmins = users.Select(u => new WikiPermissionEntity
+	            {
+	                IsMasterAdmin = true,
+	                IsSuperAdmin = false,
+	                id = ObjectId.GenerateNewId(),
+	                User_id = u.id,
+	                Articles = null
+	            });
+	            await db.SaveManyAsync(masterAdmins);                
+	        }
+
         }
 
 	    // Configure is called after ConfigureServices is called.

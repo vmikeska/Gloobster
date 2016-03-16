@@ -3,6 +3,12 @@ using System.Collections.Generic;
 
 namespace Gloobster.ReqRes
 {
+    public class PermissionRequest
+    {
+        public string actionType { get; set; }
+        public string id { get; set; }
+    }
+
     public class UpdateLinkRequest
     {
         public string linkId { get; set; }

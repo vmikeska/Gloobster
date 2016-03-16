@@ -1,0 +1,70 @@
+﻿@using Gloobster.Portal.ViewModels
+@model WikiPermissionsViewModel
+
+@{
+    ViewBag.BodyClass = "page";
+    //ViewBag.MenuGroup = "Planning";
+}
+
+<script type="text/javascript" src="@Url.Content("~/js/Views/WikiPermissionsView.js")"></script>
+
+<div class="blue-line margin"></div>
+
+<section class="wrapper margin3">
+
+    <h2>Master admins</h2>
+    <div>
+        @foreach (var a in Model.MasterAdmins)
+        {
+            <span style="border: 1px solid red;">@a.Name</span>
+        }
+    </div>
+
+
+    <h2>Super Admins</h2>
+    <div class="blue-form margin form">
+        <div id="saTags" class="tags">
+
+            @foreach (var user in Model.SuperAdmins)
+            {
+                <span id="@user.Id" class="tag">@user.Name<a class="delete" href="#">Delete</a></span>
+            }
+
+            <div id="superAdminCombo" class="dropdown">
+                <input class="inputed" placeholder="+ Add Tag">
+                <ul></ul>
+            </div>
+
+        </div>
+    </div>
+
+
+    @*<h2>Admins</h2>
+    @foreach (var user in Model.Users)
+    {
+        <div class="blue-form margin form">
+            <h4>@user.Name</h4>
+            <div class="tags">
+
+                @foreach (PermItemVM item in user.Items)
+                {
+                    <span class="tag">@item.Name<a class="delete" href="#"></a></span>
+                }
+
+                <div id="superAdminCombo" class="dropdown">
+                    <input class="inputed" placeholder="+ Add Tag">
+                    <ul></ul>
+                </div>
+
+            </div>
+
+        </div>
+    }*@
+   
+</section>
+
+<script>
+	function onBodyLoad() {
+	    currentView = new Views.WikiPermissionsView();
+	}
+</script>
