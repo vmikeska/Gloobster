@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Threading.Tasks;
 using Gloobster.Database;
+using Gloobster.DomainInterfaces;
 using Gloobster.Entities.Wiki;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes;
@@ -10,19 +12,24 @@ using MongoDB.Bson;
 using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.Wiki
-{
+{    
     public class WikiPermissionsArticleController : BaseApiController
     {
-        public WikiPermissionsArticleController(ILogger log, IDbOperations db) : base(log, db)
-        {
+        public IWikiPermissions WikiPerms { get; set; }
 
+        public WikiPermissionsArticleController(IWikiPermissions wikiPerms, ILogger log, IDbOperations db) : base(log, db)
+        {
+            WikiPerms = wikiPerms;            
         }
 
         [HttpPost]
         [AuthorizeApi]
         public async Task<IActionResult> Post([FromBody] PermissionArticleRequest req)
         {
-            //todo: check permissions
+            if (!WikiPerms.CanManageArticleAdmins(UserId))
+            {
+                return HttpUnauthorized();
+            }
 
             var articleIdObj = new ObjectId(req.articleId);
             var userIdObj = new ObjectId(req.userId);
@@ -38,7 +45,10 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         [AuthorizeApi]
         public async Task<IActionResult> Delete(string userId, string articleId)
         {
-            //todo: check permissions
+            if (!WikiPerms.CanManageArticleAdmins(UserId))
+            {
+                return HttpUnauthorized();
+            }
 
             var articleIdObj = new ObjectId(articleId);
             var userIdObj = new ObjectId(userId);

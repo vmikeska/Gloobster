@@ -1,0 +1,9 @@
+﻿
+@using System.Threading.Tasks
+@using Gloobster.Portal.ViewModels
+@model WikiModelBase
+
+@if (Model.IsAdmin)
+{
+    <input id="adminMode" type="checkbox"><label for="adminMode" class="mright10">Admin mode</label>
+}

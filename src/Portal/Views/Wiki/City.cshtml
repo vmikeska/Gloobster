@@ -49,9 +49,7 @@
 <div class="blue-line margin"></div>
 
 <section class="wrapper margin3">
-    @if (Model.IsAdmin) { 
-        <input id="adminMode" type="checkbox"><label for="adminMode" class="mright10">Admin mode</label>
-    }
+    @Html.Partial("PageAdmin")
 
     @Html.Partial("Breadcrumb")
     <h2>@Model.Texts.Title</h2>
@@ -76,10 +74,14 @@
     @Html.Partial("Table1Block", Model.Restaurant())
 
     @Html.Partial("Table1Block", Model.Transport())
-
-    @Html.Partial("Table1Block", Model.Accommodation())
+    @*border: 1px solid red;*@ 
+    <div style="min-height: 270px">
+        @Html.Partial("Table1Block", Model.Accommodation())
+    </div>
 
     @Html.Partial("Photos")
+
+    @Html.Partial("GeoLinks")
 
 </section>
 

@@ -10,7 +10,7 @@ using Gloobster.Enums;
 using MongoDB.Bson;
 
 namespace Gloobster.DomainModels.Wiki
-{    
+{
     public class WikiArticleDomain: IWikiArticleDomain
     {
         public IDbOperations DB { get; set; }

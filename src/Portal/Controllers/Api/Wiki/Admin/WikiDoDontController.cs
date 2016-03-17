@@ -16,16 +16,23 @@ using Gloobster.Enums;
 namespace Gloobster.Portal.Controllers.Api.Wiki
 {
     public class WikiDoDontController: BaseApiController
-	{        
-        public WikiDoDontController(ILogger log, IDbOperations db) : base(log, db)
+	{
+        public IWikiPermissions WikiPerms { get; set; }
+
+        public WikiDoDontController(IWikiPermissions wikiPerms, ILogger log, IDbOperations db) : base(log, db)
         {
-            
+            WikiPerms = wikiPerms;
         }
 
 	    [HttpDelete]
 	    [AuthorizeApi]
 	    public async Task<IActionResult> Delete(UpdateDoDontRequest req)
 	    {
+	        if (!WikiPerms.HasArticleAdminPermissions(UserId, req.articleId))
+	        {
+	            return HttpUnauthorized();
+	        }
+
             var articleIdObj = new ObjectId(req.articleId);
             var idObj = new ObjectId(req.id);
 
@@ -59,6 +66,11 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         [AuthorizeApi]
         public async Task<IActionResult> Post([FromBody] UpdateDoDontRequest req)
         {
+            if (!WikiPerms.HasArticleAdminPermissions(UserId, req.articleId))
+            {
+                return HttpUnauthorized();
+            }
+
             var articleIdObj = new ObjectId(req.articleId);
 
             var texts = DB.C<WikiTextsEntity>().FirstOrDefault(t=>t.Article_id == articleIdObj);
@@ -102,6 +114,11 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 		[AuthorizeApi]
 		public async Task<IActionResult> Put([FromBody] UpdateDoDontRequest req)
 		{
+            if (!WikiPerms.HasArticleAdminPermissions(UserId, req.articleId))
+            {
+                return HttpUnauthorized();
+            }
+
             var articleIdObj = new ObjectId(req.articleId);
             var idObj = new ObjectId(req.id);
 

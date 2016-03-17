@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Autofac;
+﻿using System.Collections.Generic;
 using Gloobster.Database;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.Portal.ViewModels;
@@ -10,13 +7,9 @@ using Gloobster.DomainInterfaces;
 using Gloobster.Entities;
 using Gloobster.Entities.Wiki;
 using Gloobster.Enums;
-using Gloobster.Mappers;
-using Gloobster.SocialLogin.Facebook.Communication;
 using MongoDB.Bson;
 using Serilog;
 using System.Linq;
-using FourSquare.SharpSquare.Entities;
-using Gloobster.DomainModels.Wiki;
 using Gloobster.Portal.Controllers.Api.Wiki;
 
 namespace Gloobster.Portal.Controllers.Portal
@@ -24,10 +17,12 @@ namespace Gloobster.Portal.Controllers.Portal
     public class WikiController : PortalBaseController
     {
         public IFilesDomain FileDomain { get; set; }
+        public IWikiPermissions WikiPerms { get; set; }
 
-        public WikiController(IFilesDomain filesDomain, ILogger log,  IDbOperations db) : base(log, db)
+        public WikiController(IWikiPermissions wikiPerms, IFilesDomain filesDomain, ILogger log,  IDbOperations db) : base(log, db)
         {
             FileDomain = filesDomain;
+            WikiPerms = wikiPerms;
         }
 
         public IActionResult PageRegular(string id, string lang)
@@ -47,7 +42,7 @@ namespace Gloobster.Portal.Controllers.Portal
                 template = "City";
             }
 
-            vm.IsAdmin = true;
+            vm.IsAdmin = IsUserLogged && WikiPerms.HasArticleAdminPermissions(UserId, text.Article_id.ToString());
             vm.ArticleId = text.Article_id.ToString();
 
             var langVers = DB.C<WikiTextsEntity>()
@@ -61,6 +56,22 @@ namespace Gloobster.Portal.Controllers.Portal
             return View(template, vm);
         }
 
+        public IActionResult Page(string id)
+        {
+            var texts = DB.C<WikiTextsEntity>().Where(i => i.LinkName == id).ToList();
+
+            if (texts.Count == 0)
+            {
+                return HttpNotFound();
+            }
+
+            WikiTextsEntity englishText = texts.FirstOrDefault(i => i.Language == "en");
+            var selectedText = englishText ?? texts.First();
+
+            var url = $"/wiki/{selectedText.Language}/{selectedText.LinkName}";
+            return RedirectPermanent(url);
+        }
+
         private WikiCityViewModel GetCityVM(WikiTextsEntity text)
         {
             var article = DB.C<WikiCityEntity>().FirstOrDefault(i => i.id == text.Article_id);
@@ -68,7 +79,7 @@ namespace Gloobster.Portal.Controllers.Portal
             var vm = CreateViewModelInstance<WikiCityViewModel>();
             vm.Texts = text;
             vm.Article = article;
-
+            
             return vm;
         }
 
@@ -79,9 +90,10 @@ namespace Gloobster.Portal.Controllers.Portal
             var vm = CreateViewModelInstance<WikiCountryViewModel>();
             vm.Texts = text;
             vm.Article = article;
-
+            
             return vm;
         }
+        
 
         public IActionResult ArticleTitlePhoto(string id)
         {
@@ -123,23 +135,7 @@ namespace Gloobster.Portal.Controllers.Portal
 
             return null;
         }
-
-        public IActionResult Page(string id)
-        {
-            var texts = DB.C<WikiTextsEntity>().Where(i => i.LinkName == id).ToList();
-
-            if (texts.Count == 0)
-            {
-                return HttpNotFound();
-            }
-
-            WikiTextsEntity englishText = texts.FirstOrDefault(i => i.Language == "en");
-            var selectedText = englishText ?? texts.First();
-
-            var url = $"/wiki/{selectedText.Language}/{selectedText.LinkName}";
-            return RedirectPermanent(url);
-        }
-
+        
         public IActionResult LinkMap()
         {
             var vm = CreateViewModelInstance<WikiLinkMapViewModel>();

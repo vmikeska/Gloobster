@@ -16,16 +16,23 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 	public class WikiLinkController: BaseApiController
 	{
         public IWikiUpdateDomain WikiUpdate { get; set; }
+        public IWikiPermissions WikiPerms { get; set; }
 
-        public WikiLinkController(IWikiUpdateDomain wikiUpdate, ILogger log, IDbOperations db) : base(log, db)
+        public WikiLinkController(IWikiPermissions wikiPerms, IWikiUpdateDomain wikiUpdate, ILogger log, IDbOperations db) : base(log, db)
         {
             WikiUpdate = wikiUpdate;
+            WikiPerms = wikiPerms;
         }
 
 	    [HttpDelete]
 	    [AuthorizeApi]
 	    public async Task<IActionResult> Delete(DeleteLinkRequest req)
 	    {
+            if (!WikiPerms.HasArticleAdminPermissions(UserId, req.articleId))
+            {
+                return HttpUnauthorized();
+            }
+
             var articleIdObj = new ObjectId(req.articleId);
             var linkIdObj = new ObjectId(req.linkId);
             
@@ -45,6 +52,11 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         [AuthorizeApi]
         public async Task<IActionResult> Post([FromBody] UpdateLinkRequest req)
         {
+            if (!WikiPerms.HasArticleAdminPermissions(UserId, req.articleId))
+            {
+                return HttpUnauthorized();
+            }
+
             if (req.linkId != "Temp")
             {
                 return null;
@@ -101,6 +113,11 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 		[AuthorizeApi]
 		public async Task<IActionResult> Put([FromBody] UpdateLinkRequest req)
 		{
+            if (!WikiPerms.HasArticleAdminPermissions(UserId, req.articleId))
+            {
+                return HttpUnauthorized();
+            }
+
             var articleIdObj = new ObjectId(req.articleId);
             var linkIdObj = new ObjectId(req.linkId);
 

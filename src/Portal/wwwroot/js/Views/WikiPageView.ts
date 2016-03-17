@@ -107,7 +107,7 @@
 				};
 				ViewBase.currentView.apiPut("WikiPrice", data, (r) => {
 					this.$form.remove();
-					this.$edited.find(".price").text(parsedVal);
+					this.$edited.find(".price").text(parsedVal.toFixed(2));
 				});
 			} else {
 				alert("Incorret format, make it 0.0 format");
@@ -621,9 +621,9 @@
 		}
 
 		private regRatingPrice() {
-		 this.regRatingBase("priceBtn", "priceItemAdmin", "WikiPriceRating", (c) => {
+		 this.regRatingBase("priceBtn", "rate", "WikiPriceRating", (c) => {
 			this.setLikeDislike(c.$cont, c.like, !c.like, "priceBtn", "icon-plus", "icon-minus");
-			 c.$cont.find(".price").text(c.res);
+			c.$cont.find(".price").text(c.res.toFixed(2));
 		 });
 		}
 
@@ -678,66 +678,80 @@
 
 		}
 	}
- 
+
 	export class PhotosAdmin {
-	 private articleId;
+		private articleId;
 
-	 private adminTemplate;
-	 private $cont;
+		private adminTemplate;
+		private $cont;
 
-	 constructor(articleId) {
-		this.articleId = articleId;
+		constructor(articleId) {
+			this.articleId = articleId;
 
-		this.adminTemplate = ViewBase.currentView.registerTemplate("photosAdmin-template");
-		this.$cont = $("#photos");
-	 }
+			this.adminTemplate = ViewBase.currentView.registerTemplate("photosAdmin-template");
+			this.$cont = $("#photos");
+		}
 
-	 public createAdmin() {
-		this.$cont.before(this.adminTemplate());
-		this.registerPhotoUpload(this.articleId, "galleryPhotoInput");
+		public createAdmin() {
+			this.$cont.before(this.adminTemplate());
+			this.registerPhotoUpload(this.articleId, "galleryPhotoInput");
 
-		this.showPhotos(true);
-		this.addActions();
-	 }
+			this.showPhotos(true);
+			this.addActions();
+		}
 
-	 public clean() {
-		this.$cont.find(".delete").remove();
-		this.$cont.find(".confirm").remove();
-	 }
+		public clean() {
+			this.$cont.find(".delete").remove();
+			this.$cont.find(".confirm").remove();
+		}
 
-		private addActions() {
-			var $photos = this.$cont.find(".cell");
-			var photos = $photos.toArray();
-			photos.forEach((photo) => {
-				var $photo = $(photo);
-				var $del = $(`<a href="#" class="delete">Delete</a> &nbsp;&nbsp;`);
-				$del.click((e) => {
-					e.preventDefault();
+	  public refreshActions() {
+		 this.clean();
+		 this.addActions();
+	  }
 
-					var confirmDialog = new Common.ConfirmDialog();
-					confirmDialog.create("Delete", "Do you want to permanently delete this photo ?", "Cancel", "Ok", ($dialog) => {
-						var photoId = $photo.attr("id");
-						ViewBase.currentView.apiDelete("WikiPhotoGallery", [["articleId", this.articleId], ["photoId", photoId]], (r) => {
-							$dialog.remove();
-							$photo.remove();
-						});
+		private delPhoto($del, $photo) {
+			$del.click((e) => {
+				e.preventDefault();
+
+				var confirmDialog = new Common.ConfirmDialog();
+				confirmDialog.create("Delete", "Do you want to permanently delete this photo ?", "Cancel", "Ok", ($dialog) => {
+					var photoId = $photo.attr("id");
+					ViewBase.currentView.apiDelete("WikiPhotoGallery", [["articleId", this.articleId], ["photoId", photoId]], (r) => {
+						$dialog.remove();
+						$photo.remove();
 					});
 				});
+			});
+		}
+
+		private confirmPhoto($conf, $photo) {
+			$conf.click((e) => {
+				e.preventDefault();
+				var photoId = $photo.attr("id");
+				var data = {
+					articleId: this.articleId,
+					photoId: photoId
+				};
+				ViewBase.currentView.apiPut("WikiPhotoGallery", data, (r) => {
+					$conf.remove();
+				});
+			});
+		}
+	 
+		private addActions() {
+			var $photos = this.$cont.find(".cell").not(".empty");
+			var photos = $photos.toArray();
+			photos.forEach((photo) => {
+			 var $photo = $(photo);
+
+				var $del = $(`<a href="#" class="delete">Delete</a> &nbsp;&nbsp;`);
+				this.delPhoto($del, $photo);
 				$photo.prepend($del);
 
 				if ($photo.hasClass("unconfirmedPhoto")) {
 					var $conf = $(`<a href="#" class="confirm">Confirm</a> &nbsp;&nbsp;`);
-					$conf.click((e) => {
-						e.preventDefault();
-						var photoId = $photo.attr("id");
-						var data = {
-							articleId: this.articleId,
-							photoId: photoId
-						};
-						ViewBase.currentView.apiPut("WikiPhotoGallery", data, (r) => {
-							$conf.remove();
-						});
-					});
+					this.confirmPhoto($conf, $photo);
 					$photo.prepend($conf);
 				}
 			});
@@ -753,37 +767,40 @@
 		}
 
 		private registerPhotoUpload(articleId, inputId) {
-		var config = new Common.FileUploadConfig();
-		config.inputId = inputId;
-		config.endpoint = "WikiPhotoGallery";
+			var config = new Common.FileUploadConfig();
+			config.inputId = inputId;
+			config.endpoint = "WikiPhotoGallery";
 
-		var picUpload = new Common.FileUpload(config);
-		picUpload.customId = articleId;
+			var picUpload = new Common.FileUpload(config);
+			picUpload.customId = articleId;
 
-		picUpload.onProgressChanged = (percent) => {
+			picUpload.onProgressChanged = (percent) => {
+			}
+
+			picUpload.onUploadFinished = (file, fileId) => {
+				this.addPhotoToPage(fileId, articleId);
+			}
 		}
-
-		picUpload.onUploadFinished = (file, fileId) => {
-		 this.addPhotoToPage(fileId, articleId);
-		}
-	 }
 
 		private addPhotoToPage(photoId, articleId) {
 			var thumbLink = `/Wiki/ArticlePhotoThumb?photoId=${photoId}&articleId=${articleId}`;
 			var link = `/Wiki/ArticlePhoto?photoId=${photoId}&articleId=${articleId}`;
 
 			var photo = `<div class="cell"><a href="${link}" target="_blank"> <img class="radius mhalf" src="${thumbLink}"></a></div>`;
-
+		 
 			var lastFrame = $("#photos").find(".table").last();
 
-			var cellsCnt = lastFrame.find(".cell").length;
+			var cellsCnt = lastFrame.find(".cell").not(".empty").length;
 			if (cellsCnt < 3) {
-				lastFrame.append(photo);
+				lastFrame.find(".empty").first().remove();
+				lastFrame.prepend(photo);
 			} else {
 				var $frame = $(`<div class="table row col3 margin">${photo}</div>`);
 
 				lastFrame.after($frame);
 			}
+
+			this.refreshActions();
 
 		}
 

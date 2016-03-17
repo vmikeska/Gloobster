@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Gloobster.Database;
-using Gloobster.Entities;
+using Gloobster.DomainInterfaces;
 using Gloobster.Entities.Wiki;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes;
@@ -13,15 +13,22 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 {
     public class WikiPriceController : BaseApiController
     {
-        public WikiPriceController(ILogger log, IDbOperations db) : base(log, db)
-        {
+        public IWikiPermissions WikiPerms { get; set; }
 
+        public WikiPriceController(IWikiPermissions wikiPerms, ILogger log, IDbOperations db) : base(log, db)
+        {
+            WikiPerms = wikiPerms;
         }
         
         [HttpPut]
         [AuthorizeApi]
         public async Task<IActionResult> Put([FromBody] UpdatePriceRequest req)
         {
+            if (!WikiPerms.HasArticleAdminPermissions(UserId, req.articleId))
+            {
+                return HttpUnauthorized();
+            }
+
             var articleIdObj = new ObjectId(req.articleId);            
             var idObj = new ObjectId(req.priceId);
 

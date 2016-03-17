@@ -5,18 +5,13 @@ using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels;
-using Gloobster.DomainModels.Services.Trip;
 using Gloobster.DomainObjects;
-using Gloobster.Entities;
-using Gloobster.Entities.Trip;
 using Gloobster.Entities.Wiki;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.Files;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
-using MongoDB.Driver;
 using Serilog;
-using System.Linq;
 using Gloobster.Enums;
 
 namespace Gloobster.Portal.Controllers.Api.Wiki
@@ -25,25 +20,23 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
     public class WikiPhotoGalleryController : BaseApiController
     {
         public FilesDomain FileDomain { get; set; }
-        
-        public WikiPhotoGalleryController(IFilesDomain filesDomain, ILogger log, IDbOperations db) : base(log, db)
+        public IWikiPermissions WikiPerms { get; set; }
+
+        public WikiPhotoGalleryController(IWikiPermissions wikiPerms, IFilesDomain filesDomain, ILogger log, IDbOperations db) : base(log, db)
         {
             FileDomain = (FilesDomain) filesDomain;
-        }
-
-        private bool IsUserAdmin(ObjectId userIdObj, ObjectId articleIdObj)
-        {
-            //todo: implement real functionality
-
-            var vaclavMikeska = DB.C<PortalUserEntity>().FirstOrDefault(u => u.Mail == "vmikeska@hotmail.com");
-
-            return vaclavMikeska.id == UserIdObj;
+            WikiPerms = wikiPerms;
         }
         
         [HttpPut]
         [AuthorizeApi]
         public IActionResult Put([FromBody] UpdateConfirmedRequest req)
         {
+            if (!WikiPerms.HasArticleAdminPermissions(UserId, req.articleId))
+            {
+                return HttpUnauthorized();
+            }
+
             var articleIdObj = new ObjectId(req.articleId);
             var photoIdObj = new ObjectId(req.photoId);
 
@@ -59,6 +52,11 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         [AuthorizeApi]
         public IActionResult Delete(string articleId, string photoId)
         {
+            if (!WikiPerms.HasArticleAdminPermissions(UserId, articleId))
+            {
+                return HttpUnauthorized();
+            }
+
             var articleDir = FileDomain.Storage.Combine(WikiFileConstants.FileLocation, articleId);
             var galleryDir = FileDomain.Storage.Combine(articleDir, WikiFileConstants.GalleryDir);
             var name = $"{photoId}.jpg";
@@ -77,13 +75,13 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         public IActionResult Post([FromBody] FileRequest request)
         {
             var articleId = request.customId;
+            bool isUserAdmin = WikiPerms.HasArticleAdminPermissions(UserId, articleId);
+
             var articleDir = FileDomain.Storage.Combine(WikiFileConstants.FileLocation, articleId);
             var galleryDir = FileDomain.Storage.Combine(articleDir, WikiFileConstants.GalleryDir); 
             
             var articleIdObj = new ObjectId(articleId);
-
-            bool isUserAdmin = IsUserAdmin(UserIdObj, articleIdObj);
-
+            
             ObjectId? fileId = null;
             if (request.filePartType == FilePartType.Last)
             {
@@ -173,16 +171,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
             DB.UpdateAsync(filter, update);
         }
-
-        //private void DeleteOldPicture(string articleDir, string fileName)
-        //{            
-        //    var pathToDelete = FileDomain.Storage.Combine(articleDir, fileName);
-        //    bool fileExists = FileDomain.Storage.FileExists(pathToDelete);
-        //    if (fileExists)
-        //    {
-        //        FileDomain.Storage.DeleteFile(pathToDelete);
-        //    }            
-        //}
+        
     }
 
     public class UpdateConfirmedRequest

@@ -1,4 +1,5 @@
 ﻿@using System.Threading.Tasks
+@using System.Linq
 @using Gloobster.Portal.ViewModels
 @model WikiCityViewModel
 
@@ -22,6 +23,26 @@
                         <span>By </span><a href="/PortalUser/Detail/@photo.OwnerId">@photo.OwnerName</a> 
                     </div>
                 }
+
+                @if (group == photosGroups.First())
+                {
+                    int rest = 3 - group.Count;
+
+                    for (int act = 1; act <= rest; act++)
+                    {
+                        @Html.Partial("EmptyPhoto")
+                    }
+                }
+
+            </div>
+        }
+
+        @if (!Model.Photos.Any())
+        {
+            <div class="table row col3 margin">
+                @Html.Partial("EmptyPhoto")
+                @Html.Partial("EmptyPhoto")
+                @Html.Partial("EmptyPhoto")
             </div>
         }
 

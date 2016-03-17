@@ -16,26 +16,15 @@ using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.Wiki
 {
-    public class WikiFileConstants
-    {
-        public const string FileLocation = "wiki";
-        public const string GalleryDir = "g";
-        public const string TitlePhotoName = "title";
-        public const string TitlePhotoNameExt = "title.jpg";
-        public const int TitleWidth = 940;
-        public const int TitleHeight = 280;
-
-        public const int ThumbnailWidth = 280;
-        public const int ThumbnailHeight = 190;        
-    }
-
     public class WikiTitlePhotoController : BaseApiController
     {
         public FilesDomain FileDomain { get; set; }
-        
-        public WikiTitlePhotoController(IFilesDomain filesDomain, ILogger log, IDbOperations db) : base(log, db)
+        public IWikiPermissions WikiPerms { get; set; }
+
+        public WikiTitlePhotoController(IWikiPermissions wikiPerms, IFilesDomain filesDomain, ILogger log, IDbOperations db) : base(log, db)
         {
             FileDomain = (FilesDomain) filesDomain;
+            WikiPerms = wikiPerms;
         }
         
         [HttpPost]
@@ -43,6 +32,12 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         public IActionResult Post([FromBody] FileRequest request)
         {
             var articleId = request.customId;
+
+            if (!WikiPerms.HasArticleAdminPermissions(UserId, articleId))
+            {
+                return HttpUnauthorized();
+            }
+
             var articleDir = FileDomain.Storage.Combine(WikiFileConstants.FileLocation, articleId);
             var articleIdObj = new ObjectId(articleId);
 

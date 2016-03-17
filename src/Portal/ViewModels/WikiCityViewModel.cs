@@ -199,6 +199,23 @@ namespace Gloobster.Portal.ViewModels
             return bc;
         }
 
+        public override List<RelatedLink> GetRelatedLinks()
+        {
+            var coutntryArticle = DB.C<WikiCountryEntity>().FirstOrDefault(c => c.CountryCode == Article.CountryCode);
+            var countryText = DB.C<WikiTextsEntity>().FirstOrDefault(c => c.Article_id == coutntryArticle.id);
+
+            var rl = new List<RelatedLink>
+            {
+                new RelatedLink
+                {
+                    Name = countryText.Title,
+                    Link = $"/wiki/{Texts.Language}/{countryText.LinkName}"
+                }
+            };
+            
+            return rl;
+        }
+
         public List<LinkObjectSE> GetLinksByCategory(string category)
         {
             var links = Article.PlacesLinks.Where(c => c.Category == category).ToList();
@@ -327,11 +344,17 @@ namespace Gloobster.Portal.ViewModels
                 return new TableItemVM
                 {
                     Name = i.Key,
+
                     Price1 = pub.Price.CurrentPrice,
+                    Liked1 = WasLikedPrice(pub),
                     Id1 = pub.id.ToString(),
+
                     Price2 = bar.Price.CurrentPrice,
+                    Liked2 = WasLikedPrice(bar),
                     Id2 = bar.id.ToString(),
+
                     Price3 = club.Price.CurrentPrice,
+                    Liked3 = WasLikedPrice(club),
                     Id3 = club.id.ToString(),
                 };
             }).ToList();

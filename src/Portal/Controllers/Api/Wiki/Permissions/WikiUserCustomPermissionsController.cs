@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Database;
+using Gloobster.DomainInterfaces;
 using Gloobster.Entities.Wiki;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes;
@@ -13,16 +14,21 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 {
     public class WikiUserCustomPermissionsController : BaseApiController
     {
-        public WikiUserCustomPermissionsController(ILogger log, IDbOperations db) : base(log, db)
-        {
+        public IWikiPermissions WikiPerms { get; set; }
 
+        public WikiUserCustomPermissionsController(IWikiPermissions wikiPerms, ILogger log, IDbOperations db) : base(log, db)
+        {
+            WikiPerms = wikiPerms;
         }
 
         [HttpPost]
         [AuthorizeApi]
         public async Task<IActionResult> Post([FromBody] PermissionRequest req)
         {
-            //todo: check permissions
+            if (!WikiPerms.CanManageArticleAdmins(UserId))
+            {
+                return HttpUnauthorized();
+            }
 
             var idObj = new ObjectId(req.id);
 
@@ -43,7 +49,10 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         [AuthorizeApi]
         public async Task<IActionResult> Delete(string id)
         {
-            //todo: check permissions
+            if (!WikiPerms.CanManageArticleAdmins(UserId))
+            {
+                return HttpUnauthorized();
+            }
 
             var idObj = new ObjectId(id);
 
@@ -52,9 +61,5 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
             return new ObjectResult(null);
         }
-
-        //var f1 = DB.F<WikiPermissionEntity>().Eq(p => p.User_id, idObj);
-        //var u1 = DB.U<WikiPermissionEntity>().PopFirst();
-        //var r1 = await DB.UpdateAsync(f1, u1);
     }
 }

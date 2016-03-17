@@ -89,7 +89,7 @@ var Views;
                 };
                 Views.ViewBase.currentView.apiPut("WikiPrice", data, function (r) {
                     _this.$form.remove();
-                    _this.$edited.find(".price").text(parsedVal);
+                    _this.$edited.find(".price").text(parsedVal.toFixed(2));
                 });
             }
             else {
@@ -519,9 +519,9 @@ var Views;
         };
         Rating.prototype.regRatingPrice = function () {
             var _this = this;
-            this.regRatingBase("priceBtn", "priceItemAdmin", "WikiPriceRating", function (c) {
+            this.regRatingBase("priceBtn", "rate", "WikiPriceRating", function (c) {
                 _this.setLikeDislike(c.$cont, c.like, !c.like, "priceBtn", "icon-plus", "icon-minus");
-                c.$cont.find(".price").text(c.res);
+                c.$cont.find(".price").text(c.res.toFixed(2));
             });
         };
         Rating.prototype.regRatingBase = function (btnClass, contClass, endpoint, callback) {
@@ -588,38 +588,50 @@ var Views;
             this.$cont.find(".delete").remove();
             this.$cont.find(".confirm").remove();
         };
+        PhotosAdmin.prototype.refreshActions = function () {
+            this.clean();
+            this.addActions();
+        };
+        PhotosAdmin.prototype.delPhoto = function ($del, $photo) {
+            var _this = this;
+            $del.click(function (e) {
+                e.preventDefault();
+                var confirmDialog = new Common.ConfirmDialog();
+                confirmDialog.create("Delete", "Do you want to permanently delete this photo ?", "Cancel", "Ok", function ($dialog) {
+                    var photoId = $photo.attr("id");
+                    Views.ViewBase.currentView.apiDelete("WikiPhotoGallery", [["articleId", _this.articleId], ["photoId", photoId]], function (r) {
+                        $dialog.remove();
+                        $photo.remove();
+                    });
+                });
+            });
+        };
+        PhotosAdmin.prototype.confirmPhoto = function ($conf, $photo) {
+            var _this = this;
+            $conf.click(function (e) {
+                e.preventDefault();
+                var photoId = $photo.attr("id");
+                var data = {
+                    articleId: _this.articleId,
+                    photoId: photoId
+                };
+                Views.ViewBase.currentView.apiPut("WikiPhotoGallery", data, function (r) {
+                    $conf.remove();
+                });
+            });
+        };
         PhotosAdmin.prototype.addActions = function () {
             var _this = this;
-            var $photos = this.$cont.find(".cell");
+            var $photos = this.$cont.find(".cell").not(".empty");
             var photos = $photos.toArray();
             photos.forEach(function (photo) {
                 var $photo = $(photo);
                 var $del = $("<a href=\"#\" class=\"delete\">Delete</a> &nbsp;&nbsp;");
-                $del.click(function (e) {
-                    e.preventDefault();
-                    var confirmDialog = new Common.ConfirmDialog();
-                    confirmDialog.create("Delete", "Do you want to permanently delete this photo ?", "Cancel", "Ok", function ($dialog) {
-                        var photoId = $photo.attr("id");
-                        Views.ViewBase.currentView.apiDelete("WikiPhotoGallery", [["articleId", _this.articleId], ["photoId", photoId]], function (r) {
-                            $dialog.remove();
-                            $photo.remove();
-                        });
-                    });
-                });
+                _this.delPhoto($del, $photo);
                 $photo.prepend($del);
                 if ($photo.hasClass("unconfirmedPhoto")) {
                     var $conf = $("<a href=\"#\" class=\"confirm\">Confirm</a> &nbsp;&nbsp;");
-                    $conf.click(function (e) {
-                        e.preventDefault();
-                        var photoId = $photo.attr("id");
-                        var data = {
-                            articleId: _this.articleId,
-                            photoId: photoId
-                        };
-                        Views.ViewBase.currentView.apiPut("WikiPhotoGallery", data, function (r) {
-                            $conf.remove();
-                        });
-                    });
+                    _this.confirmPhoto($conf, $photo);
                     $photo.prepend($conf);
                 }
             });
@@ -651,14 +663,16 @@ var Views;
             var link = "/Wiki/ArticlePhoto?photoId=" + photoId + "&articleId=" + articleId;
             var photo = "<div class=\"cell\"><a href=\"" + link + "\" target=\"_blank\"> <img class=\"radius mhalf\" src=\"" + thumbLink + "\"></a></div>";
             var lastFrame = $("#photos").find(".table").last();
-            var cellsCnt = lastFrame.find(".cell").length;
+            var cellsCnt = lastFrame.find(".cell").not(".empty").length;
             if (cellsCnt < 3) {
-                lastFrame.append(photo);
+                lastFrame.find(".empty").first().remove();
+                lastFrame.prepend(photo);
             }
             else {
                 var $frame = $("<div class=\"table row col3 margin\">" + photo + "</div>");
                 lastFrame.after($frame);
             }
+            this.refreshActions();
         };
         return PhotosAdmin;
     })();

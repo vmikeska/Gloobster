@@ -1,13 +1,9 @@
 using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
-using Gloobster.Entities;
-using Gloobster.Entities.Wiki;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes;
 using Microsoft.AspNet.Mvc;
-using MongoDB.Bson;
-using MongoDB.Driver;
 using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.Wiki

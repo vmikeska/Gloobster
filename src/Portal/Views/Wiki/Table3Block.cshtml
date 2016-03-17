@@ -10,27 +10,27 @@
         <table class="margin2 width100">
             <tr>
                 <th></th>
-                <th>@Model.Headers[0]</th>
-                <th>@Model.Headers[1]</th>
-                <th>@Model.Headers[2]</th>
+                <th colspan="2">@Model.Headers[0]</th>
+                <th colspan="2">@Model.Headers[1]</th>
+                <th colspan="2">@Model.Headers[2]</th>
             </tr>
 
             @foreach (var item in Model.TableItems)
             {
                 <tr>
-                    <td>@item.Name</td>                    
+                    <td>@item.Name</td>
                     <td class="priceItemAdmin" data-id="@item.Id1">
-                        €<span class="price">@item.Price1.ToString("0.00", CultureInfo.InvariantCulture)</span>
-                        @Html.Partial("PlusMinus", item.Liked1)
+                        €<span class="price">@item.Price1.ToString("0.00", CultureInfo.InvariantCulture)</span>                        
                     </td>
+                    <td class="rate" data-id="@item.Id1">@Html.Partial("PlusMinus", item.Liked1)</td>
                     <td class="priceItemAdmin" data-id="@item.Id2">
-                        €<span class="price">@item.Price2.ToString("0.00", CultureInfo.InvariantCulture)</span>
-                        @Html.Partial("PlusMinus", item.Liked2)
+                        €<span class="price">@item.Price2.ToString("0.00", CultureInfo.InvariantCulture)</span>                        
                     </td>
+                    <td class="rate" data-id="@item.Id2">@Html.Partial("PlusMinus", item.Liked2)</td>
                     <td class="priceItemAdmin" data-id="@item.Id3">
-                        €<span class="price">@item.Price3.ToString("0.00", CultureInfo.InvariantCulture)</span>
-                        @Html.Partial("PlusMinus", item.Liked3)
+                        €<span class="price">@item.Price3.ToString("0.00", CultureInfo.InvariantCulture)</span>                        
                     </td>
+                    <td class="rate" data-id="@item.Id3">@Html.Partial("PlusMinus", item.Liked3)</td>
                 </tr>
             }
         </table>
