@@ -4,9 +4,14 @@ using System.Collections.Generic;
 namespace Gloobster.ReqRes
 {
     public class PermissionRequest
-    {
-        public string actionType { get; set; }
+    {        
         public string id { get; set; }
+    }
+
+    public class PermissionArticleRequest
+    {
+        public string userId { get; set; }
+        public string articleId { get; set; }
     }
 
     public class UpdateLinkRequest
@@ -81,5 +86,6 @@ namespace Gloobster.ReqRes
         public string id { get; set; }
         public string language { get; set; }
         public string link { get; set; }
+        public string articleId { get; set; }
     }
 }

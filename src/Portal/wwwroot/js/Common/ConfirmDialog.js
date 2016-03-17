@@ -16,10 +16,11 @@ var Common;
             this.$html.find(".confirm").click(function (e) {
                 e.preventDefault();
                 okCallback(_this.$html);
+                _this.$html.fadeOut();
             });
             this.$html.find(".cancel").click(function (e) {
                 e.preventDefault();
-                _this.$html.remove();
+                _this.$html.fadeOut();
             });
             $("body").append(this.$html);
             this.$html.fadeIn();

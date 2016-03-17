@@ -73,6 +73,7 @@
 /// <reference path="js/views/wikihomeview.js" />
 /// <reference path="js/views/wikipageview.js" />
 /// <reference path="js/views/wikipermissionsview.js" />
+/// <reference path="js/views/wikisearchcombo.js" />
 /// <reference path="lib/dropzone/dist/min/dropzone.min.js" />
 /// <reference path="lib/handlebars/handlebars.js" />
 /// <reference path="lib/jquery.cookie/jquery.cookie.js" />

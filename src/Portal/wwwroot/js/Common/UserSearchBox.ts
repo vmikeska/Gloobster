@@ -12,11 +12,13 @@ module Common {
 
 		constructor(config: UserSearchConfig) {
 			this.config = config;
-			this.$root = $("#" + config.elementId);
-			this.$input = this.$root.find("input");
 		 
-			this.template = Views.ViewBase.currentView.registerTemplate("userItem-template");
+			this.$root = $("#" + config.elementId);
 			
+			this.$input = this.$root.find("input");
+
+			this.template = Views.ViewBase.currentView.registerTemplate("userItem-template");
+
 			this.delayedCallback = new DelayedCallback(this.$input);
 			this.delayedCallback.callback = (placeName) => this.searchUsers(placeName);
 		}
@@ -76,7 +78,7 @@ module Common {
 
 
 	export class UserSearchConfig {
-		elementId: string;
+	 elementId: string;	
 		clearAfterSearch: boolean;
 		endpoint: string;
 	}

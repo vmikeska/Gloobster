@@ -7,6 +7,7 @@
 }
 
 <script type="text/javascript" src="@Url.Content("~/js/Views/WikiPermissionsView.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Views/WikiSearchCombo.js")"></script>
 
 <div class="blue-line margin"></div>
 
@@ -31,7 +32,7 @@
             }
 
             <div id="superAdminCombo" class="dropdown">
-                <input class="inputed" placeholder="+ Add Tag">
+                <input class="inputed" placeholder="+ Add User">
                 <ul></ul>
             </div>
 
@@ -39,32 +40,54 @@
     </div>
 
 
-    @*<h2>Admins</h2>
+    <h2>Admins</h2>
+    <div id="newUserCombo" class="dropdown">
+        <input class="inputed" placeholder="+ Add User">
+        <ul></ul>
+    </div>
+
     @foreach (var user in Model.Users)
     {
-        <div class="blue-form margin form">
+        <div data-userId="@user.UserId" class="blue-form margin form userCustom">
             <h4>@user.Name</h4>
             <div class="tags">
 
                 @foreach (PermItemVM item in user.Items)
                 {
-                    <span class="tag">@item.Name<a class="delete" href="#"></a></span>
+                    <span id="@item.WikiId" class="tag">@item.Name<a class="delete" href="#"></a></span>
                 }
 
-                <div id="superAdminCombo" class="dropdown">
-                    <input class="inputed" placeholder="+ Add Tag">
+                <div class="dropdown articleCombo">
+                    <input class="inputed" placeholder="+ Add Article">
                     <ul></ul>
                 </div>
+            </div>
 
+            <button class="userDelete">Delete</button>
+        </div>
+    }
+
+</section>
+
+
+<script id="userPermission-template" type="text/x-handlebars-template">
+    <div class="blue-form margin form">
+        <h4>{{name}}</h4>
+        <div class="tags">
+
+            
+            <div class="dropdown articleCombo">
+                <input class="inputed" placeholder="+ Add Tag">
+                <ul></ul>
             </div>
 
         </div>
-    }*@
-   
-</section>
+        <button class="userDelete">Delete</button>
+    </div>
+</script>
 
 <script>
-	function onBodyLoad() {
-	    currentView = new Views.WikiPermissionsView();
-	}
+    function onBodyLoad() {
+        currentView = new Views.WikiPermissionsView();
+    }
 </script>

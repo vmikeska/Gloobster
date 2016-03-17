@@ -102,7 +102,7 @@ namespace Gloobster.Portal
 	                IsSuperAdmin = false,
 	                id = ObjectId.GenerateNewId(),
 	                User_id = u.id,
-	                Articles = null
+	                Articles = new List<ObjectId>()
 	            });
 	            await db.SaveManyAsync(masterAdmins);                
 	        }

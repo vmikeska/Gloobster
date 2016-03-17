@@ -19,10 +19,11 @@
 			this.$html.find(".confirm").click((e) => {
 				e.preventDefault();
 				okCallback(this.$html);
+				this.$html.fadeOut();
 			});
 			this.$html.find(".cancel").click((e) => {
 				e.preventDefault();
-				this.$html.remove();
+				this.$html.fadeOut();
 			});
 
 			$("body").append(this.$html);

@@ -1,20 +1,5 @@
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
 var Views;
 (function (Views) {
-    var WikiHomeView = (function (_super) {
-        __extends(WikiHomeView, _super);
-        function WikiHomeView() {
-            _super.call(this);
-            this.combo = new WikiSearchCombo();
-            this.combo.initId("SearchCombo");
-        }
-        return WikiHomeView;
-    })(Views.ViewBase);
-    Views.WikiHomeView = WikiHomeView;
     var WikiSearchCombo = (function () {
         function WikiSearchCombo() {
         }
@@ -44,13 +29,20 @@ var Views;
             places.forEach(function (item) {
                 htmlContent += _this.getItemHtml(item);
             });
-            this.$combo.find("ul").html(htmlContent);
+            var $ul = this.$combo.find("ul");
+            $ul.html(htmlContent);
+            if (this.selectionCallback) {
+                $ul.find("a").click(function (e) {
+                    e.preventDefault();
+                    _this.selectionCallback($(e.target));
+                });
+            }
         };
         WikiSearchCombo.prototype.getItemHtml = function (item) {
-            return "<li><a href=\"/wiki/" + item.language + "/" + item.link + "\">" + item.title + "</a></li>";
+            return "<li><a data-articleId=\"" + item.articleId + "\" href=\"/wiki/" + item.language + "/" + item.link + "\">" + item.title + "</a></li>";
         };
         return WikiSearchCombo;
     })();
     Views.WikiSearchCombo = WikiSearchCombo;
 })(Views || (Views = {}));
-//# sourceMappingURL=WikiHomeView.js.map
+//# sourceMappingURL=WikiSearchCombo.js.map

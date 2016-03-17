@@ -40,7 +40,8 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 id = r.id.ToString(),
                 link = r.LinkName,
                 language = r.Language,
-                title = r.Title
+                title = r.Title,
+                articleId = r.Article_id.ToString()
             });
 
             return new ObjectResult(results);
