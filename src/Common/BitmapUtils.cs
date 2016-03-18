@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Linq;
 using System.Drawing;
@@ -7,6 +8,14 @@ namespace Gloobster.Common
 {
     public class BitmapUtils
     {
+        public static string ConvertToBase64(Stream stream)
+        {
+            var inArray = new byte[((int)stream.Length)];
+            stream.Read(inArray, 0, (int)stream.Length);
+
+            var str = Convert.ToBase64String(inArray);
+            return str;
+        }
 
         public static Bitmap ResizeImage(Bitmap src, int width, int height)
         {

@@ -1,5 +1,7 @@
+using System;
 using System.Drawing;
 using System.IO;
+using System.Text;
 using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
@@ -8,6 +10,7 @@ using Gloobster.DomainModels.Services.Trip;
 using Gloobster.DomainObjects;
 using Gloobster.Entities.Trip;
 using Gloobster.Entities.Wiki;
+using Gloobster.Enums;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.Files;
 using Microsoft.AspNet.Mvc;
@@ -20,11 +23,13 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
     {
         public FilesDomain FileDomain { get; set; }
         public IWikiPermissions WikiPerms { get; set; }
+        public IWikiChangeDomain ChangeEventSystem { get; set; }
 
-        public WikiTitlePhotoController(IWikiPermissions wikiPerms, IFilesDomain filesDomain, ILogger log, IDbOperations db) : base(log, db)
+        public WikiTitlePhotoController(IWikiChangeDomain changeEventSystem, IWikiPermissions wikiPerms, IFilesDomain filesDomain, ILogger log, IDbOperations db) : base(log, db)
         {
             FileDomain = (FilesDomain) filesDomain;
             WikiPerms = wikiPerms;
+            ChangeEventSystem = changeEventSystem;
         }
         
         [HttpPost]
@@ -45,7 +50,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             {
                 var argsObj = (OnFileSavedArgs) args;
 
-                UpdatePicSaved(articleIdObj, true);
+                UpdatePicSaved(articleIdObj, true);  
             };
 
             FileDomain.OnBeforeCreate += (sender, args) =>
@@ -60,6 +65,19 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 {
                     var path = FileDomain.Storage.Combine(articleDir, WikiFileConstants.TitlePhotoNameExt);
                     FileDomain.Storage.SaveStream(path, stream);
+
+                    stream.Position = 0;
+                    
+                    var str64 = BitmapUtils.ConvertToBase64(stream);                    
+                    var evnt = new WikiEventDO
+                    {
+                        ArticleId = articleId,
+                        Lang = null,
+                        Value = "data:image/jpeg;base64," + str64,
+                        EventType = EventType.Update,
+                        AddId = "TitlePic"
+                    };
+                    ChangeEventSystem.ReceiveEvent(evnt);
                 }
                 
                 FileDomain.DoNotSave = true;

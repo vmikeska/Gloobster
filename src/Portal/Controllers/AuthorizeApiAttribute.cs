@@ -33,7 +33,7 @@ namespace Gloobster.Portal.Controllers
                 //context.HttpContext.Response.StatusCode = 401;
 			    if (!ExplicitAuth)
 			    {
-			        context.Result = new HttpStatusCodeResult(401);
+			        context.Result = new HttpStatusCodeResult(401);                    
 			    }
 			    return;
 			}

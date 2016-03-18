@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
@@ -10,6 +11,8 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using Serilog;
 using System.Linq;
+using Gloobster.DomainObjects;
+using Gloobster.Enums;
 
 namespace Gloobster.Portal.Controllers.Api.Wiki
 {
@@ -17,11 +20,13 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 	{
         public IWikiUpdateDomain WikiUpdate { get; set; }
         public IWikiPermissions WikiPerms { get; set; }
+        public IWikiChangeDomain ChangeEventSystem { get; set; }
 
-        public WikiLinkController(IWikiPermissions wikiPerms, IWikiUpdateDomain wikiUpdate, ILogger log, IDbOperations db) : base(log, db)
+        public WikiLinkController(IWikiChangeDomain changeEventSystem, IWikiPermissions wikiPerms, IWikiUpdateDomain wikiUpdate, ILogger log, IDbOperations db) : base(log, db)
         {
             WikiUpdate = wikiUpdate;
             WikiPerms = wikiPerms;
+            ChangeEventSystem = changeEventSystem;
         }
 
 	    [HttpDelete]
@@ -41,10 +46,14 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
             var f1 = DB.F<WikiCityEntity>().Eq(p => p.id, articleIdObj) & DB.F<WikiCityEntity>().Eq("PlacesLinks._id", linkIdObj);
             var u1 = DB.U<WikiCityEntity>().Pull(p => p.PlacesLinks, linkEntity);
-            //var u1 = DB.U<WikiCityEntity>().PopLast(p => p.PlacesLinks);
-            var r1 = await DB.UpdateAsync(f1, u1);
             
+            var r1 = await DB.UpdateAsync(f1, u1);            
             bool deleted = r1.ModifiedCount == 1;
+	        if (deleted)
+	        {
+	            SaveVersion(linkEntity, req.articleId, EventType.Delete);
+	        }
+
             return new ObjectResult(deleted);
         }
 
@@ -88,9 +97,46 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             var f2 = DB.F<WikiCityEntity>().Eq(p => p.id, articleIdObj);
             var u2 = DB.U<WikiCityEntity>().Push(p => p.PlacesLinks, linkEntity);
             var r2 = await DB.UpdateAsync(f2, u2);
-            
+            var saved = r2.ModifiedCount == 1;
+            if (saved)
+            {
+                SaveVersion(linkEntity, req.articleId, EventType.Create);
+            }
+
             var linkRes = GetResponse(linkEntity);
             return new ObjectResult(linkRes);
+        }
+
+	    private void SaveVersion(LinkObjectSE linkEntity, string articleId, EventType eventType)
+	    {
+            var evnt = new WikiEventDO
+            {
+                ArticleId = articleId,
+                Lang = null,
+                Value = "",
+                EventType = eventType,
+                AddId = linkEntity.id.ToString(),
+                Values = new List<ValueDO>
+                    {
+                        new ValueDO
+                        {
+                            Key = "Name",
+                            Value = linkEntity.Name
+                        },
+                        new ValueDO
+                        {
+                            Key = "Category",
+                            Value = linkEntity.Category
+                        },
+                    }
+            };
+            evnt.Values.AddRange(linkEntity.Links.Select(i => new ValueDO
+            {
+                Key = "Link",
+                Value = $"{i.id}|{i.SourceId}|{i.Type}"
+            }));
+
+            ChangeEventSystem.ReceiveEvent(evnt);
         }
 
 	    private dynamic GetResponse(LinkObjectSE l)
@@ -127,7 +173,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
             var f1 = DB.F<WikiCityEntity>().Eq(p => p.id, articleIdObj) & DB.F<WikiCityEntity>().Eq("PlacesLinks._id", linkIdObj);
             var u1 = DB.U<WikiCityEntity>().Pull(p => p.PlacesLinks, linkEntity);
-            //var u1 =DB.U<WikiCityEntity>().PopFirst(p => p.PlacesLinks);
+            
             var r1 = await DB.UpdateAsync(f1, u1);
 
             linkEntity.Name = req.name;
@@ -148,6 +194,11 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             var f2 = DB.F<WikiCityEntity>().Eq(p => p.id, articleIdObj);
             var u2 = DB.U<WikiCityEntity>().Push(p => p.PlacesLinks, linkEntity);
             var r2 = await DB.UpdateAsync(f2, u2);
+            bool updated = (r2.ModifiedCount == 1);
+            if (updated)            
+            {
+                SaveVersion(linkEntity, req.articleId, EventType.Update);
+            }
 
             var linkRes = GetResponse(linkEntity);
             return new ObjectResult(linkRes);

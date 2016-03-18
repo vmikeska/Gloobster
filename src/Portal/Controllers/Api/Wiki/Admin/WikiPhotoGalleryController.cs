@@ -1,6 +1,8 @@
 using System;
 using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
@@ -13,6 +15,8 @@ using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using Serilog;
 using Gloobster.Enums;
+using Gloobster.ReqRes;
+using MongoDB.Driver;
 
 namespace Gloobster.Portal.Controllers.Api.Wiki
 {
@@ -21,16 +25,18 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
     {
         public FilesDomain FileDomain { get; set; }
         public IWikiPermissions WikiPerms { get; set; }
+        public IWikiChangeDomain ChangeEventSystem { get; set; }
 
-        public WikiPhotoGalleryController(IWikiPermissions wikiPerms, IFilesDomain filesDomain, ILogger log, IDbOperations db) : base(log, db)
+        public WikiPhotoGalleryController(IWikiChangeDomain changeEventSystem, IWikiPermissions wikiPerms, IFilesDomain filesDomain, ILogger log, IDbOperations db) : base(log, db)
         {
             FileDomain = (FilesDomain) filesDomain;
             WikiPerms = wikiPerms;
+            ChangeEventSystem = changeEventSystem;
         }
         
         [HttpPut]
         [AuthorizeApi]
-        public IActionResult Put([FromBody] UpdateConfirmedRequest req)
+        public async Task<IActionResult> Put([FromBody] UpdateConfirmedRequest req)
         {
             if (!WikiPerms.HasArticleAdminPermissions(UserId, req.articleId))
             {
@@ -43,8 +49,21 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             var filter = DB.F<WikiCityEntity>().Eq(p => p.id, articleIdObj) & DB.F<WikiCityEntity>().Eq("Photos.id", photoIdObj);
             var update = DB.U<WikiCityEntity>().Set("Photos.$.Confirmed", true);
 
-            DB.UpdateAsync(filter, update);
-
+            var res = await DB.UpdateAsync(filter, update);
+            bool confirmed = res.ModifiedCount == 1;
+            if (confirmed)
+            {
+                var evnt = new WikiEventDO
+                {
+                    ArticleId = req.articleId,
+                    Lang = null,
+                    Value = "ConfirmedPhoto",
+                    EventType = EventType.Update,
+                    AddId = req.photoId
+                };
+                ChangeEventSystem.ReceiveEvent(evnt);
+            }
+            
             return new ObjectResult(null);
         }
 
@@ -59,13 +78,31 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
             var articleDir = FileDomain.Storage.Combine(WikiFileConstants.FileLocation, articleId);
             var galleryDir = FileDomain.Storage.Combine(articleDir, WikiFileConstants.GalleryDir);
-            var name = $"{photoId}.jpg";
+
+            var name = $"{photoId}.jpg";            
             var pathToDelete = FileDomain.Storage.Combine(galleryDir, name);
             bool fileExists = FileDomain.Storage.FileExists(pathToDelete);
             if (fileExists)
             {
+                using (var file = FileDomain.GetFile(galleryDir, name))
+                {
+                    SaveVersion(file, articleId, EventType.Delete);
+                }
+                
                 FileDomain.Storage.DeleteFile(pathToDelete);
             }
+
+            var nameThumb = $"{photoId}_thumb.jpg";
+            var pathToThumb = FileDomain.Storage.Combine(galleryDir, nameThumb);
+            bool thumbExists = FileDomain.Storage.FileExists(pathToThumb);
+            if (thumbExists)
+            {
+                FileDomain.Storage.DeleteFile(pathToThumb);
+            }
+
+            var articleIdObj = new ObjectId(articleId);
+            var photoIdObj = new ObjectId(photoId);
+            RemovePhotoFromDb(articleIdObj, photoIdObj);
 
             return new ObjectResult(null);
         }
@@ -110,6 +147,8 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                     var name = $"{fileId.ToString()}.jpg";
                     var path = FileDomain.Storage.Combine(galleryDir, name);
                     FileDomain.Storage.SaveStream(path, stream);
+
+                    SaveVersion(stream, articleId, EventType.Create);
                 }
 
                 AddPhotoToDb(articleIdObj, fileId.Value, isUserAdmin);
@@ -122,15 +161,13 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 Data = request.data,
                 UserId = UserId,
                 FileName = request.fileName,
-                FilePart = request.filePartType,
-                //CustomFileName = "",
+                FilePart = request.filePartType,            
                 FileLocation = articleDir,
                 FileType = request.type
             };
 
             FileDomain.WriteFilePart(filePartDo);
-
-            //return new ObjectResult(null);
+            
             var res = string.Empty;
             if (fileId.HasValue)
             {
@@ -138,6 +175,21 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             }
 
             return new ObjectResult(res);
+        }
+
+        private void SaveVersion(Stream stream, string articleId, EventType eventType)
+        {
+            stream.Position = 0;
+            var str64 = BitmapUtils.ConvertToBase64(stream);
+            var evnt = new WikiEventDO
+            {
+                ArticleId = articleId,
+                Lang = null,
+                Value = "data:image/jpeg;base64," + str64,
+                EventType = eventType,
+                AddId = "Photo"
+            };
+            ChangeEventSystem.ReceiveEvent(evnt);
         }
 
         private Stream GeneratePic(Bitmap origBitmap, float rateWidth, float rateHeight, int newWidth, int newHeight)
@@ -171,12 +223,17 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
             DB.UpdateAsync(filter, update);
         }
-        
-    }
 
-    public class UpdateConfirmedRequest
-    {
-        public string articleId { get; set; }
-        public string photoId { get; set; }
+        private void RemovePhotoFromDb(ObjectId articleIdObj, ObjectId photoId)
+        {
+            var article = DB.C<WikiCityEntity>().FirstOrDefault(c => c.id == articleIdObj);
+            var photo = article.Photos.FirstOrDefault(p => p.id == photoId);
+
+            var filter = DB.F<WikiCityEntity>().Eq(p => p.id, articleIdObj);
+            var update = DB.U<WikiCityEntity>().Pull(p => p.Photos, photo);
+
+            DB.UpdateAsync(filter, update);
+        }
+
     }
 }

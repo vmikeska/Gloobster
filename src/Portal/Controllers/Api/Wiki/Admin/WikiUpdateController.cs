@@ -8,6 +8,7 @@ using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.Wiki
 {
+
 	public class WikiUpdateController: BaseApiController
 	{
         public IWikiUpdateDomain WikiUpdate { get; set; }
@@ -23,6 +24,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 		[AuthorizeApi]
 		public async Task<IActionResult> Put([FromBody] WikiUpdateRequest req)
 		{
+            //todo: move to attribute
             if (!WikiPerms.HasArticleAdminPermissions(UserId, req.articleId))
             {
                 return HttpUnauthorized();

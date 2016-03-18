@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
+using Gloobster.DomainObjects;
 using Gloobster.Entities;
 using Gloobster.Entities.Wiki;
+using Gloobster.Enums;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -14,11 +15,12 @@ namespace Gloobster.DomainModels.Wiki
     public class WikiUpdateDomain : IWikiUpdateDomain
     {
         public IDbOperations DB { get; set; }
+        public IWikiChangeDomain ChangeEventSystem { get; set; }
 
         public async Task<bool> UpdateBaseSection(string articleId, string sectionId, string language, string newText)
         {
-            ObjectId articleIdObj = new ObjectId(articleId);
-            ObjectId sectionIdObj = new ObjectId(sectionId);
+            var articleIdObj = new ObjectId(articleId);
+            var sectionIdObj = new ObjectId(sectionId);
 
             var filter = DB.F<WikiTextsEntity>().Eq(p => p.Article_id, articleIdObj) &
                          DB.F<WikiTextsEntity>().Eq(p => p.Language, language) &
@@ -26,6 +28,20 @@ namespace Gloobster.DomainModels.Wiki
 
             var update = DB.U<WikiTextsEntity>().Set("Texts.$.Text", newText);
             var res = await DB.UpdateAsync(filter, update);
+
+            bool updated = res.ModifiedCount == 1;
+            if (updated)
+            {
+                var evnt = new WikiEventDO
+                {
+                    ArticleId = articleId,
+                    Lang = language,
+                    Value = newText,
+                    EventType = EventType.Update,
+                    AddId = sectionId                    
+                };
+                ChangeEventSystem.ReceiveEvent(evnt);
+            }
 
             return res.ModifiedCount == 1;
         }
@@ -114,16 +130,7 @@ namespace Gloobster.DomainModels.Wiki
             string objName = like ? "Texts.$.Likes" : "Texts.$.Dislikes";
             return objName;
         }
-
-        //private FilterDefinition<WikiCityEntity> PriceRatingFilter(ObjectId articleIdObj, ObjectId priceIdObj)
-        //{
-        //    FilterDefinition<WikiCityEntity> filter = 
-        //        DB.F<WikiCityEntity>().Eq(p => p.id, articleIdObj) &                         
-        //        DB.F<WikiCityEntity>().Eq("Prices.id", priceIdObj);
-
-        //    return filter;
-        //}
-
+        
         private FilterDefinition<WikiTextsEntity> RatingFilter(ObjectId articleIdObj, ObjectId sectionIdObj, string language)
         {
             FilterDefinition<WikiTextsEntity> filter = DB.F<WikiTextsEntity>().Eq(p => p.Article_id, articleIdObj) &
