@@ -6,10 +6,139 @@ using System.Linq;
 
 namespace Gloobster.Portal.ViewModels
 {
+    public class PriceItemVM
+    {
+        public string Type { get; set; }
+        public string Category { get; set; }
+        public string SubCategory { get; set; }        
+        public decimal Price { get; set; }
+    }
+
     public class WikiCountryViewModel : WikiModelBase
     {        
         public WikiCountryEntity Article { get; set; }
+
+        public override List<ArticleDataSE> Data => Article.Data;
         
+        private List<PriceItemVM> _aggPrices;
+        public List<PriceItemVM> AggPrices => _aggPrices ?? (_aggPrices = GetAggregatedPrices());
+
+        public BlockVM Base()
+        {
+            var block = Section("Base", "standard,base", 3);
+            block.Infos = Info;
+
+            return block;
+        }
+
+        public BlockVM Restaurant()
+        {
+            var block = Section("Restaurant", "standard,price1", 3);
+            block.TableItems = GetPricesByCategory("Restaurant").Select(ConvertTableItem).ToList();
+            block.ShowButtons = false;
+
+            return block;
+        }
+
+        public BlockVM Accommodation()
+        {
+            var block = Section("Accommodation", "standard,price1", 3);
+            block.TableItems = GetPricesByCategory("Accommodation").Select(ConvertTableItem).ToList();
+            block.ShowButtons = false;
+
+            return block;
+        }
+
+        public BlockVM Transport()
+        {
+            var block = Section("Transport", "standard,price1", 3);
+            block.TableItems = GetPricesByCategory("Transport").Select(ConvertTableItem).ToList();
+            block.ShowButtons = false;
+
+            return block;
+        }
+
+        public BlockVM NightLifePrices()
+        {
+            var block = Section("NightlifePrices", "strandard,price3", 4);
+            var prices = GetPricesByCategory("Nightlife").ToList();
+
+            var groups = prices.GroupBy(p => p.Type).ToList();
+
+            block.TableItems = groups.Select(i =>
+            {
+                List<PriceItemVM> items = i.ToList();
+                var pub = GetPriceBySubCat(items, "Pub");
+                var bar = GetPriceBySubCat(items, "Bar");
+                var club = GetPriceBySubCat(items, "Club");
+
+                return new TableItemVM
+                {
+                    Name = i.Key,
+
+                    Price1 = pub.Price,
+                    Price2 = bar.Price,                    
+                    Price3 = club.Price,                    
+                };
+            }).ToList();
+
+            block.Headers = new List<string>
+            {
+                "Pub",
+                "Bar",
+                "Club"
+            };
+
+            return block;
+        }
+
+        public TableItemVM ConvertTableItem(PriceItemVM priceItem)
+        {
+            var res = new TableItemVM
+            {                
+                Name = priceItem.Type,
+                Price1 = priceItem.Price
+            };
+            return res;
+        }
+
+        private List<PriceItemVM> GetAggregatedPrices()
+        {
+            var allCities = DB.C<WikiCityEntity>().Where(c => c.CountryCode == Article.CountryCode);
+            var allPrices = allCities.SelectMany(p => p.Prices).ToList();
+
+            var groupedItems = allPrices
+                .GroupBy(p => new {p.Type, p.Category, p.SubCategory})                
+                .ToList();
+
+            var aggPrices = groupedItems.Select(g =>
+            {
+                var items = g.ToList();
+                var fi = items.First();
+
+                return new PriceItemVM
+                {
+                    Category = fi.Category,
+                    Type = fi.Type,
+                    SubCategory = fi.SubCategory,
+                    Price = items.Average(i => i.Price.CurrentPrice)
+                };
+            })
+            .ToList();
+            
+            return aggPrices;
+        }
+
+        public List<PriceItemVM> GetPricesByCategory(string category)
+        {
+            return AggPrices.Where(p => p.Category == category).ToList();
+        }
+
+        private PriceItemVM GetPriceBySubCat(List<PriceItemVM> prices, string subCat)
+        {
+            return prices.FirstOrDefault(c => c.SubCategory == subCat);
+        }
+
         public override List<SectionSE> Sections => Article.Sections;
         public override List<ObjectId> Dos => Article.Dos;
         public override List<ObjectId> Donts => Article.Donts;

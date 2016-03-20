@@ -15,7 +15,10 @@
             <td class="priceItemAdmin" data-id="@item.Id1">
                 €<span class="price">@item.Price1.ToString("0.00", CultureInfo.InvariantCulture)</span>                
             </td>
-            <td class="rate" data-id="@item.Id1">@Html.Partial("PlusMinus", item.Liked1)</td>
+             @if (Model.ShowButtons)
+             {
+                 <td class="rate" data-id="@item.Id1">@Html.Partial("PlusMinus", item.Liked1)</td>
+             }
         </tr>
     }
 </table>

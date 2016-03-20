@@ -20,5 +20,7 @@ namespace Gloobster.Entities.Wiki
 
         public List<ObjectId> Dos { get; set; }
         public List<ObjectId> Donts { get; set; }
+
+        public List<ArticleDataSE> Data { get; set; }
     }
 }

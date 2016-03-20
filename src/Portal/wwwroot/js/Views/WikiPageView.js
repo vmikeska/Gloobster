@@ -457,28 +457,50 @@ var Views;
                 id: sectionId
             };
             var $html = $(this.blockTemplate(scope));
-            $html.find(".cancel").click(function (e) {
-                var $btn = $(e.target);
-                var id = $btn.data("id");
+            $html.find(".cancel").click(function (e) { return _this.cancel(e); });
+            $html.find(".save").click(function (e) { return _this.save(e); });
+            $html.find(".back").click(function (e) { return _this.moveVersion(e, +1); });
+            $html.find(".forward").click(function (e) { return _this.moveVersion(e, -1); });
+            $p.prepend($html);
+        };
+        BlockAdmin.prototype.moveVersion = function (e, direction) {
+            var $btn = $(e.target);
+            var id = $btn.data("id");
+            var $cont = $("#edit_" + id);
+            var $pos = $cont.find(".position");
+            var position = parseInt($pos.val());
+            position += direction;
+            $pos.val(position);
+            this.getVersion(id, position, function (version) {
+                $cont.find(".editTxt").val(version.value);
+            });
+        };
+        BlockAdmin.prototype.getVersion = function (id, position, callback) {
+            var data = [["articleId", this.articleId], ["lang", this.langVersion], ["addId", id], ["position", position]];
+            Views.ViewBase.currentView.apiGet("WikiVersion", data, function (r) {
+                callback(r);
+            });
+        };
+        BlockAdmin.prototype.cancel = function (e) {
+            var $btn = $(e.target);
+            var id = $btn.data("id");
+            $("#edit_" + id).remove();
+            $("#editSection_" + id).show();
+        };
+        BlockAdmin.prototype.save = function (e) {
+            var $btn = $(e.target);
+            var id = $btn.data("id");
+            var data = {
+                articleId: this.articleId,
+                sectionId: id,
+                language: this.langVersion,
+                newText: $("#edit_" + id).find(".editTxt").val()
+            };
+            Views.ViewBase.currentView.apiPut("WikiUpdate", data, function (r) {
                 $("#edit_" + id).remove();
+                $("#text_" + id).text(data.newText);
                 $("#editSection_" + id).show();
             });
-            $html.find(".save").click(function (e) {
-                var $btn = $(e.target);
-                var id = $btn.data("id");
-                var data = {
-                    articleId: _this.articleId,
-                    sectionId: id,
-                    language: _this.langVersion,
-                    newText: $("#edit_" + id).find(".editTxt").val()
-                };
-                Views.ViewBase.currentView.apiPut("WikiUpdate", data, function (r) {
-                    $("#edit_" + id).remove();
-                    $("#text_" + id).text(data.newText);
-                    $("#editSection_" + id).show();
-                });
-            });
-            $p.prepend($html);
         };
         BlockAdmin.prototype.createAdminLink = function ($block, id, adminType) {
             var _this = this;

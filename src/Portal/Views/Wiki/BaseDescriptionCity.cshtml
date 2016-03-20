@@ -1,0 +1,37 @@
+﻿@using System.Threading.Tasks
+@using Gloobster.Portal.ViewModels
+@model BlockVM
+
+<style>
+    .box.blue table {
+        border: none;
+        color: black;
+    }
+
+    .box.blue td {
+        background-color: transparent;
+        padding-bottom: 0;        
+    }
+</style>
+
+<div class="table width100 adminBlock" data-at="standard" data-id="@Model.SectionId">
+    <div class="cell">
+        @*width240*@
+        <div class="box blue mright20 adminInfo" style="width: 300px">
+            <h3>About</h3>
+            <p>
+
+                <table>
+                    @Html.Partial("TableItem", Model.InfoByName("PopulationCity"))
+                </table>
+
+            </p>
+        </div>
+    </div>
+    <div class="cell">
+        <p id="text_@Model.SectionId" class="h3">@Model.Text</p>
+    </div>
+    <div class="cell">
+        @Html.Partial("Rating")
+    </div>
+</div>

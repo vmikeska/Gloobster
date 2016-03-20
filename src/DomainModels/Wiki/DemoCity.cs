@@ -15,7 +15,7 @@ namespace Gloobster.DomainModels.Wiki
         {
             Create("en");
         }
-
+        
         public void Create(string lang)
         {
             var do1Id = ObjectId.GenerateNewId();
@@ -39,21 +39,28 @@ namespace Gloobster.DomainModels.Wiki
                 CountryCode = "CZ",
                 Dos = new List<ObjectId> { do1Id, do2Id },
                 Donts = new List<ObjectId> { dont1Id, dont2Id },
-                Data = new CountryDataSE
-                {                    
-                    Languages = new List<string> { "Czech" },
-                    Population = 10004000,
-                    CallingCode = "+420",
-                    CapitalName = "Prague",
-                    CapitalId = 465456465,
-                    CurrencyCode = "CZK",
-                    CurrencyName = "Ceska koruna",
-                    DrivingRight = true,
-                    HDI = HDI.VeryHigh,
-                    MemberOf = new List<string> { "EU", "UNESCO" },
-                    Religion = ReligionType.RomanCatolic,
-                    SocketType = SocketType.V220HZ50
+
+                Data = new List<ArticleDataSE>
+                {
+                    
                 },
+
+
+                //Data = new CountryDataSE
+                //{                    
+                //    Languages = new List<string> { "Czech" },
+                //    Population = 10004000,
+                //    CallingCode = "+420",
+                //    CapitalName = "Prague",
+                //    CapitalId = 465456465,
+                //    CurrencyCode = "CZK",
+                //    CurrencyName = "Ceska koruna",
+                //    DrivingRight = true,
+                //    HDI = HDI.VeryHigh,
+                //    MemberOf = new List<string> { "EU", "UNESCO" },
+                //    Religion = ReligionType.RomanCatolic,
+                //    SocketType = SocketType.V220HZ50
+                //},
                 Links = new List<LinkSE>
                 {
                     new LinkSE
@@ -495,11 +502,6 @@ namespace Gloobster.DomainModels.Wiki
 
                 },
 
-                Data = new CityDataSE
-                {
-                    PopulationCity = 1244858,
-                    PopulationMetro = 2484897,
-                },
 
                 PlacesLinks = new List<LinkObjectSE>
                 {

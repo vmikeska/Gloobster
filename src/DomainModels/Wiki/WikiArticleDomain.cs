@@ -43,9 +43,22 @@ namespace Gloobster.DomainModels.Wiki
                 SID = city.GID.ToString()
             });
 
-            article.Data = new CityDataSE
-            {                
-                PopulationCity = city.Population
+            article.Data = new List<ArticleDataSE>
+            {
+                new ArticleDataSE
+                {
+                    id = ObjectId.GenerateNewId(),
+                    Name = "PopulationCity",
+                    Value = city.Population.ToString(),
+                    DataType = ArticleDataType.Int
+                },
+                new ArticleDataSE
+                {
+                    id = ObjectId.GenerateNewId(),
+                    Name = "PopulationMetro",
+                    Value = null,
+                    DataType = ArticleDataType.Int
+                },                
             };
 
             builder.AddPrice("Taxi", "Transport");
@@ -85,8 +98,7 @@ namespace Gloobster.DomainModels.Wiki
             
             return article.id.ToString();
         }
-
-
+        
         public string CreateCountry(Continent continent, string countryCode, string name, string lang, 
             int capitalGID, string capitalName)
         {
@@ -107,9 +119,11 @@ namespace Gloobster.DomainModels.Wiki
             builder.AddSection("Marihuana", "No content");
             builder.AddSection("Gay", "No content");
             builder.AddSection("Transport", "No content");
-            builder.AddSection("Restaurants", "No content");
+            builder.AddSection("Restaurant", "No content");
             builder.AddSection("Tipping", "No content");
             builder.AddSection("Accommodation", "No content");
+            builder.AddSection("NightLife", "No content");
+            builder.AddSection("NightlifePrices", "No content");
 
             article.Links.Add(new LinkSE
             {
@@ -118,28 +132,103 @@ namespace Gloobster.DomainModels.Wiki
                 Link = string.Empty,
                 SID = PH.GID(countryData)
             });
-            
-            article.Data = new CountryDataSE
-            {             
-                Languages = PH.Languages(countryData),
-                Population = PH.Population(countryData),
-                Area = PH.Area(countryData),
-                CallingCode = "---",
-                CapitalId = capitalGID,
-                CapitalName = capitalName,
-                CurrencyCode = PH.Currency(countryData),
-                CurrencyName = PH.Currency(countryData),
-                //todo: http://www.worldstandards.eu/cars/list-of-left-driving-countries/
-                DrivingRight = true,
-                //todo: https://en.wikipedia.org/wiki/List_of_countries_by_Human_Development_Index
-                HDI = HDI.NA,
-                MemberOf = new List<string>(),
-                //todo:
-                Religion = ReligionType.NA,
-                //todo: 
-                SocketType = SocketType.NA
-            };
 
+            article.Data = new List<ArticleDataSE>
+            {
+                new ArticleDataSE
+                {
+                    id = ObjectId.GenerateNewId(),
+                    Name = "Languages",
+                    Values = PH.Languages(countryData),
+                    DataType = ArticleDataType.String,
+                    ListCategory = "Languages"
+                },
+                new ArticleDataSE
+                {
+                    id = ObjectId.GenerateNewId(),
+                    Name = "Population",
+                    Value = PH.Population(countryData).ToString(),
+                    DataType = ArticleDataType.Int                    
+                },
+                new ArticleDataSE
+                {
+                    id = ObjectId.GenerateNewId(),
+                    Name = "Area",
+                    Value = PH.Area(countryData).ToString(),
+                    DataType = ArticleDataType.Int
+                },
+                new ArticleDataSE
+                {
+                    id = ObjectId.GenerateNewId(),
+                    Name = "CapitalId",
+                    Value = capitalGID.ToString(),
+                    DataType = ArticleDataType.Int
+                },
+                new ArticleDataSE
+                {
+                    id = ObjectId.GenerateNewId(),
+                    Name = "CapitalName",
+                    Value = capitalName,
+                    DataType = ArticleDataType.String
+                },
+                new ArticleDataSE
+                {
+                    id = ObjectId.GenerateNewId(),
+                    Name = "CurrencyCode",
+                    Value = PH.Currency(countryData),
+                    DataType = ArticleDataType.String,                    
+                },
+                //todo: http://www.worldstandards.eu/cars/list-of-left-driving-countries/
+                new ArticleDataSE
+                {
+                    id = ObjectId.GenerateNewId(),
+                    Name = "DrivingRight",
+                    Value = true.ToString(),
+                    DataType = ArticleDataType.Bool,
+                },
+                //todo: https://en.wikipedia.org/wiki/List_of_countries_by_Human_Development_Index
+                new ArticleDataSE
+                {
+                    id = ObjectId.GenerateNewId(),
+                    Name = "HDI",
+                    Value = "2",
+                    DataType = ArticleDataType.Int,
+                    ListCategory = "HDI"
+                },
+                new ArticleDataSE
+                {
+                    id = ObjectId.GenerateNewId(),
+                    Name = "MemberOf",
+                    Values = new List<string>(),
+                    DataType = ArticleDataType.Int,
+                    ListCategory = "Organizations"
+                },
+                new ArticleDataSE
+                {
+                    id = ObjectId.GenerateNewId(),
+                    Name = "Religion",
+                    Values = new List<string>(),
+                    DataType = ArticleDataType.Int,
+                    ListCategory = "Religions"
+                },
+                //todo: http://www.worldstandards.eu/electricity/plug-voltage-by-country/
+                new ArticleDataSE
+                {
+                    id = ObjectId.GenerateNewId(),
+                    Name = "Socket",
+                    Values = new List<string>(),
+                    DataType = ArticleDataType.Int,
+                    ListCategory = "Sockets"
+                },
+                new ArticleDataSE
+                {
+                    id = ObjectId.GenerateNewId(),
+                    Name = "CallingCode",
+                    Value = "",
+                    DataType = ArticleDataType.String                    
+                }
+            };
+            
             builder.Save<WikiCountryEntity>(DB);
             
             return article.id.ToString();

@@ -51,6 +51,14 @@ namespace Gloobster.ReqRes
         public string type { get; set; }
     }
 
+    public class VersionRequest
+    {
+        public string articleId { get; set; }
+        public string lang { get; set; }
+        public string addId { get; set; }
+        public int position { get; set; }
+    }
+
 
     public class SocLinkRequest
     {

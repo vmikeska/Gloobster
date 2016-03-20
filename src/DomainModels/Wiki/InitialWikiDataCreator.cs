@@ -35,7 +35,138 @@ namespace Gloobster.DomainModels.Wiki
             if (entitiesCount == 0)
             {
                 CreateData();
+                CreateValueLists();
             }
+        }
+
+        public void CreateValueLists()
+        {
+            var hdi = new WikiListValuesEntity
+            {
+                id = ObjectId.GenerateNewId(),
+                ListCategory = "HDI",
+                Items = new List<WikiListValueSE>
+                {
+                    new WikiListValueSE
+                    {
+                        Id = 1,
+                        Name = "Low",
+                        Translate = true
+                    },
+                    new WikiListValueSE
+                    {
+                        Id = 2,
+                        Name = "Medium",
+                        Translate = true
+                    },
+                    new WikiListValueSE
+                    {
+                        Id = 3,
+                        Name = "High",
+                        Translate = true
+                    },
+                    new WikiListValueSE
+                    {
+                        Id = 4,
+                        Name = "VeryHigh",
+                        Translate = true
+                    }
+                }
+            };
+            DB.SaveAsync(hdi);
+
+            //todo: add more organizations
+            var organizations = new WikiListValuesEntity
+            {
+                id = ObjectId.GenerateNewId(),
+                ListCategory = "Organizations",
+                Items = new List<WikiListValueSE>
+                {
+                    new WikiListValueSE
+                    {
+                        Id = 1,
+                        Name = "UN",
+                        Translate = false
+                    },
+                    new WikiListValueSE
+                    {
+                        Id = 2,
+                        Name = "WHO",
+                        Translate = false
+                    },
+                }
+            };
+            DB.SaveAsync(organizations);
+
+            var religions = new WikiListValuesEntity
+            {
+                id = ObjectId.GenerateNewId(),
+                ListCategory = "Religions",
+                Items = new List<WikiListValueSE>
+                {
+                    new WikiListValueSE
+                    {
+                        Id = 1,
+                        Name = "Christianity",
+                        Translate = true
+                    },
+                    new WikiListValueSE
+                    {
+                        Id = 2,
+                        Name = "Islam",
+                        Translate = true
+                    },
+                    new WikiListValueSE
+                    {
+                        Id = 3,
+                        Name = "Hinduism",
+                        Translate = true
+                    },
+                    new WikiListValueSE
+                    {
+                        Id = 4,
+                        Name = "ChineseFolkReligion",
+                        Translate = true
+                    },
+                    new WikiListValueSE
+                    {
+                        Id = 5,
+                        Name = "Buddhism",
+                        Translate = true
+                    },
+                    new WikiListValueSE
+                    {
+                        Id = 6,
+                        Name = "Taoism",
+                        Translate = true
+                    },
+                    new WikiListValueSE
+                    {
+                        Id = 7,
+                        Name = "Shinto",
+                        Translate = true
+                    },
+                    new WikiListValueSE
+                    {
+                        Id = 8,
+                        Name = "Sikhism",
+                        Translate = true
+                    },
+                    new WikiListValueSE
+                    {
+                        Id = 9,
+                        Name = "Judaism",
+                        Translate = true
+                    },
+                    new WikiListValueSE
+                    {
+                        Id = 10,
+                        Name = "Other",
+                        Translate = true
+                    },
+                }
+            };
+            DB.SaveAsync(religions);
         }
 
         private async void CreateData()

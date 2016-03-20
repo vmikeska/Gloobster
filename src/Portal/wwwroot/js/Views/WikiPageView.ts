@@ -525,7 +525,7 @@
 	 private blockTemplate;
 	 private articleId: string;
 	 private langVersion: string;
-
+	 
 		constructor(articleId, langVersion) {
 			this.articleId = articleId;
 			this.langVersion = langVersion;
@@ -534,7 +534,8 @@
 		}
 	 
 		public createEditWindow(sectionId) {
-		 var $p = $(`#text_${sectionId}`);
+			
+			var $p = $(`#text_${sectionId}`);
 
 			var scope = {
 				text: $p.html(),
@@ -543,34 +544,61 @@
 
 			var $html = $(this.blockTemplate(scope));
 
-			$html.find(".cancel").click((e) => {
-				var $btn = $(e.target);
-				var id = $btn.data("id");
+			$html.find(".cancel").click((e) => this.cancel(e));
+			$html.find(".save").click((e) => this.save(e));
 
-				$(`#edit_${id}`).remove();
-				$(`#editSection_${id}`).show();
-			});
-
-			$html.find(".save").click((e) => {
-				var $btn = $(e.target);
-				var id = $btn.data("id");
-
-				var data = {
-					articleId: this.articleId,
-					sectionId: id,
-					language: this.langVersion,
-
-					newText: $(`#edit_${id}`).find(".editTxt").val()
-				};
-
-				ViewBase.currentView.apiPut("WikiUpdate", data, (r) => {
-					$(`#edit_${id}`).remove();
-					$(`#text_${id}`).text(data.newText);
-					$(`#editSection_${id}`).show();
-				});
-			});
+			$html.find(".back").click((e) => this.moveVersion(e, +1));
+			$html.find(".forward").click((e) => this.moveVersion(e, -1));
 
 			$p.prepend($html);
+		}
+
+		private moveVersion(e, direction) {
+			var $btn = $(e.target);
+			var id = $btn.data("id");
+			var $cont = $(`#edit_${id}`);
+			var $pos = $cont.find(".position");
+			var position = parseInt($pos.val());
+			position += direction;
+			$pos.val(position);
+
+			this.getVersion(id, position, (version) => {
+				$cont.find(".editTxt").val(version.value);
+			});
+		}
+
+		private getVersion(id, position, callback) {
+			var data = [["articleId", this.articleId], ["lang", this.langVersion], ["addId", id], ["position", position]];
+			ViewBase.currentView.apiGet("WikiVersion", data, (r) => {
+				callback(r);
+			});
+		}
+
+		private cancel(e) {
+		 var $btn = $(e.target);
+		 var id = $btn.data("id");
+
+		 $(`#edit_${id}`).remove();
+		 $(`#editSection_${id}`).show();
+	  }
+
+		private save(e) {
+			var $btn = $(e.target);
+			var id = $btn.data("id");
+
+			var data = {
+				articleId: this.articleId,
+				sectionId: id,
+				language: this.langVersion,
+
+				newText: $(`#edit_${id}`).find(".editTxt").val()
+			};
+
+			ViewBase.currentView.apiPut("WikiUpdate", data, (r) => {
+				$(`#edit_${id}`).remove();
+				$(`#text_${id}`).text(data.newText);
+				$(`#editSection_${id}`).show();
+			});
 		}
 
 		public createAdminLink($block, id, adminType) {

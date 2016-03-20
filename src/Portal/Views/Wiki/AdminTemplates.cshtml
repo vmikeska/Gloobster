@@ -7,10 +7,17 @@
 
 <script id="blockEdit-template" type="text/x-handlebars-template">
     <div id="edit_{{id}}">
+        <input class="position" type="hidden" value="0" />
+
         <textarea class="editTxt">{{text}}</textarea>
         <div>
             <button data-id="{{id}}" class="cancel">Cancel</button>
             <button data-id="{{id}}" class="save">Save</button>
+            
+            <div class="right">
+                <button data-id="{{id}}" class="back">&#60;&#60;</button>
+                <button data-id="{{id}}" class="forward">&#62;&#62;</button>
+            </div>
         </div>
     </div>
 </script>

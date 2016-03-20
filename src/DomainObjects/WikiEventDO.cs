@@ -6,6 +6,7 @@ namespace Gloobster.DomainObjects
 {
     public class WikiEventDO
     {
+        public string Id { get; set; }
         public string ArticleId { get; set; }
         public string AddId { get; set; }
         public string Lang { get; set; }
@@ -20,5 +21,13 @@ namespace Gloobster.DomainObjects
     {
         public string Key { get; set; }
         public string Value { get; set; }
+    }
+
+    public class VersionDO
+    {
+        public string ArticleId { get; set; }
+        public string AddId { get; set; }
+        public string Lang { get; set; }
+        public int Position { get; set; }
     }
 }

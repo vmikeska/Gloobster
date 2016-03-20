@@ -8,113 +8,11 @@ using MongoDB.Bson;
 
 namespace Gloobster.Portal.ViewModels
 {
-    
-    public class BlockVM
-    {
-        public bool? Liked { get; set; }
-
-        public int Size { get; set; }
-        public string Admin { get; set; }
-
-        public string Category { get; set; }
-        public string SectionId { get; set; }
-        public string Text { get; set; }
-        public string Type { get; set; }
-        public List<string> Headers { get; set; }
-        public List<TableItemVM> TableItems { get; set; }
-
-        public List<LinkVM> LinkItems { get; set; }
-
-        public string GetLinkIco(SourceType type)
-        {
-            if (type == SourceType.S4)
-            {
-                return "disc-foursquare";
-            }
-            if (type == SourceType.FB)
-            {
-                return "disc-facebook";
-            }
-            //todo: change
-            if (type == SourceType.Yelp)
-            {
-                return "disc-google";
-            }
-
-            return string.Empty;
-        }
-
-        public string GetLink(SourceType type, string sid)
-        {
-            var template = "";
-
-            if (type == SourceType.S4)
-            {
-                template = "https://foursquare.com/v/{0}";
-            }
-            if (type == SourceType.FB)
-            {
-                template = "https://www.facebook.com/{0}";
-            }
-            if (type == SourceType.Yelp)
-            {
-                template = "https://www.yelp.com/biz/{0}";
-            }
-            
-            return string.Format(template, sid);
-        }
-    }
-
-    public class LinkVM
-    {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public List<LinkItemSE> Links { get; set; }
-    }
-    
-    public class TableItemVM
-    {
-        public bool? Liked1 { get; set; }
-        public bool? Liked3 { get; set; }
-        public bool? Liked2 { get; set; }
-
-        public string Id1 { get; set; }
-        public string Id2 { get; set; }
-        public string Id3 { get; set; }
-        public string Name { get; set; }
-        public decimal Price1 { get; set; }
-        public decimal Price2 { get; set; }
-        public decimal Price3 { get; set; }
-    }
-
-    public class DoDontsVM
-    {
-        public List<DdVM> Dos { get; set; }
-        public List<DdVM> Donts { get; set; }        
-    }
-
-    public class DdVM
-    {        
-        public string Id { get; set; }
-        public string Text { get; set; }
-
-        public bool? Liked { get; set; }
-    }
-
-
-    public class PhotoVM
-    {
-        public string Id { get; set; }
-        public string OwnerId { get; set; }
-        public string OwnerName { get; set; }
-        public bool Confirmed { get; set; }
-        public DateTime Inserted { get; set; }
-        public string Description { get; set; }
-    }
-
     public class WikiCityViewModel : WikiModelBase
     {        
         public WikiCityEntity Article { get; set; }
+
+        public override List<ArticleDataSE> Data => Article.Data;
 
         public override List<SectionSE> Sections => Article.Sections;
         public override List<ObjectId> Dos => Article.Dos;
@@ -298,6 +196,14 @@ namespace Gloobster.Portal.ViewModels
             return block;
         }
 
+        public BlockVM Base()
+        {
+            var block = Section("Base", "standard,base", 3);
+            block.Infos = Info;
+
+            return block;
+        }
+
         public BlockVM Accommodation()
         {
             var block = Section("Accommodation", "standard,price1", 3);
@@ -370,5 +276,117 @@ namespace Gloobster.Portal.ViewModels
         }        
     }
 
-    
+    public class BlockVM
+    {
+        public bool? Liked { get; set; }
+
+        public int Size { get; set; }
+        public string Admin { get; set; }
+
+        public string Category { get; set; }
+        public string SectionId { get; set; }
+        public string Text { get; set; }
+        public string Type { get; set; }
+        public List<string> Headers { get; set; }
+
+        public List<TableItemVM> TableItems { get; set; }
+        public bool ShowButtons = true;
+
+        public List<LinkVM> LinkItems { get; set; }
+
+        public string GetLinkIco(SourceType type)
+        {
+            if (type == SourceType.S4)
+            {
+                return "disc-foursquare";
+            }
+            if (type == SourceType.FB)
+            {
+                return "disc-facebook";
+            }
+            //todo: change
+            if (type == SourceType.Yelp)
+            {
+                return "disc-google";
+            }
+
+            return string.Empty;
+        }
+
+        public string GetLink(SourceType type, string sid)
+        {
+            var template = "";
+
+            if (type == SourceType.S4)
+            {
+                template = "https://foursquare.com/v/{0}";
+            }
+            if (type == SourceType.FB)
+            {
+                template = "https://www.facebook.com/{0}";
+            }
+            if (type == SourceType.Yelp)
+            {
+                template = "https://www.yelp.com/biz/{0}";
+            }
+
+            return string.Format(template, sid);
+        }
+
+        public List<InfoItemVM> Infos { get; set; }
+
+        public InfoItemVM InfoByName(string name)
+        {
+            return Infos.FirstOrDefault(i => i.Name == name);
+        }
+    }
+
+    public class LinkVM
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public List<LinkItemSE> Links { get; set; }
+    }
+
+    public class TableItemVM
+    {
+        public bool? Liked1 { get; set; }
+        public bool? Liked3 { get; set; }
+        public bool? Liked2 { get; set; }
+
+        public string Id1 { get; set; }
+        public string Id2 { get; set; }
+        public string Id3 { get; set; }
+        public string Name { get; set; }
+        public decimal Price1 { get; set; }
+        public decimal Price2 { get; set; }
+        public decimal Price3 { get; set; }
+    }
+
+    public class DoDontsVM
+    {
+        public List<DdVM> Dos { get; set; }
+        public List<DdVM> Donts { get; set; }
+    }
+
+    public class DdVM
+    {
+        public string Id { get; set; }
+        public string Text { get; set; }
+
+        public bool? Liked { get; set; }
+    }
+
+
+    public class PhotoVM
+    {
+        public string Id { get; set; }
+        public string OwnerId { get; set; }
+        public string OwnerName { get; set; }
+        public bool Confirmed { get; set; }
+        public DateTime Inserted { get; set; }
+        public string Description { get; set; }
+    }
+
+
 }

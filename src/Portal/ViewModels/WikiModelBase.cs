@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Gloobster.Entities;
 using Gloobster.Entities.Wiki;
@@ -26,6 +27,15 @@ namespace Gloobster.Portal.ViewModels
         public string Link { get; set; }
     }
 
+    public class InfoItemVM
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string AfterName { get; set; }
+        public string Value { get; set; }
+        public bool Show { get; set; }
+    }
+
     public abstract class WikiModelBase : ViewModelBase
     {   
         public string ArticleId { get; set; }
@@ -43,6 +53,21 @@ namespace Gloobster.Portal.ViewModels
         public abstract List<ObjectId> Dos { get; }
         public abstract List<ObjectId> Donts { get; }
 
+        public List<InfoItemVM> _info;
+
+        public List<InfoItemVM> Info
+        {
+            get
+            {
+                if (_info == null)
+                {
+                    _info = GetInfoItems();
+                }
+                
+                return _info;
+            }
+        }
+        
         public List<LangVersionVM> LangVersions { get; set; }
 
         public string GetLangName(string langCode)
@@ -138,6 +163,8 @@ namespace Gloobster.Portal.ViewModels
             return item;
         }
 
+        public virtual List<ArticleDataSE> Data {get;}
+
         private bool? WasLiked(SectionTextsSE text)
         {
             if (string.IsNullOrEmpty(UserId))
@@ -179,7 +206,37 @@ namespace Gloobster.Portal.ViewModels
             };
         }
 
-        
+        public List<InfoItemVM> GetInfoItems()
+        {
+            var items = new List<InfoItemVM>();
+
+            foreach (var item in Data)
+            {
+                var outItem = new InfoItemVM
+                {
+                    Id = item.id.ToString(),
+                    Name = item.Name,
+                    Show = true
+                };
+                items.Add(outItem);
+
+                bool isList = item.Values != null;
+
+                if (item.DataType == ArticleDataType.Int)
+                {
+                    if (string.IsNullOrEmpty(item.Value))
+                    {
+                        outItem.Show = false;
+                    }
+                    else
+                    {
+                        outItem.Value = int.Parse(item.Value).ToString("N0", CultureInfo.InvariantCulture);
+                    }                    
+                }
+            }
+
+            return items;
+        }
 
         public T GetSectionText<T>(string type) where T : SectionTextsSE
         {

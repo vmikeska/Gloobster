@@ -1,0 +1,57 @@
+﻿@using System.Threading.Tasks
+@using Gloobster.Portal.ViewModels
+@model BlockVM
+
+@{
+    var area = Model.InfoByName("Area");
+    //area.AfterName = "km²";
+}
+
+<style>
+    /*todo: merge with City*/
+     .box.blue table {
+         border: none;
+         color: black;
+     }
+
+    .box.blue td {
+        background-color: transparent;
+        padding-bottom: 0;        
+    }
+
+    .box.blue td .value {
+        text-align: right;
+    }
+</style>
+
+<div class="table width100 adminBlock" data-at="standard" data-id="@Model.SectionId">
+    <div class="cell">
+        @*width240*@
+        <div class="box blue mright20 adminInfo" style="width: 300px">
+            <h3>About</h3>
+            @*<p>*@
+
+            <table>
+                @Html.Partial("TableItem", Model.InfoByName("Population"))
+                @Html.Partial("TableItem", Model.InfoByName("CapitalName"))
+                @*@Html.Partial("TableItem", area))*@
+            </table>   
+
+                    @*Languages                    
+                    CurrencyCode
+                    DrivingRight
+                    HDI	2
+                    CallingCode*@
+
+                
+
+            @*</p>*@
+        </div>
+    </div>
+    <div class="cell">
+        <p id="text_@Model.SectionId" class="h3">@Model.Text</p>
+    </div>
+    <div class="cell">
+        @Html.Partial("Rating")
+    </div>
+</div>

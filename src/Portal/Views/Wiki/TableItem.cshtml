@@ -1,0 +1,15 @@
+﻿@using System.Threading.Tasks
+@using Gloobster.Portal.ViewModels
+@model InfoItemVM
+
+@if (Model.Show)
+{
+    <tr id="@Model.Id">
+        <td>
+            <b>@Model.Name @Model.AfterName</b>
+        </td>
+        <td class="value">
+            @Model.Value
+        </td>
+    </tr>
+}                      

@@ -7,27 +7,23 @@ namespace Gloobster.Entities.Wiki
     public class WikiCountryEntity : WikiArticleBaseEntity
     {        
         public Continent Continent { get; set; }
-        public string CountryCode { get; set; }
-
-        public CountryDataSE Data { get; set; }        
+        public string CountryCode { get; set; }        
     }
+    
+    public enum ArticleDataType { String, Bool, Int, Decimal}
 
-    public class CountryDataSE
+    public class ArticleDataSE
     {
-        public ReligionType Religion { get; set; }        
-        public int Population { get; set; }
-        public double Area { get; set; }
-        public string CapitalName { get; set; }
-        public int CapitalId { get; set; }
-        public List<string> Languages { get; set; }
-        public HDI HDI { get; set; }
-        public string CallingCode { get; set; }
-        public bool DrivingRight { get; set; }
-        public string CurrencyCode {get;set;}
-        public string CurrencyName { get; set; }
-        public List<string> MemberOf { get; set; }
-        public SocketType SocketType { get; set; }
+        public ObjectId id { get; set; }
+        public string Name { get; set; }
+        public string Value { get; set; }
+        public List<string> Values { get; set; }
+        
+        public ArticleDataType DataType { get;set;}
+        public string ListCategory { get; set; }
     }
+
+    
 
    
     
