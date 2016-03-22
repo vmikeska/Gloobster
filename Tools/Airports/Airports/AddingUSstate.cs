@@ -28,6 +28,52 @@ namespace Airports
 
     public class AddingUSstate
     {
+        public static void HowManyCitiesOver(int popLevel)
+        {
+            var path = @"C:\S\DBScripts\Cities1000.json";
+            var file = new StreamReader(path);
+            string line;
+            int count = 0;
+            
+            while ((line = file.ReadLine()) != null)
+            {                
+                var trimLine = line.Trim();
+
+                if (string.IsNullOrEmpty(trimLine))
+                {
+                    continue;
+                }
+
+                var cleanLine = trimLine.Substring(0, trimLine.Length - 1);
+                if (string.IsNullOrEmpty(cleanLine))
+                {
+                    continue;
+                }
+
+                try
+                {
+                    var city = JsonConvert.DeserializeObject<GeoNamesCityNew>(cleanLine);
+
+                    int intPop = int.Parse(city.Population);
+                    if (intPop > popLevel)
+                    {
+                        count++;
+                    }
+                }
+                catch 
+                {
+
+                }
+            }
+
+       
+            file.Close();
+
+
+            // Suspend the screen.
+            Console.ReadLine();
+        }
+
         public static void Execute()
         {
             var path = @"C:\S\DBScripts\Cities1000.json";

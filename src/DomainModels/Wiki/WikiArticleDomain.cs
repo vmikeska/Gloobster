@@ -8,6 +8,7 @@ using Gloobster.Entities;
 using Gloobster.Entities.Wiki;
 using Gloobster.Enums;
 using MongoDB.Bson;
+using System.Linq;
 
 namespace Gloobster.DomainModels.Wiki
 {
@@ -42,6 +43,8 @@ namespace Gloobster.DomainModels.Wiki
                 Link = string.Empty,
                 SID = city.GID.ToString()
             });
+
+            article.GID = city.GID;
 
             article.Data = new List<ArticleDataSE>
             {
@@ -98,7 +101,18 @@ namespace Gloobster.DomainModels.Wiki
             
             return article.id.ToString();
         }
-        
+
+        //private bool IsRightDriving(string countryCode)
+        //{
+        //    var countries = new[] {"uk", "sr", "gy", "", "", "", "", "", "", "", "", "", "", "", "", "", "" };
+        //    if (countries.Contains(countryCode))
+        //    {
+        //        return false;
+        //    }
+
+        //    return true;
+        //}
+
         public string CreateCountry(Continent continent, string countryCode, string name, string lang, 
             int capitalGID, string capitalName)
         {
@@ -133,8 +147,11 @@ namespace Gloobster.DomainModels.Wiki
                 SID = PH.GID(countryData)
             });
 
+            article.GID = int.Parse(PH.GID(countryData));
+
             article.Data = new List<ArticleDataSE>
             {
+                //todo: http://www.sitepoint.com/web-foundations/iso-2-letter-language-codes/
                 new ArticleDataSE
                 {
                     id = ObjectId.GenerateNewId(),

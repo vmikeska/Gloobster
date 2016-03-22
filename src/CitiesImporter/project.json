@@ -1,0 +1,31 @@
+{
+  "version": "1.0.0-*",
+  "description": "CitiesImporter Console Application",
+  "authors": [ "vmike_000" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "compilationOptions": {
+    "emitEntryPoint": true
+  },
+
+  "dependencies": {
+    "Common": "1.0.0-*",
+    "Database": "1.0.0-*",
+    "DomainModels": "1.0.0-*",
+    "DomainModelsCommon": "1.0.0-*",
+    "DomainObjects": "1.0.0-*",
+    "Entities": "1.0.0-*",
+    "Enums": "1.0.0-*",
+    "Newtonsoft.Json": "7.0.1"
+  },
+
+  "commands": {
+    "CitiesImporter": "CitiesImporter"
+  },
+
+  "frameworks": {
+    "dnx451": { }
+  }
+}

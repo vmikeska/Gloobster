@@ -112,7 +112,7 @@ namespace Gloobster.CitiesService
 			return cityDO;
 		}
 
-		public List<CityDO> FindCity(string name, string countryCode, int maxRows)
+        public List<CityDO> FindCity(string name, string countryCode, int maxRows)
 		{
 			var cc = countryCode.ToLower();
 
@@ -148,7 +148,7 @@ namespace Gloobster.CitiesService
 			return results;
 		}
 
-		public List<CityDO> QueryCities(string query, int maxRows)
+	    public List<CityDO> QueryCities(string query, int maxRows)
 		{
 			var queryLower = query.ToLower().Unidecode();
 			char firstLetter = queryLower[0];
@@ -191,7 +191,7 @@ namespace Gloobster.CitiesService
 		void InitializeData();
 		CityDO GetCityById(int id);
 		List<CityDO> QueryCities(string query, int maxRows);
-		List<CityDO> FindCity(string name, string countryCode, int maxRows);
+		List<CityDO> FindCity(string name, string countryCode, int maxRows);	    
 	}
 
 	public class Names

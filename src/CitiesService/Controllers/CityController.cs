@@ -28,7 +28,7 @@ namespace Gloobster.CitiesService.Controllers
 			return cityR;
         }
 
-	    [HttpGet("name/{cityName}/cc/{countryCode}/r/{maxRows}")]
+        [HttpGet("name/{cityName}/cc/{countryCode}/r/{maxRows}")]
 	    public List<CityResponse> GetCityByName(string cityName, string countryCode, int maxRows)
 	    {
 		    var cities = CDB.FindCity(cityName, countryCode, maxRows);
@@ -41,9 +41,6 @@ namespace Gloobster.CitiesService.Controllers
 			var cities = CDB.QueryCities(query, maxRows);
 			return cities.Select(c => c.ToResponse()).ToList();
 		}
-
-
-
-
-	}
+        
+    }
 }

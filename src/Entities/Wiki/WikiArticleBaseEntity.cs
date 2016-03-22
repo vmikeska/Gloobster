@@ -12,6 +12,8 @@ namespace Gloobster.Entities.Wiki
         
         public List<LinkSE> Links { get; set; }
 
+        public int GID { get; set; }
+
         public List<SectionSE> Sections { get; set; }
 
         public bool HasTitlePhoto { get; set; }

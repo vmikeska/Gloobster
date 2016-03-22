@@ -34,6 +34,7 @@ namespace Gloobster.Portal.ViewModels
         public string AfterName { get; set; }
         public string Value { get; set; }
         public bool Show { get; set; }
+        public string ListCategory { get; set; }
     }
 
     public abstract class WikiModelBase : ViewModelBase
@@ -41,6 +42,8 @@ namespace Gloobster.Portal.ViewModels
         public string ArticleId { get; set; }
 
         public bool IsAdmin { get; set; }
+
+        public string TitleLink { get; set; }
 
         public virtual List<RelatedLink> GetRelatedLinks()
         {
@@ -210,17 +213,27 @@ namespace Gloobster.Portal.ViewModels
         {
             var items = new List<InfoItemVM>();
 
-            foreach (var item in Data)
+            var lists = DB.C<WikiListValuesEntity>().ToList();
+
+            foreach (ArticleDataSE item in Data)
             {
                 var outItem = new InfoItemVM
                 {
                     Id = item.id.ToString(),
                     Name = item.Name,
-                    Show = true
+                    Show = true,
+                    ListCategory = item.ListCategory
                 };
                 items.Add(outItem);
 
                 bool isList = item.Values != null;
+                bool isListValue = !string.IsNullOrEmpty(item.ListCategory);
+
+                WikiListValuesEntity list = null;
+                if (isListValue)
+                {
+                    list = lists.FirstOrDefault(l => l.ListCategory == item.ListCategory);
+                }
 
                 if (item.DataType == ArticleDataType.Int)
                 {
@@ -229,10 +242,71 @@ namespace Gloobster.Portal.ViewModels
                         outItem.Show = false;
                     }
                     else
+                    {                        
+                        if (isListValue)
+                        {                            
+                            var listItem = list.Items.FirstOrDefault(i => i.Id == item.Value);
+                            //todo: transalte
+                            //listItem.Translate
+                            outItem.Value = listItem.Name;
+                        }
+                        else
+                        {
+                            outItem.Value = int.Parse(item.Value).ToString("N0", CultureInfo.InvariantCulture);
+                        }                        
+                    }
+                }
+
+                if (item.DataType == ArticleDataType.String)
+                {
+                    if (isList)
+                    {                        
+                        var vals = new List<string>();
+                        foreach (string val in item.Values)
+                        {
+                            var listItem = list.Items.FirstOrDefault(i => i.Id == val);
+                            if (listItem != null)
+                            {
+                                //todo: transalte
+                                vals.Add(listItem.Name);
+                            }
+                        }
+                        outItem.Value = string.Join(",", vals);                        
+                    }
+                    else
                     {
-                        outItem.Value = int.Parse(item.Value).ToString("N0", CultureInfo.InvariantCulture);
+                        outItem.Value = item.Value;
                     }                    
                 }
+
+                if (item.DataType == ArticleDataType.Decimal)
+                {
+                    if (string.IsNullOrEmpty(item.Value))
+                    {
+                        outItem.Show = false;
+                    }
+                    else
+                    {
+                        outItem.Value = decimal.Parse(item.Value).ToString("N2", CultureInfo.InvariantCulture);
+                    }
+                }
+
+                if (item.DataType == ArticleDataType.Bool)
+                {
+                    if (string.IsNullOrEmpty(item.Value))
+                    {
+                        outItem.Show = false;
+                    }
+                    else
+                    {
+                        var value = bool.Parse(item.Value);
+                        var code = value ? "Yes" : "No";
+
+                        outItem.Value = code;
+                    }                    
+                }
+
+
             }
 
             return items;

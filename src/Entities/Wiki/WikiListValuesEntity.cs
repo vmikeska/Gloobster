@@ -11,7 +11,7 @@ namespace Gloobster.Entities.Wiki
 
     public class WikiListValueSE
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }        
         public bool Translate { get; set; }
     }

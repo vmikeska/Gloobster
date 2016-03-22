@@ -26,14 +26,6 @@
     }
 </style>
 
-@{
-    string titleLink = "/images/samples/sample16.jpg";
-    if (Model.Article.HasTitlePhoto)
-    {
-        titleLink = $"/wiki/ArticleTitlePhoto/{Model.Article.id}";
-    }
-}
-
 @Html.Partial("AdminTemplates")
 
 <style>
@@ -56,7 +48,7 @@
     @Html.Partial("Languages")
 
     <div class="titlePhoto margin">
-        <img class="radius" src="@titleLink">
+        <img class="radius" src="@Model.TitleLink">
     </div>
 
     @Html.Partial("BaseDescriptionCity", Model.Base())

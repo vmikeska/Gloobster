@@ -36,11 +36,183 @@ namespace Gloobster.DomainModels.Wiki
             {
                 CreateData();
                 CreateValueLists();
-            }
+            }            
+        }
+
+        
+        private string[] Langs()
+        {
+            var list = new[]
+            {
+                "Abkhazian", "AB",
+                "Afar", "AA",
+                "Afrikaans", "AF",
+                "Albanian", "SQ",
+                "Amharic", "AM",
+                "Arabic", "AR",
+                "Armenian", "HY",
+                "Assamese", "AS",
+                "Aymara", "AY",
+                "Azerbaijani", "AZ",
+                "Bashkir", "BA",
+                "Basque", "EU",
+                "Bengali Bangla", "BN",
+                "Bhutani", "DZ",
+                "Bihari", "BH",
+                "Bislama", "BI",
+                "Breton", "BR",
+                "Bulgarian", "BG",
+                "Burmese", "MY",
+                "Byelorussian", "BE",
+                "Cambodian", "KM",
+                "Catalan", "CA",
+                "Chinese", "ZH",
+                "Corsican", "CO",
+                "Croatian", "HR",
+                "Czech", "CS",
+                "Danish", "DA",
+                "Dutch", "NL",
+                "English", "EN",
+                "Esperanto", "EO",
+                "Estonian", "ET",
+                "Faeroese", "FO",
+                "Fiji", "FJ",
+                "Finnish", "FI",
+                "French", "FR",
+                "Frisian", "FY",
+                "Scots Gaelic", "GD",
+                "Galician", "GL",
+                "Georgian", "KA",
+                "German", "DE",
+                "Greek", "EL",
+                "Greenlandic", "KL",
+                "Guarani", "GN",
+                "Gujarati", "GU",
+                "Hausa", "HA",
+                "Hebrew", "IW",
+                "Hindi", "HI",
+                "Hungarian", "HU",
+                "Icelandic", "IS",
+                "Indonesian", "IN",
+                "Interlingua", "IA",
+                "Interlingue", "IE",
+                "Inupiak", "IK",
+                "Irish", "GA",
+                "Italian", "IT",
+                "Japanese", "JA",
+                "Javanese", "JW",
+                "Kannada", "KN",
+                "Kashmiri", "KS",
+                "Kazakh", "KK",
+                "Kinyarwanda", "RW",
+                "Kirghiz", "KY",
+                "Kirundi", "RN",
+                "Korean", "KO",
+                "Kurdish", "KU",
+                "Laothian", "LO",
+                "Latin", "LA",
+                "Latvian Lettish", "LV",
+                "Lingala", "LN",
+                "Lithuanian", "LT",
+                "Macedonian", "MK",
+                "Malagasy", "MG",
+                "Malay", "MS",
+                "Malayalam", "ML",
+                "Maltese", "MT",
+                "Maori", "MI",
+                "Marathi", "MR",
+                "Moldavian", "MO",
+                "Mongolian", "MN",
+                "Nauru", "NA",
+                "Nepali", "NE",
+                "Norwegian", "NO",
+                "Occitan", "OC",
+                "Oriya", "OR",
+                "Oromo Afan", "OM",
+                "Pashto Pushto", "PS",
+                "Persian", "FA",
+                "Polish", "PL",
+                "Portuguese", "PT",
+                "Punjabi", "PA",
+                "Quechua", "QU",
+                "Rhaeto-Romance", "RM",
+                "Romanian", "RO",
+                "Russian", "RU",
+                "Samoan", "SM",
+                "Sangro", "SG",
+                "Sanskrit", "SA",
+                "Serbian", "SR",
+                "Serbo-Croatian", "SH",
+                "Sesotho", "ST",
+                "Setswana", "TN",
+                "Shona", "SN",
+                "Sindhi", "SD",
+                "Singhalese", "SI",
+                "Siswati", "SS",
+                "Slovak", "SK",
+                "Slovenian", "SL",
+                "Somali", "SO",
+                "Spanish", "ES",
+                "Sudanese", "SU",
+                "Swahili", "SW",
+                "Swedish", "SV",
+                "Tagalog", "TL",
+                "Tajik", "TG",
+                "Tamil", "TA",
+                "Tatar", "TT",
+                "Tegulu", "TE",
+                "Thai", "TH",
+                "Tibetan", "BO",
+                "Tigrinya", "TI",
+                "Tonga", "TO",
+                "Tsonga", "TS",
+                "Turkish", "TR",
+                "Turkmen", "TK",
+                "Twi", "TW",
+                "Ukrainian", "UK",
+                "Urdu", "UR",
+                "Uzbek", "UZ",
+                "Vietnamese", "VI",
+                "Volapuk", "VO",
+                "Welsh", "CY",
+                "Wolof", "WO",
+                "Xhosa", "XH",
+                "Yiddish", "JI",
+                "Yoruba", "YO",
+                "Zulu", "ZU"
+            };
+
+            return list;            
         }
 
         public void CreateValueLists()
         {
+            var languages = new WikiListValuesEntity
+            {
+                id = ObjectId.GenerateNewId(),
+                ListCategory = "Languages",
+                Items = new List<WikiListValueSE>()
+            };
+
+            var lngs = Langs();
+            for (int act = 0; act <= lngs.Length - 1; act += 2)
+            {
+                var code = lngs[act + 1].ToLower();
+                var name = lngs[act];
+                
+                languages.Items.Add(
+                    new WikiListValueSE
+                    {
+                        Id = code,
+                        Name = name,
+                        Translate = true
+                    });
+            }
+
+
+
+            DB.SaveAsync(languages);
+
             var hdi = new WikiListValuesEntity
             {
                 id = ObjectId.GenerateNewId(),
@@ -49,25 +221,25 @@ namespace Gloobster.DomainModels.Wiki
                 {
                     new WikiListValueSE
                     {
-                        Id = 1,
+                        Id = "1",
                         Name = "Low",
                         Translate = true
                     },
                     new WikiListValueSE
                     {
-                        Id = 2,
+                        Id = "2",
                         Name = "Medium",
                         Translate = true
                     },
                     new WikiListValueSE
                     {
-                        Id = 3,
+                        Id = "3",
                         Name = "High",
                         Translate = true
                     },
                     new WikiListValueSE
                     {
-                        Id = 4,
+                        Id = "4",
                         Name = "VeryHigh",
                         Translate = true
                     }
@@ -84,13 +256,13 @@ namespace Gloobster.DomainModels.Wiki
                 {
                     new WikiListValueSE
                     {
-                        Id = 1,
+                        Id = "1",
                         Name = "UN",
                         Translate = false
                     },
                     new WikiListValueSE
                     {
-                        Id = 2,
+                        Id = "2",
                         Name = "WHO",
                         Translate = false
                     },
@@ -106,61 +278,61 @@ namespace Gloobster.DomainModels.Wiki
                 {
                     new WikiListValueSE
                     {
-                        Id = 1,
+                        Id = "1",
                         Name = "Christianity",
                         Translate = true
                     },
                     new WikiListValueSE
                     {
-                        Id = 2,
+                        Id = "2",
                         Name = "Islam",
                         Translate = true
                     },
                     new WikiListValueSE
                     {
-                        Id = 3,
+                        Id = "3",
                         Name = "Hinduism",
                         Translate = true
                     },
                     new WikiListValueSE
                     {
-                        Id = 4,
+                        Id = "4",
                         Name = "ChineseFolkReligion",
                         Translate = true
                     },
                     new WikiListValueSE
                     {
-                        Id = 5,
+                        Id = "5",
                         Name = "Buddhism",
                         Translate = true
                     },
                     new WikiListValueSE
                     {
-                        Id = 6,
+                        Id = "6",
                         Name = "Taoism",
                         Translate = true
                     },
                     new WikiListValueSE
                     {
-                        Id = 7,
+                        Id = "7",
                         Name = "Shinto",
                         Translate = true
                     },
                     new WikiListValueSE
                     {
-                        Id = 8,
+                        Id = "8",
                         Name = "Sikhism",
                         Translate = true
                     },
                     new WikiListValueSE
                     {
-                        Id = 9,
+                        Id = "9",
                         Name = "Judaism",
                         Translate = true
                     },
                     new WikiListValueSE
                     {
-                        Id = 10,
+                        Id = "10",
                         Name = "Other",
                         Translate = true
                     },
@@ -178,27 +350,27 @@ namespace Gloobster.DomainModels.Wiki
             await CreateEntireContinent(Continent.NorthAmerica, CountriesByContinent.NorthAmerica, "North America", "north-america");
             await CreateEntireContinent(Continent.SouthAmerica, CountriesByContinent.SouthAmerica, "South America", "south-america");
 
-            await CreateEntireContinent(Continent.Antarctica, new string [0], "Antarctica", "antarctica");
+            await CreateEntireContinent(Continent.Antarctica, new string [0], "Antarctica", "antarctica");            
         }
-
+        
         private async Task<bool> CreateEntireContinent(Continent cont, string[] cCodes, string title, string link)
         {
             var continentEntity = CreateContinent(cont, title, link);
             foreach (var countryCode in cCodes)
             {
                 //todo: production remove
-                if (countryCode == "CZ")
-                {
-                    var dc = new DemoCountry();
-                    await DB.SaveAsync(dc.Country);
-                    await DB.SaveAsync(dc.Texts);
+                //if (countryCode == "CZ")
+                //{
+                //    var dc = new DemoCountry();
+                //    await DB.SaveAsync(dc.Country);
+                //    await DB.SaveAsync(dc.Texts);
 
-                    var dci = new DemoCity(dc.Country.id);
-                    await DB.SaveAsync(dci.City);
-                    await DB.SaveAsync(dci.Texts);
+                //    var dci = new DemoCity(dc.Country.id);
+                //    await DB.SaveAsync(dci.City);
+                //    await DB.SaveAsync(dci.Texts);
                     
-                    continue;                    
-                }
+                //    continue;                    
+                //}
 
                 var country = CountryService.GetCountryByCountryCode2(countryCode);
                 
@@ -315,7 +487,8 @@ namespace Gloobster.DomainModels.Wiki
         {
             string langsStr = input.languages.ToString();
             var output = langsStr.Split(',').ToList();
-            return output;
+            var output2 = output.Select(i => i.Split('-')[0]).ToList();
+            return output2;
         }
 
         public static double Area(dynamic input)

@@ -4,7 +4,14 @@
 
 @{
     var area = Model.InfoByName("Area");
-    //area.AfterName = "km²";
+    area.AfterName = "(km²)";
+
+    var mainLang = Model.InfoByName("Languages");
+    var langs = mainLang.Value.Split(',').ToList();
+    if (langs.Any())
+    {
+        mainLang.Value = langs[0];
+    }    
 }
 
 <style>
@@ -19,7 +26,7 @@
         padding-bottom: 0;        
     }
 
-    .box.blue td .value {
+    .box.blue td.value {
         text-align: right;
     }
 </style>
@@ -29,23 +36,32 @@
         @*width240*@
         <div class="box blue mright20 adminInfo" style="width: 300px">
             <h3>About</h3>
-            @*<p>*@
 
             <table>
-                @Html.Partial("TableItem", Model.InfoByName("Population"))
+                @Html.Partial("TableItem", Model.InfoByName("Population"))                
                 @Html.Partial("TableItem", Model.InfoByName("CapitalName"))
-                @*@Html.Partial("TableItem", area))*@
-            </table>   
+                @Html.Partial("TableItem", area)
+                @*@Html.Partial("TableItem", Model.InfoByName("HDI"))*@
+                @*@Html.Partial("TableItem", Model.InfoByName("CallingCode"))*@
+                @*@Html.Partial("TableItem", Model.InfoByName("DrivingRight"))*@
+                @Html.Partial("TableItem", Model.InfoByName("CurrencyCode"))
 
-                    @*Languages                    
-                    CurrencyCode
-                    DrivingRight
-                    HDI	2
-                    CallingCode*@
+                @Html.Partial("TableItem", mainLang)
+                @{
+                    var otherLangs = Model.InfoByName("Languages");
+                    otherLangs.AfterName = " (Other)";
+                    if (langs.Count() > 1)
+                    {
+                        langs.RemoveAt(0);
+                        otherLangs.Value = string.Join(", ", langs);
+                    }
+                }
 
                 
+                @Html.Partial("TableItem", otherLangs)
 
-            @*</p>*@
+            </table>
+
         </div>
     </div>
     <div class="cell">

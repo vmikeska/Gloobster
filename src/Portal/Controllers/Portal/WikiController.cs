@@ -30,11 +30,16 @@ namespace Gloobster.Portal.Controllers.Portal
             WikiModelBase vm = null;
             string template = string.Empty;
             var text = DB.C<WikiTextsEntity>().FirstOrDefault(i => i.LinkName == id && i.Language == lang);
-            
+
+            if (text == null)
+            {
+                return HttpNotFound();
+            }
+
             if (text.Type == ArticleType.Country)
             {
                 vm = GetCountryVM(text);
-                template = "Country";
+                template = "Country";                
             }
             if (text.Type == ArticleType.City)
             {
@@ -42,6 +47,11 @@ namespace Gloobster.Portal.Controllers.Portal
                 template = "City";
             }
 
+            if (string.IsNullOrEmpty(vm.TitleLink))
+            {
+                vm.TitleLink = "/images/samples/sample16.jpg";
+            }
+            
             vm.IsAdmin = IsUserLogged && WikiPerms.HasArticleAdminPermissions(UserId, text.Article_id.ToString());
             vm.ArticleId = text.Article_id.ToString();
 
@@ -79,17 +89,33 @@ namespace Gloobster.Portal.Controllers.Portal
             var vm = CreateViewModelInstance<WikiCityViewModel>();
             vm.Texts = text;
             vm.Article = article;
-            
+
+            if (vm.Article.HasTitlePhoto)
+            {
+                vm.TitleLink = $"/wiki/ArticleTitlePhoto/{vm.Article.id}";
+            }
+
             return vm;
         }
 
         private WikiCountryViewModel GetCountryVM(WikiTextsEntity text)
         {
             var article = DB.C<WikiCountryEntity>().FirstOrDefault(i => i.id == text.Article_id);
-
+            
             var vm = CreateViewModelInstance<WikiCountryViewModel>();
             vm.Texts = text;
             vm.Article = article;
+
+            var gidDataItem = article.Data.FirstOrDefault(a => a.Name == "CapitalId");
+            if (gidDataItem != null)
+            {
+                int cityGID = int.Parse(gidDataItem.Value);
+                var city = DB.C<WikiCityEntity>().FirstOrDefault(c => c.GID == cityGID);
+                if (city != null && city.HasTitlePhoto)
+                {
+                    vm.TitleLink = $"/wiki/ArticleTitlePhoto/{city.id}";
+                }
+            }
             
             return vm;
         }

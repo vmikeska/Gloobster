@@ -1,4 +1,5 @@
-﻿using Gloobster.Common;
+﻿using System.Collections.Generic;
+using Gloobster.Common;
 
 namespace Gloobster.ReqRes.CitiesService
 {

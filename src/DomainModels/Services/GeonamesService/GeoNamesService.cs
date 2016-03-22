@@ -42,8 +42,8 @@ namespace Gloobster.DomainModels.Services.GeonamesService
 			var cityDO = cityResp.ToDO();
 			return cityDO;
 		}
-		
-		public async Task<List<CityDO>> GetCityAsync(string cityName, string countryCode, int maxRows)
+        
+        public async Task<List<CityDO>> GetCityAsync(string cityName, string countryCode, int maxRows)
 		{
 			var lqb = GetLinkBuilderBase();
 			lqb.Param("name", cityName);

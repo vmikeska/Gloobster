@@ -18,7 +18,7 @@ namespace Airports
 	{
 		static void Main(string[] args)
 		{
-		    AddingUSstate.Execute();
+		    AddingUSstate.HowManyCitiesOver(10000);
             
 
 		    //ProcessGeoNamesFile();
