@@ -3,7 +3,9 @@ var Views;
     var WikiSearchCombo = (function () {
         function WikiSearchCombo() {
         }
-        WikiSearchCombo.prototype.initId = function (id) {
+        WikiSearchCombo.prototype.initId = function (id, config) {
+            if (config === void 0) { config = null; }
+            this.config = config;
             this.$combo = $("#" + id);
             this.init();
         };
@@ -39,7 +41,12 @@ var Views;
             }
         };
         WikiSearchCombo.prototype.getItemHtml = function (item) {
-            return "<li><a data-articleId=\"" + item.articleId + "\" href=\"/wiki/" + item.language + "/" + item.link + "\">" + item.title + "</a></li>";
+            var ratingPercents = Math.round(item.rating * 20);
+            var rating = "";
+            if (this.config && this.config.showRating) {
+                rating = "&#9;&#9;<span class=\"rating pct" + ratingPercents + " bottom right\"> </span>";
+            }
+            return "<li><a data-articleId=\"" + item.articleId + "\" href=\"/wiki/" + item.language + "/" + item.link + "\">" + item.title + "</a>  " + rating + "</li>";
         };
         return WikiSearchCombo;
     })();

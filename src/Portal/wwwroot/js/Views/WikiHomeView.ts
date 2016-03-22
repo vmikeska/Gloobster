@@ -5,7 +5,7 @@
 	 constructor() {
 		 super();
 		 this.combo = new WikiSearchCombo();
-		 this.combo.initId("SearchCombo");
+		 this.combo.initId("SearchCombo", { showRating: true});
 	 }
 	}
 }

@@ -10,6 +10,9 @@ namespace Gloobster.Entities
 {
     public class WikiTextsEntity : EntityBase
     {
+        public DateTime Created { get; set; }
+        public DateTime? Updated { get; set; }
+
         public ObjectId Article_id { get; set; }
         public ArticleType Type { get; set; }
 
@@ -19,6 +22,8 @@ namespace Gloobster.Entities
         
         public string Title { get; set; }
         public string LinkName { get; set; }
+
+        public decimal Rating { get; set; }
     }
     
     public class SectionTextsSE

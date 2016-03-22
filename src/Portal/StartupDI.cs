@@ -110,6 +110,7 @@ namespace Gloobster.Portal
             builder.AddTransient<IWikiArticleDomain, WikiArticleDomain>();
             builder.AddTransient<IWikiPermissions, WikiPermissions>();
             builder.AddTransient<IWikiChangeDomain, WikiChangeDomain>();
+            builder.AddTransient<IContentEvaluator, ContentEvaluator>();
             
 
         }

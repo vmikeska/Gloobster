@@ -258,23 +258,16 @@ namespace Gloobster.DomainModels.Wiki
         public WikiTextsEntity Texts;
 
         private ArticleType _articleType;
-
-        public ArticleBuilder()
-        {
-
-        }
         
         private T CreateArticleBase<T>() where T : WikiArticleBaseEntity, new()
         {
             var entity = new T
             {
                 id = ObjectId.GenerateNewId(),
-                Photos = new List<WikiPhotoSE>(),
-                Created = DateTime.UtcNow,
+                Photos = new List<WikiPhotoSE>(),                
                 HasTitlePhoto = false,
                 Links = new List<LinkSE>(),
-                Sections = new List<SectionSE>(),
-                Updated = null
+                Sections = new List<SectionSE>(),                
             };
 
             return entity;
@@ -334,7 +327,10 @@ namespace Gloobster.DomainModels.Wiki
                 Title = title,
                 LinkName = linkName,
                 Type = _articleType,
-                Texts = new List<SectionTextsSE>()
+                Texts = new List<SectionTextsSE>(),
+                Created = DateTime.UtcNow,
+                Updated = null,
+                Rating = 0
             };
         }
 

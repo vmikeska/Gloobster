@@ -26,7 +26,11 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             }
 
             var lquery = query.ToLower();
-            var dbResults = DB.C<WikiTextsEntity>().Where(i => i.Title.ToLower().StartsWith(lquery)).ToList();
+            var dbResults = DB.C<WikiTextsEntity>()
+                .Where(i => i.Title.ToLower().StartsWith(lquery))
+                .OrderByDescending(o => o.Rating)
+                .ThenBy(o => o.Title)
+                .ToList();
 
             var maxDbResults = dbResults.Take(MaxResults);
 
@@ -36,7 +40,8 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 link = r.LinkName,
                 language = r.Language,
                 title = r.Title,
-                articleId = r.Article_id.ToString()
+                articleId = r.Article_id.ToString(),
+                rating = r.Rating
             });
 
             return new ObjectResult(results);

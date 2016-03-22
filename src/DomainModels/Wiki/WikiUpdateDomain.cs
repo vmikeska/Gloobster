@@ -16,6 +16,7 @@ namespace Gloobster.DomainModels.Wiki
     {
         public IDbOperations DB { get; set; }
         public IWikiChangeDomain ChangeEventSystem { get; set; }
+        public IContentEvaluator ContentEvaluator { get; set; }
 
         public async Task<bool> UpdateBaseSection(string articleId, string sectionId, string language, string newText)
         {
@@ -42,6 +43,8 @@ namespace Gloobster.DomainModels.Wiki
                 };
                 ChangeEventSystem.ReceiveEvent(evnt);
             }
+
+            await ContentEvaluator.EvaluateArticle(articleId);
 
             return res.ModifiedCount == 1;
         }

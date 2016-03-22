@@ -7,9 +7,6 @@ namespace Gloobster.Entities.Wiki
 {
     public class WikiArticleBaseEntity : EntityBase
     {
-        public DateTime Created { get; set; }
-        public DateTime? Updated { get; set; }
-        
         public List<LinkSE> Links { get; set; }
 
         public int GID { get; set; }
@@ -23,6 +20,6 @@ namespace Gloobster.Entities.Wiki
         public List<ObjectId> Dos { get; set; }
         public List<ObjectId> Donts { get; set; }
 
-        public List<ArticleDataSE> Data { get; set; }
+        public List<ArticleDataSE> Data { get; set; }        
     }
 }

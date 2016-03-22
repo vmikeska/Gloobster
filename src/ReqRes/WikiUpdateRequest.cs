@@ -101,5 +101,6 @@ namespace Gloobster.ReqRes
         public string language { get; set; }
         public string link { get; set; }
         public string articleId { get; set; }
+        public decimal rating { get; set; }
     }
 }
