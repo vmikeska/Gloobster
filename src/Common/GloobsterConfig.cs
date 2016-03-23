@@ -18,10 +18,13 @@ namespace Gloobster.Common
 		public static string MongoConnectionString { get; set; }
 		public static string DatabaseName { get; set; }
 		public static string AppSecret { get; set; }
-		public static string Domain { get; set; }
+
+        public static string Domain { get; set; }
+        public static bool IsLocal { get; set; }
+        public static string Protocol { get; set; }
 
 
-		public static string FacebookAppId { get; set; }
+        public static string FacebookAppId { get; set; }
 		public static string FacebookAppSecret { get; set; }
 
 		public static string TwitterConsumerKey { get; set; }
@@ -39,7 +42,7 @@ namespace Gloobster.Common
         public static string YelpConsumerSecret { get; set; }
 
         public static string MapBoxSecret { get; set; }
-		public static bool IsLocal { get; set; }
+		
 
 		public static string StorageConnectionString { get; set; }
 		public static string StorageRootDir { get; set; }

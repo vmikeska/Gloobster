@@ -152,6 +152,14 @@ namespace Gloobster.Portal
                     template: "wiki/{lang}/{id}",
                     defaults: new { controller = "Wiki", action = "PageRegular" }
                     );
+
+                routes.MapRoute(
+                    name: "sitemap",
+                    template: "sitemap",
+                    defaults: new { controller = "SiteMap", action = "Sitemap" }
+                    );
+
+                
             });
 		}
 
@@ -181,10 +189,12 @@ namespace Gloobster.Portal
 		{
 			GloobsterConfig.MongoConnectionString = Configuration["Data:DefaultConnection:ConnectionString"];
 			GloobsterConfig.DatabaseName = Configuration["Data:DefaultConnection:DatabaseName"];
-			GloobsterConfig.Domain = Configuration["Environment:Domain"];
-			GloobsterConfig.IsLocal = bool.Parse(Configuration["Environment:IsLocal"]);
 
-			GloobsterConfig.AppSecret = Configuration["AppSecret"];
+            GloobsterConfig.Domain = Configuration["Environment:Domain"];
+			GloobsterConfig.IsLocal = bool.Parse(Configuration["Environment:IsLocal"]);
+            GloobsterConfig.Protocol = Configuration["Environment:Protocol"];
+
+            GloobsterConfig.AppSecret = Configuration["AppSecret"];
 
 			GloobsterConfig.FacebookAppId = Configuration["Facebook:AppId"];
 			GloobsterConfig.FacebookAppSecret = Configuration["Facebook:AppSecret"];
