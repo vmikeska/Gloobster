@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.IO;
 using System.Net;
-using System.Text;
 using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
@@ -561,37 +560,6 @@ namespace Gloobster.DomainModels.Wiki
             return objResponse;
         }
     }
-    
-    public class NiceLinkBuilder
-    {
-        //todo: query db, if link exists (e.g. singapore, singapore)
-        public static string BuildLink(string name)
-        {
-            var name1 = name.Replace(" ", "-");
-            var name2 = name1.Replace(".", string.Empty);
-            var name3 = name2.Replace("'", string.Empty);
-            var name4 = RemoveDiacritics(name3);
-            var name5 = name4.ToLower();
-
-            return name5;
-        }
-
-        public static string RemoveDiacritics(string s)
-        {
-            string normalizedString = s.Normalize(NormalizationForm.FormD);
-            var stringBuilder = new StringBuilder();
-
-            for (int i = 0; i < normalizedString.Length; i++)
-            {
-                char c = normalizedString[i];
-                if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
-                    stringBuilder.Append(c);
-            }
-
-            return stringBuilder.ToString();
-        }
-    }
-    
 }
 
 

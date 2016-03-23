@@ -15,10 +15,11 @@ namespace Gloobster.DomainModels.Wiki
     public class WikiArticleDomain: IWikiArticleDomain
     {
         public IDbOperations DB { get; set; }
-        
+        public INiceLinkBuilder LinkBuilder { get; set; }
+
         public string CreateCity(CityDO city, string lang)
         {
-            var cityLink = NiceLinkBuilder.BuildLink(city.AsciiName);
+            var cityLink = LinkBuilder.BuildLinkCity(city.AsciiName, city.CountryCode, city.GID);
             
             var builder = new ArticleBuilder();
             builder.InitCity(city.CountryCode);
@@ -116,7 +117,7 @@ namespace Gloobster.DomainModels.Wiki
         public string CreateCountry(Continent continent, string countryCode, string name, string lang, 
             int capitalGID, string capitalName)
         {
-            var linkId = NiceLinkBuilder.BuildLink(name);
+            var linkId = LinkBuilder.BuildBasicLink(name);
 
             var countryInfo = GNHelper.GetCountryInfo(countryCode);
             var countryData = countryInfo.geonames[0];

@@ -16,6 +16,7 @@ using Gloobster.ReqRes.Files;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using Serilog;
+using Gloobster.Entities;
 
 namespace Gloobster.Portal.Controllers.Api.Wiki
 {
@@ -25,7 +26,8 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         public IWikiPermissions WikiPerms { get; set; }
         public IWikiChangeDomain ChangeEventSystem { get; set; }
 
-        public WikiTitlePhotoController(IWikiChangeDomain changeEventSystem, IWikiPermissions wikiPerms, IFilesDomain filesDomain, ILogger log, IDbOperations db) : base(log, db)
+        public WikiTitlePhotoController(IWikiChangeDomain changeEventSystem, IWikiPermissions wikiPerms, IFilesDomain filesDomain, 
+            ILogger log, IDbOperations db) : base(log, db)
         {
             FileDomain = (FilesDomain) filesDomain;
             WikiPerms = wikiPerms;

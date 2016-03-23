@@ -39,7 +39,7 @@ namespace Gloobster.Portal.Controllers.Portal
 
 	    public IActionResult Test()
 	    {
-            DataCreator.CreateInitialData();
+            //DataCreator.CreateInitialData();
 
 
             return View();

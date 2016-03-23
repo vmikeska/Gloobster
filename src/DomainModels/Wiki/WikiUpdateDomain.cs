@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Database;
@@ -29,6 +30,9 @@ namespace Gloobster.DomainModels.Wiki
 
             var update = DB.U<WikiTextsEntity>().Set("Texts.$.Text", newText);
             var res = await DB.UpdateAsync(filter, update);
+
+            var update2 = DB.U<WikiTextsEntity>().Set(e => e.Updated, DateTime.UtcNow);
+            var res2 = await DB.UpdateAsync(filter, update2);
 
             bool updated = res.ModifiedCount == 1;
             if (updated)

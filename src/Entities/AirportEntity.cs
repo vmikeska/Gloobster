@@ -23,5 +23,5 @@ namespace Gloobster.Entities
 		public int Alt { get; set; }
 
 		public int IncomingFlights { get; set; }
-    }	
+    }
 }
