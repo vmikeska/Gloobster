@@ -24,8 +24,8 @@ namespace Gloobster.DomainModels
 		public ILogger Log { get; set; }
 		public IStorageProvider Storage { get; set; }
 
-	    public byte[] AllBytes;
-        public bool DoNotSave = false;
+	    public byte[] AllBytes { get; set; }
+        public bool DoNotSave { get; set; }
 
 
         public string TargetDirectory { get; set; }

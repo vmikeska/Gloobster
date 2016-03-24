@@ -59,6 +59,10 @@ module Views {
 				if (value === "friends") {
 					window.location.href = "/Friends/List";
 				}
+
+				if (value === "wikiAdmin") {
+				 window.location.href = "/WikiAdmin/List";
+				}
 			});
 		}
 

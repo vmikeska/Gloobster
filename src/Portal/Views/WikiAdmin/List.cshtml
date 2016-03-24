@@ -1,0 +1,82 @@
+﻿@using System.Threading.Tasks
+@using Gloobster.DomainModels.Wiki
+@using Gloobster.Enums
+@using Gloobster.Portal.ViewModels
+@using Newtonsoft.Json
+@model AdminTasksViewModel
+
+<script type="text/javascript" src="@Url.Content("~/js/Views/WikiAdminView.js")"></script>
+
+<style>
+    .task {
+        border-bottom: 2px solid black;
+        border-top: 2px solid black;
+        padding: 5px 0 5px 0;
+    }
+
+    .titem {
+        border-bottom: 1px solid black;
+    }
+</style>
+
+<div class="blue-line margin2"></div>
+<section class="wrapper margin2 ">
+    <h2>Wiki tasks</h2>
+    @foreach (var task in Model.Tasks)
+    {
+        <div id="@task.Id" class="task">
+            <h3>@task.Caption</h3>
+
+            @if (task.TaskType == AdminTaskType.ConfirmPhoto)
+            {
+                var thumbLink = $"/Wiki/ArticlePhotoThumb?photoId={task.TargetId}&articleId={task.ArticleId}";
+                var link = $"/Wiki/ArticlePhoto?photoId={task.TargetId}&articleId={task.ArticleId}";
+
+                <div>
+                    <a href="@link" target="_blank"><img class="radius mhalf" src="@thumbLink"></a>
+                </div>
+            }
+
+            @if (task.TaskType == AdminTaskType.ResolveReport)
+            {                
+                var data = JsonConvert.DeserializeObject<ReportTaskData>(task.Data);
+
+                <div>
+                    <div class="titem">
+                        <span>Section name: </span><br />
+                        @data.SectionName
+                    </div>
+                    <div class="titem">
+                        <span>Language: </span><br />
+                        @data.Lang
+                    </div>
+                    <div class="titem">
+                        <span>Report: </span><br />
+                        @data.Report
+                    </div>
+                    <div class="titem">
+                        <span>Current text: </span><br />
+                        @data.Text
+                    </div>
+                </div>
+            }
+
+            <div>
+                @foreach (var action in task.Actions)
+                {
+                    <button class="actionButton" data-action="@action.Name">@action.Caption</button>
+                }
+            </div>
+        </div>
+    }
+</section>
+
+    
+
+
+<script>
+	function onBodyLoad() {
+	    currentView = new Views.WikiAdminView();
+	}
+
+</script>

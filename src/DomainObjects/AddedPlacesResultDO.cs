@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Gloobster.Enums;
 
 namespace Gloobster.DomainObjects
 {
@@ -8,5 +9,5 @@ namespace Gloobster.DomainObjects
         public List<VisitedStateDO> States { get; set; }
         public List<VisitedPlaceDO> Places { get; set; }
 		public List<VisitedCityDO> Cities { get; set; }   
-	}
+	}    
 }

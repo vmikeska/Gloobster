@@ -6,5 +6,5 @@ namespace Gloobster.DomainInterfaces
 	{
 		void Share(FacebookShareOptionsDO so, SocAuthenticationDO authentication);
         bool Checkin(FacebookCheckinDO checkin, SocAuthenticationDO authentication);
-	}    
+	}
 }

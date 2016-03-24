@@ -112,10 +112,15 @@ namespace Gloobster.Portal
             builder.AddTransient<IWikiChangeDomain, WikiChangeDomain>();
             builder.AddTransient<IContentEvaluator, ContentEvaluator>();
             builder.AddTransient<INiceLinkBuilder, NiceLinkBuilder>();
+            builder.AddTransient<IWikiAdminTasks, WikiAdminTasks>();
+
+            builder.AddTransient<IArticlePhoto, ArticlePhoto>();
+            builder.AddTransient<IWikiReportDomain, WikiReportDomain>();
+
+            builder.AddTransient<IExecOperation, ConfirmPhotoOperation>().Keyed<IExecOperation>("ConfirmPhotoOperation");
+            builder.AddTransient<IExecOperation, DeletePhotoOperation>().Keyed<IExecOperation>("DeletePhotoOperation");
+            builder.AddTransient<IExecOperation, SetToResolvedOperation>().Keyed<IExecOperation>("SetToResolvedOperation");
             
-
-
-
         }
 		
 	}

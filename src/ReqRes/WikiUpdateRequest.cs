@@ -42,6 +42,20 @@ namespace Gloobster.ReqRes
         public decimal price { get; set; }
     }
 
+    public class ReportRequest
+    {
+        public string lang { get; set; }
+        public string articleId { get; set; }
+        public string sectionId { get; set; }
+        public string text { get; set; }
+    }
+
+    public class AdminActionRequest
+    {
+        public string action { get; set; }
+        public string id { get; set; }
+    }
+
     public class UpdateDoDontRequest
     {
         public string articleId { get; set; }        

@@ -1,14 +1,11 @@
-using System;
 using System.Drawing;
 using System.IO;
-using System.Text;
 using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels;
-using Gloobster.DomainModels.Services.Trip;
+using Gloobster.DomainModels.Wiki;
 using Gloobster.DomainObjects;
-using Gloobster.Entities.Trip;
 using Gloobster.Entities.Wiki;
 using Gloobster.Enums;
 using Gloobster.Portal.Controllers.Base;
@@ -16,7 +13,6 @@ using Gloobster.ReqRes.Files;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using Serilog;
-using Gloobster.Entities;
 
 namespace Gloobster.Portal.Controllers.Api.Wiki
 {

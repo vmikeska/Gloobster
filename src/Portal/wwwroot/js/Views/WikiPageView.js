@@ -518,21 +518,60 @@ var Views;
         return BlockAdmin;
     })();
     Views.BlockAdmin = BlockAdmin;
+    var Report = (function () {
+        function Report(articleId, langVersion) {
+            var _this = this;
+            this.regToggleButton();
+            this.articleId = articleId;
+            this.langVersion = langVersion;
+            this.$bubble = $(".bubble");
+            this.$bubble.find(".cancel").click(function (e) {
+                e.preventDefault();
+                var $target = $(e.target);
+                _this.toggleForm($target);
+            });
+            this.regSend();
+        }
+        Report.prototype.toggleForm = function ($element) {
+            $element.closest('.evaluate').toggleClass('evaluate-open');
+        };
+        Report.prototype.regSend = function () {
+            var _this = this;
+            this.$bubble.find(".send").click(function (e) {
+                e.preventDefault();
+                var $target = $(e.target);
+                var $evaluate = $target.closest(".evaluate");
+                var $bubble = $target.closest(".bubble");
+                var data = {
+                    lang: _this.langVersion,
+                    articleId: _this.articleId,
+                    sectionId: $evaluate.data("id"),
+                    text: $bubble.find("input").val()
+                };
+                Views.ViewBase.currentView.apiPost("WikiReport", data, function (r) {
+                    _this.toggleForm($target);
+                });
+            });
+        };
+        Report.prototype.regToggleButton = function () {
+            var _this = this;
+            $(".icon-flag").click(function (e) {
+                e.preventDefault();
+                var $target = $(e.target);
+                _this.toggleForm($target);
+            });
+        };
+        return Report;
+    })();
+    Views.Report = Report;
     var Rating = (function () {
         function Rating(articleId, langVersion) {
-            this.regReport();
             this.regRating();
             this.regRatingDD();
             this.regRatingPrice();
             this.articleId = articleId;
             this.langVersion = langVersion;
         }
-        Rating.prototype.regReport = function () {
-            $(".icon-flag").click(function (e) {
-                e.preventDefault();
-                $(e.target).closest('.evaluate').toggleClass('evaluate-open');
-            });
-        };
         Rating.prototype.regRatingDD = function () {
             var _this = this;
             this.regRatingBase("pmBtn", "place", "WikiRating", function (c) {
@@ -755,6 +794,7 @@ var Views;
             this.photosAdmin = new PhotosAdmin(articleId);
             this.photos = new WikiPhotosUser(articleId);
             this.rating = new Rating(articleId, this.langVersion);
+            this.report = new Report(articleId, this.langVersion);
             this.$adminMode = $("#adminMode");
             this.regAdminMode();
         }

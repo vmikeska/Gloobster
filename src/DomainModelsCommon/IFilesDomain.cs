@@ -17,5 +17,7 @@ namespace Gloobster.DomainInterfaces
 		IStorageProvider Storage { get; set; }
 	    Task<bool> ChangeFilePublic(string tripId, string fileId, bool state);
 
-	}
+        byte[] AllBytes { get; set; }
+	    bool DoNotSave { get; set; }
+    }
 }

@@ -26,8 +26,7 @@ namespace Gloobster.Portal.Controllers.Portal
             SharedImgDomain = sharedImgDomain;
             FBService = fbService;
             PlacesExtractor = placesExtractor;
-            ComponentContext = componentContext;
-            Log = log;
+            ComponentContext = componentContext;            
         }
     
 	    public async Task<IActionResult> Pins()

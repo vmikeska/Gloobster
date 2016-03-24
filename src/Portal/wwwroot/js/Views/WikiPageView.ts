@@ -620,13 +620,74 @@
 	 
 	}
 
-	export class Rating {
+	export class Report {
+
+	 private $bubble;
+	 private $evaluate;
 
 		private articleId;
 		private langVersion;
 
 		constructor(articleId, langVersion) {
-			this.regReport();
+			this.regToggleButton();
+
+			this.articleId = articleId;
+			this.langVersion = langVersion;
+
+			this.$bubble = $(".bubble");
+		 
+			this.$bubble.find(".cancel").click((e) => {
+			 e.preventDefault();
+				var $target = $(e.target);
+				this.toggleForm($target);
+			});
+
+			this.regSend();
+		}
+	 
+		private toggleForm($element) {
+			$element.closest('.evaluate').toggleClass('evaluate-open');
+		}
+
+		private regSend() {
+			this.$bubble.find(".send").click((e) => {
+				e.preventDefault();
+				var $target = $(e.target);
+
+				var $evaluate = $target.closest(".evaluate");
+				var $bubble = $target.closest(".bubble");
+
+				var data = {
+					lang: this.langVersion,
+					articleId: this.articleId,
+					sectionId: $evaluate.data("id"),
+					text: $bubble.find("input").val()
+				};
+
+				ViewBase.currentView.apiPost("WikiReport", data, (r) => {
+					this.toggleForm($target);
+				});
+
+			});
+		}
+
+		private regToggleButton() {
+			$(".icon-flag").click((e) => {
+				e.preventDefault();
+				var $target = $(e.target);
+				this.toggleForm($target);
+			});
+		}
+
+
+	}
+
+	export class Rating {
+
+		private articleId;
+		private langVersion;
+
+		constructor(articleId, langVersion) {			
 			this.regRating();
 			this.regRatingDD();
 			this.regRatingPrice();
@@ -634,14 +695,7 @@
 			this.articleId = articleId;
 			this.langVersion = langVersion;
 		}
-
-		private regReport() {
-			$(".icon-flag").click((e) => {
-				e.preventDefault();
-				$(e.target).closest('.evaluate').toggleClass('evaluate-open');
-			});
-		}
-
+	 
 		private regRatingDD() {
 		 this.regRatingBase("pmBtn", "place", "WikiRating", (c) => {
 			this.setLikeDislike(c.$cont, c.like, !c.like, "pmBtn", "icon-plus", "icon-minus");			
@@ -903,6 +957,7 @@
 		private photosAdmin: PhotosAdmin;
 		private rating: Rating;
 		private photos: WikiPhotosUser;
+		private report: Report;
 
 		constructor(articleId) {
 			super();
@@ -919,6 +974,7 @@
 			this.photos = new WikiPhotosUser(articleId);
 
 			this.rating = new Rating(articleId, this.langVersion);
+			this.report = new Report(articleId, this.langVersion);
 
 			this.$adminMode = $("#adminMode");
 			this.regAdminMode();		 

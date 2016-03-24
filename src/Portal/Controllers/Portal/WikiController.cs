@@ -10,6 +10,7 @@ using Gloobster.Enums;
 using MongoDB.Bson;
 using Serilog;
 using System.Linq;
+using Gloobster.DomainModels.Wiki;
 using Gloobster.Portal.Controllers.Api.Wiki;
 
 namespace Gloobster.Portal.Controllers.Portal
