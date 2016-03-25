@@ -101,9 +101,10 @@ namespace Gloobster.Portal
 			foursquareService.Initialize(GloobsterConfig.FoursquareClientId, GloobsterConfig.FoursquareClientSecret);
 
 			builder.AddInstance<IFoursquareService>(foursquareService);
+            
+            builder.AddTransient<IGeoNamesOnlineService, GeoNamesOnlineService>();
 
-
-			builder.AddInstance<ICountryService>(new CountryService());
+            builder.AddInstance<ICountryService>(new CountryService());
             builder.AddTransient<IInitialWikiDataCreator, InitialWikiDataCreator>();
 
             builder.AddTransient<IWikiUpdateDomain, WikiUpdateDomain>();

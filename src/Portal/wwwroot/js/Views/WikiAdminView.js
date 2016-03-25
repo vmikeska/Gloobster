@@ -8,9 +8,48 @@ var Views;
     var WikiAdminView = (function (_super) {
         __extends(WikiAdminView, _super);
         function WikiAdminView() {
+            var _this = this;
             _super.call(this);
             this.regActionButtons();
+            this.regSearchBox();
+            $("#AddCity").click(function (e) {
+                e.preventDefault();
+                $("#addCityForm").toggle();
+            });
+            $("#SendCity").click(function (e) {
+                e.preventDefault();
+                _this.createCity();
+            });
         }
+        WikiAdminView.prototype.regSearchBox = function () {
+            var _this = this;
+            var searchBox = new Common.GNOnlineSearchBox("gnCombo");
+            searchBox.onSelected = function (city) { return _this.onCitySelected(city); };
+        };
+        WikiAdminView.prototype.onCitySelected = function (city) {
+            $("#txtGID").val(city.geonameId);
+            $("#txtPopulation").val(city.population);
+            $("#txtTitle").val(city.name);
+            this.selectedCity = city;
+        };
+        WikiAdminView.prototype.createCity = function () {
+            var _this = this;
+            if ($("#txtGID").val() === "") {
+                return;
+            }
+            var dialog = new Common.ConfirmDialog();
+            dialog.create("Add city", "Do you want to add the city ?", "Cancel", "Create", function () {
+                var data = {
+                    gid: _this.selectedCity.geonameId,
+                    population: $("#txtPopulation").val(),
+                    title: $("#txtTitle").val(),
+                    countryCode: _this.selectedCity.countryCode
+                };
+                _this.apiPost("WikiCity", data, function (r) {
+                    $("#addCityForm").hide();
+                });
+            });
+        };
         WikiAdminView.prototype.regActionButtons = function () {
             var _this = this;
             $(".actionButton").click(function (e) {
@@ -29,8 +68,6 @@ var Views;
                     }
                 });
             });
-        };
-        WikiAdminView.prototype.callAction = function (taskId, action) {
         };
         return WikiAdminView;
     })(Views.ViewBase);

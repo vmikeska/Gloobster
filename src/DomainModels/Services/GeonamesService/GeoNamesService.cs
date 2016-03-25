@@ -99,6 +99,80 @@ namespace Gloobster.DomainModels.Services.GeonamesService
 		}
 
 	}
+
+    public interface IGeoNamesOnlineService
+    {
+        Task<List<GeoName>> SearchCities(string query);
+    }
+
+    public class GeoNamesOnlineService : IGeoNamesOnlineService
+    {
+        public async Task<List<GeoName>> SearchCities(string query)
+        {
+            var qb = new QueryBuilder();
+            qb
+                .Endpoint("searchJSON")
+                //.Param("formatted", "true")
+                .Param("formatted", "true")
+                .Param("q", query)
+                .Param("maxRows", "20")
+                .Param("lang", "en")
+                .Param("featureClass", "P")
+                .Param("orderby", "population");
+
+            var response = await GetResponseAsync<CitySearchResponse>(qb);
+            return response.GeoNames;            
+        }
+        
+        public async Task<T> GetResponseAsync<T>(QueryBuilder queryBuilder) where T : new()
+        {
+            AppendBaseParams(queryBuilder);
+            var serviceUrl = queryBuilder.Build();
+            
+            var response = await _client.GetAsync(serviceUrl);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string strResponse = await response.Content.ReadAsStringAsync();
+                var objResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(strResponse);
+                return objResponse;
+            }
+            
+            return new T();
+        }
+
+        private void AppendBaseParams(QueryBuilder queryBuilder)
+        {
+            queryBuilder.Param("username", _userName);
+        }
+
+        private HttpClient InitClient()
+        {
+            var client = new HttpClient { BaseAddress = new Uri(UrlBase) };
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            return client;
+        }
+
+        public void Dispose()
+        {
+            _client.Dispose();
+        }
+
+        const string UrlBase = "http://api.geonames.org/";
+        private HttpClient _client;
+        private string _userName = "gloobster";
+
+        public GeoNamesOnlineService()
+        {
+            _client = InitClient();
+        }
+
+        public void Initialize(string userName)
+        {
+            _userName = userName;
+        }
+    }
 }
 
 

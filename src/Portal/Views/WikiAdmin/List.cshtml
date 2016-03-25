@@ -6,6 +6,7 @@
 @model AdminTasksViewModel
 
 <script type="text/javascript" src="@Url.Content("~/js/Views/WikiAdminView.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Common/GNOnlineSearchBox.js")"></script>
 
 <style>
     .task {
@@ -21,6 +22,33 @@
 
 <div class="blue-line margin2"></div>
 <section class="wrapper margin2 ">
+    <h2>Add place</h2>
+    <button id="AddCity">Show add city form</button>
+    <div id="addCityForm" style="display: none;">
+
+        <div id="gnCombo" class="dropdown">
+            <input class="inputed" placeholder="Search city">
+            <ul></ul>
+        </div>
+        
+        <table>
+            <tr>
+                <td><span>GID</span></td>
+                <td><input id="txtGID" type="text" disabled/></td>
+            </tr>            
+            <tr>
+                <td><span>Population</span></td>
+                <td><input id="txtPopulation" type="text"/></td>
+            </tr>            
+            <tr>
+                <td><span>Title</span></td>
+                <td><input id="txtTitle" type="text"/></td>
+            </tr>
+        </table>
+        <button id="SendCity">Add city</button>
+    </div>
+
+
     <h2>Wiki tasks</h2>
     @foreach (var task in Model.Tasks)
     {
@@ -38,24 +66,24 @@
             }
 
             @if (task.TaskType == AdminTaskType.ResolveReport)
-            {                
+            {
                 var data = JsonConvert.DeserializeObject<ReportTaskData>(task.Data);
 
                 <div>
                     <div class="titem">
-                        <span>Section name: </span><br />
+                        <span>Section name: </span><br/>
                         @data.SectionName
                     </div>
                     <div class="titem">
-                        <span>Language: </span><br />
+                        <span>Language: </span><br/>
                         @data.Lang
                     </div>
                     <div class="titem">
-                        <span>Report: </span><br />
+                        <span>Report: </span><br/>
                         @data.Report
                     </div>
                     <div class="titem">
-                        <span>Current text: </span><br />
+                        <span>Current text: </span><br/>
                         @data.Text
                     </div>
                 </div>

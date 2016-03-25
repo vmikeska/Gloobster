@@ -941,6 +941,10 @@
 		}
 	}
 
+	export class NewCity {
+		
+	}
+
 	export class WikiPageView extends ViewBase {
 
 		public articleId: string;

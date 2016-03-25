@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.Portal.Controllers.Base;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using Gloobster.DomainInterfaces;
+using Gloobster.DomainModels.Services.GeonamesService;
 using Gloobster.DomainModels.Wiki;
 using Serilog;
 
@@ -12,10 +14,10 @@ namespace Gloobster.Portal.Controllers.Portal
     public class HomeController : PortalBaseController
     {
 		public IInitialWikiDataCreator DataCreator { get; set; }
-
-		public HomeController(IInitialWikiDataCreator dataCreator, ILogger log, IDbOperations db) : base(log, db)
+        
+        public HomeController(IInitialWikiDataCreator dataCreator, ILogger log, IDbOperations db) : base(log, db)
 		{
-            DataCreator = dataCreator;
+            DataCreator = dataCreator;            
 		}
 
 		public BsonDocument GenerateDoc()
@@ -37,7 +39,7 @@ namespace Gloobster.Portal.Controllers.Portal
 			return View();
         }
 
-	    public IActionResult Test()
+	    public async Task<IActionResult> Test()
 	    {
             //DataCreator.CreateInitialData();
 

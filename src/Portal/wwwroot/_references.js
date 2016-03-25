@@ -11,6 +11,7 @@
 /// <reference path="js/common/filedad.js" />
 /// <reference path="js/common/fileupload.js" />
 /// <reference path="js/common/globals.js" />
+/// <reference path="js/common/gnonlinesearchbox.js" />
 /// <reference path="js/common/placesearchbox.js" />
 /// <reference path="js/common/requestsender.js" />
 /// <reference path="js/common/sharebuttons.js" />

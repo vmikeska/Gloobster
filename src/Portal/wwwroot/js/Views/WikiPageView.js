@@ -779,6 +779,12 @@ var Views;
         return WikiPhotosUser;
     })();
     Views.WikiPhotosUser = WikiPhotosUser;
+    var NewCity = (function () {
+        function NewCity() {
+        }
+        return NewCity;
+    })();
+    Views.NewCity = NewCity;
     var WikiPageView = (function (_super) {
         __extends(WikiPageView, _super);
         function WikiPageView(articleId) {
