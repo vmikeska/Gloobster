@@ -695,18 +695,18 @@
 			this.articleId = articleId;
 			this.langVersion = langVersion;
 		}
-	 
+
 		private regRatingDD() {
-		 this.regRatingBase("pmBtn", "place", "WikiRating", (c) => {
-			this.setLikeDislike(c.$cont, c.like, !c.like, "pmBtn", "icon-plus", "icon-minus");			
-		 });		 
+			this.regRatingBase("pmBtn", "place", "WikiRating", (c) => {
+				this.setLikeDislike(c.$cont, c.like, !c.like, "pmBtn", "icon-plus", "icon-minus");
+			});
 		}
 
 		private regRatingPrice() {
-		 this.regRatingBase("priceBtn", "rate", "WikiPriceRating", (c) => {
-			this.setLikeDislike(c.$cont, c.like, !c.like, "priceBtn", "icon-plus", "icon-minus");
-			c.$cont.find(".price").text(c.res.toFixed(2));
-		 });
+			this.regRatingBase("priceBtn", "rate", "WikiPriceRating", (c) => {
+				this.setLikeDislike(c.$cont, c.like, !c.like, "priceBtn", "icon-plus", "icon-minus");
+				c.$cont.prev().find(".price").text(c.res.toFixed(2));
+			});
 		}
 
 		private regRatingBase(btnClass, contClass, endpoint, callback) {

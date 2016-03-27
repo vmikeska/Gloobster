@@ -284,10 +284,11 @@ namespace Gloobster.DomainModels.Wiki
                 SubCategory = subCategory,
                 Price = new PriceSE
                 {
-                    CurrentPrice = 0,
-                    DefaultPrice = 0,
+                    CurrentPrice = 1,
+                    DefaultPrice = 1,
                     Plus = new List<ObjectId>(),
-                    Minus = new List<ObjectId>()
+                    Minus = new List<ObjectId>(),
+                    Initialized = false
                 }
             };
 

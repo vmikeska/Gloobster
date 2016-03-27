@@ -61,5 +61,6 @@ namespace Gloobster.Entities.Wiki
         public decimal CurrentPrice { get; set; }
         public List<ObjectId> Plus { get; set; }
         public List<ObjectId> Minus { get; set; }
+        public bool Initialized { get; set; }
     }
 }

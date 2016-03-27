@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Net;
@@ -351,38 +352,46 @@ namespace Gloobster.DomainModels.Wiki
         
         private async Task<bool> CreateEntireContinent(Continent cont, string[] cCodes, string title, string link)
         {
-            var continentEntity = CreateContinent(cont, title, link);
-            foreach (var countryCode in cCodes)
+            try
             {
-                //todo: production remove
-                //if (countryCode == "CZ")
-                //{
-                //    var dc = new DemoCountry();
-                //    await DB.SaveAsync(dc.Country);
-                //    await DB.SaveAsync(dc.Texts);
-
-                //    var dci = new DemoCity(dc.Country.id);
-                //    await DB.SaveAsync(dci.City);
-                //    await DB.SaveAsync(dci.Texts);
-                    
-                //    continue;                    
-                //}
-
-                var country = CountryService.GetCountryByCountryCode2(countryCode);
-                
-                string capitalName = GetCapitalName(countryCode);
-
-                var capital = (await GNService.GetCityAsync(capitalName, country.CountryCode, 1)).FirstOrDefault();
-                
-                ArticleDomain.CreateCountry(cont, countryCode, country.CountryName, Lang, capital.GID, capitalName);
-                if (capital != null)
+                var continentEntity = CreateContinent(cont, title, link);
+                foreach (var countryCode in cCodes)
                 {
-                    ArticleDomain.CreateCity(capital, Lang);
-                }                
-            }
+                    var country = CountryService.GetCountryByCountryCode2(countryCode);
 
-            return true;
+                    string capitalName = GetCapitalName(countryCode);
+
+                    var capital = (await GNService.GetCityAsync(capitalName, country.CountryCode, 1)).FirstOrDefault();
+
+                    ArticleDomain.CreateCountry(cont, countryCode, country.CountryName, Lang, capital.GID, capitalName);
+                    if (capital != null)
+                    {
+                        ArticleDomain.CreateCity(capital, Lang);
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine("Exception: " + exc.Message);
+                return false;
+            }
         }
+
+        //todo: production remove
+        //if (countryCode == "CZ")
+        //{
+        //    var dc = new DemoCountry();
+        //    await DB.SaveAsync(dc.Country);
+        //    await DB.SaveAsync(dc.Texts);
+
+        //    var dci = new DemoCity(dc.Country.id);
+        //    await DB.SaveAsync(dci.City);
+        //    await DB.SaveAsync(dci.Texts);
+
+        //    continue;                    
+        //}
 
         private string GetCapitalName(string countryCode)
         {

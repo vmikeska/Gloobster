@@ -582,7 +582,7 @@ var Views;
             var _this = this;
             this.regRatingBase("priceBtn", "rate", "WikiPriceRating", function (c) {
                 _this.setLikeDislike(c.$cont, c.like, !c.like, "priceBtn", "icon-plus", "icon-minus");
-                c.$cont.find(".price").text(c.res.toFixed(2));
+                c.$cont.prev().find(".price").text(c.res.toFixed(2));
             });
         };
         Rating.prototype.regRatingBase = function (btnClass, contClass, endpoint, callback) {

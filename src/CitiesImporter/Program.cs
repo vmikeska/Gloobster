@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Database;
@@ -7,6 +8,7 @@ using Gloobster.DomainModels.Services.GeonamesService;
 using Gloobster.DomainModels.Wiki;
 using Gloobster.Entities;
 using Gloobster.Entities.Wiki;
+using MongoDB.Bson;
 
 namespace CitiesImporter
 {
@@ -24,8 +26,30 @@ namespace CitiesImporter
             {
                 input = args[0];
             }
-            
+
             var db = new DbOperations("mongodb://localhost:27017/Gloobster", "Gloobster");
+            //var db = new DbOperations("mongodb://GloobsterConnec:Gloobster007@ds036178.mongolab.com:36178/Gloobster", "Gloobster");
+
+            if (input == "permissions")
+            {
+                bool existsPerm = db.C<WikiPermissionEntity>().Any();
+                if (!existsPerm)
+                {
+                    var users = db.C<PortalUserEntity>()
+                        .Where(u => (u.Mail == "mikeska@gmail.com") || (u.Mail == "vmikeska@hotmail.com"))
+                        .ToList();
+
+                    var masterAdmins = users.Select(u => new WikiPermissionEntity
+                    {
+                        IsMasterAdmin = true,
+                        IsSuperAdmin = false,
+                        id = ObjectId.GenerateNewId(),
+                        User_id = u.id,
+                        Articles = new List<ObjectId>()
+                    });
+                    db.SaveManyAsync(masterAdmins);
+                }
+            }
 
             if (input == "drop")
             {
@@ -36,6 +60,9 @@ namespace CitiesImporter
                 db.DropCollection<WikiTextsEntity>();
                 db.DropCollection<WikiPermissionEntity>();
                 db.DropCollection<WikiListValuesEntity>();
+                db.DropCollection<WikiReportEntity>();
+                db.DropCollection<WikiAdminTaskEntity>();
+                db.DropCollection<WikiChangeEventEntity>();
             }
 
             if (input == "basic")
