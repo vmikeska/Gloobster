@@ -1,0 +1,17 @@
+﻿
+<script>
+    function onBodyLoad() {
+
+        var articleId = "@Model.ArticleId";
+
+        @if (Model.IsAdmin)
+        {
+            @Html.Raw("currentView = new Views.WikiAdminPageView(articleId);");
+        }
+        else
+        {
+            @Html.Raw("currentView = new Views.WikiPageView(articleId);");
+        }
+    }
+
+</script>

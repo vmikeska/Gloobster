@@ -8,7 +8,7 @@
 
 <script type="text/javascript" src="@Url.Content("~/js/Views/WikiPageView.js")"></script>
 
-@Html.Partial("AdminTemplates")
+
 
 <div class="blue-line margin"></div>
 
@@ -52,9 +52,4 @@
 
 </section>
 
-<script>
-	function onBodyLoad() {
-	    currentView = new Views.WikiPageView('@Model.ArticleId');
-	}
-
-</script>
+@Html.Partial("PageScripts")

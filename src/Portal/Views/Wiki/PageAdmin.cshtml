@@ -5,5 +5,8 @@
 
 @if (Model.IsAdmin)
 {
+    <script type="text/javascript" src="@Url.Content("~/js/Views/WikiAdminPageView.js")"></script>
+
     <input id="adminMode" type="checkbox"><label for="adminMode" class="mright10">Admin mode</label>
+    @Html.Partial("AdminTemplates")
 }

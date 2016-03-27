@@ -71,6 +71,7 @@
 /// <reference path="js/views/tripviewview.js" />
 /// <reference path="js/views/twitterauthview.js" />
 /// <reference path="js/views/viewbase.js" />
+/// <reference path="js/views/wikiadminpageview.js" />
 /// <reference path="js/views/wikiadminview.js" />
 /// <reference path="js/views/wikihomeview.js" />
 /// <reference path="js/views/wikipageview.js" />

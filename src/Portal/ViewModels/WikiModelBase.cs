@@ -205,7 +205,8 @@ namespace Gloobster.Portal.ViewModels
                 Text = text.Text,
                 Type = type,
                 Size = size,
-                Admin = admin
+                Admin = admin,
+                ArticleType = Texts.Type
             };
         }
 

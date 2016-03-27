@@ -28,7 +28,7 @@
 			$(".articleCombo").toArray().forEach((combo) => {
 				var $combo = $(combo);
 				var userId = $combo.closest(".blue-form").data("userid");
-				//this.initTagCombo($(combo), userId);
+				this.initTagCombo($(combo), userId);
 			});
 		}
 
@@ -71,33 +71,33 @@
 		private addUserCustom(user) {
 			var context = { name: user.displayName };
 			var $html = $(this.userTemplate(context));
-			//this.initTagCombo($html.find(".articleCombo"), user.friendId);
+			this.initTagCombo($html.find(".articleCombo"), user.friendId);
 			this.regUserCustomDelete($html);
 			$("#newUserCombo").after($html);
 		}
 
-		//private initTagCombo($combo, userId) {
-		//	var $cont = $combo.closest(".blue-form");
+		private initTagCombo($combo, userId) {
+			var $cont = $combo.closest(".blue-form");
 
-		//	var combo = new WikiSearchCombo();
-		//	combo.initElement($combo);
-		//	combo.selectionCallback = ($a) => {
-		//		var articleId = $a.data("articleid");
+			var combo = new WikiSearchCombo();
+			combo.initElement($combo);
+			combo.selectionCallback = ($a) => {
+				var articleId = $a.data("articleid");
 
-		//		var data = {
-		//			userId: userId,
-		//			articleId: articleId
-		//		};
+				var data = {
+					userId: userId,
+					articleId: articleId
+				};
 
-		//		this.apiPost("WikiPermissionsArticle", data, (r) => {
-		//			var $tag = this.getTag($a.text(), articleId);
-		//			this.articleTagDelete($tag, userId);
+				this.apiPost("WikiPermissionsArticle", data, (r) => {
+					var $tag = this.getTag($a.text(), articleId);
+					this.articleTagDelete($tag, userId);
 
-		//			this.addTagToCont($cont.find(".tags"), $tag);
-		//			//$cont.find(".tag").last().after($tag);
-		//		});
-		//	};
-		//}
+					this.addTagToCont($cont.find(".tags"), $tag);
+					//$cont.find(".tag").last().after($tag);
+				});
+			};
+		}
 
 		private regUserCustomDelete($cont) {
 			var userId = $cont.data("userid");

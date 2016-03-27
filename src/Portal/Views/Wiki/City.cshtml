@@ -26,8 +26,6 @@
     }
 </style>
 
-@Html.Partial("AdminTemplates")
-
 <style>
     .favItem {
         border: 1px solid #009DC4; 
@@ -77,9 +75,4 @@
 
 </section>
 
-<script>
-	function onBodyLoad() {
-	    currentView = new Views.WikiPageView('@Model.ArticleId');	 
-	}
-
-</script>
+@Html.Partial("PageScripts")

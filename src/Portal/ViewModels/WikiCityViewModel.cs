@@ -278,6 +278,8 @@ namespace Gloobster.Portal.ViewModels
 
     public class BlockVM
     {
+        public ArticleType ArticleType { get; set; }
+
         public bool? Liked { get; set; }
 
         public int Size { get; set; }

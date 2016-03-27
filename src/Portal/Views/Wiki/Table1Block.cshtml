@@ -1,5 +1,6 @@
 ﻿@using System.Globalization
 @using System.Threading.Tasks
+@using Gloobster.Enums
 @using Gloobster.Portal.ViewModels
 @model BlockVM
 
@@ -17,7 +18,12 @@
             </td>
              @if (Model.ShowButtons)
              {
-                 <td class="rate" data-id="@item.Id1">@Html.Partial("PlusMinus", item.Liked1)</td>
+                 <td class="rate" data-id="@item.Id1">
+                     @if (Model.ArticleType == ArticleType.City)
+                     {
+                         @Html.Partial("PlusMinus", item.Liked1);
+                     }
+                 </td>
              }
         </tr>
     }

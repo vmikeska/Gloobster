@@ -24,10 +24,11 @@ var Views;
             });
         };
         WikiPermissionsView.prototype.initTagsSearch = function () {
+            var _this = this;
             $(".articleCombo").toArray().forEach(function (combo) {
                 var $combo = $(combo);
                 var userId = $combo.closest(".blue-form").data("userid");
-                //this.initTagCombo($(combo), userId);
+                _this.initTagCombo($(combo), userId);
             });
         };
         WikiPermissionsView.prototype.initArticleDelete = function () {
@@ -69,28 +70,29 @@ var Views;
         WikiPermissionsView.prototype.addUserCustom = function (user) {
             var context = { name: user.displayName };
             var $html = $(this.userTemplate(context));
-            //this.initTagCombo($html.find(".articleCombo"), user.friendId);
+            this.initTagCombo($html.find(".articleCombo"), user.friendId);
             this.regUserCustomDelete($html);
             $("#newUserCombo").after($html);
         };
-        //private initTagCombo($combo, userId) {
-        //	var $cont = $combo.closest(".blue-form");
-        //	var combo = new WikiSearchCombo();
-        //	combo.initElement($combo);
-        //	combo.selectionCallback = ($a) => {
-        //		var articleId = $a.data("articleid");
-        //		var data = {
-        //			userId: userId,
-        //			articleId: articleId
-        //		};
-        //		this.apiPost("WikiPermissionsArticle", data, (r) => {
-        //			var $tag = this.getTag($a.text(), articleId);
-        //			this.articleTagDelete($tag, userId);
-        //			this.addTagToCont($cont.find(".tags"), $tag);
-        //			//$cont.find(".tag").last().after($tag);
-        //		});
-        //	};
-        //}
+        WikiPermissionsView.prototype.initTagCombo = function ($combo, userId) {
+            var _this = this;
+            var $cont = $combo.closest(".blue-form");
+            var combo = new Views.WikiSearchCombo();
+            combo.initElement($combo);
+            combo.selectionCallback = function ($a) {
+                var articleId = $a.data("articleid");
+                var data = {
+                    userId: userId,
+                    articleId: articleId
+                };
+                _this.apiPost("WikiPermissionsArticle", data, function (r) {
+                    var $tag = _this.getTag($a.text(), articleId);
+                    _this.articleTagDelete($tag, userId);
+                    _this.addTagToCont($cont.find(".tags"), $tag);
+                    //$cont.find(".tag").last().after($tag);
+                });
+            };
+        };
         WikiPermissionsView.prototype.regUserCustomDelete = function ($cont) {
             var _this = this;
             var userId = $cont.data("userid");

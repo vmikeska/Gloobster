@@ -1,5 +1,6 @@
 ﻿@using System.Globalization
 @using System.Threading.Tasks
+@using Gloobster.Enums
 @using Gloobster.Portal.ViewModels
 @model BlockVM
 
@@ -22,15 +23,30 @@
                     <td class="priceItemAdmin" data-id="@item.Id1">
                         €<span class="price">@item.Price1.ToString("0.00", CultureInfo.InvariantCulture)</span>                        
                     </td>
-                    <td class="rate" data-id="@item.Id1">@Html.Partial("PlusMinus", item.Liked1)</td>
+                    <td class="rate" data-id="@item.Id1">
+                        @if (Model.ArticleType == ArticleType.City)
+                        {
+                            @Html.Partial("PlusMinus", item.Liked1);
+                        }
+                    </td>
                     <td class="priceItemAdmin" data-id="@item.Id2">
                         €<span class="price">@item.Price2.ToString("0.00", CultureInfo.InvariantCulture)</span>                        
                     </td>
-                    <td class="rate" data-id="@item.Id2">@Html.Partial("PlusMinus", item.Liked2)</td>
+                    <td class="rate" data-id="@item.Id2">
+                        @if (Model.ArticleType == ArticleType.City)
+                        {
+                            @Html.Partial("PlusMinus", item.Liked2);
+                        }
+                    </td>
                     <td class="priceItemAdmin" data-id="@item.Id3">
                         €<span class="price">@item.Price3.ToString("0.00", CultureInfo.InvariantCulture)</span>                        
                     </td>
-                    <td class="rate" data-id="@item.Id3">@Html.Partial("PlusMinus", item.Liked3)</td>
+                    <td class="rate" data-id="@item.Id3">
+                        @if (Model.ArticleType == ArticleType.City)
+                        {
+                            @Html.Partial("PlusMinus", item.Liked3);
+                        }
+                    </td>
                 </tr>
             }
         </table>
