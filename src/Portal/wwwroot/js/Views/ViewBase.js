@@ -37,23 +37,8 @@ var Views;
         });
         ViewBase.prototype.regUserMenu = function () {
             var _this = this;
-            $("#userMenu input").change(function (e) {
-                var value = $(e.target).val();
-                if (value === "logout") {
-                    _this.loginManager.logout();
-                }
-                if (value === "settings") {
-                    window.location.href = "/PortalUser/Settings";
-                }
-                if (value === "notifications") {
-                    window.location.href = "/PortalUser/Notifications";
-                }
-                if (value === "friends") {
-                    window.location.href = "/Friends/List";
-                }
-                if (value === "wikiAdmin") {
-                    window.location.href = "/WikiAdmin/List";
-                }
+            $("#logoutUser").click(function (e) {
+                _this.loginManager.logout();
             });
         };
         ViewBase.prototype.hasSocNetwork = function (net) {

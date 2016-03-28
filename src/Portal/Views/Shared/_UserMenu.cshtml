@@ -5,18 +5,18 @@
         <span class="notification">@Model.NotificationCount</span>
     }
     <ul>
-        <li data-value="logout">Logout</li>
-        <li data-value="settings">Settings</li>
-        <li data-value="friends">Friends</li>
-        <li data-value="notifications">
-            Notifications
+        <li><a id="logoutUser" href="#">Logout</a></li>
+        <li><a href="/PortalUser/Settings">Settings</a></li>
+        <li><a href="/Friends/List">Friends</a></li>
+        <li>
             @if (Model.NotificationCount > 0)
             {
                 <span class="notification">@Model.NotificationCount</span>
             }
+            <a href="/PortalUser/Notifications">Notifications</a>
         </li>
-        <li data-value="wikiAdmin">WikiAdmin</li>
-        <li data-value="wikiAdmin"><a href="/wiki/permissions">Wiki permissions</a></li>
+        <li><a href="/WikiAdmin/List">Wiki admin</a></li>
+        <li><a href="/wiki/permissions">Wiki permissions</a></li>
     </ul>
     <input type="hidden">
 </div>

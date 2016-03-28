@@ -41,28 +41,8 @@ module Views {
 
 		private regUserMenu() {
 
-			$("#userMenu input").change((e) => {
-				var value = $(e.target).val();
-
-				if (value === "logout") {
-					this.loginManager.logout();
-				}
-
-				if (value === "settings") {
-					window.location.href = "/PortalUser/Settings";
-				}
-
-				if (value === "notifications") {
-					window.location.href = "/PortalUser/Notifications";
-				}
-
-				if (value === "friends") {
-					window.location.href = "/Friends/List";
-				}
-
-				if (value === "wikiAdmin") {
-				 window.location.href = "/WikiAdmin/List";
-				}
+		 $("#logoutUser").click((e) => {				
+				this.loginManager.logout();				
 			});
 		}
 

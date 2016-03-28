@@ -7,6 +7,7 @@ using MongoDB.Bson;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels.Services.GeonamesService;
 using Gloobster.DomainModels.Wiki;
+using Gloobster.Portal.ViewModels;
 using Serilog;
 
 namespace Gloobster.Portal.Controllers.Portal
@@ -36,7 +37,8 @@ namespace Gloobster.Portal.Controllers.Portal
 
 	    public IActionResult Index()
 	    {
-			return View();
+	        var viewModel = CreateViewModelInstance<HomePageViewModel>();
+			return View(viewModel);
         }
 
 	    public async Task<IActionResult> Test()

@@ -1,148 +1,119 @@
 ﻿@{
-		ViewData["Title"] = "Home Page";
-		Layout = "";
+    ViewData["Title"] = "Home Page";
+    Layout = "";
 }
+<!DOCTYPE html>
 <html>
 <head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
 
-		<!-- custom meta -->
-		<meta name="google-signin-client_id" content="430126253289-14tdcfe4noqm6p201jrugpi9dsies2at.apps.googleusercontent.com">
-		<!-- custom meta end -->
+    <!-- custom meta -->
+    <meta name="google-signin-client_id" content="430126253289-14tdcfe4noqm6p201jrugpi9dsies2at.apps.googleusercontent.com">
+    <!-- custom meta end -->
 
-		<title>Gloobster</title>
+    <title>Gloobster</title>
 
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,700">
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700">
-    @*<link href="//fonts.googleapis.com/css?family=PT+Sans:400,700" rel="stylesheet">
-    <link href="//fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">*@
 
-    <script src="~/lib/jquery/dist/jquery.js"></script>    
+    <script src="~/lib/jquery/dist/jquery.js"></script>
     <script type="text/javascript" src="@Url.Content("~/js/script.js")"></script>
 
-    <link href="~/css/style.css" rel="stylesheet">		
+    <link href="~/css/style.css" rel="stylesheet">	
 </head>
-<body onload="onBodyLoad()" class="homepage" id="top">
+<body class="homepage" id="top">
+    <header class="header">
+        <div class="wrapper">
+            <h1><a href="." class="logo-header">Gloobster</a>
+            </h1>
+
+            <div class="menu-holder">
+                <div class="tright mhalf">
+                    @Html.Partial("_LangMenu")
+                    @Html.Partial("_UserMenu")
+                </div>
+                @Html.Partial("_Menu")
+            </div>
+
+            <a class="hamburger" data-target="#menu" href="#"><span></span></a>
+        </div>
+
+        @Html.Partial("_GlobalScripts")
+        <script type="text/javascript" src="@Url.Content("~/js/Views/HomePageView.js")"></script>
+        
+    </header>
+
+    <div id="fb-root"></div>
+
+<div class="maskots margin">
+        <div class="wrapper">
+            <h1>The only portal you'll need to travel the world</h1>
+            <div class="logins">
+                <div class="margin">
+
+                    <a class="facebook" href="#">Sign in with Facebook</a>
+
+                    @*<div onlogin="currentView.loginManager.facebookUserCreator.registerOrLogin()"
+                         class="fb-login-button"
+                         data-scope="publish_actions,user_location,user_hometown,public_profile,user_friends,email"
+                         data-max-rows="1"
+                         data-size="xlarge"
+                         data-show-faces="false"
+                         data-auto-logout-link="false">
+                        Facebook
+                    </div>*@
 
 
+                    <a class="twitter" href="#">Sign in with Twitter</a>
+                    <a class="google" href="#">Sign in with Google</a>
+                </div>
+                <span class="email">
+                    Connect with popular networks or
+                    <a class="popup-target" data-target="#popup-join" href="#">Sign Up with email</a>
+                    .
+                </span>
+            </div>
+            <div class="buttons">
+                @*<a class="button maskot" href="#">Check out the Globe</a>*@
+            </div>
+            <!--            <div class="bubble1">Let us help you travel! Setup is simple as 1-2-3 and youre set...Setup is simple as 1-2-3 and youre set...</div>-->
+            <!--            <div class="bubble2">...eg. pick your future destionations. So we can deliver deals!</div>-->
+        </div>
+    </div>
+    <section class="wrapper margin3">
+        
+        <h2 class="h3 tcenter margin3">Why travelers choose Gloobster</h2>
+        <div class="table row col3 margin2">
+            <div class="cell">
+                <div class="box plan tcenter">
+                    <h3>Keep track of your journeys</h3>
+                    <p class="tleft">Ever wanted to have one place to store all your past travels? Gloobster makes this easy and for free.</p>
+                    <a class="button" href="#">How It Works</a>
+                </div>
+            </div>
+            <div class="cell">
+                <div class="box green plan tcenter">
+                    <h3>Plan your next trip in under 3 minutes</h3>
+                    <p class="tleft">Gloobster makes it simple and fast to create itinerary. And stores all important data for you so you dont have to.</p>
+                    <a class="button" href="#">Try It Now</a>
+                </div>
+            </div>
+            <div class="cell">
+                <div class="box orange share tcenter">
+                    <h3>Share your journeys day by day with ease</h3>
+                    <p class="tleft">Share trips via Gloobster and colaborate on itinerary together. Simple yet powerful tool for any traveler.</p>
+                    <a class="button" href="#">See Journals</a>
+                </div>
+            </div>
+        </div>
+       
+        
+    </section>
 
-		<header class="header">
-				<div class="wrapper">
-						<h1><a href=".html" class="logo-header">Gloobster</a></h1>
-						<div class="menu-holder table">
-							<div class="cell">
-								@*<ul id="menu" class="menu-header table">								
-									<li><a asp-controller="Home" asp-action="PinBoard">Pin board</a></li>
-									<li><a href="#">Places to visit</a></li>
-									<li><a href="#">Trip planner</a></li>
-							    </ul>*@
-                                @Html.Partial("_Menu")
-							</div>
-							<div class="cell">
-								<ul class="menu-header separator table">
-									<li><a class="popup-target" data-target="#popup-login" href="#">Login</a></li>
-									<li><a class="popup-target" data-target="#popup-join" href="#">Join</a></li>
-								</ul>
-							</div>
-
-							<div class="cell">
-								<div class="dropdown">
-									<span class="selected">English</span>
-									<ul>
-										<li>English <span class="notification">3</span></li>
-										<li>Czech</li>
-									</ul>
-									<input type="hidden">
-								</div>
-							</div>
-						</div>
-						<a class="hamburger" data-target="#menu" href="#"><span></span></a>
-				</div>
-				
-				@Html.Partial("_GlobalScripts")
-				<script type="text/javascript" src="@Url.Content("~/js/Views/HomePageView.js")"></script>
-
-		</header>
-
-		<div class="maskots margin">
-				<div class="wrapper">
-						<h1>The only portal you'll need to travel the world</h1>
-						<div class="logins">
-						    <div class="margin">
-
-
-						        @*faked this way, have to check if legal: http://stackoverflow.com/questions/9810335/how-to-change-facebook-login-button-with-my-custom-image*@
-						        @*<a id="facebookLoginBtnHome" class="facebook" href="#">Sign in with Facebook</a>*@
-
-						        <div id="fb-root"></div>
-						        <div
-						            onlogin="currentView.loginManager.facebookUserCreator.registerOrLogin()"
-						            class="fb-login-button"
-						            data-scope="publish_actions,user_location,user_hometown,public_profile,user_friends,email"
-						            data-max-rows="1"
-						            data-size="xlarge"
-						            data-show-faces="false"
-						            data-auto-logout-link="false">
-						            Facebook
-						        </div>
-
-						        <a id="twitterLoginBtnHome" class="twitter" href="#">Sign in with Twitter</a>
-						        <a id="googleLoginBtnHome" class="google" href="#">Sign in with Google</a>
-
-						    </div>
-							<span class="email">
-									Connect with popular networks or
-									<a class="popup-target" data-target="#popup-join" href="#">Sign Up with email</a>
-									.
-							</span>
-						</div>
-						<div class="buttons">
-								@*<a class="button maskot" href="#">Check out the Globe</a>*@
-						</div>
-						<div class="bubble1">Let us help you travel! Setup is simple as 1-2-3 and youre set...Setup is simple as 1-2-3 and youre set...</div>
-						<div class="bubble2">...eg. pick your future destionations. So we can deliver deals!</div>
-				</div>
-		</div>
-
-		<section class="wrapper margin3">
-				@*<div class="hint margin">
-						<span class="icon-amplion white middle"></span>
-						Hey, if you connect your map with Facebook, you can get more visitors!
-						<a class="icon-cross" href="#">Close</a>
-				</div>*@
-				<h2 class="h3 tcenter margin3">Why travelers choose Gloobster</h2>
-				<div class="table row col3 margin2">
-						<div class="cell">
-								<div class="box plan tcenter">
-										<h3>Keep track of your journeys</h3>
-										<p class="tleft">Ever wanted to have one place to store all your past travels? Gloobster makes this easy and for free.</p>
-										<a class="button" href="#">How It Works</a>
-								</div>
-						</div>
-						<div class="cell">
-								<div class="box green plan tcenter">
-										<h3>Plan your next trip in under 3 minutes</h3>
-										<p class="tleft">Gloobster makes it simple and fast to create itinerary. And stores all important data for you so you dont have to.</p>
-										<a class="button" href="#">Try It Now</a>
-								</div>
-						</div>
-						<div class="cell">
-								<div class="box orange share tcenter">
-										<h3>Share your journeys day by day with ease</h3>
-										<p class="tleft">Share trips via Gloobster and colaborate on itinerary together. Simple yet powerful tool for any traveler.</p>
-										<a class="button" href="#">See Journals</a>
-								</div>
-						</div>
-				</div>
-
-
-		</section>
-
-		@Html.Partial("_Footer")
-		@Html.Partial("DialogLogin")
-		@Html.Partial("DialogRegister")
-
+    @Html.Partial("_Footer")
+    @Html.Partial("DialogLogin")
+    @Html.Partial("DialogRegister")
 
     <script>
 
@@ -157,12 +128,5 @@
         }
 
     </script>
-
 </body>
 </html>
-
-
-
-
-
-

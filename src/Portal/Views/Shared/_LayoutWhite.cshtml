@@ -9,14 +9,9 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<title>Gloobster</title>
 
-	@*<link rel="shortcut icon" href="images/favicon.html">*@
-    
-    @*<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=PT+Sans:400,700">
-	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:400,700">*@
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,700">
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700">
 
-    @*<link href="http://ga.cz/2015/gloobster/css/style.css" rel="stylesheet">*@
     <link href="~/css/style.css" rel="stylesheet">
     
     <link href="~/lib/jquery-ui/themes/ui-lightness/jquery-ui.css" rel="stylesheet"/>
@@ -33,16 +28,10 @@
 
         <div class="menu-holder">
             <div class="tright mhalf">
-                <div class="dropdown">
-                    <span class="selected">English</span>
-                    <ul>
-                        <li>English</li>                        
-                    </ul>
-                    <input type="hidden">
-                </div>                
+                @Html.Partial("_LangMenu")
                 @if (Model.IsUserLogged)
                 {                    
-                        @Html.Partial("_UserMenu")                    
+                        @Html.Partial("_UserMenu")
                 }                
             </div>
             @Html.Partial("_Menu")            
