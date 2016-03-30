@@ -8,8 +8,9 @@ var Reg;
                 cookiepolicy: "single_host_origin"
             };
         }
-        GoogleButton.prototype.initialize = function () {
+        GoogleButton.prototype.initialize = function (elementId) {
             var _this = this;
+            this.elementId = elementId;
             gapi.load("auth2", function () { _this.onLoaded(); });
         };
         // Retrieve the singleton for the GoogleAuth library and set up the client.

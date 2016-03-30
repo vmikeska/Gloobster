@@ -19,11 +19,13 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
 	{
         public IPlacesExtractor PlacesExtractor { get; set; }
         public IComponentContext ComponentContext { get; set; }
+        public IAccountDomain AccountDomain { get; set; }
 
-        public FbTaggedPlacesPermissionController(IComponentContext componentContext, IPlacesExtractor placesExtractor, ILogger log, IDbOperations db) : base(log, db)
+        public FbTaggedPlacesPermissionController(IAccountDomain accountDomain, IComponentContext componentContext, IPlacesExtractor placesExtractor, ILogger log, IDbOperations db) : base(log, db)
         {
             PlacesExtractor = placesExtractor;
             ComponentContext = componentContext;
+            AccountDomain = accountDomain;
         }
 		
 		[HttpPost]
@@ -33,10 +35,11 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
             PlacesExtractor.Driver = ComponentContext.ResolveKeyed<IPlacesExtractorDriver>("Facebook");
 
 		    var portalUserDO = PortalUser.ToDO();
-            var fbAcccount = portalUserDO.GetAccount(SocialNetworkType.Facebook);
+            var fbAcccount = AccountDomain.GetAuth(SocialNetworkType.Facebook, UserId);
 
-            await PlacesExtractor.ExtractNewAsync(portalUserDO.UserId, fbAcccount.Authentication);
-            await PlacesExtractor.SaveAsync();
+            //todo: fix
+            //await PlacesExtractor.ExtractNewAsync(portalUserDO.UserId, fbAcccount.Authentication);
+            //await PlacesExtractor.SaveAsync();
 
             return new ObjectResult(null);
 		}

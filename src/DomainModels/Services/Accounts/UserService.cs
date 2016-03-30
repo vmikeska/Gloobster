@@ -17,8 +17,6 @@ using Serilog;
 
 namespace Gloobster.DomainModels.Services.Accounts
 {
-	
-
 	public class UserService: IUserService
 	{
 		public IAccountDriver AccountDriver { get; set; }
@@ -43,7 +41,7 @@ namespace Gloobster.DomainModels.Services.Accounts
             AccountDriver.Authentication = authentication;
             AccountDriver.UserObj = userObj;
 
-            PortalUserDO portalUser = await Load();
+            UserDO portalUser = await Load();
 
             if (AccountDriver.NetworkType == SocialNetworkType.Base)
             {
@@ -99,13 +97,13 @@ namespace Gloobster.DomainModels.Services.Accounts
             return result;
         }
 
-        private async Task<bool> CreateCommonAsync(PortalUserDO portalUser)
+        private async Task<bool> CreateCommonAsync(UserDO portalUser)
 		{
 			await UserData.Create(portalUser);
 			return true;
 		}
 
-		private bool CheckCredintials(SocAuthenticationDO socAuthentication, PortalUserDO portalUser)
+		private bool CheckCredintials(SocAuthenticationDO socAuthentication, UserDO portalUser)
 		{
 		    try
 		    {
@@ -124,19 +122,20 @@ namespace Gloobster.DomainModels.Services.Accounts
 		    }
 		}
 
-		public async Task<PortalUserDO> Load()
+		public async Task<UserDO> Load()
 		{			
 			if (AccountDriver.NetworkType == SocialNetworkType.Base)
 			{
 				var user = (BaseUserDO) AccountDriver.UserObj;
 				var mail = user.Mail.Trim();
-				var dbUser = DB.C<PortalUserEntity>().FirstOrDefault(u => u.Mail == mail);
-				return dbUser.ToDO();
+				//var dbUser = DB.C<UserEntity>().FirstOrDefault(u => u.Mail == mail);
+				//return dbUser.ToDO();
+			    return null;
 			}
 	
 			string userId = AccountDriver.Authentication.UserId;				
 			var query = $"{{ 'SocialAccounts.NetworkType': {(int)AccountDriver.NetworkType}, 'SocialAccounts.Authentication.UserId': '{userId}' }}";
-			var results = await DB.FindAsync<PortalUserEntity>(query);
+			var results = await DB.FindAsync<UserEntity>(query);
 
 			if (!results.Any())
 			{
@@ -149,8 +148,9 @@ namespace Gloobster.DomainModels.Services.Accounts
 		
 		private bool EmailAlreadyExistsInSystem(string mail)
 		{
-			var user = DB.C<PortalUserEntity>().FirstOrDefault(u => u.Mail == mail);
-			return user != null;
+			//var user = DB.C<UserEntity>().FirstOrDefault(u => u.Mail == mail);
+			//return user != null;
+            return false;
 		}
 		
 		private string IssueToken(string portalUserId)

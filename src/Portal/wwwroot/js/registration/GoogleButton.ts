@@ -16,7 +16,9 @@
 			//scope: 'additional_scope'
 		};
 
-		public initialize() {
+	
+		public initialize(elementId) {
+			this.elementId = elementId;
 			gapi.load("auth2", () => { this.onLoaded(); });
 		}
 		

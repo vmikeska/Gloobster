@@ -8,71 +8,50 @@ namespace Gloobster.Mappers
 {
 	public static class PortalUserMappers
 	{
-		public static PortalUserDO ToDO(this PortalUserEntity entity)
+		public static UserDO ToDO(this UserEntity entity)
 		{
 			if (entity == null)
 			{
 				return null;
 			}
 
-			var dObj = new PortalUserDO
+			var dObj = new UserDO
 			{
-				DisplayName = entity.DisplayName,
-				Mail = entity.Mail,
-				Password = entity.Password,
+				DisplayName = entity.DisplayName,				
 				UserId = entity.id.ToString(),
 				Gender = entity.Gender,								
 				FirstName = entity.FirstName,
 				LastName = entity.LastName,
-				ProfileImage = entity.ProfileImage,
+                HasProfileImage = entity.HasProfileImage,
 				HomeLocation = entity.HomeLocation.ToDO(),
-				CurrentLocation = entity.CurrentLocation.ToDO()
+				CurrentLocation = entity.CurrentLocation.ToDO(),
+                Languages = entity.Languages                
 			};
-
-			if (entity.SocialAccounts != null)
-			{
-				dObj.SocialAccounts = entity.SocialAccounts.Select(a => a.ToDO()).ToArray();
-			}
-
-			if (entity.Languages != null)
-			{
-				dObj.Languages = entity.Languages.Select(l => l.ToDO()).ToArray();
-			}
-			
+            
 			return dObj;
 		}
 
-		public static PortalUserEntity ToEntity(this PortalUserDO dObj)
+		public static UserEntity ToEntity(this UserDO d)
 		{
-			if (dObj == null)
+			if (d == null)
 			{
 				return null;
 			}
 
-			var entity = new PortalUserEntity
+			var entity = new UserEntity
 			{
-				DisplayName = dObj.DisplayName,
-				Mail = dObj.Mail,
-				Password = dObj.Password,
-				id = new ObjectId(dObj.UserId),
-				Gender = dObj.Gender,
-				FirstName = dObj.FirstName,
-				LastName = dObj.LastName,
-				ProfileImage = dObj.ProfileImage,
-				HomeLocation = dObj.HomeLocation.ToEntity(),
-				CurrentLocation = dObj.CurrentLocation.ToEntity()
+				DisplayName = d.DisplayName,
+				id = new ObjectId(d.UserId),
+				Gender = d.Gender,
+				FirstName = d.FirstName,
+				LastName = d.LastName,
+				HasProfileImage = d.HasProfileImage,
+				HomeLocation = d.HomeLocation.ToEntity(),
+				CurrentLocation = d.CurrentLocation.ToEntity(),
+                Languages = d.Languages
+
 			};
-
-			if (dObj.SocialAccounts != null)
-			{
-				entity.SocialAccounts = dObj.SocialAccounts.Select(a => a.ToEntity()).ToArray();
-			}
-
-			if (dObj.Languages != null)
-			{
-				entity.Languages = dObj.Languages.Select(l => l.ToEntity()).ToArray();
-			}
-
+            
 			return entity;
 		}
 

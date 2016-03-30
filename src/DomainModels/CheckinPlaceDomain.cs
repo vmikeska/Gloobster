@@ -28,6 +28,7 @@ namespace Gloobster.DomainModels
 		public IDbOperations DB { get; set; }
 		public IFoursquareService Service { get; set; }
         public IYelpSearchService YelpService { get; set; }
+        public IAccountDomain AccountDomain { get; set; }
 
         public async Task<AddedPlacesResultDO> CheckinPlace(string sourceId, SourceType sourceType, string userId)
 		{
@@ -114,12 +115,10 @@ namespace Gloobster.DomainModels
 		}
         
 		private async Task<AddedPlacesResultDO> AddFromFB(string userId, string sourceId)
-		{
-			var userIdObj = new ObjectId(userId);
-			var user = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == userIdObj);
-			var fbAuth = user.SocialAccounts.FirstOrDefault(s => s.NetworkType == SocialNetworkType.Facebook);
+		{			
+			var fbAuth = AccountDomain.GetAuth(SocialNetworkType.Facebook, userId);
 
-			FBService.SetAccessToken(fbAuth.Authentication.AccessToken);
+			FBService.SetAccessToken(fbAuth.AccessToken);
 			var fbPlace = FBService.Get<PlaceFO>(sourceId);
 
 			var location = fbPlace.Location;

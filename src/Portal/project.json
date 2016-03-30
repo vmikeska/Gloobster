@@ -43,7 +43,8 @@
     "Serilog.Sinks.Loggly": "2.0.7",
     "loggly-csharp": "4.5.1.7",
     "AutofacSerilogIntegration": "1.0.10",
-    "BlobFileSystem.Azure": "0.0.7"
+    "BlobFileSystem.Azure": "0.0.7",
+    "Nito.AsyncEx": "3.0.1"
   },
 
   "commands": {

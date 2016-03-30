@@ -2,39 +2,19 @@ module Reg {
 	export class LoginManager {
 
 	 public static currentUserId: string;
-
-		cookieLogin: CookieLogin;
+	 
+		cookieLogin: any;
 		cookieManager: Common.CookieManager;
 
 		constructor() {
 		 this.cookieManager = new Common.CookieManager();
-			this.loadCookies();
-
-			if (!this.isAlreadyLogged()) {
-				this.facebookUserCreator = new CreateUserFacebook();
-				this.googleUserCreator = new CreateUserGoogle();
-				this.localUserCreator = new CreateUserLocal();
-				this.twitterUserCreator = new CreateUserTwitter();
-			}			
+			this.loadCookies();		
 		}
-
-		public facebookUserCreator: CreateUserFacebook;
-		public googleUserCreator: CreateUserGoogle;
-		public localUserCreator: CreateUserLocal;
-		public twitterUserCreator: CreateUserTwitter;
-
+	 
 		public loadCookies() {
-			this.cookieLogin = this.cookieManager.getJson(Constants.cookieName);
+		 this.cookieLogin = this.cookieManager.getString(Constants.cookieName);
 		}
-
-		public isAlreadyLogged() {
-			if (this.cookieLogin) {
-				return true;
-			}
-
-			return false;
-		}
-
+	 
 		public logout() {
 
 			this.cookieManager.removeCookie(Constants.cookieName);
@@ -53,10 +33,5 @@ module Reg {
 		}
 
 	}
-
-	export class CookieLogin {
-		public encodedToken: string;
-		public networkType: NetworkType;
-	}
-
+ 
 }

@@ -12,16 +12,17 @@ using MongoDB.Bson;
 
 namespace Gloobster.DomainModels
 {
-	public class VisitedCitiesDomain: IVisitedCitiesDomain
+    public class VisitedCitiesDomain: IVisitedCitiesDomain
 	{
 		public IDbOperations DB { get; set; }
         public IVisitedAggregationDomain AggDomain { get; set; }
         public IGeoNamesService GeoNamesService { get; set; }
+        public IEntitiesDemandor Demandor { get; set; }
 
         public async Task<List<VisitedCityDO>> AddNewCitiesByGIDAsync(List<GidDateDO> gids, string userId)
         {
             var userIdObj = new ObjectId(userId);
-            var visited = DB.C<VisitedEntity>().FirstOrDefault(v => v.PortalUser_id == userIdObj);
+            var visited = await Demandor.GetVisitedAsync(userIdObj);
             List<int> visitedGids = visited.Cities.Select(g => g.GeoNamesId).ToList();
 
             var validGids = gids.Where(g => g.GID != 0).ToList();
@@ -59,7 +60,7 @@ namespace Gloobster.DomainModels
         public async Task<List<VisitedCityDO>> AddNewCitiesWithGidAsync(List<VisitedCityDO> inputCities, string userId)
         {
             var userIdObj = new ObjectId(userId);
-            var visited = DB.C<VisitedEntity>().FirstOrDefault(v => v.PortalUser_id == userIdObj);
+            var visited = await Demandor.GetVisitedAsync(userIdObj);
 
             var newCities = new List<VisitedCitySE>();
             foreach (VisitedCityDO city in inputCities)
@@ -99,60 +100,6 @@ namespace Gloobster.DomainModels
             var newPlacesDO = newCities.Select(e => e.ToDO()).ToList();
             return newPlacesDO;
         }
-
-   //     public async Task<List<VisitedCityDO>> AddNewCitiesAsync(List<VisitedCityDO> inputCities, string userId)
-	  //  {		
-			//var userIdObj = new ObjectId(userId);
-			//var visited = DB.C<VisitedEntity>().FirstOrDefault(v => v.PortalUser_id == userIdObj);
-
-			//var newCities = new List<VisitedCitySE>();
-			//foreach (VisitedCityDO city in inputCities)
-			//{
-			//	bool isNewCity = !IsAlreadySavedCity(visited.Cities, city);
-			//    if (isNewCity)
-			//    {
-			//		var newCityEntity = city.ToEntity();					
-			//		newCityEntity.id = ObjectId.GenerateNewId();
-
-			//	    if (city.GeoNamesId != 0)
-			//	    {
-			//		    var geoNameCity = await GeoNamesService.GetCityByIdAsync(city.GeoNamesId);
-			//			newCityEntity.GeoNamesId = geoNameCity.GID;
-			//			newCityEntity.Location = geoNameCity.Coordinates;
-			//		    newCityEntity.City = geoNameCity.Name;
-			//		    newCityEntity.CountryCode = geoNameCity.CountryCode;
-			//	        newCityEntity.UsState = geoNameCity.UsState;
-			//	    }
-			//	    else
-			//	    {
-			//			var geoNamesCities = await GeoNamesService.GetCityAsync(city.City, city.CountryCode, 1);
-			//			if (geoNamesCities.Any())
-			//			{
-			//				var geoNamesCity = geoNamesCities.First();
-			//				newCityEntity.GeoNamesId = geoNamesCity.GID;
-			//				newCityEntity.Location = geoNamesCity.Coordinates;
-			//			}
-			//		}
-					
-			//		newCities.Add(newCityEntity);
-			//    }
-		 //   }
-
-			//if (newCities.Any())
-			//{
-			//	await PushCities(userIdObj, newCities);
-			//    foreach (var city in newCities)
-			//    {
-			//        if (city.GeoNamesId != 0)
-			//        {
-			//            await AggDomain.AddCity(city.GeoNamesId, userId);
-			//        }
-			//    }
-			//}
-
-			//var newPlacesDO = newCities.Select(e => e.ToDO()).ToList();
-			//return newPlacesDO;			
-	  //  }
         
         public List<VisitedCityDO> GetCitiesByUsers(List<string> ids, string meId)
         {

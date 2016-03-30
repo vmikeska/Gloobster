@@ -3,7 +3,7 @@
 
 		constructor() {
 			super();
-			this.loginType = NetworkType.Base;			
+			//this.loginType = NetworkType.Base;			
 		}
 
 		endpoint = "/api/User";
@@ -14,7 +14,7 @@
 			baseUser.password = password;
 			baseUser.action = action;
 
-			super.sendUserRegistrationData(baseUser);
+			//super.sendUserRegistrationData(baseUser);
 		}
 	}
 

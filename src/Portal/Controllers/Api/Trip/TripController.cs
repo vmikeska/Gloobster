@@ -71,7 +71,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 		    {
                 tripResponse.participants.ForEach(p =>
                 {
-                    var usr = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == new ObjectId(p.userId));
+                    var usr = DB.C<UserEntity>().FirstOrDefault(u => u.id == new ObjectId(p.userId));
                     p.name = usr.DisplayName;
                 });
                 userIds.AddRange(trip.Participants.Select(i => i.PortalUser_id));

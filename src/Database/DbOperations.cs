@@ -12,7 +12,19 @@ using MongoDB.Driver.Linq;
 
 namespace Gloobster.Database
 {
-	public class DbOperations: IDbOperations
+    public static class DatabaseExtensions
+    {
+        public static T FOD<T>(this IMongoQueryable<T> c, Expression<Func<T, bool>> query)
+        {
+            return c.FirstOrDefault(query);
+        }
+        public static List<T> List<T>(this IMongoQueryable<T> c, Expression<Func<T, bool>> query)
+        {
+            return c.Where(query).ToList();
+        }
+    }
+
+    public class DbOperations: IDbOperations
     {
 		public DbOperations()
 		{			
@@ -29,6 +41,30 @@ namespace Gloobster.Database
 
 		public IMongoClient Client { get; set; }
         public IMongoDatabase Database { get; set; }
+
+        public List<T> List<T>(Expression<Func<T, bool>> query) where T : EntityBase
+        {
+            var collectionName = GetCollectionName<T>();
+            var collection = Database.GetCollection<T>(collectionName);
+
+            var collectionQueryable = collection.AsQueryable();
+
+            var result = collectionQueryable.List(query);
+
+            return result;
+        }
+
+        public T FOD<T>(Expression<Func<T, bool>> query) where T : EntityBase
+        {
+            var collectionName = GetCollectionName<T>();
+            var collection = Database.GetCollection<T>(collectionName);
+
+            var collectionQueryable = collection.AsQueryable();
+
+            var result = collectionQueryable.FOD(query);
+
+            return result;
+        }
 
         public IMongoClient GetClient(string connectionString)
         {

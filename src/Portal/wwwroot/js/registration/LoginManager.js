@@ -4,21 +4,9 @@ var Reg;
         function LoginManager() {
             this.cookieManager = new Common.CookieManager();
             this.loadCookies();
-            if (!this.isAlreadyLogged()) {
-                this.facebookUserCreator = new Reg.CreateUserFacebook();
-                this.googleUserCreator = new Reg.CreateUserGoogle();
-                this.localUserCreator = new Reg.CreateUserLocal();
-                this.twitterUserCreator = new Reg.CreateUserTwitter();
-            }
         }
         LoginManager.prototype.loadCookies = function () {
-            this.cookieLogin = this.cookieManager.getJson(Constants.cookieName);
-        };
-        LoginManager.prototype.isAlreadyLogged = function () {
-            if (this.cookieLogin) {
-                return true;
-            }
-            return false;
+            this.cookieLogin = this.cookieManager.getString(Constants.cookieName);
         };
         LoginManager.prototype.logout = function () {
             this.cookieManager.removeCookie(Constants.cookieName);
@@ -36,11 +24,5 @@ var Reg;
         return LoginManager;
     })();
     Reg.LoginManager = LoginManager;
-    var CookieLogin = (function () {
-        function CookieLogin() {
-        }
-        return CookieLogin;
-    })();
-    Reg.CookieLogin = CookieLogin;
 })(Reg || (Reg = {}));
 //# sourceMappingURL=LoginManager.js.map

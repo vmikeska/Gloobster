@@ -44,7 +44,7 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 			}
 
 			var users =
-				DB.C<PortalUserEntity>()
+				DB.C<UserEntity>()
 					.Where(u => friends.Friends.Contains(u.id) && u.DisplayName.ToLower().Contains(name))
 					.ToList();
 
@@ -56,7 +56,7 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 			return new ObjectResult(friendsResponse);
 		}
 
-		private FriendResponse ToResponse(PortalUserEntity portalUser)
+		private FriendResponse ToResponse(UserEntity portalUser)
 		{			
 			var friend = new FriendResponse
 			{

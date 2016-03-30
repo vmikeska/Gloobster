@@ -12,22 +12,6 @@ var Views;
         function ViewBase() {
             ViewBase.currentView = this;
             this.cookieManager = new Common.CookieManager();
-            this.loginManager = new Reg.LoginManager();
-            var isAlreadyLogged = this.loginManager.isAlreadyLogged();
-            if (!isAlreadyLogged) {
-                this.initializeGoogle();
-                this.initializeFacebook();
-                $(".loginSection").show();
-            }
-            else {
-                console.log("isAlreadyLogged with " + this.loginManager.cookieLogin.networkType);
-                if (this.loginManager.cookieLogin.networkType === Reg.NetworkType.Facebook) {
-                    this.initializeFacebook();
-                }
-                if (this.onLogin) {
-                    this.onLogin();
-                }
-            }
             this.regUserMenu();
         }
         Object.defineProperty(ViewBase.prototype, "pageType", {
@@ -57,25 +41,6 @@ var Views;
                 return true;
             }
             return false;
-        };
-        ViewBase.prototype.initializeGoogle = function () {
-            var self = this;
-            var btnGoogle = new Reg.GoogleButton();
-            btnGoogle.successfulCallback = function (googleUser) {
-                self.loginManager.googleUserCreator.registerOrLogin(googleUser);
-            };
-            var btnName = (this.pageType === PageType.HomePage) ? "googleLoginBtnHome" : "googleLoginBtn";
-            btnGoogle.elementId = btnName;
-            btnGoogle.initialize();
-        };
-        ViewBase.prototype.initializeFacebook = function () {
-            var self = this;
-            var fbInit = new Reg.FacebookInit();
-            fbInit.onFacebookInitialized = function () {
-                console.log("fb initialized");
-                self.loginManager.facebookUserCreator.registerOrLogin();
-            };
-            fbInit.initialize();
         };
         ViewBase.prototype.apiGet = function (endpointName, params, callback) {
             var endpoint = "/api/" + endpointName;

@@ -1,14 +1,14 @@
 module Reg {
 	export class FacebookInit {
 	 
-		onFacebookInitialized: Function;
+		public onFacebookInitialized: Function;
 
-		initialize() {
+		public initialize() {
 			window['fbAsyncInit'] = this.asyncInit;
 			this.sdkLoad(document);
 		}
 
-		sdkLoad(doc) {
+		private sdkLoad(doc) {
 			var scriptElementName = 'script';
 			var scriptElementId = 'facebook-jssdk';
 			var src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5";
@@ -27,7 +27,7 @@ module Reg {
 			fjs.parentNode.insertBefore(js, fjs);
 		}
 	 
-		asyncInit = () => {			
+		private asyncInit = () => {			
 		 FB.init({
 			 appId: document["facebookId"],
 			 cookie: true, // enable cookies to allow the server to access the session

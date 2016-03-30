@@ -67,9 +67,9 @@
 	 
 	 private setInfo() {
 		this.getFormState((dataType, entity, mapType) => {					 
-			 var userLogged = this.loginManager.isAlreadyLogged();
+			 //var userLogged = this.loginManager.isAlreadyLogged();
 
-			 var $messageNotLogged = $("#messageNotLogged");
+			 //var $messageNotLogged = $("#messageNotLogged");
 			 var $messageCitiesVisited = $("#messageCitiesVisited");
 			 var $messageCountriesVisited = $("#messageCountriesVisited");
 			 var $messagePlaces = $("#messagePlaces");
@@ -78,10 +78,10 @@
 
 			 $(".infoMessage").hide();
 
-			 if (!userLogged) {
-				$messageNotLogged.show();
-				 return;
-			 }
+			 //if (!userLogged) {
+				//$messageNotLogged.show();
+				// return;
+			 //}
 
 			 if (dataType === Maps.DataType.Visited) {
 				if (entity === Maps.DisplayEntity.Pin) {

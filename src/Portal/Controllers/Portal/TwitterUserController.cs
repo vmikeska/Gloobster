@@ -24,17 +24,12 @@ namespace Gloobster.Portal.Controllers
 			DB = db;
 			ComponentContext = componentContext;
 		}
-
-	    public ActionResult MailStep()
+        
+	    public ActionResult Authorize()
 	    {
-		    return View();
-	    }
-
-	    public ActionResult Authorize(string mail)
-	    {
-		    Uri uri = TwitterSvc.BuildAuthorizationUri(mail);
+		    Uri uri = TwitterSvc.BuildAuthorizationUri();
 			
-			return new RedirectResult(uri.ToString(), false /*permanent*/);
+			return new RedirectResult(uri.ToString(), false);
 		}
 		
 		public IActionResult AuthCallback(string mail, string oauth_token, string oauth_verifier)

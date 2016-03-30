@@ -18,21 +18,28 @@ module Common {
 		onError: Function;
 
 		private addAuthentication(reqObj) {
-			var cookieStr = $.cookie(Constants.cookieName);
-			if (cookieStr) {
+		 var cookieStr = $.cookie(Constants.cookieName);
+		 if (cookieStr) {
+			
+			var headers = {};
+			headers["Authorization"] = cookieStr;
+			reqObj.headers = headers;
 
-				var cookieObj = JSON.parse(cookieStr);
-
-				var headers = {};
-				headers["Authorization"] = cookieObj.encodedToken;
-				reqObj.headers = headers;
-
-			}
-			//else {
-			//	//todo: handle error message
-			//	alert("no token found in cookies");
-			//}
+		 }
 		}
+
+		//private addAuthentication(reqObj) {
+		//	var cookieStr = $.cookie(Constants.cookieName);
+		//	if (cookieStr) {
+
+		//		var cookieObj = JSON.parse(cookieStr);
+
+		//		var headers = {};
+		//		headers["Authorization"] = cookieObj.encodedToken;
+		//		reqObj.headers = headers;
+
+		//	}
+		//}
 
 		public serializeData() {
 			this.dataToSend = JSON.stringify(this.data);

@@ -16,26 +16,7 @@ module Views {
 
 		constructor() {
 			ViewBase.currentView = this;
-			this.cookieManager = new Common.CookieManager();
-			this.loginManager = new Reg.LoginManager();
-
-			var isAlreadyLogged = this.loginManager.isAlreadyLogged();
-			if (!isAlreadyLogged) {
-				this.initializeGoogle();
-				this.initializeFacebook();
-				$(".loginSection").show();
-			} else {
-				console.log("isAlreadyLogged with " + this.loginManager.cookieLogin.networkType);
-
-				if (this.loginManager.cookieLogin.networkType === Reg.NetworkType.Facebook) {
-					this.initializeFacebook();
-				}
-
-				if (this.onLogin) {
-					this.onLogin();
-				} 
-			}
-
+			this.cookieManager = new Common.CookieManager();			
 			this.regUserMenu();
 		}
 
@@ -68,34 +49,7 @@ module Views {
 
 			return false;
 		}
-
-		private initializeGoogle() {
-			var self = this;
-
-			var btnGoogle = new Reg.GoogleButton();
-			btnGoogle.successfulCallback = (googleUser) => {
-				self.loginManager.googleUserCreator.registerOrLogin(googleUser);
-			};
-
-			var btnName = (this.pageType === PageType.HomePage) ? "googleLoginBtnHome" : "googleLoginBtn";
-			btnGoogle.elementId = btnName;
-			btnGoogle.initialize();
-		}
-
-		private initializeFacebook() {
-			var self = this;
-
-			var fbInit = new Reg.FacebookInit();
-
-			fbInit.onFacebookInitialized = () => {
-				console.log("fb initialized");
-				self.loginManager.facebookUserCreator.registerOrLogin();
-			}
-
-			fbInit.initialize();
-		}
-
-
+	 
 		public apiGet(endpointName: string, params: string[][], callback: Function) {
 
 			var endpoint = "/api/" + endpointName;

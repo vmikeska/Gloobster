@@ -133,47 +133,47 @@ namespace Gloobster.DomainModels
             return successful;
         }
 
-        public async Task<FriendsDO> CreateFriendsObj(string dbUserId)
-		{
-			var friendsObj = new FriendsEntity
-			{
-				id = new ObjectId(),
-				PortalUser_id = new ObjectId(dbUserId),
-				Friends = new List<ObjectId>(),
-				AwaitingConfirmation = new List<ObjectId>(),
-				Blocked = new List<ObjectId>(),
-				Proposed = new List<ObjectId>()
-			};
-			await DB.SaveAsync(friendsObj);
-			var friendsDo = friendsObj.ToDO();
-			return friendsDo;
-		}
+  //      public async Task<FriendsDO> CreateFriendsObj(string dbUserId)
+		//{
+		//	var friendsObj = new FriendsEntity
+		//	{
+		//		id = new ObjectId(),
+		//		PortalUser_id = new ObjectId(dbUserId),
+		//		Friends = new List<ObjectId>(),
+		//		AwaitingConfirmation = new List<ObjectId>(),
+		//		Blocked = new List<ObjectId>(),
+		//		Proposed = new List<ObjectId>()
+		//	};
+		//	await DB.SaveAsync(friendsObj);
+		//	var friendsDo = friendsObj.ToDO();
+		//	return friendsDo;
+		//}
 
 
 
-		public async Task<bool> AddEverbodyToMyFriends(string dbUserId)
-	    {
-			var myId = new ObjectId(dbUserId);
-			var myEntity = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == myId);
+		//public async Task<bool> AddEverbodyToMyFriends(string dbUserId)
+	 //   {
+		//	var myId = new ObjectId(dbUserId);
+		//	var myEntity = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == myId);
 
-			if (myEntity == null)
-			{
-				myEntity = (await CreateFriendsObj(dbUserId)).ToEntity();
-			}
+		//	if (myEntity == null)
+		//	{
+		//		myEntity = (await CreateFriendsObj(dbUserId)).ToEntity();
+		//	}
 					
-			var allUsers = await DB.FindAsync<PortalUserEntity>();
-			var allUsersExceptMe = allUsers.Where(u => u.id != myEntity.PortalUser_id).ToList();
+		//	var allUsers = await DB.FindAsync<PortalUserEntity>();
+		//	var allUsersExceptMe = allUsers.Where(u => u.id != myEntity.PortalUser_id).ToList();
 
-		    foreach (var user in allUsersExceptMe)
-		    {				
-			    if (!myEntity.Friends.Contains(user.id))
-			    {
-					myEntity.Friends.Add(user.id);
-			    }
-		    }
+		//    foreach (var user in allUsersExceptMe)
+		//    {				
+		//	    if (!myEntity.Friends.Contains(user.id))
+		//	    {
+		//			myEntity.Friends.Add(user.id);
+		//	    }
+		//    }
 
-		    await DB.ReplaceOneAsync(myEntity);
-		    return true;
-	    }
+		//    await DB.ReplaceOneAsync(myEntity);
+		//    return true;
+	 //   }
     }
 }

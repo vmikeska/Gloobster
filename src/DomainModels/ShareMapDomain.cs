@@ -16,14 +16,13 @@ namespace Gloobster.DomainModels
 		public IDbOperations DB { get; set; }
 		public ITwitterShare TwitterShare { get; set; }
 		public IFacebookShare FacebookShare { get; set; }
+        public IAccountDomain AccountDomain { get; set; }
 
-		public void ShareCities(ShareMapDO share)
-		{
-			var userIdObj = new ObjectId(share.UserId);
-			var sharingUser = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == userIdObj);
-			SocialAccountSE fbAuth = sharingUser.SocialAccounts.FirstOrDefault(s => s.NetworkType == SocialNetworkType.Facebook);
-			SocialAccountSE twAuth = sharingUser.SocialAccounts.FirstOrDefault(s => s.NetworkType == SocialNetworkType.Twitter);
-
+        public void ShareCities(ShareMapDO share)
+		{			
+			var fbAuth = AccountDomain.GetAuth(SocialNetworkType.Facebook, share.UserId);
+            var twAuth = AccountDomain.GetAuth(SocialNetworkType.Twitter, share.UserId);
+            
 			bool userFbAuthenticated = fbAuth != null;
 			bool shareToFb = share.Networks.Contains(SocialNetworkType.Facebook);
 			if (shareToFb && userFbAuthenticated)
@@ -39,7 +38,7 @@ namespace Gloobster.DomainModels
 			}
 		}
 
-		private void ShareToFB(ShareMapDO share, SocialAccountSE fbAuth)
+		private void ShareToFB(ShareMapDO share, SocAuthDO fbAuth)
 		{
 			var opts = new FacebookShareOptionsDO
 			{
@@ -53,13 +52,11 @@ namespace Gloobster.DomainModels
 
 				Link = GetSharePageLink(share.UserId)
 			};
-
-			var fbAuthDO = fbAuth.Authentication.ToDO();
-
-			FacebookShare.Share(opts, fbAuthDO);
+            
+			FacebookShare.Share(opts, fbAuth);
 		}
 
-		private void ShareToTwitter(ShareMapDO share, SocialAccountSE twAuth)
+		private void ShareToTwitter(ShareMapDO share, SocAuthDO twAuth)
 		{
 			var opts = new TwitterShareOptionsDO
 			{
@@ -68,8 +65,8 @@ namespace Gloobster.DomainModels
 				Status = share.Message
 			};
 
-			var authDO = twAuth.Authentication.ToDO();
-			TwitterShare.Tweet(opts, authDO);
+			
+			TwitterShare.Tweet(opts, twAuth);
 		}
 
 		private string GetImageLink(string userId)

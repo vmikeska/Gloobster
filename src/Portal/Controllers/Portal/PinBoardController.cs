@@ -6,6 +6,7 @@ using Gloobster.Portal.Controllers.Base;
 using Gloobster.Portal.ViewModels;
 using Microsoft.AspNet.Mvc;
 using Gloobster.DomainInterfaces;
+using Gloobster.DomainModels;
 using Gloobster.Enums;
 using Gloobster.Mappers;
 using Gloobster.SocialLogin.Facebook.Communication;
@@ -19,27 +20,36 @@ namespace Gloobster.Portal.Controllers.Portal
         public IFacebookService FBService { get; set; }
         public IComponentContext ComponentContext { get; set; }
         public IPlacesExtractor PlacesExtractor { get; set; }
-        
-        public PinBoardController(IPlacesExtractor placesExtractor, IComponentContext componentContext, IFacebookService fbService, 
+        public IEntitiesDemandor Demandor { get; set; }
+
+        public PinBoardController(IEntitiesDemandor demandor, IPlacesExtractor placesExtractor, IComponentContext componentContext, IFacebookService fbService, 
             ISharedMapImageDomain sharedImgDomain,ILogger log,  IDbOperations db) : base(log, db)
 		{
             SharedImgDomain = sharedImgDomain;
             FBService = fbService;
             PlacesExtractor = placesExtractor;
-            ComponentContext = componentContext;            
-        }
-    
-	    public async Task<IActionResult> Pins()
+            ComponentContext = componentContext;
+            Demandor = demandor;
+		}
+
+        [CreateAccount]
+        public async Task<IActionResult> Pins()
 	    {
 	        PinBoardViewModel vm = CreateViewModelInstance<PinBoardViewModel>();
-            if (IsUserLogged)
-	        {
-                vm.InitializeLogged(UserId);
-                await ImportNewFbPins();
-            }
-	        else
-	        {
-	            vm.InitializeNotLogged();                
+            bool visitedExists = false;
+            if (UserIdObj.HasValue)
+            {
+                var visitedRes = Demandor.VisitedExists(UserIdObj.Value);
+                if (visitedRes.Exists)
+                {
+                    await vm.InitializeExists(visitedRes.Entity, Demandor);
+                    //todo: bring back to life
+                    //await ImportNewFbPins();
+                }
+                else
+                {
+                    vm.InitializeNotExists();
+                }
             }
             
             return View(vm);
@@ -48,32 +58,35 @@ namespace Gloobster.Portal.Controllers.Portal
         //todo: move somewhere
         private async Task<bool> ImportNewFbPins()
         {
-            try
-            {
-                var user = PortalUser.ToDO();
-                var facebook = user.GetAccount(SocialNetworkType.Facebook);
+            //todo: fix
+            //try
+            //{
+            //    var user = PortalUser.ToDO();
+            //    var facebook = user.GetAccount(SocialNetworkType.Facebook);
 
-                bool isFbUser = (facebook != null);
-                if (isFbUser)
-                {
-                    FBService.SetAccessToken(facebook.Authentication.AccessToken);
-                    bool hasPermissions = FBService.HasPermissions("user_tagged_places");
-                    if (hasPermissions)
-                    {
-                        PlacesExtractor.Driver = ComponentContext.ResolveKeyed<IPlacesExtractorDriver>("Facebook");
+            //    bool isFbUser = (facebook != null);
+            //    if (isFbUser)
+            //    {
+            //        FBService.SetAccessToken(facebook.Authentication.AccessToken);
+            //        bool hasPermissions = FBService.HasPermissions("user_tagged_places");
+            //        if (hasPermissions)
+            //        {
+            //            PlacesExtractor.Driver = ComponentContext.ResolveKeyed<IPlacesExtractorDriver>("Facebook");
 
-                        await PlacesExtractor.ExtractNewAsync(user.UserId, facebook.Authentication);
-                        await PlacesExtractor.SaveAsync();
-                    }
-                }
+            //            await PlacesExtractor.ExtractNewAsync(user.UserId, facebook.Authentication);
+            //            await PlacesExtractor.SaveAsync();
+            //        }
+            //    }
 
-                return true;
-            }
-            catch (Exception exc)
-            {
-                Log.Error("ImportNewFbPins: " + exc.Message);
-                return false;
-            }
+            //    return true;
+            //}
+            //catch (Exception exc)
+            //{
+            //    Log.Error("ImportNewFbPins: " + exc.Message);
+            //    return false;
+            //}
+
+            return false;
         }
 
         public IActionResult SharedMapImage(string id)

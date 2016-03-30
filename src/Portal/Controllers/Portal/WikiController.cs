@@ -238,7 +238,7 @@ namespace Gloobster.Portal.Controllers.Portal
             }
 
             var userIds = perms.Select(u => u.User_id).ToList();
-            var users = DB.C<PortalUserEntity>().Where(u => userIds.Contains(u.id)).ToList();
+            var users = DB.C<UserEntity>().Where(u => userIds.Contains(u.id)).ToList();
 
             var vm = CreateViewModelInstance<WikiPermissionsViewModel>();
             
@@ -282,7 +282,7 @@ namespace Gloobster.Portal.Controllers.Portal
             };
         }
 
-        private UserViewModel ConvertUser(List<PortalUserEntity> users, ObjectId userId)
+        private UserViewModel ConvertUser(List<UserEntity> users, ObjectId userId)
         {
             var user = users.FirstOrDefault(u => u.id == userId);
 

@@ -19,7 +19,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 	public class TwitterAccountDriver : IAccountDriver
 	{
 		
-		public bool CheckCredintials(object authObject, PortalUserDO portalUser)
+		public bool CheckCredintials(object authObject, UserDO portalUser)
 		{
 			var auth = (SocAuthenticationDO) authObject;
 			TwitterSvc.AuthenticateWith(auth.AccessToken, auth.TokenSecret);
@@ -38,7 +38,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 
 		public IComponentContext ComponentContext { get; set; }
 		public IDbOperations DB { get; set; }
-		public PortalUserDO PortalUser { get; set; }
+		public UserDO PortalUser { get; set; }
 		public TwitterService TwitterSvc { get; set; }
 		public IGeoNamesService GNService { get; set; }
         public IFilesDomain FileDomain { get; set; }
@@ -52,7 +52,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 
 
 
-		public async Task<PortalUserDO> Create()
+		public async Task<UserDO> Create()
 		{
 			TwitterSvc.AuthenticateWith(Authentication.AccessToken, Authentication.TokenSecret);
 
@@ -77,22 +77,20 @@ namespace Gloobster.DomainModels.Services.Accounts
 			};
 
 
-			var userEntity = new PortalUserEntity
+			var userEntity = new UserEntity
 			{
 				id = ObjectId.GenerateNewId(),
 				DisplayName = user.ScreenName,
-				Mail = InFormInfo.Mail,
-				Password = AccountUtils.GeneratePassword(),				
-				Languages = ParseLanguage(user.Language),
+				//Mail = InFormInfo.Mail,
+				//Password = AccountUtils.GeneratePassword(),				
+				//Languages = ParseLanguage(user.Language),
 				CurrentLocation = await ParseLocation(user.Location),
-				ProfileImage = null,
+				//ProfileImage = null,
 				FirstName = AccountUtils.TryExtractFirstName(user.Name),
 				LastName = AccountUtils.TryExtractLastName(user.Name),
 				
 				Gender = Gender.N,
-				HomeLocation = null,
-
-				SocialAccounts = new [] {twitterAccount}
+				HomeLocation = null,                
 			};
 
 			var savedEntity = await DB.SaveAsync(userEntity);
@@ -160,23 +158,24 @@ namespace Gloobster.DomainModels.Services.Accounts
 			return InFormInfo.Mail;
 		}
 
-		public void OnUserExists(PortalUserDO portalUser)
+		public void OnUserExists(UserDO portalUser)
 		{
 			
 		}
 
-		public async void OnUserSuccessfulyLogged(PortalUserDO portalUser)
+		public async void OnUserSuccessfulyLogged(UserDO portalUser)
 		{
-			PlacesExtractor.Driver = ComponentContext.ResolveKeyed<IPlacesExtractorDriver>("Twitter");
+            //todo: fix
+			//PlacesExtractor.Driver = ComponentContext.ResolveKeyed<IPlacesExtractorDriver>("Twitter");
 
-			var twitterAccount = portalUser.SocialAccounts.FirstOrDefault(a => a.NetworkType == SocialNetworkType.Twitter);
-			if (twitterAccount == null)
-			{
-				return;
-			}
+			//var twitterAccount = portalUser.SocialAccounts.FirstOrDefault(a => a.NetworkType == SocialNetworkType.Twitter);
+			//if (twitterAccount == null)
+			//{
+			//	return;
+			//}
 
-			await PlacesExtractor.ExtractNewAsync(portalUser.UserId, twitterAccount.Authentication);
-			PlacesExtractor.SaveAsync();
+			//await PlacesExtractor.ExtractNewAsync(portalUser.UserId, twitterAccount.Authentication);
+			//PlacesExtractor.SaveAsync();
 		}
 	}
 }

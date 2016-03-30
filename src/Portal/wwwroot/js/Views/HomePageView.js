@@ -8,17 +8,9 @@ var Views;
     var HomePageView = (function (_super) {
         __extends(HomePageView, _super);
         function HomePageView() {
-            var _this = this;
             _super.call(this);
-            this.twInterval = null;
-            $("#twitterLoginBtnHome").click(function (e) {
-                e.preventDefault();
-                _this.twitterAuthorize();
-            });
-            $("#facebookLoginBtnHome").click(function (e) {
-                e.preventDefault();
-                _this.loginManager.facebookUserCreator.registerOrLogin();
-            });
+            var loginButtons = new Reg.LoginButtonsManager();
+            loginButtons.initialize("fbBtnHome", "googleBtnHome", "twitterBtnHome");
         }
         Object.defineProperty(HomePageView.prototype, "pageType", {
             get: function () { return Views.PageType.HomePage; },
@@ -30,22 +22,6 @@ var Views;
             _super.prototype.apiPost.call(this, "User", data, function (response) {
                 alert("user registred");
             });
-        };
-        HomePageView.prototype.twitterAuthorize = function () {
-            this.twitterLoginWatch();
-            var url = '/TwitterUser/MailStep';
-            var wnd = window.open(url, "Twitter authentication", "height=500px,width=400px");
-        };
-        HomePageView.prototype.twitterLoginWatch = function () {
-            var _this = this;
-            this.twInterval = setInterval(function () {
-                var cookieVal = _this.cookieManager.getJson(Constants.cookieName);
-                if (cookieVal) {
-                    clearInterval(_this.twInterval);
-                    window.location.href = Constants.firstRedirectUrl;
-                }
-                console.log("checking: " + JSON.stringify(cookieVal));
-            }, 500);
         };
         return HomePageView;
     })(Views.ViewBase);

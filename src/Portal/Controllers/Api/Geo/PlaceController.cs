@@ -35,7 +35,7 @@ namespace Gloobster.Portal.Controllers.Api.Geo
             var typesCol = ParseTypes(req.types);
          
             //todo: this is possibly just because of FB access token, keep this token on client, not to query it every time			
-            var user = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == UserIdObj);
+            var user = DB.C<UserEntity>().FirstOrDefault(u => u.id == UserIdObj);
          
             var userDO = user.ToDO();
          

@@ -59,8 +59,8 @@ namespace Gloobster.DomainModels.Services
 			).ToList();
 	
 			var userIdObj = new ObjectId(userId);
-			var filter = DB.F<PortalUserEntity>().Eq(p => p.id, userIdObj);
-			var update = DB.U<PortalUserEntity>().Set(p => p.HomeAirports, airportsEnts);
+			var filter = DB.F<UserEntity>().Eq(p => p.id, userIdObj);
+			var update = DB.U<UserEntity>().Set(p => p.HomeAirports, airportsEnts);
 
 			var res = await DB.UpdateAsync(filter, update);
 
@@ -79,8 +79,8 @@ namespace Gloobster.DomainModels.Services
 			};
 
 			var userIdObj = new ObjectId(userId);
-			var filter = DB.F<PortalUserEntity>().Eq(p => p.id, userIdObj);
-			var update = DB.U<PortalUserEntity>().Push(p => p.HomeAirports, saveAirport);
+			var filter = DB.F<UserEntity>().Eq(p => p.id, userIdObj);
+			var update = DB.U<UserEntity>().Push(p => p.HomeAirports, saveAirport);
 
 			var res = await DB.UpdateAsync(filter, update);
 
@@ -90,12 +90,12 @@ namespace Gloobster.DomainModels.Services
 		public async Task<bool> RemoveAirportInRange(string userId, int airportOrigId)
 		{
 			var userIdObj = new ObjectId(userId);
-			var user = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == userIdObj);
+			var user = DB.C<UserEntity>().FirstOrDefault(u => u.id == userIdObj);
 
 			var airportToDelete = user.HomeAirports.FirstOrDefault(a => a.OrigId == airportOrigId);
 			
-			var filter = DB.F<PortalUserEntity>().Eq(p => p.id, userIdObj);
-			var update = DB.U<PortalUserEntity>().Pull(p => p.HomeAirports, airportToDelete);
+			var filter = DB.F<UserEntity>().Eq(p => p.id, userIdObj);
+			var update = DB.U<UserEntity>().Pull(p => p.HomeAirports, airportToDelete);
 
 			var res = await DB.UpdateAsync(filter, update);
 

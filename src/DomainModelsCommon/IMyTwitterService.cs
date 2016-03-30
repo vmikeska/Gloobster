@@ -6,7 +6,7 @@ namespace Gloobster.DomainInterfaces
 {
 	public interface IMyTwitterService
 	{
-		Uri BuildAuthorizationUri(string mail);
+		Uri BuildAuthorizationUri();
 		SocAuthenticationDO VerifyCredintial(string oauthToken, string oauthVerifier);
 
 		ITwitterService GetAuthenticatedService(string accessToken, string accessTokenSecret);

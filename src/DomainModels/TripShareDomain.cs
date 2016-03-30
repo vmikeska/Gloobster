@@ -2,14 +2,10 @@ using System;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
-using Gloobster.Entities;
 using Gloobster.Enums;
-using Gloobster.Sharing.Facebook;
 using System.Linq;
 using Gloobster.Common;
 using Gloobster.Entities.Trip;
-using Gloobster.Mappers;
-using Gloobster.Sharing.Twitter;
 using MongoDB.Bson;
 
 namespace Gloobster.DomainModels
@@ -20,17 +16,17 @@ namespace Gloobster.DomainModels
 		public ISharedMapImageDomain ShareMapImage { get; set; }
 		public ITwitterShare TwitterShare { get; set; }
 		public IFacebookShare FacebookShare { get; set; }
+        public IAccountDomain AccountDomain { get; set; }
 
-		public void ShareTrip(ShareTripDO share)
+        public void ShareTrip(ShareTripDO share)
 		{
 			var userIdObj = new ObjectId(share.UserId);
 			var tripIdObj = new ObjectId(share.TripId);
 
-			var sharingUser = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == userIdObj);						
-			SocialAccountSE fbAuth = sharingUser.SocialAccounts.FirstOrDefault(s => s.NetworkType == SocialNetworkType.Facebook);
-			SocialAccountSE twAuth = sharingUser.SocialAccounts.FirstOrDefault(s => s.NetworkType == SocialNetworkType.Twitter);
+            var fbAuth = AccountDomain.GetAuth(SocialNetworkType.Facebook, share.UserId);
+            var twAuth = AccountDomain.GetAuth(SocialNetworkType.Twitter, share.UserId);
 
-			var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
+            var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
 
 			bool userFbAuthenticated = fbAuth != null;
 			bool shareToFb = share.Networks.Contains(SocialNetworkType.Facebook);
@@ -47,7 +43,7 @@ namespace Gloobster.DomainModels
 			}
 		}
 
-		private void ShareToTwitter(ShareTripDO share, TripEntity trip, SocialAccountSE twAuth)
+		private void ShareToTwitter(ShareTripDO share, TripEntity trip, SocAuthDO twAuth)
 		{
 			var opts = new TwitterShareOptionsDO
 			{
@@ -55,9 +51,8 @@ namespace Gloobster.DomainModels
 				ImagePath = GetLocalImageLink(share.TripId),
 				Status = share.Message
 			};
-
-			var authDO = twAuth.Authentication.ToDO();			
-			TwitterShare.Tweet(opts, authDO);
+            
+			TwitterShare.Tweet(opts, twAuth);
 		}
 
 		private Tuple<TripPlaceSE, TripPlaceSE> GetFirstAndLastPlace(TripEntity trip)
@@ -70,7 +65,7 @@ namespace Gloobster.DomainModels
 			return new Tuple<TripPlaceSE, TripPlaceSE>(firstPlace, lastPlace);
 		}
 
-		private void ShareToFB(ShareTripDO share, TripEntity trip, SocialAccountSE fbAuth)
+		private void ShareToFB(ShareTripDO share, TripEntity trip, SocAuthDO fbAuth)
 		{
 			var firstLastPlace = GetFirstAndLastPlace(trip);
 			
@@ -86,10 +81,8 @@ namespace Gloobster.DomainModels
 
 				Link = GetSharePageLink(share.TripId)
 			};
-
-			var fbAuthDO = fbAuth.Authentication.ToDO();
-
-			FacebookShare.Share(opts, fbAuthDO);
+            
+			FacebookShare.Share(opts, fbAuth);
 		}
 
 		private string GetName(TripPlaceSE firstPlace, TripPlaceSE lastPlace)

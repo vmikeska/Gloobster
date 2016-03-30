@@ -36,8 +36,8 @@ namespace Gloobster.Portal.Controllers.Base
 
         public bool IsUserLogged => !string.IsNullOrEmpty(UserId);
 
-		private PortalUserEntity _portalUser;
-		public PortalUserEntity PortalUser
+		private UserEntity _portalUser;
+		public UserEntity PortalUser
 		{
 			get
 			{
@@ -51,7 +51,7 @@ namespace Gloobster.Portal.Controllers.Base
 					return _portalUser;
 				}
 
-				_portalUser = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == UserIdObj);
+				_portalUser = DB.C<UserEntity>().FirstOrDefault(u => u.id == UserIdObj);
 
 				if (_portalUser == null)
 				{

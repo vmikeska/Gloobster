@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.Portal.Controllers.Base;
@@ -9,6 +10,10 @@ using Gloobster.DomainModels.Services.GeonamesService;
 using Gloobster.DomainModels.Wiki;
 using Gloobster.Portal.ViewModels;
 using Serilog;
+using System.Linq;
+using System.Web;
+using Gloobster.Entities;
+using Microsoft.AspNet.Http;
 
 namespace Gloobster.Portal.Controllers.Portal
 {
@@ -21,39 +26,44 @@ namespace Gloobster.Portal.Controllers.Portal
             DataCreator = dataCreator;            
 		}
 
-		public BsonDocument GenerateDoc()
+
+        [CreateAccount]
+        public async Task<IActionResult> Index()
         {
-            return new BsonDocument
-            {
-                {"id", Guid.NewGuid().ToString()},
-                {"name", "MyDoc" }
-            };
-        }
-
-	    public IActionResult TripsList()
-	    {
-			return View();
-		}
-
-	    public IActionResult Index()
-	    {
-	        var viewModel = CreateViewModelInstance<HomePageViewModel>();
-			return View(viewModel);
-        }
-
-	    public async Task<IActionResult> Test()
-	    {
-            //DataCreator.CreateInitialData();
-
-
             return View();
-	    }
+        }
 
-        public IActionResult Test2()
-        {
+        
+
+        //public BsonDocument GenerateDoc()
+        //{
+        //    return new BsonDocument
+        //    {
+        //        {"id", Guid.NewGuid().ToString()},
+        //        {"name", "MyDoc" }
+        //    };
+        //}
+
+	    
+
+        
+        
+
+
+
+	    //public async Task<IActionResult> Test()
+	    //{
+     //       //DataCreator.CreateInitialData();
+
+
+     //       return View();
+	    //}
+
+     //   public IActionResult Test2()
+     //   {
             
-            return View();
-        }
+     //       return View();
+     //   }
 
 
     }

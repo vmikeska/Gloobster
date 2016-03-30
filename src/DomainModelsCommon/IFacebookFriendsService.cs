@@ -5,6 +5,6 @@ namespace Gloobster.DomainInterfaces
 {
 	public interface IFacebookFriendsService
 	{
-		List<PortalUserDO> GetFriends(string userId);
+		List<UserDO> GetFriends(string userId);
 	}
 }

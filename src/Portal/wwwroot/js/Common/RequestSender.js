@@ -12,16 +12,20 @@ var Common;
         RequestSender.prototype.addAuthentication = function (reqObj) {
             var cookieStr = $.cookie(Constants.cookieName);
             if (cookieStr) {
-                var cookieObj = JSON.parse(cookieStr);
                 var headers = {};
-                headers["Authorization"] = cookieObj.encodedToken;
+                headers["Authorization"] = cookieStr;
                 reqObj.headers = headers;
             }
-            //else {
-            //	//todo: handle error message
-            //	alert("no token found in cookies");
-            //}
         };
+        //private addAuthentication(reqObj) {
+        //	var cookieStr = $.cookie(Constants.cookieName);
+        //	if (cookieStr) {
+        //		var cookieObj = JSON.parse(cookieStr);
+        //		var headers = {};
+        //		headers["Authorization"] = cookieObj.encodedToken;
+        //		reqObj.headers = headers;
+        //	}
+        //}
         RequestSender.prototype.serializeData = function () {
             this.dataToSend = JSON.stringify(this.data);
         };

@@ -12,7 +12,7 @@ namespace Gloobster.Sharing.Twitter
 	{
 		public IMyTwitterService MyTwitterSvc { get; set; }
 
-		public void Tweet(TwitterShareOptionsDO options, SocAuthenticationDO authentication)
+		public void Tweet(TwitterShareOptionsDO options, SocAuthDO authentication)
 		{
 			var service = MyTwitterSvc.GetAuthenticatedService(authentication.AccessToken, authentication.TokenSecret);
 			

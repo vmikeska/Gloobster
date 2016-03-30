@@ -1,6 +1,6 @@
 var Constants;
 (function (Constants) {
-    Constants.cookieName = "loginCookie";
+    Constants.cookieName = "TestSession";
     Constants.firstRedirectUrl = "/PinBoard/Pins";
     Constants.networkTypes = "NetworkTypes";
     Constants.emptyId = "000000000000000000000000";

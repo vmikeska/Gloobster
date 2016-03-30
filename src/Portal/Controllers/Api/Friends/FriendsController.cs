@@ -79,7 +79,7 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 
 			var allInvolvedUserIds = GetAllInvolvedUserIds(friendsEntity);
 
-			var friends = DB.C<PortalUserEntity>().Where(u => allInvolvedUserIds.Contains(u.id)).ToList();
+			var friends = DB.C<UserEntity>().Where(u => allInvolvedUserIds.Contains(u.id)).ToList();
 
 			var fbFriendsFiltered = GetFbFriends(userId, friendsEntity);
 
@@ -97,9 +97,9 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 			return response;
 		}
 
-		private List<PortalUserDO> GetFbFriends(string userId, FriendsEntity friends)
+		private List<UserDO> GetFbFriends(string userId, FriendsEntity friends)
 		{
-			var result = new List<PortalUserDO>();
+			var result = new List<UserDO>();
 
 		    try
 		    {                
@@ -136,7 +136,7 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 			return friendsIds;
 		}
 
-		private FriendResponse ConvertResponse(ObjectId friendId, List<PortalUserEntity> portalUsers)
+		private FriendResponse ConvertResponse(ObjectId friendId, List<UserEntity> portalUsers)
 		{
 			var portalUser = portalUsers.FirstOrDefault(u => u.id == friendId);
 

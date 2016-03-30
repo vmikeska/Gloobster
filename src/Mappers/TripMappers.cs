@@ -10,7 +10,7 @@ namespace Gloobster.Mappers
 {
 	public static class TripMappers
 	{
-		public static TripUsersResponse ToResponse(this PortalUserEntity entity)
+		public static TripUsersResponse ToResponse(this UserEntity entity)
 		{
 			var request = new TripUsersResponse
 			{

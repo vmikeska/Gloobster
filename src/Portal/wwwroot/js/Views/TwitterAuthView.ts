@@ -12,7 +12,7 @@
 		private twInterval = null;
 
 		private handleRoughResponse(resp) {
-			this.loginManager.twitterUserCreator.handleRoughResponse(resp);
+			//this.loginManager.twitterUserCreator.handleRoughResponse(resp);
 			this.twitterLoginWatch();
 		}
 

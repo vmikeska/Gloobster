@@ -5,6 +5,6 @@ namespace Gloobster.DomainInterfaces
 {
 	public interface ICreateUserData
 	{
-		Task<bool> Create(PortalUserDO portalUser);
+		Task<bool> Create(UserDO portalUser);
 	}
 }

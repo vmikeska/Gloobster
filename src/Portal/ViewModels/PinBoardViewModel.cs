@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using Gloobster.Entities;
 using System.Linq;
+using System.Threading.Tasks;
+using Gloobster.DomainModels;
 using MongoDB.Bson;
 
 namespace Gloobster.Portal.ViewModels
@@ -13,18 +15,15 @@ namespace Gloobster.Portal.ViewModels
 		public int UsStates { get; set; }
         public List<Friend> Friends { get; set; }
 
-        public void InitializeLogged(string userId)
+        public async Task InitializeExists(VisitedEntity visited, IEntitiesDemandor demandor)
         {
-            var userIdObj = new ObjectId(userId);
-            var visited = DB.C<VisitedEntity>().FirstOrDefault(u => u.PortalUser_id == userIdObj);
-
             Countries = visited.Countries.Count;
             Cities = visited.Cities.Count;
             WorldTraveled = PinBoardUtils.CalculatePercentOfWorldTraveled(Countries);
             UsStates = visited.States.Count;
 
-            var friendsEntity = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == userIdObj);
-            var friends = DB.C<PortalUserEntity>().Where(f => friendsEntity.Friends.Contains(f.id)).ToList();
+            var friendsEntity = await demandor.GetFriendsAsync(visited.PortalUser_id);
+            var friends = DB.C<UserEntity>().Where(f => friendsEntity.Friends.Contains(f.id)).ToList();
             Friends = friends.Select(f => new Friend
             {
                 DisplayName = f.DisplayName,
@@ -32,7 +31,26 @@ namespace Gloobster.Portal.ViewModels
             }).ToList();
         }
 
-        public void InitializeNotLogged()
+        //public void InitializeLogged(string userId)
+        //{
+        //    var userIdObj = new ObjectId(userId);
+        //    var visited = DB.C<VisitedEntity>().FirstOrDefault(u => u.PortalUser_id == userIdObj);
+
+        //    Countries = visited.Countries.Count;
+        //    Cities = visited.Cities.Count;
+        //    WorldTraveled = PinBoardUtils.CalculatePercentOfWorldTraveled(Countries);
+        //    UsStates = visited.States.Count;
+
+        //    var friendsEntity = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == userIdObj);
+        //    var friends = DB.C<PortalUserEntity>().Where(f => friendsEntity.Friends.Contains(f.id)).ToList();
+        //    Friends = friends.Select(f => new Friend
+        //    {
+        //        DisplayName = f.DisplayName,
+        //        Id = f.id.ToString()
+        //    }).ToList();
+        //}
+
+        public void InitializeNotExists()
         {
             Friends = new List<Friend>();
         }

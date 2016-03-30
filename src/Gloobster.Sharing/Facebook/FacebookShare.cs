@@ -30,7 +30,7 @@ namespace Gloobster.Sharing.Facebook
             }            
         }
 
-	    public bool Checkin(FacebookCheckinDO checkin, SocAuthenticationDO authentication)
+	    public bool Checkin(FacebookCheckinDO checkin, SocAuthDO authentication)
 	    {
 	        try
 	        {
@@ -69,7 +69,7 @@ namespace Gloobster.Sharing.Facebook
 	    }
 
 
-	    public void Share(FacebookShareOptionsDO so, SocAuthenticationDO authentication)
+	    public void Share(FacebookShareOptionsDO so, SocAuthDO authentication)
 		{
 			var endpoint = "/me/feed";
 			//og.follows

@@ -3,14 +3,14 @@
 
 		constructor() {
 			super();
-			this.loginType = NetworkType.Twitter;
+			//this.loginType = NetworkType.Twitter;
 		}
 
 		endpoint = "/api/TwitterUser";
 
 		handleRoughResponse(twUser) {
 
-			super.sendUserRegistrationData(twUser);
+			//super.sendUserRegistrationData(twUser);
 		}
 
 

@@ -16,15 +16,14 @@ namespace Gloobster.DomainModels.Services.Twitter
 			TwitterSvc = new TwitterService(GloobsterConfig.TwitterConsumerKey, GloobsterConfig.TwitterConsumerSecret);
 		}
 
-		private string GetCallbackUrl(string mail)
-		{
-			var protocol = "http";
-			return $"{protocol}://{GloobsterConfig.Domain}/TwitterUser/AuthCallback?mail={mail}";		
+		private string GetCallbackUrl()
+		{			
+			return $"{GloobsterConfig.Protocol}://{GloobsterConfig.Domain}/TwitterUser/AuthCallback";		
 		}
 
-		public Uri BuildAuthorizationUri(string mail)
+		public Uri BuildAuthorizationUri()
 		{
-			var url = GetCallbackUrl(mail);
+			var url = GetCallbackUrl();
 
 			// Step 1 - Retrieve an OAuth Request Token			
 			// This is the registered callback URL

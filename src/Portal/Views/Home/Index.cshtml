@@ -22,7 +22,7 @@
 
     <link href="~/css/style.css" rel="stylesheet">	
 </head>
-<body class="homepage" id="top">
+<body onload="onBodyLoad()" class="homepage" id="top">
     <header class="header">
         <div class="wrapper">
             <h1><a href="." class="logo-header">Gloobster</a>
@@ -31,7 +31,7 @@
             <div class="menu-holder">
                 <div class="tright mhalf">
                     @Html.Partial("_LangMenu")
-                    @Html.Partial("_UserMenu")
+                    @*@Html.Partial("_UserMenu")*@
                 </div>
                 @Html.Partial("_Menu")
             </div>
@@ -41,6 +41,9 @@
 
         @Html.Partial("_GlobalScripts")
         <script type="text/javascript" src="@Url.Content("~/js/Views/HomePageView.js")"></script>
+        <script type="text/javascript" src="@Url.Content("~/js/registration/SocialButtons.js")"></script>
+        <script type="text/javascript" src="@Url.Content("~/js/registration/FacebookAuth.js")"></script>
+        
         
     </header>
 
@@ -52,8 +55,6 @@
             <div class="logins">
                 <div class="margin">
 
-                    <a class="facebook" href="#">Sign in with Facebook</a>
-
                     @*<div onlogin="currentView.loginManager.facebookUserCreator.registerOrLogin()"
                          class="fb-login-button"
                          data-scope="publish_actions,user_location,user_hometown,public_profile,user_friends,email"
@@ -64,9 +65,9 @@
                         Facebook
                     </div>*@
 
-
-                    <a class="twitter" href="#">Sign in with Twitter</a>
-                    <a class="google" href="#">Sign in with Google</a>
+                    <a id="fbBtnHome"  class="facebook" href="#">Sign in with Facebook</a>
+                    <a id="twitterBtnHome" class="twitter" href="#">Sign in with Twitter</a>
+                    <a id="googleBtnHome" class="google" href="#">Sign in with Google</a>
                 </div>
                 <span class="email">
                     Connect with popular networks or
@@ -119,12 +120,6 @@
 
         function onBodyLoad() {
             currentView = new Views.HomePageView();
-
-            var loginCookie = currentView.cookieManager.getJson(Constants.cookieName);
-            if (loginCookie) {
-                window.location = Constants.firstRedirectUrl;
-            }
-
         }
 
     </script>

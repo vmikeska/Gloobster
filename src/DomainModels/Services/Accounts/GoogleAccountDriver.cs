@@ -20,7 +20,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 {
 	public class GoogleAccountDriver : IAccountDriver
 	{
-		public bool CheckCredintials(object authObject, PortalUserDO portalUser)
+		public bool CheckCredintials(object authObject, UserDO portalUser)
 		{
 			var socAuth = (SocAuthenticationDO)authObject;
 			var url = "https://www.googleapis.com/oauth2/v1/tokeninfo";
@@ -52,13 +52,13 @@ namespace Gloobster.DomainModels.Services.Accounts
         public IFilesDomain FileDomain { get; set; }
         public IPlacesExtractor PlacesExtractor { get; set; }
 		
-		public PortalUserDO PortalUser { get; set; }
+		public UserDO PortalUser { get; set; }
 
 		public SocAuthenticationDO Authentication { get; set; }
 		public object UserObj { get; set; }
 		private GoogleUserRegistrationDO User => (GoogleUserRegistrationDO) UserObj;
 
-		public async Task<PortalUserDO> Create()
+		public async Task<UserDO> Create()
 		{
 
 			var googleAccount = new SocialAccountSE
@@ -71,16 +71,14 @@ namespace Gloobster.DomainModels.Services.Accounts
 				}
 			};
 			
-			var userEntity = new PortalUserEntity
+			var userEntity = new UserEntity
 			{
 				id = ObjectId.GenerateNewId(),
 				DisplayName = User.DisplayName,
-				Mail = User.Mail,
-				Password = AccountUtils.GeneratePassword(),
-				ProfileImage = null,
+				//Mail = User.Mail,
+				//Password = AccountUtils.GeneratePassword(),
+				//ProfileImage = null,
 				
-				SocialAccounts = new[] {googleAccount},
-
 				FirstName = "",
 				LastName = "",
 				HomeLocation = null,
@@ -103,29 +101,30 @@ namespace Gloobster.DomainModels.Services.Accounts
 			return User.Mail;
 		}
 
-		public void OnUserExists(PortalUserDO portalUser)
+		public void OnUserExists(UserDO portalUser)
 		{
 			UpdateGoogleUserAuth(portalUser, Authentication.AccessToken, Authentication.ExpiresAt);
 		}
 
-		public void OnUserSuccessfulyLogged(PortalUserDO portalUser)
+		public void OnUserSuccessfulyLogged(UserDO portalUser)
 		{
 		}
 				
-		private async void UpdateGoogleUserAuth(PortalUserDO portalUser, string accessToken, DateTime expiresAt)
+		private async void UpdateGoogleUserAuth(UserDO portalUser, string accessToken, DateTime expiresAt)
 		{
-			var portalUserEntity = portalUser.ToEntity();
-			var socialAccount = portalUserEntity.SocialAccounts.First(a => a.NetworkType == SocialNetworkType.Google);
-			socialAccount.Authentication.AccessToken = accessToken;
-			socialAccount.Authentication.ExpiresAt = expiresAt;
+            //todo: fix
+			//var portalUserEntity = portalUser.ToEntity();
+			//var socialAccount = portalUserEntity.SocialAccounts.First(a => a.NetworkType == SocialNetworkType.Google);
+			//socialAccount.Authentication.AccessToken = accessToken;
+			//socialAccount.Authentication.ExpiresAt = expiresAt;
 			
-			var result = await DB.ReplaceOneAsync(portalUserEntity);
+			//var result = await DB.ReplaceOneAsync(portalUserEntity);
 
-			if (result.MatchedCount == 0)
-			{
-				//todo: make it nice here
-				throw new Exception("something went wrong with update");
-			}
+			//if (result.MatchedCount == 0)
+			//{
+			//	//todo: make it nice here
+			//	throw new Exception("something went wrong with update");
+			//}
 		}
 	}
 

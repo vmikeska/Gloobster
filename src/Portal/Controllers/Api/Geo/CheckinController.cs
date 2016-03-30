@@ -23,13 +23,15 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 		public ICountryService CountryService { get; set; }
         public IFacebookService FBService { get; set; }
         public IFacebookShare FBShare { get; set; }
+        public IAccountDomain AccountDomain { get; set; }
 
-        public CheckinController(IFacebookShare fbShare, IFacebookService fbService, ICheckinPlaceDomain checkinDomain, ICountryService countryService, ILogger log, IDbOperations db) : base(log, db)
+        public CheckinController(IAccountDomain accountDomain, IFacebookShare fbShare, IFacebookService fbService, ICheckinPlaceDomain checkinDomain, ICountryService countryService, ILogger log, IDbOperations db) : base(log, db)
 		{
 			CheckinDomain = checkinDomain;
 			CountryService = countryService;
 		    FBService = fbService;
             FBShare = fbShare;
+            AccountDomain = accountDomain;
 		}
 		
 		[HttpPost]
@@ -37,15 +39,16 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 		public async Task<IActionResult> Post([FromBody]CheckinRequest place)
 		{
 			var sourceType = (SourceType)place.SourceType;
-			
+			//save to db
 			var checkedDO = await CheckinDomain.CheckinPlace(place.SourceId, sourceType, UserId);
 
+            ///...then do other stuff
 		    if (sourceType == SourceType.FB)
 		    {
                 //https://developers.facebook.com/docs/graph-api/reference/v2.5/user/feed/
 		        
 		        var usrDO = PortalUser.ToDO();
-		        var fb = usrDO.GetAccount(SocialNetworkType.Facebook);
+		        var fb = AccountDomain.GetAuth(SocialNetworkType.Facebook, UserId);
 		        if (fb != null)
 		        {
 		            var checkin = new FacebookCheckinDO
@@ -54,7 +57,8 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 		                Place = place.SourceId		                
 		            };
 
-                    FBShare.Checkin(checkin, fb.Authentication);
+                    //todo: fix
+                    //FBShare.Checkin(checkin, fb.Authentication);
                 }                
 		    }
 

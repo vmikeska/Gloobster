@@ -4,6 +4,6 @@ namespace Gloobster.DomainInterfaces
 {
 	public interface ITwitterShare
 	{
-		void Tweet(TwitterShareOptionsDO options, SocAuthenticationDO authentication);
+		void Tweet(TwitterShareOptionsDO options, SocAuthDO authentication);
 	}
 }

@@ -12,30 +12,31 @@ using System.Linq;
 
 namespace Gloobster.DomainModels.Services.Accounts
 {
-	public class AccountDriver: IAccountDriver
+    public class AccountDriver: IAccountDriver
 	{
-		public bool CheckCredintials(object authObject, PortalUserDO portalUser)
+		public bool CheckCredintials(object authObject, UserDO portalUser)
 		{
 			var userRequest = (BaseUserDO)authObject;
-			bool valid = (userRequest.Password == portalUser.Password);
+		    bool valid = true;
+                //(userRequest.Password == portalUser.Password);
 			return valid;
 		}
 
 		public IComponentContext ComponentContext { get; set; }
 		public IDbOperations DB { get; set; }
-		public PortalUserDO PortalUser { get; set; }
+		public UserDO PortalUser { get; set; }
 		public SocialNetworkType NetworkType => SocialNetworkType.Base;
 		public SocAuthenticationDO Authentication { get; set; }
 		public object UserObj { get; set; }
 		private BaseUserDO User => (BaseUserDO)UserObj;
 
 
-		public async Task<PortalUserDO> Create()
+		public async Task<UserDO> Create()
 		{			
-			var newUser = new PortalUserEntity
+			var newUser = new UserEntity
 			{
-				Mail = User.Mail,
-				Password = User.Password,
+				//Mail = User.Mail,
+				//Password = User.Password,
 				DisplayName = GetInitialDisplayName(User.Mail)
 			};
 
@@ -61,12 +62,12 @@ namespace Gloobster.DomainModels.Services.Accounts
 			return User.Mail;
 		}
 
-		public void OnUserExists(PortalUserDO portalUser)
+		public void OnUserExists(UserDO portalUser)
 		{
 			
 		}
 
-		public void OnUserSuccessfulyLogged(PortalUserDO portalUser)
+		public void OnUserSuccessfulyLogged(UserDO portalUser)
 		{
 			
 		}

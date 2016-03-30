@@ -19,6 +19,7 @@ using Gloobster.DomainModels.Services.Twitter;
 using Gloobster.DomainModels.Wiki;
 using Gloobster.Enums;
 using Gloobster.Portal.Controllers.Api.PinBoard;
+using Gloobster.Portal.Controllers.Portal;
 using Gloobster.Sharing.Facebook;
 using Gloobster.Sharing.Twitter;
 using Gloobster.SocialLogin.Facebook.Communication;
@@ -34,7 +35,7 @@ namespace Gloobster.Portal
 			builder.AddInstance<IStorageProvider>(storage);
             
 			builder.AddTransient<IUserService, UserService>();
-			builder.AddTransient<IAccountDriver, FacebookAccountDriver>().Keyed<IAccountDriver>("Facebook");
+			//builder.AddTransient<IAccountDriver, FacebookAccountDriver>().Keyed<IAccountDriver>("Facebook");
 			builder.AddTransient<IAccountDriver, TwitterAccountDriver>().Keyed<IAccountDriver>("Twitter");
 			builder.AddTransient<IAccountDriver, GoogleAccountDriver>().Keyed<IAccountDriver>("Google");            
             builder.AddTransient<IAccountDriver, AccountDriver>().Keyed<IAccountDriver>("Base");
@@ -121,7 +122,15 @@ namespace Gloobster.Portal
             builder.AddTransient<IExecOperation, ConfirmPhotoOperation>().Keyed<IExecOperation>("ConfirmPhotoOperation");
             builder.AddTransient<IExecOperation, DeletePhotoOperation>().Keyed<IExecOperation>("DeletePhotoOperation");
             builder.AddTransient<IExecOperation, SetToResolvedOperation>().Keyed<IExecOperation>("SetToResolvedOperation");
+
+            builder.AddTransient<IEntitiesDemandor, EntitiesDemandor>();
             
+            builder.AddTransient<ISocNetworkService, SocNetworkService>();
+            builder.AddTransient<ISocLogin, FacebookSocLogin>().Keyed<ISocLogin>("Facebook");
+
+
+            builder.AddTransient<IAccountDomain, AccountDomain>();
+            builder.AddTransient<IAvatarPhoto, AvatarPhoto>();            
         }
 		
 	}

@@ -28,17 +28,17 @@
 		private initBase() {
 			var html = "";
 
-			var isLogged = ViewBase.currentView.loginManager.isAlreadyLogged();
-			if (isLogged) {
+			//var isLogged = ViewBase.currentView.loginManager.isAlreadyLogged();
+			//if (isLogged) {
 				html +=
 					this.itemTemplate({ id: "Me", displayName: "Me", checked: true }) +
 					this.itemTemplate({ id: "Friends", displayName: "Friends" }) +
 					this.itemTemplate({ id: "Everybody", displayName: "Everybody" });				
-			} else {
-				var $h = $(this.itemTemplate({ id: "Everybody", displayName: "Everybody", checked: true }));
-				$h.find("input").prop("disabled", true);
-				html = $h;				
-			}
+			//} else {
+			//	var $h = $(this.itemTemplate({ id: "Everybody", displayName: "Everybody", checked: true }));
+			//	$h.find("input").prop("disabled", true);
+			//	html = $h;				
+			//}
 
 			this.$userFilterContent.prepend(html);
 		}

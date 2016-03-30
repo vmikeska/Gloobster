@@ -28,31 +28,31 @@ namespace Gloobster.Portal.Controllers.Api.User
 		[AuthorizeApi]
 		public async Task<IActionResult> Put([FromBody] PropertyUpdateRequest request)
 		{			
-			var filter = DB.F<PortalUserEntity>().Eq(p => p.id, UserIdObj);
-			UpdateDefinition<PortalUserEntity> update = null;
+			var filter = DB.F<UserEntity>().Eq(p => p.id, UserIdObj);
+			UpdateDefinition<UserEntity> update = null;
 
 			if (request.propertyName == "HomeLocation")
 			{
 				var location = await GetLocationSubEntity(request.values["sourceId"]);
-				update = DB.U<PortalUserEntity>().Set(p => p.HomeLocation, location);
+				update = DB.U<UserEntity>().Set(p => p.HomeLocation, location);
 			}
 
 			if (request.propertyName == "CurrentLocation")
 			{
 				var location = await GetLocationSubEntity(request.values["sourceId"]);
-				update = DB.U<PortalUserEntity>().Set(p => p.CurrentLocation, location);
+				update = DB.U<UserEntity>().Set(p => p.CurrentLocation, location);
 			}
 
 			if (request.propertyName == "Gender")
 			{
 				var gender = (Gender)int.Parse(request.values["gender"]);
-				update = DB.U<PortalUserEntity>().Set(p => p.Gender, gender);				
+				update = DB.U<UserEntity>().Set(p => p.Gender, gender);				
 			}
 
 			if (request.propertyName == "DisplayName")
 			{
 				var name = request.values["name"];
-				update = DB.U<PortalUserEntity>().Set(p => p.DisplayName, name);				
+				update = DB.U<UserEntity>().Set(p => p.DisplayName, name);				
 			}
 
 			if (update != null)

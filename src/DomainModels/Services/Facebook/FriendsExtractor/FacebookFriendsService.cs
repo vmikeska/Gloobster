@@ -8,44 +8,44 @@ using Gloobster.Entities;
 using Gloobster.Enums;
 using Gloobster.Mappers;
 using Gloobster.SocialLogin.Facebook.Communication;
-using MongoDB.Bson;
 
 namespace Gloobster.DomainModels.Services.Facebook.FriendsExtractor
 {
-	public class FacebookFriendsService: IFacebookFriendsService
+    public class FacebookFriendsService: IFacebookFriendsService
 	{
 		public IFacebookService FbService { get; set; }
 		public IDbOperations DB { get; set; }
-		
-		public List<PortalUserDO> GetFriends(string userId)
-		{
-			var userIdObj = new ObjectId(userId);
+        public IAccountDomain AccountDomain { get; set; }
 
-			var portalUser = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == userIdObj);
+        public List<UserDO> GetFriends(string userId)
+		{			
+            var fbSocAuth = AccountDomain.GetAuth(SocialNetworkType.Facebook, userId);
+                
 
-		    if (portalUser.SocialAccounts == null)
-		    {
-		        return null;
-		    }
-
-            var fbSocAuth = portalUser.SocialAccounts.FirstOrDefault(s => s.NetworkType == SocialNetworkType.Facebook);
-			
-			bool hasFacebook = fbSocAuth != null;
+            bool hasFacebook = fbSocAuth != null;
 			if (!hasFacebook)
 			{
 				return null;
 			}
 
-			FbService.SetAccessToken(fbSocAuth.Authentication.AccessToken);
+			FbService.SetAccessToken(fbSocAuth.AccessToken);
 
 			List<FacebookUser> fbFriends = GetFriends();
 			List<string> friendsFBIds = fbFriends.Select(f => f.id).ToList();
 
-			var portalUsersQuery = DB.C<PortalUserEntity>().Where(u =>
-							u.SocialAccounts.Any(s => (s.NetworkType == SocialNetworkType.Facebook) && friendsFBIds.Contains(s.Authentication.UserId)));
-			var portalUsers = portalUsersQuery.ToList();
-			
-			var portalUsersDo = portalUsers.Select(u => u.ToDO()).ToList();
+
+            var friendsSocEntities =
+                DB.List<SocialAccountEntity>(u => friendsFBIds.Contains(u.UserId) && u.NetworkType == SocialNetworkType.Facebook);
+                
+
+            var friendsSocUserIds = friendsSocEntities.Select(a => a.User_id).ToList();
+
+            var friends = DB.List<UserEntity>(u => friendsSocUserIds.Contains(u.User_id));
+
+            //var portalUsersQuery = 
+            //    DB.C<SocialAccountEntity>().Where(u => u.SocialAccounts.Any(s => (s.NetworkType == SocialNetworkType.Facebook) && friendsFBIds.Contains(s.Authentication.UserId)));
+            
+			var portalUsersDo = friends.Select(u => u.ToDO()).ToList();
 			return portalUsersDo;
 		}
 

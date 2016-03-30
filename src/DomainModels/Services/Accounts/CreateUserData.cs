@@ -14,7 +14,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 {
 	public class CreateUserData : ICreateUserData
 	{
-		public PortalUserDO PortalUser { get; set; }
+		public UserDO PortalUser { get; set; }
 		public IDbOperations DB { get; set; }
 		public INotificationsDomain NotificationDomain { get; set; }
 		public IPlanningDomain PlanningDomain { get; set; }
@@ -22,13 +22,13 @@ namespace Gloobster.DomainModels.Services.Accounts
 		public IGeoNamesService GNService { get; set; }
 		public IAirportService AirportSvc { get; set; }
 
-		public async Task<bool>Create(PortalUserDO portalUser)
+		public async Task<bool>Create(UserDO portalUser)
 		{
 			PortalUser = portalUser;
 
-			await CreateVisited();			
+			//await CreateVisited();			
 			CreatePlanning();
-			CreateFriends();
+			//CreateFriends();
 
 			InitNotifications();
 			await InitAirports();
@@ -39,19 +39,19 @@ namespace Gloobster.DomainModels.Services.Accounts
 			return true;
 		}
 
-		private async Task<bool> CreateVisited()
-		{
-			var visited = new VisitedEntity
-			{
-				PortalUser_id = new ObjectId(PortalUser.UserId),
-				Places = new List<VisitedPlaceSE>(),
-				Cities = new List<VisitedCitySE>(),
-				Countries = new List<VisitedCountrySE>(),
-                States = new List<VisitedStateSE>()
-			};
-			await DB.SaveAsync(visited);
-			return true;
-		}
+		//public async Task<bool> CreateVisited()
+		//{
+		//	var visited = new VisitedEntity
+		//	{
+		//		PortalUser_id = new ObjectId(PortalUser.UserId),
+		//		Places = new List<VisitedPlaceSE>(),
+		//		Cities = new List<VisitedCitySE>(),
+		//		Countries = new List<VisitedCountrySE>(),
+  //              States = new List<VisitedStateSE>()
+		//	};
+		//	await DB.SaveAsync(visited);
+		//	return true;
+		//}
 
 		private void InitNotifications()
 		{
@@ -79,78 +79,11 @@ namespace Gloobster.DomainModels.Services.Accounts
 			PlanningDomain.CreateDBStructure(PortalUser.UserId);
 		}
 
-		private async void CreateFriends()
-		{
-			await FriendsService.CreateFriendsObj(PortalUser.UserId);
-		}
+		//private async void CreateFriends()
+		//{
+		//	await FriendsService.CreateFriendsObj(PortalUser.UserId);
+		//}
 
-	    public static TripEntity GetInitialTripEntity(string name, string userId)
-	    {
-            var travel = new TripTravelSE
-            {
-                id = ObjectId.GenerateNewId(),
-                Type = TravelType.Plane,
-                LeavingDateTime = DateTime.UtcNow,
-                ArrivingDateTime = DateTime.UtcNow.AddDays(1),
-                Description = "Here you can place notes for your travel"
-            };
-
-            var firstPlace = new TripPlaceSE
-            {
-                id = ObjectId.GenerateNewId(),
-                ArrivingId = ObjectId.Empty,
-                LeavingId = travel.id,
-                OrderNo = 1,
-                Place = new PlaceSE
-                {
-                    SourceType = SourceType.City,
-                    SourceId = "2643743",
-                    SelectedName = "London, GB",
-                    Coordinates = new LatLng { Lat = 51.50853, Lng = -0.12574 }
-                },
-                Description = "",
-                WantVisit = new List<PlaceIdSE>()
-            };
-
-            var secondPlace = new TripPlaceSE
-            {
-                id = ObjectId.GenerateNewId(),
-                ArrivingId = travel.id,
-                LeavingId = ObjectId.Empty,
-                OrderNo = 2,
-                Place = new PlaceSE
-                {
-                    SourceType = SourceType.City,
-                    SourceId = "5128581",
-                    SelectedName = "New York, US",
-                    Coordinates = new LatLng { Lat = 40.71427, Lng = -74.00597 }
-                },
-                Description = "",
-                WantVisit = new List<PlaceIdSE>(),
-            };
-
-            var tripEntity = new TripEntity
-            {
-                id = ObjectId.GenerateNewId(),
-                CreatedDate = DateTime.UtcNow,
-                Name = name,
-                PortalUser_id = new ObjectId(userId),
-                Comments = new List<CommentSE>(),
-                Files = new List<FileSE>(),
-                Travels = new List<TripTravelSE> { travel },
-                Places = new List<TripPlaceSE> { firstPlace, secondPlace },
-                Participants = new List<ParticipantSE>(),
-                FilesPublic = new List<FilePublicSE>(),
-                NotesPublic = false,
-                FriendsPublic = true,
-                AllowToRequestJoin = false,
-                SharingCode = null,
-                Notes = "",
-                Description = "",
-                HasBigPicture = false                 
-            };
-
-	        return tripEntity;
-	    }
+	    
 	}
 }

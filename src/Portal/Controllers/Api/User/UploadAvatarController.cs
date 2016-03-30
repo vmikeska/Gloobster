@@ -1,8 +1,10 @@
 using System.Drawing;
+using System.IO;
 using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels;
+using Gloobster.DomainModels.Wiki;
 using Gloobster.DomainObjects;
 using Gloobster.Entities;
 using Gloobster.Portal.Controllers.Base;
@@ -12,83 +14,40 @@ using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.User
 {
+    
+
     public class UploadAvatarController: BaseApiController
 	{		
-		public FilesDomain FileDomain { get; set; }
-
-	    private string FileLocation;
-
-		public UploadAvatarController(IFilesDomain filesDomain, ILogger log, IDbOperations db) : base(log, db)
+		public IFilesDomain FileDomain { get; set; }
+        public IAvatarPhoto AvatarPhoto { get; set; }
+        
+		public UploadAvatarController(IAvatarPhoto avatarPhoto, IFilesDomain filesDomain, ILogger log, IDbOperations db) : base(log, db)
 		{			
-			FileDomain = (FilesDomain)filesDomain;
+			FileDomain = filesDomain;
+		    AvatarPhoto = avatarPhoto;
 		}
         
-	    private void CreateThumbnail(Bitmap source, int dimension, string fileName)
-	    {
-            var newBmp = BitmapUtils.ResizeImage(source, dimension, dimension);
-            var newJpgStream = BitmapUtils.ConvertBitmapToJpg(newBmp, 90);
-            var path = FileDomain.Storage.Combine(FileLocation, fileName);
-
-            FileDomain.Storage.SaveStream(path, newJpgStream);
-
-            newBmp.Dispose();
-            newJpgStream.Dispose();
-        }
-
         [HttpPost]
 		[AuthorizeApi]
 		public IActionResult Post([FromBody] FileRequest request)
 		{
-			FileLocation = FileDomain.Storage.Combine("avatars", UserId);
+			var location = FileDomain.Storage.Combine(AvatarFilesConsts.Location, UserId);
             
-            var fileName = "profile.jpg";
-            var fileName_s = "profile_s.jpg";
-            var fileName_xs = "profile_xs.jpg";
-
             FileDomain.OnFileSaved += (sender, args) =>
-			{
-				var argsObj = (OnFileSavedArgs) args;
+            {
+                var argsObj = (OnFileSavedArgs)args;
 
-                //save orig picture name
-                var filter = DB.F<PortalUserEntity>().Eq(p => p.id, UserIdObj);
-                var update = DB.U<PortalUserEntity>().Set(p => p.ProfileImage, argsObj.FileName);
-                DB.UpdateAsync(filter, update);
+                AvatarPhoto.UpdateFileSaved(UserId);
                 
-			    var originalFile = FileDomain.GetFile(FileLocation, argsObj.FileName);
+                var originalFile = FileDomain.GetFile(location, argsObj.FileName);
+                
+                AvatarPhoto.CreateThumbnails(location, originalFile);                
+            };
 
-			    //create base rectangle cut
-			    var origBmp = new Bitmap(originalFile);
-			    var rect = BitmapUtils.CalculateBestImgCutRectangleShape(origBmp.Width, origBmp.Height);
-			    var cutBmp = BitmapUtils.ExportPartOfBitmap(origBmp, rect);
-			    var jpgStream = BitmapUtils.ConvertBitmapToJpg(cutBmp, 90);
-
-			    //save base rect cut
-			    var profilePath = FileDomain.Storage.Combine(FileLocation, fileName);
-			    FileDomain.Storage.SaveStream(profilePath, jpgStream);
-
-			    CreateThumbnail(cutBmp, 60, fileName_s);
-			    CreateThumbnail(cutBmp, 26, fileName_xs);
-			    
-                originalFile.Dispose();
-                origBmp.Dispose();
-                cutBmp.Dispose();
-                jpgStream.Dispose();                
-			};
-
-			FileDomain.OnBeforeCreate += (sender, args) =>
-			{
-			    var filesInFolder = FileDomain.Storage.ListFiles(FileLocation);
-
-			    foreach (var file in filesInFolder)
-			    {
-			        var path = file.GetPath();
-                    bool fileExists = FileDomain.Storage.FileExists(path);
-                    if (fileExists)
-                    {
-                        FileDomain.Storage.DeleteFile(path);
-                    }                    
-                }                
-			};
+            FileDomain.OnBeforeCreate += (sender, args) =>
+			{                
+			    AvatarPhoto.DeleteOld(location);             
+            };
 
 			var filePartDo = new WriteFilePartDO
 			{
@@ -97,7 +56,7 @@ namespace Gloobster.Portal.Controllers.Api.User
 				FileName = request.fileName,
 				FilePart = request.filePartType,
 				CustomFileName = "original",
-				FileLocation = FileLocation,
+				FileLocation = location,
 				FileType = request.type
 			};
 

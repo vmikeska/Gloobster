@@ -24,7 +24,7 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 		{
 		    var q = searchQuery.ToLower();
             
-		    var friendsRes = DB.C<PortalUserEntity>()
+		    var friendsRes = DB.C<UserEntity>()
                 .Where(u => u.DisplayName.ToLower().StartsWith(q))
                 .Select(u => new 
 		            {

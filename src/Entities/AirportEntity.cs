@@ -3,7 +3,7 @@ using Gloobster.Database;
 
 namespace Gloobster.Entities
 {
-	public class AirportEntity: EntityBase
+    public class AirportEntity: EntityBase
 	{
 		public int OrigId { get; set; }
 		public string Name { get; set; }

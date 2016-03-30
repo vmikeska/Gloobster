@@ -30,61 +30,81 @@ namespace Gloobster.Portal.Controllers.Base
                 return new ObjectId(UserId);
             }
         }
-            
-        public bool IsUserLogged => !string.IsNullOrEmpty(UserId);
 
         private string _userId;
-		public string UserId
-		{
-			get
-			{
-				if (!string.IsNullOrEmpty(_userId))
-				{
-					return _userId;
-				}
+        public string UserId {
+            get
+            {
+                if (string.IsNullOrEmpty(_userId))
+                {
+                    var utils = new TokenUtils();
 
-				string userId = Request.HttpContext.Session.GetString(PortalConstants.UserSessionId);
-				if (!string.IsNullOrEmpty(userId))
-				{
-					return userId;
-				}
+                    var token = utils.ReadToken(Request.HttpContext);
+                    _userId = token?.UserId;                    
+                }
 
-				var authToken = GetAuthorizationTokenFromCookie();
-				if (authToken == null)
-				{
-					return string.Empty;
-				}
+                return _userId;
+            }
 
-                Request.HttpContext.Session.SetString(PortalConstants.UserSessionId, authToken.UserId);
-				_userId = authToken.UserId;
+            set { _userId = value; }
+        }
+        
+        public bool IsUserLogged => !string.IsNullOrEmpty(UserId);
+
+        
+  //      private string _userId;
+		//public string UserId
+		//{
+		//	get
+		//	{
+		//		if (!string.IsNullOrEmpty(_userId))
+		//		{
+		//			return _userId;
+		//		}
+
+		//		string userId = Request.HttpContext.Session.GetString(PortalConstants.UserSessionId);
+		//		if (!string.IsNullOrEmpty(userId))
+		//		{
+		//			return userId;
+		//		}
+
+		//		var authToken = GetAuthorizationTokenFromCookie();
+		//		if (authToken == null)
+		//		{
+		//			return string.Empty;
+		//		}
+
+  //              Request.HttpContext.Session.SetString(PortalConstants.UserSessionId, authToken.UserId);
+		//		_userId = authToken.UserId;
 				
-				return _userId;
-			}
-		}
+		//		return _userId;
+		//	}
+		//}
 
-        private PortalUserEntity _portalUser;
-        public PortalUserEntity PortalUser
+        private UserEntity _portalUser;
+        public UserEntity PortalUser
         {
             get
             {
-                if (!IsUserLogged)
-                {
-                    return null;
-                }
+                return null;
+                //if (!IsUserLogged)
+                //{
+                //    return null;
+                //}
 
-                if (_portalUser != null)
-                {
-                    return _portalUser;
-                }
+                //if (_portalUser != null)
+                //{
+                //    return _portalUser;
+                //}
 
-                _portalUser = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == UserIdObj);
+                //_portalUser = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == UserIdObj);
 
-                if (_portalUser == null)
-                {
-                    //throw
-                }
+                //if (_portalUser == null)
+                //{
+                //    //throw
+                //}
 
-                return _portalUser;
+                //return _portalUser;
             }
         }
         
@@ -99,17 +119,19 @@ namespace Gloobster.Portal.Controllers.Base
             int notifsCount = 0;
             string socNetStr = "";
 
-            if (IsUserLogged)
-            {
-                var notifications = DB.C<NotificationsEntity>().FirstOrDefault(n => n.PortalUser_id == UserIdObj.Value);
-                if (notifications != null)
-                {
-                    notifsCount = notifications.Notifications.Count(n => n.Status == NotificationStatus.Created);
-                }
 
-                socNetStr = GetSocNetworkStr();
-                HttpContext.Response.Cookies.Append(PortalConstants.NetworkTypes, socNetStr);
-            }
+            //TDR:
+            //if (IsUserLogged)
+            //{
+            //    var notifications = DB.C<NotificationsEntity>().FirstOrDefault(n => n.PortalUser_id == UserIdObj.Value);
+            //    if (notifications != null)
+            //    {
+            //        notifsCount = notifications.Notifications.Count(n => n.Status == NotificationStatus.Created);
+            //    }
+
+            //    socNetStr = GetSocNetworkStr();
+            //    HttpContext.Response.Cookies.Append(PortalConstants.NetworkTypes, socNetStr);
+            //}
 
             var instance = new T
             {
@@ -122,61 +144,61 @@ namespace Gloobster.Portal.Controllers.Base
             return instance;
         }
         
-        private AuthorizationToken GetAuthorizationTokenFromCookie()
-	    {
-			string cookieValue = Request.HttpContext.Request.Cookies[PortalConstants.LoginCookieName];
+  //      private AuthorizationToken GetAuthorizationTokenFromCookie()
+	 //   {
+		//	string cookieValue = Request.HttpContext.Request.Cookies[PortalConstants.LoginCookieName];
 
-			if (string.IsNullOrEmpty(cookieValue))
-			{
-				return null;
-			}
+		//	if (string.IsNullOrEmpty(cookieValue))
+		//	{
+		//		return null;
+		//	}
 
-			try
-			{
-				var loggedObj = Newtonsoft.Json.JsonConvert.DeserializeObject<LoggedResponse>(cookieValue);
+		//	try
+		//	{
+		//		var loggedObj = Newtonsoft.Json.JsonConvert.DeserializeObject<LoggedResponse>(cookieValue);
 				
-				var decodedStr = JsonWebToken.Decode(loggedObj.encodedToken, GloobsterConfig.AppSecret, true);
+		//		var decodedStr = JsonWebToken.Decode(loggedObj.encodedToken, GloobsterConfig.AppSecret, true);
 
-				var tokenObj = Newtonsoft.Json.JsonConvert.DeserializeObject<AuthorizationToken>(decodedStr);
+		//		var tokenObj = Newtonsoft.Json.JsonConvert.DeserializeObject<AuthorizationToken>(decodedStr);
 
-				return tokenObj;
-			}
-			catch
-			{
-				return null;
-			}
-		}
+		//		return tokenObj;
+		//	}
+		//	catch
+		//	{
+		//		return null;
+		//	}
+		//}
         
-	    private string GetSocNetworkStr()
-	    {
-	        var networks = new List<string>();
-            if (PortalUser.SocialAccounts != null && PortalUser.SocialAccounts.Any())
-	        {
-	            foreach (var account in PortalUser.SocialAccounts)
-	            {
-	                if (account.NetworkType == SocialNetworkType.Facebook)
-	                {
-	                    networks.Add("F");
-	                }
+	    //private string GetSocNetworkStr()
+	    //{
+	    //    var networks = new List<string>();
+     //       if (PortalUser.SocialAccounts != null && PortalUser.SocialAccounts.Any())
+	    //    {
+	    //        foreach (var account in PortalUser.SocialAccounts)
+	    //        {
+	    //            if (account.NetworkType == SocialNetworkType.Facebook)
+	    //            {
+	    //                networks.Add("F");
+	    //            }
 
-	                if (account.NetworkType == SocialNetworkType.Twitter)
-	                {
-	                    networks.Add("T");
-	                }
+	    //            if (account.NetworkType == SocialNetworkType.Twitter)
+	    //            {
+	    //                networks.Add("T");
+	    //            }
 
-	                if (account.NetworkType == SocialNetworkType.Google)
-	                {
-	                    networks.Add("G");
-	                }
-	            }
-	        }
-	        else
-	        {
-                networks.Add("B");                
-	        }
+	    //            if (account.NetworkType == SocialNetworkType.Google)
+	    //            {
+	    //                networks.Add("G");
+	    //            }
+	    //        }
+	    //    }
+	    //    else
+	    //    {
+     //           networks.Add("B");                
+	    //    }
             
-            var netStr = string.Join(",", networks);            
-            return netStr;
-	    }        
+     //       var netStr = string.Join(",", networks);            
+     //       return netStr;
+	    //}        
     }
 }

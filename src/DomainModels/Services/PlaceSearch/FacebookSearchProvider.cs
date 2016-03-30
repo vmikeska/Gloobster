@@ -14,19 +14,21 @@ namespace Gloobster.DomainModels.Services.PlaceSearch
 	{
 		public IFacebookService Service { get; set; }
 		public ICountryService CountrySvc { get; set; }
+        public IAccountDomain AccountDomain { get; set; }
 
-		
-		public bool CanBeUsed(SearchServiceQueryDO queryObj)
-		{
-			bool hasFacebookUser = queryObj.PortalUser != null && queryObj.PortalUser.GetAccount(SocialNetworkType.Facebook) != null;
+        public bool CanBeUsed(SearchServiceQueryDO queryObj)
+        {
+            var fbAuth = AccountDomain.GetAuth(SocialNetworkType.Facebook, queryObj.PortalUser.UserId);
+
+            bool hasFacebookUser = queryObj.PortalUser != null && fbAuth != null;
 			return hasFacebookUser;
 		}
 
 		public async Task<List<Place>> SearchAsync(SearchServiceQueryDO queryObj)
 		{
-			var account = queryObj.PortalUser.GetAccount(SocialNetworkType.Facebook);
-
-			Service.SetAccessToken(account.Authentication.AccessToken);
+            var fbAuth = AccountDomain.GetAuth(SocialNetworkType.Facebook, queryObj.PortalUser.UserId);
+            
+			Service.SetAccessToken(fbAuth.AccessToken);
 
 			var queryBuilder = new QueryBuilder()
 				.Endpoint("search")

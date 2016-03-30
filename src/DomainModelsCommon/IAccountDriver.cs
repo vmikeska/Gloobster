@@ -8,7 +8,7 @@ namespace Gloobster.DomainInterfaces
 {
 	public interface IAccountDriver
 	{
-		bool CheckCredintials(object authObject, PortalUserDO portalUser);
+		bool CheckCredintials(object authObject, UserDO portalUser);
 
 		SocialNetworkType NetworkType { get; }
 
@@ -16,10 +16,29 @@ namespace Gloobster.DomainInterfaces
 		object UserObj { get; set; }
 		IComponentContext ComponentContext { get; set; }
 		IDbOperations DB { get; set; }
-        PortalUserDO PortalUser { get; set; }
-		Task<PortalUserDO> Create();		
+        UserDO PortalUser { get; set; }
+		Task<UserDO> Create();		
 		string GetEmail();
-		void OnUserExists(PortalUserDO portalUser);
-		void OnUserSuccessfulyLogged(PortalUserDO portalUser);
+		void OnUserExists(UserDO portalUser);
+		void OnUserSuccessfulyLogged(UserDO portalUser);
 	}
+    
+    public interface ISocLogin
+    {
+        bool ValidateToken(string token);
+        Task<UserDO> GetUserData(SocAuthDO auth);
+        PermanentTokenDO TryGetPermanentToken(string standardAccessToken);
+        string GetProfilePicUrl(SocAuthDO auth);
+    }
+
+    public interface ISocNetworkService
+    {
+        ISocLogin SocLogin { get; set; }
+        Task<LoginResponseDO> HandleAsync(SocAuthDO auth);
+    }
+
+    public interface IAccountDomain
+    {
+        SocAuthDO GetAuth(SocialNetworkType netType, string userId);
+    }
 }

@@ -48,10 +48,10 @@ namespace Gloobster.DomainModels.Services.Accounts
                 {
                     var argsObj = (OnFileSavedArgs)args;
 
-                    var userIdObj = new ObjectId(userId);
-                    var filter = db.F<PortalUserEntity>().Eq(p => p.id, userIdObj);
-                    var update = db.U<PortalUserEntity>().Set(p => p.ProfileImage, argsObj.FileName);
-                    db.UpdateAsync(filter, update);
+                    //var userIdObj = new ObjectId(userId);
+                    //var filter = db.F<UserEntity>().Eq(p => p.id, userIdObj);
+                    //var update = db.U<UserEntity>().Set(p => p.ProfileImage, argsObj.FileName);
+                    //db.UpdateAsync(filter, update);
                 };
 
                 var filePart = new WriteFilePartDO

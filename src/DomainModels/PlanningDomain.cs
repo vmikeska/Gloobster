@@ -250,7 +250,7 @@ namespace Gloobster.DomainModels
 		public async Task<CustomSearchDO> CreateNewEmptySearch(string userId, string name)
 		{
 			var userIdObj = new ObjectId(userId);
-			var user = DB.C<PortalUserEntity>().FirstOrDefault(e => e.id == userIdObj);
+			var user = DB.C<UserEntity>().FirstOrDefault(e => e.id == userIdObj);
 
 			var newSearch = new CustomSearchSE
 			{
@@ -297,7 +297,7 @@ namespace Gloobster.DomainModels
 		public async void CreateDBStructure(string userId)
 	    {
 			var userIdObj = new ObjectId(userId);
-			var user = DB.C<PortalUserEntity>().FirstOrDefault(e => e.id == userIdObj);
+			var user = DB.C<UserEntity>().FirstOrDefault(e => e.id == userIdObj);
 
 			var weekend = DB.C<PlanningWeekendEntity>().FirstOrDefault(e => e.PortalUser_id == userIdObj);
 		    if (weekend == null)

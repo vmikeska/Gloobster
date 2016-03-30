@@ -26,7 +26,7 @@ namespace Gloobster.Portal.ViewModels
                 if (photos == null)
                 {
                     var userIds = Article.Photos.Select(p => p.Owner_id).Distinct().ToList();
-                    var users = DB.C<PortalUserEntity>().Where(u => userIds.Contains(u.id)).ToList();
+                    var users = DB.C<UserEntity>().Where(u => userIds.Contains(u.id)).ToList();
 
                     photos = Article.Photos.Select(p =>
                     {

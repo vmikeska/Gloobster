@@ -12,15 +12,15 @@ module Maps {
 				["displayEntity", displayEntity.toString()]
 			];
 
-			var isLogged = Views.ViewBase.currentView.loginManager.isAlreadyLogged();
-			if (isLogged) {
+			//var isLogged = Views.ViewBase.currentView.loginManager.isAlreadyLogged();
+			//if (isLogged) {
 				request = $.merge(request, [
 					["me", people.me.toString()],
 					["friends", people.friends.toString()],
 					["everybody", people.everybody.toString()],
 					["singleFriends", people.singleFriends.join()]
 				]);
-			}
+			//}
 
 			Views.ViewBase.currentView.apiGet("PinBoardStats", request, response => {
 				this.places = new Places();

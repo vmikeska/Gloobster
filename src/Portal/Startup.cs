@@ -19,7 +19,7 @@ using MongoDB.Bson;
 
 namespace Gloobster.Portal
 {
-	public class Startup
+    public class Startup
     {
 		public IConfiguration Configuration { get; set; }
 
@@ -89,30 +89,40 @@ namespace Gloobster.Portal
             db.CreateCollection<VisitedCityAggregatedEntity>();
             db.CreateCollection<VisitedPlaceAggregatedEntity>();
 
-            bool existsPerm = db.C<WikiPermissionEntity>().Any();
-	        if (!existsPerm)
-	        {
-	            var users = db.C<PortalUserEntity>()
-	                .Where(u => (u.Mail == "mikeska@gmail.com") || (u.Mail == "vmikeska@hotmail.com"))
-	                .ToList();
+            //possibly duplicated
+         //   bool existsPerm = db.C<WikiPermissionEntity>().Any();
+	        //if (!existsPerm)
+	        //{
+	        //    //var users = db.C<UserEntity>()
+	        //    //    .Where(u => (u.Mail == "mikeska@gmail.com") || (u.Mail == "vmikeska@hotmail.com"))
+	        //    //    .ToList();
 
-	            var masterAdmins = users.Select(u => new WikiPermissionEntity
-	            {
-	                IsMasterAdmin = true,
-	                IsSuperAdmin = false,
-	                id = ObjectId.GenerateNewId(),
-	                User_id = u.id,
-	                Articles = new List<ObjectId>()
-	            });
-	            await db.SaveManyAsync(masterAdmins);                
-	        }
+	        //    //var masterAdmins = users.Select(u => new WikiPermissionEntity
+	        //    //{
+	        //    //    IsMasterAdmin = true,
+	        //    //    IsSuperAdmin = false,
+	        //    //    id = ObjectId.GenerateNewId(),
+	        //    //    User_id = u.id,
+	        //    //    Articles = new List<ObjectId>()
+	        //    //});
+	        //    //await db.SaveManyAsync(masterAdmins);                
+	        //}
 
         }
 
 	    // Configure is called after ConfigureServices is called.
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
 		{
-			loggerFactory.AddSerilog();
+            //http://derpturkey.com/asp-net-5-custom-middlware/
+            //app.Use(async (context, next) =>
+            //{
+            //    await next();
+            //});
+
+            app.UseSession();
+            //app.UseMyMiddleware();
+
+            loggerFactory.AddSerilog();
 
 			//var logging = Configuration.GetSection("Logging");
 			//loggerFactory.AddConsole(logging);
@@ -129,9 +139,11 @@ namespace Gloobster.Portal
 				app.UseExceptionHandler("/Home/Error");
 			}
 
+
+
 			app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
 
-			app.UseSession();
+			
 			app.UseStaticFiles();
 			
 			// To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715

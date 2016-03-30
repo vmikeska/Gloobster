@@ -17,32 +17,60 @@ namespace Gloobster.Portal.Controllers
             ExplicitAuth = explicitAuth;
         }
 
-		public override void OnActionExecuting(ActionExecutingContext context)
-		{
-			var controller = (Controller)context.Controller;
-			string authorizationToken = controller.Request.Headers["Authorization"];
-            
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            //var controller = (Controller)context.Controller;
+            string authorizationToken = context.HttpContext.Request.Headers["Authorization"];
+
             string decodedStr = string.Empty;
 
-			try
-			{
-				decodedStr = JsonWebToken.Decode(authorizationToken, GloobsterConfig.AppSecret, true);
-			}
-			catch
-			{
+            try
+            {
+                decodedStr = JsonWebToken.Decode(authorizationToken, GloobsterConfig.AppSecret, true);
+            }
+            catch
+            {
                 //context.HttpContext.Response.StatusCode = 401;
-			    if (!ExplicitAuth)
-			    {
-			        context.Result = new HttpStatusCodeResult(401);                    
-			    }
-			    return;
-			}
-			
-			var tokenObj = JsonConvert.DeserializeObject<AuthorizationToken>(decodedStr);
+                if (!ExplicitAuth)
+                {
+                    context.Result = new HttpStatusCodeResult(401);
+                }
+                return;
+            }
 
-			((BaseApiController)context.Controller).UserId = tokenObj.UserId;
-            
-			base.OnActionExecuting(context);
-		}
-	}
+            var tokenObj = JsonConvert.DeserializeObject<UserToken>(decodedStr);
+
+            ((BaseApiController)context.Controller).UserId = tokenObj.UserId;
+
+            base.OnActionExecuting(context);
+        }
+
+        //public override void OnActionExecuting(ActionExecutingContext context)
+        //{            
+        //          var controller = (Controller)context.Controller;
+        //	string authorizationToken = controller.Request.Headers["Authorization"];
+
+        //          string decodedStr = string.Empty;
+
+        //	try
+        //	{
+        //		decodedStr = JsonWebToken.Decode(authorizationToken, GloobsterConfig.AppSecret, true);
+        //	}
+        //	catch
+        //	{
+        //              //context.HttpContext.Response.StatusCode = 401;
+        //	    if (!ExplicitAuth)
+        //	    {
+        //	        context.Result = new HttpStatusCodeResult(401);                    
+        //	    }
+        //	    return;
+        //	}
+
+        //	var tokenObj = JsonConvert.DeserializeObject<AuthorizationToken>(decodedStr);
+
+        //	((BaseApiController)context.Controller).UserId = tokenObj.UserId;
+
+        //	base.OnActionExecuting(context);
+        //}
+    }
 }

@@ -10,6 +10,7 @@ using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using System.IO;
 using Gloobster.DomainInterfaces;
+using Gloobster.DomainModels;
 using Gloobster.DomainModels.Services.Accounts;
 using Gloobster.DomainModels.Services.Trip;
 using Gloobster.Entities.Trip;
@@ -23,18 +24,131 @@ namespace Gloobster.Portal.Controllers.Portal
 	{
 		public IFilesDomain FileDomain { get; set; }
 		public ITripPlannerDomain TripPlanner { get; set; }
-
 		public ISharedMapImageDomain SharedImgDomain { get; set; }
+        public IEntitiesDemandor Demandor { get; set; }
 
-		public TripController(ISharedMapImageDomain sharedImgDomain, ITripPlannerDomain tripPlanner, IFilesDomain filesDomain,
+		public TripController(IEntitiesDemandor demandor, ISharedMapImageDomain sharedImgDomain, ITripPlannerDomain tripPlanner, IFilesDomain filesDomain,
             ILogger log, IDbOperations db) : base(log, db)
 		{
 			FileDomain = filesDomain;
 			TripPlanner = tripPlanner;
 			SharedImgDomain = sharedImgDomain;
+		    Demandor = demandor;
 		}
 
-		public IActionResult SharedMapImage(string id)
+        [CreateAccount]
+        public async Task<IActionResult> List(string id)
+        {
+            var viewModel = CreateViewModelInstance<ViewModelTrips>();
+            viewModel.Trips = new List<TripItemViewModel>();
+            viewModel.DisplayType = string.IsNullOrEmpty(id) || (id == "grid");
+
+            if (IsUserLogged)
+            {
+                var trips = DB.List<TripEntity>(t => t.PortalUser_id == UserIdObj);
+
+                var query = $"{{ 'Participants.PortalUser_id': ObjectId('{UserId}')}}";
+                var invitedTrips = await DB.FindAsync<TripEntity>(query);
+
+                var myTripsVM = new List<TripItemViewModel>();
+                foreach (var t in trips)
+                {
+                    var tc = await TripToViewModel(t);
+                    myTripsVM.Add(tc);
+                }
+
+                var invitedTripsVM = new List<TripItemViewModel>();
+                foreach (var t in invitedTrips)
+                {
+                    var tc = await TripToViewModel(t);
+                    invitedTripsVM.Add(tc);
+                }
+                
+                viewModel.Trips.AddRange(myTripsVM);
+                viewModel.Trips.AddRange(invitedTripsVM);
+            }
+            
+            return View(viewModel);
+        }
+
+        [CreateAccount]
+        public IActionResult Detail(string id)
+        {
+            var tripIdObj = new ObjectId(id);
+            var trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);
+            
+            //permissions part            
+            bool isOwner = trip.PortalUser_id == UserIdObj;
+            if (isOwner)
+            {
+                var vm = CreateDetailVM(trip);
+                return View(vm);
+            }
+
+            var thisUserParticipant = trip.Participants.FirstOrDefault(p => p.PortalUser_id == UserIdObj);
+            bool thisUserIsAdmin = (thisUserParticipant != null) && thisUserParticipant.IsAdmin;
+            if (thisUserIsAdmin)
+            {
+                var vm = CreateDetailVM(trip);
+                return View(vm);
+            }
+
+            //user has no admin righs
+            return RedirectToAction("NoAdminRights", "Trip");
+        }
+
+        [CreateAccount]
+        public async Task<IActionResult> Overview(OverviewRequest req)
+        {
+            var tripIdObj = new ObjectId(req.id);
+            var trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);
+            var owner = await Demandor.GetUserAsync(trip.PortalUser_id);
+            
+            //permissions part
+            if (trip.FriendsPublic)
+            {
+                var vm = CretateOverviewVM(trip, owner);
+                return View(vm);
+            }
+
+            bool isOwner = trip.PortalUser_id == UserIdObj;
+            if (isOwner)
+            {
+                var vm = CretateOverviewVM(trip, owner);
+                return View(vm);
+            }
+
+            var thisUserParticipant = trip.Participants.FirstOrDefault(p => p.PortalUser_id == UserIdObj);
+            bool thisUserInvited = thisUserParticipant != null;
+            if (thisUserInvited)
+            {
+                var vm = CretateOverviewVM(trip, owner);
+                return View(vm);
+            }
+
+            bool sharingByCodeAllowed = !string.IsNullOrEmpty(trip.SharingCode);
+            if (sharingByCodeAllowed)
+            {
+                bool codeMatch = trip.SharingCode == req.sc;
+                if (codeMatch)
+                {
+                    var vm = CretateOverviewVM(trip, owner);
+                    return View(vm);
+                }
+            }
+
+            if (trip.AllowToRequestJoin)
+            {
+                return RedirectToAction("RequestJoin", "Trip", req.id);
+            }
+
+            //trip is completly private
+            return RedirectToAction("PrivateTrip", "Trip");
+        }
+
+        
+
+        public IActionResult SharedMapImage(string id)
 		{
 			var mapStream = SharedImgDomain.GetMap(id);			
 			return new FileStreamResult(mapStream, "image/png");		
@@ -51,7 +165,7 @@ namespace Gloobster.Portal.Controllers.Portal
 
 		    var dateStr = $"{fromDate.Day}.{fromDate.Month}. to {toDate.Day}.{toDate.Month}. {toDate.Year}";
 
-            var owner = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == trip.PortalUser_id);
+            var owner = DB.C<UserEntity>().FirstOrDefault(u => u.id == trip.PortalUser_id);
 
             var viewModel = CreateViewModelInstance<ViewModelShareTrip>();
 		    viewModel.Id = id;
@@ -61,138 +175,20 @@ namespace Gloobster.Portal.Controllers.Portal
 		    viewModel.DateRangeStr = dateStr;
             return View(viewModel);
 		}
-
-	    private Tuple<DateTime, DateTime> GetTripFromTo(TripEntity trip)
-	    {
-            var ordredPlaces = trip.Places.OrderBy(t => t.OrderNo);
-            var firstPlace = ordredPlaces.First();
-            var lastPlace = ordredPlaces.Last();
-            var firstTravel = trip.Travels.FirstOrDefault(t => t.id == firstPlace.LeavingId);
-            var lastTravel = trip.Travels.FirstOrDefault(t => t.id == lastPlace.ArrivingId);
-            var fromDate = firstTravel.LeavingDateTime.Value;
-            var toDate = lastTravel.ArrivingDateTime.Value;
-
-            return new Tuple<DateTime, DateTime>(fromDate, toDate);
-        }
-
-		public async Task<IActionResult> List(string id)
-		{
-            var viewModel = CreateViewModelInstance<ViewModelTrips>();           
-		    viewModel.DisplayType = string.IsNullOrEmpty(id) || (id == "grid");
-
-            var tripsEntity = DB.C<TripEntity>().Where(t => t.PortalUser_id == UserIdObj).ToList();
-
-            var query = $"{{ 'Participants.PortalUser_id': ObjectId('{UserId}')}}";
-		    var invitedTripsEntity = await DB.FindAsync<TripEntity>(query);
-            
-			var myTrips = tripsEntity.Select(TripToViewModel).ToList();
-            var invitedTrips = invitedTripsEntity.Select(TripToViewModel).ToList();
-            
-            viewModel.Trips = new List<TripItemViewModel>();
-            viewModel.Trips.AddRange(myTrips);
-            viewModel.Trips.AddRange(invitedTrips);
-            
-            return View(viewModel);
-		}
-
+        
 		public async Task<IActionResult> CreateNewTrip(string id)
 		{
-		    var tripEntity = CreateUserData.GetInitialTripEntity(id, UserId);
-            
-            await DB.SaveAsync(tripEntity);
+		    if (IsUserLogged)
+		    {
+		        var tripEntity = await Demandor.CreateNewTripEntity(id, UserIdObj.Value);
+		        var userEntity = await Demandor.GetUserAsync(UserIdObj.Value);
 
-			return RedirectToAction("Detail", "Trip", new {id = tripEntity.id.ToString() } );
+		        return RedirectToAction("Detail", "Trip", new {id = tripEntity.id.ToString()});
+		    }
+		    
+            return RedirectToAction("List", "Trip");            
 		}
         
-		public IActionResult Detail(string id)
-		{			
-			var tripIdObj = new ObjectId(id);
-
-			var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
-            var owner = DB.C<PortalUserEntity>().First(u => u.id == trip.PortalUser_id);
-
-            //permissions part            
-            bool isOwner = owner.id == UserIdObj;
-            if (isOwner)
-            {
-                var vm = CreateDetailVM(trip);
-                return View(vm);
-            }
-
-            var thisUserParticipant = trip.Participants.FirstOrDefault(p => p.PortalUser_id == UserIdObj);
-            bool thisUserIsAdmin = (thisUserParticipant != null) && thisUserParticipant.IsAdmin;
-            if (thisUserIsAdmin)
-            {
-                var vm = CreateDetailVM(trip);
-                return View(vm);
-            }
-            
-            //user has no admin righs
-            return RedirectToAction("NoAdminRights", "Trip");            
-		}
-
-	    private ViewModelTripDetail CreateDetailVM(TripEntity trip)
-	    {
-            var viewModel = CreateViewModelInstance<ViewModelTripDetail>();
-            viewModel.Name = trip.Name;
-            viewModel.TripId = trip.id.ToString();
-            viewModel.Description = trip.Description;
-            viewModel.Notes = trip.Notes;
-            viewModel.NotesPublic = trip.NotesPublic;
-
-	        return viewModel;
-	    }
-
-        public IActionResult Overview(OverviewRequest req)
-		{		    
-			var tripIdObj = new ObjectId(req.id);
-			
-			var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
-
-			var owner = DB.C<PortalUserEntity>().First(u => u.id == trip.PortalUser_id);
-            
-            //permissions part
-            if (trip.FriendsPublic)
-            {
-                var vm = CretateOverviewVM(trip, owner);
-                return View(vm);
-            }
-
-            bool isOwner = owner.id == UserIdObj;
-            if (isOwner)
-            {
-                var vm = CretateOverviewVM(trip, owner);
-                return View(vm);
-            }
-
-            var thisUserParticipant = trip.Participants.FirstOrDefault(p => p.PortalUser_id == UserIdObj);
-            bool thisUserInvited = thisUserParticipant != null;
-            if (thisUserInvited)
-            {
-                var vm = CretateOverviewVM(trip, owner);
-                return View(vm);
-            }
-
-		    bool sharingByCodeAllowed = !string.IsNullOrEmpty(trip.SharingCode);
-		    if (sharingByCodeAllowed)
-		    {
-		        bool codeMatch = trip.SharingCode == req.sc;
-		        if (codeMatch)
-		        {
-                    var vm = CretateOverviewVM(trip, owner);
-                    return View(vm);
-                }
-		    }
-
-            if (trip.AllowToRequestJoin)
-            {
-                return RedirectToAction("RequestJoin", "Trip", req.id);
-            }
-            
-            //trip is completly private
-            return RedirectToAction("PrivateTrip", "Trip");
-		}
-
         public IActionResult NoAdminRights()
         {
             var viewModel = CreateViewModelInstance<ViewModelNoAdminRights>();
@@ -210,45 +206,7 @@ namespace Gloobster.Portal.Controllers.Portal
             var viewModel = CreateViewModelInstance<ViewModelTripRequestJoin>();
             return View(viewModel);
         }
-
-
-        private ViewModelTripDetail CretateOverviewVM(TripEntity trip, PortalUserEntity owner)
-	    {
-            var viewModel = CreateViewModelInstance<ViewModelTripDetail>();
-            viewModel.Name = trip.Name;
-            viewModel.IsUserAdmin = IsUserAdmin(trip);
-            viewModel.OwnerDisplayName = owner.DisplayName;
-            viewModel.OwnerId = owner.id.ToString();
-            viewModel.TripId = trip.id.ToString();
-            viewModel.Description = trip.Description;
-            viewModel.Notes = trip.Notes;
-            viewModel.NotesPublic = trip.NotesPublic;
-            viewModel.IsOwner = (trip.PortalUser_id == UserIdObj);
-            viewModel.HasBigPicture = trip.HasBigPicture;
-            viewModel.Participants = GetParticipantsView(trip.Participants, owner.id);
-            var thisUserParticipant = trip.Participants.FirstOrDefault(p => p.PortalUser_id == UserIdObj);
-            viewModel.ThisUserInvited = thisUserParticipant != null;
-
-            return viewModel;
-	    }
-
         
-
-        private List<UserViewModel> GetParticipantsView(List<ParticipantSE> participants, ObjectId ownerId)
-	    {
-            var participantIds = participants.Where(p=> p.State == ParticipantState.Accepted).Select(p => p.PortalUser_id).ToList();
-            participantIds.Add(ownerId);
-            var participantUsers = DB.C<PortalUserEntity>().Where(u => participantIds.Contains(u.id)).ToList();
-
-            var prtcs = participantUsers.Select(p => new UserViewModel
-            {
-                Name = p.DisplayName,
-                Id = p.id.ToString()                
-            }).ToList();
-
-	        return prtcs;
-	    }
-
         public IActionResult TripPicture(string id)
         {
             var stream = GetPicture(id, TripFileConstants.BigPicNameExt);
@@ -266,6 +224,9 @@ namespace Gloobster.Portal.Controllers.Portal
             var stream = GetPicture(id, TripFileConstants.SmallPicNameExt_xs);
             return stream;
         }
+
+
+
 
         private FileStreamResult GetPicture(string tripId, string picName)
 	    {
@@ -345,16 +306,65 @@ namespace Gloobster.Portal.Controllers.Portal
 
 			return File(fileStream, fileToReturn.Type, fileToReturn.OriginalFileName);
 		}
-		
 
-		private TripItemViewModel TripToViewModel(TripEntity trip)
+        private ViewModelTripDetail CretateOverviewVM(TripEntity trip, UserEntity owner)
+        {
+            var ownerId = trip.PortalUser_id.ToString();
+            var ownerIdObj = new ObjectId(ownerId);
+
+            var viewModel = CreateViewModelInstance<ViewModelTripDetail>();
+            viewModel.Name = trip.Name;
+            viewModel.IsUserAdmin = IsUserAdmin(trip);
+            viewModel.OwnerDisplayName = owner.DisplayName;
+            viewModel.OwnerId = ownerId;
+            viewModel.TripId = trip.id.ToString();
+            viewModel.Description = trip.Description;
+            viewModel.Notes = trip.Notes;
+            viewModel.NotesPublic = trip.NotesPublic;
+            viewModel.IsOwner = (trip.PortalUser_id == UserIdObj);
+            viewModel.HasBigPicture = trip.HasBigPicture;
+            viewModel.Participants = GetParticipantsView(trip.Participants, ownerIdObj);
+            var thisUserParticipant = trip.Participants.FirstOrDefault(p => p.PortalUser_id == UserIdObj);
+            viewModel.ThisUserInvited = thisUserParticipant != null;
+
+            return viewModel;
+        }
+        
+        private List<UserViewModel> GetParticipantsView(List<ParticipantSE> participants, ObjectId ownerId)
+        {
+            var participantIds = participants.Where(p => p.State == ParticipantState.Accepted).Select(p => p.PortalUser_id).ToList();
+            participantIds.Add(ownerId);
+            var participantUsers = DB.C<UserEntity>().Where(u => participantIds.Contains(u.id)).ToList();
+
+            var prtcs = participantUsers.Select(p => new UserViewModel
+            {
+                Name = p.DisplayName,
+                Id = p.id.ToString()
+            }).ToList();
+
+            return prtcs;
+        }
+
+        private ViewModelTripDetail CreateDetailVM(TripEntity trip)
+        {
+            var viewModel = CreateViewModelInstance<ViewModelTripDetail>();
+            viewModel.Name = trip.Name;
+            viewModel.TripId = trip.id.ToString();
+            viewModel.Description = trip.Description;
+            viewModel.Notes = trip.Notes;
+            viewModel.NotesPublic = trip.NotesPublic;
+
+            return viewModel;
+        }
+
+        private async Task<TripItemViewModel> TripToViewModel(TripEntity trip)
 		{
             var tripFromTo = GetTripFromTo(trip);
             var fromDate = tripFromTo.Item1;
             var toDate = tripFromTo.Item2;
 
-		    var owner = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == trip.PortalUser_id);
-
+            var owner = await Demandor.GetUserAsync(trip.PortalUser_id);
+            
             var vm = new TripItemViewModel
 			{
 				Id = trip.id.ToString(),
@@ -371,8 +381,20 @@ namespace Gloobster.Portal.Controllers.Portal
 				IsLocked = true
 			};
 			return vm;
-		}		
-	}
+		}
+        private Tuple<DateTime, DateTime> GetTripFromTo(TripEntity trip)
+        {
+            var ordredPlaces = trip.Places.OrderBy(t => t.OrderNo);
+            var firstPlace = ordredPlaces.First();
+            var lastPlace = ordredPlaces.Last();
+            var firstTravel = trip.Travels.FirstOrDefault(t => t.id == firstPlace.LeavingId);
+            var lastTravel = trip.Travels.FirstOrDefault(t => t.id == lastPlace.ArrivingId);
+            var fromDate = firstTravel.LeavingDateTime.Value;
+            var toDate = lastTravel.ArrivingDateTime.Value;
+
+            return new Tuple<DateTime, DateTime>(fromDate, toDate);
+        }
+    }
 
     public class OverviewRequest
     {

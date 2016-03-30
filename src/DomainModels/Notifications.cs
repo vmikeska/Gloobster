@@ -32,7 +32,7 @@ namespace Gloobster.DomainModels
 		public NotificationDO FriendshipRequested(string requestorId, string receiverId)
 		{
 			var reqUserId = new ObjectId(requestorId);
-			var requestingUser = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == reqUserId);
+			var requestingUser = DB.C<UserEntity>().FirstOrDefault(u => u.id == reqUserId);
 			
 			return new NotificationDO
 			{
@@ -49,7 +49,7 @@ namespace Gloobster.DomainModels
 
 		public NotificationDO TripInvitation(string fromUserId, string toUserId, string tripId)
 		{
-			var fromUser = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == new ObjectId(fromUserId));
+			var fromUser = DB.C<UserEntity>().FirstOrDefault(u => u.id == new ObjectId(fromUserId));
 
 		    var tripIdObj = new ObjectId(tripId);
 		    var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);

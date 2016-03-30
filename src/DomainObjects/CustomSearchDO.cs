@@ -21,4 +21,5 @@ namespace Gloobster.DomainObjects
 
 		public int RoughlyDays { get; set; }
 	}
+    
 }

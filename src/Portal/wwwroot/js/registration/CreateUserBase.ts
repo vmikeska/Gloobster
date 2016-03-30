@@ -1,47 +1,47 @@
 ﻿module Reg {
 	export class CreateUserBase {
 
-		endpoint = "";
+		//endpoint = "";
 
-		loginType: NetworkType;
-		cookieManager: Common.CookieManager;
+		//loginType: NetworkType;
+		//cookieManager: Common.CookieManager;
 
-		constructor() {
-		 this.cookieManager = new Common.CookieManager();		 
-		}
+		//constructor() {
+		// this.cookieManager = new Common.CookieManager();		 
+		//}
 
-		onSuccess = (response) => {
-			console.log("storing cookie: " + response.encodedToken);
+		//onSuccess = (response) => {
+			//console.log("storing cookie: " + response.encodedToken);
 
-			this.storeCookieWithToken(response.encodedToken, response.networkType);
-			$(".popup").hide();
-		}
+			//this.storeCookieWithToken(response.encodedToken, response.networkType);
+			//$(".popup").hide();
+		//}
 
-		onError = (response) => {
-			//todo: show some general error dialog
-		}
+		//onError = (response) => {
+		//	//todo: show some general error dialog
+		//}
 
-		storeCookieWithToken(encodedToken: string, networkType: string) {
+		//storeCookieWithToken(encodedToken: string, networkType: string) {
 
-			var cookieObj = new CookieLogin();
-			cookieObj.encodedToken = encodedToken;
-			cookieObj.networkType = parseInt(networkType);
-			this.cookieManager.setJson(Constants.cookieName, cookieObj);
+		//	var cookieObj = new CookieLogin();
+		//	cookieObj.encodedToken = encodedToken;
+		//	cookieObj.networkType = parseInt(networkType);
+		//	this.cookieManager.setJson(Constants.cookieName, cookieObj);
 
-			console.log("token received: " + this.loginType);
+		//	console.log("token received: " + this.loginType);
 
-			if (cookieObj.networkType !== NetworkType.Twitter) {
-				window.location.href = Constants.firstRedirectUrl;
-			}
-		}
+		//	if (cookieObj.networkType !== NetworkType.Twitter) {
+		//		window.location.href = Constants.firstRedirectUrl;
+		//	}
+		//}
 
-		sendUserRegistrationData(newUser) {
-		 var request = new Common.RequestSender(this.endpoint, newUser);
-			request.serializeData();
-			request.onSuccess = this.onSuccess;
-			request.onError = this.onError;
-			request.sendPost();
-		}
+		//sendUserRegistrationData(newUser) {
+		// var request = new Common.RequestSender(this.endpoint, newUser);
+		//	request.serializeData();
+		//	request.onSuccess = this.onSuccess;
+		//	request.onError = this.onError;
+		//	request.sendPost();
+		//}
 	}
 
 	export enum NetworkType {

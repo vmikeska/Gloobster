@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
+using Gloobster.DomainModels.Wiki;
 using Gloobster.Entities;
 using Gloobster.Enums;
 using Gloobster.Portal.Controllers.Base;
@@ -51,10 +52,10 @@ namespace Gloobster.Portal.Controllers.Portal
 
 	    private FileStreamResult GetProfilePicture(string id, string fileName)
 	    {
-            PortalUserEntity portalUser;
+            UserEntity portalUser;
             if (!string.IsNullOrEmpty(id))
             {
-                portalUser = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == new ObjectId(id));
+                portalUser = DB.C<UserEntity>().FirstOrDefault(u => u.id == new ObjectId(id));
                 if (portalUser == null)
                 {
                     return null;
@@ -65,12 +66,12 @@ namespace Gloobster.Portal.Controllers.Portal
                 portalUser = PortalUser;
             }
             
-            if (portalUser.ProfileImage == null)
+            if (!portalUser.HasProfileImage)
             {
                 return null;
             }
 
-            var fileLocation = FileDomain.Storage.Combine("avatars", portalUser.id.ToString());
+            var fileLocation = FileDomain.Storage.Combine(AvatarFilesConsts.Location, portalUser.id.ToString());
 
             var filePath = FileDomain.Storage.Combine(fileLocation, fileName);
             bool exists = FileDomain.Storage.FileExists(filePath);

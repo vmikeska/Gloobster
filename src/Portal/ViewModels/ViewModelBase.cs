@@ -8,7 +8,7 @@ namespace Gloobster.Portal.ViewModels
 	{
         public string UserId { get; set; }
         public bool IsUserLogged => PortalUser != null;
-		public PortalUserEntity PortalUser { get; set; }
+		public UserEntity PortalUser { get; set; }
 		public IDbOperations DB { get; set; }
 		public string SocialNetwork { get; set; }
 		public int NotificationCount { get; set; }
