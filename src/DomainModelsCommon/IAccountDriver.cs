@@ -22,10 +22,17 @@ namespace Gloobster.DomainInterfaces
 		void OnUserExists(UserDO portalUser);
 		void OnUserSuccessfulyLogged(UserDO portalUser);
 	}
-    
+
+    public class TokenValidationResultDO
+    {
+        public bool IsValid { get; set; }
+        public string UserId { get; set; }
+    }
+
     public interface ISocLogin
     {
-        bool ValidateToken(string token);
+        void Init(SocAuthDO auth);        
+        TokenValidationResultDO ValidateToken(SocAuthDO auth);
         Task<UserDO> GetUserData(SocAuthDO auth);
         PermanentTokenDO TryGetPermanentToken(string standardAccessToken);
         string GetProfilePicUrl(SocAuthDO auth);

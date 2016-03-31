@@ -30,12 +30,11 @@ namespace Gloobster.Portal.Controllers.Api.Registration
 	{
 		public ISocNetworkService SocNetService { get; set; }
         public IComponentContext ComponentContext { get; set; }
-        public IFacebookService FBService { get; set; }
-        public IEntitiesDemandor Demandor { get; set; }
+        public IFacebookService FBService { get; set; }        
 
         public FacebookUserController(ISocNetworkService socNetService, IComponentContext componentContext, ILogger log, IDbOperations db) : base(log, db)
         {
-            SocNetService = socNetService;            
+            SocNetService = socNetService;
 			ComponentContext = componentContext;            
 		}
         
@@ -54,7 +53,7 @@ namespace Gloobster.Portal.Controllers.Api.Registration
             };
 
             SocNetService.SocLogin = ComponentContext.ResolveKeyed<ISocLogin>("Facebook");
-
+            
             var res = await SocNetService.HandleAsync(auth);
             return new ObjectResult(res);            
         }

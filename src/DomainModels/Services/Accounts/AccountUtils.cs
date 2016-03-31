@@ -21,12 +21,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 	}
 
 	public class AccountUtils
-	{
-		public static string GeneratePassword()
-		{
-			return "Password";
-		}
-		
+	{		
 		public static DownloadPictureResult DownloadPicture(string url)
 		{
 			var client = new WebClient();

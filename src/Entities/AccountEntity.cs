@@ -56,8 +56,10 @@ namespace Gloobster.Entities
     public class UserEntity : EntityBase
     {
         public ObjectId User_id { get; set; }
-        
-        public string DisplayName { get; set; }        
+
+        public string Mail { get; set; }
+
+        public string DisplayName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public bool HasProfileImage { get; set; }

@@ -21,75 +21,111 @@ namespace Gloobster.Portal.Controllers.Api.Registration
 	[Route("api/[controller]")]
 	public class GoogleUserController : BaseApiController
 	{
-		public IUserService UserService { get; set; }
+		//public IUserService UserService { get; set; }
 		public IComponentContext ComponentContext { get; set; }
-		
-		public GoogleUserController(IUserService userService, IComponentContext componentContext, ILogger log, IDbOperations db) : base(log, db)
+        public ISocNetworkService SocNetService { get; set; }
+
+        public GoogleUserController(ISocNetworkService socNetService, IComponentContext componentContext, ILogger log, IDbOperations db) : base(log, db)
 		{
-			UserService = userService;
-			ComponentContext = componentContext;
+			SocNetService = socNetService;
+            ComponentContext = componentContext;
 		}
 
-		[HttpPost]
+        [HttpPost]
+        [AuthorizeApi]
         //public async Task<IActionResult> Post([FromBody] GoogleAuthResponse response)
         public async Task<IActionResult> Post([FromBody] dynamic response)
-		{
+        {
             //this workaround was made so, because google doesn't return always class with same structure.
-		    var str = response.ToString();
+            var str = response.ToString();
             Dictionary<string, object> dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(str);
 
-		    List<object> vals = dict.Values.ToList();
+            List<object> vals = dict.Values.ToList();
             var f = vals.First();
-		    var s = vals[1];
-		    var l = vals.Last();
-
-            Dictionary<string, string> userParamsDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(l.ToString());
-		    var userParamsVals = userParamsDict.Values.ToList();
-
+            var s = vals[1];
+            var l = vals.Last();
+            
             var userId = f.ToString();
             var tokenData = JsonConvert.DeserializeObject<GoogleTokenData>(s.ToString());
-
-		    var userParams = new GoogleUserParams
-		    {
-		        UserId = userParamsVals[0],
-		        FullName = userParamsVals[1],
-		        FirstName = userParamsVals[2],
-		        LastName = userParamsVals[3],
-		        PhotoLink = userParamsVals[4],
-		        Mail = userParamsVals[5]
-		    };
-
+            
             DateTime expiresAt = DateTime.UtcNow.AddSeconds(tokenData.expires_in);
-
-            var auth = new SocAuthenticationDO
+            
+            var auth = new SocAuthDO
             {
+                UserId = UserId,
                 AccessToken = tokenData.access_token,
+                TokenSecret = null,
                 ExpiresAt = expiresAt,
-                UserId = userId,
+                SocUserId = userId,
+                NetType = SocialNetworkType.Google
             };
 
-            var userDo = new GoogleUserRegistrationDO
-            {
-                DisplayName = userParams.FullName,
-                ProfileLink = userParams.PhotoLink,
-                Mail = userParams.Mail
-            };
-
-            var accountDriver = ComponentContext.ResolveKeyed<IAccountDriver>("Google");
-
-            UserService.AccountDriver = accountDriver;
-
-            var result = await UserService.Validate(auth, userDo);
-            Request.HttpContext.Session.SetString(PortalConstants.UserSessionId, result.UserId);
-
-            var r = new LoggedResponse
-            {
-                encodedToken = result.EncodedToken,
-                status = result.Status.ToString(),
-                networkType = SocialNetworkType.Google
-            };
-
-            return new ObjectResult(r);
+            SocNetService.SocLogin = ComponentContext.ResolveKeyed<ISocLogin>("Google");
+            
+            var res = await SocNetService.HandleAsync(auth);
+            return new ObjectResult(res);            
         }
-	}
+
+        //[HttpPost]
+        //      //public async Task<IActionResult> Post([FromBody] GoogleAuthResponse response)
+        //      public async Task<IActionResult> Post([FromBody] dynamic response)
+        //{
+        //          //this workaround was made so, because google doesn't return always class with same structure.
+        //    var str = response.ToString();
+        //          Dictionary<string, object> dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(str);
+
+        //    List<object> vals = dict.Values.ToList();
+        //          var f = vals.First();
+        //    var s = vals[1];
+        //    var l = vals.Last();
+
+        //          Dictionary<string, string> userParamsDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(l.ToString());
+        //    var userParamsVals = userParamsDict.Values.ToList();
+
+        //          var userId = f.ToString();
+        //          var tokenData = JsonConvert.DeserializeObject<GoogleTokenData>(s.ToString());
+
+        //    var userParams = new GoogleUserParams
+        //    {
+        //        UserId = userParamsVals[0],
+        //        FullName = userParamsVals[1],
+        //        FirstName = userParamsVals[2],
+        //        LastName = userParamsVals[3],
+        //        PhotoLink = userParamsVals[4],
+        //        Mail = userParamsVals[5]
+        //    };
+
+        //          DateTime expiresAt = DateTime.UtcNow.AddSeconds(tokenData.expires_in);
+
+        //          var auth = new SocAuthenticationDO
+        //          {
+        //              AccessToken = tokenData.access_token,
+        //              ExpiresAt = expiresAt,
+        //              UserId = userId,
+        //          };
+
+        //          var userDo = new GoogleUserRegistrationDO
+        //          {
+        //              DisplayName = userParams.FullName,
+        //              ProfileLink = userParams.PhotoLink,
+        //              Mail = userParams.Mail
+        //          };
+
+        //          var accountDriver = ComponentContext.ResolveKeyed<IAccountDriver>("Google");
+
+        //          UserService.AccountDriver = accountDriver;
+
+        //          var result = await UserService.Validate(auth, userDo);
+        //          Request.HttpContext.Session.SetString(PortalConstants.UserSessionId, result.UserId);
+
+        //          var r = new LoggedResponse
+        //          {
+        //              encodedToken = result.EncodedToken,
+        //              status = result.Status.ToString(),
+        //              networkType = SocialNetworkType.Google
+        //          };
+
+        //          return new ObjectResult(r);
+        //      }
+    }
 }

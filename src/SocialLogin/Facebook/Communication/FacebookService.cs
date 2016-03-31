@@ -31,7 +31,20 @@ namespace Gloobster.SocialLogin.Facebook.Communication
 	        return response;	        
 	    }
 
-		public bool ValidateToken()
+        public string GetMeId()
+        {
+            try
+            {
+                var me = Get<FacebookUserFO>("me");
+                return me.Id;
+            }
+            catch (FacebookOAuthException)
+            {
+                return string.Empty;
+            }
+        }
+
+        public bool ValidateToken()
 		{
 			try
 			{

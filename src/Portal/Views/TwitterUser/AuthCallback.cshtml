@@ -10,14 +10,12 @@
     function onload() {
         var response = {
             "userId": "@Model.userId",
-            "accessToken": "@Model.accessToken",
-            "expiresAt": "@Model.expiresAt",
-            "mail": "@Model.mail",
+            "accessToken": "@Model.accessToken",            
             "tokenSecret": "@Model.tokenSecret"
         };
 
         var view = new Views.TwitterAuthView();
-        //view.handleRoughResponse(response);
+        view.onResponse(response);
     }
 </script>
 

@@ -16,20 +16,14 @@ var Views;
             enumerable: true,
             configurable: true
         });
-        TwitterAuthView.prototype.handleRoughResponse = function (resp) {
-            this.loginManager.twitterUserCreator.handleRoughResponse(resp);
-            this.twitterLoginWatch();
-        };
-        TwitterAuthView.prototype.twitterLoginWatch = function () {
-            var _this = this;
-            this.twInterval = setInterval(function () {
-                var cookieVal = _this.cookieManager.getJson(Constants.cookieName);
-                if (cookieVal) {
-                    clearInterval(_this.twInterval);
-                    close();
-                }
-                console.log("checking: " + JSON.stringify(cookieVal));
-            }, 500);
+        TwitterAuthView.prototype.onResponse = function (resp) {
+            var data = resp;
+            this.apiPost("TwitterUser", resp, function (r) {
+                alert(JSON.stringify(r));
+                //todo: save auth cookie
+                //todo: close page 
+            });
+            //this.twitterLoginWatch();
         };
         return TwitterAuthView;
     })(Views.ViewBase);

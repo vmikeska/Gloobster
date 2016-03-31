@@ -36,6 +36,11 @@ var Reg;
         GoogleButtonInit.prototype.initialize = function (btnId) {
             var btnGoogle = new Reg.GoogleButton();
             btnGoogle.successfulCallback = function (googleUser) {
+                var data = googleUser;
+                Views.ViewBase.currentView.apiPost("GoogleUser", data, function (r) {
+                    alert(JSON.stringify(r));
+                    //unload sdk ?
+                });
                 alert(JSON.stringify(googleUser));
             };
             btnGoogle.initialize(btnId);

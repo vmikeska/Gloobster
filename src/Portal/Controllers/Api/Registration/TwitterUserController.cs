@@ -19,43 +19,61 @@ namespace Gloobster.Portal.Controllers.Api.Registration
 	{
 		public IUserService UserService { get; set; }		
 		public IComponentContext ComponentContext { get; set; }
-	
-		public TwitterUserController(IUserService userService, IComponentContext componentContext, ILogger log, IDbOperations db) : base(log, db)
+        public ISocNetworkService SocNetService { get; set; }
+
+        public TwitterUserController(ISocNetworkService socNetService, IComponentContext componentContext, ILogger log, IDbOperations db) : base(log, db)
 		{
-			UserService = userService;
+            SocNetService = socNetService;            
 			ComponentContext = componentContext;
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Post([FromBody] TwitterUserAuthenticationRequest request)
+        [AuthorizeApi]
+        public async Task<IActionResult> Post([FromBody] TwitterUserAuthenticationRequest req)
 		{
-			var accountDriver = ComponentContext.ResolveKeyed<IAccountDriver>("Twitter");
-			UserService.AccountDriver = accountDriver;
+            var auth = new SocAuthDO
+            {
+                UserId = UserId,
+                AccessToken = req.accessToken,
+                TokenSecret = req.tokenSecret,                
+                SocUserId = req.userId,
+                NetType = SocialNetworkType.Twitter
+            };
 
-			var addInfo = new TwitterUserAddtionalInfoDO
-			{
-				Mail = request.mail
-			};
+            SocNetService.SocLogin = ComponentContext.ResolveKeyed<ISocLogin>("Twitter");
 
-			var auth = new SocAuthenticationDO
-			{
-				AccessToken = request.accessToken,
-				UserId = request.userId,
-				TokenSecret = request.tokenSecret,
-				ExpiresAt = DateTime.Parse(request.expiresAt)
-			};
+            var res = await SocNetService.HandleAsync(auth);
+            return new ObjectResult(res);
 
-			var result = await UserService.Validate(auth, addInfo);
-			Request.HttpContext.Session.SetString(PortalConstants.UserSessionId, result.UserId);
 
-			var response = new LoggedResponse
-			{
-				encodedToken = result.EncodedToken,
-				status = result.Status.ToString(),
-				networkType = SocialNetworkType.Twitter
-			};
+            //var accountDriver = ComponentContext.ResolveKeyed<IAccountDriver>("Twitter");
+            //UserService.AccountDriver = accountDriver;
 
-			return new ObjectResult(response);			
+            //var addInfo = new TwitterUserAddtionalInfoDO
+            //{
+            //	Mail = request.mail
+            //};
+
+            //var auth = new SocAuthenticationDO
+            //{
+            //	AccessToken = request.accessToken,
+            //	UserId = request.userId,
+            //	TokenSecret = request.tokenSecret,
+            //	ExpiresAt = DateTime.Parse(request.expiresAt)
+            //};
+
+            //var result = await UserService.Validate(auth, addInfo);
+            //Request.HttpContext.Session.SetString(PortalConstants.UserSessionId, result.UserId);
+
+            //var response = new LoggedResponse
+            //{
+            //	encodedToken = result.EncodedToken,
+            //	status = result.Status.ToString(),
+            //	networkType = SocialNetworkType.Twitter
+            //};
+
+            //return new ObjectResult(response);			
+            return null;
 		}
 	}
 }

@@ -11,6 +11,7 @@ namespace Gloobster.DomainObjects
         public string SocUserId { get; set; }
         public DateTime ExpiresAt { get; set; }
         public SocialNetworkType NetType { get; set; }
+        public string Other { get; set; }
         
         public bool HasPermanentToken { get; set; }
         public string ErrorMessage { get; set; }        

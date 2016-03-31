@@ -49,8 +49,14 @@
 
 	 private initialize(btnId) {		
 			var btnGoogle = new GoogleButton();
-			btnGoogle.successfulCallback = (googleUser) => {			
-				alert(JSON.stringify(googleUser));			
+			btnGoogle.successfulCallback = (googleUser) => {
+				var data = googleUser;		
+			 Views.ViewBase.currentView.apiPost("GoogleUser", data, (r) => {
+				alert(JSON.stringify(r));
+				//unload sdk ?
+			 });
+
+			 alert(JSON.stringify(googleUser));			
 			};
 		
 			btnGoogle.initialize(btnId);

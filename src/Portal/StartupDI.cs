@@ -36,9 +36,9 @@ namespace Gloobster.Portal
             
 			builder.AddTransient<IUserService, UserService>();
 			//builder.AddTransient<IAccountDriver, FacebookAccountDriver>().Keyed<IAccountDriver>("Facebook");
-			builder.AddTransient<IAccountDriver, TwitterAccountDriver>().Keyed<IAccountDriver>("Twitter");
-			builder.AddTransient<IAccountDriver, GoogleAccountDriver>().Keyed<IAccountDriver>("Google");            
-            builder.AddTransient<IAccountDriver, AccountDriver>().Keyed<IAccountDriver>("Base");
+			//builder.AddTransient<IAccountDriver, TwitterAccountDriver>().Keyed<IAccountDriver>("Twitter");
+			//builder.AddTransient<IAccountDriver, GoogleAccountDriver>().Keyed<IAccountDriver>("Google");            
+            //builder.AddTransient<IAccountDriver, AccountDriver>().Keyed<IAccountDriver>("Base");
 
 			builder.AddTransient<IVisitedPlacesDomain, VisitedPlacesDomain>();
 			builder.AddTransient<IVisitedCitiesDomain, VisitedCitiesDomain>();
@@ -127,8 +127,9 @@ namespace Gloobster.Portal
             
             builder.AddTransient<ISocNetworkService, SocNetworkService>();
             builder.AddTransient<ISocLogin, FacebookSocLogin>().Keyed<ISocLogin>("Facebook");
-
-
+            builder.AddTransient<ISocLogin, GoogleSocLogin>().Keyed<ISocLogin>("Google");
+            builder.AddTransient<ISocLogin, TwitterSocLogin>().Keyed<ISocLogin>("Twitter");
+            
             builder.AddTransient<IAccountDomain, AccountDomain>();
             builder.AddTransient<IAvatarPhoto, AvatarPhoto>();            
         }
