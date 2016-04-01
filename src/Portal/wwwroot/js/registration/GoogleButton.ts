@@ -5,6 +5,7 @@
 		public elementId: string;
 		public buttonsSelector: string;
 		public successfulCallback: Function;
+		public onBeforeClick: Function;
 
 		private auth2: any;
 
@@ -32,6 +33,12 @@
 			this.auth2 = gapi.auth2.init(this.config);
 			
 			var element = document.getElementById(this.elementId);
+
+			$(element).click((e) => {
+			 if (this.onBeforeClick) {
+				 this.onBeforeClick();
+			 }
+			});
 
 			if (element) {
 				this.attachSignin(element);

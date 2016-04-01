@@ -51,8 +51,8 @@ namespace Gloobster.Portal.Controllers.Base
         
         public bool IsUserLogged => !string.IsNullOrEmpty(UserId);
         
-        private UserEntity _User;
-        public UserEntity PortalUser
+        private UserEntity _user;
+        public new UserEntity User
         {
             get
             {                
@@ -61,17 +61,36 @@ namespace Gloobster.Portal.Controllers.Base
                     return null;
                 }
 
-                if (_User != null)
+                if (_user != null)
                 {
-                    return _User;
+                    return _user;
                 }
 
-                _User = DB.C<UserEntity>().FOD(u => u.User_id == UserIdObj);
+                _user = DB.C<UserEntity>().FOD(u => u.User_id == UserIdObj);
                 
-                return _User;
+                return _user;
             }
         }
-        
+
+        private AccountEntity _account;
+        public AccountEntity Account
+        {
+            get
+            {
+                if (!IsUserLogged)
+                {
+                    return null;
+                }
+
+                if (_account == null)
+                {
+                    _account = DB.C<AccountEntity>().FOD(u => u.User_id == UserIdObj);
+                }
+                
+                return _account;
+            }
+        }
+
         public PortalBaseController(ILogger log, IDbOperations db)
         {
             DB = db;
@@ -84,7 +103,7 @@ namespace Gloobster.Portal.Controllers.Base
             string socNetStr = "";
 
 
-            //TDR:
+            //TODO: fix
             //if (IsUserLogged)
             //{
             //    var notifications = DB.C<NotificationsEntity>().FirstOrDefault(n => n.PortalUser_id == UserIdObj.Value);
@@ -99,70 +118,36 @@ namespace Gloobster.Portal.Controllers.Base
 
             var instance = new T
             {
-                PortalUser = PortalUser,
+                User = User,
                 DB = DB,
-                SocialNetwork = socNetStr,
+                SocialNetworks = Networks,
                 NotificationCount = notifsCount,
                 UserId = UserId
             };
             return instance;
         }
+
+        private List<SocialNetworkType> _networks;
+        public List<SocialNetworkType> Networks
+        {
+            get
+            {
+                if (_networks == null)
+                {
+                    var networksEnt = DB.C<SocialAccountEntity>().List(a => a.User_id == UserIdObj);
+                    _networks = networksEnt.Select(n => n.NetworkType).ToList();
+
+                    if (!string.IsNullOrEmpty(Account.Mail))
+                    {
+                        _networks.Add(SocialNetworkType.Base);
+                    }
+                }
+
+                return _networks;
+            }
+        }
+
+
         
-  //      private AuthorizationToken GetAuthorizationTokenFromCookie()
-	 //   {
-		//	string cookieValue = Request.HttpContext.Request.Cookies[PortalConstants.LoginCookieName];
-
-		//	if (string.IsNullOrEmpty(cookieValue))
-		//	{
-		//		return null;
-		//	}
-
-		//	try
-		//	{
-		//		var loggedObj = Newtonsoft.Json.JsonConvert.DeserializeObject<LoggedResponse>(cookieValue);
-				
-		//		var decodedStr = JsonWebToken.Decode(loggedObj.encodedToken, GloobsterConfig.AppSecret, true);
-
-		//		var tokenObj = Newtonsoft.Json.JsonConvert.DeserializeObject<AuthorizationToken>(decodedStr);
-
-		//		return tokenObj;
-		//	}
-		//	catch
-		//	{
-		//		return null;
-		//	}
-		//}
-        
-	    //private string GetSocNetworkStr()
-	    //{
-	    //    var networks = new List<string>();
-     //       if (PortalUser.SocialAccounts != null && PortalUser.SocialAccounts.Any())
-	    //    {
-	    //        foreach (var account in PortalUser.SocialAccounts)
-	    //        {
-	    //            if (account.NetworkType == SocialNetworkType.Facebook)
-	    //            {
-	    //                networks.Add("F");
-	    //            }
-
-	    //            if (account.NetworkType == SocialNetworkType.Twitter)
-	    //            {
-	    //                networks.Add("T");
-	    //            }
-
-	    //            if (account.NetworkType == SocialNetworkType.Google)
-	    //            {
-	    //                networks.Add("G");
-	    //            }
-	    //        }
-	    //    }
-	    //    else
-	    //    {
-     //           networks.Add("B");                
-	    //    }
-            
-     //       var netStr = string.Join(",", networks);            
-     //       return netStr;
-	    //}        
     }
 }

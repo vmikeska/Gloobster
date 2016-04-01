@@ -1,4 +1,24 @@
 ﻿module Common {
+
+	export class HintDialog {
+	 private template;
+	 private $html;
+
+	 constructor() {
+		this.template = Views.ViewBase.currentView.registerTemplate("hint-template");
+	 }
+
+	 public create(message) {
+		this.$html = $(this.template({ message: message }));
+		 this.$html.find(".close").click((e) => {
+			e.preventDefault();
+			 this.$html.remove();
+		 });
+
+		 $("section").first().prepend(this.$html);
+	 }
+	}
+
 	export class ConfirmDialog {
 		private template;
 		private $html;

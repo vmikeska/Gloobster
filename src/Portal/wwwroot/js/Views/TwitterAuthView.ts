@@ -16,23 +16,23 @@
 		private onResponse(resp) {
 			var data = resp;
 			this.apiPost("TwitterUser", data, (r) => {			 
-			 this.cookiesSaver.saveCookies(r);			 
-			 close();			 
+			 this.cookiesSaver.saveTwitterLogged();
+			 this.cookiesSaver.saveCookies(r);		
+			 this.twitterLoginWatch(() => {
+				close();
+			 });	 			 	 
 		 });
-		 
-			//this.twitterLoginWatch();
+		 			
 		}
 
-		//private twitterLoginWatch() {			
-		//	this.twInterval = setInterval(() => {			 			
-		//	 var cookieVal = this.cookieManager.getJson(Constants.cookieName);				
-		//		if (cookieVal) {					
-		//			clearInterval(this.twInterval);					
-		//			close();
-		//		}
-		//		console.log("checking: " + JSON.stringify(cookieVal));
-		//	}, 500);			
-		//}
-
+		private twitterLoginWatch(callback) {
+			this.twInterval = setInterval(() => {
+				var isLogged = this.cookiesSaver.isTwitterLogged();
+				if (isLogged) {
+				 clearInterval(this.twInterval);
+					callback();					
+				}				
+			}, 500);
+		}
 	}
 }

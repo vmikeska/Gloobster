@@ -1,6 +1,7 @@
 ﻿@{
-		ViewBag.BodyClass = "tripview";
-		ViewBag.MenuGroup = "Trip";
+    ViewBag.BodyClass = "tripview";
+    ViewBag.MenuGroup = "Trip";
+    ViewBag.StopLayoutGenerate = true;
 }
 
 @using System.Threading.Tasks
@@ -56,31 +57,42 @@
      }
 </style>
 
+<section class="wrapper">
+    @if (!Model.SocialNetworks.Any())
+    {
+        @Html.Partial("_DialogJoinSoc")
+        @Html.Partial("_DialogJoinEmail")
+    }
+</section>
 
 <section id="bckPhoto" class="adventure-background line margin padding">
+    
     <div class="wrapper with-subnav">
         <div class="subnav-holder margin">
             <div class="table width100">
                 <div class="cell">
-                    @if (Model.IsUserAdmin) {
+                    @if (Model.IsUserAdmin)
+                    {
                         <a class="button blue-trans photoButton" href="#">
                             <input id="photoInput" type="file"/>
                             <label for="photoInput">
                                 <span class="icon-photo middle mright5"></span>
                                 Title Photo
-                            </label>                            
+                            </label>
                         </a>
                     }
 
-                    
+
                 </div>
                 <div class="cell tright">
-                    
-                    @if (!Model.IsOwner) {
+
+                    @if (!Model.IsOwner)
+                    {
                         @Html.Partial("InviteCombo")
                     }
 
-                    @if (Model.IsUserAdmin) {
+                    @if (Model.IsUserAdmin)
+                    {
                         <a data-tmp="menuPrivacy-template" class="button blue-trans popup2-target tripMenuButton" data-target="#popup-privacy" href="#">
                             <span class="icon-globe middle mright5"></span>
                             Privacy

@@ -1,6 +1,5 @@
 ﻿<div id="userMenu" class="dropdown">
-    <span class="selected">@Model.PortalUser.DisplayName
-    @*, @Model.SocialNetwork*@
+    <span class="selected">@Model.User.DisplayName, @Model.SocNetworkStr    
     </span>
     @if (Model.NotificationCount > 0)
     {

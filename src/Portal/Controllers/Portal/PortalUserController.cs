@@ -29,10 +29,10 @@ namespace Gloobster.Portal.Controllers.Portal
 		{
             var viewModel = CreateViewModelInstance<UserDetailViewModel>();
             viewModel.AvatarLink = "/PortalUser/ProfilePicture/" + id;
-            viewModel.DisplayName = PortalUser.DisplayName;
-            viewModel.Gender = GetGenderStr(PortalUser.Gender);
-            viewModel.CurrentLocation = FormatCityStr(PortalUser.CurrentLocation);
-            viewModel.HomeLocation = FormatCityStr(PortalUser.HomeLocation);
+            viewModel.DisplayName = User.DisplayName;
+            viewModel.Gender = GetGenderStr(User.Gender);
+            viewModel.CurrentLocation = FormatCityStr(User.CurrentLocation);
+            viewModel.HomeLocation = FormatCityStr(User.HomeLocation);
 
             return View(viewModel);
 		}
@@ -42,10 +42,10 @@ namespace Gloobster.Portal.Controllers.Portal
 		{
 			var viewModel = CreateViewModelInstance<SettingsViewModel>();
 			viewModel.AvatarLink = "/PortalUser/ProfilePicture";
-			viewModel.DisplayName = PortalUser.DisplayName;
-			viewModel.Gender = GetGenderStr(PortalUser.Gender);
-			viewModel.CurrentLocation = FormatCityStr(PortalUser.CurrentLocation);
-			viewModel.HomeLocation = FormatCityStr(PortalUser.HomeLocation);
+			viewModel.DisplayName = User.DisplayName;
+			viewModel.Gender = GetGenderStr(User.Gender);
+			viewModel.CurrentLocation = FormatCityStr(User.CurrentLocation);
+			viewModel.HomeLocation = FormatCityStr(User.HomeLocation);
 
 			return View(viewModel);
 		}
@@ -63,7 +63,7 @@ namespace Gloobster.Portal.Controllers.Portal
             }
             else
             {
-                portalUser = PortalUser;
+                portalUser = User;
             }
             
             if (!portalUser.HasProfileImage)

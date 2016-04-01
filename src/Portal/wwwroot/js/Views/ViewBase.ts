@@ -5,8 +5,11 @@ module Views {
 
 	export class ViewBase {
 
-	  public static currentView: ViewBase;
-	 
+	  public static currentView: ViewBase;	 
+		public static nets: string;
+
+		public loginButtonsManager: Reg.LoginButtonsManager;
+
 		public loginManager: Reg.LoginManager;
 		public cookieManager: Common.CookieManager;
 
@@ -18,15 +21,20 @@ module Views {
 			ViewBase.currentView = this;
 			this.cookieManager = new Common.CookieManager();			
 			this.regUserMenu();
+
+			this.loginButtonsManager = new Reg.LoginButtonsManager();
+			this.loginButtonsManager.createPageDialog();
 		}
 
 		private regUserMenu() {
 
+		 //todo: fix if is not working
 		 $("#logoutUser").click((e) => {				
 				this.loginManager.logout();				
 			});
 		}
 
+	 //todo: rework or remove
 		public hasSocNetwork(net: Reg.NetworkType) {
 		 var netTypesStr = this.cookieManager.getString(Constants.networkTypes);
 		 if (!netTypesStr) {

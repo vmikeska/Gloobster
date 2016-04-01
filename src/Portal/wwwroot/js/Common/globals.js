@@ -3,6 +3,7 @@ var Constants;
     Constants.tokenCookieName = "token";
     Constants.nameCookieName = "name";
     Constants.socNetsCookieName = "socNets";
+    Constants.twitterLoggedCookieName = "twitterLogged";
     Constants.firstRedirectUrl = "/PinBoard/Pins";
     Constants.networkTypes = "NetworkTypes";
     Constants.emptyId = "000000000000000000000000";

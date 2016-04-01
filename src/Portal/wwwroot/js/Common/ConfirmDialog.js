@@ -1,5 +1,21 @@
 var Common;
 (function (Common) {
+    var HintDialog = (function () {
+        function HintDialog() {
+            this.template = Views.ViewBase.currentView.registerTemplate("hint-template");
+        }
+        HintDialog.prototype.create = function (message) {
+            var _this = this;
+            this.$html = $(this.template({ message: message }));
+            this.$html.find(".close").click(function (e) {
+                e.preventDefault();
+                _this.$html.remove();
+            });
+            $("section").first().prepend(this.$html);
+        };
+        return HintDialog;
+    })();
+    Common.HintDialog = HintDialog;
     var ConfirmDialog = (function () {
         function ConfirmDialog() {
             this.template = Views.ViewBase.currentView.registerTemplate("confirmDialog-template");

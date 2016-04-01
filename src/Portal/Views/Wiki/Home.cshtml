@@ -1,10 +1,20 @@
-﻿
+﻿@using System.Linq;
+
+@{
+    ViewBag.StopLayoutGenerate = true;
+}
+
 <script type="text/javascript" src="@Url.Content("~/js/Views/WikiHomeView.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Views/WikiSearchCombo.js")"></script>
 
-<div class="blue-line margin2"></div>
+
 <section class="wrapper margin2 tcenter">
-    <h2>Gloobster Travel Wiki</h2>
+    @if (Model.SocialNetworks.Count == 0)
+    {
+        @Html.Partial("_DialogJoinSoc")
+        @Html.Partial("_DialogJoinEmail")
+    }
+    <h2>Gloobster Travel Wiki</h2>    
     <div id="SearchCombo" class="dropdown large">
         <input class="inputed" type="text" placeholder="Dropdown Search">
         <ul style="text-align: left"></ul>

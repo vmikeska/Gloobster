@@ -15,12 +15,18 @@ var Reg;
         };
         // Retrieve the singleton for the GoogleAuth library and set up the client.
         GoogleButton.prototype.onLoaded = function () {
+            var _this = this;
             if (this.auth2) {
                 return;
             }
             console.log("onLoaded");
             this.auth2 = gapi.auth2.init(this.config);
             var element = document.getElementById(this.elementId);
+            $(element).click(function (e) {
+                if (_this.onBeforeClick) {
+                    _this.onBeforeClick();
+                }
+            });
             if (element) {
                 this.attachSignin(element);
             }

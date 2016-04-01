@@ -10,6 +10,7 @@ module Constants {
 	export var tokenCookieName = "token";
 	export var nameCookieName = "name";
 	export var socNetsCookieName = "socNets";
+	export var twitterLoggedCookieName = "twitterLogged";
 
 	export var firstRedirectUrl = "/PinBoard/Pins";
 	export var networkTypes = "NetworkTypes";

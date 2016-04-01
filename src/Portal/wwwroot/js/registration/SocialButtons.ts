@@ -1,13 +1,39 @@
 ﻿module Reg {
 
 	export class LoginButtonsManager {
+	 
+		private $socDialog;
 
 		public initialize(fb, google, twitter) {
-
 			var fbBtn = new FacebookButtonInit(fb);
-			var googleBtn = new GoogleButtonInit(google);
-			var twitterBtn = new TwitterButtonInit(twitter);
+			fbBtn.onBeforeExecute = () => this.onBefore();
+			fbBtn.onAfterExecute = () => this.onAfter();
 
+			var googleBtn = new GoogleButtonInit(google);
+			googleBtn.onBeforeExecute = () => this.onBefore();
+			googleBtn.onAfterExecute = () => this.onAfter();
+		 
+			var twitterBtn = new TwitterButtonInit(twitter);
+			twitterBtn.onBeforeExecute = () => this.onBefore();
+			twitterBtn.onAfterExecute = () => this.onAfter();
+		}
+
+		private onBefore() {
+			this.$socDialog.hide();			
+		}
+
+		private onAfter() {
+		 var hint = new Common.HintDialog();
+		 hint.create("You are successfully connected!");
+		 $("#MenuRegister").parent().remove();
+		}
+
+		public createPageDialog() {
+			if (!Views.ViewBase.nets) {
+				this.$socDialog = $("#popup-joinSoc");
+				this.$socDialog.show();
+				this.initialize("fbBtnHome", "googleBtnHome", "twitterBtnHome");
+			}
 		}
 	}
 
@@ -31,39 +57,67 @@
 			//todo: remove ?
 			//this.cookiesMgr.setString(, res.UserId);
 		}
+
+		public saveTwitterLogged() {
+		 this.cookiesMgr.setString(Constants.twitterLoggedCookieName, "true");		 
+		}
+
+		public isTwitterLogged() : boolean {
+		 var str = this.cookiesMgr.getString(Constants.twitterLoggedCookieName);
+			if (str) {
+				return true;
+		 }
+			return false;
+		}
+
 	}
 
 	export class TwitterButtonInit {
-	 
-		constructor(btn) {		 		
+
+		private cookiesSaver: AuthCookieSaver;
+
+		public onBeforeExecute: Function;
+		public onAfterExecute: Function;
+
+		constructor(btn) {
+			this.cookiesSaver = new AuthCookieSaver();
 			var $btn = $(`#${btn}`);
 			$btn.click((e) => {
 				e.preventDefault();
+				if (this.onBeforeExecute) {
+					this.onBeforeExecute();
+				}
 				this.twitterAuthorize();
 			});
 		}
 
 		public twitterAuthorize() {
-		//this.twitterLoginWatch();
-		var url = '/TwitterUser/Authorize';
-		var wnd = window.open(url, "Twitter authentication", "height=500px,width=400px");
-	 }
+			this.twitterLoginWatch(() => {
+			 if (this.onAfterExecute) {
+				this.onAfterExecute();
+			 }
+			});
+			var url = '/TwitterUser/Authorize';
+			var wnd = window.open(url, "Twitter authentication", "height=500px,width=400px");
+		}
 
-	 private twInterval = null;
+		private twInterval = null;
 
-	 //private twitterLoginWatch() {
-		//this.twInterval = setInterval(() => {
-		// var cookieVal = this.cookieManager.getJson(Constants.cookieName);
-		// if (cookieVal) {
-		//	clearInterval(this.twInterval);
-		//	window.location.href = Constants.firstRedirectUrl;
-		// }
-		// console.log("checking: " + JSON.stringify(cookieVal));
-		//}, 500);
-	 //}
+		private twitterLoginWatch(callback) {
+		 this.twInterval = setInterval(() => {
+			var isLogged = this.cookiesSaver.isTwitterLogged();
+			if (isLogged) {
+			 clearInterval(this.twInterval);
+			 callback();
+			}
+		 }, 500);
+		}	 
 	}
 
 	export class GoogleButtonInit {
+
+		public onBeforeExecute: Function;
+		public onAfterExecute: Function;
 
 		private cookiesSaver: AuthCookieSaver;
 
@@ -74,10 +128,18 @@
 
 		private initialize(btnId) {
 			var btnGoogle = new GoogleButton();
+			btnGoogle.onBeforeClick = () => {
+				if (this.onBeforeExecute) {
+					this.onBeforeExecute();
+				}
+			};
 			btnGoogle.successfulCallback = (googleUser) => {
 				var data = googleUser;
 				Views.ViewBase.currentView.apiPost("GoogleUser", data, (r) => {
 					this.cookiesSaver.saveCookies(r);
+					if (this.onAfterExecute) {
+						this.onAfterExecute();
+					}
 					//unload sdk ?
 				});
 			};
@@ -87,6 +149,9 @@
 	}
 
 	export class FacebookButtonInit {
+
+	 public onBeforeExecute: Function;
+	 public onAfterExecute: Function;
 
 	 private cookiesSaver: AuthCookieSaver;
 
@@ -102,11 +167,17 @@
 			this.initializeFacebookSdk(() => {
 				$btn.click((e) => {
 					e.preventDefault();
+					if (this.onBeforeExecute) {
+						this.onBeforeExecute();
+					}
 					var auth = new FacebookAuth();
 					auth.onSuccessful = (user) => {
 						var data = user;
 						Views.ViewBase.currentView.apiPost("FacebookUser", data, (r) => {
 							this.cookiesSaver.saveCookies(r);
+							if (this.onAfterExecute) {
+								this.onAfterExecute();
+							}
 							//unload sdk ?
 						});
 					};

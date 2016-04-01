@@ -13,6 +13,8 @@ var Views;
             ViewBase.currentView = this;
             this.cookieManager = new Common.CookieManager();
             this.regUserMenu();
+            this.loginButtonsManager = new Reg.LoginButtonsManager();
+            this.loginButtonsManager.createPageDialog();
         }
         Object.defineProperty(ViewBase.prototype, "pageType", {
             get: function () { return null; },
@@ -21,10 +23,12 @@ var Views;
         });
         ViewBase.prototype.regUserMenu = function () {
             var _this = this;
+            //todo: fix if is not working
             $("#logoutUser").click(function (e) {
                 _this.loginManager.logout();
             });
         };
+        //todo: rework or remove
         ViewBase.prototype.hasSocNetwork = function (net) {
             var netTypesStr = this.cookieManager.getString(Constants.networkTypes);
             if (!netTypesStr) {

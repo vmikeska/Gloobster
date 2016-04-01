@@ -26,6 +26,15 @@ namespace Gloobster.Portal.Controllers.Portal
             WikiPerms = wikiPerms;
         }
 
+        [CreateAccount]
+        public IActionResult Home()
+        {
+            var vm = CreateViewModelInstance<WikiHomeViewModel>();
+
+            return View(vm);
+        }
+
+        [CreateAccount]
         public IActionResult PageRegular(string id, string lang)
         {
             WikiModelBase vm = null;
@@ -67,6 +76,7 @@ namespace Gloobster.Portal.Controllers.Portal
             return View(template, vm);
         }
 
+        [CreateAccount]
         public IActionResult Page(string id)
         {
             var texts = DB.C<WikiTextsEntity>().Where(i => i.LinkName == id).ToList();
@@ -82,6 +92,95 @@ namespace Gloobster.Portal.Controllers.Portal
             var url = $"/wiki/{selectedText.Language}/{selectedText.LinkName}";
             return RedirectPermanent(url);
         }
+
+
+
+        public IActionResult LinkMap()
+        {
+            var vm = CreateViewModelInstance<WikiLinkMapViewModel>();
+
+            var continents = DB.C<WikiContinentEntity>().ToList();
+            var countries = DB.C<WikiCountryEntity>().ToList();
+            var cities = DB.C<WikiCityEntity>().ToList();
+
+            vm.Languages = new List<WikiLanguageVM>
+            {
+                GetLanguageEntries("en", countries, cities, continents)
+            };
+
+            return View(vm);
+        }
+
+
+
+        public IActionResult ArticleTitlePhoto(string id)
+        {
+            var stream = GetPicture(id, WikiFileConstants.TitlePhotoNameExt);
+            return stream;
+        }
+
+        public IActionResult ArticlePhoto(string photoId, string articleId)
+        {
+            var name = $"{photoId}.jpg";
+            var stream = GetPicture(articleId, name, WikiFileConstants.GalleryDir);
+            return stream;
+        }
+
+        public IActionResult ArticlePhotoThumb(string photoId, string articleId)
+        {
+            var name = $"{photoId}_thumb.jpg";
+            var stream = GetPicture(articleId, name, WikiFileConstants.GalleryDir);
+            return stream;
+        }
+
+
+
+        public IActionResult Permissions()
+        {
+            var perms = DB.C<WikiPermissionEntity>().ToList();
+
+            //for now access just master admins
+            var masterAdmins = perms.Where(u => u.IsMasterAdmin).Select(m => m.User_id).ToList();
+            if (!masterAdmins.Contains(UserIdObj.Value))
+            {
+                return HttpUnauthorized();
+            }
+
+            var userIds = perms.Select(u => u.User_id).ToList();
+            var users = DB.C<UserEntity>().Where(u => userIds.Contains(u.id)).ToList();
+
+            var vm = CreateViewModelInstance<WikiPermissionsViewModel>();
+
+            vm.MasterAdmins = perms
+                .Where(u => u.IsMasterAdmin)
+                .ToList()
+                .Select(i => ConvertUser(users, i.User_id))
+                .ToList();
+
+            vm.SuperAdmins = perms
+                .Where(u => u.IsSuperAdmin)
+                .ToList()
+                .Select(i => ConvertUser(users, i.User_id))
+                .ToList();
+
+            var unrichAdmins = perms.Where(u => !u.IsSuperAdmin && !u.IsMasterAdmin).ToList();
+            var involvedArticlesIds = unrichAdmins.SelectMany(a => a.Articles).ToList();
+            var involvedArticles = DB.C<WikiTextsEntity>()
+                .Where(a => involvedArticlesIds
+                .Contains(a.Article_id))
+                .ToList();
+
+            vm.Users = unrichAdmins.Select(i => new UserPermVM
+            {
+                UserId = i.User_id.ToString(),
+                Name = users.First(u => u.id == i.User_id).DisplayName,
+                Items = i.Articles.Select(a => ConvertArticle(involvedArticles, a)).ToList()
+            }).ToList();
+
+            return View(vm);
+        }
+
+
 
         private WikiCityViewModel GetCityVM(WikiTextsEntity text)
         {
@@ -121,27 +220,6 @@ namespace Gloobster.Portal.Controllers.Portal
             return vm;
         }
         
-
-        public IActionResult ArticleTitlePhoto(string id)
-        {
-            var stream = GetPicture(id, WikiFileConstants.TitlePhotoNameExt);
-            return stream;
-        }
-
-        public IActionResult ArticlePhoto(string photoId, string articleId)
-        {
-            var name = $"{photoId}.jpg";
-            var stream = GetPicture(articleId, name, WikiFileConstants.GalleryDir);
-            return stream;
-        }
-
-        public IActionResult ArticlePhotoThumb(string photoId, string articleId)
-        {
-            var name = $"{photoId}_thumb.jpg";            
-            var stream = GetPicture(articleId, name, WikiFileConstants.GalleryDir);
-            return stream;
-        }
-
         private FileStreamResult GetPicture(string articleId, string picName, string customDir = null)
         {
             var articleDir = FileDomain.Storage.Combine(WikiFileConstants.FileLocation, articleId);
@@ -163,22 +241,6 @@ namespace Gloobster.Portal.Controllers.Portal
             return null;
         }
         
-        public IActionResult LinkMap()
-        {
-            var vm = CreateViewModelInstance<WikiLinkMapViewModel>();
-
-            var continents = DB.C<WikiContinentEntity>().ToList();
-            var countries = DB.C<WikiCountryEntity>().ToList();
-            var cities = DB.C<WikiCityEntity>().ToList();
-
-            vm.Languages = new List<WikiLanguageVM>
-            {
-                GetLanguageEntries("en", countries, cities, continents)                
-            };
-
-            return View(vm);
-        }
-
         private WikiLanguageVM GetLanguageEntries(string language, List<WikiCountryEntity> countriesE, 
             List<WikiCityEntity> citiesE, List<WikiContinentEntity> continents)
         {
@@ -218,59 +280,7 @@ namespace Gloobster.Portal.Controllers.Portal
 
             return langItem;
         }
-
-        public IActionResult Home()
-        {
-            var vm = CreateViewModelInstance<WikiHomeViewModel>();
-
-            return View(vm);
-        }
-
-        public IActionResult Permissions()
-        {
-            var perms = DB.C<WikiPermissionEntity>().ToList();
-
-            //for now access just master admins
-            var masterAdmins = perms.Where(u => u.IsMasterAdmin).Select(m=> m.User_id).ToList();
-            if (!masterAdmins.Contains(UserIdObj.Value))
-            {
-                return HttpUnauthorized();
-            }
-
-            var userIds = perms.Select(u => u.User_id).ToList();
-            var users = DB.C<UserEntity>().Where(u => userIds.Contains(u.id)).ToList();
-
-            var vm = CreateViewModelInstance<WikiPermissionsViewModel>();
-            
-            vm.MasterAdmins = perms
-                .Where(u => u.IsMasterAdmin)
-                .ToList()
-                .Select(i => ConvertUser(users, i.User_id))
-                .ToList();
-
-            vm.SuperAdmins = perms
-                .Where(u => u.IsSuperAdmin)
-                .ToList()
-                .Select(i => ConvertUser(users, i.User_id))
-                .ToList();
-
-            var unrichAdmins = perms.Where(u => !u.IsSuperAdmin && !u.IsMasterAdmin).ToList();
-            var involvedArticlesIds = unrichAdmins.SelectMany(a => a.Articles).ToList();
-            var involvedArticles = DB.C<WikiTextsEntity>()
-                .Where(a => involvedArticlesIds
-                .Contains(a.Article_id))
-                .ToList();
-
-            vm.Users = unrichAdmins.Select(i => new UserPermVM
-            {
-                UserId = i.User_id.ToString(),
-                Name = users.First(u => u.id == i.User_id).DisplayName,
-                Items = i.Articles.Select(a => ConvertArticle(involvedArticles, a)).ToList()    
-            }).ToList();
-
-            return View(vm);
-        }
-
+        
         private PermItemVM ConvertArticle(List<WikiTextsEntity> involvedArticles, ObjectId articleId)
         {
             var article = involvedArticles.FirstOrDefault(a => a.Article_id == articleId && a.Language == "en");

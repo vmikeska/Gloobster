@@ -58,20 +58,19 @@ var Views;
             };
         };
         PinBoardView.prototype.setInfo = function () {
-            var _this = this;
             this.getFormState(function (dataType, entity, mapType) {
-                var userLogged = _this.loginManager.isAlreadyLogged();
-                var $messageNotLogged = $("#messageNotLogged");
+                //var userLogged = this.loginManager.isAlreadyLogged();
+                //var $messageNotLogged = $("#messageNotLogged");
                 var $messageCitiesVisited = $("#messageCitiesVisited");
                 var $messageCountriesVisited = $("#messageCountriesVisited");
                 var $messagePlaces = $("#messagePlaces");
                 var $messageCitiesInterested = $("#messageCitiesInterested");
                 var $messageCountriesInterested = $("#messageCountriesInterested");
                 $(".infoMessage").hide();
-                if (!userLogged) {
-                    $messageNotLogged.show();
-                    return;
-                }
+                //if (!userLogged) {
+                //$messageNotLogged.show();
+                // return;
+                //}
                 if (dataType === Maps.DataType.Visited) {
                     if (entity === Maps.DisplayEntity.Pin) {
                         $messageCitiesVisited.show();

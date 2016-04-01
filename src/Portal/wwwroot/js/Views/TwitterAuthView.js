@@ -21,10 +21,22 @@ var Views;
             var _this = this;
             var data = resp;
             this.apiPost("TwitterUser", data, function (r) {
+                _this.cookiesSaver.saveTwitterLogged();
                 _this.cookiesSaver.saveCookies(r);
-                close();
+                _this.twitterLoginWatch(function () {
+                    close();
+                });
             });
-            //this.twitterLoginWatch();
+        };
+        TwitterAuthView.prototype.twitterLoginWatch = function (callback) {
+            var _this = this;
+            this.twInterval = setInterval(function () {
+                var isLogged = _this.cookiesSaver.isTwitterLogged();
+                if (isLogged) {
+                    clearInterval(_this.twInterval);
+                    callback();
+                }
+            }, 500);
         };
         return TwitterAuthView;
     })(Views.ViewBase);

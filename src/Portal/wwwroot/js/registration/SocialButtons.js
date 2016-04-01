@@ -4,9 +4,31 @@ var Reg;
         function LoginButtonsManager() {
         }
         LoginButtonsManager.prototype.initialize = function (fb, google, twitter) {
+            var _this = this;
             var fbBtn = new FacebookButtonInit(fb);
+            fbBtn.onBeforeExecute = function () { return _this.onBefore(); };
+            fbBtn.onAfterExecute = function () { return _this.onAfter(); };
             var googleBtn = new GoogleButtonInit(google);
+            googleBtn.onBeforeExecute = function () { return _this.onBefore(); };
+            googleBtn.onAfterExecute = function () { return _this.onAfter(); };
             var twitterBtn = new TwitterButtonInit(twitter);
+            twitterBtn.onBeforeExecute = function () { return _this.onBefore(); };
+            twitterBtn.onAfterExecute = function () { return _this.onAfter(); };
+        };
+        LoginButtonsManager.prototype.onBefore = function () {
+            this.$socDialog.hide();
+        };
+        LoginButtonsManager.prototype.onAfter = function () {
+            var hint = new Common.HintDialog();
+            hint.create("You are successfully connected!");
+            $("#MenuRegister").parent().remove();
+        };
+        LoginButtonsManager.prototype.createPageDialog = function () {
+            if (!Views.ViewBase.nets) {
+                this.$socDialog = $("#popup-joinSoc");
+                this.$socDialog.show();
+                this.initialize("fbBtnHome", "googleBtnHome", "twitterBtnHome");
+            }
         };
         return LoginButtonsManager;
     })();
@@ -24,6 +46,16 @@ var Reg;
             //todo: remove ?
             //this.cookiesMgr.setString(, res.UserId);
         };
+        AuthCookieSaver.prototype.saveTwitterLogged = function () {
+            this.cookiesMgr.setString(Constants.twitterLoggedCookieName, "true");
+        };
+        AuthCookieSaver.prototype.isTwitterLogged = function () {
+            var str = this.cookiesMgr.getString(Constants.twitterLoggedCookieName);
+            if (str) {
+                return true;
+            }
+            return false;
+        };
         return AuthCookieSaver;
     })();
     Reg.AuthCookieSaver = AuthCookieSaver;
@@ -31,16 +63,35 @@ var Reg;
         function TwitterButtonInit(btn) {
             var _this = this;
             this.twInterval = null;
+            this.cookiesSaver = new AuthCookieSaver();
             var $btn = $("#" + btn);
             $btn.click(function (e) {
                 e.preventDefault();
+                if (_this.onBeforeExecute) {
+                    _this.onBeforeExecute();
+                }
                 _this.twitterAuthorize();
             });
         }
         TwitterButtonInit.prototype.twitterAuthorize = function () {
-            //this.twitterLoginWatch();
+            var _this = this;
+            this.twitterLoginWatch(function () {
+                if (_this.onAfterExecute) {
+                    _this.onAfterExecute();
+                }
+            });
             var url = '/TwitterUser/Authorize';
             var wnd = window.open(url, "Twitter authentication", "height=500px,width=400px");
+        };
+        TwitterButtonInit.prototype.twitterLoginWatch = function (callback) {
+            var _this = this;
+            this.twInterval = setInterval(function () {
+                var isLogged = _this.cookiesSaver.isTwitterLogged();
+                if (isLogged) {
+                    clearInterval(_this.twInterval);
+                    callback();
+                }
+            }, 500);
         };
         return TwitterButtonInit;
     })();
@@ -53,10 +104,18 @@ var Reg;
         GoogleButtonInit.prototype.initialize = function (btnId) {
             var _this = this;
             var btnGoogle = new Reg.GoogleButton();
+            btnGoogle.onBeforeClick = function () {
+                if (_this.onBeforeExecute) {
+                    _this.onBeforeExecute();
+                }
+            };
             btnGoogle.successfulCallback = function (googleUser) {
                 var data = googleUser;
                 Views.ViewBase.currentView.apiPost("GoogleUser", data, function (r) {
                     _this.cookiesSaver.saveCookies(r);
+                    if (_this.onAfterExecute) {
+                        _this.onAfterExecute();
+                    }
                     //unload sdk ?
                 });
             };
@@ -76,11 +135,17 @@ var Reg;
             this.initializeFacebookSdk(function () {
                 $btn.click(function (e) {
                     e.preventDefault();
+                    if (_this.onBeforeExecute) {
+                        _this.onBeforeExecute();
+                    }
                     var auth = new Reg.FacebookAuth();
                     auth.onSuccessful = function (user) {
                         var data = user;
                         Views.ViewBase.currentView.apiPost("FacebookUser", data, function (r) {
                             _this.cookiesSaver.saveCookies(r);
+                            if (_this.onAfterExecute) {
+                                _this.onAfterExecute();
+                            }
                             //unload sdk ?
                         });
                     };
