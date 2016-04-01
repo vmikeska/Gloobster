@@ -2,8 +2,11 @@
 
 	export class TwitterAuthView extends ViewBase {
 
+	 private cookiesSaver: Reg.AuthCookieSaver;
+
 		constructor() {
-			super();
+		 super();
+		 this.cookiesSaver = new Reg.AuthCookieSaver();
 		}
 
 		get pageType(): Views.PageType { return PageType.TwitterAuth; }
@@ -12,13 +15,11 @@
 
 		private onResponse(resp) {
 			var data = resp;
-		 this.apiPost("TwitterUser", resp, (r) => {
-			 alert(JSON.stringify(r));
-			 //todo: save auth cookie
-			 //todo: close page 
+			this.apiPost("TwitterUser", data, (r) => {			 
+			 this.cookiesSaver.saveCookies(r);			 
+			 close();			 
 		 });
-
-			
+		 
 			//this.twitterLoginWatch();
 		}
 

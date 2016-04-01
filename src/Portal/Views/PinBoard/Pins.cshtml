@@ -84,6 +84,61 @@
 
 <!-- MapBox -->
 <section class="wrapper margin3">
+
+    <div class="popup2 with-padding-right margin" id="popup-privacy" style="display: block;">
+        <div class="table width100">
+            <div class="cell popcont-holder with-line">
+                @*<h3 class="slim">Privacy Settings</h3>
+                Set privacy of your trip. In participants menu you can select admins of the trip.*@
+                You are running on temporary account. You can work with the app, but if you don't connect with any real account, your data might get lost.
+            </div>
+            <div class="cell middle">
+                <div class="logins">
+                    <div class="margin">
+                        <a id="fbBtnHome" class="facebook" href="#">Facebook</a>
+                        <a id="twitterBtnHome" class="twitter" href="#">Twitter</a>
+                        <a id="googleBtnHome" class="google" href="#">Google</a>
+                    </div>
+                    <span>
+                        Or
+                        <a class="popup-target" data-target="#popup-join" href="#">Sign Up with email</a>
+                        .
+                    </span>
+                </div>
+
+
+            </div>
+        </div>
+        <a class="close" href="#">Close</a>
+    </div>
+
+    <div class="popup2 with-padding-right margin" style="display: block;">
+        <div class="table width100">
+            <div class="cell popcont-holder with-line">
+                <h3 class="slim">Join with email</h3>                    
+            </div>
+            <div class="cell middle">
+                <div class="form margin">
+                    <label class="h4" for="email">E-mail</label>
+                    <input id="email" type="text" placeholder="E-mail">
+                    <label class="h4" for="password">Password</label>
+                    <input id="password" type="password">
+                    <p class="small">
+                        By creating an account you accept the
+                        <a href="#">Terms of service</a>
+                    </p>
+                    <input class="right" type="submit" value="Join Now">
+                </div>
+
+
+            </div>
+        </div>
+        <a class="close" href="#">Close</a>
+    </div>
+
+
+    
+
     <div class="table row col2 margin">
         <div class="cell">
             <div class="table row">
@@ -103,15 +158,16 @@
             </div>
         </div>
         <div class="cell middle tright">
-            <a class="icon-share textnohide noneline strong popup2-target" data-target="#popup-share" href="#">Share map</a>            
+            <a class="icon-share textnohide noneline strong popup2-target" data-target="#popup-share" href="#">Share map</a>
         </div>
     </div>
     <div class="popup2 margin" id="popup-share">
-        <h3><span class="slim">Share</span> My Euro Trip</h3>
+        <h3><span class="slim">Share</span> My Euro Trip
+        </h3>
         <textarea id="message" class="margin" placeholder="Message..."></textarea>
         <span class="color1 mright20"><strong>Share on social media</strong></span>
         <div class="table width100">
-            <div id="shareCont" class="cell middle">               
+            <div id="shareCont" class="cell middle">
             </div>
             <div class="cell middle tright">
                 <a id="share" class="button" href="#">Share</a>
@@ -120,49 +176,49 @@
         <a class="close" href="#">Close</a>
     </div>
 
-<div id="taggedPlacesPerm" class="table row col2 margin" style="border-top: 1px solid black; border-bottom: 1px solid black; padding: 3px; display: none;">
-    <div class="cell margin3">
-        <div id="fb-root"></div>
+    <div id="taggedPlacesPerm" class="table row col2 margin" style="border-top: 1px solid black; border-bottom: 1px solid black; padding: 3px; display: none;">
+        <div class="cell margin3">
+            <div id="fb-root"></div>
 
-        <button onclick="getTaggedPlacesPermissions()">Import checkins</button>
+            <button onclick="getTaggedPlacesPermissions()">Import checkins</button>
+        </div>
+
+        <div class="cell middle tright">
+            <strong>Authorize us to import your facebook checked in places and pair your tagged places with your local account</strong>
+        </div>
     </div>
 
-    <div class="cell middle tright">
-        <strong>Authorize us to import your facebook checked in places and pair your tagged places with your local account</strong>
-    </div>
-</div>
+    <form class="blue-form" action="#" method="post">
+        <div id="cities" class="dropdown left">
+            <input id="citiesInput" class="inputed" type="text" placeholder="Place name">
+            <ul>
+            </ul>
+        </div>
 
-<form class="blue-form" action="#" method="post">
-    <div id="cities" class="dropdown left">
-        <input id="citiesInput" class="inputed" type="text" placeholder="Place name">
-        <ul>
-        </ul>
-    </div>
+        @Html.Partial("PeopleFilterComponent")
 
-    @Html.Partial("PeopleFilterComponent")
+        <div id="dataType" class="dropdown right">
+            <span class="selected">Visited</span>
+            <ul>
+                <li id="dt0" data-value="0">Visited</li>
+                @*<li id="dt1" data-value="1">Interested</li>*@
+            </ul>
+            <input type="hidden" value="0">
+        </div>
+        <div id="projectionType" class="dropdown right">
+            <span class="selected">Cities</span>
+            <ul>
+                <li id="pt0" data-value="0">Cities</li>
+                <li id="pt1" data-value="1">Countries</li>
+                <li id="pt2" data-value="2">Heat map</li>
+            </ul>
+            <input type="hidden" value="0">
+        </div>
+    </form>
 
-    <div id="dataType" class="dropdown right">
-        <span class="selected">Visited</span>
-        <ul>
-            <li id="dt0" data-value="0">Visited</li>
-            @*<li id="dt1" data-value="1">Interested</li>*@
-        </ul>
-        <input type="hidden" value="0">
+    <div class="map margin" id="map">
+        @Html.Partial("CountriesLegend")
     </div>
-    <div id="projectionType" class="dropdown right">
-        <span class="selected">Cities</span>
-        <ul>
-            <li id="pt0" data-value="0">Cities</li>
-            <li id="pt1" data-value="1">Countries</li>
-            <li id="pt2" data-value="2">Heat map</li>
-        </ul>
-        <input type="hidden" value="0">
-    </div>
-</form>
-
-<div class="map margin" id="map">   
-    @Html.Partial("CountriesLegend")
-</div>
 
     <div class="infoPanel">
         <span style="display: none" class="infoMessage" id="messageNotLogged"><a class="popup-target" data-target="#popup-join" href="#">Join us</a> and keep your personal travel statistics. Invite you friends to create your own travel community. Currently only statistics from from users overall are being displayed. See most popular places what people visited or would like to visit.</span>
@@ -174,32 +230,32 @@
     </div>
 
     <div class="squares table row margin2">
-    <div class="cell">
-        <div class="square"><strong id="CitiesCount" class="countto" data-from="0" data-to="@Model.Cities">0</strong> Cities
+        <div class="cell">
+            <div class="square"><strong id="CitiesCount" class="countto" data-from="0" data-to="@Model.Cities">0</strong> Cities
+            </div>
         </div>
-    </div>
-    <div class="cell">
-        <div class="square"><strong id="CountriesCount" class="countto" data-from="0" data-to="@Model.Countries">0</strong> Countries
+        <div class="cell">
+            <div class="square"><strong id="CountriesCount" class="countto" data-from="0" data-to="@Model.Countries">0</strong> Countries
+            </div>
         </div>
-    </div>
-    <div class="cell">
-        <div class="square">
-            <strong>
-                <span id="TraveledPercent" class="countto" data-from="0" data-to="@Model.WorldTraveled">0</span>
-                %
-            </strong> of the World
+        <div class="cell">
+            <div class="square">
+                <strong>
+                    <span id="TraveledPercent" class="countto" data-from="0" data-to="@Model.WorldTraveled">0</span>
+                    %
+                </strong> of the World
+            </div>
         </div>
-    </div>
-    @*<div class="cell">
+        @*<div class="cell">
         <div class="square">            
             <strong id="TopCitiesCount">0</strong> Top cities
         </div>
-    </div>*@    
-    <div class="cell">
-        <div class="square"><strong id="StatesCount" class="countto" data-from="0" data-to="@Model.UsStates">0</strong> US States
+    </div>*@
+        <div class="cell">
+            <div class="square"><strong id="StatesCount" class="countto" data-from="0" data-to="@Model.UsStates">0</strong> US States
+            </div>
         </div>
     </div>
-</div>
 
     <div id="bdgs"></div>
 </section>

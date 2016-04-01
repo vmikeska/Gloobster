@@ -11,17 +11,39 @@
 		}
 	}
 
+	export class AuthCookieSaver {
+
+		private cookiesMgr: Common.CookieManager;
+
+		constructor() {
+			this.cookiesMgr = new Common.CookieManager();
+		}
+
+		public saveCookies(res) {
+			this.cookiesMgr.setString(Constants.tokenCookieName, res.Token);
+			this.cookiesMgr.setString(Constants.nameCookieName, res.DisplayName);
+
+			//alert("TestOk: " + JSON.stringify(res));
+
+			//todo: implement
+			//this.cookiesMgr.setString(Constants.socNetsCookieName, );
+
+			//todo: remove ?
+			//this.cookiesMgr.setString(, res.UserId);
+		}
+	}
+
 	export class TwitterButtonInit {
+	 
+		constructor(btn) {		 		
+			var $btn = $(`#${btn}`);
+			$btn.click((e) => {
+				e.preventDefault();
+				this.twitterAuthorize();
+			});
+		}
 
-	 constructor(btn) {
-		var $btn = $(`#${btn}`);
-		$btn.click((e) => {
-			e.preventDefault();
-			this.twitterAuthorize();
-		 });
-	 }
-
-	 public twitterAuthorize() {
+		public twitterAuthorize() {
 		//this.twitterLoginWatch();
 		var url = '/TwitterUser/Authorize';
 		var wnd = window.open(url, "Twitter authentication", "height=500px,width=400px");
@@ -43,29 +65,33 @@
 
 	export class GoogleButtonInit {
 
-	 constructor(btnId) {		 
-		 this.initialize(btnId);
-	 }
+		private cookiesSaver: AuthCookieSaver;
 
-	 private initialize(btnId) {		
+		constructor(btnId) {
+			this.cookiesSaver = new AuthCookieSaver();
+			this.initialize(btnId);
+		}
+
+		private initialize(btnId) {
 			var btnGoogle = new GoogleButton();
 			btnGoogle.successfulCallback = (googleUser) => {
-				var data = googleUser;		
-			 Views.ViewBase.currentView.apiPost("GoogleUser", data, (r) => {
-				alert(JSON.stringify(r));
-				//unload sdk ?
-			 });
-
-			 alert(JSON.stringify(googleUser));			
+				var data = googleUser;
+				Views.ViewBase.currentView.apiPost("GoogleUser", data, (r) => {
+					this.cookiesSaver.saveCookies(r);
+					//unload sdk ?
+				});
 			};
-		
+
 			btnGoogle.initialize(btnId);
 		}
 	}
 
 	export class FacebookButtonInit {
 
-	 constructor(btnId) {					
+	 private cookiesSaver: AuthCookieSaver;
+
+	 constructor(btnId) {
+			this.cookiesSaver = new AuthCookieSaver();
 			this.registerFacebookButton(btnId);
 		}
 
@@ -80,7 +106,7 @@
 					auth.onSuccessful = (user) => {
 						var data = user;
 						Views.ViewBase.currentView.apiPost("FacebookUser", data, (r) => {
-							alert(JSON.stringify(r));
+							this.cookiesSaver.saveCookies(r);
 							//unload sdk ?
 						});
 					};

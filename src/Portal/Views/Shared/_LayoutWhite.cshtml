@@ -28,11 +28,8 @@
 
         <div class="menu-holder">
             <div class="tright mhalf">
-                @Html.Partial("_LangMenu")
-                @if (Model.IsUserLogged)
-                {                    
-                        @Html.Partial("_UserMenu")
-                }                
+                @Html.Partial("_LangMenu")                                  
+                @Html.Partial("_UserMenu")                                
             </div>
             @Html.Partial("_Menu")            
         </div>

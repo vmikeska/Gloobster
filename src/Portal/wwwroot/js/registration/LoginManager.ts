@@ -12,12 +12,12 @@ module Reg {
 		}
 	 
 		public loadCookies() {
-		 this.cookieLogin = this.cookieManager.getString(Constants.cookieName);
+		 this.cookieLogin = this.cookieManager.getString(Constants.tokenCookieName);
 		}
 	 
 		public logout() {
 
-			this.cookieManager.removeCookie(Constants.cookieName);
+			this.cookieManager.removeCookie(Constants.tokenCookieName);
 
 			if (this.cookieLogin.networkType === NetworkType.Facebook) {
 				FB.getLoginStatus(() => {

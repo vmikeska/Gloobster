@@ -56,38 +56,6 @@ namespace Gloobster.Portal.Controllers.Api.Registration
             
             var res = await SocNetService.HandleAsync(auth);
             return new ObjectResult(res);            
-        }
-
-        //[HttpPost]
-        //public async Task<IActionResult> Post([FromBody] FacebookUserAuthenticationRequest request)
-        //{
-        //          Log.Debug("FacebookUser: IN");
-
-        //          var facebookAuthRequest = new SocAuthenticationDO
-        //	{
-        //		AccessToken = request.accessToken,
-        //		UserId = request.userId,
-        //		ExpiresAt = DateTime.UtcNow.AddSeconds(request.expiresIn)
-        //	};
-
-        //          var accountDriver = ComponentContext.ResolveKeyed<IAccountDriver>("Facebook");
-
-        //          UserService.AccountDriver = accountDriver;
-
-        //          UserLoggedResultDO result = await UserService.Validate(facebookAuthRequest, null);
-
-        //          Log.Debug("FacebookUser: " + facebookAuthRequest.AccessToken);
-
-        //          Request.HttpContext.Session.SetString(PortalConstants.UserSessionId, result.UserId);
-
-        //          var response = new LoggedResponse
-        //	{
-        //		encodedToken = result.EncodedToken,
-        //		status = result.Status.ToString(),
-        //		networkType = SocialNetworkType.Facebook
-        //	};
-
-        //          return new ObjectResult(response);			
-        //}
+        }        
     }
 }

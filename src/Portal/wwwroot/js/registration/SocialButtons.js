@@ -11,6 +11,22 @@ var Reg;
         return LoginButtonsManager;
     })();
     Reg.LoginButtonsManager = LoginButtonsManager;
+    var AuthCookieSaver = (function () {
+        function AuthCookieSaver() {
+            this.cookiesMgr = new Common.CookieManager();
+        }
+        AuthCookieSaver.prototype.saveCookies = function (res) {
+            this.cookiesMgr.setString(Constants.tokenCookieName, res.Token);
+            this.cookiesMgr.setString(Constants.nameCookieName, res.DisplayName);
+            //alert("TestOk: " + JSON.stringify(res));
+            //todo: implement
+            //this.cookiesMgr.setString(Constants.socNetsCookieName, );
+            //todo: remove ?
+            //this.cookiesMgr.setString(, res.UserId);
+        };
+        return AuthCookieSaver;
+    })();
+    Reg.AuthCookieSaver = AuthCookieSaver;
     var TwitterButtonInit = (function () {
         function TwitterButtonInit(btn) {
             var _this = this;
@@ -31,17 +47,18 @@ var Reg;
     Reg.TwitterButtonInit = TwitterButtonInit;
     var GoogleButtonInit = (function () {
         function GoogleButtonInit(btnId) {
+            this.cookiesSaver = new AuthCookieSaver();
             this.initialize(btnId);
         }
         GoogleButtonInit.prototype.initialize = function (btnId) {
+            var _this = this;
             var btnGoogle = new Reg.GoogleButton();
             btnGoogle.successfulCallback = function (googleUser) {
                 var data = googleUser;
                 Views.ViewBase.currentView.apiPost("GoogleUser", data, function (r) {
-                    alert(JSON.stringify(r));
+                    _this.cookiesSaver.saveCookies(r);
                     //unload sdk ?
                 });
-                alert(JSON.stringify(googleUser));
             };
             btnGoogle.initialize(btnId);
         };
@@ -50,9 +67,11 @@ var Reg;
     Reg.GoogleButtonInit = GoogleButtonInit;
     var FacebookButtonInit = (function () {
         function FacebookButtonInit(btnId) {
+            this.cookiesSaver = new AuthCookieSaver();
             this.registerFacebookButton(btnId);
         }
         FacebookButtonInit.prototype.registerFacebookButton = function (btnId) {
+            var _this = this;
             var $btn = $("#" + btnId);
             this.initializeFacebookSdk(function () {
                 $btn.click(function (e) {
@@ -61,7 +80,7 @@ var Reg;
                     auth.onSuccessful = function (user) {
                         var data = user;
                         Views.ViewBase.currentView.apiPost("FacebookUser", data, function (r) {
-                            alert(JSON.stringify(r));
+                            _this.cookiesSaver.saveCookies(r);
                             //unload sdk ?
                         });
                     };

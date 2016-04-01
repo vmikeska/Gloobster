@@ -10,7 +10,7 @@ var Common;
             this.addLocalAuthentication = addLocalAuthentication;
         }
         RequestSender.prototype.addAuthentication = function (reqObj) {
-            var cookieStr = $.cookie(Constants.cookieName);
+            var cookieStr = $.cookie(Constants.tokenCookieName);
             if (cookieStr) {
                 var headers = {};
                 headers["Authorization"] = cookieStr;

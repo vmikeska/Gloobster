@@ -10,6 +10,7 @@ var Views;
         function TwitterAuthView() {
             _super.call(this);
             this.twInterval = null;
+            this.cookiesSaver = new Reg.AuthCookieSaver();
         }
         Object.defineProperty(TwitterAuthView.prototype, "pageType", {
             get: function () { return Views.PageType.TwitterAuth; },
@@ -17,11 +18,11 @@ var Views;
             configurable: true
         });
         TwitterAuthView.prototype.onResponse = function (resp) {
+            var _this = this;
             var data = resp;
-            this.apiPost("TwitterUser", resp, function (r) {
-                alert(JSON.stringify(r));
-                //todo: save auth cookie
-                //todo: close page 
+            this.apiPost("TwitterUser", data, function (r) {
+                _this.cookiesSaver.saveCookies(r);
+                close();
             });
             //this.twitterLoginWatch();
         };

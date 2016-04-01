@@ -50,61 +50,25 @@ namespace Gloobster.Portal.Controllers.Base
         }
         
         public bool IsUserLogged => !string.IsNullOrEmpty(UserId);
-
         
-  //      private string _userId;
-		//public string UserId
-		//{
-		//	get
-		//	{
-		//		if (!string.IsNullOrEmpty(_userId))
-		//		{
-		//			return _userId;
-		//		}
-
-		//		string userId = Request.HttpContext.Session.GetString(PortalConstants.UserSessionId);
-		//		if (!string.IsNullOrEmpty(userId))
-		//		{
-		//			return userId;
-		//		}
-
-		//		var authToken = GetAuthorizationTokenFromCookie();
-		//		if (authToken == null)
-		//		{
-		//			return string.Empty;
-		//		}
-
-  //              Request.HttpContext.Session.SetString(PortalConstants.UserSessionId, authToken.UserId);
-		//		_userId = authToken.UserId;
-				
-		//		return _userId;
-		//	}
-		//}
-
-        private UserEntity _portalUser;
+        private UserEntity _User;
         public UserEntity PortalUser
         {
             get
-            {
-                return null;
-                //if (!IsUserLogged)
-                //{
-                //    return null;
-                //}
+            {                
+                if (!IsUserLogged)
+                {
+                    return null;
+                }
 
-                //if (_portalUser != null)
-                //{
-                //    return _portalUser;
-                //}
+                if (_User != null)
+                {
+                    return _User;
+                }
 
-                //_portalUser = DB.C<PortalUserEntity>().FirstOrDefault(u => u.id == UserIdObj);
-
-                //if (_portalUser == null)
-                //{
-                //    //throw
-                //}
-
-                //return _portalUser;
+                _User = DB.C<UserEntity>().FOD(u => u.User_id == UserIdObj);
+                
+                return _User;
             }
         }
         

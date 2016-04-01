@@ -23,7 +23,7 @@ namespace Gloobster.Portal.Controllers
 
     public class TokenConstants
     {
-        public const string CookieKeyName = "TestSession";
+        public const string CookieKeyName = "token";
         public const string CallbackKeyName = "callback";
     }
 

@@ -18,7 +18,7 @@ module Common {
 		onError: Function;
 
 		private addAuthentication(reqObj) {
-		 var cookieStr = $.cookie(Constants.cookieName);
+		 var cookieStr = $.cookie(Constants.tokenCookieName);
 		 if (cookieStr) {
 			
 			var headers = {};

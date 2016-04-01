@@ -7,7 +7,10 @@ declare var gapi: any;
 declare var Handlebars: any;
 
 module Constants {
-	export var cookieName = "TestSession";
+	export var tokenCookieName = "token";
+	export var nameCookieName = "name";
+	export var socNetsCookieName = "socNets";
+
 	export var firstRedirectUrl = "/PinBoard/Pins";
 	export var networkTypes = "NetworkTypes";
 	export var emptyId = "000000000000000000000000";
