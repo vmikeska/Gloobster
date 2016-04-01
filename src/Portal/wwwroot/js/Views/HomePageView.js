@@ -7,22 +7,35 @@ var Views;
 (function (Views) {
     var HomePageView = (function (_super) {
         __extends(HomePageView, _super);
+        //private cookieSaver: Reg.AuthCookieSaver;
         function HomePageView() {
+            //this.cookieSaver = new Reg.AuthCookieSaver();
             _super.call(this);
-            var loginButtons = new Reg.LoginButtonsManager();
-            loginButtons.initialize("fbBtnHome", "googleBtnHome", "twitterBtnHome");
+            this.initialize("fbBtnHome", "googleBtnHome", "twitterBtnHome");
         }
+        HomePageView.prototype.initialize = function (fb, google, twitter) {
+            var _this = this;
+            var fbBtn = new Reg.FacebookButtonInit(fb);
+            fbBtn.onBeforeExecute = function () { return _this.onBefore(); };
+            fbBtn.onAfterExecute = function () { return _this.onAfter(); };
+            var googleBtn = new Reg.GoogleButtonInit(google);
+            googleBtn.onBeforeExecute = function () { return _this.onBefore(); };
+            googleBtn.onAfterExecute = function () { return _this.onAfter(); };
+            var twitterBtn = new Reg.TwitterButtonInit(twitter);
+            twitterBtn.onBeforeExecute = function () { return _this.onBefore(); };
+            twitterBtn.onAfterExecute = function () { return _this.onAfter(); };
+        };
+        HomePageView.prototype.onBefore = function () {
+            $(".logins").hide();
+        };
+        HomePageView.prototype.onAfter = function () {
+            window.location.href = Constants.firstRedirectUrl;
+        };
         Object.defineProperty(HomePageView.prototype, "pageType", {
             get: function () { return Views.PageType.HomePage; },
             enumerable: true,
             configurable: true
         });
-        HomePageView.prototype.registerNormal = function (mail, password) {
-            var data = { "mail": mail, "password": password };
-            _super.prototype.apiPost.call(this, "User", data, function (response) {
-                alert("user registred");
-            });
-        };
         return HomePageView;
     })(Views.ViewBase);
     Views.HomePageView = HomePageView;

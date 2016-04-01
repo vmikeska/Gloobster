@@ -14,8 +14,6 @@ using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.User
 {
-    
-
     public class UploadAvatarController: BaseApiController
 	{		
 		public IFilesDomain FileDomain { get; set; }

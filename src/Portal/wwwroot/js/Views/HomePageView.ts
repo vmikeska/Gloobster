@@ -1,22 +1,38 @@
 ﻿module Views {
 	export class HomePageView extends ViewBase {
 
-		constructor() {
-		 super();
+	 //private cookieSaver: Reg.AuthCookieSaver;
 
-		 var loginButtons = new Reg.LoginButtonsManager();		 
-		 loginButtons.initialize("fbBtnHome", "googleBtnHome", "twitterBtnHome");
+	 constructor() {
+		 //this.cookieSaver = new Reg.AuthCookieSaver();
+		 super();
+		
+		 this.initialize("fbBtnHome", "googleBtnHome", "twitterBtnHome");
+	 }
+
+		public initialize(fb, google, twitter) {
+		 var fbBtn = new Reg.FacebookButtonInit(fb);
+		 fbBtn.onBeforeExecute = () => this.onBefore();
+		 fbBtn.onAfterExecute = () => this.onAfter();
+
+		 var googleBtn = new Reg.GoogleButtonInit(google);
+		 googleBtn.onBeforeExecute = () => this.onBefore();
+		 googleBtn.onAfterExecute = () => this.onAfter();
+
+		 var twitterBtn = new Reg.TwitterButtonInit(twitter);
+		 twitterBtn.onBeforeExecute = () => this.onBefore();
+		 twitterBtn.onAfterExecute = () => this.onAfter();		 
+	 }
+
+		private onBefore() {
+		 $(".logins").hide();
+		}
+
+		private onAfter() {
+		 window.location.href = Constants.firstRedirectUrl;
 		}
 
 		get pageType(): PageType { return PageType.HomePage; }
-
-		public registerNormal(mail: string, password: string) {
-
-			var data = { "mail": mail, "password": password };
-			super.apiPost("User", data, response => {
-				alert("user registred");
-			});
-		}
 	 
 	}
 }

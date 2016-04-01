@@ -10,6 +10,45 @@
 
 			var displayNameCall = new Common.DelayedCallback("displayName");
 			displayNameCall.callback = (value) => this.displayNameCallback(value);
+
+			this.initPairing();
+		}
+
+		private btnExists(id) {
+			return $(`#${id}`).length === 1;
+		}
+
+		private initPairing() {
+			var fb = "fbBtnPair";
+			if (this.btnExists(fb)) {
+				var fbBtn = new Reg.FacebookButtonInit(fb);
+				fbBtn.onBeforeExecute = () => this.onBefore(fb);
+				fbBtn.onAfterExecute = () => this.onAfter();
+			}
+
+			var google = "googleBtnPair";
+			if (this.btnExists(google)) {
+				var googleBtn = new Reg.GoogleButtonInit(google);
+				googleBtn.onBeforeExecute = () => this.onBefore(google);
+				googleBtn.onAfterExecute = () => this.onAfter();
+			}
+
+			var twitter = "twitterBtnPair";
+			if (this.btnExists(twitter)) {
+				var twitterBtn = new Reg.TwitterButtonInit(twitter);
+				twitterBtn.onBeforeExecute = () => this.onBefore(twitter);
+				twitterBtn.onAfterExecute = () => this.onAfter();
+			}
+		}
+
+		private onBefore(id) {
+			$(`#${id}`).remove();
+		}
+
+		private onAfter() {
+			var hint = new Common.HintDialog();
+			hint.create("You are successfully connected!");
+			$("#MenuRegister").parent().remove();
 		}
 
 		private displayNameCallback(value: string) {
@@ -20,7 +59,7 @@
 		}
 
 		private registerAvatarFileUpload() {
-		 var avatarUploadConfig = new Common.FileUploadConfig();
+			var avatarUploadConfig = new Common.FileUploadConfig();
 			avatarUploadConfig.inputId = "avatarFile";
 			avatarUploadConfig.endpoint = "UploadAvatar";
 
@@ -29,14 +68,14 @@
 			fileUpload.onProgressChanged = (percent) => {
 				$("#progressBar").text(percent);
 			}
-			fileUpload.onUploadFinished = (file) => {			 
-				var d = new Date();			
-				$("#avatar").attr("src", `/PortalUser/ProfilePicture?d=${d.getTime()}`);			 
+			fileUpload.onUploadFinished = (file) => {
+				var d = new Date();
+				$("#avatar").attr("src", `/PortalUser/ProfilePicture?d=${d.getTime()}`);
 			}
 		}
 
 		private registerGenderCombo() {
-		 var $root = $("#gender");
+			var $root = $("#gender");
 			var $val = $root.find("input");
 
 			$val.change(e => {
@@ -63,7 +102,7 @@
 		}
 
 		private getLocationBaseConfig() {
-		 var c = new Common.PlaceSearchConfig();
+			var c = new Common.PlaceSearchConfig();
 			c.providers = "2";
 			c.minCharsToSearch = 2;
 			c.clearAfterSearch = false;

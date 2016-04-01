@@ -30,26 +30,9 @@ namespace Gloobster.Portal.Controllers.Portal
         [CreateAccount]
         public async Task<IActionResult> Index()
         {
-            return View();
+            var viewModel = CreateViewModelInstance<ViewModelHome>();
+            return View(viewModel);
         }
-
-        
-
-        //public BsonDocument GenerateDoc()
-        //{
-        //    return new BsonDocument
-        //    {
-        //        {"id", Guid.NewGuid().ToString()},
-        //        {"name", "MyDoc" }
-        //    };
-        //}
-
-	    
-
-        
-        
-
-
 
 	    //public async Task<IActionResult> Test()
 	    //{

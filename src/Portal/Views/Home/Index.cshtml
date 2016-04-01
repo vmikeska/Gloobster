@@ -1,4 +1,8 @@
-﻿@{
+﻿@using Gloobster.Portal.ViewModels
+@using System.Linq
+@model ViewModelHome
+
+@{
     ViewData["Title"] = "Home Page";
     Layout = "";
 }
@@ -20,105 +24,114 @@
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script type="text/javascript" src="@Url.Content("~/js/script.js")"></script>
 
-    <link href="~/css/style.css" rel="stylesheet">	
+    <link href="~/css/style.css" rel="stylesheet">
+    
+    <style>
+        .homepage .maskots {
+            background: transparent url("../images/globe3.png") center top no-repeat;
+            color: #fff;
+            height: 200px;
+        }
+
+        .homepage .maskots .logins { 
+            top: 100px;
+        }
+    </style>    
 </head>
 <body onload="onBodyLoad()" class="homepage" id="top">
-    <header class="header">
-        <div class="wrapper">
-            <h1><a href="." class="logo-header">Gloobster</a>
-            </h1>
+<header class="header">
+    <div class="wrapper">
+        <h1><a href="." class="logo-header">Gloobster</a>
+        </h1>
 
-            <div class="menu-holder">
-                <div class="tright mhalf">
-                    @Html.Partial("_LangMenu")
-                    @*@Html.Partial("_UserMenu")*@
-                </div>
-                @Html.Partial("_Menu")
+        <div class="menu-holder">
+            <div class="tright mhalf">
+                @Html.Partial("_LangMenu")
+                @*@Html.Partial("_UserMenu")*@
             </div>
-
-            <a class="hamburger" data-target="#menu" href="#"><span></span></a>
+            @Html.Partial("_Menu")
         </div>
 
-        @Html.Partial("_GlobalScripts")
-        <script type="text/javascript" src="@Url.Content("~/js/Views/HomePageView.js")"></script>        
-        <script type="text/javascript" src="@Url.Content("~/js/registration/FacebookAuth.js")"></script>
-        
-        
-    </header>
+        <a class="hamburger" data-target="#menu" href="#"><span></span></a>
+    </div>
 
-    <div id="fb-root"></div>
+    @Html.Partial("_GlobalScripts")
+    <script type="text/javascript" src="@Url.Content("~/js/Views/HomePageView.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/js/registration/FacebookAuth.js")"></script>
+
+
+</header>
+
+<div id="fb-root"></div>
 
 <div class="maskots margin">
-        <div class="wrapper">
-            <h1>The only portal you'll need to travel the world</h1>
+    <div class="wrapper">
+        <h1>The only portal you'll need to travel the world</h1>
+
+        @if (!Model.SocialNetworks.Any()) {
             <div class="logins">
                 <div class="margin">
-
-                    @*<div onlogin="currentView.loginManager.facebookUserCreator.registerOrLogin()"
-                         class="fb-login-button"
-                         data-scope="publish_actions,user_location,user_hometown,public_profile,user_friends,email"
-                         data-max-rows="1"
-                         data-size="xlarge"
-                         data-show-faces="false"
-                         data-auto-logout-link="false">
-                        Facebook
-                    </div>*@
-
-                    <a id="fbBtnHome"  class="facebook" href="#">Sign in with Facebook</a>
+                    <a id="fbBtnHome" class="facebook" href="#">Sign in with Facebook</a>
                     <a id="twitterBtnHome" class="twitter" href="#">Sign in with Twitter</a>
                     <a id="googleBtnHome" class="google" href="#">Sign in with Google</a>
                 </div>
-                <span class="email">
+                @*<span class="email">
                     Connect with popular networks or
                     <a class="popup-target" data-target="#popup-join" href="#">Sign Up with email</a>
                     .
-                </span>
+                </span>*@
             </div>
-            <div class="buttons">
-                @*<a class="button maskot" href="#">Check out the Globe</a>*@
+        }
+    </div>
+</div>
+<section class="wrapper margin3">
+
+    <h2 class="h3 tcenter margin3">Why travelers choose Gloobster</h2>
+    <div class="table row col3 margin2">
+        <div class="cell">
+            <div class="box plan tcenter">
+                <h3>Keep track of your journeys</h3>
+                <p class="tleft">Ever wanted to have one place to store all your past travels? Gloobster makes this easy and for free.</p>
+                <a class="button" href="#">How It Works</a>
             </div>
-            <!--            <div class="bubble1">Let us help you travel! Setup is simple as 1-2-3 and youre set...Setup is simple as 1-2-3 and youre set...</div>-->
-            <!--            <div class="bubble2">...eg. pick your future destionations. So we can deliver deals!</div>-->
+        </div>
+        <div class="cell">
+            <div class="box green plan tcenter">
+                <h3>Plan your next trip in under 3 minutes</h3>
+                <p class="tleft">Gloobster makes it simple and fast to create itinerary. And stores all important data for you so you dont have to.</p>
+                <a class="button" href="#">Try It Now</a>
+            </div>
+        </div>
+        <div class="cell">
+            <div class="box orange share tcenter">
+                <h3>Share your journeys day by day with ease</h3>
+                <p class="tleft">Share trips via Gloobster and colaborate on itinerary together. Simple yet powerful tool for any traveler.</p>
+                <a class="button" href="#">See Journals</a>
+            </div>
         </div>
     </div>
-    <section class="wrapper margin3">
-        
-        <h2 class="h3 tcenter margin3">Why travelers choose Gloobster</h2>
-        <div class="table row col3 margin2">
-            <div class="cell">
-                <div class="box plan tcenter">
-                    <h3>Keep track of your journeys</h3>
-                    <p class="tleft">Ever wanted to have one place to store all your past travels? Gloobster makes this easy and for free.</p>
-                    <a class="button" href="#">How It Works</a>
-                </div>
-            </div>
-            <div class="cell">
-                <div class="box green plan tcenter">
-                    <h3>Plan your next trip in under 3 minutes</h3>
-                    <p class="tleft">Gloobster makes it simple and fast to create itinerary. And stores all important data for you so you dont have to.</p>
-                    <a class="button" href="#">Try It Now</a>
-                </div>
-            </div>
-            <div class="cell">
-                <div class="box orange share tcenter">
-                    <h3>Share your journeys day by day with ease</h3>
-                    <p class="tleft">Share trips via Gloobster and colaborate on itinerary together. Simple yet powerful tool for any traveler.</p>
-                    <a class="button" href="#">See Journals</a>
-                </div>
-            </div>
-        </div>
-       
-        
-    </section>
 
-    @Html.Partial("_Footer")
 
-    <script>
+</section>
 
-        function onBodyLoad() {
-            currentView = new Views.HomePageView();
-        }
+@Html.Partial("_Footer")
 
-    </script>
+<script>
+
+    function onBodyLoad() {
+        currentView = new Views.HomePageView();
+    }
+
+</script>
 </body>
 </html>
+
+@*<div onlogin="currentView.loginManager.facebookUserCreator.registerOrLogin()"
+         class="fb-login-button"
+         data-scope="publish_actions,user_location,user_hometown,public_profile,user_friends,email"
+         data-max-rows="1"
+         data-size="xlarge"
+         data-show-faces="false"
+         data-auto-logout-link="false">
+        Facebook
+    </div>*@

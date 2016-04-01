@@ -1,5 +1,7 @@
 ﻿@using Gloobster.Portal.ViewModels
-@model Gloobster.Portal.ViewModels.SettingsViewModel
+@using System.Linq
+@using Gloobster.Enums
+@model SettingsViewModel
 
 <script type="text/javascript" src="@Url.Content("~/js/Views/SettingsView.js")"></script>
 
@@ -32,6 +34,15 @@
 
 .controls {
     margin-top: 15px;
+}
+
+.pairing {
+    margin-top: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    text-align: center;
 }
 
 </style>
@@ -109,12 +120,26 @@
         </tr>
     </table>
 
-
-
-    <script>
-
-        function onBodyLoad() {
-            currentView = new Views.SettingsView();
+    <div class="logins pairing">
+        @if (!Model.HasSocNet(SocialNetworkType.Facebook))
+        {
+            <a id="fbBtnPair" class="facebook" href="#">Pair with Facebook</a>
         }
 
-    </script>
+        @if (!Model.HasSocNet(SocialNetworkType.Twitter))
+        {
+            <a id="twitterBtnPair" class="twitter" href="#">Pair with Twitter</a>
+        }
+
+        @if (!Model.HasSocNet(SocialNetworkType.Google))
+        {
+            <a id="googleBtnPair" class="google" href="#">Pair with Google</a>
+        }       
+    </div>
+
+
+<script>
+    function onBodyLoad() {
+        currentView = new Views.SettingsView();
+    }
+</script>

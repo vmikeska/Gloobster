@@ -61,7 +61,7 @@ namespace Gloobster.DomainModels.Wiki
         {
             var userIdObj = new ObjectId(userId);
 
-            var filter = DB.F<UserEntity>().Eq(p => p.id, userIdObj);
+            var filter = DB.F<UserEntity>().Eq(p => p.User_id, userIdObj);
             var update = DB.U<UserEntity>().Set(p => p.HasProfileImage, true);
             await DB.UpdateAsync(filter, update);
         }

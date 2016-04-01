@@ -1,11 +1,14 @@
-﻿<ul id="menu" class="menu-header table">	
+﻿@using Gloobster.Portal.ViewModels;
+@model ViewModelBase
+
+<ul id="menu" class="menu-header table">	
 	<li><a id="MenuPinBoard" asp-controller="PinBoard" asp-action="Pins">Pin board</a></li>
     <li><a id="MenuTrip" asp-controller="Trip" asp-action="List">Trips</a></li>
     <li><a id="MenuWiki" asp-controller="Wiki" asp-action="Home">Wiki</a></li>
 
     <li><a id="MenuPlanning" asp-controller="Destination" asp-action="Planning">Planning</a></li>
 
-    @if (!Model.IsUserLogged)
+    @if (!Model.IsUserLogged && !(Model is ViewModelHome))
     {
         <li><a id="MenuRegister" class="strong popup2-target" data-target="#popup-joinSoc" href="#">Register</a></li>
     }

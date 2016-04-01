@@ -16,7 +16,40 @@ var Views;
             this.registerGenderCombo();
             var displayNameCall = new Common.DelayedCallback("displayName");
             displayNameCall.callback = function (value) { return _this.displayNameCallback(value); };
+            this.initPairing();
         }
+        SettingsView.prototype.btnExists = function (id) {
+            return $("#" + id).length === 1;
+        };
+        SettingsView.prototype.initPairing = function () {
+            var _this = this;
+            var fb = "fbBtnPair";
+            if (this.btnExists(fb)) {
+                var fbBtn = new Reg.FacebookButtonInit(fb);
+                fbBtn.onBeforeExecute = function () { return _this.onBefore(fb); };
+                fbBtn.onAfterExecute = function () { return _this.onAfter(); };
+            }
+            var google = "googleBtnPair";
+            if (this.btnExists(google)) {
+                var googleBtn = new Reg.GoogleButtonInit(google);
+                googleBtn.onBeforeExecute = function () { return _this.onBefore(google); };
+                googleBtn.onAfterExecute = function () { return _this.onAfter(); };
+            }
+            var twitter = "twitterBtnPair";
+            if (this.btnExists(twitter)) {
+                var twitterBtn = new Reg.TwitterButtonInit(twitter);
+                twitterBtn.onBeforeExecute = function () { return _this.onBefore(twitter); };
+                twitterBtn.onAfterExecute = function () { return _this.onAfter(); };
+            }
+        };
+        SettingsView.prototype.onBefore = function (id) {
+            $("#" + id).remove();
+        };
+        SettingsView.prototype.onAfter = function () {
+            var hint = new Common.HintDialog();
+            hint.create("You are successfully connected!");
+            $("#MenuRegister").parent().remove();
+        };
         SettingsView.prototype.displayNameCallback = function (value) {
             var data = { propertyName: "DisplayName", values: { name: value } };
             this.apiPut("UserProperty", data, function () {

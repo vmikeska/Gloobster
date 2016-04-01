@@ -28,7 +28,7 @@ namespace Gloobster.Portal.Controllers.Api.User
 		[AuthorizeApi]
 		public async Task<IActionResult> Put([FromBody] PropertyUpdateRequest request)
 		{			
-			var filter = DB.F<UserEntity>().Eq(p => p.id, UserIdObj);
+			var filter = DB.F<UserEntity>().Eq(p => p.User_id, UserIdObj);
 			UpdateDefinition<UserEntity> update = null;
 
 			if (request.propertyName == "HomeLocation")
@@ -57,7 +57,7 @@ namespace Gloobster.Portal.Controllers.Api.User
 
 			if (update != null)
 			{
-				await DB.UpdateAsync(filter, update);
+				var res = await DB.UpdateAsync(filter, update);
 			}			
 			
 			return new ObjectResult(null);

@@ -52,26 +52,26 @@ namespace Gloobster.Portal.Controllers.Portal
 
 	    private FileStreamResult GetProfilePicture(string id, string fileName)
 	    {
-            UserEntity portalUser;
+            UserEntity user;
             if (!string.IsNullOrEmpty(id))
             {
-                portalUser = DB.C<UserEntity>().FirstOrDefault(u => u.id == new ObjectId(id));
-                if (portalUser == null)
+                user = DB.FOD<UserEntity>(u => u.User_id == new ObjectId(id));
+                if (user == null)
                 {
                     return null;
                 }
             }
             else
             {
-                portalUser = User;
+                user = User;
             }
             
-            if (!portalUser.HasProfileImage)
+            if (!user.HasProfileImage)
             {
                 return null;
             }
 
-            var fileLocation = FileDomain.Storage.Combine(AvatarFilesConsts.Location, portalUser.id.ToString());
+            var fileLocation = FileDomain.Storage.Combine(AvatarFilesConsts.Location, user.User_id.ToString());
 
             var filePath = FileDomain.Storage.Combine(fileLocation, fileName);
             bool exists = FileDomain.Storage.FileExists(filePath);
