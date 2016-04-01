@@ -6,20 +6,11 @@ var Reg;
             this.loadCookies();
         }
         LoginManager.prototype.loadCookies = function () {
-            this.cookieLogin = this.cookieManager.getString(Constants.cookieName);
+            this.cookieLogin = this.cookieManager.getString(Constants.tokenCookieName);
         };
         LoginManager.prototype.logout = function () {
-            this.cookieManager.removeCookie(Constants.cookieName);
-            if (this.cookieLogin.networkType === Reg.NetworkType.Facebook) {
-                FB.getLoginStatus(function () {
-                    FB.logout(function () {
-                        window.location.href = "/";
-                    });
-                });
-            }
-            else {
-                window.location.href = "/";
-            }
+            this.cookieManager.removeCookie(Constants.tokenCookieName);
+            window.location.href = "/";
         };
         return LoginManager;
     })();

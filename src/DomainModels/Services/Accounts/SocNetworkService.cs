@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Common;
 using Gloobster.Database;
@@ -15,6 +16,7 @@ using Serilog;
 using System.Net;
 using Gloobster.DomainModels.Wiki;
 using Gloobster.Entities.Trip;
+using Gloobster.Enums;
 using Gloobster.Mappers;
 
 namespace Gloobster.DomainModels.Services.Accounts
@@ -28,6 +30,99 @@ namespace Gloobster.DomainModels.Services.Accounts
         public ISocLogin SocLogin { get; set; }
         public IFilesDomain FileDomain { get; set; }
         public IAvatarPhoto AvatarPhoto { get; set; }
+
+        public async Task<LoginResponseDO> HandleEmail(string mail, string password, string userId)
+        {
+            var accountExisting = DB.FOD<AccountEntity>(a => a.Mail == mail);
+            bool accountExists = accountExisting != null;
+            
+            if (accountExists)
+            {
+                bool authCorrect = (accountExisting.Password == password);
+                if (authCorrect)
+                {
+                    var user = DB.FOD<UserEntity>(u => u.User_id == accountExisting.User_id);
+                    var response = new LoginResponseDO
+                    {
+                        Token = BuildToken(accountExisting.User_id.ToString(), accountExisting.Secret),
+                        UserId = userId,
+                        DisplayName = user.DisplayName
+                    };
+                    return response;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                //since here creating new account
+                var userIdObj = new ObjectId(userId);
+                var account = DB.FOD<AccountEntity>(a => a.User_id == userIdObj);
+
+                bool accountHasAlreadyEmail = !string.IsNullOrEmpty(account.Mail);
+                if (accountHasAlreadyEmail)
+                {
+                    return null;
+                }
+
+                if (!MailValid(mail))
+                {
+                    return null;
+                }
+                
+                var filter = DB.F<AccountEntity>().Eq(u => u.id, account.id);
+                var u1 = DB.U<AccountEntity>().Set(u => u.Mail, mail);
+                var u2 = DB.U<AccountEntity>().Set(u => u.Password, password);
+                await DB.UpdateAsync(filter, u1);
+                await DB.UpdateAsync(filter, u2);
+
+                var newUserEntity = new UserEntity
+                {
+                    id = ObjectId.GenerateNewId(),
+                    DisplayName = GetNameFromEmail(mail),
+                    Gender = Gender.N,
+                    Languages = new List<string>(),
+                    CurrentLocation = null,
+                    Mail = mail,
+                    FirstName = "",
+                    LastName = "",
+                    User_id = userIdObj,
+                    HomeAirports = new List<AirportSaveSE>(),
+                    HomeLocation = null,
+                    HasProfileImage = false
+                };
+                await DB.SaveAsync(newUserEntity);
+
+                var response = new LoginResponseDO
+                {
+                    Token = BuildToken(account.User_id.ToString(), account.Secret),
+                    UserId = userId,
+                    DisplayName = newUserEntity.DisplayName
+                };
+                return response;
+            }            
+        }
+
+        private string GetNameFromEmail(string mail)
+        {
+            var prms = mail.Split('@');
+            return prms[0];
+        }
+
+        private bool MailValid(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
         public async Task<LoginResponseDO> HandleAsync(SocAuthDO auth)
         {

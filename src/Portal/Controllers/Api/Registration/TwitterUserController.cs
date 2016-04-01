@@ -16,8 +16,7 @@ namespace Gloobster.Portal.Controllers.Api.Registration
 {
 	[Route("api/[controller]")]
 	public class TwitterUserController : BaseApiController
-	{
-		public IUserService UserService { get; set; }		
+	{		
 		public IComponentContext ComponentContext { get; set; }
         public ISocNetworkService SocNetService { get; set; }
 

@@ -34,30 +34,16 @@ module Views {
 			});
 		}
 
-	 //todo: rework or remove
-		public hasSocNetwork(net: Reg.NetworkType) {
-		 var netTypesStr = this.cookieManager.getString(Constants.networkTypes);
-		 if (!netTypesStr) {
-			 return false;
-		 }
+		public hasSocNetwork(net: SocialNetworkType) {
+			var prms = ViewBase.nets.split(",");
 
-		 var prms = netTypesStr.split(",");
-
-		 if (net === Reg.NetworkType.Facebook && _.contains(prms, "F")) {
-			 return true;
-		 }
-
-		 if (net === Reg.NetworkType.Google && _.contains(prms, "G")) {
-			return true;
-		 }
-
-		 if (net === Reg.NetworkType.Twitter && _.contains(prms, "T")) {
-			return true;
-		 }
+			if (_.contains(prms, net.toString())) {
+				return true;
+			}
 
 			return false;
 		}
-	 
+
 		public apiGet(endpointName: string, params: string[][], callback: Function) {
 
 			var endpoint = "/api/" + endpointName;

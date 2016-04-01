@@ -6,7 +6,5 @@ namespace Gloobster.ReqRes.User
 	{
 		public string mail { get; set; }
 		public string password { get; set; }
-
-		public UserActionType action { get; set; }
 	}
 }

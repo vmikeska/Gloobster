@@ -205,7 +205,7 @@
 		}
 
 		private setTagPlacesVisibility() {
-			var hasFb = this.hasSocNetwork(Reg.NetworkType.Facebook);
+		 var hasFb = this.hasSocNetwork(SocialNetworkType.Facebook);
 			if (hasFb) {
 				this.fbPermissions.initFb(() => {
 					this.fbPermissions.hasPermission("user_tagged_places", (hasPerm) => {

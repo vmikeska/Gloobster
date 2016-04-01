@@ -179,7 +179,7 @@ var Views;
         };
         PinBoardView.prototype.setTagPlacesVisibility = function () {
             var _this = this;
-            var hasFb = this.hasSocNetwork(Reg.NetworkType.Facebook);
+            var hasFb = this.hasSocNetwork(SocialNetworkType.Facebook);
             if (hasFb) {
                 this.fbPermissions.initFb(function () {
                     _this.fbPermissions.hasPermission("user_tagged_places", function (hasPerm) {

@@ -42,6 +42,7 @@ namespace Gloobster.DomainInterfaces
     {
         ISocLogin SocLogin { get; set; }
         Task<LoginResponseDO> HandleAsync(SocAuthDO auth);
+        Task<LoginResponseDO> HandleEmail(string mail, string password, string userId);
     }
 
     public interface IAccountDomain

@@ -28,20 +28,9 @@ var Views;
                 _this.loginManager.logout();
             });
         };
-        //todo: rework or remove
         ViewBase.prototype.hasSocNetwork = function (net) {
-            var netTypesStr = this.cookieManager.getString(Constants.networkTypes);
-            if (!netTypesStr) {
-                return false;
-            }
-            var prms = netTypesStr.split(",");
-            if (net === Reg.NetworkType.Facebook && _.contains(prms, "F")) {
-                return true;
-            }
-            if (net === Reg.NetworkType.Google && _.contains(prms, "G")) {
-                return true;
-            }
-            if (net === Reg.NetworkType.Twitter && _.contains(prms, "T")) {
+            var prms = ViewBase.nets.split(",");
+            if (_.contains(prms, net.toString())) {
                 return true;
             }
             return false;

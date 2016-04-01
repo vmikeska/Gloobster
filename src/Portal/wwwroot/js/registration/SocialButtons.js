@@ -14,6 +14,8 @@ var Reg;
             var twitterBtn = new TwitterButtonInit(twitter);
             twitterBtn.onBeforeExecute = function () { return _this.onBefore(); };
             twitterBtn.onAfterExecute = function () { return _this.onAfter(); };
+            this.cookieSaver = new AuthCookieSaver();
+            this.regEmailDialog();
         };
         LoginButtonsManager.prototype.onBefore = function () {
             this.$socDialog.hide();
@@ -24,11 +26,32 @@ var Reg;
             $("#MenuRegister").parent().remove();
         };
         LoginButtonsManager.prototype.createPageDialog = function () {
+            var _this = this;
             if (!Views.ViewBase.nets) {
                 this.$socDialog = $("#popup-joinSoc");
+                this.$emailDialog = $("#popup-joinMail");
                 this.$socDialog.show();
                 this.initialize("fbBtnHome", "googleBtnHome", "twitterBtnHome");
+                $("#emailJoin").click(function (e) {
+                    _this.$socDialog.hide();
+                    _this.$emailDialog.show();
+                });
             }
+        };
+        LoginButtonsManager.prototype.regEmailDialog = function () {
+            var _this = this;
+            $("#emailReg").click(function (e) {
+                e.preventDefault();
+                _this.$emailDialog.hide();
+                var data = {
+                    mail: $("#email").val(),
+                    password: $("#password").val()
+                };
+                Views.ViewBase.currentView.apiPost("MailUser", data, function (r) {
+                    _this.cookieSaver.saveCookies(r);
+                    _this.onAfter();
+                });
+            });
         };
         return LoginButtonsManager;
     })();

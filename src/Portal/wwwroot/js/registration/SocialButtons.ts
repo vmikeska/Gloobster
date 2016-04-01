@@ -2,7 +2,10 @@
 
 	export class LoginButtonsManager {
 	 
-		private $socDialog;
+	 private $socDialog;
+	 private $emailDialog;
+
+	 private cookieSaver: AuthCookieSaver;
 
 		public initialize(fb, google, twitter) {
 			var fbBtn = new FacebookButtonInit(fb);
@@ -16,6 +19,9 @@
 			var twitterBtn = new TwitterButtonInit(twitter);
 			twitterBtn.onBeforeExecute = () => this.onBefore();
 			twitterBtn.onAfterExecute = () => this.onAfter();
+
+			this.cookieSaver = new AuthCookieSaver();
+			this.regEmailDialog();
 		}
 
 		private onBefore() {
@@ -31,10 +37,32 @@
 		public createPageDialog() {
 			if (!Views.ViewBase.nets) {
 				this.$socDialog = $("#popup-joinSoc");
+				this.$emailDialog = $("#popup-joinMail");
 				this.$socDialog.show();
 				this.initialize("fbBtnHome", "googleBtnHome", "twitterBtnHome");
+				$("#emailJoin").click((e) => {
+					this.$socDialog.hide();
+					this.$emailDialog.show();
+				});
+				
 			}
 		}
+
+	  private regEmailDialog() {
+		  $("#emailReg").click((e) => {
+			 e.preventDefault();
+			 this.$emailDialog.hide();
+			  var data = {
+				 mail: $("#email").val(),
+				 password: $("#password").val()
+			  };
+			 
+			 Views.ViewBase.currentView.apiPost("MailUser", data, (r) => {
+				this.cookieSaver.saveCookies(r);
+				this.onAfter();
+			 });
+		  });		 
+	  }
 	}
 
 	export class AuthCookieSaver {

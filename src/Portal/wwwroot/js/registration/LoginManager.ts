@@ -16,20 +16,8 @@ module Reg {
 		}
 	 
 		public logout() {
-
-			this.cookieManager.removeCookie(Constants.tokenCookieName);
-
-			if (this.cookieLogin.networkType === NetworkType.Facebook) {
-				FB.getLoginStatus(() => {
-					FB.logout(() => {
-						window.location.href = "/";
-					});
-				});
-
-			} else {
-				window.location.href = "/";
-			}
-
+			this.cookieManager.removeCookie(Constants.tokenCookieName);		 
+			window.location.href = "/";			
 		}
 
 	}
