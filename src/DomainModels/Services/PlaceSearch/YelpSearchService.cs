@@ -1,101 +1,105 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using Gloobster.Common;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 using RestSharp.Authenticators;
+using SimpleOAuth;
 using YelpSharp;
+using EncryptionMethod = System.Security.Cryptography.Xml.EncryptionMethod;
 
 namespace Gloobster.DomainModels.Services.PlaceSearch
 {
-    public class YelpSearchService: IYelpSearchService
-    {
-        const string RootUri = "http://api.yelp.com/v2/";
-        const string EndpointSearch = "search";
-        const string EndpointGet = "business";
-        private RestClient Client;
 
-        public YelpSearchService()
+    public class YelpSearchService : IYelpSearchService
+    {                
+        private const string ApiHost = "https://api.yelp.com";        
+        private const string SearchPath = "/v2/search/";   
+        private const string BusinessPath = "/v2/business/";
+       
+        public YelpSearchResult Search(string term, LatLng coord, int limit)
         {
-            var options = new Options
+            try
             {
-                AccessToken = GloobsterConfig.YelpAccessToken,
-                AccessTokenSecret = GloobsterConfig.YelpAccessTokenSecret,
-                ConsumerKey = GloobsterConfig.YelpConsumerKey,
-                ConsumerSecret = GloobsterConfig.YelpConsumerSecret
-            };
-            
-            Client = new RestClient(RootUri)
+                string location =
+                    $"{coord.Lat.ToString("0.000").Replace(",", ".")},{coord.Lng.ToString("0.000").Replace(",", ".")}";
+
+                string baseURL = ApiHost + SearchPath;
+                var queryParams = new Dictionary<string, string>
+                {
+                    {"term", term},
+                    //{"location", location},
+                    {"ll", location},
+                    {"limit", limit.ToString()}
+                };
+                JObject res = PerformRequest(baseURL, queryParams);
+                var resStr = res.ToString();
+                var result = JsonConvert.DeserializeObject<YelpSearchResult>(resStr);
+                return result;
+            }
+            catch (Exception exc)
             {
-                Authenticator = OAuth1Authenticator.ForProtectedResource(options.ConsumerKey, options.ConsumerSecret, 
-                    options.AccessToken, options.AccessTokenSecret)
-            };
+                return new YelpSearchResult {total = 0, businesses = new List<Business>()};
+            }
         }
 
-        public async Task<Business> GetById(string id)
+        public Business GetById(string id)
         {
-            var query = $"{EndpointGet}/{id}";
-            var request = new RestRequest(query, Method.GET);
-            
-            var tcs = new TaskCompletionSource<dynamic>();          
-            var handle = Client.ExecuteAsync(request, response =>
-            {
-                if (response.StatusCode == HttpStatusCode.NotFound)
-                {
-                    tcs.SetResult(default(Business));
-                }
-                else
-                {
-                    try
-                    {
-                        var results = JsonConvert.DeserializeObject<Business>(response.Content);
-                        tcs.SetResult(results);
-                    }
-                    catch (Exception ex)
-                    {
-                        tcs.SetException(ex);
-                    }
-                }
-            });
-           
-
-            return await tcs.Task;
+            string baseURL = ApiHost + BusinessPath + id;
+            var res = PerformRequest(baseURL);
+            var resStr = res.ToString();
+            var result = JsonConvert.DeserializeObject<Business>(resStr);
+            return result;
         }
 
-        public async Task<YelpSearchResult> Search(string term, LatLng coord)
-        {
-            var request = new RestRequest(EndpointSearch, Method.GET);
 
-            request.AddParameter("term", term);
-            request.AddParameter("radius_filter", 40000);
-            request.AddParameter("limit", 10);
-            request.AddParameter("ll", $"{coord.Lat.ToString("0.000").Replace(",", ".")},{coord.Lng.ToString("0.000").Replace(",", ".")}");
-            
-            var tcs = new TaskCompletionSource<YelpSearchResult>();            
-            var handle = Client.ExecuteAsync(request, response =>
+        private JObject PerformRequest(string baseURL, Dictionary<string, string> queryParams = null)
+        {
+            var query = System.Web.HttpUtility.ParseQueryString(String.Empty);
+
+            if (queryParams == null)
             {
-                if (response.StatusCode == HttpStatusCode.NotFound)
+                queryParams = new Dictionary<string, string>();
+            }
+
+            foreach (var queryParam in queryParams)
+            {
+                query[queryParam.Key] = queryParam.Value;
+            }
+
+            var uriBuilder = new UriBuilder(baseURL);
+            uriBuilder.Query = query.ToString();
+
+            var request = WebRequest.Create(uriBuilder.ToString());
+            request.Method = "GET";
+            var a = new EncryptionMethod();
+
+
+            request.SignRequest(
+                new Tokens
                 {
-                    tcs.SetResult(new YelpSearchResult {total = 0});
+                    ConsumerKey = GloobsterConfig.YelpConsumerKey,
+                    ConsumerSecret = GloobsterConfig.YelpConsumerSecret,
+                    AccessToken = GloobsterConfig.YelpAccessToken,
+                    AccessTokenSecret = GloobsterConfig.YelpAccessTokenSecret
                 }
-                else
-                {
-                    try
-                    {
-                        var results = JsonConvert.DeserializeObject<YelpSearchResult>(response.Content);
-                        tcs.SetResult(results);
-                    }
-                    catch (Exception ex)
-                    {
-                        tcs.SetException(ex);
-                    }
-                }
-            });
-            
-            return await tcs.Task;
+            ).WithEncryption(SimpleOAuth.EncryptionMethod.HMACSHA1).InHeader();
+
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            var stream = new StreamReader(response.GetResponseStream(), Encoding.UTF8);
+            return JObject.Parse(stream.ReadToEnd());
         }
+
     }
+
+
 }

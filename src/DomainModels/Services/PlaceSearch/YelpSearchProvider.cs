@@ -19,8 +19,9 @@ namespace Gloobster.DomainModels.Services.PlaceSearch
 
         public async Task<List<Place>> SearchAsync(SearchServiceQueryDO queryObj)
         {
-            var result = await SearchService.Search(queryObj.Query, queryObj.Coordinates);
+            var result = SearchService.Search(queryObj.Query, queryObj.Coordinates, 10);
             
+
             List<Place> places = result.businesses.Select(Convert).ToList();
             return places;
         }

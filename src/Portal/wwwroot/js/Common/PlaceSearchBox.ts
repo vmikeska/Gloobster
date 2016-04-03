@@ -28,7 +28,25 @@ module Common {
 			});
 
 			this.delayedCallback = new DelayedCallback(this.$input);
-			this.delayedCallback.callback = (placeName) => this.searchPlaces(placeName);
+			this.delayedCallback.callback = (placeName) => {
+				this.$root.find("ul").hide();
+
+				if (placeName) {
+					this.loader(true);
+				}
+
+				this.searchPlaces(placeName);
+			};
+
+		}
+
+		private loader(state: boolean) {
+			if (state) {
+				this.$root.find(".loader").show();
+			} else {
+				this.$root.find(".loader").hide();
+			}
+
 		}
 
 		public setText(text: string) {
@@ -55,10 +73,13 @@ module Common {
 				params.push(["fbt", Views.ViewBase.fbt]);
 			}
 
-			Views.ViewBase.currentView.apiGet("place", params, places => { this.fillPlacesSearchBoxHtml(places) });
+			Views.ViewBase.currentView.apiGet("place", params, places => {				
+			 this.fillPlacesSearchBoxHtml(places);
+			 this.loader(false);
+			});
 		}
 
-		private fillPlacesSearchBoxHtml(places) {
+		private fillPlacesSearchBoxHtml(places) {			
 			this.$root.find("ul").show();
 			var htmlContent = "";
 			places.forEach(item => {

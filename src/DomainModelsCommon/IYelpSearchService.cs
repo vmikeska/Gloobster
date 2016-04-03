@@ -6,7 +6,7 @@ namespace Gloobster.DomainInterfaces
 {
     public interface IYelpSearchService
     {
-        Task<YelpSearchResult> Search(string term, LatLng coord);
-        Task<Business> GetById(string id);
+        YelpSearchResult Search(string term, LatLng coord, int limit);
+        Business GetById(string id);
     }
 }

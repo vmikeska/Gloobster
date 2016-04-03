@@ -19,11 +19,12 @@ namespace Gloobster.DomainModels
 		public IDbOperations DB { get; set; }
         public IVisitedAggregationDomain AggDomain { get; set; }
         public IFriendsDomain FriendsService { get; set; }
+        public IEntitiesDemandor Demandor { get; set; }
 
 		public async Task<List<VisitedPlaceDO>> AddNewPlacesAsync(List<VisitedPlaceDO> inputPlaces, string userId)
 		{
 			var userIdObj = new ObjectId(userId);			
-			var visited = DB.C<VisitedEntity>().FirstOrDefault(p => p.PortalUser_id == userIdObj);
+			var visited = await Demandor.GetVisitedAsync(userIdObj);
 
 			var newPlaces = new List<VisitedPlaceSE>();
 			foreach (var place in inputPlaces)
@@ -62,7 +63,7 @@ namespace Gloobster.DomainModels
 		public List<VisitedPlaceDO> GetPlacesByUsers(List<string> ids, string meId)
         {            
             var idsObj = ids.Select(i => new ObjectId(i));
-            var visiteds = DB.C<VisitedEntity>().Where(v => idsObj.Contains(v.PortalUser_id)).ToList();
+            var visiteds = DB.List<VisitedEntity>(v => idsObj.Contains(v.PortalUser_id));
             
 			var visitedPlaces = visiteds.SelectMany(f => f.Places);
 			var visitedPlacesDO = visitedPlaces.Select(p => p.ToDO()).ToList();

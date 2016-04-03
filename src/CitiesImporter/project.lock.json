@@ -89,6 +89,7 @@
           "Nito.AsyncEx": "3.0.1",
           "Serilog.Framework.Logging": "1.0.0-rc1-final-10071",
           "SharpSquare": "1.0.0",
+          "SimpleOAuth.Net": "1.0.1",
           "SocialLogin": "1.0.0",
           "System.Net.Http": "4.0.0",
           "TweetSharp": "2.3.1",
@@ -1486,6 +1487,19 @@
       "SharpSquare/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1"
+      },
+      "SimpleOAuth.Net/1.0.1": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net20/SimpleOAuth.dll": {}
+        },
+        "runtime": {
+          "lib/net20/SimpleOAuth.dll": {}
+        }
       },
       "SocialLogin/1.0.0": {
         "type": "project",
@@ -1904,6 +1918,7 @@
           "Nito.AsyncEx": "3.0.1",
           "Serilog.Framework.Logging": "1.0.0-rc1-final-10071",
           "SharpSquare": "1.0.0",
+          "SimpleOAuth.Net": "1.0.1",
           "SocialLogin": "1.0.0",
           "System.Net.Http": "4.0.0",
           "TweetSharp": "2.3.1",
@@ -3301,6 +3316,19 @@
       "SharpSquare/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1"
+      },
+      "SimpleOAuth.Net/1.0.1": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net20/SimpleOAuth.dll": {}
+        },
+        "runtime": {
+          "lib/net20/SimpleOAuth.dll": {}
+        }
       },
       "SocialLogin/1.0.0": {
         "type": "project",
@@ -3719,6 +3747,7 @@
           "Nito.AsyncEx": "3.0.1",
           "Serilog.Framework.Logging": "1.0.0-rc1-final-10071",
           "SharpSquare": "1.0.0",
+          "SimpleOAuth.Net": "1.0.1",
           "SocialLogin": "1.0.0",
           "System.Net.Http": "4.0.0",
           "TweetSharp": "2.3.1",
@@ -5116,6 +5145,19 @@
       "SharpSquare/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1"
+      },
+      "SimpleOAuth.Net/1.0.1": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net20/SimpleOAuth.dll": {}
+        },
+        "runtime": {
+          "lib/net20/SimpleOAuth.dll": {}
+        }
       },
       "SocialLogin/1.0.0": {
         "type": "project",
@@ -6740,6 +6782,21 @@
         "Serilog.Framework.Logging.1.0.0-rc1-final-10071.nupkg",
         "Serilog.Framework.Logging.1.0.0-rc1-final-10071.nupkg.sha512",
         "Serilog.Framework.Logging.nuspec"
+      ]
+    },
+    "SimpleOAuth.Net/1.0.1": {
+      "type": "package",
+      "sha512": "eazObcySAbQmAFGS5kyMdTUXiVit+qW1bBIwriyoCj5pX2HbCTYxFxitpB9lxwBtnC5Hf/2W7hqhQ4CcFmoH4A==",
+      "files": [
+        "lib/net20/SimpleOAuth.dll",
+        "lib/net20/SimpleOAuth.pdb",
+        "lib/net20/SimpleOAuth.xml",
+        "lib/sl4-windowsphone71/SimpleOAuth.WP.Mango.dll",
+        "lib/sl4-windowsphone71/SimpleOAuth.WP.Mango.pdb",
+        "lib/sl4-windowsphone71/SimpleOAuth.WP.Mango.xml",
+        "SimpleOAuth.Net.1.0.1.nupkg",
+        "SimpleOAuth.Net.1.0.1.nupkg.sha512",
+        "SimpleOAuth.Net.nuspec"
       ]
     },
     "System.Collections/4.0.0": {

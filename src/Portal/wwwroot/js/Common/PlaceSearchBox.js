@@ -15,8 +15,22 @@ var Common;
                 _this.setText(_this.lastText);
             });
             this.delayedCallback = new Common.DelayedCallback(this.$input);
-            this.delayedCallback.callback = function (placeName) { return _this.searchPlaces(placeName); };
+            this.delayedCallback.callback = function (placeName) {
+                _this.$root.find("ul").hide();
+                if (placeName) {
+                    _this.loader(true);
+                }
+                _this.searchPlaces(placeName);
+            };
         }
+        PlaceSearchBox.prototype.loader = function (state) {
+            if (state) {
+                this.$root.find(".loader").show();
+            }
+            else {
+                this.$root.find(".loader").hide();
+            }
+        };
         PlaceSearchBox.prototype.setText = function (text) {
             this.lastText = text;
             this.$root.find("input").val(text);
@@ -37,7 +51,10 @@ var Common;
             if (Views.ViewBase.fbt) {
                 params.push(["fbt", Views.ViewBase.fbt]);
             }
-            Views.ViewBase.currentView.apiGet("place", params, function (places) { _this.fillPlacesSearchBoxHtml(places); });
+            Views.ViewBase.currentView.apiGet("place", params, function (places) {
+                _this.fillPlacesSearchBoxHtml(places);
+                _this.loader(false);
+            });
         };
         PlaceSearchBox.prototype.fillPlacesSearchBoxHtml = function (places) {
             var _this = this;

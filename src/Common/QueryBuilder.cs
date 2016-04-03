@@ -7,6 +7,7 @@ namespace Gloobster.Common
 	public class QueryBuilder
 	{
 		public Dictionary<string, string> Parameters = new Dictionary<string, string>();
+	    public string QueryString;
 		private bool _withQuestionMark = false;
 		private string _endpoint;
 		private string _baseUrl;
@@ -28,13 +29,13 @@ namespace Gloobster.Common
 			}
 
 			var pairedParams = Parameters.Select(p => $"{p.Key}={(_encodeParams ? HttpUtility.UrlEncode(p.Value) : p.Value)}");
-			var queryStr = string.Join("&", pairedParams);
+            QueryString = string.Join("&", pairedParams);
 			
 			bool hasParams = Parameters.Any();
 			if (hasParams)
 			{
 				result += "?";
-				result += queryStr;
+				result += QueryString;
 			}
 
 			return result;

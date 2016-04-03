@@ -86,7 +86,7 @@ namespace Gloobster.DomainModels
 
         private async Task<AddedPlacesResultDO> AddFromYelp(string businessId, string userId)
         {
-            var business = await YelpService.GetById(businessId);
+            var business = YelpService.GetById(businessId);
             
             var location = business.location;
             if (location == null)

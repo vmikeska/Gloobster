@@ -4957,3 +4957,8 @@ input.heading {
     -o-filter: brightness(50%);
     filter: brightness(50%);*/
   opacity: 0.7; }
+
+.dropdown .loader {
+  position: absolute;
+  right: 5px;
+  top: 7px; }
