@@ -16,7 +16,7 @@ namespace Gloobster.DomainInterfaces
 	public interface INotifications
 	{
 		NotificationDO NewAccountNotification(string userId);
-		NotificationDO FriendshipRequested(string requestorId, string receiverId);
-		NotificationDO TripInvitation(string fromUserId, string toUserId, string tripId);	    
+        Task<NotificationDO> FriendshipRequested(string requestorId, string receiverId);
+        Task<NotificationDO> TripInvitation(string fromUserId, string toUserId, string tripId);	    
 	}
 }

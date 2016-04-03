@@ -33,6 +33,7 @@ namespace Gloobster.DomainModels.Services.Accounts
         public ISocLogin SocLogin { get; set; }
         public IFilesDomain FileDomain { get; set; }
         public IAvatarPhoto AvatarPhoto { get; set; }
+        public INotificationsDomain NotificationDomain { get; set; }
 
         public async Task<LoginResponseDO> HandleEmail(string mail, string password, string userId)
         {
@@ -100,6 +101,8 @@ namespace Gloobster.DomainModels.Services.Accounts
                 };
                 await DB.SaveAsync(newUserEntity);
 
+                await CreateNewUserData(userId, newUserEntity.DisplayName);
+
                 var response = new LoginResponseDO
                 {
                     Token = BuildToken(account.User_id.ToString(), account.Secret),
@@ -110,6 +113,62 @@ namespace Gloobster.DomainModels.Services.Accounts
                 };
                 return response;
             }            
+        }
+
+        public async Task<LoginResponseDO> HandleAsync(SocAuthDO auth)
+        {
+            LoginResponseDO res = null;
+
+            SocLogin.Init(auth);
+
+            var tokenResult = SocLogin.ValidateToken(auth);
+            bool isTokenValid = tokenResult.IsValid && (auth.SocUserId == tokenResult.UserId);
+            if (!isTokenValid)
+            {
+                return null;
+            }
+
+            var socAccount1 = DB.FOD<SocialAccountEntity>(a => a.UserId == auth.SocUserId && a.NetworkType == auth.NetType);
+            bool socAccountExists = socAccount1 != null;
+            if (socAccountExists)
+            {
+                res = await SocAccountExists(auth, socAccount1);
+                return res;
+            }
+
+            using (await _mutex.LockAsync())
+            {
+                var socAccount = DB.FOD<SocialAccountEntity>(a => a.UserId == auth.SocUserId && a.NetworkType == auth.NetType);
+
+                bool socAccountNew = socAccount == null;
+                if (socAccountNew)
+                {
+                    res = await SocAccountNew(auth);
+                    return res;
+                }
+            }
+
+            return null;
+        }
+
+        private async Task CreateNewUserData(string userId, string displayName)
+        {
+            var userIdObj = new ObjectId(userId);
+
+            var notifications = new Notifications();
+            var notification = notifications.NewAccountNotification(userId);
+            NotificationDomain.AddNotification(notification);
+
+            var friendsEntity = new FriendsEntity
+            {
+                id = new ObjectId(),
+                User_id = userIdObj,
+                Friends = new List<ObjectId>(),
+                AwaitingConfirmation = new List<ObjectId>(),
+                Blocked = new List<ObjectId>(),
+                Proposed = new List<ObjectId>()
+            };
+            await DB.SaveAsync(friendsEntity);
         }
 
         private string GetNameFromEmail(string mail)
@@ -130,43 +189,7 @@ namespace Gloobster.DomainModels.Services.Accounts
                 return false;
             }
         }
-
-        public async Task<LoginResponseDO> HandleAsync(SocAuthDO auth)
-        {
-            LoginResponseDO res = null;
-
-            SocLogin.Init(auth);
-
-            var tokenResult = SocLogin.ValidateToken(auth);
-            bool isTokenValid = tokenResult.IsValid && (auth.SocUserId == tokenResult.UserId);
-            if (!isTokenValid)
-            {
-                return null;
-            }
-            
-            var socAccount1 = DB.FOD<SocialAccountEntity>(a => a.UserId == auth.SocUserId && a.NetworkType == auth.NetType);
-            bool socAccountExists = socAccount1 != null;
-            if (socAccountExists)
-            {                
-                res = await SocAccountExists(auth, socAccount1);
-                return res;
-            }
-
-            using (await _mutex.LockAsync())
-            {
-                var socAccount = DB.FOD<SocialAccountEntity>(a => a.UserId == auth.SocUserId && a.NetworkType == auth.NetType);
-
-                bool socAccountNew = socAccount == null;
-                if (socAccountNew)
-                {
-                    res = await SocAccountNew(auth);
-                    return res;
-                }
-            }
         
-            return null;
-        }
-
         private async Task<LoginResponseDO> SocAccountNew(SocAuthDO auth)
         {
             var userIdObj = new ObjectId(auth.UserId);
@@ -176,7 +199,9 @@ namespace Gloobster.DomainModels.Services.Accounts
             var newSocAccount = await CreateNewSocialAccount(auth);
 
             var userEntity = await CreateUserEntityIfNotExistsYet(auth, newSocAccount);
-            
+
+            await CreateNewUserData(auth.UserId, userEntity.DisplayName);
+
             var response = new LoginResponseDO
             {
                 Token = BuildToken(auth.UserId, accountEntity.Secret),
@@ -252,7 +277,7 @@ namespace Gloobster.DomainModels.Services.Accounts
                     await DB.SaveAsync(userEntity);
 
                     var profilePicUrl = SocLogin.GetProfilePicUrl(auth);
-                    SaveProfilePicture(profilePicUrl, newSocAccount.UserId);
+                    SaveProfilePicture(profilePicUrl, newSocAccount.User_id.ToString());
                 }                
             }
             

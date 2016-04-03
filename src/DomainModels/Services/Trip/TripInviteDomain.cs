@@ -88,7 +88,7 @@ namespace Gloobster.DomainModels.Services.Trip
 
 				}
 
-				var notifMsg = Notifications.Messages.TripInvitation(userId, id, tripId);
+				var notifMsg = await Notifications.Messages.TripInvitation(userId, id, tripId);
 				Notifications.AddNotification(notifMsg);
 			}
 		}

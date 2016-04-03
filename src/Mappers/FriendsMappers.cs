@@ -17,7 +17,7 @@ namespace Gloobster.Mappers
 			var dObj = new FriendsDO
 			{
 				id = entity.id.ToString(),
-				UserId = entity.PortalUser_id.ToString(),
+				UserId = entity.User_id.ToString(),
 				Friends = entity.Friends.Select(f => f.ToString()).ToList(),
 				AwaitingConfirmation = entity.AwaitingConfirmation.Select(f => f.ToString()).ToList(),
 				Proposed = entity.Proposed.Select(f => f.ToString()).ToList(),
@@ -36,7 +36,7 @@ namespace Gloobster.Mappers
 
 			var entity = new FriendsEntity
 			{
-				PortalUser_id = new ObjectId(dObj.UserId),
+				User_id = new ObjectId(dObj.UserId),
 				Friends = dObj.Friends.Select(f => new ObjectId(f)).ToList(),
 				AwaitingConfirmation = dObj.AwaitingConfirmation.Select(f => new ObjectId(f)).ToList(),
 				Proposed = dObj.Proposed.Select(f => new ObjectId(f)).ToList(),

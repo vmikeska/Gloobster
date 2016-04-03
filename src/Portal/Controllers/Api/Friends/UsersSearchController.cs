@@ -39,7 +39,7 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 		            displayName = f.DisplayName
 		        });
 
-            var friendsEntity = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == UserIdObj);
+            var friendsEntity = DB.C<FriendsEntity>().FirstOrDefault(f => f.User_id == UserIdObj);
 
             //remove user itself            
             friends = friends.Where(u => u.friendId != UserId).ToList();

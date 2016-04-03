@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
+using Gloobster.DomainModels;
 using Gloobster.DomainObjects;
 using Gloobster.Entities;
 using Gloobster.Enums;
@@ -20,12 +21,14 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 	{
 		public IFacebookFriendsService FbFriendsService { get; set; }
 		public IFriendsDomain FriendsDoimain { get; set; }
-        
-        public FriendsController(IFacebookFriendsService fbFriendsService, IFriendsDomain friendsDoimain, ILogger log, IDbOperations db) : base(log, db)
+        public IEntitiesDemandor Demandor { get; set; }
+
+        public FriendsController(IEntitiesDemandor demandor, IFacebookFriendsService fbFriendsService, IFriendsDomain friendsDoimain, ILogger log, IDbOperations db) : base(log, db)
 		{
 			FbFriendsService = fbFriendsService;
-			FriendsDoimain = friendsDoimain;            
-        }		
+			FriendsDoimain = friendsDoimain;
+            Demandor = demandor;
+		}		
 
 		[HttpGet]
 		[AuthorizeApi]
@@ -75,11 +78,11 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 		{
 			var userIdObj = new ObjectId(userId);
 
-			var friendsEntity = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == userIdObj);
+			var friendsEntity = DB.FOD<FriendsEntity>(f => f.User_id == userIdObj);
 
 			var allInvolvedUserIds = GetAllInvolvedUserIds(friendsEntity);
 
-			var friends = DB.C<UserEntity>().Where(u => allInvolvedUserIds.Contains(u.id)).ToList();
+			var friends = DB.List<UserEntity>(u => allInvolvedUserIds.Contains(u.User_id));
 
 			var fbFriendsFiltered = GetFbFriends(userId, friendsEntity);
 
@@ -136,14 +139,14 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 			return friendsIds;
 		}
 
-		private FriendResponse ConvertResponse(ObjectId friendId, List<UserEntity> portalUsers)
+		private FriendResponse ConvertResponse(ObjectId friendId, List<UserEntity> users)
 		{
-			var portalUser = portalUsers.FirstOrDefault(u => u.id == friendId);
+			var user = users.FirstOrDefault(u => u.User_id == friendId);
 
 			var friend = new FriendResponse
 			{
 				friendId = friendId.ToString(),				
-				displayName = portalUser.DisplayName
+				displayName = user.DisplayName
 			};
 
 			return friend;

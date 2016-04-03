@@ -36,7 +36,7 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 				return new ObjectResult(friendsResponse);
 			}
 
-			var friends = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == UserIdObj);
+			var friends = DB.C<FriendsEntity>().FirstOrDefault(f => f.User_id == UserIdObj);
 
 			if (friends == null)
 			{

@@ -65,7 +65,7 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
             var result = new PinBoardStatResponse();
             string[] singleFriends = string.IsNullOrEmpty(request.singleFriends) ? new string[0] : request.singleFriends.Split(',');
 
-            var ids = await GetPeopleIds(request.me, request.friends, singleFriends, userId);
+            var ids = GetPeopleIds(request.me, request.friends, singleFriends, userId);
 
             if (request.dataType == DataType.Visited)
             {
@@ -150,7 +150,7 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
             return visitedStatesRes;
         }
         
-        private async Task<List<string>> GetPeopleIds(bool me, bool friends, string[] ids, string userId)
+        private List<string> GetPeopleIds(bool me, bool friends, string[] ids, string userId)
         {
             var outIds = new List<string>();
             var userIdObj = new ObjectId(userId);
@@ -160,7 +160,7 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
                 outIds.Add(userId);
             }
 
-            var friendsEntity = await Demandor.GetFriendsAsync(userIdObj);
+            var friendsEntity = DB.FOD<FriendsEntity>(f => f.User_id == userIdObj);
             
             if (friends)
             {

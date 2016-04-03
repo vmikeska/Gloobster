@@ -15,15 +15,15 @@ namespace Gloobster.Portal.ViewModels
 		public int UsStates { get; set; }
         public List<Friend> Friends { get; set; }
 
-        public async Task InitializeExists(VisitedEntity visited, IEntitiesDemandor demandor)
+        public void InitializeExists(VisitedEntity visited, IEntitiesDemandor demandor)
         {
             Countries = visited.Countries.Count;
             Cities = visited.Cities.Count;
             WorldTraveled = PinBoardUtils.CalculatePercentOfWorldTraveled(Countries);
             UsStates = visited.States.Count;
 
-            var friendsEntity = await demandor.GetFriendsAsync(visited.PortalUser_id);
-            var friends = DB.C<UserEntity>().Where(f => friendsEntity.Friends.Contains(f.id)).ToList();
+            var friendsEntity = DB.FOD<FriendsEntity>(f => f.User_id == visited.PortalUser_id);
+            var friends = DB.List<UserEntity>(f => friendsEntity.Friends.Contains(f.id));
             Friends = friends.Select(f => new Friend
             {
                 DisplayName = f.DisplayName,

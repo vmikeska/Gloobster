@@ -102,7 +102,7 @@ namespace Gloobster.Portal.Controllers.Portal
         {
             var tripIdObj = new ObjectId(req.id);
             var trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);
-            var owner = await Demandor.GetUserAsync(trip.PortalUser_id);
+            var owner = DB.FOD<UserEntity>(u => u.User_id == trip.PortalUser_id);
             
             //permissions part
             if (trip.FriendsPublic)
@@ -181,7 +181,7 @@ namespace Gloobster.Portal.Controllers.Portal
 		    if (IsUserLogged)
 		    {
 		        var tripEntity = await Demandor.CreateNewTripEntity(id, UserIdObj.Value);
-		        var userEntity = await Demandor.GetUserAsync(UserIdObj.Value);
+		        //var userEntity = DB.FOD<UserEntity>(u => u.User_id == UserIdObj.Value);
 
 		        return RedirectToAction("Detail", "Trip", new {id = tripEntity.id.ToString()});
 		    }
@@ -363,7 +363,7 @@ namespace Gloobster.Portal.Controllers.Portal
             var fromDate = tripFromTo.Item1;
             var toDate = tripFromTo.Item2;
 
-            var owner = await Demandor.GetUserAsync(trip.PortalUser_id);
+            var owner = DB.FOD<UserEntity>(u => u.User_id == trip.PortalUser_id);
             
             var vm = new TripItemViewModel
 			{

@@ -6,7 +6,7 @@ namespace Gloobster.Entities
 {
     public class FriendsEntity: EntityBase
     {
-		public ObjectId PortalUser_id { get; set; }
+		public ObjectId User_id { get; set; }
 
 	    public List<ObjectId> Friends { get; set; }
 

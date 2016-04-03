@@ -18,7 +18,7 @@ namespace Gloobster.Mappers
 			var dObj = new UserDO
 			{
 				DisplayName = entity.DisplayName,				
-				UserId = entity.id.ToString(),
+				UserId = entity.User_id.ToString(),
 				Gender = entity.Gender,								
 				FirstName = entity.FirstName,
 				LastName = entity.LastName,
@@ -41,7 +41,7 @@ namespace Gloobster.Mappers
 			var entity = new UserEntity
 			{
 				DisplayName = d.DisplayName,
-				id = new ObjectId(d.UserId),
+				User_id = new ObjectId(d.UserId),
 				Gender = d.Gender,
 				FirstName = d.FirstName,
 				LastName = d.LastName,

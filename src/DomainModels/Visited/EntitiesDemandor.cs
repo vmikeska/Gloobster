@@ -13,10 +13,8 @@ namespace Gloobster.DomainModels
     public interface IEntitiesDemandor
     {
         Task<VisitedEntity> GetVisitedAsync(ObjectId userIdObj);
-        VisitedResult VisitedExists(ObjectId userIdObj);
-        Task<FriendsEntity> GetFriendsAsync(ObjectId userIdObj);
-        Task<TripEntity> CreateNewTripEntity(string name, ObjectId userIdObj);
-        Task<UserEntity> GetUserAsync(ObjectId userIdObj);
+        VisitedResult VisitedExists(ObjectId userIdObj);        
+        Task<TripEntity> CreateNewTripEntity(string name, ObjectId userIdObj);        
     }
 
     public class VisitedResult
@@ -38,51 +36,7 @@ namespace Gloobster.DomainModels
                 Entity = visited
             };
         }
-
-        public async Task<UserEntity> GetUserAsync(ObjectId userIdObj)
-        {
-            var displayName = "Guest";
-            
-            var user = DB.FOD<UserEntity>(u => u.id == userIdObj);
-            if (user == null)
-            {
-                var newUser = new UserEntity
-                {
-                    id = ObjectId.GenerateNewId(),
-                    User_id = userIdObj,
-                    DisplayName = displayName,                    
-                    Gender = Gender.N,
-                    HomeAirports = new List<AirportSaveSE>(),
-                    Languages = new List<string>()
-                };
-                await DB.SaveAsync(newUser);
-                return newUser;
-            }
-
-            return user;
-        }
-
-        public async Task<FriendsEntity> GetFriendsAsync(ObjectId userIdObj)
-        {
-            var friends = DB.FOD<FriendsEntity>(u => u.PortalUser_id == userIdObj);
-            if (friends == null)
-            {
-                var friendsEntity = new FriendsEntity
-                {
-                    id = new ObjectId(),
-                    PortalUser_id = userIdObj,
-                    Friends = new List<ObjectId>(),
-                    AwaitingConfirmation = new List<ObjectId>(),
-                    Blocked = new List<ObjectId>(),
-                    Proposed = new List<ObjectId>()
-                };
-                await DB.SaveAsync(friendsEntity);
-                return friendsEntity;
-            }
-
-            return friends;
-        }
-
+        
         public async Task<VisitedEntity> GetVisitedAsync(ObjectId userIdObj)
         {
             var visited = DB.FOD<VisitedEntity>(u => u.PortalUser_id == userIdObj);

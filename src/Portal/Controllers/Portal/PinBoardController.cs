@@ -42,7 +42,7 @@ namespace Gloobster.Portal.Controllers.Portal
                 var visitedRes = Demandor.VisitedExists(UserIdObj.Value);
                 if (visitedRes.Exists)
                 {
-                    await vm.InitializeExists(visitedRes.Entity, Demandor);
+                    vm.InitializeExists(visitedRes.Entity, Demandor);
                     //todo: bring back to life
                     //await ImportNewFbPins();
                 }

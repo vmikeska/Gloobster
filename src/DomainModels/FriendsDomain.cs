@@ -17,6 +17,7 @@ namespace Gloobster.DomainModels
 	public class FriendsDomain: IFriendsDomain
 	{
 		public IDbOperations DB { get; set; }
+        public IEntitiesDemandor Demandor { get; set; }
 
 		public INotificationsDomain Notification { get; set; }
 
@@ -57,25 +58,32 @@ namespace Gloobster.DomainModels
 		{
 			var myId = new ObjectId(myDbUserId);
 			var friendsId = new ObjectId(friendDbUserId);
-			var myEntity = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == myId);
-			var friendEntity = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == friendsId);
+            var myEntity = DB.FOD<FriendsEntity>(f => f.User_id == myId);
+			var friendEntity = DB.FOD<FriendsEntity>(f => f.User_id == friendsId);
 			
-			bool blocked = friendEntity.Blocked.Contains(myEntity.PortalUser_id);
+			bool blocked = friendEntity.Blocked.Contains(myEntity.User_id);
 			if (blocked)
 			{
 				return false;
 			}
 
-			bool isAlreadyRequested = myEntity.Proposed.Contains(myEntity.PortalUser_id);
-			if (isAlreadyRequested)
+			bool isAlreadyRequestedFromMe = myEntity.Proposed.Contains(friendEntity.User_id);
+			if (isAlreadyRequestedFromMe)
 			{
 				return true;
 			}
 
+            bool isAlreadyRequestedFromFriend = friendEntity.Proposed.Contains(myEntity.User_id);
+            if (isAlreadyRequestedFromFriend)
+            {
+                bool res = await ConfirmFriendship(myDbUserId, friendDbUserId);
+                return res;                
+            }
+
             bool awRes = await AddId(friendsId, myId, f => f.AwaitingConfirmation);
             bool propRes = await AddId(myId, friendsId, f => f.Proposed);
             
-			var msg = Notification.Messages.FriendshipRequested(myDbUserId, friendDbUserId);
+			var msg = await Notification.Messages.FriendshipRequested(myDbUserId, friendDbUserId);
 			Notification.AddNotification(msg);
 
 			return awRes && propRes;
@@ -85,16 +93,16 @@ namespace Gloobster.DomainModels
 		{
 			var myId = new ObjectId(myDbUserId);
 			var friendsId = new ObjectId(friendDbUserId);
-			var myEntity = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == myId);
-			var friendEntity = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == friendsId);
+			var myEntity = DB.FOD<FriendsEntity>(f => f.User_id == myId);
+			var friendEntity = DB.FOD<FriendsEntity>(f => f.User_id == friendsId);
 
-			bool blocked = friendEntity.Blocked.Contains(myEntity.PortalUser_id);
+			bool blocked = friendEntity.Blocked.Contains(myEntity.User_id);
 			if (blocked)
 			{
 				return false;
 			}
 
-			bool areAlreadyFriends = friendEntity.Friends.Contains(myEntity.PortalUser_id);
+			bool areAlreadyFriends = friendEntity.Friends.Contains(myEntity.User_id);
 			if (areAlreadyFriends)
 			{
 				return true;
@@ -117,7 +125,7 @@ namespace Gloobster.DomainModels
 
 	    private async Task<bool> PullId(ObjectId userId, ObjectId friendId, Expression<Func<FriendsEntity, IEnumerable<ObjectId>>> field)
 	    {
-            var filter = DB.F<FriendsEntity>().Eq(f => f.PortalUser_id, userId);
+            var filter = DB.F<FriendsEntity>().Eq(f => f.User_id, userId);
             var update = DB.U<FriendsEntity>().Pull(field, friendId);
             var res = await DB.UpdateAsync(filter, update);
 	        bool successful = res.ModifiedCount == 1;
@@ -126,54 +134,11 @@ namespace Gloobster.DomainModels
         
         private async Task<bool> AddId(ObjectId userId, ObjectId friendId, Expression<Func<FriendsEntity, IEnumerable<ObjectId>>> field)
         {
-            var filter = DB.F<FriendsEntity>().Eq(f => f.PortalUser_id, userId);
+            var filter = DB.F<FriendsEntity>().Eq(f => f.User_id, userId);
             var update = DB.U<FriendsEntity>().Push(field, friendId);
             var res = await DB.UpdateAsync(filter, update);
             bool successful = res.ModifiedCount == 1;
             return successful;
         }
-
-  //      public async Task<FriendsDO> CreateFriendsObj(string dbUserId)
-		//{
-		//	var friendsObj = new FriendsEntity
-		//	{
-		//		id = new ObjectId(),
-		//		PortalUser_id = new ObjectId(dbUserId),
-		//		Friends = new List<ObjectId>(),
-		//		AwaitingConfirmation = new List<ObjectId>(),
-		//		Blocked = new List<ObjectId>(),
-		//		Proposed = new List<ObjectId>()
-		//	};
-		//	await DB.SaveAsync(friendsObj);
-		//	var friendsDo = friendsObj.ToDO();
-		//	return friendsDo;
-		//}
-
-
-
-		//public async Task<bool> AddEverbodyToMyFriends(string dbUserId)
-	 //   {
-		//	var myId = new ObjectId(dbUserId);
-		//	var myEntity = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == myId);
-
-		//	if (myEntity == null)
-		//	{
-		//		myEntity = (await CreateFriendsObj(dbUserId)).ToEntity();
-		//	}
-					
-		//	var allUsers = await DB.FindAsync<PortalUserEntity>();
-		//	var allUsersExceptMe = allUsers.Where(u => u.id != myEntity.PortalUser_id).ToList();
-
-		//    foreach (var user in allUsersExceptMe)
-		//    {				
-		//	    if (!myEntity.Friends.Contains(user.id))
-		//	    {
-		//			myEntity.Friends.Add(user.id);
-		//	    }
-		//    }
-
-		//    await DB.ReplaceOneAsync(myEntity);
-		//    return true;
-	 //   }
     }
 }

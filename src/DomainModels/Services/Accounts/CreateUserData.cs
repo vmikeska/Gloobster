@@ -9,7 +9,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 	{
 		public UserDO PortalUser { get; set; }
 		public IDbOperations DB { get; set; }
-		public INotificationsDomain NotificationDomain { get; set; }
+		
 		public IPlanningDomain PlanningDomain { get; set; }
 		public IFriendsDomain FriendsService { get; set; }
 		public IGeoNamesService GNService { get; set; }
@@ -20,18 +20,10 @@ namespace Gloobster.DomainModels.Services.Accounts
 			PortalUser = portalUser;
 		
 			CreatePlanning();
-
-			InitNotifications();
+            
 			await InitAirports();
 
 			return true;
-		}
-
-		private void InitNotifications()
-		{
-			var notifications = new Notifications();
-			var notification = notifications.NewAccountNotification(PortalUser.UserId);
-			NotificationDomain.AddNotification(notification);
 		}
 
 		private async Task<bool> InitAirports()
