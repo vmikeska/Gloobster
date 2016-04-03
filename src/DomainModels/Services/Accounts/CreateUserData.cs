@@ -1,14 +1,7 @@
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
-using Gloobster.Entities;
-using Gloobster.Entities.Trip;
-using Gloobster.Enums;
-using MongoDB.Bson;
 
 namespace Gloobster.DomainModels.Services.Accounts
 {
@@ -25,33 +18,14 @@ namespace Gloobster.DomainModels.Services.Accounts
 		public async Task<bool>Create(UserDO portalUser)
 		{
 			PortalUser = portalUser;
-
-			//await CreateVisited();			
+		
 			CreatePlanning();
-			//CreateFriends();
 
 			InitNotifications();
 			await InitAirports();
 
-			//todo: remove later
-			//await FriendsService.AddEverbodyToMyFriends(portalUser.UserId);
-
 			return true;
 		}
-
-		//public async Task<bool> CreateVisited()
-		//{
-		//	var visited = new VisitedEntity
-		//	{
-		//		PortalUser_id = new ObjectId(PortalUser.UserId),
-		//		Places = new List<VisitedPlaceSE>(),
-		//		Cities = new List<VisitedCitySE>(),
-		//		Countries = new List<VisitedCountrySE>(),
-  //              States = new List<VisitedStateSE>()
-		//	};
-		//	await DB.SaveAsync(visited);
-		//	return true;
-		//}
 
 		private void InitNotifications()
 		{
@@ -78,12 +52,5 @@ namespace Gloobster.DomainModels.Services.Accounts
 		{
 			PlanningDomain.CreateDBStructure(PortalUser.UserId);
 		}
-
-		//private async void CreateFriends()
-		//{
-		//	await FriendsService.CreateFriendsObj(PortalUser.UserId);
-		//}
-
-	    
 	}
 }

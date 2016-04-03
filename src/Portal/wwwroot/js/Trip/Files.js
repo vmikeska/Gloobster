@@ -83,7 +83,7 @@ var Trip;
             if (this.files && this.files.length > 0) {
                 this.$noFiles.hide();
                 this.files.forEach(function (file) {
-                    var isOwner = file.ownerId === Reg.LoginManager.currentUserId;
+                    var isOwner = file.ownerId === Views.ViewBase.currentUserId;
                     var filePublic = _this.getFilePublic(file.id);
                     var displayFile = isOwner || filePublic.isPublic;
                     if (displayFile) {

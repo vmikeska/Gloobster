@@ -122,7 +122,7 @@
 				this.$noFiles.hide();
 				this.files.forEach((file) => {
 
-					var isOwner = file.ownerId === Reg.LoginManager.currentUserId;
+				 var isOwner = file.ownerId === Views.ViewBase.currentUserId;
 					var filePublic = this.getFilePublic(file.id);
 					var displayFile = isOwner || filePublic.isPublic;
 

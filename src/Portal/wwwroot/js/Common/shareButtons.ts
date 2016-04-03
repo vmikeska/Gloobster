@@ -31,9 +31,11 @@
 		private createHtml() {						
 			var isFirst = true;
 			this.socNetworks.forEach((net) => {
-				var $div = this.getItemHtml(isFirst, true, net.type);
-				this.$owner.append($div);
-				isFirst = false;
+				if (Views.ViewBase.currentView.hasSocNetwork(net.type)) {
+					var $div = this.getItemHtml(isFirst, true, net.type);
+					this.$owner.append($div);
+					isFirst = false;
+				}
 			});		 
 		}
 

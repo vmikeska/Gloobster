@@ -1,10 +1,7 @@
 ﻿module Views {
 	export class HomePageView extends ViewBase {
-
-	 //private cookieSaver: Reg.AuthCookieSaver;
-
-	 constructor() {
-		 //this.cookieSaver = new Reg.AuthCookieSaver();
+	 
+	 constructor() {		
 		 super();
 		
 		 this.initialize("fbBtnHome", "googleBtnHome", "twitterBtnHome");
@@ -32,7 +29,7 @@
 		 window.location.href = Constants.firstRedirectUrl;
 		}
 
-		get pageType(): PageType { return PageType.HomePage; }
+		public get pageType(): PageType { return PageType.HomePage; }
 	 
 	}
 }

@@ -1,4 +1,8 @@
 ﻿@using Gloobster.Common
+@using System.Linq;
+@using System.Threading.Tasks
+@using Gloobster.Portal.ViewModels
+@model ViewModelBase
 
 <script>
 	document["facebookId"] = "@GloobsterConfig.FacebookAppId";
@@ -17,8 +21,6 @@
 
 <script type="text/javascript" src="@Url.Content("~/js/Common/globals.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Views/ViewBase.js")"></script>
-
-<script type="text/javascript" src="@Url.Content("~/js/registration/LoginManager.js")"></script>
 
 <script type="text/javascript" src="@Url.Content("~/js/registration/SocialButtons.js")"></script>
 
@@ -67,4 +69,19 @@
             <a class="close" href="#"></a>
         </div>
     </div>
+</script>
+
+<script type="text/javascript">
+
+        @if (Model.IsUserLogged)
+        {
+            @Html.Raw($"Views.ViewBase.currentUserId = '{Model.User.id}';")
+        }
+        @{
+            var nets = Model.SocialNetworks.Select(n => ((int) n).ToString());
+            var netsStr = string.Join(",", nets);
+        }
+        @Html.Raw($"Views.ViewBase.nets = '{netsStr}';")
+
+        @Html.Raw($"Views.ViewBase.fbt = '{Model.FbToken}';")
 </script>

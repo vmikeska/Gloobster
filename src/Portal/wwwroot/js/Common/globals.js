@@ -32,9 +32,4 @@ var ParticipantState;
     ParticipantState[ParticipantState["Maybe"] = 2] = "Maybe";
     ParticipantState[ParticipantState["Refused"] = 3] = "Refused";
 })(ParticipantState || (ParticipantState = {}));
-var UserActionType;
-(function (UserActionType) {
-    UserActionType[UserActionType["Login"] = 0] = "Login";
-    UserActionType[UserActionType["Register"] = 1] = "Register";
-})(UserActionType || (UserActionType = {}));
 //# sourceMappingURL=Globals.js.map

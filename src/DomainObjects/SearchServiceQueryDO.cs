@@ -13,9 +13,9 @@ namespace Gloobster.DomainObjects
 		public string Query { get; set; }
 		public int LimitPerProvider { get; set; }
 		public LatLng Coordinates { get; set; }	
-		public SourceType[] CustomProviders { get; set; }
-		public UserDO PortalUser { get; set; }
+		public SourceType[] CustomProviders { get; set; }		
 	    public bool MustHaveCity = false;
         public bool MustHaveCountry = false;
+        public string FbToken { get; set; }
     }
 }

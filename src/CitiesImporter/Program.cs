@@ -34,21 +34,18 @@ namespace CitiesImporter
             {
                 bool existsPerm = db.C<WikiPermissionEntity>().Any();
                 if (!existsPerm)
-                {
-                    //todo: fix
-                    //var users = db.C<UserEntity>()
-                    //    .Where(u => (u.Mail == "mikeska@gmail.com") || (u.Mail == "vmikeska@hotmail.com"))
-                    //    .ToList();
+                {                   
+                    var users = db.List<UserEntity>(u => (u.Mail == "mikeska@gmail.com") || (u.Mail == "vmikeska@hotmail.com"));
 
-                    //var masterAdmins = users.Select(u => new WikiPermissionEntity
-                    //{
-                    //    IsMasterAdmin = true,
-                    //    IsSuperAdmin = false,
-                    //    id = ObjectId.GenerateNewId(),
-                    //    User_id = u.id,
-                    //    Articles = new List<ObjectId>()
-                    //});
-                    //db.SaveManyAsync(masterAdmins);
+                    var masterAdmins = users.Select(u => new WikiPermissionEntity
+                    {
+                        IsMasterAdmin = true,
+                        IsSuperAdmin = false,
+                        id = ObjectId.GenerateNewId(),
+                        User_id = u.id,
+                        Articles = new List<ObjectId>()
+                    });
+                    db.SaveManyAsync(masterAdmins);
                 }
             }
 

@@ -30,9 +30,11 @@
 
 		constructor(trip: any, editable: boolean) {
 
-		 var thisParticipant = _.find(trip.participants, (p) => { return p.userId === Reg.LoginManager.currentUserId });
+		 var thisParticipant = _.find(trip.participants, (p) => {
+			 return p.userId === Views.ViewBase.currentUserId;
+		 });
 		 this.isInvited = (thisParticipant != null);
-			this.isOwner = trip.ownerId === Reg.LoginManager.currentUserId;
+		 this.isOwner = trip.ownerId === Views.ViewBase.currentUserId;
 
 			this.editable = editable;
 			this.dialogManager = new DialogManager(this);

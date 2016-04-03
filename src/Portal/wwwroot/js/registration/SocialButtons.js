@@ -24,6 +24,16 @@ var Reg;
             var hint = new Common.HintDialog();
             hint.create("You are successfully connected!");
             $("#MenuRegister").parent().remove();
+            this.getUserMenu(function (r) {
+                $("#ddMenus").append(r);
+            });
+        };
+        LoginButtonsManager.prototype.getUserMenu = function (callback) {
+            var endpoint = "/home/component/_UserMenu";
+            var request = new Common.RequestSender(endpoint, null, true);
+            request.params = [];
+            request.onSuccess = callback;
+            request.sendGet();
         };
         LoginButtonsManager.prototype.createPageDialog = function () {
             var _this = this;
@@ -63,7 +73,9 @@ var Reg;
         AuthCookieSaver.prototype.saveCookies = function (res) {
             this.cookiesMgr.setString(Constants.tokenCookieName, res.Token);
             this.cookiesMgr.setString(Constants.nameCookieName, res.DisplayName);
-            //alert("TestOk: " + JSON.stringify(res));
+            if (res.NetType === SocialNetworkType.Facebook) {
+                Views.ViewBase.fbt = res.SocToken;
+            }
             //todo: implement
             //this.cookiesMgr.setString(Constants.socNetsCookieName, );
             //todo: remove ?

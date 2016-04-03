@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
+using Gloobster.DomainModels;
 using Gloobster.Entities;
 using Gloobster.Enums;
 using Gloobster.Mappers;
@@ -12,8 +14,8 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
 {
     public interface IPinBoardStatRequestCreator
     {
-        PinBoardStatResponse DataForNotLoggedInUser(DisplayEntity entity, DataType type);
-        PinBoardStatResponse DataForLoggedInUser(PinBoardStatRequest request, string userId);
+        //PinBoardStatResponse DataForNotLoggedInUser(DisplayEntity entity, DataType type);
+        Task<PinBoardStatResponse> DataForLoggedInUser(PinBoardStatRequest request, string userId);
     }
 
     public class PinBoardStatRequestCreator: IPinBoardStatRequestCreator
@@ -22,47 +24,48 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
         public IVisitedCitiesDomain VisitedCities { get; set; }
         public IVisitedCountriesDomain VisitedCountries { get; set; }
         public IVisitedStatesDomain VisitedStates { get; set; }
+        public IEntitiesDemandor Demandor { get; set; }
 
         public IDbOperations DB { get; set; }
 
-        public PinBoardStatResponse DataForNotLoggedInUser(DisplayEntity entity, DataType type)
-        {
-            var result = new PinBoardStatResponse();
+        //public PinBoardStatResponse DataForNotLoggedInUser(DisplayEntity entity, DataType type)
+        //{
+        //    var result = new PinBoardStatResponse();
 
-            if (type == DataType.Visited)
-            {
-                if (entity == DisplayEntity.Pin)
-                {
-                    result.visitedCities = GetVisitedCitiesOverall();
-                }
+        //    if (type == DataType.Visited)
+        //    {
+        //        if (entity == DisplayEntity.Pin)
+        //        {
+        //            result.visitedCities = GetVisitedCitiesOverall();
+        //        }
 
-                if (entity == DisplayEntity.Countries)
-                {
-                    result.visitedCountries = GetVisitedCountriesOverall();
-                    result.visitedStates = GetVisitedStatesOverall();
-                }
+        //        if (entity == DisplayEntity.Countries)
+        //        {
+        //            result.visitedCountries = GetVisitedCountriesOverall();
+        //            result.visitedStates = GetVisitedStatesOverall();
+        //        }
 
-                if (entity == DisplayEntity.Heat)
-                {
-                    result.visitedPlaces = GetVisitedPlacesOverall();
-                }
-            }
+        //        if (entity == DisplayEntity.Heat)
+        //        {
+        //            result.visitedPlaces = GetVisitedPlacesOverall();
+        //        }
+        //    }
 
-            //todo: implement
-            if (type == DataType.Interested)
-            {
+        //    //todo: implement
+        //    if (type == DataType.Interested)
+        //    {
 
-            }
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
-        public PinBoardStatResponse DataForLoggedInUser(PinBoardStatRequest request, string userId)
+        public async Task<PinBoardStatResponse> DataForLoggedInUser(PinBoardStatRequest request, string userId)
         {
             var result = new PinBoardStatResponse();
             string[] singleFriends = string.IsNullOrEmpty(request.singleFriends) ? new string[0] : request.singleFriends.Split(',');
 
-            var ids = GetPeopleIds(request.me, request.friends, singleFriends, userId);
+            var ids = await GetPeopleIds(request.me, request.friends, singleFriends, userId);
 
             if (request.dataType == DataType.Visited)
             {
@@ -147,7 +150,7 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
             return visitedStatesRes;
         }
         
-        private List<string> GetPeopleIds(bool me, bool friends, string[] ids, string userId)
+        private async Task<List<string>> GetPeopleIds(bool me, bool friends, string[] ids, string userId)
         {
             var outIds = new List<string>();
             var userIdObj = new ObjectId(userId);
@@ -157,8 +160,8 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
                 outIds.Add(userId);
             }
 
-            var friendsEntity = DB.C<FriendsEntity>().FirstOrDefault(f => f.PortalUser_id == userIdObj);
-
+            var friendsEntity = await Demandor.GetFriendsAsync(userIdObj);
+            
             if (friends)
             {
                 outIds.AddRange(friendsEntity.Friends.Select(f => f.ToString()));

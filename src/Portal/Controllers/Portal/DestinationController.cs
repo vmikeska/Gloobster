@@ -17,7 +17,7 @@ namespace Gloobster.Portal.Controllers.Portal
 
 		public IActionResult Planning()
 		{
-			var portalUser = DB.C<UserEntity>().First(p => p.id == UserIdObj);
+			var portalUser = DB.FOD<UserEntity>(p => p.User_id == UserIdObj);
 
 			var viewModel = CreateViewModelInstance<ViewModelPlanning>();
 			viewModel.InitCurrentLocation = FormatCityStr(portalUser.CurrentLocation);
@@ -26,7 +26,7 @@ namespace Gloobster.Portal.Controllers.Portal
 			if (portalUser.HomeAirports != null)
 			{
 				var airportIds = portalUser.HomeAirports.Select(a => a.OrigId);
-				viewModel.Airports = DB.C<AirportEntity>().Where(a => airportIds.Contains(a.OrigId)).ToList();
+				viewModel.Airports = DB.List<AirportEntity>(a => airportIds.Contains(a.OrigId));
 			}
 
 			return View(viewModel);

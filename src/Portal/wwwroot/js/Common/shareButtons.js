@@ -25,9 +25,11 @@ var Common;
             var _this = this;
             var isFirst = true;
             this.socNetworks.forEach(function (net) {
-                var $div = _this.getItemHtml(isFirst, true, net.type);
-                _this.$owner.append($div);
-                isFirst = false;
+                if (Views.ViewBase.currentView.hasSocNetwork(net.type)) {
+                    var $div = _this.getItemHtml(isFirst, true, net.type);
+                    _this.$owner.append($div);
+                    isFirst = false;
+                }
             });
         };
         ShareButtons.prototype.getByType = function (type) {

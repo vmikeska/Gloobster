@@ -6,5 +6,6 @@ namespace Gloobster.ReqRes
 		public string types { get; set; }
 		public string lat { get; set; }
 		public string lng { get; set; }
+        public string fbt { get; set; }
 	}
 }

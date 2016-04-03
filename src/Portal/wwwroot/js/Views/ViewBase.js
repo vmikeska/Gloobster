@@ -13,8 +13,10 @@ var Views;
             ViewBase.currentView = this;
             this.cookieManager = new Common.CookieManager();
             this.regUserMenu();
-            this.loginButtonsManager = new Reg.LoginButtonsManager();
-            this.loginButtonsManager.createPageDialog();
+            if (this.pageType !== PageType.HomePage) {
+                this.loginButtonsManager = new Reg.LoginButtonsManager();
+                this.loginButtonsManager.createPageDialog();
+            }
         }
         Object.defineProperty(ViewBase.prototype, "pageType", {
             get: function () { return null; },
@@ -23,9 +25,8 @@ var Views;
         });
         ViewBase.prototype.regUserMenu = function () {
             var _this = this;
-            //todo: fix if is not working
             $("#logoutUser").click(function (e) {
-                _this.loginManager.logout();
+                _this.logout();
             });
         };
         ViewBase.prototype.hasSocNetwork = function (net) {
@@ -34,6 +35,10 @@ var Views;
                 return true;
             }
             return false;
+        };
+        ViewBase.prototype.logout = function () {
+            this.cookieManager.removeCookie(Constants.tokenCookieName);
+            window.location.href = "/";
         };
         ViewBase.prototype.apiGet = function (endpointName, params, callback) {
             var endpoint = "/api/" + endpointName;

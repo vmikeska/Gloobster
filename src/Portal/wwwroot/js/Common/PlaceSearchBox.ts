@@ -51,6 +51,10 @@ module Common {
 				params.push(["lng", this.coordinates.lng]);
 			}
 
+			if (Views.ViewBase.fbt) {
+				params.push(["fbt", Views.ViewBase.fbt]);
+			}
+
 			Views.ViewBase.currentView.apiGet("place", params, places => { this.fillPlacesSearchBoxHtml(places) });
 		}
 

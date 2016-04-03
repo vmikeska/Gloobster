@@ -19,7 +19,8 @@
     "Gloobster.Sharing": "1.0.0-*",
     "Serilog.Framework.Logging": "1.0.0-rc1-final-10071",
     "BlobFileSystem.Azure": "0.0.7",
-    "YelpSharp": "1.2.1"
+    "YelpSharp": "1.2.1",
+    "Nito.AsyncEx": "3.0.1"
   },
 
   "frameworks": {

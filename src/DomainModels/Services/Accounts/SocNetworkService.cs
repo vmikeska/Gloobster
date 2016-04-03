@@ -18,12 +18,15 @@ using Gloobster.DomainModels.Wiki;
 using Gloobster.Entities.Trip;
 using Gloobster.Enums;
 using Gloobster.Mappers;
+using Nito.AsyncEx;
 
 namespace Gloobster.DomainModels.Services.Accounts
 {
     
     public class SocNetworkService : ISocNetworkService
     {
+        private readonly AsyncLock _mutex = new AsyncLock();
+
         public ILogger Log { get; set; }
 
         public IDbOperations DB { get; set; }
@@ -46,7 +49,9 @@ namespace Gloobster.DomainModels.Services.Accounts
                     {
                         Token = BuildToken(accountExisting.User_id.ToString(), accountExisting.Secret),
                         UserId = userId,
-                        DisplayName = user.DisplayName
+                        DisplayName = user.DisplayName,
+                        NetType = SocialNetworkType.Base,
+                        SocToken = null
                     };
                     return response;
                 }
@@ -99,7 +104,9 @@ namespace Gloobster.DomainModels.Services.Accounts
                 {
                     Token = BuildToken(account.User_id.ToString(), account.Secret),
                     UserId = userId,
-                    DisplayName = newUserEntity.DisplayName
+                    DisplayName = newUserEntity.DisplayName,
+                    NetType = SocialNetworkType.Base,
+                    SocToken = null
                 };
                 return response;
             }            
@@ -131,26 +138,33 @@ namespace Gloobster.DomainModels.Services.Accounts
             SocLogin.Init(auth);
 
             var tokenResult = SocLogin.ValidateToken(auth);
-            bool isTokenValid = tokenResult.IsValid && (auth.SocUserId == tokenResult.UserId);            
+            bool isTokenValid = tokenResult.IsValid && (auth.SocUserId == tokenResult.UserId);
             if (!isTokenValid)
-            {                
+            {
                 return null;
             }
             
-            var socAccount = 
-                DB.FOD<SocialAccountEntity>(a => a.UserId == auth.SocUserId && a.NetworkType == auth.NetType);
-            
-            bool socAccountExists = socAccount != null;
+            var socAccount1 = DB.FOD<SocialAccountEntity>(a => a.UserId == auth.SocUserId && a.NetworkType == auth.NetType);
+            bool socAccountExists = socAccount1 != null;
             if (socAccountExists)
-            {
-                res = await SocAccountExists(auth, socAccount);                
-            }
-            else
-            {
-                res = await SocAccountNew(auth);
+            {                
+                res = await SocAccountExists(auth, socAccount1);
+                return res;
             }
 
-            return res;
+            using (await _mutex.LockAsync())
+            {
+                var socAccount = DB.FOD<SocialAccountEntity>(a => a.UserId == auth.SocUserId && a.NetworkType == auth.NetType);
+
+                bool socAccountNew = socAccount == null;
+                if (socAccountNew)
+                {
+                    res = await SocAccountNew(auth);
+                    return res;
+                }
+            }
+        
+            return null;
         }
 
         private async Task<LoginResponseDO> SocAccountNew(SocAuthDO auth)
@@ -167,7 +181,9 @@ namespace Gloobster.DomainModels.Services.Accounts
             {
                 Token = BuildToken(auth.UserId, accountEntity.Secret),
                 UserId = auth.UserId,
-                DisplayName = userEntity.DisplayName
+                DisplayName = userEntity.DisplayName,
+                NetType = auth.NetType,
+                SocToken = auth.AccessToken
             };
             return response;
         }
@@ -239,22 +255,19 @@ namespace Gloobster.DomainModels.Services.Accounts
                     SaveProfilePicture(profilePicUrl, newSocAccount.UserId);
                 }                
             }
-            else
+            
+            if (string.IsNullOrEmpty(userEntity.Mail) && !string.IsNullOrEmpty(userData.Mail))
             {
-                if (string.IsNullOrEmpty(userEntity.Mail) && !string.IsNullOrEmpty(userData.Mail))
-                {
-                    //update email for mail communication
-                    await UpdateCommunicationAccount(userEntity.id, userData.Mail);
-
-                    //update mail for login
-                    var account = DB.FOD<AccountEntity>(a => a.User_id == userIdObj);
-                    if (string.IsNullOrEmpty(account.Mail))
-                    {
-                        await UpdateAccountEmail(userIdObj, userData.Mail);
-                    }
-                }
+                //update email for mail communication
+                await UpdateCommunicationAccount(userEntity.id, userData.Mail);                                
             }
 
+            var account = DB.FOD<AccountEntity>(a => a.User_id == userIdObj);
+            if (string.IsNullOrEmpty(account.Mail) && !string.IsNullOrEmpty(userData.Mail))
+            {                                
+                await UpdateAccountEmail(userIdObj, userData.Mail);                
+            }
+            
             return userEntity;
         }
 
@@ -296,7 +309,9 @@ namespace Gloobster.DomainModels.Services.Accounts
             {
                 Token = BuildToken(accountBySocAccount.User_id.ToString(), accountBySocAccount.Secret),
                 UserId = auth.UserId,
-                DisplayName = user.DisplayName
+                DisplayName = user.DisplayName,
+                NetType = auth.NetType,
+                SocToken = auth.AccessToken
             };
             return response;
         }

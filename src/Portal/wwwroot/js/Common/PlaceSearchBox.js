@@ -34,6 +34,9 @@ var Common;
                 params.push(["lat", this.coordinates.lat]);
                 params.push(["lng", this.coordinates.lng]);
             }
+            if (Views.ViewBase.fbt) {
+                params.push(["fbt", Views.ViewBase.fbt]);
+            }
             Views.ViewBase.currentView.apiGet("place", params, function (places) { _this.fillPlacesSearchBoxHtml(places); });
         };
         PlaceSearchBox.prototype.fillPlacesSearchBoxHtml = function (places) {

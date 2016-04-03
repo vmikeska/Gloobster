@@ -29,7 +29,7 @@
         <h1><a asp-controller="Home" asp-action="Index" class="logo-header">Gloobster</a></h1>
 
         <div class="menu-holder">
-            <div class="tright mhalf">
+            <div id="ddMenus" class="tright mhalf">
                 @Html.Partial("_LangMenu")
 
                 @if (Model.User != null)
@@ -70,22 +70,7 @@ else
 
     <script type="text/javascript" src="@Url.Content("~/js/script.js")"></script>
 
-    <script type="text/javascript">
-        Reg.LoginManager.currentUserId = null;
-
-        @if (Model.IsUserLogged)
-        {
-            @Html.Raw($"Reg.LoginManager.currentUserId = '{Model.User.id}';")
-        }
-        @{
-            var nets = Model.SocialNetworks.Select(n => ((int) n).ToString());
-            var netsStr = string.Join(",", nets);
-        }
-        @Html.Raw($"Views.ViewBase.nets = '{netsStr}';")
-
-
-
-    </script>
+    
 
 </body>
 </html>

@@ -34,19 +34,14 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 		{
             var typesCol = ParseTypes(req.types);
          
-            //todo: this is possibly just because of FB access token, keep this token on client, not to query it every time			
-            var user = DB.C<UserEntity>().FirstOrDefault(u => u.id == UserIdObj);
-         
-            var userDO = user.ToDO();
-         
             var queryObj = new SearchServiceQueryDO
 			{
-				Query = req.placeName,
-				PortalUser = userDO,
+				Query = req.placeName,				
 				CustomProviders = typesCol,
                 MustHaveCity = true,
                 MustHaveCountry = true,
-                LimitPerProvider = 5
+                LimitPerProvider = 5,
+                FbToken = req.fbt
 			};
          
             bool hasCoordinates = !string.IsNullOrEmpty(req.lat) && !string.IsNullOrEmpty(req.lng);
@@ -54,7 +49,11 @@ namespace Gloobster.Portal.Controllers.Api.Geo
             if (hasCoordinates)
 			{
          
-                queryObj.Coordinates = new LatLng {Lat = float.Parse(req.lat, CultureInfo.InvariantCulture), Lng = float.Parse(req.lng, CultureInfo.InvariantCulture) };
+                queryObj.Coordinates = new LatLng
+                {
+                    Lat = float.Parse(req.lat, CultureInfo.InvariantCulture),
+                    Lng = float.Parse(req.lng, CultureInfo.InvariantCulture)
+                };
 			}
          
             List<Place> result = await SearchSvc.SearchAsync(queryObj);

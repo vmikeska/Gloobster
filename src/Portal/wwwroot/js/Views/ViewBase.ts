@@ -7,10 +7,11 @@ module Views {
 
 	  public static currentView: ViewBase;	 
 		public static nets: string;
-
+		public static fbt: string;
+		public static currentUserId: string;
+	 
 		public loginButtonsManager: Reg.LoginButtonsManager;
-
-		public loginManager: Reg.LoginManager;
+	 
 		public cookieManager: Common.CookieManager;
 
 	  public onLogin: Function;
@@ -22,15 +23,15 @@ module Views {
 			this.cookieManager = new Common.CookieManager();			
 			this.regUserMenu();
 
-			this.loginButtonsManager = new Reg.LoginButtonsManager();
-			this.loginButtonsManager.createPageDialog();
+			if (this.pageType !== PageType.HomePage) {
+				this.loginButtonsManager = new Reg.LoginButtonsManager();
+				this.loginButtonsManager.createPageDialog();
+			}
 		}
 
-		private regUserMenu() {
-
-		 //todo: fix if is not working
+		private regUserMenu() {		 
 		 $("#logoutUser").click((e) => {				
-				this.loginManager.logout();				
+				this.logout();				
 			});
 		}
 
@@ -42,6 +43,11 @@ module Views {
 			}
 
 			return false;
+		}
+
+		public logout() {
+		 this.cookieManager.removeCookie(Constants.tokenCookieName);
+		 window.location.href = "/";
 		}
 
 		public apiGet(endpointName: string, params: string[][], callback: Function) {

@@ -28,7 +28,7 @@ var Views;
             this.shareDialogView = new Views.ShareDialogPinsView();
             this.initPlaceSearch();
             $("#mapType input").change(function (e) {
-                var value = $(e.target).data("value");
+                var value = $(e.target).val();
                 var parsedVal = parseInt(value);
                 _this.mapsManager.switchToView(parsedVal);
                 _this.setMenuControls();

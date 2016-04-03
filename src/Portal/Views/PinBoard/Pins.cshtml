@@ -1,14 +1,11 @@
-﻿@{
-		ViewBag.MenuGroup = "PinBoard";
-}
-
-@using System.Threading.Tasks
-@using Gloobster.Portal.Controllers
-@using Gloobster.Portal.Controllers.Portal
+﻿@using System.Threading.Tasks
 @using Gloobster.Portal.ViewModels
 @using Newtonsoft.Json
-@using Microsoft.AspNet.Mvc.ViewFeatures
-@model Gloobster.Portal.ViewModels.PinBoardViewModel
+@model PinBoardViewModel
+
+@{
+		ViewBag.MenuGroup = "PinBoard";
+}
 
 @*<script src='../../../api.mapbox.com/mapbox.js/v2.2.2/mapbox.js'></script>
 		<link href='../../../api.mapbox.com/mapbox.js/v2.2.2/mapbox.css' rel='stylesheet' />*@
@@ -129,7 +126,7 @@
         </div>
     </div>
 
-    <form class="blue-form" action="#" method="post">
+    <div class="form blue-form" action="#" method="post">
         <div id="cities" class="dropdown left">
             <input id="citiesInput" class="inputed" type="text" placeholder="Place name">
             <ul>
@@ -155,7 +152,7 @@
             </ul>
             <input type="hidden" value="0">
         </div>
-    </form>
+    </div>
 
     <div class="map margin" id="map">
         @Html.Partial("CountriesLegend")

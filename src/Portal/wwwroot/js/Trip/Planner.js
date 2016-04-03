@@ -7,9 +7,11 @@ var Trip;
             this.placesPerRow = 4;
             this.contBaseName = "plannerCont";
             this.inverseColor = false;
-            var thisParticipant = _.find(trip.participants, function (p) { return p.userId === Reg.LoginManager.currentUserId; });
+            var thisParticipant = _.find(trip.participants, function (p) {
+                return p.userId === Views.ViewBase.currentUserId;
+            });
             this.isInvited = (thisParticipant != null);
-            this.isOwner = trip.ownerId === Reg.LoginManager.currentUserId;
+            this.isOwner = trip.ownerId === Views.ViewBase.currentUserId;
             this.editable = editable;
             this.dialogManager = new Trip.DialogManager(this);
             this.placeDialog = new Trip.PlaceDialog(this.dialogManager);

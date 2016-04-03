@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.Portal.Controllers.Base;
@@ -30,18 +31,18 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
 
         [HttpGet]
 		[AuthorizeApi(true)]
-		public IActionResult Get(PinBoardStatRequest request)
+		public async Task<IActionResult> Get(PinBoardStatRequest request)
 		{
 		    PinBoardStatResponse result;
-		    if (IsUserLogged)
-		    {
-		        result = RequestCreator.DataForLoggedInUser(request, UserId);
-		    }
-		    else
-		    {
-                //user will always receive "only" all checkins data
-                result = RequestCreator.DataForNotLoggedInUser(request.displayEntity, request.dataType);
-            }
+		    //if (IsUserLogged)
+		    //{
+		        result = await RequestCreator.DataForLoggedInUser(request, UserId);
+		    //}
+		    //else
+		    //{
+      //          //user will always receive "only" all checkins data
+      //          result = RequestCreator.DataForNotLoggedInUser(request.displayEntity, request.dataType);
+      //      }
 
 		    return new ObjectResult(result);
 		}

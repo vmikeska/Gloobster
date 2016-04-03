@@ -34,19 +34,26 @@ namespace Gloobster.Portal.Controllers.Portal
             return View(viewModel);
         }
 
-	    //public async Task<IActionResult> Test()
-	    //{
-     //       //DataCreator.CreateInitialData();
+        public IActionResult Component(string id)
+        {
+            var viewModel = CreateViewModelInstance<ViewModelComponent>();
+            viewModel.Id = id;
+            return View(viewModel);
+        }
+
+        //public async Task<IActionResult> Test()
+        //{
+        //       //DataCreator.CreateInitialData();
 
 
-     //       return View();
-	    //}
+        //       return View();
+        //}
 
-     //   public IActionResult Test2()
-     //   {
-            
-     //       return View();
-     //   }
+        //   public IActionResult Test2()
+        //   {
+
+        //       return View();
+        //   }
 
 
     }

@@ -64,9 +64,11 @@
 		}
 
 		private initAcceptCombo() {
-			var isOwner = this.trip.ownerId === Reg.LoginManager.currentUserId;
+		 var isOwner = this.trip.ownerId === ViewBase.currentUserId;
 			if (!isOwner) {
-			 var thisParticipant = _.find(this.trip.participants, (p) => { return p.userId === Reg.LoginManager.currentUserId });
+			 var thisParticipant = _.find(this.trip.participants, (p) => {
+				  return p.userId === ViewBase.currentUserId;
+			 });
 			 var wasInvited = thisParticipant != null;
 				if (wasInvited) {
 					var acConfig = {

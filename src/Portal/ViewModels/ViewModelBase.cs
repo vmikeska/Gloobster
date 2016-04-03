@@ -15,7 +15,9 @@ namespace Gloobster.Portal.ViewModels
 		public List<SocialNetworkType> SocialNetworks { get; set; }
 		public int NotificationCount { get; set; }
 
-	    public bool HasSocNet(SocialNetworkType net)
+        public string FbToken { get; set; }
+
+        public bool HasSocNet(SocialNetworkType net)
 	    {
 	        return SocialNetworks.Contains(net);
 	    }

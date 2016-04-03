@@ -115,7 +115,7 @@ namespace Gloobster.Portal.Controllers.Base
             //    socNetStr = GetSocNetworkStr();
             //    HttpContext.Response.Cookies.Append(PortalConstants.NetworkTypes, socNetStr);
             //}
-
+            
             var instance = new T
             {
                 User = User,
@@ -124,7 +124,28 @@ namespace Gloobster.Portal.Controllers.Base
                 NotificationCount = notifsCount,
                 UserId = UserId
             };
+
+            if (Networks.Contains(SocialNetworkType.Facebook))
+            {
+                var fbNet = SocNetworks.FirstOrDefault(a => a.NetworkType == SocialNetworkType.Facebook);
+                instance.FbToken = fbNet.AccessToken;
+            }
+            
             return instance;
+        }
+
+        private List<SocialAccountEntity> _socNetworks;
+        public List<SocialAccountEntity> SocNetworks
+        {
+            get
+            {
+                if (_socNetworks == null)
+                {
+                    _socNetworks = DB.List<SocialAccountEntity>(a => a.User_id == UserIdObj);                    
+                }
+
+                return _socNetworks;
+            }
         }
 
         private List<SocialNetworkType> _networks;
@@ -133,9 +154,8 @@ namespace Gloobster.Portal.Controllers.Base
             get
             {
                 if (_networks == null)
-                {
-                    var networksEnt = DB.C<SocialAccountEntity>().List(a => a.User_id == UserIdObj);
-                    _networks = networksEnt.Select(n => n.NetworkType).ToList();
+                {                    
+                    _networks = SocNetworks.Select(n => n.NetworkType).ToList();
 
                     if (!string.IsNullOrEmpty(Account.Mail))
                     {

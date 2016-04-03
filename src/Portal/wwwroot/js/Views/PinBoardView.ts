@@ -28,7 +28,7 @@
 			this.initPlaceSearch();
 
 			$("#mapType input").change((e) => {
-				var value = $(e.target).data("value");
+				var value = $(e.target).val();
 				var parsedVal = parseInt(value);
 				this.mapsManager.switchToView(parsedVal);				
 				this.setMenuControls();
