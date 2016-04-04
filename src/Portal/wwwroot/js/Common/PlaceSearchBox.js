@@ -115,6 +115,8 @@ var Common;
                     return "icon-country";
                 case SourceType.S4:
                     return "icon-foursquare";
+                case SourceType.Yelp:
+                    return "icon-yelp";
             }
             return "";
         };

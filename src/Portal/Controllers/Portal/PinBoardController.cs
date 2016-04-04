@@ -7,6 +7,7 @@ using Gloobster.Portal.ViewModels;
 using Microsoft.AspNet.Mvc;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels;
+using Gloobster.DomainObjects;
 using Gloobster.Enums;
 using Gloobster.Mappers;
 using Gloobster.SocialLogin.Facebook.Communication;
@@ -21,6 +22,7 @@ namespace Gloobster.Portal.Controllers.Portal
         public IComponentContext ComponentContext { get; set; }
         public IPlacesExtractor PlacesExtractor { get; set; }
         public IEntitiesDemandor Demandor { get; set; }
+        public IAccountDomain SocAccount { get; set; }
 
         public PinBoardController(IEntitiesDemandor demandor, IPlacesExtractor placesExtractor, IComponentContext componentContext, IFacebookService fbService, 
             ISharedMapImageDomain sharedImgDomain,ILogger log,  IDbOperations db) : base(log, db)
@@ -43,8 +45,9 @@ namespace Gloobster.Portal.Controllers.Portal
                 if (visitedRes.Exists)
                 {
                     vm.InitializeExists(visitedRes.Entity, Demandor);
+                    
                     //todo: bring back to life
-                    //await ImportNewFbPins();
+                    await ImportNewFbPins();
                 }
                 else
                 {
@@ -57,34 +60,33 @@ namespace Gloobster.Portal.Controllers.Portal
         
         //todo: move somewhere
         private async Task<bool> ImportNewFbPins()
-        {
-            //todo: fix
-            //try
-            //{
-            //    var user = PortalUser.ToDO();
-            //    var facebook = user.GetAccount(SocialNetworkType.Facebook);
+        {            
+            try
+            {
 
-            //    bool isFbUser = (facebook != null);
-            //    if (isFbUser)
-            //    {
-            //        FBService.SetAccessToken(facebook.Authentication.AccessToken);
-            //        bool hasPermissions = FBService.HasPermissions("user_tagged_places");
-            //        if (hasPermissions)
-            //        {
-            //            PlacesExtractor.Driver = ComponentContext.ResolveKeyed<IPlacesExtractorDriver>("Facebook");
+                SocAuthDO facebook = SocAccount.GetAuth(SocialNetworkType.Facebook, UserId);
 
-            //            await PlacesExtractor.ExtractNewAsync(user.UserId, facebook.Authentication);
-            //            await PlacesExtractor.SaveAsync();
-            //        }
-            //    }
+                bool isFbUser = (facebook != null);
+                if (isFbUser)
+                {
+                    FBService.SetAccessToken(facebook.AccessToken);
+                    bool hasPermissions = FBService.HasPermissions("user_tagged_places");
+                    if (hasPermissions)
+                    {
+                        PlacesExtractor.Driver = ComponentContext.ResolveKeyed<IPlacesExtractorDriver>("Facebook");
 
-            //    return true;
-            //}
-            //catch (Exception exc)
-            //{
-            //    Log.Error("ImportNewFbPins: " + exc.Message);
-            //    return false;
-            //}
+                        await PlacesExtractor.ExtractNewAsync(UserId, facebook);
+                        await PlacesExtractor.SaveAsync();
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception exc)
+            {
+                Log.Error("ImportNewFbPins: " + exc.Message);
+                return false;
+            }
 
             return false;
         }

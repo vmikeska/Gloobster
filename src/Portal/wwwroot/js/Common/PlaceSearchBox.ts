@@ -140,7 +140,6 @@ module Common {
 		}
 
 		private getIconForSearch(sourceType: SourceType) {
-
 			switch (sourceType) {
 			case SourceType.FB:
 				return "icon-facebook";
@@ -149,9 +148,10 @@ module Common {
 			case SourceType.Country:
 				return "icon-country";
 			case SourceType.S4:
-				return "icon-foursquare";
-			}
-
+			 return "icon-foursquare";
+			case SourceType.Yelp:
+			 return "icon-yelp";
+		 }		 		
 			return "";
 		}
 

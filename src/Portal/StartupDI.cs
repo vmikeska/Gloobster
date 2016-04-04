@@ -34,12 +34,6 @@ namespace Gloobster.Portal
 			var storage = storageCreation.GetInstance(GloobsterConfig.IsLocal);
 			builder.AddInstance<IStorageProvider>(storage);
             
-			builder.AddTransient<IUserService, UserService>();
-			//builder.AddTransient<IAccountDriver, FacebookAccountDriver>().Keyed<IAccountDriver>("Facebook");
-			//builder.AddTransient<IAccountDriver, TwitterAccountDriver>().Keyed<IAccountDriver>("Twitter");
-			//builder.AddTransient<IAccountDriver, GoogleAccountDriver>().Keyed<IAccountDriver>("Google");            
-            //builder.AddTransient<IAccountDriver, AccountDriver>().Keyed<IAccountDriver>("Base");
-
 			builder.AddTransient<IVisitedPlacesDomain, VisitedPlacesDomain>();
 			builder.AddTransient<IVisitedCitiesDomain, VisitedCitiesDomain>();
 			builder.AddTransient<IVisitedCountriesDomain, VisitedCountriesDomain>();

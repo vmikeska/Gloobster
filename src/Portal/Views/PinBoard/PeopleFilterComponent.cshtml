@@ -1,60 +1,26 @@
 ﻿
-<style>
-
-.usersFilterComponent {
-    width: 44px; 
-    height: 44px;     
-    cursor: pointer; cursor: hand;
-}
-
-.userFilterContent {
-    position: relative; 
-    top: 30px; 
-    left: -256px;
-    z-index: 1000;
-
-    width: 300px; 
-    height: 300px; 
-    
-    border: 1px solid blue; 
-    background: white
-}
-
-.usersBox {
-    overflow-y: scroll;
-    border-top: 1px solid black;
-}
-
-.userFilterItem {
-    
-}
-    
-</style>
-
-<div class="right usersFilterComponent">
-    <img src="../images/users.png" width="44" height="44"/>
-    <div class="userFilterContent" style="display: none;">
-
-
-        <div class="usersBox">
-            
-        </div>
-
-
-    </div>
+<div class="dropdown with-checkbox right usersFilterComponent">
+    <span class="selected"><span class="icon-people left mright10"></span>People</span>
+    <ul>
+        <li data-value="split"><div style="width: 130px; border-bottom: 1px solid black;"></div></li>
+    </ul>
+    <input type="hidden">
 </div>
-
 
 <script id="item-template" type="text/x-handlebars-template">
     
-    <div class="userFilterItem">
-        {{#if checked}}
-            <input class="filterCheckbox" id="chck{{id}}" checked="checked" type="checkbox">
-        {{else}}
-            <input class="filterCheckbox" id="chck{{id}}" type="checkbox">
-        {{/if}}
+    <li data-value="{{id}}">
         
-        <label class="mleft10" for="chck{{id}}">{{displayName}}</label>
-    </div>
-    
+        {{#if hasIco}}
+            <span class="{{ico}} left mright10"></span>
+        {{/if}}
+
+        {{#if checked}}
+            <input id="chck{{id}}" checked="checked" type="checkbox">
+            {{else}}
+            <input id="chck{{id}}" type="checkbox">
+            {{/if}}
+        <label for="chck{{id}}">{{displayName}}</label>
+    </li>
+
 </script>

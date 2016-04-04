@@ -1,0 +1,20 @@
+﻿@using System.Threading.Tasks
+@using Gloobster.Portal.ViewModels
+@using Newtonsoft.Json
+@model PinBoardViewModel
+
+
+    <div class="popup2 margin" id="popup-share">
+        <h3><span class="slim">Share</span> My Euro Trip
+        </h3>
+        <textarea id="message" class="margin" placeholder="Message..."></textarea>
+        <span class="color1 mright20"><strong>Share on social media</strong></span>
+        <div class="table width100">
+            <div id="shareCont" class="cell middle">
+            </div>
+            <div class="cell middle tright">
+                <a id="share" class="button" href="#">Share</a>
+            </div>
+        </div>
+        <a class="close" href="#">Close</a>
+    </div>

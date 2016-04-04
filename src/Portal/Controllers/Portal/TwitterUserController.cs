@@ -12,15 +12,13 @@ namespace Gloobster.Portal.Controllers
 {
     public class TwitterUserController : Controller
     {
-	    public IMyTwitterService TwitterSvc { get; set; }
-	    public IUserService UserService { get; set; }
+	    public IMyTwitterService TwitterSvc { get; set; }	    
 		public IDbOperations DB { get; set; }
 		public IComponentContext ComponentContext { get; set; }
 
-		public TwitterUserController(IMyTwitterService twitterService, IUserService userService, IDbOperations db, IComponentContext componentContext)
+		public TwitterUserController(IMyTwitterService twitterService, IDbOperations db, IComponentContext componentContext)
 		{
-			TwitterSvc = twitterService;
-			UserService = userService;
+			TwitterSvc = twitterService;			
 			DB = db;
 			ComponentContext = componentContext;
 		}

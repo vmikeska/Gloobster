@@ -8,15 +8,10 @@
 	  public onSelectionChanged: Function;
 
 		constructor() {
-			this.$userFilter = $(".usersFilterComponent");
-			this.$userFilterContent = $(".userFilterContent");
-			this.$usersBox = $(".userFilterContent");
+			this.$userFilter = $(".usersFilterComponent");			
+			this.$usersBox = this.$userFilter.find("ul");
 			this.itemTemplate = ViewBase.currentView.registerTemplate("item-template");
-
-			this.$userFilter.click((e) => {
-				this.showHide();
-			});
-
+		 
 			this.initBase();
 		}
 
@@ -26,21 +21,12 @@
 	  }
 
 		private initBase() {
-			var html = "";
+			var html =
+				this.itemTemplate({ id: "Me", displayName: "Me", checked: true, hasIco: true, ico: "icon-personal" }) +
+				this.itemTemplate({ id: "Friends", displayName: "Friends", hasIco: true, ico: "icon-people" }) +
+				this.itemTemplate({ id: "Everybody", displayName: "Everybody", hasIco: true, ico: "icon-globe" });
 
-			//var isLogged = ViewBase.currentView.loginManager.isAlreadyLogged();
-			//if (isLogged) {
-				html +=
-					this.itemTemplate({ id: "Me", displayName: "Me", checked: true }) +
-					this.itemTemplate({ id: "Friends", displayName: "Friends" }) +
-					this.itemTemplate({ id: "Everybody", displayName: "Everybody" });				
-			//} else {
-			//	var $h = $(this.itemTemplate({ id: "Everybody", displayName: "Everybody", checked: true }));
-			//	$h.find("input").prop("disabled", true);
-			//	html = $h;				
-			//}
-
-			this.$userFilterContent.prepend(html);
+			this.$usersBox.prepend(html);
 		}
 
 		public initFriends(friends) {
@@ -52,7 +38,7 @@
 		}
 
 		private onUsersRendered() {
-			$(".filterCheckbox").click((e) => {
+		 this.$usersBox.find("input").change((e) => {
 				var $target = $(e.target);
 				var id = $target.attr("id");
 				var checked = $target.prop("checked");
@@ -86,8 +72,11 @@
 		}
 
 		private setForm(id, checked) {
+
+			var $chbcks = this.$usersBox.find("input");
+
 		 if (id === "chckEverybody" && checked) {
-			 $(".filterCheckbox").not("#chckEverybody").prop("checked", false);
+			$chbcks.not("#chckEverybody").prop("checked", false);
 		 } else {
 			$("#chckEverybody").prop("checked", false); 
 		 }
@@ -98,7 +87,7 @@
 		 }
 
 		 if (id === "chckFriends" && checked) {
-			$(".filterCheckbox").not("#chckEverybody").not("#chckMe").not("#chckFriends").prop("checked", false);
+			$chbcks.not("#chckEverybody").not("#chckMe").not("#chckFriends").prop("checked", false);
 		 }
 	  }
 

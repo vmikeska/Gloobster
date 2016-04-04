@@ -68,14 +68,6 @@
 
 </script>
 
-<style>
-    .infoPanel {
-        height: 100px; 
-        border: 1px solid black; 
-        margin-bottom: 10px;
-        padding: 4px;
-    }
-</style>
 
     <div class="table row col2 margin">
         <div class="cell">
@@ -99,20 +91,7 @@
             <a class="icon-share textnohide noneline strong popup2-target" data-target="#popup-share" href="#">Share map</a>
         </div>
     </div>
-    <div class="popup2 margin" id="popup-share">
-        <h3><span class="slim">Share</span> My Euro Trip
-        </h3>
-        <textarea id="message" class="margin" placeholder="Message..."></textarea>
-        <span class="color1 mright20"><strong>Share on social media</strong></span>
-        <div class="table width100">
-            <div id="shareCont" class="cell middle">
-            </div>
-            <div class="cell middle tright">
-                <a id="share" class="button" href="#">Share</a>
-            </div>
-        </div>
-        <a class="close" href="#">Close</a>
-    </div>
+    @Html.Partial("ShareDialog")
 
     <div id="taggedPlacesPerm" class="table row col2 margin" style="border-top: 1px solid black; border-bottom: 1px solid black; padding: 3px; display: none;">
         <div class="cell margin3">
@@ -152,21 +131,23 @@
                 <li id="pt2" data-value="2">Heat map</li>
             </ul>
             <input type="hidden" value="0">
-        </div>
+        </div>        
     </div>
 
-    <div class="map margin" id="map">
-        @Html.Partial("CountriesLegend")
-    </div>
+<div class="map margin" id="map">
+    @Html.Partial("CountriesLegend")
+</div>
 
-    <div class="infoPanel">
-        <span style="display: none" class="infoMessage" id="messageNotLogged"><a class="popup-target" data-target="#popup-join" href="#">Join us</a> and keep your personal travel statistics. Invite you friends to create your own travel community. Currently only statistics from from users overall are being displayed. See most popular places what people visited or would like to visit.</span>
-        <span style="display: none" class="infoMessage" id="messageCitiesVisited">Keep track of cities you've visited. See cities your friends have visited.</span>
-        <span style="display: none" class="infoMessage" id="messageCountriesVisited">Keep track of countries you've visited. See countries your friends have visited. See what countries are being visited mostly.</span>
-        <span style="display: none" class="infoMessage" id="messageCitiesInterested">See cities people are most interested in.</span>
-        <span style="display: none" class="infoMessage" id="messageCountriesInterested">See countries people are most interested in.</span>
-        <span style="display: none" class="infoMessage" id="messagePlaces">See most favourite locations over the world what people like you like to visit. See most favourite locations of your friends.</span>
-    </div>
+<div id="infoPanel" class="popup2 margin infoPanel" style="display: block;">
+    <div style="display: none" class="infoMessage" id="messageNotLogged"><a class="popup-target" data-target="#popup-join" href="#">Join us</a> and keep your personal travel statistics. Invite you friends to create your own travel community. Currently only statistics from from users overall are being displayed. See most popular places what people visited or would like to visit.</div>
+    <div style="display: none" class="infoMessage" id="messageCitiesVisited">Keep track of cities you've visited. See cities your friends have visited.</div>
+    <div style="display: none" class="infoMessage" id="messageCountriesVisited">Keep track of countries you've visited. See countries your friends have visited. See what countries are being visited mostly.</div>
+    <div style="display: none" class="infoMessage" id="messageCitiesInterested">See cities people are most interested in.</div>
+    <div style="display: none" class="infoMessage" id="messageCountriesInterested">See countries people are most interested in.</div>
+    <div style="display: none" class="infoMessage" id="messagePlaces">See most favourite locations over the world what people like you like to visit. See most favourite locations of your friends.</div>
+    
+    <a class="close" href="#">Close</a>
+</div>
 
     <div class="squares table row margin2">
         <div class="cell">

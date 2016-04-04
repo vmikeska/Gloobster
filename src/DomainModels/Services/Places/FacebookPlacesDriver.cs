@@ -16,12 +16,12 @@ namespace Gloobster.DomainModels.Services.Places
 		public ICountryService CountryService { get; set; }
 
 		public string DbUserId;
-		public SocAuthenticationDO Authentication;
+		public SocAuthDO Authentication;
 
 		private const string UserQueryBase = "/{0}/tagged_places";
 		private const string UserQueryNext = UserQueryBase + "/?after={1}";
 
-		public PlacesExtractionResults ExtractVisitedPlaces(string dbUserId, SocAuthenticationDO auth)        
+		public PlacesExtractionResults ExtractVisitedPlaces(string dbUserId, SocAuthDO auth)        
 		{			
 			DbUserId = dbUserId;
 			Authentication = auth;

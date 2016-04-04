@@ -4,6 +4,6 @@ namespace Gloobster.DomainInterfaces
 {
 	public interface IPlacesExtractorDriver
 	{
-		PlacesExtractionResults ExtractVisitedPlaces(string dbUserId, SocAuthenticationDO auth);
+		PlacesExtractionResults ExtractVisitedPlaces(string dbUserId, SocAuthDO auth);
 	}
 }

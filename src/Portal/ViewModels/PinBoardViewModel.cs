@@ -23,7 +23,7 @@ namespace Gloobster.Portal.ViewModels
             UsStates = visited.States.Count;
 
             var friendsEntity = DB.FOD<FriendsEntity>(f => f.User_id == visited.PortalUser_id);
-            var friends = DB.List<UserEntity>(f => friendsEntity.Friends.Contains(f.id));
+            var friends = DB.List<UserEntity>(f => friendsEntity.Friends.Contains(f.User_id));
             Friends = friends.Select(f => new Friend
             {
                 DisplayName = f.DisplayName,

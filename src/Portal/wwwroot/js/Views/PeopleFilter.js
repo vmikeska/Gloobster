@@ -2,14 +2,9 @@ var Views;
 (function (Views) {
     var PeopleFilter = (function () {
         function PeopleFilter() {
-            var _this = this;
             this.$userFilter = $(".usersFilterComponent");
-            this.$userFilterContent = $(".userFilterContent");
-            this.$usersBox = $(".userFilterContent");
+            this.$usersBox = this.$userFilter.find("ul");
             this.itemTemplate = Views.ViewBase.currentView.registerTemplate("item-template");
-            this.$userFilter.click(function (e) {
-                _this.showHide();
-            });
             this.initBase();
         }
         PeopleFilter.prototype.justMeSelected = function () {
@@ -17,19 +12,10 @@ var Views;
             return sel.me && !sel.everybody && !sel.friends && (sel.singleFriends.length === 0);
         };
         PeopleFilter.prototype.initBase = function () {
-            var html = "";
-            //var isLogged = ViewBase.currentView.loginManager.isAlreadyLogged();
-            //if (isLogged) {
-            html +=
-                this.itemTemplate({ id: "Me", displayName: "Me", checked: true }) +
-                    this.itemTemplate({ id: "Friends", displayName: "Friends" }) +
-                    this.itemTemplate({ id: "Everybody", displayName: "Everybody" });
-            //} else {
-            //	var $h = $(this.itemTemplate({ id: "Everybody", displayName: "Everybody", checked: true }));
-            //	$h.find("input").prop("disabled", true);
-            //	html = $h;				
-            //}
-            this.$userFilterContent.prepend(html);
+            var html = this.itemTemplate({ id: "Me", displayName: "Me", checked: true, hasIco: true, ico: "icon-personal" }) +
+                this.itemTemplate({ id: "Friends", displayName: "Friends", hasIco: true, ico: "icon-people" }) +
+                this.itemTemplate({ id: "Everybody", displayName: "Everybody", hasIco: true, ico: "icon-globe" });
+            this.$usersBox.prepend(html);
         };
         PeopleFilter.prototype.initFriends = function (friends) {
             var _this = this;
@@ -41,7 +27,7 @@ var Views;
         };
         PeopleFilter.prototype.onUsersRendered = function () {
             var _this = this;
-            $(".filterCheckbox").click(function (e) {
+            this.$usersBox.find("input").change(function (e) {
                 var $target = $(e.target);
                 var id = $target.attr("id");
                 var checked = $target.prop("checked");
@@ -69,8 +55,9 @@ var Views;
             return evnt;
         };
         PeopleFilter.prototype.setForm = function (id, checked) {
+            var $chbcks = this.$usersBox.find("input");
             if (id === "chckEverybody" && checked) {
-                $(".filterCheckbox").not("#chckEverybody").prop("checked", false);
+                $chbcks.not("#chckEverybody").prop("checked", false);
             }
             else {
                 $("#chckEverybody").prop("checked", false);
@@ -80,7 +67,7 @@ var Views;
                 $("#chckFriends").prop("checked", false);
             }
             if (id === "chckFriends" && checked) {
-                $(".filterCheckbox").not("#chckEverybody").not("#chckMe").not("#chckFriends").prop("checked", false);
+                $chbcks.not("#chckEverybody").not("#chckMe").not("#chckFriends").prop("checked", false);
             }
         };
         PeopleFilter.prototype.showHide = function () {
