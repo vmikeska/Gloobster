@@ -69,27 +69,17 @@ var Views;
         });
         PinBoardBadges.prototype.refresh = function (type) {
             $("#bdgs").html("");
-            //this.visitedTotal = 0;
-            if (type === Maps.DisplayEntity.Pin) {
-                this.aggregateCities();
-                this.generateCities();
-            }
-            if (type === Maps.DisplayEntity.Countries) {
-                this.aggregateCountries();
-                this.generateOverview();
-            }
+            this.aggregateCountries();
+            var ch = this.generateCities();
+            var oh = this.generateOverview();
+            $("#bdgs").html(oh + ch);
         };
         PinBoardBadges.prototype.aggregateCountries = function () {
-            var countries = _.map(this.mapsDataLoader.places.countries, function (c) { return c.CountryCode2; });
-            var states = _.map(this.mapsDataLoader.places.states, function (c) { return c.StateCode; });
+            //var countries = _.map(this.mapsDataLoader.places.countries, (c) => { return c.CountryCode2; });
+            //var states = _.map(this.mapsDataLoader.places.states, (c) => { return c.StateCode; });
             this.aggegatedCountries = new Views.AggregatedCountries();
-            this.aggegatedCountries.aggregate(countries);
-            this.aggegatedCountries.aggregateUs(states);
-        };
-        PinBoardBadges.prototype.aggregateCities = function () {
-            this.aggreagatedCities = _.map(this.mapsDataLoader.places.cities, function (c) {
-                return c.GeoNamesId;
-            });
+            this.aggegatedCountries.aggregate(this.countries);
+            this.aggegatedCountries.aggregateUs(this.states);
         };
         PinBoardBadges.prototype.generateOverview = function () {
             var afrHtml = this.genOverviewItem("africa.png", this.aggegatedCountries.africaVisited, this.aggegatedCountries.africaTotal, "Africa");
@@ -102,17 +92,16 @@ var Views;
             var usHtml = this.genOverviewItem("states-us.png", this.aggegatedCountries.usVisited, this.aggegatedCountries.usTotal, "US");
             var html = afrHtml + eurHtml + asiHtml + ausHtml + naHtml + saHtml + euHtml + usHtml;
             var allHtml = "<h2 class=\"citiesCont\">Overview</h2><div class=\"badges grid margin2 citiesCont\">" + html + "</div>";
-            $("#bdgs").html(allHtml);
+            return allHtml;
         };
         PinBoardBadges.prototype.generateCities = function () {
-            //$(".citiesCont").remove();		 
             var eurHtml = this.genContCitiesSection("Europe", this.europeCities);
             var asiHtml = this.genContCitiesSection("Asia", this.asiaCities);
             var naHtml = this.genContCitiesSection("North America", this.naCities);
             var saHtml = this.genContCitiesSection("South and Central America", this.saCities);
             var afHtml = this.genContCitiesSection("Africa", this.afCities);
             var html = eurHtml + asiHtml + naHtml + saHtml + afHtml;
-            $("#bdgs").html(html);
+            return html;
         };
         PinBoardBadges.prototype.genContCitiesSection = function (continentName, cities) {
             var _this = this;
@@ -120,7 +109,7 @@ var Views;
             var uHtml = "";
             this.visitedTotal = 0;
             cities.forEach(function (city) {
-                var visited = _.contains(_this.aggreagatedCities, city.g);
+                var visited = _.contains(_this.cities, city.g);
                 if (visited) {
                     _this.visitedTotal++;
                     vHtml += "<div class=\"cell\"><span class=\"badge active\"><span class=\"thumbnail\"><img src=\"../images/badges/" + city.i + "\"></span>" + city.n + "</span></div>";

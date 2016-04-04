@@ -127,7 +127,9 @@ namespace Gloobster.Portal
             builder.AddTransient<IAccountDomain, AccountDomain>();
             builder.AddTransient<IAvatarPhoto, AvatarPhoto>();
 
-            builder.AddTransient<IPinboardImportDomain, PinboardImportDomain>();            
+            builder.AddTransient<IPinboardImportDomain, PinboardImportDomain>();
+            builder.AddTransient<IPinBoardStats, PinBoardStats>();
+            
         }
 		
 	}

@@ -37,6 +37,7 @@ namespace Gloobster.Database
 		void DropCollection<T>();
         void CreateCollection<T>() where T : EntityBase;
 
+        ExistResult<T> FODR<T>(Expression<Func<T, bool>> query) where T : EntityBase;
         T FOD<T>(Expression<Func<T, bool>> query) where T : EntityBase;
         List<T> List<T>(Expression<Func<T, bool>> query) where T : EntityBase;
     }

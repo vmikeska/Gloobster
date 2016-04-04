@@ -26,7 +26,7 @@ var Views;
             var _this = this;
             this.mapsManager = new Maps.MapsManager();
             this.mapsManager.onDataChanged = function () {
-                _this.pinBoardBadges.refresh(_this.mapsManager.currentDisplayEntity);
+                _this.pinBoardBadges.refresh();
                 $("#TopCitiesCount").text(_this.pinBoardBadges.visitedTotal);
             };
             this.mapsManager.switchToView(Maps.ViewType.D2);
@@ -203,6 +203,10 @@ var Views;
             var _this = this;
             var self = this;
             this.apiPost("checkin", request, function (req) {
+                _this.pinBoardBadges.cities = req.topCities;
+                _this.pinBoardBadges.countries = req.countryCodes;
+                _this.pinBoardBadges.states = req.stateCodes;
+                _this.pinBoardBadges.refresh();
                 var moveToLocation = null;
                 if (_this.mapsManager.currentDisplayEntity === Maps.DisplayEntity.Pin) {
                     req.visitedCities.forEach(function (city) {

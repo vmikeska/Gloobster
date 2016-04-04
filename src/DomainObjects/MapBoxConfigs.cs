@@ -37,6 +37,4 @@ namespace Gloobster.DomainObjects
 		public string Color { get; set; }
 		public LatLng Coord { get; set; }
 	}
-
-	
 }

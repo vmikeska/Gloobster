@@ -18,19 +18,19 @@ namespace Gloobster.Portal.Controllers.Portal
 		public ISharedMapImageDomain SharedImgDomain { get; set; }
         public IFacebookService FBService { get; set; }
         
-        public IPlacesExtractor PlacesExtractor { get; set; }
-        public IEntitiesDemandor Demandor { get; set; }
+        public IPlacesExtractor PlacesExtractor { get; set; }        
         public IAccountDomain SocAccount { get; set; }
         public IPinboardImportDomain PinboardImport { get; set; }
+        public IPinBoardStats Stats { get; set; }
 
-        public PinBoardController(IPinboardImportDomain pinboardImport, IAccountDomain socAccount, IEntitiesDemandor demandor, IFacebookService fbService, 
+        public PinBoardController(IPinBoardStats stats, IPinboardImportDomain pinboardImport, IAccountDomain socAccount, IFacebookService fbService, 
             ISharedMapImageDomain sharedImgDomain, ILogger log,  IDbOperations db) : base(log, db)
 		{
             SharedImgDomain = sharedImgDomain;
-            FBService = fbService;            
-            Demandor = demandor;
+            FBService = fbService;                        
             SocAccount = socAccount;
             PinboardImport = pinboardImport;
+            Stats = stats;
 		}
 
         [CreateAccount]
@@ -39,8 +39,6 @@ namespace Gloobster.Portal.Controllers.Portal
 	        var vm = CreateViewModelInstance<PinBoardViewModel>();            
             if (UserIdObj.HasValue)
             {
-                var visitedEntity = await Demandor.GetVisitedAsync(UserIdObj.Value);
-
                 bool showFbDialog = false;
                 var facebook = SocAccount.GetAuth(SocialNetworkType.Facebook, UserId);
                 bool isFbUser = (facebook != null);
@@ -58,7 +56,7 @@ namespace Gloobster.Portal.Controllers.Portal
                     }
                 }
                 
-                vm.InitializeExists(visitedEntity, showFbDialog);                
+                await vm.InitializeExists(UserId, showFbDialog, Stats);                
             }
             
             return View(vm);

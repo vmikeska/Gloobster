@@ -21,10 +21,10 @@
 			this.initFbPermRequest();
 		}
 
-		public initialize() {
+		public initialize() {		 
 			this.mapsManager = new Maps.MapsManager();
 			this.mapsManager.onDataChanged = () => {
-				this.pinBoardBadges.refresh(this.mapsManager.currentDisplayEntity);
+				this.pinBoardBadges.refresh();
 				$("#TopCitiesCount").text(this.pinBoardBadges.visitedTotal);
 			};
 			this.mapsManager.switchToView(Maps.ViewType.D2);
@@ -231,6 +231,11 @@
 		public saveNewPlace(request) {
 			var self = this;
 			this.apiPost("checkin", request, (req) => {
+
+				this.pinBoardBadges.cities = req.topCities;
+				this.pinBoardBadges.countries = req.countryCodes;
+				this.pinBoardBadges.states = req.stateCodes;
+			  this.pinBoardBadges.refresh();
 
 				var moveToLocation = null;
 

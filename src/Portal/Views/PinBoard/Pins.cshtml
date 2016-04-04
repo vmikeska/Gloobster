@@ -4,7 +4,7 @@
 @model PinBoardViewModel
 
 @{
-		ViewBag.MenuGroup = "PinBoard";
+    ViewBag.MenuGroup = "PinBoard";
 }
 
 @*<script src='../../../api.mapbox.com/mapbox.js/v2.2.2/mapbox.js'></script>
@@ -47,12 +47,23 @@
 
 @Html.Partial("PinBoardTemplates")
 
+@{
+    var topCitiesStr = $"[{string.Join(",", Model.TopCities)}]";
+    var countryCodesStr = $"['{string.Join("','", Model.CountryCodes)}']";
+    var stateCodesStr = $"['{string.Join("','", Model.StateCodes)}']";
+}
+
 <script>
     function onBodyLoad() {
-		
+
         currentView = new Views.PinBoardView();
-        @Html.Raw("currentView.initFb();")
+        currentView.initFb();
+
         currentView.initialize();
+
+        currentView.pinBoardBadges.cities = @Html.Raw(topCitiesStr);
+        currentView.pinBoardBadges.countries = @Html.Raw(countryCodesStr);
+        currentView.pinBoardBadges.states = @Html.Raw(stateCodesStr);
 
         var friends = @Html.Raw(JsonConvert.SerializeObject(Model.Friends));
         var f = _.map(friends, function(i) { return {id: i.Id, displayName: i.DisplayName};});

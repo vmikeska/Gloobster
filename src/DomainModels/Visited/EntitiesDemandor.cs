@@ -27,6 +27,7 @@ namespace Gloobster.DomainModels
     {
         public IDbOperations DB { get; set; }
 
+        //todo: remove
         public VisitedResult VisitedExists(ObjectId userIdObj)
         {
             var visited = DB.FOD<VisitedEntity>(u => u.PortalUser_id == userIdObj);

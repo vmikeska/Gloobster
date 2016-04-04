@@ -11,7 +11,7 @@ using Serilog;
 
 namespace Gloobster.DomainModels.Services.Places
 {
-	public class FacebookPlacesDriver : IPlacesExtractorDriver
+    public class FacebookPlacesDriver : IPlacesExtractorDriver
 	{
         public ILogger Log { get; set; }
 

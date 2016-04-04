@@ -2,7 +2,11 @@ module Views {
 	export class PinBoardBadges {
 		public mapsManager: Maps.MapsManager;
 		public aggegatedCountries: AggregatedCountries;
-		public aggreagatedCities: string[];
+	 
+		public cities: string[];
+		public countries: string[];
+		public states: string[];
+
 		public visitedTotal = 0;
 
 		private europeCities = [
@@ -70,34 +74,25 @@ module Views {
 			return mdl;
 		}
 
-		public refresh(type: Maps.DisplayEntity) {
+		public refresh() {
 			$("#bdgs").html("");
-			//this.visitedTotal = 0;
-			if (type === Maps.DisplayEntity.Pin) {
-				this.aggregateCities();
-				this.generateCities();
-			}
+			
+			 this.aggregateCountries();
 
-			if (type === Maps.DisplayEntity.Countries) {
-				this.aggregateCountries();
-				this.generateOverview();
-			}
+			 var ch = this.generateCities();			
+			 var oh = this.generateOverview();			
+			 $("#bdgs").html(oh + ch);
 		}
 	 
 		private aggregateCountries() {
-		 var countries = _.map(this.mapsDataLoader.places.countries, (c) => { return c.CountryCode2; });
-		 var states = _.map(this.mapsDataLoader.places.states, (c) => { return c.StateCode; });
-			this.aggegatedCountries = new AggregatedCountries();
-			this.aggegatedCountries.aggregate(countries);
-			this.aggegatedCountries.aggregateUs(states);
-		}
+		 //var countries = _.map(this.mapsDataLoader.places.countries, (c) => { return c.CountryCode2; });
+		 //var states = _.map(this.mapsDataLoader.places.states, (c) => { return c.StateCode; });
 
-		private aggregateCities() {
-			this.aggreagatedCities = _.map(this.mapsDataLoader.places.cities, (c) => {
-				return c.GeoNamesId;
-			});
+		 this.aggegatedCountries = new AggregatedCountries();
+			this.aggegatedCountries.aggregate(this.countries);
+			this.aggegatedCountries.aggregateUs(this.states);
 		}
-
+	 
 		private generateOverview() {
 			var afrHtml = this.genOverviewItem("africa.png", this.aggegatedCountries.africaVisited, this.aggegatedCountries.africaTotal, "Africa");
 			var eurHtml = this.genOverviewItem("europe.png", this.aggegatedCountries.europeVisited, this.aggegatedCountries.europeTotal, "Europe");
@@ -111,11 +106,10 @@ module Views {
 
 			var html = afrHtml + eurHtml + asiHtml + ausHtml + naHtml + saHtml + euHtml + usHtml;
 			var allHtml = `<h2 class="citiesCont">Overview</h2><div class="badges grid margin2 citiesCont">${html}</div>`;
-			$("#bdgs").html(allHtml);
+			return allHtml;			
 		}
 
-		private generateCities() {
-			//$(".citiesCont").remove();		 
+		private generateCities() {			
 			var eurHtml = this.genContCitiesSection("Europe", this.europeCities);
 			var asiHtml = this.genContCitiesSection("Asia", this.asiaCities);
 			var naHtml = this.genContCitiesSection("North America", this.naCities);
@@ -123,7 +117,7 @@ module Views {
 			var afHtml = this.genContCitiesSection("Africa", this.afCities);
 
 			var html = eurHtml + asiHtml + naHtml + saHtml + afHtml;
-			$("#bdgs").html(html);
+			return html;
 		}
 
 		private genContCitiesSection(continentName: string, cities) {
@@ -131,7 +125,7 @@ module Views {
 			var uHtml = "";
 			this.visitedTotal = 0;
 			cities.forEach((city) => {
-				var visited = _.contains(this.aggreagatedCities, city.g);
+			 var visited = _.contains(this.cities, city.g);
 				if (visited) {
 					this.visitedTotal++;
 					vHtml += `<div class="cell"><span class="badge active"><span class="thumbnail"><img src="../images/badges/${city.i}"></span>${city.n}</span></div>`;

@@ -24,6 +24,12 @@ namespace Gloobster.Database
         }
     }
 
+    public class ExistResult<T>
+    {
+        public T Entity { get; set; }
+        public bool Exists { get; set; }
+    }
+
     public class DbOperations: IDbOperations
     {
 		public DbOperations()
@@ -41,6 +47,17 @@ namespace Gloobster.Database
 
 		public IMongoClient Client { get; set; }
         public IMongoDatabase Database { get; set; }
+
+
+        public ExistResult<T> FODR<T>(Expression<Func<T, bool>> query) where T : EntityBase
+        {
+            T entity = FOD(query);
+            return new ExistResult<T>
+            {
+                Exists = entity != null,
+                Entity = entity
+            };
+        }
 
         public List<T> List<T>(Expression<Func<T, bool>> query) where T : EntityBase
         {
