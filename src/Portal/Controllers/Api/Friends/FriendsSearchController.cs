@@ -36,7 +36,7 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 				return new ObjectResult(friendsResponse);
 			}
 
-			var friends = DB.C<FriendsEntity>().FirstOrDefault(f => f.User_id == UserIdObj);
+			var friends = DB.FOD<FriendsEntity>(f => f.User_id == UserIdObj);
 
 			if (friends == null)
 			{
@@ -45,7 +45,7 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 
 			var users =
 				DB.C<UserEntity>()
-					.Where(u => friends.Friends.Contains(u.id) && u.DisplayName.ToLower().Contains(name))
+					.Where(u => friends.Friends.Contains(u.User_id) && u.DisplayName.ToLower().Contains(name))
 					.ToList();
 
 			if (users.Any())
@@ -60,7 +60,7 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 		{			
 			var friend = new FriendResponse
 			{
-				friendId = portalUser.id.ToString(),				
+				friendId = portalUser.User_id.ToString(),				
 				displayName = portalUser.DisplayName
 			};
 

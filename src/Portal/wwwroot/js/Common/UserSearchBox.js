@@ -13,7 +13,9 @@ var Common;
         UserSearchBox.prototype.searchUsers = function (name) {
             var _this = this;
             var params = [["name", name]];
-            Views.ViewBase.currentView.apiGet(this.config.endpoint, params, function (places) { _this.fillSearchBoxHtml(places); });
+            Views.ViewBase.currentView.apiGet(this.config.endpoint, params, function (places) {
+                _this.fillSearchBoxHtml(places);
+            });
         };
         UserSearchBox.prototype.fillSearchBoxHtml = function (users) {
             var _this = this;

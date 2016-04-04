@@ -43,8 +43,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 			{			
 				var argsObj = (OnFileSavedArgs) args;
 				
-				var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
-
+				var trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);
 				if (trip == null)
 				{
 					//throw bad trip id
@@ -97,7 +96,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 			//todo: move to event above ?
 			if (request.filePartType == FilePartType.Last)
 			{
-				var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
+				var trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);
 			    response = GetResponse(trip);
 			}
 

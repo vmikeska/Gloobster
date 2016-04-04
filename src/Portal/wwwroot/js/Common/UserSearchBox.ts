@@ -25,7 +25,9 @@ module Common {
 
 		public searchUsers(name: string) {
 			var params = [["name", name]];
-			Views.ViewBase.currentView.apiGet(this.config.endpoint, params, places => { this.fillSearchBoxHtml(places) });
+			Views.ViewBase.currentView.apiGet(this.config.endpoint, params, (places) => {
+				this.fillSearchBoxHtml(places);
+			});
 		}
 
 		private fillSearchBoxHtml(users) {
