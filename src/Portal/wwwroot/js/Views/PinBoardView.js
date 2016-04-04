@@ -29,7 +29,7 @@ var Views;
                 _this.pinBoardBadges.refresh();
                 $("#TopCitiesCount").text(_this.pinBoardBadges.visitedTotal);
             };
-            this.mapsManager.switchToView(Maps.ViewType.D2);
+            this.mapsManager.switchToView(Maps.ViewType.D2, Maps.DisplayEntity.Pin);
             this.pinBoardBadges = new Views.PinBoardBadges();
             this.shareDialogView = new Views.ShareDialogPinsView();
             this.initPlaceSearch();
@@ -46,8 +46,10 @@ var Views;
             var _this = this;
             $("#mapType input").change(function (e) {
                 var value = $(e.target).val();
-                var parsedVal = parseInt(value);
-                _this.mapsManager.switchToView(parsedVal);
+                //var parsedVal = parseInt(value);
+                _this.getFormState(function (dataType, entity, mapType) {
+                    _this.mapsManager.switchToView(mapType, entity);
+                });
                 _this.setMenuControls();
                 _this.setInfo();
             });

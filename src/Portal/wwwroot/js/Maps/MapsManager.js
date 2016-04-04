@@ -60,7 +60,7 @@ var Maps;
             }
             this.mapsOperations.drawCountries(countries);
         };
-        MapsManager.prototype.switchToView = function (viewType) {
+        MapsManager.prototype.switchToView = function (viewType, displayEntity) {
             var _this = this;
             if (this.currentViewType === viewType) {
                 return;
@@ -78,13 +78,13 @@ var Maps;
             this.currentViewType = viewType;
             this.initView(viewType);
             this.currentMaps.show(function () {
-                _this.onMapsLoaded(savedPosition, savedZoom);
+                _this.onMapsLoaded(savedPosition, savedZoom, displayEntity);
             });
         };
-        MapsManager.prototype.onMapsLoaded = function (savedPosition, savedZoom) {
+        MapsManager.prototype.onMapsLoaded = function (savedPosition, savedZoom, displayEntity) {
             this.mapsOperations.setBaseMapsOperations(this.mapsDriver);
             this.mapsDriver.setMapObj(this.currentMaps.mapObj);
-            this.displayData(savedPosition, savedZoom);
+            this.displayData(savedPosition, savedZoom, displayEntity);
         };
         MapsManager.prototype.initView = function (viewType) {
             if (viewType === Maps.ViewType.D3) {
@@ -94,13 +94,13 @@ var Maps;
                 this.init2D();
             }
         };
-        MapsManager.prototype.displayData = function (savedPosition, savedZoom) {
+        MapsManager.prototype.displayData = function (savedPosition, savedZoom, displayEntity) {
             var people = new Maps.PeopleSelection();
             people.me = true;
             people.everybody = false;
             people.friends = false;
             people.singleFriends = [];
-            this.getPluginData(Maps.DataType.Visited, Maps.DisplayEntity.Pin, people);
+            this.getPluginData(Maps.DataType.Visited, displayEntity, people);
             if (savedPosition) {
                 var roundedZoom = Math.round(savedZoom);
                 console.log("savedZoom: " + roundedZoom);
