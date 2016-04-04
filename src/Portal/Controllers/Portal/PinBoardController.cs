@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Autofac;
+﻿using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.Portal.ViewModels;
@@ -8,64 +6,43 @@ using Microsoft.AspNet.Mvc;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels;
 using Gloobster.DomainObjects;
-using Gloobster.Enums;
 using Gloobster.Mappers;
 using Gloobster.SocialLogin.Facebook.Communication;
 using Serilog;
+using Gloobster.Enums;
 
 namespace Gloobster.Portal.Controllers.Portal
-{
+{    
     public class PinBoardController : PortalBaseController
     {
 		public ISharedMapImageDomain SharedImgDomain { get; set; }
         public IFacebookService FBService { get; set; }
-        public IComponentContext ComponentContext { get; set; }
+        
         public IPlacesExtractor PlacesExtractor { get; set; }
         public IEntitiesDemandor Demandor { get; set; }
         public IAccountDomain SocAccount { get; set; }
+        public IPinboardImportDomain PinboardImport { get; set; }
 
-        public PinBoardController(IEntitiesDemandor demandor, IPlacesExtractor placesExtractor, IComponentContext componentContext, IFacebookService fbService, 
-            ISharedMapImageDomain sharedImgDomain,ILogger log,  IDbOperations db) : base(log, db)
+        public PinBoardController(IPinboardImportDomain pinboardImport, IAccountDomain socAccount, IEntitiesDemandor demandor, IFacebookService fbService, 
+            ISharedMapImageDomain sharedImgDomain, ILogger log,  IDbOperations db) : base(log, db)
 		{
             SharedImgDomain = sharedImgDomain;
-            FBService = fbService;
-            PlacesExtractor = placesExtractor;
-            ComponentContext = componentContext;
+            FBService = fbService;            
             Demandor = demandor;
+            SocAccount = socAccount;
+            PinboardImport = pinboardImport;
 		}
 
         [CreateAccount]
         public async Task<IActionResult> Pins()
 	    {
-	        PinBoardViewModel vm = CreateViewModelInstance<PinBoardViewModel>();
-            bool visitedExists = false;
+	        var vm = CreateViewModelInstance<PinBoardViewModel>();            
             if (UserIdObj.HasValue)
             {
-                var visitedRes = Demandor.VisitedExists(UserIdObj.Value);
-                if (visitedRes.Exists)
-                {
-                    vm.InitializeExists(visitedRes.Entity, Demandor);
-                    
-                    //todo: bring back to life
-                    await ImportNewFbPins();
-                }
-                else
-                {
-                    vm.InitializeNotExists();
-                }
-            }
-            
-            return View(vm);
-		}
-        
-        //todo: move somewhere
-        private async Task<bool> ImportNewFbPins()
-        {            
-            try
-            {
+                var visitedEntity = await Demandor.GetVisitedAsync(UserIdObj.Value);
 
-                SocAuthDO facebook = SocAccount.GetAuth(SocialNetworkType.Facebook, UserId);
-
+                bool showFbDialog = false;
+                var facebook = SocAccount.GetAuth(SocialNetworkType.Facebook, UserId);
                 bool isFbUser = (facebook != null);
                 if (isFbUser)
                 {
@@ -73,24 +50,20 @@ namespace Gloobster.Portal.Controllers.Portal
                     bool hasPermissions = FBService.HasPermissions("user_tagged_places");
                     if (hasPermissions)
                     {
-                        PlacesExtractor.Driver = ComponentContext.ResolveKeyed<IPlacesExtractorDriver>("Facebook");
-
-                        await PlacesExtractor.ExtractNewAsync(UserId, facebook);
-                        await PlacesExtractor.SaveAsync();
+                        await PinboardImport.ImportFb(UserId);
+                    }
+                    else
+                    {
+                        showFbDialog = true;
                     }
                 }
-
-                return true;
+                
+                vm.InitializeExists(visitedEntity, showFbDialog);                
             }
-            catch (Exception exc)
-            {
-                Log.Error("ImportNewFbPins: " + exc.Message);
-                return false;
-            }
-
-            return false;
-        }
-
+            
+            return View(vm);
+		}
+        
         public IActionResult SharedMapImage(string id)
 		{
 			var mapStream = SharedImgDomain.GetPinBoardMap(id);				

@@ -15,6 +15,13 @@ var Views;
             enumerable: true,
             configurable: true
         });
+        PinBoardView.prototype.initFb = function (init) {
+            this.fbPermissions = new Common.FacebookPermissions();
+            this.fbPermissions.initFb(function () {
+                //initialized	
+            });
+            this.initFbPermRequest();
+        };
         PinBoardView.prototype.initialize = function () {
             var _this = this;
             this.mapsManager = new Maps.MapsManager();
@@ -23,10 +30,20 @@ var Views;
                 $("#TopCitiesCount").text(_this.pinBoardBadges.visitedTotal);
             };
             this.mapsManager.switchToView(Maps.ViewType.D2);
-            this.fbPermissions = new Common.FacebookPermissions();
             this.pinBoardBadges = new Views.PinBoardBadges();
             this.shareDialogView = new Views.ShareDialogPinsView();
             this.initPlaceSearch();
+            this.initCombos();
+            this.setInfo();
+            this.onLogin = function () {
+                _this.setInfo();
+            };
+            this.mapsManager.onCenterChanged = function (center) {
+                _this.placeSearch.setCoordinates(center.lat, center.lng);
+            };
+        };
+        PinBoardView.prototype.initCombos = function () {
+            var _this = this;
             $("#mapType input").change(function (e) {
                 var value = $(e.target).val();
                 var parsedVal = parseInt(value);
@@ -44,17 +61,9 @@ var Views;
                 _this.setMenuControls();
                 _this.setInfo();
             });
-            this.setTagPlacesVisibility();
             this.peopleFilter = new Views.PeopleFilter();
             this.peopleFilter.onSelectionChanged = function (selection) {
                 _this.refreshData();
-            };
-            this.setInfo();
-            this.onLogin = function () {
-                _this.setInfo();
-            };
-            this.mapsManager.onCenterChanged = function (center) {
-                _this.placeSearch.setCoordinates(center.lat, center.lng);
             };
         };
         PinBoardView.prototype.setInfo = function () {
@@ -168,30 +177,21 @@ var Views;
                 this.currentLegend.show();
             }
         };
+        PinBoardView.prototype.initFbPermRequest = function () {
+            var _this = this;
+            $("#fbBtnImport").click(function (e) {
+                e.preventDefault();
+                _this.getTaggedPlacesPermissions();
+            });
+        };
         PinBoardView.prototype.getTaggedPlacesPermissions = function () {
             var _this = this;
             this.fbPermissions.requestPermissions("user_tagged_places", function (resp) {
-                $("#taggedPlacesPerm").hide();
+                $("#taggedPlacesPerm").remove();
                 _this.apiPost("FbTaggedPlacesPermission", null, function (resp) {
                     _this.refreshData();
                 });
             });
-        };
-        PinBoardView.prototype.setTagPlacesVisibility = function () {
-            var _this = this;
-            var hasFb = this.hasSocNetwork(SocialNetworkType.Facebook);
-            if (hasFb) {
-                this.fbPermissions.initFb(function () {
-                    _this.fbPermissions.hasPermission("user_tagged_places", function (hasPerm) {
-                        if (!hasPerm) {
-                            $("#taggedPlacesPerm").show();
-                        }
-                        else {
-                            $("#taggedPlacesPerm").hide();
-                        }
-                    });
-                });
-            }
         };
         PinBoardView.prototype.setStatsRibbon = function (citiesCount, countriesCount, worldTraveledPercent, statesCount) {
             $("#CitiesCount").text(citiesCount);

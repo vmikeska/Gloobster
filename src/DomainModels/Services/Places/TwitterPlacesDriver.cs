@@ -15,11 +15,11 @@ namespace Gloobster.DomainModels.Services.Places
 		public TwitterService TwitterSvc;
 
 		public string DbUserId;
-		public SocAuthenticationDO Authentication;
+		public SocAuthDO Authentication;
 
 		private const int PageSize = 200;
 
-		public PlacesExtractionResults ExtractVisitedPlaces(string dbUserId, SocAuthenticationDO auth)
+		public PlacesExtractionResults ExtractVisitedPlaces(string dbUserId, SocAuthDO auth)
 		{
 			DbUserId = dbUserId;
 			Authentication = auth;

@@ -8,10 +8,18 @@
 		private fbPermissions: Common.FacebookPermissions;
 		private currentLegend: any;
 		public peopleFilter: PeopleFilter;
-
+	
 		private pinBoardBadges: PinBoardBadges;
 
 		get pageType(): Views.PageType { return PageType.PinBoard; }
+
+		public initFb(init) {
+			this.fbPermissions = new Common.FacebookPermissions();
+			this.fbPermissions.initFb(() => {
+				//initialized	
+			});
+			this.initFbPermRequest();
+		}
 
 		public initialize() {
 			this.mapsManager = new Maps.MapsManager();
@@ -20,92 +28,94 @@
 				$("#TopCitiesCount").text(this.pinBoardBadges.visitedTotal);
 			};
 			this.mapsManager.switchToView(Maps.ViewType.D2);
-			this.fbPermissions = new Common.FacebookPermissions();
+			
 			this.pinBoardBadges = new PinBoardBadges();
 
 			this.shareDialogView = new ShareDialogPinsView();
 
 			this.initPlaceSearch();
 
+			this.initCombos();
+		 
+			this.setInfo();
+
+			this.onLogin = () => {
+				this.setInfo();
+			}
+
+			this.mapsManager.onCenterChanged = (center) => {
+				this.placeSearch.setCoordinates(center.lat, center.lng);
+			}		 
+		}
+
+		private initCombos() {
 			$("#mapType input").change((e) => {
 				var value = $(e.target).val();
 				var parsedVal = parseInt(value);
-				this.mapsManager.switchToView(parsedVal);				
+				this.mapsManager.switchToView(parsedVal);
 				this.setMenuControls();
 				this.setInfo();
 			});
 
 			$("#dataType input").change(() => {
-			 this.refreshData();
-			 this.setMenuControls();
-			 this.setInfo();
+				this.refreshData();
+				this.setMenuControls();
+				this.setInfo();
 			});
 
 			$("#projectionType input").change(() => {
-			 this.refreshData();
-			 this.setMenuControls();
-			 this.setInfo();
+				this.refreshData();
+				this.setMenuControls();
+				this.setInfo();
 			});
-
-			this.setTagPlacesVisibility();
 
 			this.peopleFilter = new PeopleFilter();
 			this.peopleFilter.onSelectionChanged = (selection) => {
 				this.refreshData();
 			};
-
-			this.setInfo();
-
-		  this.onLogin =()=> {
-			 this.setInfo();
-			}
-
-			this.mapsManager.onCenterChanged = (center) => {
-			 this.placeSearch.setCoordinates(center.lat, center.lng);
-			}
 		}
-	 
-	 private setInfo() {
-		this.getFormState((dataType, entity, mapType) => {					 
-			 //var userLogged = this.loginManager.isAlreadyLogged();
 
-			 //var $messageNotLogged = $("#messageNotLogged");
-			 var $messageCitiesVisited = $("#messageCitiesVisited");
-			 var $messageCountriesVisited = $("#messageCountriesVisited");
-			 var $messagePlaces = $("#messagePlaces");
-			 var $messageCitiesInterested = $("#messageCitiesInterested");
-			 var $messageCountriesInterested = $("#messageCountriesInterested");
+		private setInfo() {
+			this.getFormState((dataType, entity, mapType) => {
+				//var userLogged = this.loginManager.isAlreadyLogged();
 
-			 $(".infoMessage").hide();
+				//var $messageNotLogged = $("#messageNotLogged");
+				var $messageCitiesVisited = $("#messageCitiesVisited");
+				var $messageCountriesVisited = $("#messageCountriesVisited");
+				var $messagePlaces = $("#messagePlaces");
+				var $messageCitiesInterested = $("#messageCitiesInterested");
+				var $messageCountriesInterested = $("#messageCountriesInterested");
 
-			 //if (!userLogged) {
+				$(".infoMessage").hide();
+
+				//if (!userLogged) {
 				//$messageNotLogged.show();
 				// return;
-			 //}
+				//}
 
-			 if (dataType === Maps.DataType.Visited) {
-				if (entity === Maps.DisplayEntity.Pin) {
-					$messageCitiesVisited.show();
+				if (dataType === Maps.DataType.Visited) {
+					if (entity === Maps.DisplayEntity.Pin) {
+						$messageCitiesVisited.show();
+					}
+					if (entity === Maps.DisplayEntity.Countries) {
+						$messageCountriesVisited.show();
+					}
+					if (entity === Maps.DisplayEntity.Heat) {
+						$messagePlaces.show();
+					}
 				}
-				if (entity === Maps.DisplayEntity.Countries) {
-				 $messageCountriesVisited.show();
-				}
-				if (entity === Maps.DisplayEntity.Heat) {
-				 $messagePlaces.show();
-				}
-			 }
 
-			 if (dataType === Maps.DataType.Interested) {
-				if (entity === Maps.DisplayEntity.Pin) {
-				 $messageCitiesInterested.show();
+				if (dataType === Maps.DataType.Interested) {
+					if (entity === Maps.DisplayEntity.Pin) {
+						$messageCitiesInterested.show();
+					}
+					if (entity === Maps.DisplayEntity.Countries) {
+						$messageCountriesInterested.show();
+					}
 				}
-				if (entity === Maps.DisplayEntity.Countries) {
-				 $messageCountriesInterested.show();
-				}
-			 }
 
-		 });
-	 }
+			});
+		}
 
 		private getFormState(callback) {
 			setTimeout(() => {
@@ -195,31 +205,22 @@
 			}
 		}
 
+		private initFbPermRequest() {
+			$("#fbBtnImport").click((e) => {
+				e.preventDefault();
+				this.getTaggedPlacesPermissions();
+			});
+		}
+
 		public getTaggedPlacesPermissions() {
 			this.fbPermissions.requestPermissions("user_tagged_places", (resp) => {
-				$("#taggedPlacesPerm").hide();
+				$("#taggedPlacesPerm").remove();
 				this.apiPost("FbTaggedPlacesPermission", null, (resp) => {
 					this.refreshData();
 				});
 			});
 		}
-
-		private setTagPlacesVisibility() {
-		 var hasFb = this.hasSocNetwork(SocialNetworkType.Facebook);
-			if (hasFb) {
-				this.fbPermissions.initFb(() => {
-					this.fbPermissions.hasPermission("user_tagged_places", (hasPerm) => {
-						if (!hasPerm) {
-							$("#taggedPlacesPerm").show();
-						} else {
-							$("#taggedPlacesPerm").hide();
-						}
-					});
-				});
-
-			}
-		}
-
+	 
 		private setStatsRibbon(citiesCount: number, countriesCount: number, worldTraveledPercent: number, statesCount: number) {
 			$("#CitiesCount").text(citiesCount);
 			$("#CountriesCount").text(countriesCount);

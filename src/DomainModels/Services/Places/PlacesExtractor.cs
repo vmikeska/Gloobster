@@ -35,7 +35,7 @@ namespace Gloobster.DomainModels.Services.Places
 
         public string DbUserId;
 
-		public async Task<bool> ExtractNewAsync(string dbUserId, SocAuthenticationDO auth)
+		public async Task<bool> ExtractNewAsync(string dbUserId, SocAuthDO auth)
 		{
 			DbUserId = dbUserId;
 			

@@ -48,23 +48,20 @@
 @Html.Partial("PinBoardTemplates")
 
 <script>
-	function onBodyLoad() {
+    function onBodyLoad() {
 		
-		currentView = new Views.PinBoardView();
-		currentView.initialize();
+        currentView = new Views.PinBoardView();
+        @Html.Raw("currentView.initFb();")
+        currentView.initialize();
 
-		var friends = @Html.Raw(JsonConvert.SerializeObject(Model.Friends));
-		var f = _.map(friends, function(i) { return {id: i.Id, displayName: i.DisplayName};});
-		currentView.peopleFilter.initFriends(f);
-	}
+        var friends = @Html.Raw(JsonConvert.SerializeObject(Model.Friends));
+        var f = _.map(friends, function(i) { return {id: i.Id, displayName: i.DisplayName};});
+        currentView.peopleFilter.initFriends(f);
+    }
 
-	function getTaggedPlacesPermissions() {
-	    currentView.getTaggedPlacesPermissions();
-	}
-
-	function deletePin(gid) {
-	    currentView.deletePin(gid);
-	}
+    function deletePin(gid) {
+        currentView.deletePin(gid);
+    }
 
 </script>
 
@@ -93,17 +90,10 @@
     </div>
     @Html.Partial("ShareDialog")
 
-    <div id="taggedPlacesPerm" class="table row col2 margin" style="border-top: 1px solid black; border-bottom: 1px solid black; padding: 3px; display: none;">
-        <div class="cell margin3">
-            <div id="fb-root"></div>
-
-            <button onclick="getTaggedPlacesPermissions()">Import checkins</button>
-        </div>
-
-        <div class="cell middle tright">
-            <strong>Authorize us to import your facebook checked in places and pair your tagged places with your local account</strong>
-        </div>
-    </div>
+    @if (Model.ShowFacebookPermissionsDialog)
+    {
+        @Html.Partial("FbCheckinsDialog")    
+    }
 
     <div class="form blue-form" action="#" method="post">
         <div id="cities" class="dropdown left">

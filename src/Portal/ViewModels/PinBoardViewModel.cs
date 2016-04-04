@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using Gloobster.Entities;
 using System.Linq;
-using System.Threading.Tasks;
-using Gloobster.DomainModels;
-using MongoDB.Bson;
+using Gloobster.DomainInterfaces;
+using Gloobster.DomainObjects;
+using Gloobster.Enums;
+using Gloobster.SocialLogin.Facebook.Communication;
 
 namespace Gloobster.Portal.ViewModels
 {
@@ -14,8 +15,9 @@ namespace Gloobster.Portal.ViewModels
 		public int WorldTraveled { get; set; }		
 		public int UsStates { get; set; }
         public List<Friend> Friends { get; set; }
+        public bool ShowFacebookPermissionsDialog { get; set; }
 
-        public void InitializeExists(VisitedEntity visited, IEntitiesDemandor demandor)
+        public void InitializeExists(VisitedEntity visited, bool showFbDialog)
         {
             Countries = visited.Countries.Count;
             Cities = visited.Cities.Count;
@@ -29,6 +31,8 @@ namespace Gloobster.Portal.ViewModels
                 DisplayName = f.DisplayName,
                 Id = f.id.ToString()
             }).ToList();
+
+            ShowFacebookPermissionsDialog = showFbDialog;
         }
 
         //public void InitializeLogged(string userId)

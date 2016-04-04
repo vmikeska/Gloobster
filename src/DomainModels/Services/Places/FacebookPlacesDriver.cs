@@ -7,11 +7,14 @@ using Gloobster.DomainObjects;
 using Gloobster.DomainObjects.BaseClasses;
 using Gloobster.Enums;
 using Gloobster.SocialLogin.Facebook.Communication;
+using Serilog;
 
 namespace Gloobster.DomainModels.Services.Places
 {
 	public class FacebookPlacesDriver : IPlacesExtractorDriver
 	{
+        public ILogger Log { get; set; }
+
 		public IFacebookService FBService { get; set; }
 		public ICountryService CountryService { get; set; }
 
@@ -63,15 +66,28 @@ namespace Gloobster.DomainModels.Services.Places
 		{
 			var response = FBService.Get<TaggedPlacesFO>(query);
 
-			var currentFoundPlaces = response.Data.Where(c => c.Place.Location.Country != null).Select(i => new FoundPlace
-			{
-				City = i.Place.Location.City,
-				Country = i.Place.Location.Country,
-				CheckinId = i.Id,
-				Time = DateTime.Parse(i.CreatedTime),
-				Latitude = i.Place.Location.Latitude,
-				Longitude = i.Place.Location.Longitude,
-			});
+		    var currentFoundPlaces = new List<FoundPlace>();
+
+		    foreach (var item in response.Data)
+		    {
+		        bool validItem = item.Place.Location != null && 
+                    !string.IsNullOrEmpty(item.Place.Location.Country) && 
+                    !string.IsNullOrEmpty(item.Place.Location.City);
+                if (validItem)
+		        {
+		            try
+		            {
+		                var converted = ConvertPlace(item);
+		                currentFoundPlaces.Add(converted);
+		            }
+		            catch (Exception exc)
+		            {
+		                Log.Error($"FacebookPlaceExtraction: ${exc.Message}, query: ${query}");
+		            }
+
+		        }
+		    }
+            
 			foundPlaces.AddRange(currentFoundPlaces);
 
 			if (response.Paging != null)
@@ -80,6 +96,21 @@ namespace Gloobster.DomainModels.Services.Places
 				Extract(nextQuery, foundPlaces);
 			}
 		}
-		
-	}
+
+	    private FoundPlace ConvertPlace(DatumFO inPlace)
+	    {
+	        var outPlace = new FoundPlace
+	        {
+	            City = inPlace.Place.Location.City,
+	            Country = inPlace.Place.Location.Country,
+	            CheckinId = inPlace.Id,
+	            Time = DateTime.Parse(inPlace.CreatedTime),
+	            Latitude = inPlace.Place.Location.Latitude,
+	            Longitude = inPlace.Place.Location.Longitude
+	        };
+
+	        return outPlace;
+	    }
+
+    }
 }

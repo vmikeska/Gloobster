@@ -125,7 +125,9 @@ namespace Gloobster.Portal
             builder.AddTransient<ISocLogin, TwitterSocLogin>().Keyed<ISocLogin>("Twitter");
             
             builder.AddTransient<IAccountDomain, AccountDomain>();
-            builder.AddTransient<IAvatarPhoto, AvatarPhoto>();            
+            builder.AddTransient<IAvatarPhoto, AvatarPhoto>();
+
+            builder.AddTransient<IPinboardImportDomain, PinboardImportDomain>();            
         }
 		
 	}

@@ -26,7 +26,8 @@
 
 
     <div class="wrapper">
-        <h1><a asp-controller="Home" asp-action="Index" class="logo-header">Gloobster</a></h1>
+        <h1><a asp-controller="Home" asp-action="Index" class="logo-header">Gloobster</a>
+        </h1>
 
         <div class="menu-holder">
             <div id="ddMenus" class="tright mhalf">
@@ -38,7 +39,7 @@
                 }
 
             </div>
-            @Html.Partial("_Menu")            
+            @Html.Partial("_Menu")
         </div>
 
         <a class="hamburger" data-target="#menu" href="#"><span></span></a>
@@ -46,6 +47,8 @@
 
 
 </header>
+
+<div id="fb-root"></div>
 
 @if (ViewBag.StopLayoutGenerate == null)
 {
