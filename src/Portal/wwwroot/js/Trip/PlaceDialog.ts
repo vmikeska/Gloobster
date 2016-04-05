@@ -5,7 +5,7 @@ module Trip {
 		private addressSearch: Common.PlaceSearchBox;
 		private placeToVisitSearch: Common.PlaceSearchBox;
 
-		private files: Files;
+		private files: TripFiles;
 
 		private $rowCont;
 

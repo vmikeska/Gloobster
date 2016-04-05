@@ -77,7 +77,7 @@
 </script>
 
 <script id="placeDetail-template" type="text/x-handlebars-template">
-		<div class="daybyday-form margin form" action="#" method="post">
+		<div class="daybyday-form margin form">
 				<div class="table row">
 						<div class="cell baseline">
 								<div id="cities" class="dropdown left">
@@ -88,11 +88,10 @@
 						</div>
 						<div class="cell baseline color1">June averages: Day 32°C • Night 16°C</div>
 				</div>
-				<textarea id="dialogDescription" placeholder="Description or related files"></textarea>
-				<div id="entityDocs" class="documents grid col3 margin">						
-                    <span class="noFiles">No files has been added yet</span>
-				</div>
-                <div id="filesPickerBoxDialog"></div>
+            
+            
+                @Html.Partial("DialogFilesUpload")
+				
 				<div class="table row">
 						<div class="cell address">
 								<h4>
@@ -118,10 +117,7 @@
 								@*<input type="submit" value="Add place">*@
 						</div>
 				</div>
-				@*<div class="rating-holder">
-						Rating
-						<span class="rating pct70 bottom"></span>
-				</div>*@
+				
 				<a class="close" href="#">Close</a>
 		</div>
 
@@ -210,12 +206,7 @@
 
 <script id="travelDetail-template" type="text/x-handlebars-template">
 		<div class="daybyday-form margin form" action="#" method="post">
-				@*
-				<div class="table row">						
-						<div class="cell baseline"><h3>PRG → VIE</h3></div>
-						<div class="cell baseline color1">Delta Air Flight 2560 from Prague to Vienna • Distance 1200 km</div>
-				</div>
-				*@
+				
 				<div class="margin">
 						<div id="travelType" class="dropdown">
 								<span class="selected">										
@@ -287,28 +278,7 @@
 						<input id="arrivingHours" type="number" min="0" max="23" step="1" />:<input id="arrivingMinutes"  type="number" min="0" max="59" step="1"  />
 				</div>
             
-            <div id="dialogUpload" class="upload-holder margin">
-                <textarea id="dialogDescription" placeholder="Description or related files"></textarea>
-                
-                <div id="entityDocs" class="documents grid col3 margin"></div>
-
-                <div class="upload-droparea" style="display: none">
-                    <div class="center-vertical">
-                        <div class="centered">
-                            <strong>Drop Files Here</strong>
-                            @*<div class="upload-progressbar">
-                                <div class="progressbar-holder middle">
-                                    <div class="progressbar">
-                                        <div class="progress" style="width:60%;"></div>
-                                        <span>1.5 MB • 3 minutes</span>
-                                    </div>
-                                </div>
-                                <a class="button middle mleft5" href="#">Cancel</a>
-                            </div>*@
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @Html.Partial("DialogFilesUpload")
             
             <a class="close" href="#">Close</a>            
 		</div>

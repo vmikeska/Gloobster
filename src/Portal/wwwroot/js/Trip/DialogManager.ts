@@ -29,27 +29,27 @@ module Trip {
 			this.placeDetailViewFriends = Views.ViewBase.currentView.registerTemplate("placeDetailViewFriends-template");
 		}
 
-		public createFilesInstanceView(entityId: string, entityType: Common.TripEntityType): Files {
+		public createFilesInstanceView(entityId: string, entityType: Common.TripEntityType): TripFiles {
 			var filesConfig = new FilesConfig();
 			filesConfig.containerId = "entityDocs";
 			filesConfig.templateId = "fileItem-template";
 			filesConfig.editable = false;
 			filesConfig.addAdder = false;
 			filesConfig.entityId = entityId;
-			var files = new Files(filesConfig);
+			var files = new TripFiles(filesConfig);
 
 			return files;
 		}
 
-		public createFilesInstance(entityId: string, entityType: Common.TripEntityType): Files {
-			var filesConfig = new FilesConfig();
+		public createFilesInstance(entityId: string, entityType: Common.TripEntityType): TripFiles {
+		 var filesConfig = new FilesConfig();
+			filesConfig.mainContainerId = "dialogUpload";
 			filesConfig.containerId = "entityDocs";
 			filesConfig.inputId = "entityFileInput";
 			filesConfig.templateId = "fileItem-template";
 			filesConfig.editable = true;
 			filesConfig.addAdder = true;
-		  //todo: maybe remove
-			filesConfig.adderContainer = null;
+			filesConfig.adderTemplate = "fileCreate-template";
 			filesConfig.entityId = entityId;
 
 			var customConfig = new Common.TripFileCustom();
@@ -57,7 +57,7 @@ module Trip {
 			customConfig.entityId = entityId;
 			customConfig.entityType = entityType;
 
-			var files = new Files(filesConfig, customConfig);
+			var files = new TripFiles(filesConfig, customConfig);
 		 
 			return files;
 		}

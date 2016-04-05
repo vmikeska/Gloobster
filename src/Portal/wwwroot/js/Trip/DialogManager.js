@@ -18,24 +18,24 @@ var Trip;
             filesConfig.editable = false;
             filesConfig.addAdder = false;
             filesConfig.entityId = entityId;
-            var files = new Trip.Files(filesConfig);
+            var files = new Trip.TripFiles(filesConfig);
             return files;
         };
         DialogManager.prototype.createFilesInstance = function (entityId, entityType) {
             var filesConfig = new Trip.FilesConfig();
+            filesConfig.mainContainerId = "dialogUpload";
             filesConfig.containerId = "entityDocs";
             filesConfig.inputId = "entityFileInput";
             filesConfig.templateId = "fileItem-template";
             filesConfig.editable = true;
             filesConfig.addAdder = true;
-            //todo: maybe remove
-            filesConfig.adderContainer = null;
+            filesConfig.adderTemplate = "fileCreate-template";
             filesConfig.entityId = entityId;
             var customConfig = new Common.TripFileCustom();
             customConfig.tripId = this.planner.trip.tripId;
             customConfig.entityId = entityId;
             customConfig.entityType = entityType;
-            var files = new Trip.Files(filesConfig, customConfig);
+            var files = new Trip.TripFiles(filesConfig, customConfig);
             return files;
         };
         DialogManager.prototype.initDescription = function (text, entityType) {

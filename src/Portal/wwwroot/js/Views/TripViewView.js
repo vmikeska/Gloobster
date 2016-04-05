@@ -26,7 +26,7 @@ var Views;
             filesConfig.editable = false;
             filesConfig.addAdder = true;
             filesConfig.templateId = "file-template";
-            this.files = new Trip.Files(filesConfig);
+            this.files = new Trip.TripFiles(filesConfig);
         };
         TripViewView.prototype.registerPhotoUpload = function () {
             var _this = this;

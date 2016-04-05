@@ -1,7 +1,7 @@
 ﻿module Views {
 	export class TripDetailView extends ViewBase {
 		trip: any;
-		files: Trip.Files;
+		files: Trip.TripFiles;
 		pictureUpload: Common.FileUpload;
 
 		tripMenu: TripMenu;
@@ -43,15 +43,18 @@
 
 	 private createFilesConfig() {
 		var filesConfig = new Trip.FilesConfig();
-		filesConfig.containerId = "filesContainer";
+		filesConfig.containerId = "filesContainer";		
 		filesConfig.inputId = "fileInput";
-		filesConfig.templateId = "file-template";
-		filesConfig.editable = true;
-		filesConfig.addAdder = true;
+		filesConfig.templateId = "file-template";		
 		filesConfig.isMasterFile = true;
-		filesConfig.adderContainer = "filesPickerBox";
+		
+		//todo: finish DnD functionality
+		filesConfig.editable = true;
+		//filesConfig.mainContainerId = "filesContainer";
+		//filesConfig.addAdder = true;
+		//filesConfig.adderTemplate = "fileCreateGeneral-template";
 
-		this.files = new Trip.Files(filesConfig);
+		this.files = new Trip.TripFiles(filesConfig);
 	 }
 
 		private setFilesCustomConfig(tripId: string) {

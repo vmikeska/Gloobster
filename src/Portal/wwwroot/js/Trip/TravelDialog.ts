@@ -2,7 +2,7 @@ module Trip {
 	export class TravelDialog {
 		public dialogManager: DialogManager;
 
-		private files: Files;
+		private files: TripFiles;
 		private data: any;
 
 		private $rowCont;

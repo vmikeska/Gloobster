@@ -1,8 +1,9 @@
 ﻿module Common {
 	export class FileUploadConfig {
 		public bytesPerRequest = 102400;
+		public customInputRegistration = false;
 		public inputId: string;
-		public endpoint: string;
+		public endpoint: string;	  
 	}
 
 	export enum TripEntityType { Place, Travel }
@@ -33,23 +34,26 @@
 
 		private config: FileUploadConfig;
 
-		private getInput() {
-			var $input = $(`#${this.config.inputId}`);
-
-			$input.change(e => {
-				this.filesEvent(e.target.files);
-			});
-
-			return $input;
-		}
+	  public $filesInput;
 
 		constructor(config: FileUploadConfig, customConfig = null) {
-		 if (customConfig) {
-			 this.customConfig = customConfig;
-		 }
+			if (customConfig) {
+				this.customConfig = customConfig;
+			}
 
-		 this.config = config;			
+			if (!config.customInputRegistration) {
+				this.registerFileInput(config.inputId);
+			}
+
+			this.config = config;
 		}
+
+		public registerFileInput(inputId) {
+		 this.$filesInput = $(`#${inputId}`);
+		 this.$filesInput.change(e => {
+			this.filesEvent(e.target.files);
+		 });
+	  }
 
 	  public filesEvent(files) {
 		 this.files = files;
@@ -64,7 +68,7 @@
 			this.currentEnd = 0;
 			this.reachedEnd = false;
 			this.firstSent = false;
-			this.getInput().val("");
+			this.$filesInput.val("");
 		}
 
 		private sendBlobToServer(isInitialCall) {
@@ -115,7 +119,7 @@
 			var percents = (this.currentEnd / this.currentFile.size) * 100;
 			var percentsRounded = Math.round(percents);
 
-			if (this.onProgressChanged) {
+			if (this.onProgressChanged && !(percentsRounded === 0)) {
 				this.onProgressChanged(percentsRounded);
 			}
 		}

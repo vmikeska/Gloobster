@@ -3,6 +3,7 @@ var Common;
     var FileUploadConfig = (function () {
         function FileUploadConfig() {
             this.bytesPerRequest = 102400;
+            this.customInputRegistration = false;
         }
         return FileUploadConfig;
     })();
@@ -30,15 +31,17 @@ var Common;
             if (customConfig) {
                 this.customConfig = customConfig;
             }
+            if (!config.customInputRegistration) {
+                this.registerFileInput(config.inputId);
+            }
             this.config = config;
         }
-        FileUpload.prototype.getInput = function () {
+        FileUpload.prototype.registerFileInput = function (inputId) {
             var _this = this;
-            var $input = $("#" + this.config.inputId);
-            $input.change(function (e) {
+            this.$filesInput = $("#" + inputId);
+            this.$filesInput.change(function (e) {
                 _this.filesEvent(e.target.files);
             });
-            return $input;
         };
         FileUpload.prototype.filesEvent = function (files) {
             this.files = files;
@@ -51,7 +54,7 @@ var Common;
             this.currentEnd = 0;
             this.reachedEnd = false;
             this.firstSent = false;
-            this.getInput().val("");
+            //this.getInput().val("");
         };
         FileUpload.prototype.sendBlobToServer = function (isInitialCall) {
             if (this.reachedEnd) {
@@ -92,7 +95,7 @@ var Common;
         FileUpload.prototype.recalculateUpdateProgress = function () {
             var percents = (this.currentEnd / this.currentFile.size) * 100;
             var percentsRounded = Math.round(percents);
-            if (this.onProgressChanged) {
+            if (this.onProgressChanged && !(percentsRounded === 0)) {
                 this.onProgressChanged(percentsRounded);
             }
         };

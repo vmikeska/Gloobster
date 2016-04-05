@@ -4,18 +4,19 @@
 		public editable: boolean;
 		public templateId: string;
 		public addAdder: boolean;
+		public mainContainerId: string;
 		public containerId: string;
 		public inputId: string;
 		public entityId: string;
-		public isMasterFile: boolean;
-		public adderContainer: string;
+		public isMasterFile: boolean;		
+	  public adderTemplate: string;
 	}
 
-	export class Files {
-		public static masterFiles: Files;
+	export class TripFiles {
+	  public static masterFiles: TripFiles;
 		public tripId: string;
 
-		private template: any;
+		private fileDocumentTemplate: any;
 		private fileInputTemplate: any;
 		public fileUpload: Common.FileUpload;
 		public fileDaD: Common.FileDaD;
@@ -25,6 +26,7 @@
 
 		private config: FilesConfig;
 
+		private $mainContainer: any;
 		private $container: any;
 		private $adderContainer: any;
 		private $adder: any;
@@ -32,23 +34,25 @@
 
 		constructor(config: FilesConfig, customConfig = null) {
 
-		 this.fileInputTemplate = Views.ViewBase.currentView.registerTemplate("fileCreate-template");
+			if (config.adderTemplate) {
+				this.fileInputTemplate = Views.ViewBase.currentView.registerTemplate(config.adderTemplate);
+			}
+
+			this.fileDocumentTemplate = Views.ViewBase.currentView.registerTemplate(config.templateId);
 
 			if (config.isMasterFile) {
-				Files.masterFiles = this;
+			 TripFiles.masterFiles = this;
 			}
 
 			this.config = config;
+			this.$mainContainer = $(`#${config.mainContainerId}`);
 			this.$container = $(`#${config.containerId}`);
 			
-			var source = $(`#${config.templateId}`).html();
-			this.template = Handlebars.compile(source);
-		 
 			var $deleteConfirm = $("#deleteFileConfirm");
 
 			$deleteConfirm.unbind();
 			$deleteConfirm.click(() => {
-				this.callDelete(Files.lastIdToDelete);
+			 this.callDelete(TripFiles.lastIdToDelete);
 				$("#popup-delete").hide();
 			});
 
@@ -57,17 +61,46 @@
 			}
 		}
 
-		private addAdder() {			
+		private registerFileUpload(customConfig) {
+		 var config = new Common.FileUploadConfig();
+		 config.inputId = this.config.inputId;
+		 config.endpoint = "TripFile";
+			config.customInputRegistration = true;
+		 this.fileUpload = new Common.FileUpload(config, customConfig);
+
+		 this.fileUpload.onProgressChanged = (percent) => {
+			this.$mainContainer.find(".upload-droparea").show();
+			this.$mainContainer.find(".upload-progressbar").show();
+
+			var $progressBarCont = this.$mainContainer.find(".upload-progressbar");
+			$progressBarCont.show();
+
+			this.setUploadProgress(percent);
+		 }
+
+		 this.fileUpload.onUploadFinished = (file, res) => {
+			this.$mainContainer.find(".upload-droparea").hide();
+			this.$mainContainer.find(".upload-progressbar").hide();
+			this.setUploadProgress(0);
+
+			if (res) {
+			 this.filterFiles(res.files, res.filesPublic);
+			}
+		 }
+		}
+
+		private addAdder() {
 			this.$adder = $(this.fileInputTemplate({ id: this.config.inputId }));
 			this.fileDaD = new Common.FileDaD();
 
 			this.$container.append(this.$adder);
-
+		  //now when file input exists, we can register events
+			this.fileUpload.$filesInput = this.$adder.find(`#${this.config.inputId}`);
 			this.fileDaD.onFiles = (files) => {
-			 this.fileUpload.filesEvent(files);
+				this.fileUpload.filesEvent(files);
 			};
 
-			this.fileDaD.registerComponent("dialogUpload");
+			this.fileDaD.registerComponent(this.config.mainContainerId);
 		}
 
 
@@ -106,10 +139,10 @@
 				this.generateFiles();
 			}
 
-			if (Files.masterFiles && (!this.config.isMasterFile)) {
-			 Files.masterFiles.files = files;
-			 Files.masterFiles.filesPublic = filesPublic;
-				Files.masterFiles.generateFiles();
+			if (TripFiles.masterFiles && (!this.config.isMasterFile)) {
+			 TripFiles.masterFiles.files = files;
+			 TripFiles.masterFiles.filesPublic = filesPublic;
+			 TripFiles.masterFiles.generateFiles();
 			}
 
 		}
@@ -151,7 +184,7 @@
 		private generateFile(context) {			
 		 var filePublic = this.getFilePublic(context.id);
 
-			var html = this.template(context);
+		 var html = this.fileDocumentTemplate(context);
 			var $html = $(html);
 
 			var $filePublic = $html.find(".filePublic");
@@ -174,7 +207,7 @@
 				});
 
 				$html.find(".delete").click((e) => {
-					Files.lastIdToDelete = $(e.target).data("id");
+				 TripFiles.lastIdToDelete = $(e.target).data("id");
 				});
 			}
 
@@ -216,7 +249,7 @@
 			var act = 0;
 			var outName = "";
 			fileName.split("").forEach((char) => {
-				if (outName.length > 30) {
+				if (outName.length > 24) {
 					return;
 				}
 				act++;
@@ -230,22 +263,12 @@
 			return outName;
 		}
 
-		private registerFileUpload(customConfig) {
-			var config = new Common.FileUploadConfig();
-			config.inputId = this.config.inputId;
-			config.endpoint = "TripFile";
-			this.fileUpload = new Common.FileUpload(config, customConfig);
-		 
-			this.fileUpload.onProgressChanged = (percent) => {
-				$(".pb_all").show();
-				$(".pb_percent").text(percent + "%");
-				$(".pb_inner").css("width", percent + "%");
-			}
+		
 
-			this.fileUpload.onUploadFinished = (file, res) => {
-				$(".pb_all").hide();
-				this.filterFiles(res.files, res.filesPublic);
-			}
+		private setUploadProgress(percent) {
+		 var $progressBarCont = this.$mainContainer.find(".upload-progressbar");
+			$progressBarCont.find(".progress").css("width", percent + "%");
+			$progressBarCont.find("span").text(percent + "%");
 		}
 
 	}

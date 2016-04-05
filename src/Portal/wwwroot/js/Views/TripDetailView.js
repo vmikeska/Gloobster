@@ -42,11 +42,13 @@ var Views;
             filesConfig.containerId = "filesContainer";
             filesConfig.inputId = "fileInput";
             filesConfig.templateId = "file-template";
-            filesConfig.editable = true;
-            filesConfig.addAdder = true;
             filesConfig.isMasterFile = true;
-            filesConfig.adderContainer = "filesPickerBox";
-            this.files = new Trip.Files(filesConfig);
+            //todo: finish DnD functionality
+            filesConfig.editable = true;
+            //filesConfig.mainContainerId = "filesContainer";
+            //filesConfig.addAdder = true;
+            //filesConfig.adderTemplate = "fileCreateGeneral-template";
+            this.files = new Trip.TripFiles(filesConfig);
         };
         TripDetailView.prototype.setFilesCustomConfig = function (tripId) {
             if (this.files.fileUpload) {

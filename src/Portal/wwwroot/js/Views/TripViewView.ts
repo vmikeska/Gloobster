@@ -2,7 +2,7 @@
 	export class TripViewView extends ViewBase {
 		trip: any;
 		comments: Trip.Comments;
-		files: Trip.Files;
+		files: Trip.TripFiles;
 		
 		planner: Trip.Planner;
 		acceptCombo: Trip.AcceptCombo;
@@ -29,7 +29,8 @@
 		 filesConfig.editable = false;
 		 filesConfig.addAdder = true;
 		 filesConfig.templateId = "file-template";
-		 this.files = new Trip.Files(filesConfig);
+		 
+		 this.files = new Trip.TripFiles(filesConfig);
 		}
 
 		private registerPhotoUpload() {
