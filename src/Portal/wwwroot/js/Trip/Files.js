@@ -7,38 +7,36 @@ var Trip;
     })();
     Trip.FilesConfig = FilesConfig;
     var Files = (function () {
-        function Files(config) {
+        function Files(config, customConfig) {
             var _this = this;
+            if (customConfig === void 0) { customConfig = null; }
+            this.fileInputTemplate = Views.ViewBase.currentView.registerTemplate("fileCreate-template");
             if (config.isMasterFile) {
                 Files.masterFiles = this;
             }
             this.config = config;
             this.$container = $("#" + config.containerId);
-            this.$noFiles = this.$container.find(".noFiles");
-            if (config.addAdder) {
-                this.$adderContainer = $("#" + config.adderContainer);
-            }
             var source = $("#" + config.templateId).html();
             this.template = Handlebars.compile(source);
-            if (config.addAdder) {
-                if (config.editable) {
-                    this.addAdder();
-                }
-            }
-            if (this.config.editable) {
-                this.registerFileUpload();
-            }
             var $deleteConfirm = $("#deleteFileConfirm");
             $deleteConfirm.unbind();
             $deleteConfirm.click(function () {
                 _this.callDelete(Files.lastIdToDelete);
                 $("#popup-delete").hide();
             });
+            if (this.config.editable) {
+                this.registerFileUpload(customConfig);
+            }
         }
         Files.prototype.addAdder = function () {
-            this.fileDaD = new Common.FileDaD(this.config.inputId);
-            this.$adder = this.fileDaD.$instance;
-            this.$adderContainer.html(this.$adder);
+            var _this = this;
+            this.$adder = $(this.fileInputTemplate({ id: this.config.inputId }));
+            this.fileDaD = new Common.FileDaD();
+            this.$container.append(this.$adder);
+            this.fileDaD.onFiles = function (files) {
+                _this.fileUpload.filesEvent(files);
+            };
+            this.fileDaD.registerComponent("dialogUpload");
         };
         Files.prototype.setFiles = function (files, tripId, filesPublic) {
             this.filesPublic = filesPublic;
@@ -79,9 +77,8 @@ var Trip;
         };
         Files.prototype.generateFiles = function () {
             var _this = this;
-            this.$container.children().not(this.$adder).not(this.$noFiles).remove();
+            this.$container.children().not(this.$adder).remove();
             if (this.files && this.files.length > 0) {
-                this.$noFiles.hide();
                 this.files.forEach(function (file) {
                     var isOwner = file.ownerId === Views.ViewBase.currentUserId;
                     var filePublic = _this.getFilePublic(file.id);
@@ -101,11 +98,10 @@ var Trip;
                     }
                 });
             }
-            else {
-                this.$noFiles.show();
+            if (this.config.editable && this.config.addAdder && !this.$adder) {
+                this.addAdder();
             }
         };
-        //doc xml html pdf
         Files.prototype.generateFile = function (context) {
             var _this = this;
             var filePublic = this.getFilePublic(context.id);
@@ -139,15 +135,18 @@ var Trip;
         Files.prototype.getFileType = function (fileName) {
             var prms = fileName.split(".");
             var fileType = prms[prms.length - 1];
-            var recognizedTypes = ["doc", "docx", "xml", "html", "pdf"];
+            if (_.contains(["jpg", "jpeg", "bmp", "png", "gif"], fileType)) {
+                return "img";
+            }
+            if (_.contains(["docx", "doc"], fileType)) {
+                return "doc";
+            }
+            var recognizedTypes = ["doc", "docx", "xml", "html", "pdf", "txt", "jpg", "jpeg", "bmp", "png", "gif"];
             var isRecognized = _.contains(recognizedTypes, fileType);
             if (isRecognized) {
-                if (fileType === "docx") {
-                    return "doc";
-                }
                 return fileType;
             }
-            return "xml";
+            return "txt";
         };
         Files.prototype.getShortFileName = function (fileName) {
             if (fileName.length <= 13) {
@@ -168,15 +167,12 @@ var Trip;
             });
             return outName;
         };
-        Files.prototype.registerFileUpload = function () {
+        Files.prototype.registerFileUpload = function (customConfig) {
             var _this = this;
             var config = new Common.FileUploadConfig();
             config.inputId = this.config.inputId;
             config.endpoint = "TripFile";
-            this.fileUpload = new Common.FileUpload(config);
-            this.fileDaD.onFiles = function (files) {
-                _this.fileUpload.filesEvent(files);
-            };
+            this.fileUpload = new Common.FileUpload(config, customConfig);
             this.fileUpload.onProgressChanged = function (percent) {
                 $(".pb_all").show();
                 $(".pb_percent").text(percent + "%");

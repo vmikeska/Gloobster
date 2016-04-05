@@ -19,20 +19,27 @@ var Common;
     })();
     Common.TripFileCustom = TripFileCustom;
     var FileUpload = (function () {
-        function FileUpload(config) {
-            var _this = this;
+        function FileUpload(config, customConfig) {
+            if (customConfig === void 0) { customConfig = null; }
             this.lastEnd = 0;
             this.currentStart = 0;
             this.currentEnd = 0;
             this.reachedEnd = false;
             this.firstSent = false;
             this.customConfig = {};
+            if (customConfig) {
+                this.customConfig = customConfig;
+            }
             this.config = config;
-            this.$input = $("#" + this.config.inputId);
-            this.$input.change(function (e) {
+        }
+        FileUpload.prototype.getInput = function () {
+            var _this = this;
+            var $input = $("#" + this.config.inputId);
+            $input.change(function (e) {
                 _this.filesEvent(e.target.files);
             });
-        }
+            return $input;
+        };
         FileUpload.prototype.filesEvent = function (files) {
             this.files = files;
             this.currentFile = this.files[0];
@@ -44,7 +51,7 @@ var Common;
             this.currentEnd = 0;
             this.reachedEnd = false;
             this.firstSent = false;
-            this.$input.val("");
+            this.getInput().val("");
         };
         FileUpload.prototype.sendBlobToServer = function (isInitialCall) {
             if (this.reachedEnd) {

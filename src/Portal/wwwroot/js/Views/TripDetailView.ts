@@ -55,9 +55,11 @@
 	 }
 
 		private setFilesCustomConfig(tripId: string) {
-			var customData = new Common.TripFileCustom();
-			customData.tripId = tripId;
-			this.files.fileUpload.customConfig = customData;
+			if (this.files.fileUpload) {
+				var customData = new Common.TripFileCustom();
+				customData.tripId = tripId;
+				this.files.fileUpload.customConfig = customData;
+			}
 		}
 
 		private getTrip(id: string) {

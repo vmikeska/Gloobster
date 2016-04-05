@@ -16,7 +16,7 @@
 		public tripId: string;
 
 		private template: any;
-		private createTemplate: any;
+		private fileInputTemplate: any;
 		public fileUpload: Common.FileUpload;
 		public fileDaD: Common.FileDaD;
 		public files: any[];
@@ -30,33 +30,20 @@
 		private $adder: any;
 		private $noFiles: any;
 
-		constructor(config: FilesConfig) {
+		constructor(config: FilesConfig, customConfig = null) {
+
+		 this.fileInputTemplate = Views.ViewBase.currentView.registerTemplate("fileCreate-template");
 
 			if (config.isMasterFile) {
 				Files.masterFiles = this;
 			}
 
 			this.config = config;
-			this.$container = $("#" + config.containerId);
-			this.$noFiles = this.$container.find(".noFiles");
-
-			if (config.addAdder) {
-				this.$adderContainer = $("#" + config.adderContainer);
-			}
-
-			var source = $("#" + config.templateId).html();
+			this.$container = $(`#${config.containerId}`);
+			
+			var source = $(`#${config.templateId}`).html();
 			this.template = Handlebars.compile(source);
-
-			if (config.addAdder) {
-				if (config.editable) {
-					this.addAdder();
-				}
-			}
-
-			if (this.config.editable) {
-				this.registerFileUpload();
-			}
-
+		 
 			var $deleteConfirm = $("#deleteFileConfirm");
 
 			$deleteConfirm.unbind();
@@ -64,13 +51,25 @@
 				this.callDelete(Files.lastIdToDelete);
 				$("#popup-delete").hide();
 			});
+
+			if (this.config.editable) {
+			 this.registerFileUpload(customConfig);
+			}
 		}
 
-		private addAdder() {
-			this.fileDaD = new Common.FileDaD(this.config.inputId);
-			this.$adder = this.fileDaD.$instance;
-			this.$adderContainer.html(this.$adder);
+		private addAdder() {			
+			this.$adder = $(this.fileInputTemplate({ id: this.config.inputId }));
+			this.fileDaD = new Common.FileDaD();
+
+			this.$container.append(this.$adder);
+
+			this.fileDaD.onFiles = (files) => {
+			 this.fileUpload.filesEvent(files);
+			};
+
+			this.fileDaD.registerComponent("dialogUpload");
 		}
+
 
 		public setFiles(files, tripId, filesPublic) {
 			this.filesPublic = filesPublic;
@@ -116,13 +115,13 @@
 		}
 
 		private generateFiles() {
-			this.$container.children().not(this.$adder).not(this.$noFiles).remove();
+			this.$container.children().not(this.$adder).remove();
 
 			if (this.files && this.files.length > 0) {
-				this.$noFiles.hide();
+				
 				this.files.forEach((file) => {
 
-				 var isOwner = file.ownerId === Views.ViewBase.currentUserId;
+					var isOwner = file.ownerId === Views.ViewBase.currentUserId;
 					var filePublic = this.getFilePublic(file.id);
 					var displayFile = isOwner || filePublic.isPublic;
 
@@ -137,17 +136,18 @@
 							isOwner: isOwner,
 							canManipulate: this.config.editable && isOwner
 						};
-					 
+
 						var $html = this.generateFile(context);
 						this.$container.prepend($html);
 					}
 				});
-			} else {
-				this.$noFiles.show();
-			}
-		}
+			} 
 
-		//doc xml html pdf
+			if (this.config.editable && this.config.addAdder && !this.$adder) {				
+				 this.addAdder();				 				
+			}			
+		}
+	 
 		private generateFile(context) {			
 		 var filePublic = this.getFilePublic(context.id);
 
@@ -191,16 +191,21 @@
 		private getFileType(fileName) {
 			var prms = fileName.split(".");
 			var fileType = prms[prms.length - 1];
-			var recognizedTypes = ["doc", "docx", "xml", "html", "pdf"];
-			var isRecognized = _.contains(recognizedTypes, fileType);
-			if (isRecognized) {
 
-				if (fileType === "docx") {
-					return "doc";
-				}
+			if (_.contains(["jpg", "jpeg", "bmp", "png", "gif"], fileType)) {
+			 return "img";
+			}
+
+			if (_.contains(["docx", "doc"], fileType)) {
+			 return "doc";
+			}
+		 
+			var recognizedTypes = ["doc", "docx", "xml", "html", "pdf", "txt", "jpg", "jpeg", "bmp", "png", "gif"];
+			var isRecognized = _.contains(recognizedTypes, fileType);
+			if (isRecognized) {			 
 				return fileType;
 			}
-			return "xml";
+			return "txt";
 		}
 
 		private getShortFileName(fileName) {
@@ -225,16 +230,12 @@
 			return outName;
 		}
 
-		private registerFileUpload() {
+		private registerFileUpload(customConfig) {
 			var config = new Common.FileUploadConfig();
 			config.inputId = this.config.inputId;
 			config.endpoint = "TripFile";
-
-			this.fileUpload = new Common.FileUpload(config);
-			this.fileDaD.onFiles = (files) => {
-				this.fileUpload.filesEvent(files);
-			};
-
+			this.fileUpload = new Common.FileUpload(config, customConfig);
+		 
 			this.fileUpload.onProgressChanged = (percent) => {
 				$(".pb_all").show();
 				$(".pb_percent").text(percent + "%");

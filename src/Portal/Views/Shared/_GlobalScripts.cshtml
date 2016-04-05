@@ -75,7 +75,7 @@
 
         @if (Model.IsUserLogged)
         {
-            @Html.Raw($"Views.ViewBase.currentUserId = '{Model.User.id}';")
+            @Html.Raw($"Views.ViewBase.currentUserId = '{Model.User.User_id}';")
         }
         @{
             var nets = Model.SocialNetworks.Select(n => ((int) n).ToString());

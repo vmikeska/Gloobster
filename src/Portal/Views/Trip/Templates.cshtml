@@ -20,7 +20,24 @@
 </script>
 
 <script id="file-template" type="text/x-handlebars-template">
+    
     <div class="cell">
+        <div class="document">
+            <a class="file {{fileType}}" href="/Trip/GetFile?fileId={{id}}&tripId={{tripId}}">
+                <span class="display-none">{{fileName}}</span>
+            </a>
+            {{#if canManipulate}}
+            <input id="filePublic{{id}}_b" class="filePublic filePublic{{id}}" data-id="{{id}}" type="checkbox" />
+            <label class="mleft10" for="filePublic{{id}}_b">Shr. invited</label>
+            <a class="delete popup-target" data-target="#popup-delete" data-id="{{id}}" href="#"></a>
+            {{/if}}
+
+            <a href="/Trip/GetFile?fileId={{id}}&tripId={{tripId}}">{{fileName}}</a>
+            
+        </div>
+    </div>
+
+    @*<div class="cell">a
         <div class="document">
             <a class="file {{fileType}}" href="/Trip/GetFile?fileId={{id}}&tripId={{tripId}}">{{fileName}}</a>
 
@@ -32,10 +49,20 @@
 
 
         </div>
-    </div>
+    </div>*@
 </script>
 
-<script id="fileCreate-template" type="text/x-handlebars-template">
+
+<script id="fileCreate-template" type="text/x-handlebars-template">    
+    <div class="cell">
+        <input type="file" id="{{id}}" class="hiddenFile" multiple="">
+        <label for="{{id}}">
+            <span class="button">Click  or drag</span>
+        </label>
+    </div>    
+</script>
+
+@*<script id="fileCreate-template" type="text/x-handlebars-template">
     <div class="dndBox">
         <div class="dndBoxInput">
             <input type="file" id="{{id}}" class="dndBoxFile" multiple="">
@@ -56,4 +83,4 @@
 
 
 
-</script>
+</script>*@

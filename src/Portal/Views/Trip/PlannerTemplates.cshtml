@@ -51,17 +51,29 @@
 </script>
 
 <script id="fileItem-template" type="text/x-handlebars-template">
-		<div class="cell">
-				<div class="document">						
-						<a class="file {{fileType}}" href="/Trip/GetFile?fileId={{id}}&tripId={{tripId}}">{{fileName}}</a>
-						
-						{{#if canManipulate}}
-						<a class="delete popup-target" data-target="#popup-delete" data-id="{{id}}" href="#">d</a>
-                        <input class="filePublic filePublic{{id}}" id="filePublic{{id}}_a" data-id="{{id}}" type="checkbox" />
-                        <label class="mleft10" for="filePublic{{id}}_a">Shr. invited</label>
-						{{/if}}
-				</div>
-		</div>
+    <div class="cell">
+        <div class="document table">
+            <div class="cell middle">
+                <a class="file {{fileType}}" href="/Trip/GetFile?fileId={{id}}&tripId={{tripId}}">
+                    <span class="display-none">{{fileName}}</span>
+                </a>
+            </div>
+            <div class="cell middle nowrap">
+                
+                {{#if canManipulate}}
+                    <input class="filePublic filePublic{{id}}" id="filePublic{{id}}_a" data-id="{{id}}" type="checkbox" />
+                    <label class="mleft10" for="filePublic{{id}}_a">Shr. invited</label>
+                {{/if}}
+
+                <a href="/Trip/GetFile?fileId={{id}}&tripId={{tripId}}">{{fileName}}</a>
+            </div>
+            <div class="cell middle">
+                <a class="delete popup-target" data-target="#popup-delete" data-id="{{id}}" href="#"></a>                
+            </div>
+        </div>
+    </div>	
+    
+    
 </script>
 
 <script id="placeDetail-template" type="text/x-handlebars-template">
@@ -274,15 +286,31 @@
 						Arriving: <input id="arrivingDate" type="text" size="10" />-
 						<input id="arrivingHours" type="number" min="0" max="23" step="1" />:<input id="arrivingMinutes"  type="number" min="0" max="59" step="1"  />
 				</div>
+            
+            <div id="dialogUpload" class="upload-holder margin">
+                <textarea id="dialogDescription" placeholder="Description or related files"></textarea>
+                
+                <div id="entityDocs" class="documents grid col3 margin"></div>
 
-				<a class="close" href="#">Close</a>
-				<textarea id="dialogDescription" placeholder="Description or related files"></textarea>
-				<div id="entityDocs" class="documents grid col3 margin">
-                    <span class="noFiles">No files has been added yet</span>
-				</div>
-                <div id="filesPickerBoxDialog"></div>
-				@*<p class="blue-info color1">This information has been imported from uploaded files. Feel free to edit it.</p>*@
-
+                <div class="upload-droparea" style="display: none">
+                    <div class="center-vertical">
+                        <div class="centered">
+                            <strong>Drop Files Here</strong>
+                            @*<div class="upload-progressbar">
+                                <div class="progressbar-holder middle">
+                                    <div class="progressbar">
+                                        <div class="progress" style="width:60%;"></div>
+                                        <span>1.5 MB • 3 minutes</span>
+                                    </div>
+                                </div>
+                                <a class="button middle mleft5" href="#">Cancel</a>
+                            </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <a class="close" href="#">Close</a>            
 		</div>
 
 </script>

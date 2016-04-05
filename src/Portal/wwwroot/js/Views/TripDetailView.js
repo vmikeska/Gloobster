@@ -49,9 +49,11 @@ var Views;
             this.files = new Trip.Files(filesConfig);
         };
         TripDetailView.prototype.setFilesCustomConfig = function (tripId) {
-            var customData = new Common.TripFileCustom();
-            customData.tripId = tripId;
-            this.files.fileUpload.customConfig = customData;
+            if (this.files.fileUpload) {
+                var customData = new Common.TripFileCustom();
+                customData.tripId = tripId;
+                this.files.fileUpload.customConfig = customData;
+            }
         };
         TripDetailView.prototype.getTrip = function (id) {
             var _this = this;

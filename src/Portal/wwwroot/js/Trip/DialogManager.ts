@@ -48,18 +48,17 @@ module Trip {
 			filesConfig.templateId = "fileItem-template";
 			filesConfig.editable = true;
 			filesConfig.addAdder = true;
-			filesConfig.adderContainer = "filesPickerBoxDialog";
+		  //todo: maybe remove
+			filesConfig.adderContainer = null;
 			filesConfig.entityId = entityId;
 
-			var customData = new Common.TripFileCustom();
-			customData.tripId = this.planner.trip.tripId;
-			customData.entityId = entityId;
-			customData.entityType = entityType;
+			var customConfig = new Common.TripFileCustom();
+			customConfig.tripId = this.planner.trip.tripId;
+			customConfig.entityId = entityId;
+			customConfig.entityType = entityType;
 
-			var files = new Files(filesConfig);
-
-			files.fileUpload.customConfig = customData;
-
+			var files = new Files(filesConfig, customConfig);
+		 
 			return files;
 		}
 

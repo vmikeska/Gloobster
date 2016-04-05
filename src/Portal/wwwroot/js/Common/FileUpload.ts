@@ -32,15 +32,23 @@
 		public onUploadFinished: Function;
 
 		private config: FileUploadConfig;
-		private $input: any;
 
-		constructor(config: FileUploadConfig) {
-			this.config = config;
-			this.$input = $("#" + this.config.inputId);
+		private getInput() {
+			var $input = $(`#${this.config.inputId}`);
 
-			this.$input.change(e => {
+			$input.change(e => {
 				this.filesEvent(e.target.files);
 			});
+
+			return $input;
+		}
+
+		constructor(config: FileUploadConfig, customConfig = null) {
+		 if (customConfig) {
+			 this.customConfig = customConfig;
+		 }
+
+		 this.config = config;			
 		}
 
 	  public filesEvent(files) {
@@ -56,7 +64,7 @@
 			this.currentEnd = 0;
 			this.reachedEnd = false;
 			this.firstSent = false;
-			this.$input.val("");
+			this.getInput().val("");
 		}
 
 		private sendBlobToServer(isInitialCall) {
