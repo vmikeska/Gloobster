@@ -15,21 +15,14 @@
 			});
 
 			this.registerTripDeletion();
-
-			this.registerOpenMenu();
+		 
+			$("#newTrip").keypress((e) => {
+			 if (e.which === 13) {
+				 this.createNewTrip();
+			 }
+			});
 		}
-
-	 //todo: delete this workaround later
-		private registerOpenMenu() {
-		 $(".icon-wheel").click((e) => {
-			 e.preventDefault();
-			 var $i = $(e.target);
-			 var tid = $i.data("tid");
-			 var $menu = $(`#tripMenu_${tid}`);
-			 $menu.show();
-		 });
-	 }
-
+	 
 		private registerTripDeletion() {
 			$("#deleteTripConfirm").click((e) => {
 				e.preventDefault();
@@ -65,11 +58,7 @@
 
 			window.location.href = `/Trip/CreateNewTrip/${tripName}`;
 		}
-
-	 public deleteTrip() {
-		 
-	 }
-
+	 
 		private registerPhotoUpload(tripId, inputId) {
 			var config = new Common.FileUploadConfig();
 			config.inputId = inputId;
@@ -84,9 +73,7 @@
 			picUpload.onUploadFinished = (file, files) => {
 				var d = new Date();
 				$(".trip-menu").hide();
-				$(`#tripImg_${tripId}`).attr("src", `/Trip/TripPictureSmall_s/${tripId}?d=${d.getDate()}`);
-
-				//this.refreshBackground(this.trip.tripId);
+				$(`#tripImg_${tripId}`).attr("src", `/Trip/TripPictureSmall_s/${tripId}?d=${d.getDate()}`);			 
 			}
 		}
 

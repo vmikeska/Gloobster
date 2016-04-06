@@ -14,7 +14,7 @@ namespace Gloobster.Mappers
 		{
 			var request = new TripUsersResponse
 			{
-				id = entity.id.ToString(),
+				id = entity.User_id.ToString(),
 				displayName = entity.DisplayName
 			};
 

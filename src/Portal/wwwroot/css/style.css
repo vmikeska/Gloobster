@@ -2973,7 +2973,8 @@ q, .quote {
 
 .subnav-holder .button {
   font-size: 20px;
-  padding: 6px 13px; }
+  padding: 6px 13px;
+  background-color: rgba(255, 255, 255, 0.8); }
 
 .subnav-holder .dropdown {
   font-size: 20px; }
@@ -3709,6 +3710,8 @@ input.heading {
     margin-bottom: 10px; }
     .daybyday-form .address .dropdown .inputed, .daybyday-view .address .dropdown .inputed {
       width: 420px; }
+  .daybyday-form .address .inputed, .daybyday-view .address .inputed {
+    width: 420px; }
   .daybyday-form .address .create, .daybyday-view .address .create {
     position: relative;
     display: block;
@@ -3737,8 +3740,11 @@ input.heading {
       width: 210px !important; }
     .daybyday-form .dropdown .inputed, .daybyday-view .dropdown .inputed {
       width: 170px; }
-    .daybyday-form .address .dropdown .inputed, .daybyday-view .address .dropdown .inputed {
-      width: 320px; } }
+    .daybyday-form .address, .daybyday-view .address {
+      /*.dropdown {*/
+      /*}*/ }
+      .daybyday-form .address .inputed, .daybyday-view .address .inputed {
+        width: 320px; } }
 
 .daybyday-view .documents {
   height: auto;
@@ -3882,7 +3888,7 @@ input.heading {
       display: inline-block;
       float: right;
       margin: -2px -2px 0 0;
-      padding: 5px 10px;
+      padding: 3px;
       text-decoration: none; }
     .places .place .delete {
       float: right;
@@ -4973,3 +4979,17 @@ input.heading {
   position: absolute;
   right: 5px;
   top: 7px; }
+
+.hiddenFile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1; }
+
+.hiddenFile + label {
+  cursor: pointer;
+  height: 40px;
+  line-height: 40px;
+  white-space: nowrap; }

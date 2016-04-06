@@ -24,7 +24,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 		{			
 			var tripIdObj = new ObjectId(request.tripId);
 			
-			var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
+			var trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);
 
 			if (trip == null)
 			{
@@ -43,7 +43,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 			var update = DB.U<TripEntity>().Push(p => p.Comments, newComment);
 			await DB.UpdateAsync(filter, update);
             
-            trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
+            trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);
             
             var response = new NewCommentResponse
 			{

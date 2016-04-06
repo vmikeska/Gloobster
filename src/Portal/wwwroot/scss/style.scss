@@ -210,8 +210,9 @@ q, .quote {
 
 .subnav-holder {
     .button {
-        font-size: 20px;
-        padding: 6px 13px;
+        font-size: 20px;        
+        padding: 6px 13px;        
+        background-color: rgba(255, 255, 255, 0.8);
     }
     .dropdown {
         font-size: 20px;
@@ -1049,6 +1050,11 @@ input.heading {
                 width: 420px;
             }
         }
+
+        .inputed {
+                width: 420px;
+            }
+
         .create {
             @include position(relative);
             display: block;
@@ -1085,11 +1091,11 @@ input.heading {
             }
         }
         .address {
-            .dropdown {
+            /*.dropdown {*/
                 .inputed {
                     width: 320px;
                 }
-            }
+            /*}*/
         }
     }
 }
@@ -1261,7 +1267,7 @@ input.heading {
             display: inline-block;
             float: right;
             margin: -2px -2px 0 0;
-            padding: 5px 10px;
+            padding: 3px;
             text-decoration: none;
         }
         .delete {
@@ -2269,3 +2275,21 @@ input.heading {
     top: 7px;
 }
 
+.hiddenFile
+{
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.hiddenFile + label
+{
+  cursor: pointer;
+
+  height: 40px;
+  line-height: 40px;
+  white-space: nowrap;
+}

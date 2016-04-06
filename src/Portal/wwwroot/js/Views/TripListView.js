@@ -8,6 +8,7 @@ var Views;
     var TripListView = (function (_super) {
         __extends(TripListView, _super);
         function TripListView() {
+            var _this = this;
             _super.call(this);
             this.registerUploads();
             $(".menuClose").click(function (e) {
@@ -15,18 +16,12 @@ var Views;
                 $(".trip-menu").hide();
             });
             this.registerTripDeletion();
-            this.registerOpenMenu();
-        }
-        //todo: delete this workaround later
-        TripListView.prototype.registerOpenMenu = function () {
-            $(".icon-wheel").click(function (e) {
-                e.preventDefault();
-                var $i = $(e.target);
-                var tid = $i.data("tid");
-                var $menu = $("#tripMenu_" + tid);
-                $menu.show();
+            $("#newTrip").keypress(function (e) {
+                if (e.which === 13) {
+                    _this.createNewTrip();
+                }
             });
-        };
+        }
         TripListView.prototype.registerTripDeletion = function () {
             var _this = this;
             $("#deleteTripConfirm").click(function (e) {
@@ -60,8 +55,6 @@ var Views;
             }
             window.location.href = "/Trip/CreateNewTrip/" + tripName;
         };
-        TripListView.prototype.deleteTrip = function () {
-        };
         TripListView.prototype.registerPhotoUpload = function (tripId, inputId) {
             var config = new Common.FileUploadConfig();
             config.inputId = inputId;
@@ -74,7 +67,6 @@ var Views;
                 var d = new Date();
                 $(".trip-menu").hide();
                 $("#tripImg_" + tripId).attr("src", "/Trip/TripPictureSmall_s/" + tripId + "?d=" + d.getDate());
-                //this.refreshBackground(this.trip.tripId);
             };
         };
         return TripListView;

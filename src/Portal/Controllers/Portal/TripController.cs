@@ -334,12 +334,12 @@ namespace Gloobster.Portal.Controllers.Portal
         {
             var participantIds = participants.Where(p => p.State == ParticipantState.Accepted).Select(p => p.PortalUser_id).ToList();
             participantIds.Add(ownerId);
-            var participantUsers = DB.C<UserEntity>().Where(u => participantIds.Contains(u.id)).ToList();
+            var participantUsers = DB.List<UserEntity>(u => participantIds.Contains(u.User_id));
 
             var prtcs = participantUsers.Select(p => new UserViewModel
             {
                 Name = p.DisplayName,
-                Id = p.id.ToString()
+                Id = p.User_id.ToString()
             }).ToList();
 
             return prtcs;

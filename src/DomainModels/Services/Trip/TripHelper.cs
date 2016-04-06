@@ -13,7 +13,7 @@ namespace Gloobster.DomainModels.Services.Trip
 	{
         public static List<TripUsersResponse> GetUsers(List<ObjectId> ids, IDbOperations db)
         {
-			var commentsUsers = db.C<UserEntity>().Where(u => ids.Contains(u.id)).ToList();
+			var commentsUsers = db.List<UserEntity>(u => ids.Contains(u.User_id)).ToList();
 			var commentsUsersResponse = commentsUsers.Select(u => u.ToResponse()).ToList();
 			return commentsUsersResponse;
 		}
