@@ -2,8 +2,8 @@
 
 <script id="addPlace-template" type="text/x-handlebars-template">
 		<div id="lastCell" class="cell">
-				<a id="addPlace" class="create" href="#"></a>
-		</div>		
+				<a id="addPlace" class="disc-create" href="#"></a>
+		</div>		    
 </script>
 
 <script id="travel-template" type="text/x-handlebars-template">
@@ -41,12 +41,12 @@
 
 
 <script id="visitItem-template" type="text/x-handlebars-template">
-		<div data-id="{{id}}" class="place">
-				<span class="{{icon}} left mright10"></span>
-
-				{{name}}
-				<a class="more" href="javascript:window.open('{{link}}')">More</a>
-				<a class="delete" href="#">Delete</a>
+		<div data-id="{{id}}" class="place">            
+            <span class="{{icon}} left mright10"></span>
+            
+            <a href="javascript:window.open('{{link}}');">{{name}}</a>
+            
+            <a class="delete" href="#">Delete</a>            
 		</div>
 </script>
 
@@ -102,6 +102,7 @@
 								</h4>
 								<div id="stayPlace" class="dropdown">
 										<input class="inputed" type="text" placeholder="Search for place">
+                                        <img class="loader" src="/images/loader-gray.gif" style="display: none" />
 										<ul>											
 										</ul>
 								</div>
@@ -113,6 +114,7 @@
 
 								<div id="placeToVisit" class="dropdown">
 										<input class="inputed" type="text" placeholder="+ Pubs, Restaurants, Museums...">
+                                        <img class="loader" src="/images/loader-gray.gif" style="display: none" />
 										<ul>												
 										</ul>
 								</div>
@@ -207,77 +209,77 @@
 </script>
 
 <script id="travelDetail-template" type="text/x-handlebars-template">
-		<div class="daybyday-form margin form" action="#" method="post">
+		<div class="daybyday-form margin form">
 				
-				<div class="margin">
-						<div id="travelType" class="dropdown">
-								<span class="selected">										
-								</span>
-								<ul>
-										<li data-value="6" data-cls="icon-bike" data-cap="Bike">
-												<span class="icon-bike black left mright5"></span>
-												Bike
-										</li>
-										<li data-value="5" data-cls="icon-boat" data-cap="Ship">
-												<span class="icon-boat black left mright5"></span>
-												Ship
-										</li>
-										<li data-value="2" data-cls="icon-car" data-cap="Car">
-												<span class="icon-car black left mright5"></span>
-												Car
-										</li>
-										<li data-value="1" data-cls="icon-plane" data-cap="Plane">
-												<span class="icon-plane black left mright5"></span>
-												Plane
-										</li>
-										<li data-value="4" data-cls="icon-train" data-cap="Train">
-												<span class="icon-train black left mright5"></span>
-												Train
-										</li>
-										<li data-value="3" data-cls="icon-train" data-cap="Bus">
-												<span class="icon-train black left mright5"></span>
-												Bus
-										</li>
-										<li data-value="0" data-cls="icon-walk" data-cap="Walk">
-												<span class="icon-walk black left mright5"></span>
-												Walk
-										</li>
-								</ul>
-								<input type="hidden">
-						</div>
-				</div>
+            
+            @*<div class="table row">
+                <div class="cell baseline"><h3>PRG → VIE</h3></div>
+                <div class="cell baseline color1">Delta Air Flight 2560 from Prague to Vienna • Distance 1200 km</div>
+            </div>*@
 
-				<div id="flightDetails" class="margin" style="display: none">								
-						<div id="airportFrom" class="dropdown">
-								<input class="inputed" type="text" placeholder="From">
-								<ul>
-								</ul>
-						</div>
-						<div id="airportTo" class="dropdown">
-								<input class="inputed" type="text" placeholder="To">
-								<ul>										
-								</ul>
-						</div>
-				</div>
+            <div class="margin">
+                <div id="travelType" class="dropdown">
+                    <span class="selected">
+                    </span>
+                    <ul>
+                        <li data-value="6" data-cls="icon-bike" data-cap="Bike">
+                            <span class="icon-bike black left mright5"></span>
+                            Bike
+                        </li>
+                        <li data-value="5" data-cls="icon-boat" data-cap="Ship">
+                            <span class="icon-boat black left mright5"></span>
+                            Ship
+                        </li>
+                        <li data-value="2" data-cls="icon-car" data-cap="Car">
+                            <span class="icon-car black left mright5"></span>
+                            Car
+                        </li>
+                        <li data-value="1" data-cls="icon-plane" data-cap="Plane">
+                            <span class="icon-plane black left mright5"></span>
+                            Plane
+                        </li>
+                        <li data-value="4" data-cls="icon-train" data-cap="Train">
+                            <span class="icon-train black left mright5"></span>
+                            Train
+                        </li>
+                        <li data-value="3" data-cls="icon-bus" data-cap="Bus">
+                            <span class="icon-bus black left mright5"></span>
+                            Bus
+                        </li>
+                        <li data-value="0" data-cls="icon-walk" data-cap="Walk">
+                            <span class="icon-walk black left mright5"></span>
+                            Walk
+                        </li>
+                    </ul>
+                    <input type="hidden">
+                </div>
+            </div>
+            
+            
+            <div id="flightDetails" class="margin" style="display: none">
+                <div id="airportFrom" class="dropdown">
+                    <input class="inputed" type="text" placeholder="From">
+                    <ul></ul>
+                </div>
+                <div id="airportTo" class="dropdown">
+                    <input class="inputed" type="text" placeholder="To">
+                    <ul></ul>
+                </div>
+            </div>
+
+            					
 								
-								@*http://felicegattuso.com/projects/datedropper/#demo*@
-								@*http://www.jqueryrain.com/?B83aD_dg*@
-								@*http://doptiq.com/smart-forms/demos/samples/flat/datepicker-yellow.html*@
-								@*<div class="datepicker">
-												24.6.
-										</div>
-										<div class="datepicker">
-												24.6.
-										</div>*@
+				@*http://felicegattuso.com/projects/datedropper/#demo*@
+                @*http://www.jqueryrain.com/?B83aD_dg*@
 
 				<div class="margin">
 						Leaving: <input id="leavingDate" type="text" size="10" />-						
-						<input id="leavingHours" type="number" min="0" max="23" step="1" />:<input id="leavingMinutes" type="number" min="0" max="59" step="1"  />
+						<input id="leavingHours" class="shorted" type="number" min="0" max="23" step="1" />:<input id="leavingMinutes" class="shorted" type="number" min="0" max="59" step="1"  />
 				</div>
 								
 				<div class="margin">						
 						Arriving: <input id="arrivingDate" type="text" size="10" />-
-						<input id="arrivingHours" type="number" min="0" max="23" step="1" />:<input id="arrivingMinutes"  type="number" min="0" max="59" step="1"  />
+						<input id="arrivingHours" class="shorted" type="number" min="0" max="23" step="1" />:<input id="arrivingMinutes" class="shorted" type="number" min="0" max="59" step="1"  />
 				</div>
             
             @Html.Partial("DialogFilesUpload")

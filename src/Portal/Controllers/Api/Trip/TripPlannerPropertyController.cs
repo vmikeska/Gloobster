@@ -83,7 +83,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 		{
 			var tripId = request.values["tripId"];
 			TripPlanner.Initialize(tripId, UserId);
-			var result = TripPlanner.UpdateProperty(request.propertyName, request.values);
+			var result = await TripPlanner.UpdateProperty(request.propertyName, request.values);
 		
 			return new ObjectResult(result);
 		}

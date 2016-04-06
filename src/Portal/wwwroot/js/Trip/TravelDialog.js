@@ -87,8 +87,10 @@ var Trip;
             var $min = $("#" + minElementId);
             if (curDateStr) {
                 var utcTime = Trip.Utils.dateStringToUtcDate(curDateStr);
-                $hrs.val(utcTime.getUTCHours());
-                $min.val(utcTime.getUTCMinutes());
+                //$hrs.val(utcTime.getUTCHours());
+                //$min.val(utcTime.getUTCMinutes());
+                $hrs.val(utcTime.getHours());
+                $min.val(utcTime.getMinutes());
             }
             var dHrs = new Common.DelayedCallback($hrs);
             dHrs.callback = function () { _this.onTimeChanged($hrs, $min, propName); };
@@ -181,11 +183,11 @@ var Trip;
             var cls = $initIcon.data("cls");
             var cap = $initIcon.data("cap");
             $combo.find(".selected").html("<span class=\"" + cls + " black left mright5\"></span>" + cap);
-            $combo.find("li").click(function (evnt) {
-                var travelType = $(evnt.target).data("value");
+            $input.change(function (e) {
+                var travelType = parseInt($input.val());
                 _this.showHideTravelDetails(travelType);
                 var data = _this.dialogManager.getPropRequest("travelType", { travelType: travelType });
-                _this.dialogManager.updateProp(data, function (response) {
+                _this.dialogManager.updateProp(data, function (r) {
                     var $currentIcon = $combo.find("li[data-value='" + travelType + "']");
                     var currentCls = $currentIcon.data("cls");
                     $(".active").children().first().attr("class", currentCls);

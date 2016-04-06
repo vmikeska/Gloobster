@@ -20,8 +20,9 @@
 		public editable: boolean;
 
 		private lastRowNo = 1;
-		private placesPerRow = 4;
+		private placesPerRow = 3;
 		private contBaseName = "plannerCont";
+	  private emptyName = "Empty";
 
 		private inverseColor = false;
 
@@ -30,11 +31,11 @@
 
 		constructor(trip: any, editable: boolean) {
 
-		 var thisParticipant = _.find(trip.participants, (p) => {
-			 return p.userId === Views.ViewBase.currentUserId;
-		 });
-		 this.isInvited = (thisParticipant != null);
-		 this.isOwner = trip.ownerId === Views.ViewBase.currentUserId;
+			var thisParticipant = _.find(trip.participants, (p) => {
+				return p.userId === Views.ViewBase.currentUserId;
+			});
+			this.isInvited = (thisParticipant != null);
+			this.isOwner = trip.ownerId === Views.ViewBase.currentUserId;
 
 			this.editable = editable;
 			this.dialogManager = new DialogManager(this);
@@ -98,7 +99,6 @@
 
 			this.$currentContainer = $html;
 			this.lastRowNo = newRowNo;
-
 		}
 
 		private addAdder() {
@@ -217,7 +217,7 @@
 		public addPlace(place: Place, inverseColor: boolean) {
 			var self = this;
 
-			var name = "Empty";
+			var name = this.emptyName;
 			if (place.place) {
 				name = place.place.selectedName;
 			}

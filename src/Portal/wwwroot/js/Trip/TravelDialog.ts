@@ -115,8 +115,10 @@ module Trip {
 
 			if (curDateStr) {
 				var utcTime = Utils.dateStringToUtcDate(curDateStr);
-				$hrs.val(utcTime.getUTCHours());
-				$min.val(utcTime.getUTCMinutes());
+				//$hrs.val(utcTime.getUTCHours());
+				//$min.val(utcTime.getUTCMinutes());
+				$hrs.val(utcTime.getHours());
+				$min.val(utcTime.getMinutes());
 			}
 
 			var dHrs = new Common.DelayedCallback($hrs);
@@ -229,11 +231,12 @@ module Trip {
 
 			$combo.find(".selected").html(`<span class="${cls} black left mright5"></span>${cap}`);
 
-			$combo.find("li").click(evnt => {
-				var travelType = $(evnt.target).data("value");
+			$input.change((e) => {
+				var travelType = parseInt($input.val());
 				this.showHideTravelDetails(travelType);
 				var data = this.dialogManager.getPropRequest("travelType", { travelType: travelType });
-				this.dialogManager.updateProp(data, (response) => {
+
+				this.dialogManager.updateProp(data, (r) => {
 					var $currentIcon = $combo.find(`li[data-value='${travelType}']`);
 					var currentCls = $currentIcon.data("cls");
 					$(".active").children().first().attr("class", currentCls);

@@ -93,7 +93,7 @@ var Common;
         };
         PlaceSearchBox.prototype.getCaption = function (place) {
             var name = "";
-            var isSocNetworkPlace = (place.SourceType === SourceType.FB) || (place.SourceType === SourceType.S4);
+            var isSocNetworkPlace = _.contains([SourceType.FB, SourceType.S4, SourceType.Yelp], place.SourceType);
             if (isSocNetworkPlace) {
                 name = place.Name + ", " + place.City;
             }

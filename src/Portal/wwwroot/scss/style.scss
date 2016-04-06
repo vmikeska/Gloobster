@@ -40,10 +40,6 @@
 
 /* Global */
 
-nazdar {
-
-}
-
 body {
     background-color: $white;
     color: $black;
@@ -378,6 +374,21 @@ q, .quote {
 
 /* Day By Day */
 
+.tripMenu{
+
+    @include tablet {
+        .button{
+                padding: 3px 6px;
+                font-size: 16px;
+        }
+    }    
+}
+
+.tripDetail{
+    textarea { width: 100%;}
+}
+
+
 .daybyday {
     .cell {
         @include position(relative);
@@ -530,6 +541,7 @@ q, .quote {
     @include tablet {
         .destination {
             padding: 20px 10px;
+            font-size: 14px;
         }
         .transport {
             width: 74px;
@@ -881,7 +893,7 @@ input.heading {
         //    border-color: $color5;
         //}
         &.shorted {
-            width: 30px;
+            width: 35px;
         }
     }
     .dropdown {
@@ -1047,12 +1059,12 @@ input.heading {
             display: block;
             margin-bottom: 10px;
             .inputed {
-                width: 420px;
+                padding: 8px 13px;
             }
         }
 
         .inputed {
-                width: 420px;
+                width: 420px;                
             }
 
         .create {

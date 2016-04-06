@@ -45,11 +45,32 @@ var Trip;
             c.elementId = "cities";
             c.minCharsToSearch = 1;
             c.clearAfterSearch = false;
+            c.customSelectedFormat = function (place) { return _this.placeNameCustom(place); };
             this.placeSearch = new Common.PlaceSearchBox(c);
             this.placeSearch.onPlaceSelected = function (req, place) { return _this.onPlaceSelected(req, place); };
             if (data.place) {
                 this.placeSearch.setText(data.place.selectedName);
             }
+        };
+        PlaceDialog.prototype.placeNameCustom = function (place) {
+            var name = "";
+            var isSocNetworkPlace = _.contains([SourceType.FB, SourceType.S4, SourceType.Yelp], place.SourceType);
+            if (isSocNetworkPlace) {
+                name = "" + this.takeMaxChars(place.Name, 19);
+            }
+            if (place.SourceType === SourceType.Country) {
+                name = place.CountryCode;
+            }
+            if (place.SourceType === SourceType.City) {
+                name = this.takeMaxChars(place.City, 19) + ", " + place.CountryCode;
+            }
+            return name;
+        };
+        PlaceDialog.prototype.takeMaxChars = function (str, cnt) {
+            if (str.length <= cnt) {
+                return str;
+            }
+            return str.substring(0, cnt - 1) + ".";
         };
         PlaceDialog.prototype.createPlaceToVisitSearch = function (data) {
             var _this = this;
@@ -138,6 +159,9 @@ var Trip;
             if (sourceType === SourceType.S4) {
                 link = "http://foursquare.com/v/" + sourceId;
             }
+            if (sourceType === SourceType.Yelp) {
+                link = "http://www.yelp.com/biz/" + sourceId;
+            }
             return link;
         };
         PlaceDialog.prototype.buildTemplateEdit = function ($row) {
@@ -192,7 +216,7 @@ var Trip;
             var context = {
                 id: id,
                 icon: iconClass,
-                name: name,
+                name: this.takeMaxChars(name, 33),
                 link: this.getSocLink(sourceType, sourceId)
             };
             var html = this.dialogManager.visitedItemTemplate(context);
@@ -212,12 +236,10 @@ var Trip;
             switch (sourceType) {
                 case SourceType.FB:
                     return "icon-facebook";
-                //case SourceType.City:
-                // return "icon-city";
-                //case SourceType.Country:
-                // return "icon-country";
                 case SourceType.S4:
                     return "icon-foursquare";
+                case SourceType.Yelp:
+                    return "icon-yelp";
             }
             return "";
         };

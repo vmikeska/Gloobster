@@ -3109,6 +3109,14 @@ q, .quote {
     content: ""; }
 
 /* Day By Day */
+@media screen and (max-width: 959px) {
+  .tripMenu .button {
+    padding: 3px 6px;
+    font-size: 16px; } }
+
+.tripDetail textarea {
+  width: 100%; }
+
 .daybyday .cell {
   position: relative;
   padding-top: 40px;
@@ -3312,7 +3320,8 @@ q, .quote {
 
 @media screen and (max-width: 959px) {
   .daybyday .destination {
-    padding: 20px 10px; }
+    padding: 20px 10px;
+    font-size: 14px; }
   .daybyday .transport {
     width: 74px; }
     .daybyday .transport [class^="icon-"] {
@@ -3587,7 +3596,7 @@ input.heading {
     color: #009dc4;
     padding: 8px 13px; }
     .blue-form input[type="color"].shorted, .daybyday-form input[type="color"].shorted, .daybyday-view input[type="color"].shorted, .blue-form input[type="date"].shorted, .daybyday-form input[type="date"].shorted, .daybyday-view input[type="date"].shorted, .blue-form input[type="datetime"].shorted, .daybyday-form input[type="datetime"].shorted, .daybyday-view input[type="datetime"].shorted, .blue-form input[type="datetime-local"].shorted, .daybyday-form input[type="datetime-local"].shorted, .daybyday-view input[type="datetime-local"].shorted, .blue-form input[type="email"].shorted, .daybyday-form input[type="email"].shorted, .daybyday-view input[type="email"].shorted, .blue-form input[type="month"].shorted, .daybyday-form input[type="month"].shorted, .daybyday-view input[type="month"].shorted, .blue-form input[type="number"].shorted, .daybyday-form input[type="number"].shorted, .daybyday-view input[type="number"].shorted, .blue-form input[type="password"].shorted, .daybyday-form input[type="password"].shorted, .daybyday-view input[type="password"].shorted, .blue-form input[type="search"].shorted, .daybyday-form input[type="search"].shorted, .daybyday-view input[type="search"].shorted, .blue-form input[type="tel"].shorted, .daybyday-form input[type="tel"].shorted, .daybyday-view input[type="tel"].shorted, .blue-form input[type="text"].shorted, .daybyday-form input[type="text"].shorted, .daybyday-view input[type="text"].shorted, .blue-form input[type="time"].shorted, .daybyday-form input[type="time"].shorted, .daybyday-view input[type="time"].shorted, .blue-form input[type="url"].shorted, .daybyday-form input[type="url"].shorted, .daybyday-view input[type="url"].shorted, .blue-form input[type="week"].shorted, .daybyday-form input[type="week"].shorted, .daybyday-view input[type="week"].shorted, .blue-form input:not([type]).shorted, .daybyday-form input:not([type]).shorted, .daybyday-view input:not([type]).shorted, .blue-form textarea.shorted, .daybyday-form textarea.shorted, .daybyday-view textarea.shorted, .blue-form select.shorted, .daybyday-form select.shorted, .daybyday-view select.shorted {
-      width: 30px; }
+      width: 35px; }
   .blue-form .dropdown .selected, .daybyday-form .dropdown .selected, .daybyday-view .dropdown .selected {
     border-color: #fff; }
   .blue-form .dropdown .inputed, .daybyday-form .dropdown .inputed, .daybyday-view .dropdown .inputed {
@@ -3709,7 +3718,7 @@ input.heading {
     display: block;
     margin-bottom: 10px; }
     .daybyday-form .address .dropdown .inputed, .daybyday-view .address .dropdown .inputed {
-      width: 420px; }
+      padding: 8px 13px; }
   .daybyday-form .address .inputed, .daybyday-view .address .inputed {
     width: 420px; }
   .daybyday-form .address .create, .daybyday-view .address .create {

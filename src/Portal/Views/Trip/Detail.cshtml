@@ -1,11 +1,12 @@
-﻿@{	
-		ViewBag.MenuGroup = "Trip";
+﻿@{
+    ViewBag.MenuGroup = "Trip";
+    ViewBag.BodyClass = "tripDetail";
 }
 
 @using System.Threading.Tasks
 @using Gloobster.Portal.Controllers.Portal
 @using Gloobster.Portal.ViewModels
-@model Gloobster.Portal.ViewModels.ViewModelTripDetail
+@model ViewModelTripDetail
 
 <link href="~/css/ToDelete.css" rel="stylesheet">
 
@@ -23,23 +24,13 @@
 <script type="text/javascript" src="@Url.Content("~/js/Trip/Utils.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Trip/PlacesManager.js")"></script>
 
-<style>  
-    .noFiles {
-        word-spacing: 0;
-    }
-
-</style>
-
     <div class="wrapper">
 
         <div class="table margin width100">
             <div class="cell middle">
-                <input id="nameInput" class="heading middle" type="text" placeholder="Give it a name" value="@Model.Name">
-                @*<a class="button border" href="#">
-                    <span class="icon-photo middle">Add photo</span>
-                </a>*@
+                <input id="nameInput" class="heading middle" type="text" placeholder="Give it a name" value="@Model.Name">                
             </div>
-            <div class="cell middle tright">                
+            <div class="cell middle tright tripMenu">                
                 <a data-tmp="menuPrivacy-template" class="button blue-trans tripMenuButton popup2-target" data-target="#popup-privacy" href="#">
                     <span class="icon-globe middle mright5"></span>
                     Privacy
@@ -60,7 +51,7 @@
 
         </div>
 
-	    <textarea class="color1" style="width: 900px;" id="description" placeholder="write trip description...">@Model.Description</textarea>
+	    <textarea class="color1" id="description" placeholder="write trip description...">@Model.Description</textarea>
 
 		<h3>Day by Day Plan</h3>
 		<div id="plannerCont1" class="daybyday table margin">		
@@ -80,7 +71,7 @@
 			<label class="color1" for="public">Public</label>
 		</div>
 	</div>
-	<textarea class="color1" style="width: 900px;" id="notes" placeholder="write your simple notes...">@Model.Notes</textarea>
+	<textarea class="color1" id="notes" placeholder="write your simple notes...">@Model.Notes</textarea>
 	@*<p class="color1">My Own Personal trip Description that I can write and edit anytime. This text would be used as default copy for sharing and for any other off site interaction so be careful. In the future it could have a feature allowing theme photo being pre-generated and possibly replaced by my photo of choice.</p>*@
 </section>
 

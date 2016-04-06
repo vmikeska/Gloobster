@@ -4,8 +4,9 @@ var Trip;
         function Planner(trip, editable) {
             this.$currentContainer = $("#plannerCont1");
             this.lastRowNo = 1;
-            this.placesPerRow = 4;
+            this.placesPerRow = 3;
             this.contBaseName = "plannerCont";
+            this.emptyName = "Empty";
             this.inverseColor = false;
             var thisParticipant = _.find(trip.participants, function (p) {
                 return p.userId === Views.ViewBase.currentUserId;
@@ -160,7 +161,7 @@ var Trip;
         };
         Planner.prototype.addPlace = function (place, inverseColor) {
             var self = this;
-            var name = "Empty";
+            var name = this.emptyName;
             if (place.place) {
                 name = place.place.selectedName;
             }

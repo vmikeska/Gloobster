@@ -30,7 +30,7 @@ module Trip {
 		private createView(data) {
 			this.buildTemplateView(this.$rowCont, data);
 
-			this.files = this.dialogManager.createFilesInstanceView(data.id, Common.TripEntityType.Place);			
+			this.files = this.dialogManager.createFilesInstanceView(data.id, Common.TripEntityType.Place);
 			this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);
 		}
 
@@ -53,16 +53,17 @@ module Trip {
 				});
 			}
 
-			this.files = this.dialogManager.createFilesInstance(data.id, Common.TripEntityType.Place);			
+			this.files = this.dialogManager.createFilesInstance(data.id, Common.TripEntityType.Place);
 			this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);
 		}
 
 		private createNameSearch(data) {
-		 var c = new Common.PlaceSearchConfig();
+			var c = new Common.PlaceSearchConfig();
 			c.providers = "0,1,2,3,4";
 			c.elementId = "cities";
 			c.minCharsToSearch = 1;
 			c.clearAfterSearch = false;
+			c.customSelectedFormat = (place) => this.placeNameCustom(place);
 
 			this.placeSearch = new Common.PlaceSearchBox(c);
 			this.placeSearch.onPlaceSelected = (req, place) => this.onPlaceSelected(req, place);
@@ -72,8 +73,35 @@ module Trip {
 			}
 		}
 
+		private placeNameCustom(place) {
+			var name = "";
+
+			var isSocNetworkPlace = _.contains([SourceType.FB, SourceType.S4, SourceType.Yelp], place.SourceType);
+			if (isSocNetworkPlace) {
+				name = `${this.takeMaxChars(place.Name, 19)}`;
+			}
+
+			if (place.SourceType === SourceType.Country) {
+				name = place.CountryCode;
+			}
+
+			if (place.SourceType === SourceType.City) {
+				name = this.takeMaxChars(place.City, 19) + ", " + place.CountryCode;
+			}
+
+			return name;
+		}
+
+		private takeMaxChars(str, cnt) {
+			if (str.length <= cnt) {
+				return str;
+			}
+
+			return str.substring(0, cnt - 1) + ".";
+		}
+
 		private createPlaceToVisitSearch(data) {
-		 var c = new Common.PlaceSearchConfig();
+			var c = new Common.PlaceSearchConfig();
 			c.providers = "1,0,4";
 			c.elementId = "placeToVisit";
 			c.minCharsToSearch = 1;
@@ -88,7 +116,7 @@ module Trip {
 		}
 
 		private createAddressSearch(data) {
-		 var c = new Common.PlaceSearchConfig();
+			var c = new Common.PlaceSearchConfig();
 			c.providers = "1,0,4";
 			c.elementId = "stayPlace";
 			c.minCharsToSearch = 1;
@@ -145,16 +173,16 @@ module Trip {
 					stayName: stayName
 				});
 
-			  if (data.address) {
-				 context = $.extend(context, {										
-					stayIco: this.getIcon(data.address.sourceType),
-					stayLink: this.getSocLink(data.address.sourceType, data.address.sourceId),
-					hasAddress: true
-				 });  
-			  }
-			 
+				if (data.address) {
+					context = $.extend(context, {
+						stayIco: this.getIcon(data.address.sourceType),
+						stayLink: this.getSocLink(data.address.sourceType, data.address.sourceId),
+						hasAddress: true
+					});
+				}
+
 				html = this.dialogManager.placeDetailViewTemplate(context);
-			} else {			 
+			} else {
 				html = this.dialogManager.placeDetailViewFriends(context);
 			}
 
@@ -171,6 +199,9 @@ module Trip {
 			}
 			if (sourceType === SourceType.S4) {
 				link = "http://foursquare.com/v/" + sourceId;
+			}
+			if (sourceType === SourceType.Yelp) {
+			 link = "http://www.yelp.com/biz/" + sourceId;
 			}
 			return link;
 		}
@@ -215,7 +246,7 @@ module Trip {
 
 		private onPlaceSelected(req, place) {
 			$(".active .name").text(this.placeSearch.lastText);
-		 
+
 			var data = this.dialogManager.getPropRequest("place", {
 				sourceId: req.SourceId,
 				sourceType: req.SourceType,
@@ -242,7 +273,7 @@ module Trip {
 			var context = {
 				id: id,
 				icon: iconClass,
-				name: name,
+				name: this.takeMaxChars(name, 33),
 				link: this.getSocLink(sourceType, sourceId)
 			};
 
@@ -269,12 +300,10 @@ module Trip {
 			switch (sourceType) {
 			case SourceType.FB:
 				return "icon-facebook";
-			//case SourceType.City:
-			// return "icon-city";
-			//case SourceType.Country:
-			// return "icon-country";
 			case SourceType.S4:
 				return "icon-foursquare";
+			case SourceType.Yelp:
+				return "icon-yelp";
 			}
 
 			return "";
