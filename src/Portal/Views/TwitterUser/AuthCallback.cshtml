@@ -1,20 +1,26 @@
 ﻿@using System.Threading.Tasks
-@using Gloobster.Portal.ViewModels
-@model ViewModelTwitterAuthCallback
+
+@model Gloobster.Portal.Controllers.TwitterResponse
 @{
     Layout = "";
 }
 
-@Html.Partial("_GlobalScripts")
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery.cookie/jquery.cookie.js"></script>
+
+<script type="text/javascript" src="@Url.Content("~/js/Common/globals.js")"></script>
+
 <script type="text/javascript" src="@Url.Content("~/js/Views/TwitterAuthView.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/registration/SocialButtons.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Common/CookieManager.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Common/RequestSender.js")"></script>
 
 <script>
     function onload() {
         var response = {
-            "userId": "@Model.UserId",
-            "accessToken": "@Model.AccessToken",            
-            "tokenSecret": "@Model.TokenSecret"
+            "userId": "@Model.userId",
+            "accessToken": "@Model.accessToken",            
+            "tokenSecret": "@Model.tokenSecret"
         };
 
         var view = new Views.TwitterAuthView();

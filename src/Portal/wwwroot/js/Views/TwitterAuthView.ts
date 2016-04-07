@@ -1,16 +1,13 @@
 ﻿module Views {
 
-	export class TwitterAuthView extends ViewBase {
+	export class TwitterAuthView  {
 
 	 private cookiesSaver: Reg.AuthCookieSaver;
 
-		constructor() {
-		 super();
+		constructor() {		 
 		 this.cookiesSaver = new Reg.AuthCookieSaver();
 		}
-
-		get pageType(): Views.PageType { return PageType.TwitterAuth; }
-
+	 
 		private twInterval = null;
 
 		private onResponse(resp) {
@@ -33,6 +30,18 @@
 					callback();					
 				}				
 			}, 500);
+		}
+
+		public apiPost(endpointName: string, data: any, callback: Function) {
+
+		 var endpoint = '/api/' + endpointName;
+		 console.log("posting: " + endpoint);
+
+		 var request = new Common.RequestSender(endpoint, data, true);
+		 request.serializeData();
+		 request.onSuccess = callback;
+		 request.onError = response => { console.log(JSON.stringify(response)) };
+		 request.sendPost();
 		}
 	}
 }

@@ -5,24 +5,25 @@ using Autofac;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
-using Gloobster.Portal.Controllers.Base;
-using Gloobster.Portal.ViewModels;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
-using Serilog;
 
 namespace Gloobster.Portal.Controllers
 {
-    public class TwitterUserController : PortalBaseController
+    public class TwitterUserController : Controller
     {
-	    public IMyTwitterService TwitterSvc { get; set; }	    				
+	    public IMyTwitterService TwitterSvc { get; set; }	    
+		public IDbOperations DB { get; set; }
+		public IComponentContext ComponentContext { get; set; }
 
-        public TwitterUserController(IMyTwitterService twitterService, ILogger log, IDbOperations db) : base(log, db)
-        {
-            TwitterSvc = twitterService;
-        }
+		public TwitterUserController(IMyTwitterService twitterService, IDbOperations db, IComponentContext componentContext)
+		{
+			TwitterSvc = twitterService;			
+			DB = db;
+			ComponentContext = componentContext;
+		}
         
-        public ActionResult Authorize()
+	    public ActionResult Authorize()
 	    {
 		    Uri uri = TwitterSvc.BuildAuthorizationUri();
 			
@@ -32,15 +33,22 @@ namespace Gloobster.Portal.Controllers
 		public IActionResult AuthCallback(string oauth_token, string oauth_verifier)
 		{			
 			var auth = TwitterSvc.VerifyCredintial(oauth_token, oauth_verifier);
+			
+			var response = new TwitterResponse
+			{
+				userId = auth.UserId,
+				accessToken = auth.AccessToken,				
+				tokenSecret = auth.TokenSecret				
+			};
 
-		    var vm = CreateViewModelInstance<ViewModelTwitterAuthCallback>();
-		    vm.UserId = auth.UserId;
-		    vm.AccessToken = auth.AccessToken;
-		    vm.TokenSecret = auth.TokenSecret;
-		
-			return View(vm);
-		}
+			return View(response);
+		}        
+	}
 
-        
-    }
+	public class TwitterResponse
+	{		
+		public string accessToken { get; set; }
+		public string tokenSecret { get; set; }
+		public string userId { get; set; }		
+	}
 }
