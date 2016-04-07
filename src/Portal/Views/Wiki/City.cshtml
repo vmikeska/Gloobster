@@ -1,4 +1,5 @@
 ﻿@using System.Threading.Tasks
+@using Gloobster.DomainModels.Wiki
 @using Gloobster.Portal.Controllers.Portal
 @using Gloobster.Portal.ViewModels
 @model WikiCityViewModel
@@ -67,9 +68,17 @@
         @Html.Partial("Table1Block", Model.Accommodation())
     </div>
 
-    @Html.Partial("Photos")
+    <div id="photos" class="blue-border margin">
+    @Html.Partial("ArticlePhotos", new PhotosVM
+    {
+        Photos = Model.Photos.Where(p => p.Confirmed).ToList(),
+        ArticleId = Model.ArticleId,
+        Admin = false,
+        UserIsAdmin = Model.IsAdmin
+    })
+    </div>
 
     @Html.Partial("GeoLinks")
 
 
-@Html.Partial("PageScripts")
+    @Html.Partial("PageScripts")

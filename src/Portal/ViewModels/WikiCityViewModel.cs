@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Gloobster.Entities;
 using System.Linq;
+using Gloobster.Database;
 using Gloobster.Entities.Wiki;
 using Gloobster.Enums;
 using MongoDB.Bson;
@@ -18,40 +19,35 @@ namespace Gloobster.Portal.ViewModels
         public override List<ObjectId> Dos => Article.Dos;
         public override List<ObjectId> Donts => Article.Donts;
 
-        private List<PhotoVM> photos;
-        public List<PhotoVM> Photos
+        private List<PhotoVM> _photos;
+        public List<PhotoVM> Photos => _photos ?? (_photos = ConvertPhotos(Article.Photos, DB));
+
+        public static List<PhotoVM> ConvertPhotos(List<WikiPhotoSE> photos, IDbOperations db)
         {
-            get
+            var userIds = photos.Select(p => p.Owner_id).Distinct().ToList();
+            var users = db.List<UserEntity>(u => userIds.Contains(u.User_id));
+
+            var phts = photos.Select(p =>
             {
-                if (photos == null)
+                string ownerName = "NotKnown";
+                var owner = users.FirstOrDefault(u => u.User_id == p.Owner_id);
+                if (owner != null)
                 {
-                    var userIds = Article.Photos.Select(p => p.Owner_id).Distinct().ToList();
-                    var users = DB.C<UserEntity>().Where(u => userIds.Contains(u.id)).ToList();
-
-                    photos = Article.Photos.Select(p =>
-                    {
-                        string ownerName = "NotKnown";
-                        var owner = users.FirstOrDefault(u => u.id == p.Owner_id);
-                        if (owner != null)
-                        {
-                            ownerName = owner.DisplayName;
-                        }
-
-                        var item = new PhotoVM
-                        {
-                            Id = p.id.ToString(),
-                            Description = p.Description,
-                            OwnerName = ownerName,
-                            OwnerId = p.Owner_id.ToString(),
-                            Confirmed = p.Confirmed,
-                            Inserted = p.Inserted
-                        };
-                        return item;
-                    }).ToList();
+                    ownerName = owner.DisplayName;
                 }
 
-                return photos;
-            }
+                var item = new PhotoVM
+                {
+                    Id = p.id.ToString(),
+                    Description = p.Description,
+                    OwnerName = ownerName,
+                    OwnerId = p.Owner_id.ToString(),
+                    Confirmed = p.Confirmed,
+                    Inserted = p.Inserted
+                };
+                return item;
+            }).ToList();
+            return phts;
         }
 
         public override List<Breadcrumb> GetBreadcrumb()
@@ -379,6 +375,14 @@ namespace Gloobster.Portal.ViewModels
         public bool? Liked { get; set; }
     }
 
+
+    public class PhotosVM
+    {
+        public string ArticleId { get; set; }
+        public List<PhotoVM> Photos { get; set; }
+        public bool Admin { get; set; }
+        public bool UserIsAdmin { get; set; }
+    }
 
     public class PhotoVM
     {

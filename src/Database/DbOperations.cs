@@ -22,6 +22,10 @@ namespace Gloobster.Database
         {
             return c.Where(query).ToList();
         }
+        public static List<T> List<T>(this IMongoQueryable<T> c)
+        {
+            return c.ToList();
+        }
     }
 
     public class ExistResult<T>
@@ -57,6 +61,17 @@ namespace Gloobster.Database
                 Exists = entity != null,
                 Entity = entity
             };
+        }
+
+        public List<T> List<T>() where T : EntityBase
+        {
+            var collectionName = GetCollectionName<T>();
+            var collection = Database.GetCollection<T>(collectionName);
+
+            var collectionQueryable = collection.AsQueryable();
+
+            var result = collectionQueryable.List();
+            return result;
         }
 
         public List<T> List<T>(Expression<Func<T, bool>> query) where T : EntityBase
@@ -112,7 +127,7 @@ namespace Gloobster.Database
 			await Database.DropCollectionAsync(collectionName);
         }
 
-        public async void CreateCollection<T>() where T : EntityBase
+        public async Task CreateCollection<T>() where T : EntityBase
         {
             bool exists = C<T>().Any();
             if (!exists)
@@ -122,7 +137,10 @@ namespace Gloobster.Database
                     var collectionName = GetCollectionName<T>();
                     await Database.CreateCollectionAsync(collectionName);
                 }
-                catch {}
+                catch(Exception exc)
+                {
+                    
+                }
             }
         }
         

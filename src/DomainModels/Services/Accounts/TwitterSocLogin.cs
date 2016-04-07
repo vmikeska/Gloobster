@@ -81,6 +81,11 @@ namespace Gloobster.DomainModels.Services.Accounts
             return ProfileUrl;
         }
 
+        public async Task OnNewUser(SocAuthDO auth)
+        {
+            
+        }
+
         private string GetImageUrl(string roughUrl)
         {
             var url = roughUrl.Replace("_normal", "");

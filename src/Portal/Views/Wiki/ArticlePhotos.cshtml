@@ -1,0 +1,95 @@
+﻿@using System.Threading.Tasks
+@using System.Linq
+@using Gloobster.Portal.ViewModels
+@model PhotosVM
+
+@{
+    Layout = "";
+
+    var photosGroups = Model.Photos.SplitBy(3);    
+}
+
+@if (Model.Admin)
+{
+    <div>
+
+        <a class="photoButton" href="#">
+            <input id="galleryPhotoInput" class="inputs" type="file" />
+            <label for="galleryPhotoInput">
+                <span class="icon-photo middle mright5"></span>
+                Direct upload
+            </label>
+        </a>
+
+    </div>
+}
+
+@foreach (var group in photosGroups)
+{
+    <div class="table row col3 margin">
+
+        @for (int act = 1; act <= 3; act++)
+        {
+            if (act <= group.Count)
+            {
+                var photo = group[act - 1];
+
+                var thumbLink = $"/Wiki/ArticlePhotoThumb?photoId={photo.Id}&articleId={Model.ArticleId}";
+                var link = $"/Wiki/ArticlePhoto?photoId={photo.Id}&articleId={Model.ArticleId}";
+
+                <div id="@photo.Id" class="cell">
+
+                    @if (Model.Admin)
+                    {
+                        <a href="#" data-pi="@photo.Id" data-ai="@Model.ArticleId" class="delete">Delete</a>
+                        <span>   </span>
+                        
+                        if (!photo.Confirmed)
+                        {
+                            <a href="#" data-pi="@photo.Id" data-ai="@Model.ArticleId" class="confirm">Confirm</a>                        
+                        }
+                    }
+
+                    <a href="@link" target="_blank"><img class="radius mhalf" src="@thumbLink"></a>
+                    <span>By </span><a href="/PortalUser/Detail/@photo.OwnerId">@photo.OwnerName</a>
+                </div>
+            }
+            else if (photosGroups.First().Equals(group))
+            {
+                @Html.Partial("EmptyPhoto")
+            }
+        }
+    </div>
+}
+
+@if (!Model.Photos.Any())
+{
+    <div class="table row col3 margin">
+        @Html.Partial("EmptyPhoto")
+        @Html.Partial("EmptyPhoto")
+        @Html.Partial("EmptyPhoto")
+    </div>
+}
+
+@if (!Model.UserIsAdmin)
+{
+    <div class="tright">
+        <a id="recommendPhoto" class="button mleft10" href="#">Recommend a Photo</a>
+    </div>
+
+    <div id="photosForm" class="tright" style="display: none">
+        <input id="cid" class="isAdmin" type="checkbox" checked><label for="cid"><span>I understand </span></label>
+        <a href="#">Terms and conditions for adding photos</a>
+        <br/>
+        <a href="#" class="button cancel">Cancel</a>
+
+        <a class="photoButton" href="#">
+            <input id="galleryInput" class="inputs" type="file"/>
+            <label for="galleryInput">
+                <span class="button">Upload photo</span>                    
+            </label>
+        </a>
+
+    </div>
+}
+

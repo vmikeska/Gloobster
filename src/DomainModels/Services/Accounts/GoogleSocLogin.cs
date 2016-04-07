@@ -122,7 +122,12 @@ namespace Gloobster.DomainModels.Services.Accounts
             
             return prms.FirstOrDefault();
         }
-        
+
+        public async Task OnNewUser(SocAuthDO auth)
+        {
+            
+        }
+
         private List<string> ParseLanguages(string langs)
         {
             return new List<string>

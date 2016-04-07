@@ -202,6 +202,8 @@ namespace Gloobster.DomainModels.Services.Accounts
 
             await CreateNewUserData(auth.UserId, userEntity.DisplayName);
 
+            await SocLogin.OnNewUser(auth);
+
             var response = new LoginResponseDO
             {
                 Token = BuildToken(auth.UserId, accountEntity.Secret),

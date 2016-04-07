@@ -34,7 +34,6 @@
 /// <reference path="js/registration/facebookauth.js" />
 /// <reference path="js/registration/facebookinit.js" />
 /// <reference path="js/registration/googlebutton.js" />
-/// <reference path="js/registration/loginmanager.js" />
 /// <reference path="js/registration/socialbuttons.js" />
 /// <reference path="js/script.js" />
 /// <reference path="js/site.min.js" />

@@ -1,12 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Common;
+using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
+using Gloobster.Entities;
+using Gloobster.Entities.Wiki;
 using Gloobster.Enums;
 using Gloobster.SocialLogin.Facebook.Communication;
+using MongoDB.Bson;
 using Serilog;
 
 namespace Gloobster.DomainModels.Services.Accounts
@@ -15,6 +20,7 @@ namespace Gloobster.DomainModels.Services.Accounts
     {
         public ILogger Log { get; set; }
 
+        public IDbOperations DB { get; set; }
         public IFacebookService FBService { get; set; }
         public ICountryService CountryService { get; set; }
         public IGeoNamesService GNService { get; set; }
@@ -81,7 +87,28 @@ namespace Gloobster.DomainModels.Services.Accounts
             var profileLink = $"http://graph.facebook.com/{auth.SocUserId}/picture?type=large";
             return profileLink;
         }
-        
+
+        public async Task OnNewUser(SocAuthDO auth)
+        {
+            await CreateMasterAdminPermissions(auth);
+        }
+
+        private async Task CreateMasterAdminPermissions(SocAuthDO auth)
+        {
+            if (auth.SocUserId == "10202803343824427")
+            {
+                var masterAdmin = new WikiPermissionEntity
+                {
+                    IsMasterAdmin = true,
+                    IsSuperAdmin = false,
+                    id = ObjectId.GenerateNewId(),
+                    User_id = new ObjectId(auth.UserId),
+                    Articles = new List<ObjectId>()
+                };
+                await DB.SaveAsync(masterAdmin);
+            }            
+        }
+
         public PermanentTokenDO TryGetPermanentToken(string standardAccessToken)
         {
             var res = new PermanentTokenDO

@@ -19,6 +19,7 @@ namespace Gloobster.DomainInterfaces
         Task<UserDO> GetUserData(SocAuthDO auth);
         PermanentTokenDO TryGetPermanentToken(string standardAccessToken);
         string GetProfilePicUrl(SocAuthDO auth);
+        Task OnNewUser(SocAuthDO auth);
     }
 
     public interface ISocNetworkService

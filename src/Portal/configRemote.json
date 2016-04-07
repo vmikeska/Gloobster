@@ -1,6 +1,12 @@
 {
   "Data": {
     "DefaultConnection": {
+      "ConnectionString": "mongodb://worker:72365e25-b9d5-4ac9-a7f5-e7a0358c353b@ds030339-a0.mlab.com:30339,ds030339-a1.mlab.com:30332/gloobster?replicaSet=rs-ds030339",
+      "DatabaseName": "gloobster"
+    }
+  },
+  "DataDis": {
+    "DefaultConnection": {
       "ConnectionString": "mongodb://GloobsterConnector:Gloobster007@ds036178.mongolab.com:36178/Gloobster",
       "DatabaseName": "Gloobster"
     }
@@ -8,7 +14,7 @@
   "Environment": {
     "Domain": "gloob999.azurewebsites.net",
     "IsLocal": "false",
-    "Protocol":  "http"
+    "Protocol": "http"
   },
   "AppSecret": "ThisIsAppSecret",
   "Facebook": {

@@ -59,9 +59,6 @@ namespace CitiesImporter
 
         public static void SaveCities(int popTreshold, int lastProcessedGid)
         {
-            //DB = new DbOperations("mongodb://localhost:27017/Gloobster", "Gloobster");
-
-            DB = new DbOperations("mongodb://GloobsterConnector:Gloobster007@ds036178.mongolab.com:36178/Gloobster", "Gloobster"); 
             ArticleDomain = new WikiArticleDomain
             {
                 DB = DB
@@ -81,7 +78,7 @@ namespace CitiesImporter
                     continue;
                 }
 
-                var dbCity = DB.C<WikiCityEntity>().FirstOrDefault(c => c.GID == city.GID);
+                var dbCity = DB.FOD<WikiCityEntity>(c => c.GID == city.GID);
                 if (dbCity != null)
                 {
                     continue;

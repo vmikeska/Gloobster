@@ -80,89 +80,69 @@ module Views {
 
 	export class PhotosAdmin {
 		private articleId;
-
-		private adminTemplate;
+	 
 		private $cont;
 
 		constructor(articleId) {
 			this.articleId = articleId;
-
-			this.adminTemplate = ViewBase.currentView.registerTemplate("photosAdmin-template");
+		 
 			this.$cont = $("#photos");
 		}
 
-		public createAdmin() {
-			this.$cont.before(this.adminTemplate());
-			this.registerPhotoUpload(this.articleId, "galleryPhotoInput");
-
-			this.showPhotos(true);
-			this.addActions();
+		public createAdmin() {						
+			this.refreshPhotos(this.articleId, true);			
 		}
 
 		public clean() {
-			this.$cont.find(".delete").remove();
-			this.$cont.find(".confirm").remove();
+		 this.refreshPhotos(this.articleId, false);
 		}
-
-		public refreshActions() {
-			this.clean();
-			this.addActions();
-		}
-
-		private delPhoto($del, $photo) {
-			$del.click((e) => {
+	 
+		private regDelPhoto() {
+			this.$cont.find(".delete").click((e) => {
 				e.preventDefault();
+				var $target = $(e.target);
 
 				var confirmDialog = new Common.ConfirmDialog();
 				confirmDialog.create("Delete", "Do you want to permanently delete this photo ?", "Cancel", "Ok", ($dialog) => {
-					var photoId = $photo.attr("id");
-					ViewBase.currentView.apiDelete("WikiPhotoGallery", [["articleId", this.articleId], ["photoId", photoId]], (r) => {
+				 
+					ViewBase.currentView.apiDelete("WikiPhotoGallery", [["articleId", $target.data("ai")], ["photoId", $target.data("pi")]], (r) => {
 						$dialog.remove();
-						$photo.remove();
+						this.refreshPhotos(this.articleId, true);
+
 					});
 				});
 			});
 		}
 
-		private confirmPhoto($conf, $photo) {
-			$conf.click((e) => {
-				e.preventDefault();
-				var photoId = $photo.attr("id");
+		private regConfPhoto() {
+		 this.$cont.find(".confirm").click((e) => {
+			e.preventDefault();
+			var $target = $(e.target);
+				
 				var data = {
-					articleId: this.articleId,
-					photoId: photoId
+				 articleId: $target.data("ai"),
+				 photoId: $target.data("pi")
 				};
-				ViewBase.currentView.apiPut("WikiPhotoGallery", data, (r) => {
-					$conf.remove();
+				ViewBase.currentView.apiPut("WikiPhotoGallery", data, (r) => {		
+				 this.refreshPhotos(this.articleId, true);
 				});
 			});
 		}
+	 
+		private refreshPhotos(id: string, admin: boolean) {
+			var request = new Common.RequestSender("/Wiki/ArticlePhotos", null, false);
+			request.params = [["id", id], ["admin", admin.toString()]];
+			request.onSuccess = (html) => {
+			 this.$cont.html(html);
 
-		private addActions() {
-			var $photos = this.$cont.find(".cell").not(".empty");
-			var photos = $photos.toArray();
-			photos.forEach((photo) => {
-				var $photo = $(photo);
-
-				var $del = $(`<a href="#" class="delete">Delete</a> &nbsp;&nbsp;`);
-				this.delPhoto($del, $photo);
-				$photo.prepend($del);
-
-				if ($photo.hasClass("unconfirmedPhoto")) {
-					var $conf = $(`<a href="#" class="confirm">Confirm</a> &nbsp;&nbsp;`);
-					this.confirmPhoto($conf, $photo);
-					$photo.prepend($conf);
+				if (admin) {
+					this.regConfPhoto();
+					this.regDelPhoto();
+					this.registerPhotoUpload(this.articleId, "galleryPhotoInput");
 				}
-			});
-		}
-
-		private showPhotos(show) {
-			var ps = $(".unconfirmedPhoto");
-			if (show) {
-				ps.show();
-			} else {
-				ps.hide();
-			}
+			};
+			request.onError = (response) => { $("#photos").html("Error") };
+			request.sendGet();		 
 		}
 
 		private registerPhotoUpload(articleId, inputId) {
@@ -176,31 +156,9 @@ module Views {
 			picUpload.onProgressChanged = (percent) => {
 			}
 
-			picUpload.onUploadFinished = (file, fileId) => {
-				this.addPhotoToPage(fileId, articleId);
+			picUpload.onUploadFinished = (file, fileId) => {			 
+				this.refreshPhotos(this.articleId, true);
 			}
-		}
-
-		private addPhotoToPage(photoId, articleId) {
-			var thumbLink = `/Wiki/ArticlePhotoThumb?photoId=${photoId}&articleId=${articleId}`;
-			var link = `/Wiki/ArticlePhoto?photoId=${photoId}&articleId=${articleId}`;
-
-			var photo = `<div class="cell"><a href="${link}" target="_blank"> <img class="radius mhalf" src="${thumbLink}"></a></div>`;
-
-			var lastFrame = $("#photos").find(".table").last();
-
-			var cellsCnt = lastFrame.find(".cell").not(".empty").length;
-			if (cellsCnt < 3) {
-				lastFrame.find(".empty").first().remove();
-				lastFrame.prepend(photo);
-			} else {
-				var $frame = $(`<div class="table row col3 margin">${photo}</div>`);
-
-				lastFrame.after($frame);
-			}
-
-			this.refreshActions();
-
 		}
 
 	}

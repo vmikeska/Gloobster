@@ -92,7 +92,23 @@ namespace Gloobster.Portal.Controllers.Portal
             var url = $"/wiki/{selectedText.Language}/{selectedText.LinkName}";
             return RedirectPermanent(url);
         }
+        
+        public IActionResult ArticlePhotos(string id, bool admin)
+        {
+            var articleIdObj = new ObjectId(id);
 
+            var city = DB.FOD<WikiCityEntity>(c => c.id == articleIdObj);
+            var photos = admin ? city.Photos : city.Photos.Where(p => p.Confirmed).ToList();
+            
+            var vm = new PhotosVM
+            {
+                Photos = WikiCityViewModel.ConvertPhotos(photos, DB),
+                ArticleId = city.id.ToString(),
+                Admin = admin,
+                UserIsAdmin = true
+            };
+            return View(vm);
+        }
 
 
         public IActionResult LinkMap()

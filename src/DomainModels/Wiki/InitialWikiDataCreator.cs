@@ -367,6 +367,7 @@ namespace Gloobster.DomainModels.Wiki
                     if (capital != null)
                     {
                         ArticleDomain.CreateCity(capital, Lang);
+                        Console.WriteLine($"Saved {capital.Name} with GID: {capital.GID}");
                     }
                 }
 

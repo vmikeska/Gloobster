@@ -9,7 +9,7 @@ using Microsoft.AspNet.Mvc;
 namespace Gloobster.CitiesService.Controllers
 {
     [Route("api/[controller]")]
-    public class MyController : Controller
+    public class HomeController : Controller
     {
         // GET: api/values
         [HttpGet]

@@ -341,8 +341,12 @@ namespace Gloobster.Portal.ViewModels
 
             return text as T;
         }
+        
+    }
 
-        public List<List<T>> SplitBy<T>(List<T> source, int count)
+    public static class ListExtensions
+    {        
+        public static List<List<T>> SplitBy<T>(this List<T> source, int count)
         {
             return source
                 .Select((x, i) => new { Index = i, Value = x })

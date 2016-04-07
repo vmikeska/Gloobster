@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Autofac;
 using Gloobster.Common;
 using Serilog;
@@ -13,8 +12,6 @@ using AutofacSerilogIntegration;
 using Autofac.Extensions.DependencyInjection;
 using Gloobster.Database;
 using Gloobster.Entities;
-using Gloobster.Entities.Wiki;
-using System.Linq;
 using MongoDB.Bson;
 
 namespace Gloobster.Portal
@@ -22,213 +19,268 @@ namespace Gloobster.Portal
     public class Startup
     {
 		public IConfiguration Configuration { get; set; }
+        public static Serilog.ILogger Logger;
+
+        private static void AddDebugLog(string txt)
+        {
+            if (Logger != null)
+            {
+                Logger.Debug(txt);
+            }
+        }
 
 		public Startup(IHostingEnvironment env)
 		{
-			//http://stackoverflow.com/questions/28258227/how-to-set-ihostingenvironment-environmentname-in-vnext-application
-			// Setup configuration sources.			
-			var builder = new ConfigurationBuilder();
+		    try
+		    {
+		        //http://stackoverflow.com/questions/28258227/how-to-set-ihostingenvironment-environmentname-in-vnext-application
+		        // Setup configuration sources.			
+		        var builder = new ConfigurationBuilder();
 
-	        if (env.IsDevelopment())
-	        {
-				builder.AddJsonFile("configLocal.json");
-			}
+		        if (env.IsDevelopment())
+		        {
+		            builder.AddJsonFile("configLocal.json");
+		        }
 
-			if (env.IsProduction())
-			{
-				builder.AddJsonFile("configRemote.json");
-				
-				Log.Logger = new LoggerConfiguration()
-				.MinimumLevel.Debug()
-				.WriteTo.Loggly()
-				.CreateLogger();
-				//https://github.com/neutmute/loggly-csharp
-				LogglyConfig.Instance.ApplicationName = "gloobster";
-				LogglyConfig.Instance.CustomerToken = "5be61d53-19c9-4e23-ad50-1300065b591a";
-				LogglyConfig.Instance.Transport = new TransportConfiguration
-				{
-					EndpointHostname = "logs-01.loggly.com",
-					EndpointPort = 443,
-					LogTransport = LogTransport.Https
-				};
-				LogglyConfig.Instance.ThrowExceptions = true;				
-			}
-			
-			//.AddJsonFile("configLocal.json");
-			//.AddJsonFile($"config.{env.EnvironmentName}.json", optional: true);
+		        if (env.IsProduction())
+		        {
+		            builder.AddJsonFile("configRemote.json");
 
-			if (env.IsDevelopment())
-            {
-                // This reads the configuration keys from the secret store.
-                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets();
-            }
-            builder.AddEnvironmentVariables();
-            Configuration = builder.Build();			
-        }
+		            Log.Logger = new LoggerConfiguration()
+		                .MinimumLevel.Debug()
+		                .WriteTo.Loggly()
+		                .CreateLogger();
+		            //https://github.com/neutmute/loggly-csharp
+		            LogglyConfig.Instance.ApplicationName = "gloobster";
+		            LogglyConfig.Instance.CustomerToken = "5be61d53-19c9-4e23-ad50-1300065b591a";
+		            LogglyConfig.Instance.Transport = new TransportConfiguration
+		            {
+		                EndpointHostname = "logs-01.loggly.com",
+		                EndpointPort = 443,
+		                LogTransport = LogTransport.Https
+		            };
+		            LogglyConfig.Instance.ThrowExceptions = true;
+		            Logger = Log.Logger;
+		            AddDebugLog("LogglyInited");
+		        }
+
+		        //.AddJsonFile("configLocal.json");
+		        //.AddJsonFile($"config.{env.EnvironmentName}.json", optional: true);
+
+		        if (env.IsDevelopment())
+		        {
+		            // This reads the configuration keys from the secret store.
+		            // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
+		            builder.AddUserSecrets();
+		        }
+		        builder.AddEnvironmentVariables();
+		        Configuration = builder.Build();
+
+                AddDebugLog("Startup:Finished");
+		    }
+		    catch (Exception exc)
+		    {
+		        AddDebugLog(exc.Message);
+		    }
+		}
 		
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-	        LoadConfigFile();
-		    InitDB();
-            
-            services.AddMvc();
-			services.AddSession();
-			services.AddCaching();
+            try
+            {
+                AddDebugLog("ConfigureServices:Enter");
 
-			var serviceProvider = InitalizeAutofac(services);
-	        return serviceProvider;
+                LoadConfigFile();
+		        InitDB();
+            
+                services.AddMvc();
+			    services.AddSession();
+			    services.AddCaching();
+
+			    var serviceProvider = InitalizeAutofac(services);
+                AddDebugLog("ConfigureServices:Finished");
+                return serviceProvider;
+            }
+            catch (Exception exc)
+            {
+                AddDebugLog(exc.Message);
+            }
+
+		    return null;
         }
 
 	    private async void InitDB()
 	    {
-            var db = new DbOperations();
-	        
-	        db.CreateCollection<VisitedCountryAggregatedEntity>();
-            db.CreateCollection<VisitedCityAggregatedEntity>();
-            db.CreateCollection<VisitedPlaceAggregatedEntity>();
+	        try
+	        {
+                AddDebugLog("InitDB:Enter");
 
-            //possibly duplicated
-         //   bool existsPerm = db.C<WikiPermissionEntity>().Any();
-	        //if (!existsPerm)
-	        //{
-	        //    //var users = db.C<UserEntity>()
-	        //    //    .Where(u => (u.Mail == "mikeska@gmail.com") || (u.Mail == "vmikeska@hotmail.com"))
-	        //    //    .ToList();
+	            var db = new DbOperations();
+                
+                await db.CreateCollection<VisitedCountryAggregatedEntity>();
+                await db.CreateCollection<VisitedCityAggregatedEntity>();
+                await db.CreateCollection<VisitedPlaceAggregatedEntity>();
 
-	        //    //var masterAdmins = users.Select(u => new WikiPermissionEntity
-	        //    //{
-	        //    //    IsMasterAdmin = true,
-	        //    //    IsSuperAdmin = false,
-	        //    //    id = ObjectId.GenerateNewId(),
-	        //    //    User_id = u.id,
-	        //    //    Articles = new List<ObjectId>()
-	        //    //});
-	        //    //await db.SaveManyAsync(masterAdmins);                
-	        //}
+	            
 
-        }
+
+                AddDebugLog("InitDB:Leave");
+	        }
+	        catch (Exception exc)
+	        {
+	            AddDebugLog(exc.Message);
+	        }
+	    }
 
 	    // Configure is called after ConfigureServices is called.
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
 		{
             //http://derpturkey.com/asp-net-5-custom-middlware/
-            //app.Use(async (context, next) =>
-            //{
-            //    await next();
-            //});
+            try
+            {
+                AddDebugLog("Configure:Enter");
 
-            app.UseSession();
-            //app.UseMyMiddleware();
-
-            loggerFactory.AddSerilog();
-
-			//var logging = Configuration.GetSection("Logging");
-			//loggerFactory.AddConsole(logging);
-			//loggerFactory.AddDebug();
-
-			if (env.IsDevelopment())
-			{
-				app.UseBrowserLink();
-				app.UseDeveloperExceptionPage();
-				app.UseDatabaseErrorPage();
-			}
-			else
-			{
-				app.UseExceptionHandler("/Home/Error");
-			}
+		        app.UseSession();
 
 
+		        loggerFactory.AddSerilog();
 
-			app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
+		        //var logging = Configuration.GetSection("Logging");
+		        //loggerFactory.AddConsole(logging);
+		        //loggerFactory.AddDebug();
 
-			
-			app.UseStaticFiles();
-			
-			// To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
-			app.UseMvc(routes =>
-			{
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+		        if (env.IsDevelopment())
+		        {
+		            app.UseBrowserLink();
+		            app.UseDeveloperExceptionPage();
+		            app.UseDatabaseErrorPage();
+		        }
+		        else
+		        {
+		            app.UseExceptionHandler("/Home/Error");
+		        }
 
-                routes.MapRoute(
-			        name: "wikiShort",
-			        template: "wiki/{id}",
-                    defaults: new { controller = "Wiki", action = "Page" }
-                    );
 
-                routes.MapRoute(
-                    name: "wikiFull",
-                    template: "wiki/{lang}/{id}",
-                    defaults: new { controller = "Wiki", action = "PageRegular" }
-                    );
 
-                routes.MapRoute(
-                    name: "sitemap",
-                    template: "sitemap",
-                    defaults: new { controller = "SiteMap", action = "Sitemap" }
-                    );
+		        app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
 
-                
-            });
+
+		        app.UseStaticFiles();
+
+		        // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
+		        app.UseMvc(routes =>
+		        {
+		            routes.MapRoute(
+		                name: "default",
+		                template: "{controller=Home}/{action=Index}/{id?}");
+
+		            routes.MapRoute(
+		                name: "wikiShort",
+		                template: "wiki/{id}",
+		                defaults: new {controller = "Wiki", action = "Page"}
+		                );
+
+		            routes.MapRoute(
+		                name: "wikiFull",
+		                template: "wiki/{lang}/{id}",
+		                defaults: new {controller = "Wiki", action = "PageRegular"}
+		                );
+
+		            routes.MapRoute(
+		                name: "sitemap",
+		                template: "sitemap",
+		                defaults: new {controller = "SiteMap", action = "Sitemap"}
+		                );
+
+
+		        });
+                AddDebugLog("Configure:Leave");
+		    }
+		    catch (Exception exc)
+		    {
+		        AddDebugLog(exc.Message);
+		    }
 		}
 
 		// Entry point for the application.
-		public static void Main(string[] args) => WebApplication.Run<Startup>(args);
+        public static void Main(string[] args) => Run(args);
+
+        private static void Run(string[] args)
+        {
+            AddDebugLog("Run:Enter");
+            WebApplication.Run<Startup>(args);
+            AddDebugLog("Run:Leave");
+        }
 
 
 
 		private IServiceProvider InitalizeAutofac(IServiceCollection services)
 		{
-			var builder = new ContainerBuilder();
-			
-			//https://github.com/nblumhardt/autofac-serilog-integration
-			builder.RegisterLogger();
-			
-			// Add any Autofac modules or registrations.
-			builder.RegisterModule(new AutofacModule());
-			// Populate the services.			
-			builder.Populate(services);			
-			// Build the container.
-			var container = builder.Build();
-			// Resolve and return the service provider.
-			return container.Resolve<IServiceProvider>();
+		    try
+		    {
+		        var builder = new ContainerBuilder();
+
+		        //https://github.com/nblumhardt/autofac-serilog-integration
+		        builder.RegisterLogger();
+
+		        // Add any Autofac modules or registrations.
+		        builder.RegisterModule(new AutofacModule());
+		        // Populate the services.			
+		        builder.Populate(services);
+		        // Build the container.
+		        var container = builder.Build();
+		        // Resolve and return the service provider.
+		        return container.Resolve<IServiceProvider>();
+		    }
+		    catch (Exception exc)
+		    {
+		        AddDebugLog(exc.Message);
+		    }
+
+		    return null;
 		}
 
 		private void LoadConfigFile()
 		{
-			GloobsterConfig.MongoConnectionString = Configuration["Data:DefaultConnection:ConnectionString"];
-			GloobsterConfig.DatabaseName = Configuration["Data:DefaultConnection:DatabaseName"];
+		    try
+		    {
 
-            GloobsterConfig.Domain = Configuration["Environment:Domain"];
-			GloobsterConfig.IsLocal = bool.Parse(Configuration["Environment:IsLocal"]);
-            GloobsterConfig.Protocol = Configuration["Environment:Protocol"];
+		        GloobsterConfig.MongoConnectionString = Configuration["Data:DefaultConnection:ConnectionString"];
+		        GloobsterConfig.DatabaseName = Configuration["Data:DefaultConnection:DatabaseName"];
 
-            GloobsterConfig.AppSecret = Configuration["AppSecret"];
+		        GloobsterConfig.Domain = Configuration["Environment:Domain"];
+		        GloobsterConfig.IsLocal = bool.Parse(Configuration["Environment:IsLocal"]);
+		        GloobsterConfig.Protocol = Configuration["Environment:Protocol"];
 
-			GloobsterConfig.FacebookAppId = Configuration["Facebook:AppId"];
-			GloobsterConfig.FacebookAppSecret = Configuration["Facebook:AppSecret"];
+		        GloobsterConfig.AppSecret = Configuration["AppSecret"];
 
-			GloobsterConfig.TwitterConsumerKey = Configuration["Twitter:ConsumerKey"];
-			GloobsterConfig.TwitterConsumerSecret = Configuration["Twitter:ConsumerSecret"];
-			GloobsterConfig.TwitterAccessToken = Configuration["Twitter:AccessToken"];
-			GloobsterConfig.TwitterAccessTokenSecret = Configuration["Twitter:AccessTokenSecret"];
+		        GloobsterConfig.FacebookAppId = Configuration["Facebook:AppId"];
+		        GloobsterConfig.FacebookAppSecret = Configuration["Facebook:AppSecret"];
 
-			GloobsterConfig.FoursquareClientId = Configuration["Foursquare:ClientId"];
-			GloobsterConfig.FoursquareClientSecret = Configuration["Foursquare:ClientSecret"];
+		        GloobsterConfig.TwitterConsumerKey = Configuration["Twitter:ConsumerKey"];
+		        GloobsterConfig.TwitterConsumerSecret = Configuration["Twitter:ConsumerSecret"];
+		        GloobsterConfig.TwitterAccessToken = Configuration["Twitter:AccessToken"];
+		        GloobsterConfig.TwitterAccessTokenSecret = Configuration["Twitter:AccessTokenSecret"];
 
-			GloobsterConfig.MapBoxSecret = Configuration["Mapbox:Secret"];
+		        GloobsterConfig.FoursquareClientId = Configuration["Foursquare:ClientId"];
+		        GloobsterConfig.FoursquareClientSecret = Configuration["Foursquare:ClientSecret"];
 
-			GloobsterConfig.StorageConnectionString = Configuration["Storage:ConnectionString"];
-			GloobsterConfig.StorageRootDir = Configuration["Storage:RootDir"];
+		        GloobsterConfig.MapBoxSecret = Configuration["Mapbox:Secret"];
 
-            GloobsterConfig.YelpAccessToken = Configuration["Yelp:AccessToken"];
-            GloobsterConfig.YelpConsumerKey = Configuration["Yelp:ConsumerKey"];
-            GloobsterConfig.YelpAccessTokenSecret = Configuration["Yelp:AccessTokenSecret"];
-            GloobsterConfig.YelpConsumerSecret = Configuration["Yelp:ConsumerSecret"];
-        }
+		        GloobsterConfig.StorageConnectionString = Configuration["Storage:ConnectionString"];
+		        GloobsterConfig.StorageRootDir = Configuration["Storage:RootDir"];
+
+		        GloobsterConfig.YelpAccessToken = Configuration["Yelp:AccessToken"];
+		        GloobsterConfig.YelpConsumerKey = Configuration["Yelp:ConsumerKey"];
+		        GloobsterConfig.YelpAccessTokenSecret = Configuration["Yelp:AccessTokenSecret"];
+		        GloobsterConfig.YelpConsumerSecret = Configuration["Yelp:ConsumerSecret"];
+		    }
+		    catch (Exception exc)
+		    {
+		        AddDebugLog(exc.Message);
+		    }
+		}
 
 	}
 
