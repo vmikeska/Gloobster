@@ -41,13 +41,12 @@ namespace Gloobster.Portal.Controllers.Portal
             return View(viewModel);
         }
 
-        //public async Task<IActionResult> Test()
-        //{
-        //       //DataCreator.CreateInitialData();
-
-
-        //       return View();
-        //}
+        public async Task<IActionResult> Test()
+        {
+            await DataCreator.CreateInitialData();
+            
+            return View();
+        }
 
         //   public IActionResult Test2()
         //   {

@@ -26,7 +26,7 @@ namespace Gloobster.DomainModels.Wiki
         public const string Lang = "en";
 
 
-        public async void CreateInitialData()
+        public async Task CreateInitialData()
         {
             var entitiesCount = await DB.GetCountAsync<WikiContinentEntity>();
             if (entitiesCount == 0)

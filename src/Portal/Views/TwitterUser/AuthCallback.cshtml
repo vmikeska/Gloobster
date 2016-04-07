@@ -1,4 +1,6 @@
-﻿@model Gloobster.Portal.Controllers.TwitterResponse
+﻿@using System.Threading.Tasks
+@using Gloobster.Portal.ViewModels
+@model ViewModelTwitterAuthCallback
 @{
     Layout = "";
 }
@@ -10,9 +12,9 @@
 <script>
     function onload() {
         var response = {
-            "userId": "@Model.userId",
-            "accessToken": "@Model.accessToken",            
-            "tokenSecret": "@Model.tokenSecret"
+            "userId": "@Model.UserId",
+            "accessToken": "@Model.AccessToken",            
+            "tokenSecret": "@Model.TokenSecret"
         };
 
         var view = new Views.TwitterAuthView();

@@ -106,6 +106,7 @@ var Trip;
             var _this = this;
             this.$container.children().not(this.$adder).remove();
             if (this.files && this.files.length > 0) {
+                $(".fileDocs").show();
                 this.files.forEach(function (file) {
                     var isOwner = file.ownerId === Views.ViewBase.currentUserId;
                     var filePublic = _this.getFilePublic(file.id);

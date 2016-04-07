@@ -204,6 +204,10 @@ q, .quote {
     }
 }
 
+.fileButton {
+    padding: 0 10px;
+}
+
 .subnav-holder {
     .button {
         font-size: 20px;        
@@ -214,6 +218,21 @@ q, .quote {
         font-size: 20px;
         .selected, li {
             padding: 6px 19px;
+        }
+    }
+
+    .mainHolder{
+        text-align: right;
+    }
+
+    @include tablet{
+        .mainHolder{
+            text-align: left;
+        }
+
+        .photo{
+            text-align: right;
+            padding-right: 5px;
         }
     }
 }
@@ -387,6 +406,16 @@ q, .quote {
 .tripDetail{
     textarea { width: 100%;}
 }
+
+.with-subnav {
+
+    @include tablet {
+        .menuItemContent {
+            width: 780px;
+        }
+    }
+}
+
 
 
 .daybyday {

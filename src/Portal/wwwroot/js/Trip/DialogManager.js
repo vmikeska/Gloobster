@@ -14,7 +14,7 @@ var Trip;
         DialogManager.prototype.createFilesInstanceView = function (entityId, entityType) {
             var filesConfig = new Trip.FilesConfig();
             filesConfig.containerId = "entityDocs";
-            filesConfig.templateId = "fileItem-template";
+            filesConfig.templateId = "fileView-template";
             filesConfig.editable = false;
             filesConfig.addAdder = false;
             filesConfig.entityId = entityId;

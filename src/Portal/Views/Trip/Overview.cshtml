@@ -70,7 +70,7 @@
     <div class="wrapper with-subnav">
         <div class="subnav-holder margin">
             <div class="table width100">
-                <div class="cell">
+                <div class="cell photo">
                     @if (Model.IsUserAdmin)
                     {
                         <a class="button blue-trans photoButton" href="#">
@@ -84,7 +84,8 @@
 
 
                 </div>
-                <div class="cell tright">
+                @*<div class="cell tright">*@
+                <div class="cell mainHolder">
 
                     @if (!Model.IsOwner)
                     {
@@ -97,7 +98,7 @@
                             <span class="icon-globe middle mright5"></span>
                             Privacy
                         </a>
-                        <a data-tmp="participants-template"class="button blue-trans popup2-target tripMenuButton" data-target="#popup-participants" href="#">
+                        <a data-tmp="participants-template" class="button blue-trans popup2-target tripMenuButton" data-target="#popup-participants" href="#">
                             <span class="icon-people middle mright5"></span>
                             Participants
                         </a>

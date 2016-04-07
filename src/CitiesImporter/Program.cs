@@ -27,8 +27,8 @@ namespace CitiesImporter
                 input = args[0];
             }
 
-            var db = new DbOperations("mongodb://localhost:27017/Gloobster", "Gloobster");
-            //var db = new DbOperations("mongodb://GloobsterConnec:Gloobster007@ds036178.mongolab.com:36178/Gloobster", "Gloobster");
+            //var db = new DbOperations("mongodb://localhost:27017/Gloobster", "Gloobster");
+            var db = new DbOperations("mongodb://GloobsterConnec:Gloobster007@ds036178.mongolab.com:36178/Gloobster", "Gloobster");
 
             if (input == "permissions")
             {

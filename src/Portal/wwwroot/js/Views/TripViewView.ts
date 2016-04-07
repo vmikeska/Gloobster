@@ -28,7 +28,7 @@
 		 filesConfig.inputId = "fileInput";
 		 filesConfig.editable = false;
 		 filesConfig.addAdder = true;
-		 filesConfig.templateId = "file-template";
+		 filesConfig.templateId = "fileView-template";
 		 
 		 this.files = new Trip.TripFiles(filesConfig);
 		}

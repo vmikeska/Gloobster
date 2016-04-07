@@ -2971,6 +2971,9 @@ q, .quote {
 .opacity5:hover {
   opacity: .5; }
 
+.fileButton {
+  padding: 0 10px; }
+
 .subnav-holder .button {
   font-size: 20px;
   padding: 6px 13px;
@@ -2980,6 +2983,16 @@ q, .quote {
   font-size: 20px; }
   .subnav-holder .dropdown .selected, .subnav-holder .dropdown li {
     padding: 6px 19px; }
+
+.subnav-holder .mainHolder {
+  text-align: right; }
+
+@media screen and (max-width: 959px) {
+  .subnav-holder .mainHolder {
+    text-align: left; }
+  .subnav-holder .photo {
+    text-align: right;
+    padding-right: 5px; } }
 
 .popcont-holder {
   position: relative;
@@ -3116,6 +3129,10 @@ q, .quote {
 
 .tripDetail textarea {
   width: 100%; }
+
+@media screen and (max-width: 959px) {
+  .with-subnav .menuItemContent {
+    width: 780px; } }
 
 .daybyday .cell {
   position: relative;

@@ -126,13 +126,13 @@
 		private filterFiles(files, filesPublic) {
 			if (!files) {
 				return;
-		 }
-		 
+			}
+
 			this.filesPublic = filesPublic;
 
 			if (this.config.entityId) {
 				var entityFiles = _.filter(files, (file) => { return file.entityId === this.config.entityId; });
-				this.files = entityFiles;				
+				this.files = entityFiles;
 				this.generateFiles();
 			} else {
 				this.files = files;
@@ -140,9 +140,9 @@
 			}
 
 			if (TripFiles.masterFiles && (!this.config.isMasterFile)) {
-			 TripFiles.masterFiles.files = files;
-			 TripFiles.masterFiles.filesPublic = filesPublic;
-			 TripFiles.masterFiles.generateFiles();
+				TripFiles.masterFiles.files = files;
+				TripFiles.masterFiles.filesPublic = filesPublic;
+				TripFiles.masterFiles.generateFiles();
 			}
 
 		}
@@ -151,7 +151,8 @@
 			this.$container.children().not(this.$adder).remove();
 
 			if (this.files && this.files.length > 0) {
-				
+				$(".fileDocs").show();
+
 				this.files.forEach((file) => {
 
 					var isOwner = file.ownerId === Views.ViewBase.currentUserId;

@@ -32,7 +32,7 @@ module Trip {
 		public createFilesInstanceView(entityId: string, entityType: Common.TripEntityType): TripFiles {
 			var filesConfig = new FilesConfig();
 			filesConfig.containerId = "entityDocs";
-			filesConfig.templateId = "fileItem-template";
+			filesConfig.templateId = "fileView-template";
 			filesConfig.editable = false;
 			filesConfig.addAdder = false;
 			filesConfig.entityId = entityId;

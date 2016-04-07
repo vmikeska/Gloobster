@@ -18,6 +18,7 @@ var Views;
             this.registerTripDeletion();
             $("#newTrip").keypress(function (e) {
                 if (e.which === 13) {
+                    e.preventDefault();
                     _this.createNewTrip();
                 }
             });

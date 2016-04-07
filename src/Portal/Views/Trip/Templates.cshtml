@@ -38,12 +38,21 @@
     </div>
 </script>
 
+<script id="fileView-template" type="text/x-handlebars-template">
+
+    <div class="cell">
+        <div class="document">
+            <a class="file {{fileType}}" href="/Trip/GetFile?fileId={{id}}&tripId={{tripId}}">{{fileName}}</a>            
+        </div>
+    </div>
+
+</script>
 
 <script id="fileCreate-template" type="text/x-handlebars-template">    
     <div class="cell">
         <input type="file" id="{{id}}" class="hiddenFile" >
         <label for="{{id}}">
-            <span class="button">Click or drag</span>
+            <span class="button fileButton">Click or drag</span>
         </label>
     </div>    
 </script>

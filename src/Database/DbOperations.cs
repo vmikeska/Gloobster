@@ -259,17 +259,25 @@ namespace Gloobster.Database
         
         public async Task<long> GetCountAsync<T>(string query = null) where T : EntityBase
         {
-			var collectionName = GetCollectionName<T>();
-			var collection = Database.GetCollection<T>(collectionName);
-
-            var filter = new BsonDocument();
-            if (!string.IsNullOrEmpty(query))
+            try
             {
-                filter = BsonDocument.Parse(query);
-            }
+                var collectionName = GetCollectionName<T>();
+                var collection = Database.GetCollection<T>(collectionName);
 
-            long count = await collection.CountAsync(filter);
-            return count;
+                var filter = new BsonDocument();
+                if (!string.IsNullOrEmpty(query))
+                {
+                    filter = BsonDocument.Parse(query);
+                }
+
+                long count = await collection.CountAsync(filter);
+                return count;
+            }
+            catch (Exception exc)
+            {
+                //todo: log, throw
+                return 0;
+            }
         }
 
 		private string GetCollectionName<T>()

@@ -1,7 +1,9 @@
+using System.Threading.Tasks;
+
 namespace Gloobster.DomainInterfaces
 {
     public interface IInitialWikiDataCreator
     {
-        void CreateInitialData();
+        Task CreateInitialData();
     }
 }
