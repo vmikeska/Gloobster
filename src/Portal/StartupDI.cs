@@ -102,9 +102,15 @@ namespace Gloobster.Portal
             builder.AddInstance<ICountryService>(new CountryService());
             builder.AddTransient<IInitialWikiDataCreator, InitialWikiDataCreator>();
 
+		    var perm = new WikiPermissions
+		    {
+		        DB = new DbOperations()
+		    };
+            perm.RefreshPermissions();
+            builder.AddInstance<IWikiPermissions>(perm);
+
             builder.AddTransient<IWikiUpdateDomain, WikiUpdateDomain>();
-            builder.AddTransient<IWikiArticleDomain, WikiArticleDomain>();
-            builder.AddTransient<IWikiPermissions, WikiPermissions>();
+            builder.AddTransient<IWikiArticleDomain, WikiArticleDomain>();            
             builder.AddTransient<IWikiChangeDomain, WikiChangeDomain>();
             builder.AddTransient<IContentEvaluator, ContentEvaluator>();
             builder.AddTransient<INiceLinkBuilder, NiceLinkBuilder>();

@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Autofac;
 using Gloobster.Common;
 using Gloobster.Database;
+using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels;
 using Gloobster.Entities;
 using Gloobster.Enums;
@@ -18,6 +20,7 @@ namespace Gloobster.Portal.Controllers.Base
     {
 		public IDbOperations DB { get; set; }
         public ILogger Log { get; set; }
+        public IComponentContext CC { get; set; }
 
         public ObjectId? UserIdObj
         {
@@ -91,39 +94,38 @@ namespace Gloobster.Portal.Controllers.Base
             }
         }
 
-        public PortalBaseController(ILogger log, IDbOperations db)
+        public PortalBaseController(ILogger log, IDbOperations db, IComponentContext cc)
         {
             DB = db;
             Log = log;
+            CC = cc;
         }
 
         public T CreateViewModelInstance<T>() where T : ViewModelBase, new()
-        {
-            int notifsCount = 0;
-            string socNetStr = "";
-
-
-            //TODO: fix
-            //if (IsUserLogged)
-            //{
-            //    var notifications = DB.C<NotificationsEntity>().FirstOrDefault(n => n.PortalUser_id == UserIdObj.Value);
-            //    if (notifications != null)
-            //    {
-            //        notifsCount = notifications.Notifications.Count(n => n.Status == NotificationStatus.Created);
-            //    }
-
-            //    socNetStr = GetSocNetworkStr();
-            //    HttpContext.Response.Cookies.Append(PortalConstants.NetworkTypes, socNetStr);
-            //}
-            
+        {            
             var instance = new T
             {
                 User = User,
                 DB = DB,
                 SocialNetworks = Networks,
-                NotificationCount = notifsCount,
-                UserId = UserId
+                NotificationCount = 0,
+                UserId = UserId,
+                CanManageArticleAdmins = false,
+                HasAnyWikiPermissions = false
             };
+
+            if (IsUserLogged)
+            {
+                var notifications = DB.FOD<NotificationsEntity>(n => n.PortalUser_id == UserIdObj.Value);
+                if (notifications != null)
+                {
+                    instance.NotificationCount = notifications.Notifications.Count(n => n.Status == NotificationStatus.Created);
+                }
+
+                var permissions = CC.Resolve<IWikiPermissions>();
+                instance.HasAnyWikiPermissions = permissions.IsAdminOfSomething(UserId);
+                instance.CanManageArticleAdmins = permissions.CanManageArticleAdmins(UserId);
+            }
 
             if (Networks.Contains(SocialNetworkType.Facebook))
             {

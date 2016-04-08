@@ -14,10 +14,10 @@
 <section class="wrapper margin3">
 
     <h2>Master admins</h2>
-    <div>
+    <div class="tags">
         @foreach (var a in Model.MasterAdmins)
         {
-            <span style="border: 1px solid red;">@a.Name</span>
+            <span class="tag">@a.Name</span>            
         }
     </div>
 
@@ -28,13 +28,22 @@
 
             @foreach (var user in Model.SuperAdmins)
             {
-                <span id="@user.Id" class="tag">@user.Name<a class="delete" href="#">Delete</a></span>
+                <span id="@user.Id" class="tag">@user.Name
+                    
+                    @if (Model.IsMasterAdmin)
+                    {
+                        <a class="delete" href="#">Delete</a>
+                    }
+                </span>
             }
 
-            <div id="superAdminCombo" class="dropdown">
-                <input class="inputed" placeholder="+ Add User">
-                <ul></ul>
-            </div>
+            @if (Model.IsMasterAdmin)
+            {
+                <div id="superAdminCombo" class="dropdown">
+                    <input class="inputed" placeholder="+ Add User">
+                    <ul></ul>
+                </div>
+            }
 
         </div>
     </div>
@@ -57,10 +66,13 @@
                     <span id="@item.WikiId" class="tag">@item.Name<a class="delete" href="#"></a></span>
                 }
 
-                <div class="dropdown articleCombo">
-                    <input class="inputed" placeholder="+ Add Article">
-                    <ul></ul>
-                </div>
+                @if (Model.IsMasterAdmin || Model.IsSuperAdmin)
+                {
+                    <div class="dropdown articleCombo">
+                        <input class="inputed" placeholder="+ Add Article">
+                        <ul></ul>
+                    </div>
+                }
             </div>
 
             <button class="userDelete">Delete</button>
@@ -88,6 +100,6 @@
 
 <script>
     function onBodyLoad() {
-        currentView = new Views.WikiPermissionsView();
+        @Html.Raw($"currentView = new Views.WikiPermissionsView({Model.IsMasterAdmin.ToString().ToLower()}, {Model.IsSuperAdmin.ToString().ToLower()});")
     }
 </script>

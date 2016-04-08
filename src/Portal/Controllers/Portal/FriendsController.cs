@@ -1,4 +1,5 @@
-﻿using Gloobster.Database;
+﻿using Autofac;
+using Gloobster.Database;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.Portal.ViewModels;
 using Microsoft.AspNet.Mvc;
@@ -17,7 +18,7 @@ namespace Gloobster.Portal.Controllers.Portal
 {
     public class FriendsController: PortalBaseController
     {
-		public FriendsController(ILogger log, IDbOperations db) : base(log, db)
+		public FriendsController(ILogger log, IDbOperations db, IComponentContext cc) : base(log, db, cc)
 		{
 		}
 

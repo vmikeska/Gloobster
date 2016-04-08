@@ -7,9 +7,11 @@ using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
+using Gloobster.Entities;
 using Gloobster.Entities.Wiki;
 using Gloobster.Enums;
 using MongoDB.Bson;
+using Newtonsoft.Json;
 
 namespace Gloobster.DomainModels.Wiki
 {
@@ -24,6 +26,11 @@ namespace Gloobster.DomainModels.Wiki
 
         public const int ThumbnailWidth = 280;
         public const int ThumbnailHeight = 190;
+    }
+
+    public class ArticlePhotoData
+    {
+        public string ArticleName { get; set; }
     }
 
     public class ArticlePhoto : IArticlePhoto
@@ -146,11 +153,21 @@ namespace Gloobster.DomainModels.Wiki
 
                 if (!confirmed)
                 {
+                    var texts = DB.FOD<WikiTextsEntity>(e => e.Article_id == articleIdObj);
+
+                    var dataObj = new ArticlePhotoData
+                    {
+                        ArticleName = texts.Title
+                    };
+
+                    var dataString = JsonConvert.SerializeObject(dataObj);
+
                     var task = new NewTaskDO
                     {
                         TaskType = AdminTaskType.ConfirmPhoto,
                         ArticleId = articleId,
-                        TargetId = fileId.ToString()
+                        TargetId = fileId.ToString(),
+                        Data = dataString
                     };
                     AdminTasks.AddTask(task);
                 }

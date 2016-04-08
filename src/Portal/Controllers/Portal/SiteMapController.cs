@@ -13,6 +13,7 @@ using Serilog;
 using System.Xml.Serialization;
 using Gloobster.Entities;
 using System.Linq;
+using Autofac;
 
 namespace Gloobster.Portal.Controllers.Portal
 {
@@ -20,7 +21,7 @@ namespace Gloobster.Portal.Controllers.Portal
     {
         private SiteMapCreator Creator { get; set; }
 
-        public SiteMapController(ILogger log,  IDbOperations db) : base(log, db)
+        public SiteMapController(ILogger log,  IDbOperations db, IComponentContext cc) : base(log, db, cc)
 		{
             Creator = new SiteMapCreator();
         }

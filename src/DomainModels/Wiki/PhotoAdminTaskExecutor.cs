@@ -26,6 +26,7 @@ namespace Gloobster.DomainModels.Wiki
 
             var task = GetNewTask(taskDO.ArticleId, AdminTaskType.ConfirmPhoto);
             task.Target_id = photoIdObj;
+            task.Data = taskDO.Data;
 
             DB.SaveAsync(task);
         }

@@ -18,10 +18,17 @@ namespace Gloobster.Database
         {
             return c.FirstOrDefault(query);
         }
+
         public static List<T> List<T>(this IMongoQueryable<T> c, Expression<Func<T, bool>> query)
         {
             return c.Where(query).ToList();
         }
+
+        public static int Cnt<T>(this IMongoQueryable<T> c, Expression<Func<T, bool>> query)
+        {
+            return c.Count(query);
+        }
+
         public static List<T> List<T>(this IMongoQueryable<T> c)
         {
             return c.ToList();
@@ -46,9 +53,7 @@ namespace Gloobster.Database
 
 			Database = GetDatabase(dbName, connectionString);
 		}
-
-		//$"mongodb://{"GloobsterConnector"}:{"Gloobster007"}@{"ds036178.mongolab.com"}:{"36178"}/Gloobster";
-
+        
 		public IMongoClient Client { get; set; }
         public IMongoDatabase Database { get; set; }
 
@@ -86,6 +91,17 @@ namespace Gloobster.Database
             return result;
         }
 
+        public int Count<T>(Expression<Func<T, bool>> query) where T : EntityBase
+        {
+            var collectionName = GetCollectionName<T>();
+            var collection = Database.GetCollection<T>(collectionName);
+
+            var collectionQueryable = collection.AsQueryable();
+
+            var result = collectionQueryable.Cnt(query);
+            return result;
+        }
+
         public T FOD<T>(Expression<Func<T, bool>> query) where T : EntityBase
         {
             var collectionName = GetCollectionName<T>();
@@ -97,6 +113,11 @@ namespace Gloobster.Database
 
             return result;
         }
+
+
+
+
+
 
         public IMongoClient GetClient(string connectionString)
         {

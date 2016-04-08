@@ -56,9 +56,15 @@
 
             @if (task.TaskType == AdminTaskType.ConfirmPhoto)
             {
+                var data = JsonConvert.DeserializeObject<ArticlePhotoData>(task.Data);
+                
                 var thumbLink = $"/Wiki/ArticlePhotoThumb?photoId={task.TargetId}&articleId={task.ArticleId}";
                 var link = $"/Wiki/ArticlePhoto?photoId={task.TargetId}&articleId={task.ArticleId}";
-
+                
+                <div class="titem">
+                    <span>Article: </span><br />
+                    @data.ArticleName
+                </div>
                 <div>
                     <a href="@link" target="_blank"><img class="radius mhalf" src="@thumbLink"></a>
                 </div>

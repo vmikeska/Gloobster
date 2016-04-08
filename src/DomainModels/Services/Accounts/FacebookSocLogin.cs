@@ -24,6 +24,7 @@ namespace Gloobster.DomainModels.Services.Accounts
         public IFacebookService FBService { get; set; }
         public ICountryService CountryService { get; set; }
         public IGeoNamesService GNService { get; set; }
+        public IWikiPermissions WikiPerms { get; set; }
 
         private FacebookUserFO _fbUser;
         
@@ -97,15 +98,7 @@ namespace Gloobster.DomainModels.Services.Accounts
         {
             if (auth.SocUserId == "10202803343824427")
             {
-                var masterAdmin = new WikiPermissionEntity
-                {
-                    IsMasterAdmin = true,
-                    IsSuperAdmin = false,
-                    id = ObjectId.GenerateNewId(),
-                    User_id = new ObjectId(auth.UserId),
-                    Articles = new List<ObjectId>()
-                };
-                await DB.SaveAsync(masterAdmin);
+                await WikiPerms.CreateNewMasterAdmin(auth.UserId);
             }            
         }
 

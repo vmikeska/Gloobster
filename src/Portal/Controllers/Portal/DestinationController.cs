@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Autofac;
 using Gloobster.Database;
 using Gloobster.Entities;
 using Gloobster.Portal.Controllers.Base;
@@ -10,7 +11,7 @@ namespace Gloobster.Portal.Controllers.Portal
 {
 	public class DestinationController : PortalBaseController
 	{
-		public DestinationController(ILogger log, IDbOperations db) : base(log, db)
+		public DestinationController(ILogger log, IDbOperations db, IComponentContext cc) : base(log, db, cc)
 		{
 			
 		}

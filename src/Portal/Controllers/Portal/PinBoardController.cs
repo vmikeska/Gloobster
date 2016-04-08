@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Autofac;
 using Gloobster.Database;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.Portal.ViewModels;
@@ -24,7 +25,7 @@ namespace Gloobster.Portal.Controllers.Portal
         public IPinBoardStats Stats { get; set; }
 
         public PinBoardController(IPinBoardStats stats, IPinboardImportDomain pinboardImport, IAccountDomain socAccount, IFacebookService fbService, 
-            ISharedMapImageDomain sharedImgDomain, ILogger log,  IDbOperations db) : base(log, db)
+            ISharedMapImageDomain sharedImgDomain, ILogger log,  IDbOperations db, IComponentContext cc) : base(log, db, cc)
 		{
             SharedImgDomain = sharedImgDomain;
             FBService = fbService;                        

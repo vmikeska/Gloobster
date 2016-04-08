@@ -44,18 +44,18 @@ namespace Gloobster.DomainModels.Wiki
 
             await DB.SaveAsync(reportEntity);
             
-            var texts = DB.C<WikiTextsEntity>().FirstOrDefault(e => e.Article_id == articleIdObj);            
+            var texts = DB.FOD<WikiTextsEntity>(e => e.Article_id == articleIdObj);            
             var sectionText = texts.Texts.FirstOrDefault(t => t.Section_id == sectionIdObj);
 
             
             WikiArticleBaseEntity article = null;
             if (texts.Type == ArticleType.City)
             {
-                article = DB.C<WikiCityEntity>().FirstOrDefault(c => c.id == articleIdObj);                
+                article = DB.FOD<WikiCityEntity>(c => c.id == articleIdObj);                
             }
             if (texts.Type == ArticleType.Country)
             {
-                article = DB.C<WikiCountryEntity>().FirstOrDefault(c => c.id == articleIdObj);                
+                article = DB.FOD<WikiCountryEntity>(c => c.id == articleIdObj);                
             }
             var section = article.Sections.FirstOrDefault(s => s.id == sectionIdObj);
             

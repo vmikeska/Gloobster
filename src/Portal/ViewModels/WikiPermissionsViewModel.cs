@@ -4,6 +4,9 @@ namespace Gloobster.Portal.ViewModels
 {
     public class WikiPermissionsViewModel : ViewModelBase
     {
+        public bool IsMasterAdmin { get; set; }
+        public bool IsSuperAdmin { get; set; }
+
         public List<UserViewModel> MasterAdmins { get; set; }
         public List<UserViewModel> SuperAdmins { get; set; }
 

@@ -22,6 +22,9 @@ namespace Gloobster.Portal.ViewModels
 	        return SocialNetworks.Contains(net);
 	    }
 
+        public bool HasAnyWikiPermissions { get; set; }
+        public bool CanManageArticleAdmins { get; set; }
+
         public string SocNetworkStr
         {
             get

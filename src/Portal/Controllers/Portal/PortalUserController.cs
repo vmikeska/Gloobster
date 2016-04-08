@@ -2,6 +2,7 @@
 using MongoDB.Bson;
 using System.Linq;
 using System.Threading.Tasks;
+using Autofac;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels.Wiki;
@@ -18,7 +19,7 @@ namespace Gloobster.Portal.Controllers.Portal
 		public IFilesDomain FileDomain { get; set; }
         public INotificationsDomain NotificationsDomain { get; set; }
 
-        public PortalUserController(INotificationsDomain notifs, IFilesDomain filesDomain,ILogger log,  IDbOperations db) : base(log, db)
+        public PortalUserController(INotificationsDomain notifs, IFilesDomain filesDomain,ILogger log,  IDbOperations db, IComponentContext cc) : base(log, db, cc)
 		{
 			FileDomain = filesDomain;
             Log = log;

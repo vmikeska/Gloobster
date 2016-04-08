@@ -16,8 +16,15 @@
             }
             <a href="/PortalUser/Notifications">Notifications</a>
         </li>
-        <li><a href="/WikiAdmin/List">Wiki admin</a></li>
-        <li><a href="/wiki/permissions">Wiki permissions</a></li>
+
+        @if (Model.HasAnyWikiPermissions)
+        {
+            <li><a href="/WikiAdmin/List">Wiki admin</a></li>
+        }
+        @if (Model.CanManageArticleAdmins)
+        {
+            <li><a href="/wiki/permissions">Wiki permissions</a></li>
+        }
     </ul>
     <input type="hidden">
 </div>

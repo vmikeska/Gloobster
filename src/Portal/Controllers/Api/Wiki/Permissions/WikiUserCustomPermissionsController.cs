@@ -30,19 +30,9 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 return HttpUnauthorized();
             }
 
-            var idObj = new ObjectId(req.id);
-
-            var newSupAdmin = new WikiPermissionEntity
-            {
-                IsSuperAdmin = false,
-                IsMasterAdmin = false,
-                id = ObjectId.GenerateNewId(),
-                User_id = idObj,
-                Articles = new List<ObjectId>()
-            };
-            await DB.SaveAsync(newSupAdmin);
-
-            return new ObjectResult(null);
+            bool created = await WikiPerms.CreateNewEmptyAdmin(req.id);
+            
+            return new ObjectResult(created);
         }
 
         [HttpDelete]
@@ -54,10 +44,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 return HttpUnauthorized();
             }
 
-            var idObj = new ObjectId(id);
-
-            var entity = DB.C<WikiPermissionEntity>().FirstOrDefault(u => u.User_id == idObj);
-            await DB.DeleteAsync<WikiPermissionEntity>(entity.id);
+            await WikiPerms.DeleteAdmin(id);
 
             return new ObjectResult(null);
         }

@@ -9,6 +9,7 @@ using Gloobster.Portal.ViewModels;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using System.IO;
+using Autofac;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels;
 using Gloobster.DomainModels.Services.Accounts;
@@ -28,7 +29,7 @@ namespace Gloobster.Portal.Controllers.Portal
         public IEntitiesDemandor Demandor { get; set; }
 
 		public TripController(IEntitiesDemandor demandor, ISharedMapImageDomain sharedImgDomain, ITripPlannerDomain tripPlanner, IFilesDomain filesDomain,
-            ILogger log, IDbOperations db) : base(log, db)
+            ILogger log, IDbOperations db, IComponentContext cc) : base(log, db, cc)
 		{
 			FileDomain = filesDomain;
 			TripPlanner = tripPlanner;

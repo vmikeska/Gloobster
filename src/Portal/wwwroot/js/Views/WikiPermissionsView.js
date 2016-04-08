@@ -7,8 +7,10 @@ var Views;
 (function (Views) {
     var WikiPermissionsView = (function (_super) {
         __extends(WikiPermissionsView, _super);
-        function WikiPermissionsView() {
+        function WikiPermissionsView(isMasterAdmin, isSuperAdmin) {
             _super.call(this);
+            this.isMasterAdmin = isMasterAdmin;
+            this.isSuperAdmin = isSuperAdmin;
             this.regSaSearch();
             this.regUserSearch();
             this.initSaDelete();
@@ -51,10 +53,16 @@ var Views;
                 var data = {
                     id: user.friendId
                 };
-                _this.apiPost("WikiPermissions", data, function (r) {
-                    var $tag = _this.getTag(user.displayName, user.friendId);
-                    _this.saDelete($tag);
-                    $("#saTags").append($tag);
+                _this.apiPost("WikiPermissions", data, function (created) {
+                    if (created) {
+                        var $tag = _this.getTag(user.displayName, user.friendId, _this.isMasterAdmin);
+                        _this.saDelete($tag);
+                        $("#saTags").append($tag);
+                    }
+                    else {
+                        var id = new Common.InfoDialog();
+                        id.create("User creation unsuccessful", "Maybe user already exists ?");
+                    }
                 });
             });
         };
@@ -62,8 +70,14 @@ var Views;
             var _this = this;
             this.getSearchBox("newUserCombo", function (user) {
                 var data = { id: user.friendId };
-                _this.apiPost("WikiUserCustomPermissions", data, function (r) {
-                    _this.addUserCustom(user);
+                _this.apiPost("WikiUserCustomPermissions", data, function (created) {
+                    if (created) {
+                        _this.addUserCustom(user);
+                    }
+                    else {
+                        var id = new Common.InfoDialog();
+                        id.create("User creation unsuccessful", "Maybe user already exists ?");
+                    }
                 });
             });
         };
@@ -86,7 +100,7 @@ var Views;
                     articleId: articleId
                 };
                 _this.apiPost("WikiPermissionsArticle", data, function (r) {
-                    var $tag = _this.getTag($a.text(), articleId);
+                    var $tag = _this.getTag($a.text(), articleId, _this.isMasterAdmin || _this.isSuperAdmin);
                     _this.articleTagDelete($tag, userId);
                     _this.addTagToCont($cont.find(".tags"), $tag);
                     //$cont.find(".tag").last().after($tag);
@@ -145,8 +159,13 @@ var Views;
                 });
             });
         };
-        WikiPermissionsView.prototype.getTag = function (text, id) {
-            return $("<span id=\"" + id + "\" class=\"tag\">" + text + "<a class=\"delete\" href=\"#\"></a></span>");
+        WikiPermissionsView.prototype.getTag = function (text, id, withDelete) {
+            if (withDelete) {
+                return $("<span id=\"" + id + "\" class=\"tag\">" + text + "<a class=\"delete\" href=\"#\"></a></span>");
+            }
+            else {
+                return $("<span id=\"" + id + "\" class=\"tag\">" + text + "</span>");
+            }
         };
         WikiPermissionsView.prototype.getSearchBox = function (id, callback) {
             var config = new Common.UserSearchConfig();

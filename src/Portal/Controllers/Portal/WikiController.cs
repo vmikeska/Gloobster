@@ -10,6 +10,7 @@ using Gloobster.Enums;
 using MongoDB.Bson;
 using Serilog;
 using System.Linq;
+using Autofac;
 using Gloobster.DomainModels.Wiki;
 using Gloobster.Portal.Controllers.Api.Wiki;
 
@@ -20,7 +21,7 @@ namespace Gloobster.Portal.Controllers.Portal
         public IFilesDomain FileDomain { get; set; }
         public IWikiPermissions WikiPerms { get; set; }
 
-        public WikiController(IWikiPermissions wikiPerms, IFilesDomain filesDomain, ILogger log,  IDbOperations db) : base(log, db)
+        public WikiController(IWikiPermissions wikiPerms, IFilesDomain filesDomain, ILogger log,  IDbOperations db, IComponentContext cc) : base(log, db, cc)
         {
             FileDomain = filesDomain;
             WikiPerms = wikiPerms;
@@ -150,22 +151,24 @@ namespace Gloobster.Portal.Controllers.Portal
         }
 
 
-
+        [AuthorizeWeb]
         public IActionResult Permissions()
         {
-            var perms = DB.C<WikiPermissionEntity>().ToList();
+            var perms = DB.List<WikiPermissionEntity>();
 
-            //for now access just master admins
-            var masterAdmins = perms.Where(u => u.IsMasterAdmin).Select(m => m.User_id).ToList();
-            if (!masterAdmins.Contains(UserIdObj.Value))
+            bool masterAdmin = perms.Any(u => u.IsMasterAdmin && u.User_id == UserIdObj.Value);
+            bool superAdmin = perms.Any(u => u.IsSuperAdmin && u.User_id == UserIdObj.Value);
+            if (!masterAdmin && !superAdmin)
             {
                 return HttpUnauthorized();
             }
 
             var userIds = perms.Select(u => u.User_id).ToList();
-            var users = DB.C<UserEntity>().Where(u => userIds.Contains(u.id)).ToList();
+            var users = DB.List<UserEntity>(u => userIds.Contains(u.User_id));
 
             var vm = CreateViewModelInstance<WikiPermissionsViewModel>();
+            vm.IsMasterAdmin = masterAdmin;
+            vm.IsSuperAdmin = superAdmin;
 
             vm.MasterAdmins = perms
                 .Where(u => u.IsMasterAdmin)
@@ -181,15 +184,12 @@ namespace Gloobster.Portal.Controllers.Portal
 
             var unrichAdmins = perms.Where(u => !u.IsSuperAdmin && !u.IsMasterAdmin).ToList();
             var involvedArticlesIds = unrichAdmins.SelectMany(a => a.Articles).ToList();
-            var involvedArticles = DB.C<WikiTextsEntity>()
-                .Where(a => involvedArticlesIds
-                .Contains(a.Article_id))
-                .ToList();
+            var involvedArticles = DB.List<WikiTextsEntity>(a => involvedArticlesIds.Contains(a.Article_id));
 
             vm.Users = unrichAdmins.Select(i => new UserPermVM
             {
                 UserId = i.User_id.ToString(),
-                Name = users.First(u => u.id == i.User_id).DisplayName,
+                Name = users.First(u => u.User_id == i.User_id).DisplayName,
                 Items = i.Articles.Select(a => ConvertArticle(involvedArticles, a)).ToList()
             }).ToList();
 
@@ -310,11 +310,11 @@ namespace Gloobster.Portal.Controllers.Portal
 
         private UserViewModel ConvertUser(List<UserEntity> users, ObjectId userId)
         {
-            var user = users.FirstOrDefault(u => u.id == userId);
+            var user = users.FirstOrDefault(u => u.User_id == userId);
 
             return new UserViewModel
             {
-                Id = user.id.ToString(),
+                Id = user.User_id.ToString(),
                 Name = user.DisplayName
             };
         }

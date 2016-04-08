@@ -1,10 +1,16 @@
 ﻿module Views {
 	export class WikiPermissionsView extends ViewBase {
 
+	  private isMasterAdmin: boolean;
+		private isSuperAdmin: boolean;
+
 		private userTemplate;
 
-		constructor() {
+		constructor(isMasterAdmin: boolean, isSuperAdmin: boolean) {
 			super();
+
+			this.isMasterAdmin = isMasterAdmin;
+			this.isSuperAdmin = isSuperAdmin;
 
 			this.regSaSearch();
 			this.regUserSearch();
@@ -51,10 +57,16 @@
 				var data = {
 					id: user.friendId
 				};
-				this.apiPost("WikiPermissions", data, (r) => {
-					var $tag = this.getTag(user.displayName, user.friendId);
-					this.saDelete($tag);
-					$("#saTags").append($tag);
+				this.apiPost("WikiPermissions", data, (created) => {
+				 if (created) {					 
+						var $tag = this.getTag(user.displayName, user.friendId, this.isMasterAdmin);
+						this.saDelete($tag);
+						$("#saTags").append($tag);
+					} else {
+						var id = new Common.InfoDialog();
+						id.create("User creation unsuccessful", "Maybe user already exists ?");
+					}
+
 				});
 			});
 		}
@@ -62,8 +74,14 @@
 		private regUserSearch() {
 			this.getSearchBox("newUserCombo", (user) => {
 				var data = { id: user.friendId };
-				this.apiPost("WikiUserCustomPermissions", data, (r) => {
-					this.addUserCustom(user);
+				this.apiPost("WikiUserCustomPermissions", data, (created) => {
+					if (created) {
+						this.addUserCustom(user);
+					} else {
+					 var id = new Common.InfoDialog();
+					 id.create("User creation unsuccessful", "Maybe user already exists ?");
+					}
+
 				});
 			});
 		}
@@ -90,7 +108,7 @@
 				};
 
 				this.apiPost("WikiPermissionsArticle", data, (r) => {
-					var $tag = this.getTag($a.text(), articleId);
+					var $tag = this.getTag($a.text(), articleId, this.isMasterAdmin || this.isSuperAdmin);
 					this.articleTagDelete($tag, userId);
 
 					this.addTagToCont($cont.find(".tags"), $tag);
@@ -157,8 +175,12 @@
 			});
 		}
 
-		private getTag(text, id) {
-			return $(`<span id="${id}" class="tag">${text}<a class="delete" href="#"></a></span>`);
+		private getTag(text, id, withDelete) {
+			if (withDelete) {
+				return $(`<span id="${id}" class="tag">${text}<a class="delete" href="#"></a></span>`);
+			} else {
+			 return $(`<span id="${id}" class="tag">${text}</span>`);
+			}
 		}
 
 		private getSearchBox(id, callback) {

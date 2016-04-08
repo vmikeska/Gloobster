@@ -43,10 +43,7 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 				throw new Exception();
 			}
 
-			var users =
-				DB.C<UserEntity>()
-					.Where(u => friends.Friends.Contains(u.User_id) && u.DisplayName.ToLower().Contains(name))
-					.ToList();
+			var users = DB.List<UserEntity>(u => friends.Friends.Contains(u.User_id) && u.DisplayName.ToLower().Contains(name));
 
 			if (users.Any())
 			{

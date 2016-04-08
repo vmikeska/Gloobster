@@ -26,40 +26,27 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         [AuthorizeApi]
         public async Task<IActionResult> Post([FromBody] PermissionRequest req)
         {
-            if (!WikiPerms.CanManageArticleAdmins(UserId))
+            if (!WikiPerms.IsMasterAdmin(UserId))
             {
                 return HttpUnauthorized();
             }
 
-            var idObj = new ObjectId(req.id);
+            bool created = await WikiPerms.CreateNewSuperAdmin(req.id);
             
-            var newSupAdmin = new WikiPermissionEntity
-            {
-                IsSuperAdmin = true,
-                IsMasterAdmin = false,
-                id = ObjectId.GenerateNewId(),
-                User_id = idObj,
-                Articles = null
-            };
-            await DB.SaveAsync(newSupAdmin);
-            
-            return new ObjectResult(null);
+            return new ObjectResult(created);
         }
 
         [HttpDelete]
         [AuthorizeApi]        
         public async Task<IActionResult> Delete(string id)
         {
-            if (!WikiPerms.CanManageArticleAdmins(UserId))
+            if (!WikiPerms.IsMasterAdmin(UserId))
             {
                 return HttpUnauthorized();
             }
 
-            var idObj = new ObjectId(id);
-            
-            var entity = DB.C<WikiPermissionEntity>().FirstOrDefault(u => u.User_id == idObj);
-            await DB.DeleteAsync<WikiPermissionEntity>(entity.id);
-            
+            await WikiPerms.DeleteAdmin(id);
+
             return new ObjectResult(null);
         }
     }

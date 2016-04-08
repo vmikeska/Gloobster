@@ -12,18 +12,17 @@ using Gloobster.Portal.ViewModels;
 using Serilog;
 using System.Linq;
 using System.Web;
+using Autofac;
 using Gloobster.Entities;
 using Microsoft.AspNet.Http;
 
 namespace Gloobster.Portal.Controllers.Portal
 {
     public class HomeController : PortalBaseController
-    {
-		public IInitialWikiDataCreator DataCreator { get; set; }
-        
-        public HomeController(IInitialWikiDataCreator dataCreator, ILogger log, IDbOperations db) : base(log, db)
+    {		
+        public HomeController(ILogger log, IDbOperations db, IComponentContext cc) : base(log, db, cc)
 		{
-            DataCreator = dataCreator;            
+            
 		}
 
 

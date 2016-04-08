@@ -49,15 +49,15 @@ namespace Gloobster.DomainModels.Wiki
         public List<TaskDO> GetUnresolvedTasks(string userId)
         {
             var userIdObj = new ObjectId(userId);
-
-            var permissions = DB.C<WikiPermissionEntity>().FirstOrDefault(u => u.User_id == userIdObj);
+            
+            var permissions = DB.FOD<WikiPermissionEntity>(u => u.User_id == userIdObj);
             if (permissions == null)
             {
                 return null;
             }
 
             var outTasks = new List<WikiAdminTaskEntity>();
-            var allUnresolvedTasks = DB.C<WikiAdminTaskEntity>().Where(t => t.State == AdminTaskState.New).ToList();
+            var allUnresolvedTasks = DB.List<WikiAdminTaskEntity>(t => t.State == AdminTaskState.New);
 
             if (permissions.IsMasterAdmin || permissions.IsSuperAdmin)
             {

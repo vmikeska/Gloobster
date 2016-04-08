@@ -31,12 +31,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 return HttpUnauthorized();
             }
 
-            var articleIdObj = new ObjectId(req.articleId);
-            var userIdObj = new ObjectId(req.userId);
-
-            var f1 = DB.F<WikiPermissionEntity>().Eq(p => p.User_id, userIdObj);
-            var u1 = DB.U<WikiPermissionEntity>().Push(p => p.Articles, articleIdObj);
-            var r1 = await DB.UpdateAsync(f1, u1);
+            await WikiPerms.AddArticlePermission(req.userId, req.articleId);
             
             return new ObjectResult(null);
         }
@@ -50,13 +45,9 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 return HttpUnauthorized();
             }
 
-            var articleIdObj = new ObjectId(articleId);
-            var userIdObj = new ObjectId(userId);
+            await WikiPerms.RemoveArticlePermission(userId, articleId);
 
-            var f1 = DB.F<WikiPermissionEntity>().Eq(p => p.User_id, userIdObj);
-            var u1 = DB.U<WikiPermissionEntity>().Pull(p => p.Articles, articleIdObj);
-            var r1 = await DB.UpdateAsync(f1, u1);
-            
+
             return new ObjectResult(null);
         }
 
