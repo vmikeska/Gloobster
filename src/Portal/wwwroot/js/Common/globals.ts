@@ -11,6 +11,7 @@ module Constants {
 	export var nameCookieName = "name";
 	export var socNetsCookieName = "socNets";
 	export var twitterLoggedCookieName = "twitterLogged";
+	export var fullRegCookieName = "fullReg";
 
 	export var firstRedirectUrl = "/PinBoard/Pins";
 	export var networkTypes = "NetworkTypes";

@@ -18,6 +18,10 @@ module Views {
 
 		get pageType(): PageType { return null; }
 
+		public get fullReg(): Boolean {
+	    return this.cookieManager.getString(Constants.fullRegCookieName) === "true";
+    }
+
 		constructor() {
 			ViewBase.currentView = this;
 			this.cookieManager = new Common.CookieManager();			

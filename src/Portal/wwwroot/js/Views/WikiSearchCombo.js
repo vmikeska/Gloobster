@@ -17,7 +17,20 @@ var Views;
             var _this = this;
             this.$input = this.$combo.find("input");
             this.delayedCallback = new Common.DelayedCallback(this.$input);
-            this.delayedCallback.callback = function (query) { return _this.search(query); };
+            this.delayedCallback.callback = function (query) {
+                if (query) {
+                    _this.loader(true);
+                }
+                _this.search(query);
+            };
+        };
+        WikiSearchCombo.prototype.loader = function (state) {
+            if (state) {
+                this.$combo.find(".loader").show();
+            }
+            else {
+                this.$combo.find(".loader").hide();
+            }
         };
         WikiSearchCombo.prototype.search = function (query) {
             var _this = this;
@@ -39,6 +52,7 @@ var Views;
                     _this.selectionCallback($(e.target));
                 });
             }
+            this.loader(false);
         };
         WikiSearchCombo.prototype.getItemHtml = function (item) {
             var ratingPercents = Math.round(item.rating * 20);

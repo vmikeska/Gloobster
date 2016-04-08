@@ -11,7 +11,7 @@
 
 		public initId(id, config = null) {
 			this.config = config;
-			this.$combo = $("#" + id);
+			this.$combo = $(`#${id}`);
 			this.init();
 		}
 
@@ -23,7 +23,21 @@
 		private init() {
 			this.$input = this.$combo.find("input");
 			this.delayedCallback = new Common.DelayedCallback(this.$input);
-			this.delayedCallback.callback = (query) => this.search(query);
+			this.delayedCallback.callback = (query) => {
+			 if (query) {
+				this.loader(true);
+			 }
+			 this.search(query);
+
+			};
+		}
+
+		private loader(state: boolean) {
+			if (state) {
+				this.$combo.find(".loader").show();
+			} else {
+				this.$combo.find(".loader").hide();
+			}
 		}
 
 		public search(query: string) {
@@ -49,6 +63,8 @@
 					this.selectionCallback($(e.target));
 				});
 			}
+
+			this.loader(false);
 		}
 
 		private getItemHtml(item) {

@@ -71,6 +71,19 @@
     </div>
 </script>
 
+<script id="infoDialog-template" type="text/x-handlebars-template">
+    <div class="popup" id="popup-info">
+        <div>
+            <h3>{{title}}</h3>
+            <p class="h4 color1">{{text}}</p>
+            <div class="tright">
+                <a class="button border cancel" href="#">Close</a>                
+            </div>
+            <a class="close" href="#"></a>
+        </div>
+    </div>
+</script>
+
 <script type="text/javascript">
 
         @if (Model.IsUserLogged)

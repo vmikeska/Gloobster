@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Autofac;
 using Gloobster.Database;
@@ -32,5 +33,6 @@ namespace Gloobster.DomainInterfaces
     public interface IAccountDomain
     {
         SocAuthDO GetAuth(SocialNetworkType netType, string userId);
+        List<SocAuthDO> GetAuths(string userId);
     }
 }

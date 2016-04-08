@@ -18,13 +18,7 @@ using Microsoft.AspNet.Http;
 using MongoDB.Bson;
 
 namespace Gloobster.Portal.Controllers.Api.Registration
-{
-    //public class FacebookLogin
-    //{
-    //    public ILogger Log { get; set; }
-    //    public IFacebookService FBService { get; set; }        
-    //}
-    
+{    
     [Route("api/[controller]")]
 	public class FacebookUserController : BaseApiController
 	{

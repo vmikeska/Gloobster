@@ -23,6 +23,13 @@ var Views;
             enumerable: true,
             configurable: true
         });
+        Object.defineProperty(ViewBase.prototype, "fullReg", {
+            get: function () {
+                return this.cookieManager.getString(Constants.fullRegCookieName) === "true";
+            },
+            enumerable: true,
+            configurable: true
+        });
         ViewBase.prototype.regUserMenu = function () {
             var _this = this;
             $("#logoutUser").click(function (e) {

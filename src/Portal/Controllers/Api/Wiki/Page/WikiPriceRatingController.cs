@@ -25,13 +25,16 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 		[AuthorizeApi]
 		public async Task<IActionResult> Put([FromBody] WikiRatingRequest req)
 		{
-		    var priceId = req.sectionId;
-		    bool plus = req.like;
+		    if (IsConfirmedRegistration)
+		    {
+		        var priceId = req.sectionId;
+		        bool plus = req.like;
 
-		    decimal newPrice = await WikiUpdate.AddPriceRating(req.articleId, priceId, UserId, plus);
-            
-            return new ObjectResult(newPrice);
-		}
+		        decimal newPrice = await WikiUpdate.AddPriceRating(req.articleId, priceId, UserId, plus);
+                return new ObjectResult(newPrice);
+            }
+            return new ObjectResult(null);
+        }
         
 	}
 }

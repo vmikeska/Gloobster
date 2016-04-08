@@ -90,7 +90,8 @@
 		public saveCookies(res) {
 			this.cookiesMgr.setString(Constants.tokenCookieName, res.Token);
 			this.cookiesMgr.setString(Constants.nameCookieName, res.DisplayName);
-
+			this.cookiesMgr.setString(Constants.fullRegCookieName, res.FullRegistration);
+		 
 			if (res.NetType === SocialNetworkType.Facebook) {
 				Views.ViewBase.fbt = res.SocToken;			 
 			}

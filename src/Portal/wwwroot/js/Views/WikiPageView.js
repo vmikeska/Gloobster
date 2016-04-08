@@ -5,10 +5,17 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Views;
 (function (Views) {
+    (function (ArticleType) {
+        ArticleType[ArticleType["Continent"] = 0] = "Continent";
+        ArticleType[ArticleType["Country"] = 1] = "Country";
+        ArticleType[ArticleType["City"] = 2] = "City";
+    })(Views.ArticleType || (Views.ArticleType = {}));
+    var ArticleType = Views.ArticleType;
     var WikiPageView = (function (_super) {
         __extends(WikiPageView, _super);
-        function WikiPageView(articleId) {
+        function WikiPageView(articleId, articleType) {
             _super.call(this);
+            this.articleType = articleType;
             this.articleId = articleId;
             this.langVersion = this.getLangVersion();
             this.photos = new WikiPhotosUser(articleId);
@@ -37,7 +44,7 @@ var Views;
             this.regSend();
         }
         Report.prototype.toggleForm = function ($element) {
-            $element.closest('.evaluate').toggleClass('evaluate-open');
+            $element.closest(".evaluate").toggleClass("evaluate-open");
         };
         Report.prototype.regSend = function () {
             var _this = this;
@@ -61,13 +68,28 @@ var Views;
             var _this = this;
             $(".icon-flag").click(function (e) {
                 e.preventDefault();
-                var $target = $(e.target);
-                _this.toggleForm($target);
+                if (Views.ViewBase.currentView.fullReg) {
+                    var $target = $(e.target);
+                    _this.toggleForm($target);
+                }
+                else {
+                    RegMessages.displayFullRegMessage();
+                }
             });
         };
         return Report;
     })();
     Views.Report = Report;
+    var RegMessages = (function () {
+        function RegMessages() {
+        }
+        RegMessages.displayFullRegMessage = function () {
+            var id = new Common.InfoDialog();
+            id.create("Full registration", "For content contribution you need to complete your registration. Either register with any social network or confirm your email.");
+        };
+        return RegMessages;
+    })();
+    Views.RegMessages = RegMessages;
     var Rating = (function () {
         function Rating(articleId, langVersion) {
             this.regRating();
@@ -103,9 +125,14 @@ var Views;
                     language: _this.langVersion,
                     like: like
                 };
-                Views.ViewBase.currentView.apiPut(endpoint, data, function (r) {
-                    callback({ $cont: $cont, like: like, res: r });
-                });
+                if (Views.ViewBase.currentView.fullReg) {
+                    Views.ViewBase.currentView.apiPut(endpoint, data, function (r) {
+                        callback({ $cont: $cont, like: like, res: r });
+                    });
+                }
+                else {
+                    RegMessages.displayFullRegMessage();
+                }
             });
         };
         Rating.prototype.regRating = function () {
@@ -142,8 +169,13 @@ var Views;
             this.articleId = articleId;
             $("#recommendPhoto").click(function (e) {
                 e.preventDefault();
-                $("#photosForm").show();
-                $("#recommendPhoto").hide();
+                if (Views.ViewBase.currentView.fullReg) {
+                    $("#photosForm").show();
+                    $("#recommendPhoto").hide();
+                }
+                else {
+                    RegMessages.displayFullRegMessage();
+                }
             });
             $("#photosForm .cancel").click(function (e) {
                 e.preventDefault();
@@ -170,9 +202,17 @@ var Views;
             var picUpload = new Common.FileUpload(config);
             picUpload.customId = articleId;
             picUpload.onProgressChanged = function (percent) {
+                var $pb = $("#galleryProgress");
+                $pb.show();
+                var pt = percent + "%";
+                $(".progress").css("width", pt);
+                $pb.find("span").text(pt);
             };
             picUpload.onUploadFinished = function (file, fileId) {
-                alert("Thank you, photo was uploaded! Will be displayed when one of our Admins validate the photo.");
+                var $pb = $("#galleryProgress");
+                $pb.hide();
+                var id = new Common.InfoDialog();
+                id.create("Photo upload", "Thank you, photo was uploaded! Will be displayed when one of our Admins validate the photo.");
             };
         };
         return WikiPhotosUser;

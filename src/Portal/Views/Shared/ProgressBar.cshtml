@@ -1,0 +1,14 @@
+﻿
+@{
+    var id = string.IsNullOrEmpty(Model) ? string.Empty : $"id={Model}" ;
+}
+
+<div @(id) class="upload-progressbar" style="display: none">
+    <div class="progressbar-holder middle">
+        <div class="progressbar">
+            <div class="progress" style="width: 0;"></div>
+            <span>0%</span>
+        </div>
+    </div>
+    @*<a class="button middle mleft5" href="#">Cancel</a>*@
+</div>

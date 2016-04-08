@@ -5,11 +5,10 @@
 		private domain = null;
 
 		public getString(cookieName: string) {
-			var value = $.cookie(cookieName);
-			console.log("getting: " + cookieName + ": " + value);
+			var value = $.cookie(cookieName);			
 			return value;
 		}
-
+	 
 		public getJson(cookieName: string) {
 			var valStr = this.getString(cookieName);
 
@@ -21,8 +20,7 @@
 			return valObj;
 		}
 
-		public setString(cookieName: string, cookieValue: string) {
-			console.log("setting: " + cookieName + ": " + cookieValue);
+		public setString(cookieName: string, cookieValue: string) {			
 			$.cookie(cookieName, cookieValue, { "domain": this.domain, "path": "/" });
 		}
 

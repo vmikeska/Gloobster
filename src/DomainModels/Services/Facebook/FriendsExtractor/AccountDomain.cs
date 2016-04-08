@@ -1,9 +1,12 @@
-﻿using Gloobster.Database;
+﻿using System.Collections.Generic;
+using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
 using Gloobster.Entities;
 using Gloobster.Enums;
+using Gloobster.Mappers;
 using MongoDB.Bson;
+using System.Linq;
 
 namespace Gloobster.DomainModels.Services.Facebook.FriendsExtractor
 {
@@ -21,19 +24,19 @@ namespace Gloobster.DomainModels.Services.Facebook.FriendsExtractor
                 return null;
             }
 
-            var auth = new SocAuthDO
-            {
-                UserId = authEntity.UserId,
-                TokenSecret = authEntity.TokenSecret,
-                AccessToken = authEntity.AccessToken,
-                ExpiresAt = authEntity.ExpiresAt,
-                SocUserId = authEntity.UserId,
-                NetType = authEntity.NetworkType,
-                ErrorMessage = authEntity.ErrorMessage,
-                HasPermanentToken = authEntity.HasPermanentToken
-            };
+            var auth = authEntity.ToDO();
 
             return auth;
+        }
+
+        public List<SocAuthDO> GetAuths(string userId)
+        {
+            var userIdObj = new ObjectId(userId);
+
+            var authsEntity = DB.List<SocialAccountEntity>(e => e.User_id == userIdObj);
+
+            var res = authsEntity.Select(e => e.ToDO()).ToList();
+            return res;
         }
     }
 }

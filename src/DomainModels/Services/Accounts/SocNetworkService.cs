@@ -34,6 +34,7 @@ namespace Gloobster.DomainModels.Services.Accounts
         public IFilesDomain FileDomain { get; set; }
         public IAvatarPhoto AvatarPhoto { get; set; }
         public INotificationsDomain NotificationDomain { get; set; }
+        public IAccountDomain AccountDomain { get; set; }
 
         public async Task<LoginResponseDO> HandleEmail(string mail, string password, string userId)
         {
@@ -52,7 +53,8 @@ namespace Gloobster.DomainModels.Services.Accounts
                         UserId = userId,
                         DisplayName = user.DisplayName,
                         NetType = SocialNetworkType.Base,
-                        SocToken = null
+                        SocToken = null,
+                        FullRegistration = accountExisting.EmailConfirmed
                     };
                     return response;
                 }
@@ -109,7 +111,8 @@ namespace Gloobster.DomainModels.Services.Accounts
                     UserId = userId,
                     DisplayName = newUserEntity.DisplayName,
                     NetType = SocialNetworkType.Base,
-                    SocToken = null
+                    SocToken = null,
+                    FullRegistration = false
                 };
                 return response;
             }            
@@ -189,7 +192,27 @@ namespace Gloobster.DomainModels.Services.Accounts
                 return false;
             }
         }
-        
+
+        private bool IsFullRegistration(string userId)
+        {
+            var userIdObj = new ObjectId(userId);
+
+            var account = DB.FOD<AccountEntity>(a => a.User_id == userIdObj);
+            if (account != null && account.EmailConfirmed)
+            {                
+                return true;
+            }
+            
+            var socAccounts = AccountDomain.GetAuths(userId);
+            if (socAccounts.Any())
+            {             
+                return true;
+            }
+
+            return false;
+        }
+
+
         private async Task<LoginResponseDO> SocAccountNew(SocAuthDO auth)
         {
             var userIdObj = new ObjectId(auth.UserId);
@@ -210,7 +233,8 @@ namespace Gloobster.DomainModels.Services.Accounts
                 UserId = auth.UserId,
                 DisplayName = userEntity.DisplayName,
                 NetType = auth.NetType,
-                SocToken = auth.AccessToken
+                SocToken = auth.AccessToken,
+                FullRegistration = IsFullRegistration(auth.UserId)
             };
             return response;
         }
@@ -338,7 +362,8 @@ namespace Gloobster.DomainModels.Services.Accounts
                 UserId = auth.UserId,
                 DisplayName = user.DisplayName,
                 NetType = auth.NetType,
-                SocToken = auth.AccessToken
+                SocToken = auth.AccessToken,
+                FullRegistration = IsFullRegistration(accountBySocAccount.User_id.ToString())
             };
             return response;
         }

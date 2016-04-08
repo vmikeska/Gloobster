@@ -7,8 +7,8 @@ var Views;
 (function (Views) {
     var WikiAdminPageView = (function (_super) {
         __extends(WikiAdminPageView, _super);
-        function WikiAdminPageView(articleId) {
-            _super.call(this, articleId);
+        function WikiAdminPageView(articleId, articleType) {
+            _super.call(this, articleId, articleType);
             this.isAdminMode = false;
             this.linksAdmin = new LinksAdmin(articleId);
             this.blockAdmin = new BlockAdmin(articleId, this.langVersion);
@@ -46,7 +46,9 @@ var Views;
             this.doDontAdmin.generateAdmin();
             this.priceAdmin.generateAdmin();
             this.photoAdmin.generateAdmin();
-            this.photosAdmin.createAdmin();
+            if (this.articleType === Views.ArticleType.City) {
+                this.photosAdmin.createAdmin();
+            }
         };
         WikiAdminPageView.prototype.destroyBlocks = function () {
             $(".editSection").remove();
@@ -54,7 +56,9 @@ var Views;
             this.priceAdmin.clean();
             this.doDontAdmin.clean();
             this.photoAdmin.clean();
-            this.photosAdmin.clean();
+            if (this.articleType === Views.ArticleType.City) {
+                this.photosAdmin.clean();
+            }
         };
         WikiAdminPageView.prototype.drawAdminBlocks = function ($block, id, adminType) {
             var adminTypes = adminType.split(",");
@@ -113,11 +117,16 @@ var Views;
             request.params = [["id", id], ["admin", admin.toString()]];
             request.onSuccess = function (html) {
                 _this.$cont.html(html);
+                var $photoBtn = $("#duCont");
                 if (admin) {
                     _this.regConfPhoto();
                     _this.regDelPhoto();
                     _this.registerPhotoUpload(_this.articleId, "galleryPhotoInput");
+                    $photoBtn.show();
                 }
+                //else {
+                //	$photoBtn.hide();
+                //}
             };
             request.onError = function (response) { $("#photos").html("Error"); };
             request.sendGet();
@@ -130,6 +139,11 @@ var Views;
             var picUpload = new Common.FileUpload(config);
             picUpload.customId = articleId;
             picUpload.onProgressChanged = function (percent) {
+                var $pb = $("#galleryProgress");
+                $pb.show();
+                var pt = percent + "%";
+                $(".progress").css("width", pt);
+                $pb.find("span").text(pt);
             };
             picUpload.onUploadFinished = function (file, fileId) {
                 _this.refreshPhotos(_this.articleId, true);

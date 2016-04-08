@@ -4,6 +4,7 @@ using Gloobster.Entities;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using System.Linq;
+using Gloobster.DomainModels.Services.Facebook.FriendsExtractor;
 using Serilog;
 
 namespace Gloobster.Portal.Controllers.Base
@@ -13,7 +14,7 @@ namespace Gloobster.Portal.Controllers.Base
 	{
 		public IDbOperations DB { get; set; }
         public ILogger Log { get; set; }
-
+        
         public BaseApiController(ILogger log, IDbOperations db)
 		{
 			DB = db;
@@ -25,14 +26,40 @@ namespace Gloobster.Portal.Controllers.Base
         public ObjectId UserIdObj
         {
             get
-            {
-                //if (string.IsNullOrEmpty(UserId))
-                //{
-                //    return null;
-                //}
+            {                
                 return new ObjectId(UserId);
             }
         }
+
+	    private bool? _isConfirmedRegistration;
+        public bool IsConfirmedRegistration
+	    {
+            get
+	        {
+
+	            if (!_isConfirmedRegistration.HasValue)
+	            {
+	                var account = DB.FOD<AccountEntity>(a => a.User_id == UserIdObj);
+	                if (account != null && account.EmailConfirmed)
+	                {
+	                    _isConfirmedRegistration = true;
+	                    return true;
+	                }
+
+	                var accountDomain = new AccountDomain {DB = DB};
+	                var socAccounts = accountDomain.GetAuths(UserId);
+	                if (socAccounts.Any())
+	                {
+	                    _isConfirmedRegistration = true;
+	                    return true;
+	                }
+
+	                _isConfirmedRegistration = false;
+	            }
+
+	            return _isConfirmedRegistration.Value;
+	        }
+	    }
 
         public bool IsUserLogged => !string.IsNullOrEmpty(UserId);
 

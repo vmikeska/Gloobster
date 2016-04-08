@@ -9,20 +9,22 @@
     var photosGroups = Model.Photos.SplitBy(3);    
 }
 
-@if (Model.Admin)
+@if (Model.UserIsAdmin)
 {
-    <div>
+    <div id="duCont" style="display: none">
 
         <a class="photoButton" href="#">
-            <input id="galleryPhotoInput" class="inputs" type="file" />
+            <input id="galleryPhotoInput" class="inputs" type="file"/>
             <label for="galleryPhotoInput">
                 <span class="icon-photo middle mright5"></span>
                 Direct upload
             </label>
         </a>
 
-    </div>
+    </div>    
 }
+
+@Html.Partial("ProgressBar", "galleryProgress")
 
 @foreach (var group in photosGroups)
 {

@@ -10,8 +10,8 @@ module Views {
 		private photoAdmin: PhotoAdmin;
 		private photosAdmin: PhotosAdmin;
 
-		constructor(articleId) {
-			super(articleId);
+		constructor(articleId, articleType) {
+			super(articleId, articleType);
 			
 			this.linksAdmin = new LinksAdmin(articleId);
 			this.blockAdmin = new BlockAdmin(articleId, this.langVersion);
@@ -53,7 +53,10 @@ module Views {
 			this.doDontAdmin.generateAdmin();
 			this.priceAdmin.generateAdmin();
 			this.photoAdmin.generateAdmin();
-			this.photosAdmin.createAdmin();
+
+			if (this.articleType === Views.ArticleType.City) {
+			 this.photosAdmin.createAdmin();
+			}		 
 		}
 
 		private destroyBlocks() {
@@ -62,10 +65,13 @@ module Views {
 			this.priceAdmin.clean();
 			this.doDontAdmin.clean();
 			this.photoAdmin.clean();
-			this.photosAdmin.clean();
+
+			if (this.articleType === Views.ArticleType.City) {
+				this.photosAdmin.clean();
+			}
 		}
 
-
+	 
 		private drawAdminBlocks($block, id, adminType) {
 			var adminTypes = adminType.split(",");
 			if (_.contains(adminTypes, "standard")) {
@@ -86,7 +92,7 @@ module Views {
 		constructor(articleId) {
 			this.articleId = articleId;
 		 
-			this.$cont = $("#photos");
+			this.$cont = $("#photos");			
 		}
 
 		public createAdmin() {						
@@ -94,7 +100,7 @@ module Views {
 		}
 
 		public clean() {
-		 this.refreshPhotos(this.articleId, false);
+		 this.refreshPhotos(this.articleId, false);		 
 		}
 	 
 		private regDelPhoto() {
@@ -134,18 +140,24 @@ module Views {
 			request.params = [["id", id], ["admin", admin.toString()]];
 			request.onSuccess = (html) => {
 			 this.$cont.html(html);
-
+				var $photoBtn = $("#duCont");
 				if (admin) {
 					this.regConfPhoto();
 					this.regDelPhoto();
 					this.registerPhotoUpload(this.articleId, "galleryPhotoInput");
+
+					$photoBtn.show();
 				}
+				//else {
+				//	$photoBtn.hide();
+				//}
 			};
 			request.onError = (response) => { $("#photos").html("Error") };
 			request.sendGet();		 
 		}
 
 		private registerPhotoUpload(articleId, inputId) {
+			
 			var config = new Common.FileUploadConfig();
 			config.inputId = inputId;
 			config.endpoint = "WikiPhotoGallery";
@@ -153,7 +165,12 @@ module Views {
 			var picUpload = new Common.FileUpload(config);
 			picUpload.customId = articleId;
 
-			picUpload.onProgressChanged = (percent) => {
+			picUpload.onProgressChanged = (percent) => {				
+				var $pb = $("#galleryProgress");
+				$pb.show();
+				var pt = `${percent}%`;
+				$(".progress").css("width", pt);
+				$pb.find("span").text(pt);
 			}
 
 			picUpload.onUploadFinished = (file, fileId) => {			 

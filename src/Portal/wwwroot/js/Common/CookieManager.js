@@ -7,7 +7,6 @@ var Common;
         }
         CookieManager.prototype.getString = function (cookieName) {
             var value = $.cookie(cookieName);
-            console.log("getting: " + cookieName + ": " + value);
             return value;
         };
         CookieManager.prototype.getJson = function (cookieName) {
@@ -19,7 +18,6 @@ var Common;
             return valObj;
         };
         CookieManager.prototype.setString = function (cookieName, cookieValue) {
-            console.log("setting: " + cookieName + ": " + cookieValue);
             $.cookie(cookieName, cookieValue, { "domain": this.domain, "path": "/" });
         };
         CookieManager.prototype.setJson = function (cookieName, cookieValue) {

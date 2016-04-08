@@ -16,6 +16,34 @@ var Common;
         return HintDialog;
     })();
     Common.HintDialog = HintDialog;
+    var InfoDialog = (function () {
+        function InfoDialog() {
+            this.template = Views.ViewBase.currentView.registerTemplate("infoDialog-template");
+        }
+        InfoDialog.prototype.create = function (title, text, callback) {
+            var _this = this;
+            if (callback === void 0) { callback = null; }
+            var context = {
+                title: title,
+                text: text
+            };
+            this.$html = $(this.template(context));
+            this.$html.find(".cancel").click(function (e) {
+                e.preventDefault();
+                if (callback) {
+                    callback();
+                }
+                _this.$html.fadeOut();
+            });
+            $("body").append(this.$html);
+            this.$html.fadeIn();
+        };
+        InfoDialog.prototype.hide = function () {
+            this.$html.hide();
+        };
+        return InfoDialog;
+    })();
+    Common.InfoDialog = InfoDialog;
     var ConfirmDialog = (function () {
         function ConfirmDialog() {
             this.template = Views.ViewBase.currentView.registerTemplate("confirmDialog-template");

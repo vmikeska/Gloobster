@@ -19,6 +19,39 @@
 	 }
 	}
 
+	export class InfoDialog {
+		private template;
+		private $html;
+
+		constructor() {
+			this.template = Views.ViewBase.currentView.registerTemplate("infoDialog-template");
+		}
+
+		public create(title, text, callback = null) {
+			var context = {
+				title: title,
+				text: text
+			};
+
+			this.$html = $(this.template(context));
+			this.$html.find(".cancel").click((e) => {
+				e.preventDefault();
+				if (callback) {
+					callback();
+				}
+				this.$html.fadeOut();
+			});
+
+			$("body").append(this.$html);
+			this.$html.fadeIn();
+		}
+
+		public hide() {
+			this.$html.hide();
+		}
+
+	}
+
 	export class ConfirmDialog {
 		private template;
 		private $html;

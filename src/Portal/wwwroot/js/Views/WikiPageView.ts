@@ -1,16 +1,22 @@
 ﻿module Views {
 
+	export enum ArticleType { Continent, Country, City } 
+
+
 	export class WikiPageView extends ViewBase {
 
+		public articleType: ArticleType;
 		public articleId: string;
 		public langVersion: string;
-
+	 
 		private rating: Rating;
 		private photos: WikiPhotosUser;
 		private report: Report;
-
-		constructor(articleId) {
-			super();
+	 
+		constructor(articleId, articleType) {
+		 super();
+		 
+			this.articleType = articleType;
 			this.articleId = articleId;
 			this.langVersion = this.getLangVersion();
 
@@ -51,8 +57,8 @@
 			this.regSend();
 		}
 
-		private toggleForm($element) {
-			$element.closest('.evaluate').toggleClass('evaluate-open');
+		private toggleForm($element) {		 
+			$element.closest(".evaluate").toggleClass("evaluate-open");
 		}
 
 		private regSend() {
@@ -80,12 +86,25 @@
 		private regToggleButton() {
 			$(".icon-flag").click((e) => {
 				e.preventDefault();
-				var $target = $(e.target);
-				this.toggleForm($target);
+
+				if (ViewBase.currentView.fullReg) {
+					var $target = $(e.target);
+					this.toggleForm($target);
+				} else {
+				 RegMessages.displayFullRegMessage();
+				}
+			 
 			});
 		}
 
 
+	}
+
+	export class RegMessages {
+	 public static displayFullRegMessage() {
+		var id = new Common.InfoDialog();
+		id.create("Full registration", "For content contribution you need to complete your registration. Either register with any social network or confirm your email.");
+	 }
 	}
 
 	export class Rating {
@@ -131,12 +150,16 @@
 					like: like
 				};
 
-				ViewBase.currentView.apiPut(endpoint, data, (r) => {
-					callback({ $cont: $cont, like: like, res: r });
-				});
+				if (ViewBase.currentView.fullReg) {
+					ViewBase.currentView.apiPut(endpoint, data, (r) => {
+						callback({ $cont: $cont, like: like, res: r });
+					});
+				} else {
+				 RegMessages.displayFullRegMessage();
+				}
 			});
 		}
-
+	 
 		private regRating() {
 			this.regRatingBase("ratingBtn", "evaluate", "WikiRating", (c) => {
 				this.setLikeDislike(c.$cont, c.like, !c.like, "ratingBtn", "icon-heart", "icon-nosmile");
@@ -177,8 +200,13 @@
 
 			$("#recommendPhoto").click((e) => {
 				e.preventDefault();
-				$("#photosForm").show();
-				$("#recommendPhoto").hide();
+
+				if (ViewBase.currentView.fullReg) {
+					$("#photosForm").show();
+					$("#recommendPhoto").hide();
+				} else {
+					RegMessages.displayFullRegMessage();
+				}
 			});
 
 			$("#photosForm .cancel").click((e) => {
@@ -212,10 +240,18 @@
 			picUpload.customId = articleId;
 
 			picUpload.onProgressChanged = (percent) => {
+				var $pb = $("#galleryProgress");
+				$pb.show();
+				var pt = `${percent}%`;
+				$(".progress").css("width", pt);
+				$pb.find("span").text(pt);
 			}
 
 			picUpload.onUploadFinished = (file, fileId) => {
-				alert("Thank you, photo was uploaded! Will be displayed when one of our Admins validate the photo.");
+				var $pb = $("#galleryProgress");
+				$pb.hide();
+				var id = new Common.InfoDialog();
+				id.create("Photo upload", "Thank you, photo was uploaded! Will be displayed when one of our Admins validate the photo.");
 			}
 		}
 	}

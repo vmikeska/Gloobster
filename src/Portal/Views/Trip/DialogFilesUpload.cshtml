@@ -7,15 +7,7 @@
         <div class="center-vertical">
             <div class="centered">
                 <strong>Drop Files Here</strong>
-                <div class="upload-progressbar" style="display: none">
-                    <div class="progressbar-holder middle">
-                        <div class="progressbar">
-                            <div class="progress" style="width:0;"></div>
-                            <span>0%</span>
-                        </div>
-                    </div>
-                    @*<a class="button middle mleft5" href="#">Cancel</a>*@
-                </div>
+                @Html.Partial("ProgressBar", "")
             </div>
         </div>
     </div>

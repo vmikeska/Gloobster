@@ -8,7 +8,26 @@ using Gloobster.ReqRes.Airport;
 
 namespace Gloobster.Mappers
 {
-	public static class AirportMappers
+    public static class SocNetMappers
+    {
+        public static SocAuthDO ToDO(this SocialAccountEntity e)
+        {
+            var d = new SocAuthDO
+            {
+               UserId = e.User_id.ToString(),
+               SocUserId = e.UserId,
+               TokenSecret = e.TokenSecret,
+               AccessToken = e.AccessToken,
+               ExpiresAt = e.ExpiresAt,
+               NetType = e.NetworkType,
+               HasPermanentToken = e.HasPermanentToken,
+               ErrorMessage = e.ErrorMessage               
+            };
+            return d;
+        }
+    }
+    
+    public static class AirportMappers
     {
 	    public static AirportResponse ToResponse(this AirportEntity e)
 	    {

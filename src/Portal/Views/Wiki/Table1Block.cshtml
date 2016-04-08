@@ -13,7 +13,7 @@
     {
         <tr>
             <td>@item.Name</td>
-            <td class="priceItemAdmin" data-id="@item.Id1">
+            <td class="@(Model.ArticleType == ArticleType.City ? "priceItemAdmin" : string.Empty) " data-id="@item.Id1">
                 €<span class="price">@item.Price1.ToString("0.00", CultureInfo.InvariantCulture)</span>                
             </td>
              @if (Model.ShowButtons)

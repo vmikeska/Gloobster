@@ -21,9 +21,12 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 		[AuthorizeApi]
 		public async Task<IActionResult> Put([FromBody] WikiRatingRequest req)
 		{
-		    await WikiUpdate.AddRating(req.articleId, req.sectionId, req.language, UserId, req.like);
-            
-            return new ObjectResult(null);
+		    if (IsConfirmedRegistration)
+		    {
+		        await WikiUpdate.AddRating(req.articleId, req.sectionId, req.language, UserId, req.like);
+		    }
+		    
+		    return new ObjectResult(null);
 		}
         
 	}
