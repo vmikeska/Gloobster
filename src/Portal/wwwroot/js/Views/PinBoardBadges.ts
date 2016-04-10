@@ -86,14 +86,15 @@ module Views {
 			return mdl;
 		}
 
-		public refresh() {
+		public refresh() {			
 			$("#bdgs").html("");
-			
+			 var $cont = $(`<table><tr></tr><tr></tr></table>`);
+				
 			 this.aggregateCountries();
 
-			 var ch = this.generateCities();			
-			 var oh = this.generateOverview();			
-			 $("#bdgs").html(oh + ch);
+			 this.generateCities($cont);			 
+			 $("#bdgs").html($cont);
+			 this.generateOverview();
 		}
 	 
 		private aggregateCountries() {		 
@@ -115,38 +116,60 @@ module Views {
 
 			var html = afrHtml + eurHtml + asiHtml + ausHtml + naHtml + saHtml + euHtml + usHtml;
 			var allHtml = `<div class="badges grid margin2 citiesCont" style="text-align: center">${html}</div>`;
-			return allHtml;			
+			return $("#bdgs").prepend(allHtml);			
+		}
+	 
+		private generateCities($cont) {
+
+		 var $ftr = $cont.find("tr").first();
+		 var $ltr = $cont.find("tr").last();
+
+		 var $naHtml = this.genContCitiesSection("North America", this.naCities);
+		 $ftr.append($naHtml);
+		 var $eurHtml = this.genContCitiesSection("Europe", this.europeCities);
+		 $ftr.append($eurHtml);
+		 var $auHtml = this.genContCitiesSection("Australia", this.australiaCities);
+		 $ftr.append($auHtml);
+		 var $asiHtml = this.genContCitiesSection("Asia", this.asiaCities);
+		 $ltr.append($asiHtml);			
+		 var $saHtml = this.genContCitiesSection("Latin America", this.saCities);
+		 $ltr.append($saHtml);
+		 var $afHtml = this.genContCitiesSection("Africa", this.afCities);
+		 $ltr.append($afHtml);			
 		}
 
-		private generateCities() {			
-			var eurHtml = this.genContCitiesSection("Europe", this.europeCities);
-			var asiHtml = this.genContCitiesSection("Asia", this.asiaCities);
-			var naHtml = this.genContCitiesSection("North America", this.naCities);
-			var saHtml = this.genContCitiesSection("South and Central America", this.saCities);
-			var afHtml = this.genContCitiesSection("Africa", this.afCities);
-			var auHtml = this.genContCitiesSection("Australia", this.australiaCities);
-		 
-			var html = eurHtml + asiHtml + naHtml + saHtml + afHtml + auHtml;
-			return html;
-		}
-
-		private genContCitiesSection(continentName: string, cities) {
-			var vHtml = "";
-			var uHtml = "";
-			this.visitedTotal = 0;
+		private genContCitiesSection(continentName: string, cities) {			
+		 this.visitedTotal = 0;
+			
+			var $html = $(`<td><table><tr><td colspan="3"><h3>${continentName}</h3></td></tr></table></td>`);
+			var $tr;
+			var $trText;
+			var act = 0;
 			cities.forEach((city) => {
+
+			 if (act === 0 || (act % 3 === 0)) {
+				 $tr = $("<tr></tr>");
+				 $trText = $("<tr></tr>");
+				 $html.find("tr").last().after($tr);
+				 $html.find("tr").last().after($trText);
+			 }
+
 			 var visited = _.contains(this.cities, city.g);
+				
+			 var $badge = $(`<td><span class="badge"><span class="thumbnail"><img src="../images/badges/${city.i}"></span></span></td>`);
+			 var $text = $(`<td class="btext"><span>${city.n}</span></td>`);
 				if (visited) {
-					this.visitedTotal++;
-					vHtml += `<div class="cell"><span class="badge active"><span class="thumbnail"><img src="../images/badges/${city.i}"></span>${city.n}</span></div>`;
+					$badge.find(".badge").addClass("active");
 				} else {
-					uHtml += `<div class="cell"><span class="badge" style="opacity: 0.5"><span class="thumbnail"><img src="../images/badges/${city.i}"></span>${city.n}</span></div>`;
+					$badge.find(".badge").css("opacity", 0.5);
 				}
+
+				$tr.append($badge);
+				$trText.append($text);
+				act++;
 			});
 
-			var cHtml = vHtml + uHtml;
-			var html = `<h2 class="citiesCont">${continentName}</h2><div class="badges grid margin2 citiesCont">${cHtml}</div>`;
-			return html;
+			return $html;
 		}
 
 

@@ -344,55 +344,38 @@ q, .quote {
 
 .badges2 {
     @include size(100% auto);
+
+    table {        
+            border: 0;
+            width: 100%;
+        }
+        td {
+            background-color: white !important;
+            padding: 0px;
+        }
+
     .badge {
-        @include size(88px auto);
-        @include position(relative);
-        display: block;
-        margin: 0 8px 10px 8px;
-        text-align: center;
+       
         .thumbnail {
-            @extend .thumbnail.disc80;
-            background-color: transparent;
-            border-color: transparent;
-            display: block;
-            margin-bottom: 5px;
-            img {
-                @include transition(all $speed);
+           background-color: white;
+           border: 0;
+            img {                
                 border-radius: 44px;
             }
-        }
-        #{$all-icons} {
-            @include position(absolute, 5px 5px null null);
-        }
-        &:hover {
-            .thumbnail {
-                img {
-                    opacity: .5;
-                }
-            }
-        }
-        &.active {
-            .thumbnail {
-                border-color: rgba($color8, .4);
-            }
-        }
+        }        
     }
 
     @include tablet{
         .badge{
-            @include size(66px auto);
-            margin: 0 !important;
-            padding: 0 !important;
-
-            span{
-                margin: 0 !important;
-                padding: 0 !important;
+         
+            .thumbnail img {
+                width: 66px;
+                height: 66px;
             }
+        }
 
-            .thumbnail.img {
-                width: 66px !important;
-                height: 66px !important;
-            }
+        .btext{
+            height: 50px;
         }
     }
 }
