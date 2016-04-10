@@ -52,7 +52,7 @@ namespace Gloobster.DomainModels
 
 		private async Task<bool> PushCountries(ObjectId userIdObj, List<VisitedCountrySE> value)
 		{
-			var filter = DB.F<VisitedEntity>().Eq(v => v.PortalUser_id, userIdObj) ;
+			var filter = DB.F<VisitedEntity>().Eq(v => v.User_id, userIdObj) ;
 			var update = DB.U<VisitedEntity>().PushEach(v => v.Countries, value);
 
 			var res = await DB.UpdateAsync(filter, update);
@@ -64,7 +64,7 @@ namespace Gloobster.DomainModels
             bool isMe = ids.Count == 1 && ids[0] == meId;
 
             var idsObj = ids.Select(i => new ObjectId(i));
-            var visiteds = DB.C<VisitedEntity>().Where(v => idsObj.Contains(v.PortalUser_id)).ToList();
+            var visiteds = DB.List<VisitedEntity>(v => idsObj.Contains(v.User_id));
             
 			var visitedCountries = visiteds.SelectMany(v => v.Countries);
 
@@ -88,7 +88,7 @@ namespace Gloobster.DomainModels
 
         public List<VisitedCountryDO> GetCountriesOverall()
         {
-            var countriesAgg = DB.C<VisitedCountryAggregatedEntity>().ToList();
+            var countriesAgg = DB.List<VisitedCountryAggregatedEntity>();
             var cs = countriesAgg.Select(country => new VisitedCountryDO
             {
                 CountryCode2 = country.CountryCode,

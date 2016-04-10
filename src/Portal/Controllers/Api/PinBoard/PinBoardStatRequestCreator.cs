@@ -13,9 +13,8 @@ using MongoDB.Bson;
 namespace Gloobster.Portal.Controllers.Api.PinBoard
 {
     public interface IPinBoardStatRequestCreator
-    {
-        //PinBoardStatResponse DataForNotLoggedInUser(DisplayEntity entity, DataType type);
-        Task<PinBoardStatResponse> DataForLoggedInUser(PinBoardStatRequest request, string userId);
+    {        
+        PinBoardStatResponse DataForLoggedInUser(PinBoardStatRequest request, string userId);
     }
 
     public class PinBoardStatRequestCreator: IPinBoardStatRequestCreator
@@ -27,40 +26,8 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
         public IEntitiesDemandor Demandor { get; set; }
 
         public IDbOperations DB { get; set; }
-
-        //public PinBoardStatResponse DataForNotLoggedInUser(DisplayEntity entity, DataType type)
-        //{
-        //    var result = new PinBoardStatResponse();
-
-        //    if (type == DataType.Visited)
-        //    {
-        //        if (entity == DisplayEntity.Pin)
-        //        {
-        //            result.visitedCities = GetVisitedCitiesOverall();
-        //        }
-
-        //        if (entity == DisplayEntity.Countries)
-        //        {
-        //            result.visitedCountries = GetVisitedCountriesOverall();
-        //            result.visitedStates = GetVisitedStatesOverall();
-        //        }
-
-        //        if (entity == DisplayEntity.Heat)
-        //        {
-        //            result.visitedPlaces = GetVisitedPlacesOverall();
-        //        }
-        //    }
-
-        //    //todo: implement
-        //    if (type == DataType.Interested)
-        //    {
-
-        //    }
-
-        //    return result;
-        //}
-
-        public async Task<PinBoardStatResponse> DataForLoggedInUser(PinBoardStatRequest request, string userId)
+        
+        public PinBoardStatResponse DataForLoggedInUser(PinBoardStatRequest request, string userId)
         {
             var result = new PinBoardStatResponse();
             string[] singleFriends = string.IsNullOrEmpty(request.singleFriends) ? new string[0] : request.singleFriends.Split(',');
@@ -113,7 +80,7 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
                 }
             }
 
-            //todo: implement
+            //implement
             if (request.dataType == DataType.Interested)
             {
 
@@ -150,7 +117,7 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
             return visitedStatesRes;
         }
         
-        private List<string> GetPeopleIds(bool me, bool friends, string[] ids, string userId)
+        private List<string> GetPeopleIds(bool me, bool friendsChecked, string[] ids, string userId)
         {
             var outIds = new List<string>();
             var userIdObj = new ObjectId(userId);
@@ -161,16 +128,21 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
             }
 
             var friendsEntity = DB.FOD<FriendsEntity>(f => f.User_id == userIdObj);
-            
-            if (friends)
+            if (friendsEntity != null)
             {
-                outIds.AddRange(friendsEntity.Friends.Select(f => f.ToString()));
+                var friendsIds = friendsEntity.Friends.Select(f => f.ToString()).ToList();
+
+                if (friendsChecked)
+                {
+                    outIds.AddRange(friendsIds);
+                }
+                else
+                {
+                    var securedFriends = friendsIds.Where(ids.Contains);
+                    outIds.AddRange(securedFriends);
+                }
             }
-            else
-            {
-                //todo: check if they are really friends
-                outIds.AddRange(ids);
-            }
+
             return outIds;
         }
     }

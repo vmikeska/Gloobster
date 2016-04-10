@@ -8,7 +8,7 @@ namespace Gloobster.Entities
 {
 	public class NotificationsEntity : EntityBase
 	{
-		public ObjectId PortalUser_id { get; set; }
+		public ObjectId User_id { get; set; }
 		public List<NotificationSE> Notifications { get; set; }
 	}
 

@@ -34,7 +34,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 
 			var newComment = new CommentSE
 			{                
-				PortalUser_id = UserIdObj,
+				User_id = UserIdObj,
 				PostDate = DateTime.UtcNow,
 				Text = request.text
 			};
@@ -48,7 +48,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
             var response = new NewCommentResponse
 			{
 				comments = trip.Comments.Select(c => c.ToResponse()).OrderByDescending(c => c.postDate).ToList(),
-				users = TripHelper.GetUsers(trip.Comments.Select(u => u.PortalUser_id).ToList(), DB)
+				users = TripHelper.GetUsers(trip.Comments.Select(u => u.User_id).ToList(), DB)
 			};
 			
 			return new ObjectResult(response);

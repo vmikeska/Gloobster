@@ -2,19 +2,8 @@
 	export class FacebookPermissions {
 
 		public initFb(callback: Function) {
-			var fbInit = new Reg.FacebookInit();
-
-			fbInit.onFacebookInitialized = () => {
-				FB.getLoginStatus(response1 => {
-					if (response1.status === "connected") {
-						if (response1 && !response1.error) {
-							callback();
-						}
-					}
-				});
-			}
-
-			fbInit.initialize();
+			var fbInit = new Reg.FacebookInit();		 
+			fbInit.initialize(callback);
 		}
 
 		public hasPermission(permissionsName: string, callback: Function) {

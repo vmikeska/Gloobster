@@ -8,19 +8,25 @@ var Views;
     var PinBoardView = (function (_super) {
         __extends(PinBoardView, _super);
         function PinBoardView() {
-            _super.apply(this, arguments);
+            var _this = this;
+            _super.call(this);
+            this.loginButtonsManager.onAfterCustom = function (net) {
+                if (net === SocialNetworkType.Facebook) {
+                    _this.initFb();
+                }
+            };
         }
         Object.defineProperty(PinBoardView.prototype, "pageType", {
             get: function () { return Views.PageType.PinBoard; },
             enumerable: true,
             configurable: true
         });
-        PinBoardView.prototype.initFb = function (init) {
+        PinBoardView.prototype.initFb = function () {
+            var _this = this;
             this.fbPermissions = new Common.FacebookPermissions();
             this.fbPermissions.initFb(function () {
-                //initialized	
+                _this.initFbPermRequest();
             });
-            this.initFbPermRequest();
         };
         PinBoardView.prototype.initialize = function () {
             var _this = this;
@@ -181,6 +187,7 @@ var Views;
         };
         PinBoardView.prototype.initFbPermRequest = function () {
             var _this = this;
+            $("#taggedPlacesPerm").show();
             $("#fbBtnImport").click(function (e) {
                 e.preventDefault();
                 _this.getTaggedPlacesPermissions();
@@ -188,10 +195,12 @@ var Views;
         };
         PinBoardView.prototype.getTaggedPlacesPermissions = function () {
             var _this = this;
-            this.fbPermissions.requestPermissions("user_tagged_places", function (resp) {
+            this.fbPermissions.requestPermissions("user_tagged_places", function (r1) {
                 $("#taggedPlacesPerm").remove();
-                _this.apiPost("FbTaggedPlacesPermission", null, function (resp) {
+                $("#importingCheckins").show();
+                _this.apiPost("FbTaggedPlacesPermission", null, function (r2) {
                     _this.refreshData();
+                    $("#importingCheckins").hide();
                 });
             });
         };

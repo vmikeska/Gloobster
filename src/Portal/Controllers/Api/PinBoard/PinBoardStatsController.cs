@@ -17,36 +17,13 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
         {
             RequestCreator = requestCreator;
         }
-
-        //public PinBoardStatsController(IVisitedStatesDomain visitedStates, IVisitedPlacesDomain visitedPlaces, IVisitedCitiesDomain visitedCities, 
-        //	IVisitedCountriesDomain visitedCountries, ICountryService countryService, ILogger log, IDbOperations db) : base(log, db)
-        //{
-        //	VisitedPlaces = visitedPlaces;
-        //	VisitedCities = visitedCities;
-        //	VisitedCountries = visitedCountries;
-        //	CountryService = countryService;
-        //    VisitedStates = visitedStates;
-        //}
-
-
+        
         [HttpGet]
-		[AuthorizeApi(true)]
-		public async Task<IActionResult> Get(PinBoardStatRequest request)
-		{
-		    PinBoardStatResponse result;
-		    //if (IsUserLogged)
-		    //{
-		        result = await RequestCreator.DataForLoggedInUser(request, UserId);
-		    //}
-		    //else
-		    //{
-      //          //user will always receive "only" all checkins data
-      //          result = RequestCreator.DataForNotLoggedInUser(request.displayEntity, request.dataType);
-      //      }
-
-		    return new ObjectResult(result);
-		}
-
-	    
-    }
+		[AuthorizeApi]
+		public IActionResult Get(PinBoardStatRequest request)
+        {
+            var result = RequestCreator.DataForLoggedInUser(request, UserId);
+            return new ObjectResult(result);
+        }
+	}
 }

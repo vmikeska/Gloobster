@@ -46,9 +46,9 @@ namespace Gloobster.Portal.Controllers.Portal
 
             if (IsUserLogged)
             {
-                var trips = DB.List<TripEntity>(t => t.PortalUser_id == UserIdObj);
+                var trips = DB.List<TripEntity>(t => t.User_id == UserIdObj);
 
-                var query = $"{{ 'Participants.PortalUser_id': ObjectId('{UserId}')}}";
+                var query = $"{{ 'Participants.User_id': ObjectId('{UserId}')}}";
                 var invitedTrips = await DB.FindAsync<TripEntity>(query);
 
                 var myTripsVM = new List<TripItemViewModel>();
@@ -79,14 +79,14 @@ namespace Gloobster.Portal.Controllers.Portal
             var trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);
             
             //permissions part            
-            bool isOwner = trip.PortalUser_id == UserIdObj;
+            bool isOwner = trip.User_id == UserIdObj;
             if (isOwner)
             {
                 var vm = CreateDetailVM(trip);
                 return View(vm);
             }
 
-            var thisUserParticipant = trip.Participants.FirstOrDefault(p => p.PortalUser_id == UserIdObj);
+            var thisUserParticipant = trip.Participants.FirstOrDefault(p => p.User_id == UserIdObj);
             bool thisUserIsAdmin = (thisUserParticipant != null) && thisUserParticipant.IsAdmin;
             if (thisUserIsAdmin)
             {
@@ -103,7 +103,7 @@ namespace Gloobster.Portal.Controllers.Portal
         {
             var tripIdObj = new ObjectId(req.id);
             var trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);
-            var owner = DB.FOD<UserEntity>(u => u.User_id == trip.PortalUser_id);
+            var owner = DB.FOD<UserEntity>(u => u.User_id == trip.User_id);
             
             //permissions part
             if (trip.FriendsPublic)
@@ -112,14 +112,14 @@ namespace Gloobster.Portal.Controllers.Portal
                 return View(vm);
             }
 
-            bool isOwner = trip.PortalUser_id == UserIdObj;
+            bool isOwner = trip.User_id == UserIdObj;
             if (isOwner)
             {
                 var vm = CretateOverviewVM(trip, owner);
                 return View(vm);
             }
 
-            var thisUserParticipant = trip.Participants.FirstOrDefault(p => p.PortalUser_id == UserIdObj);
+            var thisUserParticipant = trip.Participants.FirstOrDefault(p => p.User_id == UserIdObj);
             bool thisUserInvited = thisUserParticipant != null;
             if (thisUserInvited)
             {
@@ -166,12 +166,12 @@ namespace Gloobster.Portal.Controllers.Portal
 
 		    var dateStr = $"{fromDate.Day}.{fromDate.Month}. to {toDate.Day}.{toDate.Month}. {toDate.Year}";
 
-            var owner = DB.C<UserEntity>().FirstOrDefault(u => u.id == trip.PortalUser_id);
+            var owner = DB.C<UserEntity>().FirstOrDefault(u => u.id == trip.User_id);
 
             var viewModel = CreateViewModelInstance<ViewModelShareTrip>();
 		    viewModel.Id = id;
-            viewModel.Participants = GetParticipantsView(trip.Participants, trip.PortalUser_id);
-		    viewModel.OwnerId = trip.PortalUser_id.ToString();
+            viewModel.Participants = GetParticipantsView(trip.Participants, trip.User_id);
+		    viewModel.OwnerId = trip.User_id.ToString();
 		    viewModel.OwnerDisplayName = owner.DisplayName;
 		    viewModel.DateRangeStr = dateStr;
             return View(viewModel);
@@ -253,13 +253,13 @@ namespace Gloobster.Portal.Controllers.Portal
 				return null;
 			}
 
-			var participant = trip.Participants.FirstOrDefault(p => p.PortalUser_id == UserIdObj);
+			var participant = trip.Participants.FirstOrDefault(p => p.User_id == UserIdObj);
 			return participant;
 		}
 	
 		private bool IsUserAdmin(TripEntity trip)
 		{
-			bool isOwner = trip.PortalUser_id == UserIdObj;
+			bool isOwner = trip.User_id == UserIdObj;
 			if (isOwner)
 			{
 				return true;
@@ -310,7 +310,7 @@ namespace Gloobster.Portal.Controllers.Portal
 
         private ViewModelTripDetail CretateOverviewVM(TripEntity trip, UserEntity owner)
         {
-            var ownerId = trip.PortalUser_id.ToString();
+            var ownerId = trip.User_id.ToString();
             var ownerIdObj = new ObjectId(ownerId);
 
             var viewModel = CreateViewModelInstance<ViewModelTripDetail>();
@@ -322,10 +322,10 @@ namespace Gloobster.Portal.Controllers.Portal
             viewModel.Description = trip.Description;
             viewModel.Notes = trip.Notes;
             viewModel.NotesPublic = trip.NotesPublic;
-            viewModel.IsOwner = (trip.PortalUser_id == UserIdObj);
+            viewModel.IsOwner = (trip.User_id == UserIdObj);
             viewModel.HasBigPicture = trip.HasBigPicture;
             viewModel.Participants = GetParticipantsView(trip.Participants, ownerIdObj);
-            var thisUserParticipant = trip.Participants.FirstOrDefault(p => p.PortalUser_id == UserIdObj);
+            var thisUserParticipant = trip.Participants.FirstOrDefault(p => p.User_id == UserIdObj);
             viewModel.ThisUserInvited = thisUserParticipant != null;
 
             return viewModel;
@@ -333,7 +333,7 @@ namespace Gloobster.Portal.Controllers.Portal
         
         private List<UserViewModel> GetParticipantsView(List<ParticipantSE> participants, ObjectId ownerId)
         {
-            var participantIds = participants.Where(p => p.State == ParticipantState.Accepted).Select(p => p.PortalUser_id).ToList();
+            var participantIds = participants.Where(p => p.State == ParticipantState.Accepted).Select(p => p.User_id).ToList();
             participantIds.Add(ownerId);
             var participantUsers = DB.List<UserEntity>(u => participantIds.Contains(u.User_id));
 
@@ -364,7 +364,7 @@ namespace Gloobster.Portal.Controllers.Portal
             var fromDate = tripFromTo.Item1;
             var toDate = tripFromTo.Item2;
 
-            var owner = DB.FOD<UserEntity>(u => u.User_id == trip.PortalUser_id);
+            var owner = DB.FOD<UserEntity>(u => u.User_id == trip.User_id);
             
             var vm = new TripItemViewModel
 			{
@@ -372,12 +372,12 @@ namespace Gloobster.Portal.Controllers.Portal
                 FromDate = fromDate,
                 ToDate = toDate,                
 				Name = trip.Name,
-                Participants = GetParticipantsView(trip.Participants, trip.PortalUser_id),
+                Participants = GetParticipantsView(trip.Participants, trip.User_id),
                 HasSmallPicture = trip.HasSmallPicture,
 
-                IsOwner = trip.PortalUser_id == UserIdObj.Value,
+                IsOwner = trip.User_id == UserIdObj.Value,
                 OwnerName = owner.DisplayName,
-                OwnerId = trip.PortalUser_id.ToString(),
+                OwnerId = trip.User_id.ToString(),
 
 				IsLocked = true
 			};

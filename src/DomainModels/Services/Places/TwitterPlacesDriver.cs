@@ -29,7 +29,7 @@ namespace Gloobster.DomainModels.Services.Places
 			TwitterSvc = new TwitterService(GloobsterConfig.TwitterConsumerKey, GloobsterConfig.TwitterConsumerSecret);
 			TwitterSvc.AuthenticateWith(Authentication.AccessToken, Authentication.TokenSecret);
 
-			long userId = long.Parse(Authentication.UserId);
+			long userId = long.Parse(Authentication.SocUserId);
 			var allTweets = ExtractAllTweets(userId);
 
 			long lastExtractedId = allTweets.Max(t => t.Id);

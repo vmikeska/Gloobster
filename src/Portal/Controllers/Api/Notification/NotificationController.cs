@@ -33,7 +33,7 @@ namespace Gloobster.Portal.Controllers.Api.Notification
                 await Notifications.DeleteNotification(UserId, req.id);
             }
 
-            var notif = DB.C<NotificationsEntity>().FirstOrDefault(p => p.PortalUser_id == UserIdObj);
+            var notif = DB.C<NotificationsEntity>().FirstOrDefault(p => p.User_id == UserIdObj);
 
             return new ObjectResult(notif.Notifications.Count);
         }

@@ -29,7 +29,7 @@ namespace Gloobster.DomainModels.Services.Places
 			DbUserId = dbUserId;
 			Authentication = auth;
 
-			var taggedPlacesQuery = string.Format(UserQueryBase, auth.UserId);
+			var taggedPlacesQuery = string.Format(UserQueryBase, "me");
 
 			FBService.SetAccessToken(Authentication.AccessToken);
 
@@ -92,7 +92,7 @@ namespace Gloobster.DomainModels.Services.Places
 
 			if (response.Paging != null)
 			{
-				var nextQuery = string.Format(UserQueryNext, Authentication.UserId, response.Paging.Cursors.After);
+				var nextQuery = string.Format(UserQueryNext, "me", response.Paging.Cursors.After);
 				Extract(nextQuery, foundPlaces);
 			}
 		}

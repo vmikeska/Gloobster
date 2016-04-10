@@ -33,13 +33,11 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
 		public async Task<IActionResult> Post()
 		{
             PlacesExtractor.Driver = ComponentContext.ResolveKeyed<IPlacesExtractorDriver>("Facebook");
-
-		    var portalUserDO = PortalUser.ToDO();
+            
             var fbAcccount = AccountDomain.GetAuth(SocialNetworkType.Facebook, UserId);
-
-            //todo: fix
-            //await PlacesExtractor.ExtractNewAsync(portalUserDO.UserId, fbAcccount.Authentication);
-            //await PlacesExtractor.SaveAsync();
+            
+            await PlacesExtractor.ExtractNewAsync(UserId, fbAcccount);
+            await PlacesExtractor.SaveAsync();
 
             return new ObjectResult(null);
 		}

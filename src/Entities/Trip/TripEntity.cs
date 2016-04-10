@@ -7,7 +7,7 @@ namespace Gloobster.Entities.Trip
 {
 	public class TripEntity : EntityBase
 	{
-		public ObjectId PortalUser_id { get; set; }
+		public ObjectId User_id { get; set; }
 
 		public string Name { get; set; }
 

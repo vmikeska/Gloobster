@@ -1,7 +1,7 @@
 ﻿module Views {
 	export class PinBoardView extends ViewBase {
 
-		public mapsManager: Maps.MapsManager;
+	 public mapsManager: Maps.MapsManager;	 
 		private placeSearch: Common.PlaceSearchBox;
 
 		private shareDialogView: ShareDialogPinsView;
@@ -13,12 +13,20 @@
 
 		get pageType(): Views.PageType { return PageType.PinBoard; }
 
-		public initFb(init) {
+	  constructor() {
+		 super();
+		 this.loginButtonsManager.onAfterCustom = (net) => {
+			 if (net === SocialNetworkType.Facebook) {
+				this.initFb();
+			 }
+		 }		 
+	  }
+
+		public initFb() {
 			this.fbPermissions = new Common.FacebookPermissions();
 			this.fbPermissions.initFb(() => {
-				//initialized	
-			});
-			this.initFbPermRequest();
+			 this.initFbPermRequest();
+			});			
 		}
 
 		public initialize() {		 
@@ -209,6 +217,7 @@
 		}
 
 		private initFbPermRequest() {
+		 $("#taggedPlacesPerm").show();
 			$("#fbBtnImport").click((e) => {
 				e.preventDefault();
 				this.getTaggedPlacesPermissions();
@@ -216,14 +225,16 @@
 		}
 
 		public getTaggedPlacesPermissions() {
-			this.fbPermissions.requestPermissions("user_tagged_places", (resp) => {
+			this.fbPermissions.requestPermissions("user_tagged_places", (r1) => {
 				$("#taggedPlacesPerm").remove();
-				this.apiPost("FbTaggedPlacesPermission", null, (resp) => {
+				$("#importingCheckins").show();
+				this.apiPost("FbTaggedPlacesPermission", null, (r2) => {
 					this.refreshData();
+					$("#importingCheckins").hide();
 				});
 			});
 		}
-	 
+
 		private setStatsRibbon(citiesCount: number, countriesCount: number, worldTraveledPercent: number, statesCount: number) {
 			$("#CitiesCount").text(citiesCount);
 			$("#CountriesCount").text(countriesCount);

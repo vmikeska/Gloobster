@@ -1,4 +1,5 @@
 ﻿@using System.Threading.Tasks
+@using Gloobster.Enums
 @using Gloobster.Portal.ViewModels
 @using Newtonsoft.Json
 @model PinBoardViewModel
@@ -57,8 +58,7 @@
     function onBodyLoad() {
 
         currentView = new Views.PinBoardView();
-        currentView.initFb();
-
+        
         currentView.initialize();
 
         currentView.pinBoardBadges.cities = @Html.Raw(topCitiesStr);
@@ -68,6 +68,11 @@
         var friends = @Html.Raw(JsonConvert.SerializeObject(Model.Friends));
         var f = _.map(friends, function(i) { return {id: i.Id, displayName: i.DisplayName};});
         currentView.peopleFilter.initFriends(f);
+
+        @if (Model.ShowFacebookPermissionsDialog && Model.HasSocNet(SocialNetworkType.Facebook))
+        {
+            @Html.Raw("currentView.initFb();")
+        }
     }
 
     function deletePin(gid) {
@@ -76,8 +81,12 @@
 
 </script>
 
+@if (Model.ShowFacebookPermissionsDialog)
+{
+    @Html.Partial("FbImportingDialog")
+}
 
-    <div class="table row col2 margin">
+<div class="table row col2 margin">
         <div class="cell">
             <div class="table row">
                 <div class="cell middle">

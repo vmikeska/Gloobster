@@ -106,7 +106,7 @@ namespace Gloobster.DomainModels
             bool isMe = ids.Count == 1 && ids[0] == meId;
 
             var idsObj = ids.Select( i => new ObjectId(i));
-            var visiteds = DB.C<VisitedEntity>().Where(v => idsObj.Contains(v.PortalUser_id)).ToList();
+            var visiteds = DB.C<VisitedEntity>().Where(v => idsObj.Contains(v.User_id)).ToList();
 
             var cities = visiteds.SelectMany(c => c.Cities);
             
@@ -132,7 +132,7 @@ namespace Gloobster.DomainModels
 
         private async Task<bool> PushCities(ObjectId userIdObj, List<VisitedCitySE> value)
         {
-            var filter = DB.F<VisitedEntity>().Eq(v => v.PortalUser_id, userIdObj);
+            var filter = DB.F<VisitedEntity>().Eq(v => v.User_id, userIdObj);
             var update = DB.U<VisitedEntity>().PushEach(v => v.Cities, value);
 
             var res = await DB.UpdateAsync(filter, update);

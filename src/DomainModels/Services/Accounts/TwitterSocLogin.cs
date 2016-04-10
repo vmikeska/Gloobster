@@ -7,6 +7,8 @@ using Gloobster.Enums;
 using Serilog;
 using TweetSharp;
 using System.Linq;
+using Autofac;
+using Gloobster.DomainModels.Services.Places;
 
 namespace Gloobster.DomainModels.Services.Accounts
 {
@@ -15,7 +17,7 @@ namespace Gloobster.DomainModels.Services.Accounts
         public ILogger Log { get; set; }
 
         public IGeoNamesService GNService { get; set; }
-
+        
         public TwitterService TwitterSvc;
         public string ProfileUrl;
 
@@ -123,23 +125,16 @@ namespace Gloobster.DomainModels.Services.Accounts
 
             return null;
         }
+        
     }
 }
 
-//places extractor
-//todo: fix
-//PlacesExtractor.Driver = ComponentContext.ResolveKeyed<IPlacesExtractorDriver>("Twitter");
 
-//var twitterAccount = portalUser.SocialAccounts.FirstOrDefault(a => a.NetworkType == SocialNetworkType.Twitter);
-//if (twitterAccount == null)
-//{
-//	return;
-//}
 
-//await PlacesExtractor.ExtractNewAsync(portalUser.UserId, twitterAccount.Authentication);
-//PlacesExtractor.SaveAsync();
 
-//specifics
+
+
+////specifics
 //var twitterAccount = new SocialAccountSE
 //{
 //    Authentication = Authentication.ToEntity(),

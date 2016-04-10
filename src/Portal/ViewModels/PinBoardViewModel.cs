@@ -23,8 +23,6 @@ namespace Gloobster.Portal.ViewModels
 
         public async Task InitializeExists(string userId, bool showFbDialog, IPinBoardStats stats)
         {
-            var userIdObj = new ObjectId(userId);
-
             var statRes = await stats.GetStatsAsync(userId);
 
             Countries = statRes.CountriesCount;
@@ -42,17 +40,33 @@ namespace Gloobster.Portal.ViewModels
             StateCodes = statRes.StateCodes;
             CountryCodes = statRes.CountryCodes;
 
+
+            Friends = GetFriends(userId);
+
+            ShowFacebookPermissionsDialog = showFbDialog;
+        }
+
+        private List<Friend> GetFriends(string userId)
+        {
+            var userIdObj = new ObjectId(userId);
+        
             var friendsEntity = DB.FOD<FriendsEntity>(f => f.User_id == userIdObj);
+
+            if (friendsEntity == null)
+            {
+                return new List<Friend>();
+            }
+
             var friends = DB.List<UserEntity>(f => friendsEntity.Friends.Contains(f.User_id));
-            Friends = friends.Select(f => new Friend
+            var frnds = friends.Select(f => new Friend
             {
                 DisplayName = f.DisplayName,
                 Id = f.id.ToString()
             }).ToList();
 
-            ShowFacebookPermissionsDialog = showFbDialog;
+            return frnds;
         }
-        
+
         public void InitializeNotExists()
         {
             Friends = new List<Friend>();

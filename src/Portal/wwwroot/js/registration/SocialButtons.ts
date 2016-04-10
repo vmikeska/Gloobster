@@ -5,30 +5,32 @@
 	 private $socDialog;
 	 private $emailDialog;
 
+	 public onAfterCustom: Function;
+
 	 private cookieSaver: AuthCookieSaver;
 
 		public initialize(fb, google, twitter) {
 			var fbBtn = new FacebookButtonInit(fb);
-			fbBtn.onBeforeExecute = () => this.onBefore();
-			fbBtn.onAfterExecute = () => this.onAfter();
+			fbBtn.onBeforeExecute = () => this.onBefore(SocialNetworkType.Facebook);
+			fbBtn.onAfterExecute = () => this.onAfter(SocialNetworkType.Facebook);
 
 			var googleBtn = new GoogleButtonInit(google);
-			googleBtn.onBeforeExecute = () => this.onBefore();
-			googleBtn.onAfterExecute = () => this.onAfter();
+			googleBtn.onBeforeExecute = () => this.onBefore(SocialNetworkType.Google);
+			googleBtn.onAfterExecute = () => this.onAfter(SocialNetworkType.Google);
 		 
 			var twitterBtn = new TwitterButtonInit(twitter);
-			twitterBtn.onBeforeExecute = () => this.onBefore();
-			twitterBtn.onAfterExecute = () => this.onAfter();
+			twitterBtn.onBeforeExecute = () => this.onBefore(SocialNetworkType.Twitter);
+			twitterBtn.onAfterExecute = () => this.onAfter(SocialNetworkType.Twitter);
 
 			this.cookieSaver = new AuthCookieSaver();
 			this.regEmailDialog();
 		}
 
-		private onBefore() {
+		private onBefore(net) {
 			this.$socDialog.hide();			
 		}
 
-		private onAfter() {
+		private onAfter(net: SocialNetworkType) {
 		 var hint = new Common.HintDialog();
 		 hint.create("You are successfully connected!");
 		 $("#MenuRegister").parent().remove();
@@ -37,6 +39,9 @@
 			 $("#ddMenus").append(r);
 		 });
 		 
+		 if (this.onAfterCustom) {
+			 this.onAfterCustom(net);
+		 }
 		}
 
 		private getUserMenu(callback) {
@@ -73,7 +78,7 @@
 			 
 			 Views.ViewBase.currentView.apiPost("MailUser", data, (r) => {
 				this.cookieSaver.saveCookies(r);
-				this.onAfter();
+				this.onAfter(SocialNetworkType.Base);
 			 });
 		  });		 
 	  }
@@ -233,13 +238,7 @@
 
 		private initializeFacebookSdk(callback) {
 			var fbInit = new FacebookInit();
-
-			fbInit.onFacebookInitialized = () => {
-				console.log("fb initialized");
-				callback();				
-			}
-
-			fbInit.initialize();
+			fbInit.initialize(callback);
 
 		}
 	}

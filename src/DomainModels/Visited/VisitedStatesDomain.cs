@@ -19,7 +19,7 @@ namespace Gloobster.DomainModels
         public async Task<List<VisitedStateDO>> AddNewStatesAsync(List<VisitedStateDO> inputStates, string userId)
         {
             var userIdObj = new ObjectId(userId);
-            var visited = DB.C<VisitedEntity>().FirstOrDefault(v => v.PortalUser_id == userIdObj);
+            var visited = DB.C<VisitedEntity>().FirstOrDefault(v => v.User_id == userIdObj);
 
             var savedStates = visited.States;
             var savedCountriesCodes = savedStates.Select(c => c.StateCode).ToList();
@@ -51,7 +51,7 @@ namespace Gloobster.DomainModels
 
         private async Task<bool> PushStates(ObjectId userIdObj, List<VisitedStateSE> value)
         {
-            var filter = DB.F<VisitedEntity>().Eq(v => v.PortalUser_id, userIdObj);
+            var filter = DB.F<VisitedEntity>().Eq(v => v.User_id, userIdObj);
             var update = DB.U<VisitedEntity>().PushEach(v => v.States, value);
 
             var res = await DB.UpdateAsync(filter, update);
@@ -63,7 +63,7 @@ namespace Gloobster.DomainModels
             bool isMe = ids.Count == 1 && ids[0] == meId;
 
             var idsObj = ids.Select(i => new ObjectId(i));
-            var visiteds = DB.C<VisitedEntity>().Where(v => idsObj.Contains(v.PortalUser_id)).ToList();
+            var visiteds = DB.List<VisitedEntity>(v => idsObj.Contains(v.User_id));
 
             var visitedStates = visiteds.SelectMany(v => v.States);
 

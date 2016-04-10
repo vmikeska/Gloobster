@@ -8,7 +8,10 @@ var Maps;
                     continuousWorld: false,
                     // This option disables loading tiles outside of the world bounds.
                     noWrap: true
-                }
+                },
+                maxBounds: null,
+                maxZoom: 19,
+                minZoom: 2
             };
         }
         MapsCreatorMapBox2D.prototype.setRootElement = function (rootElement) {
@@ -32,6 +35,7 @@ var Maps;
         MapsCreatorMapBox2D.prototype.loadMap = function () {
             var _this = this;
             L.mapbox.accessToken = "pk.eyJ1IjoiZ2xvb2JzdGVyIiwiYSI6ImQxZWY5MjRkZjU1NDk2MGU3OWI2OGRiM2U3NTM0MGYxIn0.nCG7hOsSQzb0c-_qzfTCRQ";
+            this.options.maxBounds = L.latLngBounds(L.latLng(-85, -180), L.latLng(85, 180));
             this.mapObj = L.mapbox.map(this.rootElement, 'gloobster.afeef633', this.options);
             this.mapObj.on("move", function (e) {
                 if (_this.onCenterChanged) {

@@ -10,7 +10,7 @@ namespace Gloobster.Entities.Planning
 {
 	public class PlanningAnytimeEntity: EntityBase
 	{
-		public ObjectId PortalUser_id { get; set; }
+		public ObjectId User_id { get; set; }
 
 		public List<string> CountryCodes { get; set; }
 		public List<int> Cities { get; set; } 
@@ -18,7 +18,7 @@ namespace Gloobster.Entities.Planning
 
 	public class PlanningWeekendEntity : EntityBase
 	{
-		public ObjectId PortalUser_id { get; set; }
+		public ObjectId User_id { get; set; }
 		public int ExtraDaysLength { get; set; }
 		public List<string> CountryCodes { get; set; }
 		public List<int> Cities { get; set; }
@@ -26,7 +26,7 @@ namespace Gloobster.Entities.Planning
 
 	public class PlanningCustomEntity : EntityBase
 	{
-		public ObjectId PortalUser_id { get; set; }
+		public ObjectId User_id { get; set; }
 
 		public List<CustomSearchSE> Searches { get; set; }
 	}

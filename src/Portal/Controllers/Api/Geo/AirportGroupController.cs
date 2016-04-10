@@ -42,13 +42,13 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 			{
 				if (req.planningType.Value == PlanningType.Anytime)
 				{
-					var anytime = DB.C<PlanningAnytimeEntity>().FirstOrDefault(p => p.PortalUser_id == UserIdObj);
+					var anytime = DB.C<PlanningAnytimeEntity>().FirstOrDefault(p => p.User_id == UserIdObj);
 					cities.ForEach(c => c.selected = anytime.Cities.Contains(c.gid));
 				}
 
 				if (req.planningType.Value == PlanningType.Weekend)
 				{
-					var weekend = DB.C<PlanningWeekendEntity>().FirstOrDefault(p => p.PortalUser_id == UserIdObj);
+					var weekend = DB.C<PlanningWeekendEntity>().FirstOrDefault(p => p.User_id == UserIdObj);
 					cities.ForEach(c => c.selected = weekend.Cities.Contains(c.gid));
 				}
 
@@ -56,7 +56,7 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 				{
 					var customIdObj = new ObjectId(req.customId);
 
-					var custom = DB.C<PlanningCustomEntity>().FirstOrDefault(p => p.PortalUser_id == UserIdObj);
+					var custom = DB.C<PlanningCustomEntity>().FirstOrDefault(p => p.User_id == UserIdObj);
 					var selectedSearch = custom.Searches.FirstOrDefault(c => c.id == customIdObj);
 
 					if (selectedSearch == null)

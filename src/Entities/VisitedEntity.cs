@@ -8,7 +8,7 @@ namespace Gloobster.Entities
 {    
     public class VisitedEntity : EntityBase
 	{
-		public ObjectId PortalUser_id { get; set; }
+		public ObjectId User_id { get; set; }
 
 		public List<VisitedCitySE> Cities { get; set; }
 		public List<VisitedCountrySE> Countries { get; set; }

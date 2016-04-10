@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Autofac;
 using Gloobster.Common;
@@ -116,7 +117,7 @@ namespace Gloobster.Portal.Controllers.Base
 
             if (IsUserLogged)
             {
-                var notifications = DB.FOD<NotificationsEntity>(n => n.PortalUser_id == UserIdObj.Value);
+                var notifications = DB.FOD<NotificationsEntity>(n => n.User_id == UserIdObj.Value);
                 if (notifications != null)
                 {
                     instance.NotificationCount = notifications.Notifications.Count(n => n.Status == NotificationStatus.Created);
@@ -167,6 +168,16 @@ namespace Gloobster.Portal.Controllers.Base
 
                 return _networks;
             }
+        }
+
+        public SocialAccountEntity GetSocNet(SocialNetworkType socNet)
+        {
+            return SocNetworks.FirstOrDefault(n => n.NetworkType == socNet);
+        }
+
+        public bool HasSocNet(SocialNetworkType socNet)
+        {
+            return Networks.Contains(socNet);
         }
 
 

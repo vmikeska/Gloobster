@@ -6,7 +6,7 @@ namespace Gloobster.Entities.Trip
 	public class FileSE
 	{
         public ObjectId id { get; set; }
-		public ObjectId PortalUser_id { get; set; }
+		public ObjectId User_id { get; set; }
 		public string OriginalFileName { get; set; }
 		public string SavedFileName { get; set; }
 		public string Type { get; set; }

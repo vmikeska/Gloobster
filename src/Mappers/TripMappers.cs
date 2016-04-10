@@ -41,7 +41,7 @@ namespace Gloobster.Mappers
 		{
 			var entity = new ParticipantSE
 			{
-				PortalUser_id = new ObjectId(dObj.UserId),
+				User_id = new ObjectId(dObj.UserId),
 				State = dObj.State,
 				IsAdmin = dObj.IsAdmin
 			};
@@ -57,7 +57,7 @@ namespace Gloobster.Mappers
 				tripId = entity.id.ToString(),
 				name = entity.Name,
 				createdDate = entity.CreatedDate,
-				ownerId = entity.PortalUser_id.ToString(),
+				ownerId = entity.User_id.ToString(),
                 allowToRequestJoin = entity.AllowToRequestJoin,
                 friendsPublic = entity.FriendsPublic,
                 sharingCode = entity.SharingCode
@@ -100,7 +100,7 @@ namespace Gloobster.Mappers
 		{
 			var r = new ParticipantResponse
 			{
-				userId = e.PortalUser_id.ToString(),
+				userId = e.User_id.ToString(),
 				isAdmin = e.IsAdmin,
 				state = e.State
 			};
@@ -294,7 +294,7 @@ namespace Gloobster.Mappers
                 id = entity.id.ToString(),
 				originalFileName = entity.OriginalFileName,
 				savedFileName = entity.SavedFileName,
-				ownerId = entity.PortalUser_id.ToString(),
+				ownerId = entity.User_id.ToString(),
 				entityId = entity.EntityId
 			};
 
@@ -316,7 +316,7 @@ namespace Gloobster.Mappers
 		{
 			var request = new CommentResponse
 			{
-				userId = entity.PortalUser_id.ToString(),
+				userId = entity.User_id.ToString(),
 				postDate = entity.PostDate,
 				text = entity.Text
 			};

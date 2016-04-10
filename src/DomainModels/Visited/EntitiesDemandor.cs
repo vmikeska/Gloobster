@@ -30,7 +30,7 @@ namespace Gloobster.DomainModels
         //todo: remove
         public VisitedResult VisitedExists(ObjectId userIdObj)
         {
-            var visited = DB.FOD<VisitedEntity>(u => u.PortalUser_id == userIdObj);
+            var visited = DB.FOD<VisitedEntity>(u => u.User_id == userIdObj);
             return new VisitedResult
             {
                 Exists = visited != null,
@@ -40,12 +40,12 @@ namespace Gloobster.DomainModels
         
         public async Task<VisitedEntity> GetVisitedAsync(ObjectId userIdObj)
         {
-            var visited = DB.FOD<VisitedEntity>(u => u.PortalUser_id == userIdObj);
+            var visited = DB.FOD<VisitedEntity>(u => u.User_id == userIdObj);
             if (visited == null)
             {
                 var newVisited = new VisitedEntity
                 {
-                    PortalUser_id = userIdObj,
+                    User_id = userIdObj,
                     Places = new List<VisitedPlaceSE>(),
                     Cities = new List<VisitedCitySE>(),
                     Countries = new List<VisitedCountrySE>(),
@@ -108,7 +108,7 @@ namespace Gloobster.DomainModels
                 id = ObjectId.GenerateNewId(),
                 CreatedDate = DateTime.UtcNow,
                 Name = name,
-                PortalUser_id = userIdObj,
+                User_id = userIdObj,
                 Comments = new List<CommentSE>(),
                 Files = new List<FileSE>(),
                 Travels = new List<TripTravelSE> { travel },

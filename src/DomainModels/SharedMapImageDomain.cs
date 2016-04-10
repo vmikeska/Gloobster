@@ -36,7 +36,7 @@ namespace Gloobster.DomainModels
 		public string GeneratePinBoardMapLink(string userId)
 		{
 			var userIdObj = new ObjectId(userId);
-			var visited = DB.C<VisitedEntity>().FirstOrDefault(v => v.PortalUser_id == userIdObj);
+			var visited = DB.FOD<VisitedEntity>(v => v.User_id == userIdObj);
 			
 			if (visited == null)
 			{

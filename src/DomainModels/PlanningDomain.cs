@@ -67,11 +67,11 @@ namespace Gloobster.DomainModels
 		private async Task<bool> ChangeCountrySelectionAnytime(CountrySelectionDO selection)
 		{
 			var userIdObj = new ObjectId(selection.UserId);
-			var anytime = DB.C<PlanningAnytimeEntity>().FirstOrDefault(u => u.PortalUser_id == userIdObj);
+			var anytime = DB.FOD<PlanningAnytimeEntity>(u => u.User_id == userIdObj);
 
 			bool hasCountry = anytime.CountryCodes.Contains(selection.CountryCode);
 
-			var filter = DB.F<PlanningAnytimeEntity>().Eq(p => p.PortalUser_id, userIdObj);
+			var filter = DB.F<PlanningAnytimeEntity>().Eq(p => p.User_id, userIdObj);
 
 			if (selection.Selected && !hasCountry)
 			{				
@@ -93,11 +93,11 @@ namespace Gloobster.DomainModels
 		private async Task<bool> ChangeCountrySelectionWeekend(CountrySelectionDO selection)
 		{
 			var userIdObj = new ObjectId(selection.UserId);
-			var weekend = DB.C<PlanningWeekendEntity>().FirstOrDefault(u => u.PortalUser_id == userIdObj);
+			var weekend = DB.C<PlanningWeekendEntity>().FirstOrDefault(u => u.User_id == userIdObj);
 
 			bool hasCountry = weekend.CountryCodes.Contains(selection.CountryCode);
 
-			var filter = DB.F<PlanningWeekendEntity>().Eq(p => p.PortalUser_id, userIdObj);
+			var filter = DB.F<PlanningWeekendEntity>().Eq(p => p.User_id, userIdObj);
 
 			if (selection.Selected && !hasCountry)
 			{				
@@ -121,7 +121,7 @@ namespace Gloobster.DomainModels
 		{
 			var userIdObj = new ObjectId(selection.UserId);
 			var customIdObj = new ObjectId(selection.CustomId);
-			var custom = DB.C<PlanningCustomEntity>().FirstOrDefault(u => u.PortalUser_id == userIdObj);
+			var custom = DB.C<PlanningCustomEntity>().FirstOrDefault(u => u.User_id == userIdObj);
 			var customSearch = custom.Searches.FirstOrDefault(s => s.id == customIdObj);
 
 			if (customSearch == null)
@@ -131,7 +131,7 @@ namespace Gloobster.DomainModels
 
 			bool hasCountry = customSearch.CountryCodes.Contains(selection.CountryCode);
 
-			var filter = DB.F<PlanningCustomEntity>().Eq(p => p.PortalUser_id, userIdObj)
+			var filter = DB.F<PlanningCustomEntity>().Eq(p => p.User_id, userIdObj)
 				& DB.F<PlanningCustomEntity>().Eq("Searches._id", customIdObj);
 
 			if (selection.Selected && !hasCountry)
@@ -155,7 +155,7 @@ namespace Gloobster.DomainModels
 		{
 			var userIdObj = new ObjectId(selection.UserId);
 			var customIdObj = new ObjectId(selection.CustomId);
-			var custom = DB.C<PlanningCustomEntity>().FirstOrDefault(u => u.PortalUser_id == userIdObj);
+			var custom = DB.C<PlanningCustomEntity>().FirstOrDefault(u => u.User_id == userIdObj);
 			
 			var customSearch = custom.Searches.FirstOrDefault(s => s.id == customIdObj);
 
@@ -166,7 +166,7 @@ namespace Gloobster.DomainModels
 
 			bool hasCity = customSearch.Cities.Contains(selection.GID);
 
-			var filter = DB.F<PlanningCustomEntity>().Eq(p => p.PortalUser_id, userIdObj)
+			var filter = DB.F<PlanningCustomEntity>().Eq(p => p.User_id, userIdObj)
 					& DB.F<PlanningCustomEntity>().Eq("Searches._id", customIdObj);
 
 			if (selection.Selected && !hasCity)
@@ -189,11 +189,11 @@ namespace Gloobster.DomainModels
 		private async Task<bool> ChangeCitySelectionAnytime(CitySelectionDO selection)
 		{
 			var userIdObj = new ObjectId(selection.UserId);
-			var anytime = DB.C<PlanningAnytimeEntity>().FirstOrDefault(u => u.PortalUser_id == userIdObj);
+			var anytime = DB.C<PlanningAnytimeEntity>().FirstOrDefault(u => u.User_id == userIdObj);
 
 			bool hasCity = anytime.Cities.Contains(selection.GID);
 
-			var filter = DB.F<PlanningAnytimeEntity>().Eq(p => p.PortalUser_id, userIdObj);
+			var filter = DB.F<PlanningAnytimeEntity>().Eq(p => p.User_id, userIdObj);
 
 			if (selection.Selected && !hasCity)
 			{				
@@ -215,11 +215,11 @@ namespace Gloobster.DomainModels
 		private async Task<bool> ChangeCitySelectionWeekend(CitySelectionDO selection)
 		{
 			var userIdObj = new ObjectId(selection.UserId);
-			var anytime = DB.C<PlanningWeekendEntity>().FirstOrDefault(u => u.PortalUser_id == userIdObj);
+			var anytime = DB.C<PlanningWeekendEntity>().FirstOrDefault(u => u.User_id == userIdObj);
 
 			bool hasCity = anytime.Cities.Contains(selection.GID);
 
-			var filter = DB.F<PlanningWeekendEntity>().Eq(p => p.PortalUser_id, userIdObj);
+			var filter = DB.F<PlanningWeekendEntity>().Eq(p => p.User_id, userIdObj);
 
 			if (selection.Selected && !hasCity)
 			{				
@@ -241,7 +241,7 @@ namespace Gloobster.DomainModels
 		public async Task<bool> ChangeWeekendExtraDaysLength(string userId, int daysLength)
 	    {
 			var userIdObj = new ObjectId(userId);
-			var filter = DB.F<PlanningWeekendEntity>().Eq(p => p.PortalUser_id, userIdObj);
+			var filter = DB.F<PlanningWeekendEntity>().Eq(p => p.User_id, userIdObj);
 			var update = DB.U<PlanningWeekendEntity>().Set(p => p.ExtraDaysLength, daysLength);
 			var res = await DB.UpdateAsync(filter, update);
 			return res.ModifiedCount == 1;
@@ -264,7 +264,7 @@ namespace Gloobster.DomainModels
 				FromAirports = user.HomeAirports
             };
 			
-			var filter = DB.F<PlanningCustomEntity>().Eq(p => p.PortalUser_id, userIdObj);				
+			var filter = DB.F<PlanningCustomEntity>().Eq(p => p.User_id, userIdObj);				
 			var update = DB.U<PlanningCustomEntity>().Push(p => p.Searches, newSearch);
 			var res = await DB.UpdateAsync(filter, update);
 
@@ -276,7 +276,7 @@ namespace Gloobster.DomainModels
 		{
 			var userIdObj = new ObjectId(userId);
 			var searchIdObj = new ObjectId(searchId);
-			var filter = DB.F<PlanningCustomEntity>().Eq(p => p.PortalUser_id, userIdObj)
+			var filter = DB.F<PlanningCustomEntity>().Eq(p => p.User_id, userIdObj)
 				& DB.F<PlanningCustomEntity>().Eq("Searches._id", searchIdObj);
 			var update = DB.U<PlanningCustomEntity>().Push("Searches.$." + propName, value);
 			var res = await DB.UpdateAsync(filter, update);
@@ -287,7 +287,7 @@ namespace Gloobster.DomainModels
 		{
 			var userIdObj = new ObjectId(userId);
 			var searchIdObj = new ObjectId(searchId);
-			var filter = DB.F<PlanningCustomEntity>().Eq(p => p.PortalUser_id, userIdObj) 
+			var filter = DB.F<PlanningCustomEntity>().Eq(p => p.User_id, userIdObj) 
 				& DB.F<PlanningCustomEntity>().Eq("Searches._id", searchIdObj);
 			var update = DB.U<PlanningCustomEntity>().Set("Searches.$." + propName, value);
 			var res = await DB.UpdateAsync(filter, update);
@@ -299,13 +299,13 @@ namespace Gloobster.DomainModels
 			var userIdObj = new ObjectId(userId);
 			var user = DB.C<UserEntity>().FirstOrDefault(e => e.id == userIdObj);
 
-			var weekend = DB.C<PlanningWeekendEntity>().FirstOrDefault(e => e.PortalUser_id == userIdObj);
+			var weekend = DB.C<PlanningWeekendEntity>().FirstOrDefault(e => e.User_id == userIdObj);
 		    if (weekend == null)
 		    {
 			    weekend = new PlanningWeekendEntity
 			    {
 				    id = ObjectId.GenerateNewId(),
-				    PortalUser_id = userIdObj,
+				    User_id = userIdObj,
 					ExtraDaysLength = 0,
 					CountryCodes = new List<string>(),
 					Cities = new List<int>()
@@ -313,20 +313,20 @@ namespace Gloobster.DomainModels
 			    await DB.SaveAsync(weekend);
 		    }
 
-			var anytime = DB.C<PlanningAnytimeEntity>().FirstOrDefault(e => e.PortalUser_id == userIdObj);
+			var anytime = DB.C<PlanningAnytimeEntity>().FirstOrDefault(e => e.User_id == userIdObj);
 			if (anytime == null)
 			{
 				anytime = new PlanningAnytimeEntity
 				{
 					id = ObjectId.GenerateNewId(),
-					PortalUser_id = userIdObj,
+					User_id = userIdObj,
 					CountryCodes = new List<string>(),
 					Cities = new List<int>()
 				};
 				await DB.SaveAsync(anytime);
 			}
 
-			var custom = DB.C<PlanningCustomEntity>().FirstOrDefault(e => e.PortalUser_id == userIdObj);
+			var custom = DB.C<PlanningCustomEntity>().FirstOrDefault(e => e.User_id == userIdObj);
 			if (custom == null)
 			{
 				var search1 = new CustomSearchSE
@@ -352,7 +352,7 @@ namespace Gloobster.DomainModels
 				custom = new PlanningCustomEntity
 				{
 					id = ObjectId.GenerateNewId(),
-					PortalUser_id = userIdObj,
+					User_id = userIdObj,
 					Searches = new List<CustomSearchSE> {search1}
 				};
 				await DB.SaveAsync(custom);

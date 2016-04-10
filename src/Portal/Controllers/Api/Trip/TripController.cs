@@ -64,7 +64,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 			if (trip.Comments != null)
 			{
 				tripResponse.comments = tripResponse.comments.OrderByDescending(c => c.postDate).ToList();
-			    userIds.AddRange(trip.Comments.Select(i => i.PortalUser_id));			    
+			    userIds.AddRange(trip.Comments.Select(i => i.User_id));			    
 			}
 
 		    if (trip.Participants != null)
@@ -74,7 +74,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
                     var usr = DB.FOD<UserEntity>(u => u.User_id == new ObjectId(p.userId));
                     p.name = usr.DisplayName;
                 });
-                userIds.AddRange(trip.Participants.Select(i => i.PortalUser_id));
+                userIds.AddRange(trip.Participants.Select(i => i.User_id));
             }
             
 		    tripResponse.users = TripHelper.GetUsers(userIds, DB);

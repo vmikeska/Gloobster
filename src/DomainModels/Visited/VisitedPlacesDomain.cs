@@ -53,7 +53,7 @@ namespace Gloobster.DomainModels
 
 		private async Task<bool> PushPlaces(ObjectId userIdObj, List<VisitedPlaceSE> value)
 		{
-			var filter = DB.F<VisitedEntity>().Eq(v => v.PortalUser_id, userIdObj);
+			var filter = DB.F<VisitedEntity>().Eq(v => v.User_id, userIdObj);
 			var update = DB.U<VisitedEntity>().PushEach(v => v.Places, value);
 
 			var res = await DB.UpdateAsync(filter, update);
@@ -63,7 +63,7 @@ namespace Gloobster.DomainModels
 		public List<VisitedPlaceDO> GetPlacesByUsers(List<string> ids, string meId)
         {            
             var idsObj = ids.Select(i => new ObjectId(i));
-            var visiteds = DB.List<VisitedEntity>(v => idsObj.Contains(v.PortalUser_id));
+            var visiteds = DB.List<VisitedEntity>(v => idsObj.Contains(v.User_id));
             
 			var visitedPlaces = visiteds.SelectMany(f => f.Places);
 			var visitedPlacesDO = visitedPlaces.Select(p => p.ToDO()).ToList();

@@ -5,16 +5,7 @@ var Common;
         }
         FacebookPermissions.prototype.initFb = function (callback) {
             var fbInit = new Reg.FacebookInit();
-            fbInit.onFacebookInitialized = function () {
-                FB.getLoginStatus(function (response1) {
-                    if (response1.status === "connected") {
-                        if (response1 && !response1.error) {
-                            callback();
-                        }
-                    }
-                });
-            };
-            fbInit.initialize();
+            fbInit.initialize(callback);
         };
         FacebookPermissions.prototype.hasPermission = function (permissionsName, callback) {
             FB.api("/me/permissions", function (permResp) {

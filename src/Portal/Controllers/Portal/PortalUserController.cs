@@ -107,7 +107,7 @@ namespace Gloobster.Portal.Controllers.Portal
 		{
             await NotificationsDomain.SetAllNotificationsToSeen(UserId);
 
-            var notifs = DB.C<NotificationsEntity>().First(p => p.PortalUser_id == UserIdObj);
+            var notifs = DB.C<NotificationsEntity>().First(p => p.User_id == UserIdObj);
 			
 			var viewModel = CreateViewModelInstance<NotificationsViewModel>();
 			viewModel.Notifications = notifs;

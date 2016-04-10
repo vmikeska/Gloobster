@@ -40,11 +40,11 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
                 countryCode = null
             };
 
-            var visited = DB.C<VisitedEntity>().FirstOrDefault(v => v.PortalUser_id == UserIdObj);
+            var visited = DB.C<VisitedEntity>().FirstOrDefault(v => v.User_id == UserIdObj);
 
 		    var city = visited.Cities.FirstOrDefault(c => c.GeoNamesId == gid);
 
-            var f1 = DB.F<VisitedEntity>().Eq(c => c.PortalUser_id, UserIdObj);
+            var f1 = DB.F<VisitedEntity>().Eq(c => c.User_id, UserIdObj);
             var u1 = DB.U<VisitedEntity>().Pull(c => c.Cities, city);
             var resCity = await DB.UpdateAsync(f1, u1);
 
@@ -53,7 +53,7 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
 		    if (!stillSomeCitiesInCountry)
 		    {
 		        var country = visited.Countries.FirstOrDefault(c => c.CountryCode2 == city.CountryCode);
-                var f2 = DB.F<VisitedEntity>().Eq(c => c.PortalUser_id, UserIdObj);
+                var f2 = DB.F<VisitedEntity>().Eq(c => c.User_id, UserIdObj);
                 var u2 = DB.U<VisitedEntity>().Pull(c => c.Countries, country);
                 var resCountry = await DB.UpdateAsync(f2, u2);
 

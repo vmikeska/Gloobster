@@ -23,7 +23,7 @@ namespace Gloobster.DomainModels
 	        var notObjId = new ObjectId(id);
             var userIdObj = new ObjectId(userId);
             
-            var filter = DB.F<NotificationsEntity>().Eq(p => p.PortalUser_id, userIdObj) & DB.F<NotificationsEntity>().Eq("Notifications._id", notObjId);
+            var filter = DB.F<NotificationsEntity>().Eq(p => p.User_id, userIdObj) & DB.F<NotificationsEntity>().Eq("Notifications._id", notObjId);
 	        var update = DB.U<NotificationsEntity>().PopFirst(p => p.Notifications);
             var res = await DB.UpdateAsync(filter, update);
             return res.ModifiedCount == 1;            
@@ -33,7 +33,7 @@ namespace Gloobster.DomainModels
         {            
             var userIdObj = new ObjectId(userId);
 
-            var filter = DB.F<NotificationsEntity>().Eq(p => p.PortalUser_id, userIdObj);
+            var filter = DB.F<NotificationsEntity>().Eq(p => p.User_id, userIdObj);
             var update = DB.U<NotificationsEntity>().Set(p => p.Notifications, new List<NotificationSE>());
             var res = await DB.UpdateAsync(filter, update);
             return res.ModifiedCount == 1;
@@ -42,14 +42,8 @@ namespace Gloobster.DomainModels
 	    public async Task<bool> SetAllNotificationsToSeen(string userId)
 	    {            
             var userIdObj = new ObjectId(userId);
-
-            //shouldnt it work ?
-            //var filter = DB.F<NotificationsEntity>().Eq(p => p.PortalUser_id, userIdObj);
-            //var update = DB.U<NotificationsEntity>().Set("Notifications.Status", NotificationStatus.Seen);
-            //var res = await DB.UpdateManyAsync(filter, update);
-            //return res.ModifiedCount > 0;
-
-            var notif = DB.C<NotificationsEntity>().FirstOrDefault(p => p.PortalUser_id == userIdObj);
+            
+            var notif = DB.FOD<NotificationsEntity>(p => p.User_id == userIdObj);
             notif.Notifications.ForEach(n => n.Status = NotificationStatus.Seen);
 	        await DB.ReplaceOneAsync(notif);
 	        return true;
@@ -58,7 +52,7 @@ namespace Gloobster.DomainModels
         public async void AddNotification(NotificationDO notification)
 	    {
 		    var userIdObj = new ObjectId(notification.UserId);
-		    var notifications = DB.C<NotificationsEntity>().FirstOrDefault(e => e.PortalUser_id == userIdObj);
+		    var notifications = DB.C<NotificationsEntity>().FirstOrDefault(e => e.User_id == userIdObj);
 		    if (notifications == null)
 		    {
 			    CretateNotificationEntity(userIdObj);
@@ -73,7 +67,7 @@ namespace Gloobster.DomainModels
 		private async Task<bool> PushNotification(string userId, NotificationSE notification)
 		{
 			var userIdObj = new ObjectId(userId);			
-			var filter = DB.F<NotificationsEntity>().Eq(p => p.PortalUser_id, userIdObj);				
+			var filter = DB.F<NotificationsEntity>().Eq(p => p.User_id, userIdObj);				
 			var update = DB.U<NotificationsEntity>().Push(n => n.Notifications, notification);
 			var res = await DB.UpdateAsync(filter, update);
 			return res.ModifiedCount == 1;
@@ -84,7 +78,7 @@ namespace Gloobster.DomainModels
 			var e = new NotificationsEntity
 			{
 				Notifications = new List<NotificationSE>(),
-				PortalUser_id = userId
+				User_id = userId
 			};
 			await DB.SaveAsync(e);
 		}

@@ -6,27 +6,30 @@ var Reg;
         LoginButtonsManager.prototype.initialize = function (fb, google, twitter) {
             var _this = this;
             var fbBtn = new FacebookButtonInit(fb);
-            fbBtn.onBeforeExecute = function () { return _this.onBefore(); };
-            fbBtn.onAfterExecute = function () { return _this.onAfter(); };
+            fbBtn.onBeforeExecute = function () { return _this.onBefore(SocialNetworkType.Facebook); };
+            fbBtn.onAfterExecute = function () { return _this.onAfter(SocialNetworkType.Facebook); };
             var googleBtn = new GoogleButtonInit(google);
-            googleBtn.onBeforeExecute = function () { return _this.onBefore(); };
-            googleBtn.onAfterExecute = function () { return _this.onAfter(); };
+            googleBtn.onBeforeExecute = function () { return _this.onBefore(SocialNetworkType.Google); };
+            googleBtn.onAfterExecute = function () { return _this.onAfter(SocialNetworkType.Google); };
             var twitterBtn = new TwitterButtonInit(twitter);
-            twitterBtn.onBeforeExecute = function () { return _this.onBefore(); };
-            twitterBtn.onAfterExecute = function () { return _this.onAfter(); };
+            twitterBtn.onBeforeExecute = function () { return _this.onBefore(SocialNetworkType.Twitter); };
+            twitterBtn.onAfterExecute = function () { return _this.onAfter(SocialNetworkType.Twitter); };
             this.cookieSaver = new AuthCookieSaver();
             this.regEmailDialog();
         };
-        LoginButtonsManager.prototype.onBefore = function () {
+        LoginButtonsManager.prototype.onBefore = function (net) {
             this.$socDialog.hide();
         };
-        LoginButtonsManager.prototype.onAfter = function () {
+        LoginButtonsManager.prototype.onAfter = function (net) {
             var hint = new Common.HintDialog();
             hint.create("You are successfully connected!");
             $("#MenuRegister").parent().remove();
             this.getUserMenu(function (r) {
                 $("#ddMenus").append(r);
             });
+            if (this.onAfterCustom) {
+                this.onAfterCustom(net);
+            }
         };
         LoginButtonsManager.prototype.getUserMenu = function (callback) {
             var endpoint = "/home/component/_UserMenu";
@@ -59,7 +62,7 @@ var Reg;
                 };
                 Views.ViewBase.currentView.apiPost("MailUser", data, function (r) {
                     _this.cookieSaver.saveCookies(r);
-                    _this.onAfter();
+                    _this.onAfter(SocialNetworkType.Base);
                 });
             });
         };
@@ -191,11 +194,7 @@ var Reg;
         };
         FacebookButtonInit.prototype.initializeFacebookSdk = function (callback) {
             var fbInit = new Reg.FacebookInit();
-            fbInit.onFacebookInitialized = function () {
-                console.log("fb initialized");
-                callback();
-            };
-            fbInit.initialize();
+            fbInit.initialize(callback);
         };
         return FacebookButtonInit;
     })();

@@ -55,7 +55,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 				var newFile = new FileSE
 				{
                     id = ObjectId.GenerateNewId(),
-					PortalUser_id = UserIdObj,
+					User_id = UserIdObj,
 					OriginalFileName = request.fileName,
 					SavedFileName = argsObj.FileName,
 					Type = argsObj.FileType,

@@ -24,7 +24,7 @@ namespace Gloobster.DomainModels.Services.Trip
             var tripIdObj = new ObjectId(tripId);
             var userIdObj = new ObjectId(id);
             var filter = DB.F<TripEntity>().Eq(t => t.id, tripIdObj)
-                         & DB.F<TripEntity>().Eq("Participants.PortalUser_id", userIdObj);
+                         & DB.F<TripEntity>().Eq("Participants.User_id", userIdObj);
 
             var update = DB.U<TripEntity>().Set("Participants.$.IsAdmin", isAdmin);
             var res = await DB.UpdateAsync(filter, update);
@@ -36,7 +36,7 @@ namespace Gloobster.DomainModels.Services.Trip
 			var tripIdObj = new ObjectId(tripId);
 			var userIdObj = new ObjectId(userId);
 			var filter = DB.F<TripEntity>().Eq(t => t.id, tripIdObj)
-			             & DB.F<TripEntity>().Eq("Participants.PortalUser_id", userIdObj);
+			             & DB.F<TripEntity>().Eq("Participants.User_id", userIdObj);
 			
 			var update = DB.U<TripEntity>().Set("Participants.$.State", newState);
 			var res = await DB.UpdateAsync(filter, update);
@@ -49,7 +49,7 @@ namespace Gloobster.DomainModels.Services.Trip
             var idObj = new ObjectId(id);
             var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
 
-	        var participant = trip.Participants.FirstOrDefault(p => p.PortalUser_id == idObj);
+	        var participant = trip.Participants.FirstOrDefault(p => p.User_id == idObj);
 
             var filter = DB.F<TripEntity>().Eq(p => p.id, trip.id);
             var update = DB.U<TripEntity>().Pull(p => p.Participants, participant);
@@ -77,7 +77,7 @@ namespace Gloobster.DomainModels.Services.Trip
 				    var newPartEntity = new ParticipantSE
 				    {
 				        IsAdmin = false,
-				        PortalUser_id = new ObjectId(id),
+				        User_id = new ObjectId(id),
 				        State = ParticipantState.Invited
 				    };
                       
@@ -100,7 +100,7 @@ namespace Gloobster.DomainModels.Services.Trip
 				return false;
 			}
 
-			return trip.Participants.Any(p => p.PortalUser_id.ToString() == userId);
+			return trip.Participants.Any(p => p.User_id.ToString() == userId);
 		}
 
 		
