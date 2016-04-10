@@ -138,7 +138,7 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
                 }
                 else
                 {
-                    var securedFriends = friendsIds.Where(ids.Contains);
+                    var securedFriends = ids.Where(f => friendsIds.Contains(f)).ToList();
                     outIds.AddRange(securedFriends);
                 }
             }

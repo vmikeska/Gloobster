@@ -6,13 +6,7 @@ module Maps {
 			countryConfig: PolygonConfig;
 				}
 
-	export class PlaceMarker {
-			 
-	 //constructor(lat: number, lng: number) {
-		//this.lat = lat;
-		// this.lng = lng;
-	 //}
-	 
+	export class PlaceMarker {		
 		lat: number;
 		lng: number;
 		city: string;
@@ -31,7 +25,7 @@ module Maps {
 			this.borderWeight = 1;
 
 			this.fillColor = defaultColor;
-			this.fillOpacity = 0.5;
+			this.fillOpacity = 0.6;
 		}
 
 		borderColor: string;

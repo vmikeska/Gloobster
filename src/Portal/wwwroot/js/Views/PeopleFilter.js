@@ -20,8 +20,9 @@ var Views;
         PeopleFilter.prototype.initFriends = function (friends) {
             var _this = this;
             friends.forEach(function (f) {
-                var html = _this.itemTemplate(f);
-                _this.$usersBox.append(html);
+                var $item = $(_this.itemTemplate(f));
+                $item.find("input").addClass("filterCheckbox");
+                _this.$usersBox.append($item);
             });
             this.onUsersRendered();
         };

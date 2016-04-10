@@ -24,11 +24,16 @@ namespace Gloobster.Portal.Controllers.Portal
 		{
             
 		}
-
-
+        
         [CreateAccount]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
+            bool isLogged = HttpContext.Request.Cookies.ContainsKey(TokenConstants.CookieKeyName);
+            if (isLogged)
+            {
+                return RedirectToAction("Pins", "Pinboard");
+            }
+
             var viewModel = CreateViewModelInstance<ViewModelHome>();
             return View(viewModel);
         }

@@ -13,7 +13,8 @@ namespace Gloobster.DomainObjects
         public List<int> AsiaCities { get; set; }
         public List<int> NorthAmericaCities { get; set; }
         public List<int> SouthAmericaCities { get; set; }
-        public List<int> AfricaCities { get; set; }        
+        public List<int> AfricaCities { get; set; }
+        public List<int> AustraliaCities { get; set; }
 
         public List<string> CountryCodes { get; set; }
         public List<string> StateCodes { get; set; }

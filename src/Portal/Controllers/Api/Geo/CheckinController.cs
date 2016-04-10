@@ -101,6 +101,7 @@ namespace Gloobster.Portal.Controllers.Api.Geo
             response.topCities.AddRange(stats.EuropeCities);
             response.topCities.AddRange(stats.NorthAmericaCities);
             response.topCities.AddRange(stats.SouthAmericaCities);
+            response.topCities.AddRange(stats.AustraliaCities);
 
             response.stateCodes = stats.StateCodes;
             response.countryCodes = stats.CountryCodes;

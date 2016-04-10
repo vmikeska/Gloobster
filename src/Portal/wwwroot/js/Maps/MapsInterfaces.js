@@ -19,7 +19,7 @@ var Maps;
             this.borderOpacity = 1;
             this.borderWeight = 1;
             this.fillColor = defaultColor;
-            this.fillOpacity = 0.5;
+            this.fillOpacity = 0.6;
         }
         return PolygonConfig;
     })();

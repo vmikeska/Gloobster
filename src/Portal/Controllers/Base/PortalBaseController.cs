@@ -108,7 +108,7 @@ namespace Gloobster.Portal.Controllers.Base
             {
                 User = User,
                 DB = DB,
-                SocialNetworks = Networks,
+                SocialNetworks = new List<SocialNetworkType>(),
                 NotificationCount = 0,
                 UserId = UserId,
                 CanManageArticleAdmins = false,
@@ -126,12 +126,14 @@ namespace Gloobster.Portal.Controllers.Base
                 var permissions = CC.Resolve<IWikiPermissions>();
                 instance.HasAnyWikiPermissions = permissions.IsAdminOfSomething(UserId);
                 instance.CanManageArticleAdmins = permissions.CanManageArticleAdmins(UserId);
-            }
 
-            if (Networks.Contains(SocialNetworkType.Facebook))
-            {
-                var fbNet = SocNetworks.FirstOrDefault(a => a.NetworkType == SocialNetworkType.Facebook);
-                instance.FbToken = fbNet.AccessToken;
+                instance.SocialNetworks = Networks;
+
+                if (Networks.Contains(SocialNetworkType.Facebook))
+                {
+                    var fbNet = SocNetworks.FirstOrDefault(a => a.NetworkType == SocialNetworkType.Facebook);
+                    instance.FbToken = fbNet.AccessToken;
+                }
             }
             
             return instance;

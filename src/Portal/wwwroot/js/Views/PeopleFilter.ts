@@ -31,8 +31,9 @@
 
 		public initFriends(friends) {
 			friends.forEach((f) => {
-				var html = this.itemTemplate(f);
-				this.$usersBox.append(html);
+			 var $item = $(this.itemTemplate(f));
+				$item.find("input").addClass("filterCheckbox");
+				this.$usersBox.append($item);
 			});
 			this.onUsersRendered();
 		}

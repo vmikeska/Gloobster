@@ -58,6 +58,17 @@ var Views;
                 { i: "nairobi.png", n: "Nairobi", g: 184745 },
                 { i: "accra.png", n: "Accra", g: 2306104 }
             ];
+            this.australiaCities = [
+                { i: "sydney.png", n: "Sydney", g: 2147714 },
+                { i: "melbourne.png", n: "Melbourne", g: 2158177 },
+                { i: "perth.png", n: "Perth", g: 2063523 },
+                { i: "darwin.png", n: "Darwin", g: 2073124 },
+                { i: "goldcoast.png", n: "Gold coast", g: 2165087 },
+                { i: "canberra.png", n: "Canberra", g: 2172517 },
+                { i: "cairns.png", n: "Cairns", g: 2172797 },
+                { i: "brisbane.png", n: "Brisbane", g: 2174003 },
+                { i: "adelaide.png", n: "Adelaide", g: 2078025 }
+            ];
         }
         Object.defineProperty(PinBoardBadges.prototype, "mapsDataLoader", {
             get: function () {
@@ -67,7 +78,7 @@ var Views;
             enumerable: true,
             configurable: true
         });
-        PinBoardBadges.prototype.refresh = function (type) {
+        PinBoardBadges.prototype.refresh = function () {
             $("#bdgs").html("");
             this.aggregateCountries();
             var ch = this.generateCities();
@@ -75,8 +86,6 @@ var Views;
             $("#bdgs").html(oh + ch);
         };
         PinBoardBadges.prototype.aggregateCountries = function () {
-            //var countries = _.map(this.mapsDataLoader.places.countries, (c) => { return c.CountryCode2; });
-            //var states = _.map(this.mapsDataLoader.places.states, (c) => { return c.StateCode; });
             this.aggegatedCountries = new Views.AggregatedCountries();
             this.aggegatedCountries.aggregate(this.countries);
             this.aggegatedCountries.aggregateUs(this.states);
@@ -91,7 +100,7 @@ var Views;
             var euHtml = this.genOverviewItem("states-eu.png", this.aggegatedCountries.euVisited, this.aggegatedCountries.euTotal, "EU");
             var usHtml = this.genOverviewItem("states-us.png", this.aggegatedCountries.usVisited, this.aggegatedCountries.usTotal, "US");
             var html = afrHtml + eurHtml + asiHtml + ausHtml + naHtml + saHtml + euHtml + usHtml;
-            var allHtml = "<h2 class=\"citiesCont\">Overview</h2><div class=\"badges grid margin2 citiesCont\">" + html + "</div>";
+            var allHtml = "<div class=\"badges grid margin2 citiesCont\" style=\"text-align: center\">" + html + "</div>";
             return allHtml;
         };
         PinBoardBadges.prototype.generateCities = function () {
@@ -100,7 +109,8 @@ var Views;
             var naHtml = this.genContCitiesSection("North America", this.naCities);
             var saHtml = this.genContCitiesSection("South and Central America", this.saCities);
             var afHtml = this.genContCitiesSection("Africa", this.afCities);
-            var html = eurHtml + asiHtml + naHtml + saHtml + afHtml;
+            var auHtml = this.genContCitiesSection("Australia", this.australiaCities);
+            var html = eurHtml + asiHtml + naHtml + saHtml + afHtml + auHtml;
             return html;
         };
         PinBoardBadges.prototype.genContCitiesSection = function (continentName, cities) {

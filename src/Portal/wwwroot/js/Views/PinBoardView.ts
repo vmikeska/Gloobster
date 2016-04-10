@@ -59,8 +59,7 @@
 		private initCombos() {
 			$("#mapType input").change((e) => {
 				var value = $(e.target).val();
-				//var parsedVal = parseInt(value);
-
+			
 				this.getFormState((dataType, entity, mapType) => {
 					this.mapsManager.switchToView(mapType, entity);
 				});

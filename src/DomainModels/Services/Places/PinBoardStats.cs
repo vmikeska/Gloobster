@@ -41,6 +41,7 @@ namespace Gloobster.DomainModels.Services.Places
                 EuropeCities = GetCities(allCities, StatCities.EuropeCities),
                 NorthAmericaCities = GetCities(allCities, StatCities.NorthAmericaCities),
                 SouthAmericaCities = GetCities(allCities, StatCities.SouthAmericaCities),
+                AustraliaCities = GetCities(allCities, StatCities.AustraliaCities),
 
                 CountryCodes = GetCountryCodes(visited.Countries),
                 StateCodes = GetStateCodes(visited.States)
@@ -83,6 +84,9 @@ namespace Gloobster.DomainModels.Services.Places
 
         public static List<int> AfricaCities =
             new List<int> { 993800, 3369157, 360630, 2553604, 2464470, 1007311, 2332459, 184745, 2306104 };
+
+        public static List<int> AustraliaCities =
+            new List<int> { 2147714, 2158177, 2063523, 2073124, 2165087, 2172517, 2172797, 2174003, 2078025 };        
     }
 
 

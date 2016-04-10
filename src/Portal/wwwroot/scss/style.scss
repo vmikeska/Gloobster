@@ -342,6 +342,61 @@ q, .quote {
     }
 }
 
+.badges2 {
+    @include size(100% auto);
+    .badge {
+        @include size(88px auto);
+        @include position(relative);
+        display: block;
+        margin: 0 8px 10px 8px;
+        text-align: center;
+        .thumbnail {
+            @extend .thumbnail.disc80;
+            background-color: transparent;
+            border-color: transparent;
+            display: block;
+            margin-bottom: 5px;
+            img {
+                @include transition(all $speed);
+                border-radius: 44px;
+            }
+        }
+        #{$all-icons} {
+            @include position(absolute, 5px 5px null null);
+        }
+        &:hover {
+            .thumbnail {
+                img {
+                    opacity: .5;
+                }
+            }
+        }
+        &.active {
+            .thumbnail {
+                border-color: rgba($color8, .4);
+            }
+        }
+    }
+
+    @include tablet{
+        .badge{
+            @include size(66px auto);
+            margin: 0 !important;
+            padding: 0 !important;
+
+            span{
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            .thumbnail.img {
+                width: 66px !important;
+                height: 66px !important;
+            }
+        }
+    }
+}
+
 /* Comments */
 
 .comments {

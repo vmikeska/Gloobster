@@ -52,7 +52,6 @@ var Views;
             var _this = this;
             $("#mapType input").change(function (e) {
                 var value = $(e.target).val();
-                //var parsedVal = parseInt(value);
                 _this.getFormState(function (dataType, entity, mapType) {
                     _this.mapsManager.switchToView(mapType, entity);
                 });

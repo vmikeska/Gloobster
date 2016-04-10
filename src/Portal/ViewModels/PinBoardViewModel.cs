@@ -36,6 +36,7 @@ namespace Gloobster.Portal.ViewModels
             TopCities.AddRange(statRes.EuropeCities);
             TopCities.AddRange(statRes.NorthAmericaCities);
             TopCities.AddRange(statRes.SouthAmericaCities);
+            TopCities.AddRange(statRes.AustraliaCities);
 
             StateCodes = statRes.StateCodes;
             CountryCodes = statRes.CountryCodes;
@@ -61,7 +62,7 @@ namespace Gloobster.Portal.ViewModels
             var frnds = friends.Select(f => new Friend
             {
                 DisplayName = f.DisplayName,
-                Id = f.id.ToString()
+                Id = f.User_id.ToString()
             }).ToList();
 
             return frnds;

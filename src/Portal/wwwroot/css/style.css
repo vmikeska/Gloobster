@@ -1,4 +1,4 @@
-﻿@charset "UTF-8";
+@charset "UTF-8";
 /*! normalize.css v3.0.1 | MIT License | git.io/normalize */
 /**
  * 1. Set default font family to sans-serif.
@@ -3075,6 +3075,47 @@ q, .quote {
     .badges .badge.active .thumbnail {
       border-color: rgba(114, 207, 114, 0.4); }
 
+.badges2 {
+  height: auto;
+  width: 100%; }
+  .badges2 .badge {
+    height: auto;
+    width: 88px;
+    position: relative;
+    display: block;
+    margin: 0 8px 10px 8px;
+    text-align: center; }
+    .badges2 .badge .thumbnail {
+      background-color: transparent;
+      border-color: transparent;
+      display: block;
+      margin-bottom: 5px; }
+      .badges2 .badge .thumbnail img {
+        -webkit-transition: all 0.3s;
+        -moz-transition: all 0.3s;
+        transition: all 0.3s;
+        border-radius: 44px; }
+    .badges2 .badge [class^="icon-"] {
+      position: absolute;
+      top: 5px;
+      right: 5px; }
+    .badges2 .badge:hover .thumbnail img {
+      opacity: .5; }
+    .badges2 .badge.active .thumbnail {
+      border-color: rgba(114, 207, 114, 0.4); }
+  @media screen and (max-width: 959px) {
+    .badges2 .badge {
+      height: auto;
+      width: 66px;
+      margin: 0 !important;
+      padding: 0 !important; }
+      .badges2 .badge span {
+        margin: 0 !important;
+        padding: 0 !important; }
+      .badges2 .badge .thumbnail.img {
+        width: 66px !important;
+        height: 66px !important; } }
+
 /* Comments */
 .comments .thumbnail {
   -webkit-transition: all 0.3s;
@@ -4401,10 +4442,10 @@ input.heading {
     .thumbnail.disc60, .comments .thumbnail, .team .thumbnail, .thumbnail.disc60 img, .comments .thumbnail img, .team .thumbnail img {
       height: 60px;
       width: 60px; }
-  .thumbnail.disc80, .badges .badge .thumbnail {
+  .thumbnail.disc80, .badges .badge .thumbnail, .badges2 .badge .thumbnail {
     border-radius: 44px;
     border-width: 4px; }
-    .thumbnail.disc80, .badges .badge .thumbnail, .thumbnail.disc80 img, .badges .badge .thumbnail img {
+    .thumbnail.disc80, .badges .badge .thumbnail, .badges2 .badge .thumbnail, .thumbnail.disc80 img, .badges .badge .thumbnail img, .badges2 .badge .thumbnail img {
       height: 80px;
       width: 80px; }
 
