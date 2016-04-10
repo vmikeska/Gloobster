@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 /*! normalize.css v3.0.1 | MIT License | git.io/normalize */
 /**
  * 1. Set default font family to sans-serif.
@@ -4554,6 +4554,18 @@ input.heading {
     right: 10px;
     bottom: auto;
     left: auto; }
+  @media screen and (max-width: 959px) {
+    .trips.grid .trip {
+      height: 287px;
+      width: 232px; }
+      .trips.grid .trip h3 {
+        font-size: 20px; }
+      .trips.grid .trip.new {
+        height: 269px;
+        width: 214px; }
+        .trips.grid .trip.new textarea {
+          height: 100px;
+          width: 194px; } }
 
 .trips.list {
   height: auto;
