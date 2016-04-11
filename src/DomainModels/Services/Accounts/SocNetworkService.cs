@@ -126,6 +126,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 
             var tokenResult = SocLogin.ValidateToken(auth);
             bool isTokenValid = tokenResult.IsValid && (auth.SocUserId == tokenResult.UserId);
+            Log.Debug("TokenValid: " + isTokenValid);
             if (!isTokenValid)
             {
                 return null;
@@ -133,9 +134,14 @@ namespace Gloobster.DomainModels.Services.Accounts
 
             var socAccount1 = DB.FOD<SocialAccountEntity>(a => a.UserId == auth.SocUserId && a.NetworkType == auth.NetType);
             bool socAccountExists = socAccount1 != null;
+            Log.Debug("socAccountExists: " + socAccountExists);
             if (socAccountExists)
             {
                 res = await SocAccountExists(auth, socAccount1);
+                if (auth.UserId != res.UserId)
+                {
+                    //here could be delete temp account
+                }
                 return res;
             }
 
@@ -146,13 +152,23 @@ namespace Gloobster.DomainModels.Services.Accounts
                 bool socAccountNew = socAccount == null;
                 if (socAccountNew)
                 {
-                    res = await SocAccountNew(auth);
+                    Log.Debug("Creating new account");
+                    res = await SocAccountNew(auth);                    
                     return res;
                 }
             }
 
             return null;
         }
+
+        //private Task DeleteAccountIfEmpty(string userId)
+        //{
+        //    var userIdObj = new ObjectId(userId);
+
+        //    var user = DB.FOD<UserEntity>(a => a.User_id == userIdObj);
+        //    var trips = DB.FOD<TripEntity>(a => a.User_id == userIdObj);
+        //    var visited = DB.FOD<Visited>(a => a.User_id == userIdObj);
+        //}
 
         private async Task CreateNewUserData(string userId, string displayName)
         {
@@ -236,6 +252,7 @@ namespace Gloobster.DomainModels.Services.Accounts
                 SocToken = auth.AccessToken,
                 FullRegistration = IsFullRegistration(auth.UserId)
             };
+            
             return response;
         }
         

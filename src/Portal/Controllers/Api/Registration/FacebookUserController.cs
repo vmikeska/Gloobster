@@ -36,6 +36,8 @@ namespace Gloobster.Portal.Controllers.Api.Registration
         [AuthorizeApi]
         public async Task<IActionResult> Post([FromBody] FacebookUserAuthenticationRequest req)
         {
+            Log.Debug("FbUserSigning, userId: " + req.userId);
+
             var auth = new SocAuthDO
             {
                 UserId = UserId,
@@ -45,7 +47,7 @@ namespace Gloobster.Portal.Controllers.Api.Registration
                 SocUserId = req.userId,
                 NetType = SocialNetworkType.Facebook
             };
-
+            
             SocNetService.SocLogin = ComponentContext.ResolveKeyed<ISocLogin>("Facebook");
             
             var res = await SocNetService.HandleAsync(auth);

@@ -21,7 +21,7 @@ namespace Gloobster.Portal
 		public IConfiguration Configuration { get; set; }
         public static Serilog.ILogger Logger;
 
-        private static void AddDebugLog(string txt)
+        public static void AddDebugLog(string txt)
         {
             if (Logger != null)
             {
@@ -31,48 +31,47 @@ namespace Gloobster.Portal
 
 		public Startup(IHostingEnvironment env)
 		{
-		    try
-		    {
+            //.AddJsonFile("configLocal.json");
+            //.AddJsonFile($"config.{env.EnvironmentName}.json", optional: true);
+
+            try
+            {
 		        //http://stackoverflow.com/questions/28258227/how-to-set-ihostingenvironment-environmentname-in-vnext-application
 		        // Setup configuration sources.			
 		        var builder = new ConfigurationBuilder();
 
-		        if (env.IsDevelopment())
+                if (env.IsProduction())
+                {
+                    builder.AddJsonFile("configRemote.json");
+
+                    Log.Logger = new LoggerConfiguration()
+                        .MinimumLevel.Debug()
+                        .WriteTo.Loggly()
+                        .CreateLogger();
+                    //https://github.com/neutmute/loggly-csharp
+                    LogglyConfig.Instance.ApplicationName = "gloobster";
+                    LogglyConfig.Instance.CustomerToken = "5be61d53-19c9-4e23-ad50-1300065b591a";
+                    LogglyConfig.Instance.Transport = new TransportConfiguration
+                    {
+                        EndpointHostname = "logs-01.loggly.com",
+                        EndpointPort = 443,
+                        LogTransport = LogTransport.Https
+                    };
+                    LogglyConfig.Instance.ThrowExceptions = true;
+                    Logger = Log.Logger;
+                    AddDebugLog("LogglyInited");
+                    AddDebugLog("IsProduction");
+                }
+                
+                if (env.IsDevelopment())
 		        {
 		            builder.AddJsonFile("configLocal.json");
-		        }
 
-		        if (env.IsProduction())
-		        {
-		            builder.AddJsonFile("configRemote.json");
-
-		            Log.Logger = new LoggerConfiguration()
-		                .MinimumLevel.Debug()
-		                .WriteTo.Loggly()
-		                .CreateLogger();
-		            //https://github.com/neutmute/loggly-csharp
-		            LogglyConfig.Instance.ApplicationName = "gloobster";
-		            LogglyConfig.Instance.CustomerToken = "5be61d53-19c9-4e23-ad50-1300065b591a";
-		            LogglyConfig.Instance.Transport = new TransportConfiguration
-		            {
-		                EndpointHostname = "logs-01.loggly.com",
-		                EndpointPort = 443,
-		                LogTransport = LogTransport.Https
-		            };
-		            LogglyConfig.Instance.ThrowExceptions = true;
-		            Logger = Log.Logger;
-		            AddDebugLog("LogglyInited");
-		        }
-
-		        //.AddJsonFile("configLocal.json");
-		        //.AddJsonFile($"config.{env.EnvironmentName}.json", optional: true);
-
-		        if (env.IsDevelopment())
-		        {
-		            // This reads the configuration keys from the secret store.
-		            // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-		            builder.AddUserSecrets();
-		        }
+                    // This reads the configuration keys from the secret store.
+                    // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
+                    builder.AddUserSecrets();
+                }
+                
 		        builder.AddEnvironmentVariables();
 		        Configuration = builder.Build();
 

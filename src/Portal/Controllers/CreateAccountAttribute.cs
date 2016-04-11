@@ -76,18 +76,24 @@ namespace Gloobster.Portal.Controllers
     {
         public override async void OnActionExecuting(ActionExecutingContext context)
         {
-            var cx = context.HttpContext;
+            Startup.AddDebugLog("OnActionExecuting");
 
+            var cx = context.HttpContext;
+            
             var userAgent = cx.Request.Headers["User-Agent"].ToString();
-            if (IsBot(userAgent))
-            {
+            Startup.AddDebugLog("UserAgent: " + userAgent);
+            bool isBot = IsBot(userAgent);
+            Startup.AddDebugLog("IsBot: " + isBot);
+            if (isBot)
+            {                
                 base.OnActionExecuting(context);
                 return;
             }
-
+            
             var token = ReadToken(context);
-
+            Startup.AddDebugLog("Token: " + token);
             bool hasToken = token != null;
+            Startup.AddDebugLog("HasToken: " + hasToken);
             if (hasToken)
             {
                 var accountCreator = new AccountCreator();
@@ -111,9 +117,11 @@ namespace Gloobster.Portal.Controllers
                 }
             }
 
+            Startup.AddDebugLog("Issuing new token");
             //user is not logged, let's generate the session
             IssueNewToken(context);
 
+            Startup.AddDebugLog("Adding callback query string");
             //hasn't session cookie
             AddCallbackQueryStringParam(context);
         }
