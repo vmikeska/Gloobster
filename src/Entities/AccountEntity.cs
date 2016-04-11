@@ -17,6 +17,8 @@ namespace Gloobster.Entities
 
         public bool EmailSent { get; set; }
         public bool EmailConfirmed { get; set; }
+
+        public bool PossiblyEmpty { get; set; }
     }
 
     public class AccessLogEntity : EntityBase

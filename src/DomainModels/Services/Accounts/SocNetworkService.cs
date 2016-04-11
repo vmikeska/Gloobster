@@ -137,11 +137,7 @@ namespace Gloobster.DomainModels.Services.Accounts
             Log.Debug("socAccountExists: " + socAccountExists);
             if (socAccountExists)
             {
-                res = await SocAccountExists(auth, socAccount1);
-                if (auth.UserId != res.UserId)
-                {
-                    //here could be delete temp account
-                }
+                res = await SocAccountExists(auth, socAccount1);                
                 return res;
             }
 
@@ -161,14 +157,14 @@ namespace Gloobster.DomainModels.Services.Accounts
             return null;
         }
 
-        //private Task DeleteAccountIfEmpty(string userId)
-        //{
-        //    var userIdObj = new ObjectId(userId);
+        private async void MarkEmptyAccount(string userId)
+        {
+            var userIdObj = new ObjectId(userId);
 
-        //    var user = DB.FOD<UserEntity>(a => a.User_id == userIdObj);
-        //    var trips = DB.FOD<TripEntity>(a => a.User_id == userIdObj);
-        //    var visited = DB.FOD<Visited>(a => a.User_id == userIdObj);
-        //}
+            var f1 = DB.F<AccountEntity>().Eq(a => a.User_id, userIdObj);
+            var u1 = DB.U<AccountEntity>().Set(a => a.PossiblyEmpty, true);
+            await DB.UpdateAsync(f1, u1);
+        }
 
         private async Task CreateNewUserData(string userId, string displayName)
         {
@@ -364,12 +360,17 @@ namespace Gloobster.DomainModels.Services.Accounts
 
         private async Task<LoginResponseDO> SocAccountExists(SocAuthDO auth, SocialAccountEntity socAccount)
         {
-            //todo:check if old account is empty - delete
-            //check it's not the same :)
+            var authUserObjId = new ObjectId(auth.UserId);
 
             await RenewTokenIfPossible(auth, socAccount.id);
 
             var accountBySocAccount = DB.FOD<AccountEntity>(u => u.User_id == socAccount.User_id);
+
+            if (authUserObjId != accountBySocAccount.User_id)
+            {
+                //here could be delete temp account
+                MarkEmptyAccount(auth.UserId);
+            }
 
             var user = DB.FOD<UserEntity>(u => u.User_id == socAccount.User_id);
 

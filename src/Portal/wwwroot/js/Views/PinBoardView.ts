@@ -25,8 +25,33 @@
 		public initFb() {
 			this.fbPermissions = new Common.FacebookPermissions();
 			this.fbPermissions.initFb(() => {
-			 this.initFbPermRequest();
-			});			
+				this.fbPermissions.hasPermission("user_tagged_places", (hasPermissions) => {
+					if (hasPermissions) {
+						this.refreshData();
+					} else {
+						this.initFbPermRequest();
+					}
+				});
+			});
+		}
+
+		private initFbPermRequest() {
+		 $("#taggedPlacesPerm").show();
+		 $("#fbBtnImport").click((e) => {
+			e.preventDefault();
+			this.getTaggedPlacesPermissions();
+		 });
+		}
+
+		public getTaggedPlacesPermissions() {
+		 this.fbPermissions.requestPermissions("user_tagged_places", (r1) => {
+			$("#taggedPlacesPerm").remove();
+			$("#importingCheckins").show();
+			this.apiPost("FbTaggedPlacesPermission", null, (r2) => {
+			 this.refreshData();
+			 $("#importingCheckins").hide();
+			});
+		 });
 		}
 
 		public initialize() {		 
@@ -214,26 +239,7 @@
 				this.currentLegend.show();
 			}
 		}
-
-		private initFbPermRequest() {
-		 $("#taggedPlacesPerm").show();
-			$("#fbBtnImport").click((e) => {
-				e.preventDefault();
-				this.getTaggedPlacesPermissions();
-			});
-		}
-
-		public getTaggedPlacesPermissions() {
-			this.fbPermissions.requestPermissions("user_tagged_places", (r1) => {
-				$("#taggedPlacesPerm").remove();
-				$("#importingCheckins").show();
-				this.apiPost("FbTaggedPlacesPermission", null, (r2) => {
-					this.refreshData();
-					$("#importingCheckins").hide();
-				});
-			});
-		}
-
+	 
 		private setStatsRibbon(citiesCount: number, countriesCount: number, worldTraveledPercent: number, statesCount: number) {
 			$("#CitiesCount").text(citiesCount);
 			$("#CountriesCount").text(countriesCount);

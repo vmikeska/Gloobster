@@ -25,7 +25,33 @@ var Views;
             var _this = this;
             this.fbPermissions = new Common.FacebookPermissions();
             this.fbPermissions.initFb(function () {
-                _this.initFbPermRequest();
+                _this.fbPermissions.hasPermission("user_tagged_places", function (hasPermissions) {
+                    if (hasPermissions) {
+                        _this.refreshData();
+                    }
+                    else {
+                        _this.initFbPermRequest();
+                    }
+                });
+            });
+        };
+        PinBoardView.prototype.initFbPermRequest = function () {
+            var _this = this;
+            $("#taggedPlacesPerm").show();
+            $("#fbBtnImport").click(function (e) {
+                e.preventDefault();
+                _this.getTaggedPlacesPermissions();
+            });
+        };
+        PinBoardView.prototype.getTaggedPlacesPermissions = function () {
+            var _this = this;
+            this.fbPermissions.requestPermissions("user_tagged_places", function (r1) {
+                $("#taggedPlacesPerm").remove();
+                $("#importingCheckins").show();
+                _this.apiPost("FbTaggedPlacesPermission", null, function (r2) {
+                    _this.refreshData();
+                    $("#importingCheckins").hide();
+                });
             });
         };
         PinBoardView.prototype.initialize = function () {
@@ -183,25 +209,6 @@ var Views;
             if (this.currentLegend) {
                 this.currentLegend.show();
             }
-        };
-        PinBoardView.prototype.initFbPermRequest = function () {
-            var _this = this;
-            $("#taggedPlacesPerm").show();
-            $("#fbBtnImport").click(function (e) {
-                e.preventDefault();
-                _this.getTaggedPlacesPermissions();
-            });
-        };
-        PinBoardView.prototype.getTaggedPlacesPermissions = function () {
-            var _this = this;
-            this.fbPermissions.requestPermissions("user_tagged_places", function (r1) {
-                $("#taggedPlacesPerm").remove();
-                $("#importingCheckins").show();
-                _this.apiPost("FbTaggedPlacesPermission", null, function (r2) {
-                    _this.refreshData();
-                    $("#importingCheckins").hide();
-                });
-            });
         };
         PinBoardView.prototype.setStatsRibbon = function (citiesCount, countriesCount, worldTraveledPercent, statesCount) {
             $("#CitiesCount").text(citiesCount);

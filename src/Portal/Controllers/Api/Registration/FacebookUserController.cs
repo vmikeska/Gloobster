@@ -50,7 +50,7 @@ namespace Gloobster.Portal.Controllers.Api.Registration
             
             SocNetService.SocLogin = ComponentContext.ResolveKeyed<ISocLogin>("Facebook");
             
-            var res = await SocNetService.HandleAsync(auth);
+            var res = await SocNetService.HandleAsync(auth);            
             return new ObjectResult(res);            
         }        
     }
