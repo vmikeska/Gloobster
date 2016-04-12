@@ -90,14 +90,14 @@
         <div class="cell">
             <div class="table row">
                 <div class="cell middle">
-                    <h2>Pin Board</h2>
+                    <h2>@Model.W("Title")</h2>
                 </div>
                 <div class="cell middle">
                     <div id="mapType" class="dropdown">
-                        <span class="selected">2D map</span>
+                        <span class="selected">@Model.W("Map2D")</span>
                         <ul>
-                            <li data-value="1">2D map</li>
-                            <li data-value="0">3D map</li>
+                            <li data-value="1">@Model.W("Map2D")</li>
+                            <li data-value="0">@Model.W("Map3D")</li>
                         </ul>
                         <input id="mapTypeValue" type="hidden" value="1">
                     </div>
@@ -105,7 +105,7 @@
             </div>
         </div>
         <div class="cell middle tright">
-            <a class="icon-share textnohide noneline strong popup2-target" data-target="#popup-share" href="#">Share map</a>
+            <a class="icon-share textnohide noneline strong popup2-target" data-target="#popup-share" href="#">@Model.W("ShareMap")</a>
         </div>
     </div>
     @Html.Partial("ShareDialog")
@@ -117,7 +117,7 @@
 
     <div class="form blue-form" action="#" method="post">
         <div id="cities" class="dropdown left">
-            <input id="citiesInput" class="inputed" type="text" placeholder="Place name">
+            <input id="citiesInput" class="inputed" type="text" placeholder="@Model.W("PlaceName")">
             <img class="loader" src="/images/loader-gray.gif" style="display: none" />
             <ul>
             </ul>
@@ -126,19 +126,19 @@
         @Html.Partial("PeopleFilterComponent")
 
         <div id="dataType" class="dropdown right">
-            <span class="selected">Visited</span>
+            <span class="selected">@Model.W("Visited")</span>
             <ul>
-                <li id="dt0" data-value="0">Visited</li>
-                @*<li id="dt1" data-value="1">Interested</li>*@
+                <li id="dt0" data-value="0">@Model.W("Visited")</li>
+                @*<li id="dt1" data-value="1">@Model.W("Interested")</li>*@
             </ul>
             <input type="hidden" value="0">
         </div>
         <div id="projectionType" class="dropdown right">
-            <span class="selected">Cities</span>
+            <span class="selected">@Model.W("Cities")</span>
             <ul>
-                <li id="pt0" data-value="0">Cities</li>
-                <li id="pt1" data-value="1">Countries</li>
-                <li id="pt2" data-value="2">Heat map</li>
+                <li id="pt0" data-value="0">@Model.W("Cities")</li>
+                <li id="pt1" data-value="1">@Model.W("Countries")</li>
+                <li id="pt2" data-value="2">@Model.W("HeatMap")</li>
             </ul>
             <input type="hidden" value="0">
         </div>        
@@ -149,23 +149,23 @@
 </div>
 
 <div id="infoPanel" class="popup2 margin infoPanel" style="display: block;">
-    <div style="display: none" class="infoMessage" id="messageNotLogged"><a class="popup-target" data-target="#popup-join" href="#">Join us</a> and keep your personal travel statistics. Invite you friends to create your own travel community. Currently only statistics from from users overall are being displayed. See most popular places what people visited or would like to visit.</div>
-    <div style="display: none" class="infoMessage" id="messageCitiesVisited">Keep track of cities you've visited. See cities your friends have visited.</div>
-    <div style="display: none" class="infoMessage" id="messageCountriesVisited">Keep track of countries you've visited. See countries your friends have visited. See what countries are being visited mostly.</div>
-    <div style="display: none" class="infoMessage" id="messageCitiesInterested">See cities people are most interested in.</div>
-    <div style="display: none" class="infoMessage" id="messageCountriesInterested">See countries people are most interested in.</div>
-    <div style="display: none" class="infoMessage" id="messagePlaces">See most favourite locations over the world what people like you like to visit. See most favourite locations of your friends.</div>
+    <div style="display: none" class="infoMessage" id="messageNotLogged">@Model.W("MessageNotLogged")</div>
+    <div style="display: none" class="infoMessage" id="messageCitiesVisited">@Model.W("MessageCitiesVisited")</div>
+    <div style="display: none" class="infoMessage" id="messageCountriesVisited">@Model.W("MessageCountriesVisited")</div>
+    <div style="display: none" class="infoMessage" id="messageCitiesInterested">@Model.W("MessageCitiesInterested")</div>
+    <div style="display: none" class="infoMessage" id="messageCountriesInterested">@Model.W("MessageCountriesInterested")</div>
+    <div style="display: none" class="infoMessage" id="messagePlaces">@Model.W("MessagePlaces")</div>
     
-    <a class="close" href="#">Close</a>
+    <a class="close" href="#">@Model.W("Close", "layout")</a>
 </div>
 
     <div class="squares table row margin2">
         <div class="cell">
-            <div class="square"><strong id="CitiesCount" class="countto" data-from="0" data-to="@Model.Cities">0</strong> Cities
+            <div class="square"><strong id="CitiesCount" class="countto" data-from="0" data-to="@Model.Cities">0</strong> @Model.W("StatCities")
             </div>
         </div>
         <div class="cell">
-            <div class="square"><strong id="CountriesCount" class="countto" data-from="0" data-to="@Model.Countries">0</strong> Countries
+            <div class="square"><strong id="CountriesCount" class="countto" data-from="0" data-to="@Model.Countries">0</strong> @Model.W("StatCountries")
             </div>
         </div>
         <div class="cell">
@@ -173,7 +173,7 @@
                 <strong>
                     <span id="TraveledPercent" class="countto" data-from="0" data-to="@Model.WorldTraveled">0</span>
                     %
-                </strong> of the World
+                </strong> @Model.W("WorldTraveled")
             </div>
         </div>
         @*<div class="cell">
@@ -182,7 +182,7 @@
         </div>
     </div>*@
         <div class="cell">
-            <div class="square"><strong id="StatesCount" class="countto" data-from="0" data-to="@Model.UsStates">0</strong> US States
+            <div class="square"><strong id="StatesCount" class="countto" data-from="0" data-to="@Model.UsStates">0</strong> @Model.W("UsStates")
             </div>
         </div>
     </div>

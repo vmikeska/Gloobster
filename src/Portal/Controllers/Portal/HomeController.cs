@@ -20,8 +20,8 @@ namespace Gloobster.Portal.Controllers.Portal
 {
     public class HomeController : PortalBaseController
     {		
-        public HomeController(ILogger log, IDbOperations db, IComponentContext cc) : base(log, db, cc)
-		{
+        public HomeController(ILogger log, IDbOperations db, IComponentContext cc, ILanguages langs) : base(log, db, cc, langs)
+        {
             
 		}
         
@@ -31,11 +31,12 @@ namespace Gloobster.Portal.Controllers.Portal
             bool isLogged = IsUserLogged && DB.List<UserEntity>(e => e.User_id == UserIdObj).Any();
                 //HttpContext.Request.Cookies.ContainsKey(TokenConstants.CookieKeyName);
             if (isLogged)
-            {
-                return RedirectToAction("Pins", "Pinboard");
+            {                
+                return RedirectToAction("Pins", "Pinboard");                
             }
-
+            
             var viewModel = CreateViewModelInstance<ViewModelHome>();
+            viewModel.DefaultLangModuleName = "pageHomeOld";            
             return View(viewModel);
         }
 

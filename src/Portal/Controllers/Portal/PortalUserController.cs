@@ -19,8 +19,8 @@ namespace Gloobster.Portal.Controllers.Portal
 		public IFilesDomain FileDomain { get; set; }
         public INotificationsDomain NotificationsDomain { get; set; }
 
-        public PortalUserController(INotificationsDomain notifs, IFilesDomain filesDomain,ILogger log,  IDbOperations db, IComponentContext cc) : base(log, db, cc)
-		{
+        public PortalUserController(INotificationsDomain notifs, IFilesDomain filesDomain, ILogger log, IDbOperations db, IComponentContext cc, ILanguages langs) : base(log, db, cc, langs)
+        {
 			FileDomain = filesDomain;
             Log = log;
             NotificationsDomain = notifs;

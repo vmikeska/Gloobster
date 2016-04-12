@@ -23,7 +23,7 @@
 
 <div class="table row col2 margin">
     <div class="cell middle">
-        <h2>Trips</h2>
+        <h2>@Model.W("Title")</h2>
     </div>
     <div class="cell middle tright">
         <div class="blue-holder">
@@ -58,13 +58,13 @@
                     <div class="photo create"></div>
                 </div>
                 <div class="cell">
-                    <textarea id="newTrip" placeholder="New trip name..."></textarea>
+                    <textarea id="newTrip" placeholder="@Model.W("NewTripName")"></textarea>
                 </div>
                 <div class="cell"></div>
                 <div class="cell"></div>
                 <div class="cell"></div>
                 <div class="cell tright">
-                    <a class="button white-blue" href="javascript:currentView.createNewTrip();">Create</a>
+                    <a class="button white-blue" href="javascript:currentView.createNewTrip();">@Model.W("Create")</a>
                 </div>
             </div>
 
@@ -81,8 +81,8 @@
 
             <div class="cell">
                 <div class="trip new">
-                    <textarea id="newTrip" placeholder="New trip name..."></textarea>
-                    <a class="create" href="javascript:currentView.createNewTrip();">Create</a>
+                    <textarea id="newTrip" placeholder="@Model.W("NewTripName")..."></textarea>
+                    <a class="create" href="javascript:currentView.createNewTrip();">@Model.W("Create")</a>
                 </div>
             </div>
 

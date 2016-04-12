@@ -1,0 +1,73 @@
+﻿
+  <module name="login">    
+    <server>
+      <FbButton>
+        <en>
+          Sign in with Facebook
+        </en>        
+      </FbButton>
+      <TwButton>
+        <en>
+          Sign in with Twitter
+        </en>
+      </TwButton>
+      <GoButton>
+        <en>
+          Sign in with Google
+        </en>
+      </GoButton>
+
+      <FbButton1>
+        <en>Facebook</en>
+      </FbButton1>
+      <TwButton1>
+        <en>Twitter</en>
+      </TwButton1>
+      <GoButton1>
+        <en>Google</en>
+      </GoButton1>
+
+
+      <MailJoin>
+        <en>Join with email</en>
+      </MailJoin>
+
+      <Mail>
+        <en>Mail</en>
+      </Mail>
+
+      <Password>
+        <en>Password</en>
+      </Password>
+
+      <JoinButton>
+        <en>Join</en>
+      </JoinButton>
+
+
+      
+      <JoinInfoMessage>
+        <en>You are running on temporary account. You can work with the app, but if you don't connect with any real account, your data might get lost.</en>
+      </JoinInfoMessage>
+
+      <TermsOfService>
+        <en>Terms of service</en>
+      </TermsOfService>
+
+      <ByJoining>
+        <en>By joining you accept the</en>
+      </ByJoining>
+
+      <EmailRedirectionLink>
+        <en>Sign Up with email</en>
+      </EmailRedirectionLink>
+
+
+
+    </server>
+    
+    <client>
+    </client>
+    <common>      
+    </common>
+  </module>

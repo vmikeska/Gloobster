@@ -30,8 +30,8 @@ namespace Gloobster.Portal.Controllers.Portal
         private bool _showFbDialog = true;
 
         public PinBoardController(IPlacesExtractor placesExtractor, IComponentContext componentContext, IPinBoardStats stats, IPinboardImportDomain pinboardImport, IAccountDomain socAccount, IFacebookService fbService, 
-            ISharedMapImageDomain sharedImgDomain, ILogger log,  IDbOperations db, IComponentContext cc) : base(log, db, cc)
-		{
+            ISharedMapImageDomain sharedImgDomain, ILogger log, IDbOperations db, IComponentContext cc, ILanguages langs) : base(log, db, cc, langs)
+        {
             SharedImgDomain = sharedImgDomain;
             FBService = fbService;                        
             SocAccount = socAccount;
@@ -45,7 +45,8 @@ namespace Gloobster.Portal.Controllers.Portal
         [CreateAccount]
         public async Task<IActionResult> Pins()
 	    {
-	        var vm = CreateViewModelInstance<PinBoardViewModel>();            
+	        var vm = CreateViewModelInstance<PinBoardViewModel>();
+            vm.DefaultLangModuleName = "pagePins";
             if (UserIdObj.HasValue)
             {
                 await ExtractPlaces();                

@@ -4,8 +4,10 @@ using System.Collections.Generic;
 namespace Gloobster.Portal.ViewModels
 {
 	public class TripItemViewModel
-	{
-		public string Id { get; set; }
+	{        
+        public ViewModelBase B { get; set; }
+
+        public string Id { get; set; }
 
 		public string Name { get; set; }
 

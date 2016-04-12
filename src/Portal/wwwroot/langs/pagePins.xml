@@ -1,0 +1,128 @@
+﻿
+  <module name="pagePins">
+    <server>
+
+      <Title>
+        <en>Pin board</en>
+      </Title>
+
+      <Map2D>
+        <en>2D map</en>
+      </Map2D>
+
+      <Map3D>
+        <en>3D map</en>
+      </Map3D>
+
+      <ShareMap>
+        <en>Share map</en>
+      </ShareMap>
+
+      <PlaceName>
+        <en>Place name</en>
+      </PlaceName>
+
+      <Interested>
+        <en>Interested</en>
+      </Interested>
+
+      <Visited>
+        <en>Visited</en>
+      </Visited>
+
+
+      <Cities>
+        <en>Cities</en>
+      </Cities>
+
+      <Countries>
+        <en>Countries</en>
+      </Countries>
+
+      <HeatMap>
+        <en>Heat map</en>
+      </HeatMap>
+
+      <MessagePlaces>
+        <en>See most favourite locations over the world what people like you like to visit. See most favourite locations of your friends.</en>
+      </MessagePlaces>
+
+      <MessageCountriesInterested>
+        <en>See countries people are most interested in.</en>
+      </MessageCountriesInterested>
+
+      <MessageCitiesInterested>
+        <en>See cities people are most interested in.</en>
+      </MessageCitiesInterested>
+
+      <MessageCountriesVisited>
+        <en>Keep track of countries you've visited. See countries your friends have visited. See what countries are being visited mostly.</en>
+      </MessageCountriesVisited>
+
+      <MessageCitiesVisited>
+        <en>Keep track of cities you've visited. See cities your friends have visited.</en>
+      </MessageCitiesVisited>
+
+      <MessageNotLogged>
+        <en>Join us and keep your personal travel statistics. Invite you friends to create your own travel community. Currently only statistics from from users overall are being displayed. See most popular places what people visited or would like to visit.</en>
+      </MessageNotLogged>
+
+      <StatCities>
+        <en>Cities</en>
+      </StatCities>
+
+      <StatCountries>
+        <en>Countries</en>
+      </StatCountries>
+
+      <WorldTraveled>
+        <en>of the World</en>
+      </WorldTraveled>
+
+      <UsStates>
+        <en>US States</en>
+      </UsStates>
+
+
+      <ImportingCheckins>
+        <en>Importing your fb checkins</en>
+      </ImportingCheckins>
+
+      <ShareTitle>
+        <en>Share state of your map</en>
+      </ShareTitle>
+
+      <FbCheckinsTitle>
+        <en>Facebook checkins import</en>
+      </FbCheckinsTitle>
+
+      <FbCheckinsMessage>
+        <en>Authorize us to import your facebook checked in places and pair your tagged places with your local account</en>
+      </FbCheckinsMessage>
+
+      <FbCheckinsButton>
+        <en>Give tagged Places permission</en>
+      </FbCheckinsButton>
+
+
+      <People>
+        <en>People</en>
+      </People>
+
+      <VisitingFrequency>
+        <en>Visiting frequency</en>
+      </VisitingFrequency>
+
+
+
+
+
+
+
+    </server>
+    
+    <client>
+    </client>
+    <common>      
+    </common>
+  </module>

@@ -1,0 +1,42 @@
+﻿
+  <module name="pageTrips">
+    <server>
+      <Title>
+        <en>Trips</en>
+      </Title>
+
+      <NewTripName>
+        <en>New trip name</en>
+      </NewTripName>
+
+      <Create>
+        <en>Create</en>
+      </Create>
+
+
+      <Detail>
+        <en>Detail</en>
+      </Detail>
+
+      <You>
+        <en>You</en>
+      </You>
+
+      <TitlePhoto>
+        <en>Title Photo</en>
+      </TitlePhoto>
+
+      <Delete>
+        <en>Delete</en>
+      </Delete>
+
+
+
+
+    </server>
+    
+    <client>
+    </client>
+    <common>      
+    </common>
+  </module>

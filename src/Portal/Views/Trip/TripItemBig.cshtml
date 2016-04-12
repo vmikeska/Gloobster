@@ -23,7 +23,7 @@
                 {
                     <span class="icon-lock"></span>
                 }*@
-                @Model.FromDate.ToString("MMM yyyy", CultureInfo.InvariantCulture)<span class="button">Detail</span>
+                @Model.FromDate.ToString("MMM yyyy", CultureInfo.InvariantCulture)<span class="button">@Model.B.W("Detail")</span>
             </p>
             @if (Model.IsOwner)
             {

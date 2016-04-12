@@ -1,26 +1,22 @@
-﻿<div class="popup2 with-padding-right margin" id="popup-joinSoc" style="display: none;">
+﻿
+<div class="popup2 with-padding-right margin" id="popup-joinSoc" style="display: none;">
     <div class="table width100">
-        <div class="cell popcont-holder with-line">
-            @*<h3 class="slim">Privacy Settings</h3>
-                Set privacy of your trip. In participants menu you can select admins of the trip.*@
-            <p>You are running on temporary account. You can work with the app, but if you don't connect with any real account, your data might get lost.</p>
+        <div class="cell popcont-holder with-line">            
+            <p>@Model.W("JoinInfoMessage", "login")</p>
             <p class="small">
-                By joining you accept the
-                <a href="#">Terms of service</a>
+                @Model.W("ByJoining", "login")
+                <a href="#">@Model.W("TermsOfService", "login")</a>
             </p>
         </div>
         <div class="cell middle">
             <div class="logins">
                 <div class="margin">
-                    <a id="fbBtnHome" class="facebook" href="#">Facebook</a>
-                    <a id="twitterBtnHome" class="twitter" href="#">Twitter</a>
-                    <a id="googleBtnHome" class="google" href="#">Google</a>
+                    <a id="fbBtnHome" class="facebook" href="#">@Model.W("FbButton1", "login")</a>
+                    <a id="twitterBtnHome" class="twitter" href="#">@Model.W("TwButton1", "login")</a>
+                    <a id="googleBtnHome" class="google" href="#">@Model.W("GoButton1", "login")</a>
                 </div>
-                <span>
-                    Or
-                    <a id="emailJoin" href="#">Sign Up with email</a>
-                    .
-                    @*class="popup-target" data-target="#popup-joinMail"*@ 
+                <span>                    
+                    <a id="emailJoin" href="#">@Model.W("EmailRedirectionLink", "login")</a>    
                 </span>
 
             </div>
@@ -28,5 +24,5 @@
 
         </div>
     </div>
-    <a class="close" href="#">Close</a>
+    <a class="close" href="#">@Model.W("Close", "layout")</a>
 </div>

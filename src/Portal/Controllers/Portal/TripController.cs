@@ -29,8 +29,8 @@ namespace Gloobster.Portal.Controllers.Portal
         public IEntitiesDemandor Demandor { get; set; }
 
 		public TripController(IEntitiesDemandor demandor, ISharedMapImageDomain sharedImgDomain, ITripPlannerDomain tripPlanner, IFilesDomain filesDomain,
-            ILogger log, IDbOperations db, IComponentContext cc) : base(log, db, cc)
-		{
+            ILogger log, IDbOperations db, IComponentContext cc, ILanguages langs) : base(log, db, cc, langs)
+        {
 			FileDomain = filesDomain;
 			TripPlanner = tripPlanner;
 			SharedImgDomain = sharedImgDomain;
@@ -40,9 +40,11 @@ namespace Gloobster.Portal.Controllers.Portal
         [CreateAccount]
         public async Task<IActionResult> List(string id)
         {
-            var viewModel = CreateViewModelInstance<ViewModelTrips>();
-            viewModel.Trips = new List<TripItemViewModel>();
-            viewModel.DisplayType = string.IsNullOrEmpty(id) || (id == "grid");
+            var vm = CreateViewModelInstance<ViewModelTrips>();
+            vm.DefaultLangModuleName = "pageTrips";
+
+            vm.Trips = new List<TripItemViewModel>();
+            vm.DisplayType = string.IsNullOrEmpty(id) || (id == "grid");
 
             if (IsUserLogged)
             {
@@ -54,22 +56,22 @@ namespace Gloobster.Portal.Controllers.Portal
                 var myTripsVM = new List<TripItemViewModel>();
                 foreach (var t in trips)
                 {
-                    var tc = await TripToViewModel(t);
+                    var tc = await TripToViewModel(t, vm);
                     myTripsVM.Add(tc);
                 }
 
                 var invitedTripsVM = new List<TripItemViewModel>();
                 foreach (var t in invitedTrips)
                 {
-                    var tc = await TripToViewModel(t);
+                    var tc = await TripToViewModel(t, vm);
                     invitedTripsVM.Add(tc);
                 }
-                
-                viewModel.Trips.AddRange(myTripsVM);
-                viewModel.Trips.AddRange(invitedTripsVM);
+
+                vm.Trips.AddRange(myTripsVM);
+                vm.Trips.AddRange(invitedTripsVM);
             }
             
-            return View(viewModel);
+            return View(vm);
         }
 
         [CreateAccount]
@@ -358,16 +360,22 @@ namespace Gloobster.Portal.Controllers.Portal
             return viewModel;
         }
 
-        private async Task<TripItemViewModel> TripToViewModel(TripEntity trip)
+        private async Task<TripItemViewModel> TripToViewModel(TripEntity trip, ViewModelBase b)
 		{
             var tripFromTo = GetTripFromTo(trip);
             var fromDate = tripFromTo.Item1;
             var toDate = tripFromTo.Item2;
 
+            var displayName = b.W("Anonymous");
             var owner = DB.FOD<UserEntity>(u => u.User_id == trip.User_id);
+            if (owner != null)
+            {
+                displayName = owner.DisplayName;
+            }
             
             var vm = new TripItemViewModel
 			{
+                B = b,
 				Id = trip.id.ToString(),
                 FromDate = fromDate,
                 ToDate = toDate,                
@@ -376,7 +384,7 @@ namespace Gloobster.Portal.Controllers.Portal
                 HasSmallPicture = trip.HasSmallPicture,
 
                 IsOwner = trip.User_id == UserIdObj.Value,
-                OwnerName = owner.DisplayName,
+                OwnerName = displayName,
                 OwnerId = trip.User_id.ToString(),
 
 				IsLocked = true

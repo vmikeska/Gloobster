@@ -6,6 +6,7 @@ using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels;
+using Gloobster.DomainModels.Langs;
 using Gloobster.Entities;
 using Gloobster.Enums;
 using Gloobster.Portal.ViewModels;
@@ -22,6 +23,7 @@ namespace Gloobster.Portal.Controllers.Base
 		public IDbOperations DB { get; set; }
         public ILogger Log { get; set; }
         public IComponentContext CC { get; set; }
+        public ILanguages Langs { get; set; }
 
         public ObjectId? UserIdObj
         {
@@ -95,11 +97,12 @@ namespace Gloobster.Portal.Controllers.Base
             }
         }
 
-        public PortalBaseController(ILogger log, IDbOperations db, IComponentContext cc)
+        public PortalBaseController(ILogger log, IDbOperations db, IComponentContext cc, ILanguages langs)
         {
             DB = db;
             Log = log;
             CC = cc;
+            Langs = langs;            
         }
 
         public T CreateViewModelInstance<T>() where T : ViewModelBase, new()
@@ -112,7 +115,9 @@ namespace Gloobster.Portal.Controllers.Base
                 NotificationCount = 0,
                 UserId = UserId,
                 CanManageArticleAdmins = false,
-                HasAnyWikiPermissions = false
+                HasAnyWikiPermissions = false,
+                Langs = (Languages)Langs,
+                Lang = "en" // todo: change from session
             };
 
             if (IsUserLogged)
@@ -122,6 +127,8 @@ namespace Gloobster.Portal.Controllers.Base
                 {
                     instance.NotificationCount = notifications.Notifications.Count(n => n.Status == NotificationStatus.Created);
                 }
+
+                Langs.InitLangs();
 
                 var permissions = CC.Resolve<IWikiPermissions>();
                 instance.HasAnyWikiPermissions = permissions.IsAdminOfSomething(UserId);

@@ -11,15 +11,19 @@ using Microsoft.Extensions.Logging;
 using AutofacSerilogIntegration;
 using Autofac.Extensions.DependencyInjection;
 using Gloobster.Database;
+using Gloobster.DomainInterfaces;
+using Gloobster.DomainModels.Langs;
 using Gloobster.Entities;
 using MongoDB.Bson;
 
 namespace Gloobster.Portal
-{
+{    
     public class Startup
     {
 		public IConfiguration Configuration { get; set; }
         public static Serilog.ILogger Logger;
+
+        public static Languages Langs;
 
         public static void AddDebugLog(string txt)
         {
@@ -99,6 +103,7 @@ namespace Gloobster.Portal
 
 			    var serviceProvider = InitalizeAutofac(services);
                 AddDebugLog("ConfigureServices:Finished");
+                
                 return serviceProvider;
             }
             catch (Exception exc)
@@ -216,11 +221,12 @@ namespace Gloobster.Portal
             AddDebugLog("Run:Enter");
             WebApplication.Run<Startup>(args);
             AddDebugLog("Run:Leave");
+            
         }
 
 
 
-		private IServiceProvider InitalizeAutofac(IServiceCollection services)
+        private IServiceProvider InitalizeAutofac(IServiceCollection services)
 		{
 		    try
 		    {
@@ -236,6 +242,7 @@ namespace Gloobster.Portal
 		        // Build the container.
 		        var container = builder.Build();
 		        // Resolve and return the service provider.
+                
 		        return container.Resolve<IServiceProvider>();
 		    }
 		    catch (Exception exc)

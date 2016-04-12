@@ -66,14 +66,14 @@
 
 <div class="maskots margin">
     <div class="wrapper">
-        <h1>The only portal you'll need to travel the world</h1>
+        <h1>@Model.W("Motto1")</h1>
 
         @if (!Model.SocialNetworks.Any()) {
             <div class="logins">
                 <div class="margin">
-                    <a id="fbBtnHome" class="facebook" href="#">Sign in with Facebook</a>
-                    <a id="twitterBtnHome" class="twitter" href="#">Sign in with Twitter</a>
-                    <a id="googleBtnHome" class="google" href="#">Sign in with Google</a>
+                    <a id="fbBtnHome" class="facebook" href="#">@Model.W("FbButton", "login")</a>
+                    <a id="twitterBtnHome" class="twitter" href="#">@Model.W("TwButton", "login")</a>
+                    <a id="googleBtnHome" class="google" href="#">@Model.W("GoButton", "login")</a>
                 </div>                
             </div>
         }
@@ -81,27 +81,27 @@
 </div>
 <section class="wrapper margin3">
 
-    <h2 class="h3 tcenter margin3">Why travelers choose Gloobster</h2>
+    <h2 class="h3 tcenter margin3">@Model.W("Motto2")</h2>
     <div class="table row col3 margin2">
         <div class="cell">
             <div class="box plan tcenter">
-                <h3>Keep track of your journeys</h3>
-                <p class="tleft">Ever wanted to have one place to store all your past travels? Gloobster makes this easy and for free.</p>
-                <a class="button" href="#">How It Works</a>
+                <h3>@Model.W("BoxPinsTitle")</h3>
+                <p class="tleft">@Model.W("BoxPinsBody")</p>
+                <a class="button" href="#">@Model.W("BoxPinsLink")</a>
             </div>
         </div>
         <div class="cell">
             <div class="box green plan tcenter">
-                <h3>Plan your next trip in under 3 minutes</h3>
-                <p class="tleft">Gloobster makes it simple and fast to create itinerary. And stores all important data for you so you dont have to.</p>
-                <a class="button" href="#">Try It Now</a>
+                <h3>@Model.W("BoxTripsTitle")</h3>
+                <p class="tleft">@Model.W("BoxTripsBody")</p>
+                <a class="button" href="#">@Model.W("BoxTripsLink")</a>
             </div>
         </div>
         <div class="cell">
             <div class="box orange share tcenter">
-                <h3>Share your journeys day by day with ease</h3>
-                <p class="tleft">Share trips via Gloobster and colaborate on itinerary together. Simple yet powerful tool for any traveler.</p>
-                <a class="button" href="#">See Journals</a>
+                <h3>@Model.W("BoxWikiTitle")</h3>
+                <p class="tleft">@Model.W("BoxWikiBody")</p>
+                <a class="button" href="#">@Model.W("BoxWikiLink")</a>
             </div>
         </div>
     </div>
@@ -113,7 +113,8 @@
 
 <script>
 
-    function onBodyLoad() {
+    function onBodyLoad()
+    {
         currentView = new Views.HomePageView();
     }
 

@@ -1,18 +1,21 @@
-﻿<ul class="trip-menu" id="tripMenu_@Model.Id">
+﻿@using Gloobster.Portal.ViewModels
+@model TripItemViewModel
+
+<ul class="trip-menu" id="tripMenu_@Model.Id">
     <li>
         <a class="photoButton" href="#">
             <input id="photoInput_@Model.Id" data-tid="@Model.Id" class="inputs" type="file" />
             <label for="photoInput_@Model.Id">
                 <span class="icon-photo middle mright5"></span>
-                Title Photo
+                @Model.B.W("TitlePhoto")
             </label>
         </a>
     </li>
     <li>
-        <a data-tid="@Model.Id" class="deleteTrip" href="#">Delete</a>
+        <a data-tid="@Model.Id" class="deleteTrip" href="#">@Model.B.W("Delete")</a>
     </li>
     <li>
-        <a class="menuClose" href="#">Close</a>
+        <a class="menuClose" href="#">@Model.B.W("Close", "layout")</a>
     </li>
 
 </ul>

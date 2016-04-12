@@ -21,7 +21,7 @@ namespace Gloobster.Portal.Controllers.Portal
         public IFilesDomain FileDomain { get; set; }
         public IWikiPermissions WikiPerms { get; set; }
 
-        public WikiController(IWikiPermissions wikiPerms, IFilesDomain filesDomain, ILogger log,  IDbOperations db, IComponentContext cc) : base(log, db, cc)
+        public WikiController(IWikiPermissions wikiPerms, IFilesDomain filesDomain, ILogger log, IDbOperations db, IComponentContext cc, ILanguages langs) : base(log, db, cc, langs)
         {
             FileDomain = filesDomain;
             WikiPerms = wikiPerms;

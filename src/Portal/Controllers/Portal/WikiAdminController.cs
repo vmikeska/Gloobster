@@ -19,7 +19,7 @@ namespace Gloobster.Portal.Controllers.Portal
     {
         public IWikiAdminTasks AdminTasks { get; set; }
 
-        public WikiAdminController(IWikiAdminTasks adminTasks, ILogger log,  IDbOperations db, IComponentContext cc) : base(log, db, cc)
+        public WikiAdminController(IWikiAdminTasks adminTasks, ILogger log, IDbOperations db, IComponentContext cc, ILanguages langs) : base(log, db, cc, langs)
         {
             AdminTasks = adminTasks;
         }

@@ -1,0 +1,49 @@
+﻿
+  <module name="pageHomeOld">    
+    <server>
+      
+      <BoxPinsTitle>
+        <en>Keep track of your journeys</en>        
+      </BoxPinsTitle>
+      <BoxPinsBody>
+        <en>Ever wanted to have one place to store all your past travels? Gloobster makes this easy and for free.</en>
+      </BoxPinsBody>
+      <BoxPinsLink>
+        <en>To pins</en>
+      </BoxPinsLink>
+      
+      <BoxTripsTitle>
+        <en>Trip planner and travel docs organizer</en>
+      </BoxTripsTitle>
+      <BoxTripsBody>
+        <en>Gloobster makes it simple and fast to create itinerary. And stores all important data for you so you dont have to.</en>
+      </BoxTripsBody>
+      <BoxTripsLink>
+        <en>To trips</en>
+      </BoxTripsLink>
+
+      <BoxWikiTitle>
+        <en>Read our great info on travel Wiki</en>
+      </BoxWikiTitle>
+      <BoxWikiBody>
+        <en>Share trips via Gloobster and colaborate on itinerary together. Simple yet powerful tool for any traveler.</en>
+      </BoxWikiBody>
+      <BoxWikiLink>
+        <en>To wiki</en>
+      </BoxWikiLink>
+
+      <Motto1>
+        <en>The only portal you'll need to travel the world</en>
+      </Motto1>
+
+      <Motto2>
+        <en>Why travelers choose Gloobster</en>
+      </Motto2>
+
+    </server>
+    
+    <client>
+    </client>
+    <common>      
+    </common>
+  </module>

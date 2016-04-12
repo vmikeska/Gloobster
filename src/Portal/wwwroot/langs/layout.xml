@@ -1,0 +1,41 @@
+﻿
+  <module name="layout">    
+    <server>
+      <MenuPins>
+        <en>Pin board</en>        
+      </MenuPins>
+      <MenuTrips>
+        <en>Trips</en>
+      </MenuTrips>
+      <MenuWiki>
+        <en>Trips</en>
+      </MenuWiki>
+      <Close>
+        <en>Close</en>
+      </Close>
+      
+      <Share>
+        <en>Share</en>
+      </Share>
+
+      <ShareButtons>
+        <en>Share on social media</en>
+      </ShareButtons>
+
+      <Message>
+        <en>Message</en>
+      </Message>
+
+      
+
+
+
+
+
+    </server>
+    
+    <client>
+    </client>
+    <common>      
+    </common>
+  </module>

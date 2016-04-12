@@ -5,6 +5,7 @@ using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels;
+using Gloobster.DomainModels.Langs;
 using Gloobster.DomainModels.Services;
 using Gloobster.DomainModels.Services.Accounts;
 using Gloobster.DomainModels.Services.CountryService;
@@ -98,6 +99,14 @@ namespace Gloobster.Portal
 			builder.AddInstance<IFoursquareService>(foursquareService);
             
             builder.AddTransient<IGeoNamesOnlineService, GeoNamesOnlineService>();
+
+
+            var langs = new Languages
+            {
+                DB = new DbOperations()
+            };
+            
+            builder.AddInstance<ILanguages>(langs);
 
             builder.AddInstance<ICountryService>(new CountryService());
             builder.AddTransient<IInitialWikiDataCreator, InitialWikiDataCreator>();
