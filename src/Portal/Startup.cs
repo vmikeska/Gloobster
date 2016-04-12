@@ -174,7 +174,13 @@ namespace Gloobster.Portal
 		                name: "default",
 		                template: "{controller=Home}/{action=Index}/{id?}");
 
-		            routes.MapRoute(
+                    routes.MapRoute(
+                        name: "wikiHome",
+                        template: "wiki",
+                        defaults: new { controller = "Wiki", action = "Home" }
+                        );
+
+                    routes.MapRoute(
 		                name: "wikiShort",
 		                template: "wiki/{id}",
 		                defaults: new {controller = "Wiki", action = "Page"}

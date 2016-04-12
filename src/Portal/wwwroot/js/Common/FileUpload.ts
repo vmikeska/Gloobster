@@ -1,9 +1,11 @@
 ﻿module Common {
 	export class FileUploadConfig {
-		public bytesPerRequest = 102400;
+		public bytesPerRequest = 204800;
 		public customInputRegistration = false;
 		public inputId: string;
-		public endpoint: string;	  
+		public endpoint: string;
+		public maxFileSize = 21000000;
+		public useMaxSizeValidation = true;
 	}
 
 	export enum TripEntityType { Place, Travel }
@@ -59,7 +61,31 @@
 		 this.files = files;
 		 this.currentFile = this.files[0];
 
-		 this.sendBlobToServer(true);
+		  this.fileValidations(() => {
+			 this.sendBlobToServer(true);
+		  });		 
+		}
+
+		private fileValidations(callback) {
+		 var id = new InfoDialog();
+
+		 if (this.currentFile.size > this.config.maxFileSize) {			
+			id.create("File too big", `Maximal allowed size of file is ${(this.config.maxFileSize / (1024 * 1024)).toFixed(0)}MB`);
+			return;
+		 }
+
+		 if (!this.config.useMaxSizeValidation) {
+			 callback();
+			 return;
+		 }
+
+		 Views.ViewBase.currentView.apiGet("FilesUsage", [], (allowed) => {
+			 if (allowed) {
+				 callback();
+			 } else {
+				id.create("File usage over limit", "Currently is for you allowed file usage max. 300MB. If you need more, contact us on info@gloobster.com");
+			 }
+		 });
 	  }
 
 		private resetValues() {
@@ -71,11 +97,10 @@
 			this.$filesInput.val("");
 		}
 
-		private sendBlobToServer(isInitialCall) {
-
+		private sendBlobToServer(isInitialCall) {		 
 			if (this.reachedEnd) {
-				console.log("transfere complete");
-				console.log("file length: " + this.currentFile.size);
+				//console.log("transfere complete");
+				//console.log("file length: " + this.currentFile.size);
 
 				if (this.onUploadFinished) {
 					this.onUploadFinished(this.currentFile, this.finalResponse);
@@ -92,15 +117,14 @@
 			} else {
 				this.currentEnd = this.config.bytesPerRequest;
 			}
-
-			//todo: secure currentStart
+			
 			if (this.currentEnd >= this.currentFile.size) {
 				this.currentEnd = this.currentFile.size;
 				this.reachedEnd = true;
 			}
 
 			var reader = this.createReader();
-			console.log("reading: " + this.currentStart + ".." + this.currentEnd);
+			//console.log("reading: " + this.currentStart + ".." + this.currentEnd);
 			var blob = this.currentFile.slice(this.currentStart, this.currentEnd);
 			reader.readAsDataURL(blob);
 

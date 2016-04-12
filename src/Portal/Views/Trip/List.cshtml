@@ -21,20 +21,22 @@
     }  
 </style>
 
-    <div class="table row col2 margin">
-        <div class="cell middle">
-            <h2>Trips</h2>
-        </div>
-        <div class="cell middle tright">
-            <div class="blue-holder">
-                <a class="icon-grid @(Model.DisplayType ? "active" : string.Empty)" href="?id=grid"></a>
-                <a class="icon-list @(!Model.DisplayType ? "active" : string.Empty)" href="?id=tile"></a>
-            </div>
-            @*<a class="disc-create mleft20 right" href="#"></a>*@
-        </div>
+<div class="table row col2 margin">
+    <div class="cell middle">
+        <h2>Trips</h2>
     </div>
+    <div class="cell middle tright">
+        <div class="blue-holder">
+            <a class="icon-grid @(Model.DisplayType ? "active" : string.Empty)" href="?id=grid"></a>
+            <a class="icon-list @(!Model.DisplayType ? "active" : string.Empty)" href="?id=tile"></a>
+        </div>
+        @*<a class="disc-create mleft20 right" href="#"></a>*@
+    </div>
+</div>
 
-    @if (!Model.DisplayType)
+@Html.Partial("ProgressBar", "progressBar")
+
+@if (!Model.DisplayType)
     {
         <div class="trips list margin">
             <div class="row nohover">

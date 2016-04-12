@@ -23,29 +23,39 @@
 		}
 
 		private createFilesConfig() {
-		 var filesConfig = new Trip.FilesConfig();
-		 filesConfig.containerId = "filesContainer";
-		 filesConfig.inputId = "fileInput";
-		 filesConfig.editable = false;
-		 filesConfig.addAdder = true;
-		 filesConfig.templateId = "fileView-template";
+		 var c = new Trip.FilesConfig();
+		 c.containerId = "filesContainer";
+		 c.inputId = "fileInput";
+		 c.editable = false;
+		 c.addAdder = true;
+		 c.templateId = "fileView-template";
 		 
-		 this.files = new Trip.TripFiles(filesConfig);
+		 this.files = new Trip.TripFiles(c);
 		}
 
 		private registerPhotoUpload() {
-		 var config = new Common.FileUploadConfig();
-		 config.inputId = "photoInput";
-		 config.endpoint = "TripPhoto";
+			var c = new Common.FileUploadConfig();
+			c.inputId = "photoInput";
+			c.endpoint = "TripPhoto";
+			c.maxFileSize = 7500000;
+			c.useMaxSizeValidation = false;
 
-		 this.pictureUpload = new Common.FileUpload(config);
-		 this.pictureUpload.customId = this.trip.tripId;
+			this.pictureUpload = new Common.FileUpload(c);
+			this.pictureUpload.customId = this.trip.tripId;
 
-		 this.pictureUpload.onProgressChanged = (percent) => {
-		 }
-		 this.pictureUpload.onUploadFinished = (file, files) => {
+			this.pictureUpload.onProgressChanged = (percent) => {
+			 var $pb = $("#progressBarTit");
+			 $pb.show();
+			 var pt = `${percent}%`;
+			 $(".progress").css("width", pt);
+			 $pb.find("span").text(pt);				 
+			}
+			this.pictureUpload.onUploadFinished = (file, files) => {
 			 this.refreshBackground(this.trip.tripId);
-		 }
+
+			 var $pb = $("#progressBarTit");
+			 $pb.hide();
+			}
 		}
 
 		private refreshBackground(tripId) {
@@ -100,10 +110,6 @@
 
 			this.registerPhotoUpload();
 		}
-
-
-		private generateButtons() {
-
-		}
+	 
 	}
 }

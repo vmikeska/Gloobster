@@ -28,7 +28,8 @@ namespace Gloobster.Portal.Controllers.Portal
         [CreateAccount]
         public IActionResult Index()
         {
-            bool isLogged = HttpContext.Request.Cookies.ContainsKey(TokenConstants.CookieKeyName);
+            bool isLogged = IsUserLogged && DB.List<UserEntity>(e => e.User_id == UserIdObj).Any();
+                //HttpContext.Request.Cookies.ContainsKey(TokenConstants.CookieKeyName);
             if (isLogged)
             {
                 return RedirectToAction("Pins", "Pinboard");

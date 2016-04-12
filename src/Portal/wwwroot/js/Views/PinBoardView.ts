@@ -27,9 +27,9 @@
 			this.fbPermissions.initFb(() => {
 				this.fbPermissions.hasPermission("user_tagged_places", (hasPermissions) => {
 					if (hasPermissions) {
-						this.refreshData();
+					 this.refreshData();					 
 					} else {
-						this.initFbPermRequest();
+					 this.initFbPermRequest();
 					}
 				});
 			});
@@ -270,9 +270,15 @@
 						self.mapsManager.mapsDataLoader.places.countries.push(country);
 					});
 
-					req.visitedStates.forEach(state => {
-						self.mapsManager.mapsDataLoader.places.states.push(state);
-					});
+					if (req.visitedStates) {
+						req.visitedStates.forEach(state => {
+							self.mapsManager.mapsDataLoader.places.states.push(state);
+						});
+					}
+					
+					if (req.visitedCities != null && req.visitedCities.length > 0) {
+					 moveToLocation = req.visitedCities[0].Location;
+					}
 				}
 
 				if (this.mapsManager.currentDisplayEntity === Maps.DisplayEntity.Heat) {

@@ -176,8 +176,10 @@ namespace Gloobster.DomainModels
 			{
 				FileName = fileName,
 				Directory = TargetDirectory,
-				FileType = FileType
-			};
+				FileType = FileType,
+                FileSize = decimal.Round(Convert.ToDecimal(AllBytes.Length) / (1024.0m * 1024.0m), 3)
+
+            };
 			OnFileSaved.Invoke(this, onFileSavedArgs);
 		}
 		
@@ -238,5 +240,6 @@ namespace Gloobster.DomainModels
 		public string Directory { get; set; }
 		public string FileName { get; set; }
 		public string FileType { get; set; }
+        public decimal FileSize { get; set; }
 	}
 }

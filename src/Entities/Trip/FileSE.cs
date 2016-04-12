@@ -12,6 +12,7 @@ namespace Gloobster.Entities.Trip
 		public string Type { get; set; }
 		public TripEntityType EntityType { get; set; }
 		public string EntityId { get; set; }
+        public decimal FileSize { get; set; }
 	}
 
     public class FilePublicSE

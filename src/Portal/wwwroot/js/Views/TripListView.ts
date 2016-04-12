@@ -61,22 +61,30 @@
 		}
 	 
 		private registerPhotoUpload(tripId, inputId) {
-			var config = new Common.FileUploadConfig();
-			config.inputId = inputId;
-			config.endpoint = "TripPhotoSmall";
+			var c = new Common.FileUploadConfig();
+			c.inputId = inputId;
+			c.endpoint = "TripPhotoSmall";
+			c.maxFileSize = 5500000;
+			c.useMaxSizeValidation = false;
 
-			var picUpload = new Common.FileUpload(config);
-			picUpload.customId = tripId;
+			var pu = new Common.FileUpload(c);
+			pu.customId = tripId;
 
-			picUpload.onProgressChanged = (percent) => {
+			pu.onProgressChanged = (percent) => {
+			 var $pb = $("#progressBar");
+			 $pb.show();
+			 var pt = `${percent}%`;
+			 $(".progress").css("width", pt);
+			 $pb.find("span").text(pt);			 
 			}
 
-			picUpload.onUploadFinished = (file, files) => {
-				var d = new Date();
+			pu.onUploadFinished = (file, files) => {
+				//var d = new Date();
 				$(".trip-menu").hide();
-				$(`#tripImg_${tripId}`).attr("src", `/Trip/TripPictureSmall_s/${tripId}?d=${d.getDate()}`);			 
+				$(`#tripImg_${tripId}`).attr("src", `/Trip/TripPictureSmall_s/${tripId}?d=${this.makeRandomString(10)}`);			 
+				var $pb = $("#progressBar");
+				$pb.hide();
 			}
-		}
-
+		}	 
 	}
 }

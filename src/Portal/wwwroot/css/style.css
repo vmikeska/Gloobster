@@ -5027,6 +5027,14 @@ input.heading {
     padding: 6px 9px; }
 
 /*custom*/
+@media screen and (max-width: 959px) {
+  .gallery-photos img {
+    width: 220px; } }
+
+@media screen and (max-width: 959px) {
+  .titlePhoto img {
+    width: 738px; } }
+
 .buttons a:hover {
   /*-webkit-filter: brightness(50%);
     -moz-filter: brightness(50%);

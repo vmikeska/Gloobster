@@ -47,7 +47,7 @@
 
 		private onAfter() {
 			var hint = new Common.HintDialog();
-			hint.create("You are successfully connected!");
+			hint.create("You are successfully paired!");
 			$("#MenuRegister").parent().remove();
 		}
 
@@ -59,11 +59,13 @@
 		}
 
 		private registerAvatarFileUpload() {
-			var avatarUploadConfig = new Common.FileUploadConfig();
-			avatarUploadConfig.inputId = "avatarFile";
-			avatarUploadConfig.endpoint = "UploadAvatar";
+			var c = new Common.FileUploadConfig();
+			c.inputId = "avatarFile";
+			c.endpoint = "UploadAvatar";
+			c.maxFileSize = 5500000;
+			c.useMaxSizeValidation = false;
 
-			var fileUpload = new Common.FileUpload(avatarUploadConfig);
+			var fileUpload = new Common.FileUpload(c);
 
 			fileUpload.onProgressChanged = (percent) => {
 				$("#progressBar").text(percent);

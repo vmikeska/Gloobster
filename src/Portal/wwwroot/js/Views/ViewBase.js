@@ -44,7 +44,8 @@ var Views;
             return false;
         };
         ViewBase.prototype.logout = function () {
-            this.cookieManager.removeCookie(Constants.tokenCookieName);
+            var auth = new Reg.AuthCookieSaver();
+            auth.removeCookies();
             window.location.href = "/";
         };
         ViewBase.prototype.apiGet = function (endpointName, params, callback) {
@@ -86,6 +87,13 @@ var Views;
         ViewBase.prototype.registerTemplate = function (name) {
             var source = $("#" + name).html();
             return Handlebars.compile(source);
+        };
+        ViewBase.prototype.makeRandomString = function (cnt) {
+            var text = "";
+            var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            for (var i = 0; i < 10; i++)
+                text += possible.charAt(Math.floor(Math.random() * possible.length));
+            return text;
         };
         return ViewBase;
     })();

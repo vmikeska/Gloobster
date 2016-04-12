@@ -87,7 +87,7 @@ namespace Gloobster.DomainModels
 
         public List<VisitedStateDO> GetStatesOverall()
         {
-            var statesAgg = DB.C<VisitedStatesAggregatedEntity>().ToList();
+            var statesAgg = DB.List<VisitedStatesAggregatedEntity>();
             var cs = statesAgg.Select(state => new VisitedStateDO
             {
                 StateCode = state.StateCode,

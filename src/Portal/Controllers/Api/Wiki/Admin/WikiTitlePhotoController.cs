@@ -121,13 +121,20 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         }
 
         private void DeleteOldPicture(string articleDir, string fileName)
-        {            
-            var pathToDelete = FileDomain.Storage.Combine(articleDir, fileName);
-            bool fileExists = FileDomain.Storage.FileExists(pathToDelete);
-            if (fileExists)
+        {
+            try
             {
-                FileDomain.Storage.DeleteFile(pathToDelete);
-            }            
+                var pathToDelete = FileDomain.Storage.Combine(articleDir, fileName);
+                bool fileExists = FileDomain.Storage.FileExists(pathToDelete);
+                if (fileExists)
+                {
+                    FileDomain.Storage.DeleteFile(pathToDelete);
+                }
+            }
+            catch
+            {
+                
+            }
         }
     }
 }

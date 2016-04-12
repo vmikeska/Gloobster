@@ -60,7 +60,7 @@ var Views;
             if (this.config && this.config.showRating) {
                 rating = "&#9;&#9;<span class=\"rating pct" + ratingPercents + " bottom right\"> </span>";
             }
-            return "<li><a data-articleId=\"" + item.articleId + "\" href=\"/wiki/" + item.language + "/" + item.link + "\">" + item.title + "</a>  " + rating + "</li>";
+            return "<li><span><a data-articleId=\"" + item.articleId + "\" href=\"/wiki/" + item.language + "/" + item.link + "\">" + item.title + "</a>  " + rating + "</span></li>";
         };
         return WikiSearchCombo;
     })();

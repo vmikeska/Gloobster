@@ -2340,6 +2340,23 @@ input.heading {
 
 
 /*custom*/
+
+.gallery-photos{
+    @include tablet {
+        img {
+            width: 220px;
+        }
+    }   
+}
+
+.titlePhoto{
+    @include tablet{
+        img {
+            width: 738px;
+        }
+    }
+}
+
 .buttons a:hover {
     /*-webkit-filter: brightness(50%);
     -moz-filter: brightness(50%);

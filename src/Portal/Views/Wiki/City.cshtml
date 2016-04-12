@@ -68,7 +68,7 @@
         @Html.Partial("Table1Block", Model.Accommodation())
     </div>
 
-    <div id="photos" class="blue-border margin">
+    <div id="photos" class="blue-border margin gallery-photos">
     @Html.Partial("ArticlePhotos", new PhotosVM
     {
         Photos = Model.Photos.Where(p => p.Confirmed).ToList(),

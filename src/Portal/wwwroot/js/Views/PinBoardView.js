@@ -235,9 +235,14 @@ var Views;
                     req.visitedCountries.forEach(function (country) {
                         self.mapsManager.mapsDataLoader.places.countries.push(country);
                     });
-                    req.visitedStates.forEach(function (state) {
-                        self.mapsManager.mapsDataLoader.places.states.push(state);
-                    });
+                    if (req.visitedStates) {
+                        req.visitedStates.forEach(function (state) {
+                            self.mapsManager.mapsDataLoader.places.states.push(state);
+                        });
+                    }
+                    if (req.visitedCities != null && req.visitedCities.length > 0) {
+                        moveToLocation = req.visitedCities[0].Location;
+                    }
                 }
                 if (_this.mapsManager.currentDisplayEntity === Maps.DisplayEntity.Heat) {
                     req.visitedPlaces.forEach(function (place) {

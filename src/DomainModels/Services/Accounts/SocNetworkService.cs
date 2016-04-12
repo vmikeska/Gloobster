@@ -137,7 +137,7 @@ namespace Gloobster.DomainModels.Services.Accounts
             Log.Debug("socAccountExists: " + socAccountExists);
             if (socAccountExists)
             {
-                res = await SocAccountExists(auth, socAccount1);                
+                res = await SocAccountExists(auth, socAccount1);                        
                 return res;
             }
 
@@ -149,7 +149,7 @@ namespace Gloobster.DomainModels.Services.Accounts
                 if (socAccountNew)
                 {
                     Log.Debug("Creating new account");
-                    res = await SocAccountNew(auth);                    
+                    res = await SocAccountNew(auth);                                        
                     return res;
                 }
             }
@@ -362,16 +362,28 @@ namespace Gloobster.DomainModels.Services.Accounts
         {
             var authUserObjId = new ObjectId(auth.UserId);
 
-            await RenewTokenIfPossible(auth, socAccount.id);
-
             var accountBySocAccount = DB.FOD<AccountEntity>(u => u.User_id == socAccount.User_id);
 
+            //check if current soc account we are trying to pair is already used for any other account            
+            var socAccountsOfUserFromAuth = DB.List<SocialAccountEntity>(a => a.User_id == authUserObjId);
+            bool isPairing = socAccountsOfUserFromAuth.Any();
+            if (isPairing)
+            {
+                bool accountWeAreTryingToPairIsAlreadyInUse = accountBySocAccount != null;
+                if (accountWeAreTryingToPairIsAlreadyInUse)
+                {
+                    return new LoginResponseDO {AccountAlreadyInUse = true};
+                }
+            }
+
+            await RenewTokenIfPossible(auth, socAccount.id);
+            
             if (authUserObjId != accountBySocAccount.User_id)
             {
                 //here could be delete temp account
                 MarkEmptyAccount(auth.UserId);
             }
-
+            
             var user = DB.FOD<UserEntity>(u => u.User_id == socAccount.User_id);
 
             var response = new LoginResponseDO

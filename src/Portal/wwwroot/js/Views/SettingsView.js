@@ -47,7 +47,7 @@ var Views;
         };
         SettingsView.prototype.onAfter = function () {
             var hint = new Common.HintDialog();
-            hint.create("You are successfully connected!");
+            hint.create("You are successfully paired!");
             $("#MenuRegister").parent().remove();
         };
         SettingsView.prototype.displayNameCallback = function (value) {
@@ -57,10 +57,12 @@ var Views;
             });
         };
         SettingsView.prototype.registerAvatarFileUpload = function () {
-            var avatarUploadConfig = new Common.FileUploadConfig();
-            avatarUploadConfig.inputId = "avatarFile";
-            avatarUploadConfig.endpoint = "UploadAvatar";
-            var fileUpload = new Common.FileUpload(avatarUploadConfig);
+            var c = new Common.FileUploadConfig();
+            c.inputId = "avatarFile";
+            c.endpoint = "UploadAvatar";
+            c.maxFileSize = 5500000;
+            c.useMaxSizeValidation = false;
+            var fileUpload = new Common.FileUpload(c);
             fileUpload.onProgressChanged = function (percent) {
                 $("#progressBar").text(percent);
             };

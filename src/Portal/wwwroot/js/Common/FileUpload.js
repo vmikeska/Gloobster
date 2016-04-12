@@ -2,8 +2,10 @@ var Common;
 (function (Common) {
     var FileUploadConfig = (function () {
         function FileUploadConfig() {
-            this.bytesPerRequest = 102400;
+            this.bytesPerRequest = 204800;
             this.customInputRegistration = false;
+            this.maxFileSize = 21000000;
+            this.useMaxSizeValidation = true;
         }
         return FileUploadConfig;
     })();
@@ -44,9 +46,31 @@ var Common;
             });
         };
         FileUpload.prototype.filesEvent = function (files) {
+            var _this = this;
             this.files = files;
             this.currentFile = this.files[0];
-            this.sendBlobToServer(true);
+            this.fileValidations(function () {
+                _this.sendBlobToServer(true);
+            });
+        };
+        FileUpload.prototype.fileValidations = function (callback) {
+            var id = new Common.InfoDialog();
+            if (this.currentFile.size > this.config.maxFileSize) {
+                id.create("File too big", "Maximal allowed size of file is " + (this.config.maxFileSize / (1024 * 1024)).toFixed(0) + "MB");
+                return;
+            }
+            if (!this.config.useMaxSizeValidation) {
+                callback();
+                return;
+            }
+            Views.ViewBase.currentView.apiGet("FilesUsage", [], function (allowed) {
+                if (allowed) {
+                    callback();
+                }
+                else {
+                    id.create("File usage over limit", "Currently is for you allowed file usage max. 300MB. If you need more, contact us on info@gloobster.com");
+                }
+            });
         };
         FileUpload.prototype.resetValues = function () {
             this.lastEnd = 0;
@@ -54,12 +78,12 @@ var Common;
             this.currentEnd = 0;
             this.reachedEnd = false;
             this.firstSent = false;
-            //this.getInput().val("");
+            this.$filesInput.val("");
         };
         FileUpload.prototype.sendBlobToServer = function (isInitialCall) {
             if (this.reachedEnd) {
-                console.log("transfere complete");
-                console.log("file length: " + this.currentFile.size);
+                //console.log("transfere complete");
+                //console.log("file length: " + this.currentFile.size);
                 if (this.onUploadFinished) {
                     this.onUploadFinished(this.currentFile, this.finalResponse);
                 }
@@ -73,13 +97,12 @@ var Common;
             else {
                 this.currentEnd = this.config.bytesPerRequest;
             }
-            //todo: secure currentStart
             if (this.currentEnd >= this.currentFile.size) {
                 this.currentEnd = this.currentFile.size;
                 this.reachedEnd = true;
             }
             var reader = this.createReader();
-            console.log("reading: " + this.currentStart + ".." + this.currentEnd);
+            //console.log("reading: " + this.currentStart + ".." + this.currentEnd);
             var blob = this.currentFile.slice(this.currentStart, this.currentEnd);
             reader.readAsDataURL(blob);
             this.lastEnd = this.currentEnd;

@@ -69,6 +69,24 @@ var Reg;
         return LoginButtonsManager;
     })();
     Reg.LoginButtonsManager = LoginButtonsManager;
+    var LoginResponseValidator = (function () {
+        function LoginResponseValidator() {
+        }
+        LoginResponseValidator.prototype.validate = function (res) {
+            var id = new Common.InfoDialog();
+            if (!res) {
+                id.create("Unsuccessful login", "Sorry, something went wrong");
+                return false;
+            }
+            if (res.AccountAlreadyInUse) {
+                id.create("Cannot pair", "The social network you are trying to pair with current account is already in use by another account.");
+                return false;
+            }
+            return true;
+        };
+        return LoginResponseValidator;
+    })();
+    Reg.LoginResponseValidator = LoginResponseValidator;
     var AuthCookieSaver = (function () {
         function AuthCookieSaver() {
             this.cookiesMgr = new Common.CookieManager();
@@ -80,10 +98,12 @@ var Reg;
             if (res.NetType === SocialNetworkType.Facebook) {
                 Views.ViewBase.fbt = res.SocToken;
             }
-            //todo: implement
-            //this.cookiesMgr.setString(Constants.socNetsCookieName, );
-            //todo: remove ?
-            //this.cookiesMgr.setString(, res.UserId);
+        };
+        AuthCookieSaver.prototype.removeCookies = function () {
+            this.cookiesMgr.removeCookie(Constants.tokenCookieName);
+            this.cookiesMgr.removeCookie(Constants.nameCookieName);
+            this.cookiesMgr.removeCookie(Constants.fullRegCookieName);
+            this.cookiesMgr.removeCookie(Constants.twitterLoggedCookieName);
         };
         AuthCookieSaver.prototype.saveTwitterLogged = function () {
             this.cookiesMgr.setString(Constants.twitterLoggedCookieName, "true");
@@ -151,6 +171,11 @@ var Reg;
             btnGoogle.successfulCallback = function (googleUser) {
                 var data = googleUser;
                 Views.ViewBase.currentView.apiPost("GoogleUser", data, function (r) {
+                    var lrv = new LoginResponseValidator();
+                    var resValid = lrv.validate(r);
+                    if (!resValid) {
+                        return;
+                    }
                     _this.cookiesSaver.saveCookies(r);
                     if (_this.onAfterExecute) {
                         _this.onAfterExecute();
@@ -181,6 +206,11 @@ var Reg;
                     auth.onSuccessful = function (user) {
                         var data = user;
                         Views.ViewBase.currentView.apiPost("FacebookUser", data, function (r) {
+                            var lrv = new LoginResponseValidator();
+                            var resValid = lrv.validate(r);
+                            if (!resValid) {
+                                return;
+                            }
                             _this.cookiesSaver.saveCookies(r);
                             if (_this.onAfterExecute) {
                                 _this.onAfterExecute();

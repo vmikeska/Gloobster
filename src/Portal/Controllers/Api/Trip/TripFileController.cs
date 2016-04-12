@@ -47,12 +47,16 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 				if (trip == null)
 				{
 					//throw bad trip id
-					throw new Exception();
+					throw new Exception("Trip doesnt exists");
 				}
-
-				//todo: check rights to upload file
-				
-				var newFile = new FileSE
+			    bool isAdmin = HasAdminPermissions(trip);
+			    if (!isAdmin)
+			    {
+			        throw new Exception("Only admins can upload files");
+			    }
+			    decimal totalAllFilesSize = trip.Files.Sum(f => f.FileSize);
+                
+                var newFile = new FileSE
 				{
                     id = ObjectId.GenerateNewId(),
 					User_id = UserIdObj,
@@ -60,7 +64,8 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 					SavedFileName = argsObj.FileName,
 					Type = argsObj.FileType,
 					EntityId = request.entityId,
-					EntityType = request.entityType
+					EntityType = request.entityType,
+                    FileSize = argsObj.FileSize
 				};
 
 			    var newPublic = new FilePublicSE
@@ -92,8 +97,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 			FileDomain.WriteFilePart(filePartDo);
 
             NewFileResponse response = null;
-
-			//todo: move to event above ?
+            
 			if (request.filePartType == FilePartType.Last)
 			{
 				var trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);
@@ -103,24 +107,39 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 			return new ObjectResult(response);
 		}
 
+	    private bool HasAdminPermissions(TripEntity trip)
+	    {
+            var admins = trip.Participants.Where(p => p.IsAdmin).Select(a => a.User_id).ToList();
+	        admins.Add(trip.User_id);
+            if (admins.Contains(UserIdObj))
+            {
+                return true;
+            }
+
+	        return false;
+	    }
+
 		[HttpDelete]
 		[AuthorizeApi]
 		public async Task<IActionResult> Delete(string fileId, string tripId)
 		{
 			var tripIdObj = new ObjectId(tripId);			
-			var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
+			var trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);
 
-			if (trip == null)
-			{
-				//throw not exists
-				throw new NullReferenceException();
-			}
+            if (trip == null)
+            {
+                //throw bad trip id
+                throw new Exception("Trip doesnt exists");
+            }
+            bool isAdmin = HasAdminPermissions(trip);
+            if (!isAdmin)
+            {
+                throw new Exception("Only admins can upload files");
+            }
 
-			NewFileResponse filesResponse = null;
+            NewFileResponse filesResponse = null;
             if (trip.Files != null)
 			{
-				//todo: check rights				
-
 			    var id = new ObjectId(fileId);
                 var fileToDelete = trip.Files.FirstOrDefault(f => f.id == id);
 			    var publicInfoToDelete = trip.FilesPublic.FirstOrDefault(f => f.File_id == id);

@@ -25,6 +25,8 @@ namespace Gloobster.DomainObjects
         public SocialNetworkType NetType { get; set; }
         public string SocToken { get; set; }
         public bool FullRegistration { get; set; }
+
+        public bool AccountAlreadyInUse { get; set; }
     }
 
     public class PermanentTokenDO

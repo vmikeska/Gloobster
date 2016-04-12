@@ -84,6 +84,22 @@
 	  }
 	}
 
+	export class LoginResponseValidator {
+		public validate(res): boolean {
+			var id = new Common.InfoDialog();
+			if (!res) {
+				id.create("Unsuccessful login", "Sorry, something went wrong");
+				return false;
+			}
+			if (res.AccountAlreadyInUse) {
+				id.create("Cannot pair", "The social network you are trying to pair with current account is already in use by another account.");
+				return false;
+			}
+
+			return true;
+		}
+	}
+
 	export class AuthCookieSaver {
 
 		private cookiesMgr: Common.CookieManager;
@@ -99,14 +115,15 @@
 		 
 			if (res.NetType === SocialNetworkType.Facebook) {
 				Views.ViewBase.fbt = res.SocToken;			 
-			}
-		 
-			//todo: implement
-			//this.cookiesMgr.setString(Constants.socNetsCookieName, );
-
-			//todo: remove ?
-			//this.cookiesMgr.setString(, res.UserId);
+			}		 
 		}
+
+	  public removeCookies() {
+		 this.cookiesMgr.removeCookie(Constants.tokenCookieName);
+		 this.cookiesMgr.removeCookie(Constants.nameCookieName);
+		 this.cookiesMgr.removeCookie(Constants.fullRegCookieName);
+		 this.cookiesMgr.removeCookie(Constants.twitterLoggedCookieName);
+	  }
 
 		public saveTwitterLogged() {
 		 this.cookiesMgr.setString(Constants.twitterLoggedCookieName, "true");		 
@@ -186,6 +203,11 @@
 			btnGoogle.successfulCallback = (googleUser) => {
 				var data = googleUser;
 				Views.ViewBase.currentView.apiPost("GoogleUser", data, (r) => {
+					var lrv = new LoginResponseValidator();
+					var resValid = lrv.validate(r);
+					if (!resValid) {
+						return;
+					}
 					this.cookiesSaver.saveCookies(r);
 					if (this.onAfterExecute) {
 						this.onAfterExecute();
@@ -200,12 +222,12 @@
 
 	export class FacebookButtonInit {
 
-	 public onBeforeExecute: Function;
-	 public onAfterExecute: Function;
+		public onBeforeExecute: Function;
+		public onAfterExecute: Function;
 
-	 private cookiesSaver: AuthCookieSaver;
+		private cookiesSaver: AuthCookieSaver;
 
-	 constructor(btnId) {
+		constructor(btnId) {
 			this.cookiesSaver = new AuthCookieSaver();
 			this.registerFacebookButton(btnId);
 		}
@@ -224,6 +246,12 @@
 					auth.onSuccessful = (user) => {
 						var data = user;
 						Views.ViewBase.currentView.apiPost("FacebookUser", data, (r) => {
+							var lrv = new LoginResponseValidator();
+							var resValid = lrv.validate(r);
+							if (!resValid) {
+								return;
+							}
+
 							this.cookiesSaver.saveCookies(r);
 							if (this.onAfterExecute) {
 								this.onAfterExecute();

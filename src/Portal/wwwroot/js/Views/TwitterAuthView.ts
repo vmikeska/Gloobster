@@ -12,7 +12,14 @@
 
 		private onResponse(resp) {
 			var data = resp;
-			this.apiPost("TwitterUser", data, (r) => {			 
+			this.apiPost("TwitterUser", data, (r) => {
+			 var lrv = new Reg.LoginResponseValidator();
+			 var resValid = lrv.validate(r);
+			 if (!resValid) {
+				 close();
+				return;
+			 }
+
 			 this.cookiesSaver.saveTwitterLogged();
 			 this.cookiesSaver.saveCookies(r);		
 			 this.twitterLoginWatch(() => {

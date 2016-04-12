@@ -57,17 +57,27 @@ var Views;
             window.location.href = "/Trip/CreateNewTrip/" + tripName;
         };
         TripListView.prototype.registerPhotoUpload = function (tripId, inputId) {
-            var config = new Common.FileUploadConfig();
-            config.inputId = inputId;
-            config.endpoint = "TripPhotoSmall";
-            var picUpload = new Common.FileUpload(config);
-            picUpload.customId = tripId;
-            picUpload.onProgressChanged = function (percent) {
+            var _this = this;
+            var c = new Common.FileUploadConfig();
+            c.inputId = inputId;
+            c.endpoint = "TripPhotoSmall";
+            c.maxFileSize = 5500000;
+            c.useMaxSizeValidation = false;
+            var pu = new Common.FileUpload(c);
+            pu.customId = tripId;
+            pu.onProgressChanged = function (percent) {
+                var $pb = $("#progressBar");
+                $pb.show();
+                var pt = percent + "%";
+                $(".progress").css("width", pt);
+                $pb.find("span").text(pt);
             };
-            picUpload.onUploadFinished = function (file, files) {
-                var d = new Date();
+            pu.onUploadFinished = function (file, files) {
+                //var d = new Date();
                 $(".trip-menu").hide();
-                $("#tripImg_" + tripId).attr("src", "/Trip/TripPictureSmall_s/" + tripId + "?d=" + d.getDate());
+                $("#tripImg_" + tripId).attr("src", "/Trip/TripPictureSmall_s/" + tripId + "?d=" + _this.makeRandomString(10));
+                var $pb = $("#progressBar");
+                $pb.hide();
             };
         };
         return TripListView;

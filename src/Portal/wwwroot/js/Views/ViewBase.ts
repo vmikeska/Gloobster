@@ -50,8 +50,9 @@ module Views {
 		}
 
 		public logout() {
-		 this.cookieManager.removeCookie(Constants.tokenCookieName);
-		 window.location.href = "/";
+			var auth = new Reg.AuthCookieSaver();
+			auth.removeCookies();
+			window.location.href = "/";
 		}
 
 		public apiGet(endpointName: string, params: string[][], callback: Function) {
@@ -105,6 +106,16 @@ module Views {
 		public registerTemplate(name: string) {
 		 var source = $("#" + name).html();
 		 return Handlebars.compile(source);
+		}
+
+		public makeRandomString(cnt) {
+		 var text = "";
+		 var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+		 for (var i = 0; i < 10; i++)
+			text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+		 return text;
 		}
 
 	}

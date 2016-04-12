@@ -20,25 +20,34 @@ var Views;
             this.tripMenu = new Views.TripMenu();
         };
         TripViewView.prototype.createFilesConfig = function () {
-            var filesConfig = new Trip.FilesConfig();
-            filesConfig.containerId = "filesContainer";
-            filesConfig.inputId = "fileInput";
-            filesConfig.editable = false;
-            filesConfig.addAdder = true;
-            filesConfig.templateId = "fileView-template";
-            this.files = new Trip.TripFiles(filesConfig);
+            var c = new Trip.FilesConfig();
+            c.containerId = "filesContainer";
+            c.inputId = "fileInput";
+            c.editable = false;
+            c.addAdder = true;
+            c.templateId = "fileView-template";
+            this.files = new Trip.TripFiles(c);
         };
         TripViewView.prototype.registerPhotoUpload = function () {
             var _this = this;
-            var config = new Common.FileUploadConfig();
-            config.inputId = "photoInput";
-            config.endpoint = "TripPhoto";
-            this.pictureUpload = new Common.FileUpload(config);
+            var c = new Common.FileUploadConfig();
+            c.inputId = "photoInput";
+            c.endpoint = "TripPhoto";
+            c.maxFileSize = 7500000;
+            c.useMaxSizeValidation = false;
+            this.pictureUpload = new Common.FileUpload(c);
             this.pictureUpload.customId = this.trip.tripId;
             this.pictureUpload.onProgressChanged = function (percent) {
+                var $pb = $("#progressBarTit");
+                $pb.show();
+                var pt = percent + "%";
+                $(".progress").css("width", pt);
+                $pb.find("span").text(pt);
             };
             this.pictureUpload.onUploadFinished = function (file, files) {
                 _this.refreshBackground(_this.trip.tripId);
+                var $pb = $("#progressBarTit");
+                $pb.hide();
             };
         };
         TripViewView.prototype.refreshBackground = function (tripId) {
@@ -83,8 +92,6 @@ var Views;
             this.comments.displayComments();
             this.planner = new Trip.Planner(this.trip, false);
             this.registerPhotoUpload();
-        };
-        TripViewView.prototype.generateButtons = function () {
         };
         return TripViewView;
     })(Views.ViewBase);

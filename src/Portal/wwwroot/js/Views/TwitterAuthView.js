@@ -9,6 +9,12 @@ var Views;
             var _this = this;
             var data = resp;
             this.apiPost("TwitterUser", data, function (r) {
+                var lrv = new Reg.LoginResponseValidator();
+                var resValid = lrv.validate(r);
+                if (!resValid) {
+                    close();
+                    return;
+                }
                 _this.cookiesSaver.saveTwitterLogged();
                 _this.cookiesSaver.saveCookies(r);
                 _this.twitterLoginWatch(function () {
