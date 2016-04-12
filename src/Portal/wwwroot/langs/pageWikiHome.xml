@@ -1,0 +1,22 @@
+﻿
+  <module name="pageWikiHome">    
+    <server>
+      <Title>
+        <en>Gloobster travel Wiki</en>        
+      </Title>
+      
+      <SearchPlaceholder>
+        <en>Search for a city or country</en>
+      </SearchPlaceholder>
+
+      
+
+
+
+    </server>
+    
+    <client>
+    </client>
+    <common>      
+    </common>
+  </module>

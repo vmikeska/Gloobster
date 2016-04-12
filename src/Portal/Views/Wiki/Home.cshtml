@@ -1,5 +1,7 @@
 ﻿@using System.Linq;
-
+@using System.Threading.Tasks
+@using Gloobster.Portal.ViewModels
+@model WikiHomeViewModel
 @{
     ViewBag.StopLayoutGenerate = true;
 }
@@ -14,9 +16,11 @@
         @Html.Partial("_DialogJoinSoc")
         @Html.Partial("_DialogJoinEmail")
     }
-    <h2>Gloobster Travel Wiki</h2>    
+     
+
+    <h2>@Model.W("Title")</h2>    
     <div id="SearchCombo" class="dropdown large">
-        <input class="inputed" type="text" placeholder="Dropdown Search">
+        <input class="inputed" type="text" placeholder="@Model.W("SearchPlaceholder")">
         <img class="loader" src="/images/loader-gray.gif" style="display: none" />
         <ul style="text-align: left"></ul>
     </div>
