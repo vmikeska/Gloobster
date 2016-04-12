@@ -8,8 +8,6 @@
 @using Gloobster.Portal.ViewModels
 @model ViewModelTripDetail
 
-<link href="~/css/ToDelete.css" rel="stylesheet">
-
 <script type="text/javascript" src="@Url.Content("~/js/Views/TripDetailView.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Views/TripMenu.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/common/ShareButtons.js")"></script>
@@ -24,24 +22,24 @@
 <script type="text/javascript" src="@Url.Content("~/js/Trip/Utils.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Trip/PlacesManager.js")"></script>
 
-    <div class="wrapper">
+<div class="wrapper">
 
         <div class="table margin width100">
             <div class="cell middle">
-                <input id="nameInput" class="heading middle" type="text" placeholder="Give it a name" value="@Model.Name">                
+                <input id="nameInput" class="heading middle" type="text" value="@Model.Name">                
             </div>
             <div class="cell middle tright tripMenu">                
                 <a data-tmp="menuPrivacy-template" class="button blue-trans tripMenuButton popup2-target" data-target="#popup-privacy" href="#">
                     <span class="icon-globe middle mright5"></span>
-                    Privacy
+                    @Model.W("Privacy")
                 </a>
                 <a data-tmp="participants-template" class="button blue-trans tripMenuButton popup2-target" data-target="#popup-participants" href="#">
                     <span class="icon-people middle mright5"></span>
-                    Participants
+                    @Model.W("Participants")
                 </a>               
                 <a class="button blue-trans" href="/Trip/Overview/@Model.TripId">
                     <span class="icon-preview middle mright5"></span>
-                    Preview
+                    @Model.W("Preview")
                 </a>                
             </div>
         </div>
@@ -51,9 +49,9 @@
 
         </div>
 
-	    <textarea class="color1" id="description" placeholder="write trip description...">@Model.Description</textarea>
+	    <textarea class="color1" id="description" placeholder="@Model.W("TripDescription")">@Model.Description</textarea>
 
-		<h3>Day by Day Plan</h3>
+		<h3>@Model.W("DayByDay")</h3>
 		<div id="plannerCont1" class="daybyday table margin">		
 		</div>
 
@@ -64,14 +62,14 @@
 <section class="wrapper margin3">
 	<div class="table row margin">
 		<div class="cell">
-			<h3 class="margin0">Notes</h3>
+			<h3 class="margin0">@Model.W("Notes")</h3>
 		</div>
 		<div class="cell bottom">
 			<input id="public" type="checkbox" @(Model.NotesPublic ? "checked='checked'" : string.Empty)>
-			<label class="color1" for="public">Public</label>
+			<label class="color1" for="public">@Model.W("Public")</label>
 		</div>
 	</div>
-	<textarea class="color1" id="notes" placeholder="write your simple notes...">@Model.Notes</textarea>
+	<textarea class="color1" id="notes" placeholder="@Model.W("SimpleNotes")">@Model.Notes</textarea>
 	@*<p class="color1">My Own Personal trip Description that I can write and edit anytime. This text would be used as default copy for sharing and for any other off site interaction so be careful. In the future it could have a feature allowing theme photo being pre-generated and possibly replaced by my photo of choice.</p>*@
 </section>
 

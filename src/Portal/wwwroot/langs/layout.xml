@@ -18,6 +18,10 @@
         <en>Share</en>
       </Share>
 
+      <Delete>
+        <en>Delete</en>
+      </Delete>
+
       <ShareButtons>
         <en>Share on social media</en>
       </ShareButtons>

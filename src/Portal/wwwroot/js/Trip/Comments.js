@@ -39,11 +39,17 @@ var Trip;
         };
         Comments.prototype.addUserData = function (comment) {
             var user = this.getUserById(comment.userId);
+            var displayName = "Anonymous";
+            var photoUrl = "/images/anonymous.jpg";
+            if (user) {
+                displayName = user.displayName;
+                photoUrl = "/PortalUser/ProfilePicture_s/" + user.id;
+                comment["id"] = user.id;
+            }
             var postDate = new Date(comment.postDate);
             comment["displayDate"] = postDate.getDate() + "." + postDate.getMonth() + "." + postDate.getFullYear() + " (" + postDate.getHours() + ":" + postDate.getMinutes() + ")";
-            comment["displayName"] = user.displayName;
-            comment["photoUrl"] = "/PortalUser/ProfilePicture_s/" + user.id;
-            comment["id"] = user.id;
+            comment["displayName"] = displayName;
+            comment["photoUrl"] = photoUrl;
             return comment;
         };
         Comments.prototype.getUserById = function (id) {

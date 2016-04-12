@@ -84,7 +84,7 @@ namespace Gloobster.Portal.Controllers.Portal
             bool isOwner = trip.User_id == UserIdObj;
             if (isOwner)
             {
-                var vm = CreateDetailVM(trip);
+                var vm = CreateDetailVM(trip);                
                 return View(vm);
             }
 
@@ -314,23 +314,27 @@ namespace Gloobster.Portal.Controllers.Portal
         {
             var ownerId = trip.User_id.ToString();
             var ownerIdObj = new ObjectId(ownerId);
+            
+            var vm = CreateViewModelInstance<ViewModelTripDetail>();
+            vm.DefaultLangModuleName = "pageTripDetail";
 
-            var viewModel = CreateViewModelInstance<ViewModelTripDetail>();
-            viewModel.Name = trip.Name;
-            viewModel.IsUserAdmin = IsUserAdmin(trip);
-            viewModel.OwnerDisplayName = owner.DisplayName;
-            viewModel.OwnerId = ownerId;
-            viewModel.TripId = trip.id.ToString();
-            viewModel.Description = trip.Description;
-            viewModel.Notes = trip.Notes;
-            viewModel.NotesPublic = trip.NotesPublic;
-            viewModel.IsOwner = (trip.User_id == UserIdObj);
-            viewModel.HasBigPicture = trip.HasBigPicture;
-            viewModel.Participants = GetParticipantsView(trip.Participants, ownerIdObj);
+            var displayName = GetDisplayName(owner);
+            
+            vm.Name = trip.Name;
+            vm.IsUserAdmin = IsUserAdmin(trip);
+            vm.OwnerDisplayName = displayName;
+            vm.OwnerId = ownerId;
+            vm.TripId = trip.id.ToString();
+            vm.Description = trip.Description;
+            vm.Notes = trip.Notes;
+            vm.NotesPublic = trip.NotesPublic;
+            vm.IsOwner = (trip.User_id == UserIdObj);
+            vm.HasBigPicture = trip.HasBigPicture;
+            vm.Participants = GetParticipantsView(trip.Participants, ownerIdObj);
             var thisUserParticipant = trip.Participants.FirstOrDefault(p => p.User_id == UserIdObj);
-            viewModel.ThisUserInvited = thisUserParticipant != null;
+            vm.ThisUserInvited = thisUserParticipant != null;
 
-            return viewModel;
+            return vm;
         }
         
         private List<UserViewModel> GetParticipantsView(List<ParticipantSE> participants, ObjectId ownerId)
@@ -350,15 +354,26 @@ namespace Gloobster.Portal.Controllers.Portal
 
         private ViewModelTripDetail CreateDetailVM(TripEntity trip)
         {
-            var viewModel = CreateViewModelInstance<ViewModelTripDetail>();
-            viewModel.Name = trip.Name;
-            viewModel.TripId = trip.id.ToString();
-            viewModel.Description = trip.Description;
-            viewModel.Notes = trip.Notes;
-            viewModel.NotesPublic = trip.NotesPublic;
+            var vm = CreateViewModelInstance<ViewModelTripDetail>();
+            vm.DefaultLangModuleName = "pageTripDetail";
+            vm.Name = trip.Name;
+            vm.TripId = trip.id.ToString();
+            vm.Description = trip.Description;
+            vm.Notes = trip.Notes;
+            vm.NotesPublic = trip.NotesPublic;
 
-            return viewModel;
+            return vm;
         }
+
+	    private string GetDisplayName(UserEntity owner)
+	    {
+	        string displayName = null;
+            if (owner != null)
+            {
+                displayName = owner.DisplayName;
+            }
+	        return displayName;
+	    }
 
         private async Task<TripItemViewModel> TripToViewModel(TripEntity trip, ViewModelBase b)
 		{
@@ -366,12 +381,8 @@ namespace Gloobster.Portal.Controllers.Portal
             var fromDate = tripFromTo.Item1;
             var toDate = tripFromTo.Item2;
 
-            var displayName = b.W("Anonymous");
             var owner = DB.FOD<UserEntity>(u => u.User_id == trip.User_id);
-            if (owner != null)
-            {
-                displayName = owner.DisplayName;
-            }
+            var displayName = GetDisplayName(owner);
             
             var vm = new TripItemViewModel
 			{
@@ -391,6 +402,7 @@ namespace Gloobster.Portal.Controllers.Portal
 			};
 			return vm;
 		}
+
         private Tuple<DateTime, DateTime> GetTripFromTo(TripEntity trip)
         {
             var ordredPlaces = trip.Places.OrderBy(t => t.OrderNo);

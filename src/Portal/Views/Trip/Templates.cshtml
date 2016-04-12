@@ -28,7 +28,7 @@
             </a>
             {{#if canManipulate}}
             <input id="filePublic{{id}}_b" class="filePublic filePublic{{id}}" data-id="{{id}}" type="checkbox" />
-            <label class="mleft10" for="filePublic{{id}}_b">Shr. invited</label>
+            <label class="mleft10" for="filePublic{{id}}_b">@Model.W("Share")</label>
             <a class="delete popup-target" data-target="#popup-delete" data-id="{{id}}" href="#"></a>
             {{/if}}
 
@@ -52,7 +52,7 @@
     <div class="cell">
         <input type="file" id="{{id}}" class="hiddenFile" >
         <label for="{{id}}">
-            <span class="button fileButton">Click or drag</span>
+            <span class="button fileButton">@Model.W("ClickOrDrag")</span>
         </label>
     </div>    
 </script>
@@ -63,7 +63,7 @@
 
             <input type="file" id="{{id}}" class="hiddenFile">
             <label for="{{id}}">
-                <span class="disc-create">Choose file</span>
+                <span class="disc-create">@Model.W("ChooseFile")</span>
             </label>
 
         </div>

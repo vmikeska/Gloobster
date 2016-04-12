@@ -1,0 +1,279 @@
+﻿
+  <module name="pageTripDetail">
+    <server>
+      <TitlePhoto>
+        <en>Title Photo</en>
+      </TitlePhoto>
+
+      <Privacy>
+        <en>Privacy</en>
+      </Privacy>
+
+      <Participants>
+        <en>Participants</en>
+      </Participants>
+
+      <ShareTrip>
+        <en>Share trip</en>
+      </ShareTrip>
+
+      <Edit>
+        <en>Edit</en>
+      </Edit>
+
+      <DayByDay>
+        <en>Day by Day Plan</en>
+      </DayByDay>
+
+      <Notes>
+        <en>Notes</en>
+      </Notes>
+
+      <Public>
+        <en>Public</en>
+      </Public>
+
+
+      <Invited>
+        <en>Invited</en>
+      </Invited>
+
+      <Accepted>
+        <en>Accepted</en>
+      </Accepted>
+
+      <Maybe>
+        <en>Maybe</en>
+      </Maybe>
+
+      <Refused>
+        <en>Refused</en>
+      </Refused>
+
+
+      <Comments>
+        <en>Comments</en>
+      </Comments>
+
+      <YourComment>
+        <en>Your comment...</en>
+      </YourComment>
+
+      <AddComment>
+        <en>Add comment</en>
+      </AddComment>
+
+      <AllDocs>
+        <en>All documents</en>
+      </AllDocs>
+
+      <JoinedTravelers>
+        <en>Joined travelers</en>
+      </JoinedTravelers>
+
+
+      <ClickOrDrag>
+        <en>Click or drag</en>
+      </ClickOrDrag>
+
+      <ChooseFile>
+        <en>Choose file</en>
+      </ChooseFile>
+
+
+      <ParticipTitle>
+        <en>Participants</en>
+      </ParticipTitle>
+
+      <ParticipText>
+        <en>Everbody who is invited into the trip will be able to see all information (except private files). Who has "Can edit" permission can on top of that edit all information.</en>
+      </ParticipText>
+
+      <ShareWithFriends>
+        <en>Share with friends</en>
+      </ShareWithFriends>
+
+      <FriendsName>
+        <en>Friend name...</en>
+      </FriendsName>
+
+      <CanEdit>
+        <en>Can edit</en>
+      </CanEdit>
+
+      <State>
+        <en>State</en>
+      </State>
+
+
+      <Share>
+        <en>Share</en>
+      </Share>
+
+      <ShareOnSoc>
+        <en>
+          Share on<br/> social media
+        </en>
+      </ShareOnSoc>
+
+      <ShareTripText>
+        <en>Share your trip to social networks and make your friends aware of your trip. This will not give anybody permission to manipulate with your trip, or see your sensitive data. Just basic trip overview will be displayed.</en>
+      </ShareTripText>
+
+      <MessagePlaceholder>
+        <en>Message...</en>
+      </MessagePlaceholder>
+
+      <ShareTripTitle>
+        <en>Share Trip</en>
+      </ShareTripTitle>
+
+      <AllowRequestJoinCheckbox>
+        <en>Friends can request to join</en>
+      </AllowRequestJoinCheckbox>
+
+      <FriendsPublicCheckbox>
+        <en>Friends can see basic info of the trip, even they are not invited</en>
+      </FriendsPublicCheckbox>
+
+      <PrivacyText>
+        <en>Set privacy of your trip. In participants menu you can select admins of the trip.</en>
+      </PrivacyText>
+
+      <PrivacySettings>
+        <en>Privacy Settings</en>
+      </PrivacySettings>
+
+      <Arrival>
+        <en>arrival</en>
+      </Arrival>
+
+      <PlaceName>
+        <en>Place name</en>
+      </PlaceName>
+
+      <AddressStay>
+        <en>Address where I stay</en>
+      </AddressStay>
+
+      <SearchForPlace>
+        <en>Search for place</en>
+      </SearchForPlace>
+
+      <TextAddress>
+        <en>Text address</en>
+      </TextAddress>
+
+      <PlacesToVisit>
+        <en>Places to visit</en>
+      </PlacesToVisit>
+
+      <PlacesToVisitPlaceholder>
+        <en>+ Pubs, Restaurants, Museums...</en>
+      </PlacesToVisitPlaceholder>
+
+      <GoingToVisit>
+        <en>Going to visit</en>
+      </GoingToVisit>
+
+      <NoPlans>
+        <en>No plans so far</en>
+      </NoPlans>
+
+      <Link>
+        <en>Link</en>
+      </Link>
+
+      <AddressOfStay>
+        <en>Address of the stay</en>
+      </AddressOfStay>
+
+      <Map>
+        <en>Map</en>
+      </Map>
+
+      <DropFilesHere>
+        <en>Drop Files Here</en>
+      </DropFilesHere>
+
+      <Arriving>
+        <en>Arriving</en>
+      </Arriving>
+
+      <Leaving>
+        <en>Leaving</en>
+      </Leaving>
+
+      <To>
+        <en>To</en>
+      </To>
+
+      <From>
+        <en>From</en>
+      </From>
+
+      <Walk>
+        <en>Walk</en>
+      </Walk>
+
+      <Bus>
+        <en>Bus</en>
+      </Bus>
+
+      <Train>
+        <en>Train</en>
+      </Train>
+
+      <Plane>
+        <en>Plane</en>
+      </Plane>
+
+      <Car>
+        <en>Car</en>
+      </Car>
+
+      <Ship>
+        <en>Ship</en>
+      </Ship>
+
+      <Bike>
+        <en>Bike</en>
+      </Bike>
+
+      <Preview>
+        <en>Preview</en>
+      </Preview>
+
+
+      <DelDialogTitle>
+        <en>File deletion</en>
+      </DelDialogTitle>
+
+      <DelDialogBody>
+        <en>Do you wanna delete this file ?</en>
+      </DelDialogBody>
+
+      <SimpleNotes>
+        <en>write your simple notes...</en>
+      </SimpleNotes>
+
+      <TripDescription>
+        <en>write trip description...</en>
+      </TripDescription>
+
+      <Anonymous>
+        <en>Anonymous</en>
+      </Anonymous>
+
+
+
+
+
+
+    </server>
+    
+    <client>
+    </client>
+    <common>      
+    </common>
+  </module>

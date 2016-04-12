@@ -25,7 +25,7 @@
 				<div class="destination">
 		{{/if}}
 						<span class="name">{{name}}</span>
-								<span class="tab">arrival {{arrivalDateLong}}</span>
+								<span class="tab">@Model.W("Arrival") {{arrivalDateLong}}</span>
 						</div>
 												
 				{{#if isFirstDay}}
@@ -46,7 +46,7 @@
             
             <a href="javascript:window.open('{{link}}');">{{name}}</a>
             
-            <a class="delete" href="#">Delete</a>            
+            <a class="delete" href="#">@Model.W("Delete", "layout")</a>            
 		</div>
 </script>
 
@@ -62,7 +62,7 @@
                 
                 {{#if canManipulate}}
                     <input class="filePublic filePublic{{id}}" id="filePublic{{id}}_a" data-id="{{id}}" type="checkbox" />
-                    <label class="mleft10" for="filePublic{{id}}_a">Shr. invited</label>
+                    <label class="mleft10" for="filePublic{{id}}_a">@Model.W("Share")</label>
                 {{/if}}
 
                 <a href="/Trip/GetFile?fileId={{id}}&tripId={{tripId}}">{{fileName}}</a>
@@ -81,7 +81,7 @@
 				<div class="table row">
 						<div class="cell baseline">
 								<div id="cities" class="dropdown left margin3">
-										<input class="inputed" type="text" placeholder="Place name">
+										<input class="inputed" type="text" placeholder="@Model.W("PlaceName")">
                                         <img class="loader" src="/images/loader-gray.gif" style="display: none" />
 										<ul></ul>
 								</div>								
@@ -96,24 +96,21 @@
 				
 				<div class="table row">
 						<div class="cell address">
-								<h4>
-										Address
-										<span class="slim">where I stay</span>
-								</h4>
+								<h4>@Model.W("AddressStay")</h4>
 								<div id="stayPlace" class="dropdown">
-										<input class="inputed" type="text" placeholder="Search for place">
+										<input class="inputed" type="text" placeholder="@Model.W("SearchForPlace")">
                                         <img class="loader" src="/images/loader-gray.gif" style="display: none" />
 										<ul>											
 										</ul>
 								</div>
-								<input id="stayAddress" class="inputed" type="text" placeholder="Text address">
+								<input id="stayAddress" class="inputed" type="text" placeholder="@Model.W("TextAddress")">
 								@*<a class="create" href="#">Add a personal note</a>*@
 						</div>
 						<div class="cell places">
-								<h4>Places to visit</h4>
+								<h4>@Model.W("PlacesToVisit")</h4>
 
 								<div id="placeToVisit" class="dropdown">
-										<input class="inputed" type="text" placeholder="+ Pubs, Restaurants, Museums...">
+										<input class="inputed" type="text" placeholder="@Model.W("PlacesToVisitPlaceholder")">
                                         <img class="loader" src="/images/loader-gray.gif" style="display: none" />
 										<ul>												
 										</ul>
@@ -122,7 +119,7 @@
 						</div>
 				</div>
 				
-				<a class="close" href="#">Close</a>
+				<a class="close" href="#">@Model.W("Close", "layout")</a>
 		</div>
 
 </script>
@@ -139,33 +136,33 @@
 				</div>
 				<div class="table row">
 						<div class="cell places">
-								<h4>Going to visit</h4>
+								<h4>@Model.W("GoingToVisit")</h4>
 								{{#if hasNoWantVisit}}
 								<div class="place">										
-										No planes so far										
+										@Model.W("NoPlans")
 								</div>
 								{{/if}}
 								{{#each wantVisit}}
 										<div class="place">
 												<span class="{{icon}} left mright10"></span>												
 												{{name}}
-												<a class="more" href="javascript:window.open('{{link}}')">More</a>												
+												<a class="more" href="javascript:window.open('{{link}}')">@Model.W("Link")</a>												
 										</div>
 								{{/each}}								
 						</div>
 						
                     {{#if hasAddress}}
                         <div class="cell places">
-								<h4>Address of the stay</h4>
+								<h4>@Model.W("AddressOfStay")</h4>
 								<div class="place">
 										<span class="{{stayIco}} left mright10"></span>
 										{{stayName}}
-										<a class="more" href="javascript:window.open('{{stayLink}}')">Link</a>
+										<a class="more" href="javascript:window.open('{{stayLink}}')">@Model.W("Link")</a>
 								</div>
 								<div class="place">										
 										{{stayAddress}}
                                     
-										<a class="more" href="javascript:window.open('https://www.google.com/maps?q={{stayAddress}}');">Map</a>
+										<a class="more" href="javascript:window.open('https://www.google.com/maps?q={{stayAddress}}');">@Model.W("Map")</a>
 								</div>
 								
 						</div>
@@ -173,7 +170,7 @@
 				</div>
 				
 
-				<a class="close" href="#">Close</a>
+				<a class="close" href="#">@Model.W("Close", "layout")</a>
 		</div>
 </script>
 
@@ -187,24 +184,24 @@
         
         <div class="table row">
             <div class="cell places">
-                <h4>Going to visit</h4>
+                <h4>@Model.W("GoingToVisit")</h4>
                 {{#if hasNoWantVisit}}
                 <div class="place">        
-                    No planes so far
+                    @Model.W("NoPlans")
                 </div>
                 {{/if}}
                 {{#each wantVisit}}
                 <div class="place">
                     <span class="{{icon}} left mright10"></span>
                     {{name}}
-                    <a class="more" href="javascript:window.open('{{link}}')">More</a>
+                    <a class="more" href="javascript:window.open('{{link}}')">@Model.W("Link")</a>
                 </div>
                 {{/each}}
             </div>
         </div>
 
 
-        <a class="close" href="#">Close</a>
+        <a class="close" href="#">@Model.W("Close", "layout")</a>
     </div>
 </script>
 
@@ -216,7 +213,7 @@
                 <div class="cell baseline"><h3>PRG → VIE</h3></div>
                 <div class="cell baseline color1">Delta Air Flight 2560 from Prague to Vienna • Distance 1200 km</div>
             </div>*@
-
+            
             <div class="margin">
                 <div id="travelType" class="dropdown">
                     <span class="selected">
@@ -224,31 +221,31 @@
                     <ul>
                         <li data-value="6" data-cls="icon-bike" data-cap="Bike">
                             <span class="icon-bike black left mright5"></span>
-                            Bike
+                            @Model.W("Bike")
                         </li>
                         <li data-value="5" data-cls="icon-boat" data-cap="Ship">
                             <span class="icon-boat black left mright5"></span>
-                            Ship
+                            @Model.W("Ship")
                         </li>
                         <li data-value="2" data-cls="icon-car" data-cap="Car">
                             <span class="icon-car black left mright5"></span>
-                            Car
+                            @Model.W("Car")
                         </li>
                         <li data-value="1" data-cls="icon-plane" data-cap="Plane">
                             <span class="icon-plane black left mright5"></span>
-                            Plane
+                            @Model.W("Plane")
                         </li>
                         <li data-value="4" data-cls="icon-train" data-cap="Train">
                             <span class="icon-train black left mright5"></span>
-                            Train
+                            @Model.W("Train")
                         </li>
                         <li data-value="3" data-cls="icon-bus" data-cap="Bus">
                             <span class="icon-bus black left mright5"></span>
-                            Bus
+                            @Model.W("Bus")
                         </li>
                         <li data-value="0" data-cls="icon-walk" data-cap="Walk">
                             <span class="icon-walk black left mright5"></span>
-                            Walk
+                            @Model.W("Walk")
                         </li>
                     </ul>
                     <input type="hidden">
@@ -258,33 +255,33 @@
             
             <div id="flightDetails" class="margin" style="display: none">
                 <div id="airportFrom" class="dropdown">
-                    <input class="inputed" type="text" placeholder="From">
+                    <input class="inputed" type="text" placeholder="@Model.W("From")">
                     <ul></ul>
                 </div>
                 <div id="airportTo" class="dropdown">
-                    <input class="inputed" type="text" placeholder="To">
+                    <input class="inputed" type="text" placeholder="@Model.W("To")">
                     <ul></ul>
                 </div>
             </div>
 
-            					
+            
 								
 				@*http://felicegattuso.com/projects/datedropper/#demo*@
                 @*http://www.jqueryrain.com/?B83aD_dg*@
 
 				<div class="margin">
-						Leaving: <input id="leavingDate" type="text" size="10" />-						
+						@Model.W("Leaving"): <input id="leavingDate" type="text" size="10" />-						
 						<input id="leavingHours" class="shorted" type="number" min="0" max="23" step="1" />:<input id="leavingMinutes" class="shorted" type="number" min="0" max="59" step="1"  />
 				</div>
 								
 				<div class="margin">						
-						Arriving: <input id="arrivingDate" type="text" size="10" />-
+						@Model.W("Arriving"): <input id="arrivingDate" type="text" size="10" />-
 						<input id="arrivingHours" class="shorted" type="number" min="0" max="23" step="1" />:<input id="arrivingMinutes" class="shorted" type="number" min="0" max="59" step="1"  />
 				</div>
             
             @Html.Partial("DialogFilesUpload")
             
-            <a class="close" href="#">Close</a>            
+            <a class="close" href="#">@Model.W("Close", "layout")</a>            
 		</div>
 
 </script>
@@ -309,7 +306,7 @@
 				
     </div>
 			
-    <a class="close" href="#">Close</a>
+    <a class="close" href="#">@Model.W("Close", "layout")</a>
 		</div>
 </script>
 
@@ -326,6 +323,6 @@
         @*todo: format date time*@
         <p>{{arrivingDateTime}} - {{leavingDateTime}}</p>
 
-        <a class="close" href="#">Close</a>
+        <a class="close" href="#">@Model.W("Close", "layout")</a>
     </div>
 </script>

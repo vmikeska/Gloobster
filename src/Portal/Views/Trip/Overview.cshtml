@@ -5,9 +5,8 @@
 }
 
 @using System.Threading.Tasks
-@using Gloobster.Portal.Controllers.Portal
 @using Gloobster.Portal.ViewModels
-@model Gloobster.Portal.ViewModels.ViewModelTripDetail
+@model ViewModelTripDetail
 
 <script type="text/javascript" src="@Url.Content("~/js/Views/TripViewView.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Views/TripMenu.js")"></script>
@@ -44,6 +43,7 @@
 
 </style>
 
+
 <style>
      #bckPhoto {
         @if (Model.HasBigPicture)
@@ -56,6 +56,7 @@
         }
      }
 </style>
+
 
 <section class="wrapper">
     @if (!Model.SocialNetworks.Any())
@@ -79,7 +80,7 @@
                             <input id="photoInput" type="file"/>
                             <label for="photoInput">
                                 <span class="icon-photo middle mright5"></span>
-                                Title Photo
+                                @Model.W("TitlePhoto")
                             </label>
                         </a>
                     }
@@ -98,19 +99,19 @@
                     {
                         <a data-tmp="menuPrivacy-template" class="button blue-trans popup2-target tripMenuButton" data-target="#popup-privacy" href="#">
                             <span class="icon-globe middle mright5"></span>
-                            Privacy
+                            @Model.W("Privacy")
                         </a>
                         <a data-tmp="participants-template" class="button blue-trans popup2-target tripMenuButton" data-target="#popup-participants" href="#">
                             <span class="icon-people middle mright5"></span>
-                            Participants
+                            @Model.W("Participants")
                         </a>
                         <a data-tmp="menuShare-template" class="button blue-trans popup2-target tripMenuButton" data-target="#popup-share" href="#">
                             <span class="icon-share middle mright5"></span>
-                            Share trip
+                            @Model.W("ShareTrip")
                         </a>
                         <a class="button blue-trans" href="/Trip/Detail/@Model.TripId">
                             <span class="icon-edit middle mright5"></span>
-                            Edit
+                            @Model.W("Edit")
                         </a>
                     }
 
@@ -129,14 +130,22 @@
                 <h1 class="margin0">@Model.Name</h1>
             </div>
             <div class="cell middle tright">
-                by @Model.OwnerDisplayName
+                by @(string.IsNullOrEmpty(Model.OwnerDisplayName) ? Model.W("Anonymous") : Model.OwnerDisplayName)
+
                 <span class="thumbnail disc60 middle mleft10">
-                    <img src="/PortalUser/ProfilePicture_s/@Model.OwnerId">
+                    @if (string.IsNullOrEmpty(Model.OwnerDisplayName))
+                    {
+                        <img src="/images/Anonymous.jpg">
+                    }
+                    else
+                    {
+                        <img src="/PortalUser/ProfilePicture_s/@Model.OwnerId">
+                    }
                 </span>
             </div>
         </div>
         <p class="h4">@Model.Description</p>
-        <h3>Day by Day Plan</h3>
+        <h3>@Model.W("DayByDay")</h3>
         <div id="plannerCont1" class="daybyday table margin">
         </div>
     </div>
@@ -154,7 +163,7 @@
 @if (Model.NotesPublic)
 {
 	<section class="wrapper margin3 color1">
-		<strong>Notes:</strong>
+		<strong>@Model.W("Notes")</strong>
 		@Model.Notes
 	</section>
 }

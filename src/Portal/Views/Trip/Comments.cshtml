@@ -1,13 +1,14 @@
-﻿<section class="line margin padding">
+﻿
+<section class="line margin padding">
     <div class="wrapper">
-        <h3>Comments</h3>
+        <h3>@Model.W("Comments")</h3>
         <div class="form">
             <div class="table row margin">
                 <div class="cell">
-                    <textarea id="commentInput" class="width700" type="text" placeholder="Your comment..."></textarea>
+                    <textarea id="commentInput" class="width700" type="text" placeholder="@Model.W("YourComment")"></textarea>
                 </div>
                 <div class="cell">
-                    <input id="commentSubmit" type="button" value="Add comment">
+                    <input id="commentSubmit" type="button" value="@Model.W("AddComment")">
                 </div>
             </div>
         </div>

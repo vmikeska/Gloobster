@@ -20,7 +20,7 @@ namespace Gloobster.DomainModels.Langs
     {
         public IDbOperations DB { get; set; }
 
-        private readonly string[] _mods = { "pageHomeOld", "login", "pagePins", "pageTrips" };
+        private readonly string[] _mods = { "pageHomeOld", "login", "pagePins", "pageTrips", "pageTripDetail" };
 
         public Dictionary<string, LangModule> Modules = new Dictionary<string, LangModule>();
 
@@ -117,6 +117,11 @@ namespace Gloobster.DomainModels.Langs
             {
                 string wordName = wordItem.Name.LocalName;
 
+                if (section.ContainsKey(wordName))
+                {
+                    throw new Exception($"Word '{wordName}' is already in the dict '{name}'");
+                }
+
                 var word = new WordItem
                 {
                     Name = wordName,
@@ -127,7 +132,7 @@ namespace Gloobster.DomainModels.Langs
                 {
                     string lang = langItem.Name.LocalName;
                     string text = langItem.Value;
-
+                    
                     word.Texts.Add(lang, text);  
                 }
 

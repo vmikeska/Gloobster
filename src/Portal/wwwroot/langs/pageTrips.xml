@@ -26,12 +26,13 @@
         <en>Title Photo</en>
       </TitlePhoto>
 
-      <Delete>
-        <en>Delete</en>
-      </Delete>
+      <TripDelTitle>
+        <en>Trip deletion</en>
+      </TripDelTitle>
 
-
-
+      <TripDelMessage>
+        <en>Do you wanna delete this trip ?</en>
+      </TripDelMessage>
 
     </server>
     
