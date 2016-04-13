@@ -1,7 +1,6 @@
 ﻿
   <module name="pageUserSettings">    
-    <server>
-      
+    
       <Settings>
         <en>Settings</en>        
       </Settings>
@@ -29,10 +28,4 @@
       </CurrentCity>
 
 
-    </server>
-    
-    <client>
-    </client>
-    <common>      
-    </common>
   </module>

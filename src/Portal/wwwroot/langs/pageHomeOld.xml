@@ -1,7 +1,6 @@
 ﻿
   <module name="pageHomeOld">    
-    <server>
-      
+  
       <BoxPinsTitle>
         <en>Keep track of your journeys</en>        
       </BoxPinsTitle>
@@ -40,10 +39,5 @@
         <en>Why travelers choose Gloobster</en>
       </Motto2>
 
-    </server>
     
-    <client>
-    </client>
-    <common>      
-    </common>
   </module>

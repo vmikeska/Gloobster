@@ -1,6 +1,6 @@
 ﻿
   <module name="pageTripDetail">
-    <server>
+  
       <TitlePhoto>
         <en>Title Photo</en>
       </TitlePhoto>
@@ -266,14 +266,4 @@
       </Anonymous>
 
 
-
-
-
-
-    </server>
-    
-    <client>
-    </client>
-    <common>      
-    </common>
   </module>

@@ -1,6 +1,6 @@
 ﻿
   <module name="layout">
-    <server>
+
       <MenuPins>
         <en>Pin board</en>
       </MenuPins>
@@ -70,14 +70,4 @@
 
 
 
-
-
-
-
-    </server>
-    
-    <client>
-    </client>
-    <common>      
-    </common>
   </module>

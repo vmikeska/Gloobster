@@ -34,7 +34,7 @@ namespace Gloobster.Portal.ViewModels
 
         public string W(string key, string module)
         {
-            string text = Langs.GetWordServer(module, key, Lang);
+            string text = Langs.GetWord(module, key, Lang);
             return text;
         }
 

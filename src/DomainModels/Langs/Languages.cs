@@ -46,7 +46,7 @@ namespace Gloobster.DomainModels.Langs
             }
         }
 
-        public string GetWordServer(string moduleName, string key, string lang)
+        public string GetWord(string moduleName, string key, string lang)
         {
             if (!Modules.ContainsKey(moduleName))
             {
@@ -55,12 +55,12 @@ namespace Gloobster.DomainModels.Langs
 
             var module = Modules[moduleName];
 
-            if (!module.Server.ContainsKey(key))
+            if (!module.Words.ContainsKey(key))
             {
                 return "WordNotFound";
             }
 
-            var word = module.Server[key];
+            var word = module.Words[key];
             if (word.Texts.ContainsKey(lang))
             {
                 return word.Texts[lang];
@@ -105,21 +105,18 @@ namespace Gloobster.DomainModels.Langs
                 mod = Modules[modName];
             }
 
-            ExtractModuleSection(doc, mod.Client, "client");
-            ExtractModuleSection(doc, mod.Server, "server");
-            ExtractModuleSection(doc, mod.Common, "common");            
+            ExtractModule(doc, mod);
         }
 
-        private void ExtractModuleSection(XDocument doc, Dictionary<string, WordItem> section, string name)
-        {
-            var sect = doc.Root.Element(name);
-            foreach (var wordItem in sect.Elements())
+        private void ExtractModule(XDocument doc, LangModule module)
+        {            
+            foreach (var wordItem in doc.Root.Elements())
             {
                 string wordName = wordItem.Name.LocalName;
 
-                if (section.ContainsKey(wordName))
+                if (module.Words.ContainsKey(wordName))
                 {
-                    throw new Exception($"Word '{wordName}' is already in the dict '{name}'");
+                    throw new Exception($"Word '{wordName}' is already in the dict");
                 }
 
                 var word = new WordItem
@@ -136,7 +133,7 @@ namespace Gloobster.DomainModels.Langs
                     word.Texts.Add(lang, text);  
                 }
 
-                section.Add(wordName, word);
+                module.Words.Add(wordName, word);
             }
 
         }
@@ -147,9 +144,7 @@ namespace Gloobster.DomainModels.Langs
     {
         public string Name { get; set; }
 
-        public Dictionary<string, WordItem> Client = new Dictionary<string, WordItem>();
-        public Dictionary<string, WordItem> Server = new Dictionary<string, WordItem>();
-        public Dictionary<string, WordItem> Common = new Dictionary<string, WordItem>();
+        public Dictionary<string, WordItem> Words = new Dictionary<string, WordItem>();        
     }
 
     public class WordItem

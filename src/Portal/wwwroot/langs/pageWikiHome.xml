@@ -1,6 +1,6 @@
 ﻿
   <module name="pageWikiHome">    
-    <server>
+   
       <Title>
         <en>Gloobster travel Wiki</en>        
       </Title>
@@ -13,10 +13,4 @@
 
 
 
-    </server>
-    
-    <client>
-    </client>
-    <common>      
-    </common>
   </module>

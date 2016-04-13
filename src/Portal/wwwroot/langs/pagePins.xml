@@ -1,7 +1,6 @@
 ﻿
   <module name="pagePins">
-    <server>
-
+   
       <Title>
         <en>Pin board</en>
       </Title>
@@ -117,12 +116,4 @@
 
 
 
-
-
-    </server>
-    
-    <client>
-    </client>
-    <common>      
-    </common>
   </module>

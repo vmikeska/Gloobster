@@ -1,6 +1,5 @@
 ﻿
   <module name="pageNotifications">    
-    <server>
 
       <Title>
         <en>Notifications</en>        
@@ -14,10 +13,5 @@
         <en>You have no new notifications</en>
       </NoNewNotifs>
 
-      </server>
-    
-    <client>
-    </client>
-    <common>      
-    </common>
+ 
   </module>

@@ -1,6 +1,6 @@
 ﻿
   <module name="pageTrips">
-    <server>
+   
       <Title>
         <en>Trips</en>
       </Title>
@@ -53,12 +53,5 @@
       
       
       
-      
-
-    </server>
     
-    <client>
-    </client>
-    <common>      
-    </common>
   </module>

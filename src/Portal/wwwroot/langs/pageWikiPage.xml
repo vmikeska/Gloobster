@@ -1,6 +1,6 @@
 ﻿
   <module name="pageWikiPage">    
-    <server>
+
       <About>
         <en>About</en>        
       </About>
@@ -218,11 +218,4 @@
       </ReportSend>
 
 
-
-    </server>
-    
-    <client>
-    </client>
-    <common>      
-    </common>
   </module>

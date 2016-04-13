@@ -1,6 +1,6 @@
 ﻿
   <module name="login">    
-    <server>
+  
       <FbButton>
         <en>
           Sign in with Facebook
@@ -74,10 +74,4 @@
 
 
 
-    </server>
-    
-    <client>
-    </client>
-    <common>      
-    </common>
   </module>
