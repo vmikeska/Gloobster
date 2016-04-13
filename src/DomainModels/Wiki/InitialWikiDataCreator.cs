@@ -380,20 +380,6 @@ namespace Gloobster.DomainModels.Wiki
             }
         }
 
-        //todo: production remove
-        //if (countryCode == "CZ")
-        //{
-        //    var dc = new DemoCountry();
-        //    await DB.SaveAsync(dc.Country);
-        //    await DB.SaveAsync(dc.Texts);
-
-        //    var dci = new DemoCity(dc.Country.id);
-        //    await DB.SaveAsync(dci.City);
-        //    await DB.SaveAsync(dci.Texts);
-
-        //    continue;                    
-        //}
-
         private string GetCapitalName(string countryCode)
         {
             if (countryCode == "IL")

@@ -284,54 +284,12 @@ namespace Gloobster.DomainModels
 					Travel = travel.ToDO()
 				};
 
-				//var resultO = new AddPlaceResultDO
-				//{
-				//	Position = newPlace.Position,
-				//	Place = new PlaceLiteDO
-				//	{
-				//		Id = place.Id,
-				//		OrderNo = place.OrderNo,
-				//		LeavingId = null,
-				//		ArrivingId = travel.Id
-				//	},
-				//	Travel = new TravelLiteDO
-				//	{
-				//		Id = travel.Id,
-				//		Type = travel.Type
-				//	}
-				//};
 				return result;
 			}
 
 			return null;
 		}
 		
-		//public TripPlannerStructureLiteDO GetStructureLite(bool refresh)
-		//{
-		//	if (refresh)
-		//	{
-		//		LoadTrip();
-		//	}
-
-		//	var structure = new TripPlannerStructureLiteDO
-		//	{
-		//		Places = Trip.Places.Select(p => new PlaceLiteDO
-		//		{
-		//			Id = p.Id,
-		//			LeavingId = p.LeavingId,
-		//			ArrivingId = p.ArrivingId,
-		//			OrderNo = p.OrderNo
-		//		}).ToList(),
-		//		Travels = Trip.Travels.Select(p => new TravelLiteDO
-		//		{
-		//			Id = p.Id,
-		//		}).ToList()
-
-		//	};
-
-		//	return structure;
-		//}
-
 		private void LoadTrip()
 		{
 			var tripIdObj = new ObjectId(TripId);
@@ -375,21 +333,7 @@ namespace Gloobster.DomainModels
 
 			return result;
 		}
-
-		//private TripPlaceSE GetPlaceById(string id)
-		//{
-		//	if (Trip.Places == null || !Trip.Places.Any())
-		//	{
-		//		return null;
-		//	}
-
-		//	var place = Trip.Places.FirstOrDefault(p => p.id == new id);
-
-		//	//todo: throw if not found ?
-
-		//	return place;
-		//}
-
+        
 		private string NewId()
 		{
 			return Guid.NewGuid().ToString().Replace("-", string.Empty);

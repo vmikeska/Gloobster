@@ -66,7 +66,7 @@ namespace Gloobster.DomainModels
                 Type = TravelType.Plane,
                 LeavingDateTime = DateTime.UtcNow,
                 ArrivingDateTime = DateTime.UtcNow.AddDays(1),
-                Description = "Here you can place notes for your travel"
+                Description = ""
             };
 
             var firstPlace = new TripPlaceSE
