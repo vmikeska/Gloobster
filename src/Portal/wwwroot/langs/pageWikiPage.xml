@@ -9,13 +9,6 @@
         <en>Population</en>
       </PopulationCity>
 
-      <!--Population
-      CapitalName
-      Area
-      CurrencyCode
-      Languages
-      Languages-->
-
       <AboutPeople>
         <en>About people</en>
       </AboutPeople>
@@ -212,7 +205,18 @@
         <en>Very high</en>
       </VeryHigh>
 
-   
+      <ReportText>
+        <en>Let us know where to improve</en>
+      </ReportText>
+
+      <TextPlaceholder>
+        <en>Your opinion...</en>
+      </TextPlaceholder>
+
+      <ReportSend>
+        <en>Send</en>
+      </ReportSend>
+
 
 
     </server>

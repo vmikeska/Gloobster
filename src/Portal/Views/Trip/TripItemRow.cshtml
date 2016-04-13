@@ -46,7 +46,7 @@
         {
             <span data-tid="@Model.Id" class="icon-wheel blue middle mright10"></span>
         }
-        <a class="button white-blue middle" asp-controller="Trip" asp-action="Overview" asp-route-id="@Model.Id">Detail</a>
+        <a class="button white-blue middle" asp-controller="Trip" asp-action="Overview" asp-route-id="@Model.Id">@Model.B.W("Detail")</a>
         @Html.Partial("TripsItemMenu")
     </div>
 

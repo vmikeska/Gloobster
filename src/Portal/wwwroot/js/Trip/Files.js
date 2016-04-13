@@ -125,6 +125,15 @@ var Trip;
                         _this.$container.prepend($html);
                     }
                 });
+                this.$container.find(".delete").click(function (e) {
+                    e.preventDefault();
+                    var $target = $(e.target);
+                    var id = $target.data("id");
+                    var dialog = new Common.ConfirmDialog();
+                    dialog.create("DelDialogTitle", "DelDialogBody", "Cancel", "Ok", function () {
+                        _this.callDelete(id);
+                    });
+                });
             }
             if (this.config.editable && this.config.addAdder && !this.$adder) {
                 this.addAdder();
@@ -147,9 +156,6 @@ var Trip;
                         var $sisterChecks = $(".filePublic" + fileId);
                         $sisterChecks.prop("checked", state);
                     });
-                });
-                $html.find(".delete").click(function (e) {
-                    TripFiles.lastIdToDelete = $(e.target).data("id");
                 });
             }
             return $html;

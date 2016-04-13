@@ -175,6 +175,19 @@
 						this.$container.prepend($html);
 					}
 				});
+
+
+				this.$container.find(".delete").click((e) => {
+					e.preventDefault();
+					var $target = $(e.target);
+					var id = $target.data("id");
+				 
+					var dialog = new Common.ConfirmDialog();
+					dialog.create("DelDialogTitle", "DelDialogBody", "Cancel", "Ok", () => {					 
+						this.callDelete(id);					 
+					});
+
+				});
 			} 
 
 			if (this.config.editable && this.config.addAdder && !this.$adder) {				
@@ -205,11 +218,7 @@
 						$sisterChecks.prop("checked", state);
 
 					});
-				});
-
-				$html.find(".delete").click((e) => {
-				 TripFiles.lastIdToDelete = $(e.target).data("id");
-				});
+				});			 
 			}
 
 			return $html;

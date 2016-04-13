@@ -28,11 +28,11 @@
         <li><a class="icon-flag" href="#"></a></li>
     </ul>
     <div class="bubble">
-        <strong>Let us know where to improve</strong>
-        <input type="text" placeholder="Your opinion...">
+        <strong>@Model.B.W("ReportText")</strong>
+        <input type="text" placeholder="@Model.B.W("TextPlaceholder")">
         <div class="tright">
-            <a class="noneline mright20 cancel" href="#">Cancel</a>
-            <a class="button send" href="#">Send</a>            
+            <a class="noneline mright20 cancel" href="#">@Model.B.W("Cancel", "layout")</a>
+            <a class="button send" href="#">@Model.B.W("ReportSend")</a>            
         </div>
     </div>
 </div>

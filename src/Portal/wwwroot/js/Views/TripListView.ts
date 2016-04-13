@@ -2,9 +2,7 @@
 	export class TripListView extends ViewBase {
 
 		private pictureUpload: Common.FileUpload;
-
-		private tripIdToDelete: string;
-
+	
 		constructor() {
 			super();
 			this.registerUploads();
@@ -13,6 +11,8 @@
 				e.preventDefault();
 				$(".trip-menu").hide();
 			});
+
+			
 
 			this.registerTripDeletion();
 		 
@@ -25,21 +25,21 @@
 		}
 	 
 		private registerTripDeletion() {
-			$("#deleteTripConfirm").click((e) => {
-				e.preventDefault();
-				this.apiDelete("Trip", [["id", this.tripIdToDelete]], (r) => {
-				 $("#popup-delete").hide();
-					$(`#${this.tripIdToDelete}`).remove();
-				});
-		 });
-
-			$(".deleteTrip").click((e) => {
+			
+			$(".deleteTrip").click((e) => {			 
 			 e.preventDefault();
-			 var $a = $(e.target);
-			 var tid = $a.data("tid");
-			 this.tripIdToDelete = tid;
-			 $("#popup-delete").show();
-			});
+			 var $target = $(e.target);
+				var tid = $target.data("tid");
+
+			 var dialog = new Common.ConfirmDialog();
+			 dialog.create("TripDelTitle", "TripDelMessage", "Cancel", "Ok", () => {
+				this.apiDelete("Trip", [["id", tid]], (r) => {
+				 $("#popup-delete").hide();
+				 $(`#${tid}`).remove();
+				}); 
+			 });
+			 
+		 });		 
 		}
 
 		private registerUploads() {

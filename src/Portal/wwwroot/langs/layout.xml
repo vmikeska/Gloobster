@@ -15,7 +15,9 @@
         <en>Register</en>
       </MenuRegister>
 
-      
+      <Cancel>
+        <en>Cancel</en>
+      </Cancel>
 
       <Close>
         <en>Close</en>

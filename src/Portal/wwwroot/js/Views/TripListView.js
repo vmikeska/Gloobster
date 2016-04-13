@@ -25,19 +25,17 @@ var Views;
         }
         TripListView.prototype.registerTripDeletion = function () {
             var _this = this;
-            $("#deleteTripConfirm").click(function (e) {
-                e.preventDefault();
-                _this.apiDelete("Trip", [["id", _this.tripIdToDelete]], function (r) {
-                    $("#popup-delete").hide();
-                    $("#" + _this.tripIdToDelete).remove();
-                });
-            });
             $(".deleteTrip").click(function (e) {
                 e.preventDefault();
-                var $a = $(e.target);
-                var tid = $a.data("tid");
-                _this.tripIdToDelete = tid;
-                $("#popup-delete").show();
+                var $target = $(e.target);
+                var tid = $target.data("tid");
+                var dialog = new Common.ConfirmDialog();
+                dialog.create("TripDelTitle", "TripDelMessage", "Cancel", "Ok", function () {
+                    _this.apiDelete("Trip", [["id", tid]], function (r) {
+                        $("#popup-delete").hide();
+                        $("#" + tid).remove();
+                    });
+                });
             });
         };
         TripListView.prototype.registerUploads = function () {

@@ -34,6 +34,27 @@
         <en>Do you wanna delete this trip ?</en>
       </TripDelMessage>
 
+      <Name>
+        <en>Name</en>
+      </Name>
+
+      <Term>
+        <en>Term</en>
+      </Term>
+
+      <Team>
+        <en>Team</en>
+      </Team>
+
+      <Owner>
+        <en>Owner</en>
+      </Owner>
+
+      
+      
+      
+      
+
     </server>
     
     <client>

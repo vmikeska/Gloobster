@@ -41,24 +41,24 @@
         <div class="trips list margin">
             <div class="row nohover">
                 <div class="cell"></div>
-                <div class="cell">Name</div>
-                <div class="cell">Term</div>
-                <div class="cell">Team</div>
-                <div class="cell">Owner</div>
+                <div class="cell">@Model.W("Name")</div>
+                <div class="cell">@Model.W("Term")</div>
+                <div class="cell">@Model.W("Team")</div>
+                <div class="cell">@Model.W("Owner")</div>
                 <div class="cell"></div>
             </div>
 
-            @foreach (var trip in Model.Trips)
-            {
-                await Html.RenderPartialAsync("TripItemRow", (object) trip);
-            }
+            @foreach(var trip in Model.Trips)
+                        {
+                            await Html.RenderPartialAsync("TripItemRow", (object)trip);
+                        }
 
             <div class="row nohover">
                 <div class="cell">
                     <div class="photo create"></div>
                 </div>
                 <div class="cell">
-                    <textarea id="newTrip" placeholder="@Model.W("NewTripName")"></textarea>
+                    <textarea id = "newTrip" placeholder="@Model.W("NewTripName")"></textarea>
                 </div>
                 <div class="cell"></div>
                 <div class="cell"></div>
@@ -74,14 +74,14 @@
     {
         <div class="trips grid col3 margin">
 
-            @foreach (var trip in Model.Trips)
-            {
-                await Html.RenderPartialAsync("TripItemBig", (object)trip);
-            }
+            @foreach(var trip in Model.Trips)
+                    {
+                        await Html.RenderPartialAsync("TripItemBig", (object)trip);
+                    }
 
             <div class="cell">
                 <div class="trip new">
-                    <textarea id="newTrip" placeholder="@Model.W("NewTripName")..."></textarea>
+                    <textarea id = "newTrip" placeholder="@Model.W("NewTripName")..."></textarea>
                     <a class="create" href="javascript:currentView.createNewTrip();">@Model.W("Create")</a>
                 </div>
             </div>
@@ -92,8 +92,6 @@
     @*<div class="tcenter margin">
         <a class="button" href="#">Show 3 Archived Trips</a>
     </div>*@
-
-@Html.Partial("ConfirmTripDeleteDialog")
 
 <script>
     function onBodyLoad() {
