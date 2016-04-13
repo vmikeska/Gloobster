@@ -20,7 +20,7 @@ namespace Gloobster.DomainModels.Langs
     {
         public IDbOperations DB { get; set; }
 
-        private readonly string[] _mods = { "login", "layout", "pageHomeOld", "pagePins", "pageTrips", "pageTripDetail", "pageWikiHome", "pageWikiPage" };
+        private readonly string[] _mods = { "login", "layout", "pageFriends", "pageNotifications", "pageUserSettings", "pageHomeOld", "pagePins", "pageTrips", "pageTripDetail", "pageWikiHome", "pageWikiPage" };
 
         public Dictionary<string, LangModule> Modules = new Dictionary<string, LangModule>();
 

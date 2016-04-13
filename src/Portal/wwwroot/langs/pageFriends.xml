@@ -1,0 +1,28 @@
+﻿
+  <module name="pageFriends">    
+    <server>
+      <Unfriend>
+        <en>Unfriend</en>        
+      </Unfriend>
+
+      <Actions>
+        <en>Actions</en>
+      </Actions>
+
+      <SearchPlaceholder>
+        <en>Friend name</en>
+      </SearchPlaceholder>
+      <Title>
+        <en>Friends</en>
+      </Title>
+
+      
+      
+   
+    </server>
+    
+    <client>
+    </client>
+    <common>      
+    </common>
+  </module>

@@ -50,16 +50,16 @@
         <div class="cell">
             <div class="table row">
                 <div class="cell middle">
-                    <h2>Friends</h2>
+                    <h2>@Model.W("Title")</h2>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <div class="blue-form form">
+<div class="blue-form form">
         <div id="friendsSearch" class="dropdown left">
-            <input class="inputed" type="text" placeholder="Friend name">
+            <input class="inputed" type="text" placeholder="@Model.W("SearchPlaceholder")">
             <ul>
             </ul>
         </div>
@@ -87,11 +87,13 @@
     </tr>
 </script>
 
+
+
 <script id="friendMenu-template" type="text/x-handlebars-template">
     <div class="dropdown friendDropDown">
-        <span class="selected">Actions</span>
+        <span class="selected">@Model.W("Actions")</span>
         <ul>
-            <li><a class="unfriend" data-fid="{{id}}" href="#">Unfriend</a></li>            
+            <li><a class="unfriend" data-fid="{{id}}" href="#">@Model.W("Unfriend")</a></li>            
         </ul>
         <input type="hidden">
     </div>

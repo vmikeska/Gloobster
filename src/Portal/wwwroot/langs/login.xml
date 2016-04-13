@@ -26,6 +26,16 @@
       <GoButton1>
         <en>Google</en>
       </GoButton1>
+      
+      <FbButtonPair>
+        <en>Pair with Facebook</en>
+      </FbButtonPair>
+      <TwButtonPair>
+        <en>Pair with Twitter</en>
+      </TwButtonPair>
+      <GoButtonPair>
+        <en>Pair with Google</en>
+      </GoButtonPair>
 
 
       <MailJoin>

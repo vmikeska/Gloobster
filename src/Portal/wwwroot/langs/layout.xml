@@ -15,6 +15,7 @@
         <en>Register</en>
       </MenuRegister>
 
+      
 
       <Close>
         <en>Close</en>
@@ -52,6 +53,14 @@
       <Notifications>
         <en>Notifications</en>
       </Notifications>
+
+      <Male>
+        <en>Male</en>
+      </Male>
+
+      <Female>
+        <en>Female</en>
+      </Female>
 
 
 

@@ -1,5 +1,5 @@
 ﻿@using Gloobster.Portal.ViewModels
-@model Gloobster.Portal.ViewModels.UserDetailViewModel
+@model UserDetailViewModel
 
 <table>
     <tr>
@@ -10,7 +10,7 @@
     </tr>
     <tr>
         <td>
-            <span class="titleName">Display name</span>
+            <span class="titleName">@Model.W("DisplayName")</span>
         </td>
         <td>
             <span>@Model.DisplayName</span>
@@ -18,7 +18,7 @@
     </tr>
     <tr>
         <td>
-            <span class="titleName">Gender</span>
+            <span class="titleName">@Model.W("Gender")</span>
         </td>
         <td>            
             <span>@Model.Gender</span>                            
@@ -26,7 +26,7 @@
     </tr>
     <tr>
         <td>
-            <span class="titleName">Home city</span>
+            <span class="titleName">@Model.W("HomeCity")</span>
         </td>
         <td>
             <span>@Model.HomeLocation</span>                
@@ -34,7 +34,7 @@
     </tr>
     <tr>
         <td>
-            <span class="titleName">Current city</span>
+            <span class="titleName">@Model.W("CurrentCity")</span>
         </td>
         <td>
             <span>@Model.CurrentLocation</span>            

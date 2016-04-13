@@ -1,0 +1,38 @@
+﻿
+  <module name="pageUserSettings">    
+    <server>
+      
+      <Settings>
+        <en>Settings</en>        
+      </Settings>
+
+      <ChangePhoto>
+        <en>Change photo</en>
+      </ChangePhoto>
+
+      <DisplayName>
+        <en>Display name</en>
+      </DisplayName>
+
+      <Gender>
+        <en>Gender</en>
+      </Gender>
+
+      
+
+      <HomeCity>
+        <en>Home city</en>
+      </HomeCity>
+
+      <CurrentCity>
+        <en>Current city</en>
+      </CurrentCity>
+
+
+    </server>
+    
+    <client>
+    </client>
+    <common>      
+    </common>
+  </module>

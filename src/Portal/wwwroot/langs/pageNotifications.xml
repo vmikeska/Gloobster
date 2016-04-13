@@ -1,0 +1,23 @@
+﻿
+  <module name="pageNotifications">    
+    <server>
+
+      <Title>
+        <en>Notifications</en>        
+      </Title>
+
+      <DeleteAll>
+        <en>Delete all</en>
+      </DeleteAll>
+
+      <NoNewNotifs>
+        <en>You have no new notifications</en>
+      </NoNewNotifs>
+
+      </server>
+    
+    <client>
+    </client>
+    <common>      
+    </common>
+  </module>

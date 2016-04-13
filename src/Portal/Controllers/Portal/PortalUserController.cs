@@ -28,30 +28,46 @@ namespace Gloobster.Portal.Controllers.Portal
 		
 		public IActionResult Detail(string id)
 		{
-            var viewModel = CreateViewModelInstance<UserDetailViewModel>();
-            viewModel.AvatarLink = "/PortalUser/ProfilePicture/" + id;
-            viewModel.DisplayName = User.DisplayName;
-            viewModel.Gender = GetGenderStr(User.Gender);
-            viewModel.CurrentLocation = FormatCityStr(User.CurrentLocation);
-            viewModel.HomeLocation = FormatCityStr(User.HomeLocation);
+            var vm = CreateViewModelInstance<UserDetailViewModel>();
+            vm.DefaultLangModuleName = "pageUserSettings";
+            vm.AvatarLink = "/PortalUser/ProfilePicture/" + id;
+            vm.DisplayName = User.DisplayName;
+            vm.Gender = GetGenderStr(User.Gender, vm);
+            vm.CurrentLocation = FormatCityStr(User.CurrentLocation);
+            vm.HomeLocation = FormatCityStr(User.HomeLocation);
 
-            return View(viewModel);
+            return View(vm);
 		}
 
         [AuthorizeWeb]
 		public IActionResult Settings()
 		{
-			var viewModel = CreateViewModelInstance<SettingsViewModel>();
-			viewModel.AvatarLink = "/PortalUser/ProfilePicture";
-			viewModel.DisplayName = User.DisplayName;
-			viewModel.Gender = GetGenderStr(User.Gender);
-			viewModel.CurrentLocation = FormatCityStr(User.CurrentLocation);
-			viewModel.HomeLocation = FormatCityStr(User.HomeLocation);
+			var vm = CreateViewModelInstance<SettingsViewModel>();
+            vm.DefaultLangModuleName = "pageUserSettings";
+            vm.AvatarLink = "/PortalUser/ProfilePicture";
+			vm.DisplayName = User.DisplayName;
+			vm.Gender = GetGenderStr(User.Gender, vm);
+            vm.CurrentLocation = FormatCityStr(User.CurrentLocation);
+			vm.HomeLocation = FormatCityStr(User.HomeLocation);
 
-			return View(viewModel);
+			return View(vm);
 		}
 
-	    private FileStreamResult GetProfilePicture(string id, string fileName)
+        [AuthorizeWeb]
+        public async Task<IActionResult> Notifications()
+        {
+            await NotificationsDomain.SetAllNotificationsToSeen(UserId);
+
+            var notifs = DB.FOD<NotificationsEntity>(p => p.User_id == UserIdObj);
+
+            var vm = CreateViewModelInstance<NotificationsViewModel>();
+            vm.DefaultLangModuleName = "pageNotifications";
+            vm.Notifications = notifs;
+
+            return View(vm);
+        }
+
+        private FileStreamResult GetProfilePicture(string id, string fileName)
 	    {
             UserEntity user;
             if (!string.IsNullOrEmpty(id))
@@ -103,17 +119,7 @@ namespace Gloobster.Portal.Controllers.Portal
             return pic;
         }
         
-        public async Task<IActionResult> Notifications()
-		{
-            await NotificationsDomain.SetAllNotificationsToSeen(UserId);
-
-            var notifs = DB.C<NotificationsEntity>().First(p => p.User_id == UserIdObj);
-			
-			var viewModel = CreateViewModelInstance<NotificationsViewModel>();
-			viewModel.Notifications = notifs;
-            
-			return View(viewModel);
-		}
+        
         
 		private string FormatCityStr(CityLocationSE city)
 		{
@@ -125,16 +131,16 @@ namespace Gloobster.Portal.Controllers.Portal
 			return $"{city.City}, {city.CountryCode}";
 		}
 		
-		private string GetGenderStr(Gender gender)
+		private string GetGenderStr(Gender gender, ViewModelBase vm)
 		{
 			if (gender == Gender.M)
 			{
-				return "Male";
+				return  vm.W("Male", "layout");
 			}
 
 			if (gender == Gender.F)
 			{
-				return "Female";
+				return vm.W("Female", "layout");
 			}
 
 			return "N/A";

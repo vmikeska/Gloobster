@@ -1,5 +1,6 @@
 ﻿@using Gloobster.Portal.ViewModels
 @using System.Linq
+@using System.Threading.Tasks
 @using Gloobster.Enums
 @model SettingsViewModel
 
@@ -47,11 +48,12 @@
 
 </style>
 
-    <div class="table row col2 margin">
+
+<div class="table row col2 margin">
         <div class="cell">
             <div class="table row">
                 <div class="cell middle">
-                    <h2>Settings</h2>
+                    <h2>@Model.W("Settings")</h2>
                 </div>
 
             </div>
@@ -66,7 +68,7 @@
             <input type="file" id="avatarFile" />
 
             <label for="avatarFile">
-                <span>Change photo</span>
+                <span>@Model.W("ChangePhoto")</span>
             </label>
         </a>
     </div>
@@ -74,7 +76,7 @@
     <table class="controls">       
         <tr>
             <td>
-                <span class="titleName">Display name</span>
+                <span class="titleName">@Model.W("DisplayName")</span>
             </td>
             <td>
                 <input id="displayName" type="text" value="@Model.DisplayName" />
@@ -82,15 +84,15 @@
         </tr>
         <tr>
             <td>
-                <span class="titleName">Gender</span>
+                <span class="titleName">@Model.W("Gender")</span>
             </td>
             <td>
                 <div id="gender" class="dropdown left">
                     <span class="selected">@Model.Gender</span>
                     <ul>
                         @*<li data-value="0">N/A</li>*@
-                        <li data-value="1">Male</li>
-                        <li data-value="2">Female</li>
+                        <li data-value="1">@Model.W("Male", "layout")</li>
+                        <li data-value="2">@Model.W("Female", "layout")</li>
                     </ul>
                     <input type="hidden" value="0">
                 </div>
@@ -98,7 +100,7 @@
         </tr>
         <tr>
             <td>
-                <span class="titleName">Home city</span>
+                <span class="titleName">@Model.W("HomeCity")</span>
             </td>
             <td>
                 <div id="homeCity" class="dropdown left">
@@ -109,7 +111,7 @@
         </tr>
         <tr>
             <td>
-                <span class="titleName">Current city</span>
+                <span class="titleName">@Model.W("CurrentCity")</span>
             </td>
             <td>
                 <div id="currentCity" class="dropdown left">
@@ -120,20 +122,22 @@
         </tr>
     </table>
 
-    <div class="logins pairing">
+
+
+     <div class="logins pairing">
         @if (!Model.HasSocNet(SocialNetworkType.Facebook))
         {
-            <a id="fbBtnPair" class="facebook" href="#">Pair with Facebook</a>
+            <a id="fbBtnPair" class="facebook" href="#">@Model.W("FbButtonPair", "login")</a>
         }
 
         @if (!Model.HasSocNet(SocialNetworkType.Twitter))
         {
-            <a id="twitterBtnPair" class="twitter" href="#">Pair with Twitter</a>
+            <a id="twitterBtnPair" class="twitter" href="#">@Model.W("TwButtonPair", "login")</a>
         }
 
         @if (!Model.HasSocNet(SocialNetworkType.Google))
         {
-            <a id="googleBtnPair" class="google" href="#">Pair with Google</a>
+            <a id="googleBtnPair" class="google" href="#">@Model.W("GoButtonPair", "login")</a>
         }       
     </div>
 

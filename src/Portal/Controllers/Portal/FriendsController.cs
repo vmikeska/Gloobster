@@ -26,8 +26,10 @@ namespace Gloobster.Portal.Controllers.Portal
         [AuthorizeWeb]
 		public IActionResult List()
 		{
-			var viewModel = CreateViewModelInstance<ViewModelBase>();			
-			return View(viewModel);
+			var vm = CreateViewModelInstance<ViewModelBase>();
+            vm.DefaultLangModuleName = "pageFriends";
+
+            return View(vm);
 		}
 		
 	}

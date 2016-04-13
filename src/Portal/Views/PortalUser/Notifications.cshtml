@@ -1,17 +1,18 @@
-﻿@using Gloobster.Common
+﻿@using System.Threading.Tasks
+@using Gloobster.Common
 @using Gloobster.Portal.ViewModels
-@model Gloobster.Portal.ViewModels.NotificationsViewModel
+@model NotificationsViewModel
 
 <script type="text/javascript" src="@Url.Content("~/js/Views/NotificationsView.js")"></script>
 
     <div class="table margin width100">
         <div class="cell middle">
-            <h2>Notifications</h2>
+            <h2>@Model.W("Title")</h2>
         </div>
         <div class="cell middle tright">
             @if (Model.Notifications.Notifications.Any())
             {
-                <a id="deleteAll" class="button blue-trans" href="#">Delete all</a>
+                <a id="deleteAll" class="button blue-trans" href="#">@Model.W("DeleteAll")</a>
             }
         </div>
     </div>
@@ -30,12 +31,12 @@
                 {
                     <a class="button h4 middle" href="https://@GloobsterConfig.Domain/@notif.Link">@notif.LinkText</a>
                 }
-                <a data-notifId="@notif.id" class="notif_delete button border middle" href="#"><span class="icon-trash middle">Trash</span></a>
+                <a data-notifId="@notif.id" class="notif_delete button border middle" href="#"><span class="icon-trash middle"></span></a>
             </div>
         </div>
     }
 
-    <div id="noNotifs" style="display: none">You have no new notifications</div>
+    <div id="noNotifs" style="display: none">@Model.W("NoNewNotifs")</div>
 
 
 <script>
