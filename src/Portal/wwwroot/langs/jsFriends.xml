@@ -1,0 +1,27 @@
+﻿
+  <module name="jsFriends">
+
+    <Request>
+      <en>Request</en>
+    </Request>
+
+    <Friends>
+      <en>Friends</en>
+    </Friends>
+
+    <AwaitingConfirm>
+      <en>Awaiting confirmation</en>
+    </AwaitingConfirm>
+
+    <RecommByFb>
+      <en>Recommended by Facebook</en>
+    </RecommByFb>
+
+    <AlreadyProposed>
+      <en>Already proposed friendship</en>
+    </AlreadyProposed>
+
+
+
+    
+  </module>

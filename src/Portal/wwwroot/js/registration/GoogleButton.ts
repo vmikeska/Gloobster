@@ -9,9 +9,8 @@
 
 		private auth2: any;
 
-		private config = {
-			//todo: to constants
-			client_id: "430126253289-14tdcfe4noqm6p201jrugpi9dsies2at.apps.googleusercontent.com",
+		private config = {			
+			client_id: document["googleId"],
 			cookiepolicy: "single_host_origin"
 			// Request scopes in addition to 'profile' and 'email'
 			//scope: 'additional_scope'
@@ -28,8 +27,7 @@
 			if (this.auth2) {
 				return;
 			}
-			console.log("onLoaded");
-
+			
 			this.auth2 = gapi.auth2.init(this.config);
 			
 			var element = document.getElementById(this.elementId);
@@ -46,8 +44,9 @@
 		}
 
 		private errorHandler(error) {
-			//todo: do something here ?
-			alert(JSON.stringify(error, undefined, 2));
+		 var id = new Common.InfoDialog();
+		 id.create("Sorry", "Something went wrong :(");
+		 console.log("GoogleError: " + JSON.stringify(error, undefined, 2));
 		}
 
 		private attachSignin(element) {

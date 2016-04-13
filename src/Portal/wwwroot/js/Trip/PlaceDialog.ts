@@ -142,7 +142,7 @@ module Trip {
 		private buildTemplateView($row, data) {
 			var html = "";
 			var context = {
-				name: "Empty",
+				name: Views.ViewBase.currentView.t("Unnamed", "jsTrip"),
 				wantVisit: [],
 				hasNoWantVisit: true
 			}

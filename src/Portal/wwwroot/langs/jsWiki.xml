@@ -1,0 +1,23 @@
+﻿
+  <module name="jsWiki">
+
+    <FullRegTitle>
+      <en>Full registration</en>
+    </FullRegTitle>
+
+    <FullRegBody>
+      <en>For content contribution you need to complete your registration. Either register with any social network or confirm your email.</en>
+    </FullRegBody>
+
+    <UploadTitle>
+      <en>Photo upload</en>
+    </UploadTitle>
+
+    <UploadBody>
+      <en>Thank you, photo was uploaded! Will be displayed when one of our Admins validate the photo.</en>
+    </UploadBody>
+
+   
+
+    
+  </module>

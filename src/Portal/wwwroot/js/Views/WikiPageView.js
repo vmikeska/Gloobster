@@ -85,7 +85,8 @@ var Views;
         }
         RegMessages.displayFullRegMessage = function () {
             var id = new Common.InfoDialog();
-            id.create("Full registration", "For content contribution you need to complete your registration. Either register with any social network or confirm your email.");
+            var v = Views.ViewBase.currentView;
+            id.create(v.t("FullRegTitle", "jsWiki"), v.t("FullRegBody", "jsWiki"));
         };
         return RegMessages;
     })();
@@ -212,7 +213,8 @@ var Views;
                 var $pb = $("#galleryProgress");
                 $pb.hide();
                 var id = new Common.InfoDialog();
-                id.create("Photo upload", "Thank you, photo was uploaded! Will be displayed when one of our Admins validate the photo.");
+                var v = Views.ViewBase.currentView;
+                id.create(v.t("UploadTitle", "jsWiki"), v.t("UploadBody", "jsWiki"));
             };
         };
         return WikiPhotosUser;

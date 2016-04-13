@@ -42,6 +42,7 @@ namespace Gloobster.Portal.Controllers.Portal
         {
             var vm = CreateViewModelInstance<ViewModelTrips>();
             vm.DefaultLangModuleName = "pageTrips";
+            vm.LoadClientTexts(new [] { "jsTrip" });
 
             vm.Trips = new List<TripItemViewModel>();
             vm.DisplayType = string.IsNullOrEmpty(id) || (id == "grid");
@@ -317,6 +318,7 @@ namespace Gloobster.Portal.Controllers.Portal
             
             var vm = CreateViewModelInstance<ViewModelTripDetail>();
             vm.DefaultLangModuleName = "pageTripDetail";
+            vm.LoadClientTexts(new[] { "jsTrip" });
 
             var displayName = GetDisplayName(owner);
             
@@ -356,6 +358,7 @@ namespace Gloobster.Portal.Controllers.Portal
         {
             var vm = CreateViewModelInstance<ViewModelTripDetail>();
             vm.DefaultLangModuleName = "pageTripDetail";
+            vm.LoadClientTexts(new[] { "jsTrip" });
             vm.Name = trip.Name;
             vm.TripId = trip.id.ToString();
             vm.Description = trip.Description;

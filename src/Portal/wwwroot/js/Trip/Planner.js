@@ -6,7 +6,7 @@ var Trip;
             this.lastRowNo = 1;
             this.placesPerRow = 3;
             this.contBaseName = "plannerCont";
-            this.emptyName = "Empty";
+            this.emptyName = Views.ViewBase.currentView.t("Unnamed", "jsTrip");
             this.inverseColor = false;
             var thisParticipant = _.find(trip.participants, function (p) {
                 return p.userId === Views.ViewBase.currentUserId;

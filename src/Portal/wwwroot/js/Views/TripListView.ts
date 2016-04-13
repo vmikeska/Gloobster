@@ -32,7 +32,7 @@
 				var tid = $target.data("tid");
 
 			 var dialog = new Common.ConfirmDialog();
-			 dialog.create("TripDelTitle", "TripDelMessage", "Cancel", "Ok", () => {
+			 dialog.create(this.t("TripDelTitle", "jsTrip"), this.t("TripDelMessage", "jsTrip"), this.t("Cancel", "jsLayout"), this.t("Ok", "jsLayout"), () => {
 				this.apiDelete("Trip", [["id", tid]], (r) => {
 				 $("#popup-delete").hide();
 				 $(`#${tid}`).remove();

@@ -26,14 +26,6 @@
         <en>Title Photo</en>
       </TitlePhoto>
 
-      <TripDelTitle>
-        <en>Trip deletion</en>
-      </TripDelTitle>
-
-      <TripDelMessage>
-        <en>Do you wanna delete this trip ?</en>
-      </TripDelMessage>
-
       <Name>
         <en>Name</en>
       </Name>

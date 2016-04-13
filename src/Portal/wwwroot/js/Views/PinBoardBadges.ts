@@ -104,12 +104,12 @@ module Views {
 		}
 	 
 		private generateOverview() {
-			var afrHtml = this.genOverviewItem("africa.png", this.aggegatedCountries.africaVisited, this.aggegatedCountries.africaTotal, "Africa");
-			var eurHtml = this.genOverviewItem("europe.png", this.aggegatedCountries.europeVisited, this.aggegatedCountries.europeTotal, "Europe");
-			var asiHtml = this.genOverviewItem("asia.png", this.aggegatedCountries.asiaVisited, this.aggegatedCountries.asiaTotal, "Asia");
-			var ausHtml = this.genOverviewItem("australia.png", this.aggegatedCountries.australiaVisited, this.aggegatedCountries.australiaTotal, "Australia");
-			var naHtml = this.genOverviewItem("north-amecica.png", this.aggegatedCountries.northAmericaVisited, this.aggegatedCountries.northAmericaTotal, "North America");
-			var saHtml = this.genOverviewItem("south-america.png", this.aggegatedCountries.southAmericaVisited, this.aggegatedCountries.southAmericaTotal, "South America");
+			var afrHtml = this.genOverviewItem("africa.png", this.aggegatedCountries.africaVisited, this.aggegatedCountries.africaTotal, ViewBase.currentView.t("Africa", "jsPins"));
+			var eurHtml = this.genOverviewItem("europe.png", this.aggegatedCountries.europeVisited, this.aggegatedCountries.europeTotal, ViewBase.currentView.t("Europe", "jsPins"));
+			var asiHtml = this.genOverviewItem("asia.png", this.aggegatedCountries.asiaVisited, this.aggegatedCountries.asiaTotal, ViewBase.currentView.t("Asia", "jsPins"));
+			var ausHtml = this.genOverviewItem("australia.png", this.aggegatedCountries.australiaVisited, this.aggegatedCountries.australiaTotal, ViewBase.currentView.t("Australia", "jsPins"));
+			var naHtml = this.genOverviewItem("north-amecica.png", this.aggegatedCountries.northAmericaVisited, this.aggegatedCountries.northAmericaTotal, ViewBase.currentView.t("NorthAmerica", "jsPins"));
+			var saHtml = this.genOverviewItem("south-america.png", this.aggegatedCountries.southAmericaVisited, this.aggegatedCountries.southAmericaTotal, ViewBase.currentView.t("LatinAmerica", "jsPins"));
 			
 			var euHtml = this.genOverviewItem("states-eu.png", this.aggegatedCountries.euVisited, this.aggegatedCountries.euTotal, "EU");
 			var usHtml = this.genOverviewItem("states-us.png", this.aggegatedCountries.usVisited, this.aggegatedCountries.usTotal, "US");
@@ -124,17 +124,17 @@ module Views {
 		 var $ftr = $cont.find("tr").first();
 		 var $ltr = $cont.find("tr").last();
 
-		 var $naHtml = this.genContCitiesSection("North America", this.naCities);
+		 var $naHtml = this.genContCitiesSection(ViewBase.currentView.t("NorthAmerica", "jsPins"), this.naCities);
 		 $ftr.append($naHtml);
-		 var $eurHtml = this.genContCitiesSection("Europe", this.europeCities);
+		 var $eurHtml = this.genContCitiesSection(ViewBase.currentView.t("Europe", "jsPins"), this.europeCities);
 		 $ftr.append($eurHtml);
-		 var $auHtml = this.genContCitiesSection("Australia", this.australiaCities);
+		 var $auHtml = this.genContCitiesSection(ViewBase.currentView.t("Australia", "jsPins"), this.australiaCities);
 		 $ftr.append($auHtml);
-		 var $asiHtml = this.genContCitiesSection("Asia", this.asiaCities);
+		 var $asiHtml = this.genContCitiesSection(ViewBase.currentView.t("Asia", "jsPins"), this.asiaCities);
 		 $ltr.append($asiHtml);			
-		 var $saHtml = this.genContCitiesSection("Latin America", this.saCities);
+		 var $saHtml = this.genContCitiesSection(ViewBase.currentView.t("LatinAmerica", "jsPins"), this.saCities);
 		 $ltr.append($saHtml);
-		 var $afHtml = this.genContCitiesSection("Africa", this.afCities);
+		 var $afHtml = this.genContCitiesSection(ViewBase.currentView.t("Africa", "jsPins"), this.afCities);
 		 $ltr.append($afHtml);			
 		}
 

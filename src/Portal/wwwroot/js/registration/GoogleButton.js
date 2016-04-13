@@ -3,8 +3,7 @@ var Reg;
     var GoogleButton = (function () {
         function GoogleButton() {
             this.config = {
-                //todo: to constants
-                client_id: "430126253289-14tdcfe4noqm6p201jrugpi9dsies2at.apps.googleusercontent.com",
+                client_id: document["googleId"],
                 cookiepolicy: "single_host_origin"
             };
         }
@@ -19,7 +18,6 @@ var Reg;
             if (this.auth2) {
                 return;
             }
-            console.log("onLoaded");
             this.auth2 = gapi.auth2.init(this.config);
             var element = document.getElementById(this.elementId);
             $(element).click(function (e) {
@@ -32,8 +30,9 @@ var Reg;
             }
         };
         GoogleButton.prototype.errorHandler = function (error) {
-            //todo: do something here ?
-            alert(JSON.stringify(error, undefined, 2));
+            var id = new Common.InfoDialog();
+            id.create("Sorry", "Something went wrong :(");
+            console.log("GoogleError: " + JSON.stringify(error, undefined, 2));
         };
         GoogleButton.prototype.attachSignin = function (element) {
             this.auth2.attachClickHandler(element, {}, this.successfulCallback, this.errorHandler);

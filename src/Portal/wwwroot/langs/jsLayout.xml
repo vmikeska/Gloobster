@@ -1,0 +1,54 @@
+﻿
+  <module name="jsLayout">
+
+    <FileTooBigTitle>
+        <en>File too big</en>
+      </FileTooBigTitle>
+
+    <FileTooBigBody>
+      <en>Maximal allowed size of file is ${maxSize}MB</en>
+    </FileTooBigBody>
+
+    <OverLimitTitle>
+      <en>File usage over limit</en>
+    </OverLimitTitle>
+
+    <OverLimitBody>
+      <en>Currently is for you allowed file usage max. 300MB. If you need more, contact us on info@gloobster.com</en>
+    </OverLimitBody>
+
+    <UnsuccessLogin>
+      <en>Unsuccessful login</en>
+    </UnsuccessLogin>
+
+    <UnsuccessLoginBody>
+      <en>Sorry, something went wrong</en>
+    </UnsuccessLoginBody>
+
+    <CannotPair>
+      <en>Cannot pair</en>
+    </CannotPair>
+
+    <CannotPairBody>
+      <en>The social network you are trying to pair with current account is already in use by another account.</en>
+    </CannotPairBody>
+
+
+    <Anonymous>
+      <en>Anonymous</en>
+    </Anonymous>
+
+    <Cancel>
+      <en>Cancel</en>
+    </Cancel>
+
+    <Ok>
+      <en>Ok</en>
+    </Ok>
+
+    <SuccessfulPaired>
+      <en>You are successfully paired!</en>
+    </SuccessfulPaired>
+
+
+  </module>

@@ -7,6 +7,12 @@ using Gloobster.Enums;
 
 namespace Gloobster.Portal.ViewModels
 {
+    public class ModuleTexts
+    {
+        public string Name { get; set; }
+        public List<WordPair> Texts;
+    }
+
 	public class ViewModelBase
 	{
         public Languages Langs { get; set; }
@@ -19,8 +25,9 @@ namespace Gloobster.Portal.ViewModels
 		public IDbOperations DB { get; set; }
 		public List<SocialNetworkType> SocialNetworks { get; set; }        
         public int NotificationCount { get; set; }
-
+	    public List<ModuleTexts> ClientModules { get; set; }
         public string FbToken { get; set; }
+        public bool HasUserAgent { get; set; }
 
         public bool HasSocNet(SocialNetworkType net)
 	    {
@@ -37,6 +44,33 @@ namespace Gloobster.Portal.ViewModels
             string text = Langs.GetWord(module, key, Lang);
             return text;
         }
+
+	    public void LoadClientTexts(string[] modules = null)
+	    {
+            if (!HasUserAgent)
+            {
+                return;
+            }
+
+            ClientModules = new List<ModuleTexts>();
+            
+            var allModules = new List<string> {"jsLayout"};
+	        if (modules != null)
+	        {
+	            allModules.AddRange(modules);
+	        }
+
+	        foreach (var module in allModules)
+	        {
+	            var moduleText = new ModuleTexts
+	            {
+	                Texts = Langs.GetModuleTexts(module, Lang),
+	                Name = module
+	            };
+                ClientModules.Add(moduleText);                
+	        }
+	    }
+        
 
         public bool HasAnyWikiPermissions { get; set; }
         public bool CanManageArticleAdmins { get; set; }

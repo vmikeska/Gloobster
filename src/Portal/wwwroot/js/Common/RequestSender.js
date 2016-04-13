@@ -17,15 +17,6 @@ var Common;
                 reqObj.headers = headers;
             }
         };
-        //private addAuthentication(reqObj) {
-        //	var cookieStr = $.cookie(Constants.cookieName);
-        //	if (cookieStr) {
-        //		var cookieObj = JSON.parse(cookieStr);
-        //		var headers = {};
-        //		headers["Authorization"] = cookieObj.encodedToken;
-        //		reqObj.headers = headers;
-        //	}
-        //}
         RequestSender.prototype.serializeData = function () {
             this.dataToSend = JSON.stringify(this.data);
         };

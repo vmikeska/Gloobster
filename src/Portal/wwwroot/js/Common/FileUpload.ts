@@ -35,6 +35,7 @@
 		public onUploadFinished: Function;
 
 		private config: FileUploadConfig;
+	  private v : Views.ViewBase;
 
 	  public $filesInput;
 
@@ -48,6 +49,8 @@
 			}
 
 			this.config = config;
+
+			this.v = Views.ViewBase.currentView;
 		}
 
 		public registerFileInput(inputId) {
@@ -68,9 +71,10 @@
 
 		private fileValidations(callback) {
 		 var id = new InfoDialog();
-
-		 if (this.currentFile.size > this.config.maxFileSize) {			
-			id.create("File too big", `Maximal allowed size of file is ${(this.config.maxFileSize / (1024 * 1024)).toFixed(0)}MB`);
+		 
+		 if (this.currentFile.size > this.config.maxFileSize) {
+			var maxSize = (this.config.maxFileSize / (1024 * 1024)).toFixed(0);			 
+			id.create(this.v.t("FileTooBigTitle", "jsLayout"), this.v.t("FileTooBigBody", "jsLayout").replace("${maxSize}", maxSize));
 			return;
 		 }
 
@@ -79,11 +83,11 @@
 			 return;
 		 }
 
-		 Views.ViewBase.currentView.apiGet("FilesUsage", [], (allowed) => {
+		 this.v.apiGet("FilesUsage", [], (allowed) => {
 			 if (allowed) {
 				 callback();
-			 } else {
-				id.create("File usage over limit", "Currently is for you allowed file usage max. 300MB. If you need more, contact us on info@gloobster.com");
+			 } else {				
+				id.create(this.v.t("OverLimitTitle", "jsLayout"), this.v.t("OverLimitBody", "jsLayout"));
 			 }
 		 });
 	  }
@@ -175,7 +179,7 @@
 				type: this.currentFile.type
 			});
 
-			Views.ViewBase.currentView.apiPost(this.config.endpoint, dataToSend, (finalResponse) => {
+			this.v.apiPost(this.config.endpoint, dataToSend, (finalResponse) => {
 				this.finalResponse = finalResponse;
 				this.onSuccessBlobUpload();
 			});

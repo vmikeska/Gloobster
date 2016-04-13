@@ -30,7 +30,7 @@ var Views;
                 var $target = $(e.target);
                 var tid = $target.data("tid");
                 var dialog = new Common.ConfirmDialog();
-                dialog.create("TripDelTitle", "TripDelMessage", "Cancel", "Ok", function () {
+                dialog.create(_this.t("TripDelTitle", "jsTrip"), _this.t("TripDelMessage", "jsTrip"), _this.t("Cancel", "jsLayout"), _this.t("Ok", "jsLayout"), function () {
                     _this.apiDelete("Trip", [["id", tid]], function (r) {
                         $("#popup-delete").hide();
                         $("#" + tid).remove();

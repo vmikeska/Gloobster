@@ -22,7 +22,7 @@
 		private lastRowNo = 1;
 		private placesPerRow = 3;
 		private contBaseName = "plannerCont";
-	  private emptyName = "Empty";
+		private emptyName = Views.ViewBase.currentView.t("Unnamed", "jsTrip");
 
 		private inverseColor = false;
 

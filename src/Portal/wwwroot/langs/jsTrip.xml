@@ -1,0 +1,41 @@
+﻿
+  <module name="jsTrip">
+
+    <DelDialogTitle>
+      <en>File deletion</en>
+    </DelDialogTitle>
+
+    <DelDialogBody>
+      <en>Do you wanna delete this file ?</en>
+    </DelDialogBody>
+
+    <TripDelTitle>
+      <en>Trip deletion</en>
+    </TripDelTitle>
+
+    <TripDelMessage>
+      <en>Do you wanna delete this trip ?</en>
+    </TripDelMessage>
+
+    <Invited>
+      <en>Invited</en>
+    </Invited>
+
+    <Accepted>
+      <en>Accepted</en>
+    </Accepted>
+
+    <Maybe>
+      <en>Maybe</en>
+    </Maybe>
+
+    <Refused>
+      <en>Refused</en>
+    </Refused>
+
+        
+
+
+
+
+  </module>

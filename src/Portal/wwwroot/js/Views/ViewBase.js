@@ -43,6 +43,25 @@ var Views;
             }
             return false;
         };
+        ViewBase.prototype.t = function (key, module) {
+            var modules = window["modules"];
+            if (!modules) {
+                return "NoModules";
+            }
+            var mod = _.find(modules, function (m) {
+                return m.Name === module;
+            });
+            if (!mod) {
+                return "NotFoundModule";
+            }
+            var text = _.find(mod.Texts, function (t) {
+                return t.Name === key;
+            });
+            if (!text) {
+                return "KeyNotFound";
+            }
+            return text.Text;
+        };
         ViewBase.prototype.logout = function () {
             var auth = new Reg.AuthCookieSaver();
             auth.removeCookies();

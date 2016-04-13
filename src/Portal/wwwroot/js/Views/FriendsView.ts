@@ -92,7 +92,7 @@ class FriendsView extends Views.ViewBase {
 
 	private getItemHtml(item) {
 	 var photoUrl = "/PortalUser/ProfilePicture_s/" + item.friendId;
-	 return `<li data-value="${item.friendId}"><span class="thumbnail"><img src="${photoUrl}"></span>${item.displayName} <button class="requestButton" data-value="${item.friendId}">Request</button></li>`;
+	 return `<li data-value="${item.friendId}"><span class="thumbnail"><img src="${photoUrl}"></span>${item.displayName} <button class="requestButton" data-value="${item.friendId}">${this.t("Request", "jsFriends")}</button></li>`;
 	}
 
 	requestUser(userId, places) {
@@ -105,32 +105,32 @@ class FriendsView extends Views.ViewBase {
 			self.userStateChanged(response);
 		});
 	}
- 
-	public generateAllSections(friendsResponse) {
 
-	 this.$usersTable.html('<tr><td colspan="3"></td></tr>');
+	public generateAllSections(friendsResponse) {
 	 
+		this.$usersTable.html('<tr><td colspan="3"></td></tr>');
+
 		if (friendsResponse.Friends.length > 0) {
-			var titleFriends = "Friends";
+			var titleFriends = this.t("Friends", "jsFriends");
 			var friends = this.convertFriends(friendsResponse.Friends, FriendshipState.Friends);
 			this.generateSection(titleFriends, friends);
 		}
 
 		if (friendsResponse.AwaitingConfirmation.length > 0) {
-			var titleAwaiting = "Awaiting confirmation";
+			var titleAwaiting = this.t("AwaitingConfirm", "jsFriends");
 			var friendsAwaiting = this.convertFriends(friendsResponse.AwaitingConfirmation, FriendshipState.AwaitingConfirmation);
 			this.generateSection(titleAwaiting, friendsAwaiting);
 		}
 
 		if (friendsResponse.FacebookRecommended.length > 0) {
 
-			var titleFbRecommended = "Recommended by Facebook";
+			var titleFbRecommended = this.t("RecommByFb", "jsFriends");
 			var friendsFbRec = this.convertFriends(friendsResponse.FacebookRecommended, FriendshipState.None);
 			this.generateSection(titleFbRecommended, friendsFbRec);
 		}
 
 		if (friendsResponse.Proposed.length > 0) {
-			var titleProposed = "Already proposed friendship";
+			var titleProposed = this.t("AlreadyProposed", "jsFriends");
 			var friendsProposed = this.convertFriends(friendsResponse.Proposed, FriendshipState.Proposed);
 			this.generateSection(titleProposed, friendsProposed);
 		}

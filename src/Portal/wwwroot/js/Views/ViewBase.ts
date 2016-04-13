@@ -49,6 +49,31 @@ module Views {
 			return false;
 		}
 
+		public t(key: string, module: string) {
+		 var modules = window["modules"];
+		 if (!modules) {
+			 return "NoModules";
+		 }
+
+		  var mod = _.find(modules, (m) => {
+			  return m.Name === module;
+		 });
+
+		 if (!mod) {
+			 return "NotFoundModule";
+			}
+
+		  var text = _.find(mod.Texts, (t) => {
+			  return t.Name === key;
+		 });
+
+		 if (!text) {
+			 return "KeyNotFound";
+		 }
+
+		 return text.Text;
+	  }
+
 		public logout() {
 			var auth = new Reg.AuthCookieSaver();
 			auth.removeCookies();

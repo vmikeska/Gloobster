@@ -37,6 +37,9 @@
     "ConsumerKey": "Tg6yDQ3tFphahJQlitxc-w",
     "ConsumerSecret": "2LVpeUFMntvSpTWpfCYIjylGibI"
   },
+  "Google": {
+    "ClientId": "430126253289-14tdcfe4noqm6p201jrugpi9dsies2at.apps.googleusercontent.com"
+  },
   "Mapbox": {
     "Secret": "pk.eyJ1IjoiZ2xvb2JzdGVyIiwiYSI6ImQxZWY5MjRkZjU1NDk2MGU3OWI2OGRiM2U3NTM0MGYxIn0.nCG7hOsSQzb0c-_qzfTCRQ"
   },

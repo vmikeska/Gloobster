@@ -34,7 +34,7 @@ var Views;
         };
         TwitterAuthView.prototype.apiPost = function (endpointName, data, callback) {
             var endpoint = '/api/' + endpointName;
-            console.log("posting: " + endpoint);
+            //console.log("posting: " + endpoint);
             var request = new Common.RequestSender(endpoint, data, true);
             request.serializeData();
             request.onSuccess = callback;

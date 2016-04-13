@@ -42,7 +42,7 @@
 		public apiPost(endpointName: string, data: any, callback: Function) {
 
 		 var endpoint = '/api/' + endpointName;
-		 console.log("posting: " + endpoint);
+		 //console.log("posting: " + endpoint);
 
 		 var request = new Common.RequestSender(endpoint, data, true);
 		 request.serializeData();

@@ -32,6 +32,8 @@
 		private $adder: any;
 		private $noFiles: any;
 
+		private v: Views.ViewBase;
+
 		constructor(config: FilesConfig, customConfig = null) {
 
 			if (config.adderTemplate) {
@@ -59,6 +61,8 @@
 			if (this.config.editable) {
 			 this.registerFileUpload(customConfig);
 			}
+
+			this.v = Views.ViewBase.currentView;
 		}
 
 		private registerFileUpload(customConfig) {
@@ -118,7 +122,7 @@
 	 
 		private callDelete(fileId: string) {
 			var prms = [["fileId", fileId], ["tripId", this.tripId]];
-			Views.ViewBase.currentView.apiDelete("tripFile", prms, (res) => {			 
+			this.v.apiDelete("tripFile", prms, (res) => {			 
 			 this.filterFiles(res.files, res.filesPublic);
 			});
 		}
@@ -181,9 +185,9 @@
 					e.preventDefault();
 					var $target = $(e.target);
 					var id = $target.data("id");
-				 
+					
 					var dialog = new Common.ConfirmDialog();
-					dialog.create("DelDialogTitle", "DelDialogBody", "Cancel", "Ok", () => {					 
+					dialog.create(this.v.t("DelDialogTitle", "jsTrip"), this.v.t("DelDialogBody", "jsTrip"), this.v.t("Cancel", "jsLayout"), this.v.t("Ok", "jsLayout"), () => {					 
 						this.callDelete(id);					 
 					});
 

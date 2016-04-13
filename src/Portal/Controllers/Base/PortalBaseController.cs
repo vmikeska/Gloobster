@@ -106,7 +106,13 @@ namespace Gloobster.Portal.Controllers.Base
         }
 
         public T CreateViewModelInstance<T>() where T : ViewModelBase, new()
-        {            
+        {
+            string ua = HttpContext.Request.Headers["User-Agent"];
+            if (!string.IsNullOrEmpty(ua))
+            {
+                Langs.InitLangs();
+            }
+            
             var instance = new T
             {
                 User = User,
@@ -117,7 +123,8 @@ namespace Gloobster.Portal.Controllers.Base
                 CanManageArticleAdmins = false,
                 HasAnyWikiPermissions = false,
                 Langs = (Languages)Langs,
-                Lang = "en" // todo: change from session
+                Lang = "en", // todo: change from session
+                HasUserAgent = !string.IsNullOrEmpty(ua)
             };
 
             if (IsUserLogged)
@@ -127,9 +134,7 @@ namespace Gloobster.Portal.Controllers.Base
                 {
                     instance.NotificationCount = notifications.Notifications.Count(n => n.Status == NotificationStatus.Created);
                 }
-
-                Langs.InitLangs();
-
+                
                 var permissions = CC.Resolve<IWikiPermissions>();
                 instance.HasAnyWikiPermissions = permissions.IsAdminOfSomething(UserId);
                 instance.CanManageArticleAdmins = permissions.CanManageArticleAdmins(UserId);

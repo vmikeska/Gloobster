@@ -150,7 +150,7 @@
 
 			if (savedPosition) {
 				var roundedZoom = Math.round(savedZoom);
-				console.log("savedZoom: " + roundedZoom);
+				//console.log("savedZoom: " + roundedZoom);
 				this.mapsDriver.setView(savedPosition.lat, savedPosition.lng, roundedZoom);
 			}
 		}

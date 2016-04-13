@@ -128,17 +128,18 @@ var Views;
             $table.prepend($html);
         };
         TripMenu.prototype.getTextState = function (state) {
+            var v = Views.ViewBase.currentView;
             if (state === ParticipantState.Invited) {
-                return "Invited";
+                return v.t("Invited", "jsTrip");
             }
             if (state === ParticipantState.Accepted) {
-                return "Accepted";
+                return v.t("Accepted", "jsTrip");
             }
             if (state === ParticipantState.Maybe) {
-                return "Maybe";
+                return v.t("Maybe", "jsTrip");
             }
             if (state === ParticipantState.Refused) {
-                return "Refused";
+                return v.t("Refused", "jsTrip");
             }
         };
         TripMenu.prototype.addOneParticipant = function (name, id) {

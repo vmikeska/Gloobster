@@ -47,6 +47,7 @@ namespace Gloobster.Portal.Controllers.Portal
 	    {
 	        var vm = CreateViewModelInstance<PinBoardViewModel>();
             vm.DefaultLangModuleName = "pagePins";
+            vm.LoadClientTexts(new []{"jsPins"});
             if (UserIdObj.HasValue)
             {
                 await ExtractPlaces();                

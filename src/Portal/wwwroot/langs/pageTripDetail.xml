@@ -244,15 +244,6 @@
         <en>Preview</en>
       </Preview>
 
-
-      <DelDialogTitle>
-        <en>File deletion</en>
-      </DelDialogTitle>
-
-      <DelDialogBody>
-        <en>Do you wanna delete this file ?</en>
-      </DelDialogBody>
-
       <SimpleNotes>
         <en>write your simple notes...</en>
       </SimpleNotes>

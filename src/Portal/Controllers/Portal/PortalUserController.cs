@@ -30,6 +30,7 @@ namespace Gloobster.Portal.Controllers.Portal
 		{
             var vm = CreateViewModelInstance<UserDetailViewModel>();
             vm.DefaultLangModuleName = "pageUserSettings";
+            vm.LoadClientTexts();
             vm.AvatarLink = "/PortalUser/ProfilePicture/" + id;
             vm.DisplayName = User.DisplayName;
             vm.Gender = GetGenderStr(User.Gender, vm);
@@ -44,6 +45,7 @@ namespace Gloobster.Portal.Controllers.Portal
 		{
 			var vm = CreateViewModelInstance<SettingsViewModel>();
             vm.DefaultLangModuleName = "pageUserSettings";
+            vm.LoadClientTexts();
             vm.AvatarLink = "/PortalUser/ProfilePicture";
 			vm.DisplayName = User.DisplayName;
 			vm.Gender = GetGenderStr(User.Gender, vm);
@@ -61,6 +63,7 @@ namespace Gloobster.Portal.Controllers.Portal
             var notifs = DB.FOD<NotificationsEntity>(p => p.User_id == UserIdObj);
 
             var vm = CreateViewModelInstance<NotificationsViewModel>();
+            vm.LoadClientTexts();
             vm.DefaultLangModuleName = "pageNotifications";
             vm.Notifications = notifs;
 
@@ -104,18 +107,30 @@ namespace Gloobster.Portal.Controllers.Portal
         public IActionResult ProfilePicture(string id = null)
 		{
 		    var pic = GetProfilePicture(id, "profile.jpg");
+            if (pic == null)
+            {
+                return Redirect("/images/Anonymous.jpg");
+            }
 			return pic;
 		}
 
         public IActionResult ProfilePicture_s(string id = null)
         {
             var pic = GetProfilePicture(id, "profile_s.jpg");
+            if (pic == null)
+            {
+                return Redirect("/images/Anonymous.jpg");
+            }
             return pic;
         }
 
         public IActionResult ProfilePicture_xs(string id = null)
         {
             var pic = GetProfilePicture(id, "profile_xs.jpg");
+            if (pic == null)
+            {
+                return Redirect("/images/Anonymous.jpg");
+            }
             return pic;
         }
         

@@ -47,7 +47,7 @@ var Views;
         };
         SettingsView.prototype.onAfter = function () {
             var hint = new Common.HintDialog();
-            hint.create("You are successfully paired!");
+            hint.create(this.t("SuccessfulPaired", "jsLayout"));
             $("#MenuRegister").parent().remove();
         };
         SettingsView.prototype.displayNameCallback = function (value) {

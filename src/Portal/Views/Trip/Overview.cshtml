@@ -132,15 +132,8 @@
             <div class="cell middle tright">
                 by @(string.IsNullOrEmpty(Model.OwnerDisplayName) ? Model.W("Anonymous") : Model.OwnerDisplayName)
 
-                <span class="thumbnail disc60 middle mleft10">
-                    @if (string.IsNullOrEmpty(Model.OwnerDisplayName))
-                    {
-                        <img src="/images/Anonymous.jpg">
-                    }
-                    else
-                    {
-                        <img src="/PortalUser/ProfilePicture_s/@Model.OwnerId">
-                    }
+                <span class="thumbnail disc60 middle mleft10">                    
+                    <img src="/PortalUser/ProfilePicture_s/@Model.OwnerId">                    
                 </span>
             </div>
         </div>

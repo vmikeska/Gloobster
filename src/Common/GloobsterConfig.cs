@@ -41,6 +41,9 @@ namespace Gloobster.Common
         public static string YelpConsumerKey { get; set; }
         public static string YelpConsumerSecret { get; set; }
 
+        public static string GoogleClientId { get; set; }
+        
+
         public static string MapBoxSecret { get; set; }
 		
 

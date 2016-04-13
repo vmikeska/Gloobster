@@ -32,6 +32,7 @@ namespace Gloobster.Portal.Controllers.Portal
         {
             var vm = CreateViewModelInstance<WikiHomeViewModel>();
             vm.DefaultLangModuleName = "pageWikiHome";
+            vm.LoadClientTexts(new []{"jsWiki"});
             return View(vm);
         }
 

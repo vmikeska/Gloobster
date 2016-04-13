@@ -57,7 +57,7 @@ module Maps {
 
 		private loadScript(scriptUrl: string, callback: Function) {
 			$.getScript(scriptUrl, (data, textStatus, jqxhr) => {
-				console.log("Loaded: " + scriptUrl);
+				//console.log("Loaded: " + scriptUrl);
 				callback();
 			});
 		}

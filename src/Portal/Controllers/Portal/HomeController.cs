@@ -35,9 +35,10 @@ namespace Gloobster.Portal.Controllers.Portal
                 return RedirectToAction("Pins", "Pinboard");                
             }
             
-            var viewModel = CreateViewModelInstance<ViewModelHome>();
-            viewModel.DefaultLangModuleName = "pageHomeOld";            
-            return View(viewModel);
+            var vm = CreateViewModelInstance<ViewModelHome>();
+            vm.DefaultLangModuleName = "pageHomeOld";            
+            vm.LoadClientTexts();
+            return View(vm);
         }
 
         public IActionResult Component(string id)

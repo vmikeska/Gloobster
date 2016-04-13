@@ -37,6 +37,7 @@ var Common;
                 this.registerFileInput(config.inputId);
             }
             this.config = config;
+            this.v = Views.ViewBase.currentView;
         }
         FileUpload.prototype.registerFileInput = function (inputId) {
             var _this = this;
@@ -54,21 +55,23 @@ var Common;
             });
         };
         FileUpload.prototype.fileValidations = function (callback) {
+            var _this = this;
             var id = new Common.InfoDialog();
             if (this.currentFile.size > this.config.maxFileSize) {
-                id.create("File too big", "Maximal allowed size of file is " + (this.config.maxFileSize / (1024 * 1024)).toFixed(0) + "MB");
+                var maxSize = (this.config.maxFileSize / (1024 * 1024)).toFixed(0);
+                id.create(this.v.t("FileTooBigTitle", "jsLayout"), this.v.t("FileTooBigBody", "jsLayout").replace("${maxSize}", maxSize));
                 return;
             }
             if (!this.config.useMaxSizeValidation) {
                 callback();
                 return;
             }
-            Views.ViewBase.currentView.apiGet("FilesUsage", [], function (allowed) {
+            this.v.apiGet("FilesUsage", [], function (allowed) {
                 if (allowed) {
                     callback();
                 }
                 else {
-                    id.create("File usage over limit", "Currently is for you allowed file usage max. 300MB. If you need more, contact us on info@gloobster.com");
+                    id.create(_this.v.t("OverLimitTitle", "jsLayout"), _this.v.t("OverLimitBody", "jsLayout"));
                 }
             });
         };
@@ -148,7 +151,7 @@ var Common;
                 customId: this.customId,
                 type: this.currentFile.type
             });
-            Views.ViewBase.currentView.apiPost(this.config.endpoint, dataToSend, function (finalResponse) {
+            this.v.apiPost(this.config.endpoint, dataToSend, function (finalResponse) {
                 _this.finalResponse = finalResponse;
                 _this.onSuccessBlobUpload();
             });

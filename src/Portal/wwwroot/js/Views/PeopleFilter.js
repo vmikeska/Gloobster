@@ -12,9 +12,9 @@ var Views;
             return sel.me && !sel.everybody && !sel.friends && (sel.singleFriends.length === 0);
         };
         PeopleFilter.prototype.initBase = function () {
-            var html = this.itemTemplate({ id: "Me", displayName: "Me", checked: true, hasIco: true, ico: "icon-personal" }) +
-                this.itemTemplate({ id: "Friends", displayName: "Friends", hasIco: true, ico: "icon-people" }) +
-                this.itemTemplate({ id: "Everybody", displayName: "Everybody", hasIco: true, ico: "icon-globe" });
+            var html = this.itemTemplate({ id: "Me", displayName: Views.ViewBase.currentView.t("Me", "jsPins"), checked: true, hasIco: true, ico: "icon-personal" }) +
+                this.itemTemplate({ id: "Friends", displayName: Views.ViewBase.currentView.t("Friends", "jsPins"), hasIco: true, ico: "icon-people" }) +
+                this.itemTemplate({ id: "Everybody", displayName: Views.ViewBase.currentView.t("Everybody", "jsPins"), hasIco: true, ico: "icon-globe" });
             this.$usersBox.prepend(html);
         };
         PeopleFilter.prototype.initFriends = function (friends) {

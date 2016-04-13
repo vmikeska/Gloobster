@@ -110,7 +110,7 @@ var Trip;
             var _this = this;
             var html = "";
             var context = {
-                name: "Empty",
+                name: Views.ViewBase.currentView.t("Unnamed", "jsTrip"),
                 wantVisit: [],
                 hasNoWantVisit: true
             };

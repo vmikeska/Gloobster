@@ -39,11 +39,10 @@ var Trip;
         };
         Comments.prototype.addUserData = function (comment) {
             var user = this.getUserById(comment.userId);
-            var displayName = "Anonymous";
-            var photoUrl = "/images/anonymous.jpg";
+            var displayName = Views.ViewBase.currentView.t("Anonymous", "jsLayout");
+            var photoUrl = "/PortalUser/ProfilePicture_s/" + user.id;
             if (user) {
                 displayName = user.displayName;
-                photoUrl = "/PortalUser/ProfilePicture_s/" + user.id;
                 comment["id"] = user.id;
             }
             var postDate = new Date(comment.postDate);

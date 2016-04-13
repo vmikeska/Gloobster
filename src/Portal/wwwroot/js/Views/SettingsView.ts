@@ -47,7 +47,7 @@
 
 		private onAfter() {
 			var hint = new Common.HintDialog();
-			hint.create("You are successfully paired!");
+			hint.create(this.t("SuccessfulPaired", "jsLayout"));
 			$("#MenuRegister").parent().remove();
 		}
 

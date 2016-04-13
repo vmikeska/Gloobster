@@ -25,6 +25,9 @@
     "ClientId": "RW5T0GSXYHMN5W2P4DLPYEOR1UYXXKGIFDMNBBM15XE0MQZ1",
     "ClientSecret": "HHHLCEDL3YSQAM5BNCT4HZXQ2BVLRGROMS5IUHMITIDAROWJ"
   },
+  "Google": {
+    "ClientId": "430126253289-14tdcfe4noqm6p201jrugpi9dsies2at.apps.googleusercontent.com"
+  },
   "Yelp": {
     "AccessToken": "OiHUS6wAFNybNtvqI3eounf2BxIy31W6",
     "AccessTokenSecret": "idVsj8dfwTptyqH5-HN7tqVQHMg",

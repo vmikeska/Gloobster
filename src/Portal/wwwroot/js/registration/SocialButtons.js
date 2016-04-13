@@ -71,15 +71,16 @@ var Reg;
     Reg.LoginButtonsManager = LoginButtonsManager;
     var LoginResponseValidator = (function () {
         function LoginResponseValidator() {
+            this.v = Views.ViewBase.currentView;
         }
         LoginResponseValidator.prototype.validate = function (res) {
             var id = new Common.InfoDialog();
             if (!res) {
-                id.create("Unsuccessful login", "Sorry, something went wrong");
+                id.create(this.v.t("UnsuccessLogin", "jsLayout"), this.v.t("UnsuccessLoginBody", "jsLayout"));
                 return false;
             }
             if (res.AccountAlreadyInUse) {
-                id.create("Cannot pair", "The social network you are trying to pair with current account is already in use by another account.");
+                id.create(this.v.t("CannotPair", "jsLayout"), this.v.t("CannotPairBody", "jsLayout"));
                 return false;
             }
             return true;

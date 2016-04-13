@@ -28,6 +28,7 @@ namespace Gloobster.Portal.Controllers.Portal
 		{
 			var vm = CreateViewModelInstance<ViewModelBase>();
             vm.DefaultLangModuleName = "pageFriends";
+            vm.LoadClientTexts(new []{"jsFriends"});
 
             return View(vm);
 		}

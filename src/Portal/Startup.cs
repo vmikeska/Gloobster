@@ -287,7 +287,11 @@ namespace Gloobster.Portal
 		        GloobsterConfig.YelpConsumerKey = Configuration["Yelp:ConsumerKey"];
 		        GloobsterConfig.YelpAccessTokenSecret = Configuration["Yelp:AccessTokenSecret"];
 		        GloobsterConfig.YelpConsumerSecret = Configuration["Yelp:ConsumerSecret"];
-		    }
+
+                GloobsterConfig.GoogleClientId = Configuration["Google:ClientId"];
+            
+
+            }
 		    catch (Exception exc)
 		    {
 		        AddDebugLog(exc.Message);

@@ -29,6 +29,7 @@ var Trip;
             if (this.config.editable) {
                 this.registerFileUpload(customConfig);
             }
+            this.v = Views.ViewBase.currentView;
         }
         TripFiles.prototype.registerFileUpload = function (customConfig) {
             var _this = this;
@@ -77,7 +78,7 @@ var Trip;
         TripFiles.prototype.callDelete = function (fileId) {
             var _this = this;
             var prms = [["fileId", fileId], ["tripId", this.tripId]];
-            Views.ViewBase.currentView.apiDelete("tripFile", prms, function (res) {
+            this.v.apiDelete("tripFile", prms, function (res) {
                 _this.filterFiles(res.files, res.filesPublic);
             });
         };
@@ -130,7 +131,7 @@ var Trip;
                     var $target = $(e.target);
                     var id = $target.data("id");
                     var dialog = new Common.ConfirmDialog();
-                    dialog.create("DelDialogTitle", "DelDialogBody", "Cancel", "Ok", function () {
+                    dialog.create(_this.v.t("DelDialogTitle", "jsTrip"), _this.v.t("DelDialogBody", "jsTrip"), _this.v.t("Cancel", "jsLayout"), _this.v.t("Ok", "jsLayout"), function () {
                         _this.callDelete(id);
                     });
                 });

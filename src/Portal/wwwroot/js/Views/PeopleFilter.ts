@@ -22,9 +22,9 @@
 
 		private initBase() {
 			var html =
-				this.itemTemplate({ id: "Me", displayName: "Me", checked: true, hasIco: true, ico: "icon-personal" }) +
-				this.itemTemplate({ id: "Friends", displayName: "Friends", hasIco: true, ico: "icon-people" }) +
-				this.itemTemplate({ id: "Everybody", displayName: "Everybody", hasIco: true, ico: "icon-globe" });
+			 this.itemTemplate({ id: "Me", displayName: ViewBase.currentView.t("Me", "jsPins"), checked: true, hasIco: true, ico: "icon-personal" }) +
+			 this.itemTemplate({ id: "Friends", displayName: ViewBase.currentView.t("Friends", "jsPins"), hasIco: true, ico: "icon-people" }) +
+			 this.itemTemplate({ id: "Everybody", displayName: ViewBase.currentView.t("Everybody", "jsPins"), hasIco: true, ico: "icon-globe" });
 
 			this.$usersBox.prepend(html);
 		}

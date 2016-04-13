@@ -1,0 +1,46 @@
+﻿
+  <module name="jsPins">
+
+    <Request>
+      <en>Request</en>
+    </Request>
+
+    <Me>
+      <en>Me</en>
+    </Me>
+
+    <Friends>
+      <en>Friends</en>
+    </Friends>
+
+    <Everybody>
+      <en>Everybody</en>
+    </Everybody>
+
+    <Africa>
+      <en>Africa</en>
+    </Africa>
+
+    <Europe>
+      <en>Europe</en>
+    </Europe>
+
+    <Asia>
+      <en>Asia</en>
+    </Asia>
+
+    <Australia>
+      <en>Australia</en>
+    </Australia>
+
+    <NorthAmerica>
+      <en>North America</en>
+    </NorthAmerica>
+
+    <LatinAmerica>
+      <en>Latin America</en>
+    </LatinAmerica>
+
+       
+
+  </module>

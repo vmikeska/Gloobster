@@ -20,7 +20,9 @@ namespace Gloobster.DomainModels.Langs
     {
         public IDbOperations DB { get; set; }
 
-        private readonly string[] _mods = { "login", "layout", "pageFriends", "pageNotifications", "pageUserSettings", "pageHomeOld", "pagePins", "pageTrips", "pageTripDetail", "pageWikiHome", "pageWikiPage" };
+        private readonly string[] _mods = { "login", "layout",
+            "jsLayout", "jsFriends", "jsPins", "jsTrip", "jsWiki",
+            "pageFriends", "pageNotifications", "pageUserSettings", "pageHomeOld", "pagePins", "pageTrips", "pageTripDetail", "pageWikiHome", "pageWikiPage" };
 
         public Dictionary<string, LangModule> Modules = new Dictionary<string, LangModule>();
 
@@ -44,6 +46,35 @@ namespace Gloobster.DomainModels.Langs
             {
                 LoadModuleFromXml(xml);
             }
+        }
+
+        public List<WordPair> GetModuleTexts(string moduleName, string lang)
+        {
+            if (!Modules.ContainsKey(moduleName))
+            {
+                throw new Exception("ModuleNotFound");
+            }
+
+            var module = Modules[moduleName];
+            
+            var words = new List<WordPair>();
+            foreach (var word in module.Words)
+            {                
+                var texts = word.Value.Texts;
+                var text = texts["en"];
+                if (texts.ContainsKey(lang))
+                {
+                    text = texts[lang];
+                }
+                
+                words.Add(new WordPair
+                {
+                    Name = word.Key,
+                    Text = text
+                });
+            }
+
+            return words;
         }
 
         public string GetWord(string moduleName, string key, string lang)
@@ -116,7 +147,7 @@ namespace Gloobster.DomainModels.Langs
 
                 if (module.Words.ContainsKey(wordName))
                 {
-                    throw new Exception($"Word '{wordName}' is already in the dict");
+                    throw new Exception($"Word '{wordName}' is already in the module {module.Name}");
                 }
 
                 var word = new WordItem
@@ -152,5 +183,11 @@ namespace Gloobster.DomainModels.Langs
         public string Name { get; set; }
         //lang, text
         public Dictionary<string, string> Texts { get; set; }
+    }
+
+    public class WordPair
+    {
+        public string Name { get; set; }        
+        public string Text { get; set; }
     }
 }

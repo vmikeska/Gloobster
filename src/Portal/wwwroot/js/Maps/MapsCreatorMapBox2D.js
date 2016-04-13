@@ -46,7 +46,7 @@ var Maps;
         };
         MapsCreatorMapBox2D.prototype.loadScript = function (scriptUrl, callback) {
             $.getScript(scriptUrl, function (data, textStatus, jqxhr) {
-                console.log("Loaded: " + scriptUrl);
+                //console.log("Loaded: " + scriptUrl);
                 callback();
             });
         };
