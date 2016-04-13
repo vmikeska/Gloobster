@@ -200,9 +200,10 @@ namespace Gloobster.Portal.Controllers.Portal
 
         private WikiCityViewModel GetCityVM(WikiTextsEntity text)
         {
-            var article = DB.C<WikiCityEntity>().FirstOrDefault(i => i.id == text.Article_id);
+            var article = DB.FOD<WikiCityEntity>(i => i.id == text.Article_id);
 
             var vm = CreateViewModelInstance<WikiCityViewModel>();
+            vm.DefaultLangModuleName = "pageWikiPage";
             vm.Texts = text;
             vm.Article = article;
 
@@ -219,6 +220,7 @@ namespace Gloobster.Portal.Controllers.Portal
             var article = DB.C<WikiCountryEntity>().FirstOrDefault(i => i.id == text.Article_id);
             
             var vm = CreateViewModelInstance<WikiCountryViewModel>();
+            vm.DefaultLangModuleName = "pageWikiPage";
             vm.Texts = text;
             vm.Article = article;
 

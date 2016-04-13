@@ -10,10 +10,12 @@
      }
 </style>
 
+
+
 <div class="table row col2 margin doDont">
     
     <div class="cell places">
-        <h3>Try this</h3>
+        <h3>@Model.B.W("TryThis")</h3>
         @foreach (DdVM item in Model.Dos)
         {
             <div data-id="@item.Id" data-t="do" class="place">
@@ -26,7 +28,7 @@
     </div>
 
     <div class="cell places">
-        <h3>Don't try that</h3>
+        <h3>@Model.B.W("DontTryThat")</h3>
         @foreach (DdVM item in Model.Donts)
         {
             <div data-id="@item.Id" data-t="dont" class="place">

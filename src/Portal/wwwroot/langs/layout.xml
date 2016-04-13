@@ -1,19 +1,25 @@
 ﻿
-  <module name="layout">    
+  <module name="layout">
     <server>
       <MenuPins>
-        <en>Pin board</en>        
+        <en>Pin board</en>
       </MenuPins>
       <MenuTrips>
         <en>Trips</en>
       </MenuTrips>
       <MenuWiki>
-        <en>Trips</en>
+        <en>Wiki</en>
       </MenuWiki>
+
+      <MenuRegister>
+        <en>Register</en>
+      </MenuRegister>
+
+
       <Close>
         <en>Close</en>
       </Close>
-      
+
       <Share>
         <en>Share</en>
       </Share>
@@ -30,7 +36,28 @@
         <en>Message</en>
       </Message>
 
-      
+
+      <Logout>
+        <en>Logout</en>
+      </Logout>
+
+      <UserSettings>
+        <en>User settings</en>
+      </UserSettings>
+
+      <Friends>
+        <en>Friends</en>
+      </Friends>
+
+      <Notifications>
+        <en>Notifications</en>
+      </Notifications>
+
+
+
+
+
+
 
 
 

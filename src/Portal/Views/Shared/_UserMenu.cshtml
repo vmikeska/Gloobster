@@ -1,4 +1,10 @@
-﻿<div id="userMenu" class="dropdown">
+﻿@using System.Threading.Tasks
+@using Gloobster.Portal.ViewModels
+@model ViewModelBase
+
+
+
+<div id="userMenu" class="dropdown">
     <span class="selected">@Model.User.DisplayName    
     </span>
     @if (Model.NotificationCount > 0)
@@ -6,15 +12,15 @@
         <span class="notification">@Model.NotificationCount</span>
     }
     <ul>
-        <li><a id="logoutUser" href="#">Logout</a></li>
-        <li><a href="/PortalUser/Settings">Settings</a></li>
-        <li><a href="/Friends/List">Friends</a></li>
+        <li><a id="logoutUser" href="#">@Model.W("Logout")</a></li>
+        <li><a href="/PortalUser/Settings">@Model.W("UserSettings")</a></li>
+        <li><a href="/Friends/List">@Model.W("Friends")</a></li>
         <li>
             @if (Model.NotificationCount > 0)
             {
                 <span class="notification">@Model.NotificationCount</span>
             }
-            <a href="/PortalUser/Notifications">Notifications</a>
+            <a href="/PortalUser/Notifications">@Model.W("Notifications")</a>
         </li>
 
         @if (Model.HasAnyWikiPermissions)

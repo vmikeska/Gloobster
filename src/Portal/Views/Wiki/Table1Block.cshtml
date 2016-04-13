@@ -12,7 +12,7 @@
     @foreach (var item in Model.TableItems)
     {
         <tr>
-            <td>@item.Name</td>
+            <td>@Model.B.W(item.Name)</td>
             <td class="@(Model.ArticleType == ArticleType.City ? "priceItemAdmin" : string.Empty) " data-id="@item.Id1">
                 €<span class="price">@item.Price1.ToString("0.00", CultureInfo.InvariantCulture)</span>                
             </td>

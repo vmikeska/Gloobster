@@ -29,6 +29,8 @@ namespace Gloobster.Portal.ViewModels
 
     public class InfoItemVM
     {
+        public ViewModelBase B { get; set; }
+
         public string Id { get; set; }
         public string Name { get; set; }
         public string AfterName { get; set; }
@@ -98,6 +100,7 @@ namespace Gloobster.Portal.ViewModels
         {
             var model = new DoDontsVM
             {
+                B = this,
                 Donts = Donts.Select(i =>
                 {
                     var item = GetDoDontItem(i);
@@ -105,7 +108,8 @@ namespace Gloobster.Portal.ViewModels
                     {
                         Text = item.Text,
                         Id = item.Section_id.ToString(),
-                        Liked = WasLiked(item)
+                        Liked = WasLiked(item),
+                        
                     };
                 }).ToList(),
                 Dos = Dos.Select(i =>
@@ -204,9 +208,11 @@ namespace Gloobster.Portal.ViewModels
                 SectionId = section.id.ToString(),
                 Text = text.Text,
                 Type = type,
+                TranslatedType = W(type),
                 Size = size,
                 Admin = admin,
-                ArticleType = Texts.Type
+                ArticleType = Texts.Type,
+                B = this
             };
         }
 
@@ -247,9 +253,17 @@ namespace Gloobster.Portal.ViewModels
                         if (isListValue)
                         {                            
                             var listItem = list.Items.FirstOrDefault(i => i.Id == item.Value);
-                            //todo: transalte
-                            //listItem.Translate
-                            outItem.Value = listItem.Name;
+                            
+                            //don't delete, translation will be used later
+                            //if (listItem.Translate)
+                            //{
+                            //    outItem.Value = W(listItem.Name);
+                            //}
+                            //else
+                            //{
+                                outItem.Value = listItem.Name;
+                            //}
+                            
                         }
                         else
                         {
@@ -268,8 +282,16 @@ namespace Gloobster.Portal.ViewModels
                             var listItem = list.Items.FirstOrDefault(i => i.Id == val);
                             if (listItem != null)
                             {
-                                //todo: transalte
+                                //don't delete, translation will be used later
+                                //if (listItem.Translate)
+                                //{
+                                //    var txt = W(listItem.Name);
+                                //    vals.Add(txt);
+                                //}
+                                //else
+                                //{
                                 vals.Add(listItem.Name);
+                                //}                                
                             }
                         }
                         outItem.Value = string.Join(",", vals);                        

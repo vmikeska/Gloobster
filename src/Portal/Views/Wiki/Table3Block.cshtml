@@ -11,7 +11,7 @@
 
 <div class="table width100 margin">
     <div class="cell middle">
-        <h4 class="margin0">@Model.Type</h4>        
+        <h4 class="margin0">@Model.TranslatedType</h4>        
         <table class="margin2 width100">
             <tr>
                 <th></th>
@@ -23,7 +23,7 @@
             @foreach (var item in Model.TableItems)
             {
                 <tr>
-                    <td>@item.Name</td>
+                    <td>@Model.B.W(item.Name)</td>
                     <td class="@priceAdminClass" data-id="@item.Id1">
                         €<span class="price">@item.Price1.ToString("0.00", CultureInfo.InvariantCulture)</span>                        
                     </td>

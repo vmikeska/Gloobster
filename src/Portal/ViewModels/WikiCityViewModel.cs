@@ -194,7 +194,7 @@ namespace Gloobster.Portal.ViewModels
 
         public BlockVM Base()
         {
-            var block = Section("Base", "standard,base", 3);
+            var block = Section("Base", "standard,base", 3);           
             block.Infos = Info;
 
             return block;
@@ -274,6 +274,8 @@ namespace Gloobster.Portal.ViewModels
 
     public class BlockVM
     {
+        public WikiModelBase B { get; set; }
+
         public ArticleType ArticleType { get; set; }
 
         public bool? Liked { get; set; }
@@ -285,6 +287,7 @@ namespace Gloobster.Portal.ViewModels
         public string SectionId { get; set; }
         public string Text { get; set; }
         public string Type { get; set; }
+        public string TranslatedType { get; set; }        
         public List<string> Headers { get; set; }
 
         public List<TableItemVM> TableItems { get; set; }
@@ -335,7 +338,9 @@ namespace Gloobster.Portal.ViewModels
 
         public InfoItemVM InfoByName(string name)
         {
-            return Infos.FirstOrDefault(i => i.Name == name);
+            var info = Infos.FirstOrDefault(i => i.Name == name);
+            info.B = B;
+            return info;
         }
     }
 
@@ -365,6 +370,8 @@ namespace Gloobster.Portal.ViewModels
     {
         public List<DdVM> Dos { get; set; }
         public List<DdVM> Donts { get; set; }
+
+        public ViewModelBase B { get; set; }
     }
 
     public class DdVM
@@ -382,6 +389,7 @@ namespace Gloobster.Portal.ViewModels
         public List<PhotoVM> Photos { get; set; }
         public bool Admin { get; set; }
         public bool UserIsAdmin { get; set; }
+        public ViewModelBase B { get; set; }
     }
 
     public class PhotoVM

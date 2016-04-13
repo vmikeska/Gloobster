@@ -1,0 +1,224 @@
+﻿
+  <module name="pageWikiPage">    
+    <server>
+      <About>
+        <en>About</en>        
+      </About>
+
+      <PopulationCity>
+        <en>Population</en>
+      </PopulationCity>
+
+      <!--Population
+      CapitalName
+      Area
+      CurrencyCode
+      Languages
+      Languages-->
+
+      <AboutPeople>
+        <en>About people</en>
+      </AboutPeople>
+
+      <NightLife>
+        <en>Nightlife</en>
+      </NightLife>
+
+      <NightlifePrices>
+        <en>Nightlife prices</en>
+      </NightlifePrices>
+
+      <BarDistricts>
+        <en>Bar districts</en>
+      </BarDistricts>
+
+      <Restaurant>
+        <en>Restaurant</en>
+      </Restaurant>
+
+      <Transport>
+        <en>Transport</en>
+      </Transport>
+
+      <Accommodation>
+        <en>Accommodation</en>
+      </Accommodation>
+
+      <TryThis>
+        <en>Try this</en>
+      </TryThis>
+
+      <DontTryThat>
+        <en>Don't try that</en>
+      </DontTryThat>
+
+      <FavoriteSites>
+        <en>Favorite sites</en>
+      </FavoriteSites>
+
+      <PopulationMetro>
+        <en>Population metro</en>
+      </PopulationMetro>
+
+
+      <Star4>
+        <en>4*</en>
+      </Star4>
+
+      <Star3>
+        <en>3*</en>
+      </Star3>
+
+      <Hostel>
+        <en>Hostel</en>
+      </Hostel>
+
+      <PublicTransport>
+        <en>Public trans. ticket</en>
+      </PublicTransport>
+
+      <Taxi>
+        <en>Taxi</en>
+      </Taxi>
+
+      <Pizza>
+        <en>Pizza</en>
+      </Pizza>
+
+      <Local>
+        <en>Local food</en>
+      </Local>
+
+      <Steak>
+        <en>Steak</en>
+      </Steak>
+
+      <Salad>
+        <en>Salad</en>
+      </Salad>
+
+      <Cigarettes>
+        <en>Cigarettes</en>
+      </Cigarettes>
+
+      <Vodka>
+        <en>Vodka</en>
+      </Vodka>
+
+      <Whiskey>
+        <en>Whiskey</en>
+      </Whiskey>
+
+      <Wine>
+        <en>Wine</en>
+      </Wine>
+
+      <Beer>
+        <en>Beer</en>
+      </Beer>
+
+
+      <RelatedLinks>
+        <en>Related links</en>
+      </RelatedLinks>
+
+
+      <RecommendPhoto>
+        <en>Recommend a Photo</en>
+      </RecommendPhoto>
+
+      <IUnderstand>
+        <en>I understand</en>
+      </IUnderstand>
+
+      <TermsAndCondsForPhotos>
+        <en>Terms and conditions for adding photos</en>
+      </TermsAndCondsForPhotos>
+
+      <Cancel>
+        <en>Cancel</en>
+      </Cancel>
+
+      <UploadPhoto>
+        <en>Upload photo</en>
+      </UploadPhoto>
+
+
+      <Languages>
+        <en>Languages</en>
+      </Languages>
+
+      <Area>
+        <en>Area</en>
+      </Area>
+
+      <Population>
+        <en>Population</en>
+      </Population>
+
+      <CapitalName>
+        <en>Capital</en>
+      </CapitalName>
+
+      <CurrencyCode>
+        <en>Currency</en>
+      </CurrencyCode>
+
+      <DrivingRight>
+        <en>Driving on right</en>
+      </DrivingRight>
+
+      <HDI>
+        <en>HDI</en>
+      </HDI>
+
+      <MemberOf>
+        <en>Member of</en>
+      </MemberOf>
+
+      <Religion>
+        <en>Religion</en>
+      </Religion>
+
+      <Safety>
+        <en>Safety</en>
+      </Safety>
+
+      <Marihuana>
+        <en>Marihuana</en>
+      </Marihuana>
+
+      <Gay>
+        <en>Gay</en>
+      </Gay>
+
+      <Tipping>
+        <en>Tipping</en>
+      </Tipping>
+
+      <Low>
+        <en>Low</en>
+      </Low>
+
+      <High>
+        <en>High</en>
+      </High>
+
+      <Medium>
+        <en>Medium</en>
+      </Medium>
+
+      <VeryHigh>
+        <en>Very high</en>
+      </VeryHigh>
+
+   
+
+
+    </server>
+    
+    <client>
+    </client>
+    <common>      
+    </common>
+  </module>

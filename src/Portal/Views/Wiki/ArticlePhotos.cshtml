@@ -76,19 +76,19 @@
 @if (!Model.UserIsAdmin)
 {
     <div class="tright">
-        <a id="recommendPhoto" class="button mleft10" href="#">Recommend a Photo</a>
+        <a id="recommendPhoto" class="button mleft10" href="#">@Model.B.W("RecommendPhoto")</a>
     </div>
 
     <div id="photosForm" class="tright" style="display: none">
-        <input id="cid" class="isAdmin" type="checkbox" checked><label for="cid"><span>I understand </span></label>
-        <a href="#">Terms and conditions for adding photos</a>
+        <input id="cid" class="isAdmin" type="checkbox" checked><label for="cid"><span>@Model.B.W("IUnderstand") </span></label>
+        <a href="#">@Model.B.W("TermsAndCondsForPhotos")</a>
         <br/>
-        <a href="#" class="button cancel">Cancel</a>
+        <a href="#" class="button cancel">@Model.B.W("Cancel")</a>
 
         <a class="photoButton" href="#">
             <input id="galleryInput" class="inputs" type="file"/>
             <label for="galleryInput">
-                <span class="button">Upload photo</span>                    
+                <span class="button">@Model.B.W("UploadPhoto")</span>                    
             </label>
         </a>
 
