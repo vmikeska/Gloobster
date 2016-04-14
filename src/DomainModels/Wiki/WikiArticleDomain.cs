@@ -66,7 +66,8 @@ namespace Gloobster.DomainModels.Wiki
                 },                
             };
 
-            builder.AddPrice("Taxi", "Transport");
+            builder.AddPrice("TaxiInitial", "Transport");
+            builder.AddPrice("TaxiKm", "Transport");
             builder.AddPrice("PublicTransport", "Transport");
 
             builder.AddPrice("Salad", "Restaurant");            
@@ -140,6 +141,8 @@ namespace Gloobster.DomainModels.Wiki
             builder.AddSection("Accommodation", "No content");
             builder.AddSection("NightLife", "No content");
             builder.AddSection("NightlifePrices", "No content");
+            builder.AddSection("Internet", "No content");
+            builder.AddSection("SimCards", "No content");
 
             article.Links.Add(new LinkSE
             {
@@ -260,6 +263,7 @@ namespace Gloobster.DomainModels.Wiki
         public WikiTextsEntity Texts;
 
         private ArticleType _articleType;
+        public string CountryCode;
         
         private T CreateArticleBase<T>() where T : WikiArticleBaseEntity, new()
         {
@@ -277,6 +281,8 @@ namespace Gloobster.DomainModels.Wiki
 
         public void AddPrice(string type, string category, string subCategory = "")
         {
+            decimal price = GetDefaultPrice(type, category, subCategory);
+
             var item = new PriceItemSE
             {
                 id = ObjectId.GenerateNewId(),
@@ -285,8 +291,8 @@ namespace Gloobster.DomainModels.Wiki
                 SubCategory = subCategory,
                 Price = new PriceSE
                 {
-                    CurrentPrice = 1,
-                    DefaultPrice = 1,
+                    CurrentPrice = price,
+                    DefaultPrice = price,
                     Plus = new List<ObjectId>(),
                     Minus = new List<ObjectId>(),
                     Initialized = false
@@ -296,8 +302,20 @@ namespace Gloobster.DomainModels.Wiki
             ((WikiCityEntity)Article).Prices.Add(item);
         }
 
+        private decimal GetDefaultPrice(string type, string category, string subCategory = "")
+        {
+            if (type == "Beer")
+            {
+
+            }
+
+            return 1;
+        }
+
         public void InitCity(string countryCode)
         {
+            CountryCode = countryCode;
+
             Article = CreateArticleBase<WikiCityEntity>();
             var a = (WikiCityEntity)Article;
             a.Dos = new List<ObjectId>();
