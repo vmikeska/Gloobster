@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AzureBlobFileSystem;
 using Gloobster.Common;
@@ -10,8 +11,6 @@ using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
 using Gloobster.Entities.Trip;
 using Gloobster.Enums;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Auth;
 using MongoDB.Bson;
 using Serilog;
 
@@ -40,39 +39,89 @@ namespace Gloobster.DomainModels
 		public const string TempFolder = "tempfolder";
 
 		private string TempFolderPath => Storage.Combine(TempFolder, UserId);
-		
+
+	    private bool LogsOn = false;
+
+	    private void WriteLog(string text)
+	    {
+	        if (LogsOn)
+	        {
+	            var txt = $"FilesDomain: {text}";
+                Log.Debug(txt);
+	        }            
+        }
+
 		public Stream GetFile(string fileDirectory, string fileName)
 		{
-		    try
-		    {
+		    Stream stream = null;
+            try
+            {
+                WriteLog("getting file");
+                
                 string storageFilePath = Storage.Combine(fileDirectory, fileName);
                 
                 var file = Storage.GetFile(storageFilePath);                
-                var stream = file.OpenRead();
-                Log.Debug("GetFileLog: after get");
+                stream = file.OpenRead();
+                WriteLog("GetFileLog: after get");
                 return stream;
 		    }
 		    catch (Exception exc)
 		    {
-		        Log.Error("GetFileLog: " + exc.Message);
+		        stream?.Dispose();
+
+                WriteLog("Error get file" + exc.Message);                
 		        throw;
 		    }
 		}
 
 		public void DeleteFile(string filePath)
-		{
-			Storage.DeleteFile(filePath);			
-		}
+        {
+		    try
+		    {
+                WriteLog($"Deleting: {filePath}");
+                bool fileExists = false;
+
+		        try
+		        {
+
+		            if (Storage.FileExists(filePath))
+		            {
+		                fileExists = true;
+		                WriteLog($"Exists");
+		            }
+		            else
+		            {
+                        WriteLog($"NotExists");
+                    }
+                }
+		        catch (Exception exc)
+		        {
+                    WriteLog($"Exists: Exception: {exc.Message}");
+                }
+
+		        if (fileExists)
+		        {
+                    Storage.DeleteFile(filePath);
+                }
+                
+		    }
+		    catch (Exception exc)
+		    {
+                WriteLog("cannot delete file: " + exc.Message);
+            }
+        }
 
         public void DeleteFolder(string folderPath)
         {
             try
             {
+                Thread.Sleep(10);
+
                 Storage.DeleteFolder(folderPath);
             }
-            catch
+            catch (Exception exc)
             {
-                
+                WriteLog("cannot delete folder: " + exc.Message);                
             }            
         }
 
@@ -80,7 +129,9 @@ namespace Gloobster.DomainModels
 		{
 			try
 			{
-				UserId = filePart.UserId;
+                WriteLog("writing file part: " + filePart.FilePart.ToString());
+
+                UserId = filePart.UserId;
 				TargetDirectory = filePart.FileLocation;
 				OriginaFileName = filePart.FileName;
 				CustomFileName = filePart.CustomFileName;
@@ -107,11 +158,12 @@ namespace Gloobster.DomainModels
 			}
 			catch (Exception exc)
 			{
-				Log.Error($"Exception: {exc.Message}");
+                WriteLog("WriteFilePart, Exception : " + exc.Message);
 				throw;
 			}
 		}
 
+        //move out, trip stuff should not be in this common class
 	    public async Task<bool> ChangeFilePublic(string tripId, string fileId, bool state)
 	    {
 	        var tripIdObj = new ObjectId(tripId);
@@ -139,48 +191,59 @@ namespace Gloobster.DomainModels
 		}
 		
 		private void JoinAllFileParts(string lastData)
-		{			
-			var stringParts = new List<string>();
-			
-			var files = Storage.ListFiles(TempFolderPath).OrderBy(f => f.GetName());
-			foreach (var file in files)
-			{
-				string filePath = Storage.Combine(TempFolderPath, file.GetName());
-				using (var reader = new StreamReader(Storage.GetFile(filePath).OpenRead()))
-				{
-					var stringPart = reader.ReadToEnd();
-					stringParts.Add(stringPart);                    
-				}
-			}
-
-			stringParts.Add(lastData);
-
-            AllBytes = stringParts.SelectMany(Convert.FromBase64String).ToArray();
-            
-			string fileName = BuildFileName();			
-			var targetFilePath = Storage.Combine(TargetDirectory, fileName);
-
-			OnBeforeCreate.Invoke(this, null);
-
-		    if (!DoNotSave)
+		{
+		    try
 		    {
-		        var inputFileStream = Storage.CreateFile(targetFilePath).OpenWrite();
-		        using (var writer = new BinaryWriter(inputFileStream))
+                WriteLog("JoinAllFileParts: enter");
+
+                var stringParts = new List<string>();
+
+		        var files = Storage.ListFiles(TempFolderPath).OrderBy(f => f.GetName());
+		        foreach (var file in files)
 		        {
-		            writer.Write(AllBytes);
-		            writer.Flush();
+		            string filePath = Storage.Combine(TempFolderPath, file.GetName());
+		            using (var reader = new StreamReader(Storage.GetFile(filePath).OpenRead()))
+		            {
+		                var stringPart = reader.ReadToEnd();
+		                stringParts.Add(stringPart);
+		            }
 		        }
+
+		        stringParts.Add(lastData);
+
+		        AllBytes = stringParts.SelectMany(Convert.FromBase64String).ToArray();
+
+		        string fileName = BuildFileName();
+		        var targetFilePath = Storage.Combine(TargetDirectory, fileName);
+
+		        OnBeforeCreate.Invoke(this, null);
+
+		        if (!DoNotSave)
+		        {
+		            using (var inputFileStream = Storage.CreateFile(targetFilePath).OpenWrite())
+		            {
+		                using (var writer = new BinaryWriter(inputFileStream))
+		                {
+		                    writer.Write(AllBytes);
+		                    writer.Flush();
+		                }
+		            }
+		        }
+
+		        var onFileSavedArgs = new OnFileSavedArgs
+		        {
+		            FileName = fileName,
+		            Directory = TargetDirectory,
+		            FileType = FileType,
+		            FileSize = decimal.Round(Convert.ToDecimal(AllBytes.Length)/(1024.0m*1024.0m), 3)
+
+		        };
+		        OnFileSaved.Invoke(this, onFileSavedArgs);
 		    }
-
-		    var onFileSavedArgs = new OnFileSavedArgs
-			{
-				FileName = fileName,
-				Directory = TargetDirectory,
-				FileType = FileType,
-                FileSize = decimal.Round(Convert.ToDecimal(AllBytes.Length) / (1024.0m * 1024.0m), 3)
-
-            };
-			OnFileSaved.Invoke(this, onFileSavedArgs);
+		    catch (Exception exc)
+		    {
+                WriteLog($"JoinAllFileParts: exception: {exc.Message}");
+            }
 		}
 		
 		private string BuildFileName()
@@ -197,34 +260,55 @@ namespace Gloobster.DomainModels
 		}
 
 		private void SaveFilePart(string data)
-		{			
-			long newFilePartNo = DateTime.UtcNow.Ticks;
-			
-			//CreatePathIfNotExists(TempFolder);
+		{
+		    try
+		    {
+                WriteLog($"SaveFilePart: start");
 
-			var filePath = Storage.Combine(TempFolderPath, newFilePartNo.ToString());
+                long newFilePartNo = DateTime.UtcNow.Ticks;
 
-			var fileStream = Storage.CreateFile(filePath).OpenWrite();
-			using (var writer = new StreamWriter(fileStream))
-			{			
-				writer.Write(data);		
-			}		
+                var filePath = Storage.Combine(TempFolderPath, newFilePartNo.ToString());
+
+                using (var fileStream = Storage.CreateFile(filePath).OpenWrite())
+                {
+                    using (var writer = new StreamWriter(fileStream))
+                    {
+                        writer.Write(data);
+                    }
+                }
+            }
+		    catch (Exception exc)
+		    {
+                WriteLog($"SaveFilePart: exception: {exc.Message}");
+            }            
 		}
         
 		private void CleanFilePartsCache()
 		{
-			Log.Debug("FIDO: before files listed");
+            WriteLog($"CleanFilePartsCache: start: {TempFolderPath}");
 			try
 			{
-				//Storage.
-				var files = Storage.ListFiles(TempFolderPath).ToList();
-				Log.Debug("FIDO: files listed");
-				files.ForEach(f => Storage.DeleteFile(f.GetPath()));
-				Log.Debug("FIDO: files delted");
-			}
+                //Thread.Sleep(10);
+                //Storage.DeleteFolder(TempFolderPath);
+
+                var filesInFolder = Storage.ListFiles(TempFolderPath);
+
+                foreach (var file in filesInFolder)
+                {
+                    var path = file.GetPath();
+                    DeleteFile(path);
+                }
+
+                WriteLog($"CleanFilePartsCache: deleted: {TempFolderPath}");
+                
+                //var files = Storage.ListFiles(TempFolderPath).ToList();
+                //Log.Debug("FIDO: files listed");
+                //files.ForEach(f => DeleteFile(f.GetPath()));
+                //Log.Debug("FIDO: files delted");
+            }
 			catch (Exception exc)
 			{
-				Log.Debug("FIDO: exception: " + exc.Message);
+                WriteLog("CleanFilePartsCache: exception: " + exc.Message);
 			}
 		}
 

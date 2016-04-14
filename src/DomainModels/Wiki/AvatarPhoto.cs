@@ -48,12 +48,8 @@ namespace Gloobster.DomainModels.Wiki
 
             foreach (var file in filesInFolder)
             {
-                var path = file.GetPath();
-                bool fileExists = FileDomain.Storage.FileExists(path);
-                if (fileExists)
-                {
-                    FileDomain.Storage.DeleteFile(path);
-                }
+                var path = file.GetPath();                
+                FileDomain.DeleteFile(path);                
             }
         }
 

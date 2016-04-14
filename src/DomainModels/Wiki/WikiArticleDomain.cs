@@ -36,7 +36,8 @@ namespace Gloobster.DomainModels.Wiki
             builder.AddSection("Accommodation", "No content");
             builder.AddSection("Tipping", "No content");
             builder.AddSection("Restaurant", "No content");
-            
+            builder.AddSection("Surfing", "No content");
+
             article.Links.Add(new LinkSE
             {
                 Type = LinkType.Geonames,

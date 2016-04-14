@@ -37,16 +37,15 @@
           "lib/net451/Autofac.Extensions.DependencyInjection.dll": {}
         }
       },
-      "BlobFileSystem.Azure/0.0.7": {
-        "type": "package",
+      "AzureBlobFileSystem/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
         "dependencies": {
-          "WindowsAzure.Storage": "3.1.0.1"
-        },
-        "compile": {
-          "lib/net45/AzureBlobFileSystem.dll": {}
-        },
-        "runtime": {
-          "lib/net45/AzureBlobFileSystem.dll": {}
+          "loggly-csharp": "4.5.1.7",
+          "Microsoft.WindowsAzure.ConfigurationManager": "3.2.1",
+          "Serilog.Framework.Logging": "1.0.0-rc1-final-10071",
+          "Serilog.Sinks.Loggly": "2.0.7",
+          "WindowsAzure.Storage": "7.0.0"
         }
       },
       "Common/1.0.0": {
@@ -80,7 +79,7 @@
         "dependencies": {
           "Autofac": "4.0.0-rc1-177",
           "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-177",
-          "BlobFileSystem.Azure": "0.0.7",
+          "AzureBlobFileSystem": "1.0.0",
           "Common": "1.0.0",
           "Database": "1.0.0",
           "DomainObjects": "1.0.0",
@@ -126,6 +125,28 @@
         },
         "runtime": {
           "lib/net45/Facebook.dll": {}
+        }
+      },
+      "loggly-csharp/4.5.1.7": {
+        "type": "package",
+        "dependencies": {
+          "loggly-csharp-config": "4.5.1.7",
+          "Newtonsoft.Json": "6.0.8"
+        },
+        "compile": {
+          "lib/net45/Loggly.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Loggly.dll": {}
+        }
+      },
+      "loggly-csharp-config/4.5.1.7": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Loggly.Config.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Loggly.Config.dll": {}
         }
       },
       "Mappers/1.0.0": {
@@ -930,6 +951,15 @@
           "lib/net451/Microsoft.AspNet.WebUtilities.dll": {}
         }
       },
+      "Microsoft.Azure.KeyVault.Core/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Microsoft.Azure.KeyVault.Core.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Microsoft.Azure.KeyVault.Core.dll": {}
+        }
+      },
       "Microsoft.CodeAnalysis.Analyzers/1.0.0": {
         "type": "package",
         "frameworkAssemblies": [
@@ -962,7 +992,7 @@
           "lib/net45/Microsoft.CodeAnalysis.CSharp.dll": {}
         }
       },
-      "Microsoft.Data.Edm/5.6.0": {
+      "Microsoft.Data.Edm/5.6.4": {
         "type": "package",
         "compile": {
           "lib/net40/Microsoft.Data.Edm.dll": {}
@@ -1000,11 +1030,11 @@
           }
         }
       },
-      "Microsoft.Data.OData/5.6.0": {
+      "Microsoft.Data.OData/5.6.4": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Data.Edm": "[5.6.0]",
-          "System.Spatial": "[5.6.0]"
+          "Microsoft.Data.Edm": "[5.6.4]",
+          "System.Spatial": "[5.6.4]"
         },
         "compile": {
           "lib/net40/Microsoft.Data.OData.dll": {}
@@ -1042,10 +1072,10 @@
           }
         }
       },
-      "Microsoft.Data.Services.Client/5.6.0": {
+      "Microsoft.Data.Services.Client/5.6.4": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Data.OData": "[5.6.0]"
+          "Microsoft.Data.OData": "[5.6.4]"
         },
         "compile": {
           "lib/net40/Microsoft.Data.Services.Client.dll": {}
@@ -1599,13 +1629,13 @@
           "lib/net451/Microsoft.Net.Http.Headers.dll": {}
         }
       },
-      "Microsoft.WindowsAzure.ConfigurationManager/1.8.0": {
+      "Microsoft.WindowsAzure.ConfigurationManager/3.2.1": {
         "type": "package",
         "compile": {
-          "lib/net35-full/Microsoft.WindowsAzure.Configuration.dll": {}
+          "lib/net40/Microsoft.WindowsAzure.Configuration.dll": {}
         },
         "runtime": {
-          "lib/net35-full/Microsoft.WindowsAzure.Configuration.dll": {}
+          "lib/net40/Microsoft.WindowsAzure.Configuration.dll": {}
         }
       },
       "MongoDB.Bson/2.2.3": {
@@ -1642,7 +1672,7 @@
           "lib/net45/MongoDB.Driver.Core.dll": {}
         }
       },
-      "Newtonsoft.Json/6.0.6": {
+      "Newtonsoft.Json/6.0.8": {
         "type": "package",
         "compile": {
           "lib/net45/Newtonsoft.Json.dll": {}
@@ -1657,6 +1687,50 @@
         "dependencies": {
           "Common": "1.0.0",
           "Enums": "1.0.0"
+        }
+      },
+      "Serilog/1.5.11": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Serilog.dll": {},
+          "lib/net45/Serilog.FullNetFx.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Serilog.dll": {},
+          "lib/net45/Serilog.FullNetFx.dll": {}
+        }
+      },
+      "Serilog.Framework.Logging/1.0.0-rc1-final-10071": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
+          "Serilog": "1.5.11"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core",
+          "System.Runtime"
+        ],
+        "compile": {
+          "lib/dnx451/Serilog.Framework.Logging.dll": {}
+        },
+        "runtime": {
+          "lib/dnx451/Serilog.Framework.Logging.dll": {}
+        }
+      },
+      "Serilog.Sinks.Loggly/2.0.7": {
+        "type": "package",
+        "dependencies": {
+          "loggly-csharp": "4.5.0.4",
+          "Serilog": "1.5.9"
+        },
+        "compile": {
+          "lib/net45/Serilog.Sinks.Loggly.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Serilog.Sinks.Loggly.dll": {}
         }
       },
       "SharpSquare/1.0.0": {
@@ -1867,7 +1941,7 @@
           "lib/net45/_._": {}
         }
       },
-      "System.Spatial/5.6.0": {
+      "System.Spatial/5.6.4": {
         "type": "package",
         "compile": {
           "lib/net40/System.Spatial.dll": {}
@@ -1956,13 +2030,13 @@
           "MongoDB.Driver": "2.2.3"
         }
       },
-      "WindowsAzure.Storage/3.1.0.1": {
+      "WindowsAzure.Storage/7.0.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Data.OData": "5.6.0",
-          "Microsoft.Data.Services.Client": "5.6.0",
-          "Microsoft.WindowsAzure.ConfigurationManager": "1.8.0",
-          "Newtonsoft.Json": "5.0.6"
+          "Microsoft.Azure.KeyVault.Core": "1.0.0",
+          "Microsoft.Data.OData": "5.6.4",
+          "Microsoft.Data.Services.Client": "5.6.4",
+          "Newtonsoft.Json": "6.0.8"
         },
         "frameworkAssemblies": [
           "System.Data",
@@ -2012,16 +2086,15 @@
           "lib/net451/Autofac.Extensions.DependencyInjection.dll": {}
         }
       },
-      "BlobFileSystem.Azure/0.0.7": {
-        "type": "package",
+      "AzureBlobFileSystem/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
         "dependencies": {
-          "WindowsAzure.Storage": "3.1.0.1"
-        },
-        "compile": {
-          "lib/net45/AzureBlobFileSystem.dll": {}
-        },
-        "runtime": {
-          "lib/net45/AzureBlobFileSystem.dll": {}
+          "loggly-csharp": "4.5.1.7",
+          "Microsoft.WindowsAzure.ConfigurationManager": "3.2.1",
+          "Serilog.Framework.Logging": "1.0.0-rc1-final-10071",
+          "Serilog.Sinks.Loggly": "2.0.7",
+          "WindowsAzure.Storage": "7.0.0"
         }
       },
       "Common/1.0.0": {
@@ -2055,7 +2128,7 @@
         "dependencies": {
           "Autofac": "4.0.0-rc1-177",
           "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-177",
-          "BlobFileSystem.Azure": "0.0.7",
+          "AzureBlobFileSystem": "1.0.0",
           "Common": "1.0.0",
           "Database": "1.0.0",
           "DomainObjects": "1.0.0",
@@ -2101,6 +2174,28 @@
         },
         "runtime": {
           "lib/net45/Facebook.dll": {}
+        }
+      },
+      "loggly-csharp/4.5.1.7": {
+        "type": "package",
+        "dependencies": {
+          "loggly-csharp-config": "4.5.1.7",
+          "Newtonsoft.Json": "6.0.8"
+        },
+        "compile": {
+          "lib/net45/Loggly.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Loggly.dll": {}
+        }
+      },
+      "loggly-csharp-config/4.5.1.7": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Loggly.Config.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Loggly.Config.dll": {}
         }
       },
       "Mappers/1.0.0": {
@@ -2908,6 +3003,15 @@
           "lib/net451/Microsoft.AspNet.WebUtilities.dll": {}
         }
       },
+      "Microsoft.Azure.KeyVault.Core/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Microsoft.Azure.KeyVault.Core.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Microsoft.Azure.KeyVault.Core.dll": {}
+        }
+      },
       "Microsoft.CodeAnalysis.Analyzers/1.0.0": {
         "type": "package",
         "frameworkAssemblies": [
@@ -2940,7 +3044,7 @@
           "lib/net45/Microsoft.CodeAnalysis.CSharp.dll": {}
         }
       },
-      "Microsoft.Data.Edm/5.6.0": {
+      "Microsoft.Data.Edm/5.6.4": {
         "type": "package",
         "compile": {
           "lib/net40/Microsoft.Data.Edm.dll": {}
@@ -2978,11 +3082,11 @@
           }
         }
       },
-      "Microsoft.Data.OData/5.6.0": {
+      "Microsoft.Data.OData/5.6.4": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Data.Edm": "[5.6.0]",
-          "System.Spatial": "[5.6.0]"
+          "Microsoft.Data.Edm": "[5.6.4]",
+          "System.Spatial": "[5.6.4]"
         },
         "compile": {
           "lib/net40/Microsoft.Data.OData.dll": {}
@@ -3020,10 +3124,10 @@
           }
         }
       },
-      "Microsoft.Data.Services.Client/5.6.0": {
+      "Microsoft.Data.Services.Client/5.6.4": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Data.OData": "[5.6.0]"
+          "Microsoft.Data.OData": "[5.6.4]"
         },
         "compile": {
           "lib/net40/Microsoft.Data.Services.Client.dll": {}
@@ -3577,13 +3681,13 @@
           "lib/net451/Microsoft.Net.Http.Headers.dll": {}
         }
       },
-      "Microsoft.WindowsAzure.ConfigurationManager/1.8.0": {
+      "Microsoft.WindowsAzure.ConfigurationManager/3.2.1": {
         "type": "package",
         "compile": {
-          "lib/net35-full/Microsoft.WindowsAzure.Configuration.dll": {}
+          "lib/net40/Microsoft.WindowsAzure.Configuration.dll": {}
         },
         "runtime": {
-          "lib/net35-full/Microsoft.WindowsAzure.Configuration.dll": {}
+          "lib/net40/Microsoft.WindowsAzure.Configuration.dll": {}
         }
       },
       "MongoDB.Bson/2.2.3": {
@@ -3620,7 +3724,7 @@
           "lib/net45/MongoDB.Driver.Core.dll": {}
         }
       },
-      "Newtonsoft.Json/6.0.6": {
+      "Newtonsoft.Json/6.0.8": {
         "type": "package",
         "compile": {
           "lib/net45/Newtonsoft.Json.dll": {}
@@ -3635,6 +3739,50 @@
         "dependencies": {
           "Common": "1.0.0",
           "Enums": "1.0.0"
+        }
+      },
+      "Serilog/1.5.11": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Serilog.dll": {},
+          "lib/net45/Serilog.FullNetFx.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Serilog.dll": {},
+          "lib/net45/Serilog.FullNetFx.dll": {}
+        }
+      },
+      "Serilog.Framework.Logging/1.0.0-rc1-final-10071": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
+          "Serilog": "1.5.11"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core",
+          "System.Runtime"
+        ],
+        "compile": {
+          "lib/dnx451/Serilog.Framework.Logging.dll": {}
+        },
+        "runtime": {
+          "lib/dnx451/Serilog.Framework.Logging.dll": {}
+        }
+      },
+      "Serilog.Sinks.Loggly/2.0.7": {
+        "type": "package",
+        "dependencies": {
+          "loggly-csharp": "4.5.0.4",
+          "Serilog": "1.5.9"
+        },
+        "compile": {
+          "lib/net45/Serilog.Sinks.Loggly.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Serilog.Sinks.Loggly.dll": {}
         }
       },
       "SharpSquare/1.0.0": {
@@ -3845,7 +3993,7 @@
           "lib/net45/_._": {}
         }
       },
-      "System.Spatial/5.6.0": {
+      "System.Spatial/5.6.4": {
         "type": "package",
         "compile": {
           "lib/net40/System.Spatial.dll": {}
@@ -3934,13 +4082,13 @@
           "MongoDB.Driver": "2.2.3"
         }
       },
-      "WindowsAzure.Storage/3.1.0.1": {
+      "WindowsAzure.Storage/7.0.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Data.OData": "5.6.0",
-          "Microsoft.Data.Services.Client": "5.6.0",
-          "Microsoft.WindowsAzure.ConfigurationManager": "1.8.0",
-          "Newtonsoft.Json": "5.0.6"
+          "Microsoft.Azure.KeyVault.Core": "1.0.0",
+          "Microsoft.Data.OData": "5.6.4",
+          "Microsoft.Data.Services.Client": "5.6.4",
+          "Newtonsoft.Json": "6.0.8"
         },
         "frameworkAssemblies": [
           "System.Data",
@@ -3990,16 +4138,15 @@
           "lib/net451/Autofac.Extensions.DependencyInjection.dll": {}
         }
       },
-      "BlobFileSystem.Azure/0.0.7": {
-        "type": "package",
+      "AzureBlobFileSystem/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
         "dependencies": {
-          "WindowsAzure.Storage": "3.1.0.1"
-        },
-        "compile": {
-          "lib/net45/AzureBlobFileSystem.dll": {}
-        },
-        "runtime": {
-          "lib/net45/AzureBlobFileSystem.dll": {}
+          "loggly-csharp": "4.5.1.7",
+          "Microsoft.WindowsAzure.ConfigurationManager": "3.2.1",
+          "Serilog.Framework.Logging": "1.0.0-rc1-final-10071",
+          "Serilog.Sinks.Loggly": "2.0.7",
+          "WindowsAzure.Storage": "7.0.0"
         }
       },
       "Common/1.0.0": {
@@ -4033,7 +4180,7 @@
         "dependencies": {
           "Autofac": "4.0.0-rc1-177",
           "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-177",
-          "BlobFileSystem.Azure": "0.0.7",
+          "AzureBlobFileSystem": "1.0.0",
           "Common": "1.0.0",
           "Database": "1.0.0",
           "DomainObjects": "1.0.0",
@@ -4079,6 +4226,28 @@
         },
         "runtime": {
           "lib/net45/Facebook.dll": {}
+        }
+      },
+      "loggly-csharp/4.5.1.7": {
+        "type": "package",
+        "dependencies": {
+          "loggly-csharp-config": "4.5.1.7",
+          "Newtonsoft.Json": "6.0.8"
+        },
+        "compile": {
+          "lib/net45/Loggly.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Loggly.dll": {}
+        }
+      },
+      "loggly-csharp-config/4.5.1.7": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Loggly.Config.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Loggly.Config.dll": {}
         }
       },
       "Mappers/1.0.0": {
@@ -4886,6 +5055,15 @@
           "lib/net451/Microsoft.AspNet.WebUtilities.dll": {}
         }
       },
+      "Microsoft.Azure.KeyVault.Core/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Microsoft.Azure.KeyVault.Core.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Microsoft.Azure.KeyVault.Core.dll": {}
+        }
+      },
       "Microsoft.CodeAnalysis.Analyzers/1.0.0": {
         "type": "package",
         "frameworkAssemblies": [
@@ -4918,7 +5096,7 @@
           "lib/net45/Microsoft.CodeAnalysis.CSharp.dll": {}
         }
       },
-      "Microsoft.Data.Edm/5.6.0": {
+      "Microsoft.Data.Edm/5.6.4": {
         "type": "package",
         "compile": {
           "lib/net40/Microsoft.Data.Edm.dll": {}
@@ -4956,11 +5134,11 @@
           }
         }
       },
-      "Microsoft.Data.OData/5.6.0": {
+      "Microsoft.Data.OData/5.6.4": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Data.Edm": "[5.6.0]",
-          "System.Spatial": "[5.6.0]"
+          "Microsoft.Data.Edm": "[5.6.4]",
+          "System.Spatial": "[5.6.4]"
         },
         "compile": {
           "lib/net40/Microsoft.Data.OData.dll": {}
@@ -4998,10 +5176,10 @@
           }
         }
       },
-      "Microsoft.Data.Services.Client/5.6.0": {
+      "Microsoft.Data.Services.Client/5.6.4": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Data.OData": "[5.6.0]"
+          "Microsoft.Data.OData": "[5.6.4]"
         },
         "compile": {
           "lib/net40/Microsoft.Data.Services.Client.dll": {}
@@ -5555,13 +5733,13 @@
           "lib/net451/Microsoft.Net.Http.Headers.dll": {}
         }
       },
-      "Microsoft.WindowsAzure.ConfigurationManager/1.8.0": {
+      "Microsoft.WindowsAzure.ConfigurationManager/3.2.1": {
         "type": "package",
         "compile": {
-          "lib/net35-full/Microsoft.WindowsAzure.Configuration.dll": {}
+          "lib/net40/Microsoft.WindowsAzure.Configuration.dll": {}
         },
         "runtime": {
-          "lib/net35-full/Microsoft.WindowsAzure.Configuration.dll": {}
+          "lib/net40/Microsoft.WindowsAzure.Configuration.dll": {}
         }
       },
       "MongoDB.Bson/2.2.3": {
@@ -5598,7 +5776,7 @@
           "lib/net45/MongoDB.Driver.Core.dll": {}
         }
       },
-      "Newtonsoft.Json/6.0.6": {
+      "Newtonsoft.Json/6.0.8": {
         "type": "package",
         "compile": {
           "lib/net45/Newtonsoft.Json.dll": {}
@@ -5613,6 +5791,50 @@
         "dependencies": {
           "Common": "1.0.0",
           "Enums": "1.0.0"
+        }
+      },
+      "Serilog/1.5.11": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Serilog.dll": {},
+          "lib/net45/Serilog.FullNetFx.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Serilog.dll": {},
+          "lib/net45/Serilog.FullNetFx.dll": {}
+        }
+      },
+      "Serilog.Framework.Logging/1.0.0-rc1-final-10071": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
+          "Serilog": "1.5.11"
+        },
+        "frameworkAssemblies": [
+          "Microsoft.CSharp",
+          "mscorlib",
+          "System",
+          "System.Core",
+          "System.Runtime"
+        ],
+        "compile": {
+          "lib/dnx451/Serilog.Framework.Logging.dll": {}
+        },
+        "runtime": {
+          "lib/dnx451/Serilog.Framework.Logging.dll": {}
+        }
+      },
+      "Serilog.Sinks.Loggly/2.0.7": {
+        "type": "package",
+        "dependencies": {
+          "loggly-csharp": "4.5.0.4",
+          "Serilog": "1.5.9"
+        },
+        "compile": {
+          "lib/net45/Serilog.Sinks.Loggly.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Serilog.Sinks.Loggly.dll": {}
         }
       },
       "SharpSquare/1.0.0": {
@@ -5823,7 +6045,7 @@
           "lib/net45/_._": {}
         }
       },
-      "System.Spatial/5.6.0": {
+      "System.Spatial/5.6.4": {
         "type": "package",
         "compile": {
           "lib/net40/System.Spatial.dll": {}
@@ -5912,13 +6134,13 @@
           "MongoDB.Driver": "2.2.3"
         }
       },
-      "WindowsAzure.Storage/3.1.0.1": {
+      "WindowsAzure.Storage/7.0.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Data.OData": "5.6.0",
-          "Microsoft.Data.Services.Client": "5.6.0",
-          "Microsoft.WindowsAzure.ConfigurationManager": "1.8.0",
-          "Newtonsoft.Json": "5.0.6"
+          "Microsoft.Azure.KeyVault.Core": "1.0.0",
+          "Microsoft.Data.OData": "5.6.4",
+          "Microsoft.Data.Services.Client": "5.6.4",
+          "Newtonsoft.Json": "6.0.8"
         },
         "frameworkAssemblies": [
           "System.Data",
@@ -5935,6 +6157,10 @@
     }
   },
   "libraries": {
+    "AzureBlobFileSystem/1.0.0": {
+      "type": "project",
+      "path": "../AzureBlobFileSystem/project.json"
+    },
     "Common/1.0.0": {
       "type": "project",
       "path": "../Common/project.json"
@@ -6011,16 +6237,6 @@
         "lib/netcore50/Autofac.Extensions.DependencyInjection.xml"
       ]
     },
-    "BlobFileSystem.Azure/0.0.7": {
-      "type": "package",
-      "sha512": "6QlwnzFM3EibkErZFBpQjTn2keLWhgWCca3kzjX8lA4TiNFuUVE3r61CSdiqn3uQ6+Jzgo89Jwe53r+PGgeKgw==",
-      "files": [
-        "BlobFileSystem.Azure.0.0.7.nupkg",
-        "BlobFileSystem.Azure.0.0.7.nupkg.sha512",
-        "BlobFileSystem.Azure.nuspec",
-        "lib/net45/AzureBlobFileSystem.dll"
-      ]
-    },
     "Facebook/7.0.6": {
       "type": "package",
       "sha512": "D9nlWZb88S4U+eh1pUDQ+AkSkiht6m0eFpxKFddZnQSSFTnncvDMBEnNODy4fOIOjWQIiOXRVbuY04jCPyWqkw==",
@@ -6049,6 +6265,28 @@
         "LICENSE.txt",
         "readme.txt",
         "serializers/JsonNetSerializer.cs"
+      ]
+    },
+    "loggly-csharp/4.5.1.7": {
+      "type": "package",
+      "sha512": "RHAWc/tqVNldNY4gu19gnNeC9a17vsT4azMlpH14tkyCF/uAekhj5BMlj5ZBJgY8WfpGJ5pVt5xFoZ+5QFtY6w==",
+      "files": [
+        "lib/net45/Loggly.dll",
+        "lib/net45/Loggly.pdb",
+        "loggly-csharp.4.5.1.7.nupkg",
+        "loggly-csharp.4.5.1.7.nupkg.sha512",
+        "loggly-csharp.nuspec"
+      ]
+    },
+    "loggly-csharp-config/4.5.1.7": {
+      "type": "package",
+      "sha512": "TBvtjzLbJOOlJ7obo4qfHCXC8NFMI9l7Uq24QdXpdv6n5zHO7F4dvnCYmyR6YXiSSbEg409FC7324ZeIm2V1oA==",
+      "files": [
+        "lib/net45/Loggly.Config.dll",
+        "lib/net45/Loggly.Config.pdb",
+        "loggly-csharp-config.4.5.1.7.nupkg",
+        "loggly-csharp-config.4.5.1.7.nupkg.sha512",
+        "loggly-csharp-config.nuspec"
       ]
     },
     "Microsoft.AspNet.Antiforgery/1.0.0-rc1-final": {
@@ -6609,6 +6847,19 @@
         "Microsoft.AspNet.WebUtilities.nuspec"
       ]
     },
+    "Microsoft.Azure.KeyVault.Core/1.0.0": {
+      "type": "package",
+      "sha512": "iaA0E8xoVlqroQ7Iurg/VyAjfPdhzn+xN7JkdncmNoox/ez49uPbxp2vMrvhopBaUMuoBu38+8e0RvrV+X+BxA==",
+      "files": [
+        "lib/net40/Microsoft.Azure.KeyVault.Core.dll",
+        "lib/net40/Microsoft.Azure.KeyVault.Core.xml",
+        "lib/portable-net45+wp8+wpa81+win/Microsoft.Azure.KeyVault.Core.dll",
+        "lib/portable-net45+wp8+wpa81+win/Microsoft.Azure.KeyVault.Core.xml",
+        "Microsoft.Azure.KeyVault.Core.1.0.0.nupkg",
+        "Microsoft.Azure.KeyVault.Core.1.0.0.nupkg.sha512",
+        "Microsoft.Azure.KeyVault.Core.nuspec"
+      ]
+    },
     "Microsoft.CodeAnalysis.Analyzers/1.0.0": {
       "type": "package",
       "sha512": "E7VdmGw6xO3VHWapC+pNLZmo6yncS53UY3bmb5WZm9wliJBB1A6brgzKA4fcqiLrmJFx71r0M2zEbRDphRLUNg==",
@@ -6653,9 +6904,9 @@
         "ThirdPartyNotices.rtf"
       ]
     },
-    "Microsoft.Data.Edm/5.6.0": {
+    "Microsoft.Data.Edm/5.6.4": {
       "type": "package",
-      "sha512": "85HVRPZznEBFLnkbNqBeZUAD7q5h+KdWDO0Beqs9fH/0DWtFX8p02jKIftY3vii7uUoWOdu4K6Kd/p7Xtz3TsA==",
+      "sha512": "I9ea/CEOufddjjyRYIowshdeFj5SIqfWZ5conK/UIaFx2/jJ+PDRhQ5jcJTqTg/ediCa1C22TeRl/MmL9zwBew==",
       "files": [
         "lib/net40/de/Microsoft.Data.Edm.resources.dll",
         "lib/net40/es/Microsoft.Data.Edm.resources.dll",
@@ -6668,36 +6919,47 @@
         "lib/net40/ru/Microsoft.Data.Edm.resources.dll",
         "lib/net40/zh-Hans/Microsoft.Data.Edm.resources.dll",
         "lib/net40/zh-Hant/Microsoft.Data.Edm.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/de/Microsoft.Data.Edm.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/es/Microsoft.Data.Edm.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/fr/Microsoft.Data.Edm.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/it/Microsoft.Data.Edm.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/ja/Microsoft.Data.Edm.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/ko/Microsoft.Data.Edm.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/Microsoft.Data.Edm.Portable.dll",
-        "lib/portable-net40+sl5+wp8+win8/Microsoft.Data.Edm.Portable.xml",
-        "lib/portable-net40+sl5+wp8+win8/ru/Microsoft.Data.Edm.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/zh-Hans/Microsoft.Data.Edm.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/zh-Hant/Microsoft.Data.Edm.Portable.resources.dll",
-        "lib/sl4/de/Microsoft.Data.Edm.SL.resources.dll",
-        "lib/sl4/es/Microsoft.Data.Edm.SL.resources.dll",
-        "lib/sl4/fr/Microsoft.Data.Edm.SL.resources.dll",
-        "lib/sl4/it/Microsoft.Data.Edm.SL.resources.dll",
-        "lib/sl4/ja/Microsoft.Data.Edm.SL.resources.dll",
-        "lib/sl4/ko/Microsoft.Data.Edm.SL.resources.dll",
-        "lib/sl4/Microsoft.Data.Edm.SL.dll",
-        "lib/sl4/Microsoft.Data.Edm.SL.xml",
-        "lib/sl4/ru/Microsoft.Data.Edm.SL.resources.dll",
-        "lib/sl4/zh-Hans/Microsoft.Data.Edm.SL.resources.dll",
-        "lib/sl4/zh-Hant/Microsoft.Data.Edm.SL.resources.dll",
-        "Microsoft.Data.Edm.5.6.0.nupkg",
-        "Microsoft.Data.Edm.5.6.0.nupkg.sha512",
+        "lib/portable-net40+sl5+wp8+win8+wpa/de/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/es/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/fr/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/it/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/ja/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/ko/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/Microsoft.Data.Edm.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/Microsoft.Data.Edm.xml",
+        "lib/portable-net40+sl5+wp8+win8+wpa/ru/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/zh-Hans/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/zh-Hant/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/de/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/es/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/fr/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/it/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/ja/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/ko/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/Microsoft.Data.Edm.dll",
+        "lib/portable-net45+wp8+win8+wpa/Microsoft.Data.Edm.xml",
+        "lib/portable-net45+wp8+win8+wpa/ru/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/zh-Hans/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/zh-Hant/Microsoft.Data.Edm.resources.dll",
+        "lib/sl4/de/Microsoft.Data.Edm.resources.dll",
+        "lib/sl4/es/Microsoft.Data.Edm.resources.dll",
+        "lib/sl4/fr/Microsoft.Data.Edm.resources.dll",
+        "lib/sl4/it/Microsoft.Data.Edm.resources.dll",
+        "lib/sl4/ja/Microsoft.Data.Edm.resources.dll",
+        "lib/sl4/ko/Microsoft.Data.Edm.resources.dll",
+        "lib/sl4/Microsoft.Data.Edm.dll",
+        "lib/sl4/Microsoft.Data.Edm.xml",
+        "lib/sl4/ru/Microsoft.Data.Edm.resources.dll",
+        "lib/sl4/zh-Hans/Microsoft.Data.Edm.resources.dll",
+        "lib/sl4/zh-Hant/Microsoft.Data.Edm.resources.dll",
+        "Microsoft.Data.Edm.5.6.4.nupkg",
+        "Microsoft.Data.Edm.5.6.4.nupkg.sha512",
         "Microsoft.Data.Edm.nuspec"
       ]
     },
-    "Microsoft.Data.OData/5.6.0": {
+    "Microsoft.Data.OData/5.6.4": {
       "type": "package",
-      "sha512": "Lt+w1eHXe3+HOl0S4XrfO8AW2ALvKFBZtRfb9ZcmTahmE02HIlbaa3cy/jBTwNoFihfQ5vaBjNl4xspSmVcPRw==",
+      "sha512": "Te71LAvjYppmBCLWomHvhVzKes3q8L5tmmDMSyLP7YrJMYG5/Ded8uJgxWWkUX/Vh11ZDpN2WXRByOg+BAHCYw==",
       "files": [
         "lib/net40/de/Microsoft.Data.OData.resources.dll",
         "lib/net40/es/Microsoft.Data.OData.resources.dll",
@@ -6710,36 +6972,47 @@
         "lib/net40/ru/Microsoft.Data.OData.resources.dll",
         "lib/net40/zh-Hans/Microsoft.Data.OData.resources.dll",
         "lib/net40/zh-Hant/Microsoft.Data.OData.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/de/Microsoft.Data.OData.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/es/Microsoft.Data.OData.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/fr/Microsoft.Data.OData.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/it/Microsoft.Data.OData.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/ja/Microsoft.Data.OData.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/ko/Microsoft.Data.OData.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/Microsoft.Data.OData.Portable.dll",
-        "lib/portable-net40+sl5+wp8+win8/Microsoft.Data.OData.Portable.xml",
-        "lib/portable-net40+sl5+wp8+win8/ru/Microsoft.Data.OData.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/zh-Hans/Microsoft.Data.OData.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/zh-Hant/Microsoft.Data.OData.Portable.resources.dll",
-        "lib/sl4/de/Microsoft.Data.OData.SL.resources.dll",
-        "lib/sl4/es/Microsoft.Data.OData.SL.resources.dll",
-        "lib/sl4/fr/Microsoft.Data.OData.SL.resources.dll",
-        "lib/sl4/it/Microsoft.Data.OData.SL.resources.dll",
-        "lib/sl4/ja/Microsoft.Data.OData.SL.resources.dll",
-        "lib/sl4/ko/Microsoft.Data.OData.SL.resources.dll",
-        "lib/sl4/Microsoft.Data.OData.SL.dll",
-        "lib/sl4/Microsoft.Data.OData.SL.xml",
-        "lib/sl4/ru/Microsoft.Data.OData.SL.resources.dll",
-        "lib/sl4/zh-Hans/Microsoft.Data.OData.SL.resources.dll",
-        "lib/sl4/zh-Hant/Microsoft.Data.OData.SL.resources.dll",
-        "Microsoft.Data.OData.5.6.0.nupkg",
-        "Microsoft.Data.OData.5.6.0.nupkg.sha512",
+        "lib/portable-net40+sl5+wp8+win8+wpa/de/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/es/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/fr/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/it/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/ja/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/ko/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/Microsoft.Data.OData.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/Microsoft.Data.OData.xml",
+        "lib/portable-net40+sl5+wp8+win8+wpa/ru/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/zh-Hans/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/zh-Hant/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/de/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/es/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/fr/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/it/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/ja/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/ko/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/Microsoft.Data.OData.dll",
+        "lib/portable-net45+wp8+win8+wpa/Microsoft.Data.OData.xml",
+        "lib/portable-net45+wp8+win8+wpa/ru/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/zh-Hans/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/zh-Hant/Microsoft.Data.OData.resources.dll",
+        "lib/sl4/de/Microsoft.Data.OData.resources.dll",
+        "lib/sl4/es/Microsoft.Data.OData.resources.dll",
+        "lib/sl4/fr/Microsoft.Data.OData.resources.dll",
+        "lib/sl4/it/Microsoft.Data.OData.resources.dll",
+        "lib/sl4/ja/Microsoft.Data.OData.resources.dll",
+        "lib/sl4/ko/Microsoft.Data.OData.resources.dll",
+        "lib/sl4/Microsoft.Data.OData.dll",
+        "lib/sl4/Microsoft.Data.OData.xml",
+        "lib/sl4/ru/Microsoft.Data.OData.resources.dll",
+        "lib/sl4/zh-Hans/Microsoft.Data.OData.resources.dll",
+        "lib/sl4/zh-Hant/Microsoft.Data.OData.resources.dll",
+        "Microsoft.Data.OData.5.6.4.nupkg",
+        "Microsoft.Data.OData.5.6.4.nupkg.sha512",
         "Microsoft.Data.OData.nuspec"
       ]
     },
-    "Microsoft.Data.Services.Client/5.6.0": {
+    "Microsoft.Data.Services.Client/5.6.4": {
       "type": "package",
-      "sha512": "OPXiTugmoZNO4X5RrLEKyIKhXMBBGNNM7szgtAyQ42snJFTcC2pStIYtQXaSAd1gHx/MNvTYcNN8vn7o64cFgA==",
+      "sha512": "94XNZKwnpHuFAdR70kqNTMBv2ex9m+VVQX8dHknZgtlq+nTlZDgzFmahU0wsBaIqJWc3k8Z+FftQ2Voq9r0NWA==",
       "files": [
         "lib/net40/de/Microsoft.Data.Services.Client.resources.dll",
         "lib/net40/es/Microsoft.Data.Services.Client.resources.dll",
@@ -6752,30 +7025,30 @@
         "lib/net40/ru/Microsoft.Data.Services.Client.resources.dll",
         "lib/net40/zh-Hans/Microsoft.Data.Services.Client.resources.dll",
         "lib/net40/zh-Hant/Microsoft.Data.Services.Client.resources.dll",
-        "lib/portable-net45+sl5+wp8+win8/de/Microsoft.Data.Services.Client.Portable.resources.dll",
-        "lib/portable-net45+sl5+wp8+win8/es/Microsoft.Data.Services.Client.Portable.resources.dll",
-        "lib/portable-net45+sl5+wp8+win8/fr/Microsoft.Data.Services.Client.Portable.resources.dll",
-        "lib/portable-net45+sl5+wp8+win8/it/Microsoft.Data.Services.Client.Portable.resources.dll",
-        "lib/portable-net45+sl5+wp8+win8/ja/Microsoft.Data.Services.Client.Portable.resources.dll",
-        "lib/portable-net45+sl5+wp8+win8/ko/Microsoft.Data.Services.Client.Portable.resources.dll",
-        "lib/portable-net45+sl5+wp8+win8/Microsoft.Data.Services.Client.Portable.dll",
-        "lib/portable-net45+sl5+wp8+win8/Microsoft.Data.Services.Client.Portable.xml",
-        "lib/portable-net45+sl5+wp8+win8/ru/Microsoft.Data.Services.Client.Portable.resources.dll",
-        "lib/portable-net45+sl5+wp8+win8/zh-Hans/Microsoft.Data.Services.Client.Portable.resources.dll",
-        "lib/portable-net45+sl5+wp8+win8/zh-Hant/Microsoft.Data.Services.Client.Portable.resources.dll",
-        "lib/sl4/de/Microsoft.Data.Services.Client.SL.resources.dll",
-        "lib/sl4/es/Microsoft.Data.Services.Client.SL.resources.dll",
-        "lib/sl4/fr/Microsoft.Data.Services.Client.SL.resources.dll",
-        "lib/sl4/it/Microsoft.Data.Services.Client.SL.resources.dll",
-        "lib/sl4/ja/Microsoft.Data.Services.Client.SL.resources.dll",
-        "lib/sl4/ko/Microsoft.Data.Services.Client.SL.resources.dll",
-        "lib/sl4/Microsoft.Data.Services.Client.SL.dll",
-        "lib/sl4/Microsoft.Data.Services.Client.SL.xml",
-        "lib/sl4/ru/Microsoft.Data.Services.Client.SL.resources.dll",
-        "lib/sl4/zh-Hans/Microsoft.Data.Services.Client.SL.resources.dll",
-        "lib/sl4/zh-Hant/Microsoft.Data.Services.Client.SL.resources.dll",
-        "Microsoft.Data.Services.Client.5.6.0.nupkg",
-        "Microsoft.Data.Services.Client.5.6.0.nupkg.sha512",
+        "lib/portable-net45+wp8+win8+wpa/de/Microsoft.Data.Services.Client.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/es/Microsoft.Data.Services.Client.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/fr/Microsoft.Data.Services.Client.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/it/Microsoft.Data.Services.Client.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/ja/Microsoft.Data.Services.Client.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/ko/Microsoft.Data.Services.Client.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/Microsoft.Data.Services.Client.dll",
+        "lib/portable-net45+wp8+win8+wpa/Microsoft.Data.Services.Client.xml",
+        "lib/portable-net45+wp8+win8+wpa/ru/Microsoft.Data.Services.Client.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/zh-Hans/Microsoft.Data.Services.Client.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/zh-Hant/Microsoft.Data.Services.Client.resources.dll",
+        "lib/sl4/de/Microsoft.Data.Services.Client.resources.dll",
+        "lib/sl4/es/Microsoft.Data.Services.Client.resources.dll",
+        "lib/sl4/fr/Microsoft.Data.Services.Client.resources.dll",
+        "lib/sl4/it/Microsoft.Data.Services.Client.resources.dll",
+        "lib/sl4/ja/Microsoft.Data.Services.Client.resources.dll",
+        "lib/sl4/ko/Microsoft.Data.Services.Client.resources.dll",
+        "lib/sl4/Microsoft.Data.Services.Client.dll",
+        "lib/sl4/Microsoft.Data.Services.Client.xml",
+        "lib/sl4/ru/Microsoft.Data.Services.Client.resources.dll",
+        "lib/sl4/zh-Hans/Microsoft.Data.Services.Client.resources.dll",
+        "lib/sl4/zh-Hant/Microsoft.Data.Services.Client.resources.dll",
+        "Microsoft.Data.Services.Client.5.6.4.nupkg",
+        "Microsoft.Data.Services.Client.5.6.4.nupkg.sha512",
         "Microsoft.Data.Services.Client.nuspec"
       ]
     },
@@ -7221,13 +7494,14 @@
         "Microsoft.Net.Http.Headers.nuspec"
       ]
     },
-    "Microsoft.WindowsAzure.ConfigurationManager/1.8.0": {
+    "Microsoft.WindowsAzure.ConfigurationManager/3.2.1": {
       "type": "package",
-      "sha512": "a6b+9C3kZ3YtyqlxDfMSEYnqARFpr/BQcCqZFCgqBAEHDUZNr2/GOL9gC2gialM0SMOSJ5PXic4NirF19HtMwQ==",
+      "sha512": "92deJ/UgEChOtHb9eLYBsL1+Y38Y5hr+qwd7LB+iCwfIOvRsah3EUnGBjSNZxSydguXimIiJjsB4wQ2jXIqaIQ==",
       "files": [
-        "lib/net35-full/Microsoft.WindowsAzure.Configuration.dll",
-        "Microsoft.WindowsAzure.ConfigurationManager.1.8.0.nupkg",
-        "Microsoft.WindowsAzure.ConfigurationManager.1.8.0.nupkg.sha512",
+        "lib/net40/Microsoft.WindowsAzure.Configuration.dll",
+        "lib/net40/Microsoft.WindowsAzure.Configuration.xml",
+        "Microsoft.WindowsAzure.ConfigurationManager.3.2.1.nupkg",
+        "Microsoft.WindowsAzure.ConfigurationManager.3.2.1.nupkg.sha512",
         "Microsoft.WindowsAzure.ConfigurationManager.nuspec"
       ]
     },
@@ -7266,9 +7540,9 @@
         "MongoDB.Driver.Core.nuspec"
       ]
     },
-    "Newtonsoft.Json/6.0.6": {
+    "Newtonsoft.Json/6.0.8": {
       "type": "package",
-      "sha512": "w26uZNyCG5VeoKiEOJ4+9/o8koSofLKwHl7WLreIcp0U6r57L7WiRXmjp8MTKFw6dYNZ9AE0lw69WYbIhUsU9Q==",
+      "sha512": "7ut47NDedTW19EbL0JpFDYUP62fcuz27hJrehCDNajdCS5NtqL+E39+7Um3OkNc2wl2ym7K8Ln5eNuLus6mVGQ==",
       "files": [
         "lib/net20/Newtonsoft.Json.dll",
         "lib/net20/Newtonsoft.Json.xml",
@@ -7284,10 +7558,58 @@
         "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.xml",
         "lib/portable-net45+wp80+win8+wpa81+aspnetcore50/Newtonsoft.Json.dll",
         "lib/portable-net45+wp80+win8+wpa81+aspnetcore50/Newtonsoft.Json.xml",
-        "Newtonsoft.Json.6.0.6.nupkg",
-        "Newtonsoft.Json.6.0.6.nupkg.sha512",
+        "Newtonsoft.Json.6.0.8.nupkg",
+        "Newtonsoft.Json.6.0.8.nupkg.sha512",
         "Newtonsoft.Json.nuspec",
         "tools/install.ps1"
+      ]
+    },
+    "Serilog/1.5.11": {
+      "type": "package",
+      "sha512": "XNMHuP9eRWk7ffNtEAtACoBqqrSGfioQnEbeK/boi/qtamh3ZgYXvUwH9/PytJdg3LGOIT0quyTiCNaqYlJUuQ==",
+      "files": [
+        "lib/net40/Serilog.dll",
+        "lib/net40/Serilog.FullNetFx.dll",
+        "lib/net40/Serilog.FullNetFx.pdb",
+        "lib/net40/Serilog.FullNetFx.XML",
+        "lib/net40/Serilog.pdb",
+        "lib/net40/Serilog.XML",
+        "lib/net45/Serilog.dll",
+        "lib/net45/Serilog.FullNetFx.dll",
+        "lib/net45/Serilog.FullNetFx.pdb",
+        "lib/net45/Serilog.FullNetFx.XML",
+        "lib/net45/Serilog.pdb",
+        "lib/net45/Serilog.XML",
+        "lib/portable-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10/Serilog.dll",
+        "lib/portable-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10/Serilog.pdb",
+        "lib/portable-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10/Serilog.XML",
+        "Serilog.1.5.11.nupkg",
+        "Serilog.1.5.11.nupkg.sha512",
+        "Serilog.nuspec"
+      ]
+    },
+    "Serilog.Framework.Logging/1.0.0-rc1-final-10071": {
+      "type": "package",
+      "sha512": "RyB8mv2eL0xYISh7v2+62as9Whdx8WOeqfSPXcac3mRLIW3XHY0LCbKDGwIA1pDbn+AAmAa6IR7+6wmI7mI93g==",
+      "files": [
+        "lib/dnx451/Serilog.Framework.Logging.dll",
+        "lib/dnx451/Serilog.Framework.Logging.xml",
+        "lib/dnxcore50/Serilog.Framework.Logging.dll",
+        "lib/dnxcore50/Serilog.Framework.Logging.xml",
+        "Serilog.Framework.Logging.1.0.0-rc1-final-10071.nupkg",
+        "Serilog.Framework.Logging.1.0.0-rc1-final-10071.nupkg.sha512",
+        "Serilog.Framework.Logging.nuspec"
+      ]
+    },
+    "Serilog.Sinks.Loggly/2.0.7": {
+      "type": "package",
+      "sha512": "KJ2uZYTqdM5xy8/gtz8qtAD1VTQYJteqd7ugLQIxS2I1VjGudRjSTxZkp6YFJ2121dL8tH6fg14f4W8m5WkEug==",
+      "files": [
+        "lib/net45/Serilog.Sinks.Loggly.dll",
+        "lib/net45/Serilog.Sinks.Loggly.xml",
+        "Serilog.Sinks.Loggly.2.0.7.nupkg",
+        "Serilog.Sinks.Loggly.2.0.7.nupkg.sha512",
+        "Serilog.Sinks.Loggly.nuspec"
       ]
     },
     "System.Collections/4.0.0": {
@@ -7962,9 +8284,9 @@
         "System.Runtime.InteropServices.nuspec"
       ]
     },
-    "System.Spatial/5.6.0": {
+    "System.Spatial/5.6.4": {
       "type": "package",
-      "sha512": "O5hFsuKD1vUwXw9TrsbQ7XMlkL5qWHNJYSEchsaCmxFI60ffa3FSHnqvOBHKzLplaiA3enVPufDPgv9xSrp11A==",
+      "sha512": "BoXUQ0mHyeAbkR3qlhwXqUFxzJ7rZuFOrvFM/jZRk+S6JLI2JxXRKby6bxuWbmwYv2o/eRPQPbAOvEk5hB2Gmg==",
       "files": [
         "lib/net40/de/System.Spatial.resources.dll",
         "lib/net40/es/System.Spatial.resources.dll",
@@ -7977,30 +8299,41 @@
         "lib/net40/System.Spatial.xml",
         "lib/net40/zh-Hans/System.Spatial.resources.dll",
         "lib/net40/zh-Hant/System.Spatial.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/de/System.Spatial.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/es/System.Spatial.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/fr/System.Spatial.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/it/System.Spatial.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/ja/System.Spatial.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/ko/System.Spatial.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/ru/System.Spatial.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/System.Spatial.Portable.dll",
-        "lib/portable-net40+sl5+wp8+win8/System.Spatial.Portable.xml",
-        "lib/portable-net40+sl5+wp8+win8/zh-Hans/System.Spatial.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/zh-Hant/System.Spatial.Portable.resources.dll",
-        "lib/sl4/de/System.Spatial.SL.resources.dll",
-        "lib/sl4/es/System.Spatial.SL.resources.dll",
-        "lib/sl4/fr/System.Spatial.SL.resources.dll",
-        "lib/sl4/it/System.Spatial.SL.resources.dll",
-        "lib/sl4/ja/System.Spatial.SL.resources.dll",
-        "lib/sl4/ko/System.Spatial.SL.resources.dll",
-        "lib/sl4/ru/System.Spatial.SL.resources.dll",
-        "lib/sl4/System.Spatial.SL.dll",
-        "lib/sl4/System.Spatial.SL.xml",
-        "lib/sl4/zh-Hans/System.Spatial.SL.resources.dll",
-        "lib/sl4/zh-Hant/System.Spatial.SL.resources.dll",
-        "System.Spatial.5.6.0.nupkg",
-        "System.Spatial.5.6.0.nupkg.sha512",
+        "lib/portable-net40+sl5+wp8+win8+wpa/de/System.Spatial.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/es/System.Spatial.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/fr/System.Spatial.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/it/System.Spatial.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/ja/System.Spatial.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/ko/System.Spatial.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/ru/System.Spatial.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/System.Spatial.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/System.Spatial.xml",
+        "lib/portable-net40+sl5+wp8+win8+wpa/zh-Hans/System.Spatial.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/zh-Hant/System.Spatial.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/de/System.Spatial.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/es/System.Spatial.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/fr/System.Spatial.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/it/System.Spatial.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/ja/System.Spatial.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/ko/System.Spatial.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/ru/System.Spatial.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/System.Spatial.dll",
+        "lib/portable-net45+wp8+win8+wpa/System.Spatial.xml",
+        "lib/portable-net45+wp8+win8+wpa/zh-Hans/System.Spatial.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/zh-Hant/System.Spatial.resources.dll",
+        "lib/sl4/de/System.Spatial.resources.dll",
+        "lib/sl4/es/System.Spatial.resources.dll",
+        "lib/sl4/fr/System.Spatial.resources.dll",
+        "lib/sl4/it/System.Spatial.resources.dll",
+        "lib/sl4/ja/System.Spatial.resources.dll",
+        "lib/sl4/ko/System.Spatial.resources.dll",
+        "lib/sl4/ru/System.Spatial.resources.dll",
+        "lib/sl4/System.Spatial.dll",
+        "lib/sl4/System.Spatial.xml",
+        "lib/sl4/zh-Hans/System.Spatial.resources.dll",
+        "lib/sl4/zh-Hant/System.Spatial.resources.dll",
+        "System.Spatial.5.6.4.nupkg",
+        "System.Spatial.5.6.4.nupkg.sha512",
         "System.Spatial.nuspec"
       ]
     },
@@ -8212,14 +8545,21 @@
         "TweetSharp.nuspec"
       ]
     },
-    "WindowsAzure.Storage/3.1.0.1": {
+    "WindowsAzure.Storage/7.0.0": {
       "type": "package",
-      "sha512": "/6UnKf8zWJXS3TOvzAjq5yAsjDOd9t714+GIi5L6Vj6c7KmPs1jBGBx6UufDt+KVAxTrsV2Wdlbapp7z7LV+cw==",
+      "sha512": "AKxGH6NpZN0fRc2eRKtlDdkk1JW5uqCMeHCF06Z/L5xkYajM7OWquzsjAkQsi2s5a2O0Y4iE6WZOcT5PLE0IMA==",
       "files": [
         "lib/net40/Microsoft.WindowsAzure.Storage.dll",
+        "lib/net40/Microsoft.WindowsAzure.Storage.pdb",
         "lib/net40/Microsoft.WindowsAzure.Storage.xml",
-        "WindowsAzure.Storage.3.1.0.1.nupkg",
-        "WindowsAzure.Storage.3.1.0.1.nupkg.sha512",
+        "lib/win8/Microsoft.WindowsAzure.Storage.dll",
+        "lib/win8/Microsoft.WindowsAzure.Storage.pdb",
+        "lib/wp8/Microsoft.WindowsAzure.Storage.dll",
+        "lib/wp8/Microsoft.WindowsAzure.Storage.pdb",
+        "lib/wpa/Microsoft.WindowsAzure.Storage.dll",
+        "lib/wpa/Microsoft.WindowsAzure.Storage.pdb",
+        "WindowsAzure.Storage.7.0.0.nupkg",
+        "WindowsAzure.Storage.7.0.0.nupkg.sha512",
         "WindowsAzure.Storage.nuspec"
       ]
     }

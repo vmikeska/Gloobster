@@ -92,16 +92,13 @@ namespace Gloobster.DomainModels.Wiki
                     SaveVersion(file, articleId, EventType.Delete);
                 }
 
-                FileDomain.Storage.DeleteFile(pathToDelete);
+                FileDomain.DeleteFile(pathToDelete);
             }
 
             var nameThumb = $"{photoId}_thumb.jpg";
             var pathToThumb = FileDomain.Storage.Combine(galleryDir, nameThumb);
-            bool thumbExists = FileDomain.Storage.FileExists(pathToThumb);
-            if (thumbExists)
-            {
-                FileDomain.Storage.DeleteFile(pathToThumb);
-            }
+            
+            FileDomain.DeleteFile(pathToThumb);            
 
             var articleIdObj = new ObjectId(articleId);
             var photoIdObj = new ObjectId(photoId);

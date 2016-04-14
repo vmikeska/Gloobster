@@ -27,19 +27,11 @@ namespace Gloobster.Common
 
             return b;
         }
-
+        
         public static Bitmap ExportPartOfBitmap(Bitmap inputBmp, Rectangle rect)
-        {
-            Bitmap bmp = new Bitmap(rect.Width, rect.Height);
-            Graphics g = Graphics.FromImage(bmp);
-
-            // Draw the specified section of the source bitmap to the new one
-            g.DrawImage(inputBmp, 0, 0, rect, GraphicsUnit.Pixel);
-
-            // Clean up
-            g.Dispose();
-
-            return bmp;
+        {                        
+            var cloned = inputBmp.Clone(rect, inputBmp.PixelFormat);
+            return cloned;
         }
 
         public static Stream ConvertBitmapToJpg(Bitmap inputBmp, long quality)

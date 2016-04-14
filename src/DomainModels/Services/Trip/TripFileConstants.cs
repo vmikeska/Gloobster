@@ -11,7 +11,7 @@ namespace Gloobster.DomainModels.Services.Trip
         public const int SmallWidth_xs = 70;
         public const int SmallHeight_xs = 70;
 
-        public const string FileLocation = "tf";
+        public const string FileLocation = "tfa";
 
         public const string BigPicNameExt = "background.jpg";
         public const string BigPicName = "background";
