@@ -19,9 +19,7 @@ namespace Gloobster.Portal
 		public const string RepositoryDirectory = "filerepository";
 		
 		public IStorageProvider GetInstance(bool isLocal)
-		{
-			//Log.Debug("CreatingStorage, isLocal: " + isLocal);
-			
+		{			
 			if (isLocal)
 			{
 				var storage = GetLocal();
@@ -39,12 +37,10 @@ namespace Gloobster.Portal
 		{
 			try
 			{
-				//Log.Debug("GettingAzureStorage");
-				
 				var account = CloudStorageAccount.Parse(GloobsterConfig.StorageConnectionString);
 				var storage = new AzureBlobStorageProvider(account);
-				//Log.Debug("CreatedAzureStorage");
-
+			    storage.Log = Log;
+				
 				return storage;
 			}
 			catch (Exception exc)
@@ -58,12 +54,9 @@ namespace Gloobster.Portal
 		{
 			try
 			{
-				//Log.Debug("GettingLocalStorage");
-
 				var basePath = Path.Combine(GloobsterConfig.StorageRootDir, RepositoryDirectory);
 				var storage = new FileSystemStorageProvider(basePath);
-				//Log.Debug("CreatedLocalStorage");
-
+				
 				return storage;
 			}
 			catch (Exception exc)

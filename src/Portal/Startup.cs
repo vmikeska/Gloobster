@@ -27,13 +27,10 @@ namespace Gloobster.Portal
 
         public static void AddDebugLog(string txt)
         {
-            if (Logger != null)
-            {
-                Logger.Debug(txt);
-            }
+            Logger?.Debug(txt);
         }
 
-		public Startup(IHostingEnvironment env)
+        public Startup(IHostingEnvironment env)
 		{
             //.AddJsonFile("configLocal.json");
             //.AddJsonFile($"config.{env.EnvironmentName}.json", optional: true);

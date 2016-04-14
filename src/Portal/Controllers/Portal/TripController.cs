@@ -233,9 +233,7 @@ namespace Gloobster.Portal.Controllers.Portal
 
 
         private FileStreamResult GetPicture(string tripId, string picName)
-	    {
-            //var tripIdObj = new ObjectId(tripId);
-            //var trip = DB.C<TripEntity>().FirstOrDefault(u => u.id == tripIdObj);
+	    {           
             var tripDir = FileDomain.Storage.Combine(TripFileConstants.FileLocation, tripId);
             
             var filePath = FileDomain.Storage.Combine(tripDir, picName);
@@ -243,7 +241,7 @@ namespace Gloobster.Portal.Controllers.Portal
             if (exists)
             {
                 var fileStream = FileDomain.GetFile(tripDir, picName);
-                return new FileStreamResult(fileStream, "image/jpeg");
+                return new FileStreamResult(fileStream, "image/jpeg");                
             }
 
             return null;

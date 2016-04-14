@@ -91,12 +91,8 @@ namespace Gloobster.Portal.Controllers.Api.Trip
             
             if (trip.HasBigPicture)
             {
-                var pathToDelete = FileDomain.Storage.Combine(tripDir, TripFileConstants.BigPicNameExt);
-                bool fileExists = FileDomain.Storage.FileExists(pathToDelete);
-                if (fileExists)
-                {
-                    FileDomain.Storage.DeleteFile(pathToDelete);
-                }
+                var pathToDelete = FileDomain.Storage.Combine(tripDir, TripFileConstants.BigPicNameExt);                
+                FileDomain.DeleteFile(pathToDelete);                
             }
         }
 

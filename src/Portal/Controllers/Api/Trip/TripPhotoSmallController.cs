@@ -1,3 +1,4 @@
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -26,7 +27,18 @@ namespace Gloobster.Portal.Controllers.Api.Trip
         {
             FileDomain = (FilesDomain) filesDomain;
         }
-        
+
+        private bool LogsOn = false;
+
+        private void WriteLog(string text)
+        {
+            if (LogsOn)
+            {
+                var txt = $"FilesDomainC: {text}";
+                Log.Debug(txt);
+            }
+        }
+
         [HttpPost]
         [AuthorizeApi]
         public IActionResult Post([FromBody] FileRequest request)
@@ -37,33 +49,48 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 
             FileDomain.OnFileSaved += (sender, args) =>
             {
-                var argsObj = (OnFileSavedArgs) args;
+                //var argsObj = (OnFileSavedArgs) args;
 
                 UpdatePicSaved(tripIdObj, true);
             };
 
             FileDomain.OnBeforeCreate += (sender, args) =>
             {
-                DeleteOldPicture(tripDir, TripFileConstants.SmallPicNameExt_s);
-                DeleteOldPicture(tripDir, TripFileConstants.SmallPicNameExt_xs);
-
-                var bytesStream = new MemoryStream(FileDomain.AllBytes);
-
-                var origBmp = new Bitmap(bytesStream);
-
-                using (var stream = GeneratePic(origBmp, 0.810f, 1.0f, TripFileConstants.SmallWidth_s, TripFileConstants.SmallHeight_s))
+                MemoryStream bytesStream = null;
+                try
                 {
-                    var path = FileDomain.Storage.Combine(tripDir, TripFileConstants.SmallPicNameExt_s);
-                    FileDomain.Storage.SaveStream(path, stream);
-                }
+                    WriteLog($"OnBeforeCreate, trip photo small start");
 
-                using (var stream = GeneratePic(origBmp, 1.0f, 1.0f, TripFileConstants.SmallWidth_xs, TripFileConstants.SmallHeight_xs))
+                    DeleteOldPicture(tripDir, TripFileConstants.SmallPicNameExt_s);
+                    DeleteOldPicture(tripDir, TripFileConstants.SmallPicNameExt_xs);
+
+                    bytesStream = new MemoryStream(FileDomain.AllBytes);
+
+                    var origBmp = new Bitmap(bytesStream);
+
+                    using (var stream = GeneratePic(origBmp, 0.810f, 1.0f, TripFileConstants.SmallWidth_s,TripFileConstants.SmallHeight_s))
+                    {
+                        var path = FileDomain.Storage.Combine(tripDir, TripFileConstants.SmallPicNameExt_s);
+                        FileDomain.Storage.SaveStream(path, stream);
+                    }
+
+                    using (var stream = GeneratePic(origBmp, 1.0f, 1.0f, TripFileConstants.SmallWidth_xs,TripFileConstants.SmallHeight_xs))
+                    {
+                        var path = FileDomain.Storage.Combine(tripDir, TripFileConstants.SmallPicNameExt_xs);
+                        FileDomain.Storage.SaveStream(path, stream);
+                    }
+
+                    FileDomain.DoNotSave = true;
+                }
+                catch (Exception exc)
                 {
-                    var path = FileDomain.Storage.Combine(tripDir, TripFileConstants.SmallPicNameExt_xs);
-                    FileDomain.Storage.SaveStream(path, stream);
+                    WriteLog($"OnBeforeCreate, trip photo small: {exc.Message}");
+                    throw;
                 }
-
-                FileDomain.DoNotSave = true;
+                finally
+                {
+                    bytesStream?.Dispose();
+                }
             };
 
             var filePartDo = new WriteFilePartDO
@@ -84,17 +111,25 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 
         private Stream GeneratePic(Bitmap origBitmap, float rateWidth, float rateHeight, int newWidth, int newHeight)
         {
-            var rect = BitmapUtils.CalculateBestImgCut(origBitmap.Width, origBitmap.Height, rateWidth, rateHeight);
-            var cutBmp = BitmapUtils.ExportPartOfBitmap(origBitmap, rect);
-            var newBmp = BitmapUtils.ResizeImage(cutBmp, newWidth, newHeight);
-            var jpgStream = BitmapUtils.ConvertBitmapToJpg(newBmp, 90);
+            Bitmap cutBmp = null;
+            Bitmap newBmp = null;
 
-            jpgStream.Position = 0;
+            try
+            {
+                Rectangle rect = BitmapUtils.CalculateBestImgCut(origBitmap.Width, origBitmap.Height, rateWidth, rateHeight);
+                cutBmp = BitmapUtils.ExportPartOfBitmap(origBitmap, rect);
+                newBmp = BitmapUtils.ResizeImage(cutBmp, newWidth, newHeight);
+                Stream jpgStream = BitmapUtils.ConvertBitmapToJpg(newBmp, 90);
 
-            cutBmp.Dispose();
-            newBmp.Dispose();
-
-            return jpgStream;
+                jpgStream.Position = 0;
+                
+                return jpgStream;
+            }
+            finally
+            {
+                cutBmp?.Dispose();
+                newBmp?.Dispose();
+            }
         }
 
         private void UpdatePicSaved(ObjectId tripIdObj, bool state)
@@ -107,12 +142,8 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 
         private void DeleteOldPicture(string tripDir, string fileName)
         {            
-            var pathToDelete = FileDomain.Storage.Combine(tripDir, fileName);
-            bool fileExists = FileDomain.Storage.FileExists(pathToDelete);
-            if (fileExists)
-            {
-                FileDomain.Storage.DeleteFile(pathToDelete);
-            }            
+            var pathToDelete = FileDomain.Storage.Combine(tripDir, fileName);            
+            FileDomain.DeleteFile(pathToDelete);                        
         }
     }
 }

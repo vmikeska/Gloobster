@@ -34,77 +34,78 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 		[HttpPost]
 		[AuthorizeApi]
 		public IActionResult Post([FromBody] TripFileRequest request)
-		{			
-			var tripIdObj = new ObjectId(request.tripId);
-			var fileLocation = FileDomain.Storage.Combine(TripFileConstants.TripFilesDir, request.tripId);
-			var savedFileName = Guid.NewGuid().ToString().Replace("-", string.Empty);
-			
-			FileDomain.OnFileSaved += (sender, args) =>
-			{			
-				var argsObj = (OnFileSavedArgs) args;
-				
-				var trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);
-				if (trip == null)
-				{
-					//throw bad trip id
-					throw new Exception("Trip doesnt exists");
-				}
-			    bool isAdmin = HasAdminPermissions(trip);
-			    if (!isAdmin)
-			    {
-			        throw new Exception("Only admins can upload files");
-			    }
-			    decimal totalAllFilesSize = trip.Files.Sum(f => f.FileSize);
-                
-                var newFile = new FileSE
-				{
-                    id = ObjectId.GenerateNewId(),
-					User_id = UserIdObj,
-					OriginalFileName = request.fileName,
-					SavedFileName = argsObj.FileName,
-					Type = argsObj.FileType,
-					EntityId = request.entityId,
-					EntityType = request.entityType,
-                    FileSize = argsObj.FileSize
-				};
+		{		    
+		    var tripIdObj = new ObjectId(request.tripId);
+		    var fileLocation = FileDomain.Storage.Combine(TripFileConstants.TripFilesDir, request.tripId);
+		    var savedFileName = Guid.NewGuid().ToString().Replace("-", string.Empty);
 
-			    var newPublic = new FilePublicSE
-			    {
-			        File_id = newFile.id,
-			        IsPublic = false
-			    };
+		    FileDomain.OnFileSaved += (sender, args) =>
+		    {
+		        var argsObj = (OnFileSavedArgs) args;
 
-				var f1 = DB.F<TripEntity>().Eq(p => p.id, tripIdObj);
-				var u1 = DB.U<TripEntity>().Push(p => p.Files, newFile);
-				DB.UpdateAsync(f1, u1);
+		        var trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);
+		        if (trip == null)
+		        {
+		            //throw bad trip id
+		            throw new Exception("Trip doesnt exists");
+		        }
+		        bool isAdmin = HasAdminPermissions(trip);
+		        if (!isAdmin)
+		        {
+		            throw new Exception("Only admins can upload files");
+		        }
+		        decimal totalAllFilesSize = trip.Files.Sum(f => f.FileSize);
 
-                var f2 = DB.F<TripEntity>().Eq(p => p.id, tripIdObj);
-                var u2 = DB.U<TripEntity>().Push(p => p.FilesPublic, newPublic);
-                DB.UpdateAsync(f2, u2);
-            };
+		        var newFile = new FileSE
+		        {
+		            id = ObjectId.GenerateNewId(),
+		            User_id = UserIdObj,
+		            OriginalFileName = request.fileName,
+		            SavedFileName = argsObj.FileName,
+		            Type = argsObj.FileType,
+		            EntityId = request.entityId,
+		            EntityType = request.entityType,
+		            FileSize = argsObj.FileSize
+		        };
 
-			var filePartDo = new WriteFilePartDO
-			{
-				Data = request.data,
-				UserId = UserId,
-				FileName = request.fileName,
-				FilePart = request.filePartType,
-				CustomFileName = savedFileName,
-				FileLocation = fileLocation,
-				FileType = request.type
-			};
-			
-			FileDomain.WriteFilePart(filePartDo);
+		        var newPublic = new FilePublicSE
+		        {
+		            File_id = newFile.id,
+		            IsPublic = false
+		        };
 
-            NewFileResponse response = null;
-            
-			if (request.filePartType == FilePartType.Last)
-			{
-				var trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);
-			    response = GetResponse(trip);
-			}
+		        var f1 = DB.F<TripEntity>().Eq(p => p.id, tripIdObj);
+		        var u1 = DB.U<TripEntity>().Push(p => p.Files, newFile);
+		        DB.UpdateAsync(f1, u1);
 
-			return new ObjectResult(response);
+		        var f2 = DB.F<TripEntity>().Eq(p => p.id, tripIdObj);
+		        var u2 = DB.U<TripEntity>().Push(p => p.FilesPublic, newPublic);
+		        DB.UpdateAsync(f2, u2);
+		    };
+
+		    var filePartDo = new WriteFilePartDO
+		    {
+		        Data = request.data,
+		        UserId = UserId,
+		        FileName = request.fileName,
+		        FilePart = request.filePartType,
+		        CustomFileName = savedFileName,
+		        FileLocation = fileLocation,
+		        FileType = request.type
+		    };
+
+		    FileDomain.WriteFilePart(filePartDo);
+
+		    NewFileResponse response = null;
+
+		    if (request.filePartType == FilePartType.Last)
+		    {
+		        var trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);
+		        response = GetResponse(trip);
+		    }
+
+		    return new ObjectResult(response);
+		    
 		}
 
 	    private bool HasAdminPermissions(TripEntity trip)
