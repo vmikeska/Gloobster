@@ -4,5 +4,6 @@ namespace Gloobster.DomainInterfaces
     {
         void Refresh();
         void InitLangs();
+        string GetWord(string moduleName, string key, string lang);
     }
 }

@@ -1,0 +1,36 @@
+﻿
+  <module name="notifications">
+
+    <TripInvitationBody>
+        <en>You are invited to be part of '{0}' trip from {1}. {2}</en>
+      </TripInvitationBody>
+
+    <TripInvitationLink>
+      <en>See detail of the trip</en>
+    </TripInvitationLink>
+
+    <TripInvitationTitle>
+      <en>{0} invited you to join a trip</en>
+    </TripInvitationTitle>
+
+    <FriendshipRequestLink>
+      <en>Go to Friends page</en>
+    </FriendshipRequestLink>
+
+    <FriendshipRequestBody>
+      <en>If you know him/her, I guess you would like to confirm it</en>
+    </FriendshipRequestBody>
+
+    <FriendshipRequestTitle>
+      <en>{0} want to be your friend</en>
+    </FriendshipRequestTitle>
+
+    <NewUserWelcomeBody>
+      <en>Hope you will have fun with our travel components</en>
+    </NewUserWelcomeBody>
+
+    <NewUserWelcomeTitle>
+      <en>Welcome on our portal</en>
+    </NewUserWelcomeTitle>
+  
+</module>

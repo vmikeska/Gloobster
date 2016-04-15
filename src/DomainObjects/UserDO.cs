@@ -18,8 +18,9 @@ namespace Gloobster.DomainObjects
         public CityLocationDO HomeLocation { get; set; }
 		public CityLocationDO CurrentLocation { get; set; }
 		public List<string> Languages { get; set; }
+        public string DefaultLang { get; set; }
 
-		public Gender Gender { get; set; }
+        public Gender Gender { get; set; }
 	}
     
     public class CityLocationDO

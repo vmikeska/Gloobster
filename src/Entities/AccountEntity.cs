@@ -71,6 +71,8 @@ namespace Gloobster.Entities
 
         public CityLocationSE HomeLocation { get; set; }
         public CityLocationSE CurrentLocation { get; set; }
+
+        public string DefaultLang { get; set; }
         public List<string> Languages { get; set; }
 
         public Gender Gender { get; set; }

@@ -8,24 +8,25 @@ namespace Gloobster.Mappers
 {
 	public static class PortalUserMappers
 	{
-		public static UserDO ToDO(this UserEntity entity)
+		public static UserDO ToDO(this UserEntity e)
 		{
-			if (entity == null)
+			if (e == null)
 			{
 				return null;
 			}
 
 			var dObj = new UserDO
 			{
-				DisplayName = entity.DisplayName,				
-				UserId = entity.User_id.ToString(),
-				Gender = entity.Gender,								
-				FirstName = entity.FirstName,
-				LastName = entity.LastName,
-                HasProfileImage = entity.HasProfileImage,
-				HomeLocation = entity.HomeLocation.ToDO(),
-				CurrentLocation = entity.CurrentLocation.ToDO(),
-                Languages = entity.Languages                
+				DisplayName = e.DisplayName,				
+				UserId = e.User_id.ToString(),
+				Gender = e.Gender,								
+				FirstName = e.FirstName,
+				LastName = e.LastName,
+                HasProfileImage = e.HasProfileImage,
+				HomeLocation = e.HomeLocation.ToDO(),
+				CurrentLocation = e.CurrentLocation.ToDO(),
+                Languages = e.Languages,
+                DefaultLang = e.DefaultLang
 			};
             
 			return dObj;
@@ -48,8 +49,8 @@ namespace Gloobster.Mappers
 				HasProfileImage = d.HasProfileImage,
 				HomeLocation = d.HomeLocation.ToEntity(),
 				CurrentLocation = d.CurrentLocation.ToEntity(),
-                Languages = d.Languages
-
+                Languages = d.Languages,
+                DefaultLang = d.DefaultLang
 			};
             
 			return entity;

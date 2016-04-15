@@ -56,10 +56,6 @@ namespace Gloobster.Sharing.Twitter
 			memoryStream.Position = 0;
 			
 			return memoryStream;
-		}
-
-		//ImagePath = @"C:\Users\vmike_000\Pictures\ws_Blue_Docks_1920x1080.jpg",
-		//Status = "This is my status",
-		//Link = "http://idnes.cz"
+		}        
 	}
 }

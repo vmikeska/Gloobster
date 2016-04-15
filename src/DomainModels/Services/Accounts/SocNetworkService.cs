@@ -35,6 +35,7 @@ namespace Gloobster.DomainModels.Services.Accounts
         public IAvatarPhoto AvatarPhoto { get; set; }
         public INotificationsDomain NotificationDomain { get; set; }
         public IAccountDomain AccountDomain { get; set; }
+        public INotifications Notifications { get; set; }
 
         public async Task<LoginResponseDO> HandleEmail(string mail, string password, string userId)
         {
@@ -99,7 +100,8 @@ namespace Gloobster.DomainModels.Services.Accounts
                     User_id = userIdObj,
                     HomeAirports = new List<AirportSaveSE>(),
                     HomeLocation = null,
-                    HasProfileImage = false
+                    HasProfileImage = false,
+                    DefaultLang = "en"
                 };
                 await DB.SaveAsync(newUserEntity);
 
@@ -170,10 +172,8 @@ namespace Gloobster.DomainModels.Services.Accounts
         {
             var userIdObj = new ObjectId(userId);
 
-            var notifications = new Notifications();
-            var notification = notifications.NewAccountNotification(userId);
-            NotificationDomain.AddNotification(notification);
-
+            CreateNewUserNotification(userId);
+            
             var friendsEntity = new FriendsEntity
             {
                 id = new ObjectId(),
@@ -184,6 +184,19 @@ namespace Gloobster.DomainModels.Services.Accounts
                 Proposed = new List<ObjectId>()
             };
             await DB.SaveAsync(friendsEntity);
+        }
+
+        private void CreateNewUserNotification(string userId)
+        {
+            try
+            {
+                var notification = Notifications.NewAccountNotification(userId);
+                NotificationDomain.AddNotification(notification);
+            }
+            catch (Exception exc)
+            {
+                Log.Error($"CreateNewUserNotification: {exc.Message}");
+            }
         }
 
         private string GetNameFromEmail(string mail)
@@ -308,6 +321,7 @@ namespace Gloobster.DomainModels.Services.Accounts
                         HomeLocation = userData.HomeLocation.ToEntity(),
                         User_id = userIdObj,
                         Languages = userData.Languages,
+                        DefaultLang = "en",
                         HomeAirports = new List<AirportSaveSE>(),
                         HasProfileImage = false,
                         Mail = userData.Mail

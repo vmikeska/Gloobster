@@ -16,13 +16,23 @@ namespace Gloobster.DomainModels
 	public class Notifications : INotifications
 	{
 		public IDbOperations DB { get; set; }
+        public ILanguages Langs { get; set; }
 
-		public NotificationDO NewAccountNotification(string userId)
+	    private string GetWord(string key, string lang)
+	    {
+	        string word = Langs.GetWord("notifications", key, lang);
+	        return word;
+        }
+        
+        public NotificationDO NewAccountNotification(string userId)
 		{
-			return new NotificationDO
+            var userIdObj = new ObjectId(userId);
+            var user = DB.FOD<UserEntity>(u => u.User_id == userIdObj);
+
+            return new NotificationDO
 			{
-				Title = "Welcome on our portal",
-				Content = "Hope you will have fun with our travel components",
+				Title = GetWord("NewUserWelcomeTitle", user.DefaultLang), 
+				Content = GetWord("NewUserWelcomeBody", user.DefaultLang),
 				ContentType = ContentType.Text,
 				UserId = userId,
 				Status = NotificationStatus.Created,
@@ -34,38 +44,44 @@ namespace Gloobster.DomainModels
 		{
 			var reqUserId = new ObjectId(requestorId);
 			var requestingUser = DB.FOD<UserEntity>(u => u.User_id == reqUserId);
-			
-			return new NotificationDO
+
+            var recUserId = new ObjectId(receiverId);
+            var receivingUser = DB.FOD<UserEntity>(u => u.User_id == recUserId);
+
+            return new NotificationDO
 			{
-				Title = $"{requestingUser.DisplayName} want to be your friend",
-				Content = "If you know him/her, I guess you would like to confirm it",
+				Title = string.Format(GetWord("FriendshipRequestTitle", receivingUser.DefaultLang), requestingUser.DisplayName),
+				Content = GetWord("FriendshipRequestBody", receivingUser.DefaultLang),
                 Link = "Friends/List",
-                LinkText = "Go to Friends page",
+                LinkText = GetWord("FriendshipRequestLink", receivingUser.DefaultLang),
 				ContentType = ContentType.Text,
 				UserId = receiverId,
 				Status = NotificationStatus.Created,
                 Created = DateTime.UtcNow
             };
 		}
-
-		public async Task<NotificationDO> TripInvitation(string fromUserId, string toUserId, string tripId)
+        
+        public async Task<NotificationDO> TripInvitation(string fromUserId, string toUserId, string tripId)
 		{
 		    var fromUserIdObj = new ObjectId(fromUserId);            
             var fromUser = DB.FOD<UserEntity>(u => u.User_id == fromUserIdObj);
-            
 
-		    var tripIdObj = new ObjectId(tripId);
+            var toUserIdObj = new ObjectId(toUserId);
+            var toUser = DB.FOD<UserEntity>(u => u.User_id == toUserIdObj);
+
+
+            var tripIdObj = new ObjectId(tripId);
 		    var trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);
 
 			var notif = new NotificationDO
 			{
-				Title = $"{fromUser.DisplayName} invited you to join a trip",
+				Title = string.Format(GetWord("TripInvitationTitle", toUser.DefaultLang), fromUser.DisplayName),
 				UserId = toUserId,
 				Status = NotificationStatus.Created,
                 Link = $"Trip/Overview/{tripId}",
-                LinkText = "See detail of the trip",
+                LinkText = GetWord("TripInvitationLink", toUser.DefaultLang),
 
-                Content = $"You are invited to be part of '{trip.Name}' trip from {fromUser.DisplayName}. {trip.Description}",
+                Content = string.Format(GetWord("TripInvitationBody", toUser.DefaultLang), trip.Name, fromUser.DisplayName, trip.Description),
 				ContentType = ContentType.Text,
                 Created = DateTime.UtcNow
             };
