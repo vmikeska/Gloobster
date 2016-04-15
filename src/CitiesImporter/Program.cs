@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Database;
@@ -65,6 +66,8 @@ namespace CitiesImporter
             string command = "";
             string platform = "";
 
+            InitPrices();
+
             if (args.Length == 0)
             {
                 Console.Write("platform(loc,test,prod): ");
@@ -82,7 +85,7 @@ namespace CitiesImporter
             var dbName = GetDbName(platform);
 
             var db = new DbOperations(conStr, dbName);
-
+            
             if (command == "perm")
             {
                 bool existsPerm = db.C<WikiPermissionEntity>().Any();
@@ -149,6 +152,16 @@ namespace CitiesImporter
 
             
             Console.ReadLine();
+        }
+
+        private static void InitPrices()
+        {
+            var rootPath = "";
+            var beerPricesPath = Path.Combine(rootPath, "Prices", "BeerPrices.json");
+            var pricesPath = Path.Combine(rootPath, "Prices", "OtherPrices.json");
+            var beerText = File.ReadAllText(beerPricesPath);
+            var pricesText = File.ReadAllText(pricesPath);
+            DefaultPricer.Parse(beerText, pricesText);
         }
     }
 }

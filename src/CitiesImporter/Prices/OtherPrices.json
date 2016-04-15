@@ -1,0 +1,269 @@
+﻿{
+  "groups": [
+    {
+      "region": "SouthAmerica",
+      "countries": [ "AR", "BO", "BR", "CL", "CO", "EC", "GY", "PY", "PE", "SR", "UY", "VE" ],
+      "items": [
+        [ "Steak", 6 ],
+        [ "Salad", 4 ],
+        [ "Local", 3.5 ],
+        [ "Pizza", 3.5 ],
+        [ "TaxiInitial", 1 ],
+        [ "TaxiKm", 1 ],
+        [ "PublicTransport", 1 ],
+        [ "Hostel", 12 ],
+        [ "Star3", 35 ],
+        [ "Star4", 50 ],
+        [ "Cigarettes", 3.5 ]
+      ],
+      "night": [
+        [ "Wine", 1.50, 1.00, 3.00 ],
+        [ "Whiskey", 3.50, 3.00, 5.00 ],
+        [ "Vodka", 3.00, 2.00, 4.00 ]
+      ]
+    },
+    {
+      "region": "Africa",
+      "countries": [ "DZ", "AO", "BJ", "BW", "BF", "BI", "CM", "CV", "CF", "TD", "KM", "CG", "DJ", "EG", "GQ", "ER", "ET", "GA", "GM", "GH", "GW", "GN", "CI", "KE", "LS", "LR", "LY", "MG", "MW", "ML", "MR", "MU", "MA", "MZ", "NA", "NE", "NG", "RW", "ST", "SN", "SC", "SL", "SO", "ZA", "SD", "SZ", "TG", "TN", "UG", "ZM", "TZ", "ZW", "SS", "CD" ],
+      "items": [
+        [ "Steak", 4.5 ],
+        [ "Salad", 3.5 ],
+        [ "Local ", 4.5 ],
+        [ "Pizza", 4.5 ],
+        [ "TaxiInitial", 0.5 ],
+        [ "TaxiKm", 0.5 ],
+        [ "PublicTransport", 1 ],
+        [ "Hostel", 13 ],
+        [ "Star3", 40 ],
+        [ "Star4", 60 ],
+        [ "Cigarettes", 2 ]
+      ],
+      "night": [
+        [ "Wine", 1.00, 0.50, 2.00 ],
+        [ "Whiskey", 4.00, 4.00, 6.00 ],
+        [ "Vodka", 4.00, 3.50, 6.00 ]
+      ]
+    },
+    {
+      "region": "MiddleEast",
+      "countries": [ "IR", "IQ", "IL", "JO", "KW", "LB", "OM", "QA", "SA", "SY", "TR", "AE", "YE" ],
+      "items": [
+        [ "Steak", 13 ],
+        [ "Salad", 4 ],
+        [ "Local", 6 ],
+        [ "Pizza", 7.5 ],
+        [ "TaxiInitial", 2.5 ],
+        [ "TaxiKm", 5 ],
+        [ "PublicTransport", 2 ],
+        [ "Hostel", 17 ],
+        [ "Star3", 38 ],
+        [ "Star4", 60 ],
+        [ "Cigarettes", 2 ]
+      ],
+      "night": [
+        [ "Wine", 5, 5, 10 ],
+        [ "Whiskey", 7, 5, 15 ],
+        [ "Vodka", 4.5, 4, 8.5 ]
+      ]
+    },
+    {
+      "region": "EuCentral",
+      "countries": [ "CZ", "HU", "PL", "SK", "SI", "HR" ],
+      "items": [
+        [ "Steak", 8 ],
+        [ "Salad", 3.5 ],
+        [ "Local", 2.5 ],
+        [ "Pizza", 3.5 ],
+        [ "TaxiInitial", 1.5 ],
+        [ "TaxiKm", 3 ],
+        [ "PublicTransport", 0.5 ],
+        [ "Hostel", 6 ],
+        [ "Star3", 25 ],
+        [ "Star4", 50 ],
+        [ "Cigarettes", 3.5 ]
+      ],
+      "night": [
+        [ "Wine", 3, 2, 3 ],
+        [ "Whiskey", 2, 2, 5 ],
+        [ "Vodka", 1, 1, 4 ]
+      ]
+    },
+    {
+      "region": "Australia",
+      "countries": [ "AU", "FJ", "KI", "MH", "FM", "NR", "NZ", "PW", "PG", "SB", "TO", "TV", "VU", "WS", "TL" ],
+      "items": [
+        [ "Steak", 8 ],
+        [ "Salad", 5 ],
+        [ "Local", 6.5 ],
+        [ "Pizza", 5 ],
+        [ "TaxiInitial", 2 ],
+        [ "TaxiKm", 2 ],
+        [ "PublicTransport", 2.5 ],
+        [ "Hostel", 11 ],
+        [ "Star3", 35 ],
+        [ "Star4", 55 ],
+        [ "Cigarettes", 6 ]
+      ],
+      "night": [
+        [ "Wine", 2.5, 2, 3 ],
+        [ "Whiskey", 3.5, 3, 5 ],
+        [ "Vodka", 3.5, 3, 5 ]
+      ]
+    },
+    {
+      "region": "EuEast",
+      "countries": [ "AL", "BY", "BA", "BG", "MK", "MD", "RO", "RU", "RS", "UA", "ME", "LV", "LT" ],
+      "items": [
+        [ "Steak", 5.5 ],
+        [ "Salad", 3 ],
+        [ "Local", 1.5 ],
+        [ "Pizza", 3 ],
+        [ "TaxiInitial", 1 ],
+        [ "TaxiKm", 2.5 ],
+        [ "PublicTransport", 0.5 ],
+        [ "Hostel", 5 ],
+        [ "Star3", 20 ],
+        [ "Star4", 30 ],
+        [ "Cigarettes", 3.5 ]
+      ],
+      "night": [
+        [ "Wine", 1, 1, 1 ],
+        [ "Whiskey", 2, 2, 3 ],
+        [ "Vodka", 1, 1, 3 ]
+      ]
+    },
+    {
+      "region": "EuMiditerranean",
+      "countries": [ "CY", "GR", "IT", "MT", "MC", "PT", "SM", "ES" ],
+      "items": [
+        [ "Steak", 9.5 ],
+        [ "Salad", 4.5 ],
+        [ "Local", 3 ],
+        [ "Pizza", 4.5 ],
+        [ "TaxiInitial", 1 ],
+        [ "TaxiKm", 3.5 ],
+        [ "PublicTransport", 1.5 ],
+        [ "Hostel", 12.5 ],
+        [ "Star3", 25 ],
+        [ "Star4", 40 ],
+        [ "Cigarettes", 5 ]
+      ],
+      "night": [
+        [ "Wine", 1, 1, 3 ],
+        [ "Whiskey", 4, 3, 8 ],
+        [ "Vodka", 3, 3, 6 ]
+      ]
+    },
+    {
+      "region": "EuNord",
+      "countries": [ "DK", "FO", "FI", "IS", "IE", "NO", "SE", "GB", "EE" ],
+      "items": [
+        [ "Steak", 15 ],
+        [ "Salad", 5.5 ],
+        [ "Local", 6.5 ],
+        [ "Pizza", 7.5 ],
+        [ "TaxiInitial", 3.5 ],
+        [ "TaxiKm", 6.5 ],
+        [ "PublicTransport", 2.5 ],
+        [ "Hostel", 25 ],
+        [ "Star3", 45 ],
+        [ "Star4", 70 ],
+        [ "Cigarettes", 7 ]
+      ],
+      "night": [
+        [ "Wine", 3.5, 3, 10 ],
+        [ "Whiskey", 5, 4, 10 ],
+        [ "Vodka", 3.5, 1, 3 ]
+      ]
+    },
+    {
+      "region": "EuWest",
+      "countries": [ "AT", "AD", "BE", "FR", "DE", "LI", "LU", "NL", "CH" ],
+      "items": [
+        [ "Steak", 14 ],
+        [ "Salad", 6.5 ],
+        [ "Local", 5 ],
+        [ "Pizza", 6.5 ],
+        [ "TaxiInitial", 2 ],
+        [ "TaxiKm", 5.5 ],
+        [ "PublicTransport", 2 ],
+        [ "Hostel", 15 ],
+        [ "Star3", 35 ],
+        [ "Star4", 50 ],
+        [ "Cigarettes", 5 ]
+      ],
+      "night": [
+        [ "Wine", 3.5, 2, 5 ],
+        [ "Whiskey", 5, 4, 8 ],
+        [ "Vodka", 3.5, 3, 6 ]
+      ]
+    },
+    {
+      "region": "NorthAmerica",
+      "countries": [ "AG", "BS", "BB", "BZ", "CA", "CR", "CU", "DM", "DO", "SV", "GT", "HT", "HN", "JM", "MX", "NI", "PA", "KN", "LC", "VC", "TT", "US" ],
+      "items": [
+        [ "Steak", 10 ],
+        [ "Salad", 3.5 ],
+        [ "Local", 4 ],
+        [ "Pizza", 4.5 ],
+        [ "TaxiInitial", 3.5 ],
+        [ "TaxiKm", 5 ],
+        [ "PublicTransport", 2 ],
+        [ "Hostel", 15 ],
+        [ "Star3", 40 ],
+        [ "Star4", 55 ],
+        [ "Cigarettes", 6.5 ]
+      ],
+      "night": [
+        [ "Wine", 3.5, 3, 7.5 ],
+        [ "Whiskey", 3.5, 3, 6 ],
+        [ "Vodka", 3.5, 3.5, 6 ]
+      ]
+    },
+    {
+      "region": "SouthEastAsia",
+      "countries": [ "BD", "BT", "BN", "KH", "IN", "ID", "LA", "MY", "MV", "MM", "PK", "PH", "SG", "LK", "TH", "VN" ],
+      "items": [
+        [ "Steak", 5 ],
+        [ "Salad", 2 ],
+        [ "Local", 2 ],
+        [ "Pizza", 3 ],
+        [ "TaxiInitial", 0.5 ],
+        [ "TaxiKm", 0.5 ],
+        [ "PublicTransport", 0.5 ],
+        [ "Hostel", 10 ],
+        [ "Star3", 25 ],
+        [ "Star4", 50 ],
+        [ "Cigarettes", 2 ]
+      ],
+      "night": [
+        [ "Wine", 1, 2, 2.5 ],
+        [ "Whiskey", 3, 3, 4 ],
+        [ "Vodka", 2, 3, 3 ]
+      ]
+    },
+    {
+      "region": "CentralAsia",
+      "countries": [ "AF", "AM", "AZ", "BH", "CN", "GE", "KZ", "KG", "MN", "NP", "TJ", "TM", "UZ", "JP", "KP", "KR" ],
+      "items": [
+        [ "Steak", 6 ],
+        [ "Salad", 3 ],
+        [ "Local", 3 ],
+        [ "Pizza", 3.5 ],
+        [ "TaxiInitial", 0.5 ],
+        [ "TaxiKm", 0.7 ],
+        [ "PublicTransport", 0.7 ],
+        [ "Hostel", 10 ],
+        [ "Star3", 25 ],
+        [ "Star4", 50 ],
+        [ "Cigarettes", 2 ]
+      ],
+      "night": [
+        [ "Wine", 1, 2, 2.5 ],
+        [ "Whiskey", 3, 3, 4 ],
+        [ "Vodka", 2, 3, 3 ]
+      ]
+    }
+  ]
+
+}

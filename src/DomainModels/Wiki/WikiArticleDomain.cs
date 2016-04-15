@@ -16,11 +16,11 @@ namespace Gloobster.DomainModels.Wiki
     {
         public IDbOperations DB { get; set; }
         public INiceLinkBuilder LinkBuilder { get; set; }
-
+        
         public string CreateCity(CityDO city, string lang)
         {
             var cityLink = LinkBuilder.BuildLinkCity(city.AsciiName, city.CountryCode, city.GID);
-            
+
             var builder = new ArticleBuilder();
             builder.InitCity(city.CountryCode);
             builder.InitTexts(lang, city.AsciiName, cityLink);
@@ -79,6 +79,8 @@ namespace Gloobster.DomainModels.Wiki
             builder.AddPrice("Star3", "Accommodation");            
             builder.AddPrice("Star4", "Accommodation");
 
+            builder.AddPrice("Cigarettes", "Other");
+
             //nightlife
             builder.AddPrice("Beer", "Nightlife", "Pub");
             builder.AddPrice("Beer", "Nightlife", "Bar");
@@ -95,10 +97,6 @@ namespace Gloobster.DomainModels.Wiki
             builder.AddPrice("Vodka", "Nightlife", "Pub");
             builder.AddPrice("Vodka", "Nightlife", "Bar");
             builder.AddPrice("Vodka", "Nightlife", "Club");
-
-            builder.AddPrice("Cigarettes", "Nightlife", "Pub");
-            builder.AddPrice("Cigarettes", "Nightlife", "Bar");
-            builder.AddPrice("Cigarettes", "Nightlife", "Club");
             
             builder.Save<WikiCityEntity>(DB);
             
@@ -257,11 +255,12 @@ namespace Gloobster.DomainModels.Wiki
         }        
     }
 
+
     public class ArticleBuilder
     {
         public WikiArticleBaseEntity Article;
         public WikiTextsEntity Texts;
-
+        
         private ArticleType _articleType;
         public string CountryCode;
         
@@ -281,8 +280,8 @@ namespace Gloobster.DomainModels.Wiki
 
         public void AddPrice(string type, string category, string subCategory = "")
         {
-            decimal price = GetDefaultPrice(type, category, subCategory);
-
+            decimal price = DefaultPricer.GetDefaultPrice(CountryCode, type, subCategory);
+            
             var item = new PriceItemSE
             {
                 id = ObjectId.GenerateNewId(),
@@ -302,15 +301,7 @@ namespace Gloobster.DomainModels.Wiki
             ((WikiCityEntity)Article).Prices.Add(item);
         }
 
-        private decimal GetDefaultPrice(string type, string category, string subCategory = "")
-        {
-            if (type == "Beer")
-            {
-
-            }
-
-            return 1;
-        }
+        
 
         public void InitCity(string countryCode)
         {

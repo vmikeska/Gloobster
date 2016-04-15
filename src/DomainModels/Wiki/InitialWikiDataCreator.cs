@@ -22,7 +22,7 @@ namespace Gloobster.DomainModels.Wiki
         public ICountryService CountryService { get; set; }
         public IGeoNamesService GNService { get; set; }
         public IWikiArticleDomain ArticleDomain { get; set; }
-
+        
         public const string Lang = "en";
 
 
