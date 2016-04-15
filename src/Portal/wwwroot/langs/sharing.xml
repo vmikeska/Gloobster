@@ -1,0 +1,20 @@
+﻿
+  <module name="sharing">
+
+    <FbShare1>
+      <en>{0} shared his travel map</en>
+    </FbShare1>
+
+    <FbShare2>
+      <en>Join Gloobster and build a travel map of your own</en>
+    </FbShare2>
+
+    <FbShare3>
+      <en>gloobster.com, the only portal you'll need to travel the world</en>
+    </FbShare3>
+
+    <TripShare>
+      <en>See the trip of {0}</en>
+    </TripShare>
+
+  </module>

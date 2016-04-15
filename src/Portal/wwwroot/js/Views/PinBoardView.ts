@@ -19,7 +19,9 @@
 			 if (net === SocialNetworkType.Facebook) {
 				this.initFb();
 			 }
-		 }		 
+		 }
+
+		  this.initShareDialog();
 	  }
 
 		public initFb() {
@@ -35,6 +37,33 @@
 			});
 		}
 
+	 private initShareDialog() {
+		var $btn = $("#share-btn");		
+		var $dialog = $("#popup-share");
+
+		 $btn.click((e) => {
+			e.preventDefault();
+
+			var hasSocNets = this.hasSocNetwork(SocialNetworkType.Facebook) || this.hasSocNetwork(SocialNetworkType.Twitter);
+			 if (hasSocNets) {
+				 $dialog.toggleClass("popup-open");
+				 $dialog.slideToggle();
+			 } else {
+				 var id = new Common.InfoDialog();				 
+				 $("#popup-joinSoc").slideToggle();
+				 id.create(this.t("NoSocNetTitle", "jsPins"), this.t("NoSocNetShare", "jsPins"));
+			 }
+		 });		
+		}
+
+		private setShareText(cities, countries) {
+			var $dialog = $("#popup-share");
+			var txt = this.t("InitShareText", "jsPins")
+				.replace("{cities}", cities)
+				.replace("{countries}", countries);
+			$dialog.find("textarea").val(txt);
+		}
+
 		private initFbPermRequest() {
 		 $("#taggedPlacesPerm").show();
 		 $("#fbBtnImport").click((e) => {
@@ -46,10 +75,13 @@
 		public getTaggedPlacesPermissions() {
 		 this.fbPermissions.requestPermissions("user_tagged_places", (r1) => {
 			$("#taggedPlacesPerm").remove();
-			$("#importingCheckins").show();
+
+			var id = new Common.InprogressDialog();
+			id.create(this.t("ImportingCheckins", "jsPins"));
+			
 			this.apiPost("FbTaggedPlacesPermission", null, (r2) => {
 			 this.refreshData();
-			 $("#importingCheckins").hide();
+			 id.remove();
 			});
 		 });
 		}
@@ -238,6 +270,8 @@
 			$("#CountriesCount").text(countriesCount);
 			$("#TraveledPercent").text(worldTraveledPercent);
 			$("#StatesCount").text(statesCount);
+
+			this.setShareText(citiesCount, countriesCount);
 		}
 
 		public saveNewPlace(request) {
@@ -286,7 +320,7 @@
 				}
 
 				this.setStatsRibbon(req.citiesCount, req.countriesCount, req.worldTraveledPercent, req.statesCount);
-
+			
 				self.mapsManager.mapsDataLoader.mapToViewData();
 				self.mapsManager.redrawDataCallback();
 			});

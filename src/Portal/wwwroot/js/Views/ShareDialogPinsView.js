@@ -5,17 +5,26 @@ var Views;
             var _this = this;
             this.$dialog = $("#popup-share");
             this.shareButtons = new Common.ShareButtons($("#shareCont"));
-            $("#share").click(function () { return _this.share(); });
+            var v = Views.ViewBase.currentView;
+            $("#share").click(function () {
+                var id = new Common.InprogressDialog();
+                _this.$dialog.hide();
+                id.create(v.t("SharingMap", "jsPins"));
+                _this.share(function () {
+                    id.remove();
+                    var hd = new Common.HintDialog();
+                    hd.create(v.t("MapShared", "jsPins"));
+                });
+            });
         }
-        ShareDialogPinsView.prototype.share = function () {
-            var _this = this;
+        ShareDialogPinsView.prototype.share = function (callback) {
             var networks = this.shareButtons.getSelectedNetworks();
             var data = {
                 message: $("#message").val(),
                 networks: networks
             };
             Views.ViewBase.currentView.apiPost("PinBoardShare", data, function (response) {
-                _this.$dialog.hide();
+                callback();
             });
         };
         return ShareDialogPinsView;

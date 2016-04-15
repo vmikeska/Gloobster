@@ -16,6 +16,20 @@ var Common;
         return HintDialog;
     })();
     Common.HintDialog = HintDialog;
+    var InprogressDialog = (function () {
+        function InprogressDialog() {
+            this.template = Views.ViewBase.currentView.registerTemplate("inPorgressDialog-template");
+        }
+        InprogressDialog.prototype.create = function (message) {
+            this.$html = $(this.template({ message: message }));
+            $("section").first().prepend(this.$html);
+        };
+        InprogressDialog.prototype.remove = function () {
+            this.$html.remove();
+        };
+        return InprogressDialog;
+    })();
+    Common.InprogressDialog = InprogressDialog;
     var InfoDialog = (function () {
         function InfoDialog() {
             this.template = Views.ViewBase.currentView.registerTemplate("infoDialog-template");

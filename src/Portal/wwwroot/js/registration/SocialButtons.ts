@@ -85,21 +85,16 @@
 	}
 
 	export class LoginResponseValidator {
-
-	 private v: Views.ViewBase;
-
-	 constructor() {
-		this.v = Views.ViewBase.currentView;
-	 }
 	 
 	 public validate(res): boolean {
+		var v = Views.ViewBase.currentView;
 			var id = new Common.InfoDialog();
 			if (!res) {
-			 id.create(this.v.t("UnsuccessLogin", "jsLayout"), this.v.t("UnsuccessLoginBody", "jsLayout"));
+			 id.create(v.t("UnsuccessLogin", "jsLayout"), v.t("UnsuccessLoginBody", "jsLayout"));
 				return false;
 			}
 			if (res.AccountAlreadyInUse) {
-			 id.create(this.v.t("CannotPair", "jsLayout"), this.v.t("CannotPairBody", "jsLayout"));
+			 id.create(v.t("CannotPair", "jsLayout"), v.t("CannotPairBody", "jsLayout"));
 				return false;
 			}
 

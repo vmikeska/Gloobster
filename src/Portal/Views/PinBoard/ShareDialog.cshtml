@@ -1,5 +1,6 @@
 ﻿@using System.Threading.Tasks
 @using Gloobster.Portal.ViewModels
+@using Microsoft.Data.Entity.Metadata.Internal
 @using Newtonsoft.Json
 @model PinBoardViewModel
 
@@ -12,7 +13,9 @@
             <div id="shareCont" class="cell middle">
             </div>
             <div class="cell middle tright">
-                <a id="share" class="button" href="#">@Model.W("Share", "layout")</a>
+                <a id="share" class="button" href="#">                    
+                    @Model.W("Share", "layout")
+                </a>
             </div>
         </div>
         <a class="close" href="#">@Model.W("Close", "layout")</a>

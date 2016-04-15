@@ -73,6 +73,8 @@
         {
             @Html.Raw("currentView.initFb();")
         }
+
+        currentView.setShareText(@Model.Cities, @Model.Countries);
     }
 
     function deletePin(gid) {
@@ -80,11 +82,6 @@
     }
 
 </script>
-
-@if (Model.ShowFacebookPermissionsDialog)
-{
-    @Html.Partial("FbImportingDialog")
-}
 
 <div class="table row col2 margin">
         <div class="cell">
@@ -105,7 +102,7 @@
             </div>
         </div>
         <div class="cell middle tright">
-            <a class="icon-share textnohide noneline strong popup2-target" data-target="#popup-share" href="#">@Model.W("ShareMap")</a>
+            <a id="share-btn" class="icon-share textnohide noneline strong" href="#">@Model.W("ShareMap")</a>
         </div>
     </div>
     @Html.Partial("ShareDialog")

@@ -19,6 +19,24 @@
 	 }
 	}
 
+	export class InprogressDialog {
+	 private template;
+	 private $html;
+
+	 constructor() {
+		this.template = Views.ViewBase.currentView.registerTemplate("inPorgressDialog-template");
+	 }
+
+	 public create(message) {
+		this.$html = $(this.template({ message: message }));		
+		$("section").first().prepend(this.$html);		
+	 }
+
+	 public remove() {
+		 this.$html.remove();
+	 }
+	}
+
 	export class InfoDialog {
 		private template;
 		private $html;

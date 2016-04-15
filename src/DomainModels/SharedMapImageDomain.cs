@@ -40,7 +40,7 @@ namespace Gloobster.DomainModels
 			
 			if (visited == null)
 			{
-				//throw
+			    throw new Exception("NoVisitedFound");
 			}
 
 			var markers = GetPinBoardMarkers(visited);
@@ -64,11 +64,11 @@ namespace Gloobster.DomainModels
 		public string GenerateMapLink(string tripId)
 		{
 			var tripIdObj = new ObjectId(tripId);
-			var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
+			var trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);
 
 			if (trip == null)
 			{
-				//throw
+			    throw new Exception("NoTripFound");
 			}
 			
 			var pathFeature = GetPathFeature(trip);
@@ -89,12 +89,15 @@ namespace Gloobster.DomainModels
 			return mapLink;
 		}
 
-		private Stream GetFile(string link)
-		{
-			var client = new WebClient();
-			Stream stream = client.OpenRead(link);
-			return stream;
-		}
+	    private Stream GetFile(string link)
+	    {
+	        using (var client = new WebClient())
+	        {
+	            Stream stream = client.OpenRead(link);
+                return stream;
+            }	        
+	    }
+	
 
 		private FeaturePathDO GetPathFeature(TripEntity trip)
 		{

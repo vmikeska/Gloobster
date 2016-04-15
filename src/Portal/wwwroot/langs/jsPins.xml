@@ -41,6 +41,30 @@
       <en>Latin America</en>
     </LatinAmerica>
 
-       
+    <InitShareText>
+      <en>I have pinned {cities} cities and {countries} countries on my travel map</en>
+    </InitShareText>
+
+    <NoSocNetTitle>
+      <en>No social networks paired</en>
+    </NoSocNetTitle>
+
+    <NoSocNetShare>
+      <en>You have currently no social networks paired with your account, add Facebook or Twitter to your account to be able to share your travel map. You can do this in user settings.</en>
+    </NoSocNetShare>
+
+    <ImportingCheckins>
+      <en>Importing your fb checkins</en>
+    </ImportingCheckins>
+
+    <SharingMap>
+      <en>Sharing your map</en>
+    </SharingMap>
+
+    <MapShared>
+      <en>Your map was successfully shared</en>
+    </MapShared>
+
+    
 
   </module>

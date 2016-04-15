@@ -13,12 +13,13 @@
 		private onResponse(resp) {
 			var data = resp;
 			this.apiPost("TwitterUser", data, (r) => {
-			 var lrv = new Reg.LoginResponseValidator();
-			 var resValid = lrv.validate(r);
-			 if (!resValid) {
-				 close();
-				return;
-			 }
+			 
+				//var resValid = !r.AccountAlreadyInUse;
+				//lrv.validate(r);
+			 //if (!resValid) {
+				// close();
+				//return;
+			 //}
 
 			 this.cookiesSaver.saveTwitterLogged();
 			 this.cookiesSaver.saveCookies(r);		

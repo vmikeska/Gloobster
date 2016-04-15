@@ -177,6 +177,12 @@ namespace Gloobster.Portal
 		                template: "{controller=Home}/{action=Index}/{id?}");
 
                     routes.MapRoute(
+                        name: "pinsLink",
+                        template: "tm",
+                        defaults: new { controller = "Pinboard", action = "Pins" }
+                        );
+
+                    routes.MapRoute(
                         name: "wikiHome",
                         template: "wiki",
                         defaults: new { controller = "Wiki", action = "Home" }

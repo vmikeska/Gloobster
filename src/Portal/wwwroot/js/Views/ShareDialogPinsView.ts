@@ -7,10 +7,24 @@
 		constructor() {
 			this.$dialog = $("#popup-share");
 			this.shareButtons = new Common.ShareButtons($("#shareCont"));
-			$("#share").click(() => this.share());
+
+			var v = ViewBase.currentView;
+
+			$("#share").click(() => {
+
+			 var id = new Common.InprogressDialog();
+			 this.$dialog.hide();
+			 id.create(v.t("SharingMap", "jsPins"));
+
+			 this.share(() => {
+				id.remove();
+				var hd = new Common.HintDialog();
+				hd.create(v.t("MapShared", "jsPins"));
+			 });
+			});
 		}
 
-		private share() {
+		private share(callback) {
 			var networks = this.shareButtons.getSelectedNetworks();
 
 			var data = {
@@ -19,7 +33,7 @@
 			}
 
 			ViewBase.currentView.apiPost("PinBoardShare", data, response => {
-				this.$dialog.hide();
+				callback();
 			});
 		}
 

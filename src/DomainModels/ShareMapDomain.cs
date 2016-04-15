@@ -7,16 +7,27 @@ using Gloobster.Enums;
 using Gloobster.Mappers;
 using MongoDB.Bson;
 using System.Linq;
+using Serilog;
+using System;
 
 namespace Gloobster.DomainModels
 {
 	public class ShareMapDomain : IShareMapDomain
 	{
+        public ILogger Log { get; set; }
+
 		public ISharedMapImageDomain ShareMapImage { get; set; }
 		public IDbOperations DB { get; set; }
 		public ITwitterShare TwitterShare { get; set; }
 		public IFacebookShare FacebookShare { get; set; }
         public IAccountDomain AccountDomain { get; set; }
+        public ILanguages Langs { get; set; }
+
+        public string GetWord(string key, string lang)
+        {
+            string word = Langs.GetWord("sharing", key, lang);
+            return word;
+        }
 
         public void ShareCities(ShareMapDO share)
 		{			
@@ -40,33 +51,49 @@ namespace Gloobster.DomainModels
 
 		private void ShareToFB(ShareMapDO share, SocAuthDO fbAuth)
 		{
-			var opts = new FacebookShareOptionsDO
-			{
-				Message = share.Message,
-				Picture = GetImageLink(share.UserId),
+		    try
+		    {
+		        var userIdObj = new ObjectId(share.UserId);
+		        var user = DB.FOD<UserEntity>(u => u.User_id == userIdObj);
 
-				Name = "This guy just shared his travel map",
-				Description = "See the travel map of the guy",
+		        var opts = new FacebookShareOptionsDO
+		        {
+		            Message = share.Message,
+		            Picture = GetImageLink(share.UserId),
 
-				Caption = "Join Gloobster.com, web for travelers",
+		            Name = string.Format(GetWord("FbShare1", user.DefaultLang), user.DisplayName),
+		            Description = GetWord("FbShare2", user.DefaultLang),
 
-				Link = GetSharePageLink(share.UserId)
-			};
-            
-			FacebookShare.Share(opts, fbAuth);
+		            Caption = GetWord("FbShare3", user.DefaultLang),
+
+		            Link = GetSharePageLink(share.UserId)
+		        };
+
+		        FacebookShare.Share(opts, fbAuth);
+		    }
+		    catch (Exception exc)
+		    {
+		        Log.Error($"ShareToFB: {exc.Message}");
+		    }
 		}
 
 		private void ShareToTwitter(ShareMapDO share, SocAuthDO twAuth)
 		{
-			var opts = new TwitterShareOptionsDO
-			{
-				Link = GetSharePageLink(share.UserId),
-				ImagePath = GetLocalImageLink(share.UserId),
-				Status = share.Message
-			};
+		    try
+		    {
+		        var opts = new TwitterShareOptionsDO
+		        {
+		            Link = GetSharePageLink(share.UserId),
+		            ImagePath = GetLocalImageLink(share.UserId),
+		            Status = share.Message
+		        };
 
-			
-			TwitterShare.Tweet(opts, twAuth);
+		        TwitterShare.Tweet(opts, twAuth);
+		    }
+		    catch (Exception exc)
+		    {
+		        Log.Error($"ShareToTwitter: {exc.Message}");
+		    }
 		}
 
 		private string GetImageLink(string userId)
@@ -86,17 +113,15 @@ namespace Gloobster.DomainModels
 		}
 
 		private string GetLocalImageLink(string userId)
-		{
-			var protocol = "http";
-			var link = $"{protocol}://{GloobsterConfig.Domain}/PinBoard/SharedMapImage/{userId}";
+		{			
+			var link = $"{GloobsterConfig.Protocol}://{GloobsterConfig.Domain}/PinBoard/SharedMapImage/{userId}";
 			return link;
 		}
 
 		private string GetSharePageLink(string userId)
 		{
-			var protocol = "http";
-			var link = $"{protocol}://{GloobsterConfig.Domain}/PinBoard/Pins/{userId}";
-			return link;
+            var link = $"{GloobsterConfig.Protocol}://{GloobsterConfig.Domain}/tm";            
+            return link;
 		}
 	}
 }

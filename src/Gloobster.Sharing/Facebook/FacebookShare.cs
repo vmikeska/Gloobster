@@ -5,11 +5,14 @@ using Gloobster.Common;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
 using Gloobster.Enums;
+using Serilog;
 
 namespace Gloobster.Sharing.Facebook
 {	
 	public class FacebookShare: IFacebookShare
 	{
+        public ILogger Log { get; set; }
+
 	    private FacebookPrivacyDO GetDefaultPrivacy()
 	    {
 	        if (GloobsterConfig.IsLocal)
@@ -25,7 +28,7 @@ namespace Gloobster.Sharing.Facebook
                 return new FacebookPrivacyDO
                 {
                     Description = "Sharing with Friends",
-                    Value = FacebookPrivacyLevel.FRIENDS_OF_FRIENDS
+                    Value = FacebookPrivacyLevel.ALL_FRIENDS
                 };
             }            
         }
@@ -64,34 +67,40 @@ namespace Gloobster.Sharing.Facebook
 	        }
 	        catch (Exception exc)
 	        {
+                Log.Error($"CheckinFb: {exc.Message}");
 	            return false;
 	        }
 	    }
-
-
+        
 	    public void Share(FacebookShareOptionsDO so, SocAuthDO authentication)
-		{
-			var endpoint = "/me/feed";
-			//og.follows
-			
-			var client = new FacebookClient(authentication.AccessToken);
-			
-			var args = new Dictionary<string, object>
-			{
-				{"message", so.Message },
-				{"picture", so.Picture},
-				{"name", so.Name}, 
-				{"description", so.Description},
-				{"caption", so.Caption},				
-				{"link", so.Link} 
-			};
+	    {
+	        try
+	        {
+	            var endpoint = "/me/feed";
 
-            var p = so.Privacy ?? GetDefaultPrivacy();
-            var privacy = BuildPrivacyDict(p);
-			args.Add("privacy", privacy);
+	            var client = new FacebookClient(authentication.AccessToken);
 
-			client.Post(endpoint, args);
-		}
+	            var args = new Dictionary<string, object>
+	            {
+	                {"message", so.Message},
+	                {"picture", so.Picture},
+	                {"name", so.Name},
+	                {"description", so.Description},
+	                {"caption", so.Caption},
+	                {"link", so.Link}
+	            };
+
+	            var p = so.Privacy ?? GetDefaultPrivacy();
+	            var privacy = BuildPrivacyDict(p);
+	            args.Add("privacy", privacy);
+
+	            client.Post(endpoint, args);
+	        }
+	        catch (Exception exc)
+	        {
+                Log.Error($"ShareFb: {exc.Message}");
+            }
+	    }
 		
 		///https://developers.facebook.com/docs/graph-api/reference/v2.5/post 		
 		private Dictionary<string, object> BuildPrivacyDict(FacebookPrivacyDO priv)

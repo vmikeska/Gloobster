@@ -15,6 +15,7 @@ var Views;
                     _this.initFb();
                 }
             };
+            this.initShareDialog();
         }
         Object.defineProperty(PinBoardView.prototype, "pageType", {
             get: function () { return Views.PageType.PinBoard; },
@@ -35,6 +36,31 @@ var Views;
                 });
             });
         };
+        PinBoardView.prototype.initShareDialog = function () {
+            var _this = this;
+            var $btn = $("#share-btn");
+            var $dialog = $("#popup-share");
+            $btn.click(function (e) {
+                e.preventDefault();
+                var hasSocNets = _this.hasSocNetwork(SocialNetworkType.Facebook) || _this.hasSocNetwork(SocialNetworkType.Twitter);
+                if (hasSocNets) {
+                    $dialog.toggleClass("popup-open");
+                    $dialog.slideToggle();
+                }
+                else {
+                    var id = new Common.InfoDialog();
+                    $("#popup-joinSoc").slideToggle();
+                    id.create(_this.t("NoSocNetTitle", "jsPins"), _this.t("NoSocNetShare", "jsPins"));
+                }
+            });
+        };
+        PinBoardView.prototype.setShareText = function (cities, countries) {
+            var $dialog = $("#popup-share");
+            var txt = this.t("InitShareText", "jsPins")
+                .replace("{cities}", cities)
+                .replace("{countries}", countries);
+            $dialog.find("textarea").val(txt);
+        };
         PinBoardView.prototype.initFbPermRequest = function () {
             var _this = this;
             $("#taggedPlacesPerm").show();
@@ -47,10 +73,11 @@ var Views;
             var _this = this;
             this.fbPermissions.requestPermissions("user_tagged_places", function (r1) {
                 $("#taggedPlacesPerm").remove();
-                $("#importingCheckins").show();
+                var id = new Common.InprogressDialog();
+                id.create(_this.t("ImportingCheckins", "jsPins"));
                 _this.apiPost("FbTaggedPlacesPermission", null, function (r2) {
                     _this.refreshData();
-                    $("#importingCheckins").hide();
+                    id.remove();
                 });
             });
         };
@@ -209,6 +236,7 @@ var Views;
             $("#CountriesCount").text(countriesCount);
             $("#TraveledPercent").text(worldTraveledPercent);
             $("#StatesCount").text(statesCount);
+            this.setShareText(citiesCount, countriesCount);
         };
         PinBoardView.prototype.saveNewPlace = function (request) {
             var _this = this;

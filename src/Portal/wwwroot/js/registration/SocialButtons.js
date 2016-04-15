@@ -71,16 +71,16 @@ var Reg;
     Reg.LoginButtonsManager = LoginButtonsManager;
     var LoginResponseValidator = (function () {
         function LoginResponseValidator() {
-            this.v = Views.ViewBase.currentView;
         }
         LoginResponseValidator.prototype.validate = function (res) {
+            var v = Views.ViewBase.currentView;
             var id = new Common.InfoDialog();
             if (!res) {
-                id.create(this.v.t("UnsuccessLogin", "jsLayout"), this.v.t("UnsuccessLoginBody", "jsLayout"));
+                id.create(v.t("UnsuccessLogin", "jsLayout"), v.t("UnsuccessLoginBody", "jsLayout"));
                 return false;
             }
             if (res.AccountAlreadyInUse) {
-                id.create(this.v.t("CannotPair", "jsLayout"), this.v.t("CannotPairBody", "jsLayout"));
+                id.create(v.t("CannotPair", "jsLayout"), v.t("CannotPairBody", "jsLayout"));
                 return false;
             }
             return true;

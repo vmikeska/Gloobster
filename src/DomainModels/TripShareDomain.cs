@@ -5,22 +5,32 @@ using Gloobster.DomainObjects;
 using Gloobster.Enums;
 using System.Linq;
 using Gloobster.Common;
+using Gloobster.Entities;
 using Gloobster.Entities.Trip;
 using MongoDB.Bson;
+using Serilog;
 
 namespace Gloobster.DomainModels
 {
 	public class TripShareDomain : ITripShareDomain
 	{
-		public IDbOperations DB { get; set; }
+        public ILogger Log { get; set; }
+
+        public IDbOperations DB { get; set; }
 		public ISharedMapImageDomain ShareMapImage { get; set; }
 		public ITwitterShare TwitterShare { get; set; }
 		public IFacebookShare FacebookShare { get; set; }
         public IAccountDomain AccountDomain { get; set; }
+        public ILanguages Langs { get; set; }
+
+        public string GetWord(string key, string lang)
+        {
+            string word = Langs.GetWord("sharing", key, lang);
+            return word;
+        }
 
         public void ShareTrip(ShareTripDO share)
-		{
-			var userIdObj = new ObjectId(share.UserId);
+		{		            	
 			var tripIdObj = new ObjectId(share.TripId);
 
             var fbAuth = AccountDomain.GetAuth(SocialNetworkType.Facebook, share.UserId);
@@ -45,14 +55,21 @@ namespace Gloobster.DomainModels
 
 		private void ShareToTwitter(ShareTripDO share, TripEntity trip, SocAuthDO twAuth)
 		{
-			var opts = new TwitterShareOptionsDO
-			{
-				Link = GetSharePageLink(share.TripId),
-				ImagePath = GetLocalImageLink(share.TripId),
-				Status = share.Message
-			};
-            
-			TwitterShare.Tweet(opts, twAuth);
+            try
+            {
+                var opts = new TwitterShareOptionsDO
+                {
+                    Link = GetSharePageLink(share.TripId),
+                    ImagePath = GetLocalImageLink(share.TripId),
+                    Status = share.Message
+                };
+
+                TwitterShare.Tweet(opts, twAuth);
+            }
+            catch (Exception exc)
+            {
+                Log.Error($"ShareToTwitter: {exc.Message}");
+            }            
 		}
 
 		private Tuple<TripPlaceSE, TripPlaceSE> GetFirstAndLastPlace(TripEntity trip)
@@ -67,22 +84,32 @@ namespace Gloobster.DomainModels
 
 		private void ShareToFB(ShareTripDO share, TripEntity trip, SocAuthDO fbAuth)
 		{
-			var firstLastPlace = GetFirstAndLastPlace(trip);
-			
-			var opts = new FacebookShareOptionsDO
-			{
-				Message = share.Message,
-				Picture = GetImageLink(share.TripId),
+		    try
+		    {
+                var userIdObj = new ObjectId(share.UserId);
+                var user = DB.FOD<UserEntity>(u => u.User_id == userIdObj);
 
-				Name = GetName(firstLastPlace.Item1, firstLastPlace.Item2),
-				Description = "See the trip of this guy",
+                var firstLastPlace = GetFirstAndLastPlace(trip);
 
-				Caption = "Join Gloobster.com, web for travelers",
+		        var opts = new FacebookShareOptionsDO
+		        {
+		            Message = share.Message,
+		            Picture = GetImageLink(share.TripId),
 
-				Link = GetSharePageLink(share.TripId)
-			};
-            
-			FacebookShare.Share(opts, fbAuth);
+		            Name = GetName(firstLastPlace.Item1, firstLastPlace.Item2),
+		            Description = string.Format(GetWord("TripShare", user.DefaultLang), user.DisplayName),
+                    
+                    Caption = GetWord("FbShare3", user.DefaultLang),
+
+		            Link = GetSharePageLink(share.TripId)
+		        };
+
+		        FacebookShare.Share(opts, fbAuth);
+		    }
+		    catch (Exception exc)
+		    {
+                Log.Error($"ShareToFB: {exc.Message}");
+            }
 		}
 
 		private string GetName(TripPlaceSE firstPlace, TripPlaceSE lastPlace)
@@ -92,7 +119,7 @@ namespace Gloobster.DomainModels
 				return $"I am traveling from {firstPlace.Place.SelectedName} to {lastPlace.Place.SelectedName}";
 			}
 			
-			return "I am traveling somewhere";			
+			return "I am traveling";			
 		}
 
 		private string GetImageLink (string tripId)
@@ -112,16 +139,14 @@ namespace Gloobster.DomainModels
 		}
 
 		private string GetLocalImageLink(string tripId)
-		{
-			var protocol = "http";
-			var link = $"{protocol}://{GloobsterConfig.Domain}/Trip/SharedMapImage/{tripId}";
+		{			
+			var link = $"{GloobsterConfig.Protocol}://{GloobsterConfig.Domain}/Trip/SharedMapImage/{tripId}";
 			return link;
 		}
 
 		private string GetSharePageLink(string tripId)
-		{
-			var protocol = "http";
-			var link = $"{protocol}://{GloobsterConfig.Domain}/Trip/Share/{tripId}";
+		{			
+			var link = $"{GloobsterConfig.Protocol}://{GloobsterConfig.Domain}/Trip/Share/{tripId}";
 			return link;
 		}
 

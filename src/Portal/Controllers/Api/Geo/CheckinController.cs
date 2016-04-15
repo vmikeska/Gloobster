@@ -111,9 +111,7 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 
 	    private void CheckinToFb(CheckinRequest place)
 	    {
-            //https://developers.facebook.com/docs/graph-api/reference/v2.5/user/feed/
-
-            var usrDO = PortalUser.ToDO();
+            //https://developers.facebook.com/docs/graph-api/reference/v2.5/user/feed/            
             var fb = AccountDomain.GetAuth(SocialNetworkType.Facebook, UserId);
             if (fb != null)
             {
@@ -122,9 +120,8 @@ namespace Gloobster.Portal.Controllers.Api.Geo
                     Message = "Pinned by Gloobster.com",
                     Place = place.SourceId
                 };
-
-                //todo: fix
-                //FBShare.Checkin(checkin, fb.Authentication);
+                
+                FBShare.Checkin(checkin, fb);
             }
         }
 
