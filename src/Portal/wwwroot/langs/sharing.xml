@@ -17,4 +17,8 @@
       <en>See the trip of {0}</en>
     </TripShare>
 
+    <TravelFromTo>
+      <en>I am traveling from {0} to {1}</en>
+    </TravelFromTo>
+
   </module>

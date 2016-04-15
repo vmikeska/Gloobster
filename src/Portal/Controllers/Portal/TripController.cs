@@ -27,7 +27,7 @@ namespace Gloobster.Portal.Controllers.Portal
 		public ITripPlannerDomain TripPlanner { get; set; }
 		public ISharedMapImageDomain SharedImgDomain { get; set; }
         public IEntitiesDemandor Demandor { get; set; }
-
+        
 		public TripController(IEntitiesDemandor demandor, ISharedMapImageDomain sharedImgDomain, ITripPlannerDomain tripPlanner, IFilesDomain filesDomain,
             ILogger log, IDbOperations db, IComponentContext cc, ILanguages langs) : base(log, db, cc, langs)
         {
@@ -150,15 +150,8 @@ namespace Gloobster.Portal.Controllers.Portal
             return RedirectToAction("PrivateTrip", "Trip");
         }
 
-        
-
-        public IActionResult SharedMapImage(string id)
-		{
-			var mapStream = SharedImgDomain.GetMap(id);			
-			return new FileStreamResult(mapStream, "image/png");		
-		}
-
-		public IActionResult Share(string id)
+        [CreateAccount]
+        public IActionResult Share(string id)
 		{
 		    var tripIdObj = new ObjectId(id);            
 		    var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
@@ -166,21 +159,32 @@ namespace Gloobster.Portal.Controllers.Portal
 		    var tripFromTo = GetTripFromTo(trip);
             var fromDate = tripFromTo.Item1;
             var toDate = tripFromTo.Item2;
+            
+            var owner = DB.FOD<UserEntity>(u => u.User_id == trip.User_id);
 
-		    var dateStr = $"{fromDate.Day}.{fromDate.Month}. to {toDate.Day}.{toDate.Month}. {toDate.Year}";
+            var vm = CreateViewModelInstance<ViewModelShareTrip>();
+            vm.DefaultLangModuleName = "pageTripShare";
 
-            var owner = DB.C<UserEntity>().FirstOrDefault(u => u.id == trip.User_id);
-
-            var viewModel = CreateViewModelInstance<ViewModelShareTrip>();
-		    viewModel.Id = id;
-            viewModel.Participants = GetParticipantsView(trip.Participants, trip.User_id);
-		    viewModel.OwnerId = trip.User_id.ToString();
-		    viewModel.OwnerDisplayName = owner.DisplayName;
-		    viewModel.DateRangeStr = dateStr;
-            return View(viewModel);
+            var dateStr = string.Format(vm.W("DateRange"), fromDate.Day, fromDate.Month, toDate.Day, toDate.Month, toDate.Year);
+            
+            vm.Id = id;
+            vm.Participants = GetParticipantsView(trip.Participants, trip.User_id);
+		    vm.OwnerId = trip.User_id.ToString();
+		    vm.OwnerDisplayName = owner.DisplayName;
+            vm.Message = trip.LastSharingMessage;
+		    vm.DateRangeStr = dateStr;
+            return View(vm);
 		}
-        
-		public async Task<IActionResult> CreateNewTrip(string id)
+
+
+        public IActionResult SharedMapImage(string id)
+        {
+            var mapStream = SharedImgDomain.GetMap(id);
+            return new FileStreamResult(mapStream, "image/png");
+        }
+
+
+        public async Task<IActionResult> CreateNewTrip(string id)
 		{
 		    if (IsUserLogged)
 		    {

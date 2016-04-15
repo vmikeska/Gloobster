@@ -43,26 +43,26 @@
 												</span>
 						</div>
 						<div class="cell h4 middle">
-							@Model.OwnerDisplayName plans a trip
+							@Model.OwnerDisplayName @Model.W("PlannedTrip")
 						    <small class="display-block">
                                 @Model.DateRangeStr
 						        @*21. June to 28. June 2015*@
 						    </small>
 						</div>
 					</div>
-					<h1>Guys! Going to Košice for a trip around the city. Join me and share it as well!</h1>
+					<h1>@Model.Message</h1>
 				</div>
 				<div class="map-share table">			
 				    <div class="cell middle tright">
-                        <a class="button share h4 strong" href="/Trip/Overview/@Model.Id">I am already registered</a>
-				        <a class="button share h4 strong" href="/">Join Gloobster.com to see details of the trip</a>
+                        <a class="button share h4 strong" href="/Trip/Overview/@Model.Id">@Model.W("DetailOfTheTripBtn")</a>
+				        <a class="button share h4 strong" href="/">@Model.W("JoinGloobsterBtn")</a>
 				    </div>
 				</div>
 			</div>
 		</section>
 		<section class="margin padding">
 				<div class="wrapper">
-						<h3 class="slim">Travellers who joined already</h3>
+						<h3 class="slim">@Model.W("TravelersOnBoard")</h3>
 				    <div class="team grid col5 margin2">
 				        @foreach (var participant in Model.Participants)
                         {

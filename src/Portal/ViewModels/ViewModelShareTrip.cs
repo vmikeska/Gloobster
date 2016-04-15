@@ -9,5 +9,6 @@ namespace Gloobster.Portal.ViewModels
 	    public string OwnerId { get; set; }
 	    public string OwnerDisplayName { get; set; }
         public string DateRangeStr { get; set; }
-	}
+        public string Message { get; set; }
+    }
 }

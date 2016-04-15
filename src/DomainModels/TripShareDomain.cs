@@ -30,13 +30,13 @@ namespace Gloobster.DomainModels
         }
 
         public void ShareTrip(ShareTripDO share)
-		{		            	
+		{  	
 			var tripIdObj = new ObjectId(share.TripId);
 
             var fbAuth = AccountDomain.GetAuth(SocialNetworkType.Facebook, share.UserId);
             var twAuth = AccountDomain.GetAuth(SocialNetworkType.Twitter, share.UserId);
 
-            var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
+            var trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);
 
 			bool userFbAuthenticated = fbAuth != null;
 			bool shareToFb = share.Networks.Contains(SocialNetworkType.Facebook);
@@ -51,7 +51,16 @@ namespace Gloobster.DomainModels
 			{
 				ShareToTwitter(share, trip, twAuth);
 			}
+
+            UpdateTripShareMessage(tripIdObj, share.Message);
 		}
+
+	    private void UpdateTripShareMessage(ObjectId tripIdObj, string message)
+	    {
+	        var f = DB.F<TripEntity>().Eq(t => t.id, tripIdObj);
+            var u = DB.U<TripEntity>().Set(t => t.LastSharingMessage, message);
+	        DB.UpdateAsync(f, u);
+	    }
 
 		private void ShareToTwitter(ShareTripDO share, TripEntity trip, SocAuthDO twAuth)
 		{
@@ -96,7 +105,7 @@ namespace Gloobster.DomainModels
 		            Message = share.Message,
 		            Picture = GetImageLink(share.TripId),
 
-		            Name = GetName(firstLastPlace.Item1, firstLastPlace.Item2),
+		            Name = GetName(firstLastPlace.Item1, firstLastPlace.Item2, user.DefaultLang),
 		            Description = string.Format(GetWord("TripShare", user.DefaultLang), user.DisplayName),
                     
                     Caption = GetWord("FbShare3", user.DefaultLang),
@@ -112,13 +121,14 @@ namespace Gloobster.DomainModels
             }
 		}
 
-		private string GetName(TripPlaceSE firstPlace, TripPlaceSE lastPlace)
+		private string GetName(TripPlaceSE firstPlace, TripPlaceSE lastPlace, string lang)
 		{
 			if (firstPlace.Place != null && lastPlace.Place != null)
 			{
-				return $"I am traveling from {firstPlace.Place.SelectedName} to {lastPlace.Place.SelectedName}";
+			    return string.Format(GetWord("TravelFromTo", lang), firstPlace.Place.SelectedName, lastPlace.Place.SelectedName);
 			}
 			
+            //this should not happen
 			return "I am traveling";			
 		}
 

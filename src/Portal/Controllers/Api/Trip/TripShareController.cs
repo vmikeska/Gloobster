@@ -26,9 +26,9 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 		public IActionResult Get(string tripId)
 		{
 			var tripIdObj = new ObjectId(tripId);
-			var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
+			var trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);
 
-			var owner = DB.C<UserEntity>().FirstOrDefault(u => u.id == trip.User_id);
+			var owner = DB.FOD<UserEntity>(u => u.User_id == trip.User_id);
 
 			var response = new TripShareResponse
 			{
@@ -36,7 +36,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 				tripId = trip.id.ToString(),
 				owner = new TripUsersResponse
 				{
-					id = owner.id.ToString(), 
+					id = owner.User_id.ToString(), 
 					displayName = owner.DisplayName
 				},
 				participants = GetParticipants(trip),

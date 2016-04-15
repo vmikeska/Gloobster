@@ -1,0 +1,24 @@
+﻿
+  <module name="pageTripShare">
+
+    <DateRange>
+      <en>{0}.{1}. to {2}.{3}. {4}</en>
+    </DateRange>
+
+    <PlannedTrip>
+      <en>planned a trip</en>
+    </PlannedTrip>
+
+    <DetailOfTheTripBtn>
+      <en>Detail of the trip</en>
+    </DetailOfTheTripBtn>
+
+    <JoinGloobsterBtn>
+      <en>Join Gloobster.com to see details of the trip</en>
+    </JoinGloobsterBtn>
+
+    <TravelersOnBoard>
+      <en>Already borded travelers</en>
+    </TravelersOnBoard>
+
+  </module>

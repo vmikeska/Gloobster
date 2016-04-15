@@ -50,9 +50,23 @@ var Views;
                     tripId: Views.ViewBase.currentView["trip"].tripId,
                     networks: networks
                 };
+                _this.container.hide();
+                var id = new Common.InprogressDialog();
+                id.create("Sharing your trip");
                 Views.ViewBase.currentView.apiPost("TripSocNetworks", data, function (r) {
-                    _this.container.hide();
+                    id.remove();
+                    var hd = new Common.HintDialog();
+                    hd.create("Trip successfuly shared");
                 });
+                //v.t("SharingMap", "jsPins")
+                //this.share(() => {
+                //id.remove();
+                //var hd = new Common.HintDialog();
+                //hd.create(v.t("MapShared", "jsPins"));
+                //});
+                //ViewBase.currentView.apiPost("TripSocNetworks", data, r => {
+                //	this.container.hide();
+                //});
             });
             this.container.html($html);
         };

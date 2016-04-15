@@ -17,9 +17,11 @@ namespace Gloobster.Entities.Trip
         public bool FriendsPublic { get; set; }
 		public bool NotesPublic { get; set; }
         public bool AllowToRequestJoin { get; set; }
-        public string SharingCode { get; set; } 
+        public string SharingCode { get; set; }
 
-		public bool HasBigPicture { get; set; }
+        public string LastSharingMessage { get; set; }
+
+        public bool HasBigPicture { get; set; }
         public bool HasSmallPicture { get; set; }
 
         public DateTime CreatedDate { get; set; }
