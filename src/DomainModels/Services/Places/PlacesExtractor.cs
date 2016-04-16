@@ -7,11 +7,14 @@ using Gloobster.Common;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
 using Microsoft.AspNet.WebUtilities;
+using Serilog;
 
 namespace Gloobster.DomainModels.Services.Places
 {
     public class PlacesExtractor: IPlacesExtractor
 	{
+        public ILogger Log { get; set; }
+
 		public IVisitedPlacesDomain VisitedPlaces { get; set; }
 		public IVisitedCitiesDomain VisitedCities { get; set; }
 		public IVisitedCountriesDomain VisitedCountries { get; set; }
@@ -36,58 +39,102 @@ namespace Gloobster.DomainModels.Services.Places
         public string DbUserId;
 
 		public async Task<bool> ExtractNewAsync(string dbUserId, SocAuthDO auth)
-		{
-			DbUserId = dbUserId;
+		{            
+            DbUserId = dbUserId;
 			
-			var extractedPlaces = Driver.ExtractVisitedPlaces(dbUserId, auth);
-
-			if (extractedPlaces.VisitedPlaces != null)
-			{
-				var newFoundUniquePlaces = GetUniquePlaces(extractedPlaces.VisitedPlaces);
-				NewFoundUniquePlaces = await GetPlacesWithFixedLocations(newFoundUniquePlaces);
-
-				NewFoundUniqueCities = GetUniqueCities(NewFoundUniquePlaces);
-                NewFoundUniqueCitiesWithGID = await GetCitiesWithGid(NewFoundUniqueCities);
-                
-                NewFoundUniqueCountries = GetUniqueCountries(NewFoundUniqueCities);
-
-                var usCities = NewFoundUniqueCitiesWithGID.Where(c => c.CountryCode == "US").ToList();
-                NewFoundUniqueStates = GetUniqueStates(usCities);               
-			}
-
-			if (extractedPlaces.VisitedCities != null)
-			{
-				var newCities = extractedPlaces.VisitedCities.Where(c => !NewFoundUniqueCities.Contains(c)).ToList();
-				NewFoundUniqueCities.AddRange(newCities);
-
-				var newCountries = GetUniqueCountries(newCities);
-				var newUniqueCountries = newCountries.Where(c => !NewFoundUniqueCountries.Contains(c));
-				NewFoundUniqueCountries.AddRange(newUniqueCountries);
-
-                var usCities = NewFoundUniqueCitiesWithGID.Where(c => c.CountryCode == "US").ToList();
-                NewFoundUniqueStates = GetUniqueStates(usCities);
-            }
-
-			if (extractedPlaces.VisitedCountries != null)
-			{
-				var newCountries = extractedPlaces.VisitedCountries.Where(c => !NewFoundUniqueCountries.Contains(c));
-				NewFoundUniqueCountries.AddRange(newCountries);
-			}
-			
-			return true;
+			PlacesExtractionResults extractedPlaces = Driver.ExtractVisitedPlaces(dbUserId, auth);
+            
+            await ExtractPlaces(extractedPlaces);
+            
+            ExtractCities(extractedPlaces);
+            
+            ExtractCountries(extractedPlaces);
+            
+            return true;
 		}
+
+        public void ExtractCountries(PlacesExtractionResults extractedPlaces)
+        {
+            try
+            {
+                if (extractedPlaces.VisitedCountries != null)
+                {
+                    var newCountries = extractedPlaces.VisitedCountries.Where(c => !NewFoundUniqueCountries.Contains(c));
+                    NewFoundUniqueCountries.AddRange(newCountries);
+                }
+            }
+            catch (Exception exc)
+            {
+                Log.Error($"PlacesExtractor: ExtractCountries: {exc.Message}");
+            }
+        }
+
+        public void ExtractCities(PlacesExtractionResults extractedPlaces)
+        {
+            try
+            {
+                if (extractedPlaces.VisitedCities != null)
+                {
+                    var newCities = extractedPlaces.VisitedCities.Where(c => !NewFoundUniqueCities.Contains(c)).ToList();
+                    NewFoundUniqueCities.AddRange(newCities);
+
+                    var newCountries = GetUniqueCountries(newCities);
+                    var newUniqueCountries = newCountries.Where(c => !NewFoundUniqueCountries.Contains(c));
+                    NewFoundUniqueCountries.AddRange(newUniqueCountries);
+
+                    var usCities = NewFoundUniqueCitiesWithGID.Where(c => c.CountryCode == "US").ToList();
+                    NewFoundUniqueStates = GetUniqueStates(usCities);
+                }
+            }
+            catch (Exception exc)
+            {
+                Log.Error($"PlacesExtractor: ExtractCities: {exc.Message}");
+            }
+        }
+
+        public async Task ExtractPlaces(PlacesExtractionResults extractedPlaces)
+        {
+            try
+            {
+                if (extractedPlaces.VisitedPlaces != null)
+                {
+                    var newFoundUniquePlaces = GetUniquePlaces(extractedPlaces.VisitedPlaces);
+                    NewFoundUniquePlaces = await GetPlacesWithFixedLocations(newFoundUniquePlaces);
+
+                    NewFoundUniqueCities = GetUniqueCities(NewFoundUniquePlaces);
+                    NewFoundUniqueCitiesWithGID = await GetCitiesWithGid(NewFoundUniqueCities);
+
+                    NewFoundUniqueCountries = GetUniqueCountries(NewFoundUniqueCities);
+
+                    var usCities = NewFoundUniqueCitiesWithGID.Where(c => c.CountryCode == "US").ToList();
+                    NewFoundUniqueStates = GetUniqueStates(usCities);
+                }
+            }
+            catch (Exception exc)
+            {
+                Log.Error($"PlacesExtractor: ExtractPlaces: {exc.Message}");
+            }
+        }
 
         public async Task<bool> SaveAsync()
         {
-            NewVisitedPlaces = await VisitedPlaces.AddNewPlacesAsync(NewFoundUniquePlaces, DbUserId);
+            try
+            {
+                NewVisitedPlaces = await VisitedPlaces.AddNewPlacesAsync(NewFoundUniquePlaces, DbUserId);
 
-            NewVisitedCities = await VisitedCities.AddNewCitiesWithGidAsync(NewFoundUniqueCitiesWithGID, DbUserId);
-            
-            NewVisitedCountries = await VisitedCountries.AddNewCountriesAsync(NewFoundUniqueCountries, DbUserId);
-            
-            NewVisitedStates = await VisitedStates.AddNewStatesAsync(NewFoundUniqueStates, DbUserId);
+                NewVisitedCities = await VisitedCities.AddNewCitiesWithGidAsync(NewFoundUniqueCitiesWithGID, DbUserId);
 
-            return true;
+                NewVisitedCountries = await VisitedCountries.AddNewCountriesAsync(NewFoundUniqueCountries, DbUserId);
+
+                NewVisitedStates = await VisitedStates.AddNewStatesAsync(NewFoundUniqueStates, DbUserId);
+
+                return true;
+            }
+            catch (Exception exc)
+            {
+                Log.Error($"PlacesExtractor: SaveAsync: {exc.Message}");
+                throw;
+            }
         }
 
         private async Task<List<VisitedCityDO>> GetCitiesWithGid(List<VisitedCityDO> cities)

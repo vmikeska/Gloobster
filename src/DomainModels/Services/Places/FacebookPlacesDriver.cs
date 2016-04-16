@@ -21,29 +21,31 @@ namespace Gloobster.DomainModels.Services.Places
 		public string DbUserId;
 		public SocAuthDO Authentication;
 
-		private const string UserQueryBase = "/{0}/tagged_places";
-		private const string UserQueryNext = UserQueryBase + "/?after={1}";
+		private const string UserQueryBase = "/me/tagged_places";
+		private const string UserQueryNext = UserQueryBase + "/?after={0}";
 
-		public PlacesExtractionResults ExtractVisitedPlaces(string dbUserId, SocAuthDO auth)        
-		{			
+		public PlacesExtractionResults ExtractVisitedPlaces(string dbUserId, SocAuthDO auth)
+		{
+		    Log.Debug("ext:1");
 			DbUserId = dbUserId;
 			Authentication = auth;
 
-			var taggedPlacesQuery = string.Format(UserQueryBase, "me");
+			var taggedPlacesQuery = UserQueryBase;
 
 			FBService.SetAccessToken(Authentication.AccessToken);
-
-			var extractedPlaces = new List<FoundPlace>();
+            Log.Debug("ext:2");
+            var extractedPlaces = new List<FoundPlace>();
 			Extract(taggedPlacesQuery, extractedPlaces);
-
-			extractedPlaces.ForEach(i =>
+            Log.Debug("ext:3");
+            extractedPlaces.ForEach(i =>
 			{
 				i.CountryCode2 = CountryService.GetByCountryName(i.Country).CountryCode;
 				i.CountryCode3 = CountryService.GetByCountryName(i.Country).IsoAlpha3;
 			});
-
-			var extractedPlacesDO = extractedPlaces.Select(p => FacebookPlaceToVisitedPlace(p, DbUserId)).ToList();
-			return new PlacesExtractionResults {VisitedPlaces = extractedPlacesDO};
+            Log.Debug("ext:4");
+            var extractedPlacesDO = extractedPlaces.Select(p => FacebookPlaceToVisitedPlace(p, DbUserId)).ToList();
+            Log.Debug("ext:5");
+            return new PlacesExtractionResults {VisitedPlaces = extractedPlacesDO};
 		}
 
 		private VisitedPlaceDO FacebookPlaceToVisitedPlace(FoundPlace fbPlace, string portalUserId)
@@ -92,7 +94,7 @@ namespace Gloobster.DomainModels.Services.Places
 
 			if (response.Paging != null)
 			{
-				var nextQuery = string.Format(UserQueryNext, "me", response.Paging.Cursors.After);
+				var nextQuery = string.Format(UserQueryNext, response.Paging.Cursors.After);
 				Extract(nextQuery, foundPlaces);
 			}
 		}

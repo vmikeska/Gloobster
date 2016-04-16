@@ -2,7 +2,7 @@
 	export class CookieManager {
 	 
 		private domain() {
-			 return document["domain"];
+			 return document["mydomain"];
 		}
 
 		public getString(cookieName: string) {

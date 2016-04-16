@@ -31,14 +31,22 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
 		[HttpPost]
 		[AuthorizeApi]
 		public async Task<IActionResult> Post()
-		{
+		{            
+            Log.Debug("fbt1");
             PlacesExtractor.Driver = ComponentContext.ResolveKeyed<IPlacesExtractorDriver>("Facebook");
-            
-            var fbAcccount = AccountDomain.GetAuth(SocialNetworkType.Facebook, UserId);
-            
-            await PlacesExtractor.ExtractNewAsync(UserId, fbAcccount);
-            await PlacesExtractor.SaveAsync();
 
+		    if (PlacesExtractor.Driver == null)
+		    {
+		        Log.Debug("fbt: null");
+		    }
+
+            Log.Debug("fbt2");
+            var fbAcccount = AccountDomain.GetAuth(SocialNetworkType.Facebook, UserId);
+            Log.Debug("fbt3");
+            await PlacesExtractor.ExtractNewAsync(UserId, fbAcccount);
+            Log.Debug("fbt4");
+            await PlacesExtractor.SaveAsync();
+            Log.Debug("fbt5");
             return new ObjectResult(null);
 		}
 		

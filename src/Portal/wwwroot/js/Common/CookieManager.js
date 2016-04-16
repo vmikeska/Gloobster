@@ -4,7 +4,7 @@ var Common;
         function CookieManager() {
         }
         CookieManager.prototype.domain = function () {
-            return document["domain"];
+            return document["mydomain"];
         };
         CookieManager.prototype.getString = function (cookieName) {
             var value = $.cookie(cookieName);
