@@ -2,11 +2,11 @@
   <module name="jsLayout">
 
     <FileTooBigTitle>
-        <en>File too big</en>
+        <en>The size of file too big </en>
       </FileTooBigTitle>
 
     <FileTooBigBody>
-      <en>Maximal allowed size of file is ${maxSize}MB</en>
+      <en>Maximal allowed size of uploaded file is ${maxSize}MB</en>
     </FileTooBigBody>
 
     <OverLimitTitle>

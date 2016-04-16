@@ -2,13 +2,13 @@
   <module name="layout">
 
       <MenuPins>
-        <en>Pin board</en>
+        <en>Your travel map</en>
       </MenuPins>
       <MenuTrips>
-        <en>Trips</en>
+        <en>Travel organizer</en>
       </MenuTrips>
       <MenuWiki>
-        <en>Wiki</en>
+        <en>Travel Wiki</en>
       </MenuWiki>
 
       <MenuRegister>
@@ -32,7 +32,7 @@
       </Delete>
 
       <ShareButtons>
-        <en>Share on social media</en>
+        <en>Share on social networks</en>
       </ShareButtons>
 
       <Message>
