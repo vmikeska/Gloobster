@@ -38,18 +38,16 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 
 			var friends = DB.FOD<FriendsEntity>(f => f.User_id == UserIdObj);
 
-			if (friends == null)
+			if (friends != null)
 			{
-				throw new Exception();
-			}
+                var users = DB.List<UserEntity>(u => friends.Friends.Contains(u.User_id) && u.DisplayName.ToLower().Contains(name));
 
-			var users = DB.List<UserEntity>(u => friends.Friends.Contains(u.User_id) && u.DisplayName.ToLower().Contains(name));
-
-			if (users.Any())
-			{
-				friendsResponse = users.Select(ToResponse).ToList();
-			}
-			
+                if (users.Any())
+                {
+                    friendsResponse = users.Select(ToResponse).ToList();
+                }
+            }
+            
 			return new ObjectResult(friendsResponse);
 		}
 

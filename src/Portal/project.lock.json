@@ -2529,6 +2529,15 @@
           "lib/4.0/TweetSharp.dll": {}
         }
       },
+      "UAParser/2.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/net40-Client/UAParser.dll": {}
+        },
+        "runtime": {
+          "lib/net40-Client/UAParser.dll": {}
+        }
+      },
       "WebApiObjects/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
@@ -5101,6 +5110,15 @@
           "lib/4.0/TweetSharp.dll": {}
         }
       },
+      "UAParser/2.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/net40-Client/UAParser.dll": {}
+        },
+        "runtime": {
+          "lib/net40-Client/UAParser.dll": {}
+        }
+      },
       "WebApiObjects/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
@@ -7671,6 +7689,15 @@
           "lib/4.0/Hammock.ClientProfile.dll": {},
           "lib/4.0/Newtonsoft.Json.dll": {},
           "lib/4.0/TweetSharp.dll": {}
+        }
+      },
+      "UAParser/2.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/net40-Client/UAParser.dll": {}
+        },
+        "runtime": {
+          "lib/net40-Client/UAParser.dll": {}
         }
       },
       "WebApiObjects/1.0.0": {
@@ -10600,6 +10627,17 @@
         "TweetSharp.nuspec"
       ]
     },
+    "UAParser/2.1.0": {
+      "type": "package",
+      "sha512": "2t6t9jnLk+uE3daAJvehnB+PGKe0+bJidv7Novi3SmgZXGRQQ7iL73UQGdKBEeVSIPfji1I+L8j7TM6AtSjmMg==",
+      "files": [
+        "lib/net40-Client/UAParser.dll",
+        "lib/net40-Client/UAParser.XML",
+        "UAParser.2.1.0.nupkg",
+        "UAParser.2.1.0.nupkg.sha512",
+        "UAParser.nuspec"
+      ]
+    },
     "WindowsAzure.Storage/7.0.0": {
       "type": "package",
       "sha512": "AKxGH6NpZN0fRc2eRKtlDdkk1JW5uqCMeHCF06Z/L5xkYajM7OWquzsjAkQsi2s5a2O0Y4iE6WZOcT5PLE0IMA==",
@@ -10669,7 +10707,8 @@
       "loggly-csharp >= 4.5.1.7",
       "AutofacSerilogIntegration >= 1.0.10",
       "Nito.AsyncEx >= 3.0.1",
-      "AzureBlobFileSystem >= 1.0.0-*"
+      "AzureBlobFileSystem >= 1.0.0-*",
+      "UAParser >= 2.1.0"
     ],
     "DNX,Version=v4.5.1": [
       "fx/System.Drawing >= 4.0.0"

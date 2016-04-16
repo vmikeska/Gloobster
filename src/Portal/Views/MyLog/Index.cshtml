@@ -1,0 +1,57 @@
+﻿@using System.Threading.Tasks
+@using Gloobster.Entities
+@using Gloobster.Portal.Controllers.Portal
+@model List<AccessLog>
+
+@{
+    Layout = "";
+}
+
+<table border="1">
+    <tr>
+        <th>Time</th>
+        <th>User</th>
+        <th>UserAgent</th>
+        <th>IsBot</th>
+        <th>HasCallback</th>
+        <th>HasToken</th>
+        <th>TokenIssued</th>
+        <th>Url</th>
+        <th>IP</th>
+    </tr>
+    @foreach (var log in Model)
+    {
+        <tr>
+            <td>
+                @log.Time
+            </td>
+            <td>
+                @log.DisplayName - (@log.UserId)
+            </td>
+            <td>
+                @log.UserAgent
+            </td>
+            <td>
+                @log.IsBot
+            </td>
+            <td>
+                @log.HasCallback
+            </td>
+            <td>
+                @log.HasToken
+            </td>
+            <td>
+                @log.TokenIssued
+            </td>
+            <td>
+                @log.Url
+            </td>
+            <td>
+                @log.IP
+            </td>
+
+        </tr>
+
+    }
+</table>
+

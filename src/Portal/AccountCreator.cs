@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.Entities;
@@ -40,7 +41,9 @@ namespace Gloobster.Portal
                 {
                     id = ObjectId.GenerateNewId(),
                     Secret = secret,
-                    User_id = new ObjectId(userId)                    
+                    User_id = new ObjectId(userId),
+                    Time = DateTime.UtcNow
+                                    
                 };
                 await DB.SaveAsync(newAccount);
                 return newAccount;

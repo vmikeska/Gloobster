@@ -98,10 +98,10 @@
 
 
 <script type="text/javascript">
-    @if (Model.IsUserLogged)
-    {
-        @Html.Raw($"Views.ViewBase.currentUserId = '{Model.User.User_id}';")
-    }
+    @*@if (Model.IsUserLogged)
+    {*@
+        @Html.Raw($"Views.ViewBase.currentUserId = '{Model.UserId}';")
+    //}
     @{
         var nets = Model.SocialNetworks.Select(n => ((int) n).ToString());
         var netsStr = string.Join(",", nets);

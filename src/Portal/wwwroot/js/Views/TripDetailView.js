@@ -43,7 +43,7 @@ var Views;
             filesConfig.inputId = "fileInput";
             filesConfig.templateId = "file-template";
             filesConfig.isMasterFile = true;
-            //todo: finish DnD functionality
+            //todo: finish DnD functionality ?
             filesConfig.editable = true;
             //filesConfig.mainContainerId = "filesContainer";
             //filesConfig.addAdder = true;

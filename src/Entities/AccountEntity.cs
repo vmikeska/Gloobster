@@ -19,6 +19,8 @@ namespace Gloobster.Entities
         public bool EmailConfirmed { get; set; }
 
         public bool PossiblyEmpty { get; set; }
+
+        public DateTime Time { get; set; }
     }
 
     public class AccessLogEntity : EntityBase
@@ -27,7 +29,11 @@ namespace Gloobster.Entities
         public string IP { get; set; }
         public string UserAgent { get; set; }
         public DateTime Time { get; set; }
-        //more ?
+        public bool IsBot { get; set; }
+        public string Url { get; set; }
+        public bool HasToken { get; set; }
+        public bool HasCallback { get; set; }
+        public bool TokenIssued { get; set; }
     }
 
     public class SocialAccountEntity : EntityBase

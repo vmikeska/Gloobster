@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.Entities;
@@ -7,14 +8,19 @@ using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Filters;
 using Newtonsoft.Json;
 using System.Linq;
+using System.Net;
+using System.Text;
+using System.Xml;
 using Gloobster.Portal.Controllers.Base;
 using Microsoft.AspNet.Http;
+using Microsoft.AspNet.Http.Features;
 using Microsoft.Extensions.Primitives;
 using MongoDB.Bson;
 using Newtonsoft.Json.Linq;
 
 namespace Gloobster.Portal.Controllers
 {
+    
     public class UserToken
     {
         public string UserId { get; set; }
@@ -74,56 +80,120 @@ namespace Gloobster.Portal.Controllers
 
     public class CreateAccountAttribute : ActionFilterAttribute
     {
+        private AccessLogEntity AccessLog;
+
+        private void InitLog(string userAgent, string url, string ip)
+        {
+            AccessLog = new AccessLogEntity
+            {
+                Time = DateTime.UtcNow,
+                UserAgent = userAgent,
+                IsBot = false,
+                Url = url,
+                IP = ip,
+                id = ObjectId.GenerateNewId()
+            };
+        }
+
+        private void SaveLog()
+        {
+            var db = new DbOperations();
+            db.SaveAsync(AccessLog);
+        }
+
+        private string GetIp(ActionExecutingContext context)
+        {
+            var ip = new StringBuilder();
+
+            try
+            {
+                var cx = context.HttpContext;
+
+                string ip1 = cx.Features.Get<IHttpConnectionFeature>()?.RemoteIpAddress.ToString();
+                ip.Append($"ip1: {ip1}");
+                
+                string ip2 = cx.Request.Headers["REMOTE_ADDR"];
+                ip.Append($"ip2: {ip2}");
+
+                string ip3 = cx.Request.Headers["HTTP_X_FORWARDED_FOR"];
+                ip.Append($"ip3: {ip3}");
+
+                string ip4 = context.HttpContext.Connection.RemoteIpAddress.ToString();
+                ip.Append($"ip4: {ip4}");
+
+                return ip.ToString();
+            }
+            catch
+            {
+                return ip.ToString();
+            }
+        }
+
+
+
         public override async void OnActionExecuting(ActionExecutingContext context)
         {
-            Startup.AddDebugLog("OnActionExecuting");
-
-            var cx = context.HttpContext;
-            
-            var userAgent = cx.Request.Headers["User-Agent"].ToString();
-            Startup.AddDebugLog("UserAgent: " + userAgent);
-            bool isBot = IsBot(userAgent);
-            Startup.AddDebugLog("IsBot: " + isBot);
-            if (isBot)
-            {                
-                base.OnActionExecuting(context);
-                return;
-            }
-            
-            var token = ReadToken(context);
-            Startup.AddDebugLog("Token: " + token);
-            bool hasToken = token != null;
-            Startup.AddDebugLog("HasToken: " + hasToken);
-            if (hasToken)
+            try
             {
-                var accountCreator = new AccountCreator();
-                var account = await accountCreator.CreateOrReturnAccount(token.Secret, token.UserId);
+                var cx = context.HttpContext;
+                var userAgent = cx.Request.Headers["User-Agent"].ToString();
 
-                var controller = (PortalBaseController)context.Controller;
-                controller.UserId = account.User_id.ToString(); 
-                
-                base.OnActionExecuting(context);
-                return;
-            }
-            else
-            {
-                var callback = cx.Request.Query[TokenConstants.CallbackKeyName];
-                bool hasCallback = !string.IsNullOrEmpty(callback);
-                if (hasCallback)
+                string ip = GetIp(context);
+
+                InitLog(userAgent, cx.Request.Path, ip);
+
+                bool isBot = IsBot(userAgent);
+                if (isBot)
                 {
-                    //in this case the requestor is not able to keep session
+                    base.OnActionExecuting(context);
+
+                    AccessLog.IsBot = true;
+
+                    return;
+                }
+
+                var token = ReadToken(context);
+                bool hasToken = token != null;
+
+                AccessLog.HasToken = hasToken;
+
+                if (hasToken)
+                {
+                    var accountCreator = new AccountCreator();
+                    var account = await accountCreator.CreateOrReturnAccount(token.Secret, token.UserId);
+
+                    AccessLog.User_id = account.User_id;
+
+                    var controller = (PortalBaseController) context.Controller;
+                    controller.UserId = account.User_id.ToString();
+
                     base.OnActionExecuting(context);
                     return;
                 }
+                else
+                {
+                    var callback = cx.Request.Query[TokenConstants.CallbackKeyName];
+                    bool hasCallback = !string.IsNullOrEmpty(callback);
+                    AccessLog.HasCallback = hasCallback;
+                    if (hasCallback)
+                    {
+                        //in this case the requestor is not able to keep session
+                        base.OnActionExecuting(context);
+                        return;
+                    }
+                }
+
+                //user is not logged, let's generate the session                
+                IssueNewToken(context);
+                AccessLog.TokenIssued = true;
+
+                //hasn't session cookie
+                AddCallbackQueryStringParam(context);
             }
-
-            Startup.AddDebugLog("Issuing new token");
-            //user is not logged, let's generate the session
-            IssueNewToken(context);
-
-            Startup.AddDebugLog("Adding callback query string");
-            //hasn't session cookie
-            AddCallbackQueryStringParam(context);
+            finally
+            {
+                SaveLog();
+            }
         }
 
         private bool IsBot(string userAgent)
@@ -210,5 +280,5 @@ namespace Gloobster.Portal.Controllers
             var isCrawler = crawlers2.Any(crawler => userAgent.Contains(crawler));
             return isCrawler;
         }
-    }
+    }    
 }
