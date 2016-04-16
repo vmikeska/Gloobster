@@ -16,17 +16,19 @@ namespace Gloobster.Portal.Controllers.Api.Trip
     public class TripParticipantsController : BaseApiController
 	{
 		public ITripInviteDomain InviteDomain { get; set; }
+        public ITripPermissionsDomain Perms { get; set; }
 
-		public TripParticipantsController(ITripInviteDomain tripInviteDom, ILogger log, IDbOperations db) : base(log, db)
+        public TripParticipantsController(ITripPermissionsDomain perms, ITripInviteDomain tripInviteDom, ILogger log, IDbOperations db) : base(log, db)
 		{
 			InviteDomain = tripInviteDom;
+            Perms = perms;
 		}
 
         [HttpDelete]
         [AuthorizeApi]
         public async Task<IActionResult> Delete(string tripId, string id)
         {
-            //todo: check rights for this tripId
+            Perms.HasEditPermissions(tripId, UserId, true);
 
             await InviteDomain.RemoveParticipant(tripId, id);
 
@@ -37,10 +39,9 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 		[AuthorizeApi]
 		public async Task<IActionResult> Post([FromBody]InviteRequest request)
 		{
-			
-			//todo: check rights for this tripId
-            
-			InviteDomain.InvitePaticipants(request.users, UserId, request.tripId);
+            Perms.HasEditPermissions(request.tripId, UserId, true);
+
+            InviteDomain.InvitePaticipants(request.users, UserId, request.tripId);
 
             return new ObjectResult(null);
 		}

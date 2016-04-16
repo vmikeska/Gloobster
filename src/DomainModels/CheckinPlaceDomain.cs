@@ -208,8 +208,7 @@ namespace Gloobster.DomainModels
 		}
 
         private async Task<List<VisitedStateDO>> AddState(string stateCode, string userId)
-        {
-            //todo: check if state exists
+        {            
             bool countryExists = true;
             if (countryExists)
             {

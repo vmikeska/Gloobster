@@ -41,9 +41,6 @@ namespace Gloobster.DomainModels.Services.Facebook.FriendsExtractor
             var friendsSocUserIds = friendsSocEntities.Select(a => a.User_id).ToList();
 
             var friends = DB.List<UserEntity>(u => friendsSocUserIds.Contains(u.User_id));
-
-            //var portalUsersQuery = 
-            //    DB.C<SocialAccountEntity>().Where(u => u.SocialAccounts.Any(s => (s.NetworkType == SocialNetworkType.Facebook) && friendsFBIds.Contains(s.Authentication.UserId)));
             
 			var portalUsersDo = friends.Select(u => u.ToDO()).ToList();
 			return portalUsersDo;
@@ -54,7 +51,7 @@ namespace Gloobster.DomainModels.Services.Facebook.FriendsExtractor
 			var fbQuery = "/me/friends";
 			var friendsResponse = FbService.Get<FacebookFriendsResponse>(fbQuery);
 
-			//todo: extract recurively
+			//might extract recurively, if more than 20 users
 
 			return friendsResponse.data.ToList();
 		}

@@ -15,21 +15,21 @@ using Gloobster.Mappers;
 
 namespace Gloobster.DomainModels
 {
-	public class TripPlannerDomain: ITripPlannerDomain
+    public class TripPlannerDomain: ITripPlannerDomain
 	{
 		public IDbOperations DB { get; set; }
+        public ITripPermissionsDomain Perms { get; set; }
 
-		public string TripId { get; set; }
+        public string TripId { get; set; }
 		public string UserId { get; set; }
 
 		public TripEntity Trip { get; set; }
-
-
-		public void Initialize(string tripId, string userId)
-		{
-			//todo: check on permissions
-
-			TripId = tripId;
+        
+        public void Initialize(string tripId, string userId)
+        {
+            Perms.HasEditPermissions(tripId, userId, true);
+            
+            TripId = tripId;
 			UserId = userId;
 
 			LoadTrip();						
@@ -293,7 +293,7 @@ namespace Gloobster.DomainModels
 		private void LoadTrip()
 		{
 			var tripIdObj = new ObjectId(TripId);
-			Trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
+			Trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);
 		}
 
 		private async void PushTravel(TripTravelSE travel)

@@ -13,11 +13,12 @@ namespace Gloobster.DomainModels.Services.Trip
     {
         public IDbOperations DB { get; set; }
         public IFilesDomain FileDomain { get; set; }
+        public ITripPermissionsDomain Perms { get; set; }
 
         public async Task<bool> DeleteTripAsync(string tripId, string userId)
         {
-            //todo: check if user has permissions
-
+            Perms.IsOwner(tripId, userId, true);
+            
             var tripPhotoFilesDir = FileDomain.Storage.Combine(TripFileConstants.FileLocation, tripId);
             FileDomain.DeleteFolder(tripPhotoFilesDir);            
 

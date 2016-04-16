@@ -36,7 +36,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 	        }
 	        catch (Exception exc)
 	        {
-                //todo: log
+                Log.Error($"TripDomain.DeleteTripAsync: {exc.Message}");
 	            res = false;
 	        }
 	        

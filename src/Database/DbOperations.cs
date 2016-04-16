@@ -313,8 +313,7 @@ namespace Gloobster.Database
                 return count;
             }
             catch (Exception exc)
-            {
-                //todo: log, throw
+            {                
                 return 0;
             }
         }

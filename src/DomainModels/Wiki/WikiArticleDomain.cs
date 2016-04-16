@@ -154,7 +154,7 @@ namespace Gloobster.DomainModels.Wiki
 
             article.Data = new List<ArticleDataSE>
             {
-                //todo: http://www.sitepoint.com/web-foundations/iso-2-letter-language-codes/
+                //http://www.sitepoint.com/web-foundations/iso-2-letter-language-codes/
                 new ArticleDataSE
                 {
                     id = ObjectId.GenerateNewId(),
@@ -198,7 +198,7 @@ namespace Gloobster.DomainModels.Wiki
                     Value = PH.Currency(countryData),
                     DataType = ArticleDataType.String,                    
                 },
-                //todo: http://www.worldstandards.eu/cars/list-of-left-driving-countries/
+                //http://www.worldstandards.eu/cars/list-of-left-driving-countries/
                 new ArticleDataSE
                 {
                     id = ObjectId.GenerateNewId(),
@@ -206,7 +206,7 @@ namespace Gloobster.DomainModels.Wiki
                     Value = true.ToString(),
                     DataType = ArticleDataType.Bool,
                 },
-                //todo: https://en.wikipedia.org/wiki/List_of_countries_by_Human_Development_Index
+                //https://en.wikipedia.org/wiki/List_of_countries_by_Human_Development_Index
                 new ArticleDataSE
                 {
                     id = ObjectId.GenerateNewId(),
@@ -231,7 +231,7 @@ namespace Gloobster.DomainModels.Wiki
                     DataType = ArticleDataType.Int,
                     ListCategory = "Religions"
                 },
-                //todo: http://www.worldstandards.eu/electricity/plug-voltage-by-country/
+                //http://www.worldstandards.eu/electricity/plug-voltage-by-country/
                 new ArticleDataSE
                 {
                     id = ObjectId.GenerateNewId(),

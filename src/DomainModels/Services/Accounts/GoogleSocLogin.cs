@@ -142,8 +142,7 @@ namespace Gloobster.DomainModels.Services.Accounts
             {
                 return Gender.M;
             }
-
-            //todo: test female with female account
+            
             if (gender.ToLower() == "female")
             {
                 return Gender.F;
@@ -151,43 +150,6 @@ namespace Gloobster.DomainModels.Services.Accounts
 
             return Gender.N;
         }
-
-        //DownloadPictureResult picResult = AccountUtils.DownloadPicture(User.ProfileLink);
-        //AccountUtils.SaveProfilePicture(picResult.Data, picResult.ContentType, savedEntity.id.ToString(), FileDomain, DB);
-
-        //ProfileLink = User.ProfileLink
-
-        //      id = ObjectId.GenerateNewId(),
-        //DisplayName = User.DisplayName,
-        ////Mail = User.Mail,
-        ////Password = AccountUtils.GeneratePassword(),
-        ////ProfileImage = null,
-
-        //FirstName = "",
-        //LastName = "",
-        //HomeLocation = null,
-        //Gender = Gender.N,
-        //Languages = null,
-        //CurrentLocation = null
-
-
-        //really update ?
-        //private async void UpdateGoogleUserAuth(UserDO portalUser, string accessToken, DateTime expiresAt)
-        //{
-        //todo: fix
-        //var portalUserEntity = portalUser.ToEntity();
-        //var socialAccount = portalUserEntity.SocialAccounts.First(a => a.NetworkType == SocialNetworkType.Google);
-        //socialAccount.Authentication.AccessToken = accessToken;
-        //socialAccount.Authentication.ExpiresAt = expiresAt;
-
-        //var result = await DB.ReplaceOneAsync(portalUserEntity);
-
-        //if (result.MatchedCount == 0)
-        //{
-        //	//todo: make it nice here
-        //	throw new Exception("something went wrong with update");
-        //}
-        //}
     }
 
     public class Email

@@ -47,8 +47,10 @@ namespace Gloobster.Portal
             
             builder.AddInstance2<IAirportGroupService, AirportGroupService>();
 			builder.AddInstance2<IAirportService, AirportService>();
+
+            builder.AddTransient<ITripPermissionsDomain, TripPermissionsDomain>();
             
-			builder.AddTransient<IShareMapDomain, ShareMapDomain>();
+            builder.AddTransient<IShareMapDomain, ShareMapDomain>();
 			builder.AddTransient<ITripShareDomain, TripShareDomain>();
 			builder.AddTransient<ITwitterShare, TwitterShare> ();
 			builder.AddTransient <IFacebookShare, FacebookShare> ();

@@ -28,7 +28,7 @@ namespace Gloobster.DomainModels.Services.Accounts
 
 		private async Task<bool> InitAirports()
 		{
-			//todo: maybe in this case try to get location by IP
+			//maybe in this case try to get location by IP
 			if (PortalUser.CurrentLocation != null)
 			{
 				CityDO city = await GNService.GetCityByIdAsync(PortalUser.CurrentLocation.GeoNamesId);

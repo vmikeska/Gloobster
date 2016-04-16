@@ -526,9 +526,8 @@ var Views;
             if (t === SourceType.FB) {
                 return "disc-facebook";
             }
-            //todo: change
             if (t === SourceType.Yelp) {
-                return "disc-google";
+                return "disc-yelp";
             }
         };
         LinksAdmin.prototype.getLink = function (t, sid) {

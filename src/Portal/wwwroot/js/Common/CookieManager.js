@@ -2,9 +2,10 @@ var Common;
 (function (Common) {
     var CookieManager = (function () {
         function CookieManager() {
-            //todo: change in production
-            this.domain = null;
         }
+        CookieManager.prototype.domain = function () {
+            return document["domain"];
+        };
         CookieManager.prototype.getString = function (cookieName) {
             var value = $.cookie(cookieName);
             return value;
@@ -18,7 +19,7 @@ var Common;
             return valObj;
         };
         CookieManager.prototype.setString = function (cookieName, cookieValue) {
-            $.cookie(cookieName, cookieValue, { "domain": this.domain, "path": "/" });
+            $.cookie(cookieName, cookieValue, { "domain": this.domain(), "path": "/" });
         };
         CookieManager.prototype.setJson = function (cookieName, cookieValue) {
             var valStr = JSON.stringify(cookieValue);

@@ -67,8 +67,7 @@ namespace Gloobster.SocialLogin.Facebook.Communication
 				FbClient = new FacebookClient(AccessToken);
 			}
 			catch (FacebookOAuthException)
-			{
-				//todo: do something somehow
+			{				
 				throw;
 			}
 		}

@@ -50,7 +50,7 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 		{
 			var loc = PortalUser.CurrentLocation;
 
-			//todo: no loc throw
+			//no loc throw
 			
 			var curCity = await GeoNames.GetCityByIdAsync(loc.GeoNamesId);
 			//var coord = new LatLng {Lat = curCity.Coordinates.L, Lng = curLocation.Lng};

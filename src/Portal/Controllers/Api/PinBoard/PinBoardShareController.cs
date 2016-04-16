@@ -25,9 +25,7 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
 		[HttpPost]
 		[AuthorizeApi]
 		public IActionResult Post([FromBody]MapShareRequest req)
-		{
-			//todo: check rights for this share
-
+		{			
 			var share = new ShareMapDO
 			{				
 				Message = req.message,

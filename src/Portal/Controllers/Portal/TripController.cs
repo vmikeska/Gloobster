@@ -154,7 +154,7 @@ namespace Gloobster.Portal.Controllers.Portal
         public IActionResult Share(string id)
 		{
 		    var tripIdObj = new ObjectId(id);            
-		    var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
+		    var trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);
 
 		    var tripFromTo = GetTripFromTo(trip);
             var fromDate = tripFromTo.Item1;
@@ -283,7 +283,7 @@ namespace Gloobster.Portal.Controllers.Portal
 		{
 			var tripIdObj = new ObjectId(tripId);
             var fileIdObj = new ObjectId(fileId);
-            var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
+            var trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);
 
 			if (trip == null)
 			{
@@ -297,10 +297,11 @@ namespace Gloobster.Portal.Controllers.Portal
 				throw new Exception();
 			}
 
-			//todo: check rights				
+			//is id of the file protecting permissions enough ?
+            
 			var fileToReturn = trip.Files.FirstOrDefault(f => f.id == fileIdObj);
-
-			if (fileToReturn == null)
+            
+            if (fileToReturn == null)
 			{
 				//thorw not found
 				throw new Exception();

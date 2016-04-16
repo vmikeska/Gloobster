@@ -12,8 +12,7 @@ namespace Gloobster.DomainModels
 {
     public interface IEntitiesDemandor
     {
-        Task<VisitedEntity> GetVisitedAsync(ObjectId userIdObj);
-        VisitedResult VisitedExists(ObjectId userIdObj);        
+        Task<VisitedEntity> GetVisitedAsync(ObjectId userIdObj);        
         Task<TripEntity> CreateNewTripEntity(string name, ObjectId userIdObj);        
     }
 
@@ -26,17 +25,6 @@ namespace Gloobster.DomainModels
     public class EntitiesDemandor : IEntitiesDemandor
     {
         public IDbOperations DB { get; set; }
-
-        //todo: remove
-        public VisitedResult VisitedExists(ObjectId userIdObj)
-        {
-            var visited = DB.FOD<VisitedEntity>(u => u.User_id == userIdObj);
-            return new VisitedResult
-            {
-                Exists = visited != null,
-                Entity = visited
-            };
-        }
         
         public async Task<VisitedEntity> GetVisitedAsync(ObjectId userIdObj)
         {

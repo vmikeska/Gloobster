@@ -305,10 +305,10 @@ namespace Gloobster.Portal.ViewModels
             {
                 return "disc-facebook";
             }
-            //todo: change
+            
             if (type == SourceType.Yelp)
             {
-                return "disc-google";
+                return "disc-yelp";
             }
 
             return string.Empty;

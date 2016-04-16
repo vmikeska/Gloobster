@@ -29,7 +29,7 @@
             <div class="cell middle tright">
                 @if (!string.IsNullOrEmpty(notif.Link))
                 {
-                    <a class="button h4 middle" href="https://@GloobsterConfig.Domain/@notif.Link">@notif.LinkText</a>
+                    <a class="button h4 middle" href="@GloobsterConfig.Protocol://@GloobsterConfig.Domain/@notif.Link">@notif.LinkText</a>
                 }
                 <a data-notifId="@notif.id" class="notif_delete button border middle" href="#"><span class="icon-trash middle"></span></a>
             </div>

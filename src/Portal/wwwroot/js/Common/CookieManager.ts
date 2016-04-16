@@ -1,8 +1,9 @@
 ﻿module Common {
 	export class CookieManager {
-
-		//todo: change in production
-		private domain = null;
+	 
+		private domain() {
+			 return document["domain"];
+		}
 
 		public getString(cookieName: string) {
 			var value = $.cookie(cookieName);			
@@ -21,7 +22,7 @@
 		}
 
 		public setString(cookieName: string, cookieValue: string) {			
-			$.cookie(cookieName, cookieValue, { "domain": this.domain, "path": "/" });
+			$.cookie(cookieName, cookieValue, { "domain": this.domain(), "path": "/" });
 		}
 
 		public setJson(cookieName: string, cookieValue) {

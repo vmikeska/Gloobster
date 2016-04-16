@@ -39,7 +39,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             var articleIdObj = new ObjectId(req.articleId);
             var idObj = new ObjectId(req.id);
 
-            var texts = DB.C<WikiTextsEntity>().FirstOrDefault(t => t.Article_id == articleIdObj);
+            var texts = DB.FOD<WikiTextsEntity>(t => t.Article_id == articleIdObj);
 
 	        bool deleted = false;
 
@@ -52,10 +52,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             {
                 deleted = await Delete<WikiCountryEntity>(req.type, articleIdObj, idObj);
             }
-
-            //todo: delete texts
-
-
+            
             if (deleted)
             {
                 var evnt = new WikiEventDO
@@ -75,9 +72,15 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         private async Task<bool> Delete<T>(string type, ObjectId articleIdObj, ObjectId idObj) where T : WikiArticleBaseEntity
         {
             var target = type == "do" ? "Dos" : "Donts";
-            var f1 = DB.F<WikiCityEntity>().Eq(p => p.id, articleIdObj);
-            var u1 = DB.U<WikiCityEntity>().Pull(target, idObj);
+            var f1 = DB.F<T>().Eq(p => p.id, articleIdObj);
+            var u1 = DB.U<T>().Pull(target, idObj);
             var r1 = await DB.UpdateAsync(f1, u1);
+            
+            //todo: pull section texts out
+            //var f2 = DB.F<WikiTextsEntity>().Eq(p => p.Article_id, articleIdObj);
+            //var u2 = DB.U<WikiTextsEntity>().Pull(v => v.Texts, new SectionTextsSE());
+            //var r2 = await DB.UpdateAsync(f1, u1);
+
             return r1.ModifiedCount == 1;
         }
 

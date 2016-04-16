@@ -53,14 +53,22 @@ module Trip {
 			return newContext;
 		}
 
+		private formatDate(d) {
+			var t = `${d.getUTCDate()}.${d.getUTCMonth()}.${d.getUTCFullYear()} (${d.getUTCHours()}:${d.getUTCMinutes()})`;
+			return t;
+		}
+
 		private buildTemplateView(data) {
 			var html = "";
 
-			if (this.dialogManager.planner.isInvited || this.dialogManager.planner.isOwner) {
+			var lDate = new Date(data.leavingDateTime);
+			var aDate = new Date(data.arrivingDateTime);
 
+			if (this.dialogManager.planner.isInvited || this.dialogManager.planner.isOwner) {
+			 
 				var contextInvited = {
-					arrivingDateTime: data.arrivingDateTime,
-					leavingDateTime: data.leavingDateTime,
+					arrivingDateTime: this.formatDate(lDate),
+					leavingDateTime: this.formatDate(aDate),
 					description: data.description,
 					isFlight: false
 				};
@@ -72,8 +80,8 @@ module Trip {
 				html = this.dialogManager.travelDetailViewTemplate(contextInvited);
 			} else {
 				var contextNonInvited = {
-					arrivingDateTime: data.arrivingDateTime,
-					leavingDateTime: data.leavingDateTime,
+				 arrivingDateTime: this.formatDate(lDate),
+				 leavingDateTime: this.formatDate(aDate),
 					isFlight: false
 				};
 				if (data.type === TravelType.Plane) {

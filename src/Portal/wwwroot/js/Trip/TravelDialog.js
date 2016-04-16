@@ -39,12 +39,18 @@ var Trip;
             var newContext = $.extend(context, contextFlight);
             return newContext;
         };
+        TravelDialog.prototype.formatDate = function (d) {
+            var t = d.getUTCDate() + "." + d.getUTCMonth() + "." + d.getUTCFullYear() + " (" + d.getUTCHours() + ":" + d.getUTCMinutes() + ")";
+            return t;
+        };
         TravelDialog.prototype.buildTemplateView = function (data) {
             var html = "";
+            var lDate = new Date(data.leavingDateTime);
+            var aDate = new Date(data.arrivingDateTime);
             if (this.dialogManager.planner.isInvited || this.dialogManager.planner.isOwner) {
                 var contextInvited = {
-                    arrivingDateTime: data.arrivingDateTime,
-                    leavingDateTime: data.leavingDateTime,
+                    arrivingDateTime: this.formatDate(lDate),
+                    leavingDateTime: this.formatDate(aDate),
                     description: data.description,
                     isFlight: false
                 };
@@ -55,8 +61,8 @@ var Trip;
             }
             else {
                 var contextNonInvited = {
-                    arrivingDateTime: data.arrivingDateTime,
-                    leavingDateTime: data.leavingDateTime,
+                    arrivingDateTime: this.formatDate(lDate),
+                    leavingDateTime: this.formatDate(aDate),
                     isFlight: false
                 };
                 if (data.type === Trip.TravelType.Plane) {

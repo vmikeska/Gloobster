@@ -11,17 +11,19 @@ namespace Gloobster.Portal.Controllers.Api.Trip
     public class TripParticipantsIsAdminController : BaseApiController
     {
         public ITripInviteDomain InviteDomain { get; set; }
+        public ITripPermissionsDomain Perms { get; set; }
 
-        public TripParticipantsIsAdminController(ITripInviteDomain tripInviteDom, ILogger log, IDbOperations db) : base(log, db)
+        public TripParticipantsIsAdminController(ITripPermissionsDomain perms, ITripInviteDomain tripInviteDom, ILogger log, IDbOperations db) : base(log, db)
         {
             InviteDomain = tripInviteDom;
+            Perms = perms;
         }
 
         [HttpPut]
         [AuthorizeApi]
         public async Task<IActionResult> Put([FromBody]IsAdminRequest request)
         {
-            //todo: check rights for this tripId
+            Perms.HasEditPermissions(request.tripId, UserId, true);
 
             await InviteDomain.UpdateParticipantAdmin(request.tripId, request.id, request.isAdmin);
 

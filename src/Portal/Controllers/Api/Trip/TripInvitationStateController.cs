@@ -22,9 +22,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 		[HttpPut]
 		[AuthorizeApi]
 		public async Task<IActionResult> Put([FromBody]ChangeInvitationStateRequest req)
-		{
-			//todo: check rights for this tripId
-			
+		{			
 			bool updated = await InviteDomain.UpdateInvitationState(req.tripId, UserId, req.newState);
 
 			return new ObjectResult(updated);

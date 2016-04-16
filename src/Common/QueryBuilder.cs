@@ -23,8 +23,7 @@ namespace Gloobster.Common
 			}
 
 			if (!string.IsNullOrEmpty(_endpoint))
-			{
-				//todo: path connecting logic
+			{				
 				result += _endpoint;
 			}
 

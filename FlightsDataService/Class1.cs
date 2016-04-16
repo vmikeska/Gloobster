@@ -68,7 +68,7 @@
         
         public bool ConnectionAlreadyExists(ConnectionQuery query)
         {
-            //todo: check if conneciton exists
+            //check if conneciton exists
             return false;
         }
 

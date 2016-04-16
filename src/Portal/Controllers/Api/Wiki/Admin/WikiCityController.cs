@@ -26,8 +26,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             {
                 req.lang = "en";
             }
-
-            //todo: implement full functionality
+            
             //http://api.geonames.org/getJSON?username=gloobster&id=3078610&formatted=true
             var cityDO = new CityDO
             {

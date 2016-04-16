@@ -161,7 +161,7 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 		[AuthorizeApi]
 		public IActionResult Get(PlanningType planningType)
 		{
-			//todo: temp remove then
+			//temp remove then
 			Planning.CreateDBStructure(UserId);
 
 			object response = null;

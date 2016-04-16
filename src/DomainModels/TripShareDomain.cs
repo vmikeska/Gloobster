@@ -22,6 +22,7 @@ namespace Gloobster.DomainModels
 		public IFacebookShare FacebookShare { get; set; }
         public IAccountDomain AccountDomain { get; set; }
         public ILanguages Langs { get; set; }
+        public ITripPermissionsDomain Perms { get; set; }
 
         public string GetWord(string key, string lang)
         {
@@ -30,7 +31,9 @@ namespace Gloobster.DomainModels
         }
 
         public void ShareTrip(ShareTripDO share)
-		{  	
+        {
+            Perms.HasEditPermissions(share.TripId, share.UserId, true);
+
 			var tripIdObj = new ObjectId(share.TripId);
 
             var fbAuth = AccountDomain.GetAuth(SocialNetworkType.Facebook, share.UserId);

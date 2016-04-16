@@ -243,8 +243,7 @@ namespace Gloobster.DomainModels.Wiki
                 }
             };
             DB.SaveAsync(hdi);
-
-            //todo: add more organizations
+            
             var organizations = new WikiListValuesEntity
             {
                 id = ObjectId.GenerateNewId(),

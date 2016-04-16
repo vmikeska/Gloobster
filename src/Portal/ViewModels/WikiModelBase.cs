@@ -348,7 +348,7 @@ namespace Gloobster.Portal.ViewModels
             var sect = Sections.FirstOrDefault(s => s.Type == type);
             if (sect == null)
             {
-                //todo: something
+                //something
             }
             return sect;
         }
@@ -358,7 +358,7 @@ namespace Gloobster.Portal.ViewModels
             var text = Texts.Texts.FirstOrDefault(t => t.Section_id == id);
             if (text == null)
             {
-                //todo: something
+                //something
             }
 
             return text as T;

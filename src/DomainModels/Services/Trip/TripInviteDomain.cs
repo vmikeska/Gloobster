@@ -18,9 +18,9 @@ namespace Gloobster.DomainModels.Services.Trip
 	{
 		public IDbOperations DB { get; set; }
 		public INotificationsDomain Notifications { get; set; }
-
+        
 	    public async Task<bool> UpdateParticipantAdmin(string tripId, string id, bool isAdmin)
-	    {
+	    {            
             var tripIdObj = new ObjectId(tripId);
             var userIdObj = new ObjectId(id);
             var filter = DB.F<TripEntity>().Eq(t => t.id, tripIdObj)
@@ -44,10 +44,10 @@ namespace Gloobster.DomainModels.Services.Trip
 		}
 
 	    public async Task<bool> RemoveParticipant(string tripId, string id)
-	    {
+	    {            
             var tripIdObj = new ObjectId(tripId);
             var idObj = new ObjectId(id);
-            var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
+            var trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);
 
 	        var participant = trip.Participants.FirstOrDefault(p => p.User_id == idObj);
 
@@ -59,9 +59,9 @@ namespace Gloobster.DomainModels.Services.Trip
 
 
 		public async void InvitePaticipants(List<string> ids, string userId, string tripId)
-		{
-			var tripIdObj = new ObjectId(tripId);
-			var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
+		{            
+            var tripIdObj = new ObjectId(tripId);
+			var trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);
 
 			if (trip == null)
 			{
@@ -84,7 +84,7 @@ namespace Gloobster.DomainModels.Services.Trip
 					var update = DB.U<TripEntity>().Push(p => p.Participants, newPartEntity);
 					await DB.UpdateAsync(filter, update);
 					
-					//todo: send emails and such a stuff
+					//Send emails and such a stuff
 
 				}
 

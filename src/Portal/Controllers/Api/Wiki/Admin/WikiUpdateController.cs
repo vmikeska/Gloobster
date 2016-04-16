@@ -23,8 +23,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 		[HttpPut]
 		[AuthorizeApi]
 		public async Task<IActionResult> Put([FromBody] WikiUpdateRequest req)
-		{
-            //todo: move to attribute
+		{            
             if (!WikiPerms.HasArticleAdminPermissions(UserId, req.articleId))
             {
                 return HttpUnauthorized();

@@ -10,4 +10,11 @@ namespace Gloobster.DomainInterfaces
 		Task<AddPlaceResultDO> AddPlace(NewPlaceDO newPlace);
 		Task<object> UpdateProperty(string propertyName, Dictionary<string, string> values);
 	}
+
+    public interface ITripPermissionsDomain
+    {
+        bool HasEditPermissions(string tripId, string userId, bool throwEx = false);
+        bool IsOwner(string tripId, string userId, bool throwEx = false);
+        void ThrowAuthException();
+    }
 }

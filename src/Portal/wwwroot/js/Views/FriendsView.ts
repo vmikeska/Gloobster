@@ -74,11 +74,15 @@ class FriendsView extends Views.ViewBase {
 			 htmlContent += this.getItemHtml(item);
 		});
 
-		$("#friendsSearch li").unbind();
+		
 		$("#friendsSearch ul").html(htmlContent);
 
-		$("#friendsSearch li").click(clickedUser => {
-			//todo: to user detial
+		$(".userLink").click((e) => {
+		 e.preventDefault();
+			var $target = $(e.target);
+			var $li = $target.closest("li");
+			var id = $li.data("value");
+			window.location.href = `/portalUser/detail/${id}`;
 		});
 
 		$("#friendsSearch button").click(e => {
@@ -92,7 +96,7 @@ class FriendsView extends Views.ViewBase {
 
 	private getItemHtml(item) {
 	 var photoUrl = "/PortalUser/ProfilePicture_s/" + item.friendId;
-	 return `<li data-value="${item.friendId}"><span class="thumbnail"><img src="${photoUrl}"></span>${item.displayName} <button class="requestButton" data-value="${item.friendId}">${this.t("Request", "jsFriends")}</button></li>`;
+	 return `<li data-value="${item.friendId}"><span class="thumbnail"><img src="${photoUrl}"></span><a class="userLink" href="#">${item.displayName}</a> <button class="requestButton" data-value="${item.friendId}">${this.t("Request", "jsFriends")}</button></li>`;
 	}
 
 	requestUser(userId, places) {
