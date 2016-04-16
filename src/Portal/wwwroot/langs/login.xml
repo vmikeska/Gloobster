@@ -57,7 +57,7 @@
 
       
       <JoinInfoMessage>
-        <en>You are running on temporary account. You can work with the app, but if you don't connect with any real account, your data might get lost.</en>
+        <en>We have created temporary account for you. You can work with the application, but if you want to have your data safely stored, you must pair this account with any of listed social networks or mail.</en>
       </JoinInfoMessage>
 
       <TermsOfService>

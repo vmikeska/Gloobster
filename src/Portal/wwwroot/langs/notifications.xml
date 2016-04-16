@@ -2,7 +2,7 @@
   <module name="notifications">
 
     <TripInvitationBody>
-        <en>You are invited to be part of '{0}' trip from {1}. {2}</en>
+        <en>You are invited to take part of '{0}' trip organized by {1}. {2}</en>
       </TripInvitationBody>
 
     <TripInvitationLink>
@@ -26,7 +26,7 @@
     </FriendshipRequestTitle>
 
     <NewUserWelcomeBody>
-      <en>Hope you will have fun with our travel components</en>
+      <en>Our application is still in beta, so please be patient with us :) We are improving and developing fast. Explore how you can organize documents for your travel, invite your friends to you custom trips, pin the places you have visited and compare with your friends. On our Wiki you can find informations collected by real travelers from all around the world. </en>
     </NewUserWelcomeBody>
 
     <NewUserWelcomeTitle>

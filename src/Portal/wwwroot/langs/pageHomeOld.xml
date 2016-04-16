@@ -2,33 +2,33 @@
   <module name="pageHomeOld">    
   
       <BoxPinsTitle>
-        <en>Keep track of your journeys</en>        
+        <en>Keep track of the placs you've visited</en>        
       </BoxPinsTitle>
       <BoxPinsBody>
-        <en>Ever wanted to have one place to store all your past travels? Gloobster makes this easy and for free.</en>
+        <en>Pin places you've visited, share and compare with your friends. See most visited places all over the world. Let's build the travel map together!</en>
       </BoxPinsBody>
       <BoxPinsLink>
-        <en>To pins</en>
+        <en>Travel map</en>
       </BoxPinsLink>
       
       <BoxTripsTitle>
-        <en>Trip planner and travel docs organizer</en>
+        <en>Organize your travel documents</en>
       </BoxTripsTitle>
       <BoxTripsBody>
-        <en>Gloobster makes it simple and fast to create itinerary. And stores all important data for you so you dont have to.</en>
+        <en>Organize your travel documents and notes day by day. Invite your friend or let know to the people about your trip over social networks.</en>
       </BoxTripsBody>
       <BoxTripsLink>
-        <en>To trips</en>
+        <en>Travel planner</en>
       </BoxTripsLink>
 
       <BoxWikiTitle>
-        <en>Read our great info on travel Wiki</en>
+        <en>Travel knowledge base</en>
       </BoxWikiTitle>
       <BoxWikiBody>
-        <en>Share trips via Gloobster and colaborate on itinerary together. Simple yet powerful tool for any traveler.</en>
+        <en>Let travelers from all around the world to advise you how to travel. Become a part of our travel community and help us to build on of biggest travel databases on the internet.</en>
       </BoxWikiBody>
       <BoxWikiLink>
-        <en>To wiki</en>
+        <en>Travel Wiki</en>
       </BoxWikiLink>
 
       <Motto1>
@@ -36,7 +36,7 @@
       </Motto1>
 
       <Motto2>
-        <en>Why travelers choose Gloobster</en>
+        <en>Try one of our free social components</en>
       </Motto2>
 
     

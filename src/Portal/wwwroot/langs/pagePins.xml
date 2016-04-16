@@ -2,7 +2,7 @@
   <module name="pagePins">
    
       <Title>
-        <en>Pin board</en>
+        <en>Your travel map</en>
       </Title>
 
       <Map2D>
@@ -43,28 +43,24 @@
       </HeatMap>
 
       <MessagePlaces>
-        <en>See most favourite locations over the world what people like you like to visit. See most favourite locations of your friends.</en>
+        <en>See most favourite locations pinned by your friends and other travelers from all around the world.</en>
       </MessagePlaces>
 
       <MessageCountriesInterested>
-        <en>See countries people are most interested in.</en>
+        <en>See most desired countries to visit pinned by your friends and other travelers from all around the world.</en>
       </MessageCountriesInterested>
 
       <MessageCitiesInterested>
-        <en>See cities people are most interested in.</en>
+        <en>See most desired cities to visit pinned by your friends and other travelers from all around the world.</en>
       </MessageCitiesInterested>
 
       <MessageCountriesVisited>
-        <en>Keep track of countries you've visited. See countries your friends have visited. See what countries are being visited mostly.</en>
+        <en>Keep track of countries you've visited. See countries your friends have visited.</en>
       </MessageCountriesVisited>
 
       <MessageCitiesVisited>
         <en>Keep track of cities you've visited. See cities your friends have visited.</en>
       </MessageCitiesVisited>
-
-      <MessageNotLogged>
-        <en>Join us and keep your personal travel statistics. Invite you friends to create your own travel community. Currently only statistics from from users overall are being displayed. See most popular places what people visited or would like to visit.</en>
-      </MessageNotLogged>
 
       <StatCities>
         <en>Cities</en>
@@ -84,7 +80,7 @@
 
 
       <ShareTitle>
-        <en>Share state of your map</en>
+        <en>Share your current map</en>
       </ShareTitle>
 
       <FbCheckinsTitle>
@@ -92,11 +88,11 @@
       </FbCheckinsTitle>
 
       <FbCheckinsMessage>
-        <en>Authorize us to import your facebook checked in places and pair your tagged places with your local account</en>
+        <en>Authorize us to import your facebook checked-in places and pair your tagged places with your local account</en>
       </FbCheckinsMessage>
 
       <FbCheckinsButton>
-        <en>Give tagged Places permission</en>
+        <en>Give us tagged places permission</en>
       </FbCheckinsButton>
 
 
