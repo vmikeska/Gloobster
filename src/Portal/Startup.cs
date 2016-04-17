@@ -43,7 +43,8 @@ namespace Gloobster.Portal
 
                 if (env.IsProduction())
                 {
-                    builder.AddJsonFile("configRemote.json");
+                    builder.AddJsonFile("configProduction.json");
+                    //builder.AddJsonFile("configRemote.json");
 
                     Log.Logger = new LoggerConfiguration()
                         .MinimumLevel.Debug()

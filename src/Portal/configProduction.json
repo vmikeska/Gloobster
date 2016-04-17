@@ -1,0 +1,53 @@
+{
+  "Data": {
+    "DefaultConnection": {
+      "ConnectionString": "mongodb://worker:72365e25-b9d5-4ac9-a7f5-e7a0358c353b@ds030339-a0.mlab.com:30339,ds030339-a1.mlab.com:30332/gloobster?replicaSet=rs-ds030339",
+      "DatabaseName": "gloobster"
+    }
+  },
+  "Environment": {
+    "Domain": "www.gloobster.com",
+    "IsLocal": "false",
+    "Protocol": "http"
+  },
+  "AppSecret": "adksfjasfljagkams;gfaksdfa;sfa;sfjas;dklfjsa;kdflas;klfjas;klfjasd;klfja;lkfjas;dkfjas;dkas;dkhg;dsfiasdf",
+  "Facebook": {
+    "AppId": "1519189774979242",
+    "AppSecret": "72a327fb0e9f24d236995b29e5fe7512"
+  },
+  "Twitter": {
+    "ConsumerKey": "63piq9AtStn3dcp1wGtDDwv42",
+    "ConsumerSecret": "pas6PzitNyyo0kNfOWbEAberied3LWkxltddg6IUiR2R9GcB7Q",
+    "AccessToken": "1228562882-DaM75urty2GqQmLZ0T2nBqJQ5CL7iZcxVPHszi0",
+    "AccessTokenSecret": "qEAUzZnbvdtFJj51gAO0szMVlzCeCHenPBLEp3RRsj3zC"
+  },
+  "Foursquare": {
+    "ClientId": "RW5T0GSXYHMN5W2P4DLPYEOR1UYXXKGIFDMNBBM15XE0MQZ1",
+    "ClientSecret": "HHHLCEDL3YSQAM5BNCT4HZXQ2BVLRGROMS5IUHMITIDAROWJ"
+  },
+  "Yelp": {
+    "AccessToken": "OiHUS6wAFNybNtvqI3eounf2BxIy31W6",
+    "AccessTokenSecret": "idVsj8dfwTptyqH5-HN7tqVQHMg",
+    "ConsumerKey": "Tg6yDQ3tFphahJQlitxc-w",
+    "ConsumerSecret": "2LVpeUFMntvSpTWpfCYIjylGibI"
+  },
+  "Google": {
+    "ClientId": "172240636409-vmrhlgeb62c1fr487vij0ov572jpp1ip.apps.googleusercontent.com"
+  },
+  "Mapbox": {
+    "Secret": "pk.eyJ1IjoiZ2xvb2JzdGVyIiwiYSI6ImQxZWY5MjRkZjU1NDk2MGU3OWI2OGRiM2U3NTM0MGYxIn0.nCG7hOsSQzb0c-_qzfTCRQ"
+  },
+  "Logging": {
+    "IncludeScopes": false,
+    "LogLevel": {
+      "Default": "Verbose",
+      "System": "Information",
+      "Microsoft": "Information"
+    }
+  },
+  "Storage": {
+    "ConnectionString": "DefaultEndpointsProtocol=https;AccountName=gloobster;AccountKey=UhtElEWs1ZJc4d69+ww/YGP2hbGXxfTcWyThTb2jS/6ZxgkV+a1aARpRI5r9bELvIthZTubyfv8pOVY7zAIllA=="
+  }
+
+
+}

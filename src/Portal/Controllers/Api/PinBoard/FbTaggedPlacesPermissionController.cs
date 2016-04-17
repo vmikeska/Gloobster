@@ -32,21 +32,16 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
 		[AuthorizeApi]
 		public async Task<IActionResult> Post()
 		{            
-            Log.Debug("fbt1");
+            Log.Debug("TagPerm1");
             PlacesExtractor.Driver = ComponentContext.ResolveKeyed<IPlacesExtractorDriver>("Facebook");
 
-		    if (PlacesExtractor.Driver == null)
-		    {
-		        Log.Debug("fbt: null");
-		    }
-
-            Log.Debug("fbt2");
+            Log.Debug("TagPerm2");
             var fbAcccount = AccountDomain.GetAuth(SocialNetworkType.Facebook, UserId);
-            Log.Debug("fbt3");
+            Log.Debug("TagPerm3");
             await PlacesExtractor.ExtractNewAsync(UserId, fbAcccount);
-            Log.Debug("fbt4");
+            Log.Debug("TagPerm4");
             await PlacesExtractor.SaveAsync();
-            Log.Debug("fbt5");
+            Log.Debug("TagPerm5");
             return new ObjectResult(null);
 		}
 		

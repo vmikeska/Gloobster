@@ -102,7 +102,7 @@ namespace Gloobster.DomainModels.Services.Accounts
             catch (Exception exc)
             {
                 Log.Error($"GetUserData-google: {exc.Message}, socUserId: {auth.SocUserId}");
-                return null;
+                throw;
             }            
         }
 

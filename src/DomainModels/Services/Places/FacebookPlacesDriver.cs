@@ -26,26 +26,34 @@ namespace Gloobster.DomainModels.Services.Places
 
 		public PlacesExtractionResults ExtractVisitedPlaces(string dbUserId, SocAuthDO auth)
 		{
-		    Log.Debug("ext:1");
-			DbUserId = dbUserId;
-			Authentication = auth;
+		    try
+		    {
+                Log.Debug("TagPerm11");
+                DbUserId = dbUserId;
+		        Authentication = auth;
 
-			var taggedPlacesQuery = UserQueryBase;
-
-			FBService.SetAccessToken(Authentication.AccessToken);
-            Log.Debug("ext:2");
-            var extractedPlaces = new List<FoundPlace>();
-			Extract(taggedPlacesQuery, extractedPlaces);
-            Log.Debug("ext:3");
-            extractedPlaces.ForEach(i =>
-			{
-				i.CountryCode2 = CountryService.GetByCountryName(i.Country).CountryCode;
-				i.CountryCode3 = CountryService.GetByCountryName(i.Country).IsoAlpha3;
-			});
-            Log.Debug("ext:4");
-            var extractedPlacesDO = extractedPlaces.Select(p => FacebookPlaceToVisitedPlace(p, DbUserId)).ToList();
-            Log.Debug("ext:5");
-            return new PlacesExtractionResults {VisitedPlaces = extractedPlacesDO};
+		        var taggedPlacesQuery = UserQueryBase;
+                Log.Debug("TagPerm12");
+                FBService.SetAccessToken(Authentication.AccessToken);
+                Log.Debug("TagPerm13");
+                var extractedPlaces = new List<FoundPlace>();
+		        Extract(taggedPlacesQuery, extractedPlaces);
+                Log.Debug("TagPerm14");
+                extractedPlaces.ForEach(i =>
+		        {
+		            i.CountryCode2 = CountryService.GetByCountryName(i.Country).CountryCode;
+		            i.CountryCode3 = CountryService.GetByCountryName(i.Country).IsoAlpha3;
+		        });
+                Log.Debug("TagPerm15");
+                var extractedPlacesDO = extractedPlaces.Select(p => FacebookPlaceToVisitedPlace(p, DbUserId)).ToList();
+                Log.Debug("TagPerm16");
+                return new PlacesExtractionResults {VisitedPlaces = extractedPlacesDO};
+		    }
+		    catch (Exception exc)
+		    {
+		        Log.Error($"ExtractVisitedPlaces: {exc.Message}");
+		        throw;
+		    }
 		}
 
 		private VisitedPlaceDO FacebookPlaceToVisitedPlace(FoundPlace fbPlace, string portalUserId)

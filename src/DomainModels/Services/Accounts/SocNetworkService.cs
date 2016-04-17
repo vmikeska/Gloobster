@@ -37,6 +37,11 @@ namespace Gloobster.DomainModels.Services.Accounts
         public IAccountDomain AccountDomain { get; set; }
         public INotifications Notifications { get; set; }
 
+        private void AddLog(string log)
+        {
+            Log.Debug($"SocNetworkService: {log}");
+        }
+
         public async Task<LoginResponseDO> HandleEmail(string mail, string password, string userId)
         {
             var accountExisting = DB.FOD<AccountEntity>(a => a.Mail == mail);
@@ -105,7 +110,7 @@ namespace Gloobster.DomainModels.Services.Accounts
                 };
                 await DB.SaveAsync(newUserEntity);
 
-                await CreateNewUserData(userId, newUserEntity.DisplayName);
+                await CreateNewUserData(userId);
 
                 var response = new LoginResponseDO
                 {
@@ -125,36 +130,39 @@ namespace Gloobster.DomainModels.Services.Accounts
             LoginResponseDO res = null;
 
             SocLogin.Init(auth);
-
+            AddLog("Initialized");
             var tokenResult = SocLogin.ValidateToken(auth);
             bool isTokenValid = tokenResult.IsValid && (auth.SocUserId == tokenResult.UserId);
-            Log.Debug("TokenValid: " + isTokenValid);
+            AddLog("TokenValid: " + isTokenValid);
             if (!isTokenValid)
             {
                 return null;
             }
 
+            AddLog($"checking acc exists: socId: {auth.SocUserId}, net: {auth.NetType.ToString()}");
             var socAccount1 = DB.FOD<SocialAccountEntity>(a => a.UserId == auth.SocUserId && a.NetworkType == auth.NetType);
             bool socAccountExists = socAccount1 != null;
-            Log.Debug("socAccountExists: " + socAccountExists);
+            AddLog("socAccountExists: " + socAccountExists);
             if (socAccountExists)
             {
                 res = await SocAccountExists(auth, socAccount1);                        
                 return res;
             }
-
+            
             using (await _mutex.LockAsync())
             {
+                AddLog("Entering create lock");
                 var socAccount = DB.FOD<SocialAccountEntity>(a => a.UserId == auth.SocUserId && a.NetworkType == auth.NetType);
 
                 bool socAccountNew = socAccount == null;
                 if (socAccountNew)
                 {
-                    Log.Debug("Creating new account");
+                    AddLog("Creating new account");
                     res = await SocAccountNew(auth);                                        
                     return res;
                 }
             }
+            AddLog("created");
 
             return null;
         }
@@ -168,7 +176,7 @@ namespace Gloobster.DomainModels.Services.Accounts
             await DB.UpdateAsync(f1, u1);
         }
 
-        private async Task CreateNewUserData(string userId, string displayName)
+        private async Task CreateNewUserData(string userId)
         {
             var userIdObj = new ObjectId(userId);
 
@@ -195,7 +203,7 @@ namespace Gloobster.DomainModels.Services.Accounts
             }
             catch (Exception exc)
             {
-                Log.Error($"CreateNewUserNotification: {exc.Message}");
+                AddLog($"CreateNewUserNotification: {exc.Message}");
             }
         }
 
@@ -242,14 +250,19 @@ namespace Gloobster.DomainModels.Services.Accounts
         {
             var userIdObj = new ObjectId(auth.UserId);
 
-            var accountEntity = DB.FOD<AccountEntity>(u => u.User_id == userIdObj);
+            var accountEntity = DB.FOD<AccountEntity>(u => u.User_id == userIdObj);            
+            AddLog($"Found account: {accountEntity.User_id.ToString()}");
 
+            AddLog($"CreateNewSocialAccount");
             var newSocAccount = await CreateNewSocialAccount(auth);
-
+            
+            AddLog($"CreateUserEntityIfNotExistsYet");
             var userEntity = await CreateUserEntityIfNotExistsYet(auth, newSocAccount);
 
-            await CreateNewUserData(auth.UserId, userEntity.DisplayName);
+            AddLog($"CreateNewUserData");
+            await CreateNewUserData(auth.UserId);
 
+            AddLog($"OnNewUser");
             await SocLogin.OnNewUser(auth);
 
             var response = new LoginResponseDO
@@ -261,41 +274,49 @@ namespace Gloobster.DomainModels.Services.Accounts
                 SocToken = auth.AccessToken,
                 FullRegistration = IsFullRegistration(auth.UserId)
             };
-            
+            AddLog($"Returning response");
             return response;
         }
         
         private async Task<SocialAccountEntity> CreateNewSocialAccount(SocAuthDO auth)
         {
-            var userIdObj = new ObjectId(auth.UserId);
-
-            var permanentToken = SocLogin.TryGetPermanentToken(auth.AccessToken);
-
-            var newSocAccount = new SocialAccountEntity
+            try
             {
-                id = ObjectId.GenerateNewId(),
-                UserId = auth.SocUserId,
-                ExpiresAt = auth.ExpiresAt,
-                User_id = userIdObj,
-                TokenSecret = auth.TokenSecret,
-                NetworkType = auth.NetType
-            };
+                var userIdObj = new ObjectId(auth.UserId);
 
-            if (permanentToken.Issued)
-            {
-                newSocAccount.AccessToken = permanentToken.PermanentAccessToken;
-                newSocAccount.HasPermanentToken = true;
+                var permanentToken = SocLogin.TryGetPermanentToken(auth.AccessToken);
+
+                var newSocAccount = new SocialAccountEntity
+                {
+                    id = ObjectId.GenerateNewId(),
+                    UserId = auth.SocUserId,
+                    ExpiresAt = auth.ExpiresAt,
+                    User_id = userIdObj,
+                    TokenSecret = auth.TokenSecret,
+                    NetworkType = auth.NetType
+                };
+
+                if (permanentToken.Issued)
+                {
+                    newSocAccount.AccessToken = permanentToken.PermanentAccessToken;
+                    newSocAccount.HasPermanentToken = true;
+                }
+                else
+                {
+                    newSocAccount.AccessToken = auth.AccessToken;
+                    newSocAccount.HasPermanentToken = false;
+                    newSocAccount.ErrorMessage = permanentToken.Message;
+                }
+
+                await DB.SaveAsync(newSocAccount);
+
+                return newSocAccount;
             }
-            else
+            catch (Exception exc)
             {
-                newSocAccount.AccessToken = auth.AccessToken;
-                newSocAccount.HasPermanentToken = false;
-                newSocAccount.ErrorMessage = permanentToken.Message;
+                AddLog($"CreateNewSocialAccount: {exc.Message}");
+                throw;
             }
-
-            await DB.SaveAsync(newSocAccount);
-
-            return newSocAccount;
         }
 
         private async Task<UserEntity> CreateUserEntityIfNotExistsYet(SocAuthDO auth, SocialAccountEntity newSocAccount)
@@ -374,6 +395,8 @@ namespace Gloobster.DomainModels.Services.Accounts
 
         private async Task<LoginResponseDO> SocAccountExists(SocAuthDO auth, SocialAccountEntity socAccount)
         {
+            AddLog("SocAccountExists");
+
             var authUserObjId = new ObjectId(auth.UserId);
 
             var accountBySocAccount = DB.FOD<AccountEntity>(u => u.User_id == socAccount.User_id);
@@ -381,25 +404,31 @@ namespace Gloobster.DomainModels.Services.Accounts
             //check if current soc account we are trying to pair is already used for any other account            
             var socAccountsOfUserFromAuth = DB.List<SocialAccountEntity>(a => a.User_id == authUserObjId);
             bool isPairing = socAccountsOfUserFromAuth.Any();
+            AddLog($"isPairing: {isPairing}");
             if (isPairing)
             {
                 bool accountWeAreTryingToPairIsAlreadyInUse = accountBySocAccount != null;
+                AddLog($"accountWeAreTryingToPairIsAlreadyInUse: {accountWeAreTryingToPairIsAlreadyInUse}");
                 if (accountWeAreTryingToPairIsAlreadyInUse)
                 {
                     return new LoginResponseDO {AccountAlreadyInUse = true};
                 }
             }
 
+            AddLog("RenewTokenIfPossible");
             await RenewTokenIfPossible(auth, socAccount.id);
-            
+            AddLog("RenewTokenIfPossible done");
+
             if (authUserObjId != accountBySocAccount.User_id)
             {
+                AddLog("Marking empty account");
                 //here could be delete temp account
                 MarkEmptyAccount(auth.UserId);
             }
             
             var user = DB.FOD<UserEntity>(u => u.User_id == socAccount.User_id);
 
+            AddLog("Creating response");
             var response = new LoginResponseDO
             {
                 Token = BuildToken(accountBySocAccount.User_id.ToString(), accountBySocAccount.Secret),
@@ -444,23 +473,31 @@ namespace Gloobster.DomainModels.Services.Accounts
             }
             catch (Exception exc)
             {
-                Log.Error("SaveProfilePicture: " + exc.Message);                
+                AddLog("SaveProfilePicture: " + exc.Message);                
             }
         }
 
         private string BuildToken(string userId, string secret)
         {
-            var token = new
+            try
             {
-                Secret = secret,
-                UserId = userId
-            };
+                var token = new
+                {
+                    Secret = secret,
+                    UserId = userId
+                };
 
-            var tokenStr = JsonConvert.SerializeObject(token);
-            var tokenJson = JObject.Parse(tokenStr);
+                var tokenStr = JsonConvert.SerializeObject(token);
+                var tokenJson = JObject.Parse(tokenStr);
 
-            string encodedToken = JsonWebToken.Encode(tokenJson, GloobsterConfig.AppSecret, JwtHashAlgorithm.RS256);
-            return encodedToken;
+                string encodedToken = JsonWebToken.Encode(tokenJson, GloobsterConfig.AppSecret, JwtHashAlgorithm.RS256);
+                return encodedToken;
+            }
+            catch (Exception exc)
+            {
+                AddLog("BuildTokenError: " + exc.Message);
+                throw;
+            }
         }
     }
 }

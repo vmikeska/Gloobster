@@ -39,17 +39,19 @@ namespace Gloobster.DomainModels.Services.Places
         public string DbUserId;
 
 		public async Task<bool> ExtractNewAsync(string dbUserId, SocAuthDO auth)
-		{            
+		{
+            Log.Debug("TagPerm6");
             DbUserId = dbUserId;
-			
+            
 			PlacesExtractionResults extractedPlaces = Driver.ExtractVisitedPlaces(dbUserId, auth);
-            
+
+            Log.Debug("TagPerm7");
             await ExtractPlaces(extractedPlaces);
-            
+            Log.Debug("TagPerm8");
             ExtractCities(extractedPlaces);
-            
+            Log.Debug("TagPerm9");
             ExtractCountries(extractedPlaces);
-            
+            Log.Debug("TagPerm10");
             return true;
 		}
 
@@ -120,14 +122,15 @@ namespace Gloobster.DomainModels.Services.Places
         {
             try
             {
+                Log.Debug("TagPerm17");
                 NewVisitedPlaces = await VisitedPlaces.AddNewPlacesAsync(NewFoundUniquePlaces, DbUserId);
-
+                Log.Debug("TagPerm18");
                 NewVisitedCities = await VisitedCities.AddNewCitiesWithGidAsync(NewFoundUniqueCitiesWithGID, DbUserId);
-
+                Log.Debug("TagPerm19");
                 NewVisitedCountries = await VisitedCountries.AddNewCountriesAsync(NewFoundUniqueCountries, DbUserId);
-
+                Log.Debug("TagPerm20");
                 NewVisitedStates = await VisitedStates.AddNewStatesAsync(NewFoundUniqueStates, DbUserId);
-
+                Log.Debug("TagPerm21");
                 return true;
             }
             catch (Exception exc)

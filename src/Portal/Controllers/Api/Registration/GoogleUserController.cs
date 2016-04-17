@@ -20,8 +20,7 @@ namespace Gloobster.Portal.Controllers.Api.Registration
 {
 	[Route("api/[controller]")]
 	public class GoogleUserController : BaseApiController
-	{
-		//public IUserService UserService { get; set; }
+	{		
 		public IComponentContext ComponentContext { get; set; }
         public ISocNetworkService SocNetService { get; set; }
 
@@ -31,25 +30,38 @@ namespace Gloobster.Portal.Controllers.Api.Registration
             ComponentContext = componentContext;
 		}
 
+	    private void AddLog(string log)
+	    {
+	        Log.Debug($"GoogleUserC: {log}");
+	    }
+
         [HttpPost]
         [AuthorizeApi]
         //public async Task<IActionResult> Post([FromBody] GoogleAuthResponse response)
         public async Task<IActionResult> Post([FromBody] dynamic response)
         {
+            AddLog("New response from google");
+
             //this workaround was made so, because google doesn't return always class with same structure.
             var str = response.ToString();
+            AddLog($"str: {str}");
             Dictionary<string, object> dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(str);
-
+            AddLog($"dict created");
             List<object> vals = dict.Values.ToList();
             var f = vals.First();
+            AddLog($"f: {f}");
             var s = vals[1];
+            AddLog($"s: {s}");
             var l = vals.Last();
-            
+            AddLog($"l: {l}");
+
+
             var userId = f.ToString();
             var tokenData = JsonConvert.DeserializeObject<GoogleTokenData>(s.ToString());
-            
+            AddLog($"after token data");
             DateTime expiresAt = DateTime.UtcNow.AddSeconds(tokenData.expires_in);
-            
+            AddLog($"after expires");
+
             var auth = new SocAuthDO
             {
                 UserId = UserId,
@@ -61,8 +73,14 @@ namespace Gloobster.Portal.Controllers.Api.Registration
             };
 
             SocNetService.SocLogin = ComponentContext.ResolveKeyed<ISocLogin>("Google");
-            
+            if (SocNetService.SocLogin != null)
+            {
+                AddLog($"soc login loaded");
+            }
+
+            AddLog($"Calling HandleAsync");
             var res = await SocNetService.HandleAsync(auth);
+            AddLog($"Processed successfully");
             return new ObjectResult(res);            
         }
     }
