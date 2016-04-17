@@ -13,7 +13,13 @@ namespace Gloobster.Portal.ViewModels
         public List<WordPair> Texts;
     }
 
-	public class ViewModelBase
+    public class EmptyViewModel : ViewModelBase
+    {
+        
+    }
+
+
+    public class ViewModelBase
 	{
         public Languages Langs { get; set; }
         public string Lang { get; set; }

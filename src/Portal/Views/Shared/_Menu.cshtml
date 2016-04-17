@@ -3,11 +3,9 @@
 @model ViewModelBase
 
 <ul id="menu" class="menu-header table">	
-	<li><a id="MenuPinBoard" asp-controller="PinBoard" asp-action="Pins">@Model.W("MenuPins", "layout")</a></li>
-    <li><a id="MenuTrip" asp-controller="Trip" asp-action="List">@Model.W("MenuTrips", "layout")</a></li>
-    <li><a id="MenuWiki" asp-controller="Wiki" asp-action="Home">@Model.W("MenuWiki", "layout")</a></li>
-
-    @*<li><a id="MenuPlanning" asp-controller="Destination" asp-action="Planning">Planning</a></li>*@
+    <li><a class="MenuPinBoard" asp-controller="PinBoard" asp-action="Pins">@Model.W("MenuPins", "layout")</a></li>
+    <li><a class="MenuTrip" asp-controller="Trip" asp-action="List">@Model.W("MenuTrips", "layout")</a></li>
+    <li><a class="MenuWiki" asp-controller="Wiki" asp-action="Home">@Model.W("MenuWiki", "layout")</a></li>
 
     @if (!Model.IsUserLogged && !(Model is ViewModelHome))
     {
@@ -16,9 +14,6 @@
     
 </ul>
 
-<script>	
-	var name = "@ViewBag.MenuGroup";
-	$("#Menu" + name).addClass("active");
-</script>
+
 
 

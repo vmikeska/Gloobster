@@ -74,6 +74,12 @@ else
 
     <script type="text/javascript" src="@Url.Content("~/js/script.js")"></script>
 
+<script>
+
+    var name = "@ViewBag.MenuGroup";
+    $(".Menu" + name).addClass("active");
+</script>
+
 </body>
 </html>
 

@@ -1,66 +1,48 @@
 ﻿<footer class="footer">
 		<div class="wrapper">
-				<ul class="menu-footer table">
-						<li><a class="active" href="#">Cheap Flights</a></li>
-						<li><a href="#">How It Works</a></li>
-						<li><a href="#">Login</a></li>
-						<li><a href="#">Sign Up</a></li>
-				</ul>
+				@Html.Partial("_MenuFooter")
 				<div class="widgets table row col4 margin">
 						<div class="widget cell">
 								<h3>About Gloobster</h3>
 								<ul>
-										<li><a href="#">Who we are</a></li>
-										<li><a href="#">Purpose of Gloobster</a></li>
-										<li><a href="#">Office Contacts</a></li>
+										<li><a href="/about/Us">Who we are</a></li>										
 								</ul>
 						</div>
 						<div class="widget cell">
-								<h3>Gloobster benefits</h3>
+								<h3>Legal</h3>
 								<ul>
-										<li><a href="#">Travel planning</a></li>
-										<li><a href="#">Trip reports</a></li>
-										<li><a href="#">Visited places</a></li>
+										<li><a href="/legal/PrivacyPolicy">Privacy policy</a></li>
+										<li><a href="/legal/TermsAndConds">Terms and conditions</a></li>										
 								</ul>
 						</div>
 						<div class="widget cell">
-								<h3>Partner Relations</h3>
+								<h3>Component's description</h3>
 								<ul>
-										<li><a href="#">Partner with us</a></li>
-										<li><a href="#">API guide</a></li>
-										<li><a href="#">Affiliates</a></li>
-										<li><a href="#">3D information</a></li>
+										<li><a href="/about/TravelMap">Travel map</a></li>
+										<li><a href="/about/TripOrganizer">Travel organizer</a></li>
+										<li><a href="/about/Wiki">Travel Wiki</a></li>										
 								</ul>
 						</div>
 						<div class="widget cell">
 								<h3>Contact Us</h3>
-								<p>
-										+1 408 962-1568<br>
-										+420 606 606 698<br>
-										<a href="mailto:info@gloobster.com">info@gloobster.com</a>
+								<p>										
+										<a href="mailto:mike@gloobster.com">mike@gloobster.com</a>
 								</p>
 						</div>
 				</div>
 				<div class="margin2">
-						<div class="dropdown">
-								<span class="selected">English</span>
-								<ul>
-										<li>English</li>
-										<li>Czech</li>
-								</ul>
-								<input type="hidden">
-						</div>
+				    @Html.Partial("_LangMenu")
 				</div>
 				<div class="copyright">
-						<a href="#" class="logo-footer">Gloobster</a> &copy; 2015 <a href="#">Gloobster</a> inc. All rights Reserved.
+						<a href="/" class="logo-footer">Gloobster</a> &copy; 2016 <a href="#">Gloobster.com</a> All rights Reserved.
 						<div class="socials">
 								Follow us on
 								<ul>
-										<li><a href="http://facebook.com/">Facebook</a></li>
-										<li><a href="http://google.com/">Google</a></li>
+										<li><a href="https://www.facebook.com/gloobster">Facebook</a></li>
+										@*<li><a href="http://google.com/">Google</a></li>
 										<li><a href="http://linkedin.com/">LinkedIn</a></li>
 										<li><a href="http://twitter.com/">Twitter</a></li>
-										<li><a href="http://youtube.com/">Youtube</a></li>
+										<li><a href="http://youtube.com/">Youtube</a></li>*@
 								</ul>
 						</div>
 				</div>
