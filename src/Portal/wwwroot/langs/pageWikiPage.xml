@@ -70,9 +70,9 @@
         <en>Public trans. ticket</en>
       </PublicTransport>
 
-      <TaxiInit>
+    <TaxiInitial>
         <en>Taxi start</en>
-      </TaxiInit>
+      </TaxiInitial>
 
     <TaxiKm>
       <en>Taxi 1km</en>

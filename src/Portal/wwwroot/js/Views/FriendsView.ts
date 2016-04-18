@@ -252,7 +252,7 @@ class FriendsView extends Views.ViewBase {
 		var actionsHtml = "";
 		actions.forEach(action => {
 
-			var actionText = FriendActionType[action];
+			var actionText = this.t(FriendActionType[action], "jsFriends");
 
 			var actionHtml = `<button class="actionButton" data-value="${friendId}" data-action="${action}">${actionText}</button>`;
 			actionsHtml += actionHtml;

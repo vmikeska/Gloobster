@@ -21,6 +21,23 @@
       <en>Already proposed friendship</en>
     </AlreadyProposed>
 
+
+
+
+
+    <Confirm>
+      <en>Confirm</en>
+    </Confirm>
+
+    <Unfriend>
+      <en>Unfriend</en>
+    </Unfriend>
+
+    <Block>
+      <en>Block</en>
+    </Block>
+
+
     <CancelRequest>
       <en>Cancel request</en>
     </CancelRequest>

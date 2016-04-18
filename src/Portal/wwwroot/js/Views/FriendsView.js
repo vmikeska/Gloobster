@@ -215,9 +215,10 @@ var FriendsView = (function (_super) {
         return $html;
     };
     FriendsView.prototype.generateActions = function (friendId, actions) {
+        var _this = this;
         var actionsHtml = "";
         actions.forEach(function (action) {
-            var actionText = FriendActionType[action];
+            var actionText = _this.t(FriendActionType[action], "jsFriends");
             var actionHtml = "<button class=\"actionButton\" data-value=\"" + friendId + "\" data-action=\"" + action + "\">" + actionText + "</button>";
             actionsHtml += actionHtml;
         });
