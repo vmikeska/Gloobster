@@ -70,9 +70,13 @@
         <en>Public trans. ticket</en>
       </PublicTransport>
 
-      <Taxi>
-        <en>Taxi</en>
-      </Taxi>
+      <TaxiInit>
+        <en>Taxi start</en>
+      </TaxiInit>
+
+    <TaxiKm>
+      <en>Taxi 1km</en>
+    </TaxiKm>
 
       <Pizza>
         <en>Pizza</en>
