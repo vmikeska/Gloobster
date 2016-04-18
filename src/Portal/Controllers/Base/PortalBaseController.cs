@@ -72,7 +72,7 @@ namespace Gloobster.Portal.Controllers.Base
                     return _user;
                 }
 
-                _user = DB.C<UserEntity>().FOD(u => u.User_id == UserIdObj);
+                _user = DB.FOD<UserEntity>(u => u.User_id == UserIdObj);
                 
                 return _user;
             }
@@ -90,7 +90,7 @@ namespace Gloobster.Portal.Controllers.Base
 
                 if (_account == null)
                 {
-                    _account = DB.C<AccountEntity>().FOD(u => u.User_id == UserIdObj);
+                    _account = DB.FOD<AccountEntity>(u => u.User_id == UserIdObj);
                 }
                 
                 return _account;

@@ -7,9 +7,7 @@ var Views;
 (function (Views) {
     var HomePageView = (function (_super) {
         __extends(HomePageView, _super);
-        //private cookieSaver: Reg.AuthCookieSaver;
         function HomePageView() {
-            //this.cookieSaver = new Reg.AuthCookieSaver();
             _super.call(this);
             this.initialize("fbBtnHome", "googleBtnHome", "twitterBtnHome");
         }

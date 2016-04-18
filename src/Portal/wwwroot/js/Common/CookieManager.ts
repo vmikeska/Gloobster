@@ -1,8 +1,15 @@
 ﻿module Common {
 	export class CookieManager {
-	 
+
 		private domain() {
-			 return document["mydomain"];
+			var dom = document["mydomain"];
+			if (!dom) {
+				if (dom.indexOf("localhost") !== -1) {
+					return null;
+				}
+			}
+		 
+			return dom;
 		}
 
 		public getString(cookieName: string) {

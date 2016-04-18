@@ -5,6 +5,9 @@ var Views;
             var _this = this;
             this.$dialog = $("#popup-share");
             this.shareButtons = new Common.ShareButtons($("#shareCont"));
+            this.shareButtons.onSelectionChanged = function (nets) {
+                _this.fillSocStr(nets);
+            };
             var v = Views.ViewBase.currentView;
             $("#share").click(function () {
                 var id = new Common.InprogressDialog();
@@ -16,7 +19,11 @@ var Views;
                     hd.create(v.t("MapShared", "jsPins"));
                 });
             });
+            this.fillSocStr(this.shareButtons.getStr());
         }
+        ShareDialogPinsView.prototype.fillSocStr = function (str) {
+            $("#share").find("span").html(str);
+        };
         ShareDialogPinsView.prototype.share = function (callback) {
             var networks = this.shareButtons.getSelectedNetworks();
             var data = {

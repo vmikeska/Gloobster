@@ -21,14 +21,18 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 	{
 		public IFacebookFriendsService FbFriendsService { get; set; }
 		public IFriendsDomain FriendsDoimain { get; set; }
-        public IEntitiesDemandor Demandor { get; set; }
+        
 
-        public FriendsController(IEntitiesDemandor demandor, IFacebookFriendsService fbFriendsService, IFriendsDomain friendsDoimain, ILogger log, IDbOperations db) : base(log, db)
+        public FriendsController(IFacebookFriendsService fbFriendsService, IFriendsDomain friendsDoimain, ILogger log, IDbOperations db) : base(log, db)
 		{
 			FbFriendsService = fbFriendsService;
-			FriendsDoimain = friendsDoimain;
-            Demandor = demandor;
-		}		
+			FriendsDoimain = friendsDoimain;        
+		}
+
+	    private void AddLog(string text)
+	    {
+	        Log.Debug($"FriendsController: {text}");
+	    }
 
 		[HttpGet]
 		[AuthorizeApi]
@@ -75,40 +79,86 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 
 
 		private FriendsResponse GetFriends(string userId)
-		{
-			var userIdObj = new ObjectId(userId);
+        {
+		    try
+		    {
+		        AddLog($"getting friends of {userId}");
+		        var userIdObj = new ObjectId(userId);
 
-			var friendsEntity = DB.FOD<FriendsEntity>(f => f.User_id == userIdObj);
+		        var friendsEntity = DB.FOD<FriendsEntity>(f => f.User_id == userIdObj);
+		        if (friendsEntity == null)
+		        {
+                    AddLog("friends entity not found");
+                }
 
-			var allInvolvedUserIds = GetAllInvolvedUserIds(friendsEntity);
+		        var allInvolvedUserIds = GetAllInvolvedUserIds(friendsEntity);
 
-			var friends = DB.List<UserEntity>(u => allInvolvedUserIds.Contains(u.User_id));
+		        var friends = DB.List<UserEntity>(u => allInvolvedUserIds.Contains(u.User_id));
+                AddLog($"friends count {friends.Count}");
 
-			var fbFriendsFiltered = GetFbFriends(userId, friendsEntity);
+                var fbFriendsFiltered = GetFbFriends(userId, friendsEntity);
+                AddLog($"fbFriendsFiltered");
 
-			var response = new FriendsResponse
-			{
-				Friends = friendsEntity.Friends.Select(f => ConvertResponse(f, friends)).ToList(),
-				AwaitingConfirmation = friendsEntity.AwaitingConfirmation.Select(f => ConvertResponse(f, friends)).ToList(),
-				Blocked = friendsEntity.Blocked.Select(f => ConvertResponse(f, friends)).ToList(),
-				Proposed = friendsEntity.Proposed.Select(f => ConvertResponse(f, friends)).ToList(),
-				FacebookRecommended = fbFriendsFiltered.Select(f => new FriendResponse { friendId = f.UserId, displayName = f.DisplayName }).ToList()
-			};
+		        var response = new FriendsResponse();
+		        
+		        if (friendsEntity != null)
+		        {
+                    if (friendsEntity.Friends != null)
+                    {                     
+                        response.Friends = ConvertResponse(friendsEntity.Friends, friends);                        
+                        AddLog($"Friends count: {response.Friends.Count}");
+                    }
 
-		    Log.Debug($"FriendsResponseTest: {response.Friends.Count}, {response.AwaitingConfirmation.Count}, {response.FacebookRecommended.Count}");
+                    if (friendsEntity.AwaitingConfirmation != null)
+                    {                        
+                        response.AwaitingConfirmation = ConvertResponse(friendsEntity.AwaitingConfirmation, friends);
+                        AddLog($"AwaitingConfirmation count: {response.AwaitingConfirmation.Count}");
+                    }
 
-			return response;
-		}
+                    if (friendsEntity.Blocked != null)
+                    {                     
+                        response.Blocked = ConvertResponse(friendsEntity.Blocked, friends);
+                        AddLog($"Blocked count: {response.Blocked.Count}");
+                    }
+
+                    if (friendsEntity.Proposed != null)
+                    {                     
+                        response.Proposed = ConvertResponse(friendsEntity.Proposed, friends);
+                        AddLog($"Proposed count: {response.Proposed.Count}");
+                    }
+
+                    if (fbFriendsFiltered != null)
+                    {                        
+                        response.FacebookRecommended =
+                            fbFriendsFiltered.Select(f => new FriendResponse
+                            {
+                                friendId = f.UserId,
+                                displayName = f.DisplayName
+                            }).ToList();
+                        AddLog($"FacebookRecommended count: {response.FacebookRecommended.Count}");
+                    }                    
+                }
+                
+		        return response;
+		    }
+		    catch (Exception exc)
+		    {
+                AddLog($"GetFriends: exception: {exc.Message}");
+                throw;
+		    }
+        }
 
 		private List<UserDO> GetFbFriends(string userId, FriendsEntity friends)
 		{
 			var result = new List<UserDO>();
 
 		    try
-		    {                
-		        var fbFriends = FbFriendsService.GetFriends(userId);
+		    {
+                AddLog("GetFbFriends start");
+                var fbFriends = FbFriendsService.GetFriends(userId);
 		        if (fbFriends != null)
 		        {
+		            AddLog($"GetFbFriends count: {fbFriends.Count}");
 		            result = fbFriends.Where(f =>
 		            {
 		                var userIdObj = new ObjectId(f.UserId);
@@ -116,11 +166,15 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 		                       !friends.Proposed.Contains(userIdObj) &&
 		                       !friends.AwaitingConfirmation.Contains(userIdObj);
 		            }).ToList();
-		        }                
+		        }
+		        else
+		        {
+                    AddLog($"GetFbFriends count: null");
+                } 
 		    }
 		    catch (Exception exc)
 		    {
-		        Log.Error("GetFbFriends: " + exc.Message);
+                AddLog("GetFbFriends: " + exc.Message);
 		    }
 
             return result;
@@ -139,17 +193,25 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 			return friendsIds;
 		}
 
-		private FriendResponse ConvertResponse(ObjectId friendId, List<UserEntity> users)
+		private List<FriendResponse> ConvertResponse(List<ObjectId> fids, List<UserEntity> users)
 		{
-			var user = users.FirstOrDefault(u => u.User_id == friendId);
-
-			var friend = new FriendResponse
-			{
-				friendId = friendId.ToString(),				
-				displayName = user.DisplayName
-			};
-
-			return friend;
+		    var res = new List<FriendResponse>();
+            
+		    foreach (var userId in fids)
+		    {
+                var user = users.FirstOrDefault(u => u.User_id == userId);
+		        if (user != null)
+		        {
+                    var friend = new FriendResponse
+                    {
+                        friendId = user.User_id.ToString(),
+                        displayName = user.DisplayName
+                    };
+                    res.Add(friend);
+                }
+            }
+            
+			return res;
 		}
 		
 	}	

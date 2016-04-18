@@ -7,6 +7,9 @@
 		constructor() {
 			this.$dialog = $("#popup-share");
 			this.shareButtons = new Common.ShareButtons($("#shareCont"));
+		  this.shareButtons.onSelectionChanged = (nets) => {
+			  this.fillSocStr(nets);
+		  }
 
 			var v = ViewBase.currentView;
 
@@ -22,7 +25,13 @@
 				hd.create(v.t("MapShared", "jsPins"));
 			 });
 			});
+
+			this.fillSocStr(this.shareButtons.getStr());
 		}
+
+	 private fillSocStr(str) {
+		$("#share").find("span").html(str);
+	 }
 
 		private share(callback) {
 			var networks = this.shareButtons.getSelectedNetworks();

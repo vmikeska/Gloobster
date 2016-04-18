@@ -49,8 +49,24 @@ var Common;
                 else {
                     $itemDiv.append(_this.activeTag);
                 }
+                if (_this.onSelectionChanged) {
+                    var str = _this.getStr();
+                    _this.onSelectionChanged(str);
+                }
             });
             return $itemDiv;
+        };
+        ShareButtons.prototype.getStr = function () {
+            var nets = this.getSelectedNetworks();
+            var outArray = [];
+            if (_.contains(nets, 0)) {
+                outArray.push("Facebook");
+            }
+            if (_.contains(nets, 2)) {
+                outArray.push("Twitter");
+            }
+            var str = "(" + outArray.join() + ")";
+            return str;
         };
         ShareButtons.prototype.isActive = function ($div) {
             var visitedSpan = $div.find(".icon-visited");

@@ -57,11 +57,12 @@
 		}
 
 		private setShareText(cities, countries) {
-			var $dialog = $("#popup-share");
-			var txt = this.t("InitShareText", "jsPins")
-				.replace("{cities}", cities)
-				.replace("{countries}", countries);
-			$dialog.find("textarea").val(txt);
+			//not allowed :(
+		 //var $dialog = $("#popup-share");
+			//var txt = this.t("InitShareText", "jsPins")
+			//	.replace("{cities}", cities)
+			//	.replace("{countries}", countries);
+			//$dialog.find("textarea").val(txt);
 		}
 
 		private initFbPermRequest() {

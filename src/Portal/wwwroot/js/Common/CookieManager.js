@@ -4,7 +4,13 @@ var Common;
         function CookieManager() {
         }
         CookieManager.prototype.domain = function () {
-            return document["mydomain"];
+            var dom = document["mydomain"];
+            if (!dom) {
+                if (dom.indexOf("localhost") !== -1) {
+                    return null;
+                }
+            }
+            return dom;
         };
         CookieManager.prototype.getString = function (cookieName) {
             var value = $.cookie(cookieName);

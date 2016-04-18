@@ -56,10 +56,20 @@ module Views {
 			this.container.html($html);
 		}
 
+		private fillSocStr(str, $html) {
+		 $html.find("#share").find("span").html(str);
+		}
+
 		private createShareContent() {
 			var $html = $(this.shareTemplate());
 
 			var shareButtons = new Common.ShareButtons($html.find("#shareCont"));
+			shareButtons.onSelectionChanged = (nets) => {
+			 this.fillSocStr(nets, $html);
+			}
+
+			this.fillSocStr(shareButtons.getStr(), $html);
+
 			$html.find("#share").click(() => {
 				var networks = shareButtons.getSelectedNetworks();
 
@@ -78,25 +88,7 @@ module Views {
 					id.remove();
 					var hd = new Common.HintDialog();
 					hd.create("Trip successfuly shared");
-				});
-
-			 //v.t("SharingMap", "jsPins")
-			 
-
-			 
-
-			 //this.share(() => {
-				//id.remove();
-				//var hd = new Common.HintDialog();
-				//hd.create(v.t("MapShared", "jsPins"));
-			 //});
-
-
-				//ViewBase.currentView.apiPost("TripSocNetworks", data, r => {
-				//	this.container.hide();
-				//});
-
-
+				});			 
 			});
 			this.container.html($html);
 		}

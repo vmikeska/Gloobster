@@ -55,11 +55,12 @@ var Views;
             });
         };
         PinBoardView.prototype.setShareText = function (cities, countries) {
-            var $dialog = $("#popup-share");
-            var txt = this.t("InitShareText", "jsPins")
-                .replace("{cities}", cities)
-                .replace("{countries}", countries);
-            $dialog.find("textarea").val(txt);
+            //not allowed :(
+            //var $dialog = $("#popup-share");
+            //var txt = this.t("InitShareText", "jsPins")
+            //	.replace("{cities}", cities)
+            //	.replace("{countries}", countries);
+            //$dialog.find("textarea").val(txt);
         };
         PinBoardView.prototype.initFbPermRequest = function () {
             var _this = this;

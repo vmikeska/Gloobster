@@ -1,4 +1,5 @@
 ﻿@using System.Threading.Tasks
+@using Gloobster.Common
 
 @model Gloobster.Portal.Controllers.TwitterResponse
 @{
@@ -14,6 +15,10 @@
 <script type="text/javascript" src="@Url.Content("~/js/registration/SocialButtons.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Common/CookieManager.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Common/RequestSender.js")"></script>
+
+<script>    
+    document["mydomain"] = "@GloobsterConfig.Domain";
+</script>
 
 <script>
     function onload() {
