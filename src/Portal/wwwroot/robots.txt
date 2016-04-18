@@ -1,4 +1,4 @@
 ﻿User-agent: *
 Disallow:
 
-Sitemap: https://gloobster.com/sitemap
+Sitemap: http://gloobster.com/sitemap

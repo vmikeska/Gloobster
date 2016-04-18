@@ -30,6 +30,12 @@ namespace Gloobster.Portal.Controllers.Portal
 	    public IActionResult Sitemap()
 	    {
 	        Creator.DB = DB;
+
+            Creator.AddItem("", 1);
+            Creator.AddItem("Pinboard/Pins", 1);
+            Creator.AddItem("Trip/List", 1);
+            Creator.AddItem("Wiki/Home", 1);
+            
             Creator.AddWikiItems();
             var xml = Creator.Serialize();
 
@@ -54,13 +60,27 @@ namespace Gloobster.Portal.Controllers.Portal
 
         public void AddWikiItems()
         {
-            var articles = DB.C<WikiTextsEntity>().Where(e => e.Rating > 0).ToList();
+            var articles = DB.List<WikiTextsEntity>(e => e.Rating > 0);
 
             foreach (var article in articles)
             {
                 var date = article.Updated ?? article.Created;
                 AddWikiItem(article.LinkName, article.Language, date);
             }
+        }
+
+        public void AddItem(string linkName, decimal priority)
+        {
+            var link = $"{GloobsterConfig.Protocol}://{GloobsterConfig.Domain}/{linkName}";
+
+            var item = new SiteMapItem
+            {
+                loc = link,
+                changefreq = "weekly",
+                lastmod = new DateTime(2016, 4, 18, 13, 50, 30),
+                priority = priority
+            };
+            Urlset.Items.Add(item);
         }
 
         public void AddWikiItem(string linkName, string lang, DateTime updated)
