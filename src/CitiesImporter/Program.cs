@@ -144,9 +144,27 @@ namespace CitiesImporter
 
             if (command == "add")
             {
-                Import.DB = new DbOperations(conStr, dbName);
-                Import.LoadCities();
-                Import.SaveCities(10000, 0);
+                Import.DB = new DbOperations(conStr, dbName);                
+
+                try
+                {
+                    Import.LoadCities();
+                }
+                catch (Exception exc)
+                {
+                    Console.WriteLine("LoadCities exception: " +exc.Message);
+                }
+
+                try
+                {
+                    Import.SaveCities(10000, 0);
+                }
+                catch (Exception exc)
+                {
+                    Console.WriteLine("SaveCities exception: " + exc.Message);
+                }
+
+                ;
                 Console.WriteLine("Done");
             }
 

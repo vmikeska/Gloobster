@@ -307,7 +307,7 @@ namespace Gloobster.Portal.Controllers.Portal
 				throw new Exception();
 			}
 
-			var dir = Path.Combine("trips", tripId);
+			var dir = FileDomain.Storage.Combine(TripFileConstants.TripFilesDir, tripId);
 			var fileStream = FileDomain.GetFile(dir, fileToReturn.SavedFileName);
 
 

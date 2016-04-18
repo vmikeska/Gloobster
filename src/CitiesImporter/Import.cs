@@ -61,7 +61,11 @@ namespace CitiesImporter
         {
             ArticleDomain = new WikiArticleDomain
             {
-                DB = DB
+                DB = DB,
+                LinkBuilder = new NiceLinkBuilder
+                {
+                    DB = DB
+                }
             };
 
             OrderedCities = Cities.OrderBy(c => c.GID).ToList();

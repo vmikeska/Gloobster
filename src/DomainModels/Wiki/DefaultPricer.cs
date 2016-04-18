@@ -118,8 +118,11 @@ namespace Gloobster.DomainModels.Wiki
                     }
                 }
                 else
-                {                    
-                    price = economicGroup.Items[type];
+                {
+                    if (economicGroup.Items.ContainsKey(type))
+                    {
+                        price = economicGroup.Items[type];
+                    }
                 }
             }
             
