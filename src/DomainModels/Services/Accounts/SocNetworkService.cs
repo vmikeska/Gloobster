@@ -36,6 +36,7 @@ namespace Gloobster.DomainModels.Services.Accounts
         public INotificationsDomain NotificationDomain { get; set; }
         public IAccountDomain AccountDomain { get; set; }
         public INotifications Notifications { get; set; }
+        public IEntitiesDemandor Demandor { get; set; }
 
         private void AddLog(string log)
         {
@@ -181,17 +182,9 @@ namespace Gloobster.DomainModels.Services.Accounts
             var userIdObj = new ObjectId(userId);
 
             CreateNewUserNotification(userId);
-            
-            var friendsEntity = new FriendsEntity
-            {
-                id = new ObjectId(),
-                User_id = userIdObj,
-                Friends = new List<ObjectId>(),
-                AwaitingConfirmation = new List<ObjectId>(),
-                Blocked = new List<ObjectId>(),
-                Proposed = new List<ObjectId>()
-            };
-            await DB.SaveAsync(friendsEntity);
+
+            //creates the entity
+            var friends = await Demandor.GetFriendsAsync(userIdObj);
         }
 
         private void CreateNewUserNotification(string userId)
@@ -319,21 +312,34 @@ namespace Gloobster.DomainModels.Services.Accounts
             }
         }
 
+        //todo: refactor
         private async Task<UserEntity> CreateUserEntityIfNotExistsYet(SocAuthDO auth, SocialAccountEntity newSocAccount)
         {
             //maybe in future it can fill in other params from other networks, if they were not filled-in before
             var userIdObj = new ObjectId(auth.UserId);
             
             var userEntity = DB.FOD<UserEntity>(u => u.User_id == userIdObj);
-            var userData = await SocLogin.GetUserData(auth);
+            
             bool userEntityExists = userEntity != null;
             if (!userEntityExists)
-            {                
+            {
+                UserDO userData = null;
+
+                try
+                {
+                    userData = await SocLogin.GetUserData(auth);
+                }
+                catch (Exception exc)
+                {
+                    AddLog($"GetUserData: exception: " + exc.Message);
+                }
+                
                 if (userData != null)
                 {
                     userEntity = new UserEntity
                     {
                         id = ObjectId.GenerateNewId(),
+
                         DisplayName = userData.DisplayName,
                         Gender = userData.Gender,
                         CurrentLocation = userData.CurrentLocation.ToEntity(),
@@ -341,30 +347,47 @@ namespace Gloobster.DomainModels.Services.Accounts
                         LastName = userData.LastName,
                         HomeLocation = userData.HomeLocation.ToEntity(),
                         User_id = userIdObj,
-                        Languages = userData.Languages,
+                        Languages = userData.Languages,                        
+                        Mail = userData.Mail,
+
+                        DefaultLang = "en",
+                        HomeAirports = new List<AirportSaveSE>(),
+                        HasProfileImage = false
+                    };
+
+                    AddLog($"saving new entity");
+                    await DB.SaveAsync(userEntity);
+
+                    if (string.IsNullOrEmpty(userEntity.Mail) && !string.IsNullOrEmpty(userData.Mail))
+                    {
+                        //update email for mail communication
+                        await UpdateCommunicationAccount(userEntity.id, userData.Mail);
+                    }
+
+                    var account = DB.FOD<AccountEntity>(a => a.User_id == userIdObj);
+                    if (string.IsNullOrEmpty(account.Mail) && !string.IsNullOrEmpty(userData.Mail))
+                    {
+                        await UpdateAccountEmail(userIdObj, userData.Mail);
+                    }
+                }
+                else
+                {
+                    userEntity = new UserEntity
+                    {
+                        id = ObjectId.GenerateNewId(),
+
                         DefaultLang = "en",
                         HomeAirports = new List<AirportSaveSE>(),
                         HasProfileImage = false,
-                        Mail = userData.Mail
                     };
 
+                    AddLog($"saving new entity");
                     await DB.SaveAsync(userEntity);
-
-                    var profilePicUrl = SocLogin.GetProfilePicUrl(auth);
-                    SaveProfilePicture(profilePicUrl, newSocAccount.User_id.ToString());
-                }                
-            }
-            
-            if (string.IsNullOrEmpty(userEntity.Mail) && !string.IsNullOrEmpty(userData.Mail))
-            {
-                //update email for mail communication
-                await UpdateCommunicationAccount(userEntity.id, userData.Mail);                                
-            }
-
-            var account = DB.FOD<AccountEntity>(a => a.User_id == userIdObj);
-            if (string.IsNullOrEmpty(account.Mail) && !string.IsNullOrEmpty(userData.Mail))
-            {                                
-                await UpdateAccountEmail(userIdObj, userData.Mail);                
+                }
+                
+                AddLog($"saving profile picture");
+                var profilePicUrl = SocLogin.GetProfilePicUrl(auth);
+                SaveProfilePicture(profilePicUrl, newSocAccount.User_id.ToString());
             }
             
             return userEntity;
@@ -399,10 +422,13 @@ namespace Gloobster.DomainModels.Services.Accounts
 
             var authUserObjId = new ObjectId(auth.UserId);
 
-            var accountBySocAccount = DB.FOD<AccountEntity>(u => u.User_id == socAccount.User_id);
-
+            AccountEntity accountBySocAccount = DB.FOD<AccountEntity>(u => u.User_id == socAccount.User_id);
+            
             //check if current soc account we are trying to pair is already used for any other account            
-            var socAccountsOfUserFromAuth = DB.List<SocialAccountEntity>(a => a.User_id == authUserObjId);
+            List<SocialAccountEntity> socAccountsOfUserFromAuth = 
+                DB.List<SocialAccountEntity>(a => a.User_id == authUserObjId);
+
+            //just validation
             bool isPairing = socAccountsOfUserFromAuth.Any();
             AddLog($"isPairing: {isPairing}");
             if (isPairing)
@@ -414,6 +440,10 @@ namespace Gloobster.DomainModels.Services.Accounts
                     return new LoginResponseDO {AccountAlreadyInUse = true};
                 }
             }
+            
+            //production prasarna, refactor
+            //AddLog($"CreateUserEntityIfNotExistsYet");
+            //var userEntity = await CreateUserEntityIfNotExistsYet(auth, socAccount);
 
             AddLog("RenewTokenIfPossible");
             await RenewTokenIfPossible(auth, socAccount.id);

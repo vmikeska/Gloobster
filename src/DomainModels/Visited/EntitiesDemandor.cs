@@ -13,7 +13,8 @@ namespace Gloobster.DomainModels
     public interface IEntitiesDemandor
     {
         Task<VisitedEntity> GetVisitedAsync(ObjectId userIdObj);        
-        Task<TripEntity> CreateNewTripEntity(string name, ObjectId userIdObj);        
+        Task<TripEntity> CreateNewTripEntity(string name, ObjectId userIdObj);
+        Task<FriendsEntity> GetFriendsAsync(ObjectId userIdObj);
     }
 
     public class VisitedResult
@@ -116,6 +117,27 @@ namespace Gloobster.DomainModels
             await DB.SaveAsync(tripEntity);
 
             return tripEntity;
+        }
+
+        public async Task<FriendsEntity> GetFriendsAsync(ObjectId userIdObj)
+        {
+            var existingEntity = DB.FOD<FriendsEntity>(u => u.User_id == userIdObj);
+            if (existingEntity != null)
+            {
+                return existingEntity;
+            }
+
+            var newEntity = new FriendsEntity
+            {
+                id = ObjectId.GenerateNewId(),
+                User_id = userIdObj,
+                Friends = new List<ObjectId>(),
+                AwaitingConfirmation = new List<ObjectId>(),
+                Blocked = new List<ObjectId>(),
+                Proposed = new List<ObjectId>()
+            };
+            await DB.SaveAsync(newEntity);
+            return newEntity;
         }
     }
 }

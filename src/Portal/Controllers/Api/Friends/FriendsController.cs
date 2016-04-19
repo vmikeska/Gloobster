@@ -21,10 +21,12 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 	{
 		public IFacebookFriendsService FbFriendsService { get; set; }
 		public IFriendsDomain FriendsDoimain { get; set; }
+        public IEntitiesDemandor Demandor { get; set; }
         
 
-        public FriendsController(IFacebookFriendsService fbFriendsService, IFriendsDomain friendsDoimain, ILogger log, IDbOperations db) : base(log, db)
-		{
+        public FriendsController(IEntitiesDemandor demandor,  IFacebookFriendsService fbFriendsService, IFriendsDomain friendsDoimain, ILogger log, IDbOperations db) : base(log, db)
+        {
+            Demandor = demandor;
 			FbFriendsService = fbFriendsService;
 			FriendsDoimain = friendsDoimain;        
 		}
@@ -36,9 +38,13 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 
 		[HttpGet]
 		[AuthorizeApi]
-		public IActionResult Get()
+		public async Task<IActionResult> Get()
 		{
-			var response = GetFriends(UserId);
+            AddLog($"Starting get {UserId}");
+
+            var friends = await Demandor.GetFriendsAsync(UserIdObj);
+
+            var response = GetFriends(friends);
 
 			return new ObjectResult(response);
 		}
@@ -72,20 +78,18 @@ namespace Gloobster.Portal.Controllers.Api.Friends
                 await FriendsDoimain.Block(UserId, request.friendId);
             }
 
-            var response = GetFriends(UserId);
+
+            var friends = await Demandor.GetFriendsAsync(UserIdObj);
+            var response = GetFriends(friends);
 
 			return new ObjectResult(response);
 		}
 
 
-		private FriendsResponse GetFriends(string userId)
+		private FriendsResponse GetFriends(FriendsEntity friendsEntity)
         {
 		    try
-		    {
-		        AddLog($"getting friends of {userId}");
-		        var userIdObj = new ObjectId(userId);
-
-		        var friendsEntity = DB.FOD<FriendsEntity>(f => f.User_id == userIdObj);
+		    {		        		        
 		        if (friendsEntity == null)
 		        {
                     AddLog("friends entity not found");
@@ -96,7 +100,7 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 		        var friends = DB.List<UserEntity>(u => allInvolvedUserIds.Contains(u.User_id));
                 AddLog($"friends count {friends.Count}");
 
-                var fbFriendsFiltered = GetFbFriends(userId, friendsEntity);
+                var fbFriendsFiltered = GetFbFriends(friendsEntity.User_id.ToString(), friendsEntity);
                 AddLog($"fbFriendsFiltered");
 
 		        var response = new FriendsResponse();
