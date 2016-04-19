@@ -19,14 +19,14 @@ namespace Gloobster.DomainModels
 		public IDbOperations DB { get; set; }
         public IVisitedAggregationDomain AggDomain { get; set; }
         public IFriendsDomain FriendsService { get; set; }
-        public IEntitiesDemandor Demandor { get; set; }
+        public IVisitedEntityRequestor Visited { get; set; }
 
-		public async Task<List<VisitedPlaceDO>> AddNewPlacesAsync(List<VisitedPlaceDO> inputPlaces, string userId)
+        public async Task<List<VisitedPlaceDO>> AddNewPlacesAsync(List<VisitedPlaceDO> inputPlaces, string userId)
 		{
-			var userIdObj = new ObjectId(userId);			
-			var visited = await Demandor.GetVisitedAsync(userIdObj);
+			var userIdObj = new ObjectId(userId);
+            var visited = await Visited.GetOrCreate(userId);
 
-			var newPlaces = new List<VisitedPlaceSE>();
+            var newPlaces = new List<VisitedPlaceSE>();
 			foreach (var place in inputPlaces)
 			{
 				bool isNewPlace = !visited.Places.Any(p => p.SourceId == place.SourceId && p.SourceType == (int)place.SourceType);

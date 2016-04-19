@@ -5,6 +5,7 @@ declare var WE: any;
 declare var L: any;
 declare var gapi: any;
 declare var Handlebars: any;
+declare var Cookies: any;
 
 module Constants {
 	export var tokenCookieName = "token";

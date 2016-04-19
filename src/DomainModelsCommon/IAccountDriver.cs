@@ -30,6 +30,13 @@ namespace Gloobster.DomainInterfaces
         Task<LoginResponseDO> HandleEmail(string mail, string password, string userId);
     }
 
+    public interface INewAccountCreator
+    {
+        Task<bool> CreateUserFromSocNet(string userId, SocAuthDO auth);
+        Task<bool> CreateUserFromMail(string userId, string mail, string password);
+        Task RollBack();
+    }
+
     public interface IAccountDomain
     {
         SocAuthDO GetAuth(SocialNetworkType netType, string userId);

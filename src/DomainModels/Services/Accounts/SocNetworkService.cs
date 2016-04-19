@@ -15,14 +15,11 @@ using Newtonsoft.Json.Linq;
 using Serilog;
 using System.Net;
 using Gloobster.DomainModels.Wiki;
-using Gloobster.Entities.Trip;
 using Gloobster.Enums;
-using Gloobster.Mappers;
 using Nito.AsyncEx;
 
 namespace Gloobster.DomainModels.Services.Accounts
 {
-    
     public class SocNetworkService : ISocNetworkService
     {
         private readonly AsyncLock _mutex = new AsyncLock();
@@ -33,14 +30,67 @@ namespace Gloobster.DomainModels.Services.Accounts
         public ISocLogin SocLogin { get; set; }
         public IFilesDomain FileDomain { get; set; }
         public IAvatarPhoto AvatarPhoto { get; set; }
-        public INotificationsDomain NotificationDomain { get; set; }
+        
         public IAccountDomain AccountDomain { get; set; }
-        public INotifications Notifications { get; set; }
-        public IEntitiesDemandor Demandor { get; set; }
+
+        public INewAccountCreator NewAccCreator { get; set; }
 
         private void AddLog(string log)
         {
             Log.Debug($"SocNetworkService: {log}");
+        }
+
+        public async Task<LoginResponseDO> HandleAsync(SocAuthDO auth)
+        {
+            ((NewAccountCreator) NewAccCreator).SocLogin = SocLogin;
+
+            try
+            {
+                SocLogin.Init(auth);
+                AddLog("Initialized");
+                var tokenResult = SocLogin.ValidateToken(auth);
+                bool isTokenValid = tokenResult.IsValid && (auth.SocUserId == tokenResult.UserId);
+                AddLog("TokenValid: " + isTokenValid);
+                if (!isTokenValid)
+                {
+                    return Unsuccess();
+                }
+                
+                var socAccount1 = DB.FOD<SocialAccountEntity>(a => a.UserId == auth.SocUserId && a.NetworkType == auth.NetType);
+                bool socAccountExists = socAccount1 != null;
+                AddLog("socAccountExists: " + socAccountExists);
+                if (socAccountExists)
+                {
+                    LoginResponseDO res = await SocAccountExists(auth, socAccount1);
+                    return res;
+                }
+
+                //since here creating new soc account
+                using (await _mutex.LockAsync())
+                {
+                    AddLog("Entering create lock");
+                    var socAccount = DB.FOD<SocialAccountEntity>(a => a.UserId == auth.SocUserId && a.NetworkType == auth.NetType);
+
+                    bool socAccountNew = socAccount == null;
+                    if (socAccountNew)
+                    {
+                        AddLog("Creating new account");
+                        LoginResponseDO res = await SocAccountNew(auth);
+
+                        AddLog($"saving profile picture");                        
+                        SaveProfilePicture(auth);  
+
+                        return res;
+                    }
+
+                    return Unsuccess();
+                }                
+            }
+            catch (Exception exc)
+            {
+                AddLog($"HandleAsync: exception : {exc.Message}");
+                return Unsuccess();
+            }
         }
 
         public async Task<LoginResponseDO> HandleEmail(string mail, string password, string userId)
@@ -61,113 +111,62 @@ namespace Gloobster.DomainModels.Services.Accounts
                         DisplayName = user.DisplayName,
                         NetType = SocialNetworkType.Base,
                         SocToken = null,
-                        FullRegistration = accountExisting.EmailConfirmed
+                        FullRegistration = accountExisting.EmailConfirmed,
+                        Successful = true
                     };
                     return response;
                 }
-                else
-                {
-                    return null;
-                }
-            }
-            else
-            {
-                //since here creating new account
-                var userIdObj = new ObjectId(userId);
-                var account = DB.FOD<AccountEntity>(a => a.User_id == userIdObj);
-
-                bool accountHasAlreadyEmail = !string.IsNullOrEmpty(account.Mail);
-                if (accountHasAlreadyEmail)
-                {
-                    return null;
-                }
-
-                if (!MailValid(mail))
-                {
-                    return null;
-                }
                 
-                var filter = DB.F<AccountEntity>().Eq(u => u.id, account.id);
-                var u1 = DB.U<AccountEntity>().Set(u => u.Mail, mail);
-                var u2 = DB.U<AccountEntity>().Set(u => u.Password, password);
-                await DB.UpdateAsync(filter, u1);
-                await DB.UpdateAsync(filter, u2);
-
-                var newUserEntity = new UserEntity
-                {
-                    id = ObjectId.GenerateNewId(),
-                    DisplayName = GetNameFromEmail(mail),
-                    Gender = Gender.N,
-                    Languages = new List<string>(),
-                    CurrentLocation = null,
-                    Mail = mail,
-                    FirstName = "",
-                    LastName = "",
-                    User_id = userIdObj,
-                    HomeAirports = new List<AirportSaveSE>(),
-                    HomeLocation = null,
-                    HasProfileImage = false,
-                    DefaultLang = "en"
-                };
-                await DB.SaveAsync(newUserEntity);
-
-                await CreateNewUserData(userId);
-
-                var response = new LoginResponseDO
-                {
-                    Token = BuildToken(account.User_id.ToString(), account.Secret),
-                    UserId = userId,
-                    DisplayName = newUserEntity.DisplayName,
-                    NetType = SocialNetworkType.Base,
-                    SocToken = null,
-                    FullRegistration = false
-                };
-                return response;
-            }            
-        }
-
-        public async Task<LoginResponseDO> HandleAsync(SocAuthDO auth)
-        {
-            LoginResponseDO res = null;
-
-            SocLogin.Init(auth);
-            AddLog("Initialized");
-            var tokenResult = SocLogin.ValidateToken(auth);
-            bool isTokenValid = tokenResult.IsValid && (auth.SocUserId == tokenResult.UserId);
-            AddLog("TokenValid: " + isTokenValid);
-            if (!isTokenValid)
-            {
-                return null;
-            }
-
-            AddLog($"checking acc exists: socId: {auth.SocUserId}, net: {auth.NetType.ToString()}");
-            var socAccount1 = DB.FOD<SocialAccountEntity>(a => a.UserId == auth.SocUserId && a.NetworkType == auth.NetType);
-            bool socAccountExists = socAccount1 != null;
-            AddLog("socAccountExists: " + socAccountExists);
-            if (socAccountExists)
-            {
-                res = await SocAccountExists(auth, socAccount1);                        
-                return res;
+                return Unsuccess();                
             }
             
-            using (await _mutex.LockAsync())
-            {
-                AddLog("Entering create lock");
-                var socAccount = DB.FOD<SocialAccountEntity>(a => a.UserId == auth.SocUserId && a.NetworkType == auth.NetType);
-
-                bool socAccountNew = socAccount == null;
-                if (socAccountNew)
-                {
-                    AddLog("Creating new account");
-                    res = await SocAccountNew(auth);                                        
-                    return res;
-                }
-            }
-            AddLog("created");
-
-            return null;
+            //since here creating new account            
+            var newResp = await CreateNewFromEmail(userId, mail, password);
+            return newResp;                        
         }
 
+        private async Task<LoginResponseDO> CreateNewFromEmail(string userId, string mail, string password)
+        {
+            var userIdObj = new ObjectId(userId);
+            var account = DB.FOD<AccountEntity>(a => a.User_id == userIdObj);
+
+            bool accountHasAlreadyEmail = !string.IsNullOrEmpty(account.Mail);
+            if (accountHasAlreadyEmail)
+            {
+                return Unsuccess();
+            }
+
+            if (!MailValid(mail))
+            {
+                return Unsuccess();
+            }
+
+            bool created = await NewAccCreator.CreateUserFromMail(userId, mail, password);
+            if (!created)
+            {
+                return Unsuccess();
+            }
+
+            var response = new LoginResponseDO
+            {
+                Token = BuildToken(account.User_id.ToString(), account.Secret),
+                UserId = userId,
+                DisplayName = ((NewAccountCreator)NewAccCreator).NewUserEntity.DisplayName,
+                NetType = SocialNetworkType.Base,
+                SocToken = null,
+                FullRegistration = false,
+                Successful = true
+            };
+            return response;
+        }
+
+        private LoginResponseDO Unsuccess()
+        {
+            return new LoginResponseDO { Successful = false };
+        }
+
+        
+        
         private async void MarkEmptyAccount(string userId)
         {
             var userIdObj = new ObjectId(userId);
@@ -176,36 +175,7 @@ namespace Gloobster.DomainModels.Services.Accounts
             var u1 = DB.U<AccountEntity>().Set(a => a.PossiblyEmpty, true);
             await DB.UpdateAsync(f1, u1);
         }
-
-        private async Task CreateNewUserData(string userId)
-        {
-            var userIdObj = new ObjectId(userId);
-
-            CreateNewUserNotification(userId);
-
-            //creates the entity
-            var friends = await Demandor.GetFriendsAsync(userIdObj);
-        }
-
-        private void CreateNewUserNotification(string userId)
-        {
-            try
-            {
-                var notification = Notifications.NewAccountNotification(userId);
-                NotificationDomain.AddNotification(notification);
-            }
-            catch (Exception exc)
-            {
-                AddLog($"CreateNewUserNotification: {exc.Message}");
-            }
-        }
-
-        private string GetNameFromEmail(string mail)
-        {
-            var prms = mail.Split('@');
-            return prms[0];
-        }
-
+        
         private bool MailValid(string email)
         {
             try
@@ -241,234 +211,126 @@ namespace Gloobster.DomainModels.Services.Accounts
 
         private async Task<LoginResponseDO> SocAccountNew(SocAuthDO auth)
         {
-            var userIdObj = new ObjectId(auth.UserId);
+            var creator = ((NewAccountCreator)NewAccCreator);
 
-            var accountEntity = DB.FOD<AccountEntity>(u => u.User_id == userIdObj);            
-            AddLog($"Found account: {accountEntity.User_id.ToString()}");
-
-            AddLog($"CreateNewSocialAccount");
-            var newSocAccount = await CreateNewSocialAccount(auth);
-            
-            AddLog($"CreateUserEntityIfNotExistsYet");
-            var userEntity = await CreateUserEntityIfNotExistsYet(auth, newSocAccount);
-
-            AddLog($"CreateNewUserData");
-            await CreateNewUserData(auth.UserId);
-
-            AddLog($"OnNewUser");
-            await SocLogin.OnNewUser(auth);
-
-            var response = new LoginResponseDO
-            {
-                Token = BuildToken(auth.UserId, accountEntity.Secret),
-                UserId = auth.UserId,
-                DisplayName = userEntity.DisplayName,
-                NetType = auth.NetType,
-                SocToken = auth.AccessToken,
-                FullRegistration = IsFullRegistration(auth.UserId)
-            };
-            AddLog($"Returning response");
-            return response;
-        }
-        
-        private async Task<SocialAccountEntity> CreateNewSocialAccount(SocAuthDO auth)
-        {
             try
             {
                 var userIdObj = new ObjectId(auth.UserId);
 
-                var permanentToken = SocLogin.TryGetPermanentToken(auth.AccessToken);
-
-                var newSocAccount = new SocialAccountEntity
+                var accountEntity = DB.FOD<AccountEntity>(u => u.User_id == userIdObj);
+                
+                bool created = await NewAccCreator.CreateUserFromSocNet(auth.UserId, auth);
+                if (!created)
                 {
-                    id = ObjectId.GenerateNewId(),
-                    UserId = auth.SocUserId,
-                    ExpiresAt = auth.ExpiresAt,
-                    User_id = userIdObj,
-                    TokenSecret = auth.TokenSecret,
-                    NetworkType = auth.NetType
+                    return Unsuccess();
+                }
+
+                await SocLogin.OnNewUser(auth);
+
+                var response = new LoginResponseDO
+                {
+                    Token = BuildToken(auth.UserId, accountEntity.Secret),
+                    UserId = auth.UserId,
+                    DisplayName = creator.NewUserEntity.DisplayName,
+                    NetType = auth.NetType,
+                    SocToken = auth.AccessToken,
+                    FullRegistration = IsFullRegistration(auth.UserId),
+                    Successful = true
                 };
 
-                if (permanentToken.Issued)
-                {
-                    newSocAccount.AccessToken = permanentToken.PermanentAccessToken;
-                    newSocAccount.HasPermanentToken = true;
-                }
-                else
-                {
-                    newSocAccount.AccessToken = auth.AccessToken;
-                    newSocAccount.HasPermanentToken = false;
-                    newSocAccount.ErrorMessage = permanentToken.Message;
-                }
-
-                await DB.SaveAsync(newSocAccount);
-
-                return newSocAccount;
+                return response;
             }
             catch (Exception exc)
             {
-                AddLog($"CreateNewSocialAccount: {exc.Message}");
-                throw;
+                await creator.RollBack();
+                AddLog($"SocAccountNew: exception: {exc.Message}");
+                return Unsuccess();
             }
         }
-
-        //todo: refactor
-        private async Task<UserEntity> CreateUserEntityIfNotExistsYet(SocAuthDO auth, SocialAccountEntity newSocAccount)
-        {
-            //maybe in future it can fill in other params from other networks, if they were not filled-in before
-            var userIdObj = new ObjectId(auth.UserId);
-            
-            var userEntity = DB.FOD<UserEntity>(u => u.User_id == userIdObj);
-            
-            bool userEntityExists = userEntity != null;
-            if (!userEntityExists)
+        
+        private bool PairingValiation(AccountEntity accountBySocAccount)
+        {            
+            bool accountWeAreTryingToPairIsAlreadyInUse = accountBySocAccount != null;
+            AddLog($"accountWeAreTryingToPairIsAlreadyInUse: {accountWeAreTryingToPairIsAlreadyInUse}");
+            if (accountWeAreTryingToPairIsAlreadyInUse)
             {
-                UserDO userData = null;
-
-                try
-                {
-                    userData = await SocLogin.GetUserData(auth);
-                }
-                catch (Exception exc)
-                {
-                    AddLog($"GetUserData: exception: " + exc.Message);
-                }
-                
-                if (userData != null)
-                {
-                    userEntity = new UserEntity
-                    {
-                        id = ObjectId.GenerateNewId(),
-
-                        DisplayName = userData.DisplayName,
-                        Gender = userData.Gender,
-                        CurrentLocation = userData.CurrentLocation.ToEntity(),
-                        FirstName = userData.FirstName,
-                        LastName = userData.LastName,
-                        HomeLocation = userData.HomeLocation.ToEntity(),
-                        User_id = userIdObj,
-                        Languages = userData.Languages,                        
-                        Mail = userData.Mail,
-
-                        DefaultLang = "en",
-                        HomeAirports = new List<AirportSaveSE>(),
-                        HasProfileImage = false
-                    };
-
-                    AddLog($"saving new entity");
-                    await DB.SaveAsync(userEntity);
-
-                    if (string.IsNullOrEmpty(userEntity.Mail) && !string.IsNullOrEmpty(userData.Mail))
-                    {
-                        //update email for mail communication
-                        await UpdateCommunicationAccount(userEntity.id, userData.Mail);
-                    }
-
-                    var account = DB.FOD<AccountEntity>(a => a.User_id == userIdObj);
-                    if (string.IsNullOrEmpty(account.Mail) && !string.IsNullOrEmpty(userData.Mail))
-                    {
-                        await UpdateAccountEmail(userIdObj, userData.Mail);
-                    }
-                }
-                else
-                {
-                    userEntity = new UserEntity
-                    {
-                        id = ObjectId.GenerateNewId(),
-
-                        DefaultLang = "en",
-                        HomeAirports = new List<AirportSaveSE>(),
-                        HasProfileImage = false,
-                    };
-
-                    AddLog($"saving new entity");
-                    await DB.SaveAsync(userEntity);
-                }
-                
-                AddLog($"saving profile picture");
-                var profilePicUrl = SocLogin.GetProfilePicUrl(auth);
-                SaveProfilePicture(profilePicUrl, newSocAccount.User_id.ToString());
+                return false;                        
             }
             
-            return userEntity;
+            return true;
         }
 
-        private async Task UpdateAccountEmail(ObjectId userIdObj, string mail)
+        private bool IsPairing(string userId)
         {
-            var account = DB.FOD<AccountEntity>(a => a.User_id == userIdObj);
-            if (string.IsNullOrEmpty(account.Mail))
-            {
-                var newPass = System.Web.Security.Membership.GeneratePassword(6, 2);
+            var authUserObjId = new ObjectId(userId);
 
-                var filter = DB.F<AccountEntity>().Eq(u => u.User_id, userIdObj);
-                var u1 = DB.U<AccountEntity>().Set(u => u.Mail, mail);
-                var u2 = DB.U<AccountEntity>().Set(u => u.Password, newPass);
+            var socAccountsOfUserFromAuth = DB.List<SocialAccountEntity>(a => a.User_id == authUserObjId);
 
-                await DB.UpdateAsync(filter, u1);
-                await DB.UpdateAsync(filter, u2);
-            }
+            bool isPairing = socAccountsOfUserFromAuth.Any();
+            return isPairing;
         }
-
-        private async Task UpdateCommunicationAccount(ObjectId userEntityId, string mail)
+        
+        //try to fix it before removing - could be executed when pairing
+        private async Task UpdateCommunicationAccount(ObjectId userIdObj, string mail)
         {
-            var filter = DB.F<UserEntity>().Eq(u => u.id, userEntityId);
+            var filter = DB.F<UserEntity>().Eq(u => u.User_id, userIdObj);
             var update = DB.U<UserEntity>().Set(u => u.Mail, mail);
             await DB.UpdateAsync(filter, update);
         }
 
         private async Task<LoginResponseDO> SocAccountExists(SocAuthDO auth, SocialAccountEntity socAccount)
         {
-            AddLog("SocAccountExists");
-
-            var authUserObjId = new ObjectId(auth.UserId);
-
-            AccountEntity accountBySocAccount = DB.FOD<AccountEntity>(u => u.User_id == socAccount.User_id);
-            
-            //check if current soc account we are trying to pair is already used for any other account            
-            List<SocialAccountEntity> socAccountsOfUserFromAuth = 
-                DB.List<SocialAccountEntity>(a => a.User_id == authUserObjId);
-
-            //just validation
-            bool isPairing = socAccountsOfUserFromAuth.Any();
-            AddLog($"isPairing: {isPairing}");
-            if (isPairing)
+            try
             {
-                bool accountWeAreTryingToPairIsAlreadyInUse = accountBySocAccount != null;
-                AddLog($"accountWeAreTryingToPairIsAlreadyInUse: {accountWeAreTryingToPairIsAlreadyInUse}");
-                if (accountWeAreTryingToPairIsAlreadyInUse)
+                AddLog("SocAccountExists");
+
+                var authUserObjId = new ObjectId(auth.UserId);
+                
+                AccountEntity accountBySocAccount = DB.FOD<AccountEntity>(u => u.User_id == socAccount.User_id);
+
+                bool isPairing = IsPairing(auth.UserId);
+                if (isPairing)
                 {
-                    return new LoginResponseDO {AccountAlreadyInUse = true};
+                    bool pairingOk = PairingValiation(accountBySocAccount);
+                    if (!pairingOk)
+                    {
+                        return new LoginResponseDO { AccountAlreadyInUse = true };
+                    }
+                    
+                    //UpdateCommunicationAccount(authUserObjId, )
                 }
+                
+                AddLog("RenewTokenIfPossible");
+                await RenewTokenIfPossible(auth, socAccount.id);
+                AddLog("RenewTokenIfPossible done");
+
+                if (authUserObjId != accountBySocAccount.User_id)
+                {
+                    AddLog("Marking empty account");
+                    //here could be delete temp account
+                    MarkEmptyAccount(auth.UserId);
+                }
+
+                var user = DB.FOD<UserEntity>(u => u.User_id == socAccount.User_id);
+
+                AddLog("Creating response");
+                var response = new LoginResponseDO
+                {
+                    Token = BuildToken(accountBySocAccount.User_id.ToString(), accountBySocAccount.Secret),
+                    UserId = accountBySocAccount.User_id.ToString(),
+                    DisplayName = user.DisplayName,
+                    NetType = auth.NetType,
+                    SocToken = auth.AccessToken,
+                    FullRegistration = IsFullRegistration(accountBySocAccount.User_id.ToString()),
+                    Successful = true
+                };
+                return response;
             }
-            
-            //production prasarna, refactor
-            //AddLog($"CreateUserEntityIfNotExistsYet");
-            //var userEntity = await CreateUserEntityIfNotExistsYet(auth, socAccount);
-
-            AddLog("RenewTokenIfPossible");
-            await RenewTokenIfPossible(auth, socAccount.id);
-            AddLog("RenewTokenIfPossible done");
-
-            if (authUserObjId != accountBySocAccount.User_id)
+            catch (Exception exc)
             {
-                AddLog("Marking empty account");
-                //here could be delete temp account
-                MarkEmptyAccount(auth.UserId);
+                AddLog($"SocAccountExists: exception: {exc.Message}");
+                return Unsuccess();
             }
-            
-            var user = DB.FOD<UserEntity>(u => u.User_id == socAccount.User_id);
-
-            AddLog("Creating response");
-            var response = new LoginResponseDO
-            {
-                Token = BuildToken(accountBySocAccount.User_id.ToString(), accountBySocAccount.Secret),
-                UserId = auth.UserId,
-                DisplayName = user.DisplayName,
-                NetType = auth.NetType,
-                SocToken = auth.AccessToken,
-                FullRegistration = IsFullRegistration(accountBySocAccount.User_id.ToString())
-            };
-            return response;
         }
 
         private async Task<bool> RenewTokenIfPossible(SocAuthDO auth, ObjectId socAcountEntityId)
@@ -486,20 +348,22 @@ namespace Gloobster.DomainModels.Services.Accounts
             return false;
         }
 
-        public void SaveProfilePicture(string url, string userId)
+        private void SaveProfilePicture(SocAuthDO auth)
         {
             try
             {
-                var location = FileDomain.Storage.Combine(AvatarFilesConsts.Location, userId);
+                var profilePicUrl = SocLogin.GetProfilePicUrl(auth);
+
+                var location = FileDomain.Storage.Combine(AvatarFilesConsts.Location, auth.UserId);
 
                 AvatarPhoto.DeleteOld(location);
 
                 var client = new WebClient();
-                var bytes = client.DownloadData(url);
+                var bytes = client.DownloadData(profilePicUrl);
                 var bytesStream = new MemoryStream(bytes);
                 
                 AvatarPhoto.CreateThumbnails(location, bytesStream);
-                AvatarPhoto.UpdateFileSaved(userId);                
+                AvatarPhoto.UpdateFileSaved(auth.UserId);                
             }
             catch (Exception exc)
             {

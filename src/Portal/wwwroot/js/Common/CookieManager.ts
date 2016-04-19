@@ -1,19 +1,8 @@
 ﻿module Common {
 	export class CookieManager {
-
-		private domain() {
-			var dom = document["mydomain"];
-			if (!dom) {
-				if (dom.indexOf("localhost") !== -1) {
-					return null;
-				}
-			}
-		 
-			return dom;
-		}
-
-		public getString(cookieName: string) {
-			var value = $.cookie(cookieName);			
+	 
+		public getString(cookieName: string) {			
+			var value = Cookies.get(cookieName);			
 			return value;
 		}
 	 
@@ -28,8 +17,8 @@
 			return valObj;
 		}
 
-		public setString(cookieName: string, cookieValue: string) {			
-			$.cookie(cookieName, cookieValue, { "domain": this.domain(), "path": "/" });
+		public setString(cookieName: string, cookieValue: string) {						
+		 Cookies.set(cookieName, cookieValue, { expires: 365 });
 		}
 
 		public setJson(cookieName: string, cookieValue) {
@@ -39,7 +28,7 @@
 		}
 
 		public removeCookie(cookieName: string) {
-			$.removeCookie(cookieName, { path: "/" });
+		 Cookies.remove(cookieName);
 		}
 	}
 }

@@ -16,13 +16,13 @@ namespace Gloobster.DomainModels
 	{
 		public IDbOperations DB { get; set; }
         public IVisitedAggregationDomain AggDomain { get; set; }
-        public IGeoNamesService GeoNamesService { get; set; }
-        public IEntitiesDemandor Demandor { get; set; }
+        public IGeoNamesService GeoNamesService { get; set; }        
+        public IVisitedEntityRequestor Visited { get; set; }
 
         public async Task<List<VisitedCityDO>> AddNewCitiesByGIDAsync(List<GidDateDO> gids, string userId)
         {
             var userIdObj = new ObjectId(userId);
-            var visited = await Demandor.GetVisitedAsync(userIdObj);
+            var visited = await Visited.GetOrCreate(userId);
             List<int> visitedGids = visited.Cities.Select(g => g.GeoNamesId).ToList();
 
             var validGids = gids.Where(g => g.GID != 0).ToList();
@@ -60,7 +60,7 @@ namespace Gloobster.DomainModels
         public async Task<List<VisitedCityDO>> AddNewCitiesWithGidAsync(List<VisitedCityDO> inputCities, string userId)
         {
             var userIdObj = new ObjectId(userId);
-            var visited = await Demandor.GetVisitedAsync(userIdObj);
+            var visited = await Visited.GetOrCreate(userId);
 
             var newCities = new List<VisitedCitySE>();
             foreach (VisitedCityDO city in inputCities)

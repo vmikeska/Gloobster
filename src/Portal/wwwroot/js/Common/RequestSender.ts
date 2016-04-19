@@ -1,8 +1,12 @@
 module Common {
 	export class RequestSender {
 
+	 private cookieManager: CookieManager;
+
 		constructor(endPoint: string, data: any = null, addLocalAuthentication: boolean = false) {
-			this.endPoint = endPoint;
+			this.cookieManager = new CookieManager();
+
+		 this.endPoint = endPoint;
 			this.data = data;
 			this.dataToSend = data;
 			this.addLocalAuthentication = addLocalAuthentication;
@@ -18,13 +22,11 @@ module Common {
 		onError: Function;
 
 		private addAuthentication(reqObj) {
-		 var cookieStr = $.cookie(Constants.tokenCookieName);
-		 if (cookieStr) {
-			
+		 var cookieStr = this.cookieManager.getString(Constants.tokenCookieName);
+		 if (cookieStr) {			
 			var headers = {};
 			headers["Authorization"] = cookieStr;
 			reqObj.headers = headers;
-
 		 }
 		}
 	 

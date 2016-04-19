@@ -3,17 +3,8 @@ var Common;
     var CookieManager = (function () {
         function CookieManager() {
         }
-        CookieManager.prototype.domain = function () {
-            var dom = document["mydomain"];
-            if (!dom) {
-                if (dom.indexOf("localhost") !== -1) {
-                    return null;
-                }
-            }
-            return dom;
-        };
         CookieManager.prototype.getString = function (cookieName) {
-            var value = $.cookie(cookieName);
+            var value = Cookies.get(cookieName);
             return value;
         };
         CookieManager.prototype.getJson = function (cookieName) {
@@ -25,14 +16,14 @@ var Common;
             return valObj;
         };
         CookieManager.prototype.setString = function (cookieName, cookieValue) {
-            $.cookie(cookieName, cookieValue, { "domain": this.domain(), "path": "/" });
+            Cookies.set(cookieName, cookieValue, { expires: 365 });
         };
         CookieManager.prototype.setJson = function (cookieName, cookieValue) {
             var valStr = JSON.stringify(cookieValue);
             this.setString(cookieName, valStr);
         };
         CookieManager.prototype.removeCookie = function (cookieName) {
-            $.removeCookie(cookieName, { path: "/" });
+            Cookies.remove(cookieName);
         };
         return CookieManager;
     })();

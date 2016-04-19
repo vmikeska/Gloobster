@@ -21,12 +21,10 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 	{
 		public IFacebookFriendsService FbFriendsService { get; set; }
 		public IFriendsDomain FriendsDoimain { get; set; }
-        public IEntitiesDemandor Demandor { get; set; }
         
 
-        public FriendsController(IEntitiesDemandor demandor,  IFacebookFriendsService fbFriendsService, IFriendsDomain friendsDoimain, ILogger log, IDbOperations db) : base(log, db)
-        {
-            Demandor = demandor;
+        public FriendsController(IFacebookFriendsService fbFriendsService, IFriendsDomain friendsDoimain, ILogger log, IDbOperations db) : base(log, db)
+        {            
 			FbFriendsService = fbFriendsService;
 			FriendsDoimain = friendsDoimain;        
 		}
@@ -42,7 +40,7 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 		{
             AddLog($"Starting get {UserId}");
 
-            var friends = await Demandor.GetFriendsAsync(UserIdObj);
+		    var friends = DB.FOD<FriendsEntity>(f => f.User_id == UserIdObj);
 
             var response = GetFriends(friends);
 
@@ -79,7 +77,7 @@ namespace Gloobster.Portal.Controllers.Api.Friends
             }
 
 
-            var friends = await Demandor.GetFriendsAsync(UserIdObj);
+            var friends = DB.FOD<FriendsEntity>(f => f.User_id == UserIdObj);            
             var response = GetFriends(friends);
 
 			return new ObjectResult(response);

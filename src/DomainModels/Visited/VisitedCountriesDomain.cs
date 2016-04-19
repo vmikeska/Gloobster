@@ -15,13 +15,13 @@ namespace Gloobster.DomainModels
 	{
 		public IDbOperations DB { get; set; }
         public IVisitedAggregationDomain AggDomain { get; set; }
-        public IEntitiesDemandor Demandor { get; set; }
+        public IVisitedEntityRequestor Visited { get; set; }
 
         public async Task<List<VisitedCountryDO>> AddNewCountriesAsync(List<VisitedCountryDO> inputCountries, string userId)
 		{
 			var userIdObj = new ObjectId(userId);
-            var visited = await Demandor.GetVisitedAsync(userIdObj);
-
+            var visited = await Visited.GetOrCreate(userId);
+            
             var savedCountries = visited.Countries;
 			var savedCountriesCodes = savedCountries.Select(c => c.CountryCode2).ToList();
 

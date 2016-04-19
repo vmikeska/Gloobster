@@ -34,8 +34,13 @@ namespace Gloobster.Portal
 			var storageCreation = new StorageCreation();			
 			var storage = storageCreation.GetInstance(GloobsterConfig.IsLocal);
 			builder.AddInstance<IStorageProvider>(storage);
+
             
-			builder.AddTransient<IVisitedPlacesDomain, VisitedPlacesDomain>();
+            builder.AddTransient<IVisitedEntityRequestor, VisitedEntityRequestor>();
+
+            builder.AddTransient<INewAccountCreator, NewAccountCreator>();
+            
+            builder.AddTransient<IVisitedPlacesDomain, VisitedPlacesDomain>();
 			builder.AddTransient<IVisitedCitiesDomain, VisitedCitiesDomain>();
 			builder.AddTransient<IVisitedCountriesDomain, VisitedCountriesDomain>();
 			builder.AddTransient<IDbOperations, DbOperations>();

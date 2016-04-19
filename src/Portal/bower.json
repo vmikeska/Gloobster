@@ -5,11 +5,11 @@
     "jquery": "2.1.4",
     "jquery-validation": "1.11.1",
     "jquery-validation-unobtrusive": "3.2.2",
-    "jquery.cookie": "jquery-cookie#~1.4.1",
     "leaflet": "~0.7.5",
     "lodash": "~3.10.1",
     "handlebars": "~4.0.4",
     "jquery-ui": "~1.11.4",
-    "dropzone": "~4.2.0"
+    "dropzone": "~4.2.0",
+    "js-cookie": "^2.1.1"
   }
 }

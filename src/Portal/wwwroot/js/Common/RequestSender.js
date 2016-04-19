@@ -4,13 +4,14 @@ var Common;
         function RequestSender(endPoint, data, addLocalAuthentication) {
             if (data === void 0) { data = null; }
             if (addLocalAuthentication === void 0) { addLocalAuthentication = false; }
+            this.cookieManager = new Common.CookieManager();
             this.endPoint = endPoint;
             this.data = data;
             this.dataToSend = data;
             this.addLocalAuthentication = addLocalAuthentication;
         }
         RequestSender.prototype.addAuthentication = function (reqObj) {
-            var cookieStr = $.cookie(Constants.tokenCookieName);
+            var cookieStr = this.cookieManager.getString(Constants.tokenCookieName);
             if (cookieStr) {
                 var headers = {};
                 headers["Authorization"] = cookieStr;

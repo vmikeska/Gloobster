@@ -11,42 +11,59 @@ using MongoDB.Bson;
 namespace Gloobster.DomainModels
 {
     public interface IEntitiesDemandor
-    {
-        Task<VisitedEntity> GetVisitedAsync(ObjectId userIdObj);        
+    {        
         Task<TripEntity> CreateNewTripEntity(string name, ObjectId userIdObj);
-        Task<FriendsEntity> GetFriendsAsync(ObjectId userIdObj);
     }
 
-    public class VisitedResult
+    public interface IVisitedEntityRequestor
     {
-        public VisitedEntity Entity { get; set; }
-        public bool Exists { get; set; }
+        Task<VisitedEntity> GetOrCreate(string userId);
     }
+
     
+    public class VisitedEntityRequestor: IVisitedEntityRequestor
+    {
+        public IDbOperations DB { get; set; }
+
+        public async Task<VisitedEntity> GetOrCreate(string userId)
+        {
+            var userIdObj = new ObjectId(userId);
+            var e = DB.FOD<VisitedEntity>(v => v.User_id == userIdObj);
+            if (e != null)
+            {
+                return e;
+            }
+            
+            e = new VisitedEntity
+            {
+                id = ObjectId.GenerateNewId(),
+                User_id = userIdObj,
+                Places = new List<VisitedPlaceSE>(),
+                Cities = new List<VisitedCitySE>(),
+                Countries = new List<VisitedCountrySE>(),
+                States = new List<VisitedStateSE>()
+            };
+            await DB.SaveAsync(e);
+            return e;
+        }
+
+        public VisitedEntity Get(string userId)
+        {                            
+            var userIdObj = new ObjectId(userId);
+            var e = DB.FOD<VisitedEntity>(v => v.User_id == userIdObj);
+            if (e != null)
+            {
+                return e;
+            }
+
+            throw new Exception($"VisitedEntity with userId {userId} should exists, but it doesnt");
+        }
+    }
+
     public class EntitiesDemandor : IEntitiesDemandor
     {
         public IDbOperations DB { get; set; }
         
-        public async Task<VisitedEntity> GetVisitedAsync(ObjectId userIdObj)
-        {
-            var visited = DB.FOD<VisitedEntity>(u => u.User_id == userIdObj);
-            if (visited == null)
-            {
-                var newVisited = new VisitedEntity
-                {
-                    User_id = userIdObj,
-                    Places = new List<VisitedPlaceSE>(),
-                    Cities = new List<VisitedCitySE>(),
-                    Countries = new List<VisitedCountrySE>(),
-                    States = new List<VisitedStateSE>()
-                };
-                await DB.SaveAsync(newVisited);
-                return newVisited;
-            }
-
-            return visited;
-        }
-
         public async Task<TripEntity> CreateNewTripEntity(string name, ObjectId userIdObj)
         {
             var travel = new TripTravelSE
@@ -118,26 +135,6 @@ namespace Gloobster.DomainModels
 
             return tripEntity;
         }
-
-        public async Task<FriendsEntity> GetFriendsAsync(ObjectId userIdObj)
-        {
-            var existingEntity = DB.FOD<FriendsEntity>(u => u.User_id == userIdObj);
-            if (existingEntity != null)
-            {
-                return existingEntity;
-            }
-
-            var newEntity = new FriendsEntity
-            {
-                id = ObjectId.GenerateNewId(),
-                User_id = userIdObj,
-                Friends = new List<ObjectId>(),
-                AwaitingConfirmation = new List<ObjectId>(),
-                Blocked = new List<ObjectId>(),
-                Proposed = new List<ObjectId>()
-            };
-            await DB.SaveAsync(newEntity);
-            return newEntity;
-        }
+        
     }
 }

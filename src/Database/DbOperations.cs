@@ -179,6 +179,16 @@ namespace Gloobster.Database
             return entity;
         }
 
+        public async Task<bool> DeleteAsync<T>(Expression<Func<T, bool>> query) where T : EntityBase
+        {
+            var collectionName = GetCollectionName<T>();
+            var collection = Database.GetCollection<T>(collectionName);
+            
+            await collection.DeleteOneAsync(query);
+
+            return true;
+        }
+
         public async Task<bool> DeleteAsync<T>(ObjectId id) where T : EntityBase
         {            
             var collectionName = GetCollectionName<T>();

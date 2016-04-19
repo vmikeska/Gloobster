@@ -13,15 +13,13 @@ namespace Gloobster.DomainModels.Services.Places
     public class PinBoardStats : IPinBoardStats
     {
         public IDbOperations DB { get; set; }
-        public IEntitiesDemandor Demandor { get; set; }
+        public IVisitedEntityRequestor Visited { get; set; }
 
         public async Task<PinBoardStatsResultDO> GetStatsAsync(string userId)
-        {
-            var userIdObj = new ObjectId(userId);
-            
-            var visitedEntity = await Demandor.GetVisitedAsync(userIdObj);
-            
-            var res = Result(visitedEntity);
+        {            
+            var visited = await Visited.GetOrCreate(userId);
+
+            var res = Result(visited);
             return res;
         }
 

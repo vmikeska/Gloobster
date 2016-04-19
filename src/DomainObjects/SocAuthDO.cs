@@ -27,6 +27,7 @@ namespace Gloobster.DomainObjects
         public bool FullRegistration { get; set; }
 
         public bool AccountAlreadyInUse { get; set; }
+        public bool Successful { get; set; }
     }
 
     public class PermanentTokenDO

@@ -6,7 +6,7 @@
     }
   },
   "Environment": {
-    "Domain": "www.gloobster.com",
+    "Domain": "gloobster.com",
     "IsLocal": "false",
     "Protocol": "http"
   },
