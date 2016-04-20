@@ -1,6 +1,10 @@
+using System.IO;
+using System.Net;
 using System.Threading.Tasks;
+using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
+using Gloobster.DomainModels.Wiki;
 using Gloobster.DomainObjects;
 using Gloobster.Portal.Controllers.Base;
 using Microsoft.AspNet.Mvc;
@@ -8,6 +12,28 @@ using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.Wiki
 {
+    public class PricesInitializer
+    {
+        private string ReadFile(string name)
+        {
+            var link = $"{GloobsterConfig.Protocol}://{GloobsterConfig.Domain}/prices/{name}.json";
+
+            using (var client = new WebClient())
+            {
+                string str = client.DownloadString(link);
+                return str;
+            }
+        }
+
+        public void InitPrices()
+        {
+            var beerText = ReadFile("BeerPrices");
+            var pricesText = ReadFile("OtherPrices");
+            DefaultPricer.Parse(beerText, pricesText);
+        }
+    }
+
+
     public class WikiCityController : BaseApiController
     {
         public IWikiArticleDomain ArticleDomain { get; set; }
@@ -17,10 +43,18 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             ArticleDomain = articleDomain;
         }
 
+        
+
+
+
         [HttpPost]
         [AuthorizeApi]
         public async Task<IActionResult> Post([FromBody] WikiCityRequest req)
         {
+
+            var pi = new PricesInitializer();
+            pi.InitPrices();
+
             //temp
             if (string.IsNullOrEmpty(req.lang))
             {

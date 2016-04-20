@@ -26,6 +26,8 @@ var Reg;
             $("#MenuRegister").parent().remove();
             this.getUserMenu(function (r) {
                 $("#ddMenus").append(r);
+                var dd = new Common.DropDown();
+                dd.initBody();
             });
             if (this.onAfterCustom) {
                 this.onAfterCustom(net);

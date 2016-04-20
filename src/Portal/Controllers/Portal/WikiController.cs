@@ -61,7 +61,7 @@ namespace Gloobster.Portal.Controllers.Portal
 
             if (string.IsNullOrEmpty(vm.TitleLink))
             {
-                vm.TitleLink = "/images/samples/sample16.jpg";
+                vm.TitleLink = "/images/WikiDefault.jpg";
             }
             
             vm.IsAdmin = IsUserLogged && WikiPerms.HasArticleAdminPermissions(UserId, text.Article_id.ToString());
@@ -74,7 +74,9 @@ namespace Gloobster.Portal.Controllers.Portal
 
             vm.LangVersions = 
                 langVers.Select(i => new LangVersionVM {Language = i.Language, LinkName = i.LinkName}).ToList();
-            
+
+            vm.LoadClientTexts(new[] { "jsWiki" });
+
             return View(template, vm);
         }
 
