@@ -6,37 +6,38 @@
 
 
     // dropdownbubble
-    $(document).on('click', '.dropdown .selected', function () {
-        var selected = $(this);
-        var dropdown = selected.closest('.dropdown');
-        var input = selected.siblings('input');
-        dropdown.toggleClass('dropdown-open');
-        if (!dropdown.hasClass('with-checkbox')) {
-            dropdown.find('li:not(.disabled)').unbind('click').click(function () {
-                dropdown.removeClass('dropdown-open');
-                selected.html($(this).html());
-                input.val($(this).is('[data-value]') ? $(this).data('value') : $(this).html()).trigger('change');
-            });
-        }
-    });
-    $(document).on('keypress click', '.dropdown .inputed', function () {
-        var inputed = $(this);
-        var dropdown = inputed.closest('.dropdown');
-        dropdown.addClass('dropdown-open');
-        if (!dropdown.hasClass('with-checkbox')) {
-            dropdown.find('li:not(.disabled)').unbind('click').click(function () {
-                dropdown.removeClass('dropdown-open');
-                inputed.val($(this).is('[data-value]') ? $(this).data('value') : $(this).html()).trigger('change');
-            });
-        }
-    });
-    $(document).on('click', function () {
-        $('.dropdown').each(function () {
-            if (!$(this).is(':hover')) {
-                $(this).removeClass('dropdown-open');
-            }
-        });
-    });
+    //$(document).on('click', '.dropdown .selected', function () {
+    //    var selected = $(this);
+    //    var dropdown = selected.closest('.dropdown');
+    //    var input = selected.siblings('input');
+    //    dropdown.toggleClass('dropdown-open');
+    //    if (!dropdown.hasClass('with-checkbox')) {
+    //        dropdown.find('li:not(.disabled)').unbind('click').click(function () {
+    //            dropdown.removeClass('dropdown-open');
+
+    //            selected.html($(this).html());
+    //            input.val($(this).is('[data-value]') ? $(this).data('value') : $(this).html()).trigger('change');
+    //        });
+    //    }
+    //});
+    //$(document).on('keypress click', '.dropdown .inputed', function () {
+    //    var inputed = $(this);
+    //    var dropdown = inputed.closest('.dropdown');
+    //    dropdown.addClass('dropdown-open');
+    //    if (!dropdown.hasClass('with-checkbox')) {
+    //        dropdown.find('li:not(.disabled)').unbind('click').click(function () {
+    //            dropdown.removeClass('dropdown-open');
+    //            inputed.val($(this).is('[data-value]') ? $(this).data('value') : $(this).html()).trigger('change');
+    //        });
+    //    }
+    //});
+    //$(document).on('click', function () {
+    //    $('.dropdown').each(function () {
+    //        if (!$(this).is(':hover')) {
+    //            $(this).removeClass('dropdown-open');
+    //        }
+    //    });
+    //});
 
 
 

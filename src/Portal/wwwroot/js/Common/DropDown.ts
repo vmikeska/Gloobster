@@ -6,42 +6,46 @@
 
 	 public initBody() {
 
-		//$('.dropdown .selected').unbind();
-		//$('.dropdown .inputed').unbind();
+		$('.dropdown .selected').unbind();
+		$('.dropdown .inputed').unbind();
 
 
-  //  $('.dropdown .selected').on('pointerdown', (e) => {
+    $('.dropdown .selected').on('pointerdown', (e) => {
 	    
-	 //   var selected = $(e.target);
-	 //   var dropdown = selected.closest('.dropdown');
-		//	var input = selected.siblings('input');
+	    var selected = $(e.target);
+	    var dropdown = selected.closest('.dropdown');
+			var input = selected.siblings('input');
 
-		//	this.hideOthers(dropdown);
+			this.hideOthers(dropdown);
 
-		//	dropdown.toggleClass('dropdown-open');
+			dropdown.toggleClass('dropdown-open');
 
-	 //   if (!dropdown.hasClass('with-checkbox')) {
-		//    dropdown.find('li:not(.disabled)').unbind('click').click(() => {
-		//	    dropdown.removeClass('dropdown-open');
-		//			selected.html(selected.html());
-		//			input.val(selected.is('[data-value]') ? selected.data('value') : selected.html()).trigger('change');
-		//    });
-	 //   }
-  //  });
+	    if (!dropdown.hasClass('with-checkbox')) {
+		    dropdown.find('li:not(.disabled)').unbind('click').click((e) => {
+			    dropdown.removeClass('dropdown-open');
+			    var $li = $(e.target);
+					selected.html($li.html());
+				 
+					var selValue = $li.is('[data-value]') ? $li.data('value') : $li.html();
+					input.val(selValue);
+					input.trigger('change');				 
+		    });
+	    }
+    });
 
-  //  $(document).on('keypress click', '.dropdown .inputed', (e) => {	   
-	 //   var inputed = $(e.target);
-		//	var dropdown = inputed.closest('.dropdown');
+    $(document).on('keypress click', '.dropdown .inputed', (e) => {	   
+	    var inputed = $(e.target);
+			var dropdown = inputed.closest('.dropdown');
 
-		//	dropdown.addClass('dropdown-open');
+			dropdown.addClass('dropdown-open');
 
-	 //   if (!dropdown.hasClass('with-checkbox')) {
-		//    dropdown.find('li:not(.disabled)').unbind('click').click(() => {
-		//	    dropdown.removeClass('dropdown-open');
-		//	    inputed.val(inputed.is('[data-value]') ? inputed.data('value') : inputed.html()).trigger('change');
-		//    });
-	 //   }
-  //  });
+	    if (!dropdown.hasClass('with-checkbox')) {
+		    dropdown.find('li:not(.disabled)').unbind('click').click(() => {
+			    dropdown.removeClass('dropdown-open');
+			    inputed.val(inputed.is('[data-value]') ? inputed.data('value') : inputed.html()).trigger('change');
+		    });
+	    }
+    });
 
 	 }
 
