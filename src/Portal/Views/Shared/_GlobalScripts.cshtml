@@ -16,6 +16,7 @@
 
 <script src="~/lib/jquery-ui/jquery-ui.js"></script>
 <script src="~/lib/js-cookie/src/js.cookie.js"></script>
+<script src="~/js/pep.js"></script>
 
 <script src="~/lib/lodash/lodash.js"></script>
 
@@ -24,6 +25,7 @@
 
 <script type="text/javascript" src="@Url.Content("~/js/Common/globals.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Views/ViewBase.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Common/DropDown.js")"></script>
 
 <script type="text/javascript" src="@Url.Content("~/js/registration/SocialButtons.js")"></script>
 
@@ -110,6 +112,11 @@
     @Html.Raw($"Views.ViewBase.nets = '{netsStr}';")
 
     @Html.Raw($"Views.ViewBase.fbt = '{Model.FbToken}';")
+
+
+    var dd = new Common.DropDown();
+    dd.init();
+
 </script>
 
 

@@ -10,10 +10,11 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width">
 
+    <meta name="google-site-verification" content="oYdKq1oUoqxCaM5HbFMH1m9V2SGm8j6WxX0mcvDu9Is" />
     <!-- custom meta -->
-    <meta name="google-signin-client_id" content="430126253289-14tdcfe4noqm6p201jrugpi9dsies2at.apps.googleusercontent.com">
+    @*<meta name="google-signin-client_id" content="430126253289-14tdcfe4noqm6p201jrugpi9dsies2at.apps.googleusercontent.com">*@
     <!-- custom meta end -->
 
     <title>Gloobster</title>
@@ -47,7 +48,6 @@
         <div class="menu-holder">
             <div class="tright mhalf">
                 @Html.Partial("_LangMenu")
-                @*@Html.Partial("_UserMenu")*@
             </div>
             @Html.Partial("_Menu")
         </div>
@@ -68,9 +68,13 @@
     <div class="wrapper">
         <h1>@Model.W("Motto1")</h1>
 
-        @if (!Model.SocialNetworks.Any()) {
+        @if (!Model.SocialNetworks.Any())
+        {
+            <div id="preloader" style="display: none; text-align: center">
+                <img src="/images/redirecting.gif" style="height: 100px; border-radius: 5px;" />
+            </div>
             <div class="logins">
-                <div class="margin">
+                <div class="margin">                    
                     <a id="fbBtnHome" class="facebook" href="#">@Model.W("FbButton", "login")</a>
                     <a id="twitterBtnHome" class="twitter" href="#">@Model.W("TwButton", "login")</a>
                     <a id="googleBtnHome" class="google" href="#">@Model.W("GoButton", "login")</a>

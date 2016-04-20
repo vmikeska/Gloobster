@@ -25,6 +25,7 @@ var Views;
         };
         HomePageView.prototype.onBefore = function () {
             $(".logins").hide();
+            $("#preloader").show();
         };
         HomePageView.prototype.onAfter = function () {
             window.location.href = Constants.firstRedirectUrl;

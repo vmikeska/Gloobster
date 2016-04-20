@@ -2,44 +2,51 @@
 		ViewData["Title"] = "Home Page";
 		Layout = "";
 }
-@*http://maps.stamen.com/test/leaflet.html*@
 <!DOCTYPE html>
 <html>
 <head>
-		<title>tile.stamen.com: Leaflet</title>
-		<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css">
+    <meta name="viewport" content="width=device-width">
+    
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/js/pep.js"></script>
 
-		<script type="text/javascript" src="~/js/tileStamen.js"></script>
-		<script type="text/javascript">
-            function initialize() {
-                var layers = ["toner", "terrain", "watercolor"];
-                for (var i = 0; i < layers.length; i++) {
-                    var layer = layers[i];
-                    var map = new L.Map(layer, {
-                        center: new L.LatLng(37.8, -122.4),
-                        zoom: 10
-                    });
-                    map.addLayer(new L.StamenTileLayer(layer, {
-                        detectRetina: true
-                    }));
-                }
-            }
-		</script>
-		<style type="text/css">
-			.map {
-					width: 600px;
-					height: 320px;
-					margin: 0 0 1em 0;
-			}
-		</style>
-</head>
-<body onload="initialize()" class="">
-		<div id="toner" class="map leaflet-container leaflet-fade-anim" tabindex="0" style="position: relative;"><div class="leaflet-map-pane" style="transform: translate3d(-195px, 121px, 0px);"><div class="leaflet-tile-pane"><div class="leaflet-layer"><div class="leaflet-tile-container leaflet-zoom-animated"></div><div class="leaflet-tile-container leaflet-zoom-animated"><img class="leaflet-tile leaflet-tile-loaded" src="http://a.tile.stamen.com/toner/4/8/4.png" style="height: 256px; width: 256px; left: 379px; top: -305px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://b.tile.stamen.com/toner/4/8/5.png" style="height: 256px; width: 256px; left: 379px; top: -49px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://d.tile.stamen.com/toner/4/7/4.png" style="height: 256px; width: 256px; left: 123px; top: -305px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://b.tile.stamen.com/toner/4/9/4.png" style="height: 256px; width: 256px; left: 635px; top: -305px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://a.tile.stamen.com/toner/4/7/5.png" style="height: 256px; width: 256px; left: 123px; top: -49px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://c.tile.stamen.com/toner/4/9/5.png" style="height: 256px; width: 256px; left: 635px; top: -49px;"></div></div></div><div class="leaflet-objects-pane"><div class="leaflet-shadow-pane"></div><div class="leaflet-overlay-pane"></div><div class="leaflet-marker-pane"></div><div class="leaflet-popup-pane"></div></div></div><div class="leaflet-control-container"><div class="leaflet-top leaflet-left"><div class="leaflet-control-zoom leaflet-bar leaflet-control"><a class="leaflet-control-zoom-in" href="#" title="Zoom in">+</a><a class="leaflet-control-zoom-out" href="#" title="Zoom out">-</a></div></div><div class="leaflet-top leaflet-right"></div><div class="leaflet-bottom leaflet-left"></div><div class="leaflet-bottom leaflet-right"><div class="leaflet-control-attribution leaflet-control"><a href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> | Map tiles by <a href="http://stamen.com/">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.</div></div></div></div>
-		<div id="terrain" class="map leaflet-container leaflet-fade-anim" tabindex="0" style="position: relative;"><div class="leaflet-map-pane" style="transform: translate3d(-605px, 290px, 0px);"><div class="leaflet-tile-pane"><div class="leaflet-layer"><div class="leaflet-tile-container leaflet-zoom-animated"></div><div class="leaflet-tile-container leaflet-zoom-animated"><img class="leaflet-tile leaflet-tile-loaded" src="http://a.tile.stamen.com/terrain/5/6/10.jpg" style="height: 256px; width: 256px; left: 677px; top: -318px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://b.tile.stamen.com/terrain/5/7/10.jpg" style="height: 256px; width: 256px; left: 933px; top: -318px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://b.tile.stamen.com/terrain/5/6/11.jpg" style="height: 256px; width: 256px; left: 677px; top: -62px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://c.tile.stamen.com/terrain/5/7/11.jpg" style="height: 256px; width: 256px; left: 933px; top: -62px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://d.tile.stamen.com/terrain/5/5/10.jpg" style="height: 256px; width: 256px; left: 421px; top: -318px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://c.tile.stamen.com/terrain/5/8/10.jpg" style="height: 256px; width: 256px; left: 1189px; top: -318px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://a.tile.stamen.com/terrain/5/5/11.jpg" style="height: 256px; width: 256px; left: 421px; top: -62px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://d.tile.stamen.com/terrain/5/8/11.jpg" style="height: 256px; width: 256px; left: 1189px; top: -62px;"></div></div></div><div class="leaflet-objects-pane"><div class="leaflet-shadow-pane"></div><div class="leaflet-overlay-pane"></div><div class="leaflet-marker-pane"></div><div class="leaflet-popup-pane"></div></div></div><div class="leaflet-control-container"><div class="leaflet-top leaflet-left"><div class="leaflet-control-zoom leaflet-bar leaflet-control"><a class="leaflet-control-zoom-in" href="#" title="Zoom in">+</a><a class="leaflet-control-zoom-out" href="#" title="Zoom out">-</a></div></div><div class="leaflet-top leaflet-right"></div><div class="leaflet-bottom leaflet-left"></div><div class="leaflet-bottom leaflet-right"><div class="leaflet-control-attribution leaflet-control"><a href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> | Map tiles by <a href="http://stamen.com/">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org/">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.</div></div></div></div>
-		<div id="watercolor" class="map leaflet-container leaflet-fade-anim" tabindex="0" style="position: relative;"><div class="leaflet-map-pane" style="transform: translate3d(-233px, -325px, 0px);"><div class="leaflet-tile-pane"><div class="leaflet-layer"><div class="leaflet-tile-container leaflet-zoom-animated"></div><div class="leaflet-tile-container leaflet-zoom-animated"><img class="leaflet-tile leaflet-tile-loaded" src="http://c.tile.stamen.com/watercolor/2/1/1.jpg" style="height: 256px; width: 256px; left: 453px; top: 245px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://d.tile.stamen.com/watercolor/2/1/2.jpg" style="height: 256px; width: 256px; left: 453px; top: 501px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://b.tile.stamen.com/watercolor/2/0/1.jpg" style="height: 256px; width: 256px; left: 197px; top: 245px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://d.tile.stamen.com/watercolor/2/2/1.jpg" style="height: 256px; width: 256px; left: 709px; top: 245px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://c.tile.stamen.com/watercolor/2/0/2.jpg" style="height: 256px; width: 256px; left: 197px; top: 501px;"><img class="leaflet-tile leaflet-tile-loaded" src="http://a.tile.stamen.com/watercolor/2/2/2.jpg" style="height: 256px; width: 256px; left: 709px; top: 501px;"></div></div></div><div class="leaflet-objects-pane"><div class="leaflet-shadow-pane"></div><div class="leaflet-overlay-pane"></div><div class="leaflet-marker-pane"></div><div class="leaflet-popup-pane"></div></div></div><div class="leaflet-control-container"><div class="leaflet-top leaflet-left"><div class="leaflet-control-zoom leaflet-bar leaflet-control"><a class="leaflet-control-zoom-in" href="#" title="Zoom in">+</a><a class="leaflet-control-zoom-out" href="#" title="Zoom out">-</a></div></div><div class="leaflet-top leaflet-right"></div><div class="leaflet-bottom leaflet-left"></div><div class="leaflet-bottom leaflet-right"><div class="leaflet-control-attribution leaflet-control"><a href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> | Map tiles by <a href="http://stamen.com/">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org/">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.</div></div></div></div>
+        <meta charset="utf-8">
+        <title>JS Bin</title>
+    </head>
+    <body>
+    <style>
+        .pixel {
+            position: absolute;
+            background: black;
+            width: 2px;
+            height: 2px;
+        }
+        #canvas {
+            margin: 20px;
+            background: white;
+            border: 1px solid black;
+            height: 200px;
+        }
+    </style>
 
 
-		<div id="window-resizer-tooltip" style="display: none;"><a href="#" title="Edit settings"></a><span class="tooltipTitle">Window size: </span><span class="tooltipWidth" id="winWidth">1920</span> x <span class="tooltipHeight" id="winHeight">1040</span><br><span class="tooltipTitle">Viewport size: </span><span class="tooltipWidth" id="vpWidth">1920</span> x <span class="tooltipHeight" id="vpHeight">979</span></div>
-</body>
-</html>
+    <div id="canvas"></div>
+
+
+    <script type="text/javascript">
+        
+        //$("#canvas").on("pointerdown", function(event) {
+        //    alert("t");
+        //});
+
+        $("#canvas").bind("pointerdown click", function (event) {
+            alert("tb");
+        });
+
+    </script>
+
+    </body>
+
+
+
+    </html>

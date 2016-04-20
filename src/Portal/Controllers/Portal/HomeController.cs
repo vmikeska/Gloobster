@@ -47,7 +47,7 @@ namespace Gloobster.Portal.Controllers.Portal
             viewModel.Id = id;
             return View(viewModel);
         }
-
+        
         public async Task<IActionResult> TestConn()
         {
             string res = "Ok";
@@ -64,12 +64,12 @@ namespace Gloobster.Portal.Controllers.Portal
 
             return View(res);
         }
-        
-        //   public IActionResult Test2()
-        //   {
 
-        //       return View();
-        //   }
+        public IActionResult Test()
+        {
+
+            return View();
+        }
 
 
     }

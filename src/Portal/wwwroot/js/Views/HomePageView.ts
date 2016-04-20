@@ -23,6 +23,7 @@
 
 		private onBefore() {
 		 $(".logins").hide();
+			$("#preloader").show();
 		}
 
 		private onAfter() {
