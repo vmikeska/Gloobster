@@ -76,6 +76,7 @@
 /// <reference path="js/views/wikisearchcombo.js" />
 /// <reference path="lib/dropzone/dist/min/dropzone.min.js" />
 /// <reference path="lib/handlebars/handlebars.js" />
+/// <reference path="lib/jquery.cookie/jquery.cookie.js" />
 /// <reference path="lib/jquery/dist/jquery.js" />
 /// <reference path="lib/jquery-ui/jquery-ui.js" />
 /// <reference path="lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js" />

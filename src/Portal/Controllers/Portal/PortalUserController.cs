@@ -25,20 +25,27 @@ namespace Gloobster.Portal.Controllers.Portal
             Log = log;
             NotificationsDomain = notifs;
 		}
-		
-		public IActionResult Detail(string id)
-		{
+
+        public IActionResult Detail(string id)
+        {
+            var user = DB.FOD<UserEntity>(f => f.User_id == new ObjectId(id));
+
+
             var vm = CreateViewModelInstance<UserDetailViewModel>();
             vm.DefaultLangModuleName = "pageUserSettings";
             vm.LoadClientTexts();
             vm.AvatarLink = "/PortalUser/ProfilePicture/" + id;
-            vm.DisplayName = User.DisplayName;
-            vm.Gender = GetGenderStr(User.Gender, vm);
-            vm.CurrentLocation = FormatCityStr(User.CurrentLocation);
-            vm.HomeLocation = FormatCityStr(User.HomeLocation);
+
+            if (user != null)
+            {
+                vm.DisplayName = User.DisplayName;
+                vm.Gender = GetGenderStr(User.Gender, vm);
+                vm.CurrentLocation = FormatCityStr(User.CurrentLocation);
+                vm.HomeLocation = FormatCityStr(User.HomeLocation);
+            }
 
             return View(vm);
-		}
+        }
 
         [AuthorizeWeb]
 		public IActionResult Settings()
