@@ -39,7 +39,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             var idObj = new ObjectId(req.priceId);
 
 
-            var article = DB.C<WikiCityEntity>().FirstOrDefault(p => p.id == articleIdObj);
+            var article = DB.FOD<WikiCityEntity>(p => p.id == articleIdObj);
             var oldPrice = article.Prices.FirstOrDefault(p => p.id == idObj);
 
             var newPrice = new PriceSE
@@ -47,7 +47,8 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 CurrentPrice = req.price,
                 DefaultPrice = req.price,
                 Minus = new List<ObjectId>(),
-                Plus = new List<ObjectId>()
+                Plus = new List<ObjectId>(),
+                Initialized = true
             };
 
             var f1 = DB.F<WikiCityEntity>().Eq(p => p.id, articleIdObj)

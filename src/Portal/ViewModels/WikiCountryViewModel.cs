@@ -101,13 +101,52 @@ namespace Gloobster.Portal.ViewModels
             };
             return res;
         }
+        
+        private List<PriceItemSE> FilterSetUnsetPrices(List<PriceItemSE> prices)
+        {
+            var groupedItems = prices
+                .GroupBy(p => new { p.Type, p.Category, p.SubCategory })
+                .ToList();
+
+            var outPrices = new List<PriceItemSE>();
+
+            foreach (var group in groupedItems)
+            {                
+                var items = group.ToList();
+                
+                //has initialized price, this price is for us most accurate, so take just initialized ones
+                var initPrices = items.Where(i => i.Price.Initialized).ToList();
+                if (initPrices.Any())
+                {                    
+                    outPrices.AddRange(initPrices);
+                }
+                else
+                {
+                    //if has any rated prices, take just rated prices, these are second most trustable for us
+                    var ratedPrices = items.Where(i => i.Price.Minus.Any() || i.Price.Plus.Any()).ToList();
+                    if (ratedPrices.Any())
+                    {                                                
+                        outPrices.AddRange(ratedPrices);
+                    }
+                    else
+                    {
+                        //using just default values (takes just first, coz default should be same for entire country)
+                        outPrices.Add(items.First());
+                    }
+                }
+            }
+
+            return outPrices;
+        }
 
         private List<PriceItemVM> GetAggregatedPrices()
         {
-            var allCities = DB.C<WikiCityEntity>().Where(c => c.CountryCode == Article.CountryCode);
+            var allCities = DB.List<WikiCityEntity>(c => c.CountryCode == Article.CountryCode);
             var allPrices = allCities.SelectMany(p => p.Prices).ToList();
 
-            var groupedItems = allPrices
+            var filteredPrices = FilterSetUnsetPrices(allPrices);
+
+            var groupedItems = filteredPrices
                 .GroupBy(p => new {p.Type, p.Category, p.SubCategory})                
                 .ToList();
 
