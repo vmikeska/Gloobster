@@ -1,4 +1,4 @@
-﻿@charset "UTF-8";
+@charset "UTF-8";
 /*! normalize.css v3.0.1 | MIT License | git.io/normalize */
 /**
  * 1. Set default font family to sans-serif.
@@ -2832,7 +2832,8 @@ body {
   font-family: "PT Sans", sans-serif;
   font-size: 16px;
   margin: 0;
-  padding: 0; }
+  padding: 0;
+  min-width: 740px; }
 
 h1, .h1, .heading {
   font-family: "Lato", sans-serif;
@@ -3553,7 +3554,15 @@ q, .quote {
 .dropdown.large {
   height: auto;
   width: 80%;
-  font-size: 20px; }
+  font-size: 20px;
+  /*li {
+             a {
+                float: left;
+            }
+             rating {
+                float: left;
+            }            
+        }*/ }
   .dropdown.large .selected, .dropdown.large .inputed {
     height: auto;
     width: 100%; }

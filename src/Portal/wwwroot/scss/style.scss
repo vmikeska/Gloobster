@@ -47,6 +47,7 @@ body {
     font-size: 16px;
     margin: 0;
     padding: 0;
+    min-width: 740px;
 }
 
 h1, .h1, .heading {
@@ -854,6 +855,14 @@ q, .quote {
         ul {
             top: 45px;
         }
+        /*li {
+             a {
+                float: left;
+            }
+             rating {
+                float: left;
+            }            
+        }*/
     }
     .thumbnail {
         @extend .thumbnail.disc24;

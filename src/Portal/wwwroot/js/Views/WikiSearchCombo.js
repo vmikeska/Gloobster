@@ -60,10 +60,10 @@ var Views;
             if (this.config && this.config.showRating) {
                 rating = "&#9;&#9;<span class=\"rating pct" + ratingPercents + " bottom right\"> </span>";
             }
-            return "<li><span><a data-articleId=\"" + item.articleId + "\" href=\"/wiki/" + item.language + "/" + item.link + "\">" + item.title + "</a>  " + rating + "</span></li>";
+            return "<li><span class=\"clearfix\"><a class=\"left\" data-articleId=\"" + item.articleId + "\" href=\"/wiki/" + item.language + "/" + item.link + "\">" + item.title + "</a>  " + rating + "</span></li>";
         };
         return WikiSearchCombo;
-    }());
+    })();
     Views.WikiSearchCombo = WikiSearchCombo;
 })(Views || (Views = {}));
 //# sourceMappingURL=WikiSearchCombo.js.map
