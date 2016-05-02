@@ -26,7 +26,7 @@ var Common;
             Cookies.remove(cookieName);
         };
         return CookieManager;
-    })();
+    }());
     Common.CookieManager = CookieManager;
 })(Common || (Common = {}));
 //# sourceMappingURL=CookieManager.js.map

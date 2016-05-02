@@ -71,7 +71,7 @@ var Maps;
             this.mapsDriver.setView(lat, lng, zoom);
         };
         return MapsOperations;
-    })();
+    }());
     Maps.MapsOperations = MapsOperations;
 })(Maps || (Maps = {}));
 //# sourceMappingURL=MapsOperations.js.map

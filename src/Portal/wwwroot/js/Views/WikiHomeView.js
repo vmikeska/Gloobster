@@ -13,7 +13,7 @@ var Views;
             this.combo.initId("SearchCombo", { showRating: true });
         }
         return WikiHomeView;
-    })(Views.ViewBase);
+    }(Views.ViewBase));
     Views.WikiHomeView = WikiHomeView;
 })(Views || (Views = {}));
 //# sourceMappingURL=WikiHomeView.js.map

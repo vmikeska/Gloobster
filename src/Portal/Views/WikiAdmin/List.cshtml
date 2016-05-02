@@ -2,6 +2,7 @@
 @using Gloobster.DomainModels.Wiki
 @using Gloobster.Enums
 @using Gloobster.Portal.ViewModels
+@using MongoDB.Bson
 @using Newtonsoft.Json
 @model AdminTasksViewModel
 
@@ -54,6 +55,16 @@
         <div id="@task.Id" class="task">
             <h3>@task.Caption</h3>
 
+            @{
+                var articleTexts = Model.GetTextsByArticleId(new ObjectId(task.ArticleId));
+
+            }
+
+            <div class="titem">
+                <span>Title: </span><br/>
+                @articleTexts.Title
+            </div>
+            
             @if (task.TaskType == AdminTaskType.ConfirmPhoto)
             {
                 var data = JsonConvert.DeserializeObject<ArticlePhotoData>(task.Data);
@@ -72,9 +83,16 @@
 
             @if (task.TaskType == AdminTaskType.ResolveReport)
             {
-                var data = JsonConvert.DeserializeObject<ReportTaskData>(task.Data);
+                var data = JsonConvert.DeserializeObject<ReportTaskData>(task.Data);                
+                var reportEntity = Model.GetReport(new ObjectId(task.TargetId));
+                var creator = Model.GetCreatorUser(reportEntity.Creator_id);
+                
 
                 <div>
+                    <div class="titem">
+                        <span>Created by: </span><br />
+                        @creator.DisplayName
+                    </div>
                     <div class="titem">
                         <span>Section name: </span><br/>
                         @data.SectionName

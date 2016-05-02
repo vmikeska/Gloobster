@@ -94,7 +94,7 @@ var Views;
             this.registerPhotoUpload();
         };
         return TripViewView;
-    })(Views.ViewBase);
+    }(Views.ViewBase));
     Views.TripViewView = TripViewView;
 })(Views || (Views = {}));
 //# sourceMappingURL=TripViewView.js.map

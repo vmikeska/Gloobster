@@ -70,7 +70,7 @@ var Views;
             }
         };
         return WikiAdminPageView;
-    })(Views.WikiPageView);
+    }(Views.WikiPageView));
     Views.WikiAdminPageView = WikiAdminPageView;
     var PhotosAdmin = (function () {
         function PhotosAdmin(articleId) {
@@ -124,9 +124,6 @@ var Views;
                     _this.registerPhotoUpload(_this.articleId, "galleryPhotoInput");
                     $photoBtn.show();
                 }
-                //else {
-                //	$photoBtn.hide();
-                //}
             };
             request.onError = function (response) { $("#photos").html("Error"); };
             request.sendGet();
@@ -150,7 +147,7 @@ var Views;
             };
         };
         return PhotosAdmin;
-    })();
+    }());
     Views.PhotosAdmin = PhotosAdmin;
     var PhotoAdmin = (function () {
         function PhotoAdmin(articleId) {
@@ -180,7 +177,7 @@ var Views;
             };
         };
         return PhotoAdmin;
-    })();
+    }());
     Views.PhotoAdmin = PhotoAdmin;
     var PriceAdmin = (function () {
         function PriceAdmin(articleId) {
@@ -244,7 +241,7 @@ var Views;
             }
         };
         return PriceAdmin;
-    })();
+    }());
     Views.PriceAdmin = PriceAdmin;
     var DoDontAdmin = (function () {
         function DoDontAdmin(articleId, lang) {
@@ -375,7 +372,7 @@ var Views;
             });
         };
         return DoDontAdmin;
-    })();
+    }());
     Views.DoDontAdmin = DoDontAdmin;
     var LinksAdmin = (function () {
         function LinksAdmin(articleId) {
@@ -570,6 +567,8 @@ var Views;
             var _this = this;
             var $lHtml = $(this.linkItemLinkTemplate(context));
             $lHtml.find(".delete").click(function (e) { return _this.linkDelete(e); });
+            var dd = new Common.DropDown();
+            dd.registerDropDown($lHtml.find(".dropdown"));
             $cont.append($lHtml);
         };
         LinksAdmin.prototype.itemDelete = function (e, sectionId) {
@@ -587,7 +586,7 @@ var Views;
             $("#linkItem_" + id).remove();
         };
         return LinksAdmin;
-    })();
+    }());
     Views.LinksAdmin = LinksAdmin;
     var BlockAdmin = (function () {
         function BlockAdmin(articleId, langVersion) {
@@ -662,7 +661,7 @@ var Views;
             $block.children().first().append($html);
         };
         return BlockAdmin;
-    })();
+    }());
     Views.BlockAdmin = BlockAdmin;
 })(Views || (Views = {}));
 //# sourceMappingURL=WikiAdminPageView.js.map

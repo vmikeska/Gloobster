@@ -18,16 +18,14 @@ namespace Gloobster.Portal.Controllers.Portal
 		}
 
 		public IActionResult Planning()
-		{
-			var portalUser = DB.FOD<UserEntity>(p => p.User_id == UserIdObj);
-
+		{			
 			var viewModel = CreateViewModelInstance<ViewModelPlanning>();
-			viewModel.InitCurrentLocation = FormatCityStr(portalUser.CurrentLocation);
-            viewModel.CurrentLocation = portalUser.CurrentLocation;
+			viewModel.InitCurrentLocation = FormatCityStr(User.CurrentLocation);
+            viewModel.CurrentLocation = User.CurrentLocation;
 
-			if (portalUser.HomeAirports != null)
+			if (User.HomeAirports != null)
 			{
-				var airportIds = portalUser.HomeAirports.Select(a => a.OrigId);
+				var airportIds = User.HomeAirports.Select(a => a.OrigId);
 				viewModel.Airports = DB.List<AirportEntity>(a => airportIds.Contains(a.OrigId));
 			}
 

@@ -73,7 +73,7 @@ var Common;
             return visitedSpan.length === 1;
         };
         return ShareButtons;
-    })();
+    }());
     Common.ShareButtons = ShareButtons;
 })(Common || (Common = {}));
 //# sourceMappingURL=shareButtons.js.map

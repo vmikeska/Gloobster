@@ -69,7 +69,6 @@ var Maps;
         };
         BaseMapsOperation2D.prototype.moveToAnimated = function (lat, lng, zoom) {
             this.mapObj.setView([lat, lng], zoom, { animation: true });
-            //this.mapObj.panTo([lat, lng]);
         };
         BaseMapsOperation2D.prototype.getPosition = function () {
             return this.mapObj.getCenter();
@@ -78,7 +77,7 @@ var Maps;
             return this.mapObj.getZoom();
         };
         return BaseMapsOperation2D;
-    })();
+    }());
     Maps.BaseMapsOperation2D = BaseMapsOperation2D;
 })(Maps || (Maps = {}));
 //# sourceMappingURL=BaseMapsOperation2D.js.map

@@ -154,7 +154,7 @@ var Views;
             return "<div class=\"cell\"><span class=\"badge active\"><span class=\"thumbnail\"><img src=\"" + imgLink + "\"></span>" + visitedCnt + "/" + totalCnt + " <b>" + name + "</b></span></div>";
         };
         return PinBoardBadges;
-    })();
+    }());
     Views.PinBoardBadges = PinBoardBadges;
 })(Views || (Views = {}));
 //# sourceMappingURL=PinBoardBadges.js.map

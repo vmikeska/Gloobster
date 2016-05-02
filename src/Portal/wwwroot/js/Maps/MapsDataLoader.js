@@ -104,7 +104,7 @@ var Maps;
             this.viewPlaces.cities = cities;
         };
         return MapsDataLoader;
-    })();
+    }());
     Maps.MapsDataLoader = MapsDataLoader;
 })(Maps || (Maps = {}));
 //# sourceMappingURL=MapsDataLoader.js.map

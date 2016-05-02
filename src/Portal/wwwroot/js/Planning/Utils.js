@@ -17,7 +17,7 @@ var Planning;
             }, this.delay);
         };
         return DelayedCallbackMap;
-    })();
+    }());
     Planning.DelayedCallbackMap = DelayedCallbackMap;
     var GraphicConfig = (function () {
         function GraphicConfig() {
@@ -33,9 +33,7 @@ var Planning;
         GraphicConfig.prototype.getCityIcon = function () {
             var icon = L.icon({
                 iconUrl: '../../images/MapIcons/CityNormal.png',
-                //shadowUrl: 'leaf-shadow.png',
                 iconSize: [16, 16],
-                //shadowSize: [50, 64], // size of the shadow
                 iconAnchor: [8, 8],
             });
             return icon;
@@ -67,7 +65,7 @@ var Planning;
             this.unselectedConfig = uc;
         };
         return GraphicConfig;
-    })();
+    }());
     Planning.GraphicConfig = GraphicConfig;
     var PolygonConfig = (function () {
         function PolygonConfig() {
@@ -88,7 +86,7 @@ var Planning;
             };
         };
         return PolygonConfig;
-    })();
+    }());
     Planning.PolygonConfig = PolygonConfig;
     var PlanningSender = (function () {
         function PlanningSender() {
@@ -108,7 +106,7 @@ var Planning;
             return request;
         };
         return PlanningSender;
-    })();
+    }());
     Planning.PlanningSender = PlanningSender;
     (function (PlanningType) {
         PlanningType[PlanningType["Anytime"] = 0] = "Anytime";

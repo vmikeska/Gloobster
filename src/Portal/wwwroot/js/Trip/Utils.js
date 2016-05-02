@@ -16,7 +16,7 @@ var Trip;
             return utcDate;
         };
         return Utils;
-    })();
+    }());
     Trip.Utils = Utils;
 })(Trip || (Trip = {}));
 //# sourceMappingURL=Utils.js.map

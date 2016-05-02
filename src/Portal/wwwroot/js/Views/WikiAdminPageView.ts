@@ -675,10 +675,12 @@ module Views {
 			$(`#addNew_${sectionId}`).before($html);
 		}
 
+
 		private createSingleLinkEdit($cont, context) {
 			var $lHtml = $(this.linkItemLinkTemplate(context));
 			$lHtml.find(".delete").click((e) => this.linkDelete(e));
-
+            var dd = new Common.DropDown();
+		    dd.registerDropDown($lHtml.find(".dropdown"));		    
 			$cont.append($lHtml);
 		}
 

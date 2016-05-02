@@ -12,7 +12,6 @@ var Reg;
             this.elementId = elementId;
             gapi.load("auth2", function () { _this.onLoaded(); });
         };
-        // Retrieve the singleton for the GoogleAuth library and set up the client.
         GoogleButton.prototype.onLoaded = function () {
             var _this = this;
             if (this.auth2) {
@@ -38,7 +37,7 @@ var Reg;
             this.auth2.attachClickHandler(element, {}, this.successfulCallback, this.errorHandler);
         };
         return GoogleButton;
-    })();
+    }());
     Reg.GoogleButton = GoogleButton;
 })(Reg || (Reg = {}));
 //# sourceMappingURL=GoogleButton.js.map

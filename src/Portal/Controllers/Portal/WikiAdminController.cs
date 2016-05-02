@@ -28,7 +28,8 @@ namespace Gloobster.Portal.Controllers.Portal
 	    public IActionResult List()
 	    {
 	        var vm = CreateViewModelInstance<AdminTasksViewModel>();
-            
+            vm.DB = DB;
+
             vm.Tasks = AdminTasks.GetUnresolvedTasks(UserId);
 
             return View(vm);

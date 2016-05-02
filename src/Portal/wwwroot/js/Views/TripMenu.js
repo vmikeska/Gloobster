@@ -189,7 +189,7 @@ var Views;
             }
         };
         return TripMenu;
-    })();
+    }());
     Views.TripMenu = TripMenu;
 })(Views || (Views = {}));
 //# sourceMappingURL=TripMenu.js.map

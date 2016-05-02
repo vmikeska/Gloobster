@@ -19,19 +19,19 @@ var Trip;
         function Place() {
         }
         return Place;
-    })();
+    }());
     Trip.Place = Place;
     var PlaceLocation = (function () {
         function PlaceLocation() {
         }
         return PlaceLocation;
-    })();
+    }());
     Trip.PlaceLocation = PlaceLocation;
     var Travel = (function () {
         function Travel() {
         }
         return Travel;
-    })();
+    }());
     Trip.Travel = Travel;
     var PlacesManager = (function () {
         function PlacesManager(tripId) {
@@ -95,7 +95,7 @@ var Trip;
             return lastPlace;
         };
         return PlacesManager;
-    })();
+    }());
     Trip.PlacesManager = PlacesManager;
 })(Trip || (Trip = {}));
 //# sourceMappingURL=PlacesManager.js.map

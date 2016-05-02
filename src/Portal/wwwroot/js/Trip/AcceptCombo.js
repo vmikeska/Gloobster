@@ -4,7 +4,7 @@ var Trip;
         function AcceptComboConfig() {
         }
         return AcceptComboConfig;
-    })();
+    }());
     Trip.AcceptComboConfig = AcceptComboConfig;
     var AcceptCombo = (function () {
         function AcceptCombo(config) {
@@ -15,7 +15,6 @@ var Trip;
             this.$selected = this.$combo.find(".selected");
             this.$input = this.$combo.find("input");
             this.initState(config.initialState);
-            //this.$ul.find("li").click((e) => this.onClick(e));
             this.$input.change(function (e) { return _this.onChange(e); });
         }
         AcceptCombo.prototype.onChange = function (e) {
@@ -35,7 +34,7 @@ var Trip;
             this.$selected.html($li.html());
         };
         return AcceptCombo;
-    })();
+    }());
     Trip.AcceptCombo = AcceptCombo;
 })(Trip || (Trip = {}));
 //# sourceMappingURL=AcceptCombo.js.map

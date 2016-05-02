@@ -161,7 +161,7 @@ var Planning;
             });
         };
         return CustomForm;
-    })();
+    }());
     Planning.CustomForm = CustomForm;
 })(Planning || (Planning = {}));
 //# sourceMappingURL=CustomForm.js.map

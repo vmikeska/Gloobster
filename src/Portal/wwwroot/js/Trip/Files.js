@@ -4,7 +4,7 @@ var Trip;
         function FilesConfig() {
         }
         return FilesConfig;
-    })();
+    }());
     Trip.FilesConfig = FilesConfig;
     var TripFiles = (function () {
         function TripFiles(config, customConfig) {
@@ -59,7 +59,6 @@ var Trip;
             this.$adder = $(this.fileInputTemplate({ id: this.config.inputId }));
             this.fileDaD = new Common.FileDaD();
             this.$container.append(this.$adder);
-            //now when file input exists, we can register events
             this.fileUpload.$filesInput = this.$adder.find("#" + this.config.inputId);
             this.fileDaD.onFiles = function (files) {
                 _this.fileUpload.filesEvent(files);
@@ -208,7 +207,7 @@ var Trip;
             $progressBarCont.find("span").text(percent + "%");
         };
         return TripFiles;
-    })();
+    }());
     Trip.TripFiles = TripFiles;
 })(Trip || (Trip = {}));
 //# sourceMappingURL=Files.js.map

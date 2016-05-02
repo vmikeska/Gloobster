@@ -93,8 +93,6 @@ var Trip;
             var $min = $("#" + minElementId);
             if (curDateStr) {
                 var utcTime = Trip.Utils.dateStringToUtcDate(curDateStr);
-                //$hrs.val(utcTime.getUTCHours());
-                //$min.val(utcTime.getUTCMinutes());
                 $hrs.val(utcTime.getHours());
                 $min.val(utcTime.getMinutes());
             }
@@ -214,7 +212,7 @@ var Trip;
             $row.after($html);
         };
         return TravelDialog;
-    })();
+    }());
     Trip.TravelDialog = TravelDialog;
 })(Trip || (Trip = {}));
 //# sourceMappingURL=TravelDialog.js.map

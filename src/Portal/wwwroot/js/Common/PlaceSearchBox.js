@@ -132,13 +132,13 @@ var Common;
             return html;
         };
         return PlaceSearchBox;
-    })();
+    }());
     Common.PlaceSearchBox = PlaceSearchBox;
     var PlaceSearchConfig = (function () {
         function PlaceSearchConfig() {
         }
         return PlaceSearchConfig;
-    })();
+    }());
     Common.PlaceSearchConfig = PlaceSearchConfig;
 })(Common || (Common = {}));
 //# sourceMappingURL=PlaceSearchBox.js.map

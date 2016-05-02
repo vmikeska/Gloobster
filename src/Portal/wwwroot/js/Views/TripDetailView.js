@@ -43,11 +43,7 @@ var Views;
             filesConfig.inputId = "fileInput";
             filesConfig.templateId = "file-template";
             filesConfig.isMasterFile = true;
-            //finish DnD functionality ?
             filesConfig.editable = true;
-            //filesConfig.mainContainerId = "filesContainer";
-            //filesConfig.addAdder = true;
-            //filesConfig.adderTemplate = "fileCreateGeneral-template";
             this.files = new Trip.TripFiles(filesConfig);
         };
         TripDetailView.prototype.setFilesCustomConfig = function (tripId) {
@@ -68,7 +64,7 @@ var Views;
             this.planner = new Trip.Planner(this.trip, true);
         };
         return TripDetailView;
-    })(Views.ViewBase);
+    }(Views.ViewBase));
     Views.TripDetailView = TripDetailView;
 })(Views || (Views = {}));
 //# sourceMappingURL=TripDetailView.js.map

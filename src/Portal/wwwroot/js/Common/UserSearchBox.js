@@ -55,13 +55,13 @@ var Common;
             return html;
         };
         return UserSearchBox;
-    })();
+    }());
     Common.UserSearchBox = UserSearchBox;
     var UserSearchConfig = (function () {
         function UserSearchConfig() {
         }
         return UserSearchConfig;
-    })();
+    }());
     Common.UserSearchConfig = UserSearchConfig;
 })(Common || (Common = {}));
 //# sourceMappingURL=UserSearchBox.js.map

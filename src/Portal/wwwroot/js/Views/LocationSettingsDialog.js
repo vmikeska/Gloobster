@@ -75,7 +75,7 @@ var Views;
             this.$airportsCont.prepend($html);
         };
         return LocationSettingsDialog;
-    })();
+    }());
     Views.LocationSettingsDialog = LocationSettingsDialog;
 })(Views || (Views = {}));
 //# sourceMappingURL=LocationSettingsDialog.js.map

@@ -115,7 +115,7 @@ var Views;
             return text;
         };
         return ViewBase;
-    })();
+    }());
     Views.ViewBase = ViewBase;
 })(Views || (Views = {}));
 //# sourceMappingURL=ViewBase.js.map

@@ -31,13 +31,13 @@ var Reg;
             }
         };
         return FacebookAuth;
-    })();
+    }());
     Reg.FacebookAuth = FacebookAuth;
     var FacebookUser = (function () {
         function FacebookUser() {
         }
         return FacebookUser;
-    })();
+    }());
     Reg.FacebookUser = FacebookUser;
 })(Reg || (Reg = {}));
 //# sourceMappingURL=FacebookAuth.js.map

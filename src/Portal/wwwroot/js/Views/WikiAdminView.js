@@ -70,7 +70,7 @@ var Views;
             });
         };
         return WikiAdminView;
-    })(Views.ViewBase);
+    }(Views.ViewBase));
     Views.WikiAdminView = WikiAdminView;
 })(Views || (Views = {}));
 //# sourceMappingURL=WikiAdminView.js.map

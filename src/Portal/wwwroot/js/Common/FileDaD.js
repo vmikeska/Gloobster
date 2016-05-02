@@ -1,4 +1,3 @@
-//https://css-tricks.com/examples/DragAndDropFileUploading/
 var Common;
 (function (Common) {
     var FileDaD = (function () {
@@ -13,15 +12,9 @@ var Common;
                 var files = e.target.files;
                 _this.filesChose(files);
             });
-            //Firefox focus bugfix for file input
-            //$input
-            //	.on("focus", () => { $input.addClass("has-focus"); })
-            //	.on("blur", () => { $input.removeClass("has-focus"); });
-            // drag&drop files if the feature is available
             if (this.isAdvancedUpload()) {
                 this.$container
                     .on("drag dragstart dragend dragover dragenter dragleave drop", function (e) {
-                    // preventing the unwanted behaviours
                     e.preventDefault();
                     e.stopPropagation();
                 })
@@ -61,7 +54,7 @@ var Common;
             return (("draggable" in div) || ("ondragstart" in div && "ondrop" in div)) && "FormData" in window && "FileReader" in window;
         };
         return FileDaD;
-    })();
+    }());
     Common.FileDaD = FileDaD;
 })(Common || (Common = {}));
 //# sourceMappingURL=FileDaD.js.map

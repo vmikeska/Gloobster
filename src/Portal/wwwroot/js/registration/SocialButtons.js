@@ -69,7 +69,7 @@ var Reg;
             });
         };
         return LoginButtonsManager;
-    })();
+    }());
     Reg.LoginButtonsManager = LoginButtonsManager;
     var LoginResponseValidator = (function () {
         function LoginResponseValidator() {
@@ -88,7 +88,7 @@ var Reg;
             return true;
         };
         return LoginResponseValidator;
-    })();
+    }());
     Reg.LoginResponseValidator = LoginResponseValidator;
     var AuthCookieSaver = (function () {
         function AuthCookieSaver() {
@@ -119,7 +119,7 @@ var Reg;
             return false;
         };
         return AuthCookieSaver;
-    })();
+    }());
     Reg.AuthCookieSaver = AuthCookieSaver;
     var TwitterButtonInit = (function () {
         function TwitterButtonInit(btn) {
@@ -156,7 +156,7 @@ var Reg;
             }, 500);
         };
         return TwitterButtonInit;
-    })();
+    }());
     Reg.TwitterButtonInit = TwitterButtonInit;
     var GoogleButtonInit = (function () {
         function GoogleButtonInit(btnId) {
@@ -183,13 +183,12 @@ var Reg;
                     if (_this.onAfterExecute) {
                         _this.onAfterExecute();
                     }
-                    //unload sdk ?
                 });
             };
             btnGoogle.initialize(btnId);
         };
         return GoogleButtonInit;
-    })();
+    }());
     Reg.GoogleButtonInit = GoogleButtonInit;
     var FacebookButtonInit = (function () {
         function FacebookButtonInit(btnId) {
@@ -218,7 +217,6 @@ var Reg;
                             if (_this.onAfterExecute) {
                                 _this.onAfterExecute();
                             }
-                            //unload sdk ?
                         });
                     };
                     auth.login();
@@ -230,7 +228,7 @@ var Reg;
             fbInit.initialize(callback);
         };
         return FacebookButtonInit;
-    })();
+    }());
     Reg.FacebookButtonInit = FacebookButtonInit;
 })(Reg || (Reg = {}));
 //# sourceMappingURL=SocialButtons.js.map

@@ -5,7 +5,7 @@ var Trip;
             this.clearAfterSelection = false;
         }
         return AirportComboConfig;
-    })();
+    }());
     Trip.AirportComboConfig = AirportComboConfig;
     var AirportCombo = (function () {
         function AirportCombo(comboId, config) {
@@ -81,10 +81,10 @@ var Trip;
             }
             var displayName = item.name + " (" + item.city + ")";
             var displayNameSel = item.city + " (" + code + ")";
-            return "<li data-value=\"" + displayNameSel + "\" data-id=\"" + item.id + "\">" + displayName + "<span class=\"color2\">\u2022 " + code + "</span></li>";
+            return "<li data-value=\"" + displayNameSel + "\" data-id=\"" + item.id + "\">" + displayName + "<span class=\"color2\">\uFFFD " + code + "</span></li>";
         };
         return AirportCombo;
-    })();
+    }());
     Trip.AirportCombo = AirportCombo;
 })(Trip || (Trip = {}));
 //# sourceMappingURL=AirportCombo.js.map

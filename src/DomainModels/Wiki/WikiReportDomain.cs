@@ -18,6 +18,7 @@ namespace Gloobster.DomainModels.Wiki
         public string Text { get; set; }
         public string Report { get; set; }
         public string Lang { get; set; }
+        public string CreatorName { get; set; }
     }
 
     public class WikiReportDomain : IWikiReportDomain

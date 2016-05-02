@@ -103,7 +103,6 @@ var Maps;
             this.getPluginData(Maps.DataType.Visited, displayEntity, people);
             if (savedPosition) {
                 var roundedZoom = Math.round(savedZoom);
-                //console.log("savedZoom: " + roundedZoom);
                 this.mapsDriver.setView(savedPosition.lat, savedPosition.lng, roundedZoom);
             }
         };
@@ -125,7 +124,7 @@ var Maps;
             this.mapsDriver = new Maps.BaseMapsOperation2D();
         };
         return MapsManager;
-    })();
+    }());
     Maps.MapsManager = MapsManager;
 })(Maps || (Maps = {}));
 //# sourceMappingURL=MapsManager.js.map

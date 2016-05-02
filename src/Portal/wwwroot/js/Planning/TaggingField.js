@@ -4,7 +4,7 @@ var Planning;
         function TaggingFieldConfig() {
         }
         return TaggingFieldConfig;
-    })();
+    }());
     Planning.TaggingFieldConfig = TaggingFieldConfig;
     var TaggingField = (function () {
         function TaggingField(config) {
@@ -110,7 +110,7 @@ var Planning;
             });
         };
         return TaggingField;
-    })();
+    }());
     Planning.TaggingField = TaggingField;
 })(Planning || (Planning = {}));
 //# sourceMappingURL=TaggingField.js.map

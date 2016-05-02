@@ -53,7 +53,6 @@ var Views;
         SettingsView.prototype.displayNameCallback = function (value) {
             var data = { propertyName: "DisplayName", values: { name: value } };
             this.apiPut("UserProperty", data, function () {
-                //alert("updated");
             });
         };
         SettingsView.prototype.registerAvatarFileUpload = function () {
@@ -79,7 +78,6 @@ var Views;
                 var gender = $val.val();
                 var data = { propertyName: "Gender", values: { gender: gender } };
                 _this.apiPut("UserProperty", data, function () {
-                    //alert("updated");
                 });
             });
         };
@@ -102,7 +100,7 @@ var Views;
             return c;
         };
         return SettingsView;
-    })(Views.ViewBase);
+    }(Views.ViewBase));
     Views.SettingsView = SettingsView;
 })(Views || (Views = {}));
 //# sourceMappingURL=SettingsView.js.map

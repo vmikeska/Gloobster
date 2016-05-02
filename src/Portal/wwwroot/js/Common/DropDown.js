@@ -3,7 +3,26 @@ var Common;
     var DropDown = (function () {
         function DropDown() {
         }
-        //https://github.com/jquery/PEP
+        DropDown.prototype.registerDropDown = function ($dd) {
+            var _this = this;
+            $dd.find('.selected').on('pointerdown', function (e) {
+                var selected = $(e.target);
+                var dropdown = selected.closest('.dropdown');
+                var input = selected.siblings('input');
+                _this.hideOthers(dropdown);
+                dropdown.toggleClass('dropdown-open');
+                if (!dropdown.hasClass('with-checkbox')) {
+                    dropdown.find('li:not(.disabled)').unbind('click').click(function (e) {
+                        dropdown.removeClass('dropdown-open');
+                        var $li = $(e.target);
+                        selected.html($li.html());
+                        var selValue = $li.is('[data-value]') ? $li.data('value') : $li.html();
+                        input.val(selValue);
+                        input.trigger('change');
+                    });
+                }
+            });
+        };
         DropDown.prototype.initBody = function () {
             var _this = this;
             $('.dropdown .selected').unbind();
@@ -50,7 +69,7 @@ var Common;
             });
         };
         return DropDown;
-    })();
+    }());
     Common.DropDown = DropDown;
 })(Common || (Common = {}));
 //# sourceMappingURL=DropDown.js.map

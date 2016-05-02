@@ -27,7 +27,7 @@ var Common;
             }, this.delay);
         };
         return DelayedCallback;
-    })();
+    }());
     Common.DelayedCallback = DelayedCallback;
 })(Common || (Common = {}));
 //# sourceMappingURL=DelayedCallback.js.map

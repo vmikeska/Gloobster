@@ -4,13 +4,13 @@ var Maps;
         function CountryHighligt() {
         }
         return CountryHighligt;
-    })();
+    }());
     Maps.CountryHighligt = CountryHighligt;
     var PlaceMarker = (function () {
         function PlaceMarker() {
         }
         return PlaceMarker;
-    })();
+    }());
     Maps.PlaceMarker = PlaceMarker;
     var PolygonConfig = (function () {
         function PolygonConfig() {
@@ -22,19 +22,19 @@ var Maps;
             this.fillOpacity = 0.6;
         }
         return PolygonConfig;
-    })();
+    }());
     Maps.PolygonConfig = PolygonConfig;
     var Places = (function () {
         function Places() {
         }
         return Places;
-    })();
+    }());
     Maps.Places = Places;
     var PlacesDisplay = (function () {
         function PlacesDisplay() {
         }
         return PlacesDisplay;
-    })();
+    }());
     Maps.PlacesDisplay = PlacesDisplay;
     (function (ViewType) {
         ViewType[ViewType["D3"] = 0] = "D3";
@@ -57,7 +57,7 @@ var Maps;
         function PeopleSelection() {
         }
         return PeopleSelection;
-    })();
+    }());
     Maps.PeopleSelection = PeopleSelection;
 })(Maps || (Maps = {}));
 //# sourceMappingURL=MapsInterfaces.js.map

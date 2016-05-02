@@ -25,7 +25,7 @@ var Common;
             });
         };
         return FacebookPermissions;
-    })();
+    }());
     Common.FacebookPermissions = FacebookPermissions;
 })(Common || (Common = {}));
 //# sourceMappingURL=FacebookPermissions.js.map

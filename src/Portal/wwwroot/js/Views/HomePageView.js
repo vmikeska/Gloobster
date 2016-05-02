@@ -36,7 +36,7 @@ var Views;
             configurable: true
         });
         return HomePageView;
-    })(Views.ViewBase);
+    }(Views.ViewBase));
     Views.HomePageView = HomePageView;
 })(Views || (Views = {}));
 //# sourceMappingURL=HomePageView.js.map

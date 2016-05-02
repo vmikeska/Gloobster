@@ -71,7 +71,7 @@ var Common;
             return countries;
         };
         return UsStates;
-    })();
+    }());
     Common.UsStates = UsStates;
 })(Common || (Common = {}));
 //# sourceMappingURL=UsStates.js.map

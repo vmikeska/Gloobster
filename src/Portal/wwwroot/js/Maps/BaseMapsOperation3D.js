@@ -68,7 +68,7 @@ var Maps;
         };
         BaseMapsOperation3D.prototype.drawPoint = function (point) { };
         return BaseMapsOperation3D;
-    })();
+    }());
     Maps.BaseMapsOperation3D = BaseMapsOperation3D;
 })(Maps || (Maps = {}));
 //# sourceMappingURL=BaseMapsOperation3D.js.map

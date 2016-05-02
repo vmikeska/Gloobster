@@ -19,7 +19,7 @@ var Common;
             return countries;
         };
         return CountryShapes;
-    })();
+    }());
     Common.CountryShapes = CountryShapes;
 })(Common || (Common = {}));
 //# sourceMappingURL=CountryShapes.js.map

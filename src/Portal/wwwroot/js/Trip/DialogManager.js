@@ -89,7 +89,7 @@ var Trip;
             Views.ViewBase.currentView.apiPut("tripPlannerProperty", data, function (response) { return callback(response); });
         };
         return DialogManager;
-    })();
+    }());
     Trip.DialogManager = DialogManager;
 })(Trip || (Trip = {}));
 //# sourceMappingURL=DialogManager.js.map

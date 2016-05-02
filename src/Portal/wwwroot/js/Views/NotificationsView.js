@@ -45,7 +45,7 @@ var Views;
             }
         };
         return NotificationsView;
-    })(Views.ViewBase);
+    }(Views.ViewBase));
     Views.NotificationsView = NotificationsView;
 })(Views || (Views = {}));
 //# sourceMappingURL=NotificationsView.js.map

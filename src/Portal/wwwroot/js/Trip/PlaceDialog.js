@@ -244,7 +244,7 @@ var Trip;
             return "";
         };
         return PlaceDialog;
-    })();
+    }());
     Trip.PlaceDialog = PlaceDialog;
 })(Trip || (Trip = {}));
 //# sourceMappingURL=PlaceDialog.js.map

@@ -33,7 +33,7 @@ var Reg;
         FacebookInit.initCalled = false;
         FacebookInit.initialized = false;
         return FacebookInit;
-    })();
+    }());
     Reg.FacebookInit = FacebookInit;
 })(Reg || (Reg = {}));
 //# sourceMappingURL=FacebookInit.js.map

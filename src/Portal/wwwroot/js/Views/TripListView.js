@@ -71,7 +71,6 @@ var Views;
                 $pb.find("span").text(pt);
             };
             pu.onUploadFinished = function (file, files) {
-                //var d = new Date();
                 $(".trip-menu").hide();
                 $("#tripImg_" + tripId).attr("src", "/Trip/TripPictureSmall_s/" + tripId + "?d=" + _this.makeRandomString(10));
                 var $pb = $("#progressBar");
@@ -79,7 +78,7 @@ var Views;
             };
         };
         return TripListView;
-    })(Views.ViewBase);
+    }(Views.ViewBase));
     Views.TripListView = TripListView;
 })(Views || (Views = {}));
 //# sourceMappingURL=TripListView.js.map

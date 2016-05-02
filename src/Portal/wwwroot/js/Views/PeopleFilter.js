@@ -75,7 +75,7 @@ var Views;
             this.$userFilterContent.toggle();
         };
         return PeopleFilter;
-    })();
+    }());
     Views.PeopleFilter = PeopleFilter;
 })(Views || (Views = {}));
 //# sourceMappingURL=PeopleFilter.js.map

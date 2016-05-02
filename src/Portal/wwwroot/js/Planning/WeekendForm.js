@@ -47,7 +47,7 @@ var Planning;
             });
         };
         return WeekendForm;
-    })();
+    }());
     Planning.WeekendForm = WeekendForm;
 })(Planning || (Planning = {}));
 //# sourceMappingURL=WeekendForm.js.map

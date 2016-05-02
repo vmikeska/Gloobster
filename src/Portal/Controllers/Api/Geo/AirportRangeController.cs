@@ -48,7 +48,7 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 		[AuthorizeApi]
 		public async Task<IActionResult> Put([FromBody] AirportsInRangeRequest req)
 		{
-			var loc = PortalUser.CurrentLocation;
+			var loc = User.CurrentLocation;
 
 			//no loc throw
 			
@@ -67,12 +67,12 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 		[AuthorizeApi]
 		public IActionResult Get()
 		{
-			if (PortalUser.HomeAirports == null)
+			if (User.HomeAirports == null)
 			{
 				return new ObjectResult(new object[0]);
 			}
 
-			var airportsResponse = PortalUser.HomeAirports.Select(a => a.ToResponse()).ToList();
+			var airportsResponse = User.HomeAirports.Select(a => a.ToResponse()).ToList();
 			return new ObjectResult(airportsResponse);
 		}
 

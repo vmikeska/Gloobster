@@ -38,10 +38,10 @@ namespace Gloobster.Portal.Controllers.Portal
 
             if (user != null)
             {
-                vm.DisplayName = User.DisplayName;
-                vm.Gender = GetGenderStr(User.Gender, vm);
-                vm.CurrentLocation = FormatCityStr(User.CurrentLocation);
-                vm.HomeLocation = FormatCityStr(User.HomeLocation);
+                vm.DisplayName = user.DisplayName;
+                vm.Gender = GetGenderStr(user.Gender, vm);
+                vm.CurrentLocation = FormatCityStr(user.CurrentLocation);
+                vm.HomeLocation = FormatCityStr(user.HomeLocation);
             }
 
             return View(vm);

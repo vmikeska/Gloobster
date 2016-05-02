@@ -143,7 +143,20 @@ namespace Gloobster.Portal
             {
                 AddDebugLog("Configure:Enter");
 
-		        app.UseSession();
+                //app.Use(async (context, next) =>
+                //{
+                //    if (context.Request.IsHttps) //Before RC1, this was called 'IsSecure'
+                //    {
+                //        await next();
+                //    }
+                //    else
+                //    {
+                //        var withHttps = Uri.UriSchemeHttps + Uri.SchemeDelimiter + context.Request.Uri.GetComponents(UriComponents.AbsoluteUri & ~UriComponents.Scheme, UriFormat.SafeUnescaped);
+                //        context.Response.Redirect(withHttps);
+                //    }
+                //});
+
+                app.UseSession();
 
 
 		        loggerFactory.AddSerilog();

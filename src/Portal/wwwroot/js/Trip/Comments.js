@@ -58,7 +58,7 @@ var Trip;
             return user;
         };
         return Comments;
-    })();
+    }());
     Trip.Comments = Comments;
 })(Trip || (Trip = {}));
 //# sourceMappingURL=Comments.js.map

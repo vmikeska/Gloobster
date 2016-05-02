@@ -90,7 +90,7 @@ var Planning;
             });
         };
         return CitiesManager;
-    })();
+    }());
     Planning.CitiesManager = CitiesManager;
 })(Planning || (Planning = {}));
 //# sourceMappingURL=CitiesManager.js.map

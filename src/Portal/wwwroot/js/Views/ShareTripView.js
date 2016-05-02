@@ -46,7 +46,7 @@ var Views;
             Views.ViewBase.currentView.apiGet("tripShare", prms, function (trip) { return callback(trip); });
         };
         return ShareTripView;
-    })(Views.ViewBase);
+    }(Views.ViewBase));
     Views.ShareTripView = ShareTripView;
 })(Views || (Views = {}));
 //# sourceMappingURL=ShareTripView.js.map

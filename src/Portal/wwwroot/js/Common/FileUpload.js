@@ -8,7 +8,7 @@ var Common;
             this.useMaxSizeValidation = true;
         }
         return FileUploadConfig;
-    })();
+    }());
     Common.FileUploadConfig = FileUploadConfig;
     (function (TripEntityType) {
         TripEntityType[TripEntityType["Place"] = 0] = "Place";
@@ -19,7 +19,7 @@ var Common;
         function TripFileCustom() {
         }
         return TripFileCustom;
-    })();
+    }());
     Common.TripFileCustom = TripFileCustom;
     var FileUpload = (function () {
         function FileUpload(config, customConfig) {
@@ -85,8 +85,6 @@ var Common;
         };
         FileUpload.prototype.sendBlobToServer = function (isInitialCall) {
             if (this.reachedEnd) {
-                //console.log("transfere complete");
-                //console.log("file length: " + this.currentFile.size);
                 if (this.onUploadFinished) {
                     this.onUploadFinished(this.currentFile, this.finalResponse);
                 }
@@ -105,7 +103,6 @@ var Common;
                 this.reachedEnd = true;
             }
             var reader = this.createReader();
-            //console.log("reading: " + this.currentStart + ".." + this.currentEnd);
             var blob = this.currentFile.slice(this.currentStart, this.currentEnd);
             reader.readAsDataURL(blob);
             this.lastEnd = this.currentEnd;
@@ -157,7 +154,7 @@ var Common;
             });
         };
         return FileUpload;
-    })();
+    }());
     Common.FileUpload = FileUpload;
 })(Common || (Common = {}));
 //# sourceMappingURL=FileUpload.js.map

@@ -70,7 +70,7 @@ var Views;
             });
         };
         return AggregatedCountries;
-    })();
+    }());
     Views.AggregatedCountries = AggregatedCountries;
 })(Views || (Views = {}));
 //# sourceMappingURL=AggregatedCountries.js.map

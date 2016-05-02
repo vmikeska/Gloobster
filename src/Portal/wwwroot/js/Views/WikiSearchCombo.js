@@ -63,7 +63,7 @@ var Views;
             return "<li><span><a data-articleId=\"" + item.articleId + "\" href=\"/wiki/" + item.language + "/" + item.link + "\">" + item.title + "</a>  " + rating + "</span></li>";
         };
         return WikiSearchCombo;
-    })();
+    }());
     Views.WikiSearchCombo = WikiSearchCombo;
 })(Views || (Views = {}));
 //# sourceMappingURL=WikiSearchCombo.js.map

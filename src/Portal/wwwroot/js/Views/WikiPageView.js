@@ -27,7 +27,7 @@ var Views;
             return urlParams[2];
         };
         return WikiPageView;
-    })(Views.ViewBase);
+    }(Views.ViewBase));
     Views.WikiPageView = WikiPageView;
     var Report = (function () {
         function Report(articleId, langVersion) {
@@ -78,7 +78,7 @@ var Views;
             });
         };
         return Report;
-    })();
+    }());
     Views.Report = Report;
     var RegMessages = (function () {
         function RegMessages() {
@@ -89,7 +89,7 @@ var Views;
             id.create(v.t("FullRegTitle", "jsWiki"), v.t("FullRegBody", "jsWiki"));
         };
         return RegMessages;
-    })();
+    }());
     Views.RegMessages = RegMessages;
     var Rating = (function () {
         function Rating(articleId, langVersion) {
@@ -163,7 +163,7 @@ var Views;
             });
         };
         return Rating;
-    })();
+    }());
     Views.Rating = Rating;
     var WikiPhotosUser = (function () {
         function WikiPhotosUser(articleId) {
@@ -218,7 +218,7 @@ var Views;
             };
         };
         return WikiPhotosUser;
-    })();
+    }());
     Views.WikiPhotosUser = WikiPhotosUser;
 })(Views || (Views = {}));
 //# sourceMappingURL=WikiPageView.js.map

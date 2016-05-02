@@ -35,7 +35,7 @@ var Views;
             });
         };
         return ShareDialogPinsView;
-    })();
+    }());
     Views.ShareDialogPinsView = ShareDialogPinsView;
 })(Views || (Views = {}));
 //# sourceMappingURL=ShareDialogPinsView.js.map

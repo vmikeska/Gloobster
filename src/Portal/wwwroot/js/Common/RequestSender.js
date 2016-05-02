@@ -131,7 +131,7 @@ var Common;
             $.ajax(callObj);
         };
         return RequestSender;
-    })();
+    }());
     Common.RequestSender = RequestSender;
 })(Common || (Common = {}));
 //# sourceMappingURL=RequestSender.js.map

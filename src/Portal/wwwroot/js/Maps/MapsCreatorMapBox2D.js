@@ -4,9 +4,7 @@ var Maps;
         function MapsCreatorMapBox2D() {
             this.options = {
                 tileLayer: {
-                    // This map option disables world wrapping. by default, it is false.
                     continuousWorld: false,
-                    // This option disables loading tiles outside of the world bounds.
                     noWrap: true
                 },
                 maxBounds: null,
@@ -46,7 +44,6 @@ var Maps;
         };
         MapsCreatorMapBox2D.prototype.loadScript = function (scriptUrl, callback) {
             $.getScript(scriptUrl, function (data, textStatus, jqxhr) {
-                //console.log("Loaded: " + scriptUrl);
                 callback();
             });
         };
@@ -54,7 +51,7 @@ var Maps;
             this.mapObj.remove();
         };
         return MapsCreatorMapBox2D;
-    })();
+    }());
     Maps.MapsCreatorMapBox2D = MapsCreatorMapBox2D;
 })(Maps || (Maps = {}));
 //# sourceMappingURL=MapsCreatorMapBox2D.js.map

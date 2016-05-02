@@ -43,7 +43,7 @@ var Common;
             return $li;
         };
         return GNOnlineSearchBox;
-    })();
+    }());
     Common.GNOnlineSearchBox = GNOnlineSearchBox;
 })(Common || (Common = {}));
 //# sourceMappingURL=GNOnlineSearchBox.js.map

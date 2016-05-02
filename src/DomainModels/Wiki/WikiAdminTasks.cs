@@ -91,7 +91,7 @@ namespace Gloobster.DomainModels.Wiki
                 TaskType = task.Type,
                 ArticleId = task.Article_id.ToString(),
                 TargetId = task.Target_id.ToString(),
-                Data = task.Data
+                Data = task.Data,
             };
             
             return t;

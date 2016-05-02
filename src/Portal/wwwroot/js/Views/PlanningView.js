@@ -53,7 +53,7 @@ var Views;
             this.mapsOperations.loadCategory(tabType);
         };
         return PlanningView;
-    })(Views.ViewBase);
+    }(Views.ViewBase));
     Views.PlanningView = PlanningView;
 })(Views || (Views = {}));
 //# sourceMappingURL=PlanningView.js.map

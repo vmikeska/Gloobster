@@ -91,7 +91,7 @@ var Planning;
             this.$nameInput.select();
         };
         return NamesList;
-    })();
+    }());
     Planning.NamesList = NamesList;
 })(Planning || (Planning = {}));
 //# sourceMappingURL=NamesList.js.map

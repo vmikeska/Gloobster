@@ -23,7 +23,7 @@ var Friend = (function () {
     function Friend() {
     }
     return Friend;
-})();
+}());
 var FriendsView = (function (_super) {
     __extends(FriendsView, _super);
     function FriendsView() {
@@ -77,13 +77,6 @@ var FriendsView = (function (_super) {
             htmlContent += _this.getItemHtml(item);
         });
         $("#friendsSearch ul").html(htmlContent);
-        $(".userLink").click(function (e) {
-            e.preventDefault();
-            var $target = $(e.target);
-            var $li = $target.closest("li");
-            var id = $li.data("value");
-            window.location.href = "/portalUser/detail/" + id;
-        });
         $("#friendsSearch button").click(function (e) {
             e.preventDefault();
             var userId = $(e.currentTarget).data("value");
@@ -93,7 +86,7 @@ var FriendsView = (function (_super) {
     };
     FriendsView.prototype.getItemHtml = function (item) {
         var photoUrl = "/PortalUser/ProfilePicture_s/" + item.friendId;
-        return "<li data-value=\"" + item.friendId + "\"><span class=\"thumbnail\"><img src=\"" + photoUrl + "\"></span><a class=\"userLink\" href=\"#\">" + item.displayName + "</a> <button class=\"requestButton\" data-value=\"" + item.friendId + "\">" + this.t("Request", "jsFriends") + "</button></li>";
+        return "<li data-value=\"" + item.friendId + "\"><span class=\"thumbnail\"><img src=\"" + photoUrl + "\"></span><a class=\"userLink\" href=\"/portalUser/detail/" + item.friendId + "\">" + item.displayName + "</a> <button class=\"requestButton\" data-value=\"" + item.friendId + "\">" + this.t("Request", "jsFriends") + "</button></li>";
     };
     FriendsView.prototype.requestUser = function (userId, places) {
         var self = this;
@@ -225,5 +218,5 @@ var FriendsView = (function (_super) {
         return actionsHtml;
     };
     return FriendsView;
-})(Views.ViewBase);
+}(Views.ViewBase));
 //# sourceMappingURL=FriendsView.js.map

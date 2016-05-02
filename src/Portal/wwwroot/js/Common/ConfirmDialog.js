@@ -14,7 +14,7 @@ var Common;
             $("section").first().prepend(this.$html);
         };
         return HintDialog;
-    })();
+    }());
     Common.HintDialog = HintDialog;
     var InprogressDialog = (function () {
         function InprogressDialog() {
@@ -28,7 +28,7 @@ var Common;
             this.$html.remove();
         };
         return InprogressDialog;
-    })();
+    }());
     Common.InprogressDialog = InprogressDialog;
     var InfoDialog = (function () {
         function InfoDialog() {
@@ -56,7 +56,7 @@ var Common;
             this.$html.hide();
         };
         return InfoDialog;
-    })();
+    }());
     Common.InfoDialog = InfoDialog;
     var ConfirmDialog = (function () {
         function ConfirmDialog() {
@@ -87,7 +87,7 @@ var Common;
             this.$html.hide();
         };
         return ConfirmDialog;
-    })();
+    }());
     Common.ConfirmDialog = ConfirmDialog;
 })(Common || (Common = {}));
 //# sourceMappingURL=ConfirmDialog.js.map

@@ -103,7 +103,6 @@ var Views;
                     var $tag = _this.getTag($a.text(), articleId, _this.isMasterAdmin || _this.isSuperAdmin);
                     _this.articleTagDelete($tag, userId);
                     _this.addTagToCont($cont.find(".tags"), $tag);
-                    //$cont.find(".tag").last().after($tag);
                 });
             };
         };
@@ -178,7 +177,7 @@ var Views;
             };
         };
         return WikiPermissionsView;
-    })(Views.ViewBase);
+    }(Views.ViewBase));
     Views.WikiPermissionsView = WikiPermissionsView;
 })(Views || (Views = {}));
 //# sourceMappingURL=WikiPermissionsView.js.map

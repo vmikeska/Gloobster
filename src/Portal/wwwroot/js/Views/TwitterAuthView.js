@@ -9,12 +9,6 @@ var Views;
             var _this = this;
             var data = resp;
             this.apiPost("TwitterUser", data, function (r) {
-                //var resValid = !r.AccountAlreadyInUse;
-                //lrv.validate(r);
-                //if (!resValid) {
-                // close();
-                //return;
-                //}
                 _this.cookiesSaver.saveTwitterLogged();
                 _this.cookiesSaver.saveCookies(r);
                 _this.twitterLoginWatch(function () {
@@ -41,7 +35,7 @@ var Views;
             request.sendPost();
         };
         return TwitterAuthView;
-    })();
+    }());
     Views.TwitterAuthView = TwitterAuthView;
 })(Views || (Views = {}));
 //# sourceMappingURL=TwitterAuthView.js.map

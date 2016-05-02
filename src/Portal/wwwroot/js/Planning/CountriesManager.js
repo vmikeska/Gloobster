@@ -64,7 +64,7 @@ var Planning;
             });
         };
         return CountriesManager;
-    })();
+    }());
     Planning.CountriesManager = CountriesManager;
 })(Planning || (Planning = {}));
 //# sourceMappingURL=CountriesManager.js.map
