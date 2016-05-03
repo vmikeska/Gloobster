@@ -122,6 +122,22 @@
 			this.langVersion = langVersion;
 		}
 
+		public getRatingDesign(rating) {
+			var res = {
+				rstr: rating,
+				cls: ""
+			};
+
+			if (rating > 0) {
+				res.rstr = `+${rating}`;
+				res.cls = "plus";
+			} else {
+				res.cls = "minus";
+			}
+
+			return res;
+		}
+
 		private regRatingDD() {
 			this.regRatingBase("pmBtn", "place", "WikiRating", (c) => {
 				this.setLikeDislike(c.$cont, c.like, !c.like, "pmBtn", "icon-plus", "icon-minus");
@@ -160,10 +176,17 @@
 				}
 			});
 		}
-	 
+
 		private regRating() {
 			this.regRatingBase("ratingBtn", "evaluate", "WikiRating", (c) => {
 				this.setLikeDislike(c.$cont, c.like, !c.like, "ratingBtn", "icon-heart", "icon-nosmile");
+				if (c.res != null) {
+					var $r = c.$cont.find(".sRating");
+					$r.removeClass("plus").removeClass("minus");
+					var d = this.getRatingDesign(c.res);
+					$r.text(d.rstr);
+					$r.addClass(d.cls);
+				}
 			});
 		}
 

@@ -86,7 +86,7 @@ namespace Gloobster.DomainModels.Wiki
                 "Guarani", "GN",
                 "Gujarati", "GU",
                 "Hausa", "HA",
-                "Hebrew", "IW",
+                "Hebrew", "HE",
                 "Hindi", "HI",
                 "Hungarian", "HU",
                 "Icelandic", "IS",

@@ -1521,6 +1521,17 @@ input.heading {
 .evaluate {
     @include position(relative);
     text-align: left;
+
+    .sRating {
+        font-weight: bold; 
+        &.plus{
+            color: #A1C993;
+        }
+        &.minus{
+            color: #790601;
+        }
+    }
+    
     .buttons {
         border: 1px solid $color6;
         border-radius: $radius;

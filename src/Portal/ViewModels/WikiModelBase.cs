@@ -212,7 +212,8 @@ namespace Gloobster.Portal.ViewModels
                 Size = size,
                 Admin = admin,
                 ArticleType = Texts.Type,
-                B = this
+                B = this,
+                Rating = text.Rating
             };
         }
 
@@ -220,7 +221,7 @@ namespace Gloobster.Portal.ViewModels
         {
             var items = new List<InfoItemVM>();
 
-            var lists = DB.C<WikiListValuesEntity>().ToList();
+            var lists = DB.List<WikiListValuesEntity>();
 
             foreach (ArticleDataSE item in Data)
             {

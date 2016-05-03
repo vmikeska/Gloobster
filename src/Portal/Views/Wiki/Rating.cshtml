@@ -19,10 +19,23 @@
         }
     }
 
+    var ratingStr = Model.Rating.ToString();
+    var ratingCls = "";
+    if (Model.Rating > 0)
+    {
+        ratingStr = $"+{Model.Rating}";
+        ratingCls = "plus";
+    }
+    if (Model.Rating < 0)
+    {
+        ratingCls = "minus";
+    }
+
 }
 
 <div data-id="@Model.SectionId" class="evaluate evaluate-open2 evaluate-right">
     <ul class="buttons table">
+        <li><span class="sRating @ratingCls">@ratingStr</span></li>
         <li><a class="@likeClass ratingBtn" data-like="true" href="#"></a></li>
         <li><a class="@dislikeClass ratingBtn" data-like="false" href="#"></a></li>
         <li><a class="icon-flag" href="#"></a></li>

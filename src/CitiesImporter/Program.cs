@@ -72,7 +72,7 @@ namespace CitiesImporter
             {
                 Console.Write("platform(loc,test,prod): ");
                 platform = Console.ReadLine();
-                Console.Write("command(perm,drop,basic,add): ");
+                Console.Write("command(perm,drop,basic,add,sections): ");
                 command = Console.ReadLine();                
             }
             else
@@ -85,7 +85,21 @@ namespace CitiesImporter
             var dbName = GetDbName(platform);
 
             var db = new DbOperations(conStr, dbName);
-            
+
+            if (command == "sections")
+            {
+                var ad = new WikiArticleDomain
+                {
+                    DB = db,
+                    LinkBuilder = new NiceLinkBuilder
+                    {
+                        DB = db
+                    }
+                };
+
+                ad.CreateMissingSections();
+            }
+
             if (command == "perm")
             {
                 bool existsPerm = db.C<WikiPermissionEntity>().Any();

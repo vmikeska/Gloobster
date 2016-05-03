@@ -4268,6 +4268,12 @@ input.heading {
 .evaluate {
   position: relative;
   text-align: left; }
+  .evaluate .sRating {
+    font-weight: bold; }
+    .evaluate .sRating.plus {
+      color: #A1C993; }
+    .evaluate .sRating.minus {
+      color: #790601; }
   .evaluate .buttons {
     border: 1px solid #57c1db;
     border-radius: 4px;

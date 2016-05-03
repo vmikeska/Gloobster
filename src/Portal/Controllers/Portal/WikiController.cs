@@ -21,7 +21,8 @@ namespace Gloobster.Portal.Controllers.Portal
         public IFilesDomain FileDomain { get; set; }
         public IWikiPermissions WikiPerms { get; set; }
 
-        public WikiController(IWikiPermissions wikiPerms, IFilesDomain filesDomain, ILogger log, IDbOperations db, IComponentContext cc, ILanguages langs) : base(log, db, cc, langs)
+        public WikiController(IWikiPermissions wikiPerms, IFilesDomain filesDomain, ILogger log, IDbOperations db, 
+            IComponentContext cc, ILanguages langs) : base(log, db, cc, langs)
         {
             FileDomain = filesDomain;
             WikiPerms = wikiPerms;
@@ -41,13 +42,13 @@ namespace Gloobster.Portal.Controllers.Portal
         {
             WikiModelBase vm = null;
             string template = string.Empty;
-            var text = DB.C<WikiTextsEntity>().FirstOrDefault(i => i.LinkName == id && i.Language == lang);
+            var text = DB.FOD<WikiTextsEntity>(i => i.LinkName == id && i.Language == lang);
 
             if (text == null)
             {
                 return HttpNotFound();
             }
-
+            
             if (text.Type == ArticleType.Country)
             {
                 vm = GetCountryVM(text);
@@ -63,7 +64,7 @@ namespace Gloobster.Portal.Controllers.Portal
             {
                 vm.TitleLink = "/images/WikiDefault.jpg";
             }
-            
+
             vm.IsAdmin = IsUserLogged && WikiPerms.HasArticleAdminPermissions(UserId, text.Article_id.ToString());
             vm.ArticleId = text.Article_id.ToString();
 
@@ -83,7 +84,7 @@ namespace Gloobster.Portal.Controllers.Portal
         [CreateAccount]
         public IActionResult Page(string id)
         {
-            var texts = DB.C<WikiTextsEntity>().Where(i => i.LinkName == id).ToList();
+            var texts = DB.List<WikiTextsEntity>(i => i.LinkName == id);
 
             if (texts.Count == 0)
             {
@@ -119,9 +120,9 @@ namespace Gloobster.Portal.Controllers.Portal
         {
             var vm = CreateViewModelInstance<WikiLinkMapViewModel>();
 
-            var continents = DB.C<WikiContinentEntity>().ToList();
-            var countries = DB.C<WikiCountryEntity>().ToList();
-            var cities = DB.C<WikiCityEntity>().ToList();
+            var continents = DB.List<WikiContinentEntity>();
+            var countries = DB.List<WikiCountryEntity>();
+            var cities = DB.List<WikiCityEntity>();
 
             vm.Languages = new List<WikiLanguageVM>
             {
@@ -220,7 +221,7 @@ namespace Gloobster.Portal.Controllers.Portal
 
         private WikiCountryViewModel GetCountryVM(WikiTextsEntity text)
         {
-            var article = DB.C<WikiCountryEntity>().FirstOrDefault(i => i.id == text.Article_id);
+            var article = DB.FOD<WikiCountryEntity>(i => i.id == text.Article_id);
             
             var vm = CreateViewModelInstance<WikiCountryViewModel>();
             vm.DefaultLangModuleName = "pageWikiPage";
@@ -231,7 +232,7 @@ namespace Gloobster.Portal.Controllers.Portal
             if (gidDataItem != null)
             {
                 int cityGID = int.Parse(gidDataItem.Value);
-                var city = DB.C<WikiCityEntity>().FirstOrDefault(c => c.GID == cityGID);
+                var city = DB.FOD<WikiCityEntity>(c => c.GID == cityGID);
                 if (city != null && city.HasTitlePhoto)
                 {
                     vm.TitleLink = $"/wiki/ArticleTitlePhoto/{city.id}";

@@ -276,6 +276,8 @@ namespace Gloobster.Portal.ViewModels
     {
         public WikiModelBase B { get; set; }
 
+        public int Rating { get; set; }
+
         public ArticleType ArticleType { get; set; }
 
         public bool? Liked { get; set; }

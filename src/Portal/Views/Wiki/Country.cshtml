@@ -22,8 +22,15 @@
     @Html.Partial("BaseDescriptionCountry", Model.Base())
 
     @Html.Partial("Table1Block", Model.Restaurant())
+
+    @Html.Partial("StandardBlock", @Model.Section("Tipping"))
+
     @Html.Partial("Table3Block", Model.NightLifePrices())
+
     @Html.Partial("Table1Block", Model.Transport())
+
+    @Html.Partial("StandardBlock", @Model.Section("Hitchhiking"))
+
     @Html.Partial("Table1Block", Model.Accommodation())
 
     @Html.Partial("StandardBlock", @Model.Section("AboutPeople"))
@@ -38,11 +45,10 @@
 
     @Html.Partial("StandardBlock", @Model.Section("Gay"))
 
-    @Html.Partial("StandardBlock", @Model.Section("Transport"))
 
-    @Html.Partial("StandardBlock", @Model.Section("Tipping"))
-
-    @Html.Partial("StandardBlock", @Model.Section("Accommodation"))
+    @Html.Partial("StandardBlock", @Model.Section("Internet"))
+    @Html.Partial("StandardBlock", @Model.Section("SimCards"))
+    
 
     @Html.Partial("GeoLinks")
 

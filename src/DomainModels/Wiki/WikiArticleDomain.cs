@@ -16,7 +16,122 @@ namespace Gloobster.DomainModels.Wiki
     {
         public IDbOperations DB { get; set; }
         public INiceLinkBuilder LinkBuilder { get; set; }
-        
+
+        public List<string> CitySecions()
+        {
+            return new List<string>
+            {
+                "Base",
+                "BarDistricts",
+                "FavoriteSites",
+                "AboutPeople",
+                "NightLife",
+                "NightlifePrices",
+                "Transport",
+                "Accommodation",
+                "Tipping",
+                "Restaurant",
+
+                "Surfing",
+
+
+                "Safety",
+                "MuseumsAndTheater",
+                "Sport"
+            };
+        }
+
+        public List<string> CountrySecions()
+        {
+            return new List<string>
+            {
+               "Base", 
+               "AboutPeople", 
+               "Languages", 
+               "Safety", 
+               "Marihuana", 
+               "Gay", 
+               "Transport", 
+               "Restaurant",
+               "Tipping", 
+               "Accommodation", 
+               "NightLife", 
+               "NightlifePrices",
+
+               "Internet", 
+               "SimCards",
+
+               "Hitchhiking"
+            };
+        }
+
+        public async Task CreateMissingSections()
+        {
+            var countries = DB.List<WikiCountryEntity>();
+            var sectionsCountry = CountrySecions();
+            foreach (var country in countries)
+            {
+                foreach (var section in sectionsCountry)
+                {
+                    bool alreadyHas = country.Sections.Any(s => s.Type == section);
+                    if (alreadyHas)
+                    {
+                        continue;
+                    }
+
+                    await CreateSection<WikiCountryEntity>(country.id, section, "No content");
+                }
+
+                Console.WriteLine(country.CountryCode);
+            }
+
+            var cities = DB.List<WikiCityEntity>();
+            var sectionsCity = CitySecions();
+            foreach (var city in cities)
+            {
+                foreach (var section in sectionsCity)
+                {
+                    bool alreadyHas = city.Sections.Any(s => s.Type == section);
+                    if (alreadyHas)
+                    {
+                        continue;
+                    }
+
+                    await CreateSection<WikiCityEntity>(city.id, section, "No content");
+                }
+
+                Console.WriteLine(city.GID);
+            }            
+        }
+
+        private async Task CreateSection<T>(ObjectId id, string type, string text) where T : WikiArticleBaseEntity
+        {
+            var newSectId = ObjectId.GenerateNewId();
+
+            var sectionText = new SectionTextsSE
+            {
+                Text = text,
+                Dislikes = new List<ObjectId>(),
+                Likes = new List<ObjectId>(),
+                Section_id = newSectId
+            };
+
+            var section = new SectionSE
+            {
+                id = newSectId,
+                Type = type
+            };
+
+            var f1 = DB.F<T>().Eq(f => f.id, id);
+            var u1 = DB.U<T>().Push(u => u.Sections, section);
+            await DB.UpdateAsync(f1, u1);
+
+            //WARNING: works just for one language
+            var f2 = DB.F<WikiTextsEntity>().Eq(f => f.Article_id, id);
+            var u2 = DB.U<WikiTextsEntity>().Push(u => u.Texts, sectionText);
+            await DB.UpdateAsync(f2, u2);            
+        }
+
         public string CreateCity(CityDO city, string lang)
         {
             var cityLink = LinkBuilder.BuildLinkCity(city.AsciiName, city.CountryCode, city.GID);
@@ -25,18 +140,12 @@ namespace Gloobster.DomainModels.Wiki
             builder.InitCity(city.CountryCode);
             builder.InitTexts(lang, city.AsciiName, cityLink);
             var article = (WikiCityEntity)builder.Article;
-            
-            builder.AddSection("Base", "No content");
-            builder.AddSection("BarDistricts", "No content");
-            builder.AddSection("FavoriteSites", "No content");
-            builder.AddSection("AboutPeople", "No content");
-            builder.AddSection("NightLife", "No content");
-            builder.AddSection("NightlifePrices", "No content");
-            builder.AddSection("Transport", "No content");
-            builder.AddSection("Accommodation", "No content");
-            builder.AddSection("Tipping", "No content");
-            builder.AddSection("Restaurant", "No content");
-            builder.AddSection("Surfing", "No content");
+
+            var sections = CitySecions();
+            foreach (string section in sections)
+            {
+                builder.AddSection(section, "No content");
+            }
 
             article.Links.Add(new LinkSE
             {
@@ -66,17 +175,26 @@ namespace Gloobster.DomainModels.Wiki
                 },                
             };
 
+            CreateCityPrices(builder);
+            
+            builder.Save<WikiCityEntity>(DB);
+            
+            return article.id.ToString();
+        }
+
+        private void CreateCityPrices(ArticleBuilder builder)
+        {
             builder.AddPrice("TaxiInitial", "Transport");
             builder.AddPrice("TaxiKm", "Transport");
             builder.AddPrice("PublicTransport", "Transport");
 
-            builder.AddPrice("Salad", "Restaurant");            
-            builder.AddPrice("Steak", "Restaurant");            
+            builder.AddPrice("Salad", "Restaurant");
+            builder.AddPrice("Steak", "Restaurant");
             builder.AddPrice("Local", "Restaurant");
             builder.AddPrice("Pizza", "Restaurant");
-            
-            builder.AddPrice("Hostel", "Accommodation");            
-            builder.AddPrice("Star3", "Accommodation");            
+
+            builder.AddPrice("Hostel", "Accommodation");
+            builder.AddPrice("Star3", "Accommodation");
             builder.AddPrice("Star4", "Accommodation");
 
             builder.AddPrice("Cigarettes", "Other");
@@ -97,10 +215,6 @@ namespace Gloobster.DomainModels.Wiki
             builder.AddPrice("Vodka", "Nightlife", "Pub");
             builder.AddPrice("Vodka", "Nightlife", "Bar");
             builder.AddPrice("Vodka", "Nightlife", "Club");
-            
-            builder.Save<WikiCityEntity>(DB);
-            
-            return article.id.ToString();
         }
 
         //private bool IsRightDriving(string countryCode)
@@ -127,21 +241,12 @@ namespace Gloobster.DomainModels.Wiki
             builder.InitTexts(lang, name, linkId);
             var article = (WikiCountryEntity)builder.Article;
 
-            builder.AddSection("Base", "No content");
-            builder.AddSection("AboutPeople", "No content");
-            builder.AddSection("Languages", "No content");
-            builder.AddSection("Safety", "No content");
-            builder.AddSection("Marihuana", "No content");
-            builder.AddSection("Gay", "No content");
-            builder.AddSection("Transport", "No content");
-            builder.AddSection("Restaurant", "No content");
-            builder.AddSection("Tipping", "No content");
-            builder.AddSection("Accommodation", "No content");
-            builder.AddSection("NightLife", "No content");
-            builder.AddSection("NightlifePrices", "No content");
-            builder.AddSection("Internet", "No content");
-            builder.AddSection("SimCards", "No content");
-
+            var sections = CountrySecions();
+            foreach (string section in sections)
+            {
+                builder.AddSection(section, "No content");
+            }
+            
             article.Links.Add(new LinkSE
             {
                 Type = LinkType.Geonames,
@@ -253,6 +358,7 @@ namespace Gloobster.DomainModels.Wiki
             
             return article.id.ToString();
         }        
+
     }
 
 

@@ -114,7 +114,7 @@ namespace Gloobster.DomainModels.Wiki
             return defaultPrice;
         }
 
-        public async Task<bool> AddRating(string articleId, string sectionId, string language, string userId, bool like)
+        public async Task<int> AddRating(string articleId, string sectionId, string language, string userId, bool like)
         {
             ObjectId articleIdObj = new ObjectId(articleId);
             ObjectId sectionIdObj = new ObjectId(sectionId);
@@ -128,12 +128,33 @@ namespace Gloobster.DomainModels.Wiki
             var u2 = DB.U<WikiTextsEntity>().Pull(RatingObjName(false), userIdObj);
             var r2 = await DB.UpdateAsync(filter, u2);
             
+            //add rating item
             var update = DB.U<WikiTextsEntity>().Push(RatingObjName(like), userIdObj);
             var res = await DB.UpdateAsync(filter, update);
 
-            return res.ModifiedCount == 1;
+            //recalculate rating 
+            int newRating = RecalculateRating(articleId, sectionId, language);
+            var u3 = DB.U<WikiTextsEntity>().Set("Texts.$.Rating", newRating);
+            var r3 = await DB.UpdateAsync(filter, u3);
+
+            return newRating;
         }
-        
+
+        private int RecalculateRating(string articleId, string sectionId, string language)
+        {
+            ObjectId articleIdObj = new ObjectId(articleId);
+            ObjectId sectionIdObj = new ObjectId(sectionId);
+
+            var texts = DB.FOD<WikiTextsEntity>(t => t.Article_id == articleIdObj && t.Language == language);
+            var section = texts.Texts.FirstOrDefault(t => t.Section_id == sectionIdObj);
+
+            int likesCnt = section.Likes.Count;
+            int dislikesCnt = section.Dislikes.Count;
+
+            int rating = likesCnt - dislikesCnt;
+            return rating;
+        }
+
         private string RatingObjName(bool like)
         {
             string objName = like ? "Texts.$.Likes" : "Texts.$.Dislikes";

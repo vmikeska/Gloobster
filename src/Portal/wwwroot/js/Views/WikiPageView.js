@@ -27,7 +27,7 @@ var Views;
             return urlParams[2];
         };
         return WikiPageView;
-    }(Views.ViewBase));
+    })(Views.ViewBase);
     Views.WikiPageView = WikiPageView;
     var Report = (function () {
         function Report(articleId, langVersion) {
@@ -78,7 +78,7 @@ var Views;
             });
         };
         return Report;
-    }());
+    })();
     Views.Report = Report;
     var RegMessages = (function () {
         function RegMessages() {
@@ -89,7 +89,7 @@ var Views;
             id.create(v.t("FullRegTitle", "jsWiki"), v.t("FullRegBody", "jsWiki"));
         };
         return RegMessages;
-    }());
+    })();
     Views.RegMessages = RegMessages;
     var Rating = (function () {
         function Rating(articleId, langVersion) {
@@ -99,6 +99,20 @@ var Views;
             this.articleId = articleId;
             this.langVersion = langVersion;
         }
+        Rating.prototype.getRatingDesign = function (rating) {
+            var res = {
+                rstr: rating,
+                cls: ""
+            };
+            if (rating > 0) {
+                res.rstr = "+" + rating;
+                res.cls = "plus";
+            }
+            else {
+                res.cls = "minus";
+            }
+            return res;
+        };
         Rating.prototype.regRatingDD = function () {
             var _this = this;
             this.regRatingBase("pmBtn", "place", "WikiRating", function (c) {
@@ -140,6 +154,13 @@ var Views;
             var _this = this;
             this.regRatingBase("ratingBtn", "evaluate", "WikiRating", function (c) {
                 _this.setLikeDislike(c.$cont, c.like, !c.like, "ratingBtn", "icon-heart", "icon-nosmile");
+                if (c.res != null) {
+                    var $r = c.$cont.find(".sRating");
+                    $r.removeClass("plus").removeClass("minus");
+                    var d = _this.getRatingDesign(c.res);
+                    $r.text(d.rstr);
+                    $r.addClass(d.cls);
+                }
             });
         };
         Rating.prototype.setLikeDislike = function ($cont, like, dislike, btnClass, likeClass, dislikeClass) {
@@ -163,7 +184,7 @@ var Views;
             });
         };
         return Rating;
-    }());
+    })();
     Views.Rating = Rating;
     var WikiPhotosUser = (function () {
         function WikiPhotosUser(articleId) {
@@ -218,7 +239,7 @@ var Views;
             };
         };
         return WikiPhotosUser;
-    }());
+    })();
     Views.WikiPhotosUser = WikiPhotosUser;
 })(Views || (Views = {}));
 //# sourceMappingURL=WikiPageView.js.map

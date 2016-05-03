@@ -26,7 +26,7 @@
       </BarDistricts>
 
       <Restaurant>
-        <en>Restaurant</en>
+        <en>Food</en>
       </Restaurant>
 
       <Transport>
@@ -193,7 +193,34 @@
         <en>Tipping</en>
       </Tipping>
 
-      <Low>
+
+    <Surfing>
+      <en>Surfing</en>
+    </Surfing>
+
+    <MuseumsAndTheater>
+      <en>Museums and Theaters</en>
+    </MuseumsAndTheater>
+
+    <Sport>
+      <en>Sport</en>
+    </Sport>
+
+    <Internet>
+      <en>Internet</en>
+    </Internet>
+
+    <SimCards>
+      <en>Sim cards</en>
+    </SimCards>
+
+    <Hitchhiking>
+      <en>Hitchhiking</en>
+    </Hitchhiking>
+
+   
+
+    <Low>
         <en>Low</en>
       </Low>
 

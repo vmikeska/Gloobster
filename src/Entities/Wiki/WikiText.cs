@@ -34,6 +34,8 @@ namespace Gloobster.Entities
 
         public List<ObjectId> Likes { get; set; }
         public List<ObjectId> Dislikes { get; set; }
+
+        public int Rating { get; set; }
     }
     
 }

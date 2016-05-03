@@ -215,16 +215,12 @@ namespace Gloobster.Portal.ViewModels
         {
             var rl = new List<RelatedLink>();
 
-            var citiesArticles = DB.C<WikiCityEntity>()
-                .Where(c => c.CountryCode == Article.CountryCode)
-                .ToList();
+            var citiesArticles = DB.List<WikiCityEntity>(c => c.CountryCode == Article.CountryCode);
             var citiesIds = citiesArticles
                 .Select(c => c.id)
                 .ToList();
             
-            var citiesTexts = DB.C<WikiTextsEntity>()
-                .Where(c => citiesIds.Contains(c.Article_id) && c.Language == Texts.Language)
-                .ToList();
+            var citiesTexts = DB.List<WikiTextsEntity>(c => citiesIds.Contains(c.Article_id) && c.Language == Texts.Language && c.Rating > 0);
             
             foreach (var city in citiesTexts)
             {
