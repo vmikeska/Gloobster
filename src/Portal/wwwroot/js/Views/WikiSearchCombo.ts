@@ -46,10 +46,26 @@
 			ViewBase.currentView.apiGet("WikiSearch", params, places => { this.showResults(places) });
 		}
 
+		private getDisabledItem(text) {
+			return `<li class="disabled">${text}</li>`;			
+		}
+
 		private showResults(places) {
 			this.$combo.find("ul").show();
 			var htmlContent = "";
+
+			var hasRated = (places.length > 0 && places[0].rating > 0);
+			if (hasRated) {
+			  htmlContent = this.getDisabledItem("Articles rich on content");
+		  }
+
+			var ratedFinished = false;
 			places.forEach(item => {
+				if (item.rating === 0 && !ratedFinished) {
+					htmlContent += this.getDisabledItem("Help us contribute on these articles");
+					ratedFinished = true;
+				}
+
 				htmlContent += this.getItemHtml(item);
 			});
 

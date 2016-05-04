@@ -21,7 +21,7 @@
                  <td class="rate" data-id="@item.Id1">
                      @if (Model.ArticleType == ArticleType.City)
                      {
-                         @Html.Partial("PlusMinus", item.Liked1);
+                         @Html.Partial("PlusMinus", new PVM { B = Model.B, Liked = item.Liked1});
                      }
                  </td>
              }

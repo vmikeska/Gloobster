@@ -109,7 +109,7 @@ namespace Gloobster.Portal.ViewModels
                         Text = item.Text,
                         Id = item.Section_id.ToString(),
                         Liked = WasLiked(item),
-                        
+                        B = this
                     };
                 }).ToList(),
                 Dos = Dos.Select(i =>
@@ -119,7 +119,8 @@ namespace Gloobster.Portal.ViewModels
                     {
                         Text = item.Text,
                         Id = item.Section_id.ToString(),
-                        Liked = WasLiked(item)
+                        Liked = WasLiked(item),
+                        B = this
                     };
                 }).ToList()
 

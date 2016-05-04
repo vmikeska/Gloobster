@@ -35,10 +35,10 @@
 
 <div data-id="@Model.SectionId" class="evaluate evaluate-open2 evaluate-right">
     <ul class="buttons table">
-        <li><span class="sRating @ratingCls">@ratingStr</span></li>
-        <li><a class="@likeClass ratingBtn" data-like="true" href="#"></a></li>
-        <li><a class="@dislikeClass ratingBtn" data-like="false" href="#"></a></li>
-        <li><a class="icon-flag" href="#"></a></li>
+        <li><span title="@Model.B.W("RatingBalance")" class="sRating @ratingCls">@ratingStr</span></li>
+        <li><a title="@Model.B.W("LikeSection")" class="@likeClass ratingBtn" data-like="true" href="#"></a></li>
+        <li><a title="@Model.B.W("DontLikeSection")" class="@dislikeClass ratingBtn" data-like="false" href="#"></a></li>
+        <li><a title="@Model.B.W("RecommendContent")" class="icon-flag" href="#"></a></li>
     </ul>
     <div class="bubble">
         <strong>@Model.B.W("ReportText")</strong>

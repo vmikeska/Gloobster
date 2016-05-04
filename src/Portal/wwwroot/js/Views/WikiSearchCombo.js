@@ -37,11 +37,23 @@ var Views;
             var params = [["query", query]];
             Views.ViewBase.currentView.apiGet("WikiSearch", params, function (places) { _this.showResults(places); });
         };
+        WikiSearchCombo.prototype.getDisabledItem = function (text) {
+            return "<li class=\"disabled\">" + text + "</li>";
+        };
         WikiSearchCombo.prototype.showResults = function (places) {
             var _this = this;
             this.$combo.find("ul").show();
             var htmlContent = "";
+            var hasRated = (places.length > 0 && places[0].rating > 0);
+            if (hasRated) {
+                htmlContent = this.getDisabledItem("Articles rich on content");
+            }
+            var ratedFinished = false;
             places.forEach(function (item) {
+                if (item.rating === 0 && !ratedFinished) {
+                    htmlContent += _this.getDisabledItem("Help us contribute on these articles");
+                    ratedFinished = true;
+                }
                 htmlContent += _this.getItemHtml(item);
             });
             var $ul = this.$combo.find("ul");

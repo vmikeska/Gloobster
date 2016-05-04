@@ -86,6 +86,11 @@ namespace CitiesImporter
 
             var db = new DbOperations(conStr, dbName);
 
+            if (command == "regenCountries")
+            {
+                
+            }
+
             if (command == "sections")
             {
                 var ad = new WikiArticleDomain

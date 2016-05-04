@@ -382,6 +382,15 @@ namespace Gloobster.Portal.ViewModels
         public string Text { get; set; }
 
         public bool? Liked { get; set; }
+
+        public ViewModelBase B { get; set; }
+    }
+
+    public class PVM
+    {
+        public bool? Liked { get; set; }
+
+        public ViewModelBase B { get; set; }
     }
 
 

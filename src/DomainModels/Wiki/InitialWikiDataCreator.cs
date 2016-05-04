@@ -30,10 +30,11 @@ namespace Gloobster.DomainModels.Wiki
         {
             var entitiesCount = await DB.GetCountAsync<WikiContinentEntity>();
             if (entitiesCount == 0)
-            {
-                CreateData();
+            {                
                 CreateValueLists();
-            }            
+            }
+
+            CreateData();
         }
 
         
@@ -353,7 +354,12 @@ namespace Gloobster.DomainModels.Wiki
         {
             try
             {
-                var continentEntity = CreateContinent(cont, title, link);
+                var continentEntity = DB.FOD<WikiContinentEntity>(c => c.Continent == cont);
+                if (continentEntity == null)
+                {
+                    continentEntity = await CreateContinent(cont, title, link);
+                }
+
                 foreach (var countryCode in cCodes)
                 {
                     var country = CountryService.GetCountryByCountryCode2(countryCode);
@@ -361,12 +367,22 @@ namespace Gloobster.DomainModels.Wiki
                     string capitalName = GetCapitalName(countryCode);
 
                     var capital = (await GNService.GetCityAsync(capitalName, country.CountryCode, 1)).FirstOrDefault();
-
-                    ArticleDomain.CreateCountry(cont, countryCode, country.CountryName, Lang, capital.GID, capitalName);
-                    if (capital != null)
+                    if (capital == null)
                     {
-                        ArticleDomain.CreateCity(capital, Lang);
-                        Console.WriteLine($"Saved {capital.Name} with GID: {capital.GID}");
+                        continue;
+                    }
+                    
+                    var cntry = DB.FOD<WikiCountryEntity>(c => c.CountryCode == countryCode);
+                    if (cntry == null)
+                    {
+                        ArticleDomain.CreateCountry(cont, countryCode, country.CountryName, Lang, capital.GID, capitalName);
+
+                        var cty = DB.FOD<WikiCityEntity>(c => c.GID == capital.GID);
+                        if (cty == null)
+                        {
+                            ArticleDomain.CreateCity(capital, Lang);
+                            Console.WriteLine($"Saved {capital.Name} with GID: {capital.GID}");
+                        }
                     }
                 }
 
@@ -378,7 +394,7 @@ namespace Gloobster.DomainModels.Wiki
                 return false;
             }
         }
-
+        
         private string GetCapitalName(string countryCode)
         {
             if (countryCode == "IL")

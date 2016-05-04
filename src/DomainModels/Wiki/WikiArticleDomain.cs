@@ -228,8 +228,7 @@ namespace Gloobster.DomainModels.Wiki
         //    return true;
         //}
 
-        public string CreateCountry(Continent continent, string countryCode, string name, string lang, 
-            int capitalGID, string capitalName)
+        public string CreateCountry(Continent continent, string countryCode, string name, string lang, int capitalGID, string capitalName)
         {
             var linkId = LinkBuilder.BuildBasicLink(name);
 

@@ -1523,7 +1523,7 @@ input.heading {
     text-align: left;
 
     .sRating {
-        font-weight: bold; 
+        font-weight: bold;         
         &.plus{
             color: #A1C993;
         }
@@ -2099,6 +2099,7 @@ input.heading {
 .wiki-globe {
     @include size(100% 420px);
     background: $white url("../images/globe3.jpg") center bottom no-repeat;
+    border-bottom: 2px solid #57c1db;
     .wrapper {
         height: 420px;
     }
@@ -2260,6 +2261,30 @@ input.heading {
             }
         }
     }
+}
+
+.tag-cloud {
+    h2{
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    a {
+        font-size: 20px;
+    }
+
+    table{
+        margin-left: auto; 
+        margin-right: auto; 
+        width: 740px;
+        border: 0;
+        text-align: center;
+
+        td {
+            background-color: white !important;
+            padding: 0px;
+        }
+    }        
 }
 
 /* Breadcrumb */

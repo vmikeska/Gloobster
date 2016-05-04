@@ -248,5 +248,36 @@
         <en>Send</en>
       </ReportSend>
 
+    <LikeSection>
+      <en>I like this section</en>
+    </LikeSection>
 
+    <RatingBalance>
+      <en>Current rating balance</en>
+    </RatingBalance>
+
+    <DontLikeSection>
+      <en>I don't like this section</en>
+    </DontLikeSection>
+
+    <RecommendContent>
+      <en>Recommend or Report the content</en>
+    </RecommendContent>
+
+    <IncreasePrice>
+      <en>Increase price</en>
+    </IncreasePrice>
+
+    <DecreasePrice>
+      <en>Decrease price</en>
+    </DecreasePrice>
+
+    <Like>
+      <en>Like</en>
+    </Like>
+
+    <Dislike>
+      <en>Dislike</en>
+    </Dislike>
+    
   </module>

@@ -1,10 +1,28 @@
 ﻿@using System.Linq;
 @using System.Threading.Tasks
+@using Gloobster.Common
+@using Gloobster.Entities
 @using Gloobster.Portal.ViewModels
 @model WikiHomeViewModel
 @{
     ViewBag.StopLayoutGenerate = true;
     ViewBag.MenuGroup = "Wiki";
+
+    List<WikiTextsEntity> allItems = Model.Texts;
+    if (GloobsterConfig.IsLocal && allItems.Count < 30)
+    {
+        while (allItems.Count < 30)
+        {
+            allItems.AddRange(Model.Texts);
+        }
+    }
+
+    List<WikiTextsEntity> first10 = allItems.Take(10).ToList();
+    var others = new List<WikiTextsEntity>();
+    others.AddRange(allItems);
+    others.RemoveRange(0,10);
+
+    var othersBy3 = others.SplitBy(3);
 }
 
 <script type="text/javascript" src="@Url.Content("~/js/Views/WikiHomeView.js")"></script>
@@ -28,17 +46,27 @@
 </section>
 <section class="wiki-globe">
     <div class="wrapper">
-        @*<a class="button" href="#">Spain</a>
-        <a class="button" href="#">Italy</a>
-        <a class="button" href="#">Prague</a>
-        <a class="button" href="#">Brno</a>
-        <a class="button" href="#">France</a>
-        <a class="button" href="#">Greece</a>
-        <a class="button" href="#">Croatia</a>
-        <a class="button" href="#">Finland</a>
-        <a class="button" href="#">Poland</a>
-        <a class="button" href="#">Turkey</a>*@
+        @foreach (var item in first10)
+        {
+            <a class="button" href="/wiki/@item.LinkName">@item.Title</a>
+        }        
     </div>
+</section>
+
+
+<section class="tag-cloud">
+    <h2>Recent articles</h2>
+    <table>
+        @foreach (var group in othersBy3)
+        {
+            <tr>
+                @foreach (var item in group)
+                {
+                    <td><a href="/wiki/@item.LinkName">@item.Title</a></td>
+                }
+            </tr>
+        }
+    </table>
 </section>
 
 <script>

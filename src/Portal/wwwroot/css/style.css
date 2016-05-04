@@ -4754,7 +4754,8 @@ input.heading {
 .wiki-globe {
   height: 420px;
   width: 100%;
-  background: #fff url("../images/globe3.jpg") center bottom no-repeat; }
+  background: #fff url("../images/globe3.jpg") center bottom no-repeat;
+  border-bottom: 2px solid #57c1db; }
   .wiki-globe .wrapper {
     height: 420px; }
   .wiki-globe .button {
@@ -4958,6 +4959,23 @@ input.heading {
         .wiki-globe .button:nth-child(10) {
           bottom: 45px;
           left: 670px; } }
+
+.tag-cloud h2 {
+  text-align: center;
+  margin-top: 20px; }
+
+.tag-cloud a {
+  font-size: 20px; }
+
+.tag-cloud table {
+  margin-left: auto;
+  margin-right: auto;
+  width: 740px;
+  border: 0;
+  text-align: center; }
+  .tag-cloud table td {
+    background-color: white !important;
+    padding: 0px; }
 
 /* Breadcrumb */
 /* Page */
