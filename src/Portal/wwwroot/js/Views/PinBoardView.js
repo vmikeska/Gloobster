@@ -190,9 +190,13 @@ var Views;
         };
         PinBoardView.prototype.deletePin = function (gid) {
             var _this = this;
-            var prms = [["gid", gid]];
-            this.apiDelete("VisitedCity", prms, function (r) {
-                _this.mapsManager.removeCity(r.gid, r.countryCode);
+            var d = new Common.ConfirmDialog();
+            d.create(this.t("DelDialogTitle", "jsPins"), this.t("DelDialogBody", "jsPins"), this.t("Cancel", "jsLayout"), this.t("Ok", "jsLayout"), function () {
+                var prms = [["gid", gid]];
+                _this.apiDelete("VisitedCity", prms, function (r) {
+                    _this.mapsManager.removeCity(r.gid, r.countryCode);
+                    _this.refreshBadges(r.stats);
+                });
             });
         };
         PinBoardView.prototype.initPlaceSearch = function () {
@@ -232,14 +236,18 @@ var Views;
             $("#StatesCount").text(statesCount);
             this.setShareText(citiesCount, countriesCount);
         };
+        PinBoardView.prototype.refreshBadges = function (stats) {
+            this.setStatsRibbon(stats.citiesCount, stats.countriesCount, stats.worldTraveledPercent, stats.statesCount);
+            this.pinBoardBadges.cities = stats.topCities;
+            this.pinBoardBadges.countries = stats.countryCodes;
+            this.pinBoardBadges.states = stats.stateCodes;
+            this.pinBoardBadges.refresh();
+        };
         PinBoardView.prototype.saveNewPlace = function (request) {
             var _this = this;
             var self = this;
             this.apiPost("checkin", request, function (req) {
-                _this.pinBoardBadges.cities = req.topCities;
-                _this.pinBoardBadges.countries = req.countryCodes;
-                _this.pinBoardBadges.states = req.stateCodes;
-                _this.pinBoardBadges.refresh();
+                _this.refreshBadges(req);
                 var moveToLocation = null;
                 if (_this.mapsManager.currentDisplayEntity === Maps.DisplayEntity.Pin) {
                     req.visitedCities.forEach(function (city) {
@@ -269,7 +277,6 @@ var Views;
                 if (moveToLocation) {
                     self.mapsManager.mapsDriver.moveToAnimated(moveToLocation.Lat, moveToLocation.Lng, 5);
                 }
-                _this.setStatsRibbon(req.citiesCount, req.countriesCount, req.worldTraveledPercent, req.statesCount);
                 self.mapsManager.mapsDataLoader.mapToViewData();
                 self.mapsManager.redrawDataCallback();
             });

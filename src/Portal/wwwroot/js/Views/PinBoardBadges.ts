@@ -156,26 +156,47 @@ module Views {
 						name = city.n;
 					}
 
-				var $badge = $(`<div class="cell"> <span class="badge"> <span class="thumbnail"> <img src="../images/badges/${city.i}"> </span>${name}</span> </div>`);
+				var $badge = $(`<div class="cell" data-gid="${city.g}"> <span class="badge"> <span class="thumbnail"> <img src="../images/badges/${city.i}"> </span>${name}</span> </div>`);
 				$html.find(".badges").append($badge);
 				
-				var visited = _.contains(this.cities, city.g);	
+				var visited = _.contains(this.cities, city.g);
+				var $b = $badge.find(".badge");
 				if (visited) {
-					$badge.find(".badge").addClass("active");
+						$b.addClass("active");
+						$b.attr("title", ViewBase.currentView.t("ClickDelete", "jsPins"));
 				} else {
-					$badge.find(".badge").css("opacity", 0.5);
+						$badge.find("img").css("opacity", 0.5);
+						$b.attr("title", ViewBase.currentView.t("ClickCheck", "jsPins"));
 				}
-					
+
+				$b.click((e) => this.badgeClick(e));
+
 			});
 
 			return $html;
 		}
 
+		private badgeClick(e) {
+				var $t = $(e.target);
+				var $cont = $t.closest(".cell");
+				var $badge = $cont.find(".badge");				
+				var gid = $cont.data("gid");
+
+				var view = <PinBoardView>ViewBase.currentView;
+				
+				if ($badge.hasClass("active")) {					
+					view.deletePin(gid);
+				} else {
+						var req = { SourceType: SourceType.City, SourceId: gid };
+						view.saveNewPlace(req);
+				}
+
+		}
 
 		private genOverviewItem(img, visitedCnt, totalCnt, name) {
 		 var imgLink = "../images/badges/" + img;
 				
-		 return `<div class="cell"><span class="badge"><span class="thumbnail"><img src="${imgLink}"></span>${visitedCnt}/${totalCnt} <b>${name}</b></span></div>`;		 
+		 return `<div class="cell"><span class="badge" style="cursor: default"><span class="thumbnail"><img src="${imgLink}"></span>${visitedCnt}/${totalCnt} <b>${name}</b></span></div>`;		 
 		}
 	}
 }

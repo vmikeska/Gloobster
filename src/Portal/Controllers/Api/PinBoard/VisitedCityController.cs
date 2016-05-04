@@ -6,6 +6,7 @@ using Gloobster.Entities;
 using Gloobster.Entities.Trip;
 using Gloobster.Enums;
 using Gloobster.Mappers;
+using Gloobster.Portal.Controllers.Api.Geo;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.PinBoard;
 using Microsoft.AspNet.Mvc;
@@ -24,10 +25,12 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
 
 		public ICountryService CountryService { get; set; }
 
-		public VisitedCityController(ILogger log, IDbOperations db) : base(log, db)
+        public IPinBoardStats PinBoardStats { get; set; }
+
+        public VisitedCityController(IPinBoardStats pinBoardStats,  ILogger log, IDbOperations db) : base(log, db)
 		{
-			
-		}
+            PinBoardStats = pinBoardStats;
+        }
 
 
 		[HttpDelete]
@@ -40,7 +43,7 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
                 countryCode = null
             };
 
-            var visited = DB.C<VisitedEntity>().FirstOrDefault(v => v.User_id == UserIdObj);
+            var visited = DB.FOD<VisitedEntity>(v => v.User_id == UserIdObj);
 
 		    var city = visited.Cities.FirstOrDefault(c => c.GeoNamesId == gid);
 
@@ -59,7 +62,15 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
 
 		        resp.countryCode = city.CountryCode;
 		    }
-            
+
+            var responser = new PinsResponser
+            {
+                PinBoardStats = PinBoardStats
+            };
+
+            PinBoardStatResponse stats = await responser.Create(UserId);
+		    resp.stats = stats;
+
             return new ObjectResult(resp);
 		}
         
@@ -69,5 +80,6 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
     {
         public int gid { get; set; }
         public string countryCode { get; set; }
+        public PinBoardStatResponse stats { get; set; }
     }
 }

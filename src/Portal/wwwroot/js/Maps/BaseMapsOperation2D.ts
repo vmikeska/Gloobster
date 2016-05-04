@@ -29,8 +29,27 @@
 			this.markers.push(polygon);
 		}
 
+		private visitedPin = null;
+
+		private getVisitedPin() {
+			if (this.visitedPin == null) {
+				this.visitedPin = L.icon({
+					iconUrl: '../images/visited-ico.png',
+					//shadowUrl: 'leaf-shadow.png',
+
+					iconSize: [26, 31], // size of the icon
+					//shadowSize: [50, 64], // size of the shadow
+					iconAnchor: [13, 31], // point of the icon which will correspond to marker's location
+					//shadowAnchor: [4, 62],  // the same for the shadow
+					popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+				});
+			}
+				
+			return this.visitedPin;
+		}
+
 		public drawPin(place: PlaceMarker) {
-			var marker = L.marker([place.lat, place.lng]).addTo(this.mapObj);
+				var marker = L.marker([place.lat, place.lng], { icon: this.getVisitedPin()}).addTo(this.mapObj);
 			marker.gid = place.geoNamesId;
 			this.markers.push(marker);
 			return marker;

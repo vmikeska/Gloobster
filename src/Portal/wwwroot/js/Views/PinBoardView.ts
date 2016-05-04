@@ -90,10 +90,7 @@
 		public initialize() {		 
 			this.mapsManager = new Maps.MapsManager();
 			this.mapsManager.onDataChanged = () => {
-					this.pinBoardBadges.refresh();
-
-				//$("#TopCitiesCount").text(this.pinBoardBadges.visitedTotal);
-					//??
+					this.pinBoardBadges.refresh();					
 			};
 			this.mapsManager.switchToView(Maps.ViewType.D2, Maps.DisplayEntity.Pin);
 			
@@ -228,9 +225,14 @@
 		}
 
 		public deletePin(gid) {
-			var prms = [["gid", gid]];
-			this.apiDelete("VisitedCity", prms, (r) => {
-				this.mapsManager.removeCity(r.gid, r.countryCode);
+			var d = new Common.ConfirmDialog();
+			d.create(this.t("DelDialogTitle", "jsPins"), this.t("DelDialogBody", "jsPins"), this.t("Cancel", "jsLayout"), this.t("Ok", "jsLayout"), () => {
+				var prms = [["gid", gid]];
+				this.apiDelete("VisitedCity", prms, (r) => {
+					this.mapsManager.removeCity(r.gid, r.countryCode);
+
+					this.refreshBadges(r.stats);
+				});
 			});
 		}
 
@@ -277,14 +279,20 @@
 			this.setShareText(citiesCount, countriesCount);
 		}
 
+		private refreshBadges(stats) {
+			this.setStatsRibbon(stats.citiesCount, stats.countriesCount, stats.worldTraveledPercent, stats.statesCount);
+
+			this.pinBoardBadges.cities = stats.topCities;
+			this.pinBoardBadges.countries = stats.countryCodes;
+			this.pinBoardBadges.states = stats.stateCodes;
+			this.pinBoardBadges.refresh();
+		}
+
 		public saveNewPlace(request) {
 			var self = this;
 			this.apiPost("checkin", request, (req) => {
 
-				this.pinBoardBadges.cities = req.topCities;
-				this.pinBoardBadges.countries = req.countryCodes;
-				this.pinBoardBadges.states = req.stateCodes;
-			  this.pinBoardBadges.refresh();
+				this.refreshBadges(req);
 
 				var moveToLocation = null;
 
@@ -321,9 +329,7 @@
 				if (moveToLocation) {
 					self.mapsManager.mapsDriver.moveToAnimated(moveToLocation.Lat, moveToLocation.Lng, 5);
 				}
-
-				this.setStatsRibbon(req.citiesCount, req.countriesCount, req.worldTraveledPercent, req.statesCount);
-			
+					
 				self.mapsManager.mapsDataLoader.mapToViewData();
 				self.mapsManager.redrawDataCallback();
 			});

@@ -330,8 +330,9 @@ q, .quote {
         }
         &:hover {
             .thumbnail {
+                cursor: pointer; cursor: hand;
                 img {
-                    opacity: .5;
+                    opacity: 1 !important;
                 }
             }
         }
@@ -343,43 +344,6 @@ q, .quote {
     }
 }
 
-.badges2 {
-    @include size(100% auto);
-
-    table {        
-            border: 0;
-            width: 100%;
-        }
-        td {
-            background-color: white !important;
-            padding: 0px;
-        }
-
-    .badge {
-       
-        .thumbnail {
-           background-color: white;
-           border: 0;
-            img {                
-                border-radius: 44px;
-            }
-        }        
-    }
-
-    @include tablet{
-        .badge{
-         
-            .thumbnail img {
-                width: 66px;
-                height: 66px;
-            }
-        }
-
-        .btext{
-            height: 50px;
-        }
-    }
-}
 
 /* Comments */
 

@@ -3071,31 +3071,13 @@ q, .quote {
       position: absolute;
       top: 5px;
       right: 5px; }
-    .badges .badge:hover .thumbnail img {
-      opacity: .5; }
+    .badges .badge:hover .thumbnail {
+      cursor: pointer;
+      cursor: hand; }
+      .badges .badge:hover .thumbnail img {
+        opacity: 1 !important; }
     .badges .badge.active .thumbnail {
       border-color: rgba(114, 207, 114, 0.4); }
-
-.badges2 {
-  height: auto;
-  width: 100%; }
-  .badges2 table {
-    border: 0;
-    width: 100%; }
-  .badges2 td {
-    background-color: white !important;
-    padding: 0px; }
-  .badges2 .badge .thumbnail {
-    background-color: white;
-    border: 0; }
-    .badges2 .badge .thumbnail img {
-      border-radius: 44px; }
-  @media screen and (max-width: 959px) {
-    .badges2 .badge .thumbnail img {
-      width: 66px;
-      height: 66px; }
-    .badges2 .btext {
-      height: 50px; } }
 
 /* Comments */
 .comments .thumbnail {

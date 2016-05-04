@@ -34,7 +34,7 @@ var Maps;
             });
         };
         BaseMapsOperation3D.prototype.drawPin = function (place) {
-            var marker = WE.marker([place.lat, place.lng]).addTo(this.mapObj);
+            var marker = WE.marker([place.lat, place.lng], '../images/visited-ico.png', 26, 31).addTo(this.mapObj);
             marker.gid = place.geoNamesId;
             this.markers.push(marker);
             return marker;
@@ -68,7 +68,7 @@ var Maps;
         };
         BaseMapsOperation3D.prototype.drawPoint = function (point) { };
         return BaseMapsOperation3D;
-    }());
+    })();
     Maps.BaseMapsOperation3D = BaseMapsOperation3D;
 })(Maps || (Maps = {}));
 //# sourceMappingURL=BaseMapsOperation3D.js.map

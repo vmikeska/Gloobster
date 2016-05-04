@@ -60,9 +60,14 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 
 	    private async Task<PinBoardStatResponse> CreateResponse(AddedPlacesResultDO checkedDO)
 	    {
-	        var response = new PinBoardStatResponse();
-
-	        if (checkedDO.Countries != null)
+	        var responser = new PinsResponser
+	        {
+	            PinBoardStats = PinBoardStats
+	        };
+            
+	        var response = await responser.Create(UserId);
+            
+            if (checkedDO.Countries != null)
 	        {
 	            response.visitedCountries = checkedDO.Countries.Select(c => c.ToResponse()).ToArray();
 	        }
@@ -81,30 +86,6 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 	        {
 	            response.visitedStates = checkedDO.States.Select(s => s.ToResponse()).ToArray();
 	        }
-
-	        var stats = await PinBoardStats.GetStatsAsync(UserId);
-
-	        response.citiesCount = stats.CitiesCount;
-	        response.countriesCount = stats.CountriesCount;
-	        response.worldTraveledPercent = stats.WorldTraveledPercent;
-	        response.statesCount = stats.StatesCount;
-
-	        response.africaCities = stats.AfricaCities;
-	        response.asiaCities = stats.AsiaCities;
-	        response.northAmericaCities = stats.NorthAmericaCities;
-	        response.southAmericaCities = stats.SouthAmericaCities;
-	        response.europeCities = stats.EuropeCities;
-
-            response.topCities = new List<int>();
-            response.topCities.AddRange(stats.AfricaCities);
-            response.topCities.AddRange(stats.AsiaCities);
-            response.topCities.AddRange(stats.EuropeCities);
-            response.topCities.AddRange(stats.NorthAmericaCities);
-            response.topCities.AddRange(stats.SouthAmericaCities);
-            response.topCities.AddRange(stats.AustraliaCities);
-
-            response.stateCodes = stats.StateCodes;
-            response.countryCodes = stats.CountryCodes;
 
             return response;
 	    }
@@ -127,4 +108,40 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 
 		
 	}
+
+    public class PinsResponser
+    {
+        public IPinBoardStats PinBoardStats { get; set; }
+
+        public async Task<PinBoardStatResponse> Create(string userId)
+        {
+            var response = new PinBoardStatResponse();
+
+            var stats = await PinBoardStats.GetStatsAsync(userId);
+
+            response.citiesCount = stats.CitiesCount;
+            response.countriesCount = stats.CountriesCount;
+            response.worldTraveledPercent = stats.WorldTraveledPercent;
+            response.statesCount = stats.StatesCount;
+
+            response.africaCities = stats.AfricaCities;
+            response.asiaCities = stats.AsiaCities;
+            response.northAmericaCities = stats.NorthAmericaCities;
+            response.southAmericaCities = stats.SouthAmericaCities;
+            response.europeCities = stats.EuropeCities;
+
+            response.topCities = new List<int>();
+            response.topCities.AddRange(stats.AfricaCities);
+            response.topCities.AddRange(stats.AsiaCities);
+            response.topCities.AddRange(stats.EuropeCities);
+            response.topCities.AddRange(stats.NorthAmericaCities);
+            response.topCities.AddRange(stats.SouthAmericaCities);
+            response.topCities.AddRange(stats.AustraliaCities);
+
+            response.stateCodes = stats.StateCodes;
+            response.countryCodes = stats.CountryCodes;
+
+            return response;
+        }
+    }
 }

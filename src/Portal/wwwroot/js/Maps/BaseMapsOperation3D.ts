@@ -44,9 +44,9 @@
 					return marker.gid === gid;
 				});			
 		}
-
+			
 		public drawPin(place: PlaceMarker) {
-			var marker = WE.marker([place.lat, place.lng]).addTo(this.mapObj);
+				var marker = WE.marker([place.lat, place.lng], '../images/visited-ico.png', 26, 31 ).addTo(this.mapObj);
 			marker.gid = place.geoNamesId;
 			this.markers.push(marker);
 			return marker;

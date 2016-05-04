@@ -65,6 +65,22 @@
       <en>Your map was successfully shared</en>
     </MapShared>
 
+    <ClickCheck>
+      <en>Click here to mark this city as visited</en>
+    </ClickCheck>
+
+    <ClickDelete>
+      <en>Click here to remove this city from visited cities</en>
+    </ClickDelete>
+
+    <DelDialogTitle>
+      <en>Remove city</en>
+    </DelDialogTitle>
+
+    <DelDialogBody>
+      <en>Do you want to remove this city from the list of cities you've visited ?</en>
+    </DelDialogBody>
+
     
 
   </module>

@@ -4,6 +4,7 @@ var Maps;
         function BaseMapsOperation2D() {
             this.polygons = [];
             this.markers = [];
+            this.visitedPin = null;
             var source = $("#cityPopup-template").html();
             this.cityPopupTemplate = Handlebars.compile(source);
         }
@@ -17,8 +18,19 @@ var Maps;
             }).addTo(this.mapObj);
             this.markers.push(polygon);
         };
+        BaseMapsOperation2D.prototype.getVisitedPin = function () {
+            if (this.visitedPin == null) {
+                this.visitedPin = L.icon({
+                    iconUrl: '../images/visited-ico.png',
+                    iconSize: [26, 31],
+                    iconAnchor: [13, 31],
+                    popupAnchor: [-3, -76]
+                });
+            }
+            return this.visitedPin;
+        };
         BaseMapsOperation2D.prototype.drawPin = function (place) {
-            var marker = L.marker([place.lat, place.lng]).addTo(this.mapObj);
+            var marker = L.marker([place.lat, place.lng], { icon: this.getVisitedPin() }).addTo(this.mapObj);
             marker.gid = place.geoNamesId;
             this.markers.push(marker);
             return marker;
@@ -77,7 +89,7 @@ var Maps;
             return this.mapObj.getZoom();
         };
         return BaseMapsOperation2D;
-    }());
+    })();
     Maps.BaseMapsOperation2D = BaseMapsOperation2D;
 })(Maps || (Maps = {}));
 //# sourceMappingURL=BaseMapsOperation2D.js.map
