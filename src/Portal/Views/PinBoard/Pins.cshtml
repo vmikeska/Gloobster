@@ -58,12 +58,15 @@
     function onBodyLoad() {
 
         currentView = new Views.PinBoardView();
-        
+
         currentView.initialize();
 
         currentView.pinBoardBadges.cities = @Html.Raw(topCitiesStr);
         currentView.pinBoardBadges.countries = @Html.Raw(countryCodesStr);
         currentView.pinBoardBadges.states = @Html.Raw(stateCodesStr);
+
+        var gidToTitle = @Html.Raw(JsonConvert.SerializeObject(Model.GidToTitle));
+        currentView.pinBoardBadges.gidToTitle = gidToTitle;
 
         var friends = @Html.Raw(JsonConvert.SerializeObject(Model.Friends));
         var f = _.map(friends, function(i) { return {id: i.Id, displayName: i.DisplayName};});

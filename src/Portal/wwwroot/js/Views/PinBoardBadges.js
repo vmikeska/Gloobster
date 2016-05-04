@@ -122,9 +122,17 @@ var Views;
         };
         PinBoardBadges.prototype.genContCitiesSection = function (continentName, cities) {
             var _this = this;
-            var $html = $("<div class=\"cell\"><h2>" + continentName + "</h2><div class=\"badges b3x3 grid\"></div>");
+            var $html = $("<div class=\"cell\"><h3>" + continentName + "</h3><div class=\"badges b3x3 grid\"></div>");
             cities.forEach(function (city) {
-                var $badge = $("<div class=\"cell\"> <span class=\"badge\"> <span class=\"thumbnail\"> <img src=\"../images/badges/" + city.i + "\"> </span>" + city.n + "</span> </div>");
+                var name = "";
+                var title = _this.gidToTitle[city.g.toString()];
+                if (title) {
+                    name = "<a href=\"/wiki/" + title + "\">" + city.n + "</a>";
+                }
+                else {
+                    name = city.n;
+                }
+                var $badge = $("<div class=\"cell\"> <span class=\"badge\"> <span class=\"thumbnail\"> <img src=\"../images/badges/" + city.i + "\"> </span>" + name + "</span> </div>");
                 $html.find(".badges").append($badge);
                 var visited = _.contains(_this.cities, city.g);
                 if (visited) {

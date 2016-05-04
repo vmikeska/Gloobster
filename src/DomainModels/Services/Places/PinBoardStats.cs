@@ -68,6 +68,21 @@ namespace Gloobster.DomainModels.Services.Places
 
     public class StatCities
     {
+        public static List<int> AllCities
+        {
+            get
+            {
+                var cities = new List<int>();
+                cities.AddRange(EuropeCities);
+                cities.AddRange(AsiaCities);
+                cities.AddRange(NorthAmericaCities);
+                cities.AddRange(SouthAmericaCities);
+                cities.AddRange(AfricaCities);
+                cities.AddRange(AustraliaCities);
+                return cities;
+            }
+        }
+
         public static List<int> EuropeCities =
             new List<int> { 2643743, 3128760, 2988507, 3169070, 3067696, 2759794, 2950159, 3054643, 745044 };
 

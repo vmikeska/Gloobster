@@ -3,6 +3,8 @@ using Gloobster.Entities;
 using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.DomainInterfaces;
+using Gloobster.DomainModels.Services.Places;
+using Gloobster.Entities.Wiki;
 using MongoDB.Bson;
 
 namespace Gloobster.Portal.ViewModels
@@ -17,11 +19,30 @@ namespace Gloobster.Portal.ViewModels
         public List<string> StateCodes { get; set; }
         public List<int> TopCities { get; set; }
 
+        public Dictionary<int, string> GidToTitle { get; set; }
+
         public List<Friend> Friends { get; set; }
         public bool ShowFacebookPermissionsDialog { get; set; }
-        
 
-        public async Task InitializeExists(string userId, bool showFbDialog, IPinBoardStats stats)
+        private Dictionary<int, string> GetGidToTitle()
+        {
+            var allCities = StatCities.AllCities;
+            var dict = new Dictionary<int, string>();
+
+            var cities = DB.List<WikiCityEntity>(c => allCities.Contains(c.GID));
+            var cid = cities.Select(c => c.id).ToList();
+            var texts = DB.List<WikiTextsEntity>(c => cid.Contains(c.Article_id));
+
+            foreach (var city in cities)
+            {
+                var text = texts.FirstOrDefault(t => t.Article_id == city.id);
+                dict.Add(city.GID, text.LinkName);
+            }
+
+            return dict;
+        }
+
+        public async Task Initialize(string userId, bool showFbDialog, IPinBoardStats stats)
         {
             var statRes = await stats.GetStatsAsync(userId);
 
@@ -45,6 +66,8 @@ namespace Gloobster.Portal.ViewModels
             Friends = GetFriends(userId);
 
             ShowFacebookPermissionsDialog = showFbDialog;
+
+            GidToTitle = GetGidToTitle();
         }
 
         private List<Friend> GetFriends(string userId)

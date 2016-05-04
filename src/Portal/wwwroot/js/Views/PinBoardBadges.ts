@@ -7,6 +7,8 @@ module Views {
 		public countries: string[];
 		public states: string[];
 
+		public gidToTitle: any;
+
 		public visitedTotal = 0;
 
 		private europeCities = [
@@ -80,7 +82,7 @@ module Views {
 		 { i: "brisbane.png", n: "Brisbane", g: 2174003 },
 		 { i: "adelaide.png", n: "Adelaide", g: 2078025 }
 		];
-
+			
 		get mapsDataLoader(): Maps.MapsDataLoader {
 			var mdl = ViewBase.currentView["mapsManager"].mapsDataLoader;
 			return mdl;
@@ -142,11 +144,19 @@ module Views {
 
 		private genContCitiesSection(continentName: string, cities) {
 				
-			var $html = $(`<div class="cell"><h2>${continentName}</h2><div class="badges b3x3 grid"></div>`);
+			var $html = $(`<div class="cell"><h3>${continentName}</h3><div class="badges b3x3 grid"></div>`);
 			
-			cities.forEach((city) => {					
+			cities.forEach((city) => {
 
-				var $badge = $(`<div class="cell"> <span class="badge"> <span class="thumbnail"> <img src="../images/badges/${city.i}"> </span>${city.n}</span> </div>`);
+					var name = "";
+					var title = this.gidToTitle[city.g.toString()];
+					if (title) {
+						name = `<a href="/wiki/${title}">${city.n}</a>`;
+					} else {
+						name = city.n;
+					}
+
+				var $badge = $(`<div class="cell"> <span class="badge"> <span class="thumbnail"> <img src="../images/badges/${city.i}"> </span>${name}</span> </div>`);
 				$html.find(".badges").append($badge);
 				
 				var visited = _.contains(this.cities, city.g);	

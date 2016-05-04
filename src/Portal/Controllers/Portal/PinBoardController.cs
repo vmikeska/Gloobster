@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Autofac;
 using Gloobster.Database;
 using Gloobster.Portal.Controllers.Base;
@@ -51,12 +52,12 @@ namespace Gloobster.Portal.Controllers.Portal
             if (UserIdObj.HasValue)
             {
                 await ExtractPlaces();                
-                await vm.InitializeExists(UserId, _showFbDialog, Stats);                
+                await vm.Initialize(UserId, _showFbDialog, Stats);                
             }
             
             return View(vm);
 		}
-
+        
         private async Task ExtractPlaces()
         {            
             if (HasSocNet(SocialNetworkType.Facebook))
