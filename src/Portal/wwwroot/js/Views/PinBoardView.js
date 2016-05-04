@@ -81,7 +81,6 @@ var Views;
             this.mapsManager = new Maps.MapsManager();
             this.mapsManager.onDataChanged = function () {
                 _this.pinBoardBadges.refresh();
-                $("#TopCitiesCount").text(_this.pinBoardBadges.visitedTotal);
             };
             this.mapsManager.switchToView(Maps.ViewType.D2, Maps.DisplayEntity.Pin);
             this.pinBoardBadges = new Views.PinBoardBadges();
@@ -276,7 +275,7 @@ var Views;
             });
         };
         return PinBoardView;
-    }(Views.ViewBase));
+    })(Views.ViewBase);
     Views.PinBoardView = PinBoardView;
 })(Views || (Views = {}));
 //# sourceMappingURL=PinBoardView.js.map

@@ -5059,6 +5059,24 @@ input.heading {
   .upload-progressbar .button {
     padding: 6px 9px; }
 
+/* Fix 26.4.2016 */
+.badges.b3x3 .badge {
+  margin: 0 6px 10px 6px; }
+
+@media screen and (max-width: 959px) {
+  .badges .badge {
+    font-size: 14px;
+    width: 66px; }
+  .badges .badge .thumbnail {
+    border-radius: 33px;
+    border-width: 3px; }
+  .badges .badge .thumbnail, .badges .badge .thumbnail img {
+    height: 60px;
+    width: 60px; }
+  .badges .badge [class^="icon-"] {
+    right: 2px;
+    top: 2px; } }
+
 /*custom*/
 @media screen and (max-width: 959px) {
   .gallery-photos img {

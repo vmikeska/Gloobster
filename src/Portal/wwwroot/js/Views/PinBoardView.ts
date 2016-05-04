@@ -90,8 +90,10 @@
 		public initialize() {		 
 			this.mapsManager = new Maps.MapsManager();
 			this.mapsManager.onDataChanged = () => {
-				this.pinBoardBadges.refresh();
-				$("#TopCitiesCount").text(this.pinBoardBadges.visitedTotal);
+					this.pinBoardBadges.refresh();
+
+				//$("#TopCitiesCount").text(this.pinBoardBadges.visitedTotal);
+					//??
 			};
 			this.mapsManager.switchToView(Maps.ViewType.D2, Maps.DisplayEntity.Pin);
 			

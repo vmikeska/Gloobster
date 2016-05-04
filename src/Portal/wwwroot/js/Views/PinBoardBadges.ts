@@ -88,13 +88,14 @@ module Views {
 
 		public refresh() {			
 			$("#bdgs").html("");
-			 var $cont = $(`<table><tr></tr><tr></tr></table>`);
-				
+			 
 			 this.aggregateCountries();
 
-			 this.generateCities($cont);			 
-			 $("#bdgs").html($cont);
-			 this.generateOverview();
+			 var $overview = this.generateOverview();
+			 $("#bdgs").append($overview);
+
+			 var $cities = this.generateCities();			 
+			 $("#bdgs").append($cities);			 
 		}
 	 
 		private aggregateCountries() {		 
@@ -116,57 +117,45 @@ module Views {
 
 			var html = afrHtml + eurHtml + asiHtml + ausHtml + naHtml + saHtml + euHtml + usHtml;
 			var allHtml = `<div class="badges grid margin2 citiesCont" style="text-align: center">${html}</div>`;
-			return $("#bdgs").prepend(allHtml);			
-		}
-	 
-		private generateCities($cont) {
-
-		 var $ftr = $cont.find("tr").first();
-		 var $ltr = $cont.find("tr").last();
-
-		 var $naHtml = this.genContCitiesSection(ViewBase.currentView.t("NorthAmerica", "jsPins"), this.naCities);
-		 $ftr.append($naHtml);
-		 var $eurHtml = this.genContCitiesSection(ViewBase.currentView.t("Europe", "jsPins"), this.europeCities);
-		 $ftr.append($eurHtml);
-		 var $auHtml = this.genContCitiesSection(ViewBase.currentView.t("Australia", "jsPins"), this.australiaCities);
-		 $ftr.append($auHtml);
-		 var $asiHtml = this.genContCitiesSection(ViewBase.currentView.t("Asia", "jsPins"), this.asiaCities);
-		 $ltr.append($asiHtml);			
-		 var $saHtml = this.genContCitiesSection(ViewBase.currentView.t("LatinAmerica", "jsPins"), this.saCities);
-		 $ltr.append($saHtml);
-		 var $afHtml = this.genContCitiesSection(ViewBase.currentView.t("Africa", "jsPins"), this.afCities);
-		 $ltr.append($afHtml);			
+			return $(allHtml);			
 		}
 
-		private genContCitiesSection(continentName: string, cities) {			
-		 this.visitedTotal = 0;
-			
-			var $html = $(`<td><table><tr><td colspan="3"><h3>${continentName}</h3></td></tr></table></td>`);
-			var $tr;
-			var $trText;
-			var act = 0;
-			cities.forEach((city) => {
+		private generateCities() {
 
-			 if (act === 0 || (act % 3 === 0)) {
-				 $tr = $("<tr></tr>");
-				 $trText = $("<tr></tr>");
-				 $html.find("tr").last().after($tr);
-				 $html.find("tr").last().after($trText);
-			 }
+			var $html = $(`<div class="grid col3"></div>`);
 
-			 var visited = _.contains(this.cities, city.g);
+			var $naHtml = this.genContCitiesSection(ViewBase.currentView.t("NorthAmerica", "jsPins"), this.naCities);
+			$html.append($naHtml);
+			var $eurHtml = this.genContCitiesSection(ViewBase.currentView.t("Europe", "jsPins"), this.europeCities);
+			$html.append($eurHtml);
+			var $auHtml = this.genContCitiesSection(ViewBase.currentView.t("Australia", "jsPins"), this.australiaCities);
+			$html.append($auHtml);
+			var $asiHtml = this.genContCitiesSection(ViewBase.currentView.t("Asia", "jsPins"), this.asiaCities);
+			$html.append($asiHtml);
+			var $saHtml = this.genContCitiesSection(ViewBase.currentView.t("LatinAmerica", "jsPins"), this.saCities);
+			$html.append($saHtml);
+			var $afHtml = this.genContCitiesSection(ViewBase.currentView.t("Africa", "jsPins"), this.afCities);
+			$html.append($afHtml);
+
+			return $html;
+		}
+
+		private genContCitiesSection(continentName: string, cities) {
 				
-			 var $badge = $(`<td><span class="badge"><span class="thumbnail"><img src="../images/badges/${city.i}"></span></span></td>`);
-			 var $text = $(`<td class="btext"><span>${city.n}</span></td>`);
+			var $html = $(`<div class="cell"><h2>${continentName}</h2><div class="badges b3x3 grid"></div>`);
+			
+			cities.forEach((city) => {					
+
+				var $badge = $(`<div class="cell"> <span class="badge"> <span class="thumbnail"> <img src="../images/badges/${city.i}"> </span>${city.n}</span> </div>`);
+				$html.find(".badges").append($badge);
+				
+				var visited = _.contains(this.cities, city.g);	
 				if (visited) {
 					$badge.find(".badge").addClass("active");
 				} else {
 					$badge.find(".badge").css("opacity", 0.5);
 				}
-
-				$tr.append($badge);
-				$trText.append($text);
-				act++;
+					
 			});
 
 			return $html;
@@ -175,8 +164,8 @@ module Views {
 
 		private genOverviewItem(img, visitedCnt, totalCnt, name) {
 		 var imgLink = "../images/badges/" + img;
-		 
-		 return `<div class="cell"><span class="badge active"><span class="thumbnail"><img src="${imgLink}"></span>${visitedCnt}/${totalCnt} <b>${name}</b></span></div>`;		 
+				
+		 return `<div class="cell"><span class="badge"><span class="thumbnail"><img src="${imgLink}"></span>${visitedCnt}/${totalCnt} <b>${name}</b></span></div>`;		 
 		}
 	}
 }
