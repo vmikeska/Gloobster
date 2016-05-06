@@ -1,4 +1,5 @@
 ﻿@using System.Threading.Tasks
+@using Gloobster.Common
 @using Gloobster.Portal.ViewModels;
 @model ViewModelBase
 
@@ -6,6 +7,11 @@
     <li><a class="MenuPinBoard" asp-controller="PinBoard" asp-action="Pins">@Model.W("MenuPins", "layout")</a></li>
     <li><a class="MenuTrip" asp-controller="Trip" asp-action="List">@Model.W("MenuTrips", "layout")</a></li>
     <li><a class="MenuWiki" asp-controller="Wiki" asp-action="Home">@Model.W("MenuWiki", "layout")</a></li>
+
+    @if (GloobsterConfig.IsLocal)
+    {
+        <li><a class="Search" asp-controller="Destination" asp-action="Planning">Home2</a></li>
+    }
 
     @if (!Model.IsUserLogged && !(Model is ViewModelHome))
     {

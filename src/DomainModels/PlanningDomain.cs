@@ -93,7 +93,7 @@ namespace Gloobster.DomainModels
 		private async Task<bool> ChangeCountrySelectionWeekend(CountrySelectionDO selection)
 		{
 			var userIdObj = new ObjectId(selection.UserId);
-			var weekend = DB.C<PlanningWeekendEntity>().FirstOrDefault(u => u.User_id == userIdObj);
+			var weekend = DB.FOD<PlanningWeekendEntity>(u => u.User_id == userIdObj);
 
 			bool hasCountry = weekend.CountryCodes.Contains(selection.CountryCode);
 
@@ -121,7 +121,7 @@ namespace Gloobster.DomainModels
 		{
 			var userIdObj = new ObjectId(selection.UserId);
 			var customIdObj = new ObjectId(selection.CustomId);
-			var custom = DB.C<PlanningCustomEntity>().FirstOrDefault(u => u.User_id == userIdObj);
+			var custom = DB.FOD<PlanningCustomEntity>(u => u.User_id == userIdObj);
 			var customSearch = custom.Searches.FirstOrDefault(s => s.id == customIdObj);
 
 			if (customSearch == null)
@@ -155,7 +155,7 @@ namespace Gloobster.DomainModels
 		{
 			var userIdObj = new ObjectId(selection.UserId);
 			var customIdObj = new ObjectId(selection.CustomId);
-			var custom = DB.C<PlanningCustomEntity>().FirstOrDefault(u => u.User_id == userIdObj);
+			var custom = DB.FOD<PlanningCustomEntity>(u => u.User_id == userIdObj);
 			
 			var customSearch = custom.Searches.FirstOrDefault(s => s.id == customIdObj);
 
@@ -189,7 +189,7 @@ namespace Gloobster.DomainModels
 		private async Task<bool> ChangeCitySelectionAnytime(CitySelectionDO selection)
 		{
 			var userIdObj = new ObjectId(selection.UserId);
-			var anytime = DB.C<PlanningAnytimeEntity>().FirstOrDefault(u => u.User_id == userIdObj);
+			var anytime = DB.FOD<PlanningAnytimeEntity>(u => u.User_id == userIdObj);
 
 			bool hasCity = anytime.Cities.Contains(selection.GID);
 
@@ -215,7 +215,7 @@ namespace Gloobster.DomainModels
 		private async Task<bool> ChangeCitySelectionWeekend(CitySelectionDO selection)
 		{
 			var userIdObj = new ObjectId(selection.UserId);
-			var anytime = DB.C<PlanningWeekendEntity>().FirstOrDefault(u => u.User_id == userIdObj);
+			var anytime = DB.FOD<PlanningWeekendEntity>(u => u.User_id == userIdObj);
 
 			bool hasCity = anytime.Cities.Contains(selection.GID);
 
@@ -297,9 +297,9 @@ namespace Gloobster.DomainModels
 		public async void CreateDBStructure(string userId)
 	    {
 			var userIdObj = new ObjectId(userId);
-			var user = DB.C<UserEntity>().FirstOrDefault(e => e.id == userIdObj);
+			var user = DB.FOD<UserEntity>(e => e.User_id == userIdObj);
 
-			var weekend = DB.C<PlanningWeekendEntity>().FirstOrDefault(e => e.User_id == userIdObj);
+			var weekend = DB.FOD<PlanningWeekendEntity>(e => e.User_id == userIdObj);
 		    if (weekend == null)
 		    {
 			    weekend = new PlanningWeekendEntity
@@ -313,7 +313,7 @@ namespace Gloobster.DomainModels
 			    await DB.SaveAsync(weekend);
 		    }
 
-			var anytime = DB.C<PlanningAnytimeEntity>().FirstOrDefault(e => e.User_id == userIdObj);
+			var anytime = DB.FOD<PlanningAnytimeEntity>(e => e.User_id == userIdObj);
 			if (anytime == null)
 			{
 				anytime = new PlanningAnytimeEntity
@@ -326,7 +326,7 @@ namespace Gloobster.DomainModels
 				await DB.SaveAsync(anytime);
 			}
 
-			var custom = DB.C<PlanningCustomEntity>().FirstOrDefault(e => e.User_id == userIdObj);
+			var custom = DB.FOD<PlanningCustomEntity>(e => e.User_id == userIdObj);
 			if (custom == null)
 			{
 				var search1 = new CustomSearchSE
