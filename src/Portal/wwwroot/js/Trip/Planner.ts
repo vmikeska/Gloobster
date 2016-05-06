@@ -148,7 +148,7 @@
 		}
 
 		public updateRibbonDate(placeId: string, livingArriving: string, date: Date) {
-			$("#" + placeId).find("." + livingArriving).text(this.formatShortDateTime(date));
+			$(`#${placeId}`).find(`.${livingArriving}`).text(this.formatShortDateTime(date));
 		}
 
 		private getTravelIcon(travelType) {
@@ -172,6 +172,17 @@
 			}
 		}
 
+			
+		private regDateLinks($root) {
+				$root.find(".dateLink").click((e) => {
+				e.preventDefault();
+				var $t = $(e.target);
+				var pid = $t.data("pid");
+				var $elem = $(`#${pid}`).find(".transport");
+				this.setActiveTravel($elem);
+			});
+		}
+
 		public addTravel(travel: Travel, inverseColor: boolean) {
 
 			var context = {
@@ -188,6 +199,7 @@
 
 			var html = this.travelTemplate(context);
 			var $html = $(html);
+				
 			$html.find(".transport").click("*", (e) => {
 				var $elem = $(e.delegateTarget);
 				this.setActiveTravel($elem);
@@ -232,18 +244,22 @@
 				rowNo: this.lastRowNo,
 				isFirstDay: (place.arriving == null),
 				colorClassArriving: "",
-				colorClassLeaving: ""
+				colorClassLeaving: "",
+				arrivingId: "",				
+				leavingId: ""
 			}
 
 			if (place.arriving != null) {
 				var da = place.arriving.arrivingDateTime;
 				context.arrivingDate = this.formatShortDateTime(da);
 				context.arrivalDateLong = this.formatShortDateTime(da) + `${da.getUTCFullYear()}`;
+				context.arrivingId = place.arriving.id;
 			}
 
 			if (place.leaving != null) {
 				var dl = place.leaving.leavingDateTime;
 				context.leavingDate = this.formatShortDateTime(dl);
+				context.leavingId = place.leaving.id;
 			}
 
 			if (inverseColor) {
@@ -256,6 +272,7 @@
 
 			var html = this.placeTemplate(context);
 			var $html = $(html);
+			this.regDateLinks($html);
 
 			$html.find(".destination").click("*", (e) => {
 				self.dialogManager.deactivate();

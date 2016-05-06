@@ -49,16 +49,16 @@
             </div>
 
             @foreach(var trip in Model.Trips)
-                        {
-                            await Html.RenderPartialAsync("TripItemRow", (object)trip);
-                        }
+            {
+                await Html.RenderPartialAsync("TripItemRow", (object)trip);
+            }
 
             <div class="row nohover">
                 <div class="cell">
                     <div class="photo create"></div>
                 </div>
                 <div class="cell">
-                    <textarea id = "newTrip" placeholder="@Model.W("NewTripName")"></textarea>
+                    <textarea id="newTrip" placeholder="@Model.W("NewTripName")"></textarea>
                 </div>
                 <div class="cell"></div>
                 <div class="cell"></div>
@@ -97,6 +97,10 @@
     function onBodyLoad() {
         currentView = new Views.TripListView();
 
-        var txt = currentView.t("MenuPins", "jsLayout");        
+        $(".editBtn").click((e) => {
+            e.preventDefault();
+            var $t = $(e.target);
+            window.location.href = '/trip/detail/' + $t.data("id");
+        });
     }
 </script>

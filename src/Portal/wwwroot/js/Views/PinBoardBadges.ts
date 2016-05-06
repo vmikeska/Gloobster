@@ -168,8 +168,8 @@ module Views {
 						$badge.find("img").css("opacity", 0.5);
 						$b.attr("title", ViewBase.currentView.t("ClickCheck", "jsPins"));
 				}
-
-				$b.click((e) => this.badgeClick(e));
+					
+				$badge.find(".thumbnail").click((e) => this.badgeClick(e));
 
 			});
 

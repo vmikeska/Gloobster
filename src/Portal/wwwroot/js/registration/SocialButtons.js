@@ -25,9 +25,10 @@ var Reg;
             hint.create("You are successfully connected!");
             $("#MenuRegister").parent().remove();
             this.getUserMenu(function (r) {
-                $("#ddMenus").append(r);
+                var $menu = $(r);
+                $("#ddMenus").append($menu);
                 var dd = new Common.DropDown();
-                dd.initBody();
+                dd.registerDropDown($menu);
             });
             if (this.onAfterCustom) {
                 this.onAfterCustom(net);
@@ -69,7 +70,7 @@ var Reg;
             });
         };
         return LoginButtonsManager;
-    }());
+    })();
     Reg.LoginButtonsManager = LoginButtonsManager;
     var LoginResponseValidator = (function () {
         function LoginResponseValidator() {
@@ -88,7 +89,7 @@ var Reg;
             return true;
         };
         return LoginResponseValidator;
-    }());
+    })();
     Reg.LoginResponseValidator = LoginResponseValidator;
     var AuthCookieSaver = (function () {
         function AuthCookieSaver() {
@@ -119,7 +120,7 @@ var Reg;
             return false;
         };
         return AuthCookieSaver;
-    }());
+    })();
     Reg.AuthCookieSaver = AuthCookieSaver;
     var TwitterButtonInit = (function () {
         function TwitterButtonInit(btn) {
@@ -156,7 +157,7 @@ var Reg;
             }, 500);
         };
         return TwitterButtonInit;
-    }());
+    })();
     Reg.TwitterButtonInit = TwitterButtonInit;
     var GoogleButtonInit = (function () {
         function GoogleButtonInit(btnId) {
@@ -188,7 +189,7 @@ var Reg;
             btnGoogle.initialize(btnId);
         };
         return GoogleButtonInit;
-    }());
+    })();
     Reg.GoogleButtonInit = GoogleButtonInit;
     var FacebookButtonInit = (function () {
         function FacebookButtonInit(btnId) {
@@ -228,7 +229,7 @@ var Reg;
             fbInit.initialize(callback);
         };
         return FacebookButtonInit;
-    }());
+    })();
     Reg.FacebookButtonInit = FacebookButtonInit;
 })(Reg || (Reg = {}));
 //# sourceMappingURL=SocialButtons.js.map

@@ -4,26 +4,80 @@ using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.Portal.Controllers.Base;
 using Microsoft.AspNet.Mvc;
-using MongoDB.Bson;
 using Gloobster.DomainInterfaces;
-using Gloobster.DomainModels.Services.GeonamesService;
-using Gloobster.DomainModels.Wiki;
-using Gloobster.Portal.ViewModels;
 using Serilog;
 using System.Linq;
-using System.Web;
 using Autofac;
 using Gloobster.Entities;
-using Microsoft.AspNet.Http;
+using Microsoft.AspNet.Http.Extensions;
 using UAParser;
 
 namespace Gloobster.Portal.Controllers.Portal
 {
+    public class DelModel
+    {
+        public int TotalEmptyAccounts { get; set; }
+        public int OlderThan3Days { get; set; }        
+
+        public string Test { get; set; }
+    }
+
     public class MyLogController : PortalBaseController
     {
         public MyLogController(ILogger log, IDbOperations db, IComponentContext cc, ILanguages langs) : base(log, db, cc, langs)
         {
 
+        }
+
+        public IActionResult UsersToDelete()
+        {
+            var accounts = GetAccountsToDelete();
+            var days3ago = DateTime.UtcNow.AddDays(-3);
+            var accounts3 = accounts.Where(a => a.Time < days3ago);
+
+            var url = Request.GetDisplayUrl();
+
+            return View(new DelModel {Test = url, TotalEmptyAccounts = accounts.Count, OlderThan3Days = accounts3.Count()});
+        }
+
+        public async Task<IActionResult> DeleteEmptyAccounts()
+        {
+            var accounts = GetAccountsToDelete();
+            var days3ago = DateTime.UtcNow.AddDays(-3);
+            var accounts3 = accounts.Where(a => a.Time < days3ago);
+
+            foreach (var ac in accounts3)
+            {
+                await DB.DeleteAsync<AccountEntity>(ac.id);
+            }
+            
+            return RedirectToAction("UsersToDelete", "MyLog");
+        }
+        
+        private List<AccountEntity> GetAccountsToDelete()
+        {
+            var users = DB.List<UserEntity>();
+            var userIds = users.Select(u => u.User_id);
+
+            var accounts = DB.List<AccountEntity>();
+
+            var accountsToDelete = new List<AccountEntity>();
+
+            foreach (var account in accounts)
+            {
+                bool hasUser = userIds.Contains(account.User_id);
+                if (!hasUser)
+                {
+                    accountsToDelete.Add(account);
+                }
+            }
+
+            return accountsToDelete;
+        }
+
+        private void DelUsers()
+        {
+            
         }
 
         public IActionResult Index()

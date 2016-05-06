@@ -82,7 +82,10 @@
     });
     $(document).on('click', '.popup2 .close', function (e) {
         e.preventDefault();
-        $(this).closest('.popup2').slideUp().data('target').removeClass('popup-open');
+        var $target = $(this).closest('.popup2').slideUp().data('target');
+        if ($target) {
+            $target.removeClass('popup-open');
+        }            
     });
     // scrollto
     $(document).on('click', '.scrollto, a[href^=#]', function (e) {

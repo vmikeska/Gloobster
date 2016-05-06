@@ -1816,20 +1816,20 @@ input.heading {
                 }
                 .button {
                     @extend .button.white;
-                    display: none;
+                    /*display: none;*/
                     float: right;
                     font-size: 20px;
                     line-height: 1.3;
                     padding: 9px 14px;
                 }
             }
-            &:hover {
+            /*&:hover {
                 p {
                     .button {
                         display: inline-block;
                     }
                 }
-            }
+            }*/
         }
         &.new {
             @include size(280px 350px);
@@ -2430,4 +2430,75 @@ input.heading {
   height: 40px;
   line-height: 40px;
   white-space: nowrap;
+}
+
+.place-search{
+    position: relative;
+    display: inline-block;
+
+    width: 250px;
+    height: 46px;    
+
+    font-size: 18px;
+    
+    .loader {
+        position: absolute; 
+        right: 25px; 
+        top: 7px;
+    }
+
+    .base-cont{
+
+        margin-top: 10px;
+
+        ul{
+            display: inline-block;
+        }        
+    }
+
+    .search-soc{
+        margin-left: 20px;
+        color: black;
+        font-size: 22px;
+    }
+
+    
+    li{
+        list-style: none;
+        margin-bottom: 3px;
+    }
+    
+
+    input {
+
+    }
+
+    .results {
+        width: 740px;
+
+        /*background-color: white;*/
+        background-color:rgba(255, 255, 255, 0.95);
+
+        position: absolute;
+        top: 47px;        
+
+        z-index: 99999;
+    }
+
+
+
+    .soc-nets {
+        width: 740px;
+        padding-left: 15px;
+
+        .soc-item {
+            width: 235px;
+            margin-right:3px;
+
+            float: left;
+
+            
+        }
+    }
+
 }

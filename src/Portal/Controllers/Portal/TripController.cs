@@ -40,6 +40,8 @@ namespace Gloobster.Portal.Controllers.Portal
         [CreateAccount]
         public async Task<IActionResult> List(string id)
         {
+
+
             var vm = CreateViewModelInstance<ViewModelTrips>();
             vm.DefaultLangModuleName = "pageTrips";
             vm.LoadClientTexts(new [] { "jsTrip" });
@@ -50,6 +52,14 @@ namespace Gloobster.Portal.Controllers.Portal
             if (IsUserLogged)
             {
                 var trips = DB.List<TripEntity>(t => t.User_id == UserIdObj);
+
+                if (!trips.Any())
+                {
+                    var tripName = vm.W("DefaultTripName");
+
+                    var tripEntity = await Demandor.CreateNewTripEntity(tripName, UserIdObj.Value);
+                    trips.Add(tripEntity);
+                }
 
                 var query = $"{{ 'Participants.User_id': ObjectId('{UserId}')}}";
                 var invitedTrips = await DB.FindAsync<TripEntity>(query);
@@ -189,8 +199,7 @@ namespace Gloobster.Portal.Controllers.Portal
 		    if (IsUserLogged)
 		    {
 		        var tripEntity = await Demandor.CreateNewTripEntity(id, UserIdObj.Value);
-		        //var userEntity = DB.FOD<UserEntity>(u => u.User_id == UserIdObj.Value);
-
+		        
 		        return RedirectToAction("Detail", "Trip", new {id = tripEntity.id.ToString()});
 		    }
 		    

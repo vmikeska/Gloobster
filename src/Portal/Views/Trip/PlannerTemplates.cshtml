@@ -29,10 +29,10 @@
 						</div>
 												
 				{{#if isFirstDay}}
-						<div class="timeline green" style="text-align: center">{{leavingDate}}</div>
+						<div class="timeline green" style="text-align: center"><a class="leavingDate" href="#">{{leavingDate}}</a></div>
 				{{else}}
-						<div class="timeline {{colorClassArriving}} arrivingDate">{{arrivingDate}}</div>
-						<div class="timeline {{colorClassLeaving}} leavingDate">{{leavingDate}}</div>
+						<div class="timeline {{colorClassArriving}}"><a data-pid="{{arrivingId}}" class="arrivingDate dateLink" href="#">{{arrivingDate}}</a></div>
+						<div class="timeline {{colorClassLeaving}}"><a data-pid="{{leavingId}}" class="leavingDate dateLink" href="#">{{leavingDate}}</a></div>
 				{{/if}}
 				
 		</div>

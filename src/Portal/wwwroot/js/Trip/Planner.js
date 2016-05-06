@@ -123,6 +123,16 @@ var Trip;
                     return "";
             }
         };
+        Planner.prototype.regDateLinks = function ($root) {
+            var _this = this;
+            $root.find(".dateLink").click(function (e) {
+                e.preventDefault();
+                var $t = $(e.target);
+                var pid = $t.data("pid");
+                var $elem = $("#" + pid).find(".transport");
+                _this.setActiveTravel($elem);
+            });
+        };
         Planner.prototype.addTravel = function (travel, inverseColor) {
             var _this = this;
             var context = {
@@ -175,16 +185,20 @@ var Trip;
                 rowNo: this.lastRowNo,
                 isFirstDay: (place.arriving == null),
                 colorClassArriving: "",
-                colorClassLeaving: ""
+                colorClassLeaving: "",
+                arrivingId: "",
+                leavingId: ""
             };
             if (place.arriving != null) {
                 var da = place.arriving.arrivingDateTime;
                 context.arrivingDate = this.formatShortDateTime(da);
                 context.arrivalDateLong = this.formatShortDateTime(da) + ("" + da.getUTCFullYear());
+                context.arrivingId = place.arriving.id;
             }
             if (place.leaving != null) {
                 var dl = place.leaving.leavingDateTime;
                 context.leavingDate = this.formatShortDateTime(dl);
+                context.leavingId = place.leaving.id;
             }
             if (inverseColor) {
                 context.colorClassArriving = "green";
@@ -196,6 +210,7 @@ var Trip;
             }
             var html = this.placeTemplate(context);
             var $html = $(html);
+            this.regDateLinks($html);
             $html.find(".destination").click("*", function (e) {
                 self.dialogManager.deactivate();
                 var $elem = $(e.delegateTarget);
@@ -209,7 +224,7 @@ var Trip;
             return dt.getUTCDate() + "." + (dt.getUTCMonth() + 1) + ".";
         };
         return Planner;
-    }());
+    })();
     Trip.Planner = Planner;
 })(Trip || (Trip = {}));
 //# sourceMappingURL=Planner.js.map

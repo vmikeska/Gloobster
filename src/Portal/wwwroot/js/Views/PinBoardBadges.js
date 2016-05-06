@@ -144,7 +144,7 @@ var Views;
                     $badge.find("img").css("opacity", 0.5);
                     $b.attr("title", Views.ViewBase.currentView.t("ClickCheck", "jsPins"));
                 }
-                $b.click(function (e) { return _this.badgeClick(e); });
+                $badge.find(".thumbnail").click(function (e) { return _this.badgeClick(e); });
             });
             return $html;
         };

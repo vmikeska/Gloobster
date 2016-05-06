@@ -18,8 +18,12 @@
       </ShareMap>
 
       <PlaceName>
-        <en>Place name</en>
+        <en>Search a place to pin</en>
       </PlaceName>
+
+    <SearchOnSoc>
+      <en>Search on social networks</en>
+    </SearchOnSoc>
 
       <Interested>
         <en>Interested</en>

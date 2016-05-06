@@ -5,6 +5,186 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Views;
 (function (Views) {
+    var PinBoardSearch = (function () {
+        function PinBoardSearch($root) {
+            this.baseProviders = this.provToStr([SourceType.City, SourceType.Country]);
+            this.socProv = [SourceType.FB, SourceType.S4, SourceType.Yelp];
+            this.socNetProviders = this.provToStr(this.socProv);
+            this.template = Views.ViewBase.currentView.registerTemplate("placeItem-template");
+            this.socNetsActive = false;
+            this.$root = $root;
+            this.$input = $root.find("input");
+            this.$ulCity = $root.find(".ul-city");
+            this.$ulCountry = $root.find(".ul-country");
+            this.$results = $root.find(".results");
+            this.regCallback();
+            this.regSearchSoc();
+        }
+        PinBoardSearch.prototype.show = function (show) {
+            if (show) {
+                this.$results.show();
+            }
+            else {
+                this.$results.hide();
+            }
+        };
+        PinBoardSearch.prototype.regSearchSoc = function () {
+            var _this = this;
+            this.$root.find(".search-soc").click(function (e) {
+                e.preventDefault();
+                _this.socNetsActive = !_this.socNetsActive;
+                var $nets = $(".soc-nets");
+                $nets.empty();
+                if (_this.socNetsActive) {
+                    _this.searchSoc();
+                }
+            });
+        };
+        PinBoardSearch.prototype.searchSoc = function () {
+            var _this = this;
+            var $nets = $(".soc-nets");
+            this.search(this.lastQuery, false, function (places) {
+                $nets.empty();
+                for (var act = 1; act <= _this.socProv.length; act++) {
+                    var type = _this.socProv[act - 1];
+                    var plcs = _this.getByType(places, type);
+                    var $box = _this.getBox(act);
+                    $nets.append($box);
+                    _this.fill(plcs, $box);
+                }
+            });
+        };
+        PinBoardSearch.prototype.cityTemp = function (item) {
+            return "<li data-value=\"" + item.sourceId + "\" data-type=\"" + item.sourceType + "\"> <span class=\"" + item.icoClass + " left mright10\"> </span><a href=\"#\">" + item.name + "</a><span class=\"color2\">, " + item.countryCode + "</span> </li>";
+        };
+        PinBoardSearch.prototype.countryTemp = function (item) {
+            return "<li data-value=\"" + item.sourceId + "\" data-type=\"" + item.sourceType + "\"> <span class=\"" + item.icoClass + " left mright10\"> </span><a href=\"#\">" + item.name + "</a></li>";
+        };
+        PinBoardSearch.prototype.socTemp = function (item) {
+            return "<li data-value=\"" + item.sourceId + "\" data-type=\"" + item.sourceType + "\"> <span class=\"" + item.icoClass + " left mright10\"> </span><a href=\"#\">" + item.name + "</a></li>";
+        };
+        PinBoardSearch.prototype.getBox = function (num) {
+            return $("<div class=\"soc-item\"><ul class=\"" + num + "\"></ul></div>");
+        };
+        PinBoardSearch.prototype.getByType = function (places, type) {
+            return _.filter(places, function (p) { return p.SourceType === type; });
+        };
+        PinBoardSearch.prototype.regCallback = function () {
+            var _this = this;
+            this.delayedCallback = new Common.DelayedCallback(this.$input);
+            this.delayedCallback.callback = function (query) {
+                _this.lastQuery = query;
+                _this.search(query, true, function (places) {
+                    var cities = _this.getByType(places, SourceType.City);
+                    _this.fill(cities, _this.$ulCity);
+                    var countries = _this.getByType(places, SourceType.Country);
+                    _this.fill(countries, _this.$ulCountry);
+                    if (_this.socNetsActive) {
+                        _this.searchSoc();
+                    }
+                });
+            };
+        };
+        PinBoardSearch.prototype.search = function (query, isBase, callback) {
+            var _this = this;
+            this.loader(true);
+            if (query) {
+                this.show(true);
+            }
+            else {
+                this.show(false);
+                this.loader(false);
+                return;
+            }
+            var provs = isBase ? this.baseProviders : this.socNetProviders;
+            var params = [["placeName", query], ["types", provs]];
+            if (this.coordinates) {
+                params.push(["lat", this.coordinates.lat]);
+                params.push(["lng", this.coordinates.lng]);
+            }
+            if (Views.ViewBase.fbt) {
+                params.push(["fbt", Views.ViewBase.fbt]);
+            }
+            Views.ViewBase.currentView.apiGet("place", params, function (places) {
+                callback(places);
+                _this.loader(false);
+            });
+        };
+        PinBoardSearch.prototype.fill = function (places, $ul) {
+            var _this = this;
+            var htmlContent = "";
+            places.forEach(function (item) {
+                htmlContent += _this.getItemHtml(item);
+            });
+            $ul.html(htmlContent);
+            $ul.find("a").click(function (e) { return _this.itemClick(e); });
+        };
+        PinBoardSearch.prototype.itemClick = function (e) {
+            e.preventDefault();
+            var $a = $(e.target);
+            var $li = $a.closest("li");
+            var sourceId = $li.data("value");
+            var sourceType = $li.data("type");
+            var req = { SourceType: sourceType, SourceId: sourceId };
+            var view = Views.ViewBase.currentView;
+            this.$results.hide();
+            this.$input.val("");
+            view.saveNewPlace(req);
+        };
+        PinBoardSearch.prototype.setCoordinates = function (lat, lng) {
+            this.coordinates = { lat: lat, lng: lng };
+        };
+        PinBoardSearch.prototype.getItemHtml = function (item) {
+            var context = {
+                sourceId: item.SourceId,
+                sourceType: item.SourceType,
+                icoClass: this.getIconForSearch(item.SourceType),
+                name: item.Name,
+                countryCode: item.CountryCode
+            };
+            var html = "";
+            if (item.SourceType === SourceType.City) {
+                html = this.cityTemp(context);
+            }
+            else if (item.SourceType === SourceType.Country) {
+                html = this.countryTemp(context);
+            }
+            else {
+                html = this.socTemp(context);
+            }
+            this.template(context);
+            return html;
+        };
+        PinBoardSearch.prototype.getIconForSearch = function (sourceType) {
+            switch (sourceType) {
+                case SourceType.FB:
+                    return "icon-facebook";
+                case SourceType.City:
+                    return "icon-city";
+                case SourceType.Country:
+                    return "icon-country";
+                case SourceType.S4:
+                    return "icon-foursquare";
+                case SourceType.Yelp:
+                    return "icon-yelp";
+            }
+            return "";
+        };
+        PinBoardSearch.prototype.loader = function (state) {
+            if (state) {
+                this.$root.find(".loader").show();
+            }
+            else {
+                this.$root.find(".loader").hide();
+            }
+        };
+        PinBoardSearch.prototype.provToStr = function (itms) {
+            var res = _.map(itms, function (i) { return i.toString(); });
+            return res.join();
+        };
+        return PinBoardSearch;
+    })();
+    Views.PinBoardSearch = PinBoardSearch;
     var PinBoardView = (function (_super) {
         __extends(PinBoardView, _super);
         function PinBoardView() {
@@ -85,14 +265,14 @@ var Views;
             this.mapsManager.switchToView(Maps.ViewType.D2, Maps.DisplayEntity.Pin);
             this.pinBoardBadges = new Views.PinBoardBadges();
             this.shareDialogView = new Views.ShareDialogPinsView();
-            this.initPlaceSearch();
+            this.initPlaceSearch2();
             this.initCombos();
             this.setInfo();
             this.onLogin = function () {
                 _this.setInfo();
             };
             this.mapsManager.onCenterChanged = function (center) {
-                _this.placeSearch.setCoordinates(center.lat, center.lng);
+                _this.search.setCoordinates(center.lat, center.lng);
             };
         };
         PinBoardView.prototype.initCombos = function () {
@@ -199,15 +379,10 @@ var Views;
                 });
             });
         };
-        PinBoardView.prototype.initPlaceSearch = function () {
+        PinBoardView.prototype.initPlaceSearch2 = function () {
             var _this = this;
-            var c = new Common.PlaceSearchConfig();
-            c.providers = "0,1,2,3,4";
-            c.elementId = "cities";
-            c.minCharsToSearch = 1;
-            c.clearAfterSearch = true;
-            this.placeSearch = new Common.PlaceSearchBox(c);
-            this.placeSearch.onPlaceSelected = function (request) { return _this.saveNewPlace(request); };
+            this.search = new PinBoardSearch($(".place-search"));
+            this.search.onPlaceSelected = function (request) { return _this.saveNewPlace(request); };
         };
         PinBoardView.prototype.refreshData = function () {
             var _this = this;

@@ -15,6 +15,7 @@ using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels.Langs;
 using Gloobster.Entities;
 using MongoDB.Bson;
+using Microsoft.AspNet.Http.Extensions;
 
 namespace Gloobster.Portal
 {    
@@ -155,6 +156,20 @@ namespace Gloobster.Portal
                 //        context.Response.Redirect(withHttps);
                 //    }
                 //});
+
+                app.Use(async (context, next) =>
+                {
+                    var url = context.Request.GetDisplayUrl();
+                    if (url.StartsWith("http://www."))
+                    {
+                        var newUrl = url.Replace("http://www.", "http://");
+                        context.Response.Redirect(newUrl);
+                    }
+                    else
+                    {
+                        await next();
+                    }
+                });
 
                 app.UseSession();
 

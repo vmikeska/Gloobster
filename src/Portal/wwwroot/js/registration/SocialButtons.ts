@@ -36,9 +36,10 @@
 		 $("#MenuRegister").parent().remove();
 
 		 this.getUserMenu((r) => {
-			$("#ddMenus").append(r);
+			var $menu = $(r);
+			$("#ddMenus").append($menu);
 			var dd = new Common.DropDown();
-			dd.initBody();
+			dd.registerDropDown($menu);
 		 });
 		 
 		 if (this.onAfterCustom) {

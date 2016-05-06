@@ -14,9 +14,9 @@
       </Create>
 
 
-      <Detail>
-        <en>Detail</en>
-      </Detail>
+    <Edit>
+        <en>Edit</en>
+      </Edit>
 
       <You>
         <en>You</en>
@@ -42,6 +42,10 @@
         <en>Owner</en>
       </Owner>
 
+
+    <DefaultTripName>
+      <en>My first trip</en>
+    </DefaultTripName>
       
       
       

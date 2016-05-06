@@ -1,0 +1,33 @@
+﻿@using System.Threading.Tasks
+@using Gloobster.Entities
+@using Gloobster.Portal.Controllers.Portal
+@model DelModel
+
+@{
+    Layout = "";
+}
+
+<table>
+    <tr>
+        <td>TotalEmptyAccounts</td>
+        <td>@Model.TotalEmptyAccounts</td>
+    </tr>
+    <tr>
+        <td>OlderThan3Days</td>
+        <td>@Model.OlderThan3Days</td>
+    </tr>
+    <tr>
+        <td>
+            Url
+        </td>
+        <td>
+            @Model.Test
+        </td>
+    </tr>
+</table>
+<br/>
+<br/>
+<a href="/MyLog/DeleteEmptyAccounts">Delete empty accounts</a>
+
+
+
