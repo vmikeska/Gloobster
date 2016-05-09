@@ -17,6 +17,13 @@ namespace Gloobster.Portal.Controllers.Portal
 			
 		}
 
+	    public IActionResult Chat()
+	    {
+            var vm = CreateViewModelInstance<ViewModelSkypickerChat>();
+
+            return View(vm);
+        }
+
 		public IActionResult Planning()
 		{			
 			var viewModel = CreateViewModelInstance<ViewModelPlanning>();

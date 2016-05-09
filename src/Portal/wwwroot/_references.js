@@ -51,6 +51,7 @@
 /// <reference path="js/trip/traveldialog.js" />
 /// <reference path="js/trip/utils.js" />
 /// <reference path="js/views/aggregatedcountries.js" />
+/// <reference path="js/views/flychatview.js" />
 /// <reference path="js/views/friendsview.js" />
 /// <reference path="js/views/homepageview.js" />
 /// <reference path="js/views/locationsettingsdialog.js" />

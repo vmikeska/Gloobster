@@ -4,8 +4,10 @@ using AzureBlobFileSystem;
 using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
+using Gloobster.DomainInterfaces.SearchEngine;
 using Gloobster.DomainModels;
 using Gloobster.DomainModels.Langs;
+using Gloobster.DomainModels.SearchEngine;
 using Gloobster.DomainModels.Services;
 using Gloobster.DomainModels.Services.Accounts;
 using Gloobster.DomainModels.Services.CountryService;
@@ -151,7 +153,13 @@ namespace Gloobster.Portal
 
             builder.AddTransient<IPinboardImportDomain, PinboardImportDomain>();
             builder.AddTransient<IPinBoardStats, PinBoardStats>();
-            
+
+
+
+
+            builder.AddTransient<IFlightsDatabase, FlightsDatabase>();
+
+            builder.AddTransient<IFlightsCache, FlightsCache>(); 
         }
 		
 	}

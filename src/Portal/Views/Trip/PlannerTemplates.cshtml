@@ -17,16 +17,21 @@
 
 
 <script id="place-template" type="text/x-handlebars-template">
-		<div id="{{id}}" data-row="{{rowNo}}" class="cell">
+	
+    <div id="{{id}}" data-row="{{rowNo}}" class="cell">
 								
-		{{#if isActive}}
-				<div class="destination active">
-		{{else}}
-				<div class="destination">
-		{{/if}}
-						<span class="name">{{name}}</span>
-								<span class="tab">@Model.W("Arrival") {{arrivalDateLong}}</span>
-						</div>
+	{{#if isActive}}
+			<div class="destination active">
+	{{else}}
+			<div class="destination">
+	{{/if}}
+			    <span class="name">{{name}}</span>
+                
+            {{#unless isFirstDay}}
+                <span class="tab">@Model.W("Arrival") {{arrivalDateLong}}</span>
+            {{/unless}}
+
+			</div>
 												
 				{{#if isFirstDay}}
 						<div class="timeline green" style="text-align: center"><a class="leavingDate" href="#">{{leavingDate}}</a></div>
@@ -35,7 +40,7 @@
 						<div class="timeline {{colorClassLeaving}}"><a data-pid="{{leavingId}}" class="leavingDate dateLink" href="#">{{leavingDate}}</a></div>
 				{{/if}}
 				
-		</div>
+	</div>
 
 </script>
 

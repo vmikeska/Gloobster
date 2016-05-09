@@ -1,0 +1,61 @@
+﻿@{		
+//ViewBag.BodyClass = "future";
+//ViewBag.MenuGroup = "Planning";
+}
+
+@using System.Threading.Tasks
+@using Gloobster.Portal.Controllers.Portal
+@using Gloobster.Portal.ViewModels
+@model Gloobster.Portal.ViewModels.ViewModelSkypickerChat
+
+
+<script type="text/javascript" src="@Url.Content("~/js/Views/FlyChatView.js")"></script>
+
+
+<section class="wrapper margin3">
+
+    <table>
+        <tr>
+            <td>From place</td>
+            <td><input id="FromPlace" type="text" value="FRA"/></td>
+        </tr>
+        <tr>
+            <td>To place</td>
+            <td><input id="ToPlace" type="text" value="BCN"/></td>
+        </tr>
+        <tr>
+            <td>Deparature</td>
+            <td><input id="Deparature" type="text" value="20/05/2016" /></td>
+        </tr>
+        <tr>
+            <td>Return</td>
+            <td><input id="Return" type="text" value="22/05/2016"/></td>
+        </tr>
+        <tr>
+            <td>DirectFlight</td>
+            <td><input id="DirectFlight" type="text" value="0"/></td>
+        </tr>
+        <tr>
+            <td>DaysInDestinationFrom</td>
+            <td><input id="DaysInDestinationFrom" type="text" value=""/></td>
+        </tr>
+        <tr>
+            <td>TypeFlight(round/oneway)</td>
+            <td><input id="TypeFlight" type="text" value="oneway" /></td>
+        </tr>
+        
+    </table>
+    <button id="btnCall">Call</button>
+
+    <div id="results">
+        
+    </div>
+
+</section>
+
+<script>
+	function onBodyLoad() {
+	    currentView = new Views.FlyChatView();
+	}
+
+</script>

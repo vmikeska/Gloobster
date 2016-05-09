@@ -2,7 +2,7 @@
 using System.Net;
 using Newtonsoft.Json;
 
-namespace Gloobster.SearchEngine.FlightsDataService
+namespace Gloobster.DomainModels.SearchEngine
 {
     public class Calls
     {

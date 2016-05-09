@@ -20,9 +20,17 @@ module Planning {
 			this.graph = new GraphicConfig();
 
 			this.citiesManager = new CitiesManager(map, this.graph);
+			this.citiesManager.onSelectionChanged = () => this.onCitiesSelectionChanged();
+
 			this.countriesManager = new CountriesManager(map, this.graph);
 			this.citiesManager.countriesManager = this.countriesManager;
 			this.countriesManager.citiesManager = this.citiesManager;
+		}
+
+		public onCitiesSelectionChanged() {
+				Views.ViewBase.currentView.apiGet("SearchFlights", [], (r) => {
+					
+				});
 		}
 
 		public loadCategory(planningType: PlanningType) {

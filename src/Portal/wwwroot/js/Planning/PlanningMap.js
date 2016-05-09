@@ -2,13 +2,19 @@ var Planning;
 (function (Planning) {
     var PlanningMap = (function () {
         function PlanningMap(map) {
+            var _this = this;
             this.map = map;
             this.graph = new Planning.GraphicConfig();
             this.citiesManager = new Planning.CitiesManager(map, this.graph);
+            this.citiesManager.onSelectionChanged = function () { return _this.onCitiesSelectionChanged(); };
             this.countriesManager = new Planning.CountriesManager(map, this.graph);
             this.citiesManager.countriesManager = this.countriesManager;
             this.countriesManager.citiesManager = this.citiesManager;
         }
+        PlanningMap.prototype.onCitiesSelectionChanged = function () {
+            Views.ViewBase.currentView.apiGet("SearchFlights", [], function (r) {
+            });
+        };
         PlanningMap.prototype.loadCategory = function (planningType) {
             this.currentPlanningType = planningType;
             this.initCategory();
@@ -97,7 +103,7 @@ var Planning;
             return 1;
         };
         return PlanningMap;
-    }());
+    })();
     Planning.PlanningMap = PlanningMap;
 })(Planning || (Planning = {}));
 //# sourceMappingURL=PlanningMap.js.map

@@ -9,6 +9,6 @@
     "dnx451": { }
   },
   "dependencies": {
-    "Database": "1.0.0-*"
+  
   }
 }

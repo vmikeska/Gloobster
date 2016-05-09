@@ -72,6 +72,9 @@ var Planning;
                 _this.callChangeCitySelection(_this.currentPlanningType, e.target.gid, !e.target.selected, function (res) {
                     e.target.setIcon(_this.graph.selectedIcon);
                     e.target.selected = !e.target.selected;
+                    if (_this.onSelectionChanged) {
+                        _this.onSelectionChanged();
+                    }
                 });
             });
             marker.addTo(this.citiesLayerGroup);
@@ -90,7 +93,7 @@ var Planning;
             });
         };
         return CitiesManager;
-    }());
+    })();
     Planning.CitiesManager = CitiesManager;
 })(Planning || (Planning = {}));
 //# sourceMappingURL=CitiesManager.js.map

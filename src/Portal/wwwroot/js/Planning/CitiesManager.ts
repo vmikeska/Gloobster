@@ -4,6 +4,8 @@ module Planning {
 		public citiesLayerGroup: any;
 		public countriesManager: CountriesManager;
 
+		public onSelectionChanged: Function;
+
 		private map: any;
 		private graph: GraphicConfig;
 
@@ -95,6 +97,11 @@ module Planning {
 				this.callChangeCitySelection(this.currentPlanningType, e.target.gid, !e.target.selected, (res) => {
 					e.target.setIcon(this.graph.selectedIcon);
 					e.target.selected = !e.target.selected;
+
+					if (this.onSelectionChanged) {
+							this.onSelectionChanged();
+					}		
+
 				});
 			});
 
@@ -115,7 +122,7 @@ module Planning {
 			}
 
 			PlanningSender.updateProp(data, (response) => {
-				callback(response);
+					callback(response);			
 			});
 		}
 	}

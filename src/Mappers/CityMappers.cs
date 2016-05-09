@@ -4,7 +4,7 @@ using Gloobster.ReqRes.CitiesService;
 
 namespace Gloobster.Mappers
 {
-	public static class CityMappers
+    public static class CityMappers
 	{
 		public static CityDO ToDO(this CityEntity e)
 		{
