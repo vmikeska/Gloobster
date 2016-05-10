@@ -89,7 +89,7 @@ var Maps;
             return this.mapObj.getZoom();
         };
         return BaseMapsOperation2D;
-    })();
+    }());
     Maps.BaseMapsOperation2D = BaseMapsOperation2D;
 })(Maps || (Maps = {}));
 //# sourceMappingURL=BaseMapsOperation2D.js.map

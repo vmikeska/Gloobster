@@ -183,7 +183,7 @@ var Views;
             return res.join();
         };
         return PinBoardSearch;
-    })();
+    }());
     Views.PinBoardSearch = PinBoardSearch;
     var PinBoardView = (function (_super) {
         __extends(PinBoardView, _super);
@@ -457,7 +457,7 @@ var Views;
             });
         };
         return PinBoardView;
-    })(Views.ViewBase);
+    }(Views.ViewBase));
     Views.PinBoardView = PinBoardView;
 })(Views || (Views = {}));
 //# sourceMappingURL=PinBoardView.js.map

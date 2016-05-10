@@ -5622,59 +5622,59 @@
   "libraries": {
     "AzureBlobFileSystem/1.0.0": {
       "type": "project",
-      "path": "../AzureBlobFileSystem/project.json"
+      "path": "../src/AzureBlobFileSystem/project.json"
     },
     "Common/1.0.0": {
       "type": "project",
-      "path": "../Common/project.json"
+      "path": "../src/Common/project.json"
     },
     "Database/1.0.0": {
       "type": "project",
-      "path": "../Database/project.json"
+      "path": "../src/Database/project.json"
     },
     "DomainModels/1.0.0": {
       "type": "project",
-      "path": "../DomainModels/project.json"
+      "path": "../src/DomainModels/project.json"
     },
     "DomainModelsCommon/1.0.0": {
       "type": "project",
-      "path": "../DomainModelsCommon/project.json"
+      "path": "../src/DomainModelsCommon/project.json"
     },
     "DomainObjects/1.0.0": {
       "type": "project",
-      "path": "../DomainObjects/project.json"
+      "path": "../src/DomainObjects/project.json"
     },
     "Entities/1.0.0": {
       "type": "project",
-      "path": "../Entities/project.json"
+      "path": "../src/Entities/project.json"
     },
     "Enums/1.0.0": {
       "type": "project",
-      "path": "../Enums/project.json"
+      "path": "../src/Enums/project.json"
     },
     "Gloobster.Sharing/1.0.0": {
       "type": "project",
-      "path": "../Gloobster.Sharing/project.json"
+      "path": "../src/Gloobster.Sharing/project.json"
     },
     "Mappers/1.0.0": {
       "type": "project",
-      "path": "../Mappers/project.json"
+      "path": "../src/Mappers/project.json"
     },
     "ReqRes/1.0.0": {
       "type": "project",
-      "path": "../ReqRes/project.json"
+      "path": "../src/ReqRes/project.json"
     },
     "SharpSquare/1.0.0": {
       "type": "project",
-      "path": "../../wrap/SharpSquare/project.json"
+      "path": "../wrap/SharpSquare/project.json"
     },
     "SocialLogin/1.0.0": {
       "type": "project",
-      "path": "../SocialLogin/project.json"
+      "path": "../src/SocialLogin/project.json"
     },
     "WebApiObjects/1.0.0": {
       "type": "project",
-      "path": "../WebApiObjects/project.json"
+      "path": "../src/WebApiObjects/project.json"
     },
     "Autofac/4.0.0-rc1-177": {
       "type": "package",

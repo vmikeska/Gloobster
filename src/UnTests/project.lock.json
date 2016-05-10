@@ -37,16 +37,15 @@
           "lib/net451/Autofac.Extensions.DependencyInjection.dll": {}
         }
       },
-      "BlobFileSystem.Azure/0.0.6": {
-        "type": "package",
+      "AzureBlobFileSystem/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
         "dependencies": {
-          "WindowsAzure.Storage": "3.1.0.1"
-        },
-        "compile": {
-          "lib/net45/AzureBlobFileSystem.dll": {}
-        },
-        "runtime": {
-          "lib/net45/AzureBlobFileSystem.dll": {}
+          "loggly-csharp": "4.5.1.7",
+          "Microsoft.WindowsAzure.ConfigurationManager": "3.2.1",
+          "Serilog.Framework.Logging": "1.0.0-rc1-final-10071",
+          "Serilog.Sinks.Loggly": "2.0.7",
+          "WindowsAzure.Storage": "7.0.0"
         }
       },
       "Common/1.0.0": {
@@ -56,11 +55,12 @@
           "Enums": "1.0.0",
           "Facebook": "7.0.6",
           "Microsoft.AspNet.Mvc": "6.0.0-rc1-final",
-          "MongoDB.Bson": "2.2.0-rc0",
-          "MongoDB.Driver": "2.2.0-rc0",
+          "MongoDB.Bson": "2.2.3",
+          "MongoDB.Driver": "2.2.3",
           "System.Linq.Queryable": "4.0.1-beta-23516"
         },
         "frameworkAssemblies": [
+          "System.Drawing",
           "System.Web"
         ]
       },
@@ -69,8 +69,8 @@
         "framework": "DNX,Version=v4.5.1",
         "dependencies": {
           "Common": "1.0.0",
-          "MongoDB.Bson": "2.2.0-rc0",
-          "MongoDB.Driver": "2.2.0-rc0"
+          "MongoDB.Bson": "2.2.3",
+          "MongoDB.Driver": "2.2.3"
         }
       },
       "DomainModels/1.0.0": {
@@ -79,17 +79,20 @@
         "dependencies": {
           "Autofac": "4.0.0-rc1-177",
           "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-177",
-          "BlobFileSystem.Azure": "0.0.6",
+          "AzureBlobFileSystem": "1.0.0",
           "DomainModelsCommon": "1.0.0",
           "Facebook": "7.0.6",
           "Gloobster.Sharing": "1.0.0",
           "Mappers": "1.0.0",
-          "MongoDB.Driver": "2.2.0-rc0",
+          "MongoDB.Driver": "2.2.3",
+          "Nito.AsyncEx": "3.0.1",
           "Serilog.Framework.Logging": "1.0.0-rc1-final-10071",
           "SharpSquare": "1.0.0",
+          "SimpleOAuth.Net": "1.0.1",
           "SocialLogin": "1.0.0",
           "System.Net.Http": "4.0.0",
-          "TweetSharp": "2.3.1"
+          "TweetSharp": "2.3.1",
+          "YelpSharp": "1.2.1"
         },
         "frameworkAssemblies": [
           "System.Device"
@@ -101,13 +104,13 @@
         "dependencies": {
           "Autofac": "4.0.0-rc1-177",
           "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-177",
-          "BlobFileSystem.Azure": "0.0.6",
+          "AzureBlobFileSystem": "1.0.0",
           "Common": "1.0.0",
           "Database": "1.0.0",
           "DomainObjects": "1.0.0",
           "Enums": "1.0.0",
-          "MongoDB.Bson": "2.2.0-rc0",
-          "MongoDB.Driver": "2.2.0-rc0",
+          "MongoDB.Bson": "2.2.3",
+          "MongoDB.Driver": "2.2.3",
           "SharpSquare": "1.0.0",
           "TweetSharp": "2.3.1"
         },
@@ -133,7 +136,7 @@
           "Common": "1.0.0",
           "Database": "1.0.0",
           "Enums": "1.0.0",
-          "MongoDB.Driver": "2.2.0-rc0"
+          "MongoDB.Driver": "2.2.3"
         }
       },
       "Enums/1.0.0": {
@@ -149,15 +152,6 @@
           "lib/net45/Facebook.dll": {}
         }
       },
-      "FlightsSearch/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Common": "1.0.0",
-          "MongoDB.Driver": "2.2.0",
-          "Newtonsoft.Json": "7.0.1"
-        }
-      },
       "Gloobster.Sharing/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
@@ -165,8 +159,30 @@
           "Common": "1.0.0",
           "DomainModelsCommon": "1.0.0",
           "Facebook": "7.0.6",
-          "MongoDB.Driver": "2.2.0-rc0",
+          "MongoDB.Driver": "2.2.3",
           "TweetSharp": "2.3.1"
+        }
+      },
+      "loggly-csharp/4.5.1.7": {
+        "type": "package",
+        "dependencies": {
+          "loggly-csharp-config": "4.5.1.7",
+          "Newtonsoft.Json": "6.0.8"
+        },
+        "compile": {
+          "lib/net45/Loggly.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Loggly.dll": {}
+        }
+      },
+      "loggly-csharp-config/4.5.1.7": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Loggly.Config.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Loggly.Config.dll": {}
         }
       },
       "Mappers/1.0.0": {
@@ -176,7 +192,7 @@
           "Common": "1.0.0",
           "DomainModelsCommon": "1.0.0",
           "Entities": "1.0.0",
-          "MongoDB.Driver": "2.2.0-rc0",
+          "MongoDB.Driver": "2.2.3",
           "ReqRes": "1.0.0",
           "SocialLogin": "1.0.0",
           "TweetSharp": "2.3.1",
@@ -839,6 +855,15 @@
           "lib/net451/Microsoft.AspNet.WebUtilities.dll": {}
         }
       },
+      "Microsoft.Azure.KeyVault.Core/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Microsoft.Azure.KeyVault.Core.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Microsoft.Azure.KeyVault.Core.dll": {}
+        }
+      },
       "Microsoft.CodeAnalysis.Analyzers/1.0.0": {
         "type": "package",
         "frameworkAssemblies": [
@@ -871,7 +896,7 @@
           "lib/net45/Microsoft.CodeAnalysis.CSharp.dll": {}
         }
       },
-      "Microsoft.Data.Edm/5.6.0": {
+      "Microsoft.Data.Edm/5.6.4": {
         "type": "package",
         "compile": {
           "lib/net40/Microsoft.Data.Edm.dll": {}
@@ -909,11 +934,11 @@
           }
         }
       },
-      "Microsoft.Data.OData/5.6.0": {
+      "Microsoft.Data.OData/5.6.4": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Data.Edm": "[5.6.0]",
-          "System.Spatial": "[5.6.0]"
+          "Microsoft.Data.Edm": "[5.6.4]",
+          "System.Spatial": "[5.6.4]"
         },
         "compile": {
           "lib/net40/Microsoft.Data.OData.dll": {}
@@ -951,10 +976,10 @@
           }
         }
       },
-      "Microsoft.Data.Services.Client/5.6.0": {
+      "Microsoft.Data.Services.Client/5.6.4": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Data.OData": "[5.6.0]"
+          "Microsoft.Data.OData": "[5.6.4]"
         },
         "compile": {
           "lib/net40/Microsoft.Data.Services.Client.dll": {}
@@ -1414,16 +1439,16 @@
           "lib/net451/Microsoft.Net.Http.Headers.dll": {}
         }
       },
-      "Microsoft.WindowsAzure.ConfigurationManager/1.8.0": {
+      "Microsoft.WindowsAzure.ConfigurationManager/3.2.1": {
         "type": "package",
         "compile": {
-          "lib/net35-full/Microsoft.WindowsAzure.Configuration.dll": {}
+          "lib/net40/Microsoft.WindowsAzure.Configuration.dll": {}
         },
         "runtime": {
-          "lib/net35-full/Microsoft.WindowsAzure.Configuration.dll": {}
+          "lib/net40/Microsoft.WindowsAzure.Configuration.dll": {}
         }
       },
-      "MongoDB.Bson/2.2.0-rc0": {
+      "MongoDB.Bson/2.2.3": {
         "type": "package",
         "compile": {
           "lib/net45/MongoDB.Bson.dll": {}
@@ -1475,12 +1500,34 @@
           "lib/net45/Newtonsoft.Json.dll": {}
         }
       },
+      "Nito.AsyncEx/3.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Nito.AsyncEx.Concurrent.dll": {},
+          "lib/net45/Nito.AsyncEx.dll": {},
+          "lib/net45/Nito.AsyncEx.Enlightenment.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Nito.AsyncEx.Concurrent.dll": {},
+          "lib/net45/Nito.AsyncEx.dll": {},
+          "lib/net45/Nito.AsyncEx.Enlightenment.dll": {}
+        }
+      },
       "ReqRes/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
         "dependencies": {
           "Common": "1.0.0",
           "Enums": "1.0.0"
+        }
+      },
+      "RestSharp/104.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/net4/RestSharp.dll": {}
+        },
+        "runtime": {
+          "lib/net4/RestSharp.dll": {}
         }
       },
       "Serilog/1.5.11": {
@@ -1514,16 +1561,42 @@
           "lib/dnx451/Serilog.Framework.Logging.dll": {}
         }
       },
+      "Serilog.Sinks.Loggly/2.0.7": {
+        "type": "package",
+        "dependencies": {
+          "loggly-csharp": "4.5.0.4",
+          "Serilog": "1.5.9"
+        },
+        "compile": {
+          "lib/net45/Serilog.Sinks.Loggly.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Serilog.Sinks.Loggly.dll": {}
+        }
+      },
       "SharpSquare/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1"
+      },
+      "SimpleOAuth.Net/1.0.1": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net20/SimpleOAuth.dll": {}
+        },
+        "runtime": {
+          "lib/net20/SimpleOAuth.dll": {}
+        }
       },
       "SocialLogin/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
         "dependencies": {
           "Facebook": "7.0.6",
-          "MongoDB.Driver": "2.2.0-rc0"
+          "MongoDB.Driver": "2.2.3"
         },
         "frameworkAssemblies": [
           "System.Runtime.Serialization"
@@ -1725,7 +1798,7 @@
           "lib/net45/_._": {}
         }
       },
-      "System.Spatial/5.6.0": {
+      "System.Spatial/5.6.4": {
         "type": "package",
         "compile": {
           "lib/net40/System.Spatial.dll": {}
@@ -1811,16 +1884,16 @@
         "framework": "DNX,Version=v4.5.1",
         "dependencies": {
           "Common": "1.0.0",
-          "MongoDB.Driver": "2.2.0-rc0"
+          "MongoDB.Driver": "2.2.3"
         }
       },
-      "WindowsAzure.Storage/3.1.0.1": {
+      "WindowsAzure.Storage/7.0.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Data.OData": "5.6.0",
-          "Microsoft.Data.Services.Client": "5.6.0",
-          "Microsoft.WindowsAzure.ConfigurationManager": "1.8.0",
-          "Newtonsoft.Json": "5.0.6"
+          "Microsoft.Azure.KeyVault.Core": "1.0.0",
+          "Microsoft.Data.OData": "5.6.4",
+          "Microsoft.Data.Services.Client": "5.6.4",
+          "Newtonsoft.Json": "6.0.8"
         },
         "frameworkAssemblies": [
           "System.Data",
@@ -1941,6 +2014,19 @@
         },
         "runtime": {
           "lib/dnx451/xunit.runner.utility.dotnet.dll": {}
+        }
+      },
+      "YelpSharp/1.2.1": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "4.5.11",
+          "RestSharp": "104.1.0"
+        },
+        "compile": {
+          "lib/net4/YelpSharp.dll": {}
+        },
+        "runtime": {
+          "lib/net4/YelpSharp.dll": {}
         }
       }
     },
@@ -1979,16 +2065,15 @@
           "lib/net451/Autofac.Extensions.DependencyInjection.dll": {}
         }
       },
-      "BlobFileSystem.Azure/0.0.6": {
-        "type": "package",
+      "AzureBlobFileSystem/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
         "dependencies": {
-          "WindowsAzure.Storage": "3.1.0.1"
-        },
-        "compile": {
-          "lib/net45/AzureBlobFileSystem.dll": {}
-        },
-        "runtime": {
-          "lib/net45/AzureBlobFileSystem.dll": {}
+          "loggly-csharp": "4.5.1.7",
+          "Microsoft.WindowsAzure.ConfigurationManager": "3.2.1",
+          "Serilog.Framework.Logging": "1.0.0-rc1-final-10071",
+          "Serilog.Sinks.Loggly": "2.0.7",
+          "WindowsAzure.Storage": "7.0.0"
         }
       },
       "Common/1.0.0": {
@@ -1998,11 +2083,12 @@
           "Enums": "1.0.0",
           "Facebook": "7.0.6",
           "Microsoft.AspNet.Mvc": "6.0.0-rc1-final",
-          "MongoDB.Bson": "2.2.0-rc0",
-          "MongoDB.Driver": "2.2.0-rc0",
+          "MongoDB.Bson": "2.2.3",
+          "MongoDB.Driver": "2.2.3",
           "System.Linq.Queryable": "4.0.1-beta-23516"
         },
         "frameworkAssemblies": [
+          "System.Drawing",
           "System.Web"
         ]
       },
@@ -2011,8 +2097,8 @@
         "framework": "DNX,Version=v4.5.1",
         "dependencies": {
           "Common": "1.0.0",
-          "MongoDB.Bson": "2.2.0-rc0",
-          "MongoDB.Driver": "2.2.0-rc0"
+          "MongoDB.Bson": "2.2.3",
+          "MongoDB.Driver": "2.2.3"
         }
       },
       "DomainModels/1.0.0": {
@@ -2021,17 +2107,20 @@
         "dependencies": {
           "Autofac": "4.0.0-rc1-177",
           "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-177",
-          "BlobFileSystem.Azure": "0.0.6",
+          "AzureBlobFileSystem": "1.0.0",
           "DomainModelsCommon": "1.0.0",
           "Facebook": "7.0.6",
           "Gloobster.Sharing": "1.0.0",
           "Mappers": "1.0.0",
-          "MongoDB.Driver": "2.2.0-rc0",
+          "MongoDB.Driver": "2.2.3",
+          "Nito.AsyncEx": "3.0.1",
           "Serilog.Framework.Logging": "1.0.0-rc1-final-10071",
           "SharpSquare": "1.0.0",
+          "SimpleOAuth.Net": "1.0.1",
           "SocialLogin": "1.0.0",
           "System.Net.Http": "4.0.0",
-          "TweetSharp": "2.3.1"
+          "TweetSharp": "2.3.1",
+          "YelpSharp": "1.2.1"
         },
         "frameworkAssemblies": [
           "System.Device"
@@ -2043,13 +2132,13 @@
         "dependencies": {
           "Autofac": "4.0.0-rc1-177",
           "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-177",
-          "BlobFileSystem.Azure": "0.0.6",
+          "AzureBlobFileSystem": "1.0.0",
           "Common": "1.0.0",
           "Database": "1.0.0",
           "DomainObjects": "1.0.0",
           "Enums": "1.0.0",
-          "MongoDB.Bson": "2.2.0-rc0",
-          "MongoDB.Driver": "2.2.0-rc0",
+          "MongoDB.Bson": "2.2.3",
+          "MongoDB.Driver": "2.2.3",
           "SharpSquare": "1.0.0",
           "TweetSharp": "2.3.1"
         },
@@ -2075,7 +2164,7 @@
           "Common": "1.0.0",
           "Database": "1.0.0",
           "Enums": "1.0.0",
-          "MongoDB.Driver": "2.2.0-rc0"
+          "MongoDB.Driver": "2.2.3"
         }
       },
       "Enums/1.0.0": {
@@ -2091,15 +2180,6 @@
           "lib/net45/Facebook.dll": {}
         }
       },
-      "FlightsSearch/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Common": "1.0.0",
-          "MongoDB.Driver": "2.2.0",
-          "Newtonsoft.Json": "7.0.1"
-        }
-      },
       "Gloobster.Sharing/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
@@ -2107,8 +2187,30 @@
           "Common": "1.0.0",
           "DomainModelsCommon": "1.0.0",
           "Facebook": "7.0.6",
-          "MongoDB.Driver": "2.2.0-rc0",
+          "MongoDB.Driver": "2.2.3",
           "TweetSharp": "2.3.1"
+        }
+      },
+      "loggly-csharp/4.5.1.7": {
+        "type": "package",
+        "dependencies": {
+          "loggly-csharp-config": "4.5.1.7",
+          "Newtonsoft.Json": "6.0.8"
+        },
+        "compile": {
+          "lib/net45/Loggly.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Loggly.dll": {}
+        }
+      },
+      "loggly-csharp-config/4.5.1.7": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Loggly.Config.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Loggly.Config.dll": {}
         }
       },
       "Mappers/1.0.0": {
@@ -2118,7 +2220,7 @@
           "Common": "1.0.0",
           "DomainModelsCommon": "1.0.0",
           "Entities": "1.0.0",
-          "MongoDB.Driver": "2.2.0-rc0",
+          "MongoDB.Driver": "2.2.3",
           "ReqRes": "1.0.0",
           "SocialLogin": "1.0.0",
           "TweetSharp": "2.3.1",
@@ -2781,6 +2883,15 @@
           "lib/net451/Microsoft.AspNet.WebUtilities.dll": {}
         }
       },
+      "Microsoft.Azure.KeyVault.Core/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Microsoft.Azure.KeyVault.Core.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Microsoft.Azure.KeyVault.Core.dll": {}
+        }
+      },
       "Microsoft.CodeAnalysis.Analyzers/1.0.0": {
         "type": "package",
         "frameworkAssemblies": [
@@ -2813,7 +2924,7 @@
           "lib/net45/Microsoft.CodeAnalysis.CSharp.dll": {}
         }
       },
-      "Microsoft.Data.Edm/5.6.0": {
+      "Microsoft.Data.Edm/5.6.4": {
         "type": "package",
         "compile": {
           "lib/net40/Microsoft.Data.Edm.dll": {}
@@ -2851,11 +2962,11 @@
           }
         }
       },
-      "Microsoft.Data.OData/5.6.0": {
+      "Microsoft.Data.OData/5.6.4": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Data.Edm": "[5.6.0]",
-          "System.Spatial": "[5.6.0]"
+          "Microsoft.Data.Edm": "[5.6.4]",
+          "System.Spatial": "[5.6.4]"
         },
         "compile": {
           "lib/net40/Microsoft.Data.OData.dll": {}
@@ -2893,10 +3004,10 @@
           }
         }
       },
-      "Microsoft.Data.Services.Client/5.6.0": {
+      "Microsoft.Data.Services.Client/5.6.4": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Data.OData": "[5.6.0]"
+          "Microsoft.Data.OData": "[5.6.4]"
         },
         "compile": {
           "lib/net40/Microsoft.Data.Services.Client.dll": {}
@@ -3356,16 +3467,16 @@
           "lib/net451/Microsoft.Net.Http.Headers.dll": {}
         }
       },
-      "Microsoft.WindowsAzure.ConfigurationManager/1.8.0": {
+      "Microsoft.WindowsAzure.ConfigurationManager/3.2.1": {
         "type": "package",
         "compile": {
-          "lib/net35-full/Microsoft.WindowsAzure.Configuration.dll": {}
+          "lib/net40/Microsoft.WindowsAzure.Configuration.dll": {}
         },
         "runtime": {
-          "lib/net35-full/Microsoft.WindowsAzure.Configuration.dll": {}
+          "lib/net40/Microsoft.WindowsAzure.Configuration.dll": {}
         }
       },
-      "MongoDB.Bson/2.2.0-rc0": {
+      "MongoDB.Bson/2.2.3": {
         "type": "package",
         "compile": {
           "lib/net45/MongoDB.Bson.dll": {}
@@ -3417,12 +3528,34 @@
           "lib/net45/Newtonsoft.Json.dll": {}
         }
       },
+      "Nito.AsyncEx/3.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Nito.AsyncEx.Concurrent.dll": {},
+          "lib/net45/Nito.AsyncEx.dll": {},
+          "lib/net45/Nito.AsyncEx.Enlightenment.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Nito.AsyncEx.Concurrent.dll": {},
+          "lib/net45/Nito.AsyncEx.dll": {},
+          "lib/net45/Nito.AsyncEx.Enlightenment.dll": {}
+        }
+      },
       "ReqRes/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
         "dependencies": {
           "Common": "1.0.0",
           "Enums": "1.0.0"
+        }
+      },
+      "RestSharp/104.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/net4/RestSharp.dll": {}
+        },
+        "runtime": {
+          "lib/net4/RestSharp.dll": {}
         }
       },
       "Serilog/1.5.11": {
@@ -3456,16 +3589,42 @@
           "lib/dnx451/Serilog.Framework.Logging.dll": {}
         }
       },
+      "Serilog.Sinks.Loggly/2.0.7": {
+        "type": "package",
+        "dependencies": {
+          "loggly-csharp": "4.5.0.4",
+          "Serilog": "1.5.9"
+        },
+        "compile": {
+          "lib/net45/Serilog.Sinks.Loggly.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Serilog.Sinks.Loggly.dll": {}
+        }
+      },
       "SharpSquare/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1"
+      },
+      "SimpleOAuth.Net/1.0.1": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net20/SimpleOAuth.dll": {}
+        },
+        "runtime": {
+          "lib/net20/SimpleOAuth.dll": {}
+        }
       },
       "SocialLogin/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
         "dependencies": {
           "Facebook": "7.0.6",
-          "MongoDB.Driver": "2.2.0-rc0"
+          "MongoDB.Driver": "2.2.3"
         },
         "frameworkAssemblies": [
           "System.Runtime.Serialization"
@@ -3667,7 +3826,7 @@
           "lib/net45/_._": {}
         }
       },
-      "System.Spatial/5.6.0": {
+      "System.Spatial/5.6.4": {
         "type": "package",
         "compile": {
           "lib/net40/System.Spatial.dll": {}
@@ -3753,16 +3912,16 @@
         "framework": "DNX,Version=v4.5.1",
         "dependencies": {
           "Common": "1.0.0",
-          "MongoDB.Driver": "2.2.0-rc0"
+          "MongoDB.Driver": "2.2.3"
         }
       },
-      "WindowsAzure.Storage/3.1.0.1": {
+      "WindowsAzure.Storage/7.0.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Data.OData": "5.6.0",
-          "Microsoft.Data.Services.Client": "5.6.0",
-          "Microsoft.WindowsAzure.ConfigurationManager": "1.8.0",
-          "Newtonsoft.Json": "5.0.6"
+          "Microsoft.Azure.KeyVault.Core": "1.0.0",
+          "Microsoft.Data.OData": "5.6.4",
+          "Microsoft.Data.Services.Client": "5.6.4",
+          "Newtonsoft.Json": "6.0.8"
         },
         "frameworkAssemblies": [
           "System.Data",
@@ -3883,6 +4042,19 @@
         },
         "runtime": {
           "lib/dnx451/xunit.runner.utility.dotnet.dll": {}
+        }
+      },
+      "YelpSharp/1.2.1": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "4.5.11",
+          "RestSharp": "104.1.0"
+        },
+        "compile": {
+          "lib/net4/YelpSharp.dll": {}
+        },
+        "runtime": {
+          "lib/net4/YelpSharp.dll": {}
         }
       }
     },
@@ -3921,16 +4093,15 @@
           "lib/net451/Autofac.Extensions.DependencyInjection.dll": {}
         }
       },
-      "BlobFileSystem.Azure/0.0.6": {
-        "type": "package",
+      "AzureBlobFileSystem/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
         "dependencies": {
-          "WindowsAzure.Storage": "3.1.0.1"
-        },
-        "compile": {
-          "lib/net45/AzureBlobFileSystem.dll": {}
-        },
-        "runtime": {
-          "lib/net45/AzureBlobFileSystem.dll": {}
+          "loggly-csharp": "4.5.1.7",
+          "Microsoft.WindowsAzure.ConfigurationManager": "3.2.1",
+          "Serilog.Framework.Logging": "1.0.0-rc1-final-10071",
+          "Serilog.Sinks.Loggly": "2.0.7",
+          "WindowsAzure.Storage": "7.0.0"
         }
       },
       "Common/1.0.0": {
@@ -3940,11 +4111,12 @@
           "Enums": "1.0.0",
           "Facebook": "7.0.6",
           "Microsoft.AspNet.Mvc": "6.0.0-rc1-final",
-          "MongoDB.Bson": "2.2.0-rc0",
-          "MongoDB.Driver": "2.2.0-rc0",
+          "MongoDB.Bson": "2.2.3",
+          "MongoDB.Driver": "2.2.3",
           "System.Linq.Queryable": "4.0.1-beta-23516"
         },
         "frameworkAssemblies": [
+          "System.Drawing",
           "System.Web"
         ]
       },
@@ -3953,8 +4125,8 @@
         "framework": "DNX,Version=v4.5.1",
         "dependencies": {
           "Common": "1.0.0",
-          "MongoDB.Bson": "2.2.0-rc0",
-          "MongoDB.Driver": "2.2.0-rc0"
+          "MongoDB.Bson": "2.2.3",
+          "MongoDB.Driver": "2.2.3"
         }
       },
       "DomainModels/1.0.0": {
@@ -3963,17 +4135,20 @@
         "dependencies": {
           "Autofac": "4.0.0-rc1-177",
           "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-177",
-          "BlobFileSystem.Azure": "0.0.6",
+          "AzureBlobFileSystem": "1.0.0",
           "DomainModelsCommon": "1.0.0",
           "Facebook": "7.0.6",
           "Gloobster.Sharing": "1.0.0",
           "Mappers": "1.0.0",
-          "MongoDB.Driver": "2.2.0-rc0",
+          "MongoDB.Driver": "2.2.3",
+          "Nito.AsyncEx": "3.0.1",
           "Serilog.Framework.Logging": "1.0.0-rc1-final-10071",
           "SharpSquare": "1.0.0",
+          "SimpleOAuth.Net": "1.0.1",
           "SocialLogin": "1.0.0",
           "System.Net.Http": "4.0.0",
-          "TweetSharp": "2.3.1"
+          "TweetSharp": "2.3.1",
+          "YelpSharp": "1.2.1"
         },
         "frameworkAssemblies": [
           "System.Device"
@@ -3985,13 +4160,13 @@
         "dependencies": {
           "Autofac": "4.0.0-rc1-177",
           "Autofac.Extensions.DependencyInjection": "4.0.0-rc1-177",
-          "BlobFileSystem.Azure": "0.0.6",
+          "AzureBlobFileSystem": "1.0.0",
           "Common": "1.0.0",
           "Database": "1.0.0",
           "DomainObjects": "1.0.0",
           "Enums": "1.0.0",
-          "MongoDB.Bson": "2.2.0-rc0",
-          "MongoDB.Driver": "2.2.0-rc0",
+          "MongoDB.Bson": "2.2.3",
+          "MongoDB.Driver": "2.2.3",
           "SharpSquare": "1.0.0",
           "TweetSharp": "2.3.1"
         },
@@ -4017,7 +4192,7 @@
           "Common": "1.0.0",
           "Database": "1.0.0",
           "Enums": "1.0.0",
-          "MongoDB.Driver": "2.2.0-rc0"
+          "MongoDB.Driver": "2.2.3"
         }
       },
       "Enums/1.0.0": {
@@ -4033,15 +4208,6 @@
           "lib/net45/Facebook.dll": {}
         }
       },
-      "FlightsSearch/1.0.0": {
-        "type": "project",
-        "framework": "DNX,Version=v4.5.1",
-        "dependencies": {
-          "Common": "1.0.0",
-          "MongoDB.Driver": "2.2.0",
-          "Newtonsoft.Json": "7.0.1"
-        }
-      },
       "Gloobster.Sharing/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
@@ -4049,8 +4215,30 @@
           "Common": "1.0.0",
           "DomainModelsCommon": "1.0.0",
           "Facebook": "7.0.6",
-          "MongoDB.Driver": "2.2.0-rc0",
+          "MongoDB.Driver": "2.2.3",
           "TweetSharp": "2.3.1"
+        }
+      },
+      "loggly-csharp/4.5.1.7": {
+        "type": "package",
+        "dependencies": {
+          "loggly-csharp-config": "4.5.1.7",
+          "Newtonsoft.Json": "6.0.8"
+        },
+        "compile": {
+          "lib/net45/Loggly.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Loggly.dll": {}
+        }
+      },
+      "loggly-csharp-config/4.5.1.7": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Loggly.Config.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Loggly.Config.dll": {}
         }
       },
       "Mappers/1.0.0": {
@@ -4060,7 +4248,7 @@
           "Common": "1.0.0",
           "DomainModelsCommon": "1.0.0",
           "Entities": "1.0.0",
-          "MongoDB.Driver": "2.2.0-rc0",
+          "MongoDB.Driver": "2.2.3",
           "ReqRes": "1.0.0",
           "SocialLogin": "1.0.0",
           "TweetSharp": "2.3.1",
@@ -4723,6 +4911,15 @@
           "lib/net451/Microsoft.AspNet.WebUtilities.dll": {}
         }
       },
+      "Microsoft.Azure.KeyVault.Core/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Microsoft.Azure.KeyVault.Core.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Microsoft.Azure.KeyVault.Core.dll": {}
+        }
+      },
       "Microsoft.CodeAnalysis.Analyzers/1.0.0": {
         "type": "package",
         "frameworkAssemblies": [
@@ -4755,7 +4952,7 @@
           "lib/net45/Microsoft.CodeAnalysis.CSharp.dll": {}
         }
       },
-      "Microsoft.Data.Edm/5.6.0": {
+      "Microsoft.Data.Edm/5.6.4": {
         "type": "package",
         "compile": {
           "lib/net40/Microsoft.Data.Edm.dll": {}
@@ -4793,11 +4990,11 @@
           }
         }
       },
-      "Microsoft.Data.OData/5.6.0": {
+      "Microsoft.Data.OData/5.6.4": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Data.Edm": "[5.6.0]",
-          "System.Spatial": "[5.6.0]"
+          "Microsoft.Data.Edm": "[5.6.4]",
+          "System.Spatial": "[5.6.4]"
         },
         "compile": {
           "lib/net40/Microsoft.Data.OData.dll": {}
@@ -4835,10 +5032,10 @@
           }
         }
       },
-      "Microsoft.Data.Services.Client/5.6.0": {
+      "Microsoft.Data.Services.Client/5.6.4": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Data.OData": "[5.6.0]"
+          "Microsoft.Data.OData": "[5.6.4]"
         },
         "compile": {
           "lib/net40/Microsoft.Data.Services.Client.dll": {}
@@ -5298,16 +5495,16 @@
           "lib/net451/Microsoft.Net.Http.Headers.dll": {}
         }
       },
-      "Microsoft.WindowsAzure.ConfigurationManager/1.8.0": {
+      "Microsoft.WindowsAzure.ConfigurationManager/3.2.1": {
         "type": "package",
         "compile": {
-          "lib/net35-full/Microsoft.WindowsAzure.Configuration.dll": {}
+          "lib/net40/Microsoft.WindowsAzure.Configuration.dll": {}
         },
         "runtime": {
-          "lib/net35-full/Microsoft.WindowsAzure.Configuration.dll": {}
+          "lib/net40/Microsoft.WindowsAzure.Configuration.dll": {}
         }
       },
-      "MongoDB.Bson/2.2.0-rc0": {
+      "MongoDB.Bson/2.2.3": {
         "type": "package",
         "compile": {
           "lib/net45/MongoDB.Bson.dll": {}
@@ -5359,12 +5556,34 @@
           "lib/net45/Newtonsoft.Json.dll": {}
         }
       },
+      "Nito.AsyncEx/3.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Nito.AsyncEx.Concurrent.dll": {},
+          "lib/net45/Nito.AsyncEx.dll": {},
+          "lib/net45/Nito.AsyncEx.Enlightenment.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Nito.AsyncEx.Concurrent.dll": {},
+          "lib/net45/Nito.AsyncEx.dll": {},
+          "lib/net45/Nito.AsyncEx.Enlightenment.dll": {}
+        }
+      },
       "ReqRes/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
         "dependencies": {
           "Common": "1.0.0",
           "Enums": "1.0.0"
+        }
+      },
+      "RestSharp/104.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/net4/RestSharp.dll": {}
+        },
+        "runtime": {
+          "lib/net4/RestSharp.dll": {}
         }
       },
       "Serilog/1.5.11": {
@@ -5398,16 +5617,42 @@
           "lib/dnx451/Serilog.Framework.Logging.dll": {}
         }
       },
+      "Serilog.Sinks.Loggly/2.0.7": {
+        "type": "package",
+        "dependencies": {
+          "loggly-csharp": "4.5.0.4",
+          "Serilog": "1.5.9"
+        },
+        "compile": {
+          "lib/net45/Serilog.Sinks.Loggly.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Serilog.Sinks.Loggly.dll": {}
+        }
+      },
       "SharpSquare/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1"
+      },
+      "SimpleOAuth.Net/1.0.1": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System",
+          "System.Core"
+        ],
+        "compile": {
+          "lib/net20/SimpleOAuth.dll": {}
+        },
+        "runtime": {
+          "lib/net20/SimpleOAuth.dll": {}
+        }
       },
       "SocialLogin/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
         "dependencies": {
           "Facebook": "7.0.6",
-          "MongoDB.Driver": "2.2.0-rc0"
+          "MongoDB.Driver": "2.2.3"
         },
         "frameworkAssemblies": [
           "System.Runtime.Serialization"
@@ -5609,7 +5854,7 @@
           "lib/net45/_._": {}
         }
       },
-      "System.Spatial/5.6.0": {
+      "System.Spatial/5.6.4": {
         "type": "package",
         "compile": {
           "lib/net40/System.Spatial.dll": {}
@@ -5695,16 +5940,16 @@
         "framework": "DNX,Version=v4.5.1",
         "dependencies": {
           "Common": "1.0.0",
-          "MongoDB.Driver": "2.2.0-rc0"
+          "MongoDB.Driver": "2.2.3"
         }
       },
-      "WindowsAzure.Storage/3.1.0.1": {
+      "WindowsAzure.Storage/7.0.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Data.OData": "5.6.0",
-          "Microsoft.Data.Services.Client": "5.6.0",
-          "Microsoft.WindowsAzure.ConfigurationManager": "1.8.0",
-          "Newtonsoft.Json": "5.0.6"
+          "Microsoft.Azure.KeyVault.Core": "1.0.0",
+          "Microsoft.Data.OData": "5.6.4",
+          "Microsoft.Data.Services.Client": "5.6.4",
+          "Newtonsoft.Json": "6.0.8"
         },
         "frameworkAssemblies": [
           "System.Data",
@@ -5826,10 +6071,27 @@
         "runtime": {
           "lib/dnx451/xunit.runner.utility.dotnet.dll": {}
         }
+      },
+      "YelpSharp/1.2.1": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "4.5.11",
+          "RestSharp": "104.1.0"
+        },
+        "compile": {
+          "lib/net4/YelpSharp.dll": {}
+        },
+        "runtime": {
+          "lib/net4/YelpSharp.dll": {}
+        }
       }
     }
   },
   "libraries": {
+    "AzureBlobFileSystem/1.0.0": {
+      "type": "project",
+      "path": "../AzureBlobFileSystem/project.json"
+    },
     "Common/1.0.0": {
       "type": "project",
       "path": "../Common/project.json"
@@ -5857,10 +6119,6 @@
     "Enums/1.0.0": {
       "type": "project",
       "path": "../Enums/project.json"
-    },
-    "FlightsSearch/1.0.0": {
-      "type": "project",
-      "path": "../FlightsSearch/project.json"
     },
     "Gloobster.Sharing/1.0.0": {
       "type": "project",
@@ -5918,16 +6176,6 @@
         "lib/netcore50/Autofac.Extensions.DependencyInjection.xml"
       ]
     },
-    "BlobFileSystem.Azure/0.0.6": {
-      "type": "package",
-      "sha512": "61YPN8dFsh1sfzvURtMEA7Svv1f5KwR8UKNyG9x6H1OnUR9HqOyCnRWPIbNUl67BSfnDHANJzDXFCnWpSyP8Fw==",
-      "files": [
-        "BlobFileSystem.Azure.0.0.6.nupkg",
-        "BlobFileSystem.Azure.0.0.6.nupkg.sha512",
-        "BlobFileSystem.Azure.nuspec",
-        "lib/net45/AzureBlobFileSystem.dll"
-      ]
-    },
     "Facebook/7.0.6": {
       "type": "package",
       "sha512": "D9nlWZb88S4U+eh1pUDQ+AkSkiht6m0eFpxKFddZnQSSFTnncvDMBEnNODy4fOIOjWQIiOXRVbuY04jCPyWqkw==",
@@ -5956,6 +6204,28 @@
         "LICENSE.txt",
         "readme.txt",
         "serializers/JsonNetSerializer.cs"
+      ]
+    },
+    "loggly-csharp/4.5.1.7": {
+      "type": "package",
+      "sha512": "RHAWc/tqVNldNY4gu19gnNeC9a17vsT4azMlpH14tkyCF/uAekhj5BMlj5ZBJgY8WfpGJ5pVt5xFoZ+5QFtY6w==",
+      "files": [
+        "lib/net45/Loggly.dll",
+        "lib/net45/Loggly.pdb",
+        "loggly-csharp.4.5.1.7.nupkg",
+        "loggly-csharp.4.5.1.7.nupkg.sha512",
+        "loggly-csharp.nuspec"
+      ]
+    },
+    "loggly-csharp-config/4.5.1.7": {
+      "type": "package",
+      "sha512": "TBvtjzLbJOOlJ7obo4qfHCXC8NFMI9l7Uq24QdXpdv6n5zHO7F4dvnCYmyR6YXiSSbEg409FC7324ZeIm2V1oA==",
+      "files": [
+        "lib/net45/Loggly.Config.dll",
+        "lib/net45/Loggly.Config.pdb",
+        "loggly-csharp-config.4.5.1.7.nupkg",
+        "loggly-csharp-config.4.5.1.7.nupkg.sha512",
+        "loggly-csharp-config.nuspec"
       ]
     },
     "Microsoft.AspNet.Antiforgery/1.0.0-rc1-final": {
@@ -6420,6 +6690,19 @@
         "Microsoft.AspNet.WebUtilities.nuspec"
       ]
     },
+    "Microsoft.Azure.KeyVault.Core/1.0.0": {
+      "type": "package",
+      "sha512": "iaA0E8xoVlqroQ7Iurg/VyAjfPdhzn+xN7JkdncmNoox/ez49uPbxp2vMrvhopBaUMuoBu38+8e0RvrV+X+BxA==",
+      "files": [
+        "lib/net40/Microsoft.Azure.KeyVault.Core.dll",
+        "lib/net40/Microsoft.Azure.KeyVault.Core.xml",
+        "lib/portable-net45+wp8+wpa81+win/Microsoft.Azure.KeyVault.Core.dll",
+        "lib/portable-net45+wp8+wpa81+win/Microsoft.Azure.KeyVault.Core.xml",
+        "Microsoft.Azure.KeyVault.Core.1.0.0.nupkg",
+        "Microsoft.Azure.KeyVault.Core.1.0.0.nupkg.sha512",
+        "Microsoft.Azure.KeyVault.Core.nuspec"
+      ]
+    },
     "Microsoft.CodeAnalysis.Analyzers/1.0.0": {
       "type": "package",
       "sha512": "E7VdmGw6xO3VHWapC+pNLZmo6yncS53UY3bmb5WZm9wliJBB1A6brgzKA4fcqiLrmJFx71r0M2zEbRDphRLUNg==",
@@ -6464,9 +6747,9 @@
         "ThirdPartyNotices.rtf"
       ]
     },
-    "Microsoft.Data.Edm/5.6.0": {
+    "Microsoft.Data.Edm/5.6.4": {
       "type": "package",
-      "sha512": "85HVRPZznEBFLnkbNqBeZUAD7q5h+KdWDO0Beqs9fH/0DWtFX8p02jKIftY3vii7uUoWOdu4K6Kd/p7Xtz3TsA==",
+      "sha512": "I9ea/CEOufddjjyRYIowshdeFj5SIqfWZ5conK/UIaFx2/jJ+PDRhQ5jcJTqTg/ediCa1C22TeRl/MmL9zwBew==",
       "files": [
         "lib/net40/de/Microsoft.Data.Edm.resources.dll",
         "lib/net40/es/Microsoft.Data.Edm.resources.dll",
@@ -6479,36 +6762,47 @@
         "lib/net40/ru/Microsoft.Data.Edm.resources.dll",
         "lib/net40/zh-Hans/Microsoft.Data.Edm.resources.dll",
         "lib/net40/zh-Hant/Microsoft.Data.Edm.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/de/Microsoft.Data.Edm.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/es/Microsoft.Data.Edm.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/fr/Microsoft.Data.Edm.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/it/Microsoft.Data.Edm.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/ja/Microsoft.Data.Edm.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/ko/Microsoft.Data.Edm.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/Microsoft.Data.Edm.Portable.dll",
-        "lib/portable-net40+sl5+wp8+win8/Microsoft.Data.Edm.Portable.xml",
-        "lib/portable-net40+sl5+wp8+win8/ru/Microsoft.Data.Edm.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/zh-Hans/Microsoft.Data.Edm.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/zh-Hant/Microsoft.Data.Edm.Portable.resources.dll",
-        "lib/sl4/de/Microsoft.Data.Edm.SL.resources.dll",
-        "lib/sl4/es/Microsoft.Data.Edm.SL.resources.dll",
-        "lib/sl4/fr/Microsoft.Data.Edm.SL.resources.dll",
-        "lib/sl4/it/Microsoft.Data.Edm.SL.resources.dll",
-        "lib/sl4/ja/Microsoft.Data.Edm.SL.resources.dll",
-        "lib/sl4/ko/Microsoft.Data.Edm.SL.resources.dll",
-        "lib/sl4/Microsoft.Data.Edm.SL.dll",
-        "lib/sl4/Microsoft.Data.Edm.SL.xml",
-        "lib/sl4/ru/Microsoft.Data.Edm.SL.resources.dll",
-        "lib/sl4/zh-Hans/Microsoft.Data.Edm.SL.resources.dll",
-        "lib/sl4/zh-Hant/Microsoft.Data.Edm.SL.resources.dll",
-        "Microsoft.Data.Edm.5.6.0.nupkg",
-        "Microsoft.Data.Edm.5.6.0.nupkg.sha512",
+        "lib/portable-net40+sl5+wp8+win8+wpa/de/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/es/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/fr/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/it/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/ja/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/ko/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/Microsoft.Data.Edm.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/Microsoft.Data.Edm.xml",
+        "lib/portable-net40+sl5+wp8+win8+wpa/ru/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/zh-Hans/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/zh-Hant/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/de/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/es/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/fr/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/it/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/ja/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/ko/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/Microsoft.Data.Edm.dll",
+        "lib/portable-net45+wp8+win8+wpa/Microsoft.Data.Edm.xml",
+        "lib/portable-net45+wp8+win8+wpa/ru/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/zh-Hans/Microsoft.Data.Edm.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/zh-Hant/Microsoft.Data.Edm.resources.dll",
+        "lib/sl4/de/Microsoft.Data.Edm.resources.dll",
+        "lib/sl4/es/Microsoft.Data.Edm.resources.dll",
+        "lib/sl4/fr/Microsoft.Data.Edm.resources.dll",
+        "lib/sl4/it/Microsoft.Data.Edm.resources.dll",
+        "lib/sl4/ja/Microsoft.Data.Edm.resources.dll",
+        "lib/sl4/ko/Microsoft.Data.Edm.resources.dll",
+        "lib/sl4/Microsoft.Data.Edm.dll",
+        "lib/sl4/Microsoft.Data.Edm.xml",
+        "lib/sl4/ru/Microsoft.Data.Edm.resources.dll",
+        "lib/sl4/zh-Hans/Microsoft.Data.Edm.resources.dll",
+        "lib/sl4/zh-Hant/Microsoft.Data.Edm.resources.dll",
+        "Microsoft.Data.Edm.5.6.4.nupkg",
+        "Microsoft.Data.Edm.5.6.4.nupkg.sha512",
         "Microsoft.Data.Edm.nuspec"
       ]
     },
-    "Microsoft.Data.OData/5.6.0": {
+    "Microsoft.Data.OData/5.6.4": {
       "type": "package",
-      "sha512": "Lt+w1eHXe3+HOl0S4XrfO8AW2ALvKFBZtRfb9ZcmTahmE02HIlbaa3cy/jBTwNoFihfQ5vaBjNl4xspSmVcPRw==",
+      "sha512": "Te71LAvjYppmBCLWomHvhVzKes3q8L5tmmDMSyLP7YrJMYG5/Ded8uJgxWWkUX/Vh11ZDpN2WXRByOg+BAHCYw==",
       "files": [
         "lib/net40/de/Microsoft.Data.OData.resources.dll",
         "lib/net40/es/Microsoft.Data.OData.resources.dll",
@@ -6521,36 +6815,47 @@
         "lib/net40/ru/Microsoft.Data.OData.resources.dll",
         "lib/net40/zh-Hans/Microsoft.Data.OData.resources.dll",
         "lib/net40/zh-Hant/Microsoft.Data.OData.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/de/Microsoft.Data.OData.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/es/Microsoft.Data.OData.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/fr/Microsoft.Data.OData.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/it/Microsoft.Data.OData.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/ja/Microsoft.Data.OData.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/ko/Microsoft.Data.OData.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/Microsoft.Data.OData.Portable.dll",
-        "lib/portable-net40+sl5+wp8+win8/Microsoft.Data.OData.Portable.xml",
-        "lib/portable-net40+sl5+wp8+win8/ru/Microsoft.Data.OData.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/zh-Hans/Microsoft.Data.OData.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/zh-Hant/Microsoft.Data.OData.Portable.resources.dll",
-        "lib/sl4/de/Microsoft.Data.OData.SL.resources.dll",
-        "lib/sl4/es/Microsoft.Data.OData.SL.resources.dll",
-        "lib/sl4/fr/Microsoft.Data.OData.SL.resources.dll",
-        "lib/sl4/it/Microsoft.Data.OData.SL.resources.dll",
-        "lib/sl4/ja/Microsoft.Data.OData.SL.resources.dll",
-        "lib/sl4/ko/Microsoft.Data.OData.SL.resources.dll",
-        "lib/sl4/Microsoft.Data.OData.SL.dll",
-        "lib/sl4/Microsoft.Data.OData.SL.xml",
-        "lib/sl4/ru/Microsoft.Data.OData.SL.resources.dll",
-        "lib/sl4/zh-Hans/Microsoft.Data.OData.SL.resources.dll",
-        "lib/sl4/zh-Hant/Microsoft.Data.OData.SL.resources.dll",
-        "Microsoft.Data.OData.5.6.0.nupkg",
-        "Microsoft.Data.OData.5.6.0.nupkg.sha512",
+        "lib/portable-net40+sl5+wp8+win8+wpa/de/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/es/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/fr/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/it/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/ja/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/ko/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/Microsoft.Data.OData.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/Microsoft.Data.OData.xml",
+        "lib/portable-net40+sl5+wp8+win8+wpa/ru/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/zh-Hans/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/zh-Hant/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/de/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/es/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/fr/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/it/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/ja/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/ko/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/Microsoft.Data.OData.dll",
+        "lib/portable-net45+wp8+win8+wpa/Microsoft.Data.OData.xml",
+        "lib/portable-net45+wp8+win8+wpa/ru/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/zh-Hans/Microsoft.Data.OData.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/zh-Hant/Microsoft.Data.OData.resources.dll",
+        "lib/sl4/de/Microsoft.Data.OData.resources.dll",
+        "lib/sl4/es/Microsoft.Data.OData.resources.dll",
+        "lib/sl4/fr/Microsoft.Data.OData.resources.dll",
+        "lib/sl4/it/Microsoft.Data.OData.resources.dll",
+        "lib/sl4/ja/Microsoft.Data.OData.resources.dll",
+        "lib/sl4/ko/Microsoft.Data.OData.resources.dll",
+        "lib/sl4/Microsoft.Data.OData.dll",
+        "lib/sl4/Microsoft.Data.OData.xml",
+        "lib/sl4/ru/Microsoft.Data.OData.resources.dll",
+        "lib/sl4/zh-Hans/Microsoft.Data.OData.resources.dll",
+        "lib/sl4/zh-Hant/Microsoft.Data.OData.resources.dll",
+        "Microsoft.Data.OData.5.6.4.nupkg",
+        "Microsoft.Data.OData.5.6.4.nupkg.sha512",
         "Microsoft.Data.OData.nuspec"
       ]
     },
-    "Microsoft.Data.Services.Client/5.6.0": {
+    "Microsoft.Data.Services.Client/5.6.4": {
       "type": "package",
-      "sha512": "OPXiTugmoZNO4X5RrLEKyIKhXMBBGNNM7szgtAyQ42snJFTcC2pStIYtQXaSAd1gHx/MNvTYcNN8vn7o64cFgA==",
+      "sha512": "94XNZKwnpHuFAdR70kqNTMBv2ex9m+VVQX8dHknZgtlq+nTlZDgzFmahU0wsBaIqJWc3k8Z+FftQ2Voq9r0NWA==",
       "files": [
         "lib/net40/de/Microsoft.Data.Services.Client.resources.dll",
         "lib/net40/es/Microsoft.Data.Services.Client.resources.dll",
@@ -6563,30 +6868,30 @@
         "lib/net40/ru/Microsoft.Data.Services.Client.resources.dll",
         "lib/net40/zh-Hans/Microsoft.Data.Services.Client.resources.dll",
         "lib/net40/zh-Hant/Microsoft.Data.Services.Client.resources.dll",
-        "lib/portable-net45+sl5+wp8+win8/de/Microsoft.Data.Services.Client.Portable.resources.dll",
-        "lib/portable-net45+sl5+wp8+win8/es/Microsoft.Data.Services.Client.Portable.resources.dll",
-        "lib/portable-net45+sl5+wp8+win8/fr/Microsoft.Data.Services.Client.Portable.resources.dll",
-        "lib/portable-net45+sl5+wp8+win8/it/Microsoft.Data.Services.Client.Portable.resources.dll",
-        "lib/portable-net45+sl5+wp8+win8/ja/Microsoft.Data.Services.Client.Portable.resources.dll",
-        "lib/portable-net45+sl5+wp8+win8/ko/Microsoft.Data.Services.Client.Portable.resources.dll",
-        "lib/portable-net45+sl5+wp8+win8/Microsoft.Data.Services.Client.Portable.dll",
-        "lib/portable-net45+sl5+wp8+win8/Microsoft.Data.Services.Client.Portable.xml",
-        "lib/portable-net45+sl5+wp8+win8/ru/Microsoft.Data.Services.Client.Portable.resources.dll",
-        "lib/portable-net45+sl5+wp8+win8/zh-Hans/Microsoft.Data.Services.Client.Portable.resources.dll",
-        "lib/portable-net45+sl5+wp8+win8/zh-Hant/Microsoft.Data.Services.Client.Portable.resources.dll",
-        "lib/sl4/de/Microsoft.Data.Services.Client.SL.resources.dll",
-        "lib/sl4/es/Microsoft.Data.Services.Client.SL.resources.dll",
-        "lib/sl4/fr/Microsoft.Data.Services.Client.SL.resources.dll",
-        "lib/sl4/it/Microsoft.Data.Services.Client.SL.resources.dll",
-        "lib/sl4/ja/Microsoft.Data.Services.Client.SL.resources.dll",
-        "lib/sl4/ko/Microsoft.Data.Services.Client.SL.resources.dll",
-        "lib/sl4/Microsoft.Data.Services.Client.SL.dll",
-        "lib/sl4/Microsoft.Data.Services.Client.SL.xml",
-        "lib/sl4/ru/Microsoft.Data.Services.Client.SL.resources.dll",
-        "lib/sl4/zh-Hans/Microsoft.Data.Services.Client.SL.resources.dll",
-        "lib/sl4/zh-Hant/Microsoft.Data.Services.Client.SL.resources.dll",
-        "Microsoft.Data.Services.Client.5.6.0.nupkg",
-        "Microsoft.Data.Services.Client.5.6.0.nupkg.sha512",
+        "lib/portable-net45+wp8+win8+wpa/de/Microsoft.Data.Services.Client.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/es/Microsoft.Data.Services.Client.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/fr/Microsoft.Data.Services.Client.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/it/Microsoft.Data.Services.Client.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/ja/Microsoft.Data.Services.Client.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/ko/Microsoft.Data.Services.Client.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/Microsoft.Data.Services.Client.dll",
+        "lib/portable-net45+wp8+win8+wpa/Microsoft.Data.Services.Client.xml",
+        "lib/portable-net45+wp8+win8+wpa/ru/Microsoft.Data.Services.Client.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/zh-Hans/Microsoft.Data.Services.Client.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/zh-Hant/Microsoft.Data.Services.Client.resources.dll",
+        "lib/sl4/de/Microsoft.Data.Services.Client.resources.dll",
+        "lib/sl4/es/Microsoft.Data.Services.Client.resources.dll",
+        "lib/sl4/fr/Microsoft.Data.Services.Client.resources.dll",
+        "lib/sl4/it/Microsoft.Data.Services.Client.resources.dll",
+        "lib/sl4/ja/Microsoft.Data.Services.Client.resources.dll",
+        "lib/sl4/ko/Microsoft.Data.Services.Client.resources.dll",
+        "lib/sl4/Microsoft.Data.Services.Client.dll",
+        "lib/sl4/Microsoft.Data.Services.Client.xml",
+        "lib/sl4/ru/Microsoft.Data.Services.Client.resources.dll",
+        "lib/sl4/zh-Hans/Microsoft.Data.Services.Client.resources.dll",
+        "lib/sl4/zh-Hant/Microsoft.Data.Services.Client.resources.dll",
+        "Microsoft.Data.Services.Client.5.6.4.nupkg",
+        "Microsoft.Data.Services.Client.5.6.4.nupkg.sha512",
         "Microsoft.Data.Services.Client.nuspec"
       ]
     },
@@ -6949,25 +7254,26 @@
         "Microsoft.Net.Http.Headers.nuspec"
       ]
     },
-    "Microsoft.WindowsAzure.ConfigurationManager/1.8.0": {
+    "Microsoft.WindowsAzure.ConfigurationManager/3.2.1": {
       "type": "package",
-      "sha512": "a6b+9C3kZ3YtyqlxDfMSEYnqARFpr/BQcCqZFCgqBAEHDUZNr2/GOL9gC2gialM0SMOSJ5PXic4NirF19HtMwQ==",
+      "sha512": "92deJ/UgEChOtHb9eLYBsL1+Y38Y5hr+qwd7LB+iCwfIOvRsah3EUnGBjSNZxSydguXimIiJjsB4wQ2jXIqaIQ==",
       "files": [
-        "lib/net35-full/Microsoft.WindowsAzure.Configuration.dll",
-        "Microsoft.WindowsAzure.ConfigurationManager.1.8.0.nupkg",
-        "Microsoft.WindowsAzure.ConfigurationManager.1.8.0.nupkg.sha512",
+        "lib/net40/Microsoft.WindowsAzure.Configuration.dll",
+        "lib/net40/Microsoft.WindowsAzure.Configuration.xml",
+        "Microsoft.WindowsAzure.ConfigurationManager.3.2.1.nupkg",
+        "Microsoft.WindowsAzure.ConfigurationManager.3.2.1.nupkg.sha512",
         "Microsoft.WindowsAzure.ConfigurationManager.nuspec"
       ]
     },
-    "MongoDB.Bson/2.2.0-rc0": {
+    "MongoDB.Bson/2.2.3": {
       "type": "package",
-      "sha512": "V6EU/ACsUqRAwmU3Xju748gqyCPz/udNdjS+5gHVJ9LwI0jveZGEtLLHmEOpOssXZ6n0yWqwSP+vZcTDuINllg==",
+      "sha512": "AwxyD8qYgy1GQkxQV2uMzymm19QwaNNAER6gf/w8f2dDjcboEve1kv9GEz7mtn2K8p6hYQjhgnvGc+xeh0KLmg==",
       "files": [
         "lib/net45/MongoDB.Bson.dll",
         "lib/net45/MongoDB.Bson.XML",
         "License.rtf",
-        "MongoDB.Bson.2.2.0-rc0.nupkg",
-        "MongoDB.Bson.2.2.0-rc0.nupkg.sha512",
+        "MongoDB.Bson.2.2.3.nupkg",
+        "MongoDB.Bson.2.2.3.nupkg.sha512",
         "MongoDB.Bson.nuspec"
       ]
     },
@@ -7031,6 +7337,109 @@
         "tools/install.ps1"
       ]
     },
+    "Nito.AsyncEx/3.0.1": {
+      "type": "package",
+      "sha512": "JSypx/S4sBY1+0wrXcSqcdV6p5nVNFeCfIVyC9LAy69hrle/bxMJf9oZsi5UDxZl7Bsq/bD2XwxMFFOx7zVPag==",
+      "files": [
+        "lib/MonoAndroid/Nito.AsyncEx.Concurrent.dll",
+        "lib/MonoAndroid/Nito.AsyncEx.Concurrent.xml",
+        "lib/MonoAndroid/Nito.AsyncEx.dll",
+        "lib/MonoAndroid/Nito.AsyncEx.Enlightenment.dll",
+        "lib/MonoAndroid/Nito.AsyncEx.Enlightenment.xml",
+        "lib/MonoAndroid/Nito.AsyncEx.xml",
+        "lib/net40/Nito.AsyncEx.Concurrent.dll",
+        "lib/net40/Nito.AsyncEx.Concurrent.xml",
+        "lib/net40/Nito.AsyncEx.dll",
+        "lib/net40/Nito.AsyncEx.Enlightenment.dll",
+        "lib/net40/Nito.AsyncEx.Enlightenment.xml",
+        "lib/net40/Nito.AsyncEx.xml",
+        "lib/net45/Nito.AsyncEx.Concurrent.dll",
+        "lib/net45/Nito.AsyncEx.Concurrent.xml",
+        "lib/net45/Nito.AsyncEx.dll",
+        "lib/net45/Nito.AsyncEx.Enlightenment.dll",
+        "lib/net45/Nito.AsyncEx.Enlightenment.xml",
+        "lib/net45/Nito.AsyncEx.xml",
+        "lib/netcore45/Nito.AsyncEx.Concurrent.dll",
+        "lib/netcore45/Nito.AsyncEx.Concurrent.xml",
+        "lib/netcore45/Nito.AsyncEx.dll",
+        "lib/netcore45/Nito.AsyncEx.Enlightenment.dll",
+        "lib/netcore45/Nito.AsyncEx.Enlightenment.xml",
+        "lib/netcore45/Nito.AsyncEx.xml",
+        "lib/portable-net40+netcore45/Nito.AsyncEx.Concurrent.dll",
+        "lib/portable-net40+netcore45/Nito.AsyncEx.Concurrent.xml",
+        "lib/portable-net40+netcore45/Nito.AsyncEx.dll",
+        "lib/portable-net40+netcore45/Nito.AsyncEx.xml",
+        "lib/portable-net40+netcore45+sl4+wp71/Nito.AsyncEx.dll",
+        "lib/portable-net40+netcore45+sl4+wp71/Nito.AsyncEx.xml",
+        "lib/portable-net40+netcore45+sl5+wp8+wpa81/Nito.AsyncEx.dll",
+        "lib/portable-net40+netcore45+sl5+wp8+wpa81/Nito.AsyncEx.xml",
+        "lib/portable-net45+netcore45+wp8+wpa81/Nito.AsyncEx.dll",
+        "lib/portable-net45+netcore45+wp8+wpa81/Nito.AsyncEx.xml",
+        "lib/portable-net45+netcore45+wpa81/Nito.AsyncEx.Concurrent.dll",
+        "lib/portable-net45+netcore45+wpa81/Nito.AsyncEx.Concurrent.xml",
+        "lib/portable-net45+netcore45+wpa81/Nito.AsyncEx.dll",
+        "lib/portable-net45+netcore45+wpa81/Nito.AsyncEx.xml",
+        "lib/sl4/Nito.AsyncEx.dll",
+        "lib/sl4/Nito.AsyncEx.Enlightenment.dll",
+        "lib/sl4/Nito.AsyncEx.Enlightenment.xml",
+        "lib/sl4/Nito.AsyncEx.xml",
+        "lib/sl5/Nito.AsyncEx.dll",
+        "lib/sl5/Nito.AsyncEx.Enlightenment.dll",
+        "lib/sl5/Nito.AsyncEx.Enlightenment.xml",
+        "lib/sl5/Nito.AsyncEx.xml",
+        "lib/wp71/Nito.AsyncEx.dll",
+        "lib/wp71/Nito.AsyncEx.Enlightenment.dll",
+        "lib/wp71/Nito.AsyncEx.Enlightenment.xml",
+        "lib/wp71/Nito.AsyncEx.xml",
+        "lib/wp8/Nito.AsyncEx.dll",
+        "lib/wp8/Nito.AsyncEx.Enlightenment.dll",
+        "lib/wp8/Nito.AsyncEx.Enlightenment.xml",
+        "lib/wp8/Nito.AsyncEx.xml",
+        "lib/wpa81/Nito.AsyncEx.Concurrent.dll",
+        "lib/wpa81/Nito.AsyncEx.Concurrent.xml",
+        "lib/wpa81/Nito.AsyncEx.dll",
+        "lib/wpa81/Nito.AsyncEx.Enlightenment.dll",
+        "lib/wpa81/Nito.AsyncEx.Enlightenment.xml",
+        "lib/wpa81/Nito.AsyncEx.xml",
+        "lib/Xamarin.iOS10/Nito.AsyncEx.Concurrent.dll",
+        "lib/Xamarin.iOS10/Nito.AsyncEx.Concurrent.xml",
+        "lib/Xamarin.iOS10/Nito.AsyncEx.dll",
+        "lib/Xamarin.iOS10/Nito.AsyncEx.Enlightenment.dll",
+        "lib/Xamarin.iOS10/Nito.AsyncEx.Enlightenment.xml",
+        "lib/Xamarin.iOS10/Nito.AsyncEx.xml",
+        "lib/Xamarin.Mac20/Nito.AsyncEx.Concurrent.dll",
+        "lib/Xamarin.Mac20/Nito.AsyncEx.Concurrent.xml",
+        "lib/Xamarin.Mac20/Nito.AsyncEx.dll",
+        "lib/Xamarin.Mac20/Nito.AsyncEx.Enlightenment.dll",
+        "lib/Xamarin.Mac20/Nito.AsyncEx.Enlightenment.xml",
+        "lib/Xamarin.Mac20/Nito.AsyncEx.xml",
+        "Nito.AsyncEx.3.0.1.nupkg",
+        "Nito.AsyncEx.3.0.1.nupkg.sha512",
+        "Nito.AsyncEx.nuspec"
+      ]
+    },
+    "RestSharp/104.1.0": {
+      "type": "package",
+      "sha512": "dlimMbhHZ7T2saCYJDcuonz7XSpnUUAe7RxN1O5ETi7xPnfAwA20Uf5Iy9XYOm+tV4FLM0GIQiVFxkjR7NJI8A==",
+      "files": [
+        "lib/net35/RestSharp.dll",
+        "lib/net35/RestSharp.xml",
+        "lib/net35-client/RestSharp.dll",
+        "lib/net35-client/RestSharp.xml",
+        "lib/net4/RestSharp.dll",
+        "lib/net4/RestSharp.xml",
+        "lib/net4-client/RestSharp.dll",
+        "lib/net4-client/RestSharp.xml",
+        "lib/sl4/RestSharp.Silverlight.dll",
+        "lib/sl4/RestSharp.Silverlight.xml",
+        "lib/sl4-wp71/RestSharp.WindowsPhone.dll",
+        "lib/sl4-wp71/RestSharp.WindowsPhone.xml",
+        "readme.txt",
+        "RestSharp.104.1.0.nupkg",
+        "RestSharp.104.1.0.nupkg.sha512",
+        "RestSharp.nuspec"
+      ]
+    },
     "Serilog/1.5.11": {
       "type": "package",
       "sha512": "XNMHuP9eRWk7ffNtEAtACoBqqrSGfioQnEbeK/boi/qtamh3ZgYXvUwH9/PytJdg3LGOIT0quyTiCNaqYlJUuQ==",
@@ -7066,6 +7475,32 @@
         "Serilog.Framework.Logging.1.0.0-rc1-final-10071.nupkg",
         "Serilog.Framework.Logging.1.0.0-rc1-final-10071.nupkg.sha512",
         "Serilog.Framework.Logging.nuspec"
+      ]
+    },
+    "Serilog.Sinks.Loggly/2.0.7": {
+      "type": "package",
+      "sha512": "KJ2uZYTqdM5xy8/gtz8qtAD1VTQYJteqd7ugLQIxS2I1VjGudRjSTxZkp6YFJ2121dL8tH6fg14f4W8m5WkEug==",
+      "files": [
+        "lib/net45/Serilog.Sinks.Loggly.dll",
+        "lib/net45/Serilog.Sinks.Loggly.xml",
+        "Serilog.Sinks.Loggly.2.0.7.nupkg",
+        "Serilog.Sinks.Loggly.2.0.7.nupkg.sha512",
+        "Serilog.Sinks.Loggly.nuspec"
+      ]
+    },
+    "SimpleOAuth.Net/1.0.1": {
+      "type": "package",
+      "sha512": "eazObcySAbQmAFGS5kyMdTUXiVit+qW1bBIwriyoCj5pX2HbCTYxFxitpB9lxwBtnC5Hf/2W7hqhQ4CcFmoH4A==",
+      "files": [
+        "lib/net20/SimpleOAuth.dll",
+        "lib/net20/SimpleOAuth.pdb",
+        "lib/net20/SimpleOAuth.xml",
+        "lib/sl4-windowsphone71/SimpleOAuth.WP.Mango.dll",
+        "lib/sl4-windowsphone71/SimpleOAuth.WP.Mango.pdb",
+        "lib/sl4-windowsphone71/SimpleOAuth.WP.Mango.xml",
+        "SimpleOAuth.Net.1.0.1.nupkg",
+        "SimpleOAuth.Net.1.0.1.nupkg.sha512",
+        "SimpleOAuth.Net.nuspec"
       ]
     },
     "System.Collections/4.0.0": {
@@ -7746,9 +8181,9 @@
         "System.Runtime.InteropServices.nuspec"
       ]
     },
-    "System.Spatial/5.6.0": {
+    "System.Spatial/5.6.4": {
       "type": "package",
-      "sha512": "O5hFsuKD1vUwXw9TrsbQ7XMlkL5qWHNJYSEchsaCmxFI60ffa3FSHnqvOBHKzLplaiA3enVPufDPgv9xSrp11A==",
+      "sha512": "BoXUQ0mHyeAbkR3qlhwXqUFxzJ7rZuFOrvFM/jZRk+S6JLI2JxXRKby6bxuWbmwYv2o/eRPQPbAOvEk5hB2Gmg==",
       "files": [
         "lib/net40/de/System.Spatial.resources.dll",
         "lib/net40/es/System.Spatial.resources.dll",
@@ -7761,30 +8196,41 @@
         "lib/net40/System.Spatial.xml",
         "lib/net40/zh-Hans/System.Spatial.resources.dll",
         "lib/net40/zh-Hant/System.Spatial.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/de/System.Spatial.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/es/System.Spatial.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/fr/System.Spatial.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/it/System.Spatial.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/ja/System.Spatial.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/ko/System.Spatial.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/ru/System.Spatial.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/System.Spatial.Portable.dll",
-        "lib/portable-net40+sl5+wp8+win8/System.Spatial.Portable.xml",
-        "lib/portable-net40+sl5+wp8+win8/zh-Hans/System.Spatial.Portable.resources.dll",
-        "lib/portable-net40+sl5+wp8+win8/zh-Hant/System.Spatial.Portable.resources.dll",
-        "lib/sl4/de/System.Spatial.SL.resources.dll",
-        "lib/sl4/es/System.Spatial.SL.resources.dll",
-        "lib/sl4/fr/System.Spatial.SL.resources.dll",
-        "lib/sl4/it/System.Spatial.SL.resources.dll",
-        "lib/sl4/ja/System.Spatial.SL.resources.dll",
-        "lib/sl4/ko/System.Spatial.SL.resources.dll",
-        "lib/sl4/ru/System.Spatial.SL.resources.dll",
-        "lib/sl4/System.Spatial.SL.dll",
-        "lib/sl4/System.Spatial.SL.xml",
-        "lib/sl4/zh-Hans/System.Spatial.SL.resources.dll",
-        "lib/sl4/zh-Hant/System.Spatial.SL.resources.dll",
-        "System.Spatial.5.6.0.nupkg",
-        "System.Spatial.5.6.0.nupkg.sha512",
+        "lib/portable-net40+sl5+wp8+win8+wpa/de/System.Spatial.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/es/System.Spatial.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/fr/System.Spatial.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/it/System.Spatial.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/ja/System.Spatial.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/ko/System.Spatial.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/ru/System.Spatial.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/System.Spatial.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/System.Spatial.xml",
+        "lib/portable-net40+sl5+wp8+win8+wpa/zh-Hans/System.Spatial.resources.dll",
+        "lib/portable-net40+sl5+wp8+win8+wpa/zh-Hant/System.Spatial.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/de/System.Spatial.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/es/System.Spatial.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/fr/System.Spatial.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/it/System.Spatial.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/ja/System.Spatial.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/ko/System.Spatial.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/ru/System.Spatial.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/System.Spatial.dll",
+        "lib/portable-net45+wp8+win8+wpa/System.Spatial.xml",
+        "lib/portable-net45+wp8+win8+wpa/zh-Hans/System.Spatial.resources.dll",
+        "lib/portable-net45+wp8+win8+wpa/zh-Hant/System.Spatial.resources.dll",
+        "lib/sl4/de/System.Spatial.resources.dll",
+        "lib/sl4/es/System.Spatial.resources.dll",
+        "lib/sl4/fr/System.Spatial.resources.dll",
+        "lib/sl4/it/System.Spatial.resources.dll",
+        "lib/sl4/ja/System.Spatial.resources.dll",
+        "lib/sl4/ko/System.Spatial.resources.dll",
+        "lib/sl4/ru/System.Spatial.resources.dll",
+        "lib/sl4/System.Spatial.dll",
+        "lib/sl4/System.Spatial.xml",
+        "lib/sl4/zh-Hans/System.Spatial.resources.dll",
+        "lib/sl4/zh-Hant/System.Spatial.resources.dll",
+        "System.Spatial.5.6.4.nupkg",
+        "System.Spatial.5.6.4.nupkg.sha512",
         "System.Spatial.nuspec"
       ]
     },
@@ -7996,14 +8442,21 @@
         "TweetSharp.nuspec"
       ]
     },
-    "WindowsAzure.Storage/3.1.0.1": {
+    "WindowsAzure.Storage/7.0.0": {
       "type": "package",
-      "sha512": "/6UnKf8zWJXS3TOvzAjq5yAsjDOd9t714+GIi5L6Vj6c7KmPs1jBGBx6UufDt+KVAxTrsV2Wdlbapp7z7LV+cw==",
+      "sha512": "AKxGH6NpZN0fRc2eRKtlDdkk1JW5uqCMeHCF06Z/L5xkYajM7OWquzsjAkQsi2s5a2O0Y4iE6WZOcT5PLE0IMA==",
       "files": [
         "lib/net40/Microsoft.WindowsAzure.Storage.dll",
+        "lib/net40/Microsoft.WindowsAzure.Storage.pdb",
         "lib/net40/Microsoft.WindowsAzure.Storage.xml",
-        "WindowsAzure.Storage.3.1.0.1.nupkg",
-        "WindowsAzure.Storage.3.1.0.1.nupkg.sha512",
+        "lib/win8/Microsoft.WindowsAzure.Storage.dll",
+        "lib/win8/Microsoft.WindowsAzure.Storage.pdb",
+        "lib/wp8/Microsoft.WindowsAzure.Storage.dll",
+        "lib/wp8/Microsoft.WindowsAzure.Storage.pdb",
+        "lib/wpa/Microsoft.WindowsAzure.Storage.dll",
+        "lib/wpa/Microsoft.WindowsAzure.Storage.pdb",
+        "WindowsAzure.Storage.7.0.0.nupkg",
+        "WindowsAzure.Storage.7.0.0.nupkg.sha512",
         "WindowsAzure.Storage.nuspec"
       ]
     },
@@ -8169,6 +8622,17 @@
         "xunit.runner.utility.2.1.0.nupkg.sha512",
         "xunit.runner.utility.nuspec"
       ]
+    },
+    "YelpSharp/1.2.1": {
+      "type": "package",
+      "sha512": "HjWuIlXyGC9atpO3sV+xWBIIaB3grtn5bPwhsgh4HcuG6B7GZOf8ZKf/caJdOWRRuXF265d4l4PL2fplKjbBVg==",
+      "files": [
+        "lib/net4/YelpSharp.dll",
+        "lib/windowsphone8/YelpSharp.WindowsPhone.dll",
+        "YelpSharp.1.2.1.nupkg",
+        "YelpSharp.1.2.1.nupkg.sha512",
+        "YelpSharp.nuspec"
+      ]
     }
   },
   "projectFileDependencyGroups": {
@@ -8176,17 +8640,16 @@
       "Common >= 1.0.0-*",
       "DomainModels >= 1.0.0-*",
       "DomainModelsCommon >= 1.0.0-*",
+      "Gloobster.Sharing >= 1.0.0-*",
       "Mappers >= 1.0.0-*",
-      "SocialLogin >= 1.0.0-*",
-      "WebApiObjects >= 1.0.0-*",
       "MongoDB.Driver >= 2.2.0-rc0",
       "Moq >= 4.2.1507.118",
-      "TweetSharp >= 2.3.1",
-      "xunit >= 2.2.0-beta1-build3239",
-      "xunit.runner.dnx >= 2.1.0-rc1-build204",
       "Newtonsoft.Json >= 7.0.1",
-      "Gloobster.Sharing >= 1.0.0-*",
-      "FlightsSearch >= 1.0.0-*"
+      "SocialLogin >= 1.0.0-*",
+      "TweetSharp >= 2.3.1",
+      "WebApiObjects >= 1.0.0-*",
+      "xunit >= 2.2.0-beta1-build3239",
+      "xunit.runner.dnx >= 2.1.0-rc1-build204"
     ],
     "DNX,Version=v4.5.1": [
       "SharpSquare >= 1.0.0-*"

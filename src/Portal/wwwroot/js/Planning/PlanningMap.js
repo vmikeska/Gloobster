@@ -103,7 +103,7 @@ var Planning;
             return 1;
         };
         return PlanningMap;
-    })();
+    }());
     Planning.PlanningMap = PlanningMap;
 })(Planning || (Planning = {}));
 //# sourceMappingURL=PlanningMap.js.map

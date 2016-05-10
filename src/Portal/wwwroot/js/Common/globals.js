@@ -33,4 +33,4 @@ var ParticipantState;
     ParticipantState[ParticipantState["Maybe"] = 2] = "Maybe";
     ParticipantState[ParticipantState["Refused"] = 3] = "Refused";
 })(ParticipantState || (ParticipantState = {}));
-//# sourceMappingURL=globals.js.map
+//# sourceMappingURL=Globals.js.map

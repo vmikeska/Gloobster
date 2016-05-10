@@ -214,7 +214,7 @@ var Trip;
             $row.after($html);
         };
         return TravelDialog;
-    })();
+    }());
     Trip.TravelDialog = TravelDialog;
 })(Trip || (Trip = {}));
 //# sourceMappingURL=TravelDialog.js.map

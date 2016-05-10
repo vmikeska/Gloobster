@@ -224,7 +224,7 @@ var Trip;
             return dt.getUTCDate() + "." + (dt.getUTCMonth() + 1) + ".";
         };
         return Planner;
-    })();
+    }());
     Trip.Planner = Planner;
 })(Trip || (Trip = {}));
 //# sourceMappingURL=Planner.js.map

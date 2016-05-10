@@ -1,0 +1,30 @@
+{
+  "version": "1.0.0-*",
+  "description": "SpPlacesConverter Console Application",
+  "authors": [ "vmike_000" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "compilationOptions": {
+    "emitEntryPoint": true
+  },
+
+  "dependencies": {
+    "Newtonsoft.Json": "8.0.3"
+  },
+
+  "commands": { 
+    "SpPlacesConverter": "SpPlacesConverter"
+  },
+
+  "frameworks": {
+    "dnx451": {
+      "frameworkAssemblies": {
+        "System.Device": "4.0.0.0",
+        "System.Runtime.Serialization": "4.0.0.0",
+        "System.Web": "4.0.0.0"
+      }
+    }
+  }
+}

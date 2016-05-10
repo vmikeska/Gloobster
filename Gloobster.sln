@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2A345503-3703-48D8-8CA5-CCAFBEB40FE8}"
 EndProject
@@ -61,7 +61,7 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CitiesImporter", "src\Citie
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AzureBlobFileSystem", "src\AzureBlobFileSystem\AzureBlobFileSystem.xproj", "{406E9862-DAB3-4E20-82F1-FA72B3DAEE75}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "SpPlacesConvertor", "SpPlacesConvertor\SpPlacesConvertor.xproj", "{05270DE2-B416-4284-BAC9-44F2F0D64F8C}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "SpPlacesConverter", "Tools\SpPlacesConverter\SpPlacesConverter.xproj", "{360050AF-85D9-4BED-84E2-2AA0FA01C005}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -141,10 +141,10 @@ Global
 		{406E9862-DAB3-4E20-82F1-FA72B3DAEE75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{406E9862-DAB3-4E20-82F1-FA72B3DAEE75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{406E9862-DAB3-4E20-82F1-FA72B3DAEE75}.Release|Any CPU.Build.0 = Release|Any CPU
-		{05270DE2-B416-4284-BAC9-44F2F0D64F8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{05270DE2-B416-4284-BAC9-44F2F0D64F8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{05270DE2-B416-4284-BAC9-44F2F0D64F8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{05270DE2-B416-4284-BAC9-44F2F0D64F8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{360050AF-85D9-4BED-84E2-2AA0FA01C005}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{360050AF-85D9-4BED-84E2-2AA0FA01C005}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{360050AF-85D9-4BED-84E2-2AA0FA01C005}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{360050AF-85D9-4BED-84E2-2AA0FA01C005}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -171,6 +171,6 @@ Global
 		{76B68D25-F4DE-476E-A970-FB314C86F49C} = {3D73D2B8-F179-468C-A754-BA8AB266834A}
 		{7AA30038-8D35-47EB-AEDE-F1239C77F105} = {610CF833-AB89-4D5D-87AF-33B0950922FE}
 		{406E9862-DAB3-4E20-82F1-FA72B3DAEE75} = {2A345503-3703-48D8-8CA5-CCAFBEB40FE8}
-		{05270DE2-B416-4284-BAC9-44F2F0D64F8C} = {610CF833-AB89-4D5D-87AF-33B0950922FE}
+		{360050AF-85D9-4BED-84E2-2AA0FA01C005} = {610CF833-AB89-4D5D-87AF-33B0950922FE}
 	EndGlobalSection
 EndGlobal

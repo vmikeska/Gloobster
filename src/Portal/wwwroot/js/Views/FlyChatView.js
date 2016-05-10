@@ -53,7 +53,7 @@ var Views;
             return $("<tr><td>" + name + "</td><td>" + flight[name] + "</td></tr>");
         };
         return FlyChatView;
-    })(Views.ViewBase);
+    }(Views.ViewBase));
     Views.FlyChatView = FlyChatView;
 })(Views || (Views = {}));
 //# sourceMappingURL=FlyChatView.js.map
