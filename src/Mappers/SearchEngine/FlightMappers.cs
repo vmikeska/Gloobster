@@ -14,7 +14,8 @@ namespace Gloobster.Mappers
                 Price = e.Price,
                 Connections = e.Connections,
                 From = e.From,
-                To = e.To
+                To = e.To,
+                FlightScore = e.FlightScore
             };
 
             if (e.FlightParts != null)
@@ -33,7 +34,8 @@ namespace Gloobster.Mappers
                 Price = d.Price,
                 Connections = d.Connections,
                 From = d.From,
-                To = d.To
+                To = d.To,
+                FlightScore = d.FlightScore
             };
 
             if (d.FlightParts != null)

@@ -13,6 +13,8 @@ namespace Gloobster.DomainModels.SearchEngine
 {
     public class FlightsDatabase: IFlightsDatabase
     {
+        public bool UseCache = false;
+
         public IFlightsCache Cache { get; set; }
         public IDbOperations DB { get; set; }
         public IFlightScoreEngine ScoreEngine { get; set; }
@@ -20,14 +22,20 @@ namespace Gloobster.DomainModels.SearchEngine
         //currently we don't have more providers
         private IFlightSearchProvider Provider = new SkypickerSearchProvider();
 
+        private static List<NewAirportEntity> Airports;
+
         public List<FlightSearchDO> GetFlights(FlightRecordQueryDO query)
         {
+            if (Airports == null)
+            {
+                Airports = DB.List<NewAirportEntity>();
+            }
+
             if (query.Type == FlightCacheRecordType.City)
             {
                 int gid = int.Parse(query.Id);
-
-                //todo: inmemory
-                var airports = DB.List<NewAirportEntity>(c => c.GID == gid);
+                
+                var airports = Airports.Where(c => c.GID == gid);
                 var airportCodes = airports.Select(c => c.Code).ToList();
 
                 var outFlights = new List<FlightSearchDO>();
@@ -67,10 +75,13 @@ namespace Gloobster.DomainModels.SearchEngine
         {
             const double scoreThreshold = 0.5;
 
-            var cachedFlights = Cache.GetAirportConnections(query);
-            if (cachedFlights != null)
+            if (UseCache)
             {
-                return cachedFlights;
+                var cachedFlights = Cache.GetAirportConnections(query);
+                if (cachedFlights != null)
+                {
+                    return cachedFlights;
+                }
             }
 
             FlightSearchDO flightSearch = Provider.Search(query);
@@ -86,8 +97,11 @@ namespace Gloobster.DomainModels.SearchEngine
                 {
                     flightRecord.FlightScore = score;
                     passedFlights.Add(flightRecord);
-                }
+                }                
+            }
 
+            if (UseCache)
+            {
                 Cache.CacheQuery(query, passedFlights);
             }
 

@@ -15,6 +15,8 @@ namespace Gloobster.Entities.SearchEngine
         public int Connections { get; set; }
         public double HoursDuration { get; set; }
 
+        public double FlightScore { get; set; }
+
         public List<FlightPartSE> FlightParts { get; set; }
     }
 
