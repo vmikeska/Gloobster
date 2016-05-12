@@ -14,20 +14,25 @@ namespace Gloobster.DomainModels.Services
 	{
 		public IDbOperations DB { get; set; }
 
-		private List<AirportGroupEntity> Cities { get; set; }
+		private List<NewAirportCityEntity> Cities { get; set; }
 
-		public List<AirportGroupDO> GetCitiesInRange(RectDO rectDO, int? minPopulation)
+		public List<NewAirportCityDO> GetCitiesInRange(RectDO rectDO, int? minPopulation)
 	    {
 			if (Cities == null)
-			{
-				Cities = DB.C<AirportGroupEntity>().ToList();
+			{                
+				Cities = DB.List<NewAirportCityEntity>();
 			}
 
 			var citiesInRange = Cities.Where(a =>
 			{
+			    if (!a.population.HasValue)
+			    {
+			        return false;
+			    }
+
 				if (minPopulation.HasValue)
 				{
-					bool hasMinPopulation = a.Population >= minPopulation.Value;
+					bool hasMinPopulation = a.population.Value >= minPopulation.Value;
 					if (!hasMinPopulation)
 					{
 						return false;

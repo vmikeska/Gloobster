@@ -35,7 +35,7 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 				LatSouth = req.latSouth
 			};
 
-			List<AirportGroupDO> citiesDO = AirportGroupDomain.GetCitiesInRange(rect, req.minPopulation);
+			var citiesDO = AirportGroupDomain.GetCitiesInRange(rect, req.minPopulation);
 			var cities = citiesDO.Select(c => ToResponse(c)).ToList();
 
 			if (req.planningType.HasValue)
@@ -71,11 +71,11 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 			return new ObjectResult(cities);
 		}
 
-		private AirportGroupResponse ToResponse(AirportGroupDO d)
+		private AirportGroupResponse ToResponse(NewAirportCityDO d)
 		{
 			var r = new AirportGroupResponse
 			{
-				city = d.City,
+				city = d.Name,
 				countryCode = d.CountryCode,
 				coord = d.Coord,
 				gid = d.GID,

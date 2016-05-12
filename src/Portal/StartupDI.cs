@@ -159,7 +159,12 @@ namespace Gloobster.Portal
 
             builder.AddTransient<IFlightsDatabase, FlightsDatabase>();
 
-            builder.AddTransient<IFlightsCache, FlightsCache>(); 
+            builder.AddTransient<IFlightsCache, FlightsCache>();
+
+		    builder.AddTransient<IFlightScoreEngine, FlightScoreEngine>();
+
+            builder.AddTransient<IFlightsForUser, FlightsForUser>();            
+
         }
 		
 	}

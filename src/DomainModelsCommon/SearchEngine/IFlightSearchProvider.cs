@@ -5,6 +5,6 @@ namespace Gloobster.DomainInterfaces.SearchEngine
 {
     public interface IFlightSearchProvider
     {
-        List<FlightDO> Search(FlightQueryDO query);
+        FlightSearchDO Search(FlightQueryDO query);
     }
 }

@@ -73,10 +73,10 @@ namespace Gloobster.Portal.Controllers.Api.Planning
         
         private Result Convert(FlightSearchResult flight)
         {
-            var flightParts = new List<FlightPart>();
+            var flightParts = new List<FlightPartDO>();
             foreach (var route in flight.route)
             {
-                var flightPart = new FlightPart
+                var flightPart = new FlightPartDO
                 {
                     From = route.flyFrom,
                     To = route.flyTo,
@@ -185,7 +185,7 @@ namespace Gloobster.Portal.Controllers.Api.Planning
         public string From { get; set; }
         public string To { get; set; }
 
-        public List<FlightPart> FlightParts { get; set; }
+        public List<FlightPartDO> FlightParts { get; set; }
 
         public string FlightPartsStr
         {
@@ -195,15 +195,5 @@ namespace Gloobster.Portal.Controllers.Api.Planning
                 return string.Join("<br/>", prts);
             }
         }
-    }
-
-    public class FlightPart
-    {
-        public DateTime DeparatureTime { get; set; }
-        public DateTime ArrivalTime { get; set; }
-        
-        public string From { get; set; }
-        public string To { get; set; }
-    }
-
+    }    
 }

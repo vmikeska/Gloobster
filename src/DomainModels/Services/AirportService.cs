@@ -24,7 +24,7 @@ namespace Gloobster.DomainModels.Services
 		{
 			if (Airports == null)
 			{
-				var allAirports = DB.C<AirportEntity>().ToList();
+				var allAirports = DB.List<AirportEntity>();
 				Airports = allAirports.Where(a => a.IncomingFlights > 0).ToList();
 			}
 			
@@ -70,7 +70,7 @@ namespace Gloobster.DomainModels.Services
 
 		public async Task<AirportSaveDO> SaveAirportInRange(string userId, string airportId)
 		{
-			var airport = DB.C<AirportEntity>().FirstOrDefault(a => a.id == new ObjectId(airportId));
+			var airport = DB.FOD<AirportEntity>(a => a.id == new ObjectId(airportId));
 
 			var saveAirport = new AirportSaveSE
 			{
@@ -90,7 +90,7 @@ namespace Gloobster.DomainModels.Services
 		public async Task<bool> RemoveAirportInRange(string userId, int airportOrigId)
 		{
 			var userIdObj = new ObjectId(userId);
-			var user = DB.C<UserEntity>().FirstOrDefault(u => u.id == userIdObj);
+			var user = DB.FOD<UserEntity>(u => u.id == userIdObj);
 
 			var airportToDelete = user.HomeAirports.FirstOrDefault(a => a.OrigId == airportOrigId);
 			

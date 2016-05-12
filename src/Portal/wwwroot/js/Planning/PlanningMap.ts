@@ -26,13 +26,7 @@ module Planning {
 			this.citiesManager.countriesManager = this.countriesManager;
 			this.countriesManager.citiesManager = this.citiesManager;
 		}
-
-		public onCitiesSelectionChanged() {
-				Views.ViewBase.currentView.apiGet("SearchFlights", [], (r) => {
-					
-				});
-		}
-
+			
 		public loadCategory(planningType: PlanningType) {
 			this.currentPlanningType = planningType;
 			this.initCategory();
@@ -138,5 +132,38 @@ module Planning {
 			return 1;
 		}
 
+
+			////
+		public onCitiesSelectionChanged() {
+				Views.ViewBase.currentView.apiGet("SearchFlights", [], (flights) => {
+
+					this.generateFlights(flights);
+
+				});
+		}
+
+		private generateFlights(flights) {
+				var $cont = $("#results");
+				$cont.html("");
+
+				flights.forEach((flight) => {
+						var $flight = this.generateFlight(flight);
+						$cont.append($flight);
+				});
+		}
+
+		private generateFlight(flight) {
+				var $base = $(`<table></table>`);
+				var items = ["FlightScore", "From", "To", "Price", "Connections", "HoursDuration", "FlightPartsStr"];
+				items.forEach((item) => {
+						var $item = this.generateItem(flight, item);
+						$base.append($item);
+				});
+				return $base;
+		}
+
+		private generateItem(flight, name) {
+				return $(`<tr><td>${name}</td><td>${flight[name]}</td></tr>`);
+		}
 	}
 }

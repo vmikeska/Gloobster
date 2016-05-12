@@ -5,6 +5,6 @@ namespace Gloobster.DomainInterfaces
 {
 	public interface IAirportGroupService
 	{
-		List<AirportGroupDO> GetCitiesInRange(RectDO rectDO, int? minPopulation);
+		List<NewAirportCityDO> GetCitiesInRange(RectDO rectDO, int? minPopulation);
 	}
 }
