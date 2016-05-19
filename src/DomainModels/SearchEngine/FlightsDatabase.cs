@@ -13,7 +13,7 @@ namespace Gloobster.DomainModels.SearchEngine
 {
     public class FlightsDatabase: IFlightsDatabase
     {
-        public bool UseCache = false;
+        public bool UseCache = true;
 
         public IFlightsCache Cache { get; set; }
         public IDbOperations DB { get; set; }
@@ -56,10 +56,23 @@ namespace Gloobster.DomainModels.SearchEngine
                 return outFlights;
             }
 
-            //if (query.Type == FlightCacheRecordType.Country)
-            //{
-            //    //todo
-            //}
+            if (query.Type == FlightCacheRecordType.Country)
+            {
+                var outFlights = new List<FlightSearchDO>();
+                
+                var airQuery = new FlightQueryDO
+                {
+                    FromDate = query.FromDate,
+                    ToDate = query.ToDate,
+                    FromPlace = query.FromPlace,
+                    ToPlace = query.Id
+                };
+
+                var flights = GetFromCacheOrQuery(airQuery);
+                outFlights.Add(flights);
+                
+                return outFlights;
+            }
 
             return null;
         }

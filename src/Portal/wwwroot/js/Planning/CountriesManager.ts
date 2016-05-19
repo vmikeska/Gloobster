@@ -5,6 +5,8 @@ module Planning {
 
 		private countryShapes: Common.CountryShapes;
 
+		public onSelectionChanged: Function;
+
 		private map: any;
 		private graph: GraphicConfig;
 		private countriesLayerGroup: any;
@@ -59,6 +61,10 @@ module Planning {
 						this.selectedCountries.push(countryCode);
 						this.citiesManager.hideCityMarkersByCountry(countryCode);
 					}
+
+					if (this.onSelectionChanged) {
+							this.onSelectionChanged();
+					}		
 
 				});
 			});

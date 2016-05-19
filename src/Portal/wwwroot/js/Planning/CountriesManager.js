@@ -39,6 +39,9 @@ var Planning;
                         _this.selectedCountries.push(countryCode);
                         _this.citiesManager.hideCityMarkersByCountry(countryCode);
                     }
+                    if (_this.onSelectionChanged) {
+                        _this.onSelectionChanged();
+                    }
                 });
             });
             polygon.on("mouseover", function (e) {

@@ -72,7 +72,7 @@ namespace Gloobster.DomainModels.SearchEngine
 
         private List<DateCombi> GetWeekendDateComibnations()
         {
-            int countOfWeekends = 10;
+            int countOfWeekends = 1;
 
             var today = DateTime.UtcNow;
             var now = today;
@@ -97,7 +97,7 @@ namespace Gloobster.DomainModels.SearchEngine
 
         private List<string> HomeAirports()
         {
-            return new List<string> { "FRA", "PRG" };
+            return new List<string> { "FRA" };
         }
 
     }

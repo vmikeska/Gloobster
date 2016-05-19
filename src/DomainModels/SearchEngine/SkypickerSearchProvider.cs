@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Gloobster.Common;
 using Gloobster.DomainInterfaces.SearchEngine;
@@ -7,11 +8,26 @@ using Gloobster.DomainObjects.SearchEngine;
 
 namespace Gloobster.DomainModels.SearchEngine
 {
+    public class QueryEntity
+    {
+        public string From;
+        public string To;
+
+        public List<SingleFlight> DirectFlights;
+
+    }
+
+    public class SingleFlight
+    {
+        public string From;
+        public string To;
+    }
+
     public class SkypickerSearchProvider : IFlightSearchProvider
     {
         public const string BaseUrl = "https://api.skypicker.com/";
         public const string Endpoint = "flights";
-
+        
         public FlightSearchDO Search(FlightQueryDO query)
         {
             var caller = new Calls();
@@ -28,9 +44,9 @@ namespace Gloobster.DomainModels.SearchEngine
                 .Param("typeFlight", "round");
 
             var qe = qb.Build();
-
+            
             var result = caller.CallServer<SearchResultRoot>(qe);
-
+            
             List<FlightRecordDO> converted = result.data.Select(f => Convert(f)).ToList();
 
             var flightSearch = new FlightSearchDO

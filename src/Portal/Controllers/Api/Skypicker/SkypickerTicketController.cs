@@ -31,30 +31,27 @@ namespace Gloobster.Portal.Controllers.Api.Planning
             var endpoint = "flights";
             
             var qb = new QueryBuilder();
-            qb
-            .BaseUrl(baseUrl)
-            .Endpoint(endpoint)
-            .Param("flyFrom", req.FromPlace)
-            .Param("to", req.ToPlace)
-            .Param("dateFrom", req.Deparature)
-            .Param("dateTo", req.Return);
+		    qb
+		        .BaseUrl(baseUrl)
+		        .Endpoint(endpoint)
+		        
+		        .Param("partner", "picky")
+		        .Param("v", "3");
 
-		    if (!string.IsNullOrEmpty(req.DirectFlight))
-		    {
-		        qb.Param("directFlights", req.DirectFlight);
+
+            foreach (var prop in req.GetType().GetProperties())
+            {                
+                var value = prop.GetValue(req, null);
+                if (value != null)
+                {
+                    var str = value.ToString();
+                    if (!string.IsNullOrEmpty(str))
+                    {
+                        qb.Param(prop.Name, str);
+                    }
+                }                
             }
-
-            if (!string.IsNullOrEmpty(req.DaysInDestinationFrom))
-            {
-                qb.Param("daysInDestinationFrom", req.DaysInDestinationFrom);
-            }
-
-            if (!string.IsNullOrEmpty(req.TypeFlight))
-            {
-                qb.Param("typeFlight", req.TypeFlight);
-            }
-
-
+            
             var query = qb.Build();
 
             var result = caller.CallServer<SearchResultRoot>(query);
@@ -116,14 +113,22 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 
     public class FlightRequest
     {
-        public string FromPlace { get; set; }
-        public string ToPlace { get; set; }
-        public string Deparature { get; set; }
-        public string Return { get; set; }
-
-        public string DirectFlight { get; set; }
-        public string DaysInDestinationFrom { get; set; }
-        public string TypeFlight { get; set; }        
+        public string flyFrom { get; set; }
+        public string dateFrom { get; set; }
+        public string dateTo { get; set; }
+        public string to { get; set; }
+        public string oneforcity { get; set; }
+        public string daysInDestinationFrom { get; set; }
+        public string daysInDestinationTo { get; set; }        
+        public string typeFlight { get; set; }
+        public string directFlights { get; set; }
+        public string onlyWeekends { get; set; }
+        public string one_per_date { get; set; }
+        public string price_from { get; set; }
+        public string price_to { get; set; }
+        public string returnFrom { get; set; }
+        public string returnTo { get; set; }
+        public string passengers { get; set; } 
     }
 
     //////////////
