@@ -1,10 +1,11 @@
 using System.Collections.Generic;
+using Gloobster.Common;
 using Gloobster.DomainObjects.SearchEngine;
 
 namespace Gloobster.DomainInterfaces.SearchEngine
 {
-    public interface IFlightSearchProvider
+    public interface IFlightsForUser
     {
-        FlightSearchDO Search(FlightQueryDO query);
+        List<FlightSearchResultDO> GetUserWeekendOffers(string userId);
     }
 }

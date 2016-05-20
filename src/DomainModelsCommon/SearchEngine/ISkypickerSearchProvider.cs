@@ -3,8 +3,8 @@ using Gloobster.DomainObjects.SearchEngine;
 
 namespace Gloobster.DomainInterfaces.SearchEngine
 {
-    public interface IFlightsDatabase
+    public interface ISkypickerSearchProvider
     {
-        FlightSearchResultDO GetQueryResults(FlightWeekendQueryDO query);
+        FlightSearchDO Search(FlightRequestDO query);
     }
 }

@@ -68,7 +68,7 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 	        return date;
 	    }
         
-        private Result Convert(FlightSearchResult flight)
+        private Result Convert(SPFlightSearchResult flight)
         {
             var flightParts = new List<FlightPartDO>();
             foreach (var route in flight.route)
@@ -158,7 +158,7 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 
         }
 
-        private Result Convert(FlightSearchResult flight)
+        private Result Convert(SPFlightSearchResult flight)
         {
             var res = new Result
             {

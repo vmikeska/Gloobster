@@ -36,38 +36,42 @@ namespace Gloobster.Portal.Controllers.Api.Planning
             var flightSearchList = UserFlights.GetUserWeekendOffers(UserId);
             //}
 
-            var flights = flightSearchList.SelectMany(f => f.Flights);
+            var connections = flightSearchList.SelectMany(f => f.Connections).Where(c => c != null);
+
+            var flights = connections.SelectMany(f => f.Flights).ToList();
 
             return new ObjectResult(flights);
         }
         
         public IActionResult GetAytimeTesting(string type)
         {
-            var anytime = DB.FOD<PlanningAnytimeEntity>(u => u.User_id == UserIdObj);
+            return new ObjectResult(null);
 
-            var cities = DB.List<NewAirportCityEntity>(e => anytime.Cities.Contains(e.GID));
-            var citiesGids = cities.Select(c => c.GID).ToList();
+            //var anytime = DB.FOD<PlanningAnytimeEntity>(u => u.User_id == UserIdObj);
 
-            //var citiesIds = cities.Select(c => $"{c.SpId}_{c.CountryCode.ToLower()}");
+            //var cities = DB.List<NewAirportCityEntity>(e => anytime.Cities.Contains(e.GID));
+            //var citiesGids = cities.Select(c => c.GID).ToList();
 
-            var airports = DB.List<NewAirportEntity>(c => citiesGids.Contains(c.GID)).ToList();
-            var airportCodes = airports.Select(c => c.Code).ToList();
+            ////var citiesIds = cities.Select(c => $"{c.SpId}_{c.CountryCode.ToLower()}");
 
-            var toIds = string.Join(",", airportCodes);
+            //var airports = DB.List<NewAirportEntity>(c => citiesGids.Contains(c.GID)).ToList();
+            //var airportCodes = airports.Select(c => c.Code).ToList();
 
-            var query = new FlightQueryDO
-            {
-                FromPlace = "FRA",
-                ToPlace = toIds,
-                FromDate = new Date(1, 6, 2016),
-                ToDate = new Date(8, 6, 2016)
-            };
+            //var toIds = string.Join(",", airportCodes);
 
-            var flights = FlightsDb.GetFlights(query);
+            //var query = new FlightQueryDO
+            //{
+            //    FromPlace = "FRA",
+            //    ToPlace = toIds,
+            //    FromDate = new Date(1, 6, 2016),
+            //    ToDate = new Date(8, 6, 2016)
+            //};
+
+            //var flights = FlightsDb.GetFlights(query);
 
 
 
-            return new ObjectResult(flights);
+            //return new ObjectResult(flights);
         }
 
     }

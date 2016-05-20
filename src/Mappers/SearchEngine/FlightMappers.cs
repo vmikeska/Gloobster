@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Gloobster.DomainObjects.SearchEngine;
 using Gloobster.Entities.SearchEngine;
@@ -6,9 +7,9 @@ namespace Gloobster.Mappers
 {
     public static class FlightMappers
     {
-        public static FlightRecordDO ToDO(this FlightSE e)
+        public static FlightDO ToDO(this FlightSE e)
         {
-            var d = new FlightRecordDO
+            var d = new FlightDO
             {
                 HoursDuration = e.HoursDuration,
                 Price = e.Price,
@@ -26,7 +27,7 @@ namespace Gloobster.Mappers
             return d;
         }
 
-        public static FlightSE ToEntity(this FlightRecordDO d)
+        public static FlightSE ToEntity(this FlightDO d)
         {
             var e = new FlightSE
             {
@@ -68,6 +69,26 @@ namespace Gloobster.Mappers
                 ArrivalTime = e.ArrivalTime,
                 DeparatureTime = e.DeparatureTime
             };
+
+            return d;
+        }
+    }
+
+    public static class ConnectionsMappers
+    {
+        public static ConnectionDO ToDO(this ConnectionEntity e)
+        {
+            var d = new ConnectionDO
+            {
+                FromAirport = e.FromAirport,
+                ToAirport = e.ToAirport
+                
+            };
+
+            if (e.Flights != null)
+            {                
+                d.Flights = e.Flights.Select(f => f.ToDO()).ToList();
+            }
 
             return d;
         }

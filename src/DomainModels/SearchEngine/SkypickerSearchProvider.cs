@@ -8,27 +8,12 @@ using Gloobster.DomainObjects.SearchEngine;
 
 namespace Gloobster.DomainModels.SearchEngine
 {
-    public class QueryEntity
-    {
-        public string From;
-        public string To;
-
-        public List<SingleFlight> DirectFlights;
-
-    }
-
-    public class SingleFlight
-    {
-        public string From;
-        public string To;
-    }
-
-    public class SkypickerSearchProvider : IFlightSearchProvider
+    public class SkypickerSearchProvider : ISkypickerSearchProvider
     {
         public const string BaseUrl = "https://api.skypicker.com/";
         public const string Endpoint = "flights";
         
-        public FlightSearchDO Search(FlightQueryDO query)
+        public FlightSearchDO Search(FlightRequestDO req)
         {
             var caller = new Calls();
 
@@ -36,32 +21,43 @@ namespace Gloobster.DomainModels.SearchEngine
             qb
                 .BaseUrl(BaseUrl)
                 .Endpoint(Endpoint)
-                .Param("flyFrom", query.FromPlace)
-                .Param("to", query.ToPlace)
-                .Param("dateFrom", query.FromDate.ToString())
-                .Param("dateTo", query.ToDate.ToString())
-                .Param("partner", "picky")
-                .Param("typeFlight", "round");
 
-            var qe = qb.Build();
+                .Param("partner", "picky")
+                .Param("v", "3");
+
+
+            foreach (var prop in req.GetType().GetProperties())
+            {
+                var value = prop.GetValue(req, null);
+                if (value != null)
+                {
+                    var str = value.ToString();
+                    if (!string.IsNullOrEmpty(str))
+                    {
+                        qb.Param(prop.Name, str);
+                    }
+                }
+            }
+
+            var query = qb.Build();
+
+            var result = caller.CallServer<SearchResultRoot>(query);
             
-            var result = caller.CallServer<SearchResultRoot>(qe);
-            
-            List<FlightRecordDO> converted = result.data.Select(f => Convert(f)).ToList();
+            List<FlightDO> converted = result.data.Select(f => Convert(f)).ToList();
 
             var flightSearch = new FlightSearchDO
             {
-                FromPlace = query.FromPlace,
-                ToPlace = query.ToPlace,
-                FromDate = query.FromDate,
-                ToDate = query.ToDate,
+                FromPlace = req.flyFrom,
+                ToPlace = req.to,
+                FromDate = req.dateFrom.ToDate(),
+                ToDate = req.dateTo.ToDate(),
                 Flights = converted
             };
 
             return flightSearch;
         }
 
-        private FlightRecordDO Convert(FlightSearchResult flight)
+        private FlightDO Convert(SPFlightSearchResult flight)
         {
             var flightParts = new List<FlightPartDO>();
             foreach (var route in flight.route)
@@ -76,7 +72,7 @@ namespace Gloobster.DomainModels.SearchEngine
                 flightParts.Add(flightPart);
             }
 
-            var res = new FlightRecordDO
+            var res = new FlightDO
             {
                 Price = flight.price,
                 HoursDuration = GetDuration(flight.fly_duration),

@@ -15,10 +15,10 @@ namespace Gloobster.DomainObjects.SearchEngine
         public Date FromDate { get; set; }
         public Date ToDate { get; set; }
 
-        public List<FlightRecordDO> Flights { get; set; }
+        public List<FlightDO> Flights { get; set; }
     }
 
-    public class FlightRecordDO
+    public class FlightDO
     {
         public string From { get; set; }
         public string To { get; set; }

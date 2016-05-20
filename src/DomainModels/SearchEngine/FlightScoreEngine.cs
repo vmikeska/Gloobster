@@ -7,6 +7,7 @@ using Gloobster.DomainInterfaces.SearchEngine;
 using Gloobster.DomainObjects;
 using Gloobster.DomainObjects.SearchEngine;
 using Gloobster.Entities;
+using FlightDO = Gloobster.DomainObjects.SearchEngine.FlightDO;
 
 namespace Gloobster.DomainModels.SearchEngine
 {
@@ -16,7 +17,7 @@ namespace Gloobster.DomainModels.SearchEngine
         
         private static List<NewAirportEntity> Airports;
         
-        public double EvaluateFlight(FlightRecordDO flight)
+        public double EvaluateFlight(FlightDO flight)
         {
             const bool isReturn = true;
 
@@ -88,7 +89,7 @@ namespace Gloobster.DomainModels.SearchEngine
                 return 0.4;
             }
 
-            return 0.3;
+            return 0.1;
         }
 
         private double EvaluateTime(double distance, double hours)
@@ -109,14 +110,14 @@ namespace Gloobster.DomainModels.SearchEngine
             }
             if (kmPerHour >= 450)
             {
-                return 0.7;
+                return 0.6;
             }
             if (kmPerHour >= 350)
             {
-                return 0.6;
+                return 0.5;
             }
 
-            return 0.5;
+            return 0.1;
         }
 
         private double EvaluateStopsCount(int distance, int stopsCount)

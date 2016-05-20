@@ -38,13 +38,13 @@ namespace Gloobster.DomainObjects
 		public DateTime? ArrivingDateTime { get; set; }
 	}
 
-	public class FlightDO
-	{
-		public string AirportId { get; set; }
-		public string SelectedName { get; set; }
-	}
+    public class FlightDO
+    {
+        public string AirportId { get; set; }
+        public string SelectedName { get; set; }
+    }
 
-	public class PlaceDO
+    public class PlaceDO
 	{
 		public string SourceId { get; set; }
 		public SourceType SourceType { get; set; }

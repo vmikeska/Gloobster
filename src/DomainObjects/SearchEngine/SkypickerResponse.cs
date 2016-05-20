@@ -65,7 +65,7 @@ namespace Gloobster.DomainObjects.SearchEngine
         public int dTimeUTC { get; set; }
     }
 
-    public class FlightSearchResult
+    public class SPFlightSearchResult
     {
         public string mapIdfrom { get; set; }
         public string flyTo { get; set; }
@@ -100,6 +100,6 @@ namespace Gloobster.DomainObjects.SearchEngine
         public List<object> connections { get; set; }
         public string currency { get; set; }
         public int currency_rate { get; set; }
-        public List<FlightSearchResult> data { get; set; }
+        public List<SPFlightSearchResult> data { get; set; }
     }
 }

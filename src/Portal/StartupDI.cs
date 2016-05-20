@@ -155,12 +155,11 @@ namespace Gloobster.Portal
             builder.AddTransient<IPinBoardStats, PinBoardStats>();
 
 
-
+            
+            builder.AddTransient<ISkypickerSearchProvider, SkypickerSearchProvider>();
 
             builder.AddTransient<IFlightsDatabase, FlightsDatabase>();
-
-            builder.AddTransient<IFlightsCache, FlightsCache>();
-
+            
 		    builder.AddTransient<IFlightScoreEngine, FlightScoreEngine>();
 
             builder.AddTransient<IFlightsForUser, FlightsForUser>();            

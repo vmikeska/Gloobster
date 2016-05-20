@@ -5,95 +5,99 @@ using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces.SearchEngine;
 using Gloobster.DomainObjects.SearchEngine;
+using Gloobster.Entities;
 using Gloobster.Entities.Planning;
+using Gloobster.Entities.SearchEngine;
 using Gloobster.Enums.SearchEngine;
 using MongoDB.Bson;
 
 namespace Gloobster.DomainModels.SearchEngine
 {
-    public interface IFlightsForUser
-    {
-        List<FlightSearchDO> GetUserWeekendOffers(string userId);
-    }
+    //todo: dont delete yet
+    //public class GroupingEngine
+    //{
+    //    public GroupedFlight Group(ConnectionEntity connection)
+    //    {
+    //        return null;
+    //        //connection.Flights
+    //    }
+    //}
+
+    //public class GroupedFlight
+    //{
+    //    public string From;
+    //    public string To;
+    //    public int PriceFrom;
+    //    public int PriceTo;
+    //    public List<FlightSE> Flights;
+    //}
 
     public class FlightsForUser : IFlightsForUser
     {
-        public IDbOperations DB { get; set; }
+        public IDbOperations DB { get; set; }        
         public IFlightsDatabase FlightsDB { get; set; }
+
+        public static List<NewAirportCityEntity> Cities;
         
-        public List<FlightSearchDO> GetUserWeekendOffers(string userId)
+        public List<FlightSearchResultDO> GetUserWeekendOffers(string userId)
         {
+            if (Cities == null)
+            {
+                Cities = DB.List<NewAirportCityEntity>();
+            }
+
             var userIdObj = new ObjectId(userId);
             
             var weekend = DB.FOD<PlanningWeekendEntity>(u => u.User_id == userIdObj);
-
-            var dateCombinations = GetWeekendDateComibnations();
+            
             var homeAirports = HomeAirports();
-
-            var allFlights = new List<FlightSearchDO>();
+            
+            var allResults = new List<FlightSearchResultDO>();
             foreach (var homeAirport in homeAirports)
             {
-                foreach (var dateCombi in dateCombinations)
+                foreach (int cityGid in weekend.Cities)
                 {
-                    foreach (var city in weekend.Cities)
+                    var dbCity = Cities.FirstOrDefault(c => c.GID == cityGid);
+                    if (string.IsNullOrEmpty(dbCity?.SpId))
                     {
-                        var query = new FlightRecordQueryDO
-                        {
-                            FromPlace = homeAirport,
-                            Id = city.ToString(),
-                            Type = FlightCacheRecordType.City,
-                            FromDate = dateCombi.FromDate,
-                            ToDate = dateCombi.ToDate
-                        };
-
-                        var flightSearchList = FlightsDB.GetFlights(query);
-                        allFlights.AddRange(flightSearchList);
+                        continue;
                     }
-
-                    foreach (var country in weekend.CountryCodes)
+                    
+                    var query = new FlightWeekendQueryDO
                     {
-                        var query = new FlightRecordQueryDO
-                        {
-                            FromPlace = homeAirport,
-                            Id = country,
-                            Type = FlightCacheRecordType.Country,
-                            FromDate = dateCombi.FromDate,
-                            ToDate = dateCombi.ToDate
-                        };
-
-                        var flightSearchList = FlightsDB.GetFlights(query);                        
-                        allFlights.AddRange(flightSearchList);
-                    }
-                }
-            }
-            
-            return allFlights;            
-        }
-
-        private List<DateCombi> GetWeekendDateComibnations()
-        {
-            int countOfWeekends = 1;
-
-            var today = DateTime.UtcNow;
-            var now = today;
-            var outDates = new List<DateCombi>();
-            while (outDates.Count <= countOfWeekends)
-            {
-                now = now.AddDays(1);
-                if (now.DayOfWeek == DayOfWeek.Friday)
-                {
-                    var sunday = now.AddDays(2);
-                    var date = new DateCombi
-                    {
-                        FromDate = new Date(now.Day, now.Month, now.Year),
-                        ToDate = new Date(sunday.Day, sunday.Month, sunday.Year),
+                        FromPlace = homeAirport,
+                        Id = dbCity.SpId,
+                        Type = FlightCacheRecordType.City,
+                        //FromDate = dateCombi.FromDate,
+                        //ToDate = dateCombi.ToDate
                     };
-                    outDates.Add(date);
+
+                    var searchResult = FlightsDB.GetQueryResults(query);
+                    allResults.Add(searchResult);
                 }
             }
+                    
+                    //foreach (var country in weekend.CountryCodes)
+                    //{
+                    //    var query = new FlightRecordQueryDO
+                    //    {
+                    //        FromPlace = homeAirport,
+                    //        Id = country,
+                    //        Type = FlightCacheRecordType.Country,
+                    //        FromDate = dateCombi.FromDate,
+                    //        ToDate = dateCombi.ToDate
+                    //    };
 
-            return outDates;
+                    //    var flightSearchList = FlightsDB.GetFlights(query);                        
+                    //    allFlights.AddRange(flightSearchList);
+                    //}
+                
+            
+            
+            return allResults;            
         }
+
+        
 
         private List<string> HomeAirports()
         {
