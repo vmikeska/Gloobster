@@ -30,6 +30,7 @@
 /// <reference path="js/planning/customform.js" />
 /// <reference path="js/planning/nameslist.js" />
 /// <reference path="js/planning/planningmap.js" />
+/// <reference path="js/planning/resultsmanager.js" />
 /// <reference path="js/planning/taggingfield.js" />
 /// <reference path="js/planning/utils.js" />
 /// <reference path="js/planning/weekendform.js" />

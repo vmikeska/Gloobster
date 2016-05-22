@@ -6,11 +6,13 @@ var Planning;
             this.map = map;
             this.graph = new Planning.GraphicConfig();
             this.citiesManager = new Planning.CitiesManager(map, this.graph);
-            this.citiesManager.onSelectionChanged = function () { return _this.onSelectionChanged(); };
+            this.citiesManager.onSelectionChanged = function (id, newState, type) { return _this.onSelectionChanged(id, newState, type); };
             this.countriesManager = new Planning.CountriesManager(map, this.graph);
-            this.countriesManager.onSelectionChanged = function () { return _this.onSelectionChanged(); };
+            this.countriesManager.onSelectionChanged = function (id, newState, type) { return _this.onSelectionChanged(id, newState, type); };
             this.citiesManager.countriesManager = this.countriesManager;
             this.countriesManager.citiesManager = this.citiesManager;
+            this.resultsEngine = new Planning.ResultsManager();
+            this.resultsEngine.initalCall();
         }
         PlanningMap.prototype.loadCategory = function (planningType) {
             this.currentPlanningType = planningType;
@@ -99,11 +101,10 @@ var Planning;
             }
             return 1;
         };
-        PlanningMap.prototype.onSelectionChanged = function () {
-            var _this = this;
-            Views.ViewBase.currentView.apiGet("SearchFlights", [], function (flights) {
-                _this.generateFlights(flights);
-            });
+        PlanningMap.prototype.onSelectionChanged = function (id, newState, type) {
+            if (newState) {
+                this.resultsEngine.selectionChanged(id, newState, type);
+            }
         };
         PlanningMap.prototype.generateFlights = function (flights) {
             var _this = this;

@@ -19,14 +19,14 @@ namespace Gloobster.DomainModels.SearchEngine
         public ISkypickerSearchProvider SpProvider { get; set; }
         public IFlightScoreEngine ScoreEngine { get; set; }
 
-        public FlightSearchResultDO GetQueryResults(FlightWeekendQueryDO query)
+        public WeekendSearchResultDO GetQueryResults(FlightWeekendQueryDO query)
         {
-            var result = new FlightSearchResultDO { From = query.FromPlace, To = query.Id, Type = query.Type, Connections = new List<ConnectionDO>()};
+            var result = new WeekendSearchResultDO { From = query.FromPlace, To = query.MapId, Type = query.Type, Connections = new List<WeekendConnectionDO>()};
 
             var r = DB.FOD<SkypickerQueryEntity>(q => 
                 q.FromPlace == query.FromPlace 
                 && q.ToPlace == query.Id 
-                && q.ToPlaceType == FlightCacheRecordType.City);
+                && q.ToPlaceType == query.Type);
 
             //todo: isFinished, etc. Also later implement recoginition for long and standart weekends and as great finish count a bit with anytime and custom search
             bool doesntExistAtAll = (r == null);
@@ -63,6 +63,7 @@ namespace Gloobster.DomainModels.SearchEngine
                 id = ObjectId.GenerateNewId(),
                 FromPlace = query.FromPlace,
                 ToPlace = query.Id,
+                ToPlaceMap = query.MapId,
                 ToPlaceType = query.Type,
                 FirstSearchStarted = true,
                 FirstSearchFinished = false,
@@ -70,11 +71,12 @@ namespace Gloobster.DomainModels.SearchEngine
                 Weekends = new List<WeekendSE>()
             };
             await DB.SaveAsync(startEntity);
-            
+            var filter = DB.F<SkypickerQueryEntity>().Eq(f => f.id, startEntity.id);
+
             var dates = GetWeekendDateComibnations();
 
             var searches = new List<FlightSearchDO>();
-            foreach (var date in dates)
+            foreach (DateCombi date in dates)
             {
                 var provQuery = new FlightRequestDO
                 {
@@ -89,46 +91,43 @@ namespace Gloobster.DomainModels.SearchEngine
                 };
 
                 FlightSearchDO search = SpProvider.Search(provQuery);
+                search.WeekNo = date.WeekNo;
+                search.Year = date.Year;
                 searches.Add(search);
             }
 
-            var allFlights = searches.SelectMany(f => f.Flights).ToList();
-
-            var filter = DB.F<SkypickerQueryEntity>().Eq(f => f.id, startEntity.id);
-            
-            var groupedFlightsObj = allFlights.GroupBy(g => new { g.From, g.To }).ToList();
+            //give score to flights
+            var weekends = new List<WeekendConnectionEntity>();
             var allScoredFlights = new List<FlightDO>();
-            foreach (var gf in groupedFlightsObj)
+            foreach (var search in searches)
             {
-                string from = gf.Key.From;
-                string to = gf.Key.To;
+                //todo: should do something with rejected flights
+                var scoredFlights = FilterFlightsByScore(search.Flights);                
+                var passedFlights = scoredFlights.Passed;
+                allScoredFlights.AddRange(passedFlights);
 
-                List<FlightDO> groupedFlights = gf.ToList();
+                var flightsFromToGrouped = passedFlights.GroupBy(g => new {g.From, g.To}).ToList();
 
-                var scoredGroupedFlights = new List<FlightDO>();
-                foreach (var f in groupedFlights)
+                foreach (var gf in flightsFromToGrouped)
                 {
-                    double score = ScoreEngine.EvaluateFlight(f);
-                    if (score >= 0.5)
+                    string from = gf.Key.From;
+                    string to = gf.Key.To;
+
+                    List<FlightDO> flights = gf.ToList();
+
+                    var weekend = GetOrCreateWeekend(weekends, from, to, query.MapId);
+                    var weekGroup = new WeekendGroupSE
                     {
-                        f.FlightScore = score;
-                        scoredGroupedFlights.Add(f);
-                        allScoredFlights.Add(f);
-                    }
-                }
-                //todo: should somehow possibly take flight and data out of rejected
-                var flights = scoredGroupedFlights.Select(f => f.ToEntity()).ToList();
-                var connectionEntity = new ConnectionEntity
-                {
-                    id = ObjectId.GenerateNewId(),
-                    FromAirport = from,
-                    ToAirport = to,
-                    Flights = flights                    
-                };
-                
-                await DB.SaveAsync(connectionEntity);
+                        Flights = flights.Select(f => f.ToEntity()).ToList(),
+                        Year = search.Year,
+                        WeekNo = search.WeekNo,
+                        FromPrice = flights.Select(p => p.Price).Min()
+                    };
+                    weekend.WeekFlights.Add(weekGroup);
+                }                
             }
-
+            await DB.SaveManyAsync(weekends);
+          
             var fromTos = allScoredFlights.Select(fl => new { fl.From, fl.To });
             var fromTosDist = fromTos.Distinct();
             var fromTosDistList = fromTosDist.Select(i => new FromToSE { From = i.From, To = i.To }).ToList();
@@ -145,9 +144,62 @@ namespace Gloobster.DomainModels.SearchEngine
             await DB.UpdateAsync(filter, update);
         }
 
+        private WeekendConnectionEntity GetOrCreateWeekend(List<WeekendConnectionEntity> items, string from, string to, string toMapId)
+        {
+            var item = items.FirstOrDefault(i => i.FromAirport == from && i.ToAirport == to);
+            bool exists = item != null;
+            if (exists)
+            {
+                return item;
+            }
+
+            var weekend = new WeekendConnectionEntity
+            {
+                id = ObjectId.GenerateNewId(),
+                FromAirport = from,
+                ToAirport = to,
+                ToMapId = toMapId,
+                WeekFlights = new List<WeekendGroupSE>()
+            };
+            items.Add(weekend);
+            return weekend;
+        }
+
+        private ScoredFlights FilterFlightsByScore(List<FlightDO> allFlights)
+        {
+            var res = new ScoredFlights
+            {
+                Discarded = new List<FlightDO>(),
+                Passed = new List<FlightDO>()
+            };
+            
+            foreach (var f in allFlights)
+            {
+                double? score = ScoreEngine.EvaluateFlight(f);
+
+                if (!score.HasValue)
+                {
+                    res.Discarded.Add(f);
+                    continue;
+                }
+
+                f.FlightScore = score.Value;
+                if (score >= 0.5)
+                {
+                    res.Passed.Add(f);
+                }
+                else
+                {
+                    res.Discarded.Add(f);
+                }
+            }
+
+            return res;
+        }
+
         private List<DateCombi> GetWeekendDateComibnations()
         {
-            int countOfWeekends = 1;
+            int countOfWeekends = 5;
 
             var today = DateTime.UtcNow;
             var now = today;
@@ -162,7 +214,8 @@ namespace Gloobster.DomainModels.SearchEngine
                     {
                         FromDate = new Date(now.Day, now.Month, now.Year),
                         ToDate = new Date(sunday.Day, sunday.Month, sunday.Year),
-                        WeekNo = DateTimeFormatInfo.CurrentInfo.Calendar.GetWeekOfYear(now, CalendarWeekRule.FirstDay, DayOfWeek.Monday)
+                        WeekNo = DateTimeFormatInfo.CurrentInfo.Calendar.GetWeekOfYear(now, CalendarWeekRule.FirstDay, DayOfWeek.Monday),
+                        Year = now.Year
                     };
                     outDates.Add(date);
                 }
@@ -171,7 +224,7 @@ namespace Gloobster.DomainModels.SearchEngine
             return outDates;
         }
 
-
+        
 
         //todo: extract single flights
         private async void ExtractSingleFlights(FlightSearchDO search)
@@ -183,16 +236,22 @@ namespace Gloobster.DomainModels.SearchEngine
             }
         }
 
-        private List<ConnectionEntity> GetConnectionsBetweenAirports(List<FromToSE> fromTos)
+        private List<WeekendConnectionEntity> GetConnectionsBetweenAirports(List<FromToSE> fromTos)
         {
-            var conns = new List<ConnectionEntity>();
+            var conns = new List<WeekendConnectionEntity>();
             foreach (var fromTo in fromTos)
             {
-                var conn = DB.FOD<ConnectionEntity>(c => c.FromAirport == fromTo.From && c.ToAirport == fromTo.To);
+                var conn = DB.FOD<WeekendConnectionEntity>(c => c.FromAirport == fromTo.From && c.ToAirport == fromTo.To);
                 conns.Add(conn);
             }
 
             return conns;
         }
+    }
+
+    public class ScoredFlights
+    {
+        public List<FlightDO> Passed;
+        public List<FlightDO> Discarded;
     }
 }

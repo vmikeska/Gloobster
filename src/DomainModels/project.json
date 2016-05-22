@@ -21,7 +21,8 @@
     "YelpSharp": "1.2.1",
     "Nito.AsyncEx": "3.0.1",
     "SimpleOAuth.Net": "1.0.1",
-    "AzureBlobFileSystem": "1.0.0-*"
+    "AzureBlobFileSystem": "1.0.0-*",
+    "loggly-csharp": "4.5.1.7"
   },
 
   "frameworks": {

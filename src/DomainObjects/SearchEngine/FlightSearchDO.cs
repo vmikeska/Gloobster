@@ -11,6 +11,9 @@ namespace Gloobster.DomainObjects.SearchEngine
         public string FromPlace { get; set; }
         public string ToPlace { get; set; }
 
+        public int WeekNo { get; set; }
+        public int Year { get; set; }
+
         //todo: optimize by one number
         public Date FromDate { get; set; }
         public Date ToDate { get; set; }

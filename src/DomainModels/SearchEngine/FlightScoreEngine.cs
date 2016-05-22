@@ -17,7 +17,7 @@ namespace Gloobster.DomainModels.SearchEngine
         
         private static List<NewAirportEntity> Airports;
         
-        public double EvaluateFlight(FlightDO flight)
+        public double? EvaluateFlight(FlightDO flight)
         {
             const bool isReturn = true;
 
@@ -28,6 +28,12 @@ namespace Gloobster.DomainModels.SearchEngine
 
             var fromAirport = GetAirport(flight.From);
             var toAirport = GetAirport(flight.To);
+
+            //todo: should be fixed, like get distance from city or such. Or discard such a results
+            if (toAirport.Coord == null)
+            {
+                return null;
+            }
 
             double fromToDistance = GetDistance(fromAirport.Coord, toAirport.Coord);
             double distance = TotalDistance(fromToDistance, isReturn);

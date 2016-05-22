@@ -24,3 +24,5 @@ enum SourceType { FB, S4, City, Country, Yelp }
 enum SocialNetworkType { Facebook, Google, Twitter, Base, Foursquare, GeoNames }
 
 enum ParticipantState { Invited, Accepted, Maybe, Refused }
+
+enum FlightCacheRecordType {City, Country}

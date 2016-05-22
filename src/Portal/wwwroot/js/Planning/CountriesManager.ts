@@ -63,7 +63,7 @@ module Planning {
 					}
 
 					if (this.onSelectionChanged) {
-							this.onSelectionChanged();
+							this.onSelectionChanged(countryCode, !wasSelected, FlightCacheRecordType.Country);
 					}		
 
 				});

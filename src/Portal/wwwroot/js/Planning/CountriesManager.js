@@ -40,7 +40,7 @@ var Planning;
                         _this.citiesManager.hideCityMarkersByCountry(countryCode);
                     }
                     if (_this.onSelectionChanged) {
-                        _this.onSelectionChanged();
+                        _this.onSelectionChanged(countryCode, !wasSelected, FlightCacheRecordType.Country);
                     }
                 });
             });

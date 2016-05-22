@@ -8,10 +8,29 @@ namespace Gloobster.DomainObjects.SearchEngine
     {
         public string FromPlace { get; set; }
 
+        public string MapId { get; set; }
         public string Id { get; set; }
         public FlightCacheRecordType Type { get; set; }
         //public Date FromDate { get; set; }
         //public Date ToDate { get; set; }
+    }
+
+    public class WeekendConnectionDO
+    {
+        public string FromAirport { get; set; }
+        public string ToAirport { get; set; }
+        public string ToMapId { get; set; }
+
+        public List<WeekendGroupDO> WeekFlights { get; set; }
+    }
+
+    public class WeekendGroupDO
+    {
+        public int WeekNo { get; set; }
+        public int Year { get; set; }
+        public List<FlightDO> Flights { get; set; }
+
+        public double FromPrice { get; set; }
     }
 
     public class ConnectionDO
@@ -19,16 +38,18 @@ namespace Gloobster.DomainObjects.SearchEngine
         public string FromAirport { get; set; }
         public string ToAirport { get; set; }
 
-        public List<FlightDO> Flights { get; set; }
-
-
-        //this is just for storing rough direct flights
-        public List<SingleFlightDO> SingleFlights { get; set; }
-        //later then logic for extraction permanent flights will be added
+        public List<FlightDO> Flights { get; set; }        
     }
 
-   
 
+
+
+    public class RequeryDO
+    {
+        public string From { get; set; }
+        public string To { get; set; }
+        public FlightCacheRecordType Type { get; set; }
+    }
 
 
     public class SingleFlightDO
@@ -37,7 +58,7 @@ namespace Gloobster.DomainObjects.SearchEngine
         public string To { get; set; }
     }
 
-    public class FlightSearchResultDO
+    public class WeekendSearchResultDO
     {
         public string From { get; set; }
         public string To { get; set; }
@@ -46,7 +67,22 @@ namespace Gloobster.DomainObjects.SearchEngine
         public bool NotFinishedYet { get; set; }
         public bool QueryStarted { get; set; }
 
-        public List<ConnectionDO> Connections { get; set; }
+        public List<WeekendConnectionDO> Connections { get; set; }
+    }
+
+    //public class OffersDO
+    //{
+    //    public string UserId { get; set; }
+    //    public PlacesDO Excluded { get; set; }
+    //    public PlacesDO Included { get; set; }
+    //}
+
+    public class PlacesDO
+    {
+        public string UserId { get; set; }
+        public bool EntireQuery { get; set; }
+        public List<int> Cities { get; set; }
+        public List<string> Countries { get; set; }
     }
 
     public class FlightRequestDO

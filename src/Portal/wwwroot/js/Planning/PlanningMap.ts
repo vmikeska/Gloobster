@@ -15,17 +15,22 @@ module Planning {
 		private weekendForm: WeekendForm;
 		private customForm: CustomForm;
 
+		private resultsEngine: ResultsManager;
+
 		constructor(map) {
 			this.map = map;
 			this.graph = new GraphicConfig();
 
 			this.citiesManager = new CitiesManager(map, this.graph);
-			this.citiesManager.onSelectionChanged = () => this.onSelectionChanged();
+			this.citiesManager.onSelectionChanged = (id, newState, type) => this.onSelectionChanged(id, newState, type);
 
 			this.countriesManager = new CountriesManager(map, this.graph);
-			this.countriesManager.onSelectionChanged = () => this.onSelectionChanged();
+			this.countriesManager.onSelectionChanged = (id, newState, type) => this.onSelectionChanged(id, newState, type);
 			this.citiesManager.countriesManager = this.countriesManager;
 			this.countriesManager.citiesManager = this.citiesManager;
+
+			this.resultsEngine = new ResultsManager();
+			this.resultsEngine.initalCall();
 		}
 			
 		public loadCategory(planningType: PlanningType) {
@@ -134,13 +139,11 @@ module Planning {
 		}
 
 
-			////
-		public onSelectionChanged() {
-				Views.ViewBase.currentView.apiGet("SearchFlights", [], (flights) => {
-
-					this.generateFlights(flights);
-
-				});
+		/////
+		public onSelectionChanged(id: string, newState: boolean, type: FlightCacheRecordType) {
+			if (newState) {
+				this.resultsEngine.selectionChanged(id, newState, type);
+			}
 		}
 
 		private generateFlights(flights) {

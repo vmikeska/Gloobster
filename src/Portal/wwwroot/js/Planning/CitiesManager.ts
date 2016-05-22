@@ -99,7 +99,7 @@ module Planning {
 					e.target.selected = !e.target.selected;
 
 					if (this.onSelectionChanged) {
-							this.onSelectionChanged();
+							this.onSelectionChanged(e.target.gid, e.target.selected, FlightCacheRecordType.City);
 					}		
 
 				});

@@ -6,6 +6,7 @@ namespace Gloobster.DomainInterfaces.SearchEngine
 {
     public interface IFlightsForUser
     {
-        List<FlightSearchResultDO> GetUserWeekendOffers(string userId);
+        List<WeekendSearchResultDO> QuerySinglePlaces(List<RequeryDO> queries);
+        List<WeekendSearchResultDO> QueryNewQueries(PlacesDO query);
     }
 }

@@ -6,6 +6,6 @@ namespace Gloobster.DomainInterfaces.SearchEngine
 {
     public interface IFlightScoreEngine
     {
-        double EvaluateFlight(FlightDO flight);
+        double? EvaluateFlight(FlightDO flight);
     }
 }

@@ -33,4 +33,9 @@ var ParticipantState;
     ParticipantState[ParticipantState["Maybe"] = 2] = "Maybe";
     ParticipantState[ParticipantState["Refused"] = 3] = "Refused";
 })(ParticipantState || (ParticipantState = {}));
+var FlightCacheRecordType;
+(function (FlightCacheRecordType) {
+    FlightCacheRecordType[FlightCacheRecordType["City"] = 0] = "City";
+    FlightCacheRecordType[FlightCacheRecordType["Country"] = 1] = "Country";
+})(FlightCacheRecordType || (FlightCacheRecordType = {}));
 //# sourceMappingURL=Globals.js.map

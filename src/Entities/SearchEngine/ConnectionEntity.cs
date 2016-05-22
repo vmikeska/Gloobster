@@ -14,6 +14,25 @@ namespace Gloobster.Entities.SearchEngine
         public List<FlightSE> Flights { get; set; }        
     }
 
+    public class WeekendConnectionEntity : EntityBase
+    {
+        public string FromAirport { get; set; }
+        public string ToAirport { get; set; }
+        public string ToMapId { get; set; }
+
+        public List<WeekendGroupSE> WeekFlights { get; set; }
+        
+    }
+
+    public class WeekendGroupSE
+    {
+        public int WeekNo { get; set; }
+        public int Year { get; set; }
+        public List<FlightSE> Flights { get; set; }
+
+        public double FromPrice { get; set; }
+    }
+
 
 
 

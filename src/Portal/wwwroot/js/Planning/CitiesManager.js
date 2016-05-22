@@ -73,7 +73,7 @@ var Planning;
                     e.target.setIcon(_this.graph.selectedIcon);
                     e.target.selected = !e.target.selected;
                     if (_this.onSelectionChanged) {
-                        _this.onSelectionChanged();
+                        _this.onSelectionChanged(e.target.gid, e.target.selected, FlightCacheRecordType.City);
                     }
                 });
             });
