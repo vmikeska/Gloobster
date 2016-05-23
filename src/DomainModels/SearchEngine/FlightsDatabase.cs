@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces.SearchEngine;
@@ -95,6 +99,24 @@ namespace Gloobster.DomainModels.SearchEngine
                 search.Year = date.Year;
                 searches.Add(search);
             }
+
+            //Parallel.ForEach(files, (currentFile) =>
+            //{
+            //    // The more computational work you do here, the greater 
+            //    // the speedup compared to a sequential foreach loop.
+            //    String filename = System.IO.Path.GetFileName(currentFile);
+            //    var bitmap = new Bitmap(currentFile);
+
+            //    bitmap.RotateFlip(RotateFlipType.Rotate180FlipNone);
+            //    bitmap.Save(Path.Combine(newDir, filename));
+
+            //    // Peek behind the scenes to see how work is parallelized.
+            //    // But be aware: Thread contention for the Console slows down parallel loops!!!
+
+            //    Console.WriteLine("Processing {0} on thread {1}", filename, Thread.CurrentThread.ManagedThreadId);
+            //    //close lambda expression and method invocation
+            //});
+
 
             //give score to flights
             var weekends = new List<WeekendConnectionEntity>();

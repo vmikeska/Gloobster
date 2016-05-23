@@ -66,8 +66,14 @@ var Planning;
             return strParams;
         };
         ResultsManager.prototype.appendResult = function (result) {
-            var $item = "<span style=\"border: 1px solid red\">From: " + result.From + ", To: " + result.To + "</span>";
-            $("#results").append($item);
+            result.Connections.forEach(function (conn) {
+                var $item = $("<div style=\"width: 200px: display: inline-block;\"><div style=\"border: 1px solid red\">From: " + result.From + ", To: " + result.To + "</div></div>");
+                conn.WeekFlights.forEach(function (group) {
+                    var $week = $("<div>FromPrice: " + group.FromPrice + ", WeekNo: " + group.WeekNo + "</div>");
+                    $item.append($week);
+                });
+                $("#results").append($item);
+            });
         };
         ResultsManager.prototype.selectionChanged = function (id, newState, type) {
             this.getQueries([["p", (id + "-" + type)]]);

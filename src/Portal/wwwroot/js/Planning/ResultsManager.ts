@@ -79,10 +79,17 @@ module Planning {
 		}
 
 		private appendResult(result) {
-				var $item = `<span style="border: 1px solid red">From: ${result.From}, To: ${result.To}</span>`;
+			result.Connections.forEach((conn) => {
+				var $item = $(`<div style="width: 200px: display: inline-block;"><div style="border: 1px solid red">From: ${result.From}, To: ${result.To}</div></div>`);
+				conn.WeekFlights.forEach((group) => {
+					var $week = $(`<div>FromPrice: ${group.FromPrice}, WeekNo: ${group.WeekNo}</div>`);
+					$item.append($week);
+				});
+
 				$("#results").append($item);
+			});				
 		}
-			
+
 		public selectionChanged(id: string, newState: boolean, type: FlightCacheRecordType) {
 				//todo: unselecting implement
 				this.getQueries([["p", `${id}-${type}`]]);
