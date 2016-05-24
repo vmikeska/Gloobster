@@ -1,29 +1,50 @@
 var Planning;
 (function (Planning) {
-    var WeekendDisplay = (function () {
-        function WeekendDisplay() {
+    var WeekendByWeekDisplay = (function () {
+        function WeekendByWeekDisplay() {
+            this.weekendByWeekAggregator = new WeekendByWeekAggregator();
+            this.$cont = $("#results2");
         }
-        WeekendDisplay.prototype.displayByWeek = function (connections) {
-            var results = this.getByWeek(connections);
-            results = _.sortBy(results, "weekNo");
-            var $results = $("#results2");
-            $results.html("");
-            results.forEach(function (result) {
-                var weekendRange = DateOps.getWeekendRange(result.weekNo);
-                var $title = $("<div style=\"border-bottom: 1px solid red;\"><b>Weekend: " + result.weekNo + ".</b> (" + DateOps.dateToStr(weekendRange.friday) + " - " + DateOps.dateToStr(weekendRange.sunday) + ")</div>");
-                $results.append($title);
-                result.cities = _.sortBy(result.cities, "fromPrice");
-                result.cities.forEach(function (city) {
-                    var $city = $("<div style=\"border: 1px solid blue; width: 200px; display: inline-block;\"><div>To: " + city.name + "</div></div>");
-                    city.fromToOffers.forEach(function (fromToOffer) {
-                        var $fromTo = $("<div>" + fromToOffer.fromAirport + "-" + fromToOffer.toAirport + " from: " + fromToOffer.fromPrice + "</div>");
-                        $city.append($fromTo);
-                    });
-                    $results.append($city);
-                });
+        WeekendByWeekDisplay.prototype.displayByWeek = function (connections) {
+            var _this = this;
+            var weeks = this.weekendByWeekAggregator.getByWeek(connections);
+            weeks = _.sortBy(weeks, "weekNo");
+            this.$cont.html("");
+            weeks.forEach(function (week) {
+                var $week = _this.genWeek(week);
             });
         };
-        WeekendDisplay.prototype.getByWeek = function (connections) {
+        WeekendByWeekDisplay.prototype.genWeek = function (weeks) {
+            var _this = this;
+            var weekendRange = DateOps.getWeekendRange(weeks.weekNo);
+            var $title = $("<div style=\"border-bottom: 1px solid red;\"><b>Weekend: " + weeks.weekNo + ".</b> (" + DateOps.dateToStr(weekendRange.friday) + " - " + DateOps.dateToStr(weekendRange.sunday) + ")</div>");
+            this.$cont.append($title);
+            weeks.cities = _.sortBy(weeks.cities, "fromPrice");
+            weeks.cities.forEach(function (city) {
+                var $city = _this.genCity(city);
+                _this.$cont.append($city);
+            });
+        };
+        WeekendByWeekDisplay.prototype.genCity = function (city) {
+            var _this = this;
+            var $city = $("<div style=\"border: 1px solid blue; width: 200px; display: inline-block;\"><div>To: " + city.name + "</div></div>");
+            city.fromToOffers.forEach(function (offer) {
+                var $fromTo = _this.genFromTo(offer);
+                $city.append($fromTo);
+            });
+            return $city;
+        };
+        WeekendByWeekDisplay.prototype.genFromTo = function (item) {
+            var $fromTo = $("<div>" + item.fromAirport + "-" + item.toAirport + " from: " + item.fromPrice + "</div>");
+            return $fromTo;
+        };
+        return WeekendByWeekDisplay;
+    }());
+    Planning.WeekendByWeekDisplay = WeekendByWeekDisplay;
+    var WeekendByWeekAggregator = (function () {
+        function WeekendByWeekAggregator() {
+        }
+        WeekendByWeekAggregator.prototype.getByWeek = function (connections) {
             var _this = this;
             var groupByDestCity = _.groupBy(connections, 'ToCityId');
             var results = [];
@@ -50,7 +71,7 @@ var Planning;
             }
             return results;
         };
-        WeekendDisplay.prototype.getOrCreateCityResult = function (cities, toPlace, name) {
+        WeekendByWeekAggregator.prototype.getOrCreateCityResult = function (cities, toPlace, name) {
             var city = _.find(cities, function (c) {
                 return c.toPlace === toPlace;
             });
@@ -60,7 +81,7 @@ var Planning;
             }
             return city;
         };
-        WeekendDisplay.prototype.getOrCreateWeekResult = function (results, weekNo) {
+        WeekendByWeekAggregator.prototype.getOrCreateWeekResult = function (results, weekNo) {
             var result = _.find(results, function (result) {
                 return result.weekNo === weekNo;
             });
@@ -73,9 +94,9 @@ var Planning;
             }
             return result;
         };
-        return WeekendDisplay;
+        return WeekendByWeekAggregator;
     }());
-    Planning.WeekendDisplay = WeekendDisplay;
+    Planning.WeekendByWeekAggregator = WeekendByWeekAggregator;
     var DateOps = (function () {
         function DateOps() {
         }

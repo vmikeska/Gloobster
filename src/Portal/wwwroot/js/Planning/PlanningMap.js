@@ -11,7 +11,7 @@ var Planning;
             this.countriesManager.onSelectionChanged = function (id, newState, type) { return _this.onSelectionChanged(id, newState, type); };
             this.citiesManager.countriesManager = this.countriesManager;
             this.countriesManager.citiesManager = this.citiesManager;
-            var weekendDisplay = new Planning.WeekendDisplay();
+            var weekendDisplay = new Planning.WeekendByWeekDisplay();
             this.resultsEngine = new Planning.ResultsManager();
             this.resultsEngine.initalCall();
             this.resultsEngine.onConnectionsChanged = function (connections) {

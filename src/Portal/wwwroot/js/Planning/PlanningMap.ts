@@ -29,7 +29,7 @@ module Planning {
 			this.citiesManager.countriesManager = this.countriesManager;
 			this.countriesManager.citiesManager = this.citiesManager;
 
-			var weekendDisplay = new WeekendDisplay();
+			var weekendDisplay = new WeekendByWeekDisplay();
 
 			this.resultsEngine = new ResultsManager();
 			this.resultsEngine.initalCall();

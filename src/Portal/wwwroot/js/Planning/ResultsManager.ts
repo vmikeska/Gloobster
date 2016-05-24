@@ -1,106 +1,128 @@
 module Planning {
 
-	export class WeekendDisplay {
+	export class WeekendByWeekDisplay {
+
+		private weekendByWeekAggregator: WeekendByWeekAggregator;
+
+		private $cont;
+
+		constructor() {
+			this.weekendByWeekAggregator = new WeekendByWeekAggregator();
+			this.$cont = $("#results2");
+		}
 
 		public displayByWeek(connections) {
-			var results = this.getByWeek(connections);
+			var weeks = this.weekendByWeekAggregator.getByWeek(connections);
 
-			results = _.sortBy(results, "weekNo");
+			weeks = _.sortBy(weeks, "weekNo");
 
-			var $results = $("#results2");
-			$results.html("");
+			this.$cont.html("");
 
-			results.forEach((result) => {
-				var weekendRange = DateOps.getWeekendRange(result.weekNo);
+			weeks.forEach((week) => {
+				var $week = this.genWeek(week);
+			});
+		}
 
-				var $title = $(`<div style="border-bottom: 1px solid red;"><b>Weekend: ${result.weekNo}.</b> (${DateOps.dateToStr(weekendRange.friday)} - ${DateOps.dateToStr(weekendRange.sunday)})</div>`);
-				$results.append($title);
+		private genWeek(weeks) {
+			var weekendRange = DateOps.getWeekendRange(weeks.weekNo);
 
-				result.cities = _.sortBy(result.cities, "fromPrice");
+			var $title = $(`<div style="border-bottom: 1px solid red;"><b>Weekend: ${weeks.weekNo}.</b> (${DateOps.dateToStr(weekendRange.friday)} - ${DateOps.dateToStr(weekendRange.sunday)})</div>`);
+			this.$cont.append($title);
 
-				result.cities.forEach((city) => {
+			weeks.cities = _.sortBy(weeks.cities, "fromPrice");
 
-					var $city = $(`<div style="border: 1px solid blue; width: 200px; display: inline-block;"><div>To: ${city.name}</div></div>`);
+			weeks.cities.forEach((city) => {
+				var $city = this.genCity(city);
+				this.$cont.append($city);
+			});
+		}
 
-					city.fromToOffers.forEach((fromToOffer) => {
-						var $fromTo = $(`<div>${fromToOffer.fromAirport}-${fromToOffer.toAirport} from: ${fromToOffer.fromPrice}</div>`);
+		private genCity(city) {
+				var $city = $(`<div style="border: 1px solid blue; width: 200px; display: inline-block;"><div>To: ${city.name}</div></div>`);
+
+				city.fromToOffers.forEach((offer) => {
+						var $fromTo = this.genFromTo(offer);
 						$city.append($fromTo);
+				});
+
+			return $city;
+		}
+
+		private genFromTo(item) {
+				var $fromTo = $(`<div>${item.fromAirport}-${item.toAirport} from: ${item.fromPrice}</div>`);
+			return $fromTo;
+		}
+
+	}
+
+	export class WeekendByWeekAggregator {
+			public getByWeek(connections) {
+
+					var groupByDestCity = _.groupBy(connections, 'ToCityId');
+
+					var results = [];
+
+					for (var cityKey in groupByDestCity) {
+							if (!groupByDestCity.hasOwnProperty(cityKey)) {
+									continue;
+							}
+
+							var cityGroup = groupByDestCity[cityKey];
+
+							cityGroup.forEach((connection) => {
+
+									connection.WeekFlights.forEach((weekFlightsGroup) => {
+
+											var fromPrice = weekFlightsGroup.FromPrice;
+
+											var weekResult = this.getOrCreateWeekResult(results, weekFlightsGroup.WeekNo);
+											var city = this.getOrCreateCityResult(weekResult.cities, connection.ToMapId, connection.CityName);
+											if (!city.fromPrice) {
+													city.fromPrice = fromPrice;
+											} else if (city.fromPrice > fromPrice) {
+													city.fromPrice = fromPrice;
+											}
+
+											var fromToOffer = { fromAirport: connection.FromAirport, toAirport: connection.ToAirport, fromPrice: fromPrice };
+											city.fromToOffers.push(fromToOffer);
+									});
+
+
+							});
+					}
+
+					return results;
+			}
+
+			private getOrCreateCityResult(cities, toPlace, name) {
+					var city = _.find(cities, (c) => {
+							return c.toPlace === toPlace;
 					});
 
-					$results.append($city);
+					if (!city) {
+							city = { fromToOffers: [], toPlace: toPlace, name: name };
+							cities.push(city);
+					}
 
-				});
-			});
-		}
+					return city;
+			}
 
-		private getByWeek(connections) {
-
-			var groupByDestCity = _.groupBy(connections, 'ToCityId');
-
-			var results = [];
-
-			for (var cityKey in groupByDestCity) {
-				if (!groupByDestCity.hasOwnProperty(cityKey)) {
-					continue;
-				}
-
-				var cityGroup = groupByDestCity[cityKey];
-
-				cityGroup.forEach((connection) => {
-
-					connection.WeekFlights.forEach((weekFlightsGroup) => {
-
-						var fromPrice = weekFlightsGroup.FromPrice;
-
-						var weekResult = this.getOrCreateWeekResult(results, weekFlightsGroup.WeekNo);
-						var city = this.getOrCreateCityResult(weekResult.cities, connection.ToMapId, connection.CityName);
-						if (!city.fromPrice) {
-							city.fromPrice = fromPrice;
-						} else if (city.fromPrice > fromPrice) {
-							city.fromPrice = fromPrice;
-						}
-							
-						var fromToOffer = { fromAirport: connection.FromAirport, toAirport: connection.ToAirport, fromPrice: fromPrice };
-						city.fromToOffers.push(fromToOffer);					
+			private getOrCreateWeekResult(results, weekNo) {
+					var result = _.find(results, (result) => {
+							return result.weekNo === weekNo;
 					});
 
+					if (!result) {
+							result = {
+									weekNo: weekNo,
+									cities: []
+							};
+							results.push(result);
+					}
 
-				});
+					return result;
 			}
-
-			return results;
-		}
-
-		private getOrCreateCityResult(cities, toPlace, name) {
-			var city = _.find(cities, (c) => {
-				return c.toPlace === toPlace;
-			});
-
-		  if (!city) {
-					city = { fromToOffers: [], toPlace: toPlace, name: name };
-					cities.push(city);
-			}
-
-			return city;
-		}
-
-		private getOrCreateWeekResult(results, weekNo) {
-			var result = _.find(results, (result) => {
-				return result.weekNo === weekNo;
-			});
-
-			if (!result) {
-				result = {
-					weekNo: weekNo,
-					cities: []
-				};
-				results.push(result);
-			}
-
-			return result;
-		}
-
-		}
+	}
 
 	export class DateOps {
 		public static dateToStr(date) {
