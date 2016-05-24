@@ -102,7 +102,9 @@ namespace Gloobster.Mappers
             {
                 FromAirport = e.FromAirport,
                 ToAirport = e.ToAirport,
-                ToMapId = e.ToMapId
+                ToMapId = e.ToMapId,
+                ToCityId = e.ToCityId,
+                CityName = e.CityName
             };
 
             if (e.WeekFlights != null)

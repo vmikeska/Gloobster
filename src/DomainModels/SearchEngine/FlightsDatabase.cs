@@ -6,10 +6,12 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using FourSquare.SharpSquare.Entities;
 using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces.SearchEngine;
 using Gloobster.DomainObjects.SearchEngine;
+using Gloobster.Entities;
 using Gloobster.Entities.SearchEngine;
 using Gloobster.Enums.SearchEngine;
 using Gloobster.Mappers;
@@ -23,8 +25,12 @@ namespace Gloobster.DomainModels.SearchEngine
         public ISkypickerSearchProvider SpProvider { get; set; }
         public IFlightScoreEngine ScoreEngine { get; set; }
 
+        public static List<NewAirportEntity> Airports;
+
         public WeekendSearchResultDO GetQueryResults(FlightWeekendQueryDO query)
         {
+            InitDB();
+
             var result = new WeekendSearchResultDO { From = query.FromPlace, To = query.MapId, Type = query.Type, Connections = new List<WeekendConnectionDO>()};
 
             var r = DB.FOD<SkypickerQueryEntity>(q => 
@@ -79,8 +85,9 @@ namespace Gloobster.DomainModels.SearchEngine
 
             var dates = GetWeekendDateComibnations();
 
-            var searches = new List<FlightSearchDO>();
-            foreach (DateCombi date in dates)
+            var weekSearches = new List<FlightSearchDO>();
+          
+            Parallel.ForEach(dates, (date) =>
             {
                 var provQuery = new FlightRequestDO
                 {
@@ -94,37 +101,20 @@ namespace Gloobster.DomainModels.SearchEngine
                     daysInDestinationTo = "3"
                 };
 
-                FlightSearchDO search = SpProvider.Search(provQuery);
-                search.WeekNo = date.WeekNo;
-                search.Year = date.Year;
-                searches.Add(search);
-            }
-
-            //Parallel.ForEach(files, (currentFile) =>
-            //{
-            //    // The more computational work you do here, the greater 
-            //    // the speedup compared to a sequential foreach loop.
-            //    String filename = System.IO.Path.GetFileName(currentFile);
-            //    var bitmap = new Bitmap(currentFile);
-
-            //    bitmap.RotateFlip(RotateFlipType.Rotate180FlipNone);
-            //    bitmap.Save(Path.Combine(newDir, filename));
-
-            //    // Peek behind the scenes to see how work is parallelized.
-            //    // But be aware: Thread contention for the Console slows down parallel loops!!!
-
-            //    Console.WriteLine("Processing {0} on thread {1}", filename, Thread.CurrentThread.ManagedThreadId);
-            //    //close lambda expression and method invocation
-            //});
+                FlightSearchDO weekSearch = SpProvider.Search(provQuery);
+                weekSearch.WeekNo = date.WeekNo;
+                weekSearch.Year = date.Year;
+                weekSearches.Add(weekSearch);                
+            });
 
 
             //give score to flights
             var weekends = new List<WeekendConnectionEntity>();
             var allScoredFlights = new List<FlightDO>();
-            foreach (var search in searches)
+            foreach (var weekSearch in weekSearches)
             {
                 //todo: should do something with rejected flights
-                var scoredFlights = FilterFlightsByScore(search.Flights);                
+                var scoredFlights = FilterFlightsByScore(weekSearch.Flights);                
                 var passedFlights = scoredFlights.Passed;
                 allScoredFlights.AddRange(passedFlights);
 
@@ -135,14 +125,20 @@ namespace Gloobster.DomainModels.SearchEngine
                     string from = gf.Key.From;
                     string to = gf.Key.To;
 
+                    var toAirport = GetAirportByAirCode(to);
+                    if (toAirport == null)
+                    {
+                        //todo: should not happen in future with complete airport DB, but what now, discard ?
+                    }
+
                     List<FlightDO> flights = gf.ToList();
 
-                    var weekend = GetOrCreateWeekend(weekends, from, to, query.MapId);
+                    var weekend = GetOrCreateWeekend(weekends, from, to, query.MapId, toAirport.GID, toAirport.Name);
                     var weekGroup = new WeekendGroupSE
                     {
                         Flights = flights.Select(f => f.ToEntity()).ToList(),
-                        Year = search.Year,
-                        WeekNo = search.WeekNo,
+                        Year = weekSearch.Year,
+                        WeekNo = weekSearch.WeekNo,
                         FromPrice = flights.Select(p => p.Price).Min()
                     };
                     weekend.WeekFlights.Add(weekGroup);
@@ -166,7 +162,16 @@ namespace Gloobster.DomainModels.SearchEngine
             await DB.UpdateAsync(filter, update);
         }
 
-        private WeekendConnectionEntity GetOrCreateWeekend(List<WeekendConnectionEntity> items, string from, string to, string toMapId)
+        private void InitDB()
+        {
+            if (Airports == null)
+            {
+                Airports = DB.List<NewAirportEntity>();
+            }
+        }
+
+        private WeekendConnectionEntity GetOrCreateWeekend(List<WeekendConnectionEntity> items, string from, string to, 
+            string toMapId, int toCityId, string cityName)
         {
             var item = items.FirstOrDefault(i => i.FromAirport == from && i.ToAirport == to);
             bool exists = item != null;
@@ -181,10 +186,28 @@ namespace Gloobster.DomainModels.SearchEngine
                 FromAirport = from,
                 ToAirport = to,
                 ToMapId = toMapId,
+                ToCityId = toCityId,
+                CityName = cityName,
                 WeekFlights = new List<WeekendGroupSE>()
             };
             items.Add(weekend);
             return weekend;
+        }
+
+        private NewAirportEntity GetAirportByAirCode(string code)
+        {
+            var airport = Airports.FirstOrDefault(a => a.Code == code);
+            if (airport == null)
+            {                
+                return null;
+            }
+
+            if (airport.GID == 0)
+            {
+                return null;
+            }
+
+            return airport;
         }
 
         private ScoredFlights FilterFlightsByScore(List<FlightDO> allFlights)

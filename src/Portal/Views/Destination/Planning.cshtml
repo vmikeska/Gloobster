@@ -27,8 +27,6 @@
 <script type="text/javascript" src="@Url.Content("~/js/Maps/MapsCreatorMapBox2D.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Common/CountryShapes.js")"></script>
 
-<div class="blue-line margin2"></div>
-
 <section class="wrapper margin3">
 	<div class="table right">
 		<div class="cell bottom">
@@ -60,7 +58,7 @@
 
 	<div class="table width100">
 		<div class="cell">
-			<div class="tabs table row">
+			<div id="TimeTab" class="tabs table row">
 				<div class="cell">
 					<a class="tab active" data-type="0" href="#">Anytime</a>
 				</div>
@@ -79,9 +77,34 @@
 
 	<div class="map margin" id="map"></div>
 
-    <div id="results">
+    <div class="table width100">
+        <div class="cell">
+            <div id="TabsWeekendTime" class="tabs table row">
+                <div class="cell">
+                    <a class="tab active" data-type="0" href="#">By week</a>
+                </div>
+                <div class="cell">
+                    <a class="tab" data-type="1" href="#">By city</a>
+                </div>
+                <div class="cell">
+                    <a class="tab" data-type="2" href="#">By country</a>
+                </div>
+            </div>
+        </div>
 
     </div>
+
+    <div id="queue">
+        
+    </div>
+
+    <div id="results2">
+
+    </div>
+
+    @*<div id="results">
+
+    </div>*@
 
 </section>
 

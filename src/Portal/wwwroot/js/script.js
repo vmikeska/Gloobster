@@ -94,16 +94,16 @@
             $('html, body').animate({ scrollTop: $($(this).attr('href')).offset().top }, 1000);
         }
     });
-    // tabs
-    $(document).on('click', '.tab', function (e) {
-        e.preventDefault();
-        var tab = $(this);
-        var tabs = tab.closest('.tabs').find('.tab');
-        tabs.removeClass('active');
-        tab.addClass('active');
-        $('.tab-content').hide();
-        $(tab.data('target')).show();
-    });
+    //// tabs
+    //$(document).on('click', '.tab', function (e) {
+    //    e.preventDefault();
+    //    var tab = $(this);
+    //    var tabs = tab.closest('.tabs').find('.tab');
+    //    tabs.removeClass('active');
+    //    tab.addClass('active');
+    //    $('.tab-content').hide();
+    //    $(tab.data('target')).show();
+    //});
     // trips
 
     $(document).on('click', '.trip-holder .icon-wheel', function (e) {

@@ -11,8 +11,12 @@ var Planning;
             this.countriesManager.onSelectionChanged = function (id, newState, type) { return _this.onSelectionChanged(id, newState, type); };
             this.citiesManager.countriesManager = this.countriesManager;
             this.countriesManager.citiesManager = this.citiesManager;
+            var weekendDisplay = new Planning.WeekendDisplay();
             this.resultsEngine = new Planning.ResultsManager();
             this.resultsEngine.initalCall();
+            this.resultsEngine.onConnectionsChanged = function (connections) {
+                weekendDisplay.displayByWeek(connections);
+            };
         }
         PlanningMap.prototype.loadCategory = function (planningType) {
             this.currentPlanningType = planningType;
@@ -105,28 +109,6 @@ var Planning;
             if (newState) {
                 this.resultsEngine.selectionChanged(id, newState, type);
             }
-        };
-        PlanningMap.prototype.generateFlights = function (flights) {
-            var _this = this;
-            var $cont = $("#results");
-            $cont.html("");
-            flights.forEach(function (flight) {
-                var $flight = _this.generateFlight(flight);
-                $cont.append($flight);
-            });
-        };
-        PlanningMap.prototype.generateFlight = function (flight) {
-            var _this = this;
-            var $base = $("<table></table>");
-            var items = ["FlightScore", "From", "To", "Price", "Connections", "HoursDuration", "FlightPartsStr"];
-            items.forEach(function (item) {
-                var $item = _this.generateItem(flight, item);
-                $base.append($item);
-            });
-            return $base;
-        };
-        PlanningMap.prototype.generateItem = function (flight, name) {
-            return $("<tr><td>" + name + "</td><td>" + flight[name] + "</td></tr>");
         };
         return PlanningMap;
     }());

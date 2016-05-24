@@ -18,8 +18,10 @@ namespace Gloobster.Entities.SearchEngine
     {
         public string FromAirport { get; set; }
         public string ToAirport { get; set; }
+        public int ToCityId { get; set; }
         public string ToMapId { get; set; }
-
+        public string CityName { get; set; }
+        
         public List<WeekendGroupSE> WeekFlights { get; set; }
         
     }
