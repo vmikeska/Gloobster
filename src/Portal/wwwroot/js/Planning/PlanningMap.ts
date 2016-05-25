@@ -1,6 +1,9 @@
 module Planning {
 	export class PlanningMap {
 
+		public onSelectionChanged: Function;
+		public onMapTypeChanged: Function;
+
 		public delayedZoomCallback: DelayedCallbackMap;
 		private graph: GraphicConfig;
 
@@ -28,21 +31,15 @@ module Planning {
 			this.countriesManager.onSelectionChanged = (id, newState, type) => this.onSelectionChanged(id, newState, type);
 			this.citiesManager.countriesManager = this.countriesManager;
 			this.countriesManager.citiesManager = this.citiesManager;
-
-			var weekendDisplay = new WeekendByWeekDisplay();
-
-			this.resultsEngine = new ResultsManager();
-			this.resultsEngine.initalCall();
-			this.resultsEngine.onConnectionsChanged = (connections) => {					
-					weekendDisplay.displayByWeek(connections);
-			};
 		}
-			
-		public loadCategory(planningType: PlanningType) {
-			this.currentPlanningType = planningType;
+
+		public loadCategory(type: PlanningType) {
+			this.currentPlanningType = type;
 			this.initCategory();
 			this.loadCitiesInRange();
 			this.delayedZoomCallback.receiveEvent();
+
+			this.onMapTypeChanged(type);
 		}
 
 		private loadCitiesInRange() {
@@ -141,14 +138,6 @@ module Planning {
 			}
 
 			return 1;
-		}
-
-
-		/////
-		public onSelectionChanged(id: string, newState: boolean, type: FlightCacheRecordType) {
-			if (newState) {
-				this.resultsEngine.selectionChanged(id, newState, type);
-			}
 		}
 
 	}

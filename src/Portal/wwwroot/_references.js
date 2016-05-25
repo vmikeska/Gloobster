@@ -39,7 +39,6 @@
 /// <reference path="js/registration/googlebutton.js" />
 /// <reference path="js/registration/socialbuttons.js" />
 /// <reference path="js/script.js" />
-/// <reference path="js/site.min.js" />
 /// <reference path="js/tilestamen.js" />
 /// <reference path="js/trip/acceptcombo.js" />
 /// <reference path="js/trip/airportcombo.js" />

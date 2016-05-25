@@ -1,31 +1,72 @@
 ﻿module Views {
+
+	export class PlanningData {
+
+		private resultsEngine: Planning.ResultsManager;
+
+		private tabsWeekendViews;
+
+		constructor() {
+			this.resultsEngine = new Planning.ResultsManager();
+		}
+
+		public onSelectionChagned(id: string, newState: boolean, type: FlightCacheRecordType) {
+			if (newState) {
+				this.resultsEngine.selectionChanged(id, newState, type);
+			}
+		}
+
+		public onMapTypeChanged(type: Planning.PlanningType) {
+
+			if (type === Planning.PlanningType.Weekend) {
+				this.showWeekend();
+			}
+
+		}
+
+		private showWeekend() {
+
+			this.tabsWeekendViews = new TabsWeekendViews($("#tabsCont"));
+			this.tabsWeekendViews.onTabSwitched = (type: TabsWeekendType) => {
+					if (type === TabsWeekendType.ByWeek)
+					this.showWeekendByWeek(type);
+			};
+				
+		}
+
+		private showWeekendByWeek(type: TabsWeekendType) {
+				var weekendDisplay = new Planning.WeekendByWeekDisplay();
+
+				this.resultsEngine.initalCall();
+				this.resultsEngine.onConnectionsChanged = (connections) => {
+						weekendDisplay.displayByWeek(connections);
+				};
+			}
+			
+	}
+
+
 	export class PlanningView extends ViewBase {
 
 		public planningMap: Planning.PlanningMap;
 
+		public planningData: PlanningData;
+
 		private maps: Maps.MapsCreatorMapBox2D;
 		private tabsTime: TabsTime;
 		private tabsWeekendViews: TabsWeekendViews;
-
-		//private weekendDisplay: Planning.WeekendDisplay;
-
+			
 		constructor() {
 			super();
+
+			this.planningData = new PlanningData();
 
 			this.initialize();
 
 			this.tabsTime = new TabsTime();
 			this.tabsTime.onTabSwitched = ((tabType) => {
 				this.planningMap.loadCategory(tabType);
-			});
-
-			//this.tabsWeekendViews.onTabSwitched = ((tabType) => {
-			//		if (tabType === 1) {
-
-			//		}
-			//});
-
-			this.tabsWeekendViews = new TabsWeekendViews();
+			});				
 		}
 
 		public initialize() {
@@ -33,6 +74,12 @@
 			this.maps.setRootElement("map");
 			this.maps.show((map) => {
 				this.planningMap = new Planning.PlanningMap(map);
+
+				this.planningMap.onSelectionChanged = (id: string, newState: boolean, type: FlightCacheRecordType) => {
+					this.planningData.onSelectionChagned(id, newState, type);					
+				}
+				this.planningMap.onMapTypeChanged = (type: Planning.PlanningType) => this.planningData.onMapTypeChanged(type);
+
 				this.planningMap.loadCategory(Planning.PlanningType.Anytime);
 			});
 
@@ -96,7 +143,12 @@
 
 		public onTabSwitched: Function;
 
-		constructor() {
+		private tabsTemplate;
+
+		constructor($tabsCont) {			
+			this.tabsTemplate = ViewBase.currentView.registerTemplate("weekendTabs-template");
+			$tabsCont.html(this.tabsTemplate);
+
 			this.registerTabEvents();
 		}
 

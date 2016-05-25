@@ -40,7 +40,7 @@ var Planning;
         };
         WeekendByWeekDisplay.prototype.genFromTo = function (item, weekNo) {
             var _this = this;
-            var $fromTo = $("<div>" + item.fromAirport + "-" + item.toAirport + " from: \u20AC" + item.fromPrice + " <a data-wn=\"" + weekNo + "\" data-f=\"" + item.fromAirport + "\" data-t=\"" + item.toAirport + "\" href=\"#\">see flights</a></div>");
+            var $fromTo = $("<div>" + item.fromAirport + "-" + item.toAirport + " from: eur " + item.fromPrice + " <a data-wn=\"" + weekNo + "\" data-f=\"" + item.fromAirport + "\" data-t=\"" + item.toAirport + "\" href=\"#\">see flights</a></div>");
             $fromTo.find("a").click(function (e) {
                 e.preventDefault();
                 var $target = $(e.target);

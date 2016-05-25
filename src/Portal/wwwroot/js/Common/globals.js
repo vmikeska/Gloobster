@@ -38,4 +38,10 @@ var FlightCacheRecordType;
     FlightCacheRecordType[FlightCacheRecordType["City"] = 0] = "City";
     FlightCacheRecordType[FlightCacheRecordType["Country"] = 1] = "Country";
 })(FlightCacheRecordType || (FlightCacheRecordType = {}));
+var TabsWeekendType;
+(function (TabsWeekendType) {
+    TabsWeekendType[TabsWeekendType["ByWeek"] = 0] = "ByWeek";
+    TabsWeekendType[TabsWeekendType["ByCity"] = 1] = "ByCity";
+    TabsWeekendType[TabsWeekendType["ByCountry"] = 2] = "ByCountry";
+})(TabsWeekendType || (TabsWeekendType = {}));
 //# sourceMappingURL=Globals.js.map

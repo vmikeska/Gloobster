@@ -25,4 +25,6 @@ enum SocialNetworkType { Facebook, Google, Twitter, Base, Foursquare, GeoNames }
 
 enum ParticipantState { Invited, Accepted, Maybe, Refused }
 
-enum FlightCacheRecordType {City, Country}
+enum FlightCacheRecordType { City, Country }
+
+enum TabsWeekendType {ByWeek, ByCity, ByCountry}

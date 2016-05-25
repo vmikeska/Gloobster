@@ -11,18 +11,13 @@ var Planning;
             this.countriesManager.onSelectionChanged = function (id, newState, type) { return _this.onSelectionChanged(id, newState, type); };
             this.citiesManager.countriesManager = this.countriesManager;
             this.countriesManager.citiesManager = this.citiesManager;
-            var weekendDisplay = new Planning.WeekendByWeekDisplay();
-            this.resultsEngine = new Planning.ResultsManager();
-            this.resultsEngine.initalCall();
-            this.resultsEngine.onConnectionsChanged = function (connections) {
-                weekendDisplay.displayByWeek(connections);
-            };
         }
-        PlanningMap.prototype.loadCategory = function (planningType) {
-            this.currentPlanningType = planningType;
+        PlanningMap.prototype.loadCategory = function (type) {
+            this.currentPlanningType = type;
             this.initCategory();
             this.loadCitiesInRange();
             this.delayedZoomCallback.receiveEvent();
+            this.onMapTypeChanged(type);
         };
         PlanningMap.prototype.loadCitiesInRange = function () {
             var _this = this;
@@ -104,11 +99,6 @@ var Planning;
                 return 50000;
             }
             return 1;
-        };
-        PlanningMap.prototype.onSelectionChanged = function (id, newState, type) {
-            if (newState) {
-                this.resultsEngine.selectionChanged(id, newState, type);
-            }
         };
         return PlanningMap;
     }());
