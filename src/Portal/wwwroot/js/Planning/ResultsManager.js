@@ -12,31 +12,81 @@ var Planning;
             this.$cont.html("");
             weeks.forEach(function (week) {
                 var $week = _this.genWeek(week);
+                _this.$cont.append($week);
             });
         };
-        WeekendByWeekDisplay.prototype.genWeek = function (weeks) {
+        WeekendByWeekDisplay.prototype.genWeek = function (week) {
             var _this = this;
-            var weekendRange = DateOps.getWeekendRange(weeks.weekNo);
-            var $title = $("<div style=\"border-bottom: 1px solid red;\"><b>Weekend: " + weeks.weekNo + ".</b> (" + DateOps.dateToStr(weekendRange.friday) + " - " + DateOps.dateToStr(weekendRange.sunday) + ")</div>");
-            this.$cont.append($title);
-            weeks.cities = _.sortBy(weeks.cities, "fromPrice");
-            weeks.cities.forEach(function (city) {
-                var $city = _this.genCity(city);
-                _this.$cont.append($city);
+            var weekendRange = DateOps.getWeekendRange(week.weekNo);
+            var $week = $("<div class=\"weekCont\"></div>");
+            var $title = $("<div style=\"border-bottom: 1px solid red;\"><b>Weekend: " + week.weekNo + ".</b> (" + DateOps.dateToStr(weekendRange.friday) + " - " + DateOps.dateToStr(weekendRange.sunday) + ")</div>");
+            $week.append($title);
+            week.cities = _.sortBy(week.cities, "fromPrice");
+            week.cities.forEach(function (city) {
+                var $city = _this.genCity(city, week.weekNo);
+                $week.append($city);
             });
+            $week.append("<div class=\"fCont\"></div>");
+            return $week;
         };
-        WeekendByWeekDisplay.prototype.genCity = function (city) {
+        WeekendByWeekDisplay.prototype.genCity = function (city, weekNo) {
             var _this = this;
-            var $city = $("<div style=\"border: 1px solid blue; width: 200px; display: inline-block;\"><div>To: " + city.name + "</div></div>");
+            var $city = $("<div style=\"border: 1px solid blue; width: 250px; display: inline-block;\"><div>To: " + city.name + "</div></div>");
             city.fromToOffers.forEach(function (offer) {
-                var $fromTo = _this.genFromTo(offer);
+                var $fromTo = _this.genFromTo(offer, weekNo);
                 $city.append($fromTo);
             });
             return $city;
         };
-        WeekendByWeekDisplay.prototype.genFromTo = function (item) {
-            var $fromTo = $("<div>" + item.fromAirport + "-" + item.toAirport + " from: " + item.fromPrice + "</div>");
+        WeekendByWeekDisplay.prototype.genFromTo = function (item, weekNo) {
+            var _this = this;
+            var $fromTo = $("<div>" + item.fromAirport + "-" + item.toAirport + " from: \u20AC" + item.fromPrice + " <a data-wn=\"" + weekNo + "\" data-f=\"" + item.fromAirport + "\" data-t=\"" + item.toAirport + "\" href=\"#\">see flights</a></div>");
+            $fromTo.find("a").click(function (e) {
+                e.preventDefault();
+                var $target = $(e.target);
+                var weekNo = $target.data("wn");
+                var from = $target.data("f");
+                var to = $target.data("t");
+                _this.displayFlights($target, weekNo, from, to);
+            });
             return $fromTo;
+        };
+        WeekendByWeekDisplay.prototype.displayFlights = function ($target, weekNo, from, to) {
+            var _this = this;
+            var data = [["weekNo", weekNo], ["from", from], ["to", to]];
+            Views.ViewBase.currentView.apiGet("GetFlights", data, function (flights) {
+                var $flights = _this.genFlights(flights);
+                var $cont = $target.closest(".weekCont").find(".fCont");
+                $cont.html($flights);
+                var $aClose = $("<a href=\"#\">Close</a>");
+                $aClose.click(function (e) {
+                    e.preventDefault();
+                    $cont.html("");
+                });
+                $cont.prepend($aClose);
+            });
+        };
+        WeekendByWeekDisplay.prototype.genFlights = function (flights) {
+            var _this = this;
+            var $cont = $("<div></div>");
+            flights.forEach(function (flight) {
+                var $flight = _this.genFlightItem(flight);
+                $cont.append($flight);
+            });
+            return $cont;
+        };
+        WeekendByWeekDisplay.prototype.genFlightItem = function (flight) {
+            var $flight = $("<table><tr><td colspan=\"2\"></td></tr></table>");
+            $flight.append(this.getLine("Price", flight.Price));
+            $flight.append(this.getLine("Connections", flight.Connections));
+            $flight.append(this.getLine("HoursDuration", flight.HoursDuration));
+            $flight.append(this.getLine("FlightScore", flight.FlightScore));
+            $flight.append(this.getLine("FlightPartsStr", flight.FlightPartsStr));
+            return $flight;
+        };
+        WeekendByWeekDisplay.prototype.getLine = function (cap, val) {
+            var $row = $("<tr><td>" + cap + "</td><td>" + val + "</td></tr>");
+            return $row;
         };
         return WeekendByWeekDisplay;
     }());

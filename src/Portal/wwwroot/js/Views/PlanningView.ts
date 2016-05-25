@@ -16,12 +16,12 @@
 
 			this.tabsTime = new TabsTime();
 			this.tabsTime.onTabSwitched = ((tabType) => {
-					this.planningMap.loadCategory(tabType);
+				this.planningMap.loadCategory(tabType);
 			});
 
 			//this.tabsWeekendViews.onTabSwitched = ((tabType) => {
 			//		if (tabType === 1) {
-							
+
 			//		}
 			//});
 
@@ -32,16 +32,16 @@
 			this.maps = new Maps.MapsCreatorMapBox2D();
 			this.maps.setRootElement("map");
 			this.maps.show((map) => {
-					this.planningMap = new Planning.PlanningMap(map);
-					this.planningMap.loadCategory(Planning.PlanningType.Anytime);
+				this.planningMap = new Planning.PlanningMap(map);
+				this.planningMap.loadCategory(Planning.PlanningType.Anytime);
 			});
 
 			var locationDialog = new LocationSettingsDialog();
 		}
 
 
-		}
-		
+	}
+
 	export class TabsTime {
 
 		public onTabSwitched: Function;
@@ -62,8 +62,8 @@
 			var $tabsRoot = $("#TimeTab");
 			var $tabs = $tabsRoot.find(".tab");
 			$tabs.click((e) => {
-					e.preventDefault();
-				 this.switchTab($(e.delegateTarget), $tabs);
+				e.preventDefault();
+				this.switchTab($(e.delegateTarget), $tabs);
 			});
 		}
 
@@ -92,38 +92,38 @@
 		}
 	}
 
-		export class TabsWeekendViews {
+	export class TabsWeekendViews {
 
-			public onTabSwitched: Function;
+		public onTabSwitched: Function;
 
-			constructor() {
-					this.registerTabEvents();
+		constructor() {
+			this.registerTabEvents();
+		}
+
+		private registerTabEvents() {
+
+			var $tabsRoot = $("#TabsWeekendTime");
+			var $tabs = $tabsRoot.find(".tab");
+			$tabs.click((e) => {
+				e.preventDefault();
+				this.switchTab($(e.delegateTarget), $tabs);
+			});
+		}
+
+		private switchTab($target, $tabs) {
+			$tabs.removeClass("active");
+			$target.addClass("active");
+
+			var tabType = parseInt($target.data("type"));
+			var tabHtml = "";
+
+			var $tabContent = $("#tabContent");
+			$tabContent.html(tabHtml);
+
+			if (this.onTabSwitched) {
+				this.onTabSwitched(tabType);
 			}
-				
-			private registerTabEvents() {
-					
-					var $tabsRoot = $("#TabsWeekendTime");
-					var $tabs = $tabsRoot.find(".tab");
-					$tabs.click((e) => {
-								e.preventDefault();
-							this.switchTab($(e.delegateTarget), $tabs);
-					});
-			}
-
-			private switchTab($target, $tabs) {
-					$tabs.removeClass("active");
-					$target.addClass("active");
-
-					var tabType = parseInt($target.data("type"));
-					var tabHtml = "";
-					
-					var $tabContent = $("#tabContent");
-					$tabContent.html(tabHtml);
-
-					if (this.onTabSwitched) {
-							this.onTabSwitched(tabType);
-					}
-			}
+		}
 	}
 
 
