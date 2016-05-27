@@ -69,7 +69,7 @@ namespace Gloobster.DomainModels.SearchEngine
             InitDB();
             
             //var places = PlacesToQuery(offers);            
-            var homeAirports = HomeAirports();
+            var homeAirports = HomeAirports(query.UserId);
             
             var cities = new List<int>();
             var countries = new List<string>();
@@ -210,9 +210,16 @@ namespace Gloobster.DomainModels.SearchEngine
 
         
 
-        private List<string> HomeAirports()
+        private List<string> HomeAirports(string userId)
         {
-            return new List<string> { "FRA" };
+            var userIdObj = new ObjectId(userId);
+            var user = DB.FOD<UserEntity>(u => u.User_id == userIdObj);
+            var airIds = user.HomeAirports.Select(a => a.OrigId).ToList();
+            var airports = DB.List<AirportEntity>(a => airIds.Contains(a.OrigId));
+            var codes = airports.Select(a => a.IataFaa).ToList();
+
+            return codes;
+            //return new List<string> { "FRA" };
         }
 
     }

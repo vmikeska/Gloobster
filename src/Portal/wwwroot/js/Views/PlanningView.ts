@@ -5,9 +5,13 @@
 		private resultsEngine: Planning.ResultsManager;
 
 		private tabsWeekendViews;
+		private $tabsCont;
+		private $cont;
 
 		constructor() {
 			this.resultsEngine = new Planning.ResultsManager();
+			this.$tabsCont = $("#tabsCont");
+			this.$cont = $("#results2");
 		}
 
 		public onSelectionChagned(id: string, newState: boolean, type: FlightCacheRecordType) {
@@ -18,30 +22,63 @@
 
 		public onMapTypeChanged(type: Planning.PlanningType) {
 
+			this.$tabsCont.html("");
+			this.$cont.html("");
+
 			if (type === Planning.PlanningType.Weekend) {
-				this.showWeekend();
+					this.showWeekend();					
 			}
 
+			//WeekendByCityAggregator
+				//currentTab
 		}
 
 		private showWeekend() {
 
-			this.tabsWeekendViews = new TabsWeekendViews($("#tabsCont"));
-			this.tabsWeekendViews.onTabSwitched = (type: TabsWeekendType) => {
-					if (type === TabsWeekendType.ByWeek)
-					this.showWeekendByWeek(type);
+			this.tabsWeekendViews = new TabsWeekendViews(this.$tabsCont);
+
+			var byWeekDisplay = new Planning.WeekendByWeekDisplay(this.$cont);
+			var byCityDisplay = new Planning.WeekendByCityDisplay(this.$cont);
+			var byCountryDisplay = new Planning.WeekendByCountryDisplay(this.$cont);
+
+			this.resultsEngine.initalCall();
+			this.resultsEngine.onConnectionsChanged = (connections) => {
+
+				var t = this.tabsWeekendViews.currentTab;
+
+				if (t === TabsWeekendType.ByWeek) {
+					byWeekDisplay.render(connections);
+				}
+
+				if (t === TabsWeekendType.ByCity) {
+					byCityDisplay.render(connections);
+				}
+
+				if (t === TabsWeekendType.ByCountry) {
+					byCountryDisplay.render(connections);
+				}
+
+			};
+
+			this.tabsWeekendViews.onTabSwitched = (t: TabsWeekendType) => {
+
+				this.$cont.html("");
+
+				if (t === TabsWeekendType.ByWeek) {
+					byWeekDisplay.render(this.resultsEngine.connections);
+				}
+
+				if (t === TabsWeekendType.ByCity) {
+					byCityDisplay.render(this.resultsEngine.connections);
+				}
+
+				if (t === TabsWeekendType.ByCountry) {
+						byCountryDisplay.render(this.resultsEngine.connections);
+				}
+
 			};
 				
 		}
-
-		private showWeekendByWeek(type: TabsWeekendType) {
-				var weekendDisplay = new Planning.WeekendByWeekDisplay();
-
-				this.resultsEngine.initalCall();
-				this.resultsEngine.onConnectionsChanged = (connections) => {
-						weekendDisplay.displayByWeek(connections);
-				};
-			}
 			
 	}
 
@@ -142,6 +179,7 @@
 	export class TabsWeekendViews {
 
 		public onTabSwitched: Function;
+		public currentTab = TabsWeekendType.ByWeek;
 
 		private tabsTemplate;
 
@@ -172,6 +210,7 @@
 			var $tabContent = $("#tabContent");
 			$tabContent.html(tabHtml);
 
+			this.currentTab = tabType;
 			if (this.onTabSwitched) {
 				this.onTabSwitched(tabType);
 			}

@@ -1,13 +1,13 @@
 var Planning;
 (function (Planning) {
     var WeekendByWeekDisplay = (function () {
-        function WeekendByWeekDisplay() {
-            this.weekendByWeekAggregator = new WeekendByWeekAggregator();
-            this.$cont = $("#results2");
+        function WeekendByWeekDisplay($cont) {
+            this.aggregator = new WeekendByWeekAggregator();
+            this.$cont = $cont;
         }
-        WeekendByWeekDisplay.prototype.displayByWeek = function (connections) {
+        WeekendByWeekDisplay.prototype.render = function (connections) {
             var _this = this;
-            var weeks = this.weekendByWeekAggregator.getByWeek(connections);
+            var weeks = this.aggregator.getByWeek(connections);
             weeks = _.sortBy(weeks, "weekNo");
             this.$cont.html("");
             weeks.forEach(function (week) {
@@ -91,6 +91,79 @@ var Planning;
         return WeekendByWeekDisplay;
     }());
     Planning.WeekendByWeekDisplay = WeekendByWeekDisplay;
+    var WeekendByCityDisplay = (function () {
+        function WeekendByCityDisplay($cont) {
+            this.aggregator = new WeekendByCityAggregator();
+            this.$cont = $cont;
+        }
+        WeekendByCityDisplay.prototype.render = function (connections) {
+            var _this = this;
+            var cities = this.aggregator.getByCity(connections);
+            cities = _.sortBy(cities, "fromPrice");
+            cities.forEach(function (city) {
+                var $city = _this.genCity(city);
+                _this.$cont.append($city);
+            });
+        };
+        WeekendByCityDisplay.prototype.genCity = function (city) {
+            var $city = $("<div style=\"border: 1px solid blue; width: 250px; display: inline-block;\"><div>To: " + city.name + "</div><div>FromPrice: " + city.fromPrice + "</div></div>");
+            return $city;
+        };
+        return WeekendByCityDisplay;
+    }());
+    Planning.WeekendByCityDisplay = WeekendByCityDisplay;
+    var WeekendByCountryDisplay = (function () {
+        function WeekendByCountryDisplay($cont) {
+            this.aggregator = new WeekendByCountryAggregator();
+            this.$cont = $cont;
+        }
+        WeekendByCountryDisplay.prototype.render = function (connections) {
+            var _this = this;
+            var cs = this.aggregator.getByCountry(connections);
+            cs = _.sortBy(cs, "fromPrice");
+            cs.forEach(function (city) {
+                var $c = _this.genCountry(city);
+                _this.$cont.append($c);
+            });
+        };
+        WeekendByCountryDisplay.prototype.genCountry = function (c) {
+            var $c = $("<div style=\"border: 1px solid blue; width: 250px; display: inline-block;\"><div>To: " + c.name + "</div><div>FromPrice: " + c.fromPrice + "</div></div>");
+            return $c;
+        };
+        return WeekendByCountryDisplay;
+    }());
+    Planning.WeekendByCountryDisplay = WeekendByCountryDisplay;
+    var WeekendByCityAggregator = (function () {
+        function WeekendByCityAggregator() {
+        }
+        WeekendByCityAggregator.prototype.getByCity = function (connections) {
+            var groupByDestCity = _.groupBy(connections, 'ToCityId');
+            var results = [];
+            for (var cityKey in groupByDestCity) {
+                if (!groupByDestCity.hasOwnProperty(cityKey)) {
+                    continue;
+                }
+                var cityGroup = groupByDestCity[cityKey];
+                var city = cityGroup[0];
+                var result = { name: city.CityName, gid: city.ToCityId, fromPrice: null };
+                cityGroup.forEach(function (connection) {
+                    connection.WeekFlights.forEach(function (weekFlightsGroup) {
+                        var fromPrice = weekFlightsGroup.FromPrice;
+                        if (!result.fromPrice) {
+                            result.fromPrice = fromPrice;
+                        }
+                        else if (result.fromPrice > fromPrice) {
+                            result.fromPrice = fromPrice;
+                        }
+                    });
+                });
+                results.push(result);
+            }
+            return results;
+        };
+        return WeekendByCityAggregator;
+    }());
+    Planning.WeekendByCityAggregator = WeekendByCityAggregator;
     var WeekendByWeekAggregator = (function () {
         function WeekendByWeekAggregator() {
         }
@@ -147,6 +220,36 @@ var Planning;
         return WeekendByWeekAggregator;
     }());
     Planning.WeekendByWeekAggregator = WeekendByWeekAggregator;
+    var WeekendByCountryAggregator = (function () {
+        function WeekendByCountryAggregator() {
+        }
+        WeekendByCountryAggregator.prototype.getByCountry = function (connections) {
+            var groups = _.groupBy(connections, 'CountryCode');
+            var results = [];
+            for (var key in groups) {
+                if (!groups.hasOwnProperty(key)) {
+                    continue;
+                }
+                var group = groups[key];
+                var result = { name: key, fromPrice: null };
+                group.forEach(function (connection) {
+                    connection.WeekFlights.forEach(function (weekFlightsGroup) {
+                        var fromPrice = weekFlightsGroup.FromPrice;
+                        if (!result.fromPrice) {
+                            result.fromPrice = fromPrice;
+                        }
+                        else if (result.fromPrice > fromPrice) {
+                            result.fromPrice = fromPrice;
+                        }
+                    });
+                });
+                results.push(result);
+            }
+            return results;
+        };
+        return WeekendByCountryAggregator;
+    }());
+    Planning.WeekendByCountryAggregator = WeekendByCountryAggregator;
     var DateOps = (function () {
         function DateOps() {
         }

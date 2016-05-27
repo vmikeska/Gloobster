@@ -104,7 +104,8 @@ namespace Gloobster.Mappers
                 ToAirport = e.ToAirport,
                 ToMapId = e.ToMapId,
                 ToCityId = e.ToCityId,
-                CityName = e.CityName
+                CityName = e.CityName,
+                CountryCode = e.CountryCode
             };
 
             if (e.WeekFlights != null)

@@ -133,7 +133,7 @@ namespace Gloobster.DomainModels.SearchEngine
 
                     List<FlightDO> flights = gf.ToList();
 
-                    var weekend = GetOrCreateWeekend(weekends, from, to, query.MapId, toAirport.GID, toAirport.Name);
+                    var weekend = GetOrCreateWeekend(weekends, from, to, query.MapId, toAirport.GID, toAirport.Name, toAirport.CountryCode);
                     var weekGroup = new WeekendGroupSE
                     {
                         Flights = flights.Select(f => f.ToEntity()).ToList(),
@@ -171,7 +171,7 @@ namespace Gloobster.DomainModels.SearchEngine
         }
 
         private WeekendConnectionEntity GetOrCreateWeekend(List<WeekendConnectionEntity> items, string from, string to, 
-            string toMapId, int toCityId, string cityName)
+            string toMapId, int toCityId, string cityName, string countryCode)
         {
             var item = items.FirstOrDefault(i => i.FromAirport == from && i.ToAirport == to);
             bool exists = item != null;
@@ -188,6 +188,7 @@ namespace Gloobster.DomainModels.SearchEngine
                 ToMapId = toMapId,
                 ToCityId = toCityId,
                 CityName = cityName,
+                CountryCode = countryCode,
                 WeekFlights = new List<WeekendGroupSE>()
             };
             items.Add(weekend);

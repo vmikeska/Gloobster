@@ -8,6 +8,8 @@ var Views;
     var PlanningData = (function () {
         function PlanningData() {
             this.resultsEngine = new Planning.ResultsManager();
+            this.$tabsCont = $("#tabsCont");
+            this.$cont = $("#results2");
         }
         PlanningData.prototype.onSelectionChagned = function (id, newState, type) {
             if (newState) {
@@ -15,23 +17,42 @@ var Views;
             }
         };
         PlanningData.prototype.onMapTypeChanged = function (type) {
+            this.$tabsCont.html("");
+            this.$cont.html("");
             if (type === Planning.PlanningType.Weekend) {
                 this.showWeekend();
             }
         };
         PlanningData.prototype.showWeekend = function () {
             var _this = this;
-            this.tabsWeekendViews = new TabsWeekendViews($("#tabsCont"));
-            this.tabsWeekendViews.onTabSwitched = function (type) {
-                if (type === TabsWeekendType.ByWeek)
-                    _this.showWeekendByWeek(type);
-            };
-        };
-        PlanningData.prototype.showWeekendByWeek = function (type) {
-            var weekendDisplay = new Planning.WeekendByWeekDisplay();
+            this.tabsWeekendViews = new TabsWeekendViews(this.$tabsCont);
+            var byWeekDisplay = new Planning.WeekendByWeekDisplay(this.$cont);
+            var byCityDisplay = new Planning.WeekendByCityDisplay(this.$cont);
+            var byCountryDisplay = new Planning.WeekendByCountryDisplay(this.$cont);
             this.resultsEngine.initalCall();
             this.resultsEngine.onConnectionsChanged = function (connections) {
-                weekendDisplay.displayByWeek(connections);
+                var t = _this.tabsWeekendViews.currentTab;
+                if (t === TabsWeekendType.ByWeek) {
+                    byWeekDisplay.render(connections);
+                }
+                if (t === TabsWeekendType.ByCity) {
+                    byCityDisplay.render(connections);
+                }
+                if (t === TabsWeekendType.ByCountry) {
+                    byCountryDisplay.render(connections);
+                }
+            };
+            this.tabsWeekendViews.onTabSwitched = function (t) {
+                _this.$cont.html("");
+                if (t === TabsWeekendType.ByWeek) {
+                    byWeekDisplay.render(_this.resultsEngine.connections);
+                }
+                if (t === TabsWeekendType.ByCity) {
+                    byCityDisplay.render(_this.resultsEngine.connections);
+                }
+                if (t === TabsWeekendType.ByCountry) {
+                    byCountryDisplay.render(_this.resultsEngine.connections);
+                }
             };
         };
         return PlanningData;
@@ -107,6 +128,7 @@ var Views;
     Views.TabsTime = TabsTime;
     var TabsWeekendViews = (function () {
         function TabsWeekendViews($tabsCont) {
+            this.currentTab = TabsWeekendType.ByWeek;
             this.tabsTemplate = Views.ViewBase.currentView.registerTemplate("weekendTabs-template");
             $tabsCont.html(this.tabsTemplate);
             this.registerTabEvents();
@@ -127,6 +149,7 @@ var Views;
             var tabHtml = "";
             var $tabContent = $("#tabContent");
             $tabContent.html(tabHtml);
+            this.currentTab = tabType;
             if (this.onTabSwitched) {
                 this.onTabSwitched(tabType);
             }

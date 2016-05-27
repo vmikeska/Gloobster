@@ -29,6 +29,11 @@ namespace Gloobster.DomainModels.SearchEngine
             var fromAirport = GetAirport(flight.From);
             var toAirport = GetAirport(flight.To);
 
+            if (toAirport == null)
+            {
+                return null;
+            }
+
             //todo: should be fixed, like get distance from city or such. Or discard such a results
             if (toAirport.Coord == null)
             {

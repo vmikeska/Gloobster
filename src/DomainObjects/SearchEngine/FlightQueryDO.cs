@@ -22,6 +22,7 @@ namespace Gloobster.DomainObjects.SearchEngine
         public string ToMapId { get; set; }
         public int ToCityId { get; set; }
         public string CityName { get; set; }
+        public string CountryCode { get; set; }
         
         public List<WeekendGroupDO> WeekFlights { get; set; }
     }
