@@ -32,8 +32,8 @@ namespace Gloobster.Portal.Controllers.Api.Planning
         [AuthorizeApi]
         public IActionResult Get(SearchRequest req)
         {
-            List<WeekendSearchResultDO> flightSearchList = new List<WeekendSearchResultDO>();
-
+            List<SearchResultDO> flightSearchList = new List<SearchResultDO>();
+            
             bool isNewQuery = req.p == null && req.q == null;
             if (isNewQuery)
             {
@@ -43,7 +43,7 @@ namespace Gloobster.Portal.Controllers.Api.Planning
                     EntireQuery = true
                 };
 
-                flightSearchList = UserFlights.QueryNewQueries(pl);
+                flightSearchList = UserFlights.QueryNewQueries(pl, req.tt);
             }
             bool newPlacesAdded = (req.p != null && req.p.Any());
             if (newPlacesAdded)
@@ -54,7 +54,7 @@ namespace Gloobster.Portal.Controllers.Api.Planning
                     return new RequeryDO
                     {                        
                         To = prms[0],
-                        Type = (FlightCacheRecordType)Enum.Parse(typeof(FlightCacheRecordType), prms[1])
+                        Type = (PlaceType)Enum.Parse(typeof(PlaceType), prms[1])
                     };
                 }).ToList();
                 
@@ -62,11 +62,11 @@ namespace Gloobster.Portal.Controllers.Api.Planning
                 {
                     UserId = UserId,
                     EntireQuery = false,
-                    Countries = places.Where(p => p.Type == FlightCacheRecordType.Country).Select(s => s.To).ToList(),
-                    Cities = places.Where(p => p.Type == FlightCacheRecordType.City).Select(s => int.Parse(s.To)).ToList()
+                    Countries = places.Where(p => p.Type == PlaceType.Country).Select(s => s.To).ToList(),
+                    Cities = places.Where(p => p.Type == PlaceType.City).Select(s => int.Parse(s.To)).ToList()
                 };
 
-                flightSearchList = UserFlights.QueryNewQueries(pl);
+                flightSearchList = UserFlights.QueryNewQueries(pl, req.tt);
             }
             bool requerying = (req.q != null && req.q.Any());
             if (requerying)
@@ -78,21 +78,15 @@ namespace Gloobster.Portal.Controllers.Api.Planning
                     {
                         From = prms[0],
                         To = prms[1],
-                        Type = (FlightCacheRecordType) Enum.Parse(typeof (FlightCacheRecordType), prms[2])
+                        Type = (PlaceType) Enum.Parse(typeof (PlaceType), prms[2])
                     };
                 }).ToList();
 
-                flightSearchList = UserFlights.QuerySinglePlaces(queries);
+                flightSearchList = UserFlights.CheckStartedQueries(queries, req.tt);
             }
-
-
-            //List<WeekendConnectionDO> connections = flightSearchList.SelectMany(f => f.Connections).Where(c => c != null).ToList();
-
-            //todo: should be grouped by GID,CC. Not in class yet
             
-            
-
             return new ObjectResult(flightSearchList);
+            
         }
         
         public IActionResult GetAytimeTesting(string type)
@@ -130,6 +124,8 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 
     public class SearchRequest
     {
+        public TimeType tt { get; set; }
+
         //q=from-to-type
         public List<string> q { get; set; }
 

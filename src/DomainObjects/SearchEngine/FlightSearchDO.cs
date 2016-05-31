@@ -10,15 +10,14 @@ namespace Gloobster.DomainObjects.SearchEngine
     {
         public string FromPlace { get; set; }
         public string ToPlace { get; set; }
-
-        public int WeekNo { get; set; }
-        public int Year { get; set; }
-
+        
         //todo: optimize by one number
         public Date FromDate { get; set; }
         public Date ToDate { get; set; }
 
         public List<FlightDO> Flights { get; set; }
+
+        public object Params { get; set; }
     }
 
     public class FlightDO
@@ -40,6 +39,18 @@ namespace Gloobster.DomainObjects.SearchEngine
             {
                 var prts = FlightParts.Select(f => $"{f.From}-->{f.To} || {f.DeparatureTime} - {f.ArrivalTime}");
                 return string.Join("<br/>", prts);
+            }
+        }
+
+        public int DaysInDestination
+        {
+            get
+            {
+                var first = FlightParts.First().ArrivalTime;
+                var last = FlightParts.Last().DeparatureTime;
+
+                int res = (int) ((last - first).TotalDays);
+                return res;
             }
         }
     }

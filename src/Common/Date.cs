@@ -29,6 +29,11 @@ namespace Gloobster.Common
             return new Date(int.Parse(prms[0]), int.Parse(prms[1]), int.Parse(prms[2]));
         }
 
+        public static Date ToDate(this DateTime date)
+        {
+            return new Date(date.Day, date.Month, date.Year);
+        }
+
         //public static Date ToDate(this DateTime)
     }
 }

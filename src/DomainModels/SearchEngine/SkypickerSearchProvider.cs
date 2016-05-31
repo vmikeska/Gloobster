@@ -34,7 +34,13 @@ namespace Gloobster.DomainModels.SearchEngine
                     var str = value.ToString();
                     if (!string.IsNullOrEmpty(str))
                     {
+                        if (prop.Name == "Params")
+                        {
+                            continue;
+                        }
+
                         qb.Param(prop.Name, str);
+                        
                     }
                 }
             }
@@ -42,7 +48,11 @@ namespace Gloobster.DomainModels.SearchEngine
             var query = qb.Build();
 
             var result = caller.CallServer<SearchResultRoot>(query);
-            
+            if (result == null)
+            {
+                return null;
+            }
+
             List<FlightDO> converted = result.data.Select(f => Convert(f)).ToList();
 
             var flightSearch = new FlightSearchDO

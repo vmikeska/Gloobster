@@ -13,24 +13,11 @@ using MongoDB.Bson;
 
 namespace Gloobster.DomainModels.SearchEngine
 {
-    //todo: dont delete yet
-    //public class GroupingEngine
-    //{
-    //    public GroupedFlight Group(ConnectionEntity connection)
-    //    {
-    //        return null;
-    //        //connection.Flights
-    //    }
-    //}
-
-    //public class GroupedFlight
-    //{
-    //    public string From;
-    //    public string To;
-    //    public int PriceFrom;
-    //    public int PriceTo;
-    //    public List<FlightSE> Flights;
-    //}
+    public class CitiesCountries
+    {
+        public List<int> Cities { get; set; }
+        public List<string> Countries { get; set; }
+    }
 
     public class FlightsForUser : IFlightsForUser
     {
@@ -39,36 +26,35 @@ namespace Gloobster.DomainModels.SearchEngine
 
         public static List<NewAirportCityEntity> Cities;
         
-        public List<WeekendSearchResultDO> QuerySinglePlaces(List<RequeryDO> queries)
+        public List<SearchResultDO> CheckStartedQueries(List<RequeryDO> queries, TimeType timeType)
         {
             InitDB();
             
-            var allResults = new List<WeekendSearchResultDO>();
+            var allResults = new List<SearchResultDO>();
             
             foreach (RequeryDO query in queries)
             {
-                if (query.Type == FlightCacheRecordType.City)
+                if (query.Type == PlaceType.City)
                 {
                     int gid = int.Parse(query.To);
-                    WeekendSearchResultDO searchResult = QueryCity(query.From, gid);
+                    SearchResultDO searchResult = QueryCity(query.From, gid, timeType);
                     allResults.Add(searchResult);
                 }
 
-                if (query.Type == FlightCacheRecordType.Country)
+                if (query.Type == PlaceType.Country)
                 {                    
-                    WeekendSearchResultDO searchResult = QueryCountry(query.From, query.To);
+                    SearchResultDO searchResult = QueryCountry(query.From, query.To, timeType);
                     allResults.Add(searchResult);
                 }                
             }
 
             return allResults;
         }
-
-        public List<WeekendSearchResultDO> QueryNewQueries(PlacesDO query)
+        
+        public List<SearchResultDO> QueryNewQueries(PlacesDO query, TimeType timeType)
         {
             InitDB();
             
-            //var places = PlacesToQuery(offers);            
             var homeAirports = HomeAirports(query.UserId);
             
             var cities = new List<int>();
@@ -77,9 +63,10 @@ namespace Gloobster.DomainModels.SearchEngine
             if (query.EntireQuery)
             {
                 var userIdObj = new ObjectId(query.UserId);
-                var weekend = DB.FOD<PlanningWeekendEntity>(u => u.User_id == userIdObj);
-                cities = weekend.Cities;
-                countries = weekend.CountryCodes;
+                var cc = CitiesCountriesByType(timeType, userIdObj);
+                
+                cities = cc.Cities;
+                countries = cc.Countries;
             }
             else
             {
@@ -88,23 +75,44 @@ namespace Gloobster.DomainModels.SearchEngine
             }
             
 
-            var allResults = new List<WeekendSearchResultDO>();
+            var allResults = new List<SearchResultDO>();
             foreach (var homeAirport in homeAirports)
             {
                 foreach (int gid in cities)
                 {
-                    WeekendSearchResultDO searchResult = QueryCity(homeAirport, gid);
+                    SearchResultDO searchResult = QueryCity(homeAirport, gid, timeType);
                     allResults.Add(searchResult);
                 }
                 
                 foreach (string countryCode in countries)
                 {
-                    WeekendSearchResultDO searchResult = QueryCountry(homeAirport, countryCode);
+                    SearchResultDO searchResult = QueryCountry(homeAirport, countryCode, timeType);
                     allResults.Add(searchResult);
                 }
             }
 
             return allResults;
+        }
+
+        private CitiesCountries CitiesCountriesByType(TimeType timeType, ObjectId userIdObj)
+        {
+            var cc = new CitiesCountries();
+
+            if (timeType == TimeType.Anytime)
+            {
+                var weekend = DB.FOD<PlanningAnytimeEntity>(u => u.User_id == userIdObj);
+                cc.Cities = weekend.Cities;
+                cc.Countries = weekend.CountryCodes;
+            }
+
+            if (timeType == TimeType.Weekend)
+            {
+                var weekend = DB.FOD<PlanningWeekendEntity>(u => u.User_id == userIdObj);
+                cc.Cities = weekend.Cities;
+                cc.Countries = weekend.CountryCodes;
+            }
+
+            return cc;
         }
 
         private void InitDB()
@@ -115,7 +123,7 @@ namespace Gloobster.DomainModels.SearchEngine
             }
         }
 
-        private WeekendSearchResultDO QueryCity(string from, int gid)
+        private SearchResultDO QueryCity(string from, int gid, TimeType timeType)
         {
             var dbCity = Cities.FirstOrDefault(c => c.GID == gid);
             if (string.IsNullOrEmpty(dbCity?.SpId))
@@ -123,93 +131,34 @@ namespace Gloobster.DomainModels.SearchEngine
                 return null;
             }
 
-            var query = new FlightWeekendQueryDO
+            var query = new FlightDbQueryDO
             {
                 FromPlace = from,
                 Id = dbCity.SpId,
                 MapId = gid.ToString(),
-                Type = FlightCacheRecordType.City
+                ToType = PlaceType.City,
+                TimeType = timeType
             };
 
-            var searchResult = FlightsDB.GetQueryResults(query);
+            SearchResultDO searchResult = FlightsDB.GetQueryResults(query);
             return searchResult;
         }
 
-        private WeekendSearchResultDO QueryCountry(string from, string countryCode)
+        private SearchResultDO QueryCountry(string from, string countryCode, TimeType timeType)
         {            
-            var query = new FlightWeekendQueryDO
+            var query = new FlightDbQueryDO
             {
                 FromPlace = from,
                 Id = countryCode,
                 MapId = countryCode,
-                Type = FlightCacheRecordType.Country
+                ToType = PlaceType.Country,
+                TimeType = timeType
             };
 
-            var searchResult = FlightsDB.GetQueryResults(query);
+            SearchResultDO searchResult = FlightsDB.GetQueryResults(query);
             return searchResult;
         }
-
-        //private Places PlacesToQuery(OffersDO offers)
-        //{
-        //    var cities = new List<int>();
-        //    var countries = new List<string>();
-
-        //    if (offers.Included != null)
-        //    {
-        //        if (offers.Included.GIDs != null)
-        //        {
-        //            cities = offers.Included.GIDs;
-        //        }
-
-        //        if (offers.Included.CountryCodes != null)
-        //        {
-        //            countries = offers.Included.CountryCodes;
-        //        }
-
-        //        if (cities.Any() || countries.Any())
-        //        {
-        //            return new Places
-        //            {
-        //                Cities = cities,
-        //                Countries = countries
-        //            };
-        //        }
-        //    }
-
-        //    var userIdObj = new ObjectId(offers.UserId);
-        //    var weekend = DB.FOD<PlanningWeekendEntity>(u => u.User_id == userIdObj);
-
-        //    cities = weekend.Cities;
-        //    countries = weekend.CountryCodes;
-
-        //    bool countriesToExclude = (offers.Excluded?.CountryCodes != null);
-        //    if (countriesToExclude)
-        //    {
-        //        var ccs = offers.Excluded?.CountryCodes;
-        //        countries = countries.Where(c => !ccs.Contains(c)).ToList();
-        //    }
-
-        //    bool citiesToExclude = (offers.Excluded?.GIDs != null);
-        //    if (citiesToExclude)
-        //    {
-        //        var cs = offers.Excluded?.GIDs;
-        //        cities = cities.Where(c => !cs.Contains(c)).ToList();
-        //    }
-            
-        //    return new Places
-        //    {
-        //        Cities = cities,
-        //        Countries = countries
-        //    };
-            
-
-        //    //todo: implement removing cities when entire country is selected            
-        //}
-
         
-
-        
-
         private List<string> HomeAirports(string userId)
         {
             var userIdObj = new ObjectId(userId);
@@ -218,10 +167,9 @@ namespace Gloobster.DomainModels.SearchEngine
             var airports = DB.List<AirportEntity>(a => airIds.Contains(a.OrigId));
             var codes = airports.Select(a => a.IataFaa).ToList();
 
-            return codes;
-            //return new List<string> { "FRA" };
+            return codes;            
         }
-
+        
     }
 
     public class Places

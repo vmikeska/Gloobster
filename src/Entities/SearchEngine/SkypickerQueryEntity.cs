@@ -12,19 +12,19 @@ namespace Gloobster.Entities.SearchEngine
         public string ToPlace { get; set; }
         public string ToPlaceMap { get; set; }
 
-        public FlightCacheRecordType ToPlaceType { get; set; }
+        public PlaceType ToPlaceType { get; set; }
 
         public List<FromToSE> FoundConnectionsBetweenAirports { get; set; }
 
-        public List<WeekendSE> Weekends { get; set; }
+        //move to separate entity
+        //public List<WeekendSE> Weekends { get; set; }
 
         public bool FirstSearchFinished { get; set; }
         public bool FirstSearchStarted { get; set; }
 
+        public TimeType TimeType { get; set; }
 
-        //Anytime start later
-        //public List<Query> Queries;
-
+        public DateTime LastRequery { get; set; }
     }
 
     public class FromToSE
@@ -43,14 +43,5 @@ namespace Gloobster.Entities.SearchEngine
         public DateTime LastQueryNormal { get; set; }
         public DateTime LastQueryLong { get; set; }
     }
-
-    //Anytime start later
-    //public class Query
-    //{
-    //    public Date FromDate;
-    //    public Date ToDate;
-
-    //    public DateTime LastQuery;
-    //}
 
 }

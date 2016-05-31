@@ -10,7 +10,7 @@ namespace Gloobster.Entities.SearchEngine
     {
         public DateTime QueryTime { get; set; }
 
-        public FlightCacheRecordType Type { get; set; }
+        public PlaceType Type { get; set; }
 
         public string FromPlace { get; set; }
         public string ToPlace { get; set; }

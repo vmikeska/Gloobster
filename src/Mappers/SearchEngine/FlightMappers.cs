@@ -94,6 +94,29 @@ namespace Gloobster.Mappers
         }
     }
 
+    public static class AnytimeConnectionsMappers
+    {
+        public static AnytimeConnectionDO ToDO(this AnytimeConnectionEntity e)
+        {
+            var d = new AnytimeConnectionDO
+            {
+                FromAirport = e.FromAirport,
+                ToAirport = e.ToAirport,                
+                ToCityId = e.ToCityId,
+                CityName = e.CityName,
+                CountryCode = e.CountryCode,
+                FromPrice = e.FromPrice
+            };
+
+            if (e.Flights != null)
+            {
+                d.Flights = e.Flights.Select(f => f.ToDO()).ToList();
+            }
+
+            return d;
+        }
+    }
+
     public static class WeekendConnectionsMappers
     {
         public static WeekendConnectionDO ToDO(this WeekendConnectionEntity e)

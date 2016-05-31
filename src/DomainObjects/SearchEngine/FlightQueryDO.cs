@@ -4,17 +4,17 @@ using Gloobster.Enums.SearchEngine;
 
 namespace Gloobster.DomainObjects.SearchEngine
 {
-    public class FlightWeekendQueryDO
+    public class FlightDbQueryDO
     {
         public string FromPlace { get; set; }
 
         public string MapId { get; set; }
         public string Id { get; set; }
-        public FlightCacheRecordType Type { get; set; }
-        //public Date FromDate { get; set; }
-        //public Date ToDate { get; set; }
-    }
+        public PlaceType ToType { get; set; }
 
+        public TimeType TimeType { get; set; }
+    }
+    
     public class WeekendConnectionDO
     {
         public string FromAirport { get; set; }
@@ -26,6 +26,20 @@ namespace Gloobster.DomainObjects.SearchEngine
         
         public List<WeekendGroupDO> WeekFlights { get; set; }
     }
+
+    public class AnytimeConnectionDO
+    {
+        public string FromAirport { get; set; }
+        public string ToAirport { get; set; }
+        public int ToCityId { get; set; }
+        public string CityName { get; set; }
+        public string CountryCode { get; set; }
+        public double FromPrice { get; set; }
+
+        public List<FlightDO> Flights { get; set; }
+    }
+
+    
 
     public class WeekendGroupDO
     {
@@ -51,7 +65,7 @@ namespace Gloobster.DomainObjects.SearchEngine
     {
         public string From { get; set; }
         public string To { get; set; }
-        public FlightCacheRecordType Type { get; set; }
+        public PlaceType Type { get; set; }
     }
 
 
@@ -61,16 +75,16 @@ namespace Gloobster.DomainObjects.SearchEngine
         public string To { get; set; }
     }
 
-    public class WeekendSearchResultDO
+    public class SearchResultDO
     {
         public string From { get; set; }
         public string To { get; set; }
-        public FlightCacheRecordType Type { get; set; }
+        public PlaceType Type { get; set; }
 
         public bool NotFinishedYet { get; set; }
         public bool QueryStarted { get; set; }
 
-        public List<WeekendConnectionDO> Connections { get; set; }
+        public object Result { get; set; }
     }
 
     //public class OffersDO
@@ -106,6 +120,8 @@ namespace Gloobster.DomainObjects.SearchEngine
         public string returnFrom { get; set; }
         public string returnTo { get; set; }
         public string passengers { get; set; }
+
+        public object Params { get; set; }
     }
 
     //todo: remove
@@ -114,7 +130,7 @@ namespace Gloobster.DomainObjects.SearchEngine
         public string FromPlace { get; set; }
 
         public string Id { get; set; }
-        public FlightCacheRecordType Type { get; set; }
+        public PlaceType Type { get; set; }
         public Date FromDate { get; set; }
         public Date ToDate { get; set; }
     }

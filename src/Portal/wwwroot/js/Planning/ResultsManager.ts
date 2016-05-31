@@ -1,5 +1,128 @@
 module Planning {
 
+
+	export class AnytimeAggregator {
+		public aggregate(connections, days) {
+
+			var groupByDestCity = _.groupBy(connections, 'ToCityId');
+
+			var results = [];
+
+			for (var cityKey in groupByDestCity) {
+				if (!groupByDestCity.hasOwnProperty(cityKey)) {
+					continue;
+				}
+
+				var cityGroup = groupByDestCity[cityKey];
+
+				var city = cityGroup[0];
+
+				var fromPrice = _.min(_.map(cityGroup, (c) => { return c.FromPrice }));
+
+				var result = { name: city.CityName, gid: cityKey, conns: cityGroup, fromPrice: fromPrice };
+
+
+				var outConns = [];
+				cityGroup.forEach((conn) => {
+					var c = { fromAirport: conn.FromAirport, toAirport: conn.ToAirport, fromPrice: null, flights: [] };
+
+					var passedFlights = [];
+					conn.Flights.forEach((flight) => {
+						var did = flight.DaysInDestination;
+						var fits = days === null || ((did >= (days - 1)) && (did <= (days + 1)));
+						if (fits) {
+							passedFlights.push(flight);
+						}
+					});					
+
+					if (passedFlights.length > 0) {
+							c.flights = passedFlights;
+							c.fromPrice = _.min(_.map(passedFlights, (c) => { return c.Price }));
+							outConns.push(c);
+					}
+						
+				});
+
+				result.conns = outConns;
+
+				results.push(result);
+			}
+
+			return results;
+		}
+	}
+
+	export class AnytimeDisplay {
+		private aggr: AnytimeAggregator;
+
+		private $cont;
+		private $filter;
+
+		private connections = [];
+
+		constructor($cont) {
+			this.aggr = new AnytimeAggregator();
+			this.$cont = $cont;
+			this.$filter = $("#tabsCont");
+		}
+
+		public render(connections, days = null) {
+				this.$cont.html("");
+
+				this.connections = connections;
+				
+			var cities = this.aggr.aggregate(connections, days);
+
+			this.$filter.html(this.getCombo());
+
+			cities = _.sortBy(cities, "fromPrice");
+
+			cities.forEach((city) => {
+				var $city = this.genCity(city);
+				this.$cont.append($city);
+			});
+
+		}
+
+		private getCombo() {
+			var from = 2;
+			var to = 14;
+			var $combo = $(`<select id="days"><select>`);
+
+			var $oe = $(`<option value="-">Days uspecified</option>`);
+			$combo.append($oe);
+
+			for (var act = from; act <= to; act++) {
+				var $o = $(`<option value="${act}">${act} Days</option>`);
+				$combo.append($o);
+			}
+
+			$combo.change((e) => {
+				e.preventDefault();
+				var val = $combo.val();
+				this.daysFilterChange(val);
+			});
+
+			return $combo;
+		}
+
+		private daysFilterChange(val) {
+			var days = (val === "-") ? null : parseInt(val);
+			this.render(this.connections, days);
+		}
+
+		private genCity(city) {
+			var $city = $(`<div style="border: 1px solid blue; width: 250px; display: inline-block;"><div>To: ${city.name}</div><div>FromPrice: ${city.fromPrice}</div></div>`);
+
+			city.conns.forEach((conn) => {
+				var $conn = $(`<div>${conn.fromAirport}-->${conn.toAirport} - From: ${conn.fromPrice}</div>`);
+				$city.append($conn);
+			});
+
+			return $city;
+		}
+	}
+
 	export class WeekendByWeekDisplay {
 
 		private aggregator: WeekendByWeekAggregator;
@@ -385,8 +508,14 @@ module Planning {
 		private queue = [];
 		private intervalId;
 
-		public initalCall() {
-				this.getQueries([]);
+		private timeType;
+
+		public initalCall(timeType) {
+			this.timeType = timeType;
+			this.stopQuerying();
+			this.queue = [];
+			this.connections = [];
+			this.getQueries([["tt", timeType]]);
 		}
 
 		private getQueries(params) {
@@ -414,7 +543,7 @@ module Planning {
 
 								this.drawQueue();
 
-								this.connections = this.connections.concat(result.Connections);
+								this.connections = this.connections.concat(result.Result);
 								if (this.onConnectionsChanged) {
 									this.onConnectionsChanged(this.connections);
 								}								
@@ -477,6 +606,7 @@ module Planning {
 						strParams.push([`q`, `${itm.from}-${itm.to}-${itm.type}`]);
 						i++;
 				});
+				strParams.push(["tt", this.timeType]);
 				return strParams;
 		}
 			
@@ -485,7 +615,7 @@ module Planning {
 
 				this.drawQueue();
 
-				this.getQueries([["p", `${id}-${type}`]]);				
+				this.getQueries([["p", `${id}-${type}`], ["tt", this.timeType]]);				
 		}
 			
 		

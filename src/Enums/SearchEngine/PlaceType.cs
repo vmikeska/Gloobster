@@ -5,5 +5,7 @@ using System.Threading.Tasks;
 
 namespace Gloobster.Enums.SearchEngine
 {
-    public enum FlightCacheRecordType { City, Country }
+    public enum PlaceType { City, Country }
+
+    public enum TimeType { Anytime, Weekend }
 }

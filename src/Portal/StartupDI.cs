@@ -162,9 +162,21 @@ namespace Gloobster.Portal
             
 		    builder.AddTransient<IFlightScoreEngine, FlightScoreEngine>();
 
-            builder.AddTransient<IFlightsForUser, FlightsForUser>();            
+            builder.AddTransient<IFlightsForUser, FlightsForUser>();
+            
+            builder.AddTransient<IQueriesDriver, AnytimeQueriesDriver>().Keyed<IQueriesDriver>("Anytime");
+            builder.AddTransient<IQueriesDriver, WeekendQueriesDriver>().Keyed<IQueriesDriver>("Weekend");
+            
+            var airportsCache = new AirportsCache
+		    {
+		        DB = new DbOperations()
+		    };
 
-        }
+		    builder.AddInstance<IAirportsCache>(airportsCache);
+
+
+
+		}
 		
 	}
 

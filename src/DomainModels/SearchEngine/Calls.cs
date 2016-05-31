@@ -19,7 +19,7 @@ namespace Gloobster.DomainModels.SearchEngine
             }
             catch (Exception exc)
             {
-                throw;
+                return default(T);
             }
         }
 

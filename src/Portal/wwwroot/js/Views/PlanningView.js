@@ -19,41 +19,48 @@ var Views;
         PlanningData.prototype.onMapTypeChanged = function (type) {
             this.$tabsCont.html("");
             this.$cont.html("");
+            if (type === Planning.PlanningType.Anytime) {
+                this.showAnytime();
+            }
             if (type === Planning.PlanningType.Weekend) {
                 this.showWeekend();
             }
         };
+        PlanningData.prototype.showAnytime = function () {
+            var _this = this;
+            var display = new Planning.AnytimeDisplay(this.$cont);
+            this.resultsEngine.initalCall(0);
+            this.resultsEngine.onConnectionsChanged = function (connections) {
+                _this.$cont.html("");
+                display.render(_this.resultsEngine.connections);
+            };
+        };
         PlanningData.prototype.showWeekend = function () {
             var _this = this;
             this.tabsWeekendViews = new TabsWeekendViews(this.$tabsCont);
-            var byWeekDisplay = new Planning.WeekendByWeekDisplay(this.$cont);
-            var byCityDisplay = new Planning.WeekendByCityDisplay(this.$cont);
-            var byCountryDisplay = new Planning.WeekendByCountryDisplay(this.$cont);
-            this.resultsEngine.initalCall();
+            this.resultsEngine.initalCall(1);
             this.resultsEngine.onConnectionsChanged = function (connections) {
                 var t = _this.tabsWeekendViews.currentTab;
-                if (t === TabsWeekendType.ByWeek) {
-                    byWeekDisplay.render(connections);
-                }
-                if (t === TabsWeekendType.ByCity) {
-                    byCityDisplay.render(connections);
-                }
-                if (t === TabsWeekendType.ByCountry) {
-                    byCountryDisplay.render(connections);
-                }
+                _this.renderWeekend(t);
             };
             this.tabsWeekendViews.onTabSwitched = function (t) {
                 _this.$cont.html("");
-                if (t === TabsWeekendType.ByWeek) {
-                    byWeekDisplay.render(_this.resultsEngine.connections);
-                }
-                if (t === TabsWeekendType.ByCity) {
-                    byCityDisplay.render(_this.resultsEngine.connections);
-                }
-                if (t === TabsWeekendType.ByCountry) {
-                    byCountryDisplay.render(_this.resultsEngine.connections);
-                }
+                _this.renderWeekend(t);
             };
+        };
+        PlanningData.prototype.renderWeekend = function (t) {
+            if (t === TabsWeekendType.ByWeek) {
+                var d1 = new Planning.WeekendByWeekDisplay(this.$cont);
+                d1.render(this.resultsEngine.connections);
+            }
+            if (t === TabsWeekendType.ByCity) {
+                var d2 = new Planning.WeekendByCityDisplay(this.$cont);
+                d2.render(this.resultsEngine.connections);
+            }
+            if (t === TabsWeekendType.ByCountry) {
+                var d3 = new Planning.WeekendByCountryDisplay(this.$cont);
+                d3.render(this.resultsEngine.connections);
+            }
         };
         return PlanningData;
     }());

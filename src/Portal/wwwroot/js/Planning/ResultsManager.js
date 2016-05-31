@@ -1,5 +1,97 @@
 var Planning;
 (function (Planning) {
+    var AnytimeAggregator = (function () {
+        function AnytimeAggregator() {
+        }
+        AnytimeAggregator.prototype.aggregate = function (connections, days) {
+            var groupByDestCity = _.groupBy(connections, 'ToCityId');
+            var results = [];
+            for (var cityKey in groupByDestCity) {
+                if (!groupByDestCity.hasOwnProperty(cityKey)) {
+                    continue;
+                }
+                var cityGroup = groupByDestCity[cityKey];
+                var city = cityGroup[0];
+                var fromPrice = _.min(_.map(cityGroup, function (c) { return c.FromPrice; }));
+                var result = { name: city.CityName, gid: cityKey, conns: cityGroup, fromPrice: fromPrice };
+                var outConns = [];
+                cityGroup.forEach(function (conn) {
+                    var c = { fromAirport: conn.FromAirport, toAirport: conn.ToAirport, fromPrice: null, flights: [] };
+                    var passedFlights = [];
+                    conn.Flights.forEach(function (flight) {
+                        var did = flight.DaysInDestination;
+                        var fits = days === null || ((did >= (days - 1)) && (did <= (days + 1)));
+                        if (fits) {
+                            passedFlights.push(flight);
+                        }
+                    });
+                    if (passedFlights.length > 0) {
+                        c.flights = passedFlights;
+                        c.fromPrice = _.min(_.map(passedFlights, function (c) { return c.Price; }));
+                        outConns.push(c);
+                    }
+                });
+                result.conns = outConns;
+                results.push(result);
+            }
+            return results;
+        };
+        return AnytimeAggregator;
+    }());
+    Planning.AnytimeAggregator = AnytimeAggregator;
+    var AnytimeDisplay = (function () {
+        function AnytimeDisplay($cont) {
+            this.connections = [];
+            this.aggr = new AnytimeAggregator();
+            this.$cont = $cont;
+            this.$filter = $("#tabsCont");
+        }
+        AnytimeDisplay.prototype.render = function (connections, days) {
+            var _this = this;
+            if (days === void 0) { days = null; }
+            this.$cont.html("");
+            this.connections = connections;
+            var cities = this.aggr.aggregate(connections, days);
+            this.$filter.html(this.getCombo());
+            cities = _.sortBy(cities, "fromPrice");
+            cities.forEach(function (city) {
+                var $city = _this.genCity(city);
+                _this.$cont.append($city);
+            });
+        };
+        AnytimeDisplay.prototype.getCombo = function () {
+            var _this = this;
+            var from = 2;
+            var to = 14;
+            var $combo = $("<select id=\"days\"><select>");
+            var $oe = $("<option value=\"-\">Days uspecified</option>");
+            $combo.append($oe);
+            for (var act = from; act <= to; act++) {
+                var $o = $("<option value=\"" + act + "\">" + act + " Days</option>");
+                $combo.append($o);
+            }
+            $combo.change(function (e) {
+                e.preventDefault();
+                var val = $combo.val();
+                _this.daysFilterChange(val);
+            });
+            return $combo;
+        };
+        AnytimeDisplay.prototype.daysFilterChange = function (val) {
+            var days = (val === "-") ? null : parseInt(val);
+            this.render(this.connections, days);
+        };
+        AnytimeDisplay.prototype.genCity = function (city) {
+            var $city = $("<div style=\"border: 1px solid blue; width: 250px; display: inline-block;\"><div>To: " + city.name + "</div><div>FromPrice: " + city.fromPrice + "</div></div>");
+            city.conns.forEach(function (conn) {
+                var $conn = $("<div>" + conn.fromAirport + "-->" + conn.toAirport + " - From: " + conn.fromPrice + "</div>");
+                $city.append($conn);
+            });
+            return $city;
+        };
+        return AnytimeDisplay;
+    }());
+    Planning.AnytimeDisplay = AnytimeDisplay;
     var WeekendByWeekDisplay = (function () {
         function WeekendByWeekDisplay($cont) {
             this.aggregator = new WeekendByWeekAggregator();
@@ -291,8 +383,12 @@ var Planning;
             this.queue = [];
             this.doRequery = true;
         }
-        ResultsManager.prototype.initalCall = function () {
-            this.getQueries([]);
+        ResultsManager.prototype.initalCall = function (timeType) {
+            this.timeType = timeType;
+            this.stopQuerying();
+            this.queue = [];
+            this.connections = [];
+            this.getQueries([["tt", timeType]]);
         };
         ResultsManager.prototype.getQueries = function (params) {
             var _this = this;
@@ -316,7 +412,7 @@ var Planning;
                     _this.queue = _.reject(_this.queue, function (qi) { return qi.from === result.From && qi.to === result.To; });
                     console.log("queue length: " + _this.queue.length);
                     _this.drawQueue();
-                    _this.connections = _this.connections.concat(result.Connections);
+                    _this.connections = _this.connections.concat(result.Result);
                     if (_this.onConnectionsChanged) {
                         _this.onConnectionsChanged(_this.connections);
                     }
@@ -366,11 +462,12 @@ var Planning;
                 strParams.push(["q", (itm.from + "-" + itm.to + "-" + itm.type)]);
                 i++;
             });
+            strParams.push(["tt", this.timeType]);
             return strParams;
         };
         ResultsManager.prototype.selectionChanged = function (id, newState, type) {
             this.drawQueue();
-            this.getQueries([["p", (id + "-" + type)]]);
+            this.getQueries([["p", (id + "-" + type)], ["tt", this.timeType]]);
         };
         return ResultsManager;
     }());
