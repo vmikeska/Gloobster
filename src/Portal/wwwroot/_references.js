@@ -28,6 +28,7 @@
 /// <reference path="js/planning/citiesmanager.js" />
 /// <reference path="js/planning/countriesmanager.js" />
 /// <reference path="js/planning/customform.js" />
+/// <reference path="js/planning/displayandagg.js" />
 /// <reference path="js/planning/nameslist.js" />
 /// <reference path="js/planning/planningmap.js" />
 /// <reference path="js/planning/resultsmanager.js" />

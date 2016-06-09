@@ -73,7 +73,7 @@ var Views;
             var request = new Common.RequestSender(endpoint, null, true);
             request.params = params;
             request.onSuccess = callback;
-            request.onError = function (response) { alert("error"); };
+            request.onError = function (response) { alert("error: " + endpointName); };
             request.sendGet();
         };
         ViewBase.prototype.apiPost = function (endpointName, data, callback) {

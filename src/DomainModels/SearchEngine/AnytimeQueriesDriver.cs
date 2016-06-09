@@ -33,7 +33,7 @@ namespace Gloobster.DomainModels.SearchEngine
 
         public List<FlightRequestDO> GetRequests(string from, string to, PlaceType toPlaceType)
         {
-            int weeksCnt = 1;
+            int weeksCnt = 3;
 
             var queries = new List<FlightRequestDO>();
 

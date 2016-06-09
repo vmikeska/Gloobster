@@ -82,13 +82,13 @@ module Views {
 
 		public apiGet(endpointName: string, params: string[][], callback: Function) {
 
-			var endpoint = "/api/" + endpointName;
-			console.log("getting: " + endpoint);
+			var endpoint = `/api/${endpointName}`;
+			console.log(`getting: ${endpoint}`);
 
 			var request = new Common.RequestSender(endpoint, null, true);
 			request.params = params;
 			request.onSuccess = callback;
-			request.onError = response => { alert("error") };
+			request.onError = response => { alert(`error: ${endpointName}`) };
 			request.sendGet();
 		}
 

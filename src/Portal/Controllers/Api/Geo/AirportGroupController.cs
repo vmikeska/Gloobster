@@ -42,22 +42,40 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 			{
 				if (req.planningType.Value == PlanningType.Anytime)
 				{
-					var anytime = DB.C<PlanningAnytimeEntity>().FirstOrDefault(p => p.User_id == UserIdObj);
-					cities.ForEach(c => c.selected = anytime.Cities.Contains(c.gid));
+					var anytime = DB.FOD<PlanningAnytimeEntity>(p => p.User_id == UserIdObj);
+
+				    if (anytime == null)
+				    {
+                        return new ObjectResult(null);
+                    }
+
+                    cities.ForEach(c => c.selected = anytime.Cities.Contains(c.gid));
 				}
 
 				if (req.planningType.Value == PlanningType.Weekend)
 				{
-					var weekend = DB.C<PlanningWeekendEntity>().FirstOrDefault(p => p.User_id == UserIdObj);
-					cities.ForEach(c => c.selected = weekend.Cities.Contains(c.gid));
+					var weekend = DB.FOD<PlanningWeekendEntity>(p => p.User_id == UserIdObj);
+
+                    if (weekend == null)
+                    {
+                        return new ObjectResult(null);
+                    }
+
+                    cities.ForEach(c => c.selected = weekend.Cities.Contains(c.gid));
 				}
 
 				if (req.planningType.Value == PlanningType.Custom)
 				{
 					var customIdObj = new ObjectId(req.customId);
 
-					var custom = DB.C<PlanningCustomEntity>().FirstOrDefault(p => p.User_id == UserIdObj);
-					var selectedSearch = custom.Searches.FirstOrDefault(c => c.id == customIdObj);
+					var custom = DB.FOD<PlanningCustomEntity>(p => p.User_id == UserIdObj);
+
+                    if (custom == null)
+                    {
+                        return new ObjectResult(null);
+                    }
+
+                    var selectedSearch = custom.Searches.FirstOrDefault(c => c.id == customIdObj);
 
 					if (selectedSearch == null)
 					{

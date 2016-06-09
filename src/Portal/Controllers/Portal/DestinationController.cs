@@ -12,10 +12,12 @@ namespace Gloobster.Portal.Controllers.Portal
 {
 	public class DestinationController : PortalBaseController
 	{
-		public DestinationController(ILogger log, IDbOperations db, IComponentContext cc, ILanguages langs) : base(log, db, cc, langs)
+        public IPlanningDomain PlanningDom { get; set; }
+
+        public DestinationController(IPlanningDomain planning, ILogger log, IDbOperations db, IComponentContext cc, ILanguages langs) : base(log, db, cc, langs)
 		{
-			
-		}
+            PlanningDom = planning;
+        }
 
 	    public IActionResult Chat()
 	    {
@@ -25,8 +27,11 @@ namespace Gloobster.Portal.Controllers.Portal
         }
 
 		public IActionResult Planning()
-		{			
-			var viewModel = CreateViewModelInstance<ViewModelPlanning>();
+		{
+            //temp remove then
+            PlanningDom.CreateDBStructure(UserId);
+
+            var viewModel = CreateViewModelInstance<ViewModelPlanning>();
 			viewModel.InitCurrentLocation = FormatCityStr(User.CurrentLocation);
             viewModel.CurrentLocation = User.CurrentLocation;
 
