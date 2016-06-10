@@ -13,7 +13,7 @@ module Maps {
 				continuousWorld: false,
 				// This option disables loading tiles outside of the world bounds.
 				noWrap: true
-		 },
+			},
 			maxBounds: null,
 			maxZoom: 19,
 			minZoom: 2
@@ -66,6 +66,6 @@ module Maps {
 			this.mapObj.remove();
 		}
 
-		onCenterChanged: Function;
+		public onCenterChanged: Function;
 	}
 }

@@ -10,8 +10,9 @@
 
     @if (GloobsterConfig.IsLocal)
     {
+        <li><a class="TravelB" asp-controller="TravelB" asp-action="Home">Trav bud</a></li>
         <li><a class="Search" asp-controller="Destination" asp-action="Planning">Home2</a></li>
-        <li><a class="Search" asp-controller="Destination" asp-action="Chat">SP Chat</a></li>
+        @*<li><a class="Search" asp-controller="Destination" asp-action="Chat">SP Chat</a></li>*@
     }
 
     @if (!Model.IsUserLogged && !(Model is ViewModelHome))

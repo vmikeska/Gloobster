@@ -65,6 +65,7 @@
 /// <reference path="js/views/settingsview.js" />
 /// <reference path="js/views/sharedialogpinsview.js" />
 /// <reference path="js/views/sharetripview.js" />
+/// <reference path="js/views/travelbview.js" />
 /// <reference path="js/views/tripdetailview.js" />
 /// <reference path="js/views/triplistview.js" />
 /// <reference path="js/views/tripmenu.js" />

@@ -1,0 +1,121 @@
+﻿
+
+<script id="hereAndNowTabCont-template" type="text/x-handlebars-template">
+    
+    <div class="masterTab">
+        <div class="tabBlock">
+            <div>
+                <button>People</button>
+                <button>meeting points</button>                
+            </div>
+            <div class="listCont"> this is the cont</div>
+        </div>
+        <div class="tabBlock">
+            <div id="map"></div>
+        </div>
+    </div>
+
+</script>
+
+
+    <script id="checkinWindow-template" type="text/x-handlebars-template">
+        <div class="checkinCont">
+
+            <span>Checkin window</span>
+            <div>
+                <span>Want do</span>
+                <input id="wantDo0" type="radio" name="wantDo" value="0"><label for="wantDo0">WalkingTour</label>
+                <input id="wantDo1" type="radio" name="wantDo" value="1"><label for="wantDo1">Bar or Pub</label>
+                <input id="wantDo2" type="radio" name="wantDo" value="2"><label for="wantDo2">Date</label>
+
+                <input id="wantDoOther" type="radio" name="wantDo" value="3"><label for="wantDoOther">Other</label>
+
+                <input type="text" />
+            </div>
+
+            <div>
+                <span>Want meet</span>
+                <input id="wantMeetMan" type="radio" name="wantMeet" value="0"><label for="wantMeetMan">Man only</label>
+                <input id="wantMeetWoman" type="radio" name="wantMeet" value="1"><label for="wantMeetWoman">Woman only</label>
+                <input id="wantMeetAnybody" type="radio" name="wantMeet" value="2"><label for="wantMeetAnybody">Doesn't matter</label>
+                <br />
+                <input id="multiPeopleAllowed" type="checkbox" />
+                <label for="multiPeopleAllowed">Multiple people allowed</label>
+            </div>
+
+            <div>
+                <span>AgeRange</span>
+                <div id="fromAge" class="dropdown">
+                    <span class="selected">18</span>
+                    <ul>
+                        <li data-value="18">18</li>
+                        <li data-value="35">35</li>
+                    </ul>
+                    <input type="hidden" value="18">
+                </div>
+
+                <div id="toAge" class="dropdown">
+                    <span class="selected">35</span>
+                    <ul>
+                        <li data-value="18">18</li>
+                        <li data-value="35">35</li>
+                    </ul>
+                    <input type="hidden" value="35">
+                </div>
+
+            </div>
+
+            <div>
+                <button id="nowTabBtn">Checkin now</button>
+                <button id="futureTabBtn">Checkin future</button>
+
+                <div id="nowTab">
+
+                    <span>Place</span>
+                    <br />
+                    <div id="waitingPlace" class="dropdown">
+                        <input class="inputed" type="text" placeholder="Search for place name">
+                        <img class="loader" src="/images/loader-gray.gif" style="display: none" />
+                        <ul></ul>
+                    </div>
+
+                    <br />
+                    <br />
+
+                    <span>Waiting time</span>
+                    <br />
+                    <input id="minsWaiting" type="text" value="60" />
+
+
+                </div>
+
+                <div id="futureTab" style="display: none">
+
+                    <span>Place</span>
+                    <br />
+                    <div id="waitingCity" class="dropdown">
+                        <input class="inputed" type="text" placeholder="Search for a city name">
+                        <img class="loader" src="/images/loader-gray.gif" style="display: none" />
+                        <ul></ul>
+                    </div>
+
+                    <br />
+                    <br />
+
+                    <span>Visiting days</span>
+                    <br />
+                    <input id="fromDate" type="text" value="1.8.2016" />
+                    --
+                    <input id="toDate" type="text" value="5.8.2016" />
+
+                </div>
+
+            </div>
+
+            <div>
+                <button id="submitCheckin">Check in</button>
+            </div>
+        </div>
+
+    
+</script>

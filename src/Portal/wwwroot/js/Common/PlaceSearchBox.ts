@@ -4,17 +4,29 @@ module Common {
 		public config: PlaceSearchConfig;
 		public onPlaceSelected: Function;
 
+		public sourceId: any;
+		public sourceType: any;
+		public lastText: string;
+		public coord: any;
+				
 		private delayedCallback: DelayedCallback;
 		private $root: any;
 		private $input: any;
-		public lastText: string;
+		
 
 		private template: any;
 		private coordinates: any;
 
 		constructor(config: PlaceSearchConfig) {
-			this.config = config;
-			this.$root = $("#" + config.elementId);
+				this.config = config;
+
+				if (this.config.selOjb) {
+						this.$root = this.config.selOjb;
+				} else {
+						this.$root = $(`#${config.elementId}`);	
+				}
+				
+
 			this.$input = this.$root.find("input");
 
 			var source = $("#placeItem-template").html();
@@ -93,17 +105,20 @@ module Common {
 				this.selectPlace(clickedPlace, places);
 			});
 		}
-
+			
 		private selectPlace(clickedPlace, places) {
-			var sourceId = $(clickedPlace.currentTarget).data("value");
+			this.sourceId = $(clickedPlace.currentTarget).data("value");
 			var sourceTypeStr = $(clickedPlace.currentTarget).data("type");
-			var sourceType = parseInt(sourceTypeStr);
-			var clickedPlaceObj = _.find(places, place => (place.SourceId === sourceId.toString() && place.SourceType === sourceType));
+			this.sourceType = parseInt(sourceTypeStr);
+			var clickedPlaceObj = _.find(places, place => (place.SourceId === this.sourceId.toString() && place.SourceType === this.sourceType));
+
+			this.coord = clickedPlaceObj.Coordinates;
 
 			var newPlaceRequest = {
-				"SourceId": sourceId,
-				"SourceType": sourceType
+				"SourceId": this.sourceId,
+				"SourceType": this.sourceType					
 			};
+
 
 			this.$root.find("ul").hide();
 
@@ -117,7 +132,9 @@ module Common {
 				this.setText(selectedCaption);
 			}
 
-			this.onPlaceSelected(newPlaceRequest, clickedPlaceObj);
+			if (this.onPlaceSelected) {
+				this.onPlaceSelected(newPlaceRequest, clickedPlaceObj);
+			}
 		}
 
 		private getCaption(place) {
@@ -171,7 +188,9 @@ module Common {
 	}
 
 	export class PlaceSearchConfig {
-		elementId: string;
+			elementId: string;
+			selOjb: any;
+
 		providers: string;
 		minCharsToSearch: number;
 		clearAfterSearch: boolean;

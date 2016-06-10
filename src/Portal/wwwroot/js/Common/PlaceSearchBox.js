@@ -4,7 +4,12 @@ var Common;
         function PlaceSearchBox(config) {
             var _this = this;
             this.config = config;
-            this.$root = $("#" + config.elementId);
+            if (this.config.selOjb) {
+                this.$root = this.config.selOjb;
+            }
+            else {
+                this.$root = $("#" + config.elementId);
+            }
             this.$input = this.$root.find("input");
             var source = $("#placeItem-template").html();
             this.template = Handlebars.compile(source);
@@ -70,13 +75,15 @@ var Common;
             });
         };
         PlaceSearchBox.prototype.selectPlace = function (clickedPlace, places) {
-            var sourceId = $(clickedPlace.currentTarget).data("value");
+            var _this = this;
+            this.sourceId = $(clickedPlace.currentTarget).data("value");
             var sourceTypeStr = $(clickedPlace.currentTarget).data("type");
-            var sourceType = parseInt(sourceTypeStr);
-            var clickedPlaceObj = _.find(places, function (place) { return (place.SourceId === sourceId.toString() && place.SourceType === sourceType); });
+            this.sourceType = parseInt(sourceTypeStr);
+            var clickedPlaceObj = _.find(places, function (place) { return (place.SourceId === _this.sourceId.toString() && place.SourceType === _this.sourceType); });
+            this.coord = clickedPlaceObj.Coordinates;
             var newPlaceRequest = {
-                "SourceId": sourceId,
-                "SourceType": sourceType
+                "SourceId": this.sourceId,
+                "SourceType": this.sourceType
             };
             this.$root.find("ul").hide();
             if (this.config.clearAfterSearch) {
@@ -89,7 +96,9 @@ var Common;
                 }
                 this.setText(selectedCaption);
             }
-            this.onPlaceSelected(newPlaceRequest, clickedPlaceObj);
+            if (this.onPlaceSelected) {
+                this.onPlaceSelected(newPlaceRequest, clickedPlaceObj);
+            }
         };
         PlaceSearchBox.prototype.getCaption = function (place) {
             var name = "";

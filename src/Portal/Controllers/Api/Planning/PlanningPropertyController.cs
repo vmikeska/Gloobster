@@ -165,7 +165,7 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 
 			if (planningType == PlanningType.Anytime)
 			{
-				var anytime = DB.C<PlanningAnytimeEntity>().FirstOrDefault(p => p.User_id == UserIdObj);
+				var anytime = DB.FOD<PlanningAnytimeEntity>(p => p.User_id == UserIdObj);
 				if (anytime == null)
 				{
 					return null;
@@ -176,7 +176,7 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 
 			if (planningType == PlanningType.Weekend)
 			{
-				var weekend = DB.C<PlanningWeekendEntity>().FirstOrDefault(p => p.User_id == UserIdObj);
+				var weekend = DB.FOD<PlanningWeekendEntity>(p => p.User_id == UserIdObj);
 				if (weekend == null)
 				{
 					return null;
@@ -187,7 +187,7 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 
 			if (planningType == PlanningType.Custom)
 			{
-				var custom = DB.C<PlanningCustomEntity>().FirstOrDefault(p => p.User_id == UserIdObj);
+				var custom = DB.FOD<PlanningCustomEntity>(p => p.User_id == UserIdObj);
 				if (custom == null)
 				{
 					return null;
