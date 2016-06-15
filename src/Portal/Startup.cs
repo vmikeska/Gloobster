@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Autofac;
 using Gloobster.Common;
 using Serilog;
@@ -16,6 +17,7 @@ using Gloobster.DomainModels.Langs;
 using Gloobster.Entities;
 using MongoDB.Bson;
 using Microsoft.AspNet.Http.Extensions;
+using System.Linq;
 
 namespace Gloobster.Portal
 {    
@@ -125,7 +127,21 @@ namespace Gloobster.Portal
                 await db.CreateCollection<VisitedCityAggregatedEntity>();
                 await db.CreateCollection<VisitedPlaceAggregatedEntity>();
 
-	            
+
+	            var emptyInterUsers = db.List<UserEntity>(u => u.Interests == null);
+	            if (emptyInterUsers.Any())
+	            {
+	                foreach (var u in emptyInterUsers)
+	                {
+	                    if (u.Interests == null)
+	                    {
+	                        var filter = db.F<UserEntity>().Eq(f => f.id, u.id);
+	                        var update = db.U<UserEntity>().Set(f => f.Interests, new List<int>());
+	                        var res = await db.UpdateAsync(filter, update);
+	                    }
+	                }	                
+	            }
+
 
 
                 AddDebugLog("InitDB:Leave");

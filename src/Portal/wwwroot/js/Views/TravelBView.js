@@ -12,12 +12,14 @@ var Views;
             this.regEvents();
             this.hereAndNowTemplate = this.registerTemplate("hereAndNowTabCont-template");
             this.switchTab(0);
+            var status = new Status();
+            status.refresh();
         }
         TravelBView.prototype.regEvents = function () {
             $("#checkin").click(function (e) {
                 e.preventDefault();
                 var win = new CheckinWin();
-                win.showCheckinWin();
+                win.showCheckinWin(false);
             });
         };
         TravelBView.prototype.switchTab = function (tab) {
@@ -25,22 +27,123 @@ var Views;
             this.travelMap = new TravelBMap();
             if (tab === 0) {
                 var users = null;
-                var $html = this.hereAndNowTemplate();
+                var $html = $(this.hereAndNowTemplate());
                 $tabCont.html($html);
                 this.travelMap.onMapCreated = function (mapObj) {
                     users = new TravelBUsers(mapObj);
+                    users.onCheckinsChanged = function (checkins) {
+                        var tabClass = new HereAndNowTab($html);
+                        if (tabClass.currentTab === "checkins") {
+                            tabClass.genPeopleList(checkins);
+                        }
+                    };
                 };
-                this.travelMap.create("map");
                 this.travelMap.onCenterChanged = function (c) {
                     if (users) {
                         users.getCheckins(c);
                     }
                 };
+                this.travelMap.create("map");
             }
+        };
+        TravelBView.getActivityStr = function (val) {
+            if (val === 0) {
+                return "WalkingTour";
+            }
+            if (val === 1) {
+                return "Bar or Pub";
+            }
+            if (val === 2) {
+                return "Date";
+            }
+            return "Other";
+        };
+        TravelBView.getGenderStr = function (val) {
+            if (val === 0) {
+                return "Man";
+            }
+            if (val === 1) {
+                return "Woman";
+            }
+            return "All";
         };
         return TravelBView;
     }(Views.ViewBase));
     Views.TravelBView = TravelBView;
+    var Status = (function () {
+        function Status() {
+            this.template = Views.ViewBase.currentView.registerTemplate("status-template");
+        }
+        Status.prototype.refresh = function () {
+            var _this = this;
+            var $cont = $("#statusCont");
+            Views.ViewBase.currentView.apiGet("TravelBCheckin", [["me", "true"]], function (r) {
+                if (!r) {
+                    $cont.html("No status");
+                }
+                var context = {
+                    placeName: r.waitingAtText,
+                    wantMeetName: TravelBView.getGenderStr(r.wantMeet),
+                    wantDoName: TravelBView.getActivityStr(r.wantDo)
+                };
+                var $html = $(_this.template(context));
+                $html.click(function (e) {
+                    e.preventDefault();
+                    _this.editClick();
+                });
+                $cont.html($html);
+            });
+        };
+        Status.prototype.editClick = function () {
+            var win = new CheckinWin();
+            win.showCheckinWin(false);
+        };
+        return Status;
+    }());
+    Views.Status = Status;
+    var HereAndNowTab = (function () {
+        function HereAndNowTab($html) {
+            var _this = this;
+            this.currentTab = "checkins";
+            this.userTemplate = Views.ViewBase.currentView.registerTemplate("checkinUserItem-template");
+            var btnPeople = $html.find("#tabPeopleBtn");
+            var btnPoints = $html.find("#tabPointsBtn");
+            btnPeople.click(function (e) {
+                e.preventDefault();
+                _this.tabClicked("checkins");
+            });
+            btnPoints.click(function (e) {
+                e.preventDefault();
+                _this.tabClicked("points");
+            });
+            this.$listCont = $html.find(".listCont");
+        }
+        HereAndNowTab.prototype.tabClicked = function (type) {
+            this.currentTab = type;
+            if (type === "checkins") {
+            }
+            if (type === "points") {
+            }
+        };
+        HereAndNowTab.prototype.genPeopleList = function (checkins) {
+            var _this = this;
+            this.$listCont.html("");
+            var d = new Date();
+            var curYear = d.getFullYear();
+            checkins.forEach(function (p) {
+                var context = {
+                    name: p.displayName,
+                    age: curYear - p.birthYear,
+                    waitingFor: TravelBView.getGenderStr(p.wantMeet),
+                    wants: TravelBView.getActivityStr(p.wantDo)
+                };
+                var $u = $(_this.userTemplate(context));
+                _this.$listCont.append($u);
+            });
+        };
+        return HereAndNowTab;
+    }());
+    Views.HereAndNowTab = HereAndNowTab;
     var TravelBUsers = (function () {
         function TravelBUsers(mapObj) {
             this.markers = [];
@@ -56,7 +159,11 @@ var Views;
                 ["lngEast", bounds._northEast.lng]
             ];
             Views.ViewBase.currentView.apiGet("TravelBCheckin", prms, function (r) {
+                if (_this.onCheckinsChanged) {
+                    _this.onCheckinsChanged(r);
+                }
                 _this.genCheckins(r);
+                _this.checkins = r;
             });
         };
         TravelBUsers.prototype.clearMarkers = function () {
@@ -70,7 +177,7 @@ var Views;
             var _this = this;
             this.clearMarkers();
             users.forEach(function (u) {
-                var coord = u.WaitingCoord;
+                var coord = u.waitingCoord;
                 var marker = L.marker([coord.Lat, coord.Lng], { icon: _this.getVisitedPin() }).addTo(_this.mapObj);
                 _this.markers.push(marker);
             });
@@ -127,29 +234,36 @@ var Views;
             this.registerTemplates();
             this.ddReg = new Common.DropDown();
         }
-        CheckinWin.prototype.showCheckinWin = function () {
+        CheckinWin.prototype.showCheckinWin = function (isNew) {
             var _this = this;
+            this.$html = $(this.checkinWindowDialog());
+            $("body").append(this.$html);
+            this.$html.fadeIn();
             var $cont = $("#checkinWinCont");
-            var $win = $(this.checkinWindowT());
-            this.ddReg.registerDropDown($win.find("#fromAge"));
-            this.ddReg.registerDropDown($win.find("#toAge"));
-            $win.find("#nowTabBtn").click(function (e) {
+            this.ddReg.registerDropDown(this.$html.find("#fromAge"));
+            this.ddReg.registerDropDown(this.$html.find("#toAge"));
+            this.$html.find("#nowTabBtn").click(function (e) {
                 e.preventDefault();
                 _this.switchCheckinTabs(_this.nowTab);
             });
-            $win.find("#futureTabBtn").click(function (e) {
+            this.$html.find("#futureTabBtn").click(function (e) {
                 e.preventDefault();
                 _this.switchCheckinTabs(_this.futureTab);
             });
-            this.wpCombo = this.initPlaceDD("1,0,4", $win.find("#waitingPlace"));
-            this.wcCombo = this.initPlaceDD("2", $win.find("#waitingCity"));
-            $win.find("#submitCheckin").click(function (e) {
+            this.wpCombo = this.initPlaceDD("1,0,4", this.$html.find("#waitingPlace"));
+            this.wcCombo = this.initPlaceDD("2", this.$html.find("#waitingCity"));
+            this.$html.find("#submitCheckin").click(function (e) {
                 e.preventDefault();
                 _this.callServer();
             });
-            $cont.html($win);
+            this.$html.find(".cancel").click(function (e) {
+                e.preventDefault();
+                _this.$html.fadeOut();
+            });
+            $cont.html(this.$html);
         };
         CheckinWin.prototype.callServer = function () {
+            var _this = this;
             var checkinType = (this.activeTab === this.nowTab) ? 0 : 1;
             var combo = (this.activeTab === this.nowTab) ? this.wpCombo : this.wcCombo;
             var data = {
@@ -168,10 +282,13 @@ var Views;
                 waitingCoord: combo.coord
             };
             Views.ViewBase.currentView.apiPost("TravelBCheckin", data, function (r) {
+                var status = new Status();
+                status.refresh();
+                _this.$html.fadeOut();
             });
         };
         CheckinWin.prototype.registerTemplates = function () {
-            this.checkinWindowT = Views.ViewBase.currentView.registerTemplate("checkinWindow-template");
+            this.checkinWindowDialog = Views.ViewBase.currentView.registerTemplate("checkinDialog-template");
         };
         CheckinWin.prototype.initPlaceDD = function (providers, selObj) {
             var c = new Common.PlaceSearchConfig();

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Mvc;
+﻿using System.Collections.Generic;
+using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using System.Linq;
 using System.Threading.Tasks;
@@ -54,12 +55,25 @@ namespace Gloobster.Portal.Controllers.Portal
             vm.DefaultLangModuleName = "pageUserSettings";
             vm.LoadClientTexts();
             vm.AvatarLink = "/PortalUser/ProfilePicture";
-			vm.DisplayName = User.DisplayName;
+
+            vm.DisplayName = User.DisplayName;
+            vm.FirstName = User.FirstName;
+            vm.LastName = User.LastName;
+
+            vm.BirthYear = User.BirthYear;
+
 			vm.Gender = GetGenderStr(User.Gender, vm);
+            vm.FamilyStatus = GetStatusStr(User.FamilyStatus, vm);
+
             vm.CurrentLocation = FormatCityStr(User.CurrentLocation);
 			vm.HomeLocation = FormatCityStr(User.HomeLocation);
 
-			return View(vm);
+            vm.Languages = User.Languages;
+            vm.Interests = User.Interests;
+
+            vm.ShortDescription = User.ShortDescription;
+            
+            return View(vm);
 		}
 
         [AuthorizeWeb]
@@ -167,6 +181,31 @@ namespace Gloobster.Portal.Controllers.Portal
 
 			return "N/A";
 		}
-	
-	}
+
+        private string GetStatusStr(FamilyStatus status, ViewModelBase vm)
+        {
+            if (status == FamilyStatus.Single)
+            {
+                return "Single";
+            }
+
+            if (status == FamilyStatus.InRelationship)
+            {
+                return "InRelationship";
+            }
+            
+            if (status == FamilyStatus.Engaged)
+            {
+                return "Engaged";
+            }
+
+            if (status == FamilyStatus.Married)
+            {
+                return "Married";
+            }
+
+            return "N/A";
+        }
+
+    }
 }

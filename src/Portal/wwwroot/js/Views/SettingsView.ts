@@ -1,18 +1,51 @@
 ﻿module Views {
 	export class SettingsView extends ViewBase {
 
+			private langsTagger;
+			private interestsTagger;
+
 		constructor() {
 			super();
 			this.registerAvatarFileUpload();
 			this.registerLocationCombo("homeCity", "HomeLocation");
 			this.registerLocationCombo("currentCity", "CurrentLocation");
-			this.registerGenderCombo();
 
-			var displayNameCall = new Common.DelayedCallback("displayName");
-			displayNameCall.callback = (value) => this.displayNameCallback(value);
+			this.registerCombos();
+			this.fillYearCombo();
+
+			this.registerEdit("displayName", "DisplayName", (value) => {
+				return { name: value };
+			});
+
+			this.registerEdit("firstName", "FirstName", (value) => {
+				return { name: value };
+			});
+
+			this.registerEdit("lastName", "LastName", (value) => {
+				return { name: value };
+			});
+
+			this.registerEdit("shortDescription", "ShortDescription", (value) => {
+					return { text: value };
+			});
+
+
+			
+
 
 			this.initPairing();
+
+
 		}
+
+		private registerEdit(id, prop, valsCallback) {
+			var displayNameCall = new Common.DelayedCallback(id);
+			displayNameCall.callback = (value) => {
+				var vals = valsCallback(value);
+				this.callServer(prop, vals);
+			}
+		}
+
 
 		private btnExists(id) {
 			return $(`#${id}`).length === 1;
@@ -51,10 +84,50 @@
 			$("#MenuRegister").parent().remove();
 		}
 
-		private displayNameCallback(value: string) {
-			var data = { propertyName: "DisplayName", values: { name: value } };
-			this.apiPut("UserProperty", data, () => {
-				//alert("updated");
+			private callServer(prop, values, callback = null) {
+					var data = { propertyName: prop, values: values };
+					this.apiPut("UserProperty", data, () => {
+						callback();
+					});
+			}
+			
+		private registerCombos() {
+
+				this.registerCombo("birthYear", (val) => {
+						return { propertyName: "BirthYear", values: { year: val } };
+				});
+				
+			this.registerCombo("gender", (val) => {
+				return { propertyName: "Gender", values: { gender: val } };
+				});
+
+			this.registerCombo("familyStatus", (val) => {
+					return { propertyName: "FamilyStatus", values: { status: val } };
+			});
+				
+			this.fillYearCombo();
+
+		}
+
+		private fillYearCombo() {
+				var $ul = $("#birthYear").find("ul");;
+					var yearStart = 1940;
+					var yearEnd = yearStart + 80;
+					for (var act = yearStart; act <= yearEnd; act++) {
+							$ul.append(`<li data-value="${act}">${act}</li>`);
+					}
+			}
+
+		private registerCombo(id, dataBuild) {
+			var $root = $(`#${id}`);
+			var $val = $root.find("input");
+
+			$val.change(e => {
+				var val = $val.val();
+				var data = dataBuild(val);					
+				this.apiPut("UserProperty", data, () => {
+					//alert("updated");
+				});
 			});
 		}
 
@@ -76,30 +149,15 @@
 			}
 		}
 
-		private registerGenderCombo() {
-			var $root = $("#gender");
-			var $val = $root.find("input");
-
-			$val.change(e => {
-				var gender = $val.val();
-
-				var data = { propertyName: "Gender", values: { gender: gender } };
-				this.apiPut("UserProperty", data, () => {
-					//alert("updated");
-				});
-
-			});
-		}
+		
 
 		private registerLocationCombo(elementId: string, propertyName: string) {
 			var homeConf = this.getLocationBaseConfig();
 			homeConf.elementId = elementId;
 
 			var box = new Common.PlaceSearchBox(homeConf);
-			box.onPlaceSelected = (request) => {
-				var data = { propertyName: propertyName, values: { sourceId: request.SourceId, sourceType: request.SourceType } };
-				this.apiPut("UserProperty", data, () => {
-				});
+			box.onPlaceSelected = (request) => {					
+				this.callServer(propertyName, { sourceId: request.SourceId, sourceType: request.SourceType });				
 			};
 		}
 
@@ -110,7 +168,70 @@
 			c.clearAfterSearch = false;
 			return c;
 		}
+			
+		private initInterestsTagger(selectedItems) {
+				var itemsRange = [
+						{ text: "Traveling", value: 0, kind: "i" },
+						{ text: "Partying", value: 1, kind: "i" },
+						{ text: "Sport", value: 2, kind: "i" },
+						{ text: "Drinking", value: 3, kind: "i" },
+						{ text: "Eating", value: 4, kind: "i" }						
+				];
+
+				var config = new Planning.TaggingFieldConfig();
+				config.containerId = "intersTagging";
+				config.localValues = true;
+				config.itemsRange = itemsRange;
+
+				this.interestsTagger = new Planning.TaggingField(config);
+				this.interestsTagger.onItemClickedCustom = ($target, callback) => {
+						var val = $target.data("vl");
+						this.callServer("Inters", { value: val, action: "ADD" }, callback);
+				}
+
+				this.interestsTagger.onDeleteCustom = (val, callback) => {
+						this.callServer("Inters", { value: val, action: "DEL" }, callback);
+				}
+
+				//set init values		
+				var selItms = _.map(selectedItems, (i) => {
+						return { value: i, kind: "i" };
+				});
+				this.interestsTagger.setSelectedItems(selItms);
+		}
+
+			private initLangsTagger(selectedItems) {
+					var itemsRange = [
+							{ text: "English", value: "en", kind: "l"},
+							{ text: "German", value: "de", kind: "l" },
+							{ text: "Czech", value: "cz", kind: "l" },
+							{ text: "Spanish", value: "es", kind: "l" },
+							{ text: "Portuguese", value: "pt", kind: "l" },
+							{ text: "French", value: "fr", kind: "l" }
+					];
+					
+				var config = new Planning.TaggingFieldConfig();				
+				config.containerId = "langsTagging";
+				config.localValues = true;
+				config.itemsRange = itemsRange;
+					
+				this.langsTagger = new Planning.TaggingField(config);
+				this.langsTagger.onItemClickedCustom = ($target, callback) => {
+						var val = $target.data("vl");					
+						this.callServer("Langs", { value: val, action: "ADD" }, callback);						
+				}
+
+				this.langsTagger.onDeleteCustom = (val, callback) => {
+						this.callServer("Langs", { value: val, action: "DEL" }, callback);
+				}
+
+				//set init values		
+				var selItms = _.map(selectedItems, (i) => {
+					return { value: i, kind: "l" };
+				});
+				this.langsTagger.setSelectedItems(selItms);
+			}
 
 
-	}
+		}
 }

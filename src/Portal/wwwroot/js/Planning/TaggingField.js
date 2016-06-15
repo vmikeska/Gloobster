@@ -36,9 +36,24 @@ var Planning;
             });
         };
         TaggingField.prototype.createTag = function (text, value, kind) {
-            var html = "<a class=\"tag\" href=\"#\" data-vl=\"" + value + "\" data-kd=\"" + kind + "\">" + text + "</a>";
-            var $html = $(html);
+            var _this = this;
+            var $html = $("<span class=\"tag\" data-vl=\"" + value + "\" data-kd=\"" + kind + "\">" + text + "<a class=\"delete\" href=\"#\">d</a></span>");
+            $html.find("a").click(function (e) {
+                e.preventDefault();
+                var $target = $(e.target);
+                _this.removeTag($target, $html);
+            });
             return $html;
+        };
+        TaggingField.prototype.removeTag = function ($target, $html) {
+            var _this = this;
+            var val = $target.parent().data("vl");
+            this.onDeleteCustom(val, function () {
+                $html.remove();
+                _this.selectedItems = _.reject(_this.selectedItems, function (i) {
+                    return i.value === "val";
+                });
+            });
         };
         TaggingField.prototype.createTagger = function () {
             var _this = this;
@@ -50,8 +65,10 @@ var Planning;
                 _this.fillTagger($input, $ul);
             });
             $input.focus(function (e) {
-                _this.fillTagger($input, $ul);
-                $ul.show();
+                setTimeout(function () {
+                    _this.fillTagger($input, $ul);
+                    $ul.show();
+                }, 250);
             });
             $input.focusout(function (e) {
                 setTimeout(function () {
@@ -68,7 +85,9 @@ var Planning;
             this.getItemsRange(inputVal, function (items) {
                 items.forEach(function (item) {
                     var strMatch = (inputVal === "") || (item.text.toLowerCase().indexOf(inputVal) > -1);
-                    var alreadySelected = _.find(_this.selectedItems, function (i) { return i.kind === item.kind && i.value === item.value; });
+                    var alreadySelected = _.find(_this.selectedItems, function (i) {
+                        return (i.value === item.value) && (i.kind === item.kind);
+                    });
                     if (strMatch && !alreadySelected) {
                         var $item = _this.createTaggerItem(item.text, item.value, item.kind);
                         $ul.append($item);
@@ -90,11 +109,10 @@ var Planning;
         };
         TaggingField.prototype.createTaggerItem = function (text, value, kind) {
             var _this = this;
-            var html = "<li data-vl=\"" + value + "\" data-kd=\"" + kind + "\">" + text + "</li>";
-            var $html = $(html);
+            var $html = $("<li data-vl=\"" + value + "\" data-kd=\"" + kind + "\">" + text + "</li>");
             $html.click(function (e) {
-                var $target = $(e.target);
-                _this.onItemClicked($target);
+                e.preventDefault();
+                _this.onItemClicked($html);
             });
             return $html;
         };

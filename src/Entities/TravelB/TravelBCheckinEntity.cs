@@ -5,14 +5,17 @@ using System.Threading.Tasks;
 using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.Enums;
+using MongoDB.Bson;
 
 namespace Gloobster.Entities.TravelB
 {
     public class TravelBCheckinEntity : EntityBase
-    {        
-        public string WantDo { get; set; }
+    {
+        public ObjectId User_id { get; set; }
 
-        public string WantMeet { get; set; }
+        public int WantDo { get; set; }
+
+        public WantMeet WantMeet { get; set; }
 
         public bool MultiPeopleAllowed { get; set; }
 

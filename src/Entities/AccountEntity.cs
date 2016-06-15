@@ -80,13 +80,19 @@ namespace Gloobster.Entities
 
         public string DefaultLang { get; set; }
         public List<string> Languages { get; set; }
+        public List<int> Interests { get; set; }
 
         public Gender Gender { get; set; }
+        public int BirthYear { get; set; }
 
-        
+        public FamilyStatus FamilyStatus { get; set; }
+
+        public string ShortDescription { get; set; }
+
+
+
         public List<AirportSaveSE> HomeAirports { get; set; }
 
-        //+age, birth day ? At least Age
-        //
+        
     }
 }

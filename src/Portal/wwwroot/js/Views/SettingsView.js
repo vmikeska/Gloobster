@@ -8,16 +8,34 @@ var Views;
     var SettingsView = (function (_super) {
         __extends(SettingsView, _super);
         function SettingsView() {
-            var _this = this;
             _super.call(this);
             this.registerAvatarFileUpload();
             this.registerLocationCombo("homeCity", "HomeLocation");
             this.registerLocationCombo("currentCity", "CurrentLocation");
-            this.registerGenderCombo();
-            var displayNameCall = new Common.DelayedCallback("displayName");
-            displayNameCall.callback = function (value) { return _this.displayNameCallback(value); };
+            this.registerCombos();
+            this.fillYearCombo();
+            this.registerEdit("displayName", "DisplayName", function (value) {
+                return { name: value };
+            });
+            this.registerEdit("firstName", "FirstName", function (value) {
+                return { name: value };
+            });
+            this.registerEdit("lastName", "LastName", function (value) {
+                return { name: value };
+            });
+            this.registerEdit("shortDescription", "ShortDescription", function (value) {
+                return { text: value };
+            });
             this.initPairing();
         }
+        SettingsView.prototype.registerEdit = function (id, prop, valsCallback) {
+            var _this = this;
+            var displayNameCall = new Common.DelayedCallback(id);
+            displayNameCall.callback = function (value) {
+                var vals = valsCallback(value);
+                _this.callServer(prop, vals);
+            };
+        };
         SettingsView.prototype.btnExists = function (id) {
             return $("#" + id).length === 1;
         };
@@ -50,9 +68,43 @@ var Views;
             hint.create(this.t("SuccessfulPaired", "jsLayout"));
             $("#MenuRegister").parent().remove();
         };
-        SettingsView.prototype.displayNameCallback = function (value) {
-            var data = { propertyName: "DisplayName", values: { name: value } };
+        SettingsView.prototype.callServer = function (prop, values, callback) {
+            if (callback === void 0) { callback = null; }
+            var data = { propertyName: prop, values: values };
             this.apiPut("UserProperty", data, function () {
+                callback();
+            });
+        };
+        SettingsView.prototype.registerCombos = function () {
+            this.registerCombo("birthYear", function (val) {
+                return { propertyName: "BirthYear", values: { year: val } };
+            });
+            this.registerCombo("gender", function (val) {
+                return { propertyName: "Gender", values: { gender: val } };
+            });
+            this.registerCombo("familyStatus", function (val) {
+                return { propertyName: "FamilyStatus", values: { status: val } };
+            });
+            this.fillYearCombo();
+        };
+        SettingsView.prototype.fillYearCombo = function () {
+            var $ul = $("#birthYear").find("ul");
+            ;
+            var yearStart = 1940;
+            var yearEnd = yearStart + 80;
+            for (var act = yearStart; act <= yearEnd; act++) {
+                $ul.append("<li data-value=\"" + act + "\">" + act + "</li>");
+            }
+        };
+        SettingsView.prototype.registerCombo = function (id, dataBuild) {
+            var _this = this;
+            var $root = $("#" + id);
+            var $val = $root.find("input");
+            $val.change(function (e) {
+                var val = $val.val();
+                var data = dataBuild(val);
+                _this.apiPut("UserProperty", data, function () {
+                });
             });
         };
         SettingsView.prototype.registerAvatarFileUpload = function () {
@@ -70,26 +122,13 @@ var Views;
                 $("#avatar").attr("src", "/PortalUser/ProfilePicture?d=" + d.getTime());
             };
         };
-        SettingsView.prototype.registerGenderCombo = function () {
-            var _this = this;
-            var $root = $("#gender");
-            var $val = $root.find("input");
-            $val.change(function (e) {
-                var gender = $val.val();
-                var data = { propertyName: "Gender", values: { gender: gender } };
-                _this.apiPut("UserProperty", data, function () {
-                });
-            });
-        };
         SettingsView.prototype.registerLocationCombo = function (elementId, propertyName) {
             var _this = this;
             var homeConf = this.getLocationBaseConfig();
             homeConf.elementId = elementId;
             var box = new Common.PlaceSearchBox(homeConf);
             box.onPlaceSelected = function (request) {
-                var data = { propertyName: propertyName, values: { sourceId: request.SourceId, sourceType: request.SourceType } };
-                _this.apiPut("UserProperty", data, function () {
-                });
+                _this.callServer(propertyName, { sourceId: request.SourceId, sourceType: request.SourceType });
             };
         };
         SettingsView.prototype.getLocationBaseConfig = function () {
@@ -98,6 +137,59 @@ var Views;
             c.minCharsToSearch = 2;
             c.clearAfterSearch = false;
             return c;
+        };
+        SettingsView.prototype.initInterestsTagger = function (selectedItems) {
+            var _this = this;
+            var itemsRange = [
+                { text: "Traveling", value: 0, kind: "i" },
+                { text: "Partying", value: 1, kind: "i" },
+                { text: "Sport", value: 2, kind: "i" },
+                { text: "Drinking", value: 3, kind: "i" },
+                { text: "Eating", value: 4, kind: "i" }
+            ];
+            var config = new Planning.TaggingFieldConfig();
+            config.containerId = "intersTagging";
+            config.localValues = true;
+            config.itemsRange = itemsRange;
+            this.interestsTagger = new Planning.TaggingField(config);
+            this.interestsTagger.onItemClickedCustom = function ($target, callback) {
+                var val = $target.data("vl");
+                _this.callServer("Inters", { value: val, action: "ADD" }, callback);
+            };
+            this.interestsTagger.onDeleteCustom = function (val, callback) {
+                _this.callServer("Inters", { value: val, action: "DEL" }, callback);
+            };
+            var selItms = _.map(selectedItems, function (i) {
+                return { value: i, kind: "i" };
+            });
+            this.interestsTagger.setSelectedItems(selItms);
+        };
+        SettingsView.prototype.initLangsTagger = function (selectedItems) {
+            var _this = this;
+            var itemsRange = [
+                { text: "English", value: "en", kind: "l" },
+                { text: "German", value: "de", kind: "l" },
+                { text: "Czech", value: "cz", kind: "l" },
+                { text: "Spanish", value: "es", kind: "l" },
+                { text: "Portuguese", value: "pt", kind: "l" },
+                { text: "French", value: "fr", kind: "l" }
+            ];
+            var config = new Planning.TaggingFieldConfig();
+            config.containerId = "langsTagging";
+            config.localValues = true;
+            config.itemsRange = itemsRange;
+            this.langsTagger = new Planning.TaggingField(config);
+            this.langsTagger.onItemClickedCustom = function ($target, callback) {
+                var val = $target.data("vl");
+                _this.callServer("Langs", { value: val, action: "ADD" }, callback);
+            };
+            this.langsTagger.onDeleteCustom = function (val, callback) {
+                _this.callServer("Langs", { value: val, action: "DEL" }, callback);
+            };
+            var selItms = _.map(selectedItems, function (i) {
+                return { value: i, kind: "l" };
+            });
+            this.langsTagger.setSelectedItems(selItms);
         };
         return SettingsView;
     }(Views.ViewBase));

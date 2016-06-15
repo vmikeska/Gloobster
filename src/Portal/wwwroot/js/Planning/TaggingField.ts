@@ -8,7 +8,10 @@ module Planning {
 	}
 
 	export class TaggingField {
-		private $tagger: any;
+			public onItemClickedCustom: Function;
+			public onDeleteCustom: Function;
+
+			private $tagger: any;
 		private $cont: any;
 
 		private taggerTemplate: any;
@@ -19,7 +22,7 @@ module Planning {
 			this.config = config;
 
 			this.taggerTemplate = Views.ViewBase.currentView.registerTemplate("tagger-template");
-			this.$cont = $("#" + this.config.containerId);
+			this.$cont = $(`#${this.config.containerId}`);
 
 			this.$tagger = this.createTagger();
 			this.$cont.prepend(this.$tagger);
@@ -50,10 +53,26 @@ module Planning {
 			});
 		}
 
-		private createTag(text, value, kind) {
-			var html = `<a class="tag" href="#" data-vl="${value}" data-kd="${kind}">${text}</a>`;
-			var $html = $(html);
+		private createTag(text, value, kind) {			
+			var $html = $(`<span class="tag" data-vl="${value}" data-kd="${kind}">${text}<a class="delete" href="#">d</a></span>`);
+			$html.find("a").click((e) => {
+					e.preventDefault();
+					var $target = $(e.target);
+					this.removeTag($target, $html);
+			});
+
 			return $html;
+		}
+
+		private removeTag($target, $html) {			
+			var val = $target.parent().data("vl");
+
+			this.onDeleteCustom(val, () => {
+					$html.remove();
+				this.selectedItems = _.reject(this.selectedItems, (i) => {
+					return i.value === "val";
+				});
+			});
 		}
 
 		private createTagger() {
@@ -69,8 +88,11 @@ module Planning {
 			});
 
 			$input.focus((e) => {
-				this.fillTagger($input, $ul);
-				$ul.show();
+					//not sure what race condition im soliving here
+				setTimeout(() => {
+					this.fillTagger($input, $ul);
+					$ul.show();
+				}, 250);
 			});
 
 			$input.focusout((e) => {
@@ -87,12 +109,14 @@ module Planning {
 			$ul.html("");
 
 			var inputVal = $input.val().toLowerCase();
-
+				
 			this.getItemsRange(inputVal, (items) => {
 				items.forEach((item) => {
 
 					var strMatch = (inputVal === "") || (item.text.toLowerCase().indexOf(inputVal) > -1);
-					var alreadySelected = _.find(this.selectedItems, (i) => { return i.kind === item.kind && i.value === item.value });
+					var alreadySelected = _.find(this.selectedItems, (i) => {
+						return (i.value === item.value) && (i.kind === item.kind);							
+					});
 
 					if (strMatch && !alreadySelected) {
 						var $item = this.createTaggerItem(item.text, item.value, item.kind);
@@ -116,18 +140,15 @@ module Planning {
 		}
 
 		private createTaggerItem(text, value, kind) {
-			var html = `<li data-vl="${value}" data-kd="${kind}">${text}</li>`;
-			var $html = $(html);
+			var $html = $(`<li data-vl="${value}" data-kd="${kind}">${text}</li>`);
 
 			$html.click((e) => {
-				var $target = $(e.target);
-				this.onItemClicked($target);
+				e.preventDefault();		
+					this.onItemClicked($html);
 			});
 
 			return $html;
 		}
-
-		public onItemClickedCustom: Function;
 
 		private onItemClicked($target) {
 			var val = $target.data("vl");

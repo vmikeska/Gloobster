@@ -49,13 +49,78 @@ namespace Gloobster.Portal.Controllers.Api.User
 				update = DB.U<UserEntity>().Set(p => p.Gender, gender);				
 			}
 
-			if (request.propertyName == "DisplayName")
+            if (request.propertyName == "FamilyStatus")
+            {
+                var status = (FamilyStatus)int.Parse(request.values["status"]);
+                update = DB.U<UserEntity>().Set(p => p.FamilyStatus, status);
+            }
+
+            if (request.propertyName == "BirthYear")
+            {
+                var year = int.Parse(request.values["year"]);
+                update = DB.U<UserEntity>().Set(p => p.BirthYear, year);
+            }
+            
+            if (request.propertyName == "DisplayName")
 			{
 				var name = request.values["name"];
 				update = DB.U<UserEntity>().Set(p => p.DisplayName, name);				
 			}
 
-			if (update != null)
+            if (request.propertyName == "FirstName")
+            {
+                var name = request.values["name"];
+                update = DB.U<UserEntity>().Set(p => p.FirstName, name);
+            }
+
+            if (request.propertyName == "LastName")
+            {
+                var name = request.values["name"];
+                update = DB.U<UserEntity>().Set(p => p.LastName, name);
+            }
+
+            if (request.propertyName == "ShortDescription")
+            {
+                var text = request.values["text"];
+                update = DB.U<UserEntity>().Set(p => p.ShortDescription, text);
+            }
+            
+            if (request.propertyName == "Langs")
+            {
+                var value = request.values["value"];
+                var action = request.values["action"];
+
+                if (action == "ADD")
+                {
+                    update = DB.U<UserEntity>().Push(p => p.Languages, value);
+                }
+
+                if (action == "DEL")
+                {
+                    update = DB.U<UserEntity>().Pull(p => p.Languages, value);
+                }                
+            }
+
+            if (request.propertyName == "Inters")
+            {
+                var value = int.Parse(request.values["value"]);
+                var action = request.values["action"];
+
+                if (action == "ADD")
+                {
+                    update = DB.U<UserEntity>().Push(p => p.Interests, value);
+                }
+
+                if (action == "DEL")
+                {
+                    update = DB.U<UserEntity>().Pull(p => p.Interests, value);
+                }
+            }
+
+
+
+
+            if (update != null)
 			{
 				var res = await DB.UpdateAsync(filter, update);
 			}			

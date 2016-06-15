@@ -205,7 +205,8 @@ namespace Gloobster.DomainModels.Services.Accounts
 
                     DefaultLang = "en",
                     HomeAirports = new List<AirportSaveSE>(),
-                    HasProfileImage = false
+                    HasProfileImage = false,
+                    Interests = new List<int>()
                 };
 
                 if (userData.CurrentLocation != null)
