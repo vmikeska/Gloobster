@@ -9,6 +9,7 @@
 
 		private tabs;
 		private hereAndNowFuncs;
+		private currentBounds;
 
 		private hereAndNowTabConst = "hereAndNowTab";
 
@@ -71,15 +72,13 @@
 				e.preventDefault();
 
 				var win = new TravelB.CheckinWin();
-				win.showCheckinWin(false);
+				win.showNowCheckin();
 			});
 
 		}
 
 		private onMapCreated(mapObj) {
-				this.mapCheckins = new TravelB.MapCheckins(mapObj);
-				
-				
+				this.mapCheckins = new TravelB.MapCheckins(mapObj);				
 		}
 			
 		private onMapCenterChanged(c, bounds) {
@@ -87,29 +86,29 @@
 			this.displayData();
 		}
 
-			private currentBounds;
+			
 
-			private displayPlacesCheckins() {
-					if (!this.currentBounds) {
-						return;
-					}
-
-					var prms = [
-							["latSouth", this.currentBounds._southWest.lat],
-							["lngWest", this.currentBounds._southWest.lng],
-							["latNorth", this.currentBounds._northEast.lat],
-							["lngEast", this.currentBounds._northEast.lng]
-					];
-
-					ViewBase.currentView.apiGet("TravelBCheckin", prms, (checkins) => {
-
-							this.hereAndNowFuncs.genPeopleList(checkins);
-							this.mapCheckins.genCheckins(checkins);
-
-					});
+		private displayPlacesCheckins() {
+			if (!this.currentBounds) {
+				return;
 			}
 
-			private displayMeetingPoints() {
+			var prms = [
+				["latSouth", this.currentBounds._southWest.lat],
+				["lngWest", this.currentBounds._southWest.lng],
+				["latNorth", this.currentBounds._northEast.lat],
+				["lngEast", this.currentBounds._northEast.lng]
+			];
+
+			ViewBase.currentView.apiGet("CheckinNow", prms, (checkins) => {
+
+				this.hereAndNowFuncs.genPeopleList(checkins);
+				this.mapCheckins.genCheckins(checkins);
+
+			});
+		}
+
+		private displayMeetingPoints() {
 				this.hereAndNowFuncs.genMeetingPoints();
 			}
 

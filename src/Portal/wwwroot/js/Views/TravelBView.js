@@ -56,7 +56,7 @@ var Views;
             $("#checkin").click(function (e) {
                 e.preventDefault();
                 var win = new TravelB.CheckinWin();
-                win.showCheckinWin(false);
+                win.showNowCheckin();
             });
         };
         TravelBView.prototype.onMapCreated = function (mapObj) {
@@ -77,7 +77,7 @@ var Views;
                 ["latNorth", this.currentBounds._northEast.lat],
                 ["lngEast", this.currentBounds._northEast.lng]
             ];
-            Views.ViewBase.currentView.apiGet("TravelBCheckin", prms, function (checkins) {
+            Views.ViewBase.currentView.apiGet("CheckinNow", prms, function (checkins) {
                 _this.hereAndNowFuncs.genPeopleList(checkins);
                 _this.mapCheckins.genCheckins(checkins);
             });

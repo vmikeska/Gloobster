@@ -10,10 +10,11 @@ module TravelB {
 		public refresh() {
 			var $cont = $("#statusCont");
 
-			Views.ViewBase.currentView.apiGet("TravelBCheckin", [["me", "true"]], (r) => {
+			Views.ViewBase.currentView.apiGet("CheckinNow", [["me", "true"]], (r) => {
 
 				if (!r) {
-					$cont.html("No status");
+						$cont.html("No status");
+					return;
 				}
 
 				var context = {
@@ -34,7 +35,7 @@ module TravelB {
 
 		private editClick() {
 			var win = new CheckinWin();
-			win.showCheckinWin(false);
+			win.showNowCheckin();
 		}
 	}
 }

@@ -16,51 +16,59 @@
 
 		private $html;
 
-		private nowTab = "nowTab";
-		private futureTab = "futureTab";
+		private nowTabConst = "nowTab";
+		private futureTabConst = "futureTab";
 
-		//private checkinWindowT;
+
 		private checkinWindowDialog;
+		private dlgNow;
+		private dlgCity;
 		private ddReg;
 
 		private wpCombo;
 		private wcCombo;
-		private activeTab = this.nowTab;
+
+		private tabs: Tabs;
 
 		constructor() {
 			this.registerTemplates();
 			this.ddReg = new Common.DropDown();
 		}
 
-		public showCheckinWin(isNew: boolean) {
+		//public createTab($html) {
+		//		this.tabs = new Tabs($html.find("#checkDlgTab"), "placeType", 40);
 
-			var btnTxt = isNew ? "Checkin" : "Update checkin";
+		//		this.tabs.onBeforeSwitch = () => {
+		//				$(`#${this.nowTabConst}`).hide();
+		//				$(`#${this.futureTabConst}`).hide();
+		//		}
 
+		//		this.tabs.addTab(this.nowTabConst, "Checkin now", () => {
+		//				$(`#${this.nowTabConst}`).show();
+		//		});
+		//		this.tabs.addTab(this.futureTabConst, "Checkin future", () => {
+		//				$(`#${this.futureTabConst}`).show();
+		//		});
+		//		this.tabs.create();
+		//}
+
+		private createWin(edit: boolean) {
+			var btnTxt = edit ? "Update checkin" : "Checkin";
 			var context = { sumbitText: btnTxt };
 
 			this.$html = $(this.checkinWindowDialog(context));
 
+			//this.createTab(this.$html);
+
 			$("body").append(this.$html);
 			this.$html.fadeIn();
-				
+
 			this.ddReg.registerDropDown(this.$html.find("#fromAge"));
 			this.ddReg.registerDropDown(this.$html.find("#toAge"));
-
-			this.$html.find("#nowTabBtn").click((e) => {
-				e.preventDefault();
-				this.switchCheckinTabs(this.nowTab);
-			});
-			this.$html.find("#futureTabBtn").click((e) => {
-				e.preventDefault();
-				this.switchCheckinTabs(this.futureTab);
-			});
-
-			this.wpCombo = this.initPlaceDD("1,0,4", this.$html.find("#waitingPlace"));
-			this.wcCombo = this.initPlaceDD("2", this.$html.find("#waitingCity"));
-
+				
 			this.$html.find("#submitCheckin").click((e) => {
 				e.preventDefault();
-				this.callServer(isNew);
+				this.callNow();
 			});
 
 			this.$html.find(".cancel").click((e) => {
@@ -71,47 +79,56 @@
 
 			this.fillAgeCombo("fromAge");
 			this.fillAgeCombo("toAge");
+		}
 
+		private createWinNow() {
+			var $d = $(this.dlgNow());
 
-			if (!isNew) {
-				Views.ViewBase.currentView.apiGet("TravelBCheckin", [["me", "true"]], (r) => {
+			this.$html.find("#dlgSpec").html($d);
+			this.wpCombo = this.initPlaceDD("1,0,4", this.$html.find("#waitingPlace"));
+		}
+
+			private createWinCity() {
+					this.wcCombo = this.initPlaceDD("2", this.$html.find("#waitingCity"));
+			}
+
+		public showNowCheckin() {
+
+			Views.ViewBase.currentView.apiGet("CheckinNow", [["me", "true"]], (r) => {
+
+				var hasStatus = r !== null;
+
+				this.createWin(hasStatus);
+				this.createWinNow();
+
+				if (hasStatus) {
 
 					this.selectRadio("wantDo", r.wantDo);
 					this.selectRadio("wantMeet", r.wantMeet);
 
 					$("#multiPeopleAllowed").prop("checked", r.multiPeopleAllowed);
 
-					var combo = null;
-
-					//todo: init tab switch
-					if (r.checkinType === 0) {
-						combo = this.wpCombo;
-							
-						var diffMins = TravelBUtils.waitingMins(r.waitingUntil);
-						this.$html.find("#minsWaiting").val(diffMins);
-					}
-					if (r.checkinType === 1) {
-						combo = this.wcCombo;
-					}
+					var diffMins = TravelBUtils.waitingMins(r.waitingUntil);
+					this.$html.find("#minsWaiting").val(diffMins);
 
 					this.setCombo(this.$html.find("#fromAge"), r.fromAge);
 					this.setCombo(this.$html.find("#toAge"), r.toAge);
 
-					combo.initValues({
+					this.wpCombo.initValues({
 						sourceId: r.waitingAtId,
 						sourceType: r.waitingAtType,
 						lastText: r.waitingAtText,
 						coord: r.waitingCoord
 					});
 
-				});
-			}
+				}
 
+			});
 		}
-			
-		private setCombo($combo, value) {			
-				$combo.find("input").val(value);
-				$combo.find("span").html(value);
+
+		private setCombo($combo, value) {
+			$combo.find("input").val(value);
+			$combo.find("span").html(value);
 		}
 
 		private selectRadio(group, val) {
@@ -127,44 +144,55 @@
 			}
 		}
 
-		private callServer(isNew) {
+		private getRequestObj() {
+				var data = {
+						wantDo: $('input[name=wantDo]:checked').val(),
+						wantMeet: $('input[name=wantMeet]:checked').val(),
+						multiPeopleAllowed: $("#multiPeopleAllowed").prop("checked"),
+						fromAge: $("#fromAge input").val(),
+						toAge: $("#toAge input").val(),
 
-			var checkinType = (this.activeTab === this.nowTab) ? 0 : 1;
+						minsWaiting: $("#minsWaiting").val(),
 
-			var combo = (this.activeTab === this.nowTab) ? this.wpCombo : this.wcCombo;
+						fromDate: $("#fromDate").val(),
+						toDate: $("#toDate").val()						
+				};
+			return data;
+		}
 
-			var data = {
-				wantDo: $('input[name=wantDo]:checked').val(),
-				wantMeet: $('input[name=wantMeet]:checked').val(),
-				multiPeopleAllowed: $("#multiPeopleAllowed").prop("checked"),
-				fromAge: $("#fromAge input").val(),
-				toAge: $("#toAge input").val(),
 
-				minsWaiting: $("#minsWaiting").val(),
 
-				fromDate: $("#fromDate").val(),
-				toDate: $("#toDate").val(),
+		private callNow() {
 
-				checkinType: checkinType,
-				waitingAtId: combo.sourceId,
-				waitingAtType: combo.sourceType,
-				waitingAtText: combo.lastText,
-				waitingCoord: combo.coord
-			};
-
-			if (isNew) {
-				Views.ViewBase.currentView.apiPost("TravelBCheckin", data, (r) => {
-					this.refreshStat();
-				});
-			} else {
-				Views.ViewBase.currentView.apiPut("TravelBCheckin", data, (r) => {
-					this.refreshStat();
-				});
-			}
+				var data = this.getRequestObj();
+				data = $.extend(data, {
+						waitingAtId: this.wpCombo.sourceId,
+						waitingAtType: this.wpCombo.sourceType,
+						waitingAtText: this.wpCombo.lastText,
+						waitingCoord: this.wpCombo.coord
+			});
+	
+			Views.ViewBase.currentView.apiPost("CheckinNow", data, (r) => {
+				this.refreshStat();
+			});
 				
 		}
 
-		private refreshStat() {
+			private callCity() {
+					var data = this.getRequestObj();
+					data = $.extend(data, {
+							waitingAtId: this.wcCombo.sourceId,
+							waitingAtType: this.wcCombo.sourceType,
+							waitingAtText: this.wcCombo.lastText,
+							waitingCoord: this.wcCombo.coord
+					});
+
+					Views.ViewBase.currentView.apiPost("CheckinCity", data, (r) => {
+							
+					});
+			}
+
+	private refreshStat() {
 			var status = new Status();
 			status.refresh();
 			this.$html.fadeOut();
@@ -172,9 +200,10 @@
 		}
 
 		private registerTemplates() {
-			this.checkinWindowDialog = Views.ViewBase.currentView.registerTemplate("checkinDialog-template");
+				this.checkinWindowDialog = Views.ViewBase.currentView.registerTemplate("checkinDialog-template");	
 
-			//this.checkinWindowT = ViewBase.currentView.registerTemplate("checkinWindow-template");				
+				this.dlgNow = Views.ViewBase.currentView.registerTemplate("dlgNow-template");	
+				this.dlgCity = Views.ViewBase.currentView.registerTemplate("dlgCity-template");					
 		}
 
 		private initPlaceDD(providers, selObj) {
@@ -187,15 +216,7 @@
 			var combo = new Common.PlaceSearchBox(c);
 			return combo;
 		}
-
-		private switchCheckinTabs(tab) {
-			$(`#${this.nowTab}`).hide();
-			$(`#${this.futureTab}`).hide();
-
-			$(`#${tab}`).show();
-
-			this.activeTab = tab;
-		}
+			
 
 	}
 }

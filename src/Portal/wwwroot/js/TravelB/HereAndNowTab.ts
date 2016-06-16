@@ -13,31 +13,30 @@ module TravelB {
 		private userTemplate;
 
 		constructor() {
-
 			this.userTemplate = Views.ViewBase.currentView.registerTemplate("checkinUserItem-template");				
 		}
 
 		public createTab() {
-				this.tabs = new Tabs($("#hereTabs"), "hereAndNow", 40);
+			this.tabs = new Tabs($("#hereTabs"), "hereAndNow", 40);
 
-				this.tabs.onBeforeSwitch = () => {
-						$("#listCont").html("");
-					this.onBeforeSwitch();
-				}
+			this.tabs.onBeforeSwitch = () => {
+				$("#listCont").html("");
+				this.onBeforeSwitch();
+			}
 
-				this.tabs.addTab(this.peopleTabConst, "People", () => {
-					this.onPlacesCheckins();
-				});
-				this.tabs.addTab(this.mpTabConst, "Meeting points", () => {
-					this.onMeetingPoints();
-				});
-				this.tabs.create();
+			this.tabs.addTab(this.peopleTabConst, "People", () => {
+				this.onPlacesCheckins();
+			});
+			this.tabs.addTab(this.mpTabConst, "Meeting points", () => {
+				this.onMeetingPoints();
+			});
+			this.tabs.create();
 		}
 
-			public genMeetingPoints(points) {
-					var $listCont = $("#listCont");
-					$listCont.html("meeting points");
-			}
+		public genMeetingPoints(points) {
+			var $listCont = $("#listCont");
+			$listCont.html("meeting points");
+		}
 
 
 		public genPeopleList(checkins) {

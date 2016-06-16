@@ -54,52 +54,10 @@
 
                 </div>
 
-                <div>
-                    <button id="nowTabBtn">Checkin now</button>
-                    <button id="futureTabBtn">Checkin future</button>
-
-                    <div id="nowTab">
-
-                        <span>Place</span>
-                        <br />
-                        <div id="waitingPlace" class="dropdown">
-                            <input class="inputed" type="text" placeholder="Search for place name">
-                            <img class="loader" src="/images/loader-gray.gif" style="display: none" />
-                            <ul></ul>
-                        </div>
-
-                        <br />
-                        <br />
-
-                        <span>Waiting time</span>
-                        <br />
-                        <input id="minsWaiting" type="text" value="60" />
-
-
-                    </div>
-
-                    <div id="futureTab" style="display: none">
-
-                        <span>Place</span>
-                        <br />
-                        <div id="waitingCity" class="dropdown">
-                            <input class="inputed" type="text" placeholder="Search for a city name">
-                            <img class="loader" src="/images/loader-gray.gif" style="display: none" />
-                            <ul></ul>
-                        </div>
-
-                        <br />
-                        <br />
-
-                        <span>Visiting days</span>
-                        <br />
-                        <input id="fromDate" type="text" value="1.8.2016" />
-                        --
-                        <input id="toDate" type="text" value="5.8.2016" />
-
-                    </div>
+                <div id="dlgSpec">
 
                 </div>
+               
 
             </div>
             <div class="tright">
@@ -111,7 +69,45 @@
     </div>
 </script>
 
-<script id="checkinUserItem-template" type="text/x-handlebars-template">
+<script id="dlgNow-template" type="text/x-handlebars-template">
+    <span>Place</span>
+    <br />
+    <div id="waitingPlace" class="dropdown">
+        <input class="inputed" type="text" placeholder="Search for place name">
+        <img class="loader" src="/images/loader-gray.gif" style="display: none" />
+        <ul></ul>
+    </div>
+
+    <br />
+    <br />
+
+    <span>Waiting time</span>
+    <br />
+    <input id="minsWaiting" type="text" value="60" />
+
+</script>
+
+<script id="dlgCity-template" type="text/x-handlebars-template">
+    <span>Place</span>
+    <br />
+    <div id="waitingCity" class="dropdown">
+        <input class="inputed" type="text" placeholder="Search for a city name">
+        <img class="loader" src="/images/loader-gray.gif" style="display: none" />
+        <ul></ul>
+    </div>
+
+    <br />
+    <br />
+
+    <span>Visiting days</span>
+    <br />
+    <input id="fromDate" type="text" value="1.8.2016" />
+    --
+    <input id="toDate" type="text" value="5.8.2016" />
+
+</script>
+
+    <script id="checkinUserItem-template" type="text/x-handlebars-template">
 
         <div class="userItem">
             <span class="thumbnail">
@@ -119,42 +115,43 @@
             </span>
             <a href="{{link}}">{{name}}</a>
             <div>
-                {{age}} years, 
-                waiting for {{waitingFor}}, 
+                {{age}} years,
+                waiting for {{waitingFor}},
                 wants {{wants}}
             </div>
         </div>
 
-    </script>
-
-<script id="hereAndNowTabCont-template" type="text/x-handlebars-template">
-
-    <div id="hereTabs" class="myTabs">
-
-    </div>
-
-    <div id="listCont">
-
-    </div>
     
 </script>
 
-<script id="userPopup-template" type="text/x-handlebars-template">
+    <script id="hereAndNowTabCont-template" type="text/x-handlebars-template">
 
-    <div>
-        <span class="thumbnail">
-            <img src="/PortalUser/ProfilePicture_s/{{id}}">
-        </span>
-        <br />
-        <a href="#">{{name}}</a>
-        <br />
-        {{age}} years
-        <br />
-        waiting for: {{waitingFor}}
-        <br />
-        wants do: {{wants}}
-        <br />
-        waiting: {{waitingMins}} minutes
-    </div>
+        <div id="hereTabs" class="myTabs">
 
-</script>
+        </div>
+
+        <div id="listCont">
+
+        </div>
+
+    </script>
+
+    <script id="userPopup-template" type="text/x-handlebars-template">
+
+        <div>
+            <span class="thumbnail">
+                <img src="/PortalUser/ProfilePicture_s/{{id}}">
+            </span>
+            <br />
+            <a href="#">{{name}}</a>
+            <br />
+            {{age}} years
+            <br />
+            waiting for: {{waitingFor}}
+            <br />
+            wants do: {{wants}}
+            <br />
+            waiting: {{waitingMins}} minutes
+        </div>
+
+    </script>

@@ -7,9 +7,10 @@ var TravelB;
         Status.prototype.refresh = function () {
             var _this = this;
             var $cont = $("#statusCont");
-            Views.ViewBase.currentView.apiGet("TravelBCheckin", [["me", "true"]], function (r) {
+            Views.ViewBase.currentView.apiGet("CheckinNow", [["me", "true"]], function (r) {
                 if (!r) {
                     $cont.html("No status");
+                    return;
                 }
                 var context = {
                     placeName: r.waitingAtText,
@@ -26,7 +27,7 @@ var TravelB;
         };
         Status.prototype.editClick = function () {
             var win = new TravelB.CheckinWin();
-            win.showCheckinWin(false);
+            win.showNowCheckin();
         };
         return Status;
     }());

@@ -1,34 +1,28 @@
 using System;
 using System.Collections.Generic;
-using System.Device.Location;
-using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
-using Gloobster.Common;
 using Gloobster.Database;
-using Gloobster.DomainInterfaces;
+using Gloobster.DomainModels.TravelB;
 using Gloobster.DomainObjects;
+using Gloobster.DomainObjects.TravelB;
+using Gloobster.Entities;
 using Gloobster.Entities.TravelB;
-using Gloobster.Enums;
+using Gloobster.Mappers;
 using Gloobster.Portal.Controllers.Base;
-using Gloobster.ReqRes;
 using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using Serilog;
-using System.Linq;
-using Gloobster.DomainModels.TravelB;
-using Gloobster.DomainObjects.TravelB;
-using Gloobster.Entities;
-using Gloobster.Mappers;
 
 namespace Gloobster.Portal.Controllers.Api.Wiki
 {
-    public class CheckinCityController : BaseApiController
+    public class CheckinNowController: BaseApiController
     {
-        public CheckinCityDomain TbDomain { get; set; }
-
-        public CheckinCityController(ILogger log, IDbOperations db) : base(log, db)
+        public CheckinNowDomain TbDomain { get; set; }
+        
+        public CheckinNowController(ILogger log, IDbOperations db) : base(log, db)
         {
-            TbDomain = new CheckinCityDomain
+            TbDomain = new CheckinNowDomain
             {
                 DB = db
             };
@@ -41,7 +35,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             if (!string.IsNullOrEmpty(req.id))
             {
                 var userIdObj = new ObjectId(req.id);
-                var checkin = DB.FOD<CheckinCityEntity>(u => u.User_id == userIdObj);
+                var checkin = DB.FOD<CheckinNowEntity>(u => u.User_id == userIdObj);
 
                 if (checkin == null)
                 {
@@ -55,7 +49,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             }
             else if (req.me)
             {
-                var checkin = DB.FOD<CheckinCityEntity>(u => u.User_id == UserIdObj);
+                var checkin = DB.FOD<CheckinNowEntity>(u => u.User_id == UserIdObj);
 
                 if (checkin == null)
                 {
@@ -71,46 +65,33 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             {
                 var responses = GetCheckinsInRect(req);
                 return new ObjectResult(responses);
-            }
+            }            
         }
-
-        [HttpPut]
-        [AuthorizeApi]
-        public async Task<IActionResult> Put([FromBody] CheckinRequest req)
-        {
-            var checkinDO = ReqCityToDO(req);
-
-            await TbDomain.UpdateCheckin(checkinDO);
-
-            return new ObjectResult(null);
-        }
-
+        
         [HttpPost]
         [AuthorizeApi]
         public async Task<IActionResult> Post([FromBody] CheckinRequest req)
         {
-            var checkinDO = ReqCityToDO(req);
-
+            var checkinDO = ReqNowToDO(req);
+            
             await TbDomain.CreateCheckin(checkinDO);
 
             return new ObjectResult(null);
         }
 
-        private CheckinCityDO ReqCityToDO(CheckinRequest req)
+        private CheckinNowDO ReqNowToDO(CheckinRequest req)
         {
-            var checkinDO = new CheckinCityDO
+            var checkinDO = new CheckinNowDO
             {
                 UserId = UserId,
                 WantDo = req.wantDo,
-                WantMeet = req.wantMeet,
-
+                WantMeet = req.wantMeet,                
                 MultiPeopleAllowed = req.multiPeopleAllowed,
-
-                FromDate = DateTime.Parse(req.fromDate, DateTimeFormatInfo.InvariantInfo),
-                ToDate = DateTime.Parse(req.toDate, DateTimeFormatInfo.InvariantInfo),
-
+                
                 FromAge = req.fromAge,
                 ToAge = req.toAge,
+
+                WaitingUntil = DateTime.UtcNow.AddMinutes(req.minsWaiting),
 
                 WaitingAtId = req.waitingAtId,
                 WaitingAtText = req.waitingAtText,
@@ -120,7 +101,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
             return checkinDO;
         }
-
+        
         private List<CheckinResponse> GetCheckinsInRect(CheckinQueryRequest req)
         {
             var rect = new RectDO
@@ -150,7 +131,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             return responses;
         }
 
-        private CheckinResponse ConvertCheckin(UserEntity u, CheckinCityDO c)
+        private CheckinResponse ConvertCheckin(UserEntity u, CheckinNowDO c)
         {
             var response = new CheckinResponse
             {
@@ -179,10 +160,9 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
                 wantDo = c.WantDo,
                 wantMeet = c.WantMeet,
-
-                fromDate = c.FromDate,
-                toDate = c.ToDate,
-            
+                
+                waitingUntil = c.WaitingUntil,
+                
                 multiPeopleAllowed = c.MultiPeopleAllowed,
 
             };
@@ -191,90 +171,5 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         }
 
 
-    }
-
-
-
-    public class CheckinResponse
-    {
-        public string userId { get; set; }
-
-        public string displayName { get; set; }
-    
-        public string firstName { get; set; }
-        public string lastName { get; set; }
-        
-        public string homeCountry { get; set; }
-        public string livesCountry { get; set; }
-
-        public List<string> languages { get; set; }        
-        public Gender gender { get; set; }
-
-        public List<int> interests { get; set; }
-        public int birthYear { get; set; }
-        public FamilyStatus familyStatus { get; set; }
-        public string shortDescription { get; set; }
-
-        //---
-        
-        public int wantDo { get; set; }
-
-        public WantMeet wantMeet { get; set; }
-
-        public bool multiPeopleAllowed { get; set; }
-
-        public int fromAge { get; set; }
-        public int toAge { get; set; }
-
-        public DateTime waitingUntil { get; set; }
-
-        public DateTime fromDate { get; set; }
-        public DateTime toDate { get; set; }
-
-        public CheckinType checkinType { get; set; }
-        public string waitingAtId { get; set; }
-        public SourceType waitingAtType { get; set; }
-        public string waitingAtText { get; set; }
-        public LatLng waitingCoord { get; set; }
-
-    }
-
-    public enum CheckinType { Now, City }
-    
-   
-
-    public class CheckinQueryRequest
-    {
-        public string id { get; set; }
-
-        public bool me { get; set; }
-
-        public double latSouth { get; set; }
-        public double lngWest { get; set; }
-        public double latNorth { get; set; }
-        public double lngEast { get; set; }        
-    }
-
-    public class CheckinRequest
-    {
-        public int wantDo { get; set; }
-
-        public WantMeet wantMeet { get; set; }
-
-        public bool multiPeopleAllowed { get; set; }
-
-        public int fromAge { get; set; }
-        public int toAge { get; set; }
-        
-        public int minsWaiting { get; set; }
-        
-        public string fromDate { get; set; }
-        public string toDate { get; set; }
-        
-        public CheckinType checkinType { get; set; }
-        public string waitingAtId { get; set; }
-        public SourceType waitingAtType { get; set; }
-        public string waitingAtText { get; set; }
-        public LatLng waitingCoord { get; set; }
     }
 }
