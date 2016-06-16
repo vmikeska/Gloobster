@@ -28,6 +28,13 @@ var Common;
                 _this.searchPlaces(placeName);
             };
         }
+        PlaceSearchBox.prototype.initValues = function (vals) {
+            this.sourceId = vals.sourceId;
+            this.sourceType = vals.sourceType;
+            this.lastText = vals.lastText;
+            this.coord = vals.coord;
+            this.$input.val(vals.lastText);
+        };
         PlaceSearchBox.prototype.loader = function (state) {
             if (state) {
                 this.$root.find(".loader").show();

@@ -34,8 +34,23 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         [AuthorizeApi]
         [HttpGet]
 	    public async Task<IActionResult> Get(CheckinQueryRequest req)
-	    {	        
-	        if (req.me)
+	    {
+            if (!string.IsNullOrEmpty(req.id))
+            {
+                var userIdObj = new ObjectId(req.id);
+                var checkin = DB.FOD<TravelBCheckinEntity>(u => u.User_id == userIdObj);
+
+                if (checkin == null)
+                {
+                    return new ObjectResult(null);
+                }
+
+                var checkinDO = checkin.ToDO();
+                var user = DB.FOD<UserEntity>(u => u.User_id == UserIdObj);
+                var response = ConvertCheckin(user, checkinDO);
+                return new ObjectResult(response);
+            }
+	        else if (req.me)
 	        {
                 var checkin = DB.FOD<TravelBCheckinEntity>(u => u.User_id == UserIdObj);
 
@@ -55,9 +70,58 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 return new ObjectResult(responses);
             }            
 	    }
-
-	    private List<TravelBCheckinResponse> GetCheckinsInRect(CheckinQueryRequest req)
+        
+	    [HttpPut]
+	    [AuthorizeApi]
+	    public async Task<IActionResult> Put([FromBody] CheckinRequest req)
 	    {
+            var checkinDO = ReqToDO(req);
+
+            await TbDomain.UpdateCheckin(checkinDO);
+
+            return new ObjectResult(null);
+        }
+
+	    [HttpPost]
+		[AuthorizeApi]
+		public async Task<IActionResult> Post([FromBody] CheckinRequest req)
+	    {
+	        var checkinDO = ReqToDO(req);
+            
+            await TbDomain.CreateCheckin(checkinDO);
+
+            return new ObjectResult(null);
+		}
+
+        private TravelBCheckinDO ReqToDO(CheckinRequest req)
+        {
+            var checkinDO = new TravelBCheckinDO
+            {
+                UserId = UserId,
+                WantDo = req.wantDo,
+                WantMeet = req.wantMeet,
+                CheckinType = req.checkinType,
+                MultiPeopleAllowed = req.multiPeopleAllowed,
+
+                FromDate = DateTime.Parse(req.fromDate, DateTimeFormatInfo.InvariantInfo),
+                ToDate = DateTime.Parse(req.toDate, DateTimeFormatInfo.InvariantInfo),
+
+                FromAge = req.fromAge,
+                ToAge = req.toAge,
+
+                WaitingUntil = DateTime.UtcNow.AddMinutes(req.minsWaiting),
+
+                WaitingAtId = req.waitingAtId,
+                WaitingAtText = req.waitingAtText,
+                WaitingAtType = req.waitingAtType,
+                WaitingCoord = req.waitingCoord
+            };
+
+            return checkinDO;
+        }
+
+        private List<TravelBCheckinResponse> GetCheckinsInRect(CheckinQueryRequest req)
+        {
             var rect = new RectDO
             {
                 LngWest = req.lngWest,
@@ -79,14 +143,14 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
                 var response = ConvertCheckin(u, c);
 
-                responses.Add(response);                
+                responses.Add(response);
             }
 
-	        return responses;
-	    }
+            return responses;
+        }
 
-	    private TravelBCheckinResponse ConvertCheckin(UserEntity u, TravelBCheckinDO c)
-	    {
+        private TravelBCheckinResponse ConvertCheckin(UserEntity u, TravelBCheckinDO c)
+        {
             var response = new TravelBCheckinResponse
             {
                 userId = c.UserId,
@@ -124,41 +188,13 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
             };
 
-	        return response;
-	    }
+            return response;
+        }
 
-        [HttpPost]
-		[AuthorizeApi]
-		public async Task<IActionResult> Post([FromBody] CheckinRequest req)
-		{
-		    var checkinDO = new TravelBCheckinDO
-		    {
-                UserId = UserId,
-		        WantDo = req.wantDo,
-		        WantMeet = req.wantMeet,
-		        CheckinType = req.checkinType,
-		        MultiPeopleAllowed = req.multiPeopleAllowed,
 
-		        FromDate = DateTime.Parse(req.fromDate, DateTimeFormatInfo.InvariantInfo),
-		        ToDate = DateTime.Parse(req.toDate, DateTimeFormatInfo.InvariantInfo),
+    }
 
-		        FromAge = req.fromAge,
-		        ToAge = req.toAge,
 
-                WaitingUntil = DateTime.UtcNow.AddMinutes(req.minsWaiting),
-		        
-		        WaitingAtId = req.waitingAtId,
-		        WaitingAtText = req.waitingAtText,
-		        WaitingAtType = req.waitingAtType,
-                WaitingCoord = req.waitingCoord
-		    };
-
-		    await TbDomain.CreateCheckin(checkinDO);
-
-            return new ObjectResult(null);
-		}
-        
-	}
 
     public class TravelBCheckinResponse
     {
@@ -337,10 +373,24 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             
             await DB.SaveAsync(entity);
         }
+
+        public async Task UpdateCheckin(TravelBCheckinDO checkin)
+        {
+            //todo: should select the actual one
+            var userIdObj = new ObjectId(checkin.UserId);
+            var curCheckin = DB.FOD<TravelBCheckinEntity>(e => e.User_id == userIdObj);
+            
+            var entity = checkin.ToEntity();
+            entity.id = curCheckin.id;
+
+            await DB.ReplaceOneAsync(entity);
+        }
     }
 
     public class CheckinQueryRequest
     {
+        public string id { get; set; }
+
         public bool me { get; set; }
 
         public double latSouth { get; set; }

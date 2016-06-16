@@ -8,24 +8,23 @@ module Common {
 		public sourceType: any;
 		public lastText: string;
 		public coord: any;
-				
+
 		private delayedCallback: DelayedCallback;
 		private $root: any;
 		private $input: any;
-		
+
 
 		private template: any;
 		private coordinates: any;
 
 		constructor(config: PlaceSearchConfig) {
-				this.config = config;
+			this.config = config;
 
-				if (this.config.selOjb) {
-						this.$root = this.config.selOjb;
-				} else {
-						this.$root = $(`#${config.elementId}`);	
-				}
-				
+			if (this.config.selOjb) {
+				this.$root = this.config.selOjb;
+			} else {
+				this.$root = $(`#${config.elementId}`);
+			}
 
 			this.$input = this.$root.find("input");
 
@@ -50,6 +49,14 @@ module Common {
 				this.searchPlaces(placeName);
 			};
 
+		}
+
+		public initValues(vals) {
+			this.sourceId = vals.sourceId;
+			this.sourceType = vals.sourceType;
+			this.lastText = vals.lastText;
+			this.coord = vals.coord;
+			this.$input.val(vals.lastText);
 		}
 
 		private loader(state: boolean) {
@@ -85,13 +92,13 @@ module Common {
 				params.push(["fbt", Views.ViewBase.fbt]);
 			}
 
-			Views.ViewBase.currentView.apiGet("place", params, places => {				
-			 this.fillPlacesSearchBoxHtml(places);
-			 this.loader(false);
+			Views.ViewBase.currentView.apiGet("place", params, places => {
+				this.fillPlacesSearchBoxHtml(places);
+				this.loader(false);
 			});
 		}
 
-		private fillPlacesSearchBoxHtml(places) {			
+		private fillPlacesSearchBoxHtml(places) {
 			this.$root.find("ul").show();
 			var htmlContent = "";
 			places.forEach(item => {
@@ -105,7 +112,7 @@ module Common {
 				this.selectPlace(clickedPlace, places);
 			});
 		}
-			
+
 		private selectPlace(clickedPlace, places) {
 			this.sourceId = $(clickedPlace.currentTarget).data("value");
 			var sourceTypeStr = $(clickedPlace.currentTarget).data("type");
@@ -116,7 +123,7 @@ module Common {
 
 			var newPlaceRequest = {
 				"SourceId": this.sourceId,
-				"SourceType": this.sourceType					
+				"SourceType": this.sourceType
 			};
 
 
@@ -165,10 +172,10 @@ module Common {
 			case SourceType.Country:
 				return "icon-country";
 			case SourceType.S4:
-			 return "icon-foursquare";
+				return "icon-foursquare";
 			case SourceType.Yelp:
-			 return "icon-yelp";
-		 }		 		
+				return "icon-yelp";
+			}
 			return "";
 		}
 
@@ -188,8 +195,8 @@ module Common {
 	}
 
 	export class PlaceSearchConfig {
-			elementId: string;
-			selOjb: any;
+		elementId: string;
+		selOjb: any;
 
 		providers: string;
 		minCharsToSearch: number;
