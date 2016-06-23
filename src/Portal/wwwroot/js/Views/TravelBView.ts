@@ -1,6 +1,7 @@
 ﻿module Views {
+		
 	export class TravelBView extends ViewBase {
-			
+
 		private travelMap: TravelB.TravelBMap;
 
 		private mapCheckins: TravelB.MapCheckins;
@@ -8,10 +9,15 @@
 		private hereAndNowTemplate;
 
 		private tabs;
-		private hereAndNowFuncs;
+		private nowFncs: TravelB.NowTab;
+		private cityFncs: TravelB.CityTab;
 		private currentBounds;
 
-		private hereAndNowTabConst = "hereAndNowTab";
+		private nowTabConst = "nowTab";
+		private cityTabConst = "cityTab";
+
+		private reacts: CheckinReacts;
+		private chat: Chat;
 
 		constructor() {
 			super();
@@ -23,74 +29,191 @@
 			this.createMainTab();
 
 			this.createMap();
-				
+
+			this.initFilter();
+			this.initFilterDates();
+
 			var status = new TravelB.Status();
-		  status.refresh();
+			status.refresh();
+
+			this.reacts = new CheckinReacts();
+			this.reacts.refreshReacts();
+
+			this.chat = new Chat();
+			this.chat.createAll();
 		}
 
 		private createMainTab() {
 			this.tabs = new TravelB.Tabs($("#mainTab"), "main", 55);
+			var filterDateCont = $("#filterDateCont");
 
 			this.tabs.onBeforeSwitch = () => {
 				$("#theCont").html("");
 			}
 
-			this.tabs.addTab(this.hereAndNowTabConst, "Here and now", () => {
-					this.createCheckinsFnc();
+			this.tabs.addTab(this.nowTabConst, "Here and now", () => {
+				this.createCheckinsFnc();
+				filterDateCont.hide();
 			});
-			this.tabs.addTab("toCityCheckTab", "Check to a city", () => {
+			this.tabs.addTab(this.cityTabConst, "Check to a city", () => {
 				this.createCityCheckinsFnc();
+				filterDateCont.show();
 			});
 			this.tabs.create();
 		}
 
-			private createCityCheckinsFnc() {
-					$("#theCont").html("city checkins");
-			}
+		private initFilterDates() {
+				var fromDate = TravelB.DateUtils.jsDateToMyDate(new Date());
+				var toDate = TravelB.DateUtils.jsDateToMyDate(TravelB.DateUtils.addDays(Date.now(), 30));
+				this.filterDateFrom = fromDate;
+				this.filterDateTo = toDate;
 
-			private createCheckinsFnc() {
-					var $html = $(this.hereAndNowTemplate());
-					$("#theCont").html($html);
+				TravelB.DateUtils.initDatePicker($("#fromDateFilter"), fromDate, (d) => {
+						this.filterDateFrom = d;
+						this.displayData();
+				});
 
-					this.hereAndNowFuncs = new TravelB.HereAndNowTab();
-					this.hereAndNowFuncs.onPlacesCheckins = () => {
-							this.displayPlacesCheckins();
-					};
-					this.hereAndNowFuncs.onMeetingPoints = () => {
-							this.displayMeetingPoints();
+				TravelB.DateUtils.initDatePicker($("#toDateFilter"), toDate, (d) => {
+						this.filterDateTo = d;
+						this.displayData();
+				});
+		}
+
+		private initFilter() {
+			var items = TravelB.TravelBUtils.wantDoDB();
+
+			var $c = $("#filterCont");
+			var $ac = $("#allCheckins");
+
+			items.forEach((i) => {
+				var $h = $(`<input id="f_${i.id}" type="checkbox" /><label for="f_${i.id}">${i.text}</label>`);
+				$c.append($h);
+			});
+
+			$(".filter").find("input").click((e) => {
+				var $t = $(e.target);
+				var id = $t.attr("id");
+
+				if (id === "allCheckins") {
+					if ($ac.prop("checked") === true) {
+						$("#filterCont").find("input").prop("checked", false);
+						this.onFilterChanged(["all"]);
+					} else {
+						this.onFilterChanged(null);
 					}
-					this.hereAndNowFuncs.onBeforeSwitch = () => {
-							if (this.mapCheckins) {
-									this.mapCheckins.clearMarkers();
-							}
+				} else if (id.startsWith("f_")) {
+					if ($t.prop("checked") === true) {
+						$ac.prop("checked", false);
 					}
-					this.hereAndNowFuncs.createTab();
+
+					var selVals = [];
+					$c.find("input").each((i, c) => {
+						var $c = $(c);
+						if ($c.prop("checked")) {
+							var id = $c.attr("id");
+							var val = id.split("_")[1];
+							selVals.push(val);
+						}
+					});
+					this.onFilterChanged(selVals);
+
+				}
+
+			});
+		}
+
+		public selectedFilter = null;
+		public filterDateFrom;
+		public filterDateTo;
+
+		private onFilterChanged(filter) {
+			this.selectedFilter = filter;
+			this.displayData();
+		}
+
+		private createCityCheckinsFnc() {
+			this.cityFncs = new TravelB.CityTab();
+
+			this.displayCityCheckins();
+		}
+
+		private createCheckinsFnc() {
+			var $html = $(this.hereAndNowTemplate());
+			$("#theCont").html($html);
+
+			this.nowFncs = new TravelB.NowTab();
+			this.nowFncs.onPlacesCheckins = () => {
+				this.displayNowCheckins();
+			};
+			this.nowFncs.onMeetingPoints = () => {
+				this.displayMeetingPoints();
 			}
+			this.nowFncs.onBeforeSwitch = () => {
+				if (this.mapCheckins) {
+					this.mapCheckins.clearMarkers();
+				}
+			}
+			this.nowFncs.createTab();
+		}
 
 		private regEvents() {
 			$("#checkin").click((e) => {
 				e.preventDefault();
 
 				var win = new TravelB.CheckinWin();
-				win.showNowCheckin();
+
+				if (this.tabs.activeTabId === this.nowTabConst) {
+					win.showNowCheckin();
+				} else {
+					win.showCityCheckin(null);
+				}
+
 			});
 
 		}
 
 		private onMapCreated(mapObj) {
-				this.mapCheckins = new TravelB.MapCheckins(mapObj);				
+			this.mapCheckins = new TravelB.MapCheckins(mapObj);
 		}
-			
+
 		private onMapCenterChanged(c, bounds) {
 			this.currentBounds = bounds;
 			this.displayData();
 		}
 
-			
 
-		private displayPlacesCheckins() {
-			if (!this.currentBounds) {
+		private displayNowCheckins() {
+			var prms = this.getBaseQuery();
+
+			if (prms === null) {
 				return;
+			}
+
+			ViewBase.currentView.apiGet("CheckinNow", prms, (checkins) => {
+				this.nowFncs.genCheckinsList(checkins);
+				this.mapCheckins.genCheckins(checkins);
+			});
+		}
+
+		private displayCityCheckins() {
+			var prms = this.getBaseQuery();
+
+			if (prms === null) {
+				return;
+			}
+
+			prms.push(["fromDate", TravelB.DateUtils.myDateToTrans(this.filterDateFrom)]);
+			prms.push(["toDate", TravelB.DateUtils.myDateToTrans(this.filterDateTo)]);
+
+			ViewBase.currentView.apiGet("CheckinCity", prms, (checkins) => {
+				this.cityFncs.genCheckinsList(checkins);
+				this.mapCheckins.genCheckins(checkins);
+			});
+		}
+
+		private getBaseQuery() {
+			if (!this.currentBounds) {
+				return null;
 			}
 
 			var prms = [
@@ -100,73 +223,81 @@
 				["lngEast", this.currentBounds._northEast.lng]
 			];
 
-			ViewBase.currentView.apiGet("CheckinNow", prms, (checkins) => {
+			if (this.selectedFilter) {
+				prms.push(["filter", this.selectedFilter.join(",")]);
+			}
 
-				this.hereAndNowFuncs.genPeopleList(checkins);
-				this.mapCheckins.genCheckins(checkins);
-
-			});
+			return prms;
 		}
 
 		private displayMeetingPoints() {
-				this.hereAndNowFuncs.genMeetingPoints();
-			}
+
+				var prms = this.getBaseQuery();
+
+				ViewBase.currentView.apiGet("MeetingPoint", prms, (points) => {
+						this.nowFncs.genMeetingPoints(points);
+						this.mapCheckins.genMPs(points);
+				});
+
+			
+		}
 
 		private displayData() {
-			if (this.tabs.activeTabId === this.hereAndNowTabConst) {
+			if (this.tabs.activeTabId === this.nowTabConst) {
 
-				if (this.hereAndNowFuncs.tabs.activeTabId === this.hereAndNowFuncs.peopleTabConst) {
-					this.displayPlacesCheckins();
+				if (this.nowFncs.tabs.activeTabId === this.nowFncs.peopleTabConst) {
+					this.displayNowCheckins();
 				}
 
-				if (this.hereAndNowFuncs.tabs.activeTabId === this.hereAndNowFuncs.mpTabConst) {
+				if (this.nowFncs.tabs.activeTabId === this.nowFncs.mpTabConst) {
 					this.displayMeetingPoints();
 				}
 
 			}
+
+			if (this.tabs.activeTabId === this.cityTabConst) {
+					this.displayCityCheckins();
+			}
+				
 		}
-
-
-		private createMap() {
 			
+		private createMap() {
+
 			this.travelMap = new TravelB.TravelBMap();
 
 			this.travelMap.onMapCreated = (mapObj) => this.onMapCreated(mapObj);
 
 			this.travelMap.onCenterChanged = (c) => {
-					var bounds = this.travelMap.mapObj.getBounds();
-					this.onMapCenterChanged(c, bounds);
+				var bounds = this.travelMap.mapObj.getBounds();
+				this.onMapCenterChanged(c, bounds);
 			}
 
 			this.travelMap.create("map");
 		}
-			
-		public static getActivityStr(val) {
-				if (val === 0) {
-						return "WalkingTour";
-				}
-				if (val === 1) {
-						return "Bar or Pub";
-				}
-				if (val === 2) {
-						return "Date";
-				}
 
-				return "Other";
+		public static getActivityStr(vals) {
+			var outStrs = [];
+			var items = TravelB.TravelBUtils.wantDoDB();
+
+			vals.forEach((id) => {
+				var item = _.find(items, (i) => { return i.id === id });
+				outStrs.push(item.text);
+			});
+
+			return outStrs.join(", ");
 		}
 
 		public static getGenderStr(val) {
-				if (val === 0) {
-						return "Man";
-				}
-				if (val === 1) {
-						return "Woman";
-				}
+			if (val === 0) {
+				return "Man";
+			}
+			if (val === 1) {
+				return "Woman";
+			}
 
-				return "All";
+			return "All";
 		}
 
-	
 
-		}
+	}
 }

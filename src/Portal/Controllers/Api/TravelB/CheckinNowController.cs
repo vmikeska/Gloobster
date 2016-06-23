@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainModels.TravelB;
 using Gloobster.DomainObjects;
 using Gloobster.DomainObjects.TravelB;
 using Gloobster.Entities;
 using Gloobster.Entities.TravelB;
+using Gloobster.Enums;
 using Gloobster.Mappers;
 using Gloobster.Portal.Controllers.Base;
 using Microsoft.AspNet.Mvc;
@@ -16,6 +18,30 @@ using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.Wiki
 {
+    public class CheckinFilterUtils
+    {
+        
+        public static bool HasGenderMatch(WantMeet wantMeet, Gender gender)
+        {
+            if (wantMeet == WantMeet.All)
+            {
+                return true;
+            }
+
+            if (wantMeet == WantMeet.Man && gender == Gender.M)
+            {
+                return true;
+            }
+
+            if (wantMeet == WantMeet.Woman && gender == Gender.F)
+            {
+                return true;
+            }
+
+            return false;
+        }
+    }
+
     public class CheckinNowController: BaseApiController
     {
         public CheckinNowDomain TbDomain { get; set; }
@@ -28,10 +54,18 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             };
         }
 
+        //todo: move into a service
+        private async void RemoveOldCheckins()
+        {
+            var deleted = await DB.DeleteAsync<CheckinNowEntity>(c => c.WaitingUntil < DateTime.UtcNow);            
+        }
+
         [AuthorizeApi]
         [HttpGet]
         public async Task<IActionResult> Get(CheckinQueryRequest req)
         {
+            RemoveOldCheckins();
+
             if (!string.IsNullOrEmpty(req.id))
             {
                 var userIdObj = new ObjectId(req.id);
@@ -64,6 +98,29 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             else
             {
                 var responses = GetCheckinsInRect(req);
+
+                bool showAllFilteredByGenders = string.IsNullOrEmpty(req.filter);
+                bool showAll = req.filter == "all";
+
+                if (showAll)
+                {
+                    //todo: later remove my checkin. Not only here, in all if branches
+                    return new ObjectResult(responses);
+                }
+
+                responses = responses.Where(r => CheckinFilterUtils.HasGenderMatch(r.wantMeet, User.Gender)).ToList();
+
+                if (showAllFilteredByGenders)
+                {
+                    return new ObjectResult(responses);
+                }
+
+                var wantDos = req.filter.Split(',').Select(int.Parse).ToList();
+
+
+                responses = responses.Where(r => r.wantDo.Intersect(wantDos).Any()).ToList();
+                
+                
                 return new ObjectResult(responses);
             }            
         }
@@ -135,6 +192,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         {
             var response = new CheckinResponse
             {
+                id =  c.CheckinId,
                 userId = c.UserId,
                 gender = u.Gender,
                 displayName = u.DisplayName,

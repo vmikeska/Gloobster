@@ -19,16 +19,46 @@ namespace Gloobster.Common
         {
             return $"{Day}/{Month}/{Year}";
         }
+
+        public bool IsGreaterOrEqualThen(Date date)
+        {
+            if (Year < date.Year) return false;
+            if (Month < date.Month) return false;
+            if (Day <= date.Day) return false;
+
+            //if (Day == date.Day)
+            //{
+            //    return false;
+            //}
+
+            return true;
+        }
+
+        public bool IsLowerOrEqualThen(Date date)
+        {
+            if (Year > date.Year) return false;
+            if (Month > date.Month) return false;
+            if (Day >= date.Day) return false;
+
+            //if (Day == date.Day)
+            //{
+            //    return false;
+            //}
+
+            return true;
+        }
     }
 
     public static class Exts
     {
-        public static Date ToDate(this string str)
+        public static Date ToDate(this string str, char? spliter = null)
         {
-            var prms = str.Split('/');
+            char s = spliter ?? '/';
+
+            var prms = str.Split(s);
             return new Date(int.Parse(prms[0]), int.Parse(prms[1]), int.Parse(prms[2]));
         }
-
+        
         public static Date ToDate(this DateTime date)
         {
             return new Date(date.Day, date.Month, date.Year);

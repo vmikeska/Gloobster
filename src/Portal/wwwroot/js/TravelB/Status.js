@@ -15,7 +15,7 @@ var TravelB;
                 var context = {
                     placeName: r.waitingAtText,
                     wantMeetName: Views.TravelBView.getGenderStr(r.wantMeet),
-                    wantDoName: Views.TravelBView.getActivityStr(r.wantDo)
+                    wantDoName: "(" + Views.TravelBView.getActivityStr(r.wantDo) + ")"
                 };
                 var $html = $(_this.template(context));
                 $html.click(function (e) {

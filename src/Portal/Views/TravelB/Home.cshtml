@@ -8,9 +8,15 @@
 }
 
 <style>
-    .myTabs {
-        width: 100%;        
+    
+    .notif {
+        border: 1px solid black;
+        width: 200px;
     }
+
+     .myTabs {
+         width: 100%;        
+     }
 
     .myTab {
         background-color: #57c1db;
@@ -41,23 +47,87 @@
         border: 1px solid black;
     }
 
+    .filter {
+        border: 1px solid black;        
+    }
+
     #map {
         width: 100%;
         height: 350px;
     }
+
+    .chats {
+        bottom: 0;        
+        height: 250px;
+        position: fixed;
+
+        width: 100%;
+
+        text-align: center;
+    }
+
+    .chat-cont {
+        display: inline-block;
+        background-color: white;
+        
+        width: 250px;
+        height: 250px;
+        
+        border: 1px solid black;
+    }
+    
+    .chat-texts {
+        border: 1px solid green;
+        height: 190px;
+        overflow-y: scroll;
+        text-align: left;
+    }
+
+    .chat-message {
+        border: 1px solid red;
+        width: 250px;
+        height: 50px;
+        position: absolute;
+        bottom: 0;
+    }
+
+    .chat-message textarea {
+        width: 220px;
+        padding: 0;
+        margin: 0;
+        border: 0;
+        resize: none;
+        position: absolute;
+        left: 0;
+    }
+
+    .chat-message button {
+        width: 30px;
+        height: 100%;
+        position: absolute;
+        right: 0;
+    }
+    
 </style>
 
 <link href='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.css' rel='stylesheet' />
 
 <script type="text/javascript" src="@Url.Content("~/js/Views/TravelBView.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/TravelB/Chat.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/TravelB/DateUtils.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/TravelB/CheckinWin.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/js/TravelB/HereAndNowTab.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/TravelB/NowTab.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/TravelB/CityTab.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/TravelB/Status.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/TravelB/TravelBMap.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/TravelB/MapCheckins.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/TravelB/Tabs.js")"></script>
 
 <script type="text/javascript" src="@Url.Content("~/js/Maps/MapsCreatorMapBox2D.js")"></script>
+
+<div id="notifCont">
+    
+</div>
 
 <div id="statusCont">
     
@@ -69,11 +139,22 @@
 </div>
 <div class="mainCont">
     <div id="theCont" class="tabBlock">
-        
+
     </div>
     <div class="tabBlock">
         <div id="map"></div>
     </div>
+</div>
+<div class="filter">
+    <div id="filterDateCont" style="display: none">
+        <input id="fromDateFilter" type="text"/>
+        --
+        <input id="toDateFilter" type="text"/>
+    </div>
+    <b>Want do filter</b>
+    <div id="filterCont"></div>    
+    <input id="allCheckins" type="checkbox" />
+    <label for="allCheckins">All checkins (you'll be not able to contact people lookin for other genders)</label>
 </div>
 
 

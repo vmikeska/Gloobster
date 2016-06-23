@@ -1,5 +1,10 @@
 var TravelB;
 (function (TravelB) {
+    (function (CheckinType) {
+        CheckinType[CheckinType["Now"] = 0] = "Now";
+        CheckinType[CheckinType["City"] = 1] = "City";
+    })(TravelB.CheckinType || (TravelB.CheckinType = {}));
+    var CheckinType = TravelB.CheckinType;
     var TravelBUtils = (function () {
         function TravelBUtils() {
         }
@@ -12,6 +17,9 @@ var TravelB;
             var diffMins = Math.ceil(dd / (1000 * 60));
             return diffMins;
         };
+        TravelBUtils.wantDoDB = function () {
+            return [{ id: 0, text: "Walking tour" }, { id: 1, text: "Bar or Pub" }, { id: 2, text: "Date" }, { id: 3, text: "Sport" }];
+        };
         return TravelBUtils;
     }());
     TravelB.TravelBUtils = TravelBUtils;
@@ -22,40 +30,18 @@ var TravelB;
             this.registerTemplates();
             this.ddReg = new Common.DropDown();
         }
-        CheckinWin.prototype.createWin = function (edit) {
-            var _this = this;
-            var btnTxt = edit ? "Update checkin" : "Checkin";
-            var context = { sumbitText: btnTxt };
-            this.$html = $(this.checkinWindowDialog(context));
-            $("body").append(this.$html);
-            this.$html.fadeIn();
-            this.ddReg.registerDropDown(this.$html.find("#fromAge"));
-            this.ddReg.registerDropDown(this.$html.find("#toAge"));
-            this.$html.find("#submitCheckin").click(function (e) {
-                e.preventDefault();
-                _this.callNow();
-            });
-            this.$html.find(".cancel").click(function (e) {
-                e.preventDefault();
-                _this.$html.fadeOut();
-                _this.$html.remove();
-            });
-            this.fillAgeCombo("fromAge");
-            this.fillAgeCombo("toAge");
-        };
-        CheckinWin.prototype.createWinNow = function () {
-            var $d = $(this.dlgNow());
-            this.$html.find("#dlgSpec").html($d);
-            this.wpCombo = this.initPlaceDD("1,0,4", this.$html.find("#waitingPlace"));
-        };
-        CheckinWin.prototype.createWinCity = function () {
-            this.wcCombo = this.initPlaceDD("2", this.$html.find("#waitingCity"));
+        CheckinWin.prototype.showCityCheckin = function (editId) {
+            var isEdit = (editId != null);
+            if (isEdit) {
+            }
+            this.createWin(isEdit, CheckinType.City);
+            this.createWinCity();
         };
         CheckinWin.prototype.showNowCheckin = function () {
             var _this = this;
             Views.ViewBase.currentView.apiGet("CheckinNow", [["me", "true"]], function (r) {
                 var hasStatus = r !== null;
-                _this.createWin(hasStatus);
+                _this.createWin(hasStatus, CheckinType.Now);
                 _this.createWinNow();
                 if (hasStatus) {
                     _this.selectRadio("wantDo", r.wantDo);
@@ -74,12 +60,62 @@ var TravelB;
                 }
             });
         };
+        CheckinWin.prototype.initWantDo = function () {
+            var items = TravelBUtils.wantDoDB();
+            var $c = this.$html.find("#wantDoCont");
+            items.forEach(function (i) {
+                var $h = $("<input id=\"wd_" + i.id + "\" type=\"checkbox\" /><label for=\"wd_" + i.id + "\">" + i.text + "</label>");
+                $c.append($h);
+            });
+        };
+        CheckinWin.prototype.createWin = function (edit, type) {
+            var _this = this;
+            $(".popup").remove();
+            var btnTxt = edit ? "Update checkin" : "Checkin";
+            var context = { sumbitText: btnTxt };
+            this.$html = $(this.checkinWindowDialog(context));
+            $("body").append(this.$html);
+            this.$html.fadeIn();
+            this.initWantDo();
+            this.ddReg.registerDropDown(this.$html.find("#fromAge"));
+            this.ddReg.registerDropDown(this.$html.find("#toAge"));
+            this.$html.find("#submitCheckin").click(function (e) {
+                e.preventDefault();
+                if (type === CheckinType.Now) {
+                    _this.callNow();
+                }
+                if (type === CheckinType.City) {
+                    _this.callCity();
+                }
+            });
+            this.$html.find(".cancel").click(function (e) {
+                e.preventDefault();
+                _this.$html.fadeOut();
+                _this.$html.remove();
+            });
+            this.fillAgeCombo("fromAge");
+            this.fillAgeCombo("toAge");
+        };
+        CheckinWin.prototype.createWinNow = function () {
+            var $d = $(this.dlgNow());
+            this.$html.find("#dlgSpec").html($d);
+            this.wpCombo = this.initPlaceDD("1,0,4", this.$html.find("#waitingPlace"));
+        };
+        CheckinWin.prototype.createWinCity = function () {
+            var $d = $(this.dlgCity());
+            this.$html.find("#dlgSpec").html($d);
+            this.wcCombo = this.initPlaceDD("2", this.$html.find("#waitingCity"));
+            var fromDate = TravelB.DateUtils.jsDateToMyDate(TravelB.DateUtils.addDays(Date.now(), 2));
+            var toDate = TravelB.DateUtils.jsDateToMyDate(TravelB.DateUtils.addDays(Date.now(), 5));
+            TravelB.DateUtils.initDatePicker(this.$html.find("#fromDate"), fromDate);
+            TravelB.DateUtils.initDatePicker(this.$html.find("#toDate"), toDate);
+        };
         CheckinWin.prototype.setCombo = function ($combo, value) {
             $combo.find("input").val(value);
             $combo.find("span").html(value);
         };
         CheckinWin.prototype.selectRadio = function (group, val) {
-            $("input[name=" + group + "][value=" + val + "]").prop('checked', true);
+            $("input[name=" + group + "][value=" + val + "]").prop("checked", true);
         };
         CheckinWin.prototype.fillAgeCombo = function (id) {
             var $ul = $("#" + id).find("ul");
@@ -92,16 +128,26 @@ var TravelB;
         };
         CheckinWin.prototype.getRequestObj = function () {
             var data = {
-                wantDo: $('input[name=wantDo]:checked').val(),
+                wantDo: this.getWantDos(),
                 wantMeet: $('input[name=wantMeet]:checked').val(),
                 multiPeopleAllowed: $("#multiPeopleAllowed").prop("checked"),
                 fromAge: $("#fromAge input").val(),
-                toAge: $("#toAge input").val(),
-                minsWaiting: $("#minsWaiting").val(),
-                fromDate: $("#fromDate").val(),
-                toDate: $("#toDate").val()
+                toAge: $("#toAge input").val()
             };
             return data;
+        };
+        CheckinWin.prototype.getWantDos = function () {
+            var res = [];
+            var items = $("#wantDoCont").children().toArray();
+            items.forEach(function (i) {
+                var $i = $(i);
+                if ($i.prop("checked")) {
+                    var id = $i.attr("id");
+                    var val = id.split("_")[1];
+                    res.push(val);
+                }
+            });
+            return res;
         };
         CheckinWin.prototype.callNow = function () {
             var _this = this;
@@ -110,7 +156,8 @@ var TravelB;
                 waitingAtId: this.wpCombo.sourceId,
                 waitingAtType: this.wpCombo.sourceType,
                 waitingAtText: this.wpCombo.lastText,
-                waitingCoord: this.wpCombo.coord
+                waitingCoord: this.wpCombo.coord,
+                minsWaiting: $("#minsWaiting").val()
             });
             Views.ViewBase.currentView.apiPost("CheckinNow", data, function (r) {
                 _this.refreshStat();
@@ -122,7 +169,9 @@ var TravelB;
                 waitingAtId: this.wcCombo.sourceId,
                 waitingAtType: this.wcCombo.sourceType,
                 waitingAtText: this.wcCombo.lastText,
-                waitingCoord: this.wcCombo.coord
+                waitingCoord: this.wcCombo.coord,
+                fromDate: $("#fromDate").data("myDate"),
+                toDate: $("#toDate").data("myDate")
             });
             Views.ViewBase.currentView.apiPost("CheckinCity", data, function (r) {
             });

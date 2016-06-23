@@ -39,6 +39,20 @@ module TravelB {
 
 		}
 
+		public genMPs(mps) {
+				this.clearMarkers();
+
+				mps.forEach((c) => {						
+						var marker = L.marker([c.coord.Lat, c.coord.Lng], { icon: this.getVisitedPin() }).addTo(this.mapObj);
+						//marker.on("click", (e) => {
+						//		this.displayPopup(e.latlng, c.userId);
+						//});
+
+						this.markers.push(marker);
+				});
+
+		}
+
 		private displayPopup(latlng, userId) {
 
 				Views.ViewBase.currentView.apiGet("CheckinNow", [["id", userId]], (checkin) => {

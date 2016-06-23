@@ -17,13 +17,9 @@
 
                 <div>
                     <span>Want do</span>
-                    <input id="wantDo0" type="radio" name="wantDo" value="0"><label for="wantDo0">WalkingTour</label>
-                    <input id="wantDo1" type="radio" name="wantDo" value="1"><label for="wantDo1">Bar or Pub</label>
-                    <input id="wantDo2" type="radio" name="wantDo" value="2"><label for="wantDo2">Date</label>
+                    <div id="wantDoCont">
 
-                    <input id="wantDoOther" type="radio" name="wantDo" value="3"><label for="wantDoOther">Other</label>
-
-                    <input type="text" />
+                    </div>                    
                 </div>
 
                 <div>
@@ -101,40 +97,89 @@
 
     <span>Visiting days</span>
     <br />
-    <input id="fromDate" type="text" value="1.8.2016" />
+    <input id="fromDate" type="text" value="" />
     --
-    <input id="toDate" type="text" value="5.8.2016" />
+    <input id="toDate" type="text" value="" />
 
 </script>
 
-    <script id="checkinUserItem-template" type="text/x-handlebars-template">
+@*<script id="notifItem-template" type="text/x-handlebars-template">
 
-        <div class="userItem">
-            <span class="thumbnail">
-                <img src="/PortalUser/ProfilePicture_xs/{{id}}">
-            </span>
-            <a href="{{link}}">{{name}}</a>
-            <div>
-                {{age}} years,
-                waiting for {{waitingFor}},
-                wants {{wants}}
-            </div>
-        </div>
+    <div class="notifItem">
+        
+    </div>
 
-    
+</script>*@
+
+<script id="meetingPointItem-template" type="text/x-handlebars-template">
+
+    <div class="userItem">
+        @*<span class="thumbnail">
+            <img src="/PortalUser/ProfilePicture_xs/{{id}}">
+        </span>*@
+        <a href="{{link}}">{{name}}</a>
+        
+    </div>
+
 </script>
 
-    <script id="hereAndNowTabCont-template" type="text/x-handlebars-template">
+<script id="chatRow-template" type="text/x-handlebars-template">
 
-        <div id="hereTabs" class="myTabs">
+    <div class="chat-post">
+        <b>{{name}}</b>
+        <br />
+        <span class="thumbnail">
+            <img src="/PortalUser/ProfilePicture_xs/{{userId}}">
+        </span>
+        <br />
+        {{text}}
+    </div>
+</script>
 
+<script id="checkinNowItem-template" type="text/x-handlebars-template">
+
+    <div class="userItem">
+        <span class="thumbnail">
+            <img src="/PortalUser/ProfilePicture_xs/{{id}}">
+        </span>
+        <a href="{{link}}">{{name}}</a>
+        <div>
+            {{age}} years,
+            waiting for {{waitingFor}},
+            wants {{wants}}
+            <button class="startChatBtn">Ask for chat</button>
         </div>
+    </div>
 
-        <div id="listCont">
+</script>
 
+<script id="checkinCityItem-template" type="text/x-handlebars-template">
+
+    <div class="userItem">
+        <span class="thumbnail">
+            <img src="/PortalUser/ProfilePicture_xs/{{id}}">
+        </span>
+        <a href="{{link}}">{{name}}  </a> {{fromDate}} - {{toDate}}
+        <div>
+            {{age}} years,
+            waiting for {{waitingFor}},
+            wants {{wants}}
         </div>
+    </div>
 
-    </script>
+</script>
+
+<script id="hereAndNowTabCont-template" type="text/x-handlebars-template">
+
+    <div id="hereTabs" class="myTabs">
+
+    </div>
+
+    <div id="listCont">
+
+    </div>
+
+</script>
 
     <script id="userPopup-template" type="text/x-handlebars-template">
 

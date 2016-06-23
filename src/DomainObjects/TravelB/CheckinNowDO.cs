@@ -1,6 +1,7 @@
 ﻿using Gloobster.Common;
 using Gloobster.Enums;
 using System;
+using System.Collections.Generic;
 
 namespace Gloobster.DomainObjects.TravelB
 {
@@ -9,7 +10,7 @@ namespace Gloobster.DomainObjects.TravelB
         public string CheckinId { get; set; }
         public string UserId { get; set; }
 
-        public int WantDo { get; set; }
+        public List<int> WantDo { get; set; }
 
         public WantMeet WantMeet { get; set; }
 

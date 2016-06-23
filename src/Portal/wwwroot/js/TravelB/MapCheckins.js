@@ -25,6 +25,14 @@ var TravelB;
                 _this.markers.push(marker);
             });
         };
+        MapCheckins.prototype.genMPs = function (mps) {
+            var _this = this;
+            this.clearMarkers();
+            mps.forEach(function (c) {
+                var marker = L.marker([c.coord.Lat, c.coord.Lng], { icon: _this.getVisitedPin() }).addTo(_this.mapObj);
+                _this.markers.push(marker);
+            });
+        };
         MapCheckins.prototype.displayPopup = function (latlng, userId) {
             var _this = this;
             Views.ViewBase.currentView.apiGet("CheckinNow", [["id", userId]], function (checkin) {

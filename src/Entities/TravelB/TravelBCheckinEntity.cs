@@ -9,11 +9,39 @@ using MongoDB.Bson;
 
 namespace Gloobster.Entities.TravelB
 {
+    public class CheckinReactionEntity : EntityBase
+    {
+        public ObjectId AskingUser_id { get; set; }
+        public ObjectId TargetUser_id { get; set; }
+        public ObjectId Checkin_id { get; set; }
+        public CheckinReactionState State { get; set; }
+
+        public List<ChatPostSE> ChatPosts { get; set; }
+
+    }
+
+    public class ChatPostSE
+    {
+        public ObjectId id { get; set; }
+        public ObjectId User_id { get; set; }
+        public string Text { get; set; }
+        public DateTime Time { get; set; }
+    }
+
+    public class MeetingPointsEntity : EntityBase
+    {
+        public string SourceId { get; set; }
+        public string Text { get; set; }
+        public SourceType Type { get; set; }
+        public LatLng Coord { get; set; }
+    }
+
+
     public class CheckinNowEntity : EntityBase
     {
         public ObjectId User_id { get; set; }
 
-        public int WantDo { get; set; }
+        public List<int> WantDo { get; set; }
 
         public WantMeet WantMeet { get; set; }
 
@@ -34,7 +62,7 @@ namespace Gloobster.Entities.TravelB
     {
         public ObjectId User_id { get; set; }
 
-        public int WantDo { get; set; }
+        public List<int> WantDo { get; set; }
 
         public WantMeet WantMeet { get; set; }
 
@@ -48,7 +76,7 @@ namespace Gloobster.Entities.TravelB
         public string WaitingAtText { get; set; }
         public LatLng WaitingCoord { get; set; }
 
-        public DateTime FromDate { get; set; }
-        public DateTime ToDate { get; set; }
+        public Date FromDate { get; set; }
+        public Date ToDate { get; set; }
     }
 }

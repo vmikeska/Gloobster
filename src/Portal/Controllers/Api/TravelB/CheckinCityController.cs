@@ -53,23 +53,46 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 var response = ConvertCheckin(user, checkinDO);
                 return new ObjectResult(response);
             }
-            else if (req.me)
-            {
-                var checkin = DB.FOD<CheckinCityEntity>(u => u.User_id == UserIdObj);
-
-                if (checkin == null)
-                {
-                    return new ObjectResult(null);
-                }
-
-                var checkinDO = checkin.ToDO();
-                var user = DB.FOD<UserEntity>(u => u.User_id == UserIdObj);
-                var response = ConvertCheckin(user, checkinDO);
-                return new ObjectResult(response);
-            }
             else
             {
                 var responses = GetCheckinsInRect(req);
+
+                bool showAllFilteredByGenders = string.IsNullOrEmpty(req.filter);
+                bool showAll = req.filter == "all";
+
+                if (showAll)
+                {
+                    //todo: later remove my checkin. Not only here, in all if branches
+                    return new ObjectResult(responses);
+                }
+
+                responses = responses.Where(r => CheckinFilterUtils.HasGenderMatch(r.wantMeet, User.Gender)).ToList();
+
+                var fromDate = req.fromDate.ToDate('_');
+                var toDate = req.toDate.ToDate('_');
+
+                responses =
+                    responses.Where(r =>
+                    {
+                        if (r.fromDate.IsGreaterOrEqualThen(toDate) || r.toDate.IsLowerOrEqualThen(fromDate))
+                        {
+                            return false;
+                        }
+                        return true;
+                    })
+                        .ToList();
+
+                if (showAllFilteredByGenders)
+                {
+                    return new ObjectResult(responses);
+                }
+
+                var wantDos = req.filter.Split(',').Select(int.Parse).ToList();
+
+
+                responses = responses.Where(r => r.wantDo.Intersect(wantDos).Any()).ToList();
+
+
                 return new ObjectResult(responses);
             }
         }
@@ -106,8 +129,8 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
                 MultiPeopleAllowed = req.multiPeopleAllowed,
 
-                FromDate = DateTime.Parse(req.fromDate, DateTimeFormatInfo.InvariantInfo),
-                ToDate = DateTime.Parse(req.toDate, DateTimeFormatInfo.InvariantInfo),
+                FromDate = req.fromDate,
+                ToDate = req.toDate,
 
                 FromAge = req.fromAge,
                 ToAge = req.toAge,
@@ -217,7 +240,9 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
         //---
         
-        public int wantDo { get; set; }
+        public string id { get; set; }
+
+        public List<int> wantDo { get; set; }
 
         public WantMeet wantMeet { get; set; }
 
@@ -228,8 +253,8 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
         public DateTime waitingUntil { get; set; }
 
-        public DateTime fromDate { get; set; }
-        public DateTime toDate { get; set; }
+        public Date fromDate { get; set; }
+        public Date toDate { get; set; }
 
         public CheckinType checkinType { get; set; }
         public string waitingAtId { get; set; }
@@ -249,15 +274,20 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
         public bool me { get; set; }
 
+        public string filter { get; set; }
+
         public double latSouth { get; set; }
         public double lngWest { get; set; }
         public double latNorth { get; set; }
         public double lngEast { get; set; }        
+
+        public string fromDate { get; set; }
+        public string toDate { get; set; }
     }
 
     public class CheckinRequest
     {
-        public int wantDo { get; set; }
+        public List<int> wantDo { get; set; }
 
         public WantMeet wantMeet { get; set; }
 
@@ -268,8 +298,8 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         
         public int minsWaiting { get; set; }
         
-        public string fromDate { get; set; }
-        public string toDate { get; set; }
+        public Date fromDate { get; set; }
+        public Date toDate { get; set; }
         
         public CheckinType checkinType { get; set; }
         public string waitingAtId { get; set; }

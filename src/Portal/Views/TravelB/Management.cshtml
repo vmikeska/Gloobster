@@ -1,0 +1,37 @@
+﻿@using System.Threading.Tasks
+@using Gloobster.Portal.ViewModels
+
+@model TravelBManagementViewModel
+
+@{
+    ViewBag.MenuGroup = "TravelB";
+}
+
+<script type="text/javascript" src="@Url.Content("~/js/Views/TravelBMgmt.js")"></script>
+
+<style>
+   #mPoints {
+       width: 200px;
+       border: 1px solid black;
+   }
+    
+</style>
+
+<div id="mPoints">
+    
+</div>
+
+
+<div id="place" class="dropdown">
+    <input class="inputed" type="text" placeholder="Search for place name">
+    <img class="loader" src="/images/loader-gray.gif" style="display: none" />
+    <ul></ul>
+</div>
+
+
+<script>
+    function onBodyLoad() {
+        currentView = new Views.TravelBMgmt();
+    }
+</script>
+

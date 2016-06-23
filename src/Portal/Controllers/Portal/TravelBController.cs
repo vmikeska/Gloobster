@@ -28,6 +28,14 @@ namespace Gloobster.Portal.Controllers.Portal
             
             return View(vm);
         }
+
+        
+        public IActionResult Management()
+        {
+            var vm = CreateViewModelInstance<TravelBManagementViewModel>();
+
+            return View(vm);
+        }
         
     }
 

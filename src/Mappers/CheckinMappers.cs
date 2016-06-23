@@ -10,6 +10,7 @@ namespace Gloobster.Mappers
         {
             var d = new CheckinNowDO
             {
+                CheckinId = e.id.ToString(),
                 UserId = e.User_id.ToString(),
                 MultiPeopleAllowed = e.MultiPeopleAllowed,
                 WaitingAtId = e.WaitingAtId,
@@ -30,6 +31,7 @@ namespace Gloobster.Mappers
         {
             var d = new CheckinCityDO
             {
+                CheckinId = e.id.ToString(),
                 UserId = e.User_id.ToString(),
                 MultiPeopleAllowed = e.MultiPeopleAllowed,
                 WaitingAtId = e.WaitingAtId,
@@ -50,7 +52,7 @@ namespace Gloobster.Mappers
         public static CheckinCityEntity ToEntity(this CheckinCityDO d)
         {
             var e = new CheckinCityEntity
-            {
+            {                
                 User_id = new ObjectId(d.UserId),
                 MultiPeopleAllowed = d.MultiPeopleAllowed,
                 WaitingAtId = d.WaitingAtId,
@@ -64,6 +66,11 @@ namespace Gloobster.Mappers
                 WantMeet = d.WantMeet,
                 ToAge = d.ToAge
             };
+
+            if (!string.IsNullOrEmpty(d.CheckinId))
+            {
+                e.id = new ObjectId(d.CheckinId);
+            }
 
             return e;
         }
