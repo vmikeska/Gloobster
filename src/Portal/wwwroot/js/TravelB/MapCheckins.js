@@ -42,9 +42,10 @@ var TravelB;
                     id: checkin.userId,
                     name: checkin.displayName,
                     age: curYear - checkin.birthYear,
-                    waitingFor: Views.TravelBView.getGenderStr(checkin.wantMeet),
-                    wants: Views.TravelBView.getActivityStr(checkin.wantDo),
-                    waitingMins: TravelB.TravelBUtils.waitingMins(checkin.waitingUntil)
+                    waitingFor: Views.StrOpers.getGenderStr(checkin.wantMeet),
+                    wants: Views.StrOpers.getActivityStr(checkin.wantDo),
+                    waitingMins: TravelB.TravelBUtils.waitingMins(checkin.waitingUntil),
+                    interests: Views.StrOpers.getInterestsStr(checkin.interests)
                 };
                 var ppCont = _this.popupTemplate(context);
                 var popup = new L.Popup();

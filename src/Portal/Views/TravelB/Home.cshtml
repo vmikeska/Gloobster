@@ -9,16 +9,24 @@
 
 <style>
     
+    #searchCity {
+        z-index: 99999;
+        position: absolute;
+        top: 10px;
+        left: 40px;
+    }
+
     .notif {
         border: 1px solid black;
         width: 200px;
     }
 
      .myTabs {
-         width: 100%;        
+         width: 100%;         
      }
 
     .myTab {
+        border: 1px solid white;      
         background-color: #57c1db;
         color: white;        
         display: inline-block;
@@ -58,12 +66,16 @@
 
     .chats {
         bottom: 0;        
-        height: 250px;
+        height: 275px;
         position: fixed;
 
         width: 100%;
 
         text-align: center;
+
+        pointer-events: none;
+        filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='your_transparent.png', sizingMethod='scale');
+        background: none !important;
     }
 
     .chat-cont {
@@ -71,9 +83,13 @@
         background-color: white;
         
         width: 250px;
-        height: 250px;
+        height: 275px;
         
         border: 1px solid black;
+    }
+
+    .chat-title {
+        height: 25px;
     }
     
     .chat-texts {
@@ -122,8 +138,11 @@
 <script type="text/javascript" src="@Url.Content("~/js/TravelB/TravelBMap.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/TravelB/MapCheckins.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/TravelB/Tabs.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/TravelB/TravelBUtils.js")"></script>
 
 <script type="text/javascript" src="@Url.Content("~/js/Maps/MapsCreatorMapBox2D.js")"></script>
+
+<script src="//js.maxmind.com/js/geoip.js" type="text/javascript"></script>
 
 <div id="notifCont">
     
@@ -142,7 +161,14 @@
 
     </div>
     <div class="tabBlock">
-        <div id="map"></div>
+        <div id="map">            
+            <div id="searchCity" class="dropdown">
+                <input class="inputed" type="text" placeholder="Search your location">
+                <img class="loader" src="/images/loader-gray.gif" style="display: none" />
+                <ul></ul>
+            </div>
+
+        </div>
     </div>
 </div>
 <div class="filter">

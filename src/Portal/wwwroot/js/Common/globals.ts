@@ -7,6 +7,21 @@ declare var gapi: any;
 declare var Handlebars: any;
 declare var Cookies: any;
 
+
+//function geoip_country_code() { return 'DE'; }
+//function geoip_country_name() { return 'Germany'; }
+//function geoip_city() { return ''; }
+//function geoip_region() { return ''; }
+//function geoip_region_name() { return ''; }
+//function geoip_latitude() { return '51'; }
+//function geoip_longitude() { return '9'; }
+//function geoip_postal_code() { return ''; }
+//function geoip_area_code() { return ''; }
+//function geoip_metro_code() { return ''; }
+
+declare var geoip_latitude;
+declare var geoip_longitude;
+
 module Constants {
 	export var tokenCookieName = "token";
 	export var nameCookieName = "name";

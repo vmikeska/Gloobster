@@ -134,13 +134,6 @@ var Views;
                 }
             });
         };
-        TravelBView.prototype.onMapCreated = function (mapObj) {
-            this.mapCheckins = new TravelB.MapCheckins(mapObj);
-        };
-        TravelBView.prototype.onMapCenterChanged = function (c, bounds) {
-            this.currentBounds = bounds;
-            this.displayData();
-        };
         TravelBView.prototype.displayNowCheckins = function () {
             var _this = this;
             var prms = this.getBaseQuery();
@@ -148,8 +141,9 @@ var Views;
                 return;
             }
             Views.ViewBase.currentView.apiGet("CheckinNow", prms, function (checkins) {
-                _this.nowFncs.genCheckinsList(checkins);
-                _this.mapCheckins.genCheckins(checkins);
+                var fc = _.reject(checkins, function (c) { return c.userId === Views.ViewBase.currentUserId; });
+                _this.nowFncs.genCheckinsList(fc);
+                _this.mapCheckins.genCheckins(fc);
             });
         };
         TravelBView.prototype.displayCityCheckins = function () {
@@ -201,6 +195,15 @@ var Views;
                 this.displayCityCheckins();
             }
         };
+        TravelBView.prototype.initPlaceDD = function (providers, selObj) {
+            var c = new Common.PlaceSearchConfig();
+            c.providers = providers;
+            c.selOjb = selObj;
+            c.minCharsToSearch = 1;
+            c.clearAfterSearch = false;
+            var combo = new Common.PlaceSearchBox(c);
+            return combo;
+        };
         TravelBView.prototype.createMap = function () {
             var _this = this;
             this.travelMap = new TravelB.TravelBMap();
@@ -211,7 +214,40 @@ var Views;
             };
             this.travelMap.create("map");
         };
-        TravelBView.getActivityStr = function (vals) {
+        TravelBView.prototype.onMapCreated = function (mapObj) {
+            var _this = this;
+            this.mapCheckins = new TravelB.MapCheckins(mapObj);
+            this.getLocation(function (lat, lng) {
+                _this.setPlaceCenter(lat, lng);
+            });
+            var search = this.initPlaceDD("2", $("#searchCity"));
+        };
+        TravelBView.prototype.onMapCenterChanged = function (c, bounds) {
+            this.currentBounds = bounds;
+            this.displayData();
+        };
+        TravelBView.prototype.setPlaceCenter = function (lat, lng) {
+            this.travelMap.mapObj.setView([lat, lng], 9);
+        };
+        TravelBView.prototype.getLocation = function (callback) {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (p) {
+                    callback(p.coords.latitude, p.coords.longitude);
+                });
+            }
+            else {
+                var lat = geoip_latitude();
+                var lng = geoip_longitude();
+                callback(lat, lng);
+            }
+        };
+        return TravelBView;
+    }(Views.ViewBase));
+    Views.TravelBView = TravelBView;
+    var StrOpers = (function () {
+        function StrOpers() {
+        }
+        StrOpers.getActivityStr = function (vals) {
             var outStrs = [];
             var items = TravelB.TravelBUtils.wantDoDB();
             vals.forEach(function (id) {
@@ -220,7 +256,16 @@ var Views;
             });
             return outStrs.join(", ");
         };
-        TravelBView.getGenderStr = function (val) {
+        StrOpers.getInterestsStr = function (vals) {
+            var outStrs = [];
+            var items = TravelB.TravelBUtils.interestsDB();
+            vals.forEach(function (id) {
+                var item = _.find(items, function (i) { return i.id === id; });
+                outStrs.push(item.text);
+            });
+            return outStrs.join(", ");
+        };
+        StrOpers.getGenderStr = function (val) {
             if (val === 0) {
                 return "Man";
             }
@@ -229,8 +274,8 @@ var Views;
             }
             return "All";
         };
-        return TravelBView;
-    }(Views.ViewBase));
-    Views.TravelBView = TravelBView;
+        return StrOpers;
+    }());
+    Views.StrOpers = StrOpers;
 })(Views || (Views = {}));
 //# sourceMappingURL=TravelBView.js.map

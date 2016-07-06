@@ -21,7 +21,7 @@
 
 			private initCombo() {
 					var c = new Common.PlaceSearchConfig();
-					c.providers = "1,0,4";
+					c.providers = "1,4";
 					c.selOjb = $("#place");
 					c.minCharsToSearch = 1;
 					c.clearAfterSearch = true;
@@ -32,8 +32,8 @@
 					}
 			}
 
-			private addMeetingPoint(id, type, text, coords) {
-					var data = { sourceId: id, type: type, text: text, coords: coords };
+			private addMeetingPoint(id, type, text, coord) {
+					var data = { sourceId: id, type: type, text: text, coord: coord };
 
 					this.apiPost("meetingPoint", data, (r) => {
 						

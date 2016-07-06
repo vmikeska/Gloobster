@@ -103,13 +103,18 @@
 
 </script>
 
-@*<script id="notifItem-template" type="text/x-handlebars-template">
+<script id="chatWin-template" type="text/x-handlebars-template">
 
-    <div class="notifItem">
-        
+    <div data-id="{{reactId}}" id="chat_{{reactId}}" class="chat-cont">
+        <div class="chat-title"><b>{{name}}</b>   <a class="chat-min" href="#">_</a></div>
+        <div class="chat-texts"></div>
+        <div class="chat-message">
+            <textarea></textarea>
+            <button class="send">S</button>
+        </div>
     </div>
 
-</script>*@
+</script>
 
 <script id="meetingPointItem-template" type="text/x-handlebars-template">
 
@@ -181,7 +186,7 @@
 
 </script>
 
-    <script id="userPopup-template" type="text/x-handlebars-template">
+<script id="userPopup-template" type="text/x-handlebars-template">
 
         <div>
             <span class="thumbnail">
@@ -197,6 +202,8 @@
             wants do: {{wants}}
             <br />
             waiting: {{waitingMins}} minutes
+            <br />
+            Interests: {{interests}}
         </div>
 
     </script>

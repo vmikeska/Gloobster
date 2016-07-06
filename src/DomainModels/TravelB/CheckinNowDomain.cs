@@ -89,6 +89,11 @@ namespace Gloobster.DomainModels.TravelB
     {
         public static bool WithinRectangle(RectDO rectDO, LatLng coord)
         {
+            if (coord == null)
+            {
+                return false;
+            }
+
             if (coord.Lat > rectDO.LatNorth)
                 return false;
             if (coord.Lat < rectDO.LatSouth)

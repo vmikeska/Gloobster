@@ -22,14 +22,16 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         [HttpGet]
         public async Task<IActionResult> Get(ChatGetRequest req)
         {
-            if (req.reactIds.Any())
+            var lastDate = TimeZoneInfo.ConvertTimeToUtc(req.lastDate);
+            
+            if (req.reactIds != null && req.reactIds.Any())
             {
                 var wraps = new List<ChatPostsWrapperResponse>();
                 foreach (var reactId in req.reactIds)
                 {
                     var ridObj = new ObjectId(reactId);
 
-                    var newPosts = GetNewPosts(ridObj, req.lastDate);
+                    var newPosts = GetNewPosts(ridObj, lastDate);
 
                     var wrap = new ChatPostsWrapperResponse
                     {

@@ -1,52 +1,30 @@
 ﻿@{
-		ViewData["Title"] = "Home Page";
-		Layout = "";
+    ViewData["Title"] = "Home Page";
+    //Layout = "";
 }
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width">
+
+
+<link href="~/lib/cropper/dist/cropper.css" rel="stylesheet" />
+<script src="~/lib/cropper/dist/cropper.js"></script>
+
+<script type="text/javascript" src="@Url.Content("~/js/Views/CropImg.js")"></script>
+
+<style>
+    .ci-frame {
+        border: 1px solid red;
+    }
+</style>
+
+
+<div id="myFrame">
     
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/js/pep.js"></script>
-
-        <meta charset="utf-8">
-        <title>JS Bin</title>
-    </head>
-    <body>
-    <style>
-        .pixel {
-            position: absolute;
-            background: black;
-            width: 2px;
-            height: 2px;
-        }
-        #canvas {
-            margin: 20px;
-            background: white;
-            border: 1px solid black;
-            height: 200px;
-        }
-    </style>
+</div>
 
 
-    <div id="canvas"></div>
+<script>
+    
+    function onBodyLoad() {
+        curentView = new Views.CropImg("myFrame", 600, 400, "http://img.ihned.cz/attachment.php/0/64911000/Id5CPlkgeDGuTaEU7FcprWv9ObNi6S8K/1.jpg");
+    }
 
-
-    <script type="text/javascript">
-        
-        //$("#canvas").on("pointerdown", function(event) {
-        //    alert("t");
-        //});
-
-        $("#canvas").bind("pointerdown click", function (event) {
-            alert("tb");
-        });
-
-    </script>
-
-    </body>
-
-
-
-    </html>
+</script>

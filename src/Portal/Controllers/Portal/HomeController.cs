@@ -68,9 +68,16 @@ namespace Gloobster.Portal.Controllers.Portal
         public IActionResult Test()
         {
 
-            return View();
+            var vm = CreateViewModelInstance<ViewModelTest>();
+
+            return View(vm);
         }
 
 
+    }
+
+    public class ViewModelTest : ViewModelBase
+    {
+        
     }
 }

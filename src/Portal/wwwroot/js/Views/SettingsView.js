@@ -140,13 +140,10 @@ var Views;
         };
         SettingsView.prototype.initInterestsTagger = function (selectedItems) {
             var _this = this;
-            var itemsRange = [
-                { text: "Traveling", value: 0, kind: "i" },
-                { text: "Partying", value: 1, kind: "i" },
-                { text: "Sport", value: 2, kind: "i" },
-                { text: "Drinking", value: 3, kind: "i" },
-                { text: "Eating", value: 4, kind: "i" }
-            ];
+            var interests = TravelB.TravelBUtils.interestsDB();
+            var itemsRange = _.map(interests, function (i) {
+                return { text: i.text, value: i.id, kind: "i" };
+            });
             var config = new Planning.TaggingFieldConfig();
             config.containerId = "intersTagging";
             config.localValues = true;

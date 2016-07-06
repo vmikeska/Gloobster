@@ -5,24 +5,6 @@ var TravelB;
         CheckinType[CheckinType["City"] = 1] = "City";
     })(TravelB.CheckinType || (TravelB.CheckinType = {}));
     var CheckinType = TravelB.CheckinType;
-    var TravelBUtils = (function () {
-        function TravelBUtils() {
-        }
-        TravelBUtils.waitingMins = function (waitingUntil) {
-            var now = new Date();
-            var untilDate = new Date(waitingUntil);
-            var nowUtc = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
-            var untilUtc = new Date(untilDate.getUTCFullYear(), untilDate.getUTCMonth(), untilDate.getUTCDate(), untilDate.getUTCHours(), untilDate.getUTCMinutes(), untilDate.getUTCSeconds());
-            var dd = Math.abs(nowUtc.getTime() - untilUtc.getTime());
-            var diffMins = Math.ceil(dd / (1000 * 60));
-            return diffMins;
-        };
-        TravelBUtils.wantDoDB = function () {
-            return [{ id: 0, text: "Walking tour" }, { id: 1, text: "Bar or Pub" }, { id: 2, text: "Date" }, { id: 3, text: "Sport" }];
-        };
-        return TravelBUtils;
-    }());
-    TravelB.TravelBUtils = TravelBUtils;
     var CheckinWin = (function () {
         function CheckinWin() {
             this.nowTabConst = "nowTab";
@@ -47,7 +29,7 @@ var TravelB;
                     _this.selectRadio("wantDo", r.wantDo);
                     _this.selectRadio("wantMeet", r.wantMeet);
                     $("#multiPeopleAllowed").prop("checked", r.multiPeopleAllowed);
-                    var diffMins = TravelBUtils.waitingMins(r.waitingUntil);
+                    var diffMins = TravelB.TravelBUtils.waitingMins(r.waitingUntil);
                     _this.$html.find("#minsWaiting").val(diffMins);
                     _this.setCombo(_this.$html.find("#fromAge"), r.fromAge);
                     _this.setCombo(_this.$html.find("#toAge"), r.toAge);
@@ -61,7 +43,7 @@ var TravelB;
             });
         };
         CheckinWin.prototype.initWantDo = function () {
-            var items = TravelBUtils.wantDoDB();
+            var items = TravelB.TravelBUtils.wantDoDB();
             var $c = this.$html.find("#wantDoCont");
             items.forEach(function (i) {
                 var $h = $("<input id=\"wd_" + i.id + "\" type=\"checkbox\" /><label for=\"wd_" + i.id + "\">" + i.text + "</label>");

@@ -23,7 +23,7 @@ var Views;
         TravelBMgmt.prototype.initCombo = function () {
             var _this = this;
             var c = new Common.PlaceSearchConfig();
-            c.providers = "1,0,4";
+            c.providers = "1,4";
             c.selOjb = $("#place");
             c.minCharsToSearch = 1;
             c.clearAfterSearch = true;
@@ -32,8 +32,8 @@ var Views;
                 _this.addMeetingPoint(clickedPlaceObj.SourceId, clickedPlaceObj.SourceType, clickedPlaceObj.Name, clickedPlaceObj.Coordinates);
             };
         };
-        TravelBMgmt.prototype.addMeetingPoint = function (id, type, text, coords) {
-            var data = { sourceId: id, type: type, text: text, coords: coords };
+        TravelBMgmt.prototype.addMeetingPoint = function (id, type, text, coord) {
+            var data = { sourceId: id, type: type, text: text, coord: coord };
             this.apiPost("meetingPoint", data, function (r) {
             });
         };

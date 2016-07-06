@@ -168,39 +168,39 @@
 			c.clearAfterSearch = false;
 			return c;
 		}
-			
+
 		private initInterestsTagger(selectedItems) {
-				var itemsRange = [
-						{ text: "Traveling", value: 0, kind: "i" },
-						{ text: "Partying", value: 1, kind: "i" },
-						{ text: "Sport", value: 2, kind: "i" },
-						{ text: "Drinking", value: 3, kind: "i" },
-						{ text: "Eating", value: 4, kind: "i" }						
-				];
 
-				var config = new Planning.TaggingFieldConfig();
-				config.containerId = "intersTagging";
-				config.localValues = true;
-				config.itemsRange = itemsRange;
+			var interests = TravelB.TravelBUtils.interestsDB();
 
-				this.interestsTagger = new Planning.TaggingField(config);
-				this.interestsTagger.onItemClickedCustom = ($target, callback) => {
-						var val = $target.data("vl");
-						this.callServer("Inters", { value: val, action: "ADD" }, callback);
-				}
+			var itemsRange = _.map(interests, (i) => {
+				return { text: i.text, value: i.id, kind: "i" }
+			});
 
-				this.interestsTagger.onDeleteCustom = (val, callback) => {
-						this.callServer("Inters", { value: val, action: "DEL" }, callback);
-				}
 
-				//set init values		
-				var selItms = _.map(selectedItems, (i) => {
-						return { value: i, kind: "i" };
-				});
-				this.interestsTagger.setSelectedItems(selItms);
+			var config = new Planning.TaggingFieldConfig();
+			config.containerId = "intersTagging";
+			config.localValues = true;
+			config.itemsRange = itemsRange;
+
+			this.interestsTagger = new Planning.TaggingField(config);
+			this.interestsTagger.onItemClickedCustom = ($target, callback) => {
+				var val = $target.data("vl");
+				this.callServer("Inters", { value: val, action: "ADD" }, callback);
+			}
+
+			this.interestsTagger.onDeleteCustom = (val, callback) => {
+				this.callServer("Inters", { value: val, action: "DEL" }, callback);
+			}
+
+			//set init values		
+			var selItms = _.map(selectedItems, (i) => {
+				return { value: i, kind: "i" };
+			});
+			this.interestsTagger.setSelectedItems(selItms);
 		}
 
-			private initLangsTagger(selectedItems) {
+		private initLangsTagger(selectedItems) {
 					var itemsRange = [
 							{ text: "English", value: "en", kind: "l"},
 							{ text: "German", value: "de", kind: "l" },

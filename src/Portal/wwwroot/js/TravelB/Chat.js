@@ -11,22 +11,45 @@ var Views;
         function Chat() {
             this.names = [];
             this.loadedIds = [];
+            this.refreshCycleFinished = true;
+            this.lastRefreshDate = null;
             this.chatRowTmp = Views.ViewBase.currentView.registerTemplate("chatRow-template");
+            this.chatWinTmp = Views.ViewBase.currentView.registerTemplate("chatWin-template");
         }
         Chat.prototype.startRefresh = function () {
             var _this = this;
             var i = setInterval(function () {
+                if (!_this.refreshCycleFinished) {
+                    return;
+                }
+                else {
+                    _this.refreshCycleFinished = false;
+                }
                 if (_this.loadedIds.length === 0) {
                     clearInterval(i);
                 }
                 var prms = [];
+                var lastDate = null;
                 _this.loadedIds.forEach(function (rid) {
                     prms.push(["reactIds", rid]);
+                    var ld = _this.getChatByRectId(rid).data("last");
+                    if (lastDate === null) {
+                        lastDate = ld;
+                    }
+                    else if (ld > lastDate) {
+                        lastDate = ld;
+                    }
                 });
+                if (lastDate) {
+                    prms.push(["lastDate", lastDate.toString()]);
+                }
                 Views.ViewBase.currentView.apiGet("ReactChat", prms, function (responses) {
-                    responses.forEach(function (resp) {
-                        _this.appPosts(resp.posts, resp.reactId);
-                    });
+                    if (responses) {
+                        responses.forEach(function (resp) {
+                            _this.appPosts(resp.posts, resp.reactId);
+                        });
+                    }
+                    _this.refreshCycleFinished = true;
                 });
             }, 5000);
         };
@@ -40,9 +63,12 @@ var Views;
                     var $c = _this.createOneChat(r);
                     $cont.append($c);
                     _this.appPosts(r.chatPosts, r.reactId);
-                    var last = _.last(r.chatPosts);
-                    _this.getChatByRectId(r.reactId).data("last", last.time);
+                    if (r.chatPosts.length > 0) {
+                        var last = _.last(r.chatPosts);
+                        _this.getChatByRectId(r.reactId).data("last", last.time);
+                    }
                 });
+                _this.startRefresh();
             });
         };
         Chat.prototype.addNames = function (r) {
@@ -75,7 +101,15 @@ var Views;
         Chat.prototype.createOneChat = function (react) {
             var _this = this;
             this.addNames(react);
-            var $c = $("<div data-id=\"" + react.reactId + "\" id=\"chat_" + react.reactId + "\" class=\"chat-cont\"><div class=\"chat-texts\"></div><div class=\"chat-message\"><textarea></textarea><button class=\"send\">S</button></div></div>");
+            var name = react.askingUserName;
+            if (react.askingUserId === Views.ViewBase.currentUserId) {
+                name = react.targetUserName;
+            }
+            var context = {
+                reactId: react.reactId,
+                name: name
+            };
+            var $c = $(this.chatWinTmp(context));
             $c.find(".send").click(function (e) {
                 e.preventDefault();
                 var txt = $c.find("textarea").val();
@@ -95,19 +129,29 @@ var Views;
             };
             Views.ViewBase.currentView.apiPost("ReactChat", data, function (newPosts) {
                 _this.appPosts(newPosts, reactId);
+                var chatWin = _this.getChatByRectId(reactId);
+                chatWin.find("textarea").val("");
             });
         };
         Chat.prototype.appPosts = function (posts, reactId) {
             var _this = this;
-            var $cont = this.getChatByRectId(reactId).find(".chat-texts");
+            var chatWin = this.getChatByRectId(reactId);
+            var $cont = chatWin.find(".chat-texts");
             var order = _.sortBy(posts, function (p) { return p.time; });
             order.forEach(function (p) {
                 var name = _this.genNameById(p.userId);
                 var $p = _this.genPost(p.userId, name, p.text);
                 $cont.append($p);
             });
-            var last = _.last(order);
-            this.getChatByRectId(reactId).data("last", last.time);
+            if (order.length > 0) {
+                var last = _.last(order);
+                console.log("updating last.time: " + last.time);
+                chatWin.data("last", last.time);
+                setTimeout(function () {
+                    var sh = $cont[0].scrollHeight;
+                    $cont[0].scrollTop = sh;
+                }, 100);
+            }
         };
         Chat.prototype.genPost = function (userId, name, text) {
             var context = {

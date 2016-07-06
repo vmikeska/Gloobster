@@ -21,8 +21,8 @@ module TravelB {
 					id: p.userId,
 					name: p.displayName,
 					age: curYear - p.birthYear,
-					waitingFor: Views.TravelBView.getGenderStr(p.wantMeet),
-					wants: Views.TravelBView.getActivityStr(p.wantDo),
+					waitingFor: Views.StrOpers.getGenderStr(p.wantMeet),
+					wants: Views.StrOpers.getActivityStr(p.wantDo),
 					fromDate: DateUtils.myDateToStr(p.fromDate),
 					toDate: DateUtils.myDateToStr(p.toDate)
 				};

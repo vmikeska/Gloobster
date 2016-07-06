@@ -4,35 +4,62 @@
 
 	export class Chat {
 		private chatRowTmp;
+		private chatWinTmp;
 
 		constructor() {
-			this.chatRowTmp = ViewBase.currentView.registerTemplate("chatRow-template");
+				this.chatRowTmp = ViewBase.currentView.registerTemplate("chatRow-template");
+				this.chatWinTmp = ViewBase.currentView.registerTemplate("chatWin-template");
 		}
 
 		private names = [];
 	  private loadedIds = [];
 
-			public startRefresh() {
-				var i = setInterval(() => {
+		private refreshCycleFinished = true;
 
-						if (this.loadedIds.length === 0) {
-							clearInterval(i);
-						}
+		public startRefresh() {
+			var i = setInterval(() => {
 
-						var prms = [];
-						this.loadedIds.forEach((rid) => {
-							prms.push(["reactIds", rid]);
-						});
-					ViewBase.currentView.apiGet("ReactChat", prms, (responses) => {
+				if (!this.refreshCycleFinished) {
+					return;
+				} else {
+					this.refreshCycleFinished = false;
+				}
 
+				if (this.loadedIds.length === 0) {
+					clearInterval(i);
+				}
+
+				var prms = [];
+				var lastDate = null;
+				this.loadedIds.forEach((rid) => {
+						prms.push(["reactIds", rid]);
+						var ld = this.getChatByRectId(rid).data("last");
+
+						if (lastDate === null) {
+							lastDate = ld;
+						} else if (ld > lastDate) {
+							lastDate = ld;
+						}					
+				});
+				if (lastDate) {
+					prms.push(["lastDate", lastDate.toString()]);
+				}
+
+				ViewBase.currentView.apiGet("ReactChat", prms, (responses) => {
+
+					if (responses) {
 						responses.forEach((resp) => {
 							this.appPosts(resp.posts, resp.reactId);
 						});
-							
-					});
+					}
 
-				}, 5000);
-			}
+					this.refreshCycleFinished = true;
+				});
+
+			}, 5000);
+		}
+
+		private lastRefreshDate = null;
 
 		public createAll() {
 			var prms = [["state", CheckinReactionState.Accepted.toString()]];
@@ -48,9 +75,13 @@
 					$cont.append($c);
 					this.appPosts(r.chatPosts, r.reactId);
 
-					var last = _.last(r.chatPosts);
-					this.getChatByRectId(r.reactId).data("last", last.time);
+					if (r.chatPosts.length > 0) {
+						var last = _.last(r.chatPosts);
+						this.getChatByRectId(r.reactId).data("last", last.time);
+					}
 				});
+
+				this.startRefresh();
 
 			});
 		}
@@ -94,8 +125,18 @@
 
 		public createOneChat(react) {
 			this.addNames(react);
+				
+			var name = react.askingUserName;
+			if (react.askingUserId === ViewBase.currentUserId) {
+				name = react.targetUserName;
+			}
+				
+			var context = {
+					reactId: react.reactId,
+					name: name
+			};
 
-			var $c = $(`<div data-id="${react.reactId}" id="chat_${react.reactId}" class="chat-cont"><div class="chat-texts"></div><div class="chat-message"><textarea></textarea><button class="send">S</button></div></div>`);
+			var $c = $(this.chatWinTmp(context));
 
 			$c.find(".send").click((e) => {
 				e.preventDefault();
@@ -121,11 +162,16 @@
 
 			ViewBase.currentView.apiPost("ReactChat", data, (newPosts) => {
 				this.appPosts(newPosts, reactId);
+
+				var chatWin = this.getChatByRectId(reactId);
+				chatWin.find("textarea").val("");
 			});
 		}
 
 		private appPosts(posts, reactId) {
-			var $cont = this.getChatByRectId(reactId).find(".chat-texts");
+			var chatWin = this.getChatByRectId(reactId);
+			var $cont = chatWin.find(".chat-texts");
+
 			var order = _.sortBy(posts, (p) => { return p.time });
 			order.forEach((p) => {
 				var name = this.genNameById(p.userId);
@@ -133,8 +179,20 @@
 				$cont.append($p);
 			});
 
-			var last = _.last(order);
-			this.getChatByRectId(reactId).data("last", last.time);
+			if (order.length > 0) {
+				var last = _.last(order);
+
+				console.log(`updating last.time: ${last.time}`);
+
+				chatWin.data("last", last.time);
+
+				//wait until images are loaded - full height known
+				setTimeout(() => {
+					var sh = $cont[0].scrollHeight;
+					$cont[0].scrollTop = sh;
+				}, 100);
+				
+			}
 		}
 
 		private genPost(userId, name, text) {
@@ -157,7 +215,8 @@
 			var prms = [["state", CheckinReactionState.Created.toString()]];
 
 			ViewBase.currentView.apiGet("CheckinReact", prms, (reacts) => {
-				this.genRactNotifs(reacts);
+					
+					this.genRactNotifs(reacts);
 			});
 		}
 
