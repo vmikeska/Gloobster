@@ -10,7 +10,10 @@ using System.Linq;
 using Autofac;
 using Gloobster.Entities;
 using Microsoft.AspNet.Http.Extensions;
+using MongoDB.Bson;
+using MongoDB.Driver;
 using UAParser;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Gloobster.Portal.Controllers.Portal
 {
@@ -22,11 +25,47 @@ namespace Gloobster.Portal.Controllers.Portal
         public string Test { get; set; }
     }
 
+    public class StatsModel
+    {
+        public List<StatItem> items { get; set; }
+    }
+
+    public class StatItem
+    {
+        public string name { get; set; }
+        public long size { get; set; }
+        public long storageSize { get; set; }
+    }   
+    
     public class MyLogController : PortalBaseController
     {
         public MyLogController(ILogger log, IDbOperations db, IComponentContext cc, ILanguages langs) : base(log, db, cc, langs)
         {
 
+        }
+
+        public async Task<IActionResult> Stats()
+        {
+            var stats = new StatsModel
+            {
+                items = new List<StatItem>()
+            };
+
+            List<BsonDocument> colls = DB.Database.ListCollectionsAsync().Result.ToListAsync<BsonDocument>().Result;
+            foreach (var coll in colls)
+            {
+                var name = coll["name"].AsString;
+                
+                var result = await DB.Database.RunCommandAsync<BsonDocument>("{collstats: '" + name +"'}");
+                var list = result.ToList();
+                long size = long.Parse(list.FirstOrDefault(l => l.Name == "size").Value.ToString());
+                long storageSize = long.Parse(list.FirstOrDefault(l => l.Name == "storageSize").Value.ToString());
+
+                stats.items.Add(new StatItem {size = size, storageSize = storageSize, name = name});
+            }
+
+            stats.items = stats.items.OrderByDescending(o => o.storageSize).ToList();
+            return View(stats);
         }
 
         public IActionResult UsersToDelete()
@@ -75,11 +114,7 @@ namespace Gloobster.Portal.Controllers.Portal
             return accountsToDelete;
         }
 
-        private void DelUsers()
-        {
-            
-        }
-
+      
         public IActionResult Index()
         {
             var logs = DB.List<AccessLogEntity>();

@@ -4,7 +4,7 @@
 	 //https://github.com/jquery/PEP
 
         
-        public registerDropDown($dd) {
+        public static registerDropDown($dd) {
 
             $dd.find('.selected').on('pointerdown', (e) => {
 
@@ -43,7 +43,7 @@
 	    var dropdown = selected.closest('.dropdown');
 			var input = selected.siblings('input');
 
-			this.hideOthers(dropdown);
+			DropDown.hideOthers(dropdown);
 
 			dropdown.toggleClass('dropdown-open');
 
@@ -76,7 +76,7 @@
 
 	 }
 
-	 private hideOthers(hovered) {
+	 private static hideOthers(hovered) {
 		 var $items = $('.dropdown').not(hovered);
 
 		 $items.each((i, el) => {		 

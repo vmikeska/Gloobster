@@ -287,6 +287,9 @@
 				});
 
 			var search = this.initPlaceDD("2", $("#searchCity"));
+			search.onPlaceSelected = (p, e) => {
+					this.setPlaceCenter(e.Coordinates.Lat, e.Coordinates.Lng);
+			}
 		}
 
 		private onMapCenterChanged(c, bounds) {
@@ -295,7 +298,7 @@
 		}
 
 		public setPlaceCenter(lat, lng) {
-			this.travelMap.mapObj.setView([lat, lng], 9);
+			this.travelMap.mapObj.setView([lat, lng], 12);
 		}
 
 		private getLocation(callback) {

@@ -100,11 +100,26 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         {
             //todo: check rights
 
-            var checkinIdObj = new ObjectId(req.id);
+            var ridObj = new ObjectId(req.id);
 
-            var f = DB.F<CheckinReactionEntity>().Eq(r => r.Checkin_id, checkinIdObj);
+            var f = DB.F<CheckinReactionEntity>().Eq(r => r.id, ridObj);
             var u = DB.U<CheckinReactionEntity>().Set(c => c.State, req.state);
             var res = await DB.UpdateAsync(f, u);
+
+            if (res.ModifiedCount > 0)
+            {
+                if (req.state == CheckinReactionState.Blocked)
+                {
+                    //todo: block user profile
+                    //UserIdObj
+                }
+
+                if (req.state == CheckinReactionState.Reported)
+                {
+                    //todo: block user profile and report
+                    //UserIdObj
+                }
+            }
 
             return new ObjectResult(null);
         }

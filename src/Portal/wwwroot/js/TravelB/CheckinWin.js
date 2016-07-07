@@ -10,7 +10,6 @@ var TravelB;
             this.nowTabConst = "nowTab";
             this.futureTabConst = "futureTab";
             this.registerTemplates();
-            this.ddReg = new Common.DropDown();
         }
         CheckinWin.prototype.showCityCheckin = function (editId) {
             var isEdit = (editId != null);
@@ -59,8 +58,8 @@ var TravelB;
             $("body").append(this.$html);
             this.$html.fadeIn();
             this.initWantDo();
-            this.ddReg.registerDropDown(this.$html.find("#fromAge"));
-            this.ddReg.registerDropDown(this.$html.find("#toAge"));
+            Common.DropDown.registerDropDown(this.$html.find("#fromAge"));
+            Common.DropDown.registerDropDown(this.$html.find("#toAge"));
             this.$html.find("#submitCheckin").click(function (e) {
                 e.preventDefault();
                 if (type === CheckinType.Now) {
@@ -81,7 +80,7 @@ var TravelB;
         CheckinWin.prototype.createWinNow = function () {
             var $d = $(this.dlgNow());
             this.$html.find("#dlgSpec").html($d);
-            this.wpCombo = this.initPlaceDD("1,0,4", this.$html.find("#waitingPlace"));
+            this.wpCombo = this.initPlaceDD("1,4", this.$html.find("#waitingPlace"));
         };
         CheckinWin.prototype.createWinCity = function () {
             var $d = $(this.dlgCity());

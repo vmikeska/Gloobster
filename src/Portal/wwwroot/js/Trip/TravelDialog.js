@@ -208,8 +208,7 @@ var Trip;
         TravelDialog.prototype.buildTemplateEdit = function ($row) {
             var html = this.dialogManager.travelDetailTemplate();
             var $html = $(html);
-            var dd = new Common.DropDown();
-            dd.registerDropDown($html.find(".dropdown"));
+            Common.DropDown.registerDropDown($html.find(".dropdown"));
             this.dialogManager.regClose($html);
             $row.after($html);
         };

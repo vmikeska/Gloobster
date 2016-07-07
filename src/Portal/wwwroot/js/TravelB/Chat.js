@@ -5,18 +5,18 @@ var Views;
         CheckinReactionState[CheckinReactionState["Refused"] = 1] = "Refused";
         CheckinReactionState[CheckinReactionState["Accepted"] = 2] = "Accepted";
         CheckinReactionState[CheckinReactionState["Finished"] = 3] = "Finished";
+        CheckinReactionState[CheckinReactionState["Rated"] = 4] = "Rated";
+        CheckinReactionState[CheckinReactionState["NotMet"] = 5] = "NotMet";
+        CheckinReactionState[CheckinReactionState["Blocked"] = 6] = "Blocked";
+        CheckinReactionState[CheckinReactionState["Reported"] = 7] = "Reported";
     })(Views.CheckinReactionState || (Views.CheckinReactionState = {}));
     var CheckinReactionState = Views.CheckinReactionState;
-    var Chat = (function () {
-        function Chat() {
-            this.names = [];
-            this.loadedIds = [];
+    var ChatRefresh = (function () {
+        function ChatRefresh() {
             this.refreshCycleFinished = true;
             this.lastRefreshDate = null;
-            this.chatRowTmp = Views.ViewBase.currentView.registerTemplate("chatRow-template");
-            this.chatWinTmp = Views.ViewBase.currentView.registerTemplate("chatWin-template");
         }
-        Chat.prototype.startRefresh = function () {
+        ChatRefresh.prototype.startRefresh = function () {
             var _this = this;
             var i = setInterval(function () {
                 if (!_this.refreshCycleFinished) {
@@ -25,14 +25,16 @@ var Views;
                 else {
                     _this.refreshCycleFinished = false;
                 }
-                if (_this.loadedIds.length === 0) {
+                var chatWins = $(".chat-cont").toArray();
+                if (chatWins.length === 0) {
                     clearInterval(i);
                 }
+                var loadedIds = _.map(chatWins, function (w) { return $(w).data("id"); });
                 var prms = [];
                 var lastDate = null;
-                _this.loadedIds.forEach(function (rid) {
+                loadedIds.forEach(function (rid) {
                     prms.push(["reactIds", rid]);
-                    var ld = _this.getChatByRectId(rid).data("last");
+                    var ld = Chat.getChatByRectId(rid).data("last");
                     if (lastDate === null) {
                         lastDate = ld;
                     }
@@ -44,31 +46,48 @@ var Views;
                     prms.push(["lastDate", lastDate.toString()]);
                 }
                 Views.ViewBase.currentView.apiGet("ReactChat", prms, function (responses) {
-                    if (responses) {
-                        responses.forEach(function (resp) {
-                            _this.appPosts(resp.posts, resp.reactId);
-                        });
-                    }
+                    _this.onRefresh(responses);
                     _this.refreshCycleFinished = true;
                 });
             }, 5000);
         };
+        return ChatRefresh;
+    }());
+    Views.ChatRefresh = ChatRefresh;
+    var Chat = (function () {
+        function Chat() {
+            var _this = this;
+            this.names = [];
+            this.chatRowTmp = Views.ViewBase.currentView.registerTemplate("chatRow-template");
+            this.chatWinTmp = Views.ViewBase.currentView.registerTemplate("chatWin-template");
+            this.stopWinTmp = Views.ViewBase.currentView.registerTemplate("stopWin-template");
+            this.metWin = Views.ViewBase.currentView.registerTemplate("metWin-template");
+            this.chatRefresh = new ChatRefresh();
+            this.chatRefresh.onRefresh = function (responses) {
+                if (responses) {
+                    responses.forEach(function (resp) {
+                        _this.appPosts(resp.posts, resp.reactId);
+                    });
+                }
+            };
+        }
         Chat.prototype.createAll = function () {
             var _this = this;
             var prms = [["state", CheckinReactionState.Accepted.toString()]];
-            var $cont = this.getMainCont();
+            var $cont = $("body");
             Views.ViewBase.currentView.apiGet("CheckinReact", prms, function (reacts) {
-                reacts.forEach(function (r) {
-                    _this.loadedIds.push(r.reactId);
+                reacts.forEach(function (r, i) {
                     var $c = _this.createOneChat(r);
+                    var left = (i * (250 + 15));
+                    $c.css("left", left + "px");
                     $cont.append($c);
                     _this.appPosts(r.chatPosts, r.reactId);
                     if (r.chatPosts.length > 0) {
                         var last = _.last(r.chatPosts);
-                        _this.getChatByRectId(r.reactId).data("last", last.time);
+                        Chat.getChatByRectId(r.reactId).data("last", last.time);
                     }
                 });
-                _this.startRefresh();
+                _this.chatRefresh.startRefresh();
             });
         };
         Chat.prototype.addNames = function (r) {
@@ -90,26 +109,30 @@ var Views;
             }
             return f.name;
         };
-        Chat.prototype.getMainCont = function () {
-            var $c = $(".chats");
-            if ($c.length === 0) {
-                $c = $("<div class=\"chats\"></div>");
-                $("body").append($c);
-            }
-            return $c;
-        };
         Chat.prototype.createOneChat = function (react) {
             var _this = this;
             this.addNames(react);
-            var name = react.askingUserName;
-            if (react.askingUserId === Views.ViewBase.currentUserId) {
-                name = react.targetUserName;
-            }
+            var isTarget = (react.targetUserId === Views.ViewBase.currentUserId);
+            var name = isTarget ? react.askingUserName : react.targetUserName;
             var context = {
                 reactId: react.reactId,
                 name: name
             };
             var $c = $(this.chatWinTmp(context));
+            var $combo = $c.find(".actions");
+            Common.DropDown.registerDropDown($combo);
+            if (isTarget) {
+                this.targetActions($combo);
+            }
+            else {
+                this.requestorActions($combo);
+            }
+            $combo.find("a").click(function (e) {
+                e.preventDefault();
+                var $target = $(e.target);
+                var act = $target.data("act");
+                _this.exeAct(react.reactId, act);
+            });
             $c.find(".send").click(function (e) {
                 e.preventDefault();
                 var txt = $c.find("textarea").val();
@@ -117,7 +140,80 @@ var Views;
             });
             return $c;
         };
-        Chat.prototype.getChatByRectId = function (reactId) {
+        Chat.prototype.exeAct = function (reactId, act) {
+            if (act === "stop") {
+                this.createStopScreen(reactId);
+            }
+            if (act === "met") {
+                this.createMetScreen(reactId);
+            }
+            if (act === "didNotMeet") {
+                var prms = { id: reactId, state: CheckinReactionState.NotMet };
+                Views.ViewBase.currentView.apiPut("CheckinReact", prms, function () {
+                    var $cont = Chat.getChatByRectId(reactId);
+                    $cont.remove();
+                });
+            }
+        };
+        Chat.prototype.createStopScreen = function (reactId) {
+            var _this = this;
+            var $cont = Chat.getChatByRectId(reactId);
+            var $c = $(this.stopWinTmp());
+            $cont.html($c);
+            $cont.find(".notInt").click(function (e) {
+                e.preventDefault();
+                var dlg = new Common.ConfirmDialog();
+                dlg.create("Stop conversation", "Do you really want to stop the conversation ?", "Cancel", "Stop", function () {
+                    var prms = { id: reactId, state: CheckinReactionState.Refused, message: "" };
+                    Views.ViewBase.currentView.apiPut("CheckinReact", prms, function () {
+                        var $cont = Chat.getChatByRectId(reactId);
+                        $cont.remove();
+                    });
+                });
+            });
+            $cont.find(".block").click(function (e) {
+                e.preventDefault();
+                _this.block(reactId, CheckinReactionState.Blocked);
+            });
+            $cont.find(".blockReport").click(function (e) {
+                e.preventDefault();
+                _this.block(reactId, CheckinReactionState.Reported);
+            });
+        };
+        Chat.prototype.block = function (reactId, state) {
+            var dlg = new Common.ConfirmDialog();
+            dlg.create("User blocking", "Do you really want to block this user ?", "Cancel", "Block", function () {
+                var prms = { id: reactId, state: state, message: "" };
+                Views.ViewBase.currentView.apiPut("CheckinReact", prms, function () {
+                    var $cont = Chat.getChatByRectId(reactId);
+                    $cont.remove();
+                });
+            });
+        };
+        Chat.prototype.createMetScreen = function (reactId) {
+            var $cont = Chat.getChatByRectId(reactId);
+            var context = {
+                rid: reactId
+            };
+            var $c = $(this.metWin(context));
+            $cont.html($c);
+            $cont.find(".showComm").change(function (e) {
+                $cont.find(".comment").toggle();
+            });
+        };
+        Chat.prototype.targetActions = function ($combo) {
+            $combo.find("ul").append(this.actMenuItem("Stop conversation", "stop"));
+            $combo.find("ul").append(this.actMenuItem("We've already met", "met"));
+            $combo.find("ul").append(this.actMenuItem("We didn't meet", "didNotMeet"));
+        };
+        Chat.prototype.requestorActions = function ($combo) {
+            $combo.find("ul").append(this.actMenuItem("Stop conversation", "stop"));
+            $combo.find("ul").append(this.actMenuItem("We didn't meet", "didNotMeet"));
+        };
+        Chat.prototype.actMenuItem = function (name, action) {
+            return $("<li><a data-act=\"" + action + "\" href=\"#\">" + name + "</a></li>");
+        };
+        Chat.getChatByRectId = function (reactId) {
             return $("#chat_" + reactId);
         };
         Chat.prototype.sendMessage = function (txt, reactId) {
@@ -125,17 +221,17 @@ var Views;
             var data = {
                 reactId: reactId,
                 text: txt,
-                lastDate: this.getChatByRectId(reactId).data("last")
+                lastDate: Chat.getChatByRectId(reactId).data("last")
             };
             Views.ViewBase.currentView.apiPost("ReactChat", data, function (newPosts) {
                 _this.appPosts(newPosts, reactId);
-                var chatWin = _this.getChatByRectId(reactId);
+                var chatWin = Chat.getChatByRectId(reactId);
                 chatWin.find("textarea").val("");
             });
         };
         Chat.prototype.appPosts = function (posts, reactId) {
             var _this = this;
-            var chatWin = this.getChatByRectId(reactId);
+            var chatWin = Chat.getChatByRectId(reactId);
             var $cont = chatWin.find(".chat-texts");
             var order = _.sortBy(posts, function (p) { return p.time; });
             order.forEach(function (p) {
@@ -165,78 +261,5 @@ var Views;
         return Chat;
     }());
     Views.Chat = Chat;
-    var CheckinReacts = (function () {
-        function CheckinReacts() {
-        }
-        CheckinReacts.prototype.refreshReacts = function () {
-            var _this = this;
-            var prms = [["state", CheckinReactionState.Created.toString()]];
-            Views.ViewBase.currentView.apiGet("CheckinReact", prms, function (reacts) {
-                _this.genRactNotifs(reacts);
-            });
-        };
-        CheckinReacts.prototype.genRactNotifs = function (reacts) {
-            var _this = this;
-            reacts.forEach(function (r) {
-                var data = {
-                    uid: r.targetUserId,
-                    name: r.targetUserName,
-                    id: r.checkinId
-                };
-                var $h = _this.createReactNotif(data);
-                $("#notifCont").append($h);
-            });
-        };
-        CheckinReacts.prototype.createReactNotif = function (data) {
-            var _this = this;
-            var $content = $("<a data-uid=\"" + data.uid + "\" href=\"#\">" + data.name + "</a> \n\t\t\t\t\t\t\t <br/>\n\t\t\t\t\t\t\t Want's to start chat with you");
-            var actions = [
-                {
-                    name: "Start",
-                    callback: function () {
-                        _this.changeNotifState(data.id, CheckinReactionState.Accepted, function (r) {
-                            $content.closest(".notif").remove();
-                        });
-                    }
-                }
-            ];
-            var $n = this.createNotifBase($content, data, actions);
-            return $n;
-        };
-        CheckinReacts.prototype.createNotifBase = function (content, data, actions) {
-            var _this = this;
-            var $base = $("<div id=\"notif_" + data.id + "\" data-id=\"" + data.id + "\" class=\"notif\"><div class=\"acts\"></div></div>");
-            $base.append(content);
-            var $acts = $base.find(".acts");
-            var hideTxt = "Let be";
-            var $hideAct = this.genAction(hideTxt, function () {
-                _this.changeNotifState(data.id, CheckinReactionState.Refused, function (r) {
-                    $hideAct.closest(".notif").remove();
-                });
-            });
-            $acts.append($hideAct);
-            actions.forEach(function (a) {
-                var $act = _this.genAction(a.name, a.callback);
-                $acts.prepend($act);
-            });
-            return $base;
-        };
-        CheckinReacts.prototype.changeNotifState = function (id, state, callback) {
-            var data = { id: id, state: state };
-            Views.ViewBase.currentView.apiPut("CheckinReact", data, function (r) {
-                callback(r);
-            });
-        };
-        CheckinReacts.prototype.genAction = function (name, callback) {
-            var $btn = $("<button>" + name + "</button>");
-            $btn.click(function (e) {
-                e.preventDefault();
-                callback();
-            });
-            return $btn;
-        };
-        return CheckinReacts;
-    }());
-    Views.CheckinReacts = CheckinReacts;
 })(Views || (Views = {}));
 //# sourceMappingURL=Chat.js.map

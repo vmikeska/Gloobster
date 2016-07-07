@@ -12,8 +12,7 @@
 
 		private checkinWindowDialog;
 		private dlgNow;
-		private dlgCity;
-		private ddReg;
+		private dlgCity;		
 
 		private wpCombo;
 		private wcCombo;
@@ -21,8 +20,7 @@
 		private tabs: Tabs;
 
 		constructor() {
-			this.registerTemplates();
-			this.ddReg = new Common.DropDown();
+			this.registerTemplates();		
 		}
 
 			public showCityCheckin(editId) {
@@ -96,8 +94,8 @@
 
 			this.initWantDo();
 
-			this.ddReg.registerDropDown(this.$html.find("#fromAge"));
-			this.ddReg.registerDropDown(this.$html.find("#toAge"));
+			Common.DropDown.registerDropDown(this.$html.find("#fromAge"));
+			Common.DropDown.registerDropDown(this.$html.find("#toAge"));
 
 			this.$html.find("#submitCheckin").click((e) => {
 				e.preventDefault();
@@ -123,7 +121,7 @@
 			var $d = $(this.dlgNow());
 			this.$html.find("#dlgSpec").html($d);
 
-			this.wpCombo = this.initPlaceDD("1,0,4", this.$html.find("#waitingPlace"));
+			this.wpCombo = this.initPlaceDD("1,4", this.$html.find("#waitingPlace"));
 		}
 
 		private createWinCity() {

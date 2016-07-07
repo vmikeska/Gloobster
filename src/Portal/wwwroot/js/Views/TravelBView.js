@@ -221,13 +221,16 @@ var Views;
                 _this.setPlaceCenter(lat, lng);
             });
             var search = this.initPlaceDD("2", $("#searchCity"));
+            search.onPlaceSelected = function (p, e) {
+                _this.setPlaceCenter(e.Coordinates.Lat, e.Coordinates.Lng);
+            };
         };
         TravelBView.prototype.onMapCenterChanged = function (c, bounds) {
             this.currentBounds = bounds;
             this.displayData();
         };
         TravelBView.prototype.setPlaceCenter = function (lat, lng) {
-            this.travelMap.mapObj.setView([lat, lng], 9);
+            this.travelMap.mapObj.setView([lat, lng], 12);
         };
         TravelBView.prototype.getLocation = function (callback) {
             if (navigator.geolocation) {

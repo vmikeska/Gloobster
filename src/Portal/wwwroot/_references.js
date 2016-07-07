@@ -43,6 +43,7 @@
 /// <reference path="js/site.min.js" />
 /// <reference path="js/tilestamen.js" />
 /// <reference path="js/travelb/chat.js" />
+/// <reference path="js/travelb/checkinreacts.js" />
 /// <reference path="js/travelb/checkinwin.js" />
 /// <reference path="js/travelb/citytab.js" />
 /// <reference path="js/travelb/dateutils.js" />

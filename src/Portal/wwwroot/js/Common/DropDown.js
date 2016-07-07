@@ -3,7 +3,7 @@ var Common;
     var DropDown = (function () {
         function DropDown() {
         }
-        DropDown.prototype.registerDropDown = function ($dd) {
+        DropDown.registerDropDown = function ($dd) {
             var _this = this;
             $dd.find('.selected').on('pointerdown', function (e) {
                 var selected = $(e.target);
@@ -24,14 +24,13 @@ var Common;
             });
         };
         DropDown.prototype.initBody = function () {
-            var _this = this;
             $('.dropdown .selected').unbind();
             $('.dropdown .inputed').unbind();
             $('.dropdown .selected').on('pointerdown', function (e) {
                 var selected = $(e.target);
                 var dropdown = selected.closest('.dropdown');
                 var input = selected.siblings('input');
-                _this.hideOthers(dropdown);
+                DropDown.hideOthers(dropdown);
                 dropdown.toggleClass('dropdown-open');
                 if (!dropdown.hasClass('with-checkbox')) {
                     dropdown.find('li:not(.disabled)').unbind('click').click(function (e) {
@@ -56,7 +55,7 @@ var Common;
                 }
             });
         };
-        DropDown.prototype.hideOthers = function (hovered) {
+        DropDown.hideOthers = function (hovered) {
             var $items = $('.dropdown').not(hovered);
             $items.each(function (i, el) {
                 $(el).removeClass('dropdown-open');

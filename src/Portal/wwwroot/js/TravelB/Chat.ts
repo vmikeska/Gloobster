@@ -1,20 +1,16 @@
 ﻿module Views {
 
-	export enum CheckinReactionState { Created, Refused, Accepted, Finished }
+		export enum CheckinReactionState { Created, Refused, Accepted, Finished, Rated, NotMet, Blocked, Reported }
 
-	export class Chat {
-		private chatRowTmp;
-		private chatWinTmp;
 
-		constructor() {
-				this.chatRowTmp = ViewBase.currentView.registerTemplate("chatRow-template");
-				this.chatWinTmp = ViewBase.currentView.registerTemplate("chatWin-template");
-		}
+	export class ChatRefresh {
 
-		private names = [];
-	  private loadedIds = [];
+		public onRefresh: Function;
+
+		//public loadedIds = [];
 
 		private refreshCycleFinished = true;
+		private lastRefreshDate = null;
 
 		public startRefresh() {
 			var i = setInterval(() => {
@@ -25,21 +21,28 @@
 					this.refreshCycleFinished = false;
 				}
 
-				if (this.loadedIds.length === 0) {
-					clearInterval(i);
+				var chatWins = $(".chat-cont").toArray();
+
+				if (chatWins.length === 0) {
+						clearInterval(i);
 				}
+
+				var loadedIds = _.map(chatWins, (w) => { return $(w).data("id"); });
+						
+
+				
 
 				var prms = [];
 				var lastDate = null;
-				this.loadedIds.forEach((rid) => {
-						prms.push(["reactIds", rid]);
-						var ld = this.getChatByRectId(rid).data("last");
+				loadedIds.forEach((rid) => {
+					prms.push(["reactIds", rid]);
+					var ld = Chat.getChatByRectId(rid).data("last");
 
-						if (lastDate === null) {
-							lastDate = ld;
-						} else if (ld > lastDate) {
-							lastDate = ld;
-						}					
+					if (lastDate === null) {
+						lastDate = ld;
+					} else if (ld > lastDate) {
+						lastDate = ld;
+					}
 				});
 				if (lastDate) {
 					prms.push(["lastDate", lastDate.toString()]);
@@ -47,41 +50,68 @@
 
 				ViewBase.currentView.apiGet("ReactChat", prms, (responses) => {
 
-					if (responses) {
-						responses.forEach((resp) => {
-							this.appPosts(resp.posts, resp.reactId);
-						});
-					}
+					this.onRefresh(responses);
 
 					this.refreshCycleFinished = true;
 				});
 
 			}, 5000);
 		}
+	}
 
-		private lastRefreshDate = null;
+	export class Chat {
+		private chatRowTmp;
+		private chatWinTmp;
+		private stopWinTmp;
+		private metWin;
+
+		private chatRefresh: ChatRefresh;
+
+		constructor() {
+				this.chatRowTmp = ViewBase.currentView.registerTemplate("chatRow-template");
+				this.chatWinTmp = ViewBase.currentView.registerTemplate("chatWin-template");
+
+				this.stopWinTmp = ViewBase.currentView.registerTemplate("stopWin-template");
+				this.metWin = ViewBase.currentView.registerTemplate("metWin-template");
+
+				this.chatRefresh = new ChatRefresh();
+				this.chatRefresh.onRefresh = (responses) => {
+				if (responses) {
+					responses.forEach((resp) => {
+						this.appPosts(resp.posts, resp.reactId);
+					});
+				}
+			}
+		}
+
+		private names = [];
+
 
 		public createAll() {
 			var prms = [["state", CheckinReactionState.Accepted.toString()]];
 
-			var $cont = this.getMainCont();
+			var $cont = $("body");
+			//this.getMainCont();
 
 			ViewBase.currentView.apiGet("CheckinReact", prms, (reacts) => {
 
-				reacts.forEach((r) => {
-					this.loadedIds.push(r.reactId);
+				reacts.forEach((r, i) => {
+					//this.chatRefresh.loadedIds.push(r.reactId);
 
 					var $c = this.createOneChat(r);
+					var left = (i * (250 + 15));
+					$c.css("left", `${left}px`);
+
 					$cont.append($c);
 					this.appPosts(r.chatPosts, r.reactId);
 
 					if (r.chatPosts.length > 0) {
 						var last = _.last(r.chatPosts);
-						this.getChatByRectId(r.reactId).data("last", last.time);
+						Chat.getChatByRectId(r.reactId).data("last", last.time);
 					}
 				});
 
-				this.startRefresh();
+				this.chatRefresh.startRefresh();
 
 			});
 		}
@@ -112,24 +142,24 @@
 			return f.name;
 		}
 
-		private getMainCont() {
-			var $c = $(".chats");
+		//private getMainCont() {
+		//	var $c = $(".chats");
 
-			if ($c.length === 0) {
-				$c = $(`<div class="chats"></div>`);
-				$("body").append($c);
-			}
+		//	if ($c.length === 0) {
+		//		$c = $(`<div class="chats"></div>`);
+		//		$("body").append($c);
+		//	}
 
-			return $c;
-		}
+		//	return $c;
+		//}
 
 		public createOneChat(react) {
 			this.addNames(react);
 				
-			var name = react.askingUserName;
-			if (react.askingUserId === ViewBase.currentUserId) {
-				name = react.targetUserName;
-			}
+			
+			var isTarget = (react.targetUserId === ViewBase.currentUserId);
+
+			var name = isTarget ? react.askingUserName : react.targetUserName;
 				
 			var context = {
 					reactId: react.reactId,
@@ -137,6 +167,21 @@
 			};
 
 			var $c = $(this.chatWinTmp(context));
+			var $combo = $c.find(".actions");
+			Common.DropDown.registerDropDown($combo);
+			
+			if (isTarget) {
+					this.targetActions($combo);
+			} else {
+					this.requestorActions($combo);
+			}
+
+			$combo.find("a").click((e) => {
+					e.preventDefault();
+					var $target = $(e.target);
+					var act = $target.data("act");
+					this.exeAct(react.reactId, act);
+			});
 
 			$c.find(".send").click((e) => {
 				e.preventDefault();
@@ -148,7 +193,112 @@
 			return $c;
 		}
 
-		private getChatByRectId(reactId) {
+		private exeAct(reactId, act) {
+			if (act === "stop") {
+				this.createStopScreen(reactId);
+			}
+			if (act === "met") {
+				this.createMetScreen(reactId);
+			}
+			if (act === "didNotMeet") {
+
+				var prms = { id: reactId, state: CheckinReactionState.NotMet };
+				ViewBase.currentView.apiPut("CheckinReact", prms, () => {
+						var $cont = Chat.getChatByRectId(reactId);
+					$cont.remove();
+				});
+
+			}
+		}
+
+		private createStopScreen(reactId) {
+				var $cont = Chat.getChatByRectId(reactId);
+
+			var $c = $(this.stopWinTmp());
+
+			$cont.html($c);
+
+			$cont.find(".notInt").click((e) => {
+					e.preventDefault();
+					var dlg = new Common.ConfirmDialog();
+					dlg.create("Stop conversation", "Do you really want to stop the conversation ?", "Cancel", "Stop", () => {
+
+							var prms = { id: reactId, state: CheckinReactionState.Refused, message: "" };
+							ViewBase.currentView.apiPut("CheckinReact", prms, () => {
+									var $cont = Chat.getChatByRectId(reactId);
+									$cont.remove();
+							});
+
+					});					
+			});
+			
+			$cont.find(".block").click((e) => {
+					e.preventDefault();
+					this.block(reactId, CheckinReactionState.Blocked);
+			});
+
+			$cont.find(".blockReport").click((e) => {
+				e.preventDefault();
+				this.block(reactId, CheckinReactionState.Reported);
+			});
+		}
+
+		private block(reactId, state) {
+			var dlg = new Common.ConfirmDialog();
+			dlg.create("User blocking", "Do you really want to block this user ?", "Cancel", "Block", () => {
+
+				var prms = { id: reactId, state: state, message: "" };
+				ViewBase.currentView.apiPut("CheckinReact", prms, () => {
+						var $cont = Chat.getChatByRectId(reactId);
+					$cont.remove();
+				});
+
+			});
+		}
+
+		private createMetScreen(reactId) {
+				var $cont = Chat.getChatByRectId(reactId);
+
+			var context = {
+				rid: reactId
+			};
+
+			var $c = $(this.metWin(context));
+			$cont.html($c);
+			$cont.find(".showComm").change((e) => {				
+				$cont.find(".comment").toggle();
+			});
+
+
+			/ notRating
+			$cont.find("./liked")
+		}
+
+			//todo: change it all
+		private changeRectState() {
+				var prms = { id: reactId, state: CheckinReactionState.Refused, message: "" };
+				ViewBase.currentView.apiPut("CheckinReact", prms, () => {
+						var $cont = Chat.getChatByRectId(reactId);
+						$cont.remove();
+				});
+		}
+
+		private targetActions($combo) {
+				$combo.find("ul").append(this.actMenuItem("Stop conversation", "stop"));
+				$combo.find("ul").append(this.actMenuItem("We've already met", "met"));
+				$combo.find("ul").append(this.actMenuItem("We didn't meet", "didNotMeet"));				
+		}
+
+		private requestorActions($combo) {
+				$combo.find("ul").append(this.actMenuItem("Stop conversation", "stop"));
+				$combo.find("ul").append(this.actMenuItem("We didn't meet", "didNotMeet"));				
+		}
+
+		private actMenuItem(name, action) {
+			return $(`<li><a data-act="${action}" href="#">${name}</a></li>`);
+		}
+
+		public static getChatByRectId(reactId) {
 			return $(`#chat_${reactId}`);
 		}
 
@@ -157,19 +307,19 @@
 			var data = {
 				reactId: reactId,
 				text: txt,
-				lastDate: this.getChatByRectId(reactId).data("last")
+				lastDate: Chat.getChatByRectId(reactId).data("last")
 			}
 
 			ViewBase.currentView.apiPost("ReactChat", data, (newPosts) => {
 				this.appPosts(newPosts, reactId);
 
-				var chatWin = this.getChatByRectId(reactId);
+				var chatWin = Chat.getChatByRectId(reactId);
 				chatWin.find("textarea").val("");
 			});
 		}
 
 		private appPosts(posts, reactId) {
-			var chatWin = this.getChatByRectId(reactId);
+				var chatWin = Chat.getChatByRectId(reactId);
 			var $cont = chatWin.find(".chat-texts");
 
 			var order = _.sortBy(posts, (p) => { return p.time });
@@ -207,97 +357,4 @@
 			return $c;
 		}
 	}
-
-	export class CheckinReacts {
-
-		public refreshReacts() {
-
-			var prms = [["state", CheckinReactionState.Created.toString()]];
-
-			ViewBase.currentView.apiGet("CheckinReact", prms, (reacts) => {
-					
-					this.genRactNotifs(reacts);
-			});
-		}
-
-		private genRactNotifs(reacts) {
-			reacts.forEach((r) => {
-
-				var data = {
-					uid: r.targetUserId,
-					name: r.targetUserName,
-					id: r.checkinId
-				};
-
-				var $h = this.createReactNotif(data);
-				$("#notifCont").append($h);
-			});
-		}
-
-		private createReactNotif(data) {
-
-			var $content =
-				$(`<a data-uid="${data.uid}" href="#">${data.name}</a> 
-							 <br/>
-							 Want's to start chat with you`);
-
-			var actions = [
-				{
-					name: "Start",
-					callback: () => {
-						this.changeNotifState(data.id, CheckinReactionState.Accepted, (r) => {
-							//todo: display chate
-							$content.closest(".notif").remove();
-						});
-					}
-				}
-			];
-
-			var $n = this.createNotifBase($content, data, actions);
-			return $n;
-		}
-
-		private createNotifBase(content, data, actions) {
-
-			var $base = $(`<div id="notif_${data.id}" data-id="${data.id}" class="notif"><div class="acts"></div></div>`);
-			$base.append(content);
-
-			var $acts = $base.find(".acts");
-
-			var hideTxt = "Let be";
-			var $hideAct = this.genAction(hideTxt, () => {
-				this.changeNotifState(data.id, CheckinReactionState.Refused, (r) => {
-					$hideAct.closest(".notif").remove();
-				});
-			});
-			$acts.append($hideAct);
-
-			actions.forEach((a) => {
-				var $act = this.genAction(a.name, a.callback);
-				$acts.prepend($act);
-			});
-
-			return $base;
-		}
-
-		private changeNotifState(id, state: CheckinReactionState, callback) {
-
-			var data = { id: id, state: state };
-
-			ViewBase.currentView.apiPut("CheckinReact", data, (r) => {
-				callback(r);
-			});
-		}
-
-		private genAction(name, callback) {
-			var $btn = $(`<button>${name}</button>`);
-			$btn.click((e) => {
-				e.preventDefault();
-				callback();
-			});
-			return $btn;
-		}
-
-	}
-
 }

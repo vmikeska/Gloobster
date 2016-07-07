@@ -37,9 +37,8 @@
 
 		 this.getUserMenu((r) => {
 			var $menu = $(r);
-			$("#ddMenus").append($menu);
-			var dd = new Common.DropDown();
-			dd.registerDropDown($menu);
+			$("#ddMenus").append($menu);			
+			Common.DropDown.registerDropDown($menu);
 		 });
 		 
 		 if (this.onAfterCustom) {

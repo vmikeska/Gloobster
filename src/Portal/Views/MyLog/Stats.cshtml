@@ -1,0 +1,27 @@
+﻿@using System.Threading.Tasks
+@using Gloobster.Entities
+@using Gloobster.Portal.Controllers.Portal
+@model StatsModel
+
+@{
+    Layout = "";
+}
+
+<table>
+    <tr>
+        <th>name</th>
+        <th>size</th>
+        <th>storageSize</th>
+    </tr>
+    @foreach (StatItem item in Model.items)
+    {
+        <tr>
+            <td>@item.name</td>
+
+            <td>@((double)(item.size) / (double)(1024*1024))</td>
+
+            <td>@((double)(item.storageSize) / (double)(1024 * 1024))</td>
+            
+        </tr>
+    }
+</table>

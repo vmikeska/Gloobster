@@ -64,9 +64,12 @@
         height: 350px;
     }
 
-    .chats {
-        bottom: 0;        
-        height: 275px;
+    /*.chats {
+        bottom: 0;
+        left: 50%;
+        right: 50%;
+        width: 250px;
+        height: 300px;
         position: fixed;
 
         width: 100%;
@@ -76,14 +79,17 @@
         pointer-events: none;
         filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='your_transparent.png', sizingMethod='scale');
         background: none !important;
-    }
+    }*/
 
     .chat-cont {
-        display: inline-block;
+        bottom: 0;                
+        position: fixed;
+
+        /*display: inline-block;*/
         background-color: white;
         
         width: 250px;
-        height: 275px;
+        height: 300px;
         
         border: 1px solid black;
     }
@@ -130,6 +136,7 @@
 
 <script type="text/javascript" src="@Url.Content("~/js/Views/TravelBView.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/TravelB/Chat.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/TravelB/CheckinReacts.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/TravelB/DateUtils.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/TravelB/CheckinWin.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/TravelB/NowTab.js")"></script>

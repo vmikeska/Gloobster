@@ -567,8 +567,7 @@ var Views;
             var _this = this;
             var $lHtml = $(this.linkItemLinkTemplate(context));
             $lHtml.find(".delete").click(function (e) { return _this.linkDelete(e); });
-            var dd = new Common.DropDown();
-            dd.registerDropDown($lHtml.find(".dropdown"));
+            Common.DropDown.registerDropDown($lHtml.find(".dropdown"));
             $cont.append($lHtml);
         };
         LinksAdmin.prototype.itemDelete = function (e, sectionId) {
