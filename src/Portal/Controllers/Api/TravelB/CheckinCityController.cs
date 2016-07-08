@@ -138,7 +138,9 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 WaitingAtId = req.waitingAtId,
                 WaitingAtText = req.waitingAtText,
                 WaitingAtType = req.waitingAtType,
-                WaitingCoord = req.waitingCoord
+                WaitingCoord = req.waitingCoord,
+
+                Message = req.message
             };
 
             return checkinDO;
@@ -208,6 +210,8 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             
                 multiPeopleAllowed = c.MultiPeopleAllowed,
 
+                message = c.Message
+
             };
 
             return response;
@@ -262,6 +266,8 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         public string waitingAtText { get; set; }
         public LatLng waitingCoord { get; set; }
 
+        public string message { get; set; }
+
     }
 
     public enum CheckinType { Now, City }
@@ -282,7 +288,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         public double lngEast { get; set; }        
 
         public string fromDate { get; set; }
-        public string toDate { get; set; }
+        public string toDate { get; set; }        
     }
 
     public class CheckinRequest
@@ -300,7 +306,9 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         
         public Date fromDate { get; set; }
         public Date toDate { get; set; }
-        
+
+        public string message { get; set; }
+
         public CheckinType checkinType { get; set; }
         public string waitingAtId { get; set; }
         public SourceType waitingAtType { get; set; }

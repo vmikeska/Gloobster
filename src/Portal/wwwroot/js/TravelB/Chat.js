@@ -9,51 +9,9 @@ var Views;
         CheckinReactionState[CheckinReactionState["NotMet"] = 5] = "NotMet";
         CheckinReactionState[CheckinReactionState["Blocked"] = 6] = "Blocked";
         CheckinReactionState[CheckinReactionState["Reported"] = 7] = "Reported";
+        CheckinReactionState[CheckinReactionState["Met"] = 8] = "Met";
     })(Views.CheckinReactionState || (Views.CheckinReactionState = {}));
     var CheckinReactionState = Views.CheckinReactionState;
-    var ChatRefresh = (function () {
-        function ChatRefresh() {
-            this.refreshCycleFinished = true;
-            this.lastRefreshDate = null;
-        }
-        ChatRefresh.prototype.startRefresh = function () {
-            var _this = this;
-            var i = setInterval(function () {
-                if (!_this.refreshCycleFinished) {
-                    return;
-                }
-                else {
-                    _this.refreshCycleFinished = false;
-                }
-                var chatWins = $(".chat-cont").toArray();
-                if (chatWins.length === 0) {
-                    clearInterval(i);
-                }
-                var loadedIds = _.map(chatWins, function (w) { return $(w).data("id"); });
-                var prms = [];
-                var lastDate = null;
-                loadedIds.forEach(function (rid) {
-                    prms.push(["reactIds", rid]);
-                    var ld = Chat.getChatByRectId(rid).data("last");
-                    if (lastDate === null) {
-                        lastDate = ld;
-                    }
-                    else if (ld > lastDate) {
-                        lastDate = ld;
-                    }
-                });
-                if (lastDate) {
-                    prms.push(["lastDate", lastDate.toString()]);
-                }
-                Views.ViewBase.currentView.apiGet("ReactChat", prms, function (responses) {
-                    _this.onRefresh(responses);
-                    _this.refreshCycleFinished = true;
-                });
-            }, 5000);
-        };
-        return ChatRefresh;
-    }());
-    Views.ChatRefresh = ChatRefresh;
     var Chat = (function () {
         function Chat() {
             var _this = this;
@@ -61,8 +19,7 @@ var Views;
             this.chatRowTmp = Views.ViewBase.currentView.registerTemplate("chatRow-template");
             this.chatWinTmp = Views.ViewBase.currentView.registerTemplate("chatWin-template");
             this.stopWinTmp = Views.ViewBase.currentView.registerTemplate("stopWin-template");
-            this.metWin = Views.ViewBase.currentView.registerTemplate("metWin-template");
-            this.chatRefresh = new ChatRefresh();
+            this.chatRefresh = new Views.ChatRefresh();
             this.chatRefresh.onRefresh = function (responses) {
                 if (responses) {
                     responses.forEach(function (resp) {
@@ -70,25 +27,39 @@ var Views;
                     });
                 }
             };
+            this.dlg = new Common.ConfirmDialog();
         }
-        Chat.prototype.createAll = function () {
+        Chat.prototype.refreshAll = function (callback) {
             var _this = this;
-            var prms = [["state", CheckinReactionState.Accepted.toString()]];
+            if (callback === void 0) { callback = null; }
+            var prms = [["type", "s"]];
             var $cont = $("body");
             Views.ViewBase.currentView.apiGet("CheckinReact", prms, function (reacts) {
                 reacts.forEach(function (r, i) {
-                    var $c = _this.createOneChat(r);
-                    var left = (i * (250 + 15));
-                    $c.css("left", left + "px");
-                    $cont.append($c);
-                    _this.appPosts(r.chatPosts, r.reactId);
-                    if (r.chatPosts.length > 0) {
-                        var last = _.last(r.chatPosts);
-                        Chat.getChatByRectId(r.reactId).data("last", last.time);
+                    var $chat = Chat.getChatByRectId(r.reactId);
+                    var cnt = $(".chat-cont").length;
+                    if ($chat.length === 0) {
+                        _this.createOneChatWindow($cont, r, cnt);
                     }
                 });
-                _this.chatRefresh.startRefresh();
+                if (!_this.chatRefresh.isStarted) {
+                    _this.chatRefresh.startRefresh();
+                }
+                if (callback) {
+                    callback();
+                }
             });
+        };
+        Chat.prototype.createOneChatWindow = function ($cont, react, count) {
+            var $c = this.createOneChat(react);
+            var left = (count * (250 + 15));
+            $c.css("left", left + "px");
+            $cont.append($c);
+            this.appPosts(react.chatPosts, react.reactId);
+            if (react.chatPosts.length > 0) {
+                var last = _.last(react.chatPosts);
+                Chat.getChatByRectId(react.reactId).data("last", last.time);
+            }
         };
         Chat.prototype.addNames = function (r) {
             this.addName(r.askingUserId, r.askingUserName);
@@ -141,17 +112,18 @@ var Views;
             return $c;
         };
         Chat.prototype.exeAct = function (reactId, act) {
+            var _this = this;
             if (act === "stop") {
                 this.createStopScreen(reactId);
             }
             if (act === "met") {
-                this.createMetScreen(reactId);
+                this.dlg.create("Already met", "Have you really already met ?", "Cancel", "We have met", function () {
+                    _this.changeRectState(reactId, CheckinReactionState.Met);
+                });
             }
             if (act === "didNotMeet") {
-                var prms = { id: reactId, state: CheckinReactionState.NotMet };
-                Views.ViewBase.currentView.apiPut("CheckinReact", prms, function () {
-                    var $cont = Chat.getChatByRectId(reactId);
-                    $cont.remove();
+                this.dlg.create("Didn't meet", "We didn't meet", "Cancel", "We didn't meet", function () {
+                    _this.changeRectState(reactId, CheckinReactionState.NotMet);
                 });
             }
         };
@@ -162,43 +134,32 @@ var Views;
             $cont.html($c);
             $cont.find(".notInt").click(function (e) {
                 e.preventDefault();
-                var dlg = new Common.ConfirmDialog();
-                dlg.create("Stop conversation", "Do you really want to stop the conversation ?", "Cancel", "Stop", function () {
-                    var prms = { id: reactId, state: CheckinReactionState.Refused, message: "" };
-                    Views.ViewBase.currentView.apiPut("CheckinReact", prms, function () {
-                        var $cont = Chat.getChatByRectId(reactId);
-                        $cont.remove();
-                    });
+                _this.dlg.create("Stop conversation", "Do you really want to stop the conversation ?", "Cancel", "Stop", function () {
+                    _this.changeRectState(reactId, CheckinReactionState.Refused);
                 });
             });
             $cont.find(".block").click(function (e) {
                 e.preventDefault();
-                _this.block(reactId, CheckinReactionState.Blocked);
+                _this.dlg.create("User blocking", "Do you really want to block this user ?", "Cancel", "Block", function () {
+                    _this.changeRectState(reactId, CheckinReactionState.Blocked);
+                });
             });
             $cont.find(".blockReport").click(function (e) {
                 e.preventDefault();
-                _this.block(reactId, CheckinReactionState.Reported);
-            });
-        };
-        Chat.prototype.block = function (reactId, state) {
-            var dlg = new Common.ConfirmDialog();
-            dlg.create("User blocking", "Do you really want to block this user ?", "Cancel", "Block", function () {
-                var prms = { id: reactId, state: state, message: "" };
-                Views.ViewBase.currentView.apiPut("CheckinReact", prms, function () {
-                    var $cont = Chat.getChatByRectId(reactId);
-                    $cont.remove();
+                _this.dlg.create("User blocking and reporting", "Do you really want to report this user ?", "Cancel", "Report", function () {
+                    _this.changeRectState(reactId, CheckinReactionState.Blocked);
                 });
             });
         };
-        Chat.prototype.createMetScreen = function (reactId) {
-            var $cont = Chat.getChatByRectId(reactId);
-            var context = {
-                rid: reactId
-            };
-            var $c = $(this.metWin(context));
-            $cont.html($c);
-            $cont.find(".showComm").change(function (e) {
-                $cont.find(".comment").toggle();
+        Chat.prototype.changeRectState = function (reactId, state, extraVals) {
+            if (extraVals === void 0) { extraVals = null; }
+            var prms = { id: reactId, state: state };
+            if (extraVals) {
+                prms = $.extend(prms, extraVals);
+            }
+            Views.ViewBase.currentView.apiPut("CheckinReact", prms, function () {
+                var $cont = Chat.getChatByRectId(reactId);
+                $cont.remove();
             });
         };
         Chat.prototype.targetActions = function ($combo) {

@@ -8,6 +8,7 @@ var Views;
     var TravelBView = (function (_super) {
         __extends(TravelBView, _super);
         function TravelBView() {
+            var _this = this;
             _super.call(this);
             this.nowTabConst = "nowTab";
             this.cityTabConst = "cityTab";
@@ -20,10 +21,24 @@ var Views;
             this.initFilterDates();
             var status = new TravelB.Status();
             status.refresh();
-            this.reacts = new Views.CheckinReacts();
-            this.reacts.refreshReacts();
             this.chat = new Views.Chat();
-            this.chat.createAll();
+            this.chat.refreshAll();
+            this.reacts = new Views.CheckinReacts();
+            this.reacts.onStartChat = function (callback) {
+                _this.chat.refreshAll(function () {
+                    callback();
+                });
+            };
+            this.reacts.refreshReacts();
+            this.notifs = new Views.NotifRefresh();
+            this.notifs.onRefresh = function (callback) {
+                _this.reacts.refreshReacts(function () {
+                    _this.chat.refreshAll(function () {
+                        callback();
+                    });
+                });
+            };
+            this.notifs.startRefresh();
         }
         TravelBView.prototype.createMainTab = function () {
             var _this = this;

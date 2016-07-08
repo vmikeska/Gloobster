@@ -25,7 +25,9 @@ var TravelB;
                 _this.createWin(hasStatus, CheckinType.Now);
                 _this.createWinNow();
                 if (hasStatus) {
-                    _this.selectRadio("wantDo", r.wantDo);
+                    r.wantDo.forEach(function (wId) {
+                        $("#wd_" + wId).prop("checked", true);
+                    });
                     _this.selectRadio("wantMeet", r.wantMeet);
                     $("#multiPeopleAllowed").prop("checked", r.multiPeopleAllowed);
                     var diffMins = TravelB.TravelBUtils.waitingMins(r.waitingUntil);
@@ -38,6 +40,7 @@ var TravelB;
                         lastText: r.waitingAtText,
                         coord: r.waitingCoord
                     });
+                    _this.$html.find("#chckMsg").val(r.message);
                 }
             });
         };
@@ -96,7 +99,7 @@ var TravelB;
             $combo.find("span").html(value);
         };
         CheckinWin.prototype.selectRadio = function (group, val) {
-            $("input[name=" + group + "][value=" + val + "]").prop("checked", true);
+            this.$html.find("input[name=" + group + "][value=" + val + "]").prop("checked", true);
         };
         CheckinWin.prototype.fillAgeCombo = function (id) {
             var $ul = $("#" + id).find("ul");
@@ -113,7 +116,8 @@ var TravelB;
                 wantMeet: $('input[name=wantMeet]:checked').val(),
                 multiPeopleAllowed: $("#multiPeopleAllowed").prop("checked"),
                 fromAge: $("#fromAge input").val(),
-                toAge: $("#toAge input").val()
+                toAge: $("#toAge input").val(),
+                message: $("#chckMsg").val()
             };
             return data;
         };

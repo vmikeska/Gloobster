@@ -1,6 +1,6 @@
 ﻿module TravelB {
 
-		export enum CheckinType { Now, City }
+	export enum CheckinType { Now, City }
 
 	export class CheckinWin {
 
@@ -23,59 +23,62 @@
 			this.registerTemplates();		
 		}
 
-			public showCityCheckin(editId) {
+		public showCityCheckin(editId) {
 
-					var isEdit = (editId != null);
-					if (isEdit) {
-						
-					}
-
-					this.createWin(isEdit, CheckinType.City);
-					this.createWinCity();
+			var isEdit = (editId != null);
+			if (isEdit) {
 
 			}
 
+			this.createWin(isEdit, CheckinType.City);
+			this.createWinCity();
+		}
+
 		public showNowCheckin() {
 
-				Views.ViewBase.currentView.apiGet("CheckinNow", [["me", "true"]], (r) => {
+			Views.ViewBase.currentView.apiGet("CheckinNow", [["me", "true"]], (r) => {
 
-						var hasStatus = r !== null;
+				var hasStatus = r !== null;
 
-						this.createWin(hasStatus, CheckinType.Now);
-						this.createWinNow();
+				this.createWin(hasStatus, CheckinType.Now);
+				this.createWinNow();
 
-						if (hasStatus) {
+				if (hasStatus) {
 
-								this.selectRadio("wantDo", r.wantDo);
-								this.selectRadio("wantMeet", r.wantMeet);
+					r.wantDo.forEach((wId) => {
+						$(`#wd_${wId}`).prop("checked", true);
+					});
+						
+					this.selectRadio("wantMeet", r.wantMeet);
 
-								$("#multiPeopleAllowed").prop("checked", r.multiPeopleAllowed);
+					$("#multiPeopleAllowed").prop("checked", r.multiPeopleAllowed);
 
-								var diffMins = TravelBUtils.waitingMins(r.waitingUntil);
-								this.$html.find("#minsWaiting").val(diffMins);
+					var diffMins = TravelBUtils.waitingMins(r.waitingUntil);
+					this.$html.find("#minsWaiting").val(diffMins);
 
-								this.setCombo(this.$html.find("#fromAge"), r.fromAge);
-								this.setCombo(this.$html.find("#toAge"), r.toAge);
+					this.setCombo(this.$html.find("#fromAge"), r.fromAge);
+					this.setCombo(this.$html.find("#toAge"), r.toAge);
 
-								this.wpCombo.initValues({
-										sourceId: r.waitingAtId,
-										sourceType: r.waitingAtType,
-										lastText: r.waitingAtText,
-										coord: r.waitingCoord
-								});
+					this.wpCombo.initValues({
+						sourceId: r.waitingAtId,
+						sourceType: r.waitingAtType,
+						lastText: r.waitingAtText,
+						coord: r.waitingCoord
+					});
 
-						}
+					this.$html.find("#chckMsg").val(r.message);
+				}
 
-				});
+			});
 		}
 
 		private initWantDo() {
-				var items = TravelBUtils.wantDoDB();
-
+			var items = TravelBUtils.wantDoDB();
+			
 			var $c = this.$html.find("#wantDoCont");
 
 			items.forEach((i) => {
-					var $h = $(`<input id="wd_${i.id}" type="checkbox" /><label for="wd_${i.id}">${i.text}</label>`);
+				var $h = $(`<input id="wd_${i.id}" type="checkbox" /><label for="wd_${i.id}">${i.text}</label>`);
 				$c.append($h);
 			});
 		}
@@ -143,7 +146,7 @@
 		}
 
 		private selectRadio(group, val) {
-			$(`input[name=${group}][value=${val}]`).prop("checked", true);
+			this.$html.find(`input[name=${group}][value=${val}]`).prop("checked", true);
 		}
 
 		private fillAgeCombo(id) {
@@ -161,7 +164,8 @@
 				wantMeet: $('input[name=wantMeet]:checked').val(),
 				multiPeopleAllowed: $("#multiPeopleAllowed").prop("checked"),
 				fromAge: $("#fromAge input").val(),
-				toAge: $("#toAge input").val()				
+				toAge: $("#toAge input").val(),
+				message: $("#chckMsg").val()
 			};
 			return data;
 		}

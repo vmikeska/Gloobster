@@ -1,63 +1,6 @@
 ﻿module Views {
 
-		export enum CheckinReactionState { Created, Refused, Accepted, Finished, Rated, NotMet, Blocked, Reported }
-
-
-	export class ChatRefresh {
-
-		public onRefresh: Function;
-
-		//public loadedIds = [];
-
-		private refreshCycleFinished = true;
-		private lastRefreshDate = null;
-
-		public startRefresh() {
-			var i = setInterval(() => {
-
-				if (!this.refreshCycleFinished) {
-					return;
-				} else {
-					this.refreshCycleFinished = false;
-				}
-
-				var chatWins = $(".chat-cont").toArray();
-
-				if (chatWins.length === 0) {
-						clearInterval(i);
-				}
-
-				var loadedIds = _.map(chatWins, (w) => { return $(w).data("id"); });
-						
-
-				
-
-				var prms = [];
-				var lastDate = null;
-				loadedIds.forEach((rid) => {
-					prms.push(["reactIds", rid]);
-					var ld = Chat.getChatByRectId(rid).data("last");
-
-					if (lastDate === null) {
-						lastDate = ld;
-					} else if (ld > lastDate) {
-						lastDate = ld;
-					}
-				});
-				if (lastDate) {
-					prms.push(["lastDate", lastDate.toString()]);
-				}
-
-				ViewBase.currentView.apiGet("ReactChat", prms, (responses) => {
-
-					this.onRefresh(responses);
-
-					this.refreshCycleFinished = true;
-				});
-
-			}, 5000);
-		}
-	}
+		export enum CheckinReactionState { Created, Refused, Accepted, Finished, Rated, NotMet, Blocked, Reported, Met }
 
 	export class Chat {
 		private chatRowTmp;
@@ -65,56 +8,71 @@
 		private stopWinTmp;
 		private metWin;
 
+		private dlg: Common.ConfirmDialog;
+
 		private chatRefresh: ChatRefresh;
 
 		constructor() {
-				this.chatRowTmp = ViewBase.currentView.registerTemplate("chatRow-template");
-				this.chatWinTmp = ViewBase.currentView.registerTemplate("chatWin-template");
+			this.chatRowTmp = ViewBase.currentView.registerTemplate("chatRow-template");
+			this.chatWinTmp = ViewBase.currentView.registerTemplate("chatWin-template");
 
-				this.stopWinTmp = ViewBase.currentView.registerTemplate("stopWin-template");
-				this.metWin = ViewBase.currentView.registerTemplate("metWin-template");
+			this.stopWinTmp = ViewBase.currentView.registerTemplate("stopWin-template");
+			//this.metWin = ViewBase.currentView.registerTemplate("metWin-template");
 
-				this.chatRefresh = new ChatRefresh();
-				this.chatRefresh.onRefresh = (responses) => {
+			this.chatRefresh = new ChatRefresh();
+			this.chatRefresh.onRefresh = (responses) => {
 				if (responses) {
 					responses.forEach((resp) => {
 						this.appPosts(resp.posts, resp.reactId);
 					});
 				}
 			}
+
+			this.dlg = new Common.ConfirmDialog();
 		}
 
 		private names = [];
-
-
-		public createAll() {
-			var prms = [["state", CheckinReactionState.Accepted.toString()]];
+			
+		public refreshAll(callback = null) {
+			var prms = [["type", "s"]];
 
 			var $cont = $("body");
-			//this.getMainCont();
-
+			
 			ViewBase.currentView.apiGet("CheckinReact", prms, (reacts) => {
 
 				reacts.forEach((r, i) => {
-					//this.chatRefresh.loadedIds.push(r.reactId);
 
-					var $c = this.createOneChat(r);
-					var left = (i * (250 + 15));
+					var $chat = Chat.getChatByRectId(r.reactId);
+					var cnt = $(".chat-cont").length;
+						
+						if ($chat.length === 0) {
+							this.createOneChatWindow($cont, r, cnt);
+						}						
+				});
+
+				if (!this.chatRefresh.isStarted) {
+					this.chatRefresh.startRefresh();
+				}
+
+				if (callback) {
+					callback();
+				}
+			});
+		}
+
+			private createOneChatWindow($cont, react, count) {
+				var $c = this.createOneChat(react);
+					var left = (count * (250 + 15));
 					$c.css("left", `${left}px`);
 
 					$cont.append($c);
-					this.appPosts(r.chatPosts, r.reactId);
+					this.appPosts(react.chatPosts, react.reactId);
 
-					if (r.chatPosts.length > 0) {
-						var last = _.last(r.chatPosts);
-						Chat.getChatByRectId(r.reactId).data("last", last.time);
+					if (react.chatPosts.length > 0) {
+						var last = _.last(react.chatPosts);
+						Chat.getChatByRectId(react.reactId).data("last", last.time);
 					}
-				});
-
-				this.chatRefresh.startRefresh();
-
-			});
-		}
+			}
 
 		private addNames(r) {
 			this.addName(r.askingUserId, r.askingUserName);
@@ -142,20 +100,8 @@
 			return f.name;
 		}
 
-		//private getMainCont() {
-		//	var $c = $(".chats");
-
-		//	if ($c.length === 0) {
-		//		$c = $(`<div class="chats"></div>`);
-		//		$("body").append($c);
-		//	}
-
-		//	return $c;
-		//}
-
 		public createOneChat(react) {
 			this.addNames(react);
-				
 			
 			var isTarget = (react.targetUserId === ViewBase.currentUserId);
 
@@ -198,16 +144,16 @@
 				this.createStopScreen(reactId);
 			}
 			if (act === "met") {
-				this.createMetScreen(reactId);
+
+					this.dlg.create("Already met", "Have you really already met ?", "Cancel", "We have met", () => {
+							this.changeRectState(reactId, CheckinReactionState.Met);
+					});
 			}
 			if (act === "didNotMeet") {
 
-				var prms = { id: reactId, state: CheckinReactionState.NotMet };
-				ViewBase.currentView.apiPut("CheckinReact", prms, () => {
-						var $cont = Chat.getChatByRectId(reactId);
-					$cont.remove();
-				});
-
+					this.dlg.create("Didn't meet", "We didn't meet", "Cancel", "We didn't meet", () => {
+							this.changeRectState(reactId, CheckinReactionState.NotMet);
+					});					
 			}
 		}
 
@@ -220,67 +166,39 @@
 
 			$cont.find(".notInt").click((e) => {
 					e.preventDefault();
-					var dlg = new Common.ConfirmDialog();
-					dlg.create("Stop conversation", "Do you really want to stop the conversation ?", "Cancel", "Stop", () => {
-
-							var prms = { id: reactId, state: CheckinReactionState.Refused, message: "" };
-							ViewBase.currentView.apiPut("CheckinReact", prms, () => {
-									var $cont = Chat.getChatByRectId(reactId);
-									$cont.remove();
-							});
-
+					
+					this.dlg.create("Stop conversation", "Do you really want to stop the conversation ?", "Cancel", "Stop", () => {
+						this.changeRectState(reactId, CheckinReactionState.Refused);
 					});					
 			});
 			
 			$cont.find(".block").click((e) => {
 					e.preventDefault();
-					this.block(reactId, CheckinReactionState.Blocked);
+
+					this.dlg.create("User blocking", "Do you really want to block this user ?", "Cancel", "Block", () => {
+							this.changeRectState(reactId, CheckinReactionState.Blocked);							
+					});
+					
 			});
 
 			$cont.find(".blockReport").click((e) => {
-				e.preventDefault();
-				this.block(reactId, CheckinReactionState.Reported);
-			});
-		}
+					e.preventDefault();
 
-		private block(reactId, state) {
-			var dlg = new Common.ConfirmDialog();
-			dlg.create("User blocking", "Do you really want to block this user ?", "Cancel", "Block", () => {
-
-				var prms = { id: reactId, state: state, message: "" };
-				ViewBase.currentView.apiPut("CheckinReact", prms, () => {
-						var $cont = Chat.getChatByRectId(reactId);
-					$cont.remove();
+				this.dlg.create("User blocking and reporting", "Do you really want to report this user ?", "Cancel", "Report", () => {
+						this.changeRectState(reactId, CheckinReactionState.Blocked);
 				});
-
 			});
 		}
-
-		private createMetScreen(reactId) {
+		
+		private changeRectState(reactId, state: CheckinReactionState, extraVals = null) {
+			var prms = { id: reactId, state: state };
+			if (extraVals) {
+				prms = $.extend(prms, extraVals);
+			}
+			ViewBase.currentView.apiPut("CheckinReact", prms, () => {
 				var $cont = Chat.getChatByRectId(reactId);
-
-			var context = {
-				rid: reactId
-			};
-
-			var $c = $(this.metWin(context));
-			$cont.html($c);
-			$cont.find(".showComm").change((e) => {				
-				$cont.find(".comment").toggle();
+				$cont.remove();
 			});
-
-
-			/ notRating
-			$cont.find("./liked")
-		}
-
-			//todo: change it all
-		private changeRectState() {
-				var prms = { id: reactId, state: CheckinReactionState.Refused, message: "" };
-				ViewBase.currentView.apiPut("CheckinReact", prms, () => {
-						var $cont = Chat.getChatByRectId(reactId);
-						$cont.remove();
-				});
 		}
 
 		private targetActions($combo) {

@@ -17,6 +17,7 @@
 		private cityTabConst = "cityTab";
 
 		private reacts: CheckinReacts;
+		private notifs: NotifRefresh;
 		private chat: Chat;
 
 		constructor() {
@@ -36,13 +37,32 @@
 			var status = new TravelB.Status();
 			status.refresh();
 
-			this.reacts = new CheckinReacts();
-			this.reacts.refreshReacts();
-
 			this.chat = new Chat();
-			this.chat.createAll();
+			this.chat.refreshAll();
+
+			this.reacts = new CheckinReacts();
+			this.reacts.onStartChat = (callback) => {
+				this.chat.refreshAll(() => {
+					callback();
+				});
+			}
+			this.reacts.refreshReacts();
+				
+			this.notifs = new NotifRefresh();
+			this.notifs.onRefresh = (callback) => {
+
+				this.reacts.refreshReacts(() => {
+
+					this.chat.refreshAll(() => {
+						callback();
+					});
+
+				});
+
+			}
+			this.notifs.startRefresh();				
 		}
-			
+
 		private createMainTab() {
 			this.tabs = new TravelB.Tabs($("#mainTab"), "main", 55);
 			var filterDateCont = $("#filterDateCont");

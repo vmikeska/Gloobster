@@ -8,6 +8,7 @@ using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using Serilog;
 using System.Linq;
+using Gloobster.DomainInterfaces;
 using Gloobster.Entities.TravelB;
 using Gloobster.Enums;
 
@@ -17,41 +18,62 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
     {
         public string checkinId { get; set; }
 
-        public CheckinReactionState state { get; set; }
+        public string type { get; set; }
     }
 
 
     public class CheckinReactController : BaseApiController
     {
-        public CheckinReactController(ILogger log, IDbOperations db) : base(log, db)
+        public INotificationsDomain NotificationDomain { get; set; }
+        public INotifications Notifications { get; set; }
+
+        public CheckinReactController(INotificationsDomain notificationDomain, INotifications notifications, ILogger log, IDbOperations db) : base(log, db)
         {
+            Notifications = notifications;
+            NotificationDomain = notificationDomain;
         }
 
         [AuthorizeApi]
         [HttpGet]
         public async Task<IActionResult> Get(CheckinReactQueryRequest req)
         {
-            if (!string.IsNullOrEmpty(req.checkinId))
+            if (req.type == "id")
             {
-                var cidObj = new ObjectId(req.checkinId);
+                if (!string.IsNullOrEmpty(req.checkinId))
+                {
+                    var cidObj = new ObjectId(req.checkinId);
 
-                var item = DB.FOD<CheckinReactionEntity>(r => r.Checkin_id == cidObj);
+                    var item = DB.FOD<CheckinReactionEntity>(r => r.Checkin_id == cidObj);
 
-                var uids1 = new List<ObjectId> {item.AskingUser_id, item.TargetUser_id};                
-                var users1 = DB.List<UserEntity>(u => uids1.Contains(u.User_id));
+                    var uids1 = new List<ObjectId> {item.AskingUser_id, item.TargetUser_id};
+                    var users1 = DB.List<UserEntity>(u => uids1.Contains(u.User_id));
 
-                var askingUser1 = users1.FirstOrDefault(u => u.User_id == item.AskingUser_id);
-                var targetUser1 = users1.FirstOrDefault(u => u.User_id == item.TargetUser_id);
+                    var askingUser1 = users1.FirstOrDefault(u => u.User_id == item.AskingUser_id);
+                    var targetUser1 = users1.FirstOrDefault(u => u.User_id == item.TargetUser_id);
 
-                var res = Convert(item, askingUser1, targetUser1);
+                    var res = Convert(item, askingUser1, targetUser1);
 
-                return new ObjectResult(res);
+                    return new ObjectResult(res);
+                }
+            }
+
+            var items = new List<CheckinReactionEntity>();
+
+            //started chats
+            if (req.type == "s")
+            {
+                items = DB.List<CheckinReactionEntity>(r =>
+                (r.TargetUser_id == UserIdObj || r.AskingUser_id == UserIdObj) &&
+                r.State == CheckinReactionState.Accepted);
+            }
+
+            //awaiting confirmation
+            if (req.type == "a")
+            {
+                items = DB.List<CheckinReactionEntity>(r =>
+                (r.TargetUser_id == UserIdObj) && r.State == CheckinReactionState.Created);
             }
             
-            var items = DB.List<CheckinReactionEntity>(r => 
-                (r.TargetUser_id == UserIdObj || r.AskingUser_id == UserIdObj) &&
-                r.State == req.state);
-
             var uids = items.Select(u => u.AskingUser_id).ToList();
             uids.AddRange(items.Select(u => u.TargetUser_id));
             uids = uids.Distinct().ToList();
@@ -105,9 +127,26 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             var f = DB.F<CheckinReactionEntity>().Eq(r => r.id, ridObj);
             var u = DB.U<CheckinReactionEntity>().Set(c => c.State, req.state);
             var res = await DB.UpdateAsync(f, u);
-
+            
             if (res.ModifiedCount > 0)
             {
+                var react = DB.FOD<CheckinReactionEntity>(r => r.id == ridObj);
+
+                if (req.state == CheckinReactionState.Accepted)
+                {
+                    var notif = Notifications.ConfirmsChatRequest(req.id, UserId, react.AskingUser_id.ToString());                    
+                    NotificationDomain.AddNotification(notif);                    
+                }
+
+                if (req.state == CheckinReactionState.Met)
+                {
+                    var notifs = Notifications.RateMeeting(req.id);
+                    foreach (var n in notifs)
+                    {
+                        NotificationDomain.AddNotification(n);
+                    }
+                }
+
                 if (req.state == CheckinReactionState.Blocked)
                 {
                     //todo: block user profile
@@ -151,6 +190,9 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 ChatPosts = new List<ChatPostSE>()
             };
             await DB.SaveAsync(react);
+            
+            var notif = Notifications.ReactingToCheckin(react.id.ToString(), UserId, targetUserIdObj.ToString());
+            NotificationDomain.AddNotification(notif);
             
             return new ObjectResult(react.id.ToString());
         }

@@ -153,7 +153,9 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 WaitingAtId = req.waitingAtId,
                 WaitingAtText = req.waitingAtText,
                 WaitingAtType = req.waitingAtType,
-                WaitingCoord = req.waitingCoord
+                WaitingCoord = req.waitingCoord,
+
+                Message = req.message
             };
 
             return checkinDO;
@@ -212,6 +214,8 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 waitingAtType = c.WaitingAtType,
                 waitingAtText = c.WaitingAtText,
                 waitingCoord = c.WaitingCoord,
+
+                message = c.Message,
 
                 homeCountry = u.HomeLocation.CountryCode,
                 livesCountry = u.CurrentLocation.CountryCode,

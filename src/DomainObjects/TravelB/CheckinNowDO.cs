@@ -25,5 +25,7 @@ namespace Gloobster.DomainObjects.TravelB
         public LatLng WaitingCoord { get; set; }
 
         public DateTime WaitingUntil { get; set; }
+
+        public string Message { get; set; }
     }
 }

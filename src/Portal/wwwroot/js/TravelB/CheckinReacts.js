@@ -3,15 +3,20 @@ var Views;
     var CheckinReacts = (function () {
         function CheckinReacts() {
         }
-        CheckinReacts.prototype.refreshReacts = function () {
+        CheckinReacts.prototype.refreshReacts = function (callback) {
             var _this = this;
-            var prms = [["state", Views.CheckinReactionState.Created.toString()]];
+            if (callback === void 0) { callback = null; }
+            var prms = [["type", "a"]];
             Views.ViewBase.currentView.apiGet("CheckinReact", prms, function (reacts) {
                 _this.genRactNotifs(reacts);
+                if (callback) {
+                    callback();
+                }
             });
         };
         CheckinReacts.prototype.genRactNotifs = function (reacts) {
             var _this = this;
+            $("#notifCont").html("");
             reacts.forEach(function (r) {
                 var data = {
                     uid: r.targetUserId,
@@ -24,13 +29,17 @@ var Views;
         };
         CheckinReacts.prototype.createReactNotif = function (data) {
             var _this = this;
-            var $content = $("<a data-uid=\"" + data.uid + "\" href=\"#\">" + data.name + "</a> \n\t\t\t\t\t\t\t <br/>\n\t\t\t\t\t\t\t Want's to start chat with you");
+            var $content = $("<a data-uid=\"" + data.uid + "\" href=\"#\">" + data.name + "</a><br/>Want's to start chat with you");
             var actions = [
                 {
                     name: "Start",
                     callback: function () {
                         _this.changeNotifState(data.id, Views.CheckinReactionState.Accepted, function (r) {
-                            $content.closest(".notif").remove();
+                            if (_this.onStartChat) {
+                                _this.onStartChat(function () {
+                                    $content.closest(".notif").remove();
+                                });
+                            }
                         });
                     }
                 }

@@ -1,17 +1,24 @@
 module Views {
 	export class CheckinReacts {
 
-		public refreshReacts() {
+		public onStartChat: Function;
 
-			var prms = [["state", CheckinReactionState.Created.toString()]];
+		public refreshReacts(callback = null) {
 
-			ViewBase.currentView.apiGet("CheckinReact", prms, (reacts) => {
-					
+			var prms = [["type", "a"]];
+
+			ViewBase.currentView.apiGet("CheckinReact", prms, (reacts) => {					
 					this.genRactNotifs(reacts);
+
+					if (callback) {
+						callback();
+					}
 			});
 		}
 
 		private genRactNotifs(reacts) {
+			$("#notifCont").html("");
+
 			reacts.forEach((r) => {
 
 				var data = {
@@ -29,17 +36,20 @@ module Views {
 		private createReactNotif(data) {
 
 			var $content =
-				$(`<a data-uid="${data.uid}" href="#">${data.name}</a> 
-							 <br/>
-							 Want's to start chat with you`);
+				$(`<a data-uid="${data.uid}" href="#">${data.name}</a><br/>Want's to start chat with you`);
 
 			var actions = [
 				{
 					name: "Start",
 					callback: () => {
 						this.changeNotifState(data.id, CheckinReactionState.Accepted, (r) => {
-							//todo: display chate
-							$content.closest(".notif").remove();
+
+							if (this.onStartChat) {
+								this.onStartChat(() => {
+									$content.closest(".notif").remove();
+								});
+							}
+								
 						});
 					}
 				}

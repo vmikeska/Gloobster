@@ -17,6 +17,11 @@ namespace Gloobster.DomainInterfaces
 	{
 		NotificationDO NewAccountNotification(string userId);
         Task<NotificationDO> FriendshipRequested(string requestorId, string receiverId);
-        Task<NotificationDO> TripInvitation(string fromUserId, string toUserId, string tripId);	    
+        Task<NotificationDO> TripInvitation(string fromUserId, string toUserId, string tripId);
+	    List<NotificationDO> RateMeeting(string reactId);
+	    NotificationDO ReactingToCheckin(string reactId, string requestingUserId, string receiverId);
+	    NotificationDO ConfirmsChatRequest(string reactiId, string confirmerId, string receiverId);
+
+
 	}
 }

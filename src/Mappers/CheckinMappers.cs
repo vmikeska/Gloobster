@@ -21,7 +21,8 @@ namespace Gloobster.Mappers
                 FromAge = e.FromAge,
                 WaitingUntil = e.WaitingUntil,
                 WantMeet = e.WantMeet,
-                ToAge = e.ToAge
+                ToAge = e.ToAge,
+                Message = e.Message
             };
 
             return d;
@@ -43,7 +44,8 @@ namespace Gloobster.Mappers
                 WaitingAtText = e.WaitingAtText,
                 FromAge = e.FromAge,
                 WantMeet = e.WantMeet,
-                ToAge = e.ToAge
+                ToAge = e.ToAge,
+                Message = e.Message
             };
 
             return d;
@@ -64,7 +66,8 @@ namespace Gloobster.Mappers
                 WaitingAtText = d.WaitingAtText,
                 FromAge = d.FromAge,
                 WantMeet = d.WantMeet,
-                ToAge = d.ToAge
+                ToAge = d.ToAge,
+                Message = d.Message
             };
 
             if (!string.IsNullOrEmpty(d.CheckinId))
@@ -89,7 +92,8 @@ namespace Gloobster.Mappers
                 FromAge = d.FromAge,
                 WaitingUntil = d.WaitingUntil,
                 WantMeet = d.WantMeet,
-                ToAge = d.ToAge
+                ToAge = d.ToAge,
+                Message = d.Message
             };
             
             if (!string.IsNullOrEmpty(d.CheckinId))

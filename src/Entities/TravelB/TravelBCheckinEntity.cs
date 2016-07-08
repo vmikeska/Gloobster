@@ -56,6 +56,8 @@ namespace Gloobster.Entities.TravelB
         public LatLng WaitingCoord { get; set; }
 
         public DateTime WaitingUntil { get; set; }
+
+        public string Message { get; set; }
     }
 
     public class CheckinCityEntity : EntityBase
@@ -78,5 +80,7 @@ namespace Gloobster.Entities.TravelB
 
         public Date FromDate { get; set; }
         public Date ToDate { get; set; }
+
+        public string Message { get; set; }
     }
 }
