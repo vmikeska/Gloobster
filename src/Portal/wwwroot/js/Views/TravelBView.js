@@ -8,17 +8,20 @@ var Views;
     var TravelBView = (function (_super) {
         __extends(TravelBView, _super);
         function TravelBView() {
-            var _this = this;
-            _super.call(this);
+            _super.apply(this, arguments);
             this.nowTabConst = "nowTab";
             this.cityTabConst = "cityTab";
-            this.selectedFilter = null;
+        }
+        TravelBView.prototype.init = function () {
+            var _this = this;
+            this.filter = new TravelB.Filter();
+            this.filter.onFilterSelChanged = function () {
+                _this.displayData();
+            };
             this.regEvents();
             this.hereAndNowTemplate = this.registerTemplate("hereAndNowTabCont-template");
             this.createMainTab();
             this.createMap();
-            this.initFilter();
-            this.initFilterDates();
             var status = new TravelB.Status();
             status.refresh();
             this.chat = new Views.Chat();
@@ -39,87 +42,29 @@ var Views;
                 });
             };
             this.notifs.startRefresh();
-        }
+        };
         TravelBView.prototype.createMainTab = function () {
             var _this = this;
             this.tabs = new TravelB.Tabs($("#mainTab"), "main", 55);
-            var filterDateCont = $("#filterDateCont");
             this.tabs.onBeforeSwitch = function () {
                 $("#theCont").html("");
             };
             this.tabs.addTab(this.nowTabConst, "Here and now", function () {
-                _this.createCheckinsFnc();
-                filterDateCont.hide();
+                _this.createNowCheckinsFnc();
             });
             this.tabs.addTab(this.cityTabConst, "Check to a city", function () {
                 _this.createCityCheckinsFnc();
-                filterDateCont.show();
             });
             this.tabs.create();
         };
-        TravelBView.prototype.initFilterDates = function () {
-            var _this = this;
-            var fromDate = TravelB.DateUtils.jsDateToMyDate(new Date());
-            var toDate = TravelB.DateUtils.jsDateToMyDate(TravelB.DateUtils.addDays(Date.now(), 30));
-            this.filterDateFrom = fromDate;
-            this.filterDateTo = toDate;
-            TravelB.DateUtils.initDatePicker($("#fromDateFilter"), fromDate, function (d) {
-                _this.filterDateFrom = d;
-                _this.displayData();
-            });
-            TravelB.DateUtils.initDatePicker($("#toDateFilter"), toDate, function (d) {
-                _this.filterDateTo = d;
-                _this.displayData();
-            });
-        };
-        TravelBView.prototype.initFilter = function () {
-            var _this = this;
-            var items = TravelB.TravelBUtils.wantDoDB();
-            var $c = $("#filterCont");
-            var $ac = $("#allCheckins");
-            items.forEach(function (i) {
-                var $h = $("<input id=\"f_" + i.id + "\" type=\"checkbox\" /><label for=\"f_" + i.id + "\">" + i.text + "</label>");
-                $c.append($h);
-            });
-            $(".filter").find("input").click(function (e) {
-                var $t = $(e.target);
-                var id = $t.attr("id");
-                if (id === "allCheckins") {
-                    if ($ac.prop("checked") === true) {
-                        $("#filterCont").find("input").prop("checked", false);
-                        _this.onFilterChanged(["all"]);
-                    }
-                    else {
-                        _this.onFilterChanged(null);
-                    }
-                }
-                else if (id.startsWith("f_")) {
-                    if ($t.prop("checked") === true) {
-                        $ac.prop("checked", false);
-                    }
-                    var selVals = [];
-                    $c.find("input").each(function (i, c) {
-                        var $c = $(c);
-                        if ($c.prop("checked")) {
-                            var id = $c.attr("id");
-                            var val = id.split("_")[1];
-                            selVals.push(val);
-                        }
-                    });
-                    _this.onFilterChanged(selVals);
-                }
-            });
-        };
-        TravelBView.prototype.onFilterChanged = function (filter) {
-            this.selectedFilter = filter;
-            this.displayData();
-        };
         TravelBView.prototype.createCityCheckinsFnc = function () {
+            this.filter.initCity();
             this.cityFncs = new TravelB.CityTab();
             this.displayCityCheckins();
         };
-        TravelBView.prototype.createCheckinsFnc = function () {
+        TravelBView.prototype.createNowCheckinsFnc = function () {
             var _this = this;
+            this.filter.initNow();
             var $html = $(this.hereAndNowTemplate());
             $("#theCont").html($html);
             this.nowFncs = new TravelB.NowTab();
@@ -167,8 +112,8 @@ var Views;
             if (prms === null) {
                 return;
             }
-            prms.push(["fromDate", TravelB.DateUtils.myDateToTrans(this.filterDateFrom)]);
-            prms.push(["toDate", TravelB.DateUtils.myDateToTrans(this.filterDateTo)]);
+            prms.push(["fromDate", TravelB.DateUtils.myDateToTrans(this.filter.filterDateFrom)]);
+            prms.push(["toDate", TravelB.DateUtils.myDateToTrans(this.filter.filterDateTo)]);
             Views.ViewBase.currentView.apiGet("CheckinCity", prms, function (checkins) {
                 _this.cityFncs.genCheckinsList(checkins);
                 _this.mapCheckins.genCheckins(checkins);
@@ -182,10 +127,14 @@ var Views;
                 ["latSouth", this.currentBounds._southWest.lat],
                 ["lngWest", this.currentBounds._southWest.lng],
                 ["latNorth", this.currentBounds._northEast.lat],
-                ["lngEast", this.currentBounds._northEast.lng]
+                ["lngEast", this.currentBounds._northEast.lng],
+                ["type", "query"]
             ];
-            if (this.selectedFilter) {
-                prms.push(["filter", this.selectedFilter.join(",")]);
+            this.filter.langs.forEach(function (l) {
+                prms.push(["lang", l]);
+            });
+            if (this.filter.selectedFilter) {
+                prms.push(["filter", this.filter.selectedFilter.join(",")]);
             }
             return prms;
         };

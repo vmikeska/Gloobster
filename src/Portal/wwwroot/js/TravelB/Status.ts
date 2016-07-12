@@ -10,7 +10,7 @@ module TravelB {
 		public refresh() {
 			var $cont = $("#statusCont");
 
-			Views.ViewBase.currentView.apiGet("CheckinNow", [["me", "true"]], (r) => {
+			Views.ViewBase.currentView.apiGet("CheckinNow", [["type", "me"]], (r) => {
 
 				if (!r) {
 						$cont.html("No status");

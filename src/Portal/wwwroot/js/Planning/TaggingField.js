@@ -46,13 +46,12 @@ var Planning;
             return $html;
         };
         TaggingField.prototype.removeTag = function ($target, $html) {
-            var _this = this;
             var val = $target.parent().data("vl");
+            this.selectedItems = _.reject(this.selectedItems, function (i) {
+                return i.value === val;
+            });
             this.onDeleteCustom(val, function () {
                 $html.remove();
-                _this.selectedItems = _.reject(_this.selectedItems, function (i) {
-                    return i.value === "val";
-                });
             });
         };
         TaggingField.prototype.createTagger = function () {
@@ -121,10 +120,10 @@ var Planning;
             var val = $target.data("vl");
             var kind = $target.data("kd");
             var text = $target.text();
+            this.selectedItems.push({ value: val, kind: kind });
             this.onItemClickedCustom($target, function () {
                 var $tag = _this.createTag(text, val, kind);
                 _this.$tagger.before($tag);
-                _this.selectedItems.push({ value: val, kind: kind });
             });
         };
         return TaggingField;

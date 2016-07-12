@@ -25,15 +25,30 @@ namespace Gloobster.Portal.Controllers.Portal
         public IActionResult Home()
         {
             var vm = CreateViewModelInstance<TravelBViewModel>();
-            
+            vm.Languages = User.Languages;
+
             return View(vm);
+        }
+
+        public IActionResult Message(string id)
+        {
+            var userIdObj = new ObjectId(id);
+
+            var user = DB.FOD<UserEntity>(u => u.User_id == userIdObj);
+
+            var vm = CreateViewModelInstance<MessageViewModel>();
+            vm.OtherUserId = id;
+            vm.OtherUserDisplayName = user.DisplayName;
+            vm.OtherUserFirstName = user.FirstName;
+            vm.OtherUserLastName = user.LastName;
+
+            return View(vm);            
         }
 
         
         public IActionResult Management()
         {
             var vm = CreateViewModelInstance<TravelBManagementViewModel>();
-
             return View(vm);
         }
         

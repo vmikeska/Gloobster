@@ -29,7 +29,7 @@ var Views;
         };
         CheckinReacts.prototype.createReactNotif = function (data) {
             var _this = this;
-            var $content = $("<a data-uid=\"" + data.uid + "\" href=\"#\">" + data.name + "</a><br/>Want's to start chat with you");
+            var $content = $("<div><a data-uid=\"" + data.uid + "\" href=\"#\">" + data.name + "</a><br/>Want's to start chat with you</div>");
             var actions = [
                 {
                     name: "Start",
@@ -49,8 +49,8 @@ var Views;
         };
         CheckinReacts.prototype.createNotifBase = function (content, data, actions) {
             var _this = this;
-            var $base = $("<div id=\"notif_" + data.id + "\" data-id=\"" + data.id + "\" class=\"notif\"><div class=\"acts\"></div></div>");
-            $base.append(content);
+            var $base = $("<div id=\"notif_" + data.id + "\" data-id=\"" + data.id + "\" class=\"notif\"><div class=\"cont\"></div><div class=\"acts\"></div></div>");
+            $base.find(".cont").html(content);
             var $acts = $base.find(".acts");
             var hideTxt = "Let be";
             var $hideAct = this.genAction(hideTxt, function () {

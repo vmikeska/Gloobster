@@ -32,6 +32,16 @@ var TravelB;
                 TravelBUtils.i(2, "Eating")
             ];
         };
+        TravelBUtils.langsDB = function () {
+            return [
+                TravelBUtils.i("en", "English"),
+                TravelBUtils.i("de", "German"),
+                TravelBUtils.i("cz", "Czech"),
+                TravelBUtils.i("es", "Spanish"),
+                TravelBUtils.i("pt", "Portuguese"),
+                TravelBUtils.i("fr", "French")
+            ];
+        };
         return TravelBUtils;
     }());
     TravelB.TravelBUtils = TravelBUtils;

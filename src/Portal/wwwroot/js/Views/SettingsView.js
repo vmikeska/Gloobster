@@ -163,14 +163,10 @@ var Views;
         };
         SettingsView.prototype.initLangsTagger = function (selectedItems) {
             var _this = this;
-            var itemsRange = [
-                { text: "English", value: "en", kind: "l" },
-                { text: "German", value: "de", kind: "l" },
-                { text: "Czech", value: "cz", kind: "l" },
-                { text: "Spanish", value: "es", kind: "l" },
-                { text: "Portuguese", value: "pt", kind: "l" },
-                { text: "French", value: "fr", kind: "l" }
-            ];
+            var langs = TravelB.TravelBUtils.langsDB();
+            var itemsRange = _.map(langs, function (i) {
+                return { text: i.text, value: i.id, kind: "l" };
+            });
             var config = new Planning.TaggingFieldConfig();
             config.containerId = "langsTagging";
             config.localValues = true;

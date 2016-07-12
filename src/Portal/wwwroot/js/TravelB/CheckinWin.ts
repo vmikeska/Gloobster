@@ -36,7 +36,7 @@
 
 		public showNowCheckin() {
 
-			Views.ViewBase.currentView.apiGet("CheckinNow", [["me", "true"]], (r) => {
+			Views.ViewBase.currentView.apiGet("CheckinNow", [["type", "me"]], (r) => {
 
 				var hasStatus = r !== null;
 
@@ -198,6 +198,7 @@
 
 			Views.ViewBase.currentView.apiPost("CheckinNow", data, (r) => {
 				this.refreshStat();
+				this.closeWin();
 			});
 
 		}
@@ -214,13 +215,16 @@
 			});
 
 			Views.ViewBase.currentView.apiPost("CheckinCity", data, (r) => {
-
+				this.closeWin();
 			});
 		}
 
 		private refreshStat() {
 			var status = new Status();
-			status.refresh();
+			status.refresh();			
+		}
+
+		private closeWin() {
 			this.$html.fadeOut();
 			this.$html.remove();
 		}

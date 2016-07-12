@@ -35,7 +35,7 @@ var TravelB;
         };
         MapCheckins.prototype.displayPopup = function (latlng, userId) {
             var _this = this;
-            Views.ViewBase.currentView.apiGet("CheckinNow", [["id", userId]], function (checkin) {
+            Views.ViewBase.currentView.apiGet("CheckinNow", [["type", "id"], ["id", userId]], function (checkin) {
                 var d = new Date();
                 var curYear = d.getFullYear();
                 var context = {

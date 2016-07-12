@@ -1,8 +1,8 @@
 ﻿module Views {
 	export class SettingsView extends ViewBase {
 
-			private langsTagger;
-			private interestsTagger;
+		private langsTagger;
+		private interestsTagger;
 
 		constructor() {
 			super();
@@ -26,11 +26,8 @@
 			});
 
 			this.registerEdit("shortDescription", "ShortDescription", (value) => {
-					return { text: value };
+				return { text: value };
 			});
-
-
-			
 
 
 			this.initPairing();
@@ -84,39 +81,39 @@
 			$("#MenuRegister").parent().remove();
 		}
 
-			private callServer(prop, values, callback = null) {
-					var data = { propertyName: prop, values: values };
-					this.apiPut("UserProperty", data, () => {
-						callback();
-					});
-			}
-			
+		private callServer(prop, values, callback = null) {
+			var data = { propertyName: prop, values: values };
+			this.apiPut("UserProperty", data, () => {
+				callback();
+			});
+		}
+
 		private registerCombos() {
 
-				this.registerCombo("birthYear", (val) => {
-						return { propertyName: "BirthYear", values: { year: val } };
-				});
-				
+			this.registerCombo("birthYear", (val) => {
+				return { propertyName: "BirthYear", values: { year: val } };
+			});
+
 			this.registerCombo("gender", (val) => {
 				return { propertyName: "Gender", values: { gender: val } };
-				});
+			});
 
 			this.registerCombo("familyStatus", (val) => {
-					return { propertyName: "FamilyStatus", values: { status: val } };
+				return { propertyName: "FamilyStatus", values: { status: val } };
 			});
-				
+
 			this.fillYearCombo();
 
 		}
 
 		private fillYearCombo() {
-				var $ul = $("#birthYear").find("ul");;
-					var yearStart = 1940;
-					var yearEnd = yearStart + 80;
-					for (var act = yearStart; act <= yearEnd; act++) {
-							$ul.append(`<li data-value="${act}">${act}</li>`);
-					}
+			var $ul = $("#birthYear").find("ul");;
+			var yearStart = 1940;
+			var yearEnd = yearStart + 80;
+			for (var act = yearStart; act <= yearEnd; act++) {
+				$ul.append(`<li data-value="${act}">${act}</li>`);
 			}
+		}
 
 		private registerCombo(id, dataBuild) {
 			var $root = $(`#${id}`);
@@ -124,7 +121,7 @@
 
 			$val.change(e => {
 				var val = $val.val();
-				var data = dataBuild(val);					
+				var data = dataBuild(val);
 				this.apiPut("UserProperty", data, () => {
 					//alert("updated");
 				});
@@ -149,15 +146,14 @@
 			}
 		}
 
-		
 
 		private registerLocationCombo(elementId: string, propertyName: string) {
 			var homeConf = this.getLocationBaseConfig();
 			homeConf.elementId = elementId;
 
 			var box = new Common.PlaceSearchBox(homeConf);
-			box.onPlaceSelected = (request) => {					
-				this.callServer(propertyName, { sourceId: request.SourceId, sourceType: request.SourceType });				
+			box.onPlaceSelected = (request) => {
+				this.callServer(propertyName, { sourceId: request.SourceId, sourceType: request.SourceType });
 			};
 		}
 
@@ -176,7 +172,6 @@
 			var itemsRange = _.map(interests, (i) => {
 				return { text: i.text, value: i.id, kind: "i" }
 			});
-
 
 			var config = new Planning.TaggingFieldConfig();
 			config.containerId = "intersTagging";
@@ -201,37 +196,34 @@
 		}
 
 		private initLangsTagger(selectedItems) {
-					var itemsRange = [
-							{ text: "English", value: "en", kind: "l"},
-							{ text: "German", value: "de", kind: "l" },
-							{ text: "Czech", value: "cz", kind: "l" },
-							{ text: "Spanish", value: "es", kind: "l" },
-							{ text: "Portuguese", value: "pt", kind: "l" },
-							{ text: "French", value: "fr", kind: "l" }
-					];
-					
-				var config = new Planning.TaggingFieldConfig();				
-				config.containerId = "langsTagging";
-				config.localValues = true;
-				config.itemsRange = itemsRange;
-					
-				this.langsTagger = new Planning.TaggingField(config);
-				this.langsTagger.onItemClickedCustom = ($target, callback) => {
-						var val = $target.data("vl");					
-						this.callServer("Langs", { value: val, action: "ADD" }, callback);						
-				}
 
-				this.langsTagger.onDeleteCustom = (val, callback) => {
-						this.callServer("Langs", { value: val, action: "DEL" }, callback);
-				}
+			var langs = TravelB.TravelBUtils.langsDB();
 
-				//set init values		
-				var selItms = _.map(selectedItems, (i) => {
-					return { value: i, kind: "l" };
-				});
-				this.langsTagger.setSelectedItems(selItms);
+			var itemsRange = _.map(langs, (i) => {
+				return { text: i.text, value: i.id, kind: "l" }
+			});
+
+			var config = new Planning.TaggingFieldConfig();
+			config.containerId = "langsTagging";
+			config.localValues = true;
+			config.itemsRange = itemsRange;
+
+			this.langsTagger = new Planning.TaggingField(config);
+			this.langsTagger.onItemClickedCustom = ($target, callback) => {
+				var val = $target.data("vl");
+				this.callServer("Langs", { value: val, action: "ADD" }, callback);
 			}
 
+			this.langsTagger.onDeleteCustom = (val, callback) => {
+				this.callServer("Langs", { value: val, action: "DEL" }, callback);
+			}
 
+			//set init values		
+			var selItms = _.map(selectedItems, (i) => {
+				return { value: i, kind: "l" };
+			});
+			this.langsTagger.setSelectedItems(selItms);
 		}
+			
+	}
 }

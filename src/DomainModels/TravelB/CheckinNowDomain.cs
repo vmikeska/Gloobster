@@ -48,6 +48,15 @@ namespace Gloobster.DomainModels.TravelB
             var entity = checkin.ToEntity();            
             await DB.ReplaceOneAsync(entity);
         }
+
+        public async Task<bool> DeleteCheckin(string id, string userId)
+        {
+            var userIdObj = new ObjectId(userId);
+
+            var idObj = new ObjectId(id);
+            bool deleted = await DB.DeleteAsync<CheckinCityEntity>(c => c.id == idObj && c.User_id == userIdObj);
+            return deleted;
+        }
     }
 
     public class CheckinNowDomain

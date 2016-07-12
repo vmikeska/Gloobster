@@ -1,0 +1,58 @@
+﻿@using System.Threading.Tasks
+@using Gloobster.Portal.ViewModels
+@using Newtonsoft.Json
+
+@model Gloobster.Portal.ViewModels.MessageViewModel
+
+<script type="text/javascript" src="@Url.Content("~/js/Views/Messages.js")"></script>
+
+<section class="line margin padding">
+    <div class="wrapper">
+        <h3>Chat with @Model.OtherUserDisplayName</h3>
+        <div class="form">
+            <div class="table row margin">
+                <div class="cell">
+                    <textarea id="commentInput" class="width700" type="text" placeholder="Your message..."></textarea>
+                </div>
+                <div class="cell">
+                    <input id="commentSubmit" type="button" value="Send message">
+                </div>
+            </div>
+        </div>
+
+        <div id="msgsCont" class="comments table">
+
+            
+        </div>
+    </div>
+
+</section>
+
+
+<script id="msgPost-template" type="text/x-handlebars-template">
+
+    <div class="row">
+        <div class="cell">
+            <span class="thumbnail">
+                <img src="/PortalUser/ProfilePicture_s/{{userId}}">
+            </span>
+        </div>
+        <div class="cell">
+            <div class="author">
+                <a href="/PortalUser/Detail/{{userId}}"><strong>{{name}}</strong></a>
+                <span> • {{dateFormatted}}</span>
+            </div>
+            <div class="bubble">
+                {{message}}
+            </div>
+        </div>
+    </div>
+
+</script>
+
+<script>
+    function onBodyLoad() {
+        var otherUserId = '@Html.Raw(Model.OtherUserId)';
+        currentView = new Views.Messages(otherUserId);
+    }
+</script>

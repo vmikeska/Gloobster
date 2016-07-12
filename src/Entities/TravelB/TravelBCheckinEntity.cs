@@ -83,4 +83,5 @@ namespace Gloobster.Entities.TravelB
 
         public string Message { get; set; }
     }
+    
 }

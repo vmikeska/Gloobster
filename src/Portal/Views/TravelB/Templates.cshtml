@@ -138,9 +138,23 @@
 
 </script>
 
+
+<script id="cityListLayout-template" type="text/x-handlebars-template">
+
+    <div class="items">
+        
+    </div>
+    
+    <div class="mgmt">
+        @*<input id="showJustMine" type="checkbox" />
+        <label for="showJustMine">Show just mine checkins</label>*@
+    </div>
+
+</script>
+
 <script id="checkinCityItem-template" type="text/x-handlebars-template">
 
-    <div class="userItem">
+    <div class="userItem" data-uid="{{id}}">
         <span class="thumbnail">
             <img src="/PortalUser/ProfilePicture_xs/{{id}}">
         </span>
@@ -150,9 +164,69 @@
             waiting for {{waitingFor}},
             wants {{wants}}
         </div>
+        <div>
+            <button class="sendMsg">Send message</button>
+        </div>
     </div>
 
 </script>
+
+<script id="checkinCityMgmtItem-template" type="text/x-handlebars-template">
+
+    <div class="userItem" data-cid="{{cid}}">
+        
+        <a href="{{link}}">{{name}}  </a> {{fromDate}} - {{toDate}}
+        <div>
+            {{age}} years,
+            waiting for {{waitingFor}},
+            wants {{wants}}
+        </div>
+        <div>
+            <button class="del">delete</button>
+        </div>
+    </div>
+
+</script>
+
+
+<script id="filterNow-template" type="text/x-handlebars-template">
+    
+    <div class="bigCB">
+        <input id="allCheckins" type="checkbox" />
+        <label for="allCheckins">All checkins (you'll be not able to contact people lookin for other genders)</label>
+    </div>
+
+    <b>Want do filter</b>
+    <div id="filterCont"></div>
+    
+    <div id="langsFilter"></div>
+    <a href="/PortalUser/Settings">Set your default languages in profile settings</a>
+</script>
+
+<script id="filterCity-template" type="text/x-handlebars-template">
+    
+    <div class="bigCB">
+        <input id="showJustMine" type="checkbox" />
+        <label id="showJustMineLabel" for="showJustMine">Show just mine checkins</label>
+
+        <input id="allCheckins" type="checkbox" />
+        <label for="allCheckins">All checkins (you'll be not able to contact people lookin for other genders)</label>
+    </div>
+    
+    
+    <div id="filterDateCont">
+        <input id="fromDateFilter" type="text" />
+        --
+        <input id="toDateFilter" type="text" />
+    </div>
+    <b>Want do filter</b>
+    <div id="filterCont"></div>
+    
+    <div id="langsFilter"></div>
+    <a href="/PortalUser/Settings">Set your default languages in profile settings</a>
+</script>
+
+
 
 <script id="hereAndNowTabCont-template" type="text/x-handlebars-template">
 

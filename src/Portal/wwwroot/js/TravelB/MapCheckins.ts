@@ -55,7 +55,7 @@ module TravelB {
 
 		private displayPopup(latlng, userId) {
 
-				Views.ViewBase.currentView.apiGet("CheckinNow", [["id", userId]], (checkin) => {
+				Views.ViewBase.currentView.apiGet("CheckinNow", [["type", "id"],["id", userId]], (checkin) => {
 
 						var d = new Date();
 						var curYear = d.getFullYear();

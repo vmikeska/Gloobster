@@ -36,12 +36,12 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
         [AuthorizeApi]
         [HttpGet]
-        public async Task<IActionResult> Get(CheckinQueryRequest req)
+        public async Task<IActionResult> Get(CheckinCityQueryRequest req)
         {
-            if (!string.IsNullOrEmpty(req.id))
+            if (req.type == "id")
             {
-                var userIdObj = new ObjectId(req.id);
-                var checkin = DB.FOD<CheckinCityEntity>(u => u.User_id == userIdObj);
+                var checkinIdObj = new ObjectId(req.id);
+                var checkin = DB.FOD<CheckinCityEntity>(u => u.id == checkinIdObj);
 
                 if (checkin == null)
                 {
@@ -49,52 +49,88 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 }
 
                 var checkinDO = checkin.ToDO();
-                var user = DB.FOD<UserEntity>(u => u.User_id == UserIdObj);
+                var user = DB.FOD<UserEntity>(u => u.User_id == checkin.User_id);
                 var response = ConvertCheckin(user, checkinDO);
                 return new ObjectResult(response);
             }
-            else
+
+            if (req.type == "my")
+            {               
+                var checkins = DB.List<CheckinCityEntity>(u => u.User_id == UserIdObj);
+                
+                var checkinsDO = checkins.Select(c => c.ToDO()).ToList();                
+                var responses = checkinsDO.Select(c => ConvertCheckin(User, c)).ToList();
+                return new ObjectResult(responses);
+            }
+
+            if (req.type == "query")
             {
                 var responses = GetCheckinsInRect(req);
-
-                bool showAllFilteredByGenders = string.IsNullOrEmpty(req.filter);
+                
                 bool showAll = req.filter == "all";
+                bool justMine = req.filter == "mine";
 
-                if (showAll)
+                if (justMine)
                 {
-                    //todo: later remove my checkin. Not only here, in all if branches
+                    responses = responses.Where(r => r.userId == UserId).ToList();
+                    responses = FilterDate(responses, req);
                     return new ObjectResult(responses);
                 }
-
-                responses = responses.Where(r => CheckinFilterUtils.HasGenderMatch(r.wantMeet, User.Gender)).ToList();
-
-                var fromDate = req.fromDate.ToDate('_');
-                var toDate = req.toDate.ToDate('_');
-
-                responses =
-                    responses.Where(r =>
-                    {
-                        if (r.fromDate.IsGreaterOrEqualThen(toDate) || r.toDate.IsLowerOrEqualThen(fromDate))
-                        {
-                            return false;
-                        }
-                        return true;
-                    })
-                        .ToList();
-
-                if (showAllFilteredByGenders)
+                
+                if (!showAll)
                 {
-                    return new ObjectResult(responses);
+                    responses = Query(responses, req);
                 }
 
-                var wantDos = req.filter.Split(',').Select(int.Parse).ToList();
-
-
-                responses = responses.Where(r => r.wantDo.Intersect(wantDos).Any()).ToList();
-
+                //filter out mine
+                responses = responses.Where(r => r.userId != UserId).ToList();
 
                 return new ObjectResult(responses);
             }
+
+            return null;
+        }
+
+        private List<CheckinResponse> FilterDate(List<CheckinResponse> responses, CheckinCityQueryRequest req)
+        {
+            var fromDate = req.fromDate.ToDate('_');
+            var toDate = req.toDate.ToDate('_');
+
+            responses =
+                responses.Where(r =>
+                {
+                    if (r.fromDate.IsGreaterOrEqualThen(toDate) || r.toDate.IsLowerOrEqualThen(fromDate))
+                    {
+                        return false;
+                    }
+                    return true;
+                })
+                .ToList();
+
+            return responses;
+        }
+
+
+        private List<CheckinResponse> Query(List<CheckinResponse> responses, CheckinCityQueryRequest req)
+        {
+            bool showAllFilteredByGenders = string.IsNullOrEmpty(req.filter);
+
+            responses = responses.Where(r => CheckinFilterUtils.HasGenderMatch(r.wantMeet, User.Gender)).ToList();
+
+            responses = responses.Where(r => r.languages.Intersect(req.lang).Any()).ToList();
+
+            responses = FilterDate(responses, req);
+            
+            if (showAllFilteredByGenders)
+            {
+                return responses;
+            }
+
+            var wantDos = req.filter.Split(',').Select(int.Parse).ToList();
+
+            responses = responses.Where(r => r.wantDo.Intersect(wantDos).Any()).ToList();
+
+            return responses;
         }
 
         [HttpPut]
@@ -117,6 +153,14 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             await TbDomain.CreateCheckin(checkinDO);
 
             return new ObjectResult(null);
+        }
+
+        [HttpDelete]
+        [AuthorizeApi]
+        public async Task<IActionResult> Delete(string id)
+        {
+            bool deleted = await TbDomain.DeleteCheckin(id, UserId);            
+            return new ObjectResult(deleted);
         }
 
         private CheckinCityDO ReqCityToDO(CheckinRequest req)
@@ -146,7 +190,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             return checkinDO;
         }
 
-        private List<CheckinResponse> GetCheckinsInRect(CheckinQueryRequest req)
+        private List<CheckinResponse> GetCheckinsInRect(CheckinCityQueryRequest req)
         {
             var rect = new RectDO
             {
@@ -190,6 +234,8 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 birthYear = u.BirthYear,
                 familyStatus = u.FamilyStatus,
                 shortDescription = u.ShortDescription,
+
+                id = c.CheckinId,
 
                 fromAge = c.FromAge,
                 toAge = c.ToAge,
@@ -274,13 +320,15 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
     
    
 
-    public class CheckinQueryRequest
+    public class CheckinCityQueryRequest
     {
+        public string type { get; set; }
+        
         public string id { get; set; }
-
-        public bool me { get; set; }
-
+        
         public string filter { get; set; }
+
+        public List<string> lang { get; set; }
 
         public double latSouth { get; set; }
         public double lngWest { get; set; }

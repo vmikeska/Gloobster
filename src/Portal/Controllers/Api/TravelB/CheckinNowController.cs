@@ -40,6 +40,8 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
             return false;
         }
+
+        
     }
 
     public class CheckinNowController: BaseApiController
@@ -62,11 +64,11 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
         [AuthorizeApi]
         [HttpGet]
-        public async Task<IActionResult> Get(CheckinQueryRequest req)
+        public async Task<IActionResult> Get(CheckinNowQueryRequest req)
         {
             RemoveOldCheckins();
 
-            if (!string.IsNullOrEmpty(req.id))
+            if (req.type == "id")                
             {
                 var userIdObj = new ObjectId(req.id);
                 var checkin = DB.FOD<CheckinNowEntity>(u => u.User_id == userIdObj);
@@ -77,11 +79,12 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 }
 
                 var checkinDO = checkin.ToDO();
-                var user = DB.FOD<UserEntity>(u => u.User_id == UserIdObj);
+                var user = DB.FOD<UserEntity>(u => u.User_id == userIdObj);
                 var response = ConvertCheckin(user, checkinDO);
                 return new ObjectResult(response);
             }
-            else if (req.me)
+
+            if (req.type == "me")
             {
                 var checkin = DB.FOD<CheckinNowEntity>(u => u.User_id == UserIdObj);
 
@@ -95,7 +98,8 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 var response = ConvertCheckin(user, checkinDO);
                 return new ObjectResult(response);
             }
-            else
+
+            if (req.type == "query")
             {
                 var responses = GetCheckinsInRect(req);
 
@@ -110,6 +114,8 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
                 responses = responses.Where(r => CheckinFilterUtils.HasGenderMatch(r.wantMeet, User.Gender)).ToList();
 
+                responses = responses.Where(r => r.languages.Intersect(req.lang).Any()).ToList();
+
                 if (showAllFilteredByGenders)
                 {
                     return new ObjectResult(responses);
@@ -122,7 +128,9 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 
                 
                 return new ObjectResult(responses);
-            }            
+            }
+
+            return null;
         }
         
         [HttpPost]
@@ -161,7 +169,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             return checkinDO;
         }
         
-        private List<CheckinResponse> GetCheckinsInRect(CheckinQueryRequest req)
+        private List<CheckinResponse> GetCheckinsInRect(CheckinNowQueryRequest req)
         {
             var rect = new RectDO
             {
@@ -233,5 +241,22 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         }
 
 
+    }
+
+    public class CheckinNowQueryRequest
+    {
+        public string type { get; set; }
+
+        public string id { get; set; }
+
+        public string filter { get; set; }
+
+        public List<string> lang { get; set; }
+
+        public double latSouth { get; set; }
+        public double lngWest { get; set; }
+        public double latNorth { get; set; }
+        public double lngEast { get; set; }
+        
     }
 }

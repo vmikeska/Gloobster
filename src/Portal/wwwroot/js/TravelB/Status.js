@@ -7,7 +7,7 @@ var TravelB;
         Status.prototype.refresh = function () {
             var _this = this;
             var $cont = $("#statusCont");
-            Views.ViewBase.currentView.apiGet("CheckinNow", [["me", "true"]], function (r) {
+            Views.ViewBase.currentView.apiGet("CheckinNow", [["type", "me"]], function (r) {
                 if (!r) {
                     $cont.html("No status");
                     return;

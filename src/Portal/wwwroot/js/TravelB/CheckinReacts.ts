@@ -36,7 +36,7 @@ module Views {
 		private createReactNotif(data) {
 
 			var $content =
-				$(`<a data-uid="${data.uid}" href="#">${data.name}</a><br/>Want's to start chat with you`);
+				$(`<div><a data-uid="${data.uid}" href="#">${data.name}</a><br/>Want's to start chat with you</div>`);
 
 			var actions = [
 				{
@@ -49,7 +49,7 @@ module Views {
 									$content.closest(".notif").remove();
 								});
 							}
-								
+
 						});
 					}
 				}
@@ -61,8 +61,8 @@ module Views {
 
 		private createNotifBase(content, data, actions) {
 
-			var $base = $(`<div id="notif_${data.id}" data-id="${data.id}" class="notif"><div class="acts"></div></div>`);
-			$base.append(content);
+			var $base = $(`<div id="notif_${data.id}" data-id="${data.id}" class="notif"><div class="cont"></div><div class="acts"></div></div>`);
+			$base.find(".cont").html(content);
 
 			var $acts = $base.find(".acts");
 

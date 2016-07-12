@@ -6,10 +6,35 @@
         left: 40px;
     }
 
+    #theCont .items {
+        height: 340px;
+    }
+
+    #theCont .mgmt {
+        height: 30px;
+        border-top: 1px solid black;
+        font-size: 20px;
+    }
+
     .notif {
         border: 1px solid black;
-        width: 200px;
+        width: 600px;
+        height: 50px;
     }
+
+    .notif .cont {
+        width: 350px;
+        height: 50px;
+        float: left;
+        
+    }
+
+    .notif .acts {
+        width: 250px;
+        height: 50px;
+        float: right;
+    }
+
 
      .myTabs {
          width: 100%;         
@@ -33,6 +58,8 @@
     .mainCont {    
         width: 100%;
         height: 370px;
+        margin-bottom: 30px;
+        border-bottom: 2px solid black;
     }
 
     .tabBlock {        
@@ -49,27 +76,14 @@
         border: 1px solid black;        
     }
 
+    .bigCB {
+        font-size: 20px;
+    }
+
     #map {
         width: 100%;
         height: 350px;
     }
-
-    /*.chats {
-        bottom: 0;
-        left: 50%;
-        right: 50%;
-        width: 250px;
-        height: 300px;
-        position: fixed;
-
-        width: 100%;
-
-        text-align: center;
-
-        pointer-events: none;
-        filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='your_transparent.png', sizingMethod='scale');
-        background: none !important;
-    }*/
 
     .chat-cont {
         bottom: 0;                

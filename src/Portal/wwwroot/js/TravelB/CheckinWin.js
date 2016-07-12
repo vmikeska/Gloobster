@@ -20,7 +20,7 @@ var TravelB;
         };
         CheckinWin.prototype.showNowCheckin = function () {
             var _this = this;
-            Views.ViewBase.currentView.apiGet("CheckinNow", [["me", "true"]], function (r) {
+            Views.ViewBase.currentView.apiGet("CheckinNow", [["type", "me"]], function (r) {
                 var hasStatus = r !== null;
                 _this.createWin(hasStatus, CheckinType.Now);
                 _this.createWinNow();
@@ -146,9 +146,11 @@ var TravelB;
             });
             Views.ViewBase.currentView.apiPost("CheckinNow", data, function (r) {
                 _this.refreshStat();
+                _this.closeWin();
             });
         };
         CheckinWin.prototype.callCity = function () {
+            var _this = this;
             var data = this.getRequestObj();
             data = $.extend(data, {
                 waitingAtId: this.wcCombo.sourceId,
@@ -159,11 +161,14 @@ var TravelB;
                 toDate: $("#toDate").data("myDate")
             });
             Views.ViewBase.currentView.apiPost("CheckinCity", data, function (r) {
+                _this.closeWin();
             });
         };
         CheckinWin.prototype.refreshStat = function () {
             var status = new TravelB.Status();
             status.refresh();
+        };
+        CheckinWin.prototype.closeWin = function () {
             this.$html.fadeOut();
             this.$html.remove();
         };

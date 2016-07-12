@@ -15,7 +15,7 @@ module Planning {
 		private $cont: any;
 
 		private taggerTemplate: any;
-		private selectedItems: any;
+		public selectedItems: any;
 		private config: TaggingFieldConfig;
 
 		constructor(config: TaggingFieldConfig) {
@@ -64,14 +64,15 @@ module Planning {
 			return $html;
 		}
 
-		private removeTag($target, $html) {			
+		private removeTag($target, $html) {
 			var val = $target.parent().data("vl");
 
+			this.selectedItems = _.reject(this.selectedItems, (i) => {
+					return i.value === val;
+			});
+
 			this.onDeleteCustom(val, () => {
-					$html.remove();
-				this.selectedItems = _.reject(this.selectedItems, (i) => {
-					return i.value === "val";
-				});
+				$html.remove();				
 			});
 		}
 
@@ -155,10 +156,11 @@ module Planning {
 			var kind = $target.data("kd");
 			var text = $target.text();
 
+			this.selectedItems.push({ value: val, kind: kind });
+
 			this.onItemClickedCustom($target, () => {
 				var $tag = this.createTag(text, val, kind);
-				this.$tagger.before($tag);
-				this.selectedItems.push({ value: val, kind: kind });
+				this.$tagger.before($tag);				
 			});
 		}
 
