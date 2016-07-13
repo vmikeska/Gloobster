@@ -5,12 +5,129 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Views;
 (function (Views) {
+    var EmptyProps = (function () {
+        function EmptyProps() {
+            this.formTemp = Views.ViewBase.currentView.registerTemplate("settings-template");
+            this.setTemp = Views.ViewBase.currentView.registerTemplate("settingsStat-template");
+        }
+        EmptyProps.prototype.generateProps = function (props) {
+            var _this = this;
+            this.$cont = $("#reqPropCont");
+            var $form = $(this.formTemp());
+            this.$table = $form.find("table");
+            this.appSignals(this.$table);
+            this.$cont.html($form);
+            if (props.length > 0) {
+                this.$cont.show();
+            }
+            props.forEach(function (prop) {
+                _this.visible(prop, $form);
+                if (prop === "HasProfileImage") {
+                    Views.SettingsUtils.registerAvatarFileUpload("avatarFile", function () {
+                        _this.validate(true, "HasProfileImage");
+                    });
+                }
+                if (prop === "FirstName") {
+                    Views.SettingsUtils.registerEdit("firstName", "FirstName", function (value) {
+                        _this.validate((value.length > 0), "FirstName");
+                        return { name: value };
+                    });
+                }
+                if (prop === "LastName") {
+                    Views.SettingsUtils.registerEdit("lastName", "LastName", function (value) {
+                        _this.validate((value.length > 0), "LastName");
+                        return { name: value };
+                    });
+                }
+                if (prop === "BirthYear") {
+                    Views.SettingsUtils.registerEdit("birthYear", "BirthYear", function (value) {
+                        _this.validate((value.length === 4), "BirthYear");
+                        return { year: value };
+                    });
+                }
+                if (prop === "Gender") {
+                    Views.SettingsUtils.registerCombo("gender", function (val) {
+                        _this.validate((val !== Gender.N), "Gender");
+                        return { propertyName: "Gender", values: { gender: val } };
+                    });
+                    Common.DropDown.registerDropDown($("#gender"));
+                }
+                if (prop === "FamilyStatus") {
+                    Views.SettingsUtils.registerCombo("familyStatus", function (val) {
+                        _this.validate((val !== 0), "FamilyStatus");
+                        return { propertyName: "FamilyStatus", values: { status: val } };
+                    });
+                    Common.DropDown.registerDropDown($("#familyStatus"));
+                }
+                if (prop === "HomeLocation") {
+                    Views.SettingsUtils.registerLocationCombo("homeCity", "HomeLocation", function () {
+                        _this.validate(true, "HomeLocation");
+                    });
+                }
+                if (prop === "Languages") {
+                    var tl = Views.SettingsUtils.initLangsTagger([]);
+                    tl.onChange = function (items) {
+                        _this.validate(items.length > 0, "Languages");
+                    };
+                }
+                if (prop === "Interests") {
+                    var ti = Views.SettingsUtils.initInterestsTagger([]);
+                    ti.onChange = function (items) {
+                        _this.validate(items.length > 0, "Interests");
+                    };
+                }
+            });
+        };
+        EmptyProps.prototype.validate = function (res, name) {
+            if (res) {
+                this.okStat(name);
+            }
+            else {
+                this.koStat(name);
+            }
+        };
+        EmptyProps.prototype.okStat = function (name) {
+            var $tr = $("#tr" + name);
+            var $stat = $tr.find(".stat");
+            $stat.attr("src", "../images/tb/ok.png");
+            $tr.find(".close").show();
+            if (this.$table.find("tr").length === 0) {
+                this.$cont.hide();
+            }
+        };
+        EmptyProps.prototype.koStat = function (name) {
+            var $tr = $("#tr" + name);
+            var $stat = $tr.find(".stat");
+            $stat.attr("src", "../images/tb/ko.png");
+            $tr.find(".close").hide();
+        };
+        EmptyProps.prototype.appSignals = function ($table) {
+            var _this = this;
+            var trs = $table.find("tr").toArray();
+            trs.forEach(function (tr) {
+                var $tr = $(tr);
+                var $stat = $(_this.setTemp());
+                $tr.append($stat);
+                $tr.find(".close").click(function (e) {
+                    e.preventDefault();
+                    $tr.remove();
+                });
+            });
+        };
+        EmptyProps.prototype.visible = function (name, $form) {
+            var tr = $form.find("#tr" + name);
+            tr.show();
+        };
+        return EmptyProps;
+    }());
+    Views.EmptyProps = EmptyProps;
     var TravelBView = (function (_super) {
         __extends(TravelBView, _super);
         function TravelBView() {
             _super.apply(this, arguments);
             this.nowTabConst = "nowTab";
             this.cityTabConst = "cityTab";
+            this.emptyProps = [];
         }
         TravelBView.prototype.init = function () {
             var _this = this;
@@ -42,6 +159,8 @@ var Views;
                 });
             };
             this.notifs.startRefresh();
+            this.props = new EmptyProps();
+            this.props.generateProps(this.emptyProps);
         };
         TravelBView.prototype.createMainTab = function () {
             var _this = this;

@@ -182,8 +182,13 @@ namespace Gloobster.Portal.Controllers.Portal
 			return "N/A";
 		}
 
-        private string GetStatusStr(FamilyStatus status, ViewModelBase vm)
+        private string GetStatusStr(FamilyStatus? status, ViewModelBase vm)
         {
+            if (!status.HasValue)
+            {
+                return string.Empty;
+            }
+
             if (status == FamilyStatus.Single)
             {
                 return "Single";
@@ -194,16 +199,6 @@ namespace Gloobster.Portal.Controllers.Portal
                 return "InRelationship";
             }
             
-            if (status == FamilyStatus.Engaged)
-            {
-                return "Engaged";
-            }
-
-            if (status == FamilyStatus.Married)
-            {
-                return "Married";
-            }
-
             return "N/A";
         }
 

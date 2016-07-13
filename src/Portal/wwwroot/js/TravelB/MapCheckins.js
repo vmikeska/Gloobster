@@ -18,7 +18,8 @@ var TravelB;
             this.clearMarkers();
             checkins.forEach(function (c) {
                 var coord = c.waitingCoord;
-                var marker = L.marker([coord.Lat, coord.Lng], { icon: _this.getVisitedPin() }).addTo(_this.mapObj);
+                var ico = MapPins.getByGender(c.gender);
+                var marker = L.marker([coord.Lat, coord.Lng], { icon: ico }).addTo(_this.mapObj);
                 marker.on("click", function (e) {
                     _this.displayPopup(e.latlng, c.userId);
                 });
@@ -29,7 +30,7 @@ var TravelB;
             var _this = this;
             this.clearMarkers();
             mps.forEach(function (c) {
-                var marker = L.marker([c.coord.Lat, c.coord.Lng], { icon: _this.getVisitedPin() }).addTo(_this.mapObj);
+                var marker = L.marker([c.coord.Lat, c.coord.Lng], { icon: MapPins.mpPin() }).addTo(_this.mapObj);
                 _this.markers.push(marker);
             });
         };
@@ -54,19 +55,71 @@ var TravelB;
                 _this.mapObj.openPopup(popup);
             });
         };
-        MapCheckins.prototype.getVisitedPin = function () {
-            if (this.visitedPin == null) {
-                this.visitedPin = L.icon({
-                    iconUrl: '../images/visited-ico.png',
-                    iconSize: [26, 31],
-                    iconAnchor: [13, 31],
-                    popupAnchor: [-3, -76]
-                });
-            }
-            return this.visitedPin;
-        };
         return MapCheckins;
     }());
     TravelB.MapCheckins = MapCheckins;
+    var MapPins = (function () {
+        function MapPins() {
+        }
+        MapPins.getByGender = function (gender) {
+            if (gender === Gender.F) {
+                return this.womanPin();
+            }
+            if (gender === Gender.M) {
+                return this.manPin();
+            }
+            return null;
+        };
+        MapPins.mpPin = function () {
+            if (this.mpPinVal == null) {
+                this.mpPinVal = L.icon({
+                    iconUrl: '../images/tb/mp.png',
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 32],
+                    popupAnchor: [-3, -76]
+                });
+            }
+            return this.mpPinVal;
+        };
+        MapPins.manPin = function () {
+            if (this.manPinVal == null) {
+                this.manPinVal = L.icon({
+                    iconUrl: '../images/tb/man.png',
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 32],
+                    popupAnchor: [-3, -76]
+                });
+            }
+            return this.manPinVal;
+        };
+        MapPins.womanPin = function () {
+            if (this.womanPinVal == null) {
+                this.womanPinVal = L.icon({
+                    iconUrl: '../images/tb/woman.png',
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 32],
+                    popupAnchor: [-3, -76]
+                });
+            }
+            return this.womanPinVal;
+        };
+        MapPins.youPin = function () {
+            if (this.youPinVal == null) {
+                this.youPinVal = L.icon({
+                    iconUrl: '../images/tb/you.png',
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 32],
+                    popupAnchor: [-3, -76]
+                });
+            }
+            return this.youPinVal;
+        };
+        MapPins.manPinVal = null;
+        MapPins.womanPinVal = null;
+        MapPins.youPinVal = null;
+        MapPins.mpPinVal = null;
+        return MapPins;
+    }());
+    TravelB.MapPins = MapPins;
 })(TravelB || (TravelB = {}));
 //# sourceMappingURL=MapCheckins.js.map

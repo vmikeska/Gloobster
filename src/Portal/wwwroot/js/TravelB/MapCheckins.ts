@@ -28,8 +28,9 @@ module TravelB {
 			this.clearMarkers();
 
 			checkins.forEach((c) => {
-				var coord = c.waitingCoord;
-				var marker = L.marker([coord.Lat, coord.Lng], { icon: this.getVisitedPin() }).addTo(this.mapObj);
+					var coord = c.waitingCoord;
+				var ico = MapPins.getByGender(c.gender);
+				var marker = L.marker([coord.Lat, coord.Lng], { icon: ico }).addTo(this.mapObj);
 				marker.on("click", (e) => {
 					this.displayPopup(e.latlng, c.userId);
 				});
@@ -43,7 +44,7 @@ module TravelB {
 				this.clearMarkers();
 
 				mps.forEach((c) => {						
-						var marker = L.marker([c.coord.Lat, c.coord.Lng], { icon: this.getVisitedPin() }).addTo(this.mapObj);
+						var marker = L.marker([c.coord.Lat, c.coord.Lng], { icon: MapPins.mpPin() }).addTo(this.mapObj);
 						//marker.on("click", (e) => {
 						//		this.displayPopup(e.latlng, c.userId);
 						//});
@@ -80,26 +81,83 @@ module TravelB {
 				});
 				
 		}
+			
+		}
 
-		private getVisitedPin() {
-			if (this.visitedPin == null) {
-				this.visitedPin = L.icon({
-					iconUrl: '../images/visited-ico.png',
-					iconSize: [26, 31],
-					iconAnchor: [13, 31],
+	export class MapPins {
+
+		private static manPinVal = null;
+		private static womanPinVal = null;
+		private static youPinVal = null;
+		private static mpPinVal = null;
+
+		public static getByGender(gender: Gender) {
+			if (gender === Gender.F) {
+				return this.womanPin();
+			}
+
+			if (gender === Gender.M) {
+				return this.manPin();
+			}
+
+			return null;
+		}
+
+		public static mpPin() {
+			if (this.mpPinVal == null) {
+				this.mpPinVal = L.icon({
+					iconUrl: '../images/tb/mp.png',
+					iconSize: [32, 32],
+					iconAnchor: [16, 32],
 					popupAnchor: [-3, -76]
 				});
 			}
 
-			return this.visitedPin;
+			return this.mpPinVal;
+		}
+
+		public static manPin() {
+			if (this.manPinVal == null) {
+				this.manPinVal = L.icon({
+					iconUrl: '../images/tb/man.png',
+					iconSize: [32, 32],
+					iconAnchor: [16, 32],
+					popupAnchor: [-3, -76]
+				});
+			}
+
+			return this.manPinVal;
+		}
+
+		public static womanPin() {
+			if (this.womanPinVal == null) {
+				this.womanPinVal = L.icon({
+					iconUrl: '../images/tb/woman.png',
+					iconSize: [32, 32],
+					iconAnchor: [16, 32],
+					popupAnchor: [-3, -76]
+				});
+			}
+
+			return this.womanPinVal;
 		}
 
 
+		public static youPin() {
+			if (this.youPinVal == null) {
+				this.youPinVal = L.icon({
+					iconUrl: '../images/tb/you.png',
+					iconSize: [32, 32],
+					iconAnchor: [16, 32],
+					popupAnchor: [-3, -76]
+				});
+			}
 
-
-
-
+			return this.youPinVal;
+		}
 
 
 	}
+
+
 }

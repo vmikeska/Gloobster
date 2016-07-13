@@ -284,7 +284,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         public Gender gender { get; set; }
 
         public List<int> interests { get; set; }
-        public int birthYear { get; set; }
+        public int? birthYear { get; set; }
         public FamilyStatus familyStatus { get; set; }
         public string shortDescription { get; set; }
 

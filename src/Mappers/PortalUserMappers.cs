@@ -26,8 +26,13 @@ namespace Gloobster.Mappers
 				HomeLocation = e.HomeLocation.ToDO(),
 				CurrentLocation = e.CurrentLocation.ToDO(),
                 Languages = e.Languages,
-                DefaultLang = e.DefaultLang
-			};
+                DefaultLang = e.DefaultLang,
+                BirthYear = e.BirthYear,
+                FamilyStatus = e.FamilyStatus,
+                Interests = e.Interests,
+                ShortDescription = e.ShortDescription,
+                Mail = e.Mail
+            };
             
 			return dObj;
 		}
@@ -50,7 +55,12 @@ namespace Gloobster.Mappers
 				HomeLocation = d.HomeLocation.ToEntity(),
 				CurrentLocation = d.CurrentLocation.ToEntity(),
                 Languages = d.Languages,
-                DefaultLang = d.DefaultLang
+                DefaultLang = d.DefaultLang,
+                BirthYear = d.BirthYear,
+                FamilyStatus = d.FamilyStatus,
+                Interests = d.Interests,
+                ShortDescription = d.ShortDescription,
+                Mail = d.Mail                
 			};
             
 			return entity;

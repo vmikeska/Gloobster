@@ -15,7 +15,7 @@ namespace Gloobster.Portal.ViewModels
 		public string CurrentLocation { get; set; }
 		public string Gender { get; set; }
 
-        public int BirthYear { get; set; }
+        public int? BirthYear { get; set; }
         public string FamilyStatus { get; set; }
 
         public List<string> Languages { get; set; }

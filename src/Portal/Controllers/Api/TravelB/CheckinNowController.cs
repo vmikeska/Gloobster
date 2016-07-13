@@ -211,7 +211,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 lastName = u.LastName,
 
                 interests = u.Interests,
-                birthYear = u.BirthYear,
+                birthYear = u.BirthYear.Value,
                 familyStatus = u.FamilyStatus,
                 shortDescription = u.ShortDescription,
 

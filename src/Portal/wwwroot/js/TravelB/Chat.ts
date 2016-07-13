@@ -32,22 +32,36 @@
 		}
 
 		private names = [];
-			
+
 		public refreshAll(callback = null) {
 			var prms = [["type", "s"]];
 
 			var $cont = $("body");
-			
+
 			ViewBase.currentView.apiGet("CheckinReact", prms, (reacts) => {
+
+				var chats = $(".chat-cont").toArray();
+				chats.forEach((chat) => {
+					var $chat = $(chat);
+					var reactId = $chat.data("id");
+					var reactFound = _.find(reacts, (r) => {
+						return r.reactId === reactId;
+					});
+					var wasFound = reactFound != null;
+					if (!wasFound) {
+						$chat.remove();
+					}
+
+				});
 
 				reacts.forEach((r, i) => {
 
 					var $chat = Chat.getChatByRectId(r.reactId);
 					var cnt = $(".chat-cont").length;
-						
-						if ($chat.length === 0) {
-							this.createOneChatWindow($cont, r, cnt);
-						}						
+
+					if ($chat.length === 0) {
+						this.createOneChatWindow($cont, r, cnt);
+					}
 				});
 
 				if (!this.chatRefresh.isStarted) {
@@ -60,7 +74,7 @@
 			});
 		}
 
-			private createOneChatWindow($cont, react, count) {
+		private createOneChatWindow($cont, react, count) {
 				var $c = this.createOneChat(react);
 					var left = (count * (250 + 15));
 					$c.css("left", `${left}px`);
@@ -219,7 +233,7 @@
 		public static getChatByRectId(reactId) {
 			return $(`#chat_${reactId}`);
 		}
-
+			
 		private sendMessage(txt, reactId) {
 
 			var data = {

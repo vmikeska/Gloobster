@@ -44,4 +44,10 @@ var TabsWeekendType;
     TabsWeekendType[TabsWeekendType["ByCity"] = 1] = "ByCity";
     TabsWeekendType[TabsWeekendType["ByCountry"] = 2] = "ByCountry";
 })(TabsWeekendType || (TabsWeekendType = {}));
+var Gender;
+(function (Gender) {
+    Gender[Gender["N"] = 0] = "N";
+    Gender[Gender["M"] = 1] = "M";
+    Gender[Gender["F"] = 2] = "F";
+})(Gender || (Gender = {}));
 //# sourceMappingURL=Globals.js.map

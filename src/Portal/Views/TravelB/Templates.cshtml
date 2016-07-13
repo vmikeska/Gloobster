@@ -112,10 +112,10 @@
 <script id="meetingPointItem-template" type="text/x-handlebars-template">
 
     <div class="userItem">
-        @*<span class="thumbnail">
-            <img src="/PortalUser/ProfilePicture_xs/{{id}}">
-        </span>*@
+        <div style="width:40px; height: 40px; border: 1px solid black;">Photo</div>
         <a href="{{link}}">{{name}}</a>
+        <div>X people has met here</div>
+        <button>Check in</button>
         
     </div>
 
@@ -312,3 +312,126 @@
     <a class="blockReport" href="#">block & report</a>
 
 </script>
+
+<script id="settingsStat-template" type="text/x-handlebars-template">
+    <td>
+        <img class="stat" src="../images/tb/ko.png" width="64" height="64" />
+    </td>
+    <td>
+        <button style="display: none" class="close">X</button>
+    </td>
+</script>
+
+<script id="settings-template" type="text/x-handlebars-template">
+        
+    <div>
+
+        <div>Required settings for using Travel Buddy</div>
+
+        <table>
+            
+            <tr id="trHasProfileImage" style="display: none">
+                <td colspan="2">
+                    <img id="avatar" class="avatar" />
+                    <br />
+                    <a class="button avatarFile" href="#">
+                        <input type="file" id="avatarFile" style="width: 0.1px; height: 0.1px;" />
+
+                        <label for="avatarFile">
+                            @*<span>@Model.W("ChangePhoto")</span>*@
+                            <span>ChangePhoto</span>
+                        </label>
+                    </a>
+                </td>
+            </tr>
+
+            <tr id="trFirstName" style="display: none">
+                <td>
+                    <span class="titleName">First name</span>
+                </td>
+                <td>
+                    <input id="firstName" type="text" />
+                </td>
+            </tr>
+            <tr id="trLastName" style="display: none">
+                <td>
+                    <span class="titleName">Last name</span>
+                </td>
+                <td>
+                    <input id="lastName" type="text" />
+                </td>
+            </tr>
+
+            <tr id="trBirthYear" style="display: none">
+                <td>
+                    <span class="titleName">BirthYear</span>
+                </td>
+                <td>
+                    <input id="birthYear" type="number" placeholder="eg 1983" />
+                </td>
+            </tr>
+            <tr id="trGender" style="display: none">
+                <td>
+                    @*<span class="titleName">@Model.W("Gender")</span>*@
+                    <span class="titleName">Gender</span>
+                </td>
+                <td>
+                    <div id="gender" class="dropdown left">
+                        <span class="selected">N/A</span>
+                        <ul>
+                            <li data-value="1">@Model.W("Male", "layout")</li>
+                            <li data-value="2">@Model.W("Female", "layout")</li>
+                        </ul>
+                        <input type="hidden" value="0">
+                    </div>
+                </td>
+            </tr>
+            <tr id="trFamilyStatus" style="display: none">
+                <td>
+                    <span class="titleName">Status</span>
+                </td>
+                <td>
+                    <div id="familyStatus" class="dropdown left">
+                        <span class="selected">N/A</span>
+                        <ul>
+                            <li data-value="1">Single</li>
+                            <li data-value="2">InRelationship</li>
+                        </ul>
+                        <input type="hidden" value="0">
+                    </div>
+                </td>
+            </tr>
+            <tr id="trLanguages" style="display: none">
+                <td>
+                    <span class="titleName">Languages</span>
+                </td>
+                <td>
+                    <div id="langsTagging" class="tags">
+                    </div>
+                </td>
+            </tr>
+            <tr id="trInterests" style="display: none">
+                <td>
+                    <span class="titleName">Interests</span>
+                </td>
+                <td>
+                    <div id="intersTagging" class="tags">
+                    </div>
+                </td>
+            </tr>
+            <tr id="trHomeLocation" style="display: none">
+                <td>
+                    @*<span class="titleName">@Model.W("HomeCity")</span>*@
+                    <span class="titleName">HomeCity</span>
+                </td>
+                <td>
+                    <div id="homeCity" class="dropdown left">
+                        <input class="inputed" type="text" placeholder="City name">
+                        <ul></ul>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    </script>

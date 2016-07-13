@@ -83,7 +83,7 @@ namespace Gloobster.Entities
         public List<int> Interests { get; set; }
 
         public Gender Gender { get; set; }
-        public int BirthYear { get; set; }
+        public int? BirthYear { get; set; }
 
         public FamilyStatus FamilyStatus { get; set; }
 

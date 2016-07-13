@@ -46,12 +46,16 @@ var Planning;
             return $html;
         };
         TaggingField.prototype.removeTag = function ($target, $html) {
+            var _this = this;
             var val = $target.parent().data("vl");
             this.selectedItems = _.reject(this.selectedItems, function (i) {
                 return i.value === val;
             });
             this.onDeleteCustom(val, function () {
                 $html.remove();
+                if (_this.onChange) {
+                    _this.onChange(_this.selectedItems);
+                }
             });
         };
         TaggingField.prototype.createTagger = function () {
@@ -125,6 +129,9 @@ var Planning;
                 var $tag = _this.createTag(text, val, kind);
                 _this.$tagger.before($tag);
             });
+            if (this.onChange) {
+                this.onChange(this.selectedItems);
+            }
         };
         return TaggingField;
     }());

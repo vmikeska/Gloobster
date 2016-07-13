@@ -175,14 +175,18 @@ namespace Gloobster.DomainModels.Services.Accounts
                 CurrentLocation = null,
                 DefaultLang = "en",
                 DisplayName = "No name",
-                FirstName = "NoName",
-                LastName = "NoName",
+                FirstName = "",
+                LastName = "",
                 Gender = Gender.N,
                 HasProfileImage = false,
                 HomeLocation = null,
-                Languages = new List<string>(),
+                Languages = new List<string>(),                
                 Mail = "",
-                UserId = userId
+                UserId = userId,
+                BirthYear = null,
+                FamilyStatus = FamilyStatus.NA,
+                Interests = new List<int>(),
+                ShortDescription = ""
             };
             return empty;
         }
@@ -206,7 +210,9 @@ namespace Gloobster.DomainModels.Services.Accounts
                     DefaultLang = "en",
                     HomeAirports = new List<AirportSaveSE>(),
                     HasProfileImage = false,
-                    Interests = new List<int>()
+                    Interests = new List<int>(),
+                    BirthYear = null,
+                    FamilyStatus = 0
                 };
 
                 if (userData.CurrentLocation != null)

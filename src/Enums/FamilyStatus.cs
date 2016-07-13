@@ -1,4 +1,4 @@
 ﻿namespace Gloobster.Enums
 {
-    public enum FamilyStatus { Single, InRelationship, Engaged, Married}
+    public enum FamilyStatus { NA, Single, InRelationship }
 }

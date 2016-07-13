@@ -10,6 +10,7 @@ module Planning {
 	export class TaggingField {
 			public onItemClickedCustom: Function;
 			public onDeleteCustom: Function;
+			public onChange: Function;
 
 			private $tagger: any;
 		private $cont: any;
@@ -72,7 +73,10 @@ module Planning {
 			});
 
 			this.onDeleteCustom(val, () => {
-				$html.remove();				
+					$html.remove();		
+					if (this.onChange) {
+							this.onChange(this.selectedItems);
+					}		
 			});
 		}
 
@@ -162,6 +166,10 @@ module Planning {
 				var $tag = this.createTag(text, val, kind);
 				this.$tagger.before($tag);				
 			});
+
+			if (this.onChange) {
+				this.onChange(this.selectedItems);
+			}
 		}
 
 

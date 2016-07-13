@@ -35,6 +35,18 @@ var Views;
             var prms = [["type", "s"]];
             var $cont = $("body");
             Views.ViewBase.currentView.apiGet("CheckinReact", prms, function (reacts) {
+                var chats = $(".chat-cont").toArray();
+                chats.forEach(function (chat) {
+                    var $chat = $(chat);
+                    var reactId = $chat.data("id");
+                    var reactFound = _.find(reacts, function (r) {
+                        return r.reactId === reactId;
+                    });
+                    var wasFound = reactFound != null;
+                    if (!wasFound) {
+                        $chat.remove();
+                    }
+                });
                 reacts.forEach(function (r, i) {
                     var $chat = Chat.getChatByRectId(r.reactId);
                     var cnt = $(".chat-cont").length;

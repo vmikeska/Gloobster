@@ -42,4 +42,6 @@ enum ParticipantState { Invited, Accepted, Maybe, Refused }
 
 enum FlightCacheRecordType { City, Country }
 
-enum TabsWeekendType {ByWeek, ByCity, ByCountry}
+enum TabsWeekendType { ByWeek, ByCity, ByCountry }
+
+enum Gender { N, M, F }

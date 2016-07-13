@@ -20,6 +20,11 @@ namespace Gloobster.DomainObjects
 		public List<string> Languages { get; set; }
         public string DefaultLang { get; set; }
 
+        public List<int> Interests { get; set; }
+        public int? BirthYear { get; set; }
+        public FamilyStatus FamilyStatus { get; set; }
+        public string ShortDescription { get; set; }
+
         public Gender Gender { get; set; }
 	}
     
@@ -29,6 +34,5 @@ namespace Gloobster.DomainObjects
 		public string CountryCode { get; set; }
 		public int GeoNamesId { get; set; }
 	}
-
-
+    
 }
