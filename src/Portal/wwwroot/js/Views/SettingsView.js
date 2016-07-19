@@ -35,9 +35,20 @@ var Views;
             Views.SettingsUtils.registerCombo("familyStatus", function (val) {
                 return { propertyName: "FamilyStatus", values: { status: val } };
             });
-            Views.SettingsUtils.initInterestsTagger(this.inters);
+            this.initInterests();
             Views.SettingsUtils.initLangsTagger(this.langs);
             this.initPairing();
+        };
+        SettingsView.prototype.initInterests = function () {
+            var $c = $("#intersTagging");
+            this.interests = new TravelB.CategoryTagger();
+            this.interests.onFilterChange = (function (addedOrDeleted, id) {
+                var action = addedOrDeleted ? "ADD" : "DEL";
+                Views.SettingsUtils.callServer("Inters", { value: id, action: action }, function () { });
+            });
+            var data = TravelB.TravelBUtils.getInterestsTaggerData();
+            this.interests.create($c, "inters", data);
+            this.interests.initData(this.inters);
         };
         SettingsView.prototype.btnExists = function (id) {
             return $("#" + id).length === 1;

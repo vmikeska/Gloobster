@@ -34,6 +34,18 @@ var TravelB;
                     link: "abcd"
                 };
                 var $u = $(_this.mpTemplate(context));
+                $u.find(".checkin").click(function (e) {
+                    e.preventDefault();
+                    var v = Views.ViewBase.currentView;
+                    v.checkinWin.showNowCheckin(function () {
+                        v.checkinWin.wpCombo.initValues({
+                            sourceId: p.sourceId,
+                            sourceType: p.type,
+                            lastText: p.text,
+                            coord: p.coord
+                        });
+                    });
+                });
                 $listCont.append($u);
             });
         };
@@ -50,7 +62,9 @@ var TravelB;
                     name: p.displayName,
                     age: curYear - p.birthYear,
                     waitingFor: Views.StrOpers.getGenderStr(p.wantMeet),
-                    wants: Views.StrOpers.getActivityStr(p.wantDo)
+                    multiStr: Views.StrOpers.getMultiStr(p.multiPeopleAllowed),
+                    wants: Views.StrOpers.getActivityStr(p.wantDo),
+                    message: p.message
                 };
                 var $u = $(_this.checkinTemplate(context));
                 $u.find(".startChatBtn").click(function (e) {

@@ -45,7 +45,8 @@ namespace Gloobster.Mappers
                 FromAge = e.FromAge,
                 WantMeet = e.WantMeet,
                 ToAge = e.ToAge,
-                Message = e.Message
+                Message = e.Message,
+                ValidUntil = e.ValidUntil
             };
 
             return d;
@@ -67,7 +68,8 @@ namespace Gloobster.Mappers
                 FromAge = d.FromAge,
                 WantMeet = d.WantMeet,
                 ToAge = d.ToAge,
-                Message = d.Message
+                Message = d.Message,
+                ValidUntil = d.ValidUntil
             };
 
             if (!string.IsNullOrEmpty(d.CheckinId))

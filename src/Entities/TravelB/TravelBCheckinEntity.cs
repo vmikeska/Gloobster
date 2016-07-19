@@ -37,6 +37,11 @@ namespace Gloobster.Entities.TravelB
     }
 
 
+    public class CheckinNowHEntity : CheckinNowEntity
+    {
+        
+    }
+
     public class CheckinNowEntity : EntityBase
     {
         public ObjectId User_id { get; set; }
@@ -60,8 +65,13 @@ namespace Gloobster.Entities.TravelB
         public string Message { get; set; }
     }
 
-    public class CheckinCityEntity : EntityBase
+    public class CheckinCityHEntity : CheckinCityEntity
     {
+
+    }
+
+    public class CheckinCityEntity : EntityBase
+    {        
         public ObjectId User_id { get; set; }
 
         public List<int> WantDo { get; set; }
@@ -80,6 +90,7 @@ namespace Gloobster.Entities.TravelB
 
         public Date FromDate { get; set; }
         public Date ToDate { get; set; }
+        public DateTime ValidUntil { get; set; }
 
         public string Message { get; set; }
     }

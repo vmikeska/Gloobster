@@ -51,69 +51,53 @@ module TravelB {
 			});
 		}
 
+			private wantDos;
+
 		private initCommon() {
 
-				var v = <Views.TravelBView>Views.ViewBase.currentView;
-				
+			var v = <Views.TravelBView>Views.ViewBase.currentView;
+
 			this.initLangsTagger(v.defaultLangs);
-
-			var items = TravelBUtils.wantDoDB();
-
+				
 			var $c = $("#filterCont");
 			var $ac = $("#allCheckins");
 			var $jm = $("#showJustMine");
+
+			this.wantDos = new CategoryTagger();
+			var data = TravelBUtils.getWantDoTaggerData();
+			this.wantDos.create($c, "filter", data);
+			this.wantDos.onFilterChange = () => {
+					var ids = this.wantDos.getSelectedIds();
+					this.setFilter(ids);
+			}
 				
-			items.forEach((i) => {
-				var $h = $(`<input id="f_${i.id}" type="checkbox" /><label for="f_${i.id}">${i.text}</label>`);
-				$c.append($h);
-			});
-
 			$(".filter").find("input").click((e) => {
-				var $t = $(e.target);
-				var id = $t.attr("id");
+					var $t = $(e.target);
+					var id = $t.attr("id");
 
-				if (id === "allCheckins") {
+					if (id === "allCheckins") {
 
-					if ($ac.prop("checked") === true) {
-						$c.find("input").prop("checked", false);
-						$jm.prop("checked", false);
-						this.setFilter(["all"]);
-					} else {
-						this.setFilter(null);
+							if ($ac.prop("checked") === true) {
+									$c.find("input").prop("checked", false);
+									$jm.prop("checked", false);
+									this.setFilter(["all"]);
+							} else {
+									this.setFilter(null);
+							}
+
+					} else if (id === "showJustMine") {
+
+							if ($jm.prop("checked") === true) {
+									$c.find("input").prop("checked", false);
+									$ac.prop("checked", false);
+									this.setFilter(["mine"]);
+							} else {
+									this.setFilter(null);
+							}
+
 					}
-
-				} else if (id === "showJustMine") {
-
-					if ($jm.prop("checked") === true) {
-						$c.find("input").prop("checked", false);
-						$ac.prop("checked", false);
-						this.setFilter(["mine"]);
-					} else {
-						this.setFilter(null);
-					}
-
-				} else if (id.startsWith("f_")) {
-
-					if ($t.prop("checked") === true) {
-						$ac.prop("checked", false);
-					}
-
-					var selVals = [];
-					$c.find("input").each((i, c) => {
-						var $c = $(c);
-						if ($c.prop("checked")) {
-							var id = $c.attr("id");
-							var val = id.split("_")[1];
-							selVals.push(val);
-						}
-					});
-					this.setFilter(selVals);
-
-				}
-
 			});
-		}
-
+			}
 
 		private initLangsTagger(selectedItems) {
 

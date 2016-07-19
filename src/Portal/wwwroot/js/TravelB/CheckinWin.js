@@ -1,10 +1,5 @@
 var TravelB;
 (function (TravelB) {
-    (function (CheckinType) {
-        CheckinType[CheckinType["Now"] = 0] = "Now";
-        CheckinType[CheckinType["City"] = 1] = "City";
-    })(TravelB.CheckinType || (TravelB.CheckinType = {}));
-    var CheckinType = TravelB.CheckinType;
     var CheckinWin = (function () {
         function CheckinWin() {
             this.nowTabConst = "nowTab";
@@ -18,16 +13,15 @@ var TravelB;
             this.createWin(isEdit, CheckinType.City);
             this.createWinCity();
         };
-        CheckinWin.prototype.showNowCheckin = function () {
+        CheckinWin.prototype.showNowCheckin = function (callback) {
             var _this = this;
+            if (callback === void 0) { callback = null; }
             Views.ViewBase.currentView.apiGet("CheckinNow", [["type", "me"]], function (r) {
                 var hasStatus = r !== null;
                 _this.createWin(hasStatus, CheckinType.Now);
                 _this.createWinNow();
                 if (hasStatus) {
-                    r.wantDo.forEach(function (wId) {
-                        $("#wd_" + wId).prop("checked", true);
-                    });
+                    _this.wantDos.initData(r.wantDo);
                     _this.selectRadio("wantMeet", r.wantMeet);
                     $("#multiPeopleAllowed").prop("checked", r.multiPeopleAllowed);
                     var diffMins = TravelB.TravelBUtils.waitingMins(r.waitingUntil);
@@ -42,15 +36,16 @@ var TravelB;
                     });
                     _this.$html.find("#chckMsg").val(r.message);
                 }
+                if (callback) {
+                    callback();
+                }
             });
         };
         CheckinWin.prototype.initWantDo = function () {
-            var items = TravelB.TravelBUtils.wantDoDB();
             var $c = this.$html.find("#wantDoCont");
-            items.forEach(function (i) {
-                var $h = $("<input id=\"wd_" + i.id + "\" type=\"checkbox\" /><label for=\"wd_" + i.id + "\">" + i.text + "</label>");
-                $c.append($h);
-            });
+            this.wantDos = new TravelB.CategoryTagger();
+            var data = TravelB.TravelBUtils.getWantDoTaggerData();
+            this.wantDos.create($c, "checkin", data);
         };
         CheckinWin.prototype.createWin = function (edit, type) {
             var _this = this;
@@ -77,13 +72,12 @@ var TravelB;
                 _this.$html.fadeOut();
                 _this.$html.remove();
             });
-            this.fillAgeCombo("fromAge");
-            this.fillAgeCombo("toAge");
         };
         CheckinWin.prototype.createWinNow = function () {
             var $d = $(this.dlgNow());
             this.$html.find("#dlgSpec").html($d);
             this.wpCombo = this.initPlaceDD("1,4", this.$html.find("#waitingPlace"));
+            Common.DropDown.registerDropDown(this.$html.find("#minsWaiting"));
         };
         CheckinWin.prototype.createWinCity = function () {
             var $d = $(this.dlgCity());
@@ -101,15 +95,6 @@ var TravelB;
         CheckinWin.prototype.selectRadio = function (group, val) {
             this.$html.find("input[name=" + group + "][value=" + val + "]").prop("checked", true);
         };
-        CheckinWin.prototype.fillAgeCombo = function (id) {
-            var $ul = $("#" + id).find("ul");
-            ;
-            var ageStart = 18;
-            var ageEnd = 70;
-            for (var act = ageStart; act <= ageEnd; act++) {
-                $ul.append("<li data-value=\"" + act + "\">" + act + "</li>");
-            }
-        };
         CheckinWin.prototype.getRequestObj = function () {
             var data = {
                 wantDo: this.getWantDos(),
@@ -122,16 +107,7 @@ var TravelB;
             return data;
         };
         CheckinWin.prototype.getWantDos = function () {
-            var res = [];
-            var items = $("#wantDoCont").children().toArray();
-            items.forEach(function (i) {
-                var $i = $(i);
-                if ($i.prop("checked")) {
-                    var id = $i.attr("id");
-                    var val = id.split("_")[1];
-                    res.push(val);
-                }
-            });
+            var res = this.wantDos.getSelectedIds();
             return res;
         };
         CheckinWin.prototype.callNow = function () {
@@ -142,7 +118,8 @@ var TravelB;
                 waitingAtType: this.wpCombo.sourceType,
                 waitingAtText: this.wpCombo.lastText,
                 waitingCoord: this.wpCombo.coord,
-                minsWaiting: $("#minsWaiting").val()
+                minsWaiting: $("#minsWaiting input").val(),
+                checkinType: CheckinType.Now
             });
             Views.ViewBase.currentView.apiPost("CheckinNow", data, function (r) {
                 _this.refreshStat();
@@ -158,7 +135,8 @@ var TravelB;
                 waitingAtText: this.wcCombo.lastText,
                 waitingCoord: this.wcCombo.coord,
                 fromDate: $("#fromDate").data("myDate"),
-                toDate: $("#toDate").data("myDate")
+                toDate: $("#toDate").data("myDate"),
+                checkinType: CheckinType.City
             });
             Views.ViewBase.currentView.apiPost("CheckinCity", data, function (r) {
                 _this.closeWin();

@@ -4,7 +4,8 @@ var TravelB;
         function MapCheckins(mapObj) {
             this.markers = [];
             this.mapObj = mapObj;
-            this.popupTemplate = Views.ViewBase.currentView.registerTemplate("userPopup-template");
+            this.popupTemplateNow = Views.ViewBase.currentView.registerTemplate("userPopupNow-template");
+            this.popupTemplateCity = Views.ViewBase.currentView.registerTemplate("userPopupCity-template");
         }
         MapCheckins.prototype.clearMarkers = function () {
             var _this = this;
@@ -13,7 +14,7 @@ var TravelB;
             });
             this.markers = [];
         };
-        MapCheckins.prototype.genCheckins = function (checkins) {
+        MapCheckins.prototype.genCheckins = function (checkins, type) {
             var _this = this;
             this.clearMarkers();
             checkins.forEach(function (c) {
@@ -21,7 +22,12 @@ var TravelB;
                 var ico = MapPins.getByGender(c.gender);
                 var marker = L.marker([coord.Lat, coord.Lng], { icon: ico }).addTo(_this.mapObj);
                 marker.on("click", function (e) {
-                    _this.displayPopup(e.latlng, c.userId);
+                    if (type === CheckinType.Now) {
+                        _this.displayPopupNow(e.latlng, c.userId);
+                    }
+                    if (type === CheckinType.City) {
+                        _this.displayPopupCity(e.latlng, c.id);
+                    }
                 });
                 _this.markers.push(marker);
             });
@@ -34,7 +40,31 @@ var TravelB;
                 _this.markers.push(marker);
             });
         };
-        MapCheckins.prototype.displayPopup = function (latlng, userId) {
+        MapCheckins.prototype.displayPopupCity = function (latlng, cid) {
+            var _this = this;
+            Views.ViewBase.currentView.apiGet("CheckinCity", [["type", "id"], ["id", cid]], function (checkin) {
+                var d = new Date();
+                var curYear = d.getFullYear();
+                var context = {
+                    id: checkin.userId,
+                    name: checkin.displayName,
+                    age: curYear - checkin.birthYear,
+                    waitingFor: Views.StrOpers.getGenderStr(checkin.wantMeet),
+                    multiStr: Views.StrOpers.getMultiStr(checkin.multiPeopleAllowed),
+                    wants: Views.StrOpers.getActivityStr(checkin.wantDo),
+                    fromStr: Views.StrOpers.formatDate(checkin.fromDate),
+                    toStr: Views.StrOpers.formatDate(checkin.toDate),
+                    interests: Views.StrOpers.getInterestsStr(checkin.interests),
+                    message: checkin.message
+                };
+                var ppCont = _this.popupTemplateCity(context);
+                var popup = new L.Popup();
+                popup.setLatLng(latlng);
+                popup.setContent(ppCont);
+                _this.mapObj.openPopup(popup);
+            });
+        };
+        MapCheckins.prototype.displayPopupNow = function (latlng, userId) {
             var _this = this;
             Views.ViewBase.currentView.apiGet("CheckinNow", [["type", "id"], ["id", userId]], function (checkin) {
                 var d = new Date();
@@ -44,11 +74,13 @@ var TravelB;
                     name: checkin.displayName,
                     age: curYear - checkin.birthYear,
                     waitingFor: Views.StrOpers.getGenderStr(checkin.wantMeet),
+                    multiStr: Views.StrOpers.getMultiStr(checkin.multiPeopleAllowed),
                     wants: Views.StrOpers.getActivityStr(checkin.wantDo),
                     waitingMins: TravelB.TravelBUtils.waitingMins(checkin.waitingUntil),
-                    interests: Views.StrOpers.getInterestsStr(checkin.interests)
+                    interests: Views.StrOpers.getInterestsStr(checkin.interests),
+                    message: checkin.message
                 };
-                var ppCont = _this.popupTemplate(context);
+                var ppCont = _this.popupTemplateNow(context);
                 var popup = new L.Popup();
                 popup.setLatLng(latlng);
                 popup.setContent(ppCont);

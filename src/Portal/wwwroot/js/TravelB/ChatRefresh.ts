@@ -1,17 +1,26 @@
 module Views {
 	export class ChatRefresh {
 
-		public isStarted = false;
+		public get isStarted(): boolean {
+			return this.intRef !== null;
+		}
 
 		public onRefresh: Function;
 			
 		private refreshCycleFinished = true;
 		private lastRefreshDate = null;
 
-		public startRefresh() {
+		private intRef = null;
 
-			this.isStarted = true;
-			var i = setInterval(() => {
+		private stopRefresh() {
+			if (this.intRef) {
+				clearInterval(this.intRef);
+				this.intRef = null;
+			}
+		}
+
+		public startRefresh() {				
+			this.intRef = setInterval(() => {
 
 				if (!this.refreshCycleFinished) {
 					return;
@@ -22,14 +31,11 @@ module Views {
 				var chatWins = $(".chat-cont").toArray();
 
 				if (chatWins.length === 0) {
-					clearInterval(i);
+					this.stopRefresh();
 				}
 
 				var loadedIds = _.map(chatWins, (w) => { return $(w).data("id"); });
 						
-
-				
-
 				var prms = [];
 				var lastDate = null;
 				loadedIds.forEach((rid) => {

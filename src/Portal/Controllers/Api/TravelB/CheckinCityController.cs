@@ -19,6 +19,7 @@ using Gloobster.DomainModels.TravelB;
 using Gloobster.DomainObjects.TravelB;
 using Gloobster.Entities;
 using Gloobster.Mappers;
+using Gloobster.Portal.Controllers.Api.Wiki;
 
 namespace Gloobster.Portal.Controllers.Api.Wiki
 {
@@ -34,10 +35,13 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             };
         }
 
+
         [AuthorizeApi]
         [HttpGet]
         public async Task<IActionResult> Get(CheckinCityQueryRequest req)
         {
+            await TbDomain.HistorizeCheckins();
+
             if (req.type == "id")
             {
                 var checkinIdObj = new ObjectId(req.id);
@@ -55,10 +59,10 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             }
 
             if (req.type == "my")
-            {               
+            {
                 var checkins = DB.List<CheckinCityEntity>(u => u.User_id == UserIdObj);
-                
-                var checkinsDO = checkins.Select(c => c.ToDO()).ToList();                
+
+                var checkinsDO = checkins.Select(c => c.ToDO()).ToList();
                 var responses = checkinsDO.Select(c => ConvertCheckin(User, c)).ToList();
                 return new ObjectResult(responses);
             }
@@ -66,7 +70,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             if (req.type == "query")
             {
                 var responses = GetCheckinsInRect(req);
-                
+
                 bool showAll = req.filter == "all";
                 bool justMine = req.filter == "mine";
 
@@ -76,7 +80,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                     responses = FilterDate(responses, req);
                     return new ObjectResult(responses);
                 }
-                
+
                 if (!showAll)
                 {
                     responses = Query(responses, req);
@@ -105,7 +109,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                     }
                     return true;
                 })
-                .ToList();
+                    .ToList();
 
             return responses;
         }
@@ -120,7 +124,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             responses = responses.Where(r => r.languages.Intersect(req.lang).Any()).ToList();
 
             responses = FilterDate(responses, req);
-            
+
             if (showAllFilteredByGenders)
             {
                 return responses;
@@ -148,6 +152,14 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         [AuthorizeApi]
         public async Task<IActionResult> Post([FromBody] CheckinRequest req)
         {
+            var validator = new CheckinValidator();
+            validator.Validate(req);
+
+            if (!validator.IsValid)
+            {
+                throw new Exception("Invalid checkin city");
+            }
+
             var checkinDO = ReqCityToDO(req);
 
             await TbDomain.CreateCheckin(checkinDO);
@@ -159,7 +171,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         [AuthorizeApi]
         public async Task<IActionResult> Delete(string id)
         {
-            bool deleted = await TbDomain.DeleteCheckin(id, UserId);            
+            bool deleted = await TbDomain.DeleteCheckin(id, UserId);
             return new ObjectResult(deleted);
         }
 
@@ -244,21 +256,28 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 waitingAtType = c.WaitingAtType,
                 waitingAtText = c.WaitingAtText,
                 waitingCoord = c.WaitingCoord,
-
-                homeCountry = u.HomeLocation.CountryCode,
-                livesCountry = u.CurrentLocation.CountryCode,
-
+                
                 wantDo = c.WantDo,
                 wantMeet = c.WantMeet,
 
                 fromDate = c.FromDate,
                 toDate = c.ToDate,
-            
+
                 multiPeopleAllowed = c.MultiPeopleAllowed,
 
                 message = c.Message
 
             };
+
+            if (u.CurrentLocation != null)
+            {
+                response.livesCountry = u.CurrentLocation.CountryCode;
+            }
+
+            if (u.HomeLocation != null)
+            {
+                response.homeCountry = u.HomeLocation.CountryCode;
+            }
 
             return response;
         }
@@ -273,14 +292,14 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         public string userId { get; set; }
 
         public string displayName { get; set; }
-    
+
         public string firstName { get; set; }
         public string lastName { get; set; }
-        
+
         public string homeCountry { get; set; }
         public string livesCountry { get; set; }
 
-        public List<string> languages { get; set; }        
+        public List<string> languages { get; set; }
         public Gender gender { get; set; }
 
         public List<int> interests { get; set; }
@@ -289,7 +308,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         public string shortDescription { get; set; }
 
         //---
-        
+
         public string id { get; set; }
 
         public List<int> wantDo { get; set; }
@@ -316,16 +335,20 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
     }
 
-    public enum CheckinType { Now, City }
-    
-   
+    public enum CheckinType
+    {
+        Now,
+        City
+    }
+
+
 
     public class CheckinCityQueryRequest
     {
         public string type { get; set; }
-        
+
         public string id { get; set; }
-        
+
         public string filter { get; set; }
 
         public List<string> lang { get; set; }
@@ -333,11 +356,54 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         public double latSouth { get; set; }
         public double lngWest { get; set; }
         public double latNorth { get; set; }
-        public double lngEast { get; set; }        
+        public double lngEast { get; set; }
 
         public string fromDate { get; set; }
-        public string toDate { get; set; }        
+        public string toDate { get; set; }
     }
+
+    public class CheckinValidator
+    {
+        public bool IsValid = true;
+
+        public void Validate(CheckinRequest req)
+        {
+            Check(req.wantDo.Count > 0);
+            Check(req.fromAge >= 18);
+            
+            if (req.checkinType == CheckinType.Now)
+            {
+                Check(req.waitingAtType == SourceType.S4 || req.waitingAtType == SourceType.Yelp);
+
+                Check(req.minsWaiting >= 30);
+                Check(req.minsWaiting <= 240);
+            }
+
+            if (req.checkinType == CheckinType.City)
+            {
+                Check(req.waitingAtType == SourceType.City);
+
+                //check regular range ?
+                Check(req.fromDate != null);
+                Check(req.toDate != null);
+            }
+
+            //check if it is real ?
+            Check(!string.IsNullOrEmpty(req.waitingAtId));
+            Check(!string.IsNullOrEmpty(req.waitingAtText));
+            Check(req.waitingCoord != null);            
+        }
+
+        private void Check(bool state)
+        {
+            if (!state)
+            {
+                IsValid = false;
+            }
+        }
+
+    }
+
 
     public class CheckinRequest
     {

@@ -44,11 +44,27 @@ module TravelB {
 					var context = {
 							sourceId: p.sourceId,
 							type: p.type,
-							name: p.text,
+							name: p.text,							
 							link: "abcd"
 					};
 
 					var $u = $(this.mpTemplate(context));
+					
+				$u.find(".checkin").click((e) => {
+					e.preventDefault();
+
+					var v = <Views.TravelBView>Views.ViewBase.currentView;
+					v.checkinWin.showNowCheckin(() => {
+						v.checkinWin.wpCombo.initValues({
+							sourceId: p.sourceId,
+							sourceType: p.type,
+							lastText: p.text,
+							coord: p.coord
+						});
+					});
+
+				});
+
 					$listCont.append($u);
 			});				
 
@@ -72,7 +88,10 @@ module TravelB {
 					name: p.displayName,
 					age: curYear - p.birthYear,
 					waitingFor: Views.StrOpers.getGenderStr(p.wantMeet),
-					wants: Views.StrOpers.getActivityStr(p.wantDo)
+					multiStr: Views.StrOpers.getMultiStr(p.multiPeopleAllowed),
+					wants: Views.StrOpers.getActivityStr(p.wantDo),
+					message: p.message
+
 				};
 
 				var $u = $(this.checkinTemplate(context));

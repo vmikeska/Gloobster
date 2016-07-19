@@ -1,8 +1,10 @@
 ﻿module Views {
 	export class SettingsView extends ViewBase {
 
-		private langs;
-		private inters;
+			public langs;			
+			public inters;
+
+			private interests;
 
 		public init() {			
 			SettingsUtils.registerAvatarFileUpload("avatarFile");
@@ -37,10 +39,27 @@
 					return { propertyName: "FamilyStatus", values: { status: val } };
 			});
 				
-			SettingsUtils.initInterestsTagger(this.inters);
+			this.initInterests();
+			//SettingsUtils.initInterestsTagger(this.inters);
+				
 			SettingsUtils.initLangsTagger(this.langs);
 
 			this.initPairing();				
+		}
+
+		private initInterests() {
+				var $c = $("#intersTagging");
+
+				this.interests = new TravelB.CategoryTagger();
+				this.interests.onFilterChange = ((addedOrDeleted, id) => {
+					var action = addedOrDeleted ? "ADD" : "DEL";
+					SettingsUtils.callServer("Inters", { value: id, action: action }, () => { });					
+				});
+
+				var data = TravelB.TravelBUtils.getInterestsTaggerData();				
+				this.interests.create($c, "inters", data);				
+
+				this.interests.initData(this.inters);
 		}
 			
 		private btnExists(id) {

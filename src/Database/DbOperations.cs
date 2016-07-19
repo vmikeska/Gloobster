@@ -165,19 +165,36 @@ namespace Gloobster.Database
             }
         }
         
-        public async Task<T> SaveAsync<T>(T entity) where T: EntityBase
-	    {
-		    AddEntityIdIfMissing(entity);
+        public async Task<T> SaveCustomAsync<T>(T entity, string customName) where T : EntityBase
+        {
+            AddEntityIdIfMissing(entity);
 
-			var collectionName = GetCollectionName<T>();
+            var collectionName = customName;
+
             var collection = Database.GetCollection<BsonDocument>(collectionName);
-			
+
             var bsonDoc = entity.ToBsonDocument();
 
             await collection.InsertOneAsync(bsonDoc);
-			
+
             return entity;
         }
+
+        public async Task<T> SaveAsync<T>(T entity) where T : EntityBase
+        {
+            AddEntityIdIfMissing(entity);
+
+            var collectionName = GetCollectionName<T>();
+
+            var collection = Database.GetCollection<BsonDocument>(collectionName);
+
+            var bsonDoc = entity.ToBsonDocument();
+
+            await collection.InsertOneAsync(bsonDoc);
+
+            return entity;
+        }
+        
 
         public async Task<bool> DeleteAsync<T>(Expression<Func<T, bool>> query) where T : EntityBase
         {

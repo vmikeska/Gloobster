@@ -1,7 +1,5 @@
 ﻿module TravelB {
-
-	export enum CheckinType { Now, City }
-
+	
 	export class CheckinWin {
 
 		private $html;
@@ -14,10 +12,11 @@
 		private dlgNow;
 		private dlgCity;		
 
-		private wpCombo;
+		public wpCombo;
 		private wcCombo;
 
 		private tabs: Tabs;
+		private wantDos: CategoryTagger;
 
 		constructor() {
 			this.registerTemplates();		
@@ -33,8 +32,8 @@
 			this.createWin(isEdit, CheckinType.City);
 			this.createWinCity();
 		}
-
-		public showNowCheckin() {
+			
+		public showNowCheckin(callback = null) {
 
 			Views.ViewBase.currentView.apiGet("CheckinNow", [["type", "me"]], (r) => {
 
@@ -45,9 +44,7 @@
 
 				if (hasStatus) {
 
-					r.wantDo.forEach((wId) => {
-						$(`#wd_${wId}`).prop("checked", true);
-					});
+						this.wantDos.initData(r.wantDo);
 						
 					this.selectRadio("wantMeet", r.wantMeet);
 
@@ -69,18 +66,19 @@
 					this.$html.find("#chckMsg").val(r.message);
 				}
 
+				if (callback) {
+					callback();
+				}
+
 			});
 		}
 
 		private initWantDo() {
-			var items = TravelBUtils.wantDoDB();
-			
 			var $c = this.$html.find("#wantDoCont");
 
-			items.forEach((i) => {
-				var $h = $(`<input id="wd_${i.id}" type="checkbox" /><label for="wd_${i.id}">${i.text}</label>`);
-				$c.append($h);
-			});
+			this.wantDos = new CategoryTagger();
+			var data = TravelBUtils.getWantDoTaggerData();
+			this.wantDos.create($c, "checkin", data);
 		}
 
 		private createWin(edit: boolean, type: CheckinType) {
@@ -114,17 +112,16 @@
 				e.preventDefault();
 				this.$html.fadeOut();
 				this.$html.remove();
-			});
-
-			this.fillAgeCombo("fromAge");
-			this.fillAgeCombo("toAge");
+			});				
 		}
 
 		private createWinNow() {
 			var $d = $(this.dlgNow());
 			this.$html.find("#dlgSpec").html($d);
-
+				
 			this.wpCombo = this.initPlaceDD("1,4", this.$html.find("#waitingPlace"));
+
+			Common.DropDown.registerDropDown(this.$html.find("#minsWaiting"));
 		}
 
 		private createWinCity() {
@@ -148,16 +145,7 @@
 		private selectRadio(group, val) {
 			this.$html.find(`input[name=${group}][value=${val}]`).prop("checked", true);
 		}
-
-		private fillAgeCombo(id) {
-			var $ul = $(`#${id}`).find("ul");;
-			var ageStart = 18;
-			var ageEnd = 70;
-			for (var act = ageStart; act <= ageEnd; act++) {
-				$ul.append(`<li data-value="${act}">${act}</li>`);
-			}
-		}
-
+			
 		private getRequestObj() {
 			var data = {
 				wantDo: this.getWantDos(),
@@ -171,16 +159,17 @@
 		}
 
 		private getWantDos() {
-			var res = [];
-			var items = $("#wantDoCont").children().toArray();
-			items.forEach((i) => {
-				var $i = $(i);
-				if ($i.prop("checked")) {
-					var id = $i.attr("id");
-					var val = id.split("_")[1];
-					res.push(val);
-				}
-			});
+			//var res = [];
+			//var items = $("#wantDoCont").children().toArray();
+			//items.forEach((i) => {
+			//	var $i = $(i);
+			//	if ($i.prop("checked")) {
+			//		var id = $i.attr("id");
+			//		var val = id.split("_")[1];
+			//		res.push(val);
+			//	}
+			//});
+			var res = this.wantDos.getSelectedIds();
 			return res;
 		}
 
@@ -193,7 +182,8 @@
 				waitingAtType: this.wpCombo.sourceType,
 				waitingAtText: this.wpCombo.lastText,
 				waitingCoord: this.wpCombo.coord,
-				minsWaiting: $("#minsWaiting").val()
+				minsWaiting: $("#minsWaiting input").val(),
+				checkinType: CheckinType.Now
 			});
 
 			Views.ViewBase.currentView.apiPost("CheckinNow", data, (r) => {
@@ -211,7 +201,8 @@
 				waitingAtText: this.wcCombo.lastText,
 				waitingCoord: this.wcCombo.coord,
 				fromDate: $("#fromDate").data("myDate"),
-				toDate: $("#toDate").data("myDate")
+				toDate: $("#toDate").data("myDate"),
+				checkinType: CheckinType.City
 			});
 
 			Views.ViewBase.currentView.apiPost("CheckinCity", data, (r) => {

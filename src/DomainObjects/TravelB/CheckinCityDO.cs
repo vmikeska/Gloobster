@@ -26,8 +26,9 @@ namespace Gloobster.DomainObjects.TravelB
 
         public Date FromDate { get; set; }
         public Date ToDate { get; set; }
+        public DateTime ValidUntil { get; set; }
 
         public string Message { get; set; }
-
+        
     }
 }

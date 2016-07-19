@@ -60,30 +60,6 @@ var Views;
                 _this.callServer(propertyName, { sourceId: request.SourceId, sourceType: request.SourceType }, callback);
             };
         };
-        SettingsUtils.initInterestsTagger = function (selectedItems) {
-            var _this = this;
-            var interests = TravelB.TravelBUtils.interestsDB();
-            var itemsRange = _.map(interests, function (i) {
-                return { text: i.text, value: i.id, kind: "i" };
-            });
-            var config = new Planning.TaggingFieldConfig();
-            config.containerId = "intersTagging";
-            config.localValues = true;
-            config.itemsRange = itemsRange;
-            var t = new Planning.TaggingField(config);
-            t.onItemClickedCustom = function ($target, callback) {
-                var val = $target.data("vl");
-                _this.callServer("Inters", { value: val, action: "ADD" }, callback);
-            };
-            t.onDeleteCustom = function (val, callback) {
-                _this.callServer("Inters", { value: val, action: "DEL" }, callback);
-            };
-            var selItms = _.map(selectedItems, function (i) {
-                return { value: i, kind: "i" };
-            });
-            t.setSelectedItems(selItms);
-            return t;
-        };
         SettingsUtils.initLangsTagger = function (selectedItems) {
             var _this = this;
             var langs = TravelB.TravelBUtils.langsDB();

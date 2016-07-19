@@ -38,14 +38,16 @@ var TravelB;
             var _this = this;
             var v = Views.ViewBase.currentView;
             this.initLangsTagger(v.defaultLangs);
-            var items = TravelB.TravelBUtils.wantDoDB();
             var $c = $("#filterCont");
             var $ac = $("#allCheckins");
             var $jm = $("#showJustMine");
-            items.forEach(function (i) {
-                var $h = $("<input id=\"f_" + i.id + "\" type=\"checkbox\" /><label for=\"f_" + i.id + "\">" + i.text + "</label>");
-                $c.append($h);
-            });
+            this.wantDos = new TravelB.CategoryTagger();
+            var data = TravelB.TravelBUtils.getWantDoTaggerData();
+            this.wantDos.create($c, "filter", data);
+            this.wantDos.onFilterChange = function () {
+                var ids = _this.wantDos.getSelectedIds();
+                _this.setFilter(ids);
+            };
             $(".filter").find("input").click(function (e) {
                 var $t = $(e.target);
                 var id = $t.attr("id");
@@ -68,21 +70,6 @@ var TravelB;
                     else {
                         _this.setFilter(null);
                     }
-                }
-                else if (id.startsWith("f_")) {
-                    if ($t.prop("checked") === true) {
-                        $ac.prop("checked", false);
-                    }
-                    var selVals = [];
-                    $c.find("input").each(function (i, c) {
-                        var $c = $(c);
-                        if ($c.prop("checked")) {
-                            var id = $c.attr("id");
-                            var val = id.split("_")[1];
-                            selVals.push(val);
-                        }
-                    });
-                    _this.setFilter(selVals);
                 }
             });
         };

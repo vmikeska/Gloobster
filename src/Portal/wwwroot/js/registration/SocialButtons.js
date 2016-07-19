@@ -27,8 +27,7 @@ var Reg;
             this.getUserMenu(function (r) {
                 var $menu = $(r);
                 $("#ddMenus").append($menu);
-                var dd = new Common.DropDown();
-                dd.registerDropDown($menu);
+                Common.DropDown.registerDropDown($menu);
             });
             if (this.onAfterCustom) {
                 this.onAfterCustom(net);

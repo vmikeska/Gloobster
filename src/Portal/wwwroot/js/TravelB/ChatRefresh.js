@@ -1,40 +1,27 @@
 var Views;
 (function (Views) {
-    var NotificationRefresh = (function () {
-        function NotificationRefresh() {
-            this.refreshCycleFinished = true;
-            this.lastRefreshDate = null;
-        }
-        NotificationRefresh.prototype.startRefresh = function () {
-            var _this = this;
-            this.notif = new Views.CheckinReacts();
-            var i = setInterval(function () {
-                if (!_this.refreshCycleFinished) {
-                    return;
-                }
-                else {
-                    _this.refreshCycleFinished = false;
-                }
-                var chatWins = $(".chat-cont").toArray();
-                if (chatWins.length === 0) {
-                    clearInterval(i);
-                }
-                _this.notif.refreshReacts(function () {
-                    _this.refreshCycleFinished = true;
-                });
-            }, 5000);
-        };
-        return NotificationRefresh;
-    }());
-    Views.NotificationRefresh = NotificationRefresh;
     var ChatRefresh = (function () {
         function ChatRefresh() {
             this.refreshCycleFinished = true;
             this.lastRefreshDate = null;
+            this.intRef = null;
         }
+        Object.defineProperty(ChatRefresh.prototype, "isStarted", {
+            get: function () {
+                return this.intRef !== null;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        ChatRefresh.prototype.stopRefresh = function () {
+            if (this.intRef) {
+                clearInterval(this.intRef);
+                this.intRef = null;
+            }
+        };
         ChatRefresh.prototype.startRefresh = function () {
             var _this = this;
-            var i = setInterval(function () {
+            this.intRef = setInterval(function () {
                 if (!_this.refreshCycleFinished) {
                     return;
                 }
@@ -43,7 +30,7 @@ var Views;
                 }
                 var chatWins = $(".chat-cont").toArray();
                 if (chatWins.length === 0) {
-                    clearInterval(i);
+                    _this.stopRefresh();
                 }
                 var loadedIds = _.map(chatWins, function (w) { return $(w).data("id"); });
                 var prms = [];

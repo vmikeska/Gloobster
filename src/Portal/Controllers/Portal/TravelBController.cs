@@ -60,17 +60,7 @@ namespace Gloobster.Portal.Controllers.Portal
             {
                 props.Add("HomeLocation");
             }
-
-            if (user.CurrentLocation == null)
-            {
-                props.Add("CurrentLocation");
-            }
-
-            if (user.CurrentLocation == null)
-            {
-                props.Add("CurrentLocation");
-            }
-
+            
             if (user.Languages == null || user.Languages.Count == 0)
             {
                 props.Add("Languages");

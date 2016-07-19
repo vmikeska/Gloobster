@@ -64,6 +64,11 @@ namespace Gloobster.Common
             return new Date(date.Day, date.Month, date.Year);
         }
 
-        //public static Date ToDate(this DateTime)
+        public static DateTime ToDateEnd(this Date date, DateTimeKind kind)
+        {
+            var dateTime = new DateTime(date.Year, date.Month, date.Day, 23, 59, 59, kind);
+            return dateTime;
+        }
+        
     }
 }

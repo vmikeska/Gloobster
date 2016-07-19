@@ -55,18 +55,13 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 DB = db
             };
         }
-
-        //todo: move into a service
-        private async void RemoveOldCheckins()
-        {
-            var deleted = await DB.DeleteAsync<CheckinNowEntity>(c => c.WaitingUntil < DateTime.UtcNow);            
-        }
-
+        
         [AuthorizeApi]
         [HttpGet]
         public async Task<IActionResult> Get(CheckinNowQueryRequest req)
         {
-            RemoveOldCheckins();
+            //todo: move into a service
+            await TbDomain.HistorizeCheckins();
 
             if (req.type == "id")                
             {
@@ -137,11 +132,19 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         [AuthorizeApi]
         public async Task<IActionResult> Post([FromBody] CheckinRequest req)
         {
+            var validator = new CheckinValidator();
+            validator.Validate(req);
+
+            if (!validator.IsValid)
+            {
+                throw new Exception("Invalid checkin now");
+            }
+
             var checkinDO = ReqNowToDO(req);
             
             await TbDomain.CreateCheckin(checkinDO);
 
-            return new ObjectResult(null);
+            return new ObjectResult(true);
         }
 
         private CheckinNowDO ReqNowToDO(CheckinRequest req)
@@ -224,18 +227,24 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 waitingCoord = c.WaitingCoord,
 
                 message = c.Message,
-
-                homeCountry = u.HomeLocation.CountryCode,
-                livesCountry = u.CurrentLocation.CountryCode,
-
+                
                 wantDo = c.WantDo,
                 wantMeet = c.WantMeet,
                 
                 waitingUntil = c.WaitingUntil,
                 
-                multiPeopleAllowed = c.MultiPeopleAllowed,
-
+                multiPeopleAllowed = c.MultiPeopleAllowed
             };
+
+            if (u.CurrentLocation != null)
+            {
+                response.livesCountry = u.CurrentLocation.CountryCode;
+            }
+
+            if (u.HomeLocation != null)
+            {
+                response.homeCountry = u.HomeLocation.CountryCode;
+            }
 
             return response;
         }

@@ -16,27 +16,35 @@
             <div class="checkinCont">
 
                 <div>
-                    <span>Want do</span>
+                    <b>Want do</b>
                     <div id="wantDoCont">
 
                     </div>                    
                 </div>
 
                 <div>
-                    <span>Want meet</span>
+                    <b>Want meet</b>
                     <input id="wantMeetMan" type="radio" name="wantMeet" value="0"><label for="wantMeetMan">Man only</label>
                     <input id="wantMeetWoman" type="radio" name="wantMeet" value="1"><label for="wantMeetWoman">Woman only</label>
-                    <input id="wantMeetAnybody" type="radio" name="wantMeet" value="2"><label for="wantMeetAnybody">Doesn't matter</label>
+                    <input id="wantMeetAnybody" type="radio" name="wantMeet" value="2" checked><label for="wantMeetAnybody">Doesn't matter</label>
                     <br />
                     <input id="multiPeopleAllowed" type="checkbox" />
                     <label for="multiPeopleAllowed">Multiple people allowed</label>
                 </div>
 
                 <div>
-                    <span>AgeRange</span>
+                    <b>AgeRange</b>
                     <div id="fromAge" class="dropdown">
                         <span class="selected">18</span>
-                        <ul>                            
+                        <ul>
+                            <li data-value="18">18</li>
+                            <li data-value="20">20</li>
+                            <li data-value="25">25</li>
+                            <li data-value="30">30</li>
+                            <li data-value="35">35</li>
+                            <li data-value="40">40</li>
+                            <li data-value="50">50</li>
+                            <li data-value="60">60</li>
                         </ul>
                         <input type="hidden" value="18">
                     </div>
@@ -44,6 +52,14 @@
                     <div id="toAge" class="dropdown">
                         <span class="selected">35</span>
                         <ul>                            
+                            <li data-value="18">20</li>
+                            <li data-value="25">25</li>
+                            <li data-value="30">30</li>
+                            <li data-value="35">35</li>
+                            <li data-value="40">40</li>
+                            <li data-value="50">50</li>
+                            <li data-value="60">60</li>
+                            <li data-value="100">100</li>
                         </ul>
                         <input type="hidden" value="35">
                     </div>
@@ -51,7 +67,7 @@
                 </div>
                 
                 <div>
-                    <span>Checkin message</span>
+                    <b>Checkin message</b>
                     <br />
                     <textarea id="chckMsg"></textarea>
                 </div>
@@ -72,7 +88,7 @@
 </script>
 
 <script id="dlgNow-template" type="text/x-handlebars-template">
-    <span>Place</span>
+    <b>Place</b>
     <br />
     <div id="waitingPlace" class="dropdown">
         <input class="inputed" type="text" placeholder="Search for place name">
@@ -83,14 +99,28 @@
     <br />
     <br />
 
-    <span>Waiting time</span>
+    <b>Waiting time</b>
     <br />
-    <input id="minsWaiting" type="text" value="60" />
+    
+    <div id="minsWaiting" class="dropdown">
+        <span class="selected">60</span>
+        <ul>
+            <li data-value="30">30</li>
+            <li data-value="60">60</li>
+            <li data-value="90">90</li>
+            <li data-value="120">120</li>
+            <li data-value="150">150</li>
+            <li data-value="180">180</li>
+            <li data-value="210">210</li>
+            <li data-value="240">240</li>
+        </ul>
+        <input type="hidden" value="60">
+    </div>
 
 </script>
 
 <script id="dlgCity-template" type="text/x-handlebars-template">
-    <span>Place</span>
+    <b>Place</b>
     <br />
     <div id="waitingCity" class="dropdown">
         <input class="inputed" type="text" placeholder="Search for a city name">
@@ -101,7 +131,7 @@
     <br />
     <br />
 
-    <span>Visiting days</span>
+    <b>Visiting days</b>
     <br />
     <input id="fromDate" type="text" value="" />
     --
@@ -112,26 +142,31 @@
 <script id="meetingPointItem-template" type="text/x-handlebars-template">
 
     <div class="userItem">
-        <div style="width:40px; height: 40px; border: 1px solid black;">Photo</div>
+        <div style="width:40px; height: 40px; border: 1px solid black; display:inline-block;">Photo</div>
         <a href="{{link}}">{{name}}</a>
-        <div>X people has met here</div>
-        <button>Check in</button>
-        
+        <span>, 10 people have met here</span>
+        <button class="checkin">Check in</button>        
     </div>
 
 </script>
 
 <script id="checkinNowItem-template" type="text/x-handlebars-template">
-
+    
     <div class="userItem">
         <span class="thumbnail">
             <img src="/PortalUser/ProfilePicture_xs/{{id}}">
         </span>
-        <a href="{{link}}">{{name}}</a>
+        <a href="/PortalUser/Detail/{{id}}">{{name}}  </a>, {{age}} years
         <div>
-            {{age}} years,
-            waiting for {{waitingFor}},
-            wants {{wants}}
+            <b>Waiting for: </b>{{waitingFor}} + {{multiStr}}
+            <span> ,</span>
+            <b>Wants: </b>{{wants}}
+        </div>
+        
+        <div style="border: 1px solid black">
+            {{message}}
+        </div>
+        <div>
             <button class="startChatBtn">Ask for chat</button>
         </div>
     </div>
@@ -139,35 +174,31 @@
 </script>
 
 
-<script id="cityListLayout-template" type="text/x-handlebars-template">
 
-    <div class="items">
-        
-    </div>
-    
-    <div class="mgmt">
-        @*<input id="showJustMine" type="checkbox" />
-        <label for="showJustMine">Show just mine checkins</label>*@
-    </div>
-
-</script>
 
 <script id="checkinCityItem-template" type="text/x-handlebars-template">
 
-    <div class="userItem" data-uid="{{id}}">
+    <div class="userItem" data-uid="{{id}}" style="padding: 6px;">
+        <div style="border-bottom: 1px dotted black"><b>{{fromDate}} - {{toDate}}</b></div>
         <span class="thumbnail">
             <img src="/PortalUser/ProfilePicture_xs/{{id}}">
         </span>
-        <a href="{{link}}">{{name}}  </a> {{fromDate}} - {{toDate}}
-        <div>
-            {{age}} years,
-            waiting for {{waitingFor}},
-            wants {{wants}}
+        <a href="/PortalUser/Detail/{{id}}">{{name}}  </a>, {{age}} years
+        <div>            
+            <b>Waiting for: </b>{{waitingFor}} + {{multiStr}}
+            <span> ,</span>
+            <b>Wants: </b>{{wants}}            
+        </div>
+        <div style="border: 1px solid black">
+            {{message}}
         </div>
         <div>
             <button class="sendMsg">Send message</button>
         </div>
     </div>
+    
+    
+    
 
 </script>
 
@@ -175,7 +206,6 @@
 
     <div class="userItem" data-cid="{{cid}}">
         
-        <a href="{{link}}">{{name}}  </a> {{fromDate}} - {{toDate}}
         <div>
             {{age}} years,
             waiting for {{waitingFor}},
@@ -199,6 +229,7 @@
     <b>Want do filter</b>
     <div id="filterCont"></div>
     
+    <b>Languages filter</b>
     <div id="langsFilter"></div>
     <a href="/PortalUser/Settings">Set your default languages in profile settings</a>
 </script>
@@ -240,27 +271,56 @@
 
 </script>
 
-<script id="userPopup-template" type="text/x-handlebars-template">
+<script id="userPopupNow-template" type="text/x-handlebars-template">
 
-        <div>
-            <span class="thumbnail">
-                <img src="/PortalUser/ProfilePicture_s/{{id}}">
-            </span>
-            <br />
-            <a href="#">{{name}}</a>
-            <br />
-            {{age}} years
-            <br />
-            waiting for: {{waitingFor}}
-            <br />
-            wants do: {{wants}}
-            <br />
-            waiting: {{waitingMins}} minutes
-            <br />
-            Interests: {{interests}}
+    <div>
+        <span class="thumbnail">
+            <img src="/PortalUser/ProfilePicture_s/{{id}}">
+        </span>
+        <br />
+        <a href="/PortalUser/Detail/{{id}}">{{name}}</a>, {{age}} years
+        <br />
+        <b>Waiting for</b>: {{waitingFor}}, {{multiStr}}
+        <br />
+        <b>Want do</b>: {{wants}}
+        <br />
+        <b>Waiting</b>: {{waitingMins}} minutes
+        <br />
+        <b>Interests</b>: {{interests}}
+        <br />
+        <div style="border: 1px solid black">
+            {{message}}
         </div>
+        <a href="/PortalUser/Detail/{{id}}">Go to see full user profile</a>
+    </div>
 
-    </script>
+</script>
+
+<script id="userPopupCity-template" type="text/x-handlebars-template">
+
+    <div>
+        <span class="thumbnail">
+            <img src="/PortalUser/ProfilePicture_s/{{id}}">
+        </span>
+        <br />
+        <a href="/PortalUser/Detail/{{id}}">{{name}}</a>, {{age}} years
+        <br />
+        <b>Waiting for</b>: {{waitingFor}}, {{multiStr}}
+        <br />
+        <b>Want do</b>: {{wants}}
+        <br />
+        <b>Will be here</b>: {{fromStr}} - {{toStr}}
+        <br />
+        <b>Interests</b>: {{interests}}
+        <br />
+        <div style="border: 1px solid black">
+            {{message}}
+        </div>
+        <a href="/PortalUser/Detail/{{id}}">Go to see full user profile</a>
+    </div>
+
+</script>
+
 
 
 
@@ -415,7 +475,7 @@
                     <span class="titleName">Interests</span>
                 </td>
                 <td>
-                    <div id="intersTagging" class="tags">
+                    <div id="intersTagging">
                     </div>
                 </td>
             </tr>

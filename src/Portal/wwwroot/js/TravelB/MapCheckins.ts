@@ -1,12 +1,13 @@
 module TravelB {
-		
+
 	export class MapCheckins {
 
 		public checkins;
-		
-		private popupTemplate;
+
+		private popupTemplateNow;
+		private popupTemplateCity;
 		private visitedPin;
-		
+
 		private markers = [];
 
 		private mapObj;
@@ -14,9 +15,10 @@ module TravelB {
 		constructor(mapObj) {
 			this.mapObj = mapObj;
 
-			this.popupTemplate = Views.ViewBase.currentView.registerTemplate("userPopup-template");
+			this.popupTemplateNow = Views.ViewBase.currentView.registerTemplate("userPopupNow-template");
+			this.popupTemplateCity = Views.ViewBase.currentView.registerTemplate("userPopupCity-template");
 		}
-			
+
 		public clearMarkers() {
 			this.markers.forEach((m) => {
 				this.mapObj.removeLayer(m);
@@ -24,39 +26,47 @@ module TravelB {
 			this.markers = [];
 		}
 
-		public genCheckins(checkins) {
+		public genCheckins(checkins, type: CheckinType) {
 			this.clearMarkers();
 
 			checkins.forEach((c) => {
-					var coord = c.waitingCoord;
+				var coord = c.waitingCoord;
 				var ico = MapPins.getByGender(c.gender);
 				var marker = L.marker([coord.Lat, coord.Lng], { icon: ico }).addTo(this.mapObj);
 				marker.on("click", (e) => {
-					this.displayPopup(e.latlng, c.userId);
+
+					if (type === CheckinType.Now) {
+						this.displayPopupNow(e.latlng, c.userId);
+					}
+
+					if (type === CheckinType.City) {
+						this.displayPopupCity(e.latlng, c.id);
+					}
+
 				});
-					
+
 				this.markers.push(marker);
 			});
 
 		}
 
 		public genMPs(mps) {
-				this.clearMarkers();
+			this.clearMarkers();
 
-				mps.forEach((c) => {						
-						var marker = L.marker([c.coord.Lat, c.coord.Lng], { icon: MapPins.mpPin() }).addTo(this.mapObj);
-						//marker.on("click", (e) => {
-						//		this.displayPopup(e.latlng, c.userId);
-						//});
+			mps.forEach((c) => {
+				var marker = L.marker([c.coord.Lat, c.coord.Lng], { icon: MapPins.mpPin() }).addTo(this.mapObj);
+				//marker.on("click", (e) => {
+				//		this.displayPopup(e.latlng, c.userId);
+				//});
 
-						this.markers.push(marker);
-				});
+				this.markers.push(marker);
+			});
 
 		}
 
-		private displayPopup(latlng, userId) {
+		private displayPopupCity(latlng, cid) {
 
-				Views.ViewBase.currentView.apiGet("CheckinNow", [["type", "id"],["id", userId]], (checkin) => {
+				Views.ViewBase.currentView.apiGet("CheckinCity", [["type", "id"], ["id", cid]], (checkin) => {
 
 						var d = new Date();
 						var curYear = d.getFullYear();
@@ -66,12 +76,15 @@ module TravelB {
 								name: checkin.displayName,
 								age: curYear - checkin.birthYear,
 								waitingFor: Views.StrOpers.getGenderStr(checkin.wantMeet),
+								multiStr: Views.StrOpers.getMultiStr(checkin.multiPeopleAllowed),
 								wants: Views.StrOpers.getActivityStr(checkin.wantDo),
-								waitingMins: TravelBUtils.waitingMins(checkin.waitingUntil),
-								interests: Views.StrOpers.getInterestsStr(checkin.interests)
+								fromStr: Views.StrOpers.formatDate(checkin.fromDate),
+								toStr: Views.StrOpers.formatDate(checkin.toDate),								
+								interests: Views.StrOpers.getInterestsStr(checkin.interests),
+								message: checkin.message
 						}
 
-						var ppCont = this.popupTemplate(context);
+						var ppCont = this.popupTemplateCity(context);
 
 						var popup = new L.Popup();
 						popup.setLatLng(latlng);
@@ -79,10 +92,40 @@ module TravelB {
 						this.mapObj.openPopup(popup);
 
 				});
-				
+
 		}
 			
+		private displayPopupNow(latlng, userId) {
+
+			Views.ViewBase.currentView.apiGet("CheckinNow", [["type", "id"], ["id", userId]], (checkin) => {
+
+				var d = new Date();
+				var curYear = d.getFullYear();
+
+				var context = {
+					id: checkin.userId,
+					name: checkin.displayName,
+					age: curYear - checkin.birthYear,
+					waitingFor: Views.StrOpers.getGenderStr(checkin.wantMeet),
+					multiStr: Views.StrOpers.getMultiStr(checkin.multiPeopleAllowed),
+					wants: Views.StrOpers.getActivityStr(checkin.wantDo),
+					waitingMins: TravelBUtils.waitingMins(checkin.waitingUntil),
+					interests: Views.StrOpers.getInterestsStr(checkin.interests),
+					message: checkin.message
+				}
+
+				var ppCont = this.popupTemplateNow(context);
+
+				var popup = new L.Popup();
+				popup.setLatLng(latlng);
+				popup.setContent(ppCont);
+				this.mapObj.openPopup(popup);
+
+			});
+
 		}
+
+	}
 
 	export class MapPins {
 

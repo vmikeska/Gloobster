@@ -33,9 +33,9 @@ module TravelB {
 		private isFirst = true;
 
 		private genTab(t) {
-			var width = (100 / this.tabs.length) - 1;
+			var width = (100 / this.tabs.length);
 
-			var $t = $(`<div id="${t.id}" class="myTab ${this.tabGroup}" style="width: ${width}%; height: ${this.height}px">${t.text}</div>`);
+			var $t = $(`<div id="${t.id}" class="myTab ${this.tabGroup}" style="width: calc(${width}% - 2px); height: ${this.height}px">${t.text}</div>`);
 
 			if (this.isFirst) {
 				$t.addClass("act");

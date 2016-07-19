@@ -5,122 +5,6 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Views;
 (function (Views) {
-    var EmptyProps = (function () {
-        function EmptyProps() {
-            this.formTemp = Views.ViewBase.currentView.registerTemplate("settings-template");
-            this.setTemp = Views.ViewBase.currentView.registerTemplate("settingsStat-template");
-        }
-        EmptyProps.prototype.generateProps = function (props) {
-            var _this = this;
-            this.$cont = $("#reqPropCont");
-            var $form = $(this.formTemp());
-            this.$table = $form.find("table");
-            this.appSignals(this.$table);
-            this.$cont.html($form);
-            if (props.length > 0) {
-                this.$cont.show();
-            }
-            props.forEach(function (prop) {
-                _this.visible(prop, $form);
-                if (prop === "HasProfileImage") {
-                    Views.SettingsUtils.registerAvatarFileUpload("avatarFile", function () {
-                        _this.validate(true, "HasProfileImage");
-                    });
-                }
-                if (prop === "FirstName") {
-                    Views.SettingsUtils.registerEdit("firstName", "FirstName", function (value) {
-                        _this.validate((value.length > 0), "FirstName");
-                        return { name: value };
-                    });
-                }
-                if (prop === "LastName") {
-                    Views.SettingsUtils.registerEdit("lastName", "LastName", function (value) {
-                        _this.validate((value.length > 0), "LastName");
-                        return { name: value };
-                    });
-                }
-                if (prop === "BirthYear") {
-                    Views.SettingsUtils.registerEdit("birthYear", "BirthYear", function (value) {
-                        _this.validate((value.length === 4), "BirthYear");
-                        return { year: value };
-                    });
-                }
-                if (prop === "Gender") {
-                    Views.SettingsUtils.registerCombo("gender", function (val) {
-                        _this.validate((val !== Gender.N), "Gender");
-                        return { propertyName: "Gender", values: { gender: val } };
-                    });
-                    Common.DropDown.registerDropDown($("#gender"));
-                }
-                if (prop === "FamilyStatus") {
-                    Views.SettingsUtils.registerCombo("familyStatus", function (val) {
-                        _this.validate((val !== 0), "FamilyStatus");
-                        return { propertyName: "FamilyStatus", values: { status: val } };
-                    });
-                    Common.DropDown.registerDropDown($("#familyStatus"));
-                }
-                if (prop === "HomeLocation") {
-                    Views.SettingsUtils.registerLocationCombo("homeCity", "HomeLocation", function () {
-                        _this.validate(true, "HomeLocation");
-                    });
-                }
-                if (prop === "Languages") {
-                    var tl = Views.SettingsUtils.initLangsTagger([]);
-                    tl.onChange = function (items) {
-                        _this.validate(items.length > 0, "Languages");
-                    };
-                }
-                if (prop === "Interests") {
-                    var ti = Views.SettingsUtils.initInterestsTagger([]);
-                    ti.onChange = function (items) {
-                        _this.validate(items.length > 0, "Interests");
-                    };
-                }
-            });
-        };
-        EmptyProps.prototype.validate = function (res, name) {
-            if (res) {
-                this.okStat(name);
-            }
-            else {
-                this.koStat(name);
-            }
-        };
-        EmptyProps.prototype.okStat = function (name) {
-            var $tr = $("#tr" + name);
-            var $stat = $tr.find(".stat");
-            $stat.attr("src", "../images/tb/ok.png");
-            $tr.find(".close").show();
-            if (this.$table.find("tr").length === 0) {
-                this.$cont.hide();
-            }
-        };
-        EmptyProps.prototype.koStat = function (name) {
-            var $tr = $("#tr" + name);
-            var $stat = $tr.find(".stat");
-            $stat.attr("src", "../images/tb/ko.png");
-            $tr.find(".close").hide();
-        };
-        EmptyProps.prototype.appSignals = function ($table) {
-            var _this = this;
-            var trs = $table.find("tr").toArray();
-            trs.forEach(function (tr) {
-                var $tr = $(tr);
-                var $stat = $(_this.setTemp());
-                $tr.append($stat);
-                $tr.find(".close").click(function (e) {
-                    e.preventDefault();
-                    $tr.remove();
-                });
-            });
-        };
-        EmptyProps.prototype.visible = function (name, $form) {
-            var tr = $form.find("#tr" + name);
-            tr.show();
-        };
-        return EmptyProps;
-    }());
-    Views.EmptyProps = EmptyProps;
     var TravelBView = (function (_super) {
         __extends(TravelBView, _super);
         function TravelBView() {
@@ -131,6 +15,7 @@ var Views;
         }
         TravelBView.prototype.init = function () {
             var _this = this;
+            this.checkinWin = new TravelB.CheckinWin();
             this.filter = new TravelB.Filter();
             this.filter.onFilterSelChanged = function () {
                 _this.displayData();
@@ -159,7 +44,7 @@ var Views;
                 });
             };
             this.notifs.startRefresh();
-            this.props = new EmptyProps();
+            this.props = new TravelB.EmptyProps();
             this.props.generateProps(this.emptyProps);
         };
         TravelBView.prototype.createMainTab = function () {
@@ -168,10 +53,10 @@ var Views;
             this.tabs.onBeforeSwitch = function () {
                 $("#theCont").html("");
             };
-            this.tabs.addTab(this.nowTabConst, "Here and now", function () {
+            this.tabs.addTab(this.nowTabConst, "I am here and now", function () {
                 _this.createNowCheckinsFnc();
             });
-            this.tabs.addTab(this.cityTabConst, "Check to a city", function () {
+            this.tabs.addTab(this.cityTabConst, "I will be in a city", function () {
                 _this.createCityCheckinsFnc();
             });
             this.tabs.create();
@@ -204,12 +89,11 @@ var Views;
             var _this = this;
             $("#checkin").click(function (e) {
                 e.preventDefault();
-                var win = new TravelB.CheckinWin();
                 if (_this.tabs.activeTabId === _this.nowTabConst) {
-                    win.showNowCheckin();
+                    _this.checkinWin.showNowCheckin();
                 }
                 else {
-                    win.showCityCheckin(null);
+                    _this.checkinWin.showCityCheckin(null);
                 }
             });
         };
@@ -222,7 +106,7 @@ var Views;
             Views.ViewBase.currentView.apiGet("CheckinNow", prms, function (checkins) {
                 var fc = _.reject(checkins, function (c) { return c.userId === Views.ViewBase.currentUserId; });
                 _this.nowFncs.genCheckinsList(fc);
-                _this.mapCheckins.genCheckins(fc);
+                _this.mapCheckins.genCheckins(fc, CheckinType.Now);
             });
         };
         TravelBView.prototype.displayCityCheckins = function () {
@@ -235,7 +119,7 @@ var Views;
             prms.push(["toDate", TravelB.DateUtils.myDateToTrans(this.filter.filterDateTo)]);
             Views.ViewBase.currentView.apiGet("CheckinCity", prms, function (checkins) {
                 _this.cityFncs.genCheckinsList(checkins);
-                _this.mapCheckins.genCheckins(checkins);
+                _this.mapCheckins.genCheckins(checkins, CheckinType.City);
             });
         };
         TravelBView.prototype.getBaseQuery = function () {
@@ -333,6 +217,9 @@ var Views;
     var StrOpers = (function () {
         function StrOpers() {
         }
+        StrOpers.formatDate = function (date) {
+            return date.Day + "." + date.Month + "." + date.Year;
+        };
         StrOpers.getActivityStr = function (vals) {
             var outStrs = [];
             var items = TravelB.TravelBUtils.wantDoDB();
@@ -358,7 +245,13 @@ var Views;
             if (val === 1) {
                 return "Woman";
             }
-            return "All";
+            return "Any gender";
+        };
+        StrOpers.getMultiStr = function (multi) {
+            if (multi) {
+                return "More people can come";
+            }
+            return "Prefer one single person";
         };
         return StrOpers;
     }());

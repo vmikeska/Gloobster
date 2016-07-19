@@ -157,7 +157,7 @@
 
 		private init3D() {
 			this.currentMaps = new MapsCreatorGlobe3D();
-			this.currentMaps.setMapType('MQCDN1');
+			this.currentMaps.setMapType('OSM');
 			this.currentMaps.setRootElement('map');
 
 			this.mapsDriver = new BaseMapsOperation3D();

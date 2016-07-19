@@ -1,32 +1,20 @@
 module TravelB {
 	export class CityTab {
 
-		private checkinTemplate;
-			private layoutTemplate;
+		private checkinTemplate;			
 			private checkinMgmtTemplate;
 			private langsTagger;
 
 			private layoutCreated = false;
 
 		constructor() {
-			this.checkinTemplate = Views.ViewBase.currentView.registerTemplate("checkinCityItem-template");
-			this.layoutTemplate = Views.ViewBase.currentView.registerTemplate("cityListLayout-template");
+			this.checkinTemplate = Views.ViewBase.currentView.registerTemplate("checkinCityItem-template");			
 			this.checkinMgmtTemplate = Views.ViewBase.currentView.registerTemplate("checkinCityMgmtItem-template");
 		}
 			
-		private createLayout() {
-			if (!this.layoutCreated) {
-				var $cont = $("#theCont");
-				$cont.html(this.layoutTemplate());
-				this.layoutCreated = true;
-			}
-		}
-
 		public genCheckinsList(checkins) {
-
-			this.createLayout();
-
-			var $listCont = $("#theCont .items");
+				
+			var $listCont = $("#theCont");
 			$listCont.html("");
 
 			var d = new Date();
@@ -43,9 +31,11 @@ module TravelB {
 					name: p.displayName,
 					age: curYear - p.birthYear,
 					waitingFor: Views.StrOpers.getGenderStr(p.wantMeet),
+					multiStr: Views.StrOpers.getMultiStr(p.multiPeopleAllowed),
 					wants: Views.StrOpers.getActivityStr(p.wantDo),
 					fromDate: DateUtils.myDateToStr(p.fromDate),
-					toDate: DateUtils.myDateToStr(p.toDate)
+					toDate: DateUtils.myDateToStr(p.toDate),
+					message: p.message
 				};
 
 				var tmp = _.contains(selFilter,"mine") ? this.checkinMgmtTemplate : this.checkinTemplate;

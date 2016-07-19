@@ -7,62 +7,36 @@ using Gloobster.Database;
 using Gloobster.DomainObjects;
 using Gloobster.DomainObjects.TravelB;
 using Gloobster.Entities.TravelB;
+using Gloobster.Enums;
 using MongoDB.Bson;
 using Gloobster.Mappers;
 
 namespace Gloobster.DomainModels.TravelB
 {
-
-    public class CheckinCityDomain
-    {
-        public IDbOperations DB { get; set; }
-
-        public List<CheckinCityDO> GetCheckinsInRect(RectDO rect)
-        {
-            var checkins = DB.List<CheckinCityEntity>();
-
-            var outCheckins = new List<CheckinCityDO>();
-            foreach (var checkin in checkins)
-            {
-                bool withinRect = CheckinUtils.WithinRectangle(rect, checkin.WaitingCoord);
-                if (withinRect)
-                {
-                    var checkinDo = checkin.ToDO();
-                    outCheckins.Add(checkinDo);
-                }
-            }
-
-            return outCheckins;
-        }
-
-        public async Task CreateCheckin(CheckinCityDO checkin)
-        {
-            var entity = checkin.ToEntity();
-            entity.id = ObjectId.GenerateNewId();
-
-            await DB.SaveAsync(entity);
-        }
-
-        public async Task UpdateCheckin(CheckinCityDO checkin)
-        {                     
-            var entity = checkin.ToEntity();            
-            await DB.ReplaceOneAsync(entity);
-        }
-
-        public async Task<bool> DeleteCheckin(string id, string userId)
-        {
-            var userIdObj = new ObjectId(userId);
-
-            var idObj = new ObjectId(id);
-            bool deleted = await DB.DeleteAsync<CheckinCityEntity>(c => c.id == idObj && c.User_id == userIdObj);
-            return deleted;
-        }
-    }
-
     public class CheckinNowDomain
     {
         public IDbOperations DB { get; set; }
-        
+
+        public async Task HistorizeCheckins()
+        {
+            var outdatedCheckins = DB.List<CheckinNowEntity>(c => c.WaitingUntil < DateTime.UtcNow);
+
+            if (!outdatedCheckins.Any())
+            {
+                return;
+            }
+
+            var ids = outdatedCheckins.Select(c => c.id).ToList();
+
+            await DB.DeleteAsync<CheckinNowEntity>(d => ids.Contains(d.id));
+
+            var name = typeof(CheckinNowHEntity).Name.Replace("Entity", string.Empty);
+            foreach (var c in outdatedCheckins)
+            {
+                await DB.SaveCustomAsync(c, name);
+            }            
+        }
+
         public List<CheckinNowDO> GetCheckinsInRect(RectDO rect)
         {
             var checkins = DB.List<CheckinNowEntity>();
@@ -84,11 +58,20 @@ namespace Gloobster.DomainModels.TravelB
         public async Task CreateCheckin(CheckinNowDO checkin)
         {
             var userIdObj = new ObjectId(checkin.UserId);
-            await DB.DeleteAsync<CheckinNowEntity>(a => a.User_id == userIdObj);
+            
+            //delete old one
+            var oldCheckin = DB.FOD<CheckinNowEntity>(e => e.User_id == userIdObj);
+            if (oldCheckin != null)
+            {
+                await DB.DeleteAsync<CheckinNowEntity>(oldCheckin.id);
 
+                var name = typeof(CheckinNowHEntity).Name.Replace("Entity", string.Empty);                                
+                await DB.SaveCustomAsync(oldCheckin, name);
+            }
+
+            //create new
             var entity = checkin.ToEntity();
             entity.id = ObjectId.GenerateNewId();
-
             await DB.SaveAsync(entity);
         }
         

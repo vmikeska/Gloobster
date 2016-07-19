@@ -50,4 +50,9 @@ var Gender;
     Gender[Gender["M"] = 1] = "M";
     Gender[Gender["F"] = 2] = "F";
 })(Gender || (Gender = {}));
+var CheckinType;
+(function (CheckinType) {
+    CheckinType[CheckinType["Now"] = 0] = "Now";
+    CheckinType[CheckinType["City"] = 1] = "City";
+})(CheckinType || (CheckinType = {}));
 //# sourceMappingURL=Globals.js.map

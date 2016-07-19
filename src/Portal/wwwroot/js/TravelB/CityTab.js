@@ -4,20 +4,11 @@ var TravelB;
         function CityTab() {
             this.layoutCreated = false;
             this.checkinTemplate = Views.ViewBase.currentView.registerTemplate("checkinCityItem-template");
-            this.layoutTemplate = Views.ViewBase.currentView.registerTemplate("cityListLayout-template");
             this.checkinMgmtTemplate = Views.ViewBase.currentView.registerTemplate("checkinCityMgmtItem-template");
         }
-        CityTab.prototype.createLayout = function () {
-            if (!this.layoutCreated) {
-                var $cont = $("#theCont");
-                $cont.html(this.layoutTemplate());
-                this.layoutCreated = true;
-            }
-        };
         CityTab.prototype.genCheckinsList = function (checkins) {
             var _this = this;
-            this.createLayout();
-            var $listCont = $("#theCont .items");
+            var $listCont = $("#theCont");
             $listCont.html("");
             var d = new Date();
             var curYear = d.getFullYear();
@@ -30,9 +21,11 @@ var TravelB;
                     name: p.displayName,
                     age: curYear - p.birthYear,
                     waitingFor: Views.StrOpers.getGenderStr(p.wantMeet),
+                    multiStr: Views.StrOpers.getMultiStr(p.multiPeopleAllowed),
                     wants: Views.StrOpers.getActivityStr(p.wantDo),
                     fromDate: TravelB.DateUtils.myDateToStr(p.fromDate),
-                    toDate: TravelB.DateUtils.myDateToStr(p.toDate)
+                    toDate: TravelB.DateUtils.myDateToStr(p.toDate),
+                    message: p.message
                 };
                 var tmp = _.contains(selFilter, "mine") ? _this.checkinMgmtTemplate : _this.checkinTemplate;
                 var $u = $(tmp(context));

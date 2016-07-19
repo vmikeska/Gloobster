@@ -31,7 +31,6 @@ var Views;
             var display = new Planning.AnytimeDisplay(this.$cont);
             this.resultsEngine.initalCall(0);
             this.resultsEngine.onConnectionsChanged = function (connections) {
-                _this.$cont.html("");
                 display.render(_this.resultsEngine.connections);
             };
         };

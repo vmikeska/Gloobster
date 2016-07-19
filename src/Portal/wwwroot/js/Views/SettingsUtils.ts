@@ -62,37 +62,37 @@ module Views {
 			};
 		}
 
-		public static initInterestsTagger(selectedItems) {
+		//public static initInterestsTagger(selectedItems) {
 					
-			var interests = TravelB.TravelBUtils.interestsDB();
+		//	var interests = TravelB.TravelBUtils.interestsDB();
 
-			var itemsRange = _.map(interests, (i) => {
-				return { text: i.text, value: i.id, kind: "i" }
-			});
+		//	var itemsRange = _.map(interests, (i) => {
+		//		return { text: i.text, value: i.id, kind: "i" }
+		//	});
 
-			var config = new Planning.TaggingFieldConfig();
-			config.containerId = "intersTagging";
-			config.localValues = true;
-			config.itemsRange = itemsRange;
+		//	var config = new Planning.TaggingFieldConfig();
+		//	config.containerId = "intersTagging";
+		//	config.localValues = true;
+		//	config.itemsRange = itemsRange;
 
-			var t = new Planning.TaggingField(config);
-			t.onItemClickedCustom = ($target, callback) => {
-				var val = $target.data("vl");
-				this.callServer("Inters", { value: val, action: "ADD" }, callback);
-			}
+		//	var t = new Planning.TaggingField(config);
+		//	t.onItemClickedCustom = ($target, callback) => {
+		//		var val = $target.data("vl");
+		//		this.callServer("Inters", { value: val, action: "ADD" }, callback);
+		//	}
 
-			t.onDeleteCustom = (val, callback) => {
-				this.callServer("Inters", { value: val, action: "DEL" }, callback);
-			}
+		//	t.onDeleteCustom = (val, callback) => {
+		//		this.callServer("Inters", { value: val, action: "DEL" }, callback);
+		//	}
 
-			//set init values		
-			var selItms = _.map(selectedItems, (i) => {
-				return { value: i, kind: "i" };
-			});
-			t.setSelectedItems(selItms);
+		//	//set init values		
+		//	var selItms = _.map(selectedItems, (i) => {
+		//		return { value: i, kind: "i" };
+		//	});
+		//	t.setSelectedItems(selItms);
 
-			return t;
-		}
+		//	return t;
+		//}
 
 		public static initLangsTagger(selectedItems) {
 
