@@ -286,7 +286,10 @@
 		}
 
 		private formatShortDateTime(dt) {
-			return `${dt.getUTCDate()}.${dt.getUTCMonth() + 1}.`;
+				var d = moment.utc(dt).format("l");
+				var v = d.replace(dt.getUTCFullYear(), "");
+			return v;
+			//return `${dt.getUTCDate()}.${dt.getUTCMonth() + 1}.`;
 		}
 
 	}

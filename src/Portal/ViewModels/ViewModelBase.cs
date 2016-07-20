@@ -21,6 +21,7 @@ namespace Gloobster.Portal.ViewModels
 
     public class ViewModelBase
 	{
+        public string Locale { get; set; }
         public Languages Langs { get; set; }
         public string Lang { get; set; }
         public string DefaultLangModuleName { get; set; }

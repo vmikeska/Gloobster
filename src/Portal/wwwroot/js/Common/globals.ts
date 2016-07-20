@@ -6,6 +6,7 @@ declare var L: any;
 declare var gapi: any;
 declare var Handlebars: any;
 declare var Cookies: any;
+declare var moment: any;
 
 
 //function geoip_country_code() { return 'DE'; }

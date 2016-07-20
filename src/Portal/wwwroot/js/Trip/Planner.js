@@ -221,7 +221,9 @@ var Trip;
             this.appendToTimeline($html);
         };
         Planner.prototype.formatShortDateTime = function (dt) {
-            return dt.getUTCDate() + "." + (dt.getUTCMonth() + 1) + ".";
+            var d = moment.utc(dt).format("l");
+            var v = d.replace(dt.getUTCFullYear(), "");
+            return v;
         };
         return Planner;
     }());

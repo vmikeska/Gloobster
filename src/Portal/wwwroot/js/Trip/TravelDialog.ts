@@ -54,8 +54,11 @@ module Trip {
 		}
 
 		private formatDate(d) {
-			var t = `${d.getUTCDate()}.${d.getUTCMonth()}.${d.getUTCFullYear()} (${d.getUTCHours()}:${d.getUTCMinutes()})`;
-			return t;
+
+			var v = moment.utc(d).format('LLL');
+			return v;
+			//var t = `${d.getUTCDate()}.${d.getUTCMonth()}.${d.getUTCFullYear()} (${d.getUTCHours()}:${d.getUTCMinutes()})`;
+			//return t;
 		}
 
 		private buildTemplateView(data) {
@@ -67,7 +70,7 @@ module Trip {
 			if (this.dialogManager.planner.isInvited || this.dialogManager.planner.isOwner) {
 			 
 				var contextInvited = {
-					arrivingDateTime: this.formatDate(lDate),
+						arrivingDateTime: this.formatDate(lDate),
 					leavingDateTime: this.formatDate(aDate),
 					description: data.description,
 					isFlight: false

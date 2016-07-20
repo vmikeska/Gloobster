@@ -13,6 +13,7 @@ using Gloobster.Portal.ViewModels;
 using Gloobster.ReqRes;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
+using Microsoft.Net.Http.Headers;
 using MongoDB.Bson;
 using Serilog;
 
@@ -112,7 +113,21 @@ namespace Gloobster.Portal.Controllers.Base
             {
                 Langs.InitLangs();
             }
-            
+
+            var locale = "en";
+            var headers = Request.GetTypedHeaders();
+            List<StringWithQualityHeaderValue> langs = null;
+            if (headers.AcceptLanguage != null)
+            {
+                langs = headers.AcceptLanguage.ToList();
+            }
+
+            if (langs != null && langs.Any())
+            {
+                var lang = langs.First();
+                locale = lang.Value;
+            }
+
             var instance = new T
             {
                 User = User,
@@ -123,7 +138,8 @@ namespace Gloobster.Portal.Controllers.Base
                 CanManageArticleAdmins = false,
                 HasAnyWikiPermissions = false,
                 Langs = (Languages)Langs,
-                Lang = "en", // todo: change from session
+                Lang = "en", // todo: change from session,
+                Locale = locale,
                 HasUserAgent = !string.IsNullOrEmpty(ua)
             };
 

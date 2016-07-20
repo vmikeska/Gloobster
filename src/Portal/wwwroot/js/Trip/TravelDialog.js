@@ -40,8 +40,8 @@ var Trip;
             return newContext;
         };
         TravelDialog.prototype.formatDate = function (d) {
-            var t = d.getUTCDate() + "." + d.getUTCMonth() + "." + d.getUTCFullYear() + " (" + d.getUTCHours() + ":" + d.getUTCMinutes() + ")";
-            return t;
+            var v = moment.utc(d).format('LLL');
+            return v;
         };
         TravelDialog.prototype.buildTemplateView = function (data) {
             var html = "";
