@@ -7,7 +7,7 @@
 </script>
 
 <script id="travel-template" type="text/x-handlebars-template">
-		<div id="{{id}}" class="cell">
+		<div id="{{id}}" class="cell travelCont">
 				<div class="transport">
 						<span class="{{icon}}"></span>
 				</div>
@@ -18,7 +18,7 @@
 
 <script id="place-template" type="text/x-handlebars-template">
 	
-    <div id="{{id}}" data-row="{{rowNo}}" class="cell">
+    <div id="{{id}}" data-row="{{rowNo}}" class="cell placeCont">
 								
 	{{#if isActive}}
 			<div class="destination active">
@@ -36,8 +36,8 @@
 				{{#if isFirstDay}}
 						<div class="timeline green" style="text-align: center"><a class="leavingDate" href="#">{{leavingDate}}</a></div>
 				{{else}}
-						<div class="timeline {{colorClassArriving}}"><a data-pid="{{arrivingId}}" class="arrivingDate dateLink" href="#">{{arrivingDate}}</a></div>
-						<div class="timeline {{colorClassLeaving}}"><a data-pid="{{leavingId}}" class="leavingDate dateLink" href="#">{{leavingDate}}</a></div>
+						<div class="timeline {{colorClassArriving}}"><a class="arrivingDate dateLink" href="#">{{arrivingDate}}</a></div>
+						<div class="timeline {{colorClassLeaving}}"><a class="leavingDate dateLink" href="#">{{leavingDate}}</a></div>
 				{{/if}}
 				
 	</div>
@@ -210,79 +210,85 @@
     </div>
 </script>
 
+@*<div class="table row">
+        <div class="cell baseline"><h3>PRG → VIE</h3></div>
+        <div class="cell baseline color1">Delta Air Flight 2560 from Prague to Vienna • Distance 1200 km</div>
+    </div>*@
+
 <script id="travelDetail-template" type="text/x-handlebars-template">
 		<div class="daybyday-form margin form">
-				
-            
-            @*<div class="table row">
-                <div class="cell baseline"><h3>PRG → VIE</h3></div>
-                <div class="cell baseline color1">Delta Air Flight 2560 from Prague to Vienna • Distance 1200 km</div>
-            </div>*@
-            
+			
+            @*@Model.W("Leaving"):
+        @Model.W("Arriving"):*@
+
+
             <div class="margin">
-                <div id="travelType" class="dropdown">
-                    <span class="selected">
-                    </span>
-                    <ul>
-                        <li data-value="6" data-cls="icon-bike" data-cap="Bike">
-                            <span class="icon-bike black left mright5"></span>
-                            @Model.W("Bike")
-                        </li>
-                        <li data-value="5" data-cls="icon-boat" data-cap="Ship">
-                            <span class="icon-boat black left mright5"></span>
-                            @Model.W("Ship")
-                        </li>
-                        <li data-value="2" data-cls="icon-car" data-cap="Car">
-                            <span class="icon-car black left mright5"></span>
-                            @Model.W("Car")
-                        </li>
-                        <li data-value="1" data-cls="icon-plane" data-cap="Plane">
-                            <span class="icon-plane black left mright5"></span>
-                            @Model.W("Plane")
-                        </li>
-                        <li data-value="4" data-cls="icon-train" data-cap="Train">
-                            <span class="icon-train black left mright5"></span>
-                            @Model.W("Train")
-                        </li>
-                        <li data-value="3" data-cls="icon-bus" data-cap="Bus">
-                            <span class="icon-bus black left mright5"></span>
-                            @Model.W("Bus")
-                        </li>
-                        <li data-value="0" data-cls="icon-walk" data-cap="Walk">
-                            <span class="icon-walk black left mright5"></span>
-                            @Model.W("Walk")
-                        </li>
-                    </ul>
-                    <input type="hidden">
-                </div>
+                @Html.Partial("TravelType")
             </div>
-            
-            
+
+            <div class="table row margin dates">             
+                <div class="cell">
+                    <strong>How long takes the travel?</strong>
+                    <br />
+                    <input id="timeVis" type="checkbox" />
+                    <label class="mleft10" for="timeVis">Use exact time</label>
+                </div>
+                <div class="cell">                    
+                    <input type="text" id="leavingDate" class="mdd" />
+                    <span class="time">&nbsp;</span>
+                    <input id="leavingHours" class="mtd time" type="number" min="0" max="23" step="1" /><span class="time"> : </span><input id="leavingMinutes" class="mtd time" type="number" min="0" max="59" step="1" />
+                    
+                    <strong class="deli">→</strong>
+                    
+                    <input type="text" id="arrivingDate" class="mdd" />
+                    <span class="time">&nbsp;</span>
+                    <input id="arrivingHours" class="mtd time" type="number" min="0" max="23" step="1" /><span class="time"> : </span><input id="arrivingMinutes" class="mtd time" type="number" min="0" max="59" step="1" />                    
+                </div>
+                
+
+            </div>
+
             <div id="flightDetails" class="margin" style="display: none">
                 <div id="airportFrom" class="dropdown">
-                    <input class="inputed" type="text" placeholder="@Model.W("From")">
+                    <input class="inputed" type="text" placeholder="@Model.W("FromAirport")">
                     <ul></ul>
                 </div>
                 <div id="airportTo" class="dropdown">
-                    <input class="inputed" type="text" placeholder="@Model.W("To")">
+                    <input class="inputed" type="text" placeholder="@Model.W("ToAirport")">
                     <ul></ul>
                 </div>
             </div>
 
             
+            
+            
 								
+            @*<table style="border: 0; background: inherit">
+
+                <tr>
+                    <td style="background-color: inherit">
+                        
+                    </td>
+                    <td style="background-color: inherit">
+                        <input id="arrivingHours" class="shorted" type="number" min="0" max="23" step="1" />:<input id="arrivingMinutes" class="shorted" type="number" min="0" max="59" step="1" />
+                    </td>
+                </tr>
+
+            </table>*@
+
 				@*http://felicegattuso.com/projects/datedropper/#demo*@
                 @*http://www.jqueryrain.com/?B83aD_dg*@
 
-				<div class="margin">
+				@*<div class="margin">
 						@Model.W("Leaving"): <input id="leavingDate" type="text" size="10" />-						
 						<input id="leavingHours" class="shorted" type="number" min="0" max="23" step="1" />:<input id="leavingMinutes" class="shorted" type="number" min="0" max="59" step="1"  />
 				</div>
 								
 				<div class="margin">						
+                    <a href="~/views/_viewstart.cshtml">~/views/_viewstart.cshtml</a>
 						@Model.W("Arriving"): <input id="arrivingDate" type="text" size="10" />-
 						<input id="arrivingHours" class="shorted" type="number" min="0" max="23" step="1" />:<input id="arrivingMinutes" class="shorted" type="number" min="0" max="59" step="1"  />
-				</div>
+				</div>*@
             
             @Html.Partial("DialogFilesUpload")
             

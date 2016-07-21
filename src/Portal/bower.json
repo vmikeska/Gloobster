@@ -13,6 +13,7 @@
     "js-cookie": "^2.1.1",
     "jquery.pep": "~0.6.7",
     "cropper": "~2.3.2",
-    "moment": "^2.14.1"
+    "moment": "^2.14.1",
+    "datedropper": "*"
   }
 }

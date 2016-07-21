@@ -245,7 +245,8 @@ namespace Gloobster.Mappers
 				type = e.Type,
 				description = e.Description,
 				leavingDateTime = e.LeavingDateTime,
-				arrivingDateTime = e.ArrivingDateTime
+				arrivingDateTime = e.ArrivingDateTime,
+                useTime = e.UseTime
 			};
 			
 			if (e.FlightFrom != null)

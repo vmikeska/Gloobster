@@ -128,9 +128,8 @@ var Trip;
             $root.find(".dateLink").click(function (e) {
                 e.preventDefault();
                 var $t = $(e.target);
-                var pid = $t.data("pid");
-                var $elem = $("#" + pid).find(".transport");
-                _this.setActiveTravel($elem);
+                var id = $t.closest(".placeCont").attr("id");
+                _this.setActivePlaceOrTravel(id);
             });
         };
         Planner.prototype.addTravel = function (travel, inverseColor) {
@@ -149,8 +148,9 @@ var Trip;
             var html = this.travelTemplate(context);
             var $html = $(html);
             $html.find(".transport").click("*", function (e) {
-                var $elem = $(e.delegateTarget);
-                _this.setActiveTravel($elem);
+                var $t = $(e.delegateTarget);
+                var id = $t.closest(".travelCont").attr("id");
+                _this.setActivePlaceOrTravel(id);
             });
             this.appendToTimeline($html);
         };
@@ -162,15 +162,27 @@ var Trip;
                 this.$currentContainer.append($html);
             }
         };
-        Planner.prototype.setActiveTravel = function ($elem) {
+        Planner.prototype.setActivePlaceOrTravel = function (id) {
             this.dialogManager.deactivate();
-            $elem.addClass("active");
-            $elem.append($('<span class="tab"></span>'));
-            this.dialogManager.selectedId = $elem.parent().attr("id");
-            this.travelDialog.display();
+            var $cont = $("#" + id);
+            var isPlace = $cont.hasClass("placeCont");
+            var $actCont;
+            var dialog;
+            if (isPlace) {
+                dialog = this.placeDialog;
+                $actCont = $cont.find(".destination");
+            }
+            else {
+                dialog = this.travelDialog;
+                $actCont = $cont.find(".transport");
+                $actCont.append($("<span class=\"tab\"></span>"));
+            }
+            $actCont.addClass("active");
+            this.dialogManager.selectedId = id;
+            dialog.display();
         };
         Planner.prototype.addPlace = function (place, inverseColor) {
-            var self = this;
+            var _this = this;
             var name = this.emptyName;
             if (place.place) {
                 name = place.place.selectedName;
@@ -212,11 +224,9 @@ var Trip;
             var $html = $(html);
             this.regDateLinks($html);
             $html.find(".destination").click("*", function (e) {
-                self.dialogManager.deactivate();
-                var $elem = $(e.delegateTarget);
-                $elem.addClass("active");
-                self.dialogManager.selectedId = $elem.parent().attr("id");
-                self.placeDialog.display();
+                var $t = $(e.delegateTarget);
+                var id = $t.closest(".placeCont").attr("id");
+                _this.setActivePlaceOrTravel(id);
             });
             this.appendToTimeline($html);
         };

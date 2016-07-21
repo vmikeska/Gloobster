@@ -813,7 +813,8 @@ input, select, textarea {
   margin-top: 0;
   margin-bottom: 0;
   padding: 0;
-  display: table; }
+  display: table;
+  /*used at all ?*/ }
   .table > .cell, .table > li, .table.row > .cell, .table.row > li, .table > .row > .cell, .table > .row > li {
     display: table-cell;
     vertical-align: top; }
@@ -3670,6 +3671,11 @@ input.heading {
       top: 16px;
       right: 10px; }
 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0; }
+
 .daybyday-form, .daybyday-view {
   background-color: #abe0ed;
   color: #000;
@@ -3681,6 +3687,12 @@ input.heading {
   .daybyday-form h4, .daybyday-view h4 {
     font-size: 16px;
     margin-bottom: 5px; }
+  .daybyday-form .dates .mdd, .daybyday-view .dates .mdd {
+    width: 85px; }
+  .daybyday-form .dates .mtd, .daybyday-view .dates .mtd {
+    width: 20px; }
+  .daybyday-form .dates .deli, .daybyday-view .dates .deli {
+    font-size: 25px; }
   .daybyday-form textarea, .daybyday-view textarea {
     height: 70px;
     width: calc(100% - 20px);

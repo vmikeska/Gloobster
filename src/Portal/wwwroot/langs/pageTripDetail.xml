@@ -204,13 +204,13 @@
         <en>Leaving</en>
       </Leaving>
 
-      <To>
-        <en>To</en>
-      </To>
+    <ToAirport>
+        <en>To airport</en>
+      </ToAirport>
 
-      <From>
-        <en>From</en>
-      </From>
+      <FromAirport>
+        <en>From airport</en>
+      </FromAirport>
 
       <Walk>
         <en>Walk</en>

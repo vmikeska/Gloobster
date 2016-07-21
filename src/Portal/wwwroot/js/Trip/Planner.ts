@@ -172,14 +172,13 @@
 			}
 		}
 
-			
+
 		private regDateLinks($root) {
-				$root.find(".dateLink").click((e) => {
+			$root.find(".dateLink").click((e) => {
 				e.preventDefault();
 				var $t = $(e.target);
-				var pid = $t.data("pid");
-				var $elem = $(`#${pid}`).find(".transport");
-				this.setActiveTravel($elem);
+				var id = $t.closest(".placeCont").attr("id");
+				this.setActivePlaceOrTravel(id);
 			});
 		}
 
@@ -199,10 +198,11 @@
 
 			var html = this.travelTemplate(context);
 			var $html = $(html);
-				
+
 			$html.find(".transport").click("*", (e) => {
-				var $elem = $(e.delegateTarget);
-				this.setActiveTravel($elem);
+				var $t = $(e.delegateTarget);
+				var id = $t.closest(".travelCont").attr("id");
+				this.setActivePlaceOrTravel(id);
 			});
 
 			this.appendToTimeline($html);
@@ -216,19 +216,29 @@
 			}
 		}
 
-		private setActiveTravel($elem) {
+		private setActivePlaceOrTravel(id) {
 			this.dialogManager.deactivate();
 
-			$elem.addClass("active");
-			$elem.append($('<span class="tab"></span>'));
+			var $cont = $(`#${id}`);
+			var isPlace = $cont.hasClass("placeCont");
+			var $actCont;
+			var dialog;
 
-			this.dialogManager.selectedId = $elem.parent().attr("id");
-			this.travelDialog.display();
+			if (isPlace) {
+				dialog = this.placeDialog;
+				$actCont = $cont.find(".destination");
+			} else {
+				dialog = this.travelDialog;
+				$actCont = $cont.find(".transport");
+				$actCont.append($(`<span class="tab"></span>`));
+			}
+
+			$actCont.addClass("active");
+			this.dialogManager.selectedId = id;
+			dialog.display();
 		}
 
 		public addPlace(place: Place, inverseColor: boolean) {
-			var self = this;
-
 			var name = this.emptyName;
 			if (place.place) {
 				name = place.place.selectedName;
@@ -245,7 +255,7 @@
 				isFirstDay: (place.arriving == null),
 				colorClassArriving: "",
 				colorClassLeaving: "",
-				arrivingId: "",				
+				arrivingId: "",
 				leavingId: ""
 			}
 
@@ -275,21 +285,18 @@
 			this.regDateLinks($html);
 
 			$html.find(".destination").click("*", (e) => {
-				self.dialogManager.deactivate();
-				var $elem = $(e.delegateTarget);
-				$elem.addClass("active");
-				self.dialogManager.selectedId = $elem.parent().attr("id");
-				self.placeDialog.display();
+				var $t = $(e.delegateTarget);
+				var id = $t.closest(".placeCont").attr("id");
+				this.setActivePlaceOrTravel(id);
 			});
 
 			this.appendToTimeline($html);
 		}
 
 		private formatShortDateTime(dt) {
-				var d = moment.utc(dt).format("l");
-				var v = d.replace(dt.getUTCFullYear(), "");
+			var d = moment.utc(dt).format("l");
+			var v = d.replace(dt.getUTCFullYear(), "");
 			return v;
-			//return `${dt.getUTCDate()}.${dt.getUTCMonth() + 1}.`;
 		}
 
 	}

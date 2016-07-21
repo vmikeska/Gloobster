@@ -995,10 +995,15 @@ input.heading {
     }
 }
 
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
 .daybyday-form {
     @extend .blue-form;
-    background-color: $color17;
-    //color: $color1;
+    background-color: $color17;    
     color: $black;
     font-size: 16px;
     padding: 10px 20px 15px 20px;
@@ -1010,12 +1015,20 @@ input.heading {
         font-size: 16px;
         margin-bottom: 5px;
     }
-    //#{$all-text-inputs}, select {
-    //    background-color: rgba($white, .9);
-    //    &:focus, &:active {
-    //        background-color: $white;
-    //    }
-    //}
+  
+    .dates{
+        .mdd{
+            width: 85px;
+        }
+                
+        .mtd{
+            width: 20px;
+        }
+        .deli{
+            font-size: 25px;
+        }
+    }
+
     textarea {
         @include size(calc(100% - 20px) 70px);
         @include border-bottom-radius(0);
@@ -1081,6 +1094,7 @@ input.heading {
             }
         }
     }
+
     .datepicker {
         background-color: $color19;
         border-color: $color19;

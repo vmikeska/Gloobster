@@ -15,8 +15,12 @@
 
 
     <Edit>
-        <en>Edit</en>
-      </Edit>
+      <en>Edit</en>
+    </Edit>
+
+    <Preview>
+      <en>Preview</en>
+    </Preview>
 
       <You>
         <en>You</en>

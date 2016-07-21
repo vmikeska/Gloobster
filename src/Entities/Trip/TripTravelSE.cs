@@ -11,7 +11,8 @@ namespace Gloobster.Entities.Trip
 		public string Description { get; set; }
 		public FlightSE FlightFrom { get; set; }
 		public FlightSE FlightTo { get; set; }
-		public DateTime? LeavingDateTime { get; set; }
+        public bool UseTime { get; set; }
+        public DateTime? LeavingDateTime { get; set; }
 		public DateTime? ArrivingDateTime { get; set; }
 	}
 }

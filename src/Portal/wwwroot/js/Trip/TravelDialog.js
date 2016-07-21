@@ -75,6 +75,7 @@ var Trip;
             this.$rowCont.after($html);
         };
         TravelDialog.prototype.createEdit = function (data) {
+            var _this = this;
             this.buildTemplateEdit(this.$rowCont);
             this.initTravelType(data.type);
             this.dialogManager.initDescription(data.description, Common.TripEntityType.Travel);
@@ -86,6 +87,16 @@ var Trip;
             this.initDatePicker("arrivingDate", "arrivingDateTime", data.arrivingDateTime);
             this.initTimePicker("leavingHours", "leavingMinutes", "leavingDateTime", data.leavingDateTime);
             this.initTimePicker("arrivingHours", "arrivingMinutes", "arrivingDateTime", data.arrivingDateTime);
+            var $tv = $("#timeVis");
+            $tv.prop("checked", data.useTime);
+            this.visibilityTime(data.useTime);
+            $tv.change(function (e) {
+                var state = $tv.prop("checked");
+                var data = _this.dialogManager.getPropRequest("useTime", { state: state });
+                _this.dialogManager.updateProp(data, function (response) {
+                });
+                _this.visibilityTime(state);
+            });
         };
         TravelDialog.prototype.initTimePicker = function (hrsElementId, minElementId, propName, curDateStr) {
             var _this = this;
@@ -102,6 +113,15 @@ var Trip;
             var mHrs = new Common.DelayedCallback($min);
             mHrs.callback = function () { _this.onTimeChanged($hrs, $min, propName); };
             $min.change(function () { _this.onTimeChanged($hrs, $min, propName); });
+        };
+        TravelDialog.prototype.visibilityTime = function (visible) {
+            var $t = $(".time");
+            if (visible) {
+                $t.show();
+            }
+            else {
+                $t.hide();
+            }
         };
         TravelDialog.prototype.onTimeChanged = function ($hrs, $min, propName) {
             var hrs = $hrs.val();
@@ -159,9 +179,7 @@ var Trip;
             this.dialogManager.updateProp(data, function (response) { });
         };
         TravelDialog.prototype.datePickerConfig = function () {
-            return {
-                dateFormat: "dd.mm.yy"
-            };
+            return {};
         };
         TravelDialog.prototype.initAirport = function (flight, comboId, propName) {
             var _this = this;

@@ -15,7 +15,7 @@
         </div>
     </div>
     <div class="cell">
-        <a asp-controller="Trip" asp-action="Overview" asp-route-id="@Model.Id"><h3>@Model.Name</h3></a>
+        <a asp-controller="Trip" asp-action="Detail" asp-route-id="@Model.Id"><h3>@Model.Name</h3></a>
     </div>
     <div class="cell nowrap">        
         @Model.FromDate.ToString("dd. MMM yyyy", CultureInfo.GetCultureInfo(Model.B.Locale)) - @Model.ToDate.ToString("dd. MMM yyyy", CultureInfo.GetCultureInfo(Model.B.Locale))        

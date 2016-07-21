@@ -15,6 +15,7 @@
 			
 
 			this.registerTripDeletion();
+			this.registerTripOverview();
 		 
 			$("#newTrip").keypress((e) => {
 			 if (e.which === 13) {
@@ -42,6 +43,17 @@
 		 });		 
 		}
 
+		private registerTripOverview() {
+
+				$(".overviewTrip").click((e) => {
+						e.preventDefault();
+						var $target = $(e.target);
+						var tid = $target.data("tid");
+
+						window.location.href = `/Trip/Overview/${tid}`;
+				});
+		}
+			
 		private registerUploads() {
 		 var $i = $(".inputs");
 		 var inputs = $i.toArray();

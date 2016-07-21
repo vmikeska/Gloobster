@@ -8,7 +8,7 @@
   
 
     <div class="trip-holder">
-        <a class="trip edit" asp-controller="Trip" asp-action="Overview" asp-route-id="@Model.Id">
+        <a class="trip edit" asp-controller="Trip" asp-action="Detail" asp-route-id="@Model.Id">
             @if (Model.IsOwner)
             {
                 <h3>@Model.Name</h3>

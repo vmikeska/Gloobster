@@ -23,6 +23,24 @@ module Trip {
 				} else {				 
 					this.createView(data);
 				}
+
+
+				//var d = new Date();
+				//var minYear = d.getUTCFullYear();
+				//var maxYear = minYear + 10;
+
+				// var tes = $("#leavingD").dateDropper({
+				//		animate: false,
+				//		minYear: minYear,
+				//		maxYear: maxYear					
+				//});
+
+				//tes.change((e) => {
+				//		var $t = $(e.target);
+				//	var d = new Date($t.val());
+				//});
+
+				//$(".mtd").timeDropper();
 			});
 
 		}
@@ -100,14 +118,14 @@ module Trip {
 			this.$rowCont.after($html);
 		}
 
-		private createEdit(data) {		 
+		private createEdit(data) {
 			this.buildTemplateEdit(this.$rowCont);
 
 			this.initTravelType(data.type);
 
 			this.dialogManager.initDescription(data.description, Common.TripEntityType.Travel);
 
-			this.files = this.dialogManager.createFilesInstance(data.id, Common.TripEntityType.Travel);			
+			this.files = this.dialogManager.createFilesInstance(data.id, Common.TripEntityType.Travel);
 			this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);
 
 			this.initAirport(data.flightFrom, "airportFrom", "flightFrom");
@@ -118,11 +136,22 @@ module Trip {
 
 			this.initTimePicker("leavingHours", "leavingMinutes", "leavingDateTime", data.leavingDateTime);
 			this.initTimePicker("arrivingHours", "arrivingMinutes", "arrivingDateTime", data.arrivingDateTime);
+
+			var $tv = $("#timeVis");
+			$tv.prop("checked", data.useTime);
+			this.visibilityTime(data.useTime);
+			$tv.change((e) => {
+				var state = $tv.prop("checked");
+				var data = this.dialogManager.getPropRequest("useTime", { state: state });
+				this.dialogManager.updateProp(data, (response) => {					
+				});
+				this.visibilityTime(state);
+			});
 		}
 
 		private initTimePicker(hrsElementId, minElementId, propName, curDateStr) {
-			var $hrs = $("#" + hrsElementId);
-			var $min = $("#" + minElementId);
+			var $hrs = $(`#${hrsElementId}`);
+			var $min = $(`#${minElementId}`);
 
 			if (curDateStr) {
 				var utcTime = Utils.dateStringToUtcDate(curDateStr);
@@ -139,7 +168,16 @@ module Trip {
 			var mHrs = new Common.DelayedCallback($min);
 			mHrs.callback = () => { this.onTimeChanged($hrs, $min, propName); }
 			$min.change(() => { this.onTimeChanged($hrs, $min, propName); });
+		}
 
+		private visibilityTime(visible) {
+			var $t = $(".time");
+
+			if (visible) {
+					$t.show();				
+			} else {
+					$t.hide();				
+			}
 		}
 
 		private onTimeChanged($hrs, $min, propName) {
@@ -212,7 +250,7 @@ module Trip {
 
 		private datePickerConfig() {
 			return {
-				dateFormat: "dd.mm.yy"
+				//dateFormat: "dd.mm.yy"
 			};
 		}
 

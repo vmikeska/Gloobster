@@ -16,6 +16,7 @@ var Views;
                 $(".trip-menu").hide();
             });
             this.registerTripDeletion();
+            this.registerTripOverview();
             $("#newTrip").keypress(function (e) {
                 if (e.which === 13) {
                     e.preventDefault();
@@ -36,6 +37,14 @@ var Views;
                         $("#" + tid).remove();
                     });
                 });
+            });
+        };
+        TripListView.prototype.registerTripOverview = function () {
+            $(".overviewTrip").click(function (e) {
+                e.preventDefault();
+                var $target = $(e.target);
+                var tid = $target.data("tid");
+                window.location.href = "/Trip/Overview/" + tid;
             });
         };
         TripListView.prototype.registerUploads = function () {

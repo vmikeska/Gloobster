@@ -80,7 +80,8 @@ namespace Gloobster.ReqRes.Trip
         public List<FilePublicResponse> filesPublic { get; set; }
         public FlightResponse flightFrom { get; set; }
 		public FlightResponse flightTo { get; set; }
-		public DateTime? leavingDateTime { get; set; }
+        public bool useTime { get; set; }
+        public DateTime? leavingDateTime { get; set; }
 		public DateTime? arrivingDateTime { get; set; }
 	}
 }

@@ -4,7 +4,7 @@
 <ul class="trip-menu" id="tripMenu_@Model.Id">
     <li>
         <a class="photoButton" href="#">
-            <input id="photoInput_@Model.Id" data-tid="@Model.Id" class="inputs" type="file" />
+            <input id="photoInput_@Model.Id" data-tid="@Model.Id" class="inputs" type="file"/>
             <label for="photoInput_@Model.Id">
                 <span class="icon-photo middle mright5"></span>
                 @Model.B.W("TitlePhoto")
@@ -12,8 +12,11 @@
         </a>
     </li>
     <li>
-        <a data-tid="@Model.Id" class="deleteTrip" href="#">@Model.B.W("Delete", "layout")</a>
+        <a data-tid="@Model.Id" class="overviewTrip" href="#">@Model.B.W("Preview")</a>
     </li>
+    <li>
+        <a data-tid="@Model.Id" class="deleteTrip" href="#">@Model.B.W("Delete", "layout")</a>
+    </li>    
     <li>
         <a class="menuClose" href="#">@Model.B.W("Close", "layout")</a>
     </li>

@@ -82,18 +82,13 @@
 
 /* Table */
 
-.table {
-    //&, & > li, & > .cell {
-    //    @include margin(0 null 0 null);
-    //    @include padding(null 0 null 0);
-    //}
+.table {    
     @include margin(0 null 0 null);
     @include padding(0);
-    //@include padding(null 0 null 0);
+    
     display: table;
     @include cell("&, &.row, & > .row") {
-        //@include margin(0 null 0 null);
-        //@include padding(null 0 null 0);
+        
         display: table-cell;
         vertical-align: top;
         &.baseline {
@@ -149,6 +144,7 @@
             }
         }
     }
+    /*used at all ?*/
     @include mobile {
         &.row, & > .row {
             $cols: "&";

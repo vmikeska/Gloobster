@@ -100,7 +100,13 @@ namespace Gloobster.DomainModels
 				UpdateDate(travel.LeavingDateTime, "LeavingDateTime", tripIdObj, entityIdObj, values);				
 			}
 
-			if (propertyName == "arrivingDateTime")
+            if (propertyName == "useTime")
+            {
+                bool state = bool.Parse(values["state"]);
+                await UpdateTravelProperty(tripIdObj, entityIdObj, "UseTime", state);                
+            }
+
+            if (propertyName == "arrivingDateTime")
 			{
 				var travel = Trip.Travels.FirstOrDefault(t => t.id == new ObjectId(entityId));
 				UpdateDate(travel.ArrivingDateTime, "ArrivingDateTime", tripIdObj, entityIdObj, values);
