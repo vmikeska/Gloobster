@@ -53,6 +53,9 @@ namespace Gloobster.ReqRes.Trip
 		public List<PlaceIdResponse> wantVisit { get; set; }
 		public List<FileResponse> files { get; set; }
         public List<FilePublicResponse> filesPublic { get; set; }
+        public bool useTime { get; set; }
+        public DateTime? arrivingDateTime { get; set; }
+        public DateTime? leavingDateTime {get; set; }        
     }
 
 	public class PlaceResponse

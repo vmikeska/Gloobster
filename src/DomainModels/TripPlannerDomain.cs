@@ -103,7 +103,23 @@ namespace Gloobster.DomainModels
             if (propertyName == "useTime")
             {
                 bool state = bool.Parse(values["state"]);
-                await UpdateTravelProperty(tripIdObj, entityIdObj, "UseTime", state);                
+                var entityType = (TripEntityType)int.Parse(values["entityType"]);
+
+                if (entityType == TripEntityType.Travel)
+                {
+                    await UpdateTravelProperty(tripIdObj, entityIdObj, "UseTime", state);
+                }
+
+                if (entityType == TripEntityType.Place)
+                {
+                    await UpdatePlaceProperty(tripIdObj, entityIdObj, "UseTime", state);
+                }
+            }
+
+            if (propertyName == "addressText")
+            {
+                string text = values["text"];
+                await UpdatePlaceProperty(tripIdObj, entityIdObj, "AddressText", text);
             }
 
             if (propertyName == "arrivingDateTime")

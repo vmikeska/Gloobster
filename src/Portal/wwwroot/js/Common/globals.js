@@ -55,4 +55,9 @@ var CheckinType;
     CheckinType[CheckinType["Now"] = 0] = "Now";
     CheckinType[CheckinType["City"] = 1] = "City";
 })(CheckinType || (CheckinType = {}));
+var TripEntityType;
+(function (TripEntityType) {
+    TripEntityType[TripEntityType["Place"] = 0] = "Place";
+    TripEntityType[TripEntityType["Travel"] = 1] = "Travel";
+})(TripEntityType || (TripEntityType = {}));
 //# sourceMappingURL=Globals.js.map

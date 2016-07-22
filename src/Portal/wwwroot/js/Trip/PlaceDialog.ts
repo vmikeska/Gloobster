@@ -16,7 +16,7 @@ module Trip {
 		public display() {
 			this.dialogManager.closeDialog();
 
-			this.dialogManager.getDialogData(Common.TripEntityType.Place, (data) => {
+			this.dialogManager.getDialogData(TripEntityType.Place, (data) => {
 				this.$rowCont = $("#" + data.id).parent();
 
 				if (this.dialogManager.planner.editable) {
@@ -30,22 +30,23 @@ module Trip {
 		private createView(data) {
 			this.buildTemplateView(this.$rowCont, data);
 
-			this.files = this.dialogManager.createFilesInstanceView(data.id, Common.TripEntityType.Place);
+			this.files = this.dialogManager.createFilesInstanceView(data.id, TripEntityType.Place);
 			this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);
 		}
 
 		private createEdit(data) {
 
-			this.buildTemplateEdit(this.$rowCont);
+			this.buildTemplateEdit(this.$rowCont, data);
 
 			this.createNameSearch(data);
 
 			$("#stayAddress").val(data.addressText);
 
 			this.createAddressSearch(data);
+			this.regAddressText();
 
 			this.createPlaceToVisitSearch(data);
-			this.dialogManager.initDescription(data.description, Common.TripEntityType.Place);
+			this.dialogManager.initDescription(data.description, TripEntityType.Place);
 
 			if (data.wantVisit) {
 				data.wantVisit.forEach((place) => {
@@ -53,7 +54,7 @@ module Trip {
 				});
 			}
 
-			this.files = this.dialogManager.createFilesInstance(data.id, Common.TripEntityType.Place);
+			this.files = this.dialogManager.createFilesInstance(data.id, TripEntityType.Place);
 			this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);
 		}
 
@@ -136,7 +137,17 @@ module Trip {
 
 			if (data.place && data.place.coordinates) {
 				this.addressSearch.setCoordinates(data.place.coordinates.Lat, data.place.coordinates.Lng);
-			}
+			}				
+		}
+
+		private regAddressText() {
+				var d = new Common.DelayedCallback("stayAddress");
+				d.callback = (text) => {
+						var data = this.dialogManager.getPropRequest("addressText", {
+								text: text
+						});
+						this.dialogManager.updateProp(data, (r) => { });
+				}
 		}
 
 		private buildTemplateView($row, data) {
@@ -206,9 +217,13 @@ module Trip {
 			return link;
 		}
 
-		private buildTemplateEdit($row) {
-			var html = this.dialogManager.placeDetailTemplate();
-			var $html = $(html);
+		private buildTemplateEdit($row, data) {
+			var $html = $(this.dialogManager.placeDetailTemplate());
+
+			var ptt = new PlaceTravelTime(this.dialogManager, data);
+			var $time = ptt.create(TripEntityType.Place);
+			$html.find(".the-first").after($time);
+
 			this.dialogManager.regClose($html);
 
 			$row.after($html);
@@ -261,10 +276,8 @@ module Trip {
 				data.values["lat"] = coord.Lat;
 				data.values["lng"] = coord.Lng;
 			}
-
-
+				
 			this.dialogManager.updateProp(data, (response) => {});
-
 		}
 
 		private addPlaceToVisit(id: string, name: string, sourceType: SourceType, sourceId: string) {

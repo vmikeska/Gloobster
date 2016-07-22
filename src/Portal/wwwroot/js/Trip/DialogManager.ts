@@ -29,7 +29,7 @@ module Trip {
 			this.placeDetailViewFriends = Views.ViewBase.currentView.registerTemplate("placeDetailViewFriends-template");
 		}
 
-		public createFilesInstanceView(entityId: string, entityType: Common.TripEntityType): TripFiles {
+		public createFilesInstanceView(entityId: string, entityType: TripEntityType): TripFiles {
 			var filesConfig = new FilesConfig();
 			filesConfig.containerId = "entityDocs";
 			filesConfig.templateId = "fileView-template";
@@ -41,7 +41,7 @@ module Trip {
 			return files;
 		}
 
-		public createFilesInstance(entityId: string, entityType: Common.TripEntityType): TripFiles {
+		public createFilesInstance(entityId: string, entityType: TripEntityType): TripFiles {
 		 var filesConfig = new FilesConfig();
 			filesConfig.mainContainerId = "dialogUpload";
 			filesConfig.containerId = "entityDocs";
@@ -62,7 +62,7 @@ module Trip {
 			return files;
 		}
 
-		public initDescription(text: string, entityType: Common.TripEntityType) {
+		public initDescription(text: string, entityType: TripEntityType) {
 			$("#dialogDescription").val(text);
 
 			var d = new Common.DelayedCallback("dialogDescription");
@@ -75,7 +75,7 @@ module Trip {
 			}
 		}
 
-		public getDialogData(dialogType: Common.TripEntityType, callback: Function) {
+		public getDialogData(dialogType: TripEntityType, callback: Function) {
 			var prms = [["dialogType", dialogType], ["tripId", this.planner.trip.tripId], ["id", this.selectedId]];
 			Views.ViewBase.currentView.apiGet("TripPlannerProperty", prms, (response) => {
 				callback(response);

@@ -65,6 +65,7 @@
 /// <reference path="js/trip/files.js" />
 /// <reference path="js/trip/placedialog.js" />
 /// <reference path="js/trip/placesmanager.js" />
+/// <reference path="js/trip/placetraveltime.js" />
 /// <reference path="js/trip/planner.js" />
 /// <reference path="js/trip/traveldialog.js" />
 /// <reference path="js/trip/utils.js" />

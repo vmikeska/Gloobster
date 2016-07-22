@@ -34,15 +34,28 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 
 			var tripIdObj = new ObjectId(request.tripId);
 
-			var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
+			var trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);
 
 			if (request.dialogType == TripEntityType.Place)
 			{
-				var place = trip.Places.FirstOrDefault(p => p.id == entityIdObj);
+				TripPlaceSE place = trip.Places.FirstOrDefault(p => p.id == entityIdObj);
                 //todo: permission, should send just appropriate data
-                var response = place.ToResponse();
+                TripPlaceResponse response = place.ToResponse();
 
-				if (trip.Files != null)
+                TripTravelSE arrivingTravel = GetTravelById(trip, place.ArrivingId);
+                TripTravelSE leavingTravel = GetTravelById(trip, place.LeavingId);
+
+			    if (arrivingTravel?.ArrivingDateTime != null)
+			    {
+			        response.arrivingDateTime = arrivingTravel.ArrivingDateTime.Value;
+			    }
+
+                if (leavingTravel?.LeavingDateTime != null)
+                {
+                    response.leavingDateTime = leavingTravel.LeavingDateTime.Value;
+                }
+
+                if (trip.Files != null)
 				{
 					var entityFiles = trip.Files.Where(f => f.EntityId == request.id).ToList();
 					response.files = entityFiles.Select(f => f.ToResponse()).ToList();
@@ -57,9 +70,9 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 
 			if (request.dialogType == TripEntityType.Travel)
 			{
-				TripTravelSE travel = trip.Travels.FirstOrDefault(p => p.id == entityIdObj);
+				TripTravelSE travel = GetTravelById(trip, entityIdObj);
                 //todo: permission, should send just appropriate data
-				var response = travel.ToResponse();
+				TripTravelResponse response = travel.ToResponse();
 
 				if (trip.Files != null)
 				{
@@ -76,6 +89,12 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 
 			return new ObjectResult(objToReturn);
 		}
+
+	    private TripTravelSE GetTravelById(TripEntity trip, ObjectId id)
+	    {
+            TripTravelSE travel = trip.Travels.FirstOrDefault(p => p.id == id);
+	        return travel;
+	    }
 
 		[HttpPut]
 		[AuthorizeApi]

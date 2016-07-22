@@ -48,3 +48,5 @@ enum TabsWeekendType { ByWeek, ByCity, ByCountry }
 enum Gender { N, M, F }
 
 enum CheckinType { Now, City }
+
+enum TripEntityType { Place, Travel }

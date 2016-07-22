@@ -10,11 +10,6 @@ var Common;
         return FileUploadConfig;
     }());
     Common.FileUploadConfig = FileUploadConfig;
-    (function (TripEntityType) {
-        TripEntityType[TripEntityType["Place"] = 0] = "Place";
-        TripEntityType[TripEntityType["Travel"] = 1] = "Travel";
-    })(Common.TripEntityType || (Common.TripEntityType = {}));
-    var TripEntityType = Common.TripEntityType;
     var TripFileCustom = (function () {
         function TripFileCustom() {
         }

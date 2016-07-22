@@ -14,33 +14,15 @@ module Trip {
 		public display() {
 			this.dialogManager.closeDialog();
 
-			this.dialogManager.getDialogData(Common.TripEntityType.Travel, (data) => {
+			this.dialogManager.getDialogData(TripEntityType.Travel, (data) => {
 				this.data = data;
-				this.$rowCont = $("#" + data.id).parent();
-			 
+				this.$rowCont = $(`#${data.id}`).parent();
+
 				if (this.dialogManager.planner.editable) {
 					this.createEdit(data);
-				} else {				 
+				} else {
 					this.createView(data);
 				}
-
-
-				//var d = new Date();
-				//var minYear = d.getUTCFullYear();
-				//var maxYear = minYear + 10;
-
-				// var tes = $("#leavingD").dateDropper({
-				//		animate: false,
-				//		minYear: minYear,
-				//		maxYear: maxYear					
-				//});
-
-				//tes.change((e) => {
-				//		var $t = $(e.target);
-				//	var d = new Date($t.val());
-				//});
-
-				//$(".mtd").timeDropper();
 			});
 
 		}
@@ -48,7 +30,7 @@ module Trip {
 		private createView(data) {
 			this.buildTemplateView(data);
 
-			this.files = this.dialogManager.createFilesInstanceView(data.id, Common.TripEntityType.Travel);			
+			this.files = this.dialogManager.createFilesInstanceView(data.id, TripEntityType.Travel);
 			this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);
 		}
 
@@ -71,9 +53,10 @@ module Trip {
 			return newContext;
 		}
 
-		private formatDate(d) {
+		private formatDate(d, useTime) {
 
-			var v = moment.utc(d).format('LLL');
+			var fs = useTime ? "LLL" : "LL";
+			var v = moment.utc(d).format(fs);
 			return v;
 			//var t = `${d.getUTCDate()}.${d.getUTCMonth()}.${d.getUTCFullYear()} (${d.getUTCHours()}:${d.getUTCMinutes()})`;
 			//return t;
@@ -86,10 +69,10 @@ module Trip {
 			var aDate = new Date(data.arrivingDateTime);
 
 			if (this.dialogManager.planner.isInvited || this.dialogManager.planner.isOwner) {
-			 
+
 				var contextInvited = {
-						arrivingDateTime: this.formatDate(lDate),
-					leavingDateTime: this.formatDate(aDate),
+					arrivingDateTime: this.formatDate(lDate, data.useTime),
+					leavingDateTime: this.formatDate(aDate, data.useTime),
 					description: data.description,
 					isFlight: false
 				};
@@ -101,8 +84,8 @@ module Trip {
 				html = this.dialogManager.travelDetailViewTemplate(contextInvited);
 			} else {
 				var contextNonInvited = {
-				 arrivingDateTime: this.formatDate(lDate),
-				 leavingDateTime: this.formatDate(aDate),
+					arrivingDateTime: this.formatDate(lDate, data.useTime),
+					leavingDateTime: this.formatDate(aDate, data.useTime),
 					isFlight: false
 				};
 				if (data.type === TravelType.Plane) {
@@ -119,141 +102,19 @@ module Trip {
 		}
 
 		private createEdit(data) {
-			this.buildTemplateEdit(this.$rowCont);
+			this.buildTemplateEdit(this.$rowCont, data);
 
 			this.initTravelType(data.type);
 
-			this.dialogManager.initDescription(data.description, Common.TripEntityType.Travel);
+			this.dialogManager.initDescription(data.description, TripEntityType.Travel);
 
-			this.files = this.dialogManager.createFilesInstance(data.id, Common.TripEntityType.Travel);
+			this.files = this.dialogManager.createFilesInstance(data.id, TripEntityType.Travel);
 			this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);
 
 			this.initAirport(data.flightFrom, "airportFrom", "flightFrom");
-			this.initAirport(data.flightTo, "airportTo", "flightTo");
-
-			this.initDatePicker("leavingDate", "leavingDateTime", data.leavingDateTime);
-			this.initDatePicker("arrivingDate", "arrivingDateTime", data.arrivingDateTime);
-
-			this.initTimePicker("leavingHours", "leavingMinutes", "leavingDateTime", data.leavingDateTime);
-			this.initTimePicker("arrivingHours", "arrivingMinutes", "arrivingDateTime", data.arrivingDateTime);
-
-			var $tv = $("#timeVis");
-			$tv.prop("checked", data.useTime);
-			this.visibilityTime(data.useTime);
-			$tv.change((e) => {
-				var state = $tv.prop("checked");
-				var data = this.dialogManager.getPropRequest("useTime", { state: state });
-				this.dialogManager.updateProp(data, (response) => {					
-				});
-				this.visibilityTime(state);
-			});
+			this.initAirport(data.flightTo, "airportTo", "flightTo");			
 		}
-
-		private initTimePicker(hrsElementId, minElementId, propName, curDateStr) {
-			var $hrs = $(`#${hrsElementId}`);
-			var $min = $(`#${minElementId}`);
-
-			if (curDateStr) {
-				var utcTime = Utils.dateStringToUtcDate(curDateStr);
-				//$hrs.val(utcTime.getUTCHours());
-				//$min.val(utcTime.getUTCMinutes());
-				$hrs.val(utcTime.getHours());
-				$min.val(utcTime.getMinutes());
-			}
-
-			var dHrs = new Common.DelayedCallback($hrs);
-			dHrs.callback = () => { this.onTimeChanged($hrs, $min, propName); }
-			$hrs.change(() => { this.onTimeChanged($hrs, $min, propName); });
-
-			var mHrs = new Common.DelayedCallback($min);
-			mHrs.callback = () => { this.onTimeChanged($hrs, $min, propName); }
-			$min.change(() => { this.onTimeChanged($hrs, $min, propName); });
-		}
-
-		private visibilityTime(visible) {
-			var $t = $(".time");
-
-			if (visible) {
-					$t.show();				
-			} else {
-					$t.hide();				
-			}
-		}
-
-		private onTimeChanged($hrs, $min, propName) {
-			var hrs = $hrs.val();
-			if (hrs === "") {
-				hrs = "0";
-			}
-			var min = $min.val();
-			if (min === "") {
-				min = "0";
-			}
-
-			var time = { hour: hrs, minute: min };
-			this.updateDateTime(null, time, propName);
-		}
-
-		private initDatePicker(elementId, propertyName, curDateStr) {
-			var dpConfig = this.datePickerConfig();
-			var $datePicker = $("#" + elementId);
-
-			$datePicker.datepicker(dpConfig);
-
-			if (curDateStr) {
-				var utcTime = Utils.dateStringToUtcDate(curDateStr);
-				$datePicker.datepicker("setDate", utcTime);
-			}
-
-			$datePicker.change((e) => {
-				var $this = $(e.target);
-				var date = $this.datepicker("getDate");
-				var datePrms = this.getDatePrms(date);
-				this.updateDateTime(datePrms, null, propertyName);
-
-				var travel = this.dialogManager.planner.placesMgr.getTravelById(this.data.id);
-				var placeId = elementId === "arrivingDate" ? travel.to.id : travel.from.id;
-
-				var utcDate = Utils.dateToUtcDate(date);
-				this.dialogManager.planner.updateRibbonDate(placeId, elementId, utcDate);
-			});
-		}
-
-
-		private getDatePrms(date) {
-			var datePrms = {
-				year: date.getUTCFullYear(),
-				month: date.getUTCMonth() + 1,
-				day: date.getUTCDate() + 1
-			}
-
-			if (datePrms.day === 32) {
-				datePrms.day = 1;
-				datePrms.month = datePrms.month + 1;
-			}
-
-			return datePrms;
-		}
-
-		private updateDateTime(date, time, propName) {
-			var fullDateTime = {};
-			if (date) {
-				fullDateTime = $.extend(fullDateTime, date);
-			}
-			if (time) {
-				fullDateTime = $.extend(fullDateTime, time);
-			}
-
-			var data = this.dialogManager.getPropRequest(propName, fullDateTime);
-			this.dialogManager.updateProp(data, (response) => {});
-		}
-
-		private datePickerConfig() {
-			return {
-				//dateFormat: "dd.mm.yy"
-			};
-		}
-
+			
 		private initAirport(flight, comboId, propName) {
 			var airportFrom = new AirportCombo(comboId);
 			airportFrom.onSelected = (evntData) => {
@@ -304,13 +165,17 @@ module Trip {
 			}
 		}
 
-		private buildTemplateEdit($row) {
-			var html = this.dialogManager.travelDetailTemplate();
-			var $html = $(html);			
+		private buildTemplateEdit($row, data) {
+				var $html = $(this.dialogManager.travelDetailTemplate());
+
+				var ptt = new PlaceTravelTime(this.dialogManager, data);
+				var $time = ptt.create(TripEntityType.Travel);
+				$html.find(".the-first").after($time);
+
 			Common.DropDown.registerDropDown($html.find(".dropdown"));
 			this.dialogManager.regClose($html);
 
 			$row.after($html);
 		}
-	}
+		}
 }

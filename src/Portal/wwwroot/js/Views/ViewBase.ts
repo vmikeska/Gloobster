@@ -31,6 +31,8 @@ module Views {
 				this.loginButtonsManager = new Reg.LoginButtonsManager();
 				this.loginButtonsManager.createPageDialog();
 			}
+
+			$(document).tooltip();
 		}
 
 		private regUserMenu() {		 

@@ -67,7 +67,7 @@
                 
                 {{#if canManipulate}}
                     <input class="filePublic filePublic{{id}}" id="filePublic{{id}}_a" data-id="{{id}}" type="checkbox" />
-                    <label class="mleft10" for="filePublic{{id}}_a">@Model.W("Share")</label>
+                    <label title="@Model.W("ShareTitle")" class="mleft10" for="filePublic{{id}}_a">@Model.W("Share")</label>
                 {{/if}}
 
                 <a href="/Trip/GetFile?fileId={{id}}&tripId={{tripId}}">{{fileName}}</a>
@@ -81,20 +81,46 @@
     
 </script>
 
+<script id="placeTravelTime-template" type="text/x-handlebars-template">
+    <div class="table row margin dates">
+        <div class="cell">
+            <strong>{{infoTxt}}</strong>
+            <br />
+            <input id="timeVis" type="checkbox" />
+            <label class="mleft10" for="timeVis">@Model.W("UseExactTime")</label>
+        </div>
+        <div class="cell">
+            {{#if showLeft}}
+            <input type="text" id="{{dir1}}Date" class="mdd" />
+            <span class="time">&nbsp;</span>
+            <input id="{{dir1}}Hours" class="mtd time" type="number" min="0" max="23" step="1" /><span class="time"> : </span><input id="{{dir1}}Minutes" class="mtd time" type="number" min="0" max="59" step="1" />
+            {{/if}}
+            
+            {{#if showMiddle}} 
+            <strong class="deli">→</strong>
+            {{/if}}
+
+            {{#if showRight}}
+            <input type="text" id="{{dir2}}Date" class="mdd" />
+            <span class="time">&nbsp;</span>
+            <input id="{{dir2}}Hours" class="mtd time" type="number" min="0" max="23" step="1" /><span class="time"> : </span><input id="{{dir2}}Minutes" class="mtd time" type="number" min="0" max="59" step="1" />
+            {{/if}}
+        </div>
+
+    </div>
+</script>
+
 <script id="placeDetail-template" type="text/x-handlebars-template">
 		<div class="daybyday-form margin form">
-				<div class="table row">
-						<div class="cell baseline">
-								<div id="cities" class="dropdown left margin3">
-										<input class="inputed" type="text" placeholder="@Model.W("PlaceName")">
-                                        <img class="loader" src="/images/loader-gray.gif" style="display: none" />
-										<ul></ul>
-								</div>								
-						</div>
-						<div class="cell baseline color1">&nbsp;
-                            @*June averages: Day 32°C • Night 16°C*@
-                        </div>
-				</div>
+			
+            <div class="margin the-first">
+                <div id="cities" class="dropdown">
+                    <input class="inputed" type="text" placeholder="@Model.W("PlaceName")">
+                    <img class="loader" src="/images/loader-gray.gif" style="display: none" />
+                    <ul></ul>
+                </div>		
+            </div>
+
             
             
                 @Html.Partial("DialogFilesUpload")
@@ -108,8 +134,7 @@
 										<ul>											
 										</ul>
 								</div>
-								<input id="stayAddress" class="inputed" type="text" placeholder="@Model.W("TextAddress")">
-								@*<a class="create" href="#">Add a personal note</a>*@
+								<input id="stayAddress" class="inputed" type="text" placeholder="@Model.W("TextAddress")">								
 						</div>
 						<div class="cell places">
 								<h4>@Model.W("PlacesToVisit")</h4>
@@ -119,8 +144,7 @@
                                         <img class="loader" src="/images/loader-gray.gif" style="display: none" />
 										<ul>												
 										</ul>
-								</div>
-								@*<input type="submit" value="Add place">*@
+								</div>								
 						</div>
 				</div>
 				
@@ -217,35 +241,9 @@
 
 <script id="travelDetail-template" type="text/x-handlebars-template">
 		<div class="daybyday-form margin form">
-			
-            @*@Model.W("Leaving"):
-        @Model.W("Arriving"):*@
 
-
-            <div class="margin">
+            <div class="margin the-first">
                 @Html.Partial("TravelType")
-            </div>
-
-            <div class="table row margin dates">             
-                <div class="cell">
-                    <strong>How long takes the travel?</strong>
-                    <br />
-                    <input id="timeVis" type="checkbox" />
-                    <label class="mleft10" for="timeVis">Use exact time</label>
-                </div>
-                <div class="cell">                    
-                    <input type="text" id="leavingDate" class="mdd" />
-                    <span class="time">&nbsp;</span>
-                    <input id="leavingHours" class="mtd time" type="number" min="0" max="23" step="1" /><span class="time"> : </span><input id="leavingMinutes" class="mtd time" type="number" min="0" max="59" step="1" />
-                    
-                    <strong class="deli">→</strong>
-                    
-                    <input type="text" id="arrivingDate" class="mdd" />
-                    <span class="time">&nbsp;</span>
-                    <input id="arrivingHours" class="mtd time" type="number" min="0" max="23" step="1" /><span class="time"> : </span><input id="arrivingMinutes" class="mtd time" type="number" min="0" max="59" step="1" />                    
-                </div>
-                
-
             </div>
 
             <div id="flightDetails" class="margin" style="display: none">
@@ -258,38 +256,7 @@
                     <ul></ul>
                 </div>
             </div>
-
-            
-            
-            
-								
-            @*<table style="border: 0; background: inherit">
-
-                <tr>
-                    <td style="background-color: inherit">
-                        
-                    </td>
-                    <td style="background-color: inherit">
-                        <input id="arrivingHours" class="shorted" type="number" min="0" max="23" step="1" />:<input id="arrivingMinutes" class="shorted" type="number" min="0" max="59" step="1" />
-                    </td>
-                </tr>
-
-            </table>*@
-
-				@*http://felicegattuso.com/projects/datedropper/#demo*@
-                @*http://www.jqueryrain.com/?B83aD_dg*@
-
-				@*<div class="margin">
-						@Model.W("Leaving"): <input id="leavingDate" type="text" size="10" />-						
-						<input id="leavingHours" class="shorted" type="number" min="0" max="23" step="1" />:<input id="leavingMinutes" class="shorted" type="number" min="0" max="59" step="1"  />
-				</div>
-								
-				<div class="margin">						
-                    <a href="~/views/_viewstart.cshtml">~/views/_viewstart.cshtml</a>
-						@Model.W("Arriving"): <input id="arrivingDate" type="text" size="10" />-
-						<input id="arrivingHours" class="shorted" type="number" min="0" max="23" step="1" />:<input id="arrivingMinutes" class="shorted" type="number" min="0" max="59" step="1"  />
-				</div>*@
-            
+        
             @Html.Partial("DialogFilesUpload")
             
             <a class="close" href="#">@Model.W("Close", "layout")</a>            
@@ -302,11 +269,9 @@
 				
 {{#if isFlight}}
 	<div class="table row">
-		<div class="cell baseline"><h3>{{from}} → {{to}}</h3></div>
-		@*<div class="cell baseline color1">{{flightDetails}}</div>*@        
+		<div class="cell baseline"><h3>{{from}} → {{to}}</h3></div>		
 	</div>
 {{/if}}
-    @*todo: format date time*@
     <p>{{arrivingDateTime}} - {{leavingDateTime}}</p>
 				
     <p>{{description}}</p>

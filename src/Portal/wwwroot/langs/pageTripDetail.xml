@@ -110,6 +110,10 @@
         <en>Share</en>
       </Share>
 
+    <ShareTitle>
+      <en>The file is shared just with friends invited into this trip</en>
+    </ShareTitle>
+
       <ShareOnSoc>
         <en>
           Share on<br/> social media
@@ -196,14 +200,10 @@
         <en>Drop Files Here</en>
       </DropFilesHere>
 
-      <Arriving>
-        <en>Arriving</en>
-      </Arriving>
-
-      <Leaving>
-        <en>Leaving</en>
-      </Leaving>
-
+    <UseExactTime>
+      <en>Use exact time</en>
+    </UseExactTime>
+    
     <ToAirport>
         <en>To airport</en>
       </ToAirport>

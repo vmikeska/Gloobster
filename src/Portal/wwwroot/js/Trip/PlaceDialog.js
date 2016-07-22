@@ -7,7 +7,7 @@ var Trip;
         PlaceDialog.prototype.display = function () {
             var _this = this;
             this.dialogManager.closeDialog();
-            this.dialogManager.getDialogData(Common.TripEntityType.Place, function (data) {
+            this.dialogManager.getDialogData(TripEntityType.Place, function (data) {
                 _this.$rowCont = $("#" + data.id).parent();
                 if (_this.dialogManager.planner.editable) {
                     _this.createEdit(data);
@@ -19,23 +19,24 @@ var Trip;
         };
         PlaceDialog.prototype.createView = function (data) {
             this.buildTemplateView(this.$rowCont, data);
-            this.files = this.dialogManager.createFilesInstanceView(data.id, Common.TripEntityType.Place);
+            this.files = this.dialogManager.createFilesInstanceView(data.id, TripEntityType.Place);
             this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);
         };
         PlaceDialog.prototype.createEdit = function (data) {
             var _this = this;
-            this.buildTemplateEdit(this.$rowCont);
+            this.buildTemplateEdit(this.$rowCont, data);
             this.createNameSearch(data);
             $("#stayAddress").val(data.addressText);
             this.createAddressSearch(data);
+            this.regAddressText();
             this.createPlaceToVisitSearch(data);
-            this.dialogManager.initDescription(data.description, Common.TripEntityType.Place);
+            this.dialogManager.initDescription(data.description, TripEntityType.Place);
             if (data.wantVisit) {
                 data.wantVisit.forEach(function (place) {
                     _this.addPlaceToVisit(place.id, place.selectedName, place.sourceType, place.sourceId);
                 });
             }
-            this.files = this.dialogManager.createFilesInstance(data.id, Common.TripEntityType.Place);
+            this.files = this.dialogManager.createFilesInstance(data.id, TripEntityType.Place);
             this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);
         };
         PlaceDialog.prototype.createNameSearch = function (data) {
@@ -106,6 +107,16 @@ var Trip;
                 this.addressSearch.setCoordinates(data.place.coordinates.Lat, data.place.coordinates.Lng);
             }
         };
+        PlaceDialog.prototype.regAddressText = function () {
+            var _this = this;
+            var d = new Common.DelayedCallback("stayAddress");
+            d.callback = function (text) {
+                var data = _this.dialogManager.getPropRequest("addressText", {
+                    text: text
+                });
+                _this.dialogManager.updateProp(data, function (r) { });
+            };
+        };
         PlaceDialog.prototype.buildTemplateView = function ($row, data) {
             var _this = this;
             var html = "";
@@ -164,9 +175,11 @@ var Trip;
             }
             return link;
         };
-        PlaceDialog.prototype.buildTemplateEdit = function ($row) {
-            var html = this.dialogManager.placeDetailTemplate();
-            var $html = $(html);
+        PlaceDialog.prototype.buildTemplateEdit = function ($row, data) {
+            var $html = $(this.dialogManager.placeDetailTemplate());
+            var ptt = new Trip.PlaceTravelTime(this.dialogManager, data);
+            var $time = ptt.create(TripEntityType.Place);
+            $html.find(".the-first").after($time);
             this.dialogManager.regClose($html);
             $row.after($html);
         };

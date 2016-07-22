@@ -7,9 +7,7 @@
 		public maxFileSize = 21000000;
 		public useMaxSizeValidation = true;
 	}
-
-	export enum TripEntityType { Place, Travel }
-
+		
 	export class TripFileCustom {
 		public tripId: string;
 		public entityType: TripEntityType;
