@@ -10,5 +10,6 @@ namespace Gloobster.Portal.ViewModels
 	    public string OwnerDisplayName { get; set; }
         public string DateRangeStr { get; set; }
         public string Message { get; set; }
+        public bool TripIsPrivate { get; set; }
     }
 }

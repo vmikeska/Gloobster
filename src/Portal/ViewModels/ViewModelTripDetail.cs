@@ -30,6 +30,6 @@ namespace Gloobster.Portal.ViewModels
 
     public class ViewModelTripRequestJoin : ViewModelBase
     {
-
+        public string Id { get; set; }
     }
 }

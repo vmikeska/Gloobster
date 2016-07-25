@@ -1,0 +1,15 @@
+﻿
+  <module name="jsTripJoin">
+
+    <ConfirmTitle>
+      <en>Request join</en>
+    </ConfirmTitle>
+
+    <ConfirmBody>
+      <en>Your request has been sent</en>
+    </ConfirmBody>
+
+    
+
+    
+  </module>

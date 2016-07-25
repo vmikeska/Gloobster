@@ -7,12 +7,9 @@
         content: "";
         display: block;
         z-index: 99999;
+        min-width: 740px;
     }
-    //&:target {
-    //    &:before {
-    //        display: block;
-    //    }
-    //}
+
     & > div {
         @include position(fixed, 50% null null 50%);
         @include transform(translateX(-50%) translateY(-50%));

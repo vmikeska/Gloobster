@@ -24,7 +24,31 @@ namespace Gloobster.DomainModels
 	        string word = Langs.GetWord("notifications", key, lang);
 	        return word;
         }
-        
+
+        public NotificationDO TripRequestToJoinNotification(string tripId, string userId, string ownerId)
+        {
+            var userIdObj = new ObjectId(userId);
+            var user = DB.FOD<UserEntity>(u => u.User_id == userIdObj);
+
+            var tidObj = new ObjectId(tripId);
+            var trip = DB.FOD<TripEntity>(u => u.id == tidObj);
+
+            var titleTmp = GetWord("TripRequestTitle", user.DefaultLang);
+            var title = string.Format(titleTmp, user.DisplayName, trip.Name);
+            
+            return new NotificationDO
+            {
+                Title = title,
+                Content = GetWord("TripRequestBody", user.DefaultLang),
+                ContentType = ContentType.Text,
+                UserId = ownerId,
+                Status = NotificationStatus.Created,
+                Created = DateTime.UtcNow,
+                Link = $"Trip/Detail/{tripId}",
+                LinkText = GetWord("TripRequestLink", user.DefaultLang)
+            };
+        }
+
         public NotificationDO NewAccountNotification(string userId)
 		{
             var userIdObj = new ObjectId(userId);

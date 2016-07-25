@@ -81,6 +81,7 @@
 /// <reference path="js/views/pinboardbadges.js" />
 /// <reference path="js/views/pinboardview.js" />
 /// <reference path="js/views/planningview.js" />
+/// <reference path="js/views/requesttojoinview.js" />
 /// <reference path="js/views/settingsutils.js" />
 /// <reference path="js/views/settingsview.js" />
 /// <reference path="js/views/sharedialogpinsview.js" />

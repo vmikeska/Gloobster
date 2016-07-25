@@ -32,5 +32,17 @@
     <NewUserWelcomeTitle>
       <en>Welcome on our portal</en>
     </NewUserWelcomeTitle>
+
+    <TripRequestTitle>
+      <en>User {0} requested to join your trip {1}</en>
+    </TripRequestTitle>
+
+    <TripRequestBody>
+      <en>Would you like to invite him?</en>
+    </TripRequestBody>
+
+    <TripRequestLink>
+      <en>Go to trip</en>
+    </TripRequestLink>
   
 </module>

@@ -1,1 +1,12 @@
-﻿This trip is just for invited, but you can request owner to join
+﻿<script src="~/js/views/requesttojoinview.js"></script>
+
+@Model.W("InfoMessage")
+<br/>
+<br />
+
+<button id="reqBtn" data-tid="@Model.Id">@Model.W("ButtonText")</button>
+
+<script>
+    currentView = new Views.RequestToJoinView();
+</script>
+

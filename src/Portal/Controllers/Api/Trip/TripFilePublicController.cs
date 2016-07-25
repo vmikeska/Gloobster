@@ -7,7 +7,7 @@ using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.Trip
 {
-	public class TripFilePublicController : BaseApiController
+    public class TripFilePublicController : BaseApiController
 	{		
 		public IFilesDomain FileDomain { get; set; }
 		

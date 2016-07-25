@@ -21,8 +21,8 @@ namespace Gloobster.DomainModels.Langs
         public IDbOperations DB { get; set; }
 
         private readonly string[] _mods = { "sharing",  "notifications", "login", "layout",
-            "jsLayout", "jsFriends", "jsPins", "jsTrip", "jsWiki",
-            "pageFriends", "pageNotifications", "pageUserSettings", "pageHomeOld", "pageTripShare", "pagePins", "pageTrips", "pageTripDetail", "pageWikiHome", "pageWikiPage" };
+            "jsTripJoin", "jsLayout", "jsFriends", "jsPins", "jsTrip", "jsWiki",
+            "pageTripJoin", "pageFriends", "pageNotifications", "pageUserSettings", "pageHomeOld", "pageTripShare", "pagePins", "pageTrips", "pageTripDetail", "pageWikiHome", "pageWikiPage" };
 
         public Dictionary<string, LangModule> Modules = new Dictionary<string, LangModule>();
 

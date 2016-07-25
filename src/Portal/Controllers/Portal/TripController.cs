@@ -153,7 +153,7 @@ namespace Gloobster.Portal.Controllers.Portal
 
             if (trip.AllowToRequestJoin)
             {
-                return RedirectToAction("RequestJoin", "Trip", req.id);
+                return RedirectToAction("RequestJoin", "Trip", new {id = req.id});
             }
 
             //trip is completly private
@@ -183,6 +183,7 @@ namespace Gloobster.Portal.Controllers.Portal
 		    vm.OwnerDisplayName = owner.DisplayName;
             vm.Message = trip.LastSharingMessage;
 		    vm.DateRangeStr = dateStr;
+            vm.TripIsPrivate = !trip.AllowToRequestJoin && !trip.FriendsPublic;
             return View(vm);
 		}
 
@@ -220,8 +221,12 @@ namespace Gloobster.Portal.Controllers.Portal
 
         public IActionResult RequestJoin(string id)
         {
-            var viewModel = CreateViewModelInstance<ViewModelTripRequestJoin>();
-            return View(viewModel);
+            var vm = CreateViewModelInstance<ViewModelTripRequestJoin>();
+            vm.DefaultLangModuleName = "pageTripJoin";
+            vm.LoadClientTexts(new[] { "jsTripJoin" });
+            vm.Id = id;
+            
+            return View(vm);
         }
         
         public IActionResult TripPicture(string id)

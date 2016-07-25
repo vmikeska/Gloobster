@@ -1,0 +1,17 @@
+﻿
+  <module name="pageTripJoin">
+
+    <InfoMessage>
+      <en>This trip is just for invited friends. But owner of the trip allows you to request invitation.</en>
+    </InfoMessage>
+
+    <ButtonText>
+      <en>Request to join</en>
+    </ButtonText>
+
+
+
+    
+
+
+  </module>

@@ -21,6 +21,7 @@ namespace Gloobster.DomainInterfaces
 	    List<NotificationDO> RateMeeting(string reactId);
 	    NotificationDO ReactingToCheckin(string reactId, string requestingUserId, string receiverId);
 	    NotificationDO ConfirmsChatRequest(string reactiId, string confirmerId, string receiverId);
+        NotificationDO TripRequestToJoinNotification(string tripId, string userId, string ownerId);
 
 
 	}

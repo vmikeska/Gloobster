@@ -2341,7 +2341,8 @@ button, input[type="button"], input[type="reset"], input[type="submit"], .button
     background-color: rgba(0, 0, 0, 0.5);
     content: "";
     display: block;
-    z-index: 99999; }
+    z-index: 99999;
+    min-width: 740px; }
   .popup > div {
     position: fixed;
     top: 50%;

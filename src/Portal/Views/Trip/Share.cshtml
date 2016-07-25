@@ -52,9 +52,14 @@
 					</div>
 					<h1>@Model.Message</h1>
 				</div>
-				<div class="map-share table">			
+				<div class="map-share table">
 				    <div class="cell middle tright">
-                        <a class="button share h4 strong" href="/Trip/Overview/@Model.Id">@Model.W("DetailOfTheTripBtn")</a>
+
+                        @if (!Model.TripIsPrivate)
+                        {
+                            <a class="button share h4 strong" href="/Trip/Overview/@Model.Id">@Model.W("DetailOfTheTripBtn")</a>
+                        }
+
 				        <a class="button share h4 strong" href="/">@Model.W("JoinGloobsterBtn")</a>
 				    </div>
 				</div>
