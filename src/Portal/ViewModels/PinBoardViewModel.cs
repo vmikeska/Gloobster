@@ -22,7 +22,7 @@ namespace Gloobster.Portal.ViewModels
         public Dictionary<int, string> GidToTitle { get; set; }
 
         public List<Friend> Friends { get; set; }
-        public bool ShowFacebookPermissionsDialog { get; set; }
+        //public bool ShowFacebookPermissionsDialog { get; set; }
 
         private Dictionary<int, string> GetGidToTitle()
         {
@@ -42,7 +42,7 @@ namespace Gloobster.Portal.ViewModels
             return dict;
         }
 
-        public async Task Initialize(string userId, bool showFbDialog, IPinBoardStats stats)
+        public async Task Initialize(string userId, IPinBoardStats stats)
         {
             var statRes = await stats.GetStatsAsync(userId);
 
@@ -61,12 +61,9 @@ namespace Gloobster.Portal.ViewModels
 
             StateCodes = statRes.StateCodes;
             CountryCodes = statRes.CountryCodes;
-
-
+            
             Friends = GetFriends(userId);
-
-            ShowFacebookPermissionsDialog = showFbDialog;
-
+            
             GidToTitle = GetGidToTitle();
         }
 

@@ -72,7 +72,8 @@
         var f = _.map(friends, function(i) { return {id: i.Id, displayName: i.DisplayName};});
         currentView.peopleFilter.initFriends(f);
 
-        @if (Model.ShowFacebookPermissionsDialog && Model.HasSocNet(SocialNetworkType.Facebook))
+        //Model.ShowFacebookPermissionsDialog && 
+        @if (Model.HasSocNet(SocialNetworkType.Facebook))
         {
             @Html.Raw("currentView.initFb();")
         }
@@ -113,10 +114,10 @@
     </div>
     @Html.Partial("ShareDialog")
 
-    @if (Model.ShowFacebookPermissionsDialog)
-    {
+    @*@if (Model.ShowFacebookPermissionsDialog)
+    {*@
         @Html.Partial("FbCheckinsDialog")    
-    }
+    @*}*@
 
     <div class="form blue-form">
 

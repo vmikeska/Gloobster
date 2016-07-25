@@ -14,8 +14,8 @@ using MongoDB.Bson;
 using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.PinBoard
-{	
-	[Route("api/[controller]")]
+{
+    [Route("api/[controller]")]
 	public class VisitedCityController : BaseApiController
 	{
 

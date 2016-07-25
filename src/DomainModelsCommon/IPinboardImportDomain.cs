@@ -4,6 +4,6 @@ namespace Gloobster.DomainInterfaces
 {
     public interface IPinboardImportDomain
     {
-        Task ImportFb(string userId);
+        Task<bool> ImportFb(string userId);
     }
 }

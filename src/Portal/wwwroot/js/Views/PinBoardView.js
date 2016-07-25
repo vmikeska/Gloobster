@@ -209,11 +209,24 @@ var Views;
                 _this.fbPermissions.hasPermission("user_tagged_places", function (hasPermissions) {
                     if (hasPermissions) {
                         _this.refreshData();
+                        _this.checkNewPlaces();
                     }
                     else {
                         _this.initFbPermRequest();
                     }
                 });
+            });
+        };
+        PinBoardView.prototype.checkNewPlaces = function () {
+            var _this = this;
+            var prms = [];
+            this.apiGet("NewPlaces", prms, function (any) {
+                if (any) {
+                    _this.refreshData();
+                    _this.apiGet("PinStats", [], function (stats) {
+                        _this.refreshBadges(stats);
+                    });
+                }
             });
         };
         PinBoardView.prototype.initShareDialog = function () {

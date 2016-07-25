@@ -5,7 +5,11 @@ var Common;
         }
         FacebookPermissions.prototype.initFb = function (callback) {
             var fbInit = new Reg.FacebookInit();
-            fbInit.initialize(callback);
+            fbInit.initialize(function () {
+                FB.getLoginStatus(function (response) {
+                    callback();
+                });
+            });
         };
         FacebookPermissions.prototype.hasPermission = function (permissionsName, callback) {
             FB.api("/me/permissions", function (permResp) {

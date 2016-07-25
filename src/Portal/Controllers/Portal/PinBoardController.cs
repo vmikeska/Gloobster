@@ -20,27 +20,19 @@ namespace Gloobster.Portal.Controllers.Portal
 		public ISharedMapImageDomain SharedImgDomain { get; set; }
         public IFacebookService FBService { get; set; }
         
-        public IPlacesExtractor PlacesExtractor { get; set; }        
+              
         public IAccountDomain SocAccount { get; set; }
-        public IPinboardImportDomain PinboardImport { get; set; }
+        
         public IPinBoardStats Stats { get; set; }
-
-        public IComponentContext ComponentContext { get; set; }
-
-
-        private bool _showFbDialog = true;
-
-        public PinBoardController(IPlacesExtractor placesExtractor, IComponentContext componentContext, IPinBoardStats stats, IPinboardImportDomain pinboardImport, IAccountDomain socAccount, IFacebookService fbService, 
+        
+        public PinBoardController(IPinBoardStats stats, IAccountDomain socAccount, IFacebookService fbService, 
             ISharedMapImageDomain sharedImgDomain, ILogger log, IDbOperations db, IComponentContext cc, ILanguages langs) : base(log, db, cc, langs)
         {
             SharedImgDomain = sharedImgDomain;
             FBService = fbService;                        
-            SocAccount = socAccount;
-            PinboardImport = pinboardImport;
-            Stats = stats;
-            ComponentContext = componentContext;
-            PlacesExtractor = placesExtractor;
-
+            SocAccount = socAccount;            
+            Stats = stats;            
+            
 		}
 
         [CreateAccount]
@@ -51,43 +43,12 @@ namespace Gloobster.Portal.Controllers.Portal
             vm.LoadClientTexts(new []{"jsPins"});
             if (UserIdObj.HasValue)
             {
-                await ExtractPlaces();                
-                await vm.Initialize(UserId, _showFbDialog, Stats);                
+                //await ExtractPlaces();                
+                await vm.Initialize(UserId, Stats);                
             }
             
             return View(vm);
 		}
-        
-        private async Task ExtractPlaces()
-        {            
-            if (HasSocNet(SocialNetworkType.Facebook))
-            {
-                var fb = GetSocNet(SocialNetworkType.Facebook);
-                FBService.SetAccessToken(fb.AccessToken);
-                bool hasPermissions = FBService.HasPermissions("user_tagged_places");
-                if (hasPermissions)
-                {
-                    await PinboardImport.ImportFb(UserId);
-                    _showFbDialog = false;
-                }
-            }
-            
-            if (HasSocNet(SocialNetworkType.Twitter))
-            {
-                PlacesExtractor.Driver = ComponentContext.ResolveKeyed<IPlacesExtractorDriver>("Twitter");
-
-                var tw = GetSocNet(SocialNetworkType.Twitter);
-                var auth = new SocAuthDO
-                {
-                    AccessToken = tw.AccessToken,
-                    TokenSecret = tw.TokenSecret,
-                    SocUserId = tw.UserId,
-                    UserId = tw.User_id.ToString()
-                };
-                await PlacesExtractor.ExtractNewAsync(UserId, auth);
-                await PlacesExtractor.SaveAsync();
-            }
-        }
         
         public IActionResult SharedMapImage(string id)
 		{

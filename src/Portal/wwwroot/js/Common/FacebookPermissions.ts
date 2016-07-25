@@ -3,7 +3,14 @@
 
 		public initFb(callback: Function) {
 			var fbInit = new Reg.FacebookInit();		 
-			fbInit.initialize(callback);
+			fbInit.initialize(() => {
+					FB.getLoginStatus((response) => {
+							//todo: check connected
+							callback();
+					});					
+			});
+
+			
 		}
 
 		public hasPermission(permissionsName: string, callback: Function) {

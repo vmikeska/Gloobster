@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.Entities;
@@ -5,6 +6,7 @@ using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using System.Linq;
 using Gloobster.DomainModels.Services.Facebook.FriendsExtractor;
+using Gloobster.Enums;
 using Serilog;
 
 namespace Gloobster.Portal.Controllers.Base
@@ -83,6 +85,43 @@ namespace Gloobster.Portal.Controllers.Base
 	    }
 
         public bool IsUserLogged => !string.IsNullOrEmpty(UserId);
-        
-	}
+
+        private List<SocialAccountEntity> _socNetworks;
+        public List<SocialAccountEntity> SocNetworks
+        {
+            get
+            {
+                if (_socNetworks == null)
+                {
+                    _socNetworks = DB.List<SocialAccountEntity>(a => a.User_id == UserIdObj);
+                }
+
+                return _socNetworks;
+            }
+        }
+
+        private List<SocialNetworkType> _networks;
+        public List<SocialNetworkType> Networks
+        {
+            get
+            {
+                if (_networks == null)
+                {
+                    _networks = SocNetworks.Select(n => n.NetworkType).ToList();                    
+                }
+
+                return _networks;
+            }
+        }
+
+        public SocialAccountEntity GetSocNet(SocialNetworkType socNet)
+        {
+            return SocNetworks.FirstOrDefault(n => n.NetworkType == socNet);
+        }
+
+        public bool HasSocNet(SocialNetworkType socNet)
+        {
+            return Networks.Contains(socNet);
+        }
+    }
 }

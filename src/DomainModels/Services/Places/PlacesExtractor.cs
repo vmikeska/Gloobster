@@ -131,7 +131,9 @@ namespace Gloobster.DomainModels.Services.Places
                 Log.Debug("TagPerm20");
                 NewVisitedStates = await VisitedStates.AddNewStatesAsync(NewFoundUniqueStates, DbUserId);
                 Log.Debug("TagPerm21");
-                return true;
+
+                bool any = NewVisitedPlaces.Any() || NewVisitedCities.Any() || NewVisitedCountries.Any() || NewVisitedStates.Any();
+                return any;
             }
             catch (Exception exc)
             {

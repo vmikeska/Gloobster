@@ -231,9 +231,8 @@
 
 	export class PinBoardView extends ViewBase {
 
-	 public mapsManager: Maps.MapsManager;	 
-		//private placeSearch: Common.PlaceSearchBox;
-			private search: PinBoardSearch;
+		public mapsManager: Maps.MapsManager;	 					
+		private search: PinBoardSearch;
 
 		private shareDialogView: ShareDialogPinsView;
 		private fbPermissions: Common.FacebookPermissions;
@@ -244,31 +243,46 @@
 
 		get pageType(): Views.PageType { return PageType.PinBoard; }
 
-	  constructor() {
-		 super();
-		 this.loginButtonsManager.onAfterCustom = (net) => {
-			 if (net === SocialNetworkType.Facebook) {
-				this.initFb();
-			 }
-		 }
+		constructor() {
+			super();
+			this.loginButtonsManager.onAfterCustom = (net) => {
+				if (net === SocialNetworkType.Facebook) {
+					this.initFb();
+				}
+			}
 
-		  this.initShareDialog();
-	  }
+			this.initShareDialog();				
+		}
 
 		public initFb() {
 			this.fbPermissions = new Common.FacebookPermissions();
 			this.fbPermissions.initFb(() => {
 				this.fbPermissions.hasPermission("user_tagged_places", (hasPermissions) => {
 					if (hasPermissions) {
-					 this.refreshData();					 
+						this.refreshData();
+
+						this.checkNewPlaces();
 					} else {
-					 this.initFbPermRequest();
+						this.initFbPermRequest();
 					}
 				});
 			});
 		}
 
-	 private initShareDialog() {
+		private checkNewPlaces() {
+			var prms = [];
+			this.apiGet("NewPlaces", prms, (any) => {
+				if (any) {
+						this.refreshData();
+
+					this.apiGet("PinStats", [], (stats) => {
+							this.refreshBadges(stats);
+					});
+				}
+			});
+		}
+
+		private initShareDialog() {
 		var $btn = $("#share-btn");		
 		var $dialog = $("#popup-share");
 
@@ -297,11 +311,11 @@
 		}
 
 		private initFbPermRequest() {
-		 $("#taggedPlacesPerm").show();
-		 $("#fbBtnImport").click((e) => {
-			e.preventDefault();
-			this.getTaggedPlacesPermissions();
-		 });
+			$("#taggedPlacesPerm").show();
+			$("#fbBtnImport").click((e) => {
+				e.preventDefault();
+				this.getTaggedPlacesPermissions();
+			});
 		}
 
 		public getTaggedPlacesPermissions() {
@@ -466,17 +480,6 @@
 				});
 			});
 		}
-
-		//private initPlaceSearch() {
-		//	var c = new Common.PlaceSearchConfig();
-		//	c.providers = "0,1,2,3,4";
-		//	c.elementId = "cities";
-		//	c.minCharsToSearch = 1;
-		//	c.clearAfterSearch = true;
-
-		//	this.placeSearch = new Common.PlaceSearchBox(c);
-		//	this.placeSearch.onPlaceSelected = (request) => this.saveNewPlace(request);
-		//}
 
 		private initPlaceSearch2() {
 				this.search = new PinBoardSearch($(".place-search"));				

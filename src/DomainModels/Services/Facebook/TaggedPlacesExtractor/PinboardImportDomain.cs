@@ -17,7 +17,7 @@ namespace Gloobster.DomainModels.Services.Facebook.TaggedPlacesExtractor
         public IComponentContext ComponentContext { get; set; }
         public IFacebookService FBService { get; set; }
         
-        public async Task ImportFb(string userId)
+        public async Task<bool> ImportFb(string userId)
         {
             try
             {
@@ -33,14 +33,17 @@ namespace Gloobster.DomainModels.Services.Facebook.TaggedPlacesExtractor
                         PlacesExtractor.Driver = ComponentContext.ResolveKeyed<IPlacesExtractorDriver>("Facebook");
 
                         await PlacesExtractor.ExtractNewAsync(userId, facebook);
-                        await PlacesExtractor.SaveAsync();
+                        bool any = await PlacesExtractor.SaveAsync();
+                        return any;
                     }
+                    return false;
                 }
-                
+                return false;
             }
             catch (Exception exc)
-            {
-                Log.Error("ImportNewFbPins: " + exc.Message);                
+            {                
+                Log.Error("ImportNewFbPins: " + exc.Message);
+                return false;
             }            
         }
     }
