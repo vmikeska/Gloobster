@@ -9,29 +9,16 @@ using Newtonsoft.Json.Linq;
 
 namespace CoordinatesConvertor
 {
-    public class Program
+    public class ProgramXX
     {
-        public static float Convert(string origNum)
-        {
-            float numParsed1 = float.Parse(origNum);
-            string cut = numParsed1.ToString("0.000");
-            float numParsed2 = float.Parse(cut);
-            return numParsed2;
-        }
+        //public static float Convert(string origNum)
+        //{
+        //    float numParsed1 = float.Parse(origNum);
+        //    string cut = numParsed1.ToString("0.000");
+        //    float numParsed2 = float.Parse(cut);
+        //    return numParsed2;
+        //}
 
-        public static float[][] WriteDataArray(JToken[] input)
-        {
-            var outCoordinatesList = new List<float[]>();
-            foreach (var coordinate in input)
-            {
-                var cor1 = Convert(coordinate[1].ToString());
-                var cor2 = Convert(coordinate[0].ToString());
-
-                outCoordinatesList.Add(new[] { cor1, cor2 });
-            }
-
-            return outCoordinatesList.ToArray();
-        }
 
         static void Main(string[] args)
         {
@@ -45,7 +32,7 @@ namespace CoordinatesConvertor
                 Directory.CreateDirectory(outputDir);
             }
 
-            string[] inputFiles = System.IO.Directory.GetFiles(inputDir);
+            string[] inputFiles = Directory.GetFiles(inputDir);
 
             var outputCountries = new List<Country>();
             var logs = new List<string>();
@@ -97,13 +84,13 @@ namespace CoordinatesConvertor
 					if (geometryType == "MultiPolygon")
                     {
                         //string test = coordinatesResult.ToString();
-                        var temp = new List<float[][]>();
+                        var temp = new List<double[][]>();
                         foreach (var subSet1 in coordinatesResult.ToArray())
                         {
                             JToken subSet2 = subSet1.First;
                           
 
-                            var single = WriteDataArray(subSet2.ToArray());
+                            var single = Utils.WriteDataArray(subSet2.ToArray());
                             temp.Add(single);
                         }
                         country.coordinates = temp.ToArray();
@@ -113,7 +100,7 @@ namespace CoordinatesConvertor
                     {
                         var items = coordinatesResult.First.ToArray();
 
-                        var single = WriteDataArray(items);
+                        var single = Utils.WriteDataArray(items);
                         country.coordinates = new[] { single };
                     }
                     outputCountries.Add(country);
@@ -132,7 +119,7 @@ namespace CoordinatesConvertor
                 outStr += str + "," + Environment.NewLine;
             }
             var final = outStr + "]";
-            File.WriteAllText(outputDir + "build.json", final); 
+            //File.WriteAllText(outputDir + "build.json", final); 
 
             //string json = JsonConvert.SerializeObject(outputCountries.ToArray());
 

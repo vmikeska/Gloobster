@@ -1,5 +1,7 @@
 ﻿@using Gloobster.Portal.ViewModels
 @using System.Linq
+@using System.Threading.Tasks
+@using Gloobster.Common
 @model ViewModelHome
 
 @{
@@ -13,17 +15,24 @@
     <meta name="viewport" content="width=device-width">
 
     <meta name="google-site-verification" content="oYdKq1oUoqxCaM5HbFMH1m9V2SGm8j6WxX0mcvDu9Is" />
-    <!-- custom meta -->
-    @*<meta name="google-signin-client_id" content="430126253289-14tdcfe4noqm6p201jrugpi9dsies2at.apps.googleusercontent.com">*@
-    <!-- custom meta end -->
-
+    
     <title>Gloobster</title>
 
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,700">
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700">
 
-    <script src="~/lib/jquery/dist/jquery.js"></script>
-    <script type="text/javascript" src="@Url.Content("~/js/script.js")"></script>
+    @Html.Partial("_GlobalScripts")
+
+    @if (GloobsterConfig.UseMiniScripts)
+    {
+        <script src="/jsb/index.js" type="text/javascript" data-notbuild="true"></script>
+    }
+    else
+    {
+        <script src="/lib/jquery/dist/jquery.js" type="text/javascript"></script>        
+        <script src="/js/Views/HomePageView.js" type="text/javascript"></script>
+        <script src="/js/registration/FacebookAuth.js" type="text/javascript"></script>
+    }
 
     <link href="~/css/style.css" rel="stylesheet">
     
@@ -54,11 +63,6 @@
 
         <a class="hamburger" data-target="#menu" href="#"><span></span></a>
     </div>
-
-    @Html.Partial("_GlobalScripts")
-    <script type="text/javascript" src="@Url.Content("~/js/Views/HomePageView.js")"></script>
-    <script type="text/javascript" src="@Url.Content("~/js/registration/FacebookAuth.js")"></script>
-
 
 </header>
 

@@ -4,6 +4,7 @@
 }
 
 @using System.Threading.Tasks
+@using Gloobster.Common
 @using Gloobster.Portal.Controllers.Portal
 @using Gloobster.Portal.ViewModels
 @model Gloobster.Portal.ViewModels.ViewModelShareTrip
@@ -20,8 +21,18 @@
 	    <link href="http://ga.cz/2015/gloobster/css/style.css" rel="stylesheet">
 
 		@Html.Partial("_GlobalScripts")
-	    <script type="text/javascript" src="@Url.Content("~/js/Views/ShareTripView.js")"></script>
-		<script type="text/javascript" src="@Url.Content("~/js/Maps/MapsCreatorMapBox2D.js")"></script>
+
+    @if (GloobsterConfig.UseMiniScripts)
+    {
+        <script src="/jsb/shareTrip.js" type="text/javascript" data-notbuild="true"></script>
+    }
+    else
+    {
+        <script type="text/javascript" src="/js/Views/ShareTripView.js"></script>
+        <script type="text/javascript" src="/js/Maps/MapsCreatorMapBox2D.js"></script>
+    }
+
+    
 </head>
 <body class="shared" id="top">
 		<!-- MapBox -->

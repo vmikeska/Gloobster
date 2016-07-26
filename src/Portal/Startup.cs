@@ -312,8 +312,10 @@ namespace Gloobster.Portal
 		        GloobsterConfig.Domain = Configuration["Environment:Domain"];
 		        GloobsterConfig.IsLocal = bool.Parse(Configuration["Environment:IsLocal"]);
 		        GloobsterConfig.Protocol = Configuration["Environment:Protocol"];
+                GloobsterConfig.UseMiniScripts = bool.Parse(Configuration["Environment:UseMiniScripts"]);
 
-		        GloobsterConfig.AppSecret = Configuration["AppSecret"];
+
+                GloobsterConfig.AppSecret = Configuration["AppSecret"];
 
 		        GloobsterConfig.FacebookAppId = Configuration["Facebook:AppId"];
 		        GloobsterConfig.FacebookAppSecret = Configuration["Facebook:AppSecret"];

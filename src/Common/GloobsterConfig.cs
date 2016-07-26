@@ -22,7 +22,7 @@ namespace Gloobster.Common
         public static string Domain { get; set; }
         public static bool IsLocal { get; set; }
         public static string Protocol { get; set; }
-
+        public static bool UseMiniScripts { get; set; }
 
         public static string FacebookAppId { get; set; }
 		public static string FacebookAppSecret { get; set; }

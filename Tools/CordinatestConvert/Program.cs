@@ -9,25 +9,33 @@ using Newtonsoft.Json.Linq;
 
 namespace CoordinatesConvertor
 {
-    
 
-    public class Programx
+    public class Utils
     {
-        public static float[][] WriteDataArray(JToken[] input)
+        public static double[][] WriteDataArray(JToken[] input)
         {
-            var outCoordinatesList = new List<float[]>();
+            var outCoordinatesList = new List<double[]>();
             foreach (var coordinate in input)
             {
-                var cor1 = float.Parse(coordinate[1].ToString());
-                var cor2 = float.Parse(coordinate[0].ToString());
+                var cor1 = double.Parse(coordinate[1].ToString());
+                var cor2 = double.Parse(coordinate[0].ToString());
+
+                cor1 = Math.Round(cor1, 2);
+                cor2 = Math.Round(cor2, 2);
 
                 outCoordinatesList.Add(new[] { cor1, cor2 });
             }
 
             return outCoordinatesList.ToArray();
         }
+    }
 
-        static void Mainx(string[] args)
+
+    public class Program
+    {
+        
+
+        static void Mainxxx(string[] args)
         {
 	        var countryService = new CountryService();
 
@@ -97,13 +105,13 @@ namespace CoordinatesConvertor
 					if (geometryType == "MultiPolygon")
                     {
                         //string test = coordinatesResult.ToString();
-                        var temp = new List<float[][]>();
+                        var temp = new List<double[][]>();
                         foreach (var subSet1 in coordinatesResult.ToArray())
                         {
                             JToken subSet2 = subSet1.First;
                           
 
-                            var single = WriteDataArray(subSet2.ToArray());
+                            var single = Utils.WriteDataArray(subSet2.ToArray());
                             temp.Add(single);
                         }
                         country.coordinates = temp.ToArray();
@@ -113,7 +121,7 @@ namespace CoordinatesConvertor
                     {
                         var items = coordinatesResult.First.ToArray();
 
-                        var single = WriteDataArray(items);
+                        var single = Utils.WriteDataArray(items);
                         country.coordinates = new[] { single };
                     }
                     outputCountries.Add(country);

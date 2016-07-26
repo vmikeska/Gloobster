@@ -1,4 +1,6 @@
-﻿@using Gloobster.Portal.ViewModels
+﻿@using System.Threading.Tasks
+@using Gloobster.Common
+@using Gloobster.Portal.ViewModels
 @model WikiCountryViewModel
 
 @{
@@ -6,8 +8,17 @@
     ViewBag.MenuGroup = "Wiki";
 }
 
+@if (GloobsterConfig.UseMiniScripts)
+{
+    <script src="/jsb/wikipage.js" type="text/javascript" data-notbuild="true"></script>
+}
+else
+{
+    <script type="text/javascript" src="/js/Views/WikiPageView.js"></script>
+}
 
-<script type="text/javascript" src="@Url.Content("~/js/Views/WikiPageView.js")"></script>
+
+
 
     @Html.Partial("PageAdmin")
 

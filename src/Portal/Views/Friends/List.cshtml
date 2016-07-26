@@ -1,8 +1,18 @@
-﻿@{		
+﻿@using System.Threading.Tasks
+@using Gloobster.Common
+@{		
 		ViewBag.MenuGroup = "Friends";
 }
 
-<script type="text/javascript" src="@Url.Content("~/js/Views/FriendsView.js")"></script>
+@if (GloobsterConfig.UseMiniScripts)
+{
+    <script src="/jsb/friends.js" type="text/javascript" data-notbuild="true"></script>
+}
+else
+{
+    <script src="/js/Views/FriendsView.js" type="text/javascript"></script>
+}
+
 <script>
         function onBodyLoad() {
             currentView = new FriendsView();

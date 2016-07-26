@@ -1,4 +1,5 @@
 ﻿@using System.Threading.Tasks
+@using Gloobster.Common
 @using Gloobster.DomainModels.Wiki
 @using Gloobster.Portal.Controllers.Portal
 @using Gloobster.Portal.ViewModels
@@ -9,7 +10,15 @@
     ViewBag.MenuGroup = "Wiki";    
 }
 
-<script type="text/javascript" src="@Url.Content("~/js/Views/WikiPageView.js")"></script>
+@if (GloobsterConfig.UseMiniScripts)
+{
+    <script src="/jsb/wikipage.js" type="text/javascript" data-notbuild="true"></script>
+}
+else
+{
+    //achtung, compilation just from the country page. If adding something, possibly need to split the js builds
+    <script type="text/javascript" src="/js/Views/WikiPageView.js"></script>
+}
 
 <style>
     /*todo: multiple duplicities in the app*/

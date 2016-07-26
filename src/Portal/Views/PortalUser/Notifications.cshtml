@@ -3,7 +3,15 @@
 @using Gloobster.Portal.ViewModels
 @model NotificationsViewModel
 
-<script type="text/javascript" src="@Url.Content("~/js/Views/NotificationsView.js")"></script>
+
+@if (GloobsterConfig.UseMiniScripts)
+{
+    <script src="/jsb/notifications.js" type="text/javascript" data-notbuild="true"></script>
+}
+else
+{
+    <script type="text/javascript" src="/js/Views/NotificationsView.js"></script>
+}
 
     <div class="table margin width100">
         <div class="cell middle">

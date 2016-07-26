@@ -4,24 +4,33 @@
 }
 
 @using System.Threading.Tasks
+@using Gloobster.Common
 @using Gloobster.Portal.Controllers.Portal
 @using Gloobster.Portal.ViewModels
 @model ViewModelTripDetail
 
-<script type="text/javascript" src="@Url.Content("~/js/Views/TripDetailView.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/js/Views/TripMenu.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/js/common/ShareButtons.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/js/Trip/Comments.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/js/Trip/Files.js")"></script>
 
-<script type="text/javascript" src="@Url.Content("~/js/Trip/Planner.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/js/Trip/PlaceTravelTime.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/js/Trip/DialogManager.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/js/Trip/PlaceDialog.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/js/Trip/AirportCombo.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/js/Trip/TravelDialog.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/js/Trip/Utils.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/js/Trip/PlacesManager.js")"></script>
+@if (GloobsterConfig.UseMiniScripts)
+{
+    <script src="/jsb/tripDetail.js" type="text/javascript" data-notbuild="true"></script>
+}
+else
+{
+    <script type="text/javascript" src="/js/Views/TripDetailView.js"></script>
+    <script type="text/javascript" src="/js/Views/TripMenu.js"></script>
+    <script type="text/javascript" src="/js/common/ShareButtons.js"></script>
+    <script type="text/javascript" src="/js/Trip/Comments.js"></script>
+    <script type="text/javascript" src="/js/Trip/Files.js"></script>
+
+    <script type="text/javascript" src="/js/Trip/Planner.js"></script>
+    <script type="text/javascript" src="/js/Trip/PlaceTravelTime.js"></script>
+    <script type="text/javascript" src="/js/Trip/DialogManager.js"></script>
+    <script type="text/javascript" src="/js/Trip/PlaceDialog.js"></script>
+    <script type="text/javascript" src="/js/Trip/AirportCombo.js"></script>
+    <script type="text/javascript" src="/js/Trip/TravelDialog.js"></script>
+    <script type="text/javascript" src="/js/Trip/Utils.js"></script>
+    <script type="text/javascript" src="/js/Trip/PlacesManager.js"></script>
+}
 
 <div class="wrapper">
 

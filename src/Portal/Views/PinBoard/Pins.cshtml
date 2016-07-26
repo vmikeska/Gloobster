@@ -1,4 +1,5 @@
 ﻿@using System.Threading.Tasks
+@using Gloobster.Common
 @using Gloobster.Enums
 @using Gloobster.Portal.ViewModels
 @using Newtonsoft.Json
@@ -8,43 +9,38 @@
     ViewBag.MenuGroup = "PinBoard";
 }
 
-@*<script src='../../../api.mapbox.com/mapbox.js/v2.2.2/mapbox.js'></script>
-		<link href='../../../api.mapbox.com/mapbox.js/v2.2.2/mapbox.css' rel='stylesheet' />*@
+<link href='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.css' rel='stylesheet' />
+<script src="http://www.webglearth.com/v2/api.js" data-notbuild="true"></script>
 
-@*<script src='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.js'></script>*@
-<link href='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.css' rel='stylesheet'/>
+@if (GloobsterConfig.UseMiniScripts)
+{
+    <script src="/jsb/pins.js" type="text/javascript" data-notbuild="true"></script>
+}
+else
+{
+    <script type="text/javascript" src="/js/Maps/MapsInterfaces.js"></script>
 
-<script src="http://www.webglearth.com/v2/api.js"></script>
+    <script type="text/javascript" src="/js/common/ShareButtons.js"></script>
 
-@*<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" />*@
-@*<script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>*@
+    <script type="text/javascript" src="/js/Common/CountryShapes.js"></script>
+    <script type="text/javascript" src="/js/Common/UsStates.js"></script>
+    <script type="text/javascript" src="/js/Common/CountryCodes.js"></script>
+    <script type="text/javascript" src="/js/Common/FacebookPermissions.js"></script>
 
-@*<link rel="stylesheet" href="@Url.Content("~/lib/leaflet/dist/leaflet.css")" />
-<script type="text/javascript" src="@Url.Content("~/lib/leaflet/dist/leaflet-src.js")"></script>*@
+    <script type="text/javascript" src="/js/Maps/BaseMapsOperation3D.js"></script>
+    <script type="text/javascript" src="/js/Maps/BaseMapsOperation2D.js"></script>
+    <script type="text/javascript" src="/js/Maps/MapsOperations.js"></script>
+    <script type="text/javascript" src="/js/Maps/MapsCreatorGlobe3D.js"></script>
+    <script type="text/javascript" src="/js/Maps/MapsCreatorMapBox2D.js"></script>
+    <script type="text/javascript" src="/js/Maps/MapsManager.js"></script>
+    <script type="text/javascript" src="/js/Maps/MapsDataLoader.js"></script>
 
-
-<script type="text/javascript" src="@Url.Content("~/js/Maps/MapsInterfaces.js")"></script>
-
-<script type="text/javascript" src="@Url.Content("~/js/common/ShareButtons.js")"></script>
-
-<script type="text/javascript" src="@Url.Content("~/js/Common/CountryShapes.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/js/Common/UsStates.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/js/Common/CountryCodes.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/js/Common/FacebookPermissions.js")"></script>
-
-<script type="text/javascript" src="@Url.Content("~/js/Maps/BaseMapsOperation3D.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/js/Maps/BaseMapsOperation2D.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/js/Maps/MapsOperations.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/js/Maps/MapsCreatorGlobe3D.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/js/Maps/MapsCreatorMapBox2D.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/js/Maps/MapsManager.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/js/Maps/MapsDataLoader.js")"></script>
-
-<script type="text/javascript" src="@Url.Content("~/js/Views/PinBoardView.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/js/Views/ShareDialogPinsView.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/js/Views/PeopleFilter.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/js/Views/AggregatedCountries.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/js/Views/PinBoardBadges.js")"></script>
+    <script type="text/javascript" src="/js/Views/PinBoardView.js"></script>
+    <script type="text/javascript" src="/js/Views/ShareDialogPinsView.js"></script>
+    <script type="text/javascript" src="/js/Views/PeopleFilter.js"></script>
+    <script type="text/javascript" src="/js/Views/AggregatedCountries.js"></script>
+    <script type="text/javascript" src="/js/Views/PinBoardBadges.js"></script>
+}
 
 @Html.Partial("PinBoardTemplates")
 

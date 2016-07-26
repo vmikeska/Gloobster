@@ -14,7 +14,8 @@
   "Environment": {
     "Domain": "gloob999.azurewebsites.net",
     "IsLocal": "false",
-    "Protocol": "http"
+    "Protocol": "http",
+    "UseMiniScripts": "true"
   },
   "AppSecret": "ThisIsAppSecret",
   "Facebook": {

@@ -1,16 +1,24 @@
 ﻿@using Gloobster.Portal.ViewModels
 @using System.Linq
 @using System.Threading.Tasks
+@using Gloobster.Common
 @using Gloobster.Enums
 @using Newtonsoft.Json
 @model SettingsViewModel
 
-<script src="@Url.Content("~/js/Views/SettingsView.js")"></script>
-<script src="@Url.Content("~/js/Views/SettingsUtils.js")"></script>
-<script src="@Url.Content("~/js/Planning/TaggingField.js")"></script>
-<script src="@Url.Content("~/js/TravelB/CategoryTagger.js")"></script>
-<script src="@Url.Content("~/js/TravelB/Tabs.js")"></script>
-<script src="@Url.Content("~/js/TravelB/TravelBUtils.js")"></script>
+@if (GloobsterConfig.UseMiniScripts)
+{
+    <script src="/jsb/userSettings.js" type="text/javascript" data-notbuild="true"></script>
+}
+else
+{
+    <script src="/js/Views/SettingsView.js"></script>
+    <script src="/js/Views/SettingsUtils.js"></script>
+    <script src="/js/Planning/TaggingField.js"></script>
+    <script src="/js/TravelB/CategoryTagger.js"></script>
+    <script src="/js/TravelB/Tabs.js"></script>
+    <script src="/js/TravelB/TravelBUtils.js"></script>
+}
 
 <link href="~/css/chat.css" rel="stylesheet" />
 
