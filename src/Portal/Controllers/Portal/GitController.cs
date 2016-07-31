@@ -46,9 +46,9 @@ namespace Gloobster.Portal.Controllers.Portal
         public async Task<IActionResult> Issues()
         {
             var client = new GitHubClient(new ProductHeaderValue("Gloobster"));
-
-            var basicAuth = new Credentials("mikeska@gmail.com", "GitBit007");
-            client.Credentials = basicAuth;
+            
+            var tokenAuth = new Credentials("41452f93bab24937cede414f4911074289ba1280");
+            client.Credentials = tokenAuth;
             
             IReadOnlyList<Issue> issues = await client.Issue.GetAllForRepository("vmikeska", "Gloobster");
 
