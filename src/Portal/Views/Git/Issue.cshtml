@@ -1,0 +1,11 @@
+﻿@using System.Threading.Tasks
+@using Gloobster.Entities
+@using Gloobster.Portal.Controllers.Portal
+@using Octokit
+@model Issue
+
+
+
+<div class="issue" title="@Model.Body">
+    <a href="@Model.HtmlUrl">@Model.Title</a>
+</div>

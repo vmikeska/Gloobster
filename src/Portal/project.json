@@ -45,7 +45,8 @@
     "AutofacSerilogIntegration": "1.0.10",
     "Nito.AsyncEx": "3.0.1",
     "AzureBlobFileSystem": "1.0.0-*",
-    "UAParser": "2.1.0"
+    "UAParser": "2.1.0",
+    "Octokit": "0.21.1"
   },
 
   "commands": {

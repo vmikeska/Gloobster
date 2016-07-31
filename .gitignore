@@ -10,3 +10,4 @@ obj
 /packages
 /src/Portal/wwwroot/FileRepository
 /DBScripts/Cities.json
+node_modules

@@ -1,0 +1,50 @@
+﻿@using System.Threading.Tasks
+@using Gloobster.Entities
+@using Gloobster.Portal.Controllers.Portal
+@using Octokit
+@model IssuesModel
+
+@{
+    Layout = "";
+
+    var m = Model;
+}
+
+<style>
+    
+
+     table {
+         border: 1px solid black;
+     }
+    td {
+        border: 1px solid black;
+    }
+    .issue {
+        border-bottom: 1px solid red;
+        font-size: 16px;
+    }
+
+    .issue a {
+        color: darkblue;
+    }
+</style>
+
+
+<table>
+    <tr>
+        <td>Stage</td>
+        
+        <td>Pins</td>
+        <td>Fly</td>
+        <td>TravelB</td>
+        <td>Trips</td>
+        <td>Wiki</td>
+        <td>Other</td>
+        <td>Presentation</td>
+        <td>Marketing</td>
+    </tr>
+    @Html.Partial("IssueGroup", new FitlerModel { Model = Model, ActFilter = "Bug"})
+    @Html.Partial("IssueGroup", new FitlerModel { Model = Model, ActFilter = "Backlog" })
+    @Html.Partial("IssueGroup", new FitlerModel { Model = Model, ActFilter = "Plans" })
+    @Html.Partial("IssueGroup", new FitlerModel { Model = Model, ActFilter = "Visions" })
+</table>
