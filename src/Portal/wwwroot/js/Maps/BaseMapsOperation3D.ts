@@ -27,6 +27,13 @@
 		}
 
 		public drawPopUp(marker, context) {
+
+				if (context.dates) {
+						context.dates = _.map(context.dates, (d) => {
+								return moment.utc(d).format("lll");
+						});
+				}
+
 		 var popupContent = this.cityPopupTemplate(context);
 
 		 marker.bindPopup(popupContent, {

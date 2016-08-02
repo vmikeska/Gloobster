@@ -18,6 +18,11 @@ var Maps;
             this.polygons.push(polygon);
         };
         BaseMapsOperation3D.prototype.drawPopUp = function (marker, context) {
+            if (context.dates) {
+                context.dates = _.map(context.dates, function (d) {
+                    return moment.utc(d).format("lll");
+                });
+            }
             var popupContent = this.cityPopupTemplate(context);
             marker.bindPopup(popupContent, {
                 closeButton: true,
