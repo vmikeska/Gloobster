@@ -7,9 +7,12 @@
     ViewBag.MenuGroup = "TravelB";
 }
 
-<link href="~/css/chat.css" rel="stylesheet" />
+<link href="/lib/mapbox.js/mapbox.css" rel="stylesheet" />
+<link href="/lib/leaflet/dist/leaflet.css" rel="stylesheet" />
+<link href="/css/chat.css" rel="stylesheet" />
 
-<link href='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.css' rel='stylesheet' />
+<script type="text/javascript" src="/lib/leaflet/dist/leaflet.js"></script>
+<script type="text/javascript" src="/lib/mapbox.js/mapbox.js"></script>
 
 <script src="@Url.Content("~/js/Views/TravelBView.js")"></script>
 <script src="@Url.Content("~/js/Views/SettingsUtils.js")"></script>
@@ -63,7 +66,7 @@
 
     </div>
     <div class="tabBlock">
-        <div id="map">            
+        <div id="map" class="chatMap">            
             <div id="searchCity" class="dropdown">
                 <input class="inputed" type="text" placeholder="Search your location">
                 <img class="loader" src="/images/loader-gray.gif" style="display: none" />

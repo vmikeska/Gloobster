@@ -118,6 +118,7 @@
 /// <reference path="lib/js-cookie/src/js.cookie.js" />
 /// <reference path="lib/leaflet/dist/leaflet-src.js" />
 /// <reference path="lib/lodash/lodash.js" />
+/// <reference path="lib/mapbox.js/mapbox.js" />
 /// <reference path="lib/moment/moment.js" />
 /// <reference path="old/BingMapsOld.js" />
 /// <reference path="old/Coordinates.js" />

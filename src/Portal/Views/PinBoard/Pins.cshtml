@@ -9,8 +9,8 @@
     ViewBag.MenuGroup = "PinBoard";
 }
 
-<link href='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.css' rel='stylesheet' />
-<script src="http://www.webglearth.com/v2/api.js" data-notbuild="true"></script>
+<link href="/lib/mapbox.js/mapbox.css" rel="stylesheet" />
+<link href="/lib/leaflet/dist/leaflet.css" rel="stylesheet" />
 
 @if (GloobsterConfig.UseMiniScripts)
 {
@@ -18,6 +18,11 @@
 }
 else
 {
+    <script type="text/javascript" src="/lib/leaflet/dist/leaflet.js"></script>
+    <script type="text/javascript" src="/lib/mapbox.js/mapbox.js"></script>
+
+    <script type="text/javascript" src="/lib/leaflet-heat.js"></script>
+
     <script type="text/javascript" src="/js/Maps/MapsInterfaces.js"></script>
 
     <script type="text/javascript" src="/js/common/ShareButtons.js"></script>

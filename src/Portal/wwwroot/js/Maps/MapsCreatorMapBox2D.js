@@ -15,20 +15,10 @@ var Maps;
         MapsCreatorMapBox2D.prototype.setRootElement = function (rootElement) {
             this.rootElement = rootElement;
         };
-        MapsCreatorMapBox2D.prototype.setMapType = function (mapType) {
-            this.mapType = mapType;
-        };
         MapsCreatorMapBox2D.prototype.show = function (mapsLoadedCallback) {
-            var _this = this;
             var self = this;
-            this.loadScript("http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js", function () {
-                self.loadScript("https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.js", function () {
-                    self.loadScript("https://api.mapbox.com/mapbox.js/plugins/leaflet-heat/v0.1.3/leaflet-heat.js", function () {
-                        self.loadMap();
-                        mapsLoadedCallback(_this.mapObj);
-                    });
-                });
-            });
+            self.loadMap();
+            mapsLoadedCallback(this.mapObj);
         };
         MapsCreatorMapBox2D.prototype.loadMap = function () {
             var _this = this;

@@ -32,7 +32,9 @@ module Views {
 				this.loginButtonsManager.createPageDialog();
 			}
 
-			$(document).tooltip();
+			if ($(document).tooltip) {
+					$(document).tooltip();
+			}				
 		}
 
 		private regUserMenu() {		 

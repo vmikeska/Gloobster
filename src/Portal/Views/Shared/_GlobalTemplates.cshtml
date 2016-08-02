@@ -1,0 +1,58 @@
+﻿
+
+<script id="hint-template" type="text/x-handlebars-template">
+    <div class="hint margin">
+        <span class="icon-amplion white middle mright5"></span>
+        {{message}}
+        <a class="close" href="#"></a>
+    </div>
+</script>
+
+<script id="placeItem-template" type="text/x-handlebars-template">				
+		<li data-value="{{sourceId}}" data-type="{{sourceType}}"><span class="{{icoClass}} left mright10"></span>{{name}}<span class="color2">, {{countryCode}}</span></li>
+</script>
+
+<script id="userItem-template" type="text/x-handlebars-template">
+		<li data-value="{{userId}}"><span class="thumbnail"><img src="{{photoUrl}}"></span>{{displayName}}</li>
+</script>
+
+<script id="confirmDialog-template" type="text/x-handlebars-template">
+    <div class="popup" id="popup-confirm">
+        <div>
+            <h3>{{title}}</h3>
+            <p class="h4 color1">{{text}}</p>
+            <div class="tright">
+                <a class="button border cancel" href="#">{{textCancel}}</a>
+                <a class="button confirm" href="#">{{textOk}}</a>
+            </div>
+            <a class="close" href="#"></a>
+        </div>
+    </div>
+</script>
+
+<script id="infoDialog-template" type="text/x-handlebars-template">
+    <div class="popup" id="popup-info">
+        <div>
+            <h3>{{title}}</h3>
+            <p class="h4 color1">{{text}}</p>
+            <div class="tright">
+                <a class="button border cancel" href="#">@Model.W("Close", "layout")</a>                
+            </div>
+            <a class="close" href="#"></a>
+        </div>
+    </div>
+</script>
+
+<script id="inPorgressDialog-template" type="text/x-handlebars-template">
+    <div class="popup2 margin infoPanel" style="display: block">
+        <img style="vertical-align:middle" class="loader" src="/images/loader-gray.gif" />
+        <span style="font-size: 20px">{{message}}</span>
+    </div>
+</script>
+
+<script id="tagger-template" type="text/x-handlebars-template">
+    <div class="dropdown dropdown-open">
+        <input class="inputed" placeholder="+ Add Tag">
+        <ul style="display: none"></ul>
+    </div>
+</script>

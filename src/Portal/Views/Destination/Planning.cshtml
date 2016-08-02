@@ -8,7 +8,12 @@
 @using Gloobster.Portal.ViewModels
 @model Gloobster.Portal.ViewModels.ViewModelPlanning
 
-<link href='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.css' rel='stylesheet' />
+
+<link href="/lib/mapbox.js/mapbox.css" rel="stylesheet" />
+<link href="/lib/leaflet/dist/leaflet.css" rel="stylesheet" />
+
+<script type="text/javascript" src="/lib/leaflet/dist/leaflet.js"></script>
+<script type="text/javascript" src="/lib/mapbox.js/mapbox.js"></script>
 
 <script type="text/javascript" src="@Url.Content("~/js/Views/PlanningView.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Trip/AirportCombo.js")"></script>

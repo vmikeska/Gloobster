@@ -108,7 +108,6 @@ var Maps;
         };
         MapsManager.prototype.init3D = function () {
             this.currentMaps = new Maps.MapsCreatorGlobe3D();
-            this.currentMaps.setMapType('OSM');
             this.currentMaps.setRootElement('map');
             this.mapsDriver = new Maps.BaseMapsOperation3D();
         };

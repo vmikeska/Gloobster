@@ -156,8 +156,7 @@
 		}
 
 		private init3D() {
-			this.currentMaps = new MapsCreatorGlobe3D();
-			this.currentMaps.setMapType('OSM');
+			this.currentMaps = new MapsCreatorGlobe3D();			
 			this.currentMaps.setRootElement('map');
 
 			this.mapsDriver = new BaseMapsOperation3D();

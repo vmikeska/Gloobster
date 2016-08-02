@@ -6,33 +6,31 @@ var Maps;
         MapsCreatorGlobe3D.prototype.setRootElement = function (rootElement) {
             this.rootElement = rootElement;
         };
-        MapsCreatorGlobe3D.prototype.setMapType = function (mapType) {
-            this.mapType = mapType;
-        };
         MapsCreatorGlobe3D.prototype.show = function (mapsLoadedCallback) {
-            var mapOptions = {};
-            var layerOptions = {};
-            var mapUrl = '';
-            if (this.mapType === 'OSM') {
-                mapUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+            var _this = this;
+            this.showPreloader(true);
+            this.loadScript("/lib/webglearth-api.js", function () {
+                _this.showPreloader(false);
+                var mapOptions = {};
+                var layerOptions = {};
+                var mapUrl = 'https://api.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZ2xvb2JzdGVyIiwiYSI6ImQxZWY5MjRkZjU1NDk2MGU3OWI2OGRiM2U3NTM0MGYxIn0.nCG7hOsSQzb0c-_qzfTCRQ';
+                _this.mapObj = new WE.map(_this.rootElement, mapOptions);
+                WE.tileLayer(mapUrl, layerOptions).addTo(_this.mapObj);
+                mapsLoadedCallback();
+            });
+        };
+        MapsCreatorGlobe3D.prototype.showPreloader = function (visible) {
+            if (visible) {
+                $("#map").append("<div class=\"preloader-cont\"><img src=\"/images/Preloader_1.gif\" /></div>");
             }
-            if (this.mapType === 'MQCDN') {
-                mapUrl = 'http://otile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg';
-                mapOptions = { atmosphere: true, center: [0, 0], zoom: 0 };
-                layerOptions = {
-                    subdomains: '1234',
-                    attribution: 'Tiles Courtesy of MapQuest & webglearth.org'
-                };
+            else {
+                $(".preloader-cont").remove();
             }
-            if (this.mapType === 'MQCDN1') {
-                mapUrl = 'http://otile1.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg';
-                layerOptions = {
-                    attribution: 'Tiles Courtesy of MapQuest & webglearth.org'
-                };
-            }
-            this.mapObj = new WE.map(this.rootElement, mapOptions);
-            WE.tileLayer(mapUrl, layerOptions).addTo(this.mapObj);
-            mapsLoadedCallback();
+        };
+        MapsCreatorGlobe3D.prototype.loadScript = function (scriptUrl, callback) {
+            $.getScript(scriptUrl, function (data, textStatus, jqxhr) {
+                callback();
+            });
         };
         MapsCreatorGlobe3D.prototype.hide = function () {
             $("#" + this.rootElement).empty();

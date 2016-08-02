@@ -17,7 +17,9 @@ var Views;
                 this.loginButtonsManager = new Reg.LoginButtonsManager();
                 this.loginButtonsManager.createPageDialog();
             }
-            $(document).tooltip();
+            if ($(document).tooltip) {
+                $(document).tooltip();
+            }
         }
         Object.defineProperty(ViewBase.prototype, "pageType", {
             get: function () { return null; },

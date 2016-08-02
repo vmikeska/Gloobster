@@ -111,7 +111,7 @@
         font-size: 20px;
     }
 
-    #map {
+    .chatMap {
         width: 100%;
         height: 350px;
     }

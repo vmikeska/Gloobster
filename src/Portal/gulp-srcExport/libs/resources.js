@@ -11,6 +11,7 @@ var expandResources = function (resourcePath, opts) {
     var dirs = [];
 	
 	//init dirs with JS locations
+	console.log("here");
     if (typeof opts.cwd === 'string') {
         dirs.push(path.resolve(opts.cwd));
     } else if (Array.isArray(opts.cwd)) {
@@ -20,6 +21,7 @@ var expandResources = function (resourcePath, opts) {
     } else {
         throw new gutil.PluginError('gulp-resources', 'Unknown type of "cwd".');
     }
+	console.log("here not");
 
 	//For each directory to search...
      _.forEach(dirs, function (dir) {

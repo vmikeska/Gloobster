@@ -1,6 +1,8 @@
 ﻿@using System.Linq;
 @using System.Threading.Tasks
+@using Gloobster.Common
 @using Gloobster.Portal.ViewModels
+@using Microsoft.Data.Entity.Metadata.Internal
 @using Newtonsoft.Json
 @model ViewModelBase
 
@@ -12,19 +14,23 @@
     <meta name="viewport" content="width=device-width">
 	<title>Gloobster</title>
 
-    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,700">
-    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700">
+    @if (GloobsterConfig.UseMiniScripts)
+    {
+        <link href="~/cssb/site.min.css" rel="stylesheet" />
+    }
+    else
+    {
+        <link href="~/css/style.css" rel="stylesheet" />
+        <link href="//fonts.googleapis.com/css?family=PT+Sans:400,700" rel="stylesheet">
+        <link href="//fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
+        <link href="~/lib/jquery-ui/themes/ui-lightness/jquery-ui.css" rel="stylesheet"/>
 
-    <link href="~/css/style.css" rel="stylesheet">
+    }
     
-    <link href="~/lib/jquery-ui/themes/ui-lightness/jquery-ui.css" rel="stylesheet"/>
-	
 	@Html.Partial("_GlobalScripts")
 
 </head>
 <body onload="onBodyLoad()" class="@ViewBag.BodyClass" id="top">
-
-
 
 <header class="header">
 

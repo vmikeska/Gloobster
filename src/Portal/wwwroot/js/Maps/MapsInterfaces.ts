@@ -80,8 +80,7 @@ module Maps {
 			mapObj: any;
 
 			show(mapsLoadedCallback);
-			setRootElement(rootElement: string);
-			setMapType(mapType);
+			setRootElement(rootElement: string);			
 			hide();
 
 			onCenterChanged: Function;
