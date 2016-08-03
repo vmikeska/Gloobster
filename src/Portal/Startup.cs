@@ -20,7 +20,7 @@ using Microsoft.AspNet.Http.Extensions;
 using System.Linq;
 
 namespace Gloobster.Portal
-{    
+{
     public class Startup
     {
 		public IConfiguration Configuration { get; set; }
@@ -214,45 +214,9 @@ namespace Gloobster.Portal
 
 		        app.UseStaticFiles();
 
-		        // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
-		        app.UseMvc(routes =>
-		        {
-		            routes.MapRoute(
-		                name: "default",
-		                template: "{controller=Home}/{action=Index}/{id?}");
-
-                    routes.MapRoute(
-                        name: "pinsLink",
-                        template: "tm",
-                        defaults: new { controller = "Pinboard", action = "Pins" }
-                        );
-
-                    routes.MapRoute(
-                        name: "wikiHome",
-                        template: "wiki",
-                        defaults: new { controller = "Wiki", action = "Home" }
-                        );
-
-                    routes.MapRoute(
-		                name: "wikiShort",
-		                template: "wiki/{id}",
-		                defaults: new {controller = "Wiki", action = "Page"}
-		                );
-
-		            routes.MapRoute(
-		                name: "wikiFull",
-		                template: "wiki/{lang}/{id}",
-		                defaults: new {controller = "Wiki", action = "PageRegular"}
-		                );
-
-		            routes.MapRoute(
-		                name: "sitemap",
-		                template: "sitemap",
-		                defaults: new {controller = "SiteMap", action = "Sitemap"}
-		                );
-
-
-		        });
+                // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
+                Routing.Configure(app);
+               
                 AddDebugLog("Configure:Leave");
 		    }
 		    catch (Exception exc)

@@ -176,12 +176,35 @@ var Trip;
             return link;
         };
         PlaceDialog.prototype.buildTemplateEdit = function ($row, data) {
-            var $html = $(this.dialogManager.placeDetailTemplate());
+            var _this = this;
+            var context = {
+                showDelButton: (data.isLastPlace && data.placesCount > 2)
+            };
+            var $html = $(this.dialogManager.placeDetailTemplate(context));
             var ptt = new Trip.PlaceTravelTime(this.dialogManager, data);
             var $time = ptt.create(TripEntityType.Place);
             $html.find(".the-first").after($time);
+            $html.find(".delete").click(function (e) {
+                e.preventDefault();
+                var v = Views.ViewBase.currentView;
+                var cd = new Common.ConfirmDialog();
+                cd.create(v.t("PlaceRemovelDialogTitle", "jsTrip"), v.t("PlaceRemovelDialogBody", "jsTrip"), v.t("Cancel", "jsLayout"), v.t("Delete", "jsLayout"), function () {
+                    Views.ViewBase.currentView.apiDelete("TripPlanner", [["tripId", data.tripId]], function (r) {
+                        _this.deletePlace(r.placeId, r.travelId);
+                    });
+                });
+            });
             this.dialogManager.regClose($html);
             $row.after($html);
+        };
+        PlaceDialog.prototype.deletePlace = function (placeId, travelId) {
+            $("#" + placeId).remove();
+            $("#" + travelId).remove();
+            this.dialogManager.closeDialog();
+            var pm = this.dialogManager.planner.placesMgr;
+            pm.removePlaceById(placeId);
+            pm.removeTravelById(travelId);
+            this.dialogManager.planner.manageRows(pm.places.length);
         };
         PlaceDialog.prototype.onPlaceToVisitSelected = function (req, place) {
             var _this = this;

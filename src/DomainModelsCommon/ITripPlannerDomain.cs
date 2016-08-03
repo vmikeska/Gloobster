@@ -8,7 +8,8 @@ namespace Gloobster.DomainInterfaces
 	{
 		void Initialize(string tripId, string userId);
 		Task<AddPlaceResultDO> AddPlace(NewPlaceDO newPlace);
-		Task<object> UpdateProperty(string propertyName, Dictionary<string, string> values);
+        Task<RemovedPlaceDO> RemoveLastPlace();
+        Task<object> UpdateProperty(string propertyName, Dictionary<string, string> values);
 	}
 
     public interface ITripPermissionsDomain

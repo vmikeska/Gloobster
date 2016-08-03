@@ -17,7 +17,7 @@ module Trip {
 			this.dialogManager.closeDialog();
 
 			this.dialogManager.getDialogData(TripEntityType.Place, (data) => {
-				this.$rowCont = $("#" + data.id).parent();
+				this.$rowCont = $(`#${data.id}`).parent();
 
 				if (this.dialogManager.planner.editable) {
 					this.createEdit(data);
@@ -218,15 +218,46 @@ module Trip {
 		}
 
 		private buildTemplateEdit($row, data) {
-			var $html = $(this.dialogManager.placeDetailTemplate());
+
+			var context = {
+				showDelButton: (data.isLastPlace && data.placesCount > 2)
+			};
+
+			var $html = $(this.dialogManager.placeDetailTemplate(context));
 
 			var ptt = new PlaceTravelTime(this.dialogManager, data);
 			var $time = ptt.create(TripEntityType.Place);
 			$html.find(".the-first").after($time);
 
+			$html.find(".delete").click((e) => {
+					e.preventDefault();
+
+					var v = Views.ViewBase.currentView;
+
+					var cd = new Common.ConfirmDialog();
+					cd.create(v.t("PlaceRemovelDialogTitle", "jsTrip"), v.t("PlaceRemovelDialogBody", "jsTrip"), v.t("Cancel", "jsLayout"), v.t("Delete", "jsLayout"), () => {
+							Views.ViewBase.currentView.apiDelete("TripPlanner", [["tripId", data.tripId]], (r) => {
+									this.deletePlace(r.placeId, r.travelId);
+							});		
+					});
+					
+			});
+
 			this.dialogManager.regClose($html);
 
 			$row.after($html);
+		}
+
+		private deletePlace(placeId, travelId) {
+			$(`#${placeId}`).remove();
+			$(`#${travelId}`).remove();
+			this.dialogManager.closeDialog();
+
+			var pm = this.dialogManager.planner.placesMgr;
+
+			pm.removePlaceById(placeId);
+			pm.removeTravelById(travelId);
+			this.dialogManager.planner.manageRows(pm.places.length);
 		}
 
 		private onPlaceToVisitSelected(req, place) {

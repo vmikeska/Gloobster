@@ -1,5 +1,6 @@
 ﻿@using System.Globalization
 @using System.Threading.Tasks
+@using Gloobster.Common
 @using Gloobster.Portal.Controllers.Portal
 @using Gloobster.Portal.ViewModels
 @model TripItemViewModel
@@ -8,7 +9,7 @@
   
 
     <div class="trip-holder">
-        <a class="trip edit" asp-controller="Trip" asp-action="Detail" asp-route-id="@Model.Id">
+        <a class="trip edit" href="/@RoutingConsts.TripEditMenuName/@Model.Id">
             @if (Model.IsOwner)
             {
                 <h3>@Model.Name</h3>

@@ -39,6 +39,16 @@ var Trip;
             this.travels = [];
             this.tripId = tripId;
         }
+        PlacesManager.prototype.removePlaceById = function (id) {
+            this.places = _.reject(this.places, function (p) {
+                return p.id === id;
+            });
+        };
+        PlacesManager.prototype.removeTravelById = function (id) {
+            this.travels = _.reject(this.travels, function (t) {
+                return t.id === id;
+            });
+        };
         PlacesManager.prototype.mapTravel = function (resp, from, to) {
             var t = new Travel();
             t.id = resp.id;

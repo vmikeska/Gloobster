@@ -13,8 +13,9 @@ namespace Gloobster.Database
 
 	    FilterDefinitionBuilder<T> F<T>();
 	    UpdateDefinitionBuilder<T> U<T>();
+        UpdateDefinition<T> PF<T, TT>(Expression<Func<T,IEnumerable<TT>>> field, Expression<Func<TT,bool>> filter);
 
-		IMongoQueryable<T> C<T>() where T : EntityBase;
+        IMongoQueryable<T> C<T>() where T : EntityBase;
 
         Task<ReplaceOneResult> ReplaceOneAsync<T>(T doc) where T : EntityBase;
 

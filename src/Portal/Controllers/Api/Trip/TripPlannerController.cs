@@ -19,6 +19,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 			TripPlanner = plannerDomain;
 		}
 		
+        //adds a place at the end
 		[HttpPost]
 		[AuthorizeApi]
 		public async Task<IActionResult> Post([FromBody] NewPlaceRequest request)
@@ -41,6 +42,30 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 			};
 
 			return new ObjectResult(response);
-		}		
-	}
+		}
+
+        //removes a place at the end
+        [HttpDelete]
+        [AuthorizeApi]
+        public async Task<IActionResult> Delete(string tripId)
+        {
+            TripPlanner.Initialize(tripId, UserId);
+
+            RemovedPlaceDO resDO = await TripPlanner.RemoveLastPlace();
+
+            var res = new RemovedPlaceResponse
+            {
+                placeId = resDO.PlaceId,
+                travelId = resDO.TravelId
+            };
+
+            return new ObjectResult(res);
+        }
+
+        public class RemovedPlaceResponse
+        {
+            public string placeId { get; set; }
+            public string travelId { get; set; }
+        }
+    }
 }

@@ -251,13 +251,20 @@ namespace Gloobster.Database
 		public FilterDefinitionBuilder<T> F<T>()
 		{
 			 return Builders<T>.Filter;
-		}
-
-		public UpdateDefinitionBuilder<T> U<T>()
+        }
+        
+        public UpdateDefinitionBuilder<T> U<T>()
 		{
 			return Builders<T>.Update;
 		}
-        
+
+        public UpdateDefinition<T> PF<T, TT>(Expression<Func<T, IEnumerable<TT>>> field, Expression<Func<TT, bool>> filter)
+        {
+            var pullFilter = Builders<T>.Update.PullFilter(field, filter);
+            return pullFilter;
+            //var update = Builders<TripEntity>.Update.PullFilter(p => p.Travels, f => f.id == id);
+        }
+
         public async Task<UpdateResult> UpdateAsync<T>(FilterDefinition<T> filter, UpdateDefinition<T> update) where T: EntityBase
 		{
 			try

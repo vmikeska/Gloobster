@@ -1,5 +1,6 @@
 ﻿@using System.Globalization
 @using System.Threading.Tasks
+@using Gloobster.Common
 @using Gloobster.Portal.Controllers.Portal
 @using Gloobster.Portal.ViewModels
 @model TripItemViewModel
@@ -15,7 +16,7 @@
         </div>
     </div>
     <div class="cell">
-        <a asp-controller="Trip" asp-action="Detail" asp-route-id="@Model.Id"><h3>@Model.Name</h3></a>
+        <a href="/@RoutingConsts.TripEditMenuName/@Model.Id"><h3>@Model.Name</h3></a>
     </div>
     <div class="cell nowrap">        
         @Model.FromDate.ToString("dd. MMM yyyy", CultureInfo.GetCultureInfo(Model.B.Locale)) - @Model.ToDate.ToString("dd. MMM yyyy", CultureInfo.GetCultureInfo(Model.B.Locale))        
@@ -46,7 +47,7 @@
         {
             <span data-tid="@Model.Id" class="icon-wheel blue middle mright10"></span>
         }
-        <a class="button white-blue middle" asp-controller="Trip" asp-action="Detail" asp-route-id="@Model.Id">@Model.B.W("Edit")</a>
+        <a class="button white-blue middle"  href="/@RoutingConsts.TripEditMenuName/@Model.Id">@Model.B.W("Edit")</a>
         @Html.Partial("TripsItemMenu")
     </div>
 

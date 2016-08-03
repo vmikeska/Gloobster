@@ -38,10 +38,8 @@ namespace Gloobster.Portal.Controllers.Portal
 		}
 
         [CreateAccount]
-        public async Task<IActionResult> List(string id)
+        public async Task<IActionResult> List(string id = "grid")
         {
-
-
             var vm = CreateViewModelInstance<ViewModelTrips>();
             vm.DefaultLangModuleName = "pageTrips";
             vm.LoadClientTexts(new [] { "jsTrip" });

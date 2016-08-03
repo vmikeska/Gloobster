@@ -42,6 +42,10 @@ namespace Gloobster.Portal.Controllers.Api.Trip
                 //todo: permission, should send just appropriate data
                 TripPlaceResponse response = place.ToResponse();
 
+			    response.isLastPlace = trip.Places.Max(p => p.OrderNo) == place.OrderNo;
+			    response.placesCount = trip.Places.Count;
+			    response.tripId = trip.id.ToString();
+
                 TripTravelSE arrivingTravel = GetTravelById(trip, place.ArrivingId);
                 TripTravelSE leavingTravel = GetTravelById(trip, place.LeavingId);
 
@@ -105,7 +109,6 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 			var result = await TripPlanner.UpdateProperty(request.propertyName, request.values);
 		
 			return new ObjectResult(result);
-		}
-		
-	}
+		}        
+    }
 }

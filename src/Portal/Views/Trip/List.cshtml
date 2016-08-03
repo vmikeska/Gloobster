@@ -1,6 +1,7 @@
 ﻿@using System.Threading.Tasks
 @using Gloobster.Common
 @using Microsoft.Data.Entity.Metadata.Internal
+@using Gloobster.Portal;
 @{
 		ViewBag.MenuGroup = "Trip";
 }
@@ -38,8 +39,8 @@ else
     </div>
     <div class="cell middle tright">
         <div class="blue-holder">
-            <a class="icon-grid @(Model.DisplayType ? "active" : string.Empty)" href="?id=grid"></a>
-            <a class="icon-list @(!Model.DisplayType ? "active" : string.Empty)" href="?id=tile"></a>
+            <a class="icon-grid @(Model.DisplayType ? "active" : string.Empty)" href="/@RoutingConsts.PlannerMenuName/grid"></a>
+            <a class="icon-list @(!Model.DisplayType ? "active" : string.Empty)" href="/@RoutingConsts.PlannerMenuName/table"></a>
         </div>
         @*<a class="disc-create mleft20 right" href="#"></a>*@
     </div>
@@ -111,7 +112,7 @@ else
         $(".editBtn").click((e) => {
             e.preventDefault();
             var $t = $(e.target);
-            window.location.href = '/trip/detail/' + $t.data("id");
+            window.location.href = '/@RoutingConsts.TripEditMenuName/' + $t.data("id");
         });
     }
 </script>

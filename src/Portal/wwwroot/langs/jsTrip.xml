@@ -36,10 +36,13 @@
     <Unnamed>
       <en>Unnamed</en>
     </Unnamed>
+    
+    <PlaceRemovelDialogTitle>
+      <en>Place removal</en>
+    </PlaceRemovelDialogTitle>
 
-        
-
-
-
+    <PlaceRemovelDialogBody>
+      <en>Would you like to remove last place from your trip?</en>
+    </PlaceRemovelDialogBody>
 
   </module>

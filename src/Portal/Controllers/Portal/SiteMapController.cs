@@ -32,9 +32,9 @@ namespace Gloobster.Portal.Controllers.Portal
 	        Creator.DB = DB;
 
             Creator.AddItem("", 1);
-            Creator.AddItem("Pinboard/Pins", 1);
-            Creator.AddItem("Trip/List", 1);
-            Creator.AddItem("Wiki/Home", 1);
+            Creator.AddItem(RoutingConsts.PinsMenuName, 1);
+            Creator.AddItem(RoutingConsts.PlannerMenuName, 1);
+            Creator.AddItem(RoutingConsts.WikiMenuName, 1);
             
             Creator.AddWikiItems();
             var xml = Creator.Serialize();
@@ -85,7 +85,7 @@ namespace Gloobster.Portal.Controllers.Portal
 
         public void AddWikiItem(string linkName, string lang, DateTime updated)
         {
-            var link = $"{GloobsterConfig.Protocol}://{GloobsterConfig.Domain}/wiki/{lang}/{linkName}";
+            var link = $"{GloobsterConfig.Protocol}://{GloobsterConfig.Domain}/{RoutingConsts.WikiMenuName}/{lang}/{linkName}";
             
             var item = new SiteMapItem
             {

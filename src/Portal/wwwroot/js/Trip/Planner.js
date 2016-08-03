@@ -49,10 +49,20 @@ var Trip;
             }
             if (currentRow > this.lastRowNo) {
                 this.addRowContainer();
-                if (this.$lastCell) {
-                    this.$lastCell.appendTo(this.$currentContainer);
-                }
             }
+            if (currentRow < this.lastRowNo) {
+                this.removeRowContainer();
+            }
+            if (this.$lastCell) {
+                this.refreshAdder();
+            }
+        };
+        Planner.prototype.removeRowContainer = function () {
+            var lastRowId = this.contBaseName + this.lastRowNo;
+            $("#" + lastRowId).remove();
+            this.lastRowNo = this.lastRowNo - 1;
+            var currentRowId = this.contBaseName + this.lastRowNo;
+            this.$currentContainer = $("#" + currentRowId);
         };
         Planner.prototype.addRowContainer = function () {
             var newRowNo = this.lastRowNo + 1;
@@ -73,6 +83,10 @@ var Trip;
                 e.preventDefault();
                 _this.addEnd();
             });
+        };
+        Planner.prototype.refreshAdder = function () {
+            this.$lastCell.remove();
+            this.addAdder();
         };
         Planner.prototype.registerTemplates = function () {
             this.addPlaceTemplate = Views.ViewBase.currentView.registerTemplate("addPlace-template");

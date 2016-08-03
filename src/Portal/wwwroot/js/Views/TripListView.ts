@@ -50,7 +50,7 @@
 						var $target = $(e.target);
 						var tid = $target.data("tid");
 
-						window.location.href = `/Trip/Overview/${tid}`;
+						window.location.href = `/trip/${tid}`;
 				});
 		}
 			

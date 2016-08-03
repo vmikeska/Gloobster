@@ -5,7 +5,7 @@ var Constants;
     Constants.socNetsCookieName = "socNets";
     Constants.twitterLoggedCookieName = "twitterLogged";
     Constants.fullRegCookieName = "fullReg";
-    Constants.firstRedirectUrl = "/PinBoard/Pins";
+    Constants.firstRedirectUrl = "/travelmap";
     Constants.networkTypes = "NetworkTypes";
     Constants.emptyId = "000000000000000000000000";
 })(Constants || (Constants = {}));

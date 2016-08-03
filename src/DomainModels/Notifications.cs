@@ -44,7 +44,7 @@ namespace Gloobster.DomainModels
                 UserId = ownerId,
                 Status = NotificationStatus.Created,
                 Created = DateTime.UtcNow,
-                Link = $"Trip/Detail/{tripId}",
+                Link = $"{RoutingConsts.TripEditMenuName}/{tripId}",
                 LinkText = GetWord("TripRequestLink", user.DefaultLang)
             };
         }
@@ -158,7 +158,7 @@ namespace Gloobster.DomainModels
 			{
 				Title = string.Format(GetWord("FriendshipRequestTitle", receivingUser.DefaultLang), requestingUser.DisplayName),
 				Content = GetWord("FriendshipRequestBody", receivingUser.DefaultLang),
-                Link = "Friends/List",
+                Link = RoutingConsts.FriendsMenuName,
                 LinkText = GetWord("FriendshipRequestLink", receivingUser.DefaultLang),
 				ContentType = ContentType.Text,
 				UserId = receiverId,
@@ -184,7 +184,7 @@ namespace Gloobster.DomainModels
 				Title = string.Format(GetWord("TripInvitationTitle", toUser.DefaultLang), fromUser.DisplayName),
 				UserId = toUserId,
 				Status = NotificationStatus.Created,
-                Link = $"Trip/Overview/{tripId}",
+                Link = $"{RoutingConsts.TripMenuName}/{tripId}",
                 LinkText = GetWord("TripInvitationLink", toUser.DefaultLang),
 
                 Content = string.Format(GetWord("TripInvitationBody", toUser.DefaultLang), trip.Name, fromUser.DisplayName, trip.Description),

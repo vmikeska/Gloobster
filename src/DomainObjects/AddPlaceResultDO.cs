@@ -5,6 +5,12 @@ using Gloobster.Enums;
 
 namespace Gloobster.DomainObjects
 {
+    public class RemovedPlaceDO
+    {
+        public string PlaceId { get; set; }
+        public string TravelId { get; set; }
+    }
+
 	public class AddPlaceResultDO
 	{
 		public NewPlacePosition Position { get; set; }

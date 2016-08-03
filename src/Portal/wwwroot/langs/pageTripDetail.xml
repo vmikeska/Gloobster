@@ -256,5 +256,9 @@
         <en>Anonymous</en>
       </Anonymous>
 
+    <RemovePlace>
+      <en>Remove this place</en>
+    </RemovePlace>
+
 
   </module>

@@ -269,6 +269,41 @@ namespace Gloobster.DomainModels
 			return res.ModifiedCount == 1;
 		}
 
+        public async Task<RemovedPlaceDO> RemoveLastPlace()
+        {
+            if (Trip.Places.Count <= 2)
+            {
+                return null;
+            }
+
+            TripPlaceSE lastPlace = GetLastPlace();
+            TripTravelSE travelToLastPlace = Trip.Travels.First(t => t.id == lastPlace.ArrivingId);
+
+            bool placeRemoved = await RemovePlace(lastPlace.id);
+            if (placeRemoved)
+            {
+                bool travelRemoved = await RemoveTravel(travelToLastPlace.id);
+                if (travelRemoved)
+                {
+                    LoadTrip();
+
+                    var newlastPlace = GetLastPlace();
+
+                    bool updated = await UpdatePlaceProperty(Trip.id, newlastPlace.id, "LeavingId", ObjectId.Empty);
+                    if (updated)
+                    {
+                        return new RemovedPlaceDO
+                        {
+                            PlaceId = lastPlace.id.ToString(),
+                            TravelId = travelToLastPlace.id.ToString()
+                        };
+                    }
+                }                
+            }
+
+            return null;
+        }
+
 		public async Task<AddPlaceResultDO> AddPlace(NewPlaceDO newPlace)
 		{
 			TripPlaceSE lastPlace = GetLastPlace();
@@ -312,6 +347,8 @@ namespace Gloobster.DomainModels
 			return null;
 		}
 		
+
+
 		private void LoadTrip()
 		{
 			var tripIdObj = new ObjectId(TripId);
@@ -331,8 +368,24 @@ namespace Gloobster.DomainModels
 			var update = DB.U<TripEntity>().Push(p => p.Places, place);
 			UpdateResult result = await DB.UpdateAsync(filter, update);			
 		}
-		
-		private TripPlaceSE GetLastPlace()
+
+        private async Task<bool> RemovePlace(ObjectId id)
+        {            
+            var f = DB.F<TripEntity>().Eq(p => p.id, Trip.id);
+            var u = DB.PF<TripEntity, TripPlaceSE>(t => t.Places, c => c.id == id);
+            var result = await DB.UpdateAsync(f, u);
+            return result.ModifiedCount > 0;
+        }
+
+        private async Task<bool> RemoveTravel(ObjectId id)
+        {
+            var f = DB.F<TripEntity>().Eq(p => p.id, Trip.id);
+            var u = DB.PF<TripEntity, TripTravelSE>(t => t.Travels, c => c.id == id);            
+            var result = await DB.UpdateAsync(f, u);
+            return result.ModifiedCount > 0;
+        }
+
+        private TripPlaceSE GetLastPlace()
 		{
 			if (Trip.Places == null || !Trip.Places.Any())
 			{

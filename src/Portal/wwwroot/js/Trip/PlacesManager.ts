@@ -40,6 +40,18 @@ module Trip {
 			this.tripId = tripId;
 		}
 
+		public removePlaceById(id) {
+			this.places = _.reject(this.places, (p) => {
+				return p.id === id;
+			});
+		}
+
+		public removeTravelById(id) {
+				this.travels = _.reject(this.travels, (t) => {
+						return t.id === id;
+				});
+		}
+
 		public mapTravel(resp, from: Place, to: Place): Travel {
 			var t = new Travel();
 			t.id = resp.id;

@@ -74,19 +74,33 @@
 			}
 		}
 
-		private manageRows(placeCount) {
+		public manageRows(placeCount) {
 			var currentRow = Math.floor(placeCount / this.placesPerRow);
 			var rest = placeCount % this.placesPerRow;
 			if (rest > 0) {
 				currentRow++;
 			}
 			if (currentRow > this.lastRowNo) {
-				this.addRowContainer();
-
-				if (this.$lastCell) {
-					this.$lastCell.appendTo(this.$currentContainer);
-				}
+				this.addRowContainer();					
 			}
+			if (currentRow < this.lastRowNo) {
+					this.removeRowContainer();
+			}
+
+			if (this.$lastCell) {
+					this.refreshAdder();
+			}
+		}
+
+		private removeRowContainer() {				
+				var lastRowId = this.contBaseName + this.lastRowNo;
+				$(`#${lastRowId}`).remove();
+
+				this.lastRowNo = this.lastRowNo - 1;
+
+				var currentRowId = this.contBaseName + this.lastRowNo;
+
+				this.$currentContainer = $(`#${currentRowId}`);				
 		}
 
 		private addRowContainer() {
@@ -110,6 +124,11 @@
 				e.preventDefault();
 				this.addEnd();
 			});
+		}
+
+		private refreshAdder() {
+			this.$lastCell.remove();
+			this.addAdder();
 		}
 
 		private registerTemplates() {

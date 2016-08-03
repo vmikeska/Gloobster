@@ -30,7 +30,7 @@ module Constants {
 	export var twitterLoggedCookieName = "twitterLogged";
 	export var fullRegCookieName = "fullReg";
 
-	export var firstRedirectUrl = "/PinBoard/Pins";
+	export var firstRedirectUrl = "/travelmap";
 	export var networkTypes = "NetworkTypes";
 	export var emptyId = "000000000000000000000000";
 }
