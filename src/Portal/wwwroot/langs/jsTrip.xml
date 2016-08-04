@@ -44,5 +44,17 @@
     <PlaceRemovelDialogBody>
       <en>Would you like to remove last place from your trip?</en>
     </PlaceRemovelDialogBody>
+    
+    <SharingTrip>
+      <en>Sharing your trip</en>
+    </SharingTrip>
+
+    <TripShared>
+      <en>Trip successfuly shared</en>  
+    </TripShared>
+
+    <CannotShareUnnamed>
+      <en>Trip cannot be shared, you have some unnamed places</en>
+    </CannotShareUnnamed>
 
   </module>

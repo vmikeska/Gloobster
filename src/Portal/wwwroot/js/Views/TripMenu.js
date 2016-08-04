@@ -58,12 +58,19 @@ var Views;
                     networks: networks
                 };
                 _this.container.hide();
+                var v = Views.ViewBase.currentView;
                 var id = new Common.InprogressDialog();
-                id.create("Sharing your trip");
+                id.create(v.t("SharingTrip", "jsTrip"));
+                var hd = new Common.HintDialog();
                 Views.ViewBase.currentView.apiPost("TripSocNetworks", data, function (r) {
                     id.remove();
-                    var hd = new Common.HintDialog();
-                    hd.create("Trip successfuly shared");
+                    var successful = (r === "");
+                    if (successful) {
+                        hd.create(v.t("TripShared", "jsTrip"));
+                    }
+                    else if (r === "HasUnnamed") {
+                        hd.create(v.t("CannotShareUnnamed", "jsTrip"));
+                    }
                 });
             });
             this.container.html($html);

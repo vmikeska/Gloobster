@@ -65,7 +65,7 @@ module Views {
 
 			var shareButtons = new Common.ShareButtons($html.find("#shareCont"));
 			shareButtons.onSelectionChanged = (nets) => {
-			 this.fillSocStr(nets, $html);
+				this.fillSocStr(nets, $html);
 			}
 
 			this.fillSocStr(shareButtons.getStr(), $html);
@@ -81,18 +81,27 @@ module Views {
 
 				this.container.hide();
 
+				var v = ViewBase.currentView;
+					
 				var id = new Common.InprogressDialog();
-				id.create("Sharing your trip");
+				
+				id.create(v.t("SharingTrip", "jsTrip"));
 
-				ViewBase.currentView.apiPost("TripSocNetworks", data, r => {
+				var hd = new Common.HintDialog();
+				ViewBase.currentView.apiPost("TripSocNetworks", data, (r) => {
 					id.remove();
-					var hd = new Common.HintDialog();
-					hd.create("Trip successfuly shared");
-				});			 
+
+					var successful = (r === "");
+					if (successful) {
+							hd.create(v.t("TripShared", "jsTrip"));
+					} else if (r === "HasUnnamed") {
+							hd.create(v.t("CannotShareUnnamed", "jsTrip"));
+					}
+				});
 			});
 			this.container.html($html);
 		}
-	 
+
 		private createParticipantsContent(trip) {		 
 			var $html = this.participantsTemplate();
 		 
