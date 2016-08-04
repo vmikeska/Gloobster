@@ -8,7 +8,6 @@ declare var Handlebars: any;
 declare var Cookies: any;
 declare var moment: any;
 
-
 //function geoip_country_code() { return 'DE'; }
 //function geoip_country_name() { return 'Germany'; }
 //function geoip_city() { return ''; }
@@ -34,6 +33,10 @@ module Constants {
 	export var networkTypes = "NetworkTypes";
 	export var emptyId = "000000000000000000000000";
 }
+
+enum NewPlacePosition { ToLeft, ToRight }
+
+enum TravelType { Walk, Plane, Car, Bus, Train, Ship, Bike }
 
 enum SourceType { FB, S4, City, Country, Yelp }
 

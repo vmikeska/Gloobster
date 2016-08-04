@@ -107,7 +107,11 @@ var Views;
             request.sendDelete();
         };
         ViewBase.prototype.registerTemplate = function (name) {
-            var source = $("#" + name).html();
+            var $t = $("#" + name);
+            if ($t.length === 0) {
+                console.log("Template '" + name + " not found");
+            }
+            var source = $t.html();
             return Handlebars.compile(source);
         };
         ViewBase.prototype.makeRandomString = function (cnt) {

@@ -133,8 +133,15 @@ module Views {
 		}
 
 		public registerTemplate(name: string) {
-		 var source = $("#" + name).html();
-		 return Handlebars.compile(source);
+			var $t = $(`#${name}`);
+
+			if ($t.length === 0) {
+				console.log(`Template '${name} not found`);
+			}
+
+			var source = $t.html();
+				
+			return Handlebars.compile(source);
 		}
 
 		public makeRandomString(cnt) {

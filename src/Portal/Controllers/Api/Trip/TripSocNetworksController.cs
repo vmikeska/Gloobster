@@ -13,8 +13,8 @@ namespace Gloobster.Portal.Controllers.Api.Trip
     public class TripSocNetworksController : BaseApiController
 	{
 		public ITripShareDomain ShareDomain { get; set; }
-
-		public TripSocNetworksController(ITripShareDomain shareDomain, ILogger log, IDbOperations db) : base(log, db)
+        
+        public TripSocNetworksController(ITripShareDomain shareDomain, ILogger log, IDbOperations db) : base(log, db)
 		{			
 			ShareDomain = shareDomain;
 		}

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Gloobster.Common;
 using Gloobster.Enums;
 
 namespace Gloobster.ReqRes.Trip
@@ -15,8 +16,15 @@ namespace Gloobster.ReqRes.Trip
 		public List<TripUsersResponse> participants { get; set; }
 		
 		public List<TripPlaceShareResponse> places { get; set; }
-	}
-	
+        public List<TripTravelShareResponse> travels { get; set; }
+    }
+
+    public class TripTravelShareResponse
+    {
+        public string id { get; set; }
+        public List<LatLng> waypoints { get; set; }
+        public TravelType type { get; set; }
+    }
 
 	public class TripPlaceShareResponse
 	{
@@ -26,7 +34,6 @@ namespace Gloobster.ReqRes.Trip
 		public DateTime? leavingDateTime { get; set; }
 		public DateTime? arrivingDateTime { get; set; }
 
-		public TravelType leavingType { get; set; }
-
+        public string leavingId { get; set; }
 	}
 }

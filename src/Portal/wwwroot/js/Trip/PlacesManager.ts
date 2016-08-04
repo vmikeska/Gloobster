@@ -1,8 +1,5 @@
 module Trip {
-	export enum NewPlacePosition { ToLeft, ToRight }
-
-	export enum TravelType { Walk, Plane, Car, Bus, Train, Ship, Bike }
-
+	
 	export class Place {
 		public id: string;
 		public orderNo: number;

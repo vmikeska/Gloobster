@@ -12,15 +12,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width">
-		<title>Gloobster</title>
-		
-		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,700">
-		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700">
-	    <link href="http://ga.cz/2015/gloobster/css/style.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Gloobster</title>
 
-		@Html.Partial("_GlobalScripts")
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,700">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700">
+    <link href="http://ga.cz/2015/gloobster/css/style.css" rel="stylesheet">
+
+    @Html.Partial("_GlobalScripts")
 
     @if (GloobsterConfig.UseMiniScripts)
     {
@@ -28,78 +28,99 @@
     }
     else
     {
+        <script type="text/javascript" src="/lib/leaflet/dist/leaflet.js"></script>
+        <script type="text/javascript" src="/lib/mapbox.js/mapbox.js"></script>
+
         <script type="text/javascript" src="/js/Views/ShareTripView.js"></script>
         <script type="text/javascript" src="/js/Maps/MapsCreatorMapBox2D.js"></script>
     }
 
-    
+
 </head>
 <body class="shared" id="top">
-		<!-- MapBox -->
-		@*<script src='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.js'></script>*@
-		<link href='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.css' rel='stylesheet' />
-		<!-- MapBox -->
+<!-- MapBox -->
+@*<script src='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.js'></script>*@
+<link href='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.css' rel='stylesheet'/>
+<!-- MapBox -->
 
-		<section class="map-holder margin">
-			<div class="wrapper">
+<section class="map-holder margin">
+    <div class="wrapper">
 
-				<div class="map" id="map"></div>
+        <div class="map" id="map"></div>
 
-				<div class="map-logo"></div>
-				<div class="map-info">
-					<div class="table row">
-						<div class="cell middle">
-							<span class="thumbnail disc60">
+        <div class="map-logo"></div>
+        <div class="map-info">
+            <div class="table row">
+                <div class="cell middle">
+                    <span class="thumbnail disc60">
 														<img src="/PortalUser/ProfilePicture_s/@Model.OwnerId">
 												</span>
-						</div>
-						<div class="cell h4 middle">
-							@Model.OwnerDisplayName @Model.W("PlannedTrip")
-						    <small class="display-block">
-                                @Model.DateRangeStr
-						        @*21. June to 28. June 2015*@
-						    </small>
-						</div>
-					</div>
-					<h1>@Model.Message</h1>
-				</div>
-				<div class="map-share table">
-				    <div class="cell middle tright">
+                </div>
+                <div class="cell h4 middle">
+                    @Model.OwnerDisplayName @Model.W("PlannedTrip")
+                    <small class="display-block">
+                        @Model.DateRangeStr
+                        @*21. June to 28. June 2015*@
+                    </small>
+                </div>
+            </div>
+            <h1>@Model.Message</h1>
+        </div>
+        <div class="map-share table">
+            <div class="cell middle tright">
 
-                        @if (!Model.TripIsPrivate)
-                        {
-                            <a class="button share h4 strong" href="/trip/@Model.Id">@Model.W("DetailOfTheTripBtn")</a>
-                        }
+                @if (!Model.TripIsPrivate)
+                {
+                    <a class="button share h4 strong" href="/trip/@Model.Id">@Model.W("DetailOfTheTripBtn")</a>
+                }
 
-				        <a class="button share h4 strong" href="/">@Model.W("JoinGloobsterBtn")</a>
-				    </div>
-				</div>
-			</div>
-		</section>
-		<section class="margin padding">
-				<div class="wrapper">
-						<h3 class="slim">@Model.W("TravelersOnBoard")</h3>
-				    <div class="team grid col5 margin2">
-				        @foreach (var participant in Model.Participants)
-                        {
-                            await Html.RenderPartialAsync("Participant", (object)participant);
-                        }				   
-				    </div>
-						@*<div class="table row center">
-								<div class="cell color2">Copyright Gloobster 2015</div>
-								<div class="cell"><a href="#">Privacy Policy</a></div>
-								<div class="cell"><a href="#">What is Gloobster</a></div>
-								<div class="cell"><a href="#">Unsubscribe</a></div>
-						</div>*@
-				</div>
-		</section>
-		
+                <a class="button share h4 strong" href="/">@Model.W("JoinGloobsterBtn")</a>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="margin padding">
+    <div class="wrapper">
+        <h3 class="slim">@Model.W("TravelersOnBoard")</h3>
+        <div class="team grid col5 margin2">
+            @foreach (var participant in Model.Participants)
+            {
+                await Html.RenderPartialAsync("Participant", (object) participant);
+            }
+        </div>
+        @*<div class="table row center">
+				<div class="cell color2">Copyright Gloobster 2015</div>
+				<div class="cell"><a href="#">Privacy Policy</a></div>
+				<div class="cell"><a href="#">What is Gloobster</a></div>
+				<div class="cell"><a href="#">Unsubscribe</a></div>
+		</div>*@
+    </div>
+</section>
+
+<script id="cityPopup-template" type="text/x-handlebars-template">
+        <strong>{{cityName}}</strong>
+        <div>
+            {{fromDate}}
+            {{#if bothDates}}-{{/if}}
+            {{toDate}}
+        </div>
+    </script>
+
+    <script id="travelPopup-template" type="text/x-handlebars-template">
+        <strong>{{number}}. {{fromCity}} - {{toCity}}</strong>        
+    </script>
+
 <script>
-    currentView = new Views.ShareTripView('@Model.Id');	
+    currentView = new Views.ShareTripView('@Model.Id');
 </script>
-		
+
+    
+
 </body>
+
 </html>
+
+
 
 
 

@@ -1,20 +1,5 @@
 var Trip;
 (function (Trip) {
-    (function (NewPlacePosition) {
-        NewPlacePosition[NewPlacePosition["ToLeft"] = 0] = "ToLeft";
-        NewPlacePosition[NewPlacePosition["ToRight"] = 1] = "ToRight";
-    })(Trip.NewPlacePosition || (Trip.NewPlacePosition = {}));
-    var NewPlacePosition = Trip.NewPlacePosition;
-    (function (TravelType) {
-        TravelType[TravelType["Walk"] = 0] = "Walk";
-        TravelType[TravelType["Plane"] = 1] = "Plane";
-        TravelType[TravelType["Car"] = 2] = "Car";
-        TravelType[TravelType["Bus"] = 3] = "Bus";
-        TravelType[TravelType["Train"] = 4] = "Train";
-        TravelType[TravelType["Ship"] = 5] = "Ship";
-        TravelType[TravelType["Bike"] = 6] = "Bike";
-    })(Trip.TravelType || (Trip.TravelType = {}));
-    var TravelType = Trip.TravelType;
     var Place = (function () {
         function Place() {
         }

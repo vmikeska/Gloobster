@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Gloobster.Common;
 using Gloobster.Enums;
 using MongoDB.Bson;
 
@@ -14,5 +16,6 @@ namespace Gloobster.Entities.Trip
         public bool UseTime { get; set; }
         public DateTime? LeavingDateTime { get; set; }
 		public DateTime? ArrivingDateTime { get; set; }
+        public List<LatLng> WayPoints { get; set; }
 	}
 }

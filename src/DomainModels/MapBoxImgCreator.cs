@@ -67,10 +67,10 @@ namespace Gloobster.DomainModels
 		}
 
 		private string BuildPathFeature(FeaturePathDO feature)
-		{
-			var pathDef = "path-4+026-0.75";
-
-			var encodedPath = GooglePoints.Encode(feature.Points.Values);
+		{            
+            var pathDef = $"path-{feature.StrokeSize}+{feature.StrokeColor}-{feature.StrokeOpacity}";
+            
+            var encodedPath = GooglePoints.Encode(feature.Points);
 			var encodedPathHttpEncoded = HttpUtility.UrlEncode(encodedPath);
 			return $"{pathDef}({encodedPathHttpEncoded})";
 		}

@@ -6,7 +6,7 @@ using Gloobster.DomainObjects;
 using Gloobster.Enums;
 
 namespace Gloobster.DomainInterfaces
-{	
+{
     public class TokenValidationResultDO
     {
         public bool IsValid { get; set; }

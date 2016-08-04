@@ -55,7 +55,7 @@ var Trip;
                     description: data.description,
                     isFlight: false
                 };
-                if (data.type === Trip.TravelType.Plane) {
+                if (data.type === TravelType.Plane) {
                     contextInvited = this.extendContextForFlight(contextInvited, data);
                 }
                 html = this.dialogManager.travelDetailViewTemplate(contextInvited);
@@ -66,7 +66,7 @@ var Trip;
                     leavingDateTime: this.formatDate(aDate, data.useTime),
                     isFlight: false
                 };
-                if (data.type === Trip.TravelType.Plane) {
+                if (data.type === TravelType.Plane) {
                     contextNonInvited = this.extendContextForFlight(contextNonInvited, data);
                 }
                 html = this.dialogManager.travelDetailViewFriends(contextNonInvited);
@@ -122,7 +122,7 @@ var Trip;
         TravelDialog.prototype.showHideTravelDetails = function (travelType) {
             var $flightDetails = $("#flightDetails");
             $flightDetails.hide();
-            if (travelType === Trip.TravelType.Plane) {
+            if (travelType === TravelType.Plane) {
                 $flightDetails.show();
             }
         };

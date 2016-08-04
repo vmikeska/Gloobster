@@ -98,7 +98,7 @@ var Trip;
             this.dialogManager.closeDialog();
             this.dialogManager.deactivate();
             var lastPlace = this.placesMgr.getLastPlace();
-            var data = { selectorId: lastPlace.id, position: Trip.NewPlacePosition.ToRight, tripId: this.trip.tripId };
+            var data = { selectorId: lastPlace.id, position: NewPlacePosition.ToRight, tripId: this.trip.tripId };
             Views.ViewBase.currentView.apiPost("tripPlanner", data, function (response) {
                 var t = _this.placesMgr.mapTravel(response.travel, lastPlace, null);
                 lastPlace.leaving = t;
@@ -119,19 +119,19 @@ var Trip;
         };
         Planner.prototype.getTravelIcon = function (travelType) {
             switch (travelType) {
-                case Trip.TravelType.Bus:
+                case TravelType.Bus:
                     return "icon-car";
-                case Trip.TravelType.Car:
+                case TravelType.Car:
                     return "icon-car";
-                case Trip.TravelType.Plane:
+                case TravelType.Plane:
                     return "icon-plane";
-                case Trip.TravelType.Ship:
+                case TravelType.Ship:
                     return "icon-boat";
-                case Trip.TravelType.Walk:
+                case TravelType.Walk:
                     return "icon-walk";
-                case Trip.TravelType.Bike:
+                case TravelType.Bike:
                     return "icon-bike";
-                case Trip.TravelType.Train:
+                case TravelType.Train:
                     return "icon-train";
                 default:
                     return "";

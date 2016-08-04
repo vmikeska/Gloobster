@@ -4,6 +4,7 @@ using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
 using Gloobster.Enums;
 using System.Linq;
+using System.Threading.Tasks;
 using Gloobster.Common;
 using Gloobster.Entities;
 using Gloobster.Entities.Trip;
@@ -24,17 +25,21 @@ namespace Gloobster.DomainModels
         public ILanguages Langs { get; set; }
         public ITripPermissionsDomain Perms { get; set; }
 
+        public ITripWaypointsDomain WaypointDomain { get; set; }
+
         public string GetWord(string key, string lang)
         {
             string word = Langs.GetWord("sharing", key, lang);
             return word;
         }
 
-        public void ShareTrip(ShareTripDO share)
+        public async Task ShareTrip(ShareTripDO share)
         {
             Perms.HasEditPermissions(share.TripId, share.UserId, true);
 
-			var tripIdObj = new ObjectId(share.TripId);
+            await WaypointDomain.Generate(share.TripId);
+
+            var tripIdObj = new ObjectId(share.TripId);
 
             var fbAuth = AccountDomain.GetAuth(SocialNetworkType.Facebook, share.UserId);
             var twAuth = AccountDomain.GetAuth(SocialNetworkType.Twitter, share.UserId);

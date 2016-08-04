@@ -71,7 +71,7 @@ namespace Gloobster.DomainModels
 			    throw new Exception("NoTripFound");
 			}
 			
-			var pathFeature = GetPathFeature(trip);
+			var features = GetFeatures(trip);
 
 			var cfg = new BuildMapConfigDO
 			{
@@ -79,11 +79,8 @@ namespace Gloobster.DomainModels
 				Height = 900,
 				Width = 1200,
 				AutoFit = true,
-				Features = new List<FeatureBaseDO>
-				{
-					pathFeature
-				}
-			};
+				Features = features
+            };
 
 			var mapLink = ImageCreator.BuildMapLink(cfg, GloobsterConfig.MapBoxSecret);
 			return mapLink;
@@ -99,23 +96,42 @@ namespace Gloobster.DomainModels
 	    }
 	
 
-		private FeaturePathDO GetPathFeature(TripEntity trip)
+		private List<FeatureBaseDO> GetFeatures(TripEntity trip)
 		{
-			var pathFeature = new FeaturePathDO
+            var pathFeature = new FeaturePathDO
 			{
-				Points = new Dictionary<int, LatLng>()
-			};
+				Points = new List<LatLng>(),
+                StrokeColor = "550000",
+                StrokeSize = "4",
+                StrokeOpacity = "1"
+            };
+            
+            var features = new List<FeatureBaseDO>
+		    {
+		        pathFeature
+		    };
 
-			var orderedPlaces = trip.Places.OrderBy(p => p.OrderNo);
+            var orderedPlaces = trip.Places.OrderBy(p => p.OrderNo);
 			foreach (var place in orderedPlaces)
 			{
-				if (place.Place?.Coordinates != null)
-				{
-					pathFeature.Points.Add(place.OrderNo, place.Place.Coordinates);
-				}
+			    var cityMarker = new FeatureMarkerDO
+			    {
+			        Coord = place.Place.Coordinates,
+			        PinType = "town",
+			        PinSize = 3,
+			        Color = "666699"
+			    };
+			    features.Add(cityMarker);
+                
+                var travel = trip.Travels.FirstOrDefault(t => t.id == place.LeavingId);
+
+			    if (travel?.WayPoints != null)
+			    {
+			        pathFeature.Points.AddRange(travel.WayPoints);
+			    }
 			}
 
-			return pathFeature;
+			return features;
 		}
 
 		private List<FeatureMarkerDO> GetPinBoardMarkers(VisitedEntity visited)
@@ -123,7 +139,7 @@ namespace Gloobster.DomainModels
 			var list = visited.Cities.Select(city => new FeatureMarkerDO
 			{
 				PinType = "town",
-				PinSize = 1,
+				PinSize = 3,
 				Color = "666699",
 				Coord = city.Location
 			}).ToList();

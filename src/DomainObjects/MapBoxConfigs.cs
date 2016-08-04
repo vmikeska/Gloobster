@@ -27,7 +27,10 @@ namespace Gloobster.DomainObjects
 
 	public class FeaturePathDO : FeatureBaseDO
 	{
-		public Dictionary<int, LatLng> Points { get; set; }
+		public List<LatLng> Points { get; set; }
+        public string StrokeSize { get; set; }
+        public string StrokeColor { get; set; }
+        public string StrokeOpacity { get; set; }   
 	}
 
 	public class FeatureMarkerDO : FeatureBaseDO

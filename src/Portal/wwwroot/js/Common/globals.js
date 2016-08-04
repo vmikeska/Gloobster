@@ -9,6 +9,21 @@ var Constants;
     Constants.networkTypes = "NetworkTypes";
     Constants.emptyId = "000000000000000000000000";
 })(Constants || (Constants = {}));
+var NewPlacePosition;
+(function (NewPlacePosition) {
+    NewPlacePosition[NewPlacePosition["ToLeft"] = 0] = "ToLeft";
+    NewPlacePosition[NewPlacePosition["ToRight"] = 1] = "ToRight";
+})(NewPlacePosition || (NewPlacePosition = {}));
+var TravelType;
+(function (TravelType) {
+    TravelType[TravelType["Walk"] = 0] = "Walk";
+    TravelType[TravelType["Plane"] = 1] = "Plane";
+    TravelType[TravelType["Car"] = 2] = "Car";
+    TravelType[TravelType["Bus"] = 3] = "Bus";
+    TravelType[TravelType["Train"] = 4] = "Train";
+    TravelType[TravelType["Ship"] = 5] = "Ship";
+    TravelType[TravelType["Bike"] = 6] = "Bike";
+})(TravelType || (TravelType = {}));
 var SourceType;
 (function (SourceType) {
     SourceType[SourceType["FB"] = 0] = "FB";
