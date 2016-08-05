@@ -32,7 +32,7 @@ namespace Gloobster.Portal.Controllers.Portal
 
         private bool HasLabel(IReadOnlyList<Label> labels, string labelName)
         {
-            return labels.Any(l => l.Name == labelName);
+            return labels.Any(l => l.Name.ToLower() == labelName.ToLower());
         }
     }
     

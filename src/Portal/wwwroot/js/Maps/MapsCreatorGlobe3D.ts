@@ -17,6 +17,9 @@ module Maps {
 				var mapOptions = {};
 				var layerOptions = {};
 
+				
+				//var mapUrl = 'http://d.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg';
+
 				//todo: hide this somehow ?
 				var mapUrl = 'https://api.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZ2xvb2JzdGVyIiwiYSI6ImQxZWY5MjRkZjU1NDk2MGU3OWI2OGRiM2U3NTM0MGYxIn0.nCG7hOsSQzb0c-_qzfTCRQ';
 					

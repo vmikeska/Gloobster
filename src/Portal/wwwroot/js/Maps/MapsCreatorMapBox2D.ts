@@ -41,6 +41,15 @@ module Maps {
 			this.options.maxBounds = L.latLngBounds(L.latLng(-85, -180), L.latLng(85, 180));
 			this.mapObj = L.mapbox.map(this.rootElement, 'gloobster.afeef633', this.options);
 
+
+			//watercolor, don't delete
+			//var layer = new L.StamenTileLayer("watercolor");
+			//this.mapObj = new L.Map("element_id", {
+			//		center: new L.LatLng(37.7, -122.4),
+			//		zoom: 12
+			//});
+			//this.mapObj.addLayer(layer);
+
 			this.mapObj.on("move", (e) => {
 				if (this.onCenterChanged) {
 					var c = this.mapObj.getCenter();
