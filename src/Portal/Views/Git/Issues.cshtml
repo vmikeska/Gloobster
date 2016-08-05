@@ -14,10 +14,11 @@
     
 
      table {
-         border: 1px solid black;
+         /*border: 1px solid black;*/
      }
     td {
-        border: 1px solid black;
+        border-bottom: 1px solid black;
+        border-right: 1px solid black;
     }
     .issue {
         border-bottom: 1px solid red;
@@ -28,21 +29,34 @@
     .issue a {
         color: darkblue;
     }
+
+    th {
+        font-size: 25px;
+        background-color: lightslategrey;
+        color: white;
+    }
+
+    tr td:first-child {
+        font-size: 25px;
+        background-color: chocolate;
+        color: white;
+    }
+
 </style>
 
 
 <table>
     <tr>
-        <td>Stage</td>
+        <th>Stage</th>
         
-        <td>Pins</td>
-        <td>Fly</td>
-        <td>TravelB</td>
-        <td>Trips</td>
-        <td>Wiki</td>
-        <td>Other</td>
-        <td>Presentation</td>
-        <td>Marketing</td>
+        <th>Pins</th>
+        <th>Fly</th>
+        <th>TravelB</th>
+        <th>Trips</th>
+        <th>Wiki</th>
+        <th>Other</th>
+        <th>Presentation</th>
+        <th>Marketing</th>
     </tr>
     @Html.Partial("IssueGroup", new FitlerModel { Model = Model, ActFilter = "Bug"})
     @Html.Partial("IssueGroup", new FitlerModel { Model = Model, ActFilter = "Backlog" })
