@@ -6,6 +6,7 @@ using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainInterfaces.SearchEngine;
 using Gloobster.DomainModels;
+using Gloobster.DomainModels.ImageDB;
 using Gloobster.DomainModels.Langs;
 using Gloobster.DomainModels.SearchEngine;
 using Gloobster.DomainModels.Services;
@@ -100,8 +101,10 @@ namespace Gloobster.Portal
             builder.AddTransient<ICheckinPlaceDomain, CheckinPlaceDomain>();
 			builder.AddTransient<IFacebookFriendsService, FacebookFriendsService>();
 
-			//builder.AddInstance<IGeoNamesService>(new GeoNamesService());
-			builder.AddInstance2<IGeoNamesService, GeoNamesService>();
+            builder.AddTransient<IImgDbDomain, ImgDbDomain>();
+            
+            //builder.AddInstance<IGeoNamesService>(new GeoNamesService());
+            builder.AddInstance2<IGeoNamesService, GeoNamesService>();
 
 			var foursquareService = new FoursquareService();
 			foursquareService.Initialize(GloobsterConfig.FoursquareClientId, GloobsterConfig.FoursquareClientSecret);

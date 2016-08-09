@@ -1,0 +1,308 @@
+﻿@using System.Threading.Tasks
+@using Gloobster.Entities
+@using Gloobster.Portal.Controllers.Portal
+@using Gloobster.Portal.ViewModels
+@model ImageDBListViewModel
+
+<link href="/css/style.css" rel="stylesheet" />
+<link href="/lib/cropper/dist/cropper.css" rel="stylesheet"/>
+
+@Html.Partial("_GlobalScripts")
+
+<script src="/lib/cropper/dist/cropper.js"></script>
+<script src="/js/views/ImageDBView.js"></script>
+
+<style>
+    
+    .myTabs {
+         width: 100%;         
+     }
+
+    .myTab {
+        border: 1px solid white;      
+        background-color: #57c1db;
+        color: white;        
+        display: inline-block;
+        text-align: center;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer; cursor: hand;
+        padding-top: 14px;
+    }
+
+    .myTab.act {
+        background-color: red;
+    }
+
+    #naviCont {
+        margin-bottom: 8px;
+    }
+
+     #newPhotoForm {
+         border: 2px solid black;
+         margin: 8px;
+         padding: 8px;
+     }
+
+    .photoOverFrame {
+        border: 2px solid black;
+        margin-bottom: 8px;
+    }
+
+    .photoBtnFrame {
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
+
+    .img {        
+        display: inline-block;
+        width:  150px;
+        height: 100px;
+        background-position: 50% 50%;
+        background-repeat:   no-repeat;
+        background-size:     cover;
+
+        margin-left: 8px;
+        margin-top: 8px;
+        border: 2px solid black;
+        
+        cursor: pointer; cursor: hand;
+    }
+
+    #photosList {
+        height: 204px;
+
+        border-top: 2px solid black;
+        padding: 8px;
+        margin-top: 16px;        
+
+        overflow-y: scroll;
+    }
+
+    #picCutsList {
+        border-top: 2px solid black;
+        margin-top: 8px;
+        margin-bottom: 8px;
+        padding-top: 8px;
+    }
+
+    .cutListItem {
+        margin-top: 4px;
+        border-bottom: 1px solid black;
+    }
+
+    #cutCreateForm {
+        margin-top: 8px;
+        margin-bottom: 8px;
+        border: 1px solid black;
+    }
+    
+    .cutsList {
+        margin-top: 8px;
+        margin-bottom: 8px;
+        border-top: 1px solid black;
+        border-bottom: 1px solid black;
+    }
+
+</style>
+
+<div id="naviCont">
+    
+</div>
+
+<div id="tabCont">
+   
+</div>
+
+
+<script>
+    function onBodyLoad() {
+        currentView = new Views.ImageDBView();
+        currentView.init();
+    };
+
+</script>
+
+
+
+<script id="cutImgListItemTmp-template" type="text/x-handlebars-template">
+    
+    <div id="cutInst_{{cutId}}">
+        <span>{{cutName}}</span>
+        <br />
+        <img src="/Pic/{{id}}/{{shortName}}" style="width: {{width}}px; height: {{height}}px;" />
+        <div>
+            <button class="edit">Edit</button>
+            <button class="save">Save</button>
+        </div>
+    </div>
+
+</script>
+
+    <script id="cutItemTmp-template" type="text/x-handlebars-template">
+
+        <div class="cutListItem">
+            <table>
+                <tr>
+                    <td>
+                        Name
+                    </td>
+                    <td>
+                        {{name}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Short name
+                    </td>
+                    <td>
+                        {{shortName}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Width
+                    </td>
+                    <td>
+                        {{width}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Height
+                    </td>
+                    <td>
+                        {{height}}
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+
+    
+</script>
+
+    <script id="cutsDlg-template" type="text/x-handlebars-template">
+        <div>
+            <button id="btnShowAddCutForm">Show add cut form</button>
+        </div>
+
+        <div id="cutCreateForm" style="display: none">
+            <table>
+                <tr>
+                    <td>
+                        Name
+                    </td>
+                    <td>
+                        <input id="name" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Short name
+                    </td>
+                    <td>
+                        <input id="shortName" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Width
+                    </td>
+                    <td>
+                        <input id="width" type="number" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Height
+                    </td>
+                    <td>
+                        <input id="height" type="number" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button id="btnCreateCut">Create</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="cutsList">
+
+        </div>
+
+
+    </script>
+
+    <script id="searchCityDlg-template" type="text/x-handlebars-template">
+        <div>
+            <div id="city" class="dropdown">
+                <input class="inputed" type="text" placeholder="Search for city name">
+                <img class="loader" src="/images/loader-gray.gif" style="display: none" />
+                <ul></ul>
+            </div>
+            or GID:
+            <input type="text" placeholder="GID" />
+        </div>
+        <div id="photosList"></div>
+
+        <div id="picCutsList"></div>
+    </script>
+
+    <script id="addPhotoDlg-template" type="text/x-handlebars-template">
+
+        <table>
+            <tr>
+                <td>City</td>
+                <td>
+                    <div id="cityAdd" class="dropdown">
+                        <input class="inputed" type="text" placeholder="Search for city name">
+                        <img class="loader" src="/images/loader-gray.gif" style="display: none" />
+                        <ul></ul>
+                    </div>
+                </td>
+                <td colspan="2">
+                    <input id="isFree" type="checkbox"><label for="isFree"><span>Is free</span></label>
+                </td>
+
+            </tr>
+            <tr>
+                <td>Source type</td>
+                <td>
+                    <div id="originType" class="dropdown">
+                        <span class="selected">Pixabay</span>
+                        <ul>
+                            <li data-value="0">Pixabay</li>
+                            <li data-value="1">Wallpapers</li>
+                        </ul>
+                        <input type="hidden" value="0">
+                    </div>
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    Desc (optional)
+                    <br />
+                    <textarea id="desc" style="width: 80%"></textarea>
+
+                </td>
+            </tr>
+        </table>
+
+        <div class="photoBtnFrame">
+            <input id="filePhoto" type="file" />
+        </div>
+
+        <div class="photoOverFrame">
+            <img id="photoOverview" style="max-width: 100%" />
+        </div>
+
+        <div>
+            <button id="btnCreate">Create</button>
+        </div>
+
+    </script>

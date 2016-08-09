@@ -12,6 +12,7 @@
     "js-cookie": "^2.1.1",
     "jquery.pep": "~0.6.7",
     "moment": "^2.14.1",
-    "jquery-countTo": "countto#^1.2.0"
+    "jquery-countTo": "countto#^1.2.0",
+    "cropper": "^2.3.2"
   }
 }
