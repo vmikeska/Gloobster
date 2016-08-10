@@ -153,7 +153,7 @@ namespace Gloobster.Portal.Controllers.Base
                 
                 var permissions = CC.Resolve<IWikiPermissions>();
                 instance.HasAnyWikiPermissions = permissions.IsAdminOfSomething(UserId);
-                instance.CanManageArticleAdmins = permissions.CanManageArticleAdmins(UserId);
+                instance.CanManageArticleAdmins = permissions.IsSuperOrMasterAdmin(UserId);
 
                 instance.SocialNetworks = Networks;
 

@@ -51,18 +51,34 @@ namespace Gloobster.DomainModels
 	        }            
         }
 
-		public Stream GetFile(string fileDirectory, string fileName)
+        public Stream GetFile(string filePath)
+        {
+            Stream stream = null;
+            try
+            {                
+                var file = Storage.GetFile(filePath);
+                stream = file.OpenRead();                
+                return stream;
+            }
+            catch (Exception exc)
+            {
+                stream?.Dispose();
+
+                WriteLog("Error get file" + exc.Message);
+                throw;
+            }
+        }
+
+        public Stream GetFile(string fileDirectory, string fileName)
 		{
 		    Stream stream = null;
             try
-            {
-                WriteLog("getting file");
-                
+            {                
                 string storageFilePath = Storage.Combine(fileDirectory, fileName);
                 
                 var file = Storage.GetFile(storageFilePath);                
                 stream = file.OpenRead();
-                WriteLog("GetFileLog: after get");
+                
                 return stream;
 		    }
 		    catch (Exception exc)
@@ -123,6 +139,15 @@ namespace Gloobster.DomainModels
             {
                 WriteLog("cannot delete folder: " + exc.Message);                
             }            
+        }
+
+        public void CopyFile(string fromFilePath, string toFilePath)
+        {
+            using (var stream = GetFile(fromFilePath))
+            {
+                DeleteFile(toFilePath);
+                Storage.SaveStream(toFilePath, stream);
+            }
         }
 
         public void WriteFilePart(WriteFilePartDO filePart)

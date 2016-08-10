@@ -18,6 +18,7 @@ var Views;
             this.cutsDlg = this.registerTemplate("cutsDlg-template");
             this.cutItemTmp = this.registerTemplate("cutItemTmp-template");
             this.cutImgListItemTmp = this.registerTemplate("cutImgListItemTmp-template");
+            this.defaultCutImgTmp = this.registerTemplate("defaultCutImg-template");
             this.tabs = new Tabs($("#naviCont"), "main", 50);
             this.tabs.addTab("AddNewPhoto", "Add new photo", function () {
                 _this.resetNewPhotoForm();
@@ -40,6 +41,25 @@ var Views;
         ImageDBView.prototype.setCitySearchDlg = function () {
             var _this = this;
             var citySearch = this.regCityCombo($("#city"));
+            $("#showDefaults").click(function (e) {
+                e.preventDefault();
+                var $cont = $("#picCutsList");
+                if (citySearch.sourceId) {
+                    $cont.empty();
+                    _this.apiGet("ImgDbCut", [], function (cuts) {
+                        cuts.forEach(function (c) {
+                            var context = {
+                                cutId: c.id,
+                                cutName: c.name,
+                                cityId: citySearch.sourceId,
+                                shortName: c.shortName
+                            };
+                            var $i = $(_this.defaultCutImgTmp(context));
+                            $cont.append($i);
+                        });
+                    });
+                }
+            });
             citySearch.onPlaceSelected = function (request, place) {
                 _this.apiGet("ImgDbCity", [["gid", request.SourceId]], function (city) {
                     if (city == null) {
@@ -82,6 +102,12 @@ var Views;
                 width: $f.find("#width").val(),
                 height: $f.find("#height").val()
             };
+            var isValid = data.name && data.shortName && data.width && data.height;
+            if (!isValid) {
+                var iDlg = new Common.InfoDialog();
+                iDlg.create("Invalid", "All fields are required");
+                return;
+            }
             this.apiPost("ImgDbCut", data, function (r) {
                 _this.displayCuts();
             });
@@ -91,26 +117,35 @@ var Views;
             var $photosCont = $("#photosList");
             $photosCont.empty();
             city.images.forEach(function (img) {
-                var $photo = $("<div class=\"img\" style=\"background-image:url('/Pic/" + img.id + "/orig');\"></div>");
+                var $photo = $("<div class=\"img\" style=\"background-image:url('/Pic/" + img.id + "/orig');\"><div class=\"delete\">X</div></div>");
+                $photo.find(".delete").click(function (e) {
+                    e.stopPropagation();
+                    var cd = new Common.ConfirmDialog();
+                    cd.create("Photot deletion", "Do you want to delete the photo ?", "Cancel", "Delete", function () {
+                        _this.apiDelete("ImgDbPhoto", [["cityId", city.id], ["imgId", img.id]], function () {
+                            $photo.remove();
+                        });
+                    });
+                });
                 $photo.click(function (e) {
                     e.preventDefault();
-                    _this.origPhotoClicked(img.id);
+                    _this.origPhotoClicked(img.id, city.id);
                 });
                 $photosCont.append($photo);
             });
         };
-        ImageDBView.prototype.origPhotoClicked = function (id) {
+        ImageDBView.prototype.origPhotoClicked = function (imgId, cityId) {
             var _this = this;
             var $cont = $("#picCutsList");
             $cont.empty();
             this.apiGet("ImgDbCut", [], function (cuts) {
                 cuts.forEach(function (cut) {
-                    var $c = _this.genCutInstance(cut, id);
+                    var $c = _this.genCutInstance(cut, imgId, cityId);
                     $cont.append($c);
                 });
             });
         };
-        ImageDBView.prototype.genCutInstance = function (cut, imgId) {
+        ImageDBView.prototype.genCutInstance = function (cut, imgId, cityId) {
             var _this = this;
             var context = {
                 cutId: cut.id,
@@ -123,15 +158,41 @@ var Views;
             var $c = $(this.cutImgListItemTmp(context));
             $c.find(".edit").click(function (e) {
                 e.preventDefault();
+                _this.setEditCutButtons($c, false, true, true);
                 _this.editCut($c, imgId, cut);
             });
             $c.find(".save").click(function (e) {
                 e.preventDefault();
-                _this.saveNewCut(imgId, cut);
+                _this.saveNewCut(imgId, cut, cityId);
+            });
+            $c.find(".cancel").click(function (e) {
+                e.preventDefault();
+                _this.regenCutInstance(cut, imgId, cityId);
+            });
+            $c.find(".default").click(function (e) {
+                e.preventDefault();
+                _this.setCutAsDefault(cityId, imgId, cut.id);
             });
             return $c;
         };
-        ImageDBView.prototype.saveNewCut = function (photoId, cut) {
+        ImageDBView.prototype.setCutAsDefault = function (cityId, photoId, cutId) {
+            var data = {
+                cityId: cityId,
+                photoId: photoId,
+                cutId: cutId
+            };
+            this.apiPut("ImgDbDefault", data, function () {
+            });
+        };
+        ImageDBView.prototype.setEditCutButtons = function ($cont, edit, save, cancel) {
+            var $e = $cont.find(".edit");
+            var $s = $cont.find(".save");
+            var $c = $cont.find(".cancel");
+            $e.toggle(edit);
+            $s.toggle(save);
+            $c.toggle(cancel);
+        };
+        ImageDBView.prototype.saveNewCut = function (photoId, cut, cityId) {
             var _this = this;
             this.getImgData(this.$imgCutCropper, function (imgData) {
                 var data = {
@@ -141,11 +202,14 @@ var Views;
                     cutName: cut.shortName
                 };
                 _this.apiPut("ImgDbPhotoCut", data, function () {
-                    var $newInst = _this.genCutInstance(cut, photoId);
-                    var $oldInst = $("#cutInst_" + cut.id);
-                    $oldInst.replaceWith($newInst);
+                    _this.regenCutInstance(cut, photoId, cityId);
                 });
             });
+        };
+        ImageDBView.prototype.regenCutInstance = function (cut, photoId, cityId) {
+            var $newInst = this.genCutInstance(cut, photoId, cityId);
+            var $oldInst = $("#cutInst_" + cut.id);
+            $oldInst.replaceWith($newInst);
         };
         ImageDBView.prototype.editCut = function ($c, photoId, cut) {
             var $i = $c.find("img");
@@ -173,6 +237,11 @@ var Views;
         };
         ImageDBView.prototype.sendCreateNewPhoto = function () {
             var _this = this;
+            if (!this.newCityBox.sourceId || !this.$currentCropper) {
+                var iDlg = new Common.InfoDialog();
+                iDlg.create("Validation", "City and photo must be choosen");
+                return;
+            }
             this.getImgData(this.$currentCropper, function (imgData) {
                 var data = {
                     data: imgData,

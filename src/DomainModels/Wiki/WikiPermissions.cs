@@ -38,10 +38,10 @@ namespace Gloobster.DomainModels.Wiki
                 return false;
             }
 
-            return (perm.IsMasterAdmin);
+            return perm.IsMasterAdmin;
         }
 
-        public bool CanManageArticleAdmins(string userId)
+        public bool IsSuperOrMasterAdmin(string userId)
         {
             var userIdObj = new ObjectId(userId);
 

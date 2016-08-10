@@ -16,6 +16,7 @@ namespace Gloobster.DomainModels.ImageDB
     public class ImgDbDomain: IImgDbDomain
     {
         public const string PhotosDir = "pdb";
+        public const string DefPhotosDir = "d";
 
         public IFilesDomain FilesDomain { get; set; }
         public IGeoNamesService GNS { get; set; }
@@ -37,9 +38,8 @@ namespace Gloobster.DomainModels.ImageDB
             var jpgStream = BitmapUtils.ConvertBitmapToJpg(newBmp, 90);
             jpgStream.Position = 0;
 
-            var rootPath = FilesDomain.Storage.Combine(PhotosDir, update.PhotoId);
-
-            var targetFilePath = FilesDomain.Storage.Combine(rootPath, $"{update.CutName}.jpg");
+            var targetFilePath = GetPhotoPath(update.PhotoId, update.CutName);
+            
             FilesDomain.DeleteFile(targetFilePath);
             FilesDomain.Storage.SaveStream(targetFilePath, jpgStream);
 
@@ -48,6 +48,91 @@ namespace Gloobster.DomainModels.ImageDB
             newBmp.Dispose();
             jpgStream.Dispose();
 
+        }
+
+        
+        public async Task DeletePhoto(ImgDbPhotoDelDO del)
+        {
+            var rootPath = FilesDomain.Storage.Combine(PhotosDir, del.ImgId);
+            FilesDomain.DeleteFolder(rootPath);
+
+            var imgIdObj = new ObjectId(del.ImgId);
+            var cityIdObj = new ObjectId(del.CityId);
+
+            var f = DB.F<ImageCityEntity>().Eq(p => p.id, cityIdObj);
+            var u = DB.PF<ImageCityEntity, ImageSE>(t => t.Images, c => c.id == imgIdObj);
+            var result = await DB.UpdateAsync(f, u);
+            
+        }
+
+        public async Task AddNewCut(CutDO cutDo)
+        {
+            var cut = new ImageCutEntity
+            {
+                id = ObjectId.GenerateNewId(),
+                Name = cutDo.Name,
+                ShortName = cutDo.ShortName,
+                Width = cutDo.Width,
+                Height = cutDo.Height
+            };
+
+            await DB.SaveAsync(cut);
+
+            var cities = DB.List<ImageCityEntity>();
+            foreach (var city in cities)
+            {
+                var isFirst = true;
+                foreach (var img in city.Images)
+                {                    
+                    var imgId = img.id.ToString();
+                    var photoPath = GetPhotoPath(imgId, "orig");
+                    var fileStream = FilesDomain.GetFile(photoPath);
+                    
+                    var bmp = new Bitmap(fileStream);
+                    
+                    GenerateCut(bmp, city.GID, cut, isFirst, imgId);
+                    isFirst = false;
+                }                
+            }
+        }
+
+        public async Task SetDefaultCityPhotoCut(DefaultDO req)
+        {
+            var cityIdObj = new ObjectId(req.CityId);
+            var cutIdObj = new ObjectId(req.CutId);
+            var imgIdObj = new ObjectId(req.PhotoId);
+
+            var city = DB.FOD<ImageCityEntity>(c => c.id == cityIdObj);
+
+            var cut = DB.FOD<ImageCutEntity>(c => c.id == cutIdObj);
+
+            var f = DB.F<ImageCityEntity>().Eq(i => i.id, cityIdObj) & DB.F<ImageCityEntity>().Eq("DefaultCuts.Cut_id", cutIdObj);
+            var u = DB.U<ImageCityEntity>().Set("DefaultCuts.$.Img_id", imgIdObj);
+            var res = await DB.UpdateAsync(f, u);
+            
+            var fromFilePath = GetPhotoPath(req.PhotoId, cut.ShortName);            
+            var toFilePath = GetDefaultPhotoPath(city.GID, cut.ShortName);
+            
+            FilesDomain.CopyFile(fromFilePath, toFilePath);
+        }
+
+        private string GetPhotoPath(string photoId, string shortName)
+        {
+            var fileName = $"{shortName}.jpg";
+
+            var fromRootPath = FilesDomain.Storage.Combine(PhotosDir, photoId);
+            var fromFilePath = FilesDomain.Storage.Combine(fromRootPath, fileName);
+            return fromFilePath;
+        }
+
+        private string GetDefaultPhotoPath(int gid, string shortName)
+        {
+            var fileName = $"{shortName}.jpg";
+
+            var toRootPath = FilesDomain.Storage.Combine(PhotosDir, DefPhotosDir);            
+            var toRoot2Path = FilesDomain.Storage.Combine(toRootPath, gid.ToString());
+            var toFilePath = FilesDomain.Storage.Combine(toRoot2Path, fileName);
+            return toFilePath;
         }
 
         public async Task<string> AddNewPhoto(NewDbImgDO newPhoto)
@@ -62,11 +147,9 @@ namespace Gloobster.DomainModels.ImageDB
 
             var jpgStream = BitmapUtils.ConvertBitmapToJpg(origBmp, 90);
             jpgStream.Position = 0;
-
-            var rootPath = FilesDomain.Storage.Combine(PhotosDir, id.ToString());
-
-            var targetFilePath = FilesDomain.Storage.Combine(rootPath, "orig.jpg");
-            FilesDomain.Storage.SaveStream(targetFilePath, jpgStream);
+            
+            var origFilePath = GetPhotoPath(id.ToString(), "orig");                
+            FilesDomain.Storage.SaveStream(origFilePath, jpgStream);
 
             streamBitmap.Dispose();
 
@@ -81,9 +164,12 @@ namespace Gloobster.DomainModels.ImageDB
             };
 
             var cityEntity = DB.FOD<ImageCityEntity>(e => e.GID == newPhoto.GID);
-            if (cityEntity == null)
+            bool isFirst = (cityEntity == null);
+            if (isFirst)
             {
                 var city = await GNS.GetCityByIdAsync(newPhoto.GID);
+
+                var cuts = DB.List<ImageCutEntity>();
 
                 cityEntity = new ImageCityEntity
                 {
@@ -91,6 +177,7 @@ namespace Gloobster.DomainModels.ImageDB
                     GID = newPhoto.GID,
                     CountryCode = city.CountryCode,
                     CityName = city.AsciiName,
+                    DefaultCuts = cuts.Select(c => new DefaultCutSE {Cut_id = c.id, Img_id = id}).ToList(),
                     Images = new List<ImageSE> { imgEntity }
                 };
                 await DB.SaveAsync(cityEntity);
@@ -102,24 +189,24 @@ namespace Gloobster.DomainModels.ImageDB
                 var res = await DB.UpdateAsync(f, u);
             }
 
-            GenerateCuts(origBmp, id.ToString());
+            GenerateCuts(origBmp, cityEntity.GID, isFirst, imgEntity.id.ToString());
 
             origBmp.Dispose();
 
             return id.ToString();
         }
 
-        private void GenerateCuts(Bitmap origBmp, string id)
+        private void GenerateCuts(Bitmap origBmp, int gid, bool isFirst, string photoId)
         {
             var cuts = DB.List<ImageCutEntity>();
 
             foreach (ImageCutEntity cut in cuts)
             {
-                GenerateCut(origBmp, id, cut);
+                GenerateCut(origBmp, gid, cut, isFirst, photoId);
             }
         }
 
-        private void GenerateCut(Bitmap origBmp, string id, ImageCutEntity cut)
+        private void GenerateCut(Bitmap origBmp, int gid, ImageCutEntity cut, bool isFirst, string photoId)
         {
             float wRate = 1.0f;
             float hRate = 1.0f;
@@ -135,9 +222,18 @@ namespace Gloobster.DomainModels.ImageDB
 
             using (var stream = GeneratePic(origBmp, wRate, hRate, cut.Width, cut.Height))
             {
-                var rootPath = FilesDomain.Storage.Combine(PhotosDir, id);
-                var filePath = FilesDomain.Storage.Combine(rootPath, $"{cut.ShortName}.jpg");
+                var filePath = GetPhotoPath(photoId, cut.ShortName);
+                
                 FilesDomain.Storage.SaveStream(filePath, stream);
+
+                if (isFirst)
+                {
+                    stream.Position = 0;
+
+                    var defFilePath = GetDefaultPhotoPath(gid, cut.ShortName);
+
+                    FilesDomain.Storage.SaveStream(defFilePath, stream);
+                }
             }
         }
 

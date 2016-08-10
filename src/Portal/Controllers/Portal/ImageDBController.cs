@@ -45,6 +45,25 @@ namespace Gloobster.Portal.Controllers.Portal
 
             return null;
         }
+
+        public IActionResult Picd(string id, string cut)
+        {
+            var fileName = $"{cut}.jpg";
+
+            var basePath = FileDomain.Storage.Combine(ImgDbDomain.PhotosDir, ImgDbDomain.DefPhotosDir);
+            var basePath2 = FileDomain.Storage.Combine(basePath, id);
+            var fullPath = FileDomain.Storage.Combine(basePath2, fileName);
+            bool exists = FileDomain.Storage.FileExists(fullPath);
+            if (exists)
+            {
+                var fileStream = FileDomain.GetFile(fullPath);
+                return new FileStreamResult(fileStream, "image/jpeg");
+            }
+
+            return null;
+        }
+
+        // /Picd/{{cityId}}/{{shortName}}
         
 
 

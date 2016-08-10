@@ -12,8 +12,18 @@ namespace Gloobster.Entities.ImageDB
         public int GID { get; set; }
         public string CountryCode { get; set; }
         public string CityName { get; set; }
+
+        public List<DefaultCutSE> DefaultCuts { get; set; }
+
         public List<ImageSE> Images { get; set; }
     }
+
+    public class DefaultCutSE
+    {
+        public ObjectId Cut_id { get; set; }
+        public ObjectId Img_id { get; set; }
+    }
+
 
     public class ImageSE
     {

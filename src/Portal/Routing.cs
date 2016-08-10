@@ -20,6 +20,12 @@ namespace Gloobster.Portal
                     );
 
                 routes.MapRoute(
+                    name: "imageDB_def",
+                    template: "Picd/{id}/{cut}",
+                    defaults: new { controller = "ImageDB", action = "Picd" }
+                    );
+
+                routes.MapRoute(
                     name: "pinsLink",
                     template: "tm",
                     defaults: new { controller = "Pinboard", action = "Pins" }

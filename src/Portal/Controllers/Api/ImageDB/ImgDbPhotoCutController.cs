@@ -1,34 +1,34 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
-using Gloobster.Enums;
 using Gloobster.Portal.Controllers.Base;
 using Microsoft.AspNet.Mvc;
-using MongoDB.Bson;
 using Serilog;
-using System.Drawing;
-using System.IO;
-using Gloobster.Common;
-using Gloobster.Entities.ImageDB;
 
 namespace Gloobster.Portal.Controllers.Api.Wiki
 {
     public class ImgDbPhotoCutController : BaseApiController
     {
         public IImgDbDomain ImgDb { get; set; }
+        public IWikiPermissions Perms { get; set; }
 
-        public ImgDbPhotoCutController(IImgDbDomain imgDb, ILogger log, IDbOperations db) : base(log, db)
+        public ImgDbPhotoCutController(IWikiPermissions perms, IImgDbDomain imgDb, ILogger log, IDbOperations db) : base(log, db)
         {
             ImgDb = imgDb;
+            Perms = perms;
         }
         
         [HttpPut]
         [AuthorizeApi]
         public async Task<IActionResult> Put([FromBody] UpdateDbImgCutRequest req)
-        {        
+        {
+            if (!Perms.IsSuperOrMasterAdmin(UserId))
+            {
+                throw new Exception("NoPermissions");
+            }
+
             var update = new UpdateDbImgCutDO
             {
                 CutId = req.cutId,

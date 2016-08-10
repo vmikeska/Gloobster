@@ -69,6 +69,20 @@
         cursor: pointer; cursor: hand;
     }
 
+    .img .delete {
+        position: relative;
+        top: 0px;
+        left: 133px;
+        color: red;
+        font-weight: bold;
+        /*font-size: 16px;*/
+        background-color: white;
+        border: 1px solid red;
+        padding: 1px;
+        width: 14px;
+        height: 14px;
+    }
+
     #photosList {
         height: 204px;
 
@@ -123,7 +137,15 @@
 
 </script>
 
+<script id="defaultCutImg-template" type="text/x-handlebars-template">
+    
+    <div id="cutInst_{{cutId}}">
+        <span>{{cutName}}</span>
+        <br />
+        <img src="/Picd/{{cityId}}/{{shortName}}" style="width: {{width}}px; height: {{height}}px;" />        
+    </div>
 
+</script>
 
 <script id="cutImgListItemTmp-template" type="text/x-handlebars-template">
     
@@ -133,7 +155,9 @@
         <img src="/Pic/{{id}}/{{shortName}}" style="width: {{width}}px; height: {{height}}px;" />
         <div>
             <button class="edit">Edit</button>
-            <button class="save">Save</button>
+            <button class="save" style="display: none">Save</button>
+            <button class="cancel" style="display: none">Cancel</button>
+            <button class="default">Set this cut as default for this city</button>
         </div>
     </div>
 
@@ -236,16 +260,18 @@
 
     </script>
 
-    <script id="searchCityDlg-template" type="text/x-handlebars-template">
+<script id="searchCityDlg-template" type="text/x-handlebars-template">
         <div>
             <div id="city" class="dropdown">
                 <input class="inputed" type="text" placeholder="Search for city name">
                 <img class="loader" src="/images/loader-gray.gif" style="display: none" />
                 <ul></ul>
             </div>
-            or GID:
-            <input type="text" placeholder="GID" />
+            <button id="showDefaults">Show defaults for selected city</button>
         </div>
+    
+        
+
         <div id="photosList"></div>
 
         <div id="picCutsList"></div>

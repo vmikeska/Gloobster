@@ -25,7 +25,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         [AuthorizeApi]
         public async Task<IActionResult> Post([FromBody] PermissionRequest req)
         {
-            if (!WikiPerms.CanManageArticleAdmins(UserId))
+            if (!WikiPerms.IsSuperOrMasterAdmin(UserId))
             {
                 return HttpUnauthorized();
             }
@@ -39,7 +39,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         [AuthorizeApi]
         public async Task<IActionResult> Delete(string id)
         {
-            if (!WikiPerms.CanManageArticleAdmins(UserId))
+            if (!WikiPerms.IsSuperOrMasterAdmin(UserId))
             {
                 return HttpUnauthorized();
             }

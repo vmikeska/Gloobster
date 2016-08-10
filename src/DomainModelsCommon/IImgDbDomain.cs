@@ -7,5 +7,8 @@ namespace Gloobster.DomainInterfaces
     {
         Task<string> AddNewPhoto(NewDbImgDO newPhoto);
         Task UpdateImageCut(UpdateDbImgCutDO update);
+        Task DeletePhoto(ImgDbPhotoDelDO del);
+        Task SetDefaultCityPhotoCut(DefaultDO req);
+        Task AddNewCut(CutDO cutDo);
     }
 }

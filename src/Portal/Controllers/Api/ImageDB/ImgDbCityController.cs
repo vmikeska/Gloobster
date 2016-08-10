@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Gloobster.Database;
@@ -6,20 +7,28 @@ using Microsoft.AspNet.Mvc;
 using Serilog;
 using Gloobster.Entities.ImageDB;
 using System.Linq;
+using Gloobster.DomainInterfaces;
 
 namespace Gloobster.Portal.Controllers.Api.Wiki
 {
     public class ImgDbCityController : BaseApiController
-    {        
-        public ImgDbCityController(ILogger log, IDbOperations db) : base(log, db)
+    {
+        public IWikiPermissions Perms { get; set; }
+
+        public ImgDbCityController(IWikiPermissions perms, ILogger log, IDbOperations db) : base(log, db)
         {
-            
+            Perms = perms;
         }
 
         [AuthorizeApi]
         [HttpGet]
         public async Task<IActionResult> Get(QueryRequest req)
         {
+            if (!Perms.IsSuperOrMasterAdmin(UserId))
+            {
+                throw new Exception("NoPermissions");
+            }
+
             var city = DB.FOD<ImageCityEntity>(e => e.GID == req.gid.Value);
 
             if (city == null)

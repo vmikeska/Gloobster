@@ -12,10 +12,14 @@ namespace Gloobster.DomainInterfaces
 	    void DeleteFolder(string folderPath);
         void WriteFilePart(WriteFilePartDO filePart);
 		Stream GetFile(string fileDirectory, string fileName);
-		event EventHandler OnFileSaved;
+	    Stream GetFile(string filePath);
+
+        event EventHandler OnFileSaved;
 		event EventHandler OnBeforeCreate;
 		IStorageProvider Storage { get; set; }
 	    Task<bool> ChangeFilePublic(string tripId, string fileId, bool state);
+
+	    void CopyFile(string fromFilePath, string toFilePath);
 
         byte[] AllBytes { get; set; }
 	    bool DoNotSave { get; set; }

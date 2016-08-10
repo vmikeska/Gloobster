@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
@@ -7,24 +8,30 @@ using MongoDB.Bson;
 using Serilog;
 using Gloobster.Entities.ImageDB;
 using System.Linq;
+using Gloobster.DomainObjects;
 
 namespace Gloobster.Portal.Controllers.Api.Wiki
 {
     public class ImgDbCutController : BaseApiController
     {
-        public IFilesDomain FilesDomain;
-        public IGeoNamesService GNS;
+        public IWikiPermissions Perms { get; set; }
+        public IImgDbDomain ImgDb { get; set; }
 
-        public ImgDbCutController(IGeoNamesService gns, IFilesDomain filesDomain, ILogger log, IDbOperations db) : base(log, db)
+        public ImgDbCutController(IWikiPermissions perms, IImgDbDomain imgDb, ILogger log, IDbOperations db) : base(log, db)
         {
-            FilesDomain = filesDomain;
-            GNS = gns;
+            ImgDb = imgDb;
+            Perms = perms;
         }
 
         [AuthorizeApi]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
+            if (!Perms.IsSuperOrMasterAdmin(UserId))
+            {
+                throw new Exception("NoPermissions");
+            }
+
             var cuts = DB.List<ImageCutEntity>();
 
             var res = cuts.Select(c => new NewCutReqRes
@@ -43,17 +50,21 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         [AuthorizeApi]
         public async Task<IActionResult> Post([FromBody] NewCutReqRes req)
         {
-            var cut = new ImageCutEntity
+            if (!Perms.IsSuperOrMasterAdmin(UserId))
             {
-                id = ObjectId.GenerateNewId(),
+                throw new Exception("NoPermissions");
+            }
+
+            var cd = new CutDO
+            {
                 Name = req.name,
                 ShortName = req.shortName,
                 Width = req.width,
                 Height = req.height
             };
 
-            await DB.SaveAsync(cut);
-
+            await ImgDb.AddNewCut(cd);
+            
             return new ObjectResult(null);
         }
 
