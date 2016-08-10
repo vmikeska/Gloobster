@@ -12,6 +12,7 @@ using Serilog;
 using System.Linq;
 using Autofac;
 using Gloobster.DomainModels.Wiki;
+using Gloobster.Entities.ImageDB;
 using Gloobster.Portal.Controllers.Api.Wiki;
 
 namespace Gloobster.Portal.Controllers.Portal
@@ -65,7 +66,7 @@ namespace Gloobster.Portal.Controllers.Portal
             }
 
             if (string.IsNullOrEmpty(vm.TitleLink))
-            {
+            {                
                 vm.TitleLink = "/images/WikiDefault.jpg";
             }
 
@@ -218,6 +219,14 @@ namespace Gloobster.Portal.Controllers.Portal
             if (vm.Article.HasTitlePhoto)
             {
                 vm.TitleLink = $"/wiki/ArticleTitlePhoto/{vm.Article.id}";
+            }
+            else
+            {
+                var imgCityEntity = DB.FOD<ImageCityEntity>(c => c.GID == article.GID);
+                if (imgCityEntity != null)
+                {
+                    vm.TitleLink = $"/picd/{article.GID}/wt";
+                }
             }
 
             return vm;
