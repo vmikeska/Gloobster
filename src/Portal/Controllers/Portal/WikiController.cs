@@ -250,6 +250,14 @@ namespace Gloobster.Portal.Controllers.Portal
                 {
                     vm.TitleLink = $"/wiki/ArticleTitlePhoto/{city.id}";
                 }
+                else
+                {
+                    var imgCityEntity = DB.FOD<ImageCityEntity>(c => c.GID == article.GID);
+                    if (imgCityEntity != null)
+                    {
+                        vm.TitleLink = $"/picd/{article.GID}/wt";
+                    }
+                }
             }
             
             return vm;
