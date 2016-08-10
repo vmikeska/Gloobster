@@ -15,6 +15,7 @@ using Gloobster.DomainModels.Wiki;
 using Gloobster.Entities.ImageDB;
 using Gloobster.Portal.Controllers.Api.Wiki;
 
+
 namespace Gloobster.Portal.Controllers.Portal
 {
     public class WikiController : PortalBaseController
@@ -252,10 +253,10 @@ namespace Gloobster.Portal.Controllers.Portal
                 }
                 else
                 {
-                    var imgCityEntity = DB.FOD<ImageCityEntity>(c => c.GID == article.GID);
+                    var imgCityEntity = DB.FOD<ImageCityEntity>(c => c.GID == cityGID);
                     if (imgCityEntity != null)
                     {
-                        vm.TitleLink = $"/picd/{article.GID}/wt";
+                        vm.TitleLink = $"/picd/{cityGID}/wt";
                     }
                 }
             }

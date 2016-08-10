@@ -17,6 +17,7 @@ module Maps {
 			maxZoom: 19,
 			minZoom: 2
 		};
+		
 
 		public setRootElement(rootElement: string) {
 			this.rootElement = rootElement;
