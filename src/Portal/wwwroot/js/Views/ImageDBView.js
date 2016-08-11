@@ -12,6 +12,12 @@ var Views;
         }
         ImageDBView.prototype.init = function () {
             var _this = this;
+            this.selectedCity = this.regCityCombo($("#selectedCity"));
+            this.selectedCity.onPlaceSelected = function (request, place) {
+                if (_this.tabs.activeTabId === "CityPhotos") {
+                    _this.showCityPhotos(_this.selectedCity.sourceId);
+                }
+            };
             this.$tabCont = $("#tabCont");
             this.searchCityDlg = this.registerTemplate("searchCityDlg-template");
             this.addPhotoDlg = this.registerTemplate("addPhotoDlg-template");
@@ -20,14 +26,14 @@ var Views;
             this.cutImgListItemTmp = this.registerTemplate("cutImgListItemTmp-template");
             this.defaultCutImgTmp = this.registerTemplate("defaultCutImg-template");
             this.tabs = new Tabs($("#naviCont"), "main", 50);
-            this.tabs.addTab("AddNewPhoto", "Add new photo", function () {
-                _this.resetNewPhotoForm();
-            });
-            this.tabs.addTab("CitySearch", "Search for city", function () {
+            this.tabs.addTab("CityPhotos", "City photos", function () {
                 _this.showForm(_this.searchCityDlg);
                 _this.setCitySearchDlg();
             });
-            this.tabs.addTab("CutsMgmt", "Manage cuts", function () {
+            this.tabs.addTab("AddNewPhoto", "Add new photo", function () {
+                _this.resetNewPhotoForm();
+            });
+            this.tabs.addTab("CutsMgmt", "Manage cuts (Just Vaclav)", function () {
                 _this.showForm(_this.cutsDlg);
                 _this.setCutsDlg();
             });
@@ -40,18 +46,18 @@ var Views;
         };
         ImageDBView.prototype.setCitySearchDlg = function () {
             var _this = this;
-            var citySearch = this.regCityCombo($("#city"));
+            this.showCityPhotos(this.selectedCity.sourceId);
             $("#showDefaults").click(function (e) {
                 e.preventDefault();
                 var $cont = $("#picCutsList");
-                if (citySearch.sourceId) {
+                if (_this.selectedCity.sourceId) {
                     $cont.empty();
                     _this.apiGet("ImgDbCut", [], function (cuts) {
                         cuts.forEach(function (c) {
                             var context = {
                                 cutId: c.id,
                                 cutName: c.name,
-                                cityId: citySearch.sourceId,
+                                cityId: _this.selectedCity.sourceId,
                                 shortName: c.shortName
                             };
                             var $i = $(_this.defaultCutImgTmp(context));
@@ -60,15 +66,19 @@ var Views;
                     });
                 }
             });
-            citySearch.onPlaceSelected = function (request, place) {
-                _this.apiGet("ImgDbCity", [["gid", request.SourceId]], function (city) {
-                    if (city == null) {
-                        var idDlg = new Common.InfoDialog();
-                        idDlg.create("City empty", "The city is still empty");
-                    }
-                    _this.showCity(city);
-                });
-            };
+        };
+        ImageDBView.prototype.showCityPhotos = function (gid) {
+            var _this = this;
+            if (!gid) {
+                return;
+            }
+            this.apiGet("ImgDbCity", [["gid", gid]], function (city) {
+                if (city == null) {
+                    var idDlg = new Common.InfoDialog();
+                    idDlg.create("City empty", "The city is still empty");
+                }
+                _this.showCity(city);
+            });
         };
         ImageDBView.prototype.setCutsDlg = function () {
             var _this = this;
@@ -225,7 +235,6 @@ var Views;
         };
         ImageDBView.prototype.setNewPhotoDlg = function () {
             var _this = this;
-            this.newCityBox = this.regCityCombo($("#cityAdd"));
             $("#filePhoto").change(function (e) {
                 _this.preloadImg(e.target);
             });
@@ -237,7 +246,7 @@ var Views;
         };
         ImageDBView.prototype.sendCreateNewPhoto = function () {
             var _this = this;
-            if (!this.newCityBox.sourceId || !this.$currentCropper) {
+            if (!this.selectedCity.sourceId || !this.$currentCropper) {
                 var iDlg = new Common.InfoDialog();
                 iDlg.create("Validation", "City and photo must be choosen");
                 return;
@@ -245,10 +254,10 @@ var Views;
             this.getImgData(this.$currentCropper, function (imgData) {
                 var data = {
                     data: imgData,
-                    gid: _this.newCityBox.sourceId,
+                    gid: _this.selectedCity.sourceId,
                     isFree: $("#isFree").prop("checked"),
                     desc: $("#desc").val(),
-                    cityName: _this.newCityBox.lastText,
+                    cityName: _this.selectedCity.lastText,
                     origin: $("#originType input").val()
                 };
                 _this.showPreloader(true);
