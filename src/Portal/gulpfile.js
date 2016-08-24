@@ -17,6 +17,7 @@ var webroot = "./" + project.webroot + "/";
 var jsBuildPath = webroot + "jsb/";
 
 var scssPath = webroot + "scss/**/*.scss";
+var scssPath2 = webroot + "scss2/**/*.scss";
 var scssDest = webroot + "css";
 
 var data = [
@@ -77,8 +78,17 @@ gulp.task("scssBuild", function () {
     .pipe(gulp.dest(scssDest));
 });
 
+gulp.task("scssBuild2", function () {
+    
+    gulp.src(scssPath2)
+    .pipe(sass().on("error", sass.logError))
+    .pipe(gulp.dest(scssDest));
+
+});
+
 gulp.task("default", function () {
     gulp.watch(scssPath, ["buildStyles"]);
+    gulp.watch(scssPath2, ["buildStyles2"]);
 });
 
 gulp.task("buildJsFromPages", function () {
@@ -114,6 +124,7 @@ gulp.task("minCss", function () {
 });
 
 gulp.task("buildStyles", ["scssBuild", "minCss"]);
+gulp.task("buildStyles2", ["scssBuild2"]);
 
 
 

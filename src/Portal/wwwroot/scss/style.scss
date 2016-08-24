@@ -38,7 +38,6 @@
 @import "pages/shared";
 @import "pages/tripview";
 
-
 /* Global */
 
 body {
@@ -2397,6 +2396,8 @@ input[type=number]::-webkit-outer-spin-button {
 
 
 /*custom*/
+
+
 
 .gallery-photos{
     @include tablet {

@@ -1,0 +1,357 @@
+﻿
+$font-ptsans: "PT Sans", sans-serif;
+$font-lato: "Lato", sans-serif;
+
+$dark-blue: #005476;
+$light-blue: #65BDD7;
+$light-blue2: #009EC4;
+
+$green: #3DA33D;
+$orange: #F56E12;
+$yellow: #FFC400;
+
+$tablet-width: 959px;
+
+@mixin tablet {
+    @media screen and (max-width: $tablet-width) {
+        @content;
+    }
+}
+
+@mixin centerer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+body {
+    font-family: $font-ptsans;
+}
+
+.header {
+    .menu_all {
+
+        text-align: center;
+
+        
+        background-color: $dark-blue;
+
+        @include tablet {
+            
+        }
+
+        .logo_all {
+
+            height: 30px;
+            width: 180px;
+            vertical-align:top;
+            
+            padding-top: 12px;
+            display: inline-block;
+
+            .logo {
+                
+            }
+
+        }
+
+
+
+        .links {
+           
+            display: inline-block;    
+            vertical-align:top;        
+            
+            div {
+                height: 50px;
+                text-align: center;
+                display: table-cell;
+                vertical-align: middle;
+                padding-left: 20px;                
+                
+                a {
+                    color: white;
+                    text-decoration: none;
+                }   
+            }
+
+        }
+
+        .icons_all {
+            display: inline-block;
+            height: 50px;            
+            vertical-align:top;                    
+        }
+
+        .icons{
+            margin-top: 12px;    
+            height: 24px;
+            border-left: 1px solid $light-blue;
+            border-right: 1px solid $light-blue;
+            
+            
+            a{
+                padding-right: 15px;
+                text-decoration:none;
+            }
+
+            a:hover {
+                opacity: 0.8;
+            }
+        }
+
+    }
+}
+
+
+
+
+/*homepage*/
+
+.title_show_all{
+    
+    height: 450px;
+    overflow: hidden;
+    position: relative;
+
+    .photo{
+        width: 1920px;
+        height: 450px;
+
+        @include centerer;
+
+        background-image: url("/images/n/title1.jpg");
+
+        .bck_holder {
+            
+            
+            .bck {
+                background-color: rgba(0, 158, 196, 0.6);
+                display:inline-block;
+                vertical-align:top;
+            }
+
+            .empty_fill{
+                
+
+                height: 450px;    
+                width: 500px;
+                
+                /*opacity: 0.6;*/
+            }
+
+            .text_area{
+                
+                
+
+                height: 450px;
+                width: 450px;                
+                margin-left:-4px;
+
+                .motto{
+                    margin-top: 70px;
+                    margin-bottom: 25px;
+
+                    font-size: 32px;
+                    max-width: 300px;
+                    color: white;
+                    font-weight: 700;
+
+                }
+
+                .link{
+
+                    color: $light-blue;
+                    background-color: white;
+
+                    border-style: solid;
+                    border-width: 0;
+                    border-radius: 4px;                    
+                    font-weight: 700;
+                    height: 20px;
+                    line-height: 20px;
+
+                    margin: 0 5px;
+                    padding: 9px;
+
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+
+    
+}
+
+.fly_all {
+    background-color: $light-blue2;
+    text-align: center;
+    padding-top: 50px;
+    
+    .motto{
+        font-size: 28px;
+        color: white;        
+        margin-bottom: 50px;
+    }
+
+    .icons {
+        
+        .block {
+            display: inline-block;
+            vertical-align: top;
+            height:250px;            
+        }
+
+        .mr{
+            margin-right: 30px;
+        }
+
+        .icon {                        
+            width: 120px;            
+
+            .txt {
+                margin-top: 30px;
+                color: white;
+                font-size: 24px;
+            }
+        }
+
+        .pointer {            
+            /*border: 1px solid blue;*/
+            width: 140px;      
+            
+            .center_cont {      
+                margin-top: 59px;                          
+                width: 140px;
+                height: 15px;
+                
+                .dashed_cont {
+                    display: inline-block;
+                    
+                    width: 120px;
+                    height: 15px;
+
+                    .line{           
+                        margin-top: 6px;             
+                        width: 120px;
+                        height: 1px;
+                        border-top: 4px dashed white;
+                    }
+                }
+                .arrow  {
+                    display: inline-block;
+                    
+                    width: 15px;
+                    height: 15px;
+                }
+                 
+            }
+        }
+    }
+
+}
+
+.social 
+{
+    text-align: center;
+    padding-top: 60px;
+
+    .motto {
+        font-size: 30px;
+        font-weight: 600;
+        margin-bottom: 50px;
+    }
+
+    .blocks {
+
+        .mr{
+            margin-right: 50px;
+        }
+
+        .item {
+            display: inline-block;
+            
+            width: 200px;
+        
+            .image {
+                width: 84px;
+                height: 84px;
+                margin-left: auto;
+                margin-right: auto;
+                margin-bottom: 20px;
+            }
+
+            .name {
+                font-size: 28px;
+                font-weight: 500;
+                height: 30px;
+                margin-bottom: 20px;
+
+                   .blue{
+                        color: $light-blue2;
+                    }
+
+                    .yellow{
+                        color: $yellow;
+                    }
+
+                    .orange{
+                        color: $orange;
+                    }
+
+                    .green{
+                        color: $green;
+                    }
+            } 
+
+            .txt {
+                font-size: 16px;
+                height: 150px;
+
+            }
+
+            .btn {
+                text-align: center;
+
+                .blue{
+                    background-color: $light-blue2;
+                }
+
+                .yellow{
+                    background-color: $yellow;
+                }
+
+                .orange{
+                    background-color: $orange;
+                }
+
+                .green{
+                    background-color: $green;
+                }
+
+                a {
+                    display: inline-block;
+                    color: white;
+                    background-color: $light-blue2;
+
+                    border-style: solid;
+                    border-width: 0;
+                    border-radius: 4px;                    
+                    font-weight: 500;
+                    font-size: 18px;
+
+                    width: 75%;
+                    padding-top: 13px;
+                    padding-bottom: 13px;
+
+                    
+
+                    text-decoration: none;
+                }
+            }
+        } 
+
+    }
+}
+
