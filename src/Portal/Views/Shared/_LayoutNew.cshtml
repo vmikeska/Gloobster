@@ -29,77 +29,28 @@
 <body onload="onBodyLoad()" class="@ViewBag.BodyClass" id="top">
 
 <header class="header">
-
-
-
-    <div class="menu_all">
-
-        <div class="logo_all">
-            <a href="#">
-                <img src="/images/n/logo.svg"/>
-            </a>
-        </div>
-
-        <div class="links">
-            <div>
-                <a href="#">Dashboard</a>
-            </div>
-            <div>
-                <a href="#">Fly Tickets</a>
-            </div>
-            <div>
-                <a href="#">Travel Buddy</a>
-            </div>
-            <div>
-                <a href="#">Travel Organizer</a>
-            </div>
-            <div>
-                <a href="#">Travel map</a>
-            </div>
-            <div>
-                <a href="#">Travel WIKI</a>
-            </div>
-        </div>
-
-        <div class="icons_all">
-            <div class="icons">
-
-                <a href="#">
-                    <img src="/images/n/logout.svg"/>
-                </a>
-
-                <a href="#">
-                    <img src="/images/n/friends.svg"/>
-                </a>
-                <a href="#">
-                    <img src="/images/n/globe.svg"/>
-                </a>
-
-            </div>
-        </div>
-
-    </div>
+    @Html.Partial("_MenuNew")
     
 
         @*<div class="wrapper">
-                <h1><a asp-controller="Home" asp-action="Index" class="logo-header">Gloobster</a>
-                </h1>
+            <h1><a asp-controller="Home" asp-action="Index" class="logo-header">Gloobster</a>
+            </h1>
 
-                <div class="menu-holder">
-                    <div id="ddMenus" class="tright mhalf">
-                        @Html.Partial("_LangMenu")
+            <div class="menu-holder">
+                <div id="ddMenus" class="tright mhalf">
+                    @Html.Partial("_LangMenu")
 
-                        @if (Model.User != null)
-                        {
-                            @Html.Partial("_UserMenu")
-                        }
+                    @if (Model.User != null)
+                    {
+                        @Html.Partial("_UserMenu")
+                    }
 
-                    </div>
-                    @Html.Partial("_Menu")
                 </div>
+                @Html.Partial("_Menu")
+            </div>
 
-                <a class="hamburger" data-target="#menu" href="#"><span></span></a>
-            </div>*@
+            <a class="hamburger" data-target="#menu" href="#"><span></span></a>
+        </div>*@
 
 
 </header>
@@ -117,7 +68,14 @@
 </section>
 
 
-@*@Html.Partial("_Footer")*@
+<footer>
+
+    <div class="footer_cont">
+        Here will be footer content
+    </div>
+
+    @Html.Partial("_MenuNew")
+</footer>
 
 <script>
 
