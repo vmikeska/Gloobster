@@ -15,9 +15,6 @@
     @include tablet {
         @include size($wrapper-tablet auto);
     }
-    @include mobile {
-        @include size($wrapper-mobile auto);
-    }
 }
 
 /* Grid */
@@ -28,9 +25,7 @@
     display: table;
     table-layout: fixed;
     word-spacing: -2em;
-    @include cell {
-        //http://www.alsacreations.com/astuce/lire/1432-display-inline-block-espaces-indesirables.html
-        //https://css-tricks.com/fighting-the-space-between-inline-block-elements/
+    @include cell {        
         display: inline-block;
         vertical-align: top;
         word-spacing: normal;
@@ -62,22 +57,7 @@
             }
         }
     }
-    @include mobile {
-        $cols: "&";
-        @for $i from 2 through length($grid-desktop) {
-            $cols: $cols ", &.col#{$i}";
-        }
-        display: block;
-        @include cell($cols) {
-            display: block;
-            padding-bottom: $grid-mobile;
-            padding-right: 0;
-            width: auto;
-            &:last-of-type {
-                padding-bottom: 0 !important;
-            }
-        }
-    }
+   
 }
 
 /* Table */
@@ -144,23 +124,5 @@
             }
         }
     }
-    /*used at all ?*/
-    @include mobile {
-        &.row, & > .row {
-            $cols: "&";
-            @for $i from 2 through length($table-desktop) {
-                $cols: $cols ", &.col#{$i}";
-            }
-            display: block;
-            @include cell($cols) {
-                display: block;
-                padding-bottom: $table-mobile;
-                padding-right: 0;
-                width: auto;
-                &:last-of-type {
-                    padding-bottom: 0 !important;
-                }
-            }
-        }
-    }
+
 }

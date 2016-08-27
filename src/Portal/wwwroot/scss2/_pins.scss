@@ -1,0 +1,258 @@
+﻿
+
+@font-face {
+  font-family: 'icomoon';
+  src:  url('/fonts/pins/icomoon.eot?f4h0hv');
+  src:  url('/fonts/pins/icomoon.eot?f4h0hv#iefix') format('embedded-opentype'),
+    url('/fonts/pins/icomoon.ttf?f4h0hv') format('truetype'),
+    url('/fonts/pins/icomoon.woff?f4h0hv') format('woff'),
+    url('/fonts/pins/icomoon.svg?f4h0hv#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-share:before {
+  content: "\e900";
+}
+.icon-city:before {
+  content: "\e901";
+}
+.icon-country:before {
+  content: "\e902";
+}
+.icon-everybody-data:before {
+  content: "\e903";
+}
+.icon-friends-data:before {
+  content: "\e904";
+}
+.icon-my-data:before {
+  content: "\e905";
+}
+.icon-places:before {
+  content: "\e906";
+}
+
+.icons_all {
+    /*text-align:justify;*/
+    display: flex;
+    justify-content: space-between;
+    @include below-width(920){
+        display: block;        
+    }
+
+    margin-bottom: 20px;
+
+    .block:first-of-type {
+        margin-right: 20px;
+
+        @include below-width(920){            
+            margin-right: 0;
+        }
+    }
+
+    .block{
+        display: inline-block;
+
+        .pr{
+            padding-right:10px;
+        }
+        
+        .ico_all{
+            display: inline-block;            
+            text-align: center;
+            vertical-align:top;
+            
+            .ico{                                
+                display: table-cell;
+                vertical-align: middle;
+
+                width: 136px;
+                height: 136px;
+                
+                background-color: $light-blue4;
+                border-radius: 2px;
+
+                font-size: 94px;
+
+                @include below-width(460){            
+                    width: 100px;
+                    height: 100px;
+                    font-size: 70px;
+                }
+                
+                a {                 
+                 line-height: 136px;
+
+                 @include below-width(460){            
+                    line-height: 100px;
+                }
+                 
+                 text-decoration: none;   
+                 color: $light-blue;
+                }
+
+                a:hover{
+                    color: $dark-blue;
+                }
+
+                .active{
+                    color: $dark-blue;
+                }
+            }
+            .txt{
+                margin-top: 13px;
+                font-size: 16px;
+                font-weight: 600;
+                color: $light-blue;
+            }
+        }
+    }
+}
+
+#map {
+    max-width: 1280px;
+    width: 100%;
+    height: 600px;
+    margin-left: auto;
+    margin-right: auto;
+
+    .add-city{
+        position: absolute;
+        top: 17px;
+        left: 48px;
+
+        width: 180px;
+
+        z-index: 99999; 
+
+        background: url(/images/n/magnifier.svg) no-repeat scroll 7px 7px;
+        background-color: white;
+        background-position-y: 10px;
+        background-position-x: 10px;
+        padding-left:37px;
+    }  
+    
+    .map-type{
+        position: absolute;
+        top: 17px;
+        left: 240px;
+
+        z-index: 99999; 
+    }  
+
+    .share{
+        position: absolute;
+        top: 17px;
+        right: 10px;
+
+        z-index: 99999; 
+
+        text-align:center;
+        padding-top:7px;
+        
+        color: $light-blue;
+        font-size: 32px;
+
+        width: 44px;
+        height: 44px;
+
+        background-color: white;
+        border-radius: 4px;
+    }
+
+    .share:hover{
+        color: $dark-blue;        
+    }
+}
+
+.stats{
+    
+    margin-top: 12px;
+    color: white;
+
+    .bor{
+        margin-left: 20px;
+
+        @include below-width(959){            
+            margin-left: 10px;            
+        }
+
+
+        @include below-width(480){            
+            margin-left: 5px;
+        }
+    }
+
+    table {
+        width: 100%;
+        
+        div{
+            height: 70px;
+            background-color: $green;
+            border-radius: 2px;
+            
+            strong{
+                font-size: 30px;
+            }
+        } 
+    }
+}
+
+.badge_all {
+        width: 80px;
+        display: inline-block;
+        margin-right: 20px;
+
+        .icon {            
+            width: 80px;
+            height: 80px;
+
+            border-radius: 50%;
+            overflow: hidden;
+
+            margin-bottom: 10px;
+        }
+        .txt {
+
+        }
+    }
+
+.badges {
+    text-align: center;
+    margin-top: 40px;    
+} 
+
+.cities_all{
+    .continent {
+        
+        display: inline-block;
+        
+        .title{
+            text-align: left;
+        }
+
+        .cities{
+            .badge_all{
+                margin-top: 10px;
+            }
+        }
+
+    }
+} 
+

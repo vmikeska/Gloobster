@@ -49,7 +49,15 @@ namespace Gloobster.Portal.Controllers.Portal
             
             return View(vm);
 		}
-        
+
+
+        public async Task<IActionResult> NewPins()
+        {
+            var vm = CreateViewModelInstance<PinBoardViewModel>();
+            
+            return View(vm);
+        }
+
         public IActionResult SharedMapImage(string id)
 		{
 			var mapStream = SharedImgDomain.GetPinBoardMap(id);				

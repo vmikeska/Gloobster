@@ -1,0 +1,96 @@
+$dropdown-border: rgba($light-blue, .5);
+$dropdown-color: $light-blue;
+$dropdown-hover: rgba($light-blue, .2);
+$dropdown-padding: 9px 19px;
+$dropdown-radius: 4px;
+$dropdown-speed: 0.3s;
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+
+    font-size: 18px;
+
+    .selected, .inputed {
+        position: relative;
+        background-color: white;
+        border: 1px solid $dropdown-border;
+        border-radius: $dropdown-radius;
+        color: $dropdown-color;
+        cursor: pointer;
+        display: inline-block;
+        margin: 0;
+        padding: $dropdown-padding;
+    }
+    .selected {
+        padding-right: 29px !important;
+        &:after {
+            width: 10px;
+            height: 5px;            
+            position: absolute;
+            top: 50%;
+            right: 5px;
+            background: transparent url("../images/arrow-blue.png") left top no-repeat;
+            content: "";
+            display: block;
+            margin-top: -2px;
+        }
+    }
+
+    .inputed {
+        &:focus,
+        &:active {
+            background-color: white;
+            border-color: $dropdown-border;
+        }
+    }
+    ul {        
+        position: absolute;
+        top:39px;
+        left: 0;
+
+        border-bottom-right-radius: $dropdown-radius;
+        border-bottom-left-radius: $dropdown-radius;
+        background-color: white;
+        border: 1px solid $dropdown-border;
+        color: $dropdown-color;
+        cursor: pointer;
+        display: none;
+        margin: 0;
+        padding: 0;
+        white-space: nowrap;
+        z-index: 99999;
+        li {
+            border-bottom: 1px solid $dropdown-border;
+            list-style: none;
+            padding: $dropdown-padding;
+            /*&.disabled {
+                color: $color1;
+                cursor: default;
+            }*/
+            &:hover:not(.disabled) {
+                background-color: $dropdown-hover;
+            }
+            &:last-child {
+                border-bottom-right-radius: $dropdown-radius;
+                border-bottom-left-radius: $dropdown-radius;                   
+                border-bottom-color: transparent;
+            }
+        }
+    }
+    &.dropdown-open {
+        .selected, .inputed {
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;            
+        }
+        .selected {
+            &:after {
+                background-position: left bottom;
+            }
+        }
+        ul {
+            display: block;
+        }
+    }
+}

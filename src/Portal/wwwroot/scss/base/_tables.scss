@@ -17,10 +17,4 @@ table {
             background-color: $color23;
         }
     }
-    @include mobile {
-        td, th {
-            font-size: 14px;
-            padding: 2px 5px;
-        }
-    }
 }

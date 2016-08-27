@@ -1,0 +1,828 @@
+﻿@{
+    ViewData["Title"] = "New pins";
+    Layout = "_LayoutNew";
+}
+
+<script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
+<link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
+
+<link href="~/css/main.css" rel="stylesheet" />
+
+<h1>Your travel map</h1>
+
+<p>
+    Pis dunt que ium aspere pelissint undaecto bla voluptas eliquam, sunt event. odicti veribernam
+    quoditi rem volupta voluptatiora sim endunt, conseditas por autemod eos aut lam estis
+    entibea tusdae occatur moditatin porro maxime sequam dolessimus mo ende vendita tiatia
+    sam as aspelen diorem. Nam excernatur. Pis dunt que ium aspere pelissint undaecto bla voluptas eliquam, sunt event. odicti veribernam
+    quoditi rem volupta voluptatiora sim endunt, conseditas por autemod eos aut lam estis
+    entibea tusdae occatur moditatin porro maxime sequam dolessimus mo ende vendita tiatia
+    sam as aspelen diorem. Nam excernatur
+</p>
+
+<div class="icons_all wrapper">
+    <div class="block">
+        <div class="ico_all pr">
+            <div class="ico">
+                <a href="#"><span class="icon-city"></span></a>
+            </div>
+            <div class="txt">
+                CITIES
+            </div>
+        </div>
+        <div class="ico_all pr">
+            <div class="ico">
+                <a class="active" href="#"><span class="icon-country"></span></a>
+            </div>
+            <div class="txt">
+                COUNTRIES
+            </div>
+        </div>
+        <div class="ico_all">
+            <div class="ico">
+                <a href="#"><span class="icon-places"></span></a>
+            </div>
+            <div class="txt">
+                PLACES
+            </div>
+        </div>
+    </div>
+
+    <div class="block">
+        <div class="ico_all pr">
+            <div class="ico">
+                <a href="#"><span class="icon-my-data"></span></a>
+            </div>
+            <div class="txt">
+                MY DATA
+            </div>
+        </div>
+        <div class="ico_all pr">
+            <div class="ico">
+                <a href="#"><span class="icon-friends-data"></span></a>
+            </div>
+            <div class="txt">
+                FRIENDS
+            </div>
+        </div>
+        <div class="ico_all">
+            <div class="ico">
+                <a href="#"><span class="icon-everybody-data"></span></a>
+            </div>
+            <div class="txt">
+                EVERYBODY
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="map">
+    <input class="add-city" placeholder="Place to add" type="text"/>
+    <div id="mapType" class="map-type dropdown dropdown-open">
+        <span class="selected">2D map</span>
+        <ul>
+            <li data-value="1">2D map</li>
+            <li data-value="0">3D map</li>
+        </ul>
+        <input id="mapTypeValue" type="hidden" value="1">
+    </div>
+    <div class="share">
+        <span class="icon-share"></span>
+    </div>
+</div>
+
+<div class="wrapper stats">
+    <table>
+        <tr>
+            <td>
+                <div>
+                    <strong id="CitiesCount" class="countto" data-from="0" data-to="132">133</strong>
+                    <br/>
+                    Cities
+                </div>
+            </td>
+            <td>
+                <div class="bor">
+                    <strong id="CountriesCount" class="countto" data-from="0" data-to="36">36</strong>
+                    <br/>
+                    Countries
+                </div>
+            </td>
+            <td>
+                <div class="bor">
+                    <strong>
+                        <span id="TraveledPercent" class="countto" data-from="0" data-to="18">18</span>%
+                    </strong>
+                    <br />
+                    of the World
+                </div>
+            </td>
+            <td>
+                <div class="bor">
+                    <strong id="StatesCount" class="countto" data-from="0" data-to="10">10</strong>
+                    <br />
+                    US States
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+
+@*citiesCont*@
+<div class="badges">
+    <div class="badge_all">
+        <div class="icon">
+            <img src="../images/badges/africa.png"/>
+        </div>
+        <div class="txt">
+            3/54 <strong>Africa</strong>
+        </div>
+    </div>
+    <div class="badge_all">
+        <div class="icon">
+            <img src="../images/badges/europe.png"/>
+        </div>
+        <div class="txt">
+            3/54 <strong>Africa</strong>
+        </div>
+    </div>
+    <div class="badge_all">
+        <div class="icon">
+            <img src="../images/badges/australia.png"/>
+        </div>
+        <div class="txt">
+            3/54 <strong>Africa</strong>
+        </div>
+    </div>
+    <div class="badge_all">
+        <div class="icon">
+            <img src="../images/badges/north-amecica.png"/>
+        </div>
+        <div class="txt">
+            3/54 <strong>Africa</strong>
+        </div>
+    </div>
+    <div class="badge_all">
+        <div class="icon">
+            <img src="../images/badges/south-america.png"/>
+        </div>
+        <div class="txt">
+            3/54 <strong>Africa</strong>
+        </div>
+    </div>
+    <div class="badge_all">
+        <div class="icon">
+            <img src="../images/badges/states-eu.png"/>
+        </div>
+        <div class="txt">
+            3/54 <strong>Africa</strong>
+        </div>
+    </div>
+    <div class="badge_all">
+        <div class="icon">
+            <img src="../images/badges/states-us.png"/>
+        </div>
+        <div class="txt">
+            3/54 <strong>Africa</strong>
+        </div>
+    </div>
+</div>
+
+<div class="cities_all">
+<div class="continent">
+    <h2 class="title">North America</h2>
+    <div class="cities">
+        <table>
+            <tr>
+                <td>
+                    <div class="badge_all">
+                        <div class="icon">
+                            <img src="../images/badges/new-york.png"/>
+                        </div>
+                        <div class="txt">
+                            New York
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="badge_all">
+                        <div class="icon">
+                            <img src="../images/badges/new-york.png"/>
+                        </div>
+                        <div class="txt">
+                            New York
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="badge_all">
+                        <div class="icon">
+                            <img src="../images/badges/new-york.png"/>
+                        </div>
+                        <div class="txt">
+                            New York
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="badge_all">
+                        <div class="icon">
+                            <img src="../images/badges/new-york.png"/>
+                        </div>
+                        <div class="txt">
+                            New York
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="badge_all">
+                        <div class="icon">
+                            <img src="../images/badges/new-york.png"/>
+                        </div>
+                        <div class="txt">
+                            New York
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="badge_all">
+                        <div class="icon">
+                            <img src="../images/badges/new-york.png"/>
+                        </div>
+                        <div class="txt">
+                            New York
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="badge_all">
+                        <div class="icon">
+                            <img src="../images/badges/new-york.png"/>
+                        </div>
+                        <div class="txt">
+                            New York
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="badge_all">
+                        <div class="icon">
+                            <img src="../images/badges/new-york.png"/>
+                        </div>
+                        <div class="txt">
+                            New York
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="badge_all">
+                        <div class="icon">
+                            <img src="../images/badges/new-york.png"/>
+                        </div>
+                        <div class="txt">
+                            New York
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+  
+<div class="continent">
+        <h2 class="title">North America</h2>
+        <div class="cities">
+            <table>
+                <tr>
+                    <td>
+                        <div class="badge_all">
+                            <div class="icon">
+                                <img src="../images/badges/new-york.png"/>
+                            </div>
+                            <div class="txt">
+                                New York
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="badge_all">
+                            <div class="icon">
+                                <img src="../images/badges/new-york.png"/>
+                            </div>
+                            <div class="txt">
+                                New York
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="badge_all">
+                            <div class="icon">
+                                <img src="../images/badges/new-york.png"/>
+                            </div>
+                            <div class="txt">
+                                New York
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="badge_all">
+                            <div class="icon">
+                                <img src="../images/badges/new-york.png"/>
+                            </div>
+                            <div class="txt">
+                                New York
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="badge_all">
+                            <div class="icon">
+                                <img src="../images/badges/new-york.png"/>
+                            </div>
+                            <div class="txt">
+                                New York
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="badge_all">
+                            <div class="icon">
+                                <img src="../images/badges/new-york.png"/>
+                            </div>
+                            <div class="txt">
+                                New York
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="badge_all">
+                            <div class="icon">
+                                <img src="../images/badges/new-york.png"/>
+                            </div>
+                            <div class="txt">
+                                New York
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="badge_all">
+                            <div class="icon">
+                                <img src="../images/badges/new-york.png"/>
+                            </div>
+                            <div class="txt">
+                                New York
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="badge_all">
+                            <div class="icon">
+                                <img src="../images/badges/new-york.png"/>
+                            </div>
+                            <div class="txt">
+                                New York
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="continent">
+        <h2 class="title">North America</h2>
+        <div class="cities">
+            <table>
+                <tr>
+                    <td>
+                        <div class="badge_all">
+                            <div class="icon">
+                                <img src="../images/badges/new-york.png" />
+                            </div>
+                            <div class="txt">
+                                New York
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="badge_all">
+                            <div class="icon">
+                                <img src="../images/badges/new-york.png" />
+                            </div>
+                            <div class="txt">
+                                New York
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="badge_all">
+                            <div class="icon">
+                                <img src="../images/badges/new-york.png" />
+                            </div>
+                            <div class="txt">
+                                New York
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="badge_all">
+                            <div class="icon">
+                                <img src="../images/badges/new-york.png" />
+                            </div>
+                            <div class="txt">
+                                New York
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="badge_all">
+                            <div class="icon">
+                                <img src="../images/badges/new-york.png" />
+                            </div>
+                            <div class="txt">
+                                New York
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="badge_all">
+                            <div class="icon">
+                                <img src="../images/badges/new-york.png" />
+                            </div>
+                            <div class="txt">
+                                New York
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="badge_all">
+                            <div class="icon">
+                                <img src="../images/badges/new-york.png" />
+                            </div>
+                            <div class="txt">
+                                New York
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="badge_all">
+                            <div class="icon">
+                                <img src="../images/badges/new-york.png" />
+                            </div>
+                            <div class="txt">
+                                New York
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="badge_all">
+                            <div class="icon">
+                                <img src="../images/badges/new-york.png" />
+                            </div>
+                            <div class="txt">
+                                New York
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+<div class="continent">
+    <h2 class="title">North America</h2>
+    <div class="cities">
+        <table>
+            <tr>
+                <td>
+                    <div class="badge_all">
+                        <div class="icon">
+                            <img src="../images/badges/new-york.png"/>
+                        </div>
+                        <div class="txt">
+                            New York
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="badge_all">
+                        <div class="icon">
+                            <img src="../images/badges/new-york.png"/>
+                        </div>
+                        <div class="txt">
+                            New York
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="badge_all">
+                        <div class="icon">
+                            <img src="../images/badges/new-york.png"/>
+                        </div>
+                        <div class="txt">
+                            New York
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="badge_all">
+                        <div class="icon">
+                            <img src="../images/badges/new-york.png"/>
+                        </div>
+                        <div class="txt">
+                            New York
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="badge_all">
+                        <div class="icon">
+                            <img src="../images/badges/new-york.png"/>
+                        </div>
+                        <div class="txt">
+                            New York
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="badge_all">
+                        <div class="icon">
+                            <img src="../images/badges/new-york.png"/>
+                        </div>
+                        <div class="txt">
+                            New York
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="badge_all">
+                        <div class="icon">
+                            <img src="../images/badges/new-york.png"/>
+                        </div>
+                        <div class="txt">
+                            New York
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="badge_all">
+                        <div class="icon">
+                            <img src="../images/badges/new-york.png"/>
+                        </div>
+                        <div class="txt">
+                            New York
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="badge_all">
+                        <div class="icon">
+                            <img src="../images/badges/new-york.png"/>
+                        </div>
+                        <div class="txt">
+                            New York
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="continent">
+    <h2 class="title">North America</h2>
+    <div class="cities">
+        <table>
+            <tr>
+                <td>
+                    <div class="badge_all">
+                        <div class="icon">
+                            <img src="../images/badges/new-york.png"/>
+                        </div>
+                        <div class="txt">
+                            New York
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="badge_all">
+                        <div class="icon">
+                            <img src="../images/badges/new-york.png"/>
+                        </div>
+                        <div class="txt">
+                            New York
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="badge_all">
+                        <div class="icon">
+                            <img src="../images/badges/new-york.png"/>
+                        </div>
+                        <div class="txt">
+                            New York
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="badge_all">
+                        <div class="icon">
+                            <img src="../images/badges/new-york.png"/>
+                        </div>
+                        <div class="txt">
+                            New York
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="badge_all">
+                        <div class="icon">
+                            <img src="../images/badges/new-york.png"/>
+                        </div>
+                        <div class="txt">
+                            New York
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="badge_all">
+                        <div class="icon">
+                            <img src="../images/badges/new-york.png"/>
+                        </div>
+                        <div class="txt">
+                            New York
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="badge_all">
+                        <div class="icon">
+                            <img src="../images/badges/new-york.png"/>
+                        </div>
+                        <div class="txt">
+                            New York
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="badge_all">
+                        <div class="icon">
+                            <img src="../images/badges/new-york.png"/>
+                        </div>
+                        <div class="txt">
+                            New York
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="badge_all">
+                        <div class="icon">
+                            <img src="../images/badges/new-york.png"/>
+                        </div>
+                        <div class="txt">
+                            New York
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+    <div class="continent">
+        <h2 class="title">North America</h2>
+        <div class="cities">
+            <table>
+                <tr>
+                    <td>
+                        <div class="badge_all">
+                            <div class="icon">
+                                <img src="../images/badges/new-york.png" />
+                            </div>
+                            <div class="txt">
+                                New York
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="badge_all">
+                            <div class="icon">
+                                <img src="../images/badges/new-york.png" />
+                            </div>
+                            <div class="txt">
+                                New York
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="badge_all">
+                            <div class="icon">
+                                <img src="../images/badges/new-york.png" />
+                            </div>
+                            <div class="txt">
+                                New York
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="badge_all">
+                            <div class="icon">
+                                <img src="../images/badges/new-york.png" />
+                            </div>
+                            <div class="txt">
+                                New York
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="badge_all">
+                            <div class="icon">
+                                <img src="../images/badges/new-york.png" />
+                            </div>
+                            <div class="txt">
+                                New York
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="badge_all">
+                            <div class="icon">
+                                <img src="../images/badges/new-york.png" />
+                            </div>
+                            <div class="txt">
+                                New York
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="badge_all">
+                            <div class="icon">
+                                <img src="../images/badges/new-york.png" />
+                            </div>
+                            <div class="txt">
+                                New York
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="badge_all">
+                            <div class="icon">
+                                <img src="../images/badges/new-york.png" />
+                            </div>
+                            <div class="txt">
+                                New York
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="badge_all">
+                            <div class="icon">
+                                <img src="../images/badges/new-york.png" />
+                            </div>
+                            <div class="txt">
+                                New York
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function onBodyLoad() {
+        L.mapbox.accessToken = 'pk.eyJ1IjoiZ2xvb2JzdGVyIiwiYSI6ImQxZWY5MjRkZjU1NDk2MGU3OWI2OGRiM2U3NTM0MGYxIn0.nCG7hOsSQzb0c-_qzfTCRQ';
+        var map = L.mapbox.map('map', 'mapbox.streets')
+            .setView([40, -74.50], 9);
+    }
+
+</script>

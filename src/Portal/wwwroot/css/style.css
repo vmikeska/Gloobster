@@ -549,10 +549,6 @@ input, select, textarea {
     .wrapper {
       height: auto;
       width: 740px; } }
-  @media screen and (max-width: 0) {
-    .wrapper {
-      height: auto;
-      width: 300px; } }
 
 /* Grid */
 .grid {
@@ -797,24 +793,13 @@ input, select, textarea {
         padding-top: 0 !important; }
       .grid.col8 > .cell:nth-child(8n), .grid.col8 > .cell:last-child, .grid.col8 > li:nth-child(8n), .grid.col8 > li:last-child {
         padding-right: 0; } }
-  @media screen and (max-width: 0) {
-    .grid {
-      display: block; }
-      .grid > .cell, .grid > li, .grid.col2 > .cell, .grid.col2 > li, .grid.col3 > .cell, .grid.col3 > li, .grid.col4 > .cell, .grid.col4 > li, .grid.col5 > .cell, .grid.col5 > li, .grid.col6 > .cell, .grid.col6 > li, .grid.col7 > .cell, .grid.col7 > li, .grid.col8 > .cell, .grid.col8 > li {
-        display: block;
-        padding-bottom: 20px;
-        padding-right: 0;
-        width: auto; }
-        .grid > .cell:last-of-type, .grid > li:last-of-type, .grid.col2 > .cell:last-of-type, .grid.col2 > li:last-of-type, .grid.col3 > .cell:last-of-type, .grid.col3 > li:last-of-type, .grid.col4 > .cell:last-of-type, .grid.col4 > li:last-of-type, .grid.col5 > .cell:last-of-type, .grid.col5 > li:last-of-type, .grid.col6 > .cell:last-of-type, .grid.col6 > li:last-of-type, .grid.col7 > .cell:last-of-type, .grid.col7 > li:last-of-type, .grid.col8 > .cell:last-of-type, .grid.col8 > li:last-of-type {
-          padding-bottom: 0 !important; } }
 
 /* Table */
 .table {
   margin-top: 0;
   margin-bottom: 0;
   padding: 0;
-  display: table;
-  /*used at all ?*/ }
+  display: table; }
   .table > .cell, .table > li, .table.row > .cell, .table.row > li, .table > .row > .cell, .table > .row > li {
     display: table-cell;
     vertical-align: top; }
@@ -857,16 +842,6 @@ input, select, textarea {
     .table.row.col4 > .cell, .table.row.col4 > li, .table > .row.col4 > .cell, .table > .row.col4 > li {
       padding-right: 20px;
       width: 170px; } }
-  @media screen and (max-width: 0) {
-    .table.row, .table > .row {
-      display: block; }
-      .table.row > .cell, .table.row > li, .table.row.col2 > .cell, .table.row.col2 > li, .table.row.col3 > .cell, .table.row.col3 > li, .table.row.col4 > .cell, .table.row.col4 > li, .table > .row > .cell, .table > .row > li, .table > .row.col2 > .cell, .table > .row.col2 > li, .table > .row.col3 > .cell, .table > .row.col3 > li, .table > .row.col4 > .cell, .table > .row.col4 > li {
-        display: block;
-        padding-bottom: 20px;
-        padding-right: 0;
-        width: auto; }
-        .table.row > .cell:last-of-type, .table.row > li:last-of-type, .table.row.col2 > .cell:last-of-type, .table.row.col2 > li:last-of-type, .table.row.col3 > .cell:last-of-type, .table.row.col3 > li:last-of-type, .table.row.col4 > .cell:last-of-type, .table.row.col4 > li:last-of-type, .table > .row > .cell:last-of-type, .table > .row > li:last-of-type, .table > .row.col2 > .cell:last-of-type, .table > .row.col2 > li:last-of-type, .table > .row.col3 > .cell:last-of-type, .table > .row.col3 > li:last-of-type, .table > .row.col4 > .cell:last-of-type, .table > .row.col4 > li:last-of-type {
-          padding-bottom: 0 !important; } }
 
 .margin0 {
   margin-bottom: 0px; }
@@ -2565,10 +2540,6 @@ table {
     text-align: left; }
   table tr:nth-child(odd) td {
     background-color: #fffae9; }
-  @media screen and (max-width: 0) {
-    table td, table th {
-      font-size: 14px;
-      padding: 2px 5px; } }
 
 .header {
   height: 136px;

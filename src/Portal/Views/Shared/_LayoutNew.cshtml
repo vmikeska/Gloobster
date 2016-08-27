@@ -15,7 +15,7 @@
 	<title>Gloobster</title>
 
     
-    <link href="~/css/main.css" rel="stylesheet" />
+    
     <link href="//fonts.googleapis.com/css?family=PT+Sans:400,700" rel="stylesheet">
     <link href="//fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
     <link href="~/lib/jquery-ui/themes/ui-lightness/jquery-ui.css" rel="stylesheet"/>
@@ -58,14 +58,14 @@
 <div id="fb-root"></div>
 
 
-<section class="wrapper margin3">
+
     @*@if (!Model.SocialNetworks.Any())
     {
         @Html.Partial("_DialogJoinSoc")
         @Html.Partial("_DialogJoinEmail")
     }*@
     @RenderBody()
-</section>
+
 
 
 <footer>
@@ -73,7 +73,7 @@
     <div class="footer_cont">
         Here will be footer content
     </div>
-
+    
     @Html.Partial("_MenuNew")
 </footer>
 
