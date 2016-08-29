@@ -28,8 +28,7 @@ namespace Gloobster.Portal.Controllers.Portal
         [CreateAccount]
         public IActionResult Index()
         {
-            bool isLogged = IsUserLogged && DB.List<UserEntity>(e => e.User_id == UserIdObj).Any();
-                //HttpContext.Request.Cookies.ContainsKey(TokenConstants.CookieKeyName);
+            bool isLogged = IsUserLogged && DB.List<UserEntity>(e => e.User_id == UserIdObj).Any();                
             if (isLogged)
             {                
                 return RedirectToAction("Pins", "Pinboard");                
@@ -67,8 +66,15 @@ namespace Gloobster.Portal.Controllers.Portal
 
         public IActionResult NewIndex()
         {
-            var vm = CreateViewModelInstance<ViewModelTest>();
+            //bool isLogged = IsUserLogged && DB.List<UserEntity>(e => e.User_id == UserIdObj).Any();
+            //if (isLogged)
+            //{
+            //    return RedirectToAction("Pins", "Pinboard");
+            //}
 
+            var vm = CreateViewModelInstance<ViewModelHome>();
+            //vm.DefaultLangModuleName = "pageHomeOld";
+            //vm.LoadClientTexts();
             return View(vm);
         }
 

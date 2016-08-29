@@ -11,6 +11,7 @@ $light-blue4: #ccedf5;
 $green: #3DA33D;
 $orange: #F56E12;
 $yellow: #FFC400;
+$yellow2: #F5C519;
 
 $tablet-width: 959px;
 
@@ -25,6 +26,13 @@ $tablet-width: 959px;
     @media screen and (max-width: $width + 'px' ) {
         @content;
     }
+}
+
+@mixin text-justify{
+    text-align: justify;
+    -moz-text-align-last: justify;
+    -webkit-text-align-last: justify; /* not implemented yet, and will not be */
+    text-align-last: justify; /* IE */
 }
 
 
@@ -49,6 +57,20 @@ input[type="text"]{
     border-radius: 4px;
     font-size: 20px;
     color: gray;
+}
+
+.lbtn{
+    border-style: solid;
+    border-width: 0;
+    border-radius: 4px;                    
+    font-weight: 700;
+    height: 20px;
+    line-height: 20px;
+
+    margin: 0 5px;
+    padding: 9px;
+
+    text-decoration: none;
 }
 
 textarea:focus, input:focus{
@@ -93,10 +115,7 @@ p{
     padding-right: 8px;
     padding-left: 8px;
 
-    text-align: justify;
-    -moz-text-align-last: justify;
-    -webkit-text-align-last: justify; /* not implemented yet, and will not be */
-    text-align-last: justify; /* IE */
+    @include text-justify;
     
     background-color: $dark-blue;
 
@@ -203,10 +222,12 @@ p{
         a{
             padding-right: 10px;
             text-decoration:none;
+            color: $light-blue;
+            font-size: 22px;
         }
 
         a:hover {
-            opacity: 0.7;
+            color: $light-blue2;
         }
     }
 
@@ -223,6 +244,8 @@ footer {
 }
 
 
+@import "icofonts";
 @import "dropdown";
 @import "homepage";
 @import "pins";
+@import "wiki-home";

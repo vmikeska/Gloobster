@@ -44,6 +44,14 @@ namespace Gloobster.Portal.Controllers.Portal
         }
 
         [CreateAccount]
+        public IActionResult NewHome()
+        {
+            var vm = CreateViewModelInstance<WikiHomeViewModel>();            
+            return View(vm);
+        }
+
+
+        [CreateAccount]
         public IActionResult PageRegular(string id, string lang)
         {
             WikiModelBase vm = null;

@@ -87,7 +87,7 @@ var Views;
         SettingsUtils.getLocationBaseConfig = function () {
             var c = new Common.PlaceSearchConfig();
             c.providers = "2";
-            c.minCharsToSearch = 2;
+            c.minCharsToSearch = 1;
             c.clearAfterSearch = false;
             return c;
         };

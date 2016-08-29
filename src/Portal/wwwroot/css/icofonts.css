@@ -1,0 +1,49 @@
+@font-face {
+  font-family: 'icomoon';
+  src: url("/fonts/pins/icomoon.eot?f4h0hv");
+  src: url("/fonts/pins/icomoon.eot?f4h0hv#iefix") format("embedded-opentype"), url("/fonts/pins/icomoon.ttf?f4h0hv") format("truetype"), url("/fonts/pins/icomoon.woff?f4h0hv") format("woff"), url("/fonts/pins/icomoon.svg?f4h0hv#icomoon") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
+.icon-dislike:before {
+  content: "\e907"; }
+
+.icon-edit-pencil:before {
+  content: "\e908"; }
+
+.icon-like:before {
+  content: "\e909"; }
+
+.icon-share:before {
+  content: "\e900"; }
+
+.icon-city:before {
+  content: "\e901"; }
+
+.icon-country:before {
+  content: "\e902"; }
+
+.icon-everybody-data:before {
+  content: "\e903"; }
+
+.icon-friends-data:before {
+  content: "\e904"; }
+
+.icon-my-data:before {
+  content: "\e905"; }
+
+.icon-places:before {
+  content: "\e906"; }

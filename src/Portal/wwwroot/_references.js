@@ -77,6 +77,7 @@
 /// <reference path="js/views/imagedbview.js" />
 /// <reference path="js/views/locationsettingsdialog.js" />
 /// <reference path="js/views/messages.js" />
+/// <reference path="js/views/n_homepageview.js" />
 /// <reference path="js/views/notificationsview.js" />
 /// <reference path="js/views/peoplefilter.js" />
 /// <reference path="js/views/pinboardbadges.js" />

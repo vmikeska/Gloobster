@@ -9,7 +9,8 @@
     <div class="wrapper">
 
         <div class="logo_all">
-            <a href="#">
+            @*/*@
+            <a href="/home/newindex">
                 <img src="/images/n/logo.svg"/>
             </a>
         </div>
@@ -19,19 +20,21 @@
                 <a href="#">Dashboard</a>
             </div>
             <div>
-                <a href="#">Fly Tickets</a>
+                <a href="/Destination/planning">Fly Tickets</a>
             </div>
             <div>
-                <a href="#">Travel Buddy</a>
+                <a href="/TravelB/home">Travel Buddy</a>
             </div>
             <div>
-                <a href="#">Travel Organizer</a>
+                <a href="/@RoutingConsts.PlannerMenuName/grid">@Model.W("MenuTrips", "layout")</a>
             </div>
             <div>
-                <a href="#">Travel map</a>
+                @*/@RoutingConsts.PinsMenuName*@
+                <a class="MenuPins" href="/pinboard/newpins">@Model.W("MenuPins", "layout")</a>
             </div>
             <div>
-                <a class="active" href="#">Travel WIKI</a>
+                @*/@RoutingConsts.WikiMenuName*@
+                <a class="MenuWiki" href="/wiki/newhome">@Model.W("MenuWiki", "layout")</a>
             </div>
         </nav>
 
@@ -39,15 +42,18 @@
         <div class="icons_all">
             <div class="icons">
 
-                <a href="#">
-                    <img src="/images/n/logout.svg"/>
+                
+                <a href="/@RoutingConsts.UserDetailMenuName">
+                    <span class="icon-my-data"></span>
                 </a>
-
-                <a href="#">
-                    <img src="/images/n/friends.svg"/>
+                <a href="/@RoutingConsts.FriendsMenuName">
+                    <span class="icon-friends"></span>                    
+                </a>
+                <a href="/@RoutingConsts.NotifsMenuName">
+                    <span class="icon-envelope"></span>                    
                 </a>
                 <a href="#">
-                    <img src="/images/n/globe.svg"/>
+                    <span id="logoutUser" class="icon-logout"></span>
                 </a>
 
             </div>

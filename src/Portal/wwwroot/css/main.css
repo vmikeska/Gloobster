@@ -12,6 +12,17 @@ input[type="text"] {
   font-size: 20px;
   color: gray; }
 
+.lbtn {
+  border-style: solid;
+  border-width: 0;
+  border-radius: 4px;
+  font-weight: 700;
+  height: 20px;
+  line-height: 20px;
+  margin: 0 5px;
+  padding: 9px;
+  text-decoration: none; }
+
 textarea:focus, input:focus {
   outline: none; }
 
@@ -116,15 +127,88 @@ p {
         border: 0; } }
     .menu_all .icons a {
       padding-right: 10px;
-      text-decoration: none; }
+      text-decoration: none;
+      color: #65BDD7;
+      font-size: 22px; }
     .menu_all .icons a:hover {
-      opacity: 0.7; }
+      color: #009EC4; }
 
 footer .footer_cont {
   margin-top: 40px;
   height: 200px;
   background-color: #3298C1;
   color: white; }
+
+@font-face {
+  font-family: 'icomoon';
+  src: url("/fonts/pins/icomoon.eot?f4h0hv");
+  src: url("/fonts/pins/icomoon.eot?f4h0hv#iefix") format("embedded-opentype"), url("/fonts/pins/icomoon.ttf?f4h0hv") format("truetype"), url("/fonts/pins/icomoon.woff?f4h0hv") format("woff"), url("/fonts/pins/icomoon.svg?f4h0hv#icomoon") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
+.icon-envelope:before {
+  content: "\e90c"; }
+
+.icon-ico-travel-buddy:before {
+  content: "\e90a"; }
+
+.icon-ico-wiki:before {
+  content: "\e900"; }
+
+.icon-ico-travel-map:before {
+  content: "\e901"; }
+
+.icon-ico-organizer:before {
+  content: "\e902"; }
+
+.icon-friends:before {
+  content: "\e90b"; }
+
+.icon-logout:before {
+  content: "\e90d"; }
+
+.icon-dislike:before {
+  content: "\e90e"; }
+
+.icon-edit-pencil:before {
+  content: "\e908"; }
+
+.icon-like:before {
+  content: "\e909"; }
+
+.icon-share:before {
+  content: "\e907"; }
+
+.icon-city:before {
+  content: "\e906"; }
+
+.icon-country:before {
+  content: "\e905"; }
+
+.icon-everybody-data:before {
+  content: "\e903"; }
+
+.icon-friends-data:before {
+  content: "\e904"; }
+
+.icon-my-data:before {
+  content: "\e90f"; }
+
+.icon-places:before {
+  content: "\e910"; }
 
 .dropdown {
   position: relative;
@@ -195,7 +279,9 @@ footer .footer_cont {
 .title_show_all {
   height: 450px;
   overflow: hidden;
-  position: relative; }
+  position: relative;
+  text-align: left;
+  border-bottom: 2px solid #005476; }
   .title_show_all .photo {
     width: 1920px;
     height: 450px;
@@ -328,6 +414,20 @@ footer .footer_cont {
       display: inline-block;
       width: 15px;
       height: 15px; }
+  .fly_all .loc {
+    padding-top: 40px;
+    padding-bottom: 50px; }
+    .fly_all .loc input {
+      border: 3px solid #005476 !important; }
+    .fly_all .loc ul {
+      border-color: #005476 !important; }
+    .fly_all .loc li {
+      border-color: #005476 !important;
+      color: #005476 !important;
+      text-align: left; }
+      .fly_all .loc li .icon-city {
+        font-size: 26px;
+        color: #F56E12; }
 
 .social {
   text-align: center;
@@ -345,25 +445,26 @@ footer .footer_cont {
     display: inline-block;
     width: 200px;
     margin-bottom: 30px; }
+    .social .blocks .item .blue {
+      color: #009EC4; }
+    .social .blocks .item .yellow {
+      color: #FFC400; }
+    .social .blocks .item .orange {
+      color: #F56E12; }
+    .social .blocks .item .green {
+      color: #3DA33D; }
     .social .blocks .item .image {
       width: 84px;
       height: 84px;
       margin-left: auto;
       margin-right: auto;
-      margin-bottom: 20px; }
+      margin-bottom: 20px;
+      font-size: 84px; }
     .social .blocks .item .name {
       font-size: 28px;
       font-weight: 500;
       height: 30px;
       margin-bottom: 20px; }
-      .social .blocks .item .name .blue {
-        color: #009EC4; }
-      .social .blocks .item .name .yellow {
-        color: #FFC400; }
-      .social .blocks .item .name .orange {
-        color: #F56E12; }
-      .social .blocks .item .name .green {
-        color: #3DA33D; }
     .social .blocks .item .txt {
       font-size: 16px;
       height: 150px; }
@@ -392,47 +493,6 @@ footer .footer_cont {
         text-decoration: none; }
       .social .blocks .item .btn a:hover {
         opacity: 0.7; }
-
-@font-face {
-  font-family: 'icomoon';
-  src: url("/fonts/pins/icomoon.eot?f4h0hv");
-  src: url("/fonts/pins/icomoon.eot?f4h0hv#iefix") format("embedded-opentype"), url("/fonts/pins/icomoon.ttf?f4h0hv") format("truetype"), url("/fonts/pins/icomoon.woff?f4h0hv") format("woff"), url("/fonts/pins/icomoon.svg?f4h0hv#icomoon") format("svg");
-  font-weight: normal;
-  font-style: normal; }
-
-[class^="icon-"], [class*=" icon-"] {
-  /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'icomoon' !important;
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-  /* Better Font Rendering =========== */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale; }
-
-.icon-share:before {
-  content: "\e900"; }
-
-.icon-city:before {
-  content: "\e901"; }
-
-.icon-country:before {
-  content: "\e902"; }
-
-.icon-everybody-data:before {
-  content: "\e903"; }
-
-.icon-friends-data:before {
-  content: "\e904"; }
-
-.icon-my-data:before {
-  content: "\e905"; }
-
-.icon-places:before {
-  content: "\e906"; }
 
 .icons_all {
   /*text-align:justify;*/
@@ -564,3 +624,158 @@ footer .footer_cont {
     text-align: left; }
   .cities_all .continent .cities .badge_all {
     margin-top: 10px; }
+
+.wiki_header {
+  border-bottom: 2px solid #005476;
+  height: 450px;
+  overflow: hidden;
+  position: relative; }
+  .wiki_header .bck {
+    border: 1px solid red;
+    width: 1920px;
+    height: 450px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-image: url("/images/n/title1.jpg"); }
+
+.wiki_info {
+  /*height: 600px;*/
+  background-color: #3298C1; }
+  .wiki_info .bl {
+    margin-right: 30px; }
+    @media screen and (max-width: 803px) {
+      .wiki_info .bl {
+        margin-right: 0; } }
+  .wiki_info .br {
+    margin-left: 30px; }
+    @media screen and (max-width: 803px) {
+      .wiki_info .br {
+        margin-left: 0; } }
+  .wiki_info .block {
+    display: inline-block;
+    padding-top: 50px;
+    max-width: 360px;
+    min-width: 320px;
+    /*border: 1px solid red;*/ }
+    .wiki_info .block .ico {
+      width: 180px;
+      height: 180px;
+      margin-right: auto;
+      margin-left: auto;
+      margin-bottom: 35px; }
+    .wiki_info .block .title {
+      color: #F5C519; }
+    .wiki_info .block .text {
+      color: white;
+      height: 170px; }
+    .wiki_info .block .btn {
+      height: 50px; }
+      .wiki_info .block .btn .lbtn {
+        color: #3298C1;
+        background-color: #F5C519; }
+
+.article_rating {
+  width: 155px;
+  height: 41px;
+  color: #3298C1;
+  display: table;
+  border: 1px solid #3298C1;
+  border-radius: 2px; }
+  .article_rating .wrap {
+    display: table-cell;
+    vertical-align: middle; }
+    .article_rating .wrap .frame {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      border-left: 1px solid #3298C1; }
+      .article_rating .wrap .frame a {
+        width: 24px;
+        height: 24px;
+        display: inline-block;
+        font-size: 21px;
+        text-decoration: none;
+        color: #3298C1; }
+      .article_rating .wrap .frame a:hover {
+        color: #005476; }
+      .article_rating .wrap .frame .icon-edit-pencil {
+        margin-top: 4px;
+        margin-left: 8px; }
+      .article_rating .wrap .frame .icon-dislike {
+        margin-top: 9px;
+        margin-left: 7px; }
+      .article_rating .wrap .frame .icon-like {
+        margin-top: 2px;
+        margin-left: 7px; }
+      .article_rating .wrap .frame .score {
+        width: 32px;
+        margin-top: 2px;
+        margin-left: 4px; }
+  .article_rating .wrap:first-of-type .frame {
+    border: 0; }
+
+.wiki_article_wide .photo {
+  height: 420px;
+  overflow: hidden;
+  position: relative;
+  border-radius: 2px; }
+  .wiki_article_wide .photo .bck {
+    width: 1280px;
+    height: 420px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-image: url("/images/n/wiki_wide.jpg"); }
+
+.wiki_article_wide .service {
+  padding-top: 20px;
+  padding-left: 10px;
+  text-align: justify;
+  -moz-text-align-last: justify;
+  -webkit-text-align-last: justify;
+  /* not implemented yet, and will not be */
+  text-align-last: justify;
+  /* IE */ }
+  .wiki_article_wide .service h2, .wiki_article_wide .service .rate {
+    display: inline-block;
+    vertical-align: top;
+    font-weight: 500; }
+  .wiki_article_wide .service h2 {
+    margin-top: 0px; }
+
+.wiki_articles .article:first-of-type {
+  margin-right: 28px; }
+  @media screen and (max-width: 1302px) {
+    .wiki_articles .article:first-of-type {
+      margin-right: 0px; } }
+
+.wiki_articles .article {
+  /*border: 1px solid red;*/
+  display: inline-block;
+  max-width: 626px;
+  /*height: 416px;*/ }
+  .wiki_articles .article .photo {
+    border-radius: 2px;
+    overflow: hidden; }
+    .wiki_articles .article .photo img {
+      max-width: 626px; }
+      @media screen and (max-width: 626px) {
+        .wiki_articles .article .photo img {
+          max-width: 100%; } }
+  .wiki_articles .article .service {
+    padding-top: 10px; }
+    .wiki_articles .article .service h2 {
+      display: inline-block;
+      vertical-align: top;
+      width: 65%;
+      /*border: 1px solid red;*/
+      text-align: left;
+      margin-top: 0px;
+      font-weight: 500;
+      font-size: 24px; }
+    .wiki_articles .article .service .rate {
+      display: inline-block;
+      vertical-align: top; }

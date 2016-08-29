@@ -1,0 +1,230 @@
+﻿
+.wiki_header{
+    border-bottom: 2px solid $dark-blue;
+    
+    height: 450px;
+    overflow: hidden;
+    position: relative;
+
+    .bck {
+        border: 1px solid red;
+
+        width: 1920px;
+        height: 450px;
+
+        @include centerer;
+
+        background-image: url("/images/n/title1.jpg");
+    }
+    
+}
+
+.wiki_info{
+    
+    /*height: 600px;*/
+    background-color: $light-blue3;
+ 
+    .bl{
+        margin-right: 30px;
+
+        @include below-width(803){
+            margin-right: 0;        
+        }
+    }
+
+    .br{
+        margin-left: 30px;
+
+        @include below-width(803){     
+            margin-left: 0;
+        }
+    }
+
+    .block { 
+        display: inline-block;
+        padding-top: 50px;
+        max-width: 360px;
+        min-width: 320px;
+        /*border: 1px solid red;*/
+
+        .ico {
+            width: 180px;
+            height: 180px;
+            margin-right: auto;
+            margin-left: auto;
+            margin-bottom: 35px;
+        }
+        .title {
+            color: $yellow2;            
+        }
+        .text {            
+            color: white;
+            height: 170px;
+        }
+        .btn {            
+            height: 50px;
+
+            .lbtn {
+                color: $light-blue3;
+                background-color: $yellow2;
+            }
+        }
+    }
+}
+
+.article_rating{
+    width: 155px;
+    height: 41px;
+    color: $light-blue3;
+    display: table;
+    border: 1px solid $light-blue3;
+    border-radius: 2px;
+
+    .wrap{                
+        display: table-cell;
+        vertical-align: middle;        
+
+        .frame{            
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            border-left: 1px solid $light-blue3;
+
+            a{                                
+                width: 24px;
+                height: 24px;
+                display: inline-block;
+                font-size: 21px;       
+                text-decoration: none;   
+                color: $light-blue3;      
+            }
+
+            a:hover{
+                color: $dark-blue;
+            }
+
+            .icon-edit-pencil{
+                margin-top: 4px;
+                margin-left: 8px;
+            }
+
+            .icon-dislike {
+                margin-top: 9px;
+                margin-left: 7px;
+            }
+
+            .icon-like {
+                margin-top: 2px;
+                margin-left: 7px;
+            }
+
+            .score{                
+                width: 32px;
+                margin-top: 2px;
+                margin-left: 4px;
+            }
+        }
+    }
+
+    .wrap:first-of-type {
+        .frame{
+            border: 0;
+        }
+    }
+    
+}
+
+
+
+
+.wiki_article_wide{  
+    
+    .photo {
+        height: 420px;
+        overflow: hidden;
+        position: relative;
+        border-radius: 2px;
+
+        .bck{
+            
+            width: 1280px;
+            height: 420px;
+
+            @include centerer;
+
+            background-image: url("/images/n/wiki_wide.jpg");            
+        }
+    }
+
+    .service{        
+        padding-top: 20px; 
+        padding-left: 10px;
+        @include text-justify;
+
+        h2,.rate{
+            display: inline-block;
+            vertical-align: top;
+            font-weight: 500;
+        }
+
+        h2{
+            margin-top: 0px;
+        } 
+
+        .rate{            
+            
+        }
+    }
+    
+}
+
+.wiki_articles{
+    .article:first-of-type {        
+        margin-right: 28px;
+
+        @include below-width(1302){
+            margin-right: 0px;
+        }
+    }
+    
+    .article{        
+        /*border: 1px solid red;*/
+        display:inline-block;
+        max-width: 626px;
+        /*height: 416px;*/
+
+        .photo{
+            
+            border-radius: 2px;
+            overflow: hidden;
+
+            img {
+                max-width: 626px;
+
+                @include below-width(626){
+                    max-width: 100%;
+                }
+            }
+        }
+
+        .service {
+            padding-top: 10px;
+
+            h2 {
+                display:inline-block;
+                vertical-align: top;
+                width: 65%;
+                /*border: 1px solid red;*/
+                text-align: left;
+                margin-top: 0px;
+                font-weight: 500;
+                font-size: 24px;
+            }
+
+            .rate {
+                display:inline-block;
+                vertical-align: top;
+            }
+        }
+    }
+}

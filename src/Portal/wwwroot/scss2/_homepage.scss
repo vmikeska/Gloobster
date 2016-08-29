@@ -4,6 +4,9 @@
     height: 450px;
     overflow: hidden;
     position: relative;
+    text-align: left;
+
+    border-bottom: 2px solid $dark-blue;
 
     .photo{
         width: 1920px;
@@ -202,6 +205,29 @@
         }
     }
 
+    .loc{        
+        padding-top: 40px;
+        padding-bottom: 50px;
+
+        input {
+            border: 3px solid $dark-blue !important;
+        }
+
+        ul {
+            border-color:  $dark-blue !important;
+        }
+        li {
+            border-color:  $dark-blue !important;
+            color:  $dark-blue !important;
+
+            text-align: left;
+
+            .icon-city {
+                font-size: 26px;
+                color: $orange;
+            }
+        }
+    }
 }
 
 .social 
@@ -226,6 +252,22 @@
         }
 
         .item {
+            .blue{
+                color: $light-blue2;
+            }
+
+            .yellow{
+                color: $yellow;
+            }
+
+            .orange{
+                color: $orange;
+            }
+
+            .green{
+                color: $green;
+            }
+
             display: inline-block;
             
             width: 200px;
@@ -237,6 +279,8 @@
                 margin-left: auto;
                 margin-right: auto;
                 margin-bottom: 20px;
+
+                font-size: 84px;
             }
 
             .name {
@@ -244,22 +288,6 @@
                 font-weight: 500;
                 height: 30px;
                 margin-bottom: 20px;
-
-                   .blue{
-                        color: $light-blue2;
-                    }
-
-                    .yellow{
-                        color: $yellow;
-                    }
-
-                    .orange{
-                        color: $orange;
-                    }
-
-                    .green{
-                        color: $green;
-                    }
             } 
 
             .txt {

@@ -1,0 +1,152 @@
+﻿@using System.Linq;
+@using System.Threading.Tasks
+@using Gloobster.Common
+@using Gloobster.Entities
+@using Gloobster.Portal.ViewModels
+@model WikiHomeViewModel
+@{
+    ViewBag.MenuGroup = "Wiki";
+    ViewData["Title"] = "Wiki home";
+    Layout = "_LayoutNew";
+
+    <link href="~/css/main.css" rel="stylesheet" />
+
+    //List<WikiTextsEntity> allItems = Model.Texts;
+    //if (GloobsterConfig.IsLocal && allItems.Count < 30)
+    //{
+    //    while (allItems.Count < 30)
+    //    {
+    //        allItems.AddRange(Model.Texts);
+    //    }
+    //}
+
+    //List<WikiTextsEntity> first10 = allItems.Take(10).ToList();
+    //var others = new List<WikiTextsEntity>();
+    //others.AddRange(allItems);
+    //others.RemoveRange(0,10);
+
+    //var othersBy3 = others.SplitBy(3);
+}
+
+@*<script type="text/javascript" src="@Url.Content("~/js/Views/WikiHomeView.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Views/WikiSearchCombo.js")"></script>*@
+
+
+<div class="wiki_header">    
+        <div class="bck"></div>    
+</div>
+
+<div class="wiki_info">
+    <div class="block bl">
+        <div class="ico"><img src="/images/n/pencil.svg"/>
+        </div>
+        <div class="title">
+            <h2>Wiki articles created by travelers for travelers</h2>
+        </div>
+        <div class="text">
+            Unt qui sit ea dipiendis aperchi llaborepudam
+            fugit odicil inctiur sanistet optatemperat
+            mapost offi cidusci ut volese offi cillor sitinctibus
+            repernata et ommo voluptatest
+        </div>
+        <div class="btn">
+            <a class="lbtn" href="#">Learn more</a>
+        </div>
+    </div>
+
+    <div class="block br">
+        <div class="ico"><img src="/images/n/guy.svg"/>
+        </div>
+        <div class="title">
+            <h2>Help us to build the biggest Travel wiki</h2>
+        </div>
+        <div class="text">
+            Ibus nimaxim aperchi aionsequae aditae
+            doluptur am nobist et, ea serum iur Hicimodi
+            cullaccum, sitio is simus, to im quamus conet
+            aut harupta serum turitat
+        </div>
+        <div class="btn">
+            <a class="lbtn" href="#">Join us</a>
+        </div>
+    </div>
+</div>
+
+<h2>Latests Articles</h2>
+
+
+
+<div class="wiki_article_wide wrapper">
+    <div class="photo">
+        <div class="bck"></div>
+    </div>
+    <div class="service">        
+        <h2>Prague am Moldau</h2>
+        
+        <div class="rate">
+            @Html.Partial("NewArticleRating")
+        </div>
+    </div>
+
+    <p class="txt">
+        Em. Ed mostio. Mo bla volupta voluptur Volenim aionsedit porrovidenis este velluptat. Me
+        cum endaes quamus eic tem esendus dolutem veliquam faccus everianda etur apellupta issimi,
+        ommoloresto core nus sam eum essimusam is quam qui iur aut eum quiam am Gendit
+        et qui unt. Ximod eatiae natusam endebita numet aut aut alitectet.
+    </p>
+</div>
+
+<div class="wiki_articles">
+    <div class="article">
+
+        <div class="photo">
+            <img src="/images/n/wiki_small.jpg"/>
+        </div>
+
+        <div class="service">
+            <h2>Prague am Moldau Prague am Moldau</h2>
+
+            <div class="rate">
+                @Html.Partial("NewArticleRating")
+            </div>
+        </div>
+
+        <p class="txt">
+            Em. Ed mostio. Mo bla volupta voluptur Volenim aionsedit porrovidenis este velluptat. Me
+            cum endaes quamus eic tem esendus dolutem veliquam faccus everianda etur apellupta issimi,
+            ommoloresto core nus sam eum essimusam is quam qui iur aut eum quiam am Gendit
+            et qui unt. Ximod eatiae natusam endebita numet aut aut alitectet.
+        </p>
+
+    </div>
+
+    <div class="article">
+
+        <div class="photo">
+            <img src="/images/n/wiki_small.jpg" />
+        </div>
+
+        <div class="service">
+            <h2>Prague am Moldau</h2>
+
+            <div class="rate">
+                @Html.Partial("NewArticleRating")
+            </div>
+        </div>
+
+        <p class="txt">
+            Em. Ed mostio. Mo bla volupta voluptur Volenim aionsedit porrovidenis este velluptat. Me
+            cum endaes quamus eic tem esendus dolutem veliquam faccus everianda etur apellupta issimi,
+            ommoloresto core nus sam eum essimusam is quam qui iur aut eum quiam am Gendit
+            et qui unt. Ximod eatiae natusam endebita numet aut aut alitectet.
+        </p>
+
+    </div>
+</div>
+
+<script>
+	function onBodyLoad() {
+	    //currentView = new Views.WikiHomeView();
+	}
+
+</script>
