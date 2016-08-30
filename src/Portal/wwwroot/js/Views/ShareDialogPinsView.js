@@ -4,7 +4,7 @@ var Views;
         function ShareDialogPinsView() {
             var _this = this;
             this.$dialog = $("#popup-share");
-            this.shareButtons = new Common.ShareButtons($("#shareCont"));
+            this.shareButtons = new Common.ShareButtons($(".share-cont"));
             this.shareButtons.onSelectionChanged = function (nets) {
                 _this.fillSocStr(nets);
             };

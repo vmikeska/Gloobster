@@ -15,6 +15,7 @@
 /// <reference path="js/common/globals.js" />
 /// <reference path="js/common/gnonlinesearchbox.js" />
 /// <reference path="js/common/placesearchbox.js" />
+/// <reference path="js/common/popup.js" />
 /// <reference path="js/common/requestsender.js" />
 /// <reference path="js/common/sharebuttons.js" />
 /// <reference path="js/common/usersearchbox.js" />

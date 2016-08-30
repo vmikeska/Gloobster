@@ -1,13 +1,65 @@
-﻿@{
+﻿@using System.Threading.Tasks
+@using Gloobster.Common
+@using Gloobster.Enums
+@using Newtonsoft.Json
+
+@using Gloobster.Portal.ViewModels
+@model PinBoardViewModel
+
+@{
     ViewBag.MenuGroup = "Pins";
     ViewData["Title"] = "New pins";
     Layout = "_LayoutNew";
 }
 
-<script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
-<link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
+<link href="/lib/mapbox.js/mapbox.css" rel="stylesheet" />
+<link href="/lib/leaflet/dist/leaflet.css" rel="stylesheet" />
 
-<link href="~/css/main.css" rel="stylesheet" />
+@if (GloobsterConfig.UseMiniScripts)
+{
+    <script src="/jsb/pins.js" type="text/javascript" data-notbuild="true"></script>
+}
+else
+{
+
+    <link href="~/css/main.css" rel="stylesheet" />
+
+    <script type="text/javascript" src="/lib/leaflet/dist/leaflet.js"></script>
+    <script type="text/javascript" src="/lib/mapbox.js/mapbox.js"></script>
+
+    <script type="text/javascript" src="/lib/leaflet-heat.js"></script>
+
+    <script type="text/javascript" src="/js/Maps/MapsInterfaces.js"></script>
+
+    <script type="text/javascript" src="/js/common/ShareButtons.js"></script>
+
+    <script type="text/javascript" src="/js/Common/CountryShapes.js"></script>
+    <script type="text/javascript" src="/js/Common/UsStates.js"></script>
+    <script type="text/javascript" src="/js/Common/CountryCodes.js"></script>
+    <script type="text/javascript" src="/js/Common/FacebookPermissions.js"></script>
+
+    <script type="text/javascript" src="/js/Maps/BaseMapsOperation3D.js"></script>
+    <script type="text/javascript" src="/js/Maps/BaseMapsOperation2D.js"></script>
+    <script type="text/javascript" src="/js/Maps/MapsOperations.js"></script>
+    <script type="text/javascript" src="/js/Maps/MapsCreatorGlobe3D.js"></script>
+    <script type="text/javascript" src="/js/Maps/MapsCreatorMapBox2D.js"></script>
+    <script type="text/javascript" src="/js/Maps/MapsManager.js"></script>
+    <script type="text/javascript" src="/js/Maps/MapsDataLoader.js"></script>
+
+    <script type="text/javascript" src="/js/Views/PinBoardView.js"></script>
+    <script type="text/javascript" src="/js/Views/ShareDialogPinsView.js"></script>
+    <script type="text/javascript" src="/js/Views/PeopleFilter.js"></script>
+    <script type="text/javascript" src="/js/Views/AggregatedCountries.js"></script>
+    <script type="text/javascript" src="/js/Views/PinBoardBadges.js"></script>
+}
+
+@Html.Partial("PinBoardTemplates")
+
+@{
+    var topCitiesStr = $"[{string.Join(",", Model.TopCities)}]";
+    var countryCodesStr = $"['{string.Join("','", Model.CountryCodes)}']";
+    var stateCodesStr = $"['{string.Join("','", Model.StateCodes)}']";
+}
 
 <h1>Your travel map</h1>
 
@@ -77,11 +129,28 @@
     </div>
 </div>
 
-
+@Html.Partial("ShareDialog")
 
 <div id="map">
-    <input class="add-city" placeholder="Place to add" type="text"/>
-    <div id="mapType" class="map-type dropdown dropdown-open">
+    
+    <div class="place-search">
+        <input id="citiesInput" class="inputed" type="text" placeholder="@Model.W("PlaceName")">
+        <img class="loader" src="/images/loader-gray.gif" style="display: none" />
+        <div class="results" style="display: none;">
+
+            <div class="base-cont">
+                <ul class="ul-city"></ul>
+                <ul class="ul-country"></ul>
+            </div>
+
+            <a class="search-soc" href="#">@Model.W("SearchOnSoc")</a>
+            <div class="soc-nets"></div>
+
+        </div>
+    </div>
+
+
+    <div id="mapType" class="map-type dropdown">
         <span class="selected">2D map</span>
         <ul>
             <li data-value="1">2D map</li>
@@ -89,8 +158,9 @@
         </ul>
         <input id="mapTypeValue" type="hidden" value="1">
     </div>
+    
     <div class="share">
-        <span class="icon-share"></span>
+        <span id="share-btn" class="icon-share"></span>
     </div>
 </div>
 
@@ -818,12 +888,33 @@
     </div>
 </div>
 
+
+
 <script>
 
     function onBodyLoad() {
-        L.mapbox.accessToken = 'pk.eyJ1IjoiZ2xvb2JzdGVyIiwiYSI6ImQxZWY5MjRkZjU1NDk2MGU3OWI2OGRiM2U3NTM0MGYxIn0.nCG7hOsSQzb0c-_qzfTCRQ';
-        var map = L.mapbox.map('map', 'mapbox.streets')
-            .setView([40, -74.50], 9);
+        currentView = new Views.PinBoardView();
+
+        currentView.initialize();
+
+        currentView.pinBoardBadges.cities = @Html.Raw(topCitiesStr);
+        currentView.pinBoardBadges.countries = @Html.Raw(countryCodesStr);
+        currentView.pinBoardBadges.states = @Html.Raw(stateCodesStr);
+
+        var gidToTitle = @Html.Raw(JsonConvert.SerializeObject(Model.GidToTitle));
+        currentView.pinBoardBadges.gidToTitle = gidToTitle;
+
+        var friends = @Html.Raw(JsonConvert.SerializeObject(Model.Friends));
+        var f = _.map(friends, function(i) { return {id: i.Id, displayName: i.DisplayName};});
+        currentView.peopleFilter.initFriends(f);
+
+        //Model.ShowFacebookPermissionsDialog &&
+        @if (Model.HasSocNet(SocialNetworkType.Facebook))
+        {
+            @Html.Raw("currentView.initFb();")
+        }
+
+        currentView.setShareText(@Model.Cities, @Model.Countries);
     }
 
 </script>

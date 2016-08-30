@@ -139,6 +139,74 @@ footer .footer_cont {
   background-color: #3298C1;
   color: white; }
 
+.popup-n {
+  margin-bottom: 10px;
+  position: relative; }
+  .popup-n .title {
+    font-size: 24px;
+    font-weight: 600;
+    text-align: left;
+    padding: 5px; }
+  .popup-n .top-line {
+    /*height: 4px;*/
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    border-top: 5px solid #005476; }
+  .popup-n .cont {
+    border-left: 1px solid #3298C1;
+    border-right: 1px solid #3298C1;
+    border-bottom: 1px solid #3298C1;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px; }
+  .popup-n .close {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    top: 7px;
+    right: 5px;
+    text-decoration: none;
+    font-size: 32px;
+    color: #005476;
+    /*font-weight: 700;*/ }
+  .popup-n .close:hover {
+    color: darkred; }
+
+.popup-share .message {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-left: 5px;
+  padding-right: 5px; }
+  .popup-share .message textarea {
+    width: 95%;
+    border: 1px solid #3298C1;
+    border-radius: 2px;
+    line-height: 2;
+    padding: 10px;
+    font-size: 16px; }
+
+.popup-share .bottom {
+  text-align: justify;
+  -moz-text-align-last: justify;
+  -webkit-text-align-last: justify;
+  /* not implemented yet, and will not be */
+  text-align-last: justify;
+  /* IE */
+  padding-left: 10px;
+  padding-right: 10px; }
+  .popup-share .bottom .share_all {
+    display: inline-block; }
+    .popup-share .bottom .share_all .share-cont {
+      /*border: 1px solid red;*/
+      text-align: left; }
+  .popup-share .bottom .share {
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 40px;
+    color: white;
+    background-color: #3298C1;
+    font-weight: 500; }
+
 @font-face {
   font-family: 'icomoon';
   src: url("/fonts/pins/icomoon.eot?f4h0hv");
@@ -158,6 +226,9 @@ footer .footer_cont {
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
+
+.icon-close-cross:before {
+  content: "\e911"; }
 
 .icon-envelope:before {
   content: "\e90c"; }
@@ -235,7 +306,8 @@ footer .footer_cont {
       background: transparent url("../images/arrow-blue.png") left top no-repeat;
       content: "";
       display: block;
-      margin-top: -2px; }
+      margin-top: -2px;
+      line-height: 30px; }
   .dropdown .inputed:focus, .dropdown .inputed:active {
     background-color: white;
     border-color: rgba(101, 189, 215, 0.5); }
@@ -551,21 +623,62 @@ footer .footer_cont {
   height: 600px;
   margin-left: auto;
   margin-right: auto; }
-  #map .add-city {
+  #map .place-search {
     position: absolute;
-    top: 17px;
+    display: inline-block;
+    top: 21px;
     left: 48px;
-    width: 180px;
     z-index: 99999;
-    background: url(/images/n/magnifier.svg) no-repeat scroll 7px 7px;
-    background-color: white;
-    background-position-y: 10px;
-    background-position-x: 10px;
-    padding-left: 37px; }
+    height: 46px;
+    font-size: 18px; }
+    #map .place-search .loader {
+      position: absolute;
+      right: 25px;
+      top: 7px; }
+    #map .place-search input {
+      background: url(/images/n/magnifier.svg) no-repeat scroll 7px 7px;
+      background-color: white;
+      background-position-y: 10px;
+      background-position-x: 10px;
+      padding-left: 37px;
+      width: 200px; }
+    #map .place-search .results {
+      background-color: rgba(255, 255, 255, 0.95);
+      position: absolute;
+      border: 1px solid red;
+      top: 47px;
+      left: -45px; }
+      #map .place-search .results .base-cont {
+        width: 660px;
+        text-align: left;
+        margin-top: 10px; }
+        @media screen and (max-width: 700px) {
+          #map .place-search .results .base-cont {
+            width: 335px; } }
+        #map .place-search .results .base-cont ul {
+          width: 320px;
+          display: inline-block; }
+          #map .place-search .results .base-cont ul li {
+            list-style: none;
+            margin-bottom: 3px;
+            text-align: left; }
+            #map .place-search .results .base-cont ul li .icon-city, #map .place-search .results .base-cont ul li .icon-country {
+              font-size: 26px;
+              color: #F56E12; }
+      #map .place-search .results .soc-nets {
+        padding-left: 15px; }
+        #map .place-search .results .soc-nets .soc-item {
+          width: 235px;
+          margin-right: 3px;
+          float: left; }
+      #map .place-search .results .search-soc {
+        margin-left: 20px;
+        color: black;
+        font-size: 22px; }
   #map .map-type {
     position: absolute;
     top: 17px;
-    left: 240px;
+    left: 260px;
     z-index: 99999; }
   #map .share {
     position: absolute;
@@ -573,7 +686,7 @@ footer .footer_cont {
     right: 10px;
     z-index: 99999;
     text-align: center;
-    padding-top: 7px;
+    padding-top: 1px;
     color: #65BDD7;
     font-size: 32px;
     width: 44px;

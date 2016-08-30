@@ -6,7 +6,7 @@
 
 		constructor() {
 			this.$dialog = $("#popup-share");
-			this.shareButtons = new Common.ShareButtons($("#shareCont"));
+			this.shareButtons = new Common.ShareButtons($(".share-cont"));
 		  this.shareButtons.onSelectionChanged = (nets) => {
 			  this.fillSocStr(nets);
 		  }

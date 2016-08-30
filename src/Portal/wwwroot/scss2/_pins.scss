@@ -84,26 +84,92 @@
     margin-left: auto;
     margin-right: auto;
 
-    .add-city{
+    .place-search{    
         position: absolute;
-        top: 17px;
+        display: inline-block;
+        top: 21px;
         left: 48px;
-
-        width: 180px;
-
+        
         z-index: 99999; 
 
-        background: url(/images/n/magnifier.svg) no-repeat scroll 7px 7px;
-        background-color: white;
-        background-position-y: 10px;
-        background-position-x: 10px;
-        padding-left:37px;
-    }  
+        height: 46px;    
+
+        font-size: 18px;
+    
+        .loader {
+            position: absolute; 
+            right: 25px; 
+            top: 7px;
+        }
+
+        input {
+            background: url(/images/n/magnifier.svg) no-repeat scroll 7px 7px;
+            background-color: white;
+            background-position-y: 10px;
+            background-position-x: 10px;
+            padding-left:37px;
+            width: 200px;
+        }
+
+        .results {            
+            background-color:rgba(255, 255, 255, 0.95);
+
+            position: absolute;            
+            border: 1px solid red;
+            top: 47px;   
+            left: -45px;     
+
+            .base-cont{
+                width: 660px;
+                @include below-width(700){
+                    width: 335px;
+                }
+
+                text-align: left;
+                margin-top: 10px;
+
+                ul{
+                    width: 320px;
+                    
+                    display: inline-block;
+                    
+                    li{
+                        list-style: none;
+                        margin-bottom: 3px;
+                        text-align: left;
+
+                        .icon-city,.icon-country {
+                            font-size: 26px;
+                            color: $orange;
+                        }
+                    }
+                }        
+            }
+
+            .soc-nets {                
+                padding-left: 15px;
+
+                .soc-item {
+                    width: 235px;
+                    margin-right:3px;
+
+                    float: left;
+                }
+            }
+
+            .search-soc{
+                margin-left: 20px;
+                color: black;
+                font-size: 22px;
+            }
+        }
+
+    }
     
     .map-type{
         position: absolute;
         top: 17px;
-        left: 240px;
+        left: 260px;
 
         z-index: 99999; 
     }  
@@ -116,7 +182,7 @@
         z-index: 99999; 
 
         text-align:center;
-        padding-top:7px;
+        padding-top:1px;
         
         color: $light-blue;
         font-size: 32px;

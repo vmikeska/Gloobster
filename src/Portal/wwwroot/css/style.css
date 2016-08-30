@@ -5084,42 +5084,6 @@ input[type=number]::-webkit-outer-spin-button {
   line-height: 40px;
   white-space: nowrap; }
 
-.place-search {
-  position: relative;
-  display: inline-block;
-  width: 250px;
-  height: 46px;
-  font-size: 18px; }
-  .place-search .loader {
-    position: absolute;
-    right: 25px;
-    top: 7px; }
-  .place-search .base-cont {
-    margin-top: 10px; }
-    .place-search .base-cont ul {
-      display: inline-block; }
-  .place-search .search-soc {
-    margin-left: 20px;
-    color: black;
-    font-size: 22px; }
-  .place-search li {
-    list-style: none;
-    margin-bottom: 3px; }
-  .place-search .results {
-    width: 740px;
-    /*background-color: white;*/
-    background-color: rgba(255, 255, 255, 0.95);
-    position: absolute;
-    top: 47px;
-    z-index: 99999; }
-  .place-search .soc-nets {
-    width: 740px;
-    padding-left: 15px; }
-    .place-search .soc-nets .soc-item {
-      width: 235px;
-      margin-right: 3px;
-      float: left; }
-
 .preloader-cont {
   width: 100%;
   height: 500px;
