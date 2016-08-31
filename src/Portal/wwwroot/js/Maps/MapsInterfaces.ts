@@ -71,9 +71,8 @@ module Maps {
 		removePin(gid);	  
 	}
 	
-		export enum ViewType { D3, D2, D1 }
-		export enum DataType { Visited, Interested }
-		export enum DisplayEntity { Pin, Countries, Heat }
+		export enum MapType { D2, D3}		
+		export enum DataType { Cities, Countries, Places }
 
 		export interface IMapsCreator {
 

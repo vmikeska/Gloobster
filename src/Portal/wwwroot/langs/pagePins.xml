@@ -5,7 +5,45 @@
         <en>Your travel map</en>
       </Title>
 
-      <Map2D>
+    <Description>
+      <en>This application can keep track of your traveled cities, countries and places. See where your friends are traveling mostly. See where what places your friends visiting mostly. Are you new in town ? See what places are being visited by people mostly.</en>
+    </Description>
+
+    <ShareTitle>
+      <en>Share your map</en>
+    </ShareTitle>
+    
+    <Cities>
+      <en>CITIES</en>
+    </Cities>
+
+    <Countries>
+      <en>COUNTRIES</en>
+    </Countries>
+
+    <Places>
+      <en>PLACES</en>
+    </Places>
+
+    <MyData>
+      <en>MY DATA</en>
+    </MyData>
+
+    <Friends>
+      <en>FRIENDS</en>
+    </Friends>
+
+    <Everybody>
+      <en>EVERYBODY</en>
+    </Everybody>
+
+    <FilterReset>
+      <en>Reset filter</en>
+    </FilterReset>
+      
+    
+
+    <Map2D>
         <en>2D map</en>
       </Map2D>
 
@@ -18,53 +56,12 @@
       </ShareMap>
 
       <PlaceName>
-        <en>Search a place to pin</en>
+        <en>Place to add</en>
       </PlaceName>
 
     <SearchOnSoc>
       <en>Search on social networks</en>
     </SearchOnSoc>
-
-      <Interested>
-        <en>Interested</en>
-      </Interested>
-
-      <Visited>
-        <en>Visited</en>
-      </Visited>
-
-
-      <Cities>
-        <en>Cities</en>
-      </Cities>
-
-      <Countries>
-        <en>Countries</en>
-      </Countries>
-
-      <HeatMap>
-        <en>Heat map</en>
-      </HeatMap>
-
-      <MessagePlaces>
-        <en>See most favourite locations pinned by your friends and other travelers from all around the world.</en>
-      </MessagePlaces>
-
-      <MessageCountriesInterested>
-        <en>See most desired countries to visit pinned by your friends and other travelers from all around the world.</en>
-      </MessageCountriesInterested>
-
-      <MessageCitiesInterested>
-        <en>See most desired cities to visit pinned by your friends and other travelers from all around the world.</en>
-      </MessageCitiesInterested>
-
-      <MessageCountriesVisited>
-        <en>Keep track of countries you've visited. See countries your friends have visited.</en>
-      </MessageCountriesVisited>
-
-      <MessageCitiesVisited>
-        <en>Keep track of cities you've visited. See cities your friends have visited.</en>
-      </MessageCitiesVisited>
 
       <StatCities>
         <en>Cities</en>

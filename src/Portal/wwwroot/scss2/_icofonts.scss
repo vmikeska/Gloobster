@@ -26,6 +26,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-dropdown-arrow:before {
+  content: "\e912";
+}
 .icon-close-cross:before {
   content: "\e911";
 }
@@ -80,4 +83,5 @@
 .icon-places:before {
   content: "\e910";
 }
+
 

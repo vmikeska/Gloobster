@@ -64,7 +64,7 @@ module Maps {
 
 				public drawCities(cities: PlaceMarker[]) {
 
-						var pvm = <Views.NPinBoardView>Views.ViewBase.currentView;
+						var pvm = <Views.PinBoardView>Views.ViewBase.currentView;
 
 						var contBase = { isJustMe: pvm.peopleFilter.justMeSelected() };
 						cities.forEach(city => {

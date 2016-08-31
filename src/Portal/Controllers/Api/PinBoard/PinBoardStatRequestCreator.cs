@@ -26,65 +26,60 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
         public IEntitiesDemandor Demandor { get; set; }
 
         public IDbOperations DB { get; set; }
-        
+
         public PinBoardStatResponse DataForLoggedInUser(PinBoardStatRequest request, string userId)
         {
             var result = new PinBoardStatResponse();
-            string[] singleFriends = string.IsNullOrEmpty(request.singleFriends) ? new string[0] : request.singleFriends.Split(',');
+            string[] singleFriends = string.IsNullOrEmpty(request.singleFriends)
+                ? new string[0]
+                : request.singleFriends.Split(',');
 
             var ids = GetPeopleIds(request.me, request.friends, singleFriends, userId);
 
-            if (request.dataType == DataType.Visited)
+
+            if (request.dataType == DataType.Cities)
             {
-                if (request.displayEntity == DisplayEntity.Pin)
+                if (request.everybody)
                 {
-                    if (request.everybody)
-                    {
-                        result.visitedCities = GetVisitedCitiesOverall();
-                    }
-                    else
-                    {
-                        var visitedCities = VisitedCities.GetCitiesByUsers(ids, userId);
-                        result.visitedCities = visitedCities.Select(c => VisitedCityMappers.ToResponse(c)).ToArray();
-                    }
+                    result.visitedCities = GetVisitedCitiesOverall();
                 }
-
-                if (request.displayEntity == DisplayEntity.Countries)
+                else
                 {
-                    if (request.everybody)
-                    {
-                        result.visitedCountries = GetVisitedCountriesOverall();
-                        result.visitedStates = GetVisitedStatesOverall();
-                    }
-                    else
-                    {
-                        var visitedCountries = VisitedCountries.GetCountriesByUsers(ids, userId);
-                        result.visitedCountries = visitedCountries.Select(c => c.ToResponse()).ToArray();
-
-                        var visitedStates = VisitedStates.GetStatesByUsers(ids, userId);
-                        result.visitedStates = visitedStates.Select(s => s.ToResponse()).ToArray();
-                    }
-                }
-
-                if (request.displayEntity == DisplayEntity.Heat)
-                {
-                    if (request.everybody)
-                    {
-                        result.visitedPlaces = GetVisitedPlacesOverall();
-                    }
-                    else
-                    {
-                        var visitedPlaces = VisitedPlaces.GetPlacesByUsers(ids, userId);
-                        result.visitedPlaces = visitedPlaces.Select(c => c.ToResponse()).ToArray();
-                    }
+                    var visitedCities = VisitedCities.GetCitiesByUsers(ids, userId);
+                    result.visitedCities = visitedCities.Select(c => VisitedCityMappers.ToResponse(c)).ToArray();
                 }
             }
 
-            //implement
-            if (request.dataType == DataType.Interested)
+            if (request.dataType == DataType.Countries)
             {
+                if (request.everybody)
+                {
+                    result.visitedCountries = GetVisitedCountriesOverall();
+                    result.visitedStates = GetVisitedStatesOverall();
+                }
+                else
+                {
+                    var visitedCountries = VisitedCountries.GetCountriesByUsers(ids, userId);
+                    result.visitedCountries = visitedCountries.Select(c => c.ToResponse()).ToArray();
 
+                    var visitedStates = VisitedStates.GetStatesByUsers(ids, userId);
+                    result.visitedStates = visitedStates.Select(s => s.ToResponse()).ToArray();
+                }
             }
+
+            if (request.dataType == DataType.Places)
+            {
+                if (request.everybody)
+                {
+                    result.visitedPlaces = GetVisitedPlacesOverall();
+                }
+                else
+                {
+                    var visitedPlaces = VisitedPlaces.GetPlacesByUsers(ids, userId);
+                    result.visitedPlaces = visitedPlaces.Select(c => c.ToResponse()).ToArray();
+                }
+            }
+
 
             return result;
         }
@@ -134,7 +129,14 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
 
                 if (friendsChecked)
                 {
-                    outIds.AddRange(friendsIds);
+                    if (ids.Any())
+                    {
+                        outIds.AddRange(ids);
+                    }
+                    else
+                    {
+                        outIds.AddRange(friendsIds);
+                    }                    
                 }
                 else
                 {

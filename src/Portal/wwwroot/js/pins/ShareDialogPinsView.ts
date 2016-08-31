@@ -5,7 +5,7 @@
 		private $dialog: any;
 
 		constructor() {
-			this.$dialog = $("#popup-share");
+			this.$dialog = $(".popup-share");
 			this.shareButtons = new Common.ShareButtons($(".share-cont"));
 		  this.shareButtons.onSelectionChanged = (nets) => {
 			  this.fillSocStr(nets);
@@ -13,7 +13,7 @@
 
 			var v = ViewBase.currentView;
 
-			$("#share").click(() => {
+			this.$dialog.find(".share").click(() => {
 
 			 var id = new Common.InprogressDialog();
 			 this.$dialog.hide();
@@ -37,7 +37,7 @@
 			var networks = this.shareButtons.getSelectedNetworks();
 
 			var data = {
-				message: $("#message").val(),				
+					message: this.$dialog.find("textarea").val(),				
 				networks: networks				
 			}
 

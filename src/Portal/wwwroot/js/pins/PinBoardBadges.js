@@ -69,6 +69,9 @@ var Views;
                 { i: "brisbane.png", n: "Brisbane", g: 2174003 },
                 { i: "adelaide.png", n: "Adelaide", g: 2078025 }
             ];
+            this.itemOverTmp = Views.ViewBase.currentView.registerTemplate("badge-over-template");
+            this.badgesFrameTmp = Views.ViewBase.currentView.registerTemplate("badges-frame-template");
+            this.badgeItemTmp = Views.ViewBase.currentView.registerTemplate("badge-city-template");
         }
         Object.defineProperty(PinBoardBadges.prototype, "mapsDataLoader", {
             get: function () {
@@ -82,9 +85,8 @@ var Views;
             $("#bdgs").html("");
             this.aggregateCountries();
             var $overview = this.generateOverview();
-            $("#bdgs").append($overview);
-            var $cities = this.generateCities();
-            $("#bdgs").append($cities);
+            $("#overview").html($overview);
+            this.generateCities();
         };
         PinBoardBadges.prototype.aggregateCountries = function () {
             this.aggegatedCountries = new Views.AggregatedCountries();
@@ -101,60 +103,68 @@ var Views;
             var euHtml = this.genOverviewItem("states-eu.png", this.aggegatedCountries.euVisited, this.aggegatedCountries.euTotal, "EU");
             var usHtml = this.genOverviewItem("states-us.png", this.aggegatedCountries.usVisited, this.aggegatedCountries.usTotal, "US");
             var html = afrHtml + eurHtml + asiHtml + ausHtml + naHtml + saHtml + euHtml + usHtml;
-            var allHtml = "<div class=\"badges grid margin2 citiesCont\" style=\"text-align: center\">" + html + "</div>";
-            return $(allHtml);
+            return $(html);
         };
         PinBoardBadges.prototype.generateCities = function () {
-            var $html = $("<div class=\"grid col3\"></div>");
+            var $cont = $("#cities");
+            $cont.empty();
             var $naHtml = this.genContCitiesSection(Views.ViewBase.currentView.t("NorthAmerica", "jsPins"), this.naCities);
-            $html.append($naHtml);
+            $cont.append($naHtml);
             var $eurHtml = this.genContCitiesSection(Views.ViewBase.currentView.t("Europe", "jsPins"), this.europeCities);
-            $html.append($eurHtml);
+            $cont.append($eurHtml);
             var $auHtml = this.genContCitiesSection(Views.ViewBase.currentView.t("Australia", "jsPins"), this.australiaCities);
-            $html.append($auHtml);
+            $cont.append($auHtml);
             var $asiHtml = this.genContCitiesSection(Views.ViewBase.currentView.t("Asia", "jsPins"), this.asiaCities);
-            $html.append($asiHtml);
+            $cont.append($asiHtml);
             var $saHtml = this.genContCitiesSection(Views.ViewBase.currentView.t("LatinAmerica", "jsPins"), this.saCities);
-            $html.append($saHtml);
+            $cont.append($saHtml);
             var $afHtml = this.genContCitiesSection(Views.ViewBase.currentView.t("Africa", "jsPins"), this.afCities);
-            $html.append($afHtml);
-            return $html;
+            $cont.append($afHtml);
         };
         PinBoardBadges.prototype.genContCitiesSection = function (continentName, cities) {
             var _this = this;
-            var $html = $("<div class=\"cell\"><h3>" + continentName + "</h3><div class=\"badges b3x3 grid\"></div>");
+            var $cont = $(this.badgesFrameTmp({ title: continentName }));
+            var $table = $cont.find("table");
+            var actRowCity = 0;
+            var $tr;
             cities.forEach(function (city) {
-                var name = "";
+                var $item = $(_this.badgeItemTmp({ gid: city.g }));
+                $item.find("img").attr("src", "../images/badges/" + city.i);
                 var title = _this.gidToTitle[city.g.toString()];
+                var $txt = $item.find(".txt");
                 if (title) {
-                    name = "<a href=\"/wiki/" + title + "\">" + city.n + "</a>";
+                    $txt.html("<a href=\"/wiki/" + title + "\">" + city.n + "</a>");
                 }
                 else {
-                    name = city.n;
+                    $txt.html(city.n);
                 }
-                var $badge = $("<div class=\"cell\" data-gid=\"" + city.g + "\"> <span class=\"badge\"> <span class=\"thumbnail\"> <img src=\"../images/badges/" + city.i + "\"> </span>" + name + "</span> </div>");
-                $html.find(".badges").append($badge);
+                if ((actRowCity === 0) || (actRowCity === 3)) {
+                    $tr = $("<tr></tr>");
+                    $table.append($tr);
+                    actRowCity = 0;
+                }
+                $tr.append($item);
+                var $ifrm = $item.find(".icon");
                 var visited = _.contains(_this.cities, city.g);
-                var $b = $badge.find(".badge");
                 if (visited) {
-                    $b.addClass("active");
-                    $b.attr("title", Views.ViewBase.currentView.t("ClickDelete", "jsPins"));
+                    $ifrm.addClass("active");
+                    $ifrm.attr("title", Views.ViewBase.currentView.t("ClickDelete", "jsPins"));
                 }
                 else {
-                    $badge.find("img").css("opacity", 0.5);
-                    $b.attr("title", Views.ViewBase.currentView.t("ClickCheck", "jsPins"));
+                    $ifrm.attr("title", Views.ViewBase.currentView.t("ClickCheck", "jsPins"));
                 }
-                $badge.find(".thumbnail").click(function (e) { return _this.badgeClick(e); });
+                $ifrm.click(function (e) { return _this.badgeClick(e); });
+                actRowCity++;
             });
-            return $html;
+            return $cont;
         };
         PinBoardBadges.prototype.badgeClick = function (e) {
             var $t = $(e.target);
-            var $cont = $t.closest(".cell");
-            var $badge = $cont.find(".badge");
+            var $cont = $t.closest(".badge_all");
+            var $icon = $cont.find(".icon");
             var gid = $cont.data("gid");
             var view = Views.ViewBase.currentView;
-            if ($badge.hasClass("active")) {
+            if ($icon.hasClass("active")) {
                 view.deletePin(gid);
             }
             else {
@@ -164,7 +174,14 @@ var Views;
         };
         PinBoardBadges.prototype.genOverviewItem = function (img, visitedCnt, totalCnt, name) {
             var imgLink = "../images/badges/" + img;
-            return "<div class=\"cell\"><span class=\"badge\" style=\"cursor: default\"><span class=\"thumbnail\"><img src=\"" + imgLink + "\"></span>" + visitedCnt + "/" + totalCnt + " <b>" + name + "</b></span></div>";
+            var context = {
+                imgLink: imgLink,
+                visitedCnt: visitedCnt,
+                totalCnt: totalCnt,
+                name: name
+            };
+            var html = this.itemOverTmp(context);
+            return html;
         };
         return PinBoardBadges;
     }());

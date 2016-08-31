@@ -1,4 +1,4 @@
 namespace Gloobster.Enums
 {
-	public enum DataType { Visited, Interested }
+	public enum DataType { Cities, Countries, Places }
 }

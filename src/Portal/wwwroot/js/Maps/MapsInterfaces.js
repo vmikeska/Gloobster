@@ -36,23 +36,17 @@ var Maps;
         return PlacesDisplay;
     }());
     Maps.PlacesDisplay = PlacesDisplay;
-    (function (ViewType) {
-        ViewType[ViewType["D3"] = 0] = "D3";
-        ViewType[ViewType["D2"] = 1] = "D2";
-        ViewType[ViewType["D1"] = 2] = "D1";
-    })(Maps.ViewType || (Maps.ViewType = {}));
-    var ViewType = Maps.ViewType;
+    (function (MapType) {
+        MapType[MapType["D2"] = 0] = "D2";
+        MapType[MapType["D3"] = 1] = "D3";
+    })(Maps.MapType || (Maps.MapType = {}));
+    var MapType = Maps.MapType;
     (function (DataType) {
-        DataType[DataType["Visited"] = 0] = "Visited";
-        DataType[DataType["Interested"] = 1] = "Interested";
+        DataType[DataType["Cities"] = 0] = "Cities";
+        DataType[DataType["Countries"] = 1] = "Countries";
+        DataType[DataType["Places"] = 2] = "Places";
     })(Maps.DataType || (Maps.DataType = {}));
     var DataType = Maps.DataType;
-    (function (DisplayEntity) {
-        DisplayEntity[DisplayEntity["Pin"] = 0] = "Pin";
-        DisplayEntity[DisplayEntity["Countries"] = 1] = "Countries";
-        DisplayEntity[DisplayEntity["Heat"] = 2] = "Heat";
-    })(Maps.DisplayEntity || (Maps.DisplayEntity = {}));
-    var DisplayEntity = Maps.DisplayEntity;
     var PeopleSelection = (function () {
         function PeopleSelection() {
         }

@@ -72,6 +72,66 @@
                 font-size: 16px;
                 font-weight: 600;
                 color: $light-blue;
+
+                .cmb_all{
+                    position: relative;
+
+                    .cmb{                    
+                        text-decoration: none;
+                        color: $light-blue;
+                    }
+
+                    .cmb:hover{
+                            color: $dark-blue;                    
+                    }
+
+                    .list{
+                        display: block;
+                        position: absolute;
+                        top: 30px;
+                        right:0;
+                        text-align: left;
+                                                
+                        height: 300px;
+                        width: 300px;
+
+                        z-index: 999999;
+                        background-color: white;
+
+                        border: 1px solid $light-blue;
+
+                        border-bottom-left-radius: 2px;
+                        border-bottom-right-radius: 2px;
+
+                        font-size: 20px;
+                        font-weight: 500;
+
+                        .clear{
+                            border-bottom: 1px solid $light-blue;
+                            padding-left: 10px;
+
+                            a {                                
+                                color: darkred;
+                                /*font-size: 18px;*/
+                                text-decoration: none;
+                                font-weight: 600;
+                            }
+                            a:hover{
+                                color: $dark-blue;
+                            }
+                        }
+
+                        .cont {
+
+                            .item{
+                                border-bottom: 1px solid $light-blue;
+                                padding-left: 10px;                            
+                            }
+                        }
+
+                    }
+                }
+
             }
         }
     }
@@ -83,6 +143,7 @@
     height: 600px;
     margin-left: auto;
     margin-right: auto;
+    background-color: white;
 
     .place-search{    
         position: absolute;
@@ -197,7 +258,25 @@
     .share:hover{
         color: $dark-blue;        
     }
+
+    .preloader-cont {
+        width: 100%;
+        height: 500px;
+        background-color: white;
+
+        img {
+            width: 128px;
+            height: 128px;
+            position: absolute;
+            left: 50%;
+            top: 50%; 
+            margin-left: -64px;
+            margin-top: -64px;
+        }
+    }
 }
+
+
 
 .stats{
     
@@ -235,6 +314,7 @@
 .badge_all {
         width: 80px;
         display: inline-block;
+        vertical-align:top;
         margin-right: 20px;
 
         .icon {            
@@ -268,9 +348,72 @@
         .cities{
             .badge_all{
                 margin-top: 10px;
+
+                .icon{                 
+                    opacity: 0.5;
+                    cursor: pointer; cursor: hand;
+                }
+
+                .active{                    
+                    opacity: 1 !important;
+                }
+
+                .txt{
+                    a{
+                        color: $light-blue;
+                    }
+                    a:hover{
+                        color: $dark-blue;
+                    }
+                }
             }
         }
 
     }
 } 
 
+.my-legend {            
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            color: black;
+            font-family: "PT Sans", sans-serif;
+            font-size: 16px;
+            z-index: 99999;
+            background-color: white;
+            opacity: 0.7;
+            border-radius: 10px;
+           }
+        
+        .my-legend .legend-title {
+            text-align: left;
+            margin: 5px;
+            font-weight: bold;
+            font-size: 90%;
+        }
+
+        .my-legend .legend-scale ul {
+            margin: 0;
+            margin-bottom: 5px;
+            padding: 0;
+            float: left;
+            list-style: none;
+        }
+
+        .my-legend .legend-scale ul li {
+            font-size: 80%;
+            list-style: none;
+            margin-left: 0;
+            line-height: 18px;
+            margin-bottom: 2px;
+        }
+
+        .my-legend ul.legend-labels li span {
+            display: block;
+            float: left;
+            height: 16px;
+            width: 30px;
+            margin-right: 5px;
+            margin-left: 5px;
+            border: 1px solid #999;
+        }

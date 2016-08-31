@@ -29,22 +29,15 @@
 				}
 			});
 
-			//what was the meaning of this ?
-			// $(document).on('keypress click', '.dropdown .inputed', (e) => {	   
-			//  var inputed = $(e.target);
-			//var dropdown = inputed.closest('.dropdown');
+			}
 
-			//dropdown.addClass('dropdown-open');
+			public static setValue($dd, value) {
+					$dd.val(value);
+					var $li = $dd.find(`li[data-value="${value}"]`);
+					var t = $li.text();
+				$dd.find(".selected").text(t);
+			}
 
-			//  if (!dropdown.hasClass('with-checkbox')) {
-			//   dropdown.find('li:not(.disabled)').unbind('click').click(() => {
-			//    dropdown.removeClass('dropdown-open');
-			//    inputed.val(inputed.is('[data-value]') ? inputed.data('value') : inputed.html()).trigger('change');
-			//   });
-			//  }
-			// });
-		}
-			
 		private static hideOthers(hovered) {
 			var $items = $('.dropdown').not(hovered);
 

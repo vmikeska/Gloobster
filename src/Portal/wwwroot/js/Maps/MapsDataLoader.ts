@@ -5,11 +5,10 @@ module Maps {
 
 		public dataLoadedCallback: Function;
 
-		public getPluginData(dataType: DataType, displayEntity: DisplayEntity, people: PeopleSelection) {
+		public getPluginData(dataType: DataType, people: PeopleSelection) {
 
 			var request = [
-				["dataType", dataType.toString()],
-				["displayEntity", displayEntity.toString()]
+				["dataType", dataType.toString()]				
 			];
 		 
 			request = $.merge(request, [

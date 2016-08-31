@@ -22,6 +22,12 @@ var Common;
                 }
             });
         };
+        DropDown.setValue = function ($dd, value) {
+            $dd.val(value);
+            var $li = $dd.find("li[data-value=\"" + value + "\"]");
+            var t = $li.text();
+            $dd.find(".selected").text(t);
+        };
         DropDown.hideOthers = function (hovered) {
             var $items = $('.dropdown').not(hovered);
             $items.each(function (i, el) {

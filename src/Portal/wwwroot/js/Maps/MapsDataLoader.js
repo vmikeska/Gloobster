@@ -3,11 +3,10 @@ var Maps;
     var MapsDataLoader = (function () {
         function MapsDataLoader() {
         }
-        MapsDataLoader.prototype.getPluginData = function (dataType, displayEntity, people) {
+        MapsDataLoader.prototype.getPluginData = function (dataType, people) {
             var _this = this;
             var request = [
-                ["dataType", dataType.toString()],
-                ["displayEntity", displayEntity.toString()]
+                ["dataType", dataType.toString()]
             ];
             request = $.merge(request, [
                 ["me", people.me.toString()],

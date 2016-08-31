@@ -5,7 +5,6 @@ namespace Gloobster.ReqRes.PinBoard
 	public class PinBoardStatRequest
 	{
 		public DataType dataType { get; set; }
-		public DisplayEntity displayEntity { get; set; }
 
         public bool me { get; set; }
         public bool friends { get; set; }
