@@ -1,0 +1,23 @@
+﻿@using System.Threading.Tasks
+@using System.Linq
+@using Gloobster.Portal.ViewModels
+@model double
+
+<div class="stars">
+
+    @for (int act = 1; act <= 10; act = act + 2)
+    {
+        double actd_l = ((double) act)/2d;
+        double actd_r = ((double) (act + 1))/2d;
+
+        var color_l = (actd_l <= Model) ? "active" : "inactive";
+        var color_r = (actd_r <= Model) ? "active" : "inactive";
+
+        <div class="star" data-i="@act">
+            <div class="icon-star-left @color_l"></div>
+            <div class="icon-star-right @color_r"></div>
+        </div>
+    }
+
+</div>
+       

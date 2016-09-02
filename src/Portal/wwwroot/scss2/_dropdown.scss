@@ -66,10 +66,10 @@ $dropdown-speed: 0.3s;
             border-bottom: 1px solid $dropdown-border;
             list-style: none;
             padding: $dropdown-padding;
-            /*&.disabled {
-                color: $color1;
+            &.disabled {
+                color: gray;
                 cursor: default;
-            }*/
+            }
             &:hover:not(.disabled) {
                 background-color: $dropdown-hover;
             }
@@ -77,6 +77,11 @@ $dropdown-speed: 0.3s;
                 border-bottom-right-radius: $dropdown-radius;
                 border-bottom-left-radius: $dropdown-radius;                   
                 border-bottom-color: transparent;
+            }
+
+            a {
+                color: $light-blue;
+                text-decoration: none;
             }
         }
     }

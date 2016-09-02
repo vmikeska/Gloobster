@@ -1,230 +1,407 @@
 ﻿
-.wiki_header{
-    border-bottom: 2px solid $dark-blue;
-    
-    height: 450px;
-    overflow: hidden;
-    position: relative;
+$light-gray: #f2f2f2;
 
-    .bck {
-        border: 1px solid red;
+.stars {
+    .star{        
+        display:inline-block;
+        font-size: 30px;
+        
+        .active {
+            color: $yellow;
+        }
 
-        width: 1920px;
+        .inactive {
+            color: lightgray;
+        }
+
+        .icon-star-left {
+            float: left;
+        }
+        .icon-star-right {
+            margin-left: -0.4px;
+            float: right;
+        }
+    }
+}
+
+.wiki {
+
+    h1{
+        text-align: center;
+    }
+
+    .search {
+        
+        input {            
+            border:0;
+        }
+
+        li{
+            min-width: 320px;
+
+            a {
+                display: inline-block;                
+            }
+
+            .stars {
+                position: absolute;
+                right: 5px;
+                display: inline-block;                
+                .star{
+                    font-size: 18px;
+                }
+            }
+        }
+    }
+
+    .wiki_header_all {
         height: 450px;
-
-        @include centerer;
-
-        background-image: url("/images/n/title1.jpg");
-    }
-    
-}
-
-.wiki_info{
-    
-    /*height: 600px;*/
-    background-color: $light-blue3;
- 
-    .bl{
-        margin-right: 30px;
-
-        @include below-width(803){
-            margin-right: 0;        
-        }
-    }
-
-    .br{
-        margin-left: 30px;
-
-        @include below-width(803){     
-            margin-left: 0;
-        }
-    }
-
-    .block { 
-        display: inline-block;
-        padding-top: 50px;
-        max-width: 360px;
-        min-width: 320px;
-        /*border: 1px solid red;*/
-
-        .ico {
-            width: 180px;
-            height: 180px;
-            margin-right: auto;
-            margin-left: auto;
-            margin-bottom: 35px;
-        }
-        .title {
-            color: $yellow2;            
-        }
-        .text {            
-            color: white;
-            height: 170px;
-        }
-        .btn {            
-            height: 50px;
-
-            .lbtn {
-                color: $light-blue3;
-                background-color: $yellow2;
-            }
-        }
-    }
-}
-
-.article_rating{
-    width: 155px;
-    height: 41px;
-    color: $light-blue3;
-    display: table;
-    border: 1px solid $light-blue3;
-    border-radius: 2px;
-
-    .wrap{                
-        display: table-cell;
-        vertical-align: middle;        
-
-        .frame{            
-            display: inline-block;
-            width: 32px;
-            height: 32px;
-            border-left: 1px solid $light-blue3;
-
-            a{                                
-                width: 24px;
-                height: 24px;
-                display: inline-block;
-                font-size: 21px;       
-                text-decoration: none;   
-                color: $light-blue3;      
-            }
-
-            a:hover{
-                color: $dark-blue;
-            }
-
-            .icon-edit-pencil{
-                margin-top: 4px;
-                margin-left: 8px;
-            }
-
-            .icon-dislike {
-                margin-top: 9px;
-                margin-left: 7px;
-            }
-
-            .icon-like {
-                margin-top: 2px;
-                margin-left: 7px;
-            }
-
-            .score{                
-                width: 32px;
-                margin-top: 2px;
-                margin-left: 4px;
-            }
-        }
-    }
-
-    .wrap:first-of-type {
-        .frame{
-            border: 0;
-        }
-    }
-    
-}
-
-
-
-
-.wiki_article_wide{  
-    
-    .photo {
-        height: 420px;
-        overflow: hidden;
         position: relative;
-        border-radius: 2px;
+        text-align: center;
 
-        .bck{
+        .wiki_header{
+            border-bottom: 2px solid $dark-blue;
+    
+            height: 450px;
+            overflow: hidden;
+            position: relative;
+
+            .bck {            
+                width: 1920px;
+                height: 450px;
+
+                text-align: center;
+
+                @include centerer;
+
+                background-image: url("/images/n/nyc1.jpg");   
             
-            width: 1280px;
-            height: 420px;
-
-            @include centerer;
-
-            background-image: url("/images/n/wiki_wide.jpg");            
+                .search_all{                
+                    display: inline-block;
+                    position: relative;
+                    height: 450px;
+                    width: 600px;
+                
+                    .circle-bck{
+                        height: 450px;
+                        width: 600px;
+                        position: relative;
+                        background: url("/images/n/middle-circle.svg");
+                        opacity: 0.7;
+                    }
+                }         
+            }
+    
         }
+
+        .cont{            
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            min-width: 320px;
+            max-width: 400px;
+            height: 450px;
+            transform: translateX(-50%);
+
+            h1 {                
+                color: white;
+                font-weight: 500;
+                margin-top: 80px;
+            }
+
+            /*height: 450px;
+            width: 600px;
+            position: absolute;
+            top:0;
+            left:0;
+
+            z-index: 99999;*/
+        }
+
     }
 
-    .service{        
-        padding-top: 20px; 
-        padding-left: 10px;
-        @include text-justify;
+    .wiki_info{
+    
+        /*background-color: $light-blue3;*/
+        background-color: $dark-blue;
+ 
+        .bl{
+            margin-right: 30px;
 
-        h2,.rate{
+            @include below-width(803){
+                margin-right: 0;        
+            }
+        }
+
+        .br{
+            margin-left: 30px;
+
+            @include below-width(803){     
+                margin-left: 0;
+            }
+        }
+
+        .block { 
             display: inline-block;
             vertical-align: top;
-            font-weight: 500;
-        }
+            padding-top: 50px;
+            max-width: 360px;
+            min-width: 320px;
+            /*border: 1px solid red;*/
 
-        h2{
-            margin-top: 0px;
-        } 
+            .ico {
+                width: 180px;
+                height: 180px;
+                margin-right: auto;
+                margin-left: auto;
+                margin-bottom: 35px;
+            }
+            .title {
+                color: $yellow2;            
+            }
+            .text {            
+                color: white;
+                height: 170px;
+            }
+            .btn {            
+                height: 50px;
 
-        .rate{            
-            
+                .lbtn {
+                    color: $light-blue3;
+                    background-color: $yellow2;
+                }
+            }
         }
     }
-    
-}
 
-.wiki_articles{
-    .article:first-of-type {        
-        margin-right: 28px;
+    .article_rating{
+        width: 155px;
+        height: 41px;
+        color: $light-blue3;
+        display: table;
+        border: 1px solid $light-blue3;
+        border-radius: 2px;
 
-        @include below-width(1302){
-            margin-right: 0px;
-        }
-    }
-    
-    .article{        
-        /*border: 1px solid red;*/
-        display:inline-block;
-        max-width: 626px;
-        /*height: 416px;*/
+        .wrap{                
+            display: table-cell;
+            vertical-align: middle;        
 
-        .photo{
-            
-            border-radius: 2px;
-            overflow: hidden;
+            .frame{            
+                display: inline-block;
+                width: 32px;
+                height: 32px;
+                border-left: 1px solid $light-blue3;
 
-            img {
-                max-width: 626px;
+                a{                                
+                    width: 24px;
+                    height: 24px;
+                    display: inline-block;
+                    font-size: 21px;       
+                    text-decoration: none;   
+                    color: $light-blue3;      
+                }
 
-                @include below-width(626){
-                    max-width: 100%;
+                a:hover{
+                    color: $dark-blue;
+                }
+
+                .icon-edit-pencil{
+                    margin-top: 4px;
+                    margin-left: 8px;
+                }
+
+                .icon-dislike {
+                    margin-top: 9px;
+                    margin-left: 7px;
+                }
+
+                .icon-like {
+                    margin-top: 2px;
+                    margin-left: 7px;
+                }
+
+                .score{                
+                    width: 32px;
+                    margin-top: 2px;
+                    margin-left: 4px;
                 }
             }
         }
 
-        .service {
-            padding-top: 10px;
-
-            h2 {
-                display:inline-block;
-                vertical-align: top;
-                width: 65%;
-                /*border: 1px solid red;*/
-                text-align: left;
-                margin-top: 0px;
-                font-weight: 500;
-                font-size: 24px;
-            }
-
-            .rate {
-                display:inline-block;
-                vertical-align: top;
+        .wrap:first-of-type {
+            .frame{
+                border: 0;
             }
         }
+    
+    }
+
+
+
+
+    .wiki_article_wide{  
+    
+        .photo {
+            height: 420px;
+            overflow: hidden;
+            position: relative;
+            border-radius: 2px;
+
+            .bck{
+            
+                width: 1280px;
+                height: 420px;
+
+                @include centerer;
+
+                /*background-image: url("/images/n/wiki_wide.jpg");*/            
+            }
+        }
+
+        .service {                
+                position: relative;
+                height: 20px;
+                
+                .title {                    
+                    position: absolute;
+                    left: 0;
+
+                    a {
+                        color: $light-blue3;
+                        vertical-align: top;
+
+                        h2{
+                            font-weight: 500;
+                            font-size: 28px;
+                            margin-top: 0;
+                            margin-bottom: 0;
+                        }                        
+                    }
+                }
+
+                .stars{                    
+                    position: absolute;
+                    right: 0;
+                    top: 5px;
+                     
+                     .star{        
+                        font-size: 26px;
+                     }
+                }
+            }
+
+        .txt{                        
+            padding-left: 0;
+            padding-right: 0;
+            margin-bottom: 20px;
+        }
+    
+    }
+
+    .wiki_articles{
+        
+        > :nth-child(odd){
+            margin-right: 10px;
+            @include below-width(1280){
+                margin-right: 0;
+            }
+        }
+    
+        .article{                    
+            display:inline-block;
+            vertical-align: top;
+            max-width: 626px;
+            margin-bottom: 20px;
+            /*height: 416px;*/
+
+            .photo{
+            
+                img {
+                    max-width: 626px;
+
+                    border-radius: 2px;
+
+                    @include below-width(626){
+                        max-width: 100%;
+                    }
+                }
+            }
+
+            .service {                
+                position: relative;
+                height: 20px;
+                
+                .title {                    
+                    position: absolute;
+                    left: 0;
+
+                    a {
+                        color: $light-blue3;
+                        vertical-align: top;
+
+                        h2{
+                            font-weight: 500;
+                            font-size: 24px;
+                            margin-top: 0;
+                            margin-bottom: 0;
+                        }                        
+                    }
+                }
+
+                .stars{                    
+                    position: absolute;
+                    right: 0;
+                     
+                     .star{        
+                        font-size: 26px;
+                     }
+                }
+            }
+
+            /*.rate {
+                display:inline-block;
+                vertical-align: top;
+            }*/
+
+            .txt{
+                    height: 100px;                    
+                    overflow: hidden;
+                    padding-left: 0;
+                    padding-right: 0;
+                    margin-bottom: 5px;
+                }
+
+            .more{
+                text-align: left;
+                
+                a {
+                    color: $light-blue3;
+                }
+            }
+        }
+    }
+
+    .counties {
+
+        h2{
+            font-weight: 500;
+        }
+
+        background-color: $light-gray;
+        padding-bottom: 20px;
+        padding-top: 20px;
+
+        .block {
+            display: inline-block;
+            vertical-align: top;
+            width: 250px;
+            margin-top: 30px;
+
+            .item{
+                a {
+                    color: $light-blue3;
+                }
+            }
+        }        
     }
 }

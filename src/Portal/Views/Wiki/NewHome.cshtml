@@ -6,147 +6,145 @@
 @model WikiHomeViewModel
 @{
     ViewBag.MenuGroup = "Wiki";
+    ViewBag.BodyClass = "wiki";
     ViewData["Title"] = "Wiki home";
     Layout = "_LayoutNew";
 
-    <link href="~/css/main.css" rel="stylesheet" />
+    var prague = Model.TextById(3067696);
 
-    //List<WikiTextsEntity> allItems = Model.Texts;
-    //if (GloobsterConfig.IsLocal && allItems.Count < 30)
-    //{
-    //    while (allItems.Count < 30)
-    //    {
-    //        allItems.AddRange(Model.Texts);
-    //    }
-    //}
-
-    //List<WikiTextsEntity> first10 = allItems.Take(10).ToList();
-    //var others = new List<WikiTextsEntity>();
-    //others.AddRange(allItems);
-    //others.RemoveRange(0,10);
-
-    //var othersBy3 = others.SplitBy(3);
+    var smallArticles = Model.Articles.Where(a => a.GID != 3067696);    
 }
 
-@*<script type="text/javascript" src="@Url.Content("~/js/Views/WikiHomeView.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/js/Views/WikiSearchCombo.js")"></script>*@
+@if (GloobsterConfig.UseMiniScripts)
+{    
+    @*<script src="/jsb/nindex.js" type="text/javascript" data-notbuild="true"></script>*@
+}
+else
+{
+    <link href="~/css/main.css" rel="stylesheet" />
 
+    <script type="text/javascript" src="@Url.Content("~/js/Views/WikiHomeView.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/js/Views/WikiSearchCombo.js")"></script>
+}
 
-<div class="wiki_header">    
-        <div class="bck"></div>    
+<div class="wiki_header_all">
+    <div class="wiki_header">
+        <div class="bck">
+            <div class="search_all">
+                <div class="circle-bck">
+
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+
+    <div class="cont">
+        <h1>@Model.W("Title")</h1>
+
+        <div>
+            <div id="SearchCombo" class="dropdown search">
+                <input class="inputed" type="text" placeholder="@Model.W("SearchPlaceholder")">
+                <img class="loader" src="/images/loader-gray.gif" style="display: none" />
+                <ul style="text-align: left"></ul>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="wiki_info">
+
     <div class="block bl">
         <div class="ico"><img src="/images/n/pencil.svg"/>
         </div>
         <div class="title">
-            <h2>Wiki articles created by travelers for travelers</h2>
+            <h2>@Model.W("MottoForTravelers")</h2>
         </div>
         <div class="text">
-            Unt qui sit ea dipiendis aperchi llaborepudam
-            fugit odicil inctiur sanistet optatemperat
-            mapost offi cidusci ut volese offi cillor sitinctibus
-            repernata et ommo voluptatest
+            @Model.W("ForTravelersText")
         </div>
-        <div class="btn">
-            <a class="lbtn" href="#">Learn more</a>
-        </div>
+        @*<div class="btn">
+            <a class="lbtn" href="#">@Model.W("LearnMoreBtn")</a>
+        </div>*@
     </div>
-
+    
     <div class="block br">
         <div class="ico"><img src="/images/n/guy.svg"/>
         </div>
         <div class="title">
-            <h2>Help us to build the biggest Travel wiki</h2>
+            <h2>@Model.W("MottoHelpUs")</h2>
         </div>
         <div class="text">
-            Ibus nimaxim aperchi aionsequae aditae
-            doluptur am nobist et, ea serum iur Hicimodi
-            cullaccum, sitio is simus, to im quamus conet
-            aut harupta serum turitat
+            @Model.W("HelpUsText")
         </div>
-        <div class="btn">
-            <a class="lbtn" href="#">Join us</a>
-        </div>
+        @*<div class="btn">
+            <a class="lbtn" href="#">@Model.W("JoinUsBtn")</a>
+        </div>*@
     </div>
 </div>
 
 <h2>Latests Articles</h2>
 
-
-
 <div class="wiki_article_wide wrapper">
+
     <div class="photo">
-        <div class="bck"></div>
-    </div>
-    <div class="service">        
-        <h2>Prague am Moldau</h2>
-        
-        <div class="rate">
-            @Html.Partial("NewArticleRating")
+        <div class="bck">
+            <img src="/picd/3067696/whb"/>
         </div>
+    </div>
+    <div class="service">
+        <div class="title">
+            <a href="/wiki/prague">
+                <h2>@prague.Title</h2>
+            </a>
+        </div>
+
+        @Html.Partial("Stars", prague.Rating)
     </div>
 
     <p class="txt">
-        Em. Ed mostio. Mo bla volupta voluptur Volenim aionsedit porrovidenis este velluptat. Me
-        cum endaes quamus eic tem esendus dolutem veliquam faccus everianda etur apellupta issimi,
-        ommoloresto core nus sam eum essimusam is quam qui iur aut eum quiam am Gendit
-        et qui unt. Ximod eatiae natusam endebita numet aut aut alitectet.
+        @Model.SectionText(prague, "Base").Text
     </p>
 </div>
 
-<div class="wiki_articles">
-    <div class="article">
+<div class="wiki_articles wrapper">
 
-        <div class="photo">
-            <img src="/images/n/wiki_small.jpg"/>
-        </div>
+    @foreach (var article in smallArticles)
+    {
+        @Html.Partial("NewArticle", article)            
+    }
 
-        <div class="service">
-            <h2>Prague am Moldau Prague am Moldau</h2>
+    @*<div class="rate">
+            @Html.Partial("NewArticleRating")
+        </div>*@
 
-            <div class="rate">
-                @Html.Partial("NewArticleRating")
+</div>
+
+<div class="counties">
+
+    <h2>Learn more about countries</h2>
+
+    <div class="wrapper">
+
+        @foreach (var block in Model.GetCountryLinks())
+        {
+            <div class="block">
+                @foreach (var item in block)
+                {
+                    <div class="item">
+                        <a href="/wiki/@item.Link">@item.Title</a>
+                    </div>
+                }
             </div>
-        </div>
-
-        <p class="txt">
-            Em. Ed mostio. Mo bla volupta voluptur Volenim aionsedit porrovidenis este velluptat. Me
-            cum endaes quamus eic tem esendus dolutem veliquam faccus everianda etur apellupta issimi,
-            ommoloresto core nus sam eum essimusam is quam qui iur aut eum quiam am Gendit
-            et qui unt. Ximod eatiae natusam endebita numet aut aut alitectet.
-        </p>
-
-    </div>
-
-    <div class="article">
-
-        <div class="photo">
-            <img src="/images/n/wiki_small.jpg" />
-        </div>
-
-        <div class="service">
-            <h2>Prague am Moldau</h2>
-
-            <div class="rate">
-                @Html.Partial("NewArticleRating")
-            </div>
-        </div>
-
-        <p class="txt">
-            Em. Ed mostio. Mo bla volupta voluptur Volenim aionsedit porrovidenis este velluptat. Me
-            cum endaes quamus eic tem esendus dolutem veliquam faccus everianda etur apellupta issimi,
-            ommoloresto core nus sam eum essimusam is quam qui iur aut eum quiam am Gendit
-            et qui unt. Ximod eatiae natusam endebita numet aut aut alitectet.
-        </p>
+        }
 
     </div>
 </div>
 
 <script>
 	function onBodyLoad() {
-	    //currentView = new Views.WikiHomeView();
+	    currentView = new Views.WikiHomeView();
 	}
 
 </script>

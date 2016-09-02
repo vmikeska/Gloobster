@@ -18,9 +18,9 @@ namespace Gloobster.DomainModels.Wiki
         public const int OneStarLength = 60;
         public const int FiveStarLength = 400;
         
-        public async Task<decimal> EvaluateArticle(string articleId)
+        public async Task<double> EvaluateArticle(string articleId)
         {
-            var results = new List<decimal>();
+            var results = new List<double>();
 
             var articleIdObj = new ObjectId(articleId);            
             var sectionIds = new List<ObjectId>();
@@ -53,14 +53,14 @@ namespace Gloobster.DomainModels.Wiki
                     }
                     else
                     {
-                        decimal index = (Convert.ToDecimal(text.Length)/Convert.ToDecimal(FiveStarLength));
-                        decimal rating = index*5;
+                        double index = (Convert.ToDouble(text.Length)/Convert.ToDouble(FiveStarLength));
+                        double rating = index*5;
                         results.Add(rating);
                     }
                 }
             }
 
-            decimal avg = results.Average(i => i);
+            double avg = results.Average(i => i);
             
             var f = DB.F<WikiTextsEntity>().Eq(c => c.Article_id, articleIdObj);
             var u = DB.U<WikiTextsEntity>().Set(c => c.Rating, avg);

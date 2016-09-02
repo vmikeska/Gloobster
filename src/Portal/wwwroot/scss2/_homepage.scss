@@ -112,6 +112,7 @@
 
 .fly_all {
     background-color: $light-blue3;
+    background-color: $dark-blue;
     text-align: center;
     padding-top: 50px;
     
@@ -210,7 +211,7 @@
         padding-bottom: 50px;
 
         input {
-            border: 3px solid $dark-blue !important;
+            /*border: 3px solid $dark-blue !important;*/
         }
 
         ul {

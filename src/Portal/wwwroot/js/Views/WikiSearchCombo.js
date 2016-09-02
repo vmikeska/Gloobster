@@ -42,22 +42,23 @@ var Views;
         };
         WikiSearchCombo.prototype.showResults = function (places) {
             var _this = this;
-            this.$combo.find("ul").show();
-            var htmlContent = "";
+            places = _.sortBy(places, function (p) { return p.rating; }).reverse();
+            var $ul = this.$combo.find("ul");
+            $ul.empty();
+            $ul.show();
             var hasRated = (places.length > 0 && places[0].rating > 0);
             if (hasRated) {
-                htmlContent = this.getDisabledItem("Articles rich on content");
+                $ul.append(this.getDisabledItem("Articles rich on content"));
             }
             var ratedFinished = false;
             places.forEach(function (item) {
                 if (item.rating === 0 && !ratedFinished) {
-                    htmlContent += _this.getDisabledItem("Help us contribute on these articles");
+                    $ul.append(_this.getDisabledItem("Help us contribute on these articles"));
                     ratedFinished = true;
                 }
-                htmlContent += _this.getItemHtml(item);
+                var $li = _this.getItemHtml(item);
+                $ul.append($li);
             });
-            var $ul = this.$combo.find("ul");
-            $ul.html(htmlContent);
             if (this.selectionCallback) {
                 $ul.find("a").click(function (e) {
                     e.preventDefault();
@@ -67,12 +68,20 @@ var Views;
             this.loader(false);
         };
         WikiSearchCombo.prototype.getItemHtml = function (item) {
-            var ratingPercents = Math.round(item.rating * 20);
-            var rating = "";
+            var $stars = $("<div class=\"stars\"></div>");
             if (this.config && this.config.showRating) {
-                rating = "&#9;&#9;<span class=\"rating pct" + ratingPercents + " bottom right\"> </span>";
+                for (var act = 1; act <= 10; act = act + 2) {
+                    var actd_l = act / 2;
+                    var actd_r = (act + 1) / 2;
+                    var color_l = (actd_l <= item.rating) ? "active" : "inactive";
+                    var color_r = (actd_r <= item.rating) ? "active" : "inactive";
+                    var $star = $("\n\t\t\t\t\t\t\t\t<div class=\"star\" data-i=\"" + act + "\">\n\t\t\t\t\t\t\t\t\t\t<div class=\"icon-star-left " + color_l + "\"></div>\n\t\t\t\t\t\t\t\t\t\t<div class=\"icon-star-right " + color_r + "\"></div>\n\t\t\t\t\t\t\t\t</div>");
+                    $stars.append($star);
+                }
             }
-            return "<li><span class=\"clearfix\"><a class=\"left\" data-articleId=\"" + item.articleId + "\" href=\"/wiki/" + item.language + "/" + item.link + "\">" + item.title + "</a>  " + rating + "</span></li>";
+            var $li = $("<li><a data-articleId=\"" + item.articleId + "\" href=\"/wiki/" + item.language + "/" + item.link + "\">" + item.title + "</a></li>");
+            $li.append($stars);
+            return $li;
         };
         return WikiSearchCombo;
     }());

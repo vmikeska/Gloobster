@@ -134,7 +134,6 @@ p {
       color: #009EC4; }
 
 footer .footer_cont {
-  margin-top: 40px;
   height: 200px;
   background-color: #3298C1;
   color: white; }
@@ -288,14 +287,20 @@ footer .footer_cont {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
+.icon-envelope:before {
+  content: "\e90c"; }
+
+.icon-star-left:before {
+  content: "\e913"; }
+
+.icon-star-right:before {
+  content: "\e914"; }
+
 .icon-dropdown-arrow:before {
   content: "\e912"; }
 
 .icon-close-cross:before {
   content: "\e911"; }
-
-.icon-envelope:before {
-  content: "\e90c"; }
 
 .icon-ico-travel-buddy:before {
   content: "\e90a"; }
@@ -393,17 +398,19 @@ footer .footer_cont {
     .dropdown ul li {
       border-bottom: 1px solid rgba(101, 189, 215, 0.5);
       list-style: none;
-      padding: 9px 19px;
-      /*&.disabled {
-                color: $color1;
-                cursor: default;
-            }*/ }
+      padding: 9px 19px; }
+      .dropdown ul li.disabled {
+        color: gray;
+        cursor: default; }
       .dropdown ul li:hover:not(.disabled) {
         background-color: rgba(101, 189, 215, 0.2); }
       .dropdown ul li:last-child {
         border-bottom-right-radius: 4px;
         border-bottom-left-radius: 4px;
         border-bottom-color: transparent; }
+      .dropdown ul li a {
+        color: #65BDD7;
+        text-decoration: none; }
   .dropdown.dropdown-open .selected, .dropdown.dropdown-open .inputed {
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0; }
@@ -492,6 +499,7 @@ footer .footer_cont {
 
 .fly_all {
   background-color: #3298C1;
+  background-color: #005476;
   text-align: center;
   padding-top: 50px; }
   .fly_all .motto {
@@ -554,7 +562,7 @@ footer .footer_cont {
     padding-top: 40px;
     padding-bottom: 50px; }
     .fly_all .loc input {
-      border: 3px solid #005476 !important; }
+      /*border: 3px solid $dark-blue !important;*/ }
     .fly_all .loc ul {
       border-color: #005476 !important; }
     .fly_all .loc li {
@@ -902,157 +910,264 @@ footer .footer_cont {
   margin-left: 5px;
   border: 1px solid #999; }
 
-.wiki_header {
-  border-bottom: 2px solid #005476;
-  height: 450px;
-  overflow: hidden;
-  position: relative; }
-  .wiki_header .bck {
-    border: 1px solid red;
-    width: 1920px;
-    height: 450px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-image: url("/images/n/title1.jpg"); }
+.stars .star {
+  display: inline-block;
+  font-size: 30px; }
+  .stars .star .active {
+    color: #FFC400; }
+  .stars .star .inactive {
+    color: lightgray; }
+  .stars .star .icon-star-left {
+    float: left; }
+  .stars .star .icon-star-right {
+    margin-left: -0.4px;
+    float: right; }
 
-.wiki_info {
-  /*height: 600px;*/
-  background-color: #3298C1; }
-  .wiki_info .bl {
+.wiki h1 {
+  text-align: center; }
+
+.wiki .search input {
+  border: 0; }
+
+.wiki .search li {
+  min-width: 320px; }
+  .wiki .search li a {
+    display: inline-block; }
+  .wiki .search li .stars {
+    position: absolute;
+    right: 5px;
+    display: inline-block; }
+    .wiki .search li .stars .star {
+      font-size: 18px; }
+
+.wiki .wiki_header_all {
+  height: 450px;
+  position: relative;
+  text-align: center; }
+  .wiki .wiki_header_all .wiki_header {
+    border-bottom: 2px solid #005476;
+    height: 450px;
+    overflow: hidden;
+    position: relative; }
+    .wiki .wiki_header_all .wiki_header .bck {
+      width: 1920px;
+      height: 450px;
+      text-align: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-image: url("/images/n/nyc1.jpg"); }
+      .wiki .wiki_header_all .wiki_header .bck .search_all {
+        display: inline-block;
+        position: relative;
+        height: 450px;
+        width: 600px; }
+        .wiki .wiki_header_all .wiki_header .bck .search_all .circle-bck {
+          height: 450px;
+          width: 600px;
+          position: relative;
+          background: url("/images/n/middle-circle.svg");
+          opacity: 0.7; }
+  .wiki .wiki_header_all .cont {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    min-width: 320px;
+    max-width: 400px;
+    height: 450px;
+    transform: translateX(-50%);
+    /*height: 450px;
+            width: 600px;
+            position: absolute;
+            top:0;
+            left:0;
+
+            z-index: 99999;*/ }
+    .wiki .wiki_header_all .cont h1 {
+      color: white;
+      font-weight: 500;
+      margin-top: 80px; }
+
+.wiki .wiki_info {
+  /*background-color: $light-blue3;*/
+  background-color: #005476; }
+  .wiki .wiki_info .bl {
     margin-right: 30px; }
     @media screen and (max-width: 803px) {
-      .wiki_info .bl {
+      .wiki .wiki_info .bl {
         margin-right: 0; } }
-  .wiki_info .br {
+  .wiki .wiki_info .br {
     margin-left: 30px; }
     @media screen and (max-width: 803px) {
-      .wiki_info .br {
+      .wiki .wiki_info .br {
         margin-left: 0; } }
-  .wiki_info .block {
+  .wiki .wiki_info .block {
     display: inline-block;
+    vertical-align: top;
     padding-top: 50px;
     max-width: 360px;
     min-width: 320px;
     /*border: 1px solid red;*/ }
-    .wiki_info .block .ico {
+    .wiki .wiki_info .block .ico {
       width: 180px;
       height: 180px;
       margin-right: auto;
       margin-left: auto;
       margin-bottom: 35px; }
-    .wiki_info .block .title {
+    .wiki .wiki_info .block .title {
       color: #F5C519; }
-    .wiki_info .block .text {
+    .wiki .wiki_info .block .text {
       color: white;
       height: 170px; }
-    .wiki_info .block .btn {
+    .wiki .wiki_info .block .btn {
       height: 50px; }
-      .wiki_info .block .btn .lbtn {
+      .wiki .wiki_info .block .btn .lbtn {
         color: #3298C1;
         background-color: #F5C519; }
 
-.article_rating {
+.wiki .article_rating {
   width: 155px;
   height: 41px;
   color: #3298C1;
   display: table;
   border: 1px solid #3298C1;
   border-radius: 2px; }
-  .article_rating .wrap {
+  .wiki .article_rating .wrap {
     display: table-cell;
     vertical-align: middle; }
-    .article_rating .wrap .frame {
+    .wiki .article_rating .wrap .frame {
       display: inline-block;
       width: 32px;
       height: 32px;
       border-left: 1px solid #3298C1; }
-      .article_rating .wrap .frame a {
+      .wiki .article_rating .wrap .frame a {
         width: 24px;
         height: 24px;
         display: inline-block;
         font-size: 21px;
         text-decoration: none;
         color: #3298C1; }
-      .article_rating .wrap .frame a:hover {
+      .wiki .article_rating .wrap .frame a:hover {
         color: #005476; }
-      .article_rating .wrap .frame .icon-edit-pencil {
+      .wiki .article_rating .wrap .frame .icon-edit-pencil {
         margin-top: 4px;
         margin-left: 8px; }
-      .article_rating .wrap .frame .icon-dislike {
+      .wiki .article_rating .wrap .frame .icon-dislike {
         margin-top: 9px;
         margin-left: 7px; }
-      .article_rating .wrap .frame .icon-like {
+      .wiki .article_rating .wrap .frame .icon-like {
         margin-top: 2px;
         margin-left: 7px; }
-      .article_rating .wrap .frame .score {
+      .wiki .article_rating .wrap .frame .score {
         width: 32px;
         margin-top: 2px;
         margin-left: 4px; }
-  .article_rating .wrap:first-of-type .frame {
+  .wiki .article_rating .wrap:first-of-type .frame {
     border: 0; }
 
-.wiki_article_wide .photo {
+.wiki .wiki_article_wide .photo {
   height: 420px;
   overflow: hidden;
   position: relative;
   border-radius: 2px; }
-  .wiki_article_wide .photo .bck {
+  .wiki .wiki_article_wide .photo .bck {
     width: 1280px;
     height: 420px;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-image: url("/images/n/wiki_wide.jpg"); }
+    /*background-image: url("/images/n/wiki_wide.jpg");*/ }
 
-.wiki_article_wide .service {
-  padding-top: 20px;
-  padding-left: 10px;
-  text-align: justify;
-  -moz-text-align-last: justify;
-  -webkit-text-align-last: justify;
-  /* not implemented yet, and will not be */
-  text-align-last: justify;
-  /* IE */ }
-  .wiki_article_wide .service h2, .wiki_article_wide .service .rate {
+.wiki .wiki_article_wide .service {
+  position: relative;
+  height: 20px; }
+  .wiki .wiki_article_wide .service .title {
+    position: absolute;
+    left: 0; }
+    .wiki .wiki_article_wide .service .title a {
+      color: #3298C1;
+      vertical-align: top; }
+      .wiki .wiki_article_wide .service .title a h2 {
+        font-weight: 500;
+        font-size: 28px;
+        margin-top: 0;
+        margin-bottom: 0; }
+  .wiki .wiki_article_wide .service .stars {
+    position: absolute;
+    right: 0;
+    top: 5px; }
+    .wiki .wiki_article_wide .service .stars .star {
+      font-size: 26px; }
+
+.wiki .wiki_article_wide .txt {
+  padding-left: 0;
+  padding-right: 0;
+  margin-bottom: 20px; }
+
+.wiki .wiki_articles > :nth-child(odd) {
+  margin-right: 10px; }
+  @media screen and (max-width: 1280px) {
+    .wiki .wiki_articles > :nth-child(odd) {
+      margin-right: 0; } }
+
+.wiki .wiki_articles .article {
+  display: inline-block;
+  vertical-align: top;
+  max-width: 626px;
+  margin-bottom: 20px;
+  /*height: 416px;*/
+  /*.rate {
+                display:inline-block;
+                vertical-align: top;
+            }*/ }
+  .wiki .wiki_articles .article .photo img {
+    max-width: 626px;
+    border-radius: 2px; }
+    @media screen and (max-width: 626px) {
+      .wiki .wiki_articles .article .photo img {
+        max-width: 100%; } }
+  .wiki .wiki_articles .article .service {
+    position: relative;
+    height: 20px; }
+    .wiki .wiki_articles .article .service .title {
+      position: absolute;
+      left: 0; }
+      .wiki .wiki_articles .article .service .title a {
+        color: #3298C1;
+        vertical-align: top; }
+        .wiki .wiki_articles .article .service .title a h2 {
+          font-weight: 500;
+          font-size: 24px;
+          margin-top: 0;
+          margin-bottom: 0; }
+    .wiki .wiki_articles .article .service .stars {
+      position: absolute;
+      right: 0; }
+      .wiki .wiki_articles .article .service .stars .star {
+        font-size: 26px; }
+  .wiki .wiki_articles .article .txt {
+    height: 100px;
+    overflow: hidden;
+    padding-left: 0;
+    padding-right: 0;
+    margin-bottom: 5px; }
+  .wiki .wiki_articles .article .more {
+    text-align: left; }
+    .wiki .wiki_articles .article .more a {
+      color: #3298C1; }
+
+.wiki .counties {
+  background-color: #f2f2f2;
+  padding-bottom: 20px;
+  padding-top: 20px; }
+  .wiki .counties h2 {
+    font-weight: 500; }
+  .wiki .counties .block {
     display: inline-block;
     vertical-align: top;
-    font-weight: 500; }
-  .wiki_article_wide .service h2 {
-    margin-top: 0px; }
-
-.wiki_articles .article:first-of-type {
-  margin-right: 28px; }
-  @media screen and (max-width: 1302px) {
-    .wiki_articles .article:first-of-type {
-      margin-right: 0px; } }
-
-.wiki_articles .article {
-  /*border: 1px solid red;*/
-  display: inline-block;
-  max-width: 626px;
-  /*height: 416px;*/ }
-  .wiki_articles .article .photo {
-    border-radius: 2px;
-    overflow: hidden; }
-    .wiki_articles .article .photo img {
-      max-width: 626px; }
-      @media screen and (max-width: 626px) {
-        .wiki_articles .article .photo img {
-          max-width: 100%; } }
-  .wiki_articles .article .service {
-    padding-top: 10px; }
-    .wiki_articles .article .service h2 {
-      display: inline-block;
-      vertical-align: top;
-      width: 65%;
-      /*border: 1px solid red;*/
-      text-align: left;
-      margin-top: 0px;
-      font-weight: 500;
-      font-size: 24px; }
-    .wiki_articles .article .service .rate {
-      display: inline-block;
-      vertical-align: top; }
+    width: 250px;
+    margin-top: 30px; }
+    .wiki .counties .block .item a {
+      color: #3298C1; }

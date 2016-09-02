@@ -2,15 +2,35 @@
   <module name="pageWikiHome">    
    
       <Title>
-        <en>Gloobster travel Wiki</en>        
+        <en>Gloobster Travel wiki – the world at a glance</en>        
       </Title>
       
       <SearchPlaceholder>
         <en>Search for a city or country</en>
       </SearchPlaceholder>
 
-      
+    <MottoForTravelers>
+      <en>Wiki articles created by travelers for travelers</en>
+    </MottoForTravelers>
 
+    <MottoHelpUs>
+      <en>Help us to build the biggest Travel wiki</en>
+    </MottoHelpUs>
+    
+    <ForTravelersText>
+      <en>Articles full of useful structured information about places all around the world. Articles full of useful structured information about places all around the world.</en>
+    </ForTravelersText>
 
+    <HelpUsText>
+      <en>Like thousands of others, help us to participate on aricles content and build one of biggest travel databases in the world.</en>
+    </HelpUsText>
+
+    <LearnMoreBtn>
+      <en>Learn more</en>
+    </LearnMoreBtn>
+    
+    <JoinUsBtn>
+      <en>Join us</en>
+    </JoinUsBtn>
 
   </module>

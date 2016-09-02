@@ -26,14 +26,20 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-envelope:before {
+  content: "\e90c";
+}
+.icon-star-left:before {
+  content: "\e913";
+}
+.icon-star-right:before {
+  content: "\e914";
+}
 .icon-dropdown-arrow:before {
   content: "\e912";
 }
 .icon-close-cross:before {
   content: "\e911";
-}
-.icon-envelope:before {
-  content: "\e90c";
 }
 .icon-ico-travel-buddy:before {
   content: "\e90a";
@@ -83,5 +89,6 @@
 .icon-places:before {
   content: "\e910";
 }
+
 
 

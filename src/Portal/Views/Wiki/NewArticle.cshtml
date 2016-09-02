@@ -1,0 +1,26 @@
+﻿@using System.Threading.Tasks
+@using System.Linq
+@using Gloobster.Portal.ViewModels
+@model ArticleVM
+
+<div class="article">
+    
+    <div class="photo">
+        <img src="/picd/@Model.GID/whs" />
+    </div>
+
+    <div class="service">
+        <div class="title">
+            <a href="/wiki/@Model.Link">
+                <h2>@Model.Title</h2>
+            </a>
+        </div>
+
+        @Html.Partial("Stars", Model.Rating)
+    </div>
+
+    <p class="txt">
+        @Model.About
+    </p>
+    <div class="more"><a href="/wiki/@Model.Link">Read more...</a></div>
+</div>

@@ -4,6 +4,6 @@ namespace Gloobster.DomainInterfaces
 {
     public interface IContentEvaluator
     {
-        Task<decimal> EvaluateArticle(string articleId);
+        Task<double> EvaluateArticle(string articleId);
     }
 }

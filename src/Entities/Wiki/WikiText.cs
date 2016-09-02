@@ -23,7 +23,7 @@ namespace Gloobster.Entities
         public string Title { get; set; }
         public string LinkName { get; set; }
 
-        public decimal Rating { get; set; }
+        public double Rating { get; set; }
     }
     
     public class SectionTextsSE
