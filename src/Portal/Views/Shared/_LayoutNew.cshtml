@@ -20,7 +20,7 @@
     <link href="//fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
     <link href="~/lib/jquery-ui/themes/ui-lightness/jquery-ui.css" rel="stylesheet"/>
 
-    
+    <link href="~/css/main.css" rel="stylesheet" />
 
     @Html.Partial("_GlobalTemplates")
     @Html.Partial("_GlobalScripts")
@@ -29,30 +29,7 @@
 <body onload="onBodyLoad()" class="@ViewBag.BodyClass" id="top">
 
 <header class="header">
-    @Html.Partial("_MenuNew")
-    
-
-        @*<div class="wrapper">
-            <h1><a asp-controller="Home" asp-action="Index" class="logo-header">Gloobster</a>
-            </h1>
-
-            <div class="menu-holder">
-                <div id="ddMenus" class="tright mhalf">
-                    @Html.Partial("_LangMenu")
-
-                    @if (Model.User != null)
-                    {
-                        @Html.Partial("_UserMenu")
-                    }
-
-                </div>
-                @Html.Partial("_Menu")
-            </div>
-
-            <a class="hamburger" data-target="#menu" href="#"><span></span></a>
-        </div>*@
-
-
+    @Html.Partial("_MenuNew")    
 </header>
 
 <div id="fb-root"></div>

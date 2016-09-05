@@ -2,11 +2,13 @@
 @using Gloobster.Portal.ViewModels
 @model BlockVM
 
-<div data-id="@Model.SectionId" class="table width100 margin adminBlock" data-at="@Model.Admin">
-    <div class="cell middle">
+<div data-id="@Model.SectionId" class="block-header wrapper adminBlock" data-at="@Model.Admin">
+    <div class="left">
         <h@(Model.Size) class="margin0">@Model.TranslatedType</h@(Model.Size)>
     </div>
-    <div class="cell">
-        @Html.Partial("Rating")
+    <div class="right">
+        <div class="rating_all">
+            @Html.Partial("NewArticleRating")
+        </div>
     </div>
 </div>

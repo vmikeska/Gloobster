@@ -160,7 +160,7 @@ var Views;
             this.registerPhotoUpload(this.articleId, "titlePhotoInput");
         };
         PhotoAdmin.prototype.clean = function () {
-            $(".photoButton").remove();
+            $(".photo-button").remove();
         };
         PhotoAdmin.prototype.registerPhotoUpload = function (articleId, inputId) {
             var _this = this;

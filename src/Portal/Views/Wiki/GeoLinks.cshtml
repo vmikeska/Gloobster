@@ -3,10 +3,11 @@
 @using Gloobster.Portal.ViewModels
 @model WikiModelBase
 
-<h3>@Model.W("RelatedLinks")</h3>
-<div class="tags">
+<div class="links wrapper">
+    <h3>@Model.W("RelatedLinks")</h3>
+
     @foreach (var link in Model.GetRelatedLinks())
     {
-        <a class="tag" href="@link.Link">@link.Name</a>
+        <a class="lbtn" href="@link.Link">@link.Name</a>
     }
 </div>

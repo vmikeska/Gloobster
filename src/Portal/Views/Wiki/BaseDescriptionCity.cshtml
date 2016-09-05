@@ -2,22 +2,10 @@
 @using Gloobster.Portal.ViewModels
 @model BlockVM
 
-<style>
-    .box.blue table {
-        border: none;
-        color: black;
-    }
 
-    .box.blue td {
-        background-color: transparent;
-        padding-bottom: 0;        
-    }
-</style>
-
-<div class="table width100 adminBlock" data-at="standard" data-id="@Model.SectionId">
-    <div class="cell">
-        @*width240*@
-        <div class="box blue mright20 adminInfo left" style="width: 300px">
+<div class="blue-block wrapper adminBlock" data-at="standard" data-id="@Model.SectionId">
+    
+        <div class="about">
             <h3>@Model.B.W("About")</h3>
             <p>
 
@@ -28,9 +16,7 @@
             </p>
         </div>
     
+        @Html.Partial("NewArticleRating")
         <p id="text_@Model.SectionId" class="h3">@Model.Text</p>
-    </div>
-    <div class="cell">
-        @Html.Partial("Rating")
-    </div>
+        
 </div>

@@ -3,95 +3,71 @@
 @using Gloobster.Portal.ViewModels
 @model PhotosVM
 
-@{
-    Layout = "";
+<div id="photos" class="gallery-photos wrapper">
 
-    var photosGroups = Model.Photos.SplitBy(3);    
-}
+    @if (Model.UserIsAdmin)
+    {
+        <div id="duCont" style="display: none">
 
-@if (Model.UserIsAdmin)
-{
-    <div id="duCont" style="display: none">
+            <a class="photo-button" href="#">
+                <input id="galleryPhotoInput" type="file" />
+                <label for="galleryPhotoInput">Direct upload</label>
+            </a>
 
-        <a class="photoButton" href="#">
-            <input id="galleryPhotoInput" class="inputs" type="file"/>
-            <label for="galleryPhotoInput">
-                <span class="icon-photo middle mright5"></span>
-                Direct upload
-            </label>
-        </a>
+        </div>
+    }
 
-    </div>    
-}
+    @Html.Partial("ProgressBar", "galleryProgress")
 
-@Html.Partial("ProgressBar", "galleryProgress")
 
-@foreach (var group in photosGroups)
-{
-    <div class="table row col3 margin">
+    @foreach (var photo in Model.Photos)
+    {        
+        var thumbLink = $"/Wiki/ArticlePhotoThumb?photoId={photo.Id}&articleId={Model.ArticleId}";
+        var link = $"/Wiki/ArticlePhoto?photoId={photo.Id}&articleId={Model.ArticleId}";
 
-        @for (int act = 1; act <= 3; act++)
-        {
-            if (act <= group.Count)
+        <div id="@photo.Id" class="photo">
+
+            @if (Model.Admin)
             {
-                var photo = group[act - 1];
+                <a href="#" data-pi="@photo.Id" data-ai="@Model.ArticleId" class="delete">Delete</a>
+                <span>   </span>
 
-                var thumbLink = $"/Wiki/ArticlePhotoThumb?photoId={photo.Id}&articleId={Model.ArticleId}";
-                var link = $"/Wiki/ArticlePhoto?photoId={photo.Id}&articleId={Model.ArticleId}";
-
-                <div id="@photo.Id" class="cell">
-
-                    @if (Model.Admin)
-                    {
-                        <a href="#" data-pi="@photo.Id" data-ai="@Model.ArticleId" class="delete">Delete</a>
-                        <span>   </span>
-                        
-                        if (!photo.Confirmed)
-                        {
-                            <a href="#" data-pi="@photo.Id" data-ai="@Model.ArticleId" class="confirm">Confirm</a>                        
-                        }
-                    }
-
-                    <a href="@link" target="_blank"><img class="radius mhalf" src="@thumbLink"></a>
-                    <span>By </span><a href="/PortalUser/Detail/@photo.OwnerId">@photo.OwnerName</a>
-                </div>
+                if (!photo.Confirmed)
+                {
+                    <a href="#" data-pi="@photo.Id" data-ai="@Model.ArticleId" class="confirm">Confirm</a>
+                }
             }
-            else if (photosGroups.First().Equals(group))
-            {
-                @Html.Partial("EmptyPhoto")
-            }
-        }
-    </div>
-}
 
-@if (!Model.Photos.Any())
-{
-    <div class="table row col3 margin">
+            <a href="@link" target="_blank"><img class="radius mhalf" src="@thumbLink"></a>
+            <span>By </span><a href="/PortalUser/Detail/@photo.OwnerId">@photo.OwnerName</a>
+        </div>        
+    }
+        
+    @if (!Model.Photos.Any())
+    {    
         @Html.Partial("EmptyPhoto")
-        @Html.Partial("EmptyPhoto")
-        @Html.Partial("EmptyPhoto")
-    </div>
-}
+    }
 
-@if (!Model.UserIsAdmin)
-{
-    <div class="tright">
-        <a id="recommendPhoto" class="button mleft10" href="#">@Model.B.W("RecommendPhoto")</a>
-    </div>
+    @if (!Model.UserIsAdmin)
+    {
+        <div class="recomm-photo">
+            <a id="recommendPhoto" class="lbtn" href="#">@Model.B.W("RecommendPhoto")</a>
+        </div>
 
-    <div id="photosForm" class="tright" style="display: none">
-        <input id="cid" class="isAdmin" type="checkbox" checked><label for="cid"><span>@Model.B.W("IUnderstand") </span></label>
-        <a href="#">@Model.B.W("TermsAndCondsForPhotos")</a>
-        <br/>
-        <a href="#" class="button cancel">@Model.B.W("Cancel")</a>
+        <div id="photosForm" class="photos-form" style="display: none">
+            <input id="cid" class="isAdmin" type="checkbox" checked><label for="cid"><span>@Model.B.W("IUnderstand") </span></label>
+            <a href="#">@Model.B.W("TermsAndCondsForPhotos")</a>
+            <br />
+            <a href="#" class="cancel">@Model.B.W("Cancel")</a>
 
-        <a class="photoButton" href="#">
-            <input id="galleryInput" class="inputs" type="file"/>
-            <label for="galleryInput">
-                <span class="button">@Model.B.W("UploadPhoto")</span>                    
-            </label>
-        </a>
+            <a class="photo-button" href="#">
+                <input id="galleryInput" class="inputs" type="file" />
+                <label for="galleryInput">
+                    <span class="">@Model.B.W("UploadPhoto")</span>
+                </label>
+            </a>
 
-    </div>
-}
+        </div>
+    }
 
+</div>

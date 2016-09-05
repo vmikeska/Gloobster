@@ -6,8 +6,10 @@
 @model WikiCityViewModel
 
 @{
-    ViewBag.BodyClass = "page";
-    ViewBag.MenuGroup = "Wiki";    
+    //ViewBag.BodyClass = "page";
+    ViewBag.BodyClass = "wiki-page";
+    ViewBag.MenuGroup = "Wiki";
+    Layout = "_LayoutNew";
 }
 
 @if (GloobsterConfig.UseMiniScripts)
@@ -20,41 +22,15 @@ else
     <script type="text/javascript" src="/js/Views/WikiPageView.js"></script>
 }
 
-<style>
-    /*todo: multiple duplicities in the app*/
-     .photoButton input {
-         width: 0.1px;
-         height: 0.1px;
-         opacity: 0;
-         overflow: hidden;
-         position: absolute;
-         z-index: -1;
-     }
-
-    .photoButton label {
-        cursor: pointer;
-    }
-</style>
-
-<style>
-    .favItem {
-        border: 1px solid #009DC4; 
-        display: inline-block; 
-        padding: 4px; 
-        margin: 4px; 
-        border-radius: 5px;
-    }
-</style>
-
 
     @Html.Partial("PageAdmin")
 
     @Html.Partial("Breadcrumb")
-    <h2>@Model.Texts.Title</h2>
+    <h2 class="wrapper">@Model.Texts.Title</h2>
     @Html.Partial("Languages")
 
-    <div class="titlePhoto margin">
-        <img class="radius" src="@Model.TitleLink">
+    <div class="titlePhoto wrapper">
+        <img src="@Model.TitleLink">
     </div>
 
     @Html.Partial("BaseDescriptionCity", Model.Base())
@@ -72,7 +48,7 @@ else
     @Html.Partial("Table1Block", Model.Restaurant())
 
     @Html.Partial("Table1Block", Model.Transport())
-    @*border: 1px solid red;*@ 
+    
     <div style="min-height: 270px">
         @Html.Partial("Table1Block", Model.Accommodation())
     </div>
@@ -81,8 +57,6 @@ else
     @Html.Partial("StandardBlock", Model.Section("MuseumsAndTheater"))
     @Html.Partial("StandardBlock", Model.Section("Sport"))
 
-
-<div id="photos" class="blue-border margin gallery-photos">
     @Html.Partial("ArticlePhotos", new PhotosVM
     {
         Photos = Model.Photos.Where(p => p.Confirmed).ToList(),
@@ -91,9 +65,7 @@ else
         UserIsAdmin = Model.IsAdmin,
         B = Model
     })
-    </div>
 
     @Html.Partial("GeoLinks")
-
 
     @Html.Partial("PageScripts")

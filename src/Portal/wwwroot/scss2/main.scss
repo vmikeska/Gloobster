@@ -65,7 +65,7 @@ input[type="text"]{
     border-radius: 4px;                    
     font-weight: 700;
     height: 20px;
-    line-height: 20px;
+    line-height: 40px;
 
     margin: 0 5px;
     padding: 9px;
@@ -110,140 +110,85 @@ p{
     padding-right: 15px;
 }
 
-.menu_all {
-    padding-right: 8px;
-    padding-left: 8px;
-
-    @include text-justify;
-    
-    background-color: $dark-blue;
-
-    .logo_all {
-        vertical-align:top;
-            
-        padding-top: 10px;
-        display: inline-block;
-
-        @include below-width(1023){
-            display: block;
-            padding-left: 10px;
-            text-align: left;
-        }
-
-        img {
-            height: 35px;
-            width: 210px;
-
-            @include below-width(420){            
-                height: 30px;
-                width: 180px;
-            }
-        }
-
+ .photo-button{ 
+     
+     text-decoration: none;
+     
+     input {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
     }
 
+     label {
+        @extend .lbtn;
+        color: $light-blue3;
+        border: 1px solid $light-blue3;
 
-
-    .links {        
-        display: inline-block;   
-        padding-left: 17px;
-        padding-right: 17px;  
-         
-        @include below-width(1023){            
-            display: block;
-        }
-        vertical-align:top;        
-
-        div {
-            height: 50px;            
-            display: inline-block;            
-            padding-right: 10px;      
-
-            font-weight: 600;          
-                
-            a {
-                display: inline-block;
-                margin-top: 12px;
-                color: white;
-                text-decoration: none;
-            }   
-
-            a:hover {
-                color: $light-blue;
-            }
-
-            .active {
-                color: $dark-blue;
-
-                background-color: $light-blue;
-
-                border-style: solid;
-                border-width: 0;
-                border-radius: 4px;                    
-                
-                padding: 5px;
-            }
-
-            a:hover.active {
-                color: $dark-blue;
-            }
-
-        }
-
+        cursor: pointer;cursor: hand;
     }
+ }
 
-    
+  .photo-button:hover{
 
-    .icons_all {
-        display: inline-block;
-        height: 50px;            
-        vertical-align:top;     
-        
-        @include below-width(1023){
-            position: absolute;
-            right: 10px;
-            top: 5px;
-        } 
-    }
+      label {
+          border: 1px solid $dark-blue;
+          color: $dark-blue;
+      }      
+  }
 
-    .icons{
-        margin-top: 12px;    
-        height: 24px;
-        border-left: 1px solid $light-blue;
-        border-right: 1px solid $light-blue;
-        padding-right: 6px;
-        padding-left: 6px;
-            
-        @include below-width(1023){            
-            border: 0;        
-        }
-            
-        a{
-            padding-right: 10px;
-            text-decoration:none;
-            color: $light-blue;
-            font-size: 22px;
-        }
+  .htbl{
+      display: table;
+      width: 100%;      
 
-        a:hover {
-            color: $light-blue2;
-        }
-    }
+      > div {
+          display: table-cell;          
+          width: 50%;
+      }
 
+      .left{
+          text-align: left;          
+      }
+
+      .right{       
+          text-align: right;
+      }
+
+  }
+
+
+button{
+    color: white;
+    font-weight: bold;
+    background-color: $light-blue3;
+    /*border-color: $light-blue3;*/
+    border: none;
+    border-radius: 4px;
+    padding: 9px 29px;
+    text-decoration: none;
+    box-shadow:none !important;
+    margin: 4px;
+}
+
+button:hover{
+    cursor: pointer;cursor: hand;
+    opacity: 0.8;
+}
+
+button:active {
+    outline: none;
+    border: none;
 }
 
 
-footer {
-    .footer_cont {        
-        height: 200px;
-        background-color: $light-blue3;
-        color: white;
-    }
-}
-
+@import "layout";
 @import "popup";
 @import "icofonts";
 @import "dropdown";
 @import "homepage";
 @import "pins";
 @import "wiki-home";
+@import "wiki-page";

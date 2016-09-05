@@ -3,7 +3,7 @@
 @using Gloobster.Portal.ViewModels
 @model WikiModelBase
 
-<div class="breadcrumb h4 margin2">
+<div class="breadcrumb wrapper">
 
     @{
         var bc = Model.GetBreadcrumb();
@@ -24,12 +24,4 @@
             @: &gt;
         }
     }
-
-    @*<a href="#">Gloobster</a>
-    &gt;
-    <a href="#">Wikiplaces</a>
-    &gt;
-    <a href="#">Europe</a>
-    &gt;
-    <strong>Prague</strong>*@
 </div>

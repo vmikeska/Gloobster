@@ -1,0 +1,131 @@
+
+.menu_all {
+    padding-right: 8px;
+    padding-left: 8px;
+
+    @include text-justify;
+    
+    background-color: $dark-blue;
+
+    .logo_all {
+        vertical-align:top;
+            
+        padding-top: 10px;
+        display: inline-block;
+
+        @include below-width(1023){
+            display: block;
+            padding-left: 10px;
+            text-align: left;
+        }
+
+        img {
+            height: 35px;
+            width: 210px;
+
+            @include below-width(420){            
+                height: 30px;
+                width: 180px;
+            }
+        }
+
+    }
+
+
+
+    .links {        
+        display: inline-block;   
+        padding-left: 17px;
+        padding-right: 17px;  
+         
+        @include below-width(1023){            
+            display: block;
+        }
+        vertical-align:top;        
+
+        div {
+            height: 50px;            
+            display: inline-block;            
+            padding-right: 10px;      
+
+            font-weight: 600;          
+                
+            a {
+                display: inline-block;
+                margin-top: 12px;
+                color: white;
+                text-decoration: none;
+            }   
+
+            a:hover {
+                color: $light-blue;
+            }
+
+            .active {
+                color: $dark-blue;
+
+                background-color: $light-blue;
+
+                border-style: solid;
+                border-width: 0;
+                border-radius: 4px;                    
+                
+                padding: 5px;
+            }
+
+            a:hover.active {
+                color: $dark-blue;
+            }
+
+        }
+
+    }
+
+    
+
+    .icons_all {
+        display: inline-block;
+        height: 50px;            
+        vertical-align:top;     
+        
+        @include below-width(1023){
+            position: absolute;
+            right: 10px;
+            top: 5px;
+        } 
+    }
+
+    .icons{
+        margin-top: 12px;    
+        height: 24px;
+        border-left: 1px solid $light-blue;
+        border-right: 1px solid $light-blue;
+        padding-right: 6px;
+        padding-left: 6px;
+            
+        @include below-width(1023){            
+            border: 0;        
+        }
+            
+        a{
+            padding-right: 10px;
+            text-decoration:none;
+            color: $light-blue;
+            font-size: 22px;
+        }
+
+        a:hover {
+            color: $light-blue2;
+        }
+    }
+
+}
+
+
+footer {
+    .footer_cont {        
+        height: 200px;
+        background-color: $light-blue3;
+        color: white;
+    }
+}

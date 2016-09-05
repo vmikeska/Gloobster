@@ -198,7 +198,7 @@ module Views {
 		}
 
 		public clean() {
-			$(".photoButton").remove();
+				$(".photo-button").remove();
 		}
 
 		private registerPhotoUpload(articleId, inputId) {

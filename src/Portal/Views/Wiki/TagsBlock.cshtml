@@ -6,20 +6,26 @@
 
 @Html.Partial("BlockHeader")
 
-
-
-<div id="Links_@Model.SectionId" data-category="@Model.Category">
+<div class="wrapper" id="Links_@Model.SectionId" data-category="@Model.Category">
     @foreach (var item in Model.LinkItems)
     {
-        <div id="faviItem_@item.Id"  class="favItem" data-id="@item.Id" data-name="@item.Name">
-            <b>@item.Name</b>
-            @if (item.Links != null)
-            {
-                foreach (var link in item.Links)
-                {
-                    <a href="@Model.GetLink(link.Type, link.SourceId)" target="_blank"><img data-type="@((int)link.Type)" data-id="@link.id.ToString()" data-sid="@link.SourceId" class="opacity5 middle socLink" src="/images/@(Model.GetLinkIco(link.Type)).png"></a>
-                }
-            }
+        <div id="faviItem_@item.Id" class="favItem" data-id="@item.Id" data-name="@item.Name">
+            <div class="cont">
+                <div class="cell">
+                    <span class="name">@item.Name</span>
+                </div>
+                <div class="cell txt">
+                    @if (item.Links != null)
+                    {
+                        foreach (var link in item.Links)
+                        {
+                            <a href="@Model.GetLink(link.Type, link.SourceId)" target="_blank"><img data-type="@((int) link.Type)" data-id="@link.id.ToString()" data-sid="@link.SourceId" class="socLink" src="/images/@(Model.GetLinkIco(link.Type)).png"></a>
+                        }
+                    }        
+                </div>
+            </div>
+            
+            
         </div>
     }
 </div>

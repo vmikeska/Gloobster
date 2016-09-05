@@ -12,13 +12,13 @@ input[type="text"] {
   font-size: 20px;
   color: gray; }
 
-.lbtn {
+.lbtn, .photo-button label, .wiki-page .langs a {
   border-style: solid;
   border-width: 0;
   border-radius: 4px;
   font-weight: 700;
   height: 20px;
-  line-height: 20px;
+  line-height: 40px;
   margin: 0 5px;
   padding: 9px;
   text-decoration: none; }
@@ -50,6 +50,57 @@ p {
   text-align: left;
   padding-left: 15px;
   padding-right: 15px; }
+
+.photo-button {
+  text-decoration: none; }
+  .photo-button input {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1; }
+  .photo-button label {
+    color: #3298C1;
+    border: 1px solid #3298C1;
+    cursor: pointer;
+    cursor: hand; }
+
+.photo-button:hover label {
+  border: 1px solid #005476;
+  color: #005476; }
+
+.htbl {
+  display: table;
+  width: 100%; }
+  .htbl > div {
+    display: table-cell;
+    width: 50%; }
+  .htbl .left {
+    text-align: left; }
+  .htbl .right {
+    text-align: right; }
+
+button {
+  color: white;
+  font-weight: bold;
+  background-color: #3298C1;
+  /*border-color: $light-blue3;*/
+  border: none;
+  border-radius: 4px;
+  padding: 9px 29px;
+  text-decoration: none;
+  box-shadow: none !important;
+  margin: 4px; }
+
+button:hover {
+  cursor: pointer;
+  cursor: hand;
+  opacity: 0.8; }
+
+button:active {
+  outline: none;
+  border: none; }
 
 .menu_all {
   padding-right: 8px;
@@ -289,6 +340,12 @@ footer .footer_cont {
 
 .icon-envelope:before {
   content: "\e90c"; }
+
+.icon-minus:before {
+  content: "\e915"; }
+
+.icon-plus:before {
+  content: "\e916"; }
 
 .icon-star-left:before {
   content: "\e913"; }
@@ -1022,49 +1079,9 @@ footer .footer_cont {
       height: 170px; }
     .wiki .wiki_info .block .btn {
       height: 50px; }
-      .wiki .wiki_info .block .btn .lbtn {
+      .wiki .wiki_info .block .btn .lbtn, .wiki .wiki_info .block .btn .photo-button label, .photo-button .wiki .wiki_info .block .btn label, .wiki .wiki_info .block .btn .wiki-page .langs a, .wiki-page .langs .wiki .wiki_info .block .btn a {
         color: #3298C1;
         background-color: #F5C519; }
-
-.wiki .article_rating {
-  width: 155px;
-  height: 41px;
-  color: #3298C1;
-  display: table;
-  border: 1px solid #3298C1;
-  border-radius: 2px; }
-  .wiki .article_rating .wrap {
-    display: table-cell;
-    vertical-align: middle; }
-    .wiki .article_rating .wrap .frame {
-      display: inline-block;
-      width: 32px;
-      height: 32px;
-      border-left: 1px solid #3298C1; }
-      .wiki .article_rating .wrap .frame a {
-        width: 24px;
-        height: 24px;
-        display: inline-block;
-        font-size: 21px;
-        text-decoration: none;
-        color: #3298C1; }
-      .wiki .article_rating .wrap .frame a:hover {
-        color: #005476; }
-      .wiki .article_rating .wrap .frame .icon-edit-pencil {
-        margin-top: 4px;
-        margin-left: 8px; }
-      .wiki .article_rating .wrap .frame .icon-dislike {
-        margin-top: 9px;
-        margin-left: 7px; }
-      .wiki .article_rating .wrap .frame .icon-like {
-        margin-top: 2px;
-        margin-left: 7px; }
-      .wiki .article_rating .wrap .frame .score {
-        width: 32px;
-        margin-top: 2px;
-        margin-left: 4px; }
-  .wiki .article_rating .wrap:first-of-type .frame {
-    border: 0; }
 
 .wiki .wiki_article_wide .photo {
   height: 420px;
@@ -1171,3 +1188,222 @@ footer .footer_cont {
     margin-top: 30px; }
     .wiki .counties .block .item a {
       color: #3298C1; }
+
+.wiki-page {
+  text-align: left; }
+  .wiki-page .admin-block-edit textarea {
+    width: 100%;
+    height: 150px;
+    border: 1px solid #3298C1;
+    border-radius: 4px;
+    margin: 8px;
+    font-family: "PT Sans", sans-serif;
+    font-size: 18px; }
+  .wiki-page .admin-input {
+    border: 1px solid #3298C1; }
+  .wiki-page .article_rating {
+    width: 155px;
+    height: 41px;
+    color: #3298C1;
+    display: table;
+    border: 1px solid #3298C1;
+    border-radius: 2px;
+    position: relative; }
+    .wiki-page .article_rating .active {
+      color: darkred !important; }
+    .wiki-page .article_rating .green {
+      color: darkgreen; }
+    .wiki-page .article_rating .blue {
+      color: #3298C1; }
+    .wiki-page .article_rating .plus {
+      color: darkgreen; }
+    .wiki-page .article_rating .minus {
+      color: darkred; }
+    .wiki-page .article_rating .wrap {
+      display: table-cell;
+      vertical-align: middle;
+      text-align: center; }
+      .wiki-page .article_rating .wrap .frame {
+        display: inline-block;
+        text-align: center;
+        width: 40px;
+        height: 32px;
+        border-left: 1px solid #3298C1; }
+        .wiki-page .article_rating .wrap .frame a {
+          width: 24px;
+          height: 24px;
+          display: inline-block;
+          font-size: 21px;
+          text-decoration: none;
+          color: #3298C1; }
+        .wiki-page .article_rating .wrap .frame .score {
+          display: inline-block; }
+        .wiki-page .article_rating .wrap .frame a:hover {
+          color: #005476; }
+        .wiki-page .article_rating .wrap .frame .icon-edit-pencil {
+          margin-top: 4px; }
+        .wiki-page .article_rating .wrap .frame .icon-dislike {
+          margin-top: 9px; }
+        .wiki-page .article_rating .wrap .frame .icon-like {
+          margin-top: 2px; }
+        .wiki-page .article_rating .wrap .frame .score {
+          width: 32px;
+          margin-top: 2px;
+          font-weight: 600;
+          text-align: center; }
+    .wiki-page .article_rating .wrap:first-of-type .frame {
+      border: 0; }
+    .wiki-page .article_rating .bubble {
+      position: absolute;
+      top: 42px;
+      right: 0;
+      border: 1px solid #3298C1;
+      padding: 8px;
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+      background-color: white;
+      z-index: 9999; }
+      .wiki-page .article_rating .bubble .title {
+        color: black; }
+      .wiki-page .article_rating .bubble input {
+        border: 1px solid #3298C1; }
+      .wiki-page .article_rating .bubble .btns {
+        margin-top: 10px; }
+        .wiki-page .article_rating .bubble .btns a {
+          color: white;
+          background-color: #3298C1; }
+  .wiki-page .tbl {
+    border-collapse: collapse;
+    border: 1px solid #72cf72;
+    border-radius: 2px; }
+    .wiki-page .tbl td, .wiki-page .tbl th {
+      background-color: white;
+      padding: 10px 20px; }
+    .wiki-page .tbl th {
+      background-color: #72cf72;
+      border: 1px solid #72cf72;
+      color: white;
+      font-weight: normal;
+      text-align: left; }
+    .wiki-page .tbl tr:nth-child(odd) td {
+      background-color: #fffae9; }
+    .wiki-page .tbl .icon-plus, .wiki-page .tbl .icon-minus {
+      height: 20px;
+      width: 20px;
+      color: #3298C1;
+      text-decoration: none;
+      border: 1px solid #3298C1;
+      border-radius: 2px;
+      padding: 5px;
+      font-weight: 700; }
+    .wiki-page .tbl .icon-minus {
+      font-weight: 900; }
+    .wiki-page .tbl .icon-plus:hover, .wiki-page .tbl .icon-minus:hover {
+      color: #005476; }
+    .wiki-page .tbl .active {
+      color: darkred !important; }
+  .wiki-page .breadcrumb {
+    margin-top: 15px; }
+    .wiki-page .breadcrumb a {
+      text-decoration: none;
+      color: #65BDD7; }
+  .wiki-page .langs {
+    margin-bottom: 10px; }
+    .wiki-page .langs a {
+      background-color: #65BDD7;
+      color: white; }
+  .wiki-page .title-photo img {
+    border-radius: 4px; }
+  .wiki-page .blue-block h3 {
+    color: #009dc4; }
+  .wiki-page .blue-block .about {
+    float: left;
+    padding-left: 14px;
+    margin-right: 20px;
+    background-color: rgba(87, 193, 219, 0.3);
+    border-radius: 6px;
+    width: 300px; }
+    .wiki-page .blue-block .about table {
+      margin-left: 10px;
+      width: 100%; }
+      .wiki-page .blue-block .about table td:nth-child(even) {
+        text-align: right;
+        padding-right: 20px; }
+  .wiki-page .blue-block .article_rating {
+    float: right; }
+  .wiki-page .block-header {
+    display: table;
+    width: 100%; }
+    .wiki-page .block-header .left {
+      display: table-cell;
+      text-align: left;
+      vertical-align: middle;
+      width: auto; }
+      .wiki-page .block-header .left h3, .wiki-page .block-header .left h4 {
+        display: inline-block;
+        margin: 0; }
+    .wiki-page .block-header .right {
+      display: table-cell;
+      text-align: right;
+      width: auto; }
+      .wiki-page .block-header .right .rating_all {
+        display: inline-block; }
+  .wiki-page .does-donts {
+    display: table;
+    width: 100%; }
+    .wiki-page .does-donts .active {
+      color: darkred !important; }
+    .wiki-page .does-donts .block {
+      display: table-cell;
+      max-width: 50%; }
+      .wiki-page .does-donts .block .item {
+        margin-bottom: 8px; }
+        .wiki-page .does-donts .block .item .icon-like, .wiki-page .does-donts .block .item .icon-dislike {
+          height: 20px;
+          width: 20px;
+          color: #3298C1;
+          text-decoration: none;
+          border: 1px solid #3298C1;
+          border-radius: 2px;
+          padding: 5px; }
+        .wiki-page .does-donts .block .item .icon-like:hover, .wiki-page .does-donts .block .item .icon-dislike:hover {
+          color: #005476; }
+  .wiki-page .gallery-photos .photo {
+    display: inline-block; }
+    .wiki-page .gallery-photos .photo img {
+      border-radius: 2px; }
+  .wiki-page .gallery-photos .recomm-photo .lbtn, .wiki-page .gallery-photos .recomm-photo .photo-button label, .photo-button .wiki-page .gallery-photos .recomm-photo label, .wiki-page .gallery-photos .recomm-photo .langs a, .wiki-page .langs .gallery-photos .recomm-photo a {
+    color: white;
+    background-color: #3298C1; }
+  .wiki-page .gallery-photos .photos-form a {
+    color: #3298C1;
+    text-decoration: none; }
+  .wiki-page .links {
+    margin-bottom: 30px; }
+    .wiki-page .links .lbtn, .wiki-page .links .photo-button label, .photo-button .wiki-page .links label, .wiki-page .links .langs a, .wiki-page .langs .links a {
+      background-color: #3298C1;
+      color: white; }
+  .wiki-page .favItem {
+    border: 1px solid #009DC4;
+    display: inline-block;
+    padding: 2px 6px 2px 6px;
+    margin: 4px;
+    border-radius: 5px; }
+    .wiki-page .favItem .cont {
+      display: table; }
+      .wiki-page .favItem .cont .cell {
+        display: table-cell; }
+    .wiki-page .favItem .name {
+      margin-top: 8px;
+      margin-right: 4px;
+      display: inline-block;
+      vertical-align: top;
+      font-weight: 600;
+      font-size: 18px; }
+    .wiki-page .favItem img {
+      width: 32px;
+      height: 32px; }
+    .wiki-page .favItem a {
+      margin-top: 4px;
+      display: inline-block;
+      vertical-align: top; }

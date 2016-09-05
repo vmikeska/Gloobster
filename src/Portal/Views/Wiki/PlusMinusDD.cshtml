@@ -5,21 +5,21 @@
 @{
     bool? liked = Model.Liked;
 
-    var likeClass = "icon-plus";
-    var dislikeClass = "icon-minus";
+    var likedIsActive = false;
+    var dislikeIsActive = false;
     if (liked.HasValue)
     {
         if (liked.Value)
         {
-            likeClass += "Red";
+            likedIsActive = true;
         }
         else
         {
-            dislikeClass += "Red";
+            dislikeIsActive = true;
         }
     }
 
 }
 
-<a title="@Model.B.W("Like")" class="button-icon @likeClass pmBtn" data-like="true" href="#"></a>
-<a title="@Model.B.W("Dislike")" class="button-icon @dislikeClass pmBtn" data-like="false" href="#"></a>
+<a title="@Model.B.W("Like")" class="icon-like pmBtn @(likedIsActive ? "active" : string.Empty)" data-like="true" href="#"></a>
+<a title="@Model.B.W("Dislike")" class="icon-dislike pmBtn @(dislikeIsActive ? "active" : string.Empty)" data-like="false" href="#"></a>

@@ -11,13 +11,13 @@
 
 
 
-<div class="table row col2 margin doDont">
+<div class="does-donts wrapper doDont">
     
-    <div class="cell places">
+    <div class="block">
         <h3>@Model.B.W("TryThis")</h3>
         @foreach (DdVM item in Model.Dos)
         {
-            <div data-id="@item.Id" data-t="do" class="place">
+            <div data-id="@item.Id" data-t="do" class="item">
                 @Html.Partial("PlusMinusDD", item)
                 <span>@item.Text</span>
             </div>
@@ -26,11 +26,11 @@
         </div>        
     </div>
 
-    <div class="cell places">
+    <div class="block">
         <h3>@Model.B.W("DontTryThat")</h3>
         @foreach (DdVM item in Model.Donts)
         {
-            <div data-id="@item.Id" data-t="dont" class="place">
+            <div data-id="@item.Id" data-t="dont" class="item">
                 @Html.Partial("PlusMinusDD", item)
                 <span>@item.Text</span>
             </div>

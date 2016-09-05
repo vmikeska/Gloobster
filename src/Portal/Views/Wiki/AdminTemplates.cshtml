@@ -6,14 +6,17 @@
 </style>
 
 <script id="blockEdit-template" type="text/x-handlebars-template">
-    <div id="edit_{{id}}">
+    <div id="edit_{{id}}" class="admin-block-edit">
         <input class="position" type="hidden" value="0" />
 
         <textarea class="editTxt">{{text}}</textarea>
-        <div>
-            <button data-id="{{id}}" class="cancel">Cancel</button>
-            <button data-id="{{id}}" class="save">Save</button>
+        <div class="htbl">
             
+            <div class="left">
+                <button data-id="{{id}}" class="cancel">Cancel</button>
+                <button data-id="{{id}}" class="save">Save</button>
+            </div>
+
             <div class="right">
                 <button data-id="{{id}}" class="back">&#60;&#60;</button>
                 <button data-id="{{id}}" class="forward">&#62;&#62;</button>
@@ -23,8 +26,8 @@
 </script>
 
 <script id="linkItem-template" type="text/x-handlebars-template">
-    <div id="linksEdit_{{id}}">
-        <input id="name" type="text" value="{{name}}" />
+    <div id="linksEdit_{{id}}" class="wrapper">
+        <input class="admin-input" id="name" type="text" value="{{name}}" />
         <div class="links">
            
         </div>
@@ -49,7 +52,7 @@
             <input class="selectedValue" type="hidden" value="{{selectedValue}}">
         </div>
         <br />
-        <input class="sid" type="text" value="{{sid}}" />
+        <input class="sid admin-input" type="text" value="{{sid}}" />
         <br />        
         <button data-id="{{id}}" class="delete">Delete</button>
     </div>       
@@ -58,8 +61,17 @@
 
 <script id="favLink-template" type="text/x-handlebars-template">
     <div id="faviItem_{{id}}" class="favItem" data-id="{{id}}" data-name="{{name}}">
-        <b class="txt">{{name}}</b>        
+        
+        <div class="cont">
+            <div class="cell">
+                <span class="name">{{name}}</span>
+            </div>
+            <div class="cell txt">
+                
+            </div>
+        </div>
     </div>
+    
 </script>
 
 <script id="favLinkLink-template" type="text/x-handlebars-template">
@@ -76,8 +88,7 @@
 </script>
 
 <script id="doDontItem-template" type="text/x-handlebars-template">
-    <div data-id="{{id}}" data-t="{{type}}" class="place">
-        @*@Html.Partial("PlusMinusDD")*@
+    <div data-id="{{id}}" data-t="{{type}}" class="place">       
         <span>{{text}}</span>
     </div>
 </script>
@@ -85,19 +96,19 @@
 <script id="priceEdit-template" type="text/x-handlebars-template">
     <tr class="priceEdit" data-id="{{id}}">
         <td colspan="2">
-            <input type="text" placeholder="0.0 pattern" value="{{value}}" /><button>Reset</button>
+            <input class="admin-input" type="text" placeholder="0.0 pattern" value="{{value}}" /><button>Reset</button>
         </td>
     </tr>
 </script>
 
 <script id="photoEdit-template" type="text/x-handlebars-template">
-    <a class="photoButton" href="#">
-        <input id="titlePhotoInput" class="inputs" type="file" />
-        <label for="titlePhotoInput">
-            <span class="icon-photo middle mright5"></span>
-            Title Photo
-        </label>
-    </a>
+    <div style="margin: 10px;">
+        <a class="photo-button" href="#">
+            <input id="titlePhotoInput" type="file" />
+            <label for="titlePhotoInput">Title Photo</label>
+        </a>
+    </div>
+
 </script>
 
 

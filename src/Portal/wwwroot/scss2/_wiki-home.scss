@@ -174,69 +174,7 @@ $light-gray: #f2f2f2;
         }
     }
 
-    .article_rating{
-        width: 155px;
-        height: 41px;
-        color: $light-blue3;
-        display: table;
-        border: 1px solid $light-blue3;
-        border-radius: 2px;
-
-        .wrap{                
-            display: table-cell;
-            vertical-align: middle;        
-
-            .frame{            
-                display: inline-block;
-                width: 32px;
-                height: 32px;
-                border-left: 1px solid $light-blue3;
-
-                a{                                
-                    width: 24px;
-                    height: 24px;
-                    display: inline-block;
-                    font-size: 21px;       
-                    text-decoration: none;   
-                    color: $light-blue3;      
-                }
-
-                a:hover{
-                    color: $dark-blue;
-                }
-
-                .icon-edit-pencil{
-                    margin-top: 4px;
-                    margin-left: 8px;
-                }
-
-                .icon-dislike {
-                    margin-top: 9px;
-                    margin-left: 7px;
-                }
-
-                .icon-like {
-                    margin-top: 2px;
-                    margin-left: 7px;
-                }
-
-                .score{                
-                    width: 32px;
-                    margin-top: 2px;
-                    margin-left: 4px;
-                }
-            }
-        }
-
-        .wrap:first-of-type {
-            .frame{
-                border: 0;
-            }
-        }
     
-    }
-
-
 
 
     .wiki_article_wide{  

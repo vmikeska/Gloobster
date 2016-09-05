@@ -44,19 +44,19 @@ var Views;
             this.regSend();
         }
         Report.prototype.toggleForm = function ($element) {
-            $element.closest(".evaluate").toggleClass("evaluate-open");
+            $element.closest(".article_rating").find(".bubble").toggle();
         };
         Report.prototype.regSend = function () {
             var _this = this;
             this.$bubble.find(".send").click(function (e) {
                 e.preventDefault();
                 var $target = $(e.target);
-                var $evaluate = $target.closest(".evaluate");
+                var $frame = $target.closest(".article_rating");
                 var $bubble = $target.closest(".bubble");
                 var data = {
                     lang: _this.langVersion,
                     articleId: _this.articleId,
-                    sectionId: $evaluate.data("id"),
+                    sectionId: $frame.data("id"),
                     text: $bubble.find("input").val()
                 };
                 Views.ViewBase.currentView.apiPost("WikiReport", data, function (r) {
@@ -66,7 +66,7 @@ var Views;
         };
         Report.prototype.regToggleButton = function () {
             var _this = this;
-            $(".icon-flag").click(function (e) {
+            $(".icon-edit-pencil").click(function (e) {
                 e.preventDefault();
                 if (Views.ViewBase.currentView.fullReg) {
                     var $target = $(e.target);
@@ -115,14 +115,14 @@ var Views;
         };
         Rating.prototype.regRatingDD = function () {
             var _this = this;
-            this.regRatingBase("pmBtn", "place", "WikiRating", function (c) {
-                _this.setLikeDislike(c.$cont, c.like, !c.like, "pmBtn", "icon-plus", "icon-minus");
+            this.regRatingBase("pmBtn", "item", "WikiRating", function (c) {
+                _this.setLikeDislike(c.$cont, c.like, "pmBtn");
             });
         };
         Rating.prototype.regRatingPrice = function () {
             var _this = this;
             this.regRatingBase("priceBtn", "rate", "WikiPriceRating", function (c) {
-                _this.setLikeDislike(c.$cont, c.like, !c.like, "priceBtn", "icon-plus", "icon-minus");
+                _this.setLikeDislike(c.$cont, c.like, "priceBtn");
                 c.$cont.prev().find(".price").text(c.res.toFixed(2));
             });
         };
@@ -152,10 +152,10 @@ var Views;
         };
         Rating.prototype.regRating = function () {
             var _this = this;
-            this.regRatingBase("ratingBtn", "evaluate", "WikiRating", function (c) {
-                _this.setLikeDislike(c.$cont, c.like, !c.like, "ratingBtn", "icon-heart", "icon-nosmile");
+            this.regRatingBase("ratingBtn", "article_rating", "WikiRating", function (c) {
+                _this.setLikeDislike(c.$cont, c.like, "ratingBtn");
                 if (c.res != null) {
-                    var $r = c.$cont.find(".sRating");
+                    var $r = c.$cont.find(".score");
                     $r.removeClass("plus").removeClass("minus");
                     var d = _this.getRatingDesign(c.res);
                     $r.text(d.rstr);
@@ -163,23 +163,18 @@ var Views;
                 }
             });
         };
-        Rating.prototype.setLikeDislike = function ($cont, like, dislike, btnClass, likeClass, dislikeClass) {
+        Rating.prototype.setLikeDislike = function ($cont, state, btnClass) {
             var $btns = $cont.find("." + btnClass);
             var btns = $btns.toArray();
+            $btns.removeClass("active");
             btns.forEach(function (btn) {
                 var $btn = $(btn);
                 var isLike = $btn.data("like");
-                if (isLike) {
-                    var lc = likeClass + "Red";
-                    $btn.removeClass(likeClass);
-                    $btn.removeClass(lc);
-                    $btn.addClass(like ? lc : likeClass);
+                if (isLike && state) {
+                    $btn.addClass("active");
                 }
-                else {
-                    var dc = dislikeClass + "Red";
-                    $btn.removeClass(dislikeClass);
-                    $btn.removeClass(dc);
-                    $btn.addClass(dislike ? dc : dislikeClass);
+                if (!isLike && !state) {
+                    $btn.addClass("active");
                 }
             });
         };

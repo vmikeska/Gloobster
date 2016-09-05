@@ -1,24 +1,69 @@
-﻿<div class="article_rating">
+﻿@using System.Threading.Tasks
+@using Gloobster.Portal.ViewModels
+@model BlockVM
+
+@{
+    bool? liked = Model.Liked;
+
+    var likedIsActive = false;
+    var dislikeIsActive = false;
+    if (liked.HasValue)
+    {
+        if (liked.Value)
+        {
+            likedIsActive = true;
+        }
+        else
+        {
+            dislikeIsActive = true;
+        }
+    }
+
+    var ratingStr = Model.Rating.ToString();
+    var ratingCls = "";
+    if (Model.Rating > 0)
+    {
+        ratingStr = $"+{Model.Rating}";
+        ratingCls = "plus";
+    }
+    if (Model.Rating < 0)
+    {
+        ratingCls = "minus";
+    }
+
+}
+
+
+<div class="article_rating"  data-id="@Model.SectionId" >
 
     <div class="wrap">
         <div class="frame">
-            <div class="score">+5</div>
+            <div title="@Model.B.W("RatingBalance")" class="score @ratingCls">@ratingStr</div>
         </div>
     </div>
     <div class="wrap">
         <div class="frame">
-            <a href="#" class="icon-like"></a>
+            <a href="#" title="@Model.B.W("LikeSection")" data-like="true" class="icon-like ratingBtn @(likedIsActive ? "active" : string.Empty)"></a>
         </div>
     </div>
     <div class="wrap">
         <div class="frame">
-            <a href="#" class="icon-dislike"></a>
+            <a href="#" title="@Model.B.W("DontLikeSection")" data-like="false" class="icon-dislike ratingBtn @(dislikeIsActive ? "active" : string.Empty)"></a>
         </div>
     </div>
     <div class="wrap">
         <div class="frame">
-            <a href="#" class="icon-edit-pencil"></a>
+            <a href="#" title="@Model.B.W("RecommendContent")" class="icon-edit-pencil"></a>
         </div>
     </div>
 
+
+    <div class="bubble" style="display: none">
+        <span class="title">@Model.B.W("ReportText")</span>
+        <input type="text" placeholder="@Model.B.W("TextPlaceholder")">
+        <div class="btns">
+            <a class="lbtn cancel" href="#">@Model.B.W("Cancel", "layout")</a>
+            <a class="lbtn send" href="#">@Model.B.W("ReportSend")</a>
+        </div>
+    </div>
 </div>

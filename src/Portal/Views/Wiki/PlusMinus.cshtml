@@ -3,22 +3,23 @@
 @model PVM
 
 @{
-    
-    var likeClass = "icon-plus";
-    var dislikeClass = "icon-minus";
-    if (Model.Liked.HasValue)
+    bool? liked = Model.Liked;
+
+    var likedIsActive = false;
+    var dislikeIsActive = false;
+    if (liked.HasValue)
     {
-        if (Model.Liked.Value)
+        if (liked.Value)
         {
-            likeClass += "Red";
+            likedIsActive = true;
         }
         else
         {
-            dislikeClass += "Red";
+            dislikeIsActive = true;
         }
     }
 
 }
 
-<a title="@Model.B.W("IncreasePrice")" class="button-icon @likeClass priceBtn" data-like="true" href="#"></a>
-<a title="@Model.B.W("DecreasePrice")" class="button-icon @dislikeClass priceBtn" data-like="false" href="#"></a>
+<a title="@Model.B.W("IncreasePrice")" class="icon-plus priceBtn @(likedIsActive ? "active" : string.Empty)" data-like="true" href="#"></a>
+<a title="@Model.B.W("DecreasePrice")" class="icon-minus priceBtn @(dislikeIsActive ? "active" : string.Empty)" data-like="false" href="#"></a>

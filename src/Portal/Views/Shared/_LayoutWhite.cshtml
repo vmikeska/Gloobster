@@ -34,9 +34,9 @@
 <body onload="onBodyLoad()" class="@ViewBag.BodyClass" id="top">
 
 <header class="header">
+    @Html.Partial("_MenuNew")
 
-
-    <div class="wrapper">
+    @*<div class="wrapper">
         <h1><a asp-controller="Home" asp-action="Index" class="logo-header">Gloobster</a>
         </h1>
 
@@ -54,7 +54,7 @@
         </div>
 
         <a class="hamburger" data-target="#menu" href="#"><span></span></a>
-    </div>
+    </div>*@
 
 
 </header>
@@ -63,7 +63,7 @@
 
 @if (ViewBag.StopLayoutGenerate == null)
 {
-    <div class="blue-line margin"></div>
+    @*<div class="blue-line margin"></div>*@
     <section class="wrapper margin3">
         @if (!Model.SocialNetworks.Any())
         {

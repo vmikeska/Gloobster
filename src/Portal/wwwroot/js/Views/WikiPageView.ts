@@ -57,8 +57,8 @@
 			this.regSend();
 		}
 
-		private toggleForm($element) {		 
-			$element.closest(".evaluate").toggleClass("evaluate-open");
+		private toggleForm($element) {
+			$element.closest(".article_rating").find(".bubble").toggle();
 		}
 
 		private regSend() {
@@ -66,13 +66,13 @@
 				e.preventDefault();
 				var $target = $(e.target);
 
-				var $evaluate = $target.closest(".evaluate");
+				var $frame = $target.closest(".article_rating");
 				var $bubble = $target.closest(".bubble");
 
 				var data = {
 					lang: this.langVersion,
 					articleId: this.articleId,
-					sectionId: $evaluate.data("id"),
+					sectionId: $frame.data("id"),
 					text: $bubble.find("input").val()
 				};
 
@@ -84,7 +84,7 @@
 		}
 
 		private regToggleButton() {
-			$(".icon-flag").click((e) => {
+				$(".icon-edit-pencil").click((e) => {
 				e.preventDefault();
 
 				if (ViewBase.currentView.fullReg) {
@@ -122,7 +122,7 @@
 			this.langVersion = langVersion;
 		}
 
-		public getRatingDesign(rating) {
+		private getRatingDesign(rating) {
 			var res = {
 				rstr: rating,
 				cls: ""
@@ -139,14 +139,14 @@
 		}
 
 		private regRatingDD() {
-			this.regRatingBase("pmBtn", "place", "WikiRating", (c) => {
-				this.setLikeDislike(c.$cont, c.like, !c.like, "pmBtn", "icon-plus", "icon-minus");
+			this.regRatingBase("pmBtn", "item", "WikiRating", (c) => {
+				this.setLikeDislike(c.$cont, c.like, "pmBtn");
 			});
 		}
 
 		private regRatingPrice() {
 			this.regRatingBase("priceBtn", "rate", "WikiPriceRating", (c) => {
-				this.setLikeDislike(c.$cont, c.like, !c.like, "priceBtn", "icon-plus", "icon-minus");
+				this.setLikeDislike(c.$cont, c.like, "priceBtn");
 				c.$cont.prev().find(".price").text(c.res.toFixed(2));
 			});
 		}
@@ -178,10 +178,11 @@
 		}
 
 		private regRating() {
-			this.regRatingBase("ratingBtn", "evaluate", "WikiRating", (c) => {
-				this.setLikeDislike(c.$cont, c.like, !c.like, "ratingBtn", "icon-heart", "icon-nosmile");
+			this.regRatingBase("ratingBtn", "article_rating", "WikiRating", (c) => {
+				this.setLikeDislike(c.$cont, c.like, "ratingBtn");
 				if (c.res != null) {
-					var $r = c.$cont.find(".sRating");
+					var $r = c.$cont.find(".score");
+
 					$r.removeClass("plus").removeClass("minus");
 					var d = this.getRatingDesign(c.res);
 					$r.text(d.rstr);
@@ -190,25 +191,23 @@
 			});
 		}
 
-		private setLikeDislike($cont, like, dislike, btnClass, likeClass, dislikeClass) {
-			var $btns = $cont.find(`.${btnClass}`);
-			var btns = $btns.toArray();
+		private setLikeDislike($cont, state, btnClass) {
+				var $btns = $cont.find(`.${btnClass}`);				
+				var btns = $btns.toArray();
+
+			$btns.removeClass("active");
+
 			btns.forEach((btn) => {
 				var $btn = $(btn);
 				var isLike = $btn.data("like");
-				if (isLike) {
-					var lc = `${likeClass}Red`;
-					$btn.removeClass(likeClass);
-					$btn.removeClass(lc);
-
-					$btn.addClass(like ? lc : likeClass);
-				} else {
-					var dc = `${dislikeClass}Red`;
-					$btn.removeClass(dislikeClass);
-					$btn.removeClass(dc);
-
-					$btn.addClass(dislike ? dc : dislikeClass);
+				
+				if (isLike && state) {						
+						$btn.addClass("active");					
 				}
+				if (!isLike && !state) {
+						$btn.addClass("active");
+				}
+					
 			});
 
 		}

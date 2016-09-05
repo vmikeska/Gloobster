@@ -1,6 +1,6 @@
 /* Wrapper */
 
-.wrapper {
+/*.wrapper {
     @include size($wrapper-desktop auto);
     @include position(relative);
     @include margin(null auto null auto);
@@ -15,7 +15,8 @@
     @include tablet {
         @include size($wrapper-tablet auto);
     }
-}
+}*/
+
 
 /* Grid */
 

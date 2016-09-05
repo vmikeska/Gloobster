@@ -14,27 +14,11 @@
     }    
 }
 
-<style>    
-     .box.blue table {
-         border: none;
-         color: black;
-     }
-
-    .box.blue td {
-        background-color: transparent;
-        padding-bottom: 0;        
-    }
-
-    .box.blue td.value {
-        text-align: right;
-    }
-</style>
-
-<div class="table width100 adminBlock" data-at="standard" data-id="@Model.SectionId">
-    <div class="cell">
-        @*width240*@
-        <div class="box blue mright20 adminInfo left" style="width: 300px">
-            <h3>About</h3>
+<div class="blue-block wrapper adminBlock" data-at="standard" data-id="@Model.SectionId">
+   
+        
+        <div class="about">
+            <h3>@Model.B.W("About")</h3>
 
             <table>
                 @Html.Partial("TableItem", Model.InfoByName("Population"))                
@@ -63,9 +47,7 @@
 
         </div>
  
-        <p id="text_@Model.SectionId" class="h3">@Model.Text</p>
-    </div>
-    <div class="cell">
-        @Html.Partial("Rating")
-    </div>
+        <p id="text_@Model.SectionId" class="h3">@Html.Partial("NewArticleRating") @Model.Text</p>
+   
+   
 </div>
