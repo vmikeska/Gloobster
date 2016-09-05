@@ -35,23 +35,23 @@ namespace Gloobster.Portal.Controllers.Portal
             
 		}
 
+  //      [CreateAccount]
+  //      public async Task<IActionResult> Pins()
+	 //   {
+	 //       var vm = CreateViewModelInstance<PinBoardViewModel>();
+  //          vm.DefaultLangModuleName = "pagePins";
+  //          vm.LoadClientTexts(new []{"jsPins"});
+  //          if (UserIdObj.HasValue)
+  //          {
+  //              //await ExtractPlaces();                
+  //              await vm.Initialize(UserId, Stats);                
+  //          }
+            
+  //          return View(vm);
+		//}
+
         [CreateAccount]
         public async Task<IActionResult> Pins()
-	    {
-	        var vm = CreateViewModelInstance<PinBoardViewModel>();
-            vm.DefaultLangModuleName = "pagePins";
-            vm.LoadClientTexts(new []{"jsPins"});
-            if (UserIdObj.HasValue)
-            {
-                //await ExtractPlaces();                
-                await vm.Initialize(UserId, Stats);                
-            }
-            
-            return View(vm);
-		}
-
-
-        public async Task<IActionResult> NewPins()
         {
             var vm = CreateViewModelInstance<PinBoardViewModel>();
             vm.DefaultLangModuleName = "pagePins";

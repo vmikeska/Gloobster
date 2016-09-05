@@ -30,21 +30,21 @@ namespace Gloobster.Portal.Controllers.Portal
             WikiPerms = wikiPerms;
         }
 
+        //[CreateAccount]
+        //public IActionResult Home()
+        //{
+        //    var vm = CreateViewModelInstance<WikiHomeViewModel>();
+        //    vm.DefaultLangModuleName = "pageWikiHome";
+        //    vm.LoadClientTexts(new []{"jsWiki"});
+        //    vm.Texts = DB.List<WikiTextsEntity>(t => t.Rating > 0)
+        //        .OrderByDescending(o => o.Rating)
+        //        .ToList();
+
+        //    return View(vm);
+        //}
+
         [CreateAccount]
         public IActionResult Home()
-        {
-            var vm = CreateViewModelInstance<WikiHomeViewModel>();
-            vm.DefaultLangModuleName = "pageWikiHome";
-            vm.LoadClientTexts(new []{"jsWiki"});
-            vm.Texts = DB.List<WikiTextsEntity>(t => t.Rating > 0)
-                .OrderByDescending(o => o.Rating)
-                .ToList();
-
-            return View(vm);
-        }
-
-        [CreateAccount]
-        public IActionResult NewHome()
         {
             var vm = CreateViewModelInstance<WikiHomeViewModel>();
             vm.DefaultLangModuleName = "pageWikiHome";

@@ -10,7 +10,7 @@
 
         <div class="logo_all">
             @*/*@
-            <a href="/home/newindex">
+            <a href="/">
                 <img src="/images/n/logo.svg"/>
             </a>
         </div>
@@ -28,13 +28,11 @@
             <div>
                 <a href="/@RoutingConsts.PlannerMenuName/grid">@Model.W("MenuTrips", "layout")</a>
             </div>
-            <div>
-                @*/@RoutingConsts.PinsMenuName*@
-                <a class="MenuPins" href="/pinboard/newpins">@Model.W("MenuPins", "layout")</a>
+            <div>                
+                <a class="MenuPins" href="@RoutingConsts.PinsMenuName">@Model.W("MenuPins", "layout")</a>
             </div>
-            <div>
-                @*/@RoutingConsts.WikiMenuName*@
-                <a class="MenuWiki" href="/wiki/newhome">@Model.W("MenuWiki", "layout")</a>
+            <div>                
+                <a class="MenuWiki" href="@RoutingConsts.WikiMenuName">@Model.W("MenuWiki", "layout")</a>
             </div>
         </nav>
 

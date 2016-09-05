@@ -338,6 +338,12 @@ footer .footer_cont {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
+.icon-bin:before {
+  content: "\e9ac"; }
+
+.icon-mail2:before {
+  content: "\ea84"; }
+
 .icon-envelope:before {
   content: "\e90c"; }
 
@@ -1407,3 +1413,106 @@ footer .footer_cont {
       margin-top: 4px;
       display: inline-block;
       vertical-align: top; }
+
+.notif .del-btn {
+  border: 1px solid #3298C1;
+  color: #3298C1;
+  font-weight: 500; }
+
+.notif .notif_item {
+  border: 1px solid #65BDD7;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  position: relative;
+  text-align: left; }
+  .notif .notif_item .msg {
+    /*border: 1px solid red;*/
+    padding: 15px;
+    padding-top: 30px;
+    display: inline-block;
+    width: 90%;
+    text-align: left; }
+    .notif .notif_item .msg .date {
+      color: gray; }
+  .notif .notif_item .srv {
+    /*border: 1px solid red;*/
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 30px;
+    text-align: right; }
+    .notif .notif_item .srv .link {
+      color: white;
+      background-color: #65BDD7; }
+  .notif .notif_item .notif_delete {
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 9px;
+    border: 1px solid #65BDD7;
+    border-radius: 4px; }
+    .notif .notif_item .notif_delete .icon-bin {
+      display: inline-block;
+      color: #65BDD7;
+      font-size: 24px; }
+  .notif .notif_item .notif_delete:hover {
+    color: #005476;
+    border-color: #005476; }
+
+.friends .sect-title {
+  text-align: left; }
+
+.friends .friend-item .image {
+  display: inline-block;
+  border: 1px solid black;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  overflow: hidden; }
+
+.friends .friend-item .link {
+  color: #65BDD7; }
+
+.friends .friends-search input {
+  border: 2px solid #005476; }
+
+.friends .friends-search li .friends-all {
+  display: table; }
+  .friends .friends-search li .friends-all .image-all {
+    display: table-cell;
+    padding-right: 20px; }
+    .friends .friends-search li .friends-all .image-all .image {
+      display: inline-block;
+      vertical-align: middle;
+      border: 1px solid black;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      overflow: hidden; }
+  .friends .friends-search li .friends-all .link {
+    display: table-cell; }
+  .friends .friends-search li .friends-all .button {
+    display: table-cell; }
+    .friends .friends-search li .friends-all .button button {
+      vertical-align: middle;
+      display: inline-block; }
+
+.friends .actionButton {
+  font-size: 12px;
+  width: 150px;
+  margin: 0 10px 0 10px; }
+
+.friends .requestButton {
+  font-size: 12px;
+  width: 150px;
+  margin: 0 10px 0 10px; }
+
+.friends #usersTable {
+  margin-top: 30px;
+  border: 0; }
+
+.friends #usersTable td {
+  background-color: white; }
+
+.friends #usersTable h4 {
+  margin-top: 30px; }

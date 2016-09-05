@@ -1,7 +1,8 @@
 ﻿@using System.Threading.Tasks
 @using Gloobster.Common
 @{		
-		ViewBag.MenuGroup = "Friends";
+    Layout = "_LayoutNew";
+    ViewBag.BodyClass = "friends";
 }
 
 @if (GloobsterConfig.UseMiniScripts)
@@ -20,77 +21,32 @@ else
         }
 </script>
 
-<style>
-    .friendDropDown {
-        font-size: 12px;
-        margin: 0 10px 0 10px;
-        width: 150px;        
-    }
-
-    .actionButton {
-        font-size: 12px;
-        width: 150px;
-        margin: 0 10px 0 10px;
-    }
-
-    .requestButton {
-        font-size: 12px;
-        width: 150px;
-        margin: 0 10px 0 10px;
-    }
+<h1>@Model.W("Title")</h1>
 
 
-    #usersTable {
-        margin-top: 30px;
-        border: 0;
-    }
-
-    #usersTable td {
-        background-color: white;
-    }
-
-    #usersTable h4{
-        margin-top: 30px;   
-    }
+<div id="friendsSearch" class="dropdown friends-search">
+    <input class="inputed" type="text" placeholder="@Model.W("SearchPlaceholder")">
+    <ul>
+    </ul>
+</div>
 
 
-</style>
 
-    <div class="table row col2 margin">
-        <div class="cell">
-            <div class="table row">
-                <div class="cell middle">
-                    <h2>@Model.W("Title")</h2>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-<div class="blue-form form">
-        <div id="friendsSearch" class="dropdown left">
-            <input class="inputed" type="text" placeholder="@Model.W("SearchPlaceholder")">
-            <ul>
-            </ul>
-        </div>
-
-    </div>
-
-    <div class="team">
-        <table id="usersTable"></table>
-    </div>
+<div class="wrapper">
+    <table id="usersTable"></table>
+</div>
 
 
 
 <script id="friendItem-template" type="text/x-handlebars-template">
-    <tr>
-        <td>
-            <span class="thumbnail">
-                <img src="/PortalUser/ProfilePicture_s/{{id}}">
-            </span>
+    <tr class="friend-item">
+        <td>            
+            <div class="image">
+                <img src="/PortalUser/ProfilePicture_s/{{id}}" />
+            </div>
         </td>
         <td>
-            <span><a href="/PortalUser/Detail/{{id}}">{{name}}</a></span>
+            <a class="link" href="/PortalUser/Detail/{{id}}">{{name}}</a>
         </td>
         <td class="actions">           
         </td>
@@ -100,7 +56,7 @@ else
 
 
 <script id="friendMenu-template" type="text/x-handlebars-template">
-    <div class="dropdown friendDropDown">
+    <div class="dropdown">
         <span class="selected">@Model.W("Actions")</span>
         <ul>
             <li><a class="unfriend" data-fid="{{id}}" href="#">@Model.W("Unfriend")</a></li>            
@@ -108,3 +64,29 @@ else
         <input type="hidden">
     </div>
 </script>
+
+<script id="friend-search-item-template" type="text/x-handlebars-template">
+    
+    <li data-value="{{friendId}}">
+        <div class="friends-all">
+            <div class="image-all">
+                <div class="image">
+                    <img src="/PortalUser/ProfilePicture_s/{{friendId}}" />
+                </div>
+            </div>
+            <div class="link">
+                <a class="userLink" href="/portalUser/detail/{{friendId}}">{{displayName}}</a>
+            </div>
+            <div class="button">
+                <button class="requestButton" data-value="{{friendId}}">Request</button>
+            </div>
+        </div>
+        
+        
+        
+         
+    </li>
+
+</script>
+
+

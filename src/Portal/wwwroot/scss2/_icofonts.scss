@@ -26,6 +26,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-bin:before {
+  content: "\e9ac";
+}
+.icon-mail2:before {
+  content: "\ea84";
+}
 .icon-envelope:before {
   content: "\e90c";
 }

@@ -13,6 +13,7 @@ class FriendsView extends Views.ViewBase {
 
  private friendItemTemplate;
  private friendMenuTemplate;
+ private friendSearchTemplate;
 
  private $usersTable;
 
@@ -34,6 +35,9 @@ class FriendsView extends Views.ViewBase {
 
 		this.friendItemTemplate = this.registerTemplate("friendItem-template");
 		this.friendMenuTemplate = this.registerTemplate("friendMenu-template");
+
+		this.friendSearchTemplate = this.registerTemplate("friend-search-item-template");
+			
 	}
  
  public getUsersAndDisplay() {
@@ -76,15 +80,7 @@ class FriendsView extends Views.ViewBase {
 
 		
 		$("#friendsSearch ul").html(htmlContent);
-
-		//$(".userLink").click((e) => {
-		// e.preventDefault();
-		//	var $target = $(e.target);
-		//	var $li = $target.closest("li");
-		//	var id = $li.data("value");
-		//	window.location.href = `/portalUser/detail/${id}`;
-		//});
-
+			
 		$("#friendsSearch button").click(e => {
 			e.preventDefault();
 
@@ -95,11 +91,18 @@ class FriendsView extends Views.ViewBase {
 	}
 
 	private getItemHtml(item) {
-	 var photoUrl = "/PortalUser/ProfilePicture_s/" + item.friendId;
-     return `<li data-value="${item.friendId}"><span class="thumbnail"><img src="${photoUrl}"></span><a class="userLink" href="/portalUser/detail/${item.friendId}">${item.displayName}</a> <button class="requestButton" data-value="${item.friendId}">${this.t("Request", "jsFriends")}</button></li>`;
+		
+		var context = {
+				friendId: item.friendId,
+				displayName: item.displayName
+		};
+
+		var html = this.friendSearchTemplate(context);
+		return html;
+		//return `<li data-value="${item.friendId}"><div class="image"><img src="${photoUrl}"></div><a class="userLink" href="/portalUser/detail/${item.friendId}">${item.displayName}</a> <button class="requestButton" data-value="${item.friendId}">${this.t("Request", "jsFriends")}</button></li>`;
 	}
 
-	requestUser(userId, places) {
+	private requestUser(userId, places) {
 		var self = this;
 	
 		$("#friendsSearch ul").hide();
@@ -182,7 +185,7 @@ class FriendsView extends Views.ViewBase {
 	}
 
 	private generateSection(sectionTitle: string, friends: Friend[]) {
-	 var title = `<tr><td colspan="3"><h4>${sectionTitle}</h4></td></tr>`;
+	 var title = `<tr><td class="sect-title" colspan="3"><h4>${sectionTitle}</h4></td></tr>`;
 	 this.addRow(title);
 
 		friends.forEach(friend => {
@@ -236,6 +239,7 @@ class FriendsView extends Views.ViewBase {
   private generateFriendAction(friendId) {
 	  var html = this.friendMenuTemplate({ id: friendId });
 		var $html = $(html);
+		Common.DropDown.registerDropDown($html);
 		$html.find(".unfriend").click(e => {
 		 e.preventDefault();
 		 var friendId = $(e.target).data("fid");

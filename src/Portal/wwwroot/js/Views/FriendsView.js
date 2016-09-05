@@ -44,6 +44,7 @@ var FriendsView = (function (_super) {
         });
         this.friendItemTemplate = this.registerTemplate("friendItem-template");
         this.friendMenuTemplate = this.registerTemplate("friendMenu-template");
+        this.friendSearchTemplate = this.registerTemplate("friend-search-item-template");
     };
     FriendsView.prototype.getUsersAndDisplay = function () {
         var self = this;
@@ -85,8 +86,12 @@ var FriendsView = (function (_super) {
         });
     };
     FriendsView.prototype.getItemHtml = function (item) {
-        var photoUrl = "/PortalUser/ProfilePicture_s/" + item.friendId;
-        return "<li data-value=\"" + item.friendId + "\"><span class=\"thumbnail\"><img src=\"" + photoUrl + "\"></span><a class=\"userLink\" href=\"/portalUser/detail/" + item.friendId + "\">" + item.displayName + "</a> <button class=\"requestButton\" data-value=\"" + item.friendId + "\">" + this.t("Request", "jsFriends") + "</button></li>";
+        var context = {
+            friendId: item.friendId,
+            displayName: item.displayName
+        };
+        var html = this.friendSearchTemplate(context);
+        return html;
     };
     FriendsView.prototype.requestUser = function (userId, places) {
         var self = this;
@@ -154,7 +159,7 @@ var FriendsView = (function (_super) {
     };
     FriendsView.prototype.generateSection = function (sectionTitle, friends) {
         var _this = this;
-        var title = "<tr><td colspan=\"3\"><h4>" + sectionTitle + "</h4></td></tr>";
+        var title = "<tr><td class=\"sect-title\" colspan=\"3\"><h4>" + sectionTitle + "</h4></td></tr>";
         this.addRow(title);
         friends.forEach(function (friend) {
             _this.generateOneFriendItem(friend);
@@ -197,6 +202,7 @@ var FriendsView = (function (_super) {
         var _this = this;
         var html = this.friendMenuTemplate({ id: friendId });
         var $html = $(html);
+        Common.DropDown.registerDropDown($html);
         $html.find(".unfriend").click(function (e) {
             e.preventDefault();
             var friendId = $(e.target).data("fid");

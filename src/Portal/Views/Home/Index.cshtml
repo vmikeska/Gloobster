@@ -7,159 +7,190 @@
 
 @{
     ViewData["Title"] = "Home Page";
-    Layout = "";
+    Layout = "_LayoutNew";
 }
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
 
-    <meta name="google-site-verification" content="oYdKq1oUoqxCaM5HbFMH1m9V2SGm8j6WxX0mcvDu9Is" />
 
-    <title>Gloobster</title>
+@if (GloobsterConfig.UseMiniScripts)
+{
+    @*<link href="~/cssb/site.min.css" rel="stylesheet" />*@
 
-    @Html.Partial("_GlobalTemplates")
+        @*<script src="/jsb/nindex.js" type="text/javascript" data-notbuild="true"></script>*@
+}
+else
+{
 
-    @if (GloobsterConfig.UseMiniScripts)
-    {
-        <link href="~/cssb/site.min.css" rel="stylesheet" />
+    
 
-        <script src="/jsb/index.js" type="text/javascript" data-notbuild="true"></script>
-    }
-    else
-    {
-        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,700">
-        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700">
-        <link href="~/css/style.css" rel="stylesheet" />
+    <script src="/js/Views/n_HomePageView.js" type="text/javascript"></script>
+    <script src="/js/views/settingsutils.js" type="text/javascript"></script>
+}
 
-        <script src="/lib/jquery/dist/jquery.js" type="text/javascript"></script>
-        <script src="/lib/googleclientapi.js" type="text/javascript"></script>
-        <script src="/lib/js-cookie/src/js.cookie.js" type="text/javascript"></script>
-        <script src="/lib/handlebars/handlebars.js" type="text/javascript"></script>
-        <script src="/lib/moment/moment.js" type="text/javascript"></script>
-        <script src="/lib/pep.js" type="text/javascript"></script>
+<div class="title_show_all">
+    <div class="photo">
 
-        <script src="/js/Common/globals.js" type="text/javascript"></script>
-        <script src="/js/Common/RequestSender.js" type="text/javascript"></script>
-        <script src="/js/Common/CookieManager.js" type="text/javascript"></script>
-        <script src="/js/Common/ConfirmDialog.js" type="text/javascript"></script>
+        <div class="bck_holder">
+            <div class="empty_fill"></div>
+            <div class="text_area">
+                <div class="motto">
+                    The only portal
+                    you‘ll need to
+                    travel the world
+                </div>
 
-        <script src="/js/Views/ViewBase.js" type="text/javascript"></script>
-        <script src="/js/Views/HomePageView.js" type="text/javascript"></script>
-        
-        <script src="/js/registration/SocialButtons.js" type="text/javascript"></script>
-        <script src="/js/registration/GoogleButton.js" type="text/javascript"></script>
-        <script src="/js/registration/FacebookInit.js" type="text/javascript"></script>
-        <script src="/js/registration/FacebookAuth.js" type="text/javascript"></script>
-    }
- 
-    <style>
-        .homepage .maskots {
-            background: transparent url("../images/globe3.png") center top no-repeat;
-            color: #fff;
-            height: 200px;
-        }
-
-        .homepage .maskots .logins { 
-            top: 100px;
-        }
-    </style>    
-</head>
-<body onload="onBodyLoad()" class="homepage" id="top">
-<header class="header">
-    <div class="wrapper">
-        <h1><a href="." class="logo-header">Gloobster</a>
-        </h1>
-
-        <div class="menu-holder">
-            <div class="tright mhalf">
-                @Html.Partial("_LangMenu")
+                <a class="link" href="#">Learn more</a>
             </div>
-            @Html.Partial("_Menu")
         </div>
 
-        <a class="hamburger" data-target="#menu" href="#"><span></span></a>
-    </div>
-
-</header>
-
-<div id="fb-root"></div>
-
-<div class="maskots margin">
-    <div class="wrapper">
-        <h1>@Model.W("Motto1")</h1>
-
-        @if (!Model.SocialNetworks.Any())
-        {
-            <div id="preloader" style="display: none; text-align: center">
-                <img src="/images/redirecting.gif" style="height: 100px; border-radius: 5px;" />
-            </div>
-            <div class="logins">
-                <div class="margin">                    
-                    <a id="fbBtnHome" class="facebook" href="#">@Model.W("FbButton", "login")</a>
-                    <a id="twitterBtnHome" class="twitter" href="#">@Model.W("TwButton", "login")</a>
-                    <a id="googleBtnHome" class="google" href="#">@Model.W("GoButton", "login")</a>
-                </div>                
-            </div>
-        }
     </div>
 </div>
-<section class="wrapper margin3">
 
-    <h2 class="h3 tcenter margin3">@Model.W("Motto2")</h2>
-    <div class="table row col3 margin2">
-        <div class="cell">
-            <div class="box plan tcenter">
-                <h3>@Model.W("BoxPinsTitle")</h3>
-                <p class="tleft">@Model.W("BoxPinsBody")</p>
-                <a class="button" href="/@RoutingConsts.PinsMenuName">@Model.W("BoxPinsLink")</a>
+<div class="fly_all">
+
+    <div class="motto">
+        <span>Fly ticket search – three easy steps to travel the world</span>
+    </div>
+
+    <div class="icons">
+
+        <div class="icon block mr">
+            <img src="/images/n/fly-pin.svg"/>
+            <div class="txt c1">Set your home location</div>
+        </div>
+        <div class="pointer block mr">
+            <div class="center_cont">
+                <div class="dashed_cont">
+                    <div class="line"></div>
+                </div>
+                <div class="arrow"><img src="/images/n/fly-arrow.svg"/>
+                </div>
             </div>
         </div>
-        <div class="cell">
-            <div class="box green plan tcenter">
-                <h3>@Model.W("BoxTripsTitle")</h3>
-                <p class="tleft">@Model.W("BoxTripsBody")</p>
-                <a class="button" href="/@RoutingConsts.PlannerMenuName/grid">@Model.W("BoxTripsLink")</a>
+        <div class="icon block mr">
+            <img src="/images/n/fly-comp.svg"/>
+            <div class="txt">Customize your dashboard</div>
+        </div>
+        <div class="pointer block mr">
+            <div class="center_cont">
+                <div class="dashed_cont">
+                    <div class="line"></div>
+                </div>
+                <div class="arrow"><img src="/images/n/fly-arrow.svg"/>
+                </div>
             </div>
         </div>
-        <div class="cell">
-            <div class="box orange share tcenter">
-                <h3>@Model.W("BoxWikiTitle")</h3>
-                <p class="tleft">@Model.W("BoxWikiBody")</p>
-                <a class="button" href="/@RoutingConsts.WikiMenuName">@Model.W("BoxWikiLink")</a>
-            </div>
+        <div class="icon block">
+            <img src="/images/n/fly-plane.svg"/>
+            <div class="txt">Get your best deals</div>
+        </div>
+
+    </div>
+
+    <div class="loc">
+        <div id="currentCity" class="dropdown left">
+            <input class="inputed" type="text" placeholder="Set your home city">
+            <ul>                
+            </ul>
         </div>
     </div>
 
+</div>
 
-</section>
+<div class="social">
 
-@Html.Partial("_Footer")
+    <div class="blocks">
+
+        <div class="motto">Try one of our free social components</div>
+
+        <div class="item mr">
+            <div class="image">                
+                <span class="icon-ico-travel-buddy blue"></span>
+            </div>
+            <div class="name">                
+                <span class="blue">Travel buddy</span>
+            </div>
+            <div class="txt">
+                Find your travel buddy
+                here and now. Whereever
+                you are, whenever you‘re
+                on your way – get in contact
+                with travellers all over
+                the world.
+            </div>
+            <div class="btn">
+                <a class="blue" href="/TravelB/home">Find your buddy</a>
+            </div>
+        </div>
+
+        <div class="item mr">
+            <div class="image">
+                <span class="icon-ico-organizer green"></span>
+            </div>
+            <div class="name">
+                <span class="green">Travel organizer</span>
+            </div>
+            <div class="txt">
+                Organize your travel documents
+                and notes day
+                by day. Invite your friend
+                or let know to the people
+                about your trip over social
+                networks.
+            </div>
+            <div class="btn">
+                <a class="green" href="/@RoutingConsts.PlannerMenuName/grid">Try it now</a>
+            </div>
+        </div>
+
+        <div class="item mr">
+            <div class="image">
+                <span class="icon-ico-wiki orange"></span>                
+            </div>
+            <div class="name">
+                <span class="orange">Travel wiki</span>
+            </div>
+            <div class="txt">
+                Become a part of our travel
+                community and help
+                us to build one of the
+                biggest travel databases
+                on the internet.
+            </div>
+            <div class="btn">
+                @*/@RoutingConsts.WikiMenuName*@
+                <a class="orange" href="/wiki/newhome">Join us</a>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="image">
+                <span class="icon-ico-travel-map yellow"></span>                
+            </div>
+            <div class="name">
+                <span class="yellow">Travel map</span>
+            </div>
+            <div class="txt">
+                Pin places you‘ve visited,
+                share and compare with
+                your friends. See most
+                visited places all over the
+                world. Let‘s build the travel
+                map together!
+            </div>
+            <div class="btn">
+                @*/@RoutingConsts.PinsMenuName*@
+                <a class="yellow" href="/pinboard/newpins">Build your map</a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
 
 <script>
-
-    document["facebookId"] = "@GloobsterConfig.FacebookAppId";
-    document["googleId"] = "@GloobsterConfig.GoogleClientId";
-
+    
     function onBodyLoad() {
-        currentView = new Views.HomePageView();
+        currentView = new Views.NHomePageView();
     }
 
-
 </script>
-
-    @Html.Partial("_GlobalTemplates")
-
-</body>
-</html>
-
-@*<div onlogin="currentView.loginManager.facebookUserCreator.registerOrLogin()"
-         class="fb-login-button"
-         data-scope="publish_actions,user_location,user_hometown,public_profile,user_friends,email"
-         data-max-rows="1"
-         data-size="xlarge"
-         data-show-faces="false"
-         data-auto-logout-link="false">
-        Facebook
-    </div>*@

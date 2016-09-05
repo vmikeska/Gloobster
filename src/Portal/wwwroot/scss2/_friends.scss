@@ -1,0 +1,95 @@
+﻿
+.friends{
+    
+    .sect-title{
+        text-align: left;
+    }
+
+    .friend-item{
+        .image{
+            display: inline-block;
+            border: 1px solid black;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            overflow: hidden;
+        }
+
+        .link{
+            color: $light-blue;
+        }
+        
+    }
+
+    .friends-search {
+        input {
+            border: 2px solid $dark-blue;
+        }
+
+        li{
+            .friends-all
+            {
+                display: table;
+
+                .image-all{
+                    display: table-cell;
+                    padding-right: 20px;
+
+                    .image{
+                        display: inline-block;
+                        vertical-align: middle;
+
+                        border: 1px solid black;
+                        border-radius: 50%;
+                        width: 60px;
+                        height: 60px;
+                        overflow: hidden;
+                    }
+                }
+
+                .link{
+                    display: table-cell;
+
+                }
+
+                .button{
+                    display: table-cell;
+
+                    button{
+                        vertical-align: middle;
+                        display: inline-block;
+                    }
+                }
+            }
+
+            
+        }
+    }
+
+    .actionButton {
+        font-size: 12px;
+        width: 150px;
+        margin: 0 10px 0 10px;
+    }
+
+    .requestButton {
+        font-size: 12px;
+        width: 150px;
+        margin: 0 10px 0 10px;
+    }
+
+
+    #usersTable {
+        margin-top: 30px;
+        border: 0;
+    }
+
+    #usersTable td {
+        background-color: white;
+    }
+
+    #usersTable h4{
+        margin-top: 30px;   
+    }
+
+}

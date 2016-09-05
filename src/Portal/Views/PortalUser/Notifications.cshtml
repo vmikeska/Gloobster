@@ -3,6 +3,11 @@
 @using Gloobster.Portal.ViewModels
 @model NotificationsViewModel
 
+@{
+    Layout = "_LayoutNew";
+    ViewBag.BodyClass = "notif";
+}
+
 
 @if (GloobsterConfig.UseMiniScripts)
 {
@@ -13,34 +18,36 @@ else
     <script type="text/javascript" src="/js/Views/NotificationsView.js"></script>
 }
 
-    <div class="table margin width100">
-        <div class="cell middle">
+    <div class="htbl wrapper">
+        <div class="left">
             <h2>@Model.W("Title")</h2>
         </div>
-        <div class="cell middle tright">
+        <div class="right">
             @if (Model.Notifications.Notifications.Any())
             {
-                <a id="deleteAll" class="button blue-trans" href="#">@Model.W("DeleteAll")</a>
+                <a id="deleteAll" class="lbtn del-btn" href="#">@Model.W("DeleteAll")</a>
             }
         </div>
     </div>
 
     @foreach (var notif in Model.Notifications.Notifications)
     {
-        <div class="blue-border table width100 margin notif_item" id="@notif.id">
-            <div class="cell middle last-child">
+        <div class="notif_item wrapper" id="@notif.id">
+            <a data-notifId="@notif.id" class="notif_delete" href="#"><span class="icon-bin"></span></a>
+            <div class="msg">
                 <h3>@notif.Title</h3>
                 <p>
-                    <span class="color2">@notif.Created.ToShortDateString()</span> — @notif.Content
+                    <span class="date">@notif.Created.ToShortDateString()</span> — @notif.Content
                 </p>
+                <div class="srv">
+                    @if (!string.IsNullOrEmpty(notif.Link))
+                    {
+                        <a class="lbtn link" href="@GloobsterConfig.Protocol://@GloobsterConfig.Domain/@notif.Link">@notif.LinkText</a>
+                    }
+
+                </div>
             </div>
-            <div class="cell middle tright">
-                @if (!string.IsNullOrEmpty(notif.Link))
-                {
-                    <a class="button h4 middle" href="@GloobsterConfig.Protocol://@GloobsterConfig.Domain/@notif.Link">@notif.LinkText</a>
-                }
-                <a data-notifId="@notif.id" class="notif_delete button border middle" href="#"><span class="icon-trash middle"></span></a>
-            </div>
+            
         </div>
     }
 
