@@ -26,20 +26,30 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+
 .icon-bin:before {
   content: "\e9ac";
+}
+.icon-plus:before {
+  content: "\ea0a";
+}
+.icon-minus:before {
+  content: "\ea0b";
+}
+.icon-cross:before {
+  content: "\ea0f";
+}
+.icon-checkmark:before {
+  content: "\ea10";
+}
+.icon-checkmark2:before {
+  content: "\ea11";
 }
 .icon-mail2:before {
   content: "\ea84";
 }
 .icon-envelope:before {
   content: "\e90c";
-}
-.icon-minus:before {
-  content: "\e915";
-}
-.icon-plus:before {
-  content: "\e916";
 }
 .icon-star-left:before {
   content: "\e913";
@@ -101,6 +111,7 @@
 .icon-places:before {
   content: "\e910";
 }
+
 
 
 

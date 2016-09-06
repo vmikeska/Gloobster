@@ -1,0 +1,42 @@
+﻿
+.user-settings{
+
+    textarea,input{
+        border: 1px solid $light-blue;
+    }
+
+    input[type=number]{
+        height: 40px;
+        border-radius: 4px;
+        font-size: 1em;
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+    }
+
+    text-align: left;
+
+    .titleName {
+        font-weight: bold;
+    }
+
+    .avatar {
+        width: 240px;
+        height: 240px;
+        border:1px solid black;
+    }
+
+
+
+    .controls {
+        margin-top: 15px;
+    }
+
+    .pairing {
+        margin-top: 20px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        border-top: 1px solid black;
+        border-bottom: 1px solid black;
+        text-align: center;
+    }
+}

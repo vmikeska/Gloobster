@@ -183,6 +183,32 @@ button:active {
     border: none;
 }
 
+.tag{
+        position: relative;
+        margin: 0 6px 6px 0;
+        padding: 6px 10px;
+        transition: all .3s;
+        background-color: #57c1db;
+        border: 1px solid #57c1db;
+        border-radius: 4px;
+        color: #fff;
+        display: inline-block;
+        text-decoration: none;
+
+        .icon-cross{
+            margin-left: 10px;
+            margin-top: 4px;
+            display: inline-block;
+            text-decoration: none;
+            color: $dark-blue;
+            font-size: 14px;
+        }
+
+        .icon-cross:hover {
+            color: darkred;
+        }
+    }
+
 
 @import "layout";
 @import "popup";
@@ -194,3 +220,4 @@ button:active {
 @import "wiki-page";
 @import "notif";
 @import "friends";
+@import "settings";

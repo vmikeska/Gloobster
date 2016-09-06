@@ -102,6 +102,27 @@ button:active {
   outline: none;
   border: none; }
 
+.tag {
+  position: relative;
+  margin: 0 6px 6px 0;
+  padding: 6px 10px;
+  transition: all .3s;
+  background-color: #57c1db;
+  border: 1px solid #57c1db;
+  border-radius: 4px;
+  color: #fff;
+  display: inline-block;
+  text-decoration: none; }
+  .tag .icon-cross {
+    margin-left: 10px;
+    margin-top: 4px;
+    display: inline-block;
+    text-decoration: none;
+    color: #005476;
+    font-size: 14px; }
+  .tag .icon-cross:hover {
+    color: darkred; }
+
 .menu_all {
   padding-right: 8px;
   padding-left: 8px;
@@ -341,17 +362,26 @@ footer .footer_cont {
 .icon-bin:before {
   content: "\e9ac"; }
 
+.icon-plus:before {
+  content: "\ea0a"; }
+
+.icon-minus:before {
+  content: "\ea0b"; }
+
+.icon-cross:before {
+  content: "\ea0f"; }
+
+.icon-checkmark:before {
+  content: "\ea10"; }
+
+.icon-checkmark2:before {
+  content: "\ea11"; }
+
 .icon-mail2:before {
   content: "\ea84"; }
 
 .icon-envelope:before {
   content: "\e90c"; }
-
-.icon-minus:before {
-  content: "\e915"; }
-
-.icon-plus:before {
-  content: "\e916"; }
 
 .icon-star-left:before {
   content: "\e913"; }
@@ -1300,10 +1330,7 @@ footer .footer_cont {
       text-decoration: none;
       border: 1px solid #3298C1;
       border-radius: 2px;
-      padding: 5px;
-      font-weight: 700; }
-    .wiki-page .tbl .icon-minus {
-      font-weight: 900; }
+      padding: 5px; }
     .wiki-page .tbl .icon-plus:hover, .wiki-page .tbl .icon-minus:hover {
       color: #005476; }
     .wiki-page .tbl .active {
@@ -1516,3 +1543,29 @@ footer .footer_cont {
 
 .friends #usersTable h4 {
   margin-top: 30px; }
+
+.user-settings {
+  text-align: left; }
+  .user-settings textarea, .user-settings input {
+    border: 1px solid #65BDD7; }
+  .user-settings input[type=number] {
+    height: 40px;
+    border-radius: 4px;
+    font-size: 1em;
+    padding-left: 0.5em;
+    padding-right: 0.5em; }
+  .user-settings .titleName {
+    font-weight: bold; }
+  .user-settings .avatar {
+    width: 240px;
+    height: 240px;
+    border: 1px solid black; }
+  .user-settings .controls {
+    margin-top: 15px; }
+  .user-settings .pairing {
+    margin-top: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    text-align: center; }

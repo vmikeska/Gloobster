@@ -6,6 +6,11 @@
 @using Newtonsoft.Json
 @model SettingsViewModel
 
+@{
+    Layout = "_LayoutNew";
+    ViewBag.BodyClass = "user-settings";
+}
+
 @if (GloobsterConfig.UseMiniScripts)
 {
     <script src="/jsb/userSettings.js" type="text/javascript" data-notbuild="true"></script>
@@ -22,65 +27,12 @@ else
 
 <link href="~/css/chat.css" rel="stylesheet" />
 
-<style>
+<h1>@Model.W("Settings")</h1>
 
-.titleName {
-    font-weight: bold;
-}
-
-.avatar {
-    width: 240px;
-    height: 240px;
-    border:1px solid black;
-}
-
-.avatarFile input
-{
-	width: 0.1px;
-	height: 0.1px;
-	opacity: 0;
-	overflow: hidden;
-	position: absolute;
-	z-index: -1;
-}
-
-.avatarFile label {
-    font-size: 20px;
-    cursor: pointer;
-}
-
-.controls {
-    margin-top: 15px;
-}
-
-.pairing {
-    margin-top: 20px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
-    text-align: center;
-}
-
-</style>
-
-
-<div class="table row col2 margin">
-        <div class="cell">
-            <div class="table row">
-                <div class="cell middle">
-                    <h2>@Model.W("Settings")</h2>
-                </div>
-
-            </div>
-        </div>
-
-    </div>
-
-    <div>
+    <div class="wrapper">
         <img id="avatar" class="avatar" src="@Model.AvatarLink" />
         <br />
-        <a class="button avatarFile" href="#">
+        <a class="photo-button" href="#">
             <input type="file" id="avatarFile" />
 
             <label for="avatarFile">
@@ -89,133 +41,134 @@ else
         </a>
     </div>
 
-<table class="controls">
-    <tr>
-        <td colspan="2">
-            Base data
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <span class="titleName">@Model.W("DisplayName")</span>
-        </td>
-        <td>
-            <input id="displayName" type="text" value="@Model.DisplayName"/>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="2">
-            Travel Buddy min
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <span class="titleName">First name</span>
-        </td>
-        <td> 
-            <input id="firstName" type="text" value="@Model.FirstName"/>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <span class="titleName">Last name</span>
-        </td>
-        <td>
-            <input id="lastName" type="text" value="@Model.LastName" />
-        </td>
-    </tr>
+<div class="wrapper">
+    <table class="controls">
+        <tr>
+            <td colspan="2">
+                <h2>Base data</h2>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="titleName">@Model.W("DisplayName")</span>
+            </td>
+            <td>
+                <input id="displayName" type="text" value="@Model.DisplayName" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">                
+                <h2>Travel Buddy min</h2>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="titleName">First name</span>
+            </td>
+            <td>
+                <input id="firstName" type="text" value="@Model.FirstName" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="titleName">Last name</span>
+            </td>
+            <td>
+                <input id="lastName" type="text" value="@Model.LastName" />
+            </td>
+        </tr>
 
-    <tr>
-        <td>
-            <span class="titleName">BirthYear</span>
-        </td>
-        <td>
-            <input id="birthYear" type="number" value="@Model.BirthYear" placeholder="eg 1983" />
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <span class="titleName">@Model.W("Gender")</span>
-        </td>
-        <td>
-            <div id="gender" class="dropdown left">
-                <span class="selected">@Model.Gender</span>
-                <ul>
-                    <li data-value="1">@Model.W("Male", "layout")</li>
-                    <li data-value="2">@Model.W("Female", "layout")</li>
-                </ul>
-                <input type="hidden" value="0">
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <span class="titleName">Status</span>
-        </td>
-        <td>
-            <div id="familyStatus" class="dropdown left">
-                <span class="selected">@Model.FamilyStatus</span>
-                <ul>
-                    <li data-value="1">Single</li>
-                    <li data-value="2">InRelationship</li>
-                </ul>
-                <input type="hidden" value="0">
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <span class="titleName">Languages</span>
-        </td>
-        <td>
-            <div id="langsTagging" class="tags">
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <span class="titleName">Interests</span>
-        </td>
-        <td>
-            @*class="tags"*@
-            <div id="intersTagging">
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <span class="titleName">@Model.W("HomeCity")</span>
-        </td>
-        <td>
-            <div id="homeCity" class="dropdown left">
-                <input class="inputed" type="text" placeholder="City name" value="@Model.HomeLocation">
-                <ul></ul>
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <span class="titleName">@Model.W("CurrentCity")</span>
-        </td>
-        <td>
-            <div id="currentCity" class="dropdown left">
-                <input class="inputed" type="text" placeholder="City name" value="@Model.CurrentLocation">
-                <ul></ul>
-            </div>
-        </td>
-    </tr>
+        <tr>
+            <td>
+                <span class="titleName">BirthYear</span>
+            </td>
+            <td>
+                <input id="birthYear" type="number" value="@Model.BirthYear" placeholder="eg 1983" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="titleName">@Model.W("Gender")</span>
+            </td>
+            <td>
+                <div id="gender" class="dropdown left">
+                    <span class="selected">@Model.Gender</span>
+                    <ul>
+                        <li data-value="1">@Model.W("Male", "layout")</li>
+                        <li data-value="2">@Model.W("Female", "layout")</li>
+                    </ul>
+                    <input type="hidden" value="0">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="titleName">Status</span>
+            </td>
+            <td>
+                <div id="familyStatus" class="dropdown left">
+                    <span class="selected">@Model.FamilyStatus</span>
+                    <ul>
+                        <li data-value="1">Single</li>
+                        <li data-value="2">InRelationship</li>
+                    </ul>
+                    <input type="hidden" value="0">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="titleName">Languages</span>
+            </td>
+            <td>
+                <div id="langsTagging" class="tags">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="titleName">Interests</span>
+            </td>
+            <td>
+                @*class="tags"*@
+                <div id="intersTagging">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="titleName">@Model.W("HomeCity")</span>
+            </td>
+            <td>
+                <div id="homeCity" class="dropdown left">
+                    <input class="inputed" type="text" placeholder="City name" value="@Model.HomeLocation">
+                    <ul></ul>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="titleName">@Model.W("CurrentCity")</span>
+            </td>
+            <td>
+                <div id="currentCity" class="dropdown left">
+                    <input class="inputed" type="text" placeholder="City name" value="@Model.CurrentLocation">
+                    <ul></ul>
+                </div>
+            </td>
+        </tr>
 
-    <tr>
-        <td>
-            <span class="titleName">Short description</span>
-        </td>
-        <td>
-            <textarea id="shortDescription">@Model.ShortDescription</textarea>
-        </td>
-    </tr>
+        <tr>
+            <td>
+                <span class="titleName">Short description</span>
+            </td>
+            <td>
+                <textarea id="shortDescription">@Model.ShortDescription</textarea>
+            </td>
+        </tr>
 
-</table>
-
+    </table>
+</div>
 
 
      <div class="logins pairing">

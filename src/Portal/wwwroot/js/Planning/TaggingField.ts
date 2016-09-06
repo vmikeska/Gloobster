@@ -55,7 +55,7 @@ module Planning {
 		}
 
 		private createTag(text, value, kind) {			
-			var $html = $(`<span class="tag" data-vl="${value}" data-kd="${kind}">${text}<a class="delete" href="#">d</a></span>`);
+			var $html = $(`<span class="tag" data-vl="${value}" data-kd="${kind}">${text}<a class="icon-cross" href="#"></a></span>`);
 			$html.find("a").click((e) => {
 					e.preventDefault();
 					var $target = $(e.target);

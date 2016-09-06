@@ -118,8 +118,8 @@ module TravelB {
 		}
 
 		private tagItem(catId, id, name) {
-			var $i = $(`<span class="tag" data-catid="${catId}" data-id="${id}">${name}<a class="delete" href="#"></a></span>`);
-			$i.find(".delete").click((e) => {
+			var $i = $(`<span class="tag" data-catid="${catId}" data-id="${id}">${name}<a class="icon-cross" href="#"></a></span>`);
+			$i.find("a").click((e) => {
 				e.preventDefault();
 
 				if (this.tabs.activeTabId === this.tabId(this.instName, catId)) {
