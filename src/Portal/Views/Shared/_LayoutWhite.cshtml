@@ -36,40 +36,14 @@
 <header class="header">
     @Html.Partial("_MenuNew")
 
-    @*<div class="wrapper">
-        <h1><a asp-controller="Home" asp-action="Index" class="logo-header">Gloobster</a>
-        </h1>
-
-        <div class="menu-holder">
-            <div id="ddMenus" class="tright mhalf">
-                @Html.Partial("_LangMenu")
-
-                @if (Model.User != null)
-                {
-                    @Html.Partial("_UserMenu")
-                }
-
-            </div>
-            @Html.Partial("_Menu")
-        </div>
-
-        <a class="hamburger" data-target="#menu" href="#"><span></span></a>
-    </div>*@
-
-
 </header>
 
 <div id="fb-root"></div>
 
 @if (ViewBag.StopLayoutGenerate == null)
-{
-    @*<div class="blue-line margin"></div>*@
+{    
     <section class="wrapper margin3">
-        @if (!Model.SocialNetworks.Any())
-        {
-            @Html.Partial("_DialogJoinSoc")
-            @Html.Partial("_DialogJoinEmail")
-        }
+        
         @RenderBody()
     </section>
 }

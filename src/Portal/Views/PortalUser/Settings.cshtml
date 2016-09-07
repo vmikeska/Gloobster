@@ -171,22 +171,23 @@ else
 </div>
 
 
-     <div class="logins pairing">
-        @if (!Model.HasSocNet(SocialNetworkType.Facebook))
-        {
-            <a id="fbBtnPair" class="facebook" href="#">@Model.W("FbButtonPair", "login")</a>
-        }
+<div class="logins pairing">
+    
+    @if (!Model.HasSocNet(SocialNetworkType.Facebook))
+    {
+        <a id="fbBtnPair" class="facebook" href="#"><span class="icon-facebook2"></span>@Model.W("FbButtonPair", "login")</a>        
+    }
 
-        @if (!Model.HasSocNet(SocialNetworkType.Twitter))
-        {
-            <a id="twitterBtnPair" class="twitter" href="#">@Model.W("TwButtonPair", "login")</a>
-        }
+    @if (!Model.HasSocNet(SocialNetworkType.Twitter))
+    {            
+        <a id="twitterBtnPair" class="twitter" href="#"><span class="icon-twitter"></span>@Model.W("TwButtonPair", "login")</a>
+    }
 
-        @if (!Model.HasSocNet(SocialNetworkType.Google))
-        {
-            <a id="googleBtnPair" class="google" href="#">@Model.W("GoButtonPair", "login")</a>
-        }       
-    </div>
+    @if (!Model.HasSocNet(SocialNetworkType.Google))
+    {     
+        <a id="googleBtnPair" class="google" href="#"><span class="icon-google-plus"></span>@Model.W("GoButtonPair", "login")</a>
+    }
+</div>
 
 
 <script>

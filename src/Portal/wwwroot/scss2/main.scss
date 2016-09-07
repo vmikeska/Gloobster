@@ -51,7 +51,11 @@ body {
     font-size: 20px;
 }
 
-input[type="text"]{    
+a {
+    color: $light-blue3;
+}
+
+input[type="text"],input[type="password"]{    
     padding: 8px 13px;
     border: 0;
     border-radius: 4px;
@@ -71,6 +75,7 @@ input[type="text"]{
     padding: 9px;
 
     text-decoration: none;
+    cursor: pointer;
 }
 
 textarea:focus, input:focus{
@@ -184,30 +189,30 @@ button:active {
 }
 
 .tag{
-        position: relative;
-        margin: 0 6px 6px 0;
-        padding: 6px 10px;
-        transition: all .3s;
-        background-color: #57c1db;
-        border: 1px solid #57c1db;
-        border-radius: 4px;
-        color: #fff;
+    position: relative;
+    margin: 0 6px 6px 0;
+    padding: 6px 10px;
+    transition: all .3s;
+    background-color: #57c1db;
+    border: 1px solid #57c1db;
+    border-radius: 4px;
+    color: #fff;
+    display: inline-block;
+    text-decoration: none;
+
+    .icon-cross{
+        margin-left: 10px;
+        margin-top: 4px;
         display: inline-block;
         text-decoration: none;
-
-        .icon-cross{
-            margin-left: 10px;
-            margin-top: 4px;
-            display: inline-block;
-            text-decoration: none;
-            color: $dark-blue;
-            font-size: 14px;
-        }
-
-        .icon-cross:hover {
-            color: darkred;
-        }
+        color: $dark-blue;
+        font-size: 14px;
     }
+
+    .icon-cross:hover {
+        color: darkred;
+    }
+}
 
 
 @import "layout";
@@ -221,3 +226,32 @@ button:active {
 @import "notif";
 @import "friends";
 @import "settings";
+@import "registration";
+@import "trip-detail";
+
+
+.mdiv {
+    border: 2px solid red;
+    text-align: left;
+
+    .i{
+        border: 2px solid blue;
+        display: inline-block;
+        height: 50px;  
+        cursor: pointer;      
+    }
+
+
+    .b{
+        width: 1280px;
+        height: 400px;
+        border: 2px solid pink;
+        font-size: 50px;
+    }
+
+    .last{
+        background-color: red;
+    }
+
+
+}

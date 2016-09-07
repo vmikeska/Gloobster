@@ -2,9 +2,7 @@ var Trip;
 (function (Trip) {
     var Planner = (function () {
         function Planner(trip, editable) {
-            this.$currentContainer = $("#plannerCont1");
-            this.lastRowNo = 1;
-            this.placesPerRow = 3;
+            this.$currentContainer = $("#dataCont");
             this.contBaseName = "plannerCont";
             this.emptyName = Views.ViewBase.currentView.t("Unnamed", "jsTrip");
             this.inverseColor = false;
@@ -29,7 +27,6 @@ var Trip;
             var placeCount = 0;
             orderedPlaces.forEach(function (place) {
                 placeCount++;
-                _this.manageRows(placeCount);
                 _this.addPlace(place, _this.inverseColor);
                 if (place.leaving) {
                     var travel = place.leaving;
@@ -40,38 +37,6 @@ var Trip;
             if (this.editable) {
                 this.addAdder();
             }
-        };
-        Planner.prototype.manageRows = function (placeCount) {
-            var currentRow = Math.floor(placeCount / this.placesPerRow);
-            var rest = placeCount % this.placesPerRow;
-            if (rest > 0) {
-                currentRow++;
-            }
-            if (currentRow > this.lastRowNo) {
-                this.addRowContainer();
-            }
-            if (currentRow < this.lastRowNo) {
-                this.removeRowContainer();
-            }
-            if (this.$lastCell) {
-                this.refreshAdder();
-            }
-        };
-        Planner.prototype.removeRowContainer = function () {
-            var lastRowId = this.contBaseName + this.lastRowNo;
-            $("#" + lastRowId).remove();
-            this.lastRowNo = this.lastRowNo - 1;
-            var currentRowId = this.contBaseName + this.lastRowNo;
-            this.$currentContainer = $("#" + currentRowId);
-        };
-        Planner.prototype.addRowContainer = function () {
-            var newRowNo = this.lastRowNo + 1;
-            var newRowId = this.contBaseName + newRowNo;
-            var html = "<div id=\"" + newRowId + "\" class=\"daybyday table margin\"></div>";
-            var $html = $(html);
-            this.$currentContainer.after($html);
-            this.$currentContainer = $html;
-            this.lastRowNo = newRowNo;
         };
         Planner.prototype.addAdder = function () {
             var _this = this;
@@ -106,7 +71,6 @@ var Trip;
                 var p = _this.placesMgr.mapPlace(response.place, t, null);
                 t.to = p;
                 _this.placesMgr.places.push(p);
-                _this.manageRows(_this.placesMgr.places.length);
                 _this.updateRibbonDate(lastPlace.id, "leavingDate", t.leavingDateTime);
                 _this.addTravel(t, !_this.inverseColor);
                 _this.addPlace(p, _this.inverseColor);
@@ -208,7 +172,6 @@ var Trip;
                 arrivingDate: "",
                 leavingDate: "",
                 arrivalDateLong: "",
-                rowNo: this.lastRowNo,
                 isFirstDay: (place.arriving == null),
                 colorClassArriving: "",
                 colorClassLeaving: "",

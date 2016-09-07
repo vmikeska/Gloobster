@@ -11,7 +11,7 @@ var Common;
                 e.preventDefault();
                 _this.$html.remove();
             });
-            $("section").first().prepend(this.$html);
+            $("body").append(this.$html);
         };
         return HintDialog;
     }());

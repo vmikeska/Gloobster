@@ -29,30 +29,31 @@
 <body onload="onBodyLoad()" class="@ViewBag.BodyClass" id="top">
 
 <header class="header">
-    @Html.Partial("_MenuNew")    
+    @Html.Partial("_MenuNew")
 </header>
+
+
 
 <div id="fb-root"></div>
 
-
-
-    @*@if (!Model.SocialNetworks.Any())
-    {
-        @Html.Partial("_DialogJoinSoc")
-        @Html.Partial("_DialogJoinEmail")
-    }*@
     @RenderBody()
 
-
+    @if (!Model.SocialNetworks.Any())
+    {
+        @Html.Partial("_RegisterDialog")        
+    }
 
 <footer>
 
     <div class="footer_cont">
-        Here will be footer content
+        @*@Html.Partial("_Footer")*@
     </div>
-    
+
     @Html.Partial("_MenuNew")
 </footer>
+
+
+   
 
 <script>
 

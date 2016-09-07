@@ -34,40 +34,46 @@ else
 
 <div class="wrapper">
 
-    <div class="table margin width100">
-            <div class="cell middle">
-                <input id="nameInput" class="heading middle" type="text" value="@Model.Name">                
-            </div>
-            <div class="cell middle tright tripMenu">                
-                <a data-tmp="menuPrivacy-template" class="button blue-trans tripMenuButton popup2-target" data-target="#popup-privacy" href="#">
-                    <span class="icon-globe middle mright5"></span>
-                    @Model.W("Privacy")
-                </a>
-                <a data-tmp="participants-template" class="button blue-trans tripMenuButton popup2-target" data-target="#popup-participants" href="#">
-                    <span class="icon-people middle mright5"></span>
-                    @Model.W("Participants")
-                </a>               
-                <a class="button blue-trans" href="/trip/@Model.TripId">
-                    <span class="icon-preview middle mright5"></span>
-                    @Model.W("Preview")
-                </a>                
-            </div>
+    <div id="dataCont" class="daybyday table margin"></div>
+    
+</div>
+
+
+@*<div class="table margin width100">
+        <div class="cell middle">
+            <input id="nameInput" class="heading middle" type="text" value="@Model.Name">
         </div>
- 
-
-        <div class="menuItemContent" style="display: none;">
-
+        <div class="cell middle tright tripMenu">
+            <a data-tmp="menuPrivacy-template" class="button blue-trans tripMenuButton popup2-target" data-target="#popup-privacy" href="#">
+                <span class="icon-globe middle mright5"></span>
+                @Model.W("Privacy")
+            </a>
+            <a data-tmp="participants-template" class="button blue-trans tripMenuButton popup2-target" data-target="#popup-participants" href="#">
+                <span class="icon-people middle mright5"></span>
+                @Model.W("Participants")
+            </a>
+            <a class="button blue-trans" href="/trip/@Model.TripId">
+                <span class="icon-preview middle mright5"></span>
+                @Model.W("Preview")
+            </a>
         </div>
+    </div>
 
-	    <textarea class="color1" id="description" placeholder="@Model.W("TripDescription")">@Model.Description</textarea>
 
-		<h3>@Model.W("DayByDay")</h3>
-		<div id="plannerCont1" class="daybyday table margin">		
-		</div>
+    <div class="menuItemContent" style="display: none;">
 
-	</div>
+    </div>
 
-@Html.Partial("Files")
+    <textarea class="color1" id="description" placeholder="@Model.W("TripDescription")">@Model.Description</textarea>
+
+    <h3>@Model.W("DayByDay")</h3>
+*@
+
+
+
+
+
+@*@Html.Partial("Files")
 
 <section class="wrapper margin3">
 	<div class="table row margin">
@@ -79,9 +85,8 @@ else
 			<label class="color1" for="public">@Model.W("Public")</label>
 		</div>
 	</div>
-	<textarea class="color1" id="notes" placeholder="@Model.W("SimpleNotes")">@Model.Notes</textarea>
-	@*<p class="color1">My Own Personal trip Description that I can write and edit anytime. This text would be used as default copy for sharing and for any other off site interaction so be careful. In the future it could have a feature allowing theme photo being pre-generated and possibly replaced by my photo of choice.</p>*@
-</section>
+	<textarea class="color1" id="notes" placeholder="@Model.W("SimpleNotes")">@Model.Notes</textarea>	
+</section>*@
 
 @Html.Partial("Templates")
 @Html.Partial("MenuTemplates")

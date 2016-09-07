@@ -15,7 +15,7 @@
 			 this.$html.remove();
 		 });
 
-		 $("section").first().prepend(this.$html);
+		 $("body").append(this.$html);
 	 }
 	}
 

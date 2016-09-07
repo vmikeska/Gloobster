@@ -1,0 +1,43 @@
+﻿
+
+<div id="socDlg" class="login-all">
+    <div class="top-line"></div>
+    <div class="cont">
+
+        <div class="txt">
+            A temporary account was created, if you want to make your account permanent, register with following services.
+        </div>
+        <div class="links">
+            <a id="fbBtnReg" class="facebook" href="#"><span class="icon-facebook2"></span>@Model.W("FbButtonPair", "login")</a>
+            <a id="twitterBtnReg" class="twitter" href="#"><span class="icon-twitter"></span>@Model.W("TwButtonPair", "login")</a>
+            <a id="googleBtnReg" class="google" href="#"><span class="icon-google-plus"></span>@Model.W("GoButtonPair", "login")</a>
+            <a id="emailBtn" class="email" href="#">Sign-In <span class="via">via email</span></a>
+        </div>
+        <div class="tos">By joining you accept the <a href="/legal/TermsAndConds">Terms of service</a>
+        </div>
+
+        <a class="close" href="#"><span class="icon-close-cross"></span></a>
+    </div>
+</div>
+
+
+    <div id="emailDlg" class="login-all" style="display: none">
+        <div class="top-line"></div>
+        <div class="cont">
+
+            <div class="txt">
+                A temporary account was created, if you want to make your account permanent, register with following services.
+            </div>
+            <div class="links">
+                <span>@Model.W("Mail", "login")</span>
+                <input id="email" type="text" placeholder="@Model.W("Mail", "login")">
+                <span>@Model.W("Password", "login")</span>
+                <input id="password" type="password">
+
+                <a id="emailReg" class="lbtn">@Model.W("JoinButton", "login")</a>                
+            </div>
+            <div class="tos">By joining you accept the <a href="/legal/TermsAndConds">Terms of service</a></div>
+
+            <a class="close" href="#"><span class="icon-close-cross"></span></a>
+        </div>
+    </div>

@@ -1,0 +1,191 @@
+﻿
+.twitter{
+    display: inline-block;
+    vertical-align: top;
+    text-decoration: none;
+    color: white;
+    background-color: #55ACEE;
+    padding-top: 4px;
+    padding-left: 4px;
+    padding-bottom: 3px;
+    padding-right: 6px;    
+    border-radius: 4px;
+    font-size: 1.2em;
+
+    .icon-twitter{
+        display: inline-block;        
+        color: #55ACEE;
+        background-color: white;
+        padding: 4px;
+        border-radius: 4px;
+        margin-right: 5px;
+    }
+}
+
+.google {
+    display: inline-block;
+    vertical-align: top;
+    text-decoration: none;
+    color: white;
+    background-color: #EA4538;
+    
+    padding-left: 4px;    
+    padding-top: 4px;    
+    padding-bottom: 3px;
+    padding-right: 6px;
+
+    border-radius: 4px;
+    font-size: 1.2em;
+
+    .icon-google-plus{
+        display: inline-block;        
+        vertical-align: top;
+        color: white;          
+        font-size: 33px;
+        margin-right: 5px;
+    }
+}
+
+.facebook{
+    display: inline-block;
+    vertical-align: top;
+    text-decoration: none;
+    color: white;
+    background-color: #4360A0;
+    
+    padding-left: 4px;    
+    padding-top: 4px;    
+    padding-bottom: 3px;
+    padding-right: 6px;
+
+    border-radius: 4px;
+    font-size: 1.2em;
+
+    .icon-facebook2{
+        display: inline-block;        
+        vertical-align: top;
+        color: white;   
+        font-size: 31px;
+        margin-bottom: 2px;
+        margin-right: 4px;
+    }
+}
+
+.email{
+    display: inline-block;
+    vertical-align: top;
+    text-decoration: none;
+    color: black;
+    border: 1px solid $light-blue;
+    border-radius: 4px;
+    padding: 6px;
+
+    .via{
+        color: $light-blue;
+        text-decoration: underline;
+    }
+}
+
+.info-dlg{
+    height: 50px;
+    width: 100%;
+    position: fixed;
+    z-index: 999999;
+    top: 0;
+    background-color: $yellow;
+
+    .wrapper{
+        position: relative;
+    }
+
+    .cont {        
+        margin-left: 45px;
+        margin-right: 45px;        
+        height: 50px;
+        padding-top: 15px;
+    }
+
+    .icon-bell {
+        display: inline-block;
+        color: $dark-blue;
+        font-size: 1.3em;
+        position: absolute;
+        left: 10px;        
+        top: 9px;
+    }
+
+    .icon-close-cross{
+        
+        display: inline-block;
+
+        position: absolute;
+        top: 7px;
+        right: 5px;
+
+        text-decoration: none;
+        font-size: 32px;
+        color: $dark-blue;
+    }
+    
+    .icon-close-cross:hover{
+        color: darkred;
+    }
+
+}
+
+.login-all{    
+    width: 100%;
+    z-index: 999999;
+    
+    background-color: white;
+
+    position: fixed;
+    bottom: 0;
+    
+    .top-line{                
+        border-top: 5px solid $dark-blue;
+    }
+
+    .cont{       
+        border-bottom-left-radius: 2px;
+        border-bottom-right-radius: 2px;
+
+        padding-right: 40px;
+
+        .links{
+            input{
+                border: 1px solid $light-blue;
+            }
+            .lbtn{
+                color: white;
+                background-color: $light-blue3;
+            }
+
+        }
+
+        .tos{
+            font-size: 0.6em;
+        }
+    }
+
+    .close{
+        
+        display: inline-block;
+
+        width: 32px;
+        height: 32px;
+
+        position: absolute;
+        top: 7px;
+        right: 5px;
+
+        text-decoration: none;
+        font-size: 32px;
+        color: $dark-blue;
+    }
+
+    .close:hover{
+        color: darkred;
+    }
+
+}

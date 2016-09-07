@@ -26,11 +26,10 @@ module Views {
 			ViewBase.currentView = this;
 			this.cookieManager = new Common.CookieManager();			
 			this.regUserMenu();
-
-			if (this.pageType !== PageType.HomePage) {
-				this.loginButtonsManager = new Reg.LoginButtonsManager();
-				this.loginButtonsManager.createPageDialog();
-			}
+				
+			this.loginButtonsManager = new Reg.LoginButtonsManager();
+			this.loginButtonsManager.createPageDialog();
+			
 
 			if ($(document).tooltip) {
 					$(document).tooltip();

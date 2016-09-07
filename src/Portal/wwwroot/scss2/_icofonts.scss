@@ -27,6 +27,9 @@
 }
 
 
+.icon-bell:before {
+  content: "\e951";
+}
 .icon-bin:before {
   content: "\e9ac";
 }
@@ -47,6 +50,21 @@
 }
 .icon-mail2:before {
   content: "\ea84";
+}
+.icon-google-plus:before {
+  content: "\ea8b";
+}
+.icon-facebook2:before {
+  content: "\ea91";
+}
+.icon-twitter:before {
+  content: "\ea96";
+}
+.icon-foursquare:before {
+  content: "\ead6";
+}
+.icon-yelp:before {
+  content: "\ead7";
 }
 .icon-envelope:before {
   content: "\e90c";
@@ -111,7 +129,3 @@
 .icon-places:before {
   content: "\e910";
 }
-
-
-
-

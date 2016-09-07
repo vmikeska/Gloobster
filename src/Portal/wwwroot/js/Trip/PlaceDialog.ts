@@ -256,8 +256,7 @@ module Trip {
 			var pm = this.dialogManager.planner.placesMgr;
 
 			pm.removePlaceById(placeId);
-			pm.removeTravelById(travelId);
-			this.dialogManager.planner.manageRows(pm.places.length);
+			pm.removeTravelById(travelId);			
 		}
 
 		private onPlaceToVisitSelected(req, place) {

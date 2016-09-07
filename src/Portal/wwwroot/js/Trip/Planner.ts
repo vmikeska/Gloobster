@@ -16,11 +16,9 @@
 		private placeTemplate: any;
 
 
-		public $currentContainer = $("#plannerCont1");
+		public $currentContainer = $("#dataCont");
 		public editable: boolean;
-
-		private lastRowNo = 1;
-		private placesPerRow = 3;
+			
 		private contBaseName = "plannerCont";
 		private emptyName = Views.ViewBase.currentView.t("Unnamed", "jsTrip");
 
@@ -56,8 +54,7 @@
 			var placeCount = 0;
 			orderedPlaces.forEach((place) => {
 				placeCount++;
-
-				this.manageRows(placeCount);
+					
 				this.addPlace(place, this.inverseColor);
 
 				if (place.leaving) {
@@ -73,48 +70,7 @@
 				this.addAdder();
 			}
 		}
-
-		public manageRows(placeCount) {
-			var currentRow = Math.floor(placeCount / this.placesPerRow);
-			var rest = placeCount % this.placesPerRow;
-			if (rest > 0) {
-				currentRow++;
-			}
-			if (currentRow > this.lastRowNo) {
-				this.addRowContainer();					
-			}
-			if (currentRow < this.lastRowNo) {
-					this.removeRowContainer();
-			}
-
-			if (this.$lastCell) {
-					this.refreshAdder();
-			}
-		}
-
-		private removeRowContainer() {				
-				var lastRowId = this.contBaseName + this.lastRowNo;
-				$(`#${lastRowId}`).remove();
-
-				this.lastRowNo = this.lastRowNo - 1;
-
-				var currentRowId = this.contBaseName + this.lastRowNo;
-
-				this.$currentContainer = $(`#${currentRowId}`);				
-		}
-
-		private addRowContainer() {
-			var newRowNo = this.lastRowNo + 1;
-			var newRowId = this.contBaseName + newRowNo;
-			var html = `<div id="${newRowId}" class="daybyday table margin"></div>`;
-			var $html = $(html);
-
-			this.$currentContainer.after($html);
-
-			this.$currentContainer = $html;
-			this.lastRowNo = newRowNo;
-		}
-
+			
 		private addAdder() {
 			var html = this.addPlaceTemplate();
 			this.$currentContainer.append(html);
@@ -152,9 +108,7 @@
 				var p = this.placesMgr.mapPlace(response.place, t, null);
 				t.to = p;
 				this.placesMgr.places.push(p);
-
-				this.manageRows(this.placesMgr.places.length);
-
+					
 				this.updateRibbonDate(lastPlace.id, "leavingDate", t.leavingDateTime);
 
 				this.addTravel(t, !this.inverseColor);
@@ -269,8 +223,7 @@
 				name: name,
 				arrivingDate: "",
 				leavingDate: "",
-				arrivalDateLong: "",
-				rowNo: this.lastRowNo,
+				arrivalDateLong: "",				
 				isFirstDay: (place.arriving == null),
 				colorClassArriving: "",
 				colorClassLeaving: "",

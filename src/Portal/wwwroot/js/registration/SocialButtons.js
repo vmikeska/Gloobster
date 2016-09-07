@@ -23,12 +23,7 @@ var Reg;
         LoginButtonsManager.prototype.onAfter = function (net) {
             var hint = new Common.HintDialog();
             hint.create("You are successfully connected!");
-            $("#MenuRegister").parent().remove();
-            this.getUserMenu(function (r) {
-                var $menu = $(r);
-                $("#ddMenus").append($menu);
-                Common.DropDown.registerDropDown($menu);
-            });
+            $(".login-all").remove();
             if (this.onAfterCustom) {
                 this.onAfterCustom(net);
             }
@@ -43,13 +38,25 @@ var Reg;
         LoginButtonsManager.prototype.createPageDialog = function () {
             var _this = this;
             if (!Views.ViewBase.nets) {
-                this.$socDialog = $("#popup-joinSoc");
-                this.$emailDialog = $("#popup-joinMail");
+                this.$socDialog = $("#socDlg");
+                this.$emailDialog = $("#emailDlg");
                 this.$socDialog.show();
-                this.initialize("fbBtnHome", "googleBtnHome", "twitterBtnHome");
-                $("#emailJoin").click(function (e) {
+                this.initialize("fbBtnReg", "googleBtnReg", "twitterBtnReg");
+                $(".login-all").find(".close").click(function (e) {
+                    e.preventDefault();
+                    var $act = $(e.target).closest(".login-all");
+                    $act.hide();
+                    if ($act.attr("id") === "emailDlg") {
+                        _this.$socDialog.show();
+                    }
+                });
+                $("#emailBtn").click(function (e) {
                     _this.$socDialog.hide();
                     _this.$emailDialog.show();
+                });
+                $("#emailCancel").click(function (e) {
+                    _this.$emailDialog.hide();
+                    _this.$socDialog.show();
                 });
             }
         };

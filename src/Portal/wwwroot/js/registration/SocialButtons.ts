@@ -1,7 +1,7 @@
 ﻿module Reg {
 
 	export class LoginButtonsManager {
-	 
+			
 	 private $socDialog;
 	 private $emailDialog;
 
@@ -9,7 +9,8 @@
 
 	 private cookieSaver: AuthCookieSaver;
 
-		public initialize(fb, google, twitter) {
+	 public initialize(fb, google, twitter) {
+		 
 			var fbBtn = new FacebookButtonInit(fb);
 			fbBtn.onBeforeExecute = () => this.onBefore(SocialNetworkType.Facebook);
 			fbBtn.onAfterExecute = () => this.onAfter(SocialNetworkType.Facebook);
@@ -33,14 +34,8 @@
 		private onAfter(net: SocialNetworkType) {
 		 var hint = new Common.HintDialog();
 		 hint.create("You are successfully connected!");
-		 $("#MenuRegister").parent().remove();
-
-		 this.getUserMenu((r) => {
-			var $menu = $(r);
-			$("#ddMenus").append($menu);			
-			Common.DropDown.registerDropDown($menu);
-		 });
-		 
+			$(".login-all").remove();
+				
 		 if (this.onAfterCustom) {
 			 this.onAfterCustom(net);
 		 }
@@ -57,33 +52,53 @@
 
 		public createPageDialog() {
 			if (!Views.ViewBase.nets) {
-				this.$socDialog = $("#popup-joinSoc");
-				this.$emailDialog = $("#popup-joinMail");
+
+				this.$socDialog = $("#socDlg");
+				this.$emailDialog = $("#emailDlg");
+
 				this.$socDialog.show();
-				this.initialize("fbBtnHome", "googleBtnHome", "twitterBtnHome");
-				$("#emailJoin").click((e) => {
+				this.initialize("fbBtnReg", "googleBtnReg", "twitterBtnReg");
+
+				$(".login-all").find(".close").click((e) => {
+						e.preventDefault();
+
+					var $act = $(e.target).closest(".login-all");
+
+					$act.hide();
+
+					if ($act.attr("id") === "emailDlg") {
+						this.$socDialog.show();
+					}
+				});
+
+				$("#emailBtn").click((e) => {
 					this.$socDialog.hide();
 					this.$emailDialog.show();
 				});
-				
+
+				$("#emailCancel").click((e) => {
+						this.$emailDialog.hide();
+						this.$socDialog.show();						
+				});
+
 			}
 		}
 
-	  private regEmailDialog() {
-		  $("#emailReg").click((e) => {
-			 e.preventDefault();
-			 this.$emailDialog.hide();
-			  var data = {
-				 mail: $("#email").val(),
-				 password: $("#password").val()
-			  };
-			 
-			 Views.ViewBase.currentView.apiPost("MailUser", data, (r) => {
-				this.cookieSaver.saveCookies(r);
-				this.onAfter(SocialNetworkType.Base);
-			 });
-		  });		 
-	  }
+		private regEmailDialog() {
+			$("#emailReg").click((e) => {
+				e.preventDefault();
+				this.$emailDialog.hide();
+				var data = {
+					mail: $("#email").val(),
+					password: $("#password").val()
+				};
+
+				Views.ViewBase.currentView.apiPost("MailUser", data, (r) => {
+					this.cookieSaver.saveCookies(r);
+					this.onAfter(SocialNetworkType.Base);
+				});
+			});
+		}
 	}
 
 	export class LoginResponseValidator {

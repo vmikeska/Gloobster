@@ -15,9 +15,7 @@
         <span class="notification">@Model.NotificationCount</span>
     }
     <ul>
-        <li><a id="logoutUser" href="#">@Model.W("Logout", "layout")</a></li>
-        <li><a href="/@RoutingConsts.UserDetailMenuName">@Model.W("UserSettings", "layout")</a></li>
-        <li><a href="/@RoutingConsts.FriendsMenuName">@Model.W("Friends", "layout")</a></li>
+        
         <li>
             @if (Model.NotificationCount > 0)
             {
