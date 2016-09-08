@@ -21,21 +21,28 @@
 
 <script id="file-template" type="text/x-handlebars-template">
     
-    <div class="cell">
+    <span>Is it duplicite ?</span>
+
+    @*<div class="document-all">
         <div class="document">
-            <a class="file {{fileType}}" href="/Trip/GetFile?fileId={{id}}&tripId={{tripId}}">
-                <span class="display-none">{{fileName}}</span>
-            </a>
+            <div class="cell">
+                <a class="file {{fileType}}" href="/Trip/GetFile?fileId={{id}}&tripId={{tripId}}">
+                    
+                </a>
+            </div>
             {{#if canManipulate}}
-            <input id="filePublic{{id}}_b" class="filePublic filePublic{{id}}" data-id="{{id}}" type="checkbox" />
-            <label title="@Model.W("ShareTitle")" class="mleft10" for="filePublic{{id}}_b">@Model.W("Share")</label>
-            <a class="delete popup-target" data-target="#popup-delete" data-id="{{id}}" href="#"></a>
+            <div class="cell">
+                <input id="filePublic{{id}}_b" class="filePublic filePublic{{id}}" data-id="{{id}}" type="checkbox" />
+                <label title="@Model.W("ShareTitle")" for="filePublic{{id}}_b">@Model.W("Share")</label>
+                <a class="delete popup-target" data-target="#popup-delete" data-id="{{id}}" href="#"><span class="icon-close-cross"></span></a>
+            </div>
             {{/if}}
 
-            <a href="/Trip/GetFile?fileId={{id}}&tripId={{tripId}}">{{fileName}}</a>
-            
+            <div class="cell">
+                <a href="/Trip/GetFile?fileId={{id}}&tripId={{tripId}}">{{fileName}}</a>
+            </div>
         </div>
-    </div>
+    </div>*@
 </script>
 
 <script id="fileView-template" type="text/x-handlebars-template">
@@ -49,12 +56,14 @@
 </script>
 
 <script id="fileCreate-template" type="text/x-handlebars-template">    
-    <div class="cell">
-        <input type="file" id="{{id}}" class="hiddenFile" >
+    
+    <a class="photo-button" href="#">
+        <input type="file" id="{{id}}">
         <label for="{{id}}">
-            <span class="button fileButton">@Model.W("ClickOrDrag")</span>
+            <span>@Model.W("ClickOrDrag")</span>
         </label>
-    </div>    
+    </a>
+
 </script>
 
 <script id="fileCreateGeneral-template" type="text/x-handlebars-template">

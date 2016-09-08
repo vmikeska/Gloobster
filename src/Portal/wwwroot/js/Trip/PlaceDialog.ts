@@ -1,42 +1,47 @@
 module Trip {
-	export class PlaceDialog {
+		export class PlaceDialog {
+
+		public $lastBlockOnRow;
+
 		public dialogManager: DialogManager;
 		private placeSearch: Common.PlaceSearchBox;
 		private addressSearch: Common.PlaceSearchBox;
 		private placeToVisitSearch: Common.PlaceSearchBox;
 
 		private files: TripFiles;
-
-		private $rowCont;
-
+			
 		constructor(dialogManager: DialogManager) {
 			this.dialogManager = dialogManager;
 		}
 
-		public display() {
-			this.dialogManager.closeDialog();
+			public display(callback = null) {
+				this.dialogManager.closeDialog();
 
-			this.dialogManager.getDialogData(TripEntityType.Place, (data) => {
-				this.$rowCont = $(`#${data.id}`).parent();
+				this.dialogManager.getDialogData(TripEntityType.Place, (data) => {
+					var $dialog;
+					if (this.dialogManager.planner.editable) {
+						$dialog = this.createEdit(data);
+					} else {
+						$dialog = this.createView(data);
+					}
+					if (callback) {
+						callback($dialog);
+					}
+				});
+			}
 
-				if (this.dialogManager.planner.editable) {
-					this.createEdit(data);
-				} else {
-					this.createView(data);
-				}
-			});
-		}
+			private createView(data) {
+				var $html = this.buildTemplateView(data);
 
-		private createView(data) {
-			this.buildTemplateView(this.$rowCont, data);
+				this.files = this.dialogManager.createFilesInstanceView(data.id, TripEntityType.Place);
+				this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);
 
-			this.files = this.dialogManager.createFilesInstanceView(data.id, TripEntityType.Place);
-			this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);
-		}
+				return $html;
+			}
 
-		private createEdit(data) {
+			private createEdit(data) {
 
-			this.buildTemplateEdit(this.$rowCont, data);
+			var $html = this.buildTemplateEdit(data);
 
 			this.createNameSearch(data);
 
@@ -56,6 +61,8 @@ module Trip {
 
 			this.files = this.dialogManager.createFilesInstance(data.id, TripEntityType.Place);
 			this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);
+
+			return $html;
 		}
 
 		private createNameSearch(data) {
@@ -150,7 +157,7 @@ module Trip {
 				}
 		}
 
-		private buildTemplateView($row, data) {
+		private buildTemplateView(data) {
 			var html = "";
 			var context = {
 				name: Views.ViewBase.currentView.t("Unnamed", "jsTrip"),
@@ -200,7 +207,9 @@ module Trip {
 			var $html = $(html);
 			this.dialogManager.regClose($html);
 
-			$row.after($html);
+			this.$lastBlockOnRow.after($html);
+
+			return $html;
 		}
 
 		private getSocLink(sourceType: SourceType, sourceId: string) {
@@ -217,7 +226,7 @@ module Trip {
 			return link;
 		}
 
-		private buildTemplateEdit($row, data) {
+		private buildTemplateEdit(data) {
 
 			var context = {
 				showDelButton: (data.isLastPlace && data.placesCount > 2)
@@ -245,7 +254,9 @@ module Trip {
 
 			this.dialogManager.regClose($html);
 
-			$row.after($html);
+			this.$lastBlockOnRow.after($html);
+
+			return $html;
 		}
 
 		private deletePlace(placeId, travelId) {
@@ -328,7 +339,7 @@ module Trip {
 				var $item = $(e.target);
 
 				var data = this.dialogManager.getPropRequest("placeToVisitRemove", {
-					id: $item.parent().data("id")
+					id: $item.closest(".place").data("id")
 				});
 
 				this.dialogManager.updateProp(data, (response) => {});

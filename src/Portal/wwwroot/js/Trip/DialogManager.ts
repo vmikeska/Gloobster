@@ -42,22 +42,22 @@ module Trip {
 		}
 
 		public createFilesInstance(entityId: string, entityType: TripEntityType): TripFiles {
-		 var filesConfig = new FilesConfig();
-			filesConfig.mainContainerId = "dialogUpload";
-			filesConfig.containerId = "entityDocs";
-			filesConfig.inputId = "entityFileInput";
-			filesConfig.templateId = "fileItem-template";
-			filesConfig.editable = true;
-			filesConfig.addAdder = true;
-			filesConfig.adderTemplate = "fileCreate-template";
-			filesConfig.entityId = entityId;
+		 var c = new FilesConfig();
+		 c.mainContainerId = "dialogUpload";
+		 c.containerId = "entityDocs";
+		 c.inputId = "entityFileInput";
+		 c.templateId = "fileItem-template";
+		 c.editable = true;
+		 c.addAdder = true;
+		 c.adderTemplate = "fileCreate-template";
+		 c.entityId = entityId;
 
-			var customConfig = new Common.TripFileCustom();
-			customConfig.tripId = this.planner.trip.tripId;
-			customConfig.entityId = entityId;
-			customConfig.entityType = entityType;
+			var cc = new Common.TripFileCustom();
+			cc.tripId = this.planner.trip.tripId;
+			cc.entityId = entityId;
+			cc.entityType = entityType;
 
-			var files = new TripFiles(filesConfig, customConfig);
+			var files = new TripFiles(c, cc);
 		 
 			return files;
 		}
@@ -84,8 +84,8 @@ module Trip {
 
 
 		public closeDialog() {
-			$(".daybyday-form").remove();
-			$(".daybyday-view").remove();
+			$(".details").remove();
+			//$(".daybyday-view").remove();
 		}
 
 		public regClose($html) {

@@ -5,18 +5,17 @@ module Trip {
 		private files: TripFiles;
 		private data: any;
 
-		private $rowCont;
+		public $lastBlockOnRow;
 
 		constructor(dialogManager: DialogManager) {
 			this.dialogManager = dialogManager;
 		}
 
-		public display() {
+		public display(callback = null) {
 			this.dialogManager.closeDialog();
 
 			this.dialogManager.getDialogData(TripEntityType.Travel, (data) => {
 				this.data = data;
-				this.$rowCont = $(`#${data.id}`).parent();
 
 				if (this.dialogManager.planner.editable) {
 					this.createEdit(data);
@@ -98,11 +97,11 @@ module Trip {
 			var $html = $(html);
 			this.dialogManager.regClose($html);
 
-			this.$rowCont.after($html);
+			this.$lastBlockOnRow.after($html);
 		}
 
 		private createEdit(data) {
-			this.buildTemplateEdit(this.$rowCont, data);
+			this.buildTemplateEdit(data);
 
 			this.initTravelType(data.type);
 
@@ -112,9 +111,9 @@ module Trip {
 			this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);
 
 			this.initAirport(data.flightFrom, "airportFrom", "flightFrom");
-			this.initAirport(data.flightTo, "airportTo", "flightTo");			
+			this.initAirport(data.flightTo, "airportTo", "flightTo");
 		}
-			
+
 		private initAirport(flight, comboId, propName) {
 			var airportFrom = new AirportCombo(comboId);
 			airportFrom.onSelected = (evntData) => {
@@ -139,7 +138,7 @@ module Trip {
 			var cls = $initIcon.data("cls");
 			var cap = $initIcon.data("cap");
 
-			$combo.find(".selected").html(`<span class="${cls} black left mright5"></span>${cap}`);
+			$combo.find(".selected").html(`<span class="ticon ${cls} black"></span>    ${cap}`);
 
 			$input.change((e) => {
 				var travelType = parseInt($input.val());
@@ -149,7 +148,9 @@ module Trip {
 				this.dialogManager.updateProp(data, (r) => {
 					var $currentIcon = $combo.find(`li[data-value='${travelType}']`);
 					var currentCls = $currentIcon.data("cls");
-					$(".active").children().first().attr("class", currentCls);
+
+
+					$(".active").find(".ticon").attr("class", `ticon ${currentCls}`);
 				});
 
 			});
@@ -165,17 +166,17 @@ module Trip {
 			}
 		}
 
-		private buildTemplateEdit($row, data) {
-				var $html = $(this.dialogManager.travelDetailTemplate());
+		private buildTemplateEdit(data) {
+			var $html = $(this.dialogManager.travelDetailTemplate());
 
-				var ptt = new PlaceTravelTime(this.dialogManager, data);
-				var $time = ptt.create(TripEntityType.Travel);
-				$html.find(".the-first").after($time);
+			var ptt = new PlaceTravelTime(this.dialogManager, data);
+			var $time = ptt.create(TripEntityType.Travel);
+			$html.find(".the-first").after($time);
 
 			Common.DropDown.registerDropDown($html.find(".dropdown"));
 			this.dialogManager.regClose($html);
 
-			$row.after($html);
+			this.$lastBlockOnRow.after($html);
 		}
-		}
+	}
 }

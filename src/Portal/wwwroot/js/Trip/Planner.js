@@ -3,7 +3,6 @@ var Trip;
     var Planner = (function () {
         function Planner(trip, editable) {
             this.$currentContainer = $("#dataCont");
-            this.contBaseName = "plannerCont";
             this.emptyName = Views.ViewBase.currentView.t("Unnamed", "jsTrip");
             this.inverseColor = false;
             var thisParticipant = _.find(trip.participants, function (p) {
@@ -20,17 +19,36 @@ var Trip;
             this.placesMgr = new Trip.PlacesManager(trip.id);
             this.placesMgr.setData(trip.travels, trip.places);
             this.redrawAll();
+            this.initResizer();
         }
+        Planner.prototype.initResizer = function () {
+            var _this = this;
+            this.resizer = new Views.TripResizer();
+            this.resizer.onBeforeResize = function () {
+                if (_this.$currentDialog) {
+                    _this.$currentDialog.hide();
+                }
+            };
+            this.resizer.onAfterResize = function () {
+                if (_this.$currentDialog) {
+                    var $newLast = _this.resizer.getLast(_this.$activeBlock);
+                    $newLast.after(_this.$currentDialog);
+                    _this.$currentDialog.show();
+                }
+            };
+        };
         Planner.prototype.redrawAll = function () {
             var _this = this;
             var orderedPlaces = _.sortBy(this.placesMgr.places, "orderNo");
             var placeCount = 0;
-            orderedPlaces.forEach(function (place) {
+            orderedPlaces.forEach(function (place, index) {
                 placeCount++;
-                _this.addPlace(place, _this.inverseColor);
+                var $place = _this.addPlace(place, _this.inverseColor);
+                $place.data("no", index);
                 if (place.leaving) {
                     var travel = place.leaving;
-                    _this.addTravel(travel, _this.inverseColor);
+                    var $travel = _this.addTravel(travel, _this.inverseColor);
+                    $travel.data("no", index);
                 }
                 _this.inverseColor = !_this.inverseColor;
             });
@@ -127,10 +145,13 @@ var Trip;
             var $html = $(html);
             $html.find(".transport").click("*", function (e) {
                 var $t = $(e.delegateTarget);
-                var id = $t.closest(".travelCont").attr("id");
+                var $block = $t.closest(".block");
+                _this.activeBlockChanged($block);
+                var id = $block.attr("id");
                 _this.setActivePlaceOrTravel(id);
             });
             this.appendToTimeline($html);
+            return $html;
         };
         Planner.prototype.appendToTimeline = function ($html) {
             if (this.$adder) {
@@ -140,7 +161,14 @@ var Trip;
                 this.$currentContainer.append($html);
             }
         };
+        Planner.prototype.activeBlockChanged = function ($block) {
+            this.$activeBlock = $block;
+            var $last = this.resizer.getLast($block);
+            this.placeDialog.$lastBlockOnRow = $last;
+            this.travelDialog.$lastBlockOnRow = $last;
+        };
         Planner.prototype.setActivePlaceOrTravel = function (id) {
+            var _this = this;
             this.dialogManager.deactivate();
             var $cont = $("#" + id);
             var isPlace = $cont.hasClass("placeCont");
@@ -157,7 +185,9 @@ var Trip;
             }
             $actCont.addClass("active");
             this.dialogManager.selectedId = id;
-            dialog.display();
+            dialog.display(function ($dialog) {
+                _this.$currentDialog = $dialog;
+            });
         };
         Planner.prototype.addPlace = function (place, inverseColor) {
             var _this = this;
@@ -202,10 +232,13 @@ var Trip;
             this.regDateLinks($html);
             $html.find(".destination").click("*", function (e) {
                 var $t = $(e.delegateTarget);
-                var id = $t.closest(".placeCont").attr("id");
+                var $block = $t.closest(".block");
+                _this.activeBlockChanged($block);
+                var id = $block.attr("id");
                 _this.setActivePlaceOrTravel(id);
             });
             this.appendToTimeline($html);
+            return $html;
         };
         Planner.prototype.formatShortDateTime = function (dt) {
             var d = moment.utc(dt).format("l");

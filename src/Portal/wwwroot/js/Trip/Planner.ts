@@ -2,6 +2,7 @@
 	export class Planner {
 
 		public trip: any;
+		public resizer: Views.TripResizer;
 
 		public isOwner: boolean;
 		public isInvited: boolean;
@@ -15,11 +16,12 @@
 		private travelTemplate: any;
 		private placeTemplate: any;
 
+		private $currentDialog;
+		private $activeBlock;
 
 		public $currentContainer = $("#dataCont");
 		public editable: boolean;
-			
-		private contBaseName = "plannerCont";
+		
 		private emptyName = Views.ViewBase.currentView.t("Unnamed", "jsTrip");
 
 		private inverseColor = false;
@@ -32,6 +34,7 @@
 			var thisParticipant = _.find(trip.participants, (p) => {
 				return p.userId === Views.ViewBase.currentUserId;
 			});
+
 			this.isInvited = (thisParticipant != null);
 			this.isOwner = trip.ownerId === Views.ViewBase.currentUserId;
 
@@ -46,20 +49,42 @@
 			this.placesMgr = new PlacesManager(trip.id);
 			this.placesMgr.setData(trip.travels, trip.places);
 			this.redrawAll();
+
+			this.initResizer();
+		}
+
+		private initResizer() {
+			this.resizer = new Views.TripResizer();
+
+			this.resizer.onBeforeResize = () => {				
+				if (this.$currentDialog) {
+					this.$currentDialog.hide();
+				}
+			}
+
+			this.resizer.onAfterResize = () => {				
+				if (this.$currentDialog) {
+					var $newLast = this.resizer.getLast(this.$activeBlock);
+					$newLast.after(this.$currentDialog);
+					this.$currentDialog.show();
+				}
+			}
 		}
 
 		private redrawAll() {
 			var orderedPlaces = _.sortBy(this.placesMgr.places, "orderNo");
 
 			var placeCount = 0;
-			orderedPlaces.forEach((place) => {
+			orderedPlaces.forEach((place, index) => {
 				placeCount++;
 					
-				this.addPlace(place, this.inverseColor);
+				var $place = this.addPlace(place, this.inverseColor);
+				$place.data("no", index);
 
 				if (place.leaving) {
 					var travel = place.leaving;
-					this.addTravel(travel, this.inverseColor);
+					var $travel = this.addTravel(travel, this.inverseColor);
+					$travel.data("no", index);
 				}
 
 				this.inverseColor = !this.inverseColor;
@@ -174,11 +199,15 @@
 
 			$html.find(".transport").click("*", (e) => {
 				var $t = $(e.delegateTarget);
-				var id = $t.closest(".travelCont").attr("id");
+				var $block = $t.closest(".block");
+				this.activeBlockChanged($block);
+				var id = $block.attr("id");
 				this.setActivePlaceOrTravel(id);
 			});
 
 			this.appendToTimeline($html);
+
+			return $html;
 		}
 
 		private appendToTimeline($html) {
@@ -187,6 +216,13 @@
 			} else {
 				this.$currentContainer.append($html);
 			}
+		}
+
+		private activeBlockChanged($block) {
+			this.$activeBlock = $block;
+			var $last = this.resizer.getLast($block);
+			this.placeDialog.$lastBlockOnRow = $last;
+			this.travelDialog.$lastBlockOnRow = $last;
 		}
 
 		private setActivePlaceOrTravel(id) {
@@ -208,7 +244,9 @@
 
 			$actCont.addClass("active");
 			this.dialogManager.selectedId = id;
-			dialog.display();
+			dialog.display(($dialog) => {
+				this.$currentDialog = $dialog;
+			});
 		}
 
 		public addPlace(place: Place, inverseColor: boolean) {
@@ -258,11 +296,15 @@
 
 			$html.find(".destination").click("*", (e) => {
 				var $t = $(e.delegateTarget);
-				var id = $t.closest(".placeCont").attr("id");
+				var $block = $t.closest(".block");
+				this.activeBlockChanged($block);
+				var id = $block.attr("id");
 				this.setActivePlaceOrTravel(id);
 			});
 
 			this.appendToTimeline($html);
+
+			return $html;
 		}
 
 		private formatShortDateTime(dt) {

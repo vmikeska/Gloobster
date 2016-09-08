@@ -4,27 +4,32 @@ var Trip;
         function PlaceDialog(dialogManager) {
             this.dialogManager = dialogManager;
         }
-        PlaceDialog.prototype.display = function () {
+        PlaceDialog.prototype.display = function (callback) {
             var _this = this;
+            if (callback === void 0) { callback = null; }
             this.dialogManager.closeDialog();
             this.dialogManager.getDialogData(TripEntityType.Place, function (data) {
-                _this.$rowCont = $("#" + data.id).parent();
+                var $dialog;
                 if (_this.dialogManager.planner.editable) {
-                    _this.createEdit(data);
+                    $dialog = _this.createEdit(data);
                 }
                 else {
-                    _this.createView(data);
+                    $dialog = _this.createView(data);
+                }
+                if (callback) {
+                    callback($dialog);
                 }
             });
         };
         PlaceDialog.prototype.createView = function (data) {
-            this.buildTemplateView(this.$rowCont, data);
+            var $html = this.buildTemplateView(data);
             this.files = this.dialogManager.createFilesInstanceView(data.id, TripEntityType.Place);
             this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);
+            return $html;
         };
         PlaceDialog.prototype.createEdit = function (data) {
             var _this = this;
-            this.buildTemplateEdit(this.$rowCont, data);
+            var $html = this.buildTemplateEdit(data);
             this.createNameSearch(data);
             $("#stayAddress").val(data.addressText);
             this.createAddressSearch(data);
@@ -38,6 +43,7 @@ var Trip;
             }
             this.files = this.dialogManager.createFilesInstance(data.id, TripEntityType.Place);
             this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);
+            return $html;
         };
         PlaceDialog.prototype.createNameSearch = function (data) {
             var _this = this;
@@ -117,7 +123,7 @@ var Trip;
                 _this.dialogManager.updateProp(data, function (r) { });
             };
         };
-        PlaceDialog.prototype.buildTemplateView = function ($row, data) {
+        PlaceDialog.prototype.buildTemplateView = function (data) {
             var _this = this;
             var html = "";
             var context = {
@@ -160,7 +166,8 @@ var Trip;
             }
             var $html = $(html);
             this.dialogManager.regClose($html);
-            $row.after($html);
+            this.$lastBlockOnRow.after($html);
+            return $html;
         };
         PlaceDialog.prototype.getSocLink = function (sourceType, sourceId) {
             var link = "";
@@ -175,7 +182,7 @@ var Trip;
             }
             return link;
         };
-        PlaceDialog.prototype.buildTemplateEdit = function ($row, data) {
+        PlaceDialog.prototype.buildTemplateEdit = function (data) {
             var _this = this;
             var context = {
                 showDelButton: (data.isLastPlace && data.placesCount > 2)
@@ -195,7 +202,8 @@ var Trip;
                 });
             });
             this.dialogManager.regClose($html);
-            $row.after($html);
+            this.$lastBlockOnRow.after($html);
+            return $html;
         };
         PlaceDialog.prototype.deletePlace = function (placeId, travelId) {
             $("#" + placeId).remove();
@@ -204,7 +212,6 @@ var Trip;
             var pm = this.dialogManager.planner.placesMgr;
             pm.removePlaceById(placeId);
             pm.removeTravelById(travelId);
-            this.dialogManager.planner.manageRows(pm.places.length);
         };
         PlaceDialog.prototype.onPlaceToVisitSelected = function (req, place) {
             var _this = this;
@@ -261,7 +268,7 @@ var Trip;
                 e.preventDefault();
                 var $item = $(e.target);
                 var data = _this.dialogManager.getPropRequest("placeToVisitRemove", {
-                    id: $item.parent().data("id")
+                    id: $item.closest(".place").data("id")
                 });
                 _this.dialogManager.updateProp(data, function (response) { });
                 $html.remove();

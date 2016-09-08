@@ -55,12 +55,23 @@ a {
     color: $light-blue3;
 }
 
-input[type="text"],input[type="password"]{    
+input[type="text"],input[type="password"],input[type="number"],textarea{    
     padding: 8px 13px;
     border: 0;
     border-radius: 4px;
     font-size: 20px;
     color: gray;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+textarea{
+    width: 100%;
+    font-family: $font-lato;
 }
 
 .lbtn{
@@ -213,6 +224,8 @@ button:active {
         color: darkred;
     }
 }
+
+
 
 
 @import "layout";

@@ -22,20 +22,20 @@ var Trip;
             return files;
         };
         DialogManager.prototype.createFilesInstance = function (entityId, entityType) {
-            var filesConfig = new Trip.FilesConfig();
-            filesConfig.mainContainerId = "dialogUpload";
-            filesConfig.containerId = "entityDocs";
-            filesConfig.inputId = "entityFileInput";
-            filesConfig.templateId = "fileItem-template";
-            filesConfig.editable = true;
-            filesConfig.addAdder = true;
-            filesConfig.adderTemplate = "fileCreate-template";
-            filesConfig.entityId = entityId;
-            var customConfig = new Common.TripFileCustom();
-            customConfig.tripId = this.planner.trip.tripId;
-            customConfig.entityId = entityId;
-            customConfig.entityType = entityType;
-            var files = new Trip.TripFiles(filesConfig, customConfig);
+            var c = new Trip.FilesConfig();
+            c.mainContainerId = "dialogUpload";
+            c.containerId = "entityDocs";
+            c.inputId = "entityFileInput";
+            c.templateId = "fileItem-template";
+            c.editable = true;
+            c.addAdder = true;
+            c.adderTemplate = "fileCreate-template";
+            c.entityId = entityId;
+            var cc = new Common.TripFileCustom();
+            cc.tripId = this.planner.trip.tripId;
+            cc.entityId = entityId;
+            cc.entityType = entityType;
+            var files = new Trip.TripFiles(c, cc);
             return files;
         };
         DialogManager.prototype.initDescription = function (text, entityType) {
@@ -57,8 +57,7 @@ var Trip;
             });
         };
         DialogManager.prototype.closeDialog = function () {
-            $(".daybyday-form").remove();
-            $(".daybyday-view").remove();
+            $(".details").remove();
         };
         DialogManager.prototype.regClose = function ($html) {
             var _this = this;

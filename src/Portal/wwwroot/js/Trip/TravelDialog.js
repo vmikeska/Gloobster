@@ -4,12 +4,12 @@ var Trip;
         function TravelDialog(dialogManager) {
             this.dialogManager = dialogManager;
         }
-        TravelDialog.prototype.display = function () {
+        TravelDialog.prototype.display = function (callback) {
             var _this = this;
+            if (callback === void 0) { callback = null; }
             this.dialogManager.closeDialog();
             this.dialogManager.getDialogData(TripEntityType.Travel, function (data) {
                 _this.data = data;
-                _this.$rowCont = $("#" + data.id).parent();
                 if (_this.dialogManager.planner.editable) {
                     _this.createEdit(data);
                 }
@@ -73,10 +73,10 @@ var Trip;
             }
             var $html = $(html);
             this.dialogManager.regClose($html);
-            this.$rowCont.after($html);
+            this.$lastBlockOnRow.after($html);
         };
         TravelDialog.prototype.createEdit = function (data) {
-            this.buildTemplateEdit(this.$rowCont, data);
+            this.buildTemplateEdit(data);
             this.initTravelType(data.type);
             this.dialogManager.initDescription(data.description, TripEntityType.Travel);
             this.files = this.dialogManager.createFilesInstance(data.id, TripEntityType.Travel);
@@ -107,7 +107,7 @@ var Trip;
             var $initIcon = $combo.find("li[data-value='" + initTravelType + "']");
             var cls = $initIcon.data("cls");
             var cap = $initIcon.data("cap");
-            $combo.find(".selected").html("<span class=\"" + cls + " black left mright5\"></span>" + cap);
+            $combo.find(".selected").html("<span class=\"ticon " + cls + " black\"></span>    " + cap);
             $input.change(function (e) {
                 var travelType = parseInt($input.val());
                 _this.showHideTravelDetails(travelType);
@@ -115,7 +115,7 @@ var Trip;
                 _this.dialogManager.updateProp(data, function (r) {
                     var $currentIcon = $combo.find("li[data-value='" + travelType + "']");
                     var currentCls = $currentIcon.data("cls");
-                    $(".active").children().first().attr("class", currentCls);
+                    $(".active").find(".ticon").attr("class", "ticon " + currentCls);
                 });
             });
         };
@@ -126,14 +126,14 @@ var Trip;
                 $flightDetails.show();
             }
         };
-        TravelDialog.prototype.buildTemplateEdit = function ($row, data) {
+        TravelDialog.prototype.buildTemplateEdit = function (data) {
             var $html = $(this.dialogManager.travelDetailTemplate());
             var ptt = new Trip.PlaceTravelTime(this.dialogManager, data);
             var $time = ptt.create(TripEntityType.Travel);
             $html.find(".the-first").after($time);
             Common.DropDown.registerDropDown($html.find(".dropdown"));
             this.dialogManager.regClose($html);
-            $row.after($html);
+            this.$lastBlockOnRow.after($html);
         };
         return TravelDialog;
     }());

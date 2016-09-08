@@ -8,12 +8,21 @@ body {
 a {
   color: #3298C1; }
 
-input[type="text"], input[type="password"] {
+input[type="text"], input[type="password"], input[type="number"], textarea {
   padding: 8px 13px;
   border: 0;
   border-radius: 4px;
   font-size: 20px;
   color: gray; }
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0; }
+
+textarea {
+  width: 100%;
+  font-family: "Lato", sans-serif; }
 
 .lbtn, .photo-button label, .wiki-page .langs a {
   border-style: solid;
@@ -1737,6 +1746,318 @@ footer .footer_cont {
     color: #005476; }
   .login-all .close:hover {
     color: darkred; }
+
+.trip-detail {
+  text-align: left; }
+  .trip-detail .last-block {
+    background-color: gray; }
+  .trip-detail a {
+    color: #009dc4; }
+  .trip-detail a:hover {
+    text-decoration: none; }
+  .trip-detail .green {
+    background-color: #72cf72 !important; }
+  .trip-detail .travelCont {
+    display: inline-block;
+    vertical-align: top; }
+    .trip-detail .travelCont .timeline {
+      height: 30px;
+      background-color: #b8e7b8;
+      line-height: 30px;
+      white-space: nowrap; }
+    .trip-detail .travelCont .transport {
+      text-align: center;
+      height: 40px;
+      width: 100px;
+      position: relative;
+      -webkit-transition: background-color .3s;
+      -moz-transition: background-color .3s;
+      transition: background-color .3s;
+      background-color: #57c1db;
+      color: #fff;
+      cursor: pointer;
+      margin: 35px 20px 0 10px; }
+      .trip-detail .travelCont .transport .ticon {
+        margin-top: 9px; }
+    .trip-detail .travelCont .transport:before {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      border-top: 20px solid #57c1db;
+      border-bottom: 20px solid #57c1db;
+      border-left: 10px solid white;
+      content: ""; }
+    .trip-detail .travelCont .transport:after {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      border-top: 20px solid white;
+      border-bottom: 20px solid white;
+      border-left: 10px solid #57c1db;
+      content: ""; }
+    .trip-detail .travelCont .transport:hover, .trip-detail .travelCont .transport:after:hover {
+      background-color: #009dc4;
+      border-color: red; }
+  .trip-detail .placeCont {
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    margin-bottom: 20px; }
+    .trip-detail .placeCont .timeline-cont {
+      display: table;
+      width: 100%; }
+      .trip-detail .placeCont .timeline-cont .timeline {
+        display: table-cell;
+        height: 30px;
+        background-color: #b8e7b8;
+        line-height: 30px;
+        white-space: nowrap; }
+        .trip-detail .placeCont .timeline-cont .timeline .dateLink {
+          display: inline-block;
+          margin-left: 7px;
+          margin-right: 7px; }
+      .trip-detail .placeCont .timeline-cont .l {
+        text-align: right !important; }
+    .trip-detail .placeCont .destination {
+      margin-top: 20px;
+      transition: background-color .3s;
+      background-color: #57c1db;
+      border-radius: 4px;
+      color: #fff;
+      cursor: pointer;
+      min-width: 60px;
+      padding: 20px;
+      text-align: center;
+      white-space: nowrap; }
+  .trip-detail .ticon {
+    height: 22px;
+    width: 22px;
+    display: inline-block;
+    vertical-align: top; }
+    .trip-detail .ticon.black {
+      background-position-y: 22px; }
+    .trip-detail .ticon.icon-bike {
+      background-image: url("../images/icons/icon-bike.png"); }
+    .trip-detail .ticon.icon-boat {
+      background-image: url("../images/icons/icon-boat.png"); }
+    .trip-detail .ticon.icon-bus {
+      background-image: url("../images/icons/icon-bus.png"); }
+    .trip-detail .ticon.icon-car {
+      background-image: url("../images/icons/icon-car.png"); }
+    .trip-detail .ticon.icon-plane {
+      background-image: url("../images/icons/icon-plane.png"); }
+    .trip-detail .ticon.icon-train {
+      background-image: url("../images/icons/icon-train.png"); }
+    .trip-detail .ticon.icon-walk {
+      background-image: url("../images/icons/icon-walk.png"); }
+  .trip-detail .details {
+    background-color: #abe0ed;
+    border-radius: 4px;
+    position: relative;
+    padding: 10px;
+    margin-bottom: 20px;
+    display: inline-block;
+    width: 100%; }
+    .trip-detail .details .close {
+      position: absolute;
+      top: 7px;
+      right: 7px;
+      text-decoration: none;
+      font-size: 30px;
+      color: #005476; }
+      .trip-detail .details .close:hover {
+        color: darkred; }
+    .trip-detail .details .place-travel-dates {
+      margin-top: 10px; }
+      .trip-detail .details .place-travel-dates .cell {
+        display: inline-block;
+        vertical-align: top;
+        margin-bottom: 6px;
+        border: 1px solid #005476;
+        border-radius: 4px;
+        padding: 3px; }
+        .trip-detail .details .place-travel-dates .cell .mdd {
+          width: 110px;
+          text-align: center; }
+        .trip-detail .details .place-travel-dates .cell .mtd {
+          width: 25px;
+          text-align: center; }
+        .trip-detail .details .place-travel-dates .cell.last {
+          margin-left: 25px; }
+          @media screen and (max-width: 650px) {
+            .trip-detail .details .place-travel-dates .cell.last {
+              margin-left: 0; } }
+    .trip-detail .details .bottom-area {
+      text-align: center; }
+      .trip-detail .details .bottom-area > div {
+        display: inline-block;
+        vertical-align: top;
+        width: 49%;
+        min-width: 300px;
+        /*border: 1px solid red;*/ }
+      .trip-detail .details .bottom-area .places .place {
+        position: relative;
+        padding-left: 40px;
+        padding-right: 40px;
+        padding-bottom: 4px;
+        padding-top: 4px;
+        margin-bottom: 5px;
+        background-color: #e1f4f8;
+        border-radius: 4px; }
+        .trip-detail .details .bottom-area .places .place .icon {
+          position: absolute;
+          left: 6px;
+          top: 7px;
+          color: #005476; }
+        .trip-detail .details .bottom-area .places .place .delete {
+          position: absolute;
+          right: 8px;
+          top: 8px;
+          text-decoration: none;
+          color: #005476;
+          font-size: 16px; }
+          .trip-detail .details .bottom-area .places .place .delete:hover {
+            color: darkred; }
+      .trip-detail .details .bottom-area .title {
+        font-size: 1.1em;
+        font-weight: bold;
+        text-align: left;
+        padding: 6px; }
+      .trip-detail .details .bottom-area .cont {
+        text-align: left; }
+        .trip-detail .details .bottom-area .cont .text-address {
+          width: 80%;
+          margin-top: 6px; }
+    .trip-detail .details .documents-all {
+      padding: 10px; }
+      .trip-detail .details .documents-all .documents {
+        padding-top: 6px; }
+        .trip-detail .details .documents-all .documents .photo-button {
+          display: inline-block;
+          vertical-align: top; }
+        .trip-detail .details .documents-all .documents .document-all {
+          display: inline-block;
+          margin-right: 10px;
+          border: 1px solid gray;
+          border-radius: 4px;
+          padding-left: 3px;
+          padding-right: 3px;
+          padding-top: 3px; }
+          .trip-detail .details .documents-all .documents .document-all .document {
+            display: table; }
+            .trip-detail .details .documents-all .documents .document-all .document .cell {
+              display: table-cell;
+              vertical-align: top; }
+            .trip-detail .details .documents-all .documents .document-all .document .imgs {
+              /*padding-top: 8px;*/ }
+            .trip-detail .details .documents-all .documents .document-all .document .serv {
+              font-size: 16px;
+              padding-left: 5px;
+              padding-right: 5px; }
+            .trip-detail .details .documents-all .documents .document-all .document .del {
+              padding-top: 9px; }
+              .trip-detail .details .documents-all .documents .document-all .document .del a {
+                font-size: 14px;
+                text-decoration: none;
+                color: lightgray;
+                display: inline-block; }
+                .trip-detail .details .documents-all .documents .document-all .document .del a:hover {
+                  color: darkred; }
+    .trip-detail .details .file {
+      display: inline-block; }
+      .trip-detail .details .file:before {
+        /*@include transition(all $speed);*/
+        width: 40px;
+        height: 40px;
+        background-position: center center;
+        background-repeat: no-repeat;
+        border-radius: 4px;
+        content: "";
+        display: inline-block; }
+      .trip-detail .details .file.doc:before {
+        background-color: #f95;
+        background-image: url("../images/icons/icon-doc.png"); }
+      .trip-detail .details .file.html:before {
+        background-color: #f95;
+        background-image: url("../images/icons/icon-html.png"); }
+      .trip-detail .details .file.img:before {
+        background-color: #f95;
+        background-image: url("../images/icons/icon-img.png"); }
+      .trip-detail .details .file.pdf:before {
+        background-color: #f95;
+        background-image: url("../images/icons/icon-pdf.png"); }
+      .trip-detail .details .file.txt:before {
+        background-color: #f95;
+        background-image: url("../images/icons/icon-txt.png"); }
+      .trip-detail .details .file.xml:before {
+        background-color: #f95;
+        background-image: url("../images/icons/icon-xml.png"); }
+
+.upload-holder {
+  position: relative;
+  background: white;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 0.5em; }
+  .upload-holder .txt {
+    overflow: hidden; }
+    .upload-holder .txt textarea {
+      resize: none;
+      width: 99%;
+      height: 50px; }
+  .upload-holder .documents {
+    border-top: 1px solid lightgray; }
+
+.upload-droparea {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  z-index: 9999; }
+  .upload-droparea .center-vertical {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border: 2px dashed #3298C1;
+    border-radius: 4px;
+    margin: 8px; }
+    .upload-droparea .center-vertical .centered {
+      font-size: 22px;
+      color: #3298C1;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); }
+
+.upload-progressbar {
+  color: black;
+  font-size: 14px; }
+  .upload-progressbar .progressbar-holder {
+    border: 1px solid #72cf72;
+    display: inline-block;
+    padding: 5px; }
+    .upload-progressbar .progressbar-holder .progressbar {
+      width: 388px;
+      height: 28px;
+      position: relative;
+      background-color: #b8e7b8; }
+      .upload-progressbar .progressbar-holder .progressbar .progress {
+        width: 0;
+        height: 28px;
+        position: absolute;
+        background-color: #72cf72; }
+      .upload-progressbar .progressbar-holder .progressbar span {
+        position: absolute;
+        top: 5px;
+        right: 10px; }
+  .upload-progressbar .button {
+    padding: 6px 9px; }
 
 .mdiv {
   border: 2px solid red;
