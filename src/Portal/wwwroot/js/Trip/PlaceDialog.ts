@@ -1,8 +1,6 @@
 module Trip {
 		export class PlaceDialog {
-
-		public $lastBlockOnRow;
-
+				
 		public dialogManager: DialogManager;
 		private placeSearch: Common.PlaceSearchBox;
 		private addressSearch: Common.PlaceSearchBox;
@@ -14,13 +12,12 @@ module Trip {
 			this.dialogManager = dialogManager;
 		}
 
-			public display() {
-				this.dialogManager.closeDialog();
-
+		public display() {
+				
 				this.dialogManager.getDialogData(TripEntityType.Place, (data) => {
 					
 					if (this.dialogManager.planner.editable) {
-						this.createEdit(data);
+							this.createEdit(data);
 					} else {
 						this.createView(data);
 					}
@@ -29,41 +26,37 @@ module Trip {
 			}
 
 			private createView(data) {
-				var $html = this.buildTemplateView(data);
+				this.buildTemplateView(data);
 
 				this.files = this.dialogManager.createFilesInstanceView(data.id, TripEntityType.Place);
-				this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);
-
-				return $html;
+				this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);					
 			}
 
 			private createEdit(data) {
 
-			var $html = this.buildTemplateEdit(data);
+					this.buildTemplateEdit(data);
 
-			this.createNameSearch(data);
+				this.createNameSearch(data);
 
-			$("#stayAddress").val(data.addressText);
+				$("#stayAddress").val(data.addressText);
 
-			this.createAddressSearch(data);
-			this.regAddressText();
+				this.createAddressSearch(data);
+				this.regAddressText();
 
-			this.createPlaceToVisitSearch(data);
-			this.dialogManager.initDescription(data.description, TripEntityType.Place);
+				this.createPlaceToVisitSearch(data);
+				this.dialogManager.initDescription(data.description, TripEntityType.Place);
 
-			if (data.wantVisit) {
-				data.wantVisit.forEach((place) => {
-					this.addPlaceToVisit(place.id, place.selectedName, place.sourceType, place.sourceId);
-				});
+				if (data.wantVisit) {
+					data.wantVisit.forEach((place) => {
+						this.addPlaceToVisit(place.id, place.selectedName, place.sourceType, place.sourceId);
+					});
+				}
+
+				this.files = this.dialogManager.createFilesInstance(data.id, TripEntityType.Place);
+				this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);
 			}
 
-			this.files = this.dialogManager.createFilesInstance(data.id, TripEntityType.Place);
-			this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);
-
-			return $html;
-		}
-
-		private createNameSearch(data) {
+			private createNameSearch(data) {
 			var c = new Common.PlaceSearchConfig();
 			c.providers = "0,1,2,3,4";
 			c.elementId = "cities";
@@ -205,9 +198,7 @@ module Trip {
 			var $html = $(html);
 			this.dialogManager.regClose($html);
 
-			this.$lastBlockOnRow.after($html);
-
-			return $html;
+			this.dialogManager.insertDialog($html);
 		}
 
 		private getSocLink(sourceType: SourceType, sourceId: string) {
@@ -252,9 +243,7 @@ module Trip {
 
 			this.dialogManager.regClose($html);
 
-			this.$lastBlockOnRow.after($html);
-
-			return $html;
+			this.dialogManager.insertDialog($html);
 		}
 
 		private deletePlace(placeId, travelId) {

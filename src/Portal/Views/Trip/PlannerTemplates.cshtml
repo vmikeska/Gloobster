@@ -10,8 +10,8 @@
 		<div id="{{id}}" class="travelCont block">
                 <div class="timeline falldown {{colorClass}}"></div>
 				<div class="transport">
-						<span class="ticon {{icon}}"></span>
-				</div>				                
+						<span class="ticon {{icon}}"></span>                    
+				</div>				                                          
 		</div>
 </script>
 
@@ -19,7 +19,7 @@
 <script id="place-template" type="text/x-handlebars-template">
 	
     <div id="{{id}}" data-row="{{rowNo}}" class="placeCont block">
-        
+
         <div class="timeline-cont">
             {{#if isFirstDay}}
             <div class="timeline green"><a class="leavingDate dateLink" href="#">{{leavingDate}}</a></div>
@@ -28,23 +28,23 @@
             <div class="timeline {{colorClassLeaving}}"><a class="leavingDate dateLink" href="#">{{leavingDate}}</a></div>
             {{/if}}
         </div>
-        				
-	{{#if isActive}}
-			<div class="destination active">
-	{{else}}
-			<div class="destination">
-	{{/if}}
-			    <span class="name">{{name}}</span>
-                
-            @*{{#unless isFirstDay}}
-                <span class="tab">@Model.W("Arrival") {{arrivalDateLong}}</span>
-            {{/unless}}*@
 
-			</div>
-												
-				
-				
-	</div>
+        {{#if isActive}}
+        <div class="destination active">
+            <span class="name">{{name}}</span>
+        </div>
+        {{else}}
+        <div class="destination">
+            <span class="name">{{name}}</span>            
+        </div>
+        
+        {{/if}}
+        
+        <div class="tab-cont">            
+        </div>
+        
+
+    </div>
 
 </script>
 

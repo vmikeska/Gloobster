@@ -11,6 +11,11 @@ var Trip;
             this.travelDetailViewFriends = Views.ViewBase.currentView.registerTemplate("travelDetailViewFriends-template");
             this.placeDetailViewFriends = Views.ViewBase.currentView.registerTemplate("placeDetailViewFriends-template");
         }
+        DialogManager.prototype.insertDialog = function ($html) {
+            var $detail = $(".details");
+            $detail.remove();
+            this.$lastBlockOnRow.after($html);
+        };
         DialogManager.prototype.createFilesInstanceView = function (entityId, entityType) {
             var filesConfig = new Trip.FilesConfig();
             filesConfig.containerId = "entityDocs";
@@ -68,7 +73,9 @@ var Trip;
             });
         };
         DialogManager.prototype.deactivate = function () {
-            $(".destination.active").removeClass("active");
+            var $place = $(".destination.active");
+            $place.removeClass("active");
+            $place.closest(".placeCont").find(".tab-cont").empty();
             var $trans = $(".transport.active");
             $trans.removeClass("active");
             $trans.find(".tab").remove();

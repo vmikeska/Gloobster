@@ -1804,6 +1804,7 @@ footer .footer_cont {
     .trip-detail .travelCont .tab {
       height: 20px;
       width: 100px;
+      margin-top: 4px;
       position: absolute;
       top: 45px;
       border-top-left-radius: 4px;
@@ -1842,6 +1843,18 @@ footer .footer_cont {
       padding: 20px;
       text-align: center;
       white-space: nowrap; }
+    .trip-detail .placeCont .tab-cont {
+      position: relative; }
+      .trip-detail .placeCont .tab-cont .tab {
+        position: absolute;
+        top: 5px;
+        left: 0;
+        right: 0;
+        height: 15px;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        background-color: #abe0ed;
+        display: block; }
   .trip-detail .ticon {
     height: 22px;
     width: 22px;

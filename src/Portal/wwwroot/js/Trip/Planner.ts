@@ -15,8 +15,7 @@
 		private addPlaceTemplate: any;
 		private travelTemplate: any;
 		private placeTemplate: any;
-
-		private $currentDialog;
+			
 		private $activeBlock;
 
 		public $currentContainer = $("#dataCont");
@@ -53,30 +52,23 @@
 			this.initResizer();
 		}
 
+		private $lastBlockOnRow;
+
 		private initResizer() {
 			this.resizer = new Views.TripResizer();
 
-			this.resizer.onBeforeResize = () => {				
-				//if (this.$currentDialog) {
-				//	this.$currentDialog.hide();
-				//}
+			this.resizer.onBeforeResize = () => {								
 					var $cd = $(".details");
 					if ($cd.length > 0) {
 						$cd.hide();
 					}
 			}
 
-			this.resizer.onAfterResize = () => {				
-				//if (this.$currentDialog) {
-				//	var $newLast = this.resizer.getLast(this.$activeBlock);
-				//	$newLast.after(this.$currentDialog);
-				//	this.$currentDialog.show();
-				//	}
-
+			this.resizer.onAfterResize = () => {								
 				var $cd = $(".details");
 				if ($cd.length > 0) {
-						var $newLast = this.resizer.getLast(this.$activeBlock);
-						$newLast.after($cd);
+						this.$lastBlockOnRow = this.resizer.getLast(this.$activeBlock);
+						this.$lastBlockOnRow.after($cd);
 						$cd.slideDown();
 				}
 			}
@@ -190,37 +182,7 @@
 				this.setActivePlaceOrTravel(id);
 			});
 		}
-
-		public addTravel(travel: Travel, inverseColor: boolean) {
-
-			var context = {
-				id: travel.id,
-				icon: this.getTravelIcon(travel.type),
-				colorClass: ""
-			};
-
-			if (inverseColor) {
-				context.colorClass = "";
-			} else {
-				context.colorClass = "green";
-			}
-
-			var html = this.travelTemplate(context);
-			var $html = $(html);
-
-			$html.find(".transport").click("*", (e) => {
-				var $t = $(e.delegateTarget);
-				var $block = $t.closest(".block");
-				this.activeBlockChanged($block);
-				var id = $block.attr("id");
-				this.setActivePlaceOrTravel(id);
-			});
-
-			this.appendToTimeline($html);
-
-			return $html;
-		}
-
+			
 		private appendToTimeline($html) {
 			if (this.$adder) {
 				this.$lastCell.before($html);
@@ -231,33 +193,39 @@
 
 		private activeBlockChanged($block) {
 			this.$activeBlock = $block;
-			var $last = this.resizer.getLast($block);
-			this.placeDialog.$lastBlockOnRow = $last;
-			this.travelDialog.$lastBlockOnRow = $last;
+			this.$lastBlockOnRow = this.resizer.getLast($block);
+
+
+			this.dialogManager.$lastBlockOnRow = this.$lastBlockOnRow;			
 		}
 
-		private setActivePlaceOrTravel(id) {
-			this.dialogManager.deactivate();
+		private setActivePlaceOrTravel($block) {
+				
+				this.activeBlockChanged($block);
+				var id = $block.attr("id");
 
+			this.dialogManager.deactivate();
+				
 			var $cont = $(`#${id}`);
 			var isPlace = $cont.hasClass("placeCont");
 			var $actCont;
 			var dialog;
 
+			var tab = `<span class="tab"></span>`;
+
 			if (isPlace) {
 				dialog = this.placeDialog;
 				$actCont = $cont.find(".destination");
+				$cont.find(".tab-cont").html(tab);
 			} else {
 				dialog = this.travelDialog;
 				$actCont = $cont.find(".transport");
-				$actCont.append($(`<span class="tab"></span>`));
+				$actCont.append(tab);
 			}
 
 			$actCont.addClass("active");
 			this.dialogManager.selectedId = id;
-			dialog.display(($dialog) => {
-				this.$currentDialog = $dialog;
-			});
+			dialog.display();
 		}
 
 		public addPlace(place: Place, inverseColor: boolean) {
@@ -307,16 +275,43 @@
 
 			$html.find(".destination").click("*", (e) => {
 				var $t = $(e.delegateTarget);
-				var $block = $t.closest(".block");
-				this.activeBlockChanged($block);
-				var id = $block.attr("id");
-				this.setActivePlaceOrTravel(id);
+				var $block = $t.closest(".block");				
+				this.setActivePlaceOrTravel($block);
 			});
 
 			this.appendToTimeline($html);
 
 			return $html;
 		}
+
+		public addTravel(travel: Travel, inverseColor: boolean) {
+
+				var context = {
+						id: travel.id,
+						icon: this.getTravelIcon(travel.type),
+						colorClass: ""
+				};
+
+				if (inverseColor) {
+						context.colorClass = "";
+				} else {
+						context.colorClass = "green";
+				}
+
+				var html = this.travelTemplate(context);
+				var $html = $(html);
+
+				$html.find(".transport").click("*", (e) => {
+						var $t = $(e.delegateTarget);
+						var $block = $t.closest(".block");						
+						this.setActivePlaceOrTravel($block);
+				});
+
+				this.appendToTimeline($html);
+
+				return $html;
+		}
+
 
 		private formatShortDateTime(dt) {
 			var d = moment.utc(dt).format("l");

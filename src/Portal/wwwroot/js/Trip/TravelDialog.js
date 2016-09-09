@@ -6,7 +6,6 @@ var Trip;
         }
         TravelDialog.prototype.display = function () {
             var _this = this;
-            this.dialogManager.closeDialog();
             this.dialogManager.getDialogData(TripEntityType.Travel, function (data) {
                 _this.data = data;
                 if (_this.dialogManager.planner.editable) {
@@ -72,7 +71,7 @@ var Trip;
             }
             var $html = $(html);
             this.dialogManager.regClose($html);
-            this.$lastBlockOnRow.after($html);
+            this.dialogManager.insertDialog($html);
         };
         TravelDialog.prototype.createEdit = function (data) {
             this.buildTemplateEdit(data);
@@ -132,7 +131,7 @@ var Trip;
             $html.find(".the-first").after($time);
             Common.DropDown.registerDropDown($html.find(".dropdown"));
             this.dialogManager.regClose($html);
-            this.$lastBlockOnRow.after($html);
+            this.dialogManager.insertDialog($html);
         };
         return TravelDialog;
     }());

@@ -6,7 +6,6 @@ var Trip;
         }
         PlaceDialog.prototype.display = function () {
             var _this = this;
-            this.dialogManager.closeDialog();
             this.dialogManager.getDialogData(TripEntityType.Place, function (data) {
                 if (_this.dialogManager.planner.editable) {
                     _this.createEdit(data);
@@ -17,14 +16,13 @@ var Trip;
             });
         };
         PlaceDialog.prototype.createView = function (data) {
-            var $html = this.buildTemplateView(data);
+            this.buildTemplateView(data);
             this.files = this.dialogManager.createFilesInstanceView(data.id, TripEntityType.Place);
             this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);
-            return $html;
         };
         PlaceDialog.prototype.createEdit = function (data) {
             var _this = this;
-            var $html = this.buildTemplateEdit(data);
+            this.buildTemplateEdit(data);
             this.createNameSearch(data);
             $("#stayAddress").val(data.addressText);
             this.createAddressSearch(data);
@@ -38,7 +36,6 @@ var Trip;
             }
             this.files = this.dialogManager.createFilesInstance(data.id, TripEntityType.Place);
             this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);
-            return $html;
         };
         PlaceDialog.prototype.createNameSearch = function (data) {
             var _this = this;
@@ -161,8 +158,7 @@ var Trip;
             }
             var $html = $(html);
             this.dialogManager.regClose($html);
-            this.$lastBlockOnRow.after($html);
-            return $html;
+            this.dialogManager.insertDialog($html);
         };
         PlaceDialog.prototype.getSocLink = function (sourceType, sourceId) {
             var link = "";
@@ -197,8 +193,7 @@ var Trip;
                 });
             });
             this.dialogManager.regClose($html);
-            this.$lastBlockOnRow.after($html);
-            return $html;
+            this.dialogManager.insertDialog($html);
         };
         PlaceDialog.prototype.deletePlace = function (placeId, travelId) {
             $("#" + placeId).remove();

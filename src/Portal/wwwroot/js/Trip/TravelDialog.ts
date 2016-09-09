@@ -4,16 +4,13 @@ module Trip {
 
 		private files: TripFiles;
 		private data: any;
-
-		public $lastBlockOnRow;
-
+			
 		constructor(dialogManager: DialogManager) {
 			this.dialogManager = dialogManager;
 		}
 
 		public display() {
-			this.dialogManager.closeDialog();
-
+			
 			this.dialogManager.getDialogData(TripEntityType.Travel, (data) => {
 				this.data = data;
 
@@ -97,7 +94,7 @@ module Trip {
 			var $html = $(html);
 			this.dialogManager.regClose($html);
 
-			this.$lastBlockOnRow.after($html);
+			this.dialogManager.insertDialog($html);
 		}
 
 		private createEdit(data) {
@@ -176,7 +173,7 @@ module Trip {
 			Common.DropDown.registerDropDown($html.find(".dropdown"));
 			this.dialogManager.regClose($html);
 
-			this.$lastBlockOnRow.after($html);
+			this.dialogManager.insertDialog($html);
 		}
 	}
 }

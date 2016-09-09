@@ -29,6 +29,15 @@ module Trip {
 			this.placeDetailViewFriends = Views.ViewBase.currentView.registerTemplate("placeDetailViewFriends-template");
 		}
 
+		public $lastBlockOnRow;
+
+		public insertDialog($html) {
+				var $detail = $(".details");
+				$detail.remove();
+				this.$lastBlockOnRow.after($html);
+		}
+
+
 		public createFilesInstanceView(entityId: string, entityType: TripEntityType): TripFiles {
 			var filesConfig = new FilesConfig();
 			filesConfig.containerId = "entityDocs";
@@ -84,7 +93,8 @@ module Trip {
 
 
 		public closeDialog() {
-			$(".details").remove();
+				$(".details").remove();
+			
 			//$(".daybyday-view").remove();
 		}
 
@@ -97,7 +107,9 @@ module Trip {
 		}
 
 		public deactivate() {
-			$(".destination.active").removeClass("active");
+			var $place = $(".destination.active");
+			$place.removeClass("active");
+			$place.closest(".placeCont").find(".tab-cont").empty();
 
 			var $trans = $(".transport.active");
 			$trans.removeClass("active");
