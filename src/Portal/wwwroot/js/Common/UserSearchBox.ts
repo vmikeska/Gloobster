@@ -13,7 +13,7 @@ module Common {
 		constructor(config: UserSearchConfig) {
 			this.config = config;
 		 
-			this.$root = $("#" + config.elementId);
+			this.$root = $(`#${config.elementId}`);
 			
 			this.$input = this.$root.find("input");
 

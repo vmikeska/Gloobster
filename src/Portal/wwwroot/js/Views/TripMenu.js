@@ -2,9 +2,10 @@ var Views;
 (function (Views) {
     var TripMenu = (function () {
         function TripMenu() {
+            this.$win = $("#menuItemContent");
+            this.$container = this.$win.find(".cont");
             this.registerEvents();
             this.registerTemplates();
-            this.container = $(".menuItemContent");
         }
         TripMenu.prototype.registerTemplates = function () {
             this.privacyTemplate = Views.ViewBase.currentView.registerTemplate("menuPrivacy-template");
@@ -37,7 +38,7 @@ var Views;
                     trip.allowToRequestJoin = state;
                 });
             });
-            this.container.html($html);
+            this.$container.html($html);
         };
         TripMenu.prototype.fillSocStr = function (str, $html) {
             $html.find("#share").find("span").html(str);
@@ -57,7 +58,7 @@ var Views;
                     tripId: Views.ViewBase.currentView["trip"].tripId,
                     networks: networks
                 };
-                _this.container.hide();
+                _this.$container.hide();
                 var v = Views.ViewBase.currentView;
                 var id = new Common.InprogressDialog();
                 id.create(v.t("SharingTrip", "jsTrip"));
@@ -73,12 +74,12 @@ var Views;
                     }
                 });
             });
-            this.container.html($html);
+            this.$container.html($html);
         };
         TripMenu.prototype.createParticipantsContent = function (trip) {
             var _this = this;
             var $html = this.participantsTemplate();
-            this.container.html($html);
+            this.$container.html($html);
             trip.participants.forEach(function (p) {
                 _this.generateOneParticipant(p.name, p.userId, p.isAdmin, p.state);
             });
@@ -121,12 +122,13 @@ var Views;
             };
             var $table = $("#participantsTable");
             var $html = $(this.participantTemplate(context));
-            $html.find(".del").click(function (e) {
+            $html.find(".delete").click(function (e) {
                 var $btn = $(e.target);
                 var id = $btn.data("id");
                 var prms = [["tripId", trip.tripId], ["id", id]];
                 Views.ViewBase.currentView.apiDelete("TripParticipants", prms, function (r) {
                     $table.find("#" + id).remove();
+                    $table.find("#line_" + id).remove();
                     trip.participants = _.reject(trip.participants, function (p) { return p.userId === id; });
                 });
             });
@@ -174,26 +176,40 @@ var Views;
         };
         TripMenu.prototype.registerEvents = function () {
             var _this = this;
-            var $btns = $(".tripMenuButton");
+            var $btns = $(".menu-btn");
             $btns.click(function (e) {
                 var $btn = $(e.target);
-                $btns.not($btn).removeClass("popup-open");
-                var tmp = $btn.data("tmp");
-                _this.displayContent(tmp);
+                $btns.not($btn).removeClass("active");
+                var t = $btn.data("t");
+                _this.displayContent(t);
+            });
+            this.$win.find(".close").click(function (e) {
+                e.preventDefault();
+                _this.$win.slideUp();
             });
         };
         TripMenu.prototype.displayContent = function (tmp) {
-            this.container.show();
+            this.$win.slideDown();
             var trip = Views.ViewBase.currentView["trip"];
             if (tmp === "menuPrivacy-template") {
+                this.setDialogInfo("PrivacySettings", "PrivacyText");
                 this.createPrivacyContent(trip);
             }
             if (tmp === "menuShare-template") {
                 this.createShareContent();
             }
             if (tmp === "participants-template") {
+                this.setDialogInfo("ParticipTitle", "ParticipText");
                 this.createParticipantsContent(trip);
             }
+        };
+        TripMenu.prototype.setDialogInfo = function (title, txt) {
+            var $cont = $("#menuItemContent");
+            var v = Views.ViewBase.currentView;
+            var titleTxt = v.t(title, "jsTrip");
+            var txtTxt = v.t(txt, "jsTrip");
+            $cont.find(".title").html(titleTxt);
+            $cont.find(".txt").html(txtTxt);
         };
         return TripMenu;
     }());

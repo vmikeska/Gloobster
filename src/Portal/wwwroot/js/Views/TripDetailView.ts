@@ -168,8 +168,8 @@
 	 private createFilesConfig() {
 		var filesConfig = new Trip.FilesConfig();
 		filesConfig.containerId = "filesContainer";		
-		filesConfig.inputId = "fileInput";
-		filesConfig.templateId = "file-template";		
+		filesConfig.inputId = "fileInput";		
+		filesConfig.templateId = "fileItem-template";			 
 		filesConfig.isMasterFile = true;
 		
 		//finish DnD functionality ?

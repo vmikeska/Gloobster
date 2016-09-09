@@ -183,7 +183,7 @@
 
 				this.$container.find(".delete").click((e) => {
 					e.preventDefault();
-					var $target = $(e.target);
+					var $target = $(e.target).closest(".delete");
 					var id = $target.data("id");
 					
 					var dialog = new Common.ConfirmDialog();

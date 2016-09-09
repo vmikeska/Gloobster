@@ -1,88 +1,61 @@
 ﻿
 
 <script id="participants-template" type="text/x-handlebars-template">
-  
-    <div class="popup2 with-padding-right margin" id="popup-participants">
-        <div class="table width100">
-            <div class="cell popcont-holder">
-                <h3 class="slim">@Model.W("ParticipTitle")</h3>
-                @Model.W("ParticipText")
-            </div>
-            <div class="cell middle">
-                <div class="color1">@Model.W("ShareWithFriends")</div>
-                <div id="participantsTable" class="share-friends">
-                  
-                    <div class="line">
-                        <div class="cell">                  
-                            <div id="friends" class="dropdown gray">
-                                <input class="inputed" type="text" placeholder="@Model.W("FriendsName")">
-                                <ul>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="cell color1">
-                            @*<input id="checkbox4" type="checkbox"><label for="checkbox4"><span>Can edit</span></label>*@
-                        </div>
-                        <div class="cell"></div>
-                        <div class="cell"></div>
-                    </div>
+          
+    <div class="participants">        
+        <table id="participantsTable">
 
-                </div>
-            </div>
-        </div>
-        <a class="close" href="#">@Model.W("Close", "layout")</a>
+            <tr>
+                <td colspan="5">
+                    <div id="friends" class="dropdown">
+                        <input class="inputed" type="text" placeholder="@Model.W("FriendsName")">
+                        <ul></ul>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
     </div>
     
 </script>
 
 <script id="participant-template" type="text/x-handlebars-template">
     
-    <div class="line" id="{{id}}">
-        <div class="cell"><span class="thumbnail"><img src="/PortalUser/ProfilePicture_xs/{{id}}"></span>{{name}}</div>
-        <div class="cell color1 nowrap"><input id="isAdmin{{id}}" class="isAdmin" data-id="{{id}}" type="checkbox" {{checked}}><label for="isAdmin{{id}}"><span>@Model.W("CanEdit")</span></label></div>
-        <div class="cell small color1">@Model.W("State"): {{state}}</div>
-        <div class="cell"><a class="delete del" data-id="{{id}}" href="#"></a></div>
-    </div>
+    <tr id="{{id}}">
+        <td><div class="thumb"><img src="/PortalUser/ProfilePicture_s/{{id}}"/></div></td>
+        <td>{{name}}</td>
+        <td><input id="isAdmin{{id}}" class="isAdmin" data-id="{{id}}" type="checkbox" {{checked}}><label for="isAdmin{{id}}"><span>@Model.W("CanEdit")</span></label></td>
+        <td>@Model.W("State"): {{state}}</td>
+        <td><a class="delete icon-cross" data-id="{{id}}" href="#"></a></td>
+    </tr>
+    <tr>
+        <td id="line_{{id}}" class="line" colspan="5"></td>
+    </tr>
 
 </script>
 
 <script id="menuPrivacy-template" type="text/x-handlebars-template">
    
-    <div class="popup2 with-padding-right margin" id="popup-privacy">
-        <div class="table width100">
-            <div class="cell popcont-holder with-line">
-                <h3 class="slim">@Model.W("PrivacySettings")</h3>
-                @Model.W("PrivacyText")
-            </div>
-            <div class="cell middle">
-                <input type="checkbox" id="friendsPublic" checked>                
-                <label for="friendsPublic">@Model.W("FriendsPublicCheckbox")</label>
-                <br>
-                <input type="checkbox" id="allowRequestJoin">                
-                <label for="allowRequestJoin">@Model.W("AllowRequestJoinCheckbox")</label>
-            </div>
-        </div>
-        <a class="close" href="#">@Model.W("Close", "layout")</a>
-    </div>
-
+    <div class="privacy">
+        <input type="checkbox" id="friendsPublic" checked>
+        <label for="friendsPublic">@Model.W("FriendsPublicCheckbox")</label>
+        <br>
+        <input type="checkbox" id="allowRequestJoin">
+        <label for="allowRequestJoin">@Model.W("AllowRequestJoinCheckbox")</label>
+    </div>        
 </script>
 
 <script id="menuShare-template" type="text/x-handlebars-template">
     
-    <div class="popup2 with-padding-right" id="popup-share">
+    
         <div class="table width100">
-            <div class="cell popcont-holder with-line">
-                <h3 class="slim">@Model.W("ShareTripTitle")</h3>
-                @Model.W("ShareTripText")
-            </div>
+           
             <div class="cell">
                 <textarea id="message" class="margin" placeholder="@Model.W("MessagePlaceholder")"></textarea>
                 <div class="table width100">
                     <div class="cell middle">
                         <div class="table">
-                            <div class="cell middle">
-                                @*<span class="color1 mright20">@Model.W("ShareOnSoc")</span>*@
-                            </div>
+                            
                             <div id="shareCont" class="cell middle">
                                 
                             </div>
@@ -94,8 +67,7 @@
                 </div>
             </div>
         </div>
-        <a class="close" href="#">@Model.W("Close", "layout")</a>
-    </div>
+     
     
 </script>
 

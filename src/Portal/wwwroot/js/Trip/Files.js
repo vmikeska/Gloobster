@@ -127,7 +127,7 @@ var Trip;
                 });
                 this.$container.find(".delete").click(function (e) {
                     e.preventDefault();
-                    var $target = $(e.target);
+                    var $target = $(e.target).closest(".delete");
                     var id = $target.data("id");
                     var dialog = new Common.ConfirmDialog();
                     dialog.create(_this.v.t("DelDialogTitle", "jsTrip"), _this.v.t("DelDialogBody", "jsTrip"), _this.v.t("Cancel", "jsLayout"), _this.v.t("Ok", "jsLayout"), function () {

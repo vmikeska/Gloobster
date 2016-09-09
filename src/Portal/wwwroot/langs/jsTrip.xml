@@ -57,4 +57,28 @@
       <en>Trip cannot be shared, you have some unnamed places</en>
     </CannotShareUnnamed>
 
+    <PrivacyText>
+      <en>Set privacy of your trip. In participants menu you can select admins of the trip.</en>
+    </PrivacyText>
+
+    <PrivacySettings>
+      <en>Privacy Settings</en>
+    </PrivacySettings>
+
+    <ShareTripText>
+      <en>Share your trip to social networks and make your friends aware of your trip. This will not give anybody permission to manipulate with your trip, or see your sensitive data. Just basic trip overview will be displayed.</en>
+    </ShareTripText>
+
+    <ShareTripTitle>
+      <en>Share Trip</en>
+    </ShareTripTitle>
+
+    <ParticipTitle>
+      <en>Participants</en>
+    </ParticipTitle>
+
+    <ParticipText>
+      <en>Everbody who is invited into the trip will be able to see all information (except private files). Who has "Can edit" permission can on top of that edit all information.</en>
+    </ParticipText>
+
   </module>

@@ -80,19 +80,6 @@
         <en>Choose file</en>
       </ChooseFile>
 
-
-      <ParticipTitle>
-        <en>Participants</en>
-      </ParticipTitle>
-
-      <ParticipText>
-        <en>Everbody who is invited into the trip will be able to see all information (except private files). Who has "Can edit" permission can on top of that edit all information.</en>
-      </ParticipText>
-
-      <ShareWithFriends>
-        <en>Share with friends</en>
-      </ShareWithFriends>
-
       <FriendsName>
         <en>Friend name...</en>
       </FriendsName>
@@ -120,17 +107,13 @@
         </en>
       </ShareOnSoc>
 
-      <ShareTripText>
-        <en>Share your trip to social networks and make your friends aware of your trip. This will not give anybody permission to manipulate with your trip, or see your sensitive data. Just basic trip overview will be displayed.</en>
-      </ShareTripText>
+     
 
       <MessagePlaceholder>
         <en>Message...</en>
       </MessagePlaceholder>
 
-      <ShareTripTitle>
-        <en>Share Trip</en>
-      </ShareTripTitle>
+      
 
       <AllowRequestJoinCheckbox>
         <en>Friends can request to join</en>
@@ -140,13 +123,7 @@
         <en>Friends can see basic info of the trip, even they are not invited</en>
       </FriendsPublicCheckbox>
 
-      <PrivacyText>
-        <en>Set privacy of your trip. In participants menu you can select admins of the trip.</en>
-      </PrivacyText>
-
-      <PrivacySettings>
-        <en>Privacy Settings</en>
-      </PrivacySettings>
+      
 
       <Arrival>
         <en>arrival</en>

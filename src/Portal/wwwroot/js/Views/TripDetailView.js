@@ -135,7 +135,7 @@ var Views;
             var filesConfig = new Trip.FilesConfig();
             filesConfig.containerId = "filesContainer";
             filesConfig.inputId = "fileInput";
-            filesConfig.templateId = "file-template";
+            filesConfig.templateId = "fileItem-template";
             filesConfig.isMasterFile = true;
             filesConfig.editable = true;
             this.files = new Trip.TripFiles(filesConfig);

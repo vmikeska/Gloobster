@@ -19,32 +19,6 @@
 
 </script>
 
-<script id="file-template" type="text/x-handlebars-template">
-    
-    <span>Is it duplicite ?</span>
-
-    @*<div class="document-all">
-        <div class="document">
-            <div class="cell">
-                <a class="file {{fileType}}" href="/Trip/GetFile?fileId={{id}}&tripId={{tripId}}">
-                    
-                </a>
-            </div>
-            {{#if canManipulate}}
-            <div class="cell">
-                <input id="filePublic{{id}}_b" class="filePublic filePublic{{id}}" data-id="{{id}}" type="checkbox" />
-                <label title="@Model.W("ShareTitle")" for="filePublic{{id}}_b">@Model.W("Share")</label>
-                <a class="delete popup-target" data-target="#popup-delete" data-id="{{id}}" href="#"><span class="icon-close-cross"></span></a>
-            </div>
-            {{/if}}
-
-            <div class="cell">
-                <a href="/Trip/GetFile?fileId={{id}}&tripId={{tripId}}">{{fileName}}</a>
-            </div>
-        </div>
-    </div>*@
-</script>
-
 <script id="fileView-template" type="text/x-handlebars-template">
 
     <div class="cell">

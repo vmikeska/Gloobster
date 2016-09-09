@@ -386,8 +386,17 @@ footer .footer_cont {
 .icon-bell:before {
   content: "\e951"; }
 
+.icon-users:before {
+  content: "\e972"; }
+
 .icon-bin:before {
   content: "\e9ac"; }
+
+.icon-earth:before {
+  content: "\e9ca"; }
+
+.icon-eye:before {
+  content: "\e9ce"; }
 
 .icon-plus:before {
   content: "\ea0a"; }
@@ -1748,16 +1757,185 @@ footer .footer_cont {
     color: darkred; }
 
 .trip-detail {
-  text-align: left;
-  /*.last-block {
-        background-color: gray;
-    }*/ }
+  text-align: left; }
   .trip-detail a {
     color: #009dc4; }
   .trip-detail a:hover {
     text-decoration: none; }
+  .trip-detail textarea {
+    border: 1px solid lightgray; }
+  .trip-detail textarea:focus {
+    border: 1px solid black; }
   .trip-detail .green {
     background-color: #72cf72 !important; }
+  .trip-detail .file {
+    display: inline-block; }
+    .trip-detail .file:before {
+      /*@include transition(all $speed);*/
+      width: 40px;
+      height: 40px;
+      background-position: center center;
+      background-repeat: no-repeat;
+      border-radius: 4px;
+      content: "";
+      display: inline-block; }
+    .trip-detail .file.doc:before {
+      background-color: #f95;
+      background-image: url("../images/icons/icon-doc.png"); }
+    .trip-detail .file.html:before {
+      background-color: #f95;
+      background-image: url("../images/icons/icon-html.png"); }
+    .trip-detail .file.img:before {
+      background-color: #f95;
+      background-image: url("../images/icons/icon-img.png"); }
+    .trip-detail .file.pdf:before {
+      background-color: #f95;
+      background-image: url("../images/icons/icon-pdf.png"); }
+    .trip-detail .file.txt:before {
+      background-color: #f95;
+      background-image: url("../images/icons/icon-txt.png"); }
+    .trip-detail .file.xml:before {
+      background-color: #f95;
+      background-image: url("../images/icons/icon-xml.png"); }
+  .trip-detail .document-all {
+    display: inline-block;
+    margin-right: 10px;
+    border: 1px solid gray;
+    border-radius: 4px;
+    padding-left: 3px;
+    padding-right: 3px;
+    padding-top: 3px; }
+    .trip-detail .document-all .document {
+      display: table; }
+      .trip-detail .document-all .document .cell {
+        display: table-cell;
+        vertical-align: top; }
+      .trip-detail .document-all .document .imgs {
+        /*padding-top: 8px;*/ }
+      .trip-detail .document-all .document .serv {
+        font-size: 16px;
+        padding-left: 5px;
+        padding-right: 5px; }
+      .trip-detail .document-all .document .del {
+        padding-top: 9px; }
+        .trip-detail .document-all .document .del a {
+          font-size: 14px;
+          text-decoration: none;
+          color: lightgray;
+          display: inline-block; }
+          .trip-detail .document-all .document .del a:hover {
+            color: darkred; }
+  .trip-detail .service-menu {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    position: relative; }
+    .trip-detail .service-menu .name {
+      display: inline-block;
+      position: relative; }
+      .trip-detail .service-menu .name input {
+        border: 1px solid #65BDD7;
+        border-radius: 4px;
+        font-size: 1.5em; }
+      .trip-detail .service-menu .name .icon-edit-pencil {
+        position: absolute;
+        right: 7px;
+        top: 7px;
+        color: #005476; }
+    .trip-detail .service-menu .items {
+      display: inline-block;
+      position: absolute;
+      right: 0; }
+      @media screen and (max-width: 830px) {
+        .trip-detail .service-menu .items {
+          position: static;
+          margin-top: 10px; } }
+      .trip-detail .service-menu .items .lbtn, .trip-detail .service-menu .items .photo-button label, .photo-button .trip-detail .service-menu .items label, .trip-detail .service-menu .items .wiki-page .langs a, .wiki-page .langs .trip-detail .service-menu .items a {
+        border: 1px solid #65BDD7;
+        color: #65BDD7;
+        font-size: 0.9em;
+        font-weight: 500; }
+  .trip-detail .menu-cont {
+    position: relative;
+    margin-bottom: 10px;
+    font-size: 0.8em; }
+    .trip-detail .menu-cont .bar {
+      border-top: 6px solid #65BDD7;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px; }
+    .trip-detail .menu-cont .wrap {
+      border-left: 1px solid #65BDD7;
+      border-right: 1px solid #65BDD7;
+      border-bottom: 1px solid #65BDD7;
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+      padding: 12px; }
+    .trip-detail .menu-cont .desc {
+      /*border: 1px solid red;*/
+      display: inline-block;
+      vertical-align: top;
+      width: 35%; }
+      @media screen and (max-width: 830px) {
+        .trip-detail .menu-cont .desc {
+          display: block;
+          width: 100%; } }
+      .trip-detail .menu-cont .desc .title {
+        font-size: 1.1em;
+        font-weight: 600;
+        margin-bottom: 10px; }
+    .trip-detail .menu-cont .cont {
+      /*border: 1px solid red;*/
+      display: inline-block;
+      vertical-align: top;
+      width: 60%;
+      border-left: 1px solid #65BDD7;
+      padding-left: 12px;
+      min-height: 120px; }
+      @media screen and (max-width: 830px) {
+        .trip-detail .menu-cont .cont {
+          display: block;
+          width: 100%;
+          border-left: 0;
+          padding-left: 0;
+          margin-top: 15px; } }
+      .trip-detail .menu-cont .cont .privacy {
+        margin-top: 30px; }
+      .trip-detail .menu-cont .cont .participants table {
+        border: 1px solid lightgray;
+        width: 100%; }
+        .trip-detail .menu-cont .cont .participants table .line {
+          border-top: 1px solid lightgray; }
+        .trip-detail .menu-cont .cont .participants table td {
+          vertical-align: central; }
+          .trip-detail .menu-cont .cont .participants table td .thumb {
+            width: 60px;
+            height: 60px;
+            display: inline-block;
+            overflow: hidden;
+            border-radius: 50%;
+            border: 1px solid black; }
+          .trip-detail .menu-cont .cont .participants table td .delete {
+            text-decoration: none; }
+            .trip-detail .menu-cont .cont .participants table td .delete:hover {
+              color: darkred; }
+      .trip-detail .menu-cont .cont .participants .dropdown li .thumb {
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        display: inline-block;
+        vertical-align: top;
+        margin-right: 10px; }
+      .trip-detail .menu-cont .cont .participants .dropdown li .txt {
+        display: inline-block;
+        vertical-align: top;
+        margin-top: 4px; }
+    .trip-detail .menu-cont .close {
+      position: absolute;
+      top: 9px;
+      right: 6px;
+      text-decoration: none;
+      color: #005476; }
+      .trip-detail .menu-cont .close:hover {
+        color: darkred; }
   .trip-detail .travelCont {
     display: inline-block;
     vertical-align: top; }
@@ -1961,63 +2139,6 @@ footer .footer_cont {
         .trip-detail .details .documents-all .documents .photo-button {
           display: inline-block;
           vertical-align: top; }
-        .trip-detail .details .documents-all .documents .document-all {
-          display: inline-block;
-          margin-right: 10px;
-          border: 1px solid gray;
-          border-radius: 4px;
-          padding-left: 3px;
-          padding-right: 3px;
-          padding-top: 3px; }
-          .trip-detail .details .documents-all .documents .document-all .document {
-            display: table; }
-            .trip-detail .details .documents-all .documents .document-all .document .cell {
-              display: table-cell;
-              vertical-align: top; }
-            .trip-detail .details .documents-all .documents .document-all .document .imgs {
-              /*padding-top: 8px;*/ }
-            .trip-detail .details .documents-all .documents .document-all .document .serv {
-              font-size: 16px;
-              padding-left: 5px;
-              padding-right: 5px; }
-            .trip-detail .details .documents-all .documents .document-all .document .del {
-              padding-top: 9px; }
-              .trip-detail .details .documents-all .documents .document-all .document .del a {
-                font-size: 14px;
-                text-decoration: none;
-                color: lightgray;
-                display: inline-block; }
-                .trip-detail .details .documents-all .documents .document-all .document .del a:hover {
-                  color: darkred; }
-    .trip-detail .details .file {
-      display: inline-block; }
-      .trip-detail .details .file:before {
-        /*@include transition(all $speed);*/
-        width: 40px;
-        height: 40px;
-        background-position: center center;
-        background-repeat: no-repeat;
-        border-radius: 4px;
-        content: "";
-        display: inline-block; }
-      .trip-detail .details .file.doc:before {
-        background-color: #f95;
-        background-image: url("../images/icons/icon-doc.png"); }
-      .trip-detail .details .file.html:before {
-        background-color: #f95;
-        background-image: url("../images/icons/icon-html.png"); }
-      .trip-detail .details .file.img:before {
-        background-color: #f95;
-        background-image: url("../images/icons/icon-img.png"); }
-      .trip-detail .details .file.pdf:before {
-        background-color: #f95;
-        background-image: url("../images/icons/icon-pdf.png"); }
-      .trip-detail .details .file.txt:before {
-        background-color: #f95;
-        background-image: url("../images/icons/icon-txt.png"); }
-      .trip-detail .details .file.xml:before {
-        background-color: #f95;
-        background-image: url("../images/icons/icon-xml.png"); }
 
 .upload-holder {
   position: relative;
@@ -2082,19 +2203,3 @@ footer .footer_cont {
         right: 10px; }
   .upload-progressbar .button {
     padding: 6px 9px; }
-
-.mdiv {
-  border: 2px solid red;
-  text-align: left; }
-  .mdiv .i {
-    border: 2px solid blue;
-    display: inline-block;
-    height: 50px;
-    cursor: pointer; }
-  .mdiv .b {
-    width: 1280px;
-    height: 400px;
-    border: 2px solid pink;
-    font-size: 50px; }
-  .mdiv .last {
-    background-color: red; }

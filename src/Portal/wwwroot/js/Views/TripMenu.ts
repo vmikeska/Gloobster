@@ -7,13 +7,17 @@ module Views {
 		private participantTemplate;
 		private userSearchBox: Common.UserSearchBox;
 
-		private container;
+		private $container;
+		private $win;
 
 		constructor() {
+				this.$win = $("#menuItemContent");
+				this.$container = this.$win.find(".cont");			
+
 			this.registerEvents();
 			this.registerTemplates();
 
-			this.container = $(".menuItemContent");
+			
 		}
 
 		private registerTemplates() {
@@ -53,7 +57,7 @@ module Views {
 				});
 			});
 
-			this.container.html($html);
+			this.$container.html($html);
 		}
 
 		private fillSocStr(str, $html) {
@@ -79,7 +83,7 @@ module Views {
 					networks: networks
 				}
 
-				this.container.hide();
+				this.$container.hide();
 
 				var v = ViewBase.currentView;
 					
@@ -99,13 +103,13 @@ module Views {
 					}
 				});
 			});
-			this.container.html($html);
+			this.$container.html($html);
 		}
 
 		private createParticipantsContent(trip) {		 
 			var $html = this.participantsTemplate();
 		 
-			this.container.html($html);
+			this.$container.html($html);
 
 			trip.participants.forEach((p) => {
 				this.generateOneParticipant(p.name, p.userId, p.isAdmin, p.state);
@@ -158,12 +162,13 @@ module Views {
 			var $table = $("#participantsTable");
 			var $html = $(this.participantTemplate(context));
 
-			$html.find(".del").click((e) => {
+			$html.find(".delete").click((e) => {
 				var $btn = $(e.target);
 				var id = $btn.data("id");
 				var prms = [["tripId", trip.tripId], ["id", id]];
 				ViewBase.currentView.apiDelete("TripParticipants", prms, (r) => {
-					$table.find("#" + id).remove();
+						$table.find(`#${id}`).remove();
+						$table.find(`#line_${id}`).remove();						
 					trip.participants = _.reject(trip.participants, (p) => { return p.userId === id });
 				});
 			});
@@ -218,30 +223,48 @@ module Views {
 		}
 
 		private registerEvents() {
-			var $btns = $(".tripMenuButton");
+			var $btns = $(".menu-btn");
 			$btns.click((e) => {
 				var $btn = $(e.target);
-				$btns.not($btn).removeClass("popup-open");
-				var tmp = $btn.data("tmp");
-				this.displayContent(tmp);
+				$btns.not($btn).removeClass("active");
+				var t = $btn.data("t");
+				this.displayContent(t);
+			});
+
+			this.$win.find(".close").click((e) => {
+					e.preventDefault();
+					this.$win.slideUp();
 			});
 		}
 
 		public displayContent(tmp) {
-			this.container.show();
+			this.$win.slideDown();
 			var trip = ViewBase.currentView["trip"];
-			
+
 			if (tmp === "menuPrivacy-template") {
-				this.createPrivacyContent(trip);			 
+				this.setDialogInfo("PrivacySettings", "PrivacyText");
+				this.createPrivacyContent(trip);
 			}
 
 			if (tmp === "menuShare-template") {
-				this.createShareContent();			 
+				this.createShareContent();
 			}
 
 			if (tmp === "participants-template") {
-				this.createParticipantsContent(trip);			 
+					this.setDialogInfo("ParticipTitle", "ParticipText");
+				this.createParticipantsContent(trip);
 			}
+		}
+
+		private setDialogInfo(title, txt) {
+				var $cont = $("#menuItemContent");
+				var v = ViewBase.currentView;
+
+				var titleTxt = v.t(title, "jsTrip");
+				var txtTxt = v.t(txt, "jsTrip");
+
+			$cont.find(".title").html(titleTxt);
+			$cont.find(".txt").html(txtTxt);
 		}
 
 	}
