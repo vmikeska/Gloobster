@@ -58,7 +58,7 @@
 									callback();
 							}
 
-					}, 300);
+					}, 1000);
 			}
 			
 			public getLast($displayed) {

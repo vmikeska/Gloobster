@@ -4,9 +4,8 @@ var Trip;
         function TravelDialog(dialogManager) {
             this.dialogManager = dialogManager;
         }
-        TravelDialog.prototype.display = function (callback) {
+        TravelDialog.prototype.display = function () {
             var _this = this;
-            if (callback === void 0) { callback = null; }
             this.dialogManager.closeDialog();
             this.dialogManager.getDialogData(TripEntityType.Travel, function (data) {
                 _this.data = data;

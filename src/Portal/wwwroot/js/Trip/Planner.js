@@ -25,15 +25,17 @@ var Trip;
             var _this = this;
             this.resizer = new Views.TripResizer();
             this.resizer.onBeforeResize = function () {
-                if (_this.$currentDialog) {
-                    _this.$currentDialog.hide();
+                var $cd = $(".details");
+                if ($cd.length > 0) {
+                    $cd.hide();
                 }
             };
             this.resizer.onAfterResize = function () {
-                if (_this.$currentDialog) {
+                var $cd = $(".details");
+                if ($cd.length > 0) {
                     var $newLast = _this.resizer.getLast(_this.$activeBlock);
-                    $newLast.after(_this.$currentDialog);
-                    _this.$currentDialog.show();
+                    $newLast.after($cd);
+                    $cd.slideDown();
                 }
             };
         };

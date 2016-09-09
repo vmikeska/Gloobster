@@ -47,7 +47,7 @@ var Views;
                 if (callback) {
                     callback();
                 }
-            }, 300);
+            }, 1000);
         };
         TripResizer.prototype.getLast = function ($displayed) {
             var _this = this;

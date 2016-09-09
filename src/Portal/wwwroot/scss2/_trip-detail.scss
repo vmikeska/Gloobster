@@ -10,9 +10,9 @@ $detail-background: #abe0ed;
 
     text-align: left;
 
-    .last-block {
+    /*.last-block {
         background-color: gray;
-    }
+    }*/
 
     a {
         color: $links-color;
@@ -91,12 +91,24 @@ $detail-background: #abe0ed;
             border-color: red;
         }
 
+        .tab {
+            height: 20px;
+            width: 100px;
+            position: absolute;
+            top: 45px;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            background-color: $detail-background;
+            display: block;
+        }
+
     }
 
     .placeCont{        
         display: inline-block;
         vertical-align: top;
         position: relative;
+        font-size: 0.8em;
 
         margin-bottom: 20px;
 
@@ -188,7 +200,7 @@ $detail-background: #abe0ed;
         position: relative;
         padding: 10px;
         margin-bottom: 20px;
-        display: inline-block;
+        display: inline-block;        
         width: 100%;
 
 

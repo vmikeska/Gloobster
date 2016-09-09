@@ -14,19 +14,17 @@ module Trip {
 			this.dialogManager = dialogManager;
 		}
 
-			public display(callback = null) {
+			public display() {
 				this.dialogManager.closeDialog();
 
 				this.dialogManager.getDialogData(TripEntityType.Place, (data) => {
-					var $dialog;
+					
 					if (this.dialogManager.planner.editable) {
-						$dialog = this.createEdit(data);
+						this.createEdit(data);
 					} else {
-						$dialog = this.createView(data);
+						this.createView(data);
 					}
-					if (callback) {
-						callback($dialog);
-					}
+					
 				});
 			}
 

@@ -57,16 +57,27 @@
 			this.resizer = new Views.TripResizer();
 
 			this.resizer.onBeforeResize = () => {				
-				if (this.$currentDialog) {
-					this.$currentDialog.hide();
-				}
+				//if (this.$currentDialog) {
+				//	this.$currentDialog.hide();
+				//}
+					var $cd = $(".details");
+					if ($cd.length > 0) {
+						$cd.hide();
+					}
 			}
 
 			this.resizer.onAfterResize = () => {				
-				if (this.$currentDialog) {
-					var $newLast = this.resizer.getLast(this.$activeBlock);
-					$newLast.after(this.$currentDialog);
-					this.$currentDialog.show();
+				//if (this.$currentDialog) {
+				//	var $newLast = this.resizer.getLast(this.$activeBlock);
+				//	$newLast.after(this.$currentDialog);
+				//	this.$currentDialog.show();
+				//	}
+
+				var $cd = $(".details");
+				if ($cd.length > 0) {
+						var $newLast = this.resizer.getLast(this.$activeBlock);
+						$newLast.after($cd);
+						$cd.slideDown();
 				}
 			}
 		}

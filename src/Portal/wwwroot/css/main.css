@@ -1748,9 +1748,10 @@ footer .footer_cont {
     color: darkred; }
 
 .trip-detail {
-  text-align: left; }
-  .trip-detail .last-block {
-    background-color: gray; }
+  text-align: left;
+  /*.last-block {
+        background-color: gray;
+    }*/ }
   .trip-detail a {
     color: #009dc4; }
   .trip-detail a:hover {
@@ -1800,10 +1801,20 @@ footer .footer_cont {
     .trip-detail .travelCont .transport:hover, .trip-detail .travelCont .transport:after:hover {
       background-color: #009dc4;
       border-color: red; }
+    .trip-detail .travelCont .tab {
+      height: 20px;
+      width: 100px;
+      position: absolute;
+      top: 45px;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+      background-color: #abe0ed;
+      display: block; }
   .trip-detail .placeCont {
     display: inline-block;
     vertical-align: top;
     position: relative;
+    font-size: 0.8em;
     margin-bottom: 20px; }
     .trip-detail .placeCont .timeline-cont {
       display: table;

@@ -11,7 +11,7 @@ module Trip {
 			this.dialogManager = dialogManager;
 		}
 
-		public display(callback = null) {
+		public display() {
 			this.dialogManager.closeDialog();
 
 			this.dialogManager.getDialogData(TripEntityType.Travel, (data) => {

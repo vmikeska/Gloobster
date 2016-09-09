@@ -4,20 +4,15 @@ var Trip;
         function PlaceDialog(dialogManager) {
             this.dialogManager = dialogManager;
         }
-        PlaceDialog.prototype.display = function (callback) {
+        PlaceDialog.prototype.display = function () {
             var _this = this;
-            if (callback === void 0) { callback = null; }
             this.dialogManager.closeDialog();
             this.dialogManager.getDialogData(TripEntityType.Place, function (data) {
-                var $dialog;
                 if (_this.dialogManager.planner.editable) {
-                    $dialog = _this.createEdit(data);
+                    _this.createEdit(data);
                 }
                 else {
-                    $dialog = _this.createView(data);
-                }
-                if (callback) {
-                    callback($dialog);
+                    _this.createView(data);
                 }
             });
         };
