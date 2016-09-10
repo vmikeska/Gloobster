@@ -1,7 +1,7 @@
 ﻿@{
-    ViewBag.BodyClass = "tripview";
     ViewBag.MenuGroup = "Trip";
-    ViewBag.StopLayoutGenerate = true;
+    ViewBag.BodyClass = "trip-detail";
+    Layout = "_LayoutNew";
 }
 
 @using System.Threading.Tasks
@@ -16,6 +16,7 @@
 }
 else
 {
+    <script src="/js/Trip/TripResizer.js" type="text/javascript"></script>
     <script src="/js/Views/TripViewView.js" type="text/javascript"></script>
     <script src="/js/Views/TripMenu.js" type="text/javascript"></script>
     <script src="/js/common/ShareButtons.js" type="text/javascript"></script>
@@ -32,19 +33,7 @@ else
 }
 
 <style>
-    .photoButton input {
-        width: 0.1px;
-        height: 0.1px;
-        opacity: 0;
-        overflow: hidden;
-        position: absolute;
-        z-index: -1;
-    }
-
-    .photoButton label {
-        cursor: pointer;
-    }
-
+    
     .noFiles {
         word-spacing: 0;
     }
@@ -65,92 +54,73 @@ else
      }
 </style>
 
-
-<section class="wrapper">
-    @if (!Model.SocialNetworks.Any())
-    {
-        @Html.Partial("_DialogJoinSoc")
-        @Html.Partial("_DialogJoinEmail")
-    }
-</section>
-
 @Html.Partial("ProgressBar", "progressBarTit")
 
-<section id="bckPhoto" class="adventure-background line margin padding">
-    
-    <div class="wrapper with-subnav">
-        <div class="subnav-holder margin">
-            <div class="table width100">
-                <div class="cell photo">
-                    @if (Model.IsUserAdmin)
-                    {
-                        <a class="button blue-trans photoButton" href="#">
-                            <input id="photoInput" type="file"/>
-                            <label for="photoInput">
-                                <span class="icon-photo middle mright5"></span>
-                                @Model.W("TitlePhoto")
-                            </label>
-                        </a>
-                    }
+<div id="bckPhoto" class="background-wrap">
 
+    <div class="items wrapper">
 
-                </div>
-                @*<div class="cell tright">*@
-                <div class="cell mainHolder">
+        @if (Model.IsUserAdmin)
+            {
+            <a class="photo-button" href="#">
+                <input id="photoInput" type="file" />
+                <label for="photoInput">
+                    <span class="icon-photo"></span>
+                    @Model.W("TitlePhoto")
+                </label>
+            </a>
 
-                    @if (!Model.IsOwner)
-                    {
-                        @Html.Partial("InviteCombo")
-                    }
+                <a class="lbtn menu-btn" data-t="menuPrivacy-template" href="#">
+                    <span class="icon-earth"></span>
+                    @Model.W("Privacy")
+                </a>
+                <a class="lbtn menu-btn" data-t="participants-template" href="#">
+                    <span class="icon-users"></span>
+                    @Model.W("Participants")
+                </a>
+                <a class="lbtn menu-btn" data-t="menuShare-template" href="#">
+                    <span class="icon-share"></span>
+                    @Model.W("ShareTrip")
+                </a>
+                <a class="lbtn" href="/@RoutingConsts.TripEditMenuName/@Model.TripId">
+                    <span class="icon-edit-pencil"></span>
+                    @Model.W("Edit")
+                </a>                
+        }
 
-                    @if (Model.IsUserAdmin)
-                    {
-                        <a data-tmp="menuPrivacy-template" class="button blue-trans popup2-target tripMenuButton" data-target="#popup-privacy" href="#">
-                            <span class="icon-globe middle mright5"></span>
-                            @Model.W("Privacy")
-                        </a>
-                        <a data-tmp="participants-template" class="button blue-trans popup2-target tripMenuButton" data-target="#popup-participants" href="#">
-                            <span class="icon-people middle mright5"></span>
-                            @Model.W("Participants")
-                        </a>
-                        <a data-tmp="menuShare-template" class="button blue-trans popup2-target tripMenuButton" data-target="#popup-share" href="#">
-                            <span class="icon-share middle mright5"></span>
-                            @Model.W("ShareTrip")
-                        </a>
-                        <a class="button blue-trans" href="/@RoutingConsts.TripEditMenuName/@Model.TripId">
-                            <span class="icon-edit middle mright5"></span>
-                            @Model.W("Edit")
-                        </a>
-                    }
+        @if (!Model.IsOwner)
+        {
+            @Html.Partial("InviteCombo")
+        }
 
-                </div>
-            </div>
-        </div>
-
-
-        <div class="menuItemContent" style="display: none;">
-
-        </div>
     </div>
-    <div class="wrapper with-bgwhite">
-        <div class="table margin width100">
-            <div class="cell middle">
-                <h1 class="margin0">@Model.Name</h1>
-            </div>
-            <div class="cell middle tright">
-                by @(string.IsNullOrEmpty(Model.OwnerDisplayName) ? Model.W("Anonymous") : Model.OwnerDisplayName)
 
-                <span class="thumbnail disc60 middle mleft10">                    
-                    <img src="/PortalUser/ProfilePicture_s/@Model.OwnerId">                    
-                </span>
+
+
+    <div class="view wrapper">
+
+        <span class="title-name">@Model.Name</span>
+
+        <div class="by-user">
+            <span>
+                by <b>@(string.IsNullOrEmpty(Model.OwnerDisplayName) ? Model.W("Anonymous") : Model.OwnerDisplayName)</b>
+            </span>
+            <div class="thumb">
+                <img src="/PortalUser/ProfilePicture_s/@Model.OwnerId">
             </div>
         </div>
+
         <p class="h4">@Model.Description</p>
-        <h3>@Model.W("DayByDay")</h3>
-        <div id="plannerCont1" class="daybyday table margin">
+            <h3>@Model.W("DayByDay")</h3>
+            <div id="plannerCont1" class="">
         </div>
+
+       
+       <div id="dataCont" class="scheduler"></div>
+
     </div>
-</section>
+
+</div>
 
 @Html.Partial("Comments")
 

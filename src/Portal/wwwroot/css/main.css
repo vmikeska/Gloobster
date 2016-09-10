@@ -34,7 +34,8 @@ textarea {
   margin: 0 5px;
   padding: 9px;
   text-decoration: none;
-  cursor: pointer; }
+  cursor: pointer;
+  white-space: nowrap; }
 
 textarea:focus, input:focus {
   outline: none; }
@@ -1768,6 +1769,37 @@ footer .footer_cont {
     border: 1px solid black; }
   .trip-detail .green {
     background-color: #72cf72 !important; }
+  .trip-detail .background-wrap {
+    padding-top: 20px; }
+    .trip-detail .background-wrap .items {
+      margin-bottom: 10px; }
+      .trip-detail .background-wrap .items .lbtn, .trip-detail .background-wrap .items .photo-button label, .photo-button .trip-detail .background-wrap .items label, .trip-detail .background-wrap .items .wiki-page .langs a, .wiki-page .langs .trip-detail .background-wrap .items a {
+        background-color: rgba(255, 255, 255, 0.9);
+        border: 1px solid #005476;
+        /*margin-bottom: 10px;*/ }
+    .trip-detail .background-wrap .view {
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 4px;
+      padding: 10px;
+      /*border: 1px solid red;*/ }
+      .trip-detail .background-wrap .view .title-name {
+        display: inline-block;
+        font-size: 40px;
+        font-weight: 600; }
+      .trip-detail .background-wrap .view .by-user {
+        display: inline-block; }
+        .trip-detail .background-wrap .view .by-user span {
+          display: inline-block;
+          vertical-align: top;
+          margin-top: 19px; }
+        .trip-detail .background-wrap .view .by-user .thumb {
+          display: inline-block;
+          vertical-align: top;
+          width: 60px;
+          height: 60px;
+          overflow: hidden;
+          border-radius: 50%;
+          border: 1px solid black; }
   .trip-detail .file {
     display: inline-block; }
     .trip-detail .file:before {
@@ -1778,7 +1810,8 @@ footer .footer_cont {
       background-repeat: no-repeat;
       border-radius: 4px;
       content: "";
-      display: inline-block; }
+      display: inline-block;
+      vertical-align: top; }
     .trip-detail .file.doc:before {
       background-color: #f95;
       background-image: url("../images/icons/icon-doc.png"); }
@@ -1802,9 +1835,7 @@ footer .footer_cont {
     margin-right: 10px;
     border: 1px solid gray;
     border-radius: 4px;
-    padding-left: 3px;
-    padding-right: 3px;
-    padding-top: 3px; }
+    padding: 4px; }
     .trip-detail .document-all .document {
       display: table; }
       .trip-detail .document-all .document .cell {
@@ -1817,7 +1848,7 @@ footer .footer_cont {
         padding-left: 5px;
         padding-right: 5px; }
       .trip-detail .document-all .document .del {
-        padding-top: 9px; }
+        padding-top: 6px; }
         .trip-detail .document-all .document .del a {
           font-size: 14px;
           text-decoration: none;
@@ -2058,7 +2089,7 @@ footer .footer_cont {
     background-color: #abe0ed;
     border-radius: 4px;
     position: relative;
-    padding: 10px;
+    padding: 15px;
     margin-bottom: 20px;
     display: inline-block;
     width: 100%; }
@@ -2099,7 +2130,7 @@ footer .footer_cont {
         width: 49%;
         min-width: 300px;
         /*border: 1px solid red;*/ }
-      .trip-detail .details .bottom-area .places .place {
+      .trip-detail .details .bottom-area .place {
         position: relative;
         padding-left: 40px;
         padding-right: 40px;
@@ -2108,19 +2139,19 @@ footer .footer_cont {
         margin-bottom: 5px;
         background-color: #e1f4f8;
         border-radius: 4px; }
-        .trip-detail .details .bottom-area .places .place .icon {
+        .trip-detail .details .bottom-area .place .icon {
           position: absolute;
           left: 6px;
           top: 7px;
           color: #005476; }
-        .trip-detail .details .bottom-area .places .place .delete {
+        .trip-detail .details .bottom-area .place .delete {
           position: absolute;
           right: 8px;
           top: 8px;
           text-decoration: none;
           color: #005476;
           font-size: 16px; }
-          .trip-detail .details .bottom-area .places .place .delete:hover {
+          .trip-detail .details .bottom-area .place .delete:hover {
             color: darkred; }
       .trip-detail .details .bottom-area .title {
         font-size: 1.1em;
@@ -2133,12 +2164,32 @@ footer .footer_cont {
           width: 80%;
           margin-top: 6px; }
     .trip-detail .details .documents-all {
-      padding: 10px; }
+      padding: 8px; }
       .trip-detail .details .documents-all .documents {
         padding-top: 6px; }
         .trip-detail .details .documents-all .documents .photo-button {
           display: inline-block;
           vertical-align: top; }
+  .trip-detail .place-detail-view .name-title {
+    font-size: 1.2em;
+    font-weight: 600;
+    margin-bottom: 10px; }
+  .trip-detail .place-detail-view .desc {
+    font-size: 0.9em;
+    border-bottom: 1px solid #3298C1;
+    padding-bottom: 15px; }
+  .trip-detail .place-detail-view .documents .file {
+    margin-bottom: 5px;
+    margin-right: 15px;
+    border: 1px solid #3298C1;
+    padding: 3px;
+    border-radius: 4px; }
+    .trip-detail .place-detail-view .documents .file span {
+      display: inline-block;
+      vertical-align: top;
+      margin-top: 5px;
+      margin-left: 5px;
+      color: black; }
 
 .upload-holder {
   position: relative;
@@ -2151,7 +2202,8 @@ footer .footer_cont {
     .upload-holder .txt textarea {
       resize: none;
       width: 99%;
-      height: 50px; }
+      height: 50px;
+      border: 0; }
   .upload-holder .documents {
     border-top: 1px solid lightgray; }
 

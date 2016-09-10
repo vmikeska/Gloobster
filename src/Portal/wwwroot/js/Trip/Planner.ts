@@ -2,7 +2,7 @@
 	export class Planner {
 
 		public trip: any;
-		public resizer: Views.TripResizer;
+		public resizer: Trip.TripResizer;
 
 		public isOwner: boolean;
 		public isInvited: boolean;
@@ -55,7 +55,7 @@
 		private $lastBlockOnRow;
 
 		private initResizer() {
-			this.resizer = new Views.TripResizer();
+				this.resizer = new Trip.TripResizer();
 
 			this.resizer.onBeforeResize = () => {								
 					var $cd = $(".details");

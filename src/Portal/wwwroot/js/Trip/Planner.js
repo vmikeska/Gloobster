@@ -23,7 +23,7 @@ var Trip;
         }
         Planner.prototype.initResizer = function () {
             var _this = this;
-            this.resizer = new Views.TripResizer();
+            this.resizer = new Trip.TripResizer();
             this.resizer.onBeforeResize = function () {
                 var $cd = $(".details");
                 if ($cd.length > 0) {

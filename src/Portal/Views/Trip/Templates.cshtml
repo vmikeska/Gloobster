@@ -20,12 +20,8 @@
 </script>
 
 <script id="fileView-template" type="text/x-handlebars-template">
-
-    <div class="cell">
-        <div class="document">
-            <a class="file {{fileType}}" href="/Trip/GetFile?fileId={{id}}&tripId={{tripId}}">{{fileName}}</a>            
-        </div>
-    </div>
+    
+    <a class="file {{fileType}}" href="/Trip/GetFile?fileId={{id}}&tripId={{tripId}}"><span>{{fileName}}</span></a>
 
 </script>
 

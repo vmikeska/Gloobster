@@ -29,6 +29,59 @@ $detail-background: #abe0ed;
         background-color: $green2 !important;
     }
 
+    .background-wrap{
+        padding-top: 20px;
+
+        .items{
+            margin-bottom: 10px;
+
+            .lbtn{
+                background-color: rgba(255,255,255, 0.9);
+                border: 1px solid $dark-blue;
+                /*margin-bottom: 10px;*/
+            }
+
+        }
+
+
+        .view{
+            background-color: rgba(255,255,255, 0.9);
+            border-radius: 4px;
+
+            padding: 10px;
+            /*border: 1px solid red;*/
+
+            .title-name{
+                display: inline-block;
+
+                font-size: 40px;
+                font-weight: 600;
+            }
+
+            .by-user{
+                display: inline-block;
+
+                span{
+                    display: inline-block;
+                    vertical-align: top;
+                    margin-top: 19px;
+                }
+
+                .thumb{
+                    display: inline-block;
+                    vertical-align: top;
+
+                    width: 60px;
+                    height: 60px;                    
+                    overflow: hidden;
+                    border-radius: 50%;
+                    border: 1px solid black;
+                }
+            }
+            
+        }
+    }
+
     .file {
         display: inline-block;
         &:before {
@@ -41,6 +94,7 @@ $detail-background: #abe0ed;
             border-radius: 4px;
             content: "";
             display: inline-block;
+            vertical-align: top;
         }
         &.doc:before {
             background-color: #f95;//$color13;
@@ -69,50 +123,49 @@ $detail-background: #abe0ed;
     }
 
     .document-all{
-                    display: inline-block;  
-                    margin-right: 10px;     
+        display: inline-block;  
+        margin-right: 10px;     
                     
-                    border: 1px solid gray;
-                    border-radius: 4px;
-                    padding-left: 3px;
-                    padding-right: 3px;
-                    padding-top: 3px;
+        border: 1px solid gray;
+        border-radius: 4px;
+        padding: 4px;
+        
 
-                    .document{
-                        display: table;
+        .document{
+            display: table;
                 
-                        .cell {
-                            display: table-cell;
-                            vertical-align: top;                    
-                        }
+            .cell {
+                display: table-cell;
+                vertical-align: top;                    
+            }
 
-                        .imgs {
-                            /*padding-top: 8px;*/
-                        }
-                        .serv {
-                            font-size: 16px;
-                            padding-left: 5px;
-                            padding-right: 5px;
-                        }
-                        .del{
-                            padding-top: 9px;
+            .imgs {
+                /*padding-top: 8px;*/
+            }
+            .serv {
+                font-size: 16px;
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+            .del{
+                padding-top: 6px;
 
-                            a{
+                a{
                         
-                                font-size: 14px;
-                                text-decoration: none;
-                                color: lightgray;
-                                display: inline-block;
+                    font-size: 14px;
+                    text-decoration: none;
+                    color: lightgray;
+                    display: inline-block;
 
-                                &:hover{
-                                    color: darkred;
-                                }
-                            }
-                        }
-                
+                    &:hover{
+                        color: darkred;
                     }
-
                 }
+            }
+                
+        }
+
+    }
 
     .service-menu{
         margin-top: 10px;
@@ -483,7 +536,7 @@ $detail-background: #abe0ed;
         background-color: $detail-background;
         border-radius: 4px;
         position: relative;
-        padding: 10px;
+        padding: 15px;
         margin-bottom: 20px;
         display: inline-block;        
         width: 100%;
@@ -554,7 +607,10 @@ $detail-background: #abe0ed;
             }
 
             .places{
-                .place {
+                
+            }
+
+            .place {
                     position: relative;
                     padding-left: 40px;
                     padding-right: 40px;
@@ -588,7 +644,6 @@ $detail-background: #abe0ed;
                         }
                     }
                 }
-            }
 
             .title{
                 font-size: 1.1em;
@@ -608,16 +663,15 @@ $detail-background: #abe0ed;
         }
 
         .documents-all {
-            padding: 10px;
+            padding: 8px;
 
-            .documents{
+            .documents{                
                 padding-top: 6px;
-                
+
                 .photo-button{
                     display: inline-block;
                     vertical-align: top;
                 }
-
                 
             }
         }
@@ -627,8 +681,45 @@ $detail-background: #abe0ed;
 
     .place-detail{
         
+    }
 
-        
+    .place-detail-view{
+        .name-title{
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .desc{
+            font-size: 0.9em;
+            border-bottom: 1px solid $light-blue3;
+            padding-bottom: 15px;
+        }
+
+        .documents{
+            .file{
+                margin-bottom: 5px;
+                margin-right: 15px;
+                border: 1px solid $light-blue3;
+                padding: 3px;
+                border-radius: 4px;
+
+                span{
+                    display: inline-block;
+                    vertical-align: top;
+                    margin-top: 5px;
+                    margin-left: 5px;
+                    color: black;
+                }
+            }
+        }
+
+        .bottom-area {
+            .place{
+                
+
+            }
+        }
     }
 
 
@@ -651,6 +742,7 @@ $detail-background: #abe0ed;
             resize: none;
             width: 99%;
             height: 50px;
+            border: 0;
         }
     }
 
