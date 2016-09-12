@@ -1,7 +1,7 @@
 ﻿
 
 <script id="addPlace-template" type="text/x-handlebars-template">	
-    <div id="lastCell" class="block">
+    <div id="lastCell" data-no="9999" class="block">
         <div class="adder-cont">
             <a id="addPlace" class="icon-plus adder" href="#"></a>
         </div>
@@ -9,7 +9,7 @@
 </script>
 
 <script id="travel-template" type="text/x-handlebars-template">
-		<div id="{{id}}" class="travelCont block">
+		<div id="{{id}}" data-no="{{no}}" class="travelCont block">
                 <div class="timeline falldown {{colorClass}}"></div>
 				<div class="transport">
 						<span class="ticon {{icon}}"></span>                    
@@ -20,7 +20,7 @@
 
 <script id="place-template" type="text/x-handlebars-template">
 	
-    <div id="{{id}}" data-row="{{rowNo}}" class="placeCont block">
+    <div id="{{id}}" data-no="{{no}}" class="placeCont block">
 
         <div class="timeline-cont">
             {{#if isFirstDay}}

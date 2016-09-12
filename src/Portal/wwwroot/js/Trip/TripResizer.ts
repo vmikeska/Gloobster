@@ -7,118 +7,63 @@ module Trip {
 
 			private rootCont = ".scheduler";
 			private itemCont = ".block";
-			private lastClass = "last-block";
-			private itemsSelector = `${this.rootCont} > ${this.itemCont}`;
-
+			
 			private timeout;
-			private $active;
-
-			constructor() {
-					this.markLasts();
+			
+			constructor() {					
 					this.initResize();
 			}
 
-			private markLasts(callback = null) {
-					var $is = $(this.itemsSelector);
+			public getLast(blockNo) {
+					
+					var $lastBlock;
 
-					console.log("Removing lasts");
+					var can = true;
+					var curBlockNo = blockNo;
+					
+					while (can) {
+							var nextBlockNo = curBlockNo + 1;
+							
+							var $i = $(`${this.rootCont} ${this.itemCont}[data-no="${curBlockNo}"]`);
+							var $ni = $(`${this.rootCont} ${this.itemCont}[data-no="${(nextBlockNo)}"]`);
 
-					$is.removeClass(this.lastClass);
-					$is.last().addClass(this.lastClass);
+							var hasNext = $ni.length > 0;
+							if (hasNext) {
+								var currentTop = $i.offset().top;
+								var nextTop = $ni.offset().top;
 
-					if (this.timeout) {
-							window.clearTimeout(this.timeout);
-					}
-
-					this.timeout = setTimeout(() => {
-							console.clear();
-							$is.each((index, i) => {
-									var $i = $(i);
-
-									var txt = "travel";
-									var placeName = $i.find(".name");
-									if (placeName.length > 0) {
-											txt = placeName.text();
-									}
-
-									var $nextItem = $i.next(this.itemCont);
-									var hasNext = $nextItem.length > 0;
-									if (hasNext) {
-											var currentTop = $i.offset().top;
-											var nextTop = $nextItem.offset().top;
-
-											console.log(`${txt}: ${currentTop} - ${nextTop}`);
-
-											if (currentTop < nextTop) {
-													$i.addClass(this.lastClass);
-											}
-									}
-							});
-
-							if (callback) {
-									callback();
+								if (currentTop < nextTop) {
+									$lastBlock = $i;
+									can = false;
+								}
+							} else {
+									$lastBlock = $i;
+									can = false;
 							}
 
-					}, 1000);
-			}
-
-			public getLast($displayed) {
-
-					var $lastInRow;
-
-					if ($displayed.hasClass(this.lastClass)) {
-							$lastInRow = $displayed;
-					} else {
-							var $is = $(this.itemsSelector);
-
-							var isArray = $is.toArray();
-							isArray = _.sortBy(isArray, (index, item) => {
-									var $i = $(item);
-									return $i.data("no");
-							});
-
-							var $last = $(_.last(isArray));
-
-							var clickedNo = $displayed.data("no");
-							var foundStart = false;
-
-							isArray.some((i) => {
-									var $i = $(i);
-									var txt = $i.html();
-
-									var hasLast = $i.hasClass(this.lastClass);
-
-									if (foundStart && hasLast) {
-											$lastInRow = $i;
-											return true;
-									}
-
-									if ($last.data("no") === $i.data("no")) {
-											return true;
-									}
-
-									if (clickedNo === $i.data("no")) {
-											foundStart = true;
-									}
-							});
+						curBlockNo++;
 					}
 
-					return $lastInRow;
+				return $lastBlock;					
 			}
-
+				
 			private initResize() {
 
 					$(window).resize(() => {
-							if (this.onBeforeResize) {
-									this.onBeforeResize();
+						if (this.onBeforeResize) {
+							this.onBeforeResize();
+						}
+
+						if (this.timeout) {
+							window.clearTimeout(this.timeout);
+						}
+
+						this.timeout = setTimeout(() => {
+							if (this.onAfterResize) {
+								this.onAfterResize();
 							}
-
-							this.markLasts(() => {
-									if (this.onAfterResize) {
-											this.onAfterResize();
-									}
-							});
-
+						}, 300);
+							
 					});
 			}
 	}

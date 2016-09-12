@@ -33,7 +33,7 @@ var Trip;
             this.resizer.onAfterResize = function () {
                 var $cd = $(".details");
                 if ($cd.length > 0) {
-                    _this.$lastBlockOnRow = _this.resizer.getLast(_this.$activeBlock);
+                    _this.$lastBlockOnRow = _this.resizer.getLast(_this.$activeBlock.data("no"));
                     _this.$lastBlockOnRow.after($cd);
                     $cd.slideDown();
                 }
@@ -43,14 +43,12 @@ var Trip;
             var _this = this;
             var orderedPlaces = _.sortBy(this.placesMgr.places, "orderNo");
             var placeCount = 0;
-            orderedPlaces.forEach(function (place, index) {
+            orderedPlaces.forEach(function (place) {
                 placeCount++;
-                var $place = _this.addPlace(place, _this.inverseColor);
-                $place.data("no", index);
+                _this.addPlace(place, _this.inverseColor);
                 if (place.leaving) {
                     var travel = place.leaving;
-                    var $travel = _this.addTravel(travel, _this.inverseColor);
-                    $travel.data("no", index);
+                    _this.addTravel(travel, _this.inverseColor);
                 }
                 _this.inverseColor = !_this.inverseColor;
             });
@@ -140,7 +138,7 @@ var Trip;
         };
         Planner.prototype.activeBlockChanged = function ($block) {
             this.$activeBlock = $block;
-            this.$lastBlockOnRow = this.resizer.getLast($block);
+            this.$lastBlockOnRow = this.resizer.getLast($block.data("no"));
             this.dialogManager.$lastBlockOnRow = this.$lastBlockOnRow;
         };
         Planner.prototype.setActivePlaceOrTravel = function ($block) {
@@ -166,6 +164,17 @@ var Trip;
             this.dialogManager.selectedId = id;
             dialog.display();
         };
+        Planner.prototype.getHighestBlockNo = function () {
+            var highest = 0;
+            this.$currentContainer.find(".block").toArray().forEach(function (b) {
+                var $b = $(b);
+                var no = $b.data("no");
+                if (no && no > highest) {
+                    highest = no;
+                }
+            });
+            return highest;
+        };
         Planner.prototype.addPlace = function (place, inverseColor) {
             var _this = this;
             var name = this.emptyName;
@@ -183,7 +192,8 @@ var Trip;
                 colorClassArriving: "",
                 colorClassLeaving: "",
                 arrivingId: "",
-                leavingId: ""
+                leavingId: "",
+                no: this.getHighestBlockNo() + 1
             };
             if (place.arriving != null) {
                 var da = place.arriving.arrivingDateTime;
@@ -220,7 +230,8 @@ var Trip;
             var context = {
                 id: travel.id,
                 icon: this.getTravelIcon(travel.type),
-                colorClass: ""
+                colorClass: "",
+                no: this.getHighestBlockNo() + 1
             };
             if (inverseColor) {
                 context.colorClass = "";

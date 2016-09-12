@@ -67,7 +67,7 @@
 			this.resizer.onAfterResize = () => {								
 				var $cd = $(".details");
 				if ($cd.length > 0) {
-						this.$lastBlockOnRow = this.resizer.getLast(this.$activeBlock);
+						this.$lastBlockOnRow = this.resizer.getLast(this.$activeBlock.data("no"));
 						this.$lastBlockOnRow.after($cd);
 						$cd.slideDown();
 				}
@@ -77,17 +77,15 @@
 		private redrawAll() {
 			var orderedPlaces = _.sortBy(this.placesMgr.places, "orderNo");
 
-			var placeCount = 0;
-			orderedPlaces.forEach((place, index) => {
+			var placeCount = 0;			
+			orderedPlaces.forEach((place) => {
 				placeCount++;
 					
-				var $place = this.addPlace(place, this.inverseColor);
-				$place.data("no", index);
-
+				this.addPlace(place, this.inverseColor);
+				
 				if (place.leaving) {
 					var travel = place.leaving;
-					var $travel = this.addTravel(travel, this.inverseColor);
-					$travel.data("no", index);
+					this.addTravel(travel, this.inverseColor);				
 				}
 
 				this.inverseColor = !this.inverseColor;
@@ -193,7 +191,7 @@
 
 		private activeBlockChanged($block) {
 			this.$activeBlock = $block;
-			this.$lastBlockOnRow = this.resizer.getLast($block);
+			this.$lastBlockOnRow = this.resizer.getLast($block.data("no"));
 
 
 			this.dialogManager.$lastBlockOnRow = this.$lastBlockOnRow;			
@@ -228,6 +226,20 @@
 			dialog.display();
 		}
 
+		private getHighestBlockNo() {
+			var highest = 0;
+			this.$currentContainer.find(".block").toArray().forEach((b) => {
+				var $b = $(b);
+
+				var no = $b.data("no");
+				if (no && no > highest) {
+					highest = no;
+				}					
+			});
+
+			return highest;
+		}
+
 		public addPlace(place: Place, inverseColor: boolean) {
 			var name = this.emptyName;
 			if (place.place) {
@@ -245,7 +257,8 @@
 				colorClassArriving: "",
 				colorClassLeaving: "",
 				arrivingId: "",
-				leavingId: ""
+				leavingId: "",
+				no: this.getHighestBlockNo() + 1
 			}
 
 			if (place.arriving != null) {
@@ -289,7 +302,8 @@
 				var context = {
 						id: travel.id,
 						icon: this.getTravelIcon(travel.type),
-						colorClass: ""
+						colorClass: "",
+						no: this.getHighestBlockNo() + 1
 				};
 
 				if (inverseColor) {
