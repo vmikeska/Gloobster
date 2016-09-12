@@ -27,6 +27,13 @@
 }
 
 
+
+.icon-gear:before {
+  content: "\e916";
+}
+.icon-camera:before {
+  content: "\e915";
+}
 .icon-bell:before {
   content: "\e951";
 }
@@ -56,6 +63,12 @@
 }
 .icon-checkmark2:before {
   content: "\ea11";
+}
+.icon-table2:before {
+  content: "\ea71";
+}
+.icon-paragraph-justify:before {
+  content: "\ea7a";
 }
 .icon-mail2:before {
   content: "\ea84";

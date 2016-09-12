@@ -149,23 +149,6 @@
 
         .share_all {
             display: inline-block;
-
-            .share-cont {
-                /*border: 1px solid red;*/
-                text-align: left;
-
-                .icon-holder {
-                    width: 60px;
-                    height: 60px;
-                    position: relative;
-                }
-
-                .icon-visited{
-                    position: absolute;
-                    top: -5px;
-                    right: -5px;
-                }
-            }
         }
 
         .share{

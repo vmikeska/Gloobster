@@ -1,21 +1,19 @@
 ﻿
-<section class="line margin padding">
-    <div class="wrapper">
-        <h3>@Model.W("Comments")</h3>
-        <div class="form">
-            <div class="table row margin">
-                <div class="cell">
-                    <textarea id="commentInput" class="width700" type="text" placeholder="@Model.W("YourComment")"></textarea>
-                </div>
-                <div class="cell">
-                    <input id="commentSubmit" type="button" value="@Model.W("AddComment")">
-                </div>
-            </div>
+
+<div class="wrapper comments">
+    <h3>@Model.W("Comments")</h3>
+
+    <div class="txt-input">
+        <div class="txt">
+            <textarea id="commentInput" class="box-sizing" type="text" placeholder="@Model.W("YourComment")"></textarea>
         </div>
-
-        <div id="commentsContainer" class="comments table">
-
+        <div class="btn">
+            <a id="commentSubmit" class="lbtn" href="#">@Model.W("AddComment")</a>
         </div>
     </div>
 
-</section>
+    <div id="commentsContainer">
+
+    </div>
+</div>
+

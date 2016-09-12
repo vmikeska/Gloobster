@@ -5,32 +5,9 @@
 @using Gloobster.Portal.ViewModels
 @model TripItemViewModel
 
-<div class="cell" id="@Model.Id">
-  
+    <div class="trip-all trip-holder" id="@Model.Id">
+        <a href="/@RoutingConsts.TripEditMenuName/@Model.Id">
 
-    <div class="trip-holder">
-        <a class="trip edit" href="/@RoutingConsts.TripEditMenuName/@Model.Id">
-            @if (Model.IsOwner)
-            {
-                <h3>@Model.Name</h3>
-            }
-            else
-            {
-                <h3>@Model.Name - by @Model.OwnerName</h3>
-            }
-
-            <p>
-                @*@if (Model.IsLocked)
-                {
-                    <span class="icon-lock"></span>
-                }*@
-                @Model.FromDate.ToString("MMM yyyy", CultureInfo.GetCultureInfo(Model.B.Locale))
-                <span data-id="@Model.Id" class="button editBtn">@Model.B.W("Edit")</span>
-            </p>
-            @if (Model.IsOwner)
-            {
-                <span class="icon-wheel" style="display: inline"></span>
-            }
             @if (Model.HasSmallPicture)
             {
                 <img id="tripImg_@Model.Id" src="/Trip/TripPictureSmall_s/@Model.Id">
@@ -40,10 +17,30 @@
                 <img id="tripImg_@Model.Id" src="~/images/TripDefault.jpg">
             }
 
+            <p class="title">
+
+            </p>
+
+            @if (Model.IsOwner)
+            {
+                <h3>@Model.Name</h3>
+            }
+            else
+            {
+                <h3>@Model.Name - by @Model.OwnerName</h3>
+            }
+
+            <p class="serv">
+                @Model.FromDate.ToString("MMM yyyy", CultureInfo.GetCultureInfo(Model.B.Locale))                
+            </p>
+            @if (Model.IsOwner)
+            {
+                <span class="setting icon-gear"></span>
+            }
+            
+
         </a>
         @Html.Partial("TripsItemMenu")
         
     </div>
      
-
-</div>

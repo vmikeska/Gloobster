@@ -1,24 +1,24 @@
 ﻿@using Gloobster.Portal.ViewModels
 @model TripItemViewModel
 
-<ul class="trip-menu" id="tripMenu_@Model.Id">
+<ul class="trip-menu" id="tripMenu_@Model.Id" data-tid="@Model.Id" style="display: none">
     <li>
-        <a class="photoButton" href="#">
-            <input id="photoInput_@Model.Id" data-tid="@Model.Id" class="inputs" type="file"/>
+        <a class="photo-link" href="#">
+            <input id="photoInput_@Model.Id" data-tid="@Model.Id" type="file"/>
             <label for="photoInput_@Model.Id">
-                <span class="icon-photo middle mright5"></span>
-                @Model.B.W("TitlePhoto")
+                <span class="icon-camera"></span>
+                <span class="lato">@Model.B.W("TitlePhoto")</span>
             </label>
         </a>
     </li>
     <li>
-        <a data-tid="@Model.Id" class="overviewTrip" href="#">@Model.B.W("Preview")</a>
+        <a class="overviewTrip icon-eye" href="/trip/@Model.Id"><span class="lato"> @Model.B.W("Preview")</span></a>
     </li>
     <li>
-        <a data-tid="@Model.Id" class="deleteTrip" href="#">@Model.B.W("Delete", "layout")</a>
+        <a class="deleteTrip icon-bin" href="#"><span class="lato"> @Model.B.W("Delete", "layout")</span></a>
     </li>    
     <li>
-        <a class="menuClose" href="#">@Model.B.W("Close", "layout")</a>
+        <a class="menuClose icon-cross" href="#"><span class="lato"> @Model.B.W("Close", "layout")</span></a>
     </li>
 
 </ul>

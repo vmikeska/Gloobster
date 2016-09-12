@@ -178,8 +178,9 @@ var Views;
             var _this = this;
             var $btns = $(".menu-btn");
             $btns.click(function (e) {
-                var $btn = $(e.target);
-                $btns.not($btn).removeClass("active");
+                var $btn = $(e.target).closest(".menu-btn");
+                $btns.removeClass("active");
+                $btn.addClass("active");
                 var t = $btn.data("t");
                 _this.displayContent(t);
             });
@@ -196,6 +197,7 @@ var Views;
                 this.createPrivacyContent(trip);
             }
             if (tmp === "menuShare-template") {
+                this.setDialogInfo("ShareTripTitle", "ShareTripText");
                 this.createShareContent();
             }
             if (tmp === "participants-template") {

@@ -42,17 +42,14 @@ else
     </div>
 
     <div class="items">
-        <a class="lbtn menu-btn" data-t="menuPrivacy-template" href="#">
-            <span class="icon-earth"></span>
-            @Model.W("Privacy")
+        <a class="lbtn menu-btn icon-earth" data-t="menuPrivacy-template" href="#">
+            <span class="lato">@Model.W("Privacy")</span>            
         </a>
-        <a class="lbtn menu-btn" data-t="participants-template" href="#">
-            <span class="icon-users"></span>
-            @Model.W("Participants")
+        <a class="lbtn menu-btn icon-users" data-t="participants-template" href="#">
+            <span class="lato">@Model.W("Participants")</span>            
         </a>
-        <a class="lbtn" href="/trip/@Model.TripId">
-            <span class="icon-eye"></span>
-            @Model.W("Preview")
+        <a class="lbtn icon-eye" href="/trip/@Model.TripId">
+            <span class="lato">@Model.W("Preview")</span>            
         </a>
     </div>
 
@@ -77,9 +74,7 @@ else
 </div>
 
 <div class="wrapper">
-
-    <div id="dataCont" class="scheduler"></div>
-    
+    <div id="dataCont" class="scheduler"></div>    
 </div>
 
 
@@ -87,10 +82,10 @@ else
 
 <div class="wrapper">
 	
-	<h3 class="margin0">@Model.W("Notes")</h3>
+	<h3>@Model.W("Notes")</h3>
 	
 	<input id="public" type="checkbox" @(Model.NotesPublic ? "checked='checked'" : string.Empty)>
-	<label class="color1" for="public">@Model.W("Public")</label>
+	<label for="public">@Model.W("Public")</label>
 	
 	<textarea id="notes" placeholder="@Model.W("SimpleNotes")">@Model.Notes</textarea>	
 </div>

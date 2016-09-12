@@ -58,34 +58,29 @@ else
 
 <div id="bckPhoto" class="background-wrap">
 
-    <div class="items wrapper">
+    <div class="items wrapper tright">
 
         @if (Model.IsUserAdmin)
-            {
+        {
             <a class="photo-button" href="#">
-                <input id="photoInput" type="file" />
-                <label for="photoInput">
-                    <span class="icon-photo"></span>
-                    @Model.W("TitlePhoto")
+                <input id="photoInput" type="file"/>
+                <label for="photoInput" class="icon-camera">
+                    <span class="lato">@Model.W("TitlePhoto")</span>
                 </label>
             </a>
 
-                <a class="lbtn menu-btn" data-t="menuPrivacy-template" href="#">
-                    <span class="icon-earth"></span>
-                    @Model.W("Privacy")
-                </a>
-                <a class="lbtn menu-btn" data-t="participants-template" href="#">
-                    <span class="icon-users"></span>
-                    @Model.W("Participants")
-                </a>
-                <a class="lbtn menu-btn" data-t="menuShare-template" href="#">
-                    <span class="icon-share"></span>
-                    @Model.W("ShareTrip")
-                </a>
-                <a class="lbtn" href="/@RoutingConsts.TripEditMenuName/@Model.TripId">
-                    <span class="icon-edit-pencil"></span>
-                    @Model.W("Edit")
-                </a>                
+            <a class="lbtn menu-btn icon-earth" data-t="menuPrivacy-template" href="#">
+                <span class="lato">@Model.W("Privacy")</span>                
+            </a>
+            <a class="lbtn menu-btn icon-users" data-t="participants-template" href="#">                
+                <span class="lato">@Model.W("Participants")</span>
+            </a>
+            <a class="lbtn menu-btn icon-share" data-t="menuShare-template" href="#">
+                <span class="lato">@Model.W("ShareTrip")</span>                
+            </a>
+            <a class="lbtn icon-edit-pencil" href="/@RoutingConsts.TripEditMenuName/@Model.TripId">
+                <span class="lato">@Model.W("Edit")</span>                
+            </a>
         }
 
         @if (!Model.IsOwner)
@@ -95,7 +90,19 @@ else
 
     </div>
 
-
+    <div class="size-wrapper">
+        <div id="menuItemContent" class="wrapper menu-cont" style="display: none;">
+            <div class="bar"></div>
+            <div class="wrap">
+                <div class="desc">
+                    <div class="title"></div>
+                    <div class="txt"></div>
+                </div>
+                <div class="cont"></div>
+                <a class="close icon-cross" href="#"></a>
+            </div>
+        </div>
+    </div>
 
     <div class="view wrapper">
 
@@ -111,33 +118,41 @@ else
         </div>
 
         <p class="h4">@Model.Description</p>
-            <h3>@Model.W("DayByDay")</h3>
-            <div id="plannerCont1" class="">
+        <h3>@Model.W("DayByDay")</h3>
+        <div id="plannerCont1" class="">
         </div>
 
-       
-       <div id="dataCont" class="scheduler"></div>
+
+        <div id="dataCont" class="scheduler"></div>
 
     </div>
 
 </div>
 
+<div class="line"></div>
+
 @Html.Partial("Comments")
 
 @if (Model.IsOwner || Model.ThisUserInvited)
-{
-    @Html.Partial("Files")
+{    
+    <div class="wrapper fileDocs" style="display: none">
+        <h3>@Model.W("AllDocs")</h3>
+        <div id="filesContainer" class="documents view-docs">
+        </div>
+    </div>    
 }
 
-@Html.Partial("Participants")
+<div class="line"></div>
 
 @if (Model.NotesPublic)
 {
-	<section class="wrapper margin3 color1">
-		<strong>@Model.W("Notes")</strong>
-		@Model.Notes
-	</section>
+    <div class="wrapper">
+        <h3>@Model.W("Notes")</h3>
+        @Model.Notes
+    </div>
 }
+
+@Html.Partial("Participants")
 
 @Html.Partial("Templates")
 @Html.Partial("MenuTemplates")

@@ -53,7 +53,7 @@
 			var user = this.getUserById(comment.userId);
 
 			var displayName = Views.ViewBase.currentView.t("Anonymous", "jsLayout");
-			var photoUrl = "/PortalUser/ProfilePicture_s/" + user.id;
+			var photoUrl = `/PortalUser/ProfilePicture_s/${user.id}`;
 			
 			if (user) {
 			 displayName = user.displayName;			 

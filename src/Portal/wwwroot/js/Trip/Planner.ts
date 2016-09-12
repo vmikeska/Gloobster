@@ -55,7 +55,7 @@
 		private $lastBlockOnRow;
 
 		private initResizer() {
-				this.resizer = new Trip.TripResizer();
+				this.resizer = new TripResizer();
 
 			this.resizer.onBeforeResize = () => {								
 					var $cd = $(".details");

@@ -2,14 +2,11 @@
 @using System.Threading.Tasks
 @model Gloobster.Portal.ViewModels.UserViewModel
 
-
-<div class="cell">
-		<div class="table">
-				<div class="cell">
-						<span class="thumbnail">
-								<img src="/PortalUser/ProfilePicture_s/@Model.Id">
-						</span>
-				</div>
-				<div class="cell">@Model.Name</div>
+<div class="participant">
+    <div class="top">
+        <div class="thumb-cont s border">
+            <img src="/PortalUser/ProfilePicture_s/@Model.Id"/>
 		</div>
+    </div>
+    <div class="bottom"><a href="/PortalUser/detail/@Model.Id">@Model.Name</a></div>
 </div>

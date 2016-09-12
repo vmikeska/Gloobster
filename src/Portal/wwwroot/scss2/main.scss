@@ -7,11 +7,16 @@ $light-blue: #65BDD7;
 $light-blue2: #009EC4;
 $light-blue3: #3298C1;
 $light-blue4: #ccedf5;
+$light-blue5: #57c1db;
 
 $green: #3DA33D;
 $orange: #F56E12;
 $yellow: #FFC400;
 $yellow2: #F5C519;
+
+$light-gray: #EAEAEA;
+
+$trans-white: rgba(255, 255, 255, 0.9);
 
 $tablet-width: 959px;
 
@@ -35,6 +40,14 @@ $tablet-width: 959px;
     text-align-last: justify; /* IE */
 }
 
+@mixin display-flex{
+    display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
 
 @mixin centerer {
   position: absolute;
@@ -55,6 +68,10 @@ a {
     color: $light-blue3;
 }
 
+.lato{
+    font-family: $font-lato;
+}    
+
 input[type="text"],input[type="password"],input[type="number"],textarea{    
     padding: 8px 13px;
     border: 0;
@@ -72,13 +89,14 @@ input[type=number]::-webkit-outer-spin-button {
 textarea{
     width: 100%;
     font-family: $font-lato;
+    @extend .box-sizing;
 }
 
 .lbtn{
     border-style: solid;
     border-width: 0;
     border-radius: 4px;                    
-    font-weight: 700;
+    /*font-weight: 700;*/
     height: 20px;
     line-height: 40px;
 
@@ -88,6 +106,32 @@ textarea{
     text-decoration: none;
     cursor: pointer;
     white-space:nowrap;
+}
+
+.thumb-cont{
+    display: inline-block;
+    border-radius: 50%;
+    overflow: hidden;
+
+    &.s{
+        width: 60px;
+        height: 60px;
+    }
+
+    &.xs{
+        width: 26px;
+        height: 26px;
+    }
+
+    &.border{
+        border: 1px solid black;
+    }    
+}
+
+.box-sizing{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 textarea:focus, input:focus{
@@ -145,6 +189,22 @@ p{
         color: $light-blue3;
         border: 1px solid $light-blue3;
 
+        cursor: pointer;cursor: hand;
+    }
+ }
+
+ .photo-link{
+     input {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+
+     label {        
+        color: $light-blue3;        
         cursor: pointer;cursor: hand;
     }
  }
@@ -226,6 +286,32 @@ button:active {
     }
 }
 
+.tleft{
+    text-align: left;
+}
+.tright{
+    text-align: right;
+}
+.tcenter{
+    text-align: center;
+}
+
+.share-cont {
+    text-align: left;
+
+    .icon-holder {
+        width: 60px;
+        height: 60px;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .icon-visited{
+        position: absolute;
+        top: -5px;
+        right: -5px;
+    }
+}
 
 
 
@@ -242,5 +328,6 @@ button:active {
 @import "settings";
 @import "registration";
 @import "trip-detail";
+@import "trip";
 
 

@@ -1,9 +1,11 @@
 ﻿
 
-<script id="addPlace-template" type="text/x-handlebars-template">
-		<div id="lastCell" class="cell">
-				<a id="addPlace" class="disc-create" href="#"></a>
-		</div>		    
+<script id="addPlace-template" type="text/x-handlebars-template">	
+    <div id="lastCell" class="block">
+        <div class="adder-cont">
+            <a id="addPlace" class="icon-plus adder" href="#"></a>
+        </div>
+    </div>	    
 </script>
 
 <script id="travel-template" type="text/x-handlebars-template">
@@ -178,15 +180,15 @@
         <div class="desc">{{description}}</div>
         
         <div class="documents-all">
-            <div id="entityDocs" class="documents"></div>
+            <div id="entityDocs" class="documents view-docs"></div>
         </div>
         
         <div class="bottom-area">
-
+            {{#if hasAddress}}
             <div class="address">
                 <div class="title">@Model.W("AddressOfStay")</div>
                 
-                {{#if hasAddress}}
+                
                 <div class="cont">
                     
                     <div class="place">
@@ -199,9 +201,10 @@
                     </div>
 
                 </div>
-                {{/if}}
+                
 
             </div>
+            {{/if}}
 
             <div class="places">
                 <div class="title">@Model.W("GoingToVisit")</div>
@@ -232,45 +235,49 @@
 </script>
 
 <script id="placeDetailViewFriends-template" type="text/x-handlebars-template">
-    <div class="daybyday-view margin form">
-        <div class="table row">
-            <div class="cell baseline">
-                <h3>{{name}}</h3>
-            </div>            
-        </div>        
-        
-        <div class="table row">
-            <div class="cell places">
-                <h4>@Model.W("GoingToVisit")</h4>
-                {{#if hasNoWantVisit}}
-                <div class="place">        
-                    @Model.W("NoPlans")
+    
+    <div class="place-detail-view details">
+        <div class="name-title">{{name}}</div>
+      
+        <div class="bottom-area">
+            
+            <div class="places">
+                <div class="title">@Model.W("GoingToVisit")</div>
+
+                <div class="cont">
+
+                    {{#if hasNoWantVisit}}
+                    <div class="place">
+                        @Model.W("NoPlans")
+                    </div>
+                    {{/if}}
+                    {{#each wantVisit}}
+                    <div class="place">
+                        <span class="icon {{icon}}"></span>
+                        <a class="name" href="javascript:window.open('{{link}}')">{{name}}</a>
+                    </div>
+                    {{/each}}
                 </div>
-                {{/if}}
-                {{#each wantVisit}}
-                <div class="place">
-                    <span class="{{icon}} left mright10"></span>
-                    {{name}}
-                    <a class="more" href="javascript:window.open('{{link}}')">@Model.W("Link")</a>
-                </div>
-                {{/each}}
+
             </div>
+
         </div>
 
 
-        <a class="close" href="#">@Model.W("Close", "layout")</a>
+        <a class="close" href="#"><span class="icon-close-cross"></span></a>
     </div>
+    
 </script>
 
 
 <script id="travelDetail-template" type="text/x-handlebars-template">
 		<div class="travel-detail details">
 
-            <div class="margin the-first">
+            <div class="the-first">
                 @Html.Partial("TravelType")
             </div>
 
-            <div id="flightDetails" class="margin" style="display: none">
+            <div id="flightDetails" style="display: none">
                 <div id="airportFrom" class="dropdown">
                     <input class="inputed" type="text" placeholder="@Model.W("FromAirport")">
                     <ul></ul>
@@ -289,39 +296,32 @@
 </script>
 
 <script id="travelDetailView-template" type="text/x-handlebars-template">
-		<div class="daybyday-view margin form">
+	<div class="travel-detail-view details">
 				
-{{#if isFlight}}
-	<div class="table row">
-		<div class="cell baseline"><h3>{{from}} → {{to}}</h3></div>		
-	</div>
-{{/if}}
-    <p>{{arrivingDateTime}} - {{leavingDateTime}}</p>
+        {{#if isFlight}}	        
+		    <div class="name-title">{{from}} → {{to}}</div>	        
+        {{/if}}
+            <div class="times">{{arrivingDateTime}} - {{leavingDateTime}}</div>
 				
-    <p>{{description}}</p>
-    <div id="entityDocs" class="documents grid col3 margin">
-    </div>
-    <div class="table row">
-				
-    </div>
+            <div class="desc">{{description}}</div>
+            <div class="documents-all">
+                <div id="entityDocs" class="documents view-docs"></div>
+            </div>
 			
-    <a class="close" href="#">@Model.W("Close", "layout")</a>
-		</div>
+            <a class="close" href="#"><span class="icon-close-cross"></span></a> 
+	</div>
 </script>
 
 
 <script id="travelDetailViewFriends-template" type="text/x-handlebars-template">
-    <div class="daybyday-view margin form">
+    <div class="travel-detail-view details">
         
         {{#if isFlight}}
-        <div class="table row">
-            <div class="cell baseline"><h3>{{from}} → {{to}}</h3></div>           
-        </div>
+            <div class="name-title">{{from}} → {{to}}</div>
         {{/if}}
 
-        @*todo: format date time*@
-        <p>{{arrivingDateTime}} - {{leavingDateTime}}</p>
+        <div class="times">{{arrivingDateTime}} - {{leavingDateTime}}</div>
 
-        <a class="close" href="#">@Model.W("Close", "layout")</a>
+        <a class="close" href="#"><span class="icon-close-cross"></span></a> 
     </div>
 </script>

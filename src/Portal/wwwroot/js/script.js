@@ -49,10 +49,10 @@
         }
     });
    
-    $(document).on('click', '.trip-holder .icon-wheel', function (e) {
-        e.preventDefault();
-        $(this).closest('.trip-holder').find('.trip-menu').slideToggle();
-    });
+    //$(document).on('click', '.trip-holder .icon-wheel', function (e) {
+    //    e.preventDefault();
+    //    $(this).closest('.trip-holder').find('.trip-menu').slideToggle();
+    //});
 
 
    

@@ -15,7 +15,6 @@
 			
 
 			this.registerTripDeletion();
-			this.registerTripOverview();
 		 
 			$("#newTrip").keypress((e) => {
 			 if (e.which === 13) {
@@ -23,14 +22,24 @@
 				 this.createNewTrip();
 			 }
 			});
+
+			this.regSettings();
 		}
+
+			private regSettings() {
+					$(".setting").click((e) => {
+							e.preventDefault();
+							var $t = $(e.target);
+							$t.closest(".trip-holder").find(".trip-menu").slideToggle();
+					});
+			}
 	 
 		private registerTripDeletion() {
 			
 			$(".deleteTrip").click((e) => {			 
 			 e.preventDefault();
 			 var $target = $(e.target);
-				var tid = $target.data("tid");
+			 var tid = $target.closest(".trip-menu").data("tid");
 
 			 var dialog = new Common.ConfirmDialog();
 			 dialog.create(this.t("TripDelTitle", "jsTrip"), this.t("TripDelMessage", "jsTrip"), this.t("Cancel", "jsLayout"), this.t("Ok", "jsLayout"), () => {
@@ -42,20 +51,9 @@
 			 
 		 });		 
 		}
-
-		private registerTripOverview() {
-
-				$(".overviewTrip").click((e) => {
-						e.preventDefault();
-						var $target = $(e.target);
-						var tid = $target.data("tid");
-
-						window.location.href = `/trip/${tid}`;
-				});
-		}
-			
+	
 		private registerUploads() {
-		 var $i = $(".inputs");
+				var $i = $(".photo-link input");
 		 var inputs = $i.toArray();
 		  inputs.forEach((input) => {
 			 var $input = $(input);			 
@@ -90,8 +88,7 @@
 			 $pb.find("span").text(pt);			 
 			}
 
-			pu.onUploadFinished = (file, files) => {
-				//var d = new Date();
+			pu.onUploadFinished = (file, files) => {				
 				$(".trip-menu").hide();
 				$(`#tripImg_${tripId}`).attr("src", `/Trip/TripPictureSmall_s/${tripId}?d=${this.makeRandomString(10)}`);			 
 				var $pb = $("#progressBar");

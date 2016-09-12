@@ -2,8 +2,11 @@
 @using Gloobster.Common
 @using Microsoft.Data.Entity.Metadata.Internal
 @using Gloobster.Portal;
+
 @{
-		ViewBag.MenuGroup = "Trip";
+    ViewBag.MenuGroup = "Trip";
+    ViewBag.BodyClass = "trip-root";
+    Layout = "_LayoutNew";
 }
 
 @model Gloobster.Portal.ViewModels.ViewModelTrips
@@ -18,40 +21,25 @@ else
 }
 
 
-<style>
-    .photoButton input {
-        width: 0.1px;
-        height: 0.1px;
-        opacity: 0;
-        overflow: hidden;
-        position: absolute;
-        z-index: -1;
-    }
-
-    .photoButton label {
-        cursor: pointer;
-    }  
-</style>
-
-<div class="table row col2 margin">
-    <div class="cell middle">
-        <h2>@Model.W("Title")</h2>
-    </div>
-    <div class="cell middle tright">
-        <div class="blue-holder">
-            <a class="icon-grid @(Model.DisplayType ? "active" : string.Empty)" href="/@RoutingConsts.PlannerMenuName/grid"></a>
-            <a class="icon-list @(!Model.DisplayType ? "active" : string.Empty)" href="/@RoutingConsts.PlannerMenuName/table"></a>
+<div class="wrapper">
+    <div class="htbl">
+        <div class="left">
+            <h1>@Model.W("Title")</h1>
         </div>
-        @*<a class="disc-create mleft20 right" href="#"></a>*@
+        <div class="right">
+            <div class="blue-holder">
+                <a class="icon-table2 @(Model.DisplayType ? "active" : string.Empty)" href="/@RoutingConsts.PlannerMenuName/grid"></a>
+                <a class="icon-paragraph-justify @(!Model.DisplayType ? "active" : string.Empty)" href="/@RoutingConsts.PlannerMenuName/table"></a>
+            </div>
+        </div>
     </div>
-</div>
 
-@Html.Partial("ProgressBar", "progressBar")
+    @Html.Partial("ProgressBar", "progressBar")
 
-@if (!Model.DisplayType)
+    @if (!Model.DisplayType)
     {
-        <div class="trips list margin">
-            <div class="row nohover">
+        <div class="trips-table">
+            <div class="row">
                 <div class="cell"></div>
                 <div class="cell">@Model.W("Name")</div>
                 <div class="cell">@Model.W("Term")</div>
@@ -60,14 +48,16 @@ else
                 <div class="cell"></div>
             </div>
 
-            @foreach(var trip in Model.Trips)
+            @foreach (var trip in Model.Trips)
             {
                 await Html.RenderPartialAsync("TripItemRow", (object)trip);
             }
 
-            <div class="row nohover">
+            <div class="row service-row">
                 <div class="cell">
-                    <div class="photo create"></div>
+                    <div class="plus-ico-all">
+                        <div class="icon-plus"></div>
+                    </div>
                 </div>
                 <div class="cell">
                     <textarea id="newTrip" placeholder="@Model.W("NewTripName")"></textarea>
@@ -75,8 +65,8 @@ else
                 <div class="cell"></div>
                 <div class="cell"></div>
                 <div class="cell"></div>
-                <div class="cell tright">
-                    <a class="button white-blue" href="javascript:currentView.createNewTrip();">@Model.W("Create")</a>
+                <div class="cell">
+                    <a class="lbtn btn-create" href="javascript:currentView.createNewTrip();">@Model.W("Create")</a>
                 </div>
             </div>
 
@@ -84,26 +74,23 @@ else
     }
     else
     {
-        <div class="trips grid col3 margin">
+        <div class="trips-big">
 
-            @foreach(var trip in Model.Trips)
-                    {
-                        await Html.RenderPartialAsync("TripItemBig", (object)trip);
-                    }
+            @foreach (var trip in Model.Trips)
+            {
+                await Html.RenderPartialAsync("TripItemBig", (object)trip);
+            }
 
-            <div class="cell">
-                <div class="trip new">
-                    <textarea id = "newTrip" placeholder="@Model.W("NewTripName")..."></textarea>
-                    <a class="create" href="javascript:currentView.createNewTrip();">@Model.W("Create")</a>
-                </div>
+            <div class="trip-new">
+                <textarea id="newTrip" placeholder="@Model.W("NewTripName")..."></textarea>
+                <a class="create" href="javascript:currentView.createNewTrip();">@Model.W("Create")<span>   </span><span class="icon-plus"></span> </a>
             </div>
 
         </div>
     }
 
-    @*<div class="tcenter margin">
-        <a class="button" href="#">Show 3 Archived Trips</a>
-    </div>*@
+</div>
+
 
 <script>
     function onBodyLoad() {

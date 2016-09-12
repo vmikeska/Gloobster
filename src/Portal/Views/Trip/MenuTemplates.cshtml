@@ -48,25 +48,22 @@
 <script id="menuShare-template" type="text/x-handlebars-template">
     
     
-        <div class="table width100">
-           
-            <div class="cell">
-                <textarea id="message" class="margin" placeholder="@Model.W("MessagePlaceholder")"></textarea>
-                <div class="table width100">
-                    <div class="cell middle">
-                        <div class="table">
-                            
-                            <div id="shareCont" class="cell middle">
-                                
-                            </div>
-                        </div>
-                    </div>
-                    <div class="cell middle tright">
-                        <a id="share" class="button" href="#">@Model.W("Share", "layout") <span></span></a>
-                    </div>
+    <div class="share">
+        <div class="msg">
+            <textarea id="message" placeholder="@Model.W("MessagePlaceholder")"></textarea>
+        </div>
+
+        <div class="htbl">
+            <div class="left">
+                <div id="shareCont" class="share-cont">
+
                 </div>
             </div>
+            <div class="right">
+                <a id="share" class="lbtn" href="#">@Model.W("Share", "layout") <span></span></a>
+            </div>
         </div>
+    </div>
      
     
 </script>

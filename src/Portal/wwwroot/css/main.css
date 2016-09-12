@@ -8,6 +8,9 @@ body {
 a {
   color: #3298C1; }
 
+.lato {
+  font-family: "Lato", sans-serif; }
+
 input[type="text"], input[type="password"], input[type="number"], textarea {
   padding: 8px 13px;
   border: 0;
@@ -28,7 +31,7 @@ textarea {
   border-style: solid;
   border-width: 0;
   border-radius: 4px;
-  font-weight: 700;
+  /*font-weight: 700;*/
   height: 20px;
   line-height: 40px;
   margin: 0 5px;
@@ -36,6 +39,24 @@ textarea {
   text-decoration: none;
   cursor: pointer;
   white-space: nowrap; }
+
+.thumb-cont {
+  display: inline-block;
+  border-radius: 50%;
+  overflow: hidden; }
+  .thumb-cont.s {
+    width: 60px;
+    height: 60px; }
+  .thumb-cont.xs {
+    width: 26px;
+    height: 26px; }
+  .thumb-cont.border {
+    border: 1px solid black; }
+
+.box-sizing, textarea {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
 
 textarea:focus, input:focus {
   outline: none; }
@@ -79,6 +100,19 @@ p {
     border: 1px solid #3298C1;
     cursor: pointer;
     cursor: hand; }
+
+.photo-link input {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1; }
+
+.photo-link label {
+  color: #3298C1;
+  cursor: pointer;
+  cursor: hand; }
 
 .photo-button:hover label {
   border: 1px solid #005476;
@@ -137,19 +171,40 @@ button:active {
   .tag .icon-cross:hover {
     color: darkred; }
 
+.tleft {
+  text-align: left; }
+
+.tright {
+  text-align: right; }
+
+.tcenter {
+  text-align: center; }
+
+.share-cont {
+  text-align: left; }
+  .share-cont .icon-holder {
+    width: 60px;
+    height: 60px;
+    position: relative;
+    cursor: pointer; }
+  .share-cont .icon-visited {
+    position: absolute;
+    top: -5px;
+    right: -5px; }
+
+.menu-wrapper {
+  position: relative; }
+
 .menu_all {
   padding-right: 8px;
   padding-left: 8px;
+  min-height: 50px;
   background-color: #005476; }
   .menu_all .logo_all {
-    vertical-align: top;
-    padding-top: 10px;
-    display: inline-block; }
-    @media screen and (max-width: 1023px) {
-      .menu_all .logo_all {
-        display: block;
-        padding-left: 10px;
-        text-align: left; } }
+    position: absolute;
+    left: 10px;
+    top: 0px;
+    padding-top: 10px; }
     .menu_all .logo_all img {
       height: 35px;
       width: 210px; }
@@ -157,53 +212,49 @@ button:active {
         .menu_all .logo_all img {
           height: 30px;
           width: 180px; } }
-  .menu_all .links {
-    display: inline-block;
-    padding-left: 17px;
-    padding-right: 17px;
-    vertical-align: top; }
-    @media screen and (max-width: 1023px) {
-      .menu_all .links {
-        display: block; } }
-    .menu_all .links div {
-      display: inline-block;
-      padding-right: 10px;
-      font-weight: 600; }
-      .menu_all .links div a {
+  .menu_all .links_all {
+    position: absolute;
+    left: 250px;
+    top: 10px;
+    width: calc(100% - 450px); }
+    .menu_all .links_all .links {
+      display: -webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
+      font-size: 0.8em; }
+      .menu_all .links_all .links a {
         display: inline-block;
-        margin-top: 12px;
+        font-weight: 600;
         color: white;
         text-decoration: none;
-        vertical-align: top; }
-      .menu_all .links div a:hover {
+        vertical-align: top;
+        margin-top: 5px;
+        margin-right: 10px; }
+      .menu_all .links_all .links a:hover {
         color: #65BDD7; }
-      .menu_all .links div .active {
+      .menu_all .links_all .links .active {
         color: #005476;
         background-color: #65BDD7;
         border-style: solid;
         border-width: 0;
         border-radius: 4px;
-        padding: 5px; }
-      .menu_all .links div a:hover.active {
+        padding: 5px;
+        margin-top: 0 !important; }
+      .menu_all .links_all .links a:hover.active {
         color: #005476; }
   .menu_all .icons_all {
-    display: inline-block;
-    vertical-align: top; }
-    @media screen and (max-width: 1023px) {
-      .menu_all .icons_all {
-        position: absolute;
-        right: 10px;
-        top: 5px; } }
+    position: absolute;
+    right: 10px;
+    top: 5px; }
     .menu_all .icons_all .icons {
       margin-top: 12px;
       height: 24px;
-      border-left: 1px solid #65BDD7;
-      border-right: 1px solid #65BDD7;
       padding-right: 6px;
       padding-left: 6px; }
-      @media screen and (max-width: 1023px) {
-        .menu_all .icons_all .icons {
-          border: 0; } }
       .menu_all .icons_all .icons .icon {
         display: inline-block;
         position: relative; }
@@ -230,10 +281,66 @@ button:active {
         .menu_all .icons_all .icons .icon a:hover {
           color: #009EC4; }
 
-footer .footer_cont {
-  height: 200px;
-  background-color: #3298C1;
-  color: white; }
+@media screen and (max-width: 1150px) {
+  .menu_all {
+    min-height: 90px; }
+    .menu_all .links_all {
+      position: static;
+      padding-top: 50px;
+      justify-content: space-around;
+      width: 100%; } }
+
+@media screen and (max-width: 479px) {
+  .menu_all .logo_all {
+    position: static; }
+  .menu_all .icons_all {
+    position: static; }
+  .menu_all .links_all {
+    position: static;
+    justify-content: space-around;
+    padding-top: 0;
+    width: 100%; } }
+
+footer {
+  background-color: #3298C1; }
+  footer .footer_cont {
+    min-height: 200px;
+    color: white; }
+    footer .footer_cont .blocks {
+      display: -webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-around; }
+      footer .footer_cont .blocks .block {
+        display: inline-block;
+        vertical-align: top;
+        text-align: left; }
+        footer .footer_cont .blocks .block h3 {
+          font-size: 0.9em; }
+        footer .footer_cont .blocks .block ul {
+          list-style: none;
+          margin: 0;
+          padding: 0; }
+        footer .footer_cont .blocks .block a {
+          color: white;
+          text-decoration: none;
+          font-size: 0.9em; }
+          footer .footer_cont .blocks .block a:hover {
+            color: #005476; }
+          footer .footer_cont .blocks .block a.link {
+            text-decoration: underline; }
+    footer .footer_cont .socials {
+      text-align: right; }
+      footer .footer_cont .socials a {
+        color: #005476;
+        text-decoration: none; }
+        footer .footer_cont .socials a .lato {
+          color: white; }
+        footer .footer_cont .socials a:hover .lato {
+          text-decoration: underline; }
 
 .popup {
   display: none;
@@ -345,17 +452,6 @@ footer .footer_cont {
   padding-right: 10px; }
   .popup-share .bottom .share_all {
     display: inline-block; }
-    .popup-share .bottom .share_all .share-cont {
-      /*border: 1px solid red;*/
-      text-align: left; }
-      .popup-share .bottom .share_all .share-cont .icon-holder {
-        width: 60px;
-        height: 60px;
-        position: relative; }
-      .popup-share .bottom .share_all .share-cont .icon-visited {
-        position: absolute;
-        top: -5px;
-        right: -5px; }
   .popup-share .bottom .share {
     display: inline-block;
     vertical-align: top;
@@ -383,6 +479,12 @@ footer .footer_cont {
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
+
+.icon-gear:before {
+  content: "\e916"; }
+
+.icon-camera:before {
+  content: "\e915"; }
 
 .icon-bell:before {
   content: "\e951"; }
@@ -413,6 +515,12 @@ footer .footer_cont {
 
 .icon-checkmark2:before {
   content: "\ea11"; }
+
+.icon-table2:before {
+  content: "\ea71"; }
+
+.icon-paragraph-justify:before {
+  content: "\ea7a"; }
 
 .icon-mail2:before {
   content: "\ea84"; }
@@ -1759,6 +1867,10 @@ footer .footer_cont {
 
 .trip-detail {
   text-align: left; }
+  .trip-detail .line {
+    border-top: 1px solid #f2f2f2;
+    margin-top: 10px;
+    margin-bottom: 1px; }
   .trip-detail a {
     color: #009dc4; }
   .trip-detail a:hover {
@@ -1772,22 +1884,33 @@ footer .footer_cont {
   .trip-detail .background-wrap {
     padding-top: 20px; }
     .trip-detail .background-wrap .items {
-      margin-bottom: 10px; }
+      margin-bottom: 15px; }
+      .trip-detail .background-wrap .items .active {
+        border: 2px solid #005476 !important; }
+      .trip-detail .background-wrap .items a {
+        display: inline-block;
+        margin-bottom: 5px;
+        vertical-align: top; }
+        .trip-detail .background-wrap .items a:hover {
+          color: #005476; }
       .trip-detail .background-wrap .items .lbtn, .trip-detail .background-wrap .items .photo-button label, .photo-button .trip-detail .background-wrap .items label, .trip-detail .background-wrap .items .wiki-page .langs a, .wiki-page .langs .trip-detail .background-wrap .items a {
         background-color: rgba(255, 255, 255, 0.9);
-        border: 1px solid #005476;
-        /*margin-bottom: 10px;*/ }
+        border: 1px solid #005476; }
+    .trip-detail .background-wrap .size-wrapper {
+      min-height: 140px; }
     .trip-detail .background-wrap .view {
       background-color: rgba(255, 255, 255, 0.9);
       border-radius: 4px;
-      padding: 10px;
-      /*border: 1px solid red;*/ }
+      padding: 10px; }
       .trip-detail .background-wrap .view .title-name {
         display: inline-block;
+        vertical-align: top;
         font-size: 40px;
-        font-weight: 600; }
+        font-weight: 600;
+        margin-right: 30px; }
       .trip-detail .background-wrap .view .by-user {
-        display: inline-block; }
+        display: inline-block;
+        vertical-align: top; }
         .trip-detail .background-wrap .view .by-user span {
           display: inline-block;
           vertical-align: top;
@@ -1876,15 +1999,21 @@ footer .footer_cont {
       display: inline-block;
       position: absolute;
       right: 0; }
+      .trip-detail .service-menu .items .active {
+        border: 2px solid #005476 !important; }
       @media screen and (max-width: 830px) {
         .trip-detail .service-menu .items {
           position: static;
           margin-top: 10px; } }
+      .trip-detail .service-menu .items a {
+        display: inline-block;
+        margin-bottom: 5px;
+        vertical-align: top; }
+        .trip-detail .service-menu .items a:hover {
+          color: #005476; }
       .trip-detail .service-menu .items .lbtn, .trip-detail .service-menu .items .photo-button label, .photo-button .trip-detail .service-menu .items label, .trip-detail .service-menu .items .wiki-page .langs a, .wiki-page .langs .trip-detail .service-menu .items a {
         border: 1px solid #65BDD7;
-        color: #65BDD7;
-        font-size: 0.9em;
-        font-weight: 500; }
+        color: #65BDD7; }
   .trip-detail .menu-cont {
     position: relative;
     margin-bottom: 10px;
@@ -1899,7 +2028,8 @@ footer .footer_cont {
       border-bottom: 1px solid #65BDD7;
       border-bottom-left-radius: 4px;
       border-bottom-right-radius: 4px;
-      padding: 12px; }
+      padding: 12px;
+      background-color: rgba(255, 255, 255, 0.9); }
     .trip-detail .menu-cont .desc {
       /*border: 1px solid red;*/
       display: inline-block;
@@ -1928,6 +2058,9 @@ footer .footer_cont {
           border-left: 0;
           padding-left: 0;
           margin-top: 15px; } }
+      .trip-detail .menu-cont .cont .share .right .lbtn, .trip-detail .menu-cont .cont .share .right .photo-button label, .photo-button .trip-detail .menu-cont .cont .share .right label, .trip-detail .menu-cont .cont .share .right .wiki-page .langs a, .wiki-page .langs .trip-detail .menu-cont .cont .share .right a {
+        background-color: #3298C1;
+        color: white; }
       .trip-detail .menu-cont .cont .privacy {
         margin-top: 30px; }
       .trip-detail .menu-cont .cont .participants table {
@@ -1967,62 +2100,74 @@ footer .footer_cont {
       color: #005476; }
       .trip-detail .menu-cont .close:hover {
         color: darkred; }
-  .trip-detail .travelCont {
+  .trip-detail .block {
     display: inline-block;
     vertical-align: top; }
-    .trip-detail .travelCont .timeline {
-      height: 30px;
-      background-color: #b8e7b8;
-      line-height: 30px;
-      white-space: nowrap; }
-    .trip-detail .travelCont .transport {
-      text-align: center;
-      height: 40px;
-      width: 100px;
-      position: relative;
-      -webkit-transition: background-color .3s;
-      -moz-transition: background-color .3s;
-      transition: background-color .3s;
-      background-color: #57c1db;
-      color: #fff;
-      cursor: pointer;
-      margin: 35px 20px 0 10px; }
-      .trip-detail .travelCont .transport .ticon {
-        margin-top: 9px; }
-    .trip-detail .travelCont .transport:before {
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      border-top: 20px solid #57c1db;
-      border-bottom: 20px solid #57c1db;
-      border-left: 10px solid white;
-      content: ""; }
-    .trip-detail .travelCont .transport:after {
-      position: absolute;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      border-top: 20px solid white;
-      border-bottom: 20px solid white;
-      border-left: 10px solid #57c1db;
-      content: ""; }
-    .trip-detail .travelCont .transport:hover, .trip-detail .travelCont .transport:after:hover {
-      background-color: #009dc4;
-      border-color: red; }
-    .trip-detail .travelCont .tab {
-      height: 20px;
-      width: 100px;
-      margin-top: 4px;
-      position: absolute;
-      top: 45px;
-      border-top-left-radius: 4px;
-      border-top-right-radius: 4px;
-      background-color: #abe0ed;
-      display: block; }
+    .trip-detail .block .adder-cont {
+      padding-top: 48px;
+      padding-left: 15px; }
+      .trip-detail .block .adder-cont .adder {
+        display: inline-block;
+        font-size: 34px;
+        padding: 14px;
+        color: white;
+        background-color: #65BDD7;
+        text-decoration: none;
+        border-radius: 50%; }
+        .trip-detail .block .adder-cont .adder:hover {
+          background-color: white;
+          color: #005476; }
+  .trip-detail .travelCont .timeline {
+    height: 30px;
+    background-color: #b8e7b8;
+    line-height: 30px;
+    white-space: nowrap; }
+  .trip-detail .travelCont .transport {
+    text-align: center;
+    height: 40px;
+    width: 100px;
+    position: relative;
+    -webkit-transition: background-color .3s;
+    -moz-transition: background-color .3s;
+    transition: background-color .3s;
+    background-color: #57c1db;
+    color: #fff;
+    cursor: pointer;
+    margin: 35px 20px 0 10px; }
+    .trip-detail .travelCont .transport .ticon {
+      margin-top: 9px; }
+  .trip-detail .travelCont .transport:before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    border-top: 20px solid #57c1db;
+    border-bottom: 20px solid #57c1db;
+    border-left: 10px solid white;
+    content: ""; }
+  .trip-detail .travelCont .transport:after {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-top: 20px solid white;
+    border-bottom: 20px solid white;
+    border-left: 10px solid #57c1db;
+    content: ""; }
+  .trip-detail .travelCont .transport:hover, .trip-detail .travelCont .transport:after:hover {
+    background-color: #009dc4;
+    border-color: red; }
+  .trip-detail .travelCont .tab {
+    height: 20px;
+    width: 100px;
+    margin-top: 4px;
+    position: absolute;
+    top: 45px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    background-color: #abe0ed;
+    display: block; }
   .trip-detail .placeCont {
-    display: inline-block;
-    vertical-align: top;
     position: relative;
     font-size: 0.8em;
     margin-bottom: 20px; }
@@ -2123,7 +2268,7 @@ footer .footer_cont {
             .trip-detail .details .place-travel-dates .cell.last {
               margin-left: 0; } }
     .trip-detail .details .bottom-area {
-      text-align: center; }
+      text-align: left; }
       .trip-detail .details .bottom-area > div {
         display: inline-block;
         vertical-align: top;
@@ -2170,26 +2315,81 @@ footer .footer_cont {
         .trip-detail .details .documents-all .documents .photo-button {
           display: inline-block;
           vertical-align: top; }
-  .trip-detail .place-detail-view .name-title {
-    font-size: 1.2em;
-    font-weight: 600;
-    margin-bottom: 10px; }
-  .trip-detail .place-detail-view .desc {
-    font-size: 0.9em;
-    border-bottom: 1px solid #3298C1;
-    padding-bottom: 15px; }
-  .trip-detail .place-detail-view .documents .file {
+  .trip-detail .trip-participants {
+    background-color: #f2f2f2;
+    padding-top: 0;
+    text-align: left; }
+    .trip-detail .trip-participants .participant {
+      text-align: center;
+      display: inline-block;
+      max-width: 120px;
+      margin-right: 20px;
+      margin-bottom: 20px; }
+  .trip-detail .comments .txt-input {
+    margin-bottom: 20px; }
+    .trip-detail .comments .txt-input .txt {
+      display: inline-block;
+      vertical-align: top;
+      /*border: 1px solid red;*/
+      width: 80%;
+      min-width: 300px; }
+    .trip-detail .comments .txt-input .btn {
+      display: inline-block;
+      vertical-align: top;
+      /*border: 1px solid red;*/ }
+      .trip-detail .comments .txt-input .btn .lbtn, .trip-detail .comments .txt-input .btn .photo-button label, .photo-button .trip-detail .comments .txt-input .btn label, .trip-detail .comments .txt-input .btn .wiki-page .langs a, .wiki-page .langs .trip-detail .comments .txt-input .btn a {
+        color: white;
+        background-color: #3298C1; }
+  .trip-detail .comments .comment-all .comment {
+    display: table;
+    margin-bottom: 15px; }
+    .trip-detail .comments .comment-all .comment .photo {
+      display: table-cell;
+      vertical-align: top;
+      padding-right: 20px; }
+    .trip-detail .comments .comment-all .comment .post {
+      display: table-cell;
+      vertical-align: top; }
+      .trip-detail .comments .comment-all .comment .post .author {
+        margin-bottom: 5px; }
+        .trip-detail .comments .comment-all .comment .post .author span {
+          color: #b3b3b3; }
+      .trip-detail .comments .comment-all .comment .post .bubble {
+        position: relative;
+        background-color: #e8e8e8;
+        border-radius: 0 4px 4px;
+        display: inline-block;
+        padding: 10px; }
+      .trip-detail .comments .comment-all .comment .post .bubble:before {
+        position: absolute;
+        top: 0;
+        left: -10px;
+        height: 0;
+        width: 0;
+        border-bottom: 10px solid transparent;
+        border-right: 10px solid #e8e8e8;
+        border-top: 10px solid transparent;
+        content: ""; }
+  .trip-detail .documents.view-docs .file {
     margin-bottom: 5px;
     margin-right: 15px;
     border: 1px solid #3298C1;
     padding: 3px;
     border-radius: 4px; }
-    .trip-detail .place-detail-view .documents .file span {
+    .trip-detail .documents.view-docs .file span {
       display: inline-block;
       vertical-align: top;
       margin-top: 5px;
       margin-left: 5px;
       color: black; }
+  .trip-detail .place-detail-view .name-title, .trip-detail .travel-detail-view .name-title {
+    font-size: 1.2em;
+    font-weight: 600;
+    margin-bottom: 10px; }
+  .trip-detail .place-detail-view .desc, .trip-detail .travel-detail-view .desc {
+    font-size: 0.9em;
+    border-bottom: 1px solid #3298C1;
+    padding-bottom: 15px; }
 
 .upload-holder {
   position: relative;
@@ -2255,3 +2455,203 @@ footer .footer_cont {
         right: 10px; }
   .upload-progressbar .button {
     padding: 6px 9px; }
+
+.trip-root .setting-wrap {
+  display: inline-block;
+  position: relative; }
+
+.trip-root .setting {
+  font-size: 32px;
+  color: #005476;
+  cursor: pointer; }
+  .trip-root .setting:hover {
+    opacity: 0.8; }
+
+.trip-root .trip-menu {
+  position: absolute;
+  top: 25px;
+  right: 5px;
+  /*display: inline-block;*/
+  padding: 0;
+  z-index: 10;
+  font-size: 0.9em;
+  list-style: none;
+  text-align: left;
+  border-radius: 4px;
+  border: 1px solid gray;
+  background-color: rgba(0, 0, 0, 0.5); }
+  .trip-root .trip-menu li {
+    border-bottom: 1px solid lightgray;
+    padding: 5px; }
+    .trip-root .trip-menu li a {
+      color: #3298C1;
+      text-decoration: none;
+      font-size: 18px;
+      white-space: nowrap; }
+      .trip-root .trip-menu li a .lato {
+        color: white; }
+      .trip-root .trip-menu li a:hover .lato {
+        color: #3298C1; }
+    .trip-root .trip-menu li:last-of-type {
+      border-bottom: 0; }
+
+.trip-root .blue-holder {
+  display: inline-block;
+  background-color: #f0fafc;
+  border-radius: 4px;
+  padding: 8px;
+  margin-right: 8px; }
+  .trip-root .blue-holder a {
+    display: inline-block;
+    text-decoration: none;
+    font-size: 34px;
+    color: #009EC4;
+    margin: 0;
+    padding: 4px; }
+    .trip-root .blue-holder a:hover {
+      color: #005476; }
+    .trip-root .blue-holder a.active {
+      border: 1px solid #009EC4;
+      border-radius: 4px; }
+    .trip-root .blue-holder a:first-of-type {
+      margin-right: 6px; }
+
+.trip-root .trips-table {
+  display: table;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 30px; }
+  .trip-root .trips-table .row {
+    display: table-row; }
+    .trip-root .trips-table .row .cell {
+      display: table-cell;
+      vertical-align: middle;
+      padding: 8px;
+      border-bottom: 1px solid #009EC4; }
+  .trip-root .trips-table .photo {
+    display: inline-block;
+    border-radius: 4px;
+    overflow: hidden;
+    width: 70px;
+    height: 70px; }
+    .trip-root .trips-table .photo img {
+      display: inline-block;
+      margin: 0; }
+  .trip-root .trips-table .you {
+    border: 1px solid #F56E12;
+    padding: 6px;
+    border-radius: 4px;
+    color: #F56E12; }
+  .trip-root .trips-table .btn-create {
+    color: #005476;
+    border: 1px solid #005476; }
+  .trip-root .trips-table .service-row textarea {
+    resize: none; }
+  .trip-root .trips-table .service-row .plus-ico-all {
+    display: inline-block;
+    /*border: 1px solid red;*/
+    width: 70px;
+    height: 70px;
+    background-color: #65BDD7;
+    border-radius: 4px;
+    text-align: center; }
+    .trip-root .trips-table .service-row .plus-ico-all .icon-plus {
+      display: inline-block;
+      vertical-align: top;
+      margin-top: 15px;
+      font-size: 40px;
+      color: #005476; }
+
+.trip-root .trips-big {
+  padding-left: 10px;
+  padding-right: 10px;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex-flow: wrap;
+  justify-content: flex-start;
+  /*align-items: flex-start;*/ }
+  .trip-root .trips-big .trip-new {
+    display: inline-block;
+    position: relative;
+    width: 300px;
+    height: 370px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 15px;
+    background-color: #cdedf4; }
+    .trip-root .trips-big .trip-new textarea {
+      background-color: #cdedf4;
+      resize: none;
+      width: 280px;
+      height: 150px;
+      border-bottom: 1px solid white;
+      margin-right: 8px;
+      margin-left: 8px;
+      box-sizing: border-box; }
+    .trip-root .trips-big .trip-new .create {
+      display: inline-block;
+      text-decoration: none;
+      position: absolute;
+      bottom: 5px;
+      right: 7px;
+      vertical-align: middle;
+      line-height: 40px;
+      font-size: 22px;
+      padding-right: 34px; }
+      .trip-root .trips-big .trip-new .create .icon-plus {
+        display: inline-block;
+        font-size: 26px;
+        position: absolute;
+        right: 0;
+        top: 8px; }
+  .trip-root .trips-big .trip-all {
+    position: relative;
+    display: inline-block;
+    width: 300px;
+    height: 370px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 15px;
+    margin-right: 15px; }
+    .trip-root .trips-big .trip-all img {
+      position: absolute;
+      top: 0;
+      left: 0; }
+    .trip-root .trips-big .trip-all .serv {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      margin: 0;
+      padding-left: 10px;
+      padding-right: 10px;
+      color: white;
+      height: 46px;
+      line-height: 46px;
+      width: 300px;
+      font-size: 16px;
+      background: rgba(0, 0, 0, 0.3); }
+    .trip-root .trips-big .trip-all .setting {
+      position: absolute;
+      top: 5px;
+      right: 5px; }
+    .trip-root .trips-big .trip-all .title {
+      position: absolute;
+      top: 0;
+      margin: 0;
+      background-image: -webkit-linear-gradient(rgba(0, 0, 0, 0.4), transparent);
+      background-image: linear-gradient(rgba(0, 0, 0, 0.4), transparent);
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+      width: 300px;
+      height: 90px; }
+    .trip-root .trips-big .trip-all h3 {
+      position: absolute;
+      top: 6px;
+      left: 10px;
+      margin: 0;
+      color: white;
+      text-shadow: 0 -1px #000;
+      font-size: 24px; }

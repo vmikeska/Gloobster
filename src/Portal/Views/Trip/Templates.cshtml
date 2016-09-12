@@ -1,22 +1,23 @@
 ﻿<script id="comment-template" type="text/x-handlebars-template">
-
-    <div class="row">
-        <div class="cell">
-            <span class="thumbnail">
-                <img src="{{photoUrl}}">
-            </span>
-        </div>
-        <div class="cell">
-            <div class="author">
-                <a href="/PortalUser/Detail/{{id}}"><strong>{{displayName}}</strong></a>
-                <span> • {{displayDate}}</span>
+    
+    <div class="comment-all">
+        <div class="comment">
+            <div class="photo">
+                <div class="thumb-cont s border">
+                    <img src="{{photoUrl}}">
+                </div>
             </div>
-            <div class="bubble">
-                {{text}}
+            <div class="post">
+                <div class="author">
+                    <a href="/PortalUser/Detail/{{id}}"><strong>{{displayName}}</strong></a>
+                    <span> • {{displayDate}}</span>
+                </div>
+                <div class="bubble">
+                    {{text}}
+                </div>
             </div>
         </div>
     </div>
-
 </script>
 
 <script id="fileView-template" type="text/x-handlebars-template">

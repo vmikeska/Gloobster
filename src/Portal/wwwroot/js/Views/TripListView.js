@@ -16,20 +16,27 @@ var Views;
                 $(".trip-menu").hide();
             });
             this.registerTripDeletion();
-            this.registerTripOverview();
             $("#newTrip").keypress(function (e) {
                 if (e.which === 13) {
                     e.preventDefault();
                     _this.createNewTrip();
                 }
             });
+            this.regSettings();
         }
+        TripListView.prototype.regSettings = function () {
+            $(".setting").click(function (e) {
+                e.preventDefault();
+                var $t = $(e.target);
+                $t.closest(".trip-holder").find(".trip-menu").slideToggle();
+            });
+        };
         TripListView.prototype.registerTripDeletion = function () {
             var _this = this;
             $(".deleteTrip").click(function (e) {
                 e.preventDefault();
                 var $target = $(e.target);
-                var tid = $target.data("tid");
+                var tid = $target.closest(".trip-menu").data("tid");
                 var dialog = new Common.ConfirmDialog();
                 dialog.create(_this.t("TripDelTitle", "jsTrip"), _this.t("TripDelMessage", "jsTrip"), _this.t("Cancel", "jsLayout"), _this.t("Ok", "jsLayout"), function () {
                     _this.apiDelete("Trip", [["id", tid]], function (r) {
@@ -39,17 +46,9 @@ var Views;
                 });
             });
         };
-        TripListView.prototype.registerTripOverview = function () {
-            $(".overviewTrip").click(function (e) {
-                e.preventDefault();
-                var $target = $(e.target);
-                var tid = $target.data("tid");
-                window.location.href = "/trip/" + tid;
-            });
-        };
         TripListView.prototype.registerUploads = function () {
             var _this = this;
-            var $i = $(".inputs");
+            var $i = $(".photo-link input");
             var inputs = $i.toArray();
             inputs.forEach(function (input) {
                 var $input = $(input);
