@@ -12,6 +12,12 @@ $dropdown-speed: 0.3s;
 
     font-size: 18px;
 
+    .loader {
+        position: absolute; 
+        right: 5px; 
+        top: 5px;
+    }
+
     .selected, .inputed {
         position: relative;
         background-color: white;

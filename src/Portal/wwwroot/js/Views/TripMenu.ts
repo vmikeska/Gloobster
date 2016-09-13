@@ -83,7 +83,7 @@ module Views {
 					networks: networks
 				}
 
-				this.$container.hide();
+				this.$win.hide();
 
 				var v = ViewBase.currentView;
 					

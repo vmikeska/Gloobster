@@ -48,14 +48,16 @@ var Views;
                 for (var act = 1; act <= _this.socProv.length; act++) {
                     var type = _this.socProv[act - 1];
                     var plcs = _this.getByType(places, type);
-                    var $box = _this.getBox(act);
-                    $nets.append($box);
-                    _this.fill(plcs, $box.find("ul"));
+                    if (plcs.length > 0) {
+                        var $box = _this.getBox(act);
+                        $nets.append($box);
+                        _this.fill(plcs, $box.find("ul"));
+                    }
                 }
             });
         };
         PinBoardSearch.prototype.cityTemp = function (item) {
-            return "<li data-value=\"" + item.sourceId + "\" data-type=\"" + item.sourceType + "\"> <span class=\"" + item.icoClass + " left mright10\"> </span><a href=\"#\">" + item.name + "</a><span class=\"color2\">, " + item.countryCode + "</span> </li>";
+            return "<li data-value=\"" + item.sourceId + "\" data-type=\"" + item.sourceType + "\"> <span class=\"" + item.icoClass + "\"> </span><a href=\"#\">" + item.name + "</a><span class=\"color2\">, " + item.countryCode + "</span> </li>";
         };
         PinBoardSearch.prototype.countryTemp = function (item) {
             return "<li data-value=\"" + item.sourceId + "\" data-type=\"" + item.sourceType + "\"> <span class=\"" + item.icoClass + " left mright10\"> </span><a href=\"#\">" + item.name + "</a></li>";
@@ -158,7 +160,7 @@ var Views;
         PinBoardSearch.prototype.getIconForSearch = function (sourceType) {
             switch (sourceType) {
                 case SourceType.FB:
-                    return "icon-facebook";
+                    return "icon-facebook2";
                 case SourceType.City:
                     return "icon-city";
                 case SourceType.Country:

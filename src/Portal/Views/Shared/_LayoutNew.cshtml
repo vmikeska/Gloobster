@@ -36,8 +36,9 @@
 
 <div id="fb-root"></div>
 
-    @RenderBody()
-
+    <div class="master-cont">
+        @RenderBody()
+    </div>
     @if (!Model.SocialNetworks.Any())
     {
         @Html.Partial("_RegisterDialog")        

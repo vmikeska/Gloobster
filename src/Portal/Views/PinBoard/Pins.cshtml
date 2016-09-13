@@ -20,10 +20,7 @@
     <script src="/jsb/pins.js" type="text/javascript" data-notbuild="true"></script>
 }
 else
-{
-
-    <link href="~/css/main.css" rel="stylesheet" />
-
+{    
     <script type="text/javascript" src="/lib/leaflet/dist/leaflet.js"></script>
     <script type="text/javascript" src="/lib/mapbox.js/mapbox.js"></script>
 
@@ -137,6 +134,8 @@ else
 @*watercolor*@
 @*<script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.3.0" data-notbuild="true"></script>*@
 
+@Html.Partial("ShareDialog")
+
 <div id="map"></div>
 
 <div class="wrapper stats">
@@ -186,7 +185,6 @@ else
 
 </div>
 
-@Html.Partial("ShareDialog")
 @Html.Partial("PinBoardTemplates")
 
 <script>

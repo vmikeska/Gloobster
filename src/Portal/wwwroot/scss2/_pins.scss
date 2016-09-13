@@ -159,8 +159,8 @@
     
         .loader {
             position: absolute; 
-            right: 25px; 
-            top: 7px;
+            right: 5px; 
+            top: 5px;
         }
 
         input {
@@ -176,7 +176,7 @@
             background-color:rgba(255, 255, 255, 0.95);
 
             position: absolute;            
-            border: 1px solid red;
+            
             top: 47px;   
             left: -45px;     
 
@@ -208,13 +208,24 @@
             }
 
             .soc-nets {                
-                padding-left: 15px;
+                
+                ul {
+                    list-style: none;
+                    text-align: left;
+                    margin: 0;
+                    padding: 0;
+
+                    li{
+                        margin: 0;
+                        padding: 0;
+                    }
+                }
 
                 .soc-item {
-                    width: 235px;
+                    display: inline-block;
+                    vertical-align: top;
+                    width: 210px;
                     margin-right:3px;
-
-                    float: left;
                 }
             }
 

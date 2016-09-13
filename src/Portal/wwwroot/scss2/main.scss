@@ -58,10 +58,14 @@ $tablet-width: 959px;
 
 body {
     font-family: $font-ptsans;
-    min-width: 320px;
+    min-width: 320px;    
     margin: 0;
     text-align: center;
     font-size: 20px;
+}
+
+.master-cont {
+    min-height: 600px;
 }
 
 a {
@@ -329,5 +333,6 @@ button:active {
 @import "registration";
 @import "trip-detail";
 @import "trip";
+@import "trip-share";
 
 

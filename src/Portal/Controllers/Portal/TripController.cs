@@ -184,8 +184,7 @@ namespace Gloobster.Portal.Controllers.Portal
             vm.TripIsPrivate = !trip.AllowToRequestJoin && !trip.FriendsPublic;
             return View(vm);
 		}
-
-
+        
         public IActionResult SharedMapImage(string id)
         {
             var mapStream = SharedImgDomain.GetMap(id);

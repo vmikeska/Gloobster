@@ -141,25 +141,25 @@
         
     }
 
-    .bottom{
+    .htbl{
 
-        @include text-justify;
         padding-left: 10px;
         padding-right: 10px;
 
-        .share_all {
-            display: inline-block;
+        .left {
+            vertical-align: middle;
+            padding: 8px;
         }
 
-        .share{
-            display: inline-block;
+        .right{
             
-            vertical-align: top;
-            margin-top: 40px;            
+            vertical-align: middle;
+            padding: 16px;
 
-            color: white;
-            background-color: $light-blue3;
-            font-weight: 500;
+            .lbtn{
+                color: white;
+                background-color: $light-blue3;
+            }
         }
     }
 }

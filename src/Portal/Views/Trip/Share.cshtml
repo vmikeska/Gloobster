@@ -18,7 +18,10 @@
 
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Sans:400,700">
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700">
-    <link href="http://ga.cz/2015/gloobster/css/style.css" rel="stylesheet">
+
+    <link href="/lib/mapbox.js/mapbox.css" rel="stylesheet"/>
+    <link href="/lib/leaflet/dist/leaflet.css" rel="stylesheet"/>
+    <link href="~/css/main.css" rel="stylesheet"/>
 
     @Html.Partial("_GlobalTemplates")
     @Html.Partial("_GlobalScripts")
@@ -38,67 +41,62 @@
 
 
 </head>
-<body class="shared" id="top">
-<!-- MapBox -->
-@*<script src='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.js'></script>*@
-<link href='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.css' rel='stylesheet'/>
-<!-- MapBox -->
 
-<section class="map-holder margin">
-    <div class="wrapper">
+<body class="trip-share">
 
-        <div class="map" id="map"></div>
+<div class="wrapper map-wrapper">
 
-        <div class="map-logo"></div>
-        <div class="map-info">
-            <div class="table row">
-                <div class="cell middle">
-                    <span class="thumbnail disc60">
-														<img src="/PortalUser/ProfilePicture_s/@Model.OwnerId">
-												</span>
-                </div>
-                <div class="cell h4 middle">
-                    @Model.OwnerDisplayName @Model.W("PlannedTrip")
-                    <small class="display-block">
-                        @Model.DateRangeStr
-                        @*21. June to 28. June 2015*@
-                    </small>
+    <div class="map" id="map"></div>
+
+    <div class="map-logo"></div>
+
+    <div class="map-info">
+        <div class="first-row">
+            <div class="thumb-cont s border">
+                <img src="/PortalUser/ProfilePicture_s/@Model.OwnerId">
+            </div>
+            <div>
+                <span class="name">@Model.OwnerDisplayName</span>
+                <div class="trip">@Model.W("PlannedTrip")</div>
+                <div class="date">
+                    @Model.DateRangeStr
                 </div>
             </div>
-            <h1>@Model.Message</h1>
-        </div>
-        <div class="map-share table">
-            <div class="cell middle tright">
 
-                @if (!Model.TripIsPrivate)
-                {
-                    <a class="button share h4 strong" href="/trip/@Model.Id">@Model.W("DetailOfTheTripBtn")</a>
-                }
-
-                <a class="button share h4 strong" href="/">@Model.W("JoinGloobsterBtn")</a>
-            </div>
         </div>
+        <div class="name-cont">
+            <span>@Model.Message</span>
+        </div>
+
     </div>
-</section>
-<section class="margin padding">
+
+    <div class="service">
+        
+        @if (!Model.TripIsPrivate)
+        {
+            <a class="lbtn" href="/trip/@Model.Id">@Model.W("DetailOfTheTripBtn")</a>
+        }
+
+        <a class="lbtn" href="/">@Model.W("JoinGloobsterBtn")</a>
+        
+    </div>
+
+</div>
+
+
+
     <div class="wrapper">
-        <h3 class="slim">@Model.W("TravelersOnBoard")</h3>
-        <div class="team grid col5 margin2">
+        <h3>@Model.W("TravelersOnBoard")</h3>
+        
             @foreach (var participant in Model.Participants)
             {
                 await Html.RenderPartialAsync("Participant", (object) participant);
             }
-        </div>
-        @*<div class="table row center">
-				<div class="cell color2">Copyright Gloobster 2015</div>
-				<div class="cell"><a href="#">Privacy Policy</a></div>
-				<div class="cell"><a href="#">What is Gloobster</a></div>
-				<div class="cell"><a href="#">Unsubscribe</a></div>
-		</div>*@
+  
     </div>
-</section>
 
-<script id="cityPopup-template" type="text/x-handlebars-template">
+
+    <script id="cityPopup-template" type="text/x-handlebars-template">
         <strong>{{cityName}}</strong>
         <div>
             {{fromDate}}

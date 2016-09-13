@@ -58,7 +58,7 @@ var Views;
                     tripId: Views.ViewBase.currentView["trip"].tripId,
                     networks: networks
                 };
-                _this.$container.hide();
+                _this.$win.hide();
                 var v = Views.ViewBase.currentView;
                 var id = new Common.InprogressDialog();
                 id.create(v.t("SharingTrip", "jsTrip"));

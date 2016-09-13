@@ -69,17 +69,19 @@
 				for (var act = 1; act <= this.socProv.length; act++) {
 					var type = this.socProv[act - 1];
 					var plcs = this.getByType(places, type);
-					var $box = this.getBox(act);
-					$nets.append($box);
+					if (plcs.length > 0) {
+						var $box = this.getBox(act);
+						$nets.append($box);
 
-					this.fill(plcs, $box.find("ul"));
+						this.fill(plcs, $box.find("ul"));
+					}
 				}
 
 			});
 		}
 
 		private cityTemp(item) {
-				return `<li data-value="${item.sourceId}" data-type="${item.sourceType}"> <span class="${item.icoClass} left mright10"> </span><a href="#">${item.name}</a><span class="color2">, ${item.countryCode}</span> </li>`;
+				return `<li data-value="${item.sourceId}" data-type="${item.sourceType}"> <span class="${item.icoClass}"> </span><a href="#">${item.name}</a><span class="color2">, ${item.countryCode}</span> </li>`;
 		}
 
 		private countryTemp(item) {
@@ -201,7 +203,7 @@
 		private getIconForSearch(sourceType: SourceType) {
 			switch (sourceType) {
 			case SourceType.FB:
-				return "icon-facebook";
+				return "icon-facebook2";
 			case SourceType.City:
 				return "icon-city";
 			case SourceType.Country:
