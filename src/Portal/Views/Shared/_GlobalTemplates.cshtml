@@ -49,10 +49,15 @@
 </script>
 
 <script id="inPorgressDialog-template" type="text/x-handlebars-template">
-    <div class="popup2 margin infoPanel" style="display: block">
-        <img style="vertical-align:middle" class="loader" src="/images/loader-gray.gif" />
-        <span style="font-size: 20px">{{message}}</span>
+    
+    <div class="popup-n inprogress wrapper">
+        <div class="top-line"></div>
+        <div class="cont">
+            <img src="/images/loader-gray.gif" />
+            <span>{{message}}</span>
+        </div>
     </div>
+
 </script>
 
 <script id="tagger-template" type="text/x-handlebars-template">

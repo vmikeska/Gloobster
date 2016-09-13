@@ -120,6 +120,24 @@
     background-image: url("../images/icons/icon-visited.png");
 }
 
+.inprogress{
+
+    .cont{
+        position: relative;
+        min-height: 40px;
+        padding-left: 40px;
+
+        img{
+            position: absolute; 
+            top: 4px;
+            left: 5px;
+        }
+    }
+
+
+    
+}
+
 .popup-share{
     .message{
         

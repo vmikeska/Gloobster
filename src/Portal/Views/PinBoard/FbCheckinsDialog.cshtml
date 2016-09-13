@@ -3,23 +3,19 @@
 @using Newtonsoft.Json
 @model PinBoardViewModel
 
+<div class="popup-n popup-share wrapper" id="taggedPlacesPerm" style="display: none;">
+    <div class="top-line"></div>
+    <div class="cont">
 
-    <div class="popup2 margin" id="taggedPlacesPerm" style="display: none">
-    <h3>
-        <span class="slim">@Model.W("FbCheckinsTitle")</span>
-    </h3>
-
-        <div class="margin">
-            @Model.W("FbCheckinsMessage")            
+        <div class="title">@Model.W("FbCheckinsTitle")</div>
+        <div class="tleft padding2">
+            @Model.W("FbCheckinsMessage")
         </div>
 
-    <div class="table width100">
-
-        <div class="cell middle tright">
-            <div class="logins">
-                <a id="fbBtnImport" class="facebook" href="#">@Model.W("FbCheckinsButton")</a>
-            </div>
+        <div class="tright padding2">
+            <a id="fbBtnImport" class="facebook" href="#"><span class="icon-facebook2"></span>@Model.W("FbCheckinsButton")</a>            
         </div>
+
+        <a class="close" href="#"><span class="icon-close-cross"></span></a>
     </div>
-    <a class="close" href="#">@Model.W("Close", "layout")</a>
 </div>

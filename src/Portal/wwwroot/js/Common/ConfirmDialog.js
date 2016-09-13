@@ -20,9 +20,9 @@ var Common;
         function InprogressDialog() {
             this.template = Views.ViewBase.currentView.registerTemplate("inPorgressDialog-template");
         }
-        InprogressDialog.prototype.create = function (message) {
+        InprogressDialog.prototype.create = function (message, $before) {
             this.$html = $(this.template({ message: message }));
-            $("section").first().prepend(this.$html);
+            $before.before(this.$html);
         };
         InprogressDialog.prototype.remove = function () {
             this.$html.remove();

@@ -27,9 +27,9 @@
 		this.template = Views.ViewBase.currentView.registerTemplate("inPorgressDialog-template");
 	 }
 
-	 public create(message) {
+	 public create(message, $before) {
 		this.$html = $(this.template({ message: message }));		
-		$("section").first().prepend(this.$html);		
+		$before.before(this.$html);		
 	 }
 
 	 public remove() {

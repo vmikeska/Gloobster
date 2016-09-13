@@ -248,7 +248,7 @@ var Views;
             this.fbPermissions.requestPermissions("user_tagged_places", function (r1) {
                 $("#taggedPlacesPerm").remove();
                 var id = new Common.InprogressDialog();
-                id.create(_this.t("ImportingCheckins", "jsPins"));
+                id.create(_this.t("ImportingCheckins", "jsPins"), $("#map"));
                 _this.apiPost("FbTaggedPlacesPermission", null, function (r2) {
                     _this.refreshData();
                     id.remove();

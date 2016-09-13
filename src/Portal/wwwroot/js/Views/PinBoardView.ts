@@ -315,7 +315,7 @@
 							$("#taggedPlacesPerm").remove();
 
 							var id = new Common.InprogressDialog();
-							id.create(this.t("ImportingCheckins", "jsPins"));
+							id.create(this.t("ImportingCheckins", "jsPins"), $("#map"));
 
 							this.apiPost("FbTaggedPlacesPermission", null, (r2) => {
 									this.refreshData();

@@ -183,6 +183,12 @@ button:active {
 .tcenter {
   text-align: center; }
 
+.padding1 {
+  padding: 4px; }
+
+.padding2 {
+  padding: 8px; }
+
 .share-cont {
   text-align: left; }
   .share-cont .icon-holder {
@@ -430,6 +436,15 @@ footer {
   height: 22px;
   width: 22px;
   background-image: url("../images/icons/icon-visited.png"); }
+
+.inprogress .cont {
+  position: relative;
+  min-height: 40px;
+  padding-left: 40px; }
+  .inprogress .cont img {
+    position: absolute;
+    top: 4px;
+    left: 5px; }
 
 .popup-share .message {
   margin-top: 10px;
