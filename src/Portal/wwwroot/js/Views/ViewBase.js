@@ -18,6 +18,7 @@ var Views;
             if ($(document).tooltip) {
                 $(document).tooltip();
             }
+            this.initDemoFnc();
         }
         Object.defineProperty(ViewBase.prototype, "pageType", {
             get: function () { return null; },
@@ -31,10 +32,49 @@ var Views;
             enumerable: true,
             configurable: true
         });
+        ViewBase.prototype.initDemoFnc = function () {
+            var _this = this;
+            $("#switchVersion").click(function (e) {
+                var ds = _this.cookieManager.getString("Demo");
+                var newVal = ds === "on" ? "off" : "on";
+                _this.cookieManager.setString("Demo", newVal);
+                location.reload();
+            });
+            var ds = this.cookieManager.getString("Demo");
+            var urlParam = this.getUrlParam("demo");
+            if (urlParam && !ds) {
+                this.cookieManager.setString("Demo", "on");
+                location.reload();
+            }
+            if (ds) {
+                $(".ver-switch").show();
+                var href = $("#switchVersion");
+                if (ds === "on") {
+                    href.addClass("icon-toggle-on");
+                }
+                else {
+                    href.addClass("icon-toggle-off");
+                }
+            }
+        };
+        ViewBase.prototype.getUrlParam = function (name) {
+            var url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)");
+            var results = regex.exec(url);
+            if (!results)
+                return null;
+            if (!results[2])
+                return "";
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        };
         ViewBase.prototype.regUserMenu = function () {
             var _this = this;
             $("#logoutUser").click(function (e) {
                 _this.logout();
+            });
+            $("#admin-btn").click(function (e) {
+                $(".admin-menu-all").toggle();
             });
         };
         ViewBase.prototype.hasSocNetwork = function (net) {

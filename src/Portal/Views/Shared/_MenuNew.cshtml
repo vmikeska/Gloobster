@@ -18,15 +18,15 @@
             <div class="icons">
 
                 <div class="icon">
-                    <a class="icon-my-data" href="/@RoutingConsts.UserDetailMenuName"></a>
+                    <a class="icon-my-data" title="my profile" href="/@RoutingConsts.UserDetailMenuName"></a>
                 </div>
 
                 <div class="icon">
-                    <a class="icon-friends" href="/@RoutingConsts.FriendsMenuName"></a>
+                    <a class="icon-friends" title="friends" href="/@RoutingConsts.FriendsMenuName"></a>
                 </div>
 
                 <div class="icon">
-                    <a class="icon-envelope" href="/@RoutingConsts.NotifsMenuName"></a>
+                    <a class="icon-envelope" title="notifications" href="/@RoutingConsts.NotifsMenuName"></a>
 
                     @if (Model.NotificationCount > 0)
                     {
@@ -35,9 +35,40 @@
 
                 </div>
 
-                <div class="icon">
-                    <a id="logoutUser" class="icon-logout" href="#"></a>
+                @if (Model.HasAnyWikiPermissions || Model.CanManageArticleAdmins)
+                {
+                    <div class="icon">
+                        <a id="admin-btn" title="administration" class="icon-user-tie" href="#"></a>
+                        
+                    <div class="admin-menu-all" style="display: none">
+                        @if (Model.HasAnyWikiPermissions)
+                        {
+                            <a href="/WikiAdmin/List">Wiki admin</a>
+                        }
+                        @if (Model.CanManageArticleAdmins)
+                        {
+                            <a href="/imagedb/list">Image DB</a>
+                            <a href="/git/issues">GIT issues</a>
+                            <a href="/wiki/permissions">Wiki permissions</a>
+                            <a href="/mylog/index">Logs</a>
+                            <a href="/mylog/stats">DB stats</a>
+                            <a href="/mylog/userstodelete">Accounts clean</a>
+                            <a href="/travelb/management">TravelB management</a>
+                        }
+                    </div>
+                    </div>
+                    
+                }
+
+                <div class="icon ver-switch" style="display: none">
+                    <a id="switchVersion" title="switch between full and demo version" class="" href="#"></a>
                 </div>
+
+                <div class="icon">
+                    <a id="logoutUser" title="logout" class="icon-switch" href="#"></a>
+                </div>
+
+                
 
             </div>
         </div>
@@ -45,12 +76,15 @@
 
         <div class="links_all">
             <nav class="links">
-                <a href="#">Dashboard</a>
 
-                <a href="/Destination/planning">Fly Tickets</a>
+@if (Model.IsDemo)
+{
+    <a href="#">Dashboard</a>
 
-                <a href="/TravelB/home">Travel Buddy</a>
+    <a href="/Destination/planning">Fly Tickets</a>
 
+    <a href="/TravelB/home">Travel Buddy</a>
+}
                 <a href="/@RoutingConsts.PlannerMenuName/grid">@Model.W("MenuTrips", "layout")</a>
 
                 <a class="MenuPins" href="/@RoutingConsts.PinsMenuName">@Model.W("MenuPins", "layout")</a>

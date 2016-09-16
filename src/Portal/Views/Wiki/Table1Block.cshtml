@@ -21,12 +21,24 @@
                     <td class="rate" data-id="@item.Id1">
                         @if (Model.ArticleType == ArticleType.City)
                         {
-                            @Html.Partial("PlusMinus", new PVM { B = Model.B, Liked = item.Liked1 });
+                            @Html.Partial("PlusMinus", new PVM {B = Model.B, Liked = item.Liked1})
+                            ;
                         }
                     </td>
                 }
             </tr>
         }
     </table>
-    <p id="text_@Model.SectionId" class="h4">@Model.Text</p>
+
+    @if (Model.Text.ToLower() == "no content")
+    {
+        <div class="wrapper empty-cont" data-sid="@Model.SectionId">@Html.Partial("Empty")</div>
+    }
+    else
+    {
+        <p id="text_@Model.SectionId" class="h4">@Model.Text</p>
+    }
+
+    
+
 </div>

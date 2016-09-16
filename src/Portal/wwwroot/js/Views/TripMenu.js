@@ -61,7 +61,7 @@ var Views;
                 _this.$win.hide();
                 var v = Views.ViewBase.currentView;
                 var id = new Common.InprogressDialog();
-                id.create(v.t("SharingTrip", "jsTrip"));
+                id.create(v.t("SharingTrip", "jsTrip"), _this.$win);
                 var hd = new Common.HintDialog();
                 Views.ViewBase.currentView.apiPost("TripSocNetworks", data, function (r) {
                     id.remove();

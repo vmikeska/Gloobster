@@ -1,4 +1,7 @@
 module TravelB {
+
+		export enum WantMeet { Man, Woman, All } 
+
 	export class Status {
 
 		private template;
@@ -8,28 +11,35 @@ module TravelB {
 		}
 
 		public refresh() {
-			var $cont = $("#statusCont");
-
+			var $checkinRow = $(".checkin-row");
+				
 			Views.ViewBase.currentView.apiGet("CheckinNow", [["type", "me"]], (r) => {
 
-				if (!r) {
-						$cont.html("No status");
+					if (!r) {
+						$checkinRow.show();						
 					return;
 				}
 
 				var context = {
-					placeName: r.waitingAtText,
-					wantMeetName: Views.StrOpers.getGenderStr(r.wantMeet),
-					wantDoName: `(${Views.StrOpers.getActivityStr(r.wantDo)})`
-			}
+						placeName: r.waitingAtText,
+						placeLink: Common.GlobalUtils.getSocLink(r.waitingAtType, r.waitingAtId),
 
+						wmMan: ((r.wantMeet === WantMeet.Man) || (r.wantMeet === WantMeet.All)),
+						wmWoman: ((r.wantMeet === WantMeet.Woman) || (r.wantMeet === WantMeet.All)), 
+						wmWomanGroup: ((r.wantMeet === WantMeet.Woman) && r.multiPeopleAllowed), 
+						wmManGroup: ((r.wantMeet === WantMeet.Man) && r.multiPeopleAllowed),
+						wmMixGroup: ((r.wantMeet === WantMeet.All) && r.multiPeopleAllowed),
+						
+						wantDos: Views.StrOpers.getActivityStrArray(r.wantDo)
+					}
+					
 				var $html = $(this.template(context));
-				$html.click((e) => {
+				$html.find(".edit").click((e) => {
 					e.preventDefault();
 					this.editClick();
 				});
-				$cont.html($html);
-
+				$checkinRow.after($html);
+				
 			});
 		}
 

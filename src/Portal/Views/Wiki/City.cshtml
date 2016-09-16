@@ -25,11 +25,14 @@ else
 
     @Html.Partial("PageAdmin")
 
-    @Html.Partial("Breadcrumb")
-    <h2 class="wrapper">@Model.Texts.Title</h2>
+    @Html.Partial("Breadcrumb")    
     @Html.Partial("Languages")
 
     <div class="titlePhoto wrapper">
+        <div class="h-cont">
+            <h1 class="title-white">@Model.Texts.Title</h1>    
+        </div>
+        
         <img src="@Model.TitleLink">
     </div>
 

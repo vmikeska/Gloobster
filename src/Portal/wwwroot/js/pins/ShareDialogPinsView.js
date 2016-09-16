@@ -12,7 +12,7 @@ var Views;
             this.$dialog.find(".share").click(function () {
                 var id = new Common.InprogressDialog();
                 _this.$dialog.hide();
-                id.create(v.t("SharingMap", "jsPins"));
+                id.create(v.t("SharingMap", "jsPins"), _this.$dialog);
                 _this.share(function () {
                     id.remove();
                     var hd = new Common.HintDialog();

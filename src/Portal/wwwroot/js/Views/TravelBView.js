@@ -49,7 +49,7 @@ var Views;
         };
         TravelBView.prototype.createMainTab = function () {
             var _this = this;
-            this.tabs = new TravelB.Tabs($("#mainTab"), "main", 55);
+            this.tabs = new TravelB.MenuTabs($(".main-menu .tbl"), "main", 55);
             this.tabs.onBeforeSwitch = function () {
                 $("#theCont").html("");
             };
@@ -59,7 +59,7 @@ var Views;
             this.tabs.addTab(this.cityTabConst, "I will be in a city", function () {
                 _this.createCityCheckinsFnc();
             });
-            this.tabs.create();
+            this.tabs.create("<div class=\"btn-cont\"></div>");
         };
         TravelBView.prototype.createCityCheckinsFnc = function () {
             this.filter.initCity();
@@ -219,6 +219,15 @@ var Views;
         }
         StrOpers.formatDate = function (date) {
             return date.Day + "." + date.Month + "." + date.Year;
+        };
+        StrOpers.getActivityStrArray = function (vals) {
+            var outStrs = [];
+            var items = TravelB.TravelBUtils.wantDoDB();
+            vals.forEach(function (id) {
+                var item = _.find(items, function (i) { return i.id === id; });
+                outStrs.push(item.text);
+            });
+            return outStrs;
         };
         StrOpers.getActivityStr = function (vals) {
             var outStrs = [];

@@ -47,5 +47,56 @@ var TravelB;
         return Tabs;
     }());
     TravelB.Tabs = Tabs;
+    var MenuTabs = (function () {
+        function MenuTabs($cont, tabGroup, height) {
+            this.activeCls = "active";
+            this.tabs = [];
+            this.isFirst = true;
+            this.$cont = $cont;
+            this.tabGroup = tabGroup;
+            this.height = height;
+        }
+        MenuTabs.prototype.addTab = function (id, text, callback) {
+            this.tabs.push({ id: id, text: text, callback: callback });
+        };
+        MenuTabs.prototype.create = function (btnTemplate) {
+            var _this = this;
+            this.btnTemplate = btnTemplate;
+            this.tabs.forEach(function (t) {
+                var $t = _this.genTab(t);
+                _this.$cont.append($t);
+            });
+            this.tabs[0].callback();
+            this.activeTabId = this.tabs[0].id;
+        };
+        MenuTabs.prototype.genTab = function (t) {
+            var _this = this;
+            var $t = $(this.btnTemplate);
+            $t.html(t.text);
+            $t.attr("id", t.id);
+            $t.addClass(this.tabGroup);
+            if (this.isFirst) {
+                $t.addClass(this.activeCls);
+                this.isFirst = false;
+            }
+            $t.click(function (e) {
+                e.preventDefault();
+                if ($t.hasClass(_this.activeCls)) {
+                    return;
+                }
+                if (_this.onBeforeSwitch) {
+                    _this.onBeforeSwitch();
+                }
+                var $target = $(e.target);
+                $("." + _this.tabGroup).removeClass(_this.activeCls);
+                $target.addClass(_this.activeCls);
+                _this.activeTabId = $target.attr("id");
+                t.callback(t.id);
+            });
+            return $t;
+        };
+        return MenuTabs;
+    }());
+    TravelB.MenuTabs = MenuTabs;
 })(TravelB || (TravelB = {}));
 //# sourceMappingURL=Tabs.js.map

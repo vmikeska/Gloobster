@@ -1,0 +1,579 @@
+﻿
+.travelb-home{
+    
+    text-align: left;
+
+    textarea{
+        border: 1px solid $light-blue3;
+    }
+
+    .info-block-bck{
+        background-color: $light-gray;
+    }
+
+    .itag{
+        padding-left: 3px;
+        padding-right: 3px;
+        /*padding-top: 1px;
+        padding-bottom: 1px;*/
+        margin-left: 2px;
+        margin-right: 2px;
+
+        border-radius: 4px;
+        color: white;
+        background-color: $light-blue;
+    }
+
+    .g-icon{
+        font-size: 22px;  
+        margin-left: 2px;
+        margin-right: 2px;
+        color: black;
+    }
+
+    .g-icon-group{
+        .g-icon{
+            margin-left: 0;
+            margin-right: 0;
+            color: lightgray;
+        }
+                
+        .g-icon:last-of-type{
+            color: black;
+            margin-left: -5px;
+        }
+
+    }
+
+    .info-block{
+        
+        padding: 8px;
+        text-align: center;
+
+
+        .block{
+            
+            width: 48%;
+            min-width: 320px;
+            display: inline-block;
+            vertical-align: top;
+
+            @include below-width(700){            
+                width: 95%;
+            }
+
+            .block-inner{
+                display: table;
+                
+                .img-all{
+                    
+                    display: table-cell;
+                    vertical-align: middle;
+                    width: 30%;
+
+                    img{            
+                        width: 100%;                            
+                    }
+                }
+
+                .txt{
+                    /*border: 1px solid red;*/
+
+                    display: table-cell;
+                    vertical-align: middle;
+                    text-align: left;
+                    width: 60%;                    
+                    width: auto;
+
+                    padding: 10px;
+                }
+            }
+
+        }
+
+    }
+
+    .status-row {
+        /*border: 1px solid red;*/
+
+        margin-top: 15px;
+        margin-bottom: 15px;
+
+        padding-left: 46px;
+        position: relative;
+
+        .icon-location{
+            font-size: 46px;
+            position: absolute;
+            left: 0;
+            top: 5px;
+            color: lightgray;            
+        }
+
+        .place{
+            .edit{
+                position: absolute;
+                right: 0;
+
+                font-size: 24px;
+                color: $dark-blue;
+
+            }
+        }
+
+        .data{
+            .item {
+                display: inline-block;
+
+                .name{
+                    display: inline-block;
+                    font-weight: bold;
+                }
+
+                .cont{
+                    display: inline-block;
+                }
+            }
+
+            
+        }
+    }
+
+    .checkin-row{
+        padding: 16px;
+        
+        .now-checkin-btn{
+            font-size: 28px;
+            color: lightgray;
+            text-decoration: none;
+
+            .lato{
+                color: $light-blue2;
+                font-size: 24px;
+                text-decoration: underline !important;
+            }
+
+            &:hover{
+                color: $dark-blue;
+                
+                .lato{
+                    line-height: 28px;
+                    color: $dark-blue;
+                    text-decoration: none;
+                }
+            }
+        }
+
+    }
+
+    .main-menu{        
+        margin-top: 10px;
+
+        .tbl {
+            display: table;
+            width: 100%;
+            div{
+                display: table-cell;
+                text-align: center;
+                width: 50%;
+                background-color: $light-blue;
+                padding-top: 15px;
+                padding-bottom: 15px;
+                cursor: pointer;
+                color: white;
+
+                &:first-of-type{
+                    border-top-left-radius: 4px;
+                }
+                &:last-of-type{
+                    border-top-right-radius: 4px;
+                }
+            }
+
+            
+        }
+
+        .active{
+            background-color: $dark-blue !important;
+        }
+    }
+
+    .map {
+        width: 100%;        
+        height: 500px;
+    }
+
+    .results{
+
+        .title{
+            font-size: 24px;
+            font-weight: bold;
+            padding: 8px;
+        }
+
+        .tbl{
+            display: table;
+            width: 100%;
+        }
+
+        .meeting-points{            
+            display: table-cell;
+            width: 29%;            
+            height: 300px;
+
+            .meeting-point{
+                position: relative;
+                padding-left: 67px;
+                padding-right: 75px;
+                margin: 10px;
+
+                min-height: 70px;
+                border-bottom: 1px solid black;
+
+                .photo-cont {
+                    
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+
+                    .photo{                        
+                        width: 60px;
+                        height: 60px;
+                        border-radius: 2px;
+                    }
+                } 
+                
+                .cont {
+                    
+                    .people-met{
+                        font-size: 14px;
+                    }
+                } 
+                
+                .btn-cont {
+                    
+                    position: absolute;
+                    right: 0;
+                    top: 5px;
+
+                    /*width: 90px;*/
+
+                    a{
+
+                        text-align: center;
+                        display: inline-block;
+                            
+                        text-decoration: none;
+                        background-color: $light-blue;
+                        border-radius: 4px;
+                        padding: 5px;
+                        color: white;
+                        font-size: 16px;
+                            
+                        .icon-bubbles2{
+                            font-size: 24px;
+                        }
+
+                        &:hover{
+                            color: $dark-blue;
+                        }
+                    }
+                }
+            }
+
+        }
+
+        .people{
+            
+            display: table-cell;
+            height: 300px;
+            width: 68%;
+
+            .person{
+                position:relative;
+                
+                margin: 10px;
+                padding:7px;
+
+                background-color: $light-gray;
+                border-radius: 4px;
+
+                .data{
+                    display: table;
+                    width: 100%;
+
+                    .photo-cont{                        
+                       display: table-cell;
+                       vertical-align: top;
+                       width: 70px;
+                       height: 70px;
+                       
+                    
+                       .photo-all{
+                           position: relative;
+                           width: 60px;
+                           height: 60px;
+
+                           .photo{                               
+                                /*border: 1px solid black;*/
+                                border-radius: 2px;
+                           }
+
+                           .c-flag{
+                                position: absolute;
+                                top: -11px;
+                                right: -11px;
+
+                                width: 22px;
+                                height: 22px;                            
+                            }
+                       }
+                       
+                    }
+
+                    .cont{                        
+                        display: table-cell;
+                        vertical-align: top;
+
+                        .first{
+                            .flag{
+                                width: 18px;
+                                height: 18px;
+                                /*border-radius: 50%;
+                                border: 1px solid black;*/
+                            }
+                        }  
+                    }
+
+                    .btn-cont{                        
+                        display: table-cell;
+                        vertical-align: top;
+                        width: 120px;
+
+                         .chat-btn{
+                            text-align: center;
+                            display: inline-block;
+                            
+                            text-decoration: none;
+                            background-color: $light-blue;
+                            border-radius: 4px;
+                            padding: 5px;
+                            color: white;
+                            
+                            .icon-bubbles2{
+                                font-size: 24px;
+                            }
+
+                            &:hover{
+                                color: $dark-blue;
+                            }
+                        }
+                    }
+                }
+
+                .message-all{
+                    .pointer{
+                        /*display: inline-block;*/
+                        border-bottom:  10px solid white;
+                        border-right:  10px solid transparent;
+                        border-left:  10px solid transparent;
+                        border-top:  0;
+
+                        height: 0;
+                        width: 0;
+                        margin-left: 20px;
+
+                        /*position: absolute;
+                        top: 0;
+                        left: -10px;
+                        height: 0;
+                        width: 0;
+                        border-bottom: 10px solid transparent;
+                        border-right: 10px solid #e8e8e8;
+                        border-top: 10px solid transparent;
+                        content: "";*/
+                    }
+
+                    .message{
+                        background-color: white;
+                        border-radius: 15px;
+                        padding: 15px;
+
+                    }
+                }
+
+                
+
+                
+            }
+        }
+    }
+
+
+
+
+
+
+    .wantDosMain .dataCont {    
+    
+    }
+    
+    .wantDosMain .dataCont {
+        min-height: 40px;
+        border-bottom: 1px solid black;
+        border-left: 1px solid black;
+        border-right: 1px solid black;
+        padding: 8px;
+    }
+
+    .wantDosMain .dataCont .tag {
+         cursor: pointer; cursor: hand;
+    }
+
+    .wantDosMain .selected {
+        padding: 8px;
+        min-height: 40px;
+        border: 1px solid black;
+    }
+
+
+
+
+    #searchCity {
+        z-index: 99999;
+        position: absolute;
+        top: 10px;
+        left: 40px;
+    }
+
+    #theCont {
+        overflow-y: scroll;
+    }
+
+    #theCont .items {
+        height: 340px;
+    }
+
+    #theCont .mgmt {
+        height: 30px;
+        border-top: 1px solid black;
+        font-size: 20px;
+    }
+
+    .notif {
+        border: 1px solid black;
+        width: 600px;
+        height: 50px;
+    }
+
+    .notif .cont {
+        width: 350px;
+        height: 50px;
+        float: left;
+        
+    }
+
+    .notif .acts {
+        width: 250px;
+        height: 50px;
+        float: right;
+    }
+
+
+     .myTabs {
+         width: 100%;         
+     }
+
+    .myTab {
+        border: 1px solid white;      
+        background-color: #57c1db;
+        color: white;        
+        display: inline-block;
+        text-align: center;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer; cursor: hand;
+        padding-top: 14px;
+    }
+
+    .myTab.act {
+        background-color: red;
+    }
+
+    .mainCont {    
+        width: 100%;
+        height: 370px;
+        margin-bottom: 30px;
+        border-bottom: 2px solid black;
+    }
+
+    .tabBlock {        
+        width: 49%;
+        height: 350px;
+        float: left;
+    }
+
+    .listCont {
+        border: 1px solid black;
+    }
+
+    .filter {
+        border-top: 1px solid black;
+        border-bottom: 1px solid black;
+    }
+
+    .bigCB {
+        font-size: 20px;
+    }
+
+    .chat-cont {
+        bottom: 0;                
+        position: fixed;
+
+        /*display: inline-block;*/
+        background-color: white;
+        
+        width: 250px;
+        height: 300px;
+        
+        border: 1px solid black;
+    }
+
+
+    .chat-title {
+        height: 25px;
+    }
+    
+    .chat-texts {
+        border: 1px solid green;
+        height: 190px;
+        overflow-y: scroll;
+        text-align: left;
+    }
+
+    .chat-message {
+        border: 1px solid red;
+        width: 250px;
+        height: 50px;
+        position: absolute;
+        bottom: 0;
+    }
+
+    .chat-message textarea {
+        width: 220px;
+        padding: 0;
+        margin: 0;
+        border: 0;
+        resize: none;
+        position: absolute;
+        left: 0;
+    }
+
+    .chat-message button {
+        width: 30px;
+        height: 100%;
+        position: absolute;
+        right: 0;
+    }
+  
+}

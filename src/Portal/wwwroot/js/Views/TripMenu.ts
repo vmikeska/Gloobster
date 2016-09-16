@@ -89,7 +89,7 @@ module Views {
 					
 				var id = new Common.InprogressDialog();
 				
-				id.create(v.t("SharingTrip", "jsTrip"));
+				id.create(v.t("SharingTrip", "jsTrip"), this.$win);
 
 				var hd = new Common.HintDialog();
 				ViewBase.currentView.apiPost("TripSocNetworks", data, (r) => {

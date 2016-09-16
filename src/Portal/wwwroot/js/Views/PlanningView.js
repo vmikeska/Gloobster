@@ -67,15 +67,35 @@ var Views;
     var PlanningView = (function (_super) {
         __extends(PlanningView, _super);
         function PlanningView() {
-            var _this = this;
             _super.call(this);
+            this.anytimeTabTemplate = Views.ViewBase.currentView.registerTemplate("anytime-template");
+            this.weekendTabTemplate = Views.ViewBase.currentView.registerTemplate("weekend-template");
+            this.customTabTemplate = Views.ViewBase.currentView.registerTemplate("custom-template");
             this.planningData = new PlanningData();
             this.initialize();
-            this.tabsTime = new TabsTime();
-            this.tabsTime.onTabSwitched = (function (tabType) {
-                _this.planningMap.loadCategory(tabType);
-            });
         }
+        PlanningView.prototype.initTabs = function () {
+            var _this = this;
+            var tabHtml = "";
+            var $tabContent = $("#tabContent");
+            this.tabs = new Planning.Tabs($("#naviCont"), "main", 50);
+            this.tabs.addTab("tabAnytime", "Anytime", function () {
+                tabHtml = _this.anytimeTabTemplate();
+                $tabContent.html(tabHtml);
+                _this.planningMap.loadCategory(0);
+            });
+            this.tabs.addTab("tabWeekend", "Weekend", function () {
+                tabHtml = _this.weekendTabTemplate();
+                $tabContent.html(tabHtml);
+                _this.planningMap.loadCategory(1);
+            });
+            this.tabs.addTab("tabCustom", "Custom", function () {
+                tabHtml = _this.customTabTemplate();
+                $tabContent.html(tabHtml);
+                _this.planningMap.loadCategory(2);
+            });
+            this.tabs.create();
+        };
         PlanningView.prototype.initialize = function () {
             var _this = this;
             this.maps = new Maps.MapsCreatorMapBox2D();
@@ -89,49 +109,11 @@ var Views;
                 _this.planningMap.loadCategory(Planning.PlanningType.Anytime);
             });
             var locationDialog = new Views.LocationSettingsDialog();
+            this.initTabs();
         };
         return PlanningView;
     }(Views.ViewBase));
     Views.PlanningView = PlanningView;
-    var TabsTime = (function () {
-        function TabsTime() {
-            this.registerTabEvents();
-        }
-        TabsTime.prototype.registerTabEvents = function () {
-            var _this = this;
-            this.anytimeTabTemplate = Views.ViewBase.currentView.registerTemplate("anytime-template");
-            this.weekendTabTemplate = Views.ViewBase.currentView.registerTemplate("weekend-template");
-            this.customTabTemplate = Views.ViewBase.currentView.registerTemplate("custom-template");
-            var $tabsRoot = $("#TimeTab");
-            var $tabs = $tabsRoot.find(".tab");
-            $tabs.click(function (e) {
-                e.preventDefault();
-                _this.switchTab($(e.delegateTarget), $tabs);
-            });
-        };
-        TabsTime.prototype.switchTab = function ($target, $tabs) {
-            $tabs.removeClass("active");
-            $target.addClass("active");
-            var tabType = parseInt($target.data("type"));
-            var tabHtml = "";
-            if (tabType === Planning.PlanningType.Anytime) {
-                tabHtml = this.anytimeTabTemplate();
-            }
-            if (tabType === Planning.PlanningType.Weekend) {
-                tabHtml = this.weekendTabTemplate();
-            }
-            if (tabType === Planning.PlanningType.Custom) {
-                tabHtml = this.customTabTemplate();
-            }
-            var $tabContent = $("#tabContent");
-            $tabContent.html(tabHtml);
-            if (this.onTabSwitched) {
-                this.onTabSwitched(tabType);
-            }
-        };
-        return TabsTime;
-    }());
-    Views.TabsTime = TabsTime;
     var TabsWeekendViews = (function () {
         function TabsWeekendViews($tabsCont) {
             this.currentTab = TabsWeekendType.ByWeek;

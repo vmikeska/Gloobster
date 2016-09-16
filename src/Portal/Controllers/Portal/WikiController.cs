@@ -354,6 +354,11 @@ namespace Gloobster.Portal.Controllers.Portal
         {
             var user = users.FirstOrDefault(u => u.User_id == userId);
 
+            if (user == null)
+            {
+                return null;
+            }
+
             return new UserViewModel
             {
                 Id = user.User_id.ToString(),

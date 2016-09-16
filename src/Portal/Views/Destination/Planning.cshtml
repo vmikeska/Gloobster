@@ -1,6 +1,7 @@
 ﻿@{		
-		ViewBag.BodyClass = "future";
-		ViewBag.MenuGroup = "Planning";
+    ViewBag.BodyClass = "fly-tickets";
+    ViewBag.MenuGroup = "Planning";
+    Layout = "_LayoutNew";
 }
 
 @using System.Threading.Tasks
@@ -18,6 +19,7 @@
 <script type="text/javascript" src="@Url.Content("~/js/Views/PlanningView.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Trip/AirportCombo.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Views/LocationSettingsDialog.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/TravelB/Tabs.js")"></script>
 
 <script type="text/javascript" src="@Url.Content("~/js/Planning/NamesList.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Planning/CustomForm.js")"></script>
@@ -29,77 +31,41 @@
 <script type="text/javascript" src="@Url.Content("~/js/Planning/PlanningMap.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Planning/ResultsManager.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Planning/DisplayAndAgg.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Planning/Tabs.js")"></script>
 
 <script type="text/javascript" src="@Url.Content("~/js/Maps/MapsCreatorMapBox2D.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Common/CountryShapes.js")"></script>
 
-<section class="wrapper margin3">
-	<div class="table right">
-		<div class="cell bottom">
-			<span class="icon-home mright5"></span>
-		</div>
-		<div id="currentLocation" class="cell h4 middle">
-			<small class="display-block">Current location</small>
-			<strong>@Model.CityName</strong>, <span>@Model.CountryName</span>
-		</div>
-		<div class="cell bottom">
-			<span class="icon-plane2 mright5 mleft10"></span>
-		</div>
-		<div class="cell h4 middle">
-			<small class="display-block">Home Airport</small>
-			@Model.AirportsStr
-		</div>
-		<div class="cell bottom">
-			<a class="icon-wheel blue mleft10 popup-target" data-target="#popup-future" href="#"></a>
-		</div>
-	</div>
-	@*<h1 class="margin2">Planning</h1>*@
+<div class="wrapper">
+    <span class="icon-home"></span>
+    <small>Current location</small>
+    <strong>@Model.CityName</strong>, <span>@Model.CountryName</span>
 
-	@*<div class="hint orange margin">
-		<span class="icon-amplion orange middle mright5"></span>
-		Our search engine is now in beta. So bear with us until next release to be out in
-		<strong>37 days, 5 hours and 32 minutes</strong>.
-		<a class="close" href="#">Close</a>
-	</div>*@
 
-	<div class="table width100">
-		<div class="cell">
-			<div id="TimeTab" class="tabs table row">
-				<div class="cell">
-					<a class="tab active" data-type="0" href="#">Anytime</a>
-				</div>
-				<div class="cell">
-					<a class="tab" data-type="1" href="#">Weekend</a>
-				</div>
-				<div class="cell">
-					<a class="tab" data-type="2" href="#">Custom</a>
-				</div>
-			</div>
-		</div>
-		
-	</div>
+    <small>Home Airport</small>
+    
+    <a class="icon-gear" data-target="#popup-future" href="#"></a> @Model.AirportsStr
 
-	<div id="tabContent"></div>
 
-	<div class="map margin" id="map"></div>
+    <div id="naviCont"></div>
+
+    <div id="tabContent"></div>
+
+    <div class="map" id="map"></div>
 
     <div id="tabsCont">
 
     </div>
 
     <div id="queue">
-        
+
     </div>
 
     <div id="results2">
 
     </div>
+</div>
 
-    @*<div id="results">
-
-    </div>*@
-
-</section>
 
 @Html.Partial("LocationSettingsDialog", Model)
 @Html.Partial("DestinationTemplates")

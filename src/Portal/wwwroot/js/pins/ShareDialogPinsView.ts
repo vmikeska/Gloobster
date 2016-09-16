@@ -17,7 +17,7 @@
 
 			 var id = new Common.InprogressDialog();
 			 this.$dialog.hide();
-			 id.create(v.t("SharingMap", "jsPins"));
+			 id.create(v.t("SharingMap", "jsPins"), this.$dialog);
 
 			 this.share(() => {
 				id.remove();

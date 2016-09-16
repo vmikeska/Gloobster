@@ -7,7 +7,7 @@ module Trip {
 		private $combo: any;
 		private $cont: any;
 		private $input: any;
-		private limit = 10;
+		private limit = 8;
 		private lastText: string;
 
 		public onSelected: Function;
@@ -15,7 +15,7 @@ module Trip {
 
 		constructor(comboId: string, config = new AirportComboConfig) {
 			this.config = config;
-			this.$combo = $("#" + comboId);
+			this.$combo = $(`#${comboId}`);
 			this.$cont = this.$combo.find("ul");
 			this.$input = this.$combo.find("input");
 			this.registerInput();
@@ -49,11 +49,14 @@ module Trip {
 		}
 
 		private displayResults(items) {
+				this.$cont.html("");
+
 			if (!items) {
+				this.$cont.hide();
 				return;
 			}
-
-			this.$cont.html("");
+				
+			this.$cont.show();
 
 			items.forEach((item) => {
 				var itemHtml = this.getItemHtml(item);
@@ -94,7 +97,7 @@ module Trip {
 			var displayName = `${item.name} (${item.city})`;
 			var displayNameSel = `${item.city} (${code})`;
 
-			return `<li data-value="${displayNameSel}" data-id="${item.id}">${displayName}<span class="color2">• ${code}</span></li>`;
+			return `<li data-value="${displayNameSel}" data-id="${item.id}">${displayName} - ${code}</li>`;
 		}
 	}
 }

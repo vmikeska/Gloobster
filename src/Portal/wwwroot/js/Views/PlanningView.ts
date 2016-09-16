@@ -7,12 +7,14 @@
 		private tabsWeekendViews;
 		private $tabsCont;
 		private $cont;
-
+		
 		constructor() {
 			this.resultsEngine = new Planning.ResultsManager();
 			this.$tabsCont = $("#tabsCont");
-			this.$cont = $("#results2");
+			this.$cont = $("#results2");				
 		}
+
+			
 
 		public onSelectionChagned(id: string, newState: boolean, type: FlightCacheRecordType) {
 			if (newState) {
@@ -93,21 +95,52 @@
 
 		public planningData: PlanningData;
 
-		private maps: Maps.MapsCreatorMapBox2D;
-		private tabsTime: TabsTime;
+		private maps: Maps.MapsCreatorMapBox2D;		
 		private tabsWeekendViews: TabsWeekendViews;
-			
+
+		private tabs;
+
+		private anytimeTabTemplate: any;
+		private weekendTabTemplate: any;
+		private customTabTemplate: any;
+
+
 		constructor() {
 			super();
+
+			this.anytimeTabTemplate = ViewBase.currentView.registerTemplate("anytime-template");
+			this.weekendTabTemplate = ViewBase.currentView.registerTemplate("weekend-template");
+			this.customTabTemplate = ViewBase.currentView.registerTemplate("custom-template");
 
 			this.planningData = new PlanningData();
 
 			this.initialize();
+				
+		}
 
-			this.tabsTime = new TabsTime();
-			this.tabsTime.onTabSwitched = ((tabType) => {
-				this.planningMap.loadCategory(tabType);
-			});				
+		private initTabs() {
+
+				var tabHtml = "";
+				var $tabContent = $("#tabContent");				
+
+				this.tabs = new Planning.Tabs($("#naviCont"), "main", 50);
+				this.tabs.addTab("tabAnytime", "Anytime", () => {
+						tabHtml = this.anytimeTabTemplate();
+						$tabContent.html(tabHtml);
+						this.planningMap.loadCategory(0);
+				});
+				this.tabs.addTab("tabWeekend", "Weekend", () => {
+						tabHtml = this.weekendTabTemplate();
+						$tabContent.html(tabHtml);
+						this.planningMap.loadCategory(1);
+				});
+
+				this.tabs.addTab("tabCustom", "Custom", () => {
+						tabHtml = this.customTabTemplate();
+						$tabContent.html(tabHtml);
+						this.planningMap.loadCategory(2);
+				});
+				this.tabs.create();
 		}
 
 		public initialize() {
@@ -125,61 +158,13 @@
 			});
 
 			var locationDialog = new LocationSettingsDialog();
+
+			this.initTabs();
 		}
 
 
 	}
-
-	export class TabsTime {
-
-		public onTabSwitched: Function;
-
-		constructor() {
-			this.registerTabEvents();
-		}
-
-		private anytimeTabTemplate: any;
-		private weekendTabTemplate: any;
-		private customTabTemplate: any;
-
-		private registerTabEvents() {
-			this.anytimeTabTemplate = ViewBase.currentView.registerTemplate("anytime-template");
-			this.weekendTabTemplate = ViewBase.currentView.registerTemplate("weekend-template");
-			this.customTabTemplate = ViewBase.currentView.registerTemplate("custom-template");
-
-			var $tabsRoot = $("#TimeTab");
-			var $tabs = $tabsRoot.find(".tab");
-			$tabs.click((e) => {
-				e.preventDefault();
-				this.switchTab($(e.delegateTarget), $tabs);
-			});
-		}
-
-		private switchTab($target, $tabs) {
-			$tabs.removeClass("active");
-			$target.addClass("active");
-
-			var tabType = parseInt($target.data("type"));
-			var tabHtml = "";
-			if (tabType === Planning.PlanningType.Anytime) {
-				tabHtml = this.anytimeTabTemplate();
-			}
-			if (tabType === Planning.PlanningType.Weekend) {
-				tabHtml = this.weekendTabTemplate();
-			}
-			if (tabType === Planning.PlanningType.Custom) {
-				tabHtml = this.customTabTemplate();
-			}
-
-			var $tabContent = $("#tabContent");
-			$tabContent.html(tabHtml);
-
-			if (this.onTabSwitched) {
-				this.onTabSwitched(tabType);
-			}
-		}
-	}
-
+		
 	export class TabsWeekendViews {
 
 		public onTabSwitched: Function;

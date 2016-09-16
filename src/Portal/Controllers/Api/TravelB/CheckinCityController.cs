@@ -324,7 +324,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
         public Date fromDate { get; set; }
         public Date toDate { get; set; }
-
+        
         public CheckinType checkinType { get; set; }
         public string waitingAtId { get; set; }
         public SourceType waitingAtType { get; set; }

@@ -25,21 +25,6 @@ namespace Gloobster.Portal.Controllers.Portal
             
 		}
 
-        //[CreateAccount]
-        //public IActionResult Index()
-        //{
-        //    bool isLogged = IsUserLogged && DB.List<UserEntity>(e => e.User_id == UserIdObj).Any();                
-        //    if (isLogged)
-        //    {                
-        //        return RedirectToAction("Pins", "Pinboard");                
-        //    }
-
-        //    var vm = CreateViewModelInstance<ViewModelHome>();
-        //    vm.DefaultLangModuleName = "pageHomeOld";            
-        //    vm.LoadClientTexts();
-        //    return View(vm);
-        //}
-
         [CreateAccount]
         public IActionResult Index()
         {

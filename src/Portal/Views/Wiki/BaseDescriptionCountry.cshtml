@@ -14,7 +14,7 @@
     }    
 }
 
-<div class="blue-block wrapper adminBlock" data-at="standard" data-id="@Model.SectionId">
+<div class="blue-block wrapper adminBlock empty-cont" data-sid="@Model.SectionId" data-at="standard" data-id="@Model.SectionId">
    
         
         <div class="about">
@@ -46,8 +46,16 @@
             </table>
 
         </div>
- 
-        <p id="text_@Model.SectionId" class="h3">@Html.Partial("NewArticleRating") @Model.Text</p>
-   
-   
+
+    @Html.Partial("NewArticleRating")
+
+    @if (Model.Text.ToLower() == "no content")
+    {
+        @Html.Partial("Empty", "noborder")
+    }
+    else
+    {
+        <p id="text_@Model.SectionId" class="h3"> @Model.Text</p>
+    }
+
 </div>

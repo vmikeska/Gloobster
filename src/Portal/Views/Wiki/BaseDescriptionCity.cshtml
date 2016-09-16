@@ -3,7 +3,7 @@
 @model BlockVM
 
 
-<div class="blue-block wrapper adminBlock" data-at="standard" data-id="@Model.SectionId">
+<div class="blue-block wrapper adminBlock empty-cont" data-sid="@Model.SectionId" data-at="standard" data-id="@Model.SectionId">
     
         <div class="about">
             <h3>@Model.B.W("About")</h3>
@@ -17,6 +17,15 @@
         </div>
     
         @Html.Partial("NewArticleRating")
-        <p id="text_@Model.SectionId" class="h3">@Model.Text</p>
-        
+    
+
+    @if (Model.Text.ToLower() == "no content")
+    {
+        @Html.Partial("Empty", "noborder")
+    }
+    else
+    {
+        <p id="text_@Model.SectionId" class="h3">@Model.Text</p>        
+    }
+
 </div>

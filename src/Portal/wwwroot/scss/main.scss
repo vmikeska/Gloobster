@@ -1,0 +1,346 @@
+﻿
+$font-ptsans: "PT Sans", sans-serif;
+$font-lato: "Lato", sans-serif;
+
+$dark-blue: #005476;
+$light-blue: #65BDD7;
+$light-blue2: #009EC4;
+$light-blue3: #3298C1;
+$light-blue4: #ccedf5;
+$light-blue5: #57c1db;
+
+$green: #3DA33D;
+$orange: #F56E12;
+$yellow: #FFC400;
+$yellow2: #F5C519;
+
+$light-gray: #EAEAEA;
+
+$trans-white: rgba(255, 255, 255, 0.9);
+
+$tablet-width: 959px;
+
+@mixin tablet {
+    @media screen and (max-width: $tablet-width) {
+        @content;
+    }
+}
+
+
+@mixin below-width($width) {
+    @media screen and (max-width: $width + 'px' ) {
+        @content;
+    }
+}
+
+@mixin text-justify{
+    text-align: justify;
+    -moz-text-align-last: justify;
+    -webkit-text-align-last: justify; /* not implemented yet, and will not be */
+    text-align-last: justify; /* IE */
+}
+
+@mixin display-flex{
+    display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+
+@mixin centerer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+body {
+    font-family: $font-ptsans;
+    min-width: 320px;    
+    margin: 0;
+    text-align: center;
+    font-size: 20px;
+}
+
+.master-cont {
+    min-height: 600px;
+}
+
+a {
+    color: $light-blue3;
+}
+
+.lato{
+    font-family: $font-lato;
+}    
+
+input[type="text"],input[type="password"],input[type="number"],textarea{    
+    padding: 8px 13px;
+    border: 0;
+    border-radius: 4px;
+    font-size: 20px;
+    color: gray;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+textarea{
+    width: 100%;
+    font-family: $font-lato;
+    @extend .box-sizing;
+}
+
+.lbtn{
+    border-style: solid;
+    border-width: 0;
+    border-radius: 4px;                    
+    /*font-weight: 700;*/
+    height: 20px;
+    line-height: 40px;
+
+    margin: 0 5px;
+    padding: 9px;
+
+    text-decoration: none;
+    cursor: pointer;
+    white-space:nowrap;
+}
+
+.thumb-cont{
+    display: inline-block;
+    border-radius: 50%;
+    overflow: hidden;
+
+    &.s{
+        width: 60px;
+        height: 60px;
+    }
+
+    &.xs{
+        width: 26px;
+        height: 26px;
+    }
+
+    &.border{
+        border: 1px solid black;
+    }    
+}
+
+.box-sizing{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+textarea:focus, input:focus{
+    outline: none;
+}
+
+.wrapper{
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@include below-width(1023){
+
+    .menu_all:nth-of-type(2){
+        display: none;
+    }
+
+}
+
+h1{
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+
+p{
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+ .photo-button{ 
+     
+     text-decoration: none;
+     
+     input {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+
+     label {
+        @extend .lbtn;
+        color: $light-blue3;
+        border: 1px solid $light-blue3;
+
+        cursor: pointer;cursor: hand;
+    }
+ }
+
+ .photo-link{
+     input {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+
+     label {        
+        color: $light-blue3;        
+        cursor: pointer;cursor: hand;
+    }
+ }
+
+  .photo-button:hover{
+
+      label {
+          border: 1px solid $dark-blue;
+          color: $dark-blue;
+      }      
+  }
+
+  .htbl{
+      display: table;
+      width: 100%;      
+
+      > div {
+          display: table-cell;          
+          width: 50%;
+      }
+
+      .left{
+          text-align: left;          
+      }
+
+      .right{       
+          text-align: right;
+      }
+
+  }
+
+
+button{
+    color: white;
+    font-weight: bold;
+    background-color: $light-blue3;
+    /*border-color: $light-blue3;*/
+    border: none;
+    border-radius: 4px;
+    padding: 9px 29px;
+    text-decoration: none;
+    box-shadow:none !important;
+    margin: 4px;
+}
+
+button:hover{
+    cursor: pointer;cursor: hand;
+    opacity: 0.8;
+}
+
+button:active {
+    outline: none;
+    border: none;
+}
+
+.tag{
+    position: relative;
+    margin: 0 6px 6px 0;
+    padding: 6px 10px;
+    transition: all .3s;
+    background-color: #57c1db;
+    border: 1px solid #57c1db;
+    border-radius: 4px;
+    color: #fff;
+    display: inline-block;
+    text-decoration: none;
+
+    .icon-cross{
+        margin-left: 10px;
+        margin-top: 4px;
+        display: inline-block;
+        text-decoration: none;
+        color: $dark-blue;
+        font-size: 14px;
+    }
+
+    .icon-cross:hover {
+        color: darkred;
+    }
+}
+
+.tleft{
+    text-align: left;
+}
+.tright{
+    text-align: right;
+}
+.tcenter{
+    text-align: center;
+}
+
+.padding1{
+    padding: 4px;    
+}
+
+.padding2{
+    padding: 8px;    
+}
+
+.share-cont {
+    text-align: left;
+
+    .icon-holder {
+        width: 60px;
+        height: 60px;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .icon-visited{
+        position: absolute;
+        top: -5px;
+        right: -5px;
+    }
+}
+
+
+@import "layout";
+@import "popup";
+@import "icofonts";
+@import "dropdown";
+@import "homepage";
+@import "pins";
+@import "wiki-home";
+@import "wiki-page";
+@import "notif";
+@import "friends";
+@import "settings";
+@import "registration";
+@import "trip-detail";
+@import "trip";
+@import "trip-share";
+@import "travelb-home";
+@import "fly-tickets";
+

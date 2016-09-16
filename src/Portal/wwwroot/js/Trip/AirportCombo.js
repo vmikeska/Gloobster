@@ -10,7 +10,7 @@ var Trip;
     var AirportCombo = (function () {
         function AirportCombo(comboId, config) {
             if (config === void 0) { config = new AirportComboConfig; }
-            this.limit = 10;
+            this.limit = 8;
             this.config = config;
             this.$combo = $("#" + comboId);
             this.$cont = this.$combo.find("ul");
@@ -44,10 +44,12 @@ var Trip;
         };
         AirportCombo.prototype.displayResults = function (items) {
             var _this = this;
+            this.$cont.html("");
             if (!items) {
+                this.$cont.hide();
                 return;
             }
-            this.$cont.html("");
+            this.$cont.show();
             items.forEach(function (item) {
                 var itemHtml = _this.getItemHtml(item);
                 _this.$cont.append(itemHtml);
@@ -81,7 +83,7 @@ var Trip;
             }
             var displayName = item.name + " (" + item.city + ")";
             var displayNameSel = item.city + " (" + code + ")";
-            return "<li data-value=\"" + displayNameSel + "\" data-id=\"" + item.id + "\">" + displayName + "<span class=\"color2\">\uFFFD " + code + "</span></li>";
+            return "<li data-value=\"" + displayNameSel + "\" data-id=\"" + item.id + "\">" + displayName + " - " + code + "</li>";
         };
         return AirportCombo;
     }());

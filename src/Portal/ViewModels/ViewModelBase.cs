@@ -4,6 +4,8 @@ using Gloobster.Database;
 using Gloobster.DomainModels.Langs;
 using Gloobster.Entities;
 using Gloobster.Enums;
+using Microsoft.AspNet.Http;
+using Microsoft.Net.Http.Server;
 
 namespace Gloobster.Portal.ViewModels
 {
@@ -40,6 +42,8 @@ namespace Gloobster.Portal.ViewModels
 	    {
 	        return SocialNetworks.Contains(net);
 	    }
+
+        public bool IsDemo { get; set; }
 
         public string W(string key)
 	    {	        

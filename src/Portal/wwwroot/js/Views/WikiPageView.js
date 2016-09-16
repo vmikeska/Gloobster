@@ -21,7 +21,19 @@ var Views;
             this.photos = new WikiPhotosUser(articleId);
             this.rating = new Rating(articleId, this.langVersion);
             this.report = new Report(articleId, this.langVersion);
+            this.regContribute();
         }
+        WikiPageView.prototype.regContribute = function () {
+            $(".contrib-link").click(function (e) {
+                e.preventDefault();
+                var $t = $(e.target);
+                var $cont = $t.closest(".empty-cont");
+                if ($cont.length > 0) {
+                    var sid = $cont.data("sid");
+                    $(".article_rating[data-id=\"" + sid + "\"]").find(".bubble").toggle();
+                }
+            });
+        };
         WikiPageView.prototype.getLangVersion = function () {
             var urlParams = window.location.pathname.split("/");
             return urlParams[2];

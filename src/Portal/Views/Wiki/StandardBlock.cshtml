@@ -4,4 +4,12 @@
 
 @Html.Partial("BlockHeader")
 
-<p id="text_@Model.SectionId" class="h4">@Model.Text</p>
+
+@if (Model.Text.ToLower() == "no content")
+{
+    <div class="wrapper empty-cont" data-sid="@Model.SectionId">@Html.Partial("Empty")</div>
+}
+else
+{
+    <p id="text_@Model.SectionId" class="h4">@Model.Text</p>
+}

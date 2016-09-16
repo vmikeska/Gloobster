@@ -15,26 +15,44 @@
     
     <div class="block">
         <h3>@Model.B.W("TryThis")</h3>
-        @foreach (DdVM item in Model.Dos)
+
+        @if (!Model.Dos.Any())
         {
-            <div data-id="@item.Id" data-t="do" class="item">
-                @Html.Partial("PlusMinusDD", item)
-                <span>@item.Text</span>
-            </div>
+            <div class="wrapper">@Html.Partial("Empty")</div>
         }
+        else
+        {
+            foreach (DdVM item in Model.Dos)
+            {
+                <div data-id="@item.Id" data-t="do" class="item">
+                    @Html.Partial("PlusMinusDD", item)
+                    <span>@item.Text</span>
+                </div>
+            }
+        }
+
         <div class="admindo">
         </div>        
     </div>
 
     <div class="block">
         <h3>@Model.B.W("DontTryThat")</h3>
-        @foreach (DdVM item in Model.Donts)
+
+        @if (!Model.Dos.Any())
         {
-            <div data-id="@item.Id" data-t="dont" class="item">
-                @Html.Partial("PlusMinusDD", item)
-                <span>@item.Text</span>
-            </div>
+            <div class="wrapper">@Html.Partial("Empty")</div>
         }
+        else
+        {
+            foreach (DdVM item in Model.Donts)
+            {
+                <div data-id="@item.Id" data-t="dont" class="item">
+                    @Html.Partial("PlusMinusDD", item)
+                    <span>@item.Text</span>
+                </div>
+            }
+        }
+
         <div class="admindont">
         </div>
     </div>

@@ -103,7 +103,7 @@ namespace Gloobster.Portal.Controllers.Base
             DB = db;
             Log = log;
             CC = cc;
-            Langs = langs;            
+            Langs = langs;
         }
 
         public T CreateViewModelInstance<T>() where T : ViewModelBase, new()
@@ -140,9 +140,16 @@ namespace Gloobster.Portal.Controllers.Base
                 Langs = (Languages)Langs,
                 Lang = "en", // todo: change from session,
                 Locale = locale,
-                HasUserAgent = !string.IsNullOrEmpty(ua)
+                HasUserAgent = !string.IsNullOrEmpty(ua),
+                IsDemo = false
             };
 
+            var hasCookie = Request.Cookies.ContainsKey("Demo");
+            if (hasCookie)
+            {
+                instance.IsDemo = Request.Cookies["Demo"].ToString() == "on";
+            }
+            
             if (IsUserLogged)
             {
                 var notifications = DB.FOD<NotificationsEntity>(n => n.User_id == UserIdObj.Value);

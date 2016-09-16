@@ -14,13 +14,21 @@
     <meta name="viewport" content="width=device-width">
 	<title>Gloobster</title>
 
-    
-    
-    <link href="//fonts.googleapis.com/css?family=PT+Sans:400,700" rel="stylesheet">
-    <link href="//fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
-    <link href="~/lib/jquery-ui/themes/ui-lightness/jquery-ui.css" rel="stylesheet"/>
 
-    <link href="~/css/main.css" rel="stylesheet" />
+
+    @if (GloobsterConfig.UseMiniScripts)
+    {
+        <link href="~/cssb/main.min.css" rel="stylesheet" />
+    }
+    else
+    {
+        <link href="~/css/main.css" rel="stylesheet" />
+        <link href="//fonts.googleapis.com/css?family=PT+Sans:400,700" rel="stylesheet">
+        <link href="//fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
+        <link href="~/lib/jquery-ui/themes/ui-lightness/jquery-ui.css" rel="stylesheet" />
+    }
+
+    
 
     @Html.Partial("_GlobalTemplates")
     @Html.Partial("_GlobalScripts")

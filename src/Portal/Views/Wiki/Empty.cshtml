@@ -1,0 +1,14 @@
+﻿@model object
+
+@{
+    var cls = (Model is string) ? Model : string.Empty;
+}
+
+    <p class="empty-block @cls">
+        <span class="txt">TXT</span>
+        <span class="msg">
+            Unfortunately this section doesn't have any content yet
+            <br/>
+            Share your knowledge and help us to build biggest travel WIKI in te world. <a class="contrib-link" href="#">Contribute</a>  
+        </span>
+    </p>

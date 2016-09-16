@@ -78,7 +78,7 @@
 		}
 			
 		private createMainTab() {
-			this.tabs = new TravelB.Tabs($("#mainTab"), "main", 55);
+				this.tabs = new TravelB.MenuTabs($(".main-menu .tbl"), "main", 55);
 			
 			this.tabs.onBeforeSwitch = () => {
 				$("#theCont").html("");
@@ -90,7 +90,7 @@
 			this.tabs.addTab(this.cityTabConst, "I will be in a city", () => {
 				this.createCityCheckinsFnc();				
 			});
-			this.tabs.create();
+			this.tabs.create(`<div class="btn-cont"></div>`);
 		}
 
 		private createCityCheckinsFnc() {
@@ -287,6 +287,18 @@
 
 			public static formatDate(date) {
 				return `${date.Day}.${date.Month}.${date.Year}`;
+			}
+
+			public static getActivityStrArray(vals) {
+					var outStrs = [];
+					var items = TravelB.TravelBUtils.wantDoDB();
+
+					vals.forEach((id) => {
+							var item = _.find(items, (i) => { return i.id === id });
+							outStrs.push(item.text);
+					});
+
+					return outStrs;
 			}
 
 			public static getActivityStr(vals) {

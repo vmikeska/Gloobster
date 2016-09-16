@@ -3,8 +3,10 @@
 
 @{
     ViewBag.BodyClass = "page";
-    //ViewBag.MenuGroup = "Planning";
+    Layout = "_LayoutNew";
+    //ViewBag.BodyClass = "";
 }
+
 
 <script type="text/javascript" src="@Url.Content("~/js/Views/WikiPermissionsView.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Views/WikiSearchCombo.js")"></script>
@@ -17,7 +19,10 @@
     <div class="tags">
         @foreach (var a in Model.MasterAdmins)
         {
-            <span class="tag">@a.Name</span>            
+            if (a != null)
+            {
+                <span class="tag">@a.Name</span>
+            }
         }
     </div>
 

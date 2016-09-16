@@ -6,21 +6,32 @@
 @using Newtonsoft.Json
 @model AdminTasksViewModel
 
+@{       
+    Layout = "_LayoutNew";
+    ViewBag.BodyClass = "wiki-admin-list";
+}
+
 <script type="text/javascript" src="@Url.Content("~/js/Views/WikiAdminView.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Common/GNOnlineSearchBox.js")"></script>
 
 <style>
-    .task {
-        border-bottom: 2px solid black;
-        border-top: 2px solid black;
-        padding: 5px 0 5px 0;
+    
+    .wiki-admin-list {
+        text-align: left;
     }
+
+     .task {
+         border-bottom: 2px solid black;
+         border-top: 2px solid black;
+         padding: 5px 0 5px 0;
+     }
 
     .titem {
         border-bottom: 1px solid black;
     }
 </style>
 
+<div class="wrapper">
 
     <h2>Add place</h2>
     <button id="AddCity">Show add city form</button>
@@ -30,19 +41,19 @@
             <input class="inputed" placeholder="Search city">
             <ul></ul>
         </div>
-        
+
         <table>
             <tr>
                 <td><span>GID</span></td>
-                <td><input id="txtGID" type="text" disabled/></td>
-            </tr>            
+                <td><input id="txtGID" type="text" disabled /></td>
+            </tr>
             <tr>
                 <td><span>Population</span></td>
-                <td><input id="txtPopulation" type="text"/></td>
-            </tr>            
+                <td><input id="txtPopulation" type="text" /></td>
+            </tr>
             <tr>
                 <td><span>Title</span></td>
-                <td><input id="txtTitle" type="text"/></td>
+                <td><input id="txtTitle" type="text" /></td>
             </tr>
         </table>
         <button id="SendCity">Add city</button>
@@ -61,68 +72,68 @@
             }
 
             <div class="titem">
-                <span>Title: </span><br/>
+                <span>Title: </span><br />
                 @articleTexts.Title
             </div>
-            
+
             @if (task.TaskType == AdminTaskType.ConfirmPhoto)
             {
                 var data = JsonConvert.DeserializeObject<ArticlePhotoData>(task.Data);
-                
+
                 var thumbLink = $"/Wiki/ArticlePhotoThumb?photoId={task.TargetId}&articleId={task.ArticleId}";
                 var link = $"/Wiki/ArticlePhoto?photoId={task.TargetId}&articleId={task.ArticleId}";
-                
-                <div class="titem">
-                    <span>Article: </span><br />
-                    @data.ArticleName
-                </div>
-                <div>
-                    <a href="@link" target="_blank"><img class="radius mhalf" src="@thumbLink"></a>
-                </div>
+
+            <div class="titem">
+                <span>Article: </span><br />
+                @data.ArticleName
+            </div>
+            <div>
+                <a href="@link" target="_blank"><img class="radius mhalf" src="@thumbLink"></a>
+            </div>
             }
 
             @if (task.TaskType == AdminTaskType.ResolveReport)
             {
-                var data = JsonConvert.DeserializeObject<ReportTaskData>(task.Data);                
+                var data = JsonConvert.DeserializeObject<ReportTaskData>(task.Data);
                 var reportEntity = Model.GetReport(new ObjectId(task.TargetId));
                 var creator = Model.GetCreatorUser(reportEntity.Creator_id);
-                
 
-                <div>
-                    <div class="titem">
-                        <span>Created by: </span><br />
-                        @creator.DisplayName
-                    </div>
-                    <div class="titem">
-                        <span>Section name: </span><br/>
-                        @data.SectionName
-                    </div>
-                    <div class="titem">
-                        <span>Language: </span><br/>
-                        @data.Lang
-                    </div>
-                    <div class="titem">
-                        <span>Report: </span><br/>
-                        @data.Report
-                    </div>
-                    <div class="titem">
-                        <span>Current text: </span><br/>
-                        @data.Text
-                    </div>
+
+            <div>
+                <div class="titem">
+                    <span>Created by: </span><br />
+                    @creator.DisplayName
                 </div>
+                <div class="titem">
+                    <span>Section name: </span><br />
+                    @data.SectionName
+                </div>
+                <div class="titem">
+                    <span>Language: </span><br />
+                    @data.Lang
+                </div>
+                <div class="titem">
+                    <span>Report: </span><br />
+                    @data.Report
+                </div>
+                <div class="titem">
+                    <span>Current text: </span><br />
+                    @data.Text
+                </div>
+            </div>
             }
 
             <div>
                 @foreach (var action in task.Actions)
                 {
-                    <button class="actionButton" data-action="@action.Name">@action.Caption</button>
+                <button class="actionButton" data-action="@action.Name">@action.Caption</button>
                 }
             </div>
         </div>
-    }
+                }
 
 
-    
+</div>
 
 
 <script>

@@ -5,41 +5,88 @@ module Views {
 
 	export class ViewBase {
 
-	  public static currentView: ViewBase;	 
+		public static currentView: ViewBase;
 		public static nets: string;
 		public static fbt: string;
 		public static currentUserId: string;
-	 
+
 		public loginButtonsManager: Reg.LoginButtonsManager;
-	 
+
 		public cookieManager: Common.CookieManager;
 
-	  public onLogin: Function;
+		public onLogin: Function;
 
 		get pageType(): PageType { return null; }
 
 		public get fullReg(): Boolean {
-	    return this.cookieManager.getString(Constants.fullRegCookieName) === "true";
-    }
+			return this.cookieManager.getString(Constants.fullRegCookieName) === "true";
+		}
 
 		constructor() {
 			ViewBase.currentView = this;
-			this.cookieManager = new Common.CookieManager();			
+			this.cookieManager = new Common.CookieManager();
 			this.regUserMenu();
-				
+
 			this.loginButtonsManager = new Reg.LoginButtonsManager();
 			this.loginButtonsManager.createPageDialog();
-			
 
 			if ($(document).tooltip) {
-					$(document).tooltip();
-			}				
+				$(document).tooltip();
+			}
+
+			this.initDemoFnc();
 		}
 
-		private regUserMenu() {		 
-		 $("#logoutUser").click((e) => {				
-				this.logout();				
+		private initDemoFnc() {
+
+			$("#switchVersion").click((e) => {
+				var ds = this.cookieManager.getString("Demo");
+
+				var newVal = ds === "on" ? "off" : "on";
+
+				this.cookieManager.setString("Demo", newVal);
+				location.reload();
 			});
+
+			var ds = this.cookieManager.getString("Demo");
+
+			var urlParam = this.getUrlParam("demo");
+			if (urlParam && !ds) {
+				this.cookieManager.setString("Demo", "on");
+				location.reload();
+			}
+
+			if (ds) {
+				$(".ver-switch").show();
+
+				var href = $("#switchVersion");
+
+				if (ds === "on") {
+					href.addClass("icon-toggle-on");
+				} else {
+					href.addClass("icon-toggle-off");
+				}
+			}
+		}
+
+		private getUrlParam(name) {
+			var url = window.location.href;
+			name = name.replace(/[\[\]]/g, "\\$&");
+			var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)");
+			var results = regex.exec(url);
+			if (!results) return null;
+			if (!results[2]) return "";
+			return decodeURIComponent(results[2].replace(/\+/g, " "));
+		}
+
+		private regUserMenu() {
+			$("#logoutUser").click((e) => {
+				this.logout();
+			});
+
+			$("#admin-btn").click((e) => {
+				$(".admin-menu-all").toggle();
+			});				
 		}
 
 		public hasSocNetwork(net: SocialNetworkType) {
@@ -53,29 +100,29 @@ module Views {
 		}
 
 		public t(key: string, module: string) {
-		 var modules = window["modules"];
-		 if (!modules) {
-			 return "NoModules";
-		 }
-
-		  var mod = _.find(modules, (m) => {
-			  return m.Name === module;
-		 });
-
-		 if (!mod) {
-			 return "NotFoundModule";
+			var modules = window["modules"];
+			if (!modules) {
+				return "NoModules";
 			}
 
-		  var text = _.find(mod.Texts, (t) => {
-			  return t.Name === key;
-		 });
+			var mod = _.find(modules, (m) => {
+				return m.Name === module;
+			});
 
-		 if (!text) {
-			 return "KeyNotFound";
-		 }
+			if (!mod) {
+				return "NotFoundModule";
+			}
 
-		 return text.Text;
-	  }
+			var text = _.find(mod.Texts, (t) => {
+				return t.Name === key;
+			});
+
+			if (!text) {
+				return "KeyNotFound";
+			}
+
+			return text.Text;
+		}
 
 		public logout() {
 			var auth = new Reg.AuthCookieSaver();
@@ -139,18 +186,18 @@ module Views {
 			}
 
 			var source = $t.html();
-				
+
 			return Handlebars.compile(source);
 		}
 
 		public makeRandomString(cnt) {
-		 var text = "";
-		 var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+			var text = "";
+			var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-		 for (var i = 0; i < 10; i++)
-			text += possible.charAt(Math.floor(Math.random() * possible.length));
+			for (var i = 0; i < 10; i++)
+				text += possible.charAt(Math.floor(Math.random() * possible.length));
 
-		 return text;
+			return text;
 		}
 
 	}

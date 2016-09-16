@@ -90,7 +90,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
                 var checkinDO = checkin.ToDO();
                 var user = DB.FOD<UserEntity>(u => u.User_id == UserIdObj);
-                var response = ConvertCheckin(user, checkinDO);
+                CheckinResponse response = ConvertCheckin(user, checkinDO);
                 return new ObjectResult(response);
             }
 

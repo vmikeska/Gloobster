@@ -8,8 +8,9 @@
 
 @{
     ViewBag.MenuGroup = "Pins";
-    ViewData["Title"] = "New pins";
+    ViewData["Title"] = "Travel map";
     Layout = "_LayoutNew";
+    ViewBag.BodyClass = "pins";
 }
 
 <link href="/lib/mapbox.js/mapbox.css" rel="stylesheet" />
@@ -137,7 +138,9 @@ else
 @Html.Partial("ShareDialog")
 @Html.Partial("FbCheckinsDialog")
 
-<div id="map"></div>
+<div class="wrapper">
+    <div id="map"></div>
+</div>
 
 <div class="wrapper stats">
     <table>

@@ -160,7 +160,7 @@ module Trip {
 				return {
 					name: item.selectedName,
 					icon: this.getIcon(item.sourceType),
-					link: this.getSocLink(item.sourceType, item.sourceId)
+					link: Common.GlobalUtils.getSocLink(item.sourceType, item.sourceId)
 				};
 			});
 
@@ -185,7 +185,7 @@ module Trip {
 				if (data.address) {
 					context = $.extend(context, {
 						stayIco: this.getIcon(data.address.sourceType),
-						stayLink: this.getSocLink(data.address.sourceType, data.address.sourceId),
+						stayLink: Common.GlobalUtils.getSocLink(data.address.sourceType, data.address.sourceId),
 						hasAddress: true
 					});
 				}
@@ -201,19 +201,7 @@ module Trip {
 			this.dialogManager.insertDialog($html);
 		}
 
-		private getSocLink(sourceType: SourceType, sourceId: string) {
-			var link = "";
-			if (sourceType === SourceType.FB) {
-				link = "http://facebook.com/" + sourceId;
-			}
-			if (sourceType === SourceType.S4) {
-				link = "http://foursquare.com/v/" + sourceId;
-			}
-			if (sourceType === SourceType.Yelp) {
-			 link = "http://www.yelp.com/biz/" + sourceId;
-			}
-			return link;
-		}
+		
 
 		private buildTemplateEdit(data) {
 
@@ -315,7 +303,7 @@ module Trip {
 				id: id,
 				icon: iconClass,
 				name: this.takeMaxChars(name, 33),
-				link: this.getSocLink(sourceType, sourceId)
+				link: Common.GlobalUtils.getSocLink(sourceType, sourceId)
 			};
 
 			var html = this.dialogManager.visitedItemTemplate(context);

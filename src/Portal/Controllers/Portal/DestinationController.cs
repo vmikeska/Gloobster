@@ -26,7 +26,8 @@ namespace Gloobster.Portal.Controllers.Portal
             return View(vm);
         }
 
-		public IActionResult Planning()
+        [CreateAccount]
+        public IActionResult Planning()
 		{
             //temp remove then
             PlanningDom.CreateDBStructure(UserId);

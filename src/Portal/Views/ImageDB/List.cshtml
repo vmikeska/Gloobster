@@ -4,6 +4,11 @@
 @using Gloobster.Portal.ViewModels
 @model ImageDBListViewModel
 
+@{
+    Layout = "_LayoutNew";
+    //ViewBag.BodyClass = "";
+}
+
 <link href="/css/style.css" rel="stylesheet" />
 <link href="/lib/cropper/dist/cropper.css" rel="stylesheet"/>
 
@@ -121,22 +126,25 @@
 
 </style>
 
-<div id="selectedCity" class="dropdown">
-    <input class="inputed" type="text" placeholder="Search for city name">
-    <img class="loader" src="/images/loader-gray.gif" style="display: none" />
-    <ul></ul>
+<div class="wrapper">
+
+    <div id="selectedCity" class="dropdown">
+        <input class="inputed" type="text" placeholder="Search for city name">
+        <img class="loader" src="/images/loader-gray.gif" style="display: none" />
+        <ul></ul>
+    </div>
+
+
+
+    <div id="naviCont">
+
+    </div>
+
+    <div id="tabCont">
+
+    </div>
+
 </div>
-
-
-
-<div id="naviCont">
-    
-</div>
-
-<div id="tabCont">
-   
-</div>
-
 
 <script>
     function onBodyLoad() {

@@ -1,43 +1,64 @@
 ﻿@using Gloobster.Portal.ViewModels
 @model UserDetailViewModel
 
-<table>
-    <tr>
-        <td colspan="2">
-            <img id="avatar" src="@Model.AvatarLink" style="width: 200px; height: 200px" />
-            <br />            
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <span class="titleName">@Model.W("DisplayName")</span>
-        </td>
-        <td>
-            <span>@Model.DisplayName</span>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <span class="titleName">@Model.W("Gender")</span>
-        </td>
-        <td>            
-            <span>@Model.Gender</span>                            
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <span class="titleName">@Model.W("HomeCity")</span>
-        </td>
-        <td>
-            <span>@Model.HomeLocation</span>                
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <span class="titleName">@Model.W("CurrentCity")</span>
-        </td>
-        <td>
-            <span>@Model.CurrentLocation</span>            
-        </td>
-    </tr>
-</table>
+@{
+    Layout = "_LayoutNew";
+    //ViewBag.BodyClass = "";
+}
+
+<style>
+    table {
+        text-align: left;
+    }
+
+    .titleName {
+        font-weight: bold;
+    }
+</style>
+
+<div class="wrapper">
+
+    <table>
+        <tr>
+            <td colspan="2">
+                <div class="thumb-cont border" style="width: 200px; height: 200px">
+                    <img id="avatar" src="@Model.AvatarLink" />
+                </div>
+                <br/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="titleName">@Model.W("DisplayName")</span>
+            </td>
+            <td>
+                <span>@Model.DisplayName</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="titleName">@Model.W("Gender")</span>
+            </td>
+            <td>
+                <span>@Model.Gender</span>                            
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="titleName">@Model.W("HomeCity")</span>
+            </td>
+            <td>
+                <span>@Model.HomeLocation</span>                
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="titleName">@Model.W("CurrentCity")</span>
+            </td>
+            <td>
+                <span>@Model.CurrentLocation</span>            
+            </td>
+        </tr>
+    </table>
+
+</div>

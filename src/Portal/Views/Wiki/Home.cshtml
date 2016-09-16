@@ -17,14 +17,12 @@
 
 @if (GloobsterConfig.UseMiniScripts)
 {    
-    @*<script src="/jsb/nindex.js" type="text/javascript" data-notbuild="true"></script>*@
+    <script src="/jsb/wikihome.js" type="text/javascript" data-notbuild="true"></script>
 }
 else
 {
-    <link href="~/css/main.css" rel="stylesheet" />
-
-    <script type="text/javascript" src="@Url.Content("~/js/Views/WikiHomeView.js")"></script>
-    <script type="text/javascript" src="@Url.Content("~/js/Views/WikiSearchCombo.js")"></script>
+    <script src="/js/Views/WikiHomeView.js" type="text/javascript"></script>
+    <script src="/js/Views/WikiSearchCombo.js" type="text/javascript"></script>    
 }
 
 <div class="wiki_header_all">

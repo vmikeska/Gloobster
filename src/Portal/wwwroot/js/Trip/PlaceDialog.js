@@ -127,7 +127,7 @@ var Trip;
                 return {
                     name: item.selectedName,
                     icon: _this.getIcon(item.sourceType),
-                    link: _this.getSocLink(item.sourceType, item.sourceId)
+                    link: Common.GlobalUtils.getSocLink(item.sourceType, item.sourceId)
                 };
             });
             context.hasNoWantVisit = (context.wantVisit.length === 0);
@@ -147,7 +147,7 @@ var Trip;
                 if (data.address) {
                     context = $.extend(context, {
                         stayIco: this.getIcon(data.address.sourceType),
-                        stayLink: this.getSocLink(data.address.sourceType, data.address.sourceId),
+                        stayLink: Common.GlobalUtils.getSocLink(data.address.sourceType, data.address.sourceId),
                         hasAddress: true
                     });
                 }
@@ -159,19 +159,6 @@ var Trip;
             var $html = $(html);
             this.dialogManager.regClose($html);
             this.dialogManager.insertDialog($html);
-        };
-        PlaceDialog.prototype.getSocLink = function (sourceType, sourceId) {
-            var link = "";
-            if (sourceType === SourceType.FB) {
-                link = "http://facebook.com/" + sourceId;
-            }
-            if (sourceType === SourceType.S4) {
-                link = "http://foursquare.com/v/" + sourceId;
-            }
-            if (sourceType === SourceType.Yelp) {
-                link = "http://www.yelp.com/biz/" + sourceId;
-            }
-            return link;
         };
         PlaceDialog.prototype.buildTemplateEdit = function (data) {
             var _this = this;
@@ -250,7 +237,7 @@ var Trip;
                 id: id,
                 icon: iconClass,
                 name: this.takeMaxChars(name, 33),
-                link: this.getSocLink(sourceType, sourceId)
+                link: Common.GlobalUtils.getSocLink(sourceType, sourceId)
             };
             var html = this.dialogManager.visitedItemTemplate(context);
             var $html = $(html);
