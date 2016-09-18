@@ -8,8 +8,8 @@ var TravelB;
         }
         CityTab.prototype.genCheckinsList = function (checkins) {
             var _this = this;
-            var $listCont = $("#theCont");
-            $listCont.html("");
+            var $listCont = $(".results .people");
+            $listCont.find(".person").remove();
             var d = new Date();
             var curYear = d.getFullYear();
             var v = Views.ViewBase.currentView;
@@ -20,9 +20,16 @@ var TravelB;
                     id: p.userId,
                     name: p.displayName,
                     age: curYear - p.birthYear,
-                    waitingFor: Views.StrOpers.getGenderStr(p.wantMeet),
-                    multiStr: Views.StrOpers.getMultiStr(p.multiPeopleAllowed),
-                    wants: Views.StrOpers.getActivityStr(p.wantDo),
+                    languages: Views.StrOpers.langsToFlags(p.languages, p.homeCountry),
+                    homeCountry: p.homeCountry,
+                    livesCountry: p.livesCountry,
+                    livesOtherCountry: p.homeCountry !== p.livesCountry,
+                    wmMan: ((p.wantMeet === TravelB.WantMeet.Man) || (p.wantMeet === TravelB.WantMeet.All)),
+                    wmWoman: ((p.wantMeet === TravelB.WantMeet.Woman) || (p.wantMeet === TravelB.WantMeet.All)),
+                    wmWomanGroup: ((p.wantMeet === TravelB.WantMeet.Woman) && p.multiPeopleAllowed),
+                    wmManGroup: ((p.wantMeet === TravelB.WantMeet.Man) && p.multiPeopleAllowed),
+                    wmMixGroup: ((p.wantMeet === TravelB.WantMeet.All) && p.multiPeopleAllowed),
+                    wantDos: Views.StrOpers.getActivityStrArray(p.wantDo),
                     fromDate: TravelB.DateUtils.myDateToStr(p.fromDate),
                     toDate: TravelB.DateUtils.myDateToStr(p.toDate),
                     message: p.message

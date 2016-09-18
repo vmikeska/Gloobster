@@ -15,10 +15,13 @@ var Views;
     var Chat = (function () {
         function Chat() {
             var _this = this;
-            this.names = [];
-            this.chatRowTmp = Views.ViewBase.currentView.registerTemplate("chatRow-template");
-            this.chatWinTmp = Views.ViewBase.currentView.registerTemplate("chatWin-template");
+            this.chatLayoutTmp = Views.ViewBase.currentView.registerTemplate("chat-layout-template");
+            this.chatTitleTagTmp = Views.ViewBase.currentView.registerTemplate("chat-person-title-template");
+            this.chatMsgLeftTmp = Views.ViewBase.currentView.registerTemplate("chat-msg-l-template");
+            this.chatMsgRightTmp = Views.ViewBase.currentView.registerTemplate("chat-msg-r-template");
+            this.chatActionTmp = Views.ViewBase.currentView.registerTemplate("chat-action-template");
             this.stopWinTmp = Views.ViewBase.currentView.registerTemplate("stopWin-template");
+            this.names = [];
             this.chatRefresh = new Views.ChatRefresh();
             this.chatRefresh.onRefresh = function (responses) {
                 if (responses) {
@@ -33,27 +36,15 @@ var Views;
             var _this = this;
             if (callback === void 0) { callback = null; }
             var prms = [["type", "s"]];
-            var $cont = $("body");
             Views.ViewBase.currentView.apiGet("CheckinReact", prms, function (reacts) {
-                var chats = $(".chat-cont").toArray();
-                chats.forEach(function (chat) {
-                    var $chat = $(chat);
-                    var reactId = $chat.data("id");
-                    var reactFound = _.find(reacts, function (r) {
-                        return r.reactId === reactId;
-                    });
-                    var wasFound = reactFound != null;
-                    if (!wasFound) {
-                        $chat.remove();
-                    }
-                });
-                reacts.forEach(function (r, i) {
-                    var $chat = Chat.getChatByRectId(r.reactId);
-                    var cnt = $(".chat-cont").length;
-                    if ($chat.length === 0) {
-                        _this.createOneChatWindow($cont, r, cnt);
-                    }
-                });
+                var anyReacts = reacts.length > 0;
+                var $layout = $(".nchat-all");
+                var hasLayout = $layout.length > 0;
+                if (anyReacts && !hasLayout) {
+                    _this.createLayout(reacts);
+                }
+                _this.addNewPersons(reacts, hasLayout);
+                _this.removeOldPersons(reacts);
                 if (!_this.chatRefresh.isStarted) {
                     _this.chatRefresh.startRefresh();
                 }
@@ -62,16 +53,198 @@ var Views;
                 }
             });
         };
-        Chat.prototype.createOneChatWindow = function ($cont, react, count) {
-            var $c = this.createOneChat(react);
-            var left = (count * (250 + 15));
-            $c.css("left", left + "px");
-            $cont.append($c);
-            this.appPosts(react.chatPosts, react.reactId);
-            if (react.chatPosts.length > 0) {
-                var last = _.last(react.chatPosts);
-                Chat.getChatByRectId(react.reactId).data("last", last.time);
+        Chat.getUserTitleNameTag = function (rid) {
+            var $i = $(".nchat-all .people .person[data-rid=\"" + rid + "\"]");
+            if ($i.length > 0) {
+                return $i;
             }
+            return null;
+        };
+        Chat.prototype.appPosts = function (posts, reactId) {
+            var _this = this;
+            if (posts.length > 0) {
+                var a = "t";
+            }
+            var $titleTag = Chat.getUserTitleNameTag(reactId);
+            var $msgStorage = $titleTag.find(".msg-storage");
+            var $txtCont = $(".nchat-all .messages");
+            var oldPosts = $msgStorage.find(".message").toArray();
+            var firstMsgUserId = oldPosts.length > 0 ? $(oldPosts[0]).data("uid") : null;
+            var actRid = this.getActivePerson().data("rid");
+            var ordered = _.sortBy(posts, function (p) { return p.time; });
+            ordered.forEach(function (p) {
+                var name = _this.genNameById(p.userId);
+                if (!firstMsgUserId) {
+                    firstMsgUserId = p.userId;
+                }
+                var leftTmp = firstMsgUserId === p.userId;
+                var post = _this.genPost(leftTmp, p.userId, name, p.text, p.time);
+                if (actRid === reactId) {
+                    $txtCont.append(post);
+                }
+                $msgStorage.append(post);
+            });
+            if (ordered.length > 0) {
+                var last = _.last(ordered);
+                $titleTag.data("last", last.time);
+                this.scrollToEnd();
+            }
+        };
+        Chat.prototype.scrollToEnd = function () {
+            setTimeout(function () {
+                var $txtCont = $(".nchat-all .messages");
+                var sh = $txtCont[0].scrollHeight;
+                $txtCont[0].scrollTop = sh;
+            }, 10);
+        };
+        Chat.prototype.genPost = function (leftTmp, userId, name, text, time) {
+            var context = {
+                userId: userId,
+                name: name,
+                text: text,
+                time: moment(time).format("LT")
+            };
+            var tmp = leftTmp ? this.chatMsgLeftTmp : this.chatMsgRightTmp;
+            var c = tmp(context);
+            return c;
+        };
+        Chat.prototype.genUserTitleNameTag = function (react, isActive) {
+            var _this = this;
+            var isTarget = (react.targetUserId === Views.ViewBase.currentUserId);
+            var name = isTarget ? react.askingUserName : react.targetUserName;
+            var context = {
+                name: name,
+                rid: react.reactId
+            };
+            var $person = $(this.chatTitleTagTmp(context));
+            if (isActive) {
+                $person.addClass("active");
+            }
+            this.switchPersonStatus($person, isActive);
+            var $people = $(".nchat-all .people");
+            var $actionMenuCont = $person.find(".actions-cont");
+            if (isTarget) {
+                this.targetActions($actionMenuCont);
+            }
+            else {
+                this.requestorActions($actionMenuCont);
+            }
+            $people.append($person);
+            $person.find(".name-active").click(function (e) {
+                e.preventDefault();
+                var persons = $people.find(".person").toArray();
+                persons.forEach(function (p) {
+                    var $p = $(p);
+                    _this.switchPersonStatus($p, false);
+                });
+                _this.switchPersonStatus($person, true);
+                var $msgTmpCont = $person.find(".msg-storage");
+                var $msgCont = $(".nchat-all .messages");
+                $msgCont.empty();
+                $msgCont.html($msgTmpCont.clone().html());
+                $(".nchat-all .chat-with .name").html($person.find(".name-cont .name").html());
+                _this.scrollToEnd();
+            });
+            $person.find(".actions").click(function (e) {
+                e.preventDefault();
+                $actionMenuCont.toggle();
+            });
+            $person.find(".stop").click(function (e) {
+                e.preventDefault();
+                var rid = $person.data("rid");
+                _this.exeAct(rid, "stop");
+            });
+            return $person;
+        };
+        Chat.prototype.switchPersonStatus = function ($person, isActive) {
+            var $cont = $person.find(".name-cont");
+            var $name = $cont.find(".name");
+            var $nameActive = $cont.find(".name-active");
+            if (isActive) {
+                $name.show();
+                $nameActive.hide();
+            }
+            else {
+                $name.hide();
+                $nameActive.show();
+            }
+        };
+        Chat.prototype.getActivePerson = function () {
+            var $person = $(".person.active");
+            return $person;
+        };
+        Chat.prototype.sendMessage = function () {
+            var _this = this;
+            var $person = this.getActivePerson();
+            var rid = $person.data("rid");
+            var last = $person.data("last");
+            var $msgBox = $("#msgBox");
+            var data = {
+                reactId: rid,
+                text: $msgBox.val(),
+                lastDate: last
+            };
+            Views.ViewBase.currentView.apiPost("ReactChat", data, function (newPosts) {
+                _this.appPosts(newPosts, rid);
+                $msgBox.val("");
+            });
+        };
+        Chat.prototype.createLayout = function (reacts) {
+            var _this = this;
+            var $layout = $(".nchat-all");
+            var firstReact = reacts[0];
+            var isTarget = (firstReact.targetUserId === Views.ViewBase.currentUserId);
+            var name = isTarget ? firstReact.askingUserName : firstReact.targetUserName;
+            var context = {
+                initChatName: name
+            };
+            $layout = $(this.chatLayoutTmp(context));
+            $("body").append($layout);
+            $layout.find("#msgBox").keyup(function (e) {
+                if (e.keyCode === 13) {
+                    _this.sendMessage();
+                }
+            });
+            $layout.find("#minimize").click(function (e) {
+                $layout.find(".people").toggle();
+                $layout.find(".messages").toggle();
+                $layout.find(".new-message").toggle();
+            });
+        };
+        Chat.prototype.addNewPersons = function (reacts, hasLayout) {
+            var _this = this;
+            var first = true;
+            reacts.forEach(function (r, i) {
+                _this.addNames(r);
+                var $titleTag = Chat.getUserTitleNameTag(r.reactId);
+                var exists = $titleTag != null;
+                if (!exists) {
+                    var isActive = !hasLayout && first;
+                    var $person = _this.genUserTitleNameTag(r, isActive);
+                    if (isActive) {
+                        first = false;
+                    }
+                    _this.appPosts(r.chatPosts, r.reactId);
+                    if (r.chatPosts.length > 0) {
+                        var last = _.last(r.chatPosts);
+                        Chat.getUserTitleNameTag(r.reactId).data("last", last.time);
+                    }
+                }
+            });
+        };
+        Chat.prototype.removeOldPersons = function (reacts) {
+            var persons = $(".nchat-all .persons .person").toArray();
+            persons.forEach(function (person) {
+                var $person = $(person);
+                var reactId = $person.data("rid");
+                var reactFound = _.find(reacts, function (r) {
+                    return r.reactId === reactId;
+                });
+                var wasFound = reactFound != null;
+                if (!wasFound) {
+                    $person.remove();
+                }
+            });
         };
         Chat.prototype.addNames = function (r) {
             this.addName(r.askingUserId, r.askingUserName);
@@ -92,56 +265,33 @@ var Views;
             }
             return f.name;
         };
-        Chat.prototype.createOneChat = function (react) {
+        Chat.prototype.actMenuItem = function (name, action) {
             var _this = this;
-            this.addNames(react);
-            var isTarget = (react.targetUserId === Views.ViewBase.currentUserId);
-            var name = isTarget ? react.askingUserName : react.targetUserName;
             var context = {
-                reactId: react.reactId,
+                action: action,
                 name: name
             };
-            var $c = $(this.chatWinTmp(context));
-            var $combo = $c.find(".actions");
-            Common.DropDown.registerDropDown($combo);
-            if (isTarget) {
-                this.targetActions($combo);
-            }
-            else {
-                this.requestorActions($combo);
-            }
-            $combo.find("a").click(function (e) {
+            var $i = $(this.chatActionTmp(context));
+            var $a = $i.find("a");
+            $a.click(function (e) {
                 e.preventDefault();
                 var $target = $(e.target);
                 var act = $target.data("act");
-                _this.exeAct(react.reactId, act);
+                var rid = $target.closest(".person").data("rid");
+                _this.exeAct(rid, act);
             });
-            $c.find(".send").click(function (e) {
-                e.preventDefault();
-                var txt = $c.find("textarea").val();
-                _this.sendMessage(txt, react.reactId);
-            });
-            return $c;
+            return $i;
         };
-        Chat.prototype.exeAct = function (reactId, act) {
-            var _this = this;
-            if (act === "stop") {
-                this.createStopScreen(reactId);
-            }
-            if (act === "met") {
-                this.dlg.create("Already met", "Have you really already met ?", "Cancel", "We have met", function () {
-                    _this.changeRectState(reactId, CheckinReactionState.Met);
-                });
-            }
-            if (act === "didNotMeet") {
-                this.dlg.create("Didn't meet", "We didn't meet", "Cancel", "We didn't meet", function () {
-                    _this.changeRectState(reactId, CheckinReactionState.NotMet);
-                });
-            }
+        Chat.prototype.targetActions = function ($cont) {
+            $cont.append(this.actMenuItem("We've already met", "met"));
+            $cont.append(this.actMenuItem("We didn't meet", "didNotMeet"));
+        };
+        Chat.prototype.requestorActions = function ($cont) {
+            $cont.append(this.actMenuItem("We didn't meet", "didNotMeet"));
         };
         Chat.prototype.createStopScreen = function (reactId) {
             var _this = this;
-            var $cont = Chat.getChatByRectId(reactId);
+            var $cont = $(".nchat-all .messages");
             var $c = $(this.stopWinTmp());
             $cont.html($c);
             $cont.find(".notInt").click(function (e) {
@@ -164,72 +314,37 @@ var Views;
             });
         };
         Chat.prototype.changeRectState = function (reactId, state, extraVals) {
+            var _this = this;
             if (extraVals === void 0) { extraVals = null; }
             var prms = { id: reactId, state: state };
             if (extraVals) {
                 prms = $.extend(prms, extraVals);
             }
             Views.ViewBase.currentView.apiPut("CheckinReact", prms, function () {
-                var $cont = Chat.getChatByRectId(reactId);
-                $cont.remove();
+                var $person = Chat.getUserTitleNameTag(reactId);
+                $person.remove();
+                var $actPerson = _this.getActivePerson();
+                var isJustActive = $person.data("rid") === reactId;
+                if (isJustActive) {
+                    $(".nchat-all .messages").empty();
+                }
             });
         };
-        Chat.prototype.targetActions = function ($combo) {
-            $combo.find("ul").append(this.actMenuItem("Stop conversation", "stop"));
-            $combo.find("ul").append(this.actMenuItem("We've already met", "met"));
-            $combo.find("ul").append(this.actMenuItem("We didn't meet", "didNotMeet"));
-        };
-        Chat.prototype.requestorActions = function ($combo) {
-            $combo.find("ul").append(this.actMenuItem("Stop conversation", "stop"));
-            $combo.find("ul").append(this.actMenuItem("We didn't meet", "didNotMeet"));
-        };
-        Chat.prototype.actMenuItem = function (name, action) {
-            return $("<li><a data-act=\"" + action + "\" href=\"#\">" + name + "</a></li>");
-        };
-        Chat.getChatByRectId = function (reactId) {
-            return $("#chat_" + reactId);
-        };
-        Chat.prototype.sendMessage = function (txt, reactId) {
+        Chat.prototype.exeAct = function (reactId, act) {
             var _this = this;
-            var data = {
-                reactId: reactId,
-                text: txt,
-                lastDate: Chat.getChatByRectId(reactId).data("last")
-            };
-            Views.ViewBase.currentView.apiPost("ReactChat", data, function (newPosts) {
-                _this.appPosts(newPosts, reactId);
-                var chatWin = Chat.getChatByRectId(reactId);
-                chatWin.find("textarea").val("");
-            });
-        };
-        Chat.prototype.appPosts = function (posts, reactId) {
-            var _this = this;
-            var chatWin = Chat.getChatByRectId(reactId);
-            var $cont = chatWin.find(".chat-texts");
-            var order = _.sortBy(posts, function (p) { return p.time; });
-            order.forEach(function (p) {
-                var name = _this.genNameById(p.userId);
-                var $p = _this.genPost(p.userId, name, p.text);
-                $cont.append($p);
-            });
-            if (order.length > 0) {
-                var last = _.last(order);
-                console.log("updating last.time: " + last.time);
-                chatWin.data("last", last.time);
-                setTimeout(function () {
-                    var sh = $cont[0].scrollHeight;
-                    $cont[0].scrollTop = sh;
-                }, 100);
+            if (act === "stop") {
+                this.createStopScreen(reactId);
             }
-        };
-        Chat.prototype.genPost = function (userId, name, text) {
-            var context = {
-                userId: userId,
-                name: name,
-                text: text
-            };
-            var $c = $(this.chatRowTmp(context));
-            return $c;
+            if (act === "met") {
+                this.dlg.create("Already met", "Have you really already met ?", "Cancel", "We have met", function () {
+                    _this.changeRectState(reactId, CheckinReactionState.Met);
+                });
+            }
+            if (act === "didNotMeet") {
+                this.dlg.create("Didn't meet", "We didn't meet", "Cancel", "We didn't meet", function () {
+                    _this.changeRectState(reactId, CheckinReactionState.NotMet);
+                });
+            }
         };
         return Chat;
     }());

@@ -9,6 +9,7 @@ var Views;
         __extends(TravelBView, _super);
         function TravelBView() {
             _super.apply(this, arguments);
+            this.hereAndNowTemplate = this.registerTemplate("hereAndNowTabCont-template");
             this.nowTabConst = "nowTab";
             this.cityTabConst = "cityTab";
             this.emptyProps = [];
@@ -21,7 +22,6 @@ var Views;
                 _this.displayData();
             };
             this.regEvents();
-            this.hereAndNowTemplate = this.registerTemplate("hereAndNowTabCont-template");
             this.createMainTab();
             this.createMap();
             var status = new TravelB.Status();
@@ -105,6 +105,9 @@ var Views;
             prms.push(["fromDate", TravelB.DateUtils.myDateToTrans(this.filter.filterDateFrom)]);
             prms.push(["toDate", TravelB.DateUtils.myDateToTrans(this.filter.filterDateTo)]);
             Views.ViewBase.currentView.apiGet("CheckinCity", prms, function (checkins) {
+                if (_this.mapCheckins) {
+                    _this.mapCheckins.clearMarkers();
+                }
                 _this.cityFncs.genCheckinsList(checkins);
                 _this.mapCheckins.genCheckins(checkins, CheckinType.City);
             });

@@ -272,23 +272,70 @@
 
 
 <script id="checkinCityItem-template" type="text/x-handlebars-template">
+    
+    <div class="person" data-uid="{{id}}">
+        <div class="data">
 
-    <div class="userItem" data-uid="{{id}}" style="padding: 6px;">
-        <div style="border-bottom: 1px dotted black"><b>{{fromDate}} - {{toDate}}</b></div>
-        <span class="thumbnail">
-            <img src="/PortalUser/ProfilePicture_xs/{{id}}">
-        </span>
-        <a href="/PortalUser/Detail/{{id}}">{{name}}  </a>, {{age}} years
-        <div>            
-            <b>Waiting for: </b>{{waitingFor}} + {{multiStr}}
-            <span> ,</span>
-            <b>Wants: </b>{{wants}}            
+            <div class="photo-cont">
+
+                <div class="photo-all">
+                    <img class="photo" src="/PortalUser/ProfilePicture_s/{{id}}" />
+                    <img class="c-flag" src="/images/n/flags/{{homeCountry}}.svg" />
+
+                    {{#if livesOtherCountry}}
+                    <img class="c-flag-other" src="/images/n/flags/{{livesCountry}}.svg" />
+                    {{/if}}
+                </div>
+
+            </div>
+            <div class="cont">
+                <div class="first">
+                    <a href="/PortalUser/Detail/{{id}}">{{name}}</a> - <span class="years">{{age}}</span> years
+                    {{#each languages}}
+                    <img class="flag" src="/images/n/flags/{{this}}.svg" />
+                    {{/each}}
+                </div>
+                <div class="second">
+                    <span>{{fromDate}} - {{toDate}}</span>
+
+                    {{#if wmMan}}
+                    <span class="g-icon icon-male" title="want meet man"></span>
+                    {{/if}}
+
+                    {{#if wmWoman}}
+                    <span class="g-icon icon-female" title="want meet woman"></span>
+                    {{/if}}
+
+                    {{#if wmWomanGroup}}
+                    <span class="g-icon g-icon-group" title="want meet group of women"><span class="g-icon icon-female"></span><span class="g-icon icon-female"></span></span>
+                    {{/if}}
+
+                    {{#if wmManGroup}}
+                    <span class="g-icon g-icon-group" title="want meet group of men"><span class="g-icon icon-male"></span><span class="g-icon icon-male"></span></span>
+                    {{/if}}
+
+                    {{#if wmMixGroup}}
+                    <span class="g-icon g-icon-group" title="want meet gender mixed group"><span class="g-icon icon-female"></span><span class="g-icon icon-male"></span></span>
+                    {{/if}}
+
+                    {{#each wantDos}}
+                    <span class="itag">{{this}}</span>
+                    {{/each}}
+                </div>
+
+
+
+            </div>
+            <div class="btn-cont">
+                <a class="chat-btn" href="#"><span class="icon-bubbles2"></span><br /><span class="txt">Message</span></a>
+            </div>
+
         </div>
-        <div style="border: 1px solid black">
-            {{message}}
-        </div>
-        <div>
-            <button class="sendMsg">Send message</button>
+        <div class="message-all">
+            <div class="pointer"></div>
+            <div class="message">
+                {{message}}
+            </div>
         </div>
     </div>
     
@@ -416,40 +463,6 @@
 
 
 
-<script id="chatRow-template" type="text/x-handlebars-template">
-
-    <div class="chat-post">
-        <b>{{name}}</b>
-        <br />
-        <span class="thumbnail">
-            <img src="/PortalUser/ProfilePicture_xs/{{userId}}">
-        </span>
-        <br />
-        {{text}}
-    </div>
-
-</script>
-
-<script id="chatWin-template" type="text/x-handlebars-template">
-
-    <div data-id="{{reactId}}" id="chat_{{reactId}}" class="chat-cont">
-        
-        <div class="dropdown actions">
-            <span class="selected">Choose action</span>                        
-            <ul>
-                
-            </ul>
-        </div>
-
-        <div class="chat-title"><b>{{name}}</b>   <a class="chat-min" href="#">_</a></div>
-        <div class="chat-texts"></div>
-        <div class="chat-message">
-            <textarea></textarea>
-            <button class="send">S</button>
-        </div>
-    </div>
-
-</script>
 
 <script id="notif-base-template" type="text/x-handlebars-template">
 
@@ -606,3 +619,107 @@
         </table>
     </div>
     </script>
+
+
+@*chat templates*@
+
+<script id="chat-action-template" type="text/x-handlebars-template">
+    <div class="row">
+        <a href="#" data-act="{{action}}">{{name}}</a>
+    </div>
+</script>
+
+    <script id="chat-person-title-template" type="text/x-handlebars-template">
+
+        <div class="person" data-rid="{{rid}}">
+
+            <div class="wrap">
+                <div class="photo-cont">
+                    <div class="thumb-cont border">
+                        <img src="/PortalUser/ProfilePicture_s/{{id}}" />
+                    </div>
+                </div>
+                <div class="name-cont">
+
+                    <span class="name" style="display: none">{{name}}</span>
+                    <a href="#" class="name-active" style="display: none">{{name}}</a>
+
+                </div>
+                <div class="icon-cont">
+                    <a href="#" title="user actions" class="icon-auction actions"></a>
+                    <div class="actions-cont" style="display: none">
+                        
+                    </div>
+                </div>
+                <div class="icon-cont">
+                    <a href="#" title="close/stop conversation" class="icon-cross stop"></a>
+                </div>
+            </div>
+
+            <div class="msg-storage" style="display: none;"></div>
+        </div>
+
+    </script>
+
+    <script id="chat-msg-l-template" type="text/x-handlebars-template">
+
+        <div class="message" data-uid="{{userId}}">
+            <div class="data l">
+                <span class="name">{{name}}</span>
+                <span class="time">{{time}}</span>
+            </div>
+            <div class="tbl">
+                <div class="photo">
+                    <div class="thumb-cont xs border">
+                        <img src="/PortalUser/ProfilePicture_xs/{{userId}}" />
+                    </div>
+                </div>
+                <div class="txt padding-r">
+                    <span class="msg">{{text}}</span>
+                </div>
+            </div>
+        </div>
+
+    </script>
+
+    <script id="chat-msg-r-template" type="text/x-handlebars-template">
+
+        <div class="message" data-uid="{{userId}}">
+            <div class="data r">
+                <span class="name">{{name}}</span>
+                <span class="time">{{time}}</span>
+            </div>
+            <div class="tbl">
+                <div class="txt r padding-l">
+                    <span class="msg">{{text}}</span>
+                </div>
+                <div class="photo">
+                    <div class="thumb-cont xs border">
+                        <img src="/PortalUser/ProfilePicture_xs/{{userId}}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </script>
+
+    <script id="chat-layout-template" type="text/x-handlebars-template">
+
+        <div class="nchat-all">
+            <div class="service">
+                <span class="chat-with">Chat with <span class="name">{{initChatName}}</span></span>
+                <a id="minimize" class="min icon-minus" title="minimize" href="#"></a>
+            </div>
+
+            <div class="people"></div>
+
+            <div class="messages"></div>
+
+            <div class="new-message">
+                <input id="msgBox" placeholder="Type a message..." type="text" />
+            </div>
+
+        </div>
+
+    </script>
+

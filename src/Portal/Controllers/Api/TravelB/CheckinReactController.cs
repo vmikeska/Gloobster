@@ -51,7 +51,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                     var askingUser1 = users1.FirstOrDefault(u => u.User_id == item.AskingUser_id);
                     var targetUser1 = users1.FirstOrDefault(u => u.User_id == item.TargetUser_id);
 
-                    var res = Convert(item, askingUser1, targetUser1);
+                    CheckinReactionResponse res = Convert(item, askingUser1, targetUser1);
 
                     return new ObjectResult(res);
                 }

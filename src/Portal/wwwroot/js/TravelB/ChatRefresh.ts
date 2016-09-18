@@ -28,19 +28,19 @@ module Views {
 					this.refreshCycleFinished = false;
 				}
 
-				var chatWins = $(".chat-cont").toArray();
+				var persons = $(".nchat-all .people .person").toArray();
 
-				if (chatWins.length === 0) {
+				if (persons.length === 0) {
 					this.stopRefresh();
 				}
 
-				var loadedIds = _.map(chatWins, (w) => { return $(w).data("id"); });
+				var loadedIds = _.map(persons, (p) => { return $(p).data("rid"); });
 						
 				var prms = [];
 				var lastDate = null;
 				loadedIds.forEach((rid) => {
 					prms.push(["reactIds", rid]);
-					var ld = Chat.getChatByRectId(rid).data("last");
+					var ld = Chat.getUserTitleNameTag(rid).data("last");
 
 					if (lastDate === null) {
 						lastDate = ld;

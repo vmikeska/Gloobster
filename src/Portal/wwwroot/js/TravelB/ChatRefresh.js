@@ -28,16 +28,16 @@ var Views;
                 else {
                     _this.refreshCycleFinished = false;
                 }
-                var chatWins = $(".chat-cont").toArray();
-                if (chatWins.length === 0) {
+                var persons = $(".nchat-all .people .person").toArray();
+                if (persons.length === 0) {
                     _this.stopRefresh();
                 }
-                var loadedIds = _.map(chatWins, function (w) { return $(w).data("id"); });
+                var loadedIds = _.map(persons, function (p) { return $(p).data("rid"); });
                 var prms = [];
                 var lastDate = null;
                 loadedIds.forEach(function (rid) {
                     prms.push(["reactIds", rid]);
-                    var ld = Views.Chat.getChatByRectId(rid).data("last");
+                    var ld = Views.Chat.getUserTitleNameTag(rid).data("last");
                     if (lastDate === null) {
                         lastDate = ld;
                     }

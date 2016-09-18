@@ -285,7 +285,7 @@
         .meeting-points{            
             display: table-cell;
             width: 29%;            
-            height: 300px;
+            /*height: 300px;*/
 
             .meeting-point{
                 position: relative;
@@ -350,7 +350,7 @@
         .people{
             
             display: table-cell;
-            height: 300px;
+            /*height: 300px;*/
             width: 68%;
 
             .person{
@@ -478,6 +478,18 @@
                 
             }
         }
+
+        @include below-width(959){
+            .meeting-points{
+                display: block;
+                width: 100%;
+            }
+            .people{
+                display: block;
+                width: 100%;
+                
+            }
+        }
     }
 
     .nchat-all{
@@ -599,6 +611,8 @@
                     display: table-cell;
                     vertical-align: middle;
 
+                    position: relative;
+
                     .actions{                                 
                         font-size: 32px;
                         color: $dark-blue;
@@ -608,7 +622,24 @@
                         }
                     }
 
-                    .close{                           
+                    .actions-cont{
+                        position: absolute;
+                        right: 5px;
+                        top: 30px;
+
+                        width: 200px;
+                        border: 1px solid $border-color;
+                        border-radius: 4px;
+
+                        background-color: white;
+
+                        .row{
+                            border-bottom: 1px solid $border-color;
+                            padding: 5px;
+                        }
+                    }
+
+                    .stop{                           
                         font-size: 16px;
                         color: $dark-blue;
 

@@ -14,8 +14,8 @@ module TravelB {
 			
 		public genCheckinsList(checkins) {
 				
-			var $listCont = $("#theCont");
-			$listCont.html("");
+				var $listCont = $(".results .people");
+				$listCont.find(".person").remove();
 
 			var d = new Date();
 			var curYear = d.getFullYear();
@@ -24,19 +24,30 @@ module TravelB {
 			var selFilter = v.filter.selectedFilter;
 
 			checkins.forEach((p) => {
-
+					
 					var context = {
-					cid: p.id,
-					id: p.userId,
-					name: p.displayName,
-					age: curYear - p.birthYear,
-					waitingFor: Views.StrOpers.getGenderStr(p.wantMeet),
-					multiStr: Views.StrOpers.getMultiStr(p.multiPeopleAllowed),
-					wants: Views.StrOpers.getActivityStr(p.wantDo),
-					fromDate: DateUtils.myDateToStr(p.fromDate),
-					toDate: DateUtils.myDateToStr(p.toDate),
-					message: p.message
-				};
+						cid: p.id,
+						id: p.userId,
+						name: p.displayName,
+						age: curYear - p.birthYear,
+
+						languages: Views.StrOpers.langsToFlags(p.languages, p.homeCountry),
+						homeCountry: p.homeCountry,
+						livesCountry: p.livesCountry,
+						livesOtherCountry: p.homeCountry !== p.livesCountry,
+
+						wmMan: ((p.wantMeet === WantMeet.Man) || (p.wantMeet === WantMeet.All)),
+						wmWoman: ((p.wantMeet === WantMeet.Woman) || (p.wantMeet === WantMeet.All)),
+						wmWomanGroup: ((p.wantMeet === WantMeet.Woman) && p.multiPeopleAllowed),
+						wmManGroup: ((p.wantMeet === WantMeet.Man) && p.multiPeopleAllowed),
+						wmMixGroup: ((p.wantMeet === WantMeet.All) && p.multiPeopleAllowed),
+
+						wantDos: Views.StrOpers.getActivityStrArray(p.wantDo),
+						
+						fromDate: DateUtils.myDateToStr(p.fromDate),
+						toDate: DateUtils.myDateToStr(p.toDate),
+						message: p.message
+					};
 
 				var tmp = _.contains(selFilter,"mine") ? this.checkinMgmtTemplate : this.checkinTemplate;
 

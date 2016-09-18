@@ -3002,7 +3002,7 @@ footer {
   .travelb-home .results .meeting-points {
     display: table-cell;
     width: 29%;
-    height: 300px; }
+    /*height: 300px;*/ }
     .travelb-home .results .meeting-points .meeting-point {
       position: relative;
       padding-left: 67px;
@@ -3039,7 +3039,7 @@ footer {
             color: #005476; }
   .travelb-home .results .people {
     display: table-cell;
-    height: 300px;
+    /*height: 300px;*/
     width: 68%; }
     .travelb-home .results .people .person {
       position: relative;
@@ -3118,6 +3118,13 @@ footer {
         background-color: white;
         border-radius: 15px;
         padding: 15px; }
+  @media screen and (max-width: 959px) {
+    .travelb-home .results .meeting-points {
+      display: block;
+      width: 100%; }
+    .travelb-home .results .people {
+      display: block;
+      width: 100%; } }
   .travelb-home .nchat-all {
     border: 1px solid gray;
     position: fixed;
@@ -3190,16 +3197,28 @@ footer {
             font-weight: bold; }
         .travelb-home .nchat-all .people .person .icon-cont {
           display: table-cell;
-          vertical-align: middle; }
+          vertical-align: middle;
+          position: relative; }
           .travelb-home .nchat-all .people .person .icon-cont .actions {
             font-size: 32px;
             color: #005476; }
             .travelb-home .nchat-all .people .person .icon-cont .actions:hover {
               color: darkred; }
-          .travelb-home .nchat-all .people .person .icon-cont .close {
+          .travelb-home .nchat-all .people .person .icon-cont .actions-cont {
+            position: absolute;
+            right: 5px;
+            top: 30px;
+            width: 200px;
+            border: 1px solid gray;
+            border-radius: 4px;
+            background-color: white; }
+            .travelb-home .nchat-all .people .person .icon-cont .actions-cont .row {
+              border-bottom: 1px solid gray;
+              padding: 5px; }
+          .travelb-home .nchat-all .people .person .icon-cont .stop {
             font-size: 16px;
             color: #005476; }
-            .travelb-home .nchat-all .people .person .icon-cont .close:hover {
+            .travelb-home .nchat-all .people .person .icon-cont .stop:hover {
               color: darkred; }
         @media screen and (max-width: 640px) {
           .travelb-home .nchat-all .people .person .photo-cont .thumb-cont {

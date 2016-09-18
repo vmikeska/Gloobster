@@ -5,7 +5,7 @@
 
 		private mapCheckins: TravelB.MapCheckins;
 
-		private hereAndNowTemplate;
+		private hereAndNowTemplate = this.registerTemplate("hereAndNowTabCont-template");
 
 		private tabs;
 		private nowFncs: TravelB.NowTab;
@@ -38,9 +38,7 @@
 		  }
 
 			this.regEvents();
-
-			this.hereAndNowTemplate = this.registerTemplate("hereAndNowTabCont-template");
-
+				
 			this.createMainTab();
 
 			this.createMap();
@@ -93,7 +91,7 @@
 			this.tabs.create(`<div class="btn-cont"></div>`);
 		}
 
-		private createCityCheckinsFnc() {
+		private createCityCheckinsFnc() {			
 			this.filter.initCity();
 
 			this.cityFncs = new TravelB.CityTab();
@@ -153,6 +151,9 @@
 			prms.push(["toDate", TravelB.DateUtils.myDateToTrans(this.filter.filterDateTo)]);
 				
 			ViewBase.currentView.apiGet("CheckinCity", prms, (checkins) => {
+					if (this.mapCheckins) {
+							this.mapCheckins.clearMarkers();
+					}
 				this.cityFncs.genCheckinsList(checkins);
 				this.mapCheckins.genCheckins(checkins, CheckinType.City);
 			});
