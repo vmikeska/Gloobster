@@ -502,6 +502,9 @@ footer {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
+.icon-auction:before {
+  content: "\e91c"; }
+
 .icon-male:before {
   content: "\e91a"; }
 
@@ -523,6 +526,9 @@ footer {
 .icon-camera:before {
   content: "\e915"; }
 
+.icon-envelop:before {
+  content: "\e945"; }
+
 .icon-location:before {
   content: "\e947"; }
 
@@ -534,6 +540,9 @@ footer {
 
 .icon-users:before {
   content: "\e972"; }
+
+.icon-user-check:before {
+  content: "\e975"; }
 
 .icon-user-tie:before {
   content: "\e976"; }
@@ -2808,7 +2817,25 @@ footer {
     text-align: center; }
 
 .travelb-home {
-  text-align: left; }
+  text-align: left;
+  /*.notif {
+        border: 1px solid black;
+        width: 600px;
+        height: 50px;
+    }
+
+    .notif .cont {
+        width: 350px;
+        height: 50px;
+        float: left;
+        
+    }
+
+    .notif .acts {
+        width: 250px;
+        height: 50px;
+        float: right;
+    }*/ }
   .travelb-home textarea {
     border: 1px solid #3298C1; }
   .travelb-home .info-block-bck {
@@ -2862,6 +2889,41 @@ footer {
           width: 60%;
           width: auto;
           padding: 10px; }
+  .travelb-home .notifs .notif {
+    margin-top: 8px; }
+    .travelb-home .notifs .notif .notif-body {
+      display: table;
+      border: 1px solid #F56E12;
+      border-radius: 2px; }
+      .travelb-home .notifs .notif .notif-body .ico {
+        display: table-cell;
+        vertical-align: middle;
+        font-size: 40px;
+        color: #F56E12;
+        padding-right: 8px;
+        padding-left: 8px; }
+      .travelb-home .notifs .notif .notif-body .cont {
+        display: table-cell;
+        vertical-align: top;
+        padding-right: 10px; }
+      .travelb-home .notifs .notif .notif-body .acts {
+        display: table-cell;
+        vertical-align: middle; }
+        .travelb-home .notifs .notif .notif-body .acts .act-btn {
+          margin: 10px;
+          white-space: nowrap;
+          display: inline-block; }
+          .travelb-home .notifs .notif .notif-body .acts .act-btn.icon-user-check {
+            color: #3DA33D;
+            font-size: 26px; }
+          .travelb-home .notifs .notif .notif-body .acts .act-btn.icon-cross {
+            color: darkred;
+            font-size: 22px; }
+          .travelb-home .notifs .notif .notif-body .acts .act-btn .lato {
+            font-size: 24px;
+            color: black; }
+          .travelb-home .notifs .notif .notif-body .acts .act-btn:hover {
+            text-decoration: underline; }
   .travelb-home .status-row {
     /*border: 1px solid red;*/
     margin-top: 15px;
@@ -2877,6 +2939,11 @@ footer {
     .travelb-home .status-row .place .edit {
       position: absolute;
       right: 0;
+      font-size: 24px;
+      color: #005476; }
+    .travelb-home .status-row .place .delete {
+      position: absolute;
+      right: 28px;
       font-size: 24px;
       color: #005476; }
     .travelb-home .status-row .data .item {
@@ -2956,8 +3023,7 @@ footer {
       .travelb-home .results .meeting-points .meeting-point .btn-cont {
         position: absolute;
         right: 0;
-        top: 5px;
-        /*width: 90px;*/ }
+        top: 5px; }
         .travelb-home .results .meeting-points .meeting-point .btn-cont a {
           text-align: center;
           display: inline-block;
@@ -3002,14 +3068,18 @@ footer {
               right: -11px;
               width: 22px;
               height: 22px; }
+            .travelb-home .results .people .person .data .photo-cont .photo-all .c-flag-other {
+              position: absolute;
+              top: -11px;
+              right: 7px;
+              width: 22px;
+              height: 22px; }
         .travelb-home .results .people .person .data .cont {
           display: table-cell;
           vertical-align: top; }
           .travelb-home .results .people .person .data .cont .first .flag {
             width: 18px;
-            height: 18px;
-            /*border-radius: 50%;
-                                border: 1px solid black;*/ }
+            height: 18px; }
         .travelb-home .results .people .person .data .btn-cont {
           display: table-cell;
           vertical-align: top;
@@ -3048,6 +3118,168 @@ footer {
         background-color: white;
         border-radius: 15px;
         padding: 15px; }
+  .travelb-home .nchat-all {
+    border: 1px solid gray;
+    position: fixed;
+    bottom: 0;
+    left: calc(50% - 320px);
+    width: 640px;
+    background-color: white;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    z-index: 99999; }
+    @media screen and (max-width: 640px) {
+      .travelb-home .nchat-all {
+        left: 0;
+        width: 100%; } }
+    .travelb-home .nchat-all .tbl {
+      display: table;
+      width: 100%; }
+    .travelb-home .nchat-all .service {
+      position: relative;
+      height: 24px;
+      background-color: #005476;
+      text-align: right;
+      padding-right: 8px;
+      color: white; }
+      .travelb-home .nchat-all .service .chat-with {
+        position: absolute;
+        left: 5px; }
+      .travelb-home .nchat-all .service .min {
+        display: inline-block;
+        vertical-align: top;
+        line-height: 24px;
+        font-size: 14px;
+        font-weight: bold;
+        color: white; }
+        .travelb-home .nchat-all .service .min:hover {
+          color: #65BDD7; }
+    .travelb-home .nchat-all .people {
+      border-bottom: 1px solid gray; }
+      .travelb-home .nchat-all .people .person {
+        display: inline-block;
+        background-color: #ccedf5;
+        border-radius: 4px;
+        margin-top: 4px;
+        margin-left: 4px; }
+        .travelb-home .nchat-all .people .person .wrap {
+          padding-left: 4px;
+          padding-top: 4px;
+          padding-right: 4px;
+          display: table; }
+        .travelb-home .nchat-all .people .person .photo-cont {
+          display: table-cell;
+          vertical-align: middle; }
+          .travelb-home .nchat-all .people .person .photo-cont .thumb-cont {
+            box-sizing: border-box;
+            width: 40px;
+            height: 40px; }
+            .travelb-home .nchat-all .people .person .photo-cont .thumb-cont img {
+              width: 40px;
+              height: 40px; }
+        .travelb-home .nchat-all .people .person .name-cont {
+          display: table-cell;
+          vertical-align: middle;
+          padding-left: 4px;
+          padding-right: 4px; }
+          .travelb-home .nchat-all .people .person .name-cont .name-active {
+            font-weight: bold; }
+            .travelb-home .nchat-all .people .person .name-cont .name-active:hover {
+              color: #005476; }
+          .travelb-home .nchat-all .people .person .name-cont .name {
+            font-weight: bold; }
+        .travelb-home .nchat-all .people .person .icon-cont {
+          display: table-cell;
+          vertical-align: middle; }
+          .travelb-home .nchat-all .people .person .icon-cont .actions {
+            font-size: 32px;
+            color: #005476; }
+            .travelb-home .nchat-all .people .person .icon-cont .actions:hover {
+              color: darkred; }
+          .travelb-home .nchat-all .people .person .icon-cont .close {
+            font-size: 16px;
+            color: #005476; }
+            .travelb-home .nchat-all .people .person .icon-cont .close:hover {
+              color: darkred; }
+        @media screen and (max-width: 640px) {
+          .travelb-home .nchat-all .people .person .photo-cont .thumb-cont {
+            width: 26px;
+            height: 26px; }
+            .travelb-home .nchat-all .people .person .photo-cont .thumb-cont img {
+              width: 26px;
+              height: 26px; } }
+    .travelb-home .nchat-all .messages {
+      height: 240px;
+      overflow-y: scroll;
+      border-bottom: 1px solid gray; }
+      .travelb-home .nchat-all .messages .message {
+        margin-top: 4px; }
+        .travelb-home .nchat-all .messages .message .data {
+          font-size: 16px;
+          padding-left: 5px;
+          padding-right: 5px; }
+          .travelb-home .nchat-all .messages .message .data.l {
+            text-align: left; }
+          .travelb-home .nchat-all .messages .message .data.r {
+            text-align: right; }
+          .travelb-home .nchat-all .messages .message .data .name {
+            font-weight: bold; }
+          .travelb-home .nchat-all .messages .message .data .time {
+            color: dimgray; }
+        .travelb-home .nchat-all .messages .message .padding-r {
+          padding-right: 35px; }
+        .travelb-home .nchat-all .messages .message .padding-l {
+          padding-left: 35px; }
+        .travelb-home .nchat-all .messages .message .photo {
+          display: table-cell;
+          padding: 3px;
+          vertical-align: top;
+          width: 32px; }
+        .travelb-home .nchat-all .messages .message .txt {
+          display: table-cell;
+          vertical-align: top; }
+          .travelb-home .nchat-all .messages .message .txt.r {
+            text-align: right; }
+          .travelb-home .nchat-all .messages .message .txt .msg {
+            display: inline-block;
+            background-color: #f2f2f2;
+            border-radius: 6px;
+            padding: 4px;
+            font-size: 16px; }
+    .travelb-home .nchat-all .new-message {
+      /*.txt{
+                display: table-cell;
+                vertical-align: top;
+                height: 60px;
+
+                textarea{
+                    resize: none;                    
+                    height: 60px;
+                    border-radius:0;
+                }
+            }
+
+            .btn{
+                display: table-cell;
+                vertical-align: top;
+                height: 60px;
+                width: 60px;
+
+                a{
+                height: 50px;
+                width: 50px;    
+                    display: inline-block;
+                    padding: 5px;
+                    text-decoration: none;
+                    text-align: center;
+                    color: white;
+                    background-color: $light-blue;
+                }
+            }*/ }
+      .travelb-home .nchat-all .new-message input {
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 16px; }
   .travelb-home .wantDosMain .dataCont {
     min-height: 40px;
     border-bottom: 1px solid black;
@@ -3074,18 +3306,6 @@ footer {
     height: 30px;
     border-top: 1px solid black;
     font-size: 20px; }
-  .travelb-home .notif {
-    border: 1px solid black;
-    width: 600px;
-    height: 50px; }
-  .travelb-home .notif .cont {
-    width: 350px;
-    height: 50px;
-    float: left; }
-  .travelb-home .notif .acts {
-    width: 250px;
-    height: 50px;
-    float: right; }
   .travelb-home .myTabs {
     width: 100%; }
   .travelb-home .myTab {

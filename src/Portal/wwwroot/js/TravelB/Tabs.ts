@@ -75,14 +75,10 @@ module TravelB {
 
 		private activeCls = "active";
 
-		private $cont;
-		private tabGroup;
-		private height;
+		private $cont;		
 
-		constructor($cont, tabGroup, height) {
-			this.$cont = $cont;
-			this.tabGroup = tabGroup;
-			this.height = height;
+		constructor($cont) {
+			this.$cont = $cont;			
 		}
 
 		private tabs = [];
@@ -112,7 +108,6 @@ module TravelB {
 				var $t = $(this.btnTemplate);
 				$t.html(t.text);
 				$t.attr("id", t.id);
-			$t.addClass(this.tabGroup);
 				
 			if (this.isFirst) {
 					$t.addClass(this.activeCls);
@@ -132,7 +127,7 @@ module TravelB {
 
 				var $target = $(e.target);
 
-				$(`.${this.tabGroup}`).removeClass(this.activeCls);
+				this.$cont.children().removeClass(this.activeCls);
 				$target.addClass(this.activeCls);
 				this.activeTabId = $target.attr("id");
 				t.callback(t.id);

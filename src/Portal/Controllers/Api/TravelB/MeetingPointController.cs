@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Gloobster.Database;
@@ -8,7 +9,9 @@ using Microsoft.AspNet.Mvc;
 using MongoDB.Bson;
 using Serilog;
 using System.Linq;
+using FourSquare.SharpSquare.Entities;
 using Gloobster.Common;
+using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
 using Gloobster.Entities;
 using Gloobster.DomainModels.TravelB;
@@ -17,9 +20,13 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 {
     public class MeetingPointController : BaseApiController
     {
-        public MeetingPointController(ILogger log, IDbOperations db) : base(log, db)
-        {
+        public IFoursquareService FoursquareSvc;
+        public IYelpSearchService YelpSvc;
 
+        public MeetingPointController(IYelpSearchService yelpSvc, IFoursquareService fourSvc, ILogger log, IDbOperations db) : base(log, db)
+        {
+            FoursquareSvc = fourSvc;
+            YelpSvc = yelpSvc;
         }
 
         [HttpPost]
@@ -53,19 +60,63 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         [HttpGet]
         public async Task<IActionResult> Get(MeetingPointsQueryRequest req)
         {
-            var result = new List<MeetingPointReqRes>();
+            var results = new List<MeetingPointReqRes>();
 
             if (req.all)
             {
                 var list = DB.List<MeetingPointsEntity>();
-                result = list.Select(Convert).ToList();
+                results = list.Select(Convert).ToList();
             }
             else
             {
-                result = GetMpsInRect(req);
+                results = GetMpsInRect(req);
+
+                foreach (var result in results)
+                {
+                    result.photoUrl = GetImgUrl(result.type, result.sourceId, 60);
+                }
             }
 
-            return new ObjectResult(result);
+            return new ObjectResult(results);
+        }
+
+        public string GetImgUrl(SourceType sourceType, string sourceId, int width)
+        {
+            try
+            {
+                if (sourceType == SourceType.S4)
+                {
+                    var prms = new Dictionary<string, string>
+                    {
+                        {"limit", "1"}
+                    };
+                    
+                    List<Photo> response = FoursquareSvc.Client.GetVenuePhotos(sourceId, prms);
+
+                    if (response == null || !response.Any())
+                    {
+                        return null;
+                    }
+
+                    var photo = response.First();
+                    var url = $"{photo.prefix}width{width}{photo.suffix}";
+                    return url;
+                }
+
+                if (sourceType == SourceType.Yelp)
+                {
+                    var business = YelpSvc.GetById(sourceId);
+                    return business.image_url;
+                }
+
+                return null;
+            }
+            catch (Exception exc)
+            {
+
+
+                return null;
+            }
         }
 
         private List<MeetingPointReqRes> GetMpsInRect(MeetingPointsQueryRequest req)
@@ -125,5 +176,6 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         public SourceType type { get; set; }
         public string text { get; set; }
         public LatLng coord { get; set; }
+        public string photoUrl { get; set; }
     }
 }

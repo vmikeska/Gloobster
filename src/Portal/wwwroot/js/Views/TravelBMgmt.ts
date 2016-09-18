@@ -5,7 +5,8 @@
 			constructor() {
 				super();
 
-				this.initCombo();
+				this.initCityCombo();
+				this.initPlaceCombo();
 				this.genMP();
 			}
 
@@ -19,15 +20,30 @@
 					});
 			}
 
-			private initCombo() {
+			private initCityCombo() {
+					var c = new Common.PlaceSearchConfig();
+					c.providers = "2";
+					c.selOjb = $("#city");
+					c.minCharsToSearch = 1;
+					c.clearAfterSearch = false;
+
+					var combo = new Common.PlaceSearchBox(c);
+					combo.onPlaceSelected = (newPlaceRequest, clickedPlaceObj) => {
+						var c = clickedPlaceObj.Coordinates;
+						this.placeCombo.setCoordinates(c.Lat, c.Lng);
+					}
+			}
+
+			private placeCombo: Common.PlaceSearchBox;
+			private initPlaceCombo() {
 					var c = new Common.PlaceSearchConfig();
 					c.providers = "1,4";
 					c.selOjb = $("#place");
 					c.minCharsToSearch = 1;
 					c.clearAfterSearch = true;
 
-					var combo = new Common.PlaceSearchBox(c);
-					combo.onPlaceSelected = (newPlaceRequest, clickedPlaceObj) => {							
+					this.placeCombo = new Common.PlaceSearchBox(c);
+					this.placeCombo.onPlaceSelected = (newPlaceRequest, clickedPlaceObj) => {							
 							this.addMeetingPoint(clickedPlaceObj.SourceId, clickedPlaceObj.SourceType, clickedPlaceObj.Name, clickedPlaceObj.Coordinates);
 					}
 			}

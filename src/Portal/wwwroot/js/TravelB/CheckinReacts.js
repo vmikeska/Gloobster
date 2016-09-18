@@ -2,6 +2,8 @@ var Views;
 (function (Views) {
     var CheckinReacts = (function () {
         function CheckinReacts() {
+            this.chatRequestBodyTmp = Views.ViewBase.currentView.registerTemplate("chat-request-body-template");
+            this.notifBaseTmp = Views.ViewBase.currentView.registerTemplate("notif-base-template");
         }
         CheckinReacts.prototype.refreshReacts = function (callback) {
             var _this = this;
@@ -29,39 +31,49 @@ var Views;
         };
         CheckinReacts.prototype.createReactNotif = function (data) {
             var _this = this;
-            var $content = $("<div><a data-uid=\"" + data.uid + "\" href=\"#\">" + data.name + "</a><br/>Want's to start chat with you</div>");
-            var actions = [
-                {
-                    name: "Start",
-                    callback: function () {
-                        _this.changeNotifState(data.id, Views.CheckinReactionState.Accepted, function (r) {
-                            if (_this.onStartChat) {
-                                _this.onStartChat(function () {
-                                    $content.closest(".notif").remove();
-                                });
-                            }
-                        });
-                    }
+            var context = {
+                uid: data.uid,
+                name: data.name
+            };
+            var $content = $(this.chatRequestBodyTmp(context));
+            var startAction = {
+                name: "Accept",
+                icon: "icon-user-check",
+                callback: function () {
+                    _this.changeNotifState(data.id, Views.CheckinReactionState.Accepted, function (r) {
+                        if (_this.onStartChat) {
+                            _this.onStartChat(function () {
+                                $content.closest(".notif").remove();
+                            });
+                        }
+                    });
                 }
-            ];
+            };
+            var actions = [startAction];
             var $n = this.createNotifBase($content, data, actions);
             return $n;
         };
-        CheckinReacts.prototype.createNotifBase = function (content, data, actions) {
+        CheckinReacts.prototype.createNotifBase = function ($content, data, actions) {
             var _this = this;
-            var $base = $("<div id=\"notif_" + data.id + "\" data-id=\"" + data.id + "\" class=\"notif\"><div class=\"cont\"></div><div class=\"acts\"></div></div>");
-            $base.find(".cont").html(content);
+            var context = {
+                id: data.id
+            };
+            var $base = $(this.notifBaseTmp(context));
+            var letBeAction = {
+                name: "LetBe",
+                icon: "icon-cross",
+                callback: function () {
+                    _this.changeNotifState(data.id, Views.CheckinReactionState.Refused, function (r) {
+                        $base.remove();
+                    });
+                }
+            };
+            actions.push(letBeAction);
+            $base.find(".cont").html($content);
             var $acts = $base.find(".acts");
-            var hideTxt = "Let be";
-            var $hideAct = this.genAction(hideTxt, function () {
-                _this.changeNotifState(data.id, Views.CheckinReactionState.Refused, function (r) {
-                    $hideAct.closest(".notif").remove();
-                });
-            });
-            $acts.append($hideAct);
             actions.forEach(function (a) {
-                var $act = _this.genAction(a.name, a.callback);
-                $acts.prepend($act);
+                var $act = _this.genAction(a.name, a.icon, a.callback);
+                $acts.append($act);
             });
             return $base;
         };
@@ -71,8 +83,8 @@ var Views;
                 callback(r);
             });
         };
-        CheckinReacts.prototype.genAction = function (name, callback) {
-            var $btn = $("<button>" + name + "</button>");
+        CheckinReacts.prototype.genAction = function (name, icon, callback) {
+            var $btn = $("<a href=\"#\" class=\"act-btn " + icon + "\"><span class=\"lato\"> " + name + "</span></a><br/>");
             $btn.click(function (e) {
                 e.preventDefault();
                 callback();

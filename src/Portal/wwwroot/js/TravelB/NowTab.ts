@@ -1,9 +1,9 @@
 module TravelB {
 	export class NowTab {
 
-		public onPlacesCheckins: Function;
-		public onMeetingPoints: Function;
-		public onBeforeSwitch: Function;
+		//public onPlacesCheckins: Function;
+		//public onMeetingPoints: Function;
+		//public onBeforeSwitch: Function;
 
 		public tabs;
 
@@ -18,39 +18,23 @@ module TravelB {
 				this.mpTemplate = Views.ViewBase.currentView.registerTemplate("meetingPointItem-template");
 		}
 
-		public createTab() {
-			this.tabs = new Tabs($("#hereTabs"), "hereAndNow", 40);
-
-			this.tabs.onBeforeSwitch = () => {
-				$("#listCont").html("");
-				this.onBeforeSwitch();
-			}
-
-			this.tabs.addTab(this.peopleTabConst, "People", () => {
-				this.onPlacesCheckins();
-			});
-			this.tabs.addTab(this.mpTabConst, "Meeting points", () => {
-				this.onMeetingPoints();
-			});
-			this.tabs.create();
-		}
-
 		public genMeetingPoints(points) {
-			var $listCont = $("#listCont");
-			$listCont.html("");
+			var $listCont = $(".results .meeting-points");
+			$listCont.find(".meeting-point").remove();
 
 			points.forEach((p) => {
 
-					var context = {
-							sourceId: p.sourceId,
-							type: p.type,
-							name: p.text,							
-							link: "abcd"
-					};
+				var context = {
+					sourceId: p.sourceId,
+					type: p.type,
+					name: p.text,
+					link: Common.GlobalUtils.getSocLink(p.type, p.sourceId),
+					photoUrl: p.photoUrl
+				};
 
-					var $u = $(this.mpTemplate(context));
-					
-				$u.find(".checkin").click((e) => {
+				var $u = $(this.mpTemplate(context));
+
+				$u.find(".btn-check").click((e) => {
 					e.preventDefault();
 
 					var v = <Views.TravelBView>Views.ViewBase.currentView;
@@ -65,16 +49,16 @@ module TravelB {
 
 				});
 
-					$listCont.append($u);
-			});				
+				$listCont.append($u);
+			});
 
 		}
 
 
 		public genCheckinsList(checkins) {
 
-			var $listCont = $("#listCont");
-			$listCont.html("");
+			var $listCont = $(".results .people");
+			$listCont.find(".person").remove();
 				
 			var d = new Date();
 			var curYear = d.getFullYear();
@@ -87,15 +71,24 @@ module TravelB {
 					id: p.userId,
 					name: p.displayName,
 					age: curYear - p.birthYear,
-					waitingFor: Views.StrOpers.getGenderStr(p.wantMeet),
-					multiStr: Views.StrOpers.getMultiStr(p.multiPeopleAllowed),
-					wants: Views.StrOpers.getActivityStr(p.wantDo),
+					languages: Views.StrOpers.langsToFlags(p.languages, p.homeCountry),
+					homeCountry: p.homeCountry,
+					livesCountry: p.livesCountry,
+					livesOtherCountry: p.homeCountry !== p.livesCountry,
+					
+					wmMan: ((p.wantMeet === WantMeet.Man) || (p.wantMeet === WantMeet.All)),
+					wmWoman: ((p.wantMeet === WantMeet.Woman) || (p.wantMeet === WantMeet.All)),
+					wmWomanGroup: ((p.wantMeet === WantMeet.Woman) && p.multiPeopleAllowed),
+					wmManGroup: ((p.wantMeet === WantMeet.Man) && p.multiPeopleAllowed),
+					wmMixGroup: ((p.wantMeet === WantMeet.All) && p.multiPeopleAllowed),
+					
+					wantDos: Views.StrOpers.getActivityStrArray(p.wantDo),
 					message: p.message
-
+					
 				};
 
 				var $u = $(this.checkinTemplate(context));
-				$u.find(".startChatBtn").click((e) => {
+				$u.find(".chat-btn").click((e) => {
 						e.preventDefault();
 						cr.askForChat(p);
 				});

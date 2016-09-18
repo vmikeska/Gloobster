@@ -1,0 +1,24 @@
+{
+  "version": "1.0.0-*",
+  "description": "RenameFlags Console Application",
+  "authors": [ "vmike_000" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "compilationOptions": {
+    "emitEntryPoint": true
+  },
+
+  "dependencies": {
+    "Newtonsoft.Json": "9.0.1"
+  },
+
+  "commands": {
+    "RenameFlags": "RenameFlags"
+  },
+
+  "frameworks": {
+    "dnx451": { }
+  }
+}

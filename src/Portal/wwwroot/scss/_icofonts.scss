@@ -29,6 +29,9 @@
 
 
 
+.icon-auction:before {
+  content: "\e91c";
+}
 .icon-male:before {
   content: "\e91a";
 }
@@ -50,6 +53,9 @@
 .icon-camera:before {
   content: "\e915";
 }
+.icon-envelop:before {
+  content: "\e945";
+}
 .icon-location:before {
   content: "\e947";
 }
@@ -61,6 +67,9 @@
 }
 .icon-users:before {
   content: "\e972";
+}
+.icon-user-check:before {
+  content: "\e975";
 }
 .icon-user-tie:before {
   content: "\e976";
@@ -179,6 +188,4 @@
 .icon-places:before {
   content: "\e910";
 }
-
-
 

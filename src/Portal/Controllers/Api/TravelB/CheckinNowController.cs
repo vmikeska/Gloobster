@@ -96,7 +96,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
             if (req.type == "query")
             {
-                var responses = GetCheckinsInRect(req);
+                List<CheckinResponse> responses = GetCheckinsInRect(req);
 
                 bool showAllFilteredByGenders = string.IsNullOrEmpty(req.filter);
                 bool showAll = req.filter == "all";
@@ -147,6 +147,16 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             return new ObjectResult(true);
         }
 
+        [AuthorizeApi]
+        [HttpDelete]
+        public async Task<IActionResult> Delete()
+        {
+            await TbDomain.DeleteCheckin(UserId);
+
+            return new ObjectResult(true);
+        }
+
+        
         private CheckinNowDO ReqNowToDO(CheckinRequest req)
         {
             var checkinDO = new CheckinNowDO

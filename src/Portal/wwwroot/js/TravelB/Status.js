@@ -13,11 +13,13 @@ var TravelB;
         Status.prototype.refresh = function () {
             var _this = this;
             var $checkinRow = $(".checkin-row");
+            var $statusRow = $(".status-row");
             Views.ViewBase.currentView.apiGet("CheckinNow", [["type", "me"]], function (r) {
                 if (!r) {
-                    $checkinRow.show();
+                    _this.visibilityStatusIsSet(false);
                     return;
                 }
+                $statusRow.remove();
                 var context = {
                     placeName: r.waitingAtText,
                     placeLink: Common.GlobalUtils.getSocLink(r.waitingAtType, r.waitingAtId),
@@ -33,8 +35,27 @@ var TravelB;
                     e.preventDefault();
                     _this.editClick();
                 });
+                $html.find(".delete").click(function (e) {
+                    e.preventDefault();
+                    Views.ViewBase.currentView.apiDelete("CheckinNow", [], function () {
+                        _this.visibilityStatusIsSet(false);
+                    });
+                });
                 $checkinRow.after($html);
+                _this.visibilityStatusIsSet(true);
             });
+        };
+        Status.prototype.visibilityStatusIsSet = function (isSet) {
+            var $checkinRow = $(".checkin-row");
+            var $statusRow = $(".status-row");
+            if (isSet) {
+                $checkinRow.hide();
+                $statusRow.show();
+            }
+            else {
+                $checkinRow.show();
+                $statusRow.remove();
+            }
         };
         Status.prototype.editClick = function () {
             var win = new TravelB.CheckinWin();

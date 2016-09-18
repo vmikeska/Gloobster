@@ -1088,7 +1088,7 @@ namespace Gloobster.DomainModels.Services.CountryService
 							},
 							{
 								""countryCode"": ""ST"",
-								""countryName"": ""São Tomé and Príncipe"",
+								""countryName"": ""Sao Tome and Principe"",
 								""isoAlpha3"": ""STP""
 							},
 							{

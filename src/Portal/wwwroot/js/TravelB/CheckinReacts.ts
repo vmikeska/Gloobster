@@ -1,8 +1,11 @@
 module Views {
 	export class CheckinReacts {
 
-		public onStartChat: Function;
+			public onStartChat: Function;
 
+			public chatRequestBodyTmp = ViewBase.currentView.registerTemplate("chat-request-body-template");
+			public notifBaseTmp = ViewBase.currentView.registerTemplate("notif-base-template");
+			
 		public refreshReacts(callback = null) {
 
 			var prms = [["type", "a"]];
@@ -35,48 +38,62 @@ module Views {
 
 		private createReactNotif(data) {
 
-			var $content =
-				$(`<div><a data-uid="${data.uid}" href="#">${data.name}</a><br/>Want's to start chat with you</div>`);
+			var context = {
+					uid: data.uid,
+					name: data.name
+			};
 
-			var actions = [
-				{
-					name: "Start",
-					callback: () => {
-						this.changeNotifState(data.id, CheckinReactionState.Accepted, (r) => {
+			var $content = $(this.chatRequestBodyTmp(context));
+				
+			var startAction = {
+				name: "Accept",
+				icon: "icon-user-check",
+				callback: () => {
+					this.changeNotifState(data.id, CheckinReactionState.Accepted, (r) => {
 
-							if (this.onStartChat) {
-								this.onStartChat(() => {
-									$content.closest(".notif").remove();
-								});
-							}
+						if (this.onStartChat) {
+							this.onStartChat(() => {
+								$content.closest(".notif").remove();
+							});
+						}
 
-						});
-					}
+					});
 				}
-			];
-
+			};
+				
+			var actions = [startAction];
+				
 			var $n = this.createNotifBase($content, data, actions);
 			return $n;
 		}
 
-		private createNotifBase(content, data, actions) {
+		private createNotifBase($content, data, actions) {
 
-			var $base = $(`<div id="notif_${data.id}" data-id="${data.id}" class="notif"><div class="cont"></div><div class="acts"></div></div>`);
-			$base.find(".cont").html(content);
+			var context = {
+				id: data.id
+			};
+				
+			var $base = $(this.notifBaseTmp(context));
+				
+				var letBeAction = {
+						name: "LetBe",
+						icon: "icon-cross",
+						callback: () => {
+								this.changeNotifState(data.id, CheckinReactionState.Refused, (r) => {
+										$base.remove();
+								});
+						}
+				}
+				actions.push(letBeAction);
+
+			
+			$base.find(".cont").html($content);
 
 			var $acts = $base.find(".acts");
 
-			var hideTxt = "Let be";
-			var $hideAct = this.genAction(hideTxt, () => {
-				this.changeNotifState(data.id, CheckinReactionState.Refused, (r) => {
-					$hideAct.closest(".notif").remove();
-				});
-			});
-			$acts.append($hideAct);
-
 			actions.forEach((a) => {
-				var $act = this.genAction(a.name, a.callback);
-				$acts.prepend($act);
+				var $act = this.genAction(a.name, a.icon, a.callback);
+				$acts.append($act);
 			});
 
 			return $base;
@@ -91,8 +108,8 @@ module Views {
 			});
 		}
 
-		private genAction(name, callback) {
-			var $btn = $(`<button>${name}</button>`);
+		private genAction(name, icon, callback) {
+			var $btn = $(`<a href="#" class="act-btn ${icon}"><span class="lato"> ${name}</span></a><br/>`);
 			$btn.click((e) => {
 				e.preventDefault();
 				callback();

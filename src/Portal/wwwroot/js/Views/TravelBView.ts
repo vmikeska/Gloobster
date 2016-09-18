@@ -78,7 +78,7 @@
 		}
 			
 		private createMainTab() {
-				this.tabs = new TravelB.MenuTabs($(".main-menu .tbl"), "main", 55);
+				this.tabs = new TravelB.MenuTabs($(".main-menu .tbl"));
 			
 			this.tabs.onBeforeSwitch = () => {
 				$("#theCont").html("");
@@ -103,23 +103,13 @@
 
 		private createNowCheckinsFnc() {
 			this.filter.initNow();
-
-			var $html = $(this.hereAndNowTemplate());
-			$("#theCont").html($html);
-
+				
 			this.nowFncs = new TravelB.NowTab();
-			this.nowFncs.onPlacesCheckins = () => {
-				this.displayNowCheckins();
-			};
-			this.nowFncs.onMeetingPoints = () => {
-				this.displayMeetingPoints();
-			}
-			this.nowFncs.onBeforeSwitch = () => {
-				if (this.mapCheckins) {
-					this.mapCheckins.clearMarkers();
-				}
-			}
-			this.nowFncs.createTab();
+			//if (this.mapCheckins) {
+			//		this.mapCheckins.clearMarkers();
+			//}
+			this.displayNowCheckins();
+			this.displayMeetingPoints();			
 		}
 
 		private regEvents() {
@@ -203,18 +193,11 @@
 
 
 		}
-
+			
 		private displayData() {
 			if (this.tabs.activeTabId === this.nowTabConst) {
-
-				if (this.nowFncs.tabs.activeTabId === this.nowFncs.peopleTabConst) {
 					this.displayNowCheckins();
-				}
-
-				if (this.nowFncs.tabs.activeTabId === this.nowFncs.mpTabConst) {
-					this.displayMeetingPoints();
-				}
-
+					this.displayMeetingPoints();					
 			}
 
 			if (this.tabs.activeTabId === this.cityTabConst) {
@@ -289,7 +272,30 @@
 				return `${date.Day}.${date.Month}.${date.Year}`;
 			}
 
-			public static getActivityStrArray(vals) {
+		public static langsToFlags(langs, homeCountry) {
+			//todo: implement most common
+				
+			var out = [];
+
+			langs.forEach((l) => {
+				var lang = l.toLowerCase();
+
+				if (lang === "en") {
+					if (homeCountry.toLowerCase() === "us") {
+						out.push("us");
+					} else {
+						out.push("gb");
+					}
+				} else {
+						out.push(lang);
+				}
+			});
+
+			return out;
+
+		}
+
+		public static getActivityStrArray(vals) {
 					var outStrs = [];
 					var items = TravelB.TravelBUtils.wantDoDB();
 

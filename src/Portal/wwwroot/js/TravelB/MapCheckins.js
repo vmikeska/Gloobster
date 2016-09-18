@@ -16,7 +16,6 @@ var TravelB;
         };
         MapCheckins.prototype.genCheckins = function (checkins, type) {
             var _this = this;
-            this.clearMarkers();
             checkins.forEach(function (c) {
                 var coord = c.waitingCoord;
                 var ico = MapPins.getByGender(c.gender);

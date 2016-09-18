@@ -48,13 +48,11 @@ var TravelB;
     }());
     TravelB.Tabs = Tabs;
     var MenuTabs = (function () {
-        function MenuTabs($cont, tabGroup, height) {
+        function MenuTabs($cont) {
             this.activeCls = "active";
             this.tabs = [];
             this.isFirst = true;
             this.$cont = $cont;
-            this.tabGroup = tabGroup;
-            this.height = height;
         }
         MenuTabs.prototype.addTab = function (id, text, callback) {
             this.tabs.push({ id: id, text: text, callback: callback });
@@ -74,7 +72,6 @@ var TravelB;
             var $t = $(this.btnTemplate);
             $t.html(t.text);
             $t.attr("id", t.id);
-            $t.addClass(this.tabGroup);
             if (this.isFirst) {
                 $t.addClass(this.activeCls);
                 this.isFirst = false;
@@ -88,7 +85,7 @@ var TravelB;
                     _this.onBeforeSwitch();
                 }
                 var $target = $(e.target);
-                $("." + _this.tabGroup).removeClass(_this.activeCls);
+                _this.$cont.children().removeClass(_this.activeCls);
                 $target.addClass(_this.activeCls);
                 _this.activeTabId = $target.attr("id");
                 t.callback(t.id);

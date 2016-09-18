@@ -7,34 +7,20 @@ var TravelB;
             this.checkinTemplate = Views.ViewBase.currentView.registerTemplate("checkinNowItem-template");
             this.mpTemplate = Views.ViewBase.currentView.registerTemplate("meetingPointItem-template");
         }
-        NowTab.prototype.createTab = function () {
-            var _this = this;
-            this.tabs = new TravelB.Tabs($("#hereTabs"), "hereAndNow", 40);
-            this.tabs.onBeforeSwitch = function () {
-                $("#listCont").html("");
-                _this.onBeforeSwitch();
-            };
-            this.tabs.addTab(this.peopleTabConst, "People", function () {
-                _this.onPlacesCheckins();
-            });
-            this.tabs.addTab(this.mpTabConst, "Meeting points", function () {
-                _this.onMeetingPoints();
-            });
-            this.tabs.create();
-        };
         NowTab.prototype.genMeetingPoints = function (points) {
             var _this = this;
-            var $listCont = $("#listCont");
-            $listCont.html("");
+            var $listCont = $(".results .meeting-points");
+            $listCont.find(".meeting-point").remove();
             points.forEach(function (p) {
                 var context = {
                     sourceId: p.sourceId,
                     type: p.type,
                     name: p.text,
-                    link: "abcd"
+                    link: Common.GlobalUtils.getSocLink(p.type, p.sourceId),
+                    photoUrl: p.photoUrl
                 };
                 var $u = $(_this.mpTemplate(context));
-                $u.find(".checkin").click(function (e) {
+                $u.find(".btn-check").click(function (e) {
                     e.preventDefault();
                     var v = Views.ViewBase.currentView;
                     v.checkinWin.showNowCheckin(function () {
@@ -51,8 +37,8 @@ var TravelB;
         };
         NowTab.prototype.genCheckinsList = function (checkins) {
             var _this = this;
-            var $listCont = $("#listCont");
-            $listCont.html("");
+            var $listCont = $(".results .people");
+            $listCont.find(".person").remove();
             var d = new Date();
             var curYear = d.getFullYear();
             var cr = new CheckinReact();
@@ -61,13 +47,20 @@ var TravelB;
                     id: p.userId,
                     name: p.displayName,
                     age: curYear - p.birthYear,
-                    waitingFor: Views.StrOpers.getGenderStr(p.wantMeet),
-                    multiStr: Views.StrOpers.getMultiStr(p.multiPeopleAllowed),
-                    wants: Views.StrOpers.getActivityStr(p.wantDo),
+                    languages: Views.StrOpers.langsToFlags(p.languages, p.homeCountry),
+                    homeCountry: p.homeCountry,
+                    livesCountry: p.livesCountry,
+                    livesOtherCountry: p.homeCountry !== p.livesCountry,
+                    wmMan: ((p.wantMeet === TravelB.WantMeet.Man) || (p.wantMeet === TravelB.WantMeet.All)),
+                    wmWoman: ((p.wantMeet === TravelB.WantMeet.Woman) || (p.wantMeet === TravelB.WantMeet.All)),
+                    wmWomanGroup: ((p.wantMeet === TravelB.WantMeet.Woman) && p.multiPeopleAllowed),
+                    wmManGroup: ((p.wantMeet === TravelB.WantMeet.Man) && p.multiPeopleAllowed),
+                    wmMixGroup: ((p.wantMeet === TravelB.WantMeet.All) && p.multiPeopleAllowed),
+                    wantDos: Views.StrOpers.getActivityStrArray(p.wantDo),
                     message: p.message
                 };
                 var $u = $(_this.checkinTemplate(context));
-                $u.find(".startChatBtn").click(function (e) {
+                $u.find(".chat-btn").click(function (e) {
                     e.preventDefault();
                     cr.askForChat(p);
                 });

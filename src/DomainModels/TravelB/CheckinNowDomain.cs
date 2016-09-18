@@ -56,25 +56,29 @@ namespace Gloobster.DomainModels.TravelB
         }
         
         public async Task CreateCheckin(CheckinNowDO checkin)
-        {
-            var userIdObj = new ObjectId(checkin.UserId);
-            
-            //delete old one
-            var oldCheckin = DB.FOD<CheckinNowEntity>(e => e.User_id == userIdObj);
-            if (oldCheckin != null)
-            {
-                await DB.DeleteAsync<CheckinNowEntity>(oldCheckin.id);
-
-                var name = typeof(CheckinNowHEntity).Name.Replace("Entity", string.Empty);                                
-                await DB.SaveCustomAsync(oldCheckin, name);
-            }
+        {            
+            await DeleteCheckin(checkin.UserId);
 
             //create new
             var entity = checkin.ToEntity();
             entity.id = ObjectId.GenerateNewId();
             await DB.SaveAsync(entity);
         }
-        
+
+        public async Task DeleteCheckin(string userId)
+        {
+            var userIdObj = new ObjectId(userId);
+            
+            var oldCheckin = DB.FOD<CheckinNowEntity>(e => e.User_id == userIdObj);
+            if (oldCheckin != null)
+            {
+                await DB.DeleteAsync<CheckinNowEntity>(oldCheckin.id);
+
+                var name = typeof(CheckinNowHEntity).Name.Replace("Entity", string.Empty);
+                await DB.SaveCustomAsync(oldCheckin, name);
+            }            
+        }
+
     }
 
     public class CheckinUtils

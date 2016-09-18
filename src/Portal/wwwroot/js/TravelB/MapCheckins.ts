@@ -27,7 +27,7 @@ module TravelB {
 		}
 
 		public genCheckins(checkins, type: CheckinType) {
-			this.clearMarkers();
+			//this.clearMarkers();
 
 			checkins.forEach((c) => {
 				var coord = c.waitingCoord;

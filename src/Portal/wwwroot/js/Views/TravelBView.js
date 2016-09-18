@@ -49,7 +49,7 @@ var Views;
         };
         TravelBView.prototype.createMainTab = function () {
             var _this = this;
-            this.tabs = new TravelB.MenuTabs($(".main-menu .tbl"), "main", 55);
+            this.tabs = new TravelB.MenuTabs($(".main-menu .tbl"));
             this.tabs.onBeforeSwitch = function () {
                 $("#theCont").html("");
             };
@@ -67,23 +67,10 @@ var Views;
             this.displayCityCheckins();
         };
         TravelBView.prototype.createNowCheckinsFnc = function () {
-            var _this = this;
             this.filter.initNow();
-            var $html = $(this.hereAndNowTemplate());
-            $("#theCont").html($html);
             this.nowFncs = new TravelB.NowTab();
-            this.nowFncs.onPlacesCheckins = function () {
-                _this.displayNowCheckins();
-            };
-            this.nowFncs.onMeetingPoints = function () {
-                _this.displayMeetingPoints();
-            };
-            this.nowFncs.onBeforeSwitch = function () {
-                if (_this.mapCheckins) {
-                    _this.mapCheckins.clearMarkers();
-                }
-            };
-            this.nowFncs.createTab();
+            this.displayNowCheckins();
+            this.displayMeetingPoints();
         };
         TravelBView.prototype.regEvents = function () {
             var _this = this;
@@ -151,12 +138,8 @@ var Views;
         };
         TravelBView.prototype.displayData = function () {
             if (this.tabs.activeTabId === this.nowTabConst) {
-                if (this.nowFncs.tabs.activeTabId === this.nowFncs.peopleTabConst) {
-                    this.displayNowCheckins();
-                }
-                if (this.nowFncs.tabs.activeTabId === this.nowFncs.mpTabConst) {
-                    this.displayMeetingPoints();
-                }
+                this.displayNowCheckins();
+                this.displayMeetingPoints();
             }
             if (this.tabs.activeTabId === this.cityTabConst) {
                 this.displayCityCheckins();
@@ -219,6 +202,24 @@ var Views;
         }
         StrOpers.formatDate = function (date) {
             return date.Day + "." + date.Month + "." + date.Year;
+        };
+        StrOpers.langsToFlags = function (langs, homeCountry) {
+            var out = [];
+            langs.forEach(function (l) {
+                var lang = l.toLowerCase();
+                if (lang === "en") {
+                    if (homeCountry.toLowerCase() === "us") {
+                        out.push("us");
+                    }
+                    else {
+                        out.push("gb");
+                    }
+                }
+                else {
+                    out.push(lang);
+                }
+            });
+            return out;
         };
         StrOpers.getActivityStrArray = function (vals) {
             var outStrs = [];

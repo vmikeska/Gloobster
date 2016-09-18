@@ -12,13 +12,16 @@ module TravelB {
 
 		public refresh() {
 			var $checkinRow = $(".checkin-row");
-				
+			var $statusRow = $(".status-row");
+
 			Views.ViewBase.currentView.apiGet("CheckinNow", [["type", "me"]], (r) => {
 
-					if (!r) {
-						$checkinRow.show();						
+				if (!r) {
+					this.visibilityStatusIsSet(false);
 					return;
 				}
+
+				$statusRow.remove();
 
 				var context = {
 						placeName: r.waitingAtText,
@@ -38,9 +41,29 @@ module TravelB {
 					e.preventDefault();
 					this.editClick();
 				});
+				$html.find(".delete").click((e) => {
+						e.preventDefault();
+					Views.ViewBase.currentView.apiDelete("CheckinNow", [], () => {
+							this.visibilityStatusIsSet(false);
+					});
+				});
+
 				$checkinRow.after($html);
-				
+				this.visibilityStatusIsSet(true);
 			});
+		}
+
+		public visibilityStatusIsSet(isSet: boolean) {
+			var $checkinRow = $(".checkin-row");
+			var $statusRow = $(".status-row");
+
+			if (isSet) {
+				$checkinRow.hide();
+				$statusRow.show();
+			} else {
+				$checkinRow.show();
+				$statusRow.remove();
+			}
 		}
 
 		private editClick() {
