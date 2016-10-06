@@ -34,6 +34,37 @@ else
     <script type="text/javascript" src="/js/Trip/PlacesManager.js"></script>
 }
 
+@{
+    var showText = "show info";
+    var hideText = "hide info";
+    var infoCss = Model.InfoBlockVisible("info-tripdetail");
+    var infoBtnTxt = infoCss == string.Empty ? hideText : showText;
+}
+
+<div class="info-block-bck" id="info-tripdetail">
+
+    <div class="wrapper">
+
+        <div class="title-table">
+            <div class="left">
+                <a href="/@RoutingConsts.PlannerMenuName/grid">Travel organizer</a> &gt; 
+                <h1>Edit mode</h1>
+            </div>
+
+            <div class="right">
+                <a class="showHide" data-ts="@showText" data-th="@hideText" href="#">@infoBtnTxt</a> 
+            </div>
+
+        </div>
+
+        <div class="info-block" style="@infoCss">
+            Organize your travel documents and notes day by day. Invite your friend or let know to the people about your trip over social networks.
+
+        </div>
+
+    </div>
+</div>
+
 <div class="service-menu wrapper">
 
     <div class="name">

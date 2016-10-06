@@ -35,6 +35,43 @@ module Views {
 			}
 
 			this.initDemoFnc();
+
+			this.initTitleFnc();
+		}
+
+		private initTitleFnc() {
+			var $ibAll = $(".info-block-bck");
+			var $btn = $ibAll.find(".showHide");
+
+			$btn.click((e) => {
+				e.preventDefault();
+
+				var id = $ibAll.attr("id");
+				var $ib = $ibAll.find(".info-block");
+
+				var visible = $ib.css("display") === "block";
+				$btn.html(visible ? $btn.data("ts") : $btn.data("th"));
+
+
+				var data = this.cookieManager.getJson("InfoBlocks");
+				if (data) {
+					var thisInfo = _.find(data.infos, (info) => {
+						return info.id === id;
+					});
+
+					if (thisInfo) {
+						thisInfo.visible = !visible;
+					} else {
+						data.infos.push({ id: id, visible: false });
+					}				
+
+				} else {
+					data = { infos: [{ id: id, visible: false }] }
+				}
+				this.cookieManager.setJson("InfoBlocks", data);
+
+				$ib.slideToggle();
+			});
 		}
 
 		private initDemoFnc() {

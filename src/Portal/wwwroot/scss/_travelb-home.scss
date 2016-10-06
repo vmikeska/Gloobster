@@ -7,8 +7,98 @@
         border: 1px solid $light-blue3;
     }
 
-    .info-block-bck{
-        background-color: $light-gray;
+    .checkin-icon{
+        z-index: 99999 !important;
+
+        .thumb-cont{
+            width: 40px;
+            height: 40px;
+
+            img{
+                width: 40px;
+                height: 40px;
+            }
+        }
+    }
+
+    .checkin-you-icon {
+        z-index: 99999 !important;
+
+        background-color: white;
+        border: 2px solid red;
+        border-radius: 4px;
+        text-align: center;
+
+        span{
+            font-size: 38px;
+            display: inline-block;
+            line-height: 1;
+        }
+
+    }
+
+    .mp-icon{
+        z-index: 99998 !important;
+        
+        .cont{
+            width: 40px;
+            height: 40px;
+
+            border: 1px solid black;
+            border-radius: 4px;
+            
+
+            img{
+                width: 38px;
+                height: 38px;
+            }
+        }
+    }
+
+    .info-block{
+        
+        padding: 8px;
+        text-align: center;
+
+
+        .block{
+            
+            width: 48%;
+            min-width: 320px;
+            display: inline-block;
+            vertical-align: top;
+
+            @include below-width(700){            
+                width: 95%;
+            }
+
+            .block-inner{
+                display: table;
+                
+                .img-all{
+                    
+                    display: table-cell;
+                    vertical-align: middle;
+                    width: 30%;
+
+                    img{            
+                        width: 100%;                            
+                    }
+                }
+
+                .txt{                    
+                    display: table-cell;
+                    vertical-align: middle;
+                    text-align: left;
+                    width: 60%;                    
+                    width: auto;
+
+                    padding: 10px;
+                }
+            }
+
+        }
+
     }
 
     .itag{
@@ -45,54 +135,7 @@
 
     }
 
-    .info-block{
-        
-        padding: 8px;
-        text-align: center;
-
-
-        .block{
-            
-            width: 48%;
-            min-width: 320px;
-            display: inline-block;
-            vertical-align: top;
-
-            @include below-width(700){            
-                width: 95%;
-            }
-
-            .block-inner{
-                display: table;
-                
-                .img-all{
-                    
-                    display: table-cell;
-                    vertical-align: middle;
-                    width: 30%;
-
-                    img{            
-                        width: 100%;                            
-                    }
-                }
-
-                .txt{
-                    /*border: 1px solid red;*/
-
-                    display: table-cell;
-                    vertical-align: middle;
-                    text-align: left;
-                    width: 60%;                    
-                    width: auto;
-
-                    padding: 10px;
-                }
-            }
-
-        }
-
-    }
-
+    
     .notifs{
                 
         .notif{
@@ -264,9 +307,37 @@
         }
     }
 
+    .no-location-perm{
+        background-color: $yellow;
+        font-size: 0.8em;
+        padding: 4px;
+    }
+
     .map {
         width: 100%;        
         height: 500px;
+
+        .entities-filter{
+            background-color: white;
+
+            border: 1px solid $light-blue3;
+            border-radius: 4px;
+            padding: 6px;
+            z-index: 99999;
+
+            position: absolute;
+            top: 10px;
+            right: 10px;
+
+            @include below-width(479){   
+                top: 60px;
+            }
+
+            label{
+                font-weight: 600;
+            }
+
+        }
     }
 
     .results{

@@ -162,6 +162,10 @@ var TravelB;
             c.minCharsToSearch = 1;
             c.clearAfterSearch = false;
             var combo = new Common.PlaceSearchBox(c);
+            var loc = TravelB.UserLocation.currentLocation;
+            if (loc) {
+                combo.setCoordinates(loc.lat, loc.lng);
+            }
             return combo;
         };
         return CheckinWin;

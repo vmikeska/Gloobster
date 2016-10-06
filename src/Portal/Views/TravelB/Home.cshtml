@@ -10,10 +10,15 @@
 }
 
 <link href="/lib/mapbox.js/mapbox.css" rel="stylesheet" />
-<link href="/lib/leaflet/dist/leaflet.css" rel="stylesheet" />
+<link href="/lib/leaflet/dist/leaflet.css" rel="stylesheet"/>
 
 <script type="text/javascript" src="/lib/leaflet/dist/leaflet.js"></script>
 <script type="text/javascript" src="/lib/mapbox.js/mapbox.js"></script>
+
+<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
+<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
+<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
+
 
 <script src="@Url.Content("~/js/Views/TravelBView.js")"></script>
 <script src="@Url.Content("~/js/Views/SettingsUtils.js")"></script>
@@ -33,18 +38,36 @@
 <script src="@Url.Content("~/js/TravelB/MapCheckins.js")"></script>
 <script src="@Url.Content("~/js/TravelB/Tabs.js")"></script>
 <script src="@Url.Content("~/js/TravelB/TravelBUtils.js")"></script>
+<script src="@Url.Content("~/js/TravelB/UserLocation.js")"></script>
 
 <script src="@Url.Content("~/js/Maps/MapsCreatorMapBox2D.js")"></script>
 
 <script src="@Url.Content("~/js/Planning/TaggingField.js")"></script>
 
-<script src="//js.maxmind.com/js/geoip.js" type="text/javascript"></script>
 
-<div class="info-block-bck">
+@{
+    var showText = "show info";
+    var hideText = "hide info";
+    var infoCss = Model.InfoBlockVisible("info-travelb");
+    var infoBtnTxt = infoCss == string.Empty ? hideText : showText;
+}
+
+<div class="info-block-bck" id="info-travelb">
 
     <div class="wrapper">
 
-        <div class="info-block">
+        <div class="title-table">
+            <div class="left">                
+                <h1>Find a travel buddy</h1>    
+            </div>
+
+            <div class="right">
+                <a class="showHide" data-ts="@showText" data-th="@hideText" href="#">@infoBtnTxt</a>    
+            </div>
+            
+        </div>
+
+        <div class="info-block" style="@infoCss">
             <div class="block">
 
                 <div class="block-inner">
@@ -93,11 +116,23 @@
         </div>
     </div>
 
+    <div class="no-location-perm" style="display: none">
+        Seems you didn't grant us location permissions, so we cannot show your exact location. Once you change your mind, you must go to your browser Location settings and allow it.
+    </div>
+
     <div id="map" class="map">
         <div id="searchCity" class="dropdown">
-            <input class="inputed" type="text" placeholder="Search your location">
+            <input class="inputed" type="text" placeholder="Search location">
             <img class="loader" src="/images/loader-gray.gif" style="display: none"/>
             <ul></ul>
+        </div>
+        
+        <div class="entities-filter">
+            <input id="fShowPeople" type="checkbox" checked />
+            <label for="fShowPeople">People</label>
+            <br/>
+            <input id="fPoints" type="checkbox" checked />
+            <label for="fPoints">Meeting points</label>            
         </div>
     </div>
 
@@ -134,137 +169,6 @@
 
     </div>
 
-
-@*<div class="nchat-all">
-    <div class="service">
-
-        <span class="chat-with">Chat with <span class="name">John Myland</span></span>
-
-        <a class="min icon-minus" title="minimize" href="#"></a>
-    </div>
-    <div class="people">
-
-
-        <div class="person">
-
-            <div class="wrap">
-                <div class="photo-cont">
-                    <div class="thumb-cont border">
-                        <img src="/PortalUser/ProfilePicture_s"/>
-                    </div>
-                </div>
-                <div class="name-cont">
-                    <span class="name">John Myland</span>    
-                </div>
-                <div class="icon-cont">
-                    <a href="#" title="user actions" class="icon-auction actions"></a>
-                </div>
-                <div class="icon-cont">
-                    <a href="#" title="close/stop conversation" class="icon-cross close"></a>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="person">
-
-            <div class="wrap">
-                <div class="photo-cont">
-                    <div class="thumb-cont border">
-                        <img src="/PortalUser/ProfilePicture_s" />
-                    </div>
-                </div>
-                <div class="name-cont">
-                    <a href="#" class="name-active">John Staward</a>
-                </div>
-                <div class="icon-cont">
-                    <a href="#" title="user actions" class="icon-auction actions"></a>
-                </div>
-                <div class="icon-cont">
-                    <a href="#" title="close/stop conversation" class="icon-cross close"></a>
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <div class="messages">
-
-        <div class="message">
-            <div class="data l">
-                <span class="name">Vaclav Mikeska</span>
-                <span class="time">16:45</span>
-            </div>
-            <div class="tbl">
-                <div class="photo">
-                    <div class="thumb-cont xs border">
-                        <img src="/PortalUser/ProfilePicture_xs"/>
-                    </div>
-                </div>
-                <div class="txt padding-r">
-                    <span class="msg">Hi mate, how is it going ? Are you still there ?</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="message">
-            <div class="data r">
-                <span class="name">Vaclav Mikeska</span>
-                <span class="time">16:45</span>
-            </div>
-            <div class="tbl">
-                <div class="txt r padding-l">
-                    <span class="msg">Well, it's going quite well...</span>
-                </div>
-                <div class="photo">
-                    <div class="thumb-cont xs border">
-                        <img src="/PortalUser/ProfilePicture_xs"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="message">
-            <div class="data l">
-                <span class="name">Vaclav Mikeska</span>
-                <span class="time">16:45</span>
-            </div>
-            <div class="tbl">
-                <div class="photo">
-                    <div class="thumb-cont xs border">
-                        <img src="/PortalUser/ProfilePicture_xs"/>
-                    </div>
-                </div>
-                <div class="txt padding-r">
-                    <span class="msg">Would you like to meet, I have nothing to do. Would you like to meet, I have nothing to do. Would you like to meet, I have nothing to do. Would you like to meet, I have nothing to do.</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="message">
-            <div class="data r">
-                <span class="name">Vaclav Mikeska</span>
-                <span class="time">16:45</span>
-            </div>
-            <div class="tbl">
-                <div class="txt r padding-l">
-                    <span class="msg">Well, it's going quite well...</span>
-                </div>
-                <div class="photo">
-                    <div class="thumb-cont xs border">
-                        <img src="/PortalUser/ProfilePicture_xs"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <div class="new-message">
-        <input placeholder="Type a message..." type="text"/>
-    
-    </div>
-
-
-</div>*@
 
 <script>
     function onBodyLoad() {

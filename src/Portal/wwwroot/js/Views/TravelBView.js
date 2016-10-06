@@ -83,6 +83,12 @@ var Views;
                     _this.checkinWin.showCityCheckin(null);
                 }
             });
+            $("#fShowPeople").change(function (e) {
+                _this.displayNowCheckins();
+            });
+            $("#fPoints").change(function (e) {
+                _this.displayMeetingPoints();
+            });
         };
         TravelBView.prototype.displayNowCheckins = function () {
             var _this = this;
@@ -90,11 +96,16 @@ var Views;
             if (prms === null) {
                 return;
             }
-            Views.ViewBase.currentView.apiGet("CheckinNow", prms, function (checkins) {
-                var fc = _.reject(checkins, function (c) { return c.userId === Views.ViewBase.currentUserId; });
-                _this.nowFncs.genCheckinsList(fc);
-                _this.mapCheckins.genCheckins(fc, CheckinType.Now);
-            });
+            var showPeople = $("#fShowPeople").prop("checked");
+            if (showPeople) {
+                Views.ViewBase.currentView.apiGet("CheckinNow", prms, function (checkins) {
+                    _this.nowFncs.genCheckinsList(checkins);
+                    _this.mapCheckins.genCheckins(checkins, CheckinType.Now);
+                });
+            }
+            else {
+                this.mapCheckins.clearCheckins();
+            }
         };
         TravelBView.prototype.displayCityCheckins = function () {
             var _this = this;
@@ -105,9 +116,6 @@ var Views;
             prms.push(["fromDate", TravelB.DateUtils.myDateToTrans(this.filter.filterDateFrom)]);
             prms.push(["toDate", TravelB.DateUtils.myDateToTrans(this.filter.filterDateTo)]);
             Views.ViewBase.currentView.apiGet("CheckinCity", prms, function (checkins) {
-                if (_this.mapCheckins) {
-                    _this.mapCheckins.clearMarkers();
-                }
                 _this.cityFncs.genCheckinsList(checkins);
                 _this.mapCheckins.genCheckins(checkins, CheckinType.City);
             });
@@ -134,10 +142,16 @@ var Views;
         TravelBView.prototype.displayMeetingPoints = function () {
             var _this = this;
             var prms = this.getBaseQuery();
+            var showMPs = $("#fPoints").prop("checked");
             Views.ViewBase.currentView.apiGet("MeetingPoint", prms, function (points) {
                 _this.nowFncs.genMeetingPoints(points);
-                _this.mapCheckins.genMPs(points);
+                if (showMPs) {
+                    _this.mapCheckins.genMPs(points);
+                }
             });
+            if (!showMPs && this.mapCheckins) {
+                this.mapCheckins.clearMPs();
+            }
         };
         TravelBView.prototype.displayData = function () {
             if (this.tabs.activeTabId === this.nowTabConst) {
@@ -169,14 +183,42 @@ var Views;
         };
         TravelBView.prototype.onMapCreated = function (mapObj) {
             var _this = this;
+            this.mapObj = mapObj;
             this.mapCheckins = new TravelB.MapCheckins(mapObj);
-            this.getLocation(function (lat, lng) {
-                _this.setPlaceCenter(lat, lng);
+            TravelB.UserLocation.getLocation(function (res) {
+                TravelB.UserLocation.setCurrentLocation(res.lat, res.lng);
+                _this.setPlaceCenter(res.lat, res.lng);
+                if (res.exactLoc) {
+                    _this.createUserMarker(res.lat, res.lng);
+                    _this.startUserTracking();
+                }
+                if (res.userDenied) {
+                    $(".no-location-perm").show();
+                }
             });
             var search = this.initPlaceDD("2", $("#searchCity"));
             search.onPlaceSelected = function (p, e) {
                 _this.setPlaceCenter(e.Coordinates.Lat, e.Coordinates.Lng);
             };
+        };
+        TravelBView.prototype.createUserMarker = function (lat, lng) {
+            this.youMarker = L.marker([lat, lng], { title: "Your position" }).addTo(this.mapObj);
+        };
+        TravelBView.prototype.clearUserMarker = function () {
+            if (this.youMarker) {
+                this.mapObj.removeLayer(this.youMarker);
+                this.youMarker = null;
+            }
+        };
+        TravelBView.prototype.startUserTracking = function () {
+            var _this = this;
+            navigator.geolocation.watchPosition(function (pos) {
+                TravelB.UserLocation.setCurrentLocation(pos.coords.latitude, pos.coords.longitude);
+                _this.clearUserMarker();
+                _this.createUserMarker(pos.coords.latitude, pos.coords.longitude);
+            }, function (error) {
+                _this.clearUserMarker();
+            });
         };
         TravelBView.prototype.onMapCenterChanged = function (c, bounds) {
             this.currentBounds = bounds;
@@ -184,18 +226,6 @@ var Views;
         };
         TravelBView.prototype.setPlaceCenter = function (lat, lng) {
             this.travelMap.mapObj.setView([lat, lng], 12);
-        };
-        TravelBView.prototype.getLocation = function (callback) {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (p) {
-                    callback(p.coords.latitude, p.coords.longitude);
-                });
-            }
-            else {
-                var lat = geoip_latitude();
-                var lng = geoip_longitude();
-                callback(lat, lng);
-            }
         };
         return TravelBView;
     }(Views.ViewBase));

@@ -2,6 +2,7 @@
 @using Gloobster.Common
 @using Microsoft.Data.Entity.Metadata.Internal
 @using Gloobster.Portal;
+@model Gloobster.Portal.ViewModels.ViewModelTrips
 
 @{
     ViewBag.MenuGroup = "Trip";
@@ -9,7 +10,7 @@
     Layout = "_LayoutNew";
 }
 
-@model Gloobster.Portal.ViewModels.ViewModelTrips
+
 
 @if (GloobsterConfig.UseMiniScripts)
 {
@@ -20,17 +21,44 @@ else
     <script src="/js/Views/TripListView.js" type="text/javascript"></script>
 }
 
+@{
+    var showText = "show info";
+    var hideText = "hide info";
+    var infoCss = Model.InfoBlockVisible("info-triplist");
+    var infoBtnTxt = infoCss == string.Empty ? hideText : showText;
+}
+
+<div class="info-block-bck" id="info-triplist">
+
+    <div class="wrapper">
+
+        <div class="title-table">
+            <div class="left">                
+                <h1>Travel organizer</h1>
+            </div>
+
+            <div class="right">
+                <a class="showHide" data-ts="@showText" data-th="@hideText" href="#">@infoBtnTxt</a>
+            </div>
+
+        </div>
+
+        <div class="info-block" style="@infoCss">
+            Organize your travel documents and notes day by day. Invite your friend or let know to the people about your trip over social networks.
+
+        </div>
+
+    </div>
+</div>
+
+
 
 <div class="wrapper">
-    <div class="htbl">
-        <div class="left">
-            <h1>@Model.W("Title")</h1>
-        </div>
-        <div class="right">
-            <div class="blue-holder">
-                <a class="icon-table2 @(Model.DisplayType ? "active" : string.Empty)" href="/@RoutingConsts.PlannerMenuName/grid"></a>
-                <a class="icon-paragraph-justify @(!Model.DisplayType ? "active" : string.Empty)" href="/@RoutingConsts.PlannerMenuName/table"></a>
-            </div>
+
+    <div class="blue-holder-all">
+        <div class="blue-holder">
+            <a class="icon-table2 @(Model.DisplayType ? "active" : string.Empty)" href="/@RoutingConsts.PlannerMenuName/grid"></a>
+            <a class="icon-paragraph-justify @(!Model.DisplayType ? "active" : string.Empty)" href="/@RoutingConsts.PlannerMenuName/table"></a>
         </div>
     </div>
 

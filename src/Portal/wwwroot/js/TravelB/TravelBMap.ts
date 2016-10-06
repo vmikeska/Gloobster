@@ -11,7 +11,8 @@ module TravelB {
 		private timeoutId;
 
 		public create(mapId) {
-			this.mapCreator = new Maps.MapsCreatorMapBox2D();
+				this.mapCreator = new Maps.MapsCreatorMapBox2D();
+			this.mapCreator.options.minZoom = 12;
 			this.mapCreator.onCenterChanged = (c) => {
 
 				if (this.onCenterChanged) {

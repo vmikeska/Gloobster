@@ -299,6 +299,22 @@ button:active {
           display: block;
           border-bottom: 1px solid #3298C1; }
 
+.info-block-bck {
+  background-color: #EAEAEA; }
+  .info-block-bck .title-table {
+    display: table;
+    width: 100%;
+    padding: 10px; }
+    .info-block-bck .title-table .left {
+      display: table-cell; }
+      .info-block-bck .title-table .left h1 {
+        padding: 0;
+        margin: 0;
+        font-size: 1.4em; }
+    .info-block-bck .title-table .right {
+      display: table-cell;
+      text-align: right; }
+
 @media screen and (max-width: 1150px) {
   .menu_all {
     min-height: 90px; }
@@ -2605,26 +2621,30 @@ footer {
     .trip-root .trip-menu li:last-of-type {
       border-bottom: 0; }
 
-.trip-root .blue-holder {
-  display: inline-block;
-  background-color: #f0fafc;
-  border-radius: 4px;
-  padding: 8px;
-  margin-right: 8px; }
-  .trip-root .blue-holder a {
+.trip-root .blue-holder-all {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  text-align: right; }
+  .trip-root .blue-holder-all .blue-holder {
     display: inline-block;
-    text-decoration: none;
-    font-size: 34px;
-    color: #009EC4;
-    margin: 0;
-    padding: 4px; }
-    .trip-root .blue-holder a:hover {
-      color: #005476; }
-    .trip-root .blue-holder a.active {
-      border: 1px solid #009EC4;
-      border-radius: 4px; }
-    .trip-root .blue-holder a:first-of-type {
-      margin-right: 6px; }
+    background-color: #f0fafc;
+    border-radius: 4px;
+    padding: 8px;
+    margin-right: 8px; }
+    .trip-root .blue-holder-all .blue-holder a {
+      display: inline-block;
+      text-decoration: none;
+      font-size: 34px;
+      color: #009EC4;
+      margin: 0;
+      padding: 4px; }
+      .trip-root .blue-holder-all .blue-holder a:hover {
+        color: #005476; }
+      .trip-root .blue-holder-all .blue-holder a.active {
+        border: 1px solid #009EC4;
+        border-radius: 4px; }
+      .trip-root .blue-holder-all .blue-holder a:first-of-type {
+        margin-right: 6px; }
 
 .trip-root .trips-table {
   display: table;
@@ -2838,8 +2858,60 @@ footer {
     }*/ }
   .travelb-home textarea {
     border: 1px solid #3298C1; }
-  .travelb-home .info-block-bck {
-    background-color: #f2f2f2; }
+  .travelb-home .checkin-icon {
+    z-index: 99999 !important; }
+    .travelb-home .checkin-icon .thumb-cont {
+      width: 40px;
+      height: 40px; }
+      .travelb-home .checkin-icon .thumb-cont img {
+        width: 40px;
+        height: 40px; }
+  .travelb-home .checkin-you-icon {
+    z-index: 99999 !important;
+    background-color: white;
+    border: 2px solid red;
+    border-radius: 4px;
+    text-align: center; }
+    .travelb-home .checkin-you-icon span {
+      font-size: 38px;
+      display: inline-block;
+      line-height: 1; }
+  .travelb-home .mp-icon {
+    z-index: 99998 !important; }
+    .travelb-home .mp-icon .cont {
+      width: 40px;
+      height: 40px;
+      border: 1px solid black;
+      border-radius: 4px; }
+      .travelb-home .mp-icon .cont img {
+        width: 38px;
+        height: 38px; }
+  .travelb-home .info-block {
+    padding: 8px;
+    text-align: center; }
+    .travelb-home .info-block .block {
+      width: 48%;
+      min-width: 320px;
+      display: inline-block;
+      vertical-align: top; }
+      @media screen and (max-width: 700px) {
+        .travelb-home .info-block .block {
+          width: 95%; } }
+      .travelb-home .info-block .block .block-inner {
+        display: table; }
+        .travelb-home .info-block .block .block-inner .img-all {
+          display: table-cell;
+          vertical-align: middle;
+          width: 30%; }
+          .travelb-home .info-block .block .block-inner .img-all img {
+            width: 100%; }
+        .travelb-home .info-block .block .block-inner .txt {
+          display: table-cell;
+          vertical-align: middle;
+          text-align: left;
+          width: 60%;
+          width: auto;
+          padding: 10px; }
   .travelb-home .itag {
     padding-left: 3px;
     padding-right: 3px;
@@ -2862,33 +2934,6 @@ footer {
   .travelb-home .g-icon-group .g-icon:last-of-type {
     color: black;
     margin-left: -5px; }
-  .travelb-home .info-block {
-    padding: 8px;
-    text-align: center; }
-    .travelb-home .info-block .block {
-      width: 48%;
-      min-width: 320px;
-      display: inline-block;
-      vertical-align: top; }
-      @media screen and (max-width: 700px) {
-        .travelb-home .info-block .block {
-          width: 95%; } }
-      .travelb-home .info-block .block .block-inner {
-        display: table; }
-        .travelb-home .info-block .block .block-inner .img-all {
-          display: table-cell;
-          vertical-align: middle;
-          width: 30%; }
-          .travelb-home .info-block .block .block-inner .img-all img {
-            width: 100%; }
-        .travelb-home .info-block .block .block-inner .txt {
-          /*border: 1px solid red;*/
-          display: table-cell;
-          vertical-align: middle;
-          text-align: left;
-          width: 60%;
-          width: auto;
-          padding: 10px; }
   .travelb-home .notifs .notif {
     margin-top: 8px; }
     .travelb-home .notifs .notif .notif-body {
@@ -2989,9 +3034,27 @@ footer {
           border-top-right-radius: 4px; }
     .travelb-home .main-menu .active {
       background-color: #005476 !important; }
+  .travelb-home .no-location-perm {
+    background-color: #FFC400;
+    font-size: 0.8em;
+    padding: 4px; }
   .travelb-home .map {
     width: 100%;
     height: 500px; }
+    .travelb-home .map .entities-filter {
+      background-color: white;
+      border: 1px solid #3298C1;
+      border-radius: 4px;
+      padding: 6px;
+      z-index: 99999;
+      position: absolute;
+      top: 10px;
+      right: 10px; }
+      @media screen and (max-width: 479px) {
+        .travelb-home .map .entities-filter {
+          top: 60px; } }
+      .travelb-home .map .entities-filter label {
+        font-weight: 600; }
   .travelb-home .results .title {
     font-size: 24px;
     font-weight: bold;

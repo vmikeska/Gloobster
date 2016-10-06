@@ -57,6 +57,8 @@ module TravelB {
 
 		public genCheckinsList(checkins) {
 
+			var fc = _.reject(checkins, (c) => { return c.userId === Views.ViewBase.currentUserId });
+
 			var $listCont = $(".results .people");
 			$listCont.find(".person").remove();
 				
@@ -65,7 +67,7 @@ module TravelB {
 
 			var cr = new CheckinReact();
 
-			checkins.forEach((p) => {
+			fc.forEach((p) => {
 
 				var context = {
 					id: p.userId,

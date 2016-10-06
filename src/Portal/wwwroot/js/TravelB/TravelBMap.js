@@ -6,6 +6,7 @@ var TravelB;
         TravelBMap.prototype.create = function (mapId) {
             var _this = this;
             this.mapCreator = new Maps.MapsCreatorMapBox2D();
+            this.mapCreator.options.minZoom = 12;
             this.mapCreator.onCenterChanged = function (c) {
                 if (_this.onCenterChanged) {
                     _this.mapMoved(function () {

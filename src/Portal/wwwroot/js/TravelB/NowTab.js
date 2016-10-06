@@ -37,12 +37,13 @@ var TravelB;
         };
         NowTab.prototype.genCheckinsList = function (checkins) {
             var _this = this;
+            var fc = _.reject(checkins, function (c) { return c.userId === Views.ViewBase.currentUserId; });
             var $listCont = $(".results .people");
             $listCont.find(".person").remove();
             var d = new Date();
             var curYear = d.getFullYear();
             var cr = new CheckinReact();
-            checkins.forEach(function (p) {
+            fc.forEach(function (p) {
                 var context = {
                     id: p.userId,
                     name: p.displayName,

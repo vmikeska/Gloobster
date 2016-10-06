@@ -18,6 +18,10 @@
 		private reacts: CheckinReacts;
 		private notifs: NotifRefresh;
 		private chat: Chat;
+			
+		private youMarker;
+
+		private mapObj;
 
 		private props: TravelB.EmptyProps;
 
@@ -120,10 +124,18 @@
 						this.checkinWin.showCityCheckin(null);
 				}
 
+				});
+
+			$("#fShowPeople").change((e) => {				
+				this.displayNowCheckins();
+			});
+
+			$("#fPoints").change((e) => {
+					this.displayMeetingPoints();
 			});
 
 		}
-			
+
 		private displayNowCheckins() {
 			var prms = this.getBaseQuery();
 
@@ -131,15 +143,19 @@
 				return;
 			}
 
-			ViewBase.currentView.apiGet("CheckinNow", prms, (checkins) => {
+			var showPeople = $("#fShowPeople").prop("checked");
+			if (showPeople) {
+				ViewBase.currentView.apiGet("CheckinNow", prms, (checkins) => {					
+						this.nowFncs.genCheckinsList(checkins);
 
-				var fc = _.reject(checkins, (c) => { return c.userId === ViewBase.currentUserId });
+						this.mapCheckins.genCheckins(checkins, CheckinType.Now);
+				});
+			} else {					
+				this.mapCheckins.clearCheckins();
+			}
 
-				this.nowFncs.genCheckinsList(fc);
-				this.mapCheckins.genCheckins(fc, CheckinType.Now);
-			});
 		}
-			
+
 		private displayCityCheckins() {
 			var prms = this.getBaseQuery();
 
@@ -150,10 +166,7 @@
 			prms.push(["fromDate", TravelB.DateUtils.myDateToTrans(this.filter.filterDateFrom)]);
 			prms.push(["toDate", TravelB.DateUtils.myDateToTrans(this.filter.filterDateTo)]);
 				
-			ViewBase.currentView.apiGet("CheckinCity", prms, (checkins) => {
-					if (this.mapCheckins) {
-							this.mapCheckins.clearMarkers();
-					}
+			ViewBase.currentView.apiGet("CheckinCity", prms, (checkins) => {					
 				this.cityFncs.genCheckinsList(checkins);
 				this.mapCheckins.genCheckins(checkins, CheckinType.City);
 			});
@@ -187,14 +200,21 @@
 
 			var prms = this.getBaseQuery();
 
+			var showMPs = $("#fPoints").prop("checked");
+
 			ViewBase.currentView.apiGet("MeetingPoint", prms, (points) => {
 				this.nowFncs.genMeetingPoints(points);
-				this.mapCheckins.genMPs(points);
+
+				if (showMPs) {
+					this.mapCheckins.genMPs(points);
+				}
 			});
-
-
+				
+			if (!showMPs && this.mapCheckins) {
+				this.mapCheckins.clearMPs();
+			}				
 		}
-			
+
 		private displayData() {
 			if (this.tabs.activeTabId === this.nowTabConst) {
 					this.displayNowCheckins();
@@ -217,7 +237,7 @@
 				var combo = new Common.PlaceSearchBox(c);
 				return combo;
 		}
-
+			
 		private createMap() {
 
 			this.travelMap = new TravelB.TravelBMap();
@@ -233,17 +253,54 @@
 		}
 
 		private onMapCreated(mapObj) {
-				this.mapCheckins = new TravelB.MapCheckins(mapObj);
+			this.mapObj = mapObj;
+			this.mapCheckins = new TravelB.MapCheckins(mapObj);
 
-			this.getLocation((lat, lng) => {
-				this.setPlaceCenter(lat, lng);
-				});
+			TravelB.UserLocation.getLocation((res) => {
+					TravelB.UserLocation.setCurrentLocation(res.lat, res.lng);				
+				this.setPlaceCenter(res.lat, res.lng);
 
+				if (res.exactLoc) {
+					this.createUserMarker(res.lat, res.lng);
+					this.startUserTracking();
+				}
+
+				if (res.userDenied) {
+					$(".no-location-perm").show();
+				}
+			});
+				
 			var search = this.initPlaceDD("2", $("#searchCity"));
 			search.onPlaceSelected = (p, e) => {
-					this.setPlaceCenter(e.Coordinates.Lat, e.Coordinates.Lng);
+				this.setPlaceCenter(e.Coordinates.Lat, e.Coordinates.Lng);
 			}
 		}
+
+		private createUserMarker(lat, lng) {
+			this.youMarker = L.marker([lat, lng], { title: "Your position" }).addTo(this.mapObj);
+		}
+
+		private clearUserMarker() {
+			if (this.youMarker) {
+				this.mapObj.removeLayer(this.youMarker);
+				this.youMarker = null;
+			}
+		}
+
+		
+
+		private startUserTracking() {
+				navigator.geolocation.watchPosition(
+						(pos) => {
+								TravelB.UserLocation.setCurrentLocation(pos.coords.latitude, pos.coords.longitude);
+								this.clearUserMarker();
+								this.createUserMarker(pos.coords.latitude, pos.coords.longitude);
+							},
+							(error) => {
+									this.clearUserMarker();
+							}
+					);
+			}
 
 		private onMapCenterChanged(c, bounds) {
 				this.currentBounds = bounds;
@@ -254,18 +311,8 @@
 			this.travelMap.mapObj.setView([lat, lng], 12);
 		}
 
-		private getLocation(callback) {
-			if (navigator.geolocation) {
-				navigator.geolocation.getCurrentPosition((p) => {
-					callback(p.coords.latitude, p.coords.longitude);
-				});
-			} else {
-				var lat = geoip_latitude();
-				var lng = geoip_longitude();
-				callback(lat, lng);
-			}
+		
 		}
-	}
 
 	export class StrOpers {
 

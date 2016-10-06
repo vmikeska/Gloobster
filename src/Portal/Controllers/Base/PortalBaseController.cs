@@ -15,10 +15,12 @@ using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Net.Http.Headers;
 using MongoDB.Bson;
+using Newtonsoft.Json;
 using Serilog;
 
 namespace Gloobster.Portal.Controllers.Base
 {
+    
     public class PortalBaseController: Controller
     {
 		public IDbOperations DB { get; set; }
@@ -141,13 +143,25 @@ namespace Gloobster.Portal.Controllers.Base
                 Lang = "en", // todo: change from session,
                 Locale = locale,
                 HasUserAgent = !string.IsNullOrEmpty(ua),
-                IsDemo = false
+                IsDemo = false,
+                InfoBlocks = new InfoBlocks
+                {
+                    infos = new List<InfoBlock>()
+                }
             };
 
-            var hasCookie = Request.Cookies.ContainsKey("Demo");
-            if (hasCookie)
+            var hasDemoCookie = Request.Cookies.ContainsKey("Demo");
+            if (hasDemoCookie)
             {
                 instance.IsDemo = Request.Cookies["Demo"].ToString() == "on";
+            }
+
+            var hasInfoCookie = Request.Cookies.ContainsKey("InfoBlocks");
+            if (hasInfoCookie)
+            {
+                var str = Request.Cookies["InfoBlocks"].ToString();
+                var infoBlocks = JsonConvert.DeserializeObject<InfoBlocks>(str);
+                instance.InfoBlocks = infoBlocks;                
             }
             
             if (IsUserLogged)

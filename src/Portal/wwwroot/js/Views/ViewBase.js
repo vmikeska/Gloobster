@@ -19,6 +19,7 @@ var Views;
                 $(document).tooltip();
             }
             this.initDemoFnc();
+            this.initTitleFnc();
         }
         Object.defineProperty(ViewBase.prototype, "pageType", {
             get: function () { return null; },
@@ -32,6 +33,35 @@ var Views;
             enumerable: true,
             configurable: true
         });
+        ViewBase.prototype.initTitleFnc = function () {
+            var _this = this;
+            var $ibAll = $(".info-block-bck");
+            var $btn = $ibAll.find(".showHide");
+            $btn.click(function (e) {
+                e.preventDefault();
+                var id = $ibAll.attr("id");
+                var $ib = $ibAll.find(".info-block");
+                var visible = $ib.css("display") === "block";
+                $btn.html(visible ? $btn.data("ts") : $btn.data("th"));
+                var data = _this.cookieManager.getJson("InfoBlocks");
+                if (data) {
+                    var thisInfo = _.find(data.infos, function (info) {
+                        return info.id === id;
+                    });
+                    if (thisInfo) {
+                        thisInfo.visible = !visible;
+                    }
+                    else {
+                        data.infos.push({ id: id, visible: false });
+                    }
+                }
+                else {
+                    data = { infos: [{ id: id, visible: false }] };
+                }
+                _this.cookieManager.setJson("InfoBlocks", data);
+                $ib.slideToggle();
+            });
+        };
         ViewBase.prototype.initDemoFnc = function () {
             var _this = this;
             $("#switchVersion").click(function (e) {

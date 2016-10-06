@@ -66,6 +66,7 @@
 /// <reference path="js/travelb/tabs.js" />
 /// <reference path="js/travelb/travelbmap.js" />
 /// <reference path="js/travelb/travelbutils.js" />
+/// <reference path="js/travelb/userlocation.js" />
 /// <reference path="js/trip/acceptcombo.js" />
 /// <reference path="js/trip/airportcombo.js" />
 /// <reference path="js/trip/comments.js" />

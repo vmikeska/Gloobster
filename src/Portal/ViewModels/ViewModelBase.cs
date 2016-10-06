@@ -6,6 +6,7 @@ using Gloobster.Entities;
 using Gloobster.Enums;
 using Microsoft.AspNet.Http;
 using Microsoft.Net.Http.Server;
+using System.Linq;
 
 namespace Gloobster.Portal.ViewModels
 {
@@ -20,6 +21,17 @@ namespace Gloobster.Portal.ViewModels
         
     }
 
+
+    public class InfoBlocks
+    {
+        public List<InfoBlock> infos { get; set; }
+    }
+
+    public class InfoBlock
+    {
+        public string id { get; set; }
+        public bool visible { get; set; }
+    }
 
     public class ViewModelBase
 	{
@@ -37,12 +49,29 @@ namespace Gloobster.Portal.ViewModels
 	    public List<ModuleTexts> ClientModules { get; set; }
         public string FbToken { get; set; }
         public bool HasUserAgent { get; set; }
+        public InfoBlocks InfoBlocks { get; set; }
 
         public bool HasSocNet(SocialNetworkType net)
 	    {
 	        return SocialNetworks.Contains(net);
 	    }
 
+        public string InfoBlockVisible(string id)
+        {
+            var block = InfoBlocks.infos.FirstOrDefault(i => i.id == id);
+            if (block == null)
+            {
+                return string.Empty;
+            }
+
+            if (block.visible)
+            {
+                return string.Empty;
+            }
+
+            return "display:none;";
+        }
+        
         public bool IsDemo { get; set; }
 
         public string W(string key)

@@ -12,8 +12,8 @@
 		private dlgNow;
 		private dlgCity;		
 
-		public wpCombo;
-		private wcCombo;
+		public wpCombo: Common.PlaceSearchBox;
+		private wcCombo: Common.PlaceSearchBox;
 
 		private tabs: Tabs;
 		private wantDos: CategoryTagger;
@@ -44,7 +44,7 @@
 
 				if (hasStatus) {
 
-						this.wantDos.initData(r.wantDo);
+					this.wantDos.initData(r.wantDo);
 						
 					this.selectRadio("wantMeet", r.wantMeet);
 
@@ -62,7 +62,7 @@
 						lastText: r.waitingAtText,
 						coord: r.waitingCoord
 					});
-
+						
 					this.$html.find("#chckMsg").val(r.message);
 				}
 
@@ -235,6 +235,12 @@
 			c.clearAfterSearch = false;
 
 			var combo = new Common.PlaceSearchBox(c);
+
+			var loc = UserLocation.currentLocation;
+			if (loc) {
+					combo.setCoordinates(loc.lat, loc.lng);
+			}
+
 			return combo;
 		}
 

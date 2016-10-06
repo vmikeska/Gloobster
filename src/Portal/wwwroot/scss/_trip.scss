@@ -62,34 +62,41 @@
         }
     }
 
-    .blue-holder{
-        display: inline-block;
-        background-color: #f0fafc;
-        border-radius: 4px;
-        padding: 8px;
-        margin-right: 8px;
+    .blue-holder-all{
+        margin-top: 8px;
+        margin-bottom: 8px;
+        text-align: right;
 
-        a{
+        .blue-holder{
             display: inline-block;
-            text-decoration: none;
-            font-size: 34px;
-            color: $light-blue2;
-            margin: 0;
-            padding: 4px;
+            background-color: #f0fafc;
+            border-radius: 4px;
+            padding: 8px;
+            margin-right: 8px;
 
-            &:hover{
-                color: $dark-blue;
-            }
+            a{
+                display: inline-block;
+                text-decoration: none;
+                font-size: 34px;
+                color: $light-blue2;
+                margin: 0;
+                padding: 4px;
 
-            &.active{
-                border: 1px solid $light-blue2;
-                border-radius: 4px;
+                &:hover{
+                    color: $dark-blue;
+                }
+
+                &.active{
+                    border: 1px solid $light-blue2;
+                    border-radius: 4px;
                 
+                }
+
+                &:first-of-type{
+                    margin-right: 6px;
+                }
             }
 
-            &:first-of-type{
-                margin-right: 6px;
-            }
         }
 
     }
