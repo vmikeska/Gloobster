@@ -1,54 +1,17 @@
 module Views {
-	export class Messages extends ViewBase {
-
-		private msgTmp;
-
-		private otherUserId;
-
-		constructor(otherUserId) {
+	export class MessagesHome extends ViewBase {
+			
+		constructor() {
 			super();
-			this.otherUserId = otherUserId;
-			this.msgTmp = this.registerTemplate("msgPost-template");
 
-			this.refresh();
-
-			$("#commentSubmit").click((e) => {
+			$(".um-all").click((e) => {
 				e.preventDefault();
-				var msg = $("#commentInput").val();
-				this.sendMessage(this.otherUserId, msg);
+				var $t = $(e.delegateTarget);
+				var url = $t.data("url");
+
+				window.location.href = url;
 			});
 		}
 			
-		public refresh() {
-			var prms = [["userId", this.otherUserId]];
-			this.apiGet("Message", prms, (rs) => {
-					this.displayMessages(rs.messages);
-			});
-		}
-
-		public sendMessage(userId, message) {
-
-			var data = {
-				userId: userId,
-				message: message
-			};
-
-			this.apiPost("Message", data, (rs) => {
-				this.displayMessages(rs.messages);
-			});
-		}
-
-		private displayMessages(messages) {
-
-			var $cont = $("#msgsCont");
-			$cont.html("");
-
-			messages.forEach((r) => {
-				var $m = $(this.msgTmp(r));
-				$cont.prepend($m);
-			});
-
-		}
-
 	}
 }

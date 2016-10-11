@@ -5,6 +5,7 @@ var TravelB;
             this.nowTabConst = "nowTab";
             this.futureTabConst = "futureTab";
             this.registerTemplates();
+            this.$win = $(".checkin-win");
         }
         CheckinWin.prototype.showCityCheckin = function (editId) {
             var isEdit = (editId != null);
@@ -45,16 +46,15 @@ var TravelB;
             var $c = this.$html.find("#wantDoCont");
             this.wantDos = new TravelB.CategoryTagger();
             var data = TravelB.TravelBUtils.getWantDoTaggerData();
-            this.wantDos.create($c, "checkin", data);
+            this.wantDos.create($c, "checkin", data, "Pick activities you'd like to do");
         };
         CheckinWin.prototype.createWin = function (edit, type) {
             var _this = this;
-            $(".popup").remove();
             var btnTxt = edit ? "Update checkin" : "Checkin";
             var context = { sumbitText: btnTxt };
             this.$html = $(this.checkinWindowDialog(context));
-            $("body").append(this.$html);
-            this.$html.fadeIn();
+            this.$win.html(this.$html);
+            this.$win.slideDown();
             this.initWantDo();
             Common.DropDown.registerDropDown(this.$html.find("#fromAge"));
             Common.DropDown.registerDropDown(this.$html.find("#toAge"));
@@ -69,8 +69,9 @@ var TravelB;
             });
             this.$html.find(".cancel").click(function (e) {
                 e.preventDefault();
-                _this.$html.fadeOut();
-                _this.$html.remove();
+                _this.$win.slideUp(function () {
+                    _this.$win.empty();
+                });
             });
         };
         CheckinWin.prototype.createWinNow = function () {

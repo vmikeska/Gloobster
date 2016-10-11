@@ -8,6 +8,13 @@ module TravelB {
 			var dd = Math.abs(nowUtc.getTime() - untilUtc.getTime());
 			var diffMins = Math.ceil(dd / (1000 * 60));
 			return diffMins;
+			}
+
+		public static minsToTimeStr(mins) {
+			var h = Math.floor(mins / 60);
+			var m = mins % 60;
+
+			return `${h}h ${m}m`;
 		}
 
 			public static i(id, text) {

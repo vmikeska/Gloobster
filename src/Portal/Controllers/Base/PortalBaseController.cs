@@ -17,6 +17,7 @@ using Microsoft.Net.Http.Headers;
 using MongoDB.Bson;
 using Newtonsoft.Json;
 using Serilog;
+using Gloobster.Entities.TravelB;
 
 namespace Gloobster.Portal.Controllers.Base
 {
@@ -147,9 +148,10 @@ namespace Gloobster.Portal.Controllers.Base
                 InfoBlocks = new InfoBlocks
                 {
                     infos = new List<InfoBlock>()
-                }
+                },
+                UnreadMessagesCount = 0
             };
-
+            
             var hasDemoCookie = Request.Cookies.ContainsKey("Demo");
             if (hasDemoCookie)
             {
@@ -166,6 +168,18 @@ namespace Gloobster.Portal.Controllers.Base
             
             if (IsUserLogged)
             {
+                int unreadCnt = 0;
+                var msgs = DB.List<MessageEntity>(e => e.UserIds.Contains(User.User_id));
+                foreach (var msg in msgs)
+                {
+                    var unread = msg.Messages.Where(m => !m.Read && (m.User_id != UserIdObj.Value)).ToList();
+                    if (unread.Any())
+                    {
+                        unreadCnt++;
+                    }
+                }
+                instance.UnreadMessagesCount = unreadCnt;
+
                 var notifications = DB.FOD<NotificationsEntity>(n => n.User_id == UserIdObj.Value);
                 if (notifications != null)
                 {

@@ -1,21 +1,124 @@
 module TravelB {
+
+	export class CustomCheckbox {
+		public onChange: Function;
+
+		private $root;
+		private $checker;
+
+		constructor($root, checked = false) {
+			this.$root = $root;
+			this.$checker = this.$root.find(".checker");
+			this.setChecker(checked);
+
+			this.$root.click((e) => {
+				var newState = !this.isChecked();
+				this.setChecker(newState);
+				if (this.onChange) {
+					this.onChange($root.attr("id"), newState);
+				}
+			});
+		}
+
+		public isChecked() {
+			return this.$checker.hasClass("icon-checkmark");
+		}
+
+		public setChecker(checked) {
+			this.$checker.removeClass("icon-checkmark");
+			this.$checker.removeClass("icon-checkmark2");
+
+			if (checked) {
+				this.$checker.addClass("icon-checkmark");
+			} else {
+				this.$checker.addClass("icon-checkmark2");
+			}
+
+		}
+
+	}
+
+
 	export class Filter {
 
 		private langsTagger;
 
 		public onFilterSelChanged: Function;
 
-		public selectedFilter = null;
+		public selectedFilter = "gender";
 		public filterDateFrom;
 		public filterDateTo;
 		public langs;
-			
+		public wds;
+
 		private nowTemp;
 		private cityTemp;
 
+		private wantDos;
+		
+
+		private $filter;
+
 		constructor() {
+			this.initCheckboxes();
+
+			this.$filter = $(".filter");
+
 			this.nowTemp = Views.ViewBase.currentView.registerTemplate("filterNow-template");
-			this.cityTemp = Views.ViewBase.currentView.registerTemplate("filterCity-template");			
+			this.cityTemp = Views.ViewBase.currentView.registerTemplate("filterCity-template");
+		}
+
+		private useFilter: CustomCheckbox;
+		private useAllCheckins: CustomCheckbox;
+
+		private initCheckboxes() {
+			this.useFilter = new CustomCheckbox($("#cbUseFilter"));
+			this.useFilter.onChange = ((id, newState) => {
+				this.setCheckboxes(id, newState);
+
+				if (newState) {
+					this.$filter.slideDown();
+				} else {
+					this.$filter.slideUp();
+				}
+
+				this.updateFilter(newState, this.useAllCheckins.isChecked());
+
+			});
+			this.useAllCheckins = new CustomCheckbox($("#cbAllCheckins"));
+			this.useAllCheckins.onChange = ((id, newState) => {
+				this.setCheckboxes(id, newState);
+
+				if (newState) {
+					this.$filter.slideUp();
+				}
+
+				this.updateFilter(this.useFilter.isChecked(), newState);
+
+			});
+		}
+
+		private updateFilter(useFilter: boolean, allCheckins: boolean) {
+			if (allCheckins) {
+				this.setFilter(null);
+				return;
+			}
+
+			if (useFilter) {
+				this.setFilter("full");
+			} else {
+				this.setFilter("gender");
+			}
+		}
+
+		private setCheckboxes(id, newState) {
+			if (id === "cbUseFilter" && newState) {
+				this.useAllCheckins.setChecker(false);
+			}
+
+			if (id === "cbAllCheckins" && newState) {
+				this.useFilter.setChecker(false);
+			}
 		}
 
 		public initNow() {
@@ -24,11 +127,11 @@ module TravelB {
 		}
 
 		public initCity() {
-			$(".filter").html(this.cityTemp());				
+			$(".filter").html(this.cityTemp());
 			this.initCommon();
 			this.initFilterDates();
 		}
-			
+
 		private setFilter(filter) {
 			this.selectedFilter = filter;
 			this.onFilterSelChanged();
@@ -51,53 +154,22 @@ module TravelB {
 			});
 		}
 
-			private wantDos;
-
 		private initCommon() {
 
 			var v = <Views.TravelBView>Views.ViewBase.currentView;
 
 			this.initLangsTagger(v.defaultLangs);
-				
+
 			var $c = $("#filterCont");
-			var $ac = $("#allCheckins");
-			var $jm = $("#showJustMine");
 
 			this.wantDos = new CategoryTagger();
 			var data = TravelBUtils.getWantDoTaggerData();
-			this.wantDos.create($c, "filter", data);
+			this.wantDos.create($c, "filter", data, "Filter is inactive until you choose some activities");
 			this.wantDos.onFilterChange = () => {
-					var ids = this.wantDos.getSelectedIds();
-					this.setFilter(ids);
+				this.wds = this.wantDos.getSelectedIds();
+				this.onFilterSelChanged();
 			}
-				
-			$(".filter").find("input").click((e) => {
-					var $t = $(e.target);
-					var id = $t.attr("id");
-
-					if (id === "allCheckins") {
-
-							if ($ac.prop("checked") === true) {
-									$c.find("input").prop("checked", false);
-									$jm.prop("checked", false);
-									this.setFilter(["all"]);
-							} else {
-									this.setFilter(null);
-							}
-
-					} else if (id === "showJustMine") {
-
-							if ($jm.prop("checked") === true) {
-									$c.find("input").prop("checked", false);
-									$ac.prop("checked", false);
-									this.setFilter(["mine"]);
-							} else {
-									this.setFilter(null);
-							}
-
-					}
-			});
-			}
+		}
 
 		private initLangsTagger(selectedItems) {
 
@@ -129,15 +201,15 @@ module TravelB {
 			this.refreshLangs();
 		}
 
-			private langsChanged(callback) {
-				this.refreshLangs();
-				this.onFilterSelChanged();
-				callback();
-			}
+		private langsChanged(callback) {
+			this.refreshLangs();
+			this.onFilterSelChanged();
+			callback();
+		}
 
-			private refreshLangs() {
-				this.langs = _.map(this.langsTagger.selectedItems, (i) => { return i.value; });
-			}
+		private refreshLangs() {
+			this.langs = _.map(this.langsTagger.selectedItems, (i) => { return i.value; });
+		}
 
 	}
 }

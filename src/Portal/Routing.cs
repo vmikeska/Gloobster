@@ -18,11 +18,23 @@ namespace Gloobster.Portal
                     template: "Pic/{id}/{cut}",
                     defaults: new { controller = "ImageDB", action = "Pic" }
                     );
-
+                
                 routes.MapRoute(
                     name: "imageDB_def",
                     template: "Picd/{id}/{cut}",
                     defaults: new { controller = "ImageDB", action = "Picd" }
+                    );
+
+                routes.MapRoute(
+                    name: "messages",
+                    template: "messages",
+                    defaults: new { controller = "Message", action = "Home" }
+                    );
+
+                routes.MapRoute(
+                    name: "message",
+                    template: "message/{id}",
+                    defaults: new { controller = "Message", action = "Message" }
                     );
 
                 routes.MapRoute(

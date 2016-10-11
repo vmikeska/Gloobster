@@ -1,4 +1,5 @@
-﻿
+﻿@using Gloobster.Common
+
 
 
 
@@ -54,132 +55,143 @@
 </script>
 
 <script id="checkinDialog-template" type="text/x-handlebars-template">
-    <div class="popup" id="checkin-dialog">
+    
+    <div class="checkinCont">
+
+        <div id="dlgSpec">
+
+        </div>
+
         <div>
-            <h3>Checkin dialog</h3>
-            <div class="checkinCont">
+            <div class="title">Want do</div>
 
-                <div>
-                    <b>Want do</b>
-                    <div id="wantDoCont">
+            <div id="wantDoCont">
 
-                    </div>                    
-                </div>
+            </div>
+        </div>
 
-                <div>
-                    <b>Want meet</b>
+
+        <div class="double-tbl">
+            <div class="cell">
+                <div class="title">Want meet</div>
+
+                <span class="multi">
                     <input id="wantMeetMan" type="radio" name="wantMeet" value="0"><label for="wantMeetMan">Man only</label>
+                </span>
+                <span class="multi">
                     <input id="wantMeetWoman" type="radio" name="wantMeet" value="1"><label for="wantMeetWoman">Woman only</label>
+                </span>
+                <span class="multi">
                     <input id="wantMeetAnybody" type="radio" name="wantMeet" value="2" checked><label for="wantMeetAnybody">Doesn't matter</label>
-                    <br />
+                </span>
+                <span class="multi">
                     <input id="multiPeopleAllowed" type="checkbox" />
                     <label for="multiPeopleAllowed">Multiple people allowed</label>
+                </span>
+            </div>
+
+            <div class="cell">
+                <div class="title">AgeRange</div>
+
+                <div id="fromAge" class="dropdown">
+                    <span class="selected">18</span>
+                    <ul>
+                        <li data-value="18">18</li>
+                        <li data-value="20">20</li>
+                        <li data-value="25">25</li>
+                        <li data-value="30">30</li>
+                        <li data-value="35">35</li>
+                        <li data-value="40">40</li>
+                        <li data-value="50">50</li>
+                        <li data-value="60">60</li>
+                    </ul>
+                    <input type="hidden" value="18">
                 </div>
 
-                <div>
-                    <b>AgeRange</b>
-                    <div id="fromAge" class="dropdown">
-                        <span class="selected">18</span>
-                        <ul>
-                            <li data-value="18">18</li>
-                            <li data-value="20">20</li>
-                            <li data-value="25">25</li>
-                            <li data-value="30">30</li>
-                            <li data-value="35">35</li>
-                            <li data-value="40">40</li>
-                            <li data-value="50">50</li>
-                            <li data-value="60">60</li>
-                        </ul>
-                        <input type="hidden" value="18">
-                    </div>
-
-                    <div id="toAge" class="dropdown">
-                        <span class="selected">35</span>
-                        <ul>                            
-                            <li data-value="18">20</li>
-                            <li data-value="25">25</li>
-                            <li data-value="30">30</li>
-                            <li data-value="35">35</li>
-                            <li data-value="40">40</li>
-                            <li data-value="50">50</li>
-                            <li data-value="60">60</li>
-                            <li data-value="100">100</li>
-                        </ul>
-                        <input type="hidden" value="35">
-                    </div>
-
+                <div id="toAge" class="dropdown">
+                    <span class="selected">35</span>
+                    <ul>
+                        <li data-value="18">20</li>
+                        <li data-value="25">25</li>
+                        <li data-value="30">30</li>
+                        <li data-value="35">35</li>
+                        <li data-value="40">40</li>
+                        <li data-value="50">50</li>
+                        <li data-value="60">60</li>
+                        <li data-value="100">100</li>
+                    </ul>
+                    <input type="hidden" value="35">
                 </div>
-                
+            </div>
+        </div>
+
                 <div>
-                    <b>Checkin message</b>
-                    <br />
+                    <div class="title">Checkin message</div>
+
                     <textarea id="chckMsg"></textarea>
                 </div>
 
-                <div id="dlgSpec">
-
-                </div>
-               
-
             </div>
-            <div class="tright">
-                <a class="button border cancel" href="#">Cancel</a>
-                <a id="submitCheckin" class="button confirm" href="#">{{sumbitText}}</a>
+            <div>
+                <a class="cancel icon-cross" href="#"></a>
+                <a id="submitCheckin" class="lbtn confirm icon-location" href="#"><span class="lato">{{sumbitText}}</span></a>
             </div>
             <a class="close" href="#"></a>
-        </div>
-    </div>
+
 </script>
 
 <script id="dlgNow-template" type="text/x-handlebars-template">
-    <b>Place</b>
-    <br />
-    <div id="waitingPlace" class="dropdown">
-        <input class="inputed" type="text" placeholder="Search for place name">
-        <img class="loader" src="/images/loader-gray.gif" style="display: none" />
-        <ul></ul>
-    </div>
-
-    <br />
-    <br />
-
-    <b>Waiting time</b>
-    <br />
     
-    <div id="minsWaiting" class="dropdown">
-        <span class="selected">60</span>
-        <ul>
-            <li data-value="30">30</li>
-            <li data-value="60">60</li>
-            <li data-value="90">90</li>
-            <li data-value="120">120</li>
-            <li data-value="150">150</li>
-            <li data-value="180">180</li>
-            <li data-value="210">210</li>
-            <li data-value="240">240</li>
-        </ul>
-        <input type="hidden" value="60">
+    <div class="double-tbl">
+        <div class="cell">
+            <div class="title">Place</div>
+
+            <div id="waitingPlace" class="dropdown">
+                <input class="inputed" type="text" placeholder="Search for place name">
+                <img class="loader" src="/images/loader-gray.gif" style="display: none" />
+                <ul></ul>
+            </div>
+        </div>
+        <div class="cell">
+            <div class="title">Waiting time</div>
+
+            <div id="minsWaiting" class="dropdown">
+                <span class="selected">60</span>
+                <ul>
+                    <li data-value="30">30</li>
+                    <li data-value="60">60</li>
+                    <li data-value="90">90</li>
+                    <li data-value="120">120</li>
+                    <li data-value="150">150</li>
+                    <li data-value="180">180</li>
+                    <li data-value="210">210</li>
+                    <li data-value="240">240</li>
+                </ul>
+                <input type="hidden" value="60">
+            </div>
+        </div>
     </div>
 
 </script>
 
 <script id="dlgCity-template" type="text/x-handlebars-template">
-    <b>Place</b>
-    <br />
-    <div id="waitingCity" class="dropdown">
-        <input class="inputed" type="text" placeholder="Search for a city name">
-        <img class="loader" src="/images/loader-gray.gif" style="display: none" />
-        <ul></ul>
-    </div>
+    <div class="title">Place</div>
 
-    <br />
-    <br />
+    
+        <div id="waitingCity" class="dropdown">
+            <input class="inputed" type="text" placeholder="Search for a city name">
+            <img class="loader" src="/images/loader-gray.gif" style="display: none" />
+            <ul></ul>
+        </div>
 
-    <b>Visiting days</b>
-    <br />
-    <input id="fromDate" type="text" value="" />
-    --
-    <input id="toDate" type="text" value="" />
+        <br />
+        <br />
+
+        <div class="title">Visiting days</div>
+    
+            <input id="fromDate" type="text" value="" />
+            --
+            <input id="toDate" type="text" value="" />
 
 </script>
 
@@ -190,8 +202,13 @@
             <img class="photo" src="{{photoUrl}}" />
         </div>
         <div class="cont">
-            <a href="{{link}}">{{name}}</a>, <span class="type">Music club</span><br />
-            <span class="people-met">10 people have already met here</span>
+            <a href="{{link}}">{{name}}</a>
+            <br />
+            {{#each categories}}
+                <span class="type">{{this}}</span>{{#unless @Html.Raw("@")last}}, {{/unless}}
+            {{/each}}
+ 
+            <div class="people-met">{{peopleMet}} people have already met here</div>
         </div>
         <div class="btn-cont">
             <a class="btn-check" href="#"><span class="icon-location"></span><br /><span class="txt">Check-in</span></a>
@@ -327,7 +344,7 @@
 
             </div>
             <div class="btn-cont">
-                <a class="chat-btn" href="#"><span class="icon-bubbles2"></span><br /><span class="txt">Message</span></a>
+                <a class="chat-btn" target="_blank" href="/@RoutingConsts.MessageMenuName/{{id}}"><span class="icon-bubbles2"></span><br /><span class="txt">Message</span></a>
             </div>
 
         </div>
@@ -360,40 +377,27 @@
 
 <script id="filterNow-template" type="text/x-handlebars-template">
     
-    <div class="bigCB">
-        <input id="allCheckins" type="checkbox" />
-        <label for="allCheckins">All checkins (you'll be not able to contact people lookin for other genders)</label>
-    </div>
-
-    <b>Want do filter</b>
+    <div class="title">What activites are you interested of?</div>
     <div id="filterCont"></div>
     
-    <b>Languages filter</b>
-    <div id="langsFilter"></div>
-    <a href="/PortalUser/Settings">Set your default languages in profile settings</a>
+    <div class="title">Show people speaking one of following languages</div>
+    <div id="langsFilter" class="langs-filter"></div>
+
 </script>
 
 <script id="filterCity-template" type="text/x-handlebars-template">
     
-    <div class="bigCB">
-        <input id="showJustMine" type="checkbox" />
-        <label id="showJustMineLabel" for="showJustMine">Show just mine checkins</label>
-
-        <input id="allCheckins" type="checkbox" />
-        <label for="allCheckins">All checkins (you'll be not able to contact people lookin for other genders)</label>
-    </div>
-    
-    
+    <div class="title">Show checkins between following dates</div>
     <div id="filterDateCont">
         <input id="fromDateFilter" type="text" />
-        --
+        <span class="split">-</span>
         <input id="toDateFilter" type="text" />
     </div>
-    <b>Want do filter</b>
+    <div class="title">What activites are you interested of?</div>
     <div id="filterCont"></div>
     
-    <div id="langsFilter"></div>
-    <a href="/PortalUser/Settings">Set your default languages in profile settings</a>
+    <div class="title">Show people speaking one of following languages</div>
+    <div id="langsFilter" class="langs-filter"></div>    
 </script>
 
 
@@ -412,50 +416,149 @@
 
 <script id="userPopupNow-template" type="text/x-handlebars-template">
 
-    <div>
-        <span class="thumbnail">
-            <img src="/PortalUser/ProfilePicture_s/{{id}}">
-        </span>
-        <br />
-        <a href="/PortalUser/Detail/{{id}}">{{name}}</a>, {{age}} years
-        <br />
-        <b>Waiting for</b>: {{waitingFor}}, {{multiStr}}
-        <br />
-        <b>Want do</b>: {{wants}}
-        <br />
-        <b>Waiting</b>: {{waitingMins}} minutes
-        <br />
-        <b>Interests</b>: {{interests}}
-        <br />
-        <div style="border: 1px solid black">
-            {{message}}
+    <div class="user-popup">
+        
+        <div class="top">
+            <div class="left">
+                <div class="photo">
+                    <img src="/PortalUser/ProfilePicture_s/{{id}}">
+                </div>
+            </div>
+            <div class="right">
+                <a href="/PortalUser/Detail/{{id}}" target="_blank">{{name}}</a>, {{age}} years
+                <div class="line">
+                    {{interests}}
+                </div>                    
+                <div class="line">
+                    {{#each languages}}
+                    <img class="flag" src="/images/n/flags/{{this}}.svg" />
+                    {{/each}}
+                </div>    
+                
+                   
+            </div>
         </div>
-        <a href="/PortalUser/Detail/{{id}}">Go to see full user profile</a>
+        <div class="checkin">
+            <div class="line">                
+                {{#if wmMan}}
+                <span class="g-icon icon-male" title="want meet man"></span>
+                {{/if}}
+
+                {{#if wmWoman}}
+                <span class="g-icon icon-female" title="want meet woman"></span>
+                {{/if}}
+
+                {{#if wmWomanGroup}}
+                <span class="g-icon g-icon-group" title="want meet group of women"><span class="g-icon icon-female"></span><span class="g-icon icon-female"></span></span>
+                {{/if}}
+
+                {{#if wmManGroup}}
+                <span class="g-icon g-icon-group" title="want meet group of men"><span class="g-icon icon-male"></span><span class="g-icon icon-male"></span></span>
+                {{/if}}
+
+                {{#if wmMixGroup}}
+                <span class="g-icon g-icon-group" title="want meet gender mixed group"><span class="g-icon icon-female"></span><span class="g-icon icon-male"></span></span>
+                {{/if}}
+                
+                {{#each wantDos}}
+                <span class="itag">{{this}}</span>
+                {{/each}}
+            </div>
+
+            <div class="line">
+                <span class="title">Still here for</span>: {{waitingStr}}
+            </div>
+            
+        </div>
+
+        <div class="msg">
+            {{message}}
+        </div>        
     </div>
 
 </script>
 
-<script id="userPopupCity-template" type="text/x-handlebars-template">
+<script id="mpPopup-template" type="text/x-handlebars-template">
+    
+    <div class="mp-popup">
+        
+        <div class="photo-frame">
+            <img src="{{photoUrl}}" />
+        </div>
+        <div class="txt">
+            <div class="name">
+                <a href="{{link}}">{{name}}</a>
+            </div>
+            <div class="cats">
+                {{#each categories}}
+                <span>{{this}}</span>{{#unless @Html.Raw("@")last}}, {{/unless}}
+                {{/each}}
+            </div>
 
-    <div>
-        <span class="thumbnail">
-            <img src="/PortalUser/ProfilePicture_s/{{id}}">
-        </span>
-        <br />
-        <a href="/PortalUser/Detail/{{id}}">{{name}}</a>, {{age}} years
-        <br />
-        <b>Waiting for</b>: {{waitingFor}}, {{multiStr}}
-        <br />
-        <b>Want do</b>: {{wants}}
-        <br />
-        <b>Will be here</b>: {{fromStr}} - {{toStr}}
-        <br />
-        <b>Interests</b>: {{interests}}
-        <br />
-        <div style="border: 1px solid black">
+            <div class="people-met">{{peopleMet}} people have already met here</div>
+        </div>
+    </div>
+    
+</script>
+
+<script id="userPopupCity-template" type="text/x-handlebars-template">
+    
+    <div class="user-popup">
+
+        <div class="top">
+            <div class="left">
+                <div class="photo">
+                    <img src="/PortalUser/ProfilePicture_s/{{id}}">
+                </div>
+            </div>
+            <div class="right">
+                <a href="/PortalUser/Detail/{{id}}" target="_blank">{{name}}</a>, {{age}} years
+                <div class="line">
+                    {{interests}}
+                </div>
+                <div class="line">
+                    {{#each languages}}
+                    <img class="flag" src="/images/n/flags/{{this}}.svg" />
+                    {{/each}}
+                </div>   
+            </div>
+        </div>
+        <div class="checkin">
+            <div class="line">
+                {{#if wmMan}}
+                <span class="g-icon icon-male" title="want meet man"></span>
+                {{/if}}
+
+                {{#if wmWoman}}
+                <span class="g-icon icon-female" title="want meet woman"></span>
+                {{/if}}
+
+                {{#if wmWomanGroup}}
+                <span class="g-icon g-icon-group" title="want meet group of women"><span class="g-icon icon-female"></span><span class="g-icon icon-female"></span></span>
+                {{/if}}
+
+                {{#if wmManGroup}}
+                <span class="g-icon g-icon-group" title="want meet group of men"><span class="g-icon icon-male"></span><span class="g-icon icon-male"></span></span>
+                {{/if}}
+
+                {{#if wmMixGroup}}
+                <span class="g-icon g-icon-group" title="want meet gender mixed group"><span class="g-icon icon-female"></span><span class="g-icon icon-male"></span></span>
+                {{/if}}
+
+                {{#each wantDos}}
+                <span class="itag">{{this}}</span>
+                {{/each}}
+            </div>
+
+            <div class="line">
+                <span class="title">Will be here</span>: {{fromStr}} - {{toStr}}                
+            </div>
+
+        </div>
+
+        <div class="msg">
             {{message}}
         </div>
-        <a href="/PortalUser/Detail/{{id}}">Go to see full user profile</a>
     </div>
 
 </script>

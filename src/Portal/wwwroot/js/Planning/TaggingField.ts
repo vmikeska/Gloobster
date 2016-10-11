@@ -8,11 +8,11 @@ module Planning {
 	}
 
 	export class TaggingField {
-			public onItemClickedCustom: Function;
-			public onDeleteCustom: Function;
-			public onChange: Function;
+		public onItemClickedCustom: Function;
+		public onDeleteCustom: Function;
+		public onChange: Function;
 
-			private $tagger: any;
+		private $tagger: any;
 		private $cont: any;
 
 		private taggerTemplate: any;

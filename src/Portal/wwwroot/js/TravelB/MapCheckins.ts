@@ -4,21 +4,18 @@ module TravelB {
 
 		public checkins;
 
-		private popupTemplateNow;
-		private popupTemplateCity;
-		private visitedPin;
+		private popupTemplateNow = Views.ViewBase.currentView.registerTemplate("userPopupNow-template");
+		private popupTemplateCity = Views.ViewBase.currentView.registerTemplate("userPopupCity-template");
+		private popupMP = Views.ViewBase.currentView.registerTemplate("mpPopup-template");
 
-		private checkinsLayer;
-		
+		private visitedPin;		
+		private checkinsLayer;		
 		private clusterLayerMPs; 
 
 		private mapObj;
 
 		constructor(mapObj) {
-			this.mapObj = mapObj;
-
-			this.popupTemplateNow = Views.ViewBase.currentView.registerTemplate("userPopupNow-template");
-			this.popupTemplateCity = Views.ViewBase.currentView.registerTemplate("userPopupCity-template");
+			this.mapObj = mapObj;			
 		}
 
 		public clearCheckins() {
@@ -84,6 +81,9 @@ module TravelB {
 				var markerCont = MapPins.getMpCont(c);
 
 				var marker = L.marker([c.coord.Lat, c.coord.Lng], { icon: markerCont });
+				marker.on("click", (e) => {						
+						this.displayPopupMP(e.latlng, c.id);						
+				});
 					
 				this.clusterLayerMPs.addLayer(marker);
 			});
@@ -92,24 +92,31 @@ module TravelB {
 		}
 
 		private displayPopupCity(latlng, cid) {
-
-				Views.ViewBase.currentView.apiGet("CheckinCity", [["type", "id"], ["id", cid]], (checkin) => {
+				
+				Views.ViewBase.currentView.apiGet("CheckinCity", [["type", "id"], ["id", cid]], (c) => {
 
 						var d = new Date();
 						var curYear = d.getFullYear();
 
-						var context = {
-								id: checkin.userId,
-								name: checkin.displayName,
-								age: curYear - checkin.birthYear,
-								waitingFor: Views.StrOpers.getGenderStr(checkin.wantMeet),
-								multiStr: Views.StrOpers.getMultiStr(checkin.multiPeopleAllowed),
-								wants: Views.StrOpers.getActivityStr(checkin.wantDo),
-								fromStr: Views.StrOpers.formatDate(checkin.fromDate),
-								toStr: Views.StrOpers.formatDate(checkin.toDate),								
-								interests: Views.StrOpers.getInterestsStr(checkin.interests),
-								message: checkin.message
-						}
+					var context = {
+						id: c.userId,
+						name: c.displayName,
+						age: curYear - c.birthYear,
+						languages: Views.StrOpers.langsToFlags(c.languages, c.homeCountry),
+
+						wmMan: ((c.wantMeet === WantMeet.Man) || (c.wantMeet === WantMeet.All)),
+						wmWoman: ((c.wantMeet === WantMeet.Woman) || (c.wantMeet === WantMeet.All)),
+						wmWomanGroup: ((c.wantMeet === WantMeet.Woman) && c.multiPeopleAllowed),
+						wmManGroup: ((c.wantMeet === WantMeet.Man) && c.multiPeopleAllowed),
+						wmMixGroup: ((c.wantMeet === WantMeet.All) && c.multiPeopleAllowed),
+
+						wantDos: Views.StrOpers.getActivityStrArray(c.wantDo),
+						fromStr: Views.StrOpers.formatDate(c.fromDate),
+						toStr: Views.StrOpers.formatDate(c.toDate),								
+						interests: Views.StrOpers.getInterestsStr(c.interests),
+						message: c.message
+					};
+
 
 						var ppCont = this.popupTemplateCity(context);
 
@@ -121,24 +128,54 @@ module TravelB {
 				});
 
 		}
-			
+
+		private displayPopupMP(latlng, id) {
+
+				Views.ViewBase.currentView.apiGet("MeetingPoint", [["id", id]], (mp) => {
+						
+						var context = {
+								id: mp.id,
+								photoUrl: mp.photoUrl,
+								link: Common.GlobalUtils.getSocLink(mp.type, mp.sourceId),
+								name: mp.text,
+								categories: mp.categories, 
+								peopleMet: mp.peopleMet
+						}
+
+						var ppCont = this.popupMP(context);
+
+						var popup = new L.Popup();
+						popup.setLatLng(latlng);
+						popup.setContent(ppCont);
+						this.mapObj.openPopup(popup);
+
+				});
+
+		}
+
 		private displayPopupNow(latlng, userId) {
 
-			Views.ViewBase.currentView.apiGet("CheckinNow", [["type", "id"], ["id", userId]], (checkin) => {
+			Views.ViewBase.currentView.apiGet("CheckinNow", [["type", "id"], ["id", userId]], (c) => {
 
 				var d = new Date();
 				var curYear = d.getFullYear();
 
 				var context = {
-					id: checkin.userId,
-					name: checkin.displayName,
-					age: curYear - checkin.birthYear,
-					waitingFor: Views.StrOpers.getGenderStr(checkin.wantMeet),
-					multiStr: Views.StrOpers.getMultiStr(checkin.multiPeopleAllowed),
-					wants: Views.StrOpers.getActivityStr(checkin.wantDo),
-					waitingMins: TravelBUtils.waitingMins(checkin.waitingUntil),
-					interests: Views.StrOpers.getInterestsStr(checkin.interests),
-					message: checkin.message
+					id: c.userId,
+					name: c.displayName,
+					age: curYear - c.birthYear,
+					languages: Views.StrOpers.langsToFlags(c.languages, c.homeCountry),
+					
+					wmMan: ((c.wantMeet === WantMeet.Man) || (c.wantMeet === WantMeet.All)),
+					wmWoman: ((c.wantMeet === WantMeet.Woman) || (c.wantMeet === WantMeet.All)),
+					wmWomanGroup: ((c.wantMeet === WantMeet.Woman) && c.multiPeopleAllowed),
+					wmManGroup: ((c.wantMeet === WantMeet.Man) && c.multiPeopleAllowed),
+					wmMixGroup: ((c.wantMeet === WantMeet.All) && c.multiPeopleAllowed),
+
+					wantDos: Views.StrOpers.getActivityStrArray(c.wantDo),
+					waitingStr: TravelBUtils.minsToTimeStr(TravelBUtils.waitingMins(c.waitingUntil)),
+					interests: Views.StrOpers.getInterestsStr(c.interests),
+					message: c.message
 				}
 
 				var ppCont = this.popupTemplateNow(context);

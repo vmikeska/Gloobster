@@ -17,9 +17,11 @@ var TravelB;
                 }
             });
         };
-        CategoryTagger.prototype.create = function ($cont, instName, data) {
+        CategoryTagger.prototype.create = function ($cont, instName, data, emptyText) {
             var _this = this;
+            if (emptyText === void 0) { emptyText = null; }
             this.instName = instName;
+            this.emptyText = emptyText;
             this.data = data;
             this.$cont = $cont;
             this.layout();
@@ -34,6 +36,17 @@ var TravelB;
                 });
             });
             this.tabs.create();
+            this.showEmptyText();
+        };
+        CategoryTagger.prototype.showEmptyText = function () {
+            if (this.emptyText) {
+                this.$selected.html("<div class=\"empty\">" + this.emptyText + "</div>");
+            }
+        };
+        CategoryTagger.prototype.hideEmptyText = function () {
+            if (this.emptyText) {
+                this.$selected.find(".empty").remove();
+            }
         };
         CategoryTagger.prototype.findItemById = function (id) {
             var found = false;
@@ -102,10 +115,14 @@ var TravelB;
                 if (_this.onFilterChange) {
                     _this.onFilterChange(false, id);
                 }
+                if (_this.$selected.find(".tag").length === 0) {
+                    _this.showEmptyText();
+                }
             });
             return $i;
         };
         CategoryTagger.prototype.addToSelected = function (catId, id, name) {
+            this.hideEmptyText();
             var $t = this.tagItem(catId, id, name);
             this.$selected.append($t);
             if (this.onFilterChange) {

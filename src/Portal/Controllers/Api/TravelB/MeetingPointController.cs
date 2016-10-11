@@ -33,15 +33,41 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         [AuthorizeApi]
         public async Task<IActionResult> Post([FromBody] MeetingPointReqRes req)
         {
+            var categories = new List<CategorySE>();
+
+            if (req.type == SourceType.S4)
+            {
+                var venue = FoursquareSvc.Client.GetVenue(req.sourceId);
+                categories = venue.categories.Select(c => new CategorySE
+                {
+                    CatId = c.id,
+                    Name = c.name
+                }).ToList();
+            }
+
+
+            if (req.type == SourceType.Yelp)
+            {
+                Business business = YelpSvc.GetById(req.sourceId);
+                categories = business.categories.Select(c => new CategorySE
+                {
+                    CatId = c[1],
+                    Name = c[0]
+                }).ToList();
+            }
+
+
             var entity = new MeetingPointsEntity
             {
                 id = ObjectId.GenerateNewId(),
                 SourceId = req.sourceId,
                 Type = req.type,
                 Text = req.text,
-                Coord = req.coord
+                Coord = req.coord,
+                Categories = categories,
+                PeopleMet = 0
             };
-
+            
             await DB.SaveAsync(entity);
 
             var ls = new MeetingPointReqRes
@@ -62,7 +88,17 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         {
             var results = new List<MeetingPointReqRes>();
 
-            if (req.all)
+            bool byId = !string.IsNullOrEmpty(req.id);
+
+            if (byId)
+            {
+                var mpIdObj = new ObjectId(req.id);
+                var item = DB.FOD<MeetingPointsEntity>(m => m.id == mpIdObj);
+                var itemConv = Convert(item);
+                itemConv.photoUrl = GetImgUrl(itemConv.type, itemConv.sourceId, 60);
+                return new ObjectResult(itemConv);
+            }
+            else if (req.all)
             {
                 var list = DB.List<MeetingPointsEntity>();
                 results = list.Select(Convert).ToList();
@@ -152,8 +188,16 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 sourceId = l.SourceId,
                 text = l.Text,
                 type = l.Type,
-                coord = l.Coord
+                coord = l.Coord,
+                categories = new List<string>(),
+                peopleMet = l.PeopleMet
             };
+
+            if (l.Categories != null)
+            {
+                mp.categories = l.Categories.Select(c => c.Name).ToList();
+            }
+
             return mp;
         }
     }
@@ -161,6 +205,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
     public class MeetingPointsQueryRequest
     {
         public bool all { get; set; }
+        public string id { get; set; }
 
         public double latSouth { get; set; }
         public double lngWest { get; set; }
@@ -177,5 +222,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         public string text { get; set; }
         public LatLng coord { get; set; }
         public string photoUrl { get; set; }
+        public List<string> categories { get; set; }
+        public int peopleMet { get; set; }
     }
 }

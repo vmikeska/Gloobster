@@ -18,8 +18,11 @@
 		private tabs: Tabs;
 		private wantDos: CategoryTagger;
 
+			private $win;
+
 		constructor() {
-			this.registerTemplates();		
+			this.registerTemplates();
+			this.$win = $(".checkin-win");
 		}
 
 		public showCityCheckin(editId) {
@@ -78,20 +81,18 @@
 
 			this.wantDos = new CategoryTagger();
 			var data = TravelBUtils.getWantDoTaggerData();
-			this.wantDos.create($c, "checkin", data);
+			this.wantDos.create($c, "checkin", data, "Pick activities you'd like to do");
 		}
 
 		private createWin(edit: boolean, type: CheckinType) {
-				//temp fix
-				$(".popup").remove();
-
+			
 			var btnTxt = edit ? "Update checkin" : "Checkin";
 			var context = { sumbitText: btnTxt };
 
 			this.$html = $(this.checkinWindowDialog(context));
 				
-			$("body").append(this.$html);
-			this.$html.fadeIn();
+			this.$win.html(this.$html);
+			this.$win.slideDown();
 
 			this.initWantDo();
 
@@ -110,8 +111,9 @@
 
 			this.$html.find(".cancel").click((e) => {
 				e.preventDefault();
-				this.$html.fadeOut();
-				this.$html.remove();
+				this.$win.slideUp(() => {
+						this.$win.empty();
+				});				
 			});				
 		}
 

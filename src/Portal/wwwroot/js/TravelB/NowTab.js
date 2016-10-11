@@ -11,13 +11,22 @@ var TravelB;
             var _this = this;
             var $listCont = $(".results .meeting-points");
             $listCont.find(".meeting-point").remove();
+            var $no = $(".no-mp-all");
+            if (points.length > 0) {
+                $no.hide();
+            }
+            else {
+                $no.show();
+            }
             points.forEach(function (p) {
                 var context = {
                     sourceId: p.sourceId,
                     type: p.type,
                     name: p.text,
                     link: Common.GlobalUtils.getSocLink(p.type, p.sourceId),
-                    photoUrl: p.photoUrl
+                    photoUrl: p.photoUrl,
+                    categories: p.categories,
+                    peopleMet: p.peopleMet
                 };
                 var $u = $(_this.mpTemplate(context));
                 $u.find(".btn-check").click(function (e) {
@@ -38,6 +47,13 @@ var TravelB;
         NowTab.prototype.genCheckinsList = function (checkins) {
             var _this = this;
             var fc = _.reject(checkins, function (c) { return c.userId === Views.ViewBase.currentUserId; });
+            var $no = $(".no-people-all");
+            if (fc.length > 0) {
+                $no.hide();
+            }
+            else {
+                $no.show();
+            }
             var $listCont = $(".results .people");
             $listCont.find(".person").remove();
             var d = new Date();

@@ -85,6 +85,7 @@
 /// <reference path="js/views/homepageview.js" />
 /// <reference path="js/views/imagedbview.js" />
 /// <reference path="js/views/locationsettingsdialog.js" />
+/// <reference path="js/views/message.js" />
 /// <reference path="js/views/messages.js" />
 /// <reference path="js/views/notificationsview.js" />
 /// <reference path="js/views/pinboardview.js" />

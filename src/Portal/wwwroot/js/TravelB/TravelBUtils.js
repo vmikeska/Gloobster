@@ -12,6 +12,11 @@ var TravelB;
             var diffMins = Math.ceil(dd / (1000 * 60));
             return diffMins;
         };
+        TravelBUtils.minsToTimeStr = function (mins) {
+            var h = Math.floor(mins / 60);
+            var m = mins % 60;
+            return h + "h " + m + "m";
+        };
         TravelBUtils.i = function (id, text) {
             return { id: id, text: text };
         };

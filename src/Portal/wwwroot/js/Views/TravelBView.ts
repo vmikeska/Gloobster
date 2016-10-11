@@ -1,4 +1,5 @@
 ﻿module Views {
+	
 	export class TravelBView extends ViewBase {
 
 		private travelMap: TravelB.TravelBMap;
@@ -31,7 +32,7 @@
 		public checkinWin;
 			
 		public emptyProps = [];
-
+			
 		public init() {
 
 			this.checkinWin = new TravelB.CheckinWin();
@@ -94,10 +95,12 @@
 			});
 			this.tabs.create(`<div class="btn-cont"></div>`);
 		}
-
+			
 		private createCityCheckinsFnc() {			
-			this.filter.initCity();
+			$(".meeting-points").hide();
 
+			this.filter.initCity();
+				
 			this.cityFncs = new TravelB.CityTab();
 
 			this.displayCityCheckins();
@@ -105,11 +108,10 @@
 
 		private createNowCheckinsFnc() {
 			this.filter.initNow();
-				
-			this.nowFncs = new TravelB.NowTab();
-			//if (this.mapCheckins) {
-			//		this.mapCheckins.clearMarkers();
-			//}
+
+			$(".meeting-points").show();
+
+			this.nowFncs = new TravelB.NowTab();		
 			this.displayNowCheckins();
 			this.displayMeetingPoints();			
 		}
@@ -167,8 +169,11 @@
 			prms.push(["toDate", TravelB.DateUtils.myDateToTrans(this.filter.filterDateTo)]);
 				
 			ViewBase.currentView.apiGet("CheckinCity", prms, (checkins) => {					
-				this.cityFncs.genCheckinsList(checkins);
-				this.mapCheckins.genCheckins(checkins, CheckinType.City);
+					this.cityFncs.genCheckinsList(checkins);
+
+					var fc = _.reject(checkins, (c) => { return c.userId === ViewBase.currentUserId });
+
+					this.mapCheckins.genCheckins(fc, CheckinType.City);
 			});
 		}
 
@@ -182,15 +187,16 @@
 				["lngWest", this.currentBounds._southWest.lng],
 				["latNorth", this.currentBounds._northEast.lat],
 				["lngEast", this.currentBounds._northEast.lng],
-				["type", "query"]
+				["type", "query"],
+				["filter", this.filter.selectedFilter]
 			];
 
 			this.filter.langs.forEach((l) => {
 				prms.push(["lang", l]);
 			});
 
-			if (this.filter.selectedFilter) {
-				prms.push(["filter", this.filter.selectedFilter.join(",")]);
+			if (this.filter.wds) {
+					prms.push(["wds", this.filter.wds.join(",")]);
 			}
 
 			return prms;
@@ -317,7 +323,10 @@
 	export class StrOpers {
 
 			public static formatDate(date) {
-				return `${date.Day}.${date.Month}.${date.Year}`;
+					var utc = Date.UTC(date.Year, date.Month, date.Day);
+					var d = moment.utc(utc).format("L");
+				return d;
+				//return `${date.Day}.${date.Month}.${date.Year}`;
 			}
 
 		public static langsToFlags(langs, homeCountry) {

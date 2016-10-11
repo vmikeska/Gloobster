@@ -62,12 +62,14 @@ var Views;
             this.tabs.create("<div class=\"btn-cont\"></div>");
         };
         TravelBView.prototype.createCityCheckinsFnc = function () {
+            $(".meeting-points").hide();
             this.filter.initCity();
             this.cityFncs = new TravelB.CityTab();
             this.displayCityCheckins();
         };
         TravelBView.prototype.createNowCheckinsFnc = function () {
             this.filter.initNow();
+            $(".meeting-points").show();
             this.nowFncs = new TravelB.NowTab();
             this.displayNowCheckins();
             this.displayMeetingPoints();
@@ -117,7 +119,8 @@ var Views;
             prms.push(["toDate", TravelB.DateUtils.myDateToTrans(this.filter.filterDateTo)]);
             Views.ViewBase.currentView.apiGet("CheckinCity", prms, function (checkins) {
                 _this.cityFncs.genCheckinsList(checkins);
-                _this.mapCheckins.genCheckins(checkins, CheckinType.City);
+                var fc = _.reject(checkins, function (c) { return c.userId === Views.ViewBase.currentUserId; });
+                _this.mapCheckins.genCheckins(fc, CheckinType.City);
             });
         };
         TravelBView.prototype.getBaseQuery = function () {
@@ -129,13 +132,14 @@ var Views;
                 ["lngWest", this.currentBounds._southWest.lng],
                 ["latNorth", this.currentBounds._northEast.lat],
                 ["lngEast", this.currentBounds._northEast.lng],
-                ["type", "query"]
+                ["type", "query"],
+                ["filter", this.filter.selectedFilter]
             ];
             this.filter.langs.forEach(function (l) {
                 prms.push(["lang", l]);
             });
-            if (this.filter.selectedFilter) {
-                prms.push(["filter", this.filter.selectedFilter.join(",")]);
+            if (this.filter.wds) {
+                prms.push(["wds", this.filter.wds.join(",")]);
             }
             return prms;
         };
@@ -234,7 +238,9 @@ var Views;
         function StrOpers() {
         }
         StrOpers.formatDate = function (date) {
-            return date.Day + "." + date.Month + "." + date.Year;
+            var utc = Date.UTC(date.Year, date.Month, date.Day);
+            var d = moment.utc(utc).format("L");
+            return d;
         };
         StrOpers.langsToFlags = function (langs, homeCountry) {
             var out = [];

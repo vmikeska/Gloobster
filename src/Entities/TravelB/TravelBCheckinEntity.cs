@@ -34,6 +34,14 @@ namespace Gloobster.Entities.TravelB
         public string Text { get; set; }
         public SourceType Type { get; set; }
         public LatLng Coord { get; set; }
+        public int PeopleMet { get; set; }
+        public List<CategorySE> Categories { get; set; }
+    }
+
+    public class CategorySE
+    {
+        public string CatId { get; set; }
+        public string Name { get; set; }        
     }
 
 

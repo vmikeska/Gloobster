@@ -9,6 +9,7 @@ module TravelB {
 			private $selected;
 			private $dataCont;
 			private instName;
+			private emptyText;
 
 			private data;
 			
@@ -27,8 +28,9 @@ module TravelB {
 			});
 		}
 
-		public create($cont, instName: string, data) {
-			this.instName = instName;
+		public create($cont, instName: string, data, emptyText = null) {
+				this.instName = instName;
+			this.emptyText = emptyText;
 			this.data = data;
 			this.$cont = $cont;
 			this.layout();
@@ -48,9 +50,24 @@ module TravelB {
 				});
 			});
 
-			this.tabs.create();				
+			this.tabs.create();
+
+			this.showEmptyText();
 		}
 
+		private showEmptyText() {
+			if (this.emptyText) {
+				this.$selected.html(`<div class="empty">${this.emptyText}</div>`);
+			}
+		}
+
+
+		private hideEmptyText() {
+				if (this.emptyText) {
+						this.$selected.find(".empty").remove();
+				}
+		}
+			
 		private findItemById(id) {
 			var found = false;
 			var foundItem;
@@ -131,11 +148,17 @@ module TravelB {
 				if (this.onFilterChange) {
 					this.onFilterChange(false, id);
 				}
+
+					if (this.$selected.find(".tag").length === 0) {
+						this.showEmptyText();
+					}
 			});
 			return $i;
 		}
 
 		private addToSelected(catId, id, name) {
+			this.hideEmptyText();
+
 			var $t = this.tagItem(catId, id, name);
 			this.$selected.append($t);
 			if (this.onFilterChange) {

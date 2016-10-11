@@ -21,6 +21,13 @@ module TravelB {
 		public genMeetingPoints(points) {
 			var $listCont = $(".results .meeting-points");
 			$listCont.find(".meeting-point").remove();
+				
+			var $no = $(".no-mp-all");
+			if (points.length > 0) {
+					$no.hide();
+			} else {
+					$no.show();
+			}
 
 			points.forEach((p) => {
 
@@ -29,7 +36,9 @@ module TravelB {
 					type: p.type,
 					name: p.text,
 					link: Common.GlobalUtils.getSocLink(p.type, p.sourceId),
-					photoUrl: p.photoUrl
+					photoUrl: p.photoUrl,
+					categories: p.categories,
+					peopleMet: p.peopleMet
 				};
 
 				var $u = $(this.mpTemplate(context));
@@ -58,6 +67,13 @@ module TravelB {
 		public genCheckinsList(checkins) {
 
 			var fc = _.reject(checkins, (c) => { return c.userId === Views.ViewBase.currentUserId });
+
+			var $no = $(".no-people-all");
+			if (fc.length > 0) {
+			  $no.hide();
+		  } else {
+			  $no.show();
+		  }
 
 			var $listCont = $(".results .people");
 			$listCont.find(".person").remove();

@@ -98,29 +98,34 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             {
                 List<CheckinResponse> responses = GetCheckinsInRect(req);
 
-                bool showAllFilteredByGenders = string.IsNullOrEmpty(req.filter);
-                bool showAll = req.filter == "all";
+                bool noFilter = string.IsNullOrEmpty(req.filter);
+                bool genderFilter = req.filter == "gender";
+                bool fullFilter = req.filter == "full";
 
-                if (showAll)
+                if (noFilter)
                 {
-                    //todo: later remove my checkin. Not only here, in all if branches
                     return new ObjectResult(responses);
                 }
 
                 responses = responses.Where(r => CheckinFilterUtils.HasGenderMatch(r.wantMeet, User.Gender)).ToList();
 
-                responses = responses.Where(r => r.languages.Intersect(req.lang).Any()).ToList();
-
-                if (showAllFilteredByGenders)
+                if (genderFilter)
                 {
                     return new ObjectResult(responses);
                 }
-
-                var wantDos = req.filter.Split(',').Select(int.Parse).ToList();
-
-
-                responses = responses.Where(r => r.wantDo.Intersect(wantDos).Any()).ToList();
                 
+                //since here full filter
+
+                if (req.lang.Any())
+                {
+                    responses = responses.Where(r => r.languages.Intersect(req.lang).Any()).ToList();
+                }
+
+                var wantDos = string.IsNullOrEmpty(req.wds) ? new List<int>() : req.wds.Split(',').Select(int.Parse).ToList();
+                if (wantDos.Any())
+                {
+                    responses = responses.Where(r => r.wantDo.Intersect(wantDos).Any()).ToList();
+                }
                 
                 return new ObjectResult(responses);
             }
@@ -271,6 +276,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         public string filter { get; set; }
 
         public List<string> lang { get; set; }
+        public string wds { get; set; }
 
         public double latSouth { get; set; }
         public double lngWest { get; set; }

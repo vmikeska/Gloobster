@@ -18,5 +18,7 @@ namespace Gloobster.Common
         public const string FriendsMenuName = "friends";
         public const string NotifsMenuName = "notification";
 
+        public const string MessagesMenuName = "messages";
+        public const string MessageMenuName = "message";
     }
 }

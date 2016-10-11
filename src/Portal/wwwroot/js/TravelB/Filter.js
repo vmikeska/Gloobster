@@ -1,11 +1,86 @@
 var TravelB;
 (function (TravelB) {
+    var CustomCheckbox = (function () {
+        function CustomCheckbox($root, checked) {
+            var _this = this;
+            if (checked === void 0) { checked = false; }
+            this.$root = $root;
+            this.$checker = this.$root.find(".checker");
+            this.setChecker(checked);
+            this.$root.click(function (e) {
+                var newState = !_this.isChecked();
+                _this.setChecker(newState);
+                if (_this.onChange) {
+                    _this.onChange($root.attr("id"), newState);
+                }
+            });
+        }
+        CustomCheckbox.prototype.isChecked = function () {
+            return this.$checker.hasClass("icon-checkmark");
+        };
+        CustomCheckbox.prototype.setChecker = function (checked) {
+            this.$checker.removeClass("icon-checkmark");
+            this.$checker.removeClass("icon-checkmark2");
+            if (checked) {
+                this.$checker.addClass("icon-checkmark");
+            }
+            else {
+                this.$checker.addClass("icon-checkmark2");
+            }
+        };
+        return CustomCheckbox;
+    }());
+    TravelB.CustomCheckbox = CustomCheckbox;
     var Filter = (function () {
         function Filter() {
-            this.selectedFilter = null;
+            this.selectedFilter = "gender";
+            this.initCheckboxes();
+            this.$filter = $(".filter");
             this.nowTemp = Views.ViewBase.currentView.registerTemplate("filterNow-template");
             this.cityTemp = Views.ViewBase.currentView.registerTemplate("filterCity-template");
         }
+        Filter.prototype.initCheckboxes = function () {
+            var _this = this;
+            this.useFilter = new CustomCheckbox($("#cbUseFilter"));
+            this.useFilter.onChange = (function (id, newState) {
+                _this.setCheckboxes(id, newState);
+                if (newState) {
+                    _this.$filter.slideDown();
+                }
+                else {
+                    _this.$filter.slideUp();
+                }
+                _this.updateFilter(newState, _this.useAllCheckins.isChecked());
+            });
+            this.useAllCheckins = new CustomCheckbox($("#cbAllCheckins"));
+            this.useAllCheckins.onChange = (function (id, newState) {
+                _this.setCheckboxes(id, newState);
+                if (newState) {
+                    _this.$filter.slideUp();
+                }
+                _this.updateFilter(_this.useFilter.isChecked(), newState);
+            });
+        };
+        Filter.prototype.updateFilter = function (useFilter, allCheckins) {
+            if (allCheckins) {
+                this.setFilter(null);
+                return;
+            }
+            if (useFilter) {
+                this.setFilter("full");
+            }
+            else {
+                this.setFilter("gender");
+            }
+        };
+        Filter.prototype.setCheckboxes = function (id, newState) {
+            if (id === "cbUseFilter" && newState) {
+                this.useAllCheckins.setChecker(false);
+            }
+            if (id === "cbAllCheckins" && newState) {
+                this.useFilter.setChecker(false);
+            }
+        };
         Filter.prototype.initNow = function () {
             $(".filter").html(this.nowTemp());
             this.initCommon();
@@ -39,39 +114,13 @@ var TravelB;
             var v = Views.ViewBase.currentView;
             this.initLangsTagger(v.defaultLangs);
             var $c = $("#filterCont");
-            var $ac = $("#allCheckins");
-            var $jm = $("#showJustMine");
             this.wantDos = new TravelB.CategoryTagger();
             var data = TravelB.TravelBUtils.getWantDoTaggerData();
-            this.wantDos.create($c, "filter", data);
+            this.wantDos.create($c, "filter", data, "Filter is inactive until you choose some activities");
             this.wantDos.onFilterChange = function () {
-                var ids = _this.wantDos.getSelectedIds();
-                _this.setFilter(ids);
+                _this.wds = _this.wantDos.getSelectedIds();
+                _this.onFilterSelChanged();
             };
-            $(".filter").find("input").click(function (e) {
-                var $t = $(e.target);
-                var id = $t.attr("id");
-                if (id === "allCheckins") {
-                    if ($ac.prop("checked") === true) {
-                        $c.find("input").prop("checked", false);
-                        $jm.prop("checked", false);
-                        _this.setFilter(["all"]);
-                    }
-                    else {
-                        _this.setFilter(null);
-                    }
-                }
-                else if (id === "showJustMine") {
-                    if ($jm.prop("checked") === true) {
-                        $c.find("input").prop("checked", false);
-                        $ac.prop("checked", false);
-                        _this.setFilter(["mine"]);
-                    }
-                    else {
-                        _this.setFilter(null);
-                    }
-                }
-            });
         };
         Filter.prototype.initLangsTagger = function (selectedItems) {
             var _this = this;

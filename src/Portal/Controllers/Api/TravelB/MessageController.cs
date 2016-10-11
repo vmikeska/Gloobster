@@ -26,6 +26,8 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             var toUserId = new ObjectId(req.userId);
             var resp = GetMessages(toUserId);
 
+            MarkAllMessagesAsRead(UserIdObj, toUserId);
+
             return new ObjectResult(resp);
         }
         
@@ -53,7 +55,8 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 id = ObjectId.GenerateNewId(),
                 User_id = UserIdObj,
                 Message = req.message,
-                Date = DateTime.UtcNow
+                Date = DateTime.UtcNow,
+                Read = false
             };
 
             var f = DB.F<MessageEntity>().Eq(m => m.id, msg.id);
@@ -92,14 +95,37 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                     name = user.DisplayName,
                     message = m.Message,
                     date = m.Date,
-                    dateFormatted = $"{m.Date.Day}.{m.Date.Month}.{m.Date.Year} ({m.Date.Hour}:{m.Date.Minute})"
+                    read = m.Read
                 };
                 resp.messages.Add(mr);
             }
 
             msg.Messages = msg.Messages.OrderByDescending(o => o.Date).ToList();
-
+            
             return resp;
+        }
+
+        private async void MarkAllMessagesAsRead(ObjectId readingUser, ObjectId otherUser)
+        {
+            //cannot be updated everything at once
+            //https://jira.mongodb.org/browse/SERVER-1243
+
+            var msgCont = DB.FOD<MessageEntity>(e => e.UserIds.Contains(readingUser) && e.UserIds.Contains(otherUser));
+
+            var messages = msgCont.Messages.Where(a => a.User_id != readingUser).OrderByDescending(a => a.Date);
+
+            var update = DB.U<MessageEntity>().Set("Messages.$.Read", true);
+
+            foreach (var m in messages)
+            {
+                if (m.Read)
+                {
+                    break;
+                }
+                
+                var filter = DB.F<MessageEntity>().Eq(p => p.id, msgCont.id) & DB.F<MessageEntity>().Eq("Messages._id", m.id);                
+                var res = await DB.UpdateManyAsync(filter, update);
+            }            
         }
 
 
@@ -123,6 +149,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         public string dateFormatted { get; set; }
         public string userId { get; set; }
         public string name { get; set; }
+        public bool read { get; set; }
     }
 
     public class MessagesResponse

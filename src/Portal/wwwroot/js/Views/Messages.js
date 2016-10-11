@@ -5,48 +5,19 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Views;
 (function (Views) {
-    var Messages = (function (_super) {
-        __extends(Messages, _super);
-        function Messages(otherUserId) {
-            var _this = this;
+    var MessagesHome = (function (_super) {
+        __extends(MessagesHome, _super);
+        function MessagesHome() {
             _super.call(this);
-            this.otherUserId = otherUserId;
-            this.msgTmp = this.registerTemplate("msgPost-template");
-            this.refresh();
-            $("#commentSubmit").click(function (e) {
+            $(".um-all").click(function (e) {
                 e.preventDefault();
-                var msg = $("#commentInput").val();
-                _this.sendMessage(_this.otherUserId, msg);
+                var $t = $(e.delegateTarget);
+                var url = $t.data("url");
+                window.location.href = url;
             });
         }
-        Messages.prototype.refresh = function () {
-            var _this = this;
-            var prms = [["userId", this.otherUserId]];
-            this.apiGet("Message", prms, function (rs) {
-                _this.displayMessages(rs.messages);
-            });
-        };
-        Messages.prototype.sendMessage = function (userId, message) {
-            var _this = this;
-            var data = {
-                userId: userId,
-                message: message
-            };
-            this.apiPost("Message", data, function (rs) {
-                _this.displayMessages(rs.messages);
-            });
-        };
-        Messages.prototype.displayMessages = function (messages) {
-            var _this = this;
-            var $cont = $("#msgsCont");
-            $cont.html("");
-            messages.forEach(function (r) {
-                var $m = $(_this.msgTmp(r));
-                $cont.prepend($m);
-            });
-        };
-        return Messages;
+        return MessagesHome;
     }(Views.ViewBase));
-    Views.Messages = Messages;
+    Views.MessagesHome = MessagesHome;
 })(Views || (Views = {}));
 //# sourceMappingURL=Messages.js.map

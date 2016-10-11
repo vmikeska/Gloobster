@@ -24,7 +24,7 @@ namespace Gloobster.Common
         {
             if (Year < date.Year) return false;
             if (Month < date.Month) return false;
-            if (Day <= date.Day) return false;
+            if ((Month == date.Month) && Day <= date.Day) return false;
 
             //if (Day == date.Day)
             //{
@@ -38,7 +38,7 @@ namespace Gloobster.Common
         {
             if (Year > date.Year) return false;
             if (Month > date.Month) return false;
-            if (Day >= date.Day) return false;
+            if ((Month == date.Month) && Day >= date.Day) return false;
 
             //if (Day == date.Day)
             //{

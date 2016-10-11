@@ -201,6 +201,52 @@ button:active {
     top: -5px;
     right: -5px; }
 
+.comments .txt-input {
+  margin-bottom: 20px; }
+  .comments .txt-input .txt {
+    display: inline-block;
+    vertical-align: top;
+    width: 80%;
+    min-width: 300px; }
+  .comments .txt-input .btn {
+    display: inline-block;
+    vertical-align: top;
+    /*border: 1px solid red;*/ }
+    .comments .txt-input .btn .lbtn, .comments .txt-input .btn .photo-button label, .photo-button .comments .txt-input .btn label, .comments .txt-input .btn .wiki-page .langs a, .wiki-page .langs .comments .txt-input .btn a {
+      color: white;
+      background-color: #3298C1; }
+
+.comments .comment-all .comment {
+  display: table;
+  margin-bottom: 15px; }
+  .comments .comment-all .comment .photo {
+    display: table-cell;
+    vertical-align: top;
+    padding-right: 20px; }
+  .comments .comment-all .comment .post {
+    display: table-cell;
+    vertical-align: top; }
+    .comments .comment-all .comment .post .author {
+      margin-bottom: 5px; }
+      .comments .comment-all .comment .post .author span {
+        color: #b3b3b3; }
+    .comments .comment-all .comment .post .bubble {
+      position: relative;
+      background-color: #e8e8e8;
+      border-radius: 0 4px 4px;
+      display: inline-block;
+      padding: 10px; }
+    .comments .comment-all .comment .post .bubble:before {
+      position: absolute;
+      top: 0;
+      left: -10px;
+      height: 0;
+      width: 0;
+      border-bottom: 10px solid transparent;
+      border-right: 10px solid #e8e8e8;
+      border-top: 10px solid transparent;
+      content: ""; }
+
 .menu-wrapper {
   position: relative; }
 
@@ -304,7 +350,8 @@ button:active {
   .info-block-bck .title-table {
     display: table;
     width: 100%;
-    padding: 10px; }
+    padding: 10px;
+    text-align: left; }
     .info-block-bck .title-table .left {
       display: table-cell; }
       .info-block-bck .title-table .left h1 {
@@ -517,6 +564,9 @@ footer {
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
+
+.icon-message:before {
+  content: "\e91d"; }
 
 .icon-auction:before {
   content: "\e91c"; }
@@ -2451,51 +2501,6 @@ footer {
       max-width: 120px;
       margin-right: 20px;
       margin-bottom: 20px; }
-  .trip-detail .comments .txt-input {
-    margin-bottom: 20px; }
-    .trip-detail .comments .txt-input .txt {
-      display: inline-block;
-      vertical-align: top;
-      /*border: 1px solid red;*/
-      width: 80%;
-      min-width: 300px; }
-    .trip-detail .comments .txt-input .btn {
-      display: inline-block;
-      vertical-align: top;
-      /*border: 1px solid red;*/ }
-      .trip-detail .comments .txt-input .btn .lbtn, .trip-detail .comments .txt-input .btn .photo-button label, .photo-button .trip-detail .comments .txt-input .btn label, .trip-detail .comments .txt-input .btn .wiki-page .langs a, .wiki-page .langs .trip-detail .comments .txt-input .btn a {
-        color: white;
-        background-color: #3298C1; }
-  .trip-detail .comments .comment-all .comment {
-    display: table;
-    margin-bottom: 15px; }
-    .trip-detail .comments .comment-all .comment .photo {
-      display: table-cell;
-      vertical-align: top;
-      padding-right: 20px; }
-    .trip-detail .comments .comment-all .comment .post {
-      display: table-cell;
-      vertical-align: top; }
-      .trip-detail .comments .comment-all .comment .post .author {
-        margin-bottom: 5px; }
-        .trip-detail .comments .comment-all .comment .post .author span {
-          color: #b3b3b3; }
-      .trip-detail .comments .comment-all .comment .post .bubble {
-        position: relative;
-        background-color: #e8e8e8;
-        border-radius: 0 4px 4px;
-        display: inline-block;
-        padding: 10px; }
-      .trip-detail .comments .comment-all .comment .post .bubble:before {
-        position: absolute;
-        top: 0;
-        left: -10px;
-        height: 0;
-        width: 0;
-        border-bottom: 10px solid transparent;
-        border-right: 10px solid #e8e8e8;
-        border-top: 10px solid transparent;
-        content: ""; }
   .trip-detail .documents.view-docs .file {
     margin-bottom: 5px;
     margin-right: 15px;
@@ -2837,25 +2842,7 @@ footer {
     text-align: center; }
 
 .travelb-home {
-  text-align: left;
-  /*.notif {
-        border: 1px solid black;
-        width: 600px;
-        height: 50px;
-    }
-
-    .notif .cont {
-        width: 350px;
-        height: 50px;
-        float: left;
-        
-    }
-
-    .notif .acts {
-        width: 250px;
-        height: 50px;
-        float: right;
-    }*/ }
+  text-align: left; }
   .travelb-home textarea {
     border: 1px solid #3298C1; }
   .travelb-home .checkin-icon {
@@ -2934,6 +2921,27 @@ footer {
   .travelb-home .g-icon-group .g-icon:last-of-type {
     color: black;
     margin-left: -5px; }
+  .travelb-home .wantDosMain .tabsCont .myTab {
+    background-color: #3298C1; }
+    .travelb-home .wantDosMain .tabsCont .myTab.act {
+      background-color: #F56E12; }
+  .travelb-home .wantDosMain .dataCont {
+    min-height: 40px;
+    padding: 6px 6px 0 6px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    background-color: white; }
+    .travelb-home .wantDosMain .dataCont .tag {
+      cursor: pointer; }
+  .travelb-home .wantDosMain .selected {
+    padding: 6px 6px 0 6px;
+    min-height: 40px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    background-color: white; }
+    .travelb-home .wantDosMain .selected .empty {
+      padding: 8px;
+      color: gray; }
   .travelb-home .notifs .notif {
     margin-top: 8px; }
     .travelb-home .notifs .notif .notif-body {
@@ -3038,6 +3046,47 @@ footer {
     background-color: #FFC400;
     font-size: 0.8em;
     padding: 4px; }
+  .travelb-home .checkin-win {
+    position: relative;
+    background-color: #f2f2f2;
+    border: 1px solid #3298C1;
+    border-radius: 4px;
+    padding: 8px; }
+    .travelb-home .checkin-win textarea {
+      resize: none;
+      border: 0; }
+    .travelb-home .checkin-win .multi {
+      white-space: nowrap; }
+    .travelb-home .checkin-win .dropdown .selected {
+      border: 0 !important;
+      color: black !important; }
+    .travelb-home .checkin-win .title {
+      font-weight: bold;
+      margin-top: 8px;
+      margin-bottom: 8px; }
+    .travelb-home .checkin-win .confirm {
+      background-color: #3298C1;
+      color: white;
+      /*margin: 8px;*/
+      display: inline-block; }
+    .travelb-home .checkin-win .cancel {
+      position: absolute;
+      right: 5px;
+      top: 5px; }
+      .travelb-home .checkin-win .cancel:hover {
+        color: darkred; }
+    .travelb-home .checkin-win .double-tbl {
+      width: 100%;
+      display: table; }
+      .travelb-home .checkin-win .double-tbl .cell {
+        display: table-cell;
+        width: 50%; }
+    @media screen and (max-width: 620px) {
+      .travelb-home .checkin-win .double-tbl {
+        display: block; }
+        .travelb-home .checkin-win .double-tbl .cell {
+          display: block;
+          width: 100%; } }
   .travelb-home .map {
     width: 100%;
     height: 500px; }
@@ -3055,6 +3104,84 @@ footer {
           top: 60px; } }
       .travelb-home .map .entities-filter label {
         font-weight: 600; }
+  .travelb-home .mp-popup {
+    display: table;
+    width: 300px; }
+    .travelb-home .mp-popup .photo-frame {
+      display: table-cell;
+      vertical-align: top; }
+      .travelb-home .mp-popup .photo-frame img {
+        border-radius: 4px; }
+    .travelb-home .mp-popup .txt {
+      display: table-cell;
+      vertical-align: top;
+      padding-left: 4px; }
+      .travelb-home .mp-popup .txt .name {
+        font-weight: bold;
+        color: black;
+        font-size: 1.2em; }
+      .travelb-home .mp-popup .txt .cats span {
+        font-weight: bold; }
+  .travelb-home .user-popup .line {
+    margin-top: 3px;
+    margin-bottom: 3px; }
+    .travelb-home .user-popup .line .title {
+      font-weight: bold; }
+  .travelb-home .user-popup .top {
+    display: table; }
+    .travelb-home .user-popup .top .left {
+      display: table-cell;
+      vertical-align: top; }
+      .travelb-home .user-popup .top .left .photo {
+        width: 60px;
+        height: 60px;
+        border-radius: 4px;
+        overflow: hidden; }
+    .travelb-home .user-popup .top .right {
+      display: table-cell;
+      vertical-align: top;
+      padding-left: 4px; }
+      .travelb-home .user-popup .top .right .flag {
+        width: 16px;
+        height: 16px; }
+  .travelb-home .user-popup .msg {
+    border-top: 1px dotted gray; }
+  .travelb-home .filter-menu .checkbox-all {
+    display: inline-block;
+    margin: 5px;
+    cursor: pointer; }
+    .travelb-home .filter-menu .checkbox-all .checker-all {
+      display: inline-block;
+      vertical-align: top;
+      padding: 2px;
+      position: relative;
+      border: 1px solid gray;
+      border-radius: 4px; }
+      .travelb-home .filter-menu .checkbox-all .checker-all .checker {
+        font-size: 37px; }
+      .travelb-home .filter-menu .checkbox-all .checker-all .icon-checkmark {
+        color: #3DA33D; }
+      .travelb-home .filter-menu .checkbox-all .checker-all .icon-checkmark2 {
+        color: #F56E12; }
+    .travelb-home .filter-menu .checkbox-all .label {
+      display: inline-block;
+      vertical-align: top;
+      line-height: 37px;
+      font-size: 1.2em; }
+  .travelb-home .filter {
+    background-color: #f2f2f2;
+    padding: 6px 10px 6px 10px;
+    border-radius: 4px; }
+    .travelb-home .filter .title {
+      font-weight: bold;
+      margin-top: 8px;
+      margin-bottom: 8px; }
+    .travelb-home .filter .split {
+      font-size: 30px; }
+    .travelb-home .filter .langs-filter {
+      background-color: white;
+      padding: 6px 6px 0 6px;
+      border-radius: 4px; }
   .travelb-home .results .title {
     font-size: 24px;
     font-weight: bold;
@@ -3064,15 +3191,36 @@ footer {
     width: 100%; }
   .travelb-home .results .meeting-points {
     display: table-cell;
-    width: 29%;
-    /*height: 300px;*/ }
+    width: 29%; }
+    .travelb-home .results .meeting-points .no-mp-all {
+      display: table;
+      width: 100%;
+      margin-bottom: 10px; }
+      .travelb-home .results .meeting-points .no-mp-all .img {
+        display: table-cell;
+        vertical-align: top;
+        background: url("/images/n/no-meeting-points.svg");
+        background-repeat: no-repeat;
+        background-size: 100%;
+        width: 150px;
+        height: 150px;
+        opacity: 0.8; }
+      .travelb-home .results .meeting-points .no-mp-all .txt {
+        display: table-cell;
+        vertical-align: middle;
+        max-width: 400px;
+        padding-left: 16px;
+        font-size: 28px;
+        color: gray; }
     .travelb-home .results .meeting-points .meeting-point {
       position: relative;
       padding-left: 67px;
       padding-right: 75px;
       margin: 10px;
       min-height: 70px;
-      border-bottom: 1px solid black; }
+      border-bottom: 1px dotted slategray; }
+      .travelb-home .results .meeting-points .meeting-point:last-of-type {
+        border-bottom: 0; }
       .travelb-home .results .meeting-points .meeting-point .photo-cont {
         position: absolute;
         left: 0;
@@ -3102,8 +3250,27 @@ footer {
             color: #005476; }
   .travelb-home .results .people {
     display: table-cell;
-    /*height: 300px;*/
     width: 68%; }
+    .travelb-home .results .people .no-people-all {
+      display: table;
+      width: 100%;
+      margin-bottom: 10px; }
+      .travelb-home .results .people .no-people-all .img {
+        display: table-cell;
+        vertical-align: top;
+        background: url("/images/n/no-people.svg");
+        background-repeat: no-repeat;
+        background-size: 100%;
+        width: 150px;
+        height: 150px;
+        opacity: 0.8; }
+      .travelb-home .results .people .no-people-all .txt {
+        display: table-cell;
+        vertical-align: middle;
+        max-width: 400px;
+        padding-left: 16px;
+        font-size: 28px;
+        color: gray; }
     .travelb-home .results .people .person {
       position: relative;
       margin: 10px;
@@ -3362,19 +3529,6 @@ footer {
         width: 100%;
         box-sizing: border-box;
         font-size: 16px; }
-  .travelb-home .wantDosMain .dataCont {
-    min-height: 40px;
-    border-bottom: 1px solid black;
-    border-left: 1px solid black;
-    border-right: 1px solid black;
-    padding: 8px; }
-  .travelb-home .wantDosMain .dataCont .tag {
-    cursor: pointer;
-    cursor: hand; }
-  .travelb-home .wantDosMain .selected {
-    padding: 8px;
-    min-height: 40px;
-    border: 1px solid black; }
   .travelb-home #searchCity {
     z-index: 99999;
     position: absolute;
@@ -3414,45 +3568,6 @@ footer {
     float: left; }
   .travelb-home .listCont {
     border: 1px solid black; }
-  .travelb-home .filter {
-    border-top: 1px solid black;
-    border-bottom: 1px solid black; }
-  .travelb-home .bigCB {
-    font-size: 20px; }
-  .travelb-home .chat-cont {
-    bottom: 0;
-    position: fixed;
-    /*display: inline-block;*/
-    background-color: white;
-    width: 250px;
-    height: 300px;
-    border: 1px solid black; }
-  .travelb-home .chat-title {
-    height: 25px; }
-  .travelb-home .chat-texts {
-    border: 1px solid green;
-    height: 190px;
-    overflow-y: scroll;
-    text-align: left; }
-  .travelb-home .chat-message {
-    border: 1px solid red;
-    width: 250px;
-    height: 50px;
-    position: absolute;
-    bottom: 0; }
-  .travelb-home .chat-message textarea {
-    width: 220px;
-    padding: 0;
-    margin: 0;
-    border: 0;
-    resize: none;
-    position: absolute;
-    left: 0; }
-  .travelb-home .chat-message button {
-    width: 30px;
-    height: 100%;
-    position: absolute;
-    right: 0; }
 
 .fly-tickets .map {
   max-width: 1280px;
@@ -3490,3 +3605,50 @@ footer {
   width: 49%;
   height: 350px;
   float: left; }
+
+.travelb-message {
+  text-align: left; }
+  .travelb-message .txt-input {
+    margin-top: 10px;
+    margin-bottom: 10px; }
+    .travelb-message .txt-input textarea {
+      border: 1px solid lightgray;
+      resize: none; }
+  .travelb-message .comment-all.unread {
+    border: 1px solid #3DA33D;
+    padding: 3px;
+    border-radius: 4px;
+    margin-bottom: 2px;
+    margin-top: 2px; }
+
+.travelb-messages .um-all {
+  border-bottom: 1px dotted gray;
+  padding-top: 8px;
+  padding-left: 4px;
+  cursor: pointer; }
+  .travelb-messages .um-all:hover {
+    background-color: #f2f2f2; }
+  .travelb-messages .um-all .um {
+    display: table; }
+    .travelb-messages .um-all .um .photo {
+      display: table-cell;
+      vertical-align: top; }
+      .travelb-messages .um-all .um .photo .photo-frame {
+        width: 60px;
+        height: 60px;
+        overflow: hidden;
+        border-radius: 4px; }
+    .travelb-messages .um-all .um .other {
+      display: table-cell;
+      vertical-align: top;
+      padding-left: 6px;
+      text-align: left; }
+      .travelb-messages .um-all .um .other .name {
+        font-weight: bold; }
+      .travelb-messages .um-all .um .other .unread {
+        font-weight: bold; }
+      .travelb-messages .um-all .um .other .text {
+        color: gray; }
+      .travelb-messages .um-all .um .other .date {
+        color: gray;
+        font-size: 0.6em; }

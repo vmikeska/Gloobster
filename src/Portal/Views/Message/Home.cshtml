@@ -1,0 +1,76 @@
+﻿@using System.Threading.Tasks
+@using Gloobster.Common
+@using Gloobster.Portal.ViewModels
+@using Newtonsoft.Json
+
+@model Gloobster.Portal.ViewModels.MessagesViewModel
+
+@{
+    
+    Layout = "_LayoutNew";
+    ViewBag.BodyClass = "travelb-messages";
+}
+
+<script src="/js/views/messages.js"></script>
+
+<div class="info-block-bck" id="info-travelb">
+
+    <div class="wrapper">
+
+        <div class="title-table">
+            <div class="left">
+                <h1>Messages</h1>
+            </div>
+
+            <div class="right">
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="wrapper">
+
+    @foreach (var userMessage in Model.UserMessages)
+    {
+        var name = (!string.IsNullOrEmpty(userMessage.UserFirstName) && !string.IsNullOrEmpty(userMessage.UserLastName)) ?
+            $"{userMessage.UserFirstName} {userMessage.UserLastName} ({userMessage.UserDisplayName})"
+            : userMessage.UserDisplayName;
+        
+        <div class="um-all" data-url="/@RoutingConsts.MessageMenuName/@userMessage.UserId">
+            <div class="um">
+                <div class="photo">
+                    <div class="photo-frame">
+                        <img src="/PortalUser/ProfilePicture_s/@userMessage.UserId">
+                    </div>
+                </div>
+                <div class="other">
+
+                    <div class="name">
+                        @name
+                        @if (userMessage.Unread)
+                        {
+                            <span class="unread">(1)</span>
+                        }
+                    </div>
+
+                    <div class="text">@userMessage.LastMessageText</div>
+                    <div class="date">@userMessage.Date.ToShortTimeString() @userMessage.Date.ToShortDateString()</div>
+                </div>
+
+            </div>
+            
+        </div>
+    }
+
+</div>
+
+
+
+<script>
+    function onBodyLoad() {
+        currentView = new Views.MessagesHome();
+    }
+</script>

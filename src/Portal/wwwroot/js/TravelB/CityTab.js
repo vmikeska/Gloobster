@@ -10,6 +10,13 @@ var TravelB;
             var _this = this;
             var $listCont = $(".results .people");
             $listCont.find(".person").remove();
+            var $no = $(".no-people-all");
+            if (checkins.length > 0) {
+                $no.hide();
+            }
+            else {
+                $no.show();
+            }
             var d = new Date();
             var curYear = d.getFullYear();
             var v = Views.ViewBase.currentView;

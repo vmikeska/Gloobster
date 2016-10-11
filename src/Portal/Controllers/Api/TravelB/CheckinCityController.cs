@@ -69,27 +69,40 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
             if (req.type == "query")
             {
-                var responses = GetCheckinsInRect(req);
+                List<CheckinResponse> responses = GetCheckinsInRect(req);
+                responses = FilterDate(responses, req);
 
-                bool showAll = req.filter == "all";
-                bool justMine = req.filter == "mine";
+                bool noFilter = string.IsNullOrEmpty(req.filter);
+                bool genderFilter = req.filter == "gender";
+                bool fullFilter = req.filter == "full";
 
-                if (justMine)
+                if (noFilter)
                 {
-                    responses = responses.Where(r => r.userId == UserId).ToList();
-                    responses = FilterDate(responses, req);
                     return new ObjectResult(responses);
                 }
 
-                if (!showAll)
+                responses = responses.Where(r => CheckinFilterUtils.HasGenderMatch(r.wantMeet, User.Gender)).ToList();
+
+                if (genderFilter)
                 {
-                    responses = Query(responses, req);
+                    return new ObjectResult(responses);
                 }
 
-                //filter out mine
-                responses = responses.Where(r => r.userId != UserId).ToList();
+                //since here full filter
 
-                return new ObjectResult(responses);
+                if (req.lang.Any())
+                {
+                    responses = responses.Where(r => r.languages.Intersect(req.lang).Any()).ToList();
+                }
+
+                var wantDos = string.IsNullOrEmpty(req.wds) ? new List<int>() : req.wds.Split(',').Select(int.Parse).ToList();
+
+                if (wantDos.Any())
+                {
+                    responses = responses.Where(r => r.wantDo.Intersect(wantDos).Any()).ToList();
+                }
+                
+                return new ObjectResult(responses);                
             }
 
             return null;
@@ -103,7 +116,10 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             responses =
                 responses.Where(r =>
                 {
-                    if (r.fromDate.IsGreaterOrEqualThen(toDate) || r.toDate.IsLowerOrEqualThen(fromDate))
+                    bool isPast = r.fromDate.IsGreaterOrEqualThen(toDate);
+                    bool isFuture = fromDate.IsGreaterOrEqualThen(r.toDate);
+
+                    if (isPast || isFuture)
                     {
                         return false;
                     }
@@ -113,29 +129,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
             return responses;
         }
-
-
-        private List<CheckinResponse> Query(List<CheckinResponse> responses, CheckinCityQueryRequest req)
-        {
-            bool showAllFilteredByGenders = string.IsNullOrEmpty(req.filter);
-
-            responses = responses.Where(r => CheckinFilterUtils.HasGenderMatch(r.wantMeet, User.Gender)).ToList();
-
-            responses = responses.Where(r => r.languages.Intersect(req.lang).Any()).ToList();
-
-            responses = FilterDate(responses, req);
-
-            if (showAllFilteredByGenders)
-            {
-                return responses;
-            }
-
-            var wantDos = req.filter.Split(',').Select(int.Parse).ToList();
-
-            responses = responses.Where(r => r.wantDo.Intersect(wantDos).Any()).ToList();
-
-            return responses;
-        }
+        
 
         [HttpPut]
         [AuthorizeApi]
@@ -350,6 +344,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         public string id { get; set; }
 
         public string filter { get; set; }
+        public string wds { get; set; }
 
         public List<string> lang { get; set; }
 

@@ -110,6 +110,11 @@
         <a id="checkin" href="#" class="icon-location now-checkin-btn"><span class="lato"> Checkin to meet somebody</span></a>
     </div>
 
+    <div class="checkin-win" style="display: none">
+
+      
+    </div>
+
     <div class="main-menu">
         <div class="tbl">
 
@@ -131,9 +136,35 @@
             <input id="fShowPeople" type="checkbox" checked />
             <label for="fShowPeople">People</label>
             <br/>
-            <input id="fPoints" type="checkbox" checked />
-            <label for="fPoints">Meeting points</label>            
+            <input id="fPoints" type="checkbox"/>
+            <label for="fPoints">Meeting points</label>
         </div>
+    </div>
+
+    <div class="filter-menu">
+
+        <div id="cbUseFilter" class="checkbox-all">
+            <div class="checker-all">
+                <div class="checker"></div>
+            </div>
+            <div class="label">
+                Use filter
+            </div>
+        </div>
+        
+        <div id="cbAllCheckins" class="checkbox-all">
+            <div class="checker-all">
+                <div class="checker"></div>
+            </div>
+            <div class="label">
+                Show all checkins
+            </div>
+        </div>
+
+    </div>
+
+    <div class="filter" style="display: none">
+
     </div>
 
     <div class="results">
@@ -142,11 +173,28 @@
             <div class="people">
                 <div class="title">People</div>
 
+                <div class="no-people-all">                    
+                    <div class="img">
+
+                    </div>
+                    <div class="txt">
+                        Sorry, no people here right now, but you can visit one of our popular Meeting Points and check in.
+                    </div>
+                </div>
+                
             </div>    
 
             <div class="meeting-points">
                 <div class="title">Meeting points</div>
 
+                <div class="no-mp-all">
+                    <div class="img">
+
+                    </div>
+                    <div class="txt">
+                        Sorry, no Meeting Points, we are not yet active in this area.
+                    </div>
+                </div>
 
             </div>
             
@@ -163,9 +211,7 @@
 
         </div>
 
-        <div class="filter">
-
-        </div>
+        
 
     </div>
 
