@@ -4,11 +4,14 @@ module TravelB {
 
 	export class Status {
 
-		private template;
+		private template = Views.ViewBase.currentView.registerTemplate("status-template");
 
-		constructor() {
-			this.template = Views.ViewBase.currentView.registerTemplate("status-template");
+		private view: Views.TravelBView;
+
+		constructor(view: Views.TravelBView) {
+				this.view = view;			
 		}
+
 
 		public refresh() {
 			var $checkinRow = $(".checkin-row");
@@ -38,8 +41,8 @@ module TravelB {
 					
 				var $html = $(this.template(context));
 				$html.find(".edit").click((e) => {
-					e.preventDefault();
-					this.editClick();
+						e.preventDefault();
+					 this.view.checkinMenu.activateTab("check");
 				});
 				$html.find(".delete").click((e) => {
 						e.preventDefault();
@@ -65,10 +68,6 @@ module TravelB {
 				$statusRow.remove();
 			}
 		}
-
-		private editClick() {
-			var win = new CheckinWin();
-			win.showNowCheckin();
-		}
+			
 	}
 }

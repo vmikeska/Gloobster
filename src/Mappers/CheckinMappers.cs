@@ -69,7 +69,7 @@ namespace Gloobster.Mappers
                 WantMeet = d.WantMeet,
                 ToAge = d.ToAge,
                 Message = d.Message,
-                ValidUntil = d.ValidUntil
+                ValidUntil = d.ValidUntil                
             };
 
             if (!string.IsNullOrEmpty(d.CheckinId))
@@ -83,7 +83,7 @@ namespace Gloobster.Mappers
         public static CheckinNowEntity ToEntity(this CheckinNowDO d)
         {
             var e = new CheckinNowEntity
-            {                
+            {                                
                 User_id = new ObjectId(d.UserId),
                 MultiPeopleAllowed = d.MultiPeopleAllowed,
                 WaitingAtId = d.WaitingAtId,

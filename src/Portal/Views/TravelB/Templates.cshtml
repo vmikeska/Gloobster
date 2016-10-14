@@ -1,7 +1,32 @@
 ﻿@using Gloobster.Common
+@using Microsoft.AspNet.Mvc.Rendering
 
 
+<script id="city-checkin-mgmt-item-template" type="text/x-handlebars-template">
+    
+    <div class="checkin-mgmt-item" data-id="{{id}}">
+        
+        <div class="title">
+            {{cityName}} 
+            <a href="#" class="icon-bin delete"></a>
+            <a href="#" class="icon-edit-pencil edit"></a>
+        </div>
 
+        <div class="date">{{fromDate}} - {{toDate}}</div>
+
+        <div class="data-cont">
+            @Html.Partial("WantMeet")
+            <span class="years">({{fromAge}} - {{toAge}} years)</span>
+
+            {{#each wantDos}}
+            <span class="itag">{{this}}</span>
+            {{/each}}
+        </div>
+        <div class="msg">{{message}}</div>
+        
+    </div>
+
+</script>
 
 <script id="status-template" type="text/x-handlebars-template">
 
@@ -14,34 +39,12 @@
             <a href="#" class="icon-bin delete"></a>
         </div>
         <div class="data">
-            <div class="item">
-                <span class="name">Want meet: </span>
-                <div class="cont" id="wantMeetCont">
-                    
-                    {{#if wmMan}}
-                        <span class="g-icon icon-male" title="want meet man"></span>
-                    {{/if}}
-                    
-                    {{#if wmWoman}}
-                        <span class="g-icon icon-female" title="want meet woman"></span>
-                    {{/if}}
-                    
-                    {{#if wmWomanGroup}}
-                        <span class="g-icon g-icon-group" title="want meet group of women"><span class="g-icon icon-female"></span><span class="g-icon icon-female"></span></span>
-                    {{/if}}
-                    
-                    {{#if wmManGroup}}
-                        <span class="g-icon g-icon-group" title="want meet group of men"><span class="g-icon icon-male"></span><span class="g-icon icon-male"></span></span>
-                    {{/if}}
-                    
-                    {{#if wmMixGroup}}
-                        <span class="g-icon g-icon-group" title="want meet gender mixed group"><span class="g-icon icon-female"></span><span class="g-icon icon-male"></span></span>
-                    {{/if}}
-
+            <div class="item">                
+                <div class="cont" id="wantMeetCont">                   
+                    @Html.Partial("WantMeet")                     
                 </div>
             </div>
-            <div class="item">
-                <span class="name">Want do: </span>
+            <div class="item">                
                 <div class="cont" id="wantDoCont">
                     {{#each wantDos}}
                         <span class="itag">{{this}}</span>
@@ -55,7 +58,7 @@
 </script>
 
 <script id="checkinDialog-template" type="text/x-handlebars-template">
-    
+
     <div class="checkinCont">
 
         <div id="dlgSpec">
@@ -125,19 +128,19 @@
             </div>
         </div>
 
-                <div>
-                    <div class="title">Checkin message</div>
+        <div>
+            <div class="title">Checkin message</div>
 
-                    <textarea id="chckMsg"></textarea>
-                </div>
+            <textarea id="chckMsg" placeholder="Type a short message"></textarea>
+        </div>
+        
+        <div>
+            <a id="submitCheckin" class="lbtn confirm icon-location" href="#"><span class="lato">{{sumbitText}}</span></a>
+        </div>
 
-            </div>
-            <div>
-                <a class="cancel icon-cross" href="#"></a>
-                <a id="submitCheckin" class="lbtn confirm icon-location" href="#"><span class="lato">{{sumbitText}}</span></a>
-            </div>
-            <a class="close" href="#"></a>
-
+    </div>
+    
+    
 </script>
 
 <script id="dlgNow-template" type="text/x-handlebars-template">
@@ -156,16 +159,15 @@
             <div class="title">Waiting time</div>
 
             <div id="minsWaiting" class="dropdown">
-                <span class="selected">60</span>
+                <span class="selected">1h</span>
                 <ul>
-                    <li data-value="30">30</li>
-                    <li data-value="60">60</li>
-                    <li data-value="90">90</li>
-                    <li data-value="120">120</li>
-                    <li data-value="150">150</li>
-                    <li data-value="180">180</li>
-                    <li data-value="210">210</li>
-                    <li data-value="240">240</li>
+                    <li data-value="30">0.5h</li>
+                    <li data-value="60">1h</li>
+                    <li data-value="90">1.5h</li>
+                    <li data-value="120">2h</li>
+                    <li data-value="150">2.5h</li>
+                    <li data-value="180">3h</li>                    
+                    <li data-value="240">4h</li>
                 </ul>
                 <input type="hidden" value="60">
             </div>
@@ -189,9 +191,9 @@
 
         <div class="title">Visiting days</div>
     
-            <input id="fromDate" type="text" value="" />
-            --
-            <input id="toDate" type="text" value="" />
+        <input id="fromDate" type="text" value="" />
+        -
+        <input id="toDate" type="text" value="" />
 
 </script>
 
@@ -219,51 +221,35 @@
 
 <script id="checkinNowItem-template" type="text/x-handlebars-template">
     
-    <div class="person" data-uid="{{id}}">
+    <div class="person" data-uid="{{uid}}">
         <div class="data">
 
             <div class="photo-cont">
 
                 <div class="photo-all">
-                    <img class="photo" src="/PortalUser/ProfilePicture_s/{{id}}" />
-                    <img class="c-flag" src="/images/n/flags/{{homeCountry}}.svg" />
-                    
-                    {{#if livesOtherCountry}}
-                    <img class="c-flag-other" src="/images/n/flags/{{livesCountry}}.svg" />
-                    {{/if}}
+                    <img class="photo" src="/PortalUser/ProfilePicture_s/{{uid}}" />                    
                 </div>
 
             </div>
             <div class="cont">
                 <div class="first">
-                    <a href="/PortalUser/Detail/{{id}}">{{name}}</a> - <span class="years">{{age}}</span> years
+                    <a href="/PortalUser/Detail/{{uid}}">{{name}}</a> - <span class="years">{{age}}</span> years
+                    
+                    <img class="c-flag" src="/images/n/flags/{{homeCountry}}.svg" title="born" />
+
+                    {{#if livesOtherCountry}}
+                    <img class="c-flag" src="/images/n/flags/{{livesCountry}}.svg" title="lives" />
+                    {{/if}}
+
                     {{#each languages}}
-                    <img class="flag" src="/images/n/flags/{{this}}.svg" />                    
+                    <span class="lang-tag" title="speaks {{this}}">{{this}}</span>
                     {{/each}}                     
                 </div>
                 <div class="second">
-                    {{#if wmMan}}
-                    <span class="g-icon icon-male" title="want meet man"></span>
-                    {{/if}}
-
-                    {{#if wmWoman}}
-                    <span class="g-icon icon-female" title="want meet woman"></span>
-                    {{/if}}
-
-                    {{#if wmWomanGroup}}
-                    <span class="g-icon g-icon-group" title="want meet group of women"><span class="g-icon icon-female"></span><span class="g-icon icon-female"></span></span>
-                    {{/if}}
-
-                    {{#if wmManGroup}}
-                    <span class="g-icon g-icon-group" title="want meet group of men"><span class="g-icon icon-male"></span><span class="g-icon icon-male"></span></span>
-                    {{/if}}
-
-                    {{#if wmMixGroup}}
-                    <span class="g-icon g-icon-group" title="want meet gender mixed group"><span class="g-icon icon-female"></span><span class="g-icon icon-male"></span></span>
-                    {{/if}}
+                    @Html.Partial("WantMeet")
                     
                     {{#each wantDos}}
-                    <span class="itag">{{this}}</span>
+                    <span class="itag">{{this}}</span>                    
                     {{/each}}
                 </div>
 
@@ -290,51 +276,35 @@
 
 <script id="checkinCityItem-template" type="text/x-handlebars-template">
     
-    <div class="person" data-uid="{{id}}">
+    <div class="person" data-uid="{{uid}}">
         <div class="data">
 
             <div class="photo-cont">
 
                 <div class="photo-all">
-                    <img class="photo" src="/PortalUser/ProfilePicture_s/{{id}}" />
-                    <img class="c-flag" src="/images/n/flags/{{homeCountry}}.svg" />
-
-                    {{#if livesOtherCountry}}
-                    <img class="c-flag-other" src="/images/n/flags/{{livesCountry}}.svg" />
-                    {{/if}}
+                    <img class="photo" src="/PortalUser/ProfilePicture_s/{{uid}}" />                    
                 </div>
 
             </div>
             <div class="cont">
                 <div class="first">
-                    <a href="/PortalUser/Detail/{{id}}">{{name}}</a> - <span class="years">{{age}}</span> years
+                    <a href="/PortalUser/Detail/{{uid}}">{{name}}</a> - <span class="years">{{age}}</span> years
+                    
+                    <img class="c-flag" src="/images/n/flags/{{homeCountry}}.svg" title="born" />
+
+                    {{#if livesOtherCountry}}
+                    <img class="c-flag" src="/images/n/flags/{{livesCountry}}.svg" title="lives" />
+                    {{/if}}
+
                     {{#each languages}}
-                    <img class="flag" src="/images/n/flags/{{this}}.svg" />
+                    <span class="lang-tag" title="speaks {{this}}">{{this}}</span>
                     {{/each}}
                 </div>
                 <div class="second">
                     <span>{{fromDate}} - {{toDate}}</span>
-
-                    {{#if wmMan}}
-                    <span class="g-icon icon-male" title="want meet man"></span>
-                    {{/if}}
-
-                    {{#if wmWoman}}
-                    <span class="g-icon icon-female" title="want meet woman"></span>
-                    {{/if}}
-
-                    {{#if wmWomanGroup}}
-                    <span class="g-icon g-icon-group" title="want meet group of women"><span class="g-icon icon-female"></span><span class="g-icon icon-female"></span></span>
-                    {{/if}}
-
-                    {{#if wmManGroup}}
-                    <span class="g-icon g-icon-group" title="want meet group of men"><span class="g-icon icon-male"></span><span class="g-icon icon-male"></span></span>
-                    {{/if}}
-
-                    {{#if wmMixGroup}}
-                    <span class="g-icon g-icon-group" title="want meet gender mixed group"><span class="g-icon icon-female"></span><span class="g-icon icon-male"></span></span>
-                    {{/if}}
-
+                    
+                    @Html.Partial("WantMeet")
+                    
                     {{#each wantDos}}
                     <span class="itag">{{this}}</span>
                     {{/each}}
@@ -344,7 +314,7 @@
 
             </div>
             <div class="btn-cont">
-                <a class="chat-btn" target="_blank" href="/@RoutingConsts.MessageMenuName/{{id}}"><span class="icon-bubbles2"></span><br /><span class="txt">Message</span></a>
+                <a class="chat-btn" target="_blank" href="/@RoutingConsts.MessageMenuName/{{uid}}"><span class="icon-bubbles2"></span><br /><span class="txt">Message</span></a>
             </div>
 
         </div>
@@ -386,18 +356,13 @@
 </script>
 
 <script id="filterCity-template" type="text/x-handlebars-template">
-    
-    <div class="title">Show checkins between following dates</div>
-    <div id="filterDateCont">
-        <input id="fromDateFilter" type="text" />
-        <span class="split">-</span>
-        <input id="toDateFilter" type="text" />
-    </div>
+        
     <div class="title">What activites are you interested of?</div>
     <div id="filterCont"></div>
     
     <div class="title">Show people speaking one of following languages</div>
     <div id="langsFilter" class="langs-filter"></div>    
+
 </script>
 
 
@@ -416,22 +381,29 @@
 
 <script id="userPopupNow-template" type="text/x-handlebars-template">
 
-    <div class="user-popup">
+    <div class="user-popup" data-cid="{{cid}}" data-uid="{{uid}}">
         
         <div class="top">
             <div class="left">
                 <div class="photo">
-                    <img src="/PortalUser/ProfilePicture_s/{{id}}">
+                    <img src="/PortalUser/ProfilePicture_s/{{uid}}">
                 </div>
             </div>
             <div class="right">
-                <a href="/PortalUser/Detail/{{id}}" target="_blank">{{name}}</a>, {{age}} years
+                <a href="/PortalUser/Detail/{{uid}}" target="_blank">{{name}}</a>, {{age}} years
                 <div class="line">
                     {{interests}}
                 </div>                    
                 <div class="line">
-                    {{#each languages}}
-                    <img class="flag" src="/images/n/flags/{{this}}.svg" />
+                    
+                    <img class="c-flag" src="/images/n/flags/{{homeCountry}}.svg" title="born" />
+
+                    {{#if livesOtherCountry}}
+                    <img class="c-flag" src="/images/n/flags/{{livesCountry}}.svg" title="lives" />
+                    {{/if}}
+
+                    {{#each languages}}                    
+                    <span class="lang-tag" title="speaks {{this}}">{{this}}</span>
                     {{/each}}
                 </div>    
                 
@@ -439,26 +411,8 @@
             </div>
         </div>
         <div class="checkin">
-            <div class="line">                
-                {{#if wmMan}}
-                <span class="g-icon icon-male" title="want meet man"></span>
-                {{/if}}
-
-                {{#if wmWoman}}
-                <span class="g-icon icon-female" title="want meet woman"></span>
-                {{/if}}
-
-                {{#if wmWomanGroup}}
-                <span class="g-icon g-icon-group" title="want meet group of women"><span class="g-icon icon-female"></span><span class="g-icon icon-female"></span></span>
-                {{/if}}
-
-                {{#if wmManGroup}}
-                <span class="g-icon g-icon-group" title="want meet group of men"><span class="g-icon icon-male"></span><span class="g-icon icon-male"></span></span>
-                {{/if}}
-
-                {{#if wmMixGroup}}
-                <span class="g-icon g-icon-group" title="want meet gender mixed group"><span class="g-icon icon-female"></span><span class="g-icon icon-male"></span></span>
-                {{/if}}
+            <div class="line">             
+                @Html.Partial("WantMeet")   
                 
                 {{#each wantDos}}
                 <span class="itag">{{this}}</span>
@@ -474,6 +428,13 @@
         <div class="msg">
             {{message}}
         </div>        
+        
+        <div class="bottom-cont">
+            <a class="chat-btn chat-btn-popup" href="#">
+                <span class="icon-bubbles2"></span>
+                <span class="txt">Ask for chat</span>
+            </a>
+        </div>
     </div>
 
 </script>
@@ -508,56 +469,52 @@
         <div class="top">
             <div class="left">
                 <div class="photo">
-                    <img src="/PortalUser/ProfilePicture_s/{{id}}">
+                    <img src="/PortalUser/ProfilePicture_s/{{uid}}">
                 </div>
             </div>
             <div class="right">
-                <a href="/PortalUser/Detail/{{id}}" target="_blank">{{name}}</a>, {{age}} years
+                <a href="/PortalUser/Detail/{{uid}}" target="_blank">{{name}}</a>, {{age}} years
                 <div class="line">
                     {{interests}}
                 </div>
                 <div class="line">
+                    
+                    <img class="c-flag" src="/images/n/flags/{{homeCountry}}.svg" title="born" />
+
+                    {{#if livesOtherCountry}}
+                    <img class="c-flag" src="/images/n/flags/{{livesCountry}}.svg" title="lives" />
+                    {{/if}}
+
                     {{#each languages}}
-                    <img class="flag" src="/images/n/flags/{{this}}.svg" />
+                    <span class="lang-tag" title="speaks {{this}}">{{this}}</span>
                     {{/each}}
                 </div>   
             </div>
         </div>
         <div class="checkin">
             <div class="line">
-                {{#if wmMan}}
-                <span class="g-icon icon-male" title="want meet man"></span>
-                {{/if}}
-
-                {{#if wmWoman}}
-                <span class="g-icon icon-female" title="want meet woman"></span>
-                {{/if}}
-
-                {{#if wmWomanGroup}}
-                <span class="g-icon g-icon-group" title="want meet group of women"><span class="g-icon icon-female"></span><span class="g-icon icon-female"></span></span>
-                {{/if}}
-
-                {{#if wmManGroup}}
-                <span class="g-icon g-icon-group" title="want meet group of men"><span class="g-icon icon-male"></span><span class="g-icon icon-male"></span></span>
-                {{/if}}
-
-                {{#if wmMixGroup}}
-                <span class="g-icon g-icon-group" title="want meet gender mixed group"><span class="g-icon icon-female"></span><span class="g-icon icon-male"></span></span>
-                {{/if}}
-
+                @Html.Partial("WantMeet")
+               
                 {{#each wantDos}}
                 <span class="itag">{{this}}</span>
                 {{/each}}
             </div>
 
             <div class="line">
-                <span class="title">Will be here</span>: {{fromStr}} - {{toStr}}                
+                <span class="title">Will be here</span>: {{fromDate}} - {{toDate}}                
             </div>
 
         </div>
 
         <div class="msg">
             {{message}}
+        </div>
+        
+        <div class="bottom-cont">
+            <a class="chat-btn" target="_blank" href="/@RoutingConsts.MessageMenuName/{{uid}}">
+                <span class="icon-bubbles2"></span>
+                <span class="txt">Message</span>
+            </a>
         </div>
     </div>
 

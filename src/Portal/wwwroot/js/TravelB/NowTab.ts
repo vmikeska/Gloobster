@@ -48,7 +48,7 @@ module TravelB {
 
 					var v = <Views.TravelBView>Views.ViewBase.currentView;
 					v.checkinWin.showNowCheckin(() => {
-						v.checkinWin.wpCombo.initValues({
+							v.checkinWin.placeCombo.initValues({
 							sourceId: p.sourceId,
 							sourceType: p.type,
 							lastText: p.text,
@@ -78,37 +78,15 @@ module TravelB {
 			var $listCont = $(".results .people");
 			$listCont.find(".person").remove();
 				
-			var d = new Date();
-			var curYear = d.getFullYear();
-
 			var cr = new CheckinReact();
 
-			fc.forEach((p) => {
-
-				var context = {
-					id: p.userId,
-					name: p.displayName,
-					age: curYear - p.birthYear,
-					languages: Views.StrOpers.langsToFlags(p.languages, p.homeCountry),
-					homeCountry: p.homeCountry,
-					livesCountry: p.livesCountry,
-					livesOtherCountry: p.homeCountry !== p.livesCountry,
+			fc.forEach((c) => {
+				var context = CheckinMapping.map(c, CheckinType.Now);
 					
-					wmMan: ((p.wantMeet === WantMeet.Man) || (p.wantMeet === WantMeet.All)),
-					wmWoman: ((p.wantMeet === WantMeet.Woman) || (p.wantMeet === WantMeet.All)),
-					wmWomanGroup: ((p.wantMeet === WantMeet.Woman) && p.multiPeopleAllowed),
-					wmManGroup: ((p.wantMeet === WantMeet.Man) && p.multiPeopleAllowed),
-					wmMixGroup: ((p.wantMeet === WantMeet.All) && p.multiPeopleAllowed),
-					
-					wantDos: Views.StrOpers.getActivityStrArray(p.wantDo),
-					message: p.message
-					
-				};
-
 				var $u = $(this.checkinTemplate(context));
 				$u.find(".chat-btn").click((e) => {
 						e.preventDefault();
-						cr.askForChat(p);
+						cr.askForChat(c.userId, c.id);
 				});
 				$listCont.append($u);
 			});				
@@ -116,9 +94,57 @@ module TravelB {
 
 		}
 
+	export class CheckinMapping {
+
+			public static map(c, type: CheckinType) {
+
+					var d = new Date();
+					var curYear = d.getFullYear();
+
+					var context = {
+							uid: c.userId,
+							cid: c.id,
+							name: c.displayName,
+							age: curYear - c.birthYear,
+							languages: c.languages,
+
+							homeCountry: c.homeCountry,
+							livesCountry: c.livesCountry,
+							livesOtherCountry: c.homeCountry !== c.livesCountry,
+
+							wmMan: ((c.wantMeet === WantMeet.Man) || (c.wantMeet === WantMeet.All)),
+							wmWoman: ((c.wantMeet === WantMeet.Woman) || (c.wantMeet === WantMeet.All)),
+							wmWomanGroup: ((c.wantMeet === WantMeet.Woman) && c.multiPeopleAllowed),
+							wmManGroup: ((c.wantMeet === WantMeet.Man) && c.multiPeopleAllowed),
+							wmMixGroup: ((c.wantMeet === WantMeet.All) && c.multiPeopleAllowed),
+
+							wantDos: Views.StrOpers.getActivityStrArray(c.wantDo),
+							message: c.message							
+					};
+
+					if (type === CheckinType.Now) {
+							context = $.extend(context, {
+									waitingStr: TravelBUtils.minsToTimeStr(TravelBUtils.waitingMins(c.waitingUntil))
+							});
+					}
+
+					if (type === CheckinType.City) {
+						context = $.extend(context, {
+								fromDate: Views.StrOpers.formatDate(c.fromDate),
+								toDate: Views.StrOpers.formatDate(c.toDate)
+						});
+					}
+
+
+
+				return context;
+			}
+
+	}
+
 	export class CheckinReact {
-		public askForChat(checkin) {
-			var data = { uid: checkin.userId, cid: checkin.id };
+		public askForChat(uid, cid) {
+			var data = { uid: uid, cid: cid };
 
 			Views.ViewBase.currentView.apiPost("CheckinReact", data, () => {
 				var id = new Common.InfoDialog();

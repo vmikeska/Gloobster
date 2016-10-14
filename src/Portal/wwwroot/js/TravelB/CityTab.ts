@@ -24,38 +24,12 @@ module TravelB {
 						$no.show();
 				}
 
-			var d = new Date();
-			var curYear = d.getFullYear();
-			
-				var v = <Views.TravelBView>Views.ViewBase.currentView;
+			var v = <Views.TravelBView>Views.ViewBase.currentView;
 			var selFilter = v.filter.selectedFilter;
 
-			checkins.forEach((p) => {
+			checkins.forEach((c) => {
+				var context = CheckinMapping.map(c, CheckinType.City);
 					
-					var context = {
-						cid: p.id,
-						id: p.userId,
-						name: p.displayName,
-						age: curYear - p.birthYear,
-
-						languages: Views.StrOpers.langsToFlags(p.languages, p.homeCountry),
-						homeCountry: p.homeCountry,
-						livesCountry: p.livesCountry,
-						livesOtherCountry: p.homeCountry !== p.livesCountry,
-
-						wmMan: ((p.wantMeet === WantMeet.Man) || (p.wantMeet === WantMeet.All)),
-						wmWoman: ((p.wantMeet === WantMeet.Woman) || (p.wantMeet === WantMeet.All)),
-						wmWomanGroup: ((p.wantMeet === WantMeet.Woman) && p.multiPeopleAllowed),
-						wmManGroup: ((p.wantMeet === WantMeet.Man) && p.multiPeopleAllowed),
-						wmMixGroup: ((p.wantMeet === WantMeet.All) && p.multiPeopleAllowed),
-
-						wantDos: Views.StrOpers.getActivityStrArray(p.wantDo),
-						
-						fromDate: DateUtils.myDateToStr(p.fromDate),
-						toDate: DateUtils.myDateToStr(p.toDate),
-						message: p.message
-					};
-
 				var tmp = _.contains(selFilter,"mine") ? this.checkinMgmtTemplate : this.checkinTemplate;
 
 				var $u = $(tmp(context));

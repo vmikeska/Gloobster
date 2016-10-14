@@ -9,7 +9,6 @@ using Gloobster.DomainObjects;
 using Gloobster.DomainObjects.TravelB;
 using Gloobster.Entities;
 using Gloobster.Entities.TravelB;
-using Gloobster.Enums;
 using Gloobster.Mappers;
 using Gloobster.Portal.Controllers.Base;
 using Microsoft.AspNet.Mvc;
@@ -18,32 +17,6 @@ using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.Wiki
 {
-    public class CheckinFilterUtils
-    {
-        
-        public static bool HasGenderMatch(WantMeet wantMeet, Gender gender)
-        {
-            if (wantMeet == WantMeet.All)
-            {
-                return true;
-            }
-
-            if (wantMeet == WantMeet.Man && gender == Gender.M)
-            {
-                return true;
-            }
-
-            if (wantMeet == WantMeet.Woman && gender == Gender.F)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        
-    }
-
     public class CheckinNowController: BaseApiController
     {
         public CheckinNowDomain TbDomain { get; set; }
@@ -152,6 +125,26 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             return new ObjectResult(true);
         }
 
+        [HttpPut]
+        [AuthorizeApi]
+        public async Task<IActionResult> Put([FromBody] CheckinRequest req)
+        {
+            var validator = new CheckinValidator();
+            validator.Validate(req);
+
+            if (!validator.IsValid)
+            {
+                throw new Exception("Invalid checkin now");
+            }
+
+            var checkinDO = ReqNowToDO(req);
+            checkinDO.WaitingUntil = DateTime.UtcNow.AddMinutes(req.minsWaiting);
+
+            await TbDomain.UpdateCheckin(checkinDO);
+
+            return new ObjectResult(true);
+        }
+
         [AuthorizeApi]
         [HttpDelete]
         public async Task<IActionResult> Delete()
@@ -166,6 +159,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         {
             var checkinDO = new CheckinNowDO
             {
+                CheckinId = req.id,
                 UserId = UserId,
                 WantDo = req.wantDo,
                 WantMeet = req.wantMeet,                

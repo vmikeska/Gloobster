@@ -42,18 +42,23 @@
 				var $layout = $(".nchat-all");
 				var hasLayout = $layout.length > 0;
 
-				if (anyReacts && !hasLayout) {
-					this.createLayout(reacts);
+				if (anyReacts) {
+					if (!hasLayout) {
+						this.createLayout(reacts);
+						}
+
+					this.addNewPersons(reacts, hasLayout);
+
+					this.removeOldPersons(reacts);
+
+					if (!this.chatRefresh.isStarted) {
+							this.chatRefresh.startRefresh();
+					}
+
+				} else {
+					this.destroyLayout();					
 				}
-
-				this.addNewPersons(reacts, hasLayout);
-
-				this.removeOldPersons(reacts);
-
-				if (!this.chatRefresh.isStarted) {
-					this.chatRefresh.startRefresh();
-				}
-
+					
 				if (callback) {
 					callback();
 				}
@@ -269,6 +274,11 @@
 			});
 		}
 
+			private destroyLayout() {
+					var $layout = $(".nchat-all");
+					$layout.remove();
+			}
+
 		private addNewPersons(reacts, hasLayout) {
 			var first = true;
 			reacts.forEach((r, i) => {
@@ -305,8 +315,7 @@
 				if (!wasFound) {
 					$person.remove();
 				}
-
-			});
+			});				
 		}
 
 		private addNames(r) {
@@ -407,6 +416,11 @@
 			ViewBase.currentView.apiPut("CheckinReact", prms, () => {
 					var $person = Chat.getUserTitleNameTag(reactId);
 					$person.remove();
+
+					var anyPersons = $(".nchat-all .persons .person").length > 0;
+					if (!anyPersons) {
+						this.destroyLayout();
+					}
 
 					var $actPerson = this.getActivePerson();
 					var isJustActive = $person.data("rid") === reactId;

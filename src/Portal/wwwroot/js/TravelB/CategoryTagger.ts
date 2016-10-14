@@ -19,6 +19,8 @@ module TravelB {
 		}
 
 		public initData(data) {
+			this.hideEmptyText();
+
 			data.forEach((id) => {
 				var res = this.findItemById(id);
 				if (res !== null) { 

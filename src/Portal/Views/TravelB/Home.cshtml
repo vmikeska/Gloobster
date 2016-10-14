@@ -39,6 +39,8 @@
 <script src="@Url.Content("~/js/TravelB/Tabs.js")"></script>
 <script src="@Url.Content("~/js/TravelB/TravelBUtils.js")"></script>
 <script src="@Url.Content("~/js/TravelB/UserLocation.js")"></script>
+<script src="@Url.Content("~/js/TravelB/CityCheckinsMgmt.js")"></script>
+<script src="@Url.Content("~/js/TravelB/CheckinMenu.js")"></script>
 
 <script src="@Url.Content("~/js/Maps/MapsCreatorMapBox2D.js")"></script>
 
@@ -107,12 +109,18 @@
     </div>
 
     <div class="checkin-row" style="display: none">
-        <a id="checkin" href="#" class="icon-location now-checkin-btn"><span class="lato"> Checkin to meet somebody</span></a>
+        <a id="checkin" href="#" data-t="check" class="icon-location now-checkin-btn"><span class="lato"> Check-in</span></a>
+
+        <a id="cityCheckins" href="#" data-t="manage" class="icon-file-text city-checkins-btn" style="display: none"><span class="lato"> Manage check-ins</span></a>
     </div>
 
     <div class="checkin-win" style="display: none">
+        <a class="close icon-cross" href="#"></a>
 
-      
+        <div class="cont">
+            
+        </div>
+
     </div>
 
     <div class="main-menu">
@@ -141,6 +149,13 @@
         </div>
     </div>
 
+    <div class="filter-date" id="filterDateCont" style="display: none">
+        <div class="title">Show checkins between following dates</div>
+        <input id="fromDateFilter" type="text"/>
+        <span class="split">-</span>
+        <input id="toDateFilter" type="text"/>
+    </div>
+
     <div class="filter-menu">
 
         <div id="cbUseFilter" class="checkbox-all">
@@ -151,7 +166,7 @@
                 Use filter
             </div>
         </div>
-        
+
         <div id="cbAllCheckins" class="checkbox-all">
             <div class="checker-all">
                 <div class="checker"></div>

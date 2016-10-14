@@ -1,10 +1,11 @@
 var TravelB;
 (function (TravelB) {
     var MapCheckins = (function () {
-        function MapCheckins(mapObj) {
+        function MapCheckins(view, mapObj) {
             this.popupTemplateNow = Views.ViewBase.currentView.registerTemplate("userPopupNow-template");
             this.popupTemplateCity = Views.ViewBase.currentView.registerTemplate("userPopupCity-template");
             this.popupMP = Views.ViewBase.currentView.registerTemplate("mpPopup-template");
+            this.view = view;
             this.mapObj = mapObj;
         }
         MapCheckins.prototype.clearCheckins = function () {
@@ -30,8 +31,7 @@ var TravelB;
                     var mc = MapPins.getYourCheckinCont(c);
                     var m = L.marker([coord.Lat, coord.Lng], { icon: mc, title: "Your checkin" });
                     m.on("click", function (e) {
-                        var win = new TravelB.CheckinWin();
-                        win.showNowCheckin();
+                        _this.view.checkinWin.showNowCheckin();
                     });
                     _this.checkinsLayer.addLayer(m);
                 }
@@ -68,24 +68,7 @@ var TravelB;
         MapCheckins.prototype.displayPopupCity = function (latlng, cid) {
             var _this = this;
             Views.ViewBase.currentView.apiGet("CheckinCity", [["type", "id"], ["id", cid]], function (c) {
-                var d = new Date();
-                var curYear = d.getFullYear();
-                var context = {
-                    id: c.userId,
-                    name: c.displayName,
-                    age: curYear - c.birthYear,
-                    languages: Views.StrOpers.langsToFlags(c.languages, c.homeCountry),
-                    wmMan: ((c.wantMeet === TravelB.WantMeet.Man) || (c.wantMeet === TravelB.WantMeet.All)),
-                    wmWoman: ((c.wantMeet === TravelB.WantMeet.Woman) || (c.wantMeet === TravelB.WantMeet.All)),
-                    wmWomanGroup: ((c.wantMeet === TravelB.WantMeet.Woman) && c.multiPeopleAllowed),
-                    wmManGroup: ((c.wantMeet === TravelB.WantMeet.Man) && c.multiPeopleAllowed),
-                    wmMixGroup: ((c.wantMeet === TravelB.WantMeet.All) && c.multiPeopleAllowed),
-                    wantDos: Views.StrOpers.getActivityStrArray(c.wantDo),
-                    fromStr: Views.StrOpers.formatDate(c.fromDate),
-                    toStr: Views.StrOpers.formatDate(c.toDate),
-                    interests: Views.StrOpers.getInterestsStr(c.interests),
-                    message: c.message
-                };
+                var context = TravelB.CheckinMapping.map(c, CheckinType.City);
                 var ppCont = _this.popupTemplateCity(context);
                 var popup = new L.Popup();
                 popup.setLatLng(latlng);
@@ -114,28 +97,19 @@ var TravelB;
         MapCheckins.prototype.displayPopupNow = function (latlng, userId) {
             var _this = this;
             Views.ViewBase.currentView.apiGet("CheckinNow", [["type", "id"], ["id", userId]], function (c) {
-                var d = new Date();
-                var curYear = d.getFullYear();
-                var context = {
-                    id: c.userId,
-                    name: c.displayName,
-                    age: curYear - c.birthYear,
-                    languages: Views.StrOpers.langsToFlags(c.languages, c.homeCountry),
-                    wmMan: ((c.wantMeet === TravelB.WantMeet.Man) || (c.wantMeet === TravelB.WantMeet.All)),
-                    wmWoman: ((c.wantMeet === TravelB.WantMeet.Woman) || (c.wantMeet === TravelB.WantMeet.All)),
-                    wmWomanGroup: ((c.wantMeet === TravelB.WantMeet.Woman) && c.multiPeopleAllowed),
-                    wmManGroup: ((c.wantMeet === TravelB.WantMeet.Man) && c.multiPeopleAllowed),
-                    wmMixGroup: ((c.wantMeet === TravelB.WantMeet.All) && c.multiPeopleAllowed),
-                    wantDos: Views.StrOpers.getActivityStrArray(c.wantDo),
-                    waitingStr: TravelB.TravelBUtils.minsToTimeStr(TravelB.TravelBUtils.waitingMins(c.waitingUntil)),
-                    interests: Views.StrOpers.getInterestsStr(c.interests),
-                    message: c.message
-                };
+                var context = TravelB.CheckinMapping.map(c, CheckinType.Now);
                 var ppCont = _this.popupTemplateNow(context);
                 var popup = new L.Popup();
                 popup.setLatLng(latlng);
                 popup.setContent(ppCont);
                 _this.mapObj.openPopup(popup);
+                $(".chat-btn-popup").click(function (e) {
+                    e.preventDefault();
+                    var cr = new TravelB.CheckinReact();
+                    var $t = $(e.delegateTarget);
+                    var $c = $t.closest(".user-popup");
+                    cr.askForChat($c.data("uid"), $c.data("cid"));
+                });
             });
         };
         return MapCheckins;

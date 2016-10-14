@@ -7,6 +7,29 @@
         border: 1px solid $light-blue3;
     }
 
+    .invalid {
+        border: 1px solid red !important;
+    }
+
+    .lang-tag{
+        display: inline-block;
+        vertical-align: top;
+
+        text-transform: uppercase;
+        border: 1px dotted $light-blue3;
+        padding: 2px;
+        border-radius: 2px;
+        font-weight: bold;        
+    }
+
+    .c-flag{        
+        display: inline-block;
+        vertical-align: top;
+
+        width: 22px;
+        height: 22px;                            
+    }
+
     .checkin-icon{
         z-index: 99999 !important;
 
@@ -137,6 +160,8 @@
 
     .wantDosMain {
     
+        border-radius: 4px;
+
             .tabsCont{
                 .myTab {
                     background-color: $light-blue3;
@@ -288,17 +313,22 @@
     }
 
     .checkin-row{
-        padding: 16px;
+        /*padding: 16px;*/
         
-        .now-checkin-btn{
+        margin-top: 10px;
+        
+        a{
             font-size: 28px;
             color: lightgray;
             text-decoration: none;
 
+            margin-left: 20px;
+            /*margin-right: 10px;*/
+            
             .lato{
                 color: $light-blue2;
                 font-size: 24px;
-                text-decoration: underline !important;
+                text-decoration: underline;
             }
 
             &:hover{
@@ -308,6 +338,18 @@
                     line-height: 28px;
                     color: $dark-blue;
                     text-decoration: none;
+                }
+            }
+
+            &.active{
+                color: $orange;
+                background-color: $light-gray;
+                border-top-left-radius: 4px;
+                border-top-right-radius: 4px;
+                padding: 4px;
+
+                .lato {
+                    text-decoration: none !important;
                 }
             }
         }
@@ -355,11 +397,69 @@
     .checkin-win {
         position: relative;
         background-color: $light-gray;
-        border: 1px solid $light-blue3;
+        
         border-radius: 4px;
 
         padding: 8px;
 
+        .close{
+            position: absolute;
+            right: 5px;
+            top: 5px;
+
+            &:hover{
+                color: darkred;
+            }
+        }   
+    }
+
+    .checkin-mgmt-item{
+        border-bottom: 1px dotted gray;
+        padding-bottom: 4px;
+        padding-top: 4px;
+
+        .tbl {
+            display: table;
+
+            .left{
+                display: table-cell;
+            }
+
+            .right{
+                display: table-cell;
+            }
+        }
+
+        .title{
+            font-weight: bold;
+        }
+    
+        .date {
+            font-size: 0.6em;
+        }
+    
+        .data-cont {
+            padding-top: 3px;
+            padding-bottom: 3px;
+            
+            .years{
+                font-size: 0.8em;
+            }
+        }
+    
+        .msg {
+            background-color: white;
+            padding: 6px;
+            border-radius: 4px;
+            margin-top: 3px;
+        }
+
+        &:last-of-type{
+            border-bottom: 0;
+        }
+    }
+
+    .checkinCont{
         textarea {
             resize: none;
             border: 0;
@@ -386,20 +486,11 @@
 
         .confirm{
             background-color: $light-blue3;
-            color: white;
-            /*margin: 8px;*/
+            color: white;            
             display: inline-block;
         }
 
-        .cancel{
-            position: absolute;
-            right: 5px;
-            top: 5px;
-
-            &:hover{
-                color: darkred;
-            }
-        }
+        
 
         .double-tbl{
             width: 100%;
@@ -524,6 +615,24 @@
             }
         }
 
+        .bottom-cont {
+            margin-top: 3px;
+
+            .chat-btn{            
+                display: inline-block;
+                            
+                text-decoration: none;
+                background-color: $light-blue;
+                border-radius: 4px;
+                padding: 5px;
+                color: white;
+                
+                &:hover{
+                    color: $dark-blue;
+                }
+            }
+        }
+
         .checkin{
 
         }
@@ -581,14 +690,31 @@
             margin-bottom: 8px;
         }
 
-        .split{
-            font-size: 30px;
-        }
-
         .langs-filter{
             background-color: white;
             padding: 6px 6px 0 6px;
             border-radius: 4px;
+        }
+    }
+
+    .filter-date{
+        margin-top: 4px;
+        background-color: $light-gray;
+        padding: 6px 10px 6px 10px;
+        border-radius: 4px;
+
+        input{
+            width: 100px;
+        }
+
+        .split{
+            font-size: 30px;
+        }
+
+        .title{
+            font-weight: bold;
+            margin-top: 8px;
+            margin-bottom: 8px;
         }
     }
 
@@ -760,28 +886,9 @@
                            width: 60px;
                            height: 60px;
 
-                           .photo{                               
-                                /*border: 1px solid black;*/
+                           .photo{                                                               
                                 border-radius: 2px;
                            }
-
-                           .c-flag{
-                                position: absolute;
-                                top: -11px;
-                                right: -11px;
-
-                                width: 22px;
-                                height: 22px;                            
-                            }
-
-                           .c-flag-other{
-                                position: absolute;
-                                top: -11px;
-                                right: 7px;
-
-                                width: 22px;
-                                height: 22px;                            
-                            }
                        }
                        
                     }

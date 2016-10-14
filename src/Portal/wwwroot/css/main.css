@@ -592,6 +592,9 @@ footer {
 .icon-camera:before {
   content: "\e915"; }
 
+.icon-file-text:before {
+  content: "\e922"; }
+
 .icon-envelop:before {
   content: "\e945"; }
 
@@ -2845,6 +2848,21 @@ footer {
   text-align: left; }
   .travelb-home textarea {
     border: 1px solid #3298C1; }
+  .travelb-home .invalid {
+    border: 1px solid red !important; }
+  .travelb-home .lang-tag {
+    display: inline-block;
+    vertical-align: top;
+    text-transform: uppercase;
+    border: 1px dotted #3298C1;
+    padding: 2px;
+    border-radius: 2px;
+    font-weight: bold; }
+  .travelb-home .c-flag {
+    display: inline-block;
+    vertical-align: top;
+    width: 22px;
+    height: 22px; }
   .travelb-home .checkin-icon {
     z-index: 99999 !important; }
     .travelb-home .checkin-icon .thumb-cont {
@@ -2921,27 +2939,29 @@ footer {
   .travelb-home .g-icon-group .g-icon:last-of-type {
     color: black;
     margin-left: -5px; }
-  .travelb-home .wantDosMain .tabsCont .myTab {
-    background-color: #3298C1; }
-    .travelb-home .wantDosMain .tabsCont .myTab.act {
-      background-color: #F56E12; }
-  .travelb-home .wantDosMain .dataCont {
-    min-height: 40px;
-    padding: 6px 6px 0 6px;
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-    background-color: white; }
-    .travelb-home .wantDosMain .dataCont .tag {
-      cursor: pointer; }
-  .travelb-home .wantDosMain .selected {
-    padding: 6px 6px 0 6px;
-    min-height: 40px;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-    background-color: white; }
-    .travelb-home .wantDosMain .selected .empty {
-      padding: 8px;
-      color: gray; }
+  .travelb-home .wantDosMain {
+    border-radius: 4px; }
+    .travelb-home .wantDosMain .tabsCont .myTab {
+      background-color: #3298C1; }
+      .travelb-home .wantDosMain .tabsCont .myTab.act {
+        background-color: #F56E12; }
+    .travelb-home .wantDosMain .dataCont {
+      min-height: 40px;
+      padding: 6px 6px 0 6px;
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+      background-color: white; }
+      .travelb-home .wantDosMain .dataCont .tag {
+        cursor: pointer; }
+    .travelb-home .wantDosMain .selected {
+      padding: 6px 6px 0 6px;
+      min-height: 40px;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+      background-color: white; }
+      .travelb-home .wantDosMain .selected .empty {
+        padding: 8px;
+        color: gray; }
   .travelb-home .notifs .notif {
     margin-top: 8px; }
     .travelb-home .notifs .notif .notif-body {
@@ -3007,21 +3027,32 @@ footer {
       .travelb-home .status-row .data .item .cont {
         display: inline-block; }
   .travelb-home .checkin-row {
-    padding: 16px; }
-    .travelb-home .checkin-row .now-checkin-btn {
+    /*padding: 16px;*/
+    margin-top: 10px; }
+    .travelb-home .checkin-row a {
       font-size: 28px;
       color: lightgray;
-      text-decoration: none; }
-      .travelb-home .checkin-row .now-checkin-btn .lato {
+      text-decoration: none;
+      margin-left: 20px;
+      /*margin-right: 10px;*/ }
+      .travelb-home .checkin-row a .lato {
         color: #009EC4;
         font-size: 24px;
-        text-decoration: underline !important; }
-      .travelb-home .checkin-row .now-checkin-btn:hover {
+        text-decoration: underline; }
+      .travelb-home .checkin-row a:hover {
         color: #005476; }
-        .travelb-home .checkin-row .now-checkin-btn:hover .lato {
+        .travelb-home .checkin-row a:hover .lato {
           line-height: 28px;
           color: #005476;
           text-decoration: none; }
+      .travelb-home .checkin-row a.active {
+        color: #F56E12;
+        background-color: #f2f2f2;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        padding: 4px; }
+        .travelb-home .checkin-row a.active .lato {
+          text-decoration: none !important; }
   .travelb-home .main-menu {
     margin-top: 10px; }
     .travelb-home .main-menu .tbl {
@@ -3049,44 +3080,68 @@ footer {
   .travelb-home .checkin-win {
     position: relative;
     background-color: #f2f2f2;
-    border: 1px solid #3298C1;
     border-radius: 4px;
     padding: 8px; }
-    .travelb-home .checkin-win textarea {
-      resize: none;
-      border: 0; }
-    .travelb-home .checkin-win .multi {
-      white-space: nowrap; }
-    .travelb-home .checkin-win .dropdown .selected {
-      border: 0 !important;
-      color: black !important; }
-    .travelb-home .checkin-win .title {
-      font-weight: bold;
-      margin-top: 8px;
-      margin-bottom: 8px; }
-    .travelb-home .checkin-win .confirm {
-      background-color: #3298C1;
-      color: white;
-      /*margin: 8px;*/
-      display: inline-block; }
-    .travelb-home .checkin-win .cancel {
+    .travelb-home .checkin-win .close {
       position: absolute;
       right: 5px;
       top: 5px; }
-      .travelb-home .checkin-win .cancel:hover {
+      .travelb-home .checkin-win .close:hover {
         color: darkred; }
-    .travelb-home .checkin-win .double-tbl {
-      width: 100%;
+  .travelb-home .checkin-mgmt-item {
+    border-bottom: 1px dotted gray;
+    padding-bottom: 4px;
+    padding-top: 4px; }
+    .travelb-home .checkin-mgmt-item .tbl {
       display: table; }
-      .travelb-home .checkin-win .double-tbl .cell {
-        display: table-cell;
-        width: 50%; }
-    @media screen and (max-width: 620px) {
-      .travelb-home .checkin-win .double-tbl {
-        display: block; }
-        .travelb-home .checkin-win .double-tbl .cell {
-          display: block;
-          width: 100%; } }
+      .travelb-home .checkin-mgmt-item .tbl .left {
+        display: table-cell; }
+      .travelb-home .checkin-mgmt-item .tbl .right {
+        display: table-cell; }
+    .travelb-home .checkin-mgmt-item .title {
+      font-weight: bold; }
+    .travelb-home .checkin-mgmt-item .date {
+      font-size: 0.6em; }
+    .travelb-home .checkin-mgmt-item .data-cont {
+      padding-top: 3px;
+      padding-bottom: 3px; }
+      .travelb-home .checkin-mgmt-item .data-cont .years {
+        font-size: 0.8em; }
+    .travelb-home .checkin-mgmt-item .msg {
+      background-color: white;
+      padding: 6px;
+      border-radius: 4px;
+      margin-top: 3px; }
+    .travelb-home .checkin-mgmt-item:last-of-type {
+      border-bottom: 0; }
+  .travelb-home .checkinCont textarea {
+    resize: none;
+    border: 0; }
+  .travelb-home .checkinCont .multi {
+    white-space: nowrap; }
+  .travelb-home .checkinCont .dropdown .selected {
+    border: 0 !important;
+    color: black !important; }
+  .travelb-home .checkinCont .title {
+    font-weight: bold;
+    margin-top: 8px;
+    margin-bottom: 8px; }
+  .travelb-home .checkinCont .confirm {
+    background-color: #3298C1;
+    color: white;
+    display: inline-block; }
+  .travelb-home .checkinCont .double-tbl {
+    width: 100%;
+    display: table; }
+    .travelb-home .checkinCont .double-tbl .cell {
+      display: table-cell;
+      width: 50%; }
+  @media screen and (max-width: 620px) {
+    .travelb-home .checkinCont .double-tbl {
+      display: block; }
+      .travelb-home .checkinCont .double-tbl .cell {
+        display: block;
+        width: 100%; } }
   .travelb-home .map {
     width: 100%;
     height: 500px; }
@@ -3144,6 +3199,17 @@ footer {
       .travelb-home .user-popup .top .right .flag {
         width: 16px;
         height: 16px; }
+  .travelb-home .user-popup .bottom-cont {
+    margin-top: 3px; }
+    .travelb-home .user-popup .bottom-cont .chat-btn {
+      display: inline-block;
+      text-decoration: none;
+      background-color: #65BDD7;
+      border-radius: 4px;
+      padding: 5px;
+      color: white; }
+      .travelb-home .user-popup .bottom-cont .chat-btn:hover {
+        color: #005476; }
   .travelb-home .user-popup .msg {
     border-top: 1px dotted gray; }
   .travelb-home .filter-menu .checkbox-all {
@@ -3176,12 +3242,23 @@ footer {
       font-weight: bold;
       margin-top: 8px;
       margin-bottom: 8px; }
-    .travelb-home .filter .split {
-      font-size: 30px; }
     .travelb-home .filter .langs-filter {
       background-color: white;
       padding: 6px 6px 0 6px;
       border-radius: 4px; }
+  .travelb-home .filter-date {
+    margin-top: 4px;
+    background-color: #f2f2f2;
+    padding: 6px 10px 6px 10px;
+    border-radius: 4px; }
+    .travelb-home .filter-date input {
+      width: 100px; }
+    .travelb-home .filter-date .split {
+      font-size: 30px; }
+    .travelb-home .filter-date .title {
+      font-weight: bold;
+      margin-top: 8px;
+      margin-bottom: 8px; }
   .travelb-home .results .title {
     font-size: 24px;
     font-weight: bold;
@@ -3290,20 +3367,7 @@ footer {
             width: 60px;
             height: 60px; }
             .travelb-home .results .people .person .data .photo-cont .photo-all .photo {
-              /*border: 1px solid black;*/
               border-radius: 2px; }
-            .travelb-home .results .people .person .data .photo-cont .photo-all .c-flag {
-              position: absolute;
-              top: -11px;
-              right: -11px;
-              width: 22px;
-              height: 22px; }
-            .travelb-home .results .people .person .data .photo-cont .photo-all .c-flag-other {
-              position: absolute;
-              top: -11px;
-              right: 7px;
-              width: 22px;
-              height: 22px; }
         .travelb-home .results .people .person .data .cont {
           display: table-cell;
           vertical-align: top; }

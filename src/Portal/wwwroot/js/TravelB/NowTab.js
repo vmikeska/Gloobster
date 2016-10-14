@@ -33,7 +33,7 @@ var TravelB;
                     e.preventDefault();
                     var v = Views.ViewBase.currentView;
                     v.checkinWin.showNowCheckin(function () {
-                        v.checkinWin.wpCombo.initValues({
+                        v.checkinWin.placeCombo.initValues({
                             sourceId: p.sourceId,
                             sourceType: p.type,
                             lastText: p.text,
@@ -56,30 +56,13 @@ var TravelB;
             }
             var $listCont = $(".results .people");
             $listCont.find(".person").remove();
-            var d = new Date();
-            var curYear = d.getFullYear();
             var cr = new CheckinReact();
-            fc.forEach(function (p) {
-                var context = {
-                    id: p.userId,
-                    name: p.displayName,
-                    age: curYear - p.birthYear,
-                    languages: Views.StrOpers.langsToFlags(p.languages, p.homeCountry),
-                    homeCountry: p.homeCountry,
-                    livesCountry: p.livesCountry,
-                    livesOtherCountry: p.homeCountry !== p.livesCountry,
-                    wmMan: ((p.wantMeet === TravelB.WantMeet.Man) || (p.wantMeet === TravelB.WantMeet.All)),
-                    wmWoman: ((p.wantMeet === TravelB.WantMeet.Woman) || (p.wantMeet === TravelB.WantMeet.All)),
-                    wmWomanGroup: ((p.wantMeet === TravelB.WantMeet.Woman) && p.multiPeopleAllowed),
-                    wmManGroup: ((p.wantMeet === TravelB.WantMeet.Man) && p.multiPeopleAllowed),
-                    wmMixGroup: ((p.wantMeet === TravelB.WantMeet.All) && p.multiPeopleAllowed),
-                    wantDos: Views.StrOpers.getActivityStrArray(p.wantDo),
-                    message: p.message
-                };
+            fc.forEach(function (c) {
+                var context = CheckinMapping.map(c, CheckinType.Now);
                 var $u = $(_this.checkinTemplate(context));
                 $u.find(".chat-btn").click(function (e) {
                     e.preventDefault();
-                    cr.askForChat(p);
+                    cr.askForChat(c.userId, c.id);
                 });
                 $listCont.append($u);
             });
@@ -87,11 +70,50 @@ var TravelB;
         return NowTab;
     }());
     TravelB.NowTab = NowTab;
+    var CheckinMapping = (function () {
+        function CheckinMapping() {
+        }
+        CheckinMapping.map = function (c, type) {
+            var d = new Date();
+            var curYear = d.getFullYear();
+            var context = {
+                uid: c.userId,
+                cid: c.id,
+                name: c.displayName,
+                age: curYear - c.birthYear,
+                languages: c.languages,
+                homeCountry: c.homeCountry,
+                livesCountry: c.livesCountry,
+                livesOtherCountry: c.homeCountry !== c.livesCountry,
+                wmMan: ((c.wantMeet === TravelB.WantMeet.Man) || (c.wantMeet === TravelB.WantMeet.All)),
+                wmWoman: ((c.wantMeet === TravelB.WantMeet.Woman) || (c.wantMeet === TravelB.WantMeet.All)),
+                wmWomanGroup: ((c.wantMeet === TravelB.WantMeet.Woman) && c.multiPeopleAllowed),
+                wmManGroup: ((c.wantMeet === TravelB.WantMeet.Man) && c.multiPeopleAllowed),
+                wmMixGroup: ((c.wantMeet === TravelB.WantMeet.All) && c.multiPeopleAllowed),
+                wantDos: Views.StrOpers.getActivityStrArray(c.wantDo),
+                message: c.message
+            };
+            if (type === CheckinType.Now) {
+                context = $.extend(context, {
+                    waitingStr: TravelB.TravelBUtils.minsToTimeStr(TravelB.TravelBUtils.waitingMins(c.waitingUntil))
+                });
+            }
+            if (type === CheckinType.City) {
+                context = $.extend(context, {
+                    fromDate: Views.StrOpers.formatDate(c.fromDate),
+                    toDate: Views.StrOpers.formatDate(c.toDate)
+                });
+            }
+            return context;
+        };
+        return CheckinMapping;
+    }());
+    TravelB.CheckinMapping = CheckinMapping;
     var CheckinReact = (function () {
         function CheckinReact() {
         }
-        CheckinReact.prototype.askForChat = function (checkin) {
-            var data = { uid: checkin.userId, cid: checkin.id };
+        CheckinReact.prototype.askForChat = function (uid, cid) {
+            var data = { uid: uid, cid: cid };
             Views.ViewBase.currentView.apiPost("CheckinReact", data, function () {
                 var id = new Common.InfoDialog();
                 id.create("Request sent", "You asked to start chat with the user, now you have to wait until he confirms the chat");

@@ -173,6 +173,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         {
             var checkinDO = new CheckinCityDO
             {
+                CheckinId = req.id,
                 UserId = UserId,
                 WantDo = req.wantDo,
                 WantMeet = req.wantMeet,
@@ -402,6 +403,8 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
     public class CheckinRequest
     {
+        public string id { get; set; }
+
         public List<int> wantDo { get; set; }
 
         public WantMeet wantMeet { get; set; }

@@ -1,20 +1,27 @@
 ﻿module Views {
+
+
 	
+
 	export class TravelBView extends ViewBase {
 
 		private travelMap: TravelB.TravelBMap;
+
+		public checkinWin: TravelB.CheckinWin;
 
 		private mapCheckins: TravelB.MapCheckins;
 
 		private hereAndNowTemplate = this.registerTemplate("hereAndNowTabCont-template");
 
-		private tabs;
+		public tabs;
 		private nowFncs: TravelB.NowTab;
 		private cityFncs: TravelB.CityTab;
 		private currentBounds;
 
-		private nowTabConst = "nowTab";
-		private cityTabConst = "cityTab";
+		public checkinMenu: TravelB.CheckinMenu;
+
+		public nowTabConst = "nowTab";
+		public cityTabConst = "cityTab";
 
 		private reacts: CheckinReacts;
 		private notifs: NotifRefresh;
@@ -26,16 +33,17 @@
 
 		private props: TravelB.EmptyProps;
 
+		public status: TravelB.Status;
+
 		public filter: TravelB.Filter;
 		public defaultLangs;
-
-		public checkinWin;
 			
 		public emptyProps = [];
 			
 		public init() {
 
-			this.checkinWin = new TravelB.CheckinWin();
+				this.checkinWin = new TravelB.CheckinWin(this);
+				this.checkinMenu = new TravelB.CheckinMenu(this);
 
 			this.filter = new TravelB.Filter();
 		  this.filter.onFilterSelChanged = () => {
@@ -48,8 +56,8 @@
 
 			this.createMap();
 				
-			var status = new TravelB.Status();
-			status.refresh();
+			this.status = new TravelB.Status(this);
+			this.status.refresh();
 
 			this.chat = new Chat();
 			this.chat.refreshAll();
@@ -88,10 +96,22 @@
 			}
 
 			this.tabs.addTab(this.nowTabConst, "I am here and now", () => {
-				this.createNowCheckinsFnc();				
+
+					this.checkinMenu.setCheckinByTab(this.nowTabConst);
+					
+					this.createNowCheckinsFnc();
+					$("#filterDateCont").hide();
+					$("#cityCheckins").hide();
+					
 			});
 			this.tabs.addTab(this.cityTabConst, "I will be in a city", () => {
-				this.createCityCheckinsFnc();				
+
+					this.checkinMenu.setCheckinByTab(this.cityTabConst);
+					
+					this.createCityCheckinsFnc();				
+					$("#filterDateCont").show();
+					$("#cityCheckins").show();
+					
 			});
 			this.tabs.create(`<div class="btn-cont"></div>`);
 		}
@@ -115,19 +135,9 @@
 			this.displayNowCheckins();
 			this.displayMeetingPoints();			
 		}
-
+			
 		private regEvents() {
-			$("#checkin").click((e) => {
-				e.preventDefault();
-					
-				if (this.tabs.activeTabId === this.nowTabConst) {
-					this.checkinWin.showNowCheckin();
-				} else {
-						this.checkinWin.showCityCheckin(null);
-				}
-
-				});
-
+	
 			$("#fShowPeople").change((e) => {				
 				this.displayNowCheckins();
 			});
@@ -260,7 +270,7 @@
 
 		private onMapCreated(mapObj) {
 			this.mapObj = mapObj;
-			this.mapCheckins = new TravelB.MapCheckins(mapObj);
+			this.mapCheckins = new TravelB.MapCheckins(this, mapObj);
 
 			TravelB.UserLocation.getLocation((res) => {
 					TravelB.UserLocation.setCurrentLocation(res.lat, res.lng);				
@@ -326,31 +336,7 @@
 					var utc = Date.UTC(date.Year, date.Month, date.Day);
 					var d = moment.utc(utc).format("L");
 				return d;
-				//return `${date.Day}.${date.Month}.${date.Year}`;
 			}
-
-		public static langsToFlags(langs, homeCountry) {
-			//todo: implement most common
-				
-			var out = [];
-
-			langs.forEach((l) => {
-				var lang = l.toLowerCase();
-
-				if (lang === "en") {
-					if (homeCountry.toLowerCase() === "us") {
-						out.push("us");
-					} else {
-						out.push("gb");
-					}
-				} else {
-						out.push(lang);
-				}
-			});
-
-			return out;
-
-		}
 
 		public static getActivityStrArray(vals) {
 					var outStrs = [];

@@ -143,8 +143,10 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                     var notifs = Notifications.RateMeeting(req.id);
                     foreach (var n in notifs)
                     {
-                        NotificationDomain.AddNotification(n);
+                        NotificationDomain.AddNotification(n);                        
                     }
+
+                    UpdateMeetingPointMet(react);
                 }
 
                 if (req.state == CheckinReactionState.Blocked)
@@ -161,6 +163,20 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             }
 
             return new ObjectResult(null);
+        }
+
+        private async void UpdateMeetingPointMet(CheckinReactionEntity react)
+        {
+            var checkin = DB.FOD<CheckinNowEntity>(c => c.id == react.Checkin_id);
+
+            var mp = DB.FOD<MeetingPointsEntity>(p => p.SourceId == checkin.WaitingAtId & p.Type == checkin.WaitingAtType);
+
+            if (mp != null)
+            {
+                var f = DB.F<MeetingPointsEntity>().Eq(r => r.id, mp.id);
+                var u = DB.U<MeetingPointsEntity>().Inc(c => c.PeopleMet, 2);
+                var res = await DB.UpdateAsync(f, u);
+            }
         }
 
         [HttpPost]

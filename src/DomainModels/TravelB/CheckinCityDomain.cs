@@ -67,7 +67,8 @@ namespace Gloobster.DomainModels.TravelB
 
         public async Task UpdateCheckin(CheckinCityDO checkin)
         {                     
-            var entity = checkin.ToEntity();            
+            var entity = checkin.ToEntity();
+            entity.ValidUntil = checkin.ToDate.ToDateEnd(DateTimeKind.Utc);
             await DB.ReplaceOneAsync(entity);
         }
 

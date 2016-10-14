@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Common;
@@ -57,7 +58,7 @@ namespace Gloobster.DomainModels.TravelB
         
         public async Task CreateCheckin(CheckinNowDO checkin)
         {            
-            await DeleteCheckin(checkin.UserId);
+            //await DeleteCheckin(checkin.UserId);
 
             //create new
             var entity = checkin.ToEntity();
@@ -77,6 +78,13 @@ namespace Gloobster.DomainModels.TravelB
                 var name = typeof(CheckinNowHEntity).Name.Replace("Entity", string.Empty);
                 await DB.SaveCustomAsync(oldCheckin, name);
             }            
+        }
+
+        public async Task UpdateCheckin(CheckinNowDO checkin)
+        {
+            var entity = checkin.ToEntity();
+            
+            await DB.ReplaceOneAsync(entity);
         }
 
     }

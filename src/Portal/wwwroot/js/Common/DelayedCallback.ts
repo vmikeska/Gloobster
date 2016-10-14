@@ -9,10 +9,10 @@ module Common {
 		private timeoutId = null;
 		private $input: any;
 
-		constructor(input: string) {
+		constructor(input) {
 			var isId = (typeof input === "string");
 			if (isId) {
-				this.$input = $("#" + input);
+				this.$input = $(`#${input}`);
 			} else {
 				this.$input = input;
 			}

@@ -17,30 +17,10 @@ var TravelB;
             else {
                 $no.show();
             }
-            var d = new Date();
-            var curYear = d.getFullYear();
             var v = Views.ViewBase.currentView;
             var selFilter = v.filter.selectedFilter;
-            checkins.forEach(function (p) {
-                var context = {
-                    cid: p.id,
-                    id: p.userId,
-                    name: p.displayName,
-                    age: curYear - p.birthYear,
-                    languages: Views.StrOpers.langsToFlags(p.languages, p.homeCountry),
-                    homeCountry: p.homeCountry,
-                    livesCountry: p.livesCountry,
-                    livesOtherCountry: p.homeCountry !== p.livesCountry,
-                    wmMan: ((p.wantMeet === TravelB.WantMeet.Man) || (p.wantMeet === TravelB.WantMeet.All)),
-                    wmWoman: ((p.wantMeet === TravelB.WantMeet.Woman) || (p.wantMeet === TravelB.WantMeet.All)),
-                    wmWomanGroup: ((p.wantMeet === TravelB.WantMeet.Woman) && p.multiPeopleAllowed),
-                    wmManGroup: ((p.wantMeet === TravelB.WantMeet.Man) && p.multiPeopleAllowed),
-                    wmMixGroup: ((p.wantMeet === TravelB.WantMeet.All) && p.multiPeopleAllowed),
-                    wantDos: Views.StrOpers.getActivityStrArray(p.wantDo),
-                    fromDate: TravelB.DateUtils.myDateToStr(p.fromDate),
-                    toDate: TravelB.DateUtils.myDateToStr(p.toDate),
-                    message: p.message
-                };
+            checkins.forEach(function (c) {
+                var context = TravelB.CheckinMapping.map(c, CheckinType.City);
                 var tmp = _.contains(selFilter, "mine") ? _this.checkinMgmtTemplate : _this.checkinTemplate;
                 var $u = $(tmp(context));
                 $u.find(".del").click(function (e) {

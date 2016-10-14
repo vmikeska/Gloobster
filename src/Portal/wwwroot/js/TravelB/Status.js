@@ -7,8 +7,9 @@ var TravelB;
     })(TravelB.WantMeet || (TravelB.WantMeet = {}));
     var WantMeet = TravelB.WantMeet;
     var Status = (function () {
-        function Status() {
+        function Status(view) {
             this.template = Views.ViewBase.currentView.registerTemplate("status-template");
+            this.view = view;
         }
         Status.prototype.refresh = function () {
             var _this = this;
@@ -33,7 +34,7 @@ var TravelB;
                 var $html = $(_this.template(context));
                 $html.find(".edit").click(function (e) {
                     e.preventDefault();
-                    _this.editClick();
+                    _this.view.checkinMenu.activateTab("check");
                 });
                 $html.find(".delete").click(function (e) {
                     e.preventDefault();
@@ -56,10 +57,6 @@ var TravelB;
                 $checkinRow.show();
                 $statusRow.remove();
             }
-        };
-        Status.prototype.editClick = function () {
-            var win = new TravelB.CheckinWin();
-            win.showNowCheckin();
         };
         return Status;
     }());

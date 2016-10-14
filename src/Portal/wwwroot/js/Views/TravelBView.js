@@ -16,7 +16,8 @@ var Views;
         }
         TravelBView.prototype.init = function () {
             var _this = this;
-            this.checkinWin = new TravelB.CheckinWin();
+            this.checkinWin = new TravelB.CheckinWin(this);
+            this.checkinMenu = new TravelB.CheckinMenu(this);
             this.filter = new TravelB.Filter();
             this.filter.onFilterSelChanged = function () {
                 _this.displayData();
@@ -24,8 +25,8 @@ var Views;
             this.regEvents();
             this.createMainTab();
             this.createMap();
-            var status = new TravelB.Status();
-            status.refresh();
+            this.status = new TravelB.Status(this);
+            this.status.refresh();
             this.chat = new Views.Chat();
             this.chat.refreshAll();
             this.reacts = new Views.CheckinReacts();
@@ -54,10 +55,16 @@ var Views;
                 $("#theCont").html("");
             };
             this.tabs.addTab(this.nowTabConst, "I am here and now", function () {
+                _this.checkinMenu.setCheckinByTab(_this.nowTabConst);
                 _this.createNowCheckinsFnc();
+                $("#filterDateCont").hide();
+                $("#cityCheckins").hide();
             });
             this.tabs.addTab(this.cityTabConst, "I will be in a city", function () {
+                _this.checkinMenu.setCheckinByTab(_this.cityTabConst);
                 _this.createCityCheckinsFnc();
+                $("#filterDateCont").show();
+                $("#cityCheckins").show();
             });
             this.tabs.create("<div class=\"btn-cont\"></div>");
         };
@@ -76,15 +83,6 @@ var Views;
         };
         TravelBView.prototype.regEvents = function () {
             var _this = this;
-            $("#checkin").click(function (e) {
-                e.preventDefault();
-                if (_this.tabs.activeTabId === _this.nowTabConst) {
-                    _this.checkinWin.showNowCheckin();
-                }
-                else {
-                    _this.checkinWin.showCityCheckin(null);
-                }
-            });
             $("#fShowPeople").change(function (e) {
                 _this.displayNowCheckins();
             });
@@ -188,7 +186,7 @@ var Views;
         TravelBView.prototype.onMapCreated = function (mapObj) {
             var _this = this;
             this.mapObj = mapObj;
-            this.mapCheckins = new TravelB.MapCheckins(mapObj);
+            this.mapCheckins = new TravelB.MapCheckins(this, mapObj);
             TravelB.UserLocation.getLocation(function (res) {
                 TravelB.UserLocation.setCurrentLocation(res.lat, res.lng);
                 _this.setPlaceCenter(res.lat, res.lng);
@@ -241,24 +239,6 @@ var Views;
             var utc = Date.UTC(date.Year, date.Month, date.Day);
             var d = moment.utc(utc).format("L");
             return d;
-        };
-        StrOpers.langsToFlags = function (langs, homeCountry) {
-            var out = [];
-            langs.forEach(function (l) {
-                var lang = l.toLowerCase();
-                if (lang === "en") {
-                    if (homeCountry.toLowerCase() === "us") {
-                        out.push("us");
-                    }
-                    else {
-                        out.push("gb");
-                    }
-                }
-                else {
-                    out.push(lang);
-                }
-            });
-            return out;
         };
         StrOpers.getActivityStrArray = function (vals) {
             var outStrs = [];
