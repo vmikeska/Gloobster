@@ -601,8 +601,14 @@ footer {
 .icon-location:before {
   content: "\e947"; }
 
+.icon-clock:before {
+  content: "\e94e"; }
+
 .icon-bell:before {
   content: "\e951"; }
+
+.icon-calendar:before {
+  content: "\e953"; }
 
 .icon-bubbles2:before {
   content: "\e96d"; }
@@ -3054,25 +3060,40 @@ footer {
         .travelb-home .checkin-row a.active .lato {
           text-decoration: none !important; }
   .travelb-home .main-menu {
-    margin-top: 10px; }
-    .travelb-home .main-menu .tbl {
-      display: table;
-      width: 100%; }
-      .travelb-home .main-menu .tbl div {
-        display: table-cell;
-        text-align: center;
-        width: 50%;
+    margin-top: 10px;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between; }
+    .travelb-home .main-menu div {
+      text-align: center;
+      width: 48%;
+      font-size: 1.2em;
+      border: 2px solid #65BDD7;
+      color: #65BDD7;
+      padding-top: 15px;
+      padding-bottom: 15px;
+      cursor: pointer;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+      /*&:first-of-type{
+                border-top-left-radius: 4px;
+            }
+            &:last-of-type{
+                border-top-right-radius: 4px;
+            }*/ }
+      .travelb-home .main-menu div:hover {
         background-color: #65BDD7;
-        padding-top: 15px;
-        padding-bottom: 15px;
-        cursor: pointer;
-        color: white; }
-        .travelb-home .main-menu .tbl div:first-of-type {
-          border-top-left-radius: 4px; }
-        .travelb-home .main-menu .tbl div:last-of-type {
-          border-top-right-radius: 4px; }
+        color: white;
+        border-color: #65BDD7; }
     .travelb-home .main-menu .active {
-      background-color: #005476 !important; }
+      background-color: #65BDD7 !important;
+      color: white; }
+  .travelb-home .main-menu-cont {
+    margin-bottom: 12px; }
   .travelb-home .no-location-perm {
     background-color: #FFC400;
     font-size: 0.8em;

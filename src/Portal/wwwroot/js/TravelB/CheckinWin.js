@@ -14,6 +14,8 @@ var TravelB;
             if (callback === void 0) { callback = null; }
             this.editId = editId;
             var isEdit = (editId != null);
+            this.createWin(isEdit, CheckinType.City);
+            this.createWinCity();
             if (isEdit) {
                 var data = [["type", "id"], ["id", editId]];
                 Views.ViewBase.currentView.apiGet("CheckinCity", data, function (r) {
@@ -37,8 +39,6 @@ var TravelB;
             else {
                 this.createValidations(CheckinType.City);
             }
-            this.createWin(isEdit, CheckinType.City);
-            this.createWinCity();
             if (!isEdit) {
                 this.initDatePickers();
             }
@@ -103,13 +103,13 @@ var TravelB;
         CheckinWin.prototype.createWinNow = function () {
             var $d = $(this.dlgNow());
             this.$html.find("#dlgSpec").html($d);
-            this.placeCombo = this.initPlaceDD("1,4", this.$html.find("#waitingPlace"));
+            this.placeCombo = this.initPlaceDD("1,4", this.$html.find("#placeCombo"));
             Common.DropDown.registerDropDown(this.$html.find("#minsWaiting"));
         };
         CheckinWin.prototype.createWinCity = function () {
             var $d = $(this.dlgCity());
             this.$html.find("#dlgSpec").html($d);
-            this.placeCombo = this.initPlaceDD("2", this.$html.find("#waitingCity"));
+            this.placeCombo = this.initPlaceDD("2", this.$html.find("#placeCombo"));
         };
         CheckinWin.prototype.initDatePickers = function (fromDate, toDate) {
             if (fromDate === void 0) { fromDate = null; }
@@ -225,7 +225,7 @@ var TravelB;
             this.valids = new CheckinValidations();
             this.valids.valMessage($msg, $msg);
             this.valids.valWantDo(this.wantDos, this.$html.find("#wantDoCont .wantDosMain"));
-            this.valids.valPlace(this.placeCombo, this.$html.find("#waitingPlace input"));
+            this.valids.valPlace(this.placeCombo, this.$html.find("#placeCombo input"));
             if (type === CheckinType.City) {
                 this.valids.valCalendar($("#fromDate"), $("#toDate"), $("#fromDate"), $("#toDate"));
             }
@@ -272,7 +272,7 @@ var TravelB;
             };
         };
         CheckinValidations.prototype.valPlaceBody = function (box, $frame) {
-            var isSelected = box.sourceId != null;
+            var isSelected = box.sourceId != undefined;
             this.visual(isSelected, $frame);
             this.placeValid = isSelected;
         };

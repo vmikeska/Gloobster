@@ -54,8 +54,8 @@ var TravelB;
             this.isFirst = true;
             this.$cont = $cont;
         }
-        MenuTabs.prototype.addTab = function (id, text, callback) {
-            this.tabs.push({ id: id, text: text, callback: callback });
+        MenuTabs.prototype.addTab = function (config, callback) {
+            this.tabs.push({ id: config.id, text: config.text, customClass: config.customClass, callback: callback });
         };
         MenuTabs.prototype.create = function (btnTemplate) {
             var _this = this;
@@ -70,6 +70,7 @@ var TravelB;
         MenuTabs.prototype.genTab = function (t) {
             var _this = this;
             var $t = $(this.btnTemplate);
+            $t.addClass(t.customClass);
             $t.html(t.text);
             $t.attr("id", t.id);
             if (this.isFirst) {

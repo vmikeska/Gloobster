@@ -13,7 +13,7 @@
 
 		private hereAndNowTemplate = this.registerTemplate("hereAndNowTabCont-template");
 
-		public tabs;
+		public tabs: TravelB.MenuTabs;
 		private nowFncs: TravelB.NowTab;
 		private cityFncs: TravelB.CityTab;
 		private currentBounds;
@@ -89,22 +89,24 @@
 		}
 			
 		private createMainTab() {
-				this.tabs = new TravelB.MenuTabs($(".main-menu .tbl"));
+				this.tabs = new TravelB.MenuTabs($(".main-menu"));
 			
 			this.tabs.onBeforeSwitch = () => {
 				$("#theCont").html("");
 			}
 
-			this.tabs.addTab(this.nowTabConst, "I am here and now", () => {
+			this.tabs.addTab({ id: this.nowTabConst, text: " I am here and now", customClass: "icon-clock" }, () => {
 
-					this.checkinMenu.setCheckinByTab(this.nowTabConst);
-					
-					this.createNowCheckinsFnc();
-					$("#filterDateCont").hide();
-					$("#cityCheckins").hide();
-					
+				this.checkinMenu.setCheckinByTab(this.nowTabConst);
+
+				this.createNowCheckinsFnc();
+				$("#filterDateCont").hide();
+				$("#cityCheckins").hide();
+
 			});
-			this.tabs.addTab(this.cityTabConst, "I will be in a city", () => {
+		
+
+			this.tabs.addTab({ id: this.cityTabConst, text: " I will be in a city", customClass: "icon-calendar" }, () => {
 
 					this.checkinMenu.setCheckinByTab(this.cityTabConst);
 					

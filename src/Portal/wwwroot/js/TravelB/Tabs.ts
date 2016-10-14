@@ -16,7 +16,7 @@ module TravelB {
 				}
 
 				private tabs = [];
-
+				
 				public addTab(id, text, callback) {
 						this.tabs.push({ id: id, text: text, callback: callback });
 				}
@@ -85,9 +85,9 @@ module TravelB {
 
 		private btnTemplate;
 
-		public addTab(id, text, callback) {
-			this.tabs.push({ id: id, text: text, callback: callback });
-		}
+				public addTab(config, callback) {
+						this.tabs.push({ id: config.id, text: config.text, customClass: config.customClass, callback: callback });
+				}
 
 		public create(btnTemplate) {
 			this.btnTemplate = btnTemplate;
@@ -106,6 +106,7 @@ module TravelB {
 		private genTab(t) {
 				
 				var $t = $(this.btnTemplate);
+				$t.addClass(t.customClass);
 				$t.html(t.text);
 				$t.attr("id", t.id);
 				

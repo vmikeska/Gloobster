@@ -50,17 +50,17 @@ var Views;
         };
         TravelBView.prototype.createMainTab = function () {
             var _this = this;
-            this.tabs = new TravelB.MenuTabs($(".main-menu .tbl"));
+            this.tabs = new TravelB.MenuTabs($(".main-menu"));
             this.tabs.onBeforeSwitch = function () {
                 $("#theCont").html("");
             };
-            this.tabs.addTab(this.nowTabConst, "I am here and now", function () {
+            this.tabs.addTab({ id: this.nowTabConst, text: " I am here and now", customClass: "icon-clock" }, function () {
                 _this.checkinMenu.setCheckinByTab(_this.nowTabConst);
                 _this.createNowCheckinsFnc();
                 $("#filterDateCont").hide();
                 $("#cityCheckins").hide();
             });
-            this.tabs.addTab(this.cityTabConst, "I will be in a city", function () {
+            this.tabs.addTab({ id: this.cityTabConst, text: " I will be in a city", customClass: "icon-calendar" }, function () {
                 _this.checkinMenu.setCheckinByTab(_this.cityTabConst);
                 _this.createCityCheckinsFnc();
                 $("#filterDateCont").show();

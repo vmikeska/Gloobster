@@ -25,10 +25,14 @@
 				}
 
 				public showCityCheckin(editId, callback = null) {
-
+						
 						this.editId = editId;
 
 						var isEdit = (editId != null);
+
+						this.createWin(isEdit, CheckinType.City);
+						this.createWinCity();
+
 						if (isEdit) {
 							var data = [["type", "id"], ["id", editId]];
 
@@ -60,10 +64,7 @@
 						} else {
 								this.createValidations(CheckinType.City);
 						}
-
-						this.createWin(isEdit, CheckinType.City);
-						this.createWinCity();
-
+						
 					if (!isEdit) {
 						this.initDatePickers();
 					}
@@ -152,7 +153,7 @@
 						var $d = $(this.dlgNow());
 						this.$html.find("#dlgSpec").html($d);
 
-						this.placeCombo = this.initPlaceDD("1,4", this.$html.find("#waitingPlace"));
+						this.placeCombo = this.initPlaceDD("1,4", this.$html.find("#placeCombo"));
 
 						Common.DropDown.registerDropDown(this.$html.find("#minsWaiting"));
 				}
@@ -161,7 +162,7 @@
 						var $d = $(this.dlgCity());
 						this.$html.find("#dlgSpec").html($d);
 
-						this.placeCombo = this.initPlaceDD("2", this.$html.find("#waitingCity"));						
+						this.placeCombo = this.initPlaceDD("2", this.$html.find("#placeCombo"));						
 				}
 
 				private initDatePickers(fromDate = null, toDate = null) {
@@ -299,7 +300,7 @@
 
 						this.valids.valWantDo(this.wantDos, this.$html.find("#wantDoCont .wantDosMain"));
 
-						this.valids.valPlace(this.placeCombo, this.$html.find("#waitingPlace input"));
+						this.valids.valPlace(this.placeCombo, this.$html.find("#placeCombo input"));
 
 						if (type === CheckinType.City) {
 								this.valids.valCalendar($("#fromDate"), $("#toDate"), $("#fromDate"), $("#toDate"));
@@ -361,7 +362,7 @@
 		}
 
 		private valPlaceBody(box: Common.PlaceSearchBox, $frame) {
-				var isSelected = box.sourceId != null;
+				var isSelected = box.sourceId != undefined;
 
 				this.visual(isSelected, $frame);
 
