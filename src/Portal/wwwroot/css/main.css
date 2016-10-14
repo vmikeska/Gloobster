@@ -3016,15 +3016,19 @@ footer {
       top: 5px;
       color: lightgray; }
     .travelb-home .status-row .place .edit {
-      position: absolute;
-      right: 0;
+      /*position: absolute;
+                right: 0;*/
       font-size: 24px;
       color: #005476; }
+      .travelb-home .status-row .place .edit:hover {
+        color: #3298C1; }
     .travelb-home .status-row .place .delete {
-      position: absolute;
-      right: 28px;
+      /*position: absolute;
+                right: 28px;*/
       font-size: 24px;
       color: #005476; }
+      .travelb-home .status-row .place .delete:hover {
+        color: #3298C1; }
     .travelb-home .status-row .data .item {
       display: inline-block; }
       .travelb-home .status-row .data .item .name {

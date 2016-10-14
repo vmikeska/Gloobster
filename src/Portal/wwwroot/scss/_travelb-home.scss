@@ -278,19 +278,27 @@
 
         .place{
             .edit{
-                position: absolute;
-                right: 0;
+                /*position: absolute;
+                right: 0;*/
 
                 font-size: 24px;
                 color: $dark-blue;
+
+                &:hover{
+                    color: $light-blue3;
+                }
             }
 
             .delete{
-                position: absolute;
-                right: 28px;
+                /*position: absolute;
+                right: 28px;*/
 
                 font-size: 24px;
                 color: $dark-blue;
+
+                &:hover{
+                    color: $light-blue3;
+                }
             }
         }
 
