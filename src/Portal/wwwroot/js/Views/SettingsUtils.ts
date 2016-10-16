@@ -23,12 +23,12 @@ module Views {
 		}
 
 		public static registerEdit(id, prop, valsCallback, finishedCallback = null) {
-			var displayNameCall = new Common.DelayedCallback(id);
-			displayNameCall.callback = (value) => {
+			var dc = new Common.DelayedCallback(id);
+			dc.callback = (value) => {
 				var vals = valsCallback(value);
 				this.callServer(prop, vals, finishedCallback);
 			}
-			}
+		}
 
 		public static registerCombo(id, dataBuild) {
 				var $root = $(`#${id}`);

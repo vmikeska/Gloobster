@@ -51,8 +51,8 @@ module TravelB {
 		public langs;
 		public wds;
 
-		private nowTemp;
-		private cityTemp;
+		private nowTemp = Views.ViewBase.currentView.registerTemplate("filterNow-template");
+		private cityTemp = Views.ViewBase.currentView.registerTemplate("filterCity-template");
 
 		private wantDos;
 		
@@ -63,9 +63,6 @@ module TravelB {
 			this.initCheckboxes();
 
 			this.$filter = $(".filter");
-
-			this.nowTemp = Views.ViewBase.currentView.registerTemplate("filterNow-template");
-			this.cityTemp = Views.ViewBase.currentView.registerTemplate("filterCity-template");
 		}
 
 		private useFilter: CustomCheckbox;

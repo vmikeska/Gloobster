@@ -141,14 +141,17 @@
         .title-table{
             display: table;
             width: 100%;
-            padding: 10px;
+            padding-top: 10px;
+            padding-bottom: 10px;
             text-align: left;
 
             
             .left{
                 display: table-cell;
+                padding-left: 10px;
 
-                h1{
+                h1{  
+                    display: inline-block;                  
                     padding: 0;
                     margin: 0;
                     font-size: 1.4em;
@@ -158,6 +161,7 @@
             .right{
                 display: table-cell;
                 text-align: right;
+                padding-right: 10px;
             }
         }
     }

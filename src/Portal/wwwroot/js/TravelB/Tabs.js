@@ -70,8 +70,8 @@ var TravelB;
         MenuTabs.prototype.genTab = function (t) {
             var _this = this;
             var $t = $(this.btnTemplate);
-            $t.addClass(t.customClass);
             $t.html(t.text);
+            $t.prepend("<span class=\"" + t.customClass + "\"></span>");
             $t.attr("id", t.id);
             if (this.isFirst) {
                 $t.addClass(this.activeCls);

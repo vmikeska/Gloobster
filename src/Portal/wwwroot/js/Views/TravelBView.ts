@@ -39,9 +39,9 @@
 		public defaultLangs;
 			
 		public emptyProps = [];
-			
-		public init() {
 
+		public init() {
+				
 				this.checkinWin = new TravelB.CheckinWin(this);
 				this.checkinMenu = new TravelB.CheckinMenu(this);
 
@@ -85,7 +85,12 @@
 			this.notifs.startRefresh();
 
 			this.props = new TravelB.EmptyProps();
-			this.props.generateProps(this.emptyProps);				
+			this.props.generateProps(this.emptyProps);
+
+			$(".city-chck-cnt .city-link").click((e) => {
+					e.preventDefault();
+				 $("#cityTab").click();
+			});
 		}
 			
 		private createMainTab() {
@@ -96,27 +101,34 @@
 			}
 
 			this.tabs.addTab({ id: this.nowTabConst, text: " I am here and now", customClass: "icon-clock" }, () => {
-
-				this.checkinMenu.setCheckinByTab(this.nowTabConst);
-
-				this.createNowCheckinsFnc();
-				$("#filterDateCont").hide();
-				$("#cityCheckins").hide();
-
+				this.nowTabClicked();
 			});
 		
-
 			this.tabs.addTab({ id: this.cityTabConst, text: " I will be in a city", customClass: "icon-calendar" }, () => {
-
-					this.checkinMenu.setCheckinByTab(this.cityTabConst);
-					
-					this.createCityCheckinsFnc();				
-					$("#filterDateCont").show();
-					$("#cityCheckins").show();
-					
+				this.cityTabClicked();
 			});
+
 			this.tabs.create(`<div class="btn-cont"></div>`);
 		}
+
+			private nowTabClicked() {
+					this.checkinMenu.setCheckinByTab(this.nowTabConst);
+
+					this.createNowCheckinsFnc();
+					$("#filterDateCont").hide();
+					$("#cityCheckins").hide();					
+
+					this.cityCheckinsCnt();
+		}
+
+			private cityTabClicked() {
+					this.checkinMenu.setCheckinByTab(this.cityTabConst);
+
+					this.createCityCheckinsFnc();
+					$(".city-chck-cnt").hide();
+					$("#filterDateCont").show();
+					$("#cityCheckins").show();
+			}
 			
 		private createCityCheckinsFnc() {			
 			$(".meeting-points").hide();
@@ -170,6 +182,31 @@
 
 		}
 
+		private cityCheckinsCnt() {
+				var prms = this.getBoundsQuery();
+
+				if (prms === null) {
+						return;
+				}
+
+			var now = TravelB.DateUtils.jsDateToMyDate(new Date());
+			prms.push(["fromDate", TravelB.DateUtils.myDateToTrans(now)]);
+			prms.push(["toDate", TravelB.DateUtils.myDateToTrans(now)]);
+			prms.push(["type", "count"]);
+
+			ViewBase.currentView.apiGet("CheckinCity", prms, (cnt) => {
+
+				if (cnt > 0) {
+					$(".city-chck-cnt").show();
+				} else {
+						$(".city-chck-cnt").hide();
+				}
+
+				$("#cityCount").html(cnt);										
+			});
+
+		}
+
 		private displayCityCheckins() {
 			var prms = this.getBaseQuery();
 
@@ -180,29 +217,40 @@
 			prms.push(["fromDate", TravelB.DateUtils.myDateToTrans(this.filter.filterDateFrom)]);
 			prms.push(["toDate", TravelB.DateUtils.myDateToTrans(this.filter.filterDateTo)]);
 				
-			ViewBase.currentView.apiGet("CheckinCity", prms, (checkins) => {					
-					this.cityFncs.genCheckinsList(checkins);
+			ViewBase.currentView.apiGet("CheckinCity", prms, (cs) => {					
+					this.cityFncs.genCheckinsList(cs);
 
-					var fc = _.reject(checkins, (c) => { return c.userId === ViewBase.currentUserId });
+					var fc = _.reject(cs, (c) => { return c.userId === ViewBase.currentUserId });
 
 					this.mapCheckins.genCheckins(fc, CheckinType.City);
 			});
 		}
+
+		private getBoundsQuery() {
+
+				if (!this.currentBounds) {
+						return null;
+				}
+
+					var prms = [
+							["latSouth", this.currentBounds._southWest.lat],
+							["lngWest", this.currentBounds._southWest.lng],
+							["latNorth", this.currentBounds._northEast.lat],
+							["lngEast", this.currentBounds._northEast.lng]							
+					];
+				return prms;
+			}
 
 		private getBaseQuery() {
 			if (!this.currentBounds) {
 				return null;
 			}
 
-			var prms = [
-				["latSouth", this.currentBounds._southWest.lat],
-				["lngWest", this.currentBounds._southWest.lng],
-				["latNorth", this.currentBounds._northEast.lat],
-				["lngEast", this.currentBounds._northEast.lng],
-				["type", "query"],
-				["filter", this.filter.selectedFilter]
-			];
-
+			var prms = this.getBoundsQuery();
+				
+			prms.push(["type", "query"]);
+			prms.push(["filter", this.filter.selectedFilter]);
+			
 			this.filter.langs.forEach((l) => {
 				prms.push(["lang", l]);
 			});
@@ -236,7 +284,8 @@
 		private displayData() {
 			if (this.tabs.activeTabId === this.nowTabConst) {
 					this.displayNowCheckins();
-					this.displayMeetingPoints();					
+					this.displayMeetingPoints();
+					this.cityCheckinsCnt();					
 			}
 
 			if (this.tabs.activeTabId === this.cityTabConst) {
@@ -255,7 +304,9 @@
 				var combo = new Common.PlaceSearchBox(c);
 				return combo;
 		}
-			
+
+		private mapCenter;
+
 		private createMap() {
 
 			this.travelMap = new TravelB.TravelBMap();
@@ -263,11 +314,16 @@
 			this.travelMap.onMapCreated = (mapObj) => this.onMapCreated(mapObj);
 
 			this.travelMap.onCenterChanged = (c) => {
-				var bounds = this.travelMap.mapObj.getBounds();
-				this.onMapCenterChanged(c, bounds);
+					this.mapCenter = c;
+					this.refreshMap();
 			}
 
 			this.travelMap.create("map");
+		}
+
+		public refreshMap() {
+				var bounds = this.travelMap.mapObj.getBounds();
+				this.onMapCenterChanged(this.mapCenter, bounds);
 		}
 
 		private onMapCreated(mapObj) {
@@ -335,7 +391,7 @@
 	export class StrOpers {
 
 			public static formatDate(date) {
-					var utc = Date.UTC(date.Year, date.Month, date.Day);
+					var utc = Date.UTC(date.Year, date.Month - 1, date.Day);
 					var d = moment.utc(utc).format("L");
 				return d;
 			}

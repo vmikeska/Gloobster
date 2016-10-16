@@ -104,11 +104,13 @@ module TravelB {
 		private isFirst = true;
 
 		private genTab(t) {
+
+			var $t = $(this.btnTemplate);			
+			$t.html(t.text);
+			
+			$t.prepend(`<span class="${t.customClass}"></span>`);
 				
-				var $t = $(this.btnTemplate);
-				$t.addClass(t.customClass);
-				$t.html(t.text);
-				$t.attr("id", t.id);
+			$t.attr("id", t.id);
 				
 			if (this.isFirst) {
 					$t.addClass(this.activeCls);
@@ -136,6 +138,11 @@ module TravelB {
 
 			return $t;
 		}
+
+			private tc($t) {
+					
+					
+			}
 
 
 	}

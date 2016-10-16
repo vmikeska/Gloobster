@@ -47,6 +47,10 @@ var Views;
             this.notifs.startRefresh();
             this.props = new TravelB.EmptyProps();
             this.props.generateProps(this.emptyProps);
+            $(".city-chck-cnt .city-link").click(function (e) {
+                e.preventDefault();
+                $("#cityTab").click();
+            });
         };
         TravelBView.prototype.createMainTab = function () {
             var _this = this;
@@ -55,18 +59,26 @@ var Views;
                 $("#theCont").html("");
             };
             this.tabs.addTab({ id: this.nowTabConst, text: " I am here and now", customClass: "icon-clock" }, function () {
-                _this.checkinMenu.setCheckinByTab(_this.nowTabConst);
-                _this.createNowCheckinsFnc();
-                $("#filterDateCont").hide();
-                $("#cityCheckins").hide();
+                _this.nowTabClicked();
             });
             this.tabs.addTab({ id: this.cityTabConst, text: " I will be in a city", customClass: "icon-calendar" }, function () {
-                _this.checkinMenu.setCheckinByTab(_this.cityTabConst);
-                _this.createCityCheckinsFnc();
-                $("#filterDateCont").show();
-                $("#cityCheckins").show();
+                _this.cityTabClicked();
             });
             this.tabs.create("<div class=\"btn-cont\"></div>");
+        };
+        TravelBView.prototype.nowTabClicked = function () {
+            this.checkinMenu.setCheckinByTab(this.nowTabConst);
+            this.createNowCheckinsFnc();
+            $("#filterDateCont").hide();
+            $("#cityCheckins").hide();
+            this.cityCheckinsCnt();
+        };
+        TravelBView.prototype.cityTabClicked = function () {
+            this.checkinMenu.setCheckinByTab(this.cityTabConst);
+            this.createCityCheckinsFnc();
+            $(".city-chck-cnt").hide();
+            $("#filterDateCont").show();
+            $("#cityCheckins").show();
         };
         TravelBView.prototype.createCityCheckinsFnc = function () {
             $(".meeting-points").hide();
@@ -107,6 +119,25 @@ var Views;
                 this.mapCheckins.clearCheckins();
             }
         };
+        TravelBView.prototype.cityCheckinsCnt = function () {
+            var prms = this.getBoundsQuery();
+            if (prms === null) {
+                return;
+            }
+            var now = TravelB.DateUtils.jsDateToMyDate(new Date());
+            prms.push(["fromDate", TravelB.DateUtils.myDateToTrans(now)]);
+            prms.push(["toDate", TravelB.DateUtils.myDateToTrans(now)]);
+            prms.push(["type", "count"]);
+            Views.ViewBase.currentView.apiGet("CheckinCity", prms, function (cnt) {
+                if (cnt > 0) {
+                    $(".city-chck-cnt").show();
+                }
+                else {
+                    $(".city-chck-cnt").hide();
+                }
+                $("#cityCount").html(cnt);
+            });
+        };
         TravelBView.prototype.displayCityCheckins = function () {
             var _this = this;
             var prms = this.getBaseQuery();
@@ -115,13 +146,13 @@ var Views;
             }
             prms.push(["fromDate", TravelB.DateUtils.myDateToTrans(this.filter.filterDateFrom)]);
             prms.push(["toDate", TravelB.DateUtils.myDateToTrans(this.filter.filterDateTo)]);
-            Views.ViewBase.currentView.apiGet("CheckinCity", prms, function (checkins) {
-                _this.cityFncs.genCheckinsList(checkins);
-                var fc = _.reject(checkins, function (c) { return c.userId === Views.ViewBase.currentUserId; });
+            Views.ViewBase.currentView.apiGet("CheckinCity", prms, function (cs) {
+                _this.cityFncs.genCheckinsList(cs);
+                var fc = _.reject(cs, function (c) { return c.userId === Views.ViewBase.currentUserId; });
                 _this.mapCheckins.genCheckins(fc, CheckinType.City);
             });
         };
-        TravelBView.prototype.getBaseQuery = function () {
+        TravelBView.prototype.getBoundsQuery = function () {
             if (!this.currentBounds) {
                 return null;
             }
@@ -129,10 +160,17 @@ var Views;
                 ["latSouth", this.currentBounds._southWest.lat],
                 ["lngWest", this.currentBounds._southWest.lng],
                 ["latNorth", this.currentBounds._northEast.lat],
-                ["lngEast", this.currentBounds._northEast.lng],
-                ["type", "query"],
-                ["filter", this.filter.selectedFilter]
+                ["lngEast", this.currentBounds._northEast.lng]
             ];
+            return prms;
+        };
+        TravelBView.prototype.getBaseQuery = function () {
+            if (!this.currentBounds) {
+                return null;
+            }
+            var prms = this.getBoundsQuery();
+            prms.push(["type", "query"]);
+            prms.push(["filter", this.filter.selectedFilter]);
             this.filter.langs.forEach(function (l) {
                 prms.push(["lang", l]);
             });
@@ -159,6 +197,7 @@ var Views;
             if (this.tabs.activeTabId === this.nowTabConst) {
                 this.displayNowCheckins();
                 this.displayMeetingPoints();
+                this.cityCheckinsCnt();
             }
             if (this.tabs.activeTabId === this.cityTabConst) {
                 this.displayCityCheckins();
@@ -178,10 +217,14 @@ var Views;
             this.travelMap = new TravelB.TravelBMap();
             this.travelMap.onMapCreated = function (mapObj) { return _this.onMapCreated(mapObj); };
             this.travelMap.onCenterChanged = function (c) {
-                var bounds = _this.travelMap.mapObj.getBounds();
-                _this.onMapCenterChanged(c, bounds);
+                _this.mapCenter = c;
+                _this.refreshMap();
             };
             this.travelMap.create("map");
+        };
+        TravelBView.prototype.refreshMap = function () {
+            var bounds = this.travelMap.mapObj.getBounds();
+            this.onMapCenterChanged(this.mapCenter, bounds);
         };
         TravelBView.prototype.onMapCreated = function (mapObj) {
             var _this = this;
@@ -236,7 +279,7 @@ var Views;
         function StrOpers() {
         }
         StrOpers.formatDate = function (date) {
-            var utc = Date.UTC(date.Year, date.Month, date.Day);
+            var utc = Date.UTC(date.Year, date.Month - 1, date.Day);
             var d = moment.utc(utc).format("L");
             return d;
         };

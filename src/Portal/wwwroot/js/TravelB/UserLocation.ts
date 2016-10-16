@@ -1,7 +1,7 @@
 module TravelB {
 	export class UserLocation {
 
-		public static currentLocation;
+		public static currentLocation = null;
 
 		public static setCurrentLocation(lat, lng) {
 			this.currentLocation = { lat: lat, lng: lng };

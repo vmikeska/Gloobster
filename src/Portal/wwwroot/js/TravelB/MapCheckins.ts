@@ -35,38 +35,61 @@ module TravelB {
 			}
 		}
 
-		public genCheckins(checkins, type: CheckinType) {	
+			private groupByPlace(cs) {
+					var csgs = _.groupBy(cs, (c) => { return c.waitingAtId });
+
+					var o = [];
+
+					for (var key in csgs) {
+							if (csgs.hasOwnProperty(key)) {
+									o.push(csgs[key]);
+							}
+					}
+
+					return o;
+			}
+
+			private addPixelsToCoord(lat, lng, xPixelsOffset, yPixelsOffset, map) {
+					var latLng = L.latLng([lat, lng]);
+
+					var point = map.latLngToContainerPoint(latLng);
+
+					var newPoint = L.point([point.x + xPixelsOffset, point.y + yPixelsOffset]);
+
+					var newLatLng = map.containerPointToLatLng(newPoint);
+					return newLatLng;
+			}
+
+		public genCheckins(cs, type: CheckinType) {	
 			this.clearCheckins();
 			this.checkinsLayer = new L.LayerGroup();
+
+			var csgs = this.groupByPlace(cs);
 				
-			checkins.forEach((c) => {
-				var coord = c.waitingCoord;
-				var isYou = c.userId === Views.ViewBase.currentUserId;
-				if (isYou) {
-						var mc = MapPins.getYourCheckinCont(c);
-						var m = L.marker([coord.Lat, coord.Lng], { icon: mc, title: "Your checkin" });
-							m.on("click", (e) => {									
-									this.view.checkinWin.showNowCheckin();
+			csgs.forEach((csg) => {
+					
+				csg.forEach((c, i) => {
+						var coord = c.waitingCoord;
+						
+						var markerCont = MapPins.getCheckinCont(c);
+						
+						var newCoord = this.addPixelsToCoord(coord.Lat, coord.Lng, i * 30, 0, this.mapObj);
+
+						var marker = L.marker(newCoord, { icon: markerCont });
+						marker.on("click", (e) => {
+
+								if (type === CheckinType.Now) {
+										this.displayPopupNow(e.latlng, c.userId);
+								}
+
+								if (type === CheckinType.City) {
+										this.displayPopupCity(e.latlng, c.id);
+								}
+
 						});
-						this.checkinsLayer.addLayer(m);
-
-				} else {
-					var markerCont = MapPins.getCheckinCont(c);
-
-					var marker = L.marker([coord.Lat, coord.Lng], { icon: markerCont });
-					marker.on("click", (e) => {
-
-						if (type === CheckinType.Now) {
-							this.displayPopupNow(e.latlng, c.userId);
-						}
-
-						if (type === CheckinType.City) {
-							this.displayPopupCity(e.latlng, c.id);
-						}
-
-					});
-					this.checkinsLayer.addLayer(marker);
-				}
+						this.checkinsLayer.addLayer(marker);
+				});
+					
 			});
 
 			this.mapObj.addLayer(this.checkinsLayer);
@@ -137,7 +160,7 @@ module TravelB {
 			Views.ViewBase.currentView.apiGet("CheckinNow", [["type", "id"], ["id", userId]], (c) => {
 
 				var context = CheckinMapping.map(c, CheckinType.Now);
-					
+				
 				var ppCont = this.popupTemplateNow(context);
 
 				var popup = new L.Popup();
@@ -195,19 +218,6 @@ module TravelB {
 				});
 
 				return cont;				
-		}
-
-		public static getYourCheckinCont(checkin) {
-				var html =
-						`<span>C</span>`;
-				var cont = L.divIcon({
-						className: "checkin-you-icon",
-						html: html,
-						iconSize: [40, 40],
-						iconAnchor: [20, 0]
-				});
-
-				return cont;
 		}
 			
 	}

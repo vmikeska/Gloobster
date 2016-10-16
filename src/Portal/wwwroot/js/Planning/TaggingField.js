@@ -87,7 +87,7 @@ var Planning;
             var inputVal = $input.val().toLowerCase();
             this.getItemsRange(inputVal, function (items) {
                 items.forEach(function (item) {
-                    var strMatch = (inputVal === "") || (item.text.toLowerCase().indexOf(inputVal) > -1);
+                    var strMatch = (inputVal === "") || (item.text.toLowerCase().startsWith(inputVal));
                     var alreadySelected = _.find(_this.selectedItems, function (i) {
                         return (i.value === item.value) && (i.kind === item.kind);
                     });

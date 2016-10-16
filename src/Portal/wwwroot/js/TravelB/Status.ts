@@ -42,12 +42,13 @@ module TravelB {
 				var $html = $(this.template(context));
 				$html.find(".edit").click((e) => {
 						e.preventDefault();
-					 this.view.checkinMenu.activateTab("check");
+						this.view.checkinMenu.activateTab("check");						
 				});
 				$html.find(".delete").click((e) => {
 						e.preventDefault();
 					Views.ViewBase.currentView.apiDelete("CheckinNow", [], () => {
 							this.visibilityStatusIsSet(false);
+							this.view.refreshMap();
 					});
 				});
 

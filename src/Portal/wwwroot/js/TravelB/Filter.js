@@ -34,10 +34,10 @@ var TravelB;
     var Filter = (function () {
         function Filter() {
             this.selectedFilter = "gender";
-            this.initCheckboxes();
-            this.$filter = $(".filter");
             this.nowTemp = Views.ViewBase.currentView.registerTemplate("filterNow-template");
             this.cityTemp = Views.ViewBase.currentView.registerTemplate("filterCity-template");
+            this.initCheckboxes();
+            this.$filter = $(".filter");
         }
         Filter.prototype.initCheckboxes = function () {
             var _this = this;

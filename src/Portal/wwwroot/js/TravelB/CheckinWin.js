@@ -166,12 +166,14 @@ var TravelB;
                 Views.ViewBase.currentView.apiPut("CheckinNow", data, function (r) {
                     _this.view.checkinMenu.hideWin();
                     _this.view.status.refresh();
+                    _this.view.refreshMap();
                 });
             }
             else {
                 Views.ViewBase.currentView.apiPost("CheckinNow", data, function (r) {
                     _this.refreshStat();
                     _this.view.checkinMenu.hideWin();
+                    _this.view.refreshMap();
                 });
             }
         };

@@ -89,7 +89,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 
                 //since here full filter
 
-                if (req.lang.Any())
+                if (req.lang != null && req.lang.Any())
                 {
                     responses = responses.Where(r => r.languages.Intersect(req.lang).Any()).ToList();
                 }

@@ -9,7 +9,8 @@ var Maps;
                 },
                 maxBounds: null,
                 maxZoom: 19,
-                minZoom: 2
+                minZoom: 2,
+                zoomControl: false
             };
         }
         MapsCreatorMapBox2D.prototype.setRootElement = function (rootElement) {

@@ -227,11 +227,13 @@
 								Views.ViewBase.currentView.apiPut("CheckinNow", data, (r) => {
 										this.view.checkinMenu.hideWin();
 										this.view.status.refresh();
+										this.view.refreshMap();
 								});
 						} else {
 								Views.ViewBase.currentView.apiPost("CheckinNow", data, (r) => {
 										this.refreshStat();
 										this.view.checkinMenu.hideWin();
+										this.view.refreshMap();
 								});
 						}						
 				}
@@ -258,11 +260,11 @@
 
 						if (isEdit) {
 								Views.ViewBase.currentView.apiPut("CheckinCity", data, (r) => {
-										this.view.checkinMenu.hideWin();										
+										this.view.checkinMenu.hideWin();													
 								});
 						} else {
 								Views.ViewBase.currentView.apiPost("CheckinCity", data, (r) => {
-										this.view.checkinMenu.hideWin();										
+										this.view.checkinMenu.hideWin();																				
 								});	
 						}
 

@@ -18,27 +18,9 @@ module TravelB {
 						Views.ViewBase.currentView.apiGet("CheckinCity", [["type", "my"]], (cs) => {
 
 							cs.forEach((c) => {
-
-									var context = {
-										id: c.id,
-										cityName: c.waitingAtText,
-										fromDate: moment.utc(c.fromDate).format("L"),
-										toDate: moment.utc(c.toDate).format("L"), 
-
-										fromAge: c.fromAge,
-										toAge: c.toAge,
-
-										wmMan: ((c.wantMeet === WantMeet.Man) || (c.wantMeet === WantMeet.All)),
-										wmWoman: ((c.wantMeet === WantMeet.Woman) || (c.wantMeet === WantMeet.All)),
-										wmWomanGroup: ((c.wantMeet === WantMeet.Woman) && c.multiPeopleAllowed),
-										wmManGroup: ((c.wantMeet === WantMeet.Man) && c.multiPeopleAllowed),
-										wmMixGroup: ((c.wantMeet === WantMeet.All) && c.multiPeopleAllowed),
-
-										wantDos: Views.StrOpers.getActivityStrArray(c.wantDo),
-
-										message: c.message
-								};
-
+									
+									var context = CheckinMapping.map(c, CheckinType.City);
+							
 									var $item = $(this.itemTmp(context));
 
 								$item.find(".edit").click((e) => {

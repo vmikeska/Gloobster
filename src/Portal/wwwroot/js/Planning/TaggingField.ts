@@ -118,7 +118,7 @@ module Planning {
 			this.getItemsRange(inputVal, (items) => {
 				items.forEach((item) => {
 
-					var strMatch = (inputVal === "") || (item.text.toLowerCase().indexOf(inputVal) > -1);
+					var strMatch = (inputVal === "") || (item.text.toLowerCase().startsWith(inputVal));
 					var alreadySelected = _.find(this.selectedItems, (i) => {
 						return (i.value === item.value) && (i.kind === item.kind);							
 					});

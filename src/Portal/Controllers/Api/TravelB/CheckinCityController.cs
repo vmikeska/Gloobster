@@ -42,6 +42,13 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         {
             await TbDomain.HistorizeCheckins();
 
+            if (req.type == "count")
+            {
+                List<CheckinResponse> responses = GetCheckinsInRect(req);                
+                responses = FilterDate(responses, req);
+                return new ObjectResult(responses.Count);
+            }
+
             if (req.type == "id")
             {
                 var checkinIdObj = new ObjectId(req.id);
@@ -90,7 +97,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
                 //since here full filter
 
-                if (req.lang.Any())
+                if (req.lang != null && req.lang.Any())
                 {
                     responses = responses.Where(r => r.languages.Intersect(req.lang).Any()).ToList();
                 }
@@ -113,6 +120,12 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             var fromDate = req.fromDate.ToDate('_');
             var toDate = req.toDate.ToDate('_');
 
+            responses = FilterDate(responses, fromDate, toDate);
+            return responses;
+        }
+
+        private List<CheckinResponse> FilterDate(List<CheckinResponse> responses, Date fromDate, Date toDate)
+        {            
             responses =
                 responses.Where(r =>
                 {
@@ -129,7 +142,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
             return responses;
         }
-        
+
 
         [HttpPut]
         [AuthorizeApi]

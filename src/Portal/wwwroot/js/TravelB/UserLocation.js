@@ -44,6 +44,7 @@ var TravelB;
                 });
             }
         };
+        UserLocation.currentLocation = null;
         return UserLocation;
     }());
     TravelB.UserLocation = UserLocation;

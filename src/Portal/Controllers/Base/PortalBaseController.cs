@@ -169,7 +169,7 @@ namespace Gloobster.Portal.Controllers.Base
             if (IsUserLogged)
             {
                 int unreadCnt = 0;
-                var msgs = DB.List<MessageEntity>(e => e.UserIds.Contains(User.User_id));
+                var msgs = DB.List<MessageEntity>(e => e.UserIds.Contains(UserIdObj.Value));
                 foreach (var msg in msgs)
                 {
                     var unread = msg.Messages.Where(m => !m.Read && (m.User_id != UserIdObj.Value)).ToList();

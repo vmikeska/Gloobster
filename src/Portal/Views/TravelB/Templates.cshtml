@@ -7,7 +7,7 @@
     <div class="checkin-mgmt-item" data-id="{{id}}">
         
         <div class="title">
-            {{cityName}} 
+            {{waitingAtText}} 
             <a href="#" class="icon-bin delete"></a>
             <a href="#" class="icon-edit-pencil edit"></a>
         </div>
@@ -34,9 +34,9 @@
         <span class="icon-location"></span>
 
         <div class="place">
-            <a href="{{placeLink}}">{{placeName}}</a>
             <a href="#" class="icon-edit-pencil edit"></a>
             <a href="#" class="icon-bin delete"></a>
+            <a href="{{placeLink}}">{{placeName}}</a>            
         </div>
         <div class="data">
             <div class="item">                
@@ -213,7 +213,11 @@
             <div class="people-met">{{peopleMet}} people have already met here</div>
         </div>
         <div class="btn-cont">
-            <a class="btn-check" href="#"><span class="icon-location"></span><br /><span class="txt">Check-in</span></a>
+            {{#if distance}}
+            <span class="icon-location"></span><span class="distance-n">{{distance}}</span> km
+            
+            {{/if}}
+            @*<a class="btn-check" href="#"><span class="icon-location"></span><br /><span class="txt">Check-in</span></a>*@
         </div>
     </div>
 
@@ -246,7 +250,10 @@
                     {{/each}}                     
                 </div>
                 <div class="second">
+                    <a target="_blank" href="{{waitingLink}}">{{waitingAtText}}</a>
+
                     @Html.Partial("WantMeet")
+                    <span class="years">({{fromAge}} - {{toAge}} years)</span>
                     
                     {{#each wantDos}}
                     <span class="itag">{{this}}</span>                    
@@ -301,9 +308,11 @@
                     {{/each}}
                 </div>
                 <div class="second">
+                    <strong>{{waitingAtText}}, </strong>
                     <span>{{fromDate}} - {{toDate}}</span>
                     
                     @Html.Partial("WantMeet")
+                    <span class="years">({{fromAge}} - {{toAge}} years)</span>
                     
                     {{#each wantDos}}
                     <span class="itag">{{this}}</span>
@@ -411,8 +420,11 @@
             </div>
         </div>
         <div class="checkin">
-            <div class="line">             
-                @Html.Partial("WantMeet")   
+            <div class="line">  
+                <a target="_blank" href="{{waitingLink}}">{{waitingAtText}}</a>
+                           
+                @Html.Partial("WantMeet")
+                <span class="years">({{fromAge}} - {{toAge}} years)</span>   
                 
                 {{#each wantDos}}
                 <span class="itag">{{this}}</span>
@@ -429,12 +441,14 @@
             {{message}}
         </div>        
         
+        {{#unless isYou}}
         <div class="bottom-cont">
             <a class="chat-btn chat-btn-popup" href="#">
                 <span class="icon-bubbles2"></span>
                 <span class="txt">Ask for chat</span>
             </a>
         </div>
+        {{/unless}}
     </div>
 
 </script>
@@ -494,6 +508,7 @@
         <div class="checkin">
             <div class="line">
                 @Html.Partial("WantMeet")
+                <span class="years">({{fromAge}} - {{toAge}} years)</span>
                
                 {{#each wantDos}}
                 <span class="itag">{{this}}</span>

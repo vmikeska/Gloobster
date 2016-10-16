@@ -20,24 +20,34 @@ var TravelB;
                 this.clusterLayerMPs = null;
             }
         };
-        MapCheckins.prototype.genCheckins = function (checkins, type) {
+        MapCheckins.prototype.groupByPlace = function (cs) {
+            var csgs = _.groupBy(cs, function (c) { return c.waitingAtId; });
+            var o = [];
+            for (var key in csgs) {
+                if (csgs.hasOwnProperty(key)) {
+                    o.push(csgs[key]);
+                }
+            }
+            return o;
+        };
+        MapCheckins.prototype.addPixelsToCoord = function (lat, lng, xPixelsOffset, yPixelsOffset, map) {
+            var latLng = L.latLng([lat, lng]);
+            var point = map.latLngToContainerPoint(latLng);
+            var newPoint = L.point([point.x + xPixelsOffset, point.y + yPixelsOffset]);
+            var newLatLng = map.containerPointToLatLng(newPoint);
+            return newLatLng;
+        };
+        MapCheckins.prototype.genCheckins = function (cs, type) {
             var _this = this;
             this.clearCheckins();
             this.checkinsLayer = new L.LayerGroup();
-            checkins.forEach(function (c) {
-                var coord = c.waitingCoord;
-                var isYou = c.userId === Views.ViewBase.currentUserId;
-                if (isYou) {
-                    var mc = MapPins.getYourCheckinCont(c);
-                    var m = L.marker([coord.Lat, coord.Lng], { icon: mc, title: "Your checkin" });
-                    m.on("click", function (e) {
-                        _this.view.checkinWin.showNowCheckin();
-                    });
-                    _this.checkinsLayer.addLayer(m);
-                }
-                else {
+            var csgs = this.groupByPlace(cs);
+            csgs.forEach(function (csg) {
+                csg.forEach(function (c, i) {
+                    var coord = c.waitingCoord;
                     var markerCont = MapPins.getCheckinCont(c);
-                    var marker = L.marker([coord.Lat, coord.Lng], { icon: markerCont });
+                    var newCoord = _this.addPixelsToCoord(coord.Lat, coord.Lng, i * 30, 0, _this.mapObj);
+                    var marker = L.marker(newCoord, { icon: markerCont });
                     marker.on("click", function (e) {
                         if (type === CheckinType.Now) {
                             _this.displayPopupNow(e.latlng, c.userId);
@@ -47,7 +57,7 @@ var TravelB;
                         }
                     });
                     _this.checkinsLayer.addLayer(marker);
-                }
+                });
             });
             this.mapObj.addLayer(this.checkinsLayer);
         };
@@ -132,16 +142,6 @@ var TravelB;
             var html = "<div class=\"cont\">\n\t\t\t\t\t\t\t\t<img src=\"" + mp.photoUrl + "\">\n\t\t\t\t\t\t</div>";
             var cont = L.divIcon({
                 className: "mp-icon",
-                html: html,
-                iconSize: [40, 40],
-                iconAnchor: [20, 0]
-            });
-            return cont;
-        };
-        MapPins.getYourCheckinCont = function (checkin) {
-            var html = "<span>C</span>";
-            var cont = L.divIcon({
-                className: "checkin-you-icon",
                 html: html,
                 iconSize: [40, 40],
                 iconAnchor: [20, 0]

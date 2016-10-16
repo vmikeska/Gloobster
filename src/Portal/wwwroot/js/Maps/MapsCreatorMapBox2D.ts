@@ -15,7 +15,8 @@ module Maps {
 			},
 			maxBounds: null,
 			maxZoom: 19,
-			minZoom: 2
+			minZoom: 2,
+			zoomControl: false
 		};
 		
 

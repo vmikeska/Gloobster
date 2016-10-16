@@ -26,8 +26,13 @@ var TravelB;
                     link: Common.GlobalUtils.getSocLink(p.type, p.sourceId),
                     photoUrl: p.photoUrl,
                     categories: p.categories,
-                    peopleMet: p.peopleMet
+                    peopleMet: p.peopleMet,
+                    distance: null
                 };
+                var l = TravelB.UserLocation.currentLocation;
+                if (l != null) {
+                    context.distance = Common.GlobalUtils.getDistance(l.lat, l.lng, p.coord.Lat, p.coord.Lng).toFixed(1);
+                }
                 var $u = $(_this.mpTemplate(context));
                 $u.find(".btn-check").click(function (e) {
                     e.preventDefault();
@@ -82,6 +87,8 @@ var TravelB;
                 name: c.displayName,
                 age: curYear - c.birthYear,
                 languages: c.languages,
+                fromAge: c.fromAge,
+                toAge: c.toAge,
                 homeCountry: c.homeCountry,
                 livesCountry: c.livesCountry,
                 livesOtherCountry: c.homeCountry !== c.livesCountry,
@@ -91,7 +98,13 @@ var TravelB;
                 wmManGroup: ((c.wantMeet === TravelB.WantMeet.Man) && c.multiPeopleAllowed),
                 wmMixGroup: ((c.wantMeet === TravelB.WantMeet.All) && c.multiPeopleAllowed),
                 wantDos: Views.StrOpers.getActivityStrArray(c.wantDo),
-                message: c.message
+                message: c.message,
+                isYou: (c.userId === Views.ViewBase.currentUserId),
+                waitingAtId: c.waitingAtId,
+                waitingAtType: c.waitingAtType,
+                waitingAtText: c.waitingAtText,
+                waitingCoord: c.waitingCoord,
+                waitingLink: Common.GlobalUtils.getSocLink(c.waitingAtType, c.waitingAtId)
             };
             if (type === CheckinType.Now) {
                 context = $.extend(context, {

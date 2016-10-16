@@ -40,6 +40,7 @@ var TravelB;
                     e.preventDefault();
                     Views.ViewBase.currentView.apiDelete("CheckinNow", [], function () {
                         _this.visibilityStatusIsSet(false);
+                        _this.view.refreshMap();
                     });
                 });
                 $checkinRow.after($html);
