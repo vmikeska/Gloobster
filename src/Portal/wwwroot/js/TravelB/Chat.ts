@@ -368,11 +368,11 @@
 
 		private targetActions($cont) {				
 				$cont.append(this.actMenuItem("We've already met", "met"));
-				$cont.append(this.actMenuItem("We didn't meet", "didNotMeet"));
+				$cont.append(this.actMenuItem("We didn't meet", "didNotMeet"));			
 		}
 
 		private requestorActions($cont) {				
-				$cont.append(this.actMenuItem("We didn't meet", "didNotMeet"));
+				$cont.append(this.actMenuItem("We didn't meet", "didNotMeet"));				
 		}
 
 		private createStopScreen(reactId) {
@@ -380,32 +380,37 @@
 
 			var $c = $(this.stopWinTmp());
 
-			$cont.html($c);
+			$cont.append($c);
+				
+			var blockPerson = $c.find("#cbBlockPerson").prop("checked");
+			var reportPerson = $c.find("#cbReportPerson").prop("checked");
 
-			$cont.find(".notInt").click((e) => {
-				e.preventDefault();
+			$c.find(".exec").click((e) => {
+					e.preventDefault();
 
-				this.dlg.create("Stop conversation", "Do you really want to stop the conversation ?", "Cancel", "Stop", () => {
-					this.changeRectState(reactId, CheckinReactionState.Refused);
-				});
+					if (blockPerson) {
+							this.dlg.create("User blocking and reporting", "Do you really want to report this user ?", "Cancel", "Report", () => {
+									this.changeRectState(reactId, CheckinReactionState.Blocked);
+							});	
+					}
+					else if (reportPerson) {
+							this.dlg.create("User blocking", "Do you really want to block this user ?", "Cancel", "Block", () => {
+									this.changeRectState(reactId, CheckinReactionState.Blocked);
+							});
+					}
+					else {
+							this.dlg.create("Stop conversation", "Do you really want to stop the conversation ?", "Cancel", "Stop", () => {
+									this.changeRectState(reactId, CheckinReactionState.Refused);
+							});		
+					}
 			});
 
-			$cont.find(".block").click((e) => {
-				e.preventDefault();
+			$c.find(".cancel").click((e) => {
+					e.preventDefault();
 
-				this.dlg.create("User blocking", "Do you really want to block this user ?", "Cancel", "Block", () => {
-					this.changeRectState(reactId, CheckinReactionState.Blocked);
-				});
-
+				$c.remove();
 			});
-
-			$cont.find(".blockReport").click((e) => {
-				e.preventDefault();
-
-				this.dlg.create("User blocking and reporting", "Do you really want to report this user ?", "Cancel", "Report", () => {
-					this.changeRectState(reactId, CheckinReactionState.Blocked);
-				});
-			});
+				
 		}
 
 		private changeRectState(reactId, state: CheckinReactionState, extraVals = null) {
@@ -429,11 +434,7 @@
 					}
 			});
 		}
-
-		
-
-		
-
+			
 		private exeAct(reactId, act) {
 			if (act === "stop") {
 				this.createStopScreen(reactId);
@@ -450,6 +451,7 @@
 					this.changeRectState(reactId, CheckinReactionState.NotMet);
 				});
 			}
+
 		}
 	}
 }

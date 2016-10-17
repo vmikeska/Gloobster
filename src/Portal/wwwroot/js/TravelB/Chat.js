@@ -302,24 +302,30 @@ var Views;
             var _this = this;
             var $cont = $(".nchat-all .messages");
             var $c = $(this.stopWinTmp());
-            $cont.html($c);
-            $cont.find(".notInt").click(function (e) {
+            $cont.append($c);
+            var blockPerson = $c.find("#cbBlockPerson").prop("checked");
+            var reportPerson = $c.find("#cbReportPerson").prop("checked");
+            $c.find(".exec").click(function (e) {
                 e.preventDefault();
-                _this.dlg.create("Stop conversation", "Do you really want to stop the conversation ?", "Cancel", "Stop", function () {
-                    _this.changeRectState(reactId, CheckinReactionState.Refused);
-                });
+                if (blockPerson) {
+                    _this.dlg.create("User blocking and reporting", "Do you really want to report this user ?", "Cancel", "Report", function () {
+                        _this.changeRectState(reactId, CheckinReactionState.Blocked);
+                    });
+                }
+                else if (reportPerson) {
+                    _this.dlg.create("User blocking", "Do you really want to block this user ?", "Cancel", "Block", function () {
+                        _this.changeRectState(reactId, CheckinReactionState.Blocked);
+                    });
+                }
+                else {
+                    _this.dlg.create("Stop conversation", "Do you really want to stop the conversation ?", "Cancel", "Stop", function () {
+                        _this.changeRectState(reactId, CheckinReactionState.Refused);
+                    });
+                }
             });
-            $cont.find(".block").click(function (e) {
+            $c.find(".cancel").click(function (e) {
                 e.preventDefault();
-                _this.dlg.create("User blocking", "Do you really want to block this user ?", "Cancel", "Block", function () {
-                    _this.changeRectState(reactId, CheckinReactionState.Blocked);
-                });
-            });
-            $cont.find(".blockReport").click(function (e) {
-                e.preventDefault();
-                _this.dlg.create("User blocking and reporting", "Do you really want to report this user ?", "Cancel", "Report", function () {
-                    _this.changeRectState(reactId, CheckinReactionState.Blocked);
-                });
+                $c.remove();
             });
         };
         Chat.prototype.changeRectState = function (reactId, state, extraVals) {

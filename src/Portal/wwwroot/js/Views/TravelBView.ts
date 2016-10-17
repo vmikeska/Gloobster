@@ -104,7 +104,7 @@
 				this.nowTabClicked();
 			});
 		
-			this.tabs.addTab({ id: this.cityTabConst, text: " I will be in a city", customClass: "icon-calendar" }, () => {
+			this.tabs.addTab({ id: this.cityTabConst, text: " I will be in a city", customClass: "icon-location-on-road" }, () => {
 				this.cityTabClicked();
 			});
 
@@ -116,7 +116,9 @@
 
 					this.createNowCheckinsFnc();
 					$("#filterDateCont").hide();
-					$("#cityCheckins").hide();					
+					$("#cityCheckins").hide();
+
+				  $(".entities-filter").show();
 
 					this.cityCheckinsCnt();
 		}
@@ -128,6 +130,8 @@
 					$(".city-chck-cnt").hide();
 					$("#filterDateCont").show();
 					$("#cityCheckins").show();
+
+					$(".entities-filter").hide();
 			}
 			
 		private createCityCheckinsFnc() {			

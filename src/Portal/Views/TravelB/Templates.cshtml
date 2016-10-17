@@ -560,15 +560,25 @@
 </script>
 
 <script id="stopWin-template" type="text/x-handlebars-template">
+    
+    <div class="chat-stop-win">
+        
+        <div class="main-info">You can without any mentioned reason stop conversation with any person anytime. Just press the button bellow.</div>
+        
+        <div class="ln"> 
+            <label for="cbBlockPerson"><span class="icon-eye-blocked"></span> Would you like to block this person/make you invisible for this person?</label>
+            <input id="cbBlockPerson" type="checkbox" />
+        </div>
+        
+        <div class="ln">
+            <label for="cbReportPerson"><span class="icon-stop2"></span> Did other person somehow offended or assulted you ? Then report the person and we will evaluate the chat between you. Please use this just when you are sure about it, you might get negative rating if you misuse this reporting.</label>
+            <input id="cbReportPerson" type="checkbox" />
+        </div>
 
-    <button class="notInt">Not interested</button>
-    <br/>
-    <br />
-    <br />
-    <br />
-    <a class="block" href="#">block</a>
-    <br />
-    <a class="blockReport" href="#">block & report</a>
+        <a href="#" class="lbtn exec">Stop chat</a>
+        <a href="#" class="lbtn cancel">Cancel</a>
+
+    </div>
 
 </script>
 

@@ -587,6 +587,9 @@ footer {
 .icon-toggle-off:before {
   content: "\e917"; }
 
+.icon-stop2:before {
+  content: "\e91f"; }
+
 .icon-gear:before {
   content: "\e916"; }
 
@@ -638,6 +641,9 @@ footer {
 .icon-eye:before {
   content: "\e9ce"; }
 
+.icon-eye-blocked:before {
+  content: "\e9d1"; }
+
 .icon-plus:before {
   content: "\ea0a"; }
 
@@ -652,6 +658,9 @@ footer {
 
 .icon-checkmark2:before {
   content: "\ea11"; }
+
+.icon-stop3:before {
+  content: "\ea17"; }
 
 .icon-table2:before {
   content: "\ea71"; }
@@ -3555,6 +3564,7 @@ footer {
             position: absolute;
             right: 5px;
             top: 30px;
+            z-index: 100;
             width: 200px;
             border: 1px solid gray;
             border-radius: 4px;
@@ -3577,7 +3587,8 @@ footer {
     .travelb-home .nchat-all .messages {
       height: 240px;
       overflow-y: scroll;
-      border-bottom: 1px solid gray; }
+      border-bottom: 1px solid gray;
+      position: relative; }
       .travelb-home .nchat-all .messages .message {
         margin-top: 4px; }
         .travelb-home .nchat-all .messages .message .data {
@@ -3646,6 +3657,33 @@ footer {
         width: 100%;
         box-sizing: border-box;
         font-size: 16px; }
+    .travelb-home .nchat-all .chat-stop-win {
+      font-size: 0.8em;
+      z-index: 100;
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      background-color: white; }
+      .travelb-home .nchat-all .chat-stop-win .main-info {
+        margin: 4px;
+        padding: 4px;
+        border-radius: 4px;
+        border: 2px solid #005476;
+        background-color: #FFC400; }
+      .travelb-home .nchat-all .chat-stop-win .ln {
+        margin: 4px;
+        padding: 4px;
+        border-bottom: 1px dotted #65BDD7; }
+        .travelb-home .nchat-all .chat-stop-win .ln span[class^="icon-"] {
+          color: #F56E12;
+          font-size: 1.1em; }
+      .travelb-home .nchat-all .chat-stop-win .lbtn, .travelb-home .nchat-all .chat-stop-win .photo-button label, .photo-button .travelb-home .nchat-all .chat-stop-win label, .travelb-home .nchat-all .chat-stop-win .wiki-page .langs a, .wiki-page .langs .travelb-home .nchat-all .chat-stop-win a {
+        color: white;
+        background-color: #65BDD7; }
+        .travelb-home .nchat-all .chat-stop-win .lbtn:hover, .travelb-home .nchat-all .chat-stop-win .photo-button label:hover, .photo-button .travelb-home .nchat-all .chat-stop-win label:hover, .travelb-home .nchat-all .chat-stop-win .wiki-page .langs a:hover, .wiki-page .langs .travelb-home .nchat-all .chat-stop-win a:hover {
+          color: #005476; }
   .travelb-home #theCont {
     overflow-y: scroll; }
   .travelb-home #theCont .items {

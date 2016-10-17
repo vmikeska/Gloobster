@@ -61,7 +61,7 @@ var Views;
             this.tabs.addTab({ id: this.nowTabConst, text: " I am here and now", customClass: "icon-clock" }, function () {
                 _this.nowTabClicked();
             });
-            this.tabs.addTab({ id: this.cityTabConst, text: " I will be in a city", customClass: "icon-calendar" }, function () {
+            this.tabs.addTab({ id: this.cityTabConst, text: " I will be in a city", customClass: "icon-location-on-road" }, function () {
                 _this.cityTabClicked();
             });
             this.tabs.create("<div class=\"btn-cont\"></div>");
@@ -71,6 +71,7 @@ var Views;
             this.createNowCheckinsFnc();
             $("#filterDateCont").hide();
             $("#cityCheckins").hide();
+            $(".entities-filter").show();
             this.cityCheckinsCnt();
         };
         TravelBView.prototype.cityTabClicked = function () {
@@ -79,6 +80,7 @@ var Views;
             $(".city-chck-cnt").hide();
             $("#filterDateCont").show();
             $("#cityCheckins").show();
+            $(".entities-filter").hide();
         };
         TravelBView.prototype.createCityCheckinsFnc = function () {
             $(".meeting-points").hide();
