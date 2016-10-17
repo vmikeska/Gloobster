@@ -1,4 +1,5 @@
 ﻿@using System.Threading.Tasks
+@using Gloobster.Common
 @using Newtonsoft.Json
 
 @model Gloobster.Portal.ViewModels.TravelBViewModel
@@ -11,40 +12,48 @@
 
 <link href="/lib/mapbox.js/mapbox.css" rel="stylesheet" />
 <link href="/lib/leaflet/dist/leaflet.css" rel="stylesheet"/>
+<link href="/lib/leaflet.markercluster/dist/MarkerCluster.css" rel="stylesheet"/>
+<link href="/lib/leaflet.markercluster/dist/MarkerCluster.Default.css" rel="stylesheet" />
 
-<script type="text/javascript" src="/lib/leaflet/dist/leaflet.js"></script>
-<script type="text/javascript" src="/lib/mapbox.js/mapbox.js"></script>
-
-<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
+@*<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
 <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
-<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
+<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />*@
 
 
-<script src="@Url.Content("~/js/Views/TravelBView.js")"></script>
-<script src="@Url.Content("~/js/Views/SettingsUtils.js")"></script>
-<script src="@Url.Content("~/js/TravelB/EmptyProps.js")"></script>
-<script src="@Url.Content("~/js/TravelB/CategoryTagger.js")"></script>
-<script src="@Url.Content("~/js/TravelB/Chat.js")"></script>
-<script src="@Url.Content("~/js/TravelB/Filter.js")"></script>
-<script src="@Url.Content("~/js/TravelB/NotifRefresh.js")"></script>
-<script src="@Url.Content("~/js/TravelB/ChatRefresh.js")"></script>
-<script src="@Url.Content("~/js/TravelB/CheckinReacts.js")"></script>
-<script src="@Url.Content("~/js/TravelB/DateUtils.js")"></script>
-<script src="@Url.Content("~/js/TravelB/CheckinWin.js")"></script>
-<script src="@Url.Content("~/js/TravelB/NowTab.js")"></script>
-<script src="@Url.Content("~/js/TravelB/CityTab.js")"></script>
-<script src="@Url.Content("~/js/TravelB/Status.js")"></script>
-<script src="@Url.Content("~/js/TravelB/TravelBMap.js")"></script>
-<script src="@Url.Content("~/js/TravelB/MapCheckins.js")"></script>
-<script src="@Url.Content("~/js/TravelB/Tabs.js")"></script>
-<script src="@Url.Content("~/js/TravelB/TravelBUtils.js")"></script>
-<script src="@Url.Content("~/js/TravelB/UserLocation.js")"></script>
-<script src="@Url.Content("~/js/TravelB/CityCheckinsMgmt.js")"></script>
-<script src="@Url.Content("~/js/TravelB/CheckinMenu.js")"></script>
+@if (GloobsterConfig.UseMiniScripts)
+{
+    <script src="/jsb/tb.js" type="text/javascript" data-notbuild="true"></script>
+}
+else
+{
+    <script type="text/javascript" src="/lib/leaflet/dist/leaflet.js"></script>
+    <script type="text/javascript" src="/lib/mapbox.js/mapbox.js"></script>
+    <script type="text/javascript" src="/lib/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+    <script type="text/javascript" src="/js/Views/TravelBView.js"></script>
+    <script type="text/javascript" src="/js/Views/SettingsUtils.js"></script>
+    <script type="text/javascript" src="/js/TravelB/EmptyProps.js"></script>
+    <script type="text/javascript" src="/js/TravelB/CategoryTagger.js"></script>
+    <script type="text/javascript" src="/js/TravelB/Chat.js"></script>
+    <script type="text/javascript" src="/js/TravelB/Filter.js"></script>
+    <script type="text/javascript" src="/js/TravelB/NotifRefresh.js"></script>
+    <script type="text/javascript" src="/js/TravelB/ChatRefresh.js"></script>
+    <script type="text/javascript" src="/js/TravelB/CheckinReacts.js"></script>
+    <script type="text/javascript" src="/js/TravelB/DateUtils.js"></script>
+    <script type="text/javascript" src="/js/TravelB/CheckinWin.js"></script>
+    <script type="text/javascript" src="/js/TravelB/NowTab.js"></script>
+    <script type="text/javascript" src="/js/TravelB/CityTab.js"></script>
+    <script type="text/javascript" src="/js/TravelB/Status.js"></script>
+    <script type="text/javascript" src="/js/TravelB/TravelBMap.js"></script>
+    <script type="text/javascript" src="/js/TravelB/MapCheckins.js"></script>
+    <script type="text/javascript" src="/js/TravelB/Tabs.js"></script>
+    <script type="text/javascript" src="/js/TravelB/TravelBUtils.js"></script>
+    <script type="text/javascript" src="/js/TravelB/UserLocation.js"></script>
+    <script type="text/javascript" src="/js/TravelB/CityCheckinsMgmt.js"></script>
+    <script type="text/javascript" src="/js/TravelB/CheckinMenu.js"></script>
+    <script type="text/javascript" src="/js/Maps/MapsCreatorMapBox2D.js"></script>
+    <script type="text/javascript" src="/js/Planning/TaggingField.js"></script>    
+}
 
-<script src="@Url.Content("~/js/Maps/MapsCreatorMapBox2D.js")"></script>
-
-<script src="@Url.Content("~/js/Planning/TaggingField.js")"></script>
 
 
 @{

@@ -71,6 +71,10 @@ var data = [
         {
             i: "Wiki/Home",
             o: "wikihome"
+        },
+        {
+            i: "TravelB/Home",
+            o: "tb"
         }
         
     ];

@@ -13,6 +13,10 @@
     "jquery.pep": "~0.6.7",
     "moment": "^2.14.1",
     "jquery-countTo": "countto#^1.2.0",
-    "cropper": "^2.3.2"
+    "cropper": "^2.3.2",
+    "leaflet.markercluster": "~1.0.0"
+  },
+  "resolutions": {
+    "leaflet": ">= 1.0.0"
   }
 }
