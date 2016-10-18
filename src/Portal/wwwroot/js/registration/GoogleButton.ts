@@ -9,8 +9,10 @@
 
 		private auth2: any;
 
+		private clientId = document["googleId"];
+
 		private config = {			
-			client_id: document["googleId"],
+		  client_id: this.clientId,
 			cookiepolicy: "single_host_origin"
 			// Request scopes in addition to 'profile' and 'email'
 			//scope: 'additional_scope'
@@ -19,6 +21,8 @@
 	
 		public initialize(elementId) {
 			this.elementId = elementId;
+
+			gapi.client.setApiKey(this.clientId);
 			gapi.load("auth2", () => { this.onLoaded(); });
 		}
 		

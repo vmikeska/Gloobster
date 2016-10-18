@@ -49,7 +49,7 @@ namespace Gloobster.DomainModels.Services.Accounts
                 {
                     return false;
                 }
-
+                
                 UserDO userData = await GetUserDataFromSocNet(auth);
                 bool userDataCreated = await CreateUserData(userId, userData);
                 if (!userDataCreated)
@@ -238,7 +238,7 @@ namespace Gloobster.DomainModels.Services.Accounts
             }
         }
 
-        private async Task<bool> CreateNewSocialAccountEntity(SocAuthDO auth)
+        public async Task<bool> CreateNewSocialAccountEntity(SocAuthDO auth)
         {
             try
             {

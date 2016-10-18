@@ -28,12 +28,14 @@ namespace Gloobster.DomainInterfaces
         ISocLogin SocLogin { get; set; }
         Task<LoginResponseDO> HandleAsync(SocAuthDO auth);
         Task<LoginResponseDO> HandleEmail(string mail, string password, string userId);
+        Task<bool> Unpair(string userId, SocialNetworkType type);
     }
 
     public interface INewAccountCreator
     {
         Task<bool> CreateUserFromSocNet(string userId, SocAuthDO auth);
         Task<bool> CreateUserFromMail(string userId, string mail, string password);
+        Task<bool> CreateNewSocialAccountEntity(SocAuthDO auth);
         Task RollBack();
     }
 

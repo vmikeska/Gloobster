@@ -23,7 +23,7 @@ module TravelB {
 
 			data.forEach((id) => {
 				var res = this.findItemById(id);
-				if (res !== null) { 
+				if (res) { 
 					var $t = this.tagItem(res.foundCat, id, res.foundItem.text);
 					this.$selected.append($t);
 				}

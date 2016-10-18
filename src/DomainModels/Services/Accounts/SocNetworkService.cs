@@ -93,6 +93,8 @@ namespace Gloobster.DomainModels.Services.Accounts
             }
         }
 
+
+
         public async Task<LoginResponseDO> HandleEmail(string mail, string password, string userId)
         {
             var accountExisting = DB.FOD<AccountEntity>(a => a.Mail == mail);
@@ -165,7 +167,13 @@ namespace Gloobster.DomainModels.Services.Accounts
             return new LoginResponseDO { Successful = false };
         }
 
-        
+        public async Task<bool> Unpair(string userId, SocialNetworkType type)
+        {
+            var userIdObj = new ObjectId(userId);
+
+            bool deleted = await DB.DeleteAsync<SocialAccountEntity>(u => u.User_id == userIdObj && u.NetworkType == type);
+            return deleted;
+        }
         
         private async void MarkEmptyAccount(string userId)
         {
@@ -217,15 +225,29 @@ namespace Gloobster.DomainModels.Services.Accounts
             {
                 var userIdObj = new ObjectId(auth.UserId);
 
-                var accountEntity = DB.FOD<AccountEntity>(u => u.User_id == userIdObj);
-                
-                bool created = await NewAccCreator.CreateUserFromSocNet(auth.UserId, auth);
-                if (!created)
+                var userEntity = DB.FOD<UserEntity>(u => u.User_id == userIdObj);
+                bool isPairing = userEntity != null;
+                if (isPairing)
                 {
-                    return Unsuccess();
+                    bool created = await NewAccCreator.CreateNewSocialAccountEntity(auth);
+                    if (!created)
+                    {
+                        return Unsuccess();
+                    }
+                    creator.NewUserEntity = userEntity;
                 }
+                else
+                {
+                    bool created = await NewAccCreator.CreateUserFromSocNet(auth.UserId, auth);
+                    if (!created)
+                    {
+                        return Unsuccess();
+                    }
 
-                await SocLogin.OnNewUser(auth);
+                    await SocLogin.OnNewUser(auth);
+                }
+                
+                var accountEntity = DB.FOD<AccountEntity>(u => u.User_id == userIdObj);
 
                 var response = new LoginResponseDO
                 {

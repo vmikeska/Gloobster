@@ -83,5 +83,13 @@ namespace Gloobster.Portal.Controllers.Api.Registration
             AddLog($"Processed successfully");
             return new ObjectResult(res);            
         }
+
+        [HttpDelete]
+        [AuthorizeApi]
+        public async Task<IActionResult> Delete()
+        {
+            var res = await SocNetService.Unpair(UserId, SocialNetworkType.Google);
+            return new ObjectResult(res);
+        }
     }
 }

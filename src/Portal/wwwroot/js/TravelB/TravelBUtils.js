@@ -88,43 +88,107 @@ var TravelB;
         };
         TravelBUtils.intLifestyle = function () {
             return [
-                TravelBUtils.i(101, "Hipster"),
-                TravelBUtils.i(102, "ItGuy"),
-                TravelBUtils.i(103, "Traveler"),
-                TravelBUtils.i(104, "Artist"),
-                TravelBUtils.i(105, "SportGuy"),
-                TravelBUtils.i(106, "PartyGuy"),
-                TravelBUtils.i(107, "Talker"),
-                TravelBUtils.i(108, "Listener")
+                TravelBUtils.i(1001, "Travels"),
+                TravelBUtils.i(1002, "Hitchhike"),
+                TravelBUtils.i(1003, "Backpacking"),
+                TravelBUtils.i(1004, "Camping"),
+                TravelBUtils.i(1005, "Sports"),
+                TravelBUtils.i(1006, "Books"),
+                TravelBUtils.i(1007, "Movies"),
+                TravelBUtils.i(1008, "Anime"),
+                TravelBUtils.i(1009, "Politics"),
+                TravelBUtils.i(1010, "Motors"),
+                TravelBUtils.i(1011, "Bio"),
+                TravelBUtils.i(1012, "Environment"),
+                TravelBUtils.i(1013, "Animals"),
+                TravelBUtils.i(1014, "Fitness"),
+                TravelBUtils.i(1015, "Games"),
+                TravelBUtils.i(1016, "Hipster"),
+                TravelBUtils.i(1017, "Naturism"),
+                TravelBUtils.i(1018, "Gay"),
+                TravelBUtils.i(1019, "Ultras"),
+                TravelBUtils.i(1020, "Science"),
+                TravelBUtils.i(1021, "Arts"),
+                TravelBUtils.i(1022, "Volunteering"),
+                TravelBUtils.i(1023, "Vegan"),
+                TravelBUtils.i(1024, "Vegetarian"),
+                TravelBUtils.i(1025, "Religion"),
+                TravelBUtils.i(1026, "Party animal"),
+                TravelBUtils.i(1027, "Writing"),
+                TravelBUtils.i(1028, "Food lover"),
+                TravelBUtils.i(1029, "Alchool"),
+                TravelBUtils.i(1030, "Globe trotter"),
+                TravelBUtils.i(1031, "Dating"),
+                TravelBUtils.i(1032, "Clubbing"),
+                TravelBUtils.i(1033, "Pub"),
+                TravelBUtils.i(1034, "Fashion"),
+                TravelBUtils.i(1035, "IT guy")
             ];
         };
         TravelBUtils.intMusic = function () {
             return [
-                TravelBUtils.i(201, "Rock"),
-                TravelBUtils.i(202, "Jazz"),
-                TravelBUtils.i(203, "Electro"),
-                TravelBUtils.i(204, "DnB"),
-                TravelBUtils.i(205, "Techno"),
-                TravelBUtils.i(206, "Funk")
+                TravelBUtils.i(2001, "Classic"),
+                TravelBUtils.i(2002, "Electronic"),
+                TravelBUtils.i(2003, "Dance"),
+                TravelBUtils.i(2004, "Rock"),
+                TravelBUtils.i(2005, "Techno"),
+                TravelBUtils.i(2006, "Hip hop"),
+                TravelBUtils.i(2007, "Folk"),
+                TravelBUtils.i(2008, "Pop"),
+                TravelBUtils.i(2009, "Blues"),
+                TravelBUtils.i(2010, "Jazz"),
+                TravelBUtils.i(2011, "Latin"),
+                TravelBUtils.i(2012, "Reggae"),
+                TravelBUtils.i(2013, "R & B"),
+                TravelBUtils.i(2014, "Alternative"),
+                TravelBUtils.i(2015, "Grunge"),
+                TravelBUtils.i(2016, "Indie"),
+                TravelBUtils.i(2017, "Punk"),
+                TravelBUtils.i(2018, "Metal"),
+                TravelBUtils.i(2019, "Industrial"),
+                TravelBUtils.i(2020, "Progressive"),
+                TravelBUtils.i(2021, "Rock & Roll"),
+                TravelBUtils.i(2022, "Ska"),
+                TravelBUtils.i(2023, "Soul"),
+                TravelBUtils.i(2024, "Funky"),
+                TravelBUtils.i(2025, "Rockabilly"),
+                TravelBUtils.i(2026, "Rave")
             ];
         };
-        TravelBUtils.intSomething = function () {
+        TravelBUtils.intCharacteristic = function () {
             return [
-                TravelBUtils.i(301, "Somthing1"),
-                TravelBUtils.i(302, "Somthing2"),
-                TravelBUtils.i(303, "Somthing3")
+                TravelBUtils.i(3001, "Adventurous"),
+                TravelBUtils.i(3002, "Listener"),
+                TravelBUtils.i(3003, "Cultured"),
+                TravelBUtils.i(3004, "Fair"),
+                TravelBUtils.i(3005, "Independent"),
+                TravelBUtils.i(3006, "Optimistic"),
+                TravelBUtils.i(3007, "Precise"),
+                TravelBUtils.i(3008, "Humble"),
+                TravelBUtils.i(3009, "Open mind"),
+                TravelBUtils.i(3010, "Talkative"),
+                TravelBUtils.i(3011, "Extravagant"),
+                TravelBUtils.i(3012, "Money"),
+                TravelBUtils.i(3013, "Success"),
+                TravelBUtils.i(3014, "Love"),
+                TravelBUtils.i(3015, "Family"),
+                TravelBUtils.i(3016, "Work"),
+                TravelBUtils.i(3017, "Career"),
+                TravelBUtils.i(3018, "Friends"),
+                TravelBUtils.i(3019, "Fun"),
+                TravelBUtils.i(3020, "Education")
             ];
         };
         TravelBUtils.interestsDB = function () {
             var all = [];
-            all = all.concat(this.intLifestyle(), this.intMusic(), this.intSomething());
+            all = all.concat(this.intLifestyle(), this.intMusic(), this.intCharacteristic());
             return all;
         };
         TravelBUtils.getInterestsTaggerData = function () {
             var data = [
-                { k: "Lifestyle", id: 100, items: TravelBUtils.intLifestyle() },
-                { k: "Music", id: 200, items: TravelBUtils.intMusic() },
-                { k: "Something", id: 300, items: TravelBUtils.intSomething() }
+                { k: "Lifestyle", id: 1000, items: TravelBUtils.intLifestyle() },
+                { k: "Music", id: 2000, items: TravelBUtils.intMusic() },
+                { k: "Characteristic", id: 3000, items: TravelBUtils.intCharacteristic() }
             ];
             return data;
         };

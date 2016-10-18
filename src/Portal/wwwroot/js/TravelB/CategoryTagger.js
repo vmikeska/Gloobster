@@ -12,7 +12,7 @@ var TravelB;
             this.hideEmptyText();
             data.forEach(function (id) {
                 var res = _this.findItemById(id);
-                if (res !== null) {
+                if (res) {
                     var $t = _this.tagItem(res.foundCat, id, res.foundItem.text);
                     _this.$selected.append($t);
                 }

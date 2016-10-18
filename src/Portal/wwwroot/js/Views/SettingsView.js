@@ -9,6 +9,7 @@ var Views;
         __extends(SettingsView, _super);
         function SettingsView() {
             _super.apply(this, arguments);
+            this.activeSocItem = null;
         }
         SettingsView.prototype.init = function () {
             Views.SettingsUtils.registerAvatarFileUpload("avatarFile");
@@ -38,6 +39,46 @@ var Views;
             this.initInterests();
             Views.SettingsUtils.initLangsTagger(this.langs);
             this.initPairing();
+            this.initPairedMenu();
+        };
+        SettingsView.prototype.initPairedMenu = function () {
+            var _this = this;
+            $(".soc-ico").click(function (e) {
+                e.preventDefault();
+                var $t = $(e.target);
+                _this.activeSocItem = parseInt($t.data("t"));
+                $(".menu").toggle();
+            });
+            $(".menu .unpair").click(function (e) {
+                e.preventDefault();
+                _this.callUnpair();
+            });
+            $(".menu .close").click(function (e) {
+                e.preventDefault();
+                $(".menu").toggle();
+            });
+        };
+        SettingsView.prototype.callUnpair = function () {
+            var _this = this;
+            var name = "";
+            if (this.activeSocItem === SocialNetworkType.Facebook) {
+                name = "Facebook";
+            }
+            if (this.activeSocItem === SocialNetworkType.Twitter) {
+                name = "Twitter";
+            }
+            if (this.activeSocItem === SocialNetworkType.Google) {
+                name = "Google";
+            }
+            var cd = new Common.ConfirmDialog();
+            cd.create("Unpairing confirmation", "Would you like to unpair with " + name + "?", "Cancel", "Unpair", function () {
+                var ep = name + "User";
+                _this.apiDelete(ep, [], function (r) {
+                    $(".soc-ico[data-t=\"" + _this.activeSocItem + "\"]").hide();
+                    $(".menu").toggle();
+                    $(".logins-to-pair .item[data-t=\"" + _this.activeSocItem + "\"]").show();
+                });
+            });
         };
         SettingsView.prototype.initInterests = function () {
             var $c = $("#intersTagging");
@@ -59,28 +100,36 @@ var Views;
             if (this.btnExists(fb)) {
                 var fbBtn = new Reg.FacebookButtonInit(fb);
                 fbBtn.onBeforeExecute = function () { return _this.onBefore(fb); };
-                fbBtn.onAfterExecute = function () { return _this.onAfter(); };
+                fbBtn.onAfterExecute = function () { return _this.onAfter(fb); };
             }
             var google = "googleBtnPair";
             if (this.btnExists(google)) {
                 var googleBtn = new Reg.GoogleButtonInit(google);
                 googleBtn.onBeforeExecute = function () { return _this.onBefore(google); };
-                googleBtn.onAfterExecute = function () { return _this.onAfter(); };
+                googleBtn.onAfterExecute = function () { return _this.onAfter(google); };
             }
             var twitter = "twitterBtnPair";
             if (this.btnExists(twitter)) {
                 var twitterBtn = new Reg.TwitterButtonInit(twitter);
                 twitterBtn.onBeforeExecute = function () { return _this.onBefore(twitter); };
-                twitterBtn.onAfterExecute = function () { return _this.onAfter(); };
+                twitterBtn.onAfterExecute = function () { return _this.onAfter(twitter); };
             }
         };
         SettingsView.prototype.onBefore = function (id) {
-            $("#" + id).remove();
+            $("#" + id).parent().hide();
         };
-        SettingsView.prototype.onAfter = function () {
-            var hint = new Common.HintDialog();
-            hint.create(this.t("SuccessfulPaired", "jsLayout"));
-            $("#MenuRegister").parent().remove();
+        SettingsView.prototype.onAfter = function (id) {
+            var sid = null;
+            if (id === "fbBtnPair") {
+                sid = 0;
+            }
+            else if (id === "googleBtnPair") {
+                sid = 1;
+            }
+            else if (id === "twitterBtnPair") {
+                sid = 2;
+            }
+            $(".soc-ico[data-t=\"" + sid + "\"]").show();
         };
         return SettingsView;
     }(Views.ViewBase));

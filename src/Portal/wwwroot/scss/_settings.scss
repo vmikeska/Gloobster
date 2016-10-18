@@ -1,6 +1,157 @@
 ﻿
 .user-settings{
 
+    .wrapper{    
+    }
+
+    .split-tbl {
+        display: table;
+        padding-top: 8px;        
+        padding-left: 8px;
+
+        .left{
+            display: table-cell;
+            vertical-align: top;
+        }
+
+        .right {
+            display: table-cell;
+            vertical-align: top;
+
+            padding-left: 12px;
+        }
+    }
+
+    @include below-width(959){            
+        .split-tbl {
+            display: block;
+
+            .left{
+                display: block;
+            }
+
+            .right {
+                display: block;
+            }
+        }
+    }
+
+
+    $pps: 220px;
+
+    .photo-cont {
+        position: relative;
+        width: $pps;
+        height: $pps;
+        overflow: hidden;
+
+        border-radius: 4px;
+
+        img {
+            width: $pps;
+            height: $pps;
+        }
+
+        .photo-edit {
+
+            position: absolute;
+            top: 10px;
+            right: 10px;
+
+            text-decoration: none;
+
+            input {
+                width: 0.1px;
+                height: 0.1px;
+                opacity: 0;
+                overflow: hidden;
+                position: absolute;
+                z-index: -1;
+            }
+
+            label {
+                color: $light-blue;
+                font-size: 1.3em;                
+                cursor: pointer;
+
+                &:hover {
+                    color: $dark-blue;
+                }
+            }
+
+            
+
+        }
+
+        
+
+    }
+
+    .logins-paired {
+        
+        margin-top: 8px;
+        margin-bottom: 8px;
+
+        .txt {
+            font-weight: bold;
+            position: relative;
+            top: -0.25em;
+            margin-right: 4px;
+        }
+
+        .soc-ico {
+            font-size: 26px;
+            cursor: pointer;
+
+            &:hover {
+                opacity: 0.8;
+            }
+        }
+
+        .menu{
+            background-color: $light-gray;
+            border-radius: 4px;
+            padding: 6px;
+
+            .info {
+                font-weight: bold;
+                border-bottom: 1px dotted gray;
+                margin-bottom: 8px;
+            }
+
+            a{
+                &:hover {
+                    color: darkred;
+                }
+            }
+        }
+
+        .icon-facebook2 {
+            color: #4360A0;
+        }
+
+        .icon-twitter {
+            color: #55ACEE;
+        }
+
+        .icon-google-plus {
+            color: #EA4538;
+        }
+    }
+
+    .logins-to-pair {
+        border-top: 1px dotted gray;
+        padding-top: 8px;
+
+        .item {
+            margin-bottom: 6px;
+        }
+    }
+
+
+
+
+
     textarea,input{
         border: 1px solid $light-blue;
     }
@@ -19,11 +170,7 @@
         font-weight: bold;
     }
 
-    .avatar {
-        width: 240px;
-        height: 240px;
-        border:1px solid black;
-    }
+    
 
 
 
@@ -31,12 +178,5 @@
         margin-top: 15px;
     }
 
-    .pairing {
-        margin-top: 20px;
-        padding-top: 5px;
-        padding-bottom: 5px;
-        border-top: 1px solid black;
-        border-bottom: 1px solid black;
-        text-align: center;
-    }
+    
 }

@@ -1897,6 +1897,85 @@ footer {
 
 .user-settings {
   text-align: left; }
+  .user-settings .split-tbl {
+    display: table;
+    padding-top: 8px;
+    padding-left: 8px; }
+    .user-settings .split-tbl .left {
+      display: table-cell;
+      vertical-align: top; }
+    .user-settings .split-tbl .right {
+      display: table-cell;
+      vertical-align: top;
+      padding-left: 12px; }
+  @media screen and (max-width: 959px) {
+    .user-settings .split-tbl {
+      display: block; }
+      .user-settings .split-tbl .left {
+        display: block; }
+      .user-settings .split-tbl .right {
+        display: block; } }
+  .user-settings .photo-cont {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    overflow: hidden;
+    border-radius: 4px; }
+    .user-settings .photo-cont img {
+      width: 220px;
+      height: 220px; }
+    .user-settings .photo-cont .photo-edit {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      text-decoration: none; }
+      .user-settings .photo-cont .photo-edit input {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1; }
+      .user-settings .photo-cont .photo-edit label {
+        color: #65BDD7;
+        font-size: 1.3em;
+        cursor: pointer; }
+        .user-settings .photo-cont .photo-edit label:hover {
+          color: #005476; }
+  .user-settings .logins-paired {
+    margin-top: 8px;
+    margin-bottom: 8px; }
+    .user-settings .logins-paired .txt {
+      font-weight: bold;
+      position: relative;
+      top: -0.25em;
+      margin-right: 4px; }
+    .user-settings .logins-paired .soc-ico {
+      font-size: 26px;
+      cursor: pointer; }
+      .user-settings .logins-paired .soc-ico:hover {
+        opacity: 0.8; }
+    .user-settings .logins-paired .menu {
+      background-color: #f2f2f2;
+      border-radius: 4px;
+      padding: 6px; }
+      .user-settings .logins-paired .menu .info {
+        font-weight: bold;
+        border-bottom: 1px dotted gray;
+        margin-bottom: 8px; }
+      .user-settings .logins-paired .menu a:hover {
+        color: darkred; }
+    .user-settings .logins-paired .icon-facebook2 {
+      color: #4360A0; }
+    .user-settings .logins-paired .icon-twitter {
+      color: #55ACEE; }
+    .user-settings .logins-paired .icon-google-plus {
+      color: #EA4538; }
+  .user-settings .logins-to-pair {
+    border-top: 1px dotted gray;
+    padding-top: 8px; }
+    .user-settings .logins-to-pair .item {
+      margin-bottom: 6px; }
   .user-settings textarea, .user-settings input {
     border: 1px solid #65BDD7; }
   .user-settings input[type=number] {
@@ -1907,19 +1986,8 @@ footer {
     padding-right: 0.5em; }
   .user-settings .titleName {
     font-weight: bold; }
-  .user-settings .avatar {
-    width: 240px;
-    height: 240px;
-    border: 1px solid black; }
   .user-settings .controls {
     margin-top: 15px; }
-  .user-settings .pairing {
-    margin-top: 20px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
-    text-align: center; }
 
 .twitter {
   display: inline-block;

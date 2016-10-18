@@ -2,14 +2,16 @@ var Reg;
 (function (Reg) {
     var GoogleButton = (function () {
         function GoogleButton() {
+            this.clientId = document["googleId"];
             this.config = {
-                client_id: document["googleId"],
+                client_id: this.clientId,
                 cookiepolicy: "single_host_origin"
             };
         }
         GoogleButton.prototype.initialize = function (elementId) {
             var _this = this;
             this.elementId = elementId;
+            gapi.client.setApiKey(this.clientId);
             gapi.load("auth2", function () { _this.onLoaded(); });
         };
         GoogleButton.prototype.onLoaded = function () {
