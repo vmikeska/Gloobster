@@ -5,6 +5,7 @@ module Planning {
 		public itemsRange: any[];
 		public localValues: boolean;
 		public listSource: string;
+		public placeholder: string;
 	}
 
 	export class TaggingField {
@@ -15,16 +16,19 @@ module Planning {
 		private $tagger: any;
 		private $cont: any;
 
-		private taggerTemplate: any;
+		private taggerTemplate = Views.ViewBase.currentView.registerTemplate("tagger-template");
 		public selectedItems: any;
 		private config: TaggingFieldConfig;
 
 		constructor(config: TaggingFieldConfig) {
 			this.config = config;
 
-			this.taggerTemplate = Views.ViewBase.currentView.registerTemplate("tagger-template");
-			this.$cont = $(`#${this.config.containerId}`);
+			if (!this.config.placeholder) {
+				this.config.placeholder = "Search";
+			}
 
+			this.$cont = $(`#${this.config.containerId}`);
+				
 			this.$tagger = this.createTagger();
 			this.$cont.prepend(this.$tagger);
 		}
@@ -81,7 +85,12 @@ module Planning {
 		}
 
 		private createTagger() {
-			var html = this.taggerTemplate();
+
+				var context = {
+						placeholder: this.config.placeholder
+				}
+
+			var html = this.taggerTemplate(context);
 			var $html = $(html);
 
 			var $input = $html.find("input");

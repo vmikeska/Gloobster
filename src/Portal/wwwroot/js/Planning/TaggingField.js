@@ -8,8 +8,11 @@ var Planning;
     Planning.TaggingFieldConfig = TaggingFieldConfig;
     var TaggingField = (function () {
         function TaggingField(config) {
-            this.config = config;
             this.taggerTemplate = Views.ViewBase.currentView.registerTemplate("tagger-template");
+            this.config = config;
+            if (!this.config.placeholder) {
+                this.config.placeholder = "Search";
+            }
             this.$cont = $("#" + this.config.containerId);
             this.$tagger = this.createTagger();
             this.$cont.prepend(this.$tagger);
@@ -60,7 +63,10 @@ var Planning;
         };
         TaggingField.prototype.createTagger = function () {
             var _this = this;
-            var html = this.taggerTemplate();
+            var context = {
+                placeholder: this.config.placeholder
+            };
+            var html = this.taggerTemplate(context);
             var $html = $(html);
             var $input = $html.find("input");
             var $ul = $html.find("ul");

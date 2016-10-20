@@ -1,6 +1,8 @@
-﻿@using System.Threading.Tasks
+﻿
 @using Gloobster.Common
 @using Newtonsoft.Json
+@using System.Linq;
+@using Microsoft.AspNet.Mvc.Rendering
 
 @model Gloobster.Portal.ViewModels.TravelBViewModel
 
@@ -10,15 +12,11 @@
     ViewBag.BodyClass = "travelb-home";
 }
 
-<link href="/lib/mapbox.js/mapbox.css" rel="stylesheet" />
-<link href="/lib/leaflet/dist/leaflet.css" rel="stylesheet"/>
-<link href="/lib/leaflet.markercluster/dist/MarkerCluster.css" rel="stylesheet"/>
+<link href="/lib/mapbox.js/mapbox.css" rel="stylesheet"/>
+@*<link href="/lib/leaflet/dist/leaflet.css" rel="stylesheet" />*@
+
+<link href="/lib/leaflet.markercluster/dist/MarkerCluster.css" rel="stylesheet" />
 <link href="/lib/leaflet.markercluster/dist/MarkerCluster.Default.css" rel="stylesheet" />
-
-@*<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
-<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
-<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />*@
-
 
 @if (GloobsterConfig.UseMiniScripts)
 {
@@ -26,9 +24,10 @@
 }
 else
 {
-    <script type="text/javascript" src="/lib/leaflet/dist/leaflet.js"></script>
+    <script type="text/javascript" src="/lib/leaflet/dist/leaflet.js"></script>    
     <script type="text/javascript" src="/lib/mapbox.js/mapbox.js"></script>
     <script type="text/javascript" src="/lib/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+
     <script type="text/javascript" src="/js/Views/TravelBView.js"></script>
     <script type="text/javascript" src="/js/Views/SettingsUtils.js"></script>
     <script type="text/javascript" src="/js/TravelB/EmptyProps.js"></script>
@@ -50,8 +49,11 @@ else
     <script type="text/javascript" src="/js/TravelB/UserLocation.js"></script>
     <script type="text/javascript" src="/js/TravelB/CityCheckinsMgmt.js"></script>
     <script type="text/javascript" src="/js/TravelB/CheckinMenu.js"></script>
+    <script type="text/javascript" src="/js/TravelB/FormValidations.js"></script>
     <script type="text/javascript" src="/js/Maps/MapsCreatorMapBox2D.js"></script>
-    <script type="text/javascript" src="/js/Planning/TaggingField.js"></script>    
+    <script type="text/javascript" src="/js/Planning/TaggingField.js"></script>
+
+    
 }
 
 
@@ -111,6 +113,16 @@ else
     </div>
 </div>
 
+
+<div class="wrapper">
+
+    @if (Model.EmptyProps.Any())
+    {
+        @Html.Partial("EmptyProps")
+    }
+
+</div>
+
 <div class="wrapper">
 
     <div id="notifCont" class="notifs">
@@ -140,9 +152,11 @@ else
 
     </div>
 
-        <div class="no-location-perm" style="display: none">
+    <div class="no-location-perm" style="display: none">
         Seems you didn't grant us location permissions, so we cannot show your exact location. Once you change your mind, you must go to your browser Location settings and allow it.
     </div>
+
+    
 
     <div class="map-wrap">
         <div id="map" class="map"></div>
@@ -156,16 +170,16 @@ else
         </div>
 
         <div class="entities-filter">
-            <input id="fShowPeople" type="checkbox" checked />
+            <input id="fShowPeople" type="checkbox" checked/>
             <label for="fShowPeople">People</label>
-            <br />
-            <input id="fPoints" type="checkbox" />
+            <br/>
+            <input id="fPoints" type="checkbox"/>
             <label for="fPoints">Meeting points</label>
         </div>
     </div>
 
     <div class="city-chck-cnt">
-        <span class="cnt" id="cityCount"></span> more people are checked-in to the <a class="city-link" href="#">City</a> 
+        <span class="cnt" id="cityCount"></span> more people are checked-in to the <a class="city-link" href="#">City</a>
     </div>
 
     <div class="filter-date" id="filterDateCont" style="display: none">
@@ -207,7 +221,7 @@ else
             <div class="people">
                 <div class="title">People</div>
 
-                <div class="no-people-all">                    
+                <div class="no-people-all">
                     <div class="img">
 
                     </div>
@@ -215,8 +229,8 @@ else
                         Sorry, no people here right now, but you can visit one of our popular Meeting Points and check in.
                     </div>
                 </div>
-                
-            </div>    
+
+            </div>
 
             <div class="meeting-points">
                 <div class="title">Meeting points</div>
@@ -231,30 +245,24 @@ else
                 </div>
 
             </div>
-            
+
         </div>
 
     </div>
 
-
-    <div id="testCont">
-
-        </div>
-
-        <div id="reqPropCont" style="display: none;">
-
-        </div>
-
-        
-
-    </div>
+</div>
 
 
 <script>
     function onBodyLoad() {
         currentView = new Views.TravelBView();
-        currentView.defaultLangs = @Html.Raw(JsonConvert.SerializeObject(Model.Languages));        
+        currentView.defaultLangs = @Html.Raw(JsonConvert.SerializeObject(Model.User.Languages));
         currentView.emptyProps = @Html.Raw(JsonConvert.SerializeObject(Model.EmptyProps));
+
+        @if (Model.User.HomeLocation != null)
+        {
+            @Html.Raw($"currentView.homeLocation = '{Model.User.HomeLocation.City}';")
+        }
 
         currentView.init();
     }

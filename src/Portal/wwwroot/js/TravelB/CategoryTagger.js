@@ -9,7 +9,9 @@ var TravelB;
         };
         CategoryTagger.prototype.initData = function (data) {
             var _this = this;
-            this.hideEmptyText();
+            if (data.length > 0) {
+                this.hideEmptyText();
+            }
             data.forEach(function (id) {
                 var res = _this.findItemById(id);
                 if (res) {

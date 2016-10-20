@@ -58,7 +58,6 @@ module Maps {
 					this.onCenterChanged(c);
 			 }				
 			});
-			
 		}
 
 		private loadScript(scriptUrl: string, callback: Function) {

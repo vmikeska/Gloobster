@@ -48,6 +48,7 @@ var TravelB;
                     var markerCont = MapPins.getCheckinCont(c);
                     var newCoord = _this.addPixelsToCoord(coord.Lat, coord.Lng, i * 30, 0, _this.mapObj);
                     var marker = L.marker(newCoord, { icon: markerCont });
+                    _this.checkinsLayer.addLayer(marker);
                     marker.on("click", function (e) {
                         if (type === CheckinType.Now) {
                             _this.displayPopupNow(e.latlng, c.userId);
@@ -56,7 +57,6 @@ var TravelB;
                             _this.displayPopupCity(e.latlng, c.id);
                         }
                     });
-                    _this.checkinsLayer.addLayer(marker);
                 });
             });
             this.mapObj.addLayer(this.checkinsLayer);
@@ -64,7 +64,7 @@ var TravelB;
         MapCheckins.prototype.genMPs = function (mps) {
             var _this = this;
             this.clearMPs();
-            this.clusterLayerMPs = new L.MarkerClusterGroup();
+            this.clusterLayerMPs = L.markerClusterGroup();
             mps.forEach(function (c) {
                 var markerCont = MapPins.getMpCont(c);
                 var marker = L.marker([c.coord.Lat, c.coord.Lng], { icon: markerCont });

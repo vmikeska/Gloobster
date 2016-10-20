@@ -9,7 +9,7 @@ var Views;
         __extends(HomePageView, _super);
         function HomePageView() {
             _super.call(this);
-            Views.SettingsUtils.registerLocationCombo("currentCity", "CurrentLocation", function () {
+            Views.SettingsUtils.registerLocationCombo($("#currentCity"), "CurrentLocation", function () {
                 window.location.href = "/Destination/planning";
             });
         }

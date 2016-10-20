@@ -57,7 +57,15 @@ namespace Gloobster.Portal.Controllers.Api.User
 
             if (request.propertyName == "BirthYear")
             {
-                var year = int.Parse(request.values["year"]);
+                var ys = request.values["year"];
+
+                int? year = null;
+                int y = 0;
+                if (int.TryParse(ys, out y) )
+                {
+                    year = int.Parse(ys);
+                }
+                
                 update = DB.U<UserEntity>().Set(p => p.BirthYear, year);
             }
             

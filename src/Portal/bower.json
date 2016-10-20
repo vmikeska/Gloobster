@@ -5,7 +5,6 @@
     "jquery": "2.1.4",
     "jquery-validation": "1.11.1",
     "jquery-validation-unobtrusive": "3.2.2",
-    "leaflet": "~0.7.7",
     "lodash": "~3.10.1",
     "handlebars": "~4.0.4",
     "jquery-ui": "~1.11.4",
@@ -14,9 +13,8 @@
     "moment": "^2.14.1",
     "jquery-countTo": "countto#^1.2.0",
     "cropper": "^2.3.2",
-    "leaflet.markercluster": "~1.0.0"
-  },
-  "resolutions": {
-    "leaflet": ">= 1.0.0"
+    "mapbox.js": "^2.4.0",
+    "leaflet.markercluster": "0.5.0",
+    "leaflet": "1.0.1"
   }
 }

@@ -13,8 +13,10 @@ var Views;
         }
         SettingsView.prototype.init = function () {
             Views.SettingsUtils.registerAvatarFileUpload("avatarFile");
-            Views.SettingsUtils.registerLocationCombo("homeCity", "HomeLocation");
-            Views.SettingsUtils.registerLocationCombo("currentCity", "CurrentLocation");
+            this.homeCity = Views.SettingsUtils.registerLocationCombo($("#homeCity"), "HomeLocation");
+            this.currentCity = Views.SettingsUtils.registerLocationCombo($("#currentCity"), "CurrentLocation");
+            this.homeCity.setText(this.homeLocation);
+            this.currentCity.setText(this.currentLocation);
             Views.SettingsUtils.registerEdit("displayName", "DisplayName", function (value) {
                 return { name: value };
             });
@@ -36,10 +38,11 @@ var Views;
             Views.SettingsUtils.registerCombo("familyStatus", function (val) {
                 return { propertyName: "FamilyStatus", values: { status: val } };
             });
-            this.initInterests();
-            Views.SettingsUtils.initLangsTagger(this.langs);
+            Views.SettingsUtils.initInterests($("#intersTagging"), this.inters);
+            this.langsTagger = Views.SettingsUtils.initLangsTagger(this.langs);
             this.initPairing();
             this.initPairedMenu();
+            this.createTbVals();
         };
         SettingsView.prototype.initPairedMenu = function () {
             var _this = this;
@@ -80,16 +83,15 @@ var Views;
                 });
             });
         };
-        SettingsView.prototype.initInterests = function () {
-            var $c = $("#intersTagging");
-            this.interests = new TravelB.CategoryTagger();
-            this.interests.onFilterChange = (function (addedOrDeleted, id) {
-                var action = addedOrDeleted ? "ADD" : "DEL";
-                Views.SettingsUtils.callServer("Inters", { value: id, action: action }, function () { });
-            });
-            var data = TravelB.TravelBUtils.getInterestsTaggerData();
-            this.interests.create($c, "inters", data);
-            this.interests.initData(this.inters);
+        SettingsView.prototype.createTbVals = function () {
+            this.tbValids = new TravelB.FormValidations();
+            this.tbValids.valMessage($("#firstName"), $("#firstName"));
+            this.tbValids.valMessage($("#lastName"), $("#lastName"));
+            this.tbValids.valMessage($("#birthYear"), $("#birthYear"), Views.SettingsUtils.yearValidation);
+            this.tbValids.valPlace(this.homeCity, $("#homeCity"), $("#homeCity input"));
+            this.tbValids.valPlace(this.currentCity, $("#currentCity"), $("#currentCity input"));
+            this.tbValids.valTagger(this.langsTagger, $("#langsTagging input"));
+            this.tbValids.valDropDownVal($("#gender"), $("#gender .selected"), Gender.N);
         };
         SettingsView.prototype.btnExists = function (id) {
             return $("#" + id).length === 1;

@@ -20,35 +20,40 @@
 					});
 			}
 
-			private initCityCombo() {
-					var c = new Common.PlaceSearchConfig();
-					c.providers = "2";
-					c.selOjb = $("#city");
-					c.minCharsToSearch = 1;
-					c.clearAfterSearch = false;
+		private initCityCombo() {
 
-					var combo = new Common.PlaceSearchBox(c);
-					combo.onPlaceSelected = (newPlaceRequest, clickedPlaceObj) => {
-						var c = clickedPlaceObj.Coordinates;
-						this.placeCombo.setCoordinates(c.Lat, c.Lng);
-					}
-			}
+			var $c = $("#city");
+			var c = new Common.PlaceSearchConfig();
+			c.providers = "2";
+			c.selOjb = $c;
+			c.minCharsToSearch = 1;
+			c.clearAfterSearch = false;
 
-			private placeCombo: Common.PlaceSearchBox;
-			private initPlaceCombo() {
-					var c = new Common.PlaceSearchConfig();
-					c.providers = "1,4";
-					c.selOjb = $("#place");
-					c.minCharsToSearch = 1;
-					c.clearAfterSearch = true;
+			var combo = new Common.PlaceSearchBox(c);
+			$c.change((newPlaceRequest, clickedPlaceObj) => {
+				var c = clickedPlaceObj.Coordinates;
+				this.placeCombo.setCoordinates(c.Lat, c.Lng);
+			});
+		}
 
-					this.placeCombo = new Common.PlaceSearchBox(c);
-					this.placeCombo.onPlaceSelected = (newPlaceRequest, clickedPlaceObj) => {							
-							this.addMeetingPoint(clickedPlaceObj.SourceId, clickedPlaceObj.SourceType, clickedPlaceObj.Name, clickedPlaceObj.Coordinates);
-					}
-			}
+		private placeCombo: Common.PlaceSearchBox;
 
-			private addMeetingPoint(id, type, text, coord) {
+		private initPlaceCombo() {
+			var $p = $("#place");
+
+			var c = new Common.PlaceSearchConfig();
+			c.providers = "1,4";
+			c.selOjb = $("#place");
+			c.minCharsToSearch = 1;
+			c.clearAfterSearch = true;
+
+			this.placeCombo = new Common.PlaceSearchBox(c);
+			$p.change((newPlaceRequest, clickedPlaceObj) => {
+				this.addMeetingPoint(clickedPlaceObj.SourceId, clickedPlaceObj.SourceType, clickedPlaceObj.Name, clickedPlaceObj.Coordinates);
+			});
+		}
+
+		private addMeetingPoint(id, type, text, coord) {
 					var data = { sourceId: id, type: type, text: text, coord: coord };
 
 					this.apiPost("meetingPoint", data, (r) => {

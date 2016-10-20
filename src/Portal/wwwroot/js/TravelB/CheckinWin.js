@@ -37,10 +37,8 @@ var TravelB;
                 });
             }
             else {
-                this.createValidations(CheckinType.City);
-            }
-            if (!isEdit) {
                 this.initDatePickers();
+                this.createValidations(CheckinType.City);
             }
             if (callback) {
                 callback();
@@ -147,7 +145,7 @@ var TravelB;
         };
         CheckinWin.prototype.callNow = function (isEdit) {
             var _this = this;
-            if (!this.valids.isAllValid(CheckinType.Now)) {
+            if (!this.valids.isAllValid()) {
                 var id = new Common.InfoDialog();
                 id.create("Validation message", "Some required fields are not filled out.");
                 return;
@@ -179,10 +177,18 @@ var TravelB;
         };
         CheckinWin.prototype.callCity = function (isEdit) {
             var _this = this;
-            if (!this.valids.isAllValid(CheckinType.City)) {
+            if (!this.valids.isAllValid()) {
                 var id = new Common.InfoDialog();
                 id.create("Validation message", "Some required fields are not filled out.");
                 return;
+            }
+            var origFromDate = $("#fromDate").data("myDate");
+            var origToDate = $("#toDate").data("myDate");
+            var fromDate = origFromDate;
+            var toDate = origToDate;
+            if (TravelB.DateUtils.myDateToJsDate(origFromDate) > TravelB.DateUtils.myDateToJsDate(origToDate)) {
+                fromDate = origToDate;
+                toDate = origFromDate;
             }
             var data = this.getRequestObj();
             data = $.extend(data, {
@@ -190,8 +196,8 @@ var TravelB;
                 waitingAtType: this.placeCombo.sourceType,
                 waitingAtText: this.placeCombo.lastText,
                 waitingCoord: this.placeCombo.coord,
-                fromDate: $("#fromDate").data("myDate"),
-                toDate: $("#toDate").data("myDate"),
+                fromDate: fromDate,
+                toDate: toDate,
                 checkinType: CheckinType.City,
                 id: this.editId
             });
@@ -209,10 +215,10 @@ var TravelB;
         CheckinWin.prototype.refreshStat = function () {
             this.view.status.refresh();
         };
-        CheckinWin.prototype.initPlaceDD = function (providers, selObj) {
+        CheckinWin.prototype.initPlaceDD = function (providers, $selObj) {
             var c = new Common.PlaceSearchConfig();
             c.providers = providers;
-            c.selOjb = selObj;
+            c.selOjb = $selObj;
             c.minCharsToSearch = 1;
             c.clearAfterSearch = false;
             var combo = new Common.PlaceSearchBox(c);
@@ -224,96 +230,13 @@ var TravelB;
         };
         CheckinWin.prototype.createValidations = function (type) {
             var $msg = this.$html.find("#chckMsg");
-            this.valids = new CheckinValidations();
+            this.valids = new TravelB.FormValidations();
             this.valids.valMessage($msg, $msg);
             this.valids.valWantDo(this.wantDos, this.$html.find("#wantDoCont .wantDosMain"));
-            this.valids.valPlace(this.placeCombo, this.$html.find("#placeCombo input"));
-            if (type === CheckinType.City) {
-                this.valids.valCalendar($("#fromDate"), $("#toDate"), $("#fromDate"), $("#toDate"));
-            }
+            this.valids.valPlace(this.placeCombo, this.$html.find("#placeCombo"), this.$html.find("#placeCombo input"));
         };
         return CheckinWin;
     }());
     TravelB.CheckinWin = CheckinWin;
-    var CheckinValidations = (function () {
-        function CheckinValidations() {
-            this.isValid = false;
-            this.ic = "invalid";
-            this.messageValid = false;
-            this.wantDoValid = false;
-            this.placeValid = false;
-            this.dateValid = false;
-        }
-        CheckinValidations.prototype.isAllValid = function (type) {
-            var baseValid = this.messageValid && this.wantDoValid && this.placeValid;
-            if (type === CheckinType.Now) {
-                return baseValid;
-            }
-            return this.dateValid;
-        };
-        CheckinValidations.prototype.valCalendar = function ($fromDate, $toDate, $fromFrame, $toFrame) {
-            var _this = this;
-            this.valCalendarBody($fromDate, $toDate, $fromFrame, $toFrame);
-            $fromDate.change(function (e) {
-                _this.valCalendarBody($fromDate, $toDate, $fromFrame, $toFrame);
-            });
-        };
-        CheckinValidations.prototype.valCalendarBody = function ($fromDate, $toDate, $fromFrame, $toFrame) {
-            var fromDate = $fromDate.datepicker("getDate");
-            var toDate = $toDate.datepicker("getDate");
-            var rangeOk = toDate >= fromDate;
-            this.visual(rangeOk, $fromFrame);
-            this.visual(rangeOk, $toFrame);
-            this.dateValid = rangeOk;
-        };
-        CheckinValidations.prototype.valPlace = function (box, $frame) {
-            var _this = this;
-            this.valPlaceBody(box, $frame);
-            box.onPlaceSelected = function () {
-                _this.valPlaceBody(box, $frame);
-            };
-        };
-        CheckinValidations.prototype.valPlaceBody = function (box, $frame) {
-            var isSelected = box.sourceId != undefined;
-            this.visual(isSelected, $frame);
-            this.placeValid = isSelected;
-        };
-        CheckinValidations.prototype.valWantDo = function (tagger, $frame) {
-            var _this = this;
-            this.valWantDoBody(tagger, $frame);
-            tagger.onFilterChange = function () {
-                _this.valWantDoBody(tagger, $frame);
-            };
-        };
-        CheckinValidations.prototype.valWantDoBody = function (tagger, $frame) {
-            var anySelected = tagger.getSelectedIds().length > 0;
-            this.visual(anySelected, $frame);
-            this.wantDoValid = anySelected;
-        };
-        CheckinValidations.prototype.valMessage = function ($txt, $frame) {
-            var _this = this;
-            this.valMessageBody($txt, $frame);
-            var dc = new Common.DelayedCallback($txt);
-            dc.callback = function (val) {
-                _this.valMessageBody($txt, $frame);
-            };
-        };
-        CheckinValidations.prototype.valMessageBody = function ($txt, $frame) {
-            var val = $txt.val();
-            var hasText = val.length > 0;
-            this.visual(hasText, $frame);
-            this.messageValid = hasText;
-        };
-        CheckinValidations.prototype.visual = function (isValid, $frame) {
-            if (isValid) {
-                $frame.removeClass(this.ic);
-            }
-            else {
-                $frame.addClass(this.ic);
-            }
-        };
-        return CheckinValidations;
-    }());
-    TravelB.CheckinValidations = CheckinValidations;
 })(TravelB || (TravelB = {}));
 //# sourceMappingURL=CheckinWin.js.map

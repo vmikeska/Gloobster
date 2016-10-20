@@ -3,14 +3,19 @@
 
 			public langs;			
 			public inters;
+			public homeLocation;
+			public currentLocation;
 
 			private interests;
 
-		public init() {			
+			public init() {								
 			SettingsUtils.registerAvatarFileUpload("avatarFile");
-			SettingsUtils.registerLocationCombo("homeCity", "HomeLocation");
-			SettingsUtils.registerLocationCombo("currentCity", "CurrentLocation");
-				
+			this.homeCity = SettingsUtils.registerLocationCombo($("#homeCity"), "HomeLocation");
+			this.currentCity = SettingsUtils.registerLocationCombo($("#currentCity"), "CurrentLocation");
+
+			this.homeCity.setText(this.homeLocation);
+			this.currentCity.setText(this.currentLocation);
+
 			SettingsUtils.registerEdit("displayName", "DisplayName", (value) => {
 				return { name: value };
 			});
@@ -38,15 +43,16 @@
 			SettingsUtils.registerCombo("familyStatus", (val) => {
 					return { propertyName: "FamilyStatus", values: { status: val } };
 			});
+
+			SettingsUtils.initInterests($("#intersTagging"), this.inters);
 				
-			this.initInterests();
-			//SettingsUtils.initInterestsTagger(this.inters);
-				
-			SettingsUtils.initLangsTagger(this.langs);
+			this.langsTagger = SettingsUtils.initLangsTagger(this.langs);
 
 			this.initPairing();
 
 			this.initPairedMenu();
+
+			this.createTbVals();
 		}
 
 		private activeSocItem = null;
@@ -107,19 +113,24 @@
 		}
 
 
-		private initInterests() {
-				var $c = $("#intersTagging");
+		private tbValids;
+		public homeCity: Common.PlaceSearchBox;
+		public currentCity: Common.PlaceSearchBox;
+		private langsTagger: Planning.TaggingField;
 
-				this.interests = new TravelB.CategoryTagger();
-				this.interests.onFilterChange = ((addedOrDeleted, id) => {
-					var action = addedOrDeleted ? "ADD" : "DEL";
-					SettingsUtils.callServer("Inters", { value: id, action: action }, () => { });					
-				});
+		private createTbVals() {		
+				this.tbValids = new TravelB.FormValidations();
+				this.tbValids.valMessage($("#firstName"), $("#firstName"));
+				this.tbValids.valMessage($("#lastName"), $("#lastName"));
+				this.tbValids.valMessage($("#birthYear"), $("#birthYear"), Views.SettingsUtils.yearValidation);
 
-				var data = TravelB.TravelBUtils.getInterestsTaggerData();				
-				this.interests.create($c, "inters", data);				
+				this.tbValids.valPlace(this.homeCity, $("#homeCity"), $("#homeCity input"));
+				this.tbValids.valPlace(this.currentCity, $("#currentCity"), $("#currentCity input"));
 
-				this.interests.initData(this.inters);
+				this.tbValids.valTagger(this.langsTagger, $("#langsTagging input"));
+
+
+				this.tbValids.valDropDownVal($("#gender"), $("#gender .selected"), Gender.N);
 		}
 			
 		private btnExists(id) {

@@ -43,18 +43,20 @@ module TravelB {
 				$datePicker.datepicker("setDate", d);
 				$datePicker.data("myDate", date);
 			}
-
+				
 			$datePicker.change((e) => {
 				var $this = $(e.target);
 				var date = $this.datepicker("getDate");
 
 				var myDate = DateUtils.jsDateToMyDate(date);
 				$datePicker.data("myDate", myDate);
-
+				
 				if (onChange) {
 					onChange(myDate);
-				}
+				}				
 			});
+
+			
 		}
 	}
 }

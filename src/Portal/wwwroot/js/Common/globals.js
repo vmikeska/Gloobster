@@ -75,4 +75,4 @@ var TripEntityType;
     TripEntityType[TripEntityType["Place"] = 0] = "Place";
     TripEntityType[TripEntityType["Travel"] = 1] = "Travel";
 })(TripEntityType || (TripEntityType = {}));
-//# sourceMappingURL=Globals.js.map
+//# sourceMappingURL=globals.js.map

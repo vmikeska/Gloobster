@@ -32,22 +32,24 @@
 
 		private registerLocationCombo(elementId: string, propertyName: string) {
 
+			var $c = $(`#${elementId}`);
+
 			var c = new Common.PlaceSearchConfig();
 			c.providers = "2";
 			c.minCharsToSearch = 1;
 			c.clearAfterSearch = false;
-			c.elementId = elementId;
+			c.selOjb = $c;
 
 			var box = new Common.PlaceSearchBox(c);
-			box.onPlaceSelected = (request, place) => {
+			$c.change((e, request, place) => {
 				var data = { propertyName: propertyName, values: { sourceId: request.SourceId, sourceType: request.SourceType } };
-				Views.ViewBase.currentView.apiPut("UserProperty", data, (res) => {
+				ViewBase.currentView.apiPut("UserProperty", data, (res) => {
 
 					var $loc = $("#currentLocation");
 					$loc.find("strong").text(place.City);
 					$loc.find("span").text(place.CountryCode);
 				});
-			};
+			});
 		}
 
 		private kmRangeSelected = 200;

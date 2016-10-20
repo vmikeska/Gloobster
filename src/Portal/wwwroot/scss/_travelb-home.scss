@@ -1,6 +1,40 @@
 ﻿
 .travelb-home{
     
+    /*.everything {
+        position: relative;
+
+        .blocker{
+            position: absolute;
+            top:0;
+            right:0;
+            bottom: 0;
+            left: 0;
+
+            border-radius: 4px;
+
+            background-color: black;
+            opacity: 0.7;
+            z-index: 999999;
+        }
+
+        .blocker-info {
+            display: inline-block;
+
+            width: 400px;
+            font-size: 26px;
+            color: red;
+
+            position: absolute;
+            top:50%;
+            right:50%;
+            bottom: 50%;
+            left: 50%;
+            z-index: 9999999;
+            background-color: none;
+        }
+    }*/
+
     text-align: left;
 
     textarea{
@@ -8,7 +42,7 @@
     }
 
     .invalid {
-        border: 1px solid red !important;
+        border: 2px solid red !important;
     }
 
     .lang-tag{
@@ -1417,5 +1451,108 @@
     .listCont {
         border: 1px solid black;
     }
-     
+ 
+    .required-settings{
+
+        background-color: $light-gray;
+        border-radius: 4px;
+        margin-top: 4px;
+        padding:12px;
+
+        .info {            
+            display: inline-block;
+            border-radius: 4px;            
+            background-color: white;
+            padding: 8px;            
+            border: 2px solid $orange;
+            margin-bottom: 12px;
+        }
+
+        .item-title {
+            font-weight: bold;
+            /*color: gray;*/
+            margin-right: 8px;
+            margin-left: 8px;
+            display: inline-block;
+        }
+
+        $pps: 220px;
+        .photo-cont {
+            position: relative;
+            width: $pps;
+            height: $pps;
+            overflow: hidden;
+            background-color: white;
+
+            border-radius: 4px;
+
+            img {
+                width: $pps;
+                height: $pps;
+            }
+
+            .photo-edit {
+
+                position: absolute;
+                top: 10px;
+                right: 10px;
+
+                text-decoration: none;
+
+                input {
+                    width: 0.1px;
+                    height: 0.1px;
+                    opacity: 0;
+                    overflow: hidden;
+                    position: absolute;
+                    z-index: -1;
+                }
+
+                label {
+                    color: $light-blue;
+                    font-size: 1.3em;                
+                    cursor: pointer;
+
+                    &:hover {
+                        color: $dark-blue;
+                    }
+                }
+
+            }
+        }
+
+        #intersTagging {
+            border: 1px solid $light-blue3;
+            border-radius: 4px;
+        }
+
+        textarea,input{
+            border: 1px solid $light-blue3;            
+        }
+
+        .dropdown .selected{
+            border: 1px solid $light-blue3;
+        }
+
+        input[type=number]{            
+            border-radius: 4px;            
+            padding-left: 0.5em;
+            padding-right: 0.5em;
+        }
+
+        .all-valid {
+            margin-top: 16px;
+            font-weight: bold;
+
+            .lbtn {
+                background-color: $light-blue3;
+                color: white;
+
+                &:hover{
+                    background-color: $dark-blue;
+                }
+            }
+        }
+    }
+        
 }

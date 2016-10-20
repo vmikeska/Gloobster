@@ -4,7 +4,7 @@
 		constructor() {
 			super();
 
-			SettingsUtils.registerLocationCombo("currentCity", "CurrentLocation", () => {
+			SettingsUtils.registerLocationCombo($("#currentCity"), "CurrentLocation", () => {
 				window.location.href = "/Destination/planning";
 			});				
 		}

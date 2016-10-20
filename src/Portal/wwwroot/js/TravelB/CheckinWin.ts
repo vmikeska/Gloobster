@@ -62,13 +62,11 @@
 								this.createValidations(CheckinType.City);
 							});
 						} else {
+								this.initDatePickers();
+
 								this.createValidations(CheckinType.City);
 						}
 						
-					if (!isEdit) {
-						this.initDatePickers();
-					}
-
 					if (callback) {
 								callback();
 						}
@@ -206,7 +204,7 @@
 				
 				private callNow(isEdit: boolean) {
 
-						if (!this.valids.isAllValid(CheckinType.Now)) {
+						if (!this.valids.isAllValid()) {
 								var id = new Common.InfoDialog();
 								id.create("Validation message", "Some required fields are not filled out.");
 								return;
@@ -240,20 +238,30 @@
 
 				private callCity(isEdit: boolean) {
 
-						if (!this.valids.isAllValid(CheckinType.City)) {
+						if (!this.valids.isAllValid()) {
 								var id = new Common.InfoDialog();
 								id.create("Validation message", "Some required fields are not filled out.");
 								return;
 						}
+						
+						var origFromDate = $("#fromDate").data("myDate");
+						var origToDate = $("#toDate").data("myDate");
+						var fromDate = origFromDate;
+						var toDate = origToDate;
 
+						if (DateUtils.myDateToJsDate(origFromDate) > DateUtils.myDateToJsDate(origToDate)) {
+								fromDate = origToDate;
+								toDate = origFromDate;
+						}
+						
 						var data = this.getRequestObj();
 						data = $.extend(data, {
 								waitingAtId: this.placeCombo.sourceId,
 								waitingAtType: this.placeCombo.sourceType,
 								waitingAtText: this.placeCombo.lastText,
 								waitingCoord: this.placeCombo.coord,
-								fromDate: $("#fromDate").data("myDate"),
-								toDate: $("#toDate").data("myDate"),
+								fromDate: fromDate,
+								toDate: toDate,
 								checkinType: CheckinType.City,
 								id: this.editId
 						});
@@ -275,10 +283,10 @@
 						this.view.status.refresh();
 				}
 				
-				private initPlaceDD(providers, selObj) {
+				private initPlaceDD(providers, $selObj) {
 						var c = new Common.PlaceSearchConfig();
 						c.providers = providers;
-						c.selOjb = selObj;
+						c.selOjb = $selObj;
 						c.minCharsToSearch = 1;
 						c.clearAfterSearch = false;
 
@@ -292,126 +300,18 @@
 						return combo;
 				}		
 
-				private valids: CheckinValidations;
+				private valids: FormValidations;
 
 				private createValidations(type: CheckinType) {
 						var $msg = this.$html.find("#chckMsg");
 
-						this.valids = new CheckinValidations();
+						this.valids = new FormValidations();
 						this.valids.valMessage($msg, $msg);
 
 						this.valids.valWantDo(this.wantDos, this.$html.find("#wantDoCont .wantDosMain"));
-
-						this.valids.valPlace(this.placeCombo, this.$html.find("#placeCombo input"));
-
-						if (type === CheckinType.City) {
-								this.valids.valCalendar($("#fromDate"), $("#toDate"), $("#fromDate"), $("#toDate"));
-						}
+						
+						this.valids.valPlace(this.placeCombo, this.$html.find("#placeCombo"), this.$html.find("#placeCombo input"));
+						
 				}
 		}
-
-	export class CheckinValidations {
-
-		public isValid = false;
-
-		private ic = "invalid";
-
-		private messageValid = false;
-		private wantDoValid = false;
-		private placeValid = false;
-		private dateValid = false;
-
-		public isAllValid(type: CheckinType) {
-
-			var baseValid = this.messageValid && this.wantDoValid && this.placeValid;
-
-			if (type === CheckinType.Now) {
-				return baseValid;
-			}
-
-			return this.dateValid;
-		}
-
-		public valCalendar($fromDate, $toDate, $fromFrame, $toFrame) {
-
-			this.valCalendarBody($fromDate, $toDate, $fromFrame, $toFrame);
-
-			$fromDate.change((e) => {
-					this.valCalendarBody($fromDate, $toDate, $fromFrame, $toFrame);
-			});
-
-		}
-
-	  private valCalendarBody($fromDate, $toDate, $fromFrame, $toFrame) {
-
-				var fromDate = $fromDate.datepicker("getDate");
-				var toDate = $toDate.datepicker("getDate");
-
-				var rangeOk = toDate >= fromDate;
-
-				this.visual(rangeOk, $fromFrame);
-				this.visual(rangeOk, $toFrame);
-
-				this.dateValid = rangeOk;
-		}	
-
-		public valPlace(box: Common.PlaceSearchBox, $frame) {
-				this.valPlaceBody(box, $frame);
-
-				box.onPlaceSelected = () => {
-						this.valPlaceBody(box, $frame);
-				}
-		}
-
-		private valPlaceBody(box: Common.PlaceSearchBox, $frame) {
-				var isSelected = box.sourceId != undefined;
-
-				this.visual(isSelected, $frame);
-
-				this.placeValid = isSelected;
-		}
-
-		public valWantDo(tagger: CategoryTagger, $frame) {				
-				this.valWantDoBody(tagger, $frame);
-
-				tagger.onFilterChange = () => {
-					this.valWantDoBody(tagger, $frame);
-				}
-		}
-
-		private valWantDoBody(tagger: CategoryTagger, $frame) {
-			var anySelected = tagger.getSelectedIds().length > 0;
-
-			this.visual(anySelected, $frame);
-
-			this.wantDoValid = anySelected;
-		}
-
-		public valMessage($txt, $frame) {
-
-				this.valMessageBody($txt, $frame);
-
-				var dc = new Common.DelayedCallback($txt);
-				dc.callback = (val) => {
-					this.valMessageBody($txt, $frame);
-				};				
-		}
-
-		private valMessageBody($txt, $frame) {
-				var val = $txt.val();
-				var hasText = val.length > 0;
-				this.visual(hasText, $frame);
-				
-				this.messageValid = hasText;
-		}
-
-		private visual(isValid: boolean, $frame) {
-				if (isValid) {
-						$frame.removeClass(this.ic);
-				} else {
-						$frame.addClass(this.ic);
-				}
-		}
-
-	}
 }

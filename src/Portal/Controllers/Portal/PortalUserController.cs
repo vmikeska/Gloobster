@@ -63,6 +63,7 @@ namespace Gloobster.Portal.Controllers.Portal
             vm.BirthYear = User.BirthYear;
 
 			vm.Gender = GetGenderStr(User.Gender, vm);
+            vm.GenderVal = User.Gender;
             vm.FamilyStatus = GetStatusStr(User.FamilyStatus, vm);
 
             vm.CurrentLocation = FormatCityStr(User.CurrentLocation);
@@ -130,7 +131,7 @@ namespace Gloobster.Portal.Controllers.Portal
 		    var pic = GetProfilePicture(id, "profile.jpg");
             if (pic == null)
             {
-                return Redirect("/images/Anonymous.jpg");
+                return Redirect("/images/n/empty-profile-pic.svg");
             }
 			return pic;
 		}
@@ -140,7 +141,7 @@ namespace Gloobster.Portal.Controllers.Portal
             var pic = GetProfilePicture(id, "profile_s.jpg");
             if (pic == null)
             {
-                return Redirect("/images/Anonymous.jpg");
+                return Redirect("/images/n/empty-profile-pic.svg");
             }
             return pic;
         }
@@ -150,7 +151,7 @@ namespace Gloobster.Portal.Controllers.Portal
             var pic = GetProfilePicture(id, "profile_xs.jpg");
             if (pic == null)
             {
-                return Redirect("/images/Anonymous.jpg");
+                return Redirect("/images/n/empty-profile-pic.svg");
             }
             return pic;
         }

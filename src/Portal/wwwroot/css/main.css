@@ -14,6 +14,20 @@ a {
 .lato {
   font-family: "Lato", sans-serif; }
 
+.tagger {
+  position: relative; }
+  .tagger input {
+    font-size: 20px !important;
+    padding-left: 33px !important;
+    width: 70px; }
+  .tagger .icon-search {
+    position: absolute;
+    top: 9px;
+    left: 6px;
+    color: gray;
+    display: inline-block;
+    font-size: 24px; }
+
 input[type="text"], input[type="password"], input[type="number"], textarea {
   padding: 8px 13px;
   border: 0;
@@ -629,6 +643,9 @@ footer {
 .icon-user-tie:before {
   content: "\e976"; }
 
+.icon-search:before {
+  content: "\e986"; }
+
 .icon-bin:before {
   content: "\e9ac"; }
 
@@ -649,6 +666,9 @@ footer {
 
 .icon-minus:before {
   content: "\ea0b"; }
+
+.icon-info:before {
+  content: "\ea0c"; }
 
 .icon-cross:before {
   content: "\ea0f"; }
@@ -1903,7 +1923,8 @@ footer {
     padding-left: 8px; }
     .user-settings .split-tbl .left {
       display: table-cell;
-      vertical-align: top; }
+      vertical-align: top;
+      min-width: 240px; }
     .user-settings .split-tbl .right {
       display: table-cell;
       vertical-align: top;
@@ -1976,18 +1997,42 @@ footer {
     padding-top: 8px; }
     .user-settings .logins-to-pair .item {
       margin-bottom: 6px; }
-  .user-settings textarea, .user-settings input {
-    border: 1px solid #65BDD7; }
-  .user-settings input[type=number] {
-    height: 40px;
+  .user-settings .controls .section-title {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-top: 12px;
+    margin-bottom: 8px; }
+  .user-settings .controls .section-info {
+    position: relative;
+    display: inline-block;
     border-radius: 4px;
-    font-size: 1em;
+    background-color: #f2f2f2;
+    padding: 8px;
+    padding-left: 45px;
+    margin: 8px; }
+    .user-settings .controls .section-info .icon-info {
+      position: absolute;
+      top: 8px;
+      left: 10px;
+      color: #F56E12;
+      font-size: 26px; }
+  .user-settings .controls .item-title {
+    font-weight: bold;
+    color: gray;
+    margin-right: 8px;
+    margin-left: 8px;
+    display: inline-block; }
+  .user-settings .controls #intersTagging {
+    border: 1px solid #3298C1;
+    border-radius: 4px; }
+  .user-settings .controls textarea, .user-settings .controls input {
+    border: 1px solid #3298C1; }
+  .user-settings .controls .dropdown .selected {
+    border: 1px solid #3298C1; }
+  .user-settings .controls input[type=number] {
+    border-radius: 4px;
     padding-left: 0.5em;
     padding-right: 0.5em; }
-  .user-settings .titleName {
-    font-weight: bold; }
-  .user-settings .controls {
-    margin-top: 15px; }
 
 .twitter {
   display: inline-block;
@@ -2932,11 +2977,44 @@ footer {
     text-align: center; }
 
 .travelb-home {
+  /*.everything {
+        position: relative;
+
+        .blocker{
+            position: absolute;
+            top:0;
+            right:0;
+            bottom: 0;
+            left: 0;
+
+            border-radius: 4px;
+
+            background-color: black;
+            opacity: 0.7;
+            z-index: 999999;
+        }
+
+        .blocker-info {
+            display: inline-block;
+
+            width: 400px;
+            font-size: 26px;
+            color: red;
+
+            position: absolute;
+            top:50%;
+            right:50%;
+            bottom: 50%;
+            left: 50%;
+            z-index: 9999999;
+            background-color: none;
+        }
+    }*/
   text-align: left; }
   .travelb-home textarea {
     border: 1px solid #3298C1; }
   .travelb-home .invalid {
-    border: 1px solid red !important; }
+    border: 2px solid red !important; }
   .travelb-home .lang-tag {
     display: inline-block;
     vertical-align: top;
@@ -3786,6 +3864,71 @@ footer {
     float: left; }
   .travelb-home .listCont {
     border: 1px solid black; }
+  .travelb-home .required-settings {
+    background-color: #f2f2f2;
+    border-radius: 4px;
+    margin-top: 4px;
+    padding: 12px; }
+    .travelb-home .required-settings .info {
+      display: inline-block;
+      border-radius: 4px;
+      background-color: white;
+      padding: 8px;
+      border: 2px solid #F56E12;
+      margin-bottom: 12px; }
+    .travelb-home .required-settings .item-title {
+      font-weight: bold;
+      /*color: gray;*/
+      margin-right: 8px;
+      margin-left: 8px;
+      display: inline-block; }
+    .travelb-home .required-settings .photo-cont {
+      position: relative;
+      width: 220px;
+      height: 220px;
+      overflow: hidden;
+      background-color: white;
+      border-radius: 4px; }
+      .travelb-home .required-settings .photo-cont img {
+        width: 220px;
+        height: 220px; }
+      .travelb-home .required-settings .photo-cont .photo-edit {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        text-decoration: none; }
+        .travelb-home .required-settings .photo-cont .photo-edit input {
+          width: 0.1px;
+          height: 0.1px;
+          opacity: 0;
+          overflow: hidden;
+          position: absolute;
+          z-index: -1; }
+        .travelb-home .required-settings .photo-cont .photo-edit label {
+          color: #65BDD7;
+          font-size: 1.3em;
+          cursor: pointer; }
+          .travelb-home .required-settings .photo-cont .photo-edit label:hover {
+            color: #005476; }
+    .travelb-home .required-settings #intersTagging {
+      border: 1px solid #3298C1;
+      border-radius: 4px; }
+    .travelb-home .required-settings textarea, .travelb-home .required-settings input {
+      border: 1px solid #3298C1; }
+    .travelb-home .required-settings .dropdown .selected {
+      border: 1px solid #3298C1; }
+    .travelb-home .required-settings input[type=number] {
+      border-radius: 4px;
+      padding-left: 0.5em;
+      padding-right: 0.5em; }
+    .travelb-home .required-settings .all-valid {
+      margin-top: 16px;
+      font-weight: bold; }
+      .travelb-home .required-settings .all-valid .lbtn, .travelb-home .required-settings .all-valid .photo-button label, .photo-button .travelb-home .required-settings .all-valid label, .travelb-home .required-settings .all-valid .wiki-page .langs a, .wiki-page .langs .travelb-home .required-settings .all-valid a {
+        background-color: #3298C1;
+        color: white; }
+        .travelb-home .required-settings .all-valid .lbtn:hover, .travelb-home .required-settings .all-valid .photo-button label:hover, .photo-button .travelb-home .required-settings .all-valid label:hover, .travelb-home .required-settings .all-valid .wiki-page .langs a:hover, .wiki-page .langs .travelb-home .required-settings .all-valid a:hover {
+          background-color: #005476; }
 
 .fly-tickets .map {
   max-width: 1280px;

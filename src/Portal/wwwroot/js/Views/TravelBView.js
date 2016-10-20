@@ -45,7 +45,7 @@ var Views;
                 });
             };
             this.notifs.startRefresh();
-            this.props = new TravelB.EmptyProps();
+            this.props = new TravelB.EmptyProps(this);
             this.props.generateProps(this.emptyProps);
             $(".city-chck-cnt .city-link").click(function (e) {
                 e.preventDefault();
@@ -243,10 +243,11 @@ var Views;
                     $(".no-location-perm").show();
                 }
             });
-            var search = this.initPlaceDD("2", $("#searchCity"));
-            search.onPlaceSelected = function (p, e) {
-                _this.setPlaceCenter(e.Coordinates.Lat, e.Coordinates.Lng);
-            };
+            var $sc = $("#searchCity");
+            this.initPlaceDD("2", $sc);
+            $sc.change(function (e, p, c) {
+                _this.setPlaceCenter(c.Coordinates.Lat, c.Coordinates.Lng);
+            });
         };
         TravelBView.prototype.createUserMarker = function (lat, lng) {
             this.youMarker = L.marker([lat, lng], { title: "Your position" }).addTo(this.mapObj);

@@ -23,6 +23,7 @@ else
     <script src="/js/TravelB/CategoryTagger.js"></script>
     <script src="/js/TravelB/Tabs.js"></script>
     <script src="/js/TravelB/TravelBUtils.js"></script>
+    <script src="/js/TravelB/FormValidations.js"></script>
 }
 
 <div class="info-block-bck" id="info-travelb">
@@ -110,12 +111,17 @@ else
             <table class="controls">
                 <tr>
                     <td colspan="2">
-                        <h2>Base data</h2>
+                        <div class="section-title">Basic profile info</div>
+
+                        <div class="section-info">
+                            <span class="icon-info"></span>
+                            These are only the data we require for basic website use
+                        </div>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <span class="titleName">@Model.W("DisplayName")</span>
+                        <span class="item-title">@Model.W("DisplayName")</span>
                     </td>
                     <td>
                         <input id="displayName" type="text" value="@Model.DisplayName" />
@@ -123,29 +129,33 @@ else
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <h2>Travel Buddy min</h2>
+                        <div class="section-title">Travel Buddy (required)</div>
+                        <div class="section-info">
+                            <span class="icon-info"></span>
+                            As Travel Buddy service is about meeting real people in real world, users must honestly provide their real credintials. Users must be at least 18 years old
+                        </div>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <span class="titleName">First name</span>
+                        <span class="item-title">First name</span>
                     </td>
                     <td>
-                        <input id="firstName" type="text" value="@Model.FirstName" />
+                        <input id="firstName" type="text" placeholder="Last name" value="@Model.FirstName" />
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <span class="titleName">Last name</span>
+                        <span class="item-title">Last name</span>
                     </td>
                     <td>
-                        <input id="lastName" type="text" value="@Model.LastName" />
+                        <input id="lastName" type="text" placeholder="First name" value="@Model.LastName" />
                     </td>
                 </tr>
 
                 <tr>
                     <td>
-                        <span class="titleName">BirthYear</span>
+                        <span class="item-title">Birth year</span>
                     </td>
                     <td>
                         <input id="birthYear" type="number" value="@Model.BirthYear" placeholder="eg 1983" />
@@ -153,22 +163,85 @@ else
                 </tr>
                 <tr>
                     <td>
-                        <span class="titleName">@Model.W("Gender")</span>
+                        <span class="item-title">@Model.W("Gender")</span>
                     </td>
                     <td>
-                        <div id="gender" class="dropdown left">
+                        <div id="gender" class="dropdown">
                             <span class="selected">@Model.Gender</span>
                             <ul>
                                 <li data-value="1">@Model.W("Male", "layout")</li>
                                 <li data-value="2">@Model.W("Female", "layout")</li>
                             </ul>
-                            <input type="hidden" value="0">
+                            <input type="hidden" value="@((int)Model.GenderVal)">
+                        </div>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <span class="item-title">Languages</span>
+                    </td>
+                    <td>
+                        <div id="langsTagging" class="tags">
+                        </div>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <span class="item-title">@Model.W("HomeCity")</span>
+                    </td>
+                    <td>
+                        <div id="homeCity" class="dropdown">
+                            <input class="inputed" type="text" placeholder="City name" value="">
+                            <ul></ul>
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <span class="titleName">Status</span>
+                        <span class="item-title">@Model.W("CurrentCity")</span>
+                    </td>
+                    <td>
+                        <div id="currentCity" class="dropdown">
+                            <input class="inputed" type="text" placeholder="City name" value="">
+                            <ul></ul>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <div class="section-title">Travel Buddy (optional)</div>
+                        <div class="section-info">
+                            <span class="icon-info"></span>
+                            These data are not required but might give you some extra credit while searching for new friends
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <span class="item-title">Interests</span>
+                    </td>
+                    <td>
+                        <div id="intersTagging">
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <span class="item-title">Short description</span>
+                    </td>
+                    <td>
+                        <textarea id="shortDescription" placeholder="Write short description about yourself">@Model.ShortDescription</textarea>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <span class="item-title">Status</span>
                     </td>
                     <td>
                         <div id="familyStatus" class="dropdown left">
@@ -179,56 +252,6 @@ else
                             </ul>
                             <input type="hidden" value="0">
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span class="titleName">Languages</span>
-                    </td>
-                    <td>
-                        <div id="langsTagging" class="tags">
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span class="titleName">Interests</span>
-                    </td>
-                    <td>
-                        @*class="tags"*@
-                        <div id="intersTagging">
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span class="titleName">@Model.W("HomeCity")</span>
-                    </td>
-                    <td>
-                        <div id="homeCity" class="dropdown left">
-                            <input class="inputed" type="text" placeholder="City name" value="@Model.HomeLocation">
-                            <ul></ul>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span class="titleName">@Model.W("CurrentCity")</span>
-                    </td>
-                    <td>
-                        <div id="currentCity" class="dropdown left">
-                            <input class="inputed" type="text" placeholder="City name" value="@Model.CurrentLocation">
-                            <ul></ul>
-                        </div>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        <span class="titleName">Short description</span>
-                    </td>
-                    <td>
-                        <textarea id="shortDescription">@Model.ShortDescription</textarea>
                     </td>
                 </tr>
 
@@ -246,9 +269,11 @@ else
     function onBodyLoad() {
         currentView = new Views.SettingsView();
 
-        currentView.langs = @Html.Raw(JsonConvert.SerializeObject(Model.Languages));        
+        currentView.langs = @Html.Raw(JsonConvert.SerializeObject(Model.Languages));
         currentView.inters = @Html.Raw(JsonConvert.SerializeObject(Model.Interests));
-        
+        currentView.homeLocation = "@Html.Raw(Model.HomeLocation)";
+        currentView.currentLocation = "@Html.Raw(Model.CurrentLocation)";
+
         currentView.init();
     }
 </script>

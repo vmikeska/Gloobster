@@ -4,13 +4,11 @@ var Common;
         function PlaceSearchBox(config) {
             var _this = this;
             this.config = config;
-            if (this.config.selOjb) {
-                this.$root = this.config.selOjb;
-            }
-            else {
-                this.$root = $("#" + config.elementId);
-            }
+            this.$root = this.config.selOjb;
             this.$input = this.$root.find("input");
+            this.$input.change(function (e) {
+                e.stopPropagation();
+            });
             var source = $("#placeItem-template").html();
             this.template = Handlebars.compile(source);
             this.$input.focus(function (e) {
@@ -103,9 +101,7 @@ var Common;
                 }
                 this.setText(selectedCaption);
             }
-            if (this.onPlaceSelected) {
-                this.onPlaceSelected(newPlaceRequest, clickedPlaceObj);
-            }
+            this.$root.trigger("change", [newPlaceRequest, clickedPlaceObj]);
         };
         PlaceSearchBox.prototype.getCaption = function (place) {
             var name = "";

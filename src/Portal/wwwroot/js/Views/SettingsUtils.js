@@ -3,6 +3,15 @@ var Views;
     var SettingsUtils = (function () {
         function SettingsUtils() {
         }
+        SettingsUtils.yearValidation = function (val) {
+            if (val.length !== 4) {
+                return false;
+            }
+            if (Common.F.tryParseInt(val) === null) {
+                return false;
+            }
+            return true;
+        };
         SettingsUtils.registerAvatarFileUpload = function (id, callback) {
             if (callback === void 0) { callback = null; }
             var c = new Common.FileUploadConfig();
@@ -17,6 +26,7 @@ var Views;
             fileUpload.onUploadFinished = function (file) {
                 var d = new Date();
                 $("#avatar").attr("src", "/PortalUser/ProfilePicture?d=" + d.getTime());
+                $("#" + id).data("valid", true);
                 if (callback) {
                     callback();
                 }
@@ -25,8 +35,12 @@ var Views;
         SettingsUtils.registerEdit = function (id, prop, valsCallback, finishedCallback) {
             var _this = this;
             if (finishedCallback === void 0) { finishedCallback = null; }
-            var displayNameCall = new Common.DelayedCallback(id);
-            displayNameCall.callback = function (value) {
+            var $i = $("#" + id);
+            var dc = new Common.DelayedCallback(id);
+            dc.callback = function (value) {
+                if ($i.attr("type") === "number") {
+                    value = Common.F.tryParseInt(value);
+                }
                 var vals = valsCallback(value);
                 _this.callServer(prop, vals, finishedCallback);
             };
@@ -50,15 +64,26 @@ var Views;
                 }
             });
         };
-        SettingsUtils.registerLocationCombo = function (elementId, propertyName, callback) {
+        SettingsUtils.registerLocationCombo = function ($combo, propertyName, callback) {
             var _this = this;
             if (callback === void 0) { callback = null; }
             var homeConf = this.getLocationBaseConfig();
-            homeConf.elementId = elementId;
+            homeConf.selOjb = $combo;
             var box = new Common.PlaceSearchBox(homeConf);
-            box.onPlaceSelected = function (request) {
+            $combo.change(function (e, request) {
                 _this.callServer(propertyName, { sourceId: request.SourceId, sourceType: request.SourceType }, callback);
-            };
+            });
+            return box;
+        };
+        SettingsUtils.initInterests = function ($c, inters) {
+            var interests = new TravelB.CategoryTagger();
+            interests.onFilterChange = (function (addedOrDeleted, id) {
+                var action = addedOrDeleted ? "ADD" : "DEL";
+                SettingsUtils.callServer("Inters", { value: id, action: action }, function () { });
+            });
+            var data = TravelB.TravelBUtils.getInterestsTaggerData();
+            interests.create($c, "inters", data, "Pick some characteristics of you");
+            interests.initData(inters);
         };
         SettingsUtils.initLangsTagger = function (selectedItems) {
             var _this = this;

@@ -31,7 +31,7 @@ module Constants {
 
 	export var firstRedirectUrl = "/travelmap";
 	export var networkTypes = "NetworkTypes";
-	export var emptyId = "000000000000000000000000";
+	export var emptyId = "000000000000000000000000";  
 }
 
 enum NewPlacePosition { ToLeft, ToRight }

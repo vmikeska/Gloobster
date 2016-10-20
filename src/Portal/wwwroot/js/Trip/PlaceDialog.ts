@@ -57,15 +57,17 @@ module Trip {
 			}
 
 			private createNameSearch(data) {
-			var c = new Common.PlaceSearchConfig();
+
+				var $c = $("#cities");
+					var c = new Common.PlaceSearchConfig();
 			c.providers = "0,1,2,3,4";
-			c.elementId = "cities";
+			c.selOjb = $c;
 			c.minCharsToSearch = 1;
 			c.clearAfterSearch = false;
 			c.customSelectedFormat = (place) => this.placeNameCustom(place);
 
 			this.placeSearch = new Common.PlaceSearchBox(c);
-			this.placeSearch.onPlaceSelected = (req, place) => this.onPlaceSelected(req, place);
+			$c.change((e, req, place) => this.onPlaceSelected(req, place));
 
 			if (data.place) {
 				this.placeSearch.setText(data.place.selectedName);
@@ -100,14 +102,15 @@ module Trip {
 		}
 
 		private createPlaceToVisitSearch(data) {
+			var $p = $("#placeToVisit");
 			var c = new Common.PlaceSearchConfig();
 			c.providers = "1,0,4";
-			c.elementId = "placeToVisit";
+			c.selOjb = $p;
 			c.minCharsToSearch = 1;
 			c.clearAfterSearch = true;
 
 			this.placeToVisitSearch = new Common.PlaceSearchBox(c);
-			this.placeToVisitSearch.onPlaceSelected = (req, place) => this.onPlaceToVisitSelected(req, place);
+			$p.change((e, req, place) => this.onPlaceToVisitSelected(req, place));
 
 			if (data.place && data.place.coordinates) {
 				this.placeToVisitSearch.setCoordinates(data.place.coordinates.Lat, data.place.coordinates.Lng);
@@ -115,9 +118,10 @@ module Trip {
 		}
 
 		private createAddressSearch(data) {
+			var $p = $("#stayPlace");
 			var c = new Common.PlaceSearchConfig();
 			c.providers = "1,0,4";
-			c.elementId = "stayPlace";
+			c.selOjb = $p;
 			c.minCharsToSearch = 1;
 			c.clearAfterSearch = false;
 			c.customSelectedFormat = (place) => {
@@ -125,7 +129,7 @@ module Trip {
 			}
 
 			this.addressSearch = new Common.PlaceSearchBox(c);
-			this.addressSearch.onPlaceSelected = (req, place) => this.onAddressSelected(req, place);
+			$p.change((e, req, place) => this.onAddressSelected(req, place));
 
 			var addressName = "";
 			if (data.address) {

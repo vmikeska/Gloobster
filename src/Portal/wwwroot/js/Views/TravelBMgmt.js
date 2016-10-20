@@ -23,28 +23,30 @@ var Views;
         };
         TravelBMgmt.prototype.initCityCombo = function () {
             var _this = this;
+            var $c = $("#city");
             var c = new Common.PlaceSearchConfig();
             c.providers = "2";
-            c.selOjb = $("#city");
+            c.selOjb = $c;
             c.minCharsToSearch = 1;
             c.clearAfterSearch = false;
             var combo = new Common.PlaceSearchBox(c);
-            combo.onPlaceSelected = function (newPlaceRequest, clickedPlaceObj) {
+            $c.change(function (newPlaceRequest, clickedPlaceObj) {
                 var c = clickedPlaceObj.Coordinates;
                 _this.placeCombo.setCoordinates(c.Lat, c.Lng);
-            };
+            });
         };
         TravelBMgmt.prototype.initPlaceCombo = function () {
             var _this = this;
+            var $p = $("#place");
             var c = new Common.PlaceSearchConfig();
             c.providers = "1,4";
             c.selOjb = $("#place");
             c.minCharsToSearch = 1;
             c.clearAfterSearch = true;
             this.placeCombo = new Common.PlaceSearchBox(c);
-            this.placeCombo.onPlaceSelected = function (newPlaceRequest, clickedPlaceObj) {
+            $p.change(function (newPlaceRequest, clickedPlaceObj) {
                 _this.addMeetingPoint(clickedPlaceObj.SourceId, clickedPlaceObj.SourceType, clickedPlaceObj.Name, clickedPlaceObj.Coordinates);
-            };
+            });
         };
         TravelBMgmt.prototype.addMeetingPoint = function (id, type, text, coord) {
             var data = { sourceId: id, type: type, text: text, coord: coord };

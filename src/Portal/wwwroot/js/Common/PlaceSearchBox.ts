@@ -2,8 +2,7 @@ module Common {
 	export class PlaceSearchBox {
 
 		public config: PlaceSearchConfig;
-		public onPlaceSelected: Function;
-
+		
 		public sourceId: any;
 		public sourceType: any;
 		public lastText: string;
@@ -19,14 +18,14 @@ module Common {
 
 		constructor(config: PlaceSearchConfig) {
 			this.config = config;
-
-			if (this.config.selOjb) {
-				this.$root = this.config.selOjb;
-			} else {
-				this.$root = $(`#${config.elementId}`);
-			}
-
+				
+			this.$root = this.config.selOjb;
+				
 			this.$input = this.$root.find("input");
+
+			this.$input.change((e) => {
+					e.stopPropagation();
+			});
 
 			var source = $("#placeItem-template").html();
 			this.template = Handlebars.compile(source);
@@ -125,8 +124,7 @@ module Common {
 				"SourceId": this.sourceId,
 				"SourceType": this.sourceType
 			};
-
-
+				
 			this.$root.find("ul").hide();
 
 			if (this.config.clearAfterSearch) {
@@ -138,10 +136,8 @@ module Common {
 				}
 				this.setText(selectedCaption);
 			}
-
-			if (this.onPlaceSelected) {
-				this.onPlaceSelected(newPlaceRequest, clickedPlaceObj);
-			}
+				
+			this.$root.trigger("change",[newPlaceRequest, clickedPlaceObj]);
 		}
 
 		private getCaption(place) {
@@ -194,10 +190,8 @@ module Common {
 		}
 	}
 
-	export class PlaceSearchConfig {
-		elementId: string;
+	export class PlaceSearchConfig {		
 		selOjb: any;
-
 		providers: string;
 		minCharsToSearch: number;
 		clearAfterSearch: boolean;

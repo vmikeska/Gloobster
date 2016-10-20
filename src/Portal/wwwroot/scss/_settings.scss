@@ -1,8 +1,8 @@
 ﻿
 .user-settings{
 
-    .wrapper{    
-    }
+    text-align: left;
+    $pps: 220px;
 
     .split-tbl {
         display: table;
@@ -12,6 +12,7 @@
         .left{
             display: table-cell;
             vertical-align: top;
+            min-width: 240px;
         }
 
         .right {
@@ -37,7 +38,7 @@
     }
 
 
-    $pps: 220px;
+    
 
     .photo-cont {
         position: relative;
@@ -148,35 +149,80 @@
         }
     }
 
+    .controls {
+        
+        .section-title {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-top: 12px;
+            margin-bottom: 8px;
+        }
 
+        .section-info {
+            position: relative;
+            display: inline-block;
+            border-radius: 4px;            
+            background-color: $light-gray;
+            padding: 8px;
+            padding-left: 45px;
+            margin: 8px;
 
+            .icon-info {
+                position: absolute;
+                top: 8px;
+                left: 10px;
+                
+                color: $orange;
+                font-size: 26px;
 
+            }
+        }
 
-    textarea,input{
-        border: 1px solid $light-blue;
+        .item-title {
+            font-weight: bold;
+            color: gray;
+            margin-right: 8px;
+            margin-left: 8px;
+            display: inline-block;
+        }
+
+        #intersTagging {
+            border: 1px solid $light-blue3;
+            border-radius: 4px;
+        }
+
+        textarea,input{
+            border: 1px solid $light-blue3;            
+        }
+
+        .dropdown .selected{
+            border: 1px solid $light-blue3;
+        }
+
+        input[type=number]{            
+            border-radius: 4px;            
+            padding-left: 0.5em;
+            padding-right: 0.5em;
+        }
+
     }
 
-    input[type=number]{
-        height: 40px;
-        border-radius: 4px;
-        font-size: 1em;
-        padding-left: 0.5em;
-        padding-right: 0.5em;
-    }
 
-    text-align: left;
 
-    .titleName {
-        font-weight: bold;
-    }
+
+
+    
+
+    
+
+    
+
 
     
 
 
 
-    .controls {
-        margin-top: 15px;
-    }
+    
 
     
 }

@@ -23,20 +23,21 @@ var Views;
             };
         };
         LocationSettingsDialog.prototype.registerLocationCombo = function (elementId, propertyName) {
+            var $c = $("#" + elementId);
             var c = new Common.PlaceSearchConfig();
             c.providers = "2";
             c.minCharsToSearch = 1;
             c.clearAfterSearch = false;
-            c.elementId = elementId;
+            c.selOjb = $c;
             var box = new Common.PlaceSearchBox(c);
-            box.onPlaceSelected = function (request, place) {
+            $c.change(function (e, request, place) {
                 var data = { propertyName: propertyName, values: { sourceId: request.SourceId, sourceType: request.SourceType } };
                 Views.ViewBase.currentView.apiPut("UserProperty", data, function (res) {
                     var $loc = $("#currentLocation");
                     $loc.find("strong").text(place.City);
                     $loc.find("span").text(place.CountryCode);
                 });
-            };
+            });
         };
         LocationSettingsDialog.prototype.registerAirportRange = function () {
             var _this = this;

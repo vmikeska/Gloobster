@@ -74,8 +74,10 @@ module TravelB {
 						var markerCont = MapPins.getCheckinCont(c);
 						
 						var newCoord = this.addPixelsToCoord(coord.Lat, coord.Lng, i * 30, 0, this.mapObj);
-
+						
 						var marker = L.marker(newCoord, { icon: markerCont });
+						this.checkinsLayer.addLayer(marker);
+				
 						marker.on("click", (e) => {
 
 								if (type === CheckinType.Now) {
@@ -87,7 +89,7 @@ module TravelB {
 								}
 
 						});
-						this.checkinsLayer.addLayer(marker);
+						
 				});
 					
 			});
@@ -98,7 +100,7 @@ module TravelB {
 		public genMPs(mps) {
 				
 			this.clearMPs();
-			this.clusterLayerMPs = new L.MarkerClusterGroup();
+			this.clusterLayerMPs = L.markerClusterGroup();
 
 
 			mps.forEach((c) => {

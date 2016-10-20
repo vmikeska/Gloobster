@@ -39,6 +39,7 @@
 		public defaultLangs;
 			
 		public emptyProps = [];
+		public homeLocation;
 
 		public init() {
 				
@@ -84,7 +85,7 @@
 			}
 			this.notifs.startRefresh();
 
-			this.props = new TravelB.EmptyProps();
+			this.props = new TravelB.EmptyProps(this);
 			this.props.generateProps(this.emptyProps);
 
 			$(".city-chck-cnt .city-link").click((e) => {
@@ -347,15 +348,16 @@
 					$(".no-location-perm").show();
 				}
 			});
-				
-			var search = this.initPlaceDD("2", $("#searchCity"));
-			search.onPlaceSelected = (p, e) => {
-				this.setPlaceCenter(e.Coordinates.Lat, e.Coordinates.Lng);
-			}
+
+			var $sc = $("#searchCity");
+			this.initPlaceDD("2", $sc);
+			$sc.change((e, p, c) => {
+				this.setPlaceCenter(c.Coordinates.Lat, c.Coordinates.Lng);
+			});
 		}
 
 		private createUserMarker(lat, lng) {
-			this.youMarker = L.marker([lat, lng], { title: "Your position" }).addTo(this.mapObj);
+				this.youMarker = L.marker([lat, lng], { title: "Your position" }).addTo(this.mapObj);				
 		}
 
 		private clearUserMarker() {

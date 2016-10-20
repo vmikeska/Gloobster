@@ -1,0 +1,114 @@
+﻿
+@model Gloobster.Portal.ViewModels.TravelBViewModel
+
+<div class="required-settings">
+
+    <div class="info">
+        Before you start... Travel Buddy service is about meeting real people in real world. Therefore we have to ask you fill in honestly following information. By using this service, you agree with <a href="/legal/TermsAndConds">Terms of use</a>
+    </div>
+
+    <table>
+        <tr>
+            <td>
+                <span class="item-title">Profile photo</span>
+            </td>
+            <td>
+                <div class="photo-cont">
+
+                    <img id="avatar" src="/PortalUser/ProfilePicture" />
+
+                    <a class="photo-edit" href="#">
+                        <input type="file" id="avatarFile" data-valid="@Model.User.HasProfileImage.ToString().ToLower()" />
+
+                        <label for="avatarFile">
+                            <span class="icon-edit-pencil"></span>
+                        </label>
+                    </a>
+
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="item-title">First name</span>
+            </td>
+            <td>
+                <input id="firstName" type="text" placeholder="First name" value="@Model.User.FirstName"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="item-title">Last name</span>
+            </td>
+            <td>
+                <input id="lastName" type="text" placeholder="Last name" value="@Model.User.LastName"/>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="item-title">Birth year</span>
+            </td>
+            <td>
+                <input id="birthYear" type="number" max="2002" placeholder="eg 1983" value="@Model.User.BirthYear"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="item-title">Gender</span>
+            </td>
+            <td>
+                <div id="gender" class="dropdown">
+                    <span class="selected">@Model.GenderStr</span>
+                    <ul>
+                        <li data-value="1">Male</li>
+                        <li data-value="2">Female</li>
+                    </ul>
+                    <input type="hidden" value="@((int) Model.User.Gender)">
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="item-title">Languages</span>
+            </td>
+            <td>
+                <div id="langsTagging" class="tags">
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="item-title">City (Born)</span>
+            </td>
+            <td>
+                <div id="homeCity" class="dropdown">
+                    <input class="inputed" type="text" placeholder="City name"/>
+                    <ul></ul>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="item-title">City (Living)</span>
+            </td>
+            <td>
+                <div id="currentCity" class="dropdown">
+                    <input class="inputed" type="text" placeholder="City name" />
+                    <ul></ul>
+                </div>
+            </td>
+        </tr>
+
+    </table>
+
+    <div class="all-valid info" style="display: none">
+        Is everything correct? Then close the dialog and start using the service!        
+        <a class="lbtn" href="#">Close dialog</a>
+    </div>
+
+</div>

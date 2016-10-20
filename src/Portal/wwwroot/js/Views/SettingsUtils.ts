@@ -1,6 +1,18 @@
 module Views {
 	export class SettingsUtils {
 
+		public static yearValidation(val) {
+			if (val.length !== 4) {
+				return false;
+			}
+
+			if (Common.F.tryParseInt(val) === null) {
+				return false;
+			}
+
+			return true;
+		}
+
 		public static registerAvatarFileUpload(id, callback = null) {
 			var c = new Common.FileUploadConfig();
 			c.inputId = id;
@@ -15,7 +27,8 @@ module Views {
 			}
 			fileUpload.onUploadFinished = (file) => {
 				var d = new Date();
-				$("#avatar").attr("src", `/PortalUser/ProfilePicture?d=${d.getTime()}`);
+				$("#avatar").attr("src", `/PortalUser/ProfilePicture?d=${d.getTime()}`);				
+				$(`#${id}`).data("valid", true);
 				if (callback) {
 					callback();
 				}
@@ -23,8 +36,15 @@ module Views {
 		}
 
 		public static registerEdit(id, prop, valsCallback, finishedCallback = null) {
+			var $i = $(`#${id}`);
+
 			var dc = new Common.DelayedCallback(id);
 			dc.callback = (value) => {
+
+					if ($i.attr("type") === "number") {
+							value = Common.F.tryParseInt(value);													
+					}
+
 				var vals = valsCallback(value);
 				this.callServer(prop, vals, finishedCallback);
 			}
@@ -37,29 +57,45 @@ module Views {
 				$val.change(e => {
 						var val = $val.val();
 						var data = dataBuild(val);
-						Views.ViewBase.currentView.apiPut("UserProperty", data, () => {
-								//alert("updated");
+						ViewBase.currentView.apiPut("UserProperty", data, () => {
+																
 						});
 				});
 		}
 
 		public static callServer(prop, values, callback = null) {
 			var data = { propertyName: prop, values: values };
-			Views.ViewBase.currentView.apiPut("UserProperty", data, () => {
+			ViewBase.currentView.apiPut("UserProperty", data, () => {
 				if (callback) {
 					callback();
 				}
 			});
 		}
 
-		public static registerLocationCombo(elementId: string, propertyName: string, callback = null) {
+		public static registerLocationCombo($combo, propertyName: string, callback = null) {
 			var homeConf = this.getLocationBaseConfig();
-			homeConf.elementId = elementId;
+			homeConf.selOjb = $combo;
 
 			var box = new Common.PlaceSearchBox(homeConf);
-			box.onPlaceSelected = (request) => {
+			$combo.change((e, request) => {
 				this.callServer(propertyName, { sourceId: request.SourceId, sourceType: request.SourceType }, callback);
-			};
+			});
+
+			return box;
+		}
+
+		public static initInterests($c, inters) {
+				
+				var interests = new TravelB.CategoryTagger();
+				interests.onFilterChange = ((addedOrDeleted, id) => {
+						var action = addedOrDeleted ? "ADD" : "DEL";
+						SettingsUtils.callServer("Inters", { value: id, action: action }, () => { });
+				});
+
+				var data = TravelB.TravelBUtils.getInterestsTaggerData();
+				interests.create($c, "inters", data, "Pick some characteristics of you");
+
+				interests.initData(inters);
 		}
 
 		//public static initInterestsTagger(selectedItems) {

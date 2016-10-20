@@ -39,14 +39,15 @@ var Trip;
         };
         PlaceDialog.prototype.createNameSearch = function (data) {
             var _this = this;
+            var $c = $("#cities");
             var c = new Common.PlaceSearchConfig();
             c.providers = "0,1,2,3,4";
-            c.elementId = "cities";
+            c.selOjb = $c;
             c.minCharsToSearch = 1;
             c.clearAfterSearch = false;
             c.customSelectedFormat = function (place) { return _this.placeNameCustom(place); };
             this.placeSearch = new Common.PlaceSearchBox(c);
-            this.placeSearch.onPlaceSelected = function (req, place) { return _this.onPlaceSelected(req, place); };
+            $c.change(function (e, req, place) { return _this.onPlaceSelected(req, place); });
             if (data.place) {
                 this.placeSearch.setText(data.place.selectedName);
             }
@@ -73,29 +74,31 @@ var Trip;
         };
         PlaceDialog.prototype.createPlaceToVisitSearch = function (data) {
             var _this = this;
+            var $p = $("#placeToVisit");
             var c = new Common.PlaceSearchConfig();
             c.providers = "1,0,4";
-            c.elementId = "placeToVisit";
+            c.selOjb = $p;
             c.minCharsToSearch = 1;
             c.clearAfterSearch = true;
             this.placeToVisitSearch = new Common.PlaceSearchBox(c);
-            this.placeToVisitSearch.onPlaceSelected = function (req, place) { return _this.onPlaceToVisitSelected(req, place); };
+            $p.change(function (e, req, place) { return _this.onPlaceToVisitSelected(req, place); });
             if (data.place && data.place.coordinates) {
                 this.placeToVisitSearch.setCoordinates(data.place.coordinates.Lat, data.place.coordinates.Lng);
             }
         };
         PlaceDialog.prototype.createAddressSearch = function (data) {
             var _this = this;
+            var $p = $("#stayPlace");
             var c = new Common.PlaceSearchConfig();
             c.providers = "1,0,4";
-            c.elementId = "stayPlace";
+            c.selOjb = $p;
             c.minCharsToSearch = 1;
             c.clearAfterSearch = false;
             c.customSelectedFormat = function (place) {
                 return place.Name;
             };
             this.addressSearch = new Common.PlaceSearchBox(c);
-            this.addressSearch.onPlaceSelected = function (req, place) { return _this.onAddressSelected(req, place); };
+            $p.change(function (e, req, place) { return _this.onAddressSelected(req, place); });
             var addressName = "";
             if (data.address) {
                 addressName = data.address.selectedName;

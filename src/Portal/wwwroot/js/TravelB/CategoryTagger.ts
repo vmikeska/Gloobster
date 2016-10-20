@@ -19,7 +19,10 @@ module TravelB {
 		}
 
 		public initData(data) {
-			this.hideEmptyText();
+
+			if (data.length > 0) {
+				this.hideEmptyText();
+			}
 
 			data.forEach((id) => {
 				var res = this.findItemById(id);
@@ -105,11 +108,7 @@ module TravelB {
 			itms = _.reject(itms, (i) => {
 				return _.contains(ids, i.id);
 			});
-
-		  //add the root one ?
-			//var $di = this.catItem(key.k, key.id, key.k);
-			//this.$dataCont.append($di);
-
+				
 			itms.forEach((i) => {
 				var $i = this.catItem(catData.k, i.id, i.text);
 				this.$dataCont.append($i);

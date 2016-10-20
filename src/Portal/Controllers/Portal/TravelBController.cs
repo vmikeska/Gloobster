@@ -27,10 +27,25 @@ namespace Gloobster.Portal.Controllers.Portal
         public IActionResult Home()
         {
             var vm = CreateViewModelInstance<TravelBViewModel>();
-            vm.Languages = User.Languages;
+            vm.GenderStr = GetGenderStr(User.Gender, vm);
             vm.EmptyProps = GetEmptyProps(UserId);
 
             return View(vm);
+        }
+
+        private string GetGenderStr(Gender gender, ViewModelBase vm)
+        {
+            if (gender == Gender.M)
+            {
+                return vm.W("Male", "layout");
+            }
+
+            if (gender == Gender.F)
+            {
+                return vm.W("Female", "layout");
+            }
+
+            return "N/A";
         }
 
         private List<string> GetEmptyProps(string userId)
@@ -41,6 +56,11 @@ namespace Gloobster.Portal.Controllers.Portal
 
             var props = new List<string>();
 
+            if (!user.HasProfileImage)
+            {
+                props.Add("HasProfileImage");
+            }
+
             if (string.IsNullOrEmpty(user.FirstName))
             {
                 props.Add("FirstName");
@@ -50,12 +70,7 @@ namespace Gloobster.Portal.Controllers.Portal
             {
                 props.Add("LastName");
             }
-
-            if (!user.HasProfileImage)
-            {
-                props.Add("HasProfileImage");
-            }
-
+            
             if (user.HomeLocation == null)
             {
                 props.Add("HomeLocation");
@@ -65,12 +80,7 @@ namespace Gloobster.Portal.Controllers.Portal
             {
                 props.Add("Languages");
             }
-
-            if (user.Interests == null || user.Interests.Count == 0)
-            {
-                props.Add("Interests");
-            }
-
+            
             if (user.Gender == Gender.N)
             {
                 props.Add("Gender");
@@ -80,17 +90,7 @@ namespace Gloobster.Portal.Controllers.Portal
             {
                 props.Add("BirthYear");
             }
-
-            if (!user.BirthYear.HasValue)
-            {
-                props.Add("BirthYear");
-            }
-
-            if (user.FamilyStatus == FamilyStatus.NA)
-            {
-                props.Add("FamilyStatus");
-            }
-
+            
             return props;
         }
 
