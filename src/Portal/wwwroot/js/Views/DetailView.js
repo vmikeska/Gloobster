@@ -25,7 +25,12 @@ var Views;
                     var char = _.find(chars, function (li) {
                         return li.id === code;
                     });
-                    $l.html(char.text);
+                    if (char) {
+                        $l.html(char.text);
+                    }
+                    else {
+                        $l.hide();
+                    }
                 });
             }
         };
@@ -40,7 +45,12 @@ var Views;
                     var lang = _.find(langs, function (li) {
                         return li.id === code;
                     });
-                    $l.html(lang.text);
+                    if (lang) {
+                        $l.html(lang.text);
+                    }
+                    else {
+                        $l.hide();
+                    }
                 });
             }
         };

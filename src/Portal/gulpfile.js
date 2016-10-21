@@ -57,6 +57,10 @@ var data = [
             o: "userSettings"
         },
         {
+            i: "PortalUser/Detail",
+            o: "userDetail"
+        },
+        {
             i: "PortalUser/Notifications",
             o: "notifications"
         },
