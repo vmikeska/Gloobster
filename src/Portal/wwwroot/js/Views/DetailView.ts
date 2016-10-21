@@ -95,7 +95,7 @@
 					var id = $c.data("id");
 					
 					var cd = new Common.ConfirmDialog();
-					cd.create("Rating deletion", "Do you want to delete this rating?", "Cancel", "Delete", () => {
+					cd.create(this.t("RatingDelTitle", "jsUserDetail"), this.t("RatingDelBody", "jsUserDetail"), this.t("Cancel", "jsLayout"), this.t("Delete", "jsLayout"), () => {
 						this.apiDelete("UserRating", [["id", id]], () => {
 							$(`.item[data-id="${id}"]`).remove();
 						});

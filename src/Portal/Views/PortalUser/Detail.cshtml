@@ -29,7 +29,7 @@ else
 
         <div class="title-table">
             <div class="left">
-                <h1>User detail</h1>
+                <h1>@Model.W("Title")</h1>
             </div>
 
             <div class="right">
@@ -57,22 +57,22 @@ else
             <div class="trophies-all">                
                 <div class="trophies">
                     <div class="item">
-                        <div class="name">cities</div>
+                        <div class="name">@Model.W("Cities")</div>
                         <span class="icon-city ico"></span>
                         <div class="value">@Model.Cities</div>                        
                     </div>
                     <div class="item">
-                        <div class="name">countries</div>
+                        <div class="name">@Model.W("Countries")</div>
                         <span class="icon-country ico"></span>
                         <div class="value">@Model.Countries</div>
                     </div>
                     <div class="item">
-                        <div class="name">places</div>
+                        <div class="name">@Model.W("Places")</div>
                         <span class="icon-location ico"></span>
                         <div class="value">@Model.Places</div>
                     </div>
                     <div class="item">
-                        <div class="name">wiki</div>
+                        <div class="name">@Model.W("Wiki")</div>
                         <span class="icon-book ico"></span>
                         <div class="value">0</div>
                     </div>
@@ -80,14 +80,14 @@ else
             </div>
 
             <div class="ratings">
-                <div class="title">Recommendations from other travelers</div>
+                <div class="title">@Model.W("RecommentationsTitle")</div>
 
                 <div class="items">
 
                     @if (!Model.Ratings.Any())
                     {
                         <div class="empty">
-                            No recommendations posted yet
+                            @Model.W("RecommentationsEmpty")                            
                         </div>
                     }
 
@@ -135,7 +135,7 @@ else
                 {
                     <tr>
                         <td>
-                            <span class="item-title">Real name</span>
+                            <span class="item-title">@Model.W("RealName")</span>
                         </td>
                         <td>
                             <span>@Model.FirstName @Model.LastName</span>
@@ -147,7 +147,7 @@ else
                 {
                     <tr>
                         <td>
-                            <span class="item-title">Age</span>
+                            <span class="item-title">@Model.W("Age")</span>
                         </td>
                         <td>
                             <span>@(DateTime.UtcNow.Year - Model.BirthYear.Value)</span>
@@ -159,7 +159,7 @@ else
                 {
                     <tr>
                         <td>
-                            <span class="item-title">Family status</span>
+                            <span class="item-title">@Model.W("FamilyStatus")</span>
                         </td>
                         <td>
                             <span>@Model.GetFamilyStatusStr(Model.FamilyStatus)</span>
@@ -195,7 +195,7 @@ else
                 {
                     <tr>
                         <td>
-                            <span class="item-title">Languages</span>
+                            <span class="item-title">@Model.W("Languages")</span>
                         </td>
 
                         <td>
@@ -213,7 +213,7 @@ else
                 {
                     <tr>
                         <td colspan="2">
-                            <span class="item-title">Characteristics</span>
+                            <span class="item-title">@Model.W("Characteristics")</span>
                             <br/>
 
                             <div id="characts">
@@ -230,7 +230,7 @@ else
                 {
                     <tr>
                         <td>
-                            <span class="item-title">Description</span>
+                            <span class="item-title">@Model.W("ShortDesc")</span>
                         </td>
                         <td>
                             <span>@Model.ShortDescription</span>

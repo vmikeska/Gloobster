@@ -1,0 +1,68 @@
+﻿<module name="pageUserDetail">
+
+  <Title>
+    <en>User profile</en>
+  </Title>
+
+  <Cities>
+    <en>cities</en>
+  </Cities>
+
+  <Countries>
+    <en>countries</en>
+  </Countries>
+
+  <Places>
+    <en>places</en>
+  </Places>
+
+  <Wiki>
+    <en>wiki</en>
+  </Wiki>
+
+  <RecommentationsTitle>
+    <en>Recommendations from other travelers</en>
+  </RecommentationsTitle>
+
+  <RecommentationsEmpty>
+    <en>No recommendations posted yet</en>
+  </RecommentationsEmpty>
+  
+  <DisplayName>
+    <en>Display name</en>
+  </DisplayName>
+
+  <RealName>
+    <en>Real name</en>
+  </RealName>
+
+  <Age>
+    <en>Age</en>
+  </Age>
+
+  <FamilyStatus>
+    <en>Family status</en>
+  </FamilyStatus>
+
+  <Characteristics>
+    <en>Characteristics</en>
+  </Characteristics>
+
+  <ShortDesc>
+    <en>Short description</en>
+  </ShortDesc>
+
+  <Languages>
+    <en>Languages</en>
+  </Languages>
+
+  <HomeCity>
+    <en>Home city</en>
+  </HomeCity>
+
+  <CurrentCity>
+    <en>Current city</en>
+  </CurrentCity>
+
+
+</module>

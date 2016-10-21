@@ -34,8 +34,8 @@ namespace Gloobster.Portal.Controllers.Portal
             var user = DB.FOD<UserEntity>(f => f.User_id == thisUserIdObj);
             
             var vm = CreateViewModelInstance<UserDetailViewModel>();
-            vm.DefaultLangModuleName = "pageUserSettings";
-            vm.LoadClientTexts();
+            vm.DefaultLangModuleName = "pageUserDetail";            
+            vm.LoadClientTexts(new[] { "jsUserDetail" });
             vm.AvatarLink = "/PortalUser/ProfilePicture/" + id;
 
             if (user != null)

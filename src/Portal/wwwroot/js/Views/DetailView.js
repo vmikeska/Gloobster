@@ -79,7 +79,7 @@ var Views;
                 var $c = $t.closest(".item");
                 var id = $c.data("id");
                 var cd = new Common.ConfirmDialog();
-                cd.create("Rating deletion", "Do you want to delete this rating?", "Cancel", "Delete", function () {
+                cd.create(_this.t("RatingDelTitle", "jsUserDetail"), _this.t("RatingDelBody", "jsUserDetail"), _this.t("Cancel", "jsLayout"), _this.t("Delete", "jsLayout"), function () {
                     _this.apiDelete("UserRating", [["id", id]], function () {
                         $(".item[data-id=\"" + id + "\"]").remove();
                     });
