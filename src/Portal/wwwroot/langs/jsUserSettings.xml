@@ -1,0 +1,17 @@
+﻿
+  <module name="jsUserSettings">
+
+    <UnpairingConfirmTitle>
+      <en>Unpairing confirmation</en>
+    </UnpairingConfirmTitle>
+
+
+    <UnpairingConfirmBody>
+      <en>Would you like to unpair this social network?</en>
+    </UnpairingConfirmBody>
+
+    <Unpair>
+      <en>Unpair</en>
+    </Unpair> 
+
+  </module>

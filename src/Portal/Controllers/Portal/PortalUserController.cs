@@ -90,7 +90,7 @@ namespace Gloobster.Portal.Controllers.Portal
 		{
 			var vm = CreateViewModelInstance<SettingsViewModel>();
             vm.DefaultLangModuleName = "pageUserSettings";
-            vm.LoadClientTexts();
+            vm.LoadClientTexts(new[] { "jsUserSettings" });                        
             vm.AvatarLink = "/PortalUser/ProfilePicture";
 
             vm.DisplayName = User.DisplayName;
@@ -208,7 +208,7 @@ namespace Gloobster.Portal.Controllers.Portal
 		private string GetGenderStr(Gender gender, ViewModelBase vm)
 		{
 			if (gender == Gender.M)
-			{
+			{                
 				return  vm.W("Male", "layout");
 			}
 
@@ -228,13 +228,13 @@ namespace Gloobster.Portal.Controllers.Portal
             }
 
             if (status == FamilyStatus.Single)
-            {
-                return "Single";
+            {                
+                return vm.W("Single");
             }
 
             if (status == FamilyStatus.InRelationship)
             {
-                return "InRelationship";
+                return vm.W("InRelationship"); ;
             }
             
             return "N/A";

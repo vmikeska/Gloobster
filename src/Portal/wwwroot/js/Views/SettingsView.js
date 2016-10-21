@@ -74,7 +74,7 @@ var Views;
                 name = "Google";
             }
             var cd = new Common.ConfirmDialog();
-            cd.create("Unpairing confirmation", "Would you like to unpair with " + name + "?", "Cancel", "Unpair", function () {
+            cd.create(this.t("UnpairingConfirmTitle", "jsUserSettings"), this.t("UnpairingConfirmBody", "jsUserSettings"), this.t("Cancel", "jsLayout"), this.t("Unpair", "jsUserSettings"), function () {
                 var ep = name + "User";
                 _this.apiDelete(ep, [], function (r) {
                     $(".soc-ico[data-t=\"" + _this.activeSocItem + "\"]").hide();

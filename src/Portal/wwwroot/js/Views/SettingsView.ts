@@ -98,8 +98,8 @@
 
 				var cd = new Common.ConfirmDialog();
 
-				cd.create("Unpairing confirmation", `Would you like to unpair with ${name}?`, "Cancel", "Unpair", () => {
-
+				cd.create(this.t("UnpairingConfirmTitle", "jsUserSettings"), this.t("UnpairingConfirmBody", "jsUserSettings"), this.t("Cancel", "jsLayout"), this.t("Unpair", "jsUserSettings"), () => {
+						
 						var ep = `${name}User`;
 						this.apiDelete(ep, [], (r) => {
 								$(`.soc-ico[data-t="${this.activeSocItem}"]`).hide();
@@ -122,7 +122,7 @@
 				this.tbValids = new TravelB.FormValidations();
 				this.tbValids.valMessage($("#firstName"), $("#firstName"));
 				this.tbValids.valMessage($("#lastName"), $("#lastName"));
-				this.tbValids.valMessage($("#birthYear"), $("#birthYear"), Views.SettingsUtils.yearValidation);
+				this.tbValids.valMessage($("#birthYear"), $("#birthYear"), SettingsUtils.yearValidation);
 
 				this.tbValids.valPlace(this.homeCity, $("#homeCity"), $("#homeCity input"));
 				this.tbValids.valPlace(this.currentCity, $("#currentCity"), $("#currentCity input"));

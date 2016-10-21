@@ -1,22 +1,73 @@
 ﻿
   <module name="pageUserSettings">    
     
-      <Settings>
-        <en>Settings</en>        
-      </Settings>
+      <Title>
+        <en>Your profile edit</en>        
+      </Title>
 
-      <ChangePhoto>
-        <en>Change photo</en>
-      </ChangePhoto>
+    <PreviewLink>
+      <en>Preview profile</en>
+    </PreviewLink>
 
-      <DisplayName>
+    <PairedWith>
+      <en>Paired with</en>
+    </PairedWith>
+
+    <SocMenuTitle>
+      <en>Actions</en>
+    </SocMenuTitle>
+
+    <Unpair>
+      <en>Unpair</en>
+    </Unpair>
+
+    <Close>
+      <en>Close</en>
+    </Close>
+
+    <BasicInfo>
+      <en>Basic profile info</en>
+    </BasicInfo>
+
+    <BasicInfoText>
+      <en>These are only the data we require for basic website use</en>
+    </BasicInfoText>
+    
+    <DisplayName>
         <en>Display name</en>
       </DisplayName>
 
+    <TravelBuddyRequired>
+      <en>Travel Buddy (required)</en>
+    </TravelBuddyRequired>
+
+    <TravelBuddyRequiredText>
+      <en>As Travel Buddy service is about meeting real people in real world, users must honestly provide their real credintials. Users must be at least 18 years old</en>
+    </TravelBuddyRequiredText>
+
+    <FirstName>
+      <en>First name</en>
+    </FirstName>
+
+    <LastName>
+      <en>Last name</en>
+    </LastName>
+
+    <BirthYear>
+      <en>Birth year</en>
+    </BirthYear>
+
+    <BirthYearPlaceholder>
+      <en>eg 1983</en>
+    </BirthYearPlaceholder>
+    
       <Gender>
         <en>Gender</en>
       </Gender>
 
+    <Languages>
+      <en>Languages</en>
+    </Languages>
       
 
       <HomeCity>
@@ -27,5 +78,40 @@
         <en>Current city</en>
       </CurrentCity>
 
+    <CityPlaceholder>
+      <en>City name</en>
+    </CityPlaceholder>
 
+    <TravelBuddyOptional>
+      <en>Travel Buddy (optional)</en>
+    </TravelBuddyOptional>
+
+    <TravelBuddyOptionalText>
+      <en>These data are not required but might give you some extra credit while searching for new friends</en>
+    </TravelBuddyOptionalText>
+
+    <Characteristics>
+      <en>Characteristics</en>
+    </Characteristics>
+
+    <ShortDesc>
+      <en>Short description</en>
+    </ShortDesc>
+
+    <ShortDescPlaceholder>
+      <en>Write short description about yourself</en>
+    </ShortDescPlaceholder>
+
+    <FamilyStatus>
+      <en>Family status</en>
+    </FamilyStatus>
+
+    <Single>
+      <en>Single</en>
+    </Single>
+
+    <InRelationship>
+      <en>In relationship</en>
+    </InRelationship>
+    
   </module>
