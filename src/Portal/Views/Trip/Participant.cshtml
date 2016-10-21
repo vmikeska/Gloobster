@@ -1,5 +1,6 @@
 ﻿@using System.Globalization
 @using System.Threading.Tasks
+@using Gloobster.Common
 @model Gloobster.Portal.ViewModels.UserViewModel
 
 <div class="participant">
@@ -8,5 +9,5 @@
             <img src="/PortalUser/ProfilePicture_s/@Model.Id"/>
 		</div>
     </div>
-    <div class="bottom"><a href="/PortalUser/detail/@Model.Id">@Model.Name</a></div>
+    <div class="bottom"><a href="/@RoutingConsts.UserDetailMenuName/@Model.Id">@Model.Name</a></div>
 </div>

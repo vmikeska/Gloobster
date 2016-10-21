@@ -1,5 +1,5 @@
 ﻿
-.user-settings{
+.user-detail {
 
     text-align: left;
     $pps: 220px;
@@ -37,8 +37,81 @@
         }
     }
 
+    .photo-cont {
+        position: relative;
+        width: $pps;
+        height: $pps;
+        overflow: hidden;
 
-    
+        border-radius: 4px;
+
+        img {
+            width: $pps;
+            height: $pps;
+        }
+    }
+
+    .item-title {
+        font-weight: bold;
+        color: gray;
+        margin-right: 8px;
+        margin-left: 8px;
+        display: inline-block;
+    }
+
+    .ltag {
+        display: inline-block;
+        border: 1px dotted $light-blue3;
+        border-radius: 4px;
+        padding-left: 4px;
+        padding-right: 4px;
+        font-weight: bold;
+    }
+
+    table {
+        td {
+            height: 40px;
+        }
+    }
+}
+
+.user-settings{
+
+    text-align: left;
+    $pps: 220px;
+
+    .split-tbl {
+        display: table;
+        padding-top: 8px;        
+        padding-left: 8px;
+
+        .left{
+            display: table-cell;
+            vertical-align: top;
+            min-width: 240px;
+        }
+
+        .right {
+            display: table-cell;
+            vertical-align: top;
+
+            padding-left: 12px;
+        }
+    }
+
+    @include below-width(959){            
+        .split-tbl {
+            display: block;
+
+            .left{
+                display: block;
+            }
+
+            .right {
+                display: block;
+            }
+        }
+    }
 
     .photo-cont {
         position: relative;

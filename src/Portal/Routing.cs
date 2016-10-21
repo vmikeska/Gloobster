@@ -82,9 +82,15 @@ namespace Gloobster.Portal
                     );
 
                 routes.MapRoute(
-                    name: "userDetail",
+                    name: "userSettings",
                     template: RoutingConsts.UserDetailMenuName,
                     defaults: new { controller = "PortalUser", action = "Settings" }
+                    );
+
+                routes.MapRoute(
+                    name: "userDetial",
+                    template: RoutingConsts.UserDetailMenuName + "/{id}",
+                    defaults: new { controller = "PortalUser", action = "Detail" }
                     );
 
                 routes.MapRoute(

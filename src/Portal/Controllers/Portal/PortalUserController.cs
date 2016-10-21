@@ -40,9 +40,19 @@ namespace Gloobster.Portal.Controllers.Portal
             if (user != null)
             {
                 vm.DisplayName = user.DisplayName;
+                vm.FirstName = user.FirstName;
+                vm.LastName = user.LastName;
+
                 vm.Gender = GetGenderStr(user.Gender, vm);
+
                 vm.CurrentLocation = FormatCityStr(user.CurrentLocation);
                 vm.HomeLocation = FormatCityStr(user.HomeLocation);
+
+                vm.BirthYear = user.BirthYear;
+                vm.FamilyStatus = user.FamilyStatus;
+                vm.ShortDescription = user.ShortDescription;
+                vm.Interests = user.Interests;
+                vm.Languages = user.Languages;
             }
 
             return View(vm);

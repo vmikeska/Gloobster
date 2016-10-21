@@ -1915,6 +1915,52 @@ footer {
 .friends #usersTable h4 {
   margin-top: 30px; }
 
+.user-detail {
+  text-align: left; }
+  .user-detail .split-tbl {
+    display: table;
+    padding-top: 8px;
+    padding-left: 8px; }
+    .user-detail .split-tbl .left {
+      display: table-cell;
+      vertical-align: top;
+      min-width: 240px; }
+    .user-detail .split-tbl .right {
+      display: table-cell;
+      vertical-align: top;
+      padding-left: 12px; }
+  @media screen and (max-width: 959px) {
+    .user-detail .split-tbl {
+      display: block; }
+      .user-detail .split-tbl .left {
+        display: block; }
+      .user-detail .split-tbl .right {
+        display: block; } }
+  .user-detail .photo-cont {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    overflow: hidden;
+    border-radius: 4px; }
+    .user-detail .photo-cont img {
+      width: 220px;
+      height: 220px; }
+  .user-detail .item-title {
+    font-weight: bold;
+    color: gray;
+    margin-right: 8px;
+    margin-left: 8px;
+    display: inline-block; }
+  .user-detail .ltag {
+    display: inline-block;
+    border: 1px dotted #3298C1;
+    border-radius: 4px;
+    padding-left: 4px;
+    padding-right: 4px;
+    font-weight: bold; }
+  .user-detail table td {
+    height: 40px; }
+
 .user-settings {
   text-align: left; }
   .user-settings .split-tbl {

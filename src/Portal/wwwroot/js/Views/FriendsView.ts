@@ -98,8 +98,7 @@ class FriendsView extends Views.ViewBase {
 		};
 
 		var html = this.friendSearchTemplate(context);
-		return html;
-		//return `<li data-value="${item.friendId}"><div class="image"><img src="${photoUrl}"></div><a class="userLink" href="/portalUser/detail/${item.friendId}">${item.displayName}</a> <button class="requestButton" data-value="${item.friendId}">${this.t("Request", "jsFriends")}</button></li>`;
+		return html;		
 	}
 
 	private requestUser(userId, places) {

@@ -1,4 +1,8 @@
-﻿@using Gloobster.Portal.ViewModels
+﻿@using System
+@using System.Linq
+@using System.Threading.Tasks
+@using Gloobster.Enums
+@using Gloobster.Portal.ViewModels
 @model UserDetailViewModel
 
 @{
@@ -6,72 +10,140 @@
     ViewBag.BodyClass = "user-detail";
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-<style>
-    table {
-        text-align: left;
-    }
-
-    .titleName {
-        font-weight: bold;
-    }
-</style>
-
 <div class="wrapper">
 
-    <table>
-        <tr>
-            <td colspan="2">
-                <div class="thumb-cont border" style="width: 200px; height: 200px">
-                    <img id="avatar" src="@Model.AvatarLink" />
-                </div>
-                <br/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <span class="titleName">@Model.W("DisplayName")</span>
-            </td>
-            <td>
-                <span>@Model.DisplayName</span>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <span class="titleName">@Model.W("Gender")</span>
-            </td>
-            <td>
-                <span>@Model.Gender</span>                            
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <span class="titleName">@Model.W("HomeCity")</span>
-            </td>
-            <td>
-                <span>@Model.HomeLocation</span>                
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <span class="titleName">@Model.W("CurrentCity")</span>
-            </td>
-            <td>
-                <span>@Model.CurrentLocation</span>            
-            </td>
-        </tr>
-    </table>
+    <div class="split-tbl">
+        <div class="left">
 
-</div>
+            <div class="photo-cont">
+                <img id="avatar" src="@Model.AvatarLink"/>
+            </div>
+
+            </div>
+        <div class="right">
+
+            <table>
+
+                <tr>
+                    <td>
+                        <span class="item-title">@Model.W("DisplayName")</span>
+                    </td>
+                    <td>
+                        <span>@Model.DisplayName</span>
+                    </td>
+                </tr>
+
+                @if (!string.IsNullOrEmpty(Model.FirstName) || !string.IsNullOrEmpty(Model.LastName))
+                {
+                    <tr>
+                        <td>
+                            <span class="item-title">Real name</span>
+                        </td>
+                        <td>
+                            <span>@Model.FirstName @Model.LastName</span>
+                        </td>
+                    </tr>
+                }
+
+                @if (Model.BirthYear.HasValue)
+                {
+                    <tr>
+                        <td>
+                            <span class="item-title">Age</span>
+                        </td>
+                        <td>
+                            <span>@(DateTime.UtcNow.Year - Model.BirthYear.Value)</span>
+                        </td>
+                    </tr>
+                }
+
+                @if (Model.FamilyStatus != FamilyStatus.NA)
+                {
+                    <tr>
+                        <td>
+                            <span class="item-title">Family status</span>
+                        </td>
+                        <td>
+                            <span>@Model.GetFamilyStatusStr(Model.FamilyStatus)</span>
+                        </td>
+                    </tr>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.HomeLocation))
+                {
+                    <tr>
+                        <td>
+                            <span class="item-title">@Model.W("HomeCity")</span>
+                        </td>
+                        <td>
+                            <span>@Model.HomeLocation</span>
+                        </td>
+                    </tr>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.CurrentLocation))
+                {
+                    <tr>
+                        <td>
+                            <span class="item-title">@Model.W("CurrentCity")</span>
+                        </td>
+                        <td>
+                            <span>@Model.CurrentLocation</span>
+                        </td>
+                    </tr>
+                }
+
+                @if (Model.Languages != null && Model.Languages.Any())
+                {
+                    <tr>
+                        <td>
+                            <span class="item-title">Languages</span>
+                        </td>
+
+                        <td>
+                            @foreach (var l in Model.Languages)
+                            {
+                                <span class="ltag">@l</span>
+                            }
+                        </td>
+                    </tr>
+                }
+
+                @if (Model.Interests.Any())
+                {
+                    <tr>
+                        <td>
+                            <span class="item-title">Interests</span>
+                        </td>
+
+                        <td>
+                            @foreach (var l in Model.Interests)
+                            {
+                                <span class="tag">@l</span>
+                            }
+                        </td>
+                    </tr>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.ShortDescription))
+                {
+                    <tr>
+                        <td>
+                            <span class="item-title">Description</span>
+                        </td>
+                        <td>
+                            <span>@Model.ShortDescription</span>
+                        </td>
+                    </tr>
+                }
+
+
+            </table>
+
+        </div>
+    </div>
+
+
+            
+
+        </div>

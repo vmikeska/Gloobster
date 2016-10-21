@@ -1,6 +1,8 @@
 ﻿@using System.Threading.Tasks
 @using System.Linq
+@using Gloobster.Common
 @using Gloobster.Portal.ViewModels
+@using Microsoft.Data.Entity.Metadata.Internal
 @model PhotosVM
 
 <div id="photos" class="gallery-photos wrapper">
@@ -39,7 +41,7 @@
             }
 
             <a href="@link" target="_blank"><img class="radius mhalf" src="@thumbLink"></a>
-            <span>By </span><a href="/PortalUser/Detail/@photo.OwnerId">@photo.OwnerName</a>
+            <span>By </span><a href="/@RoutingConsts.UserDetailMenuName/@photo.OwnerId">@photo.OwnerName</a>
         </div>        
     }
         

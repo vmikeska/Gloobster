@@ -1,5 +1,7 @@
 ﻿@using System.Threading.Tasks
+@using Gloobster.Common
 @using Gloobster.Portal.ViewModels
+@using Microsoft.Data.Entity.Metadata.Internal
 @using Newtonsoft.Json
 
 @model Gloobster.Portal.ViewModels.MessageViewModel
@@ -60,7 +62,7 @@
             </div>
             <div class="post">
                 <div class="author">
-                    <a target="_blank" href="/PortalUser/Detail/{{userId}}"><strong>{{name}}</strong></a>
+                    <a target="_blank" href="/@RoutingConsts.UserDetailMenuName/{{userId}}"><strong>{{name}}</strong></a>
                     <span> • {{dateFormatted}}</span>
                 </div>
                 <div class="bubble">

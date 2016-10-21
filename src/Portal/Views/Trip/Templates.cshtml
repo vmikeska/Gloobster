@@ -1,4 +1,7 @@
-﻿<script id="comment-template" type="text/x-handlebars-template">
+﻿@using System.Threading.Tasks
+@using Gloobster.Common
+@using Microsoft.Data.Entity.Metadata.Internal
+<script id="comment-template" type="text/x-handlebars-template">
     
     <div class="comment-all">
         <div class="comment">
@@ -9,7 +12,7 @@
             </div>
             <div class="post">
                 <div class="author">
-                    <a href="/PortalUser/Detail/{{id}}"><strong>{{displayName}}</strong></a>
+                    <a href="/@RoutingConsts.UserDetailMenuName/{{id}}"><strong>{{displayName}}</strong></a>
                     <span> • {{displayDate}}</span>
                 </div>
                 <div class="bubble">

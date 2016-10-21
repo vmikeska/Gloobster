@@ -35,9 +35,27 @@ namespace Gloobster.Portal.ViewModels
     public class UserDetailViewModel : ViewModelBase
     {
         public string AvatarLink { get; set; }
+
         public string DisplayName { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+
         public string HomeLocation { get; set; }
         public string CurrentLocation { get; set; }
+
         public string Gender { get; set; }
+
+        public int? BirthYear { get; set; }
+        public FamilyStatus FamilyStatus { get; set; }
+
+        public List<string> Languages { get; set; }
+        public List<int> Interests { get; set; }
+
+        public string ShortDescription { get; set; }
+
+        public string GetFamilyStatusStr(FamilyStatus fs)
+        {
+            return fs.ToString();
+        }
     }
 }
