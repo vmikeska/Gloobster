@@ -613,6 +613,9 @@ footer {
 .icon-camera:before {
   content: "\e915"; }
 
+.icon-book:before {
+  content: "\e920"; }
+
 .icon-file-text:before {
   content: "\e922"; }
 
@@ -1924,27 +1927,50 @@ footer {
     .user-detail .split-tbl .left {
       display: table-cell;
       vertical-align: top;
-      min-width: 240px; }
+      min-width: 240px;
+      max-width: 320px; }
     .user-detail .split-tbl .right {
       display: table-cell;
       vertical-align: top;
       padding-left: 12px; }
-  @media screen and (max-width: 959px) {
-    .user-detail .split-tbl {
-      display: block; }
-      .user-detail .split-tbl .left {
-        display: block; }
-      .user-detail .split-tbl .right {
-        display: block; } }
   .user-detail .photo-cont {
+    display: inline-block;
     position: relative;
-    width: 220px;
-    height: 220px;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
     border-radius: 4px; }
     .user-detail .photo-cont img {
-      width: 220px;
-      height: 220px; }
+      width: 100%;
+      height: 100%; }
+  @media screen and (max-width: 650px) {
+    .user-detail .split-tbl {
+      display: block; }
+      .user-detail .split-tbl .left {
+        display: block;
+        max-width: unset; }
+      .user-detail .split-tbl .photo-line {
+        text-align: center; }
+      .user-detail .split-tbl .right {
+        display: block; } }
+  .user-detail .trophies-all .trophies {
+    display: table;
+    width: 100%;
+    border-bottom: 1px dotted gray;
+    padding-bottom: 8px;
+    margin-bottom: 8px; }
+    .user-detail .trophies-all .trophies .item {
+      width: 25%;
+      display: table-cell;
+      text-align: center; }
+      .user-detail .trophies-all .trophies .item .name {
+        font-weight: bold; }
+      .user-detail .trophies-all .trophies .item .ico {
+        font-size: 60px;
+        color: #005476; }
+      .user-detail .trophies-all .trophies .item .value {
+        font-size: 1.2em;
+        font-weight: bold; }
   .user-detail .item-title {
     font-weight: bold;
     color: gray;
@@ -1960,6 +1986,26 @@ footer {
     font-weight: bold; }
   .user-detail table td {
     height: 40px; }
+  .user-detail .ratings .title {
+    font-weight: bold; }
+  .user-detail .ratings .items .empty {
+    color: gray;
+    padding: 8px; }
+  .user-detail .ratings .items .item {
+    margin-top: 4px;
+    margin-bottom: 4px;
+    /*border-bottom: 1px dotted gray;*/ }
+    .user-detail .ratings .items .item .top .icon-cross {
+      font-size: 0.8em;
+      color: #005476; }
+      .user-detail .ratings .items .item .top .icon-cross:hover {
+        color: red; }
+  .user-detail .ratings .new-rating textarea {
+    resize: none;
+    border: 1px solid #65BDD7; }
+  .user-detail .ratings .new-rating .lbtn, .user-detail .ratings .new-rating .photo-button label, .photo-button .user-detail .ratings .new-rating label, .user-detail .ratings .new-rating .wiki-page .langs a, .wiki-page .langs .user-detail .ratings .new-rating a {
+    background-color: #3298C1;
+    color: white; }
 
 .user-settings {
   text-align: left; }
@@ -1975,7 +2021,7 @@ footer {
       display: table-cell;
       vertical-align: top;
       padding-left: 12px; }
-  @media screen and (max-width: 959px) {
+  @media screen and (max-width: 650px) {
     .user-settings .split-tbl {
       display: block; }
       .user-settings .split-tbl .left {

@@ -137,7 +137,7 @@ namespace Gloobster.DomainModels
             {
                 Title = $"Rating of meeting with {ratedUser.DisplayName}",
                 Content = "Do you want to rate this user ?",
-                Link = $"TravelB/UserRating/{ratedUserId}",
+                Link = $"{RoutingConsts.UserDetailMenuName}/{ratedUserId}",
                 LinkText = "Rate",
                 ContentType = ContentType.Text,
                 UserId = receiverId,

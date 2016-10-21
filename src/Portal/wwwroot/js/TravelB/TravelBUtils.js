@@ -22,18 +22,24 @@ var TravelB;
         };
         TravelBUtils.wdSightseeing = function () {
             return [
-                TravelBUtils.i(101, "WalkingTour"),
-                TravelBUtils.i(102, "BikeTour"),
-                TravelBUtils.i(103, "Trip"),
-                TravelBUtils.i(104, "ExhibitionMuseum")
+                TravelBUtils.i(101, "Walking tour"),
+                TravelBUtils.i(102, "Bike tour"),
+                TravelBUtils.i(103, "Local trip"),
+                TravelBUtils.i(104, "Exhibition/Museum"),
+                TravelBUtils.i(105, "Photo hunting")
             ];
         };
         TravelBUtils.wdNightlife = function () {
             return [
                 TravelBUtils.i(201, "Pub"),
                 TravelBUtils.i(202, "Bar"),
-                TravelBUtils.i(203, "Club"),
-                TravelBUtils.i(204, "Outside")
+                TravelBUtils.i(203, "Clubbing"),
+                TravelBUtils.i(204, "Outside"),
+                TravelBUtils.i(205, "Pub crawl"),
+                TravelBUtils.i(206, "Concert"),
+                TravelBUtils.i(207, "Pub quiz"),
+                TravelBUtils.i(208, "Dining"),
+                TravelBUtils.i(209, "Cinema")
             ];
         };
         TravelBUtils.wdSport = function () {
@@ -46,28 +52,20 @@ var TravelB;
                 TravelBUtils.i(306, "Golf"),
                 TravelBUtils.i(307, "Biking"),
                 TravelBUtils.i(308, "Baseball"),
-                TravelBUtils.i(309, "Hockey")
+                TravelBUtils.i(309, "Hockey"),
+                TravelBUtils.i(310, "Hiking"),
+                TravelBUtils.i(311, "Fishing"),
+                TravelBUtils.i(312, "Chess"),
+                TravelBUtils.i(313, "Poker"),
+                TravelBUtils.i(314, "Lasertag"),
+                TravelBUtils.i(315, "Bowling")
             ];
         };
         TravelBUtils.wdDate = function () {
             return [
-                TravelBUtils.i(401, "OneToOne"),
+                TravelBUtils.i(401, "One to One"),
                 TravelBUtils.i(402, "Pairs"),
                 TravelBUtils.i(403, "Group")
-            ];
-        };
-        TravelBUtils.wdDining = function () {
-            return [
-                TravelBUtils.i(501, "Vegan"),
-                TravelBUtils.i(502, "International"),
-                TravelBUtils.i(503, "DiningAdventure")
-            ];
-        };
-        TravelBUtils.wdEvents = function () {
-            return [
-                TravelBUtils.i(601, "Cinema"),
-                TravelBUtils.i(602, "Concert"),
-                TravelBUtils.i(603, "SportMatch")
             ];
         };
         TravelBUtils.getWantDoTaggerData = function () {
@@ -75,16 +73,9 @@ var TravelB;
                 { k: "Sightseeing", id: 100, items: TravelBUtils.wdSightseeing() },
                 { k: "Nightlife", id: 200, items: TravelBUtils.wdNightlife() },
                 { k: "Sport", id: 300, items: TravelBUtils.wdSport() },
-                { k: "Date", id: 400, items: TravelBUtils.wdDate() },
-                { k: "Dining", id: 500, items: TravelBUtils.wdDining() },
-                { k: "Events", id: 600, items: TravelBUtils.wdEvents() }
+                { k: "Date", id: 400, items: TravelBUtils.wdDate() }
             ];
             return data;
-        };
-        TravelBUtils.wantDoDB = function () {
-            var all = [];
-            all = all.concat(this.wdSightseeing(), this.wdNightlife(), this.wdSport(), this.wdDate(), this.wdDining(), this.wdEvents());
-            return all;
         };
         TravelBUtils.intLifestyle = function () {
             return [
@@ -178,6 +169,11 @@ var TravelB;
                 TravelBUtils.i(3019, "Fun"),
                 TravelBUtils.i(3020, "Education")
             ];
+        };
+        TravelBUtils.wantDoDB = function () {
+            var all = [];
+            all = all.concat(this.wdSightseeing(), this.wdNightlife(), this.wdSport(), this.wdDate());
+            return all;
         };
         TravelBUtils.interestsDB = function () {
             var all = [];

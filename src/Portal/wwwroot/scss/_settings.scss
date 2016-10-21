@@ -2,7 +2,7 @@
 .user-detail {
 
     text-align: left;
-    $pps: 220px;
+    $pps: 100%;
 
     .split-tbl {
         display: table;
@@ -13,6 +13,7 @@
             display: table-cell;
             vertical-align: top;
             min-width: 240px;
+            max-width: 320px;
         }
 
         .right {
@@ -23,21 +24,8 @@
         }
     }
 
-    @include below-width(959){            
-        .split-tbl {
-            display: block;
-
-            .left{
-                display: block;
-            }
-
-            .right {
-                display: block;
-            }
-        }
-    }
-
     .photo-cont {
+        display: inline-block;
         position: relative;
         width: $pps;
         height: $pps;
@@ -48,6 +36,58 @@
         img {
             width: $pps;
             height: $pps;
+        }
+    }
+
+    @include below-width(650){            
+        .split-tbl {
+            display: block;
+
+            .left{
+                display: block;    
+                max-width: unset;            
+            }
+
+            .photo-line{
+                text-align: center;
+            }
+
+            .right {
+                display: block;
+            }
+        }
+    }
+
+    .trophies-all {
+        
+        .trophies {
+            display: table;
+            width: 100%;
+
+            border-bottom: 1px dotted gray;
+            padding-bottom: 8px;
+            margin-bottom: 8px;
+
+            .item {
+                width: 25%;
+                display: table-cell;
+                text-align: center;
+
+                .name {
+                    font-weight: bold;
+                }
+
+                .ico {
+                    font-size: 60px;
+                    color: $dark-blue;
+                    
+                }
+
+                .value {
+                    font-size: 1.2em;
+                    font-weight: bold;
+                }
+            }
         }
     }
 
@@ -71,6 +111,51 @@
     table {
         td {
             height: 40px;
+        }
+    }
+
+    .ratings{
+        .title{
+            font-weight: bold;
+        }
+
+        .items{
+
+            .empty {
+                color: gray;
+                padding: 8px;
+            }
+
+            .item{
+                margin-top: 4px;
+                margin-bottom: 4px;
+                /*border-bottom: 1px dotted gray;*/
+
+                .top{
+                    .icon-cross{
+                        font-size: 0.8em;
+                        color: $dark-blue;
+                        &:hover {
+                            color: red;
+                        }
+                    }
+                }
+                .text{
+
+                }
+            }
+        }
+
+        .new-rating{
+            textarea {
+                resize: none;
+                border: 1px solid $light-blue;
+            }
+
+            .lbtn{
+                background-color: $light-blue3;
+                color: white;
+            }
         }
     }
 }
@@ -99,7 +184,7 @@
         }
     }
 
-    @include below-width(959){            
+    @include below-width(650){            
         .split-tbl {
             display: block;
 

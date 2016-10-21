@@ -29,9 +29,10 @@ namespace Gloobster.Portal.Controllers.Portal
 
         public IActionResult Detail(string id)
         {
-            var user = DB.FOD<UserEntity>(f => f.User_id == new ObjectId(id));
+            var thisUserIdObj = new ObjectId(id);
 
-
+            var user = DB.FOD<UserEntity>(f => f.User_id == thisUserIdObj);
+            
             var vm = CreateViewModelInstance<UserDetailViewModel>();
             vm.DefaultLangModuleName = "pageUserSettings";
             vm.LoadClientTexts();
@@ -39,6 +40,7 @@ namespace Gloobster.Portal.Controllers.Portal
 
             if (user != null)
             {
+                vm.DisplayedUserId = user.User_id.ToString();
                 vm.DisplayName = user.DisplayName;
                 vm.FirstName = user.FirstName;
                 vm.LastName = user.LastName;
@@ -53,6 +55,31 @@ namespace Gloobster.Portal.Controllers.Portal
                 vm.ShortDescription = user.ShortDescription;
                 vm.Interests = user.Interests;
                 vm.Languages = user.Languages;
+
+                var userIds = user.Ratings.Select(r => r.User_id).Distinct();
+                var users = DB.List<UserEntity>(u => userIds.Contains(u.User_id));
+                
+                vm.Ratings = user.Ratings.Select(r =>
+                {
+                    var usr = users.FirstOrDefault(u => u.User_id == r.User_id);
+                    var v = new UserRatingVM
+                    {
+                        Id = r.id.ToString(),
+                        Name = $"{usr.FirstName} {usr.LastName}",
+                        UserId = r.User_id.ToString(),
+                        Text = r.Text
+                    };
+                    return v;
+                }).ToList();
+
+                var visited = DB.FOD<VisitedEntity>(v => v.User_id == thisUserIdObj);
+                if (visited != null)
+                {
+                    vm.Cities = visited.Cities.Count;
+                    vm.Countries = visited.Countries.Count;
+                    vm.Places = visited.Places.Count;
+                }
+
             }
 
             return View(vm);

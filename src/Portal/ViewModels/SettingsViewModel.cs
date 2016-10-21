@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Gloobster.Entities;
 using Gloobster.Enums;
 
 namespace Gloobster.Portal.ViewModels
@@ -34,6 +35,8 @@ namespace Gloobster.Portal.ViewModels
 
     public class UserDetailViewModel : ViewModelBase
     {
+        public string DisplayedUserId { get; set; }
+
         public string AvatarLink { get; set; }
 
         public string DisplayName { get; set; }
@@ -57,5 +60,19 @@ namespace Gloobster.Portal.ViewModels
         {
             return fs.ToString();
         }
+
+        public List<UserRatingVM> Ratings { get; set; }
+
+        public int Cities { get; set; }
+        public int Countries { get; set; }
+        public int Places { get; set; }
+    }
+
+    public class UserRatingVM
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string UserId { get; set; }
+        public string Text { get; set; }
     }
 }

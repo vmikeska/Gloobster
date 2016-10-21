@@ -17,13 +17,13 @@
 }
 else
 {
-    <script src="/js/Views/SettingsView.js"></script>
-    <script src="/js/Views/SettingsUtils.js"></script>
-    <script src="/js/Planning/TaggingField.js"></script>
-    <script src="/js/TravelB/CategoryTagger.js"></script>
-    <script src="/js/TravelB/Tabs.js"></script>
-    <script src="/js/TravelB/TravelBUtils.js"></script>
-    <script src="/js/TravelB/FormValidations.js"></script>
+    <script src="/js/Views/SettingsView.js" type="text/javascript"></script>
+    <script src="/js/Views/SettingsUtils.js" type="text/javascript"></script>
+    <script src="/js/Planning/TaggingField.js" type="text/javascript"></script>
+    <script src="/js/TravelB/CategoryTagger.js" type="text/javascript"></script>
+    <script src="/js/TravelB/Tabs.js" type="text/javascript"></script>
+    <script src="/js/TravelB/TravelBUtils.js" type="text/javascript"></script>
+    <script src="/js/TravelB/FormValidations.js" type="text/javascript"></script>
 }
 
 <div class="info-block-bck" id="info-travelb">
@@ -50,6 +50,10 @@ else
 
     <div class="split-tbl">
         <div class="left">
+
+            <div class="preview-link">
+                <a href="/@RoutingConsts.UserDetailMenuName/@Model.UserId">Preview profile</a>
+            </div>
 
             <div class="photo-cont">
 
@@ -221,10 +225,9 @@ else
                 </tr>
 
                 <tr>
-                    <td>
-                        <span class="item-title">Interests</span>
-                    </td>
-                    <td>
+                    <td colspan="2">
+                        <span class="item-title">Characteristics</span>
+
                         <div id="intersTagging">
                         </div>
                     </td>

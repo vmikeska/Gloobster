@@ -212,7 +212,8 @@ namespace Gloobster.DomainModels.Services.Accounts
                     HasProfileImage = false,
                     Interests = new List<int>(),
                     BirthYear = null,
-                    FamilyStatus = 0
+                    FamilyStatus = 0,
+                    Ratings = new List<UserRatingSE>()
                 };
 
                 if (userData.CurrentLocation != null)

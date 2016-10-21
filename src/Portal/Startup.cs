@@ -128,15 +128,15 @@ namespace Gloobster.Portal
                 await db.CreateCollection<VisitedPlaceAggregatedEntity>();
 
 
-	            var emptyInterUsers = db.List<UserEntity>(u => u.Interests == null);
-	            if (emptyInterUsers.Any())
+	            var emptyRatings = db.List<UserEntity>(u => u.Ratings == null);
+	            if (emptyRatings.Any())
 	            {
-	                foreach (var u in emptyInterUsers)
+	                foreach (var u in emptyRatings)
 	                {
-	                    if (u.Interests == null)
+	                    if (u.Ratings == null)
 	                    {
 	                        var filter = db.F<UserEntity>().Eq(f => f.id, u.id);
-	                        var update = db.U<UserEntity>().Set(f => f.Interests, new List<int>());
+	                        var update = db.U<UserEntity>().Set(f => f.Ratings, new List<UserRatingSE>());
 	                        var res = await db.UpdateAsync(filter, update);
 	                    }
 	                }	                

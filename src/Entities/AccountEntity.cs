@@ -89,10 +89,19 @@ namespace Gloobster.Entities
 
         public string ShortDescription { get; set; }
 
+        public List<UserRatingSE> Ratings { get; set; }
 
 
         public List<AirportSaveSE> HomeAirports { get; set; }
 
         
+    }
+
+    public class UserRatingSE
+    {
+        public ObjectId id { get; set; }
+        public string Text { get; set; }
+        public ObjectId User_id { get; set; }
+        public DateTime Inserted { get; set; }
     }
 }

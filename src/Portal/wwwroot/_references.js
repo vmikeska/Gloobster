@@ -84,6 +84,7 @@
 /// <reference path="js/trip/tripresizer.js" />
 /// <reference path="js/trip/utils.js" />
 /// <reference path="js/views/cropimg.js" />
+/// <reference path="js/views/detailview.js" />
 /// <reference path="js/views/flychatview.js" />
 /// <reference path="js/views/friendsview.js" />
 /// <reference path="js/views/homepageview.js" />
