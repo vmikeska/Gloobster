@@ -27,6 +27,10 @@ namespace Gloobster.Portal.Controllers.Portal
         public IActionResult Home()
         {
             var vm = CreateViewModelInstance<TravelBViewModel>();
+
+            vm.DefaultLangModuleName = "pageTravelB";
+            vm.LoadClientTexts(new[] { "jsTravelB" });
+
             vm.GenderStr = GetGenderStr(User.Gender, vm);
             vm.EmptyProps = GetEmptyProps(UserId);
 

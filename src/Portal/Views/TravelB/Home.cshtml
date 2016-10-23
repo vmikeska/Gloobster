@@ -56,8 +56,6 @@ else
     
 }
 
-
-
 @{
     var showText = "show info";
     var hideText = "hide info";
@@ -71,7 +69,7 @@ else
 
         <div class="title-table">
         <div class="left">
-            <h1>Find a travel buddy</h1>
+            <h1>@Model.W("Title")</h1>
         </div>
 
             <div class="right">
@@ -89,7 +87,7 @@ else
                 </div>
 
                 <div class="txt">
-                    Checkin right here right now and find your instant travel buddies. Simply pick activities you are interested in and browse among people around you.
+                    @Model.W("InfoNow")
                 </div>
             </div>
 
@@ -103,7 +101,7 @@ else
                 </div>
 
                 <div class="txt">
-                    Are you planning and trip ? Would you like to meet with other single travelers or join a group of others ? Share you schedule and interests with other travelers.
+                    @Model.W("InfoCity")
                 </div>
             </div>
         </div>
@@ -136,9 +134,9 @@ else
     <div class="main-menu-cont">
 
         <div class="checkin-row" style="display: none">
-            <a id="checkin" href="#" data-t="check" class="icon-location now-checkin-btn"><span class="lato"> Check-in</span></a>
+            <a id="checkin" href="#" data-t="check" class="icon-location now-checkin-btn"><span class="lato"> @Model.W("CheckinBtn")</span></a>
 
-            <a id="cityCheckins" href="#" data-t="manage" class="icon-file-text city-checkins-btn" style="display: none"><span class="lato"> Manage check-ins</span></a>
+            <a id="cityCheckins" href="#" data-t="manage" class="icon-file-text city-checkins-btn" style="display: none"><span class="lato"> @Model.W("ManageCheckinsBtn")</span></a>
         </div>
 
         <div class="checkin-win" style="display: none">
@@ -153,7 +151,7 @@ else
     </div>
 
     <div class="no-location-perm" style="display: none">
-        Seems you didn't grant us location permissions, so we cannot show your exact location. Once you change your mind, you must go to your browser Location settings and allow it.
+        @Model.W("NoLocationPermissions")
     </div>
 
     
@@ -163,7 +161,7 @@ else
 
         <div class="search-city">
             <div id="searchCity" class="dropdown">
-                <input class="inputed" type="text" placeholder="Search location">
+                <input class="inputed" type="text" placeholder="@Model.W("SearchLocationPlaceholder")">
                 <img class="loader" src="/images/loader-gray.gif" style="display: none"/>
                 <ul></ul>
             </div>
@@ -171,19 +169,19 @@ else
 
         <div class="entities-filter">
             <input id="fShowPeople" type="checkbox" checked/>
-            <label for="fShowPeople">People</label>
+            <label for="fShowPeople">@Model.W("People")</label>
             <br/>
             <input id="fPoints" type="checkbox"/>
-            <label for="fPoints">Meeting points</label>
+            <label for="fPoints">@Model.W("MeetingPoints")</label>
         </div>
     </div>
 
     <div class="city-chck-cnt">
-        <span class="cnt" id="cityCount"></span> more people are checked-in to the <a class="city-link" href="#">City</a>
+        <span class="cnt" id="cityCount"></span> @Model.W("MorePeopleInCity") <a class="city-link" href="#">@Model.W("City")</a>
     </div>
 
     <div class="filter-date" id="filterDateCont" style="display: none">
-        <div class="title">Show checkins between following dates</div>
+        <div class="title">@Model.W("FilterDatesTitle")</div>
         <input id="fromDateFilter" type="text"/>
         <span class="split">-</span>
         <input id="toDateFilter" type="text"/>
@@ -196,7 +194,7 @@ else
                 <div class="checker"></div>
             </div>
             <div class="label">
-                Use filter
+                @Model.W("UseFilter")
             </div>
         </div>
 
@@ -205,7 +203,7 @@ else
                 <div class="checker"></div>
             </div>
             <div class="label">
-                Show all checkins
+                @Model.W("ShowAllCheckinsFilter")
             </div>
         </div>
 
@@ -219,28 +217,28 @@ else
 
         <div class="tbl">
             <div class="people">
-                <div class="title">People</div>
+                <div class="title">@Model.W("PeopleTitle")</div>
 
                 <div class="no-people-all">
                     <div class="img">
 
                     </div>
                     <div class="txt">
-                        Sorry, no people here right now, but you can visit one of our popular Meeting Points.
+                        @Model.W("NoPeoplePlaceholder")
                     </div>
                 </div>
 
             </div>
 
             <div class="meeting-points">
-                <div class="title">Meeting points</div>
+                <div class="title">@Model.W("MeetingPointsTitle")</div>
 
                 <div class="no-mp-all">
                     <div class="img">
 
                     </div>
                     <div class="txt">
-                        Sorry, no Meeting Points, we are not yet active in this area.
+                        @Model.W("NoMeetingPointsPlaceholder")
                     </div>
                 </div>
 

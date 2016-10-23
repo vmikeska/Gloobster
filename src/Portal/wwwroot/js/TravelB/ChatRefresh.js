@@ -1,5 +1,5 @@
-var Views;
-(function (Views) {
+var TravelB;
+(function (TravelB) {
     var ChatRefresh = (function () {
         function ChatRefresh() {
             this.refreshCycleFinished = true;
@@ -37,7 +37,7 @@ var Views;
                 var lastDate = null;
                 loadedIds.forEach(function (rid) {
                     prms.push(["reactIds", rid]);
-                    var ld = Views.Chat.getUserTitleNameTag(rid).data("last");
+                    var ld = TravelB.Chat.getUserTitleNameTag(rid).data("last");
                     if (lastDate === null) {
                         lastDate = ld;
                     }
@@ -56,6 +56,6 @@ var Views;
         };
         return ChatRefresh;
     }());
-    Views.ChatRefresh = ChatRefresh;
-})(Views || (Views = {}));
+    TravelB.ChatRefresh = ChatRefresh;
+})(TravelB || (TravelB = {}));
 //# sourceMappingURL=ChatRefresh.js.map

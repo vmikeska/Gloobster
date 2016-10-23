@@ -18,7 +18,7 @@ var Views;
             var _this = this;
             this.checkinWin = new TravelB.CheckinWin(this);
             this.checkinMenu = new TravelB.CheckinMenu(this);
-            this.filter = new TravelB.Filter();
+            this.filter = new TravelB.Filter(this);
             this.filter.onFilterSelChanged = function () {
                 _this.displayData();
             };
@@ -27,9 +27,9 @@ var Views;
             this.createMap();
             this.status = new TravelB.Status(this);
             this.status.refresh();
-            this.chat = new Views.Chat();
+            this.chat = new TravelB.Chat(this);
             this.chat.refreshAll();
-            this.reacts = new Views.CheckinReacts();
+            this.reacts = new TravelB.CheckinReacts(this);
             this.reacts.onStartChat = function (callback) {
                 _this.chat.refreshAll(function () {
                     callback();
@@ -149,8 +149,8 @@ var Views;
             prms.push(["fromDate", TravelB.DateUtils.myDateToTrans(this.filter.filterDateFrom)]);
             prms.push(["toDate", TravelB.DateUtils.myDateToTrans(this.filter.filterDateTo)]);
             Views.ViewBase.currentView.apiGet("CheckinCity", prms, function (cs) {
-                _this.cityFncs.genCheckinsList(cs);
                 var fc = _.reject(cs, function (c) { return c.userId === Views.ViewBase.currentUserId; });
+                _this.cityFncs.genCheckinsList(fc);
                 _this.mapCheckins.genCheckins(fc, CheckinType.City);
             });
         };

@@ -92,7 +92,7 @@ namespace Gloobster.Portal
 		public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             try
-            {
+            {                
                 AddDebugLog("ConfigureServices:Enter");
 
                 LoadConfigFile();
@@ -160,32 +160,38 @@ namespace Gloobster.Portal
             {
                 AddDebugLog("Configure:Enter");
 
-                //app.Use(async (context, next) =>
-                //{
-                //    if (context.Request.IsHttps) //Before RC1, this was called 'IsSecure'
-                //    {
-                //        await next();
-                //    }
-                //    else
-                //    {
-                //        var withHttps = Uri.UriSchemeHttps + Uri.SchemeDelimiter + context.Request.Uri.GetComponents(UriComponents.AbsoluteUri & ~UriComponents.Scheme, UriFormat.SafeUnescaped);
-                //        context.Response.Redirect(withHttps);
-                //    }
-                //});
-
-                app.Use(async (context, next) =>
+                if (!GloobsterConfig.IsLocal)
                 {
-                    var url = context.Request.GetDisplayUrl();
-                    if (url.StartsWith("http://www."))
+                    app.Use(async (context, next) =>
                     {
-                        var newUrl = url.Replace("http://www.", "http://");
-                        context.Response.Redirect(newUrl);
-                    }
-                    else
+                        string protoHeader = context.Request.Headers["X-Forwarded-Proto"];
+                        if (protoHeader.ToLower().Equals("https"))
+                        {
+                            await next();
+                        }
+                        else
+                        {
+                            var withHttps = "https://" + context.Request.Host + context.Request.Path;
+                            context.Response.Redirect(withHttps, true);
+                        }
+                    });
+
+                    app.Use(async (context, next) =>
                     {
-                        await next();
-                    }
-                });
+                        var url = context.Request.GetDisplayUrl();
+                        
+                        if (url.StartsWith("https://www."))
+                        {
+                            url = url.Replace("https://www.", "https://");
+                            context.Response.Redirect(url, true);                        
+                        }
+                        else
+                        {
+                            await next();
+                        }
+
+                    });
+                }
 
                 app.UseSession();
 

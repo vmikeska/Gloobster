@@ -1,4 +1,4 @@
-module Views {
+module TravelB {
 	export class ChatRefresh {
 
 		public get isStarted(): boolean {
@@ -52,7 +52,7 @@ module Views {
 					prms.push(["lastDate", lastDate.toString()]);
 				}
 
-				ViewBase.currentView.apiGet("ReactChat", prms, (responses) => {
+				Views.ViewBase.currentView.apiGet("ReactChat", prms, (responses) => {
 
 					this.onRefresh(responses);
 

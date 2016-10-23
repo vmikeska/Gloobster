@@ -47,11 +47,11 @@ module TravelB {
 				private edit(id) {
 						this.view.checkinMenu.activateTab("check", id);
 				}
-
+				
 				private delete(id, $item) {
 
 						var cd = new Common.ConfirmDialog();
-						cd.create("Checkin deletion", "Do you want to delete this checkin ?", "Cancel", "Delete", () => {
+						cd.create(this.view.t("CheckinDelTitle", "jsTravelB"), this.view.t("CheckinDelBody", "jsTravelB"), this.view.t("Cancel", "jsLayout"), this.view.t("Delete", "jsLayout"), () => {
 
 								Views.ViewBase.currentView.apiDelete("CheckinCity",[["id", id]], () => {
 										$item.remove();

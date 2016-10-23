@@ -56,6 +56,12 @@ namespace Gloobster.Portal
                     );
 
                 routes.MapRoute(
+                    name: "travelbuddy",
+                    template: RoutingConsts.TravelBuddyMenuName,
+                    defaults: new { controller = "travelb", action = "home" }
+                    );
+                
+                routes.MapRoute(
                     name: "TripOverview",
                     template: RoutingConsts.TripMenuName + "/{id}",
                     defaults: new { controller = "trip", action = "overview" }

@@ -33,7 +33,7 @@ var TravelB;
         };
         CityCheckinsMgmt.prototype.delete = function (id, $item) {
             var cd = new Common.ConfirmDialog();
-            cd.create("Checkin deletion", "Do you want to delete this checkin ?", "Cancel", "Delete", function () {
+            cd.create(this.view.t("CheckinDelTitle", "jsTravelB"), this.view.t("CheckinDelBody", "jsTravelB"), this.view.t("Cancel", "jsLayout"), this.view.t("Delete", "jsLayout"), function () {
                 Views.ViewBase.currentView.apiDelete("CheckinCity", [["id", id]], function () {
                     $item.remove();
                     cd.hide();

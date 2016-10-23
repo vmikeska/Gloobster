@@ -1,0 +1,302 @@
+﻿
+  <module name="pageTravelB">
+
+    <WantMeetMan>
+      <en>want meet man</en>
+    </WantMeetMan>
+
+    <WantMeetWoman>
+      <en>want meet woman</en>
+    </WantMeetWoman>
+
+    <WantMeetGroupWomen>
+      <en>want meet group of women</en>
+    </WantMeetGroupWomen>
+
+    <WantMeetGroupMan>
+      <en>want meet group of men</en>
+    </WantMeetGroupMan>
+
+    <WantMeetGroupMixed>
+      <en>want meet gender mixed group</en>
+    </WantMeetGroupMixed>
+
+    <Years>
+      <en>years</en>
+    </Years>
+
+    <WantDo>
+      <en>Want do</en>
+    </WantDo>
+    
+    <WantMeet>
+      <en>Want meet</en>
+    </WantMeet>
+
+    <ManOnly>
+      <en>Man only</en>
+    </ManOnly>
+    
+    <WomanOnly>
+      <en>Woman only</en>
+    </WomanOnly>
+
+    <AnyGender>
+      <en>Doesn't matter</en>
+    </AnyGender>
+
+    <MultiPeopleAllowed>
+      <en>Multiple people allowed</en>
+    </MultiPeopleAllowed>
+
+    <AgeRange>
+      <en>Are range</en>
+    </AgeRange>
+
+    <CheckinMessage>
+      <en>Checkin message</en>
+    </CheckinMessage>
+
+    <AskForChatBtn>
+      <en>Ask for chat</en>
+    </AskForChatBtn>
+
+    <Message>
+      <en>Message</en>
+    </Message>
+
+    <InterestedActivitesFitler>
+      <en>What activites are you interested of?</en>
+    </InterestedActivitesFitler>
+
+    <LanguagesFilter>
+      <en>Show people speaking one of following languages</en>
+    </LanguagesFilter>
+
+    <StillWaiting>
+      <en>Still here for</en>
+    </StillWaiting>
+
+    <BornCountry>
+      <en>Born</en>
+    </BornCountry>
+    
+    <LivesCountry>
+      <en>Lives</en>
+    </LivesCountry>
+
+    <Speaks>
+      <en>speaks</en>
+    </Speaks>
+
+    <PeopleMetCount>
+      <en>people have already met here</en>
+    </PeopleMetCount>
+
+    <StayingDates>
+      <en>Will be here</en>
+    </StayingDates>
+
+    <MessageBtn>
+      <en>Message</en>
+    </MessageBtn>
+
+    <ChatRequestMsg>
+      <en>Want's to start chat with you. Would you like to accept the request ?</en>
+    </ChatRequestMsg>
+
+    <StopChatInfo>
+      <en>You can without any mentioned reason stop conversation with any person anytime. Just press the button bellow.</en>
+    </StopChatInfo>
+
+    <StopChatBlock>
+      <en>Would you like to block this person/make you invisible for this person?</en>
+    </StopChatBlock>
+
+    <StopChatReport>
+      <en>Did other person somehow offended or assulted you ? Then report the person and we will evaluate the chat between you. Please use this just when you are sure about it, you might get negative rating if you misuse this reporting.</en>
+    </StopChatReport>
+
+    <StopChatBtn>
+      <en>Stop chat</en>
+    </StopChatBtn>
+
+    <CancelChatBtn>
+      <en>Cancel</en>
+    </CancelChatBtn>
+
+    <StopChatCross>
+      <en>close/stop conversation</en>
+    </StopChatCross>
+
+    <UserActions>
+      <en>user actions</en>
+    </UserActions>
+
+    <ChatWith>
+      <en>Chat with</en>
+    </ChatWith>
+
+    <WriteMsgPlaceholder>
+      <en>Type a message...</en>
+    </WriteMsgPlaceholder>
+
+    <Messages>
+      <en>Messages</en>
+    </Messages>
+
+    <YourCommentPlaceholder>
+      <en>Your comment...</en>
+    </YourCommentPlaceholder>
+
+    <SendBtn>
+      <en>Send</en>
+    </SendBtn>
+
+    <Title>
+      <en>Find your travel buddy</en>
+    </Title>
+
+
+    <InfoCity>
+      <en>Are you planning and trip ? Would you like to meet with other single travelers or join a group of others ? Share you schedule and interests with other travelers.</en>
+    </InfoCity>
+
+    <InfoNow>
+      <en>Checkin right here right now and find your instant travel buddies. Simply pick activities you are interested in and browse among people around you.</en>
+    </InfoNow>
+
+    <NoLocationPermissions>
+      <en>Seems you didn't grant us location permissions, so we cannot show your exact location. Once you change your mind, you must go to your browser Location settings and allow it.</en>
+    </NoLocationPermissions>
+
+    <SearchLocationPlaceholder>
+      <en>Search location</en>
+    </SearchLocationPlaceholder>
+    
+    <People>
+      <en>People</en>
+    </People>
+
+    <MeetingPoints>
+      <en>Meeting points</en>
+    </MeetingPoints>
+
+
+    <MorePeopleInCity>
+      <en>more people are checked-in to the</en>
+    </MorePeopleInCity>
+
+    <City>
+      <en>City</en>
+    </City>
+
+    <FilterDatesTitle>
+      <en>Show checkins between following dates</en>
+    </FilterDatesTitle>
+
+    <UseFilter>
+      <en>Use filter</en>
+    </UseFilter>
+
+    <ShowAllCheckinsFilter>
+      <en>Show all checkins</en>
+    </ShowAllCheckinsFilter>
+
+    <PeopleTitle>
+      <en>People</en>
+    </PeopleTitle>
+
+    <NoPeoplePlaceholder>
+      <en>Sorry, no people here right now, but you can visit one of our popular Meeting Points.</en>
+    </NoPeoplePlaceholder>
+
+    <MeetingPointsTitle>
+      <en>Meeting points</en>
+    </MeetingPointsTitle>
+    
+    <NoMeetingPointsPlaceholder>
+      <en>Sorry, no Meeting Points, we are not yet active in this area.</en>
+    </NoMeetingPointsPlaceholder>
+
+    <ProfilePhoto>
+      <en>Profile photo</en>
+    </ProfilePhoto>
+    
+    <RequiredPropsTitle>
+      <en>Before you start... Travel Buddy service is about meeting real people in real world. Therefore we have to ask you fill in honestly following information. By using this service, you agree with</en>
+    </RequiredPropsTitle>
+
+    <TermsOfUse>
+      <en>Terms of use</en>
+    </TermsOfUse>
+
+    <FirstName>
+      <en>First name</en>
+    </FirstName>
+
+    <FirstNamePlaceholder>
+      <en>First name</en>
+    </FirstNamePlaceholder>
+
+    <LastName>
+      <en>Last name</en>
+    </LastName>
+
+    <LastNamePlaceholder>
+      <en>Last name</en>
+    </LastNamePlaceholder>
+
+    <BirthYear>
+      <en>Birth year</en>
+    </BirthYear>
+
+    <BirthYearPlaceholder>
+      <en>eg 1983</en>
+    </BirthYearPlaceholder>
+
+    <Gender>
+      <en>Gender</en>
+    </Gender>
+
+    <Male>
+      <en>Male</en>
+    </Male>
+
+    <Female>
+      <en>Female</en>
+    </Female>
+
+    <Languages>
+      <en>Languages</en>
+    </Languages>
+
+    <CityBorn>
+      <en>City (Born)</en>
+    </CityBorn>
+
+    <CityNamePlaceholder>
+      <en>City name</en>
+    </CityNamePlaceholder>
+
+    <CityLiving>
+      <en>City (Living)</en>
+    </CityLiving>
+
+    <PropsFinalMessage>
+      <en>Is everything correct? Then close the dialog and start using the service!</en>
+    </PropsFinalMessage>
+
+    <CloseDialog>
+      <en>Close dialog</en>
+    </CloseDialog>
+
+    <CheckinBtn>
+      <en>Check-in</en>
+    </CheckinBtn>
+
+    <ManageCheckinsBtn>
+      <en>Manage check-ins</en>
+    </ManageCheckinsBtn>
+
+  </module>

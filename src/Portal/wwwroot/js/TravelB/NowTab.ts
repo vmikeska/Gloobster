@@ -165,9 +165,11 @@ module TravelB {
 		public askForChat(uid, cid) {
 			var data = { uid: uid, cid: cid };
 
-			Views.ViewBase.currentView.apiPost("CheckinReact", data, () => {
+			var v = Views.ViewBase.currentView;
+				
+			v.apiPost("CheckinReact", data, () => {
 				var id = new Common.InfoDialog();
-				id.create("Request sent", "You asked to start chat with the user, now you have to wait until he confirms the chat");
+				id.create(v.t("RequestSentTitle", "jsTravelB"), v.t("RequestSentBody", "jsTravelB"));
 			});
 
 		}

@@ -23,9 +23,9 @@
 		public nowTabConst = "nowTab";
 		public cityTabConst = "cityTab";
 
-		private reacts: CheckinReacts;
+		private reacts: TravelB.CheckinReacts;
 		private notifs: NotifRefresh;
-		private chat: Chat;
+		private chat: TravelB.Chat;
 			
 		private youMarker;
 
@@ -46,7 +46,7 @@
 				this.checkinWin = new TravelB.CheckinWin(this);
 				this.checkinMenu = new TravelB.CheckinMenu(this);
 
-			this.filter = new TravelB.Filter();
+			this.filter = new TravelB.Filter(this);
 		  this.filter.onFilterSelChanged = () => {
 			  this.displayData();
 		  }
@@ -60,10 +60,10 @@
 			this.status = new TravelB.Status(this);
 			this.status.refresh();
 
-			this.chat = new Chat();
+			this.chat = new TravelB.Chat(this);
 			this.chat.refreshAll();
 
-			this.reacts = new CheckinReacts();
+			this.reacts = new TravelB.CheckinReacts(this);
 			this.reacts.onStartChat = (callback) => {
 				this.chat.refreshAll(() => {
 					callback();
@@ -223,10 +223,11 @@
 			prms.push(["toDate", TravelB.DateUtils.myDateToTrans(this.filter.filterDateTo)]);
 				
 			ViewBase.currentView.apiGet("CheckinCity", prms, (cs) => {					
-					this.cityFncs.genCheckinsList(cs);
 
 					var fc = _.reject(cs, (c) => { return c.userId === ViewBase.currentUserId });
 
+					this.cityFncs.genCheckinsList(fc);
+					
 					this.mapCheckins.genCheckins(fc, CheckinType.City);
 			});
 		}

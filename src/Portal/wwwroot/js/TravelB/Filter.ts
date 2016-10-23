@@ -59,7 +59,11 @@ module TravelB {
 
 		private $filter;
 
-		constructor() {
+			private v: Views.TravelBView;
+
+			constructor(v) {
+				this.v = v;
+
 			this.initCheckboxes();
 
 			this.$filter = $(".filter");
@@ -97,7 +101,7 @@ module TravelB {
 
 		private updateFilter(useFilter: boolean, allCheckins: boolean) {
 			if (allCheckins) {
-				this.setFilter(null);
+				this.setFilter("");
 				return;
 			}
 
@@ -152,16 +156,14 @@ module TravelB {
 		}
 
 		private initCommon() {
-
-			var v = <Views.TravelBView>Views.ViewBase.currentView;
-
-			this.initLangsTagger(v.defaultLangs);
+				
+			this.initLangsTagger(this.v.defaultLangs);
 
 			var $c = $("#filterCont");
 
 			this.wantDos = new CategoryTagger();
 			var data = TravelBUtils.getWantDoTaggerData();
-			this.wantDos.create($c, "filter", data, "Filter is inactive until you choose some activities");
+			this.wantDos.create($c, "filter", data, this.v.t("FilterActivitesPlacehodler", "jsTravelB"));
 			this.wantDos.onFilterChange = () => {
 				this.wds = this.wantDos.getSelectedIds();
 				this.onFilterSelChanged();

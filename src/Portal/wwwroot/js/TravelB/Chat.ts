@@ -1,26 +1,30 @@
-﻿module Views {
+﻿module TravelB {
 
 	export enum CheckinReactionState { Created, Refused, Accepted, Finished, Rated, NotMet, Blocked, Reported, Met }
 
 	export class Chat {
 
-		private chatLayoutTmp = ViewBase.currentView.registerTemplate("chat-layout-template");
-		private chatTitleTagTmp = ViewBase.currentView.registerTemplate("chat-person-title-template");
-		private chatMsgLeftTmp = ViewBase.currentView.registerTemplate("chat-msg-l-template");
-		private chatMsgRightTmp = ViewBase.currentView.registerTemplate("chat-msg-r-template");
-		private chatActionTmp = ViewBase.currentView.registerTemplate("chat-action-template");
+		private chatLayoutTmp = Views.ViewBase.currentView.registerTemplate("chat-layout-template");
+		private chatTitleTagTmp = Views.ViewBase.currentView.registerTemplate("chat-person-title-template");
+		private chatMsgLeftTmp = Views.ViewBase.currentView.registerTemplate("chat-msg-l-template");
+		private chatMsgRightTmp = Views.ViewBase.currentView.registerTemplate("chat-msg-r-template");
+		private chatActionTmp = Views.ViewBase.currentView.registerTemplate("chat-action-template");
 
 			
 		
-		private stopWinTmp = ViewBase.currentView.registerTemplate("stopWin-template");
+		private stopWinTmp = Views.ViewBase.currentView.registerTemplate("stopWin-template");
 		
 		private dlg: Common.ConfirmDialog;
 
 		private chatRefresh: ChatRefresh;
 		private names = [];
 
-		constructor() {
-			
+		private v: Views.TravelBView;
+
+		constructor(view) {
+
+			this.v = view;
+
 			this.chatRefresh = new ChatRefresh();
 			this.chatRefresh.onRefresh = (responses) => {
 				if (responses) {
@@ -36,7 +40,7 @@
 		public refreshAll(callback = null) {
 			var prms = [["type", "s"]];
 
-			ViewBase.currentView.apiGet("CheckinReact", prms, (reacts) => {
+			this.v.apiGet("CheckinReact", prms, (reacts) => {
 
 				var anyReacts = reacts.length > 0;
 				var $layout = $(".nchat-all");
@@ -75,11 +79,7 @@
 		}
 
 		private appPosts(posts, reactId) {
-
-				if (posts.length > 0) {
-					var a = "t";
-				}
-
+				
 			var $titleTag = Chat.getUserTitleNameTag(reactId);
 			var $msgStorage = $titleTag.find(".msg-storage");
 			var $txtCont = $(".nchat-all .messages");
@@ -143,7 +143,7 @@
 
 
 		private genUserTitleNameTag(react, isActive: boolean) {
-			var isTarget = (react.targetUserId === ViewBase.currentUserId);
+			var isTarget = (react.targetUserId === Views.ViewBase.currentUserId);
 			var name = isTarget ? react.askingUserName : react.targetUserName;
 
 			var context = {
@@ -240,7 +240,7 @@
 				lastDate: last
 			}
 
-			ViewBase.currentView.apiPost("ReactChat", data, (newPosts) => {
+			Views.ViewBase.currentView.apiPost("ReactChat", data, (newPosts) => {
 				this.appPosts(newPosts, rid);
 
 				$msgBox.val("");
@@ -251,7 +251,7 @@
 			var $layout = $(".nchat-all");
 
 			var firstReact = reacts[0];
-			var isTarget = (firstReact.targetUserId === ViewBase.currentUserId);
+			var isTarget = (firstReact.targetUserId === Views.ViewBase.currentUserId);
 			var name = isTarget ? firstReact.askingUserName : firstReact.targetUserName;
 
 			var context = {
@@ -365,14 +365,14 @@
 
 			return $i;
 		}
-
+			
 		private targetActions($cont) {				
-				$cont.append(this.actMenuItem("We've already met", "met"));
-				$cont.append(this.actMenuItem("We didn't meet", "didNotMeet"));			
+				$cont.append(this.actMenuItem(this.v.t("AlreadyMet", "jsTravelB"), "met"));
+				$cont.append(this.actMenuItem(this.v.t("DidntMeet", "jsTravelB"), "didNotMeet"));			
 		}
 
 		private requestorActions($cont) {				
-				$cont.append(this.actMenuItem("We didn't meet", "didNotMeet"));				
+				$cont.append(this.actMenuItem(this.v.t("DidntMeet", "jsTravelB"), "didNotMeet"));				
 		}
 
 		private createStopScreen(reactId) {
@@ -389,17 +389,17 @@
 					e.preventDefault();
 
 					if (blockPerson) {
-							this.dlg.create("User blocking and reporting", "Do you really want to report this user ?", "Cancel", "Report", () => {
+							this.dlg.create(this.v.t("UserBlockingTitle", "jsTravelB"), this.v.t("UserBlockingBody", "jsTravelB"), this.v.t("Cancel", "jsLayout"), this.v.t("UserBlockingReport", "jsTravelB"), () => {
 									this.changeRectState(reactId, CheckinReactionState.Blocked);
 							});	
 					}
 					else if (reportPerson) {
-							this.dlg.create("User blocking", "Do you really want to block this user ?", "Cancel", "Block", () => {
+							this.dlg.create(this.v.t("UserReportingTitle", "jsTravelB"), this.v.t("UserReportingBody", "jsTravelB"), this.v.t("Cancel", "jsLayout"), this.v.t("UserReportingBlock", "jsTravelB"), () => {
 									this.changeRectState(reactId, CheckinReactionState.Blocked);
 							});
 					}
 					else {
-							this.dlg.create("Stop conversation", "Do you really want to stop the conversation ?", "Cancel", "Stop", () => {
+							this.dlg.create(this.v.t("StopConversationTitle", "jsTravelB"), this.v.t("StopConversationBody", "jsTravelB"), this.v.t("Cancel", "jsLayout"), this.v.t("StopConversationStop", "jsTravelB"), () => {
 									this.changeRectState(reactId, CheckinReactionState.Refused);
 							});		
 					}
@@ -418,7 +418,7 @@
 			if (extraVals) {
 				prms = $.extend(prms, extraVals);
 			}
-			ViewBase.currentView.apiPut("CheckinReact", prms, () => {
+			this.v.apiPut("CheckinReact", prms, () => {
 					var $person = Chat.getUserTitleNameTag(reactId);
 					$person.remove();
 
@@ -441,13 +441,13 @@
 			}
 			if (act === "met") {
 
-				this.dlg.create("Already met", "Have you really already met ?", "Cancel", "We have met", () => {
+					this.dlg.create(this.v.t("AlreadyMetTitle", "jsTravelB"), this.v.t("AlreadyMetBody", "jsTravelB"), this.v.t("Cancel", "jsLayout"), this.v.t("AlreadyMetConfirm", "jsTravelB"), () => {
 					this.changeRectState(reactId, CheckinReactionState.Met);
 				});
 			}
 			if (act === "didNotMeet") {
 
-				this.dlg.create("Didn't meet", "We didn't meet", "Cancel", "We didn't meet", () => {
+					this.dlg.create(this.v.t("DidntMeetTitle", "jsTravelB"), this.v.t("DidntMeetBody", "jsTravelB"), this.v.t("Cancel", "jsLayout"), this.v.t("DidntMeetConfirm", "jsTravelB"), () => {
 					this.changeRectState(reactId, CheckinReactionState.NotMet);
 				});
 			}

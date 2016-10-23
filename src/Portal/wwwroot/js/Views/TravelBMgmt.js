@@ -30,7 +30,7 @@ var Views;
             c.minCharsToSearch = 1;
             c.clearAfterSearch = false;
             var combo = new Common.PlaceSearchBox(c);
-            $c.change(function (newPlaceRequest, clickedPlaceObj) {
+            $c.change(function (e, newPlaceRequest, clickedPlaceObj) {
                 var c = clickedPlaceObj.Coordinates;
                 _this.placeCombo.setCoordinates(c.Lat, c.Lng);
             });
@@ -44,7 +44,7 @@ var Views;
             c.minCharsToSearch = 1;
             c.clearAfterSearch = true;
             this.placeCombo = new Common.PlaceSearchBox(c);
-            $p.change(function (newPlaceRequest, clickedPlaceObj) {
+            $p.change(function (e, newPlaceRequest, clickedPlaceObj) {
                 _this.addMeetingPoint(clickedPlaceObj.SourceId, clickedPlaceObj.SourceType, clickedPlaceObj.Name, clickedPlaceObj.Coordinates);
             });
         };

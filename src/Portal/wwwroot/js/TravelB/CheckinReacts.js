@@ -1,15 +1,16 @@
-var Views;
-(function (Views) {
+var TravelB;
+(function (TravelB) {
     var CheckinReacts = (function () {
-        function CheckinReacts() {
+        function CheckinReacts(view) {
             this.chatRequestBodyTmp = Views.ViewBase.currentView.registerTemplate("chat-request-body-template");
             this.notifBaseTmp = Views.ViewBase.currentView.registerTemplate("notif-base-template");
+            this.v = view;
         }
         CheckinReacts.prototype.refreshReacts = function (callback) {
             var _this = this;
             if (callback === void 0) { callback = null; }
             var prms = [["type", "a"]];
-            Views.ViewBase.currentView.apiGet("CheckinReact", prms, function (reacts) {
+            this.v.apiGet("CheckinReact", prms, function (reacts) {
                 _this.genRactNotifs(reacts);
                 if (callback) {
                     callback();
@@ -37,10 +38,10 @@ var Views;
             };
             var $content = $(this.chatRequestBodyTmp(context));
             var startAction = {
-                name: "Accept",
+                name: this.v.t("AcceptBtn", "jsTravelB"),
                 icon: "icon-user-check",
                 callback: function () {
-                    _this.changeNotifState(data.id, Views.CheckinReactionState.Accepted, function (r) {
+                    _this.changeNotifState(data.id, TravelB.CheckinReactionState.Accepted, function (r) {
                         if (_this.onStartChat) {
                             _this.onStartChat(function () {
                                 $content.closest(".notif").remove();
@@ -60,10 +61,10 @@ var Views;
             };
             var $base = $(this.notifBaseTmp(context));
             var letBeAction = {
-                name: "LetBe",
+                name: this.v.t("LetBeBtn", "jsTravelB"),
                 icon: "icon-cross",
                 callback: function () {
-                    _this.changeNotifState(data.id, Views.CheckinReactionState.Refused, function (r) {
+                    _this.changeNotifState(data.id, TravelB.CheckinReactionState.Refused, function (r) {
                         $base.remove();
                     });
                 }
@@ -93,6 +94,6 @@ var Views;
         };
         return CheckinReacts;
     }());
-    Views.CheckinReacts = CheckinReacts;
-})(Views || (Views = {}));
+    TravelB.CheckinReacts = CheckinReacts;
+})(TravelB || (TravelB = {}));
 //# sourceMappingURL=CheckinReacts.js.map

@@ -11,6 +11,10 @@
         <en>Travel Wiki</en>
       </MenuWiki>
 
+    <MenuTB>
+      <en>Travel Buddy</en>
+    </MenuTB>
+
       <MenuRegister>
         <en>Register</en>
       </MenuRegister>

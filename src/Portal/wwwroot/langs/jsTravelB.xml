@@ -1,0 +1,122 @@
+﻿
+  <module name="jsTravelB">
+
+
+    <AlreadyMet>
+      <en>We've already met</en>
+    </AlreadyMet>
+
+    <DidntMeet>
+      <en>We didn't meet</en>
+    </DidntMeet>
+
+    <UserBlockingTitle>
+      <en>User blocking and reporting</en>
+    </UserBlockingTitle>
+
+    <UserBlockingBody>
+      <en>Do you really want to report this user ?</en>
+    </UserBlockingBody>
+
+    <UserBlockingReport>
+      <en>Report</en>
+    </UserBlockingReport>
+
+    <UserReportingTitle>
+      <en>User reporting</en>
+    </UserReportingTitle>
+
+    <UserReportingBody>
+      <en>Do you really want to block this user ?</en>
+    </UserReportingBody>
+
+    <UserReportingBlock>
+      <en>Block</en>
+    </UserReportingBlock>
+
+    <StopConversationTitle>
+      <en>Stop conversation</en>
+    </StopConversationTitle>
+
+    <StopConversationBody>
+      <en>Do you really want to stop the conversation ?</en>
+    </StopConversationBody>
+
+    <StopConversationStop>
+      <en>Stop</en>
+    </StopConversationStop>
+
+    <AlreadyMetTitle>
+      <en>Already met</en>
+    </AlreadyMetTitle>
+
+    <AlreadyMetBody>
+      <en>Have you really already met ?</en>
+    </AlreadyMetBody>
+
+    <AlreadyMetConfirm>
+      <en>We have met</en>
+    </AlreadyMetConfirm>
+
+    <DidntMeetTitle>
+      <en>Didn't meet</en>
+    </DidntMeetTitle>
+
+    <DidntMeetBody>
+      <en>We didn't meet</en>
+    </DidntMeetBody>
+
+    <DidntMeetConfirm>
+      <en>We didn't meet</en>
+    </DidntMeetConfirm>
+
+    <AcceptBtn>
+      <en>Accept</en>
+    </AcceptBtn>
+
+    <LetBeBtn>
+      <en>Let be</en>
+    </LetBeBtn>
+
+    <ActivitesEmptyText>
+      <en>Pick activities you'd like to do</en>
+    </ActivitesEmptyText>
+
+    <Checkin>
+      <en>Checkin</en>
+    </Checkin>
+
+    <UpdateCheckin>
+      <en>Update checkin</en>
+    </UpdateCheckin>
+
+    <InvalidMsgTitle>
+      <en>Validation message</en>
+    </InvalidMsgTitle>
+
+    <InvalidMsgBody>
+      <en>Some required fields are not filled out.</en>
+    </InvalidMsgBody>
+
+    <CheckinDelTitle>
+      <en>Checkin deletion</en>
+    </CheckinDelTitle>
+
+    <CheckinDelBody>
+      <en>Do you want to delete this checkin ?</en>
+    </CheckinDelBody>
+
+    <FilterActivitesPlacehodler>
+      <en>Filter is inactive until you choose some activities</en>
+    </FilterActivitesPlacehodler>
+
+    <RequestSentTitle>
+      <en>Request sent</en>
+    </RequestSentTitle>
+
+    <RequestSentBody>
+      <en>You asked to start chat with the user, now you have to wait until he confirms the chat</en>
+    </RequestSentBody>
+
+
+  </module>

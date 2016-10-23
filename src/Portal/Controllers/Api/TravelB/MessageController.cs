@@ -112,20 +112,24 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
             var msgCont = DB.FOD<MessageEntity>(e => e.UserIds.Contains(readingUser) && e.UserIds.Contains(otherUser));
 
-            var messages = msgCont.Messages.Where(a => a.User_id != readingUser).OrderByDescending(a => a.Date);
-
-            var update = DB.U<MessageEntity>().Set("Messages.$.Read", true);
-
-            foreach (var m in messages)
+            if (msgCont != null)
             {
-                if (m.Read)
+                var messages = msgCont.Messages.Where(a => a.User_id != readingUser).OrderByDescending(a => a.Date);
+
+                var update = DB.U<MessageEntity>().Set("Messages.$.Read", true);
+
+                foreach (var m in messages)
                 {
-                    break;
+                    if (m.Read)
+                    {
+                        break;
+                    }
+
+                    var filter = DB.F<MessageEntity>().Eq(p => p.id, msgCont.id) &
+                                 DB.F<MessageEntity>().Eq("Messages._id", m.id);
+                    var res = await DB.UpdateManyAsync(filter, update);
                 }
-                
-                var filter = DB.F<MessageEntity>().Eq(p => p.id, msgCont.id) & DB.F<MessageEntity>().Eq("Messages._id", m.id);                
-                var res = await DB.UpdateManyAsync(filter, update);
-            }            
+            }
         }
 
 

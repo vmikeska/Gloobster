@@ -78,11 +78,11 @@ var TravelB;
             var $c = this.$html.find("#wantDoCont");
             this.wantDos = new TravelB.CategoryTagger();
             var data = TravelB.TravelBUtils.getWantDoTaggerData();
-            this.wantDos.create($c, "checkin", data, "Pick activities you'd like to do");
+            this.wantDos.create($c, "checkin", data, this.view.t("ActivitesEmptyText", "jsTravelB"));
         };
         CheckinWin.prototype.createWin = function (isEdit, type) {
             var _this = this;
-            var btnTxt = isEdit ? "Update checkin" : "Checkin";
+            var btnTxt = isEdit ? this.view.t("UpdateCheckin", "jsTravelB") : this.view.t("Checkin", "jsTravelB");
             var context = { sumbitText: btnTxt };
             this.$html = $(this.checkinWindowDialog(context));
             this.initWantDo();
@@ -147,7 +147,7 @@ var TravelB;
             var _this = this;
             if (!this.valids.isAllValid()) {
                 var id = new Common.InfoDialog();
-                id.create("Validation message", "Some required fields are not filled out.");
+                id.create(this.view.t("InvalidMsgTitle", "jsTravelB"), this.view.t("InvalidMsgBody", "jsTravelB"));
                 return;
             }
             var data = this.getRequestObj();
@@ -179,7 +179,7 @@ var TravelB;
             var _this = this;
             if (!this.valids.isAllValid()) {
                 var id = new Common.InfoDialog();
-                id.create("Validation message", "Some required fields are not filled out.");
+                id.create(this.view.t("InvalidMsgTitle", "jsTravelB"), this.view.t("InvalidMsgBody", "jsTravelB"));
                 return;
             }
             var origFromDate = $("#fromDate").data("myDate");

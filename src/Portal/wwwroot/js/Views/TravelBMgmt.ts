@@ -30,7 +30,7 @@
 			c.clearAfterSearch = false;
 
 			var combo = new Common.PlaceSearchBox(c);
-			$c.change((newPlaceRequest, clickedPlaceObj) => {
+			$c.change((e, newPlaceRequest, clickedPlaceObj) => {
 				var c = clickedPlaceObj.Coordinates;
 				this.placeCombo.setCoordinates(c.Lat, c.Lng);
 			});
@@ -48,7 +48,7 @@
 			c.clearAfterSearch = true;
 
 			this.placeCombo = new Common.PlaceSearchBox(c);
-			$p.change((newPlaceRequest, clickedPlaceObj) => {
+			$p.change((e, newPlaceRequest, clickedPlaceObj) => {
 				this.addMeetingPoint(clickedPlaceObj.SourceId, clickedPlaceObj.SourceType, clickedPlaceObj.Name, clickedPlaceObj.Coordinates);
 			});
 		}

@@ -121,12 +121,14 @@
 
 						this.wantDos = new CategoryTagger();
 						var data = TravelBUtils.getWantDoTaggerData();
-						this.wantDos.create($c, "checkin", data, "Pick activities you'd like to do");
+						this.wantDos.create($c, "checkin", data, this.view.t("ActivitesEmptyText", "jsTravelB"));
 				}
+
+				
 
 				private createWin(isEdit: boolean, type: CheckinType) {
 						
-						var btnTxt = isEdit ? "Update checkin" : "Checkin";
+						var btnTxt = isEdit ? this.view.t("UpdateCheckin", "jsTravelB") : this.view.t("Checkin", "jsTravelB");
 						var context = { sumbitText: btnTxt };
 
 						this.$html = $(this.checkinWindowDialog(context));
@@ -206,7 +208,7 @@
 
 						if (!this.valids.isAllValid()) {
 								var id = new Common.InfoDialog();
-								id.create("Validation message", "Some required fields are not filled out.");
+								id.create(this.view.t("InvalidMsgTitle", "jsTravelB"), this.view.t("InvalidMsgBody", "jsTravelB"));
 								return;
 						}
 
@@ -240,7 +242,7 @@
 
 						if (!this.valids.isAllValid()) {
 								var id = new Common.InfoDialog();
-								id.create("Validation message", "Some required fields are not filled out.");
+								id.create(this.view.t("InvalidMsgTitle", "jsTravelB"), this.view.t("InvalidMsgBody", "jsTravelB"));
 								return;
 						}
 						

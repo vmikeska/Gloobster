@@ -16,7 +16,7 @@
 
         <div class="data-cont">
             @Html.Partial("WantMeet")
-            <span class="years">({{fromAge}} - {{toAge}} years)</span>
+            <span class="years">({{fromAge}} - {{toAge}} @Model.W("Years"))</span>
 
             {{#each wantDos}}
             <span class="itag">{{this}}</span>
@@ -57,6 +57,8 @@
 
 </script>
 
+
+
 <script id="checkinDialog-template" type="text/x-handlebars-template">
 
     <div class="checkinCont">
@@ -64,37 +66,36 @@
         <div id="dlgSpec">
 
         </div>
-
+         
         <div>
-            <div class="title">Want do</div>
+            <div class="title">@Model.W("WantDo")</div>
 
             <div id="wantDoCont">
 
             </div>
         </div>
 
-
         <div class="double-tbl">
             <div class="cell">
-                <div class="title">Want meet</div>
+                <div class="title">@Model.W("WantMeet")</div>
 
                 <span class="multi">
-                    <input id="wantMeetMan" type="radio" name="wantMeet" value="0"><label for="wantMeetMan">Man only</label>
+                    <input id="wantMeetMan" type="radio" name="wantMeet" value="0"><label for="wantMeetMan">@Model.W("ManOnly")</label>
                 </span>
                 <span class="multi">
-                    <input id="wantMeetWoman" type="radio" name="wantMeet" value="1"><label for="wantMeetWoman">Woman only</label>
+                    <input id="wantMeetWoman" type="radio" name="wantMeet" value="1"><label for="wantMeetWoman">@Model.W("WomanOnly")</label>
                 </span>
                 <span class="multi">
-                    <input id="wantMeetAnybody" type="radio" name="wantMeet" value="2" checked><label for="wantMeetAnybody">Doesn't matter</label>
+                    <input id="wantMeetAnybody" type="radio" name="wantMeet" value="2" checked><label for="wantMeetAnybody">@Model.W("AnyGender")</label>
                 </span>
                 <span class="multi">
                     <input id="multiPeopleAllowed" type="checkbox" />
-                    <label for="multiPeopleAllowed">Multiple people allowed</label>
+                    <label for="multiPeopleAllowed">@Model.W("MultiPeopleAllowed")</label>
                 </span>
             </div>
 
             <div class="cell">
-                <div class="title">AgeRange</div>
+                <div class="title">@Model.W("AgeRange")</div>
 
                 <div id="fromAge" class="dropdown">
                     <span class="selected">18</span>
@@ -129,7 +130,7 @@
         </div>
 
         <div>
-            <div class="title">Checkin message</div>
+            <div class="title">@Model.W("CheckinMessage")</div>
 
             <textarea id="chckMsg" placeholder="Type a short message"></textarea>
         </div>
@@ -237,7 +238,7 @@
             </div>
             <div class="cont">
                 <div class="first">
-                    <a href="/@RoutingConsts.UserDetailMenuName/{{uid}}">{{name}}</a> - <span class="years">{{age}}</span> years
+                    <a href="/@RoutingConsts.UserDetailMenuName/{{uid}}">{{name}}</a> - <span class="years">{{age}}</span> @Model.W("Years")
                     
                     <img class="c-flag" src="/images/n/flags/{{homeCountry}}.svg" title="born" />
 
@@ -253,7 +254,7 @@
                     <a target="_blank" href="{{waitingLink}}">{{waitingAtText}}</a>
 
                     @Html.Partial("WantMeet")
-                    <span class="years">({{fromAge}} - {{toAge}} years)</span>
+                    <span class="years">({{fromAge}} - {{toAge}} @Model.W("Years"))</span>
                     
                     {{#each wantDos}}
                     <span class="itag">{{this}}</span>                    
@@ -264,7 +265,7 @@
 
             </div>
             <div class="btn-cont">
-                <a class="chat-btn" href="#"><span class="icon-bubbles2"></span><br /><span class="txt">Ask for chat</span></a>
+                <a class="chat-btn" href="#"><span class="icon-bubbles2"></span><br /><span class="txt">@Model.W("AskForChatBtn")</span></a>
             </div>
 
         </div>
@@ -295,7 +296,7 @@
             </div>
             <div class="cont">
                 <div class="first">
-                    <a href="/@RoutingConsts.UserDetailMenuName/{{uid}}">{{name}}</a> - <span class="years">{{age}}</span> years
+                    <a href="/@RoutingConsts.UserDetailMenuName/{{uid}}">{{name}}</a> - <span class="years">{{age}}</span> @Model.W("Years")
                     
                     <img class="c-flag" src="/images/n/flags/{{homeCountry}}.svg" title="born" />
 
@@ -312,7 +313,7 @@
                     <span>{{fromDate}} - {{toDate}}</span>
                     
                     @Html.Partial("WantMeet")
-                    <span class="years">({{fromAge}} - {{toAge}} years)</span>
+                    <span class="years">({{fromAge}} - {{toAge}} @Model.W("Years"))</span>
                     
                     {{#each wantDos}}
                     <span class="itag">{{this}}</span>
@@ -323,7 +324,7 @@
 
             </div>
             <div class="btn-cont">
-                <a class="chat-btn" target="_blank" href="/@RoutingConsts.MessageMenuName/{{uid}}"><span class="icon-bubbles2"></span><br /><span class="txt">Message</span></a>
+                <a class="chat-btn" target="_blank" href="/@RoutingConsts.MessageMenuName/{{uid}}"><span class="icon-bubbles2"></span><br /><span class="txt">@Model.W("Message")</span></a>
             </div>
 
         </div>
@@ -337,12 +338,12 @@
     
 </script>
 
-<script id="checkinCityMgmtItem-template" type="text/x-handlebars-template">
+@*<script id="checkinCityMgmtItem-template" type="text/x-handlebars-template">
 
     <div class="userItem" data-cid="{{cid}}">
         
         <div>
-            {{age}} years,
+            {{age}} @Model.W("Years"),
             waiting for {{waitingFor}},
             wants {{wants}}
         </div>
@@ -351,25 +352,26 @@
         </div>
     </div>
 
-</script>
+</script>*@
+
 
 
 <script id="filterNow-template" type="text/x-handlebars-template">
     
-    <div class="title">What activites are you interested of?</div>
+    <div class="title">@Model.W("InterestedActivitesFitler")</div>
     <div id="filterCont"></div>
     
-    <div class="title">Show people speaking one of following languages</div>
+    <div class="title">@Model.W("LanguagesFilter")</div>
     <div id="langsFilter" class="langs-filter"></div>
 
 </script>
 
 <script id="filterCity-template" type="text/x-handlebars-template">
         
-    <div class="title">What activites are you interested of?</div>
+    <div class="title">@Model.W("InterestedActivitesFitler")</div>
     <div id="filterCont"></div>
     
-    <div class="title">Show people speaking one of following languages</div>
+    <div class="title">@Model.W("LanguagesFilter")</div>
     <div id="langsFilter" class="langs-filter"></div>    
 
 </script>
@@ -399,20 +401,20 @@
                 </div>
             </div>
             <div class="right">
-                <a href="/@RoutingConsts.UserDetailMenuName/{{uid}}" target="_blank">{{name}}</a>, {{age}} years
+                <a href="/@RoutingConsts.UserDetailMenuName/{{uid}}" target="_blank">{{name}}</a>, {{age}} @Model.W("Years")
                 <div class="line">
                     {{interests}}
                 </div>                    
                 <div class="line">
-                    
-                    <img class="c-flag" src="/images/n/flags/{{homeCountry}}.svg" title="born" />
+                     
+                    <img class="c-flag" src="/images/n/flags/{{homeCountry}}.svg" title="@Model.W("BornCountry")" />
 
                     {{#if livesOtherCountry}}
-                    <img class="c-flag" src="/images/n/flags/{{livesCountry}}.svg" title="lives" />
+                    <img class="c-flag" src="/images/n/flags/{{livesCountry}}.svg" title="@Model.W("LivesCountry")" />
                     {{/if}}
 
                     {{#each languages}}                    
-                    <span class="lang-tag" title="speaks {{this}}">{{this}}</span>
+                    <span class="lang-tag" title="@Model.W("Speaks") {{this}}">{{this}}</span>
                     {{/each}}
                 </div>    
                 
@@ -424,7 +426,7 @@
                 <a target="_blank" href="{{waitingLink}}">{{waitingAtText}}</a>
                            
                 @Html.Partial("WantMeet")
-                <span class="years">({{fromAge}} - {{toAge}} years)</span>   
+                <span class="years">({{fromAge}} - {{toAge}} @Model.W("Years"))</span>   
                 
                 {{#each wantDos}}
                 <span class="itag">{{this}}</span>
@@ -432,7 +434,7 @@
             </div>
 
             <div class="line">
-                <span class="title">Still here for</span>: {{waitingStr}}
+                <span class="title">@Model.W("StillWaiting")</span>: {{waitingStr}}
             </div>
             
         </div>
@@ -445,13 +447,15 @@
         <div class="bottom-cont">
             <a class="chat-btn chat-btn-popup" href="#">
                 <span class="icon-bubbles2"></span>
-                <span class="txt">Ask for chat</span>
+                <span class="txt">@Model.W("AskForChatBtn")</span>
             </a>
         </div>
         {{/unless}}
     </div>
 
 </script>
+
+
 
 <script id="mpPopup-template" type="text/x-handlebars-template">
     
@@ -470,7 +474,7 @@
                 {{/each}}
             </div>
 
-            <div class="people-met">{{peopleMet}} people have already met here</div>
+            <div class="people-met">{{peopleMet}} @Model.W("PeopleMetCount")</div>
         </div>
     </div>
     
@@ -487,20 +491,20 @@
                 </div>
             </div>
             <div class="right">
-                <a href="/@RoutingConsts.UserDetailMenuName/{{uid}}" target="_blank">{{name}}</a>, {{age}} years
+                <a href="/@RoutingConsts.UserDetailMenuName/{{uid}}" target="_blank">{{name}}</a>, {{age}} @Model.W("Years")
                 <div class="line">
                     {{interests}}
                 </div>
                 <div class="line">
                     
-                    <img class="c-flag" src="/images/n/flags/{{homeCountry}}.svg" title="born" />
+                    <img class="c-flag" src="/images/n/flags/{{homeCountry}}.svg" title="@Model.W("BornCountry")" />
 
                     {{#if livesOtherCountry}}
-                    <img class="c-flag" src="/images/n/flags/{{livesCountry}}.svg" title="lives" />
+                    <img class="c-flag" src="/images/n/flags/{{livesCountry}}.svg" title="@Model.W("LivesCountry")" />
                     {{/if}}
 
                     {{#each languages}}
-                    <span class="lang-tag" title="speaks {{this}}">{{this}}</span>
+                    <span class="lang-tag" title="@Model.W("Speaks") {{this}}">{{this}}</span>
                     {{/each}}
                 </div>   
             </div>
@@ -508,7 +512,7 @@
         <div class="checkin">
             <div class="line">
                 @Html.Partial("WantMeet")
-                <span class="years">({{fromAge}} - {{toAge}} years)</span>
+                <span class="years">({{fromAge}} - {{toAge}} @Model.W("Years"))</span>
                
                 {{#each wantDos}}
                 <span class="itag">{{this}}</span>
@@ -516,7 +520,7 @@
             </div>
 
             <div class="line">
-                <span class="title">Will be here</span>: {{fromDate}} - {{toDate}}                
+                <span class="title">@Model.W("StayingDates")</span>: {{fromDate}} - {{toDate}}                
             </div>
 
         </div>
@@ -528,7 +532,7 @@
         <div class="bottom-cont">
             <a class="chat-btn" target="_blank" href="/@RoutingConsts.MessageMenuName/{{uid}}">
                 <span class="icon-bubbles2"></span>
-                <span class="txt">Message</span>
+                <span class="txt">@Model.W("Message")</span>
             </a>
         </div>
     </div>
@@ -554,7 +558,7 @@
 <script id="chat-request-body-template" type="text/x-handlebars-template">
 
     <div class="chat-request">
-        <a data-uid="{{uid}}" href="#">{{name}}</a><br />Want's to start chat with you. Would you like to accept the request ?
+        <a data-uid="{{uid}}" href="#">{{name}}</a><br />@Model.W("ChatRequestMsg")
     </div>
 
 </script>
@@ -563,20 +567,20 @@
     
     <div class="chat-stop-win">
         
-        <div class="main-info">You can without any mentioned reason stop conversation with any person anytime. Just press the button bellow.</div>
+        <div class="main-info">@Model.W("StopChatInfo")</div>
         
         <div class="ln"> 
-            <label for="cbBlockPerson"><span class="icon-eye-blocked"></span> Would you like to block this person/make you invisible for this person?</label>
+            <label for="cbBlockPerson"><span class="icon-eye-blocked"></span> @Model.W("StopChatBlock")</label>
             <input id="cbBlockPerson" type="checkbox" />
         </div>
         
         <div class="ln">
-            <label for="cbReportPerson"><span class="icon-stop2"></span> Did other person somehow offended or assulted you ? Then report the person and we will evaluate the chat between you. Please use this just when you are sure about it, you might get negative rating if you misuse this reporting.</label>
+            <label for="cbReportPerson"><span class="icon-stop2"></span> @Model.W("StopChatReport")</label>
             <input id="cbReportPerson" type="checkbox" />
         </div>
 
-        <a href="#" class="lbtn exec">Stop chat</a>
-        <a href="#" class="lbtn cancel">Cancel</a>
+        <a href="#" class="lbtn exec">@Model.W("StopChatBtn")</a>
+        <a href="#" class="lbtn cancel">@Model.W("CancelChatBtn")</a>
 
     </div>
 
@@ -609,13 +613,13 @@
 
                 </div>
                 <div class="icon-cont">
-                    <a href="#" title="user actions" class="icon-auction actions"></a>
+                    <a href="#" title="@Model.W("UserActions")" class="icon-auction actions"></a>
                     <div class="actions-cont" style="display: none">
                         
                     </div>
                 </div>
                 <div class="icon-cont">
-                    <a href="#" title="close/stop conversation" class="icon-cross stop"></a>
+                    <a href="#" title="@Model.W("StopChatCross")" class="icon-cross stop"></a>
                 </div>
             </div>
 
@@ -670,7 +674,7 @@
 
         <div class="nchat-all">
             <div class="service">
-                <span class="chat-with">Chat with <span class="name">{{initChatName}}</span></span>
+                <span class="chat-with">@Model.W("ChatWith") <span class="name">{{initChatName}}</span></span>
                 <a id="minimize" class="min icon-minus" title="minimize" href="#"></a>
             </div>
 
@@ -679,7 +683,7 @@
             <div class="messages"></div>
 
             <div class="new-message">
-                <input id="msgBox" placeholder="Type a message..." type="text" />
+                <input id="msgBox" placeholder="@Model.W("WriteMsgPlaceholder")" type="text" />
             </div>
 
         </div>

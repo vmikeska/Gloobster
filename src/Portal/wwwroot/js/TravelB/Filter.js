@@ -32,10 +32,11 @@ var TravelB;
     }());
     TravelB.CustomCheckbox = CustomCheckbox;
     var Filter = (function () {
-        function Filter() {
+        function Filter(v) {
             this.selectedFilter = "gender";
             this.nowTemp = Views.ViewBase.currentView.registerTemplate("filterNow-template");
             this.cityTemp = Views.ViewBase.currentView.registerTemplate("filterCity-template");
+            this.v = v;
             this.initCheckboxes();
             this.$filter = $(".filter");
         }
@@ -63,7 +64,7 @@ var TravelB;
         };
         Filter.prototype.updateFilter = function (useFilter, allCheckins) {
             if (allCheckins) {
-                this.setFilter(null);
+                this.setFilter("");
                 return;
             }
             if (useFilter) {
@@ -111,12 +112,11 @@ var TravelB;
         };
         Filter.prototype.initCommon = function () {
             var _this = this;
-            var v = Views.ViewBase.currentView;
-            this.initLangsTagger(v.defaultLangs);
+            this.initLangsTagger(this.v.defaultLangs);
             var $c = $("#filterCont");
             this.wantDos = new TravelB.CategoryTagger();
             var data = TravelB.TravelBUtils.getWantDoTaggerData();
-            this.wantDos.create($c, "filter", data, "Filter is inactive until you choose some activities");
+            this.wantDos.create($c, "filter", data, this.v.t("FilterActivitesPlacehodler", "jsTravelB"));
             this.wantDos.onFilterChange = function () {
                 _this.wds = _this.wantDos.getSelectedIds();
                 _this.onFilterSelChanged();

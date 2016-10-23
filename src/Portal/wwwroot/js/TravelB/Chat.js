@@ -1,5 +1,5 @@
-var Views;
-(function (Views) {
+var TravelB;
+(function (TravelB) {
     (function (CheckinReactionState) {
         CheckinReactionState[CheckinReactionState["Created"] = 0] = "Created";
         CheckinReactionState[CheckinReactionState["Refused"] = 1] = "Refused";
@@ -10,10 +10,10 @@ var Views;
         CheckinReactionState[CheckinReactionState["Blocked"] = 6] = "Blocked";
         CheckinReactionState[CheckinReactionState["Reported"] = 7] = "Reported";
         CheckinReactionState[CheckinReactionState["Met"] = 8] = "Met";
-    })(Views.CheckinReactionState || (Views.CheckinReactionState = {}));
-    var CheckinReactionState = Views.CheckinReactionState;
+    })(TravelB.CheckinReactionState || (TravelB.CheckinReactionState = {}));
+    var CheckinReactionState = TravelB.CheckinReactionState;
     var Chat = (function () {
-        function Chat() {
+        function Chat(view) {
             var _this = this;
             this.chatLayoutTmp = Views.ViewBase.currentView.registerTemplate("chat-layout-template");
             this.chatTitleTagTmp = Views.ViewBase.currentView.registerTemplate("chat-person-title-template");
@@ -22,7 +22,8 @@ var Views;
             this.chatActionTmp = Views.ViewBase.currentView.registerTemplate("chat-action-template");
             this.stopWinTmp = Views.ViewBase.currentView.registerTemplate("stopWin-template");
             this.names = [];
-            this.chatRefresh = new Views.ChatRefresh();
+            this.v = view;
+            this.chatRefresh = new TravelB.ChatRefresh();
             this.chatRefresh.onRefresh = function (responses) {
                 if (responses) {
                     responses.forEach(function (resp) {
@@ -36,7 +37,7 @@ var Views;
             var _this = this;
             if (callback === void 0) { callback = null; }
             var prms = [["type", "s"]];
-            Views.ViewBase.currentView.apiGet("CheckinReact", prms, function (reacts) {
+            this.v.apiGet("CheckinReact", prms, function (reacts) {
                 var anyReacts = reacts.length > 0;
                 var $layout = $(".nchat-all");
                 var hasLayout = $layout.length > 0;
@@ -67,9 +68,6 @@ var Views;
         };
         Chat.prototype.appPosts = function (posts, reactId) {
             var _this = this;
-            if (posts.length > 0) {
-                var a = "t";
-            }
             var $titleTag = Chat.getUserTitleNameTag(reactId);
             var $msgStorage = $titleTag.find(".msg-storage");
             var $txtCont = $(".nchat-all .messages");
@@ -292,11 +290,11 @@ var Views;
             return $i;
         };
         Chat.prototype.targetActions = function ($cont) {
-            $cont.append(this.actMenuItem("We've already met", "met"));
-            $cont.append(this.actMenuItem("We didn't meet", "didNotMeet"));
+            $cont.append(this.actMenuItem(this.v.t("AlreadyMet", "jsTravelB"), "met"));
+            $cont.append(this.actMenuItem(this.v.t("DidntMeet", "jsTravelB"), "didNotMeet"));
         };
         Chat.prototype.requestorActions = function ($cont) {
-            $cont.append(this.actMenuItem("We didn't meet", "didNotMeet"));
+            $cont.append(this.actMenuItem(this.v.t("DidntMeet", "jsTravelB"), "didNotMeet"));
         };
         Chat.prototype.createStopScreen = function (reactId) {
             var _this = this;
@@ -308,17 +306,17 @@ var Views;
             $c.find(".exec").click(function (e) {
                 e.preventDefault();
                 if (blockPerson) {
-                    _this.dlg.create("User blocking and reporting", "Do you really want to report this user ?", "Cancel", "Report", function () {
+                    _this.dlg.create(_this.v.t("UserBlockingTitle", "jsTravelB"), _this.v.t("UserBlockingBody", "jsTravelB"), _this.v.t("Cancel", "jsLayout"), _this.v.t("UserBlockingReport", "jsTravelB"), function () {
                         _this.changeRectState(reactId, CheckinReactionState.Blocked);
                     });
                 }
                 else if (reportPerson) {
-                    _this.dlg.create("User blocking", "Do you really want to block this user ?", "Cancel", "Block", function () {
+                    _this.dlg.create(_this.v.t("UserReportingTitle", "jsTravelB"), _this.v.t("UserReportingBody", "jsTravelB"), _this.v.t("Cancel", "jsLayout"), _this.v.t("UserReportingBlock", "jsTravelB"), function () {
                         _this.changeRectState(reactId, CheckinReactionState.Blocked);
                     });
                 }
                 else {
-                    _this.dlg.create("Stop conversation", "Do you really want to stop the conversation ?", "Cancel", "Stop", function () {
+                    _this.dlg.create(_this.v.t("StopConversationTitle", "jsTravelB"), _this.v.t("StopConversationBody", "jsTravelB"), _this.v.t("Cancel", "jsLayout"), _this.v.t("StopConversationStop", "jsTravelB"), function () {
                         _this.changeRectState(reactId, CheckinReactionState.Refused);
                     });
                 }
@@ -335,7 +333,7 @@ var Views;
             if (extraVals) {
                 prms = $.extend(prms, extraVals);
             }
-            Views.ViewBase.currentView.apiPut("CheckinReact", prms, function () {
+            this.v.apiPut("CheckinReact", prms, function () {
                 var $person = Chat.getUserTitleNameTag(reactId);
                 $person.remove();
                 var anyPersons = $(".nchat-all .persons .person").length > 0;
@@ -355,18 +353,18 @@ var Views;
                 this.createStopScreen(reactId);
             }
             if (act === "met") {
-                this.dlg.create("Already met", "Have you really already met ?", "Cancel", "We have met", function () {
+                this.dlg.create(this.v.t("AlreadyMetTitle", "jsTravelB"), this.v.t("AlreadyMetBody", "jsTravelB"), this.v.t("Cancel", "jsLayout"), this.v.t("AlreadyMetConfirm", "jsTravelB"), function () {
                     _this.changeRectState(reactId, CheckinReactionState.Met);
                 });
             }
             if (act === "didNotMeet") {
-                this.dlg.create("Didn't meet", "We didn't meet", "Cancel", "We didn't meet", function () {
+                this.dlg.create(this.v.t("DidntMeetTitle", "jsTravelB"), this.v.t("DidntMeetBody", "jsTravelB"), this.v.t("Cancel", "jsLayout"), this.v.t("DidntMeetConfirm", "jsTravelB"), function () {
                     _this.changeRectState(reactId, CheckinReactionState.NotMet);
                 });
             }
         };
         return Chat;
     }());
-    Views.Chat = Chat;
-})(Views || (Views = {}));
+    TravelB.Chat = Chat;
+})(TravelB || (TravelB = {}));
 //# sourceMappingURL=Chat.js.map
