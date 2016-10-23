@@ -15,7 +15,7 @@
     </UserBlockingTitle>
 
     <UserBlockingBody>
-      <en>Do you really want to report this user ?</en>
+      <en>Do you really want to report this user?</en>
     </UserBlockingBody>
 
     <UserBlockingReport>
@@ -27,7 +27,7 @@
     </UserReportingTitle>
 
     <UserReportingBody>
-      <en>Do you really want to block this user ?</en>
+      <en>Do you really want to block this user?</en>
     </UserReportingBody>
 
     <UserReportingBlock>
@@ -35,11 +35,11 @@
     </UserReportingBlock>
 
     <StopConversationTitle>
-      <en>Stop conversation</en>
+      <en>Stop chat</en>
     </StopConversationTitle>
 
     <StopConversationBody>
-      <en>Do you really want to stop the conversation ?</en>
+      <en>Do you really want to stop this chat?</en>
     </StopConversationBody>
 
     <StopConversationStop>
@@ -91,7 +91,7 @@
     </UpdateCheckin>
 
     <InvalidMsgTitle>
-      <en>Validation message</en>
+      <en>Cannot create checkin</en>
     </InvalidMsgTitle>
 
     <InvalidMsgBody>
@@ -115,8 +115,16 @@
     </RequestSentTitle>
 
     <RequestSentBody>
-      <en>You asked to start chat with the user, now you have to wait until he confirms the chat</en>
+      <en>Request was sent to the user, you'll be notified when user accepts the chat</en>
     </RequestSentBody>
+
+    <MajorCityBtn>
+      <en>I will be in a city</en>
+    </MajorCityBtn>
+
+    <MajorNowBtn>
+      <en>I am here and now</en>
+    </MajorNowBtn>
 
 
   </module>

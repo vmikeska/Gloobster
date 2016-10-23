@@ -144,20 +144,21 @@
     
 </script>
 
+
 <script id="dlgNow-template" type="text/x-handlebars-template">
     
     <div class="double-tbl">
         <div class="cell">
-            <div class="title">Place</div>
+            <div class="title">@Model.W("MeetingPlace")</div>
 
             <div id="placeCombo" class="dropdown">
-                <input class="inputed" type="text" placeholder="Search for place name">
+                <input class="inputed" type="text" placeholder="@Model.W("PlaceNamePlaceholder")">
                 <img class="loader" src="/images/loader-gray.gif" style="display: none" />
                 <ul></ul>
             </div>
         </div>
         <div class="cell">
-            <div class="title">Waiting time</div>
+            <div class="title">@Model.W("WaitingTime")</div>
 
             <div id="minsWaiting" class="dropdown">
                 <span class="selected">1h</span>
@@ -178,11 +179,11 @@
 </script>
 
 <script id="dlgCity-template" type="text/x-handlebars-template">
-    <div class="title">Place</div>
+    <div class="title">@Model.W("MeetingCity")</div>
 
     
         <div id="placeCombo" class="dropdown">
-            <input class="inputed" type="text" placeholder="Search for a city name">
+            <input class="inputed" type="text" placeholder="@Model.W("CityNamePlaceholder")">
             <img class="loader" src="/images/loader-gray.gif" style="display: none" />
             <ul></ul>
         </div>
@@ -190,7 +191,7 @@
         <br />
         <br />
 
-        <div class="title">Visiting days</div>
+        <div class="title">@Model.W("VisitingDates")</div>
     
         <input id="fromDate" type="text" value="" />        
         -
@@ -211,7 +212,7 @@
                 <span class="type">{{this}}</span>{{#unless @Html.Raw("@")last}}, {{/unless}}
             {{/each}}
  
-            <div class="people-met">{{peopleMet}} people have already met here</div>
+            <div class="people-met">{{peopleMet}} @Model.W("PeopleMetCount")</div>
         </div>
         <div class="btn-cont">
             {{#if distance}}
@@ -558,7 +559,7 @@
 <script id="chat-request-body-template" type="text/x-handlebars-template">
 
     <div class="chat-request">
-        <a data-uid="{{uid}}" href="#">{{name}}</a><br />@Model.W("ChatRequestMsg")
+        <a data-uid="{{uid}}" href="/user/{{uid}}">{{name}}</a><br />@Model.W("ChatRequestMsg")
     </div>
 
 </script>

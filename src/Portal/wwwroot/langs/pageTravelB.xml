@@ -26,11 +26,11 @@
     </Years>
 
     <WantDo>
-      <en>Want do</en>
+      <en>What would you like to do?</en>
     </WantDo>
     
     <WantMeet>
-      <en>Want meet</en>
+      <en>Who would you like to meet?</en>
     </WantMeet>
 
     <ManOnly>
@@ -46,7 +46,7 @@
     </AnyGender>
 
     <MultiPeopleAllowed>
-      <en>Multiple people allowed</en>
+      <en>Can be more people</en>
     </MultiPeopleAllowed>
 
     <AgeRange>
@@ -54,7 +54,7 @@
     </AgeRange>
 
     <CheckinMessage>
-      <en>Checkin message</en>
+      <en>Say Hi to the people</en>
     </CheckinMessage>
 
     <AskForChatBtn>
@@ -102,19 +102,19 @@
     </MessageBtn>
 
     <ChatRequestMsg>
-      <en>Want's to start chat with you. Would you like to accept the request ?</en>
+      <en>want's to start chat with you. Would you like to accept the request ?</en>
     </ChatRequestMsg>
 
     <StopChatInfo>
-      <en>You can without any mentioned reason stop conversation with any person anytime. Just press the button bellow.</en>
+      <en>You can anytime stop conversation without any reason. Just press the button bellow.</en>
     </StopChatInfo>
 
     <StopChatBlock>
-      <en>Would you like to block this person/make you invisible for this person?</en>
+      <en>Would you like to block this person and make you invisible?</en>
     </StopChatBlock>
 
     <StopChatReport>
-      <en>Did other person somehow offended or assulted you ? Then report the person and we will evaluate the chat between you. Please use this just when you are sure about it, you might get negative rating if you misuse this reporting.</en>
+      <en>Were you offended or assulted? Then report this chat and we will evaluate it. Please use this just when you are sure about it, you might get negative rating if you misuse this reporting.</en>
     </StopChatReport>
 
     <StopChatBtn>
@@ -138,7 +138,7 @@
     </ChatWith>
 
     <WriteMsgPlaceholder>
-      <en>Type a message...</en>
+      <en>Write a message...</en>
     </WriteMsgPlaceholder>
 
     <Messages>
@@ -159,11 +159,11 @@
 
 
     <InfoCity>
-      <en>Are you planning and trip ? Would you like to meet with other single travelers or join a group of others ? Share you schedule and interests with other travelers.</en>
+      <en>Are you planning a trip? Let other people know you'll be there. Share your trip from our Trip planner.</en>
     </InfoCity>
 
     <InfoNow>
-      <en>Checkin right here right now and find your instant travel buddies. Simply pick activities you are interested in and browse among people around you.</en>
+      <en>Find your travel companion right here and right now. See other people around you with similar activites.</en>
     </InfoNow>
 
     <NoLocationPermissions>
@@ -175,16 +175,16 @@
     </SearchLocationPlaceholder>
     
     <People>
-      <en>People</en>
+      <en>People around you</en>
     </People>
 
     <MeetingPoints>
-      <en>Meeting points</en>
+      <en>Popular meeting points</en>
     </MeetingPoints>
 
 
     <MorePeopleInCity>
-      <en>more people are checked-in to the</en>
+      <en>more long-term travelers are in the city</en>
     </MorePeopleInCity>
 
     <City>
@@ -208,15 +208,15 @@
     </PeopleTitle>
 
     <NoPeoplePlaceholder>
-      <en>Sorry, no people here right now, but you can visit one of our popular Meeting Points.</en>
+      <en>Sorry, no people here at the moment, but you can visit one of our popular Meeting Points.</en>
     </NoPeoplePlaceholder>
 
     <MeetingPointsTitle>
-      <en>Meeting points</en>
+      <en>Popular Meeting points</en>
     </MeetingPointsTitle>
     
     <NoMeetingPointsPlaceholder>
-      <en>Sorry, no Meeting Points, we are not yet active in this area.</en>
+      <en>Sorry, we are not yet active in this area.</en>
     </NoMeetingPointsPlaceholder>
 
     <ProfilePhoto>
@@ -224,7 +224,7 @@
     </ProfilePhoto>
     
     <RequiredPropsTitle>
-      <en>Before you start... Travel Buddy service is about meeting real people in real world. Therefore we have to ask you fill in honestly following information. By using this service, you agree with</en>
+      <en>Before you start... Travel Buddy service is about meeting real people in real world. Therefore we have to ask you to fill in honestly following information. By using this service, you agree with</en>
     </RequiredPropsTitle>
 
     <TermsOfUse>
@@ -268,7 +268,7 @@
     </Female>
 
     <Languages>
-      <en>Languages</en>
+      <en>Native or fluent in languages</en>
     </Languages>
 
     <CityBorn>
@@ -298,5 +298,27 @@
     <ManageCheckinsBtn>
       <en>Manage check-ins</en>
     </ManageCheckinsBtn>
+
+    <MeetingPlace>
+      <en>Where you are?</en>
+    </MeetingPlace>
+
+    <PlaceNamePlaceholder>
+      <en>Search for place's name</en>
+    </PlaceNamePlaceholder>
+
+    <WaitingTime>
+      <en>How long are you staying</en>
+    </WaitingTime>
+
+    <MeetingCity>
+      <en>What city are you visiting?</en>
+    </MeetingCity>
+
+    <VisitingDates>
+      <en>Dates you are visiting</en>
+    </VisitingDates>
+
+    
 
   </module>
