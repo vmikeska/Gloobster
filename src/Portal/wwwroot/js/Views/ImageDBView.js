@@ -18,17 +18,20 @@ var Views;
             var $scdd = $("#selectedCity");
             this.selectedCity = this.regCityCombo($scdd);
             this.$tabCont = $("#tabCont");
-            this.searchCityDlg = this.registerTemplate("searchCityDlg-template");
             this.tabs = new Tabs($("#naviCont"), "main", 50);
             this.tabs.addTab("CityPhotos", "City photos", function () {
-                _this.showForm(_this.searchCityDlg);
-                _this.photosFnc.setCityPhotosList();
+                if (_this.selectedCity.sourceId) {
+                    _this.photosFnc.create(_this.selectedCity.sourceId);
+                }
+                else {
+                    _this.$tabCont.html("<div class=\"no-city\">No city selected</div>");
+                }
             });
             this.tabs.addTab("AddNewPhoto", "Add new photo", function () {
                 _this.newPhotoFnc.resetNewPhotoForm();
             });
             this.tabs.addTab("CutsMgmt", "Manage cuts (Just Vaclav)", function () {
-                _this.showForm(_this.cutsDlg);
+                _this.fillMainContent(_this.cutsDlg);
                 _this.cutsFnc.setCutsDlg();
             });
             this.tabs.create();
@@ -43,12 +46,12 @@ var Views;
             var box = new Common.PlaceSearchBox(c);
             $scdd.change(function (e, a, b) {
                 if (_this.tabs.activeTabId === "CityPhotos") {
-                    _this.photosFnc.showCityPhotos(_this.selectedCity.sourceId);
+                    _this.photosFnc.create(_this.selectedCity.sourceId);
                 }
             });
             return box;
         };
-        ImageDbView.prototype.showForm = function (template) {
+        ImageDbView.prototype.fillMainContent = function (template) {
             this.$tabCont.empty();
             var $html = $(template());
             this.$tabCont.html($html);
@@ -61,61 +64,78 @@ var Views;
             this.defaultCutImgTmp = Views.ViewBase.currentView.registerTemplate("defaultCutImg-template");
             this.v = v;
         }
-        Photos.prototype.showCityPhotos = function (gid) {
+        Photos.prototype.create = function (gid) {
             var _this = this;
             if (!gid) {
                 return;
             }
             this.v.apiGet("ImgDbCity", [["gid", gid]], function (city) {
-                if (city == null) {
-                }
-                _this.generateCityPhotos(city);
+                _this.city = city;
+                _this.createTabs();
             });
         };
-        Photos.prototype.setCityPhotosList = function () {
+        Photos.prototype.showDefaults = function () {
             var _this = this;
-            this.showCityPhotos(this.v.selectedCity.sourceId);
-            $("#showDefaults").click(function (e) {
-                e.preventDefault();
-                var $cont = $("#picCutsList");
-                if (_this.v.selectedCity.sourceId) {
-                    $cont.empty();
-                    _this.v.apiGet("ImgDbCut", [], function (cuts) {
-                        cuts.forEach(function (c) {
-                            var context = {
-                                cutId: c.id,
-                                cutName: c.name,
-                                cityId: _this.v.selectedCity.sourceId,
-                                shortName: c.shortName,
-                                random: _this.v.makeRandomString(10)
-                            };
-                            var $i = $(_this.defaultCutImgTmp(context));
-                            $cont.append($i);
-                        });
-                    });
-                }
+            this.$cont.empty();
+            this.v.apiGet("ImgDbCut", [], function (cuts) {
+                cuts.forEach(function (c) {
+                    var context = {
+                        cutId: c.id,
+                        cutName: c.name,
+                        cityId: _this.v.selectedCity.sourceId,
+                        shortName: c.shortName,
+                        random: _this.v.makeRandomString(10)
+                    };
+                    var $i = $(_this.defaultCutImgTmp(context));
+                    _this.$cont.append($i);
+                });
             });
         };
-        Photos.prototype.generateCityPhotos = function (city) {
+        Photos.prototype.createTabs = function () {
             var _this = this;
-            var $photosCont = $("#photosList");
-            $photosCont.empty();
-            city.images.forEach(function (img) {
+            var $tabCont = $("#tabCont");
+            $tabCont.empty();
+            $tabCont.append("<div id=\"photosTabCont\"></div>");
+            $tabCont.append("<div id=\"photosCont\"></div>");
+            this.$cont = $("#photosCont");
+            this.tabs = new Tabs($("#photosTabCont"), "photos", 30);
+            this.tabs.addTab("DefaultCuts", "Default cuts", function () {
+                _this.showDefaults();
+            });
+            this.tabs.addTab("AllPhotos", "All Photos", function () {
+                _this.showPhotos();
+            });
+            this.tabs.create();
+        };
+        Photos.prototype.showPhotos = function () {
+            var _this = this;
+            this.$cont.empty();
+            this.city.images.forEach(function (img) {
                 var $photo = $("<div class=\"img\" style=\"background-image:url('/Pic/" + img.id + "/orig');\"><div class=\"delete\">X</div></div>");
                 $photo.find(".delete").click(function (e) {
                     e.stopPropagation();
                     var cd = new Common.ConfirmDialog();
-                    cd.create("Photot deletion", "Do you want to delete the photo ?", "Cancel", "Delete", function () {
-                        _this.v.apiDelete("ImgDbPhoto", [["cityId", city.id], ["imgId", img.id]], function () {
+                    cd.create("Photo deletion", "Do you want to delete the photo ?", "Cancel", "Delete", function () {
+                        _this.v.apiDelete("ImgDbPhoto", [["cityId", _this.city.id], ["imgId", img.id]], function () {
                             $photo.remove();
                         });
                     });
                 });
                 $photo.click(function (e) {
                     e.preventDefault();
-                    _this.v.cutsFnc.origPhotoClicked(img.id, city.id);
+                    _this.origPhotoClicked(img.id, _this.city.id);
                 });
-                $photosCont.append($photo);
+                _this.$cont.append($photo);
+            });
+        };
+        Photos.prototype.origPhotoClicked = function (imgId, cityId) {
+            var _this = this;
+            this.$cont.empty();
+            this.v.apiGet("ImgDbCut", [], function (cuts) {
+                cuts.forEach(function (cut) {
+                    var $c = _this.v.cutsFnc.genCutInstance(cut, imgId, cityId);
+                    _this.$cont.append($c);
+                });
             });
         };
         return Photos;
@@ -139,17 +159,6 @@ var Views;
                 _this.sendCreateCut();
             });
             this.displayCuts();
-        };
-        Cuts.prototype.origPhotoClicked = function (imgId, cityId) {
-            var _this = this;
-            var $cont = $("#picCutsList");
-            $cont.empty();
-            this.v.apiGet("ImgDbCut", [], function (cuts) {
-                cuts.forEach(function (cut) {
-                    var $c = _this.genCutInstance(cut, imgId, cityId);
-                    $cont.append($c);
-                });
-            });
         };
         Cuts.prototype.displayCuts = function () {
             var _this = this;
@@ -269,7 +278,7 @@ var Views;
             this.v = v;
         }
         NewPhoto.prototype.resetNewPhotoForm = function () {
-            this.v.showForm(this.addPhotoDlg);
+            this.v.fillMainContent(this.addPhotoDlg);
             this.setNewPhotoDlg();
         };
         NewPhoto.prototype.preloadImg = function (input) {

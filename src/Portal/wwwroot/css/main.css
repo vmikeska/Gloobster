@@ -4105,3 +4105,100 @@ footer {
       .travelb-messages .um-all .um .other .date {
         color: gray;
         font-size: 0.6em; }
+
+.image-db .no-city {
+  border: 2px solid blue;
+  font-size: 26px;
+  padding: 20px;
+  background-color: lightyellow;
+  margin: 10px;
+  border-radius: 4px; }
+
+.image-db .myTabs {
+  width: 100%; }
+
+.image-db .myTab {
+  border: 1px solid white;
+  background-color: #57c1db;
+  color: white;
+  display: inline-block;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  cursor: hand;
+  padding-top: 14px; }
+
+.image-db .myTab.act {
+  background-color: red; }
+
+.image-db #naviCont {
+  margin-top: 16px;
+  margin-bottom: 8px; }
+
+.image-db #newPhotoForm {
+  border: 2px solid black;
+  margin: 8px;
+  padding: 8px; }
+
+.image-db .photoOverFrame {
+  border: 2px solid black;
+  margin-bottom: 8px; }
+
+.image-db .photoBtnFrame {
+  margin-top: 8px;
+  margin-bottom: 8px; }
+
+.image-db .img {
+  display: inline-block;
+  width: 150px;
+  height: 100px;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin-left: 8px;
+  margin-top: 8px;
+  border: 2px solid black;
+  cursor: pointer;
+  cursor: hand; }
+
+.image-db .img .delete {
+  position: relative;
+  top: 0px;
+  left: 133px;
+  color: red;
+  font-weight: bold;
+  /*font-size: 16px;*/
+  background-color: white;
+  border: 1px solid red;
+  padding: 1px;
+  width: 14px;
+  height: 14px; }
+
+.image-db #photosList {
+  height: 204px;
+  border-top: 2px solid black;
+  padding: 8px;
+  margin-top: 16px;
+  overflow-y: scroll; }
+
+.image-db #picCutsList {
+  border-top: 2px solid black;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding-top: 8px; }
+
+.image-db .cutListItem {
+  margin-top: 4px;
+  border-bottom: 1px solid black; }
+
+.image-db #cutCreateForm {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  border: 1px solid black; }
+
+.image-db .cutsList {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black; }

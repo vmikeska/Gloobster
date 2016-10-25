@@ -1,8 +1,8 @@
 
 module Views {
-		
+
 	export class ImageDbView extends ViewBase {
-			
+
 		public $tabCont;
 
 		public selectedCity: Common.PlaceSearchBox;
@@ -29,28 +29,31 @@ module Views {
 			var $scdd = $("#selectedCity");
 
 			this.selectedCity = this.regCityCombo($scdd);
-			
-			this.$tabCont = $("#tabCont");
 
-			this.searchCityDlg = this.registerTemplate("searchCityDlg-template");
+			this.$tabCont = $("#tabCont");
 
 			this.tabs = new Tabs($("#naviCont"), "main", 50);
 			this.tabs.addTab("CityPhotos", "City photos", () => {
-				this.showForm(this.searchCityDlg);
-				this.photosFnc.setCityPhotosList();
+
+				if (this.selectedCity.sourceId) {
+					this.photosFnc.create(this.selectedCity.sourceId);
+				} else {
+					this.$tabCont.html(`<div class="no-city">No city selected</div>`);
+				}
+
 			});
 			this.tabs.addTab("AddNewPhoto", "Add new photo", () => {
 				this.newPhotoFnc.resetNewPhotoForm();
 			});
 
 			this.tabs.addTab("CutsMgmt", "Manage cuts (Just Vaclav)", () => {
-				this.showForm(this.cutsDlg);
+				this.fillMainContent(this.cutsDlg);
 				this.cutsFnc.setCutsDlg();
 			});
 			this.tabs.create();
 
 		}
-			
+
 		private regCityCombo($scdd) {
 
 			var c = new Common.PlaceSearchConfig();
@@ -61,106 +64,135 @@ module Views {
 
 			var box = new Common.PlaceSearchBox(c);
 			$scdd.change((e, a, b) => {
-					if (this.tabs.activeTabId === "CityPhotos") {
-							this.photosFnc.showCityPhotos(this.selectedCity.sourceId);
-					}
+				if (this.tabs.activeTabId === "CityPhotos") {
+					this.photosFnc.create(this.selectedCity.sourceId);
+				}
 			});
 
 			return box;
 		}
 
-		public showForm(template) {
+		public fillMainContent(template) {
 			this.$tabCont.empty();
 
 			var $html = $(template());
 			this.$tabCont.html($html);
 		}
-			
-		}
+
+	}
 
 	export class Photos {
-			private v: ImageDbView;
+		private v: ImageDbView;
 
-			private defaultCutImgTmp = Views.ViewBase.currentView.registerTemplate("defaultCutImg-template");
+		private defaultCutImgTmp = Views.ViewBase.currentView.registerTemplate("defaultCutImg-template");
 
-			constructor(v) {
-					this.v = v;
+		private tabs: Tabs;
+
+		private city;
+		private $cont;
+
+		constructor(v) {
+			this.v = v;
+		}
+
+		public create(gid) {
+			if (!gid) {
+				return;
 			}
 
-			public showCityPhotos(gid) {
+			this.v.apiGet("ImgDbCity", [["gid", gid]], (city) => {
+				//if (city == null) {
 
-					if (!gid) {
-							return;
-					}
+				//}
 
-					this.v.apiGet("ImgDbCity", [["gid", gid]], (city) => {
-							if (city == null) {
+				this.city = city;
+				this.createTabs();
+			});
+		}
 
-							}
-							this.generateCityPhotos(city);
+		private showDefaults() {
+
+			this.$cont.empty();
+
+			this.v.apiGet("ImgDbCut", [], (cuts) => {
+				cuts.forEach((c) => {
+
+					var context = {
+						cutId: c.id,
+						cutName: c.name,
+						cityId: this.v.selectedCity.sourceId,
+						shortName: c.shortName,
+						random: this.v.makeRandomString(10)
+					};
+
+					var $i = $(this.defaultCutImgTmp(context));
+					this.$cont.append($i);
+				});
+			});
+		}
+
+		private createTabs() {
+
+			var $tabCont = $("#tabCont");
+			$tabCont.empty();
+			$tabCont.append(`<div id="photosTabCont"></div>`);
+			$tabCont.append(`<div id="photosCont"></div>`);
+
+			this.$cont = $("#photosCont");
+
+			this.tabs = new Tabs($("#photosTabCont"), "photos", 30);
+			this.tabs.addTab("DefaultCuts", "Default cuts", () => {
+				this.showDefaults();
+			});
+			this.tabs.addTab("AllPhotos", "All Photos", () => {
+				this.showPhotos();
+			});
+
+			this.tabs.create();
+		}
+
+		private showPhotos() {
+
+			this.$cont.empty();
+
+			this.city.images.forEach((img) => {
+				var $photo = $(`<div class="img" style="background-image:url('/Pic/${img.id}/orig');"><div class="delete">X</div></div>`);
+
+				$photo.find(".delete").click((e) => {
+					e.stopPropagation();
+
+					var cd = new Common.ConfirmDialog();
+					cd.create("Photo deletion", "Do you want to delete the photo ?", "Cancel", "Delete", () => {
+
+						this.v.apiDelete("ImgDbPhoto", [["cityId", this.city.id], ["imgId", img.id]], () => {
+							$photo.remove();
+						});
+
 					});
-			}
-			
-			public setCityPhotosList() {
 
-					this.showCityPhotos(this.v.selectedCity.sourceId);
+				});
 
-					$("#showDefaults").click((e) => {
-							e.preventDefault();
+				$photo.click((e) => {
+					e.preventDefault();
+					this.origPhotoClicked(img.id, this.city.id);
+				});
 
-							var $cont = $("#picCutsList");
+				this.$cont.append($photo);
+			});
+		}
 
-							if (this.v.selectedCity.sourceId) {
-									$cont.empty();
-									this.v.apiGet("ImgDbCut", [], (cuts) => {
-											cuts.forEach((c) => {
+		public origPhotoClicked(imgId, cityId) {				
+				this.$cont.empty();
 
-													var context = {
-															cutId: c.id,
-															cutName: c.name,
-															cityId: this.v.selectedCity.sourceId,
-															shortName: c.shortName,
-															random: this.v.makeRandomString(10)
-													};
+				this.v.apiGet("ImgDbCut", [], (cuts) => {
+						cuts.forEach((cut) => {
+								var $c = this.v.cutsFnc.genCutInstance(cut, imgId, cityId);
+								this.$cont.append($c);
+						});
+				});
 
-													var $i = $(this.defaultCutImgTmp(context));
-													$cont.append($i);
-											});
-									});
-							}
-					});
-			}
+		}
 
-			private generateCityPhotos(city) {
-					var $photosCont = $("#photosList");
-
-					$photosCont.empty();
-
-					city.images.forEach((img) => {
-							var $photo = $(`<div class="img" style="background-image:url('/Pic/${img.id}/orig');"><div class="delete">X</div></div>`);
-
-							$photo.find(".delete").click((e) => {
-									e.stopPropagation();
-
-									var cd = new Common.ConfirmDialog();
-									cd.create("Photot deletion", "Do you want to delete the photo ?", "Cancel", "Delete", () => {
-
-											this.v.apiDelete("ImgDbPhoto", [["cityId", city.id], ["imgId", img.id]], () => {
-													$photo.remove();
-											});
-
-									});
-
-							});
-
-							$photo.click((e) => {
-									e.preventDefault();
-									this.v.cutsFnc.origPhotoClicked(img.id, city.id);
-							});
-
-							$photosCont.append($photo);
-					});
-			}
 	}
 
 	export class Cuts {
@@ -190,19 +222,6 @@ module Views {
 					});
 
 					this.displayCuts();
-			}
-			
-			public origPhotoClicked(imgId, cityId) {
-					var $cont = $("#picCutsList");
-					$cont.empty();
-
-					this.v.apiGet("ImgDbCut", [], (cuts) => {
-							cuts.forEach((cut) => {
-									var $c = this.genCutInstance(cut, imgId, cityId);
-									$cont.append($c);
-							});
-					});
-
 			}
 			
 			private displayCuts() {
@@ -301,7 +320,7 @@ module Views {
 					$oldInst.replaceWith($newInst);
 			}
 
-			private genCutInstance(cut, imgId, cityId) {
+			public genCutInstance(cut, imgId, cityId) {
 					var context = {
 							cutId: cut.id,
 							cutName: cut.name,
@@ -348,7 +367,7 @@ module Views {
 		}
 
 		public resetNewPhotoForm() {
-				this.v.showForm(this.addPhotoDlg);
+				this.v.fillMainContent(this.addPhotoDlg);
 				this.setNewPhotoDlg();
 		}
 

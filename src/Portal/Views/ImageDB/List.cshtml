@@ -6,127 +6,15 @@
 
 @{
     Layout = "_LayoutNew";
-    //ViewBag.BodyClass = "";
+    ViewBag.BodyClass = "image-db";
 }
 
 <link href="/lib/cropper/dist/cropper.css" rel="stylesheet"/>
-
-@*@Html.Partial("_GlobalScripts")*@
 
 <script src="/lib/cropper/dist/cropper.js"></script>
 
 <script src="/js/ImageDb/ImageDb.js"></script>
 <script src="/js/Views/ImageDbView.js"></script>
-
-
-<style>
-    
-    .myTabs {
-         width: 100%;         
-     }
-
-    .myTab {
-        border: 1px solid white;      
-        background-color: #57c1db;
-        color: white;        
-        display: inline-block;
-        text-align: center;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer; cursor: hand;
-        padding-top: 14px;
-    }
-
-    .myTab.act {
-        background-color: red;
-    }
-
-    #naviCont {
-        margin-top: 16px;
-        margin-bottom: 8px;
-    }
-
-     #newPhotoForm {
-         border: 2px solid black;
-         margin: 8px;
-         padding: 8px;
-     }
-
-    .photoOverFrame {
-        border: 2px solid black;
-        margin-bottom: 8px;
-    }
-
-    .photoBtnFrame {
-        margin-top: 8px;
-        margin-bottom: 8px;
-    }
-
-    .img {        
-        display: inline-block;
-        width:  150px;
-        height: 100px;
-        background-position: 50% 50%;
-        background-repeat:   no-repeat;
-        background-size:     cover;
-
-        margin-left: 8px;
-        margin-top: 8px;
-        border: 2px solid black;
-        
-        cursor: pointer; cursor: hand;
-    }
-
-    .img .delete {
-        position: relative;
-        top: 0px;
-        left: 133px;
-        color: red;
-        font-weight: bold;
-        /*font-size: 16px;*/
-        background-color: white;
-        border: 1px solid red;
-        padding: 1px;
-        width: 14px;
-        height: 14px;
-    }
-
-    #photosList {
-        height: 204px;
-
-        border-top: 2px solid black;
-        padding: 8px;
-        margin-top: 16px;        
-
-        overflow-y: scroll;
-    }
-
-    #picCutsList {
-        border-top: 2px solid black;
-        margin-top: 8px;
-        margin-bottom: 8px;
-        padding-top: 8px;
-    }
-
-    .cutListItem {
-        margin-top: 4px;
-        border-bottom: 1px solid black;
-    }
-
-    #cutCreateForm {
-        margin-top: 8px;
-        margin-bottom: 8px;
-        border: 1px solid black;
-    }
-    
-    .cutsList {
-        margin-top: 8px;
-        margin-bottom: 8px;
-        border-top: 1px solid black;
-        border-bottom: 1px solid black;
-    }
-
-</style>
 
 <div class="wrapper">
 
@@ -279,17 +167,7 @@
 
     </script>
 
-<script id="searchCityDlg-template" type="text/x-handlebars-template">
-        <div>            
-            <button id="showDefaults">Show defaults for selected city</button>
-        </div>
-    
-        
 
-        <div id="photosList"></div>
-
-        <div id="picCutsList"></div>
-    </script>
 
 <script id="addPhotoDlg-template" type="text/x-handlebars-template">
 
