@@ -31,7 +31,7 @@ namespace Gloobster.Portal.Controllers.Portal
 	    {
 	        Creator.DB = DB;
 
-            Creator.AddItem("", 1);
+            Creator.AddItem(RoutingConsts.TravelBuddyMenuName, 1);
             Creator.AddItem(RoutingConsts.PinsMenuName, 1);
             Creator.AddItem(RoutingConsts.PlannerMenuName, 1);
             Creator.AddItem(RoutingConsts.WikiMenuName, 1);

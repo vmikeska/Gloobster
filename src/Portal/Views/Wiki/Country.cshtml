@@ -1,6 +1,7 @@
 ﻿@using System.Threading.Tasks
 @using Gloobster.Common
 @using Gloobster.Portal.ViewModels
+@using Microsoft.AspNet.Mvc.Rendering
 @model WikiCountryViewModel
 
 @{
@@ -19,7 +20,7 @@ else
 }
 
 
-
+@Html.Partial("GAnalytics")
 
     @Html.Partial("PageAdmin")
 

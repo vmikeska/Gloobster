@@ -1,11 +1,11 @@
 
 module Views {
+		
+	export class ImageDbView extends ViewBase {
+			
+		public $tabCont;
 
-	export class ImageDBView extends ViewBase {
-
-		private $currentCropper;
-
-		private selectedCity;
+		public selectedCity: Common.PlaceSearchBox;
 
 		private tabs;
 
@@ -16,240 +16,248 @@ module Views {
 		private cutImgListItemTmp;
 		private defaultCutImgTmp;
 
-		private $tabCont;
+		public newPhotoFnc: NewPhoto;
+		public cutsFnc: Cuts;
+		public photosFnc: Photos;
 
 		public init() {
 
-				this.selectedCity = this.regCityCombo($("#selectedCity"));
-				this.selectedCity.onPlaceSelected = (request, place) => {
+			this.newPhotoFnc = new NewPhoto(this);
+			this.cutsFnc = new Cuts(this);
+			this.photosFnc = new Photos(this);
 
-					if (this.tabs.activeTabId === "CityPhotos") {
-						this.showCityPhotos(this.selectedCity.sourceId);
-					}
-				};
+			var $scdd = $("#selectedCity");
 
+			this.selectedCity = this.regCityCombo($scdd);
+			
 			this.$tabCont = $("#tabCont");
 
 			this.searchCityDlg = this.registerTemplate("searchCityDlg-template");
-			this.addPhotoDlg = this.registerTemplate("addPhotoDlg-template");
-			this.cutsDlg = this.registerTemplate("cutsDlg-template");
-			this.cutItemTmp = this.registerTemplate("cutItemTmp-template");
-			this.cutImgListItemTmp = this.registerTemplate("cutImgListItemTmp-template");
-			this.defaultCutImgTmp = this.registerTemplate("defaultCutImg-template");
-	
+
 			this.tabs = new Tabs($("#naviCont"), "main", 50);
 			this.tabs.addTab("CityPhotos", "City photos", () => {
-					this.showForm(this.searchCityDlg);
-					this.setCitySearchDlg();
+				this.showForm(this.searchCityDlg);
+				this.photosFnc.setCityPhotosList();
 			});
 			this.tabs.addTab("AddNewPhoto", "Add new photo", () => {
-				this.resetNewPhotoForm();
+				this.newPhotoFnc.resetNewPhotoForm();
 			});
-			
+
 			this.tabs.addTab("CutsMgmt", "Manage cuts (Just Vaclav)", () => {
-					this.showForm(this.cutsDlg);
-				this.setCutsDlg();
+				this.showForm(this.cutsDlg);
+				this.cutsFnc.setCutsDlg();
 			});
 			this.tabs.create();
 
 		}
+			
+		private regCityCombo($scdd) {
 
-		private showForm(template) {
+			var c = new Common.PlaceSearchConfig();
+			c.providers = "2";
+			c.minCharsToSearch = 1;
+			c.clearAfterSearch = false;
+			c.selOjb = $scdd;
+
+			var box = new Common.PlaceSearchBox(c);
+			$scdd.change((e, a, b) => {
+					if (this.tabs.activeTabId === "CityPhotos") {
+							this.photosFnc.showCityPhotos(this.selectedCity.sourceId);
+					}
+			});
+
+			return box;
+		}
+
+		public showForm(template) {
 			this.$tabCont.empty();
 
 			var $html = $(template());
 			this.$tabCont.html($html);
 		}
+			
+		}
 
-		private setCitySearchDlg() {
+	export class Photos {
+			private v: ImageDbView;
 
-			this.showCityPhotos(this.selectedCity.sourceId);
+			private defaultCutImgTmp = Views.ViewBase.currentView.registerTemplate("defaultCutImg-template");
 
-			$("#showDefaults").click((e) => {
-				e.preventDefault();
+			constructor(v) {
+					this.v = v;
+			}
 
-				var $cont = $("#picCutsList");
+			public showCityPhotos(gid) {
 
-				if (this.selectedCity.sourceId) {
-					$cont.empty();
-					this.apiGet("ImgDbCut", [], (cuts) => {
-						cuts.forEach((c) => {
+					if (!gid) {
+							return;
+					}
 
-							var context = {
-								cutId: c.id,
-								cutName: c.name,
-								cityId: this.selectedCity.sourceId,
-								shortName: c.shortName
-							};
+					this.v.apiGet("ImgDbCity", [["gid", gid]], (city) => {
+							if (city == null) {
 
-							var $i = $(this.defaultCutImgTmp(context));
-							$cont.append($i);
-						});
+							}
+							this.generateCityPhotos(city);
 					});
-				}
-			});
-		}
+			}
+			
+			public setCityPhotosList() {
 
-		private showCityPhotos(gid) {
+					this.showCityPhotos(this.v.selectedCity.sourceId);
 
-			if (!gid) {
-				return;
+					$("#showDefaults").click((e) => {
+							e.preventDefault();
+
+							var $cont = $("#picCutsList");
+
+							if (this.v.selectedCity.sourceId) {
+									$cont.empty();
+									this.v.apiGet("ImgDbCut", [], (cuts) => {
+											cuts.forEach((c) => {
+
+													var context = {
+															cutId: c.id,
+															cutName: c.name,
+															cityId: this.v.selectedCity.sourceId,
+															shortName: c.shortName,
+															random: this.v.makeRandomString(10)
+													};
+
+													var $i = $(this.defaultCutImgTmp(context));
+													$cont.append($i);
+											});
+									});
+							}
+					});
 			}
 
-			this.apiGet("ImgDbCity", [["gid", gid]], (city) => {
-				if (city == null) {
-					var idDlg = new Common.InfoDialog();
-					idDlg.create("City empty", "The city is still empty");
-				}
-				this.showCity(city);
-			});
-		}
+			private generateCityPhotos(city) {
+					var $photosCont = $("#photosList");
 
-		private setCutsDlg() {
+					$photosCont.empty();
 
-			$("#btnShowAddCutForm").click((e) => {
-				e.preventDefault();
-				$("#cutCreateForm").toggle();
-			});
+					city.images.forEach((img) => {
+							var $photo = $(`<div class="img" style="background-image:url('/Pic/${img.id}/orig');"><div class="delete">X</div></div>`);
 
-			$("#btnCreateCut").click((e) => {
-				e.preventDefault();
-				this.sendCreateCut();
-			});
+							$photo.find(".delete").click((e) => {
+									e.stopPropagation();
 
-			this.displayCuts();
-				
-		}
+									var cd = new Common.ConfirmDialog();
+									cd.create("Photot deletion", "Do you want to delete the photo ?", "Cancel", "Delete", () => {
 
-		private displayCuts() {
-			var $l = $("#cutsList");
+											this.v.apiDelete("ImgDbPhoto", [["cityId", city.id], ["imgId", img.id]], () => {
+													$photo.remove();
+											});
 
-			$l.empty();
+									});
 
-			this.apiGet("ImgDbCut", [], (cuts) => {
-				cuts.forEach((c) => {
-					var $i = $(this.cutItemTmp(c));
-					$l.append($i);
-				});
-			});
-		}
+							});
 
-		private sendCreateCut() {
-			var $f = $("#cutCreateForm");
+							$photo.click((e) => {
+									e.preventDefault();
+									this.v.cutsFnc.origPhotoClicked(img.id, city.id);
+							});
 
-			var data = {
-				name: $f.find("#name").val(),
-				shortName: $f.find("#shortName").val(),
-				width: $f.find("#width").val(),
-				height: $f.find("#height").val()
-			};
+							$photosCont.append($photo);
+					});
+			}
+	}
 
+	export class Cuts {
 
-			var isValid = data.name && data.shortName && data.width && data.height;
-			if (!isValid) {
-				var iDlg = new Common.InfoDialog();
-				iDlg.create("Invalid", "All fields are required");
-				return;
+			private v: ImageDbView;
+
+			private $imgCutCropper;
+
+			private cutsDlg = Views.ViewBase.currentView.registerTemplate("cutsDlg-template");
+			private cutItemTmp = Views.ViewBase.currentView.registerTemplate("cutItemTmp-template");
+			private cutImgListItemTmp = Views.ViewBase.currentView.registerTemplate("cutImgListItemTmp-template");			
+
+			constructor(v) {
+					this.v = v;
 			}
 
-			this.apiPost("ImgDbCut", data, (r) => {
-				this.displayCuts();
-			});
-		}
+			public setCutsDlg() {
 
-		private showCity(city) {
-			var $photosCont = $("#photosList");
+					$("#btnShowAddCutForm").click((e) => {
+							e.preventDefault();
+							$("#cutCreateForm").toggle();
+					});
 
-			$photosCont.empty();
+					$("#btnCreateCut").click((e) => {
+							e.preventDefault();
+							this.sendCreateCut();
+					});
 
-			city.images.forEach((img) => {
-				var $photo = $(`<div class="img" style="background-image:url('/Pic/${img.id}/orig');"><div class="delete">X</div></div>`);
+					this.displayCuts();
+			}
+			
+			public origPhotoClicked(imgId, cityId) {
+					var $cont = $("#picCutsList");
+					$cont.empty();
 
-				$photo.find(".delete").click((e) => {
-						e.stopPropagation();
+					this.v.apiGet("ImgDbCut", [], (cuts) => {
+							cuts.forEach((cut) => {
+									var $c = this.genCutInstance(cut, imgId, cityId);
+									$cont.append($c);
+							});
+					});
 
-						var cd = new Common.ConfirmDialog();
-						cd.create("Photot deletion", "Do you want to delete the photo ?", "Cancel", "Delete", () => {
+			}
+			
+			private displayCuts() {
+					var $l = $("#cutsList");
 
-								this.apiDelete("ImgDbPhoto", [["cityId", city.id],["imgId", img.id]], () => {
-									$photo.remove();
-								});
-								
-						});
+					$l.empty();
 
-				});
+					this.v.apiGet("ImgDbCut", [], (cuts) => {
+							cuts.forEach((c) => {
+									var $i = $(this.cutItemTmp(c));
+									$l.append($i);
+							});
+					});
+			}
 
-				$photo.click((e) => {
-					e.preventDefault();
-					this.origPhotoClicked(img.id, city.id);
-				});
-					
-				$photosCont.append($photo);
-			});
-		}
+			private sendCreateCut() {
+					var $f = $("#cutCreateForm");
 
-		private origPhotoClicked(imgId, cityId) {
-			var $cont = $("#picCutsList");
-			$cont.empty();
-
-			this.apiGet("ImgDbCut", [], (cuts) => {
-				cuts.forEach((cut) => {
-						var $c = this.genCutInstance(cut, imgId, cityId);
-					$cont.append($c);
-				});
-			});
-
-		}
-
-		private genCutInstance(cut, imgId, cityId) {
-			var context = {
-				cutId: cut.id,
-				cutName: cut.name,
-				id: imgId,
-				shortName: cut.shortName,
-				width: cut.width,
-				height: cut.height
-			};
-			var $c = $(this.cutImgListItemTmp(context));
-			$c.find(".edit").click((e) => {
-				e.preventDefault();
-				this.setEditCutButtons($c, false, true, true);
-				this.editCut($c, imgId, cut);
-			});
-			$c.find(".save").click((e) => {
-				e.preventDefault();
-				this.saveNewCut(imgId, cut, cityId);
-			});
-			$c.find(".cancel").click((e) => {
-				e.preventDefault();
-				this.regenCutInstance(cut, imgId, cityId);
-			});
-			$c.find(".default").click((e) => {
-				e.preventDefault();
-				this.setCutAsDefault(cityId, imgId, cut.id);
-			});
-
-			return $c;
-		}
-
-
-		private setCutAsDefault(cityId, photoId, cutId) {
-
-				var data = {
-					cityId: cityId,
-					photoId: photoId,
-					cutId: cutId
+					var data = {
+							name: $f.find("#name").val(),
+							shortName: $f.find("#shortName").val(),
+							width: $f.find("#width").val(),
+							height: $f.find("#height").val()
 					};
 
-					this.apiPut("ImgDbDefault", data, () => {
-						
+
+					var isValid = data.name && data.shortName && data.width && data.height;
+					if (!isValid) {
+							var iDlg = new Common.InfoDialog();
+							iDlg.create("Invalid", "All fields are required");
+							return;
+					}
+
+					this.v.apiPost("ImgDbCut", data, (r) => {
+							this.displayCuts();
+					});
+			}
+
+			private setCutAsDefault(cityId, photoId, cutId) {
+
+					var data = {
+							cityId: cityId,
+							photoId: photoId,
+							cutId: cutId
+					};
+
+					this.v.apiPut("ImgDbDefault", data, () => {
+
 					});
 
 			}
 
 			private setEditCutButtons($cont, edit, save, cancel) {
 					var $e = $cont.find(".edit");
-					var $s =  $cont.find(".save");
+					var $s = $cont.find(".save");
 					var $c = $cont.find(".cancel");
 
 					$e.toggle(edit);
@@ -258,47 +266,125 @@ module Views {
 			}
 
 			private saveNewCut(photoId, cut, cityId) {
+					var is = new ImageDb.ImageSender(this.v, "ImgDbPhotoCut", this.$imgCutCropper, () => {
+							var d = {
+									cutId: cut.id,
+									photoId: photoId,
+									cutName: cut.shortName
+							};
+							return d;
+					}, () => {
+							this.regenCutInstance(cut, photoId, cityId);
+					});
 
-			this.getImgData(this.$imgCutCropper, (imgData) => {
-				var data = {
-					cutId: cut.id,
-					photoId: photoId,
-					data: imgData,
-					cutName: cut.shortName
-				};
+					is.send();
+			}
 
-				this.apiPut("ImgDbPhotoCut", data, () => {
-						this.regenCutInstance(cut, photoId, cityId);
-				});
-			});
+			private editCut($c, photoId, cut) {
+					var $i = $c.find("img");
+					$i.attr("src", `/Pic/${photoId}/orig`);
+					$i.css({ "width": "", "height": "", "max-width": "100%" });
 
+					this.$imgCutCropper = $i.cropper({
+							aspectRatio: cut.width / cut.height,
+							autoCropArea: 1.0,
+							cropBoxResizable: false,
+							crop: (e) => {
+							}
+					});
+			}
+
+			private regenCutInstance(cut, photoId, cityId) {
+					var $newInst = this.genCutInstance(cut, photoId, cityId);
+					var $oldInst = $(`#cutInst_${cut.id}`);
+
+					$oldInst.replaceWith($newInst);
+			}
+
+			private genCutInstance(cut, imgId, cityId) {
+					var context = {
+							cutId: cut.id,
+							cutName: cut.name,
+							id: imgId,
+							shortName: cut.shortName,
+							width: cut.width,
+							height: cut.height,
+							random: this.v.makeRandomString(10)
+					};
+
+					var $c = $(this.cutImgListItemTmp(context));
+					$c.find(".edit").click((e) => {
+							e.preventDefault();
+							this.setEditCutButtons($c, false, true, true);
+							this.editCut($c, imgId, cut);
+					});
+					$c.find(".save").click((e) => {
+							e.preventDefault();
+							this.saveNewCut(imgId, cut, cityId);
+					});
+					$c.find(".cancel").click((e) => {
+							e.preventDefault();
+							this.regenCutInstance(cut, imgId, cityId);
+					});
+					$c.find(".default").click((e) => {
+							e.preventDefault();
+							this.setCutAsDefault(cityId, imgId, cut.id);
+					});
+
+					return $c;
+			}
+	}
+
+	export class NewPhoto {
+
+		private v: ImageDbView;
+
+		private addPhotoDlg = ViewBase.currentView.registerTemplate("addPhotoDlg-template");
+
+		private $currentCropper;
+
+		constructor(v) {
+			this.v = v;
 		}
 
-		private regenCutInstance(cut, photoId, cityId) {
-			var $newInst = this.genCutInstance(cut, photoId, cityId);
-			var $oldInst = $(`#cutInst_${cut.id}`);
-
-			$oldInst.replaceWith($newInst);
+		public resetNewPhotoForm() {
+				this.v.showForm(this.addPhotoDlg);
+				this.setNewPhotoDlg();
 		}
 
-		private $imgCutCropper;
+		private preloadImg(input) {
+			if (input.files && input.files[0]) {
+				var reader = new FileReader();
 
-		private editCut($c, photoId, cut) {
-			var $i = $c.find("img");
-			$i.attr("src", `/Pic/${photoId}/orig`);
-			$i.css({ "width": "", "height": "", "max-width": "100%" });
-				
-			this.$imgCutCropper = $i.cropper({
-					aspectRatio: cut.width / cut.height,
-					autoCropArea: 1.0,
-					cropBoxResizable: false,
-					crop: (e) => {							
-					}
-			});
+				reader.onload = (e) => {
+					var $img = $("#photoOverview");
+					$img.attr("src", e.target["result"]);
+
+					this.$currentCropper = this.initCropper($img);
+					this.showCanvasDimensions(this.$currentCropper);
+				}
+
+				reader.readAsDataURL(input.files[0]);
+			}
 		}
 
-		private setNewPhotoDlg() {
+		private showPreloader(visible) {
+			if (visible) {
+				this.v.$tabCont.html(`<div class="preloader-cont"><img src="/images/Preloader_1.gif" /><span id="percentsUploaded"></span>%</div>`);
+			} else {
+				$(".preloader-cont").remove();
+			}
+		}
+
+		private showCanvasDimensions($cropper) {
+			var canvas = $cropper.cropper("getCroppedCanvas");
+
+			$("#cWidth").html(canvas.width);
+			$("#cHeight").html(canvas.height);
+		}
 			
+		private setNewPhotoDlg() {
+
 			$("#filePhoto").change((e) => {
 				this.preloadImg(e.target);
 			});
@@ -307,58 +393,34 @@ module Views {
 
 			$("#btnCreate").click((e) => {
 				e.preventDefault();
-				this.sendCreateNewPhoto();
-			});
-		}
 
-		private sendCreateNewPhoto() {
+				if (!this.v.selectedCity.sourceId || !this.$currentCropper) {
+					var iDlg = new Common.InfoDialog();
+					iDlg.create("Validation", "City and photo must be choosen");
+					return;
+				}
 
-				if (!this.selectedCity.sourceId || !this.$currentCropper) {
-				var iDlg = new Common.InfoDialog();
-				iDlg.create("Validation", "City and photo must be choosen");
-				return;
-			}
-
-			this.getImgData(this.$currentCropper, (imgData) => {
-
-				var data = {
-					data: imgData,
-					gid: this.selectedCity.sourceId,
-					isFree: $("#isFree").prop("checked"),
-					desc: $("#desc").val(),
-					cityName: this.selectedCity.lastText,
-					origin: $("#originType input").val()
-				};
-
-				this.showPreloader(true);
-
-				this.apiPost("ImgDbPhoto", data, (r) => {
-						this.resetNewPhotoForm();
-						this.showPreloader(false);
+				var is = new ImageDb.ImageSender(this.v, "ImgDbPhoto", this.$currentCropper, () => {
+					var r = {
+						gid: this.v.selectedCity.sourceId,
+						isFree: $("#isFree").prop("checked"),
+						desc: $("#desc").val(),
+						cityName: this.v.selectedCity.lastText,
+						origin: $("#originType input").val()
+					}
+					return r;
+				}, () => {
+					this.showPreloader(false);
 				});
 
-			});
-		}
-
-		private resetNewPhotoForm() {
-			this.showForm(this.addPhotoDlg);
-			this.setNewPhotoDlg();
-		}
-
-		private getImgData($cropper, callback) {
-			$cropper.cropper('getCroppedCanvas').toBlob((blob) => {
-
-				var reader = new FileReader();
-				reader.onloadend = (evnt) => {
-					callback(evnt.target["result"]);
-				}
-				reader.readAsDataURL(blob);
+				this.showPreloader(true);
+				is.send();
 			});
 		}
 
 		private initCropper($img) {
 			var $cropper = $img.cropper({
-					autoCropArea: 1.0,
+				autoCropArea: 1.0,
 				crop: (e) => {
 					// Output the result data for cropping image.
 					//console.log(e.x);
@@ -374,108 +436,72 @@ module Views {
 			return $cropper;
 		}
 
-		private preloadImg(input) {
-			if (input.files && input.files[0]) {
-				var reader = new FileReader();
-
-				reader.onload = (e) => {
-					var $img = $("#photoOverview");
-					$img.attr("src", e.target["result"]);
-
-					this.$currentCropper = this.initCropper($img);
-				}
-
-				reader.readAsDataURL(input.files[0]);
-			}
-		}
-
-		private regCityCombo(obj) {
-
-			var c = new Common.PlaceSearchConfig();
-			c.providers = "2";
-			c.minCharsToSearch = 1;
-			c.clearAfterSearch = false;
-			c.selOjb = obj;
-
-			var box = new Common.PlaceSearchBox(c);
-
-			return box;
-		}
-
-		private showPreloader(visible) {
-			if (visible) {
-					this.$tabCont.html(`<div class="preloader-cont"><img src="/images/Preloader_1.gif" /></div>`);
-			} else {
-				$(".preloader-cont").remove();
-			}
-		}
-
 	}
 
 	export class Tabs {
 
-			public onBeforeSwitch: Function;
-			public activeTabId;
+		public onBeforeSwitch: Function;
+		public activeTabId;
 
-			private $cont;
-			private tabGroup;
-			private height;
+		private $cont;
+		private tabGroup;
+		private height;
 
-			constructor($cont, tabGroup, height) {
-					this.$cont = $cont;
-					this.tabGroup = tabGroup;
-					this.height = height;
+		constructor($cont, tabGroup, height) {
+			this.$cont = $cont;
+			this.tabGroup = tabGroup;
+			this.height = height;
+		}
+
+		private tabs = [];
+
+		public addTab(id, text, callback) {
+			this.tabs.push({ id: id, text: text, callback: callback });
+		}
+
+		public create() {
+			this.tabs.forEach((t) => {
+				var $t = this.genTab(t);
+				this.$cont.append($t);
+			});
+
+			this.tabs[0].callback();
+			this.activeTabId = this.tabs[0].id;
+		}
+
+		private isFirst = true;
+
+		private genTab(t) {
+			var width = (100 / this.tabs.length);
+
+			var $t = $(`<div id="${t.id}" class="myTab ${this.tabGroup}" style="width: calc(${width}% - 2px); height: ${this.height}px">${t.text}</div>`);
+
+			if (this.isFirst) {
+				$t.addClass("act");
+				this.isFirst = false;
 			}
 
-			private tabs = [];
+			$t.click((e) => {
+				e.preventDefault();
 
-			public addTab(id, text, callback) {
-					this.tabs.push({ id: id, text: text, callback: callback });
-			}
+				if ($t.hasClass("act")) {
+					return;
+				}
 
-			public create() {
-					this.tabs.forEach((t) => {
-							var $t = this.genTab(t);
-							this.$cont.append($t);
-					});
+				if (this.onBeforeSwitch) {
+					this.onBeforeSwitch();
+				}
 
-					this.tabs[0].callback();
-					this.activeTabId = this.tabs[0].id;
-			}
+				var $target = $(e.target);
 
-			private isFirst = true;
+				$(`.${this.tabGroup}`).removeClass("act");
+				$target.addClass("act");
+				this.activeTabId = $target.attr("id");
+				t.callback(t.id);
+			});
 
-			private genTab(t) {
-					var width = (100 / this.tabs.length);
-
-					var $t = $(`<div id="${t.id}" class="myTab ${this.tabGroup}" style="width: calc(${width}% - 2px); height: ${this.height}px">${t.text}</div>`);
-
-					if (this.isFirst) {
-							$t.addClass("act");
-							this.isFirst = false;
-					}
-
-					$t.click((e) => {
-							e.preventDefault();
-
-							if ($t.hasClass("act")) {
-									return;
-							}
-
-							if (this.onBeforeSwitch) {
-									this.onBeforeSwitch();
-							}
-
-							var $target = $(e.target);
-
-							$(`.${this.tabGroup}`).removeClass("act");
-							$target.addClass("act");
-							this.activeTabId = $target.attr("id");
-							t.callback(t.id);
-					});
-
-					return $t;
-			}
+			return $t;
+		}
 
 
 	}

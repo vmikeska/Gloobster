@@ -858,8 +858,8 @@ footer {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-image: url("/images/n/mountain1.jpg");
-    /*background-image: url("/images/n/title.jpg");*/ }
+    /*background-image: url("/images/n/mountain1.jpg");*/
+    background-image: url("/images/n/title.jpg"); }
     .homepage .title_show_all .photo .empty-fill {
       position: absolute;
       left: 0;

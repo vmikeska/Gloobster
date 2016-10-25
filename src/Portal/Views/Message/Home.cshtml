@@ -1,6 +1,7 @@
 ﻿@using System.Threading.Tasks
 @using Gloobster.Common
 @using Gloobster.Portal.ViewModels
+@using Microsoft.AspNet.Mvc.Rendering
 @using Newtonsoft.Json
 
 @model Gloobster.Portal.ViewModels.MessagesViewModel
@@ -10,6 +11,8 @@
     Layout = "_LayoutNew";
     ViewBag.BodyClass = "travelb-messages";
 }
+
+@Html.Partial("GAnalytics")
 
 <script src="/js/views/messages.js"></script>
 

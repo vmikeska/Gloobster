@@ -25,8 +25,7 @@ namespace Gloobster.DomainModels
 
 	    public byte[] AllBytes { get; set; }
         public bool DoNotSave { get; set; }
-
-
+        
         public string TargetDirectory { get; set; }
 		public string OriginaFileName { get; set; }
 		public string CustomFileName { get; set; }
@@ -178,11 +177,13 @@ namespace Gloobster.DomainModels
 				if (filePart.FilePart == FilePartType.Last)
 				{
 					JoinAllFileParts(dataObj.Data);
-					CleanFilePartsCache();
-				}
+                    CleanFilePartsCache();
+                }
 			}
 			catch (Exception exc)
 			{
+                CleanFilePartsCache();
+
                 WriteLog("WriteFilePart, Exception : " + exc.Message);
 				throw;
 			}
@@ -219,9 +220,9 @@ namespace Gloobster.DomainModels
 		{
 		    try
 		    {
-                WriteLog("JoinAllFileParts: enter");
+		        WriteLog("JoinAllFileParts: enter");
 
-                var stringParts = new List<string>();
+		        var stringParts = new List<string>();
 
 		        var files = Storage.ListFiles(TempFolderPath).OrderBy(f => f.GetName());
 		        foreach (var file in files)
@@ -238,13 +239,13 @@ namespace Gloobster.DomainModels
 
 		        AllBytes = stringParts.SelectMany(Convert.FromBase64String).ToArray();
 
-		        string fileName = BuildFileName();
-		        var targetFilePath = Storage.Combine(TargetDirectory, fileName);
-
 		        OnBeforeCreate.Invoke(this, null);
+
+		        string fileName = BuildFileName();
 
 		        if (!DoNotSave)
 		        {
+		            var targetFilePath = Storage.Combine(TargetDirectory, fileName);
 		            using (var inputFileStream = Storage.CreateFile(targetFilePath).OpenWrite())
 		            {
 		                using (var writer = new BinaryWriter(inputFileStream))
@@ -263,12 +264,15 @@ namespace Gloobster.DomainModels
 		            FileSize = decimal.Round(Convert.ToDecimal(AllBytes.Length)/(1024.0m*1024.0m), 3)
 
 		        };
+
+
 		        OnFileSaved.Invoke(this, onFileSavedArgs);
 		    }
 		    catch (Exception exc)
 		    {
-                WriteLog($"JoinAllFileParts: exception: {exc.Message}");
-            }
+		        CleanFilePartsCache();
+		        WriteLog($"JoinAllFileParts: exception: {exc.Message}");
+		    }
 		}
 		
 		private string BuildFileName()

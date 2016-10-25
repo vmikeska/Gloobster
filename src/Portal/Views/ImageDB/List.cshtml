@@ -9,13 +9,15 @@
     //ViewBag.BodyClass = "";
 }
 
-<link href="/css/style.css" rel="stylesheet" />
 <link href="/lib/cropper/dist/cropper.css" rel="stylesheet"/>
 
-@Html.Partial("_GlobalScripts")
+@*@Html.Partial("_GlobalScripts")*@
 
 <script src="/lib/cropper/dist/cropper.js"></script>
-<script src="/js/views/ImageDBView.js"></script>
+
+<script src="/js/ImageDb/ImageDb.js"></script>
+<script src="/js/Views/ImageDbView.js"></script>
+
 
 <style>
     
@@ -148,7 +150,7 @@
 
 <script>
     function onBodyLoad() {
-        currentView = new Views.ImageDBView();
+        currentView = new Views.ImageDbView();
         currentView.init();
     };
 
@@ -159,7 +161,7 @@
     <div id="cutInst_{{cutId}}">
         <span>{{cutName}}</span>
         <br />
-        <img src="/Picd/{{cityId}}/{{shortName}}" style="width: {{width}}px; height: {{height}}px;" />        
+        <img src="/Picd/{{cityId}}/{{shortName}}?random={{random}}" style="width: {{width}}px; height: {{height}}px;" />        
     </div>
 
 </script>
@@ -169,7 +171,7 @@
     <div id="cutInst_{{cutId}}">
         <span>{{cutName}}</span>
         <br />
-        <img src="/Pic/{{id}}/{{shortName}}" style="width: {{width}}px; height: {{height}}px;" />
+        <img src="/Pic/{{id}}/{{shortName}}?random={{random}}" style="width: {{width}}px; height: {{height}}px;" />
         <div>
             <button class="edit">Edit</button>
             <button class="save" style="display: none">Save</button>
@@ -300,8 +302,9 @@
                         <ul>
                             <li data-value="0">Pixabay</li>
                             <li data-value="1">Google</li>
-                            <li data-value="3">Unknown</li>
-                            <li data-value="2">Wallpapers</li>
+                            <li data-value="2">Unknown</li>
+                            <li data-value="3">Freepik</li>
+                            <li data-value="4">Wallpapers</li>                            
                         </ul>
                         <input type="hidden" value="0">
                     </div>
@@ -314,11 +317,15 @@
                 <td colspan="4">
                     Desc (optional)
                     <br />
-                    <textarea id="desc" style="width: 80%"></textarea>
+                    <textarea id="desc" style="border: 1px solid black; width: 80%"></textarea>
 
                 </td>
             </tr>
         </table>
+    
+        <div>
+            Canvas size <span id="cWidth">0</span>X<span id="cHeight">0</span>
+        </div>
 
         <div class="photoBtnFrame">
             <input id="filePhoto" type="file" />
@@ -327,7 +334,7 @@
         <div class="photoOverFrame">
             <img id="photoOverview" style="max-width: 100%" />
         </div>
-
+    
         <div>
             <button id="btnCreate">Create</button>
         </div>

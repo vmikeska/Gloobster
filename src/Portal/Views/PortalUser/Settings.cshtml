@@ -11,6 +11,8 @@
     ViewBag.BodyClass = "user-settings travelb-home";
 }
 
+@Html.Partial("GAnalytics")
+
 @if (GloobsterConfig.UseMiniScripts)
 {
     <script src="/jsb/userSettings.js" type="text/javascript" data-notbuild="true"></script>

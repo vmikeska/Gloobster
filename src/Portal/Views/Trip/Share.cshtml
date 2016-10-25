@@ -7,6 +7,7 @@
 @using Gloobster.Common
 @using Gloobster.Portal.Controllers.Portal
 @using Gloobster.Portal.ViewModels
+@using Microsoft.AspNet.Mvc.Rendering
 @model Gloobster.Portal.ViewModels.ViewModelShareTrip
 
 <!DOCTYPE html>
@@ -25,6 +26,8 @@
 
     @Html.Partial("_GlobalTemplates")
     @Html.Partial("_GlobalScripts")
+
+    @Html.Partial("GAnalytics")
 
     @if (GloobsterConfig.UseMiniScripts)
     {

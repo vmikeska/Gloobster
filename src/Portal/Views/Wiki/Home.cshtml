@@ -3,6 +3,7 @@
 @using Gloobster.Common
 @using Gloobster.Entities
 @using Gloobster.Portal.ViewModels
+@using Microsoft.AspNet.Mvc.Rendering
 @model WikiHomeViewModel
 @{
     ViewBag.MenuGroup = "Wiki";
@@ -14,6 +15,8 @@
 
     var smallArticles = Model.Articles.Where(a => a.GID != 3067696);    
 }
+
+@Html.Partial("GAnalytics")
 
 @if (GloobsterConfig.UseMiniScripts)
 {    

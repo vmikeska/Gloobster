@@ -3,6 +3,7 @@
 @using Gloobster.DomainModels.Wiki
 @using Gloobster.Portal.Controllers.Portal
 @using Gloobster.Portal.ViewModels
+@using Microsoft.AspNet.Mvc.Rendering
 @model WikiCityViewModel
 
 @{
@@ -21,7 +22,7 @@ else
     //achtung, compilation just from the country page. If adding something, possibly need to split the js builds
     <script type="text/javascript" src="/js/Views/WikiPageView.js"></script>
 }
-
+@Html.Partial("GAnalytics")
 
     @Html.Partial("PageAdmin")
 

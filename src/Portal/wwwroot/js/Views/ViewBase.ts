@@ -227,7 +227,7 @@ module Views {
 			return Handlebars.compile(source);
 		}
 
-		public makeRandomString(cnt) {
+		public makeRandomString(cnt: number) {
 			var text = "";
 			var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 

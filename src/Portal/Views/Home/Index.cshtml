@@ -3,6 +3,7 @@
 @using System.Threading.Tasks
 @using Gloobster.Common
 @using Gloobster.Portal
+@using Microsoft.AspNet.Mvc.Rendering
 @model ViewModelHome
 
 @{
@@ -11,6 +12,8 @@
     ViewBag.BodyClass = "homepage";
 }
 
+
+@Html.Partial("GAnalytics")
 
 @if (GloobsterConfig.UseMiniScripts)
 {

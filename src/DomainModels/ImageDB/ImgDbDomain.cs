@@ -27,13 +27,7 @@ namespace Gloobster.DomainModels.ImageDB
             var cutIdObj = new ObjectId(update.CutId);
             var cut = DB.FOD<ImageCutEntity>(c => c.id == cutIdObj);
             
-            var imgData = CutOffMetaData(update.Data);
-
-            var bitmapData = Convert.FromBase64String(imgData);
-            var streamBitmap = new MemoryStream(bitmapData);
-            var origBmp = new Bitmap((Bitmap)Image.FromStream(streamBitmap));
-
-            var newBmp = BitmapUtils.ResizeImage(origBmp, cut.Width, cut.Height);
+            var newBmp = BitmapUtils.ResizeImage(update.Bmp, cut.Width, cut.Height);
 
             var jpgStream = BitmapUtils.ConvertBitmapToJpg(newBmp, 90);
             jpgStream.Position = 0;
@@ -42,12 +36,9 @@ namespace Gloobster.DomainModels.ImageDB
             
             FilesDomain.DeleteFile(targetFilePath);
             FilesDomain.Storage.SaveStream(targetFilePath, jpgStream);
-
-            streamBitmap.Dispose();
-            origBmp.Dispose();
+            
             newBmp.Dispose();
             jpgStream.Dispose();
-
         }
 
         
@@ -139,19 +130,19 @@ namespace Gloobster.DomainModels.ImageDB
         {
             var id = ObjectId.GenerateNewId();
 
-            var imgData = CutOffMetaData(newPhoto.Data);
+            //var imgData = CutOffMetaData(newPhoto.Data);
 
-            var bitmapData = Convert.FromBase64String(imgData);
-            var streamBitmap = new MemoryStream(bitmapData);
-            var origBmp = new Bitmap((Bitmap)Image.FromStream(streamBitmap));
+            //var bitmapData = Convert.FromBase64String(imgData);
+            //var streamBitmap = new MemoryStream(bitmapData);
+            //var origBmp = new Bitmap((Bitmap)Image.FromStream(streamBitmap));
 
-            var jpgStream = BitmapUtils.ConvertBitmapToJpg(origBmp, 90);
+            var jpgStream = BitmapUtils.ConvertBitmapToJpg(newPhoto.Bmp, 90);
             jpgStream.Position = 0;
             
             var origFilePath = GetPhotoPath(id.ToString(), "orig");                
             FilesDomain.Storage.SaveStream(origFilePath, jpgStream);
 
-            streamBitmap.Dispose();
+            //streamBitmap.Dispose();
 
             jpgStream.Dispose();
 
@@ -189,9 +180,9 @@ namespace Gloobster.DomainModels.ImageDB
                 var res = await DB.UpdateAsync(f, u);
             }
 
-            GenerateCuts(origBmp, cityEntity.GID, isFirst, imgEntity.id.ToString());
+            GenerateCuts(newPhoto.Bmp, cityEntity.GID, isFirst, imgEntity.id.ToString());
 
-            origBmp.Dispose();
+            newPhoto.Bmp.Dispose();
 
             return id.ToString();
         }

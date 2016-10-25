@@ -2,6 +2,7 @@
 @using Gloobster.Common
 @using Microsoft.Data.Entity.Metadata.Internal
 @using Gloobster.Portal;
+@using Microsoft.AspNet.Mvc.Rendering
 @model Gloobster.Portal.ViewModels.ViewModelTrips
 
 @{
@@ -10,7 +11,7 @@
     Layout = "_LayoutNew";
 }
 
-
+@Html.Partial("GAnalytics")
 
 @if (GloobsterConfig.UseMiniScripts)
 {
