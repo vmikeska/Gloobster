@@ -170,51 +170,42 @@
 
 
 <script id="addPhotoDlg-template" type="text/x-handlebars-template">
-
-        <table>
-            <tr>
-                <td>Source type</td>
-                <td>
-                    <div id="originType" class="dropdown">
-                        <span class="selected">Pixabay</span>
-                        <ul>
-                            <li data-value="0">Pixabay</li>
-                            <li data-value="1">Google</li>
-                            <li data-value="2">Unknown</li>
-                            <li data-value="3">Freepik</li>
-                            <li data-value="4">Wallpapers</li>                            
-                        </ul>
-                        <input type="hidden" value="0">
-                    </div>
-                </td>
-                <td colspan="2">
-                    <input id="isFree" type="checkbox"><label for="isFree"><span>Is free</span></label>
-                </td>
-            </tr>            
-            <tr>
-                <td colspan="4">
-                    Desc (optional)
-                    <br />
-                    <textarea id="desc" style="border: 1px solid black; width: 80%"></textarea>
-
-                </td>
-            </tr>
-        </table>
     
-        <div>
-            Canvas size <span id="cWidth">0</span>X<span id="cHeight">0</span>
+    <div class="new-photo-form">
+
+        <div class="input-form">
+
+            <div id="originType" class="dropdown">
+                <span class="selected">Pixabay</span>
+                <ul>
+                    <li data-value="0">Pixabay</li>
+                    <li data-value="1">Google</li>
+                    <li data-value="2">Unknown</li>
+                    <li data-value="3">Freepik</li>
+                    <li data-value="4">Wallpapers</li>
+                </ul>
+                <input type="hidden" value="0">
+            </div>
+
+            <input id="isFree" type="checkbox"><label for="isFree"><span>Is free</span></label>
+            
+            <br />
+            <button id="btnCreate">Create</button>
         </div>
 
-        <div class="photoBtnFrame">
-            <input id="filePhoto" type="file" />
+        <div class="file-info">
+            <table>
+                <tr>
+                    <td><b>Canvas size</b></td>
+                    <td><span id="cWidth">0</span>X<span id="cHeight">0</span></td>
+                </tr>
+            </table>
         </div>
 
         <div class="photoOverFrame">
             <img id="photoOverview" style="max-width: 100%" />
         </div>
-    
-        <div>
-            <button id="btnCreate">Create</button>
-        </div>
 
-    </script>
+    </div>
+
+</script>

@@ -4106,99 +4106,154 @@ footer {
         color: gray;
         font-size: 0.6em; }
 
-.image-db .no-city {
-  border: 2px solid blue;
-  font-size: 26px;
-  padding: 20px;
-  background-color: lightyellow;
-  margin: 10px;
-  border-radius: 4px; }
+.image-db {
+  /*.preloader-cont {
+         display: inline-block;
+         position: relative;
 
-.image-db .myTabs {
-  width: 100%; }
+         width: 200px;
+         height: 200px;
 
-.image-db .myTab {
-  border: 1px solid white;
-  background-color: #57c1db;
-  color: white;
-  display: inline-block;
-  text-align: center;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  cursor: hand;
-  padding-top: 14px; }
+         text-align: center;
 
-.image-db .myTab.act {
-  background-color: red; }
+         img {
+             position: absolute;
+             top: 0;
+             left: 0;
+             right: 0;
+             bottom: 0;
+         }
 
-.image-db #naviCont {
-  margin-top: 16px;
-  margin-bottom: 8px; }
+         .percent-cont {
+             z-index: 999999;
+             display: inline-block;
 
-.image-db #newPhotoForm {
-  border: 2px solid black;
-  margin: 8px;
-  padding: 8px; }
+             margin-top: 50px;
 
-.image-db .photoOverFrame {
-  border: 2px solid black;
-  margin-bottom: 8px; }
+             padding: 8px;
+             
+             background-color: white;
 
-.image-db .photoBtnFrame {
-  margin-top: 8px;
-  margin-bottom: 8px; }
-
-.image-db .img {
-  display: inline-block;
-  width: 150px;
-  height: 100px;
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-  background-size: cover;
-  margin-left: 8px;
-  margin-top: 8px;
-  border: 2px solid black;
-  cursor: pointer;
-  cursor: hand; }
-
-.image-db .img .delete {
-  position: relative;
-  top: 0px;
-  left: 133px;
-  color: red;
-  font-weight: bold;
-  /*font-size: 16px;*/
-  background-color: white;
-  border: 1px solid red;
-  padding: 1px;
-  width: 14px;
-  height: 14px; }
-
-.image-db #photosList {
-  height: 204px;
-  border-top: 2px solid black;
-  padding: 8px;
-  margin-top: 16px;
-  overflow-y: scroll; }
-
-.image-db #picCutsList {
-  border-top: 2px solid black;
-  margin-top: 8px;
-  margin-bottom: 8px;
-  padding-top: 8px; }
-
-.image-db .cutListItem {
-  margin-top: 4px;
-  border-bottom: 1px solid black; }
-
-.image-db #cutCreateForm {
-  margin-top: 8px;
-  margin-bottom: 8px;
-  border: 1px solid black; }
-
-.image-db .cutsList {
-  margin-top: 8px;
-  margin-bottom: 8px;
-  border-top: 1px solid black;
-  border-bottom: 1px solid black; }
+             border: 2px solid $dark-blue;
+         }
+     }*/ }
+  .image-db .no-city {
+    border: 2px solid blue;
+    font-size: 26px;
+    padding: 20px;
+    background-color: lightyellow;
+    margin: 10px;
+    border-radius: 4px; }
+  .image-db .new-photo-cont {
+    /*text-decoration: none;*/ }
+    .image-db .new-photo-cont input {
+      width: 0.1px;
+      height: 0.1px;
+      opacity: 0;
+      overflow: hidden;
+      position: absolute;
+      z-index: -1; }
+    .image-db .new-photo-cont label {
+      font-weight: bold;
+      font-size: 30px;
+      display: inline-block;
+      padding: 15px;
+      margin: 15px;
+      color: white;
+      border: 2px solid #3298C1;
+      background-color: #65BDD7;
+      cursor: pointer;
+      border-radius: 4px; }
+  .image-db .new-photo-form {
+    position: relative;
+    text-align: left; }
+    .image-db .new-photo-form .input-form {
+      display: inline-block;
+      background-color: lightyellow;
+      border: 2px solid blue;
+      padding: 5px;
+      border-radius: 4px;
+      margin: 8px; }
+    .image-db .new-photo-form .file-info {
+      display: inline-block;
+      position: absolute;
+      right: 0;
+      background-color: lightyellow;
+      border: 2px solid blue;
+      padding: 5px;
+      border-radius: 4px;
+      margin: 8px; }
+  .image-db .myTabs {
+    width: 100%; }
+  .image-db .myTab {
+    border: 1px solid white;
+    background-color: #57c1db;
+    color: white;
+    display: inline-block;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    cursor: hand;
+    padding-top: 14px; }
+  .image-db .myTab.act {
+    background-color: red; }
+  .image-db #naviCont {
+    margin-top: 16px;
+    margin-bottom: 8px; }
+  .image-db #newPhotoForm {
+    border: 2px solid black;
+    margin: 8px;
+    padding: 8px; }
+  .image-db .photoOverFrame {
+    border: 2px solid black;
+    margin-bottom: 8px; }
+  .image-db .img {
+    display: inline-block;
+    width: 150px;
+    height: 100px;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-left: 8px;
+    margin-top: 8px;
+    border: 2px solid black;
+    cursor: pointer;
+    cursor: hand; }
+  .image-db .img {
+    position: relative; }
+    .image-db .img .delete {
+      display: inline-block;
+      position: absolute;
+      top: -12px;
+      right: -12px;
+      border: 2px solid #005476;
+      color: #005476;
+      font-weight: bold;
+      background-color: white;
+      border-radius: 50%; }
+      .image-db .img .delete:hover {
+        color: red; }
+  .image-db #photosList {
+    height: 204px;
+    border-top: 2px solid black;
+    padding: 8px;
+    margin-top: 16px;
+    overflow-y: scroll; }
+  .image-db #picCutsList {
+    border-top: 2px solid black;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    padding-top: 8px; }
+  .image-db .cutListItem {
+    margin-top: 4px;
+    border-bottom: 1px solid black; }
+  .image-db #cutCreateForm {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    border: 1px solid black; }
+  .image-db .cutsList {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black; }

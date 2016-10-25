@@ -9,9 +9,10 @@ module Views {
 
 		private tabs;
 
+		private cutsDlg = Views.ViewBase.currentView.registerTemplate("cutsDlg-template");
+
 		private searchCityDlg;
-		private addPhotoDlg;
-		private cutsDlg;
+		private addPhotoDlg;		
 		private cutItemTmp;
 		private cutImgListItemTmp;
 		private defaultCutImgTmp;
@@ -43,7 +44,7 @@ module Views {
 
 			});
 			this.tabs.addTab("AddNewPhoto", "Add new photo", () => {
-				this.newPhotoFnc.resetNewPhotoForm();
+				this.newPhotoFnc.create();
 			});
 
 			this.tabs.addTab("CutsMgmt", "Manage cuts (Just Vaclav)", () => {
@@ -101,9 +102,10 @@ module Views {
 			}
 
 			this.v.apiGet("ImgDbCity", [["gid", gid]], (city) => {
-				//if (city == null) {
-
-				//}
+				if (city == null) {
+						this.v.$tabCont.html(`<div class="no-city">No photos in this city</div>`);
+						return;
+				}
 
 				this.city = city;
 				this.createTabs();
@@ -200,8 +202,7 @@ module Views {
 			private v: ImageDbView;
 
 			private $imgCutCropper;
-
-			private cutsDlg = Views.ViewBase.currentView.registerTemplate("cutsDlg-template");
+			
 			private cutItemTmp = Views.ViewBase.currentView.registerTemplate("cutItemTmp-template");
 			private cutImgListItemTmp = Views.ViewBase.currentView.registerTemplate("cutImgListItemTmp-template");			
 
@@ -366,30 +367,39 @@ module Views {
 			this.v = v;
 		}
 
-		public resetNewPhotoForm() {
-				this.v.fillMainContent(this.addPhotoDlg);
-				this.setNewPhotoDlg();
+		public create() {
+				
+			var $btn = $(`<div class="new-photo-cont"><input id="filePhoto" type="file" /><label for="filePhoto">Choose a photo</label></div>`);
+
+			$btn.find("#filePhoto").change((e) => {					
+					this.showPreloader(true);
+					this.setupStudioWin(e.target);
+			});
+
+			this.v.$tabCont.html($btn);
 		}
 
-		private preloadImg(input) {
-			if (input.files && input.files[0]) {
-				var reader = new FileReader();
+		private preloadImg(input, callback) {
 
-				reader.onload = (e) => {
-					var $img = $("#photoOverview");
-					$img.attr("src", e.target["result"]);
+			//setTimeout(() => {
+				if (input.files && input.files[0]) {
+					var reader = new FileReader();
 
-					this.$currentCropper = this.initCropper($img);
-					this.showCanvasDimensions(this.$currentCropper);
+					reader.onload = (e) => {
+						callback(e.target["result"]);
+					}
+
+					reader.readAsDataURL(input.files[0]);
 				}
-
-				reader.readAsDataURL(input.files[0]);
-			}
+			//}, 500);
+				
 		}
 
 		private showPreloader(visible) {
-			if (visible) {
-				this.v.$tabCont.html(`<div class="preloader-cont"><img src="/images/Preloader_1.gif" /><span id="percentsUploaded"></span>%</div>`);
+				
+		  if (visible) {
+					//this.v.$tabCont.html(`<div class="preloader-cont"><img src="/images/Preloader_1.gif" /><div class="percent-cont" style="display: none"><span id="percentsUploaded">0</span>%</div></div>`);
+					this.v.$tabCont.html(`<div class="preloader-cont"><img src="/images/Preloader_1.gif" /></div>`);
 			} else {
 				$(".preloader-cont").remove();
 			}
@@ -402,40 +412,52 @@ module Views {
 			$("#cHeight").html(canvas.height);
 		}
 			
-		private setNewPhotoDlg() {
+		private setupStudioWin(fileInput) {
+				
+				this.preloadImg(fileInput, (imgData) => {
+						this.v.fillMainContent(this.addPhotoDlg);
 
-			$("#filePhoto").change((e) => {
-				this.preloadImg(e.target);
-			});
+						var $img = $("#photoOverview");
+						$img.attr("src", imgData);
 
-			Common.DropDown.registerDropDown($("#originType"));
+						this.$currentCropper = this.initCropper($img);
+						this.showCanvasDimensions(this.$currentCropper);
 
-			$("#btnCreate").click((e) => {
-				e.preventDefault();
+						Common.DropDown.registerDropDown($("#originType"));
 
-				if (!this.v.selectedCity.sourceId || !this.$currentCropper) {
-					var iDlg = new Common.InfoDialog();
-					iDlg.create("Validation", "City and photo must be choosen");
-					return;
-				}
+						$("#btnCreate").click((e) => {
+								e.preventDefault();
 
-				var is = new ImageDb.ImageSender(this.v, "ImgDbPhoto", this.$currentCropper, () => {
-					var r = {
-						gid: this.v.selectedCity.sourceId,
-						isFree: $("#isFree").prop("checked"),
-						desc: $("#desc").val(),
-						cityName: this.v.selectedCity.lastText,
-						origin: $("#originType input").val()
-					}
-					return r;
-				}, () => {
-					this.showPreloader(false);
+								if (!this.v.selectedCity.sourceId || !this.$currentCropper) {
+										var iDlg = new Common.InfoDialog();
+										iDlg.create("Validation", "City and photo must be choosen");
+										return;
+								}
+
+								this.sendImgToSrv();
+						});
 				});
-
-				this.showPreloader(true);
-				is.send();
-			});
+				
 		}
+
+			private sendImgToSrv() {
+					
+					var is = new ImageDb.ImageSender(this.v, "ImgDbPhoto", this.$currentCropper, () => {
+							var r = {
+									gid: this.v.selectedCity.sourceId,
+									isFree: $("#isFree").prop("checked"),
+									desc: $("#desc").val(),
+									cityName: this.v.selectedCity.lastText,
+									origin: $("#originType input").val()
+							}
+							return r;
+					}, () => {
+							this.create();
+					});
+
+					this.showPreloader(true);
+					is.send();
+			}
 
 		private initCropper($img) {
 			var $cropper = $img.cropper({

@@ -11,6 +11,103 @@
     }
 
 
+     .new-photo-cont {
+
+         /*text-decoration: none;*/
+     
+         input {
+            width: 0.1px;
+            height: 0.1px;
+            opacity: 0;
+            overflow: hidden;
+            position: absolute;
+            z-index: -1;
+        }
+
+         label {        
+             font-weight: bold;
+             font-size: 30px;
+             display: inline-block;
+             padding: 15px;
+             margin: 15px;
+
+
+            color: white;
+            border: 2px solid $light-blue3;
+            background-color: $light-blue;
+
+            cursor: pointer;
+
+            border-radius: 4px;
+        }
+
+     }
+
+     /*.preloader-cont {
+         display: inline-block;
+         position: relative;
+
+         width: 200px;
+         height: 200px;
+
+         text-align: center;
+
+         img {
+             position: absolute;
+             top: 0;
+             left: 0;
+             right: 0;
+             bottom: 0;
+         }
+
+         .percent-cont {
+             z-index: 999999;
+             display: inline-block;
+
+             margin-top: 50px;
+
+             padding: 8px;
+             
+             background-color: white;
+
+             border: 2px solid $dark-blue;
+         }
+     }*/
+
+
+     .new-photo-form {
+
+         position: relative;
+         text-align: left;
+
+         .input-form {
+             display: inline-block;
+             
+             background-color: lightyellow;
+             border: 2px solid blue;
+             padding: 5px;
+             border-radius: 4px;
+             margin: 8px;
+         }
+
+         .file-info{
+             display: inline-block;
+             position:absolute;
+             right: 0;
+             
+
+             background-color: lightyellow;
+             border: 2px solid blue;
+             padding: 5px;
+             border-radius: 4px;
+             margin: 8px;
+         }
+
+     }
+
+     
+
+
 
 
     .myTabs {
@@ -49,11 +146,6 @@
         margin-bottom: 8px;
     }
 
-    .photoBtnFrame {
-        margin-top: 8px;
-        margin-bottom: 8px;
-    }
-
     .img {        
         display: inline-block;
         width:  150px;
@@ -69,18 +161,28 @@
         cursor: pointer; cursor: hand;
     }
 
-    .img .delete {
+    .img  {
         position: relative;
-        top: 0px;
-        left: 133px;
-        color: red;
-        font-weight: bold;
-        /*font-size: 16px;*/
-        background-color: white;
-        border: 1px solid red;
-        padding: 1px;
-        width: 14px;
-        height: 14px;
+
+        .delete {
+            display: inline-block;
+            position: absolute;
+            top: -12px;
+            right: -12px;
+
+            border: 2px solid $dark-blue;
+
+            color: $dark-blue;
+            font-weight: bold;
+            
+            background-color: white;
+            
+            border-radius: 50%;
+            
+            &:hover{
+                color: red;
+            }
+        }
     }
 
     #photosList {

@@ -9,6 +9,7 @@ var Views;
         __extends(ImageDbView, _super);
         function ImageDbView() {
             _super.apply(this, arguments);
+            this.cutsDlg = Views.ViewBase.currentView.registerTemplate("cutsDlg-template");
         }
         ImageDbView.prototype.init = function () {
             var _this = this;
@@ -28,7 +29,7 @@ var Views;
                 }
             });
             this.tabs.addTab("AddNewPhoto", "Add new photo", function () {
-                _this.newPhotoFnc.resetNewPhotoForm();
+                _this.newPhotoFnc.create();
             });
             this.tabs.addTab("CutsMgmt", "Manage cuts (Just Vaclav)", function () {
                 _this.fillMainContent(_this.cutsDlg);
@@ -70,6 +71,10 @@ var Views;
                 return;
             }
             this.v.apiGet("ImgDbCity", [["gid", gid]], function (city) {
+                if (city == null) {
+                    _this.v.$tabCont.html("<div class=\"no-city\">No photos in this city</div>");
+                    return;
+                }
                 _this.city = city;
                 _this.createTabs();
             });
@@ -143,7 +148,6 @@ var Views;
     Views.Photos = Photos;
     var Cuts = (function () {
         function Cuts(v) {
-            this.cutsDlg = Views.ViewBase.currentView.registerTemplate("cutsDlg-template");
             this.cutItemTmp = Views.ViewBase.currentView.registerTemplate("cutItemTmp-template");
             this.cutImgListItemTmp = Views.ViewBase.currentView.registerTemplate("cutImgListItemTmp-template");
             this.v = v;
@@ -277,26 +281,27 @@ var Views;
             this.addPhotoDlg = Views.ViewBase.currentView.registerTemplate("addPhotoDlg-template");
             this.v = v;
         }
-        NewPhoto.prototype.resetNewPhotoForm = function () {
-            this.v.fillMainContent(this.addPhotoDlg);
-            this.setNewPhotoDlg();
-        };
-        NewPhoto.prototype.preloadImg = function (input) {
+        NewPhoto.prototype.create = function () {
             var _this = this;
+            var $btn = $("<div class=\"new-photo-cont\"><input id=\"filePhoto\" type=\"file\" /><label for=\"filePhoto\">Choose a photo</label></div>");
+            $btn.find("#filePhoto").change(function (e) {
+                _this.showPreloader(true);
+                _this.setupStudioWin(e.target);
+            });
+            this.v.$tabCont.html($btn);
+        };
+        NewPhoto.prototype.preloadImg = function (input, callback) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
                 reader.onload = function (e) {
-                    var $img = $("#photoOverview");
-                    $img.attr("src", e.target["result"]);
-                    _this.$currentCropper = _this.initCropper($img);
-                    _this.showCanvasDimensions(_this.$currentCropper);
+                    callback(e.target["result"]);
                 };
                 reader.readAsDataURL(input.files[0]);
             }
         };
         NewPhoto.prototype.showPreloader = function (visible) {
             if (visible) {
-                this.v.$tabCont.html("<div class=\"preloader-cont\"><img src=\"/images/Preloader_1.gif\" /><span id=\"percentsUploaded\"></span>%</div>");
+                this.v.$tabCont.html("<div class=\"preloader-cont\"><img src=\"/images/Preloader_1.gif\" /></div>");
             }
             else {
                 $(".preloader-cont").remove();
@@ -307,34 +312,42 @@ var Views;
             $("#cWidth").html(canvas.width);
             $("#cHeight").html(canvas.height);
         };
-        NewPhoto.prototype.setNewPhotoDlg = function () {
+        NewPhoto.prototype.setupStudioWin = function (fileInput) {
             var _this = this;
-            $("#filePhoto").change(function (e) {
-                _this.preloadImg(e.target);
-            });
-            Common.DropDown.registerDropDown($("#originType"));
-            $("#btnCreate").click(function (e) {
-                e.preventDefault();
-                if (!_this.v.selectedCity.sourceId || !_this.$currentCropper) {
-                    var iDlg = new Common.InfoDialog();
-                    iDlg.create("Validation", "City and photo must be choosen");
-                    return;
-                }
-                var is = new ImageDb.ImageSender(_this.v, "ImgDbPhoto", _this.$currentCropper, function () {
-                    var r = {
-                        gid: _this.v.selectedCity.sourceId,
-                        isFree: $("#isFree").prop("checked"),
-                        desc: $("#desc").val(),
-                        cityName: _this.v.selectedCity.lastText,
-                        origin: $("#originType input").val()
-                    };
-                    return r;
-                }, function () {
-                    _this.showPreloader(false);
+            this.preloadImg(fileInput, function (imgData) {
+                _this.v.fillMainContent(_this.addPhotoDlg);
+                var $img = $("#photoOverview");
+                $img.attr("src", imgData);
+                _this.$currentCropper = _this.initCropper($img);
+                _this.showCanvasDimensions(_this.$currentCropper);
+                Common.DropDown.registerDropDown($("#originType"));
+                $("#btnCreate").click(function (e) {
+                    e.preventDefault();
+                    if (!_this.v.selectedCity.sourceId || !_this.$currentCropper) {
+                        var iDlg = new Common.InfoDialog();
+                        iDlg.create("Validation", "City and photo must be choosen");
+                        return;
+                    }
+                    _this.sendImgToSrv();
                 });
-                _this.showPreloader(true);
-                is.send();
             });
+        };
+        NewPhoto.prototype.sendImgToSrv = function () {
+            var _this = this;
+            var is = new ImageDb.ImageSender(this.v, "ImgDbPhoto", this.$currentCropper, function () {
+                var r = {
+                    gid: _this.v.selectedCity.sourceId,
+                    isFree: $("#isFree").prop("checked"),
+                    desc: $("#desc").val(),
+                    cityName: _this.v.selectedCity.lastText,
+                    origin: $("#originType input").val()
+                };
+                return r;
+            }, function () {
+                _this.create();
+            });
+            this.showPreloader(true);
+            is.send();
         };
         NewPhoto.prototype.initCropper = function ($img) {
             var $cropper = $img.cropper({

@@ -56,7 +56,9 @@ var ImageDb;
             }
             this.v.apiPost(this.endpoint, data, function (finished) {
                 var s = Math.round((_this.currentEnd / _this.totalLength) * 100);
-                $("#percentsUploaded").html(s);
+                var $pu = $("#percentsUploaded");
+                $pu.show();
+                $pu.html(s);
                 if (_this.filePart === 0) {
                     _this.filePart = 1;
                 }
