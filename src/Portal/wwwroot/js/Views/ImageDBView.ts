@@ -7,7 +7,7 @@ module Views {
 
 		public selectedCity: Common.PlaceSearchBox;
 
-		private tabs;
+		public tabs;
 
 		private cutsDlg = Views.ViewBase.currentView.registerTemplate("cutsDlg-template");
 
@@ -47,10 +47,21 @@ module Views {
 				this.newPhotoFnc.create();
 			});
 
+			this.tabs.addTab("CitiesWithPhotos", "Cities with photos", () => {
+					var c = new CitiesWithPhotos(this);
+					c.create();
+			});
+
+			this.tabs.addTab("CitiesByPop", "Cities by population", () => {
+					var c = new CitiesByPopulation(this);
+					c.create();
+			});
+
 			this.tabs.addTab("CutsMgmt", "Manage cuts (Just Vaclav)", () => {
 				this.fillMainContent(this.cutsDlg);
 				this.cutsFnc.setCutsDlg();
 			});
+
 			this.tabs.create();
 
 		}
@@ -80,6 +91,313 @@ module Views {
 			this.$tabCont.html($html);
 		}
 
+		}
+		
+
+		export class CitiesByPopulation {
+			private v: ImageDbView;
+
+			private layoutTemplate = Views.ViewBase.currentView.registerTemplate("citiesByPopLayout-template");
+
+			constructor(v) {
+					this.v = v;
+
+				this.ac = new AggregatedCountries();
+			}
+
+			private ac: AggregatedCountries;
+
+			private citiesByPop;
+			private citiesWithPhotos;
+			private cities = [];
+
+		  private $cont;
+
+			public create() {
+
+					this.v.$tabCont.html(this.layoutTemplate());
+
+					var $cbByContinent = $("#cbByContinent");
+					var $cbByCountry = $("#cbByCountry");
+					
+					$cbByContinent.change(() => {
+							var byCont = $cbByContinent.prop("checked");
+							var byCountry = $cbByCountry.prop("checked");
+
+							this.showPreloader(true);
+							this.displayData(byCont, byCountry);
+							this.regLinkEvent();
+					});
+					$cbByCountry.change(() => {
+							var byCont = $cbByContinent.prop("checked");
+							var byCountry = $cbByCountry.prop("checked");
+
+							this.showPreloader(true);
+							this.displayData(byCont, byCountry);
+							this.regLinkEvent();
+					});
+					
+				this.$cont = this.v.$tabCont.find(".results");
+
+				this.showPreloader(true);
+
+				this.getData((citiesByPop, citiesWithPhotos) => {
+					this.citiesByPop = citiesByPop;
+					this.citiesWithPhotos = citiesWithPhotos;
+						
+					this.citiesByPop.forEach((cbp) => {
+
+						var cwp = _.find(this.citiesWithPhotos, (c) => {
+							return c.gid === cbp.GID;
+						});
+							
+						var city = $.extend(cbp, { imgs: 0});
+
+						if (cwp) {
+							city.imgs = cwp.images.length;
+						}
+
+						this.cities.push(city);
+
+					});
+
+					this.displayData(true, true);
+					this.regLinkEvent();
+				});
+			}
+
+			private displayData(byContinent: boolean, byCountry: boolean) {
+
+				this.$cont.empty();
+
+				if (!byContinent && !byCountry) {
+					var $t = this.generateCities(this.cities);
+					this.$cont.html($t);
+
+					return;
+				}
+
+				var countryGroupedArray = [];
+
+				if (byCountry) {
+					var countryGrouped = _.groupBy(this.cities, "CountryCode");
+
+					for (var key in countryGrouped) {
+						if (countryGrouped.hasOwnProperty(key)) {
+							var citiesOfCountry = countryGrouped[key];
+
+							var $h = this.generateCities(citiesOfCountry);
+
+							countryGroupedArray.push({ countryCode: key, $h: $h });
+						}
+					}
+				}
+
+				if (!byContinent) {
+					countryGroupedArray.forEach((cga) => {
+						this.dispalyCountryGroup(cga);
+					});
+					return;
+				}
+
+				if (byCountry && byContinent) {
+
+					var europeCountries = this.coByCont(countryGroupedArray, this.ac.europe);
+					var northAmericaCountries = this.coByCont(countryGroupedArray, this.ac.northAmerica);
+					var asiaCountries = this.coByCont(countryGroupedArray, this.ac.asia);
+					var southAmericaCountries = this.coByCont(countryGroupedArray, this.ac.southAmerica);
+					var austrailaCountries = this.coByCont(countryGroupedArray, this.ac.austraila);
+					var africaCountries = this.coByCont(countryGroupedArray, this.ac.africa);
+
+
+					this.$cont.append(`<h1>Europe</h1>`);
+					europeCountries.forEach((cga) => {
+						this.dispalyCountryGroup(cga);
+					});
+
+					this.$cont.append(`<h1>North America</h1>`);
+					northAmericaCountries.forEach((cga) => {
+						this.dispalyCountryGroup(cga);
+					});
+
+					this.$cont.append(`<h1>Asia</h1>`);
+					asiaCountries.forEach((cga) => {
+						this.dispalyCountryGroup(cga);
+					});
+
+					this.$cont.append(`<h1>South America</h1>`);
+					southAmericaCountries.forEach((cga) => {
+						this.dispalyCountryGroup(cga);
+					});
+
+					this.$cont.append(`<h1>Australia</h1>`);
+					austrailaCountries.forEach((cga) => {
+						this.dispalyCountryGroup(cga);
+					});
+
+					this.$cont.append(`<h1>Africa</h1>`);
+					africaCountries.forEach((cga) => {
+						this.dispalyCountryGroup(cga);
+					});
+					return;
+				}
+
+				//just by continent
+
+
+				var europeCities = [];
+				var northAmericaCities = [];
+				var asiaCities = [];
+				var southAmericaCities = [];
+				var austrailaCities = [];
+				var africaCities = [];
+
+				this.cities.forEach((c) => {
+
+					if (_.contains(this.ac.europe, c.CountryCode)) {
+						europeCities.push(c);
+					} else if (_.contains(this.ac.northAmerica, c.CountryCode)) {
+						northAmericaCities.push(c);
+					} else if (_.contains(this.ac.asia, c.CountryCode)) {
+						asiaCities.push(c);
+					} else if (_.contains(this.ac.southAmerica, c.CountryCode)) {
+						southAmericaCities.push(c);
+					} else if (_.contains(this.ac.austraila, c.CountryCode)) {
+						austrailaCities.push(c);
+					} else if (_.contains(this.ac.africa, c.CountryCode)) {
+						africaCities.push(c);
+					}
+
+				});
+
+				this.$cont.append(`<h1>Europe</h1>`);
+				var $eu = this.generateCities(europeCities);
+				this.$cont.append($eu);
+
+				this.$cont.append(`<h1>North America</h1>`);
+				var $na = this.generateCities(northAmericaCities);
+				this.$cont.append($na);
+
+				this.$cont.append(`<h1>Asia</h1>`);
+				var $as = this.generateCities(asiaCities);
+				this.$cont.append($as);
+
+				this.$cont.append(`<h1>South America</h1>`);
+				var $sa = this.generateCities(southAmericaCities);
+				this.$cont.append($sa);
+
+				this.$cont.append(`<h1>Australia</h1>`);
+				var $au = this.generateCities(austrailaCities);
+				this.$cont.append($au);
+
+				this.$cont.append(`<h1>Africa</h1>`);
+				var $af = this.generateCities(africaCities);
+				this.$cont.append($af);					
+			}
+
+				private regLinkEvent() {
+						$(".city-link").click((e) => {
+								e.preventDefault();
+								var $tar = $(e.target);
+								var gid = $tar.data("gid");
+
+								this.v.selectedCity.setText($tar.html());
+								this.v.selectedCity.sourceId = gid;
+
+								this.v.tabs.activateTab("CityPhotos");
+
+						});
+				}
+
+			private coByCont(countryGroupedArray, continentCountryCodes) {
+				var res = [];
+
+				countryGroupedArray.forEach((cga) => {
+					if (_.contains(continentCountryCodes, cga.countryCode)) {
+						res.push(cga);
+					}
+				});
+				return res;
+			}
+
+			private dispalyCountryGroup(cga) {
+						this.$cont.append(`<h2>${cga.countryCode}</h2>`);
+						this.$cont.append(cga.$h);
+				}
+
+				private generateCities(cities) {
+
+						cities = _.sortBy(cities, (c) => { return c.Population }).reverse();
+						var $t = $(`<table></table>`);
+
+						cities.forEach((c) => {
+
+								var stateClass = (c.imgs > 0) ? "checkmark" : "cross";
+								$t.append(`
+										<tr>
+												<td>
+														<a href="#" class="city-link" data-gid="${c.GID}">${c.AsciiName}</a>
+												</td>
+												<td>${c.Population}</td>
+												<td><span class="icon-${stateClass}"></span></td>
+										</tr>`);								
+						});
+
+					return $t;
+				}
+
+				private showPreloader(visible) {
+						if (visible) {					
+								this.$cont.html(`<div class="preloader-cont"><img src="/images/Preloader_1.gif" /></div>`);
+						} else {
+								$(".preloader-cont").remove();
+						}
+				}
+
+				private getCityByPopData(callback) {
+						var data = [["mp", "100000"]];
+						this.v.apiGet("CityByPop", data, (cities) => {
+							callback(cities);
+						});
+				}
+
+				private getCitiesWithPhotosData(callback) {
+						var data = [["query", ""]];						
+						this.v.apiGet("imgDbCity", data, (cities) => {
+							callback(cities);
+						});
+				}
+
+				private getData(callback) {
+						this.getCityByPopData((citiesByPop) => {
+						this.getCitiesWithPhotosData((citiesWithPhotos) => {
+								callback(citiesByPop, citiesWithPhotos);
+						});
+					});
+				}
+		}
+
+	export class CitiesWithPhotos {
+			private v: ImageDbView;
+
+			constructor(v) {
+					this.v = v;
+			}
+
+			public create() {
+				var data = [["query", ""]];
+
+				this.v.$tabCont.empty();
+
+				this.v.apiGet("imgDbCity", data, (cities) => {
+
+					cities.forEach((c) => {
+						var $h = $(`<div>${c.name} - ${c.images.length} </div>`);
+						this.v.$tabCont.append($h);
+					});
+						
+				});
+			}
 	}
 
 	export class Photos {
@@ -484,7 +802,7 @@ module Views {
 		public onBeforeSwitch: Function;
 		public activeTabId;
 
-		private $cont;
+		public $cont;
 		private tabGroup;
 		private height;
 
@@ -542,6 +860,18 @@ module Views {
 			});
 
 			return $t;
+		}
+
+		public activateTab(tabId) {
+			var $tg = $(`.${this.tabGroup}`);
+			$tg.removeClass("act");
+			$(`#${tabId}`).addClass("act");
+			this.activeTabId = tabId;
+			var tab = _.find(this.tabs, (t) => {
+				return t.id === tabId;
+			});
+
+			tab.callback(tabId);
 		}
 
 

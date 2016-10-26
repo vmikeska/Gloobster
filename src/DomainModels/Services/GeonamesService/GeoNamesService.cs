@@ -79,10 +79,20 @@ namespace Gloobster.DomainModels.Services.GeonamesService
 
 			return new T();
 		}
+        
+        public async Task<List<CityDO>> GetCityByPopulation(int minPopulation)
+        {
+            var lqb = GetLinkBuilderBase();
+            lqb.Param("mp", minPopulation);            
+            var link = lqb.Build();
+            var citiesResp = await GetResponseAsync<List<CityResponse>>(link);
+
+            var citiesDO = citiesResp.Select(c => c.ToDO()).ToList();
+            return citiesDO;
+        }
 
 
-
-		private HttpClient InitClient()
+        private HttpClient InitClient()
 		{
 			var client = new HttpClient
 			{

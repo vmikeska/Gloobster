@@ -31,6 +31,14 @@ var Views;
             this.tabs.addTab("AddNewPhoto", "Add new photo", function () {
                 _this.newPhotoFnc.create();
             });
+            this.tabs.addTab("CitiesWithPhotos", "Cities with photos", function () {
+                var c = new CitiesWithPhotos(_this);
+                c.create();
+            });
+            this.tabs.addTab("CitiesByPop", "Cities by population", function () {
+                var c = new CitiesByPopulation(_this);
+                c.create();
+            });
             this.tabs.addTab("CutsMgmt", "Manage cuts (Just Vaclav)", function () {
                 _this.fillMainContent(_this.cutsDlg);
                 _this.cutsFnc.setCutsDlg();
@@ -60,6 +68,236 @@ var Views;
         return ImageDbView;
     }(Views.ViewBase));
     Views.ImageDbView = ImageDbView;
+    var CitiesByPopulation = (function () {
+        function CitiesByPopulation(v) {
+            this.layoutTemplate = Views.ViewBase.currentView.registerTemplate("citiesByPopLayout-template");
+            this.cities = [];
+            this.v = v;
+            this.ac = new Views.AggregatedCountries();
+        }
+        CitiesByPopulation.prototype.create = function () {
+            var _this = this;
+            this.v.$tabCont.html(this.layoutTemplate());
+            var $cbByContinent = $("#cbByContinent");
+            var $cbByCountry = $("#cbByCountry");
+            $cbByContinent.change(function () {
+                var byCont = $cbByContinent.prop("checked");
+                var byCountry = $cbByCountry.prop("checked");
+                _this.showPreloader(true);
+                _this.displayData(byCont, byCountry);
+                _this.regLinkEvent();
+            });
+            $cbByCountry.change(function () {
+                var byCont = $cbByContinent.prop("checked");
+                var byCountry = $cbByCountry.prop("checked");
+                _this.showPreloader(true);
+                _this.displayData(byCont, byCountry);
+                _this.regLinkEvent();
+            });
+            this.$cont = this.v.$tabCont.find(".results");
+            this.showPreloader(true);
+            this.getData(function (citiesByPop, citiesWithPhotos) {
+                _this.citiesByPop = citiesByPop;
+                _this.citiesWithPhotos = citiesWithPhotos;
+                _this.citiesByPop.forEach(function (cbp) {
+                    var cwp = _.find(_this.citiesWithPhotos, function (c) {
+                        return c.gid === cbp.GID;
+                    });
+                    var city = $.extend(cbp, { imgs: 0 });
+                    if (cwp) {
+                        city.imgs = cwp.images.length;
+                    }
+                    _this.cities.push(city);
+                });
+                _this.displayData(true, true);
+                _this.regLinkEvent();
+            });
+        };
+        CitiesByPopulation.prototype.displayData = function (byContinent, byCountry) {
+            var _this = this;
+            this.$cont.empty();
+            if (!byContinent && !byCountry) {
+                var $t = this.generateCities(this.cities);
+                this.$cont.html($t);
+                return;
+            }
+            var countryGroupedArray = [];
+            if (byCountry) {
+                var countryGrouped = _.groupBy(this.cities, "CountryCode");
+                for (var key in countryGrouped) {
+                    if (countryGrouped.hasOwnProperty(key)) {
+                        var citiesOfCountry = countryGrouped[key];
+                        var $h = this.generateCities(citiesOfCountry);
+                        countryGroupedArray.push({ countryCode: key, $h: $h });
+                    }
+                }
+            }
+            if (!byContinent) {
+                countryGroupedArray.forEach(function (cga) {
+                    _this.dispalyCountryGroup(cga);
+                });
+                return;
+            }
+            if (byCountry && byContinent) {
+                var europeCountries = this.coByCont(countryGroupedArray, this.ac.europe);
+                var northAmericaCountries = this.coByCont(countryGroupedArray, this.ac.northAmerica);
+                var asiaCountries = this.coByCont(countryGroupedArray, this.ac.asia);
+                var southAmericaCountries = this.coByCont(countryGroupedArray, this.ac.southAmerica);
+                var austrailaCountries = this.coByCont(countryGroupedArray, this.ac.austraila);
+                var africaCountries = this.coByCont(countryGroupedArray, this.ac.africa);
+                this.$cont.append("<h1>Europe</h1>");
+                europeCountries.forEach(function (cga) {
+                    _this.dispalyCountryGroup(cga);
+                });
+                this.$cont.append("<h1>North America</h1>");
+                northAmericaCountries.forEach(function (cga) {
+                    _this.dispalyCountryGroup(cga);
+                });
+                this.$cont.append("<h1>Asia</h1>");
+                asiaCountries.forEach(function (cga) {
+                    _this.dispalyCountryGroup(cga);
+                });
+                this.$cont.append("<h1>South America</h1>");
+                southAmericaCountries.forEach(function (cga) {
+                    _this.dispalyCountryGroup(cga);
+                });
+                this.$cont.append("<h1>Australia</h1>");
+                austrailaCountries.forEach(function (cga) {
+                    _this.dispalyCountryGroup(cga);
+                });
+                this.$cont.append("<h1>Africa</h1>");
+                africaCountries.forEach(function (cga) {
+                    _this.dispalyCountryGroup(cga);
+                });
+                return;
+            }
+            var europeCities = [];
+            var northAmericaCities = [];
+            var asiaCities = [];
+            var southAmericaCities = [];
+            var austrailaCities = [];
+            var africaCities = [];
+            this.cities.forEach(function (c) {
+                if (_.contains(_this.ac.europe, c.CountryCode)) {
+                    europeCities.push(c);
+                }
+                else if (_.contains(_this.ac.northAmerica, c.CountryCode)) {
+                    northAmericaCities.push(c);
+                }
+                else if (_.contains(_this.ac.asia, c.CountryCode)) {
+                    asiaCities.push(c);
+                }
+                else if (_.contains(_this.ac.southAmerica, c.CountryCode)) {
+                    southAmericaCities.push(c);
+                }
+                else if (_.contains(_this.ac.austraila, c.CountryCode)) {
+                    austrailaCities.push(c);
+                }
+                else if (_.contains(_this.ac.africa, c.CountryCode)) {
+                    africaCities.push(c);
+                }
+            });
+            this.$cont.append("<h1>Europe</h1>");
+            var $eu = this.generateCities(europeCities);
+            this.$cont.append($eu);
+            this.$cont.append("<h1>North America</h1>");
+            var $na = this.generateCities(northAmericaCities);
+            this.$cont.append($na);
+            this.$cont.append("<h1>Asia</h1>");
+            var $as = this.generateCities(asiaCities);
+            this.$cont.append($as);
+            this.$cont.append("<h1>South America</h1>");
+            var $sa = this.generateCities(southAmericaCities);
+            this.$cont.append($sa);
+            this.$cont.append("<h1>Australia</h1>");
+            var $au = this.generateCities(austrailaCities);
+            this.$cont.append($au);
+            this.$cont.append("<h1>Africa</h1>");
+            var $af = this.generateCities(africaCities);
+            this.$cont.append($af);
+        };
+        CitiesByPopulation.prototype.regLinkEvent = function () {
+            var _this = this;
+            $(".city-link").click(function (e) {
+                e.preventDefault();
+                var $tar = $(e.target);
+                var gid = $tar.data("gid");
+                _this.v.selectedCity.setText($tar.html());
+                _this.v.selectedCity.sourceId = gid;
+                _this.v.tabs.activateTab("CityPhotos");
+            });
+        };
+        CitiesByPopulation.prototype.coByCont = function (countryGroupedArray, continentCountryCodes) {
+            var res = [];
+            countryGroupedArray.forEach(function (cga) {
+                if (_.contains(continentCountryCodes, cga.countryCode)) {
+                    res.push(cga);
+                }
+            });
+            return res;
+        };
+        CitiesByPopulation.prototype.dispalyCountryGroup = function (cga) {
+            this.$cont.append("<h2>" + cga.countryCode + "</h2>");
+            this.$cont.append(cga.$h);
+        };
+        CitiesByPopulation.prototype.generateCities = function (cities) {
+            cities = _.sortBy(cities, function (c) { return c.Population; }).reverse();
+            var $t = $("<table></table>");
+            cities.forEach(function (c) {
+                var stateClass = (c.imgs > 0) ? "checkmark" : "cross";
+                $t.append("\n\t\t\t\t\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t\t\t\t\t\t<td>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<a href=\"#\" class=\"city-link\" data-gid=\"" + c.GID + "\">" + c.AsciiName + "</a>\n\t\t\t\t\t\t\t\t\t\t\t\t</td>\n\t\t\t\t\t\t\t\t\t\t\t\t<td>" + c.Population + "</td>\n\t\t\t\t\t\t\t\t\t\t\t\t<td><span class=\"icon-" + stateClass + "\"></span></td>\n\t\t\t\t\t\t\t\t\t\t</tr>");
+            });
+            return $t;
+        };
+        CitiesByPopulation.prototype.showPreloader = function (visible) {
+            if (visible) {
+                this.$cont.html("<div class=\"preloader-cont\"><img src=\"/images/Preloader_1.gif\" /></div>");
+            }
+            else {
+                $(".preloader-cont").remove();
+            }
+        };
+        CitiesByPopulation.prototype.getCityByPopData = function (callback) {
+            var data = [["mp", "100000"]];
+            this.v.apiGet("CityByPop", data, function (cities) {
+                callback(cities);
+            });
+        };
+        CitiesByPopulation.prototype.getCitiesWithPhotosData = function (callback) {
+            var data = [["query", ""]];
+            this.v.apiGet("imgDbCity", data, function (cities) {
+                callback(cities);
+            });
+        };
+        CitiesByPopulation.prototype.getData = function (callback) {
+            var _this = this;
+            this.getCityByPopData(function (citiesByPop) {
+                _this.getCitiesWithPhotosData(function (citiesWithPhotos) {
+                    callback(citiesByPop, citiesWithPhotos);
+                });
+            });
+        };
+        return CitiesByPopulation;
+    }());
+    Views.CitiesByPopulation = CitiesByPopulation;
+    var CitiesWithPhotos = (function () {
+        function CitiesWithPhotos(v) {
+            this.v = v;
+        }
+        CitiesWithPhotos.prototype.create = function () {
+            var _this = this;
+            var data = [["query", ""]];
+            this.v.$tabCont.empty();
+            this.v.apiGet("imgDbCity", data, function (cities) {
+                cities.forEach(function (c) {
+                    var $h = $("<div>" + c.name + " - " + c.images.length + " </div>");
+                    _this.v.$tabCont.append($h);
+                });
+            });
+        };
+        return CitiesWithPhotos;
+    }());
+    Views.CitiesWithPhotos = CitiesWithPhotos;
     var Photos = (function () {
         function Photos(v) {
             this.defaultCutImgTmp = Views.ViewBase.currentView.registerTemplate("defaultCutImg-template");
@@ -403,6 +641,16 @@ var Views;
                 t.callback(t.id);
             });
             return $t;
+        };
+        Tabs.prototype.activateTab = function (tabId) {
+            var $tg = $("." + this.tabGroup);
+            $tg.removeClass("act");
+            $("#" + tabId).addClass("act");
+            this.activeTabId = tabId;
+            var tab = _.find(this.tabs, function (t) {
+                return t.id === tabId;
+            });
+            tab.callback(tabId);
         };
         return Tabs;
     }());

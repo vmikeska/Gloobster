@@ -14,6 +14,7 @@
 <script src="/lib/cropper/dist/cropper.js"></script>
 
 <script src="/js/ImageDb/ImageDb.js"></script>
+<script src="/js/pins/AggregatedCountries.js"></script>
 <script src="/js/Views/ImageDbView.js"></script>
 
 <div class="wrapper">
@@ -44,12 +45,26 @@
 
 </script>
 
-<script id="defaultCutImg-template" type="text/x-handlebars-template">
+
+<script id="citiesByPopLayout-template" type="text/x-handlebars-template">
     
+    <div class="cities-by-pop">
+        <div class="service">
+            <input id="cbByContinent" type="checkbox" checked/><label for="cbByContinent">By continent</label>
+            <input id="cbByCountry" type="checkbox" checked /><label for="cbByCountry">By country</label>
+        </div>
+        <div class="results"></div>
+    </div>
+    
+
+</script>
+
+<script id="defaultCutImg-template" type="text/x-handlebars-template">
+
     <div id="cutInst_{{cutId}}">
         <span>{{cutName}}</span>
         <br />
-        <img src="/Picd/{{cityId}}/{{shortName}}?random={{random}}" style="width: {{width}}px; height: {{height}}px;" />        
+        <img src="/Picd/{{cityId}}/{{shortName}}?random={{random}}" style="width: {{width}}px; height: {{height}}px;" />
     </div>
 
 </script>

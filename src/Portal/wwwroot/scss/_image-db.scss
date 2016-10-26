@@ -106,7 +106,33 @@
      }
 
      
+     .cities-by-pop{
 
+         input[type="checkbox"] {
+             width: 30px;
+             height: 30px;              
+         }
+
+         label {
+             font-size: 30px;
+         }
+
+         .results{
+             text-align: left;
+
+             .preloader-cont {
+                 text-align: center;
+             }
+
+             .icon-checkmark {
+                 color: lawngreen;
+             }
+
+             .icon-cross {
+                 color: red;
+             }
+         }
+     }
 
 
 

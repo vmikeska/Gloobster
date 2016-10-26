@@ -18,6 +18,8 @@ namespace Gloobster.DomainInterfaces
 		Task<CityDO> GetCityByIdAsync(int id);
 		Task<List<CityDO>> GetCityAsync(string cityName, string countryCode, int maxRows);
 		Task<List<CityDO>> GetCityQueryAsync(string query, int maxRows);
+	    Task<List<CityDO>> GetCityByPopulation(int minPopulation);
+
 	}
 
 	[DataContract]

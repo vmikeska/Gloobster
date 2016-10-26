@@ -29,28 +29,52 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 throw new Exception("NoPermissions");
             }
 
-            var city = DB.FOD<ImageCityEntity>(e => e.GID == req.gid.Value);
-
-            if (city == null)
+            if (req.gid.HasValue)
             {
-                return new ObjectResult(null);
+                ImageCityEntity city = DB.FOD<ImageCityEntity>(e => e.GID == req.gid.Value);
+
+                if (city == null)
+                {
+                    return new ObjectResult(null);
+                }
+
+                var response = Convert(city);
+
+                return new ObjectResult(response);
             }
 
+            if (string.IsNullOrEmpty(req.query))
+            {
+                var city = DB.List<ImageCityEntity>();
+
+                var response = city.Select(Convert);
+                return new ObjectResult(response);
+            }
+            else
+            {
+                var city = DB.List<ImageCityEntity>(q => q.CityName.Contains(req.query));
+
+                var response = city.Select(Convert);
+                return new ObjectResult(response);
+            }
+        }
+
+        private QueryResponse Convert(ImageCityEntity e)
+        {
             var response = new QueryResponse
             {
-                id = city.id.ToString(),
-                name = city.CityName,
-                gid = city.GID,
-                images = city.Images.Select(i => new PhotoResponse
+                id = e.id.ToString(),
+                name = e.CityName,
+                gid = e.GID,
+                images = e.Images.Select(i => new PhotoResponse
                 {
                     id = i.id.ToString(),
                     isFree = i.IsFree,
                     desc = i.Desc,
-                    origin = i.Origin                    
+                    origin = i.Origin
                 }).ToList()
             };
-
-            return new ObjectResult(response);
+            return response;
         }
         
     }
@@ -73,6 +97,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
     public class QueryRequest
     {
+        
         public string query { get; set; }
         public int? gid { get; set; }
     }

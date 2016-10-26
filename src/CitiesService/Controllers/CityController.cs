@@ -41,6 +41,13 @@ namespace Gloobster.CitiesService.Controllers
 			var cities = CDB.QueryCities(query, maxRows);
 			return cities.Select(c => c.ToResponse()).ToList();
 		}
-        
+
+        [HttpGet("mp/{minPopulation}")]
+        public List<CityResponse> GetCitiesByPopulation(int minPopulation)
+        {            
+            var cities = CDB.CitiesByPopulation(minPopulation);
+            return cities.Select(c => c.ToResponse()).ToList();
+        }
+
     }
 }

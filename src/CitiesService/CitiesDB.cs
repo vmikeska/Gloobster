@@ -181,8 +181,23 @@ namespace Gloobster.CitiesService
 			
 			return results;
 		}
-		
 
+	    public List<CityDO> CitiesByPopulation(int minPopulation)
+	    {
+	        var results = new List<CityDO>();
+
+            foreach (var i in CitiesIdDictionary)
+            {
+                var city = i.Value;
+
+                if (city.Population >= minPopulation)
+                {
+                    results.Add(city);
+                }
+            }
+
+	        return results;
+	    }
 	}
 
 
@@ -191,7 +206,9 @@ namespace Gloobster.CitiesService
 		void InitializeData();
 		CityDO GetCityById(int id);
 		List<CityDO> QueryCities(string query, int maxRows);
-		List<CityDO> FindCity(string name, string countryCode, int maxRows);	    
+		List<CityDO> FindCity(string name, string countryCode, int maxRows);
+	    List<CityDO> CitiesByPopulation(int minPopulation);
+
 	}
 
 	public class Names

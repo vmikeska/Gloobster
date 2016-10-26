@@ -4183,6 +4183,19 @@ footer {
       padding: 5px;
       border-radius: 4px;
       margin: 8px; }
+  .image-db .cities-by-pop input[type="checkbox"] {
+    width: 30px;
+    height: 30px; }
+  .image-db .cities-by-pop label {
+    font-size: 30px; }
+  .image-db .cities-by-pop .results {
+    text-align: left; }
+    .image-db .cities-by-pop .results .preloader-cont {
+      text-align: center; }
+    .image-db .cities-by-pop .results .icon-checkmark {
+      color: lawngreen; }
+    .image-db .cities-by-pop .results .icon-cross {
+      color: red; }
   .image-db .myTabs {
     width: 100%; }
   .image-db .myTab {
