@@ -29,20 +29,7 @@ namespace Gloobster.Portal.Controllers.Portal
             FileDomain = filesDomain;
             WikiPerms = wikiPerms;
         }
-
-        //[CreateAccount]
-        //public IActionResult Home()
-        //{
-        //    var vm = CreateViewModelInstance<WikiHomeViewModel>();
-        //    vm.DefaultLangModuleName = "pageWikiHome";
-        //    vm.LoadClientTexts(new []{"jsWiki"});
-        //    vm.Texts = DB.List<WikiTextsEntity>(t => t.Rating > 0)
-        //        .OrderByDescending(o => o.Rating)
-        //        .ToList();
-
-        //    return View(vm);
-        //}
-
+        
         [CreateAccount]
         public IActionResult Home()
         {
@@ -51,8 +38,7 @@ namespace Gloobster.Portal.Controllers.Portal
             vm.LoadClientTexts(new[] { "jsWiki" });
 
             vm.LoadArticles();
-
-
+            
             return View(vm);
         }
 
@@ -231,18 +217,18 @@ namespace Gloobster.Portal.Controllers.Portal
             vm.Texts = text;
             vm.Article = article;
 
-            if (vm.Article.HasTitlePhoto)
-            {
-                vm.TitleLink = $"/wiki/ArticleTitlePhoto/{vm.Article.id}";
-            }
-            else
-            {
+            //if (vm.Article.HasTitlePhoto)
+            //{
+            //    vm.TitleLink = $"/wiki/ArticleTitlePhoto/{vm.Article.id}";
+            //}
+            //else
+            //{
                 var imgCityEntity = DB.FOD<ImageCityEntity>(c => c.GID == article.GID);
                 if (imgCityEntity != null)
                 {
                     vm.TitleLink = $"/picd/{article.GID}/wt";
                 }
-            }
+            //}
 
             return vm;
         }
@@ -261,18 +247,19 @@ namespace Gloobster.Portal.Controllers.Portal
             {
                 int cityGID = int.Parse(gidDataItem.Value);
                 var city = DB.FOD<WikiCityEntity>(c => c.GID == cityGID);
-                if (city != null && city.HasTitlePhoto)
-                {
-                    vm.TitleLink = $"/wiki/ArticleTitlePhoto/{city.id}";
-                }
-                else
-                {
+
+                //if (city != null && city.HasTitlePhoto)
+                //{
+                //    vm.TitleLink = $"/wiki/ArticleTitlePhoto/{city.id}";
+                //}
+                //else
+                //{
                     var imgCityEntity = DB.FOD<ImageCityEntity>(c => c.GID == cityGID);
                     if (imgCityEntity != null)
                     {
                         vm.TitleLink = $"/picd/{cityGID}/wt";
                     }
-                }
+                //}
             }
             
             return vm;
