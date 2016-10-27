@@ -12,35 +12,35 @@ namespace Gloobster.Portal.ViewModels
 
         public List<AirportEntity> Airports { get; set; }
 
-        public string AirportsStr
-        {
-            get
-            {
-                if (Airports == null)
-                {
-                    return "N/A";
-                }
+        //public string AirportsStr
+        //{
+        //    get
+        //    {
+        //        if (Airports == null)
+        //        {
+        //            return "N/A";
+        //        }
 
-                if (Airports.Count == 3)
-                {
-                    return $"{Airports[0].IataFaa}, {Airports[1].IataFaa}, {Airports[2].IataFaa}";
-                }
-                if (Airports.Count == 2)
-                {
-                    return $"{Airports[0].IataFaa}, {Airports[1].IataFaa}";
-                }
-                if (Airports.Count == 1)
-                {
-                    return Airports[0].IataFaa;
-                }
-                if (Airports.Count > 3)
-                {
-                    return $"{Airports[0].IataFaa}, {Airports[1].IataFaa}, {Airports[2].IataFaa},...";
-                }
+        //        if (Airports.Count == 3)
+        //        {
+        //            return $"{Airports[0].IataFaa}, {Airports[1].IataFaa}, {Airports[2].IataFaa}";
+        //        }
+        //        if (Airports.Count == 2)
+        //        {
+        //            return $"{Airports[0].IataFaa}, {Airports[1].IataFaa}";
+        //        }
+        //        if (Airports.Count == 1)
+        //        {
+        //            return Airports[0].IataFaa;
+        //        }
+        //        if (Airports.Count > 3)
+        //        {
+        //            return $"{Airports[0].IataFaa}, {Airports[1].IataFaa}, {Airports[2].IataFaa},...";
+        //        }
 
-                return "";
-            }
-        }
+        //        return "";
+        //    }
+        //}
 
         public string CityName
         {

@@ -11,7 +11,9 @@ namespace Gloobster.Mappers
 			var e = new AirportSaveSE
 			{
 				OrigId = d.OrigId,
-				SelectedName = d.SelectedName
+                City = d.City,
+                AirCode = d.AirCode,
+                AirName = d.AirName				
 			};
 
 			return e;
@@ -21,9 +23,11 @@ namespace Gloobster.Mappers
 		{
 			var d = new AirportSaveDO
 			{
-				OrigId = e.OrigId,
-				SelectedName = e.SelectedName
-			};
+                OrigId = e.OrigId,
+                City = e.City,
+                AirCode = e.AirCode,
+                AirName = e.AirName
+            };
 
 			return d;
 		}
@@ -33,7 +37,9 @@ namespace Gloobster.Mappers
 			var r = new AirportSaveResponse
 			{
 				origId = d.OrigId,
-				selectedName = d.SelectedName
+                city = d.City,
+                airCode = d.AirCode,
+                airName = d.AirName				
 			};
 
 			return r;
@@ -44,7 +50,9 @@ namespace Gloobster.Mappers
 			var r = new AirportSaveResponse
 			{
 				origId = e.OrigId,
-				selectedName = e.SelectedName
+				city = e.City,
+                airCode = e.AirCode,
+                airName = e.AirName
 			};
 
 			return r;

@@ -4,92 +4,71 @@
 @model Gloobster.Portal.ViewModels.ViewModelPlanning
 
 
-<div class="popup future-popup" id="popup-future">
 
-	<div>
-		<h3 class="slim">Set your home airports</h3>
-		<form>
-			<div class="table width100">
-				@*<div class="row">
-					<div class="cell">
-						Notification
-					</div>
-					<div class="cell">
-						<input id="email" type="checkbox">
-						<label for="email" class="mright10">Email</label>
-						<input id="sms" type="checkbox">
-						<label for="sms" class="mright10">SMS</label>
-						<input id="facebook" type="checkbox">
-						<label for="facebook">Facebook</label>
-						<br>
-						<input id="inform" type="checkbox">
-						<label for="inform">Inform me about exceptional deals</label>
-						<div class="small mleft20 color1">Based purely on your home airports. Maximum one deal a month.</div>
-					</div>
-				</div>*@
-				<div class="row">
-					<div class="cell middle">
-						Hometown
-					</div>
-					<div class="cell middle">
+    <div class="top-ribbon">
+        <span class="icon-home"></span>
+            
+        @if (string.IsNullOrEmpty(Model.CityName))
+        {
+            <span class="home-location-name">City not set</span>
+        }
+        else
+        {
+            <span class="home-location-name">
+                <strong>@Model.CityName</strong>, @Model.CountryName
+            </span>
+        }
 
-						<div id="currentCity" class="dropdown future-hometown">
-							<input class="inputed" type="text" placeholder="City name" value="@Model.InitCurrentLocation">
-							<ul></ul>
-						</div>
+        <div class="airports"></div>
 
-					</div>
-				</div>
-				<div class="row">
-					<div class="cell middle">
-						Airports far
-					</div>
-					<div class="cell">
-						<div class="table width100 margin">
-							<div class="cell">
-								<div id="airportsRange" class="dropdown">
-									<span class="selected">200 km</span>
-									<ul>
-										<li data-vl="100">100 km</li>
-										<li data-vl="200">200 km</li>
-										<li data-vl="300">300 km</li>
-										<li data-vl="400">400 km</li>
-										<li data-vl="500">500 km</li>
-									</ul>
-									<input type="hidden">
-								</div>
-							</div>
-							<div class="cell middle">
-								add as home airports
-							</div>
-							<div class="cell tright">
-								<a id="addAirports" class="button" href="#">Add</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="cell"></div>
-					<div class="cell">
-						My home airports
-						<div id="airportsCont" class="places" style="height: 200px; overflow-x: hidden; overflow-y: scroll">
-						</div>
+        <a href="#" class="edit">edit</a>
+    </div>
 
-						<div id="airportCombo" class="dropdown">
-							<input class="inputed" type="text" placeholder="+ Search for airports">
-							<ul></ul>
-						</div>
+<div class="location-dialog" style="display: none">
 
-					</div>
-				</div>
-				@*<div class="row">
-					<div class="cell"></div>
-					<div class="cell tright">
-						<a class="button" href="#">Save</a>
-					</div>
-				</div>*@
-			</div>
-		</form>
-		<a class="close" href="#">Close</a>
-	</div>
-</div>
+    <div class="tbl-wrap">
+
+        <div class="left">
+            <div class="title">Where do you live?</div>
+            <div id="currentCity" class="dropdown">
+                <input class="inputed" type="text" placeholder="City name" value="@Model.InitCurrentLocation">
+                <ul></ul>
+            </div>
+
+            <div class="title">Add home airport in range</div>
+            <div id="airportsRange" class="dropdown">
+                <span class="selected">200 km</span>
+                <ul>
+                    <li data-value="100">100 km</li>
+                    <li data-value="200">200 km</li>
+                    <li data-value="300">300 km</li>
+                    <li data-value="400">400 km</li>
+                    <li data-value="500">500 km</li>
+                </ul>
+                <input type="hidden">
+            </div>
+        </div>
+
+        <div class="right">
+            <div class="title">Customize your airports</div>
+            <div id="airportsCont" class="airports-cont">
+            </div>
+
+
+            <div id="airportCombo" class="dropdown">
+                <input class="inputed" type="text" placeholder="+ Search for airports">
+                <ul></ul>
+            </div>
+        </div>
+
+    </div>
+
+    </div>
+
+
+<script id="homeAirportItem-template" type="text/x-handlebars-template">
+    <div id="{{id}}" data-code="{{airCode}}" class="airport">
+        <span class="name" title="{{airName}}">{{city}} ({{airCode}})</span>
+        <a class="icon-cross delete" href="#"></a>
+    </div>    
+</script>

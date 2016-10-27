@@ -54,8 +54,10 @@ namespace Gloobster.DomainModels.Services
 				new AirportSaveSE
 				{
 					OrigId = a.OrigId,
-                    SelectedName = $"{a.Name}({a.City}, {a.CountryCode}), {a.IataFaa}"
-				}
+                    City = BuildCityName(a.City, a.CountryCode),
+                    AirCode = a.IataFaa,
+                    AirName = a.Name                    
+                }
 			).ToList();
 	
 			var userIdObj = new ObjectId(userId);
@@ -68,17 +70,25 @@ namespace Gloobster.DomainModels.Services
 			return airportsDOs;
 		}
 
+	    private string BuildCityName(string city, string country)
+	    {
+	        return $"{city}, {country}";
+	    }
+        
 		public async Task<AirportSaveDO> SaveAirportInRange(string userId, string airportId)
 		{
 			var airport = DB.FOD<AirportEntity>(a => a.id == new ObjectId(airportId));
 
-			var saveAirport = new AirportSaveSE
-			{
-				OrigId = airport.OrigId,
-				SelectedName = $"{airport.Name}({airport.City}, {airport.CountryCode}), {airport.IataFaa}"
-			};
+		    var saveAirport = new AirportSaveSE
+		        {
+		            OrigId = airport.OrigId,
+		            City = BuildCityName(airport.City, airport.CountryCode),
+		            AirCode = airport.IataFaa,
+		            AirName = airport.Name
+		        };
 
-			var userIdObj = new ObjectId(userId);
+
+            var userIdObj = new ObjectId(userId);
 			var filter = DB.F<UserEntity>().Eq(p => p.User_id, userIdObj);
 			var update = DB.U<UserEntity>().Push(p => p.HomeAirports, saveAirport);
 

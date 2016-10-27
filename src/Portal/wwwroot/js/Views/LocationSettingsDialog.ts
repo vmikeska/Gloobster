@@ -1,37 +1,49 @@
 ﻿module Views {
 	export class LocationSettingsDialog {
 
-		private airTemplate: any;
-		private $airportsCont: any;
+		private airTemplate = Views.ViewBase.currentView.registerTemplate("homeAirportItem-template");
+
+		private $airportsCont;
+		private $airContS;
+
+		private kmRangeSelected = 200;
 
 		constructor() {
-			this.registerLocationCombo("currentCity", "CurrentLocation");
-			this.registerAirportRange();
-			this.airTemplate = Views.ViewBase.currentView.registerTemplate("homeAirportItem-template");
+				this.regLocCombo("currentCity", "CurrentLocation");
+			this.regRangeCombo();
+
 			this.$airportsCont = $("#airportsCont");
+			this.$airContS = $(".top-ribbon .airports");
 
 			this.initAirports();
+			this.loadMgmtAirports();
+
+			$(".top-ribbon .edit").click((e) => {
+				e.preventDefault();
+				$(".location-dialog").toggle();
+			});
 		}
 
-		private initAirports() {
-
-			Views.ViewBase.currentView.apiGet("airportRange", null, (airports) => {
-				this.generateAirports(airports);
+		private loadMgmtAirports() {
+			Views.ViewBase.currentView.apiGet("airportRange", null, (as) => {
+				this.generateAirports(as);
 			});
+		}
 
-			var airportFrom = new Trip.AirportCombo("airportCombo", { clearAfterSelection: true });
-			airportFrom.onSelected = (evntData) => {
+		private initAirports() {				
+			var ac = new Trip.AirportCombo("airportCombo", { clearAfterSelection: true });
+			ac.onSelected = (e) => {
 
-				var data = { airportId: evntData.id };
-				Views.ViewBase.currentView.apiPost("airportRange", data, (airport) => {
-					this.generateAirport(airport);
+				var data = { airportId: e.id };
+				Views.ViewBase.currentView.apiPost("airportRange", data, (a) => {
+						this.genAirport(a);
+						this.genAirportS(a.airCode);
 				});
 
 			}
 		}
 
-		private registerLocationCombo(elementId: string, propertyName: string) {
-
+		private regLocCombo(elementId: string, propertyName: string) {
 			var $c = $(`#${elementId}`);
 
 			var c = new Common.PlaceSearchConfig();
@@ -44,53 +56,61 @@
 			$c.change((e, request, place) => {
 				var data = { propertyName: propertyName, values: { sourceId: request.SourceId, sourceType: request.SourceType } };
 				ViewBase.currentView.apiPut("UserProperty", data, (res) => {
-
-					var $loc = $("#currentLocation");
-					$loc.find("strong").text(place.City);
-					$loc.find("span").text(place.CountryCode);
+						$(".home-location-name").html(`${place.City}, (${place.CountryCode})`);
 				});
 			});
 		}
 
-		private kmRangeSelected = 200;
-
-		private registerAirportRange() {
-			var $comboRoot = $("#airportsRange");
-			$comboRoot.click((e) => {
-				var $li = $(e.target);
-				var val = $li.data("vl");
-				this.kmRangeSelected = parseInt(val);
+		private regRangeCombo() {
+			var $dd = $("#airportsRange");
+			$dd.change((e) => {
+				var kms = parseInt($dd.find("input").val());
+				this.kmRangeSelected = kms;
+				this.callAirportsByRange();
 			});
 
-			var $addAirports = $("#addAirports");
-			$addAirports.click(() => {
+		}
 
-				var data = { distance: this.kmRangeSelected };
-				Views.ViewBase.currentView.apiPut("AirportRange", data, (airports) => {
-					this.generateAirports(airports);
-				});
+		private callAirportsByRange() {
+			var data = { distance: this.kmRangeSelected };
+			Views.ViewBase.currentView.apiPut("AirportRange", data, (airports) => {
+				this.generateAirports(airports);
 			});
-
 		}
 
 		private generateAirports(airports) {
-			this.$airportsCont.find(".place").remove();
+			this.$airportsCont.find(".airport").remove();
+			this.$airContS.empty();
 
-			airports.forEach((airport) => {
-				this.generateAirport(airport);
+			airports.forEach((a) => {
+					this.genAirport(a);
+					this.genAirportS(a.airCode);
 			});
 		}
 
-		private generateAirport(airport) {
-			var context = { name: airport.selectedName, id: airport.origId };
-			var html = this.airTemplate(context);
-			var $html = $(html);
+		private genAirportS(code) {
+				var $h = $(`<span id="s_${code}" class="airport">${code}</span>`);
+			this.$airContS.append($h);
+		}
 
+		private genAirport(a) {
+			var context = {
+				id: a.origId,
+				city: a.city,
+				airCode: a.airCode,
+				airName: a.airName
+			};
+
+			var $html = $(this.airTemplate(context));
+			
 			$html.find(".delete").click((e) => {
-				var id = $(e.target).parent().attr("id");
+				var $c = $(e.target).parent();
+				var id = $c.attr("id");
+				var code = $c.data("code");
 				var data = [["id", id]];
-				Views.ViewBase.currentView.apiDelete("AirportRange", data, (airports) => {
-					$("#" + id).remove();
+				Views.ViewBase.currentView.apiDelete("AirportRange", data, (as) => {
+						$(`#${id}`).remove();
+						$(`#s_${code}`).remove();
 				});
 			});
 

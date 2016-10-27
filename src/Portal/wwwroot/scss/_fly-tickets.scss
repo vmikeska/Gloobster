@@ -45,6 +45,88 @@
         float: left;
     }
 
+    .top-ribbon{
+        text-align: left;
+        margin-top: 8px;
+        margin-bottom: 8px;
+
+        .icon-home {
+            color: $dark-blue;
+            font-size: 1.3em;
+            margin-right: 4px;
+        }
+
+        .home-location-name {
+            font-size: 1.1em;
+        }
+
+        .airports{
+            display: inline-block;
+
+            .airport{
+                display: inline-block;
+                border: 1px dotted $light-blue;
+                padding-left: 1px;
+                padding-right: 1px;
+                border-radius: 4px;
+                margin-left: 2px;
+                margin-right: 2px;
+                font-size: 0.9em;
+            }
+        }
+    }
+
+    .location-dialog{
+        border: 1px solid $light-blue;
+        margin: 12px;
+        padding: 12px;
+        border-radius: 4px;
+        text-align: left;
+
+        .title{            
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .tbl-wrap {
+            display: table;
+            width: 100%;
+
+            .left{
+                display:table-cell;
+                border-right: 1px dotted gray;
+                padding-right: 12px;
+            }
+
+            .right{
+                display:table-cell;
+                padding-left: 12px;
+            }
+        }
+
+        .airports-cont{
+            .airport{
+                color: white;
+                border-radius: 4px;
+                display: inline-block;
+                background-color: $light-blue;
+
+                padding: 2px;
+                margin: 2px;
+
+                .icon-cross{
+                    color: $dark-blue;
+
+                    &:hover{
+                        color:darkred;
+                    }
+                }
+            }
+        }
+    }
+
+    
+
   
   
 }

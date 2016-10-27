@@ -63,10 +63,11 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 					int value = int.Parse(GV("value"));
 					string text = GV("text");
 
+                    //todo: check on functionality, was broken by refactoring in Fly
 					var airport = new AirportSaveSE
 					{
 						OrigId = value,
-						SelectedName = text
+                        City = text
 					};
 
 					bool success = await Planning.PushCustomProperty(UserId, searchId, "FromAirports", airport);

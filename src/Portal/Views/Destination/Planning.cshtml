@@ -7,6 +7,7 @@
 @using System.Threading.Tasks
 @using Gloobster.Portal.Controllers.Portal
 @using Gloobster.Portal.ViewModels
+@using Microsoft.AspNet.Mvc.Rendering
 @model Gloobster.Portal.ViewModels.ViewModelPlanning
 
 
@@ -36,15 +37,59 @@
 <script type="text/javascript" src="@Url.Content("~/js/Maps/MapsCreatorMapBox2D.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Common/CountryShapes.js")"></script>
 
+
+<div class="info-block-bck" id="info-travelb">
+
+    <div class="wrapper">
+
+        <div class="title-table">
+            <div class="left">
+                <h1>Fly tickets</h1>
+            </div>
+
+            @*<div class="right">
+                <a class="showHide" data-ts="@showText" data-th="@hideText" href="#">@infoBtnTxt</a>
+            </div>*@
+
+        </div>
+
+        @*<div class="info-block" style="@infoCss">
+            <div class="block">
+
+                <div class="block-inner">
+                    <div class="img-all">
+                        <img src="/images/n/checkin-now.svg" />
+                    </div>
+
+                    <div class="txt">
+                        @Model.W("InfoNow")
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="block">
+
+                <div class="block-inner">
+                    <div class="img-all">
+                        <img src="/images/n/checkin-city.svg" />
+                    </div>
+
+                    <div class="txt">
+                        @Model.W("InfoCity")
+                    </div>
+                </div>
+            </div>
+
+        </div>*@
+
+    </div>
+</div>
+
 <div class="wrapper">
-    <span class="icon-home"></span>
-    <small>Current location</small>
-    <strong>@Model.CityName</strong>, <span>@Model.CountryName</span>
-
-
-    <small>Home Airport</small>
     
-    <a class="icon-gear" data-target="#popup-future" href="#"></a> @Model.AirportsStr
+
+    @Html.Partial("LocationSettingsDialog")
 
 
     <div id="naviCont"></div>
@@ -67,7 +112,7 @@
 </div>
 
 
-@Html.Partial("LocationSettingsDialog", Model)
+
 @Html.Partial("DestinationTemplates")
 
 <script>
