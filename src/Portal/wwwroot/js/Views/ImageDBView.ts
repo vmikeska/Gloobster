@@ -148,7 +148,7 @@ module Views {
 					this.citiesByPop.forEach((cbp) => {
 
 						var cwp = _.find(this.citiesWithPhotos, (c) => {
-							return c.gid === cbp.GID;
+							return c.gid === cbp.gid;
 						});
 							
 						var city = $.extend(cbp, { imgs: 0});
@@ -180,7 +180,7 @@ module Views {
 				var countryGroupedArray = [];
 
 				if (byCountry) {
-					var countryGrouped = _.groupBy(this.cities, "CountryCode");
+					var countryGrouped = _.groupBy(this.cities, "countryCode");
 
 					for (var key in countryGrouped) {
 						if (countryGrouped.hasOwnProperty(key)) {
@@ -254,17 +254,17 @@ module Views {
 
 				this.cities.forEach((c) => {
 
-					if (_.contains(this.ac.europe, c.CountryCode)) {
+					if (_.contains(this.ac.europe, c.countryCode)) {
 						europeCities.push(c);
-					} else if (_.contains(this.ac.northAmerica, c.CountryCode)) {
+					} else if (_.contains(this.ac.northAmerica, c.countryCode)) {
 						northAmericaCities.push(c);
-					} else if (_.contains(this.ac.asia, c.CountryCode)) {
+					} else if (_.contains(this.ac.asia, c.countryCode)) {
 						asiaCities.push(c);
-					} else if (_.contains(this.ac.southAmerica, c.CountryCode)) {
+					} else if (_.contains(this.ac.southAmerica, c.countryCode)) {
 						southAmericaCities.push(c);
-					} else if (_.contains(this.ac.austraila, c.CountryCode)) {
+					} else if (_.contains(this.ac.austraila, c.countryCode)) {
 						austrailaCities.push(c);
-					} else if (_.contains(this.ac.africa, c.CountryCode)) {
+					} else if (_.contains(this.ac.africa, c.countryCode)) {
 						africaCities.push(c);
 					}
 
@@ -327,18 +327,21 @@ module Views {
 
 				private generateCities(cities) {
 
-						cities = _.sortBy(cities, (c) => { return c.Population }).reverse();
+						cities = _.sortBy(cities, (c) => { return c.population }).reverse();
 						var $t = $(`<table></table>`);
 
 						cities.forEach((c) => {
 
 								var stateClass = (c.imgs > 0) ? "checkmark" : "cross";
+								var air = c.hasAir ? `<span class="icon-airplane"></span>` : "";
+
 								$t.append(`
 										<tr>
 												<td>
-														<a href="#" class="city-link" data-gid="${c.GID}">${c.AsciiName}</a>
+														<a href="#" class="city-link" data-gid="${c.gid}">${c.name}</a>
 												</td>
-												<td>${c.Population}</td>
+												<td>${c.population}</td>
+												<td>${air}</td>
 												<td><span class="icon-${stateClass}"></span></td>
 										</tr>`);								
 						});
@@ -354,14 +357,25 @@ module Views {
 						}
 				}
 
-				private getCityByPopData(callback) {
-						var data = [["mp", "100000"]];
-						this.v.apiGet("CityByPop", data, (cities) => {
-							callback(cities);
-						});
-				}
+			private getCityByPopData(callback) {
+				var data = [["mp", "100000"]];
+				this.v.apiGet("CityByPop", data, (cities) => {
 
-				private getCitiesWithPhotosData(callback) {
+					var convCities = _.map(cities, (c) => {
+						return {
+							gid: c.g,
+							name: c.n,
+							countryCode: c.c,
+							population: c.p,
+							hasAir: c.a
+						};
+					});
+
+					callback(convCities);
+				});
+			}
+
+			private getCitiesWithPhotosData(callback) {
 						var data = [["query", ""]];						
 						this.v.apiGet("imgDbCity", data, (cities) => {
 							callback(cities);

@@ -652,6 +652,9 @@ footer {
 .icon-bin:before {
   content: "\e9ac"; }
 
+.icon-airplane:before {
+  content: "\e9af"; }
+
 .icon-switch:before {
   content: "\e9b6"; }
 

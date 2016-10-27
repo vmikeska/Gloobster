@@ -101,7 +101,7 @@ var Views;
                 _this.citiesWithPhotos = citiesWithPhotos;
                 _this.citiesByPop.forEach(function (cbp) {
                     var cwp = _.find(_this.citiesWithPhotos, function (c) {
-                        return c.gid === cbp.GID;
+                        return c.gid === cbp.gid;
                     });
                     var city = $.extend(cbp, { imgs: 0 });
                     if (cwp) {
@@ -123,7 +123,7 @@ var Views;
             }
             var countryGroupedArray = [];
             if (byCountry) {
-                var countryGrouped = _.groupBy(this.cities, "CountryCode");
+                var countryGrouped = _.groupBy(this.cities, "countryCode");
                 for (var key in countryGrouped) {
                     if (countryGrouped.hasOwnProperty(key)) {
                         var citiesOfCountry = countryGrouped[key];
@@ -178,22 +178,22 @@ var Views;
             var austrailaCities = [];
             var africaCities = [];
             this.cities.forEach(function (c) {
-                if (_.contains(_this.ac.europe, c.CountryCode)) {
+                if (_.contains(_this.ac.europe, c.countryCode)) {
                     europeCities.push(c);
                 }
-                else if (_.contains(_this.ac.northAmerica, c.CountryCode)) {
+                else if (_.contains(_this.ac.northAmerica, c.countryCode)) {
                     northAmericaCities.push(c);
                 }
-                else if (_.contains(_this.ac.asia, c.CountryCode)) {
+                else if (_.contains(_this.ac.asia, c.countryCode)) {
                     asiaCities.push(c);
                 }
-                else if (_.contains(_this.ac.southAmerica, c.CountryCode)) {
+                else if (_.contains(_this.ac.southAmerica, c.countryCode)) {
                     southAmericaCities.push(c);
                 }
-                else if (_.contains(_this.ac.austraila, c.CountryCode)) {
+                else if (_.contains(_this.ac.austraila, c.countryCode)) {
                     austrailaCities.push(c);
                 }
-                else if (_.contains(_this.ac.africa, c.CountryCode)) {
+                else if (_.contains(_this.ac.africa, c.countryCode)) {
                     africaCities.push(c);
                 }
             });
@@ -241,11 +241,12 @@ var Views;
             this.$cont.append(cga.$h);
         };
         CitiesByPopulation.prototype.generateCities = function (cities) {
-            cities = _.sortBy(cities, function (c) { return c.Population; }).reverse();
+            cities = _.sortBy(cities, function (c) { return c.population; }).reverse();
             var $t = $("<table></table>");
             cities.forEach(function (c) {
                 var stateClass = (c.imgs > 0) ? "checkmark" : "cross";
-                $t.append("\n\t\t\t\t\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t\t\t\t\t\t<td>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<a href=\"#\" class=\"city-link\" data-gid=\"" + c.GID + "\">" + c.AsciiName + "</a>\n\t\t\t\t\t\t\t\t\t\t\t\t</td>\n\t\t\t\t\t\t\t\t\t\t\t\t<td>" + c.Population + "</td>\n\t\t\t\t\t\t\t\t\t\t\t\t<td><span class=\"icon-" + stateClass + "\"></span></td>\n\t\t\t\t\t\t\t\t\t\t</tr>");
+                var air = c.hasAir ? "<span class=\"icon-airplane\"></span>" : "";
+                $t.append("\n\t\t\t\t\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t\t\t\t\t\t<td>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<a href=\"#\" class=\"city-link\" data-gid=\"" + c.gid + "\">" + c.name + "</a>\n\t\t\t\t\t\t\t\t\t\t\t\t</td>\n\t\t\t\t\t\t\t\t\t\t\t\t<td>" + c.population + "</td>\n\t\t\t\t\t\t\t\t\t\t\t\t<td>" + air + "</td>\n\t\t\t\t\t\t\t\t\t\t\t\t<td><span class=\"icon-" + stateClass + "\"></span></td>\n\t\t\t\t\t\t\t\t\t\t</tr>");
             });
             return $t;
         };
@@ -260,7 +261,16 @@ var Views;
         CitiesByPopulation.prototype.getCityByPopData = function (callback) {
             var data = [["mp", "100000"]];
             this.v.apiGet("CityByPop", data, function (cities) {
-                callback(cities);
+                var convCities = _.map(cities, function (c) {
+                    return {
+                        gid: c.g,
+                        name: c.n,
+                        countryCode: c.c,
+                        population: c.p,
+                        hasAir: c.a
+                    };
+                });
+                callback(convCities);
             });
         };
         CitiesByPopulation.prototype.getCitiesWithPhotosData = function (callback) {
