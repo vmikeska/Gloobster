@@ -64,9 +64,9 @@ var Views;
         return PlanningData;
     }());
     Views.PlanningData = PlanningData;
-    var PlanningView = (function (_super) {
-        __extends(PlanningView, _super);
-        function PlanningView() {
+    var FlyView = (function (_super) {
+        __extends(FlyView, _super);
+        function FlyView() {
             _super.call(this);
             this.anytimeTabTemplate = Views.ViewBase.currentView.registerTemplate("anytime-template");
             this.weekendTabTemplate = Views.ViewBase.currentView.registerTemplate("weekend-template");
@@ -74,7 +74,7 @@ var Views;
             this.planningData = new PlanningData();
             this.initialize();
         }
-        PlanningView.prototype.initTabs = function () {
+        FlyView.prototype.initTabs = function () {
             var _this = this;
             var tabHtml = "";
             var $tabContent = $("#tabContent");
@@ -96,7 +96,7 @@ var Views;
             });
             this.tabs.create();
         };
-        PlanningView.prototype.initialize = function () {
+        FlyView.prototype.initialize = function () {
             var _this = this;
             this.maps = new Maps.MapsCreatorMapBox2D();
             this.maps.setRootElement("map");
@@ -111,9 +111,9 @@ var Views;
             var locationDialog = new Views.LocationSettingsDialog();
             this.initTabs();
         };
-        return PlanningView;
+        return FlyView;
     }(Views.ViewBase));
-    Views.PlanningView = PlanningView;
+    Views.FlyView = FlyView;
     var TabsWeekendViews = (function () {
         function TabsWeekendViews($tabsCont) {
             this.currentTab = TabsWeekendType.ByWeek;
@@ -146,4 +146,4 @@ var Views;
     }());
     Views.TabsWeekendViews = TabsWeekendViews;
 })(Views || (Views = {}));
-//# sourceMappingURL=PlanningView.js.map
+//# sourceMappingURL=FlyView.js.map

@@ -89,7 +89,7 @@
 	}
 
 
-	export class PlanningView extends ViewBase {
+	export class FlyView extends ViewBase {
 
 		public planningMap: Planning.PlanningMap;
 

@@ -180,7 +180,7 @@ $light-gray: #f2f2f2;
     .wiki_article_wide{  
     
         .photo {
-            height: 420px;
+            height: 450px;
             overflow: hidden;
             position: relative;
             border-radius: 2px;
@@ -188,7 +188,7 @@ $light-gray: #f2f2f2;
             .bck{
             
                 width: 1280px;
-                height: 420px;
+                height: 450px;
 
                 @include centerer;
 
