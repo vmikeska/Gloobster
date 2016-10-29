@@ -74,26 +74,7 @@ namespace Gloobster.Mappers
         }
     }
 
-    public static class ConnectionsMappers
-    {
-        public static ConnectionDO ToDO(this ConnectionEntity e)
-        {
-            var d = new ConnectionDO
-            {
-                FromAirport = e.FromAirport,
-                ToAirport = e.ToAirport
-                
-            };
-
-            if (e.Flights != null)
-            {                
-                d.Flights = e.Flights.Select(f => f.ToDO()).ToList();
-            }
-
-            return d;
-        }
-    }
-
+    
     public static class AnytimeConnectionsMappers
     {
         public static AnytimeConnectionDO ToDO(this AnytimeConnectionEntity e)

@@ -63,7 +63,7 @@ namespace Gloobster.DomainModels.SearchEngine
             if (query.EntireQuery)
             {
                 var userIdObj = new ObjectId(query.UserId);
-                var cc = CitiesCountriesByType(timeType, userIdObj);
+                var cc = GetUsersCitiesAndCountries(timeType, userIdObj);
                 
                 cities = cc.Cities;
                 countries = cc.Countries;
@@ -74,7 +74,6 @@ namespace Gloobster.DomainModels.SearchEngine
                 countries = query.Countries;
             }
             
-
             var allResults = new List<SearchResultDO>();
             foreach (var homeAirport in homeAirports)
             {
@@ -94,7 +93,7 @@ namespace Gloobster.DomainModels.SearchEngine
             return allResults;
         }
 
-        private CitiesCountries CitiesCountriesByType(TimeType timeType, ObjectId userIdObj)
+        private CitiesCountries GetUsersCitiesAndCountries(TimeType timeType, ObjectId userIdObj)
         {
             var cc = new CitiesCountries();
 

@@ -16,7 +16,7 @@ namespace Gloobster.DomainModels.SearchEngine
 {
     public interface IQueriesDriver
     {
-        List<FlightRequestDO> GetRequests(string from, string to, PlaceType toPlaceType);
+        List<FlightRequestDO> BuildRequests(string from, string to, PlaceType toPlaceType);
         Task DeleteConnection(string from, string to);
         object GetResultsOfFinishedQuery(List<FromToSE> fromTos);
         Task<ScoredFlights> ProcessSearchResults(string toMapId, List<FlightSearchDO> weekSearches);
@@ -28,7 +28,7 @@ namespace Gloobster.DomainModels.SearchEngine
         public IDbOperations DB { get; set; }
         public IAirportsCache AirCache { get; set; }
 
-        public List<FlightRequestDO> GetRequests(string from, string to, PlaceType toPlaceType)
+        public List<FlightRequestDO> BuildRequests(string from, string to, PlaceType toPlaceType)
         {
             var dates = GetWeekendDateComibnations();
             var queries = new List<FlightRequestDO>();

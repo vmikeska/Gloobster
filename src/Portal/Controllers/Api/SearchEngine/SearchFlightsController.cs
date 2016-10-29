@@ -34,6 +34,7 @@ namespace Gloobster.Portal.Controllers.Api.Planning
         {
             List<SearchResultDO> flightSearchList = new List<SearchResultDO>();
             
+            //first time loaded, get all results/queue
             bool isNewQuery = req.p == null && req.q == null;
             if (isNewQuery)
             {
@@ -45,6 +46,8 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 
                 flightSearchList = UserFlights.QueryNewQueries(pl, req.tt);
             }
+
+            //new cities or countries selected
             bool newPlacesAdded = (req.p != null && req.p.Any());
             if (newPlacesAdded)
             {
@@ -68,6 +71,8 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 
                 flightSearchList = UserFlights.QueryNewQueries(pl, req.tt);
             }
+
+            //asking whether query was finished or not
             bool requerying = (req.q != null && req.q.Any());
             if (requerying)
             {

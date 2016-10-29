@@ -18,20 +18,8 @@ namespace Gloobster.DomainModels.SearchEngine
         public IFlightScoreEngine ScoreEngine { get; set; }
         public IDbOperations DB { get; set; }
         public IAirportsCache AirCache { get; set; }
-
-        private DateTime GetFirstFriday()
-        {
-            var friday = DateTime.UtcNow;
-
-            while (friday.DayOfWeek != DayOfWeek.Friday)
-            {
-                friday = friday.AddDays(1);
-            }
-
-            return friday;
-        }
-
-        public List<FlightRequestDO> GetRequests(string from, string to, PlaceType toPlaceType)
+        
+        public List<FlightRequestDO> BuildRequests(string from, string to, PlaceType toPlaceType)
         {
             int weeksCnt = 3;
 
@@ -52,6 +40,70 @@ namespace Gloobster.DomainModels.SearchEngine
 
             return queries;
         }
+
+        public Task DeleteConnection(string from, string to)
+        {
+            return null;
+        }
+
+        public object GetResultsOfFinishedQuery(List<FromToSE> fromTos)
+        {
+            var conns = new List<AnytimeConnectionEntity>();
+            foreach (var fromTo in fromTos)
+            {
+                var conn = DB.FOD<AnytimeConnectionEntity>(c => c.FromAirport == fromTo.From && c.ToAirport == fromTo.To);
+                conns.Add(conn);
+            }
+
+            var connsDO = conns.Select(c => c.ToDO()).ToList();
+
+            return connsDO;
+        }
+
+        public async Task<ScoredFlights> ProcessSearchResults(string toMapId, List<FlightSearchDO> searches)
+        {
+            var connections = new List<AnytimeConnectionEntity>();
+
+            List<FlightDO> allFlights = searches.SelectMany(f => f.Flights).ToList();
+
+            var scoredFlights = FilterFlightsByScore(allFlights);
+
+            var flightsFromToGrouped = scoredFlights.Passed.GroupBy(g => new { g.From, g.To }).ToList();
+
+            foreach (var gf in flightsFromToGrouped)
+            {
+                string from = gf.Key.From;
+                string to = gf.Key.To;
+
+                var flights = gf.ToList();
+                double fromPrice = flights.Min(f => f.Price);
+
+                var toAirport = AirCache.GetAirportByAirCode(to);
+                if (toAirport == null)
+                {
+                    //todo: should not happen in future with complete airport DB, but what now, discard ?
+                }
+
+                var connection = new AnytimeConnectionEntity
+                {
+                    id = ObjectId.GenerateNewId(),
+                    FromAirport = from,
+                    ToAirport = to,
+                    ToCityId = toAirport.GID,
+                    CountryCode = toAirport.CountryCode,
+                    Flights = flights.Select(f => f.ToEntity()).ToList(),
+                    CityName = toAirport.Name,
+                    FromPrice = fromPrice
+                };
+
+                connections.Add(connection);
+            }
+
+            await DB.SaveManyAsync(connections);
+
+            return scoredFlights;
+        }
+
 
         private FlightRequestDO CreateReq(string from, string to, DateTime since1, DateTime since2, PlaceType toPlaceType)
         {
@@ -92,69 +144,7 @@ namespace Gloobster.DomainModels.SearchEngine
             return null;
         }
 
-        public Task DeleteConnection(string from, string to)
-        {            
-            return null;
-        }
-
-        public object GetResultsOfFinishedQuery(List<FromToSE> fromTos)
-        {
-            var conns = new List<AnytimeConnectionEntity>();
-            foreach (var fromTo in fromTos)
-            {
-                var conn = DB.FOD<AnytimeConnectionEntity>(c => c.FromAirport == fromTo.From && c.ToAirport == fromTo.To);
-                conns.Add(conn);
-            }
-
-            var connsDO = conns.Select(c => c.ToDO()).ToList();
-
-            return connsDO;
-        }
-
-        public async Task<ScoredFlights> ProcessSearchResults(string toMapId, List<FlightSearchDO> searches)
-        {            
-            var connections = new List<AnytimeConnectionEntity>();
-            
-            List<FlightDO> allFlights = searches.SelectMany(f => f.Flights).ToList();
-
-            var scoredFlights = FilterFlightsByScore(allFlights);
-            
-            var flightsFromToGrouped = scoredFlights.Passed.GroupBy(g => new { g.From, g.To }).ToList();
-
-            foreach (var gf in flightsFromToGrouped)
-            {
-                string from = gf.Key.From;
-                string to = gf.Key.To;
-
-                var flights = gf.ToList();
-                double fromPrice = flights.Min(f => f.Price);
-                
-                var toAirport = AirCache.GetAirportByAirCode(to);
-                if (toAirport == null)
-                {
-                    //todo: should not happen in future with complete airport DB, but what now, discard ?
-                }
-
-                var connection = new AnytimeConnectionEntity
-                {
-                    id = ObjectId.GenerateNewId(),
-                    FromAirport = from,
-                    ToAirport = to,
-                    ToCityId = toAirport.GID,
-                    CountryCode = toAirport.CountryCode,
-                    Flights = flights.Select(f => f.ToEntity()).ToList(),
-                    CityName = toAirport.Name,
-                    FromPrice = fromPrice
-                };
-
-                connections.Add(connection);
-            }
-
-            await DB.SaveManyAsync(connections);
-
-            return scoredFlights;            
-        }
-
+        
         private ScoredFlights FilterFlightsByScore(List<FlightDO> allFlights)
         {
             var res = new ScoredFlights
@@ -185,6 +175,18 @@ namespace Gloobster.DomainModels.SearchEngine
             }
 
             return res;
+        }
+
+        private DateTime GetFirstFriday()
+        {
+            var friday = DateTime.UtcNow;
+
+            while (friday.DayOfWeek != DayOfWeek.Friday)
+            {
+                friday = friday.AddDays(1);
+            }
+
+            return friday;
         }
     }
 }

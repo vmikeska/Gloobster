@@ -6,14 +6,6 @@ using Gloobster.Database;
 
 namespace Gloobster.Entities.SearchEngine
 {
-    public class ConnectionEntity : EntityBase
-    {
-        public string FromAirport { get; set; }
-        public string ToAirport { get; set; }
-
-        public List<FlightSE> Flights { get; set; }        
-    }
-
     public class WeekendConnectionEntity : EntityBase
     {
         public string FromAirport { get; set; }

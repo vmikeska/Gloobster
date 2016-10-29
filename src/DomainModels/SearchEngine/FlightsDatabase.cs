@@ -66,12 +66,13 @@ namespace Gloobster.DomainModels.SearchEngine
             //will not happen
             return null;
         }
-        
-        public async void Requery(string queryId)
+
+        //requerying is not implemented yet, should be called periodically from a service
+        public void Requery(string queryId)
         {
             var queryIdObj = new ObjectId(queryId);
             var entity = DB.FOD<SkypickerQueryEntity>(e => e.id == queryIdObj);
-            
+
             StartQuery(entity);
         }
 
@@ -111,28 +112,27 @@ namespace Gloobster.DomainModels.SearchEngine
 
             StartQuery(entity);
         }
-
-
-
-
+        
         private async void StartQuery(SkypickerQueryEntity entity)
         {
-            var requests = RequestsDriver.GetRequests(entity.FromPlace, entity.ToPlace, entity.ToPlaceType);
+            List<FlightRequestDO> requests = RequestsDriver.BuildRequests(entity.FromPlace, entity.ToPlace, entity.ToPlaceType);
 
             var weekSearches = new List<FlightSearchDO>();
-
-
-            foreach (var request in requests)
+            
+            //one request here is for one time period, week or weekend. Right now, possibly must not be like that in future
+            foreach (FlightRequestDO request in requests)
             {
-                FlightSearchDO weekSearch = SpProvider.Search(request);
-                if (weekSearch == null)
+                FlightSearchDO searchResult = SpProvider.Search(request);
+                if (searchResult == null)
                 {
                     continue;
                 }
 
-                weekSearch.Params = request.Params;
-                weekSearches.Add(weekSearch);
+                searchResult.Params = request.Params;
+                weekSearches.Add(searchResult);
             }
+
+            //this didn't work very well, but I should check on it again
 
             //Parallel.ForEach(requests, (request) =>
             //{
@@ -141,6 +141,8 @@ namespace Gloobster.DomainModels.SearchEngine
             //    weekSearches.Add(weekSearch);               
             //});
 
+
+            //we are requerying, therefore all old connections gonna be deleted
             bool isRequery = entity.FoundConnectionsBetweenAirports.Any();
             if (isRequery)
             {
@@ -152,13 +154,20 @@ namespace Gloobster.DomainModels.SearchEngine
 
             ScoredFlights processedFlightsResult = await RequestsDriver.ProcessSearchResults(entity.ToPlaceMap, weekSearches);
 
+            //taking just these flight which alived score evaluation
             await UpdateConnectionsBetweenAirports(processedFlightsResult.Passed, entity.id);
 
+            //currently have no meaning, will be for future use
             var allFlights = processedFlightsResult.Passed;
-            allFlights.AddRange(processedFlightsResult.Discarded);
+            allFlights.AddRange(processedFlightsResult.Discarded);            
             ExtractSingleFlights(allFlights);
             
-            var filter = DB.F<SkypickerQueryEntity>().Eq(f => f.id, entity.id);
+            await SetQueryWasFinishedForTheFirstTime(entity.id);
+        }
+
+        private async Task SetQueryWasFinishedForTheFirstTime(ObjectId id)
+        {
+            var filter = DB.F<SkypickerQueryEntity>().Eq(f => f.id, id);
             var update = DB.U<SkypickerQueryEntity>().Set(f => f.FirstSearchFinished, true);
             await DB.UpdateAsync(filter, update);
         }
