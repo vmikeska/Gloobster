@@ -1,5 +1,155 @@
 ﻿
 
+<script id="connection-single-flight-template" type="text/x-handlebars-template">
+    
+    <div class="flight">
+        <div class="top-line">
+            {{airName}}
+        </div>
+
+        <div class="data-tbl">
+
+            <div class="di logo-cont">
+                <img class="air-logo" src="/images/n/Examples/Lufthansa.svg" />
+            </div>
+
+            <div class="di flight-dir">
+                <div class="from-to">{{codeFrom}} → {{codeTo}}</div>
+                <div class="flight-no">{{flightNo}}</div>
+            </div>
+
+            <div class="di">
+                <div class="date">{{date}}</div>
+            </div>
+
+            <div class="di time-cont">
+                <div class="time">{{timeFrom}} - {{timeTo}}</div>
+                <div class="duration">({{durHours}}h {{durMins}}min)</div>
+            </div>
+
+            <div class="di">
+                <div class="flight-direct">{{directStr}}</div>
+            </div>
+
+        </div>
+
+    </div>
+
+</script>
+
+
+<div class="conns">
+    <div class="conn">
+
+        <div class="layout-tbl">
+            <div class="left">
+
+                <div class="flight">
+                    <div class="top-line">
+                        Lufthansa
+                    </div>
+
+                    <div class="data-tbl">
+
+                        <div class="di logo-cont">
+                            <img class="air-logo" src="/images/n/Examples/Lufthansa.svg" />
+                        </div>
+
+                        <div class="di flight-dir">
+                            <div class="from-to">HHN → GRO</div>
+                            <div class="flight-no">HHN111</div>
+                        </div>
+
+                        <div class="di">
+                            <div class="date">Tue 21 June</div>
+                        </div>
+
+                        <div class="di time-cont">
+                            <div class="time">18:50 - 20:00</div>
+                            <div class="duration">(1h 15min)</div>
+                        </div>
+
+                        <div class="di">
+                            <div class="flight-direct">Direct</div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="flight">
+                    <div class="top-line">
+                        Swissair
+                    </div>
+
+                    <div class="data-tbl">
+
+                        <div class="di logo-cont">
+                            <img class="air-logo" src="/images/n/Examples/SwissAir.svg" />
+                        </div>
+
+                        <div class="di flight-dir">
+                            <div class="from-to">HHN → GRO</div>
+                            <div class="flight-no">HHN111</div>
+                        </div>
+
+                        <div class="di">
+                            <div class="date">Tue 21 June</div>
+                        </div>
+
+                        <div class="di time-cont">
+                            <div class="time">18:50 - 20:00</div>
+                            <div class="duration">(1h 15min)</div>
+                        </div>
+
+                        <div class="di">
+                            <div class="flight-direct">Direct</div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="service">
+                    <a href="#"><span class="txt">show detail </span><span class="icon-dropdown-arrow"></span></a>
+                </div>
+
+            </div>
+            <div class="right">
+
+                <div class="book-zone">
+                    <div class="score">
+                        <div class="txt-score">
+                            excellent
+                        </div>
+                        <div class="stars-score">
+                            <span class="icon-star-full"></span><span class="icon-star-full"></span><span class="icon-star-full"></span>
+                        </div>
+                        <div class="cap">
+                            Flight score
+                        </div>
+                    </div>
+                    <div class="price-all">
+                        <span class="currency">€</span><span class="price">93</span>
+                    </div>
+
+                    <div class="btn-cont">
+                        <a href="#">Book now</a>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
 <script id="resultGroupItem-template" type="text/x-handlebars-template">
     <div class="flight-result" data-gid="{{gid}}">
         <div class="img-cont">

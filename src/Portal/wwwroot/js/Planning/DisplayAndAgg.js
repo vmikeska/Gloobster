@@ -39,6 +39,47 @@ var Planning;
         return AnytimeAggregator;
     }());
     Planning.AnytimeAggregator = AnytimeAggregator;
+    var LastItem = (function () {
+        function LastItem() {
+        }
+        LastItem.getLast = function ($rootCont, itemClass, blockNo) {
+            var $lastBlock;
+            var can = true;
+            var curBlockNo = blockNo;
+            while (can) {
+                var nextBlockNo = curBlockNo + 1;
+                var $i = this.findByNo($rootCont, itemClass, curBlockNo);
+                var $ni = this.findByNo($rootCont, itemClass, nextBlockNo);
+                var hasNext = $ni.length > 0;
+                if (hasNext) {
+                    var currentTop = $i.offset().top;
+                    var nextTop = $ni.offset().top;
+                    if (currentTop < nextTop) {
+                        $lastBlock = $i;
+                        can = false;
+                    }
+                }
+                else {
+                    $lastBlock = $i;
+                    can = false;
+                }
+                curBlockNo++;
+            }
+            return $lastBlock;
+        };
+        LastItem.findByNo = function ($rootCont, itemClass, no) {
+            var $found = null;
+            $rootCont.find("." + itemClass).toArray().forEach(function (i) {
+                var $i = $(i);
+                if (parseInt($i.data("no")) === no) {
+                    $found = $i;
+                }
+            });
+            return $found;
+        };
+        return LastItem;
+    }());
+    Planning.LastItem = LastItem;
     var AnytimeDisplay = (function () {
         function AnytimeDisplay($cont) {
             this.connections = [];
@@ -47,6 +88,7 @@ var Planning;
             this.$filter = $("#tabsCont");
         }
         AnytimeDisplay.prototype.render = function (connections, days) {
+            var _this = this;
             if (days === void 0) { days = null; }
             this.connections = connections;
             var cities = this.aggr.aggregate(connections, days);
@@ -70,11 +112,12 @@ var Planning;
                         price: i.fromPrice
                     };
                 };
-                lgi.evnt("td", function (e, $connection, $target) {
+                lgi.evnt("td", function (e, $connection, $td) {
                     var from = $connection.data("f");
                     var to = $connection.data("t");
                     var gid = $cityBox.data("gid");
-                    alert(gid + "-" + from + "-" + to);
+                    var $lastConnInRow = LastItem.getLast(_this.$cont, "flight-result", $cityBox.data("no"));
+                    alert($lastConnInRow.data("no"));
                 });
                 lgi.generateList(item.conns);
             };

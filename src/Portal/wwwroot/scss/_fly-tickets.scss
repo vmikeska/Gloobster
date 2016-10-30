@@ -132,13 +132,18 @@
         
         text-align: left;
 
-        @include display-flex;
+        /*@include display-flex;
         flex-flow: wrap;
-        justify-content: space-around;
+        justify-content: space-around;*/
+        
 
         .flight-result {
             width: 310px;
             margin-bottom: 8px;
+
+            display: inline-block;
+            margin-left: 4px;
+            margin-right: 4px;
 
             .img-cont {
                 position: relative;
@@ -293,5 +298,244 @@
         }
     }
   
-  
+  .flight-conns {
+      .conns{
+          margin-top: 12px;
+
+          .conn {
+              background-color: $very-light-blue;
+              
+              .layout-tbl {
+                  display: table;
+                  width: 100%;
+
+                  .left {
+                      display: table-cell;
+                      vertical-align: top;
+                  }
+
+                  .right {
+                      display: table-cell;
+                      vertical-align: top;
+                      text-align: right;
+                      width: 160px;                      
+                  }
+              }
+
+              .flight {
+                      text-align: left;
+                      border-bottom: 1px solid $light-blue6;
+
+                      .top-line {                          
+                          font-size: 0.8em;
+                          color: darkgray;
+                          margin-bottom: 14px;
+                          margin-top: 10px;
+                          padding-left: 20px;
+                      }
+
+                      .data-tbl {
+                          display: table;
+                          width: 100%;
+
+                          .di {
+                              display: table-cell;
+                              vertical-align: top;
+                              padding-bottom: 12px;
+
+                              &:first-of-type {                                  
+                                  padding-left: 20px;
+                              }
+                          }
+
+                          .logo-cont {
+                              
+                              .air-logo {
+                                  width: 50px;                                  
+                              }
+                          }
+
+                          .flight-dir {
+                              
+                              .from-to{
+                                  font-weight: bold;
+                                  font-size: 1.2em;                              
+                              }
+
+                              .flight-no{
+                                  font-size: 0.8em;
+                                  color: darkgray;
+                              }
+                          }
+
+                          .date {
+                              font-weight: bold;
+                          }
+
+                          .time-cont{
+                              .time {
+                                  font-weight: bold;
+                              }
+
+                              .duration {
+                                  font-size: 0.8em;
+                                  color: darkgray;
+                              }
+                          }
+
+                          .flight-direct {
+                              font-weight: bold;
+                          }
+                      }
+
+                  }
+
+                .book-zone {
+                    display: inline-block;
+
+                    padding: 20px;
+
+                    background-color: $light-blue6;
+
+                    .score {
+                        background-color: white;
+                        border: 1px solid $light-blue3;
+                        border-radius: 4px;
+                        padding: 8px;
+                        text-align: center;
+
+                        .txt-score {
+                            font-weight: bold;
+                            font-size: 1.1em;
+                        }
+
+                        .stars-score{
+                            color: $yellow;
+                        }
+
+                        .cap{
+                            font-size: 0.75em;
+                            color: gray;
+                        }
+                    }
+
+                    .price-all {
+                        font-weight: bold;
+                        text-align: right;
+
+                        .currency {
+                              
+                        }
+
+                        .price{
+                            font-size: 2em;                              
+                        }
+                    }
+
+                    .btn-cont{
+                        a{
+                            font-weight: bold;
+                            text-decoration: none;
+                            display: inline-block;
+                            color: white;
+                            background-color: $green3;
+                            padding: 10px;
+                            border-radius: 4px;
+                        }
+                    }
+
+                }
+
+                .service{
+                    
+                    text-align:left;
+                    padding: 10px;
+                    padding-left: 50px;
+
+                    a {
+                        text-decoration: none;
+
+                        .txt {
+                            display: inline-block;
+                            vertical-align:top;
+
+                            text-decoration: underline;
+
+                            color: $light-blue;
+                        }
+
+                        .icon-dropdown-arrow {
+                            display: inline-block;
+                            vertical-align:top;
+
+                            color: white;
+                            border-radius: 4px;
+                            padding: 3px;
+
+                            color: white;
+                            background-color: $light-blue;
+
+                            font-weight: 100;
+                            font-size: 0.8em;
+
+                            margin-left: 8px;
+                        }
+                    }
+                }
+
+              @include below-width(720) {
+                  .layout-tbl{
+                      display: block;
+
+                      .left,.right{
+                          display: block;
+                          width: initial;
+                      }
+                    }
+
+                    .book-zone {                      
+                      display: block;
+                      position: relative;
+                      padding: 5px;
+
+                      .score {                      
+                          display: inline-block;  
+                          vertical-align: top;
+
+                          position: absolute;
+                          left: 10px;
+                          top: 8px;
+
+
+                        .txt-score {
+                            display: inline-block;  
+                        }
+
+                        .stars-score{
+                          display: inline-block !important;  
+                        }
+
+                        .cap{
+                          display: inline-block !important;  
+                        }
+                    }
+
+                      .price-all {
+                          display: inline-block;  
+                          vertical-align: top;
+                      }
+                      
+                      .btn-cont {
+                          display: inline-block;  
+                          vertical-align: top;
+                      }
+                }
+              }
+
+              
+
+          }
+
+      }
+  }
 }

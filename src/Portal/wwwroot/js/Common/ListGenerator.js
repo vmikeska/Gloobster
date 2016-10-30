@@ -41,8 +41,11 @@ var Common;
             if (this.clearCont) {
                 this.$cont.empty();
             }
+            var itemNo = 0;
             items.forEach(function (item) {
-                _this.generateItem(item);
+                var $item = _this.generateItem(item);
+                $item.data("no", itemNo);
+                itemNo++;
             });
         };
         ListGenerator.prototype.generateItem = function (item) {
@@ -62,6 +65,7 @@ var Common;
             if (this.onItemAppended) {
                 this.onItemAppended($item, item);
             }
+            return $item;
         };
         return ListGenerator;
     }());

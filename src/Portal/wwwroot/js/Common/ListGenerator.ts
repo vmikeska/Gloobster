@@ -66,8 +66,11 @@ module Common {
 				this.$cont.empty();
 			}
 
+			var itemNo = 0;
 			items.forEach((item) => {
-				this.generateItem(item);
+				var $item = this.generateItem(item);
+				$item.data("no", itemNo);
+				itemNo++;
 			});
 		}
 
@@ -95,10 +98,10 @@ module Common {
 
 			if (this.onItemAppended) {
 				this.onItemAppended($item, item);
-			}				
-		}
+			}
 
-
+			return $item;
+		}			
 	}
 
 
