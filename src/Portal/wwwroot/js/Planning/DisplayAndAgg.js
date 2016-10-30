@@ -47,17 +47,38 @@ var Planning;
             this.$filter = $("#tabsCont");
         }
         AnytimeDisplay.prototype.render = function (connections, days) {
-            var _this = this;
             if (days === void 0) { days = null; }
-            this.$cont.html("");
             this.connections = connections;
             var cities = this.aggr.aggregate(connections, days);
             this.$filter.html(this.getCombo());
             cities = _.sortBy(cities, "fromPrice");
-            cities.forEach(function (city) {
-                var $city = _this.genCity(city);
-                _this.$cont.append($city);
-            });
+            var lg = Common.ListGenerator.init(this.$cont, "resultGroupItem-template");
+            lg.clearCont = true;
+            lg.customMapping = function (i) {
+                return {
+                    gid: i.gid,
+                    title: i.name,
+                    price: i.fromPrice
+                };
+            };
+            lg.onItemAppended = function ($cityBox, item) {
+                var lgi = Common.ListGenerator.init($cityBox.find("table"), "resultGroup-priceItem-template");
+                lgi.customMapping = function (i) {
+                    return {
+                        from: i.fromAirport,
+                        to: i.toAirport,
+                        price: i.fromPrice
+                    };
+                };
+                lgi.evnt("td", function (e, $connection, $target) {
+                    var from = $connection.data("f");
+                    var to = $connection.data("t");
+                    var gid = $cityBox.data("gid");
+                    alert(gid + "-" + from + "-" + to);
+                });
+                lgi.generateList(item.conns);
+            };
+            lg.generateList(cities);
         };
         AnytimeDisplay.prototype.getCombo = function () {
             var _this = this;
@@ -80,14 +101,6 @@ var Planning;
         AnytimeDisplay.prototype.daysFilterChange = function (val) {
             var days = (val === "-") ? null : parseInt(val);
             this.render(this.connections, days);
-        };
-        AnytimeDisplay.prototype.genCity = function (city) {
-            var $city = $("<div style=\"border: 1px solid blue; width: 250px; display: inline-block;\"><div>To: " + city.name + "</div><div>FromPrice: " + city.fromPrice + "</div></div>");
-            city.conns.forEach(function (conn) {
-                var $conn = $("<div>" + conn.fromAirport + "-->" + conn.toAirport + " - From: " + conn.fromPrice + "</div>");
-                $city.append($conn);
-            });
-            return $city;
         };
         return AnytimeDisplay;
     }());

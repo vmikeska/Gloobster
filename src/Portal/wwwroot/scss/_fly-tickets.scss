@@ -126,7 +126,172 @@
     }
 
     
+    .flight-results {
 
+        margin-top: 12px;
+        
+        text-align: left;
+
+        @include display-flex;
+        flex-flow: wrap;
+        justify-content: space-around;
+
+        .flight-result {
+            width: 310px;
+            margin-bottom: 8px;
+
+            .img-cont {
+                position: relative;
+
+                img {
+                    border-top-left-radius: 4px;
+                    border-top-right-radius: 4px;
+
+                    width: 100%;                    
+                    vertical-align: middle;
+                }
+
+                .txt-cont {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+
+                    border-top-left-radius: 4px;
+                    border-top-right-radius: 4px;
+
+                    background-color: rgba(black, 0.5);
+
+                    color: white;                    
+                    font-weight: 600;
+                    font-size: 1.1em;
+
+                    padding: 0.8em;
+                }
+
+                .price-cont{
+                    display: inline-block;
+                    position: absolute;
+                    top: 60px;
+                    left: -12px;
+
+                    width: 60px;
+                    height: 60px;
+
+                    padding: 12px;
+                    border: 2px solid white;
+                    border-radius: 50%;
+
+                    background-color: $green3;
+                    color: white;
+
+                    text-align: center;
+
+                    .wrap {
+                        display: inline-block;
+                        
+                        .from{
+                            display: inline-block;
+                            font-size: 0.8em;                            
+                        }
+
+                        .price-all{
+                            display: inline-block;
+                            font-weight: bold;
+                            font-size: 1.3em;                                                        
+                        }
+                    }
+                }
+            }
+
+            .items {                
+                border-left: 1px solid $light-blue;
+                border-bottom: 1px solid $light-blue;
+                border-right: 1px solid $light-blue;
+
+                border-bottom-left-radius: 4px;
+                border-bottom-right-radius: 4px;
+
+                padding-top: 12px;
+                padding-bottom: 12px;
+
+                table{
+                    font-size: 0.8em;
+                    width: 100%;
+                    margin: 0;
+                    
+                    border-spacing:0; 
+                    border-collapse: collapse;  
+
+                    td{
+                        padding-bottom: 4px;
+                        cursor: pointer;
+
+                        &:first-of-type{
+                            padding-left: 8px;
+                        }
+                    }
+
+                    tr {
+                        
+                        
+                        &:hover {
+                            background-color: $light-blue4;
+
+                            .btn {
+                                color: white;
+                                background-color: $dark-blue;
+                            }
+
+                        }
+                    }
+                }
+
+                .btn{
+                    display: inline-block;
+                    vertical-align:middle;
+                    
+                    font-weight: bold;
+                    text-transform: uppercase;
+
+                    border-radius: 4px;
+
+                    color: black;                    
+                    text-decoration: none;
+
+                    padding-left: 2px;
+                    padding-right: 2px;
+
+                    background-color: $light-blue4;
+                }
+            }
+
+        }
+    }
+
+    @include below-width(1279) {
+        
+        .flight-results {
+         /*display: initial;*/
+        }
+
+
+        .flight-result {
+            display: inline-block;
+         width: 300px !important;
+        }
+    }
+
+    @include below-width(990) {
+        .flight-results {
+         /*display: initial;*/
+        }
+
+        .flight-result {
+            display: inline-block;
+         width: 280px !important;         
+        }
+    }
   
   
 }

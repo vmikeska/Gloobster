@@ -67,8 +67,7 @@ module Planning {
 		}
 
 		public render(connections, days = null) {
-				this.$cont.html("");
-
+				
 				this.connections = connections;
 				
 			var cities = this.aggr.aggregate(connections, days);
@@ -77,11 +76,43 @@ module Planning {
 
 			cities = _.sortBy(cities, "fromPrice");
 
-			cities.forEach((city) => {
-				var $city = this.genCity(city);
-				this.$cont.append($city);
-			});
+		  var lg = Common.ListGenerator.init(this.$cont, "resultGroupItem-template");
+			lg.clearCont = true;
 
+				lg.customMapping = (i) => {
+					return {
+						 gid: i.gid,
+						title: i.name,
+						price: i.fromPrice
+					};
+				}
+
+			lg.onItemAppended = ($cityBox, item) => {
+
+				var lgi = Common.ListGenerator.init($cityBox.find("table"), "resultGroup-priceItem-template");
+				lgi.customMapping = (i) => {
+					return {
+						from: i.fromAirport,
+						to: i.toAirport,
+						price: i.fromPrice
+					};
+				};
+
+					lgi.evnt("td", (e, $connection, $td) => {
+						var from = $connection.data("f");
+						var to = $connection.data("t");
+						var gid = $cityBox.data("gid");
+
+						alert(`${gid}-${from}-${to}`);						
+					});
+
+				lgi.generateList(item.conns);
+
+			};
+				
+				
+				
+				lg.generateList(cities);
 		}
 
 		private getCombo() {
@@ -111,16 +142,16 @@ module Planning {
 			this.render(this.connections, days);
 		}
 
-		private genCity(city) {
-			var $city = $(`<div style="border: 1px solid blue; width: 250px; display: inline-block;"><div>To: ${city.name}</div><div>FromPrice: ${city.fromPrice}</div></div>`);
+		//private genCity(city) {
+		//	var $city = $(`<div style="border: 1px solid blue; width: 250px; display: inline-block;"><div>To: ${city.name}</div><div>FromPrice: ${city.fromPrice}</div></div>`);
 
-			city.conns.forEach((conn) => {
-				var $conn = $(`<div>${conn.fromAirport}-->${conn.toAirport} - From: ${conn.fromPrice}</div>`);
-				$city.append($conn);
-			});
+		//	city.conns.forEach((conn) => {
+		//		var $conn = $(`<div>${conn.fromAirport}-->${conn.toAirport} - From: ${conn.fromPrice}</div>`);
+		//		$city.append($conn);
+		//	});
 
-			return $city;
-		}
+		//	return $city;
+		//}
 	}
 
 	export class WeekendByWeekDisplay {

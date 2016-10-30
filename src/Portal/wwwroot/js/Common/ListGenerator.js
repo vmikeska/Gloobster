@@ -5,15 +5,15 @@ var Common;
         }
         ListGeneratorTest.prototype.test = function (myItems) {
             var lg = ListGenerator.init($("#theCont"), "myItem-template");
-            lg.config.customMapping = function (item) {
+            lg.customMapping = function (item) {
                 return {
                     asdf: item.a,
                     asddd: item.b
                 };
             };
-            lg.config.evnt($(".delete"), function (e, $item, $target) {
+            lg.evnt($(".delete"), function (e, $item, $target) {
             });
-            lg.config.evnt($(".add"), function (e, $item, $target) {
+            lg.evnt($(".add"), function (e, $item, $target) {
             });
             lg.generateList(myItems);
         };
@@ -22,19 +22,24 @@ var Common;
     Common.ListGeneratorTest = ListGeneratorTest;
     var ListGenerator = (function () {
         function ListGenerator() {
+            this.clearCont = false;
+            this.customMapping = null;
         }
         ListGenerator.init = function ($cont, itemTemplateName) {
             var lg = new ListGenerator();
-            lg.config = new ListGeneratorConfig();
-            lg.config.$cont = $cont;
-            lg.config.itemTemplateName = itemTemplateName;
-            lg.itemTemplate = Views.ViewBase.currentView.registerTemplate(lg.config.itemTemplateName);
+            lg.$cont = $cont;
+            lg.itemTemplateName = itemTemplateName;
+            lg.eventHandlers = [];
+            lg.itemTemplate = Views.ViewBase.currentView.registerTemplate(lg.itemTemplateName);
             return lg;
+        };
+        ListGenerator.prototype.evnt = function (selector, handler) {
+            this.eventHandlers.push(new EventHandler(selector, handler));
         };
         ListGenerator.prototype.generateList = function (items) {
             var _this = this;
-            if (this.config.clearCont) {
-                this.config.$cont.empty();
+            if (this.clearCont) {
+                this.$cont.empty();
             }
             items.forEach(function (item) {
                 _this.generateItem(item);
@@ -42,37 +47,29 @@ var Common;
         };
         ListGenerator.prototype.generateItem = function (item) {
             var context = item;
-            if (this.config.customMapping) {
-                context = this.config.customMapping(item);
+            if (this.customMapping) {
+                context = this.customMapping(item);
             }
             var $item = $(this.itemTemplate(context));
-            this.config.eventHandlers.forEach(function (eh) {
-                eh.$selector.on(eh.event, function (e) {
+            this.eventHandlers.forEach(function (eh) {
+                $item.find(eh.selector).on(eh.event, function (e) {
                     e.preventDefault();
                     var $target = $(e.target);
                     eh.handler(e, $item, $target);
                 });
             });
-            this.config.$cont.append($item);
+            this.$cont.append($item);
+            if (this.onItemAppended) {
+                this.onItemAppended($item, item);
+            }
         };
         return ListGenerator;
     }());
     Common.ListGenerator = ListGenerator;
-    var ListGeneratorConfig = (function () {
-        function ListGeneratorConfig() {
-            this.clearCont = false;
-            this.customMapping = null;
-        }
-        ListGeneratorConfig.prototype.evnt = function ($selector, handler) {
-            this.eventHandlers.push(new EventHandler($selector, handler));
-        };
-        return ListGeneratorConfig;
-    }());
-    Common.ListGeneratorConfig = ListGeneratorConfig;
     var EventHandler = (function () {
-        function EventHandler($selector, handler) {
+        function EventHandler(selector, handler) {
             this.event = "click";
-            this.$selector = $selector;
+            this.selector = selector;
             this.handler = handler;
         }
         return EventHandler;

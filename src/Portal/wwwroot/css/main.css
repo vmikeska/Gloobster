@@ -4115,6 +4115,110 @@ footer {
       .fly-tickets .location-dialog .airports-cont .airport .icon-cross:hover {
         color: darkred; }
 
+.fly-tickets .flight-results {
+  margin-top: 12px;
+  text-align: left;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex-flow: wrap;
+  justify-content: space-around; }
+  .fly-tickets .flight-results .flight-result {
+    width: 310px;
+    margin-bottom: 8px; }
+    .fly-tickets .flight-results .flight-result .img-cont {
+      position: relative; }
+      .fly-tickets .flight-results .flight-result .img-cont img {
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        width: 100%;
+        vertical-align: middle; }
+      .fly-tickets .flight-results .flight-result .img-cont .txt-cont {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        font-weight: 600;
+        font-size: 1.1em;
+        padding: 0.8em; }
+      .fly-tickets .flight-results .flight-result .img-cont .price-cont {
+        display: inline-block;
+        position: absolute;
+        top: 60px;
+        left: -12px;
+        width: 60px;
+        height: 60px;
+        padding: 12px;
+        border: 2px solid white;
+        border-radius: 50%;
+        background-color: #3DA243;
+        color: white;
+        text-align: center; }
+        .fly-tickets .flight-results .flight-result .img-cont .price-cont .wrap {
+          display: inline-block; }
+          .fly-tickets .flight-results .flight-result .img-cont .price-cont .wrap .from {
+            display: inline-block;
+            font-size: 0.8em; }
+          .fly-tickets .flight-results .flight-result .img-cont .price-cont .wrap .price-all {
+            display: inline-block;
+            font-weight: bold;
+            font-size: 1.3em; }
+    .fly-tickets .flight-results .flight-result .items {
+      border-left: 1px solid #65BDD7;
+      border-bottom: 1px solid #65BDD7;
+      border-right: 1px solid #65BDD7;
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+      padding-top: 12px;
+      padding-bottom: 12px; }
+      .fly-tickets .flight-results .flight-result .items table {
+        font-size: 0.8em;
+        width: 100%;
+        margin: 0;
+        border-spacing: 0;
+        border-collapse: collapse; }
+        .fly-tickets .flight-results .flight-result .items table td {
+          padding-bottom: 4px;
+          cursor: pointer; }
+          .fly-tickets .flight-results .flight-result .items table td:first-of-type {
+            padding-left: 8px; }
+        .fly-tickets .flight-results .flight-result .items table tr:hover {
+          background-color: #ccedf5; }
+          .fly-tickets .flight-results .flight-result .items table tr:hover .btn {
+            color: white;
+            background-color: #005476; }
+      .fly-tickets .flight-results .flight-result .items .btn {
+        display: inline-block;
+        vertical-align: middle;
+        font-weight: bold;
+        text-transform: uppercase;
+        border-radius: 4px;
+        color: black;
+        text-decoration: none;
+        padding-left: 2px;
+        padding-right: 2px;
+        background-color: #ccedf5; }
+
+@media screen and (max-width: 1279px) {
+  .fly-tickets .flight-results {
+    /*display: initial;*/ }
+  .fly-tickets .flight-result {
+    display: inline-block;
+    width: 300px !important; } }
+
+@media screen and (max-width: 990px) {
+  .fly-tickets .flight-results {
+    /*display: initial;*/ }
+  .fly-tickets .flight-result {
+    display: inline-block;
+    width: 280px !important; } }
+
 .travelb-message {
   text-align: left; }
   .travelb-message .txt-input {

@@ -1,4 +1,49 @@
 ﻿
+
+<script id="resultGroupItem-template" type="text/x-handlebars-template">
+    <div class="flight-result" data-gid="{{gid}}">
+        <div class="img-cont">
+            
+            <img src="/picd/{{gid}}/f" onerror="this.src='/images/n/no-fly-img.png'" />
+            <div class="txt-cont">{{title}}</div>
+            <div class="price-cont">
+                <div class="wrap">
+                    <span class="from">from</span>
+                    <br />
+                    <span class="price-all">
+                        <span class="currency">€</span><span class="price">{{price}}</span>
+                    </span>
+                </div>
+            </div>
+
+        </div>
+        <div class="items">
+
+            <table>
+                
+            </table>
+
+        </div>
+    </div>
+</script>
+
+
+<script id="resultGroup-priceItem-template" type="text/x-handlebars-template">
+    <tr data-f="{{from}}" data-t="{{to}}"> 
+        <td><strong>{{from}} → {{to}}</strong></td>
+        <td>from</td>
+        <td><strong>€{{price}}</strong></td>
+        <td><a class="btn" href="#">see offers</a></td>
+    </tr>
+</script>
+
+
+
+
+
+
+
+
 <script id="weekendTabs-template" type="text/x-handlebars-template">
     <div class="table width100">
         <div class="cell">
