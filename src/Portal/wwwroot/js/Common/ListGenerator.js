@@ -24,6 +24,7 @@ var Common;
         function ListGenerator() {
             this.clearCont = false;
             this.customMapping = null;
+            this.appendStyle = "append";
         }
         ListGenerator.init = function ($cont, itemTemplateName) {
             var lg = new ListGenerator();
@@ -58,10 +59,18 @@ var Common;
                 $item.find(eh.selector).on(eh.event, function (e) {
                     e.preventDefault();
                     var $target = $(e.target);
-                    eh.handler(e, $item, $target);
+                    eh.handler(e, $item, $target, item);
                 });
             });
-            this.$cont.append($item);
+            if (this.appendStyle === "append") {
+                this.$cont.append($item);
+            }
+            else if (this.appendStyle === "prepend") {
+                this.$cont.prepend($item);
+            }
+            else if (this.appendStyle === "after") {
+                this.$cont.after($item);
+            }
             if (this.onItemAppended) {
                 this.onItemAppended($item, item);
             }

@@ -25,7 +25,10 @@ else
     <script src="/lib/js-cookie/src/js.cookie.js" type="text/javascript"></script>
     <script src="/lib/lodash/lodash.js" type="text/javascript"></script>
     <script src="/lib/handlebars/handlebars.js" type="text/javascript"></script>
-    <script src="/lib/moment/moment.js" type="text/javascript"></script>
+    
+    @*<script src="/lib/moment/moment.js" type="text/javascript"></script>*@    
+    <script src="/lib/moment/min/moment-with-locales.min.js" type="text/javascript"></script>
+
     <script src="/lib/pep.js" type="text/javascript"></script>
     <script src="/lib/jquery-countto/jquery.countto.js" type="text/javascript"></script>
     <script src="/js/script.js" type="text/javascript"></script>
@@ -53,6 +56,22 @@ else
 }
 
 <script>   
+
+
+    Handlebars.registerHelper('for', function(from, to, incr, block) {
+        var accum = '';
+        for(var i = from; i < to; i += incr)
+            accum += block.fn(i);
+        return accum;
+    });
+
+    Handlebars.registerHelper('ifCond', function(v1, v2, options) {
+        if(v1 === v2) {
+            return options.fn(this);
+        }
+        return options.inverse(this);
+    });
+
     window["modules"] = @Html.Raw(JsonConvert.SerializeObject(Model.ClientModules));
 
     @Html.Raw($"Views.ViewBase.currentUserId = '{Model.UserId}';")

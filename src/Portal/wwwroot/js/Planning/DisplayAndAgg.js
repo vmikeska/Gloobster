@@ -3,8 +3,32 @@ var Planning;
     var AnytimeAggregator = (function () {
         function AnytimeAggregator() {
         }
+        AnytimeAggregator.prototype.splitInboundOutboundFlight = function (flight) {
+            var thereParts = [];
+            var backParts = [];
+            var thereFinished = false;
+            flight.FlightParts.forEach(function (fp) {
+                if (thereFinished) {
+                    backParts.push(fp);
+                }
+                else {
+                    thereParts.push(fp);
+                }
+                if (fp.To === flight.To) {
+                    thereFinished = true;
+                }
+            });
+            flight.thereParts = thereParts;
+            flight.backParts = backParts;
+        };
         AnytimeAggregator.prototype.aggregate = function (connections, days) {
-            var groupByDestCity = _.groupBy(connections, 'ToCityId');
+            var _this = this;
+            connections.forEach(function (c) {
+                c.Flights.forEach(function (f) {
+                    _this.splitInboundOutboundFlight(f);
+                });
+            });
+            var groupByDestCity = _.groupBy(connections, "ToCityId");
             var results = [];
             for (var cityKey in groupByDestCity) {
                 if (!groupByDestCity.hasOwnProperty(cityKey)) {
@@ -13,7 +37,12 @@ var Planning;
                 var cityGroup = groupByDestCity[cityKey];
                 var city = cityGroup[0];
                 var fromPrice = _.min(_.map(cityGroup, function (c) { return c.FromPrice; }));
-                var result = { name: city.CityName, gid: cityKey, conns: cityGroup, fromPrice: fromPrice };
+                var result = {
+                    name: city.CityName,
+                    gid: cityKey,
+                    conns: cityGroup,
+                    fromPrice: fromPrice
+                };
                 var outConns = [];
                 cityGroup.forEach(function (conn) {
                     var c = { fromAirport: conn.FromAirport, toAirport: conn.ToAirport, fromPrice: null, flights: [] };
@@ -39,115 +68,6 @@ var Planning;
         return AnytimeAggregator;
     }());
     Planning.AnytimeAggregator = AnytimeAggregator;
-    var LastItem = (function () {
-        function LastItem() {
-        }
-        LastItem.getLast = function ($rootCont, itemClass, blockNo) {
-            var $lastBlock;
-            var can = true;
-            var curBlockNo = blockNo;
-            while (can) {
-                var nextBlockNo = curBlockNo + 1;
-                var $i = this.findByNo($rootCont, itemClass, curBlockNo);
-                var $ni = this.findByNo($rootCont, itemClass, nextBlockNo);
-                var hasNext = $ni.length > 0;
-                if (hasNext) {
-                    var currentTop = $i.offset().top;
-                    var nextTop = $ni.offset().top;
-                    if (currentTop < nextTop) {
-                        $lastBlock = $i;
-                        can = false;
-                    }
-                }
-                else {
-                    $lastBlock = $i;
-                    can = false;
-                }
-                curBlockNo++;
-            }
-            return $lastBlock;
-        };
-        LastItem.findByNo = function ($rootCont, itemClass, no) {
-            var $found = null;
-            $rootCont.find("." + itemClass).toArray().forEach(function (i) {
-                var $i = $(i);
-                if (parseInt($i.data("no")) === no) {
-                    $found = $i;
-                }
-            });
-            return $found;
-        };
-        return LastItem;
-    }());
-    Planning.LastItem = LastItem;
-    var AnytimeDisplay = (function () {
-        function AnytimeDisplay($cont) {
-            this.connections = [];
-            this.aggr = new AnytimeAggregator();
-            this.$cont = $cont;
-            this.$filter = $("#tabsCont");
-        }
-        AnytimeDisplay.prototype.render = function (connections, days) {
-            var _this = this;
-            if (days === void 0) { days = null; }
-            this.connections = connections;
-            var cities = this.aggr.aggregate(connections, days);
-            this.$filter.html(this.getCombo());
-            cities = _.sortBy(cities, "fromPrice");
-            var lg = Common.ListGenerator.init(this.$cont, "resultGroupItem-template");
-            lg.clearCont = true;
-            lg.customMapping = function (i) {
-                return {
-                    gid: i.gid,
-                    title: i.name,
-                    price: i.fromPrice
-                };
-            };
-            lg.onItemAppended = function ($cityBox, item) {
-                var lgi = Common.ListGenerator.init($cityBox.find("table"), "resultGroup-priceItem-template");
-                lgi.customMapping = function (i) {
-                    return {
-                        from: i.fromAirport,
-                        to: i.toAirport,
-                        price: i.fromPrice
-                    };
-                };
-                lgi.evnt("td", function (e, $connection, $td) {
-                    var from = $connection.data("f");
-                    var to = $connection.data("t");
-                    var gid = $cityBox.data("gid");
-                    var $lastConnInRow = LastItem.getLast(_this.$cont, "flight-result", $cityBox.data("no"));
-                    alert($lastConnInRow.data("no"));
-                });
-                lgi.generateList(item.conns);
-            };
-            lg.generateList(cities);
-        };
-        AnytimeDisplay.prototype.getCombo = function () {
-            var _this = this;
-            var from = 2;
-            var to = 14;
-            var $combo = $("<select id=\"days\"><select>");
-            var $oe = $("<option value=\"-\">Days uspecified</option>");
-            $combo.append($oe);
-            for (var act = from; act <= to; act++) {
-                var $o = $("<option value=\"" + act + "\">" + act + " Days</option>");
-                $combo.append($o);
-            }
-            $combo.change(function (e) {
-                e.preventDefault();
-                var val = $combo.val();
-                _this.daysFilterChange(val);
-            });
-            return $combo;
-        };
-        AnytimeDisplay.prototype.daysFilterChange = function (val) {
-            var days = (val === "-") ? null : parseInt(val);
-            this.render(this.connections, days);
-        };
-        return AnytimeDisplay;
-    }());
-    Planning.AnytimeDisplay = AnytimeDisplay;
     var WeekendByWeekDisplay = (function () {
         function WeekendByWeekDisplay($cont) {
             this.aggregator = new WeekendByWeekAggregator();

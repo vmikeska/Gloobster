@@ -2,9 +2,42 @@ module Planning {
 
 
 	export class AnytimeAggregator {
+
+		private splitInboundOutboundFlight(flight) {
+
+			var thereParts = [];
+			var backParts = [];
+
+			var thereFinished = false;
+
+			flight.FlightParts.forEach((fp) => {
+
+				if (thereFinished) {
+					backParts.push(fp);
+				} else {
+					thereParts.push(fp);
+				}
+
+				if (fp.To === flight.To) {
+					thereFinished = true;
+				}
+
+			});
+
+			flight.thereParts = thereParts;
+			flight.backParts = backParts;
+		}
+
+
 		public aggregate(connections, days) {
 
-			var groupByDestCity = _.groupBy(connections, 'ToCityId');
+			connections.forEach((c) => {
+				c.Flights.forEach((f) => {
+					this.splitInboundOutboundFlight(f);
+				});
+			});
+			
+			var groupByDestCity = _.groupBy(connections, "ToCityId");
 
 			var results = [];
 
@@ -19,9 +52,13 @@ module Planning {
 
 				var fromPrice = _.min(_.map(cityGroup, (c) => { return c.FromPrice }));
 
-				var result = { name: city.CityName, gid: cityKey, conns: cityGroup, fromPrice: fromPrice };
-
-
+				var result = {
+					name: city.CityName,
+					gid: cityKey,
+					conns: cityGroup,
+					fromPrice: fromPrice
+				};
+					
 				var outConns = [];
 				cityGroup.forEach((conn) => {
 					var c = { fromAirport: conn.FromAirport, toAirport: conn.ToAirport, fromPrice: null, flights: [] };
@@ -51,159 +88,7 @@ module Planning {
 			return results;
 		}
 	}
-
-	export class LastItem {
-		public static getLast($rootCont, itemClass, blockNo) {
-
-			var $lastBlock;
-
-			var can = true;
-			var curBlockNo = blockNo;
-
-			while (can) {
-				var nextBlockNo = curBlockNo + 1;
-
-				var $i = this.findByNo($rootCont, itemClass, curBlockNo);
-				var $ni = this.findByNo($rootCont, itemClass, nextBlockNo);
-
-				var hasNext = $ni.length > 0;
-				if (hasNext) {
-					var currentTop = $i.offset().top;
-					var nextTop = $ni.offset().top;
-
-					if (currentTop < nextTop) {
-						$lastBlock = $i;
-						can = false;
-					}
-				} else {
-					$lastBlock = $i;
-					can = false;
-				}
-
-				curBlockNo++;
-			}
-
-			return $lastBlock;
-		}
-
-		private static findByNo($rootCont, itemClass, no) {
-			var $found = null;
-			$rootCont.find(`.${itemClass}`).toArray().forEach((i) => {
-				var $i = $(i);
-				if (parseInt($i.data("no")) === no) {
-					$found = $i;
-				}
-			});
-
-			return $found;
-		}
-	}
-
-	export class AnytimeDisplay {
-		private aggr: AnytimeAggregator;
-
-		private $cont;
-		private $filter;
-
-		private connections = [];
-
-		constructor($cont) {
-			this.aggr = new AnytimeAggregator();
-			this.$cont = $cont;
-			this.$filter = $("#tabsCont");
-		}
-
-		public render(connections, days = null) {
-				
-				this.connections = connections;
-				
-			var cities = this.aggr.aggregate(connections, days);
-
-			this.$filter.html(this.getCombo());
-
-			cities = _.sortBy(cities, "fromPrice");
-
-		  var lg = Common.ListGenerator.init(this.$cont, "resultGroupItem-template");
-			lg.clearCont = true;
-
-				lg.customMapping = (i) => {
-					return {
-						 gid: i.gid,
-						title: i.name,
-						price: i.fromPrice
-					};
-				}
-
-			lg.onItemAppended = ($cityBox, item) => {
-
-				var lgi = Common.ListGenerator.init($cityBox.find("table"), "resultGroup-priceItem-template");
-				lgi.customMapping = (i) => {
-					return {
-						from: i.fromAirport,
-						to: i.toAirport,
-						price: i.fromPrice
-					};
-				};
-
-					lgi.evnt("td", (e, $connection, $td) => {
-						var from = $connection.data("f");
-						var to = $connection.data("t");
-						var gid = $cityBox.data("gid");
-
-						var $lastConnInRow = LastItem.getLast(this.$cont, "flight-result", $cityBox.data("no"));
-						alert($lastConnInRow.data("no"));
-
-						//alert(`${gid}-${from}-${to}`);
-					});
-
-				lgi.generateList(item.conns);
-
-			};
-				
-				
-				
-				lg.generateList(cities);
-		}
-
-		private getCombo() {
-			var from = 2;
-			var to = 14;
-			var $combo = $(`<select id="days"><select>`);
-
-			var $oe = $(`<option value="-">Days uspecified</option>`);
-			$combo.append($oe);
-
-			for (var act = from; act <= to; act++) {
-				var $o = $(`<option value="${act}">${act} Days</option>`);
-				$combo.append($o);
-			}
-
-			$combo.change((e) => {
-				e.preventDefault();
-				var val = $combo.val();
-				this.daysFilterChange(val);
-			});
-
-			return $combo;
-		}
-
-		private daysFilterChange(val) {
-			var days = (val === "-") ? null : parseInt(val);
-			this.render(this.connections, days);
-		}
-
-		//private genCity(city) {
-		//	var $city = $(`<div style="border: 1px solid blue; width: 250px; display: inline-block;"><div>To: ${city.name}</div><div>FromPrice: ${city.fromPrice}</div></div>`);
-
-		//	city.conns.forEach((conn) => {
-		//		var $conn = $(`<div>${conn.fromAirport}-->${conn.toAirport} - From: ${conn.fromPrice}</div>`);
-		//		$city.append($conn);
-		//	});
-
-		//	return $city;
-		//}
-	}
-
+		
 	export class WeekendByWeekDisplay {
 
 		private aggregator: WeekendByWeekAggregator;
@@ -316,27 +201,6 @@ module Planning {
 
 
 	}
-
-	//string From
-  //string To 
-  //double Price
-  //int Connections
-  //double HoursDuration 
-  //double FlightScore 
-  //List <FlightPartDO> FlightParts
-  //string FlightPartsStr
-
-//WeekendConnectionDO 
-//		string FromAirport
-//    string ToAirport
-//    string ToMapId
-//    List <WeekendGroupDO> WeekFlights
-
-//WeekendGroupDO 
-//		int WeekNo
-//    int Year
-//    List <FlightDO> Flights
-//    double FromPrice
 
 	export class WeekendByCityDisplay {
 		private aggregator: WeekendByCityAggregator;

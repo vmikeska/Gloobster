@@ -35,6 +35,7 @@ module Common {
 		public itemTemplateName: string;
 		public eventHandlers: EventHandler[];
 		public customMapping = null;
+		public appendStyle = "append";
 			
 		private itemTemplate;
 
@@ -73,8 +74,7 @@ module Common {
 				itemNo++;
 			});
 		}
-
-
+			
 		private generateItem(item) {
 
 			var context = item;
@@ -90,11 +90,17 @@ module Common {
 
 					var $target = $(e.target);
 
-					eh.handler(e, $item, $target);
+					eh.handler(e, $item, $target, item);
 				});
 			});
 
-			this.$cont.append($item);
+			if (this.appendStyle === "append") {
+				this.$cont.append($item);
+			} else if (this.appendStyle === "prepend") {
+				this.$cont.prepend($item);
+			} else if (this.appendStyle === "after") {
+				this.$cont.after($item);
+			}
 
 			if (this.onItemAppended) {
 				this.onItemAppended($item, item);

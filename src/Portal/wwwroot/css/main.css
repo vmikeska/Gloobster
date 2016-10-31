@@ -4239,6 +4239,8 @@ footer {
     .fly-tickets .flight-conns .conns .conn .flight {
       text-align: left;
       border-bottom: 1px solid #9FD2E3; }
+      .fly-tickets .flight-conns .conns .conn .flight.sub-part {
+        background-color: white !important; }
       .fly-tickets .flight-conns .conns .conn .flight .top-line {
         font-size: 0.8em;
         color: darkgray;

@@ -73,12 +73,18 @@ namespace Gloobster.Portal.Controllers.Api.Planning
             var flightParts = new List<FlightPartDO>();
             foreach (var route in flight.route)
             {
+                var dTimeUtc = ConvertDate(route.dTimeUTC);
+                var aTimeUtc = ConvertDate(route.aTimeUTC);
+                TimeSpan duration = aTimeUtc - dTimeUtc;
+
                 var flightPart = new FlightPartDO
                 {
                     From = route.flyFrom,
                     To = route.flyTo,
                     DeparatureTime = ConvertDate(route.dTime),
-                    ArrivalTime = ConvertDate(route.aTime)
+                    ArrivalTime = ConvertDate(route.aTime),
+                    Airline = route.airline,
+                    MinsDuration = (int)duration.TotalMinutes
                 };
                 flightParts.Add(flightPart);
             }

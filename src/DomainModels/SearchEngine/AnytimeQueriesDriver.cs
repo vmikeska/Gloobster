@@ -56,7 +56,7 @@ namespace Gloobster.DomainModels.SearchEngine
             }
 
             var connsDO = conns.Select(c => c.ToDO()).ToList();
-
+            
             return connsDO;
         }
 

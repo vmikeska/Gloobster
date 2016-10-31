@@ -54,7 +54,10 @@ namespace Gloobster.Mappers
                 From = d.From,
                 To = d.To,
                 ArrivalTime = d.ArrivalTime,
-                DeparatureTime = d.DeparatureTime
+                DeparatureTime = d.DeparatureTime,
+                Airline = d.Airline,
+                MinsDuration = d.MinsDuration,
+                FlightNo = d.FlightNo
             };
 
             return e;
@@ -67,7 +70,10 @@ namespace Gloobster.Mappers
                 From = e.From,
                 To = e.To,
                 ArrivalTime = e.ArrivalTime,
-                DeparatureTime = e.DeparatureTime
+                DeparatureTime = e.DeparatureTime,
+                Airline = e.Airline,
+                MinsDuration = e.MinsDuration,
+                FlightNo = e.FlightNo
             };
 
             return d;
