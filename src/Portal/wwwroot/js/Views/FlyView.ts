@@ -11,7 +11,7 @@
 		constructor() {
 			this.resultsEngine = new Planning.ResultsManager();
 			this.$tabsCont = $("#tabsCont");
-			this.$cont = $("#results2");				
+			this.$cont = $("#results2");								
 		}
 
 			
@@ -41,13 +41,17 @@
 
 
 		private showAnytime() {
-				var display = new Planning.AnytimeDisplay(this.$cont);
+			var display = new Planning.AnytimeDisplay(this.$cont);
 
+			var fromDays = 1;
+			var toDays = 20;
 
 			this.resultsEngine.initalCall(0);
-			this.resultsEngine.onConnectionsChanged = (connections) => {					
-					display.render(this.resultsEngine.connections);
+			this.resultsEngine.onConnectionsChanged = (connections) => {
+				display.render(this.resultsEngine.connections, fromDays, toDays);
 			};
+
+			display.genDaysSlider(fromDays, toDays);
 		}
 
 		private showWeekend() {

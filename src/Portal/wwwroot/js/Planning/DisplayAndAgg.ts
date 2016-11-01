@@ -29,7 +29,7 @@ module Planning {
 		}
 
 
-		public aggregate(connections, days) {
+		public aggregate(connections, daysFrom = null, daysTo = null) {
 
 			connections.forEach((c) => {
 				c.Flights.forEach((f) => {
@@ -49,27 +49,25 @@ module Planning {
 				var cityGroup = groupByDestCity[cityKey];
 
 				var city = cityGroup[0];
-
-				var fromPrice = _.min(_.map(cityGroup, (c) => { return c.FromPrice }));
-
-				var result = {
-					name: city.CityName,
-					gid: cityKey,
-					conns: cityGroup,
-					fromPrice: fromPrice
-				};
-					
+	
 				var outConns = [];
 				cityGroup.forEach((conn) => {
-					var c = { fromAirport: conn.FromAirport, toAirport: conn.ToAirport, fromPrice: null, flights: [] };
+					var c = {
+							fromAirport: conn.FromAirport,
+							toAirport: conn.ToAirport,
+							fromPrice: null,
+							flights: []
+					};
 
 					var passedFlights = [];
 					conn.Flights.forEach((flight) => {
 						var did = flight.DaysInDestination;
-						var fits = days === null || ((did >= (days - 1)) && (did <= (days + 1)));
+
+						var fits = daysFrom === null || ((did >= daysFrom) && (did <= daysTo));
 						if (fits) {
 							passedFlights.push(flight);
 						}
+
 					});					
 
 					if (passedFlights.length > 0) {
@@ -80,9 +78,22 @@ module Planning {
 						
 				});
 
-				result.conns = outConns;
+				var cityHasAnyConns = (outConns.length > 0);
+				if (cityHasAnyConns) {
 
-				results.push(result);
+						var fromPrice = _.min(_.map(outConns, (c) => { return c.fromPrice }));
+
+					var result = {
+						name: city.CityName,
+						gid: cityKey,
+						conns: cityGroup,
+						fromPrice: fromPrice
+					};
+
+					result.conns = outConns;
+
+					results.push(result);
+				}
 			}
 
 			return results;

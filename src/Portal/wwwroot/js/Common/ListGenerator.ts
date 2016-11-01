@@ -40,6 +40,8 @@ module Common {
 		private itemTemplate;
 
 		public onItemAppended: Function;
+
+		private $items = [];
 			
 		public static init($cont, itemTemplateName): ListGenerator {
 			var lg = new ListGenerator();
@@ -55,7 +57,11 @@ module Common {
 
 		
 
-		//todo: itemCont 
+		public destroy() {
+				this.$items.forEach(($i) => {
+					$i.remove();
+				});
+		}
 
 		public evnt(selector: string, handler: Function) {
 			this.eventHandlers.push(new EventHandler(selector, handler));
@@ -70,11 +76,12 @@ module Common {
 			var itemNo = 0;
 			items.forEach((item) => {
 				var $item = this.generateItem(item);
+				this.$items.push($item);
 				$item.data("no", itemNo);
 				itemNo++;
 			});
 		}
-			
+
 		private generateItem(item) {
 
 			var context = item;
@@ -88,7 +95,7 @@ module Common {
 				$item.find(eh.selector).on(eh.event, (e) => {
 					e.preventDefault();
 
-					var $target = $(e.target);
+					var $target = $(e.delegateTarget);
 
 					eh.handler(e, $item, $target, item);
 				});

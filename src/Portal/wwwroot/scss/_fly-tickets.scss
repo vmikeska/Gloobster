@@ -45,6 +45,56 @@
         float: left;
     }
 
+    .anytime-slider-cont {
+        text-align: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+
+        .title {
+            font-weight: bold;
+        }
+
+        .inner-cont {
+            width: 80%; 
+            display: inline-block;
+
+            input {
+                border: 1px solid $light-blue;
+                border-radius: 4px;
+                width: 30px;
+                text-align:center;
+            }
+
+            .tbl {
+                display: table;
+                width: 100%;
+
+                .left {
+                    display: table-cell;
+
+                    padding-right: 16px;
+                }
+
+                .center {
+                    display: table-cell;
+                    width: 100%;
+
+                    .inner-cont-slider {
+                        display: block !important;
+                    }
+                }
+
+                .right {
+                    display: table-cell;
+
+                    padding-left: 16px;
+                }
+            }
+        }
+       
+    }
+
+
     .top-ribbon{
         text-align: left;
         margin-top: 8px;
@@ -303,9 +353,9 @@
       .conns{
           margin-top: 12px;
 
-          .conn {
-              background-color: $very-light-blue;
-              
+          .conn {              
+              margin-bottom: 12px;
+
               .layout-tbl {
                   display: table;
                   width: 100%;
@@ -313,89 +363,152 @@
                   .left {
                       display: table-cell;
                       vertical-align: top;
+                      width: 100%;
                   }
 
                   .right {
                       display: table-cell;
                       vertical-align: top;
                       text-align: right;
-                      width: 160px;                      
+                      
                   }
               }
 
-              .flight {
+              .flight-bck-cont {
+
+                  background-color: $very-light-blue;
+
+                  padding-left: 20px;
+                  padding-top: 10px;
 
                   &.sub-part {
-                      background-color: white !important;
-                  }
+                    background-color: white !important;
+                        &:last-of-type{
+                            margin-bottom: 12px;
+                        }
+                    }
 
-                      text-align: left;
-                      border-bottom: 1px solid $light-blue6;
+                  .flight {
+                    text-align: left;
+                    border-bottom: 1px solid $light-blue6;
 
-                      .top-line {                          
-                          font-size: 0.8em;
-                          color: darkgray;
-                          margin-bottom: 14px;
-                          margin-top: 10px;
-                          padding-left: 20px;
-                      }
+                    .top-line {                          
+                        font-size: 0.8em;
+                        color: darkgray;
+                        margin-bottom: 14px;
+                    }
 
-                      .data-tbl {
-                          display: table;
-                          width: 100%;
+                    .data-tbl {
+                        display: table;
+                        width: 100%;
+                        white-space: nowrap;
+                        
+                        /*text-align: left;*/
 
-                          .di {
-                              display: table-cell;
-                              vertical-align: top;
-                              padding-bottom: 12px;
+                        .di {
+                            display: table-cell;
+                            vertical-align: top;
+                            padding-bottom: 12px;
 
-                              &:first-of-type {                                  
-                                  padding-left: 20px;
-                              }
-                          }
+                            &:first-of-type {                                  
+                                /*padding-left: 20px;*/
+                            }
+                        }
 
-                          .logo-cont {
+                        .logo-cont {
+                             width: 15%;
+
+                            .air-logo {
+                                width: 50px;                                  
+                            }
+                        }
+
+                        .flight-dir {
+                            width: 25%;
                               
-                              .air-logo {
-                                  width: 50px;                                  
-                              }
-                          }
+                            .from-to{
+                                font-weight: bold;
+                                font-size: 1.2em;                              
+                            }
 
-                          .flight-dir {
-                              
-                              .from-to{
-                                  font-weight: bold;
-                                  font-size: 1.2em;                              
-                              }
+                            .flight-no{
+                                font-size: 0.8em;
+                                color: darkgray;
+                            }
+                        }
 
-                              .flight-no{
-                                  font-size: 0.8em;
-                                  color: darkgray;
-                              }
-                          }
+                        .date {
+                            width: 20%;
 
-                          .date {
-                              font-weight: bold;
-                          }
+                            font-weight: bold;
+                        }
 
-                          .time-cont{
-                              .time {
-                                  font-weight: bold;
-                              }
+                        .time-cont{
+                            width: 20%;
 
-                              .duration {
-                                  font-size: 0.8em;
-                                  color: darkgray;
-                              }
-                          }
+                            .time {
+                                font-weight: bold;
+                            }
 
-                          .flight-direct {
-                              font-weight: bold;
-                          }
-                      }
+                            .duration {
+                                font-size: 0.8em;
+                                color: darkgray;
+                            }
+                        }
 
-                  }
+                        .direct-cont {
+                            width: 20%;
+                            text-align: right;
+                            padding-right: 20px;
 
+                            .direct {                            
+                                font-weight: bold;
+                                color: $green2;
+                            }
+
+                            .stops {
+                                
+                                .stops-btn {
+                                    text-decoration: none;
+                                
+                                    .txt {
+                                        display: inline-block;
+                                        vertical-align:top;
+
+                                        text-decoration: underline;
+
+                                        color: $light-blue;
+                                    }
+
+                                    .icon-dropdown-arrow {
+
+                                        &.opened {
+                                            transform: scale(1, -1);
+                                        }
+
+                                        display: inline-block;
+                                        vertical-align:top;
+
+                                        color: white;
+                                        border-radius: 4px;
+                                        padding: 3px;
+
+                                        color: white;
+                                        background-color: $light-blue;
+
+                                        font-weight: 100;
+                                        font-size: 0.8em;
+
+                                        margin-left: 8px;
+                                    }
+                                }                            
+                            }
+                        }
+
+                    }
+
+                }
+              }
                 .book-zone {
                     display: inline-block;
 
@@ -417,6 +530,7 @@
 
                         .stars-score{
                             color: $yellow;
+                            font-size: 0.7em;
                         }
 
                         .cap{
@@ -447,46 +561,14 @@
                             background-color: $green3;
                             padding: 10px;
                             border-radius: 4px;
+                            white-space: nowrap;
+
+                            &:hover {
+                                background-color: $green2;                                
+                            }
                         }
                     }
 
-                }
-
-                .service{
-                    
-                    text-align:left;
-                    padding: 10px;
-                    padding-left: 50px;
-
-                    a {
-                        text-decoration: none;
-
-                        .txt {
-                            display: inline-block;
-                            vertical-align:top;
-
-                            text-decoration: underline;
-
-                            color: $light-blue;
-                        }
-
-                        .icon-dropdown-arrow {
-                            display: inline-block;
-                            vertical-align:top;
-
-                            color: white;
-                            border-radius: 4px;
-                            padding: 3px;
-
-                            color: white;
-                            background-color: $light-blue;
-
-                            font-weight: 100;
-                            font-size: 0.8em;
-
-                            margin-left: 8px;
-                        }
-                    }
                 }
 
               @include below-width(720) {

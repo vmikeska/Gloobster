@@ -1,12 +1,17 @@
-﻿using Gloobster.Database;
+﻿using System;
+using System.IO;
+using Gloobster.Database;
 using Gloobster.Portal.Controllers.Base;
 using Microsoft.AspNet.Mvc;
 using Gloobster.DomainInterfaces;
 using Serilog;
 using Autofac;
+using Gloobster.Common;
 using Gloobster.Portal.ViewModels;
 using Gloobster.DomainModels;
 using Gloobster.DomainModels.ImageDB;
+using Microsoft.Extensions.PlatformAbstractions;
+using RestSharp.Extensions;
 
 namespace Gloobster.Portal.Controllers.Portal
 {
@@ -14,13 +19,13 @@ namespace Gloobster.Portal.Controllers.Portal
     public class ImageDBController : PortalBaseController
     {
         public IFilesDomain FileDomain;
+        public IApplicationEnvironment AppEnvironment;
 
-        public ImageDBController(IFilesDomain fileDomain, ILogger log, IDbOperations db, IComponentContext cc, ILanguages langs) : base(log, db, cc, langs)
+        public ImageDBController(IApplicationEnvironment appEnvironment, IFilesDomain fileDomain, ILogger log, IDbOperations db, IComponentContext cc, ILanguages langs) : base(log, db, cc, langs)
         {
             FileDomain = fileDomain;
+            AppEnvironment = appEnvironment;
         }
-
-       
         
         public IActionResult List()
         {
@@ -58,6 +63,19 @@ namespace Gloobster.Portal.Controllers.Portal
             {
                 var fileStream = FileDomain.GetFile(fullPath);
                 return new FileStreamResult(fileStream, "image/jpeg");
+            }
+            else
+            {
+                //todo: solve by not hardcoded way
+                if (cut == "f")
+                {                    
+                    var fullTempPath = Path.Combine(AppEnvironment.ApplicationBasePath, "wwwroot", "images", "n", "no-fly-img.png");
+
+                    byte[] bytes = System.IO.File.ReadAllBytes(fullTempPath);
+                    
+                    var ms = new MemoryStream(bytes);
+                    return new FileStreamResult(ms, "image/png");                                        
+                }
             }
 
             return null;

@@ -29,10 +29,13 @@ var Views;
         PlanningData.prototype.showAnytime = function () {
             var _this = this;
             var display = new Planning.AnytimeDisplay(this.$cont);
+            var fromDays = 1;
+            var toDays = 20;
             this.resultsEngine.initalCall(0);
             this.resultsEngine.onConnectionsChanged = function (connections) {
-                display.render(_this.resultsEngine.connections);
+                display.render(_this.resultsEngine.connections, fromDays, toDays);
             };
+            display.genDaysSlider(fromDays, toDays);
         };
         PlanningData.prototype.showWeekend = function () {
             var _this = this;

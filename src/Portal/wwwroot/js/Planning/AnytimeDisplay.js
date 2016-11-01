@@ -47,13 +47,14 @@ var Planning;
             this.aggr = new Planning.AnytimeAggregator();
             this.$cont = $cont;
             this.$filter = $("#tabsCont");
+            this.genDaysSlider(1, 20);
         }
-        AnytimeDisplay.prototype.render = function (connections, days) {
+        AnytimeDisplay.prototype.render = function (connections, daysFrom, daysTo) {
             var _this = this;
-            if (days === void 0) { days = null; }
+            if (daysFrom === void 0) { daysFrom = null; }
+            if (daysTo === void 0) { daysTo = null; }
             this.connections = connections;
-            var cities = this.aggr.aggregate(connections, days);
-            this.$filter.html(this.getCombo());
+            var cities = this.aggr.aggregate(connections, daysFrom, daysTo);
             cities = _.sortBy(cities, "fromPrice");
             var lg = Common.ListGenerator.init(this.$cont, "resultGroupItem-template");
             lg.clearCont = true;
@@ -68,6 +69,57 @@ var Planning;
                 _this.generateCityGroupedOffers($cityBox, item);
             };
             lg.generateList(cities);
+        };
+        AnytimeDisplay.prototype.daysRangeChanged = function (daysFrom, daysTo) {
+            this.render(this.connections, daysFrom, daysTo);
+        };
+        AnytimeDisplay.prototype.genDaysSlider = function (daysMin, daysMax) {
+            var _this = this;
+            var tmp = Views.ViewBase.currentView.registerTemplate("anytime-timeSlider-template");
+            this.$filter.html(tmp());
+            var slider = document.getElementById("daysSlider");
+            var $daysFrom = $("#daysFrom");
+            var $daysTo = $("#daysTo");
+            $daysFrom.val(daysMin);
+            $daysTo.val(daysMax);
+            var si = noUiSlider.create(slider, {
+                start: [daysMin + 1, daysMax - 1],
+                connect: true,
+                step: 1,
+                range: {
+                    'min': daysMin,
+                    'max': daysMax
+                }
+            });
+            var fromCall = new Common.DelayedCallback($daysFrom);
+            fromCall.delay = 500;
+            fromCall.callback = function (val) {
+                var fixedVal = val;
+                if (val < daysMin) {
+                    fixedVal = daysMin;
+                    $daysFrom.val(fixedVal);
+                }
+                si.set([fixedVal, null]);
+                _this.daysRangeChanged(fixedVal, $daysTo.val());
+            };
+            var toCall = new Common.DelayedCallback($daysTo);
+            toCall.delay = 500;
+            toCall.callback = function (val) {
+                var fixedVal = val;
+                if (val > daysMax) {
+                    fixedVal = daysMax;
+                    $daysTo.val(fixedVal);
+                }
+                si.set([null, fixedVal]);
+                _this.daysRangeChanged($daysFrom.val(), fixedVal);
+            };
+            si.on("slide", function (range) {
+                var from = parseInt(range[0]);
+                var to = parseInt(range[1]);
+                $daysFrom.val(from);
+                $daysTo.val(to);
+                _this.daysRangeChanged(from, to);
+            });
         };
         AnytimeDisplay.prototype.generateCityGroupedOffers = function ($cityBox, item) {
             var _this = this;
@@ -131,16 +183,31 @@ var Planning;
                 }
             };
             lgi.evnt(".stops-btn", function (e, $multiFlight, $btn, multiFlight) {
-                var lgi2 = Common.ListGenerator.init($multiFlight, "connection-single-flight-template");
-                lgi2.appendStyle = "after";
-                lgi2.customMapping = function (f) {
-                    var res = _this.mapSingleFlight(f);
-                    res.customClass = "sub-part";
-                    return res;
-                };
-                lgi2.generateList(multiFlight.parts);
+                var $arrow = $btn.find(".icon-dropdown-arrow");
+                if (multiFlight.subList) {
+                    multiFlight.subList.destroy();
+                    multiFlight.subList = null;
+                    $arrow.removeClass("opened");
+                }
+                else {
+                    var subFlightsLg = _this.genMultiFlightFlights($multiFlight, multiFlight);
+                    multiFlight.subList = subFlightsLg;
+                    $arrow.addClass("opened");
+                }
             });
             lgi.generateList(majorFlights);
+        };
+        AnytimeDisplay.prototype.genMultiFlightFlights = function ($multiFlight, multiFlight) {
+            var _this = this;
+            var lg = Common.ListGenerator.init($multiFlight, "connection-single-flight-template");
+            lg.appendStyle = "after";
+            lg.customMapping = function (f) {
+                var res = _this.mapSingleFlight(f);
+                res.customClass = "sub-part";
+                return res;
+            };
+            lg.generateList(multiFlight.parts);
+            return lg;
         };
         AnytimeDisplay.prototype.viewForMultiFlight = function (parts) {
             var first = _.first(parts);

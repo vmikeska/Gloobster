@@ -21,8 +21,10 @@ var Planning;
             flight.thereParts = thereParts;
             flight.backParts = backParts;
         };
-        AnytimeAggregator.prototype.aggregate = function (connections, days) {
+        AnytimeAggregator.prototype.aggregate = function (connections, daysFrom, daysTo) {
             var _this = this;
+            if (daysFrom === void 0) { daysFrom = null; }
+            if (daysTo === void 0) { daysTo = null; }
             connections.forEach(function (c) {
                 c.Flights.forEach(function (f) {
                     _this.splitInboundOutboundFlight(f);
@@ -36,20 +38,18 @@ var Planning;
                 }
                 var cityGroup = groupByDestCity[cityKey];
                 var city = cityGroup[0];
-                var fromPrice = _.min(_.map(cityGroup, function (c) { return c.FromPrice; }));
-                var result = {
-                    name: city.CityName,
-                    gid: cityKey,
-                    conns: cityGroup,
-                    fromPrice: fromPrice
-                };
                 var outConns = [];
                 cityGroup.forEach(function (conn) {
-                    var c = { fromAirport: conn.FromAirport, toAirport: conn.ToAirport, fromPrice: null, flights: [] };
+                    var c = {
+                        fromAirport: conn.FromAirport,
+                        toAirport: conn.ToAirport,
+                        fromPrice: null,
+                        flights: []
+                    };
                     var passedFlights = [];
                     conn.Flights.forEach(function (flight) {
                         var did = flight.DaysInDestination;
-                        var fits = days === null || ((did >= (days - 1)) && (did <= (days + 1)));
+                        var fits = daysFrom === null || ((did >= daysFrom) && (did <= daysTo));
                         if (fits) {
                             passedFlights.push(flight);
                         }
@@ -60,8 +60,18 @@ var Planning;
                         outConns.push(c);
                     }
                 });
-                result.conns = outConns;
-                results.push(result);
+                var cityHasAnyConns = (outConns.length > 0);
+                if (cityHasAnyConns) {
+                    var fromPrice = _.min(_.map(outConns, function (c) { return c.fromPrice; }));
+                    var result = {
+                        name: city.CityName,
+                        gid: cityKey,
+                        conns: cityGroup,
+                        fromPrice: fromPrice
+                    };
+                    result.conns = outConns;
+                    results.push(result);
+                }
             }
             return results;
         };

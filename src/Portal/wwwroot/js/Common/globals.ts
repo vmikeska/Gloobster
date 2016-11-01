@@ -7,6 +7,8 @@ declare var gapi: any;
 declare var Handlebars: any;
 declare var Cookies: any;
 declare var moment: any;
+declare var noUiSlider: any;
+
 
 //function geoip_country_code() { return 'DE'; }
 //function geoip_country_name() { return 'Germany'; }

@@ -25,6 +25,7 @@ var Common;
             this.clearCont = false;
             this.customMapping = null;
             this.appendStyle = "append";
+            this.$items = [];
         }
         ListGenerator.init = function ($cont, itemTemplateName) {
             var lg = new ListGenerator();
@@ -33,6 +34,11 @@ var Common;
             lg.eventHandlers = [];
             lg.itemTemplate = Views.ViewBase.currentView.registerTemplate(lg.itemTemplateName);
             return lg;
+        };
+        ListGenerator.prototype.destroy = function () {
+            this.$items.forEach(function ($i) {
+                $i.remove();
+            });
         };
         ListGenerator.prototype.evnt = function (selector, handler) {
             this.eventHandlers.push(new EventHandler(selector, handler));
@@ -45,6 +51,7 @@ var Common;
             var itemNo = 0;
             items.forEach(function (item) {
                 var $item = _this.generateItem(item);
+                _this.$items.push($item);
                 $item.data("no", itemNo);
                 itemNo++;
             });
@@ -58,7 +65,7 @@ var Common;
             this.eventHandlers.forEach(function (eh) {
                 $item.find(eh.selector).on(eh.event, function (e) {
                     e.preventDefault();
-                    var $target = $(e.target);
+                    var $target = $(e.delegateTarget);
                     eh.handler(e, $item, $target, item);
                 });
             });

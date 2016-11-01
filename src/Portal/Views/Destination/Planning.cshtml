@@ -12,7 +12,9 @@
 
 
 <link href="/lib/mapbox.js/mapbox.css" rel="stylesheet" />
-<link href="/lib/leaflet/dist/leaflet.css" rel="stylesheet" />
+<link href="/lib/leaflet/dist/leaflet.css" rel="stylesheet"/>
+
+<script src="/js/Common/nouislider/nouislider.js" type="text/javascript"></script>
 
 <script type="text/javascript" src="/lib/leaflet/dist/leaflet.js"></script>
 <script type="text/javascript" src="/lib/mapbox.js/mapbox.js"></script>
@@ -38,6 +40,8 @@
 
 <script type="text/javascript" src="@Url.Content("~/js/Maps/MapsCreatorMapBox2D.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Common/CountryShapes.js")"></script>
+
+
 
 
 <div class="info-block-bck" id="info-travelb">
@@ -89,125 +93,6 @@
 </div>
 
 <div class="wrapper">
-
-    <div class="flight-conns">
-
-        <div class="title">
-
-        </div>
-
-
-        @*<div class="conns">
-            <div class="conn">
-
-                <div class="layout-tbl">
-                    <div class="left">
-
-                        <div class="flight">
-                            <div class="top-line">
-                                Lufthansa
-                            </div>
-
-                            <div class="data-tbl">
-
-                                <div class="di logo-cont">
-                                    <img class="air-logo" src="/images/n/Examples/Lufthansa.svg"/>
-                                </div>
-
-                                <div class="di flight-dir">
-                                    <div class="from-to">HHN → GRO</div>
-                                    <div class="flight-no">HHN111</div>
-                                </div>
-
-                                <div class="di">
-                                    <div class="date">Tue 21 June</div>
-                                </div>
-
-                                <div class="di time-cont">
-                                    <div class="time">18:50 - 20:00</div>
-                                    <div class="duration">(1h 15min)</div>
-                                </div>
-
-                                <div class="di">
-                                    <div class="flight-direct">Direct</div>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        <div class="flight">
-                            <div class="top-line">
-                                Swissair
-                            </div>
-
-                            <div class="data-tbl">
-
-                                <div class="di logo-cont">
-                                    <img class="air-logo" src="/images/n/Examples/SwissAir.svg" />
-                                </div>
-
-                                <div class="di flight-dir">
-                                    <div class="from-to">HHN → GRO</div>
-                                    <div class="flight-no">HHN111</div>
-                                </div>
-
-                                <div class="di">
-                                    <div class="date">Tue 21 June</div>
-                                </div>
-
-                                <div class="di time-cont">
-                                    <div class="time">18:50 - 20:00</div>
-                                    <div class="duration">(1h 15min)</div>
-                                </div>
-
-                                <div class="di">
-                                    <div class="flight-direct">Direct</div>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        <div class="service">
-                            <a href="#"><span class="txt">show detail </span><span class="icon-dropdown-arrow"></span></a>
-                        </div>
-
-                    </div>
-                    <div class="right">
-
-                        <div class="book-zone">
-                            <div class="score">
-                                <div class="txt-score">
-                                    excellent
-                                </div>
-                                <div class="stars-score">
-                                    <span class="icon-star-full"></span><span class="icon-star-full"></span><span class="icon-star-full"></span>
-                                </div>
-                                <div class="cap">
-                                    Flight score
-                                </div>
-                            </div>
-                            <div class="price-all">
-                                <span class="currency">€</span><span class="price">93</span>
-                            </div>
-                            
-                            <div class="btn-cont">
-                                <a href="#">Book now</a>
-                            </div>                            
-                        </div>
-
-                        
-
-                    </div>
-                </div>
-
-            </div>
-        </div>*@
-
-    </div>
-
-
 
     @Html.Partial("LocationSettingsDialog")
 

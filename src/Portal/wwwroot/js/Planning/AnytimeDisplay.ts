@@ -59,16 +59,16 @@ module Planning {
 			this.aggr = new AnytimeAggregator();
 			this.$cont = $cont;
 			this.$filter = $("#tabsCont");
+
+			this.genDaysSlider(1, 20);
 		}
 
-		public render(connections, days = null) {
+		public render(connections, daysFrom = null, daysTo = null) {
 
 			this.connections = connections;
 
-			var cities = this.aggr.aggregate(connections, days);
-
-			this.$filter.html(this.getCombo());
-
+			var cities = this.aggr.aggregate(connections, daysFrom, daysTo);
+				
 			cities = _.sortBy(cities, "fromPrice");
 
 			var lg = Common.ListGenerator.init(this.$cont, "resultGroupItem-template");
@@ -83,14 +83,78 @@ module Planning {
 			}
 
 			lg.onItemAppended = ($cityBox, item) => {
-
 				this.generateCityGroupedOffers($cityBox, item);
-
 			};
-
-
+				
 			lg.generateList(cities);
 		}
+
+			private daysRangeChanged(daysFrom, daysTo) {
+					this.render(this.connections, daysFrom, daysTo);
+			}
+
+			public genDaysSlider(daysMin, daysMax) {
+					var tmp = Views.ViewBase.currentView.registerTemplate("anytime-timeSlider-template");
+
+					this.$filter.html(tmp());
+
+					var slider = document.getElementById("daysSlider");
+
+					var $daysFrom = $("#daysFrom");					
+					var $daysTo = $("#daysTo");
+
+					$daysFrom.val(daysMin);
+					$daysTo.val(daysMax);
+
+					var si = noUiSlider.create(slider, {
+							start: [daysMin + 1, daysMax - 1],
+							connect: true,
+							step: 1,							
+							range: {
+									'min': daysMin,
+									'max': daysMax
+							}
+					});
+
+					var fromCall = new Common.DelayedCallback($daysFrom);
+					fromCall.delay = 500;
+					fromCall.callback = (val) => {
+
+							var fixedVal = val;
+							if (val < daysMin) {
+									fixedVal = daysMin;
+								$daysFrom.val(fixedVal);
+							}
+							
+							si.set([fixedVal, null]);
+
+						this.daysRangeChanged(fixedVal, $daysTo.val());
+					}
+
+					var toCall = new Common.DelayedCallback($daysTo);
+					toCall.delay = 500;
+					toCall.callback = (val) => {
+
+							var fixedVal = val;
+							if (val > daysMax) {
+									fixedVal = daysMax;
+									$daysTo.val(fixedVal);
+							}
+
+							si.set([null, fixedVal]);
+
+							this.daysRangeChanged($daysFrom.val(), fixedVal);
+					}
+					
+					si.on("slide", (range) => {
+						var from = parseInt(range[0]);
+						var to = parseInt(range[1]);
+						$daysFrom.val(from);
+						$daysTo.val(to);
+
+						this.daysRangeChanged(from, to);
+					});
+			}
 
 		private generateCityGroupedOffers($cityBox, item) {
 			var lgi = Common.ListGenerator.init($cityBox.find("table"), "resultGroup-priceItem-template");
@@ -165,18 +229,34 @@ module Planning {
 
 			lgi.evnt(".stops-btn", (e, $multiFlight, $btn, multiFlight) => {
 
-				var lgi2 = Common.ListGenerator.init($multiFlight, "connection-single-flight-template");
-				lgi2.appendStyle = "after";
-				lgi2.customMapping = (f) => {
-					var res = this.mapSingleFlight(f);
-					res.customClass = "sub-part";
-					return res;
-				};
+				var $arrow = $btn.find(".icon-dropdown-arrow");
 
-				lgi2.generateList(multiFlight.parts);
+				if (multiFlight.subList) {
+					multiFlight.subList.destroy();
+					multiFlight.subList = null;
+					$arrow.removeClass("opened");
+				} else {
+					var subFlightsLg = this.genMultiFlightFlights($multiFlight, multiFlight);
+					multiFlight.subList = subFlightsLg;
+					$arrow.addClass("opened");
+				}
 			});
 
 			lgi.generateList(majorFlights);
+		}
+
+		private genMultiFlightFlights($multiFlight, multiFlight) {
+			var lg = Common.ListGenerator.init($multiFlight, "connection-single-flight-template");
+			lg.appendStyle = "after";
+			lg.customMapping = (f) => {
+				var res = this.mapSingleFlight(f);
+				res.customClass = "sub-part";
+				return res;
+			};
+
+			lg.generateList(multiFlight.parts);
+
+			return lg;
 		}
 
 		private viewForMultiFlight(parts) {
@@ -239,16 +319,6 @@ module Planning {
 
 			return context;
 		}
-
-
-//private genFlight($cont, flight) {
-//			var lgi = Common.ListGenerator.init($cont, "connection-single-flight-template");
-//			lgi.customMapping = (f) => {
-//				return this.mapSingleFlight(f);
-//			};
-
-//			lgi.generateList(flight.FlightParts);
-//		}
 
 		private getDurationMulti(from, to) {
 			var diffMs = to - from;
