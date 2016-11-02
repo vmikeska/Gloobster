@@ -277,7 +277,11 @@ var Planning;
             return res;
         };
         AnytimeDisplay.prototype.getLogoLink = function (code) {
-            return "/images/n/Examples/Lufthansa.svg";
+            var airs = ["FR", "A6"];
+            if (!_.contains(airs, code)) {
+                code = "default-airline";
+            }
+            return "/images/n/" + code + ".svg";
         };
         AnytimeDisplay.prototype.getCombo = function () {
             var _this = this;

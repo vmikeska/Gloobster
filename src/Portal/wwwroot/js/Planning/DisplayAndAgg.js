@@ -1,35 +1,10 @@
 var Planning;
 (function (Planning) {
-    var AnytimeAggregator = (function () {
-        function AnytimeAggregator() {
+    var WeekendByWeekAggregator = (function () {
+        function WeekendByWeekAggregator() {
         }
-        AnytimeAggregator.prototype.splitInboundOutboundFlight = function (flight) {
-            var thereParts = [];
-            var backParts = [];
-            var thereFinished = false;
-            flight.FlightParts.forEach(function (fp) {
-                if (thereFinished) {
-                    backParts.push(fp);
-                }
-                else {
-                    thereParts.push(fp);
-                }
-                if (fp.To === flight.To) {
-                    thereFinished = true;
-                }
-            });
-            flight.thereParts = thereParts;
-            flight.backParts = backParts;
-        };
-        AnytimeAggregator.prototype.aggregate = function (connections, daysFrom, daysTo) {
+        WeekendByWeekAggregator.prototype.getByWeek = function (connections) {
             var _this = this;
-            if (daysFrom === void 0) { daysFrom = null; }
-            if (daysTo === void 0) { daysTo = null; }
-            connections.forEach(function (c) {
-                c.Flights.forEach(function (f) {
-                    _this.splitInboundOutboundFlight(f);
-                });
-            });
             var groupByDestCity = _.groupBy(connections, "ToCityId");
             var results = [];
             for (var cityKey in groupByDestCity) {
@@ -37,47 +12,50 @@ var Planning;
                     continue;
                 }
                 var cityGroup = groupByDestCity[cityKey];
-                var city = cityGroup[0];
-                var outConns = [];
-                cityGroup.forEach(function (conn) {
-                    var c = {
-                        fromAirport: conn.FromAirport,
-                        toAirport: conn.ToAirport,
-                        fromPrice: null,
-                        flights: []
-                    };
-                    var passedFlights = [];
-                    conn.Flights.forEach(function (flight) {
-                        var did = flight.DaysInDestination;
-                        var fits = daysFrom === null || ((did >= daysFrom) && (did <= daysTo));
-                        if (fits) {
-                            passedFlights.push(flight);
+                cityGroup.forEach(function (connection) {
+                    connection.WeekFlights.forEach(function (weekFlightsGroup) {
+                        var fromPrice = weekFlightsGroup.FromPrice;
+                        var weekResult = _this.getOrCreateWeekResult(results, weekFlightsGroup.WeekNo);
+                        var city = _this.getOrCreateCityResult(weekResult.cities, connection.ToMapId, connection.CityName);
+                        if (!city.fromPrice) {
+                            city.fromPrice = fromPrice;
                         }
+                        else if (city.fromPrice > fromPrice) {
+                            city.fromPrice = fromPrice;
+                        }
+                        var fromToOffer = { fromAirport: connection.FromAirport, toAirport: connection.ToAirport, fromPrice: fromPrice };
+                        city.fromToOffers.push(fromToOffer);
                     });
-                    if (passedFlights.length > 0) {
-                        c.flights = passedFlights;
-                        c.fromPrice = _.min(_.map(passedFlights, function (c) { return c.Price; }));
-                        outConns.push(c);
-                    }
                 });
-                var cityHasAnyConns = (outConns.length > 0);
-                if (cityHasAnyConns) {
-                    var fromPrice = _.min(_.map(outConns, function (c) { return c.fromPrice; }));
-                    var result = {
-                        name: city.CityName,
-                        gid: cityKey,
-                        conns: cityGroup,
-                        fromPrice: fromPrice
-                    };
-                    result.conns = outConns;
-                    results.push(result);
-                }
             }
             return results;
         };
-        return AnytimeAggregator;
+        WeekendByWeekAggregator.prototype.getOrCreateCityResult = function (cities, toPlace, name) {
+            var city = _.find(cities, function (c) {
+                return c.toPlace === toPlace;
+            });
+            if (!city) {
+                city = { fromToOffers: [], toPlace: toPlace, name: name };
+                cities.push(city);
+            }
+            return city;
+        };
+        WeekendByWeekAggregator.prototype.getOrCreateWeekResult = function (results, weekNo) {
+            var result = _.find(results, function (result) {
+                return result.weekNo === weekNo;
+            });
+            if (!result) {
+                result = {
+                    weekNo: weekNo,
+                    cities: []
+                };
+                results.push(result);
+            }
+            return result;
+        };
+        return WeekendByWeekAggregator;
     }());
-    Planning.AnytimeAggregator = AnytimeAggregator;
+    Planning.WeekendByWeekAggregator = WeekendByWeekAggregator;
     var WeekendByWeekDisplay = (function () {
         function WeekendByWeekDisplay($cont) {
             this.aggregator = new WeekendByWeekAggregator();
@@ -169,6 +147,84 @@ var Planning;
         return WeekendByWeekDisplay;
     }());
     Planning.WeekendByWeekDisplay = WeekendByWeekDisplay;
+    var AnytimeAggregator = (function () {
+        function AnytimeAggregator() {
+        }
+        AnytimeAggregator.prototype.splitInboundOutboundFlight = function (flight) {
+            var thereParts = [];
+            var backParts = [];
+            var thereFinished = false;
+            flight.FlightParts.forEach(function (fp) {
+                if (thereFinished) {
+                    backParts.push(fp);
+                }
+                else {
+                    thereParts.push(fp);
+                }
+                if (fp.To === flight.To) {
+                    thereFinished = true;
+                }
+            });
+            flight.thereParts = thereParts;
+            flight.backParts = backParts;
+        };
+        AnytimeAggregator.prototype.aggregate = function (connections, daysFrom, daysTo) {
+            var _this = this;
+            if (daysFrom === void 0) { daysFrom = null; }
+            if (daysTo === void 0) { daysTo = null; }
+            connections.forEach(function (c) {
+                c.Flights.forEach(function (f) {
+                    _this.splitInboundOutboundFlight(f);
+                });
+            });
+            var groupByDestCity = _.groupBy(connections, "ToCityId");
+            var results = [];
+            for (var cityKey in groupByDestCity) {
+                if (!groupByDestCity.hasOwnProperty(cityKey)) {
+                    continue;
+                }
+                var cityGroup = groupByDestCity[cityKey];
+                var city = cityGroup[0];
+                var outConns = [];
+                cityGroup.forEach(function (conn) {
+                    var c = {
+                        fromAirport: conn.FromAirport,
+                        toAirport: conn.ToAirport,
+                        fromPrice: null,
+                        flights: []
+                    };
+                    var passedFlights = [];
+                    conn.Flights.forEach(function (flight) {
+                        var did = flight.DaysInDestination;
+                        var fits = daysFrom === null || ((did >= daysFrom) && (did <= daysTo));
+                        if (fits) {
+                            passedFlights.push(flight);
+                        }
+                    });
+                    if (passedFlights.length > 0) {
+                        c.flights = passedFlights;
+                        c.fromPrice = _.min(_.map(passedFlights, function (c) { return c.Price; }));
+                        outConns.push(c);
+                    }
+                });
+                var cityHasAnyConns = (outConns.length > 0);
+                if (cityHasAnyConns) {
+                    var fromPrice = _.min(_.map(outConns, function (c) { return c.fromPrice; }));
+                    var result = {
+                        name: city.CityName,
+                        gid: cityKey,
+                        conns: cityGroup,
+                        fromPrice: fromPrice
+                    };
+                    result.conns = outConns;
+                    results.push(result);
+                }
+            }
+            return results;
+        };
+        return AnytimeAggregator;
+    }());
+    Planning.AnytimeAggregator = AnytimeAggregator;
     var WeekendByCityDisplay = (function () {
         function WeekendByCityDisplay($cont) {
             this.aggregator = new WeekendByCityAggregator();
@@ -242,62 +298,6 @@ var Planning;
         return WeekendByCityAggregator;
     }());
     Planning.WeekendByCityAggregator = WeekendByCityAggregator;
-    var WeekendByWeekAggregator = (function () {
-        function WeekendByWeekAggregator() {
-        }
-        WeekendByWeekAggregator.prototype.getByWeek = function (connections) {
-            var _this = this;
-            var groupByDestCity = _.groupBy(connections, 'ToCityId');
-            var results = [];
-            for (var cityKey in groupByDestCity) {
-                if (!groupByDestCity.hasOwnProperty(cityKey)) {
-                    continue;
-                }
-                var cityGroup = groupByDestCity[cityKey];
-                cityGroup.forEach(function (connection) {
-                    connection.WeekFlights.forEach(function (weekFlightsGroup) {
-                        var fromPrice = weekFlightsGroup.FromPrice;
-                        var weekResult = _this.getOrCreateWeekResult(results, weekFlightsGroup.WeekNo);
-                        var city = _this.getOrCreateCityResult(weekResult.cities, connection.ToMapId, connection.CityName);
-                        if (!city.fromPrice) {
-                            city.fromPrice = fromPrice;
-                        }
-                        else if (city.fromPrice > fromPrice) {
-                            city.fromPrice = fromPrice;
-                        }
-                        var fromToOffer = { fromAirport: connection.FromAirport, toAirport: connection.ToAirport, fromPrice: fromPrice };
-                        city.fromToOffers.push(fromToOffer);
-                    });
-                });
-            }
-            return results;
-        };
-        WeekendByWeekAggregator.prototype.getOrCreateCityResult = function (cities, toPlace, name) {
-            var city = _.find(cities, function (c) {
-                return c.toPlace === toPlace;
-            });
-            if (!city) {
-                city = { fromToOffers: [], toPlace: toPlace, name: name };
-                cities.push(city);
-            }
-            return city;
-        };
-        WeekendByWeekAggregator.prototype.getOrCreateWeekResult = function (results, weekNo) {
-            var result = _.find(results, function (result) {
-                return result.weekNo === weekNo;
-            });
-            if (!result) {
-                result = {
-                    weekNo: weekNo,
-                    cities: []
-                };
-                results.push(result);
-            }
-            return result;
-        };
-        return WeekendByWeekAggregator;
-    }());
-    Planning.WeekendByWeekAggregator = WeekendByWeekAggregator;
     var WeekendByCountryAggregator = (function () {
         function WeekendByCountryAggregator() {
         }

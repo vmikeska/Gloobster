@@ -347,8 +347,14 @@ module Planning {
 		}
 
 		private getLogoLink(code) {
-				return "/images/n/Examples/Lufthansa.svg";
-			}
+
+				var airs = ["FR", "A6"];
+				if (!_.contains(airs, code)) {
+					code = "default-airline";
+				}
+
+				return `/images/n/${code}.svg`;
+		}
 
 		private getCombo() {
 			var from = 2;
