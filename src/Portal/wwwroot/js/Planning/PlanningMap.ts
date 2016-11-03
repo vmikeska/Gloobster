@@ -15,7 +15,7 @@ module Planning {
 		public citiesManager: CitiesManager;
 		public countriesManager: CountriesManager;
 
-		private weekendForm: WeekendForm;
+		
 		private customForm: CustomForm;
 
 		private resultsEngine: ResultsManager;
@@ -39,7 +39,8 @@ module Planning {
 			this.loadCitiesInRange();
 			this.delayedZoomCallback.receiveEvent();
 
-			this.onMapTypeChanged(type);
+			//do I need it ?
+			//this.onMapTypeChanged(type);
 		}
 
 		private loadCitiesInRange() {
@@ -91,8 +92,7 @@ module Planning {
 				}
 
 				if (this.currentPlanningType === PlanningType.Weekend) {
-					this.countriesManager.createCountries(this.viewData.countryCodes, this.currentPlanningType);
-					this.weekendForm = new WeekendForm(data);
+					this.countriesManager.createCountries(this.viewData.countryCodes, this.currentPlanningType);					
 				}
 
 				if (this.currentPlanningType === PlanningType.Custom) {

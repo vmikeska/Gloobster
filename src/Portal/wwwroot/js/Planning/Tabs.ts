@@ -1,7 +1,9 @@
 module Planning {
 	export class Tabs {
 
-		public onBeforeSwitch: Function;
+			public onBeforeSwitch: Function;
+			public onChange: Function;
+
 		public activeTabId;
 
 		private $cont;
@@ -59,6 +61,10 @@ module Planning {
 				$target.addClass("act");
 				this.activeTabId = $target.attr("id");
 				t.callback(t.id);
+
+				if (this.onChange) {
+					this.onChange();
+				}
 			});
 
 			return $t;

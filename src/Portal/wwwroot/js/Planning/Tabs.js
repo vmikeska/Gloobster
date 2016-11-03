@@ -41,6 +41,9 @@ var Planning;
                 $target.addClass("act");
                 _this.activeTabId = $target.attr("id");
                 t.callback(t.id);
+                if (_this.onChange) {
+                    _this.onChange();
+                }
             });
             return $t;
         };

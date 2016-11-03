@@ -4444,6 +4444,18 @@ footer {
         border-top-right-radius: 4px;
         width: 100%;
         vertical-align: middle; }
+      .fly-tickets .flight-results .flight-result .img-cont .img-wrap {
+        position: relative;
+        overflow: hidden;
+        width: 310px;
+        height: 204px;
+        border-radius: 4px; }
+        .fly-tickets .flight-results .flight-result .img-cont .img-wrap img {
+          width: 330px !important;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%); }
       .fly-tickets .flight-results .flight-result .img-cont .txt-cont {
         position: absolute;
         top: 0;

@@ -13,8 +13,8 @@ namespace RenameFlags
             var coSvc = new CountryService();
 
             int found = 0;
-            string[] files = Directory.GetFiles(@"C:\S\Gloobster\src\Portal\wwwroot\images\n\src-flags");
-            string dest = @"C:\S\Gloobster\src\Portal\wwwroot\images\n\flags";
+            string[] files = Directory.GetFiles(@"C:\S\Gloobster\src\Portal\wwwroot\images\n\flags-square-src");
+            string dest = @"C:\S\Gloobster\src\Portal\wwwroot\images\n\flags-square";
             foreach (var filePath in files)
             {
                 var fullFileName = Path.GetFileName(filePath);

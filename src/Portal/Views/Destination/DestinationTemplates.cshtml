@@ -128,8 +128,37 @@
 
 
 
+<script id="resultGroupItemCountry-template" type="text/x-handlebars-template">
+    <div class="flight-result" data-cc="{{cc}}">
+        <div class="img-cont">
+            
+            <div class="img-wrap">
+                <img src="/images/n/flags-square/{{cc}}.svg" />
+            </div>
+            
 
-    <script id="resultGroupItem-template" type="text/x-handlebars-template">
+            <div class="txt-cont">{{title}}</div>
+            <div class="price-cont">
+                <div class="wrap">
+                    <span class="from">from</span>
+                    <br />
+                    <span class="price-all">
+                        <span class="currency">€</span><span class="price">{{price}}</span>
+                    </span>
+                </div>
+            </div>
+
+        </div>
+        <div class="items">
+
+            <table></table>
+
+        </div>
+    </div>
+</script>
+
+
+<script id="resultGroupItem-template" type="text/x-handlebars-template">
         <div class="flight-result" data-gid="{{gid}}">
             <div class="img-cont">
 
@@ -171,47 +200,31 @@
 
 
 
-    <script id="weekendTabs-template" type="text/x-handlebars-template">
-        <div class="table width100">
-            <div class="cell">
-                <div id="TabsWeekendTime" class="tabs table row">
-                    <div class="cell">
-                        <a class="tab active" data-type="0" href="#">By week</a>
-                    </div>
-                    <div class="cell">
-                        <a class="tab" data-type="1" href="#">By city</a>
-                    </div>
-                    <div class="cell">
-                        <a class="tab" data-type="2" href="#">By country</a>
-                    </div>
-                </div>
-            </div>
+<script id="weekend-layout-template" type="text/x-handlebars-template">
+    <div class="weekend-filter">
+            
+        <div class="grouping-filter"></div>
+            
+        <div class="list-order-filter"></div>
+    </div>
 
+</script>
+
+<script id="weekend-week-template" type="text/x-handlebars-template">
+    <div class="weekend-item">
+        
+        <div class="title">
+            <span>{{week}}.</span> <span>{{dateFrom}} - {{dateTo}}</span>
         </div>
 
-    </script>
+        <div class="cont"></div>
+    </div>
+    
+</script>
 
-    <script id="anytime-template" type="text/x-handlebars-template">
 
 
-    </script>
-
-    <script id="weekend-template" type="text/x-handlebars-template">
-
-        <div class="blue-form margin form">
-            <div class="future-line">
-                Include extended weekends
-                <input id="plus1" type="checkbox">
-                <label class="mleft10" for="plus1">+1day</label>
-                <input id="plus2" type="checkbox">
-                <label class="mleft10" for="plus2">+2days</label>
-            </div>
-
-        </div>
-
-    </script>
-
-    <script id="custom-template" type="text/x-handlebars-template">
+<script id="custom-template" type="text/x-handlebars-template">
 
         <div class="blue-form margin form">
             <div class="table future-table">

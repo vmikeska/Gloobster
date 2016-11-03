@@ -30,13 +30,16 @@
 <script type="text/javascript" src="@Url.Content("~/js/Planning/CitiesManager.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Planning/CountriesManager.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Planning/Utils.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/js/Planning/WeekendForm.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Planning/PlanningMap.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Planning/ResultsManager.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/js/Planning/DisplayAndAgg.js")"></script>
+
 <script type="text/javascript" src="@Url.Content("~/js/Planning/Tabs.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Planning/AirlineCodes.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Planning/AnytimeDisplay.js")"></script>
+
+<script src="~/js/planning/WeekendAggregators.js"></script>
+<script src="~/js/planning/weekendpagesetter.js"></script>
+<script src="~/js/planning/bycityandweekdisplay.js"></script>
 
 <script type="text/javascript" src="@Url.Content("~/js/Maps/MapsCreatorMapBox2D.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Common/CountryShapes.js")"></script>
@@ -103,7 +106,7 @@
 
     <div class="map" id="map"></div>
 
-    <div id="tabsCont">
+    <div id="filterCont">
 
     </div>
 
@@ -111,7 +114,7 @@
 
     </div>
 
-    <div class="flight-results" id="results2">
+    <div class="flight-results" id="resultsCont">
 
     </div>
 </div>

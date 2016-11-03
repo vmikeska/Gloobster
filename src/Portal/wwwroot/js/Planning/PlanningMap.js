@@ -17,7 +17,6 @@ var Planning;
             this.initCategory();
             this.loadCitiesInRange();
             this.delayedZoomCallback.receiveEvent();
-            this.onMapTypeChanged(type);
         };
         PlanningMap.prototype.loadCitiesInRange = function () {
             var _this = this;
@@ -61,7 +60,6 @@ var Planning;
                 }
                 if (_this.currentPlanningType === Planning.PlanningType.Weekend) {
                     _this.countriesManager.createCountries(_this.viewData.countryCodes, _this.currentPlanningType);
-                    _this.weekendForm = new Planning.WeekendForm(data);
                 }
                 if (_this.currentPlanningType === Planning.PlanningType.Custom) {
                     var search = _this.viewData.searches[0];

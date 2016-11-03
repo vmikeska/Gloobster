@@ -55,10 +55,10 @@ module Planning {
 
 		private connections = [];
 
-		constructor($cont) {
+		constructor() {
 			this.aggr = new AnytimeAggregator();
-			this.$cont = $cont;
-			this.$filter = $("#tabsCont");
+			this.$cont = $("#resultsCont");
+			this.$filter = $("#filterCont");
 
 			this.genDaysSlider(1, 20);
 		}
@@ -348,12 +348,12 @@ module Planning {
 
 		private getLogoLink(code) {
 
-				var airs = ["FR", "A6"];
+				var airs = ["OK", "LX", "4U", "5J", "9U", "9W", "A3", "A5", "A9", "AA", "AB", "AC", "AF", "AK", "AS", "AV", "AY", "AZ", "B2", "B6", "BA", "BE", "BT", "BY", "CA", "CI", "CX", "CZ", "D8", "DE", "DJ", "DL", "DP", "DY", "EI", "EK", "EV", "EW", "F9", "FI", "FL", "FR", "FV", "G3", "GA", "HG", "HQ", "HU", "HV", "IB", "IG", "JJ", "JL", "JP", "JQ", "JT", "JU", "KC", "KE", "KL", "KM", "LA", "LG", "LH", "LO", "LP", "LS", "LU", "MH", "MQ", "MT", "MU", "NH", "NZ", "OA", "OO", "OS", "OU", "OZ", "PC", "PS", "QF", "QR", "QU", "RO", "S7", "SK", "SN", "SQ", "SR", "ST", "SU", "SV", "SW", "TG", "TK", "TO", "TP", "TV", "U2", "U6", "UA", "UT", "UX", "VA", "VN", "VS", "VX", "VY", "W6", "WN", "WS", "X3", "XQ", "YM", "ZH"];
 				if (!_.contains(airs, code)) {
 					code = "default-airline";
 				}
 
-				return `/images/n/${code}.svg`;
+				return `/images/n/airlogos/${code}.svg`;
 		}
 
 		private getCombo() {
@@ -385,6 +385,105 @@ module Planning {
 			
 	}
 
+
+		export class AnytimeAggregator {
+
+			private splitInboundOutboundFlight(flight) {
+
+					var thereParts = [];
+					var backParts = [];
+
+					var thereFinished = false;
+
+					flight.FlightParts.forEach((fp) => {
+
+							if (thereFinished) {
+									backParts.push(fp);
+							} else {
+									thereParts.push(fp);
+							}
+
+							if (fp.To === flight.To) {
+									thereFinished = true;
+							}
+
+					});
+
+					flight.thereParts = thereParts;
+					flight.backParts = backParts;
+			}
+
+
+			public aggregate(connections, daysFrom = null, daysTo = null) {
+
+					connections.forEach((c) => {
+							c.Flights.forEach((f) => {
+									this.splitInboundOutboundFlight(f);
+							});
+					});
+
+					var groupByDestCity = _.groupBy(connections, "ToCityId");
+
+					var results = [];
+
+					for (var cityKey in groupByDestCity) {
+							if (!groupByDestCity.hasOwnProperty(cityKey)) {
+									continue;
+							}
+
+							var cityGroup = groupByDestCity[cityKey];
+
+							var city = cityGroup[0];
+
+							var outConns = [];
+							cityGroup.forEach((conn) => {
+									var c = {
+											fromAirport: conn.FromAirport,
+											toAirport: conn.ToAirport,
+											fromPrice: null,
+											flights: []
+									};
+
+									var passedFlights = [];
+									conn.Flights.forEach((flight) => {
+											var did = flight.DaysInDestination;
+
+											var fits = daysFrom === null || ((did >= daysFrom) && (did <= daysTo));
+											if (fits) {
+													passedFlights.push(flight);
+											}
+
+									});
+
+									if (passedFlights.length > 0) {
+											c.flights = passedFlights;
+											c.fromPrice = _.min(_.map(passedFlights, (c) => { return c.Price }));
+											outConns.push(c);
+									}
+
+							});
+
+							var cityHasAnyConns = (outConns.length > 0);
+							if (cityHasAnyConns) {
+
+									var fromPrice = _.min(_.map(outConns, (c) => { return c.fromPrice }));
+
+									var result = {
+											name: city.CityName,
+											gid: cityKey,
+											conns: cityGroup,
+											fromPrice: fromPrice
+									};
+
+									result.conns = outConns;
+
+									results.push(result);
+							}
+					}
+
+					return results;
+			}
+	}
 
 
 }

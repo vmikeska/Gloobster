@@ -5,30 +5,36 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Views;
 (function (Views) {
-    var PlanningData = (function () {
-        function PlanningData() {
+    var FlyView = (function (_super) {
+        __extends(FlyView, _super);
+        function FlyView() {
+            _super.call(this);
+            this.$cont = $("#resultsCont");
+            this.$filter = $("#filterCont");
             this.resultsEngine = new Planning.ResultsManager();
-            this.$tabsCont = $("#tabsCont");
-            this.$cont = $("#results2");
+            this.initialize();
         }
-        PlanningData.prototype.onSelectionChagned = function (id, newState, type) {
-            if (newState) {
-                this.resultsEngine.selectionChanged(id, newState, type);
-            }
-        };
-        PlanningData.prototype.onMapTypeChanged = function (type) {
-            this.$tabsCont.html("");
-            this.$cont.html("");
-            if (type === Planning.PlanningType.Anytime) {
-                this.showAnytime();
-            }
-            if (type === Planning.PlanningType.Weekend) {
-                this.showWeekend();
-            }
-        };
-        PlanningData.prototype.showAnytime = function () {
+        FlyView.prototype.initTabs = function () {
             var _this = this;
-            var display = new Planning.AnytimeDisplay(this.$cont);
+            this.tabs = new Planning.Tabs($("#naviCont"), "main", 50);
+            this.tabs.onBeforeSwitch = function () {
+                _this.$cont.empty();
+                _this.$filter.empty();
+            };
+            this.tabs.addTab("tabAnytime", "Anytime", function () {
+                _this.setAnytime();
+            });
+            this.tabs.addTab("tabWeekend", "Weekend", function () {
+                _this.setWeekend();
+            });
+            this.tabs.addTab("tabCustom", "Custom", function () {
+            });
+            this.tabs.create();
+        };
+        FlyView.prototype.setAnytime = function () {
+            var _this = this;
+            this.planningMap.loadCategory(0);
+            var display = new Planning.AnytimeDisplay();
             var fromDays = 1;
             var toDays = 20;
             this.resultsEngine.initalCall(0);
@@ -37,67 +43,14 @@ var Views;
             };
             display.genDaysSlider(fromDays, toDays);
         };
-        PlanningData.prototype.showWeekend = function () {
-            var _this = this;
-            this.tabsWeekendViews = new TabsWeekendViews(this.$tabsCont);
+        FlyView.prototype.setWeekend = function () {
+            var s = new Planning.WeekendPageSetter(this);
+            s.init();
+            this.planningMap.loadCategory(1);
             this.resultsEngine.initalCall(1);
             this.resultsEngine.onConnectionsChanged = function (connections) {
-                var t = _this.tabsWeekendViews.currentTab;
-                _this.renderWeekend(t);
+                s.setConnections(connections);
             };
-            this.tabsWeekendViews.onTabSwitched = function (t) {
-                _this.$cont.html("");
-                _this.renderWeekend(t);
-            };
-        };
-        PlanningData.prototype.renderWeekend = function (t) {
-            if (t === TabsWeekendType.ByWeek) {
-                var d1 = new Planning.WeekendByWeekDisplay(this.$cont);
-                d1.render(this.resultsEngine.connections);
-            }
-            if (t === TabsWeekendType.ByCity) {
-                var d2 = new Planning.WeekendByCityDisplay(this.$cont);
-                d2.render(this.resultsEngine.connections);
-            }
-            if (t === TabsWeekendType.ByCountry) {
-                var d3 = new Planning.WeekendByCountryDisplay(this.$cont);
-                d3.render(this.resultsEngine.connections);
-            }
-        };
-        return PlanningData;
-    }());
-    Views.PlanningData = PlanningData;
-    var FlyView = (function (_super) {
-        __extends(FlyView, _super);
-        function FlyView() {
-            _super.call(this);
-            this.anytimeTabTemplate = Views.ViewBase.currentView.registerTemplate("anytime-template");
-            this.weekendTabTemplate = Views.ViewBase.currentView.registerTemplate("weekend-template");
-            this.customTabTemplate = Views.ViewBase.currentView.registerTemplate("custom-template");
-            this.planningData = new PlanningData();
-            this.initialize();
-        }
-        FlyView.prototype.initTabs = function () {
-            var _this = this;
-            var tabHtml = "";
-            var $tabContent = $("#tabContent");
-            this.tabs = new Planning.Tabs($("#naviCont"), "main", 50);
-            this.tabs.addTab("tabAnytime", "Anytime", function () {
-                tabHtml = _this.anytimeTabTemplate();
-                $tabContent.html(tabHtml);
-                _this.planningMap.loadCategory(0);
-            });
-            this.tabs.addTab("tabWeekend", "Weekend", function () {
-                tabHtml = _this.weekendTabTemplate();
-                $tabContent.html(tabHtml);
-                _this.planningMap.loadCategory(1);
-            });
-            this.tabs.addTab("tabCustom", "Custom", function () {
-                tabHtml = _this.customTabTemplate();
-                $tabContent.html(tabHtml);
-                _this.planningMap.loadCategory(2);
-            });
-            this.tabs.create();
         };
         FlyView.prototype.initialize = function () {
             var _this = this;
@@ -106,9 +59,10 @@ var Views;
             this.maps.show(function (map) {
                 _this.planningMap = new Planning.PlanningMap(map);
                 _this.planningMap.onSelectionChanged = function (id, newState, type) {
-                    _this.planningData.onSelectionChagned(id, newState, type);
+                    if (newState) {
+                        _this.resultsEngine.selectionChanged(id, newState, type);
+                    }
                 };
-                _this.planningMap.onMapTypeChanged = function (type) { return _this.planningData.onMapTypeChanged(type); };
                 _this.planningMap.loadCategory(Planning.PlanningType.Anytime);
             });
             var locationDialog = new Views.LocationSettingsDialog();
@@ -117,36 +71,5 @@ var Views;
         return FlyView;
     }(Views.ViewBase));
     Views.FlyView = FlyView;
-    var TabsWeekendViews = (function () {
-        function TabsWeekendViews($tabsCont) {
-            this.currentTab = TabsWeekendType.ByWeek;
-            this.tabsTemplate = Views.ViewBase.currentView.registerTemplate("weekendTabs-template");
-            $tabsCont.html(this.tabsTemplate);
-            this.registerTabEvents();
-        }
-        TabsWeekendViews.prototype.registerTabEvents = function () {
-            var _this = this;
-            var $tabsRoot = $("#TabsWeekendTime");
-            var $tabs = $tabsRoot.find(".tab");
-            $tabs.click(function (e) {
-                e.preventDefault();
-                _this.switchTab($(e.delegateTarget), $tabs);
-            });
-        };
-        TabsWeekendViews.prototype.switchTab = function ($target, $tabs) {
-            $tabs.removeClass("active");
-            $target.addClass("active");
-            var tabType = parseInt($target.data("type"));
-            var tabHtml = "";
-            var $tabContent = $("#tabContent");
-            $tabContent.html(tabHtml);
-            this.currentTab = tabType;
-            if (this.onTabSwitched) {
-                this.onTabSwitched(tabType);
-            }
-        };
-        return TabsWeekendViews;
-    }());
-    Views.TabsWeekendViews = TabsWeekendViews;
 })(Views || (Views = {}));
 //# sourceMappingURL=FlyView.js.map
