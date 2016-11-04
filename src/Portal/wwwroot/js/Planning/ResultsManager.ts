@@ -29,7 +29,9 @@ module Planning {
 		public recieveResults(results) {
 				console.log("receiving results");
 				this.stopQuerying();
-				
+
+				var newConnections = false;
+
 				results.forEach((result) => {
 
 						if (result.NotFinishedYet) {
@@ -38,19 +40,23 @@ module Planning {
 								this.queue.push({ from: result.From, to: result.To, type: result.Type });
 						} else {
 
-								console.log("queue length: " + this.queue.length);
+								console.log(`queue length: ${this.queue.length}`);
 								this.queue = _.reject(this.queue, (qi)=> { return qi.from === result.From && qi.to === result.To; });
-								console.log("queue length: " + this.queue.length);
+								console.log(`queue length: ${this.queue.length}`);
 
 								this.drawQueue();
 
 								this.connections = this.connections.concat(result.Result);
-								if (this.onConnectionsChanged) {
-									this.onConnectionsChanged(this.connections);
-								}								
+								newConnections = true;
 						}
 
 				});
+
+				if (newConnections) {
+						if (this.onConnectionsChanged) {
+								this.onConnectionsChanged(this.connections);
+						}	
+				}
 
 				if (this.queue.length > 0) {
 						this.startQuerying();

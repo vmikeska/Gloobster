@@ -19,7 +19,8 @@ var Planning;
             this.connections = connections;
             if (grouping === LocationGrouping.ByCity) {
                 if (order === ListOrder.ByWeek) {
-                    var r1 = GroupByCityAndWeek.exe(this.connections);
+                    var agg1 = new GroupByCityAndWeek();
+                    var r1 = agg1.exe(this.connections);
                     var d1 = new Planning.ByCityAndWeekDisplay(this.$cont);
                     d1.render(r1);
                 }
@@ -28,7 +29,8 @@ var Planning;
             }
             if (grouping === LocationGrouping.ByCountry) {
                 if (order === ListOrder.ByWeek) {
-                    var r2 = GroupByCountryAndWeek.exe(this.connections);
+                    var agg2 = new GroupByCountryAndWeek();
+                    var r2 = agg2.exe(this.connections);
                     var d2 = new Planning.ByCountryAndWeekDisplay(this.$cont);
                     d2.render(r2);
                 }
@@ -39,8 +41,9 @@ var Planning;
     Planning.WeekendDisplayer = WeekendDisplayer;
     var GroupByCountryAndWeek = (function () {
         function GroupByCountryAndWeek() {
+            this.weekGroups = [];
         }
-        GroupByCountryAndWeek.exe = function (connections) {
+        GroupByCountryAndWeek.prototype.exe = function (connections) {
             var _this = this;
             connections.forEach(function (connection) {
                 connection.WeekFlights.forEach(function (weekFlight) {
@@ -63,7 +66,7 @@ var Planning;
             });
             return this.weekGroups;
         };
-        GroupByCountryAndWeek.getOrCreateWeekGroup = function (week, year) {
+        GroupByCountryAndWeek.prototype.getOrCreateWeekGroup = function (week, year) {
             var weekGroup = _.find(this.weekGroups, function (wg) { return wg.week === week && wg.year === year; });
             if (!weekGroup) {
                 weekGroup = {
@@ -75,7 +78,7 @@ var Planning;
             }
             return weekGroup;
         };
-        GroupByCountryAndWeek.getOrCreateWeekGroupCountry = function (weekGroup, countryCode, name) {
+        GroupByCountryAndWeek.prototype.getOrCreateWeekGroupCountry = function (weekGroup, countryCode, name) {
             var wgc = _.find(weekGroup.countries, function (country) { return country.countryCode === countryCode; });
             if (!wgc) {
                 wgc = {
@@ -88,14 +91,14 @@ var Planning;
             }
             return wgc;
         };
-        GroupByCountryAndWeek.weekGroups = [];
         return GroupByCountryAndWeek;
     }());
     Planning.GroupByCountryAndWeek = GroupByCountryAndWeek;
     var GroupByCityAndWeek = (function () {
         function GroupByCityAndWeek() {
+            this.weekGroups = [];
         }
-        GroupByCityAndWeek.exe = function (connections) {
+        GroupByCityAndWeek.prototype.exe = function (connections) {
             var _this = this;
             connections.forEach(function (connection) {
                 connection.WeekFlights.forEach(function (weekFlight) {
@@ -118,7 +121,7 @@ var Planning;
             });
             return this.weekGroups;
         };
-        GroupByCityAndWeek.getOrCreateWeekGroup = function (week, year) {
+        GroupByCityAndWeek.prototype.getOrCreateWeekGroup = function (week, year) {
             var weekGroup = _.find(this.weekGroups, function (wg) { return wg.week === week && wg.year === year; });
             if (!weekGroup) {
                 weekGroup = {
@@ -130,7 +133,7 @@ var Planning;
             }
             return weekGroup;
         };
-        GroupByCityAndWeek.getOrCreateWeekGroupCity = function (weekGroup, gid, name) {
+        GroupByCityAndWeek.prototype.getOrCreateWeekGroupCity = function (weekGroup, gid, name) {
             var wgc = _.find(weekGroup.cities, function (city) { return city.gid === gid; });
             if (!wgc) {
                 wgc = {
@@ -143,7 +146,6 @@ var Planning;
             }
             return wgc;
         };
-        GroupByCityAndWeek.weekGroups = [];
         return GroupByCityAndWeek;
     }());
     Planning.GroupByCityAndWeek = GroupByCityAndWeek;

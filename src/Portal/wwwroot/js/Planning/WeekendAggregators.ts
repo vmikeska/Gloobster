@@ -5,22 +5,23 @@ module Planning {
 
 	export class WeekendDisplayer {
 
-			private connections;
-			private $cont;
+		private connections;
+		private $cont;
 
-			constructor($cont) {
-				this.$cont = $cont;
-			}
+		constructor($cont) {
+			this.$cont = $cont;
+		}
 
 		public showResults(connections, grouping: LocationGrouping, order: ListOrder) {
 			this.connections = connections;
-				
+
 			if (grouping === LocationGrouping.ByCity) {
 
 				if (order === ListOrder.ByWeek) {
-						var r1 = GroupByCityAndWeek.exe(this.connections);
-						var d1 = new ByCityAndWeekDisplay(this.$cont);
-						d1.render(r1);
+					var agg1 = new GroupByCityAndWeek();
+					var r1 = agg1.exe(this.connections);
+					var d1 = new ByCityAndWeekDisplay(this.$cont);
+					d1.render(r1);
 				}
 			}
 
@@ -30,22 +31,23 @@ module Planning {
 
 			if (grouping === LocationGrouping.ByCountry) {
 
-					if (order === ListOrder.ByWeek) {
-							var r2 = GroupByCountryAndWeek.exe(this.connections);
-							var d2 = new ByCountryAndWeekDisplay(this.$cont);
-							d2.render(r2);
-					}					
+				if (order === ListOrder.ByWeek) {
+					var agg2 = new GroupByCountryAndWeek();
+					var r2 = agg2.exe(this.connections);
+					var d2 = new ByCountryAndWeekDisplay(this.$cont);
+					d2.render(r2);
+				}
 			}
-				
+
 		}
 
 	}
 
 	export class GroupByCountryAndWeek {
 
-			private static weekGroups = [];
+			private weekGroups = [];
 
-			public static exe(connections) {
+			public exe(connections) {
 					connections.forEach((connection) => {
 
 							connection.WeekFlights.forEach((weekFlight) => {
@@ -73,7 +75,7 @@ module Planning {
 					return this.weekGroups;
 			}
 
-			private static getOrCreateWeekGroup(week, year) {
+			private getOrCreateWeekGroup(week, year) {
 
 					var weekGroup = _.find(this.weekGroups, (wg) => { return wg.week === week && wg.year === year });
 					if (!weekGroup) {
@@ -88,7 +90,7 @@ module Planning {
 					return weekGroup;
 			}
 
-			private static getOrCreateWeekGroupCountry(weekGroup, countryCode, name) {
+			private getOrCreateWeekGroupCountry(weekGroup, countryCode, name) {
 					var wgc = _.find(weekGroup.countries, (country) => { return country.countryCode === countryCode });
 					if (!wgc) {
 							wgc = {
@@ -107,15 +109,15 @@ module Planning {
 		
 	export class GroupByCityAndWeek {
 
-		private static weekGroups = [];
+		private weekGroups = [];
 
-		public static exe(connections) {
+		public exe(connections) {
 			connections.forEach((connection) => {
 
 				connection.WeekFlights.forEach((weekFlight) => {
 					var weekGroup = this.getOrCreateWeekGroup(weekFlight.WeekNo, weekFlight.Year);
 					var weekGroupCity = this.getOrCreateWeekGroupCity(weekGroup, connection.ToCityId, connection.CityName);
-
+						
 					var flightGroup = {
 						fromPrice: weekFlight.FromPrice,
 						fromAirport: connection.FromAirport,
@@ -137,7 +139,7 @@ module Planning {
 			return this.weekGroups;
 		}
 
-		private static getOrCreateWeekGroup(week, year) {
+		private getOrCreateWeekGroup(week, year) {
 
 					var weekGroup = _.find(this.weekGroups, (wg) => { return wg.week === week && wg.year === year });
 					if (!weekGroup) {
@@ -152,7 +154,7 @@ module Planning {
 					return weekGroup;
 			}
 
-			private static getOrCreateWeekGroupCity(weekGroup, gid, name) {
+			private getOrCreateWeekGroupCity(weekGroup, gid, name) {
 					var wgc = _.find(weekGroup.cities, (city) => { return city.gid === gid });
 					if (!wgc) {
 							wgc = {

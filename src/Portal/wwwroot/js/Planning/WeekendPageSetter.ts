@@ -3,8 +3,8 @@ module Planning {
 
 		public connections;
 			
-		public grouping: Planning.LocationGrouping;
-		public order: Planning.ListOrder;
+		public grouping = LocationGrouping.ByCity;
+		public order = ListOrder.ByWeek;
 
 		private v: Views.FlyView;
 
@@ -38,6 +38,8 @@ module Planning {
 		private initWeekendFilters() {
 
 			var tabsg = new Tabs(this.$filter.find(".grouping-filter"), "groupingFilter", 40);
+			tabsg.initCall = false;
+
 			tabsg.addTab("tabByCity", "By city", () => {
 				this.grouping = LocationGrouping.ByCity;
 
@@ -52,6 +54,8 @@ module Planning {
 			tabsg.create();
 
 			var tabso = new Tabs($(this.$filter.find(".list-order-filter")), "listOrder", 40);
+			tabso.initCall = false;
+
 			tabso.addTab("tabByWeek", "By week", () => {
 				this.order = ListOrder.ByWeek;
 			});

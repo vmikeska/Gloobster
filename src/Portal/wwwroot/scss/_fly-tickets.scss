@@ -208,22 +208,36 @@
 
                 .img-wrap {
                     position: relative;
-                    overflow: hidden;
+                    z-index: 1;
+                    /*display: inline-block;*/
+                        
                     width: 310px;
                     height: 204px;
-                    border-radius: 4px;
-                    
+                        
+                    border-top-left-radius: 4px;
+                    border-top-right-radius: 4px;
+                    overflow: hidden;
+                        
+                    /*box-sizing: border-box;*/
+                    /*border-width: 1px;
+                    border-style: solid;*/
+                    /*border: 1px solid white;*/
+
+
                     img {
                         width: 330px !important;
                         @include centerer;
                     }
                 }
+                
 
                 .txt-cont {
                     position: absolute;
                     top: 0;
                     left: 0;
                     right: 0;
+
+                    z-index: 10;
 
                     border-top-left-radius: 4px;
                     border-top-right-radius: 4px;
@@ -242,6 +256,8 @@
                     position: absolute;
                     top: 60px;
                     left: -12px;
+                    
+                    z-index: 15;
 
                     width: 60px;
                     height: 60px;
@@ -337,10 +353,10 @@
         }
     }
 
-    @include below-width(1279) {
+    /*@include below-width(1279) {
         
         .flight-results {
-         /*display: initial;*/
+         display: initial;
         }
 
 
@@ -352,14 +368,14 @@
 
     @include below-width(990) {
         .flight-results {
-         /*display: initial;*/
+         display: initial;
         }
 
         .flight-result {
             display: inline-block;
          width: 280px !important;         
         }
-    }
+    }*/
   
 
   .flight-conns {

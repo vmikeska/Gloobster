@@ -4306,393 +4306,402 @@ footer {
         .travelb-home .required-settings .all-valid .lbtn:hover, .travelb-home .required-settings .all-valid .photo-button label:hover, .photo-button .travelb-home .required-settings .all-valid label:hover, .travelb-home .required-settings .all-valid .wiki-page .langs a:hover, .wiki-page .langs .travelb-home .required-settings .all-valid a:hover {
           background-color: #005476; }
 
-.fly-tickets .map {
-  max-width: 1280px;
-  width: 100%;
-  height: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: white; }
+.fly-tickets {
+  /*@include below-width(1279) {
+        
+        .flight-results {
+         display: initial;
+        }
 
-.fly-tickets .myTabs {
-  width: 100%; }
 
-.fly-tickets .myTab {
-  border: 1px solid white;
-  background-color: #57c1db;
-  color: white;
-  display: inline-block;
-  text-align: center;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  cursor: hand;
-  padding-top: 14px; }
+        .flight-result {
+            display: inline-block;
+         width: 300px !important;
+        }
+    }
 
-.fly-tickets .myTab.act {
-  background-color: red; }
+    @include below-width(990) {
+        .flight-results {
+         display: initial;
+        }
 
-.fly-tickets .mainCont {
-  width: 100%;
-  height: 370px;
-  margin-bottom: 30px;
-  border-bottom: 2px solid black; }
-
-.fly-tickets .tabBlock {
-  width: 49%;
-  height: 350px;
-  float: left; }
-
-.fly-tickets .anytime-slider-cont {
-  text-align: center;
-  margin-top: 20px;
-  margin-bottom: 20px; }
-  .fly-tickets .anytime-slider-cont .title {
-    font-weight: bold; }
-  .fly-tickets .anytime-slider-cont .inner-cont {
-    width: 80%;
-    display: inline-block; }
-    .fly-tickets .anytime-slider-cont .inner-cont input {
-      border: 1px solid #65BDD7;
-      border-radius: 4px;
-      width: 30px;
-      text-align: center; }
-    .fly-tickets .anytime-slider-cont .inner-cont .tbl {
+        .flight-result {
+            display: inline-block;
+         width: 280px !important;         
+        }
+    }*/ }
+  .fly-tickets .map {
+    max-width: 1280px;
+    width: 100%;
+    height: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white; }
+  .fly-tickets .myTabs {
+    width: 100%; }
+  .fly-tickets .myTab {
+    border: 1px solid white;
+    background-color: #57c1db;
+    color: white;
+    display: inline-block;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    cursor: hand;
+    padding-top: 14px; }
+  .fly-tickets .myTab.act {
+    background-color: red; }
+  .fly-tickets .mainCont {
+    width: 100%;
+    height: 370px;
+    margin-bottom: 30px;
+    border-bottom: 2px solid black; }
+  .fly-tickets .tabBlock {
+    width: 49%;
+    height: 350px;
+    float: left; }
+  .fly-tickets .anytime-slider-cont {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px; }
+    .fly-tickets .anytime-slider-cont .title {
+      font-weight: bold; }
+    .fly-tickets .anytime-slider-cont .inner-cont {
+      width: 80%;
+      display: inline-block; }
+      .fly-tickets .anytime-slider-cont .inner-cont input {
+        border: 1px solid #65BDD7;
+        border-radius: 4px;
+        width: 30px;
+        text-align: center; }
+      .fly-tickets .anytime-slider-cont .inner-cont .tbl {
+        display: table;
+        width: 100%; }
+        .fly-tickets .anytime-slider-cont .inner-cont .tbl .left {
+          display: table-cell;
+          padding-right: 16px; }
+        .fly-tickets .anytime-slider-cont .inner-cont .tbl .center {
+          display: table-cell;
+          width: 100%; }
+          .fly-tickets .anytime-slider-cont .inner-cont .tbl .center .inner-cont-slider {
+            display: block !important; }
+        .fly-tickets .anytime-slider-cont .inner-cont .tbl .right {
+          display: table-cell;
+          padding-left: 16px; }
+  .fly-tickets .top-ribbon {
+    text-align: left;
+    margin-top: 8px;
+    margin-bottom: 8px; }
+    .fly-tickets .top-ribbon .icon-home {
+      color: #005476;
+      font-size: 1.3em;
+      margin-right: 4px; }
+    .fly-tickets .top-ribbon .home-location-name {
+      font-size: 1.1em; }
+    .fly-tickets .top-ribbon .airports {
+      display: inline-block; }
+      .fly-tickets .top-ribbon .airports .airport {
+        display: inline-block;
+        border: 1px dotted #65BDD7;
+        padding-left: 1px;
+        padding-right: 1px;
+        border-radius: 4px;
+        margin-left: 2px;
+        margin-right: 2px;
+        font-size: 0.9em; }
+  .fly-tickets .location-dialog {
+    border: 1px solid #65BDD7;
+    margin: 12px;
+    padding: 12px;
+    border-radius: 4px;
+    text-align: left; }
+    .fly-tickets .location-dialog .title {
+      font-weight: bold;
+      font-size: 1.1em; }
+    .fly-tickets .location-dialog .tbl-wrap {
       display: table;
       width: 100%; }
-      .fly-tickets .anytime-slider-cont .inner-cont .tbl .left {
+      .fly-tickets .location-dialog .tbl-wrap .left {
         display: table-cell;
-        padding-right: 16px; }
-      .fly-tickets .anytime-slider-cont .inner-cont .tbl .center {
+        border-right: 1px dotted gray;
+        padding-right: 12px; }
+      .fly-tickets .location-dialog .tbl-wrap .right {
         display: table-cell;
-        width: 100%; }
-        .fly-tickets .anytime-slider-cont .inner-cont .tbl .center .inner-cont-slider {
-          display: block !important; }
-      .fly-tickets .anytime-slider-cont .inner-cont .tbl .right {
-        display: table-cell;
-        padding-left: 16px; }
-
-.fly-tickets .top-ribbon {
-  text-align: left;
-  margin-top: 8px;
-  margin-bottom: 8px; }
-  .fly-tickets .top-ribbon .icon-home {
-    color: #005476;
-    font-size: 1.3em;
-    margin-right: 4px; }
-  .fly-tickets .top-ribbon .home-location-name {
-    font-size: 1.1em; }
-  .fly-tickets .top-ribbon .airports {
-    display: inline-block; }
-    .fly-tickets .top-ribbon .airports .airport {
-      display: inline-block;
-      border: 1px dotted #65BDD7;
-      padding-left: 1px;
-      padding-right: 1px;
+        padding-left: 12px; }
+    .fly-tickets .location-dialog .airports-cont .airport {
+      color: white;
       border-radius: 4px;
-      margin-left: 2px;
-      margin-right: 2px;
-      font-size: 0.9em; }
-
-.fly-tickets .location-dialog {
-  border: 1px solid #65BDD7;
-  margin: 12px;
-  padding: 12px;
-  border-radius: 4px;
-  text-align: left; }
-  .fly-tickets .location-dialog .title {
-    font-weight: bold;
-    font-size: 1.1em; }
-  .fly-tickets .location-dialog .tbl-wrap {
-    display: table;
-    width: 100%; }
-    .fly-tickets .location-dialog .tbl-wrap .left {
-      display: table-cell;
-      border-right: 1px dotted gray;
-      padding-right: 12px; }
-    .fly-tickets .location-dialog .tbl-wrap .right {
-      display: table-cell;
-      padding-left: 12px; }
-  .fly-tickets .location-dialog .airports-cont .airport {
-    color: white;
-    border-radius: 4px;
-    display: inline-block;
-    background-color: #65BDD7;
-    padding: 2px;
-    margin: 2px; }
-    .fly-tickets .location-dialog .airports-cont .airport .icon-cross {
-      color: #005476; }
-      .fly-tickets .location-dialog .airports-cont .airport .icon-cross:hover {
-        color: darkred; }
-
-.fly-tickets .flight-results {
-  margin-top: 12px;
-  text-align: left;
-  /*@include display-flex;
+      display: inline-block;
+      background-color: #65BDD7;
+      padding: 2px;
+      margin: 2px; }
+      .fly-tickets .location-dialog .airports-cont .airport .icon-cross {
+        color: #005476; }
+        .fly-tickets .location-dialog .airports-cont .airport .icon-cross:hover {
+          color: darkred; }
+  .fly-tickets .flight-results {
+    margin-top: 12px;
+    text-align: left;
+    /*@include display-flex;
         flex-flow: wrap;
         justify-content: space-around;*/ }
-  .fly-tickets .flight-results .flight-result {
-    width: 310px;
-    margin-bottom: 8px;
-    display: inline-block;
-    margin-left: 4px;
-    margin-right: 4px; }
-    .fly-tickets .flight-results .flight-result .img-cont {
-      position: relative; }
-      .fly-tickets .flight-results .flight-result .img-cont img {
-        border-top-left-radius: 4px;
-        border-top-right-radius: 4px;
-        width: 100%;
-        vertical-align: middle; }
-      .fly-tickets .flight-results .flight-result .img-cont .img-wrap {
-        position: relative;
-        overflow: hidden;
-        width: 310px;
-        height: 204px;
-        border-radius: 4px; }
-        .fly-tickets .flight-results .flight-result .img-cont .img-wrap img {
-          width: 330px !important;
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%); }
-      .fly-tickets .flight-results .flight-result .img-cont .txt-cont {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        border-top-left-radius: 4px;
-        border-top-right-radius: 4px;
-        background-color: rgba(0, 0, 0, 0.5);
-        color: white;
-        font-weight: 600;
-        font-size: 1.1em;
-        padding: 0.8em; }
-      .fly-tickets .flight-results .flight-result .img-cont .price-cont {
-        display: inline-block;
-        position: absolute;
-        top: 60px;
-        left: -12px;
-        width: 60px;
-        height: 60px;
-        padding: 12px;
-        border: 2px solid white;
-        border-radius: 50%;
-        background-color: #3DA243;
-        color: white;
-        text-align: center; }
-        .fly-tickets .flight-results .flight-result .img-cont .price-cont .wrap {
-          display: inline-block; }
-          .fly-tickets .flight-results .flight-result .img-cont .price-cont .wrap .from {
-            display: inline-block;
-            font-size: 0.8em; }
-          .fly-tickets .flight-results .flight-result .img-cont .price-cont .wrap .price-all {
-            display: inline-block;
-            font-weight: bold;
-            font-size: 1.3em; }
-    .fly-tickets .flight-results .flight-result .items {
-      border-left: 1px solid #65BDD7;
-      border-bottom: 1px solid #65BDD7;
-      border-right: 1px solid #65BDD7;
-      border-bottom-left-radius: 4px;
-      border-bottom-right-radius: 4px;
-      padding-top: 12px;
-      padding-bottom: 12px; }
-      .fly-tickets .flight-results .flight-result .items table {
-        font-size: 0.8em;
-        width: 100%;
-        margin: 0;
-        border-spacing: 0;
-        border-collapse: collapse; }
-        .fly-tickets .flight-results .flight-result .items table td {
-          padding-bottom: 4px;
-          cursor: pointer; }
-          .fly-tickets .flight-results .flight-result .items table td:first-of-type {
-            padding-left: 8px; }
-        .fly-tickets .flight-results .flight-result .items table tr:hover {
-          background-color: #ccedf5; }
-          .fly-tickets .flight-results .flight-result .items table tr:hover .btn {
-            color: white;
-            background-color: #005476; }
-      .fly-tickets .flight-results .flight-result .items .btn {
-        display: inline-block;
-        vertical-align: middle;
-        font-weight: bold;
-        text-transform: uppercase;
-        border-radius: 4px;
-        color: black;
-        text-decoration: none;
-        padding-left: 2px;
-        padding-right: 2px;
-        background-color: #ccedf5; }
-
-@media screen and (max-width: 1279px) {
-  .fly-tickets .flight-results {
-    /*display: initial;*/ }
-  .fly-tickets .flight-result {
-    display: inline-block;
-    width: 300px !important; } }
-
-@media screen and (max-width: 990px) {
-  .fly-tickets .flight-results {
-    /*display: initial;*/ }
-  .fly-tickets .flight-result {
-    display: inline-block;
-    width: 280px !important; } }
-
-.fly-tickets .flight-conns .conns {
-  margin-top: 12px; }
-  .fly-tickets .flight-conns .conns .conn {
-    margin-bottom: 12px; }
-    .fly-tickets .flight-conns .conns .conn .layout-tbl {
-      display: table;
-      width: 100%; }
-      .fly-tickets .flight-conns .conns .conn .layout-tbl .left {
-        display: table-cell;
-        vertical-align: top;
-        width: 100%; }
-      .fly-tickets .flight-conns .conns .conn .layout-tbl .right {
-        display: table-cell;
-        vertical-align: top;
-        text-align: right; }
-    .fly-tickets .flight-conns .conns .conn .flight-bck-cont {
-      background-color: #F0F8FA;
-      padding-left: 20px;
-      padding-top: 10px; }
-      .fly-tickets .flight-conns .conns .conn .flight-bck-cont.sub-part {
-        background-color: white !important; }
-        .fly-tickets .flight-conns .conns .conn .flight-bck-cont.sub-part:last-of-type {
-          margin-bottom: 12px; }
-      .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight {
-        text-align: left;
-        border-bottom: 1px solid #9FD2E3; }
-        .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .top-line {
-          font-size: 0.8em;
-          color: darkgray;
-          margin-bottom: 14px; }
-        .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl {
-          display: table;
-          width: 100%;
-          white-space: nowrap;
-          /*text-align: left;*/ }
-          .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .di {
-            display: table-cell;
-            vertical-align: top;
-            padding-bottom: 12px; }
-            .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .di:first-of-type {
-              /*padding-left: 20px;*/ }
-          .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .logo-cont {
-            width: 15%; }
-            .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .logo-cont .air-logo {
-              width: 50px; }
-          .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .flight-dir {
-            width: 25%; }
-            .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .flight-dir .from-to {
-              font-weight: bold;
-              font-size: 1.2em; }
-            .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .flight-dir .flight-no {
-              font-size: 0.8em;
-              color: darkgray; }
-          .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .date {
-            width: 20%;
-            font-weight: bold; }
-          .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .time-cont {
-            width: 20%; }
-            .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .time-cont .time {
-              font-weight: bold; }
-            .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .time-cont .duration {
-              font-size: 0.8em;
-              color: darkgray; }
-          .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .direct-cont {
-            width: 20%;
-            text-align: right;
-            padding-right: 20px; }
-            .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .direct-cont .direct {
-              font-weight: bold;
-              color: #72cf72; }
-            .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .direct-cont .stops .stops-btn {
-              text-decoration: none; }
-              .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .direct-cont .stops .stops-btn .txt {
-                display: inline-block;
-                vertical-align: top;
-                text-decoration: underline;
-                color: #65BDD7; }
-              .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .direct-cont .stops .stops-btn .icon-dropdown-arrow {
-                display: inline-block;
-                vertical-align: top;
-                color: white;
-                border-radius: 4px;
-                padding: 3px;
-                color: white;
-                background-color: #65BDD7;
-                font-weight: 100;
-                font-size: 0.8em;
-                margin-left: 8px; }
-                .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .direct-cont .stops .stops-btn .icon-dropdown-arrow.opened {
-                  transform: scale(1, -1); }
-    .fly-tickets .flight-conns .conns .conn .book-zone {
+    .fly-tickets .flight-results .flight-result {
+      width: 310px;
+      margin-bottom: 8px;
       display: inline-block;
-      padding: 20px;
-      background-color: #9FD2E3; }
-      .fly-tickets .flight-conns .conns .conn .book-zone .score {
-        background-color: white;
-        border: 1px solid #3298C1;
-        border-radius: 4px;
-        padding: 8px;
-        text-align: center; }
-        .fly-tickets .flight-conns .conns .conn .book-zone .score .txt-score {
-          font-weight: bold;
-          font-size: 1.1em; }
-        .fly-tickets .flight-conns .conns .conn .book-zone .score .stars-score {
-          color: #FFC400;
-          font-size: 0.7em; }
-        .fly-tickets .flight-conns .conns .conn .book-zone .score .cap {
-          font-size: 0.75em;
-          color: gray; }
-      .fly-tickets .flight-conns .conns .conn .book-zone .price-all {
-        font-weight: bold;
-        text-align: right; }
-        .fly-tickets .flight-conns .conns .conn .book-zone .price-all .price {
-          font-size: 2em; }
-      .fly-tickets .flight-conns .conns .conn .book-zone .btn-cont a {
-        font-weight: bold;
-        text-decoration: none;
-        display: inline-block;
-        color: white;
-        background-color: #3DA243;
-        padding: 10px;
-        border-radius: 4px;
-        white-space: nowrap; }
-        .fly-tickets .flight-conns .conns .conn .book-zone .btn-cont a:hover {
-          background-color: #72cf72; }
-    @media screen and (max-width: 720px) {
-      .fly-tickets .flight-conns .conns .conn .layout-tbl {
-        display: block; }
-        .fly-tickets .flight-conns .conns .conn .layout-tbl .left, .fly-tickets .flight-conns .conns .conn .layout-tbl .right {
-          display: block;
-          width: initial; }
-      .fly-tickets .flight-conns .conns .conn .book-zone {
-        display: block;
-        position: relative;
-        padding: 5px; }
-        .fly-tickets .flight-conns .conns .conn .book-zone .score {
-          display: inline-block;
-          vertical-align: top;
+      margin-left: 4px;
+      margin-right: 4px; }
+      .fly-tickets .flight-results .flight-result .img-cont {
+        position: relative; }
+        .fly-tickets .flight-results .flight-result .img-cont img {
+          border-top-left-radius: 4px;
+          border-top-right-radius: 4px;
+          width: 100%;
+          vertical-align: middle; }
+        .fly-tickets .flight-results .flight-result .img-cont .img-wrap {
+          position: relative;
+          z-index: 1;
+          /*display: inline-block;*/
+          width: 310px;
+          height: 204px;
+          border-top-left-radius: 4px;
+          border-top-right-radius: 4px;
+          overflow: hidden;
+          /*box-sizing: border-box;*/
+          /*border-width: 1px;
+                    border-style: solid;*/
+          /*border: 1px solid white;*/ }
+          .fly-tickets .flight-results .flight-result .img-cont .img-wrap img {
+            width: 330px !important;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); }
+        .fly-tickets .flight-results .flight-result .img-cont .txt-cont {
           position: absolute;
-          left: 10px;
-          top: 8px; }
-          .fly-tickets .flight-conns .conns .conn .book-zone .score .txt-score {
+          top: 0;
+          left: 0;
+          right: 0;
+          z-index: 10;
+          border-top-left-radius: 4px;
+          border-top-right-radius: 4px;
+          background-color: rgba(0, 0, 0, 0.5);
+          color: white;
+          font-weight: 600;
+          font-size: 1.1em;
+          padding: 0.8em; }
+        .fly-tickets .flight-results .flight-result .img-cont .price-cont {
+          display: inline-block;
+          position: absolute;
+          top: 60px;
+          left: -12px;
+          z-index: 15;
+          width: 60px;
+          height: 60px;
+          padding: 12px;
+          border: 2px solid white;
+          border-radius: 50%;
+          background-color: #3DA243;
+          color: white;
+          text-align: center; }
+          .fly-tickets .flight-results .flight-result .img-cont .price-cont .wrap {
             display: inline-block; }
+            .fly-tickets .flight-results .flight-result .img-cont .price-cont .wrap .from {
+              display: inline-block;
+              font-size: 0.8em; }
+            .fly-tickets .flight-results .flight-result .img-cont .price-cont .wrap .price-all {
+              display: inline-block;
+              font-weight: bold;
+              font-size: 1.3em; }
+      .fly-tickets .flight-results .flight-result .items {
+        border-left: 1px solid #65BDD7;
+        border-bottom: 1px solid #65BDD7;
+        border-right: 1px solid #65BDD7;
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 4px;
+        padding-top: 12px;
+        padding-bottom: 12px; }
+        .fly-tickets .flight-results .flight-result .items table {
+          font-size: 0.8em;
+          width: 100%;
+          margin: 0;
+          border-spacing: 0;
+          border-collapse: collapse; }
+          .fly-tickets .flight-results .flight-result .items table td {
+            padding-bottom: 4px;
+            cursor: pointer; }
+            .fly-tickets .flight-results .flight-result .items table td:first-of-type {
+              padding-left: 8px; }
+          .fly-tickets .flight-results .flight-result .items table tr:hover {
+            background-color: #ccedf5; }
+            .fly-tickets .flight-results .flight-result .items table tr:hover .btn {
+              color: white;
+              background-color: #005476; }
+        .fly-tickets .flight-results .flight-result .items .btn {
+          display: inline-block;
+          vertical-align: middle;
+          font-weight: bold;
+          text-transform: uppercase;
+          border-radius: 4px;
+          color: black;
+          text-decoration: none;
+          padding-left: 2px;
+          padding-right: 2px;
+          background-color: #ccedf5; }
+  .fly-tickets .flight-conns .conns {
+    margin-top: 12px; }
+    .fly-tickets .flight-conns .conns .conn {
+      margin-bottom: 12px; }
+      .fly-tickets .flight-conns .conns .conn .layout-tbl {
+        display: table;
+        width: 100%; }
+        .fly-tickets .flight-conns .conns .conn .layout-tbl .left {
+          display: table-cell;
+          vertical-align: top;
+          width: 100%; }
+        .fly-tickets .flight-conns .conns .conn .layout-tbl .right {
+          display: table-cell;
+          vertical-align: top;
+          text-align: right; }
+      .fly-tickets .flight-conns .conns .conn .flight-bck-cont {
+        background-color: #F0F8FA;
+        padding-left: 20px;
+        padding-top: 10px; }
+        .fly-tickets .flight-conns .conns .conn .flight-bck-cont.sub-part {
+          background-color: white !important; }
+          .fly-tickets .flight-conns .conns .conn .flight-bck-cont.sub-part:last-of-type {
+            margin-bottom: 12px; }
+        .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight {
+          text-align: left;
+          border-bottom: 1px solid #9FD2E3; }
+          .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .top-line {
+            font-size: 0.8em;
+            color: darkgray;
+            margin-bottom: 14px; }
+          .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl {
+            display: table;
+            width: 100%;
+            white-space: nowrap;
+            /*text-align: left;*/ }
+            .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .di {
+              display: table-cell;
+              vertical-align: top;
+              padding-bottom: 12px; }
+              .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .di:first-of-type {
+                /*padding-left: 20px;*/ }
+            .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .logo-cont {
+              width: 15%; }
+              .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .logo-cont .air-logo {
+                width: 50px; }
+            .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .flight-dir {
+              width: 25%; }
+              .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .flight-dir .from-to {
+                font-weight: bold;
+                font-size: 1.2em; }
+              .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .flight-dir .flight-no {
+                font-size: 0.8em;
+                color: darkgray; }
+            .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .date {
+              width: 20%;
+              font-weight: bold; }
+            .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .time-cont {
+              width: 20%; }
+              .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .time-cont .time {
+                font-weight: bold; }
+              .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .time-cont .duration {
+                font-size: 0.8em;
+                color: darkgray; }
+            .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .direct-cont {
+              width: 20%;
+              text-align: right;
+              padding-right: 20px; }
+              .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .direct-cont .direct {
+                font-weight: bold;
+                color: #72cf72; }
+              .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .direct-cont .stops .stops-btn {
+                text-decoration: none; }
+                .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .direct-cont .stops .stops-btn .txt {
+                  display: inline-block;
+                  vertical-align: top;
+                  text-decoration: underline;
+                  color: #65BDD7; }
+                .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .direct-cont .stops .stops-btn .icon-dropdown-arrow {
+                  display: inline-block;
+                  vertical-align: top;
+                  color: white;
+                  border-radius: 4px;
+                  padding: 3px;
+                  color: white;
+                  background-color: #65BDD7;
+                  font-weight: 100;
+                  font-size: 0.8em;
+                  margin-left: 8px; }
+                  .fly-tickets .flight-conns .conns .conn .flight-bck-cont .flight .data-tbl .direct-cont .stops .stops-btn .icon-dropdown-arrow.opened {
+                    transform: scale(1, -1); }
+      .fly-tickets .flight-conns .conns .conn .book-zone {
+        display: inline-block;
+        padding: 20px;
+        background-color: #9FD2E3; }
+        .fly-tickets .flight-conns .conns .conn .book-zone .score {
+          background-color: white;
+          border: 1px solid #3298C1;
+          border-radius: 4px;
+          padding: 8px;
+          text-align: center; }
+          .fly-tickets .flight-conns .conns .conn .book-zone .score .txt-score {
+            font-weight: bold;
+            font-size: 1.1em; }
           .fly-tickets .flight-conns .conns .conn .book-zone .score .stars-score {
-            display: inline-block !important; }
+            color: #FFC400;
+            font-size: 0.7em; }
           .fly-tickets .flight-conns .conns .conn .book-zone .score .cap {
-            display: inline-block !important; }
+            font-size: 0.75em;
+            color: gray; }
         .fly-tickets .flight-conns .conns .conn .book-zone .price-all {
+          font-weight: bold;
+          text-align: right; }
+          .fly-tickets .flight-conns .conns .conn .book-zone .price-all .price {
+            font-size: 2em; }
+        .fly-tickets .flight-conns .conns .conn .book-zone .btn-cont a {
+          font-weight: bold;
+          text-decoration: none;
           display: inline-block;
-          vertical-align: top; }
-        .fly-tickets .flight-conns .conns .conn .book-zone .btn-cont {
-          display: inline-block;
-          vertical-align: top; } }
+          color: white;
+          background-color: #3DA243;
+          padding: 10px;
+          border-radius: 4px;
+          white-space: nowrap; }
+          .fly-tickets .flight-conns .conns .conn .book-zone .btn-cont a:hover {
+            background-color: #72cf72; }
+      @media screen and (max-width: 720px) {
+        .fly-tickets .flight-conns .conns .conn .layout-tbl {
+          display: block; }
+          .fly-tickets .flight-conns .conns .conn .layout-tbl .left, .fly-tickets .flight-conns .conns .conn .layout-tbl .right {
+            display: block;
+            width: initial; }
+        .fly-tickets .flight-conns .conns .conn .book-zone {
+          display: block;
+          position: relative;
+          padding: 5px; }
+          .fly-tickets .flight-conns .conns .conn .book-zone .score {
+            display: inline-block;
+            vertical-align: top;
+            position: absolute;
+            left: 10px;
+            top: 8px; }
+            .fly-tickets .flight-conns .conns .conn .book-zone .score .txt-score {
+              display: inline-block; }
+            .fly-tickets .flight-conns .conns .conn .book-zone .score .stars-score {
+              display: inline-block !important; }
+            .fly-tickets .flight-conns .conns .conn .book-zone .score .cap {
+              display: inline-block !important; }
+          .fly-tickets .flight-conns .conns .conn .book-zone .price-all {
+            display: inline-block;
+            vertical-align: top; }
+          .fly-tickets .flight-conns .conns .conn .book-zone .btn-cont {
+            display: inline-block;
+            vertical-align: top; } }
 
 .travelb-message {
   text-align: left; }

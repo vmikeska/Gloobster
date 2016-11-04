@@ -2,6 +2,8 @@ var Planning;
 (function (Planning) {
     var WeekendPageSetter = (function () {
         function WeekendPageSetter(v) {
+            this.grouping = Planning.LocationGrouping.ByCity;
+            this.order = Planning.ListOrder.ByWeek;
             this.$cont = $("#resultsCont");
             this.$filter = $("#filterCont");
             this.v = v;
@@ -22,6 +24,7 @@ var Planning;
         WeekendPageSetter.prototype.initWeekendFilters = function () {
             var _this = this;
             var tabsg = new Planning.Tabs(this.$filter.find(".grouping-filter"), "groupingFilter", 40);
+            tabsg.initCall = false;
             tabsg.addTab("tabByCity", "By city", function () {
                 _this.grouping = Planning.LocationGrouping.ByCity;
             });
@@ -33,6 +36,7 @@ var Planning;
             });
             tabsg.create();
             var tabso = new Planning.Tabs($(this.$filter.find(".list-order-filter")), "listOrder", 40);
+            tabso.initCall = false;
             tabso.addTab("tabByWeek", "By week", function () {
                 _this.order = Planning.ListOrder.ByWeek;
             });

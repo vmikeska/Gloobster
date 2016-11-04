@@ -2,8 +2,9 @@ var Planning;
 (function (Planning) {
     var Tabs = (function () {
         function Tabs($cont, tabGroup, height) {
-            this.tabs = [];
             this.isFirst = true;
+            this.initCall = false;
+            this.tabs = [];
             this.$cont = $cont;
             this.tabGroup = tabGroup;
             this.height = height;
@@ -17,7 +18,9 @@ var Planning;
                 var $t = _this.genTab(t);
                 _this.$cont.append($t);
             });
-            this.tabs[0].callback();
+            if (this.initCall) {
+                this.tabs[0].callback();
+            }
             this.activeTabId = this.tabs[0].id;
         };
         Tabs.prototype.genTab = function (t) {

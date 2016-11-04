@@ -1,10 +1,14 @@
 module Planning {
 	export class Tabs {
 
-			public onBeforeSwitch: Function;
-			public onChange: Function;
+		public onBeforeSwitch: Function;
+		public onChange: Function;
 
 		public activeTabId;
+
+		private isFirst = true;
+
+		public initCall = false;
 
 		private $cont;
 		private tabGroup;
@@ -28,12 +32,13 @@ module Planning {
 				this.$cont.append($t);
 			});
 
-			this.tabs[0].callback();
+			if (this.initCall) {
+				this.tabs[0].callback();
+			}
+
 			this.activeTabId = this.tabs[0].id;
 		}
-
-		private isFirst = true;
-
+			
 		private genTab(t) {
 			var width = (100 / this.tabs.length);
 
@@ -50,7 +55,7 @@ module Planning {
 				if ($t.hasClass("act")) {
 					return;
 				}
-
+					
 				if (this.onBeforeSwitch) {
 					this.onBeforeSwitch();
 				}

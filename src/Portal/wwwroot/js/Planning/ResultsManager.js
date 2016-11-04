@@ -24,6 +24,7 @@ var Planning;
             var _this = this;
             console.log("receiving results");
             this.stopQuerying();
+            var newConnections = false;
             results.forEach(function (result) {
                 if (result.NotFinishedYet) {
                 }
@@ -36,11 +37,14 @@ var Planning;
                     console.log("queue length: " + _this.queue.length);
                     _this.drawQueue();
                     _this.connections = _this.connections.concat(result.Result);
-                    if (_this.onConnectionsChanged) {
-                        _this.onConnectionsChanged(_this.connections);
-                    }
+                    newConnections = true;
                 }
             });
+            if (newConnections) {
+                if (this.onConnectionsChanged) {
+                    this.onConnectionsChanged(this.connections);
+                }
+            }
             if (this.queue.length > 0) {
                 this.startQuerying();
             }
@@ -95,68 +99,5 @@ var Planning;
         return ResultsManager;
     }());
     Planning.ResultsManager = ResultsManager;
-    var ListGeneratorTest = (function () {
-        function ListGeneratorTest() {
-        }
-        ListGeneratorTest.prototype.test = function (myItems) {
-            var lg = new ListGenerator();
-            lg.config.$cont = $("#theCont");
-            lg.config.itemTemplate = "myItem-template";
-            lg.config.evnt($(".delete"), function (e, $target) {
-            });
-            lg.config.evnt($(".add"), function (e, $target) {
-            });
-            lg.generateList(myItems);
-        };
-        return ListGeneratorTest;
-    }());
-    Planning.ListGeneratorTest = ListGeneratorTest;
-    var ListGeneratorConfig = (function () {
-        function ListGeneratorConfig() {
-            this.clearCont = false;
-        }
-        ListGeneratorConfig.prototype.evnt = function ($selector, handler) {
-            this.eventHandlers.push(new EventHandler($selector, handler));
-        };
-        return ListGeneratorConfig;
-    }());
-    Planning.ListGeneratorConfig = ListGeneratorConfig;
-    var EventHandler = (function () {
-        function EventHandler($selector, handler) {
-            this.event = "click";
-            this.$selector = $selector;
-            this.handler = handler;
-        }
-        return EventHandler;
-    }());
-    Planning.EventHandler = EventHandler;
-    var ListGenerator = (function () {
-        function ListGenerator() {
-        }
-        ListGenerator.prototype.generateList = function (items) {
-            var _this = this;
-            this.itemTemplate = Views.ViewBase.currentView.registerTemplate(this.config.itemTemplate);
-            if (this.config.clearCont) {
-                this.config.$cont.empty();
-            }
-            items.forEach(function (item) {
-                _this.generateItem(item);
-            });
-        };
-        ListGenerator.prototype.generateItem = function (item) {
-            var context = item;
-            var $item = $(this.itemTemplate(context));
-            this.config.eventHandlers.forEach(function (eh) {
-                eh.$selector.on(eh.event, function (e) {
-                    e.preventDefault();
-                    var $target = $(e.target);
-                    eh.handler(e, $target);
-                });
-            });
-            this.config.$cont.append($item);
-        };
-        return ListGenerator;
-    }());
-    Planning.ListGenerator = ListGenerator;
 })(Planning || (Planning = {}));
 //# sourceMappingURL=ResultsManager.js.map
