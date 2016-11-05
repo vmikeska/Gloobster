@@ -1,8 +1,7 @@
 module Planning {
 
-	export enum LocationGrouping { None, ByCity, ByCountry }
-	export enum ListOrder {ByWeek, ByPrice}
-
+	export enum LocationGrouping { ByCity, ByCountry, ByContinent }
+	
 	export class WeekendDisplayer {
 
 		private connections;
@@ -12,62 +11,60 @@ module Planning {
 			this.$cont = $cont;
 		}
 
-		public showResults(connections, grouping: LocationGrouping, order: ListOrder) {
+		public showResults(connections, grouping: LocationGrouping) {
 			this.connections = connections;
 
-			if (grouping === LocationGrouping.ByCity) {
-
-				if (order === ListOrder.ByWeek) {
-					var agg1 = new GroupByCityAndWeek();
+			if (grouping === LocationGrouping.ByCity) {					
+					var agg1 = new GroupByCity();
 					var r1 = agg1.exe(this.connections);
-					var d1 = new ByCityAndWeekDisplay(this.$cont);
-					d1.render(r1);
-				}
+					var d1 = new ByCityDisplay(this.$cont);
+					d1.render(r1);									
 			}
-
-			if (grouping === LocationGrouping.None) {
-
-			}
-
-			if (grouping === LocationGrouping.ByCountry) {
-
-				if (order === ListOrder.ByWeek) {
-					var agg2 = new GroupByCountryAndWeek();
+				
+			if (grouping === LocationGrouping.ByCountry) {					
+					var agg2 = new GroupByCountry();
 					var r2 = agg2.exe(this.connections);
-					var d2 = new ByCountryAndWeekDisplay(this.$cont);
+					var d2 = new ByCountryDisplay(this.$cont);
 					d2.render(r2);
 				}
 			}
 
-		}
-
 	}
 
-	export class GroupByCountryAndWeek {
+	
+		
+	export class GroupByCountry {
 
 			private weekGroups = [];
 
 			public exe(connections) {
-					connections.forEach((connection) => {
+					connections.forEach((c) => {
 
-							connection.WeekFlights.forEach((weekFlight) => {
+							c.WeekFlights.forEach((weekFlight) => {
 									var weekGroup = this.getOrCreateWeekGroup(weekFlight.WeekNo, weekFlight.Year);
-									var weekGroupCountry = this.getOrCreateWeekGroupCountry(weekGroup, connection.CountryCode, connection.CountryCode);
-
+									var country = this.getOrCreateCountry(weekGroup, c.CountryCode, c.CountryCode);
+									var city = this.getOrCreateCity(c.ToCityId, c.CityName, country);
+									
 									var flightGroup = {
 											fromPrice: weekFlight.FromPrice,
-											fromAirport: connection.FromAirport,
-											toAirport: connection.ToAirport,
+											fromAirport: c.FromAirport,
+											toAirport: c.ToAirport,
 											flights: weekFlight.Flights
 									};
 
-									if (!weekGroupCountry.fromPrice) {
-											weekGroupCountry.fromPrice = weekFlight.FromPrice;
-									} else if (weekGroupCountry.fromPrice > weekFlight.FromPrice) {
-											weekGroupCountry.fromPrice = weekFlight.FromPrice;
+									if (!country.fromPrice) {
+											country.fromPrice = weekFlight.FromPrice;
+									} else if (country.fromPrice > weekFlight.FromPrice) {
+											country.fromPrice = weekFlight.FromPrice;
 									}
 
-									weekGroupCountry.flightsGroups.push(flightGroup);
+									if (!city.fromPrice) {
+											city.fromPrice = weekFlight.FromPrice;
+									} else if (city.fromPrice > weekFlight.FromPrice) {
+											city.fromPrice = weekFlight.FromPrice;
+									}
+
+									city.flightsGroups.push(flightGroup);
 							});
 
 					});
@@ -90,14 +87,16 @@ module Planning {
 					return weekGroup;
 			}
 
-			private getOrCreateWeekGroupCountry(weekGroup, countryCode, name) {
+			private getOrCreateCountry(weekGroup, countryCode, name) {
 					var wgc = _.find(weekGroup.countries, (country) => { return country.countryCode === countryCode });
 					if (!wgc) {
 							wgc = {
 									countryCode: countryCode,
 									name: name,
 									fromPrice: null,
-									flightsGroups: []
+									cities: []
+									//flightsGroups: []
+
 							}
 							weekGroup.countries.push(wgc);
 					}
@@ -105,9 +104,27 @@ module Planning {
 					return wgc;
 			}
 
+		private getOrCreateCity(gid, name, countryGroup) {
+			var city = _.find(countryGroup.cities, (c) => {
+				return c.gid === gid;
+			});
+
+			if (!city) {
+				city = {
+					gid: gid,
+					name: name,
+					fromPrice: null,
+					flightsGroups: []
+					}
+				countryGroup.cities.push(city);
+			}
+
+			return city;
+		}
+
 	}
 		
-	export class GroupByCityAndWeek {
+	export class GroupByCity {
 
 		private weekGroups = [];
 

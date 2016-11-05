@@ -3,7 +3,6 @@ var Planning;
     var WeekendPageSetter = (function () {
         function WeekendPageSetter(v) {
             this.grouping = Planning.LocationGrouping.ByCity;
-            this.order = Planning.ListOrder.ByWeek;
             this.$cont = $("#resultsCont");
             this.$filter = $("#filterCont");
             this.v = v;
@@ -13,43 +12,27 @@ var Planning;
             this.onFilterChanged();
         };
         WeekendPageSetter.prototype.init = function () {
-            var layoutTmp = this.v.registerTemplate("weekend-layout-template");
+            var layoutTmp = this.v.registerTemplate("filtering-weekend-template");
             this.$filter.html(layoutTmp());
             this.initWeekendFilters();
             this.displayer = new Planning.WeekendDisplayer(this.$cont);
         };
         WeekendPageSetter.prototype.onFilterChanged = function () {
-            this.displayer.showResults(this.connections, this.grouping, this.order);
+            this.displayer.showResults(this.connections, this.grouping);
         };
         WeekendPageSetter.prototype.initWeekendFilters = function () {
             var _this = this;
-            var tabsg = new Planning.Tabs(this.$filter.find(".grouping-filter"), "groupingFilter", 40);
-            tabsg.initCall = false;
-            tabsg.addTab("tabByCity", "By city", function () {
-                _this.grouping = Planning.LocationGrouping.ByCity;
-            });
-            tabsg.addTab("tabByCountry", "By country", function () {
-                _this.grouping = Planning.LocationGrouping.ByCountry;
-            });
-            tabsg.addTab("tabNoGrouping", "No location grouping", function () {
-                _this.grouping = Planning.LocationGrouping.None;
-            });
-            tabsg.create();
-            var tabso = new Planning.Tabs($(this.$filter.find(".list-order-filter")), "listOrder", 40);
-            tabso.initCall = false;
-            tabso.addTab("tabByWeek", "By week", function () {
-                _this.order = Planning.ListOrder.ByWeek;
-            });
-            tabso.addTab("tabByPrice", "By price", function () {
-                _this.order = Planning.ListOrder.ByPrice;
-            });
-            tabsg.onChange = function () {
+            var f = new Planning.Filtering();
+            f.onFilterChanged = function () {
+                var state = f.getState();
+                _this.grouping = state.actItem;
                 _this.onFilterChanged();
             };
-            tabso.onChange = function () {
-                _this.onFilterChanged();
-            };
-            tabso.create();
+            f.init([
+                Planning.LocationGrouping.ByCity,
+                Planning.LocationGrouping.ByCountry,
+                Planning.LocationGrouping.ByContinent
+            ], Planning.LocationGrouping.ByCity, true);
         };
         return WeekendPageSetter;
     }());

@@ -1,5 +1,7 @@
 ﻿module Views {
 
+	
+
 	export class FlyView extends ViewBase {
 
 		public planningMap: Planning.PlanningMap;
@@ -86,6 +88,7 @@
 				}
 				
 				this.planningMap.loadCategory(Planning.PlanningType.Anytime);
+					
 			});
 
 			var locationDialog = new LocationSettingsDialog();

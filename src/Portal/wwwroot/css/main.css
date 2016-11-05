@@ -28,6 +28,29 @@ a {
     display: inline-block;
     font-size: 24px; }
 
+.checkbox-all {
+  display: inline-block;
+  margin: 5px;
+  cursor: pointer; }
+  .checkbox-all .checker-all {
+    display: inline-block;
+    vertical-align: top;
+    padding: 2px;
+    position: relative;
+    border: 1px solid gray;
+    border-radius: 4px; }
+    .checkbox-all .checker-all .checker {
+      font-size: 37px; }
+    .checkbox-all .checker-all .icon-checkmark {
+      color: #3DA33D; }
+    .checkbox-all .checker-all .icon-checkmark2 {
+      color: #F56E12; }
+  .checkbox-all .label {
+    display: inline-block;
+    vertical-align: top;
+    line-height: 37px;
+    font-size: 1.2em; }
+
 input[type="text"], input[type="password"], input[type="number"], textarea {
   padding: 8px 13px;
   border: 0;
@@ -992,6 +1015,9 @@ footer {
 
 .icon-yelp:before {
   content: "\ead7"; }
+
+.icon-continent:before {
+  content: "\e91e"; }
 
 .icon-location-on-road:before {
   content: "\e919"; }
@@ -3788,28 +3814,6 @@ footer {
         color: #005476; }
   .travelb-home .user-popup .msg {
     border-top: 1px dotted gray; }
-  .travelb-home .filter-menu .checkbox-all {
-    display: inline-block;
-    margin: 5px;
-    cursor: pointer; }
-    .travelb-home .filter-menu .checkbox-all .checker-all {
-      display: inline-block;
-      vertical-align: top;
-      padding: 2px;
-      position: relative;
-      border: 1px solid gray;
-      border-radius: 4px; }
-      .travelb-home .filter-menu .checkbox-all .checker-all .checker {
-        font-size: 37px; }
-      .travelb-home .filter-menu .checkbox-all .checker-all .icon-checkmark {
-        color: #3DA33D; }
-      .travelb-home .filter-menu .checkbox-all .checker-all .icon-checkmark2 {
-        color: #F56E12; }
-    .travelb-home .filter-menu .checkbox-all .label {
-      display: inline-block;
-      vertical-align: top;
-      line-height: 37px;
-      font-size: 1.2em; }
   .travelb-home .filter {
     background-color: #f2f2f2;
     padding: 6px 10px 6px 10px;
@@ -4440,12 +4444,67 @@ footer {
         color: #005476; }
         .fly-tickets .location-dialog .airports-cont .airport .icon-cross:hover {
           color: darkred; }
+  .fly-tickets .checker-all {
+    border: none; }
+    .fly-tickets .checker-all .icon-checkmark {
+      color: #3DA243; }
+    .fly-tickets .checker-all .icon-checkmark2 {
+      color: #F56E12; }
+  .fly-tickets .filtering {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 12px;
+    background-color: #F0F8FA;
+    border-radius: 4px; }
+    .fly-tickets .filtering .title {
+      font-size: 1.1em;
+      font-weight: bold;
+      text-align: left;
+      margin-bottom: 8px; }
+    .fly-tickets .filtering .layout-table {
+      display: table;
+      width: 100%; }
+      .fly-tickets .filtering .layout-table .l {
+        display: table-cell;
+        vertical-align: top;
+        text-align: left; }
+      .fly-tickets .filtering .layout-table .r {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: right; }
+    .fly-tickets .filtering .locations .location {
+      display: inline-block;
+      text-align: center;
+      margin-right: 50px; }
+      .fly-tickets .filtering .locations .location:last-of-type {
+        margin-right: 0; }
+      .fly-tickets .filtering .locations .location .ico-all {
+        cursor: pointer; }
+        .fly-tickets .filtering .locations .location .ico-all .icon {
+          font-size: 100px;
+          color: #57c1db; }
+          .fly-tickets .filtering .locations .location .ico-all .icon:hover {
+            color: #005476; }
+        .fly-tickets .filtering .locations .location .ico-all .txt {
+          font-weight: bold;
+          color: #005476; }
+      .fly-tickets .filtering .locations .location.active .icon {
+        color: #F56E12 !important; }
   .fly-tickets .flight-results {
     margin-top: 12px;
     text-align: left;
     /*@include display-flex;
         flex-flow: wrap;
         justify-content: space-around;*/ }
+    .fly-tickets .flight-results .weekend-item .title {
+      margin-bottom: 12px; }
+      .fly-tickets .flight-results .weekend-item .title .week {
+        font-weight: bold;
+        text-decoration: underline;
+        font-size: 1.2em; }
+      .fly-tickets .flight-results .weekend-item .title .date {
+        font-size: 0.8em;
+        vertical-align: central; }
     .fly-tickets .flight-results .flight-result {
       width: 310px;
       margin-bottom: 8px;
@@ -4491,6 +4550,8 @@ footer {
           font-weight: 600;
           font-size: 1.1em;
           padding: 0.8em; }
+          .fly-tickets .flight-results .flight-result .img-cont .txt-cont.darker {
+            background-color: rgba(0, 0, 0, 0.7); }
         .fly-tickets .flight-results .flight-result .img-cont .price-cont {
           display: inline-block;
           position: absolute;
@@ -4548,7 +4609,8 @@ footer {
           text-decoration: none;
           padding-left: 2px;
           padding-right: 2px;
-          background-color: #ccedf5; }
+          background-color: #ccedf5;
+          white-space: nowrap; }
   .fly-tickets .flight-conns .conns {
     margin-top: 12px; }
     .fly-tickets .flight-conns .conns .conn {

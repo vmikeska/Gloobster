@@ -102,6 +102,39 @@ a {
     }
 }
 
+.checkbox-all{
+    display: inline-block;
+    margin: 5px;
+    cursor: pointer;
+
+    .checker-all{
+        display: inline-block;
+        vertical-align: top;
+        padding: 2px;
+        position: relative;
+        border: 1px solid gray;
+        border-radius: 4px;
+
+        .checker{                    
+            font-size: 37px;                    
+        }
+
+        .icon-checkmark{
+            color: $green;
+        }
+        .icon-checkmark2{
+            color: $orange;
+        }
+    }
+
+    .label{
+        display: inline-block;
+        vertical-align: top;
+        line-height: 37px;
+        font-size: 1.2em;
+    }
+}
+
 
 input[type="text"],input[type="password"],input[type="number"],textarea{    
     padding: 8px 13px;

@@ -1,5 +1,46 @@
 ﻿
 
+<script id="filtering-weekend-template" type="text/x-handlebars-template">
+    <div class="filtering">
+        
+        <div class="title">Filtering</div>
+
+        <div class="layout-table">
+            <div class="l">                
+                <div class="locations">
+
+                </div>
+            </div>
+
+            <div class="r">
+
+                <div id="cbLongWeekend" class="checkbox-all">
+                    <div class="checker-all">
+                        <div class="checker icon-checkmark2"></div>
+                    </div>
+                    <div class="label">
+                        Include long weekends
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</script>
+
+<script id="filter-location-template" type="text/x-handlebars-template">
+    <div class="location" data-type="{{type}}">
+        <div class="ico-all">
+            <span class="icon icon-{{icon}}"></span>
+        </div>
+        <div class="txt">
+            <span>{{txt}}</span>
+        </div>
+    </div>
+</script>
+
+
 <script id="anytime-timeSlider-template" type="text/x-handlebars-template">
     <div class="anytime-slider-cont">
         <div class="title">How many days would you like to stay in destination?</div>
@@ -131,25 +172,23 @@
 <script id="resultGroupItemCountry-template" type="text/x-handlebars-template">
     <div class="flight-result" data-cc="{{cc}}">
         <div class="img-cont">
-            
-            
+
             <div class="img-wrap">
                 <img src="/images/n/flags-square/{{cc}}.svg" />
             </div>
-            
 
-                <div class="txt-cont">{{title}}</div>
-                <div class="price-cont">
-                    <div class="wrap">
-                        <span class="from">from</span>
-                        <br />
-                        <span class="price-all">
-                            <span class="currency">€</span><span class="price">{{price}}</span>
-                        </span>
-                    </div>
+            <div class="txt-cont darker">{{title}}</div>
+            <div class="price-cont">
+                <div class="wrap">
+                    <span class="from">from</span>
+                    <br />
+                    <span class="price-all">
+                        <span class="currency">€</span><span class="price">{{price}}</span>
+                    </span>
                 </div>
-
             </div>
+
+        </div>
         <div class="items">
 
             <table></table>
@@ -185,7 +224,7 @@
     </script>
 
 
-    <script id="resultGroup-priceItem-template" type="text/x-handlebars-template">
+<script id="resultGroup-priceItem-template" type="text/x-handlebars-template">
         <tr data-f="{{from}}" data-t="{{to}}">
             <td><strong>{{from}} → {{to}}</strong></td>
             <td>from</td>
@@ -194,28 +233,21 @@
         </tr>
     </script>
 
-
-
-
-
-
-
-
-<script id="weekend-layout-template" type="text/x-handlebars-template">
-    <div class="weekend-filter">
-            
-        <div class="grouping-filter"></div>
-            
-        <div class="list-order-filter"></div>
-    </div>
-
+<script id="grouped-country-city-template" type="text/x-handlebars-template">
+    <tr data-gid="{{gid}}">
+        <td><strong>{{name}}</strong></td>
+        <td>from</td>
+        <td><strong>€{{price}}</strong></td>
+        <td><a class="btn" href="#">see offers</a></td>
+    </tr>
 </script>
+
 
 <script id="weekend-week-template" type="text/x-handlebars-template">
     <div class="weekend-item">
         
         <div class="title">
-            <span>{{week}}.</span> <span>{{dateFrom}} - {{dateTo}}</span>
+            <span class="week">{{week}}. weekend</span> <span class="date">({{dateFrom}} - {{dateTo}})</span>
         </div>
 
         <div class="cont"></div>

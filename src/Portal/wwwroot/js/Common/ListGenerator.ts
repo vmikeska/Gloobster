@@ -82,6 +82,8 @@ module Common {
 			});
 		}
 
+			public activeItem: Function;
+
 		private generateItem(item) {
 
 			var context = item;
@@ -91,15 +93,28 @@ module Common {
 
 			var $item = $(this.itemTemplate(context));
 
-			this.eventHandlers.forEach((eh) => {
-				$item.find(eh.selector).on(eh.event, (e) => {
-					e.preventDefault();
+				if (this.activeItem) {
+						var actItemRes = this.activeItem(item);
+						if (actItemRes.isActive) {
+							$item.addClass(actItemRes.cls);
+						}
+				}
 
-					var $target = $(e.delegateTarget);
+				this.eventHandlers.forEach((eh) => {
 
-					eh.handler(e, $item, $target, item);
+					var $i = $item;
+					if (eh.selector) {
+						$i = $item.find(eh.selector);
+					}
+
+					$i.on(eh.event, (e) => {
+						e.preventDefault();
+
+						var $target = $(e.delegateTarget);
+
+						eh.handler(e, $item, $target, item);
+					});
 				});
-			});
 
 			if (this.appendStyle === "append") {
 				this.$cont.append($item);

@@ -62,8 +62,18 @@ var Common;
                 context = this.customMapping(item);
             }
             var $item = $(this.itemTemplate(context));
+            if (this.activeItem) {
+                var actItemRes = this.activeItem(item);
+                if (actItemRes.isActive) {
+                    $item.addClass(actItemRes.cls);
+                }
+            }
             this.eventHandlers.forEach(function (eh) {
-                $item.find(eh.selector).on(eh.event, function (e) {
+                var $i = $item;
+                if (eh.selector) {
+                    $i = $item.find(eh.selector);
+                }
+                $i.on(eh.event, function (e) {
                     e.preventDefault();
                     var $target = $(e.delegateTarget);
                     eh.handler(e, $item, $target, item);

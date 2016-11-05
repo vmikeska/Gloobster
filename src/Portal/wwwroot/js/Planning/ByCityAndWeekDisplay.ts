@@ -36,7 +36,7 @@ module Planning {
 
 	}
 
-	export class ByCountryAndWeekDisplay extends ByWeekDisplay {
+	export class ByCountryDisplay extends ByWeekDisplay {
 
 		constructor($cont) {
 			super($cont);
@@ -59,32 +59,32 @@ module Planning {
 			}
 
 			lg.onItemAppended = ($country, country) => {
-					this.generateCountryFlightGroups($country, country);
+					this.generateCountryCities($country, country);
 			}
 
 			lg.generateList(countries);
 		}
 
-		private generateCountryFlightGroups($country, city) {
-			var lg = Common.ListGenerator.init($country.find(".items table"), "resultGroup-priceItem-template");
+		private generateCountryCities($country, country) {
+				var lg = Common.ListGenerator.init($country.find(".items table"), "grouped-country-city-template");
 
-			lg.customMapping = (g) => {
-				return {
-					from: g.fromAirport,
-					to: g.toAirport,
-					price: g.fromPrice,
-					flights: g.flights
+			lg.customMapping = (c) => {
+					return {
+							gid: c.gid,
+							name: c.name,
+							price: c.fromPrice,
+							//flightsGroups - add when used							
 				};
 			}
 
-			lg.generateList(city.flightsGroups);
+			lg.generateList(country.cities);
 		}
 
 
 	}
 
 
-	export class ByCityAndWeekDisplay extends ByWeekDisplay {
+	export class ByCityDisplay extends ByWeekDisplay {
 
 
 		constructor($cont) {

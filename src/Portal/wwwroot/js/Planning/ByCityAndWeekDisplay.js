@@ -30,16 +30,16 @@ var Planning;
         return ByWeekDisplay;
     }());
     Planning.ByWeekDisplay = ByWeekDisplay;
-    var ByCountryAndWeekDisplay = (function (_super) {
-        __extends(ByCountryAndWeekDisplay, _super);
-        function ByCountryAndWeekDisplay($cont) {
+    var ByCountryDisplay = (function (_super) {
+        __extends(ByCountryDisplay, _super);
+        function ByCountryDisplay($cont) {
             var _this = this;
             _super.call(this, $cont);
             this.onItemAppended = function ($week, week) {
                 _this.generateWeek($week, week);
             };
         }
-        ByCountryAndWeekDisplay.prototype.generateWeek = function ($week, week) {
+        ByCountryDisplay.prototype.generateWeek = function ($week, week) {
             var _this = this;
             var countries = _.sortBy(week.countries, "fromPrice");
             var lg = Common.ListGenerator.init($week.find(".cont"), "resultGroupItemCountry-template");
@@ -51,35 +51,34 @@ var Planning;
                 };
             };
             lg.onItemAppended = function ($country, country) {
-                _this.generateCountryFlightGroups($country, country);
+                _this.generateCountryCities($country, country);
             };
             lg.generateList(countries);
         };
-        ByCountryAndWeekDisplay.prototype.generateCountryFlightGroups = function ($country, city) {
-            var lg = Common.ListGenerator.init($country.find(".items table"), "resultGroup-priceItem-template");
-            lg.customMapping = function (g) {
+        ByCountryDisplay.prototype.generateCountryCities = function ($country, country) {
+            var lg = Common.ListGenerator.init($country.find(".items table"), "grouped-country-city-template");
+            lg.customMapping = function (c) {
                 return {
-                    from: g.fromAirport,
-                    to: g.toAirport,
-                    price: g.fromPrice,
-                    flights: g.flights
+                    gid: c.gid,
+                    name: c.name,
+                    price: c.fromPrice,
                 };
             };
-            lg.generateList(city.flightsGroups);
+            lg.generateList(country.cities);
         };
-        return ByCountryAndWeekDisplay;
+        return ByCountryDisplay;
     }(ByWeekDisplay));
-    Planning.ByCountryAndWeekDisplay = ByCountryAndWeekDisplay;
-    var ByCityAndWeekDisplay = (function (_super) {
-        __extends(ByCityAndWeekDisplay, _super);
-        function ByCityAndWeekDisplay($cont) {
+    Planning.ByCountryDisplay = ByCountryDisplay;
+    var ByCityDisplay = (function (_super) {
+        __extends(ByCityDisplay, _super);
+        function ByCityDisplay($cont) {
             var _this = this;
             _super.call(this, $cont);
             this.onItemAppended = function ($week, week) {
                 _this.generateWeek($week, week);
             };
         }
-        ByCityAndWeekDisplay.prototype.generateWeek = function ($week, week) {
+        ByCityDisplay.prototype.generateWeek = function ($week, week) {
             var _this = this;
             var cities = _.sortBy(week.cities, "fromPrice");
             var lg = Common.ListGenerator.init($week.find(".cont"), "resultGroupItem-template");
@@ -95,7 +94,7 @@ var Planning;
             };
             lg.generateList(cities);
         };
-        ByCityAndWeekDisplay.prototype.generateCityFlightGroups = function ($city, city) {
+        ByCityDisplay.prototype.generateCityFlightGroups = function ($city, city) {
             var lg = Common.ListGenerator.init($city.find(".items table"), "resultGroup-priceItem-template");
             lg.customMapping = function (g) {
                 return {
@@ -107,9 +106,9 @@ var Planning;
             };
             lg.generateList(city.flightsGroups);
         };
-        return ByCityAndWeekDisplay;
+        return ByCityDisplay;
     }(ByWeekDisplay));
-    Planning.ByCityAndWeekDisplay = ByCityAndWeekDisplay;
+    Planning.ByCityDisplay = ByCityDisplay;
     var DateOps = (function () {
         function DateOps() {
         }

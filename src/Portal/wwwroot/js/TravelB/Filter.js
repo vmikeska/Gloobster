@@ -1,36 +1,5 @@
 var TravelB;
 (function (TravelB) {
-    var CustomCheckbox = (function () {
-        function CustomCheckbox($root, checked) {
-            var _this = this;
-            if (checked === void 0) { checked = false; }
-            this.$root = $root;
-            this.$checker = this.$root.find(".checker");
-            this.setChecker(checked);
-            this.$root.click(function (e) {
-                var newState = !_this.isChecked();
-                _this.setChecker(newState);
-                if (_this.onChange) {
-                    _this.onChange($root.attr("id"), newState);
-                }
-            });
-        }
-        CustomCheckbox.prototype.isChecked = function () {
-            return this.$checker.hasClass("icon-checkmark");
-        };
-        CustomCheckbox.prototype.setChecker = function (checked) {
-            this.$checker.removeClass("icon-checkmark");
-            this.$checker.removeClass("icon-checkmark2");
-            if (checked) {
-                this.$checker.addClass("icon-checkmark");
-            }
-            else {
-                this.$checker.addClass("icon-checkmark2");
-            }
-        };
-        return CustomCheckbox;
-    }());
-    TravelB.CustomCheckbox = CustomCheckbox;
     var Filter = (function () {
         function Filter(v) {
             this.selectedFilter = "gender";
@@ -42,7 +11,7 @@ var TravelB;
         }
         Filter.prototype.initCheckboxes = function () {
             var _this = this;
-            this.useFilter = new CustomCheckbox($("#cbUseFilter"));
+            this.useFilter = new Common.CustomCheckbox($("#cbUseFilter"));
             this.useFilter.onChange = (function (id, newState) {
                 _this.setCheckboxes(id, newState);
                 if (newState) {
@@ -53,7 +22,7 @@ var TravelB;
                 }
                 _this.updateFilter(newState, _this.useAllCheckins.isChecked());
             });
-            this.useAllCheckins = new CustomCheckbox($("#cbAllCheckins"));
+            this.useAllCheckins = new Common.CustomCheckbox($("#cbAllCheckins"));
             this.useAllCheckins.onChange = (function (id, newState) {
                 _this.setCheckboxes(id, newState);
                 if (newState) {

@@ -175,6 +175,88 @@
         }
     }
 
+    .checker-all{        
+        border: none;
+        
+        .icon-checkmark{
+            color: $green3;
+        }
+        .icon-checkmark2{
+            color: $orange;
+        }
+    }
+
+    .filtering {
+        margin-top: 20px;
+        margin-bottom: 20px;
+
+        padding: 12px;
+
+        background-color: $very-light-blue;
+        border-radius: 4px;
+
+        .title {
+            font-size: 1.1em;
+            font-weight: bold;
+            text-align: left;
+            margin-bottom: 8px;
+        }
+
+        .layout-table{
+            display: table;
+            width: 100%;
+            
+            .l {
+                display: table-cell;
+                vertical-align: top;
+                text-align: left;
+            }
+
+            .r {
+                display: table-cell;
+                vertical-align: middle;
+                text-align: right;
+            }
+        }
+
+        .locations {
+            .location {
+                display: inline-block;                
+                text-align: center;
+                margin-right: 50px;
+
+                &:last-of-type {
+                    margin-right: 0;
+                }
+
+                .ico-all{
+                    cursor: pointer;
+                            
+                    .icon {
+                        font-size: 100px;
+                        color: $light-blue5;
+                            
+                        &:hover {
+                            color: $dark-blue;
+                        }
+                    }
+
+                    .txt {
+                        font-weight: bold;
+                        color: $dark-blue;                           
+                    }
+                }
+
+                &.active {
+                    .icon {
+                        color: $orange !important;
+                    }
+                }
+            }
+        }
+
+    }
+
     
     .flight-results {
 
@@ -186,6 +268,23 @@
         flex-flow: wrap;
         justify-content: space-around;*/
         
+        .weekend-item{
+            .title{
+                margin-bottom: 12px;
+
+                .week {
+                    font-weight: bold;
+                    text-decoration: underline;
+                    font-size: 1.2em;
+                }
+
+                .date {
+                    font-size: 0.8em;
+                    vertical-align: central;
+                }
+            }
+        }
+
 
         .flight-result {
             width: 310px;
@@ -243,6 +342,10 @@
                     border-top-right-radius: 4px;
 
                     background-color: rgba(black, 0.5);
+
+                    &.darker {
+                        background-color: rgba(black, 0.7);
+                    }
 
                     color: white;                    
                     font-weight: 600;
@@ -324,7 +427,7 @@
 
                             .btn {
                                 color: white;
-                                background-color: $dark-blue;
+                                background-color: $dark-blue;                                
                             }
 
                         }
@@ -347,6 +450,7 @@
                     padding-right: 2px;
 
                     background-color: $light-blue4;
+                    white-space: nowrap;
                 }
             }
 
