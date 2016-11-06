@@ -19,6 +19,9 @@
 <script type="text/javascript" src="/lib/leaflet/dist/leaflet.js"></script>
 <script type="text/javascript" src="/lib/mapbox.js/mapbox.js"></script>
 
+
+<script type="text/javascript" src="/js/Planning/Filtering.js"></script>
+
 <script type="text/javascript" src="@Url.Content("~/js/Views/FlyView.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Trip/AirportCombo.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Views/LocationSettingsDialog.js")"></script>
@@ -37,12 +40,13 @@
 <script type="text/javascript" src="@Url.Content("~/js/Planning/AirlineCodes.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Planning/AnytimeDisplay.js")"></script>
 
-<script src="~/js/planning/WeekendAggregators.js"></script>
-<script src="~/js/planning/weekendpagesetter.js"></script>
-<script src="~/js/planning/bycityandweekdisplay.js"></script>
+<script src="/js/planning/WeekendAggregators.js"></script>
+<script src="/js/planning/WeekendPageSetter.js"></script>
+<script src="/js/planning/AnytimePageSetter.js"></script>
+<script src="/js/planning/bycityandweekdisplay.js"></script>
 
 <script type="text/javascript" src="/js/Common/CustomCheckbox.js"></script>
-<script type="text/javascript" src="/js/Planning/Filtering.js"></script>
+
 
 <script type="text/javascript" src="@Url.Content("~/js/Maps/MapsCreatorMapBox2D.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Common/CountryShapes.js")"></script>
@@ -107,6 +111,10 @@
     <div id="tabContent"></div>
 
     <div class="map" id="map"></div>
+
+    <div class="filtering-title">
+        Your search results
+    </div>
 
     <div id="filterCont">
 

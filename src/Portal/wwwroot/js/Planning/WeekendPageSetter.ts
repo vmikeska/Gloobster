@@ -22,20 +22,20 @@ module Planning {
 		}
 
 		public init() {
-			var layoutTmp = this.v.registerTemplate("filtering-weekend-template");
+			var layoutTmp = this.v.registerTemplate("filtering-template");
 			this.$filter.html(layoutTmp());
 
-			this.initWeekendFilters();
+			this.initFilters();
 
 			this.displayer = new WeekendDisplayer(this.$cont);
 		}
-
+			
 		private onFilterChanged() {
 			this.displayer.showResults(this.connections, this.grouping);
 		}
 
-		private initWeekendFilters() {
-			var f = new Filtering();
+		private initFilters() {
+				var f = new FilteringWeekend();
 
 			f.onFilterChanged = () => {
 				var state = f.getState();
@@ -43,7 +43,7 @@ module Planning {
 				this.onFilterChanged();
 			}
 
-			f.init([
+			f.initW([
 					LocationGrouping.ByCity,
 					LocationGrouping.ByCountry,
 					LocationGrouping.ByContinent

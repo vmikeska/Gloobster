@@ -41,6 +41,7 @@
 /// <reference path="js/pins/switcher.js" />
 /// <reference path="js/planning/airlinecodes.js" />
 /// <reference path="js/planning/anytimedisplay.js" />
+/// <reference path="js/planning/anytimepagesetter.js" />
 /// <reference path="js/planning/bycityandweekdisplay.js" />
 /// <reference path="js/planning/citiesmanager.js" />
 /// <reference path="js/planning/countriesmanager.js" />

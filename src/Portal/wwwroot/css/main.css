@@ -4450,17 +4450,43 @@ footer {
       color: #3DA243; }
     .fly-tickets .checker-all .icon-checkmark2 {
       color: #F56E12; }
+  .fly-tickets .rating-filter {
+    display: inline-block; }
+    .fly-tickets .rating-filter .levels {
+      display: table;
+      width: 460px; }
+      .fly-tickets .rating-filter .levels .itm {
+        display: table-cell;
+        width: 33.3%; }
+      .fly-tickets .rating-filter .levels .level {
+        border-radius: 4px;
+        margin: 6px;
+        background-color: white;
+        text-align: center;
+        cursor: pointer; }
+        .fly-tickets .rating-filter .levels .level.active {
+          border: 2px solid #3298C1; }
+        .fly-tickets .rating-filter .levels .level .num {
+          color: #3298C1;
+          font-size: 2em;
+          font-weight: bold; }
+        .fly-tickets .rating-filter .levels .level .stars span {
+          color: #FFC400; }
+        .fly-tickets .rating-filter .levels .level .txt {
+          font-size: 0.9em;
+          color: darkgray; }
+  .fly-tickets .filtering-title {
+    font-weight: bold;
+    font-size: 2.2em;
+    text-align: left; }
   .fly-tickets .filtering {
     margin-top: 20px;
     margin-bottom: 20px;
     padding: 12px;
+    border-top: 5px solid #3298C1;
     background-color: #F0F8FA;
-    border-radius: 4px; }
-    .fly-tickets .filtering .title {
-      font-size: 1.1em;
-      font-weight: bold;
-      text-align: left;
-      margin-bottom: 8px; }
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px; }
     .fly-tickets .filtering .layout-table {
       display: table;
       width: 100%; }
@@ -4490,6 +4516,9 @@ footer {
           color: #005476; }
       .fly-tickets .filtering .locations .location.active .icon {
         color: #F56E12 !important; }
+    .fly-tickets .filtering .sec-line {
+      text-align: left;
+      margin-top: 12px; }
   .fly-tickets .flight-results {
     margin-top: 12px;
     text-align: left;
