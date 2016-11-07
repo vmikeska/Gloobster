@@ -30,8 +30,7 @@ var Planning;
             };
             f.initW([
                 Planning.LocationGrouping.ByCity,
-                Planning.LocationGrouping.ByCountry,
-                Planning.LocationGrouping.ByContinent
+                Planning.LocationGrouping.ByCountry
             ], Planning.LocationGrouping.ByCity, true);
         };
         return WeekendPageSetter;

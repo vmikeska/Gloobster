@@ -48,19 +48,15 @@
 		}
 
 		private setAnytime() {				
+				var s = new Planning.AnytimePageSetter(this);
+				s.init();
+				
 				this.planningMap.loadCategory(0);
 				
-				var display = new Planning.AnytimeDisplay();
-
-				var fromDays = 1;
-				var toDays = 20;
-
 				this.resultsEngine.initalCall(0);
 				this.resultsEngine.onConnectionsChanged = (connections) => {
-						display.render(this.resultsEngine.connections, fromDays, toDays);
-				};
-
-				display.genDaysSlider(fromDays, toDays);
+						s.setConnections(connections);					
+				};				
 		}
 
 		private setWeekend() {

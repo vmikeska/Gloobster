@@ -4372,7 +4372,7 @@ footer {
     .fly-tickets .anytime-slider-cont .title {
       font-weight: bold; }
     .fly-tickets .anytime-slider-cont .inner-cont {
-      width: 80%;
+      /*width: 80%;*/
       display: inline-block; }
       .fly-tickets .anytime-slider-cont .inner-cont input {
         border: 1px solid #65BDD7;
@@ -4475,12 +4475,7 @@ footer {
         .fly-tickets .rating-filter .levels .level .txt {
           font-size: 0.9em;
           color: darkgray; }
-  .fly-tickets .filtering-title {
-    font-weight: bold;
-    font-size: 2.2em;
-    text-align: left; }
   .fly-tickets .filtering {
-    margin-top: 20px;
     margin-bottom: 20px;
     padding: 12px;
     border-top: 5px solid #3298C1;
@@ -4498,27 +4493,39 @@ footer {
         display: table-cell;
         vertical-align: middle;
         text-align: right; }
-    .fly-tickets .filtering .locations .location {
-      display: inline-block;
-      text-align: center;
-      margin-right: 50px; }
-      .fly-tickets .filtering .locations .location:last-of-type {
-        margin-right: 0; }
-      .fly-tickets .filtering .locations .location .ico-all {
-        cursor: pointer; }
-        .fly-tickets .filtering .locations .location .ico-all .icon {
-          font-size: 100px;
-          color: #57c1db; }
-          .fly-tickets .filtering .locations .location .ico-all .icon:hover {
-            color: #005476; }
-        .fly-tickets .filtering .locations .location .ico-all .txt {
-          font-weight: bold;
-          color: #005476; }
-      .fly-tickets .filtering .locations .location.active .icon {
-        color: #F56E12 !important; }
+    @media screen and (max-width: 890px) {
+      .fly-tickets .filtering .layout-table {
+        display: block; }
+        .fly-tickets .filtering .layout-table .l {
+          display: block;
+          text-align: center; }
+        .fly-tickets .filtering .layout-table .r {
+          display: block;
+          text-align: center; } }
+    .fly-tickets .filtering .locations {
+      margin-bottom: 10px; }
+      .fly-tickets .filtering .locations .location {
+        display: inline-block;
+        text-align: center;
+        margin-right: 50px; }
+        .fly-tickets .filtering .locations .location:last-of-type {
+          margin-right: 0; }
+        .fly-tickets .filtering .locations .location .ico-all {
+          cursor: pointer; }
+          .fly-tickets .filtering .locations .location .ico-all .icon {
+            font-size: 100px;
+            color: #57c1db; }
+            .fly-tickets .filtering .locations .location .ico-all .icon:hover {
+              color: #005476; }
+        .fly-tickets .filtering .locations .location .txt {
+          margin-top: 6px;
+          font-weight: bold; }
+        .fly-tickets .filtering .locations .location.active .icon {
+          color: #F56E12 !important; }
     .fly-tickets .filtering .sec-line {
       text-align: left;
-      margin-top: 12px; }
+      margin-top: 12px;
+      border-top: 1px dotted #3298C1; }
   .fly-tickets .flight-results {
     margin-top: 12px;
     text-align: left;

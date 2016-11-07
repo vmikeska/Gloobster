@@ -32,16 +32,13 @@ var Views;
             this.tabs.create();
         };
         FlyView.prototype.setAnytime = function () {
-            var _this = this;
+            var s = new Planning.AnytimePageSetter(this);
+            s.init();
             this.planningMap.loadCategory(0);
-            var display = new Planning.AnytimeDisplay();
-            var fromDays = 1;
-            var toDays = 20;
             this.resultsEngine.initalCall(0);
             this.resultsEngine.onConnectionsChanged = function (connections) {
-                display.render(_this.resultsEngine.connections, fromDays, toDays);
+                s.setConnections(connections);
             };
-            display.genDaysSlider(fromDays, toDays);
         };
         FlyView.prototype.setWeekend = function () {
             var s = new Planning.WeekendPageSetter(this);

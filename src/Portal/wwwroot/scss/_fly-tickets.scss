@@ -55,7 +55,7 @@
         }
 
         .inner-cont {
-            width: 80%; 
+            /*width: 80%;*/ 
             display: inline-block;
 
             input {
@@ -231,14 +231,8 @@
         }
     }
 
-    .filtering-title {
-        font-weight: bold;
-        font-size: 2.2em;
-        text-align: left;
-    }
 
-    .filtering {
-        margin-top: 20px;
+    .filtering {        
         margin-bottom: 20px;
 
         padding: 12px;
@@ -266,7 +260,25 @@
             }
         }
 
+        @include below-width(890) {
+            .layout-table{
+                display: block;
+            
+                .l {
+                    display: block;           
+                    text-align:center;
+                }
+
+                .r {
+                    display: block;   
+                    text-align:center;             
+                }
+            }
+        }
+
         .locations {
+            margin-bottom: 10px;
+
             .location {
                 display: inline-block;                
                 text-align: center;
@@ -287,11 +299,11 @@
                             color: $dark-blue;
                         }
                     }
+                }
 
-                    .txt {
-                        font-weight: bold;
-                        color: $dark-blue;                           
-                    }
+                .txt {
+                    margin-top: 6px;
+                    font-weight: bold;                    
                 }
 
                 &.active {
@@ -305,6 +317,7 @@
         .sec-line {
             text-align: left;
             margin-top: 12px;
+            border-top: 1px dotted $light-blue3;
         }
     }
 

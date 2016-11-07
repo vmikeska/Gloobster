@@ -45,8 +45,7 @@ module Planning {
 
 			f.initW([
 					LocationGrouping.ByCity,
-					LocationGrouping.ByCountry,
-					LocationGrouping.ByContinent
+					LocationGrouping.ByCountry
 				],
 				LocationGrouping.ByCity,
 				true);

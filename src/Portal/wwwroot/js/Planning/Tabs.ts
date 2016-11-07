@@ -8,7 +8,7 @@ module Planning {
 
 		private isFirst = true;
 
-		public initCall = false;
+		public initCall = true;
 
 		private $cont;
 		private tabGroup;

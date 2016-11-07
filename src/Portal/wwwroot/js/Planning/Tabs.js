@@ -3,7 +3,7 @@ var Planning;
     var Tabs = (function () {
         function Tabs($cont, tabGroup, height) {
             this.isFirst = true;
-            this.initCall = false;
+            this.initCall = true;
             this.tabs = [];
             this.$cont = $cont;
             this.tabGroup = tabGroup;
