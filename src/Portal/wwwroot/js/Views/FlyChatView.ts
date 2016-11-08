@@ -16,8 +16,8 @@ module Views {
 		public generateUi() {
 			var fields = [
 					{ name: "flyFrom", valuesRange: [], defaultValue: "FRA", cap: "Skypicker api id of the departure destination. Accepts the list of airport codes, city ID, two letter country code or metropolitan coded. For multicity search enter any number of values separated by comma. E.g. LON - checks every airport in London, LHR - checks flights from London Heathrow, UK - flights from United Kingdom Example: CZ." },
-					{ name: "dateFrom", valuesRange: [], defaultValue: "20/05/2016", cap: "search flights from this date (dd/mm/YYYY). Use parameters dateFrom and dateTo as a daterange for the flight departure. Parameter dateFrom 01/05/2016 and dateTo 30/05/2016 means, that the departure can be anytime between those dates. For the dates of the return flights, use the returnTo&returnFrom or daysInDestinationFrom & daysInDestinationTo parameters Example: 08/02/2016." },
-					{ name: "dateTo", valuesRange: [], defaultValue: "22/05/2016", cap: "search flights until this date (dd/mm/YYYY) Example: 08/03/2016." },
+					{ name: "dateFrom", valuesRange: [], defaultValue: "7/01/2017", cap: "search flights from this date (dd/mm/YYYY). Use parameters dateFrom and dateTo as a daterange for the flight departure. Parameter dateFrom 01/05/2016 and dateTo 30/05/2016 means, that the departure can be anytime between those dates. For the dates of the return flights, use the returnTo&returnFrom or daysInDestinationFrom & daysInDestinationTo parameters Example: 08/02/2016." },
+					{ name: "dateTo", valuesRange: [], defaultValue: "17/01/2017", cap: "search flights until this date (dd/mm/YYYY) Example: 08/03/2016." },
 
 					{ name: "to", valuesRange: [], defaultValue: "LON", cap: "Skypicker api id of the arrival destination. Can also accept a list of airport codes separated by a comma for multicity search. E.g. BRQ,PRG,BTS,BUD. If you don't include any value you'll get results for all the airports in the world. Example: porto." },
 

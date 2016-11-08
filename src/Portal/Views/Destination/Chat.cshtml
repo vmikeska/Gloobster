@@ -1,4 +1,5 @@
 ﻿@{		
+    ViewBag.BodyClass = "sp-chat";
     ViewBag.MenuGroup = "Planning";
     Layout = "_LayoutNew";
 }
@@ -12,21 +13,22 @@
 <script type="text/javascript" src="@Url.Content("~/js/Views/FlyChatView.js")"></script>
 
 
-<section class="wrapper margin3">
+<div class="wrapper">
 
     <table id="theTable">
-      
-        
+
+
     </table>
+
     <button id="btnCall">Call</button>
 
     <div id="results">
         
     </div>
 
-</section>
+</div>
 
-<script>
+<script type="text/javascript">
 	function onBodyLoad() {
 	    currentView = new Views.FlyChatView();
 	}

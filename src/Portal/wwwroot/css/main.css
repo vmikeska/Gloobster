@@ -5012,3 +5012,15 @@ footer {
     margin-bottom: 8px;
     border-top: 1px solid black;
     border-bottom: 1px solid black; }
+
+.sp-chat {
+  text-align: left; }
+  .sp-chat input {
+    border: 2px solid darkblue; }
+  .sp-chat table td:nth-child(1) {
+    font-weight: bold; }
+  .sp-chat table td:nth-child(3) {
+    border-bottom: 1px solid black;
+    padding: 10px;
+    background-color: antiquewhite;
+    font-weight: bold; }

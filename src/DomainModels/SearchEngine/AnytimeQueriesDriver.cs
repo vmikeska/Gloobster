@@ -117,6 +117,7 @@ namespace Gloobster.DomainModels.SearchEngine
                     dateFrom = since1.ToDate().ToString(),
                     dateTo = since2.ToDate().ToString(),                    
                     one_per_date = "1",
+                    typeFlight = "round",
 
                     daysInDestinationFrom = "2",
                     daysInDestinationTo = "10"
