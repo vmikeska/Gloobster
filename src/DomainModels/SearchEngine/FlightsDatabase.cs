@@ -152,16 +152,17 @@ namespace Gloobster.DomainModels.SearchEngine
                 }                
             }
 
-            ScoredFlights processedFlightsResult = await RequestsDriver.ProcessSearchResults(entity.ToPlaceMap, weekSearches);
+            ScoredFlightsDO processedFlightsResult = await RequestsDriver.ProcessSearchResults(entity.ToPlaceMap, weekSearches);
 
             //taking just these flight which alived score evaluation
             await UpdateConnectionsBetweenAirports(processedFlightsResult.Passed, entity.id);
 
+            //todo: extract single flights
             //currently have no meaning, will be for future use
             var allFlights = processedFlightsResult.Passed;
             allFlights.AddRange(processedFlightsResult.Discarded);            
-            ExtractSingleFlights(allFlights);
-            
+            //ExtractSingleFlights(allFlights);
+
             await SetQueryWasFinishedForTheFirstTime(entity.id);
         }
 

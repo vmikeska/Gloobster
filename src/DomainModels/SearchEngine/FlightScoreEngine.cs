@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Device.Location;
 using System.Linq;
@@ -15,58 +16,140 @@ namespace Gloobster.DomainModels.SearchEngine
     {
         public IDbOperations DB { get; set; }
         
-        private static List<NewAirportEntity> Airports;
-        
-        public double? EvaluateFlight(FlightDO flight)
+        private static List<AirportEntity> Airports;
+
+        public ScoredFlightsDO FilterFlightsByScore(List<FlightDO> allFlights)
         {
-            const bool isReturn = true;
-
-            if (Airports == null)
+            var res = new ScoredFlightsDO
             {
-                Airports = DB.List<NewAirportEntity>();
+                Discarded = new List<FlightDO>(),
+                Passed = new List<FlightDO>()
+            };
+
+            foreach (var f in allFlights)
+            {
+                double? score = null;
+                try
+                {
+                    score = EvaluateFlight(f);
+                }
+                catch (Exception exc)
+                {
+                    //todo: add logging 
+                }
+
+                if (!score.HasValue)
+                {
+                    res.Discarded.Add(f);
+                    continue;
+                }
+
+                f.FlightScore = score.Value;
+                if (score >= 0.5)
+                {
+                    res.Passed.Add(f);
+                }
+                else
+                {
+                    res.Discarded.Add(f);
+                }
             }
 
-            var fromAirport = GetAirport(flight.From);
-            var toAirport = GetAirport(flight.To);
-
-            if (toAirport == null)
-            {
-                return null;
-            }
-
-            //todo: should be fixed, like get distance from city or such. Or discard such a results
-            if (toAirport.Coord == null)
-            {
-                return null;
-            }
-
-            double fromToDistance = GetDistance(fromAirport.Coord, toAirport.Coord);
-            double distance = TotalDistance(fromToDistance, isReturn);
-
-            int stops = flight.Connections - 1;
-            if (isReturn)
-            {
-                stops--;
-            }
-
-            double priceIndex = EvaluatePrice(distance, flight.Price);
-            double timeIndex = EvaluateTime(distance, flight.HoursDuration);
-            double stopsIndex = EvaluateStopsCount((int)distance, stops);
-            //todo: airport score
-
-            double avgIndex = (priceIndex + timeIndex + stopsIndex)/3;
-
-            return avgIndex;
+            return res;
         }
 
-        private double TotalDistance(double distance, bool isReturn)
+        public double? EvaluateFlight(FlightDO flight)
+        {            
+            //todo: move out
+            if (Airports == null)
+            {
+                Airports = DB.List<AirportEntity>();
+            }
+            
+            var parts = SplitInboundOutboundFlight(flight.FlightParts, flight.To);
+            var thereParts = parts[0];
+            var backParts = parts[1];
+
+            int halfPrice = (int)(flight.Price/2);
+            var thereScore = EvaluateSingleFlight(thereParts, halfPrice);
+            var backScore = EvaluateSingleFlight(backParts, halfPrice);
+
+            if (!thereScore.HasValue || !backScore.HasValue)
+            {
+                return null;
+            }
+
+            double avgScore = (thereScore.Value + backScore.Value)/2;
+            return avgScore;
+        }
+
+        private List<List<FlightPartDO>> SplitInboundOutboundFlight(List<FlightPartDO> flightParts, string to)
         {
-            double totalDistance = isReturn ? 2 * distance : distance;
-            return totalDistance;
+            var thereParts = new List<FlightPartDO>();
+            var backParts = new List<FlightPartDO>();
+
+            var thereFinished = false;
+
+            foreach (var part in flightParts)
+            {
+                if (thereFinished)
+                {
+                    backParts.Add(part);
+                }
+                else
+                {
+                    thereParts.Add(part);
+                }
+
+                if (part.To == to)
+                {
+                    thereFinished = true;
+                }
+            }
+
+            return new List<List<FlightPartDO>> {thereParts, backParts};
+        }
+
+
+        private double? EvaluateSingleFlight(List<FlightPartDO> parts, int price)
+        {
+            var firstPart = parts.First();
+            var lastPart = parts.Last();
+
+            string fromAir = firstPart.From;
+            string toAir = lastPart.To;
+            int stops = parts.Count - 1;
+
+            TimeSpan durationSpan = lastPart.ArrivalTime - firstPart.DeparatureTime;
+            
+            var fromAirport = GetAirport(fromAir);
+            var toAirport = GetAirport(toAir);
+
+            bool airportOk = (toAirport?.Coord != null);
+            if (!airportOk)
+            {
+                return null;
+            }
+
+            double distance = GetDistance(fromAirport.Coord, toAirport.Coord);
+
+            double priceIndex = EvaluatePrice(distance, price);
+
+            double timeIndex = 1;
+            double stopsIndex = 1;
+            if (stops > 0)
+            {
+                timeIndex = EvaluateTime(distance, durationSpan.TotalHours);
+                stopsIndex = EvaluateStopsCount((int)distance, stops);
+            }
+            
+            double avgIndex = (priceIndex + timeIndex + stopsIndex)/3;
+            return avgIndex;
         }
 
         private double EvaluatePrice(double distance, double price)
         {
+            //just for info
             const double goodPerKm = 0.04;
 
             double pricePerKm = price/distance;
@@ -243,9 +326,9 @@ namespace Gloobster.DomainModels.SearchEngine
             return (int)(dist/1000);            
         }
 
-        private NewAirportEntity GetAirport(string code)
+        private AirportEntity GetAirport(string code)
         {
-            return Airports.FirstOrDefault(a => a.Code == code);
+            return Airports.FirstOrDefault(a => a.IataFaa == code);
         }
 
     }

@@ -1,5 +1,32 @@
 ﻿
 
+<script id="city-deals-template" type="text/x-handlebars-template">
+    
+    <div class="city-deal" data-gid="{{gid}}">
+        
+        <div class="title">
+            Our best deals for {{cityName}}
+        </div>
+        
+        <div class="flights">
+
+        </div>
+        
+        <div class="other-flights-preloader">
+            <img class="loader" src="/images/loader-gray.gif"/>
+            Not flexible ? We are seraching other good flights with similar prices for you
+        </div>
+        
+        <div class="other-flights-filter"></div>
+
+        <div class="other-flights-cont" style="display: none">
+            
+        </div>
+
+    </div>
+
+</script>
+
 <script id="filtering-weekend-template" type="text/x-handlebars-template">
     
     <div id="cbLongWeekend" class="checkbox-all">
@@ -163,7 +190,7 @@
     
 </script>
 
-    <script id="connection-flight-template" type="text/x-handlebars-template">
+<script id="connection-flight-template" type="text/x-handlebars-template">
 
         <div class="conn">
 
@@ -179,20 +206,16 @@
 
                     <div class="book-zone">
                         <div class="score">
-                            <div class="txt-score">
-                                excellent
+                            <div class="txt-score">                                
+                                {{#ifCond scoreText "E"}}Excellent{{/ifCond}}
+                                {{#ifCond scoreText "G"}}Good{{/ifCond}}
+                                {{#ifCond scoreText "S"}}Standard{{/ifCond}}                                
                             </div>
                             <div class="stars-score">
 
-                                <span class="icon-star-full"></span>
-                                <span class="icon-star-full"></span>
-                                <span class="icon-star-full"></span>
-                                <span class="icon-star-full"></span>
-                                <span class="icon-star-full"></span>
-
-                                @*{{#for 1 stars 1}}
+                                {{#for 0 scoreStars 1}}
                                     <span class="icon-star-full"></span>
-                                    {{/for}}*@
+                                {{/for}}
 
                             </div>
                             <div class="cap">
@@ -249,7 +272,7 @@
 
 
 <script id="resultGroupItem-template" type="text/x-handlebars-template">
-        <div class="flight-result" data-gid="{{gid}}">
+        <div class="flight-result" data-gid="{{gid}}" data-name="{{title}}">
             <div class="img-cont">
 
                 <img src="/picd/{{gid}}/f" />

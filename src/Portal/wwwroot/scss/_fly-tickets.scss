@@ -545,281 +545,295 @@
     }*/
   
 
-  .flight-conns {
-      .conns{
-          margin-top: 12px;
 
-          .conn {              
-              margin-bottom: 12px;
+      
+    .conn {              
+        margin-bottom: 12px;
 
-              .layout-tbl {
-                  display: table;
-                  width: 100%;
+        .layout-tbl {
+            display: table;
+            width: 100%;
 
-                  .left {
-                      display: table-cell;
-                      vertical-align: top;
-                      width: 100%;
-                  }
+            .left {
+                display: table-cell;
+                vertical-align: top;
+                width: 100%;
+            }
 
-                  .right {
-                      display: table-cell;
-                      vertical-align: top;
-                      text-align: right;
+            .right {
+                display: table-cell;
+                vertical-align: top;
+                text-align: right;
                       
-                  }
-              }
+            }
+        }
 
-              .flight-bck-cont {
+        .flight-bck-cont {
 
-                  background-color: $very-light-blue;
+            background-color: $very-light-blue;
 
-                  padding-left: 20px;
-                  padding-top: 10px;
+            padding-left: 20px;
+            padding-top: 10px;
 
-                  &.sub-part {
-                    background-color: white !important;
-                        &:last-of-type{
-                            margin-bottom: 12px;
-                        }
+            &.sub-part {
+            background-color: white !important;
+                &:last-of-type{
+                    margin-bottom: 12px;
+                }
+            }
+
+            .flight {
+            text-align: left;
+            border-bottom: 1px solid $light-blue6;
+
+            .top-line {                          
+                font-size: 0.8em;
+                color: darkgray;
+                margin-bottom: 14px;
+            }
+
+            .data-tbl {
+                display: table;
+                width: 100%;
+                white-space: nowrap;
+                        
+                /*text-align: left;*/
+
+                .di {
+                    display: table-cell;
+                    vertical-align: top;
+                    padding-bottom: 12px;
+
+                    &:first-of-type {                                  
+                        /*padding-left: 20px;*/
+                    }
+                }
+
+                .logo-cont {
+                        width: 15%;
+
+                    .air-logo {
+                        width: 50px;                                  
+                    }
+                }
+
+                .flight-dir {
+                    width: 25%;
+                              
+                    .from-to{
+                        font-weight: bold;
+                        font-size: 1.2em;                              
                     }
 
-                  .flight {
-                    text-align: left;
-                    border-bottom: 1px solid $light-blue6;
-
-                    .top-line {                          
+                    .flight-no{
                         font-size: 0.8em;
                         color: darkgray;
-                        margin-bottom: 14px;
                     }
-
-                    .data-tbl {
-                        display: table;
-                        width: 100%;
-                        white-space: nowrap;
-                        
-                        /*text-align: left;*/
-
-                        .di {
-                            display: table-cell;
-                            vertical-align: top;
-                            padding-bottom: 12px;
-
-                            &:first-of-type {                                  
-                                /*padding-left: 20px;*/
-                            }
-                        }
-
-                        .logo-cont {
-                             width: 15%;
-
-                            .air-logo {
-                                width: 50px;                                  
-                            }
-                        }
-
-                        .flight-dir {
-                            width: 25%;
-                              
-                            .from-to{
-                                font-weight: bold;
-                                font-size: 1.2em;                              
-                            }
-
-                            .flight-no{
-                                font-size: 0.8em;
-                                color: darkgray;
-                            }
-                        }
-
-                        .date {
-                            width: 20%;
-
-                            font-weight: bold;
-                        }
-
-                        .time-cont{
-                            width: 20%;
-
-                            .time {
-                                font-weight: bold;
-                            }
-
-                            .duration {
-                                font-size: 0.8em;
-                                color: darkgray;
-                            }
-                        }
-
-                        .direct-cont {
-                            width: 20%;
-                            text-align: right;
-                            padding-right: 20px;
-
-                            .direct {                            
-                                font-weight: bold;
-                                color: $green2;
-                            }
-
-                            .stops {
-                                
-                                .stops-btn {
-                                    text-decoration: none;
-                                
-                                    .txt {
-                                        display: inline-block;
-                                        vertical-align:top;
-
-                                        text-decoration: underline;
-
-                                        color: $light-blue;
-                                    }
-
-                                    .icon-dropdown-arrow {
-
-                                        &.opened {
-                                            transform: scale(1, -1);
-                                        }
-
-                                        display: inline-block;
-                                        vertical-align:top;
-
-                                        color: white;
-                                        border-radius: 4px;
-                                        padding: 3px;
-
-                                        color: white;
-                                        background-color: $light-blue;
-
-                                        font-weight: 100;
-                                        font-size: 0.8em;
-
-                                        margin-left: 8px;
-                                    }
-                                }                            
-                            }
-                        }
-
-                    }
-
                 }
-              }
-                .book-zone {
-                    display: inline-block;
 
-                    padding: 20px;
+                .date {
+                    width: 20%;
 
-                    background-color: $light-blue6;
+                    font-weight: bold;
+                }
 
-                    .score {
-                        background-color: white;
-                        border: 1px solid $light-blue3;
-                        border-radius: 4px;
-                        padding: 8px;
-                        text-align: center;
+                .time-cont{
+                    width: 20%;
 
-                        .txt-score {
-                            font-weight: bold;
-                            font-size: 1.1em;
-                        }
-
-                        .stars-score{
-                            color: $yellow;
-                            font-size: 0.7em;
-                        }
-
-                        .cap{
-                            font-size: 0.75em;
-                            color: gray;
-                        }
-                    }
-
-                    .price-all {
+                    .time {
                         font-weight: bold;
-                        text-align: right;
-
-                        .currency {
-                              
-                        }
-
-                        .price{
-                            font-size: 2em;                              
-                        }
                     }
 
-                    .btn-cont{
-                        a{
-                            font-weight: bold;
+                    .duration {
+                        font-size: 0.8em;
+                        color: darkgray;
+                    }
+                }
+
+                .direct-cont {
+                    width: 20%;
+                    text-align: right;
+                    padding-right: 20px;
+
+                    .direct {                            
+                        font-weight: bold;
+                        color: $green2;
+                    }
+
+                    .stops {
+                                
+                        .stops-btn {
                             text-decoration: none;
-                            display: inline-block;
-                            color: white;
-                            background-color: $green3;
-                            padding: 10px;
-                            border-radius: 4px;
-                            white-space: nowrap;
+                                
+                            .txt {
+                                display: inline-block;
+                                vertical-align:top;
 
-                            &:hover {
-                                background-color: $green2;                                
+                                text-decoration: underline;
+
+                                color: $light-blue;
                             }
-                        }
-                    }
 
+                            .icon-dropdown-arrow {
+
+                                &.opened {
+                                    transform: scale(1, -1);
+                                }
+
+                                display: inline-block;
+                                vertical-align:top;
+
+                                color: white;
+                                border-radius: 4px;
+                                padding: 3px;
+
+                                color: white;
+                                background-color: $light-blue;
+
+                                font-weight: 100;
+                                font-size: 0.8em;
+
+                                margin-left: 8px;
+                            }
+                        }                            
+                    }
                 }
 
-              @include below-width(720) {
-                  .layout-tbl{
-                      display: block;
+            }
 
-                      .left,.right{
-                          display: block;
-                          width: initial;
-                      }
+        }
+        }
+        .book-zone {
+            display: inline-block;
+
+            padding: 20px;
+
+            background-color: $light-blue6;
+
+            .score {
+                background-color: white;
+                border: 1px solid $light-blue3;
+                border-radius: 4px;
+                padding: 8px;
+                text-align: center;
+
+                .txt-score {
+                    font-weight: bold;
+                    font-size: 1.1em;
+                }
+
+                .stars-score{
+                    color: $yellow;
+                    font-size: 0.7em;
+                }
+
+                .cap{
+                    font-size: 0.75em;
+                    color: gray;
+                }
+            }
+
+            .price-all {
+                font-weight: bold;
+                text-align: right;
+
+                .currency {
+                              
+                }
+
+                .price{
+                    font-size: 2em;                              
+                }
+            }
+
+            .btn-cont{
+                a{
+                    font-weight: bold;
+                    text-decoration: none;
+                    display: inline-block;
+                    color: white;
+                    background-color: $green3;
+                    padding: 10px;
+                    border-radius: 4px;
+                    white-space: nowrap;
+
+                    &:hover {
+                        background-color: $green2;                                
                     }
+                }
+            }
 
-                    .book-zone {                      
-                      display: block;
-                      position: relative;
-                      padding: 5px;
+        }
 
-                      .score {                      
-                          display: inline-block;  
-                          vertical-align: top;
+        @include below-width(720) {
+            .layout-tbl{
+                display: block;
 
-                          position: absolute;
-                          left: 10px;
-                          top: 8px;
+                .left,.right{
+                    display: block;
+                    width: initial;
+                }
+            }
+
+            .book-zone {                      
+                display: block;
+                position: relative;
+                padding: 5px;
+
+                .score {                      
+                    display: inline-block;  
+                    vertical-align: top;
+
+                    position: absolute;
+                    left: 10px;
+                    top: 8px;
 
 
-                        .txt-score {
-                            display: inline-block;  
-                        }
+                .txt-score {
+                    display: inline-block;  
+                }
 
-                        .stars-score{
-                          display: inline-block !important;  
-                        }
+                .stars-score{
+                    display: inline-block !important;  
+                }
 
-                        .cap{
-                          display: inline-block !important;  
-                        }
-                    }
+                .cap{
+                    display: inline-block !important;  
+                }
+            }
 
-                      .price-all {
-                          display: inline-block;  
-                          vertical-align: top;
-                      }
+                .price-all {
+                    display: inline-block;  
+                    vertical-align: top;
+                }
                       
-                      .btn-cont {
-                          display: inline-block;  
-                          vertical-align: top;
-                      }
+                .btn-cont {
+                    display: inline-block;  
+                    vertical-align: top;
                 }
-              }
+        }
+        }
 
               
 
-          }
+    }
 
+      
+  .city-deal {
+      .title {
+          font-size: 1.2em;
+          font-weight: bold;
       }
+
+      .other-flights-preloader {
+          margin: 10px;
+          display: inline-block;
+          font-weight: bold;
+          padding: 20px;
+          background-color: $yellow;
+      }
+
   }
+
+
 }

@@ -13,6 +13,7 @@ using MongoDB.Bson;
 
 namespace Gloobster.DomainModels.SearchEngine
 {
+    
     public class AnytimeQueriesDriver : IQueriesDriver
     {
         public IFlightScoreEngine ScoreEngine { get; set; }
@@ -20,22 +21,44 @@ namespace Gloobster.DomainModels.SearchEngine
         public IAirportsCache AirCache { get; set; }
         
         public List<FlightRequestDO> BuildRequests(string from, string to, PlaceType toPlaceType)
-        {
-            int weeksCnt = 3;
-
+        {            
             var queries = new List<FlightRequestDO>();
 
-            var friday = GetFirstFriday();
-            
-            for (int act = 1; act <= weeksCnt; act++)
+            var today = DateTime.UtcNow;
+            var inOneYear = today.AddYears(1);
+
+
+            //todo: this is not done yet for city
+            if (toPlaceType == PlaceType.City)
+            {                
+                var provQuery = new FlightRequestDO
+                {
+                    flyFrom = from,
+                    to = to,
+                    dateFrom = today.ToDate().ToString(),
+                    dateTo = inOneYear.ToDate().ToString(),
+                    one_per_date = "1",
+                    typeFlight = "round",
+
+                    daysInDestinationFrom = "2",
+                    daysInDestinationTo = "10"
+                };
+                queries.Add(provQuery);
+            }
+
+            if (toPlaceType == PlaceType.Country)
             {
-                //var friday2 = friday.AddDays(7);
-                //var friday3 = friday2.AddDays(7);
-                
-                var w1 = CreateReq(from, to, friday, friday.AddDays(2), toPlaceType);
-                queries.Add(w1);
-                
-                friday = friday.AddDays(7);
+                //testing just country
+                var provQuery = new FlightRequestDO
+                {
+                    flyFrom = from,
+                    to = to,
+                    dateFrom = today.ToDate().ToString(),
+                    dateTo = inOneYear.ToDate().ToString(),
+                    oneforcity = "1",
+                    typeFlight = "round"                    
+                };
+                queries.Add(provQuery);
             }
 
             return queries;
@@ -52,6 +75,11 @@ namespace Gloobster.DomainModels.SearchEngine
             foreach (var fromTo in fromTos)
             {
                 var conn = DB.FOD<AnytimeConnectionEntity>(c => c.FromAirport == fromTo.From && c.ToAirport == fromTo.To);
+                if (conn == null)
+                {
+                    continue;
+                }
+
                 conns.Add(conn);
             }
 
@@ -60,13 +88,13 @@ namespace Gloobster.DomainModels.SearchEngine
             return connsDO;
         }
 
-        public async Task<ScoredFlights> ProcessSearchResults(string toMapId, List<FlightSearchDO> searches)
+        public async Task<ScoredFlightsDO> ProcessSearchResults(string toMapId, List<FlightSearchDO> searches)
         {
             var connections = new List<AnytimeConnectionEntity>();
 
             List<FlightDO> allFlights = searches.SelectMany(f => f.Flights).ToList();
 
-            var scoredFlights = FilterFlightsByScore(allFlights);
+            var scoredFlights = ScoreEngine.FilterFlightsByScore(allFlights);
 
             var flightsFromToGrouped = scoredFlights.Passed.GroupBy(g => new { g.From, g.To }).ToList();
 
@@ -81,9 +109,10 @@ namespace Gloobster.DomainModels.SearchEngine
                 var toAirport = AirCache.GetAirportByAirCode(to);
                 if (toAirport == null)
                 {
-                    //todo: should not happen in future with complete airport DB, but what now, discard ?
+                    //todo: create complete database of 
+                    continue;                    
                 }
-
+                
                 var connection = new AnytimeConnectionEntity
                 {
                     id = ObjectId.GenerateNewId(),
@@ -103,81 +132,7 @@ namespace Gloobster.DomainModels.SearchEngine
 
             return scoredFlights;
         }
-
-
-        private FlightRequestDO CreateReq(string from, string to, DateTime since1, DateTime since2, PlaceType toPlaceType)
-        {
-            if (toPlaceType == PlaceType.City)
-            {
-                //testing just country
-                var provQuery = new FlightRequestDO
-                {
-                    flyFrom = from,
-                    to = to,
-                    dateFrom = since1.ToDate().ToString(),
-                    dateTo = since2.ToDate().ToString(),                    
-                    one_per_date = "1",
-                    typeFlight = "round",
-
-                    daysInDestinationFrom = "2",
-                    daysInDestinationTo = "10"
-                };
-                return provQuery;
-            }
-
-            if (toPlaceType == PlaceType.Country)
-            {
-                //testing just country
-                var provQuery = new FlightRequestDO
-                {
-                    flyFrom = from,
-                    to = to,
-                    dateFrom = since1.ToDate().ToString(),
-                    dateTo = since2.ToDate().ToString(),
-                    oneforcity = "1",
-                    
-                    daysInDestinationFrom = "2",
-                    daysInDestinationTo = "10"
-                };
-                return provQuery;
-            }
-
-            return null;
-        }
-
         
-        private ScoredFlights FilterFlightsByScore(List<FlightDO> allFlights)
-        {
-            var res = new ScoredFlights
-            {
-                Discarded = new List<FlightDO>(),
-                Passed = new List<FlightDO>()
-            };
-
-            foreach (var f in allFlights)
-            {
-                double? score = ScoreEngine.EvaluateFlight(f);
-
-                if (!score.HasValue)
-                {
-                    res.Discarded.Add(f);
-                    continue;
-                }
-
-                f.FlightScore = score.Value;
-                if (score >= 0.5)
-                {
-                    res.Passed.Add(f);
-                }
-                else
-                {
-                    res.Discarded.Add(f);
-                }
-            }
-
-            return res;
-        }
-
         private DateTime GetFirstFriday()
         {
             var friday = DateTime.UtcNow;

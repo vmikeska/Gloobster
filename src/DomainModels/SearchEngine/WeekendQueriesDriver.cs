@@ -19,7 +19,7 @@ namespace Gloobster.DomainModels.SearchEngine
         List<FlightRequestDO> BuildRequests(string from, string to, PlaceType toPlaceType);
         Task DeleteConnection(string from, string to);
         object GetResultsOfFinishedQuery(List<FromToSE> fromTos);
-        Task<ScoredFlights> ProcessSearchResults(string toMapId, List<FlightSearchDO> weekSearches);
+        Task<ScoredFlightsDO> ProcessSearchResults(string toMapId, List<FlightSearchDO> weekSearches);
     }
 
     public class WeekendQueriesDriver: IQueriesDriver
@@ -72,11 +72,11 @@ namespace Gloobster.DomainModels.SearchEngine
             return connsDO;
         }
 
-        public async Task<ScoredFlights> ProcessSearchResults(string toMapId, List<FlightSearchDO> weekSearches)
+        public async Task<ScoredFlightsDO> ProcessSearchResults(string toMapId, List<FlightSearchDO> weekSearches)
         {
             //give score to flights
             var weekends = new List<WeekendConnectionEntity>();
-            var allScoredFlights = new ScoredFlights
+            var allScoredFlights = new ScoredFlightsDO
             {
                 Passed = new List<FlightDO>(),
                 Discarded = new List<FlightDO>()
@@ -86,7 +86,7 @@ namespace Gloobster.DomainModels.SearchEngine
             {
                 var prms = (DateCombi) weekSearch.Params;
                 
-                var scoredFlights = FilterFlightsByScore(weekSearch.Flights);                
+                var scoredFlights = ScoreEngine.FilterFlightsByScore(weekSearch.Flights);                
                 allScoredFlights.Passed.AddRange(scoredFlights.Passed);
                 allScoredFlights.Discarded.AddRange(scoredFlights.Discarded);
 
@@ -172,39 +172,6 @@ namespace Gloobster.DomainModels.SearchEngine
 
             return outDates;
         }
-
-
-
-        private ScoredFlights FilterFlightsByScore(List<FlightDO> allFlights)
-        {
-            var res = new ScoredFlights
-            {
-                Discarded = new List<FlightDO>(),
-                Passed = new List<FlightDO>()
-            };
-
-            foreach (var f in allFlights)
-            {
-                double? score = ScoreEngine.EvaluateFlight(f);
-
-                if (!score.HasValue)
-                {
-                    res.Discarded.Add(f);
-                    continue;
-                }
-
-                f.FlightScore = score.Value;
-                if (score >= 0.5)
-                {
-                    res.Passed.Add(f);
-                }
-                else
-                {
-                    res.Discarded.Add(f);
-                }
-            }
-
-            return res;
-        }
+        
     }
 }
