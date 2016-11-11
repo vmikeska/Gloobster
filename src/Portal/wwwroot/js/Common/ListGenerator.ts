@@ -1,33 +1,5 @@
 module Common {
 
-		export class ListGeneratorTest {
-		
-			public test(myItems) {
-					
-				var lg = ListGenerator.init($("#theCont"), "myItem-template");
-					
-				lg.customMapping = (item) => {
-					return {
-						 asdf: item.a, 
-						 asddd: item.b
-					};
-				}
-				
-				lg.evnt($(".delete"), (e, $item, $target) => {
-					//do something, like delete the thing
-				});
-
-				lg.evnt($(".add"), (e, $item, $target) => {
-					//do something, like delete the thing
-				});
-
-				lg.generateList(myItems);
-				//todo: maybe cont at custom time
-			}
-
-	}
-
-
 	export class ListGenerator {
 		
 		public clearCont = false;
@@ -38,7 +10,12 @@ module Common {
 		public appendStyle = "append";
 			
 		private itemTemplate;
+		public emptyTemplate;
 
+		static get v(): Views.ViewBase {
+        return Views.ViewBase.currentView;
+    }
+		
 		public onItemAppended: Function;
 
 		private $items = [];
@@ -49,8 +26,8 @@ module Common {
 			lg.$cont = $cont;
 			lg.itemTemplateName = itemTemplateName;
 			lg.eventHandlers = [];
-
-			lg.itemTemplate = Views.ViewBase.currentView.registerTemplate(lg.itemTemplateName);
+				
+			lg.itemTemplate = this.v.registerTemplate(lg.itemTemplateName);
 
 			return lg;
 		}
@@ -80,6 +57,15 @@ module Common {
 				$item.data("no", itemNo);
 				itemNo++;
 			});
+
+				if (items.length === 0) {
+						var t = ListGenerator.v.registerTemplate(this.emptyTemplate);
+						var $t = $(t());
+
+						this.$cont.html($t);
+
+						this.$items.push($t);
+				}
 		}
 
 			public activeItem: Function;

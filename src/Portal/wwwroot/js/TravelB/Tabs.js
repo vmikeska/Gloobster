@@ -93,6 +93,8 @@ var TravelB;
             });
             return $t;
         };
+        MenuTabs.prototype.tc = function ($t) {
+        };
         return MenuTabs;
     }());
     TravelB.MenuTabs = MenuTabs;

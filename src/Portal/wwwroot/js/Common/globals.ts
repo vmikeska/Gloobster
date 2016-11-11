@@ -56,4 +56,6 @@ enum CheckinType { Now, City }
 
 enum TripEntityType { Place, Travel }
 
+enum ScoreLevel { Excellent, Good, Standard }
+
 

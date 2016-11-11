@@ -1,9 +1,23 @@
 ﻿
 
+<script id="flights-empty-template" type="text/x-handlebars-template">
+
+    <div class="other-flights-empty">
+        
+        <div class="info">
+            <span class="smile">:(</span>
+            No results were found. You can try to search with lower score level.
+        </div>
+    </div>
+
+</script>
+
 <script id="city-deals-template" type="text/x-handlebars-template">
     
     <div class="city-deal" data-gid="{{gid}}">
         
+        
+
         <div class="title">
             Our best deals for {{cityName}}
         </div>
@@ -12,18 +26,44 @@
 
         </div>
         
-        <div class="other-flights-preloader">
-            <img class="loader" src="/images/loader-gray.gif"/>
-            Not flexible ? We are seraching other good flights with similar prices for you
+        <div class="title">
+            Not flexible? See another options in following months
         </div>
-        
-        <div class="other-flights-filter"></div>
 
-        <div class="other-flights-cont" style="display: none">
+        <div class="other-flights-filter" style="display: none">
+            
+            <div class="title">How many days would you like to stay in destination?</div>
+            <div class="days-range"></div>
+
+            <div class="title">What month are you interested of?</div>
+            <div class="months"></div>
             
         </div>
+        
+        <div class="other-flights-preloader">            
+            <div class="center">
+                <div class="top">
+                    <div class="plane-preloader">
+                        <img src="/images/n/Plane_icon.svg" />
+                    </div>
+                </div>
+                <div class="bottom">
+                    <span class="txt">Not flexible ? We are seraching other good flights with similar prices for you</span>
+                </div>
+            </div>
+        </div>
 
+        <div class="other-flights-cont">
+            
+        </div>
+        
     </div>
+
+</script>
+
+<script id="month-item-filter-template" type="text/x-handlebars-template">
+
+    <div class="month" data-m="{{month}}" data-y="{{year}}">{{txt}}</div>
 
 </script>
 
@@ -118,28 +158,26 @@
 </script>
 
 
-<script id="anytime-timeSlider-template" type="text/x-handlebars-template">
-    <div class="anytime-slider-cont">
-        <div class="title">How many days would you like to stay in destination?</div>
-        <div class="inner-cont">
+<script id="range-slider-template" type="text/x-handlebars-template">
+    
+        <div class="slider-cont">
             
             <div class="tbl">
                 <div class="left">
-                    <input id="daysFrom" type="number" />
+                    <input id="{{id}}_from" type="number" />
                 </div>
                 <div class="center">
                     <div class="inner-cont-slider">
-                        <div id="daysSlider"></div>
+                        <div id="{{id}}"></div>
                     </div>
                 </div>
                 <div class="right">
-                    <input id="daysTo" type="number" />
+                    <input id="{{id}}_to" type="number" />
                 </div>
             </div>
             
-            
         </div>
-    </div>
+    
 </script>
 
     <script id="connection-single-flight-template" type="text/x-handlebars-template">

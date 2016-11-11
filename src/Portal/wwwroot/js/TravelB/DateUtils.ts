@@ -5,8 +5,8 @@ module TravelB {
 			var result = new Date(date);
 			result.setDate(result.getDate() + days);
 			return result;
-		}
-
+			}
+			
 		public static myDateToStr(myDate) {
 			return `${myDate.Day}.${myDate.Month}.${myDate.Year}`;
 		}

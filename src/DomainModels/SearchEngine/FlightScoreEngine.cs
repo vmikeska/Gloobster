@@ -8,6 +8,7 @@ using Gloobster.DomainInterfaces.SearchEngine;
 using Gloobster.DomainObjects;
 using Gloobster.DomainObjects.SearchEngine;
 using Gloobster.Entities;
+using Gloobster.Enums.SearchEngine;
 using FlightDO = Gloobster.DomainObjects.SearchEngine.FlightDO;
 
 namespace Gloobster.DomainModels.SearchEngine
@@ -18,7 +19,25 @@ namespace Gloobster.DomainModels.SearchEngine
         
         private static List<AirportEntity> Airports;
 
-        public ScoredFlightsDO FilterFlightsByScore(List<FlightDO> allFlights)
+        public double MinIndexByScoreLevel(ScoreLevel level)
+        {
+            double oneLevel = 0.5/3;
+            double baseIndex = 0.5;
+
+            if (level == ScoreLevel.Standard)
+            {
+                return baseIndex;
+            }
+
+            if (level == ScoreLevel.Good)
+            {
+                return baseIndex + oneLevel;
+            }
+
+            return baseIndex + (oneLevel*2);
+        }
+
+        public ScoredFlightsDO FilterFlightsByScore(List<FlightDO> allFlights, ScoreLevel level = ScoreLevel.Standard)
         {
             var res = new ScoredFlightsDO
             {
@@ -45,7 +64,10 @@ namespace Gloobster.DomainModels.SearchEngine
                 }
 
                 f.FlightScore = score.Value;
-                if (score >= 0.5)
+
+                double treshold = MinIndexByScoreLevel(level);
+
+                if (score >= treshold)
                 {
                     res.Passed.Add(f);
                 }

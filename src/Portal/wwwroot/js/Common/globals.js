@@ -75,4 +75,10 @@ var TripEntityType;
     TripEntityType[TripEntityType["Place"] = 0] = "Place";
     TripEntityType[TripEntityType["Travel"] = 1] = "Travel";
 })(TripEntityType || (TripEntityType = {}));
+var ScoreLevel;
+(function (ScoreLevel) {
+    ScoreLevel[ScoreLevel["Excellent"] = 0] = "Excellent";
+    ScoreLevel[ScoreLevel["Good"] = 1] = "Good";
+    ScoreLevel[ScoreLevel["Standard"] = 2] = "Standard";
+})(ScoreLevel || (ScoreLevel = {}));
 //# sourceMappingURL=globals.js.map

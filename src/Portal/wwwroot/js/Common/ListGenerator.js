@@ -1,25 +1,5 @@
 var Common;
 (function (Common) {
-    var ListGeneratorTest = (function () {
-        function ListGeneratorTest() {
-        }
-        ListGeneratorTest.prototype.test = function (myItems) {
-            var lg = ListGenerator.init($("#theCont"), "myItem-template");
-            lg.customMapping = function (item) {
-                return {
-                    asdf: item.a,
-                    asddd: item.b
-                };
-            };
-            lg.evnt($(".delete"), function (e, $item, $target) {
-            });
-            lg.evnt($(".add"), function (e, $item, $target) {
-            });
-            lg.generateList(myItems);
-        };
-        return ListGeneratorTest;
-    }());
-    Common.ListGeneratorTest = ListGeneratorTest;
     var ListGenerator = (function () {
         function ListGenerator() {
             this.clearCont = false;
@@ -27,12 +7,19 @@ var Common;
             this.appendStyle = "append";
             this.$items = [];
         }
+        Object.defineProperty(ListGenerator, "v", {
+            get: function () {
+                return Views.ViewBase.currentView;
+            },
+            enumerable: true,
+            configurable: true
+        });
         ListGenerator.init = function ($cont, itemTemplateName) {
             var lg = new ListGenerator();
             lg.$cont = $cont;
             lg.itemTemplateName = itemTemplateName;
             lg.eventHandlers = [];
-            lg.itemTemplate = Views.ViewBase.currentView.registerTemplate(lg.itemTemplateName);
+            lg.itemTemplate = this.v.registerTemplate(lg.itemTemplateName);
             return lg;
         };
         ListGenerator.prototype.destroy = function () {
@@ -55,6 +42,12 @@ var Common;
                 $item.data("no", itemNo);
                 itemNo++;
             });
+            if (items.length === 0) {
+                var t = ListGenerator.v.registerTemplate(this.emptyTemplate);
+                var $t = $(t());
+                this.$cont.html($t);
+                this.$items.push($t);
+            }
         };
         ListGenerator.prototype.generateItem = function (item) {
             var context = item;

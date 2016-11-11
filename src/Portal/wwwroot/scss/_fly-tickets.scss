@@ -1,4 +1,8 @@
 ﻿
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
 .fly-tickets{
    
      .map {
@@ -45,53 +49,88 @@
         float: left;
     }
 
-    .anytime-slider-cont {
+    .other-flights-empty{
         text-align: center;
-        margin-top: 20px;
-        margin-bottom: 20px;
 
-        .title {
+        .smile {
+            display: inline-block;
+            font-size: 40px;
             font-weight: bold;
+            color: $dark-blue;
+            margin-right: 25px;
         }
 
-        .inner-cont {
-            /*width: 80%;*/ 
+        .info {
+            margin: 10px;
             display: inline-block;
+            font-weight: bold;
+            padding: 20px;
+            border: 2px solid $orange;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+    }
 
-            input {
-                border: 1px solid $light-blue;
-                border-radius: 4px;
-                width: 30px;
-                text-align:center;
+    .months-filter {
+        margin-top: 8px;
+        margin-bottom: 8px;
+
+        .month{
+            display: inline;
+            background-color: $light-blue3;
+            color: white;
+            padding: 4px;
+            margin-left: 2px;
+            margin-right: 2px;
+            border-radius: 4px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: $dark-blue;
             }
 
-            .tbl {
-                display: table;
+            &.active {
+                background-color: $dark-blue;
+            }
+        }
+    }
+
+    .slider-cont {
+        /*width: 80%;*/ 
+        display: inline-block;
+
+        input {
+            border: 1px solid $light-blue;
+            border-radius: 4px;
+            width: 30px;
+            text-align:center;
+        }
+
+        .tbl {
+            display: table;
+            width: 100%;
+
+            .left {
+                display: table-cell;
+
+                padding-right: 16px;
+            }
+
+            .center {
+                display: table-cell;
                 width: 100%;
 
-                .left {
-                    display: table-cell;
-
-                    padding-right: 16px;
-                }
-
-                .center {
-                    display: table-cell;
-                    width: 100%;
-
-                    .inner-cont-slider {
-                        display: block !important;
-                    }
-                }
-
-                .right {
-                    display: table-cell;
-
-                    padding-left: 16px;
+                .inner-cont-slider {
+                    display: block !important;
                 }
             }
+
+            .right {
+                display: table-cell;
+
+                padding-left: 16px;
+            }
         }
-       
     }
 
 
@@ -199,6 +238,7 @@
             }
 
             .level {
+                @include noselect;
                 
                 &.active {
                     border: 2px solid $light-blue3;
@@ -820,20 +860,75 @@
 
       
   .city-deal {
+      border: 1px solid $light-blue;
+      border-radius: 4px;
+      padding: 8px;
+      margin-bottom: 20px;
+
       .title {
-          font-size: 1.2em;
+          font-size: 1.3em;
           font-weight: bold;
+          margin-bottom: 12px;
+          text-decoration: underline;
       }
 
+      .other-flights-filter {
+          background-color: $very-light-blue;
+
+        text-align: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+
+        .title {
+            font-weight: bold;
+        }
+
+    }
+
       .other-flights-preloader {
-          margin: 10px;
-          display: inline-block;
-          font-weight: bold;
-          padding: 20px;
-          background-color: $yellow;
+          text-align: center;
+
+          .center {
+              margin: 10px;
+              display: inline-block;
+              font-weight: bold;
+              padding: 20px;
+              border: 2px solid $orange;
+              font-weight: bold;
+              border-radius: 4px;
+            }
+          
       }
 
   }
 
+  .plane-preloader{
+      $spin: 1s;
+      $size: 60px;
+      $size-half: 30px;
 
+        position:relative;
+        display: inline-block;
+        width: $size;
+        height: $size;
+            
+        img{
+                
+            position: absolute;
+            top: 50%;
+            left: 50%;
+                
+            width: $size;
+            height: $size;
+
+            color: $dark-blue;
+                
+            margin-top: -$size-half;
+            margin-left: -$size-half;
+
+            -webkit-animation:spin $spin linear infinite;
+            -moz-animation:spin $spin linear infinite;
+            animation:spin $spin linear infinite;
+        }
+    }  
 }
