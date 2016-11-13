@@ -127,12 +127,19 @@ var Planning;
         };
         AnytimeAggUtils.getScoreStars = function (index) {
             var percents = index * 100;
-            var base = percents - 50;
-            var stars = Math.floor(base / 10);
-            if ((base % 10) > 0) {
-                stars++;
+            if (percents >= 90) {
+                return 5;
             }
-            return stars;
+            if (percents >= 80) {
+                return 4;
+            }
+            if (percents >= 70) {
+                return 3;
+            }
+            if (percents >= 60) {
+                return 2;
+            }
+            return 1;
         };
         return AnytimeAggUtils;
     }());

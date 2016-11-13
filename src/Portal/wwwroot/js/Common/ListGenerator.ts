@@ -8,6 +8,7 @@ module Common {
 		public eventHandlers: EventHandler[];
 		public customMapping = null;
 		public appendStyle = "append";
+		public isAsync = false;
 			
 		private itemTemplate;
 		public emptyTemplate;
@@ -50,23 +51,59 @@ module Common {
 				this.$cont.empty();
 			}
 
-			var itemNo = 0;
-			items.forEach((item) => {
-				var $item = this.generateItem(item);
-				this.$items.push($item);
-				$item.data("no", itemNo);
-				itemNo++;
-			});
+			if (items.length === 0) {
 
-				if (items.length === 0) {
-						var t = ListGenerator.v.registerTemplate(this.emptyTemplate);
-						var $t = $(t());
+				if (this.emptyTemplate) {
+					var t = ListGenerator.v.registerTemplate(this.emptyTemplate);
+					var $t = $(t());
 
-						this.$cont.html($t);
+					this.$cont.html($t);
 
-						this.$items.push($t);
+					this.$items.push($t);
 				}
+
+				return;
+			}
+
+
+			var by = 10;
+			if (this.isAsync && (items.length > by)) {
+
+				var to = by;
+				var max = items.length - 1;
+				for (var i = 0; i <= max; i = i + by) {
+
+					if (to > max) {
+						to = max + 1;
+					}
+						
+					var index = i / by;
+
+					this.genItemsChunkTime(i, index, items.slice(i, to));
+
+					to = to + by;
+				}
+			} else {
+					this.genItemsChunk(0, items);	
+			}				
 		}
+
+		private genItemsChunkTime(startNo, chunkNo, items) {
+			setTimeout(() => {
+					this.genItemsChunk(startNo, items);
+				},
+				500 * chunkNo);
+		}
+
+		private genItemsChunk(startNo, items) {
+					var itemNo = startNo;
+					items.forEach((item) => {
+							var $item = this.generateItem(item);
+							this.$items.push($item);
+							$item.data("no", itemNo);
+							itemNo++;
+					});
+			}
 
 			public activeItem: Function;
 

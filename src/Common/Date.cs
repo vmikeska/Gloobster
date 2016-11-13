@@ -69,6 +69,12 @@ namespace Gloobster.Common
             var dateTime = new DateTime(date.Year, date.Month, date.Day, 23, 59, 59, kind);
             return dateTime;
         }
-        
+
+        public static DateTime ToDateStart(this Date date, DateTimeKind kind)
+        {
+            var dateTime = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, kind);
+            return dateTime;
+        }
+
     }
 }

@@ -5,6 +5,7 @@ var Common;
             this.clearCont = false;
             this.customMapping = null;
             this.appendStyle = "append";
+            this.isAsync = false;
             this.$items = [];
         }
         Object.defineProperty(ListGenerator, "v", {
@@ -31,23 +32,50 @@ var Common;
             this.eventHandlers.push(new EventHandler(selector, handler));
         };
         ListGenerator.prototype.generateList = function (items) {
-            var _this = this;
             if (this.clearCont) {
                 this.$cont.empty();
             }
-            var itemNo = 0;
+            if (items.length === 0) {
+                if (this.emptyTemplate) {
+                    var t = ListGenerator.v.registerTemplate(this.emptyTemplate);
+                    var $t = $(t());
+                    this.$cont.html($t);
+                    this.$items.push($t);
+                }
+                return;
+            }
+            var by = 10;
+            if (this.isAsync && (items.length > by)) {
+                var to = by;
+                var max = items.length - 1;
+                for (var i = 0; i <= max; i = i + by) {
+                    if (to > max) {
+                        to = max + 1;
+                    }
+                    var index = i / by;
+                    this.genItemsChunkTime(i, index, items.slice(i, to));
+                    to = to + by;
+                }
+            }
+            else {
+                this.genItemsChunk(0, items);
+            }
+        };
+        ListGenerator.prototype.genItemsChunkTime = function (startNo, chunkNo, items) {
+            var _this = this;
+            setTimeout(function () {
+                _this.genItemsChunk(startNo, items);
+            }, 500 * chunkNo);
+        };
+        ListGenerator.prototype.genItemsChunk = function (startNo, items) {
+            var _this = this;
+            var itemNo = startNo;
             items.forEach(function (item) {
                 var $item = _this.generateItem(item);
                 _this.$items.push($item);
                 $item.data("no", itemNo);
                 itemNo++;
             });
-            if (items.length === 0) {
-                var t = ListGenerator.v.registerTemplate(this.emptyTemplate);
-                var $t = $(t());
-                this.$cont.html($t);
-                this.$items.push($t);
-            }
         };
         ListGenerator.prototype.generateItem = function (item) {
             var context = item;

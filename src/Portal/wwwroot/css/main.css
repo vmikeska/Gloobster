@@ -4411,13 +4411,21 @@ footer {
       .fly-tickets .months-filter .month.active {
         background-color: #005476; }
   .fly-tickets .slider-cont {
-    /*width: 80%;*/
+    width: 100% !important;
     display: inline-block; }
     .fly-tickets .slider-cont input {
       border: 1px solid #65BDD7;
       border-radius: 4px;
       width: 30px;
       text-align: center; }
+    .fly-tickets .slider-cont .value {
+      border: 1px solid #65BDD7;
+      border-radius: 4px;
+      width: 30px;
+      text-align: center;
+      padding: 4px;
+      background-color: white;
+      font-weight: bold; }
     .fly-tickets .slider-cont .tbl {
       display: table;
       width: 100%; }
@@ -4850,22 +4858,111 @@ footer {
           display: inline-block;
           vertical-align: top; } }
   .fly-tickets .city-deal {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
     border: 1px solid #65BDD7;
-    border-radius: 4px;
-    padding: 8px;
+    border-top: 5px solid #3298C1;
     margin-bottom: 20px; }
+    .fly-tickets .city-deal .title-top {
+      font-size: 1.3em;
+      font-weight: bold;
+      padding: 12px;
+      background-color: #F0F8FA; }
+    .fly-tickets .city-deal .title-deal {
+      font-size: 1.3em;
+      font-weight: bold;
+      text-decoration: underline;
+      padding-left: 14px;
+      padding-bottom: 12px;
+      background-color: #F0F8FA; }
+    .fly-tickets .city-deal .splitter {
+      padding: 12px;
+      background-color: #F0F8FA; }
+      .fly-tickets .city-deal .splitter div {
+        border-top: 1px solid #65BDD7; }
+    .fly-tickets .city-deal .search-tabs {
+      background-color: white;
+      padding-top: 20px; }
+      .fly-tickets .city-deal .search-tabs .tab {
+        position: relative;
+        bottom: -1px;
+        display: inline-block;
+        margin-left: 30px;
+        font-weight: bold;
+        font-size: 1.1em;
+        color: #3298C1;
+        border: 1px solid #3298C1;
+        border-bottom-width: 0;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding: 12px;
+        cursor: pointer;
+        background-color: #F0F8FA; }
+        .fly-tickets .city-deal .search-tabs .tab.active, .fly-tickets .city-deal .search-tabs .tab:hover {
+          color: white;
+          background-color: #3298C1; }
+    .fly-tickets .city-deal .tabs-cont {
+      background-color: #F0F8FA;
+      border-top: 1px solid #3298C1; }
     .fly-tickets .city-deal .title {
       font-size: 1.3em;
       font-weight: bold;
       margin-bottom: 12px;
-      text-decoration: underline; }
+      text-decoration: underline;
+      padding-left: 14px; }
+      .fly-tickets .city-deal .title.blue {
+        background-color: #F0F8FA; }
     .fly-tickets .city-deal .other-flights-filter {
-      background-color: #F0F8FA;
+      padding-left: 12px;
+      padding-right: 12px;
       text-align: center;
       margin-top: 20px;
       margin-bottom: 20px; }
       .fly-tickets .city-deal .other-flights-filter .title {
         font-weight: bold; }
+      .fly-tickets .city-deal .other-flights-filter .ltbl {
+        width: 100%;
+        display: table; }
+        .fly-tickets .city-deal .other-flights-filter .ltbl .block {
+          width: 50%;
+          display: table-cell; }
+      @media screen and (max-width: 800px) {
+        .fly-tickets .city-deal .other-flights-filter .ltbl {
+          display: block; }
+          .fly-tickets .city-deal .other-flights-filter .ltbl .block {
+            width: initial;
+            display: block; } }
+    .fly-tickets .city-deal .dep-arr {
+      padding: 10px; }
+      .fly-tickets .city-deal .dep-arr .tit {
+        font-weight: bold;
+        font-size: 1.2em;
+        margin-bottom: 6px; }
+      .fly-tickets .city-deal .dep-arr .date-cont {
+        position: relative;
+        display: inline-block; }
+        .fly-tickets .city-deal .dep-arr .date-cont input {
+          font-size: 1.1em;
+          width: 120px;
+          padding-left: 35px;
+          border: 1px solid #65BDD7;
+          color: #005476; }
+        .fly-tickets .city-deal .dep-arr .date-cont .icon-calendar {
+          font-size: 1.3em;
+          position: absolute;
+          left: 7px;
+          top: 10px;
+          color: #005476; }
+      .fly-tickets .city-deal .dep-arr .time-cont {
+        display: block; }
+    .fly-tickets .city-deal .srvc {
+      padding: 12px; }
+      .fly-tickets .city-deal .srvc .lbtn, .fly-tickets .city-deal .srvc .photo-button label, .photo-button .fly-tickets .city-deal .srvc label, .fly-tickets .city-deal .srvc .wiki-page .langs a, .wiki-page .langs .fly-tickets .city-deal .srvc a {
+        color: white;
+        background-color: #F56E12;
+        font-weight: bold; }
+        .fly-tickets .city-deal .srvc .lbtn:hover, .fly-tickets .city-deal .srvc .photo-button label:hover, .photo-button .fly-tickets .city-deal .srvc label:hover, .fly-tickets .city-deal .srvc .wiki-page .langs a:hover, .wiki-page .langs .fly-tickets .city-deal .srvc a:hover {
+          background-color: #005476; }
     .fly-tickets .city-deal .other-flights-preloader {
       text-align: center; }
       .fly-tickets .city-deal .other-flights-preloader .center {

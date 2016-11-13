@@ -56,6 +56,27 @@ namespace Gloobster.Portal.Controllers.Api.Planning
                 fr.daysInDestinationTo = req.daysTo.ToString();                                
 		    }
 
+            if (req.ss == SpSearchStyle.CustomCity)
+            {
+                Date dfrom = req.dateFrom.ToDate('_');
+                var dtFrom = dfrom.ToDateStart(DateTimeKind.Utc);
+                Date dto = req.dateTo.ToDate('_');
+                var dtTo = dto.ToDateStart(DateTimeKind.Utc);
+
+                var spanDiff = dtTo - dtFrom;
+                int days = spanDiff.Days;
+                
+                fr.flyFrom = req.codeFrom;
+                fr.to = req.codeTo;
+                
+                fr.dateFrom = dfrom.ToString();
+                fr.dateTo = dfrom.ToString();
+                fr.daysInDestinationFrom = days.ToString();
+                fr.daysInDestinationTo = days.ToString();
+
+                fr.dateTo = req.dateTo.Replace("_", "/");                
+            }
+            
             FlightSearchDO search = SpProvider.Search(fr);
 		    var evaluatedFlights = ScoreEngine.FilterFlightsByScore(search.Flights, ScoreLevel.Standard);
             
@@ -76,7 +97,10 @@ namespace Gloobster.Portal.Controllers.Api.Planning
         public int daysTo { get; set; }
         public int monthNo { get; set; }
         public int yearNo { get; set; }
+
+        public string dateFrom { get; set; }
+        public string dateTo { get; set; }
     }
 
-    public enum SpSearchStyle { BestDealsOfCity }
+    public enum SpSearchStyle { BestDealsOfCity, CustomCity }    
 }

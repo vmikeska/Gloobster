@@ -12,156 +12,232 @@
 
 </script>
 
+@*remove this when not needed, was just for test*@
+<script id="list-tst-template" type="text/x-handlebars-template">
+    <div>{{v}}</div>
+</script>
+
+<script id="deals-srch-template" type="text/x-handlebars-template">
+    <div class="other-flights-filter">
+
+        <div class="title">How many days would you like to stay in destination?</div>
+        <div class="days-range"></div>
+
+        <div class="title">What month are you interested of?</div>
+        <div class="months"></div>
+
+    </div>
+</script>
+
+<script id="classics-srch-template" type="text/x-handlebars-template">
+    <div class="other-flights-filter">
+        
+        <div class="ltbl">
+
+            <div class="block">
+                <div class="dep-arr dep">
+                    <div class="tit">Deparature</div>
+
+                    <div class="middle">
+                        <div class="date-cont">
+                            <input class="date" type="text" />
+                            <span class="icon-calendar"></span>
+                        </div>
+                    </div>
+                    <div class="bottom">
+                        <div class="time"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="block">
+                <div class="dep-arr arr">
+                    <div class="tit">Arrival</div>
+
+                    <div class="date-cont-all">
+                        <div class="date-cont">
+                            <input class="date" type="text" />
+                            <span class="icon-calendar"></span>
+                        </div>
+                    </div>
+                    <div class="time-cont">
+                        <div class="time"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="srvc">
+            <a id="search" class="lbtn" href="#">Search</a>
+        </div>
+
+    </div>
+</script>
+
 <script id="city-deals-template" type="text/x-handlebars-template">
-    
-    <div class="city-deal" data-gid="{{gid}}">
-        
-        
 
-        <div class="title">
-            Our best deals for {{cityName}}
-        </div>
-        
-        <div class="flights">
+        <div class="city-deal" data-gid="{{gid}}">
 
-        </div>
-        
-        <div class="title">
-            Not flexible? See another options in following months
-        </div>
+            <div class="title-top">
+                Deals for {{cityName}} ({{codeFrom}} - {{codeTo}})
+            </div>
 
-        <div class="other-flights-filter" style="display: none">
+            <div class="splitter">
+                <div></div>
+            </div>
+
+            <div class="title-deal">
+                Our best deal
+            </div>
+
+            <div class="flights">
+
+            </div>
+
+            <div class="title">
+                Not flexible? See another options in following months
+            </div>
+
+            <div class="search-tabs">
+                <div class="tab active" data-t="deals">
+                    Best deal search
+                </div>
+                <div class="tab" data-t="classic">
+                    Classic search
+                </div>
+            </div>
+
+            <div class="tabs-cont">
+
+            </div>
             
-            <div class="title">How many days would you like to stay in destination?</div>
-            <div class="days-range"></div>
+            <div class="splitter">
+                <div></div>
+            </div>
 
-            <div class="title">What month are you interested of?</div>
-            <div class="months"></div>
-            
-        </div>
-        
-        <div class="other-flights-preloader">            
-            <div class="center">
-                <div class="top">
-                    <div class="plane-preloader">
-                        <img src="/images/n/Plane_icon.svg" />
+            <div class="other-flights-preloader">
+                <div class="center">
+                    <div class="top">
+                        <div class="plane-preloader">
+                            <img src="/images/n/Plane_icon.svg" />
+                        </div>
+                    </div>
+                    <div class="bottom">
+                        <span class="txt">Not flexible ? We are seraching other good flights with similar prices for you</span>
                     </div>
                 </div>
-                <div class="bottom">
-                    <span class="txt">Not flexible ? We are seraching other good flights with similar prices for you</span>
-                </div>
+            </div>
+
+            <div class="other-flights-cont">
+
+            </div>
+
+        </div>
+
+    </script>
+
+    <script id="month-item-filter-template" type="text/x-handlebars-template">
+
+        <div class="month" data-m="{{month}}" data-y="{{year}}">{{txt}}</div>
+
+    </script>
+
+    <script id="filtering-weekend-template" type="text/x-handlebars-template">
+
+        <div id="cbLongWeekend" class="checkbox-all">
+            <div class="checker-all">
+                <div class="checker icon-checkmark2"></div>
+            </div>
+            <div class="label">
+                Include long weekends
             </div>
         </div>
 
-        <div class="other-flights-cont">
-            
-        </div>
-        
-    </div>
+    </script>
 
-</script>
+    <script id="filtering-template" type="text/x-handlebars-template">
 
-<script id="month-item-filter-template" type="text/x-handlebars-template">
+        <div class="filtering">
 
-    <div class="month" data-m="{{month}}" data-y="{{year}}">{{txt}}</div>
-
-</script>
-
-<script id="filtering-weekend-template" type="text/x-handlebars-template">
-    
-    <div id="cbLongWeekend" class="checkbox-all">
-        <div class="checker-all">
-            <div class="checker icon-checkmark2"></div>
-        </div>
-        <div class="label">
-            Include long weekends
-        </div>
-    </div>
-
-</script>
-
-<script id="filtering-template" type="text/x-handlebars-template">
-    
-    <div class="filtering">
-        
-        <div class="layout-table">
-            <div class="l">                
-                <div class="locations">
-
-                </div>
-            </div>
-
-            <div class="r">
-
-                <div class="rating-filter">
-                    <div class="levels">
-
-                        <div class="itm">
-                            <div class="level lev5 active" data-s="5">
-                                <div class="num">20</div>
-                                <div class="stars">
-                                    <span class="icon-star-full"></span>
-                                    <span class="icon-star-full"></span>
-                                    <span class="icon-star-full"></span>
-                                    <span class="icon-star-full"></span>
-                                    <span class="icon-star-full"></span>
-                                </div>
-                                <div class="txt">Excellent deals</div>
-                            </div>
-                        </div>
-
-                        <div class="itm">
-                            <div class="level lev3" data-s="3">
-                                <div class="num">99</div>
-                                <div class="stars">
-                                    <span class="icon-star-full"></span>
-                                    <span class="icon-star-full"></span>
-                                    <span class="icon-star-full"></span>
-                                </div>
-                                <div class="txt">Good deals</div>
-                            </div>
-                        </div>
-
-                        <div class="itm">
-                            <div class="level lev1" data-s="1">
-                                <div class="num">20</div>
-                                <div class="stars">
-                                    <span class="icon-star-full"></span>
-                                </div>
-                                <div class="txt">Standard deals</div>
-                            </div>
-                        </div>
+            <div class="layout-table">
+                <div class="l">
+                    <div class="locations">
 
                     </div>
                 </div>
 
+                <div class="r">
+
+                    <div class="rating-filter">
+                        <div class="levels">
+
+                            <div class="itm">
+                                <div class="level lev5 active" data-s="5">
+                                    <div class="num">20</div>
+                                    <div class="stars">
+                                        <span class="icon-star-full"></span>
+                                        <span class="icon-star-full"></span>
+                                        <span class="icon-star-full"></span>
+                                        <span class="icon-star-full"></span>
+                                        <span class="icon-star-full"></span>
+                                    </div>
+                                    <div class="txt">Excellent deals</div>
+                                </div>
+                            </div>
+
+                            <div class="itm">
+                                <div class="level lev3" data-s="3">
+                                    <div class="num">99</div>
+                                    <div class="stars">
+                                        <span class="icon-star-full"></span>
+                                        <span class="icon-star-full"></span>
+                                        <span class="icon-star-full"></span>
+                                    </div>
+                                    <div class="txt">Good deals</div>
+                                </div>
+                            </div>
+
+                            <div class="itm">
+                                <div class="level lev1" data-s="1">
+                                    <div class="num">20</div>
+                                    <div class="stars">
+                                        <span class="icon-star-full"></span>
+                                    </div>
+                                    <div class="txt">Standard deals</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sec-line">
+
+            </div>
+
+        </div>
+
+    </script>
+
+    <script id="filter-location-template" type="text/x-handlebars-template">
+        <div class="location" data-type="{{type}}">
+            <div class="ico-all">
+                <span class="icon icon-{{icon}}"></span>
+            </div>
+            <div class="txt">
+                <span>{{txt}}</span>
             </div>
         </div>
-        
-        <div class="sec-line">
-            
-        </div>
-
-    </div>
-
-</script>
-
-<script id="filter-location-template" type="text/x-handlebars-template">
-    <div class="location" data-type="{{type}}">
-        <div class="ico-all">
-            <span class="icon icon-{{icon}}"></span>
-        </div>
-        <div class="txt">
-            <span>{{txt}}</span>
-        </div>
-    </div>
-</script>
+    </script>
 
 
 <script id="range-slider-template" type="text/x-handlebars-template">
-    
+
         <div class="slider-cont">
-            
+
             <div class="tbl">
                 <div class="left">
                     <input id="{{id}}_from" type="number" />
@@ -175,12 +251,34 @@
                     <input id="{{id}}_to" type="number" />
                 </div>
             </div>
-            
+
         </div>
-    
+
+    </script>
+
+<script id="time-slider-template" type="text/x-handlebars-template">
+
+    <div class="slider-cont">
+
+        <div class="tbl">
+            <div class="left">
+                <span class="value" id="{{id}}_from"></span>
+            </div>
+            <div class="center">
+                <div class="inner-cont-slider">
+                    <div id="{{id}}"></div>
+                </div>
+            </div>
+            <div class="right">
+                <span class="value" id="{{id}}_to"></span>                
+            </div>
+        </div>
+
+    </div>
+
 </script>
 
-    <script id="connection-single-flight-template" type="text/x-handlebars-template">
+<script id="connection-single-flight-template" type="text/x-handlebars-template">
 
         <div class="flight-bck-cont {{customClass}}">
 
@@ -225,10 +323,10 @@
 
             </div>
         </div>
-    
-</script>
 
-<script id="connection-flight-template" type="text/x-handlebars-template">
+    </script>
+
+    <script id="connection-flight-template" type="text/x-handlebars-template">
 
         <div class="conn">
 
@@ -244,15 +342,15 @@
 
                     <div class="book-zone">
                         <div class="score">
-                            <div class="txt-score">                                
+                            <div class="txt-score">
                                 {{#ifCond scoreText "E"}}Excellent{{/ifCond}}
                                 {{#ifCond scoreText "G"}}Good{{/ifCond}}
-                                {{#ifCond scoreText "S"}}Standard{{/ifCond}}                                
+                                {{#ifCond scoreText "S"}}Standard{{/ifCond}}
                             </div>
                             <div class="stars-score">
 
                                 {{#for 0 scoreStars 1}}
-                                    <span class="icon-star-full"></span>
+                                <span class="icon-star-full"></span>
                                 {{/for}}
 
                             </div>
@@ -280,36 +378,36 @@
 
 
 
-<script id="resultGroupItemCountry-template" type="text/x-handlebars-template">
-    <div class="flight-result" data-cc="{{cc}}">
-        <div class="img-cont">
+    <script id="resultGroupItemCountry-template" type="text/x-handlebars-template">
+        <div class="flight-result" data-cc="{{cc}}">
+            <div class="img-cont">
 
-            <div class="img-wrap">
-                <img src="/images/n/flags-square/{{cc}}.svg" />
-            </div>
-
-            <div class="txt-cont darker">{{title}}</div>
-            <div class="price-cont">
-                <div class="wrap">
-                    <span class="from">from</span>
-                    <br />
-                    <span class="price-all">
-                        <span class="currency">€</span><span class="price">{{price}}</span>
-                    </span>
+                <div class="img-wrap">
+                    <img src="/images/n/flags-square/{{cc}}.svg" />
                 </div>
+
+                <div class="txt-cont darker">{{title}}</div>
+                <div class="price-cont">
+                    <div class="wrap">
+                        <span class="from">from</span>
+                        <br />
+                        <span class="price-all">
+                            <span class="currency">€</span><span class="price">{{price}}</span>
+                        </span>
+                    </div>
+                </div>
+
             </div>
+            <div class="items">
 
+                <table></table>
+
+            </div>
         </div>
-        <div class="items">
-
-            <table></table>
-
-        </div>
-    </div>
-</script>
+    </script>
 
 
-<script id="resultGroupItem-template" type="text/x-handlebars-template">
+    <script id="resultGroupItem-template" type="text/x-handlebars-template">
         <div class="flight-result" data-gid="{{gid}}" data-name="{{title}}">
             <div class="img-cont">
 
@@ -335,7 +433,7 @@
     </script>
 
 
-<script id="resultGroup-priceItem-template" type="text/x-handlebars-template">
+    <script id="resultGroup-priceItem-template" type="text/x-handlebars-template">
         <tr data-f="{{from}}" data-t="{{to}}">
             <td><strong>{{from}} → {{to}}</strong></td>
             <td>from</td>
@@ -344,31 +442,31 @@
         </tr>
     </script>
 
-<script id="grouped-country-city-template" type="text/x-handlebars-template">
-    <tr data-gid="{{gid}}">
-        <td><strong>{{name}}</strong></td>
-        <td>from</td>
-        <td><strong>€{{price}}</strong></td>
-        <td><a class="btn" href="#">see offers</a></td>
-    </tr>
-</script>
+    <script id="grouped-country-city-template" type="text/x-handlebars-template">
+        <tr data-gid="{{gid}}">
+            <td><strong>{{name}}</strong></td>
+            <td>from</td>
+            <td><strong>€{{price}}</strong></td>
+            <td><a class="btn" href="#">see offers</a></td>
+        </tr>
+    </script>
 
 
-<script id="weekend-week-template" type="text/x-handlebars-template">
-    <div class="weekend-item">
-        
-        <div class="title">
-            <span class="week">{{week}}. weekend</span> <span class="date">({{dateFrom}} - {{dateTo}})</span>
+    <script id="weekend-week-template" type="text/x-handlebars-template">
+        <div class="weekend-item">
+
+            <div class="title">
+                <span class="week">{{week}}. weekend</span> <span class="date">({{dateFrom}} - {{dateTo}})</span>
+            </div>
+
+            <div class="cont"></div>
         </div>
 
-        <div class="cont"></div>
-    </div>
-    
-</script>
+    </script>
 
 
 
-<script id="custom-template" type="text/x-handlebars-template">
+    <script id="custom-template" type="text/x-handlebars-template">
 
         <div class="blue-form margin form">
             <div class="table future-table">

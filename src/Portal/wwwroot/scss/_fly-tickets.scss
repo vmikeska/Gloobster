@@ -95,8 +95,8 @@
         }
     }
 
-    .slider-cont {
-        /*width: 80%;*/ 
+    .slider-cont {        
+        width: 100% !important;
         display: inline-block;
 
         input {
@@ -104,6 +104,16 @@
             border-radius: 4px;
             width: 30px;
             text-align:center;
+        }
+
+        .value {
+            border: 1px solid $light-blue;
+            border-radius: 4px;
+            width: 30px;
+            text-align:center;
+            padding: 4px;
+            background-color: white;
+            font-weight: bold;
         }
 
         .tbl {
@@ -860,20 +870,88 @@
 
       
   .city-deal {
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
       border: 1px solid $light-blue;
-      border-radius: 4px;
-      padding: 8px;
+      border-top: 5px solid $light-blue3;
+      
       margin-bottom: 20px;
+
+
+      .title-top {
+          font-size: 1.3em;
+          font-weight: bold;
+          padding: 12px;
+          background-color: $very-light-blue;    
+      }
+
+      .title-deal {
+          font-size: 1.3em;
+          font-weight: bold;          
+          text-decoration: underline;
+          padding-left: 14px;
+          padding-bottom: 12px;
+
+          background-color: $very-light-blue;          
+      }
+
+      .splitter{
+          padding: 12px;
+          background-color: $very-light-blue;
+          div{
+              border-top: 1px solid $light-blue;
+          }
+      }
+
+      .search-tabs {
+          background-color: white;
+          padding-top: 20px;
+
+          .tab{
+              position:relative;
+              bottom: -1px;
+
+              display: inline-block;
+              margin-left: 30px;
+              font-weight: bold;
+              font-size: 1.1em;
+              color: $light-blue3;
+              border: 1px solid $light-blue3;
+              border-bottom-width: 0;
+              border-top-left-radius: 8px;
+              border-top-right-radius: 8px;
+              padding: 12px;
+              cursor: pointer;
+              background-color: $very-light-blue;
+
+              &.active,&:hover{
+                  color: white;
+                  background-color: $light-blue3;
+              }
+          }
+      }
+
+      .tabs-cont{
+          
+          background-color: $very-light-blue;
+          border-top: 1px solid $light-blue3;
+      }
 
       .title {
           font-size: 1.3em;
           font-weight: bold;
           margin-bottom: 12px;
           text-decoration: underline;
+          padding-left: 14px;
+
+          &.blue{
+              background-color: $very-light-blue;
+          }
       }
 
       .other-flights-filter {
-          background-color: $very-light-blue;
+          padding-left: 12px;
+          padding-right: 12px;
 
         text-align: center;
         margin-top: 20px;
@@ -883,7 +961,77 @@
             font-weight: bold;
         }
 
+        .ltbl{
+            width: 100%;
+            display: table;
+
+            .block{
+                width: 50%;
+                display: table-cell;                
+            }
+        }
+
+        @include below-width(800) {
+            .ltbl{                
+                display: block;
+
+                .block{
+                    width: initial;
+                    display: block;
+                }
+            }
+        }
+
     }
+
+      .dep-arr {          
+          padding: 10px;
+
+          .tit{
+              font-weight: bold;
+              font-size: 1.2em;
+              margin-bottom: 6px;
+          }
+
+          .date-cont{
+              position: relative;              
+              display: inline-block;
+
+              input {
+                  font-size: 1.1em;
+                  width: 120px;
+                  padding-left: 35px;
+                  border: 1px solid $light-blue;
+                  color: $dark-blue;
+              }
+
+              .icon-calendar {
+                  font-size: 1.3em;
+                  position: absolute;
+                  left: 7px;
+                  top: 10px;
+                  color: $dark-blue;
+              }
+          }
+
+          .time-cont {
+              display: block;              
+          }
+      }
+
+      .srvc{
+          padding: 12px;
+
+          .lbtn{
+              color: white;
+              background-color: $orange;
+              font-weight: bold;
+
+              &:hover {
+                  background-color: $dark-blue;
+              }
+          }
+      }
 
       .other-flights-preloader {
           text-align: center;

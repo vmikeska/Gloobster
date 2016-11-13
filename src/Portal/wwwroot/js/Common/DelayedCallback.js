@@ -29,5 +29,24 @@ var Common;
         return DelayedCallback;
     }());
     Common.DelayedCallback = DelayedCallback;
+    var DelayedReturn = (function () {
+        function DelayedReturn() {
+            this.delay = 1000;
+            this.timeoutId = null;
+        }
+        DelayedReturn.prototype.receive = function (callback) {
+            var _this = this;
+            if (this.timeoutId) {
+                clearTimeout(this.timeoutId);
+                this.timeoutId = null;
+            }
+            this.timeoutId = setTimeout(function () {
+                _this.timeoutId = null;
+                callback();
+            }, this.delay);
+        };
+        return DelayedReturn;
+    }());
+    Common.DelayedReturn = DelayedReturn;
 })(Common || (Common = {}));
 //# sourceMappingURL=DelayedCallback.js.map
