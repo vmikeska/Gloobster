@@ -34,11 +34,25 @@
 
 
 		}
-			
+
+		private mapSwitch(callback) {
+			var $cont = $(".map-type-switch");
+			var $btns = $cont.find(".btn");
+			$btns.click((e) => {
+				var $t = $(e.target);
+
+				$btns.removeClass("active");
+				$t.addClass("active");
+
+				var type = $t.hasClass("country") ? FlightCacheRecordType.Country : FlightCacheRecordType.City;
+				callback(type);
+			});
+		}
+
 		private initTabs() {
 				
 				this.tabs = new Planning.Tabs($("#naviCont"), "main", 50);
-
+				this.tabs.initCall = false;
 				this.tabs.onBeforeSwitch = () => {
 						this.$cont.empty();
 						this.$filter.empty();
@@ -84,25 +98,29 @@
 		}
 
 		public initialize() {
-			this.maps = new Maps.MapsCreatorMapBox2D();
-			this.maps.setRootElement("map");
-			this.maps.show((map) => {
-				this.planningMap = new Planning.PlanningMap(map);
-
-				this.planningMap.onSelectionChanged = (id: string, newState: boolean, type: FlightCacheRecordType) => {
-						if (newState) {
-								this.resultsEngine.selectionChanged(id, newState, type);
-						}						
-				}
+				this.planningMap = new Planning.PlanningMap();
 				
-				this.planningMap.loadCategory(Planning.PlanningType.Anytime);
-					
+				this.planningMap.onMapLoaded = () => {
+					this.setAnytime();
+				}
+
+			this.planningMap.onSelectionChanged = (id: string, newState: boolean, type: FlightCacheRecordType) => {
+					//todo: unselecting
+					if (newState) {
+					this.resultsEngine.selectionChanged(id, newState, type);
+				}
+			}
+
+
+			this.mapSwitch((type) => {
+
 			});
+			
 
 			var locationDialog = new LocationSettingsDialog();
 
 			this.initTabs();
-		}			
+		}
 	} 
 
 }

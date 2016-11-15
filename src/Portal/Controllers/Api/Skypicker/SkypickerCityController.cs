@@ -78,7 +78,7 @@ namespace Gloobster.Portal.Controllers.Api.Planning
             }
             
             FlightSearchDO search = SpProvider.Search(fr);
-		    var evaluatedFlights = ScoreEngine.FilterFlightsByScore(search.Flights, ScoreLevel.Standard);
+		    var evaluatedFlights = ScoreEngine.FilterFlightsByScore(search.Flights, req.scoreLevel);
             
             return new ObjectResult(evaluatedFlights.Passed);
 		}

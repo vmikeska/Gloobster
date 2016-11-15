@@ -46,296 +46,317 @@ module Planning {
 						return $found;
 				}
 		}
-		
-		export class CityDetail {
 
-				private flightDetails: FlightDetails;
-				private v = Views.ViewBase.currentView;
-
-				private codeFrom;
-				private codeTo;
-				private cityName;
-				private gid;
-
-				private scoreLevel;
-
-				private slider: RangeSlider;
-				private monthsSel: MonthsSelector;
-
-				private $layout;
-
-				constructor(scoreLevel, codeFrom, codeTo, cityName, gid) {
-						this.flightDetails = new FlightDetails();
-
-						this.scoreLevel = scoreLevel;
-
-						this.codeFrom = codeFrom;
-						this.codeTo = codeTo;
-						this.cityName = cityName;
-						this.gid = gid;
-				}
-
-				public init(flights) {
-						flights = _.sortBy(flights, "Price");
-
-						this.flightDetails.genFlights(this.$layout.find(".flights"), flights);
-
-						this.genMonthFlights();
-				}
-
-				public destroyLayout() {
-						$(".city-deal").remove();
-				}
-
-			private initTabs($cont, callback) {
-				var $tabs = $cont.find(".tab");
-
-				$cont.find(".tab")
-					.click((e) => {
-						e.preventDefault();
-						var $t = $(e.delegateTarget);
-
-						$tabs.removeClass("active");
-						$t.addClass("active");
-
-						var t = $t.data("t");
-						callback(t);
-					});
-
-			}
-
-			public createLayout($lastBox) {
-				this.destroyLayout();
-
-				var cityDealLayout = this.v.registerTemplate("city-deals-template");
-				var context = {
-					gid: this.gid,
-					cityName: this.cityName,
-					codeFrom: this.codeFrom,
-					codeTo: this.codeTo
-				};
-				this.$layout = $(cityDealLayout(context));
-
-				$lastBox.after(this.$layout);
-
-				this.initDeals();
-
-
-				this.initTabs(this.$layout.find(".search-tabs"),
-					(t) => {
-							this.$layout.find(".tabs-cont").empty();
-							this.$layout.find(".other-flights-cont").empty();
-
-						if (t === "deals") {
-							this.initDeals();
-						}
-
-						if (t === "classic") {
-							this.initClassic();
-						}
-					});
-					
-			}
-
-			private filterLayout(tmpName) {
-				var t = this.v.registerTemplate(tmpName);
-				var $tmp = $(t());
-				this.$layout.find(".tabs-cont").html($tmp);
-				return $tmp;
-			}
-
-			private initDeals() {
-				var $tmp = this.filterLayout("deals-srch-template");
-
-				this.slider = new RangeSlider($tmp.find(".days-range"), "daysRange");
-				this.slider.genSlider(1, 21);
-				this.slider.onRangeChanged = () => {
-					this.genMonthFlights();
-				}
-
-				this.monthsSel = new MonthsSelector($tmp.find(".months"));
-				this.monthsSel.gen(12);
-				this.monthsSel.onChange = () => {
-					this.genMonthFlights();
-				}
-			}
-
+		export class CityClassicSearch {
 				
-			private fromDate = this.addDays(new Date(), 1);
-			private toDate = this.addDays(this.fromDate, 3);
-			private currentFlights = [];
+				private fromDate = this.addDays(new Date(), 1);
+				private toDate = this.addDays(this.fromDate, 3);
+				private currentFlights = [];
 
-			private depTimeFrom = 0;
-			private depTimeTo = 1440;
-			private arrTimeFrom = 0;
-			private arrTimeTo = 1440;
+				private depTimeFrom = 0;
+				private depTimeTo = 1440;
+				private arrTimeFrom = 0;
+				private arrTimeTo = 1440;
 
-			private addDays(date, days) {
-				return moment(date).add(days, "days").toDate();
-			}
+				private cityDetail: CityDetail;
 
-			private initClassic() {
-				var $tmp = this.filterLayout("classics-srch-template");
-					
-				var $depDate = $tmp.find(".dep .date");
-				this.datepicker($depDate, this.fromDate, (d) => {
-					this.fromDate = d;
-				});
+				private $flightsCont = $(".other-flights-cont");
 
-				var $depTime = this.timeSlider($tmp.find(".dep .time"), "depTime", (from, to) => {
-						this.depTimeFrom = from;
-						this.depTimeTo = to;
-						this.filterFlightsTime();
-				});
+				constructor(cd: CityDetail) {
+						this.cityDetail = cd;
+				}
 
-				var $arrDate = $tmp.find(".arr .date");
-				this.datepicker($arrDate, this.toDate, (d) => {
-						this.toDate = d;
-				});
+				private addDays(date, days) {
+						return moment(date).add(days, "days").toDate();
+				}
 
-				var $arrTime = this.timeSlider($tmp.find(".arr .time"), "arrTime", (from, to) => {
-						this.arrTimeFrom = from;
-						this.arrTimeTo = to;
-						this.filterFlightsTime();
-				});
+				public init() {
+						this.$flightsCont.empty();
 
-				$tmp.find("#search").click((e) => {
-						e.preventDefault();
+						var $tmp = this.cityDetail.filterLayout("classics-srch-template");
 
-					this.genCustomFlights();
-				});
+						var $depDate = $tmp.find(".dep .date");
+						this.datepicker($depDate, this.fromDate, (d) => {
+								this.fromDate = d;
+						});
 
-			}
+						var $depTime = this.timeSlider($tmp.find(".dep .time"), "depTime", (from, to) => {
+								this.depTimeFrom = from;
+								this.depTimeTo = to;
+								this.filterFlightsTime();
+						});
 
-			private filterFlightsTime() {
-					var $ofCont = this.$layout.find(".other-flights-cont");
-				$ofCont.empty();
+						var $arrDate = $tmp.find(".arr .date");
+						this.datepicker($arrDate, this.toDate, (d) => {
+								this.toDate = d;
+						});
 
-				var flights = _.filter(this.currentFlights, (f) => {
+						var $arrTime = this.timeSlider($tmp.find(".arr .time"), "arrTime", (from, to) => {
+								this.arrTimeFrom = from;
+								this.arrTimeTo = to;
+								this.filterFlightsTime();
+						});
 
-						var first = _.first(f.FlightParts);
-						var last = _.last(f.FlightParts);
+						$tmp.find("#search").click((e) => {
+								e.preventDefault();
 
-						var thereMins = this.getDateMinutes(new Date(first.DeparatureTime));
-						var depFits = this.timeFits(thereMins, this.depTimeFrom, this.depTimeTo);
+								this.genCustomFlights();
+						});
 
-						var backMins = this.getDateMinutes(new Date(last.DeparatureTime));
-						var arrFits = this.timeFits(backMins, this.arrTimeFrom, this.arrTimeTo);
+				}
 
-						return depFits && arrFits;
-					});
-					
-				this.flightDetails.genFlights($ofCont, flights);
-			}
+				private filterFlightsTime() {						
+						this.$flightsCont.empty();
 
-			private timeFits(time, from, to) {
+						var flights = _.filter(this.currentFlights, (f) => {
+
+								var first = _.first(f.FlightParts);
+								var last = _.last(f.FlightParts);
+
+								var thereMins = this.getDateMinutes(new Date(first.DeparatureTime));
+								var depFits = this.timeFits(thereMins, this.depTimeFrom, this.depTimeTo);
+
+								var backMins = this.getDateMinutes(new Date(last.DeparatureTime));
+								var arrFits = this.timeFits(backMins, this.arrTimeFrom, this.arrTimeTo);
+
+								return depFits && arrFits;
+						});
+
+						this.cityDetail.flightDetails.genFlights(this.$flightsCont, flights);
+				}
+
+				private timeFits(time, from, to) {
 						return from <= time && to >= time;
 				}
 
 				private getDateMinutes(date: Date) {
-					return ((date.getHours() -1) * 60) + date.getMinutes();
+						return ((date.getHours() - 1) * 60) + date.getMinutes();
 				}
-				
-			private genCustomFlights() {
-					var fromDate = TravelB.DateUtils.myDateToTrans(TravelB.DateUtils.jsDateToMyDate(this.fromDate));
-					var toDate = TravelB.DateUtils.myDateToTrans(TravelB.DateUtils.jsDateToMyDate(this.toDate));
 
-					var prms = [
-							["ss", "1"],
-							["codeFrom", this.codeFrom],
-							["codeTo", this.codeTo],
-							["dateFrom", fromDate],
-							["dateTo", toDate],
-							
-							["scoreLevel", this.scoreLevel.toString()]
-					];
+				private genCustomFlights() {
+						var fromDate = TravelB.DateUtils.myDateToTrans(TravelB.DateUtils.jsDateToMyDate(this.fromDate));
+						var toDate = TravelB.DateUtils.myDateToTrans(TravelB.DateUtils.jsDateToMyDate(this.toDate));
 
-					this.genFlights(prms);
-			}
+						var prms = [
+								["ss", "1"],
+								["codeFrom", this.cityDetail.codeFrom],
+								["codeTo", this.cityDetail.codeTo],
+								["dateFrom", fromDate],
+								["dateTo", toDate],
 
-			private timeSlider($cont, id, onChange) {
-				var ts = new TimeSlider($cont, id);
-				ts.onRangeChanged = (from, to) => {
-					onChange(from, to);
-				};
-				ts.genSlider();
-				return ts;
-			}
+								["scoreLevel", ScoreLevel.Standard.toString()]
+						];
 
-			private datepicker($dp, date, callback) {
-			
-				$dp.datepicker();
-				$dp.datepicker("setDate", date);
-				$dp.change((e) => {
-					var $this = $(e.target);
-					var date = $this.datepicker("getDate");
+						this.cityDetail.genFlights(prms, (flights) => {
+							this.currentFlights = flights;
+						});
+				}
 
-					callback(date);
+				private timeSlider($cont, id, onChange) {
+						var ts = new TimeSlider($cont, id);
+						ts.onRangeChanged = (from, to) => {
+								onChange(from, to);
+						};
+						ts.genSlider();
+						return ts;
+				}
+
+				private datepicker($dp, date, callback) {
+
+						$dp.datepicker();
+						$dp.datepicker("setDate", date);
+						$dp.change((e) => {
+								var $this = $(e.target);
+								var date = $this.datepicker("getDate");
+
+								callback(date);
+						});
+				}
+		}
+
+	export class CityDetail {
+
+		public flightDetails: FlightDetails;
+		private v = Views.ViewBase.currentView;
+
+		public codeFrom;
+		public codeTo;
+		private cityName;
+		private gid;
+
+		public scoreLevel;
+
+		private slider: RangeSlider;
+		private monthsSel: MonthsSelector;
+
+		private classicSearch: CityClassicSearch;
+
+		public $layout;
+
+		constructor(scoreLevel, codeFrom, codeTo, cityName, gid) {
+			this.flightDetails = new FlightDetails();
+
+			this.scoreLevel = scoreLevel;
+
+			this.codeFrom = codeFrom;
+			this.codeTo = codeTo;
+			this.cityName = cityName;
+			this.gid = gid;				
+		}
+
+		public init(flights) {
+			flights = _.sortBy(flights, "Price");
+
+			this.flightDetails.genFlights(this.$layout.find(".flights"), flights);
+
+			this.genMonthFlights();
+		}
+
+		public destroyLayout() {
+			$(".city-deal").remove();
+		}
+
+		private initTabs($cont, callback) {
+			var $tabs = $cont.find(".tab");
+
+			$cont.find(".tab")
+				.click((e) => {
+					e.preventDefault();
+					var $t = $(e.delegateTarget);
+
+					$tabs.removeClass("active");
+					$t.addClass("active");
+
+					var t = $t.data("t");
+					callback(t);
 				});
-			}
-
-
-			private preloader(show: boolean) {
-				var $p = this.$layout.find(".other-flights-preloader");
-
-				if (show) {
-					$p.show();
-				} else {
-					$p.hide();
-				}
-			}
-
-
-			private genMonthFlights() {
-					var days = this.slider.getRange();
-
-					var prms = [
-							["ss", "0"],
-							["codeFrom", this.codeFrom],
-							["codeTo", this.codeTo],
-							["daysFrom", days.from.toString()],
-							["daysTo", days.to.toString()],
-							["monthNo", this.monthsSel.month.toString()],
-							["yearNo", this.monthsSel.year.toString()],
-							["scoreLevel", this.scoreLevel.toString()]
-					];
-
-					this.genFlights(prms);
-			}
-
-			private genFlights(prms) {
-				var $ofCont = this.$layout.find(".other-flights-cont");
-				$ofCont.empty();
-
-				this.preloader(true);
-	
-				this.v.apiGet("SkypickerCity", prms, (fs) => {
-
-						this.currentFlights = fs;
-
-						//fs = _(fs).chain()
-						//		.sortBy("FlightScore").reverse()
-						//		.sortBy("Price")
-						//		.value();		
-
-						fs = _(fs)
-							.chain()
-							.sortBy("Price")
-							.reverse()
-							.sortBy("FlightScore")
-							.reverse()
-							.value();
-
-						this.flightDetails.genFlights($ofCont, fs);
-						
-						this.preloader(false);
-					});
-
-			}
 
 		}
 
-		export class FlightDetails {
+		public createLayout($lastBox) {
+			this.destroyLayout();
+
+			var cityDealLayout = this.v.registerTemplate("city-deals-template");
+			var context = {
+				gid: this.gid,
+				cityName: this.cityName,
+				codeFrom: this.codeFrom,
+				codeTo: this.codeTo
+			};
+			this.$layout = $(cityDealLayout(context));
+
+			$lastBox.after(this.$layout);
+
+			this.initDeals();
+
+
+			this.initTabs(this.$layout.find(".search-tabs"),
+				(t) => {
+					this.$layout.find(".tabs-cont").empty();
+					this.$layout.find(".other-flights-cont").empty();
+
+					if (t === "deals") {
+						this.initDeals();
+					}
+
+					if (t === "classic") {
+						this.classicSearch = new CityClassicSearch(this);
+						this.classicSearch.init();
+					}
+				});
+
+			this.$layout.find(".close").click((e) => {
+					e.preventDefault();
+					this.destroyLayout();
+				});
+		}
+			
+		public filterLayout(tmpName) {
+			var t = this.v.registerTemplate(tmpName);
+			var $tmp = $(t());
+			this.$layout.find(".tabs-cont").html($tmp);
+			return $tmp;
+		}
+
+		private initDeals() {
+			var $tmp = this.filterLayout("deals-srch-template");
+
+			this.slider = new RangeSlider($tmp.find(".days-range"), "daysRange");
+			this.slider.genSlider(1, 21);
+			this.slider.onRangeChanged = () => {
+				this.genMonthFlights();
+			}
+
+			this.monthsSel = new MonthsSelector($tmp.find(".months"));
+			this.monthsSel.gen(12);
+			this.monthsSel.onChange = () => {
+				this.genMonthFlights();
+			}
+		}
+
+		private preloader(show: boolean) {
+			var $p = this.$layout.find(".other-flights-preloader");
+
+			if (show) {
+				$p.show();
+			} else {
+				$p.hide();
+			}
+		}
+
+
+		private genMonthFlights() {
+			var days = this.slider.getRange();
+
+			var prms = [
+				["ss", "0"],
+				["codeFrom", this.codeFrom],
+				["codeTo", this.codeTo],
+				["daysFrom", days.from.toString()],
+				["daysTo", days.to.toString()],
+				["monthNo", this.monthsSel.month.toString()],
+				["yearNo", this.monthsSel.year.toString()],
+				["scoreLevel", this.scoreLevel.toString()]
+			];
+
+			this.genFlights(prms);
+		}
+
+		public genFlights(prms, callback: Function = null) {
+			var $ofCont = this.$layout.find(".other-flights-cont");
+			$ofCont.empty();
+
+			this.preloader(true);
+
+			this.v.apiGet("SkypickerCity", prms, (fs) => {
+
+					if (callback) {
+						callback(fs);
+					}
+
+					//fs = _(fs).chain()
+					//		.sortBy("FlightScore").reverse()
+					//		.sortBy("Price")
+					//		.value();		
+
+					fs = _(fs)
+						.chain()
+						.sortBy("Price")
+						.reverse()
+						.sortBy("FlightScore")
+						.reverse()
+						.value();
+
+					this.flightDetails.genFlights($ofCont, fs);
+
+					this.preloader(false);
+				});
+
+		}
+
+	}
+
+	export class FlightDetails {
 
 				public genFlights($cont, flights) {
 						var lg = Common.ListGenerator.init($cont, "connection-flight-template");

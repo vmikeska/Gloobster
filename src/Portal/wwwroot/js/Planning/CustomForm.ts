@@ -35,7 +35,7 @@ module Planning {
 			this.airportTagger.setSelectedItems(airportSelectedItems);
 
 			this.initDuration(search.roughlyDays);
-			this.planningMap.countriesManager.createCountries(search.countryCodes, PlanningType.Custom);
+			//this.planningMap.countriesManager.createCountries(search.countryCodes, PlanningType.Custom);
 			this.planningMap.delayedZoomCallback.receiveEvent();
 
 		}

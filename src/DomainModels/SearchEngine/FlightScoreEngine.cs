@@ -176,31 +176,31 @@ namespace Gloobster.DomainModels.SearchEngine
 
             double pricePerKm = price/distance;
 
-            if (pricePerKm <= 0.02)
+            if (pricePerKm <= 0.0133)
             {
                 return 1;
             }
-            if (pricePerKm <= 0.03)
+            if (pricePerKm <= 0.02)
             {
                 return 0.9;
             }
-            if (pricePerKm <= 0.04)
+            if (pricePerKm <= 0.0266)
             {
                 return 0.8;
             }
-            if (pricePerKm <= 0.05)
+            if (pricePerKm <= 0.0333)
             {
                 return 0.7;
             }
-            if (pricePerKm <= 0.06)
+            if (pricePerKm <= 0.04)
             {
                 return 0.6;
             }
-            if (pricePerKm <= 0.07)
+            if (pricePerKm <= 0.0466)
             {
                 return 0.5;
             }
-            if (pricePerKm <= 0.08)
+            if (pricePerKm <= 0.0533)
             {
                 return 0.4;
             }

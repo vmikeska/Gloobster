@@ -10,18 +10,6 @@ var Planning;
             this.map.addLayer(this.citiesLayerGroup);
         }
         CitiesManager.prototype.createCities = function (cities, planningType) {
-            var _this = this;
-            this.currentPlanningType = planningType;
-            this.cities = cities;
-            var filteredCities = _.filter(cities, function (city) {
-                return !_.contains(_this.countriesManager.selectedCountries, city.countryCode);
-            });
-            this.citiesToMarkers = [];
-            this.citiesLayerGroup.clearLayers();
-            filteredCities.forEach(function (city) {
-                var cityMarker = _this.createCity(city);
-                _this.addCityToMarker(city, cityMarker);
-            });
         };
         CitiesManager.prototype.hideCityMarkersByCountry = function (countryCode) {
             var _this = this;

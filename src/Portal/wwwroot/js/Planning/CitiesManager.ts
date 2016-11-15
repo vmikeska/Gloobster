@@ -2,8 +2,7 @@ module Planning {
 	export class CitiesManager {
 
 		public citiesLayerGroup: any;
-		public countriesManager: CountriesManager;
-
+		
 		public onSelectionChanged: Function;
 
 		private map: any;
@@ -23,6 +22,7 @@ module Planning {
 		}
 
 		public createCities(cities, planningType: PlanningType) {
+			
 			this.currentPlanningType = planningType;
 
 			this.cities = cities;

@@ -14,9 +14,21 @@ var Views;
             this.resultsEngine = new Planning.ResultsManager();
             this.initialize();
         }
+        FlyView.prototype.mapSwitch = function (callback) {
+            var $cont = $(".map-type-switch");
+            var $btns = $cont.find(".btn");
+            $btns.click(function (e) {
+                var $t = $(e.target);
+                $btns.removeClass("active");
+                $t.addClass("active");
+                var type = $t.hasClass("country") ? FlightCacheRecordType.Country : FlightCacheRecordType.City;
+                callback(type);
+            });
+        };
         FlyView.prototype.initTabs = function () {
             var _this = this;
             this.tabs = new Planning.Tabs($("#naviCont"), "main", 50);
+            this.tabs.initCall = false;
             this.tabs.onBeforeSwitch = function () {
                 _this.$cont.empty();
                 _this.$filter.empty();
@@ -51,16 +63,16 @@ var Views;
         };
         FlyView.prototype.initialize = function () {
             var _this = this;
-            this.maps = new Maps.MapsCreatorMapBox2D();
-            this.maps.setRootElement("map");
-            this.maps.show(function (map) {
-                _this.planningMap = new Planning.PlanningMap(map);
-                _this.planningMap.onSelectionChanged = function (id, newState, type) {
-                    if (newState) {
-                        _this.resultsEngine.selectionChanged(id, newState, type);
-                    }
-                };
-                _this.planningMap.loadCategory(Planning.PlanningType.Anytime);
+            this.planningMap = new Planning.PlanningMap();
+            this.planningMap.onMapLoaded = function () {
+                _this.setAnytime();
+            };
+            this.planningMap.onSelectionChanged = function (id, newState, type) {
+                if (newState) {
+                    _this.resultsEngine.selectionChanged(id, newState, type);
+                }
+            };
+            this.mapSwitch(function (type) {
             });
             var locationDialog = new Views.LocationSettingsDialog();
             this.initTabs();

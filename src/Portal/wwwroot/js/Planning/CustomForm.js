@@ -21,7 +21,6 @@ var Planning;
             var airportSelectedItems = this.getAirportTaggerSelectedItems(search);
             this.airportTagger.setSelectedItems(airportSelectedItems);
             this.initDuration(search.roughlyDays);
-            this.planningMap.countriesManager.createCountries(search.countryCodes, Planning.PlanningType.Custom);
             this.planningMap.delayedZoomCallback.receiveEvent();
         };
         CustomForm.prototype.initAirportTagger = function (search) {

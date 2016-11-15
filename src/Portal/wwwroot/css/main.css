@@ -4347,13 +4347,39 @@ footer {
          width: 280px !important;         
         }
     }*/ }
-  .fly-tickets .map {
-    max-width: 1280px;
-    width: 100%;
-    height: 600px;
-    margin-left: auto;
-    margin-right: auto;
-    background-color: white; }
+  .fly-tickets .map-cont {
+    position: relative; }
+    .fly-tickets .map-cont .map {
+      max-width: 1280px;
+      width: 100%;
+      height: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      background-color: #3298C1; }
+    .fly-tickets .map-cont .map-type-switch {
+      display: inline-block;
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      z-index: 9999999; }
+      .fly-tickets .map-cont .map-type-switch .items-tbl {
+        display: table; }
+        .fly-tickets .map-cont .map-type-switch .items-tbl .btn {
+          display: table-cell;
+          cursor: pointer;
+          border: 1px solid white;
+          color: white;
+          font-weight: bold;
+          padding: 8px;
+          background-color: #65BDD7; }
+          .fly-tickets .map-cont .map-type-switch .items-tbl .btn.active, .fly-tickets .map-cont .map-type-switch .items-tbl .btn:hover {
+            background-color: #F56E12; }
+        .fly-tickets .map-cont .map-type-switch .items-tbl .country {
+          border-bottom-left-radius: 8px;
+          border-top-left-radius: 8px; }
+        .fly-tickets .map-cont .map-type-switch .items-tbl .city {
+          border-bottom-right-radius: 8px;
+          border-top-right-radius: 8px; }
   .fly-tickets .myTabs {
     width: 100%; }
   .fly-tickets .myTab {
@@ -4858,11 +4884,25 @@ footer {
           display: inline-block;
           vertical-align: top; } }
   .fly-tickets .city-deal {
+    position: relative;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
     border: 1px solid #65BDD7;
     border-top: 5px solid #3298C1;
     margin-bottom: 20px; }
+    .fly-tickets .city-deal .close {
+      display: inline-block;
+      position: absolute;
+      right: -17px;
+      top: -20px;
+      background-color: #3298C1;
+      border-radius: 50%;
+      color: white;
+      font-size: 0.7em;
+      padding: 12px;
+      cursor: pointer; }
+      .fly-tickets .city-deal .close:hover {
+        color: #F56E12; }
     .fly-tickets .city-deal .title-top {
       font-size: 1.3em;
       font-weight: bold;
