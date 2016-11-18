@@ -1,6 +1,6 @@
 module Planning {
 
-		export class MapConstants {
+	export class MapConstants {
 				public static mapOptions = {
 						zoom: 3,
 						maxZoom: 19,
@@ -45,29 +45,51 @@ module Planning {
 		public onCountryChange: Function;
 		public onMapLoaded: Function;
 
-		public selectedCountries = [];
-
-		private featureArray = [];
+		private mapCountries: MapCountries;
 
 		public mapObj;
 
-		public init(contId: string, ccs = []) {
+		public init(contId: string) {
+
+			this.mapCountries = new MapCountries(this);
+
 			this.mapObj = L.map(contId, MapConstants.mapOptions);
 
-			this.selectedCountries = ccs;
-
-			this.getGeoJson((countries) => {					
-				this.createCountries(countries);
-				this.createMapboxLayer();
-
-				if (this.onMapLoaded) {
-					this.onMapLoaded();
-				}
-			});
+				this.mapCountries.init(() => {
+						if (this.onMapLoaded) {
+								this.onMapLoaded();
+						}
+				});				
 		}
 
 		public setCountries(ccs) {
-				this.selectedCountries = ccs;
+				this.mapCountries.set(ccs);
+		}
+
+		
+		public countrySelChanged(cc, isSelected: boolean) {
+			if (this.onCountryChange) {
+				this.onCountryChange(cc, isSelected);
+			}
+		}
+	
+	}
+
+	export class MapCountries {
+
+		private countriesData;
+
+		private map: Map;
+
+		constructor(map: Map) {
+			this.map = map;
+		}
+
+		public selectedCountries = [];
+		private featureArray = [];
+
+		public set(ccs) {
+			this.selectedCountries = ccs;
 
 			this.featureArray.forEach((i) => {
 				var cc = i[0];
@@ -82,34 +104,30 @@ module Planning {
 			});
 		}
 
-		private createMapboxLayer() {
-			var tempUrl = "https://api.mapbox.com/styles/v1/gloobster/civi2b1wn00a82kpattor5wui/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2xvb2JzdGVyIiwiYSI6ImQxZWY5MjRkZjU1NDk2MGU3OWI2OGRiM2U3NTM0MGYxIn0.nCG7hOsSQzb0c-_qzfTCRQ";
-			var mapLayer = L.tileLayer(tempUrl, MapConstants.tileOptions);
-			this.mapObj.addLayer(mapLayer);
+		public init(callback) {
 
-			var topPane = this.mapObj.createPane('leaflet-top-pane', this.mapObj.getPanes().mapPane);
-			topPane.appendChild(mapLayer.getContainer());
-			mapLayer.setZIndex(5);								
-		}
-
-		private getCountryStyle(cc) {
-			if (this.isCountrySelected(cc)) {
-				return MapConstants.selCountryStyle;
+			if (this.countriesData) {
+				this.createMapboxLayer();
+				callback();
 			} else {
-				return MapConstants.unselCountryStyle;
-			}
-		}
 
-		private isCountrySelected(cc) {
-			var selected = _.contains(this.selectedCountries, cc);
-			return selected;
+				this.getGeoJson((countries) => {
+
+					this.createMapboxLayer();
+					this.createCountries(countries);
+
+					callback();
+				});
+
+			}
 		}
 
 		private createCountries(countries) {
-			$(countries.features).each((key, feature) => {
+			$(countries.features)
+				.each((key, feature) => {
 					this.createMapFeature(feature);
 				});
-			}
+		}
 
 		private createMapFeature(feature) {
 			var cc = feature.properties.iso_a2;
@@ -120,9 +138,9 @@ module Planning {
 			});
 
 			this.featureArray.push([cc, l]);
-				
 
-			l.addTo(this.mapObj);
+
+			l.addTo(this.map.mapObj);
 			l.on("mouseover",
 				(e) => {
 					var layer = this.getLayer(e);
@@ -136,7 +154,7 @@ module Planning {
 				});
 			l.on("click",
 				(e) => {
-					var layer = this.getLayer(e);					
+					var layer = this.getLayer(e);
 					this.countryClicked(cc, layer);
 				});
 		}
@@ -153,32 +171,49 @@ module Planning {
 			var s = this.getCountryStyle(cc);
 			layer.setStyle(s);
 
-			this.countrySelChanged(cc, !selected);
+			this.map.countrySelChanged(cc, !selected);
 		}
 
-		private countrySelChanged(cc, isSelected: boolean) {
-			if (this.onCountryChange) {
-				this.onCountryChange(cc, isSelected);
+		private createMapboxLayer() {
+			var tempUrl =
+				"https://api.mapbox.com/styles/v1/gloobster/civi2b1wn00a82kpattor5wui/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2xvb2JzdGVyIiwiYSI6ImQxZWY5MjRkZjU1NDk2MGU3OWI2OGRiM2U3NTM0MGYxIn0.nCG7hOsSQzb0c-_qzfTCRQ";
+			var mapLayer = L.tileLayer(tempUrl, MapConstants.tileOptions);
+			this.map.mapObj.addLayer(mapLayer);
+
+			var topPane = this.map.mapObj.createPane('leaflet-top-pane', this.map.mapObj.getPanes().mapPane);
+			topPane.appendChild(mapLayer.getContainer());
+			mapLayer.setZIndex(5);
+		}
+
+		private getCountryStyle(cc) {
+			if (this.isCountrySelected(cc)) {
+				return MapConstants.selCountryStyle;
+			} else {
+				return MapConstants.unselCountryStyle;
 			}
 		}
 
-		private getLayer(e) {
-					var id = e.layer._leaflet_id;
-					var layer = this.mapObj._layers[id];
-				return layer;
-			}
+		private isCountrySelected(cc) {
+			var selected = _.contains(this.selectedCountries, cc);
+			return selected;
+		}
 
 		private getGeoJson(callback) {
 			$.ajax({
 					dataType: "json",
 					url: "/geo/custom.geo.json",
 					success: (data) => {
+						this.countriesData = data;
 						callback(data);
 					}
 				})
 				.error(() => { alert("error voe") });
 		}
 
-
+		private getLayer(e) {
+			var id = e.layer._leaflet_id;
+			var layer = this.map.mapObj._layers[id];
+			return layer;
+		}
 	}
 }

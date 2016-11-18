@@ -110,6 +110,9 @@ module Planning {
 			return marker;
 		}
 
+			//to planning map
+
+
 		private callChangeCitySelection(planningType: PlanningType, gid: string, selected: boolean, callback: Function) {
 
 			var data = PlanningSender.createRequest(planningType, "cities", {
@@ -125,5 +128,6 @@ module Planning {
 					callback(response);			
 			});
 		}
+
 	}
 }
