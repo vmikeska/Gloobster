@@ -13,8 +13,8 @@ module Planning {
 
 		private currentPlanningType: PlanningType;
 
-		constructor(map, graph: GraphicConfig) {
-			this.graph = graph;
+		constructor(map) {
+			this.graph = new GraphicConfig();
 			this.map = map;
 
 			this.citiesLayerGroup = L.layerGroup();
@@ -27,29 +27,29 @@ module Planning {
 
 			this.cities = cities;
 
-			var filteredCities = _.filter(cities, (city) => {
-				return !_.contains(this.countriesManager.selectedCountries, city.countryCode);
-			});
+			//var filteredCities = _.filter(cities, (city) => {
+			//	return !_.contains(this.countriesManager.selectedCountries, city.countryCode);
+			//});
 
 			this.citiesToMarkers = [];
 
 			this.citiesLayerGroup.clearLayers();
 
-			filteredCities.forEach((city) => {
+			cities.forEach((city) => {
 				var cityMarker = this.createCity(city);
 				this.addCityToMarker(city, cityMarker);
 			});
 
 		}
 
-		public hideCityMarkersByCountry(countryCode: string) {
-			var cityMarkerPairs = this.getCitiesMarkersByCountry(countryCode);
-			cityMarkerPairs.forEach((pair) => {
-				this.citiesLayerGroup.removeLayer(pair.marker);
-				pair = null;
-			});
-			this.citiesToMarkers = _.reject(this.citiesToMarkers, (i) => { return i === null });
-		}
+		//public hideCityMarkersByCountry(countryCode: string) {
+		//	var cityMarkerPairs = this.getCitiesMarkersByCountry(countryCode);
+		//	cityMarkerPairs.forEach((pair) => {
+		//		this.citiesLayerGroup.removeLayer(pair.marker);
+		//		pair = null;
+		//	});
+		//	this.citiesToMarkers = _.reject(this.citiesToMarkers, (i) => { return i === null });
+		//}
 
 		public showCityMarkersByCountry(countryCode: string) {
 			var cities = this.getCitiesByCountry(countryCode);

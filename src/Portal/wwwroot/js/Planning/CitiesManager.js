@@ -1,24 +1,24 @@
 var Planning;
 (function (Planning) {
     var CitiesManager = (function () {
-        function CitiesManager(map, graph) {
+        function CitiesManager(map) {
             this.cities = [];
             this.citiesToMarkers = [];
-            this.graph = graph;
+            this.graph = new Planning.GraphicConfig();
             this.map = map;
             this.citiesLayerGroup = L.layerGroup();
             this.map.addLayer(this.citiesLayerGroup);
         }
         CitiesManager.prototype.createCities = function (cities, planningType) {
-        };
-        CitiesManager.prototype.hideCityMarkersByCountry = function (countryCode) {
             var _this = this;
-            var cityMarkerPairs = this.getCitiesMarkersByCountry(countryCode);
-            cityMarkerPairs.forEach(function (pair) {
-                _this.citiesLayerGroup.removeLayer(pair.marker);
-                pair = null;
+            this.currentPlanningType = planningType;
+            this.cities = cities;
+            this.citiesToMarkers = [];
+            this.citiesLayerGroup.clearLayers();
+            cities.forEach(function (city) {
+                var cityMarker = _this.createCity(city);
+                _this.addCityToMarker(city, cityMarker);
             });
-            this.citiesToMarkers = _.reject(this.citiesToMarkers, function (i) { return i === null; });
         };
         CitiesManager.prototype.showCityMarkersByCountry = function (countryCode) {
             var _this = this;
@@ -73,7 +73,7 @@ var Planning;
                 gid: gid,
                 selected: selected
             });
-            if (planningType === Planning.PlanningType.Custom) {
+            if (planningType === PlanningType.Custom) {
                 data.values.customId = Planning.NamesList.selectedSearch.id;
             }
             Planning.PlanningSender.updateProp(data, function (response) {

@@ -22,20 +22,13 @@
 	}
 
 	export class GraphicConfig {
-		public borderColor = "#000000";
-		public fillColorUnselected = "#CFCAC8";
-		public fillColorSelected = "#57CF5F";
-		public fillColorHover = "#57CF9D";
-
+		
 		constructor() {
 			this.cityIcon = this.getCityIcon();
 			this.focusIcon = this.getCityIconFocus();
-			this.selectedIcon = this.getSelectedIcon();
-			this.initConfigs();
+			this.selectedIcon = this.getSelectedIcon();			
 		}
-
-		public selectedConfig: PolygonConfig;
-		public unselectedConfig: PolygonConfig;
+			
 
 		public cityIcon: any;
 		public focusIcon: any;
@@ -71,19 +64,7 @@
 				iconAnchor: [10, 10]
 			});
 			return icon;
-		}
-
-		private initConfigs() {
-			var sc = new PolygonConfig();
-			sc.fillColor = this.fillColorSelected;
-			sc.borderColor = this.borderColor;
-			this.selectedConfig = sc;
-
-			var uc = new PolygonConfig();
-			uc.fillColor = this.fillColorUnselected;
-			uc.borderColor = this.borderColor;
-			this.unselectedConfig = uc;
-		}
+		}			
 	}
 
 	export class PolygonConfig {
@@ -137,6 +118,5 @@
 			return request;
 		}
 	}
-
-	export enum PlanningType { Anytime, Weekend, Custom }
+		
 }

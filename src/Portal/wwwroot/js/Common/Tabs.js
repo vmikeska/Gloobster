@@ -1,15 +1,18 @@
-var Planning;
-(function (Planning) {
+var Common;
+(function (Common) {
     var Tabs = (function () {
-        function Tabs($cont, tabGroup, height) {
+        function Tabs($cont, tabGroup) {
             this.isFirst = true;
             this.initCall = true;
+            this.btnClass = "btn";
+            this.btnContClass = "btn-cont";
+            this.contClass = "tab-menu";
             this.tabs = [];
             this.$cont = $cont;
             this.tabGroup = tabGroup;
-            this.height = height;
         }
         Tabs.prototype.addTab = function (id, text, callback) {
+            if (callback === void 0) { callback = null; }
             this.tabs.push({ id: id, text: text, callback: callback });
         };
         Tabs.prototype.create = function () {
@@ -18,6 +21,7 @@ var Planning;
                 var $t = _this.genTab(t);
                 _this.$cont.append($t);
             });
+            this.$cont.addClass(this.contClass);
             if (this.initCall) {
                 this.tabs[0].callback();
             }
@@ -25,15 +29,15 @@ var Planning;
         };
         Tabs.prototype.genTab = function (t) {
             var _this = this;
-            var width = (100 / this.tabs.length);
-            var $t = $("<div id=\"" + t.id + "\" class=\"myTab " + this.tabGroup + "\" style=\"width: calc(" + width + "% - 2px); height: " + this.height + "px\">" + t.text + "</div>");
+            var $t = $("<div class=\"" + this.btnContClass + "\"><div id=\"" + t.id + "\" class=\"" + this.btnClass + " " + this.tabGroup + "\">" + t.text + "</div></div>");
+            var $btn = $t.find(".btn");
             if (this.isFirst) {
-                $t.addClass("act");
+                $btn.addClass("act");
                 this.isFirst = false;
             }
-            $t.click(function (e) {
+            $btn.click(function (e) {
                 e.preventDefault();
-                if ($t.hasClass("act")) {
+                if ($btn.hasClass("act")) {
                     return;
                 }
                 if (_this.onBeforeSwitch) {
@@ -43,15 +47,17 @@ var Planning;
                 $("." + _this.tabGroup).removeClass("act");
                 $target.addClass("act");
                 _this.activeTabId = $target.attr("id");
-                t.callback(t.id);
+                if (t.callback) {
+                    t.callback(t.id);
+                }
                 if (_this.onChange) {
-                    _this.onChange();
+                    _this.onChange(t.id);
                 }
             });
             return $t;
         };
         return Tabs;
     }());
-    Planning.Tabs = Tabs;
-})(Planning || (Planning = {}));
+    Common.Tabs = Tabs;
+})(Common || (Common = {}));
 //# sourceMappingURL=Tabs.js.map

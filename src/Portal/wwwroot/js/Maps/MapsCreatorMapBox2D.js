@@ -27,28 +27,7 @@ var Maps;
             var _this = this;
             L.mapbox.accessToken = "pk.eyJ1IjoiZ2xvb2JzdGVyIiwiYSI6ImQxZWY5MjRkZjU1NDk2MGU3OWI2OGRiM2U3NTM0MGYxIn0.nCG7hOsSQzb0c-_qzfTCRQ";
             this.options.maxBounds = L.latLngBounds(L.latLng(-85, -180), L.latLng(85, 180));
-            this.mapObj = new L.Map(this.rootElement, this.options);
-            $.ajax({
-                dataType: "json",
-                url: "/geo/custom.geo.json",
-                success: function (data) {
-                    var myStyle = {
-                        "color": "#ff7800",
-                        "weight": 1,
-                        "opacity": 0.65
-                    };
-                    $(data.features).each(function (key, data) {
-                        var l = new L.GeoJSON(data, { style: myStyle });
-                        l.addTo(_this.mapObj);
-                    });
-                    setTimeout(function () {
-                        var mapLayer = L
-                            .tileLayer("https://api.mapbox.com/styles/v1/gloobster/civi2b1wn00a82kpattor5wui/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2xvb2JzdGVyIiwiYSI6ImQxZWY5MjRkZjU1NDk2MGU3OWI2OGRiM2U3NTM0MGYxIn0.nCG7hOsSQzb0c-_qzfTCRQ");
-                        _this.mapObj.addLayer(mapLayer);
-                        mapLayer.bringToFront();
-                    }, 5000);
-                }
-            }).error(function () { alert("error voe"); });
+            this.mapObj = L.mapbox.map(this.rootElement, 'gloobster.afeef633', this.options);
             this.mapObj.on("move", function (e) {
                 if (_this.onCenterChanged) {
                     var c = _this.mapObj.getCenter();

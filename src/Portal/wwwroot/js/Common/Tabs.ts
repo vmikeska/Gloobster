@@ -1,4 +1,4 @@
-module Planning {
+module Common {
 	export class Tabs {
 
 		public onBeforeSwitch: Function;
@@ -9,20 +9,21 @@ module Planning {
 		private isFirst = true;
 
 		public initCall = true;
+		private btnClass = "btn";
+		private btnContClass = "btn-cont";
+		private contClass = "tab-menu";
 
 		private $cont;
 		private tabGroup;
-		private height;
-
-		constructor($cont, tabGroup, height) {
+		
+		constructor($cont, tabGroup) {
 			this.$cont = $cont;
-			this.tabGroup = tabGroup;
-			this.height = height;
+			this.tabGroup = tabGroup;		
 		}
 
 		private tabs = [];
 
-		public addTab(id, text, callback) {
+		public addTab(id, text, callback = null) {
 			this.tabs.push({ id: id, text: text, callback: callback });
 		}
 
@@ -30,7 +31,9 @@ module Planning {
 			this.tabs.forEach((t) => {
 				var $t = this.genTab(t);
 				this.$cont.append($t);
-			});
+				});
+
+			 this.$cont.addClass(this.contClass);
 
 			if (this.initCall) {
 				this.tabs[0].callback();
@@ -40,19 +43,19 @@ module Planning {
 		}
 			
 		private genTab(t) {
-			var width = (100 / this.tabs.length);
+				var $t = $(`<div class="${this.btnContClass}"><div id="${t.id}" class="${this.btnClass} ${this.tabGroup}">${t.text}</div></div>`);
 
-			var $t = $(`<div id="${t.id}" class="myTab ${this.tabGroup}" style="width: calc(${width}% - 2px); height: ${this.height}px">${t.text}</div>`);
+			var $btn = $t.find(".btn");
 
 			if (this.isFirst) {
-				$t.addClass("act");
+					$btn.addClass("act");
 				this.isFirst = false;
 			}
 
-			$t.click((e) => {
+			$btn.click((e) => {
 				e.preventDefault();
 
-				if ($t.hasClass("act")) {
+				if ($btn.hasClass("act")) {
 					return;
 				}
 					
@@ -65,10 +68,13 @@ module Planning {
 				$(`.${this.tabGroup}`).removeClass("act");
 				$target.addClass("act");
 				this.activeTabId = $target.attr("id");
-				t.callback(t.id);
+
+				if (t.callback) {
+					t.callback(t.id);
+				}
 
 				if (this.onChange) {
-					this.onChange();
+						this.onChange(t.id);
 				}
 			});
 

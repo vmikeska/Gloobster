@@ -4,9 +4,9 @@ var Planning;
         function MapConstants() {
         }
         MapConstants.mapOptions = {
-            zoom: 2,
+            zoom: 3,
             maxZoom: 19,
-            minZoom: 2,
+            minZoom: 3,
             maxBounds: L.latLngBounds(L.latLng(-85, -180), L.latLng(85, 180)),
             zoomControl: false,
             center: [34.5133, -94.1629]
@@ -22,9 +22,6 @@ var Planning;
             fillOpacity: 1
         };
         MapConstants.selCountryStyle = {
-            color: "#F56E12",
-            weight: 1,
-            opacity: 1,
             fillColor: "#3DA243",
             fillOpacity: 1
         };

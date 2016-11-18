@@ -39,7 +39,7 @@ var Planning;
                     value: val,
                     id: Planning.NamesList.selectedSearch.id
                 };
-                var data = Planning.PlanningSender.createRequest(Planning.PlanningType.Custom, "fromAirports", values);
+                var data = Planning.PlanningSender.createRequest(PlanningType.Custom, "fromAirports", values);
                 Planning.PlanningSender.pushProp(data, function (res) {
                     Planning.NamesList.selectedSearch.fromAirports.push({ origId: val, selectedName: text });
                     callback(res);
@@ -73,7 +73,7 @@ var Planning;
                 var val = $target.data("vl");
                 var kind = $target.data("kd");
                 var text = $target.text();
-                var data = Planning.PlanningSender.createRequest(Planning.PlanningType.Custom, "time", {
+                var data = Planning.PlanningSender.createRequest(PlanningType.Custom, "time", {
                     kind: kind,
                     value: val,
                     id: Planning.NamesList.selectedSearch.id
@@ -152,7 +152,7 @@ var Planning;
             });
         };
         CustomForm.prototype.callUpdateMinLength = function (roughlyDays) {
-            var data = Planning.PlanningSender.createRequest(Planning.PlanningType.Custom, "roughlyDays", {
+            var data = Planning.PlanningSender.createRequest(PlanningType.Custom, "roughlyDays", {
                 id: Planning.NamesList.selectedSearch.id,
                 days: roughlyDays
             });

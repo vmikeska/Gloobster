@@ -5,65 +5,82 @@ module Planning {
 		public onMapLoaded: Function;
 
 		public delayedZoomCallback: DelayedCallbackMap;
-		private graph: GraphicConfig;
 
 		public map: Map;
 
 		private viewData: any;
 		private planningType: PlanningType;
+		private viewType = FlightCacheRecordType.Country;
 
 		public citiesManager: CitiesManager;
-			
-		private customForm: CustomForm;
+
+		//dont delete
+		//private customForm: CustomForm;
 
 		private resultsEngine: ResultsManager;
 
 		constructor() {
-				this.map = new Map();
-				this.map.init("map");
+			this.initMap();
 
-				this.map.onCountryChange = (cc, isSelected) => {						
-						this.onSelectionChanged(cc, isSelected, FlightCacheRecordType.Country);
+			this.initCountriesFnc();
 
-						var data = PlanningSender.createRequest(this.planningType, "countries", {
-								countryCode: cc,
-								selected: isSelected
-						});
-
-						PlanningSender.updateProp(data, (response) => {								
-						});						
-				};
-
-				this.map.onMapLoaded = () => {
-						this.loadCategory(PlanningType.Anytime);
-						this.onMapLoaded();
-				}
-
-
-			//this.graph = new GraphicConfig();
-			//this.citiesManager = new CitiesManager(map, this.graph);
-			//this.citiesManager.onSelectionChanged = (id, newState, type) => this.onSelectionChanged(id, newState, type);				
-			//this.citiesManager.countriesManager = this.countriesManager;			
+			this.initCitiesFnc();
 		}
+
+		public changeViewType(type: FlightCacheRecordType) {
+				this.viewType = type;
+				this.displayMapData();
+		}
+
+		private initMap() {
+					this.map = new Map();
+					this.map.init("map");
+
+					this.map.onMapLoaded = () => {
+							this.loadCategory(PlanningType.Anytime);
+							this.onMapLoaded();
+					}
+		}
+
+		private initCountriesFnc() {
+			this.map.onCountryChange = (cc, isSelected) => {
+				this.onSelectionChanged(cc, isSelected, FlightCacheRecordType.Country);
+
+				var data = PlanningSender.createRequest(this.planningType,
+					"countries",
+					{
+						countryCode: cc,
+						selected: isSelected
+					});
+
+				PlanningSender.updateProp(data,
+					(response) => {
+					});
+			};
+		}
+
+		private initCitiesFnc() {
 			
+			this.citiesManager = new CitiesManager(this.map.mapObj);
+
+			this.citiesManager.onSelectionChanged = (id, newState, type) => {
+				this.onSelectionChanged(id, newState, type);
+			}
+		}
 
 		public loadCategory(pt: PlanningType) {
 			this.planningType = pt;
-			this.initCountries();				
-
-
-			//this.loadCitiesInRange();
-			//this.delayedZoomCallback.receiveEvent();				
+			this.initData();								
 		}
 
-		private initCountries() {
+		private initData() {
 
 			this.getTabData(this.planningType,
 				(data) => {
 
 					this.viewData = data;
 
-					this.map.setCountries(this.viewData.countryCodes);
+					this.displayMapData();
 
 					//do not delete
 					//if (this.planningType === PlanningType.Custom) {
@@ -75,79 +92,90 @@ module Planning {
 				});
 		}
 
-		private getTabData(planningType: PlanningType, callback) {
-				var prms = [["planningType", planningType.toString()]];
+		private displayMapData() {
+			if (this.viewType === FlightCacheRecordType.Country) {
+				this.map.setCountries(this.viewData.countryCodes);
+			} else {
+				this.loadCitiesInRange();
+				this.delayedZoomCallback.receiveEvent();
+			}
+		}
 
-				Views.ViewBase.currentView.apiGet("PlanningProperty", prms, (response) => {
-						callback(response);
+		private getTabData(planningType: PlanningType, callback) {
+			var prms = [["planningType", planningType.toString()]];
+
+			Views.ViewBase.currentView.apiGet("PlanningProperty", prms, (response) => {
+					callback(response);
 				});
 		}
 
-		//private loadCitiesInRange() {
-		//	this.delayedZoomCallback = new DelayedCallbackMap();
-		//	this.delayedZoomCallback.callback = () => {
-		//		this.callToLoadCities();
-		//	};
+		private loadCitiesInRange() {
+			this.delayedZoomCallback = new DelayedCallbackMap();
+			this.delayedZoomCallback.callback = () => {
+				this.callToLoadCities();
+			};
 
-		//	this.map.on("zoomend", e => {
-		//		this.delayedZoomCallback.receiveEvent();
-		//	});
-		//	this.map.on("moveend", e => {
-		//		this.delayedZoomCallback.receiveEvent();
-		//	});
+			this.map.mapObj.on("zoomend", e => {
+				this.delayedZoomCallback.receiveEvent();
+			});
+			this.map.mapObj.on("moveend", e => {
+				this.delayedZoomCallback.receiveEvent();
+			});
 
-		//}
+		}
 
-		//private callToLoadCities() {
-		//	var bounds = this.map.getBounds();
-		//	var zoom = this.map.getZoom();
-		//	var population = this.getPopulationFromZoom(zoom);
+		private callToLoadCities() {
+			var bounds = this.map.mapObj.getBounds();
+			var zoom = this.map.mapObj.getZoom();
+			var population = this.getPopulationFromZoom(zoom);
 
-		//	var prms = [
-		//		["latSouth", bounds._southWest.lat],
-		//		["lngWest", bounds._southWest.lng],
-		//		["latNorth", bounds._northEast.lat],
-		//		["lngEast", bounds._northEast.lng],
-		//		["minPopulation", population],
-		//		["planningType", this.currentPlanningType.toString()]
-		//	];
+			var prms = [
+				["latSouth", bounds._southWest.lat],
+				["lngWest", bounds._southWest.lng],
+				["latNorth", bounds._northEast.lat],
+				["lngEast", bounds._northEast.lng],
+				["minPopulation", population.toString()],
+				["planningType", this.planningType.toString()]
+			];
 
-		//	if (this.currentPlanningType === PlanningType.Custom) {
-		//		prms.push(["customId", NamesList.selectedSearch.id]);
-		//	}
+			//dont delete
+			//if (this.planningType === PlanningType.Custom) {
+			//	prms.push(["customId", NamesList.selectedSearch.id]);
+			//}
 
-		//	Views.ViewBase.currentView.apiGet("airportGroup", prms, (response) => {
-		//		this.onCitiesResponse(response);
-		//	});
-		//}
+			Views.ViewBase.currentView.apiGet("airportGroup", prms, (response) => {
+				this.onCitiesResponse(response);
+			});
+		}
 			
-		//private onCitiesResponse(cities) {
-		//	this.citiesManager.createCities(cities, this.currentPlanningType);
-		//}
+		private onCitiesResponse(cities) {
+			this.citiesManager.createCities(cities, this.planningType);
+		}
 
-		//private getPopulationFromZoom(zoom) {
-		//	if (zoom < 3) {
-		//		return 2000000;
-		//	}
-		//	if (zoom === 3) {
-		//		return 800000;
-		//	}
-		//	if (zoom === 4) {
-		//		return 600000;
-		//	}
-		//	if (zoom === 5) {
-		//		return 400000;
-		//	}
-		//	if (zoom === 6) {
-		//		return 200000;
-		//	}
+		private getPopulationFromZoom(zoom) {
+			if (zoom < 3) {
+				return 2000000;
+			}
+			if (zoom === 3) {
+				return 800000;
+			}
+			if (zoom === 4) {
+				return 600000;
+			}
+			if (zoom === 5) {
+				return 400000;
+			}
+			if (zoom === 6) {
+				return 200000;
+			}
 
-		//	if (zoom === 7) {
-		//		return 50000;
-		//	}
+			if (zoom === 7) {
+				return 50000;
+			}
 
-		//	return 1;
-		//}
+			return 1;
+		}
 
-	}
+		}
+
 }

@@ -21,14 +21,9 @@ var Planning;
     Planning.DelayedCallbackMap = DelayedCallbackMap;
     var GraphicConfig = (function () {
         function GraphicConfig() {
-            this.borderColor = "#000000";
-            this.fillColorUnselected = "#CFCAC8";
-            this.fillColorSelected = "#57CF5F";
-            this.fillColorHover = "#57CF9D";
             this.cityIcon = this.getCityIcon();
             this.focusIcon = this.getCityIconFocus();
             this.selectedIcon = this.getSelectedIcon();
-            this.initConfigs();
         }
         GraphicConfig.prototype.getCityIcon = function () {
             var icon = L.icon({
@@ -53,16 +48,6 @@ var Planning;
                 iconAnchor: [10, 10]
             });
             return icon;
-        };
-        GraphicConfig.prototype.initConfigs = function () {
-            var sc = new PolygonConfig();
-            sc.fillColor = this.fillColorSelected;
-            sc.borderColor = this.borderColor;
-            this.selectedConfig = sc;
-            var uc = new PolygonConfig();
-            uc.fillColor = this.fillColorUnselected;
-            uc.borderColor = this.borderColor;
-            this.unselectedConfig = uc;
         };
         return GraphicConfig;
     }());
@@ -108,11 +93,5 @@ var Planning;
         return PlanningSender;
     }());
     Planning.PlanningSender = PlanningSender;
-    (function (PlanningType) {
-        PlanningType[PlanningType["Anytime"] = 0] = "Anytime";
-        PlanningType[PlanningType["Weekend"] = 1] = "Weekend";
-        PlanningType[PlanningType["Custom"] = 2] = "Custom";
-    })(Planning.PlanningType || (Planning.PlanningType = {}));
-    var PlanningType = Planning.PlanningType;
 })(Planning || (Planning = {}));
 //# sourceMappingURL=Utils.js.map

@@ -11,7 +11,6 @@ var Views;
             _super.call(this);
             this.$cont = $("#resultsCont");
             this.$filter = $("#filterCont");
-            this.resultsEngine = new Planning.ResultsManager();
             this.initialize();
         }
         FlyView.prototype.mapSwitch = function (callback) {
@@ -27,52 +26,50 @@ var Views;
         };
         FlyView.prototype.initTabs = function () {
             var _this = this;
-            this.tabs = new Planning.Tabs($("#naviCont"), "main", 50);
+            this.tabs = new Common.Tabs($("#naviCont"), "main");
             this.tabs.initCall = false;
             this.tabs.onBeforeSwitch = function () {
                 _this.$cont.empty();
                 _this.$filter.empty();
             };
-            this.tabs.addTab("tabAnytime", "Anytime", function () {
-                _this.setAnytime();
+            this.tabs.addTab("tabAnytime", "All deals", function () {
+                _this.changeSetter(PlanningType.Anytime);
             });
-            this.tabs.addTab("tabWeekend", "Weekend", function () {
-                _this.setWeekend();
+            this.tabs.addTab("tabWeekend", "Weekend deals", function () {
+                _this.changeSetter(PlanningType.Weekend);
             });
-            this.tabs.addTab("tabCustom", "Custom", function () {
+            this.tabs.addTab("tabCustom", "Long term search", function () {
+            });
+            this.tabs.addTab("tabClassic", "Classic search", function () {
             });
             this.tabs.create();
         };
-        FlyView.prototype.setAnytime = function () {
-            var s = new Planning.AnytimePageSetter(this);
-            s.init();
-            this.planningMap.loadCategory(0);
-            this.resultsEngine.initalCall(0);
-            this.resultsEngine.onConnectionsChanged = function (connections) {
-                s.setConnections(connections);
-            };
-        };
-        FlyView.prototype.setWeekend = function () {
-            var s = new Planning.WeekendPageSetter(this);
-            s.init();
-            this.planningMap.loadCategory(1);
-            this.resultsEngine.initalCall(1);
-            this.resultsEngine.onConnectionsChanged = function (connections) {
-                s.setConnections(connections);
-            };
+        FlyView.prototype.changeSetter = function (type) {
+            if (type === PlanningType.Anytime) {
+                this.currentSetter = new Planning.AnytimePageSetter(this);
+            }
+            if (type === PlanningType.Weekend) {
+                this.currentSetter = new Planning.WeekendPageSetter(this);
+            }
+            this.currentSetter.init();
+            this.planningMap.loadCategory(type);
+            this.resultsEngine.initalCall(type);
         };
         FlyView.prototype.initialize = function () {
             var _this = this;
+            this.resultsEngine = new Planning.ResultsManager();
+            this.resultsEngine.onConnectionsChanged = function (connections) {
+                _this.currentSetter.setConnections(connections);
+            };
             this.planningMap = new Planning.PlanningMap();
             this.planningMap.onMapLoaded = function () {
-                _this.setAnytime();
+                _this.changeSetter(PlanningType.Anytime);
             };
             this.planningMap.onSelectionChanged = function (id, newState, type) {
-                if (newState) {
-                    _this.resultsEngine.selectionChanged(id, newState, type);
-                }
+                _this.resultsEngine.selectionChanged(id, newState, type);
             };
             this.mapSwitch(function (type) {
+                _this.planningMap.changeViewType(type);
             });
             var locationDialog = new Views.LocationSettingsDialog();
             this.initTabs();

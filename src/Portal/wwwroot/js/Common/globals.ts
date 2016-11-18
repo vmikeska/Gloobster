@@ -50,6 +50,8 @@ enum FlightCacheRecordType { City, Country }
 
 enum TabsWeekendType { ByWeek, ByCity, ByCountry }
 
+enum PlanningType { Anytime, Weekend, Custom }
+
 enum Gender { N, M, F }
 
 enum CheckinType { Now, City }

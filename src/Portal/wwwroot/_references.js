@@ -23,6 +23,7 @@
 /// <reference path="js/common/popup.js" />
 /// <reference path="js/common/requestsender.js" />
 /// <reference path="js/common/sharebuttons.js" />
+/// <reference path="js/common/tabs.js" />
 /// <reference path="js/common/usersearchbox.js" />
 /// <reference path="js/common/usstates.js" />
 /// <reference path="js/imagedb/imagedb.js" />

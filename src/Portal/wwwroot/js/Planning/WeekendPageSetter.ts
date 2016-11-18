@@ -1,5 +1,5 @@
 module Planning {
-	export class WeekendPageSetter {
+		export class WeekendPageSetter implements IPageSetter {
 
 		public connections;
 

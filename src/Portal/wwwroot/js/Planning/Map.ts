@@ -2,9 +2,9 @@ module Planning {
 
 		export class MapConstants {
 				public static mapOptions = {
-						zoom: 2,
+						zoom: 3,
 						maxZoom: 19,
-						minZoom: 2,
+						minZoom: 3,
 						maxBounds: L.latLngBounds(L.latLng(-85, -180), L.latLng(85, 180)),
 						zoomControl: false,
 						//todo: change to user location
@@ -26,9 +26,9 @@ module Planning {
 				};
 
 				public static selCountryStyle = {
-						color: "#F56E12",
-						weight: 1,
-						opacity: 1,
+						//color: "#F56E12",
+						//weight: 1,
+						//opacity: 1,
 						
 						fillColor: "#3DA243",
 						fillOpacity: 1		
@@ -89,7 +89,7 @@ module Planning {
 
 			var topPane = this.mapObj.createPane('leaflet-top-pane', this.mapObj.getPanes().mapPane);
 			topPane.appendChild(mapLayer.getContainer());
-			mapLayer.setZIndex(5);				
+			mapLayer.setZIndex(5);								
 		}
 
 		private getCountryStyle(cc) {

@@ -13,6 +13,7 @@ $light-blue6: #9FD2E3;
 
 $very-light-blue: #F0F8FA;
 $very-light-blue2: #D0E7EE;
+$very-light-blue3: #F0FAFC;
 
 $green: #3DA33D;
 $green3: #3DA243;
@@ -93,6 +94,46 @@ a {
     font-family: $font-lato;
 }    
 
+
+.tab-menu {    
+    text-align: left;
+
+    display: table;
+
+    .btn-cont {
+        display: table-cell;        
+    }
+
+    .btn {
+        @include noselect;
+
+        display: inline-block;
+        
+        margin-left: 20px;
+        /*width: 170px;*/
+            
+        cursor: pointer;
+
+        color: $light-blue2;
+        background-color: $very-light-blue3;
+            
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+
+        font-weight: bold;
+        /*font-size: 1.1em;*/
+
+        &.act, &:hover {
+            background-color: $light-blue2;
+            color: white;
+        }
+    }
+}
 
 .tagger{
     position: relative;

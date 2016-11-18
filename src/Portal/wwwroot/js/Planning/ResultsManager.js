@@ -32,21 +32,22 @@ var Planning;
                     _this.queue.push({ from: result.From, to: result.To, type: result.Type });
                 }
                 else {
-                    console.log("queue length: " + _this.queue.length);
                     _this.queue = _.reject(_this.queue, function (qi) { return qi.from === result.From && qi.to === result.To; });
-                    console.log("queue length: " + _this.queue.length);
                     _this.drawQueue();
                     _this.connections = _this.connections.concat(result.Result);
                     newConnections = true;
                 }
             });
             if (newConnections) {
-                if (this.onConnectionsChanged) {
-                    this.onConnectionsChanged(this.connections);
-                }
+                this.connectionsChanged();
             }
             if (this.queue.length > 0) {
                 this.startQuerying();
+            }
+        };
+        ResultsManager.prototype.connectionsChanged = function () {
+            if (this.onConnectionsChanged) {
+                this.onConnectionsChanged(this.connections);
             }
         };
         ResultsManager.prototype.stopQuerying = function () {
@@ -93,8 +94,16 @@ var Planning;
             return strParams;
         };
         ResultsManager.prototype.selectionChanged = function (id, newState, type) {
-            this.drawQueue();
-            this.getQueries([["p", (id + "-" + type)], ["tt", this.timeType]]);
+            if (newState) {
+                this.drawQueue();
+                this.getQueries([["p", (id + "-" + type)], ["tt", this.timeType]]);
+            }
+            else {
+                if (type === FlightCacheRecordType.Country) {
+                    this.connections = _.reject(this.connections, function (c) { return c.CountryCode === id; });
+                    this.connectionsChanged();
+                }
+            }
         };
         return ResultsManager;
     }());

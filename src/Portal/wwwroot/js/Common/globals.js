@@ -59,6 +59,12 @@ var TabsWeekendType;
     TabsWeekendType[TabsWeekendType["ByCity"] = 1] = "ByCity";
     TabsWeekendType[TabsWeekendType["ByCountry"] = 2] = "ByCountry";
 })(TabsWeekendType || (TabsWeekendType = {}));
+var PlanningType;
+(function (PlanningType) {
+    PlanningType[PlanningType["Anytime"] = 0] = "Anytime";
+    PlanningType[PlanningType["Weekend"] = 1] = "Weekend";
+    PlanningType[PlanningType["Custom"] = 2] = "Custom";
+})(PlanningType || (PlanningType = {}));
 var Gender;
 (function (Gender) {
     Gender[Gender["N"] = 0] = "N";

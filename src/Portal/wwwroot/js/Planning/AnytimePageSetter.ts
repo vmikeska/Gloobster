@@ -1,5 +1,11 @@
 module Planning {
-	export class AnytimePageSetter {
+
+		export interface IPageSetter {
+				setConnections(conns);
+				init();
+		}
+
+		export class AnytimePageSetter implements IPageSetter {
 
 		public connections;
 

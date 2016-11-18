@@ -42,7 +42,6 @@
 <script type="text/javascript" src="@Url.Content("~/js/Planning/PlanningMap.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Planning/ResultsManager.js")"></script>
 
-<script type="text/javascript" src="@Url.Content("~/js/Planning/Tabs.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/js/Planning/AirlineCodes.js")"></script>
 
 <script src="/js/planning/WeekendDisplayer.js"></script>
@@ -70,7 +69,7 @@
 
         <div class="title-table">
             <div class="left">
-                <h1>Fly tickets</h1>
+                <h1>Travel deals</h1>
             </div>
 
             @*<div class="right">
@@ -115,8 +114,9 @@
 <div class="wrapper">
     
     @Html.Partial("LocationSettingsDialog")
+  
 
-    <div id="naviCont"></div>
+    <div id="naviCont" class="navi-cont"></div>
 
     <div id="tabContent"></div>
     

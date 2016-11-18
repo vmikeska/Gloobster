@@ -19,7 +19,7 @@ var Planning;
                 _this.saveNewName();
             });
             this.$addNewItem.click(function () {
-                var data = Planning.PlanningSender.createRequest(Planning.PlanningType.Custom, "createNewSearch", {
+                var data = Planning.PlanningSender.createRequest(PlanningType.Custom, "createNewSearch", {
                     searchName: 'new search'
                 });
                 Planning.PlanningSender.pushProp(data, function (newSearch) {
@@ -65,7 +65,7 @@ var Planning;
         NamesList.prototype.saveNewName = function () {
             var _this = this;
             var newName = this.$nameInput.val();
-            var data = Planning.PlanningSender.createRequest(Planning.PlanningType.Custom, "renameSearch", {
+            var data = Planning.PlanningSender.createRequest(PlanningType.Custom, "renameSearch", {
                 id: NamesList.selectedSearch.id,
                 searchName: newName
             });

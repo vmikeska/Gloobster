@@ -18,21 +18,7 @@
 		constructor() {
 			super();
 				
-			this.resultsEngine = new Planning.ResultsManager();
-
 			this.initialize();
-
-			//remove this when not needed
-			//var lst = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,16,17,18,19,20,21,22,23,24,25,26,27,28,29];
-			//var lg = Common.ListGenerator.init($("#myTestx"), "list-tst-template");
-			//lg.isAsync = true;
-			//lg.customMapping = (i) => {
-
-			//		return {v: i}
-			//};
-		 // lg.generateList(lst);
-
-
 		}
 
 		private mapSwitch(callback) {
@@ -51,71 +37,73 @@
 
 		private initTabs() {
 				
-				this.tabs = new Planning.Tabs($("#naviCont"), "main", 50);
+				this.tabs = new Common.Tabs($("#naviCont"), "main");
 				this.tabs.initCall = false;
 				this.tabs.onBeforeSwitch = () => {
 						this.$cont.empty();
 						this.$filter.empty();
 				}
 
-				this.tabs.addTab("tabAnytime", "Anytime", () => {
-					this.setAnytime();						
+				this.tabs.addTab("tabAnytime", "All deals", () => {					
+						this.changeSetter(PlanningType.Anytime);
 				});
-				this.tabs.addTab("tabWeekend", "Weekend", () => {
-					this.setWeekend();						
+				this.tabs.addTab("tabWeekend", "Weekend deals", () => {					
+						this.changeSetter(PlanningType.Weekend);
 				});
-
-				this.tabs.addTab("tabCustom", "Custom", () => {
+				
+				this.tabs.addTab("tabCustom", "Long term search", () => {
 						//tabHtml = this.customTabTemplate();
 						//$tabContent.html(tabHtml);
 						//this.planningMap.loadCategory(2);
 				});
+
+				this.tabs.addTab("tabClassic", "Classic search", () => {
+				
+				});
+
 				this.tabs.create();
 		}
 
-		private setAnytime() {				
-				var s = new Planning.AnytimePageSetter(this);
-				s.init();
+			private currentSetter: Planning.IPageSetter;
+
+			private changeSetter(type: PlanningType) {
+					if (type === PlanningType.Anytime) {
+							this.currentSetter = new Planning.AnytimePageSetter(this);
+					}
+					if (type === PlanningType.Weekend) {
+							this.currentSetter = new Planning.WeekendPageSetter(this);
+					}
+
+				this.currentSetter.init();
+
+				this.planningMap.loadCategory(type);
+
+				this.resultsEngine.initalCall(type);
 				
-				this.planningMap.loadCategory(0);
-				
-				this.resultsEngine.initalCall(0);
-				this.resultsEngine.onConnectionsChanged = (connections) => {
-						s.setConnections(connections);					
-				};				
-		}
-
-		private setWeekend() {
-				var s = new Planning.WeekendPageSetter(this);				
-				s.init();
-
-				this.planningMap.loadCategory(1);
-
-				this.resultsEngine.initalCall(1);
-				this.resultsEngine.onConnectionsChanged = (connections) => {
-						s.setConnections(connections);						
-				};
-		}
-
+			}
+			
 		public initialize() {
-				this.planningMap = new Planning.PlanningMap();
-				
-				this.planningMap.onMapLoaded = () => {
-					this.setAnytime();
-				}
+			this.resultsEngine = new Planning.ResultsManager();
+			this.resultsEngine.onConnectionsChanged = (connections) => {
+				this.currentSetter.setConnections(connections);
+			};
+
+
+			this.planningMap = new Planning.PlanningMap();
+
+			this.planningMap.onMapLoaded = () => {
+				this.changeSetter(PlanningType.Anytime);
+			}
 
 			this.planningMap.onSelectionChanged = (id: string, newState: boolean, type: FlightCacheRecordType) => {
-					//todo: unselecting
-					if (newState) {
 					this.resultsEngine.selectionChanged(id, newState, type);
-				}
 			}
 
 
 			this.mapSwitch((type) => {
-
+				this.planningMap.changeViewType(type);
 			});
-			
+
 
 			var locationDialog = new LocationSettingsDialog();
 

@@ -40,9 +40,9 @@ module Planning {
 								this.queue.push({ from: result.From, to: result.To, type: result.Type });
 						} else {
 
-								console.log(`queue length: ${this.queue.length}`);
+								//console.log(`queue length: ${this.queue.length}`);
 								this.queue = _.reject(this.queue, (qi)=> { return qi.from === result.From && qi.to === result.To; });
-								console.log(`queue length: ${this.queue.length}`);
+								//console.log(`queue length: ${this.queue.length}`);
 
 								this.drawQueue();
 
@@ -53,14 +53,18 @@ module Planning {
 				});
 
 				if (newConnections) {
-						if (this.onConnectionsChanged) {
-								this.onConnectionsChanged(this.connections);
-						}	
+					this.connectionsChanged();
 				}
 
 				if (this.queue.length > 0) {
 						this.startQuerying();
 				}
+		}
+
+		private connectionsChanged() {
+				if (this.onConnectionsChanged) {
+						this.onConnectionsChanged(this.connections);
+				}	
 		}
 
 		private stopQuerying() {
@@ -116,16 +120,23 @@ module Planning {
 				strParams.push(["tt", this.timeType]);
 				return strParams;
 		}
-			
-		public selectionChanged(id: string, newState: boolean, type: FlightCacheRecordType) {
-				//todo: unselecting implement
 
+		public selectionChanged(id: string, newState: boolean, type: FlightCacheRecordType) {
+
+			if (newState) {
 				this.drawQueue();
 
-				this.getQueries([["p", `${id}-${type}`], ["tt", this.timeType]]);				
+				this.getQueries([["p", `${id}-${type}`], ["tt", this.timeType]]);
+			} else {
+				if (type === FlightCacheRecordType.Country) {
+						this.connections = _.reject(this.connections, (c) => { return c.CountryCode === id; });
+						this.connectionsChanged();
+				}
+				//todo: unselecting implement city
+			}
 		}
-			
-		
+
+
 	}
 
 
