@@ -11,8 +11,7 @@ var Planning;
         };
         PlanningMap.prototype.changeViewType = function (type) {
             this.viewType = type;
-            var data = this.getViewTypeData();
-            this.map.switch(this.viewType, data);
+            this.map.switch(this.viewType);
         };
         PlanningMap.prototype.initMap = function () {
             var _this = this;
@@ -20,7 +19,7 @@ var Planning;
             this.map.onMapLoaded = function () {
                 _this.onMapLoaded();
             };
-            this.map.init("map");
+            this.map.init();
         };
         PlanningMap.prototype.initCountriesFnc = function () {
             var _this = this;
@@ -52,8 +51,9 @@ var Planning;
             var _this = this;
             this.getTabData(this.planningType, function (data) {
                 _this.viewData = data;
-                var vData = _this.getViewTypeData();
-                _this.map.switch(_this.viewType, vData);
+                _this.map.mapCities.set(_this.viewData.cities);
+                _this.map.mapCountries.set(_this.viewData.countryCodes);
+                _this.map.switch(_this.viewType);
             });
         };
         PlanningMap.prototype.getTabData = function (planningType, callback) {
@@ -61,14 +61,6 @@ var Planning;
             Views.ViewBase.currentView.apiGet("PlanningProperty", prms, function (response) {
                 callback(response);
             });
-        };
-        PlanningMap.prototype.getViewTypeData = function () {
-            if (this.viewType === FlightCacheRecordType.Country) {
-                return this.viewData.countryCodes;
-            }
-            else {
-                return this.viewData.cities;
-            }
         };
         return PlanningMap;
     }());

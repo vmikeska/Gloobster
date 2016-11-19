@@ -25,9 +25,8 @@ module Planning {
 
 		public changeViewType(type: FlightCacheRecordType) {
 			this.viewType = type;
-
-			var data = this.getViewTypeData();
-			this.map.switch(this.viewType, data);
+				
+			this.map.switch(this.viewType);
 		}
 
 		private initMap() {
@@ -37,7 +36,7 @@ module Planning {
 				this.onMapLoaded();
 			}
 
-			this.map.init("map");
+			this.map.init();
 		}
 
 		private initCountriesFnc() {
@@ -71,17 +70,7 @@ module Planning {
 						//}
 
 						PlanningSender.updateProp(data, (response) => {});
-				};
-
-
-				
-
-
-			//this.citiesManager = new CitiesManager(this.map.mapObj);
-
-			//this.citiesManager.onSelectionChanged = (id, newState, type) => {
-			//	this.onSelectionChanged(id, newState, type);
-			//}
+				};				
 		}
 
 		public loadCategory(pt: PlanningType) {
@@ -94,9 +83,12 @@ module Planning {
 			this.getTabData(this.planningType, (data) => {
 
 					this.viewData = data;
+					
+					this.map.mapCities.set(this.viewData.cities);
+					this.map.mapCountries.set(this.viewData.countryCodes);
 
-					var vData = this.getViewTypeData();
-					this.map.switch(this.viewType, vData);
+					
+					this.map.switch(this.viewType);
 					
 
 					//do not delete
@@ -116,17 +108,7 @@ module Planning {
 						callback(response);
 				});
 		}
-
-		private getViewTypeData() {
-			if (this.viewType === FlightCacheRecordType.Country) {				
-				return this.viewData.countryCodes;
-			} else {
-
-				return this.viewData.cities;				
-			}
-		}
-
-		
+			
 			
 
 		}

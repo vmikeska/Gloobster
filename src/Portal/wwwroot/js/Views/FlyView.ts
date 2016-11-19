@@ -1,30 +1,28 @@
 ﻿module Views {
 
-	
-
 	export class FlyView extends ViewBase {
 
 		public planningMap: Planning.PlanningMap;
-			
+
 		private resultsEngine: Planning.ResultsManager;
-			
-		private maps: Maps.MapsCreatorMapBox2D;		
-			
-		private tabs;	
-					
+
+		private maps: Maps.MapsCreatorMapBox2D;
+
+		private tabs;
+
 		private $cont = $("#resultsCont");
 		private $filter = $("#filterCont");
-			
+
 		constructor() {
 			super();
-				
+
 			this.initialize();
 		}
 
 		private mapSwitch(callback) {
 			var $cont = $(".map-type-switch");
 			var $btns = $cont.find(".btn");
-			$btns.click((e) => {					
+			$btns.click((e) => {
 				var $t = $(e.target);
 				var type = $t.hasClass("country") ? FlightCacheRecordType.Country : FlightCacheRecordType.City;
 
@@ -41,52 +39,52 @@
 		}
 
 		private initTabs() {
-				
-				this.tabs = new Common.Tabs($("#naviCont"), "main");
-				this.tabs.initCall = false;
-				this.tabs.onBeforeSwitch = () => {
-						this.$cont.empty();
-						this.$filter.empty();
-				}
 
-				this.tabs.addTab("tabAnytime", "All deals", () => {					
-						this.changeSetter(PlanningType.Anytime);
+			this.tabs = new Common.Tabs($("#naviCont"), "main");
+			this.tabs.initCall = false;
+			this.tabs.onBeforeSwitch = () => {
+				this.$cont.empty();
+				this.$filter.empty();
+			}
+
+			this.tabs.addTab("tabAnytime", "All deals", () => {
+					this.changeSetter(PlanningType.Anytime);
 				});
-				this.tabs.addTab("tabWeekend", "Weekend deals", () => {					
-						this.changeSetter(PlanningType.Weekend);
-				});
-				
-				this.tabs.addTab("tabCustom", "Long term search", () => {
-						//tabHtml = this.customTabTemplate();
-						//$tabContent.html(tabHtml);
-						//this.planningMap.loadCategory(2);
+			this.tabs.addTab("tabWeekend", "Weekend deals", () => {
+					this.changeSetter(PlanningType.Weekend);
 				});
 
-				this.tabs.addTab("tabClassic", "Classic search", () => {
-				
+			this.tabs.addTab("tabCustom", "Long term search", () => {
+					//tabHtml = this.customTabTemplate();
+					//$tabContent.html(tabHtml);
+					//this.planningMap.loadCategory(2);
 				});
 
-				this.tabs.create();
+			this.tabs.addTab("tabClassic", "Classic search", () => {
+
+			});
+
+			this.tabs.create();
 		}
 
-			private currentSetter: Planning.IPageSetter;
+		private currentSetter: Planning.IPageSetter;
 
-			private changeSetter(type: PlanningType) {
-					if (type === PlanningType.Anytime) {
-							this.currentSetter = new Planning.AnytimePageSetter(this);
-					}
-					if (type === PlanningType.Weekend) {
-							this.currentSetter = new Planning.WeekendPageSetter(this);
-					}
-
-				this.currentSetter.init();
-
-				this.planningMap.loadCategory(type);
-
-				this.resultsEngine.initalCall(type);
-				
+		private changeSetter(type: PlanningType) {
+			if (type === PlanningType.Anytime) {
+				this.currentSetter = new Planning.AnytimePageSetter(this);
 			}
-			
+			if (type === PlanningType.Weekend) {
+				this.currentSetter = new Planning.WeekendPageSetter(this);
+			}
+
+			this.currentSetter.init();
+
+			this.planningMap.loadCategory(type);
+
+			this.resultsEngine.initalCall(type);
+
+		}
+
 		public initialize() {
 			this.resultsEngine = new Planning.ResultsManager();
 			this.resultsEngine.onConnectionsChanged = (connections) => {
@@ -101,13 +99,13 @@
 			}
 
 			this.planningMap.onSelectionChanged = (id: string, newState: boolean, type: FlightCacheRecordType) => {
-					this.resultsEngine.selectionChanged(id, newState, type);
+				this.resultsEngine.selectionChanged(id, newState, type);
 			}
 
-				this.planningMap.init();
+			this.planningMap.init();
 
 
-				this.mapSwitch((type) => {
+			this.mapSwitch((type) => {
 				this.planningMap.changeViewType(type);
 			});
 
@@ -116,6 +114,6 @@
 
 			this.initTabs();
 		}
-	} 
+	}
 
 }
