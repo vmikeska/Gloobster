@@ -37,6 +37,7 @@
             .items-tbl {
                 display: table;
                 .btn {
+                    @include noselect;
                     display: table-cell;
                     cursor: pointer;
                     border: 1px solid white;

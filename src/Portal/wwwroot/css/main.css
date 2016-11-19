@@ -4403,6 +4403,18 @@ footer {
       .fly-tickets .map-cont .map-type-switch .items-tbl {
         display: table; }
         .fly-tickets .map-cont .map-type-switch .items-tbl .btn {
+          -webkit-touch-callout: none;
+          /* iOS Safari */
+          -webkit-user-select: none;
+          /* Chrome/Safari/Opera */
+          -khtml-user-select: none;
+          /* Konqueror */
+          -moz-user-select: none;
+          /* Firefox */
+          -ms-user-select: none;
+          /* Internet Explorer/Edge */
+          user-select: none;
+          /* Non-prefixed version, currently not supported by any browser */
           display: table-cell;
           cursor: pointer;
           border: 1px solid white;

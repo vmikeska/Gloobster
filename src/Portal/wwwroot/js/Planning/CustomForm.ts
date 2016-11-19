@@ -36,7 +36,7 @@ module Planning {
 
 			this.initDuration(search.roughlyDays);
 			//this.planningMap.countriesManager.createCountries(search.countryCodes, PlanningType.Custom);
-			this.planningMap.delayedZoomCallback.receiveEvent();
+			//this.planningMap.delayedZoomCallback.receiveEvent();
 
 		}
 

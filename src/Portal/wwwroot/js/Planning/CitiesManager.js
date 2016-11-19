@@ -1,85 +1,8 @@
 var Planning;
 (function (Planning) {
     var CitiesManager = (function () {
-        function CitiesManager(map) {
-            this.cities = [];
-            this.citiesToMarkers = [];
-            this.graph = new Planning.GraphicConfig();
-            this.map = map;
-            this.citiesLayerGroup = L.layerGroup();
-            this.map.addLayer(this.citiesLayerGroup);
+        function CitiesManager() {
         }
-        CitiesManager.prototype.createCities = function (cities, planningType) {
-            var _this = this;
-            this.currentPlanningType = planningType;
-            this.cities = cities;
-            this.citiesToMarkers = [];
-            this.citiesLayerGroup.clearLayers();
-            cities.forEach(function (city) {
-                var cityMarker = _this.createCity(city);
-                _this.addCityToMarker(city, cityMarker);
-            });
-        };
-        CitiesManager.prototype.showCityMarkersByCountry = function (countryCode) {
-            var _this = this;
-            var cities = this.getCitiesByCountry(countryCode);
-            cities.forEach(function (city) {
-                var cityMarker = _this.createCity(city);
-                _this.addCityToMarker(city, cityMarker);
-            });
-        };
-        CitiesManager.prototype.addCityToMarker = function (city, marker) {
-            this.citiesToMarkers.push({ city: city, marker: marker });
-        };
-        CitiesManager.prototype.getCitiesMarkersByCountry = function (countryCode) {
-            var pairs = _.filter(this.citiesToMarkers, function (pair) { return pair.city.countryCode === countryCode; });
-            return pairs;
-        };
-        CitiesManager.prototype.getCitiesByCountry = function (countryCode) {
-            var cities = _.filter(this.cities, function (city) { return city.countryCode === countryCode; });
-            return cities;
-        };
-        CitiesManager.prototype.createCity = function (city) {
-            var _this = this;
-            var icon = city.selected ? this.graph.selectedIcon : this.graph.cityIcon;
-            var marker = L.marker([city.coord.Lat, city.coord.Lng], { icon: icon });
-            marker.selected = city.selected;
-            marker.gid = city.gid;
-            marker.on("mouseover", function (e) {
-                e.target.setIcon(_this.graph.focusIcon);
-            });
-            marker.on("mouseout", function (e) {
-                if (!e.target.selected) {
-                    e.target.setIcon(_this.graph.cityIcon);
-                }
-                else {
-                    e.target.setIcon(_this.graph.selectedIcon);
-                }
-            });
-            marker.on("click", function (e) {
-                _this.callChangeCitySelection(_this.currentPlanningType, e.target.gid, !e.target.selected, function (res) {
-                    e.target.setIcon(_this.graph.selectedIcon);
-                    e.target.selected = !e.target.selected;
-                    if (_this.onSelectionChanged) {
-                        _this.onSelectionChanged(e.target.gid, e.target.selected, FlightCacheRecordType.City);
-                    }
-                });
-            });
-            marker.addTo(this.citiesLayerGroup);
-            return marker;
-        };
-        CitiesManager.prototype.callChangeCitySelection = function (planningType, gid, selected, callback) {
-            var data = Planning.PlanningSender.createRequest(planningType, "cities", {
-                gid: gid,
-                selected: selected
-            });
-            if (planningType === PlanningType.Custom) {
-                data.values.customId = Planning.NamesList.selectedSearch.id;
-            }
-            Planning.PlanningSender.updateProp(data, function (response) {
-                callback(response);
-            });
-        };
         return CitiesManager;
     }());
     Planning.CitiesManager = CitiesManager;

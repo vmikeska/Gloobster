@@ -22,6 +22,9 @@ var Planning;
             fillOpacity: 1
         };
         MapConstants.selCountryStyle = {
+            color: "#9096a0",
+            weight: 1,
+            opacity: 1,
             fillColor: "#3DA243",
             fillOpacity: 1
         };
@@ -33,20 +36,28 @@ var Planning;
     }());
     Planning.MapConstants = MapConstants;
     var Map = (function () {
-        function Map() {
+        function Map(planningMap) {
+            this.planningMap = planningMap;
         }
         Map.prototype.init = function (contId) {
-            var _this = this;
             this.mapCountries = new MapCountries(this);
+            this.mapCities = new MapCities(this);
             this.mapObj = L.map(contId, MapConstants.mapOptions);
-            this.mapCountries.init(function () {
-                if (_this.onMapLoaded) {
-                    _this.onMapLoaded();
-                }
-            });
+            this.onMapLoaded();
         };
-        Map.prototype.setCountries = function (ccs) {
-            this.mapCountries.set(ccs);
+        Map.prototype.switch = function (type, data) {
+            var _this = this;
+            if (type === FlightCacheRecordType.Country) {
+                this.mapCities.destroy();
+                this.mapCountries.init(function () {
+                    _this.mapCountries.set(data);
+                });
+            }
+            if (type === FlightCacheRecordType.City) {
+                this.mapCountries.destroy();
+                this.mapCities.init();
+                this.mapCities.set(data);
+            }
         };
         Map.prototype.countrySelChanged = function (cc, isSelected) {
             if (this.onCountryChange) {
@@ -56,6 +67,134 @@ var Planning;
         return Map;
     }());
     Planning.Map = Map;
+    var MapCities = (function () {
+        function MapCities(map) {
+            this.citiesToMarkers = [];
+            this.cities = [];
+            this.map = map;
+            this.graph = new Planning.GraphicConfig();
+        }
+        MapCities.prototype.init = function () {
+            this.createMapboxLayer();
+            this.citiesLayerGroup = L.layerGroup();
+            this.map.mapObj.addLayer(this.citiesLayerGroup);
+        };
+        MapCities.prototype.set = function (cities) {
+            this.loadCitiesInRange();
+            this.delayedZoomCallback.receiveEvent();
+        };
+        MapCities.prototype.destroy = function () {
+            if (this.citiesLayerGroup) {
+                this.citiesLayerGroup.clearLayers();
+                this.map.mapObj.removeLayer(this.citiesLayerGroup);
+                this.citiesLayerGroup = null;
+            }
+            this.destroyMapboxLayer();
+        };
+        MapCities.prototype.destroyMapboxLayer = function () {
+            if (this.tileLayer) {
+                this.map.mapObj.removeLayer(this.tileLayer);
+                this.tileLayer = null;
+            }
+        };
+        MapCities.prototype.createMapboxLayer = function () {
+            var tempUrl = "https://api.mapbox.com/styles/v1/gloobster/civo64vmw004i2kqkwpcocjyp/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2xvb2JzdGVyIiwiYSI6ImQxZWY5MjRkZjU1NDk2MGU3OWI2OGRiM2U3NTM0MGYxIn0.nCG7hOsSQzb0c-_qzfTCRQ";
+            this.tileLayer = L.tileLayer(tempUrl, MapConstants.tileOptions);
+            this.map.mapObj.addLayer(this.tileLayer);
+        };
+        MapCities.prototype.getPopulationFromZoom = function (zoom) {
+            if (zoom < 3) {
+                return 2000000;
+            }
+            if (zoom === 3) {
+                return 800000;
+            }
+            if (zoom === 4) {
+                return 600000;
+            }
+            if (zoom === 5) {
+                return 400000;
+            }
+            if (zoom === 6) {
+                return 200000;
+            }
+            if (zoom === 7) {
+                return 50000;
+            }
+            return 1;
+        };
+        MapCities.prototype.callToLoadCities = function () {
+            var _this = this;
+            var bounds = this.map.mapObj.getBounds();
+            var zoom = this.map.mapObj.getZoom();
+            var population = this.getPopulationFromZoom(zoom);
+            var prms = [
+                ["latSouth", bounds._southWest.lat],
+                ["lngWest", bounds._southWest.lng],
+                ["latNorth", bounds._northEast.lat],
+                ["lngEast", bounds._northEast.lng],
+                ["minPopulation", population.toString()],
+                ["planningType", this.map.planningMap.planningType.toString()]
+            ];
+            Views.ViewBase.currentView.apiGet("airportGroup", prms, function (cities) {
+                _this.createCities(cities);
+            });
+        };
+        MapCities.prototype.createCities = function (cities) {
+            var _this = this;
+            this.cities = cities;
+            this.citiesToMarkers = [];
+            if (this.citiesLayerGroup) {
+                this.citiesLayerGroup.clearLayers();
+            }
+            cities.forEach(function (city) {
+                var cityMarker = _this.createCity(city);
+            });
+        };
+        MapCities.prototype.createCity = function (city) {
+            var _this = this;
+            var icon = city.selected ? this.graph.selectedIcon : this.graph.cityIcon;
+            var marker = L.marker([city.coord.Lat, city.coord.Lng], { icon: icon });
+            marker.selected = city.selected;
+            marker.gid = city.gid;
+            marker.on("mouseover", function (e) {
+                e.target.setIcon(_this.graph.focusIcon);
+            });
+            marker.on("mouseout", function (e) {
+                if (!e.target.selected) {
+                    e.target.setIcon(_this.graph.cityIcon);
+                }
+                else {
+                    e.target.setIcon(_this.graph.selectedIcon);
+                }
+            });
+            marker.on("click", function (e) {
+                _this.cityClicked(e);
+            });
+            marker.addTo(this.citiesLayerGroup);
+            return marker;
+        };
+        MapCities.prototype.cityClicked = function (e) {
+            e.target.setIcon(this.graph.selectedIcon);
+            e.target.selected = !e.target.selected;
+            this.map.onCityChange(e.target.gid, e.target.selected);
+        };
+        MapCities.prototype.loadCitiesInRange = function () {
+            var _this = this;
+            this.delayedZoomCallback = new Planning.DelayedCallbackMap();
+            this.delayedZoomCallback.callback = function () {
+                _this.callToLoadCities();
+            };
+            this.map.mapObj.on("zoomend", function (e) {
+                _this.delayedZoomCallback.receiveEvent();
+            });
+            this.map.mapObj.on("moveend", function (e) {
+                _this.delayedZoomCallback.receiveEvent();
+            });
+        };
+        return MapCities;
+    }());
+    Planning.MapCities = MapCities;
     var MapCountries = (function () {
         function MapCountries(map) {
             this.selectedCountries = [];
@@ -78,24 +217,30 @@ var Planning;
         };
         MapCountries.prototype.init = function (callback) {
             var _this = this;
-            if (this.countriesData) {
-                this.createMapboxLayer();
+            this.getGeoJson(function () {
+                _this.createMapboxLayer();
+                _this.createCountries();
                 callback();
-            }
-            else {
-                this.getGeoJson(function (countries) {
-                    _this.createMapboxLayer();
-                    _this.createCountries(countries);
-                    callback();
-                });
-            }
+            });
         };
-        MapCountries.prototype.createCountries = function (countries) {
+        MapCountries.prototype.destroy = function () {
+            this.destroyMapboxLayer();
+            this.destroyCountries();
+        };
+        MapCountries.prototype.createCountries = function () {
             var _this = this;
-            $(countries.features)
+            this.ccsLayerGroup = L.layerGroup();
+            this.map.mapObj.addLayer(this.ccsLayerGroup);
+            $(this.countriesData.features)
                 .each(function (key, feature) {
                 _this.createMapFeature(feature);
             });
+        };
+        MapCountries.prototype.destroyCountries = function () {
+            this.ccsLayerGroup.clearLayers();
+            this.map.mapObj.removeLayer(this.ccsLayerGroup);
+            this.ccsLayerGroup = null;
+            this.featureArray = [];
         };
         MapCountries.prototype.createMapFeature = function (feature) {
             var _this = this;
@@ -104,7 +249,7 @@ var Planning;
                 style: this.getCountryStyle(cc)
             });
             this.featureArray.push([cc, l]);
-            l.addTo(this.map.mapObj);
+            l.addTo(this.ccsLayerGroup);
             l.on("mouseover", function (e) {
                 var layer = _this.getLayer(e);
                 layer.setStyle(MapConstants.hoverStyle);
@@ -131,13 +276,21 @@ var Planning;
             layer.setStyle(s);
             this.map.countrySelChanged(cc, !selected);
         };
+        MapCountries.prototype.destroyMapboxLayer = function () {
+            this.map.mapObj.removeLayer(this.mapLayer);
+            this.mapLayer = null;
+        };
         MapCountries.prototype.createMapboxLayer = function () {
             var tempUrl = "https://api.mapbox.com/styles/v1/gloobster/civi2b1wn00a82kpattor5wui/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2xvb2JzdGVyIiwiYSI6ImQxZWY5MjRkZjU1NDk2MGU3OWI2OGRiM2U3NTM0MGYxIn0.nCG7hOsSQzb0c-_qzfTCRQ";
-            var mapLayer = L.tileLayer(tempUrl, MapConstants.tileOptions);
-            this.map.mapObj.addLayer(mapLayer);
-            var topPane = this.map.mapObj.createPane('leaflet-top-pane', this.map.mapObj.getPanes().mapPane);
-            topPane.appendChild(mapLayer.getContainer());
-            mapLayer.setZIndex(5);
+            this.mapLayer = L.tileLayer(tempUrl, MapConstants.tileOptions);
+            this.map.mapObj.addLayer(this.mapLayer);
+            var paneName = "leaflet-top-pane";
+            var pane = this.map.mapObj.getPane(paneName);
+            if (!pane) {
+                this.mapboxPane = this.map.mapObj.createPane(paneName);
+            }
+            this.mapboxPane.appendChild(this.mapLayer.getContainer());
+            this.mapLayer.setZIndex(5);
         };
         MapCountries.prototype.getCountryStyle = function (cc) {
             if (this.isCountrySelected(cc)) {
@@ -153,15 +306,20 @@ var Planning;
         };
         MapCountries.prototype.getGeoJson = function (callback) {
             var _this = this;
-            $.ajax({
-                dataType: "json",
-                url: "/geo/custom.geo.json",
-                success: function (data) {
-                    _this.countriesData = data;
-                    callback(data);
-                }
-            })
-                .error(function () { alert("error voe"); });
+            if (this.countriesData) {
+                callback();
+            }
+            else {
+                $.ajax({
+                    dataType: "json",
+                    url: "/geo/custom.geo.json",
+                    success: function (data) {
+                        _this.countriesData = data;
+                        callback();
+                    }
+                })
+                    .error(function () { alert("error voe"); });
+            }
         };
         MapCountries.prototype.getLayer = function (e) {
             var id = e.layer._leaflet_id;

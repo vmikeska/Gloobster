@@ -3,23 +3,19 @@ module Planning {
 
 		public onSelectionChanged: Function;		
 		public onMapLoaded: Function;
-
-		public delayedZoomCallback: DelayedCallbackMap;
-
+			
 		public map: Map;
 
 		private viewData: any;
-		private planningType: PlanningType;
-		private viewType = FlightCacheRecordType.Country;
-
-		public citiesManager: CitiesManager;
-
+		public planningType: PlanningType;
+		public viewType = FlightCacheRecordType.Country;
+			
 		//dont delete
 		//private customForm: CustomForm;
 
 		private resultsEngine: ResultsManager;
 
-		constructor() {
+		public init() {
 			this.initMap();
 
 			this.initCountriesFnc();
@@ -28,18 +24,20 @@ module Planning {
 		}
 
 		public changeViewType(type: FlightCacheRecordType) {
-				this.viewType = type;
-				this.displayMapData();
+			this.viewType = type;
+
+			var data = this.getViewTypeData();
+			this.map.switch(this.viewType, data);
 		}
 
 		private initMap() {
-					this.map = new Map();
-					this.map.init("map");
+			this.map = new Map(this);
 
-					this.map.onMapLoaded = () => {
-							this.loadCategory(PlanningType.Anytime);
-							this.onMapLoaded();
-					}
+			this.map.onMapLoaded = () => {				
+				this.onMapLoaded();
+			}
+
+			this.map.init("map");
 		}
 
 		private initCountriesFnc() {
@@ -53,19 +51,37 @@ module Planning {
 						selected: isSelected
 					});
 
-				PlanningSender.updateProp(data,
-					(response) => {
-					});
+				PlanningSender.updateProp(data, (response) => {});
 			};
 		}
 
 		private initCitiesFnc() {
-			
-			this.citiesManager = new CitiesManager(this.map.mapObj);
 
-			this.citiesManager.onSelectionChanged = (id, newState, type) => {
-				this.onSelectionChanged(id, newState, type);
-			}
+				this.map.onCityChange = (gid, isSelected) => {
+						this.onSelectionChanged(gid, isSelected, FlightCacheRecordType.City);
+
+						var data = PlanningSender.createRequest(this.planningType, "cities", {
+								gid: gid,
+								selected: isSelected
+						});
+
+						//dont delete
+						//if (planningType === PlanningType.Custom) {
+						//		data.values.customId = NamesList.selectedSearch.id;
+						//}
+
+						PlanningSender.updateProp(data, (response) => {});
+				};
+
+
+				
+
+
+			//this.citiesManager = new CitiesManager(this.map.mapObj);
+
+			//this.citiesManager.onSelectionChanged = (id, newState, type) => {
+			//	this.onSelectionChanged(id, newState, type);
+			//}
 		}
 
 		public loadCategory(pt: PlanningType) {
@@ -75,12 +91,13 @@ module Planning {
 
 		private initData() {
 
-			this.getTabData(this.planningType,
-				(data) => {
+			this.getTabData(this.planningType, (data) => {
 
 					this.viewData = data;
 
-					this.displayMapData();
+					var vData = this.getViewTypeData();
+					this.map.switch(this.viewType, vData);
+					
 
 					//do not delete
 					//if (this.planningType === PlanningType.Custom) {
@@ -92,89 +109,25 @@ module Planning {
 				});
 		}
 
-		private displayMapData() {
-			if (this.viewType === FlightCacheRecordType.Country) {
-				this.map.setCountries(this.viewData.countryCodes);
-			} else {
-				this.loadCitiesInRange();
-				this.delayedZoomCallback.receiveEvent();
-			}
-		}
-
 		private getTabData(planningType: PlanningType, callback) {
-			var prms = [["planningType", planningType.toString()]];
+				var prms = [["planningType", planningType.toString()]];
 
-			Views.ViewBase.currentView.apiGet("PlanningProperty", prms, (response) => {
-					callback(response);
+				Views.ViewBase.currentView.apiGet("PlanningProperty", prms, (response) => {
+						callback(response);
 				});
 		}
 
-		private loadCitiesInRange() {
-			this.delayedZoomCallback = new DelayedCallbackMap();
-			this.delayedZoomCallback.callback = () => {
-				this.callToLoadCities();
-			};
+		private getViewTypeData() {
+			if (this.viewType === FlightCacheRecordType.Country) {				
+				return this.viewData.countryCodes;
+			} else {
 
-			this.map.mapObj.on("zoomend", e => {
-				this.delayedZoomCallback.receiveEvent();
-			});
-			this.map.mapObj.on("moveend", e => {
-				this.delayedZoomCallback.receiveEvent();
-			});
-
+				return this.viewData.cities;				
+			}
 		}
 
-		private callToLoadCities() {
-			var bounds = this.map.mapObj.getBounds();
-			var zoom = this.map.mapObj.getZoom();
-			var population = this.getPopulationFromZoom(zoom);
-
-			var prms = [
-				["latSouth", bounds._southWest.lat],
-				["lngWest", bounds._southWest.lng],
-				["latNorth", bounds._northEast.lat],
-				["lngEast", bounds._northEast.lng],
-				["minPopulation", population.toString()],
-				["planningType", this.planningType.toString()]
-			];
-
-			//dont delete
-			//if (this.planningType === PlanningType.Custom) {
-			//	prms.push(["customId", NamesList.selectedSearch.id]);
-			//}
-
-			Views.ViewBase.currentView.apiGet("airportGroup", prms, (response) => {
-				this.onCitiesResponse(response);
-			});
-		}
+		
 			
-		private onCitiesResponse(cities) {
-			this.citiesManager.createCities(cities, this.planningType);
-		}
-
-		private getPopulationFromZoom(zoom) {
-			if (zoom < 3) {
-				return 2000000;
-			}
-			if (zoom === 3) {
-				return 800000;
-			}
-			if (zoom === 4) {
-				return 600000;
-			}
-			if (zoom === 5) {
-				return 400000;
-			}
-			if (zoom === 6) {
-				return 200000;
-			}
-
-			if (zoom === 7) {
-				return 50000;
-			}
-
-			return 1;
-		}
 
 		}
 

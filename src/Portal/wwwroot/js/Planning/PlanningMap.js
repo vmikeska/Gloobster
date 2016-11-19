@@ -3,22 +3,24 @@ var Planning;
     var PlanningMap = (function () {
         function PlanningMap() {
             this.viewType = FlightCacheRecordType.Country;
+        }
+        PlanningMap.prototype.init = function () {
             this.initMap();
             this.initCountriesFnc();
             this.initCitiesFnc();
-        }
+        };
         PlanningMap.prototype.changeViewType = function (type) {
             this.viewType = type;
-            this.displayMapData();
+            var data = this.getViewTypeData();
+            this.map.switch(this.viewType, data);
         };
         PlanningMap.prototype.initMap = function () {
             var _this = this;
-            this.map = new Planning.Map();
-            this.map.init("map");
+            this.map = new Planning.Map(this);
             this.map.onMapLoaded = function () {
-                _this.loadCategory(PlanningType.Anytime);
                 _this.onMapLoaded();
             };
+            this.map.init("map");
         };
         PlanningMap.prototype.initCountriesFnc = function () {
             var _this = this;
@@ -28,15 +30,18 @@ var Planning;
                     countryCode: cc,
                     selected: isSelected
                 });
-                Planning.PlanningSender.updateProp(data, function (response) {
-                });
+                Planning.PlanningSender.updateProp(data, function (response) { });
             };
         };
         PlanningMap.prototype.initCitiesFnc = function () {
             var _this = this;
-            this.citiesManager = new Planning.CitiesManager(this.map.mapObj);
-            this.citiesManager.onSelectionChanged = function (id, newState, type) {
-                _this.onSelectionChanged(id, newState, type);
+            this.map.onCityChange = function (gid, isSelected) {
+                _this.onSelectionChanged(gid, isSelected, FlightCacheRecordType.City);
+                var data = Planning.PlanningSender.createRequest(_this.planningType, "cities", {
+                    gid: gid,
+                    selected: isSelected
+                });
+                Planning.PlanningSender.updateProp(data, function (response) { });
             };
         };
         PlanningMap.prototype.loadCategory = function (pt) {
@@ -47,17 +52,9 @@ var Planning;
             var _this = this;
             this.getTabData(this.planningType, function (data) {
                 _this.viewData = data;
-                _this.displayMapData();
+                var vData = _this.getViewTypeData();
+                _this.map.switch(_this.viewType, vData);
             });
-        };
-        PlanningMap.prototype.displayMapData = function () {
-            if (this.viewType === FlightCacheRecordType.Country) {
-                this.map.setCountries(this.viewData.countryCodes);
-            }
-            else {
-                this.loadCitiesInRange();
-                this.delayedZoomCallback.receiveEvent();
-            }
         };
         PlanningMap.prototype.getTabData = function (planningType, callback) {
             var prms = [["planningType", planningType.toString()]];
@@ -65,59 +62,13 @@ var Planning;
                 callback(response);
             });
         };
-        PlanningMap.prototype.loadCitiesInRange = function () {
-            var _this = this;
-            this.delayedZoomCallback = new Planning.DelayedCallbackMap();
-            this.delayedZoomCallback.callback = function () {
-                _this.callToLoadCities();
-            };
-            this.map.mapObj.on("zoomend", function (e) {
-                _this.delayedZoomCallback.receiveEvent();
-            });
-            this.map.mapObj.on("moveend", function (e) {
-                _this.delayedZoomCallback.receiveEvent();
-            });
-        };
-        PlanningMap.prototype.callToLoadCities = function () {
-            var _this = this;
-            var bounds = this.map.mapObj.getBounds();
-            var zoom = this.map.mapObj.getZoom();
-            var population = this.getPopulationFromZoom(zoom);
-            var prms = [
-                ["latSouth", bounds._southWest.lat],
-                ["lngWest", bounds._southWest.lng],
-                ["latNorth", bounds._northEast.lat],
-                ["lngEast", bounds._northEast.lng],
-                ["minPopulation", population.toString()],
-                ["planningType", this.planningType.toString()]
-            ];
-            Views.ViewBase.currentView.apiGet("airportGroup", prms, function (response) {
-                _this.onCitiesResponse(response);
-            });
-        };
-        PlanningMap.prototype.onCitiesResponse = function (cities) {
-            this.citiesManager.createCities(cities, this.planningType);
-        };
-        PlanningMap.prototype.getPopulationFromZoom = function (zoom) {
-            if (zoom < 3) {
-                return 2000000;
+        PlanningMap.prototype.getViewTypeData = function () {
+            if (this.viewType === FlightCacheRecordType.Country) {
+                return this.viewData.countryCodes;
             }
-            if (zoom === 3) {
-                return 800000;
+            else {
+                return this.viewData.cities;
             }
-            if (zoom === 4) {
-                return 600000;
-            }
-            if (zoom === 5) {
-                return 400000;
-            }
-            if (zoom === 6) {
-                return 200000;
-            }
-            if (zoom === 7) {
-                return 50000;
-            }
-            return 1;
         };
         return PlanningMap;
     }());

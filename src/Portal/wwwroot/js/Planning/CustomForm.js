@@ -21,7 +21,6 @@ var Planning;
             var airportSelectedItems = this.getAirportTaggerSelectedItems(search);
             this.airportTagger.setSelectedItems(airportSelectedItems);
             this.initDuration(search.roughlyDays);
-            this.planningMap.delayedZoomCallback.receiveEvent();
         };
         CustomForm.prototype.initAirportTagger = function (search) {
             var config = new Planning.TaggingFieldConfig();

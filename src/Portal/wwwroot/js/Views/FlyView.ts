@@ -24,13 +24,18 @@
 		private mapSwitch(callback) {
 			var $cont = $(".map-type-switch");
 			var $btns = $cont.find(".btn");
-			$btns.click((e) => {
+			$btns.click((e) => {					
 				var $t = $(e.target);
+				var type = $t.hasClass("country") ? FlightCacheRecordType.Country : FlightCacheRecordType.City;
+
+				if (type === this.planningMap.viewType) {
+					return;
+				}
 
 				$btns.removeClass("active");
 				$t.addClass("active");
 
-				var type = $t.hasClass("country") ? FlightCacheRecordType.Country : FlightCacheRecordType.City;
+
 				callback(type);
 			});
 		}
@@ -99,8 +104,10 @@
 					this.resultsEngine.selectionChanged(id, newState, type);
 			}
 
+				this.planningMap.init();
 
-			this.mapSwitch((type) => {
+
+				this.mapSwitch((type) => {
 				this.planningMap.changeViewType(type);
 			});
 
