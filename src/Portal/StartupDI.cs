@@ -113,7 +113,8 @@ namespace Gloobster.Portal
             
             builder.AddTransient<IGeoNamesOnlineService, GeoNamesOnlineService>();
 
-
+            builder.AddTransient<ICustomSearchDomain, CustomSearchDomain>();
+            
             var langs = new Languages
             {
                 DB = new DbOperations()

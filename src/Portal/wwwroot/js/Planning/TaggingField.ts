@@ -17,7 +17,7 @@ module Planning {
 		private $cont: any;
 
 		private taggerTemplate = Views.ViewBase.currentView.registerTemplate("tagger-template");
-		public selectedItems: any;
+		public selectedItems = [];
 		private config: TaggingFieldConfig;
 
 		constructor(config: TaggingFieldConfig) {

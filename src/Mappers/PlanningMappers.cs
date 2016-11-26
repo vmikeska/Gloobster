@@ -25,51 +25,74 @@ namespace Gloobster.Mappers
 			};
 			return r;
 		}
-
-		public static PlanningCustomResponse ToResponse(this PlanningCustomEntity e)
-		{
-			var r = new PlanningCustomResponse
-			{
-				searches = e.Searches.Select(s => s.ToResponse()).ToList()
-			};
-			return r;
-		}
-
+        
 		public static CustomSearchResponse ToResponse(this CustomSearchSE e)
 		{
 			var r = new CustomSearchResponse
 			{
 				id = e.id.ToString(),
-				countryCodes = e.CountryCodes,
-				from = e.From,				
-				months = e.Months,
-				roughlyDays = e.RoughlyDays,
-				searchName = e.SearchName,
-				to = e.To,
-				years = e.Years
+                arrival = e.Arrival,
+                ccs = e.CCs,
+                customAirs = e.CustomAirs.Select(a => a.ToResponse()).ToList(),
+                daysFrom = e.DaysFrom,
+                daysTo = e.DaysTo,
+                deparature = e.Deparature,
+                gids = e.GIDs,
+                name = e.Name,
+                standardAirs = e.StandardAirs                
 			};
-
-			if (e.FromAirports != null)
-			{
-				r.fromAirports = e.FromAirports.Select(a => a.ToResponse()).ToList();
-			}
-
+            
 			return r;
 		}
 
-		public static CustomSearchResponse ToResponse(this CustomSearchDO d)
+	    public static FromAirResponse ToResponse(this FromAirSE e)
+	    {
+	        var r = new FromAirResponse
+	        {
+	            text = e.Text,
+	            origId = e.OrigId
+	        };
+
+	        return r;
+	    }
+
+        public static FromAirResponse ToResponse(this FromAirDO e)
+        {
+            var r = new FromAirResponse
+            {
+                text = e.Text,
+                origId = e.OrigId
+            };
+
+            return r;
+        }
+
+        public static FromAirDO ToDO(this FromAirSE e)
+        {
+            var r = new FromAirDO
+            {
+                Text = e.Text,
+                OrigId = e.OrigId
+            };
+
+            return r;
+        }
+
+        public static CustomSearchResponse ToResponse(this CustomSearchDO d)
 		{
 			var r = new CustomSearchResponse
 			{
-				id = d.Id,
-				countryCodes = d.CountryCodes,
-				from = d.From,
-				months = d.Months,
-				roughlyDays = d.RoughlyDays,
-				searchName = d.SearchName,
-				to = d.To,
-				years = d.Years
-			};
+                id = d.Id,
+                arrival = d.Arrival,
+                ccs = d.CCs,
+                customAirs = d.CustomAirs.Select(a => a.ToResponse()).ToList(),
+                daysFrom = d.DaysFrom,
+                daysTo = d.DaysTo,
+                deparature = d.Deparature,
+                gids = d.GIDs,
+                name = d.Name,
+                standardAirs = d.StandardAirs
+            };
 			return r;
 		}
 
@@ -77,23 +100,18 @@ namespace Gloobster.Mappers
 		{
 			var r = new CustomSearchDO
 			{
-				Id = e.id.ToString(),
-				CountryCodes = e.CountryCodes,
-				Cities = e.Cities,
-				From = e.From,
-				Months = e.Months,
-				RoughlyDays = e.RoughlyDays,
-				SearchName = e.SearchName,
-				To = e.To,
-				Years = e.Years,				
-			};
-
-			if (e.FromAirports != null)
-			{
-				r.FromAirports = e.FromAirports.Select(a => a.ToDO()).ToList();
-			}
-			
-
+                Id = e.id.ToString(),
+                Arrival = e.Arrival,
+                Deparature = e.Deparature,
+                DaysFrom = e.DaysFrom,
+                DaysTo = e.DaysTo,
+                Name = e.Name,
+                CCs = e.CCs,
+                GIDs = e.GIDs,
+                StandardAirs = e.StandardAirs,                
+                CustomAirs = e.CustomAirs.Select(a => a.ToDO()).ToList(),
+            };
+            
 			return r;
 		}
 

@@ -31,18 +31,16 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 			var q = req.query.ToLower();
 
 			var airports = DB.C<AirportEntity>()
-				.Where(a =>
-						a.Name.ToLower().Contains(q) ||
-						a.City.ToLower().Contains(q) ||
-						a.IataFaa.ToLower().Contains(req.query) ||
-						a.Icao.ToLower().Contains(req.query)
-						)
+				.Where(a => a.City.ToLower().Contains(q) || a.IataFaa.ToLower().Contains(req.query))
 				.Take(10)
 				.ToList();
 
-			var airportsResponse = airports.Select(a => new AirportTaggerResponse
+            airports = airports.Where(a => !string.IsNullOrEmpty(a.IataFaa)).ToList();
+
+
+            var airportsResponse = airports.Select(a => new AirportTaggerResponse
 			{
-				text = $"{a.Name}({a.City},{a.CountryCode}),{a.IataFaa}",
+				text = $"{a.City}, {a.CountryCode} - {a.IataFaa}",
 				kind = "airport",
 				value = a.OrigId.ToString()
 			});

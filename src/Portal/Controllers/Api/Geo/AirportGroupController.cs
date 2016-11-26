@@ -64,26 +64,28 @@ namespace Gloobster.Portal.Controllers.Api.Geo
                     cities.ForEach(c => c.selected = weekend.Cities.Contains(c.gid));
 				}
 
-				if (req.planningType.Value == PlanningType.Custom)
-				{
-					var customIdObj = new ObjectId(req.customId);
+                //todo: what is it for ?
 
-					var custom = DB.FOD<PlanningCustomEntity>(p => p.User_id == UserIdObj);
+				//if (req.planningType.Value == PlanningType.Custom)
+				//{
+				//	var customIdObj = new ObjectId(req.customId);
 
-                    if (custom == null)
-                    {
-                        return new ObjectResult(null);
-                    }
+				//	var custom = DB.FOD<PlanningCustomEntity>(p => p.User_id == UserIdObj);
 
-                    var selectedSearch = custom.Searches.FirstOrDefault(c => c.id == customIdObj);
+    //                if (custom == null)
+    //                {
+    //                    return new ObjectResult(null);
+    //                }
 
-					if (selectedSearch == null)
-					{
-						return new ObjectResult(null);
-					}
+    //                var selectedSearch = custom.Searches.FirstOrDefault(c => c.id == customIdObj);
 
-					cities.ForEach(c => c.selected = selectedSearch.Cities.Contains(c.gid));
-				}
+				//	if (selectedSearch == null)
+				//	{
+				//		return new ObjectResult(null);
+				//	}
+
+				//	cities.ForEach(c => c.selected = selectedSearch.Cities.Contains(c.gid));
+				//}
 			}
 
 			return new ObjectResult(cities);

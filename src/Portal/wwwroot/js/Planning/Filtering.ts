@@ -307,8 +307,7 @@ module Planning {
 				}
 			});
 
-			si.on("slide",
-				(range) => {
+			si.on("slide", (range) => {
 					var from = parseInt(range[0]);
 					var to = parseInt(range[1]);
 					this.display(from, to);
@@ -362,6 +361,8 @@ module Planning {
 		private $cont;
 		private id;
 
+		private slider;
+
 		constructor($cont, id) {
 			this.$cont = $cont;
 			this.id = id;
@@ -385,6 +386,12 @@ module Planning {
 				}
 		}
 
+		public setVals(from, to) {
+			this.slider.set([from, to]);
+			this.$from.val(from);
+			this.$to.val(to);
+		}
+
 		public genSlider(min, max) {
 			var t = Views.ViewBase.currentView.registerTemplate("range-slider-template");
 
@@ -404,7 +411,7 @@ module Planning {
 			this.$from.val(min);
 			this.$to.val(max);
 
-			var si = noUiSlider.create(slider,
+			this.slider = noUiSlider.create(slider,
 			{
 				start: [min + 1, max - 1],
 				connect: true,
@@ -425,7 +432,7 @@ module Planning {
 					this.$from.val(fixedVal);
 				}
 
-				si.set([fixedVal, null]);
+				this.slider.set([fixedVal, null]);
 
 				this.rangeChanged(fixedVal, this.$to.val());
 			}
@@ -440,12 +447,12 @@ module Planning {
 					this.$to.val(fixedVal);
 				}
 
-				si.set([null, fixedVal]);
+				this.slider.set([null, fixedVal]);
 
 				this.rangeChanged(this.$from.val(), fixedVal);
 			}
 				
-			si.on("slide",
+			this.slider.on("slide",
 				(range) => {
 					var from = parseInt(range[0]);
 					var to = parseInt(range[1]);
@@ -455,6 +462,8 @@ module Planning {
 					this.rangeChanged(from, to);
 				});
 		}
+
+
 	}
 
 	export class FilteringWeekend extends Filtering {

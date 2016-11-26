@@ -12,6 +12,7 @@ var Views;
             this.$cont = $("#resultsCont");
             this.$filter = $("#filterCont");
             this.initialize();
+            var cf = new Planning.CustomFrom(this);
         }
         FlyView.prototype.mapSwitch = function (callback) {
             var _this = this;
@@ -43,6 +44,7 @@ var Views;
                 _this.changeSetter(PlanningType.Weekend);
             });
             this.tabs.addTab("tabCustom", "Long term search", function () {
+                _this.changeSetter(PlanningType.Custom);
             });
             this.tabs.addTab("tabClassic", "Classic search", function () {
             });
@@ -54,6 +56,9 @@ var Views;
             }
             if (type === PlanningType.Weekend) {
                 this.currentSetter = new Planning.WeekendPageSetter(this);
+            }
+            if (type === PlanningType.Custom) {
+                this.currentSetter = new Planning.CustomPageSetter(this);
             }
             this.currentSetter.init();
             this.planningMap.loadCategory(type);

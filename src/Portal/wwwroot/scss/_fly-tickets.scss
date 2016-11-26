@@ -5,7 +5,173 @@
 
 .fly-tickets{
    
+    .date-cont{
+        position: relative;              
+        display: inline-block;
+
+        input {
+            font-size: 1.1em;
+            width: 120px;
+            padding-left: 35px;
+            border: 1px solid $light-blue;
+            color: $dark-blue;
+        }
+
+        .icon-calendar {
+            font-size: 1.3em;
+            position: absolute;
+            left: 7px;
+            top: 10px;
+            color: $dark-blue;
+        }
+    }
     
+    .form-custom {
+        background-color: $very-light-blue3;
+        padding: 12px;
+        text-align: left;
+
+        .title {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .searches-menu {
+            
+            border-bottom: 1px dotted $light-blue3;
+            padding-bottom: 6px;
+
+            .item {
+                @include noselect;
+
+                display: inline-block;
+                border-radius: 4px;
+                padding: 8px;
+                color: white;
+                background-color: $light-blue;
+                font-weight: bold;
+                cursor: pointer;
+                margin-right: 10px;
+
+                .name{
+                    display: inline-block;
+
+                    .name-txt {
+                        
+                    }
+
+                    .name-edit {
+                        display: none;
+                        vertical-align: middle;
+                    }
+                }
+
+                .service {
+                    display: inline-block;
+
+                    .edit, .delete {
+                        display: none;
+
+                        color: $dark-blue;
+                        margin-left: 4px;
+
+                        &:hover{
+                            color: $orange;
+                            cursor: pointer;
+                        }
+                    }
+
+                    .edit-save {
+                        display: none;
+                        vertical-align: middle;
+
+                        background-color: $green;
+                        color: white;
+                        padding: 8px;
+                        text-decoration: none;
+                        border-radius: 4px;
+                        border: 1px solid white;
+
+                        &:hover {
+                            background-color: $orange;
+                        }
+                    }
+
+                }
+
+                &.state-active {
+                    background-color: $light-blue3;
+
+                    .edit, .delete {
+                        display: inline-block;
+                    }
+                }
+
+                &.state-editing {
+                    
+                    .edit, .delete {
+                        display: none;
+                    }
+
+                    .name-edit{
+                        display: inline !important;
+                    }
+
+                    .name-txt {
+                        display: none !important;
+                    }
+
+                    .edit-save {
+                        display: inline-block !important;
+                    }
+                }
+
+                
+            }
+
+            .adder {
+                display: inline-block;
+                border-radius: 4px;
+                border: 1px solid $light-blue3;
+                padding: 8px;
+                cursor: pointer;
+
+                &:hover {
+                    color: $orange;
+                    border-color: $orange;
+                }
+            }
+        }
+
+        .airports-cont {
+
+            .airs-label {
+                margin-right: 12px;
+                font-weight: bold;
+            }
+
+            .tagger-cont {
+                border: 1px solid $light-blue3;
+                border-radius: 4px;
+                display: inline-block;
+                padding-left: 4px;
+                padding-right: 4px;
+                padding-top: 4px;
+                background-color: white;
+            }
+        }
+
+        
+
+        .days-range-cont {
+
+        }
+
+        
+    }
+
+
     .navi-cont {
         margin-bottom: 5px;
 
@@ -1046,26 +1212,7 @@
               margin-bottom: 6px;
           }
 
-          .date-cont{
-              position: relative;              
-              display: inline-block;
-
-              input {
-                  font-size: 1.1em;
-                  width: 120px;
-                  padding-left: 35px;
-                  border: 1px solid $light-blue;
-                  color: $dark-blue;
-              }
-
-              .icon-calendar {
-                  font-size: 1.3em;
-                  position: absolute;
-                  left: 7px;
-                  top: 10px;
-                  color: $dark-blue;
-              }
-          }
+          
 
           .time-cont {
               display: block;              

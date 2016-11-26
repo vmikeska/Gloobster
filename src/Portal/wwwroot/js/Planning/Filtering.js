@@ -284,6 +284,11 @@ var Planning;
                 });
             }
         };
+        RangeSlider.prototype.setVals = function (from, to) {
+            this.slider.set([from, to]);
+            this.$from.val(from);
+            this.$to.val(to);
+        };
         RangeSlider.prototype.genSlider = function (min, max) {
             var _this = this;
             var t = Views.ViewBase.currentView.registerTemplate("range-slider-template");
@@ -297,7 +302,7 @@ var Planning;
             this.$to = $("#" + this.id + "_to");
             this.$from.val(min);
             this.$to.val(max);
-            var si = noUiSlider.create(slider, {
+            this.slider = noUiSlider.create(slider, {
                 start: [min + 1, max - 1],
                 connect: true,
                 step: 1,
@@ -314,7 +319,7 @@ var Planning;
                     fixedVal = min;
                     _this.$from.val(fixedVal);
                 }
-                si.set([fixedVal, null]);
+                _this.slider.set([fixedVal, null]);
                 _this.rangeChanged(fixedVal, _this.$to.val());
             };
             var toCall = new Common.DelayedCallback(this.$to);
@@ -325,10 +330,10 @@ var Planning;
                     fixedVal = max;
                     _this.$to.val(fixedVal);
                 }
-                si.set([null, fixedVal]);
+                _this.slider.set([null, fixedVal]);
                 _this.rangeChanged(_this.$from.val(), fixedVal);
             };
-            si.on("slide", function (range) {
+            this.slider.on("slide", function (range) {
                 var from = parseInt(range[0]);
                 var to = parseInt(range[1]);
                 _this.$from.val(from);

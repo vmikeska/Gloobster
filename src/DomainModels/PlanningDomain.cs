@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
@@ -8,14 +7,14 @@ using Gloobster.Entities;
 using Gloobster.Entities.Planning;
 using Gloobster.Entities.Trip;
 using Gloobster.Enums;
-using Gloobster.Mappers;
 using MongoDB.Bson;
 
 namespace Gloobster.DomainModels
 {
-	public class PlanningDomain: IPlanningDomain
+    public class PlanningDomain: IPlanningDomain
 	{
 		public IDbOperations DB { get; set; }
+
 
 		public async Task<bool> ChangeCountrySelection(CountrySelectionDO selection)
 		{
@@ -31,11 +30,11 @@ namespace Gloobster.DomainModels
 				return changed;
 			}
 
-			if (selection.PlanningType == PlanningType.Custom)
-			{
-				bool changed = await ChangeCountrySelectionCustom(selection);
-				return changed;
-			}
+			//if (selection.PlanningType == PlanningType.Custom)
+			//{
+			//	bool changed = await ChangeCountrySelectionCustom(selection);
+			//	return changed;
+			//}
 
 			return false;
 		}
@@ -54,11 +53,11 @@ namespace Gloobster.DomainModels
 				return changed;
 			}
 
-			if (selection.PlanningType == PlanningType.Custom)
-			{
-				bool changed = await ChangeCitySelectionCustom(selection);
-				return changed;
-			}
+			//if (selection.PlanningType == PlanningType.Custom)
+			//{
+			//	bool changed = await ChangeCitySelectionCustom(selection);
+			//	return changed;
+			//}
 
 			return false;
 		}
@@ -117,74 +116,9 @@ namespace Gloobster.DomainModels
 		}
 		
 		
-		private async Task<bool> ChangeCountrySelectionCustom(CountrySelectionDO selection)
-		{
-			var userIdObj = new ObjectId(selection.UserId);
-			var customIdObj = new ObjectId(selection.CustomId);
-			var custom = DB.FOD<PlanningCustomEntity>(u => u.User_id == userIdObj);
-			var customSearch = custom.Searches.FirstOrDefault(s => s.id == customIdObj);
+		
 
-			if (customSearch == null)
-			{
-				//throw
-			}
-
-			bool hasCountry = customSearch.CountryCodes.Contains(selection.CountryCode);
-
-			var filter = DB.F<PlanningCustomEntity>().Eq(p => p.User_id, userIdObj)
-				& DB.F<PlanningCustomEntity>().Eq("Searches._id", customIdObj);
-
-			if (selection.Selected && !hasCountry)
-			{
-				var update = DB.U<PlanningCustomEntity>().Push("Searches.$.CountryCodes", selection.CountryCode);
-				var res = await DB.UpdateAsync(filter, update);
-				return res.ModifiedCount == 1;
-			}
-
-			if (!selection.Selected && hasCountry)
-			{
-				var update = DB.U<PlanningCustomEntity>().Pull("Searches.$.CountryCodes", selection.CountryCode);
-				var res = await DB.UpdateAsync(filter, update);
-				return res.ModifiedCount == 1;
-			}
-
-			return false;
-		}
-
-		private async Task<bool> ChangeCitySelectionCustom(CitySelectionDO selection)
-		{
-			var userIdObj = new ObjectId(selection.UserId);
-			var customIdObj = new ObjectId(selection.CustomId);
-			var custom = DB.FOD<PlanningCustomEntity>(u => u.User_id == userIdObj);
-			
-			var customSearch = custom.Searches.FirstOrDefault(s => s.id == customIdObj);
-
-			if (customSearch == null)
-			{
-				//throw
-			}
-
-			bool hasCity = customSearch.Cities.Contains(selection.GID);
-
-			var filter = DB.F<PlanningCustomEntity>().Eq(p => p.User_id, userIdObj)
-					& DB.F<PlanningCustomEntity>().Eq("Searches._id", customIdObj);
-
-			if (selection.Selected && !hasCity)
-			{				
-				var update = DB.U<PlanningCustomEntity>().Push("Searches.$.Cities", selection.GID);
-				var res = await DB.UpdateAsync(filter, update);
-				return res.ModifiedCount == 1;
-			}
-
-			if (!selection.Selected && hasCity)
-			{				
-				var update = DB.U<PlanningCustomEntity>().Pull("Searches.$.Cities", selection.GID);
-				var res = await DB.UpdateAsync(filter, update);
-				return res.ModifiedCount == 1;
-			}
-
-			return false;
-		}
+		
 
 		private async Task<bool> ChangeCitySelectionAnytime(CitySelectionDO selection)
 		{
@@ -247,52 +181,9 @@ namespace Gloobster.DomainModels
 			return res.ModifiedCount == 1;
 		}
 
-		public async Task<CustomSearchDO> CreateNewEmptySearch(string userId, string name)
-		{
-			var userIdObj = new ObjectId(userId);
-			var user = DB.C<UserEntity>().FirstOrDefault(e => e.id == userIdObj);
+		
 
-			var newSearch = new CustomSearchSE
-			{
-				id = ObjectId.GenerateNewId(),
-				Cities = new List<int>(),
-				CountryCodes = new List<string>(),
-				Months = new List<int>(),
-				SearchName = name,				
-				Years = new List<int>(),
-				RoughlyDays = 0,
-				FromAirports = user.HomeAirports
-            };
-			
-			var filter = DB.F<PlanningCustomEntity>().Eq(p => p.User_id, userIdObj);				
-			var update = DB.U<PlanningCustomEntity>().Push(p => p.Searches, newSearch);
-			var res = await DB.UpdateAsync(filter, update);
-
-			CustomSearchDO nsDO = newSearch.ToDO();
-            return nsDO;
-		}
-
-		public async Task<bool> PushCustomProperty(string userId, string searchId, string propName, object value)
-		{
-			var userIdObj = new ObjectId(userId);
-			var searchIdObj = new ObjectId(searchId);
-			var filter = DB.F<PlanningCustomEntity>().Eq(p => p.User_id, userIdObj)
-				& DB.F<PlanningCustomEntity>().Eq("Searches._id", searchIdObj);
-			var update = DB.U<PlanningCustomEntity>().Push("Searches.$." + propName, value);
-			var res = await DB.UpdateAsync(filter, update);
-			return res.ModifiedCount == 1;
-		}
-
-		public async Task<bool> UpdateCustomProperty(string userId, string searchId, string propName, object value)
-		{
-			var userIdObj = new ObjectId(userId);
-			var searchIdObj = new ObjectId(searchId);
-			var filter = DB.F<PlanningCustomEntity>().Eq(p => p.User_id, userIdObj) 
-				& DB.F<PlanningCustomEntity>().Eq("Searches._id", searchIdObj);
-			var update = DB.U<PlanningCustomEntity>().Set("Searches.$." + propName, value);
-			var res = await DB.UpdateAsync(filter, update);
-			return res.ModifiedCount == 1;
-		}
+		
 		
 		public async void CreateDBStructure(string userId)
 	    {
@@ -324,39 +215,7 @@ namespace Gloobster.DomainModels
 					Cities = new List<int>()
 				};
 				await DB.SaveAsync(anytime);
-			}
-
-			var custom = DB.FOD<PlanningCustomEntity>(e => e.User_id == userIdObj);
-			if (custom == null)
-			{
-				var search1 = new CustomSearchSE
-				{
-					id = ObjectId.GenerateNewId(),
-					SearchName = "My summer holiday search",					
-					RoughlyDays = 7,
-					Months = new List<int> {3, 4},
-					Years = new List<int> {2016, 2017},
-					CountryCodes = new List<string> {"CZ", "DE"},
-					Cities = new List<int> {2950159, 2911298, 3067696},					
-				};
-
-				if (user.HomeAirports != null)
-				{
-					search1.FromAirports = user.HomeAirports;
-				}
-				else
-				{
-					search1.FromAirports = new List<AirportSaveSE>();
-				}
-				
-				custom = new PlanningCustomEntity
-				{
-					id = ObjectId.GenerateNewId(),
-					User_id = userIdObj,
-					Searches = new List<CustomSearchSE> {search1}
-				};
-				await DB.SaveAsync(custom);
-			}
+			}            
 		}
 		
 

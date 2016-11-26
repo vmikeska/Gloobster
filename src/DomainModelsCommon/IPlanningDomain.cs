@@ -12,11 +12,6 @@ namespace Gloobster.DomainInterfaces
 		Task<bool> ChangeCitySelection(CitySelectionDO selection);
 
 		Task<bool> ChangeWeekendExtraDaysLength(string userId, int daysLength);
-        void CreateDBStructure(string userId);
-
-		Task<bool> UpdateCustomProperty(string userId, string searchId, string propName, object value);
-		Task<bool> PushCustomProperty(string userId, string searchId, string propName, object value);
-
-		Task<CustomSearchDO> CreateNewEmptySearch(string userId, string name);
+        void CreateDBStructure(string userId);        
 	}
 }

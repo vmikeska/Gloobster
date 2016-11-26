@@ -1,4 +1,6 @@
-﻿using Gloobster.Enums;
+﻿using System.Collections.Generic;
+using Gloobster.Common;
+using Gloobster.Enums;
 
 namespace Gloobster.DomainObjects
 {
@@ -9,5 +11,5 @@ namespace Gloobster.DomainObjects
 		public int GID { get; set; }
 		public bool Selected { get; set; }
 		public string CustomId { get; set; }
-	}
+	}    
 }

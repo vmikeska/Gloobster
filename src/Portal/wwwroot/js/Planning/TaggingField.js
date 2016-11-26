@@ -9,6 +9,7 @@ var Planning;
     var TaggingField = (function () {
         function TaggingField(config) {
             this.taggerTemplate = Views.ViewBase.currentView.registerTemplate("tagger-template");
+            this.selectedItems = [];
             this.config = config;
             if (!this.config.placeholder) {
                 this.config.placeholder = "Search";

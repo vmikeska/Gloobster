@@ -29,7 +29,9 @@ var Common;
             });
         };
         ListGenerator.prototype.evnt = function (selector, handler) {
-            this.eventHandlers.push(new EventHandler(selector, handler));
+            var eh = new EventHandler(selector, handler);
+            this.eventHandlers.push(eh);
+            return eh;
         };
         ListGenerator.prototype.generateList = function (items) {
             if (this.clearCont) {
@@ -109,6 +111,9 @@ var Common;
             else if (this.appendStyle === "after") {
                 this.$cont.after($item);
             }
+            else if (this.appendStyle === "before") {
+                this.$cont.before($item);
+            }
             if (this.onItemAppended) {
                 this.onItemAppended($item, item);
             }
@@ -123,6 +128,10 @@ var Common;
             this.selector = selector;
             this.handler = handler;
         }
+        EventHandler.prototype.setEvent = function (event) {
+            this.event = event;
+            return this;
+        };
         return EventHandler;
     }());
     Common.EventHandler = EventHandler;

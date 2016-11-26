@@ -466,76 +466,64 @@
 
     </script>
 
-
-
-    <script id="custom-template" type="text/x-handlebars-template">
-
-        <div class="blue-form margin form">
-            <div class="table future-table">
-                <div class="cell">
-                    <span class="future-label"></span>
-                </div>
-                <div class="cell">
-                    <button id="addNewItem">[+]</button>
-                    <input id="nameInput" style="display: none" />
-
-                    <button id="nameSaveBtn" style="display: none">[s]</button>
-                    <div class="dropdown future-select-full">
-
-                        <span id="selectedSpan" class="selected"></span>
-                        <button id="nameEditBtn">[e]</button>
-                        <ul id="searchesList"></ul>
-                        <input type="hidden">
-                    </div>
-                </div>
-            </div>
-            <div class="table future-table">
-                <div class="cell">
-                    <span class="future-label">From</span>
-                </div>
-                <div class="cell">
-                    <div id="fromAirportsTagger" class="tags future-tags-full">
-
-                        @*<a class="tag" href="#">Frankfurt &bull; FRA</a>
-                            <a class="tag" href="#">Barcelona &bull; BCN</a>
-
-                            <div class="dropdown dropdown-open">
-                                    <input class="inputed" placeholder="+ Add Tag">
-                                    <ul>
-                                            <li>Dropdown Menu Item</li>
-                                            <li>Another Item</li>
-                                            <li>The Last One</li>
-                                    </ul>
-                            </div>*@
-
-                        <a class="close" href="#">Close</a>
-                    </div>
-                </div>
-            </div>
-            <div class="table future-table">
-                <div class="cell">
-                    <span class="future-label">Time</span>
-                </div>
-                <div class="cell">
-                    <div id="timeTagger" class="tags future-tags-full">
-                        <a class="close" href="#">Close</a>
-                    </div>
-                </div>
-            </div>
-            <div id="lengthRadio" class="future-line">
-                <span class="color1">Rough duration</span>
-                <input id="radio1" data-vl="0" name="radio" type="radio" checked>
-                <label class="mleft10" for="radio1">Not important</label>
-                <input id="radio2" data-vl="3" name="radio" type="radio">
-                <label class="mleft10" for="radio2">Weekend</label>
-                <input id="radio3" data-vl="7" name="radio" type="radio">
-                <label class="mleft10" for="radio3">Week</label>
-                <input id="radio4" data-vl="14" name="radio" type="radio">
-                <label class="mleft10" for="radio4">Two weeks</label>
-                <input id="radio5" data-vl="custom" name="radio" type="radio">
-                <label class="mleft10" for="radio5">Custom</label>
-                <input style="display: none" id="customLength" type="text" value="0" />
-            </div>
+<script id="custom-menu-btn-template" type="text/x-handlebars-template">
+    
+    <div id="{{id}}" class="item" data-id="{{id}}">
+        <div class="name">
+            <span class="name-txt">{{name}}</span>
+            <input class="name-edit" type="text" value="{{name}}" />
         </div>
+        <div class="service">
+            <span class="edit icon-edit-pencil"></span>
+            <span class="delete icon-cross"></span>
+            <a class="edit-save" href="#">save</a>
+        </div>
+    </div>
 
-    </script>
+</script>
+
+<script id="custom-template" type="text/x-handlebars-template">
+
+        <div class="form-custom">
+            
+            <div class="searches-menu">
+
+                
+
+                <a class="adder icon-plus"></a>
+                
+            </div>
+            
+            <div class="title">What are departing airports?</div>
+            <div class="airports-cont">
+                <div>
+                    <input id="cbStandard" type="checkbox" />
+                    <label for="cbStandard">My standard airports</label>
+                </div>
+                <span class="airs-label">Custom airports</span>
+                <div class="tagger-cont" id="airTagger"></div>
+            </div>
+
+            <div class="title">How many days would you like to spend in destination?</div>
+            <div class="days-range-cont"></div>
+            
+            <div class="title">Date range</div>
+            <div class="dates">
+                
+                <div class="date-cont">
+                    <input class="date" type="text" id="dpDep">
+                    <span class="icon-calendar"></span>
+                </div>
+                
+                <div class="date-cont">
+                    <input class="date" type="text" id="dpArr">
+                    <span class="icon-calendar"></span>
+                </div>
+
+            </div>
+
+        </div>
+    
+
+
+</script>

@@ -1,5 +1,7 @@
 ﻿module Views {
 
+		
+
 	export class FlyView extends ViewBase {
 
 		public planningMap: Planning.PlanningMap;
@@ -17,6 +19,9 @@
 			super();
 
 			this.initialize();
+
+
+			var cf = new Planning.CustomFrom(this);			
 		}
 
 		private mapSwitch(callback) {
@@ -55,9 +60,7 @@
 				});
 
 			this.tabs.addTab("tabCustom", "Long term search", () => {
-					//tabHtml = this.customTabTemplate();
-					//$tabContent.html(tabHtml);
-					//this.planningMap.loadCategory(2);
+					this.changeSetter(PlanningType.Custom);					
 				});
 
 			this.tabs.addTab("tabClassic", "Classic search", () => {
@@ -75,6 +78,10 @@
 			}
 			if (type === PlanningType.Weekend) {
 				this.currentSetter = new Planning.WeekendPageSetter(this);
+			}
+
+			if (type === PlanningType.Custom) {
+					this.currentSetter = new Planning.CustomPageSetter(this);
 			}
 
 			this.currentSetter.init();

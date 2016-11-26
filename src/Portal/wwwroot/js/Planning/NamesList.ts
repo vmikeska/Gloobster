@@ -1,122 +1,124 @@
-module Planning {
-	export class NamesList {
-		$nameInput: any;
-		$nameSaveBtn: any;
-		$nameEditBtn: any;
-		$selectedSpan: any;
-		$searchesList: any;
-		$addNewItem: any;
+//module Planning {
 
-		private searches = [];
-		public currentSearchDeleteThisShit;
+//		//todo: used ?
+//	export class NamesList {
+//		$nameInput: any;
+//		$nameSaveBtn: any;
+//		$nameEditBtn: any;
+//		$selectedSpan: any;
+//		$searchesList: any;
+//		$addNewItem: any;
 
-		private isEditMode = false;
+//		private searches = [];
+//		public currentSearchDeleteThisShit;
 
-		public onSearchChanged: Function;
+//		private isEditMode = false;
 
-		public static selectedSearch;
+//		public onSearchChanged: Function;
 
-		constructor(searches) {
-			this.searches = searches;
-			NamesList.selectedSearch = this.searches[0];
+//		public static selectedSearch;
 
-			this.$nameInput = $("#nameInput");
-			this.$nameSaveBtn = $("#nameSaveBtn");
-			this.$nameEditBtn = $("#nameEditBtn");
-			this.$selectedSpan = $("#selectedSpan");
-			this.$searchesList = $("#searchesList");
-			this.$addNewItem = $("#addNewItem");
+//		constructor(searches) {
+//			this.searches = searches;
+//			NamesList.selectedSearch = this.searches[0];
 
-			this.$nameEditBtn.click(() => this.editClick());
-			this.$nameSaveBtn.click(() => this.saveClick());
+//			this.$nameInput = $("#nameInput");
+//			this.$nameSaveBtn = $("#nameSaveBtn");
+//			this.$nameEditBtn = $("#nameEditBtn");
+//			this.$selectedSpan = $("#selectedSpan");
+//			this.$searchesList = $("#searchesList");
+//			this.$addNewItem = $("#addNewItem");
 
-			this.$nameInput.focusout(() => {
-				this.saveNewName();
-			});
+//			this.$nameEditBtn.click(() => this.editClick());
+//			this.$nameSaveBtn.click(() => this.saveClick());
 
-			this.$addNewItem.click(() => {
-				var data = PlanningSender.createRequest(PlanningType.Custom, "createNewSearch", {
-					searchName: 'new search'
-				});
+//			this.$nameInput.focusout(() => {
+//				this.saveNewName();
+//			});
 
-				PlanningSender.pushProp(data, (newSearch) => {
-					searches.push(newSearch);
-					NamesList.selectedSearch = newSearch;
-					this.addItem(newSearch);
-					this.setToEditMode();
-					this.onSearchChanged(newSearch);
-				});
-			});
+//			this.$addNewItem.click(() => {
+//				var data = PlanningSender.createRequest(PlanningType.Custom, "createNewSearch", {
+//					searchName: 'new search'
+//				});
 
-			this.fillList();
-		}
+//				PlanningSender.pushProp(data, (newSearch) => {
+//					searches.push(newSearch);
+//					NamesList.selectedSearch = newSearch;
+//					this.addItem(newSearch);
+//					this.setToEditMode();
+//					this.onSearchChanged(newSearch);
+//				});
+//			});
 
-		private fillList() {
-			this.$searchesList.html("");
+//			this.fillList();
+//		}
 
-			this.searches.forEach((search) => {
-				this.addItem(search);
-			});
+//		private fillList() {
+//			this.$searchesList.html("");
 
-			NamesList.selectedSearch = this.searches[0];
-			this.$selectedSpan.text(NamesList.selectedSearch.searchName);
-		}
+//			this.searches.forEach((search) => {
+//				this.addItem(search);
+//			});
 
-		private addItem(search) {
-			var itemHtml = `<li data-si="${search.id}">${search.searchName}</li>`;
-			var $item = $(itemHtml);
-			this.$searchesList.append($item);
+//			NamesList.selectedSearch = this.searches[0];
+//			this.$selectedSpan.text(NamesList.selectedSearch.searchName);
+//		}
 
-			$item.click((e) => {
-				this.itemClick($item);
-			});
-		}
+//		private addItem(search) {
+//			var itemHtml = `<li data-si="${search.id}">${search.searchName}</li>`;
+//			var $item = $(itemHtml);
+//			this.$searchesList.append($item);
 
-		private itemClick($item) {
-			var searchId = $item.data("si");
-			var search = _.find(this.searches, (search) => { return search.id === searchId; });
-			NamesList.selectedSearch = search;
-			this.onSearchChanged(search);
-		}
+//			$item.click((e) => {
+//				this.itemClick($item);
+//			});
+//		}
 
-		public saveClick() {
-			this.saveNewName();
-		}
+//		private itemClick($item) {
+//			var searchId = $item.data("si");
+//			var search = _.find(this.searches, (search) => { return search.id === searchId; });
+//			NamesList.selectedSearch = search;
+//			this.onSearchChanged(search);
+//		}
 
-		public editClick() {
-			this.setToEditMode();
-		}
+//		public saveClick() {
+//			this.saveNewName();
+//		}
 
-		private saveNewName() {
-			var newName = this.$nameInput.val();
-			var data = PlanningSender.createRequest(PlanningType.Custom, "renameSearch", {
-				id: NamesList.selectedSearch.id,
-				searchName: newName
-			});
+//		public editClick() {
+//			this.setToEditMode();
+//		}
 
-			PlanningSender.updateProp(data, (res) => {
-				NamesList.selectedSearch.searchName = newName;
-				this.$nameInput.hide();
-				this.$selectedSpan.show();
-				this.$nameEditBtn.show();
-				this.$nameSaveBtn.hide();
-				this.isEditMode = false;
+//		private saveNewName() {
+//			var newName = this.$nameInput.val();
+//			var data = PlanningSender.createRequest(PlanningType.Custom, "renameSearch", {
+//				id: NamesList.selectedSearch.id,
+//				searchName: newName
+//			});
 
-				this.$selectedSpan.text(newName);
-				this.$searchesList.find(`li[data-si='${NamesList.selectedSearch.id}']`).text(newName);
-			});
-		}
+//			PlanningSender.updateProp(data, (res) => {
+//				NamesList.selectedSearch.searchName = newName;
+//				this.$nameInput.hide();
+//				this.$selectedSpan.show();
+//				this.$nameEditBtn.show();
+//				this.$nameSaveBtn.hide();
+//				this.isEditMode = false;
 
-		private setToEditMode() {
-			this.$nameInput.show();
-			this.$nameInput.val(NamesList.selectedSearch.searchName);
-			this.$selectedSpan.hide();
-			this.$nameEditBtn.hide();
-			this.$nameSaveBtn.show();
-			this.isEditMode = true;
-			this.$nameInput.focus();
-			this.$nameInput.select();
-		}
+//				this.$selectedSpan.text(newName);
+//				this.$searchesList.find(`li[data-si='${NamesList.selectedSearch.id}']`).text(newName);
+//			});
+//		}
 
-	}
-}
+//		private setToEditMode() {
+//			this.$nameInput.show();
+//			this.$nameInput.val(NamesList.selectedSearch.searchName);
+//			this.$selectedSpan.hide();
+//			this.$nameEditBtn.hide();
+//			this.$nameSaveBtn.show();
+//			this.isEditMode = true;
+//			this.$nameInput.focus();
+//			this.$nameInput.select();
+//		}
+
+//	}
+//}

@@ -1,25 +1,32 @@
 using System;
 using System.Collections.Generic;
+using Gloobster.Common;
 
 namespace Gloobster.DomainObjects
 {
-	public class CustomSearchDO
-	{
-		public string Id { get; set; }
-		public string SearchName { get; set; }
+    public class CustomSearchDO
+    {
+        public string Id { get; set; }
+        
+        public string Name { get; set; }
 
-		public List<AirportSaveDO> FromAirports { get; set; }
+        public int DaysFrom { get; set; }
+        public int DaysTo { get; set; }
 
+        public List<string> CCs { get; set; }
+        public List<int> GIDs { get; set; }
 
-		public List<string> CountryCodes { get; set; }
-		public List<int> Cities { get; set; }
+        public Date Deparature { get; set; }
+        public Date Arrival { get; set; }
 
-		public List<int> Years { get; set; }
-		public List<int> Months { get; set; }
-		public DateTime? From { get; set; }
-		public DateTime? To { get; set; }
+        public bool StandardAirs { get; set; }
+        public List<FromAirDO> CustomAirs { get; set; }
+    }
 
-		public int RoughlyDays { get; set; }
-	}
-    
+    public class FromAirDO
+    {
+        public string Text { get; set; }
+        public int OrigId { get; set; }
+    }
+
 }

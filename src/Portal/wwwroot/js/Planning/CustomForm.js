@@ -1,165 +1,289 @@
 var Planning;
 (function (Planning) {
-    var CustomForm = (function () {
-        function CustomForm(data, planningMap) {
-            var _this = this;
-            this.planningMap = planningMap;
-            this.data = data;
-            this.namesList = new Planning.NamesList(data.searches);
-            this.namesList.onSearchChanged = function (search) { return _this.onSearchChanged(search); };
-            this.registerDuration();
-            this.initTimeTagger(Planning.NamesList.selectedSearch);
-            this.initAirportTagger(Planning.NamesList.selectedSearch);
-            this.fillForm(Planning.NamesList.selectedSearch);
+    var PropsDataUpload = (function () {
+        function PropsDataUpload(searchId, propName) {
+            this.values = [];
+            this.searchId = searchId;
+            this.propName = propName;
         }
-        CustomForm.prototype.onSearchChanged = function (search) {
-            this.fillForm(search);
+        PropsDataUpload.prototype.setVal = function (val) {
+            this.value = val;
         };
-        CustomForm.prototype.fillForm = function (search) {
-            var timeSelectedItems = this.getTimeTaggerSelectedItems(search);
-            this.timeTagger.setSelectedItems(timeSelectedItems);
-            var airportSelectedItems = this.getAirportTaggerSelectedItems(search);
-            this.airportTagger.setSelectedItems(airportSelectedItems);
-            this.initDuration(search.roughlyDays);
+        PropsDataUpload.prototype.addVal = function (name, val) {
+            this.values.push({ name: name, val: val });
         };
-        CustomForm.prototype.initAirportTagger = function (search) {
+        PropsDataUpload.prototype.send = function (callback) {
+            if (callback === void 0) { callback = null; }
+            var req = {
+                id: this.searchId,
+                name: this.propName,
+                value: this.value,
+                values: this.values
+            };
+            Views.ViewBase.currentView.apiPut("CustomSearch", req, function (res) {
+                if (callback) {
+                    callback(res);
+                }
+            });
+        };
+        return PropsDataUpload;
+    }());
+    Planning.PropsDataUpload = PropsDataUpload;
+    var SearchDataLoader = (function () {
+        function SearchDataLoader() {
+        }
+        SearchDataLoader.prototype.getInitData = function (callback) {
+            var prms = [["actionName", "init"]];
+            Views.ViewBase.currentView.apiGet("CustomSearch", prms, function (res) {
+                callback(res);
+            });
+        };
+        SearchDataLoader.prototype.getSearch = function (id, callback) {
+            var prms = [["actionName", "search"], ["id", id]];
+            Views.ViewBase.currentView.apiGet("CustomSearch", prms, function (res) {
+                callback(res);
+            });
+        };
+        SearchDataLoader.prototype.createNewSearch = function (callback) {
+            var data = {
+                actionName: "new"
+            };
+            Views.ViewBase.currentView.apiPost("CustomSearch", data, function (res) {
+                callback(res);
+            });
+        };
+        SearchDataLoader.prototype.deleteSearch = function (id, callback) {
+            Views.ViewBase.currentView.apiDelete("CustomSearch", [["actionName", "search"], ["id", id]], function (res) {
+                callback(res);
+            });
+        };
+        SearchDataLoader.prototype.removeAirport = function (searchId, origId, callback) {
+            var prms = [["actionName", "air"], ["id", searchId], ["paramId", origId]];
+            Views.ViewBase.currentView.apiDelete("CustomSearch", prms, function (res) {
+                callback(res);
+            });
+        };
+        return SearchDataLoader;
+    }());
+    Planning.SearchDataLoader = SearchDataLoader;
+    var CustomMenu = (function () {
+        function CustomMenu($cont) {
+            this.actCls = "state-active";
+            this.dataLoader = new SearchDataLoader();
+            this.$cont = $cont;
+        }
+        CustomMenu.prototype.addItem = function (id, name) {
+            this.headers.push({ id: id, name: name });
+            this.init(this.headers);
+        };
+        CustomMenu.prototype.init = function (headers) {
+            var _this = this;
+            this.headers = headers;
+            this.$cont.find(".item").remove();
+            var lg = Common.ListGenerator.init(this.$cont.find(".adder"), "custom-menu-btn-template");
+            lg.appendStyle = "before";
+            var isFirst = true;
+            lg.activeItem = function () {
+                var obj = {
+                    isActive: isFirst,
+                    cls: _this.actCls
+                };
+                isFirst = false;
+                return obj;
+            };
+            lg.evnt(null, function (e, $item, $target, item) {
+                _this.itemClicked($item);
+            });
+            lg.evnt(".delete", function (e, $item, $target, item) {
+                _this.delClicked(item.id);
+            });
+            lg.evnt(".edit", function (e, $item, $target, item) {
+                _this.editClicked($item);
+            });
+            lg.evnt(".edit-save", function (e, $item, $target, item) {
+                _this.saveClicked($item);
+            });
+            lg.evnt(".name-edit", function (e, $item, $target, item) {
+                _this.keyPressed(e, $item);
+            })
+                .setEvent("keyup");
+            lg.generateList(headers);
+        };
+        CustomMenu.prototype.keyPressed = function (e, $item) {
+            if (e.keyCode === 13) {
+                this.saveClicked($item);
+            }
+        };
+        CustomMenu.prototype.saveClicked = function ($item) {
+            var id = $item.data("id");
+            var name = $item.find(".name-edit").val();
+            var header = _.find(this.headers, function (h) { return h.id === id; });
+            header.name = name;
+            var pdu = new PropsDataUpload(id, "name");
+            pdu.setVal(name);
+            pdu.send(function () {
+                $item.find(".name-txt").html(name);
+                $item.removeClass("state-editing");
+                $item.addClass("state-active");
+            });
+        };
+        CustomMenu.prototype.editClicked = function ($item) {
+            $item.removeClass("state-active");
+            $item.addClass("state-editing");
+        };
+        CustomMenu.prototype.delClicked = function (id) {
+            var _this = this;
+            var cd = new Common.ConfirmDialog();
+            cd.create("Search removal", "Do you want to remove the search?", "Cancel", "Delete", function () {
+                _this.dataLoader.deleteSearch(id, function () {
+                    $("#" + id).remove();
+                });
+            });
+        };
+        CustomMenu.prototype.itemClicked = function ($item) {
+            var id = $item.data("id");
+            var $items = this.$cont.find(".item");
+            $items.removeClass(this.actCls);
+            $item.addClass(this.actCls);
+            if (this.onSearchChange) {
+                this.onSearchChange(id);
+            }
+        };
+        return CustomMenu;
+    }());
+    Planning.CustomMenu = CustomMenu;
+    var CustomFrom = (function () {
+        function CustomFrom(v) {
+            this.v = v;
+            this.create();
+            this.dataLoader = new SearchDataLoader();
+            this.menu = new CustomMenu(this.$form.find(".searches-menu"));
+            this.init();
+        }
+        CustomFrom.prototype.initDaysRange = function () {
+            var _this = this;
+            this.slider = new Planning.RangeSlider(this.$form.find(".days-range-cont"), "daysRange");
+            this.slider.genSlider(1, 21);
+            this.slider.onRangeChanged = function (from, to) {
+                var caller = new PropsDataUpload(_this.searchId, "daysRange");
+                caller.addVal("from", from);
+                caller.addVal("to", to);
+                caller.send();
+            };
+        };
+        CustomFrom.prototype.datepicker = function ($dp, callback) {
+            $dp.datepicker();
+            $dp.change(function (e) {
+                var $this = $(e.target);
+                var date = $this.datepicker("getDate");
+                callback(date);
+            });
+        };
+        CustomFrom.prototype.create = function () {
+            var tmp = this.v.registerTemplate("custom-template");
+            this.$form = $(tmp());
+            $("#tabContent").html(this.$form);
+            this.$dpDep = this.$form.find("#dpDep");
+            this.$dpArr = this.$form.find("#dpArr");
+        };
+        CustomFrom.prototype.initDateRange = function () {
+            var _this = this;
+            this.datepicker(this.$dpDep, function (date) {
+                var md = TravelB.DateUtils.jsDateToMyDate(date);
+                var td = TravelB.DateUtils.myDateToTrans(md);
+                var caller = new PropsDataUpload(_this.searchId, "dep");
+                caller.setVal(td);
+                caller.send();
+            });
+            this.datepicker(this.$dpArr, function (date) {
+                var md = TravelB.DateUtils.jsDateToMyDate(date);
+                var td = TravelB.DateUtils.myDateToTrans(md);
+                var caller = new PropsDataUpload(_this.searchId, "arr");
+                caller.setVal(td);
+                caller.send();
+            });
+        };
+        CustomFrom.prototype.initStandardAir = function () {
+            var _this = this;
+            var $cb = this.$form.find("#cbStandard");
+            $cb.change(function () {
+                var state = $cb.prop("checked");
+                var caller = new PropsDataUpload(_this.searchId, "stdAir");
+                caller.setVal(state);
+                caller.send();
+            });
+        };
+        CustomFrom.prototype.init = function () {
+            var _this = this;
+            this.dataLoader.getInitData(function (data) {
+                _this.searchId = data.first.id;
+                _this.menu.init(data.headers);
+                _this.initFormControls();
+                _this.loadSearch(data.first);
+            });
+            this.menu.onSearchChange = function (id) {
+                _this.dataLoader.getSearch(id, function (search) {
+                    _this.loadSearch(search);
+                    _this.searchId = id;
+                });
+            };
+            this.$form.find(".adder").click(function (e) {
+                e.preventDefault();
+                _this.dataLoader.createNewSearch(function (search) {
+                    _this.menu.addItem(search.id, search.name);
+                    _this.loadSearch(search);
+                });
+            });
+        };
+        CustomFrom.prototype.initFormControls = function () {
+            this.initDaysRange();
+            this.initAirTagger();
+            this.initDateRange();
+            this.initStandardAir();
+        };
+        CustomFrom.prototype.loadSearch = function (search) {
+            this.$form.find("#cbStandard").prop("checked", search.standardAirs);
+            var depDate = TravelB.DateUtils.myDateToJsDate(search.deparature);
+            var arrDate = TravelB.DateUtils.myDateToJsDate(search.arrival);
+            this.$dpDep.datepicker("setDate", depDate);
+            this.$dpArr.datepicker("setDate", arrDate);
+            this.slider.setVals(search.daysFrom, search.daysTo);
+            var airs = this.getAirs(search);
+            this.airTagger.setSelectedItems(airs);
+        };
+        CustomFrom.prototype.getAirs = function (search) {
+            var si = [];
+            search.customAirs.forEach(function (a) {
+                si.push({ kind: "airport", value: a.origId, text: a.text });
+            });
+            return si;
+        };
+        CustomFrom.prototype.initAirTagger = function () {
+            var _this = this;
             var config = new Planning.TaggingFieldConfig();
-            config.customId = search.id;
-            config.containerId = "fromAirportsTagger";
+            config.containerId = "airTagger";
             config.localValues = false;
             config.listSource = "TaggerAirports";
-            this.airportTagger = new Planning.TaggingField(config);
-            this.airportTagger.onItemClickedCustom = function ($target, callback) {
+            this.airTagger = new Planning.TaggingField(config);
+            this.airTagger.onItemClickedCustom = function ($target, callback) {
                 var val = $target.data("vl");
                 var kind = $target.data("kd");
                 var text = $target.text();
-                var values = {
-                    text: text,
-                    value: val,
-                    id: Planning.NamesList.selectedSearch.id
-                };
-                var data = Planning.PlanningSender.createRequest(PlanningType.Custom, "fromAirports", values);
-                Planning.PlanningSender.pushProp(data, function (res) {
-                    Planning.NamesList.selectedSearch.fromAirports.push({ origId: val, selectedName: text });
-                    callback(res);
+                var pdu = new PropsDataUpload(_this.searchId, "custAir");
+                pdu.addVal("text", text);
+                pdu.addVal("origId", val);
+                pdu.send(function () {
+                    callback();
+                });
+            };
+            this.airTagger.onDeleteCustom = function (val, callback) {
+                _this.dataLoader.removeAirport(_this.searchId, val, function () {
+                    callback();
                 });
             };
         };
-        CustomForm.prototype.initTimeTagger = function (search) {
-            var itemsRange = [
-                { text: "January", value: 1, kind: "month" },
-                { text: "February", value: 2, kind: "month" },
-                { text: "March", value: 3, kind: "month" },
-                { text: "April", value: 4, kind: "month" },
-                { text: "May", value: 5, kind: "month" },
-                { text: "June", value: 6, kind: "month" },
-                { text: "July", value: 7, kind: "month" },
-                { text: "August", value: 8, kind: "month" },
-                { text: "September", value: 9, kind: "month" },
-                { text: "October", value: 10, kind: "month" },
-                { text: "November", value: 11, kind: "month" },
-                { text: "December", value: 12, kind: "month" },
-                { text: "year 2015", value: 2015, kind: "year" },
-                { text: "year 2016", value: 2016, kind: "year" }
-            ];
-            var config = new Planning.TaggingFieldConfig();
-            config.itemsRange = itemsRange;
-            config.customId = search.id;
-            config.containerId = "timeTagger";
-            config.localValues = true;
-            this.timeTagger = new Planning.TaggingField(config);
-            this.timeTagger.onItemClickedCustom = function ($target, callback) {
-                var val = $target.data("vl");
-                var kind = $target.data("kd");
-                var text = $target.text();
-                var data = Planning.PlanningSender.createRequest(PlanningType.Custom, "time", {
-                    kind: kind,
-                    value: val,
-                    id: Planning.NamesList.selectedSearch.id
-                });
-                Planning.PlanningSender.pushProp(data, function (res) {
-                    if (kind === "year") {
-                        Planning.NamesList.selectedSearch.years.push(val);
-                    }
-                    if (kind === "month") {
-                        Planning.NamesList.selectedSearch.months.push(val);
-                    }
-                    callback(res);
-                });
-            };
-        };
-        CustomForm.prototype.getAirportTaggerSelectedItems = function (search) {
-            var selectedItems = [];
-            search.fromAirports.forEach(function (airport) {
-                selectedItems.push({ kind: "airport", value: airport.origId, text: airport.selectedName });
-            });
-            return selectedItems;
-        };
-        CustomForm.prototype.getTimeTaggerSelectedItems = function (search) {
-            var selectedItems = [];
-            search.months.forEach(function (month) {
-                selectedItems.push({ value: month, kind: "month" });
-            });
-            search.years.forEach(function (year) {
-                selectedItems.push({ value: year, kind: "year" });
-            });
-            return selectedItems;
-        };
-        CustomForm.prototype.initDuration = function (days) {
-            if (days === 0) {
-                this.setRadio(1, true);
-            }
-            else if (days === 3) {
-                this.setRadio(2, true);
-            }
-            else if (days === 7) {
-                this.setRadio(3, true);
-            }
-            else if (days === 14) {
-                this.setRadio(4, true);
-            }
-            else {
-                this.setRadio(5, true);
-                $("#customLength").show();
-                $("#customLength").val(days);
-            }
-        };
-        CustomForm.prototype.setRadio = function (no, val) {
-            $("#radio" + no).prop("checked", val);
-        };
-        CustomForm.prototype.registerDuration = function () {
-            var _this = this;
-            var dc = new Common.DelayedCallback("customLength");
-            dc.callback = function (val) {
-                var intVal = parseInt(val);
-                if (intVal) {
-                    _this.callUpdateMinLength(intVal);
-                }
-            };
-            var $lengthRadio = $("input[type=radio][name=radio]");
-            var $customLength = $("#customLength");
-            $lengthRadio.change(function (e) {
-                var $target = $(e.target);
-                var val = $target.data("vl");
-                if (val === "custom") {
-                    $customLength.show();
-                }
-                else {
-                    $customLength.hide();
-                    _this.callUpdateMinLength(parseInt(val));
-                }
-            });
-        };
-        CustomForm.prototype.callUpdateMinLength = function (roughlyDays) {
-            var data = Planning.PlanningSender.createRequest(PlanningType.Custom, "roughlyDays", {
-                id: Planning.NamesList.selectedSearch.id,
-                days: roughlyDays
-            });
-            Planning.PlanningSender.updateProp(data, function (res) {
-            });
-        };
-        return CustomForm;
+        return CustomFrom;
     }());
-    Planning.CustomForm = CustomForm;
+    Planning.CustomFrom = CustomFrom;
 })(Planning || (Planning = {}));
 //# sourceMappingURL=CustomForm.js.map

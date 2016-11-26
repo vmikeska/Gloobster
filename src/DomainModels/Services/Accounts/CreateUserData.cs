@@ -10,11 +10,12 @@ namespace Gloobster.DomainModels.Services.Accounts
 		public UserDO PortalUser { get; set; }
 		public IDbOperations DB { get; set; }
 		
-		public IPlanningDomain PlanningDomain { get; set; }
-		public IFriendsDomain FriendsService { get; set; }
+		public IPlanningDomain PlanningDomain { get; set; }        
+        
+        public IFriendsDomain FriendsService { get; set; }
 		public IGeoNamesService GNService { get; set; }
 		public IAirportService AirportSvc { get; set; }
-
+        
 		public async Task<bool>Create(UserDO portalUser)
 		{
 			PortalUser = portalUser;
@@ -41,8 +42,8 @@ namespace Gloobster.DomainModels.Services.Accounts
 		}
 
 		private void CreatePlanning()
-		{
-			PlanningDomain.CreateDBStructure(PortalUser.UserId);
-		}
+		{			
+            PlanningDomain.CreateDBStructure(PortalUser.UserId);
+        }
 	}
 }

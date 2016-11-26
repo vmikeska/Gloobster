@@ -41,8 +41,11 @@ module Common {
 				});
 		}
 
-		public evnt(selector: string, handler: Function) {
-			this.eventHandlers.push(new EventHandler(selector, handler));
+		public evnt(selector: string, handler: Function): EventHandler {
+			var eh = new EventHandler(selector, handler);
+			this.eventHandlers.push(eh);
+
+			return eh;
 		}
 
 		public generateList(items) {
@@ -129,7 +132,7 @@ module Common {
 					if (eh.selector) {
 						$i = $item.find(eh.selector);
 					}
-
+						
 					$i.on(eh.event, (e) => {
 						e.preventDefault();
 
@@ -145,6 +148,8 @@ module Common {
 				this.$cont.prepend($item);
 			} else if (this.appendStyle === "after") {
 				this.$cont.after($item);
+			} else if (this.appendStyle === "before") {
+					this.$cont.before($item);
 			}
 
 			if (this.onItemAppended) {
@@ -165,5 +170,10 @@ module Common {
 		public selector;
 		public handler: Function;
 		public event = "click";
+
+		public setEvent(event) {
+			this.event = event;
+			return this;
+		}
 	}
 }
