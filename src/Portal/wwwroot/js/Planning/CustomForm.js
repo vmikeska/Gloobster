@@ -74,21 +74,27 @@ var Planning;
         }
         CustomMenu.prototype.addItem = function (id, name) {
             this.headers.push({ id: id, name: name });
-            this.init(this.headers);
+            this.init(this.headers, id);
         };
-        CustomMenu.prototype.init = function (headers) {
+        CustomMenu.prototype.init = function (headers, initId) {
             var _this = this;
+            if (initId === void 0) { initId = null; }
             this.headers = headers;
             this.$cont.find(".item").remove();
+            var activeId = "";
+            if (this.headers.length > 0) {
+                activeId = this.headers[0].id;
+            }
+            if (initId) {
+                activeId = initId;
+            }
             var lg = Common.ListGenerator.init(this.$cont.find(".adder"), "custom-menu-btn-template");
             lg.appendStyle = "before";
-            var isFirst = true;
-            lg.activeItem = function () {
+            lg.activeItem = function (item) {
                 var obj = {
-                    isActive: isFirst,
+                    isActive: item.id === activeId,
                     cls: _this.actCls
                 };
-                isFirst = false;
                 return obj;
             };
             lg.evnt(null, function (e, $item, $target, item) {
@@ -259,6 +265,7 @@ var Planning;
                 _this.dataLoader.createNewSearch(function (search) {
                     _this.menu.addItem(search.id, search.name);
                     _this.loadSearch(search);
+                    _this.searchId = search.id;
                 });
             });
         };

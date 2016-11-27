@@ -117,26 +117,32 @@ module Planning {
 
 		public addItem(id, name) {
 			this.headers.push({ id: id, name: name });
-			this.init(this.headers);
+			this.init(this.headers, id);
 		}
 
-		public init(headers) {
+		public init(headers, initId = null) {
 			this.headers = headers;
 
 			this.$cont.find(".item").remove();
 
+			var activeId = "";
+			if (this.headers.length > 0) {
+					activeId = this.headers[0].id;
+			}
+			if (initId) {
+				activeId = initId;
+			}
+
+
 			var lg = Common.ListGenerator.init(this.$cont.find(".adder"), "custom-menu-btn-template");
 			lg.appendStyle = "before";
-
-			var isFirst = true;
-			lg.activeItem = () => {
+				
+			lg.activeItem = (item) => {
 				var obj = {
-					isActive: isFirst,
+					isActive: item.id === activeId,
 					cls: this.actCls
 				};
-
-				isFirst = false;
-
+					
 				return obj;
 			}
 
@@ -385,7 +391,8 @@ module Planning {
 				this.dataLoader.createNewSearch((search) => {
 						this.menu.addItem(search.id, search.name);
 						this.loadSearch(search);
-					});
+					this.searchId = search.id;
+				});
 				});
 
 		}
