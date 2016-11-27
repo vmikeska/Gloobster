@@ -58,7 +58,8 @@ namespace Gloobster.DomainModels
                 CustomAirs = new List<FromAirSE>(),
                 DaysFrom = 5,
                 DaysTo = 10,
-                StandardAirs = true
+                StandardAirs = true,
+                Freq = 30
             };
 
             return search1;
@@ -154,6 +155,12 @@ namespace Gloobster.DomainModels
             return success;         
         }
 
+        public async Task<bool> UpdateFreq(string userId, string searchId, int days)
+        {
+            bool success = await UpdateCustomProperty(userId, searchId, "Freq", days);
+            return success;
+        }
+
 
 
 
@@ -237,7 +244,7 @@ namespace Gloobster.DomainModels
         //    return false;
         //}
 
-       
+
         private async Task<bool> PushCustomProperty(string userId, string searchId, string propName, object value)
         {
             var userIdObj = new ObjectId(userId);

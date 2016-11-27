@@ -93,6 +93,15 @@ namespace Gloobster.DomainModels.SearchEngine
             return allResults;
         }
 
+        private CitiesCountries GetUsersCitiesAndCountriesCustom(ObjectId userIdObj, ObjectId searchId)
+        {
+            var cc = new CitiesCountries();
+
+            
+
+            return cc;
+        }
+
         private CitiesCountries GetUsersCitiesAndCountries(TimeType timeType, ObjectId userIdObj)
         {
             var cc = new CitiesCountries();

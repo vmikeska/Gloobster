@@ -34,6 +34,8 @@ namespace Gloobster.ReqRes.Planning
 
         public bool standardAirs { get; set; }
         public List<FromAirResponse> customAirs { get; set; }
+
+        public int freq { get; set; }
     }
 
     public class FromAirResponse

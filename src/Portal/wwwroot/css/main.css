@@ -116,6 +116,26 @@ textarea {
   cursor: pointer;
   white-space: nowrap; }
 
+.lbtn2 {
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  padding: 9px;
+  border-radius: 4px;
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Chrome/Safari/Opera */
+  -khtml-user-select: none;
+  /* Konqueror */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently not supported by any browser */ }
+
 .thumb-cont {
   display: inline-block;
   border-radius: 50%;
@@ -4476,17 +4496,69 @@ footer {
         .fly-tickets .form-custom .searches-menu .adder:hover {
           color: #F56E12;
           border-color: #F56E12; }
-    .fly-tickets .form-custom .airports-cont .airs-label {
-      margin-right: 12px;
-      font-weight: bold; }
-    .fly-tickets .form-custom .airports-cont .tagger-cont {
-      border: 1px solid #3298C1;
+    .fly-tickets .form-custom .tag {
+      padding: 4px; }
+    .fly-tickets .form-custom .tagger input {
+      padding: 5px 19px; }
+    .fly-tickets .form-custom .tagger .icon-search {
+      font-size: 19px; }
+    .fly-tickets .form-custom .airports-cont {
       border-radius: 4px;
-      display: inline-block;
+      background-color: white;
       padding-left: 4px;
-      padding-right: 4px;
-      padding-top: 4px;
-      background-color: white; }
+      padding-right: 4px; }
+      .fly-tickets .form-custom .airports-cont .sta-air-cont {
+        background-color: #65BDD7;
+        display: inline-block;
+        color: white;
+        border-radius: 4px;
+        padding: 5px; }
+      .fly-tickets .form-custom .airports-cont .tagger-cont {
+        border-radius: 4px;
+        display: inline-block;
+        padding-left: 4px;
+        padding-right: 4px;
+        padding-top: 4px; }
+    .fly-tickets .form-custom .freq-cont {
+      margin-top: 10px;
+      margin-bottom: 10px; }
+      .fly-tickets .form-custom .freq-cont .itbl {
+        display: table;
+        width: 100%; }
+        .fly-tickets .form-custom .freq-cont .itbl .cell {
+          display: table-cell;
+          width: 33%; }
+        .fly-tickets .form-custom .freq-cont .itbl .item {
+          -webkit-touch-callout: none;
+          /* iOS Safari */
+          -webkit-user-select: none;
+          /* Chrome/Safari/Opera */
+          -khtml-user-select: none;
+          /* Konqueror */
+          -moz-user-select: none;
+          /* Firefox */
+          -ms-user-select: none;
+          /* Internet Explorer/Edge */
+          user-select: none;
+          /* Non-prefixed version, currently not supported by any browser */
+          text-align: center;
+          color: white;
+          font-weight: bold;
+          background-color: #65BDD7;
+          border-radius: 4px;
+          padding: 10px;
+          margin-left: 5px;
+          margin-right: 5px;
+          cursor: pointer; }
+          .fly-tickets .form-custom .freq-cont .itbl .item.active {
+            background-color: #F56E12; }
+    .fly-tickets .form-custom .action-bar {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px dotted #3298C1; }
+      .fly-tickets .form-custom .action-bar .inactive {
+        color: white;
+        background-color: #3DA243; }
   .fly-tickets .navi-cont {
     margin-bottom: 5px; }
     @media screen and (max-width: 700px) {

@@ -30,7 +30,9 @@ module Planning {
 				values: this.values
 			};
 
-			Views.ViewBase.currentView.apiPut("CustomSearch", req, (res) => {
+			Views.ViewBase.currentView.apiPut("CustomSearch",
+				req,
+				(res) => {
 					if (callback) {
 						callback(res);
 					}
@@ -44,16 +46,20 @@ module Planning {
 
 			var prms = [["actionName", "init"]];
 
-			Views.ViewBase.currentView.apiGet("CustomSearch", prms, (res) => {
+			Views.ViewBase.currentView.apiGet("CustomSearch",
+				prms,
+				(res) => {
 					callback(res);
 				});
 		}
 
 		public getSearch(id, callback: Function) {
-				var prms = [["actionName", "search"], ["id", id]];
+			var prms = [["actionName", "search"], ["id", id]];
 
-				Views.ViewBase.currentView.apiGet("CustomSearch", prms, (res) => {
-						callback(res);
+			Views.ViewBase.currentView.apiGet("CustomSearch",
+				prms,
+				(res) => {
+					callback(res);
 				});
 		}
 
@@ -63,23 +69,29 @@ module Planning {
 				actionName: "new"
 			};
 
-			Views.ViewBase.currentView.apiPost("CustomSearch", data, (res) => {
+			Views.ViewBase.currentView.apiPost("CustomSearch",
+				data,
+				(res) => {
 					callback(res);
 				});
 		}
 
 		public deleteSearch(id, callback: Function) {
-				Views.ViewBase.currentView.apiDelete("CustomSearch", [["actionName", "search"], ["id", id]], (res) => {
-						callback(res);
+			Views.ViewBase.currentView.apiDelete("CustomSearch",
+				[["actionName", "search"], ["id", id]],
+				(res) => {
+					callback(res);
 				});
 		}
 
 		public removeAirport(searchId, origId, callback: Function) {
 
-				var prms = [["actionName", "air"], ["id", searchId], ["paramId", origId]];
+			var prms = [["actionName", "air"], ["id", searchId], ["paramId", origId]];
 
-				Views.ViewBase.currentView.apiDelete("CustomSearch", prms, (res) => {
-						callback(res);
+			Views.ViewBase.currentView.apiDelete("CustomSearch",
+				prms,
+				(res) => {
+					callback(res);
 				});
 		}
 
@@ -97,7 +109,7 @@ module Planning {
 		private headers;
 
 		private dataLoader: SearchDataLoader;
-			
+
 		constructor($cont) {
 			this.dataLoader = new SearchDataLoader();
 			this.$cont = $cont;
@@ -128,69 +140,79 @@ module Planning {
 				return obj;
 			}
 
-			lg.evnt(null, (e, $item, $target, item) => {
+			lg.evnt(null,
+				(e, $item, $target, item) => {
 					this.itemClicked($item);
-			});
+				});
 
-			lg.evnt(".delete", (e, $item, $target, item) => {
+			lg.evnt(".delete",
+				(e, $item, $target, item) => {
 					this.delClicked(item.id);
-			});
+				});
 
-			lg.evnt(".edit", (e, $item, $target, item) => {
+			lg.evnt(".edit",
+				(e, $item, $target, item) => {
 					this.editClicked($item);
-			});
+				});
 
-			lg.evnt(".edit-save", (e, $item, $target, item) => {
+			lg.evnt(".edit-save",
+				(e, $item, $target, item) => {
 					this.saveClicked($item);
-			});
+				});
 
-			lg.evnt(".name-edit", (e, $item, $target, item) => {
-					this.keyPressed(e, $item);
-		  })
-			.setEvent("keyup");
-	
+			lg.evnt(".name-edit",
+					(e, $item, $target, item) => {
+						this.keyPressed(e, $item);
+					})
+				.setEvent("keyup");
+
 			lg.generateList(headers);
 		}
 
 		private keyPressed(e, $item) {
-				if (e.keyCode === 13) {
-					this.saveClicked($item);
-				}
+			if (e.keyCode === 13) {
+				this.saveClicked($item);
 			}
+		}
 
 		private saveClicked($item) {
-				var id = $item.data("id");
-				var name = $item.find(".name-edit").val();
+			var id = $item.data("id");
+			var name = $item.find(".name-edit").val();
 
-				var header = _.find(this.headers, (h) => { return h.id === id });
-				header.name = name;
+			var header = _.find(this.headers, (h) => { return h.id === id });
+			header.name = name;
 
-				var pdu = new PropsDataUpload(id, "name");
-				pdu.setVal(name);
-				pdu.send(() => {
-						$item.find(".name-txt").html(name);
-						$item.removeClass("state-editing");
-						$item.addClass("state-active");
-				});
+			var pdu = new PropsDataUpload(id, "name");
+			pdu.setVal(name);
+			pdu.send(() => {
+				$item.find(".name-txt").html(name);
+				$item.removeClass("state-editing");
+				$item.addClass("state-active");
+			});
 		}
 
 		private editClicked($item) {
-				$item.removeClass("state-active");
-				$item.addClass("state-editing");
+			$item.removeClass("state-active");
+			$item.addClass("state-editing");
 		}
 
 		private delClicked(id) {
 
-				var cd = new Common.ConfirmDialog();
+			var cd = new Common.ConfirmDialog();
 
-				cd.create("Search removal", "Do you want to remove the search?", "Cancel", "Delete", () => {
+			cd.create("Search removal",
+				"Do you want to remove the search?",
+				"Cancel",
+				"Delete",
+				() => {
 
-						this.dataLoader.deleteSearch(id, () => {
+					this.dataLoader.deleteSearch(id,
+						() => {
 							$(`#${id}`).remove();
 						});
 
 				});
-				
+
 		}
 
 		private itemClicked($item) {
@@ -244,19 +266,19 @@ module Planning {
 			this.slider.genSlider(1, 21);
 			this.slider.onRangeChanged = (from, to) => {
 
-					var caller = new PropsDataUpload(this.searchId, "daysRange");
-					caller.addVal("from", from);
-					caller.addVal("to", to);
-					caller.send();
+				var caller = new PropsDataUpload(this.searchId, "daysRange");
+				caller.addVal("from", from);
+				caller.addVal("to", to);
+				caller.send();
 			}
 		}
 
-		private datepicker($dp, callback) {
-			$dp.datepicker();
+		private datepicker($dp, opts = {}, callback) {
+			$dp.datepicker(opts);
 			$dp.change((e) => {
 				var $this = $(e.target);
 				var date = $this.datepicker("getDate");
-					
+
 				callback(date);
 			});
 		}
@@ -270,9 +292,44 @@ module Planning {
 			this.$dpArr = this.$form.find("#dpArr");
 		}
 
+		private initFreq() {
+			var items = [{ days: 1, text: "Daily" }, { days: 7, text: "Weekly" }, { days: 30, text: "Monthly" }];
+
+			var $c = this.$form.find(".freq-cont .itbl");
+
+			var lg = Common.ListGenerator.init($c, "freq-item-template");
+
+			lg.evnt(".item", (e, $item, $target, item) => {					
+					this.updateFreq(item.days, () => {
+						this.setFreq(item.days);
+					});
+			});
+
+			lg.generateList(items);
+		}
+
+		private updateFreq(days, callback) {
+			var pdu = new PropsDataUpload(this.searchId, "freq");
+			pdu.setVal(days);
+			pdu.send(() => {
+				callback();
+			});
+		}
+
+		private setFreq(days) {
+			var $c = this.$form.find(".freq-cont");
+
+			$c.find(".item").removeClass("active");
+
+			var $item = $c.find(`[data-d="${days}"]`);
+			$item.addClass("active");
+		}
+
 		private initDateRange() {
-				
-			this.datepicker(this.$dpDep, (date) => {
+
+			var depOpts = { minDate: moment().add(1, "days").toDate() };
+
+			this.datepicker(this.$dpDep, depOpts, (date) => { 
 					var md = TravelB.DateUtils.jsDateToMyDate(date);
 					var td = TravelB.DateUtils.myDateToTrans(md);
 
@@ -281,7 +338,7 @@ module Planning {
 					caller.send();
 				});
 
-			this.datepicker(this.$dpArr, (date) => {
+			this.datepicker(this.$dpArr, {}, (date) => {
 					var md = TravelB.DateUtils.jsDateToMyDate(date);
 					var td = TravelB.DateUtils.myDateToTrans(md);
 
@@ -290,7 +347,7 @@ module Planning {
 					caller.send();
 				});
 		}
-
+	
 		private initStandardAir() {
 
 			var $cb = this.$form.find("#cbStandard");
@@ -306,7 +363,6 @@ module Planning {
 
 		private init() {
 			
-
 			this.dataLoader.getInitData((data) => {
 				  this.searchId = data.first.id;
 
@@ -334,12 +390,13 @@ module Planning {
 
 		}
 
-			private initFormControls() {
-					this.initDaysRange();
-					this.initAirTagger();
-					this.initDateRange();
-					this.initStandardAir();
-			}
+		private initFormControls() {
+			this.initDaysRange();
+			this.initAirTagger();
+			this.initDateRange();
+			this.initStandardAir();
+			this.initFreq();
+		}
 
 		private loadSearch(search) {
 			this.$form.find("#cbStandard").prop("checked", search.standardAirs);
@@ -354,6 +411,8 @@ module Planning {
 
 			var airs = this.getAirs(search);
 			this.airTagger.setSelectedItems(airs);
+
+			this.setFreq(search.freq);
 		}
 
 		private getAirs(search) {
@@ -370,6 +429,7 @@ module Planning {
 			config.containerId = "airTagger";
 			config.localValues = false;
 			config.listSource = "TaggerAirports";
+			config.clientMatch = false;
 
 			this.airTagger = new TaggingField(config);
 			this.airTagger.onItemClickedCustom = ($target, callback) => {

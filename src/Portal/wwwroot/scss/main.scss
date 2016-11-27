@@ -211,7 +211,7 @@ textarea{
 .lbtn{
     border-style: solid;
     border-width: 0;
-    border-radius: 4px;                    
+    border-radius: 4px; 
     /*font-weight: 700;*/
     height: 20px;
     line-height: 40px;
@@ -222,6 +222,17 @@ textarea{
     text-decoration: none;
     cursor: pointer;
     white-space:nowrap;
+}
+
+.lbtn2 {
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+    white-space:nowrap;
+
+    padding: 9px;
+    border-radius: 4px;
+    @include noselect;
 }
 
 .thumb-cont{

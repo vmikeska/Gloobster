@@ -6,6 +6,7 @@ module Planning {
 		public localValues: boolean;
 		public listSource: string;
 		public placeholder: string;
+		public clientMatch = true;
 	}
 
 	export class TaggingField {
@@ -120,6 +121,7 @@ module Planning {
 		}
 
 		private fillTagger($input, $ul) {
+			console.log("filling");
 			$ul.html("");
 
 			var inputVal = $input.val().toLowerCase();
@@ -127,7 +129,11 @@ module Planning {
 			this.getItemsRange(inputVal, (items) => {
 				items.forEach((item) => {
 
-					var strMatch = (inputVal === "") || (item.text.toLowerCase().startsWith(inputVal));
+					var strMatch = true;
+					if (this.config.clientMatch) {
+							strMatch = (inputVal === "") || (item.text.toLowerCase().startsWith(inputVal));
+					}
+
 					var alreadySelected = _.find(this.selectedItems, (i) => {
 						return (i.value === item.value) && (i.kind === item.kind);							
 					});
@@ -136,6 +142,7 @@ module Planning {
 						var $item = this.createTaggerItem(item.text, item.value, item.kind);
 						$ul.append($item);
 					}
+
 				});
 			});
 		}

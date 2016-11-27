@@ -144,21 +144,41 @@
             }
         }
 
-        .airports-cont {
+        .tag {
+            padding: 4px;
+        }
+        .tagger{
+            input {
+                padding: 5px 19px;
+            }
 
-            .airs-label {
-                margin-right: 12px;
-                font-weight: bold;
+            .icon-search{
+                font-size: 19px;
+            }            
+        }
+
+        .airports-cont {
+            border-radius: 4px;
+            background-color: white;
+            padding-left: 4px;
+            padding-right: 4px;
+
+            .sta-air-cont {
+                background-color: $light-blue;
+
+                display: inline-block;
+                color: white;
+                border-radius: 4px;
+                padding: 5px;
             }
 
             .tagger-cont {
-                border: 1px solid $light-blue3;
+                
                 border-radius: 4px;
                 display: inline-block;
                 padding-left: 4px;
                 padding-right: 4px;
-                padding-top: 4px;
-                background-color: white;
+                padding-top: 4px;                
             }
         }
 
@@ -168,6 +188,50 @@
 
         }
 
+        .freq-cont {
+            margin-top: 10px;
+            margin-bottom: 10px;
+
+            .itbl {
+                display: table;
+                width: 100%;
+
+                .cell{
+                    display: table-cell;
+                    width: 33%;
+                }
+
+                .item {
+                    @include noselect;
+
+                    text-align: center;                    
+                    color: white;
+                    font-weight: bold;
+                    background-color: $light-blue;
+                    border-radius: 4px;
+                    padding: 10px;
+                    margin-left: 5px;
+                    margin-right: 5px;
+                    cursor: pointer;
+
+                    &.active {
+                        background-color: $orange;
+                    }
+                }
+            }
+        }
+
+        .action-bar {
+            margin-top: 8px;
+            padding-top: 8px;
+
+            border-top: 1px dotted $light-blue3;
+
+            .inactive {
+                color: white;
+                background-color: $green3;
+            }
+        }
         
     }
 

@@ -21,6 +21,8 @@ namespace Gloobster.DomainObjects
 
         public bool StandardAirs { get; set; }
         public List<FromAirDO> CustomAirs { get; set; }
+
+        public int Freq { get; set; }
     }
 
     public class FromAirDO

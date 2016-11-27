@@ -47,7 +47,9 @@ namespace Gloobster.Entities.Planning
         public Date Arrival { get; set; }
 
         public bool StandardAirs { get; set; }
-        public List<FromAirSE> CustomAirs { get; set; }        
+        public List<FromAirSE> CustomAirs { get; set; }
+
+        public int Freq { get; set; }
 	}
 
     public class FromAirSE

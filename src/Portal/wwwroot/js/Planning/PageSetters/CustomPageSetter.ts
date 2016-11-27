@@ -21,11 +21,15 @@ module Planning {
 		public init() {
 			var $tabContent = $("#tabContent");
 
+			//var cf = new CustomFrom(this.v);			
+
 				var $form = $(this.formTmp());
 				$tabContent.html($form);
 			//this.planningMap.loadCategory(2);
 
 		}
+
+			
 	}
 
 

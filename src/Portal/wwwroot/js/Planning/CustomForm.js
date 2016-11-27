@@ -171,8 +171,9 @@ var Planning;
                 caller.send();
             };
         };
-        CustomFrom.prototype.datepicker = function ($dp, callback) {
-            $dp.datepicker();
+        CustomFrom.prototype.datepicker = function ($dp, opts, callback) {
+            if (opts === void 0) { opts = {}; }
+            $dp.datepicker(opts);
             $dp.change(function (e) {
                 var $this = $(e.target);
                 var date = $this.datepicker("getDate");
@@ -186,16 +187,42 @@ var Planning;
             this.$dpDep = this.$form.find("#dpDep");
             this.$dpArr = this.$form.find("#dpArr");
         };
+        CustomFrom.prototype.initFreq = function () {
+            var _this = this;
+            var items = [{ days: 1, text: "Daily" }, { days: 7, text: "Weekly" }, { days: 30, text: "Monthly" }];
+            var $c = this.$form.find(".freq-cont .itbl");
+            var lg = Common.ListGenerator.init($c, "freq-item-template");
+            lg.evnt(".item", function (e, $item, $target, item) {
+                _this.updateFreq(item.days, function () {
+                    _this.setFreq(item.days);
+                });
+            });
+            lg.generateList(items);
+        };
+        CustomFrom.prototype.updateFreq = function (days, callback) {
+            var pdu = new PropsDataUpload(this.searchId, "freq");
+            pdu.setVal(days);
+            pdu.send(function () {
+                callback();
+            });
+        };
+        CustomFrom.prototype.setFreq = function (days) {
+            var $c = this.$form.find(".freq-cont");
+            $c.find(".item").removeClass("active");
+            var $item = $c.find("[data-d=\"" + days + "\"]");
+            $item.addClass("active");
+        };
         CustomFrom.prototype.initDateRange = function () {
             var _this = this;
-            this.datepicker(this.$dpDep, function (date) {
+            var depOpts = { minDate: moment().add(1, "days").toDate() };
+            this.datepicker(this.$dpDep, depOpts, function (date) {
                 var md = TravelB.DateUtils.jsDateToMyDate(date);
                 var td = TravelB.DateUtils.myDateToTrans(md);
                 var caller = new PropsDataUpload(_this.searchId, "dep");
                 caller.setVal(td);
                 caller.send();
             });
-            this.datepicker(this.$dpArr, function (date) {
+            this.datepicker(this.$dpArr, {}, function (date) {
                 var md = TravelB.DateUtils.jsDateToMyDate(date);
                 var td = TravelB.DateUtils.myDateToTrans(md);
                 var caller = new PropsDataUpload(_this.searchId, "arr");
@@ -240,6 +267,7 @@ var Planning;
             this.initAirTagger();
             this.initDateRange();
             this.initStandardAir();
+            this.initFreq();
         };
         CustomFrom.prototype.loadSearch = function (search) {
             this.$form.find("#cbStandard").prop("checked", search.standardAirs);
@@ -250,6 +278,7 @@ var Planning;
             this.slider.setVals(search.daysFrom, search.daysTo);
             var airs = this.getAirs(search);
             this.airTagger.setSelectedItems(airs);
+            this.setFreq(search.freq);
         };
         CustomFrom.prototype.getAirs = function (search) {
             var si = [];
@@ -264,6 +293,7 @@ var Planning;
             config.containerId = "airTagger";
             config.localValues = false;
             config.listSource = "TaggerAirports";
+            config.clientMatch = false;
             this.airTagger = new Planning.TaggingField(config);
             this.airTagger.onItemClickedCustom = function ($target, callback) {
                 var val = $target.data("vl");

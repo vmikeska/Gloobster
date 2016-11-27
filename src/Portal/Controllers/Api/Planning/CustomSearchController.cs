@@ -89,8 +89,14 @@ namespace Gloobster.Portal.Controllers.Api.Planning
             {
                 await SearchDomain.UpdateName(UserId, req.id, req.value);
             }
-            
-		    return new ObjectResult(null);
+
+            if (req.name == "freq")
+            {
+                int days = int.Parse(req.value);
+                await SearchDomain.UpdateFreq(UserId, req.id, days);
+            }
+
+            return new ObjectResult(null);
 		}
 
         [HttpDelete]

@@ -18,5 +18,7 @@ namespace Gloobster.DomainInterfaces
         Task<bool> UpdateDeparature(string userId, string searchId, Date dep);
         Task<bool> UpdateArrival(string userId, string searchId, Date arr);
 
+        Task<bool> UpdateFreq(string userId, string searchId, int days);
+
     }
 }

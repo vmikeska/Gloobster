@@ -39,7 +39,8 @@ namespace Gloobster.Mappers
                 deparature = e.Deparature,
                 gids = e.GIDs,
                 name = e.Name,
-                standardAirs = e.StandardAirs                
+                standardAirs = e.StandardAirs,
+                freq = e.Freq
 			};
             
 			return r;
@@ -91,7 +92,8 @@ namespace Gloobster.Mappers
                 deparature = d.Deparature,
                 gids = d.GIDs,
                 name = d.Name,
-                standardAirs = d.StandardAirs
+                standardAirs = d.StandardAirs,
+                freq = d.Freq
             };
 			return r;
 		}
@@ -110,6 +112,7 @@ namespace Gloobster.Mappers
                 GIDs = e.GIDs,
                 StandardAirs = e.StandardAirs,                
                 CustomAirs = e.CustomAirs.Select(a => a.ToDO()).ToList(),
+                Freq = e.Freq
             };
             
 			return r;

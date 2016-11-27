@@ -2,6 +2,7 @@ var Planning;
 (function (Planning) {
     var TaggingFieldConfig = (function () {
         function TaggingFieldConfig() {
+            this.clientMatch = true;
         }
         return TaggingFieldConfig;
     }());
@@ -90,11 +91,15 @@ var Planning;
         };
         TaggingField.prototype.fillTagger = function ($input, $ul) {
             var _this = this;
+            console.log("filling");
             $ul.html("");
             var inputVal = $input.val().toLowerCase();
             this.getItemsRange(inputVal, function (items) {
                 items.forEach(function (item) {
-                    var strMatch = (inputVal === "") || (item.text.toLowerCase().startsWith(inputVal));
+                    var strMatch = true;
+                    if (_this.config.clientMatch) {
+                        strMatch = (inputVal === "") || (item.text.toLowerCase().startsWith(inputVal));
+                    }
                     var alreadySelected = _.find(_this.selectedItems, function (i) {
                         return (i.value === item.value) && (i.kind === item.kind);
                     });

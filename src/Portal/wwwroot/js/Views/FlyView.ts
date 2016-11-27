@@ -1,7 +1,5 @@
 ﻿module Views {
-
 		
-
 	export class FlyView extends ViewBase {
 
 		public planningMap: Planning.PlanningMap;
@@ -19,8 +17,7 @@
 			super();
 
 			this.initialize();
-
-
+				
 			var cf = new Planning.CustomFrom(this);			
 		}
 
