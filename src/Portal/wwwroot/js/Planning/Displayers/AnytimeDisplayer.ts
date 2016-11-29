@@ -85,7 +85,7 @@ module Planning {
 						var gid = $cityBox.data("gid");
 						var name = $cityBox.data("name");
 
-						var $lc = LastItem.getLast(this.$cont, "flight-result", $cityBox.data("no"));
+						var $lc = Common.LastItem.getLast(this.$cont, "flight-result", $cityBox.data("no"));
 
 						var conn = _.find(this.connections, (c) => { return c.FromAirport === from && c.ToAirport === to });
 

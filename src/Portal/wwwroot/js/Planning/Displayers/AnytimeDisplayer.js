@@ -57,7 +57,7 @@ var Planning;
                 var to = $connection.data("t");
                 var gid = $cityBox.data("gid");
                 var name = $cityBox.data("name");
-                var $lc = Planning.LastItem.getLast(_this.$cont, "flight-result", $cityBox.data("no"));
+                var $lc = Common.LastItem.getLast(_this.$cont, "flight-result", $cityBox.data("no"));
                 var conn = _.find(_this.connections, function (c) { return c.FromAirport === from && c.ToAirport === to; });
                 var cd = new Planning.CityDetail(_this.scoreLevel, from, to, name, gid);
                 cd.createLayout($lc);
