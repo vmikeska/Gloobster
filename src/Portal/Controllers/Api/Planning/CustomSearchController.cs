@@ -28,9 +28,7 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 			DB = db;
             SearchDomain = searchDomain;			
 		}
-
-		private PlanningPropRequest Req;
-
+        
 		[HttpPost]
 		[AuthorizeApi]
 		public async Task<IActionResult> Post([FromBody] CustomSearchPostReq req)

@@ -1,35 +1,33 @@
 module Planning {
-
-		export interface IPageSetter {
-				setConnections(conns);
-				init();
-		}
-
+		
 	export class CustomPageSetter implements IPageSetter {
 
-			private formTmp = Views.ViewBase.currentView.registerTemplate("custom-template");
-			private v: Views.FlyView;
 
-			constructor(v: Views.FlyView) {
-					this.v = v;
-			}
+		private v: Views.FlyView;
+
+		private customForm: CustomFrom;
+
+
+		constructor(v: Views.FlyView) {
+			this.v = v;
+		}
 
 		public setConnections(conns) {
 
 		}
-
-		public init() {
-			var $tabContent = $("#tabContent");
-
-			//var cf = new CustomFrom(this.v);			
-
-				var $form = $(this.formTmp());
-				$tabContent.html($form);
-			//this.planningMap.loadCategory(2);
-
+			
+		public init(callback: Function) {
+				this.customForm = new CustomFrom(this.v);
+				this.customForm.init(() => {
+					callback();
+				});				
 		}
 
-			
+		public getCustomId() {
+			return this.customForm.searchId;
+		}
+
+		
 	}
 
 

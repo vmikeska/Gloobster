@@ -8,6 +8,7 @@ using Gloobster.Entities.Planning;
 using Gloobster.Entities.Trip;
 using Gloobster.Enums;
 using MongoDB.Bson;
+using System.Linq;
 
 namespace Gloobster.DomainModels
 {
@@ -30,13 +31,13 @@ namespace Gloobster.DomainModels
 				return changed;
 			}
 
-			//if (selection.PlanningType == PlanningType.Custom)
-			//{
-			//	bool changed = await ChangeCountrySelectionCustom(selection);
-			//	return changed;
-			//}
+            if (selection.PlanningType == PlanningType.Custom)
+            {
+                bool changed = await ChangeCountrySelectionCustom(selection);
+                return changed;
+            }
 
-			return false;
+            return false;
 		}
 
 		public async Task<bool> ChangeCitySelection(CitySelectionDO selection)
@@ -53,13 +54,13 @@ namespace Gloobster.DomainModels
 				return changed;
 			}
 
-			//if (selection.PlanningType == PlanningType.Custom)
-			//{
-			//	bool changed = await ChangeCitySelectionCustom(selection);
-			//	return changed;
-			//}
+            if (selection.PlanningType == PlanningType.Custom)
+            {
+                bool changed = await ChangeCitySelectionCustom(selection);
+                return changed;
+            }
 
-			return false;
+            return false;
 		}
 
 
@@ -114,13 +115,80 @@ namespace Gloobster.DomainModels
 
 			return false;
 		}
-		
-		
-		
 
-		
 
-		private async Task<bool> ChangeCitySelectionAnytime(CitySelectionDO selection)
+        private async Task<bool> ChangeCitySelectionCustom(CitySelectionDO selection)
+        {
+            var userIdObj = new ObjectId(selection.UserId);
+            var customIdObj = new ObjectId(selection.CustomId);
+            var custom = DB.FOD<PlanningCustomEntity>(u => u.User_id == userIdObj);
+
+            var customSearch = custom.Searches.FirstOrDefault(s => s.id == customIdObj);
+
+            if (customSearch == null)
+            {
+                //throw
+            }
+
+            bool hasCity = customSearch.GIDs.Contains(selection.GID);
+
+            var filter = DB.F<PlanningCustomEntity>().Eq(p => p.User_id, userIdObj)
+                         & DB.F<PlanningCustomEntity>().Eq("Searches._id", customIdObj);
+
+            if (selection.Selected && !hasCity)
+            {
+                var update = DB.U<PlanningCustomEntity>().Push("Searches.$.GIDs", selection.GID);
+                var res = await DB.UpdateAsync(filter, update);
+                return res.ModifiedCount == 1;
+            }
+
+            if (!selection.Selected && hasCity)
+            {
+                var update = DB.U<PlanningCustomEntity>().Pull("Searches.$.GIDs", selection.GID);
+                var res = await DB.UpdateAsync(filter, update);
+                return res.ModifiedCount == 1;
+            }
+
+            return false;
+        }
+
+        private async Task<bool> ChangeCountrySelectionCustom(CountrySelectionDO selection)
+        {
+            var uid = new ObjectId(selection.UserId);
+            var cid = new ObjectId(selection.CustomId);
+            var custom = DB.FOD<PlanningCustomEntity>(u => u.User_id == uid);
+            var customSearch = custom.Searches.FirstOrDefault(s => s.id == cid);
+
+            if (customSearch == null)
+            {
+                //throw
+            }
+
+            bool hasCountry = customSearch.CCs.Contains(selection.CountryCode);
+
+            var filter = DB.F<PlanningCustomEntity>().Eq(p => p.User_id, uid)
+                         & DB.F<PlanningCustomEntity>().Eq("Searches._id", cid);
+
+            if (selection.Selected && !hasCountry)
+            {
+                var update = DB.U<PlanningCustomEntity>().Push("Searches.$.CCs", selection.CountryCode);
+                var res = await DB.UpdateAsync(filter, update);
+                return res.ModifiedCount == 1;
+            }
+
+            if (!selection.Selected && hasCountry)
+            {
+                var update = DB.U<PlanningCustomEntity>().Pull("Searches.$.CCs", selection.CountryCode);
+                var res = await DB.UpdateAsync(filter, update);
+                return res.ModifiedCount == 1;
+            }
+
+            return false;
+        }
+
+
+
+        private async Task<bool> ChangeCitySelectionAnytime(CitySelectionDO selection)
 		{
 			var userIdObj = new ObjectId(selection.UserId);
 			var anytime = DB.FOD<PlanningAnytimeEntity>(u => u.User_id == userIdObj);

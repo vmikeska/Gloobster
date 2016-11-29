@@ -2,7 +2,8 @@ module Planning {
 
 		export interface IPageSetter {
 				setConnections(conns);
-				init();
+				init(callback: Function);
+				getCustomId();
 		}
 
 }

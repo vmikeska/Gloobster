@@ -11,11 +11,12 @@ var Planning;
             this.connections = conns;
             this.onFilterChanged();
         };
-        AnytimePageSetter.prototype.init = function () {
+        AnytimePageSetter.prototype.init = function (callback) {
             var layoutTmp = this.v.registerTemplate("filtering-template");
             this.$filter.html(layoutTmp());
             this.initFilters();
             this.displayer = new Planning.AnytimeDisplayer(this.$cont, this.filter);
+            callback();
         };
         AnytimePageSetter.prototype.onFilterChanged = function () {
             this.displayer.showResults(this.connections, this.grouping);
@@ -33,6 +34,9 @@ var Planning;
                 Planning.LocationGrouping.ByCountry,
                 Planning.LocationGrouping.ByContinent
             ], Planning.LocationGrouping.ByCity);
+        };
+        AnytimePageSetter.prototype.getCustomId = function () {
+            return null;
         };
         return AnytimePageSetter;
     }());

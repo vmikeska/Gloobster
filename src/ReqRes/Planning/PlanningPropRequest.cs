@@ -3,10 +3,19 @@ using Gloobster.Enums;
 
 namespace Gloobster.ReqRes.Planning
 {
-	public class PlanningPropRequest
+	public class SelCityRequest
 	{		
-		public PlanningType planningType { get; set; }
-		public string propertyName { get; set; }
-		public Dictionary<string, string> values { get; set; } 
+		public PlanningType type { get; set; }
+		public int gid { get; set; }
+        public bool selected { get; set; }
+        public string customId { get; set; }        
 	}
+
+    public class SelCountryRequest
+    {
+        public PlanningType type { get; set; }
+        public string cc { get; set; }
+        public bool selected { get; set; }
+        public string customId { get; set; }
+    }
 }

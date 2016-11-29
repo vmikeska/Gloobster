@@ -164,7 +164,6 @@ var Planning;
             this.create();
             this.dataLoader = new SearchDataLoader();
             this.menu = new CustomMenu(this.$form.find(".searches-menu"));
-            this.init();
         }
         CustomFrom.prototype.initDaysRange = function () {
             var _this = this;
@@ -246,18 +245,20 @@ var Planning;
                 caller.send();
             });
         };
-        CustomFrom.prototype.init = function () {
+        CustomFrom.prototype.init = function (callback) {
             var _this = this;
             this.dataLoader.getInitData(function (data) {
                 _this.searchId = data.first.id;
                 _this.menu.init(data.headers);
                 _this.initFormControls();
                 _this.loadSearch(data.first);
+                callback();
             });
             this.menu.onSearchChange = function (id) {
                 _this.dataLoader.getSearch(id, function (search) {
                     _this.loadSearch(search);
                     _this.searchId = id;
+                    _this.v.planningMap.loadCategory(PlanningType.Custom);
                 });
             };
             this.$form.find(".adder").click(function (e) {

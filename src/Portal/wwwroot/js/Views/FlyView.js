@@ -12,7 +12,6 @@ var Views;
             this.$cont = $("#resultsCont");
             this.$filter = $("#filterCont");
             this.initialize();
-            var cf = new Planning.CustomFrom(this);
         }
         FlyView.prototype.mapSwitch = function (callback) {
             var _this = this;
@@ -51,6 +50,8 @@ var Views;
             this.tabs.create();
         };
         FlyView.prototype.changeSetter = function (type) {
+            var _this = this;
+            $("#tabContent").empty();
             if (type === PlanningType.Anytime) {
                 this.currentSetter = new Planning.AnytimePageSetter(this);
             }
@@ -60,9 +61,10 @@ var Views;
             if (type === PlanningType.Custom) {
                 this.currentSetter = new Planning.CustomPageSetter(this);
             }
-            this.currentSetter.init();
-            this.planningMap.loadCategory(type);
-            this.resultsEngine.initalCall(type);
+            this.currentSetter.init(function () {
+                _this.planningMap.loadCategory(type);
+                _this.resultsEngine.initalCall(type);
+            });
         };
         FlyView.prototype.initialize = function () {
             var _this = this;
@@ -70,7 +72,7 @@ var Views;
             this.resultsEngine.onConnectionsChanged = function (connections) {
                 _this.currentSetter.setConnections(connections);
             };
-            this.planningMap = new Planning.PlanningMap();
+            this.planningMap = new Planning.PlanningMap(this);
             this.planningMap.onMapLoaded = function () {
                 _this.changeSetter(PlanningType.Anytime);
             };

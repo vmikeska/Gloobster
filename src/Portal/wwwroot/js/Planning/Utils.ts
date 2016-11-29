@@ -98,25 +98,5 @@
 			}
 		}
 	}
-
-	export class PlanningSender {
-
-		public static updateProp(data, callback) {
-			Views.ViewBase.currentView.apiPut("PlanningProperty", data, (response) => {
-				callback(response);
-			});
-		}
-
-		public static pushProp(data, callback) {
-			Views.ViewBase.currentView.apiPost("PlanningProperty", data, (response) => {
-				callback(response);
-			});
-		}
-
-		public static createRequest(planningType: PlanningType, propertyName: string, values) {
-			var request = { planningType: planningType, propertyName: propertyName, values: values };
-			return request;
-		}
-	}
 		
 }

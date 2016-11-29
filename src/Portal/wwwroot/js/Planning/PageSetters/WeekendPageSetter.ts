@@ -21,13 +21,15 @@ module Planning {
 			this.onFilterChanged();
 		}
 
-		public init() {
+		public init(callback: Function) {
 			var layoutTmp = this.v.registerTemplate("filtering-template");
 			this.$filter.html(layoutTmp());
 
 			this.initFilters();
 
 			this.displayer = new WeekendDisplayer(this.$cont);
+
+			callback();
 		}
 			
 		private onFilterChanged() {
@@ -50,5 +52,9 @@ module Planning {
 				LocationGrouping.ByCity,
 				true);
 		}
-	}
+
+			getCustomId() {
+				return null;
+			}
+		}
 }

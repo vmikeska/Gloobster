@@ -171,7 +171,8 @@ namespace Gloobster.Portal
             
             builder.AddTransient<IQueriesDriver, AnytimeQueriesDriver>().Keyed<IQueriesDriver>("Anytime");
             builder.AddTransient<IQueriesDriver, WeekendQueriesDriver>().Keyed<IQueriesDriver>("Weekend");
-            
+            builder.AddTransient<IQueriesDriver, CustomQueriesDriver>().Keyed<IQueriesDriver>("Custom");
+
             var airportsCache = new AirportsCache
 		    {
 		        DB = new DbOperations()

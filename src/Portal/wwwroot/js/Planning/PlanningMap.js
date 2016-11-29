@@ -1,8 +1,9 @@
 var Planning;
 (function (Planning) {
     var PlanningMap = (function () {
-        function PlanningMap() {
+        function PlanningMap(v) {
             this.viewType = FlightCacheRecordType.Country;
+            this.v = v;
         }
         PlanningMap.prototype.init = function () {
             this.initMap();
@@ -25,22 +26,18 @@ var Planning;
             var _this = this;
             this.map.onCountryChange = function (cc, isSelected) {
                 _this.onSelectionChanged(cc, isSelected, FlightCacheRecordType.Country);
-                var data = Planning.PlanningSender.createRequest(_this.planningType, "countries", {
-                    countryCode: cc,
-                    selected: isSelected
-                });
-                Planning.PlanningSender.updateProp(data, function (response) { });
+                var customId = _this.v.currentSetter.getCustomId();
+                var data = { type: _this.planningType, cc: cc, selected: isSelected, customId: customId };
+                _this.v.apiPut("SelCountry", data, function () { });
             };
         };
         PlanningMap.prototype.initCitiesFnc = function () {
             var _this = this;
             this.map.onCityChange = function (gid, isSelected) {
                 _this.onSelectionChanged(gid, isSelected, FlightCacheRecordType.City);
-                var data = Planning.PlanningSender.createRequest(_this.planningType, "cities", {
-                    gid: gid,
-                    selected: isSelected
-                });
-                Planning.PlanningSender.updateProp(data, function (response) { });
+                var customId = _this.v.currentSetter.getCustomId();
+                var data = { type: _this.planningType, gid: gid, selected: isSelected, customId: customId };
+                _this.v.apiPut("SelCity", data, function () { });
             };
         };
         PlanningMap.prototype.loadCategory = function (pt) {
@@ -49,16 +46,15 @@ var Planning;
         };
         PlanningMap.prototype.initData = function () {
             var _this = this;
-            this.getTabData(this.planningType, function (data) {
-                _this.viewData = data;
-                _this.map.mapCities.set(_this.viewData.cities);
-                _this.map.mapCountries.set(_this.viewData.countryCodes);
+            this.getSelectedCCs(this.planningType, function (ccs) {
+                _this.map.mapCountries.set(ccs);
                 _this.map.switch(_this.viewType);
             });
         };
-        PlanningMap.prototype.getTabData = function (planningType, callback) {
-            var prms = [["planningType", planningType.toString()]];
-            Views.ViewBase.currentView.apiGet("PlanningProperty", prms, function (response) {
+        PlanningMap.prototype.getSelectedCCs = function (planningType, callback) {
+            var customId = this.v.currentSetter.getCustomId();
+            var prms = [["type", planningType.toString()], ["customId", customId]];
+            Views.ViewBase.currentView.apiGet("SelCountry", prms, function (response) {
                 callback(response);
             });
         };

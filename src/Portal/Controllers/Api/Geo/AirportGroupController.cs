@@ -66,27 +66,27 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 
                 //todo: what is it for ?
 
-				//if (req.planningType.Value == PlanningType.Custom)
-				//{
-				//	var customIdObj = new ObjectId(req.customId);
+                if (req.planningType.Value == PlanningType.Custom)
+                {
+                    var customIdObj = new ObjectId(req.customId);
 
-				//	var custom = DB.FOD<PlanningCustomEntity>(p => p.User_id == UserIdObj);
+                    var custom = DB.FOD<PlanningCustomEntity>(p => p.User_id == UserIdObj);
 
-    //                if (custom == null)
-    //                {
-    //                    return new ObjectResult(null);
-    //                }
+                    if (custom == null)
+                    {
+                        return new ObjectResult(null);
+                    }
 
-    //                var selectedSearch = custom.Searches.FirstOrDefault(c => c.id == customIdObj);
+                    var selectedSearch = custom.Searches.FirstOrDefault(c => c.id == customIdObj);
 
-				//	if (selectedSearch == null)
-				//	{
-				//		return new ObjectResult(null);
-				//	}
+                    if (selectedSearch == null)
+                    {
+                        return new ObjectResult(null);
+                    }
 
-				//	cities.ForEach(c => c.selected = selectedSearch.Cities.Contains(c.gid));
-				//}
-			}
+                    cities.ForEach(c => c.selected = selectedSearch.GIDs.Contains(c.gid));
+                }
+            }
 
 			return new ObjectResult(cities);
 		}

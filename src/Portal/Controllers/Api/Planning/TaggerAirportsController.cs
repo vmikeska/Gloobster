@@ -29,11 +29,10 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 			}
 
 			var q = req.query.ToLower();
-            var qu = req.query.ToUpper();
-
+            
             var airports = DB.C<AirportEntity>()
                 .OrderByDescending(o => o.IncomingFlights)
-                .Where(a => a.IataFaa.StartsWith(qu) || a.City.ToLower().Contains(q))                
+                .Where(a => a.IataFaa.ToLower().StartsWith(q) || a.City.ToLower().Contains(q))                
                 .Take(10)                
                 .ToList();
 

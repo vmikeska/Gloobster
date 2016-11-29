@@ -39,7 +39,7 @@ module Planning {
 
 		private tileLayer;
 
-		private delayedZoomCallback: DelayedCallbackMap;
+		private delayedCallback: DelayedCallbackMap;
 
 		private $map = $("#mapCities");
 		private inited = false;
@@ -64,15 +64,7 @@ module Planning {
 		public hide() {
 				this.$map.hide();					
 		}
-
-		public set(cities) {
-			this.cities = cities;
-
-			if (this.inited) {
-				this.initCities();
-			}
-		}
-			
+	
 		private init() {
 			this.mapObj = L.map("mapCities", MapConstants.mapOptions);
 			this.position = new MapPosition(this.mapObj);
@@ -81,9 +73,9 @@ module Planning {
 			this.mapObj.addLayer(this.citiesLayerGroup);
 		}
 			
-		private initCities() {
+		public initCities() {
 			this.loadCitiesInRange();
-			this.delayedZoomCallback.receiveEvent();
+			this.callToLoadCities();
 		}
 
 		//wait a bit
@@ -124,10 +116,12 @@ module Planning {
 			return 1;
 		}
 
-		private callToLoadCities() {
+		public callToLoadCities() {
 			var bounds = this.mapObj.getBounds();
 			var zoom = this.mapObj.getZoom();
 			var population = this.getPopulationFromZoom(zoom);
+
+			var customId = this.map.planningMap.v.currentSetter.getCustomId();
 
 			var prms = [
 				["latSouth", bounds._southWest.lat],
@@ -135,17 +129,11 @@ module Planning {
 				["latNorth", bounds._northEast.lat],
 				["lngEast", bounds._northEast.lng],
 				["minPopulation", population.toString()],
-				["planningType", this.map.planningMap.planningType.toString()]
+				["planningType", this.map.planningMap.planningType.toString()],
+				["customId", customId]
 			];
-
-			//dont delete
-			//if (this.planningType === PlanningType.Custom) {
-			//	prms.push(["customId", NamesList.selectedSearch.id]);
-			//}
-
-			Views.ViewBase.currentView.apiGet("airportGroup",
-				prms,
-				(cities) => {
+				
+			Views.ViewBase.currentView.apiGet("airportGroup", prms, (cities) => {
 					this.createCities(cities);
 				});
 		}
@@ -198,24 +186,24 @@ module Planning {
 			return marker;
 		}
 
-			private cityClicked(e) {
-					e.target.setIcon(this.graph.selectedIcon);
-					e.target.selected = !e.target.selected;
+		private cityClicked(e) {
+				e.target.setIcon(this.graph.selectedIcon);
+				e.target.selected = !e.target.selected;
 
-					this.map.onCityChange(e.target.gid, e.target.selected);					
-			}
+				this.map.onCityChange(e.target.gid, e.target.selected);					
+		}
 
 		private loadCitiesInRange() {
-			this.delayedZoomCallback = new DelayedCallbackMap();
-			this.delayedZoomCallback.callback = () => {
+			this.delayedCallback = new DelayedCallbackMap();
+			this.delayedCallback.callback = () => {
 				this.callToLoadCities();
 			};
 
 			this.mapObj.on("zoomend", e => {
-					this.delayedZoomCallback.receiveEvent();
+					this.delayedCallback.receiveEvent();
 				});
 			this.mapObj.on("moveend", e => {
-					this.delayedZoomCallback.receiveEvent();
+					this.delayedCallback.receiveEvent();
 				});
 
 		}

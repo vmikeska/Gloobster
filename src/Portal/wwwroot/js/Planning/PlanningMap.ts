@@ -5,15 +5,19 @@ module Planning {
 		public onMapLoaded: Function;
 			
 		public map: Map;
-
-		private viewData: any;
-		public planningType: PlanningType;
-		public viewType = FlightCacheRecordType.Country;
 			
-		//dont delete
-		//private customForm: CustomForm;
+		public viewType = FlightCacheRecordType.Country;
 
+		public planningType: PlanningType;
+		public customId;
+		
 		private resultsEngine: ResultsManager;
+
+		public v: Views.FlyView;
+
+		constructor(v: Views.FlyView) {
+			this.v = v;
+		}
 
 		public init() {
 			this.initMap();
@@ -43,14 +47,11 @@ module Planning {
 			this.map.onCountryChange = (cc, isSelected) => {
 				this.onSelectionChanged(cc, isSelected, FlightCacheRecordType.Country);
 
-				var data = PlanningSender.createRequest(this.planningType,
-					"countries",
-					{
-						countryCode: cc,
-						selected: isSelected
-					});
-
-				PlanningSender.updateProp(data, (response) => {});
+				var customId = this.v.currentSetter.getCustomId();
+					
+				var data = { type: this.planningType, cc: cc, selected: isSelected, customId: customId};
+					
+				this.v.apiPut("SelCountry", data, () => {});					
 			};
 		}
 
@@ -59,17 +60,11 @@ module Planning {
 				this.map.onCityChange = (gid, isSelected) => {
 						this.onSelectionChanged(gid, isSelected, FlightCacheRecordType.City);
 
-						var data = PlanningSender.createRequest(this.planningType, "cities", {
-								gid: gid,
-								selected: isSelected
-						});
+						var customId = this.v.currentSetter.getCustomId();
 
-						//dont delete
-						//if (planningType === PlanningType.Custom) {
-						//		data.values.customId = NamesList.selectedSearch.id;
-						//}
+						var data = { type: this.planningType, gid: gid, selected: isSelected, customId: customId };
 
-						PlanningSender.updateProp(data, (response) => {});
+						this.v.apiPut("SelCity", data, () => { });		
 				};				
 		}
 
@@ -80,31 +75,20 @@ module Planning {
 
 		private initData() {
 
-			this.getTabData(this.planningType, (data) => {
-
-					this.viewData = data;
+				this.getSelectedCCs(this.planningType, (ccs) => {
 					
-					this.map.mapCities.set(this.viewData.cities);
-					this.map.mapCountries.set(this.viewData.countryCodes);
+					this.map.mapCountries.set(ccs);
 
-					
-					this.map.switch(this.viewType);
-					
-
-					//do not delete
-					//if (this.planningType === PlanningType.Custom) {
-					//		var search = this.viewData.searches[0];
-					//		this.countriesManager.createCountries(search.countryCodes, this.planningType);
-					//		this.customForm = new CustomForm(data, this);
-					//}
-
-				});
+					this.map.switch(this.viewType);					
+				});				
 		}
 
-		private getTabData(planningType: PlanningType, callback) {
-				var prms = [["planningType", planningType.toString()]];
+		private getSelectedCCs(planningType: PlanningType, callback) {
+				var customId = this.v.currentSetter.getCustomId();
 
-				Views.ViewBase.currentView.apiGet("PlanningProperty", prms, (response) => {
+				var prms = [["type", planningType.toString()], ["customId", customId]];
+				
+				Views.ViewBase.currentView.apiGet("SelCountry", prms, (response) => {
 						callback(response);
 				});
 		}

@@ -90,6 +90,11 @@ namespace Gloobster.DomainModels.SearchEngine
                 key = "Weekend";
             }
 
+            if (timeType == TimeType.Custom)
+            {
+                key = "Custom";
+            }
+
             RequestsDriver = ComponentContext.ResolveKeyed<IQueriesDriver>(key);
         }
 

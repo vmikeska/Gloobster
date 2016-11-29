@@ -67,7 +67,7 @@ namespace Gloobster.DomainModels.SearchEngine
                 conns.Add(conn);
             }
 
-            var connsDO = conns.Select(c => c.ToDO()).ToList();
+            List<WeekendConnectionDO> connsDO = conns.Select(c => c.ToDO()).ToList();
 
             return connsDO;
         }

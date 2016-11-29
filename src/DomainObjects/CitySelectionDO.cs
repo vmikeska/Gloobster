@@ -10,6 +10,6 @@ namespace Gloobster.DomainObjects
 		public string UserId { get; set; }
 		public int GID { get; set; }
 		public bool Selected { get; set; }
-		public string CustomId { get; set; }
+        public string CustomId { get; set; }
 	}    
 }

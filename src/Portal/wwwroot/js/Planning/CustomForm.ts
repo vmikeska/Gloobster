@@ -254,7 +254,7 @@ module Planning {
 		private $dpDep;
 		private $dpArr;
 
-		private searchId;
+		public searchId;
 
 		constructor(v: Views.FlyView) {
 			this.v = v;
@@ -262,9 +262,7 @@ module Planning {
 			this.create();
 
 			this.dataLoader = new SearchDataLoader();
-			this.menu = new CustomMenu(this.$form.find(".searches-menu"));
-
-			this.init();
+			this.menu = new CustomMenu(this.$form.find(".searches-menu"));				
 		}
 
 		private initDaysRange() {
@@ -367,7 +365,7 @@ module Planning {
 				
 		}
 
-		private init() {
+		public init(callback: Function) {
 			
 			this.dataLoader.getInitData((data) => {
 				  this.searchId = data.first.id;
@@ -376,13 +374,17 @@ module Planning {
 
 					this.initFormControls();
 
-					this.loadSearch(data.first);					
+					this.loadSearch(data.first);
+
+					callback();
 			});
 
 			this.menu.onSearchChange = (id) => {
 					this.dataLoader.getSearch(id, (search) => {
 							this.loadSearch(search);
 							this.searchId = id;
+							this.v.planningMap.loadCategory(PlanningType.Custom);
+							//this.v.planningMap.map.mapCities.callToLoadCities();
 					});
 			}
 

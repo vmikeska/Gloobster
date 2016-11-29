@@ -2,15 +2,18 @@ var Planning;
 (function (Planning) {
     var CustomPageSetter = (function () {
         function CustomPageSetter(v) {
-            this.formTmp = Views.ViewBase.currentView.registerTemplate("custom-template");
             this.v = v;
         }
         CustomPageSetter.prototype.setConnections = function (conns) {
         };
-        CustomPageSetter.prototype.init = function () {
-            var $tabContent = $("#tabContent");
-            var $form = $(this.formTmp());
-            $tabContent.html($form);
+        CustomPageSetter.prototype.init = function (callback) {
+            this.customForm = new Planning.CustomFrom(this.v);
+            this.customForm.init(function () {
+                callback();
+            });
+        };
+        CustomPageSetter.prototype.getCustomId = function () {
+            return this.customForm.searchId;
         };
         return CustomPageSetter;
     }());

@@ -73,25 +73,5 @@ var Planning;
         return PolygonConfig;
     }());
     Planning.PolygonConfig = PolygonConfig;
-    var PlanningSender = (function () {
-        function PlanningSender() {
-        }
-        PlanningSender.updateProp = function (data, callback) {
-            Views.ViewBase.currentView.apiPut("PlanningProperty", data, function (response) {
-                callback(response);
-            });
-        };
-        PlanningSender.pushProp = function (data, callback) {
-            Views.ViewBase.currentView.apiPost("PlanningProperty", data, function (response) {
-                callback(response);
-            });
-        };
-        PlanningSender.createRequest = function (planningType, propertyName, values) {
-            var request = { planningType: planningType, propertyName: propertyName, values: values };
-            return request;
-        };
-        return PlanningSender;
-    }());
-    Planning.PlanningSender = PlanningSender;
 })(Planning || (Planning = {}));
 //# sourceMappingURL=Utils.js.map

@@ -63,7 +63,21 @@ namespace Gloobster.DomainModels.SearchEngine
             if (query.EntireQuery)
             {
                 var userIdObj = new ObjectId(query.UserId);
-                var cc = GetUsersCitiesAndCountries(timeType, userIdObj);
+                CitiesCountries cc = null;
+
+                if (timeType == TimeType.Anytime || timeType == TimeType.Weekend)
+                {
+                    cc = GetUsersCitiesAndCountries(timeType, userIdObj);
+                }
+
+                if (timeType == TimeType.Custom)
+                {
+                    cc = new CitiesCountries
+                    {
+                        Cities = new List<int>(),
+                        Countries = new List<string>()
+                    };
+                }
                 
                 cities = cc.Cities;
                 countries = cc.Countries;
@@ -92,15 +106,7 @@ namespace Gloobster.DomainModels.SearchEngine
 
             return allResults;
         }
-
-        private CitiesCountries GetUsersCitiesAndCountriesCustom(ObjectId userIdObj, ObjectId searchId)
-        {
-            var cc = new CitiesCountries();
-
-            
-
-            return cc;
-        }
+        
 
         private CitiesCountries GetUsersCitiesAndCountries(TimeType timeType, ObjectId userIdObj)
         {
@@ -119,7 +125,7 @@ namespace Gloobster.DomainModels.SearchEngine
                 cc.Cities = weekend.Cities;
                 cc.Countries = weekend.CountryCodes;
             }
-
+            
             return cc;
         }
 

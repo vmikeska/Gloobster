@@ -2,6 +2,8 @@
 		
 	export class FlyView extends ViewBase {
 
+		public currentSetter: Planning.IPageSetter;
+
 		public planningMap: Planning.PlanningMap;
 
 		private resultsEngine: Planning.ResultsManager;
@@ -17,8 +19,6 @@
 			super();
 
 			this.initialize();
-				
-			var cf = new Planning.CustomFrom(this);			
 		}
 
 		private mapSwitch(callback) {
@@ -66,10 +66,11 @@
 
 			this.tabs.create();
 		}
-
-		private currentSetter: Planning.IPageSetter;
-
+			
 		private changeSetter(type: PlanningType) {
+
+			$("#tabContent").empty();
+
 			if (type === PlanningType.Anytime) {
 				this.currentSetter = new Planning.AnytimePageSetter(this);
 			}
@@ -81,12 +82,12 @@
 					this.currentSetter = new Planning.CustomPageSetter(this);
 			}
 
-			this.currentSetter.init();
+			this.currentSetter.init(() => {
+					this.planningMap.loadCategory(type);
 
-			this.planningMap.loadCategory(type);
-
-			this.resultsEngine.initalCall(type);
-
+					this.resultsEngine.initalCall(type);
+			});
+				
 		}
 
 		public initialize() {
@@ -96,7 +97,7 @@
 			};
 
 
-			this.planningMap = new Planning.PlanningMap();
+			this.planningMap = new Planning.PlanningMap(this);
 
 			this.planningMap.onMapLoaded = () => {
 				this.changeSetter(PlanningType.Anytime);

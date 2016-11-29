@@ -1,1 +1,0 @@
-//# sourceMappingURL=NamesList.js.map

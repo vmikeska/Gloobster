@@ -36,12 +36,6 @@ var Planning;
         MapCities.prototype.hide = function () {
             this.$map.hide();
         };
-        MapCities.prototype.set = function (cities) {
-            this.cities = cities;
-            if (this.inited) {
-                this.initCities();
-            }
-        };
         MapCities.prototype.init = function () {
             this.mapObj = L.map("mapCities", Planning.MapConstants.mapOptions);
             this.position = new MapPosition(this.mapObj);
@@ -51,7 +45,7 @@ var Planning;
         };
         MapCities.prototype.initCities = function () {
             this.loadCitiesInRange();
-            this.delayedZoomCallback.receiveEvent();
+            this.callToLoadCities();
         };
         MapCities.prototype.createMapboxLayer = function () {
             var tempUrl = "https://api.mapbox.com/styles/v1/gloobster/civo64vmw004i2kqkwpcocjyp/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2xvb2JzdGVyIiwiYSI6ImQxZWY5MjRkZjU1NDk2MGU3OWI2OGRiM2U3NTM0MGYxIn0.nCG7hOsSQzb0c-_qzfTCRQ";
@@ -84,13 +78,15 @@ var Planning;
             var bounds = this.mapObj.getBounds();
             var zoom = this.mapObj.getZoom();
             var population = this.getPopulationFromZoom(zoom);
+            var customId = this.map.planningMap.v.currentSetter.getCustomId();
             var prms = [
                 ["latSouth", bounds._southWest.lat],
                 ["lngWest", bounds._southWest.lng],
                 ["latNorth", bounds._northEast.lat],
                 ["lngEast", bounds._northEast.lng],
                 ["minPopulation", population.toString()],
-                ["planningType", this.map.planningMap.planningType.toString()]
+                ["planningType", this.map.planningMap.planningType.toString()],
+                ["customId", customId]
             ];
             Views.ViewBase.currentView.apiGet("airportGroup", prms, function (cities) {
                 _this.createCities(cities);
@@ -137,15 +133,15 @@ var Planning;
         };
         MapCities.prototype.loadCitiesInRange = function () {
             var _this = this;
-            this.delayedZoomCallback = new Planning.DelayedCallbackMap();
-            this.delayedZoomCallback.callback = function () {
+            this.delayedCallback = new Planning.DelayedCallbackMap();
+            this.delayedCallback.callback = function () {
                 _this.callToLoadCities();
             };
             this.mapObj.on("zoomend", function (e) {
-                _this.delayedZoomCallback.receiveEvent();
+                _this.delayedCallback.receiveEvent();
             });
             this.mapObj.on("moveend", function (e) {
-                _this.delayedZoomCallback.receiveEvent();
+                _this.delayedCallback.receiveEvent();
             });
         };
         return MapCities;

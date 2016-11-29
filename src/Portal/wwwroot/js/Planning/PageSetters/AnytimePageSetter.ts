@@ -24,13 +24,15 @@ module Planning {
 			this.onFilterChanged();
 		}
 
-		public init() {
+		public init(callback: Function) {
 			var layoutTmp = this.v.registerTemplate("filtering-template");
 			this.$filter.html(layoutTmp());
 
 			this.initFilters();
 
 			this.displayer = new AnytimeDisplayer(this.$cont, this.filter);
+
+			callback();
 		}
 			
 		private onFilterChanged() {
@@ -52,6 +54,10 @@ module Planning {
 					LocationGrouping.ByContinent
 				],
 				LocationGrouping.ByCity);
+		}
+
+		public getCustomId() {
+			return null;
 		}
 	}
 }
