@@ -7,11 +7,11 @@ var Planning;
         }
         AnytimeDisplayer.prototype.showResults = function (connections, grouping) {
             this.connections = connections;
+            var filterState = this.filter.getStateBase();
             if (grouping === Planning.LocationGrouping.ByCity) {
                 var agg1 = new AnytimeByCityAgg(connections);
                 var fs = this.filter.getStateBase();
                 agg1.exe(fs.starsLevel);
-                var filterState = this.filter.getStateBase();
                 var dis = new AnytimeByCityDis(this.connections, filterState.currentLevel);
                 dis.render(agg1.cities);
             }
@@ -19,7 +19,7 @@ var Planning;
                 var agg2 = new AnytimeByCountryAgg(connections);
                 var fs2 = this.filter.getStateBase();
                 agg2.exe(fs2.starsLevel);
-                var dis2 = new AnytimeByCountryDis(this.connections);
+                var dis2 = new AnytimeByCountryDis(this.connections, filterState.currentLevel);
                 dis2.render(agg2.countries);
             }
         };
@@ -69,9 +69,10 @@ var Planning;
     }());
     Planning.AnytimeByCityDis = AnytimeByCityDis;
     var AnytimeByCountryDis = (function () {
-        function AnytimeByCountryDis(connections) {
+        function AnytimeByCountryDis(connections, scoreLevel) {
             this.$cont = $("#resultsCont");
             this.connections = connections;
+            this.scoreLevel = scoreLevel;
         }
         AnytimeByCountryDis.prototype.render = function (countries) {
             var _this = this;
@@ -91,6 +92,7 @@ var Planning;
             lg.generateList(countries);
         };
         AnytimeByCountryDis.prototype.genOffers = function ($cityBox, cities) {
+            var _this = this;
             cities = _.sortBy(cities, "fromPrice");
             var lgi = Common.ListGenerator.init($cityBox.find("table"), "grouped-country-city-template");
             lgi.customMapping = function (i) {
@@ -100,6 +102,24 @@ var Planning;
                     price: i.fromPrice
                 };
             };
+            lgi.evnt(null, function (e, $tr, $target, item) {
+                var from = "from";
+                var to = "to";
+                var gid = $tr.data("gid");
+                var $lc = Common.LastItem.getLast(_this.$cont, "flight-result", $cityBox.data("no"));
+                var conn = _.filter(_this.connections, function (c) { return c.ToCityId === gid; });
+                var first = _.first(conn);
+                var name = first.CityName;
+                var flights = [];
+                conn.forEach(function (c) {
+                    c.Flights.forEach(function (f) {
+                        flights.push(f);
+                    });
+                });
+                var cd = new Planning.CityDetail(_this.scoreLevel, from, to, name, gid);
+                cd.createLayout($lc);
+                cd.init(flights);
+            });
             lgi.generateList(cities);
         };
         return AnytimeByCountryDis;

@@ -14,15 +14,15 @@ module Planning {
 		public showResults(connections, grouping: LocationGrouping) {
 			this.connections = connections;
 
+			var filterState = this.filter.getStateBase();
+
 			if (grouping === LocationGrouping.ByCity) {
 				var agg1 = new AnytimeByCityAgg(connections);
 
 				var fs = this.filter.getStateBase();
 
 				agg1.exe(fs.starsLevel);
-
-				var filterState = this.filter.getStateBase();
-
+					
 				var dis = new AnytimeByCityDis(this.connections, filterState.currentLevel);
 				dis.render(agg1.cities);
 			}
@@ -34,7 +34,7 @@ module Planning {
 
 					agg2.exe(fs2.starsLevel);
 
-					var dis2 = new AnytimeByCountryDis(this.connections);
+					var dis2 = new AnytimeByCountryDis(this.connections, filterState.currentLevel);
 					dis2.render(agg2.countries);
 			}
 
@@ -101,10 +101,13 @@ module Planning {
 
 	export class AnytimeByCountryDis {
 			private $cont = $("#resultsCont");
-			private connections;
 
-			constructor(connections) {
+			private connections;
+			private scoreLevel;
+
+			constructor(connections, scoreLevel) {
 					this.connections = connections;
+					this.scoreLevel = scoreLevel;
 			}
 
 			public render(countries) {
@@ -140,18 +143,30 @@ module Planning {
 						};
 					}
 					
-					//lgi.evnt("td", (e, $connection, $td, eItem) => {
-					//		var from = $connection.data("f");
-					//		var to = $connection.data("t");
-					//		var gid = $cityBox.data("gid");
+					lgi.evnt(null, (e, $tr, $target, item) => {							
+							var from = "from";
+							var to = "to";
 
-					//		var $lc = LastItem.getLast(this.$cont, "flight-result", $cityBox.data("no"));
+							var gid = $tr.data("gid");
+						  
+							var $lc = Common.LastItem.getLast(this.$cont, "flight-result", $cityBox.data("no"));
 
-					//		var fd = new FlightDetails();
+							var conn = _.filter(this.connections, (c) => { return c.ToCityId === gid });
+							var first = _.first(conn);
+							var name = first.CityName;
 
-					//		var conn = _.find(this.connections, (c) => { return c.FromAirport === from && c.ToAirport === to });
-					//		fd.show($lc, conn.Flights);
-					//});
+							
+							var flights = [];
+							conn.forEach((c) => {
+								c.Flights.forEach((f) => {
+									flights.push(f);
+								});
+							});
+						
+							var cd = new CityDetail(this.scoreLevel, from, to, name, gid);
+							cd.createLayout($lc);
+							cd.init(flights);
+					});
 
 					lgi.generateList(cities);
 			}

@@ -76,8 +76,7 @@ module Planning {
 			this.initDeals();
 
 
-			this.initTabs(this.$layout.find(".search-tabs"),
-				(t) => {
+			this.initTabs(this.$layout.find(".search-tabs"), (t) => {
 					this.$layout.find(".tabs-cont").empty();
 					this.$layout.find(".other-flights-cont").empty();
 
