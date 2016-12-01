@@ -256,6 +256,9 @@ var Planning;
         };
         ByCityDisplay.prototype.generateCityFlightGroups = function ($city, city) {
             var lg = Common.ListGenerator.init($city.find(".items table"), "resultGroup-priceItem-template");
+            lg.listLimit = 2;
+            lg.listLimitMoreTmp = "offers-expander-template";
+            lg.listLimitLessTmp = "offers-collapser-template";
             lg.customMapping = function (g) {
                 return {
                     from: g.fromAirport,

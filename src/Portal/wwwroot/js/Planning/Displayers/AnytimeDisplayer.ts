@@ -35,14 +35,24 @@ module Planning {
 					agg2.exe(fs2.starsLevel);
 
 					var dis2 = new AnytimeByCountryDis(this.connections, filterState.currentLevel);
-					dis2.render(agg2.countries);
+					dis2.render(agg2.countries, $("#resultsCont"));
+			}
+
+			if (grouping === LocationGrouping.ByContinent) {
+					var agg3 = new AnytimeByContinentAgg(connections);
+
+					var fs3 = this.filter.getStateBase();
+
+					agg3.exe(fs3.starsLevel);
+
+					var dis3 = new AnytimeByContinentDis(this.connections, filterState.currentLevel);
+					dis3.render(agg3.getAllConts());
 			}
 
 
 		}
 
 	}
-
 
 	export class AnytimeByCityDis {
 		private $cont = $("#resultsCont");
@@ -78,6 +88,9 @@ module Planning {
 
 		private genOffers($cityBox, flights) {
 				var lgi = Common.ListGenerator.init($cityBox.find("table"), "resultGroup-priceItem-template");
+				lgi.listLimit = 2;
+				lgi.listLimitMoreTmp = "offers-expander-template";
+				lgi.listLimitLessTmp = "offers-collapser-template";
 				
 				lgi.evnt("td", (e, $connection, $td, eItem) => {
 						var from = $connection.data("f");
@@ -89,9 +102,15 @@ module Planning {
 
 						var conn = _.find(this.connections, (c) => { return c.FromAirport === from && c.ToAirport === to });
 
-						var cd = new CityDetail(this.scoreLevel, from, to, name, gid);
+						var flights = FlightConvert.cFlights(conn.Flights);
+
+						var title = `Deals for ${name}`;
+
+						var pairs: CodePair[] = [{ from: from, to: to }];
+
+						var cd = new CityDetail(this.scoreLevel, pairs, title, name, gid);
 						cd.createLayout($lc);
-						cd.init(conn.Flights);						
+						cd.init(flights);
 				});
 
 				lgi.generateList(flights);
@@ -100,7 +119,7 @@ module Planning {
 	}
 
 	export class AnytimeByCountryDis {
-			private $cont = $("#resultsCont");
+			private $cont;
 
 			private connections;
 			private scoreLevel;
@@ -110,12 +129,13 @@ module Planning {
 					this.scoreLevel = scoreLevel;
 			}
 
-			public render(countries) {
+			public render(countries, $cont) {
+				  this.$cont = $cont;
 					countries = _.sortBy(countries, "fromPrice");
 
 					var lg = Common.ListGenerator.init(this.$cont, "resultGroupItemCountry-template");
 					lg.clearCont = true;
-
+					
 					lg.customMapping = (i) => {
 							return {
 									cc: i.cc,
@@ -142,11 +162,12 @@ module Planning {
 							price: i.fromPrice
 						};
 					}
-					
-					lgi.evnt(null, (e, $tr, $target, item) => {							
-							var from = "from";
-							var to = "to";
 
+					lgi.listLimit = 2;
+					lgi.listLimitMoreTmp = "offers-expander-template";
+					lgi.listLimitLessTmp = "offers-collapser-template";
+
+					lgi.evnt(null, (e, $tr, $target, item) => {														
 							var gid = $tr.data("gid");
 						  
 							var $lc = Common.LastItem.getLast(this.$cont, "flight-result", $cityBox.data("no"));
@@ -154,16 +175,22 @@ module Planning {
 							var conn = _.filter(this.connections, (c) => { return c.ToCityId === gid });
 							var first = _.first(conn);
 							var name = first.CityName;
-
 							
 							var flights = [];
+							var pairs: CodePair[] = [];
+
 							conn.forEach((c) => {
-								c.Flights.forEach((f) => {
-									flights.push(f);
+									pairs.push({ from: c.FromAirport, to: c.ToAirport });
+
+									c.Flights.forEach((f) => {
+									var flight = FlightConvert.cFlight(f);
+									flights.push(flight);
 								});
 							});
-						
-							var cd = new CityDetail(this.scoreLevel, from, to, name, gid);
+							
+							var title = `Deals for ${name}`;
+
+							var cd = new CityDetail(this.scoreLevel, pairs, title, name, gid);
 							cd.createLayout($lc);
 							cd.init(flights);
 					});
@@ -171,219 +198,85 @@ module Planning {
 					lgi.generateList(cities);
 			}
 	}
-		
-	export class AnytimeAggUtils {
 
+		export class AnytimeByContinentDis {
+			private $cont = $("#resultsCont");
 
-			public static checkFilter(flight, starsLevel: number) {
-				var scoreOk = this.matchesScore(flight, starsLevel);
-			return scoreOk;
-		}
+			private connections;
+			private continents = [];
+			private scoreLevel;
 
-		private static matchesScore(flight, starsLevel) {
-			if (starsLevel === 1) {
-				return true;
+			constructor(connections, scoreLevel) {
+				this.connections = connections;
+				this.scoreLevel = scoreLevel;
 			}
 
-			var stars = this.getScoreStars(flight.FlightScore);
-			if ((starsLevel === 5) && _.contains([5, 4], stars)) {
-				return true;
-			}
-			if ((starsLevel === 3) && _.contains([5, 4, 3, 2], stars)) {
-				return true;
-			}
+			public render(conts) {
 
-			return false;
-		}
+				this.mapContObjs(conts);
 
-		public static getScoreStars(index) {
-				var percents = index * 100;
-				
-				if (percents >= 90) {
-					return 5;
-				}
-				if (percents >= 80) {
-						return 4;
-				}
-				if (percents >= 70) {
-						return 3;
-				}
-				if (percents >= 60) {
-						return 2;
-				}
+				var lg = Common.ListGenerator.init(this.$cont, "continent-group-template");
+				lg.clearCont = true;
+					
+				lg.onItemAppended = ($continent, continent) => {
+					this.genCountries($continent, continent.countries);
+				};
 
-				return 1;				
-		}
+				lg.evnt(".visi", (e, $item, $target, item) => {
+						var vis = Boolean($target.data("v"));
 
-		//var daysOk = this.daysFilter(flight, daysFrom, daysTo);
+						var txt = vis ?  "expand" : "collapse";
+						$target.html(txt);
 
-			//private static getFlightDays(flight) {
-			//		var fp = _.first(flight.FlightParts);
-			//		var lp = _.last(flight.FlightParts);
-			//		var f = fp.DeparatureTime;
-			//		var t = lp.ArrivalTime;
-
-			//		var fd = new Date(f);
-			//		var td = new Date(t);
-			//		var timeDiff = Math.abs(td.getTime() - fd.getTime());
-			//		var days = Math.ceil(timeDiff / (1000 * 3600 * 24));
-
-			//		return { from: f, to: t, days: days };
-			//}
-
-			//private static daysFilter(flight, daysFrom, daysTo) {
-			//		var fd = this.getFlightDays(flight);
-
-			//		var fits = daysFrom === null || ((fd.days >= daysFrom) && (fd.days <= daysTo));
-			//		return fits;
-			//}
-	}
-
-		export class AnytimeByCountryAgg {
-
-			public countries = [];
-
-			public connections;
-
-			constructor(connections) {
-					this.connections = connections;
-			}
-
-			public exe(starsLevel: number) {
-
-					this.connections.forEach((c) => {
-
-							var passedFlights = [];
-
-							c.Flights.forEach((f) => {
-									var filterMatch = AnytimeAggUtils.checkFilter(f, starsLevel);
-									if (filterMatch) {
-											passedFlights.push(f);
-									}
-							});
-							
-							if (passedFlights.length > 0) {
-									var country = this.getCountry(c.CountryCode, c.CountryCode);
-									var city = this.getCity(country, c.ToCityId, c.CityName);
-
-									var fromPrice = _.min(_.map(passedFlights, (pf) => { return pf.Price }));
-
-									if (!country.fromPrice) {
-											country.fromPrice = fromPrice;
-									} else if (country.fromPrice > fromPrice) {
-											country.fromPrice = fromPrice;
-									}
-
-									if (!city.fromPrice) {
-											city.fromPrice = fromPrice;
-									} else if (city.fromPrice > fromPrice) {
-											city.fromPrice = fromPrice;
-									}									
-							}
-
+						$item.find(".cont").toggle(!vis);
+						
+						$target.data("v", !vis);
 					});
-			}
-				
-			private getCountry(cc, name) {
-					var country = _.find(this.countries, (c) => { return c.cc === cc });
 
-					if (!country) {
-							country = {
-									cc: cc,
-									name: name,									
-									fromPrice: null,
-									cities: []
-							};
-
-							this.countries.push(country);
-					}
-
-					return country;
+				lg.generateList(this.continents);
 			}
 
-			private getCity(country, gid, name) {
-				var city = _.find(country.cities, (c) => { return c.gid === gid });
+			private genCountries($continent, countries) {
+					var bc = new AnytimeByCountryDis(this.connections, this.scoreLevel);
+					bc.render(countries, $continent.find(".cont"));
+			}
 
-				if (!city) {
-					city = {
-						gid: gid,
-						name: name,
-						fromPrice: null
-					};
+			private mapContObjs(conts) {
 
-					country.cities.push(city);
+				if (conts.europe.length > 0) {
+					this.addCont("Europe", conts.europe);
 				}
 
-				return city;
-			}
-
-		}
-
-
-	export class AnytimeByCityAgg {
-
-			public cities = [];
-
-			public connections;
-
-			constructor(connections) {
-					this.connections = connections;
-			}
-
-			public exe(starsLevel) {
-
-			this.connections.forEach((c) => {
-
-				var passedFlights = [];
-
-				c.Flights.forEach((f) => {
-						var filterMatch = AnytimeAggUtils.checkFilter(f, starsLevel);
-						if (filterMatch) {
-								passedFlights.push(f);
-						}
-				});
-
-				if (passedFlights.length > 0) {
-					var city = this.getOrCreateCity(c.ToCityId, c.CityName, c.CountryCode);
-
-					var bestFlight = {
-						from: c.FromAirport,
-						to: c.ToAirport,
-						price: _.min(_.map(passedFlights, (pf) => { return pf.Price }))
-					}
-
-					city.bestFlights.push(bestFlight);
-
-					if (!city.fromPrice) {
-						city.fromPrice = bestFlight.price;
-					} else if (city.fromPrice > bestFlight.price) {
-						city.fromPrice = bestFlight.price;
-					}
+				if (conts.nAmerica.length > 0) {
+					this.addCont("North America", conts.nAmerica);
 				}
 
-			});
-		}
-			
-			private getOrCreateCity(gid, name, countryCode) {
+				if (conts.sAmerica.length > 0) {
+					this.addCont("South America", conts.sAmerica);
+				}
 
-					var city = _.find(this.cities, (c) => { return c.gid === gid });
+				if (conts.asia.length > 0) {
+					this.addCont("Asia", conts.asia);
+				}
 
-					if (!city) {
-							city = {
-									gid: gid,
-									name: name,
-									cc: countryCode,
-									fromPrice: null,
-									bestFlights: []
-							};
+				if (conts.australia.length > 0) {
+					this.addCont("Australia", conts.australia);
+				}
 
-							this.cities.push(city);
-					}
-
-					return city;
+				if (conts.africa.length > 0) {
+					this.addCont("Africa", conts.africa);
+				}
 			}
 
-	}
+			private addCont(name, countries) {
+				var cont = {
+					name: name,
+					countries: countries
+				}
+				this.continents.push(cont);
+			}
 
+
+		}
 
 }

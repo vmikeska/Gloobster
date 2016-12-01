@@ -2,17 +2,17 @@ module Planning {
 	
 	export class FlightDetails {
 
-				public genFlights($cont, flights) {
+				public genFlights($cont, flights: Flight[]) {
 						var lg = Common.ListGenerator.init($cont, "connection-flight-template");
 						lg.clearCont = true;
 						lg.isAsync = true;
 						lg.emptyTemplate = "flights-empty-template";
 						lg.customMapping = (i) => {
 
-							var stars = AnytimeAggUtils.getScoreStars(i.FlightScore);
+							var stars = AnytimeAggUtils.getScoreStars(i.score);
 
 								return {
-										price: i.Price,
+										price: i.price,
 										scoreText: this.getScoreText(stars),
 										scoreStars: stars
 								};
@@ -36,14 +36,14 @@ module Planning {
 						return "S";
 				}
 
-				private splitInboundOutboundFlight(flight) {
+				private splitInboundOutboundFlight(flight: Flight) {
 
 						var thereParts = [];
 						var backParts = [];
 
 						var thereFinished = false;
 
-						flight.FlightParts.forEach((fp) => {
+						flight.parts.forEach((fp) => {
 
 								if (thereFinished) {
 										backParts.push(fp);
@@ -51,7 +51,7 @@ module Planning {
 										thereParts.push(fp);
 								}
 
-								if (fp.To === flight.To) {
+								if (fp.to === flight.to) {
 										thereFinished = true;
 								}
 
@@ -64,7 +64,7 @@ module Planning {
 				}
 
 
-				private genFlight($cont, flight) {
+				private genFlight($cont, flight: Flight) {
 
 						var inOut = this.splitInboundOutboundFlight(flight);
 						var thereParts = inOut.thereParts;
@@ -127,22 +127,21 @@ module Planning {
 						return lg;
 				}
 
-				private viewForMultiFlight(parts) {
+				private viewForMultiFlight(parts: FlightPart[]) {
 
 						var first = _.first(parts);
 						var last = _.last(parts);
 
-						var airName = "Multi airlines";
-						//todo: change to multi
-						var logoLink = "/images/n/Examples/SwissAir.svg";
+						var airName = "Multi airlines";						
+						var logoLink = "/images/n/airlogos/default-airline.svg";
 
-						var allAirSame = _.every(parts, (p) => { return p.Airline === first.Airline });
+						var allAirSame = _.every(parts, (p) => { return p.airline === first.airline });
 						if (allAirSame) {
-								airName = AirlineCodes.getName(first.Airline);
-								logoLink = this.getLogoLink(first.Airline);
+								airName = AirlineCodes.getName(first.airline);
+								logoLink = this.getLogoLink(first.airline);
 						}
 
-						var dur = this.getDurationMulti(new Date(first.DeparatureTime), new Date(last.ArrivalTime));
+						var dur = this.getDurationMulti(first.depTime, last.arrTime);
 
 						var res = {
 								isMulti: true,
@@ -151,12 +150,12 @@ module Planning {
 
 								airName: airName,
 								logoLink: logoLink,
-								codeFrom: first.From,
-								codeTo: last.To,
+								codeFrom: first.from,
+								codeTo: last.to,
 								flightNo: "",
-								date: this.getDate(first.DeparatureTime),
-								timeFrom: this.getTime(first.DeparatureTime),
-								timeTo: this.getTime(last.ArrivalTime),
+								date: this.getDate(first.depTime),
+								timeFrom: this.getTime(first.depTime),
+								timeTo: this.getTime(last.arrTime),
 								durHours: dur.hours,
 								durMins: dur.mins,
 								stops: parts.length - 1
@@ -165,21 +164,21 @@ module Planning {
 						return res;
 				}
 
-				private mapSingleFlight(f) {
+				private mapSingleFlight(f: FlightPart) {
 
-						var dur = this.getDuration(f.MinsDuration);
+						var dur = this.getDuration(f.minsDuration);
 
 						var context = {
 								customClass: "",
 
-								airName: AirlineCodes.getName(f.Airline),
-								logoLink: this.getLogoLink(f.Airline),
-								codeFrom: f.From,
-								codeTo: f.To,
-								flightNo: f.Airline + f.FlightNo,
-								date: this.getDate(f.DeparatureTime),
-								timeFrom: this.getTime(f.DeparatureTime),
-								timeTo: this.getTime(f.ArrivalTime),
+								airName: AirlineCodes.getName(f.airline),
+								logoLink: this.getLogoLink(f.airline),
+								codeFrom: f.from,
+								codeTo: f.to,
+								flightNo: f.airline + f.flightNo,
+								date: this.getDate(f.depTime),
+								timeFrom: this.getTime(f.depTime),
+								timeTo: this.getTime(f.arrTime),
 								durHours: dur.hours,
 								durMins: dur.mins,
 								stops: 0
@@ -221,7 +220,7 @@ module Planning {
 								code = "default-airline";
 						}
 
-						return `/images/n/airlogos/${code}.svg`;
+						return `/images/n/airlogos/${code}.svg`;						
 				}
 
 

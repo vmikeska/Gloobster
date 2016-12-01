@@ -10,9 +10,9 @@ var Planning;
             lg.isAsync = true;
             lg.emptyTemplate = "flights-empty-template";
             lg.customMapping = function (i) {
-                var stars = Planning.AnytimeAggUtils.getScoreStars(i.FlightScore);
+                var stars = Planning.AnytimeAggUtils.getScoreStars(i.score);
                 return {
-                    price: i.Price,
+                    price: i.price,
                     scoreText: _this.getScoreText(stars),
                     scoreStars: stars
                 };
@@ -35,14 +35,14 @@ var Planning;
             var thereParts = [];
             var backParts = [];
             var thereFinished = false;
-            flight.FlightParts.forEach(function (fp) {
+            flight.parts.forEach(function (fp) {
                 if (thereFinished) {
                     backParts.push(fp);
                 }
                 else {
                     thereParts.push(fp);
                 }
-                if (fp.To === flight.To) {
+                if (fp.to === flight.to) {
                     thereFinished = true;
                 }
             });
@@ -111,25 +111,25 @@ var Planning;
             var first = _.first(parts);
             var last = _.last(parts);
             var airName = "Multi airlines";
-            var logoLink = "/images/n/Examples/SwissAir.svg";
-            var allAirSame = _.every(parts, function (p) { return p.Airline === first.Airline; });
+            var logoLink = "/images/n/airlogos/default-airline.svg";
+            var allAirSame = _.every(parts, function (p) { return p.airline === first.airline; });
             if (allAirSame) {
-                airName = Planning.AirlineCodes.getName(first.Airline);
-                logoLink = this.getLogoLink(first.Airline);
+                airName = Planning.AirlineCodes.getName(first.airline);
+                logoLink = this.getLogoLink(first.airline);
             }
-            var dur = this.getDurationMulti(new Date(first.DeparatureTime), new Date(last.ArrivalTime));
+            var dur = this.getDurationMulti(first.depTime, last.arrTime);
             var res = {
                 isMulti: true,
                 parts: parts,
                 customClass: "",
                 airName: airName,
                 logoLink: logoLink,
-                codeFrom: first.From,
-                codeTo: last.To,
+                codeFrom: first.from,
+                codeTo: last.to,
                 flightNo: "",
-                date: this.getDate(first.DeparatureTime),
-                timeFrom: this.getTime(first.DeparatureTime),
-                timeTo: this.getTime(last.ArrivalTime),
+                date: this.getDate(first.depTime),
+                timeFrom: this.getTime(first.depTime),
+                timeTo: this.getTime(last.arrTime),
                 durHours: dur.hours,
                 durMins: dur.mins,
                 stops: parts.length - 1
@@ -137,17 +137,17 @@ var Planning;
             return res;
         };
         FlightDetails.prototype.mapSingleFlight = function (f) {
-            var dur = this.getDuration(f.MinsDuration);
+            var dur = this.getDuration(f.minsDuration);
             var context = {
                 customClass: "",
-                airName: Planning.AirlineCodes.getName(f.Airline),
-                logoLink: this.getLogoLink(f.Airline),
-                codeFrom: f.From,
-                codeTo: f.To,
-                flightNo: f.Airline + f.FlightNo,
-                date: this.getDate(f.DeparatureTime),
-                timeFrom: this.getTime(f.DeparatureTime),
-                timeTo: this.getTime(f.ArrivalTime),
+                airName: Planning.AirlineCodes.getName(f.airline),
+                logoLink: this.getLogoLink(f.airline),
+                codeFrom: f.from,
+                codeTo: f.to,
+                flightNo: f.airline + f.flightNo,
+                date: this.getDate(f.depTime),
+                timeFrom: this.getTime(f.depTime),
+                timeTo: this.getTime(f.arrTime),
                 durHours: dur.hours,
                 durMins: dur.mins,
                 stops: 0

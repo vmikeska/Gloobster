@@ -71,9 +71,9 @@ var Views;
     var CitiesByPopulation = (function () {
         function CitiesByPopulation(v) {
             this.layoutTemplate = Views.ViewBase.currentView.registerTemplate("citiesByPopLayout-template");
+            this.ag = Common.CountriesGroup;
             this.cities = [];
             this.v = v;
-            this.ac = new Views.AggregatedCountries();
         }
         CitiesByPopulation.prototype.create = function () {
             var _this = this;
@@ -139,12 +139,12 @@ var Views;
                 return;
             }
             if (byCountry && byContinent) {
-                var europeCountries = this.coByCont(countryGroupedArray, this.ac.europe);
-                var northAmericaCountries = this.coByCont(countryGroupedArray, this.ac.northAmerica);
-                var asiaCountries = this.coByCont(countryGroupedArray, this.ac.asia);
-                var southAmericaCountries = this.coByCont(countryGroupedArray, this.ac.southAmerica);
-                var austrailaCountries = this.coByCont(countryGroupedArray, this.ac.austraila);
-                var africaCountries = this.coByCont(countryGroupedArray, this.ac.africa);
+                var europeCountries = this.coByCont(countryGroupedArray, this.ag.europe);
+                var northAmericaCountries = this.coByCont(countryGroupedArray, this.ag.northAmerica);
+                var asiaCountries = this.coByCont(countryGroupedArray, this.ag.asia);
+                var southAmericaCountries = this.coByCont(countryGroupedArray, this.ag.southAmerica);
+                var austrailaCountries = this.coByCont(countryGroupedArray, this.ag.austraila);
+                var africaCountries = this.coByCont(countryGroupedArray, this.ag.africa);
                 this.$cont.append("<h1>Europe</h1>");
                 europeCountries.forEach(function (cga) {
                     _this.dispalyCountryGroup(cga);
@@ -178,22 +178,22 @@ var Views;
             var austrailaCities = [];
             var africaCities = [];
             this.cities.forEach(function (c) {
-                if (_.contains(_this.ac.europe, c.countryCode)) {
+                if (_.contains(_this.ag.europe, c.countryCode)) {
                     europeCities.push(c);
                 }
-                else if (_.contains(_this.ac.northAmerica, c.countryCode)) {
+                else if (_.contains(_this.ag.northAmerica, c.countryCode)) {
                     northAmericaCities.push(c);
                 }
-                else if (_.contains(_this.ac.asia, c.countryCode)) {
+                else if (_.contains(_this.ag.asia, c.countryCode)) {
                     asiaCities.push(c);
                 }
-                else if (_.contains(_this.ac.southAmerica, c.countryCode)) {
+                else if (_.contains(_this.ag.southAmerica, c.countryCode)) {
                     southAmericaCities.push(c);
                 }
-                else if (_.contains(_this.ac.austraila, c.countryCode)) {
+                else if (_.contains(_this.ag.austraila, c.countryCode)) {
                     austrailaCities.push(c);
                 }
-                else if (_.contains(_this.ac.africa, c.countryCode)) {
+                else if (_.contains(_this.ag.africa, c.countryCode)) {
                     africaCities.push(c);
                 }
             });

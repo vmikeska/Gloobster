@@ -19,6 +19,14 @@ var Planning;
             var _this = this;
             this.$flightsCont.empty();
             var $tmp = this.cityDetail.filterLayout("classics-srch-template");
+            if (this.cityDetail.codePairs.length > 1) {
+                this.airSel = new Planning.AirportSelector($tmp.find(".airpairs-filter"), this.cityDetail.codePairs);
+                this.airSel.onChange = function () {
+                    _this.filterFlightsTime();
+                };
+                this.airSel.init();
+                $(".multi-conn-cont").show();
+            }
             var $depDate = $tmp.find(".dep .date");
             this.datepicker($depDate, this.fromDate, function (d) {
                 _this.fromDate = d;
@@ -46,13 +54,18 @@ var Planning;
             var _this = this;
             this.$flightsCont.empty();
             var flights = _.filter(this.currentFlights, function (f) {
-                var first = _.first(f.FlightParts);
-                var last = _.last(f.FlightParts);
-                var thereMins = _this.getDateMinutes(new Date(first.DeparatureTime));
+                var first = _.first(f.parts);
+                var last = _.last(f.parts);
+                var thereMins = _this.getDateMinutes(first.depTime);
                 var depFits = _this.timeFits(thereMins, _this.depTimeFrom, _this.depTimeTo);
-                var backMins = _this.getDateMinutes(new Date(last.DeparatureTime));
+                var backMins = _this.getDateMinutes(last.depTime);
                 var arrFits = _this.timeFits(backMins, _this.arrTimeFrom, _this.arrTimeTo);
-                return depFits && arrFits;
+                var codeOk = true;
+                if (_this.cityDetail.codePairs.length > 1) {
+                    var actCodePairs = _this.airSel.getActive();
+                    codeOk = _.find(actCodePairs, function (p) { return p.from === f.from && p.to === f.to; });
+                }
+                return depFits && arrFits && codeOk;
             });
             this.cityDetail.flightDetails.genFlights(this.$flightsCont, flights);
         };
@@ -68,12 +81,14 @@ var Planning;
             var toDate = TravelB.DateUtils.myDateToTrans(TravelB.DateUtils.jsDateToMyDate(this.toDate));
             var prms = [
                 ["ss", "1"],
-                ["codeFrom", this.cityDetail.codeFrom],
-                ["codeTo", this.cityDetail.codeTo],
                 ["dateFrom", fromDate],
                 ["dateTo", toDate],
                 ["scoreLevel", ScoreLevel.Standard.toString()]
             ];
+            this.cityDetail.codePairs.forEach(function (cp) {
+                var cps = ["codePairs", Planning.AirportSelector.toString(cp)];
+                prms.push(cps);
+            });
             this.cityDetail.genFlights(prms, function (flights) {
                 _this.currentFlights = flights;
             });

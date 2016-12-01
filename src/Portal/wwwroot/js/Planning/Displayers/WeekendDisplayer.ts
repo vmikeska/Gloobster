@@ -328,6 +328,10 @@ module Planning {
 			private generateCityFlightGroups($city, city) {
 					var lg = Common.ListGenerator.init($city.find(".items table"), "resultGroup-priceItem-template");
 
+					lg.listLimit = 2;
+					lg.listLimitMoreTmp = "offers-expander-template";
+					lg.listLimitLessTmp = "offers-collapser-template";
+
 					lg.customMapping = (g) => {
 							return {
 									from: g.fromAirport,

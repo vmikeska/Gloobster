@@ -100,12 +100,10 @@ module Views {
 			private layoutTemplate = Views.ViewBase.currentView.registerTemplate("citiesByPopLayout-template");
 
 			constructor(v) {
-					this.v = v;
-
-				this.ac = new AggregatedCountries();
+					this.v = v;					
 			}
 
-			private ac: AggregatedCountries;
+			private ag = Common.CountriesGroup;
 
 			private citiesByPop;
 			private citiesWithPhotos;
@@ -202,12 +200,12 @@ module Views {
 
 				if (byCountry && byContinent) {
 
-					var europeCountries = this.coByCont(countryGroupedArray, this.ac.europe);
-					var northAmericaCountries = this.coByCont(countryGroupedArray, this.ac.northAmerica);
-					var asiaCountries = this.coByCont(countryGroupedArray, this.ac.asia);
-					var southAmericaCountries = this.coByCont(countryGroupedArray, this.ac.southAmerica);
-					var austrailaCountries = this.coByCont(countryGroupedArray, this.ac.austraila);
-					var africaCountries = this.coByCont(countryGroupedArray, this.ac.africa);
+						var europeCountries = this.coByCont(countryGroupedArray, this.ag.europe);
+						var northAmericaCountries = this.coByCont(countryGroupedArray, this.ag.northAmerica);
+						var asiaCountries = this.coByCont(countryGroupedArray, this.ag.asia);
+						var southAmericaCountries = this.coByCont(countryGroupedArray, this.ag.southAmerica);
+						var austrailaCountries = this.coByCont(countryGroupedArray, this.ag.austraila);
+						var africaCountries = this.coByCont(countryGroupedArray, this.ag.africa);
 
 
 					this.$cont.append(`<h1>Europe</h1>`);
@@ -254,17 +252,17 @@ module Views {
 
 				this.cities.forEach((c) => {
 
-					if (_.contains(this.ac.europe, c.countryCode)) {
+					if (_.contains(this.ag.europe, c.countryCode)) {
 						europeCities.push(c);
-					} else if (_.contains(this.ac.northAmerica, c.countryCode)) {
+					} else if (_.contains(this.ag.northAmerica, c.countryCode)) {
 						northAmericaCities.push(c);
-					} else if (_.contains(this.ac.asia, c.countryCode)) {
+					} else if (_.contains(this.ag.asia, c.countryCode)) {
 						asiaCities.push(c);
-					} else if (_.contains(this.ac.southAmerica, c.countryCode)) {
+					} else if (_.contains(this.ag.southAmerica, c.countryCode)) {
 						southAmericaCities.push(c);
-					} else if (_.contains(this.ac.austraila, c.countryCode)) {
+					} else if (_.contains(this.ag.austraila, c.countryCode)) {
 						austrailaCities.push(c);
-					} else if (_.contains(this.ac.africa, c.countryCode)) {
+					} else if (_.contains(this.ag.africa, c.countryCode)) {
 						africaCities.push(c);
 					}
 

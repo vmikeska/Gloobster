@@ -9,18 +9,25 @@ var Planning;
             this.connections = connections;
             var filterState = this.filter.getStateBase();
             if (grouping === Planning.LocationGrouping.ByCity) {
-                var agg1 = new AnytimeByCityAgg(connections);
+                var agg1 = new Planning.AnytimeByCityAgg(connections);
                 var fs = this.filter.getStateBase();
                 agg1.exe(fs.starsLevel);
                 var dis = new AnytimeByCityDis(this.connections, filterState.currentLevel);
                 dis.render(agg1.cities);
             }
             if (grouping === Planning.LocationGrouping.ByCountry) {
-                var agg2 = new AnytimeByCountryAgg(connections);
+                var agg2 = new Planning.AnytimeByCountryAgg(connections);
                 var fs2 = this.filter.getStateBase();
                 agg2.exe(fs2.starsLevel);
                 var dis2 = new AnytimeByCountryDis(this.connections, filterState.currentLevel);
-                dis2.render(agg2.countries);
+                dis2.render(agg2.countries, $("#resultsCont"));
+            }
+            if (grouping === Planning.LocationGrouping.ByContinent) {
+                var agg3 = new Planning.AnytimeByContinentAgg(connections);
+                var fs3 = this.filter.getStateBase();
+                agg3.exe(fs3.starsLevel);
+                var dis3 = new AnytimeByContinentDis(this.connections, filterState.currentLevel);
+                dis3.render(agg3.getAllConts());
             }
         };
         return AnytimeDisplayer;
@@ -52,6 +59,9 @@ var Planning;
         AnytimeByCityDis.prototype.genOffers = function ($cityBox, flights) {
             var _this = this;
             var lgi = Common.ListGenerator.init($cityBox.find("table"), "resultGroup-priceItem-template");
+            lgi.listLimit = 2;
+            lgi.listLimitMoreTmp = "offers-expander-template";
+            lgi.listLimitLessTmp = "offers-collapser-template";
             lgi.evnt("td", function (e, $connection, $td, eItem) {
                 var from = $connection.data("f");
                 var to = $connection.data("t");
@@ -59,9 +69,12 @@ var Planning;
                 var name = $cityBox.data("name");
                 var $lc = Common.LastItem.getLast(_this.$cont, "flight-result", $cityBox.data("no"));
                 var conn = _.find(_this.connections, function (c) { return c.FromAirport === from && c.ToAirport === to; });
-                var cd = new Planning.CityDetail(_this.scoreLevel, from, to, name, gid);
+                var flights = Planning.FlightConvert.cFlights(conn.Flights);
+                var title = "Deals for " + name;
+                var pairs = [{ from: from, to: to }];
+                var cd = new Planning.CityDetail(_this.scoreLevel, pairs, title, name, gid);
                 cd.createLayout($lc);
-                cd.init(conn.Flights);
+                cd.init(flights);
             });
             lgi.generateList(flights);
         };
@@ -70,12 +83,12 @@ var Planning;
     Planning.AnytimeByCityDis = AnytimeByCityDis;
     var AnytimeByCountryDis = (function () {
         function AnytimeByCountryDis(connections, scoreLevel) {
-            this.$cont = $("#resultsCont");
             this.connections = connections;
             this.scoreLevel = scoreLevel;
         }
-        AnytimeByCountryDis.prototype.render = function (countries) {
+        AnytimeByCountryDis.prototype.render = function (countries, $cont) {
             var _this = this;
+            this.$cont = $cont;
             countries = _.sortBy(countries, "fromPrice");
             var lg = Common.ListGenerator.init(this.$cont, "resultGroupItemCountry-template");
             lg.clearCont = true;
@@ -102,21 +115,26 @@ var Planning;
                     price: i.fromPrice
                 };
             };
+            lgi.listLimit = 2;
+            lgi.listLimitMoreTmp = "offers-expander-template";
+            lgi.listLimitLessTmp = "offers-collapser-template";
             lgi.evnt(null, function (e, $tr, $target, item) {
-                var from = "from";
-                var to = "to";
                 var gid = $tr.data("gid");
                 var $lc = Common.LastItem.getLast(_this.$cont, "flight-result", $cityBox.data("no"));
                 var conn = _.filter(_this.connections, function (c) { return c.ToCityId === gid; });
                 var first = _.first(conn);
                 var name = first.CityName;
                 var flights = [];
+                var pairs = [];
                 conn.forEach(function (c) {
+                    pairs.push({ from: c.FromAirport, to: c.ToAirport });
                     c.Flights.forEach(function (f) {
-                        flights.push(f);
+                        var flight = Planning.FlightConvert.cFlight(f);
+                        flights.push(flight);
                     });
                 });
-                var cd = new Planning.CityDetail(_this.scoreLevel, from, to, name, gid);
+                var title = "Deals for " + name;
+                var cd = new Planning.CityDetail(_this.scoreLevel, pairs, title, name, gid);
                 cd.createLayout($lc);
                 cd.init(flights);
             });
@@ -125,155 +143,63 @@ var Planning;
         return AnytimeByCountryDis;
     }());
     Planning.AnytimeByCountryDis = AnytimeByCountryDis;
-    var AnytimeAggUtils = (function () {
-        function AnytimeAggUtils() {
-        }
-        AnytimeAggUtils.checkFilter = function (flight, starsLevel) {
-            var scoreOk = this.matchesScore(flight, starsLevel);
-            return scoreOk;
-        };
-        AnytimeAggUtils.matchesScore = function (flight, starsLevel) {
-            if (starsLevel === 1) {
-                return true;
-            }
-            var stars = this.getScoreStars(flight.FlightScore);
-            if ((starsLevel === 5) && _.contains([5, 4], stars)) {
-                return true;
-            }
-            if ((starsLevel === 3) && _.contains([5, 4, 3, 2], stars)) {
-                return true;
-            }
-            return false;
-        };
-        AnytimeAggUtils.getScoreStars = function (index) {
-            var percents = index * 100;
-            if (percents >= 90) {
-                return 5;
-            }
-            if (percents >= 80) {
-                return 4;
-            }
-            if (percents >= 70) {
-                return 3;
-            }
-            if (percents >= 60) {
-                return 2;
-            }
-            return 1;
-        };
-        return AnytimeAggUtils;
-    }());
-    Planning.AnytimeAggUtils = AnytimeAggUtils;
-    var AnytimeByCountryAgg = (function () {
-        function AnytimeByCountryAgg(connections) {
-            this.countries = [];
+    var AnytimeByContinentDis = (function () {
+        function AnytimeByContinentDis(connections, scoreLevel) {
+            this.$cont = $("#resultsCont");
+            this.continents = [];
             this.connections = connections;
+            this.scoreLevel = scoreLevel;
         }
-        AnytimeByCountryAgg.prototype.exe = function (starsLevel) {
+        AnytimeByContinentDis.prototype.render = function (conts) {
             var _this = this;
-            this.connections.forEach(function (c) {
-                var passedFlights = [];
-                c.Flights.forEach(function (f) {
-                    var filterMatch = AnytimeAggUtils.checkFilter(f, starsLevel);
-                    if (filterMatch) {
-                        passedFlights.push(f);
-                    }
-                });
-                if (passedFlights.length > 0) {
-                    var country = _this.getCountry(c.CountryCode, c.CountryCode);
-                    var city = _this.getCity(country, c.ToCityId, c.CityName);
-                    var fromPrice = _.min(_.map(passedFlights, function (pf) { return pf.Price; }));
-                    if (!country.fromPrice) {
-                        country.fromPrice = fromPrice;
-                    }
-                    else if (country.fromPrice > fromPrice) {
-                        country.fromPrice = fromPrice;
-                    }
-                    if (!city.fromPrice) {
-                        city.fromPrice = fromPrice;
-                    }
-                    else if (city.fromPrice > fromPrice) {
-                        city.fromPrice = fromPrice;
-                    }
-                }
+            this.mapContObjs(conts);
+            var lg = Common.ListGenerator.init(this.$cont, "continent-group-template");
+            lg.clearCont = true;
+            lg.onItemAppended = function ($continent, continent) {
+                _this.genCountries($continent, continent.countries);
+            };
+            lg.evnt(".visi", function (e, $item, $target, item) {
+                var vis = Boolean($target.data("v"));
+                var txt = vis ? "expand" : "collapse";
+                $target.html(txt);
+                $item.find(".cont").toggle(!vis);
+                $target.data("v", !vis);
             });
+            lg.generateList(this.continents);
         };
-        AnytimeByCountryAgg.prototype.getCountry = function (cc, name) {
-            var country = _.find(this.countries, function (c) { return c.cc === cc; });
-            if (!country) {
-                country = {
-                    cc: cc,
-                    name: name,
-                    fromPrice: null,
-                    cities: []
-                };
-                this.countries.push(country);
+        AnytimeByContinentDis.prototype.genCountries = function ($continent, countries) {
+            var bc = new AnytimeByCountryDis(this.connections, this.scoreLevel);
+            bc.render(countries, $continent.find(".cont"));
+        };
+        AnytimeByContinentDis.prototype.mapContObjs = function (conts) {
+            if (conts.europe.length > 0) {
+                this.addCont("Europe", conts.europe);
             }
-            return country;
-        };
-        AnytimeByCountryAgg.prototype.getCity = function (country, gid, name) {
-            var city = _.find(country.cities, function (c) { return c.gid === gid; });
-            if (!city) {
-                city = {
-                    gid: gid,
-                    name: name,
-                    fromPrice: null
-                };
-                country.cities.push(city);
+            if (conts.nAmerica.length > 0) {
+                this.addCont("North America", conts.nAmerica);
             }
-            return city;
+            if (conts.sAmerica.length > 0) {
+                this.addCont("South America", conts.sAmerica);
+            }
+            if (conts.asia.length > 0) {
+                this.addCont("Asia", conts.asia);
+            }
+            if (conts.australia.length > 0) {
+                this.addCont("Australia", conts.australia);
+            }
+            if (conts.africa.length > 0) {
+                this.addCont("Africa", conts.africa);
+            }
         };
-        return AnytimeByCountryAgg;
+        AnytimeByContinentDis.prototype.addCont = function (name, countries) {
+            var cont = {
+                name: name,
+                countries: countries
+            };
+            this.continents.push(cont);
+        };
+        return AnytimeByContinentDis;
     }());
-    Planning.AnytimeByCountryAgg = AnytimeByCountryAgg;
-    var AnytimeByCityAgg = (function () {
-        function AnytimeByCityAgg(connections) {
-            this.cities = [];
-            this.connections = connections;
-        }
-        AnytimeByCityAgg.prototype.exe = function (starsLevel) {
-            var _this = this;
-            this.connections.forEach(function (c) {
-                var passedFlights = [];
-                c.Flights.forEach(function (f) {
-                    var filterMatch = AnytimeAggUtils.checkFilter(f, starsLevel);
-                    if (filterMatch) {
-                        passedFlights.push(f);
-                    }
-                });
-                if (passedFlights.length > 0) {
-                    var city = _this.getOrCreateCity(c.ToCityId, c.CityName, c.CountryCode);
-                    var bestFlight = {
-                        from: c.FromAirport,
-                        to: c.ToAirport,
-                        price: _.min(_.map(passedFlights, function (pf) { return pf.Price; }))
-                    };
-                    city.bestFlights.push(bestFlight);
-                    if (!city.fromPrice) {
-                        city.fromPrice = bestFlight.price;
-                    }
-                    else if (city.fromPrice > bestFlight.price) {
-                        city.fromPrice = bestFlight.price;
-                    }
-                }
-            });
-        };
-        AnytimeByCityAgg.prototype.getOrCreateCity = function (gid, name, countryCode) {
-            var city = _.find(this.cities, function (c) { return c.gid === gid; });
-            if (!city) {
-                city = {
-                    gid: gid,
-                    name: name,
-                    cc: countryCode,
-                    fromPrice: null,
-                    bestFlights: []
-                };
-                this.cities.push(city);
-            }
-            return city;
-        };
-        return AnytimeByCityAgg;
-    }());
-    Planning.AnytimeByCityAgg = AnytimeByCityAgg;
+    Planning.AnytimeByContinentDis = AnytimeByContinentDis;
 })(Planning || (Planning = {}));
 //# sourceMappingURL=AnytimeDisplayer.js.map

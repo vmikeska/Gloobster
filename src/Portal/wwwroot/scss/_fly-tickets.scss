@@ -3,8 +3,36 @@
 @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
 @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
 
+.hidable-hide {
+    display: none;
+}
+
+.list-state-collapsed {
+    .expander {
+       
+    }
+    
+    .collapser {
+        display: none;
+    }
+}
+
+.list-state-expanded {
+    .expander {
+       display: none;
+    }
+    
+    .collapser {
+        
+    }
+}
+
 .fly-tickets{
    
+    .expander, .collapser {
+        text-align: left;        
+    }
+
     .date-cont{
         position: relative;              
         display: inline-block;
@@ -337,16 +365,26 @@
     .months-filter {
         margin-top: 8px;
         margin-bottom: 8px;
+        
 
         .month{
-            display: inline;
+            display: inline-block;
             background-color: $light-blue3;
             color: white;
             padding: 4px;
+            
             margin-left: 2px;
             margin-right: 2px;
-            border-radius: 4px;
+            margin-bottom:4px;
+
+            border-radius: 4px;            
             cursor: pointer;
+            @include noselect;
+
+            span {
+                white-space: nowrap;
+            }
+            
 
             &:hover {
                 background-color: $dark-blue;
@@ -833,6 +871,25 @@
         }
     }
 
+    .continent-all {
+        .title {
+            position: relative;
+            margin-bottom: 6px;
+
+            .txt{
+                font-size: 1.4em;
+                font-weight: bold;
+            }
+
+            .visi{
+                display: inline-block;
+                position: absolute;
+                right: 5px;
+                top: 0px;
+            }
+        }
+    }
+
     /*@include below-width(1279) {
         
         .flight-results {
@@ -1191,16 +1248,12 @@
           background-color: white;
           padding-top: 20px;
 
-          .tab{
-              position:relative;
-              bottom: -1px;
-
+          .tab{              
               display: inline-block;
               margin-left: 30px;
               font-weight: bold;
               font-size: 1.1em;
               color: $light-blue3;
-              border: 1px solid $light-blue3;
               border-bottom-width: 0;
               border-top-left-radius: 8px;
               border-top-right-radius: 8px;
@@ -1209,8 +1262,11 @@
               background-color: $very-light-blue;
 
               &.active,&:hover{
-                  color: white;
-                  background-color: $light-blue3;
+                border: 1px solid $light-blue3;
+                color: $dark-blue;
+                border-bottom-width: 0;
+                position:relative;
+              bottom: -1px;
               }
           }
       }
@@ -1241,9 +1297,29 @@
         margin-top: 20px;
         margin-bottom: 20px;
 
-        .title {
-            font-weight: bold;
-        }
+        .tit{
+              font-weight: bold;
+              font-size: 1.2em;
+              margin-bottom: 6px;
+          }
+
+        .airpairs-filter {
+              .pair {
+                  display: inline-block;
+                  background-color: $light-blue3;
+                  color: white;
+                  padding: 6px;
+                  margin-left: 2px;
+                  margin-right: 2px;
+                  border-radius: 4px;
+                  cursor: pointer;
+                  @include noselect;
+
+                  &.active {
+                      background-color: $orange;
+                  }
+              }
+          }
 
         .ltbl{
             width: 100%;
@@ -1271,14 +1347,7 @@
       .dep-arr {          
           padding: 10px;
 
-          .tit{
-              font-weight: bold;
-              font-size: 1.2em;
-              margin-bottom: 6px;
-          }
-
           
-
           .time-cont {
               display: block;              
           }

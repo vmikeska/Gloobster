@@ -4379,6 +4379,15 @@ footer {
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg); } }
 
+.hidable-hide {
+  display: none; }
+
+.list-state-collapsed .collapser {
+  display: none; }
+
+.list-state-expanded .expander {
+  display: none; }
+
 .fly-tickets {
   /*@include below-width(1279) {
         
@@ -4403,6 +4412,8 @@ footer {
          width: 280px !important;         
         }
     }*/ }
+  .fly-tickets .expander, .fly-tickets .collapser {
+    text-align: left; }
   .fly-tickets .date-cont {
     position: relative;
     display: inline-block; }
@@ -4636,14 +4647,29 @@ footer {
     margin-top: 8px;
     margin-bottom: 8px; }
     .fly-tickets .months-filter .month {
-      display: inline;
+      display: inline-block;
       background-color: #3298C1;
       color: white;
       padding: 4px;
       margin-left: 2px;
       margin-right: 2px;
+      margin-bottom: 4px;
       border-radius: 4px;
-      cursor: pointer; }
+      cursor: pointer;
+      -webkit-touch-callout: none;
+      /* iOS Safari */
+      -webkit-user-select: none;
+      /* Chrome/Safari/Opera */
+      -khtml-user-select: none;
+      /* Konqueror */
+      -moz-user-select: none;
+      /* Firefox */
+      -ms-user-select: none;
+      /* Internet Explorer/Edge */
+      user-select: none;
+      /* Non-prefixed version, currently not supported by any browser */ }
+      .fly-tickets .months-filter .month span {
+        white-space: nowrap; }
       .fly-tickets .months-filter .month:hover {
         background-color: #005476; }
       .fly-tickets .months-filter .month.active {
@@ -4944,6 +4970,17 @@ footer {
           padding-right: 2px;
           background-color: #ccedf5;
           white-space: nowrap; }
+  .fly-tickets .continent-all .title {
+    position: relative;
+    margin-bottom: 6px; }
+    .fly-tickets .continent-all .title .txt {
+      font-size: 1.4em;
+      font-weight: bold; }
+    .fly-tickets .continent-all .title .visi {
+      display: inline-block;
+      position: absolute;
+      right: 5px;
+      top: 0px; }
   .fly-tickets .conn {
     margin-bottom: 12px; }
     .fly-tickets .conn .layout-tbl {
@@ -5136,14 +5173,11 @@ footer {
       background-color: white;
       padding-top: 20px; }
       .fly-tickets .city-deal .search-tabs .tab {
-        position: relative;
-        bottom: -1px;
         display: inline-block;
         margin-left: 30px;
         font-weight: bold;
         font-size: 1.1em;
         color: #3298C1;
-        border: 1px solid #3298C1;
         border-bottom-width: 0;
         border-top-left-radius: 8px;
         border-top-right-radius: 8px;
@@ -5151,8 +5185,11 @@ footer {
         cursor: pointer;
         background-color: #F0F8FA; }
         .fly-tickets .city-deal .search-tabs .tab.active, .fly-tickets .city-deal .search-tabs .tab:hover {
-          color: white;
-          background-color: #3298C1; }
+          border: 1px solid #3298C1;
+          color: #005476;
+          border-bottom-width: 0;
+          position: relative;
+          bottom: -1px; }
     .fly-tickets .city-deal .tabs-cont {
       background-color: #F0F8FA;
       border-top: 1px solid #3298C1; }
@@ -5170,8 +5207,33 @@ footer {
       text-align: center;
       margin-top: 20px;
       margin-bottom: 20px; }
-      .fly-tickets .city-deal .other-flights-filter .title {
-        font-weight: bold; }
+      .fly-tickets .city-deal .other-flights-filter .tit {
+        font-weight: bold;
+        font-size: 1.2em;
+        margin-bottom: 6px; }
+      .fly-tickets .city-deal .other-flights-filter .airpairs-filter .pair {
+        display: inline-block;
+        background-color: #3298C1;
+        color: white;
+        padding: 6px;
+        margin-left: 2px;
+        margin-right: 2px;
+        border-radius: 4px;
+        cursor: pointer;
+        -webkit-touch-callout: none;
+        /* iOS Safari */
+        -webkit-user-select: none;
+        /* Chrome/Safari/Opera */
+        -khtml-user-select: none;
+        /* Konqueror */
+        -moz-user-select: none;
+        /* Firefox */
+        -ms-user-select: none;
+        /* Internet Explorer/Edge */
+        user-select: none;
+        /* Non-prefixed version, currently not supported by any browser */ }
+        .fly-tickets .city-deal .other-flights-filter .airpairs-filter .pair.active {
+          background-color: #F56E12; }
       .fly-tickets .city-deal .other-flights-filter .ltbl {
         width: 100%;
         display: table; }
@@ -5186,10 +5248,6 @@ footer {
             display: block; } }
     .fly-tickets .city-deal .dep-arr {
       padding: 10px; }
-      .fly-tickets .city-deal .dep-arr .tit {
-        font-weight: bold;
-        font-size: 1.2em;
-        margin-bottom: 6px; }
       .fly-tickets .city-deal .dep-arr .time-cont {
         display: block; }
     .fly-tickets .city-deal .srvc {

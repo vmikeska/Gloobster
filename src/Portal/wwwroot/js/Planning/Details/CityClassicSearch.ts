@@ -3,7 +3,7 @@ module Planning {
 				
 				private fromDate = this.addDays(new Date(), 1);
 				private toDate = this.addDays(this.fromDate, 3);
-				private currentFlights = [];
+				private currentFlights: Flight[] = [];
 
 				private depTimeFrom = 0;
 				private depTimeTo = 1440;
@@ -11,6 +11,7 @@ module Planning {
 				private arrTimeTo = 1440;
 
 				private cityDetail: CityDetail;
+				private airSel: AirportSelector;
 
 				private $flightsCont = $(".other-flights-cont");
 
@@ -27,7 +28,16 @@ module Planning {
 
 						var $tmp = this.cityDetail.filterLayout("classics-srch-template");
 
-						var $depDate = $tmp.find(".dep .date");
+					if (this.cityDetail.codePairs.length > 1) {
+						this.airSel = new AirportSelector($tmp.find(".airpairs-filter"), this.cityDetail.codePairs);
+						this.airSel.onChange = () => {
+							this.filterFlightsTime();
+						}
+						this.airSel.init();
+						$(".multi-conn-cont").show();
+					}
+
+					var $depDate = $tmp.find(".dep .date");
 						this.datepicker($depDate, this.fromDate, (d) => {
 								this.fromDate = d;
 						});
@@ -60,19 +70,25 @@ module Planning {
 				private filterFlightsTime() {						
 						this.$flightsCont.empty();
 
-						var flights = _.filter(this.currentFlights, (f) => {
+						var flights = _.filter(this.currentFlights, (f: Flight) => {
 
-								var first = _.first(f.FlightParts);
-								var last = _.last(f.FlightParts);
+								var first = _.first(f.parts);
+								var last = _.last(f.parts);
 
-								var thereMins = this.getDateMinutes(new Date(first.DeparatureTime));
+								var thereMins = this.getDateMinutes(first.depTime);
 								var depFits = this.timeFits(thereMins, this.depTimeFrom, this.depTimeTo);
 
-								var backMins = this.getDateMinutes(new Date(last.DeparatureTime));
+								var backMins = this.getDateMinutes(last.depTime);
 								var arrFits = this.timeFits(backMins, this.arrTimeFrom, this.arrTimeTo);
 
-								return depFits && arrFits;
-						});
+								var codeOk = true;
+								if (this.cityDetail.codePairs.length > 1) {
+									var actCodePairs = this.airSel.getActive();
+									codeOk = _.find(actCodePairs, (p) => { return p.from === f.from && p.to === f.to });
+								}
+
+								return depFits && arrFits && codeOk;
+							});
 
 						this.cityDetail.flightDetails.genFlights(this.$flightsCont, flights);
 				}
@@ -90,15 +106,18 @@ module Planning {
 						var toDate = TravelB.DateUtils.myDateToTrans(TravelB.DateUtils.jsDateToMyDate(this.toDate));
 
 						var prms = [
-								["ss", "1"],
-								["codeFrom", this.cityDetail.codeFrom],
-								["codeTo", this.cityDetail.codeTo],
+								["ss", "1"],								
 								["dateFrom", fromDate],
 								["dateTo", toDate],
-
 								["scoreLevel", ScoreLevel.Standard.toString()]
 						];
 
+
+					this.cityDetail.codePairs.forEach((cp) => {
+							var cps = ["codePairs", AirportSelector.toString(cp)];
+						prms.push(cps);
+					});
+						
 						this.cityDetail.genFlights(prms, (flights) => {
 							this.currentFlights = flights;
 						});

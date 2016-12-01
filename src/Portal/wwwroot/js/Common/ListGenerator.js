@@ -6,6 +6,9 @@ var Common;
             this.customMapping = null;
             this.appendStyle = "append";
             this.isAsync = false;
+            this.listLimit = 0;
+            this.listLimitMoreTmp = "";
+            this.listLimitLessTmp = "";
             this.$items = [];
         }
         Object.defineProperty(ListGenerator, "v", {
@@ -72,12 +75,62 @@ var Common;
         ListGenerator.prototype.genItemsChunk = function (startNo, items) {
             var _this = this;
             var itemNo = startNo;
+            var hidable = this.isHidable(items);
             items.forEach(function (item) {
                 var $item = _this.generateItem(item);
                 _this.$items.push($item);
                 $item.data("no", itemNo);
+                if (hidable) {
+                    _this.hidableFnc(itemNo, $item, items);
+                }
                 itemNo++;
             });
+        };
+        ListGenerator.prototype.isHidable = function (items) {
+            if (this.listLimit === 0) {
+                return false;
+            }
+            return items.length > this.listLimit + 1;
+        };
+        ListGenerator.prototype.hidableFnc = function (itemNo, $item, items) {
+            var _this = this;
+            if (itemNo + 1 === this.listLimit) {
+                var t = ListGenerator.v.registerTemplate(this.listLimitMoreTmp);
+                var $t = $(t());
+                $t.click(function (e) {
+                    e.preventDefault();
+                    _this.toggleHidingCls(true);
+                });
+                this.$cont.append($t);
+            }
+            if (itemNo + 1 > this.listLimit) {
+                $item.addClass("hidable");
+                $item.addClass("hidable-hide");
+            }
+            var isLast = itemNo + 1 === items.length;
+            if (isLast) {
+                var tl = ListGenerator.v.registerTemplate(this.listLimitLessTmp);
+                var $tl = $(tl());
+                $tl.click(function (e) {
+                    e.preventDefault();
+                    _this.toggleHidingCls(false);
+                });
+                this.$cont.append($tl);
+                this.toggleHidingCls(false);
+            }
+        };
+        ListGenerator.prototype.toggleHidingCls = function (state) {
+            var $hs = this.$cont.find(".hidable");
+            if (state) {
+                this.$cont.removeClass("list-state-collapsed");
+                this.$cont.addClass("list-state-expanded");
+                $hs.removeClass("hidable-hide");
+            }
+            else {
+                this.$cont.addClass("list-state-collapsed");
+                this.$cont.removeClass("list-state-expanded");
+                $hs.addClass("hidable-hide");
+            }
         };
         ListGenerator.prototype.generateItem = function (item) {
             var context = item;

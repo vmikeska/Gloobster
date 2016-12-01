@@ -1,37 +1,49 @@
 module Planning {
+
+		export interface CodePair {
+				from: string;
+				to: string;
+		}
+
+		
+
 	
+
 	export class CityDetail {
 
 		public flightDetails: FlightDetails;
 		private v = Views.ViewBase.currentView;
 
-		public codeFrom;
-		public codeTo;
+		public codePairs: CodePair[];
+
 		private cityName;
 		private gid;
+		private title;
 
 		public scoreLevel;
 
 		private slider: RangeSlider;
 		private monthsSel: MonthsSelector;
+		private airSel: AirportSelector;
 
 		private classicSearch: CityClassicSearch;
 
 		public $layout;
 
-		constructor(scoreLevel, codeFrom, codeTo, cityName, gid) {
-			this.flightDetails = new FlightDetails();
+		constructor(scoreLevel, codePairs: CodePair[], title, cityName, gid) {
+				
+		this.flightDetails = new FlightDetails();
 
 			this.scoreLevel = scoreLevel;
 
-			this.codeFrom = codeFrom;
-			this.codeTo = codeTo;
+			this.codePairs = codePairs;			
 			this.cityName = cityName;
-			this.gid = gid;				
+			this.gid = gid;
+			this.title = title;
 		}
 
-		public init(flights) {
-			flights = _.sortBy(flights, "Price");
+		public init(flights: Flight[]) {
+			flights = _.sortBy(flights, "price");
 
 			this.flightDetails.genFlights(this.$layout.find(".flights"), flights);
 
@@ -61,13 +73,11 @@ module Planning {
 
 		public createLayout($lastBox) {
 			this.destroyLayout();
-
+				
 			var cityDealLayout = this.v.registerTemplate("city-deals-template");
 			var context = {
-				gid: this.gid,
-				cityName: this.cityName,
-				codeFrom: this.codeFrom,
-				codeTo: this.codeTo
+				gid: this.gid,				
+				title: this.title				
 			};
 			this.$layout = $(cityDealLayout(context));
 
@@ -106,8 +116,18 @@ module Planning {
 		private initDeals() {
 			var $tmp = this.filterLayout("deals-srch-template");
 
+			if (this.codePairs.length > 1) {
+				this.airSel = new AirportSelector($tmp.find(".airpairs-filter"), this.codePairs);
+				this.airSel.onChange = () => {
+					this.genMonthFlights();
+				}
+				this.airSel.init();
+				$(".multi-conn-cont").show();
+			}
+
 			this.slider = new RangeSlider($tmp.find(".days-range"), "daysRange");
 			this.slider.genSlider(1, 21);
+			this.slider.setVals(5,7);
 			this.slider.onRangeChanged = () => {
 				this.genMonthFlights();
 			}
@@ -135,14 +155,18 @@ module Planning {
 
 			var prms = [
 				["ss", "0"],
-				["codeFrom", this.codeFrom],
-				["codeTo", this.codeTo],
 				["daysFrom", days.from.toString()],
 				["daysTo", days.to.toString()],
 				["monthNo", this.monthsSel.month.toString()],
 				["yearNo", this.monthsSel.year.toString()],
 				["scoreLevel", this.scoreLevel.toString()]
 			];
+
+			var codePairs = (this.codePairs.length > 1) ? this.airSel.getActive() : this.codePairs;
+			codePairs.forEach((cp) => {
+					var cps = ["codePairs", AirportSelector.toString(cp)];
+					prms.push(cps);
+			});
 
 			this.genFlights(prms);
 		}
@@ -155,8 +179,10 @@ module Planning {
 
 			this.v.apiGet("SkypickerCity", prms, (fs) => {
 
+				 var flights = FlightConvert.cFlights(fs);
+
 					if (callback) {
-						callback(fs);
+							callback(flights);
 					}
 
 					//fs = _(fs).chain()
@@ -164,15 +190,15 @@ module Planning {
 					//		.sortBy("Price")
 					//		.value();		
 
-					fs = _(fs)
+					flights = _(flights)
 						.chain()
-						.sortBy("Price")
+						.sortBy("price")
 						.reverse()
-						.sortBy("FlightScore")
+						.sortBy("score")
 						.reverse()
 						.value();
 
-					this.flightDetails.genFlights($ofCont, fs);
+					this.flightDetails.genFlights($ofCont, flights);
 
 					this.preloader(false);
 				});

@@ -30,60 +30,76 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 		public IActionResult Get(SpCityRequest req)
 		{
 		    var fr = new FlightRequestDO();
-		    
-            if (req.ss == SpSearchStyle.BestDealsOfCity)
-            {
-                var today = DateTime.UtcNow;
 
-                int startDay = 1;
-                if (today.Month == req.monthNo && today.Year == req.yearNo)
-                {
-                    startDay = today.Day;
-                }
-
-                var startDate = new DateTime(req.yearNo, req.monthNo, startDay);
-                var endDate = startDate.AddMonths(1);
-
-                fr.flyFrom = req.codeFrom;
-                fr.to = req.codeTo;
-                fr.dateFrom = startDate.ToDate().ToString();
-                fr.dateTo = endDate.ToDate().ToString();
-                fr.one_per_date = "1";
+		    var flights = new List<FlightDO>();
+            
+            foreach (var pair in req.codePairs)
+		    {
+		        var prms = pair.Split('-');
+		        var codeFrom = prms.First();
+		        var codeTo = prms.Last();
                 
-                //maybe is still needed
-                //fr.typeFlight = "round";		        
-                fr.daysInDestinationFrom = req.daysFrom.ToString();
-                fr.daysInDestinationTo = req.daysTo.ToString();                                
+		        if (req.ss == SpSearchStyle.BestDealsOfCity)
+		        {
+		            var today = DateTime.UtcNow;
+
+		            int startDay = 1;
+		            if (today.Month == req.monthNo && today.Year == req.yearNo)
+		            {
+		                startDay = today.Day;
+		            }
+
+		            var startDate = new DateTime(req.yearNo, req.monthNo, startDay);
+		            var endDate = startDate.AddMonths(1);
+
+		            fr.flyFrom = codeFrom;
+		            fr.to = codeTo;
+		            fr.dateFrom = startDate.ToDate().ToString();
+		            fr.dateTo = endDate.ToDate().ToString();
+		            fr.one_per_date = "1";
+
+		            //maybe is still needed
+		            //fr.typeFlight = "round";		        
+		            fr.daysInDestinationFrom = req.daysFrom.ToString();
+		            fr.daysInDestinationTo = req.daysTo.ToString();
+		        }
+
+		        if (req.ss == SpSearchStyle.CustomCity)
+		        {
+		            Date dfrom = req.dateFrom.ToDate('_');
+		            var dtFrom = dfrom.ToDateStart(DateTimeKind.Utc);
+		            Date dto = req.dateTo.ToDate('_');
+		            var dtTo = dto.ToDateStart(DateTimeKind.Utc);
+
+		            var spanDiff = dtTo - dtFrom;
+		            int days = spanDiff.Days;
+
+		            fr.flyFrom = codeFrom;
+		            fr.to = codeTo;
+
+		            fr.dateFrom = dfrom.ToString();
+		            fr.dateTo = dfrom.ToString();
+		            fr.daysInDestinationFrom = days.ToString();
+		            fr.daysInDestinationTo = days.ToString();
+
+		            fr.dateTo = req.dateTo.Replace("_", "/");
+		        }
+
+                FlightSearchDO search = SpProvider.Search(fr);
+                var evaluatedFlights = ScoreEngine.FilterFlightsByScore(search.Flights, req.scoreLevel);
+		        flights.AddRange(evaluatedFlights.Passed);
 		    }
-
-            if (req.ss == SpSearchStyle.CustomCity)
-            {
-                Date dfrom = req.dateFrom.ToDate('_');
-                var dtFrom = dfrom.ToDateStart(DateTimeKind.Utc);
-                Date dto = req.dateTo.ToDate('_');
-                var dtTo = dto.ToDateStart(DateTimeKind.Utc);
-
-                var spanDiff = dtTo - dtFrom;
-                int days = spanDiff.Days;
-                
-                fr.flyFrom = req.codeFrom;
-                fr.to = req.codeTo;
-                
-                fr.dateFrom = dfrom.ToString();
-                fr.dateTo = dfrom.ToString();
-                fr.daysInDestinationFrom = days.ToString();
-                fr.daysInDestinationTo = days.ToString();
-
-                fr.dateTo = req.dateTo.Replace("_", "/");                
-            }
             
-            FlightSearchDO search = SpProvider.Search(fr);
-		    var evaluatedFlights = ScoreEngine.FilterFlightsByScore(search.Flights, req.scoreLevel);
-            
-            return new ObjectResult(evaluatedFlights.Passed);
+            return new ObjectResult(flights);
 		}
         
     }
+
+    //public class CodePair
+    //{
+    //    public string from { get; set; }
+    //    public string to { get; set; }
+    //}
 
     public class SpCityRequest
     {
@@ -91,8 +107,10 @@ namespace Gloobster.Portal.Controllers.Api.Planning
      
         public ScoreLevel scoreLevel { get; set; }
 
-        public string codeFrom { get; set; }
-        public string codeTo { get; set; }
+        public List<string> codePairs { get; set; }
+
+        //public string codeFrom { get; set; }
+        //public string codeTo { get; set; }
         public int daysFrom { get; set; }
         public int daysTo { get; set; }
         public int monthNo { get; set; }

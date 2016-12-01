@@ -19,19 +19,29 @@
 
 <script id="deals-srch-template" type="text/x-handlebars-template">
     <div class="other-flights-filter">
+        
+        <div class="multi-conn-cont" style="display: none">
+            <div class="title">What connection are you interested?</div>
+            <div class="airpairs-filter"></div>
+        </div>
 
-        <div class="title">How many days would you like to stay in destination?</div>
-        <div class="days-range"></div>
+            <div class="title">How many days would you like to stay in destination?</div>
+            <div class="days-range"></div>
 
-        <div class="title">What month are you interested of?</div>
-        <div class="months"></div>
+            <div class="title">What month are you interested of?</div>
+            <div class="months"></div>
 
-    </div>
+        </div>
 </script>
 
 <script id="classics-srch-template" type="text/x-handlebars-template">
     <div class="other-flights-filter">
         
+        <div class="multi-conn-cont" style="display: none">
+            <div class="tit">What connection are you interested?</div>
+            <div class="airpairs-filter"></div>
+        </div>
+
         <div class="ltbl">
 
             <div class="block">
@@ -82,7 +92,7 @@
             <span class="icon-cross close"></span>
 
             <div class="title-top">
-                Deals for {{cityName}} ({{codeFrom}} - {{codeTo}})
+                {{title}}                
             </div>
 
             <div class="splitter">
@@ -139,9 +149,15 @@
 
     </script>
 
+    <script id="air-pair-item-template" type="text/x-handlebars-template">
+
+        <div class="pair" data-f="{{from}}" data-t="{{to}}">{{from}} - {{to}}</div>
+
+    </script>
+
     <script id="month-item-filter-template" type="text/x-handlebars-template">
 
-        <div class="month" data-m="{{month}}" data-y="{{year}}">{{txt}}</div>
+        <div class="month" data-m="{{month}}" data-y="{{year}}"><span>{{txt}}</span></div>
 
     </script>
 
@@ -378,7 +394,34 @@
 
     </script>
 
+<script id="offers-expander-template" type="text/x-handlebars-template">
+    <tr class="expander">
+        <td colspan="4">
+            <a class="btn" href="#">more</a>
+        </td>        
+    </tr>
+</script>
 
+<script id="offers-collapser-template" type="text/x-handlebars-template">
+    <tr class="collapser">
+        <td colspan="4">
+            <a class="btn" href="#">less</a>
+        </td>
+    </tr>
+</script>
+
+<script id="continent-group-template" type="text/x-handlebars-template">
+    <div class="continent-all">
+        <div class="title">
+            <span class="txt">{{name}}</span> 
+            
+            <a href="#" data-v="true" class="visi">collapse</a>
+        </div>
+        <div class="cont">
+            
+        </div>
+    </div>
+</script>
 
     <script id="resultGroupItemCountry-template" type="text/x-handlebars-template">
         <div class="flight-result" data-cc="{{cc}}">
