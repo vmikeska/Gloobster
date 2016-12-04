@@ -12,6 +12,8 @@ module Planning {
 
 		public displayer: WeekendDisplayer;
 
+		private filtering: FilteringWeekend;
+
 		constructor(v: Views.FlyView) {
 			this.v = v;
 		}
@@ -27,7 +29,7 @@ module Planning {
 
 			this.initFilters();
 
-			this.displayer = new WeekendDisplayer(this.$cont);
+			this.displayer = new WeekendDisplayer(this.$cont, this.filtering);
 
 			callback();
 		}
@@ -37,20 +39,20 @@ module Planning {
 		}
 
 		private initFilters() {
-				var f = new FilteringWeekend();
+				this.filtering = new FilteringWeekend();
 
-			f.onFilterChanged = () => {
-				var state = f.getState();
-				this.grouping = state.actItem;
+				this.filtering.onFilterChanged = () => {
+						var state = this.filtering.getStateBase();
+						this.grouping = state.grouping;
 				this.onFilterChanged();
 			}
 
-			f.initW([
+				this.filtering.initW([
 					LocationGrouping.ByCity,
 					LocationGrouping.ByCountry
 				],
 				LocationGrouping.ByCity,
-				true);
+				false);
 		}
 
 			getCustomId() {

@@ -21,6 +21,17 @@ declare var noUiSlider: any;
 //function geoip_area_code() { return ''; }
 //function geoip_metro_code() { return ''; }
 
+function any(a)
+{
+	if (a) {
+		if (a.length > 0) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
 declare var geoip_latitude;
 declare var geoip_longitude;
 

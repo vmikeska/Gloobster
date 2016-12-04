@@ -6,32 +6,162 @@ module Planning {
 
 		private connections;
 		private $cont;
+		private filter: FilteringWeekend;
 
-		constructor($cont) {
-			this.$cont = $cont;
+			
+		constructor($cont, filter: FilteringWeekend) {
+				this.$cont = $cont;
+				this.filter = filter;
 		}
 
 		public showResults(connections, grouping: LocationGrouping) {
 			this.connections = connections;
 
+			var fs = this.filter.getState();
+
 			if (grouping === LocationGrouping.ByCity) {					
-					var agg1 = new GroupByCity();
-					var r1 = agg1.exe(this.connections);
-					var d1 = new ByCityDisplay(this.$cont);
+					var agg1 = new WeekendByCityAgg();
+					var r1 = agg1.exe(this.connections, fs.days, fs.starsLevel);
+					
+					var d1 = new WeekendByCityDis(this.$cont, fs.currentLevel);
 					d1.render(r1);									
 			}
-				
+
+
+
+
+
+
 			if (grouping === LocationGrouping.ByCountry) {					
 					var agg2 = new GroupByCountry();
 					var r2 = agg2.exe(this.connections);
-					var d2 = new ByCountryDisplay(this.$cont);
+
+					var d2 = new ByCountryDisplay(this.$cont, fs.currentLevel);
 					d2.render(r2);
 				}
 			}
 
 	}
 
-	
+
+		export class ByWeekDisplay {
+			public onItemAppended: Function;
+
+			private $cont;
+			public scoreLevel;
+
+			constructor($cont, scoreLevel) {
+					this.$cont = $cont;
+				this.scoreLevel = scoreLevel;
+			}
+
+			public render(data) {
+
+				 this.$cont.empty();
+					
+					var weeks = _(data).chain()
+							.sortBy("week")
+							.sortBy("year")							
+							.value();	
+					
+					var lg = Common.ListGenerator.init(this.$cont, "weekend-week-template");
+					lg.clearCont = true;
+					lg.customMapping = (w) => {
+
+							var wr = DateOps.getWeekendRange(w.week);
+
+							return {
+									week: w.week,
+									year: w.year,
+									dateFrom: moment.utc(wr.friday).format("ll"),
+									dateTo: moment.utc(wr.sunday).format("ll")
+							}
+					}
+
+					lg.onItemAppended = ($week, week) => {
+							this.onItemAppended($week, week);
+					}
+
+					lg.generateList(weeks);
+			}
+
+
+	}
+
+		export class WeekendByCityDis extends ByWeekDisplay {
+				
+				constructor($cont, scoreLevel) {
+					super($cont, scoreLevel);
+						
+					this.onItemAppended = ($week, week) => {
+							this.generateWeek($week, week);
+					}
+			}
+
+			private generateWeek($week, week) {
+					var cities = _.sortBy(week.cities, "fromPrice");
+
+				 var $weekCont = $week.find(".cont");
+
+				 var lg = Common.ListGenerator.init($weekCont, "resultGroupItem-template");				
+
+					lg.customMapping = (c) => {
+							return {
+									gid: c.gid,
+									title: c.name,
+									price: c.fromPrice
+							}
+					}
+
+					lg.onItemAppended = ($city, city) => {
+							this.generateCityFlightGroups($weekCont, $city, city);
+					}
+
+					lg.generateList(cities);
+			}
+
+			private generateCityFlightGroups($weekCont, $city, city) {
+
+					var $cont = $city.find(".items table");
+					var lg = Common.ListGenerator.init($cont, "resultGroup-priceItem-template");
+
+					lg.listLimit = 2;
+					lg.listLimitMoreTmp = "offers-expander-template";
+					lg.listLimitLessTmp = "offers-collapser-template";
+
+					lg.customMapping = (g) => {
+							return {
+									from: g.fromAirport,
+									to: g.toAirport,
+									price: g.fromPrice,
+									flights: g.flights
+							};
+					}
+
+					lg.evnt("td", (e, $item, $target, conn) => {
+
+							var flights = FlightConvert.cFlights(conn.flights);
+
+							var $lc = Common.LastItem.getLast($weekCont, "flight-result", $city.data("no"));
+
+							var title = `Deals for ${name}`;
+							
+							var pairs: CodePair[] = [{ from: flights[0].from, to: flights[0].to }];
+
+							var cd = new WeekendDetail(pairs, title, city.gid);
+							cd.createLayout($lc);
+							cd.init(flights);														
+					});
+
+					lg.generateList(city.flightsGroups);
+			}
+
+
+	}
+
+
+
+
 		
 	export class GroupByCountry {
 
@@ -124,133 +254,13 @@ module Planning {
 
 	}
 		
-	export class GroupByCity {
-
-		private weekGroups = [];
-
-		public exe(connections) {
-			connections.forEach((connection) => {
-
-				connection.WeekFlights.forEach((weekFlight) => {
-					var weekGroup = this.getOrCreateWeekGroup(weekFlight.WeekNo, weekFlight.Year);
-					var weekGroupCity = this.getOrCreateWeekGroupCity(weekGroup, connection.ToCityId, connection.CityName);
-						
-					var flightGroup = {
-						fromPrice: weekFlight.FromPrice,
-						fromAirport: connection.FromAirport,
-						toAirport: connection.ToAirport,
-						flights: weekFlight.Flights
-					};
-
-					if (!weekGroupCity.fromPrice) {
-						weekGroupCity.fromPrice = weekFlight.FromPrice;
-					} else if (weekGroupCity.fromPrice > weekFlight.FromPrice) {
-						weekGroupCity.fromPrice = weekFlight.FromPrice;
-					}
-
-					weekGroupCity.flightsGroups.push(flightGroup);
-				});
-
-			});
-
-			return this.weekGroups;
-		}
-
-		private getOrCreateWeekGroup(week, year) {
-
-					var weekGroup = _.find(this.weekGroups, (wg) => { return wg.week === week && wg.year === year });
-					if (!weekGroup) {
-							weekGroup = {
-									week: week,
-									year: year,
-									cities: []
-							}
-							this.weekGroups.push(weekGroup);
-					}
-
-					return weekGroup;
-			}
-
-			private getOrCreateWeekGroupCity(weekGroup, gid, name) {
-					var wgc = _.find(weekGroup.cities, (city) => { return city.gid === gid });
-					if (!wgc) {
-							wgc = {
-									gid: gid,
-									name: name,
-									fromPrice: null,
-									flightsGroups: []
-							}
-							weekGroup.cities.push(wgc);
-					}
-
-					return wgc;
-			}
-
-	//		var structureExample = [
-	//		{
-	//									week: 46,
-	//									year: 2016,
-
-	//									cities: [
-	//						{
-	//								gid: 132,
-	//								name: "London",
-	//								fromPrice: 66,
-	//								flightsGroups: [{
-	//										fromPrice: 86,
-	//										fromAirport: "HHN",
-	//										toAirport: "LCY",
-	//										flights: []
-	//								}]
-
-	//						}
-	//									]
-	//		}
-	//];
-
-	}
-
-
-		export class ByWeekDisplay {
-			public onItemAppended: Function;
-
-			private $cont;
-
-			constructor($cont) {
-					this.$cont = $cont;
-			}
-
-			public render(data) {
-
-					var weeks = _.sortBy(data, "week"); //todo: year as well
-
-					var lg = Common.ListGenerator.init(this.$cont, "weekend-week-template");
-					lg.clearCont = true;
-					lg.customMapping = (w) => {
-
-							var wr = DateOps.getWeekendRange(w.week);
-
-							return {
-									week: w.week,
-									dateFrom: moment.utc(wr.friday).format("ll"),
-									dateTo: moment.utc(wr.sunday).format("ll")
-							}
-					}
-
-					lg.onItemAppended = ($week, week) => {
-							this.onItemAppended($week, week);
-					}
-
-					lg.generateList(weeks);
-			}
-
-
-	}
+	
+		
 
 	export class ByCountryDisplay extends ByWeekDisplay {
 
-			constructor($cont) {
-					super($cont);
+			constructor($cont, scoreLevel) {
+					super($cont, scoreLevel);
 
 					this.onItemAppended = ($week, week) => {
 							this.generateWeek($week, week);
@@ -295,59 +305,7 @@ module Planning {
 	}
 
 
-	export class ByCityDisplay extends ByWeekDisplay {
-
-
-			constructor($cont) {
-					super($cont);
-
-					this.onItemAppended = ($week, week) => {
-							this.generateWeek($week, week);
-					}
-			}
-
-			private generateWeek($week, week) {
-					var cities = _.sortBy(week.cities, "fromPrice");
-
-					var lg = Common.ListGenerator.init($week.find(".cont"), "resultGroupItem-template");
-					lg.customMapping = (c) => {
-							return {
-									gid: c.gid,
-									title: c.name,
-									price: c.fromPrice
-							}
-					}
-
-					lg.onItemAppended = ($city, city) => {
-							this.generateCityFlightGroups($city, city);
-					}
-
-					lg.generateList(cities);
-			}
-
-			private generateCityFlightGroups($city, city) {
-					var lg = Common.ListGenerator.init($city.find(".items table"), "resultGroup-priceItem-template");
-
-					lg.listLimit = 2;
-					lg.listLimitMoreTmp = "offers-expander-template";
-					lg.listLimitLessTmp = "offers-collapser-template";
-
-					lg.customMapping = (g) => {
-							return {
-									from: g.fromAirport,
-									to: g.toAirport,
-									price: g.fromPrice,
-									flights: g.flights
-							};
-					}
-
-					lg.generateList(city.flightsGroups);
-			}
-
-
-	}
-
-
+	
 	export class DateOps {
 
 			public static getWeekendRange(weekNo) {

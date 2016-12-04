@@ -15,7 +15,7 @@ var Planning;
             var layoutTmp = this.v.registerTemplate("filtering-template");
             this.$filter.html(layoutTmp());
             this.initFilters();
-            this.displayer = new Planning.WeekendDisplayer(this.$cont);
+            this.displayer = new Planning.WeekendDisplayer(this.$cont, this.filtering);
             callback();
         };
         WeekendPageSetter.prototype.onFilterChanged = function () {
@@ -23,16 +23,16 @@ var Planning;
         };
         WeekendPageSetter.prototype.initFilters = function () {
             var _this = this;
-            var f = new Planning.FilteringWeekend();
-            f.onFilterChanged = function () {
-                var state = f.getState();
-                _this.grouping = state.actItem;
+            this.filtering = new Planning.FilteringWeekend();
+            this.filtering.onFilterChanged = function () {
+                var state = _this.filtering.getStateBase();
+                _this.grouping = state.grouping;
                 _this.onFilterChanged();
             };
-            f.initW([
+            this.filtering.initW([
                 Planning.LocationGrouping.ByCity,
                 Planning.LocationGrouping.ByCountry
-            ], Planning.LocationGrouping.ByCity, true);
+            ], Planning.LocationGrouping.ByCity, false);
         };
         WeekendPageSetter.prototype.getCustomId = function () {
             return null;

@@ -668,7 +668,86 @@
         .sec-line {
             text-align: left;
             margin-top: 12px;
+            padding-top: 12px;
             border-top: 1px dotted $light-blue3;
+
+            .weekend-deals-filter {
+                
+
+                .all-deals {
+                    vertical-align: top;
+                    display: inline-block;
+        
+                    margin-top: 8px;
+        
+                    font-weight: bold;
+        
+                    white-space: nowrap;
+                }
+    
+                .days-filter {
+                    display: inline-block;
+                    text-align: center;
+
+                    .ftbl {
+                        display: table;
+
+                        .cell {
+                            display: table-cell;
+                        }
+                    }
+
+                    .txt {
+                        display: inline-block;
+                        font-weight: bold;
+                        margin-left: 10px;
+                        margin-right: 25px;
+                    }
+    
+                    .day{
+                        box-sizing: border-box;
+                        border-width: 2px;
+                        border-style: solid;
+
+                        display: inline-block;
+                        background-color: $light-blue3;
+                        color: white;
+                        border-radius: 4px;
+            
+                        padding-top: 20px;
+                        padding-bottom: 20px;
+            
+                        font-weight: bold;
+                        margin-left: 4px;
+                        width: 66px;
+                        @include noselect;
+
+                        &.act {
+                            background-color: $orange;
+                        }
+
+                        &.foc {
+                            border-color: red;
+                        }
+
+                        &.perm-sel{
+                            background-color: $orange;
+                        }
+                    }
+
+                    &.enabled {
+                        .day {
+                            cursor: pointer;
+                        }
+                    }
+
+                    &.disabled {
+                        filter: grayscale(70%);
+                    }
+                }
+            }
+  
+
         }
     }
 

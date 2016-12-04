@@ -1,5 +1,37 @@
 var Planning;
 (function (Planning) {
+    var WeekendDetail = (function () {
+        function WeekendDetail(codePairs, title, gid) {
+            this.v = Views.ViewBase.currentView;
+            this.flightDetails = new Planning.FlightDetails();
+            this.gid = gid;
+            this.title = title;
+        }
+        WeekendDetail.prototype.destroyLayout = function () {
+            $(".city-deal").remove();
+        };
+        WeekendDetail.prototype.createLayout = function ($lastBox) {
+            var _this = this;
+            this.destroyLayout();
+            var cityDealLayout = this.v.registerTemplate("city-deals-weekend-template");
+            var context = {
+                gid: this.gid,
+                title: this.title
+            };
+            this.$layout = $(cityDealLayout(context));
+            $lastBox.after(this.$layout);
+            this.$layout.find(".close").click(function (e) {
+                e.preventDefault();
+                _this.destroyLayout();
+            });
+        };
+        WeekendDetail.prototype.init = function (flights) {
+            flights = _.sortBy(flights, "price");
+            this.flightDetails.genFlights(this.$layout.find(".flights"), flights);
+        };
+        return WeekendDetail;
+    }());
+    Planning.WeekendDetail = WeekendDetail;
     var CityDetail = (function () {
         function CityDetail(scoreLevel, codePairs, title, cityName, gid) {
             this.v = Views.ViewBase.currentView;

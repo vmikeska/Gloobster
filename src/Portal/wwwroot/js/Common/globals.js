@@ -1,3 +1,11 @@
+function any(a) {
+    if (a) {
+        if (a.length > 0) {
+            return true;
+        }
+    }
+    return false;
+}
 var Constants;
 (function (Constants) {
     Constants.tokenCookieName = "token";

@@ -43,7 +43,7 @@ namespace Gloobster.DomainModels.SearchEngine
 
                     //todo: rework then to something more specific
                     daysInDestinationFrom = "2",
-                    daysInDestinationTo = "3",
+                    daysInDestinationTo = "4",
 
                     Params = date
                 };
@@ -156,13 +156,13 @@ namespace Gloobster.DomainModels.SearchEngine
             while (outDates.Count <= countOfWeekends)
             {
                 now = now.AddDays(1);
-                if (now.DayOfWeek == DayOfWeek.Friday)
+                if (now.DayOfWeek == DayOfWeek.Thursday)
                 {
-                    var sunday = now.AddDays(2);
+                    var monday = now.AddDays(4);
                     var date = new DateCombi
                     {
                         FromDate = new Date(now.Day, now.Month, now.Year),
-                        ToDate = new Date(sunday.Day, sunday.Month, sunday.Year),
+                        ToDate = new Date(monday.Day, monday.Month, monday.Year),
                         WeekNo = DateTimeFormatInfo.CurrentInfo.Calendar.GetWeekOfYear(now, CalendarWeekRule.FirstDay, DayOfWeek.Monday),
                         Year = now.Year
                     };

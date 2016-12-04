@@ -1,6 +1,7 @@
 
 //event: (e, $item, $target, item)
 // = (item) => { return {isActive: true, cls: "active" } };
+//onItemAppended($item, item)
 
 module Common {
 

@@ -5,9 +5,53 @@ module Planning {
 				to: string;
 		}
 
-		
 
-	
+	export class WeekendDetail {
+			private flightDetails: FlightDetails;
+			private $layout;
+
+			private gid;
+			private title;
+
+			private v = Views.ViewBase.currentView;
+
+			constructor(codePairs: CodePair[], title, gid) {
+
+					this.flightDetails = new FlightDetails();
+
+					this.gid = gid;
+					this.title = title;
+			}
+
+			public destroyLayout() {
+					$(".city-deal").remove();
+			}
+
+			public createLayout($lastBox) {
+					this.destroyLayout();
+
+					var cityDealLayout = this.v.registerTemplate("city-deals-weekend-template");
+					var context = {
+							gid: this.gid,
+							title: this.title
+					};
+					this.$layout = $(cityDealLayout(context));
+
+					$lastBox.after(this.$layout);
+					
+					this.$layout.find(".close").click((e) => {
+							e.preventDefault();
+							this.destroyLayout();
+					});
+			}
+
+			public init(flights: Flight[]) {
+					flights = _.sortBy(flights, "price");
+
+					this.flightDetails.genFlights(this.$layout.find(".flights"), flights);					
+			}
+	}
+
 
 	export class CityDetail {
 

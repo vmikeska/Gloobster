@@ -23,7 +23,12 @@
 
 
 
-<script src="/js/Planning/Filtering.js" type="text/javascript"></script>
+<script src="/js/Planning/Filtering/Filtering.js" type="text/javascript"></script>
+
+<script src="/js/Planning/Filtering/AirportSelector.js" type="text/javascript"></script>
+<script src="/js/Planning/Filtering/MonthsSelector.js" type="text/javascript"></script>
+<script src="/js/Planning/Filtering/RangeSlider.js" type="text/javascript"></script>
+<script src="/js/Planning/Filtering/TimeSlider.js" type="text/javascript"></script>
 
 <script src="/js/Views/FlyView.js" type="text/javascript"></script>
 <script src="/js/Trip/AirportCombo.js" type="text/javascript"></script>
@@ -63,6 +68,8 @@
 <script src="/js/Planning/Aggregators/AnytimeByCityAgg.js" type="text/javascript"></script>
 <script src="/js/Planning/Aggregators/AnytimeByCountryAgg.js" type="text/javascript"></script>
 <script src="/js/Planning/Aggregators/AnytimeByContinentAgg.js" type="text/javascript"></script>
+
+<script src="/js/Planning/Aggregators/WeekendByCityAgg.js" type="text/javascript"></script>
 
 
 <script src="/js/Planning/PageSetters/WeekendPageSetter.js" type="text/javascript"></script>
@@ -126,8 +133,7 @@
 <div class="wrapper">
     
     @Html.Partial("LocationSettingsDialog")
-  
-
+    
     <div id="naviCont" class="navi-cont"></div>
 
     <div id="tabContent"></div>
