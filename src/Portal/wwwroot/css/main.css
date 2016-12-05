@@ -4432,15 +4432,17 @@ footer {
   .fly-tickets .form-custom {
     background-color: #F0FAFC;
     padding: 12px;
-    text-align: left; }
+    text-align: left;
+    border-radius: 4px;
+    margin-bottom: 4px; }
     .fly-tickets .form-custom .title {
       font-weight: bold;
       font-size: 1.1em;
       margin-bottom: 10px;
       margin-top: 10px; }
     .fly-tickets .form-custom .searches-menu {
-      border-bottom: 1px dotted #3298C1;
-      padding-bottom: 6px; }
+      position: relative;
+      padding-right: 30px; }
       .fly-tickets .form-custom .searches-menu .item {
         -webkit-touch-callout: none;
         /* iOS Safari */
@@ -4508,6 +4510,15 @@ footer {
         .fly-tickets .form-custom .searches-menu .adder:hover {
           color: #F56E12;
           border-color: #F56E12; }
+      .fly-tickets .form-custom .searches-menu .show-hide {
+        position: absolute;
+        right: 0;
+        top: 5px; }
+    .fly-tickets .form-custom .form-cont {
+      border-top: 1px dotted #3298C1;
+      margin-top: 6px; }
+      .fly-tickets .form-custom .form-cont.hidden {
+        display: none; }
     .fly-tickets .form-custom .tag {
       padding: 4px; }
     .fly-tickets .form-custom .tagger input {

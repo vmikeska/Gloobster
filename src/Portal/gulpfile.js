@@ -79,6 +79,10 @@ var data = [
         {
             i: "TravelB/Home",
             o: "tb"
+        },
+        {
+            i: "Deals/Home",
+            o: "deals"
         }
         
     ];

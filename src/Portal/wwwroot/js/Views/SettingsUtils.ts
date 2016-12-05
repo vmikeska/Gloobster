@@ -63,7 +63,7 @@ module Views {
 				});
 		}
 
-		public static callServer(prop, values, callback = null) {
+		public static callServer(prop, values, callback: Function = null) {
 			var data = { propertyName: prop, values: values };
 			ViewBase.currentView.apiPut("UserProperty", data, () => {
 				if (callback) {
@@ -72,7 +72,7 @@ module Views {
 			});
 		}
 
-		public static registerLocationCombo($combo, propertyName: string, callback = null) {
+		public static registerLocationCombo($combo, propertyName: string, callback: Function = null) {
 			var homeConf = this.getLocationBaseConfig();
 			homeConf.selOjb = $combo;
 

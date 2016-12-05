@@ -10,7 +10,7 @@ var Views;
         function HomePageView() {
             _super.call(this);
             Views.SettingsUtils.registerLocationCombo($("#currentCity"), "CurrentLocation", function () {
-                window.location.href = "/Destination/planning";
+                window.location.href = "/deals";
             });
         }
         Object.defineProperty(HomePageView.prototype, "pageType", {

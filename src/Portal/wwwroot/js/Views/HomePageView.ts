@@ -5,7 +5,8 @@
 			super();
 
 			SettingsUtils.registerLocationCombo($("#currentCity"), "CurrentLocation", () => {
-				window.location.href = "/Destination/planning";
+					window.location.href = "/deals";
+					
 			});				
 		}
 			

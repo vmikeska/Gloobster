@@ -28,9 +28,7 @@ namespace Gloobster.Portal.Controllers.Portal
         [CreateAccount]
         public IActionResult Index()
         {
-            var vm = CreateViewModelInstance<ViewModelHome>();
-            //vm.DefaultLangModuleName = "pageHomeOld";
-            //vm.LoadClientTexts();
+            var vm = CreateViewModelInstance<ViewModelHome>();            
             return View(vm);
         }
 

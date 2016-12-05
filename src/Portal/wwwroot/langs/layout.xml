@@ -15,6 +15,10 @@
       <en>Travel Buddy</en>
     </MenuTB>
 
+    <MenuDeals>
+      <en>Travel deals</en>
+    </MenuDeals>
+
       <MenuRegister>
         <en>Register</en>
       </MenuRegister>

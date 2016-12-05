@@ -1,0 +1,176 @@
+﻿@{		
+    ViewBag.BodyClass = "fly-tickets";
+    ViewBag.MenuGroup = "Deals";
+    Layout = "_LayoutNew";
+}
+
+@using System.Threading.Tasks
+@using Gloobster.Common
+@using Gloobster.Portal.Controllers.Portal
+@using Gloobster.Portal.ViewModels
+@using Microsoft.AspNet.Mvc.Rendering
+@model Gloobster.Portal.ViewModels.ViewModelPlanning
+
+
+@if (GloobsterConfig.UseMiniScripts)
+{
+    <script src="/jsb/deals.js" type="text/javascript" data-notbuild="true"></script>
+}
+else
+{
+    <link href="/lib/leaflet/dist/leaflet.css" rel="stylesheet" />
+
+    <script type="text/javascript" src="/lib/leaflet/dist/leaflet.js"></script>
+
+    <script src="/js/Common/nouislider/nouislider.js" type="text/javascript"></script>
+    <script src="/js/Common/LastItem.js" type="text/javascript"></script>
+    <script src="/js/Common/CountriesGroup.js" type="text/javascript"></script>
+    <script src="/js/Common/CustomCheckbox.js" type="text/javascript"></script>
+
+    
+    <script src="/js/Deals/Filtering/Filtering.js" type="text/javascript"></script>
+
+    <script src="/js/Deals/Filtering/AirportSelector.js" type="text/javascript"></script>
+    <script src="/js/Deals/Filtering/MonthsSelector.js" type="text/javascript"></script>
+    <script src="/js/Deals/Filtering/RangeSlider.js" type="text/javascript"></script>
+    <script src="/js/Deals/Filtering/TimeSlider.js" type="text/javascript"></script>
+
+    <script src="/js/Views/FlyView.js" type="text/javascript"></script>
+    <script src="/js/Trip/AirportCombo.js" type="text/javascript"></script>
+    <script src="/js/Views/LocationSettingsDialog.js" type="text/javascript"></script>
+
+    <script src="/js/TravelB/DateUtils.js" type="text/javascript"></script>
+
+    <script src="/js/Deals/Map/Map.js" type="text/javascript"></script>
+    <script src="/js/Deals/Map/MapCities.js" type="text/javascript"></script>
+    <script src="/js/Deals/Map/MapCountries.js" type="text/javascript"></script>
+
+
+    <script src="/js/Deals/CustomForm/CustomForm.js" type="text/javascript"></script>
+    <script src="/js/Deals/CustomForm/CustomMenu.js" type="text/javascript"></script>
+    <script src="/js/Deals/CustomForm/PropsDataUpload.js" type="text/javascript"></script>
+    <script src="/js/Deals/CustomForm/SearchDataLoader.js" type="text/javascript"></script>
+
+    <script src="/js/Deals/Details/Convert.js" type="text/javascript"></script>
+    <script src="/js/Deals/Details/CityClassicSearch.js" type="text/javascript"></script>
+    <script src="/js/Deals/Details/CityDetail.js" type="text/javascript"></script>
+    <script src="/js/Deals/Details/FlightDetails.js" type="text/javascript"></script>
+
+
+
+    <script src="/js/Deals/TaggingField.js" type="text/javascript"></script>
+
+    <script src="/js/Deals/PlanningMap.js" type="text/javascript"></script>
+    <script src="/js/Deals/ResultsManager.js" type="text/javascript"></script>
+
+    <script src="/js/Deals/AirlineCodes.js" type="text/javascript"></script>
+
+    <script src="/js/Deals/Displayers/AnytimeDisplayer.js" type="text/javascript"></script>
+    <script src="/js/Deals/Displayers/WeekendDisplayer.js" type="text/javascript"></script>
+
+    <script src="/js/Deals/Aggregators/AnytimeAggUtils.js" type="text/javascript"></script>
+    <script src="/js/Deals/Aggregators/AnytimeByCityAgg.js" type="text/javascript"></script>
+    <script src="/js/Deals/Aggregators/AnytimeByCountryAgg.js" type="text/javascript"></script>
+    <script src="/js/Deals/Aggregators/AnytimeByContinentAgg.js" type="text/javascript"></script>
+
+    <script src="/js/Deals/Aggregators/WeekendByCityAgg.js" type="text/javascript"></script>
+    <script src="/js/Deals/Aggregators/WeekendByCountryAgg.js" type="text/javascript"></script>
+
+
+    <script src="/js/Deals/PageSetters/WeekendPageSetter.js" type="text/javascript"></script>
+    <script src="/js/Deals/PageSetters/AnytimePageSetter.js" type="text/javascript"></script>
+    <script src="/js/Deals/PageSetters/CustomPageSetter.js" type="text/javascript"></script>
+
+}
+
+<div class="info-block-bck" id="info-travelb">
+
+    <div class="wrapper">
+        
+        <div class="title-table">
+            <div class="left">
+                <h1>Travel deals</h1>
+            </div>
+
+            @*<div class="right">
+                <a class="showHide" data-ts="@showText" data-th="@hideText" href="#">@infoBtnTxt</a>
+            </div>*@
+
+        </div>
+
+        @*<div class="info-block" style="@infoCss">
+            <div class="block">
+
+                <div class="block-inner">
+                    <div class="img-all">
+                        <img src="/images/n/checkin-now.svg" />
+                    </div>
+
+                    <div class="txt">
+                        @Model.W("InfoNow")
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="block">
+
+                <div class="block-inner">
+                    <div class="img-all">
+                        <img src="/images/n/checkin-city.svg" />
+                    </div>
+
+                    <div class="txt">
+                        @Model.W("InfoCity")
+                    </div>
+                </div>
+            </div>
+
+        </div>*@
+
+    </div>
+</div>
+
+<div class="wrapper">
+    
+    @Html.Partial("LocationSettingsDialog")
+    
+    <div id="naviCont" class="navi-cont"></div>
+
+    <div id="tabContent"></div>
+    
+    <div class="map-cont">
+        <div class="map" id="mapCountries"></div>
+        <div class="map" id="mapCities" style="display: none"></div>
+
+        <div class="map-type-switch">
+            <div class="items-tbl">
+                <div class="country btn active">Countries</div>
+                <div class="city btn">Cities</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="filterCont">
+
+    </div>
+
+    <div id="queue">
+
+    </div>
+
+    <div class="flight-results" id="resultsCont">
+
+    </div>
+</div>
+
+
+
+@Html.Partial("DestinationTemplates")
+
+<script>
+	function onBodyLoad() {
+	    currentView = new Views.FlyView();
+	}
+
+</script>

@@ -58,6 +58,8 @@
         background-color: $very-light-blue3;
         padding: 12px;
         text-align: left;
+        border-radius: 4px;
+        margin-bottom: 4px;
 
         .title {
             font-weight: bold;
@@ -67,9 +69,9 @@
         }
 
         .searches-menu {
-            
-            border-bottom: 1px dotted $light-blue3;
-            padding-bottom: 6px;
+            position: relative;                        
+            padding-right: 30px;
+
 
             .item {
                 @include noselect;
@@ -170,6 +172,21 @@
                     color: $orange;
                     border-color: $orange;
                 }
+            }
+
+            .show-hide{
+                position: absolute;
+                right: 0;
+                top:5px;
+            }
+        }
+
+        .form-cont {
+            border-top: 1px dotted $light-blue3;
+            margin-top: 6px;
+
+            &.hidden {
+                display: none;
             }
         }
 

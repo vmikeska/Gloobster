@@ -73,6 +73,12 @@ namespace Gloobster.Portal
                     defaults: new { controller = "trip", action = "detail" }
                     );
 
+                routes.MapRoute(
+                    name: "Deals",
+                    template: RoutingConsts.DealsMenuName,
+                    defaults: new { controller = "deals", action = "home" }
+                    );
+
 
 
                 routes.MapRoute(
