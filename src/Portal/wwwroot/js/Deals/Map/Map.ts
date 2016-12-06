@@ -41,7 +41,7 @@ module Planning {
 		}
 
 	export class Map {
-
+			
 		public onCountryChange: Function;
 		public onCityChange: Function;
 		public onMapLoaded: Function;
@@ -53,6 +53,11 @@ module Planning {
 			
 		constructor(planningMap: PlanningMap) {
 			this.planningMap = planningMap;
+		}
+
+		public anySelected() {
+			var city = _.find(this.mapCities.cities, (c) => { return c.selected; });
+			return (city) || any(this.mapCountries.selectedCountries);
 		}
 
 		public init() {

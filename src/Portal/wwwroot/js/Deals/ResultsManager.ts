@@ -9,9 +9,13 @@ module Planning {
 		private queue = [];
 		private intervalId;
 
-		private timeType;
+		public timeType: PlanningType;
 
-		public initalCall(timeType) {
+			public refresh() {
+				this.initalCall(this.timeType);
+			}
+
+		public initalCall(timeType: PlanningType) {
 			this.timeType = timeType;
 			this.stopQuerying();
 			this.queue = [];

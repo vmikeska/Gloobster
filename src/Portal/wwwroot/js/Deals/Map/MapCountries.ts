@@ -96,6 +96,12 @@ module Planning {
 		}
 
 		private countryClicked(cc, layer) {
+
+				if (!this.map.planningMap.v.hasAirs) {
+						this.map.planningMap.v.showAirsFirst();
+						return;
+				}
+
 			var selected = this.isCountrySelected(cc);
 
 			if (selected) {

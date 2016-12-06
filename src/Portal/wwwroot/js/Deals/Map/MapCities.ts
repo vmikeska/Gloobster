@@ -33,7 +33,7 @@ module Planning {
 		private citiesLayerGroup: any;
 		private citiesToMarkers = [];
 			
-		private cities = [];
+		public cities = [];
 
 		private tileLayer;
 
@@ -181,7 +181,13 @@ module Planning {
 		}
 
 		private cityClicked(e) {
-				e.target.setIcon(MapIcons.selected);
+
+			if (!this.map.planningMap.v.hasAirs) {
+					this.map.planningMap.v.showAirsFirst();
+				return;
+			}
+
+			e.target.setIcon(MapIcons.selected);
 				e.target.selected = !e.target.selected;
 
 				this.map.onCityChange(e.target.gid, e.target.selected);					

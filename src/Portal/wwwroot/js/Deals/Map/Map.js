@@ -39,6 +39,10 @@ var Planning;
         function Map(planningMap) {
             this.planningMap = planningMap;
         }
+        Map.prototype.anySelected = function () {
+            var city = _.find(this.mapCities.cities, function (c) { return c.selected; });
+            return (city) || any(this.mapCountries.selectedCountries);
+        };
         Map.prototype.init = function () {
             var _this = this;
             this.mapCities = new Planning.MapCities(this);

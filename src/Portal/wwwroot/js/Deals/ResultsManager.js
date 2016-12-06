@@ -6,6 +6,9 @@ var Planning;
             this.queue = [];
             this.doRequery = true;
         }
+        ResultsManager.prototype.refresh = function () {
+            this.initalCall(this.timeType);
+        };
         ResultsManager.prototype.initalCall = function (timeType) {
             this.timeType = timeType;
             this.stopQuerying();

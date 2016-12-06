@@ -6,12 +6,16 @@
 
 		public planningMap: Planning.PlanningMap;
 
-		private resultsEngine: Planning.ResultsManager;
+		public resultsEngine: Planning.ResultsManager;
 
-		private maps: Maps.MapsCreatorMapBox2D;
-
+		private locDlg: LocationSettingsDialog;
+			
 		private tabs;
 
+		public get hasAirs(): boolean {
+			return this.locDlg.hasAirports();
+		}
+			
 		private $cont = $("#resultsCont");
 		private $filter = $("#filterCont");
 
@@ -20,6 +24,10 @@
 
 			this.initialize();
 		}
+
+			public showAirsFirst() {
+				alert("Location and airports must be selected first");
+			}
 
 		private mapSwitch(callback) {
 			var $cont = $(".map-type-switch");
@@ -115,7 +123,7 @@
 			});
 
 
-			var locationDialog = new LocationSettingsDialog();
+			this.locDlg = new LocationSettingsDialog(this);
 
 			this.initTabs();
 		}

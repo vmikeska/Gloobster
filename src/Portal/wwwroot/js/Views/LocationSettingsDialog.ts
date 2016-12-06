@@ -8,10 +8,15 @@
 
 		private kmRangeSelected = 200;
 
-		constructor() {
-				AirLoc.registerLocationCombo($("#currentCity"), (place) => {
+			private v: FlyView;
+
+		constructor(v: FlyView) {
+			this.v = v;
+			AirLoc.registerLocationCombo($("#currentCity"),
+				(place) => {
+					$("#rangeBlock").removeClass("hidden");
 					$(".home-location-name").html(`${place.City}, (${place.CountryCode})`);
-			});
+				});
 
 			this.regRangeCombo();
 
@@ -22,13 +27,41 @@
 			this.loadMgmtAirports();
 
 			$(".top-ribbon .edit").click((e) => {
-				e.preventDefault();
-				$(".location-dialog").toggle();
+					e.preventDefault();
+					$(".location-dialog").toggleClass("hidden");
+					this.hideRefresh();
+				});
+
+			$("#airClose").click((e) => {
+					e.preventDefault();
+					$(".location-dialog").addClass("hidden");
+					this.hideRefresh();
+				});
+
+			$("#refreshResults").click((e) => {
+					e.preventDefault();
+					this.v.resultsEngine.refresh();
+				  this.hideRefresh();
 			});
 		}
 
+		private hideRefresh() {
+					$(".refresh-line").addClass("hidden");
+			}
+
+		private changed() {
+			var sel = this.v.planningMap.map.anySelected();
+			if (sel) {
+				$(".refresh-line").removeClass("hidden");
+			}
+
+				if (this.hasAirports()) {
+					$(".no-airs-info").hide();
+				}
+		}
+
 		private loadMgmtAirports() {
-			Views.ViewBase.currentView.apiGet("airportRange", null, (as) => {
+			this.v.apiGet("airportRange", null, (as) => {
 				this.generateAirports(as);
 			});
 		}
@@ -38,19 +71,28 @@
 			ac.onSelected = (e) => {
 
 				var data = { airportId: e.id };
-				Views.ViewBase.currentView.apiPost("airportRange", data, (a) => {
+				this.v.apiPost("airportRange", data, (a) => {
 						this.genAirport(a);
 						this.genAirportS(a.airCode);
+						this.changed();
 				});
 
-			}
+			}				
 		}
-			
+
+			public hasAirports() {
+				return $("#airportsCont").find(".airport").length > 0;
+			}
+
 		private regRangeCombo() {
 			var $dd = $("#airportsRange");
 			$dd.change((e) => {
 				var kms = parseInt($dd.find("input").val());
-				this.kmRangeSelected = kms;
+				this.kmRangeSelected = kms;				
+			});
+
+			$("#addAirsRange").click((e) => {
+				e.preventDefault();
 				this.callAirportsByRange();
 			});
 
@@ -58,8 +100,9 @@
 
 		private callAirportsByRange() {
 			var data = { distance: this.kmRangeSelected };
-			Views.ViewBase.currentView.apiPut("AirportRange", data, (airports) => {
-				this.generateAirports(airports);
+			this.v.apiPut("AirportRange", data, (airports) => {
+					this.generateAirports(airports);
+				  this.changed();
 			});
 		}
 
@@ -96,6 +139,7 @@
 				Views.ViewBase.currentView.apiDelete("AirportRange", data, (as) => {
 						$(`#${id}`).remove();
 						$(`#s_${code}`).remove();
+					this.changed();
 				});
 			});
 

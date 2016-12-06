@@ -1,9 +1,14 @@
 ﻿@using System.Threading.Tasks
 @using Gloobster.Portal.Controllers.Portal
 @using Gloobster.Portal.ViewModels
-@model Gloobster.Portal.ViewModels.ViewModelPlanning
+@model ViewModelPlanning
 
-
+@if (!Model.HasAirports)
+{
+    <div class="no-airs-info">
+        <span class="icon-bell icon"></span> <span class="txt">To be able to use this service, you have to first select your home location and home airports</span>
+    </div>
+}
 
     <div class="top-ribbon">
         <span class="icon-home"></span>
@@ -24,18 +29,22 @@
         <a href="#" class="edit">edit</a>
     </div>
 
-<div class="location-dialog" style="display: none">
 
-    <div class="tbl-wrap">
+<div class="location-dialog @(Model.HasAirports ? "hidden" : string.Empty)">
+    
+    <span id="airClose" class="icon-cross form-close"></span>
 
-        <div class="left">
+    <div>
+        <div class="input-block">
             <div class="title">Where do you live?</div>
             <div id="currentCity" class="dropdown">
                 <input class="inputed" type="text" placeholder="City name" value="@Model.InitCurrentLocation">
                 <ul></ul>
             </div>
-
-            <div class="title">Add home airport in range</div>
+        </div>
+        
+        <div id="rangeBlock" class="input-block @(string.IsNullOrEmpty(Model.InitCurrentLocation) ? "hidden" : string.Empty)">
+            <div class="title">Select airports in range of</div>
             <div id="airportsRange" class="dropdown">
                 <span class="selected">200 km</span>
                 <ul>
@@ -47,23 +56,28 @@
                 </ul>
                 <input type="hidden">
             </div>
+            <a id="addAirsRange" class="lbtn2 add-btn" href="#">Select</a>
+        </div>    
+    </div>
+    
+    <div class="bottom-line">
+        <div class="title">Customize your airports</div>
+        <div id="airportsCont" class="airports-cont">
         </div>
 
-        <div class="right">
-            <div class="title">Customize your airports</div>
-            <div id="airportsCont" class="airports-cont">
-            </div>
 
-
-            <div id="airportCombo" class="dropdown">
-                <input class="inputed" type="text" placeholder="+ Search for airports">
-                <ul></ul>
-            </div>
+        <div id="airportCombo" class="dropdown">
+            <input class="inputed" type="text" placeholder="+ Search for airports">
+            <ul></ul>
         </div>
-
     </div>
-
+    
+    <div class="refresh-line hidden">
+        <a id="refreshResults" class="lbtn2 refresh-results" href="#">Refresh results</a>
     </div>
+    
+
+</div>
 
 
 <script id="homeAirportItem-template" type="text/x-handlebars-template">

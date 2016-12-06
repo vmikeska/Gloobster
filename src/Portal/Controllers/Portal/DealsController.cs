@@ -39,13 +39,20 @@ namespace Gloobster.Portal.Controllers.Portal
 
             var viewModel = CreateViewModelInstance<ViewModelPlanning>();
 			viewModel.InitCurrentLocation = FormatCityStr(ua);
-            
+
+		    viewModel.HasAirports = false;
+
             if (ua != null)
 			{
                 viewModel.CurrentLocation = ua.CurrentLocation;
 
                 var airportIds = ua.Airports.Select(a => a.OrigId);
 				viewModel.Airports = DB.List<AirportEntity>(a => airportIds.Contains(a.OrigId));
+
+			    if (airportIds.Any())
+			    {
+                    viewModel.HasAirports = true;
+			    }
 			}
 
 			return View(viewModel);

@@ -11,6 +11,12 @@ $light-blue4: #ccedf5;
 $light-blue5: #57c1db;
 $light-blue6: #9FD2E3;
 
+$info-blue: #99DBEC;
+
+$ribbon-blue: #57C2DB;
+$input-margin-blue: #AAE0ED;
+$input-color: #9999B1;
+
 $very-light-blue: #F0F8FA;
 $very-light-blue2: #D0E7EE;
 $very-light-blue3: #F0FAFC;
@@ -193,19 +199,24 @@ input[type="text"],input[type="password"],input[type="number"],textarea{
     border: 0;
     border-radius: 4px;
     font-size: 20px;
-    color: gray;
+    color: $input-color;
+    border-color: $input-margin-blue;
 }
 
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
   -webkit-appearance: none; 
   margin: 0; 
+  border-color: $input-margin-blue;
+  color: $input-color;
 }
 
 textarea{
     width: 100%;
     font-family: $font-lato;
     @extend .box-sizing;
+    border-color: $input-margin-blue;
+    color: $input-color;
 }
 
 .lbtn{
@@ -233,6 +244,24 @@ textarea{
     padding: 9px;
     border-radius: 4px;
     @include noselect;
+}
+
+.form-close {
+    position: absolute;
+    top: -18px;
+    right: -18px;
+    font-size: 0.8em;
+
+    padding: 10px;
+    border-radius: 50%;
+    color: white;
+    background-color: $light-blue3;
+
+    cursor: pointer;
+
+    &:hover {
+        color: $orange;
+    }
 }
 
 .thumb-cont{

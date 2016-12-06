@@ -1,10 +1,13 @@
 var Views;
 (function (Views) {
     var LocationSettingsDialog = (function () {
-        function LocationSettingsDialog() {
+        function LocationSettingsDialog(v) {
+            var _this = this;
             this.airTemplate = Views.ViewBase.currentView.registerTemplate("homeAirportItem-template");
             this.kmRangeSelected = 200;
+            this.v = v;
             Views.AirLoc.registerLocationCombo($("#currentCity"), function (place) {
+                $("#rangeBlock").removeClass("hidden");
                 $(".home-location-name").html(place.City + ", (" + place.CountryCode + ")");
             });
             this.regRangeCombo();
@@ -14,12 +17,35 @@ var Views;
             this.loadMgmtAirports();
             $(".top-ribbon .edit").click(function (e) {
                 e.preventDefault();
-                $(".location-dialog").toggle();
+                $(".location-dialog").toggleClass("hidden");
+                _this.hideRefresh();
+            });
+            $("#airClose").click(function (e) {
+                e.preventDefault();
+                $(".location-dialog").addClass("hidden");
+                _this.hideRefresh();
+            });
+            $("#refreshResults").click(function (e) {
+                e.preventDefault();
+                _this.v.resultsEngine.refresh();
+                _this.hideRefresh();
             });
         }
+        LocationSettingsDialog.prototype.hideRefresh = function () {
+            $(".refresh-line").addClass("hidden");
+        };
+        LocationSettingsDialog.prototype.changed = function () {
+            var sel = this.v.planningMap.map.anySelected();
+            if (sel) {
+                $(".refresh-line").removeClass("hidden");
+            }
+            if (this.hasAirports()) {
+                $(".no-airs-info").hide();
+            }
+        };
         LocationSettingsDialog.prototype.loadMgmtAirports = function () {
             var _this = this;
-            Views.ViewBase.currentView.apiGet("airportRange", null, function (as) {
+            this.v.apiGet("airportRange", null, function (as) {
                 _this.generateAirports(as);
             });
         };
@@ -28,11 +54,15 @@ var Views;
             var ac = new Trip.AirportCombo("airportCombo", { clearAfterSelection: true });
             ac.onSelected = function (e) {
                 var data = { airportId: e.id };
-                Views.ViewBase.currentView.apiPost("airportRange", data, function (a) {
+                _this.v.apiPost("airportRange", data, function (a) {
                     _this.genAirport(a);
                     _this.genAirportS(a.airCode);
+                    _this.changed();
                 });
             };
+        };
+        LocationSettingsDialog.prototype.hasAirports = function () {
+            return $("#airportsCont").find(".airport").length > 0;
         };
         LocationSettingsDialog.prototype.regRangeCombo = function () {
             var _this = this;
@@ -40,14 +70,18 @@ var Views;
             $dd.change(function (e) {
                 var kms = parseInt($dd.find("input").val());
                 _this.kmRangeSelected = kms;
+            });
+            $("#addAirsRange").click(function (e) {
+                e.preventDefault();
                 _this.callAirportsByRange();
             });
         };
         LocationSettingsDialog.prototype.callAirportsByRange = function () {
             var _this = this;
             var data = { distance: this.kmRangeSelected };
-            Views.ViewBase.currentView.apiPut("AirportRange", data, function (airports) {
+            this.v.apiPut("AirportRange", data, function (airports) {
                 _this.generateAirports(airports);
+                _this.changed();
             });
         };
         LocationSettingsDialog.prototype.generateAirports = function (airports) {
@@ -64,6 +98,7 @@ var Views;
             this.$airContS.append($h);
         };
         LocationSettingsDialog.prototype.genAirport = function (a) {
+            var _this = this;
             var context = {
                 id: a.origId,
                 city: a.city,
@@ -79,6 +114,7 @@ var Views;
                 Views.ViewBase.currentView.apiDelete("AirportRange", data, function (as) {
                     $("#" + id).remove();
                     $("#s_" + code).remove();
+                    _this.changed();
                 });
             });
             this.$airportsCont.prepend($html);

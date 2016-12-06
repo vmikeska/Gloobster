@@ -13,6 +13,16 @@ var Views;
             this.$filter = $("#filterCont");
             this.initialize();
         }
+        Object.defineProperty(FlyView.prototype, "hasAirs", {
+            get: function () {
+                return this.locDlg.hasAirports();
+            },
+            enumerable: true,
+            configurable: true
+        });
+        FlyView.prototype.showAirsFirst = function () {
+            alert("Location and airports must be selected first");
+        };
         FlyView.prototype.mapSwitch = function (callback) {
             var _this = this;
             var $cont = $(".map-type-switch");
@@ -83,7 +93,7 @@ var Views;
             this.mapSwitch(function (type) {
                 _this.planningMap.changeViewType(type);
             });
-            var locationDialog = new Views.LocationSettingsDialog();
+            this.locDlg = new Views.LocationSettingsDialog(this);
             this.initTabs();
         };
         return FlyView;

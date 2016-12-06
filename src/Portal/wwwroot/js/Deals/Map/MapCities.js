@@ -126,6 +126,10 @@ var Planning;
             return marker;
         };
         MapCities.prototype.cityClicked = function (e) {
+            if (!this.map.planningMap.v.hasAirs) {
+                this.map.planningMap.v.showAirsFirst();
+                return;
+            }
             e.target.setIcon(MapIcons.selected);
             e.target.selected = !e.target.selected;
             this.map.onCityChange(e.target.gid, e.target.selected);

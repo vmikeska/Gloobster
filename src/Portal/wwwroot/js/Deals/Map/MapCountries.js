@@ -69,6 +69,10 @@ var Planning;
             });
         };
         MapCountries.prototype.countryClicked = function (cc, layer) {
+            if (!this.map.planningMap.v.hasAirs) {
+                this.map.planningMap.v.showAirsFirst();
+                return;
+            }
             var selected = this.isCountrySelected(cc);
             if (selected) {
                 this.selectedCountries = _.reject(this.selectedCountries, function (c) { return c === cc; });
