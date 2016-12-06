@@ -1,9 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
-using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
-using Gloobster.DomainObjects;
 using Gloobster.Entities;
 using Gloobster.Mappers;
 using Gloobster.Portal.Controllers.Base;
@@ -11,7 +9,7 @@ using Gloobster.ReqRes.Airport;
 using Microsoft.AspNet.Mvc;
 using Serilog;
 
-namespace Gloobster.Portal.Controllers.Api.Geo
+namespace Gloobster.Portal.Controllers.Api.SearchEngine
 {
 	[Route("api/[controller]")]
 	public class AirportRangeController : BaseApiController
@@ -48,7 +46,9 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 		[AuthorizeApi]
 		public async Task<IActionResult> Put([FromBody] AirportsInRangeRequest req)
 		{
-			var loc = User.CurrentLocation;
+            var ua = DB.FOD<UserAirports>(u => u.User_id == UserIdObj);
+
+		    var loc = ua.CurrentLocation;
 
 			//no loc throw
 			
@@ -66,15 +66,17 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 		[AuthorizeApi]
 		public IActionResult Get()
 		{
-			if (User.HomeAirports == null)
-			{
-				return new ObjectResult(new object[0]);
-			}
+		    var ua = DB.FOD<UserAirports>(u => u.User_id == UserIdObj);
 
-			var airportsResponse = User.HomeAirports.Select(a => a.ToResponse()).ToList();
+		    if (ua == null)
+		    {
+                return new ObjectResult(new object[0]);
+            }
+            
+			var airportsResponse = ua.Airports.Select(a => a.ToResponse()).ToList();
 			return new ObjectResult(airportsResponse);
 		}
 
 
-	}	
+	}
 }

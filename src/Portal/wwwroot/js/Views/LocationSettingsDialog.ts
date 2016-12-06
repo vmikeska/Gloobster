@@ -9,7 +9,10 @@
 		private kmRangeSelected = 200;
 
 		constructor() {
-				this.regLocCombo("currentCity", "CurrentLocation");
+				AirLoc.registerLocationCombo($("#currentCity"), (place) => {
+					$(".home-location-name").html(`${place.City}, (${place.CountryCode})`);
+			});
+
 			this.regRangeCombo();
 
 			this.$airportsCont = $("#airportsCont");
@@ -42,25 +45,7 @@
 
 			}
 		}
-
-		private regLocCombo(elementId: string, propertyName: string) {
-			var $c = $(`#${elementId}`);
-
-			var c = new Common.PlaceSearchConfig();
-			c.providers = "2";
-			c.minCharsToSearch = 1;
-			c.clearAfterSearch = false;
-			c.selOjb = $c;
-
-			var box = new Common.PlaceSearchBox(c);
-			$c.change((e, request, place) => {
-				var data = { propertyName: propertyName, values: { sourceId: request.SourceId, sourceType: request.SourceType } };
-				ViewBase.currentView.apiPut("UserProperty", data, (res) => {
-						$(".home-location-name").html(`${place.City}, (${place.CountryCode})`);
-				});
-			});
-		}
-
+			
 		private regRangeCombo() {
 			var $dd = $("#airportsRange");
 			$dd.change((e) => {

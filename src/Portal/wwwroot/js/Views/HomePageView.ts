@@ -1,16 +1,16 @@
 ﻿module Views {
 		export class HomePageView extends ViewBase {
 
-		constructor() {
-			super();
+			constructor() {
+				super();
 
-			SettingsUtils.registerLocationCombo($("#currentCity"), "CurrentLocation", () => {
-					window.location.href = "/deals";
-					
-			});				
-		}
-			
-		public get pageType(): PageType { return PageType.HomePage; }
+				AirLoc.registerLocationCombo($("#currentCity"), (place) => {
+						window.location.href = "/deals";
+					});
+
+			}
+
+			public get pageType(): PageType { return PageType.HomePage; }
 
 	}
 }

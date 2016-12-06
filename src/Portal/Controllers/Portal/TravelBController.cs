@@ -31,24 +31,27 @@ namespace Gloobster.Portal.Controllers.Portal
             vm.DefaultLangModuleName = "pageTravelB";
             vm.LoadClientTexts(new[] { "jsTravelB" });
 
-            vm.GenderStr = GetGenderStr(User.Gender, vm);
+            vm.GenderStr = GetGenderStr(vm);
             vm.EmptyProps = GetEmptyProps(UserId);
 
             return View(vm);
         }
 
-        private string GetGenderStr(Gender gender, ViewModelBase vm)
+        private string GetGenderStr(ViewModelBase vm)
         {
-            if (gender == Gender.M)
+            if (User != null)
             {
-                return vm.W("Male", "layout");
-            }
+                if (User.Gender == Gender.M)
+                {
+                    return vm.W("Male", "layout");
+                }
 
-            if (gender == Gender.F)
-            {
-                return vm.W("Female", "layout");
+                if (User.Gender == Gender.F)
+                {
+                    return vm.W("Female", "layout");
+                }
             }
-
+            
             return "N/A";
         }
 
@@ -60,37 +63,39 @@ namespace Gloobster.Portal.Controllers.Portal
 
             var props = new List<string>();
 
-            if (!user.HasProfileImage)
+
+
+            if (user == null || !user.HasProfileImage)
             {
                 props.Add("HasProfileImage");
             }
 
-            if (string.IsNullOrEmpty(user.FirstName))
+            if (user == null || string.IsNullOrEmpty(user.FirstName))
             {
                 props.Add("FirstName");
             }
 
-            if (string.IsNullOrEmpty(user.LastName))
+            if (user == null || string.IsNullOrEmpty(user.LastName))
             {
                 props.Add("LastName");
             }
             
-            if (user.HomeLocation == null)
+            if (user == null || user.HomeLocation == null)
             {
                 props.Add("HomeLocation");
             }
             
-            if (user.Languages == null || user.Languages.Count == 0)
+            if (user == null || user.Languages == null || user.Languages.Count == 0)
             {
                 props.Add("Languages");
             }
             
-            if (user.Gender == Gender.N)
+            if (user == null || user.Gender == Gender.N)
             {
                 props.Add("Gender");
             }
 
-            if (!user.BirthYear.HasValue)
+            if (user == null || !user.BirthYear.HasValue)
             {
                 props.Add("BirthYear");
             }

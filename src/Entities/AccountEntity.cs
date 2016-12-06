@@ -89,13 +89,16 @@ namespace Gloobster.Entities
 
         public string ShortDescription { get; set; }
 
-        public List<UserRatingSE> Ratings { get; set; }
-
-
-        public List<AirportSaveSE> HomeAirports { get; set; }
-
-        
+        public List<UserRatingSE> Ratings { get; set; }        
     }
+
+    public class UserAirports: EntityBase
+    {
+        public ObjectId User_id { get; set; }
+        public List<AirportSaveSE> Airports { get; set; }
+        public CityLocationSE CurrentLocation { get; set; }
+    }
+
 
     public class UserRatingSE
     {

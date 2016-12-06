@@ -176,8 +176,16 @@ namespace Gloobster.DomainModels.SearchEngine
         private List<string> HomeAirports(string userId)
         {
             var userIdObj = new ObjectId(userId);
-            var user = DB.FOD<UserEntity>(u => u.User_id == userIdObj);
-            var airIds = user.HomeAirports.Select(a => a.OrigId).ToList();
+            
+            var ua = DB.FOD<UserAirports>(u => u.User_id == userIdObj);
+
+            var airIds = new List<int>();
+
+            if (ua != null)
+            {
+                airIds = ua.Airports.Select(a => a.OrigId).ToList();
+            }
+
             var airports = DB.List<AirportEntity>(a => airIds.Contains(a.OrigId));
             var codes = airports.Select(a => a.IataFaa).ToList();
 

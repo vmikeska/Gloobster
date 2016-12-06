@@ -207,8 +207,7 @@ namespace Gloobster.DomainModels.Services.Accounts
                     Languages = userData.Languages,
                     Mail = userData.Mail,
 
-                    DefaultLang = "en",
-                    HomeAirports = new List<AirportSaveSE>(),
+                    DefaultLang = "en",                    
                     HasProfileImage = false,
                     Interests = new List<int>(),
                     BirthYear = null,

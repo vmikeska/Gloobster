@@ -41,23 +41,9 @@ namespace Gloobster.Portal.Controllers.Api.User
 
 			if (request.propertyName == "CurrentLocation")
 			{
-			    var gid = int.Parse(request.values["sourceId"]);
-			    const int defaultDistance = 200;
-
-                var location = await GetLocationSubEntity(gid);
-
-			    var user = DB.FOD<UserEntity>(u => u.User_id == UserIdObj);
-                
-			    bool firstInit = user.CurrentLocation == null;
-			    if (firstInit)
-			    {
-                    var city = await GNS.GetCityByIdAsync(gid);
-                    
-			        var airports = AirService.GetAirportsInRange(city.Coordinates, defaultDistance);
-			        var airportsDO = await AirService.SaveAirportsInRange(UserId, airports);
-			    }
-                
-			    update = DB.U<UserEntity>().Set(p => p.CurrentLocation, location);
+			    var gid = int.Parse(request.values["sourceId"]);			    
+                var location = await GetLocationSubEntity(gid);                
+			    update = DB.U<UserEntity>().Set(p => p.CurrentLocation, location);			    
 			}
 
 			if (request.propertyName == "Gender")

@@ -9,7 +9,7 @@ var Views;
         __extends(HomePageView, _super);
         function HomePageView() {
             _super.call(this);
-            Views.SettingsUtils.registerLocationCombo($("#currentCity"), "CurrentLocation", function () {
+            Views.AirLoc.registerLocationCombo($("#currentCity"), function (place) {
                 window.location.href = "/deals";
             });
         }

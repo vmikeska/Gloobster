@@ -31,31 +31,36 @@ namespace Gloobster.Portal.Controllers.Portal
         [CreateAccount]
         public IActionResult Home()
 		{
+            var ua = DB.FOD<UserAirports>(u => u.User_id == UserIdObj);
+
             //temp remove then
             PlanningDom.CreateDBStructure(UserId);
             CustomSearchDomain.CreateDbStructure(UserId);
 
             var viewModel = CreateViewModelInstance<ViewModelPlanning>();
-			viewModel.InitCurrentLocation = FormatCityStr(User.CurrentLocation);
-            viewModel.CurrentLocation = User.CurrentLocation;
-
-			if (User.HomeAirports != null)
+			viewModel.InitCurrentLocation = FormatCityStr(ua);
+            
+            if (ua != null)
 			{
-				var airportIds = User.HomeAirports.Select(a => a.OrigId);
+                viewModel.CurrentLocation = ua.CurrentLocation;
+
+                var airportIds = ua.Airports.Select(a => a.OrigId);
 				viewModel.Airports = DB.List<AirportEntity>(a => airportIds.Contains(a.OrigId));
 			}
 
 			return View(viewModel);
 		}
 
-		private string FormatCityStr(CityLocationSE city)
-		{
-			if (city == null)
+		private string FormatCityStr(UserAirports ua)
+		{            
+			if (ua?.CurrentLocation == null)
 			{
 				return string.Empty;
 			}
 
-			return $"{city.City}, {city.CountryCode}";
+		    var city = ua.CurrentLocation;
+
+			return $"{ city.City}, {city.CountryCode}";
 		}
 
 	}

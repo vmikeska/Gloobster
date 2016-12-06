@@ -4,7 +4,9 @@ var Views;
         function LocationSettingsDialog() {
             this.airTemplate = Views.ViewBase.currentView.registerTemplate("homeAirportItem-template");
             this.kmRangeSelected = 200;
-            this.regLocCombo("currentCity", "CurrentLocation");
+            Views.AirLoc.registerLocationCombo($("#currentCity"), function (place) {
+                $(".home-location-name").html(place.City + ", (" + place.CountryCode + ")");
+            });
             this.regRangeCombo();
             this.$airportsCont = $("#airportsCont");
             this.$airContS = $(".top-ribbon .airports");
@@ -31,21 +33,6 @@ var Views;
                     _this.genAirportS(a.airCode);
                 });
             };
-        };
-        LocationSettingsDialog.prototype.regLocCombo = function (elementId, propertyName) {
-            var $c = $("#" + elementId);
-            var c = new Common.PlaceSearchConfig();
-            c.providers = "2";
-            c.minCharsToSearch = 1;
-            c.clearAfterSearch = false;
-            c.selOjb = $c;
-            var box = new Common.PlaceSearchBox(c);
-            $c.change(function (e, request, place) {
-                var data = { propertyName: propertyName, values: { sourceId: request.SourceId, sourceType: request.SourceType } };
-                Views.ViewBase.currentView.apiPut("UserProperty", data, function (res) {
-                    $(".home-location-name").html(place.City + ", (" + place.CountryCode + ")");
-                });
-            });
         };
         LocationSettingsDialog.prototype.regRangeCombo = function () {
             var _this = this;
