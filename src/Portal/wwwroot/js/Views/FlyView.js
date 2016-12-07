@@ -5,6 +5,55 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Views;
 (function (Views) {
+    var DelasEval = (function () {
+        function DelasEval(timeType, connections) {
+            this.res = { Excellent: 0, Good: 0, Standard: 0 };
+            this.timeType = timeType;
+            this.connections = connections;
+        }
+        DelasEval.prototype.countDeals = function () {
+            var _this = this;
+            if (this.timeType === PlanningType.Anytime) {
+                this.connections.forEach(function (c) {
+                    c.Flights.forEach(function (f) {
+                        var stars = Planning.AnytimeAggUtils.getScoreStars(f.FlightScore);
+                        _this.incCategory(stars);
+                    });
+                });
+            }
+            if (this.timeType === PlanningType.Weekend) {
+                this.connections.forEach(function (c) {
+                    c.WeekFlights.forEach(function (wf) {
+                        wf.Flights.forEach(function (f) {
+                            var stars = Planning.AnytimeAggUtils.getScoreStars(f.FlightScore);
+                            _this.incCategory(stars);
+                        });
+                    });
+                });
+            }
+            if (this.timeType === PlanningType.Custom) {
+            }
+        };
+        DelasEval.prototype.incCategory = function (stars) {
+            if (stars >= 4) {
+                this.res.Excellent++;
+            }
+            else if (stars >= 2) {
+                this.res.Good++;
+            }
+            else {
+                this.res.Standard++;
+            }
+        };
+        DelasEval.prototype.dispayDeals = function () {
+            this.countDeals();
+            $("#delasEx").html(this.res.Excellent);
+            $("#delasGo").html(this.res.Good);
+            $("#delasSt").html(this.res.Standard);
+        };
+        return DelasEval;
+    }());
+    Views.DelasEval = DelasEval;
     var FlyView = (function (_super) {
         __extends(FlyView, _super);
         function FlyView() {
@@ -21,7 +70,8 @@ var Views;
             configurable: true
         });
         FlyView.prototype.showAirsFirst = function () {
-            alert("Location and airports must be selected first");
+            var id = new Common.InfoDialog();
+            id.create("No airports", "Location and airports must be selected first");
         };
         FlyView.prototype.mapSwitch = function (callback) {
             var _this = this;
@@ -81,6 +131,8 @@ var Views;
             this.resultsEngine = new Planning.ResultsManager();
             this.resultsEngine.onConnectionsChanged = function (connections) {
                 _this.currentSetter.setConnections(connections);
+                var de = new DelasEval(_this.resultsEngine.timeType, connections);
+                de.dispayDeals();
             };
             this.planningMap = new Planning.PlanningMap(this);
             this.planningMap.onMapLoaded = function () {

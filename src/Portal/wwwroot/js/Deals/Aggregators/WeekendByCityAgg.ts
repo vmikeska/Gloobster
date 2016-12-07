@@ -97,11 +97,7 @@ module Planning {
 									  var flights = this.fittingFlights(weekFlight.Flights, days, starsLevel);
 
 										if (any(flights)) {
-
-												if (weekFlight.WeekNo === 53) {
-													console.log("-----53-----");
-												}
-
+												
 												var weekGroup = this.getOrCreateWeekGroup(weekFlight.WeekNo, weekFlight.Year);
 												var weekGroupCity = this.getOrCreateWeekGroupCity(weekGroup, connection.ToCityId, connection.CityName);
 

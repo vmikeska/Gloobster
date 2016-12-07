@@ -82,9 +82,6 @@ var Planning;
                 connection.WeekFlights.forEach(function (weekFlight) {
                     var flights = _this.fittingFlights(weekFlight.Flights, days, starsLevel);
                     if (any(flights)) {
-                        if (weekFlight.WeekNo === 53) {
-                            console.log("-----53-----");
-                        }
                         var weekGroup = _this.getOrCreateWeekGroup(weekFlight.WeekNo, weekFlight.Year);
                         var weekGroupCity = _this.getOrCreateWeekGroupCity(weekGroup, connection.ToCityId, connection.CityName);
                         var lowestPrice = _this.getLowestPrice(flights);

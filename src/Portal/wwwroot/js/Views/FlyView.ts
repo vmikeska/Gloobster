@@ -1,5 +1,66 @@
 ﻿module Views {
-		
+
+	export class DelasEval {
+
+		private timeType: PlanningType;
+		private connections;
+
+		private res = { Excellent: 0, Good: 0, Standard: 0 };
+
+		constructor(timeType: PlanningType, connections) {
+			this.timeType = timeType;
+			this.connections = connections;
+		}
+
+		private countDeals() {
+
+			if (this.timeType === PlanningType.Anytime) {
+				this.connections.forEach((c) => {
+
+					c.Flights.forEach((f) => {
+						var stars = Planning.AnytimeAggUtils.getScoreStars(f.FlightScore);
+						this.incCategory(stars);
+					});
+
+				});
+				}
+
+			if (this.timeType === PlanningType.Weekend) {
+					this.connections.forEach((c) => {
+							c.WeekFlights.forEach((wf) => {
+								wf.Flights.forEach((f) => {
+										var stars = Planning.AnytimeAggUtils.getScoreStars(f.FlightScore);
+										this.incCategory(stars);
+								});									
+							});
+					});
+			}
+
+			if (this.timeType === PlanningType.Custom) {
+					//todo: implement
+			}
+		}
+
+		private incCategory(stars) {
+			if (stars >= 4) {
+				this.res.Excellent++;
+			} else if (stars >= 2) {
+				this.res.Good++;
+			} else {
+				this.res.Standard++;
+			}
+		}
+
+
+		public dispayDeals() {
+			this.countDeals();
+
+			$("#delasEx").html(this.res.Excellent);
+			$("#delasGo").html(this.res.Good);
+			$("#delasSt").html(this.res.Standard);
+		}
+	}
+
 	export class FlyView extends ViewBase {
 
 		public currentSetter: Planning.IPageSetter;
@@ -25,9 +86,12 @@
 			this.initialize();
 		}
 
-			public showAirsFirst() {
-				alert("Location and airports must be selected first");
-			}
+		public showAirsFirst() {
+				var id = new Common.InfoDialog();
+				id.create("No airports", "Location and airports must be selected first");				
+		}
+
+			
 
 		private mapSwitch(callback) {
 			var $cont = $(".map-type-switch");
@@ -78,7 +142,7 @@
 		private changeSetter(type: PlanningType) {
 
 			$("#tabContent").empty();
-
+				
 			if (type === PlanningType.Anytime) {
 				this.currentSetter = new Planning.AnytimePageSetter(this);
 			}
@@ -93,7 +157,7 @@
 			this.currentSetter.init(() => {
 					this.planningMap.loadCategory(type);
 
-					this.resultsEngine.initalCall(type);
+					this.resultsEngine.initalCall(type);					
 			});
 				
 		}
@@ -101,7 +165,10 @@
 		public initialize() {
 			this.resultsEngine = new Planning.ResultsManager();
 			this.resultsEngine.onConnectionsChanged = (connections) => {
-				this.currentSetter.setConnections(connections);
+					this.currentSetter.setConnections(connections);
+
+				  var de = new DelasEval(this.resultsEngine.timeType, connections);
+					de.dispayDeals();
 			};
 
 
