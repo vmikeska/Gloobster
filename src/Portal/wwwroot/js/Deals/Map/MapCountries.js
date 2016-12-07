@@ -47,23 +47,26 @@ var Planning;
             });
         };
         MapCountries.prototype.createMapFeature = function (feature) {
-            var _this = this;
             var cc = feature.properties.cc;
             var l = new L.GeoJSON(feature, {
                 style: this.getCountryStyle(cc)
             });
             this.featureArray.push([cc, l]);
+            this.regEvnts(l, cc);
             l.addTo(this.ccsLayerGroup);
-            l.on("mouseover", function (e) {
+        };
+        MapCountries.prototype.regEvnts = function (la, cc) {
+            var _this = this;
+            la.on("mouseover", function (e) {
                 var layer = _this.getLayer(e);
                 layer.setStyle(Planning.MapConstants.hoverStyle);
             });
-            l.on("mouseout", function (e) {
+            la.on("mouseout", function (e) {
                 var layer = _this.getLayer(e);
                 var s = _this.getCountryStyle(cc);
                 layer.setStyle(s);
             });
-            l.on("click", function (e) {
+            la.on("click", function (e) {
                 var layer = _this.getLayer(e);
                 _this.countryClicked(cc, layer);
             });

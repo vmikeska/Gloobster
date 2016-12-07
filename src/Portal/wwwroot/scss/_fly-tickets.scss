@@ -799,6 +799,7 @@
                     }
     
                     .day{
+                        position: relative;
                         box-sizing: border-box;
                         border-width: 2px;
                         border-style: solid;
@@ -821,7 +822,12 @@
                         }
 
                         &.foc {
-                            border-color: red;
+                            width: 74px;
+                            padding-top: 24px;
+                            padding-bottom: 24px;
+
+                            /*top: -2px;*/
+                            left: -4px;
                         }
 
                         &.perm-sel{

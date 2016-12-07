@@ -67,7 +67,7 @@ module Planning {
 					this.createMapFeature(feature);
 				});
 		}
-			
+
 		private createMapFeature(feature) {
 			var cc = feature.properties.cc;
 
@@ -78,21 +78,24 @@ module Planning {
 
 			this.featureArray.push([cc, l]);
 				
+			this.regEvnts(l, cc);
 			l.addTo(this.ccsLayerGroup);
+		}
 
-			l.on("mouseover", (e) => {
+		private regEvnts(la, cc) {				
+				la.on("mouseover", (e) => {					
 					var layer = this.getLayer(e);
-					layer.setStyle(MapConstants.hoverStyle);
+					layer.setStyle(MapConstants.hoverStyle);					
 				});
-			l.on("mouseout", (e) => {
+			la.on("mouseout", (e) => {					
 					var layer = this.getLayer(e);
 					var s = this.getCountryStyle(cc);
 					layer.setStyle(s);
 				});
-			l.on("click", (e) => {
+			la.on("click", (e) => {					
 					var layer = this.getLayer(e);
 					this.countryClicked(cc, layer);
-				});
+			});			
 		}
 
 		private countryClicked(cc, layer) {

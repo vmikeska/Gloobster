@@ -4943,6 +4943,7 @@ footer {
           margin-left: 10px;
           margin-right: 25px; }
         .fly-tickets .filtering .sec-line .weekend-deals-filter .days-filter .day {
+          position: relative;
           box-sizing: border-box;
           border-width: 2px;
           border-style: solid;
@@ -4970,7 +4971,11 @@ footer {
           .fly-tickets .filtering .sec-line .weekend-deals-filter .days-filter .day.act {
             background-color: #F56E12; }
           .fly-tickets .filtering .sec-line .weekend-deals-filter .days-filter .day.foc {
-            border-color: red; }
+            width: 74px;
+            padding-top: 24px;
+            padding-bottom: 24px;
+            /*top: -2px;*/
+            left: -4px; }
           .fly-tickets .filtering .sec-line .weekend-deals-filter .days-filter .day.perm-sel {
             background-color: #F56E12; }
         .fly-tickets .filtering .sec-line .weekend-deals-filter .days-filter.enabled .day {
