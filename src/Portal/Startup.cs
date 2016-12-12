@@ -18,6 +18,7 @@ using Gloobster.Entities;
 using MongoDB.Bson;
 using Microsoft.AspNet.Http.Extensions;
 using System.Linq;
+using Gloobster.DomainModels.SearchEngine;
 
 namespace Gloobster.Portal
 {
@@ -37,6 +38,13 @@ namespace Gloobster.Portal
 		{
             //.AddJsonFile("configLocal.json");
             //.AddJsonFile($"config.{env.EnvironmentName}.json", optional: true);
+
+            var qc = new QueryCleaner();
+            qc.Execute += () =>
+            {
+                Console.WriteLine("Alles gut");
+            };
+            qc.Start();
 
             try
             {
@@ -238,8 +246,7 @@ namespace Gloobster.Portal
         {
             AddDebugLog("Run:Enter");
             WebApplication.Run<Startup>(args);
-            AddDebugLog("Run:Leave");
-            
+            AddDebugLog("Run:Leave");            
         }
 
 

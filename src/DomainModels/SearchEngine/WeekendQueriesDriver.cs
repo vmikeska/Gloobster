@@ -40,8 +40,7 @@ namespace Gloobster.DomainModels.SearchEngine
                     to = to,
                     dateFrom = date.FromDate.ToString(),
                     dateTo = date.ToDate.ToString(),
-
-                    //todo: rework then to something more specific
+                    
                     daysInDestinationFrom = "2",
                     daysInDestinationTo = "4",
 

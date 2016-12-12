@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
@@ -118,16 +119,25 @@ namespace Gloobster.DomainModels.SearchEngine
             StartQuery(entity);
         }
         
+        private List<string> _myLogs = new List<string>();
+
         private async void StartQuery(SkypickerQueryEntity entity)
         {
             List<FlightRequestDO> requests = RequestsDriver.BuildRequests(entity.FromPlace, entity.ToPlace, entity.ToPlaceType);
 
             var weekSearches = new List<FlightSearchDO>();
-            
+
+            var sw = new Stopwatch();
+
             //one request here is for one time period, week or weekend. Right now, possibly must not be like that in future
             foreach (FlightRequestDO request in requests)
             {
+                sw.Restart();
                 FlightSearchDO searchResult = SpProvider.Search(request);
+                sw.Stop();
+
+                _myLogs.Add($"{request.flyFrom}-{request.to}: {sw.Elapsed.TotalMilliseconds}");
+                
                 if (searchResult == null)
                 {
                     continue;
