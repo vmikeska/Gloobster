@@ -73,6 +73,25 @@ namespace Gloobster.DomainModels.SearchEngine8
 
     //------classes------
 
+    public static class ResultsMappers
+    {
+        public static AnytimeResultDO ToDO(this AnytimeResultsEntity e)
+        {
+            return null;
+        }
+
+        public static WeekendResultDO ToDO(this WeekendResultsEntity e)
+        {
+            return null;
+        }
+
+        public static CustomResultDO ToDO(this CustomResultsEntity e)
+        {
+            return null;
+        }
+    }
+    
+
     public interface IQueryBuilder
     {
         FlightRequestDO BuildCountry(string airCode, string cc);

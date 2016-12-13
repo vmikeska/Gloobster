@@ -22,30 +22,54 @@ namespace Gloobster.Portal.Controllers.Api.Planning
         [AuthorizeApi]
         public async Task<IActionResult> Get(SearchRequest8 req)
         {
-            var results = new List<FlightQueryResult8DO>();
+            if (req.timeType == TimeType8.Anytime)
+            {
+                var results = GetResults<AnytimeResultDO>(req);
+                //todo: create response class + convert to response
+                return new ObjectResult(results);
+            }
+
+            if (req.timeType == TimeType8.Weekend)
+            {
+                var results = GetResults<WeekendResultDO>(req);
+                //todo: create response class + convert to response
+                return new ObjectResult(results);
+            }
+
+            if (req.timeType == TimeType8.Custom)
+            {
+                var results = GetResults<CustomResultDO>(req);
+                //todo: create response class + convert to response
+                return new ObjectResult(results);
+            }
+            
+            return new ObjectResult(null);
+        }
+
+
+        private async Task<List<FlightQueryResult8DO<T>>> GetResults<T>(SearchRequest8 req)
+        {
+            var results = new List<FlightQueryResult8DO<T>>();
 
             if (req.firstQuery)
             {
-                results = await ClientExecutor.ExeFirstRequestAsync(UserId, req.timeType, req.customId);
+                results = await ClientExecutor.ExeFirstRequestAsync<T>(UserId, req.timeType, req.customId);
             }
             else
             {
                 var dests = ExtractDests(req);
-                var singleResults = await ClientExecutor.ExeSingleRequestsAsync(UserId, req.timeType, dests);
+                var singleResults = await ClientExecutor.ExeSingleRequestsAsync<T>(UserId, req.timeType, dests);
                 results.AddRange(singleResults);
 
                 if (req.qids != null)
                 {
-                    var requeryResults = ClientExecutor.ExeRequery(req.qids);
+                    var requeryResults = ClientExecutor.ExeRequery<T>(req.qids);
                     results.AddRange(requeryResults);
-                }                
+                }
             }
-            
-            //todo: create response class + convert to response
-            return new ObjectResult(results);
-        }
 
-        
+            return results;
+        }
 
         private DestinationRequests8DO ExtractDests(SearchRequest8 req)
         {

@@ -23,28 +23,28 @@ namespace Gloobster.DomainModels.SearchEngine8
 
         public FlightsDb8 FlightsDB { get; set; }
 
-        public async Task<List<FlightQueryResult8DO>> ExeFirstRequestAsync(string userId, TimeType8 timeType, string customId = null)
+        public async Task<List<FlightQueryResult8DO<T>>> ExeFirstRequestAsync<T>(string userId, TimeType8 timeType, string customId = null)
         {
             var userIdObj = new ObjectId(userId);
             
             var dests = GetDestinations(timeType, userIdObj, customId);
             var queries = GetQueries(timeType, dests, userId, customId);
             
-            var results = await ExeQueriesAsync(queries);
+            var results = await ExeQueriesAsync<T>(queries);
             return results;
         }
 
-        public async Task<List<FlightQueryResult8DO>> ExeSingleRequestsAsync(string userId, TimeType8 timeType, DestinationRequests8DO dests, string customId = null)
+        public async Task<List<FlightQueryResult8DO<T>>> ExeSingleRequestsAsync<T>(string userId, TimeType8 timeType, DestinationRequests8DO dests, string customId = null)
         {
             var queries = GetQueries(timeType, dests, userId, customId);
 
-            var results = await ExeQueriesAsync(queries);
+            var results = await ExeQueriesAsync<T>(queries);
             return results;
         }
 
-        public List<FlightQueryResult8DO> ExeRequery(List<string> ids)
+        public List<FlightQueryResult8DO<T>> ExeRequery<T>(List<string> ids)
         {
-            var results = FlightsDB.CheckOnResults(ids);
+            var results = FlightsDB.CheckOnResults<T>(ids);
             return results;
         }
 
@@ -94,12 +94,12 @@ namespace Gloobster.DomainModels.SearchEngine8
             return dests;
         }
 
-        private async Task<List<FlightQueryResult8DO>> ExeQueriesAsync(List<FlightQuery8DO> queries)
+        private async Task<List<FlightQueryResult8DO<T>>> ExeQueriesAsync<T>(List<FlightQuery8DO> queries)
         {
-            var results = new List<FlightQueryResult8DO>();
+            var results = new List<FlightQueryResult8DO<T>>();
             foreach (var query in queries)
             {
-                var result = await FlightsDB.GetResultsAsync(query);
+                var result = await FlightsDB.GetResultsAsync<T>(query);
                 results.Add(result);
             }
 
@@ -304,7 +304,7 @@ namespace Gloobster.DomainModels.SearchEngine8
 
         public FlightQuery8DO BuildQueryWeekendCity(string fromAir, int gid, int week, int year)
         {
-            var prms = $"{week}_{year}";
+            var prms = ParamsParsers.Weekend(week, year);
 
             return new FlightQuery8DO
             {
@@ -346,7 +346,7 @@ namespace Gloobster.DomainModels.SearchEngine8
 
         public FlightQuery8DO BuildQueryCustomCountry(string fromAir, string cc, string userId, string searchId)
         {
-            var prms = $"{userId}_{searchId}";
+            var prms = ParamsParsers.Custom(userId, searchId);
 
             return new FlightQuery8DO
             {
@@ -365,7 +365,7 @@ namespace Gloobster.DomainModels.SearchEngine8
 
         public IDbOperations DB { get; set; }
 
-        public async Task<FlightQueryResult8DO> GetResultsAsync(FlightQuery8DO q)
+        public async Task<FlightQueryResult8DO<T>> GetResultsAsync<T>(FlightQuery8DO q)
         {
             QueryEntity queryEntity = GetQuery(q);
 
@@ -374,12 +374,12 @@ namespace Gloobster.DomainModels.SearchEngine8
             {
                 if (queryEntity.State == QueryState8.Saved)
                 {
-                    return new FlightQueryResult8DO { QueryId = queryEntity.id.ToString(), State = QueryState8.Saved };
+                    return new FlightQueryResult8DO<T> { QueryId = queryEntity.id.ToString(), State = QueryState8.Saved };
                 }
 
                 if (queryEntity.State == QueryState8.Started)
                 {
-                    return new FlightQueryResult8DO {QueryId = queryEntity.id.ToString(), State = QueryState8.Started};
+                    return new FlightQueryResult8DO<T> {QueryId = queryEntity.id.ToString(), State = QueryState8.Started};
                 }
 
                 if (queryEntity.State == QueryState8.Finished)
@@ -392,47 +392,78 @@ namespace Gloobster.DomainModels.SearchEngine8
                         await DeleteQueryAsync(queryEntity.id);
                         await SaveQueryAsync(q);
 
-                        return new FlightQueryResult8DO { QueryId = queryEntity.id.ToString(), State = QueryState8.Saved };
+                        return new FlightQueryResult8DO<T> { QueryId = queryEntity.id.ToString(), State = QueryState8.Saved };
                     }
 
-                    return new FlightQueryResult8DO
+                    return new FlightQueryResult8DO<T>
                     {
                         QueryId = queryEntity.id.ToString(),
                         State = QueryState8.Finished,
-
-                        //todo: return results
-                        Result = new object()
+                        
+                        Results = GetResults<T>(queryEntity.id)
                     };
                 }
             }
             
             var newQueryId = await SaveQueryAsync(q);
-            return new FlightQueryResult8DO {QueryId = newQueryId, State = QueryState8.Saved};
+            return new FlightQueryResult8DO<T> {QueryId = newQueryId, State = QueryState8.Saved};
         }
 
-        public List<FlightQueryResult8DO> CheckOnResults(List<string> ids)
+        public List<FlightQueryResult8DO<T>> CheckOnResults<T>(List<string> ids)
         {
-            var results = new List<FlightQueryResult8DO>();
+            var results = new List<FlightQueryResult8DO<T>>();
 
             var objIds = ids.Select(i => new ObjectId(i)).ToList();
 
             var queries = DB.List<QueryEntity>(e => objIds.Contains(e.id));
 
-            foreach (var query in queries)
+            foreach (QueryEntity query in queries)
             {
                 if (query.State == QueryState8.Finished)
                 {
-                    //todo: get results
+                    var result = new FlightQueryResult8DO<T>
+                    {
+                        QueryId = query.id.ToString(),
+                        State = query.State,
+                        Results = GetResults<T>(query.id)
+                    };
+                    results.Add(result);
                 }
 
                 if (query.State == QueryState8.Started || query.State == QueryState8.Saved)
                 {
-                    var result = new FlightQueryResult8DO {QueryId = query.id.ToString(), State = query.State};
+                    var result = new FlightQueryResult8DO<T> {QueryId = query.id.ToString(), State = query.State};
                     results.Add(result);
                 }
             }
 
             return results;
+        }
+
+        private List<T> GetResults<T>(ObjectId qid)
+        {
+            if (typeof(T) == typeof(AnytimeResultDO))
+            {
+                var resultsEnts = DB.List<AnytimeResultsEntity>(i => i.Query_id == qid);
+                var results = resultsEnts.Select(e => e.ToDO());
+                return (List<T>)results;
+            }
+
+            if (typeof(T) == typeof(WeekendResultDO))
+            {
+                var resultsEnts = DB.List<WeekendResultsEntity>(i => i.Query_id == qid);
+                var results = resultsEnts.Select(e => e.ToDO());
+                return (List<T>)results;
+            }
+
+            if (typeof(T) == typeof(CustomResultDO))
+            {
+                var resultsEnts = DB.List<CustomResultsEntity>(i => i.Query_id == qid);
+                var results = resultsEnts.Select(e => e.ToDO());
+                return (List<T>)results;
+            }
+            
+            return null;
         }
 
         private async Task DeleteQueryAsync(ObjectId id)
