@@ -318,8 +318,8 @@ namespace Gloobster.DomainModels.SearchEngine8
 
         public FlightQuery8DO BuildQueryWeekendCountry(string fromAir, string cc, int week, int year)
         {
-            var prms = $"{week}_{year}";
-
+            var prms = ParamsParsers.Weekend(week, year);
+            
             return new FlightQuery8DO
             {
                 FromAir = fromAir,
@@ -332,8 +332,8 @@ namespace Gloobster.DomainModels.SearchEngine8
 
         public FlightQuery8DO BuildQueryCustomCity(string fromAir, int gid, string userId, string searchId)
         {
-            var prms = $"{userId}_{searchId}";
-
+            var prms = ParamsParsers.Custom(userId, searchId);
+            
             return new FlightQuery8DO
             {
                 FromAir = fromAir,

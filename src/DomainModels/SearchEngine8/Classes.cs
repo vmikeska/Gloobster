@@ -28,6 +28,12 @@ namespace Gloobster.DomainModels.SearchEngine8
             };
         }
 
+        public static string Weekend(int week, int year)
+        {
+            var str = $"{week}_{year}";
+            return str;
+        }
+
         public static CustomParams Custom(string prms)
         {
             var ps = prms.Split('_');
@@ -37,7 +43,13 @@ namespace Gloobster.DomainModels.SearchEngine8
                 SearchId = ps[1]
             };            
         }
-        //var prms = $"{userId}_{searchId}";
+
+        public static string Custom(string userId, string searchId)
+        {
+            var str = $"{userId}_{searchId}";
+            return str;
+        }
+        
 
     }
 
@@ -129,15 +141,56 @@ namespace Gloobster.DomainModels.SearchEngine8
         public List<FlightSE> Flights { get; set; }
     }
 
-    public class FlightQueryResult8DO
+    public class FlightQueryResult8DO<T>
     {
         public string QueryId { get; set; }
         public QueryState8 State { get; set; }
 
-        //?
-        public object Result { get; set; }
+        public List<T> Results { get; set; }
+    }
+    
+    public class AnytimeResultDO
+    {        
+        public string FromAir { get; set; }
+        public string ToAir { get; set; }
+
+        public int GID { get; set; }
+        public string Name { get; set; }
+        public string CC { get; set; }
+
+        public List<FlightDO> Flights { get; set; }
     }
 
+    public class WeekendResultDO
+    {
+        public string FromAir { get; set; }
+        public string ToAir { get; set; }
+
+        public int GID { get; set; }
+        public string Name { get; set; }
+        public string CC { get; set; }
+
+        public int Week { get; set; }
+        public int Year { get; set; }
+
+        public List<FlightDO> Flights { get; set; }
+    }
+
+    public class CustomResultDO
+    {
+        public string FromAir { get; set; }
+        public string ToAir { get; set; }
+
+        public int GID { get; set; }
+        public string Name { get; set; }
+        public string CC { get; set; }
+
+        public string UserId { get; set; }
+        public string CustomId { get; set; }
+
+        public List<FlightDO> Flights { get; set; }
+    }
+    
     public class WeeksCombi
     {
         public int Year { get; set; }

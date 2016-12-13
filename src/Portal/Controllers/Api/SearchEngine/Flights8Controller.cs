@@ -45,6 +45,8 @@ namespace Gloobster.Portal.Controllers.Api.Planning
             return new ObjectResult(results);
         }
 
+        
+
         private DestinationRequests8DO ExtractDests(SearchRequest8 req)
         {
             var dests = new DestinationRequests8DO
