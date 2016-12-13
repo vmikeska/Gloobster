@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Common;
 using Gloobster.Database;
+using Gloobster.DomainInterfaces.SearchEngine;
 using Gloobster.DomainModels.SearchEngine;
 using Gloobster.DomainObjects.SearchEngine;
 using Gloobster.Entities;
@@ -25,24 +26,43 @@ namespace Gloobster.DomainModels.SearchEngine8
 
         private const int threadsCnt = 5;
 
-        public void ExecuteQueries()
+        public async void ExecuteQueriesAsync()
         {
+            await DeleteOldQueriesAsync();
+
             var queries = DB.C<QueryEntity>().Where(s => s.State == QueryState8.Saved).OrderBy(a => a.Created).ToList();
 
             foreach (var query in queries)
             {
-                ExecuteQuery(query);
+                //? sync or async ?
+                ExecuteQueryAsync(query);
             }
         }
+
+        private async Task DeleteOldQueriesAsync()
+        {
+            DateTime old = DateTime.UtcNow.AddHours(-1);
+
+            await DB.DeleteAsync<QueryEntity>(q => q.State == QueryState8.Finished && q.Executed.Value < old);
+        }
         
-        private void ExecuteQuery(QueryEntity query)
+        private async Task ExecuteQueryAsync(QueryEntity query)
         {            
             IQueryBuilder builder = GetBuilder(query);
             FlightRequestDO request = BuildRequest(query, builder);
             List<FlightDO> flights = KiwiExecutor.Search(request);
 
-            ResultsProcessor.SaveFlights(flights);
-            //todo: change query state
+            await ResultsProcessor.ProcessFlightsAsync(flights, query.TimeType, query.id.ToString(), query.Params);
+            
+            await UpdateQueryStateAsync(query.id, QueryState8.Finished);
+        }
+
+        private async Task UpdateQueryStateAsync(ObjectId id, QueryState8 state)
+        {
+            var filter = DB.F<QueryEntity>().Eq(f => f.id, id);
+            var update = DB.U<QueryEntity>().Set(u => u.State, state);
+
+            await DB.UpdateAsync(filter, update);
         }
 
         private FlightRequestDO BuildRequest(QueryEntity query, IQueryBuilder builder)
@@ -197,11 +217,203 @@ namespace Gloobster.DomainModels.SearchEngine8
 
     public class KiwiResultsProcessor
     {
-        //todo: separate for anytime, weekend, custom
+        public IDbOperations DB { get; set; }
+        public IFlightScoreEngine ScoreEngine { get; set; }
+        public FlightsBigDataCalculator BigDataCalculator { get; set; }
+        public IAirportsCache AirCache { get; set; }
+        
+        public async Task ProcessFlightsAsync(List<FlightDO> flights, TimeType8 timeType, string queryId, string prms)
+        {            
+            ScoredFlightsDO evalFlights = ScoreEngine.FilterFlightsByScore(flights);
 
-        public void SaveFlights(List<FlightDO> flights)
+            BigDataCalculator.Process(evalFlights);
+
+            var groupedFlights = evalFlights.Passed.GroupBy(g => new { g.From, g.To }).ToList();
+
+            var outGroups = new List<GroupedResultDO>();
+
+            foreach (var gf in groupedFlights)
+            {
+                string from = gf.Key.From;
+                string to = gf.Key.To;
+
+                var fs = gf.ToList();
+
+                var toAirport = AirCache.GetAirportByAirCode(to);
+                if (toAirport == null)
+                {
+                    //todo: create complete database of all airports
+                    continue;
+                }
+
+                var outGroup = new GroupedResultDO
+                {
+                    From = from,
+                    To = to,
+
+                    CC = toAirport.CountryCode,
+                    GID = toAirport.GID,
+                    Name = toAirport.Name,
+
+                    Flights = fs
+                };
+                outGroups.Add(outGroup);                
+            }
+
+            IKiwiResultSaver saver = GetSaver(timeType, prms);            
+            var entities = saver.BuildEntities(outGroups, queryId);
+
+            await DB.SaveManyAsync(entities);
+        }
+
+        private IKiwiResultSaver GetSaver(TimeType8 timeType, string prms)
         {
-            List<FlightSE> flightsSE = flights.Select(f => f.ToEntity()).ToList();
+            IKiwiResultSaver saver = null;
+
+            if (timeType == TimeType8.Anytime)
+            {
+                saver = new KiwiAnytimeResultsSaver();
+            }
+
+            if (timeType == TimeType8.Weekend)
+            {
+                var ps = ParamsParsers.Weekend(prms);
+                saver = new KiwiWeekendResultsSaver(ps.Week, ps.Year);
+            }
+
+            if (timeType == TimeType8.Custom)
+            {
+                var ps = ParamsParsers.Custom(prms);
+                saver = new KiwiCustomResultsSaver(ps.UserId, ps.SearchId);
+            }
+
+            return saver;
+        }
+    }
+    
+    public class KiwiAnytimeResultsSaver: IKiwiResultSaver
+    {
+        public List<EntityBase> BuildEntities(List<GroupedResultDO> groups, string queryId)
+        {
+            var qid = new ObjectId(queryId);
+
+            var entities = new List<EntityBase>();
+
+            foreach (var group in groups)
+            {                                
+                var flightsSE = group.Flights.Select(f => f.ToEntity()).ToList();
+
+                var resEnt = new AnytimeResultsEntity
+                {
+                    id = ObjectId.GenerateNewId(),
+                    Query_id = qid,
+
+                    FromAir = group.From,
+                    ToAir = group.To,
+
+                    CC = group.CC,
+                    GID = group.GID,
+                    Name = group.Name,
+
+                    Flights = flightsSE                    
+                };
+                
+                entities.Add(resEnt);
+            }
+
+            return entities;
+        }
+    }
+
+    public class KiwiWeekendResultsSaver : IKiwiResultSaver
+    {
+        private int _week;
+        private int _year;
+
+        public KiwiWeekendResultsSaver(int week, int year)
+        {
+            _week = week;
+            _year = year;
+        }
+
+        public List<EntityBase> BuildEntities(List<GroupedResultDO> groups, string queryId)
+        {
+            var qid = new ObjectId(queryId);
+
+            var entities = new List<EntityBase>();
+
+            foreach (var group in groups)
+            {
+                var flightsSE = group.Flights.Select(f => f.ToEntity()).ToList();
+
+                var resEnt = new WeekendResultsEntity
+                {
+                    id = ObjectId.GenerateNewId(),
+                    Query_id = qid,
+
+                    FromAir = group.From,
+                    ToAir = group.To,
+
+                    CC = group.CC,
+                    GID = group.GID,
+                    Name = group.Name,
+
+                    Week = _week,
+                    Year = _year,
+
+                    Flights = flightsSE
+                };
+
+                entities.Add(resEnt);
+            }
+
+            return entities;
+        }
+    }
+
+    public class KiwiCustomResultsSaver : IKiwiResultSaver
+    {
+        private string _customId;
+        private string _userId;
+
+        public KiwiCustomResultsSaver(string userId, string customId)
+        {
+            _customId = customId;
+            _userId = userId;
+        }
+
+        public List<EntityBase> BuildEntities(List<GroupedResultDO> groups, string queryId)
+        {
+            var qid = new ObjectId(queryId);
+
+            var entities = new List<EntityBase>();
+
+            foreach (var group in groups)
+            {
+                var flightsSE = group.Flights.Select(f => f.ToEntity()).ToList();
+
+                var resEnt = new CustomResultsEntity
+                {
+                    id = ObjectId.GenerateNewId(),
+                    Query_id = qid,
+
+                    FromAir = group.From,
+                    ToAir = group.To,
+
+                    CC = group.CC,
+                    GID = group.GID,
+                    Name = group.Name,
+
+                    CustomId = _customId,
+                    UserId = _userId,
+
+                    Flights = flightsSE
+                };
+
+                entities.Add(resEnt);
+            }
+
+            return entities;
         }
     }
 
@@ -331,4 +543,11 @@ namespace Gloobster.DomainModels.SearchEngine8
         }
     }
 
+    public class FlightsBigDataCalculator
+    {
+        public void Process(ScoredFlightsDO evalFlights)
+        {
+            //todo: implement one day
+        }
+    }
 }

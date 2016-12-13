@@ -361,6 +361,8 @@ namespace Gloobster.DomainModels.SearchEngine8
 
     public class FlightsDb8
     {
+        private const int maxCacheLifeTimeMins = 60;
+
         public IDbOperations DB { get; set; }
 
         public async Task<FlightQueryResult8DO> GetResultsAsync(FlightQuery8DO q)
@@ -377,11 +379,22 @@ namespace Gloobster.DomainModels.SearchEngine8
 
                 if (queryEntity.State == QueryState8.Started)
                 {
-                    return new FlightQueryResult8DO {QueryId = queryEntity.id.ToString(), State = QueryState8.Started};                    
+                    return new FlightQueryResult8DO {QueryId = queryEntity.id.ToString(), State = QueryState8.Started};
                 }
 
                 if (queryEntity.State == QueryState8.Finished)
                 {
+                    TimeSpan age = DateTime.UtcNow - queryEntity.Executed.Value;
+                    bool isOld = age.TotalMinutes > maxCacheLifeTimeMins;
+
+                    if (isOld)
+                    {
+                        await DeleteQueryAsync(queryEntity.id);
+                        await SaveQueryAsync(q);
+
+                        return new FlightQueryResult8DO { QueryId = queryEntity.id.ToString(), State = QueryState8.Saved };
+                    }
+
                     return new FlightQueryResult8DO
                     {
                         QueryId = queryEntity.id.ToString(),
@@ -420,6 +433,11 @@ namespace Gloobster.DomainModels.SearchEngine8
             }
 
             return results;
+        }
+
+        private async Task DeleteQueryAsync(ObjectId id)
+        {
+            await DB.DeleteAsync<QueryEntity>(id);
         }
 
         private QueryEntity GetQuery(FlightQuery8DO q)

@@ -15,7 +15,44 @@ using Hammock;
 using MongoDB.Bson;
 
 namespace Gloobster.DomainModels.SearchEngine8
-{   
+{
+    public class ParamsParsers
+    {
+        public static WeekendParams Weekend(string prms)
+        {
+            var ps = prms.Split('_');
+            return new WeekendParams
+            {
+                Week = int.Parse(ps[0]),
+                Year = int.Parse(ps[1])
+            };
+        }
+
+        public static CustomParams Custom(string prms)
+        {
+            var ps = prms.Split('_');
+            return new CustomParams
+            {
+                UserId = ps[0],
+                SearchId = ps[1]
+            };            
+        }
+        //var prms = $"{userId}_{searchId}";
+
+    }
+
+    public class CustomParams
+    {
+        public string UserId;
+        public string SearchId;
+    }
+
+    public class WeekendParams
+    {
+        public int Week;
+        public int Year;
+    }
+
     //----enums-------
 
     public enum PlaceType8 { City, Country }
@@ -42,6 +79,54 @@ namespace Gloobster.DomainModels.SearchEngine8
 
         public DateTime Created { get; set; }
         public DateTime? Executed { get; set; }
+    }
+
+    public class AnytimeResultsEntity : EntityBase
+    {
+        public ObjectId Query_id { get; set; }
+
+        public string FromAir { get; set; }
+        public string ToAir { get; set; }
+
+        public int GID { get; set; }
+        public string Name { get; set; }
+        public string CC { get; set; }
+        
+        public List<FlightSE> Flights { get; set; }
+    }
+
+    public class WeekendResultsEntity : EntityBase
+    {
+        public ObjectId Query_id { get; set; }
+
+        public string FromAir { get; set; }
+        public string ToAir { get; set; }
+
+        public int GID { get; set; }
+        public string Name { get; set; }
+        public string CC { get; set; }
+
+        public int Week { get; set; }
+        public int Year { get; set; }
+
+        public List<FlightSE> Flights { get; set; }
+    }
+
+    public class CustomResultsEntity : EntityBase
+    {
+        public ObjectId Query_id { get; set; }
+
+        public string FromAir { get; set; }
+        public string ToAir { get; set; }
+
+        public int GID { get; set; }
+        public string Name { get; set; }
+        public string CC { get; set; }
+
+        public string UserId { get; set; }
+        public string CustomId { get; set; }
+
+        public List<FlightSE> Flights { get; set; }
     }
 
     public class FlightQueryResult8DO
@@ -79,5 +164,22 @@ namespace Gloobster.DomainModels.SearchEngine8
     {
         public Date FromDate { get; set; }
         public Date ToDate { get; set; }
+    }
+
+    public class GroupedResultDO
+    {
+        public string From { get; set; }
+        public string To { get; set; }
+
+        public string CC { get; set; }
+        public string Name { get; set; }
+        public int GID { get; set; }
+
+        public List<FlightDO> Flights { get; set; }
+    }
+
+    public interface IKiwiResultSaver
+    {
+        List<EntityBase> BuildEntities(List<GroupedResultDO> groups, string queryId);
     }
 }

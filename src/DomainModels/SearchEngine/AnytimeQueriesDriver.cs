@@ -133,16 +133,5 @@ namespace Gloobster.DomainModels.SearchEngine
             return scoredFlights;
         }
         
-        private DateTime GetFirstFriday()
-        {
-            var friday = DateTime.UtcNow;
-
-            while (friday.DayOfWeek != DayOfWeek.Friday)
-            {
-                friday = friday.AddDays(1);
-            }
-
-            return friday;
-        }
     }
 }
