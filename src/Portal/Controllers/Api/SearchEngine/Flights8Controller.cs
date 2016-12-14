@@ -2,20 +2,21 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainModels.SearchEngine8;
+using Gloobster.DomainModels.SearchEngine8.Queuing;
 using Gloobster.Portal.Controllers.Base;
 using Microsoft.AspNet.Mvc;
 using Serilog;
 
-namespace Gloobster.Portal.Controllers.Api.Planning
+namespace Gloobster.Portal.Controllers.Api.SearchEngine
 {
     [Route("api/[controller]")]
     public class Flights8Controller : BaseApiController
     {
-        public ClientRequestExecutor ClientExecutor { get; set; }
+        public IClientRequestExecutor ClientExecutor { get; set; }
 
-        public Flights8Controller(ILogger log, IDbOperations db) : base(log, db)
+        public Flights8Controller(IClientRequestExecutor clientExecutor, ILogger log, IDbOperations db) : base(log, db)
         {
-            
+            ClientExecutor = clientExecutor;
         }
 
         [HttpGet]
@@ -24,21 +25,21 @@ namespace Gloobster.Portal.Controllers.Api.Planning
         {
             if (req.timeType == TimeType8.Anytime)
             {
-                var results = GetResults<AnytimeResultDO>(req);
+                var results = await GetResults<AnytimeResultDO>(req);
                 //todo: create response class + convert to response
                 return new ObjectResult(results);
             }
 
             if (req.timeType == TimeType8.Weekend)
             {
-                var results = GetResults<WeekendResultDO>(req);
+                var results = await GetResults<WeekendResultDO>(req);
                 //todo: create response class + convert to response
                 return new ObjectResult(results);
             }
 
             if (req.timeType == TimeType8.Custom)
             {
-                var results = GetResults<CustomResultDO>(req);
+                var results = await GetResults<CustomResultDO>(req);
                 //todo: create response class + convert to response
                 return new ObjectResult(results);
             }
@@ -93,7 +94,6 @@ namespace Gloobster.Portal.Controllers.Api.Planning
         }
         
     }
-
 
 
     public class SearchRequest8

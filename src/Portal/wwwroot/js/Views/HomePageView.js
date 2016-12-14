@@ -8,9 +8,24 @@ var Views;
     var HomePageView = (function (_super) {
         __extends(HomePageView, _super);
         function HomePageView() {
+            var _this = this;
             _super.call(this);
             Views.AirLoc.registerLocationCombo($("#currentCity"), function (place) {
                 window.location.href = "/deals";
+            });
+            $("#myTest").click(function (e) {
+                e.preventDefault();
+                var prms = [["firstQuery", "false"], ["timeType", "0"], ["ccs", "GB"]];
+                _this.apiGet("Flights8", prms, function (res) {
+                    var re = res;
+                });
+            });
+            $("#myTest2").click(function (e) {
+                e.preventDefault();
+                var prms = [];
+                _this.apiGet("ExeTest", prms, function (res) {
+                    var re = res;
+                });
             });
         }
         Object.defineProperty(HomePageView.prototype, "pageType", {

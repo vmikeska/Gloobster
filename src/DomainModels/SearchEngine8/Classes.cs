@@ -77,27 +77,53 @@ namespace Gloobster.DomainModels.SearchEngine8
     {
         public static AnytimeResultDO ToDO(this AnytimeResultsEntity e)
         {
-            return null;
+            var d = new AnytimeResultDO
+            {
+                FromAir = e.FromAir,
+                CC = e.CC,
+                GID = e.GID,
+                Name = e.Name,
+                ToAir = e.ToAir,
+                Flights = e.Flights.Select(f => f.ToDO()).ToList()
+            };
+            return d;
         }
 
         public static WeekendResultDO ToDO(this WeekendResultsEntity e)
         {
-            return null;
+            var d = new WeekendResultDO
+            {
+                FromAir = e.FromAir,
+                CC = e.CC,
+                GID = e.GID,
+                Name = e.Name,
+                ToAir = e.ToAir,
+                Flights = e.Flights.Select(f => f.ToDO()).ToList(),
+
+                Year = e.Year,
+                Week = e.Week
+            };
+            return d;
         }
 
         public static CustomResultDO ToDO(this CustomResultsEntity e)
         {
-            return null;
+            var d = new CustomResultDO
+            {
+                FromAir = e.FromAir,
+                CC = e.CC,
+                GID = e.GID,
+                Name = e.Name,
+                ToAir = e.ToAir,
+                Flights = e.Flights.Select(f => f.ToDO()).ToList(),
+
+                UserId = e.UserId,
+                CustomId = e.CustomId
+            };
+            return d;
         }
     }
     
-
-    public interface IQueryBuilder
-    {
-        FlightRequestDO BuildCountry(string airCode, string cc);
-        FlightRequestDO BuildCity(string airCode, int gid);
-    }
-
     public class QueryEntity: EntityBase
     {
         public QueryState8 State { get; set; }
@@ -112,7 +138,7 @@ namespace Gloobster.DomainModels.SearchEngine8
         public DateTime? Executed { get; set; }
     }
 
-    public class AnytimeResultsEntity : EntityBase
+    public class AnytimeResultsEntity: EntityBase
     {
         public ObjectId Query_id { get; set; }
 
@@ -249,9 +275,75 @@ namespace Gloobster.DomainModels.SearchEngine8
 
         public List<FlightDO> Flights { get; set; }
     }
+    
+    //---inters-----
 
-    public interface IKiwiResultSaver
+    public interface IClientRequestExecutor
     {
-        List<EntityBase> BuildEntities(List<GroupedResultDO> groups, string queryId);
+        Task<List<FlightQueryResult8DO<T>>> ExeFirstRequestAsync<T>(string userId, TimeType8 timeType, string customId = null);
+
+        Task<List<FlightQueryResult8DO<T>>> ExeSingleRequestsAsync<T>(string userId, TimeType8 timeType, DestinationRequests8DO dests, string customId = null);
+
+        List<FlightQueryResult8DO<T>> ExeRequery<T>(List<string> ids);
     }
+
+    public interface IKiwiResultSaver<T>
+    {
+        List<T> BuildEntities(List<GroupedResultDO> groups, string queryId);
+    }
+
+    public interface IQueryBuilder
+    {
+        FlightRequestDO BuildCountry(string airCode, string cc);
+        FlightRequestDO BuildCity(string airCode, int gid);
+    }
+
+    public interface IRequestsBuilder8
+    {
+        List<FlightQuery8DO> BuildQueriesAnytime(DestinationRequests8DO destinations, string userId);
+        List<FlightQuery8DO> BuildQueriesWeekend(DestinationRequests8DO destinations, string userId);
+        List<FlightQuery8DO> BuildQueriesCustom(DestinationRequests8DO destinations, string userId, string searchId);
+    }
+
+    public interface IRequestBuilder8
+    {
+        FlightQuery8DO BuildQueryAnytimeCity(string fromAir, int gid);
+
+        FlightQuery8DO BuildQueryAnytimeCountry(string fromAir, string cc);
+
+        FlightQuery8DO BuildQueryWeekendCity(string fromAir, int gid, int week, int year);
+
+        FlightQuery8DO BuildQueryWeekendCountry(string fromAir, string cc, int week, int year);
+
+        FlightQuery8DO BuildQueryCustomCity(string fromAir, int gid, string userId, string searchId);
+
+        FlightQuery8DO BuildQueryCustomCountry(string fromAir, string cc, string userId, string searchId);
+    }
+
+    public interface IFlightsDb8
+    {
+        Task<FlightQueryResult8DO<T>> GetResultsAsync<T>(FlightQuery8DO q);
+        List<FlightQueryResult8DO<T>> CheckOnResults<T>(List<string> ids);
+    }
+
+    public interface IFlightsBigDataCalculator
+    {
+        void Process(ScoredFlightsDO evalFlights);
+    }
+
+    public interface IKiwiResultsExecutor
+    {
+        List<FlightDO> Search(FlightRequestDO req);
+    }
+
+    public interface IKiwiResultsProcessor
+    {
+        Task ProcessFlightsAsync(List<FlightDO> flights, TimeType8 timeType, string queryId, string prms);
+    }
+
+    public interface IQueriesExecutor
+    {
+        void ExecuteQueriesAsync();
+    }
+
 }

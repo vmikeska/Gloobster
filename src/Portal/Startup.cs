@@ -19,9 +19,11 @@ using MongoDB.Bson;
 using Microsoft.AspNet.Http.Extensions;
 using System.Linq;
 using Gloobster.DomainModels.SearchEngine;
+using Gloobster.DomainModels.SearchEngine8;
 
 namespace Gloobster.Portal
 {
+    
     public class Startup
     {
 		public IConfiguration Configuration { get; set; }
@@ -38,14 +40,7 @@ namespace Gloobster.Portal
 		{
             //.AddJsonFile("configLocal.json");
             //.AddJsonFile($"config.{env.EnvironmentName}.json", optional: true);
-
-            var qc = new QueryCleaner();
-            qc.Execute += () =>
-            {
-                Console.WriteLine("Alles gut");
-            };
-            qc.Start();
-
+            
             try
             {
 		        //http://stackoverflow.com/questions/28258227/how-to-set-ihostingenvironment-environmentname-in-vnext-application
@@ -112,6 +107,8 @@ namespace Gloobster.Portal
 
 			    var serviceProvider = InitalizeAutofac(services);
                 AddDebugLog("ConfigureServices:Finished");
+
+                StartQueryExecutions(serviceProvider);
                 
                 return serviceProvider;
             }
@@ -121,6 +118,13 @@ namespace Gloobster.Portal
             }
 
 		    return null;
+        }
+
+        private void StartQueryExecutions(IServiceProvider serviceProvider)
+        {
+            var executor = serviceProvider.GetService<IQueriesExecutor>();
+            ExecutionStarter.Executor = executor;
+            ExecutionStarter.Start();
         }
 
 	    private async void InitDB()

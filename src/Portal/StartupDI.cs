@@ -9,6 +9,9 @@ using Gloobster.DomainModels;
 using Gloobster.DomainModels.ImageDB;
 using Gloobster.DomainModels.Langs;
 using Gloobster.DomainModels.SearchEngine;
+using Gloobster.DomainModels.SearchEngine8;
+using Gloobster.DomainModels.SearchEngine8.Executing;
+using Gloobster.DomainModels.SearchEngine8.Queuing;
 using Gloobster.DomainModels.Services;
 using Gloobster.DomainModels.Services.Accounts;
 using Gloobster.DomainModels.Services.CountryService;
@@ -182,7 +185,30 @@ namespace Gloobster.Portal
 
 
 
-		}
+            builder.AddTransient<IFlightsDb8, FlightsDb8>();
+            builder.AddTransient<IRequestBuilder8, RequestBuilder8>();
+            builder.AddTransient<IRequestsBuilder8, RequestsBuilder8>();
+            builder.AddTransient<IClientRequestExecutor, ClientRequestExecutor>();
+
+            builder.AddTransient<IFlightsBigDataCalculator, FlightsBigDataCalculator>();
+            builder.AddTransient<IKiwiResultsExecutor, KiwiResultsExecutor>();
+            builder.AddTransient<IKiwiResultsProcessor, KiwiResultsProcessor>();
+            builder.AddTransient<IQueriesExecutor, QueriesExecutor>();
+
+            
+
+
+
+
+
+
+
+
+
+
+
+
+        }
 		
 	}
 
