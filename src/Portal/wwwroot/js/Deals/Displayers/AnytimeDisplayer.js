@@ -5,28 +5,29 @@ var Planning;
             this.$cont = $cont;
             this.filter = filter;
         }
-        AnytimeDisplayer.prototype.showResults = function (connections, grouping) {
-            this.connections = connections;
+        AnytimeDisplayer.prototype.showResults = function (queries, grouping) {
+            this.queries = queries;
             var filterState = this.filter.getStateBase();
+            var results = Planning.FlightsExtractor.getResults(this.queries);
             if (grouping === Planning.LocationGrouping.ByCity) {
-                var agg1 = new Planning.AnytimeByCityAgg(connections);
+                var agg1 = new Planning.AnytimeByCityAgg(this.queries);
                 var fs = this.filter.getStateBase();
                 agg1.exe(fs.starsLevel);
-                var dis = new AnytimeByCityDis(this.connections, filterState.currentLevel);
+                var dis = new AnytimeByCityDis(results, filterState.currentLevel);
                 dis.render(agg1.cities);
             }
             if (grouping === Planning.LocationGrouping.ByCountry) {
-                var agg2 = new Planning.AnytimeByCountryAgg(connections);
+                var agg2 = new Planning.AnytimeByCountryAgg(this.queries);
                 var fs2 = this.filter.getStateBase();
                 agg2.exe(fs2.starsLevel);
-                var dis2 = new AnytimeByCountryDis(this.connections, filterState.currentLevel);
+                var dis2 = new AnytimeByCountryDis(results, filterState.currentLevel);
                 dis2.render(agg2.countries, $("#resultsCont"));
             }
             if (grouping === Planning.LocationGrouping.ByContinent) {
-                var agg3 = new Planning.AnytimeByContinentAgg(connections);
+                var agg3 = new Planning.AnytimeByContinentAgg(this.queries);
                 var fs3 = this.filter.getStateBase();
                 agg3.exe(fs3.starsLevel);
-                var dis3 = new AnytimeByContinentDis(this.connections, filterState.currentLevel);
+                var dis3 = new AnytimeByContinentDis(results, filterState.currentLevel);
                 dis3.render(agg3.getAllConts());
             }
         };
@@ -34,9 +35,9 @@ var Planning;
     }());
     Planning.AnytimeDisplayer = AnytimeDisplayer;
     var AnytimeByCityDis = (function () {
-        function AnytimeByCityDis(connections, scoreLevel) {
+        function AnytimeByCityDis(results, scoreLevel) {
             this.$cont = $("#resultsCont");
-            this.connections = connections;
+            this.results = results;
             this.scoreLevel = scoreLevel;
         }
         AnytimeByCityDis.prototype.render = function (cities) {
@@ -56,7 +57,7 @@ var Planning;
             };
             lg.generateList(cities);
         };
-        AnytimeByCityDis.prototype.genOffers = function ($cityBox, flights) {
+        AnytimeByCityDis.prototype.genOffers = function ($cityBox, bestFlights) {
             var _this = this;
             var lgi = Common.ListGenerator.init($cityBox.find("table"), "resultGroup-priceItem-template");
             lgi.listLimit = 2;
@@ -68,22 +69,22 @@ var Planning;
                 var gid = $cityBox.data("gid");
                 var name = $cityBox.data("name");
                 var $lc = Common.LastItem.getLast(_this.$cont, "flight-result", $cityBox.data("no"));
-                var conn = _.find(_this.connections, function (c) { return c.FromAirport === from && c.ToAirport === to; });
-                var flights = Planning.FlightConvert.cFlights(conn.Flights);
+                var result = _.find(_this.results, function (r) { return r.from === from && r.to === to; });
+                var flights = Planning.FlightConvert2.cFlights(result.fs);
                 var title = "Deals for " + name;
                 var pairs = [{ from: from, to: to }];
                 var cd = new Planning.CityDetail(_this.scoreLevel, pairs, title, name, gid);
                 cd.createLayout($lc);
                 cd.init(flights);
             });
-            lgi.generateList(flights);
+            lgi.generateList(bestFlights);
         };
         return AnytimeByCityDis;
     }());
     Planning.AnytimeByCityDis = AnytimeByCityDis;
     var AnytimeByCountryDis = (function () {
-        function AnytimeByCountryDis(connections, scoreLevel) {
-            this.connections = connections;
+        function AnytimeByCountryDis(results, scoreLevel) {
+            this.results = results;
             this.scoreLevel = scoreLevel;
         }
         AnytimeByCountryDis.prototype.render = function (countries, $cont) {
@@ -121,15 +122,15 @@ var Planning;
             lgi.evnt(null, function (e, $tr, $target, item) {
                 var gid = $tr.data("gid");
                 var $lc = Common.LastItem.getLast(_this.$cont, "flight-result", $cityBox.data("no"));
-                var conn = _.filter(_this.connections, function (c) { return c.ToCityId === gid; });
-                var first = _.first(conn);
+                var results = _.filter(_this.results, function (r) { return r.gid === gid; });
+                var first = _.first(results);
                 var name = first.CityName;
                 var flights = [];
                 var pairs = [];
-                conn.forEach(function (c) {
-                    pairs.push({ from: c.FromAirport, to: c.ToAirport });
-                    c.Flights.forEach(function (f) {
-                        var flight = Planning.FlightConvert.cFlight(f);
+                results.forEach(function (r) {
+                    pairs.push({ from: r.from, to: r.to });
+                    r.fs.forEach(function (f) {
+                        var flight = Planning.FlightConvert2.cFlight(f);
                         flights.push(flight);
                     });
                 });
@@ -144,10 +145,10 @@ var Planning;
     }());
     Planning.AnytimeByCountryDis = AnytimeByCountryDis;
     var AnytimeByContinentDis = (function () {
-        function AnytimeByContinentDis(connections, scoreLevel) {
+        function AnytimeByContinentDis(results, scoreLevel) {
             this.$cont = $("#resultsCont");
             this.continents = [];
-            this.connections = connections;
+            this.results = results;
             this.scoreLevel = scoreLevel;
         }
         AnytimeByContinentDis.prototype.render = function (conts) {
@@ -168,7 +169,7 @@ var Planning;
             lg.generateList(this.continents);
         };
         AnytimeByContinentDis.prototype.genCountries = function ($continent, countries) {
-            var bc = new AnytimeByCountryDis(this.connections, this.scoreLevel);
+            var bc = new AnytimeByCountryDis(this.results, this.scoreLevel);
             bc.render(countries, $continent.find(".cont"));
         };
         AnytimeByContinentDis.prototype.mapContObjs = function (conts) {

@@ -1,7 +1,7 @@
 var Planning;
 (function (Planning) {
     var AnytimeByContinentAgg = (function () {
-        function AnytimeByContinentAgg(connections) {
+        function AnytimeByContinentAgg(queries) {
             this.europe = [];
             this.nAmerica = [];
             this.sAmerica = [];
@@ -9,7 +9,7 @@ var Planning;
             this.africa = [];
             this.australia = [];
             this.cg = Common.CountriesGroup;
-            this.connections = connections;
+            this.queries = queries;
         }
         AnytimeByContinentAgg.prototype.getAllConts = function () {
             return {
@@ -23,7 +23,7 @@ var Planning;
         };
         AnytimeByContinentAgg.prototype.exe = function (starsLevel) {
             var _this = this;
-            var ca = new Planning.AnytimeByCountryAgg(this.connections);
+            var ca = new Planning.AnytimeByCountryAgg(this.queries);
             ca.exe(starsLevel);
             ca.countries.forEach(function (c) {
                 if (_this.contains(c.cc, _this.cg.europe)) {

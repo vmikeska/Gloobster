@@ -73,6 +73,13 @@ var PlanningType;
     PlanningType[PlanningType["Weekend"] = 1] = "Weekend";
     PlanningType[PlanningType["Custom"] = 2] = "Custom";
 })(PlanningType || (PlanningType = {}));
+var QueryState;
+(function (QueryState) {
+    QueryState[QueryState["Saved"] = 0] = "Saved";
+    QueryState[QueryState["Started"] = 1] = "Started";
+    QueryState[QueryState["Finished"] = 2] = "Finished";
+    QueryState[QueryState["Failed"] = 3] = "Failed";
+})(QueryState || (QueryState = {}));
 var Gender;
 (function (Gender) {
     Gender[Gender["N"] = 0] = "N";

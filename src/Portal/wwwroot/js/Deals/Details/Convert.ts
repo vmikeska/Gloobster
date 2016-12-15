@@ -67,6 +67,49 @@ module Planning {
 		}
 	}
 
+		export class FlightConvert2 {
+
+			public static cFlights(fs): Flight[] {
+					var flights = [];
+					fs.forEach((f) => {
+							var flight = this.cFlight(f);
+							flights.push(flight);
+					});
+					return flights;
+			}
+
+			public static cFlight(f): Flight {
+					var flight: Flight = {
+							from: f.from,
+							to: f.to,
+							price: f.price,
+							score: f.score,
+							parts: []
+					};
+
+					f.parts.forEach((p) => {
+							var part = this.cPart(p);
+							flight.parts.push(part);
+					});
+
+					return flight;
+			}
+
+			public static cPart(p): FlightPart {
+					var part: FlightPart = {
+							depTime: new Date(p.dep),
+							arrTime: new Date(p.arr),
+							from: p.from,
+							to: p.to,
+							airline: p.air,
+							minsDuration: p.mins,
+							flightNo: p.no
+					}
+
+					return part;
+			}
+	}
+
 //public string From { get; set; }
 //public string To { get; set; }
 //public double Price { get; set; }

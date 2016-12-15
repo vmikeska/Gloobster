@@ -68,9 +68,7 @@ namespace Gloobster.DomainModels.SearchEngine8
     //----enums-------
 
     public enum PlaceType8 { City, Country }
-    public enum QueryState8 { Saved, Started, Finished,
-        Failed
-    }
+    public enum QueryState8 { Saved, Started, Finished, Failed }
     public enum TimeType8 { Anytime, Weekend, Custom }
 
     //------classes------
@@ -213,7 +211,10 @@ namespace Gloobster.DomainModels.SearchEngine8
             var r = new FlightQueryResultResponse<T, TY>
             {
                 qid = d.QueryId,
-                state = d.State
+                state = d.State,
+
+                to = d.To,
+                toType = d.ToType
             };
 
             if (d.Results != null)
@@ -246,6 +247,9 @@ namespace Gloobster.DomainModels.SearchEngine8
     {
         public string qid { get; set; }
         public QueryState8 state { get; set; }
+
+        public string to { get; set; }
+        public PlaceType8 toType { get; set; }
 
         public List<TY> results { get; set; }
     }
@@ -389,6 +393,9 @@ namespace Gloobster.DomainModels.SearchEngine8
     {
         public string QueryId { get; set; }
         public QueryState8 State { get; set; }
+
+        public string To { get; set; }
+        public PlaceType8 ToType { get; set; }
 
         public List<T> Results { get; set; }
     }

@@ -9,12 +9,12 @@ module Planning {
 				public africa = [];
 				public australia = [];
 
-			public connections;
+			public queries;
 				
 			private cg = Common.CountriesGroup;
 
-			constructor(connections) {
-					this.connections = connections;
+			constructor(queries) {
+					this.queries = queries;
 			}
 
 			public getAllConts() {
@@ -30,7 +30,7 @@ module Planning {
 
 			public exe(starsLevel: number) {
 										
-					var ca = new AnytimeByCountryAgg(this.connections);
+					var ca = new AnytimeByCountryAgg(this.queries);
 					ca.exe(starsLevel);
 
 					ca.countries.forEach((c) => {

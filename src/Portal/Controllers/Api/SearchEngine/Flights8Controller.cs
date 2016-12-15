@@ -11,11 +11,11 @@ using System.Linq;
 namespace Gloobster.Portal.Controllers.Api.SearchEngine
 {
     [Route("api/[controller]")]
-    public class Flights8Controller : BaseApiController
+    public class DealsController : BaseApiController
     {
         public IClientRequestExecutor ClientExecutor { get; set; }
         
-        public Flights8Controller(IClientRequestExecutor clientExecutor, ILogger log, IDbOperations db) : base(log, db)
+        public DealsController(IClientRequestExecutor clientExecutor, ILogger log, IDbOperations db) : base(log, db)
         {
             ClientExecutor = clientExecutor;
         }
@@ -102,6 +102,8 @@ namespace Gloobster.Portal.Controllers.Api.SearchEngine
         public bool firstQuery { get; set; }
         public TimeType8 timeType { get; set; }
         public string customId { get; set; }
+
+        //todo: week/year s + to results manager
 
         public List<string> ccs { get; set; }
         public List<int> gids { get; set; }

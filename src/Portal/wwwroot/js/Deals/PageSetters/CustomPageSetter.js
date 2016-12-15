@@ -4,7 +4,7 @@ var Planning;
         function CustomPageSetter(v) {
             this.v = v;
         }
-        CustomPageSetter.prototype.setConnections = function (conns) {
+        CustomPageSetter.prototype.setQueries = function (queries) {
         };
         CustomPageSetter.prototype.init = function (callback) {
             this.customForm = new Planning.CustomFrom(this.v);

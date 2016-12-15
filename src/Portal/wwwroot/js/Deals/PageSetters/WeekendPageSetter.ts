@@ -1,7 +1,7 @@
 module Planning {
 		export class WeekendPageSetter implements IPageSetter {
 
-		public connections;
+		public queries;
 
 		public grouping = LocationGrouping.ByCity;
 
@@ -18,8 +18,8 @@ module Planning {
 			this.v = v;
 		}
 
-		public setConnections(conns) {
-			this.connections = conns;
+		public setQueries(queries) {
+				this.queries = queries;
 			this.onFilterChanged();
 		}
 
@@ -35,25 +35,25 @@ module Planning {
 		}
 			
 		private onFilterChanged() {
-			this.displayer.showResults(this.connections, this.grouping);
+				this.displayer.showResults(this.queries, this.grouping);
 		}
 
-		private initFilters() {
+			private initFilters() {
 				this.filtering = new FilteringWeekend();
 
 				this.filtering.onFilterChanged = () => {
-						var state = this.filtering.getStateBase();
-						this.grouping = state.grouping;
-				this.onFilterChanged();
-			}
+					var state = this.filtering.getStateBase();
+					this.grouping = state.grouping;
+					this.onFilterChanged();
+				}
 
 				this.filtering.initW([
+						LocationGrouping.ByCity,
+						LocationGrouping.ByCountry
+					],
 					LocationGrouping.ByCity,
-					LocationGrouping.ByCountry
-				],
-				LocationGrouping.ByCity,
-				false);
-		}
+					false);
+			}
 
 			getCustomId() {
 				return null;

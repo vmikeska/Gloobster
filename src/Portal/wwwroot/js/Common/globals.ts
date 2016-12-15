@@ -63,6 +63,8 @@ enum TabsWeekendType { ByWeek, ByCity, ByCountry }
 
 enum PlanningType { Anytime, Weekend, Custom }
 
+enum QueryState { Saved, Started, Finished, Failed }
+
 enum Gender { N, M, F }
 
 enum CheckinType { Now, City }

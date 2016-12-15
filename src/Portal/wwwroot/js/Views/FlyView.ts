@@ -3,42 +3,20 @@
 	export class DelasEval {
 
 		private timeType: PlanningType;
-		private connections;
+		private queries;
 
 		private res = { Excellent: 0, Good: 0, Standard: 0 };
 
-		constructor(timeType: PlanningType, connections) {
+		constructor(timeType: PlanningType, queries) {
 			this.timeType = timeType;
-			this.connections = connections;
+			this.queries = queries;
 		}
-
+			
 		private countDeals() {
-
-			if (this.timeType === PlanningType.Anytime) {
-				this.connections.forEach((c) => {
-
-					c.Flights.forEach((f) => {
-						var stars = Planning.AnytimeAggUtils.getScoreStars(f.FlightScore);
+				Planning.FlightsExtractor.f(this.queries, (f, r, q) => {
+						var stars = Planning.AnytimeAggUtils.getScoreStars(f.score);
 						this.incCategory(stars);
-					});
-
-				});
-				}
-
-			if (this.timeType === PlanningType.Weekend) {
-					this.connections.forEach((c) => {
-							c.WeekFlights.forEach((wf) => {
-								wf.Flights.forEach((f) => {
-										var stars = Planning.AnytimeAggUtils.getScoreStars(f.FlightScore);
-										this.incCategory(stars);
-								});									
-							});
-					});
-			}
-
-			if (this.timeType === PlanningType.Custom) {
-					//todo: implement
-			}
+				});				
 		}
 
 		private incCategory(stars) {
@@ -64,22 +42,14 @@
 	export class FlyView extends ViewBase {
 
 		public currentSetter: Planning.IPageSetter;
-
 		public planningMap: Planning.PlanningMap;
-
 		public resultsEngine: Planning.ResultsManager;
 
-		private locDlg: LocationSettingsDialog;
-			
+		private locDlg: LocationSettingsDialog;			
 		private tabs;
-
-		public get hasAirs(): boolean {
-			return this.locDlg.hasAirports();
-		}
-			
 		private $cont = $("#resultsCont");
 		private $filter = $("#filterCont");
-
+	
 		constructor() {
 			super();
 
@@ -91,8 +61,42 @@
 				id.create("No airports", "Location and airports must be selected first");				
 		}
 
-			
+		public get hasAirs(): boolean {
+				return this.locDlg.hasAirports();
+		}
 
+		public initialize() {
+				this.resultsEngine = new Planning.ResultsManager();
+				this.resultsEngine.onResultsChanged = (queries) => {
+						this.currentSetter.setQueries(queries);
+
+						var de = new DelasEval(this.resultsEngine.timeType, queries);
+						de.dispayDeals();
+				};
+
+				this.planningMap = new Planning.PlanningMap(this);
+
+				this.planningMap.onMapLoaded = () => {
+						this.changeSetter(PlanningType.Anytime);
+				}
+
+				this.planningMap.onSelectionChanged = (id: string, newState: boolean, type: FlightCacheRecordType) => {
+						this.resultsEngine.selectionChanged(id, newState, type);
+				}
+
+				this.planningMap.init();
+
+
+				this.mapSwitch((type) => {
+						this.planningMap.changeViewType(type);
+				});
+
+
+				this.locDlg = new LocationSettingsDialog(this);
+
+				this.initTabs();
+		}
+			
 		private mapSwitch(callback) {
 			var $cont = $(".map-type-switch");
 			var $btns = $cont.find(".btn");
@@ -161,39 +165,7 @@
 			});
 				
 		}
-
-		public initialize() {
-			this.resultsEngine = new Planning.ResultsManager();
-			this.resultsEngine.onConnectionsChanged = (connections) => {
-					this.currentSetter.setConnections(connections);
-
-				  var de = new DelasEval(this.resultsEngine.timeType, connections);
-					de.dispayDeals();
-			};
-
-
-			this.planningMap = new Planning.PlanningMap(this);
-
-			this.planningMap.onMapLoaded = () => {
-				this.changeSetter(PlanningType.Anytime);
-			}
-
-			this.planningMap.onSelectionChanged = (id: string, newState: boolean, type: FlightCacheRecordType) => {
-				this.resultsEngine.selectionChanged(id, newState, type);
-			}
-
-			this.planningMap.init();
-
-
-			this.mapSwitch((type) => {
-				this.planningMap.changeViewType(type);
-			});
-
-
-			this.locDlg = new LocationSettingsDialog(this);
-
-			this.initTabs();
-		}
+			
 	}
 
 }

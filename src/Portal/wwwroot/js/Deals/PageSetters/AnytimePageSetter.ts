@@ -3,7 +3,7 @@ module Planning {
 		
 	export class AnytimePageSetter implements IPageSetter {
 
-		public connections;
+		public queries;
 
 		public grouping = LocationGrouping.ByCity;
 
@@ -19,8 +19,8 @@ module Planning {
 			this.v = v;
 		}
 
-		public setConnections(conns) {
-			this.connections = conns;
+		public setQueries(queries) {
+				this.queries = queries;
 			this.onFilterChanged();
 		}
 
@@ -36,7 +36,7 @@ module Planning {
 		}
 			
 		private onFilterChanged() {
-			this.displayer.showResults(this.connections, this.grouping);
+			this.displayer.showResults(this.queries, this.grouping);
 		}
 
 		private initFilters() {

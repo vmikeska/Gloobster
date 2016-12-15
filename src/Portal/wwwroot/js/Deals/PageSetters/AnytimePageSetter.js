@@ -7,8 +7,8 @@ var Planning;
             this.$filter = $("#filterCont");
             this.v = v;
         }
-        AnytimePageSetter.prototype.setConnections = function (conns) {
-            this.connections = conns;
+        AnytimePageSetter.prototype.setQueries = function (queries) {
+            this.queries = queries;
             this.onFilterChanged();
         };
         AnytimePageSetter.prototype.init = function (callback) {
@@ -19,7 +19,7 @@ var Planning;
             callback();
         };
         AnytimePageSetter.prototype.onFilterChanged = function () {
-            this.displayer.showResults(this.connections, this.grouping);
+            this.displayer.showResults(this.queries, this.grouping);
         };
         AnytimePageSetter.prototype.initFilters = function () {
             var _this = this;

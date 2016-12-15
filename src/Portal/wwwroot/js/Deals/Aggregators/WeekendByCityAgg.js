@@ -25,11 +25,11 @@ var Planning;
             if (!days) {
                 return true;
             }
-            var parts = this.splitInboundOutboundFlight(f.FlightParts, f.To);
+            var parts = this.splitInboundOutboundFlight(f.parts, f.to);
             var first = _.first(parts.thereParts);
             var last = _.last(parts.backParts);
-            var from = new Date(first.DeparatureTime);
-            var until = new Date(last.ArrivalTime);
+            var from = new Date(first.dep);
+            var until = new Date(last.arr);
             var fDay = this.convDayNo(from.getDay());
             var tDay = this.convDayNo(until.getDay());
             var fDayOk = days.from === fDay;
@@ -38,7 +38,7 @@ var Planning;
             return valid;
         };
         WeekendAggBase.prototype.getLowestPrice = function (flights) {
-            var ps = _.map(flights, function (f) { return f.Price; });
+            var ps = _.map(flights, function (f) { return f.price; });
             return _.min(ps);
         };
         WeekendAggBase.prototype.convDayNo = function (orig) {
@@ -76,30 +76,28 @@ var Planning;
             _super.apply(this, arguments);
             this.weekGroups = [];
         }
-        WeekendByCityAgg.prototype.exe = function (connections, days, starsLevel) {
+        WeekendByCityAgg.prototype.exe = function (queries, days, starsLevel) {
             var _this = this;
-            connections.forEach(function (connection) {
-                connection.WeekFlights.forEach(function (weekFlight) {
-                    var flights = _this.fittingFlights(weekFlight.Flights, days, starsLevel);
-                    if (any(flights)) {
-                        var weekGroup = _this.getOrCreateWeekGroup(weekFlight.WeekNo, weekFlight.Year);
-                        var weekGroupCity = _this.getOrCreateWeekGroupCity(weekGroup, connection.ToCityId, connection.CityName);
-                        var lowestPrice = _this.getLowestPrice(flights);
-                        var flightGroup = {
-                            fromPrice: lowestPrice,
-                            fromAirport: connection.FromAirport,
-                            toAirport: connection.ToAirport,
-                            flights: flights
-                        };
-                        if (!weekGroupCity.fromPrice) {
-                            weekGroupCity.fromPrice = lowestPrice;
-                        }
-                        else if (weekGroupCity.fromPrice > lowestPrice) {
-                            weekGroupCity.fromPrice = lowestPrice;
-                        }
-                        weekGroupCity.flightsGroups.push(flightGroup);
+            Planning.FlightsExtractor.r(queries, function (r, q) {
+                var flights = _this.fittingFlights(r.fs, days, starsLevel);
+                if (any(flights)) {
+                    var weekGroup = _this.getOrCreateWeekGroup(r.week, r.year);
+                    var weekGroupCity = _this.getOrCreateWeekGroupCity(weekGroup, r.gid, r.name);
+                    var lowestPrice = _this.getLowestPrice(flights);
+                    var flightGroup = {
+                        fromPrice: lowestPrice,
+                        fromAirport: r.from,
+                        toAirport: r.to,
+                        flights: flights
+                    };
+                    if (!weekGroupCity.fromPrice) {
+                        weekGroupCity.fromPrice = lowestPrice;
                     }
-                });
+                    else if (weekGroupCity.fromPrice > lowestPrice) {
+                        weekGroupCity.fromPrice = lowestPrice;
+                    }
+                    weekGroupCity.flightsGroups.push(flightGroup);
+                }
             });
             return this.weekGroups;
         };

@@ -1,8 +1,68 @@
 var Planning;
 (function (Planning) {
+    var QueriesBuilder = (function () {
+        function QueriesBuilder() {
+            this.prms = [];
+            this.firstQuery = false;
+            this.ccs = [];
+            this.gids = [];
+            this.qids = [];
+        }
+        QueriesBuilder.new = function () {
+            return new QueriesBuilder();
+        };
+        QueriesBuilder.prototype.addCC = function (cc) {
+            this.ccs.push(cc);
+            return this;
+        };
+        QueriesBuilder.prototype.addGID = function (gid) {
+            this.gids.push(gid);
+            return this;
+        };
+        QueriesBuilder.prototype.addQID = function (qid) {
+            this.qids.push(qid);
+            return this;
+        };
+        QueriesBuilder.prototype.setFirstQuery = function (state) {
+            this.firstQuery = state;
+            return this;
+        };
+        QueriesBuilder.prototype.setTimeType = function (val) {
+            this.timeType = val;
+            return this;
+        };
+        QueriesBuilder.prototype.setCustomId = function (val) {
+            this.customId = val;
+            return this;
+        };
+        QueriesBuilder.prototype.build = function () {
+            var _this = this;
+            this.addPrm("timeType", this.timeType);
+            this.addPrm("firstQuery", this.firstQuery);
+            if (this.firstQuery) {
+                return this.prms;
+            }
+            this.ccs.forEach(function (cc) {
+                _this.addPrm("ccs", cc);
+            });
+            this.gids.forEach(function (gid) {
+                _this.addPrm("gids", gid);
+            });
+            this.qids.forEach(function (qid) {
+                _this.addPrm("qids", qid);
+            });
+            return this.prms;
+        };
+        QueriesBuilder.prototype.addPrm = function (name, val) {
+            var p = [name, val.toString()];
+            this.prms.push(p);
+        };
+        return QueriesBuilder;
+    }());
+    Planning.QueriesBuilder = QueriesBuilder;
     var ResultsManager = (function () {
         function ResultsManager() {
-            this.connections = [];
+            this.finishedQueries = [];
             this.queue = [];
             this.doRequery = true;
         }
@@ -13,44 +73,72 @@ var Planning;
             this.timeType = timeType;
             this.stopQuerying();
             this.queue = [];
-            this.connections = [];
-            this.getQueries([["tt", timeType]]);
+            this.finishedQueries = [];
+            var request = QueriesBuilder.new()
+                .setFirstQuery(true)
+                .setTimeType(timeType)
+                .build();
+            this.getQueries(request);
         };
-        ResultsManager.prototype.getQueries = function (params) {
-            var _this = this;
-            console.log("Getting queries");
-            Views.ViewBase.currentView.apiGet("SearchFlights", params, function (results) {
-                _this.recieveResults(results);
-            });
-        };
-        ResultsManager.prototype.recieveResults = function (results) {
+        ResultsManager.prototype.recieveQueries = function (queries) {
             var _this = this;
             console.log("receiving results");
             this.stopQuerying();
-            var newConnections = false;
-            results.forEach(function (result) {
-                if (result.NotFinishedYet) {
-                }
-                else if (result.QueryStarted) {
-                    _this.queue.push({ from: result.From, to: result.To, type: result.Type });
-                }
-                else {
-                    _this.queue = _.reject(_this.queue, function (qi) { return qi.from === result.From && qi.to === result.To; });
+            var newResults = false;
+            queries.forEach(function (query) {
+                if (query.state === QueryState.Failed) {
+                    _this.removeFromQueue(query.qid);
                     _this.drawQueue();
-                    _this.connections = _this.connections.concat(result.Result);
-                    newConnections = true;
+                }
+                if (query.state === QueryState.Finished) {
+                    _this.addToFinished(query);
+                    _this.drawQueue();
+                    newResults = true;
                 }
             });
-            if (newConnections) {
-                this.connectionsChanged();
+            if (newResults) {
+                this.resultsChanged();
             }
             if (this.queue.length > 0) {
                 this.startQuerying();
             }
         };
-        ResultsManager.prototype.connectionsChanged = function () {
-            if (this.onConnectionsChanged) {
-                this.onConnectionsChanged(this.connections);
+        ResultsManager.prototype.addToFinished = function (query) {
+            this.finishedQueries.push(query);
+            this.removeFromQueue(query.qid);
+        };
+        ResultsManager.prototype.removeFromQueue = function (id) {
+            this.queue = _.reject(this.queue, function (qid) { return qid === id; });
+        };
+        ResultsManager.prototype.selectionChanged = function (id, newState, type) {
+            if (newState) {
+                this.drawQueue();
+                var qb = QueriesBuilder.new()
+                    .setTimeType(this.timeType);
+                if (type === FlightCacheRecordType.City) {
+                    qb.addGID(parseInt(id));
+                }
+                if (type === FlightCacheRecordType.Country) {
+                    qb.addCC(id);
+                }
+                var prms = qb.build();
+                this.getQueries(prms);
+            }
+            else {
+                this.finishedQueries = _.reject(this.finishedQueries, function (c) { return c.to === id; });
+                this.resultsChanged();
+            }
+        };
+        ResultsManager.prototype.getQueries = function (params) {
+            var _this = this;
+            console.log("Getting queries");
+            Views.ViewBase.currentView.apiGet("Deals", params, function (queries) {
+                _this.recieveQueries(queries);
+            });
+        };
+        ResultsManager.prototype.resultsChanged = function () {
+            if (this.onResultsChanged) {
+                this.onResultsChanged(this.finishedQueries);
             }
         };
         ResultsManager.prototype.stopQuerying = function () {
@@ -70,7 +158,12 @@ var Planning;
                 if (_this.queue.length === 0) {
                     _this.stopQuerying();
                 }
-                var prms = _this.buildQueueParams(_this.queue);
+                var qb = QueriesBuilder.new()
+                    .setTimeType(_this.timeType);
+                _this.queue.forEach(function (q) {
+                    qb.addQID(q);
+                });
+                var prms = qb.build();
                 _this.getQueries(prms);
             }, 3000);
         };
@@ -83,30 +176,8 @@ var Planning;
                 $queue.html("");
             }
             this.queue.forEach(function (i) {
-                $queue.append("<div style=\"display: inline; width: 50px; border: 1px solid red;\">" + i.from + "-->" + i.to + "</div>");
+                $queue.append("<div style=\"display: inline; width: 50px; border: 1px solid red;\">" + i.qid + "</div>");
             });
-        };
-        ResultsManager.prototype.buildQueueParams = function (queue) {
-            var strParams = [];
-            var i = 0;
-            queue.forEach(function (itm) {
-                strParams.push(["q", (itm.from + "-" + itm.to + "-" + itm.type)]);
-                i++;
-            });
-            strParams.push(["tt", this.timeType]);
-            return strParams;
-        };
-        ResultsManager.prototype.selectionChanged = function (id, newState, type) {
-            if (newState) {
-                this.drawQueue();
-                this.getQueries([["p", (id + "-" + type)], ["tt", this.timeType]]);
-            }
-            else {
-                if (type === FlightCacheRecordType.Country) {
-                    this.connections = _.reject(this.connections, function (c) { return c.CountryCode === id; });
-                    this.connectionsChanged();
-                }
-            }
         };
         return ResultsManager;
     }());

@@ -6,33 +6,17 @@ var __extends = (this && this.__extends) || function (d, b) {
 var Views;
 (function (Views) {
     var DelasEval = (function () {
-        function DelasEval(timeType, connections) {
+        function DelasEval(timeType, queries) {
             this.res = { Excellent: 0, Good: 0, Standard: 0 };
             this.timeType = timeType;
-            this.connections = connections;
+            this.queries = queries;
         }
         DelasEval.prototype.countDeals = function () {
             var _this = this;
-            if (this.timeType === PlanningType.Anytime) {
-                this.connections.forEach(function (c) {
-                    c.Flights.forEach(function (f) {
-                        var stars = Planning.AnytimeAggUtils.getScoreStars(f.FlightScore);
-                        _this.incCategory(stars);
-                    });
-                });
-            }
-            if (this.timeType === PlanningType.Weekend) {
-                this.connections.forEach(function (c) {
-                    c.WeekFlights.forEach(function (wf) {
-                        wf.Flights.forEach(function (f) {
-                            var stars = Planning.AnytimeAggUtils.getScoreStars(f.FlightScore);
-                            _this.incCategory(stars);
-                        });
-                    });
-                });
-            }
-            if (this.timeType === PlanningType.Custom) {
-            }
+            Planning.FlightsExtractor.f(this.queries, function (f, r, q) {
+                var stars = Planning.AnytimeAggUtils.getScoreStars(f.score);
+                _this.incCategory(stars);
+            });
         };
         DelasEval.prototype.incCategory = function (stars) {
             if (stars >= 4) {
@@ -62,6 +46,10 @@ var Views;
             this.$filter = $("#filterCont");
             this.initialize();
         }
+        FlyView.prototype.showAirsFirst = function () {
+            var id = new Common.InfoDialog();
+            id.create("No airports", "Location and airports must be selected first");
+        };
         Object.defineProperty(FlyView.prototype, "hasAirs", {
             get: function () {
                 return this.locDlg.hasAirports();
@@ -69,9 +57,27 @@ var Views;
             enumerable: true,
             configurable: true
         });
-        FlyView.prototype.showAirsFirst = function () {
-            var id = new Common.InfoDialog();
-            id.create("No airports", "Location and airports must be selected first");
+        FlyView.prototype.initialize = function () {
+            var _this = this;
+            this.resultsEngine = new Planning.ResultsManager();
+            this.resultsEngine.onResultsChanged = function (queries) {
+                _this.currentSetter.setQueries(queries);
+                var de = new DelasEval(_this.resultsEngine.timeType, queries);
+                de.dispayDeals();
+            };
+            this.planningMap = new Planning.PlanningMap(this);
+            this.planningMap.onMapLoaded = function () {
+                _this.changeSetter(PlanningType.Anytime);
+            };
+            this.planningMap.onSelectionChanged = function (id, newState, type) {
+                _this.resultsEngine.selectionChanged(id, newState, type);
+            };
+            this.planningMap.init();
+            this.mapSwitch(function (type) {
+                _this.planningMap.changeViewType(type);
+            });
+            this.locDlg = new Views.LocationSettingsDialog(this);
+            this.initTabs();
         };
         FlyView.prototype.mapSwitch = function (callback) {
             var _this = this;
@@ -125,28 +131,6 @@ var Views;
                 _this.planningMap.loadCategory(type);
                 _this.resultsEngine.initalCall(type);
             });
-        };
-        FlyView.prototype.initialize = function () {
-            var _this = this;
-            this.resultsEngine = new Planning.ResultsManager();
-            this.resultsEngine.onConnectionsChanged = function (connections) {
-                _this.currentSetter.setConnections(connections);
-                var de = new DelasEval(_this.resultsEngine.timeType, connections);
-                de.dispayDeals();
-            };
-            this.planningMap = new Planning.PlanningMap(this);
-            this.planningMap.onMapLoaded = function () {
-                _this.changeSetter(PlanningType.Anytime);
-            };
-            this.planningMap.onSelectionChanged = function (id, newState, type) {
-                _this.resultsEngine.selectionChanged(id, newState, type);
-            };
-            this.planningMap.init();
-            this.mapSwitch(function (type) {
-                _this.planningMap.changeViewType(type);
-            });
-            this.locDlg = new Views.LocationSettingsDialog(this);
-            this.initTabs();
         };
         return FlyView;
     }(Views.ViewBase));

@@ -1,24 +1,24 @@
 var Planning;
 (function (Planning) {
     var AnytimeByCountryAgg = (function () {
-        function AnytimeByCountryAgg(connections) {
+        function AnytimeByCountryAgg(queries) {
             this.countries = [];
-            this.connections = connections;
+            this.queries = queries;
         }
         AnytimeByCountryAgg.prototype.exe = function (starsLevel) {
             var _this = this;
-            this.connections.forEach(function (c) {
-                var passedFlights = [];
-                c.Flights.forEach(function (f) {
-                    var filterMatch = Planning.AnytimeAggUtils.checkFilter(f, starsLevel);
-                    if (filterMatch) {
-                        passedFlights.push(f);
+            Planning.FlightsExtractor.r(this.queries, function (r, q) {
+                var passed = [];
+                r.fs.forEach(function (f) {
+                    var ok = Planning.AnytimeAggUtils.checkFilter(f, starsLevel);
+                    if (ok) {
+                        passed.push(f);
                     }
                 });
-                if (passedFlights.length > 0) {
-                    var country = _this.getCountry(c.CountryCode, c.CountryCode);
-                    var city = _this.getCity(country, c.ToCityId, c.CityName);
-                    var fromPrice = _.min(_.map(passedFlights, function (pf) { return pf.Price; }));
+                if (any(passed)) {
+                    var country = _this.getCountry(r.cc, r.cc);
+                    var city = _this.getCity(country, r.gid, r.name);
+                    var fromPrice = _.min(_.map(passed, function (pf) { return pf.price; }));
                     if (!country.fromPrice) {
                         country.fromPrice = fromPrice;
                     }

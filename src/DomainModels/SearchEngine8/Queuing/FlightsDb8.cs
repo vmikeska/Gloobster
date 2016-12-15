@@ -48,6 +48,9 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
                     {
                         QueryId = queryEntity.id.ToString(),
                         State = QueryState8.Finished,
+
+                        ToType = q.ToType,
+                        To = q.To,
                         
                         Results = GetResults<T>(queryEntity.id)
                     };

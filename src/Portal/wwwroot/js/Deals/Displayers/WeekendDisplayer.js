@@ -16,20 +16,14 @@ var Planning;
             this.$cont = $cont;
             this.filter = filter;
         }
-        WeekendDisplayer.prototype.showResults = function (connections, grouping) {
-            this.connections = connections;
+        WeekendDisplayer.prototype.showResults = function (queries, grouping) {
+            this.queries = queries;
             var fs = this.filter.getState();
             if (grouping === LocationGrouping.ByCity) {
                 var agg1 = new Planning.WeekendByCityAgg();
-                var r1 = agg1.exe(this.connections, fs.days, fs.starsLevel);
+                var r1 = agg1.exe(this.queries, fs.days, fs.starsLevel);
                 var d1 = new WeekendByCityDis(this.$cont, fs.currentLevel);
                 d1.render(r1);
-            }
-            if (grouping === LocationGrouping.ByCountry) {
-                var agg2 = new Planning.WeekendByCountryAgg();
-                var r2 = agg2.exe(this.connections, fs.days, fs.starsLevel);
-                var d2 = new ByCountryDisplay(this.$cont, fs.currentLevel);
-                d2.render(r2);
             }
         };
         return WeekendDisplayer;

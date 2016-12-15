@@ -42,9 +42,6 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
                 }                
             }
             
-            //just for test, remove
-            var queries2 = DB.C<QueryEntity>().Where(s => s.State == QueryState8.Saved).OrderBy(a => a.Created).ToList();
-
             foreach (var query in queries)
             {                
                 ExecuteQueryAsync(query);

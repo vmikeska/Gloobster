@@ -4,30 +4,28 @@ module Planning {
 
 			public countries = [];
 
-			public connections;
+			public queries;
 
-			constructor(connections) {
-					this.connections = connections;
+			constructor(queries) {
+					this.queries = queries;
 			}
 
 			public exe(starsLevel: number) {
 
-					this.connections.forEach((c) => {
+					FlightsExtractor.r(this.queries, (r, q) => {
 
-							var passedFlights = [];
+							var passed = [];
 
-							c.Flights.forEach((f) => {
-									var filterMatch = AnytimeAggUtils.checkFilter(f, starsLevel);
-									if (filterMatch) {
-											passedFlights.push(f);
-									}
+							r.fs.forEach((f) => {
+									var ok = AnytimeAggUtils.checkFilter(f, starsLevel);
+									if (ok) { passed.push(f); }									
 							});
-							
-							if (passedFlights.length > 0) {
-									var country = this.getCountry(c.CountryCode, c.CountryCode);
-									var city = this.getCity(country, c.ToCityId, c.CityName);
 
-									var fromPrice = _.min(_.map(passedFlights, (pf) => { return pf.Price }));
+							if (any(passed)) {
+									var country = this.getCountry(r.cc, r.cc);
+									var city = this.getCity(country, r.gid, r.name);
+
+									var fromPrice = _.min(_.map(passed, (pf) => { return pf.price }));
 
 									if (!country.fromPrice) {
 											country.fromPrice = fromPrice;
@@ -39,10 +37,9 @@ module Planning {
 											city.fromPrice = fromPrice;
 									} else if (city.fromPrice > fromPrice) {
 											city.fromPrice = fromPrice;
-									}									
-							}
-
-					});
+									}	
+							}							
+					});			
 			}
 				
 			private getCountry(cc, name) {

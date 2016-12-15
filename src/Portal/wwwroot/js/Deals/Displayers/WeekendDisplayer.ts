@@ -4,7 +4,7 @@ module Planning {
 		
 	export class WeekendDisplayer {
 
-		private connections;
+			private queries;
 		private $cont;
 		private filter: FilteringWeekend;
 
@@ -14,26 +14,26 @@ module Planning {
 				this.filter = filter;
 		}
 
-		public showResults(connections, grouping: LocationGrouping) {
-			this.connections = connections;
+		public showResults(queries, grouping: LocationGrouping) {
+				this.queries = queries;
 
 			var fs = this.filter.getState();
 
 			if (grouping === LocationGrouping.ByCity) {					
 					var agg1 = new WeekendByCityAgg();
-					var r1 = agg1.exe(this.connections, fs.days, fs.starsLevel);
+					var r1 = agg1.exe(this.queries, fs.days, fs.starsLevel);
 					
 					var d1 = new WeekendByCityDis(this.$cont, fs.currentLevel);
 					d1.render(r1);									
 			}
 				
-			if (grouping === LocationGrouping.ByCountry) {					
-					var agg2 = new WeekendByCountryAgg();
-					var r2 = agg2.exe(this.connections, fs.days, fs.starsLevel);
+			//if (grouping === LocationGrouping.ByCountry) {					
+			//		var agg2 = new WeekendByCountryAgg();
+			//		var r2 = agg2.exe(this.connections, fs.days, fs.starsLevel);
 
-					var d2 = new ByCountryDisplay(this.$cont, fs.currentLevel);
-					d2.render(r2);
-				}
+			//		var d2 = new ByCountryDisplay(this.$cont, fs.currentLevel);
+			//		d2.render(r2);
+			//	}
 			}
 
 	}

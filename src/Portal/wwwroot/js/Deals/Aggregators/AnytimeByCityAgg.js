@@ -1,26 +1,26 @@
 var Planning;
 (function (Planning) {
     var AnytimeByCityAgg = (function () {
-        function AnytimeByCityAgg(connections) {
+        function AnytimeByCityAgg(queries) {
             this.cities = [];
-            this.connections = connections;
+            this.queries = queries;
         }
         AnytimeByCityAgg.prototype.exe = function (starsLevel) {
             var _this = this;
-            this.connections.forEach(function (c) {
-                var passedFlights = [];
-                c.Flights.forEach(function (f) {
-                    var filterMatch = Planning.AnytimeAggUtils.checkFilter(f, starsLevel);
-                    if (filterMatch) {
-                        passedFlights.push(f);
+            Planning.FlightsExtractor.r(this.queries, function (r, q) {
+                var passed = [];
+                r.fs.forEach(function (f) {
+                    var ok = Planning.AnytimeAggUtils.checkFilter(f, starsLevel);
+                    if (ok) {
+                        passed.push(f);
                     }
                 });
-                if (passedFlights.length > 0) {
-                    var city = _this.getOrCreateCity(c.ToCityId, c.CityName, c.CountryCode);
+                if (any(passed)) {
+                    var city = _this.getOrCreateCity(r.gid, r.name, r.cc);
                     var bestFlight = {
-                        from: c.FromAirport,
-                        to: c.ToAirport,
-                        price: _.min(_.map(passedFlights, function (pf) { return pf.Price; }))
+                        from: r.from,
+                        to: r.to,
+                        price: _.min(_.map(passed, function (pf) { return pf.price; }))
                     };
                     city.bestFlights.push(bestFlight);
                     if (!city.fromPrice) {
@@ -32,13 +32,13 @@ var Planning;
                 }
             });
         };
-        AnytimeByCityAgg.prototype.getOrCreateCity = function (gid, name, countryCode) {
+        AnytimeByCityAgg.prototype.getOrCreateCity = function (gid, name, cc) {
             var city = _.find(this.cities, function (c) { return c.gid === gid; });
             if (!city) {
                 city = {
                     gid: gid,
                     name: name,
-                    cc: countryCode,
+                    cc: cc,
                     fromPrice: null,
                     bestFlights: []
                 };

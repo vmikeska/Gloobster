@@ -12,7 +12,7 @@ module Planning {
 			this.v = v;
 		}
 
-		public setConnections(conns) {
+		public setQueries(queries) {
 
 		}
 			
