@@ -68,7 +68,9 @@ namespace Gloobster.DomainModels.SearchEngine8
     //----enums-------
 
     public enum PlaceType8 { City, Country }
-    public enum QueryState8 { Saved, Started, Finished }
+    public enum QueryState8 { Saved, Started, Finished,
+        Failed
+    }
     public enum TimeType8 { Anytime, Weekend, Custom }
 
     //------classes------
@@ -122,8 +124,205 @@ namespace Gloobster.DomainModels.SearchEngine8
             };
             return d;
         }
+
+        public static AnytimeResultResponse ToResponse(this AnytimeResultDO d)
+        {
+            var r = new AnytimeResultResponse
+            {
+                cc = d.CC,
+                from = d.FromAir,
+                to = d.ToAir,
+                gid = d.GID,
+                name = d.Name,
+                fs = d.Flights.Select(f => f.ToResponse()).ToList()                
+            };
+
+            return r;
+        }
+
+        public static WeekendResultResponse ToResponse(this WeekendResultDO d)
+        {
+            var r = new WeekendResultResponse
+            {
+                cc = d.CC,
+                from = d.FromAir,
+                to = d.ToAir,
+                gid = d.GID,
+                name = d.Name,
+                fs = d.Flights.Select(f => f.ToResponse()).ToList(),
+
+                week = d.Week,
+                year = d.Year                
+            };
+
+            return r;
+        }
+
+        public static CustomResultResponse ToResponse(this CustomResultDO d)
+        {
+            var r = new CustomResultResponse
+            {
+                cc = d.CC,
+                from = d.FromAir,
+                to = d.ToAir,
+                gid = d.GID,
+                name = d.Name,
+                fs = d.Flights.Select(f => f.ToResponse()).ToList(),
+
+                cid = d.CustomId,
+                uid = d.UserId                
+            };
+
+            return r;
+        }
+
+        public static FlightResponse ToResponse(this FlightDO d)
+        {
+            var r = new FlightResponse
+            {
+                to = d.To,
+                from = d.From,
+                days = d.DaysInDestination,
+                hrs = d.HoursDuration,
+                price = d.Price,
+                score = d.FlightScore,
+                parts = d.FlightParts.Select(p => p.ToResponse()).ToList()
+            };
+
+            return r;
+        }
+
+        public static FlightPartResponse ToResponse(this FlightPartDO d)
+        {
+            var r = new FlightPartResponse
+            {
+                to = d.To,
+                from = d.From,
+                air = d.Airline,
+                arr = d.ArrivalTime,
+                dep = d.DeparatureTime,
+                mins = d.MinsDuration,
+                no = d.FlightNo
+            };
+
+            return r;
+        }
+
+        public static FlightQueryResultResponse<T, TY> ToResponse<T, TY>(this FlightQueryResult8DO<T> d) 
+        {
+            var r = new FlightQueryResultResponse<T, TY>
+            {
+                qid = d.QueryId,
+                state = d.State
+            };
+
+            if (d.Results != null)
+            {
+                if (typeof(T) == typeof(AnytimeResultDO))
+                {
+                    var rs = d.Results.Select(e => (e as AnytimeResultDO).ToResponse()).ToList();
+                    r.results = rs as List<TY>;
+                }
+
+                if (typeof(T) == typeof(WeekendResultDO))
+                {
+                    var rs = d.Results.Select(e => (e as WeekendResultDO).ToResponse()).ToList();
+                    r.results = rs as List<TY>;
+                }
+
+                if (typeof(T) == typeof(CustomResultDO))
+                {
+                    var rs = d.Results.Select(e => (e as CustomResultDO).ToResponse()).ToList();
+                    r.results = rs as List<TY>;
+                }
+            }
+
+            return r;
+        }
     }
+
+
+    public class FlightQueryResultResponse<T, TY>
+    {
+        public string qid { get; set; }
+        public QueryState8 state { get; set; }
+
+        public List<TY> results { get; set; }
+    }
+
+    public class AnytimeResultResponse
+    {
+        public string from { get; set; }
+        public string to { get; set; }
+
+        public int gid { get; set; }
+        public string name { get; set; }
+        public string cc { get; set; }
+
+        public List<FlightResponse> fs { get; set; }
+    }
+
+    public class WeekendResultResponse
+    {
+        public string from { get; set; }
+        public string to { get; set; }
+
+        public int gid { get; set; }
+        public string name { get; set; }
+        public string cc { get; set; }
+
+        public List<FlightResponse> fs { get; set; }
+
+        public int week { get; set; }
+        public int year { get; set; }
+        
+    }
+
+    public class CustomResultResponse
+    {
+        public string from { get; set; }
+        public string to { get; set; }
+
+        public int gid { get; set; }
+        public string name { get; set; }
+        public string cc { get; set; }
+
+        public string uid { get; set; }
+        public string cid { get; set; }
+
+        public List<FlightResponse> fs { get; set; }        
+    }
+
     
+    public class FlightResponse
+    {
+        public string from { get; set; }
+        public string to { get; set; }
+
+        public double price { get; set; }        
+        public double score { get; set; }
+        
+        public double hrs { get; set; }
+        public int days { get; set; }
+
+        public List<FlightPartResponse> parts { get; set; }
+    }
+
+    public class FlightPartResponse
+    {
+        public string from { get; set; }
+        public string to { get; set; }
+
+        public DateTime dep { get; set; }
+        public DateTime arr { get; set; }
+        
+        public string air { get; set; }
+        public int no { get; set; }
+
+        public int mins { get; set; }
+    }
+
+
     public class QueryEntity: EntityBase
     {
         public QueryState8 State { get; set; }
@@ -344,6 +543,7 @@ namespace Gloobster.DomainModels.SearchEngine8
     public interface IQueriesExecutor
     {
         void ExecuteQueriesAsync();
+        Task DeleteOldQueriesAsync();
     }
 
 }

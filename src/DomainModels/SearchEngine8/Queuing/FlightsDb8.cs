@@ -12,6 +12,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
         private const int maxCacheLifeTimeMins = 60;
 
         public IDbOperations DB { get; set; }
+        public IQueriesExecutor QueriesExecutor { get; set; }
 
         public async Task<FlightQueryResult8DO<T>> GetResultsAsync<T>(FlightQuery8DO q)
         {
@@ -54,6 +55,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
             }
             
             var newQueryId = await SaveQueryAsync(q);
+            QueriesExecutor.ExecuteQueriesAsync();
             return new FlightQueryResult8DO<T> {QueryId = newQueryId, State = QueryState8.Saved};
         }
 
@@ -93,22 +95,22 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
             if (typeof(T) == typeof(AnytimeResultDO))
             {
                 var resultsEnts = DB.List<AnytimeResultsEntity>(i => i.Query_id == qid);
-                var results = resultsEnts.Select(e => e.ToDO());
-                return (List<T>)results;
+                var results = resultsEnts.Select(e => e.ToDO()).ToList();
+                return results as List<T>;
             }
 
             if (typeof(T) == typeof(WeekendResultDO))
             {
                 var resultsEnts = DB.List<WeekendResultsEntity>(i => i.Query_id == qid);
-                var results = resultsEnts.Select(e => e.ToDO());
-                return (List<T>)results;
+                var results = resultsEnts.Select(e => e.ToDO()).ToList();
+                return results as List<T>;
             }
 
             if (typeof(T) == typeof(CustomResultDO))
             {
                 var resultsEnts = DB.List<CustomResultsEntity>(i => i.Query_id == qid);
-                var results = resultsEnts.Select(e => e.ToDO());
-                return (List<T>)results;
+                var results = resultsEnts.Select(e => e.ToDO()).ToList();
+                return results as List<T>;
             }
             
             return null;
@@ -117,6 +119,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
         private async Task DeleteQueryAsync(ObjectId id)
         {
             await DB.DeleteAsync<QueryEntity>(id);
+            //todo: delete results
         }
 
         private QueryEntity GetQuery(FlightQuery8DO q)

@@ -124,8 +124,12 @@ namespace Gloobster.Portal
         {
             var executor = serviceProvider.GetService<IQueriesExecutor>();
             ExecutionStarter.Executor = executor;
-            ExecutionStarter.Start();
-        }
+
+            ExecutionStarter.StartCleaning();
+
+
+            executor.ExecuteQueriesAsync();
+       }
 
 	    private async void InitDB()
 	    {

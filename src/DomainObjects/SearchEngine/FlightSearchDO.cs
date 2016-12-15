@@ -32,16 +32,7 @@ namespace Gloobster.DomainObjects.SearchEngine
         public double FlightScore { get; set; }
 
         public List<FlightPartDO> FlightParts { get; set; }
-
-        public string FlightPartsStr
-        {
-            get
-            {
-                var prts = FlightParts.Select(f => $"{f.From}-->{f.To} || {f.DeparatureTime} - {f.ArrivalTime}");
-                return string.Join("<br/>", prts);
-            }
-        }
-
+        
         public int DaysInDestination
         {
             get
@@ -63,10 +54,10 @@ namespace Gloobster.DomainObjects.SearchEngine
         public string From { get; set; }
         public string To { get; set; }
 
-        public string Airline { get; set; }
-        public int MinsDuration { get; set; }
-
+        public string Airline { get; set; }        
         public int FlightNo { get; set; }
+
+        public int MinsDuration { get; set; }
     }
     
 }

@@ -6,6 +6,7 @@ using Gloobster.DomainModels.SearchEngine8.Queuing;
 using Gloobster.Portal.Controllers.Base;
 using Microsoft.AspNet.Mvc;
 using Serilog;
+using System.Linq;
 
 namespace Gloobster.Portal.Controllers.Api.SearchEngine
 {
@@ -13,7 +14,7 @@ namespace Gloobster.Portal.Controllers.Api.SearchEngine
     public class Flights8Controller : BaseApiController
     {
         public IClientRequestExecutor ClientExecutor { get; set; }
-
+        
         public Flights8Controller(IClientRequestExecutor clientExecutor, ILogger log, IDbOperations db) : base(log, db)
         {
             ClientExecutor = clientExecutor;
@@ -26,22 +27,22 @@ namespace Gloobster.Portal.Controllers.Api.SearchEngine
             if (req.timeType == TimeType8.Anytime)
             {
                 var results = await GetResults<AnytimeResultDO>(req);
-                //todo: create response class + convert to response
-                return new ObjectResult(results);
+                var cr = results.Select(r => r.ToResponse<AnytimeResultDO, AnytimeResultResponse>());
+                return new ObjectResult(cr);
             }
 
             if (req.timeType == TimeType8.Weekend)
             {
                 var results = await GetResults<WeekendResultDO>(req);
-                //todo: create response class + convert to response
-                return new ObjectResult(results);
+                var cr = results.Select(r => r.ToResponse<WeekendResultDO, WeekendResultResponse>());
+                return new ObjectResult(cr);
             }
 
             if (req.timeType == TimeType8.Custom)
             {
                 var results = await GetResults<CustomResultDO>(req);
-                //todo: create response class + convert to response
-                return new ObjectResult(results);
+                var cr = results.Select(r => r.ToResponse<CustomResultDO, CustomResultResponse>());
+                return new ObjectResult(cr);
             }
             
             return new ObjectResult(null);

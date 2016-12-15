@@ -12,7 +12,7 @@
 				$("#myTest").click((e) => {
 						e.preventDefault();
 
-						var prms = [["firstQuery", "false"], ["timeType", "0"], ["ccs", "GB"]];
+						var prms = [["firstQuery", "false"], ["timeType", "0"], ["ccs", "BG"]];
 						
 					  this.apiGet("Flights8", prms, (res) => {
 						  var re = res;

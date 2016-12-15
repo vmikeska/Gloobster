@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainObjects.SearchEngine;
+using Gloobster.Entities;
 using MongoDB.Bson;
+using Nito.AsyncEx;
 
 namespace Gloobster.DomainModels.SearchEngine8.Executing
 {
@@ -14,22 +17,45 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
         public IKiwiResultsExecutor KiwiExecutor { get; set; }
         public IKiwiResultsProcessor ResultsProcessor { get; set; }
 
-        private const int threadsCnt = 5;
+        //todo: maybe execute just queries started by user ?
+
+        private static readonly AsyncLock Lock = new AsyncLock();
 
         public async void ExecuteQueriesAsync()
         {
-            await DeleteOldQueriesAsync();
+            var queries = new List<QueryEntity>();
 
-            var queries = DB.C<QueryEntity>().Where(s => s.State == QueryState8.Saved).OrderBy(a => a.Created).ToList();
+            using (await Lock.LockAsync())
+            {
+                //implement just only X threads execution ?
+                queries = DB.C<QueryEntity>().Where(s => s.State == QueryState8.Saved).OrderBy(a => a.Created).ToList();
+
+                if (!queries.Any())
+                {
+                    return;
+                }
+
+                var ids = queries.Select(q => q.id);
+                foreach (var id in ids)
+                {
+                    await UpdateQueryStateAsync(id, QueryState8.Started);
+                }                
+            }
+            
+            //just for test, remove
+            var queries2 = DB.C<QueryEntity>().Where(s => s.State == QueryState8.Saved).OrderBy(a => a.Created).ToList();
 
             foreach (var query in queries)
-            {
-                //? sync or async ?
+            {                
                 ExecuteQueryAsync(query);
             }
+
+            Thread.Sleep(1000);
+
+            ExecuteQueriesAsync();
         }
 
-        private async Task DeleteOldQueriesAsync()
+        public async Task DeleteOldQueriesAsync()
         {
             DateTime old = DateTime.UtcNow.AddHours(-1);
 
@@ -37,15 +63,23 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
         }
         
         private async Task ExecuteQueryAsync(QueryEntity query)
-        {            
-            IQueryBuilder builder = GetBuilder(query);
-            FlightRequestDO request = BuildRequest(query, builder);
-            List<FlightDO> flights = KiwiExecutor.Search(request);
+        {
+            try
+            {                
+                IQueryBuilder builder = GetBuilder(query);
+                FlightRequestDO request = BuildRequest(query, builder);
+                List<FlightDO> flights = KiwiExecutor.Search(request);
 
-            await ResultsProcessor.ProcessFlightsAsync(flights, query.TimeType, query.id.ToString(), query.Params);
+                await ResultsProcessor.ProcessFlightsAsync(flights, query.TimeType, query.id.ToString(), query.Params);
 
-            await UpdateQueryExcecutedAsync(query.id);
-            await UpdateQueryStateAsync(query.id, QueryState8.Finished);
+                await UpdateQueryExcecutedAsync(query.id);
+                await UpdateQueryStateAsync(query.id, QueryState8.Finished);
+            }
+            catch (Exception exc)
+            {
+                await UpdateQueryStateAsync(query.id, QueryState8.Failed);
+            }
+            
         }
 
         private async Task UpdateQueryExcecutedAsync(ObjectId id)

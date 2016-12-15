@@ -15,7 +15,7 @@ var Views;
             });
             $("#myTest").click(function (e) {
                 e.preventDefault();
-                var prms = [["firstQuery", "false"], ["timeType", "0"], ["ccs", "GB"]];
+                var prms = [["firstQuery", "false"], ["timeType", "0"], ["ccs", "BG"]];
                 _this.apiGet("Flights8", prms, function (res) {
                     var re = res;
                 });

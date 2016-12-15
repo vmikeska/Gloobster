@@ -1,31 +1,44 @@
 using System;
+using System.Threading.Tasks;
 using Gloobster.DomainModels.SearchEngine8;
 
 namespace Gloobster.DomainModels.SearchEngine
-{
-    //public delegate void TimeHasComeEventHandler();
-
+{    
     public static class ExecutionStarter
     {
         public static IQueriesExecutor Executor { get; set; }
 
-        private const int secInterval = 2;
+        //private const int secInterval = 2;
+        
+        //public static void Start()
+        //{
+        //    var dueTime = TimeSpan.FromSeconds(secInterval).TotalMilliseconds;
+        //    var timer = new System.Timers.Timer(dueTime);
+        //    timer.Elapsed += (sender, e) =>
+        //    {
+        //        Executor.ExecuteQueriesAsync();
 
-        //public static event TimeHasComeEventHandler Execute;
+                
+        //    };
+        //    timer.Start();
+        //}
 
-        public static void Start()
+        private const int cleaningMinInterval = 60;
+
+        public static async Task StartCleaning()
         {
-            var dueTime = TimeSpan.FromSeconds(secInterval).TotalMilliseconds;
-            var timer = new System.Timers.Timer(dueTime);
+            await Executor.DeleteOldQueriesAsync();
+
+            var dueTime = TimeSpan.FromSeconds(cleaningMinInterval).TotalMilliseconds;
+            var timer = new System.Timers.Timer(dueTime);            
             timer.Elapsed += (sender, e) =>
             {
-                Executor.ExecuteQueriesAsync();
-
-                //Execute?.Invoke();
+                Executor.DeleteOldQueriesAsync();
+                
             };
             timer.Start();
         }
 
-        
+
     }
 }
