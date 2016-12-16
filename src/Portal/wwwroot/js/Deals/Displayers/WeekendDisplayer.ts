@@ -27,13 +27,13 @@ module Planning {
 					d1.render(r1);									
 			}
 				
-			//if (grouping === LocationGrouping.ByCountry) {					
-			//		var agg2 = new WeekendByCountryAgg();
-			//		var r2 = agg2.exe(this.connections, fs.days, fs.starsLevel);
+			if (grouping === LocationGrouping.ByCountry) {					
+					var agg2 = new WeekendByCountryAgg();
+					var r2 = agg2.exe(this.queries, fs.days, fs.starsLevel);
 
-			//		var d2 = new ByCountryDisplay(this.$cont, fs.currentLevel);
-			//		d2.render(r2);
-			//	}
+					var d2 = new ByCountryDisplay(this.$cont, fs.currentLevel);
+					d2.render(r2);
+				}
 			}
 
 	}
@@ -109,13 +109,13 @@ module Planning {
 					}
 
 					lg.onItemAppended = ($city, city) => {
-							this.generateCityFlightGroups($weekCont, $city, city);
+							this.generateCity($weekCont, $city, city);
 					}
 
 					lg.generateList(cities);
 			}
 
-			private generateCityFlightGroups($weekCont, $city, city) {
+			private generateCity($weekCont, $city, city) {
 
 					var $cont = $city.find(".items table");
 					var lg = Common.ListGenerator.init($cont, "resultGroup-priceItem-template");
@@ -135,7 +135,7 @@ module Planning {
 
 					lg.evnt("td", (e, $item, $target, conn) => {
 
-							var flights = FlightConvert.cFlights(conn.flights);
+							var flights = FlightConvert2.cFlights(conn.flights);
 
 							var $lc = Common.LastItem.getLast($weekCont, "flight-result", $city.data("no"));
 
@@ -216,7 +216,7 @@ module Planning {
 				lg.evnt("td", (e, $item, $target, conn) => {
 
 						var flightsOrig = this.extractFlights(conn.flightsGroups);
-						var flights = FlightConvert.cFlights(flightsOrig);
+						var flights = FlightConvert2.cFlights(flightsOrig);
 
 						var $lc = Common.LastItem.getLast($weekCont, "flight-result", $country.data("no"));
 

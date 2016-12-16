@@ -28,6 +28,9 @@ var Planning;
             var parts = this.splitInboundOutboundFlight(f.parts, f.to);
             var first = _.first(parts.thereParts);
             var last = _.last(parts.backParts);
+            if (!first || !last) {
+                return false;
+            }
             var from = new Date(first.dep);
             var until = new Date(last.arr);
             var fDay = this.convDayNo(from.getDay());
@@ -58,7 +61,7 @@ var Planning;
                 else {
                     thereParts.push(fp);
                 }
-                if (fp.To === to) {
+                if (fp.to === to) {
                     thereFinished = true;
                 }
             });

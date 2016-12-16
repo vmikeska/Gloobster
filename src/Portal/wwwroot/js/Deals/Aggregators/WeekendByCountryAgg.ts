@@ -4,48 +4,45 @@ module Planning {
 
 				private weekGroups = [];
 
-				public exe(connections, days, starsLevel) {
-						connections.forEach((c) => {
+				public exe(queries, days, starsLevel) {
 
-								c.WeekFlights.forEach((weekFlight) => {
+					FlightsExtractor.r(queries, (r, q) => {
 
-										var flights = this.fittingFlights(weekFlight.Flights, days, starsLevel);
+							var flights = this.fittingFlights(r.fs, days, starsLevel);
 
-									if (any(flights)) {
-											var weekGroup = this.getOrCreateWeekGroup(weekFlight.WeekNo, weekFlight.Year);
-											var country = this.getOrCreateCountry(weekGroup, c.CountryCode, c.CountryCode);
-											var city = this.getOrCreateCity(c.ToCityId, c.CityName, country);
+							if (any(flights)) {
+									var weekGroup = this.getOrCreateWeekGroup(r.week, r.year);
+									var country = this.getOrCreateCountry(weekGroup, r.cc, r.cc);
+									var city = this.getOrCreateCity(r.gid, r.name, country);
 
-											var lowestPrice = this.getLowestPrice(flights);
+									var lowestPrice = this.getLowestPrice(flights);
 
-											var flightGroup = {
-													fromPrice: lowestPrice,
-													fromAirport: c.FromAirport,
-													toAirport: c.ToAirport,
-													flights: flights
-											};
+									var flightGroup = {
+											fromPrice: lowestPrice,
+											fromAirport: r.from,
+											toAirport: r.to,
+											flights: flights
+									};
 
-											if (!country.fromPrice) {
-													country.fromPrice = lowestPrice;
-											} else if (country.fromPrice > lowestPrice) {
-													country.fromPrice = lowestPrice;
-											}
+									if (!country.fromPrice) {
+											country.fromPrice = lowestPrice;
+									} else if (country.fromPrice > lowestPrice) {
+											country.fromPrice = lowestPrice;
+									}
 
-											if (!city.fromPrice) {
-													city.fromPrice = lowestPrice;
-											} else if (city.fromPrice > lowestPrice) {
-													city.fromPrice = lowestPrice;
-											}
+									if (!city.fromPrice) {
+											city.fromPrice = lowestPrice;
+									} else if (city.fromPrice > lowestPrice) {
+											city.fromPrice = lowestPrice;
+									}
 
-											city.flightsGroups.push(flightGroup);
+									city.flightsGroups.push(flightGroup);
 
-										}
-																				
-								});
+							}
+
 
 						});
-
-
+						
 						return this.weekGroups;
 				}
 

@@ -21,14 +21,16 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
             bool queryExists = queryEntity != null;
             if (queryExists)
             {
+                var qid = queryEntity.id.ToString();
+
                 if (queryEntity.State == QueryState8.Saved)
                 {
-                    return new FlightQueryResult8DO<T> { QueryId = queryEntity.id.ToString(), State = QueryState8.Saved };
+                    return GetResultBase<T>(q, qid, QueryState8.Saved);
                 }
 
                 if (queryEntity.State == QueryState8.Started)
                 {
-                    return new FlightQueryResult8DO<T> {QueryId = queryEntity.id.ToString(), State = QueryState8.Started};
+                    return GetResultBase<T>(q, qid, QueryState8.Started);
                 }
 
                 if (queryEntity.State == QueryState8.Finished)
@@ -39,29 +41,36 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
                     if (isOld)
                     {
                         await DeleteQueryAsync(queryEntity.id);
-                        await SaveQueryAsync(q);
-
-                        return new FlightQueryResult8DO<T> { QueryId = queryEntity.id.ToString(), State = QueryState8.Saved };
                     }
-
-                    return new FlightQueryResult8DO<T>
+                    else
                     {
-                        QueryId = queryEntity.id.ToString(),
-                        State = QueryState8.Finished,
-
-                        ToType = q.ToType,
-                        To = q.To,
-                        
-                        Results = GetResults<T>(queryEntity.id)
-                    };
+                        var finishedResult = GetResultBase<T>(q, qid, QueryState8.Finished);
+                        finishedResult.Results = GetResults<T>(queryEntity.id);
+                        return finishedResult;
+                    }                    
                 }
             }
             
             var newQueryId = await SaveQueryAsync(q);
             QueriesExecutor.ExecuteQueriesAsync();
-            return new FlightQueryResult8DO<T> {QueryId = newQueryId, State = QueryState8.Saved};
+            return GetResultBase<T>(q, newQueryId, QueryState8.Saved);            
         }
 
+        private FlightQueryResult8DO<T> GetResultBase<T>(FlightQuery8DO query, string qid, QueryState8 state)
+        {            
+            return new FlightQueryResult8DO<T>
+            {
+                QueryId = qid,
+                State = state,
+
+                From = query.FromAir,
+
+                ToType = query.ToType,
+                To = query.To,
+                Prms = query.Params
+            };
+        }
+        
         public List<FlightQueryResult8DO<T>> CheckOnResults<T>(List<string> ids)
         {
             var results = new List<FlightQueryResult8DO<T>>();
@@ -72,22 +81,25 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
 
             foreach (QueryEntity query in queries)
             {
+                var result = new FlightQueryResult8DO<T>
+                {
+                    QueryId = query.id.ToString(),
+                    State = query.State,
+
+                    From = query.FromAir,
+
+                    ToType = query.ToType,
+                    To = query.To,
+
+                    Prms = query.Params
+                };
+
                 if (query.State == QueryState8.Finished)
                 {
-                    var result = new FlightQueryResult8DO<T>
-                    {
-                        QueryId = query.id.ToString(),
-                        State = query.State,
-                        Results = GetResults<T>(query.id)
-                    };
-                    results.Add(result);
+                    result.Results = GetResults<T>(query.id);                    
                 }
-
-                if (query.State == QueryState8.Started || query.State == QueryState8.Saved)
-                {
-                    var result = new FlightQueryResult8DO<T> {QueryId = query.id.ToString(), State = query.State};
-                    results.Add(result);
-                }
+                
+                results.Add(result);               
             }
 
             return results;

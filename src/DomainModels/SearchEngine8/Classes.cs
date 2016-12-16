@@ -213,8 +213,12 @@ namespace Gloobster.DomainModels.SearchEngine8
                 qid = d.QueryId,
                 state = d.State,
 
+                from = d.From,
+
                 to = d.To,
-                toType = d.ToType
+                toType = d.ToType,
+                toName = d.ToName,
+                prms = d.Prms
             };
 
             if (d.Results != null)
@@ -248,8 +252,13 @@ namespace Gloobster.DomainModels.SearchEngine8
         public string qid { get; set; }
         public QueryState8 state { get; set; }
 
+        public string from { get; set; }
+
         public string to { get; set; }
         public PlaceType8 toType { get; set; }
+        public string toName { get; set; }
+
+        public string prms { get; set; }
 
         public List<TY> results { get; set; }
     }
@@ -394,8 +403,13 @@ namespace Gloobster.DomainModels.SearchEngine8
         public string QueryId { get; set; }
         public QueryState8 State { get; set; }
 
+        public string From { get; set; }
+
         public string To { get; set; }
         public PlaceType8 ToType { get; set; }
+        public string ToName { get; set; }
+
+        public string Prms { get; set; }
 
         public List<T> Results { get; set; }
     }

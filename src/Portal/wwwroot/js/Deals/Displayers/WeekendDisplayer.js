@@ -25,6 +25,12 @@ var Planning;
                 var d1 = new WeekendByCityDis(this.$cont, fs.currentLevel);
                 d1.render(r1);
             }
+            if (grouping === LocationGrouping.ByCountry) {
+                var agg2 = new Planning.WeekendByCountryAgg();
+                var r2 = agg2.exe(this.queries, fs.days, fs.starsLevel);
+                var d2 = new ByCountryDisplay(this.$cont, fs.currentLevel);
+                d2.render(r2);
+            }
         };
         return WeekendDisplayer;
     }());
@@ -82,11 +88,11 @@ var Planning;
                 };
             };
             lg.onItemAppended = function ($city, city) {
-                _this.generateCityFlightGroups($weekCont, $city, city);
+                _this.generateCity($weekCont, $city, city);
             };
             lg.generateList(cities);
         };
-        WeekendByCityDis.prototype.generateCityFlightGroups = function ($weekCont, $city, city) {
+        WeekendByCityDis.prototype.generateCity = function ($weekCont, $city, city) {
             var $cont = $city.find(".items table");
             var lg = Common.ListGenerator.init($cont, "resultGroup-priceItem-template");
             lg.listLimit = 2;
@@ -101,7 +107,7 @@ var Planning;
                 };
             };
             lg.evnt("td", function (e, $item, $target, conn) {
-                var flights = Planning.FlightConvert.cFlights(conn.flights);
+                var flights = Planning.FlightConvert2.cFlights(conn.flights);
                 var $lc = Common.LastItem.getLast($weekCont, "flight-result", $city.data("no"));
                 var title = "Deals for " + city.name;
                 var pairs = [{ from: flights[0].from, to: flights[0].to }];
@@ -157,7 +163,7 @@ var Planning;
             };
             lg.evnt("td", function (e, $item, $target, conn) {
                 var flightsOrig = _this.extractFlights(conn.flightsGroups);
-                var flights = Planning.FlightConvert.cFlights(flightsOrig);
+                var flights = Planning.FlightConvert2.cFlights(flightsOrig);
                 var $lc = Common.LastItem.getLast($weekCont, "flight-result", $country.data("no"));
                 var title = "Deals for " + name;
                 var pairs = [{ from: flights[0].from, to: flights[0].to }];

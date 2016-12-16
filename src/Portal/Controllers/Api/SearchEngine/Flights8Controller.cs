@@ -7,6 +7,7 @@ using Gloobster.Portal.Controllers.Base;
 using Microsoft.AspNet.Mvc;
 using Serilog;
 using System.Linq;
+using Gloobster.DomainModels.SearchEngine;
 
 namespace Gloobster.Portal.Controllers.Api.SearchEngine
 {
@@ -14,10 +15,13 @@ namespace Gloobster.Portal.Controllers.Api.SearchEngine
     public class DealsController : BaseApiController
     {
         public IClientRequestExecutor ClientExecutor { get; set; }
-        
-        public DealsController(IClientRequestExecutor clientExecutor, ILogger log, IDbOperations db) : base(log, db)
+        public IAirportsCache AirCache { get; set; }
+
+
+        public DealsController(IAirportsCache airCache, IClientRequestExecutor clientExecutor, ILogger log, IDbOperations db) : base(log, db)
         {
             ClientExecutor = clientExecutor;
+            AirCache = airCache;
         }
 
         [HttpGet]
@@ -40,7 +44,7 @@ namespace Gloobster.Portal.Controllers.Api.SearchEngine
 
             if (req.timeType == TimeType8.Custom)
             {
-                var results = await GetResults<CustomResultDO>(req);
+                List<FlightQueryResult8DO<CustomResultDO>> results = await GetResults<CustomResultDO>(req);
                 var cr = results.Select(r => r.ToResponse<CustomResultDO, CustomResultResponse>());
                 return new ObjectResult(cr);
             }
@@ -69,8 +73,29 @@ namespace Gloobster.Portal.Controllers.Api.SearchEngine
                     results.AddRange(requeryResults);
                 }
             }
+            
+            var unfinishedResults = results.Where(r => r.State != QueryState8.Failed && r.State != QueryState8.Finished).ToList();
+            EnrichByCities(unfinishedResults);
 
             return results;
+        }
+
+        private void EnrichByCities<T>(List<FlightQueryResult8DO<T>> results)
+        {
+            foreach (var result in results)
+            {
+                result.ToName = result.To;
+
+                if (result.ToType == PlaceType8.City)
+                {                    
+                    int gid = int.Parse(result.To);
+                    var airport = AirCache.GetAirportByGID(gid);
+                    if (airport != null)
+                    {
+                        result.ToName = airport.Name;
+                    }
+                }                
+            }
         }
 
         private DestinationRequests8DO ExtractDests(SearchRequest8 req)
@@ -103,7 +128,7 @@ namespace Gloobster.Portal.Controllers.Api.SearchEngine
         public TimeType8 timeType { get; set; }
         public string customId { get; set; }
 
-        //todo: week/year s + to results manager
+        //todo: add possiblity to request single week
 
         public List<string> ccs { get; set; }
         public List<int> gids { get; set; }

@@ -88,14 +88,16 @@ var Planning;
             queries.forEach(function (query) {
                 if (query.state === QueryState.Failed) {
                     _this.removeFromQueue(query.qid);
-                    _this.drawQueue();
                 }
                 if (query.state === QueryState.Finished) {
                     _this.addToFinished(query);
-                    _this.drawQueue();
                     newResults = true;
                 }
+                if (query.state === QueryState.Saved || query.state === QueryState.Started) {
+                    _this.addToQueue(query);
+                }
             });
+            this.drawQueue();
             if (newResults) {
                 this.resultsChanged();
             }
@@ -103,12 +105,19 @@ var Planning;
                 this.startQuerying();
             }
         };
+        ResultsManager.prototype.addToQueue = function (query) {
+            var exists = _.find(this.queue, function (item) { return item.qid === query.qid; });
+            if (exists) {
+                return;
+            }
+            this.queue.push(query);
+        };
         ResultsManager.prototype.addToFinished = function (query) {
             this.finishedQueries.push(query);
             this.removeFromQueue(query.qid);
         };
         ResultsManager.prototype.removeFromQueue = function (id) {
-            this.queue = _.reject(this.queue, function (qid) { return qid === id; });
+            this.queue = _.reject(this.queue, function (item) { return item.qid === id; });
         };
         ResultsManager.prototype.selectionChanged = function (id, newState, type) {
             if (newState) {
@@ -161,26 +170,54 @@ var Planning;
                 var qb = QueriesBuilder.new()
                     .setTimeType(_this.timeType);
                 _this.queue.forEach(function (q) {
-                    qb.addQID(q);
+                    qb.addQID(q.qid);
                 });
                 var prms = qb.build();
                 _this.getQueries(prms);
             }, 3000);
         };
         ResultsManager.prototype.drawQueue = function () {
+            var _this = this;
             var $queue = $("#queue");
             if (this.queue.length > 0) {
-                $queue.html("<div>Queue: <img class=\"loader\" src=\"/images/loader-gray.gif\"/></div>");
+                $queue.html("<div style=\"display: inline-block;\">Queue: <img class=\"loader\" src=\"/images/loader-gray.gif\"/></div>");
             }
             else {
                 $queue.html("");
             }
-            this.queue.forEach(function (i) {
-                $queue.append("<div style=\"display: inline; width: 50px; border: 1px solid red;\">" + i.qid + "</div>");
+            this.queue.forEach(function (query) {
+                var prmsTxt = "";
+                if (_this.timeType === PlanningType.Weekend) {
+                    var dates = ParamsParsers.weekend(query.prms);
+                    prmsTxt = "(" + dates.week + ". week, " + dates.year + ")";
+                }
+                if (_this.timeType === PlanningType.Custom) {
+                }
+                $queue.append("<div style=\"display: inline-block; border: 1px solid red;\">" + query.from + " - " + query.toName + prmsTxt + "</div>");
             });
         };
         return ResultsManager;
     }());
     Planning.ResultsManager = ResultsManager;
+    var ParamsParsers = (function () {
+        function ParamsParsers() {
+        }
+        ParamsParsers.weekend = function (prms) {
+            var ps = prms.split("_");
+            return {
+                week: ps[0],
+                year: ps[1]
+            };
+        };
+        ParamsParsers.custom = function (prms) {
+            var ps = prms.split("_");
+            return {
+                userId: ps[0],
+                searchId: ps[1]
+            };
+        };
+        return ParamsParsers;
+    }());
+    Planning.ParamsParsers = ParamsParsers;
 })(Planning || (Planning = {}));
 //# sourceMappingURL=ResultsManager.js.map

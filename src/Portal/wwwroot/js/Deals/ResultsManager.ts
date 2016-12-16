@@ -122,22 +122,22 @@ module Planning {
 				queries.forEach((query) => {
 
 						if (query.state === QueryState.Failed) {
-								this.removeFromQueue(query.qid);
-
-								this.drawQueue();
+								this.removeFromQueue(query.qid);								
 						}
 
 						if (query.state === QueryState.Finished) {
 								this.addToFinished(query);
-
-								this.drawQueue();
 								
 								newResults = true;
 						}
 
-						//do nothing for: QueryState.Saved, QueryState.Started
+						if (query.state === QueryState.Saved || query.state === QueryState.Started) {
+							this.addToQueue(query);
+						}
 						
 				});
+
+				this.drawQueue();
 
 				if (newResults) {
 						this.resultsChanged();
@@ -148,13 +148,22 @@ module Planning {
 				}
 		}
 
+		private addToQueue(query) {
+			var exists = _.find(this.queue, (item) => { return item.qid === query.qid; });
+			if (exists) {
+				return;
+			}
+
+			this.queue.push(query);
+		}
+
 		private addToFinished(query) {
 			this.finishedQueries.push(query);
 			this.removeFromQueue(query.qid);
 		}
 
 		private removeFromQueue(id) {
-			this.queue = _.reject(this.queue, (qid) => { return qid === id; });
+			this.queue = _.reject(this.queue, (item) => { return item.qid === id; });
 		}
 
 		public selectionChanged(id: string, newState: boolean, type: FlightCacheRecordType) {
@@ -219,7 +228,7 @@ module Planning {
 						.setTimeType(this.timeType);
 					
 				this.queue.forEach((q) => {
-					qb.addQID(q);
+					qb.addQID(q.qid);
 				});
 				
 				var prms = qb.build();
@@ -229,35 +238,51 @@ module Planning {
 		}
 
 		private drawQueue() {
-				var $queue = $("#queue");
+			var $queue = $("#queue");
 
-				if (this.queue.length > 0) {
-					$queue.html(`<div>Queue: <img class="loader" src="/images/loader-gray.gif"/></div>`);
-				} else {
-						$queue.html("");	
-				}
-				
-				this.queue.forEach((i) => {
-						$queue.append(`<div style="display: inline; width: 50px; border: 1px solid red;">${i.qid}</div>`);
-				});					
+			if (this.queue.length > 0) {
+				$queue.html(`<div style="display: inline-block;">Queue: <img class="loader" src="/images/loader-gray.gif"/></div>`);
+			} else {
+				$queue.html("");
 			}
 
-		//private buildQueueParams(queue) {
-		//		var strParams = [];
-		//		var i = 0;
-		//		queue.forEach((itm) => {
-		//				strParams.push([`q`, `${itm.from}-${itm.to}-${itm.type}`]);
-		//				i++;
-		//		});
-		//		strParams.push(["tt", this.timeType]);
-		//		return strParams;
-		//}
+			this.queue.forEach((query) => {
+					
+					var prmsTxt = "";
 
-		
+					if (this.timeType === PlanningType.Weekend) {
+							var dates = ParamsParsers.weekend(query.prms);
+							prmsTxt = `(${dates.week}. week, ${dates.year})`;
+					}
 
+					if (this.timeType === PlanningType.Custom) {
+							//todo:
+					}
+					
+					$queue.append(`<div style="display: inline-block; border: 1px solid red;">${query.from} - ${query.toName}${prmsTxt}</div>`);
 
-	}
+			});
+		}
 
+		}
 
+		export class ParamsParsers {
+			public static weekend(prms) {
+				var ps = prms.split("_");
+				return {
+					week: ps[0],
+					year: ps[1]
+				};
+			}
+				
+			public static custom(prms) {
+				var ps = prms.split("_");
+				return {
+					userId: ps[0],
+					searchId: ps[1]
+				};
+			}
+
+		}
 	
 }

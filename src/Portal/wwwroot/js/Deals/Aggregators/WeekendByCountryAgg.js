@@ -11,37 +11,35 @@ var Planning;
             _super.apply(this, arguments);
             this.weekGroups = [];
         }
-        WeekendByCountryAgg.prototype.exe = function (connections, days, starsLevel) {
+        WeekendByCountryAgg.prototype.exe = function (queries, days, starsLevel) {
             var _this = this;
-            connections.forEach(function (c) {
-                c.WeekFlights.forEach(function (weekFlight) {
-                    var flights = _this.fittingFlights(weekFlight.Flights, days, starsLevel);
-                    if (any(flights)) {
-                        var weekGroup = _this.getOrCreateWeekGroup(weekFlight.WeekNo, weekFlight.Year);
-                        var country = _this.getOrCreateCountry(weekGroup, c.CountryCode, c.CountryCode);
-                        var city = _this.getOrCreateCity(c.ToCityId, c.CityName, country);
-                        var lowestPrice = _this.getLowestPrice(flights);
-                        var flightGroup = {
-                            fromPrice: lowestPrice,
-                            fromAirport: c.FromAirport,
-                            toAirport: c.ToAirport,
-                            flights: flights
-                        };
-                        if (!country.fromPrice) {
-                            country.fromPrice = lowestPrice;
-                        }
-                        else if (country.fromPrice > lowestPrice) {
-                            country.fromPrice = lowestPrice;
-                        }
-                        if (!city.fromPrice) {
-                            city.fromPrice = lowestPrice;
-                        }
-                        else if (city.fromPrice > lowestPrice) {
-                            city.fromPrice = lowestPrice;
-                        }
-                        city.flightsGroups.push(flightGroup);
+            Planning.FlightsExtractor.r(queries, function (r, q) {
+                var flights = _this.fittingFlights(r.fs, days, starsLevel);
+                if (any(flights)) {
+                    var weekGroup = _this.getOrCreateWeekGroup(r.week, r.year);
+                    var country = _this.getOrCreateCountry(weekGroup, r.cc, r.cc);
+                    var city = _this.getOrCreateCity(r.gid, r.name, country);
+                    var lowestPrice = _this.getLowestPrice(flights);
+                    var flightGroup = {
+                        fromPrice: lowestPrice,
+                        fromAirport: r.from,
+                        toAirport: r.to,
+                        flights: flights
+                    };
+                    if (!country.fromPrice) {
+                        country.fromPrice = lowestPrice;
                     }
-                });
+                    else if (country.fromPrice > lowestPrice) {
+                        country.fromPrice = lowestPrice;
+                    }
+                    if (!city.fromPrice) {
+                        city.fromPrice = lowestPrice;
+                    }
+                    else if (city.fromPrice > lowestPrice) {
+                        city.fromPrice = lowestPrice;
+                    }
+                    city.flightsGroups.push(flightGroup);
+                }
             });
             return this.weekGroups;
         };

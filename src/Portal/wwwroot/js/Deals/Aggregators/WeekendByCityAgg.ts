@@ -30,6 +30,11 @@ module Planning {
 						var first = _.first(parts.thereParts);
 						var last = _.last(parts.backParts);
 
+						//temporary solves the problem when returning to different airport
+						if (!first || !last) {
+							return false;
+						}
+
 						var from = new Date(first.dep);
 						var until = new Date(last.arr);
 
@@ -57,6 +62,8 @@ module Planning {
 				
 				protected  splitInboundOutboundFlight(parts, to) {
 
+						//todo: solve problem flying form FRA, returning to HHN
+
 						var thereParts = [];
 						var backParts = [];
 
@@ -70,7 +77,7 @@ module Planning {
 										thereParts.push(fp);
 								}
 
-								if (fp.To === to) {
+								if (fp.to === to) {
 										thereFinished = true;
 								}
 
@@ -86,7 +93,7 @@ module Planning {
 
 		export class WeekendByCityAgg extends WeekendAggBase {
 
-				private weekGroups = [];
+			private weekGroups = [];
 
 			public exe(queries, days, starsLevel) {
 
