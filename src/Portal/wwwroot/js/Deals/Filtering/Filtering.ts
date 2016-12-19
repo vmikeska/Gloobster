@@ -279,21 +279,34 @@ module Planning {
 					this.itemClicked(item.ni);
 				});
 
-			lg.evnt(".day",
-					(e, $item, $target, item) => {
-						this.showFocus(item.ni);
-					})
+			lg.evnt(".day", (e, $item, $target, item) => {
+					
+				if (this.focusTimeoutId) {
+						clearTimeout(this.focusTimeoutId);
+						this.focusTimeoutId = null;
+				}
+					
+					this.showFocus(item.ni);
+				})
 				.setEvent("mouseenter");
 
-			lg.evnt(".day",
-					(e, $item, $target, item) => {
-						this.unsetFocus();
-					})
-				.setEvent("mouseleave");
+			lg.evnt(".day", (e, $item, $target, item) => {
+					
+					
+				this.focusTimeoutId = setTimeout(() => {
+						this.focusTimeoutId = null;
+						this.unsetFocus(null);
+				}, 200);	
+					
+					
+				})
+			.setEvent("mouseleave");
 
 			lg.generateList(items);
 
 		}
+
+		private focusTimeoutId = null;
 
 		private removeActNo(no) {
 			var $i = this.getItemByNo(no);
@@ -332,11 +345,11 @@ module Planning {
 			this.change();
 		}
 
-			private change() {
-					if (this.onFilterChange) {
-							this.onFilterChange();
-					}
-			}
+		private change() {
+				if (this.onFilterChange) {
+						this.onFilterChange();
+				}
+		}
 
 		private remAdd(remms, adds) {
 			if (remms) {
@@ -398,13 +411,20 @@ module Planning {
 				nos = [7, 1];
 			}
 
+			this.unsetFocus(null);
+
 			nos.forEach((noi) => {
 				this.setFocus(noi);
 			});
 		}
 
-		private unsetFocus() {
-			this.$filterCont.find(".day").removeClass("foc");
+		private unsetFocus(no) {
+				if (no) {
+						var $i = this.getItemByNo(no);
+						$i.removeClass("foc");
+				} else {
+						this.$filterCont.find(".day").removeClass("foc");
+				}				
 		}
 
 		private setFocus(no) {

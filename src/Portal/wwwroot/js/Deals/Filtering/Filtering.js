@@ -179,6 +179,7 @@ var Planning;
     var DaysFilter = (function () {
         function DaysFilter($cbCont, $filterCont) {
             this.enabled = false;
+            this.focusTimeoutId = null;
             this.$cbCont = $cbCont;
             this.$filterCont = $filterCont;
         }
@@ -227,11 +228,18 @@ var Planning;
                 _this.itemClicked(item.ni);
             });
             lg.evnt(".day", function (e, $item, $target, item) {
+                if (_this.focusTimeoutId) {
+                    clearTimeout(_this.focusTimeoutId);
+                    _this.focusTimeoutId = null;
+                }
                 _this.showFocus(item.ni);
             })
                 .setEvent("mouseenter");
             lg.evnt(".day", function (e, $item, $target, item) {
-                _this.unsetFocus();
+                _this.focusTimeoutId = setTimeout(function () {
+                    _this.focusTimeoutId = null;
+                    _this.unsetFocus(null);
+                }, 200);
             })
                 .setEvent("mouseleave");
             lg.generateList(items);
@@ -319,12 +327,19 @@ var Planning;
             if (no === 1) {
                 nos = [7, 1];
             }
+            this.unsetFocus(null);
             nos.forEach(function (noi) {
                 _this.setFocus(noi);
             });
         };
-        DaysFilter.prototype.unsetFocus = function () {
-            this.$filterCont.find(".day").removeClass("foc");
+        DaysFilter.prototype.unsetFocus = function (no) {
+            if (no) {
+                var $i = this.getItemByNo(no);
+                $i.removeClass("foc");
+            }
+            else {
+                this.$filterCont.find(".day").removeClass("foc");
+            }
         };
         DaysFilter.prototype.setFocus = function (no) {
             var $i = this.getItemByNo(no);

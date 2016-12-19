@@ -779,8 +779,6 @@
 
         padding: 12px;
 
-        border-top: 5px solid $light-blue3;
-
         background-color: $very-light-blue;
         border-bottom-left-radius: 4px;
         border-bottom-right-radius: 4px;
@@ -857,13 +855,12 @@
         }
 
         .sec-line {
-            text-align: left;
-            margin-top: 12px;
+            text-align: left;            
             padding-top: 12px;
-            border-top: 1px dotted $light-blue3;
-
+            
             .weekend-deals-filter {
-                
+                padding-top: 12px;    
+                border-top: 1px dotted $light-blue3;
 
                 .all-deals {
                     vertical-align: top;
@@ -929,6 +926,7 @@
 
                         &.perm-sel{
                             background-color: $orange;
+                            cursor: default !important;
                         }
                     }
 

@@ -4940,7 +4940,6 @@ footer {
   .fly-tickets .filtering {
     margin-bottom: 20px;
     padding: 12px;
-    border-top: 5px solid #3298C1;
     background-color: #F0F8FA;
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px; }
@@ -4986,67 +4985,69 @@ footer {
           color: #F56E12 !important; }
     .fly-tickets .filtering .sec-line {
       text-align: left;
-      margin-top: 12px;
-      padding-top: 12px;
-      border-top: 1px dotted #3298C1; }
-      .fly-tickets .filtering .sec-line .weekend-deals-filter .all-deals {
-        vertical-align: top;
-        display: inline-block;
-        margin-top: 8px;
-        font-weight: bold;
-        white-space: nowrap; }
-      .fly-tickets .filtering .sec-line .weekend-deals-filter .days-filter {
-        display: inline-block;
-        text-align: center; }
-        .fly-tickets .filtering .sec-line .weekend-deals-filter .days-filter .ftbl {
-          display: table; }
-          .fly-tickets .filtering .sec-line .weekend-deals-filter .days-filter .ftbl .cell {
-            display: table-cell; }
-        .fly-tickets .filtering .sec-line .weekend-deals-filter .days-filter .txt {
+      padding-top: 12px; }
+      .fly-tickets .filtering .sec-line .weekend-deals-filter {
+        padding-top: 12px;
+        border-top: 1px dotted #3298C1; }
+        .fly-tickets .filtering .sec-line .weekend-deals-filter .all-deals {
+          vertical-align: top;
           display: inline-block;
+          margin-top: 8px;
           font-weight: bold;
-          margin-left: 10px;
-          margin-right: 25px; }
-        .fly-tickets .filtering .sec-line .weekend-deals-filter .days-filter .day {
-          position: relative;
-          box-sizing: border-box;
-          border-width: 2px;
-          border-style: solid;
+          white-space: nowrap; }
+        .fly-tickets .filtering .sec-line .weekend-deals-filter .days-filter {
           display: inline-block;
-          background-color: #3298C1;
-          color: white;
-          border-radius: 4px;
-          padding-top: 20px;
-          padding-bottom: 20px;
-          font-weight: bold;
-          margin-left: 4px;
-          width: 66px;
-          -webkit-touch-callout: none;
-          /* iOS Safari */
-          -webkit-user-select: none;
-          /* Chrome/Safari/Opera */
-          -khtml-user-select: none;
-          /* Konqueror */
-          -moz-user-select: none;
-          /* Firefox */
-          -ms-user-select: none;
-          /* Internet Explorer/Edge */
-          user-select: none;
-          /* Non-prefixed version, currently not supported by any browser */ }
-          .fly-tickets .filtering .sec-line .weekend-deals-filter .days-filter .day.act {
-            background-color: #F56E12; }
-          .fly-tickets .filtering .sec-line .weekend-deals-filter .days-filter .day.foc {
-            width: 74px;
-            padding-top: 24px;
-            padding-bottom: 24px;
-            /*top: -2px;*/
-            left: -4px; }
-          .fly-tickets .filtering .sec-line .weekend-deals-filter .days-filter .day.perm-sel {
-            background-color: #F56E12; }
-        .fly-tickets .filtering .sec-line .weekend-deals-filter .days-filter.enabled .day {
-          cursor: pointer; }
-        .fly-tickets .filtering .sec-line .weekend-deals-filter .days-filter.disabled {
-          filter: grayscale(70%); }
+          text-align: center; }
+          .fly-tickets .filtering .sec-line .weekend-deals-filter .days-filter .ftbl {
+            display: table; }
+            .fly-tickets .filtering .sec-line .weekend-deals-filter .days-filter .ftbl .cell {
+              display: table-cell; }
+          .fly-tickets .filtering .sec-line .weekend-deals-filter .days-filter .txt {
+            display: inline-block;
+            font-weight: bold;
+            margin-left: 10px;
+            margin-right: 25px; }
+          .fly-tickets .filtering .sec-line .weekend-deals-filter .days-filter .day {
+            position: relative;
+            box-sizing: border-box;
+            border-width: 2px;
+            border-style: solid;
+            display: inline-block;
+            background-color: #3298C1;
+            color: white;
+            border-radius: 4px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            font-weight: bold;
+            margin-left: 4px;
+            width: 66px;
+            -webkit-touch-callout: none;
+            /* iOS Safari */
+            -webkit-user-select: none;
+            /* Chrome/Safari/Opera */
+            -khtml-user-select: none;
+            /* Konqueror */
+            -moz-user-select: none;
+            /* Firefox */
+            -ms-user-select: none;
+            /* Internet Explorer/Edge */
+            user-select: none;
+            /* Non-prefixed version, currently not supported by any browser */ }
+            .fly-tickets .filtering .sec-line .weekend-deals-filter .days-filter .day.act {
+              background-color: #F56E12; }
+            .fly-tickets .filtering .sec-line .weekend-deals-filter .days-filter .day.foc {
+              width: 74px;
+              padding-top: 24px;
+              padding-bottom: 24px;
+              /*top: -2px;*/
+              left: -4px; }
+            .fly-tickets .filtering .sec-line .weekend-deals-filter .days-filter .day.perm-sel {
+              background-color: #F56E12;
+              cursor: default !important; }
+          .fly-tickets .filtering .sec-line .weekend-deals-filter .days-filter.enabled .day {
+            cursor: pointer; }
+          .fly-tickets .filtering .sec-line .weekend-deals-filter .days-filter.disabled {
+            filter: grayscale(70%); }
   .fly-tickets .flight-results {
     margin-top: 12px;
     text-align: left;
