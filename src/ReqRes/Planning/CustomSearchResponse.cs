@@ -36,6 +36,9 @@ namespace Gloobster.ReqRes.Planning
         public List<FromAirResponse> customAirs { get; set; }
 
         public int freq { get; set; }
+        public DateTime? lastNewsletter { get; set; }
+
+        public bool started { get; set; }
     }
 
     public class FromAirResponse

@@ -11,7 +11,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
     {
         public IDbOperations DB { get; set; }
         public IRequestsBuilder8 ReqBuilder { get; set; }
-        public IFlightsDb8 FlightsDB { get; set; }
+        public IFlightsDb FlightsDB { get; set; }
 
         public async Task<List<FlightQueryResult8DO<T>>> ExeFirstRequestAsync<T>(string userId, TimeType8 timeType, string customId = null)
         {

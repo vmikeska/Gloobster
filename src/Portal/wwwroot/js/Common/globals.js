@@ -6,6 +6,9 @@ function any(a) {
     }
     return false;
 }
+function notNull(a) {
+    return (a !== null) && (a !== "null") && (a !== undefined) && (a !== "undefined");
+}
 var Constants;
 (function (Constants) {
     Constants.tokenCookieName = "token";

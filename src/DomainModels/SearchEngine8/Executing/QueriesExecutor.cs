@@ -56,7 +56,50 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
         {
             DateTime old = DateTime.UtcNow.AddHours(-1);
 
-            await DB.DeleteAsync<QueryEntity>(q => q.State == QueryState8.Finished && q.Executed.Value < old);
+            List<QueryEntity> oldQueries =  DB.List<QueryEntity>(q => q.State == QueryState8.Finished && q.Executed.Value < old);
+
+            var anytimeQueries = new List<QueryEntity>();
+            var weekendQueries = new List<QueryEntity>();
+            var customQueries = new List<QueryEntity>();
+
+            foreach (var oldQuery in oldQueries)
+            {
+                if (oldQuery.TimeType == TimeType8.Anytime)
+                {
+                    anytimeQueries.Add(oldQuery);
+                }
+                if (oldQuery.TimeType == TimeType8.Weekend)
+                {
+                    weekendQueries.Add(oldQuery);
+                }
+                if (oldQuery.TimeType == TimeType8.Custom)
+                {
+                    customQueries.Add(oldQuery);
+                }
+            }
+
+            var oldIds = oldQueries.Select(q => q.id);
+
+            await DB.DeleteAsync<QueryEntity>(q => oldIds.Contains(q.id));
+
+            var anyIds = anytimeQueries.Select(q => q.id).ToList();
+            var weekendIds = weekendQueries.Select(q => q.id).ToList();
+            var customIds = customQueries.Select(q => q.id).ToList();
+
+            if (anyIds.Any())
+            {
+                await DB.DeleteAsync<AnytimeResultsEntity>(q => anyIds.Contains(q.Query_id));
+            }
+
+            if (weekendIds.Any())
+            {
+                await DB.DeleteAsync<WeekendResultsEntity>(q => weekendIds.Contains(q.Query_id));
+            }
+
+            if (customIds.Any())
+            {
+                await DB.DeleteAsync<CustomResultsEntity>(q => customIds.Contains(q.Query_id));
+            }
         }
         
         private async Task ExecuteQueryAsync(QueryEntity query)
@@ -131,7 +174,12 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
             if (query.TimeType == TimeType8.Custom)
             {
                 var prms = ParamsParsers.Custom(query.Params);
-                builder = new CustomKiwiQueryBuilder(prms.UserId, prms.SearchId);
+                var bldr = new CustomKiwiQueryBuilder(prms.UserId, prms.SearchId)
+                {
+                    DB = DB
+                };
+
+                builder = bldr;
             }
 
             return builder;

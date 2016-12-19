@@ -176,7 +176,7 @@ module Planning {
 							
 							var results = _.filter(this.results, (r) => { return r.gid === gid });
 							var first = _.first(results);
-							var name = first.CityName;
+							var name = first.name;
 							
 							var flights = [];
 							var pairs: CodePair[] = [];

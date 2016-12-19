@@ -39,6 +39,7 @@ var Planning;
             var _this = this;
             this.addPrm("timeType", this.timeType);
             this.addPrm("firstQuery", this.firstQuery);
+            this.addPrm("customId", this.customId);
             if (this.firstQuery) {
                 return this.prms;
             }
@@ -54,17 +55,20 @@ var Planning;
             return this.prms;
         };
         QueriesBuilder.prototype.addPrm = function (name, val) {
-            var p = [name, val.toString()];
-            this.prms.push(p);
+            if (notNull(val)) {
+                var p = [name, val.toString()];
+                this.prms.push(p);
+            }
         };
         return QueriesBuilder;
     }());
     Planning.QueriesBuilder = QueriesBuilder;
     var ResultsManager = (function () {
-        function ResultsManager() {
+        function ResultsManager(v) {
             this.finishedQueries = [];
             this.queue = [];
             this.doRequery = true;
+            this.v = v;
         }
         ResultsManager.prototype.refresh = function () {
             this.initalCall(this.timeType);
@@ -74,16 +78,18 @@ var Planning;
             this.stopQuerying();
             this.queue = [];
             this.finishedQueries = [];
+            this.resultsChanged();
+            var customId = this.v.currentSetter.getCustomId();
             var request = QueriesBuilder.new()
                 .setFirstQuery(true)
                 .setTimeType(timeType)
+                .setCustomId(customId)
                 .build();
             this.getQueries(request);
         };
         ResultsManager.prototype.recieveQueries = function (queries) {
             var _this = this;
             console.log("receiving results");
-            this.stopQuerying();
             var newResults = false;
             queries.forEach(function (query) {
                 if (query.state === QueryState.Failed) {
@@ -122,8 +128,10 @@ var Planning;
         ResultsManager.prototype.selectionChanged = function (id, newState, type) {
             if (newState) {
                 this.drawQueue();
+                var customId = this.v.currentSetter.getCustomId();
                 var qb = QueriesBuilder.new()
-                    .setTimeType(this.timeType);
+                    .setTimeType(this.timeType)
+                    .setCustomId(customId);
                 if (type === FlightCacheRecordType.City) {
                     qb.addGID(parseInt(id));
                 }
@@ -141,6 +149,7 @@ var Planning;
         ResultsManager.prototype.getQueries = function (params) {
             var _this = this;
             console.log("Getting queries");
+            this.stopQuerying();
             Views.ViewBase.currentView.apiGet("Deals", params, function (queries) {
                 _this.recieveQueries(queries);
             });
@@ -177,28 +186,47 @@ var Planning;
             }, 3000);
         };
         ResultsManager.prototype.drawQueue = function () {
-            var _this = this;
-            var $queue = $("#queue");
-            if (this.queue.length > 0) {
-                $queue.html("<div style=\"display: inline-block;\">Queue: <img class=\"loader\" src=\"/images/loader-gray.gif\"/></div>");
+            var qv = new QueueVisualize();
+            if (any(this.queue)) {
+                qv.draw(this.timeType, this.queue);
             }
             else {
-                $queue.html("");
+                qv.hide();
             }
-            this.queue.forEach(function (query) {
-                var prmsTxt = "";
-                if (_this.timeType === PlanningType.Weekend) {
-                    var dates = ParamsParsers.weekend(query.prms);
-                    prmsTxt = "(" + dates.week + ". week, " + dates.year + ")";
-                }
-                if (_this.timeType === PlanningType.Custom) {
-                }
-                $queue.append("<div style=\"display: inline-block; border: 1px solid red;\">" + query.from + " - " + query.toName + prmsTxt + "</div>");
-            });
         };
         return ResultsManager;
     }());
     Planning.ResultsManager = ResultsManager;
+    var QueueVisualize = (function () {
+        function QueueVisualize() {
+            this.$mainCont = $("#queue");
+            this.$cont = this.$mainCont.find(".cont");
+            this.itemTmp = Views.ViewBase.currentView.registerTemplate("queue-item-tmp");
+        }
+        QueueVisualize.prototype.draw = function (timeType, queries) {
+            var _this = this;
+            this.$mainCont.removeClass("hidden");
+            queries.forEach(function (query) {
+                var prmsTxt = "";
+                if (timeType === PlanningType.Weekend) {
+                    var dates = ParamsParsers.weekend(query.prms);
+                    prmsTxt = "(" + dates.week + ". week, " + dates.year + ")";
+                }
+                var text = query.from + " - " + query.toName + " " + prmsTxt;
+                var context = {
+                    text: text
+                };
+                var $itm = _this.itemTmp(context);
+                _this.$cont.append($itm);
+            });
+        };
+        QueueVisualize.prototype.hide = function () {
+            this.$cont.empty();
+            this.$mainCont.addClass("hidden");
+        };
+        return QueueVisualize;
+    }());
+    Planning.QueueVisualize = QueueVisualize;
     var ParamsParsers = (function () {
         function ParamsParsers() {
         }

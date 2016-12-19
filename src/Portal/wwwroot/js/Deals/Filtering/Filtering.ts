@@ -164,19 +164,7 @@ module Planning {
 		public initA(locationItems: LocationGrouping[], activeLocation: LocationGrouping) {
 			this.init(locationItems, activeLocation);				
 		}
-
-		//public getState() {
-		//	var bs = this.getStateBase();
-
-		//	var ls = {
-		//			fromDays: this.fromDays,
-		//			toDays: this.toDays
-		//	};
-
-		//	var s = $.extend(bs, ls);
-		//	return s;
-		//}
-
+			
 		private daysRangeChanged(from, to) {
 			this.fromDays = from;
 			this.toDays = to;

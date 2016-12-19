@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Gloobster.Database;
+using Gloobster.DomainModels.SearchEngine;
 using Gloobster.Entities;
+using Gloobster.Entities.Planning;
 using MongoDB.Bson;
 
 namespace Gloobster.DomainModels.SearchEngine8.Queuing
@@ -12,6 +14,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
     {
         public IDbOperations DB { get; set; }
         public IRequestBuilder8 ReqBuilder { get; set; }
+        public IOldAirportsCache AirCache { get; set; }
 
         public List<FlightQuery8DO> BuildQueriesAnytime(DestinationRequests8DO destinations, string userId)
         {
@@ -69,9 +72,14 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
         public List<FlightQuery8DO> BuildQueriesCustom(DestinationRequests8DO destinations, string userId, string searchId)
         {
             var queries = new List<FlightQuery8DO>();
-            
-            var airs = HomeAirports(userId);
 
+            if (!destinations.Any())
+            {
+                return queries;
+            }
+
+            var airs = GetCustomAirs(userId, searchId);
+            
             foreach (string air in airs)
             {
                 foreach (string cc in destinations.CCs)
@@ -88,6 +96,34 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
             }
             
             return queries;
+        }
+
+        private List<string> GetCustomAirs(string userId, string searchId)
+        {
+            var userIdObj = new ObjectId(userId);
+            var sidObj = new ObjectId(searchId);
+            var customEnt = DB.FOD<PlanningCustomEntity>(p => p.User_id == userIdObj);
+            var search = customEnt.Searches.FirstOrDefault(s => s.id == sidObj);
+
+            var airs = new List<string>();
+            if (search.StandardAirs)
+            {
+                var ha = HomeAirports(userId);
+                airs.AddRange(ha);
+            }
+
+            if (search.CustomAirs != null)
+            {
+                var customIds = search.CustomAirs.Select(a => a.OrigId);
+
+                foreach (int customId in customIds)
+                {
+                    var air = AirCache.GetByOrigId(customId);
+                    airs.Add(air.IataFaa);
+                }
+            }
+
+            return airs;
         }
         
         private List<WeeksCombi> GetWeekends(int countOfWeekends)

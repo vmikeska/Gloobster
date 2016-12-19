@@ -22,7 +22,9 @@ namespace Gloobster.Mappers
                 gids = e.GIDs,
                 name = e.Name,
                 standardAirs = e.StandardAirs,
-                freq = e.Freq
+                freq = e.Freq,
+                started = e.Started,
+                lastNewsletter = e.LastNewsletter
 			};
             
 			return r;
@@ -75,7 +77,9 @@ namespace Gloobster.Mappers
                 gids = d.GIDs,
                 name = d.Name,
                 standardAirs = d.StandardAirs,
-                freq = d.Freq
+                freq = d.Freq,
+                started = d.Started,
+                lastNewsletter = d.LastNewsletter
             };
 			return r;
 		}
@@ -94,7 +98,9 @@ namespace Gloobster.Mappers
                 GIDs = e.GIDs,
                 StandardAirs = e.StandardAirs,                
                 CustomAirs = e.CustomAirs.Select(a => a.ToDO()).ToList(),
-                Freq = e.Freq
+                Freq = e.Freq,
+                Started = e.Started,
+                LastNewsletter = e.LastNewsletter
             };
             
 			return r;

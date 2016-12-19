@@ -124,7 +124,7 @@ var Planning;
                 var $lc = Common.LastItem.getLast(_this.$cont, "flight-result", $cityBox.data("no"));
                 var results = _.filter(_this.results, function (r) { return r.gid === gid; });
                 var first = _.first(results);
-                var name = first.CityName;
+                var name = first.name;
                 var flights = [];
                 var pairs = [];
                 results.forEach(function (r) {

@@ -97,8 +97,8 @@ var Planning;
         };
         FlightDetails.prototype.genMultiFlightFlights = function ($multiFlight, multiFlight) {
             var _this = this;
-            var lg = Common.ListGenerator.init($multiFlight, "connection-single-flight-template");
-            lg.appendStyle = "after";
+            var $cont = $multiFlight.find(".flights-sub");
+            var lg = Common.ListGenerator.init($cont, "connection-single-flight-template");
             lg.customMapping = function (f) {
                 var res = _this.mapSingleFlight(f);
                 res.customClass = "sub-part";

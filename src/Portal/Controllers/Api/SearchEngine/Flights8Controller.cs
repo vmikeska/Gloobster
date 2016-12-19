@@ -44,7 +44,7 @@ namespace Gloobster.Portal.Controllers.Api.SearchEngine
 
             if (req.timeType == TimeType8.Custom)
             {
-                List<FlightQueryResult8DO<CustomResultDO>> results = await GetResults<CustomResultDO>(req);
+                var results = await GetResults<CustomResultDO>(req);
                 var cr = results.Select(r => r.ToResponse<CustomResultDO, CustomResultResponse>());
                 return new ObjectResult(cr);
             }
@@ -64,7 +64,7 @@ namespace Gloobster.Portal.Controllers.Api.SearchEngine
             else
             {
                 var dests = ExtractDests(req);
-                var singleResults = await ClientExecutor.ExeSingleRequestsAsync<T>(UserId, req.timeType, dests);
+                var singleResults = await ClientExecutor.ExeSingleRequestsAsync<T>(UserId, req.timeType, dests, req.customId);
                 results.AddRange(singleResults);
 
                 if (req.qids != null)

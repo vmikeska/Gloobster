@@ -23,6 +23,9 @@ namespace Gloobster.DomainObjects
         public List<FromAirDO> CustomAirs { get; set; }
 
         public int Freq { get; set; }
+        public DateTime? LastNewsletter { get; set; }
+
+        public bool Started { get; set; }
     }
 
     public class FromAirDO

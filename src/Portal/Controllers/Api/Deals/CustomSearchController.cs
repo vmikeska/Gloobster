@@ -49,7 +49,16 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 		public async Task<IActionResult> Put([FromBody] CustomSearchUpdateReq req)
 		{
 
-		    if (req.name == "daysRange")
+            if (req.name == "started")
+            {
+                bool started = bool.Parse(req.value);
+                
+                //todo: if started == false, search results should be deleted
+                //todo: if started and any places selected, queries should be created/executed
+                await SearchDomain.UpdateStarted(UserId, req.id, started);
+            }
+
+            if (req.name == "daysRange")
 		    {
 		        int from = int.Parse(req.GetValByName("from"));
                 int to = int.Parse(req.GetValByName("to"));

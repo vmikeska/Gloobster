@@ -32,6 +32,10 @@ function any(a)
 	return false;
 }
 
+function notNull(a) {
+	return (a !== null) && (a !== "null") && (a !== undefined) && (a !== "undefined");
+}
+
 declare var geoip_latitude;
 declare var geoip_longitude;
 

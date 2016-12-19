@@ -7,9 +7,9 @@ using MongoDB.Bson;
 
 namespace Gloobster.DomainModels.SearchEngine8.Queuing
 {
-    public class FlightsDb8: IFlightsDb8
+    public class FlightsDb: IFlightsDb
     {
-        private const int maxCacheLifeTimeMins = 60;
+        private const int MaxCacheLifeTimeMins = 60;
 
         public IDbOperations DB { get; set; }
         public IQueriesExecutor QueriesExecutor { get; set; }
@@ -36,18 +36,19 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
                 if (queryEntity.State == QueryState8.Finished)
                 {
                     TimeSpan age = DateTime.UtcNow - queryEntity.Executed.Value;
-                    bool isOld = age.TotalMinutes > maxCacheLifeTimeMins;
+                    bool isOld = age.TotalMinutes > MaxCacheLifeTimeMins;
 
                     if (isOld)
                     {
-                        await DeleteQueryAsync(queryEntity.id);
+                        await DeleteQueryAsync(queryEntity);
                     }
                     else
                     {
                         var finishedResult = GetResultBase<T>(q, qid, QueryState8.Finished);
-                        finishedResult.Results = GetResults<T>(queryEntity.id);
+                        var results = GetResults<T>(queryEntity.id);
+                        finishedResult.Results = results;
                         return finishedResult;
-                    }                    
+                    }
                 }
             }
             
@@ -56,21 +57,6 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
             return GetResultBase<T>(q, newQueryId, QueryState8.Saved);            
         }
 
-        private FlightQueryResult8DO<T> GetResultBase<T>(FlightQuery8DO query, string qid, QueryState8 state)
-        {            
-            return new FlightQueryResult8DO<T>
-            {
-                QueryId = qid,
-                State = state,
-
-                From = query.FromAir,
-
-                ToType = query.ToType,
-                To = query.To,
-                Prms = query.Params
-            };
-        }
-        
         public List<FlightQueryResult8DO<T>> CheckOnResults<T>(List<string> ids)
         {
             var results = new List<FlightQueryResult8DO<T>>();
@@ -96,15 +82,32 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
 
                 if (query.State == QueryState8.Finished)
                 {
-                    result.Results = GetResults<T>(query.id);                    
+                    result.Results = GetResults<T>(query.id);
                 }
-                
-                results.Add(result);               
+
+                results.Add(result);
             }
 
             return results;
         }
 
+
+        private FlightQueryResult8DO<T> GetResultBase<T>(FlightQuery8DO query, string qid, QueryState8 state)
+        {            
+            return new FlightQueryResult8DO<T>
+            {
+                QueryId = qid,
+                State = state,
+
+                From = query.FromAir,
+
+                ToType = query.ToType,
+                To = query.To,
+                Prms = query.Params
+            };
+        }
+        
+        
         private List<T> GetResults<T>(ObjectId qid)
         {
             if (typeof(T) == typeof(AnytimeResultDO))
@@ -131,10 +134,24 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
             return null;
         }
 
-        private async Task DeleteQueryAsync(ObjectId id)
+        private async Task DeleteQueryAsync(QueryEntity queryEntity)
         {
-            await DB.DeleteAsync<QueryEntity>(id);
-            //todo: delete results
+            await DB.DeleteAsync<QueryEntity>(queryEntity.id);
+
+            if (queryEntity.TimeType == TimeType8.Anytime)
+            {
+                await DB.DeleteAsync<AnytimeResultsEntity>(q => q.Query_id == queryEntity.id);
+            }
+
+            if (queryEntity.TimeType == TimeType8.Weekend)
+            {
+                await DB.DeleteAsync<WeekendResultsEntity>(q => q.Query_id == queryEntity.id);
+            }
+
+            if (queryEntity.TimeType == TimeType8.Custom)
+            {
+                await DB.DeleteAsync<CustomResultsEntity>(q => q.Query_id == queryEntity.id);
+            }            
         }
 
         private QueryEntity GetQuery(FlightQuery8DO q)

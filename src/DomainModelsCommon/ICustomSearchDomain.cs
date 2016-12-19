@@ -10,6 +10,7 @@ namespace Gloobster.DomainInterfaces
         Task<CustomSearchDO> CreateNewSearch(string userId);
         Task<bool> DeleteSearch(string userId, string searchId);
 
+        Task<bool> UpdateStarted(string userId, string searchId, bool started);
         Task<bool> UpdateName(string userId, string searchId, string name);
         Task<bool> UpdateStandardAir(string userId, string searchId, bool value);
         Task<bool> UpdateDaysRange(string userId, string searchId, int from, int to);

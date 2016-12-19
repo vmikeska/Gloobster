@@ -27,6 +27,39 @@ var Planning;
                 callback(date);
             });
         };
+        CustomFrom.prototype.initDatesClosing = function () {
+            var _this = this;
+            this.$form.find("#datesDoneBtn").click(function (e) {
+                e.preventDefault();
+                _this.updateStarted(true, function () {
+                    _this.setFormState(true);
+                });
+            });
+            this.$form.find("#resetDates").click(function (e) {
+                e.preventDefault();
+                _this.updateStarted(false, function () {
+                    _this.setFormState(false);
+                });
+            });
+        };
+        CustomFrom.prototype.initDateRange = function () {
+            var _this = this;
+            var depOpts = { minDate: moment().add(1, "days").toDate() };
+            this.datepicker(this.$dpDep, depOpts, function (date) {
+                _this.depDate = TravelB.DateUtils.jsDateToMyDate(date);
+                var td = TravelB.DateUtils.myDateToTrans(_this.depDate);
+                var caller = new Planning.PropsDataUpload(_this.searchId, "dep");
+                caller.setVal(td);
+                caller.send();
+            });
+            this.datepicker(this.$dpArr, {}, function (date) {
+                _this.arrDate = TravelB.DateUtils.jsDateToMyDate(date);
+                var td = TravelB.DateUtils.myDateToTrans(_this.arrDate);
+                var caller = new Planning.PropsDataUpload(_this.searchId, "arr");
+                caller.setVal(td);
+                caller.send();
+            });
+        };
         CustomFrom.prototype.create = function () {
             var tmp = this.v.registerTemplate("custom-template");
             this.$form = $(tmp());
@@ -68,6 +101,13 @@ var Planning;
             });
             lg.generateList(items);
         };
+        CustomFrom.prototype.updateStarted = function (started, callback) {
+            var pdu = new Planning.PropsDataUpload(this.searchId, "started");
+            pdu.setVal(started);
+            pdu.send(function () {
+                callback();
+            });
+        };
         CustomFrom.prototype.updateFreq = function (days, callback) {
             var pdu = new Planning.PropsDataUpload(this.searchId, "freq");
             pdu.setVal(days);
@@ -80,24 +120,6 @@ var Planning;
             $c.find(".item").removeClass("active");
             var $item = $c.find("[data-d=\"" + days + "\"]");
             $item.addClass("active");
-        };
-        CustomFrom.prototype.initDateRange = function () {
-            var _this = this;
-            var depOpts = { minDate: moment().add(1, "days").toDate() };
-            this.datepicker(this.$dpDep, depOpts, function (date) {
-                var md = TravelB.DateUtils.jsDateToMyDate(date);
-                var td = TravelB.DateUtils.myDateToTrans(md);
-                var caller = new Planning.PropsDataUpload(_this.searchId, "dep");
-                caller.setVal(td);
-                caller.send();
-            });
-            this.datepicker(this.$dpArr, {}, function (date) {
-                var md = TravelB.DateUtils.jsDateToMyDate(date);
-                var td = TravelB.DateUtils.myDateToTrans(md);
-                var caller = new Planning.PropsDataUpload(_this.searchId, "arr");
-                caller.setVal(td);
-                caller.send();
-            });
         };
         CustomFrom.prototype.initStandardAir = function () {
             var _this = this;
@@ -123,6 +145,7 @@ var Planning;
                     _this.loadSearch(search);
                     _this.searchId = id;
                     _this.v.planningMap.loadCategory(PlanningType.Custom);
+                    _this.v.resultsEngine.initalCall(PlanningType.Custom);
                 });
             };
             this.$form.find(".adder").click(function (e) {
@@ -140,17 +163,43 @@ var Planning;
             this.initDateRange();
             this.initStandardAir();
             this.initFreq();
+            this.initDatesClosing();
         };
         CustomFrom.prototype.loadSearch = function (search) {
             this.$form.find("#cbStandard").prop("checked", search.standardAirs);
-            var depDate = TravelB.DateUtils.myDateToJsDate(search.deparature);
-            var arrDate = TravelB.DateUtils.myDateToJsDate(search.arrival);
-            this.$dpDep.datepicker("setDate", depDate);
-            this.$dpArr.datepicker("setDate", arrDate);
+            this.depDate = search.deparature;
+            this.arrDate = search.arrival;
+            this.$dpDep.datepicker("setDate", TravelB.DateUtils.myDateToJsDate(this.depDate));
+            this.$dpArr.datepicker("setDate", TravelB.DateUtils.myDateToJsDate(this.arrDate));
             this.slider.setVals(search.daysFrom, search.daysTo);
             var airs = this.getAirs(search);
             this.airTagger.setSelectedItems(airs);
             this.setFreq(search.freq);
+            this.setFormState(search.started);
+        };
+        CustomFrom.prototype.setFormState = function (started) {
+            var $datesStatic = this.$form.find(".dates-static");
+            var $flexPart = this.$form.find(".flexible-part");
+            var $fixedPart = this.$form.find(".fixed-part");
+            if (started) {
+                var days = this.slider.getRange();
+                var dep = moment(TravelB.DateUtils.myDateToJsDate(this.depDate)).format("l");
+                var arr = moment(TravelB.DateUtils.myDateToJsDate(this.arrDate)).format("l");
+                $(".earliest-dep").html(dep);
+                $(".latest-arr").html(arr);
+                $(".days-from").html(days.from);
+                $(".days-to").html(days.to);
+                $flexPart.removeClass("disabled-block");
+                $datesStatic.removeClass("hidden");
+                $fixedPart.addClass("hidden");
+                this.v.enableMap(true);
+            }
+            else {
+                $flexPart.addClass("disabled-block");
+                $datesStatic.addClass("hidden");
+                $fixedPart.removeClass("hidden");
+                this.v.enableMap(false);
+            }
         };
         CustomFrom.prototype.getAirs = function (search) {
             var si = [];
@@ -175,6 +224,7 @@ var Planning;
                 pdu.addVal("text", text);
                 pdu.addVal("origId", val);
                 pdu.send(function () {
+                    _this.v.resultsEngine.refresh();
                     callback();
                 });
             };

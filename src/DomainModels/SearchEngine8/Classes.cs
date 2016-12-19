@@ -467,6 +467,11 @@ namespace Gloobster.DomainModels.SearchEngine8
     {
         public List<string> CCs { get; set; }
         public List<int> GIDs { get; set; }
+
+        public bool Any()
+        {
+            return CCs.Any() || GIDs.Any();
+        }
     }
 
     public class FlightQuery8DO
@@ -540,7 +545,7 @@ namespace Gloobster.DomainModels.SearchEngine8
         FlightQuery8DO BuildQueryCustomCountry(string fromAir, string cc, string userId, string searchId);
     }
 
-    public interface IFlightsDb8
+    public interface IFlightsDb
     {
         Task<FlightQueryResult8DO<T>> GetResultsAsync<T>(FlightQuery8DO q);
         List<FlightQueryResult8DO<T>> CheckOnResults<T>(List<string> ids);

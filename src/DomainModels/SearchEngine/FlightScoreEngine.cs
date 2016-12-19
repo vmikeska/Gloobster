@@ -16,8 +16,7 @@ namespace Gloobster.DomainModels.SearchEngine
     public class FlightScoreEngine : IFlightScoreEngine
     {
         public IDbOperations DB { get; set; }
-        
-        private static List<AirportEntity> Airports;
+        public IOldAirportsCache AirCache { get; set; }
 
         public double MinIndexByScoreLevel(ScoreLevel level)
         {
@@ -81,13 +80,7 @@ namespace Gloobster.DomainModels.SearchEngine
         }
 
         public double? EvaluateFlight(FlightDO flight)
-        {            
-            //todo: move out
-            if (Airports == null)
-            {
-                Airports = DB.List<AirportEntity>();
-            }
-            
+        {   
             var parts = SplitInboundOutboundFlight(flight.FlightParts, flight.To);
             var thereParts = parts[0];
             var backParts = parts[1];
@@ -144,8 +137,8 @@ namespace Gloobster.DomainModels.SearchEngine
 
             TimeSpan durationSpan = lastPart.ArrivalTime - firstPart.DeparatureTime;
             
-            var fromAirport = GetAirport(fromAir);
-            var toAirport = GetAirport(toAir);
+            var fromAirport = AirCache.GetByCode(fromAir);
+            var toAirport = AirCache.GetByCode(toAir);
 
             bool airportOk = (toAirport?.Coord != null);
             if (!airportOk)
@@ -348,10 +341,7 @@ namespace Gloobster.DomainModels.SearchEngine
             return (int)(dist/1000);            
         }
 
-        private AirportEntity GetAirport(string code)
-        {
-            return Airports.FirstOrDefault(a => a.IataFaa == code);
-        }
+        
 
     }
 }

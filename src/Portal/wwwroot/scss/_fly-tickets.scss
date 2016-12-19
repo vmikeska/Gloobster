@@ -54,6 +54,47 @@
         }
     }
     
+    .queue-all{
+        $preload-size: 1.3em;
+
+        position: relative;
+        text-align: left;
+        
+        padding-left: $preload-size * 1.3;
+
+        .preloader {            
+            position: absolute;
+            top: 6px;
+            left: 0;
+
+            display: inline-block;
+
+            width: $preload-size;
+            height: $preload-size;
+
+            img {
+                @include spin($preload-size);
+                color: $dark-blue;
+            }
+            
+        }
+
+        .cont {
+            .item{
+                display: inline-block;
+                border: 2px solid $light-blue3;
+                padding:3px;
+                border-radius: 4px;
+                margin: 2px;
+                font-weight: bold;
+            }
+        }
+
+        &.hidden{
+            display: none;
+        }
+    }
+
     .form-custom {
         background-color: $very-light-blue3;
         padding: 12px;
@@ -185,6 +226,43 @@
             border-top: 1px dotted $light-blue3;
             margin-top: 6px;
 
+            .disabled-block {
+                position: relative;
+
+                filter: grayscale(70%);
+                
+                .click-blocker {
+                    display: block !important;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    cursor: default;
+                }
+            }
+
+            .fixed-part {
+                &.hidden {
+                    display: none;
+                }
+            } 
+
+            .dates-static {
+                .cap {
+                    font-weight: bold;
+                    color: $input-color; 
+                }
+
+                .val {
+                    font-weight:bold;
+                }
+
+                &.hidden {
+                    display: none;
+                }
+            }
+
             &.hidden {
                 display: none;
             }
@@ -273,10 +351,15 @@
 
             border-top: 1px dotted $light-blue3;
 
-            .inactive {
+            .finish-dates-btn {
                 color: white;
                 background-color: $green3;
+
+                &:hover {
+                    background-color: $orange;
+                }
             }
+
         }
         
     }
@@ -302,12 +385,26 @@
             background-color: $light-blue2;
         }
 
+        .map-disabled {
+            display: block !important;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            cursor: default;
+            background-color: dimgray;
+            opacity: 0.7;
+            
+            z-index: 9999999;
+        }
+
         .map-type-switch {
             display: inline-block;
             position: absolute;
             right: 20px;
             top: 20px;
-            z-index: 9999999;
+            z-index: 999999;
 
 
             .items-tbl {
@@ -1121,7 +1218,6 @@
 
             background-color: $very-light-blue;
 
-            padding-left: 20px;
             padding-top: 10px;
 
             &.sub-part {
@@ -1132,125 +1228,131 @@
             }
 
             .flight {
-            text-align: left;
-            border-bottom: 1px solid $light-blue6;
+                padding-left: 20px;
+                text-align: left;
+                border-bottom: 1px solid $light-blue6;
 
-            .top-line {                          
-                font-size: 0.8em;
-                color: darkgray;
-                margin-bottom: 14px;
-            }
+                .top-line {                          
+                    font-size: 0.8em;
+                    color: darkgray;
+                    margin-bottom: 14px;
+                }
 
-            .data-tbl {
-                display: table;
-                width: 100%;
-                white-space: nowrap;
+                .data-tbl {
+                    display: table;
+                    width: 100%;
+                    white-space: nowrap;
                         
-                /*text-align: left;*/
+                    /*text-align: left;*/
 
-                .di {
-                    display: table-cell;
-                    vertical-align: top;
-                    padding-bottom: 12px;
+                    .di {
+                        display: table-cell;
+                        vertical-align: top;
+                        padding-bottom: 12px;
 
-                    &:first-of-type {                                  
-                        /*padding-left: 20px;*/
+                        &:first-of-type {                                  
+                            /*padding-left: 20px;*/
+                        }
                     }
-                }
 
-                .logo-cont {
-                        width: 15%;
+                    .logo-cont {
+                            width: 15%;
 
-                    .air-logo {
-                        width: 50px;                                  
+                        .air-logo {
+                            width: 50px;                                  
+                        }
                     }
-                }
 
-                .flight-dir {
-                    width: 25%;
+                    .flight-dir {
+                        width: 25%;
                               
-                    .from-to{
-                        font-weight: bold;
-                        font-size: 1.2em;                              
+                        .from-to{
+                            font-weight: bold;
+                            font-size: 1.2em;                              
+                        }
+
+                        .flight-no{
+                            font-size: 0.8em;
+                            color: darkgray;
+                        }
                     }
 
-                    .flight-no{
-                        font-size: 0.8em;
-                        color: darkgray;
-                    }
-                }
+                    .date {
+                        width: 20%;
 
-                .date {
-                    width: 20%;
-
-                    font-weight: bold;
-                }
-
-                .time-cont{
-                    width: 20%;
-
-                    .time {
                         font-weight: bold;
                     }
 
-                    .duration {
-                        font-size: 0.8em;
-                        color: darkgray;
-                    }
-                }
+                    .time-cont{
+                        width: 20%;
 
-                .direct-cont {
-                    width: 20%;
-                    text-align: right;
-                    padding-right: 20px;
+                        .time {
+                            font-weight: bold;
+                        }
 
-                    .direct {                            
-                        font-weight: bold;
-                        color: $green2;
+                        .duration {
+                            font-size: 0.8em;
+                            color: darkgray;
+                        }
                     }
 
-                    .stops {
+                    .direct-cont {
+                        width: 20%;
+                        text-align: right;
+                        padding-right: 20px;
+
+                        .direct {                            
+                            font-weight: bold;
+                            color: $green2;
+                        }
+
+                        .stops {
                                 
-                        .stops-btn {
-                            text-decoration: none;
+                            .stops-btn {
+                                text-decoration: none;
                                 
-                            .txt {
-                                display: inline-block;
-                                vertical-align:top;
+                                .txt {
+                                    display: inline-block;
+                                    vertical-align:top;
 
-                                text-decoration: underline;
+                                    text-decoration: underline;
 
-                                color: $light-blue;
-                            }
-
-                            .icon-dropdown-arrow {
-
-                                &.opened {
-                                    transform: scale(1, -1);
+                                    color: $light-blue;
                                 }
 
-                                display: inline-block;
-                                vertical-align:top;
+                                .icon-dropdown-arrow {
 
-                                color: white;
-                                border-radius: 4px;
-                                padding: 3px;
+                                    &.opened {
+                                        transform: scale(1, -1);
+                                    }
 
-                                color: white;
-                                background-color: $light-blue;
+                                    display: inline-block;
+                                    vertical-align:top;
 
-                                font-weight: 100;
-                                font-size: 0.8em;
+                                    color: white;
+                                    border-radius: 4px;
+                                    padding: 3px;
 
-                                margin-left: 8px;
-                            }
-                        }                            
+                                    color: white;
+                                    background-color: $light-blue;
+
+                                    font-weight: 100;
+                                    font-size: 0.8em;
+
+                                    margin-left: 8px;
+                                }
+                            }                            
+                        }
                     }
+
                 }
 
             }
 
-        }
+            .flights-sub {
+                padding-left: 20px;
+                background-color: white;
+            }
         }
         .book-zone {
             display: inline-block;
@@ -1563,33 +1665,17 @@
 
   }
 
-  .plane-preloader{
-      $spin: 1s;
+  .plane-preloader{      
       $size: 60px;
-      $size-half: 30px;
-
+      
         position:relative;
         display: inline-block;
         width: $size;
         height: $size;
             
-        img{
-                
-            position: absolute;
-            top: 50%;
-            left: 50%;
-                
-            width: $size;
-            height: $size;
-
+        img{                
+            @include spin($size);
             color: $dark-blue;
-                
-            margin-top: -$size-half;
-            margin-left: -$size-half;
-
-            -webkit-animation:spin $spin linear infinite;
-            -moz-animation:spin $spin linear infinite;
-            animation:spin $spin linear infinite;
         }
     }  
 }

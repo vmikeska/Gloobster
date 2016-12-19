@@ -57,6 +57,26 @@ $tablet-width: 959px;
     }
 }
 
+@mixin spin($size) {
+    
+    $size-half: $size/2;
+    $spin: 1s;
+    
+    position: absolute;
+    top: 50%;
+    left: 50%;
+                
+    width: $size;
+    height: $size;
+    
+    margin-top: - $size-half;
+    margin-left: - $size-half;
+
+    -webkit-animation:spin $spin linear infinite;
+    -moz-animation:spin $spin linear infinite;
+    animation:spin $spin linear infinite;
+}
+
 @mixin text-justify{
     text-align: justify;
     -moz-text-align-last: justify;

@@ -45,12 +45,15 @@ namespace Gloobster.Entities.Planning
 
         public Date Deparature { get; set; }
         public Date Arrival { get; set; }
-
+        
         public bool StandardAirs { get; set; }
         public List<FromAirSE> CustomAirs { get; set; }
 
         public int Freq { get; set; }
-	}
+        public DateTime? LastNewsletter { get; set; }
+
+        public bool Started { get; set; }
+    }
 
     public class FromAirSE
     {

@@ -16,7 +16,7 @@ namespace Gloobster.DomainModels.SearchEngine
         public IDbOperations DB { get; set; }
 
         public static List<NewAirportEntity> Airports;
-
+        
         public NewAirportEntity GetAirportByGID(int gid)
         {
             InitDB();

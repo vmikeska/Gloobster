@@ -59,7 +59,8 @@ namespace Gloobster.DomainModels
                 DaysFrom = 5,
                 DaysTo = 10,
                 StandardAirs = true,
-                Freq = 30
+                Freq = 30,
+                Started = false
             };
 
             return search1;
@@ -93,8 +94,14 @@ namespace Gloobster.DomainModels
             return result.ModifiedCount == 1;
         }
 
-        
 
+
+
+        public async Task<bool> UpdateStarted(string userId, string searchId, bool started)
+        {
+            bool success = await UpdateCustomProperty(userId, searchId, "Started", started);
+            return success;
+        }
 
         public async Task<bool> UpdateName(string userId, string searchId, string name)
         {

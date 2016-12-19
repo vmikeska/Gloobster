@@ -59,7 +59,7 @@ var Views;
         });
         FlyView.prototype.initialize = function () {
             var _this = this;
-            this.resultsEngine = new Planning.ResultsManager();
+            this.resultsEngine = new Planning.ResultsManager(this);
             this.resultsEngine.onResultsChanged = function (queries) {
                 _this.currentSetter.setQueries(queries);
                 var de = new DelasEval(_this.resultsEngine.timeType, queries);
@@ -78,6 +78,15 @@ var Views;
             });
             this.locDlg = new Views.LocationSettingsDialog(this);
             this.initTabs();
+        };
+        FlyView.prototype.enableMap = function (state) {
+            var disabler = $("#mapDisabler");
+            if (state) {
+                disabler.removeClass("map-disabled");
+            }
+            else {
+                disabler.addClass("map-disabled");
+            }
         };
         FlyView.prototype.mapSwitch = function (callback) {
             var _this = this;
@@ -99,6 +108,7 @@ var Views;
             this.tabs = new Common.Tabs($("#naviCont"), "main");
             this.tabs.initCall = false;
             this.tabs.onBeforeSwitch = function () {
+                _this.enableMap(true);
                 _this.$cont.empty();
                 _this.$filter.empty();
             };

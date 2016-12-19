@@ -184,8 +184,13 @@ namespace Gloobster.Portal
 		    builder.AddInstance<IAirportsCache>(airportsCache);
 
 
+		    var oldAirCache = new OldAirportsCache();
+            oldAirCache.Init(new DbOperations());
+            builder.AddInstance<IOldAirportsCache>(oldAirCache);
+            
 
-            builder.AddTransient<IFlightsDb8, FlightsDb8>();
+
+            builder.AddTransient<IFlightsDb, FlightsDb>();
             builder.AddTransient<IRequestBuilder8, RequestBuilder8>();
             builder.AddTransient<IRequestsBuilder8, RequestsBuilder8>();
             builder.AddTransient<IClientRequestExecutor, ClientRequestExecutor>();
@@ -195,8 +200,8 @@ namespace Gloobster.Portal
             builder.AddTransient<IKiwiResultsProcessor, KiwiResultsProcessor>();
             builder.AddTransient<IQueriesExecutor, QueriesExecutor>();
 
-            
 
+            
 
 
 

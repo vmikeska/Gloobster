@@ -114,13 +114,17 @@ module Planning {
 				}
 
 				private genMultiFlightFlights($multiFlight, multiFlight) {
-						var lg = Common.ListGenerator.init($multiFlight, "connection-single-flight-template");
-						lg.appendStyle = "after";
+
+					  var $cont = $multiFlight.find(".flights-sub");
+
+						var lg = Common.ListGenerator.init($cont, "connection-single-flight-template");						
 						lg.customMapping = (f) => {
 								var res = this.mapSingleFlight(f);
 								res.customClass = "sub-part";
 								return res;
 						};
+
+						//var parts = _.sortBy(multiFlight.parts, "depTime");
 
 						lg.generateList(multiFlight.parts);
 

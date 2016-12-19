@@ -21,6 +21,9 @@ var Views;
             this.initDemoFnc();
             this.initTitleFnc();
         }
+        ViewBase.v = function () {
+            return this.currentView;
+        };
         Object.defineProperty(ViewBase.prototype, "pageType", {
             get: function () { return null; },
             enumerable: true,

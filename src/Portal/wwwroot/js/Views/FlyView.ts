@@ -66,7 +66,7 @@
 		}
 
 		public initialize() {
-				this.resultsEngine = new Planning.ResultsManager();
+				this.resultsEngine = new Planning.ResultsManager(this);
 				this.resultsEngine.onResultsChanged = (queries) => {
 						this.currentSetter.setQueries(queries);
 
@@ -96,7 +96,16 @@
 
 				this.initTabs();
 		}
-			
+
+		public enableMap(state) {
+			var disabler = $("#mapDisabler");
+			if (state) {
+				disabler.removeClass("map-disabled");
+			} else {
+				disabler.addClass("map-disabled");
+			}
+		}
+
 		private mapSwitch(callback) {
 			var $cont = $(".map-type-switch");
 			var $btns = $cont.find(".btn");
@@ -121,6 +130,7 @@
 			this.tabs = new Common.Tabs($("#naviCont"), "main");
 			this.tabs.initCall = false;
 			this.tabs.onBeforeSwitch = () => {
+				this.enableMap(true);
 				this.$cont.empty();
 				this.$filter.empty();
 			}

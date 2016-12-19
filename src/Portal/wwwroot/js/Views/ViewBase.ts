@@ -5,10 +5,14 @@ module Views {
 
 	export class ViewBase {
 
-		public static currentView: ViewBase;
+		public static currentView;
 		public static nets: string;
 		public static fbt: string;
 		public static currentUserId: string;
+
+			public static v<T>() {
+						return <T>this.currentView;
+	   }
 
 		public loginButtonsManager: Reg.LoginButtonsManager;
 
