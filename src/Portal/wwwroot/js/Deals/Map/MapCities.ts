@@ -9,7 +9,7 @@ module Planning {
 			}
 			
 			public setPos(obj) {
-					this.mapObj.setZoom(obj.z);
+					this.mapObj.setZoom(obj.z, { animate: false });
 					this.mapObj.panTo(obj.c, { animate: false });
 			}
 

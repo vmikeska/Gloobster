@@ -5,7 +5,7 @@ var Planning;
             this.mapObj = mapObj;
         }
         MapPosition.prototype.setPos = function (obj) {
-            this.mapObj.setZoom(obj.z);
+            this.mapObj.setZoom(obj.z, { animate: false });
             this.mapObj.panTo(obj.c, { animate: false });
         };
         MapPosition.prototype.getPos = function () {
