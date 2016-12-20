@@ -284,6 +284,13 @@ textarea{
     }
 }
 
+@include below-width(1280) {
+    .form-close {
+        top: 3px;
+        right: 2px;        
+    }
+}
+
 .thumb-cont{
     display: inline-block;
     border-radius: 50%;

@@ -1477,27 +1477,6 @@
       
       margin-bottom: 20px;
 
-      .close {
-          display: inline-block;
-          
-          position: absolute;
-          right: -17px;
-          top: -20px;
-
-          background-color: $light-blue3;
-          border-radius: 50%;
-          color: white;
-
-          font-size: 0.7em;
-          padding: 12px;
-
-          cursor: pointer;
-
-          &:hover {
-              color: $orange;
-          }
-      }
-
       .title-top {
           font-size: 1.3em;
           font-weight: bold;
@@ -1506,13 +1485,67 @@
       }
 
       .title-deal {
-          font-size: 1.3em;
-          font-weight: bold;          
-          text-decoration: underline;
-          padding-left: 14px;
-          padding-bottom: 12px;
+          position: relative;
+          min-height: 30px;
 
           background-color: $very-light-blue;          
+          
+          
+
+          .txt {
+              display: inline-block;
+              font-size: 1.3em;
+              font-weight: bold;          
+              text-decoration: underline;
+              margin-left: 14px;
+              margin-bottom: 12px;
+          }
+
+          .deals-ordering {
+              display: inline-block;
+              position: absolute;
+              top: 1px;
+              right: 5px;
+              
+              .items-table {
+                  display: table;
+
+                  .cell {
+                      display: table-cell;
+                  }
+              }
+
+              .item{
+                  display: inline-block;
+                  border: 2px solid white;
+                  background-color: $light-blue;
+                  color: white;
+                  font-weight: bold;
+                  padding: 3px;
+                  cursor: pointer;
+
+                  &:hover{
+                      background-color: $orange;
+                  }
+                      
+                  &.active {
+                      background-color: $orange;
+                  }
+              }
+
+              .l {
+                  border-bottom-left-radius: 5px;
+                  border-top-left-radius: 5px;
+              }
+
+              .r {
+                  border-bottom-right-radius: 5px;
+                  border-top-right-radius: 5px;
+              }
+          }
+          
+
+          
       }
 
       .splitter{

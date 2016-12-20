@@ -26,8 +26,13 @@ var Planning;
             });
         };
         WeekendDetail.prototype.init = function (flights) {
-            flights = _.sortBy(flights, "price");
-            this.flightDetails.genFlights(this.$layout.find(".flights"), flights);
+            var _this = this;
+            this.ordering = new Planning.FlightsOrdering();
+            this.ordering.setFlights(flights);
+            this.ordering.onChange = function (orderedFlights) {
+                _this.flightDetails.genFlights(_this.$layout.find(".flights"), orderedFlights);
+            };
+            this.ordering.change();
         };
         return WeekendDetail;
     }());
@@ -43,8 +48,13 @@ var Planning;
             this.title = title;
         }
         CityDetail.prototype.init = function (flights) {
-            flights = _.sortBy(flights, "price");
-            this.flightDetails.genFlights(this.$layout.find(".flights"), flights);
+            var _this = this;
+            this.ordering = new Planning.FlightsOrdering();
+            this.ordering.setFlights(flights);
+            this.ordering.onChange = function (orderedFlights) {
+                _this.flightDetails.genFlights(_this.$layout.find(".flights"), orderedFlights);
+            };
+            this.ordering.change();
             this.genMonthFlights();
         };
         CityDetail.prototype.destroyLayout = function () {

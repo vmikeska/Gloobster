@@ -1,7 +1,60 @@
 module Planning {
-	
-	export class FlightDetails {
 
+		export class FlightsOrdering {
+
+				public onChange: Function;
+
+				private $cont;
+				private act = "active";
+
+				public orderBy = "price";
+				public orderStyle = "asc";
+
+				private setActiveById(id) {
+						this.$cont.find(`[data-b="${id}"]`).addClass(this.act);
+				}
+
+				private flights;
+
+				public setFlights(flights) {
+					this.flights = flights;
+				}
+
+				public change() {
+					if (this.onChange) {
+							var oFlights = _.sortBy(this.flights, this.orderBy);
+
+							if (this.orderStyle === "desc") {
+								oFlights = oFlights.reverse();
+							}
+
+							this.onChange(oFlights);
+					}
+				}
+				
+				constructor() {
+					this.$cont = $(".deals-ordering");
+
+					var $items = this.$cont.find(".item");
+
+					this.setActiveById(this.orderBy);
+
+					$items.click((e) => {							
+							var $t = $(e.target);
+
+							$items.removeClass(this.act);
+							$t.addClass(this.act);
+
+							this.orderStyle = $t.data("o");							
+							this.orderBy = $t.data("b");		
+
+							this.change();
+					});
+				}
+		}
+
+	export class FlightDetails {
+			
 				public genFlights($cont, flights: Flight[]) {
 						var lg = Common.ListGenerator.init($cont, "connection-flight-template");
 						lg.clearCont = true;
@@ -123,9 +176,7 @@ module Planning {
 								res.customClass = "sub-part";
 								return res;
 						};
-
-						//var parts = _.sortBy(multiFlight.parts, "depTime");
-
+						
 						lg.generateList(multiFlight.parts);
 
 						return lg;

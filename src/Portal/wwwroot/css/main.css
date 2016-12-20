@@ -154,6 +154,11 @@ textarea {
   .form-close:hover {
     color: #F56E12; }
 
+@media screen and (max-width: 1280px) {
+  .form-close {
+    top: 3px;
+    right: 2px; } }
+
 .thumb-cont {
   display: inline-block;
   border-radius: 50%;
@@ -5341,31 +5346,49 @@ footer {
     border: 1px solid #65BDD7;
     border-top: 5px solid #3298C1;
     margin-bottom: 20px; }
-    .fly-tickets .city-deal .close {
-      display: inline-block;
-      position: absolute;
-      right: -17px;
-      top: -20px;
-      background-color: #3298C1;
-      border-radius: 50%;
-      color: white;
-      font-size: 0.7em;
-      padding: 12px;
-      cursor: pointer; }
-      .fly-tickets .city-deal .close:hover {
-        color: #F56E12; }
     .fly-tickets .city-deal .title-top {
       font-size: 1.3em;
       font-weight: bold;
       padding: 12px;
       background-color: #F0F8FA; }
     .fly-tickets .city-deal .title-deal {
-      font-size: 1.3em;
-      font-weight: bold;
-      text-decoration: underline;
-      padding-left: 14px;
-      padding-bottom: 12px;
+      position: relative;
+      min-height: 30px;
       background-color: #F0F8FA; }
+      .fly-tickets .city-deal .title-deal .txt {
+        display: inline-block;
+        font-size: 1.3em;
+        font-weight: bold;
+        text-decoration: underline;
+        margin-left: 14px;
+        margin-bottom: 12px; }
+      .fly-tickets .city-deal .title-deal .deals-ordering {
+        display: inline-block;
+        position: absolute;
+        top: 1px;
+        right: 5px; }
+        .fly-tickets .city-deal .title-deal .deals-ordering .items-table {
+          display: table; }
+          .fly-tickets .city-deal .title-deal .deals-ordering .items-table .cell {
+            display: table-cell; }
+        .fly-tickets .city-deal .title-deal .deals-ordering .item {
+          display: inline-block;
+          border: 2px solid white;
+          background-color: #65BDD7;
+          color: white;
+          font-weight: bold;
+          padding: 3px;
+          cursor: pointer; }
+          .fly-tickets .city-deal .title-deal .deals-ordering .item:hover {
+            background-color: #F56E12; }
+          .fly-tickets .city-deal .title-deal .deals-ordering .item.active {
+            background-color: #F56E12; }
+        .fly-tickets .city-deal .title-deal .deals-ordering .l {
+          border-bottom-left-radius: 5px;
+          border-top-left-radius: 5px; }
+        .fly-tickets .city-deal .title-deal .deals-ordering .r {
+          border-bottom-right-radius: 5px;
+          border-top-right-radius: 5px; }
     .fly-tickets .city-deal .splitter {
       padding: 12px;
       background-color: #F0F8FA; }

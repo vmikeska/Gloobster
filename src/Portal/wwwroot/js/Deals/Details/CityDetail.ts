@@ -13,6 +13,8 @@ module Planning {
 			private gid;
 			private title;
 
+			private ordering: FlightsOrdering;
+
 			private v = Views.ViewBase.currentView;
 
 			constructor(codePairs: CodePair[], title, gid) {
@@ -45,10 +47,13 @@ module Planning {
 					});
 			}
 
-			public init(flights: Flight[]) {
-					flights = _.sortBy(flights, "price");
-
-					this.flightDetails.genFlights(this.$layout.find(".flights"), flights);					
+			public init(flights: Flight[]) {					
+					this.ordering = new FlightsOrdering();
+					this.ordering.setFlights(flights);
+					this.ordering.onChange = (orderedFlights) => {
+							this.flightDetails.genFlights(this.$layout.find(".flights"), orderedFlights);
+					}
+					this.ordering.change();					
 			}
 	}
 
@@ -71,6 +76,7 @@ module Planning {
 		private airSel: AirportSelector;
 
 		private classicSearch: CityClassicSearch;
+		private ordering: FlightsOrdering;
 
 		public $layout;
 
@@ -83,14 +89,18 @@ module Planning {
 			this.codePairs = codePairs;			
 			this.cityName = cityName;
 			this.gid = gid;
-			this.title = title;
+			this.title = title;				
 		}
-
+			
 		public init(flights: Flight[]) {
-			flights = _.sortBy(flights, "price");
 
-			this.flightDetails.genFlights(this.$layout.find(".flights"), flights);
-
+			this.ordering = new FlightsOrdering();
+			this.ordering.setFlights(flights);
+				this.ordering.onChange = (orderedFlights) => {
+				this.flightDetails.genFlights(this.$layout.find(".flights"), orderedFlights);
+			}
+			this.ordering.change();
+				
 			this.genMonthFlights();
 		}
 

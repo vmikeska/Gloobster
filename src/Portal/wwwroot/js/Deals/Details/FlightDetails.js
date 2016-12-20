@@ -1,5 +1,41 @@
 var Planning;
 (function (Planning) {
+    var FlightsOrdering = (function () {
+        function FlightsOrdering() {
+            var _this = this;
+            this.act = "active";
+            this.orderBy = "price";
+            this.orderStyle = "asc";
+            this.$cont = $(".deals-ordering");
+            var $items = this.$cont.find(".item");
+            this.setActiveById(this.orderBy);
+            $items.click(function (e) {
+                var $t = $(e.target);
+                $items.removeClass(_this.act);
+                $t.addClass(_this.act);
+                _this.orderStyle = $t.data("o");
+                _this.orderBy = $t.data("b");
+                _this.change();
+            });
+        }
+        FlightsOrdering.prototype.setActiveById = function (id) {
+            this.$cont.find("[data-b=\"" + id + "\"]").addClass(this.act);
+        };
+        FlightsOrdering.prototype.setFlights = function (flights) {
+            this.flights = flights;
+        };
+        FlightsOrdering.prototype.change = function () {
+            if (this.onChange) {
+                var oFlights = _.sortBy(this.flights, this.orderBy);
+                if (this.orderStyle === "desc") {
+                    oFlights = oFlights.reverse();
+                }
+                this.onChange(oFlights);
+            }
+        };
+        return FlightsOrdering;
+    }());
+    Planning.FlightsOrdering = FlightsOrdering;
     var FlightDetails = (function () {
         function FlightDetails() {
         }
