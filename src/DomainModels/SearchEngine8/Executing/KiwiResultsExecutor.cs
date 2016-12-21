@@ -57,7 +57,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
             return converted;
         }
 
-        private FlightDO Convert(SPFlightSearchResult flight)
+        private FlightDO Convert(KiwiFlightSearchResult flight)
         {
             var flightParts = new List<FlightPartDO>();
             foreach (var route in flight.route)
@@ -79,6 +79,8 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
                 flightParts.Add(flightPart);
             }
 
+            var bookLink = GetBookLink(flight.deep_link);
+            
             var res = new FlightDO
             {
                 Price = flight.price,
@@ -86,9 +88,17 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
                 Connections = flight.route.Count,
                 From = flight.flyFrom,
                 To = flight.flyTo,
-                FlightParts = flightParts
+                FlightParts = flightParts,
+                BookLink = bookLink
             };
             return res;
+        }
+
+        private string GetBookLink(string deepLink)
+        {
+            var l = deepLink;
+            l = l.Replace("picky", "gloobster");
+            return l;
         }
 
         private DateTime ConvertDate(int seconds)

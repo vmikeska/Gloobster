@@ -19,9 +19,8 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
         //todo: should be reviewed at all
         public FlightRequestDO BuildCity(string airCode, int gid)
         {
-            var today = DateTime.UtcNow;
-            //todo: really one year ?
-            var inOneYear = today.AddYears(1);
+            var today = DateTime.UtcNow;            
+            var inHalfYear = today.AddMonths(6);
 
             var cityAir = NewAirCityCache.GetByGID(gid);
             if (cityAir == null)
@@ -34,12 +33,9 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
                 flyFrom = airCode,
                 to = cityAir.SpId,
                 dateFrom = today.ToDate().ToString(),
-                dateTo = inOneYear.ToDate().ToString(),
+                dateTo = inHalfYear.ToDate().ToString(),
                 one_per_date = "1",
-
-                //todo: this is possibly not needed ?
-                //typeFlight = "round",
-
+                
                 daysInDestinationFrom = "2",
                 daysInDestinationTo = "10"
             };
@@ -49,18 +45,20 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
         
         public FlightRequestDO BuildCountry(string airCode, string cc)
         {
-            var today = DateTime.UtcNow;
-            //todo: really one year ?
-            var inOneYear = today.AddYears(1);
+            var today = DateTime.UtcNow;            
+            var inHalfYear = today.AddMonths(6);
 
             var req = new FlightRequestDO
             {
                 flyFrom = airCode,
                 to = cc,
                 dateFrom = today.ToDate().ToString(),
-                dateTo = inOneYear.ToDate().ToString(),
+                dateTo = inHalfYear.ToDate().ToString(),
                 oneforcity = "1",
-                typeFlight = "round"
+
+                daysInDestinationFrom = "2",
+                daysInDestinationTo = "10"
+                //typeFlight = "round"
             };
             return req;
         }
@@ -98,7 +96,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
                 dateTo = dates.ToDate.ToString(),
 
                 daysInDestinationFrom = "2",
-                daysInDestinationTo = "4",
+                daysInDestinationTo = "4"
             };
 
             return req;
@@ -116,7 +114,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
                 dateTo = dates.ToDate.ToString(),
 
                 daysInDestinationFrom = "2",
-                daysInDestinationTo = "4",
+                daysInDestinationTo = "4"
             };
 
             return req;
@@ -133,8 +131,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
                 ToDate = end.ToDate()
             };
         }
-
-        //todo: check on this
+        
         private DateTime FirstDateOfWeekISO8601(int year, int weekOfYear)
         {
             DateTime jan1 = new DateTime(year, 1, 1);

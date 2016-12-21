@@ -31,5 +31,7 @@ namespace Gloobster.Entities.SearchEngine
         public string Airline { get; set; }
         public int MinsDuration { get; set; }
         public int FlightNo { get; set; }
+
+        public string BookLink { get; set; }
     }
 }
