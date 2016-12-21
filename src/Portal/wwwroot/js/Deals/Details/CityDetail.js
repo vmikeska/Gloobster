@@ -161,7 +161,7 @@ var Planning;
             $ofCont.empty();
             this.preloader(true);
             this.v.apiGet("SkypickerCity", prms, function (fs) {
-                var flights = Planning.FlightConvert.cFlights(fs);
+                var flights = Planning.FlightConvert2.cFlights(fs);
                 if (callback) {
                     callback(flights);
                 }

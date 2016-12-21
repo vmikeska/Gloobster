@@ -46,9 +46,6 @@ module Planning {
 											.value();
 							}
 							
-							//if (this.orderStyle === "desc") {
-							//	oFlights = oFlights.reverse();
-							//}
 
 							this.onChange(oFlights);
 					}
@@ -89,7 +86,8 @@ module Planning {
 								return {
 										price: i.price,
 										scoreText: this.getScoreText(stars),
-										scoreStars: stars
+										scoreStars: stars,
+										bookLink: i.bookLink
 								};
 						};
 

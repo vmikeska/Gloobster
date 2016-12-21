@@ -6,6 +6,7 @@ using Gloobster.Database;
 using Gloobster.DomainInterfaces.SearchEngine8;
 using Gloobster.DomainObjects.SearchEngine;
 using Gloobster.Enums.SearchEngine;
+using Gloobster.Mappers.SearchEngine8;
 using Gloobster.Portal.Controllers.Base;
 using Microsoft.AspNet.Mvc;
 using Serilog;
@@ -88,8 +89,10 @@ namespace Gloobster.Portal.Controllers.Api.SearchEngine
                 var evaluatedFlights = ScoreEngine.FilterFlightsByScore(spFlights, req.scoreLevel);
 		        flights.AddRange(evaluatedFlights.Passed);
 		    }
+
+		    var res = flights.Select(f => f.ToResponse());
             
-            return new ObjectResult(flights);
+            return new ObjectResult(res);
 		}
         
     }

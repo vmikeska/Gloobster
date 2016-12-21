@@ -120,7 +120,7 @@ namespace Gloobster.Mappers.SearchEngine8
                 hrs = d.HoursDuration,
                 price = d.Price,
                 score = d.FlightScore,
-                bookLink = d.BookLink,
+                bl = d.BookLink,
                 parts = d.FlightParts.Select(p => p.ToResponse()).ToList()
             };
 

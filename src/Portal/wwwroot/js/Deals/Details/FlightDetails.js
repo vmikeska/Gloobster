@@ -64,7 +64,8 @@ var Planning;
                 return {
                     price: i.price,
                     scoreText: _this.getScoreText(stars),
-                    scoreStars: stars
+                    scoreStars: stars,
+                    bookLink: i.bookLink
                 };
             };
             lg.onItemAppended = function ($flightAll, flight) {

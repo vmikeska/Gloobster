@@ -233,7 +233,7 @@ module Planning {
 
 			this.v.apiGet("SkypickerCity", prms, (fs) => {
 
-				 var flights = FlightConvert.cFlights(fs);
+				 var flights = FlightConvert2.cFlights(fs);
 
 					if (callback) {
 							callback(flights);
