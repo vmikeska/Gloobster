@@ -2,9 +2,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Database;
-using Gloobster.DomainInterfaces.SearchEngine;
+using Gloobster.DomainInterfaces.SearchEngine8;
 using Gloobster.DomainModels.SearchEngine;
 using Gloobster.DomainObjects.SearchEngine;
+using Gloobster.DomainObjects.SearchEngine8;
+using Gloobster.Enums.SearchEngine;
 
 namespace Gloobster.DomainModels.SearchEngine8.Executing
 {
@@ -15,7 +17,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
         public IFlightsBigDataCalculator BigDataCalculator { get; set; }
         public IAirportsCache AirCache { get; set; }
         
-        public async Task ProcessFlightsAsync(List<FlightDO> flights, TimeType8 timeType, string queryId, string prms)
+        public async Task ProcessFlightsAsync(List<FlightDO> flights, TimeType timeType, string queryId, string prms)
         {            
             ScoredFlightsDO evalFlights = ScoreEngine.FilterFlightsByScore(flights);
 
@@ -68,7 +70,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
         /// <returns></returns>
         private void ResultsLimiter(List<GroupedResultDO> inGroupedResults)
         {
-            foreach (var groupedResult in inGroupedResults)
+            foreach (GroupedResultDO groupedResult in inGroupedResults)
             {
                 if (groupedResult.Flights.Count > 20)
                 {
@@ -84,17 +86,17 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
             }
         }
 
-        private async Task SaveResults(List<GroupedResultDO> groupedResults, TimeType8 timeType, string queryId, string prms)
+        private async Task SaveResults(List<GroupedResultDO> groupedResults, TimeType timeType, string queryId, string prms)
         {
             //this is so because of collection name recognition when saving to DB
-            if (timeType == TimeType8.Anytime)
+            if (timeType == TimeType.Anytime)
             {
                 var saver = new KiwiAnytimeResultsSaver();
                 var entities = saver.BuildEntities(groupedResults, queryId);
                 await DB.SaveManyAsync(entities);
             }
 
-            if (timeType == TimeType8.Weekend)
+            if (timeType == TimeType.Weekend)
             {
                 var ps = ParamsParsers.Weekend(prms);
                 var saver = new KiwiWeekendResultsSaver(ps.Week, ps.Year);
@@ -102,7 +104,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
                 await DB.SaveManyAsync(entities);
             }
 
-            if (timeType == TimeType8.Custom)
+            if (timeType == TimeType.Custom)
             {
                 var ps = ParamsParsers.Custom(prms);
                 var saver = new KiwiCustomResultsSaver(ps.UserId, ps.SearchId);

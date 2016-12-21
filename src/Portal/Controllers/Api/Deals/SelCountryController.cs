@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
-using Gloobster.Entities.Planning;
+using Gloobster.Entities.SearchEngine;
 using Gloobster.Entities.Trip;
 using Gloobster.Enums;
 using Gloobster.Mappers;
@@ -54,7 +54,7 @@ namespace Gloobster.Portal.Controllers.Api.Planning
             
             if (type == PlanningType.Anytime)
 			{
-				var anytime = DB.FOD<PlanningAnytimeEntity>(p => p.User_id == UserIdObj);
+				var anytime = DB.FOD<DealsAnytimeEntity>(p => p.User_id == UserIdObj);
 				if (anytime == null)
 				{
 					return null;
@@ -65,7 +65,7 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 
 			if (type == PlanningType.Weekend)
 			{
-				var weekend = DB.FOD<PlanningWeekendEntity>(p => p.User_id == UserIdObj);
+				var weekend = DB.FOD<DealsWeekendEntity>(p => p.User_id == UserIdObj);
 				if (weekend == null)
 				{
 					return null;
@@ -76,7 +76,7 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 
             if (type == PlanningType.Custom)
             {
-                var custom = DB.FOD<PlanningCustomEntity>(p => p.User_id == UserIdObj);
+                var custom = DB.FOD<DealsCustomEntity>(p => p.User_id == UserIdObj);
                 if (custom == null)
                 {
                     return null;

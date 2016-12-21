@@ -3,7 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Database;
+using Gloobster.DomainInterfaces.SearchEngine8;
+using Gloobster.DomainObjects.SearchEngine8;
+using Gloobster.Entities.SearchEngine;
+using Gloobster.Enums.SearchEngine;
 using MongoDB.Bson;
+using Gloobster.Mappers.SearchEngine8;
 
 namespace Gloobster.DomainModels.SearchEngine8.Queuing
 {
@@ -23,17 +28,17 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
             {
                 var qid = queryEntity.id.ToString();
 
-                if (queryEntity.State == QueryState8.Saved)
+                if (queryEntity.State == QueryState.Saved)
                 {
-                    return GetResultBase<T>(q, qid, QueryState8.Saved);
+                    return GetResultBase<T>(q, qid, QueryState.Saved);
                 }
 
-                if (queryEntity.State == QueryState8.Started)
+                if (queryEntity.State == QueryState.Started)
                 {
-                    return GetResultBase<T>(q, qid, QueryState8.Started);
+                    return GetResultBase<T>(q, qid, QueryState.Started);
                 }
 
-                if (queryEntity.State == QueryState8.Finished)
+                if (queryEntity.State == QueryState.Finished)
                 {
                     TimeSpan age = DateTime.UtcNow - queryEntity.Executed.Value;
                     bool isOld = age.TotalMinutes > MaxCacheLifeTimeMins;
@@ -44,7 +49,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
                     }
                     else
                     {
-                        var finishedResult = GetResultBase<T>(q, qid, QueryState8.Finished);
+                        var finishedResult = GetResultBase<T>(q, qid, QueryState.Finished);
                         var results = GetResults<T>(queryEntity.id);
                         finishedResult.Results = results;
                         return finishedResult;
@@ -54,7 +59,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
             
             var newQueryId = await SaveQueryAsync(q);
             QueriesExecutor.ExecuteQueriesAsync();
-            return GetResultBase<T>(q, newQueryId, QueryState8.Saved);            
+            return GetResultBase<T>(q, newQueryId, QueryState.Saved);            
         }
 
         public List<FlightQueryResult8DO<T>> CheckOnResults<T>(List<string> ids)
@@ -80,7 +85,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
                     Prms = query.Params
                 };
 
-                if (query.State == QueryState8.Finished)
+                if (query.State == QueryState.Finished)
                 {
                     result.Results = GetResults<T>(query.id);
                 }
@@ -92,7 +97,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
         }
 
 
-        private FlightQueryResult8DO<T> GetResultBase<T>(FlightQuery8DO query, string qid, QueryState8 state)
+        private FlightQueryResult8DO<T> GetResultBase<T>(FlightQuery8DO query, string qid, QueryState state)
         {            
             return new FlightQueryResult8DO<T>
             {
@@ -138,17 +143,17 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
         {
             await DB.DeleteAsync<QueryEntity>(queryEntity.id);
 
-            if (queryEntity.TimeType == TimeType8.Anytime)
+            if (queryEntity.TimeType == TimeType.Anytime)
             {
                 await DB.DeleteAsync<AnytimeResultsEntity>(q => q.Query_id == queryEntity.id);
             }
 
-            if (queryEntity.TimeType == TimeType8.Weekend)
+            if (queryEntity.TimeType == TimeType.Weekend)
             {
                 await DB.DeleteAsync<WeekendResultsEntity>(q => q.Query_id == queryEntity.id);
             }
 
-            if (queryEntity.TimeType == TimeType8.Custom)
+            if (queryEntity.TimeType == TimeType.Custom)
             {
                 await DB.DeleteAsync<CustomResultsEntity>(q => q.Query_id == queryEntity.id);
             }            
@@ -178,7 +183,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
                 ToType = q.ToType,
                 TimeType = q.TimeType,
                 Params = q.Params,
-                State = QueryState8.Saved,
+                State = QueryState.Saved,
                 Created = DateTime.UtcNow,
                 Executed = null
             };

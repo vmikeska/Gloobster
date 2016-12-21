@@ -3,11 +3,11 @@ using System.Linq;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
+using Gloobster.Entities.SearchEngine;
 using Gloobster.Enums;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.ReqRes.Airport;
 using Microsoft.AspNet.Mvc;
-using Gloobster.Entities.Planning;
 using MongoDB.Bson;
 using Serilog;
 
@@ -42,7 +42,7 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 			{
 				if (req.planningType.Value == PlanningType.Anytime)
 				{
-					var anytime = DB.FOD<PlanningAnytimeEntity>(p => p.User_id == UserIdObj);
+					var anytime = DB.FOD<DealsAnytimeEntity>(p => p.User_id == UserIdObj);
 
 				    if (anytime == null)
 				    {
@@ -54,7 +54,7 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 
 				if (req.planningType.Value == PlanningType.Weekend)
 				{
-					var weekend = DB.FOD<PlanningWeekendEntity>(p => p.User_id == UserIdObj);
+					var weekend = DB.FOD<DealsWeekendEntity>(p => p.User_id == UserIdObj);
 
                     if (weekend == null)
                     {
@@ -63,14 +63,12 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 
                     cities.ForEach(c => c.selected = weekend.Cities.Contains(c.gid));
 				}
-
-                //todo: what is it for ?
-
+                
                 if (req.planningType.Value == PlanningType.Custom)
                 {
                     var customIdObj = new ObjectId(req.customId);
 
-                    var custom = DB.FOD<PlanningCustomEntity>(p => p.User_id == UserIdObj);
+                    var custom = DB.FOD<DealsCustomEntity>(p => p.User_id == UserIdObj);
 
                     if (custom == null)
                     {

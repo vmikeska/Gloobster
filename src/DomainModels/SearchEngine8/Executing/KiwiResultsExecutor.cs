@@ -2,8 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gloobster.Common;
+using Gloobster.DomainInterfaces.SearchEngine8;
 using Gloobster.DomainModels.SearchEngine;
 using Gloobster.DomainObjects.SearchEngine;
+using Gloobster.DomainObjects.SearchEngine8;
+using Gloobster.DomainObjects;
 
 namespace Gloobster.DomainModels.SearchEngine8.Executing
 {

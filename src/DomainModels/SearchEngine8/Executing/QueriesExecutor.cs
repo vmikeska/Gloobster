@@ -4,9 +4,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Gloobster.Database;
+using Gloobster.DomainInterfaces.SearchEngine8;
 using Gloobster.DomainModels.SearchEngine;
 using Gloobster.DomainObjects.SearchEngine;
 using Gloobster.Entities;
+using Gloobster.Entities.SearchEngine;
+using Gloobster.Enums.SearchEngine;
 using MongoDB.Bson;
 using Nito.AsyncEx;
 
@@ -29,7 +32,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
             using (await Lock.LockAsync())
             {
                 //implement just only X threads execution ?
-                queries = DB.C<QueryEntity>().Where(s => s.State == QueryState8.Saved).OrderBy(a => a.Created).ToList();
+                queries = DB.C<QueryEntity>().Where(s => s.State == QueryState.Saved).OrderBy(a => a.Created).ToList();
 
                 if (!queries.Any())
                 {
@@ -39,7 +42,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
                 var ids = queries.Select(q => q.id);
                 foreach (var id in ids)
                 {
-                    await UpdateQueryStateAsync(id, QueryState8.Started);
+                    await UpdateQueryStateAsync(id, QueryState.Started);
                 }                
             }
             
@@ -57,7 +60,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
         {
             DateTime old = DateTime.UtcNow.AddHours(-1);
 
-            List<QueryEntity> oldQueries =  DB.List<QueryEntity>(q => q.State == QueryState8.Finished && q.Executed.Value < old);
+            List<QueryEntity> oldQueries =  DB.List<QueryEntity>(q => q.State == QueryState.Finished && q.Executed.Value < old);
 
             var anytimeQueries = new List<QueryEntity>();
             var weekendQueries = new List<QueryEntity>();
@@ -65,15 +68,15 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
 
             foreach (var oldQuery in oldQueries)
             {
-                if (oldQuery.TimeType == TimeType8.Anytime)
+                if (oldQuery.TimeType == TimeType.Anytime)
                 {
                     anytimeQueries.Add(oldQuery);
                 }
-                if (oldQuery.TimeType == TimeType8.Weekend)
+                if (oldQuery.TimeType == TimeType.Weekend)
                 {
                     weekendQueries.Add(oldQuery);
                 }
-                if (oldQuery.TimeType == TimeType8.Custom)
+                if (oldQuery.TimeType == TimeType.Custom)
                 {
                     customQueries.Add(oldQuery);
                 }
@@ -112,7 +115,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
 
                 if (request == null)
                 {
-                    await UpdateQueryStateAsync(query.id, QueryState8.Failed);
+                    await UpdateQueryStateAsync(query.id, QueryState.Failed);
                     return;
                 }
 
@@ -121,11 +124,11 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
                 await ResultsProcessor.ProcessFlightsAsync(flights, query.TimeType, query.id.ToString(), query.Params);
 
                 await UpdateQueryExcecutedAsync(query.id);
-                await UpdateQueryStateAsync(query.id, QueryState8.Finished);
+                await UpdateQueryStateAsync(query.id, QueryState.Finished);
             }
             catch (Exception exc)
             {
-                await UpdateQueryStateAsync(query.id, QueryState8.Failed);
+                await UpdateQueryStateAsync(query.id, QueryState.Failed);
             }
             
         }
@@ -138,7 +141,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
             await DB.UpdateAsync(filter, update);
         }
 
-        private async Task UpdateQueryStateAsync(ObjectId id, QueryState8 state)
+        private async Task UpdateQueryStateAsync(ObjectId id, QueryState state)
         {
             var filter = DB.F<QueryEntity>().Eq(f => f.id, id);
             var update = DB.U<QueryEntity>().Set(u => u.State, state);
@@ -150,13 +153,13 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
         {
             FlightRequestDO request = null;
 
-            if (query.ToType == PlaceType8.City)
+            if (query.ToType == PlaceType.City)
             {
                 int gid = int.Parse(query.To);
                 request = builder.BuildCity(query.FromAir, gid);
             }
 
-            if (query.ToType == PlaceType8.Country)
+            if (query.ToType == PlaceType.Country)
             {
                 request = builder.BuildCountry(query.FromAir, query.To);
             }
@@ -168,24 +171,26 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
         {
             IQueryBuilder builder = null;
 
-            if (query.TimeType == TimeType8.Anytime)
+            if (query.TimeType == TimeType.Anytime)
             {
-                builder = new AnytimeKiwiQueryBuilder
+                var b = new AnytimeKiwiQueryBuilder
                 {
                     NewAirCityCache = NewAirCityCache
                 };
+                builder = b;
             }
 
-            if (query.TimeType == TimeType8.Weekend)
+            if (query.TimeType == TimeType.Weekend)
             {
                 var prms = ParamsParsers.Weekend(query.Params);
-                builder = new WeekendKiwiQueryBuilder(prms.Week, prms.Year)
+                var b = new WeekendKiwiQueryBuilder(prms.Week, prms.Year)
                 {
                     NewAirCityCache = NewAirCityCache
                 };
+                builder = b;
             }
 
-            if (query.TimeType == TimeType8.Custom)
+            if (query.TimeType == TimeType.Custom)
             {
                 var prms = ParamsParsers.Custom(query.Params);
                 var bldr = new CustomKiwiQueryBuilder(prms.UserId, prms.SearchId)

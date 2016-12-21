@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Gloobster.Database;
+using Gloobster.DomainInterfaces.SearchEngine8;
 using Gloobster.DomainModels.SearchEngine;
+using Gloobster.DomainObjects.SearchEngine8;
 using Gloobster.Entities;
-using Gloobster.Entities.Planning;
+using Gloobster.Entities.SearchEngine;
+using Gloobster.Enums.SearchEngine;
 using MongoDB.Bson;
 
 namespace Gloobster.DomainModels.SearchEngine8.Queuing
@@ -102,7 +105,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
         {
             var userIdObj = new ObjectId(userId);
             var sidObj = new ObjectId(searchId);
-            var customEnt = DB.FOD<PlanningCustomEntity>(p => p.User_id == userIdObj);
+            var customEnt = DB.FOD<DealsCustomEntity>(p => p.User_id == userIdObj);
             var search = customEnt.Searches.FirstOrDefault(s => s.id == sidObj);
 
             var airs = new List<string>();
@@ -186,8 +189,8 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
             {
                 FromAir = fromAir,
                 To = gid.ToString(),
-                ToType = PlaceType8.City,
-                TimeType = TimeType8.Anytime,
+                ToType = PlaceType.City,
+                TimeType = TimeType.Anytime,
                 Params = null
             };
         }
@@ -198,8 +201,8 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
             {
                 FromAir = fromAir,
                 To = cc,
-                ToType = PlaceType8.Country,
-                TimeType = TimeType8.Anytime,
+                ToType = PlaceType.Country,
+                TimeType = TimeType.Anytime,
                 Params = null
             };
         }
@@ -212,8 +215,8 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
             {
                 FromAir = fromAir,
                 To = gid.ToString(),
-                ToType = PlaceType8.City,
-                TimeType = TimeType8.Weekend,
+                ToType = PlaceType.City,
+                TimeType = TimeType.Weekend,
                 Params = prms
             };
         }
@@ -226,8 +229,8 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
             {
                 FromAir = fromAir,
                 To = cc,
-                ToType = PlaceType8.Country,
-                TimeType = TimeType8.Weekend,
+                ToType = PlaceType.Country,
+                TimeType = TimeType.Weekend,
                 Params = prms
             };
         }
@@ -240,8 +243,8 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
             {
                 FromAir = fromAir,
                 To = gid.ToString(),
-                ToType = PlaceType8.City,
-                TimeType = TimeType8.Custom,
+                ToType = PlaceType.City,
+                TimeType = TimeType.Custom,
                 Params = prms
             };
         }
@@ -254,8 +257,8 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
             {
                 FromAir = fromAir,
                 To = cc,
-                ToType = PlaceType8.Country,
-                TimeType = TimeType8.Custom,
+                ToType = PlaceType.Country,
+                TimeType = TimeType.Custom,
                 Params = prms
             };
         }

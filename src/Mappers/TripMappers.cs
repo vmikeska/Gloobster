@@ -227,7 +227,7 @@ namespace Gloobster.Mappers
 			return r;
 		}
 
-		public static FlightResponse ToResponse(this FlightDO d)
+		public static FlightResponse ToResponse(this FlightTripDO d)
 		{
 			var r = new FlightResponse
 			{
@@ -351,9 +351,9 @@ namespace Gloobster.Mappers
 			return d;
 		}
 
-		public static FlightDO ToDO(this FlightSE e)
+		public static FlightTripDO ToDO(this FlightSE e)
 		{
-			var d = new FlightDO
+			var d = new FlightTripDO
 			{
 				SelectedName = e.SelectedName,
 				AirportId = e.Airport_id.ToString()

@@ -4,7 +4,7 @@ using AzureBlobFileSystem;
 using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
-using Gloobster.DomainInterfaces.SearchEngine;
+using Gloobster.DomainInterfaces.SearchEngine8;
 using Gloobster.DomainModels;
 using Gloobster.DomainModels.ImageDB;
 using Gloobster.DomainModels.Langs;
@@ -163,18 +163,10 @@ namespace Gloobster.Portal
             builder.AddTransient<IPinBoardStats, PinBoardStats>();
 
 
-            
-            builder.AddTransient<ISkypickerSearchProvider, SkypickerSearchProvider>();
-
-            builder.AddTransient<IFlightsDatabase, FlightsDatabase>();
-            
+                   
 		    builder.AddTransient<IFlightScoreEngine, FlightScoreEngine>();
 
-            builder.AddTransient<IFlightsForUser, FlightsForUser>();
             
-            builder.AddTransient<IQueriesDriver, AnytimeQueriesDriver>().Keyed<IQueriesDriver>("Anytime");
-            builder.AddTransient<IQueriesDriver, WeekendQueriesDriver>().Keyed<IQueriesDriver>("Weekend");
-            builder.AddTransient<IQueriesDriver, CustomQueriesDriver>().Keyed<IQueriesDriver>("Custom");
 
             var airportsCache = new AirportsCache
 		    {

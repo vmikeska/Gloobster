@@ -18,8 +18,10 @@ using Gloobster.Entities;
 using MongoDB.Bson;
 using Microsoft.AspNet.Http.Extensions;
 using System.Linq;
+using Gloobster.DomainInterfaces.SearchEngine8;
 using Gloobster.DomainModels.SearchEngine;
 using Gloobster.DomainModels.SearchEngine8;
+using Gloobster.DomainModels.SearchEngine8.Executing;
 
 namespace Gloobster.Portal
 {

@@ -5,9 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Common;
 using Gloobster.Database;
+using Gloobster.DomainInterfaces.SearchEngine8;
 using Gloobster.DomainModels.SearchEngine;
 using Gloobster.DomainObjects.SearchEngine;
-using Gloobster.Entities.Planning;
+using Gloobster.Entities.SearchEngine;
 using MongoDB.Bson;
 
 namespace Gloobster.DomainModels.SearchEngine8.Executing
@@ -215,7 +216,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
             var userIdObj = new ObjectId(_userId);
             var customIdObj = new ObjectId(_customId);
 
-            var custom = DB.FOD<PlanningCustomEntity>(e => e.User_id == userIdObj);
+            var custom = DB.FOD<DealsCustomEntity>(e => e.User_id == userIdObj);
             var search = custom.Searches.FirstOrDefault(s => s.id == customIdObj);
             return search;
         }

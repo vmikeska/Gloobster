@@ -7,7 +7,7 @@ using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
 using Gloobster.Entities;
-using Gloobster.Entities.Planning;
+using Gloobster.Entities.SearchEngine;
 using Gloobster.Entities.Trip;
 using Gloobster.Mappers;
 using MongoDB.Bson;
@@ -25,12 +25,12 @@ namespace Gloobster.DomainModels
         {
             var userIdObj = new ObjectId(userId);
 
-            var custom = DB.FOD<PlanningCustomEntity>(e => e.User_id == userIdObj);
+            var custom = DB.FOD<DealsCustomEntity>(e => e.User_id == userIdObj);
             if (custom == null)
             {                
                 var search1 = BuildEmptySearch("My first search");
                 
-                custom = new PlanningCustomEntity
+                custom = new DealsCustomEntity
                 {
                     id = ObjectId.GenerateNewId(),
                     User_id = userIdObj,
@@ -74,8 +74,8 @@ namespace Gloobster.DomainModels
 
             var search = BuildEmptySearch(name);
 
-            var f = DB.F<PlanningCustomEntity>().Eq(p => p.User_id, userIdObj);
-            var u = DB.U<PlanningCustomEntity>().Push(p => p.Searches, search);
+            var f = DB.F<DealsCustomEntity>().Eq(p => p.User_id, userIdObj);
+            var u = DB.U<DealsCustomEntity>().Push(p => p.Searches, search);
             var updateRes = await DB.UpdateAsync(f, u);
 
             CustomSearchDO searchDO = search.ToDO();
@@ -88,8 +88,8 @@ namespace Gloobster.DomainModels
             var uid = new ObjectId(userId);
             var sid = new ObjectId(searchId);
 
-            var filter = DB.F<PlanningCustomEntity>().Eq(f => f.User_id, uid);
-            var update = DB.PF<PlanningCustomEntity, CustomSearchSE>(t => t.Searches, c => c.id == sid);
+            var filter = DB.F<DealsCustomEntity>().Eq(f => f.User_id, uid);
+            var update = DB.PF<DealsCustomEntity, CustomSearchSE>(t => t.Searches, c => c.id == sid);
             var result = await DB.UpdateAsync(filter, update);
             return result.ModifiedCount == 1;
         }
@@ -141,7 +141,7 @@ namespace Gloobster.DomainModels
             var uid = new ObjectId(userId);
             var sid = new ObjectId(searchId);
 
-            var customEntity = DB.FOD<PlanningCustomEntity>(u => u.User_id == uid);
+            var customEntity = DB.FOD<DealsCustomEntity>(u => u.User_id == uid);
             var search = customEntity.Searches.FirstOrDefault(s => s.id == sid);
 
             var airs = search.CustomAirs.Where(a => a.OrigId != origId);
@@ -173,9 +173,9 @@ namespace Gloobster.DomainModels
         {
             var userIdObj = new ObjectId(userId);
             var searchIdObj = new ObjectId(searchId);
-            var filter = DB.F<PlanningCustomEntity>().Eq(p => p.User_id, userIdObj)
-                         & DB.F<PlanningCustomEntity>().Eq("Searches._id", searchIdObj);
-            var update = DB.U<PlanningCustomEntity>().Push("Searches.$." + propName, value);
+            var filter = DB.F<DealsCustomEntity>().Eq(p => p.User_id, userIdObj)
+                         & DB.F<DealsCustomEntity>().Eq("Searches._id", searchIdObj);
+            var update = DB.U<DealsCustomEntity>().Push("Searches.$." + propName, value);
             var res = await DB.UpdateAsync(filter, update);
             return res.ModifiedCount == 1;
         }
@@ -184,9 +184,9 @@ namespace Gloobster.DomainModels
         {
             var userIdObj = new ObjectId(userId);
             var searchIdObj = new ObjectId(searchId);
-            var filter = DB.F<PlanningCustomEntity>().Eq(p => p.User_id, userIdObj)
-                         & DB.F<PlanningCustomEntity>().Eq("Searches._id", searchIdObj);
-            var update = DB.U<PlanningCustomEntity>().Set("Searches.$." + propName, value);
+            var filter = DB.F<DealsCustomEntity>().Eq(p => p.User_id, userIdObj)
+                         & DB.F<DealsCustomEntity>().Eq("Searches._id", searchIdObj);
+            var update = DB.U<DealsCustomEntity>().Set("Searches.$." + propName, value);
             var res = await DB.UpdateAsync(filter, update);
             return res.ModifiedCount == 1;
         }

@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Gloobster.Database;
+using Gloobster.DomainInterfaces.SearchEngine8;
 using Gloobster.DomainModels.SearchEngine8;
 using Gloobster.Portal.Controllers.Base;
 using Microsoft.AspNet.Mvc;

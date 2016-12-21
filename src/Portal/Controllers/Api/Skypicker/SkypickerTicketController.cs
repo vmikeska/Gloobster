@@ -8,6 +8,8 @@ using Gloobster.Portal.Controllers.Base;
 using Microsoft.AspNet.Mvc;
 using Serilog;
 using Gloobster.DomainModels.SearchEngine;
+using Gloobster.DomainModels.SearchEngine8.Executing;
+using Gloobster.DomainObjects.SearchEngine8;
 
 namespace Gloobster.Portal.Controllers.Api.Planning
 {
@@ -68,7 +70,7 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 	        return date;
 	    }
         
-        private Result Convert(SPFlightSearchResult flight)
+        private Result Convert(KiwiFlightSearchResult flight)
         {
             var flightParts = new List<FlightPartDO>();
             foreach (var route in flight.route)
@@ -164,7 +166,7 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 
         }
 
-        private Result Convert(SPFlightSearchResult flight)
+        private Result Convert(KiwiFlightSearchResult flight)
         {
             var res = new Result
             {

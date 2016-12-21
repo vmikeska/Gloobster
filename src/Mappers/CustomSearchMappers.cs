@@ -1,6 +1,6 @@
 using System.Linq;
 using Gloobster.DomainObjects;
-using Gloobster.Entities.Planning;
+using Gloobster.Entities.SearchEngine;
 using Gloobster.ReqRes.Planning;
 
 namespace Gloobster.Mappers

@@ -6,7 +6,7 @@ using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
-using Gloobster.Entities.Planning;
+using Gloobster.Entities.SearchEngine;
 using Gloobster.Entities.Trip;
 using Gloobster.Enums;
 using Gloobster.Mappers;
@@ -129,7 +129,7 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 		[AuthorizeApi]
 		public IActionResult Get(CustomSearchGetReq req)
 		{
-            var custom = DB.FOD<PlanningCustomEntity>(p => p.User_id == UserIdObj);
+            var custom = DB.FOD<DealsCustomEntity>(p => p.User_id == UserIdObj);
 
             if (req.actionName == "init")
 		    {

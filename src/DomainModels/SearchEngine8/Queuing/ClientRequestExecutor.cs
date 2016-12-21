@@ -2,7 +2,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Database;
-using Gloobster.Entities.Planning;
+using Gloobster.DomainInterfaces.SearchEngine8;
+using Gloobster.DomainObjects.SearchEngine8;
+using Gloobster.Entities.SearchEngine;
+using Gloobster.Enums.SearchEngine;
 using MongoDB.Bson;
 
 namespace Gloobster.DomainModels.SearchEngine8.Queuing
@@ -13,7 +16,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
         public IRequestsBuilder8 ReqBuilder { get; set; }
         public IFlightsDb FlightsDB { get; set; }
 
-        public async Task<List<FlightQueryResult8DO<T>>> ExeFirstRequestAsync<T>(string userId, TimeType8 timeType, string customId = null)
+        public async Task<List<FlightQueryResult8DO<T>>> ExeFirstRequestAsync<T>(string userId, TimeType timeType, string customId = null)
         {
             var userIdObj = new ObjectId(userId);
             
@@ -24,7 +27,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
             return results;
         }
 
-        public async Task<List<FlightQueryResult8DO<T>>> ExeSingleRequestsAsync<T>(string userId, TimeType8 timeType, DestinationRequests8DO dests, string customId = null)
+        public async Task<List<FlightQueryResult8DO<T>>> ExeSingleRequestsAsync<T>(string userId, TimeType timeType, DestinationRequests8DO dests, string customId = null)
         {
             var queries = GetQueries(timeType, dests, userId, customId);
 
@@ -39,21 +42,21 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
         }
 
 
-        private List<FlightQuery8DO> GetQueries(TimeType8 timeType, DestinationRequests8DO dests, string userId, string customId = null)
+        private List<FlightQuery8DO> GetQueries(TimeType timeType, DestinationRequests8DO dests, string userId, string customId = null)
         {
             List<FlightQuery8DO> queries = null;
 
-            if (timeType == TimeType8.Anytime)
+            if (timeType == TimeType.Anytime)
             {                 
                 queries = ReqBuilder.BuildQueriesAnytime(dests, userId);
             }
 
-            if (timeType == TimeType8.Weekend)
+            if (timeType == TimeType.Weekend)
             {                
                 queries = ReqBuilder.BuildQueriesWeekend(dests, userId);
             }
 
-            if (timeType == TimeType8.Custom)
+            if (timeType == TimeType.Custom)
             {             
                 queries = ReqBuilder.BuildQueriesCustom(dests, userId, customId);
             }
@@ -61,21 +64,21 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
             return queries;
         }
 
-        private DestinationRequests8DO GetDestinations(TimeType8 timeType, ObjectId userIdObj, string customId)
+        private DestinationRequests8DO GetDestinations(TimeType timeType, ObjectId userIdObj, string customId)
         {
             DestinationRequests8DO dests = null;
 
-            if (timeType == TimeType8.Anytime)
+            if (timeType == TimeType.Anytime)
             {
                 dests = GetDestinationsAnytime(userIdObj);                
             }
 
-            if (timeType == TimeType8.Weekend)
+            if (timeType == TimeType.Weekend)
             {
                 dests = GetDestinationsWeekend(userIdObj);                
             }
 
-            if (timeType == TimeType8.Custom)
+            if (timeType == TimeType.Custom)
             {
                 var customObjId = new ObjectId(customId);
                 dests = GetDestinationsCustom(userIdObj, customObjId);                
@@ -100,7 +103,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
         {
             var destinations = new DestinationRequests8DO();
             
-            var ent = DB.FOD<PlanningAnytimeEntity>(u => u.User_id == userIdObj);
+            var ent = DB.FOD<DealsAnytimeEntity>(u => u.User_id == userIdObj);
             destinations.GIDs = ent.Cities;
             destinations.CCs = ent.CountryCodes;
             
@@ -111,7 +114,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
         {
             var destinations = new DestinationRequests8DO();
             
-            var ent = DB.FOD<PlanningWeekendEntity>(u => u.User_id == userIdObj);
+            var ent = DB.FOD<DealsWeekendEntity>(u => u.User_id == userIdObj);
             destinations.GIDs = ent.Cities;
             destinations.CCs = ent.CountryCodes;
             
@@ -122,7 +125,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
         {
             var destinations = new DestinationRequests8DO();
 
-            var ent = DB.FOD<PlanningCustomEntity>(u => u.User_id == userIdObj);
+            var ent = DB.FOD<DealsCustomEntity>(u => u.User_id == userIdObj);
             var search = ent.Searches.FirstOrDefault(s => s.id == customIdObj);
 
             destinations.GIDs = search.GIDs;

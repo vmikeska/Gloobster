@@ -1,8 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using Gloobster.DomainModels.SearchEngine8;
+using Gloobster.DomainInterfaces.SearchEngine8;
 
-namespace Gloobster.DomainModels.SearchEngine
+namespace Gloobster.DomainModels.SearchEngine8.Executing
 {    
     public static class ExecutionStarter
     {
