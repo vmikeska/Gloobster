@@ -521,6 +521,7 @@ namespace Gloobster.DomainModels.SearchEngine8
     {
         FlightRequestDO BuildCountry(string airCode, string cc);
         FlightRequestDO BuildCity(string airCode, int gid);
+        INewAirportCityCache NewAirCityCache { get; set; }
     }
 
     public interface IRequestsBuilder8

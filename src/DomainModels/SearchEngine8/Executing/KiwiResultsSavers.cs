@@ -15,7 +15,10 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
             var entities = new List<AnytimeResultsEntity>();
 
             foreach (var group in groups)
-            {                                
+            {                              
+                
+                
+                  
                 var flightsSE = group.Flights.Select(f => f.ToEntity()).ToList();
 
                 var resEnt = new AnytimeResultsEntity

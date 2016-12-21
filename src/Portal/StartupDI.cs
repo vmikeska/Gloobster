@@ -187,8 +187,12 @@ namespace Gloobster.Portal
 		    var oldAirCache = new OldAirportsCache();
             oldAirCache.Init(new DbOperations());
             builder.AddInstance<IOldAirportsCache>(oldAirCache);
-            
 
+
+		    var newAirCityCache = new NewAirportCityCache();
+            newAirCityCache.Init(new DbOperations());
+            builder.AddInstance<INewAirportCityCache>(newAirCityCache);
+            
 
             builder.AddTransient<IFlightsDb, FlightsDb>();
             builder.AddTransient<IRequestBuilder8, RequestBuilder8>();

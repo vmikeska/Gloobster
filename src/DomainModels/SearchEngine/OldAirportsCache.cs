@@ -33,4 +33,5 @@ namespace Gloobster.DomainModels.SearchEngine
         }
 
     }
+    
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Common;
 using Gloobster.Database;
+using Gloobster.DomainModels.SearchEngine;
 using Gloobster.DomainObjects.SearchEngine;
 using Gloobster.Entities.Planning;
 using MongoDB.Bson;
@@ -13,6 +14,8 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
 {
     public class AnytimeKiwiQueryBuilder : IQueryBuilder
     {
+        public INewAirportCityCache NewAirCityCache { get; set; }
+
         //todo: should be reviewed at all
         public FlightRequestDO BuildCity(string airCode, int gid)
         {
@@ -20,16 +23,22 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
             //todo: really one year ?
             var inOneYear = today.AddYears(1);
 
+            var cityAir = NewAirCityCache.GetByGID(gid);
+            if (cityAir == null)
+            {
+                return null;
+            }
+
             var req = new FlightRequestDO
             {
                 flyFrom = airCode,
-                to = gid.ToString(),
+                to = cityAir.SpId,
                 dateFrom = today.ToDate().ToString(),
                 dateTo = inOneYear.ToDate().ToString(),
                 one_per_date = "1",
 
                 //todo: this is possibly not needed ?
-                typeFlight = "round",
+                //typeFlight = "round",
 
                 daysInDestinationFrom = "2",
                 daysInDestinationTo = "10"
@@ -37,7 +46,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
 
             return req;
         }
-
+        
         public FlightRequestDO BuildCountry(string airCode, string cc)
         {
             var today = DateTime.UtcNow;
@@ -60,6 +69,8 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
 
     public class WeekendKiwiQueryBuilder : IQueryBuilder
     {
+        public INewAirportCityCache NewAirCityCache { get; set; }
+
         private int _week;
         private int _year;
 
@@ -73,10 +84,16 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
         {
             var dates = GetDates(_week, _year);
 
+            var cityAir = NewAirCityCache.GetByGID(gid);
+            if (cityAir == null)
+            {
+                return null;
+            }
+
             var req = new FlightRequestDO
             {
                 flyFrom = airCode,
-                to = gid.ToString(),
+                to = cityAir.SpId,
                 dateFrom = dates.FromDate.ToString(),
                 dateTo = dates.ToDate.ToString(),
 
@@ -139,6 +156,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
 
     public class CustomKiwiQueryBuilder : IQueryBuilder
     {
+        public INewAirportCityCache NewAirCityCache { get; set; }
         public IDbOperations DB { get; set; }
 
         private string _userId;
@@ -154,10 +172,16 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
         {
             var search = GetSearch();
 
+            var cityAir = NewAirCityCache.GetByGID(gid);
+            if (cityAir == null)
+            {
+                return null;
+            }
+
             var req = new FlightRequestDO
             {
                 flyFrom = airCode,
-                to = gid.ToString(),
+                to = cityAir.SpId,
 
                 dateFrom = search.Deparature.ToString(),
                 dateTo = search.Arrival.ToString(),

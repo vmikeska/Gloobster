@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Gloobster.Database;
+using Gloobster.DomainModels.SearchEngine;
 using Gloobster.DomainObjects.SearchEngine;
 using Gloobster.Entities;
 using MongoDB.Bson;
@@ -16,7 +17,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
         public IDbOperations DB { get; set; }
         public IKiwiResultsExecutor KiwiExecutor { get; set; }
         public IKiwiResultsProcessor ResultsProcessor { get; set; }
-
+        public INewAirportCityCache NewAirCityCache { get; set; }
         //todo: maybe execute just queries started by user ?
 
         private static readonly AsyncLock Lock = new AsyncLock();
@@ -108,6 +109,13 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
             {                
                 IQueryBuilder builder = GetBuilder(query);
                 FlightRequestDO request = BuildRequest(query, builder);
+
+                if (request == null)
+                {
+                    await UpdateQueryStateAsync(query.id, QueryState8.Failed);
+                    return;
+                }
+
                 List<FlightDO> flights = KiwiExecutor.Search(request);
 
                 await ResultsProcessor.ProcessFlightsAsync(flights, query.TimeType, query.id.ToString(), query.Params);
@@ -162,13 +170,19 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
 
             if (query.TimeType == TimeType8.Anytime)
             {
-                builder = new AnytimeKiwiQueryBuilder();
+                builder = new AnytimeKiwiQueryBuilder
+                {
+                    NewAirCityCache = NewAirCityCache
+                };
             }
 
             if (query.TimeType == TimeType8.Weekend)
             {
-                var prms = ParamsParsers.Weekend(query.Params);                
-                builder = new WeekendKiwiQueryBuilder(prms.Week, prms.Year);
+                var prms = ParamsParsers.Weekend(query.Params);
+                builder = new WeekendKiwiQueryBuilder(prms.Week, prms.Year)
+                {
+                    NewAirCityCache = NewAirCityCache
+                };
             }
 
             if (query.TimeType == TimeType8.Custom)
@@ -176,6 +190,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
                 var prms = ParamsParsers.Custom(query.Params);
                 var bldr = new CustomKiwiQueryBuilder(prms.UserId, prms.SearchId)
                 {
+                    NewAirCityCache = NewAirCityCache,
                     DB = DB
                 };
 

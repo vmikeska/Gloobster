@@ -53,11 +53,44 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
                 outGroups.Add(outGroup);                
             }
 
+            //temporary results count limiting for cities, have a look on method description
+            ResultsLimiter(outGroups);
+
+            await SaveResults(outGroups, timeType, queryId, prms);
+        }
+
+        /// <summary>
+        /// This is temprary functionality. We need to limit results returned for a city. Usually houndreds, somethimes thousands.
+        /// In future, we should aggregate these result and show average price to the user, or that there are many other similar
+        /// offers possible
+        /// </summary>
+        /// <param name="inGroupedResults"></param>
+        /// <returns></returns>
+        private void ResultsLimiter(List<GroupedResultDO> inGroupedResults)
+        {
+            foreach (var groupedResult in inGroupedResults)
+            {
+                if (groupedResult.Flights.Count > 20)
+                {
+                    var topByPrice = groupedResult.Flights.OrderBy(o => o.Price).Take(10).ToList();
+                    var topByScore = groupedResult.Flights.OrderByDescending(o => o.FlightScore).Take(10).ToList();
+
+                    var filtered = new List<FlightDO>();
+                    filtered.AddRange(topByPrice);
+                    filtered.AddRange(topByScore);
+                    filtered = filtered.Distinct().ToList();
+                    groupedResult.Flights = filtered;
+                }                
+            }
+        }
+
+        private async Task SaveResults(List<GroupedResultDO> groupedResults, TimeType8 timeType, string queryId, string prms)
+        {
             //this is so because of collection name recognition when saving to DB
             if (timeType == TimeType8.Anytime)
             {
                 var saver = new KiwiAnytimeResultsSaver();
-                var entities = saver.BuildEntities(outGroups, queryId);
+                var entities = saver.BuildEntities(groupedResults, queryId);
                 await DB.SaveManyAsync(entities);
             }
 
@@ -65,7 +98,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
             {
                 var ps = ParamsParsers.Weekend(prms);
                 var saver = new KiwiWeekendResultsSaver(ps.Week, ps.Year);
-                var entities = saver.BuildEntities(outGroups, queryId);
+                var entities = saver.BuildEntities(groupedResults, queryId);
                 await DB.SaveManyAsync(entities);
             }
 
@@ -73,10 +106,9 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
             {
                 var ps = ParamsParsers.Custom(prms);
                 var saver = new KiwiCustomResultsSaver(ps.UserId, ps.SearchId);
-                var entities = saver.BuildEntities(outGroups, queryId);
+                var entities = saver.BuildEntities(groupedResults, queryId);
                 await DB.SaveManyAsync(entities);
             }
-            
         }
     }
 }

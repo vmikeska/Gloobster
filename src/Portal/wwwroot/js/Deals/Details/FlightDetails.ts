@@ -22,11 +22,33 @@ module Planning {
 
 				public change() {
 					if (this.onChange) {
-							var oFlights = _.sortBy(this.flights, this.orderBy);
+						var oFlights = [];
+							
+							//todo: orderStyle can be removed
 
-							if (this.orderStyle === "desc") {
-								oFlights = oFlights.reverse();
+							if (this.orderBy === "price") {
+									oFlights = _(this.flights)
+											.chain()
+											.sortBy("price")
+											.reverse()
+											.sortBy("score")
+											.reverse()
+											.value();	
 							}
+
+							if (this.orderBy === "score") {
+									oFlights = _(this.flights)
+											.chain()
+											.sortBy("score")
+											.reverse()
+											.sortBy("price")
+											//.reverse()
+											.value();
+							}
+							
+							//if (this.orderStyle === "desc") {
+							//	oFlights = oFlights.reverse();
+							//}
 
 							this.onChange(oFlights);
 					}

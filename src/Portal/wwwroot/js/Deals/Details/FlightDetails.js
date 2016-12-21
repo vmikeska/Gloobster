@@ -26,9 +26,23 @@ var Planning;
         };
         FlightsOrdering.prototype.change = function () {
             if (this.onChange) {
-                var oFlights = _.sortBy(this.flights, this.orderBy);
-                if (this.orderStyle === "desc") {
-                    oFlights = oFlights.reverse();
+                var oFlights = [];
+                if (this.orderBy === "price") {
+                    oFlights = _(this.flights)
+                        .chain()
+                        .sortBy("price")
+                        .reverse()
+                        .sortBy("score")
+                        .reverse()
+                        .value();
+                }
+                if (this.orderBy === "score") {
+                    oFlights = _(this.flights)
+                        .chain()
+                        .sortBy("score")
+                        .reverse()
+                        .sortBy("price")
+                        .value();
                 }
                 this.onChange(oFlights);
             }
