@@ -1,0 +1,23 @@
+﻿
+  <module name="pageDeals">
+
+    <Title>
+      <en>Travel deals</en>
+    </Title>
+
+
+    <InfoBlock1>
+      <en>
+        Choose your home airports and places you'd like to visit.
+        We will keep these information saved and anytime you come back you'll be offerd best travel deals for your favourite places.
+        Setup a long term search and let us help you to find your perfect summer trip.
+      </en>
+    </InfoBlock1>
+
+    <InfoBlock2>
+      <en>We will evaluate for you best travel deals for holiday, weekend or help you to fullfil your dream of visiting an exotic country.</en>
+    </InfoBlock2>
+    
+
+
+  </module>

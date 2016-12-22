@@ -112,52 +112,6 @@
         }
     }
 
-    .info-block{
-        
-        padding: 8px;
-        text-align: center;
-
-
-        .block{
-            
-            width: 48%;
-            min-width: 320px;
-            display: inline-block;
-            vertical-align: top;
-
-            @include below-width(700){            
-                width: 95%;
-            }
-
-            .block-inner{
-                display: table;
-                
-                .img-all{
-                    
-                    display: table-cell;
-                    vertical-align: middle;
-                    width: 30%;
-
-                    img{            
-                        width: 100%;                            
-                    }
-                }
-
-                .txt{                    
-                    display: table-cell;
-                    vertical-align: middle;
-                    text-align: left;
-                    width: 60%;                    
-                    width: auto;
-
-                    padding: 10px;
-                }
-            }
-
-        }
-
-    }
-
     .itag{
         padding-left: 3px;
         padding-right: 3px;

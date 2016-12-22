@@ -56,22 +56,6 @@ namespace Gloobster.Portal.ViewModels
 	    {
 	        return SocialNetworks.Contains(net);
 	    }
-
-        public string InfoBlockVisible(string id)
-        {
-            var block = InfoBlocks.infos.FirstOrDefault(i => i.id == id);
-            if (block == null)
-            {
-                return string.Empty;
-            }
-
-            if (block.visible)
-            {
-                return string.Empty;
-            }
-
-            return "display:none;";
-        }
         
         public bool IsDemo { get; set; }
 
@@ -149,5 +133,59 @@ namespace Gloobster.Portal.ViewModels
                 return netStr;
             }
         }
+
+        private bool InfoBlockVisible(string id)
+        {
+            var block = InfoBlocks.infos.FirstOrDefault(i => i.id == id);
+            if (block == null)
+            {
+                return true;
+            }
+
+            if (block.visible)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public InfoBlockResult InfoBlock(string id)
+        {
+            bool visible = InfoBlockVisible(id);
+
+            var res = new InfoBlockResult
+            {
+                BaseModel = this,
+
+                IsVisible = visible,
+                BtnTxt = visible ? W("HideTitleInfo", "layout") : W("ShowTitleInfo", "layout"),
+                Class = visible ? string.Empty : "collapsed",
+                Css = visible ? string.Empty : "display:none;",
+                LinkSteps = new List<LinkStep>()
+            };
+
+            return res;
+        }        
     }
+
+    public class InfoBlockResult
+    {
+        public ViewModelBase BaseModel { get; set; }
+
+        public bool IsVisible { get; set; }
+        public string Css { get; set; }
+        public string Class { get; set; }
+        public string BtnTxt { get; set; }        
+
+        public List<LinkStep> LinkSteps { get; set; }
+    }
+
+    public class LinkStep
+    {
+        public string Link { get; set; }
+        public string Txt { get; set; }
+    }
+
+
 }

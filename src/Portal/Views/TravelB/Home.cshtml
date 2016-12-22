@@ -59,57 +59,38 @@ else
     
 }
 
+
 @{
-    var showText = "show info";
-    var hideText = "hide info";
-    var infoCss = Model.InfoBlockVisible("info-travelb");
-    var infoBtnTxt = infoCss == string.Empty ? hideText : showText;
+    var infoBlock = Model.InfoBlock("info-travelb");
 }
 
-<div class="info-block-bck" id="info-travelb">
+<div class="info-block-bck @infoBlock.Class" id="info-travelb">
 
     <div class="wrapper">
 
-        <div class="title-table">
-        <div class="left">
-            <h1>@Model.W("Title")</h1>
-        </div>
+        @Html.Partial("TitleBlock", infoBlock)
 
-            <div class="right">
-                <a class="showHide" data-ts="@showText" data-th="@hideText" href="#">@infoBtnTxt</a>
-            </div>
+        <div class="info-block info-block2" style="@infoBlock.Css">
 
-    </div>
+            <div class="info-inner-table">
 
-    <div class="info-block" style="@infoCss">
-        <div class="block">
-
-            <div class="block-inner">
-                <div class="img-all">
-                    <img src="/images/n/checkin-now.svg"/>
+                <div class="block">
+                    <img class="svg-img" src="/images/n/guy.svg">
+                    <p class="txt">
+                        @Model.W("InfoNow")
+                    </p>
                 </div>
 
-                <div class="txt">
-                    @Model.W("InfoNow")
+                <div class="block">
+                    <img class="svg-img" src="/images/n/yellow-ico-calendar.svg">
+                    <p class="txt">
+                        @Model.W("InfoCity")
+                    </p>
                 </div>
+
             </div>
 
         </div>
-
-        <div class="block">
-
-            <div class="block-inner">
-                <div class="img-all">
-                    <img src="/images/n/checkin-city.svg"/>
-                </div>
-
-                <div class="txt">
-                    @Model.W("InfoCity")
-                </div>
-            </div>
-        </div>
-
-    </div>
 
     </div>
 </div>

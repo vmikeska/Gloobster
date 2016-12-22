@@ -1,8 +1,16 @@
 ﻿
   <module name="pageTrips">
-   
-      <Title>
-        <en>Trips</en>
+
+    <InfoBlock1>
+      <en>Organize your travel documents and notes day by day. Keep track of places you'd like to visit.</en>
+    </InfoBlock1>
+
+    <InfoBlock2>
+      <en>Invite your friend or let know to the people about your trip over social networks.</en>
+    </InfoBlock2>
+
+    <Title>
+        <en>Travel organizer</en>
       </Title>
 
       <NewTripName>

@@ -56,21 +56,49 @@ else
     <script type="text/javascript" src="/js/pins/PinBoardBadges.js"></script>
 }
 
-
-
 @{
     var topCitiesStr = $"[{string.Join(",", Model.TopCities)}]";
     var countryCodesStr = $"['{string.Join("','", Model.CountryCodes)}']";
     var stateCodesStr = $"['{string.Join("','", Model.StateCodes)}']";
 }
 
-<h1>Your travel map</h1>
+@{        
+    var infoBlock = Model.InfoBlock("info-travelmap");
+}
 
-<p>
-    @Model.W("Description")
-</p>
+<div class="info-block-bck @infoBlock.Class" id="info-travelmap">
 
-<div class="icons_all wrapper">
+    <div class="wrapper">
+
+        @Html.Partial("TitleBlock", infoBlock)
+
+        <div class="info-block info-block2" style="@infoBlock.Css">
+
+            <div class="info-inner-table">
+
+                <div class="block">
+                    <img class="svg-img" src="/images/n/fly-pin.svg">
+                    <p class="txt">
+                        @Model.W("InfoBlock1")
+                    </p>
+                </div>
+
+                <div class="block">
+                    <img class="svg-img" src="/images/n/guy.svg">
+                    <p class="txt">
+                        @Model.W("InfoBlock2")
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<div class="head-icons-all wrapper">
     <div class="block data-type">
         <div class="ico_all pr">
             <div class="ico">
@@ -135,9 +163,6 @@ else
         </div>
     </div>
 </div>
-
-@*watercolor*@
-@*<script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.3.0" data-notbuild="true"></script>*@
 
 @Html.Partial("ShareDialog")
 @Html.Partial("FbCheckinsDialog")

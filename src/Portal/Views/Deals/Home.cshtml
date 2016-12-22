@@ -9,7 +9,7 @@
 @using Gloobster.Portal.Controllers.Portal
 @using Gloobster.Portal.ViewModels
 @using Microsoft.AspNet.Mvc.Rendering
-@model Gloobster.Portal.ViewModels.ViewModelPlanning
+@model Gloobster.Portal.ViewModels.ViewModelDeals
 
 
 <link href="/lib/leaflet/dist/leaflet.css" rel="stylesheet" />
@@ -86,50 +86,37 @@ else
 
 }
 
-<div class="info-block-bck" id="info-travelb">
+@{
+    var infoBlock = Model.InfoBlock("info-deals");
+}
+
+<div class="info-block-bck @infoBlock.Class" id="info-deals">
 
     <div class="wrapper">
         
-        <div class="title-table">
-            <div class="left">
-                <h1>Travel deals</h1>
+        @Html.Partial("TitleBlock", infoBlock)
+
+        <div class="info-block info-block2" style="@infoBlock.Css">
+            
+            <div class="info-inner-table">
+                
+                <div class="block">
+                    <img class="svg-img" src="/images/n/fly-pin.svg">
+                    <p class="txt">
+                        @Model.W("InfoBlock1")
+                    </p>
+                </div>
+                
+                <div class="block">
+                    <img class="svg-img" src="/images/n/fly-plane.svg">
+                    <p class="txt">
+                        @Model.W("InfoBlock2")
+                    </p>
+                </div>
+
             </div>
-
-            @*<div class="right">
-                <a class="showHide" data-ts="@showText" data-th="@hideText" href="#">@infoBtnTxt</a>
-            </div>*@
-
+            
         </div>
-
-        @*<div class="info-block" style="@infoCss">
-            <div class="block">
-
-                <div class="block-inner">
-                    <div class="img-all">
-                        <img src="/images/n/checkin-now.svg" />
-                    </div>
-
-                    <div class="txt">
-                        @Model.W("InfoNow")
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="block">
-
-                <div class="block-inner">
-                    <div class="img-all">
-                        <img src="/images/n/checkin-city.svg" />
-                    </div>
-
-                    <div class="txt">
-                        @Model.W("InfoCity")
-                    </div>
-                </div>
-            </div>
-
-        </div>*@
 
     </div>
 </div>

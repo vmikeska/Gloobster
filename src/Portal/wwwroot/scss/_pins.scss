@@ -1,13 +1,14 @@
 ﻿
 .pins{
 
-.icons_all {    
+.head-icons-all {    
     display: flex;
     justify-content: space-between;
     @include below-width(920){
         display: block;        
     }
 
+    margin-top: 20px;
     margin-bottom: 20px;
 
     .block:first-of-type {

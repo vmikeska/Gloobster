@@ -4,7 +4,7 @@ using Gloobster.Entities.Trip;
 
 namespace Gloobster.Portal.ViewModels
 {
-    public class ViewModelPlanning : ViewModelBase
+    public class ViewModelDeals : ViewModelBase
     {
         public string InitCurrentLocation { get; set; }
 

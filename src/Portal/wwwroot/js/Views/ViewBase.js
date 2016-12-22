@@ -46,6 +46,9 @@ var Views;
                 var $ib = $ibAll.find(".info-block");
                 var visible = $ib.css("display") === "block";
                 $btn.html(visible ? $btn.data("ts") : $btn.data("th"));
+                if (!visible) {
+                    $ibAll.removeClass("collapsed");
+                }
                 var data = _this.cookieManager.getJson("InfoBlocks");
                 if (data) {
                     var thisInfo = _.find(data.infos, function (info) {
@@ -62,7 +65,11 @@ var Views;
                     data = { infos: [{ id: id, visible: false }] };
                 }
                 _this.cookieManager.setJson("InfoBlocks", data);
-                $ib.slideToggle();
+                $ib.slideToggle(function () {
+                    if (visible) {
+                        $ibAll.addClass("collapsed");
+                    }
+                });
             });
         };
         ViewBase.prototype.initDemoFnc = function () {

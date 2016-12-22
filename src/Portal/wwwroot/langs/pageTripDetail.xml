@@ -1,7 +1,23 @@
 ﻿
   <module name="pageTripDetail">
-  
-      <TitlePhoto>
+
+    <Title>
+      <en>Edit mode</en>
+    </Title>
+
+    <ParentTitle>
+      <en>Travel organizer</en>
+    </ParentTitle>
+    
+    <InfoBlock1>
+      <en>Organize your travel documents and notes day by day. Keep track of places you'd like to visit.</en>
+    </InfoBlock1>
+
+    <InfoBlock2>
+      <en>Invite your friend or let know to the people about your trip over social networks.</en>
+    </InfoBlock2>
+
+    <TitlePhoto>
         <en>Title Photo</en>
       </TitlePhoto>
 

@@ -37,25 +37,28 @@ namespace Gloobster.Portal.Controllers.Portal
             PlanningDom.CreateDBStructure(UserId);
             CustomSearchDomain.CreateDbStructure(UserId);
 
-            var viewModel = CreateViewModelInstance<ViewModelPlanning>();
-			viewModel.InitCurrentLocation = FormatCityStr(ua);
+            var vm = CreateViewModelInstance<ViewModelDeals>();
 
-		    viewModel.HasAirports = false;
+            vm.DefaultLangModuleName = "pageDeals";
+            vm.LoadClientTexts(new[] { "jsDeals" });
+            vm.InitCurrentLocation = FormatCityStr(ua);
+
+            vm.HasAirports = false;
 
             if (ua != null)
 			{
-                viewModel.CurrentLocation = ua.CurrentLocation;
+                vm.CurrentLocation = ua.CurrentLocation;
 
                 var airportIds = ua.Airports.Select(a => a.OrigId);
-				viewModel.Airports = DB.List<AirportEntity>(a => airportIds.Contains(a.OrigId));
+                vm.Airports = DB.List<AirportEntity>(a => airportIds.Contains(a.OrigId));
 
 			    if (airportIds.Any())
 			    {
-                    viewModel.HasAirports = true;
+                    vm.HasAirports = true;
 			    }
 			}
 
-			return View(viewModel);
+			return View(vm);
 		}
 
 		private string FormatCityStr(UserAirports ua)

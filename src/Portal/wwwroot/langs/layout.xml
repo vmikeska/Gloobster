@@ -1,6 +1,14 @@
 ﻿
   <module name="layout">
 
+    <ShowTitleInfo>
+      <en>show info</en>
+    </ShowTitleInfo>
+
+    <HideTitleInfo>
+      <en>hide info</en>
+    </HideTitleInfo>
+    
       <MenuPins>
         <en>Your travel map</en>
       </MenuPins>

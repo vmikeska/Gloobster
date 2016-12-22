@@ -23,29 +23,34 @@ else
 }
 
 @{
-    var showText = "show info";
-    var hideText = "hide info";
-    var infoCss = Model.InfoBlockVisible("info-triplist");
-    var infoBtnTxt = infoCss == string.Empty ? hideText : showText;
+    var infoBlock = Model.InfoBlock("info-triplist");
 }
 
-<div class="info-block-bck" id="info-triplist">
+<div class="info-block-bck @infoBlock.Class" id="info-triplist">
 
     <div class="wrapper">
 
-        <div class="title-table">
-            <div class="left">                
-                <h1>Travel organizer</h1>
+        @Html.Partial("TitleBlock", infoBlock)
+
+        <div class="info-block info-block2" style="@infoBlock.Css">
+
+            <div class="info-inner-table">
+
+                <div class="block">
+                    <img class="svg-img" src="/images/n/yellow-ico-calendar.svg">
+                    <p class="txt">
+                        @Model.W("InfoBlock1")                        
+                    </p>
+                </div>
+
+                <div class="block">
+                    <img class="svg-img" src="/images/n/guy.svg">
+                    <p class="txt">
+                        @Model.W("InfoBlock2")                        
+                    </p>
+                </div>
+
             </div>
-
-            <div class="right">
-                <a class="showHide" data-ts="@showText" data-th="@hideText" href="#">@infoBtnTxt</a>
-            </div>
-
-        </div>
-
-        <div class="info-block" style="@infoCss">
-            Organize your travel documents and notes day by day. Invite your friend or let know to the people about your trip over social networks.
 
         </div>
 

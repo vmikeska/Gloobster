@@ -11,6 +11,9 @@ body {
 a {
   color: #3298C1; }
 
+.svg-img {
+  -webkit-backface-visibility: hidden; }
+
 .lato {
   font-family: "Lato", sans-serif; }
 
@@ -740,7 +743,15 @@ button:active {
           border-bottom: 1px solid #3298C1; }
 
 .info-block-bck {
-  background-color: #EAEAEA; }
+  background-color: #009EC4;
+  color: white; }
+  .info-block-bck a {
+    color: white; }
+  .info-block-bck.collapsed {
+    color: black;
+    background-color: white; }
+    .info-block-bck.collapsed a {
+      color: #005476; }
   .info-block-bck .title-table {
     display: table;
     width: 100%;
@@ -759,6 +770,31 @@ button:active {
       display: table-cell;
       text-align: right;
       padding-right: 10px; }
+    .info-block-bck .title-table .showHide:hover {
+      color: #F56E12; }
+
+.info-block2 {
+  padding: 8px;
+  text-align: center; }
+  .info-block2 .info-inner-table {
+    display: table; }
+    .info-block2 .info-inner-table .block {
+      width: 50%;
+      display: table-cell;
+      min-height: 125px; }
+  @media screen and (max-width: 800px) {
+    .info-block2 .info-inner-table {
+      display: block; }
+      .info-block2 .info-inner-table .block {
+        width: 100%;
+        display: block; } }
+  .info-block2 img {
+    float: left;
+    vertical-align: top;
+    width: 120px;
+    margin-right: 15px; }
+  .info-block2 .txt {
+    vertical-align: top; }
 
 @media screen and (max-width: 1150px) {
   .menu_all {
@@ -1441,27 +1477,28 @@ footer {
       .homepage .social .blocks .item .btn a:hover {
         opacity: 0.7; }
 
-.pins .icons_all {
+.pins .head-icons-all {
   display: flex;
   justify-content: space-between;
+  margin-top: 20px;
   margin-bottom: 20px; }
   @media screen and (max-width: 920px) {
-    .pins .icons_all {
+    .pins .head-icons-all {
       display: block; } }
-  .pins .icons_all .block:first-of-type {
+  .pins .head-icons-all .block:first-of-type {
     margin-right: 20px; }
     @media screen and (max-width: 920px) {
-      .pins .icons_all .block:first-of-type {
+      .pins .head-icons-all .block:first-of-type {
         margin-right: 0; } }
-  .pins .icons_all .block {
+  .pins .head-icons-all .block {
     display: inline-block; }
-    .pins .icons_all .block .pr {
+    .pins .head-icons-all .block .pr {
       padding-right: 10px; }
-    .pins .icons_all .block .ico_all {
+    .pins .head-icons-all .block .ico_all {
       display: inline-block;
       text-align: center;
       vertical-align: top; }
-      .pins .icons_all .block .ico_all .ico {
+      .pins .head-icons-all .block .ico_all .ico {
         display: table-cell;
         vertical-align: middle;
         width: 136px;
@@ -1470,34 +1507,34 @@ footer {
         border-radius: 2px;
         font-size: 94px; }
         @media screen and (max-width: 460px) {
-          .pins .icons_all .block .ico_all .ico {
+          .pins .head-icons-all .block .ico_all .ico {
             width: 100px;
             height: 100px;
             font-size: 70px; } }
-        .pins .icons_all .block .ico_all .ico a {
+        .pins .head-icons-all .block .ico_all .ico a {
           line-height: 136px;
           text-decoration: none;
           color: #65BDD7; }
           @media screen and (max-width: 460px) {
-            .pins .icons_all .block .ico_all .ico a {
+            .pins .head-icons-all .block .ico_all .ico a {
               line-height: 100px; } }
-        .pins .icons_all .block .ico_all .ico a:hover {
+        .pins .head-icons-all .block .ico_all .ico a:hover {
           color: #005476; }
-        .pins .icons_all .block .ico_all .ico .active {
+        .pins .head-icons-all .block .ico_all .ico .active {
           color: #005476; }
-      .pins .icons_all .block .ico_all .txt {
+      .pins .head-icons-all .block .ico_all .txt {
         margin-top: 13px;
         font-size: 16px;
         font-weight: 600;
         color: #65BDD7; }
-        .pins .icons_all .block .ico_all .txt .cmb_all {
+        .pins .head-icons-all .block .ico_all .txt .cmb_all {
           position: relative; }
-          .pins .icons_all .block .ico_all .txt .cmb_all .cmb {
+          .pins .head-icons-all .block .ico_all .txt .cmb_all .cmb {
             text-decoration: none;
             color: #65BDD7; }
-          .pins .icons_all .block .ico_all .txt .cmb_all .cmb:hover {
+          .pins .head-icons-all .block .ico_all .txt .cmb_all .cmb:hover {
             color: #005476; }
-          .pins .icons_all .block .ico_all .txt .cmb_all .list {
+          .pins .head-icons-all .block .ico_all .txt .cmb_all .list {
             display: block;
             position: absolute;
             top: 30px;
@@ -1512,17 +1549,17 @@ footer {
             border-bottom-right-radius: 2px;
             font-size: 20px;
             font-weight: 500; }
-            .pins .icons_all .block .ico_all .txt .cmb_all .list .clear {
+            .pins .head-icons-all .block .ico_all .txt .cmb_all .list .clear {
               border-bottom: 1px solid #65BDD7;
               padding-left: 10px; }
-              .pins .icons_all .block .ico_all .txt .cmb_all .list .clear a {
+              .pins .head-icons-all .block .ico_all .txt .cmb_all .list .clear a {
                 color: darkred;
                 /*font-size: 18px;*/
                 text-decoration: none;
                 font-weight: 600; }
-              .pins .icons_all .block .ico_all .txt .cmb_all .list .clear a:hover {
+              .pins .head-icons-all .block .ico_all .txt .cmb_all .list .clear a:hover {
                 color: #005476; }
-            .pins .icons_all .block .ico_all .txt .cmb_all .list .cont .item {
+            .pins .head-icons-all .block .ico_all .txt .cmb_all .list .cont .item {
               border-bottom: 1px solid #65BDD7;
               padding-left: 10px; }
 
@@ -2656,8 +2693,6 @@ footer {
     border-top: 1px solid #f2f2f2;
     margin-top: 10px;
     margin-bottom: 1px; }
-  .trip-detail a {
-    color: #009dc4; }
   .trip-detail a:hover {
     text-decoration: none; }
   .trip-detail textarea {
@@ -3537,32 +3572,6 @@ footer {
       .travelb-home .mp-icon .cont img {
         width: 38px;
         height: 38px; }
-  .travelb-home .info-block {
-    padding: 8px;
-    text-align: center; }
-    .travelb-home .info-block .block {
-      width: 48%;
-      min-width: 320px;
-      display: inline-block;
-      vertical-align: top; }
-      @media screen and (max-width: 700px) {
-        .travelb-home .info-block .block {
-          width: 95%; } }
-      .travelb-home .info-block .block .block-inner {
-        display: table; }
-        .travelb-home .info-block .block .block-inner .img-all {
-          display: table-cell;
-          vertical-align: middle;
-          width: 30%; }
-          .travelb-home .info-block .block .block-inner .img-all img {
-            width: 100%; }
-        .travelb-home .info-block .block .block-inner .txt {
-          display: table-cell;
-          vertical-align: middle;
-          text-align: left;
-          width: 60%;
-          width: auto;
-          padding: 10px; }
   .travelb-home .itag {
     padding-left: 3px;
     padding-right: 3px;

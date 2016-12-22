@@ -5,9 +5,13 @@
         <en>Your travel map</en>
       </Title>
 
-    <Description>
-      <en>This application can keep track of your traveled cities, countries and places. See where your friends are traveling mostly. See where what places your friends visiting mostly. Are you new in town ? See what places are being visited by people mostly.</en>
-    </Description>
+    <InfoBlock1>
+      <en>Keep track of your traveled cities, countries and places. See where your friends are traveling mostly.</en>
+    </InfoBlock1>
+
+    <InfoBlock2>
+      <en>Are you new in town ? See what places are being visited by people mostly.</en>
+    </InfoBlock2>
 
     <ShareTitle>
       <en>Share your map</en>

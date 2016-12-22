@@ -1,0 +1,20 @@
+﻿
+@using Gloobster.Portal.ViewModels
+@model InfoBlockResult
+
+<div class="title-table">
+    <div class="left">
+        @foreach (var b in Model.LinkSteps)
+        {
+            <a href="@b.Link">@b.Txt</a> @(">")
+        }
+        
+
+        <h1>@Model.BaseModel.W("Title")</h1>
+    </div>
+
+    <div class="right">
+        <a class="showHide" data-ts="@Model.BaseModel.W("ShowTitleInfo", "layout")" data-th="@Model.BaseModel.W("HideTitleInfo", "layout")" href="#">@Model.BtnTxt</a>
+    </div>
+
+</div>

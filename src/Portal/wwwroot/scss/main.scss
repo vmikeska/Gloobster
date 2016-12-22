@@ -12,6 +12,7 @@ $light-blue5: #57c1db;
 $light-blue6: #9FD2E3;
 
 $info-blue: #99DBEC;
+$info-blue2: #009EC4;
 
 $ribbon-blue: #57C2DB;
 $input-margin-blue: #AAE0ED;
@@ -115,6 +116,10 @@ body {
 a {
     color: $light-blue3;
 }
+
+.svg-img{         
+        -webkit-backface-visibility: hidden;
+    }
 
 .lato{
     font-family: $font-lato;

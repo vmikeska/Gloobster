@@ -19,17 +19,27 @@ else
     <script type="text/javascript" src="/js/Views/NotificationsView.js"></script>
 }
 
-    <div class="htbl wrapper">
-        <div class="left">
-            <h2>@Model.W("Title")</h2>
-        </div>
-        <div class="right">
-            @if (Model.Notifications.Notifications.Any())
+
+<div class="info-block-bck collapsed">
+
+    <div class="wrapper">
+
+        <div class="title-table">
+            <div class="left">
+                <h1>@Model.W("Title")</h1>
+            </div>
+
+            <div class="right">
+                @if (Model.Notifications.Notifications.Any())
             {
-                <a id="deleteAll" class="lbtn del-btn" href="#">@Model.W("DeleteAll")</a>
-            }
+                    <a id="deleteAll" class="lbtn del-btn" href="#">@Model.W("DeleteAll")</a>
+                }
+            </div>
+
         </div>
+
     </div>
+</div>
 
     @foreach (var notif in Model.Notifications.Notifications)
     {

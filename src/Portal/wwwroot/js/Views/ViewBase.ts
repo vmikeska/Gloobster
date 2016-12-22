@@ -56,6 +56,9 @@ module Views {
 				var visible = $ib.css("display") === "block";
 				$btn.html(visible ? $btn.data("ts") : $btn.data("th"));
 
+				if (!visible) {
+						$ibAll.removeClass("collapsed");
+				}
 
 				var data = this.cookieManager.getJson("InfoBlocks");
 				if (data) {
@@ -74,7 +77,11 @@ module Views {
 				}
 				this.cookieManager.setJson("InfoBlocks", data);
 
-				$ib.slideToggle();
+				$ib.slideToggle(() => {
+					if (visible) {						
+							$ibAll.addClass("collapsed");
+					}
+				});
 			});
 		}
 

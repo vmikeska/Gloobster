@@ -4,10 +4,12 @@
     Layout = "_LayoutNew";
 }
 
+@using System.Collections.Generic
 @using System.Threading.Tasks
 @using Gloobster.Common
 @using Gloobster.Portal.Controllers.Portal
 @using Gloobster.Portal.ViewModels
+@using Microsoft.Data.Entity.Metadata.Internal
 @model ViewModelTripDetail
 
 @Html.Partial("GAnalytics")
@@ -36,30 +38,42 @@ else
 }
 
 @{
-    var showText = "show info";
-    var hideText = "hide info";
-    var infoCss = Model.InfoBlockVisible("info-tripdetail");
-    var infoBtnTxt = infoCss == string.Empty ? hideText : showText;
+    var infoBlock = Model.InfoBlock("info-tripdetail");
+    infoBlock.LinkSteps = new List<LinkStep>
+    {
+        new LinkStep
+        {
+            Link = "/" + @RoutingConsts.PlannerMenuName + "/grid",
+            Txt = Model.W("ParentTitle")
+        }
+    };
 }
 
-<div class="info-block-bck" id="info-tripdetail">
+<div class="info-block-bck @infoBlock.Class" id="info-tripdetail">
 
     <div class="wrapper">
+        
+        @Html.Partial("TitleBlock", infoBlock)
 
-        <div class="title-table">
-            <div class="left">
-                <a href="/@RoutingConsts.PlannerMenuName/grid">Travel organizer</a> &gt; 
-                <h1>Edit mode</h1>
+        <div class="info-block info-block2" style="@infoBlock.Css">
+
+            <div class="info-inner-table">
+
+                <div class="block">
+                    <img class="svg-img" src="/images/n/yellow-ico-calendar.svg">
+                    <p class="txt">
+                        @Model.W("InfoBlock1")
+                    </p>
+                </div>
+
+                <div class="block">
+                    <img class="svg-img" src="/images/n/guy.svg">
+                    <p class="txt">
+                        @Model.W("InfoBlock2")
+                    </p>
+                </div>
+
             </div>
-
-            <div class="right">
-                <a class="showHide" data-ts="@showText" data-th="@hideText" href="#">@infoBtnTxt</a> 
-            </div>
-
-        </div>
-
-        <div class="info-block" style="@infoCss">
-            Organize your travel documents and notes day by day. Invite your friend or let know to the people about your trip over social networks.
 
         </div>
 
