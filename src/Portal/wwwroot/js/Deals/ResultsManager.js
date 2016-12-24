@@ -90,8 +90,6 @@ var Planning;
         };
         ResultsManager.prototype.recieveQueries = function (queries) {
             var _this = this;
-            console.log("receiving results");
-            console.log("QUEUE SIZE: " + this.queue.length);
             var newResults = false;
             queries.forEach(function (query) {
                 if (query.state === QueryState.Failed) {
@@ -150,7 +148,6 @@ var Planning;
         };
         ResultsManager.prototype.getQueries = function (params) {
             var _this = this;
-            console.log("Getting queries");
             this.stopQuerying();
             Views.ViewBase.currentView.apiGet("Deals", params, function (queries) {
                 _this.recieveQueries(queries);
@@ -164,7 +161,6 @@ var Planning;
         ResultsManager.prototype.stopQuerying = function () {
             if (this.intervalId) {
                 clearInterval(this.intervalId);
-                console.log("Querying stopped");
             }
         };
         ResultsManager.prototype.startQuerying = function () {
@@ -173,7 +169,6 @@ var Planning;
                 return;
             }
             this.intervalId = setInterval(function () {
-                console.log("Querying started");
                 _this.drawQueue();
                 if (_this.queue.length === 0) {
                     _this.stopQuerying();
@@ -209,7 +204,13 @@ var Planning;
             var _this = this;
             this.$cont.empty();
             this.$mainCont.removeClass("hidden");
-            queries.forEach(function (query) {
+            var maxItems = 7;
+            var qd = queries;
+            var shrinkQueue = qd.length > maxItems;
+            if (shrinkQueue) {
+                qd = qd.slice(0, maxItems);
+            }
+            qd.forEach(function (query) {
                 var prmsTxt = "";
                 if (timeType === PlanningType.Weekend) {
                     var dates = ParamsParsers.weekend(query.prms);
@@ -222,6 +223,9 @@ var Planning;
                 var $itm = _this.itemTmp(context);
                 _this.$cont.append($itm);
             });
+            if (shrinkQueue) {
+                this.$cont.append("<span>...</span>");
+            }
         };
         QueueVisualize.prototype.hide = function () {
             this.$cont.empty();

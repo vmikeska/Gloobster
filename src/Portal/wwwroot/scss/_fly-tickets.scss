@@ -950,12 +950,8 @@
 
         margin-top: 12px;
         
-        text-align: left;
+        text-align: center;
 
-        /*@include display-flex;
-        flex-flow: wrap;
-        justify-content: space-around;*/
-        
         .weekend-item{
             .title{
                 margin-bottom: 12px;
@@ -975,13 +971,19 @@
 
 
         .flight-result {
-            width: 310px;
+            width: 306px;
             margin-bottom: 8px;
 
             display: inline-block;
+            
             margin-left: 4px;
             margin-right: 4px;
 
+            @include below-width(641) {
+                margin-left: 2px;
+            margin-right: 2px;
+            }
+            
             .img-cont {
                 position: relative;
 
@@ -996,21 +998,14 @@
                 .img-wrap {
                     position: relative;
                     z-index: 1;
-                    /*display: inline-block;*/
-                        
-                    width: 310px;
-                    height: 204px;
+                    
+                    width: 306px;
+                    height: 200px;
                         
                     border-top-left-radius: 4px;
                     border-top-right-radius: 4px;
                     overflow: hidden;
-                        
-                    /*box-sizing: border-box;*/
-                    /*border-width: 1px;
-                    border-style: solid;*/
-                    /*border: 1px solid white;*/
-
-
+                    
                     img {
                         width: 330px !important;
                         @include centerer;
@@ -1107,8 +1102,7 @@
                         }
                     }
 
-                    tr {
-                        
+                    tr {                        
                         
                         &:hover {
                             background-color: $light-blue4;

@@ -127,11 +127,7 @@ module Planning {
 			this.getQueries(request);
 		 }
 
-		public recieveQueries(queries) {
-				console.log("receiving results");
-
-				console.log("QUEUE SIZE: " + this.queue.length);
-				
+		public recieveQueries(queries) {				
 				var newResults = false;
 
 				queries.forEach((query) => {
@@ -207,9 +203,7 @@ module Planning {
 			}
 		}
 
-		private getQueries(params) {				
-				console.log("Getting queries");
-
+		private getQueries(params) {								
 				this.stopQuerying();
 				Views.ViewBase.currentView.apiGet("Deals", params, (queries) => {
 						this.recieveQueries(queries);
@@ -227,7 +221,6 @@ module Planning {
 		private stopQuerying() {
 				if (this.intervalId) {
 						clearInterval(this.intervalId);
-						console.log("Querying stopped");
 				}
 		}
 			
@@ -237,9 +230,7 @@ module Planning {
 				return;
 			}
 
-			this.intervalId = setInterval(() => {
-				console.log("Querying started");
-
+			this.intervalId = setInterval(() => {				
 				this.drawQueue();
 
 				if (this.queue.length === 0) {
@@ -290,7 +281,15 @@ module Planning {
 
 			this.$mainCont.removeClass("hidden");
 
-			queries.forEach((query) => {
+			var maxItems = 7;
+			var qd = queries;
+			var shrinkQueue = qd.length > maxItems;
+
+			if (shrinkQueue) {
+				qd = qd.slice(0, maxItems);
+			}
+
+			qd.forEach((query) => {
 
 				var prmsTxt = "";
 
@@ -309,6 +308,10 @@ module Planning {
 
 				this.$cont.append($itm);
 			});
+
+				if (shrinkQueue) {
+					this.$cont.append(`<span>...</span>`);
+				}
 		}
 
 		public hide() {			
