@@ -27,23 +27,24 @@ else
     <script src="/js/views/settingsutils.js" type="text/javascript"></script>
 }
 
-<div class="title_show_all">
+<div class="title-show-all">
     <div class="photo">
         <div class="empty-fill"></div>
-        <div class="main-fill-circle"></div>
+        @*<div class="main-fill-circle"></div>*@
     </div>
-
+    
+    <div class="photo-small"></div>
 
     <div class="wrapper">
         <div class="main-fill"></div>
         
 
         <div class="text-area">
-            <div class="motto">
+            <h1 class="motto">
                 The only portal
                 you need to
                 travel the world
-            </div>
+            </h1>
 
             @*<a class="link" href="#">Learn more</a>*@
         </div>
@@ -53,8 +54,7 @@ else
 </div>
 
 
-@if (Model.IsDemo)
-{
+
     <div class="fly_all">
 
         <div class="motto">
@@ -97,7 +97,7 @@ else
         </div>
 
         <div class="loc">
-            <div id="currentCity" class="dropdown left">
+            <div id="currentCity" class="dropdown">
                 <input class="inputed" type="text" placeholder="Set your home city">
                 <ul>
                 </ul>
@@ -105,7 +105,7 @@ else
         </div>
 
     </div>
-}
+
 <div class="social">
 
     <div class="blocks">
@@ -128,7 +128,7 @@ else
             the world.
         </div>
         <div class="btn">
-            <a class="blue" href="/TravelB/home">Find your buddy</a>
+            <a class="blue" href="/@RoutingConsts.TravelBuddyMenuName">Find your buddy</a>
         </div>
     </div>
 

@@ -1,12 +1,20 @@
 ﻿
 .homepage{
 
-.title_show_all{
+.title-show-all{
     
     height: 450px;
     overflow: hidden;
     position: relative;
     text-align: left;
+
+    @include below-width(1150) {
+        height: 385px;
+    }
+
+    @include below-width(900) {
+        height: 340px;
+    }
 
     border-bottom: 2px solid $dark-blue;
 
@@ -16,7 +24,6 @@
 
         @include centerer;
 
-        /*background-image: url("/images/n/mountain1.jpg");*/
         background-image: url("/images/n/title.jpg");
 
         .empty-fill{
@@ -29,26 +36,18 @@
             width: 320px;
         }
 
-        .main-fill-circle{
-            display: none;
-            
-            position: absolute;            
-            left: 660px;
-            top: 0;
-
-            height: 450px;
-            width: 600px;            
-            
-            background: url("/images/n/middle-circle.svg");
-            opacity: 0.8;
-
-            @include below-width(600){
-                
-            }
-        }
     }
 
-    
+    .photo-small {
+        display: none;
+
+        width: 750px;
+        height: 340px;
+
+        @include centerer;
+
+        background-image: url("/images/n/title-small.jpg");
+    }
 
     .wrapper{
         position: relative;
@@ -75,6 +74,9 @@
             height: 450px;
 
             .motto{
+                display: block;
+                text-align: center;
+
                 margin-top: 70px;
                 padding-left: 10px;
                     
@@ -85,21 +87,39 @@
         }
     }
 
-    @include below-width(959){
+    @include below-width(750){
         .main-fill{
             display: none;
         }
 
-        .main-fill-circle{
-            display: block !important;
+        .text-area {
+            position: static !important;
+            top: initial !important;            
+            left: initial !important;            
+            width: initial !important;
+            height: initial !important;
+
+            margin-top: 70px;
+
+            text-align: center;
+
+            background-color: rgba($light-blue3, 0.9);
+
+            padding-top: 15px;
+            padding-bottom: 15px;
+
+            .motto {
+                margin-top: initial !important;
+                padding-left: initial !important;
+            }
         }
 
-        .text-area {
-            position: absolute;
-            margin-left: auto;
-            margin-right: auto;
-            left: 0;
-            right: 0;
+        .photo-small {
+            display: block;
+        }
+
+        .photo {
+            display: none;
         }
     }
 
@@ -207,9 +227,9 @@
     .loc{        
         padding-top: 40px;
         padding-bottom: 50px;
-
+        
         input {
-            /*border: 3px solid $dark-blue !important;*/
+            text-align: center;
         }
 
         ul {
