@@ -5078,6 +5078,7 @@ footer {
       width: 306px;
       margin-bottom: 8px;
       display: inline-block;
+      text-align: left;
       margin-left: 4px;
       margin-right: 4px; }
       @media screen and (max-width: 641px) {

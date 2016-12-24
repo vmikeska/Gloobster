@@ -52,7 +52,6 @@ var Planning;
             this.qids.forEach(function (qid) {
                 _this.addPrm("qids", qid);
             });
-            console.log("BUILDING");
             return this.prms;
         };
         QueriesBuilder.prototype.addPrm = function (name, val) {

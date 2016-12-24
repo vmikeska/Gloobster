@@ -74,10 +74,7 @@ module Planning {
 				this.qids.forEach((qid) => {
 					this.addPrm("qids", qid);
 				});
-
-
-				console.log("BUILDING");
-
+					
 				return this.prms;
 			}
 
