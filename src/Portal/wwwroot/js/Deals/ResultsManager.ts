@@ -75,6 +75,9 @@ module Planning {
 					this.addPrm("qids", qid);
 				});
 
+
+				console.log("BUILDING");
+
 				return this.prms;
 			}
 
@@ -126,6 +129,8 @@ module Planning {
 
 		public recieveQueries(queries) {
 				console.log("receiving results");
+
+				console.log("QUEUE SIZE: " + this.queue.length);
 				
 				var newResults = false;
 
@@ -280,8 +285,10 @@ module Planning {
 			}
 
 		public draw(timeType, queries) {
-				
-				this.$mainCont.removeClass("hidden");
+
+			this.$cont.empty();
+
+			this.$mainCont.removeClass("hidden");
 
 			queries.forEach((query) => {
 

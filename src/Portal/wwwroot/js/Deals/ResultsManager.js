@@ -52,6 +52,7 @@ var Planning;
             this.qids.forEach(function (qid) {
                 _this.addPrm("qids", qid);
             });
+            console.log("BUILDING");
             return this.prms;
         };
         QueriesBuilder.prototype.addPrm = function (name, val) {
@@ -90,6 +91,7 @@ var Planning;
         ResultsManager.prototype.recieveQueries = function (queries) {
             var _this = this;
             console.log("receiving results");
+            console.log("QUEUE SIZE: " + this.queue.length);
             var newResults = false;
             queries.forEach(function (query) {
                 if (query.state === QueryState.Failed) {
@@ -205,6 +207,7 @@ var Planning;
         }
         QueueVisualize.prototype.draw = function (timeType, queries) {
             var _this = this;
+            this.$cont.empty();
             this.$mainCont.removeClass("hidden");
             queries.forEach(function (query) {
                 var prmsTxt = "";
