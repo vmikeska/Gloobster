@@ -1,114 +1,109 @@
 ﻿
 @model Gloobster.Portal.ViewModels.TravelBViewModel
 
-<div class="required-settings">
+<div class="standard-form req-settings">
+    <span class="icon-cross form-close"></span>
+    <div class="ribbon"></div>
+    <div class="form-cont-all">
+        <div class="form-title">Required info</div>
+        
+        <div class="form-caption">@Model.W("RequiredPropsTitle") <a href="/legal/TermsAndConds">@Model.W("TermsOfUse")</a></div>
 
-    <div class="info">
-        @Model.W("RequiredPropsTitle") <a href="/legal/TermsAndConds">@Model.W("TermsOfUse")</a>
+        <div class="form-cont">
+            
+            <div class="lr-table">
+                
+                <div class="l">
+                    
+                    <div class="photo-title">@Model.W("ProfilePhoto")</div>
+                    
+                    <div class="photo-cont">
+
+                        <img id="avatar" src="/PortalUser/ProfilePicture" />
+
+                        <a class="photo-edit" href="#">
+                            <input type="file" id="avatarFile" data-valid="@Model.User.HasProfileImage.ToString().ToLower()" />
+
+                            <label for="avatarFile">
+                                <span class="icon-edit-pencil"></span>
+                            </label>
+                        </a>
+
+                    </div>
+
+                </div>
+                
+                <div class="r">
+                    
+                    <div class="photo-title">User data</div>
+
+                    <div class="double-row-item">
+                        
+                        <div class="item gap">
+                            <input id="firstName" type="text" placeholder="@Model.W("FirstNamePlaceholder")" value="@Model.User.FirstName" />
+                        </div>
+                        
+                        <div class="item">
+                            <input id="lastName" type="text" placeholder="@Model.W("LastNamePlaceholder")" value="@Model.User.LastName" />
+                        </div>
+
+                    </div>
+                    
+                    <div class="single-row-item">
+                        <div id="langsTagging" class="tags"></div>    
+                    </div>
+
+                    <div class="double-row-item">
+
+                        <div class="item gap">
+                            <div id="homeCity" class="dropdown">
+                                <input class="inputed" type="text" placeholder="@Model.W("CityBornPlaceholder")" />
+                                <ul></ul>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div id="currentCity" class="dropdown">
+                                <input class="inputed" type="text" placeholder="@Model.W("CityLivingPlaceholder")" />
+                                <ul></ul>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                    <div class="double-row-item">
+
+                        <div class="item gap">
+                            <input id="birthYear" type="number" max="2002" placeholder="@Model.W("BirthYearPlaceholder")" value="@Model.User.BirthYear" />
+                        </div>
+
+                        <div class="item">
+                            <div id="gender" class="dropdown">
+                                <span class="selected">@Model.GenderStr</span>
+                                <ul>
+                                    <li data-value="1">@Model.W("Male")</li>
+                                    <li data-value="2">@Model.W("Female")</li>
+                                </ul>
+                                <input type="hidden" value="@((int) Model.User.Gender)">
+                            </div>
+                        </div>
+
+                    </div>
+               
+                    <div class="all-valid info" style="display: none">
+                        @Model.W("PropsFinalMessage")
+                        <a id="doneClose" class="lbtn2" href="#">@Model.W("CloseDialog")</a>
+                    </div>
+
+                </div>
+
+            </div>
+            
+
+            
+            
+
+        </div>
+
     </div>
-
-    <table>
-        <tr>
-            <td>
-                <span class="item-title">@Model.W("ProfilePhoto")</span>
-            </td>
-            <td>
-                <div class="photo-cont">
-
-                    <img id="avatar" src="/PortalUser/ProfilePicture" />
-
-                    <a class="photo-edit" href="#">
-                        <input type="file" id="avatarFile" data-valid="@Model.User.HasProfileImage.ToString().ToLower()" />
-
-                        <label for="avatarFile">
-                            <span class="icon-edit-pencil"></span>
-                        </label>
-                    </a>
-
-                </div>
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-                <span class="item-title">@Model.W("FirstName")</span>
-            </td>
-            <td>
-                <input id="firstName" type="text" placeholder="@Model.W("FirstNamePlaceholder")" value="@Model.User.FirstName"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <span class="item-title">@Model.W("LastName")</span>
-            </td>
-            <td>
-                <input id="lastName" type="text" placeholder="@Model.W("LastNamePlaceholder")" value="@Model.User.LastName"/>
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-                <span class="item-title">@Model.W("BirthYear")</span>
-            </td>
-            <td>
-                <input id="birthYear" type="number" max="2002" placeholder="@Model.W("BirthYearPlaceholder")" value="@Model.User.BirthYear"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <span class="item-title">@Model.W("Gender")</span>
-            </td>
-            <td>
-                <div id="gender" class="dropdown">
-                    <span class="selected">@Model.GenderStr</span>
-                    <ul>
-                        <li data-value="1">@Model.W("Male")</li>
-                        <li data-value="2">@Model.W("Female")</li>
-                    </ul>
-                    <input type="hidden" value="@((int) Model.User.Gender)">
-                </div>
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-                <span class="item-title">@Model.W("Languages")</span>
-            </td>
-            <td>
-                <div id="langsTagging" class="tags">
-                </div>
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-                <span class="item-title">@Model.W("CityBorn")</span>
-            </td>
-            <td>
-                <div id="homeCity" class="dropdown">
-                    <input class="inputed" type="text" placeholder="@Model.W("CityNamePlaceholder")"/>
-                    <ul></ul>
-                </div>
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-                <span class="item-title">@Model.W("CityLiving")</span>
-            </td>
-            <td>
-                <div id="currentCity" class="dropdown">
-                    <input class="inputed" type="text" placeholder="@Model.W("CityNamePlaceholder")" />
-                    <ul></ul>
-                </div>
-            </td>
-        </tr>
-
-    </table>
-
-    <div class="all-valid info" style="display: none">
-        @Model.W("PropsFinalMessage")
-        <a class="lbtn" href="#">@Model.W("CloseDialog")</a>
-    </div>
-
 </div>

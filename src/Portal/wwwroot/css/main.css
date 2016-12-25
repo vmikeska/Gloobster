@@ -157,6 +157,28 @@ textarea {
   .form-close:hover {
     color: #F56E12; }
 
+.standard-form {
+  position: relative;
+  margin-top: 24px; }
+  .standard-form .ribbon {
+    background-color: #57C2DB;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    height: 5px; }
+  .standard-form .form-cont-all {
+    background-color: #F0FAFC;
+    padding: 16px; }
+    .standard-form .form-cont-all .form-title {
+      font-weight: bold;
+      font-size: 1.2em; }
+    .standard-form .form-cont-all .form-caption {
+      margin-top: 20px;
+      margin-bottom: 20px; }
+  @media screen and (max-width: 560px) {
+    .standard-form .form-cont-all {
+      padding-left: 6px;
+      padding-right: 6px; } }
+
 @media screen and (max-width: 1280px) {
   .form-close {
     top: 3px;
@@ -1231,8 +1253,9 @@ footer {
     cursor: pointer;
     display: inline-block;
     margin: 0;
-    padding: 9px 19px; }
+    /*padding: $dropdown-padding;*/ }
   .dropdown .selected {
+    padding: 9px 19px;
     padding-right: 29px !important; }
     .dropdown .selected:after {
       width: 10px;
@@ -3527,44 +3550,12 @@ footer {
     text-align: center; }
 
 .travelb-home {
-  /*.everything {
-        position: relative;
-
-        .blocker{
-            position: absolute;
-            top:0;
-            right:0;
-            bottom: 0;
-            left: 0;
-
-            border-radius: 4px;
-
-            background-color: black;
-            opacity: 0.7;
-            z-index: 999999;
-        }
-
-        .blocker-info {
-            display: inline-block;
-
-            width: 400px;
-            font-size: 26px;
-            color: red;
-
-            position: absolute;
-            top:50%;
-            right:50%;
-            bottom: 50%;
-            left: 50%;
-            z-index: 9999999;
-            background-color: none;
-        }
-    }*/
-  text-align: left; }
+  text-align: left;
+  /*.invalid {
+        border: 2px solid red !important;
+    }*/ }
   .travelb-home textarea {
     border: 1px solid #3298C1; }
-  .travelb-home .invalid {
-    border: 2px solid red !important; }
   .travelb-home .lang-tag {
     display: inline-block;
     vertical-align: top;
@@ -3609,8 +3600,6 @@ footer {
   .travelb-home .itag {
     padding-left: 3px;
     padding-right: 3px;
-    /*padding-top: 1px;
-        padding-bottom: 1px;*/
     margin-left: 2px;
     margin-right: 2px;
     border-radius: 4px;
@@ -3758,13 +3747,7 @@ footer {
       padding-bottom: 15px;
       cursor: pointer;
       border-top-left-radius: 4px;
-      border-top-right-radius: 4px;
-      /*&:first-of-type{
-                border-top-left-radius: 4px;
-            }
-            &:last-of-type{
-                border-top-right-radius: 4px;
-            }*/ }
+      border-top-right-radius: 4px; }
       .travelb-home .main-menu div:hover {
         background-color: #65BDD7;
         color: white;
@@ -3874,10 +3857,7 @@ footer {
       z-index: 99999;
       position: absolute;
       top: 10px;
-      right: 10px;
-      /*@include below-width(479){   
-                top: 60px;
-            }*/ }
+      right: 10px; }
       .travelb-home .map-wrap .entities-filter label {
         font-weight: 600; }
   .travelb-home .map {
@@ -4013,26 +3993,7 @@ footer {
       .travelb-home .results .meeting-points .meeting-point .btn-cont {
         position: absolute;
         right: 0;
-        top: 5px;
-        /*a{
-                        text-align: center;
-                        display: inline-block;
-                            
-                        text-decoration: none;
-                        background-color: $light-blue;
-                        border-radius: 4px;
-                        padding: 5px;
-                        color: white;
-                        font-size: 16px;
-                            
-                        .icon-bubbles2{
-                            font-size: 24px;
-                        }
-
-                        &:hover{
-                            color: $dark-blue;
-                        }
-                    }*/ }
+        top: 5px; }
         .travelb-home .results .meeting-points .meeting-point .btn-cont .icon-location {
           color: #F56E12; }
   .travelb-home .results .people {
@@ -4101,23 +4062,13 @@ footer {
             .travelb-home .results .people .person .data .btn-cont .chat-btn:hover {
               color: #005476; }
       .travelb-home .results .people .person .message-all .pointer {
-        /*display: inline-block;*/
         border-bottom: 10px solid white;
         border-right: 10px solid transparent;
         border-left: 10px solid transparent;
         border-top: 0;
         height: 0;
         width: 0;
-        margin-left: 20px;
-        /*position: absolute;
-                        top: 0;
-                        left: -10px;
-                        height: 0;
-                        width: 0;
-                        border-bottom: 10px solid transparent;
-                        border-right: 10px solid #e8e8e8;
-                        border-top: 10px solid transparent;
-                        content: "";*/ }
+        margin-left: 20px; }
       .travelb-home .results .people .person .message-all .message {
         background-color: white;
         border-radius: 15px;
@@ -4271,40 +4222,10 @@ footer {
             border-radius: 6px;
             padding: 4px;
             font-size: 16px; }
-    .travelb-home .nchat-all .new-message {
-      /*.txt{
-                display: table-cell;
-                vertical-align: top;
-                height: 60px;
-
-                textarea{
-                    resize: none;                    
-                    height: 60px;
-                    border-radius:0;
-                }
-            }
-
-            .btn{
-                display: table-cell;
-                vertical-align: top;
-                height: 60px;
-                width: 60px;
-
-                a{
-                height: 50px;
-                width: 50px;    
-                    display: inline-block;
-                    padding: 5px;
-                    text-decoration: none;
-                    text-align: center;
-                    color: white;
-                    background-color: $light-blue;
-                }
-            }*/ }
-      .travelb-home .nchat-all .new-message input {
-        width: 100%;
-        box-sizing: border-box;
-        font-size: 16px; }
+    .travelb-home .nchat-all .new-message input {
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 16px; }
     .travelb-home .nchat-all .chat-stop-win {
       font-size: 0.8em;
       z-index: 100;
@@ -4351,7 +4272,6 @@ footer {
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    cursor: hand;
     padding-top: 14px; }
   .travelb-home .myTab.act {
     background-color: red; }
@@ -4366,71 +4286,85 @@ footer {
     float: left; }
   .travelb-home .listCont {
     border: 1px solid black; }
-  .travelb-home .required-settings {
-    background-color: #f2f2f2;
-    border-radius: 4px;
-    margin-top: 4px;
-    padding: 12px; }
-    .travelb-home .required-settings .info {
-      display: inline-block;
-      border-radius: 4px;
-      background-color: white;
-      padding: 8px;
-      border: 2px solid #F56E12;
-      margin-bottom: 12px; }
-    .travelb-home .required-settings .item-title {
-      font-weight: bold;
-      /*color: gray;*/
-      margin-right: 8px;
-      margin-left: 8px;
-      display: inline-block; }
-    .travelb-home .required-settings .photo-cont {
-      position: relative;
-      width: 220px;
-      height: 220px;
-      overflow: hidden;
-      background-color: white;
-      border-radius: 4px; }
-      .travelb-home .required-settings .photo-cont img {
-        width: 220px;
-        height: 220px; }
-      .travelb-home .required-settings .photo-cont .photo-edit {
+  .travelb-home .req-settings .lr-table {
+    display: table; }
+    .travelb-home .req-settings .lr-table .l {
+      display: table-cell;
+      padding-right: 30px;
+      border-right: 1px solid #AAE0ED; }
+    .travelb-home .req-settings .lr-table .r {
+      display: table-cell;
+      padding-left: 30px; }
+  .travelb-home .req-settings .photo-title {
+    font-weight: bold;
+    margin-bottom: 16px; }
+  .travelb-home .req-settings .photo-cont {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    background-color: white;
+    border: 1px solid #AAE0ED;
+    width: 180px;
+    height: 220px; }
+    .travelb-home .req-settings .photo-cont img {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 180px;
+      height: 220px; }
+    .travelb-home .req-settings .photo-cont .photo-edit {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      text-decoration: none; }
+      .travelb-home .req-settings .photo-cont .photo-edit input {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
         position: absolute;
-        top: 10px;
-        right: 10px;
-        text-decoration: none; }
-        .travelb-home .required-settings .photo-cont .photo-edit input {
-          width: 0.1px;
-          height: 0.1px;
-          opacity: 0;
-          overflow: hidden;
-          position: absolute;
-          z-index: -1; }
-        .travelb-home .required-settings .photo-cont .photo-edit label {
-          color: #65BDD7;
-          font-size: 1.3em;
-          cursor: pointer; }
-          .travelb-home .required-settings .photo-cont .photo-edit label:hover {
-            color: #005476; }
-    .travelb-home .required-settings #intersTagging {
-      border: 1px solid #3298C1;
-      border-radius: 4px; }
-    .travelb-home .required-settings textarea, .travelb-home .required-settings input {
-      border: 1px solid #3298C1; }
-    .travelb-home .required-settings .dropdown .selected {
-      border: 1px solid #3298C1; }
-    .travelb-home .required-settings input[type=number] {
-      border-radius: 4px;
-      padding-left: 0.5em;
-      padding-right: 0.5em; }
-    .travelb-home .required-settings .all-valid {
-      margin-top: 16px;
-      font-weight: bold; }
-      .travelb-home .required-settings .all-valid .lbtn, .travelb-home .required-settings .all-valid .photo-button label, .photo-button .travelb-home .required-settings .all-valid label, .travelb-home .required-settings .all-valid .wiki-page .langs a, .wiki-page .langs .travelb-home .required-settings .all-valid a {
-        background-color: #3298C1;
-        color: white; }
-        .travelb-home .required-settings .all-valid .lbtn:hover, .travelb-home .required-settings .all-valid .photo-button label:hover, .photo-button .travelb-home .required-settings .all-valid label:hover, .travelb-home .required-settings .all-valid .wiki-page .langs a:hover, .wiki-page .langs .travelb-home .required-settings .all-valid a:hover {
-          background-color: #005476; }
+        z-index: -1; }
+      .travelb-home .req-settings .photo-cont .photo-edit label {
+        color: #65BDD7;
+        font-size: 1.3em;
+        cursor: pointer; }
+        .travelb-home .req-settings .photo-cont .photo-edit label:hover {
+          color: #005476; }
+  .travelb-home .req-settings input[type="text"], .travelb-home .req-settings input[type="number"] {
+    width: 200px !important;
+    border: 1px solid #AAE0ED; }
+  .travelb-home .req-settings .invalid {
+    border: 2px solid #F56E12 !important; }
+  .travelb-home .req-settings .double-row-item {
+    display: table;
+    margin-bottom: 16px; }
+    .travelb-home .req-settings .double-row-item .item {
+      display: table-cell; }
+  .travelb-home .req-settings .gap {
+    padding-right: 16px; }
+  .travelb-home .req-settings .single-row-item {
+    margin-bottom: 16px; }
+  .travelb-home .req-settings .all-valid {
+    margin-top: 16px;
+    font-weight: bold; }
+    .travelb-home .req-settings .all-valid .lbtn2 {
+      background-color: #3DA33D;
+      color: white; }
+      .travelb-home .req-settings .all-valid .lbtn2:hover {
+        background-color: #F56E12; }
+  @media screen and (max-width: 792px) {
+    .travelb-home .req-settings .lr-table, .travelb-home .req-settings .l, .travelb-home .req-settings .r {
+      display: block; }
+      .travelb-home .req-settings .lr-table .l, .travelb-home .req-settings .l .l, .travelb-home .req-settings .r .l {
+        display: block;
+        border: 0;
+        padding: 0;
+        text-align: center; }
+      .travelb-home .req-settings .lr-table .r, .travelb-home .req-settings .l .r, .travelb-home .req-settings .r .r {
+        display: block;
+        padding: 0; }
+    .travelb-home .req-settings .gap {
+      padding-right: 4px; } }
 
 @-moz-keyframes spin {
   100% {

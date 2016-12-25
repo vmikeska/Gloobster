@@ -16,6 +16,7 @@ var TravelB;
             this.homeCity = Views.SettingsUtils.registerLocationCombo($("#homeCity"), "HomeLocation");
             this.currentCity = Views.SettingsUtils.registerLocationCombo($("#currentCity"), "CurrentLocation");
             this.homeCity.setText(this.view.homeLocation);
+            this.currentCity.setText(this.view.currentLocation);
             Views.SettingsUtils.registerEdit("firstName", "FirstName", function (value) {
                 return { name: value };
             });
@@ -28,12 +29,12 @@ var TravelB;
             Views.SettingsUtils.registerCombo("gender", function (val) {
                 return { propertyName: "Gender", values: { gender: val } };
             });
-            this.langsTagger = Views.SettingsUtils.initLangsTagger(this.view.defaultLangs);
+            this.langsTagger = Views.SettingsUtils.initLangsTagger(this.view.defaultLangs, this.view.t("LangSearch", "jsTravelB"));
             this.createTbVals();
             var $v = $(".all-valid");
-            $v.find(".lbtn").click(function (e) {
+            $v.find("#doneClose").click(function (e) {
                 e.preventDefault();
-                $(".required-settings").hide();
+                $(".req-settings").hide();
             });
         };
         EmptyProps.prototype.createTbVals = function () {

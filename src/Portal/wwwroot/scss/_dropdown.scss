@@ -27,10 +27,12 @@ $dropdown-speed: 0.3s;
         cursor: pointer;
         display: inline-block;
         margin: 0;
-        padding: $dropdown-padding;
+        /*padding: $dropdown-padding;*/
     }
-    .selected {
+    .selected {        
+        padding: $dropdown-padding;
         padding-right: 29px !important;
+
         &:after {
             width: 10px;
             height: 5px;            

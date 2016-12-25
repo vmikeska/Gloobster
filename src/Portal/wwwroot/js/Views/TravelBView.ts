@@ -40,6 +40,7 @@
 			
 		public emptyProps = [];
 		public homeLocation;
+		public currentLocation;
 
 		public init() {
 				

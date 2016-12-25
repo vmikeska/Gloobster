@@ -13,7 +13,7 @@ module Views {
 			return true;
 		}
 
-		public static registerAvatarFileUpload(id, callback = null) {
+		public static registerAvatarFileUpload(id, callback: Function = null) {
 			var c = new Common.FileUploadConfig();
 			c.inputId = id;
 			c.endpoint = "UploadAvatar";
@@ -130,7 +130,7 @@ module Views {
 		//	return t;
 		//}
 
-		public static initLangsTagger(selectedItems) {
+		public static initLangsTagger(selectedItems, placeholder = null) {
 
 			var langs = TravelB.TravelBUtils.langsDB();
 
@@ -143,6 +143,10 @@ module Views {
 			config.localValues = true;
 			config.itemsRange = itemsRange;
 
+			if (placeholder) {
+				config.placeholder = placeholder;
+			}
+			
 			var t = new Planning.TaggingField(config);
 			t.onItemClickedCustom = ($target, callback) => {
 				var val = $target.data("vl");

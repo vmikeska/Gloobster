@@ -231,34 +231,21 @@
       <en>Terms of use</en>
     </TermsOfUse>
 
-    <FirstName>
-      <en>First name</en>
-    </FirstName>
-
+   
     <FirstNamePlaceholder>
       <en>First name</en>
     </FirstNamePlaceholder>
 
-    <LastName>
-      <en>Last name</en>
-    </LastName>
-
+   
     <LastNamePlaceholder>
       <en>Last name</en>
     </LastNamePlaceholder>
 
-    <BirthYear>
-      <en>Birth year</en>
-    </BirthYear>
-
     <BirthYearPlaceholder>
-      <en>eg 1983</en>
+      <en>Birth year, eg 1983</en>
     </BirthYearPlaceholder>
 
-    <Gender>
-      <en>Gender</en>
-    </Gender>
-
+  
     <Male>
       <en>Male</en>
     </Male>
@@ -267,21 +254,14 @@
       <en>Female</en>
     </Female>
 
-    <Languages>
-      <en>Native or fluent in languages</en>
-    </Languages>
 
-    <CityBorn>
+    <CityBornPlaceholder>
       <en>City (Born)</en>
-    </CityBorn>
+    </CityBornPlaceholder>
 
-    <CityNamePlaceholder>
-      <en>City name</en>
-    </CityNamePlaceholder>
-
-    <CityLiving>
+    <CityLivingPlaceholder>
       <en>City (Living)</en>
-    </CityLiving>
+    </CityLivingPlaceholder>
 
     <PropsFinalMessage>
       <en>Is everything correct? Then close the dialog and start using the service!</en>

@@ -126,5 +126,8 @@
       <en>I am here and now</en>
     </MajorNowBtn>
 
+    <LangSearch>
+      <en>Known languages</en>
+    </LangSearch>
 
   </module>

@@ -85,8 +85,9 @@ var Views;
             interests.create($c, "inters", data, "Pick some characteristics of you");
             interests.initData(inters);
         };
-        SettingsUtils.initLangsTagger = function (selectedItems) {
+        SettingsUtils.initLangsTagger = function (selectedItems, placeholder) {
             var _this = this;
+            if (placeholder === void 0) { placeholder = null; }
             var langs = TravelB.TravelBUtils.langsDB();
             var itemsRange = _.map(langs, function (i) {
                 return { text: i.text, value: i.id, kind: "l" };
@@ -95,6 +96,9 @@ var Views;
             config.containerId = "langsTagging";
             config.localValues = true;
             config.itemsRange = itemsRange;
+            if (placeholder) {
+                config.placeholder = placeholder;
+            }
             var t = new Planning.TaggingField(config);
             t.onItemClickedCustom = function ($target, callback) {
                 var val = $target.data("vl");

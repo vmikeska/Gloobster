@@ -26,6 +26,7 @@ module TravelB {
 			this.currentCity = Views.SettingsUtils.registerLocationCombo($("#currentCity"), "CurrentLocation");
 
 			this.homeCity.setText(this.view.homeLocation);
+			this.currentCity.setText(this.view.currentLocation);
 
 			Views.SettingsUtils.registerEdit("firstName", "FirstName", (value) => {
 				return { name: value };
@@ -43,14 +44,14 @@ module TravelB {
 				return { propertyName: "Gender", values: { gender: val } };
 			});
 
-			this.langsTagger = Views.SettingsUtils.initLangsTagger(this.view.defaultLangs);
+			this.langsTagger = Views.SettingsUtils.initLangsTagger(this.view.defaultLangs, this.view.t("LangSearch", "jsTravelB"));
 
 			this.createTbVals();
 
 			var $v = $(".all-valid");
-			$v.find(".lbtn").click((e) => {
+			$v.find("#doneClose").click((e) => {
 				e.preventDefault();
-				$(".required-settings").hide();
+				$(".req-settings").hide();
 			});
 		}
 

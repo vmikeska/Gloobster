@@ -1,49 +1,15 @@
 ﻿
 .travelb-home{
     
-    /*.everything {
-        position: relative;
-
-        .blocker{
-            position: absolute;
-            top:0;
-            right:0;
-            bottom: 0;
-            left: 0;
-
-            border-radius: 4px;
-
-            background-color: black;
-            opacity: 0.7;
-            z-index: 999999;
-        }
-
-        .blocker-info {
-            display: inline-block;
-
-            width: 400px;
-            font-size: 26px;
-            color: red;
-
-            position: absolute;
-            top:50%;
-            right:50%;
-            bottom: 50%;
-            left: 50%;
-            z-index: 9999999;
-            background-color: none;
-        }
-    }*/
-
     text-align: left;
 
     textarea{
         border: 1px solid $light-blue3;
     }
 
-    .invalid {
+    /*.invalid {
         border: 2px solid red !important;
-    }
+    }*/
 
     .lang-tag{
         display: inline-block;
@@ -115,8 +81,6 @@
     .itag{
         padding-left: 3px;
         padding-right: 3px;
-        /*padding-top: 1px;
-        padding-bottom: 1px;*/
         margin-left: 2px;
         margin-right: 2px;
 
@@ -374,12 +338,6 @@
                 border-color: $light-blue;
             }
 
-            /*&:first-of-type{
-                border-top-left-radius: 4px;
-            }
-            &:last-of-type{
-                border-top-right-radius: 4px;
-            }*/
         }
 
         .active{
@@ -564,10 +522,6 @@
             position: absolute;
             top: 10px;
             right: 10px;
-
-            /*@include below-width(479){   
-                top: 60px;
-            }*/
 
             label{
                 font-weight: 600;
@@ -815,25 +769,6 @@
                         color: $orange;
                     }
 
-                    /*a{
-                        text-align: center;
-                        display: inline-block;
-                            
-                        text-decoration: none;
-                        background-color: $light-blue;
-                        border-radius: 4px;
-                        padding: 5px;
-                        color: white;
-                        font-size: 16px;
-                            
-                        .icon-bubbles2{
-                            font-size: 24px;
-                        }
-
-                        &:hover{
-                            color: $dark-blue;
-                        }
-                    }*/
                 }
             }
 
@@ -945,7 +880,7 @@
 
                 .message-all{
                     .pointer{
-                        /*display: inline-block;*/
+                    
                         border-bottom:  10px solid white;
                         border-right:  10px solid transparent;
                         border-left:  10px solid transparent;
@@ -955,15 +890,6 @@
                         width: 0;
                         margin-left: 20px;
 
-                        /*position: absolute;
-                        top: 0;
-                        left: -10px;
-                        height: 0;
-                        width: 0;
-                        border-bottom: 10px solid transparent;
-                        border-right: 10px solid #e8e8e8;
-                        border-top: 10px solid transparent;
-                        content: "";*/
                     }
 
                     .message{
@@ -1252,36 +1178,6 @@
                 font-size: 16px;
             }
 
-
-            /*.txt{
-                display: table-cell;
-                vertical-align: top;
-                height: 60px;
-
-                textarea{
-                    resize: none;                    
-                    height: 60px;
-                    border-radius:0;
-                }
-            }
-
-            .btn{
-                display: table-cell;
-                vertical-align: top;
-                height: 60px;
-                width: 60px;
-
-                a{
-                height: 50px;
-                width: 50px;    
-                    display: inline-block;
-                    padding: 5px;
-                    text-decoration: none;
-                    text-align: center;
-                    color: white;
-                    background-color: $light-blue;
-                }
-            }*/
         }
 
         .chat-stop-win{
@@ -1350,7 +1246,7 @@
         text-align: center;
         font-size: 16px;
         font-weight: bold;
-        cursor: pointer; cursor: hand;
+        cursor: pointer;
         padding-top: 14px;
     }
 
@@ -1374,44 +1270,49 @@
     .listCont {
         border: 1px solid black;
     }
- 
-    .required-settings{
 
-        background-color: $light-gray;
-        border-radius: 4px;
-        margin-top: 4px;
-        padding:12px;
+    .req-settings {
 
-        .info {            
-            display: inline-block;
-            border-radius: 4px;            
-            background-color: white;
-            padding: 8px;            
-            border: 2px solid $orange;
-            margin-bottom: 12px;
+        .lr-table {
+            display: table;
+
+            .l {
+                display: table-cell;
+
+                padding-right: 30px;
+
+                border-right: 1px solid $input-margin-blue;
+            }
+
+            .r {
+                display: table-cell;
+
+                padding-left: 30px;
+            }
+
         }
 
-        .item-title {
+        .photo-title {
             font-weight: bold;
-            /*color: gray;*/
-            margin-right: 8px;
-            margin-left: 8px;
-            display: inline-block;
+            margin-bottom: 16px;
         }
 
-        $pps: 220px;
         .photo-cont {
             position: relative;
-            width: $pps;
-            height: $pps;
             overflow: hidden;
-            background-color: white;
+            display: inline-block;
 
-            border-radius: 4px;
+            background-color: white;
+            border: 1px solid $input-margin-blue;
+            width: 180px;
+            height: 220px;
 
             img {
-                width: $pps;
-                height: $pps;
+                position: absolute;
+                bottom: 0;
+                left:0;
+                width: 180px;
+                height: 220px;
             }
 
             .photo-edit {
@@ -1444,38 +1345,69 @@
             }
         }
 
-        #intersTagging {
-            border: 1px solid $light-blue3;
-            border-radius: 4px;
+        input[type="text"], input[type="number"] {
+            width: 200px !important;
+            border: 1px solid $input-margin-blue;
         }
 
-        textarea,input{
-            border: 1px solid $light-blue3;            
+        .invalid {
+            border: 2px solid $orange !important;
         }
 
-        .dropdown .selected{
-            border: 1px solid $light-blue3;
+        .double-row-item {
+            display: table;
+
+            margin-bottom: 16px;
+
+            .item {
+                display: table-cell;
+            }
         }
 
-        input[type=number]{            
-            border-radius: 4px;            
-            padding-left: 0.5em;
-            padding-right: 0.5em;
+        .gap {
+                padding-right: 16px;
+            }
+
+        .single-row-item {
+            margin-bottom: 16px;
         }
 
         .all-valid {
             margin-top: 16px;
             font-weight: bold;
 
-            .lbtn {
-                background-color: $light-blue3;
+            .lbtn2 {
+                background-color: $green;
                 color: white;
 
                 &:hover{
-                    background-color: $dark-blue;
+                    background-color: $orange;
                 }
             }
         }
+
+        @include below-width(792) {
+            .lr-table, .l, .r {
+                display: block;
+
+                .l {
+                    display: block;
+                    border: 0;
+                    padding: 0;
+                    text-align: center;
+                }
+
+                .r {
+                    display: block;
+                    padding: 0;                    
+                }
+            }
+
+            .gap {
+                padding-right:4px;
+            }
+        }
     }
+
         
 }

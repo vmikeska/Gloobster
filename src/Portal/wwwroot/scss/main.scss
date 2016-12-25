@@ -289,6 +289,47 @@ textarea{
     }
 }
 
+.standard-form {
+    position: relative;
+
+    margin-top: 24px;
+
+    .ribbon {
+        background-color: $ribbon-blue;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        height: 5px;
+    }
+
+    .form-cont-all {
+        background-color: $very-light-blue3;
+        padding: 16px;
+
+        .form-title {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .form-caption {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-cont {
+
+            
+
+        }
+    }
+
+    @include below-width(560) {
+        .form-cont-all {
+            padding-left: 6px;
+            padding-right: 6px;
+        }
+    }
+}
+
 @include below-width(1280) {
     .form-close {
         top: 3px;

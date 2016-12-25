@@ -246,6 +246,11 @@ else
             @Html.Raw($"currentView.homeLocation = '{Model.User.HomeLocation.City}';")
         }
 
+        @if (Model.User.CurrentLocation != null)
+        {
+            @Html.Raw($"currentView.currentLocation = '{Model.User.CurrentLocation.City}';")
+        }
+
         currentView.init();
     }
 </script>
