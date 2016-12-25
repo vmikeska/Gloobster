@@ -40,6 +40,13 @@
 
 </head>
 <body onload="onBodyLoad()" class="@ViewBag.BodyClass" id="top">
+    
+@if (!Model.CookiesConfirmed)
+{
+    <div class="cookies-info">This site cannot work without cookies.
+        <a id="confirmCookies" href="#" class="lbtn2 ok-btn">I understand</a>
+    </div>
+}
 
 <header class="header">
     @Html.Partial("_MenuNew")

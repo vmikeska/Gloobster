@@ -165,7 +165,9 @@ namespace Gloobster.Portal.Controllers.Base
                 var infoBlocks = JsonConvert.DeserializeObject<InfoBlocks>(str);
                 instance.InfoBlocks = infoBlocks;                
             }
-            
+
+            instance.CookiesConfirmed = Request.Cookies.ContainsKey("CookiesConfirmed");
+
             if (IsUserLogged)
             {
                 int unreadCnt = 0;

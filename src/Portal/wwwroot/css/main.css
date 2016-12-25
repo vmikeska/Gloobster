@@ -644,6 +644,23 @@ button:active {
 .noUi-marker-vertical.noUi-marker-large {
   width: 15px; }
 
+.cookies-info {
+  position: relative;
+  background-color: #FFC400;
+  text-align: left;
+  padding: 8px;
+  color: #005476; }
+  .cookies-info .ok-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background-color: #005476;
+    font-weight: bold;
+    color: white;
+    padding: 4px; }
+    .cookies-info .ok-btn:hover {
+      background-color: #3DA33D; }
+
 .menu-wrapper {
   position: relative; }
 

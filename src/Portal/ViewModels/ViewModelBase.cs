@@ -50,6 +50,7 @@ namespace Gloobster.Portal.ViewModels
         public string FbToken { get; set; }
         public bool HasUserAgent { get; set; }
         public InfoBlocks InfoBlocks { get; set; }
+        public bool CookiesConfirmed { get; set; }
         public int UnreadMessagesCount { get; set; }
 
         public bool HasSocNet(SocialNetworkType net)

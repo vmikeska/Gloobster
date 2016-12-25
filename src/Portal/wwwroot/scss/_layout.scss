@@ -1,4 +1,29 @@
 
+.cookies-info {
+    position: relative;
+
+    background-color: $yellow;
+    text-align: left;
+    padding: 8px;
+    color: $dark-blue;
+    
+
+    .ok-btn {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+
+        background-color: $dark-blue;
+        font-weight: bold;
+        color: white;
+        padding: 4px;
+
+        &:hover {
+            background-color: $green;
+        }
+    }
+}
+
 .menu-wrapper{
     position: relative;
 }

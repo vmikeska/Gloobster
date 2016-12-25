@@ -20,6 +20,7 @@ var Views;
             }
             this.initDemoFnc();
             this.initTitleFnc();
+            this.infoCookie();
         }
         ViewBase.v = function () {
             return this.currentView;
@@ -36,6 +37,14 @@ var Views;
             enumerable: true,
             configurable: true
         });
+        ViewBase.prototype.infoCookie = function () {
+            var _this = this;
+            $("#confirmCookies").click(function (e) {
+                e.preventDefault();
+                _this.cookieManager.setString("CookiesConfirmed", "a");
+                $(".cookies-info").remove();
+            });
+        };
         ViewBase.prototype.initTitleFnc = function () {
             var _this = this;
             var $ibAll = $(".info-block-bck");

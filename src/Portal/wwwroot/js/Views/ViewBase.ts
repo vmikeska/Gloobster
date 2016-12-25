@@ -41,7 +41,19 @@ module Views {
 			this.initDemoFnc();
 
 			this.initTitleFnc();
+
+			this.infoCookie();
 		}
+
+			private infoCookie() {
+				$("#confirmCookies").click((e) => {
+						e.preventDefault();
+
+						this.cookieManager.setString("CookiesConfirmed", "a");
+
+					$(".cookies-info").remove();
+				});
+			}
 
 		private initTitleFnc() {
 			var $ibAll = $(".info-block-bck");
