@@ -284,8 +284,13 @@
     </MeetingPlace>
 
     <PlaceNamePlaceholder>
-      <en>Search for place's name</en>
+      <en>Search for a place</en>
     </PlaceNamePlaceholder>
+
+    <CityNamePlaceholder>
+      <en>Search for a city</en>
+    </CityNamePlaceholder>
+
 
     <WaitingTime>
       <en>How long are you staying</en>

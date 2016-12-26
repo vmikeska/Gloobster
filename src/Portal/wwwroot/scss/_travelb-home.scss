@@ -7,24 +7,22 @@
         border: 1px solid $light-blue3;
     }
 
-    /*.invalid {
-        border: 2px solid red !important;
-    }*/
+    .invalid {
+            border: 2px solid $orange !important;
+        }
 
     .lang-tag{
         display: inline-block;
-        vertical-align: top;
+        vertical-align: middle;
 
-        text-transform: uppercase;
-        border: 1px dotted $light-blue3;
-        padding: 2px;
-        border-radius: 2px;
+        text-transform: uppercase;        
+        padding: 2px;        
         font-weight: bold;        
     }
 
     .c-flag{        
         display: inline-block;
-        vertical-align: top;
+        vertical-align: middle;
 
         width: 22px;
         height: 22px;                            
@@ -79,14 +77,30 @@
     }
 
     .itag{
-        padding-left: 3px;
-        padding-right: 3px;
+        padding-left: 4px;
+        padding-right: 4px;
         margin-left: 2px;
         margin-right: 2px;
 
         border-radius: 4px;
         color: white;
         background-color: $light-blue;
+    }
+
+    .itag-big{
+        display: inline-block;
+
+        white-space: nowrap;
+        padding-left: 3px;
+        padding-right: 3px;
+        margin-left: 2px;
+        margin-right: 2px;
+        margin-bottom: 4px;
+
+        border-radius: 4px;
+        color: white;
+        font-weight: bold;
+        background-color: $info-blue2;
     }
 
     .g-icon{
@@ -110,14 +124,61 @@
 
     }
 
-    .wantDosMain {
-    
+    .wantDosMain {    
         border-radius: 4px;
 
+        /*
+            Is it used ?
+            
+            .myTabs {
+         width: 100%;         
+     }
+
+    .myTab {
+        border: 1px solid white;      
+        background-color: #57c1db;
+        color: white;        
+        display: inline-block;
+        text-align: center;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        padding-top: 14px;
+    }
+
+    .myTab.act {
+        background-color: red;
+    }*/
+
             .tabsCont{
+                padding-left: 6px;
+                padding-right: 6px;
+
+                background-color: white;
+
                 .myTab {
-                    background-color: $light-blue3;
+                    @include noselect;
+                    display: inline-block;
+
+                    text-align: center;
+
+                    cursor: pointer;
+
+                    color: white;
+
+                    border-radius: 2px;
+
+                    padding-top: 4px;
+                    padding-bottom: 4px;
+
+                    margin-right: 2px;
+                    background-color: $info-blue2;
+                    font-weight: bold;
                     
+                    &:hover {
+                        background-color: $orange;
+                    }
+
                     &.act{
                         background-color: $orange;
                     }
@@ -219,12 +280,11 @@
         padding-left: 46px;
         position: relative;
 
-        .icon-location{
-            font-size: 46px;
+        .pin{
+            width: 35px;
             position: absolute;
             left: 0;
-            top: 5px;
-            color: lightgray;            
+            top: 0;
         }
 
         .place{
@@ -234,7 +294,7 @@
                 color: $dark-blue;
 
                 &:hover{
-                    color: $light-blue3;
+                    color: $orange;
                 }
             }
 
@@ -244,7 +304,7 @@
                 color: $dark-blue;
 
                 &:hover{
-                    color: $light-blue3;
+                    color: $orange;
                 }
             }
         }
@@ -271,39 +331,33 @@
         
         margin-top: 10px;
         
+        
         a{
-            font-size: 28px;
-            color: lightgray;
+            display: inline-block;
+            font-size: 1.3em;
+            font-weight: bold;
+            
+            padding-top: 0.5em;
+            padding-bottom: 0.5em;
+            padding-left: 2.6em;
+            padding-right: 2.6em;
+
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+
             text-decoration: none;
 
-            margin-left: 20px;
-            
-            .lato{
-                color: $light-blue2;
-                font-size: 24px;
-                text-decoration: underline;
-            }
+            color: $info-blue2;
+            background-color: $light-blue4;
 
             &:hover{
-                color: $dark-blue;
-                
-                .lato{
-                    line-height: 28px;
-                    color: $dark-blue;
-                    text-decoration: none;
-                }
+                color: white;
+                background-color: $info-blue2;
             }
 
             &.active{
-                color: $orange;
-                background-color: $light-gray;
-                border-top-left-radius: 4px;
-                border-top-right-radius: 4px;
-                padding: 4px;
-
-                .lato {
-                    text-decoration: none !important;
-                }
+                color: white;
+                background-color: $info-blue2;
             }
         }
 
@@ -318,31 +372,33 @@
         
         div{
             
+            background-color: $very-light-blue3;
+
             text-align: center;
             width: 48%;
+
             font-size: 1.2em;
-            
-            border: 2px solid $light-blue;
-            color: $light-blue;
+            font-weight: bold;
+
+            color: $info-blue2;
 
             padding-top: 15px;
             padding-bottom: 15px;
             cursor: pointer;
             
-            border-top-left-radius: 4px;
-            border-top-right-radius: 4px;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
 
             &:hover {
-                background-color: $light-blue;
-                color: white;
-                border-color: $light-blue;
+                background-color: $info-blue2;
+                color: white;                
             }
 
         }
 
         .active{
             
-            background-color: $light-blue !important;
+            background-color: $info-blue2 !important;
             color: white;
         }
     }
@@ -359,7 +415,7 @@
 
     .checkin-win {
         position: relative;
-        background-color: $light-gray;
+        background-color: $light-blue4;
         
         border-radius: 4px;
 
@@ -370,10 +426,20 @@
             right: 5px;
             top: 5px;
 
+            cursor: pointer;
+
+            font-size: 0.8em;
+
+            padding: 10px;
+            border-radius: 50%;
+            color: white;
+            background-color: $info-blue2;
+            
             &:hover{
-                color: darkred;
+                color: $orange;
             }
         }   
+
     }
 
     .checkin-mgmt-item{
@@ -463,17 +529,27 @@
 
         .title{
             font-weight: bold;
-            margin-top: 8px;
-            margin-bottom: 8px;
+            margin-top: 10px;
+            margin-bottom: 10px;
         }
 
-        .confirm{
-            background-color: $light-blue3;
-            color: white;            
-            display: inline-block;
-        }
+        .confirm-cont {
+            text-align: right;
+            padding-top: 10px;
+            padding-bottom: 10px;
 
-        
+            .confirm{
+                background-color: $green;
+                color: white;            
+                display: inline-block;
+
+                text-align: center;
+
+                &:hover {
+                    background-color: $orange;
+                }
+            }
+        }
 
         .double-tbl{
             width: 100%;
@@ -496,6 +572,17 @@
         }
     }
 
+    .map-wrap-all {
+        background-color: $very-light-blue3;
+        padding-left: 16px;
+        padding-right: 16px;
+        padding-top: 18px;
+        padding-bottom: 30px;
+
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
     .map-wrap {
         position: relative;
 
@@ -514,8 +601,8 @@
         .entities-filter{
             background-color: white;
 
-            border: 1px solid $light-blue3;
-            border-radius: 4px;
+            border: 2px solid $light-blue3;
+            
             padding: 6px;
             z-index: 99999;
 
@@ -529,6 +616,7 @@
 
         }
     }
+
 
     .map {
         width: 100%;        
@@ -637,17 +725,23 @@
     }
 
     .filter-menu{
+        padding-left: 20px;
+        font-size: 0.6em;
+        display: inline-block;
         
+        vertical-align: top;
 
-        
+        .checker{                    
+            font-size: 25px;                    
+        }
     }
 
     .filter {
-        background-color: $light-gray;
+        background-color: $light-blue4;
         padding: 6px 10px 6px 10px;
         border-radius: 4px;
 
-        .title{
+        .tit{
             font-weight: bold;
             margin-top: 8px;
             margin-bottom: 8px;
@@ -661,8 +755,7 @@
     }
 
     .filter-date{
-        margin-top: 4px;
-        background-color: $light-gray;
+        margin-top: 4px;        
         padding: 6px 10px 6px 10px;
         border-radius: 4px;
 
@@ -684,9 +777,10 @@
     .results{
 
         .title{
-            font-size: 24px;
+            font-size: 1.4em;
             font-weight: bold;
             padding: 8px;
+            background-color: $very-light-blue3;
         }
 
         .tbl{
@@ -696,7 +790,10 @@
 
         .meeting-points{            
             display: table-cell;
-            width: 29%;            
+            width: 28%;
+
+            background-color: white;
+            border-radius: 2px;
             
             .no-mp-all {
                 display: table;
@@ -730,10 +827,11 @@
                 position: relative;
                 padding-left: 67px;
                 padding-right: 75px;
+                padding-bottom: 14px;
                 margin: 10px;
 
                 min-height: 70px;                
-                border-bottom: 1px dotted slategray;
+                border-bottom: 1px solid $light-gray2;
 
                 &:last-of-type {
                     border-bottom: 0;
@@ -747,20 +845,25 @@
 
                     .photo{                        
                         width: 60px;
-                        height: 60px;
-                        border-radius: 2px;
+                        height: 60px;                        
                     }
                 } 
                 
                 .cont {
                     
                     .people-met{
+                        margin-top: 8px;
                         font-size: 14px;
+                        color: $darker-gray;
                     }
                 } 
                 
                 .btn-cont {
                     
+                    .pin {
+                        width: 0.6em;
+                    }
+
                     position: absolute;
                     right: 0;
                     top: 5px;
@@ -774,12 +877,21 @@
 
         }
 
+        .split {
+            display: table-cell;            
+            width: 3%;
+        }
+
         .people{
             
             display: table-cell;            
-            width: 68%;
+            width: 66%;
+
+            background-color: white;
+            border-radius: 2px;
 
             .no-people-all {
+                margin: 8px;
                 display: table;
                 width: 100%;
                 margin-bottom: 10px;
@@ -814,8 +926,7 @@
                 margin: 10px;
                 padding:7px;
 
-                background-color: $light-gray;
-                border-radius: 4px;
+                border-bottom: 1px solid $light-gray2;
 
                 .data{
                     display: table;
@@ -826,7 +937,6 @@
                        vertical-align: top;
                        width: 70px;
                        height: 70px;
-                       
                     
                        .photo-all{
                            position: relative;
@@ -834,7 +944,8 @@
                            height: 60px;
 
                            .photo{                                                               
-                                border-radius: 2px;
+                                border-radius: 50%;
+                                border: 1px solid $darker-gray;
                            }
                        }
                        
@@ -845,9 +956,37 @@
                         vertical-align: top;
 
                         .first{
+
+                            margin-bottom: 6px;
+
+                            .name {
+                                text-decoration: none;
+                                color: $info-blue2;
+                                font-size: 1.1em;
+                                font-weight: bold;
+
+                                &:hover {
+                                    color: $orange;
+                                }
+                            }
+
                             .flag{
                                 width: 18px;
                                 height: 18px;
+                            }
+                        }
+                        
+                        .second {
+                            margin-bottom: 6px;
+
+                            .place {
+                                text-decoration: none;
+                                color: $info-blue2;                                
+                                font-weight: bold;
+
+                                &:hover {
+                                    color: $orange;
+                                }
                             }
                         }  
                     }
@@ -857,52 +996,28 @@
                         vertical-align: top;
                         width: 120px;
 
-                         .chat-btn{
-                            text-align: center;
-                            display: inline-block;
+                         .chat-btn{                            
+                            background-color: $orange;
                             
-                            text-decoration: none;
-                            background-color: $light-blue;
-                            border-radius: 4px;
-                            padding: 5px;
                             color: white;
+                            font-weight: bold;
                             
-                            .icon-bubbles2{
-                                font-size: 24px;
-                            }
-
                             &:hover{
-                                color: $dark-blue;
+                                background-color: $green;
                             }
                         }
                     }
                 }
 
-                .message-all{
-                    .pointer{
-                    
-                        border-bottom:  10px solid white;
-                        border-right:  10px solid transparent;
-                        border-left:  10px solid transparent;
-                        border-top:  0;
-
-                        height: 0;
-                        width: 0;
-                        margin-left: 20px;
-
-                    }
-
-                    .message{
-                        background-color: white;
-                        border-radius: 15px;
-                        padding: 15px;
-
-                    }
+                .message{
+                    margin-top: 8px;
+                   color: $darker-gray;
                 }
 
-                
+            }
 
-                
+            .person:last-child{
+                border-bottom: 0;
             }
         }
 
@@ -911,6 +1026,12 @@
                 display: block;
                 width: 100%;
             }
+
+            .split {
+                display: block;
+                width: 100%;
+            }
+
             .people{
                 display: block;
                 width: 100%;
@@ -1234,26 +1355,6 @@
         font-size: 20px;
     }
 
-     .myTabs {
-         width: 100%;         
-     }
-
-    .myTab {
-        border: 1px solid white;      
-        background-color: #57c1db;
-        color: white;        
-        display: inline-block;
-        text-align: center;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        padding-top: 14px;
-    }
-
-    .myTab.act {
-        background-color: red;
-    }
-
     .mainCont {    
         width: 100%;
         height: 370px;
@@ -1348,10 +1449,6 @@
         input[type="text"], input[type="number"] {
             width: 200px !important;
             border: 1px solid $input-margin-blue;
-        }
-
-        .invalid {
-            border: 2px solid $orange !important;
         }
 
         .double-row-item {

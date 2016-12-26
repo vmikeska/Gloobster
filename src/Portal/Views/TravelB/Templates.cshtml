@@ -31,12 +31,12 @@
 <script id="status-template" type="text/x-handlebars-template">
 
     <div class="status-row">
-        <span class="icon-location"></span>
-
-        <div class="place">
+        <img class="pin svg-img" src="/images/n/logo-pin.svg" />
+        
+        <div class="place">            
+            <a href="{{placeLink}}">{{placeName}}</a>            
             <a href="#" class="icon-edit-pencil edit"></a>
             <a href="#" class="icon-bin delete"></a>
-            <a href="{{placeLink}}">{{placeName}}</a>            
         </div>
         <div class="data">
             <div class="item">                
@@ -135,8 +135,8 @@
             <textarea id="chckMsg" placeholder="Type a short message"></textarea>
         </div>
         
-        <div>
-            <a id="submitCheckin" class="lbtn confirm icon-location" href="#"><span class="lato">{{sumbitText}}</span></a>
+        <div class="confirm-cont">
+            <a id="submitCheckin" class="lbtn2 confirm" href="#">{{sumbitText}}</a>
         </div>
 
     </div>
@@ -216,7 +216,9 @@
         </div>
         <div class="btn-cont">
             {{#if distance}}
-            <span class="icon-location"></span><span class="distance-n">{{distance}}</span> km
+            <img class="pin svg-img" src="/images/n/logo-pin.svg">
+            @*<span class="icon-location"></span>*@
+            <span class="distance-n">{{distance}}</span> km
             
             {{/if}}
             
@@ -239,7 +241,7 @@
             </div>
             <div class="cont">
                 <div class="first">
-                    <a href="/@RoutingConsts.UserDetailMenuName/{{uid}}">{{name}}</a> - <span class="years">{{age}}</span> @Model.W("Years")
+                    <a class="name" target="_blank" href="/@RoutingConsts.UserDetailMenuName/{{uid}}">{{name}}</a> - <span class="years">{{age}}</span> @Model.W("Years")
                     
                     <img class="c-flag" src="/images/n/flags/{{homeCountry}}.svg" title="born" />
 
@@ -252,29 +254,30 @@
                     {{/each}}                     
                 </div>
                 <div class="second">
-                    <a target="_blank" href="{{waitingLink}}">{{waitingAtText}}</a>
+                    <a class="place" target="_blank" href="{{waitingLink}}">{{waitingAtText}}</a>
+                </div>
+                <div class="third">
+                    
+                    {{#each wantDos}}
+                    <span class="itag-big">{{this}}</span>
+                    {{/each}}
 
                     @Html.Partial("WantMeet")
                     <span class="years">({{fromAge}} - {{toAge}} @Model.W("Years"))</span>
-                    
-                    {{#each wantDos}}
-                    <span class="itag">{{this}}</span>                    
-                    {{/each}}
+
                 </div>
+
 
 
 
             </div>
             <div class="btn-cont">
-                <a class="chat-btn" href="#"><span class="icon-bubbles2"></span><br /><span class="txt">@Model.W("AskForChatBtn")</span></a>
+                <a class="lbtn2 chat-btn" href="#">@Model.W("AskForChatBtn")</a>
             </div>
 
         </div>
-        <div class="message-all">
-            <div class="pointer"></div>
-            <div class="message">
-                {{message}}
-            </div>
+        <div class="message">            
+            {{message}}            
         </div>
     </div>
 
@@ -341,10 +344,10 @@
 
 <script id="filterNow-template" type="text/x-handlebars-template">
     
-    <div class="title">@Model.W("InterestedActivitesFitler")</div>
+    <div class="tit">@Model.W("InterestedActivitesFitler")</div>
     <div id="filterCont"></div>
     
-    <div class="title">@Model.W("LanguagesFilter")</div>
+    <div class="tit">@Model.W("LanguagesFilter")</div>
     <div id="langsFilter" class="langs-filter"></div>
 
 </script>

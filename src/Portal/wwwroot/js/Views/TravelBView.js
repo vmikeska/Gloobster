@@ -58,10 +58,10 @@ var Views;
             this.tabs.onBeforeSwitch = function () {
                 $("#theCont").html("");
             };
-            this.tabs.addTab({ id: this.nowTabConst, text: " " + this.t("MajorNowBtn", "jsTravelB"), customClass: "icon-clock" }, function () {
+            this.tabs.addTab({ id: this.nowTabConst, text: this.t("MajorNowBtn", "jsTravelB") }, function () {
                 _this.nowTabClicked();
             });
-            this.tabs.addTab({ id: this.cityTabConst, text: " " + this.t("MajorCityBtn", "jsTravelB"), customClass: "icon-location-on-road" }, function () {
+            this.tabs.addTab({ id: this.cityTabConst, text: this.t("MajorCityBtn", "jsTravelB") }, function () {
                 _this.cityTabClicked();
             });
             this.tabs.create("<div class=\"btn-cont\"></div>");

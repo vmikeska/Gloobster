@@ -69,25 +69,25 @@ a {
 
 .checkbox-all {
   display: inline-block;
-  margin: 5px;
   cursor: pointer; }
   .checkbox-all .checker-all {
     display: inline-block;
     vertical-align: top;
     padding: 2px;
     position: relative;
-    border: 1px solid gray;
+    /*border: 1px solid gray;*/
     border-radius: 4px; }
     .checkbox-all .checker-all .checker {
-      font-size: 37px; }
+      font-size: 37px;
+      vertical-align: top; }
     .checkbox-all .checker-all .icon-checkmark {
       color: #F56E12; }
     .checkbox-all .checker-all .icon-checkmark2 {
       color: dimgray; }
   .checkbox-all .label {
     display: inline-block;
-    vertical-align: top;
-    line-height: 37px;
+    vertical-align: middle;
+    line-height: 1.2em;
     font-size: 1.2em; }
 
 input[type="text"], input[type="password"], input[type="number"], textarea {
@@ -157,6 +157,11 @@ textarea {
   .form-close:hover {
     color: #F56E12; }
 
+@media screen and (max-width: 1280px) {
+  .form-close {
+    top: 3px;
+    right: 2px; } }
+
 .standard-form {
   position: relative;
   margin-top: 24px; }
@@ -178,11 +183,6 @@ textarea {
     .standard-form .form-cont-all {
       padding-left: 6px;
       padding-right: 6px; } }
-
-@media screen and (max-width: 1280px) {
-  .form-close {
-    top: 3px;
-    right: 2px; } }
 
 .thumb-cont {
   display: inline-block;
@@ -3550,23 +3550,20 @@ footer {
     text-align: center; }
 
 .travelb-home {
-  text-align: left;
-  /*.invalid {
-        border: 2px solid red !important;
-    }*/ }
+  text-align: left; }
   .travelb-home textarea {
     border: 1px solid #3298C1; }
+  .travelb-home .invalid {
+    border: 2px solid #F56E12 !important; }
   .travelb-home .lang-tag {
     display: inline-block;
-    vertical-align: top;
+    vertical-align: middle;
     text-transform: uppercase;
-    border: 1px dotted #3298C1;
     padding: 2px;
-    border-radius: 2px;
     font-weight: bold; }
   .travelb-home .c-flag {
     display: inline-block;
-    vertical-align: top;
+    vertical-align: middle;
     width: 22px;
     height: 22px; }
   .travelb-home .checkin-icon {
@@ -3598,13 +3595,25 @@ footer {
         width: 38px;
         height: 38px; }
   .travelb-home .itag {
-    padding-left: 3px;
-    padding-right: 3px;
+    padding-left: 4px;
+    padding-right: 4px;
     margin-left: 2px;
     margin-right: 2px;
     border-radius: 4px;
     color: white;
     background-color: #65BDD7; }
+  .travelb-home .itag-big {
+    display: inline-block;
+    white-space: nowrap;
+    padding-left: 3px;
+    padding-right: 3px;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-bottom: 4px;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    background-color: #009EC4; }
   .travelb-home .g-icon {
     font-size: 22px;
     margin-left: 2px;
@@ -3618,11 +3627,60 @@ footer {
     color: black;
     margin-left: -5px; }
   .travelb-home .wantDosMain {
-    border-radius: 4px; }
-    .travelb-home .wantDosMain .tabsCont .myTab {
-      background-color: #3298C1; }
-      .travelb-home .wantDosMain .tabsCont .myTab.act {
-        background-color: #F56E12; }
+    border-radius: 4px;
+    /*
+            Is it used ?
+            
+            .myTabs {
+         width: 100%;         
+     }
+
+    .myTab {
+        border: 1px solid white;      
+        background-color: #57c1db;
+        color: white;        
+        display: inline-block;
+        text-align: center;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        padding-top: 14px;
+    }
+
+    .myTab.act {
+        background-color: red;
+    }*/ }
+    .travelb-home .wantDosMain .tabsCont {
+      padding-left: 6px;
+      padding-right: 6px;
+      background-color: white; }
+      .travelb-home .wantDosMain .tabsCont .myTab {
+        -webkit-touch-callout: none;
+        /* iOS Safari */
+        -webkit-user-select: none;
+        /* Chrome/Safari/Opera */
+        -khtml-user-select: none;
+        /* Konqueror */
+        -moz-user-select: none;
+        /* Firefox */
+        -ms-user-select: none;
+        /* Internet Explorer/Edge */
+        user-select: none;
+        /* Non-prefixed version, currently not supported by any browser */
+        display: inline-block;
+        text-align: center;
+        cursor: pointer;
+        color: white;
+        border-radius: 2px;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        margin-right: 2px;
+        background-color: #009EC4;
+        font-weight: bold; }
+        .travelb-home .wantDosMain .tabsCont .myTab:hover {
+          background-color: #F56E12; }
+        .travelb-home .wantDosMain .tabsCont .myTab.act {
+          background-color: #F56E12; }
     .travelb-home .wantDosMain .dataCont {
       min-height: 40px;
       padding: 6px 6px 0 6px;
@@ -3680,22 +3738,21 @@ footer {
     margin-bottom: 15px;
     padding-left: 46px;
     position: relative; }
-    .travelb-home .status-row .icon-location {
-      font-size: 46px;
+    .travelb-home .status-row .pin {
+      width: 35px;
       position: absolute;
       left: 0;
-      top: 5px;
-      color: lightgray; }
+      top: 0; }
     .travelb-home .status-row .place .edit {
       font-size: 24px;
       color: #005476; }
       .travelb-home .status-row .place .edit:hover {
-        color: #3298C1; }
+        color: #F56E12; }
     .travelb-home .status-row .place .delete {
       font-size: 24px;
       color: #005476; }
       .travelb-home .status-row .place .delete:hover {
-        color: #3298C1; }
+        color: #F56E12; }
     .travelb-home .status-row .data .item {
       display: inline-block; }
       .travelb-home .status-row .data .item .name {
@@ -3706,28 +3763,24 @@ footer {
   .travelb-home .checkin-row {
     margin-top: 10px; }
     .travelb-home .checkin-row a {
-      font-size: 28px;
-      color: lightgray;
+      display: inline-block;
+      font-size: 1.3em;
+      font-weight: bold;
+      padding-top: 0.5em;
+      padding-bottom: 0.5em;
+      padding-left: 2.6em;
+      padding-right: 2.6em;
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
       text-decoration: none;
-      margin-left: 20px; }
-      .travelb-home .checkin-row a .lato {
-        color: #009EC4;
-        font-size: 24px;
-        text-decoration: underline; }
+      color: #009EC4;
+      background-color: #ccedf5; }
       .travelb-home .checkin-row a:hover {
-        color: #005476; }
-        .travelb-home .checkin-row a:hover .lato {
-          line-height: 28px;
-          color: #005476;
-          text-decoration: none; }
+        color: white;
+        background-color: #009EC4; }
       .travelb-home .checkin-row a.active {
-        color: #F56E12;
-        background-color: #f2f2f2;
-        border-top-left-radius: 4px;
-        border-top-right-radius: 4px;
-        padding: 4px; }
-        .travelb-home .checkin-row a.active .lato {
-          text-decoration: none !important; }
+        color: white;
+        background-color: #009EC4; }
   .travelb-home .main-menu {
     margin-top: 10px;
     display: -webkit-box;
@@ -3738,22 +3791,22 @@ footer {
     flex-flow: row wrap;
     justify-content: space-between; }
     .travelb-home .main-menu div {
+      background-color: #F0FAFC;
       text-align: center;
       width: 48%;
       font-size: 1.2em;
-      border: 2px solid #65BDD7;
-      color: #65BDD7;
+      font-weight: bold;
+      color: #009EC4;
       padding-top: 15px;
       padding-bottom: 15px;
       cursor: pointer;
-      border-top-left-radius: 4px;
-      border-top-right-radius: 4px; }
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px; }
       .travelb-home .main-menu div:hover {
-        background-color: #65BDD7;
-        color: white;
-        border-color: #65BDD7; }
+        background-color: #009EC4;
+        color: white; }
     .travelb-home .main-menu .active {
-      background-color: #65BDD7 !important;
+      background-color: #009EC4 !important;
       color: white; }
   .travelb-home .main-menu-cont {
     margin-bottom: 12px; }
@@ -3763,15 +3816,21 @@ footer {
     padding: 4px; }
   .travelb-home .checkin-win {
     position: relative;
-    background-color: #f2f2f2;
+    background-color: #ccedf5;
     border-radius: 4px;
     padding: 8px; }
     .travelb-home .checkin-win .close {
       position: absolute;
       right: 5px;
-      top: 5px; }
+      top: 5px;
+      cursor: pointer;
+      font-size: 0.8em;
+      padding: 10px;
+      border-radius: 50%;
+      color: white;
+      background-color: #009EC4; }
       .travelb-home .checkin-win .close:hover {
-        color: darkred; }
+        color: #F56E12; }
   .travelb-home .checkin-mgmt-item {
     border-bottom: 1px dotted gray;
     padding-bottom: 4px;
@@ -3821,12 +3880,19 @@ footer {
     color: black !important; }
   .travelb-home .checkinCont .title {
     font-weight: bold;
-    margin-top: 8px;
-    margin-bottom: 8px; }
-  .travelb-home .checkinCont .confirm {
-    background-color: #3298C1;
-    color: white;
-    display: inline-block; }
+    margin-top: 10px;
+    margin-bottom: 10px; }
+  .travelb-home .checkinCont .confirm-cont {
+    text-align: right;
+    padding-top: 10px;
+    padding-bottom: 10px; }
+    .travelb-home .checkinCont .confirm-cont .confirm {
+      background-color: #3DA33D;
+      color: white;
+      display: inline-block;
+      text-align: center; }
+      .travelb-home .checkinCont .confirm-cont .confirm:hover {
+        background-color: #F56E12; }
   .travelb-home .checkinCont .double-tbl {
     width: 100%;
     display: table; }
@@ -3839,6 +3905,14 @@ footer {
       .travelb-home .checkinCont .double-tbl .cell {
         display: block;
         width: 100%; } }
+  .travelb-home .map-wrap-all {
+    background-color: #F0FAFC;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 18px;
+    padding-bottom: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px; }
   .travelb-home .map-wrap {
     position: relative; }
     .travelb-home .map-wrap .search-city {
@@ -3851,8 +3925,7 @@ footer {
         width: 220px; }
     .travelb-home .map-wrap .entities-filter {
       background-color: white;
-      border: 1px solid #3298C1;
-      border-radius: 4px;
+      border: 2px solid #3298C1;
       padding: 6px;
       z-index: 99999;
       position: absolute;
@@ -3916,11 +3989,18 @@ footer {
         color: #005476; }
   .travelb-home .user-popup .msg {
     border-top: 1px dotted gray; }
+  .travelb-home .filter-menu {
+    padding-left: 20px;
+    font-size: 0.6em;
+    display: inline-block;
+    vertical-align: top; }
+    .travelb-home .filter-menu .checker {
+      font-size: 25px; }
   .travelb-home .filter {
-    background-color: #f2f2f2;
+    background-color: #ccedf5;
     padding: 6px 10px 6px 10px;
     border-radius: 4px; }
-    .travelb-home .filter .title {
+    .travelb-home .filter .tit {
       font-weight: bold;
       margin-top: 8px;
       margin-bottom: 8px; }
@@ -3930,7 +4010,6 @@ footer {
       border-radius: 4px; }
   .travelb-home .filter-date {
     margin-top: 4px;
-    background-color: #f2f2f2;
     padding: 6px 10px 6px 10px;
     border-radius: 4px; }
     .travelb-home .filter-date input {
@@ -3942,15 +4021,18 @@ footer {
       margin-top: 8px;
       margin-bottom: 8px; }
   .travelb-home .results .title {
-    font-size: 24px;
+    font-size: 1.4em;
     font-weight: bold;
-    padding: 8px; }
+    padding: 8px;
+    background-color: #F0FAFC; }
   .travelb-home .results .tbl {
     display: table;
     width: 100%; }
   .travelb-home .results .meeting-points {
     display: table-cell;
-    width: 29%; }
+    width: 28%;
+    background-color: white;
+    border-radius: 2px; }
     .travelb-home .results .meeting-points .no-mp-all {
       display: table;
       width: 100%;
@@ -3975,9 +4057,10 @@ footer {
       position: relative;
       padding-left: 67px;
       padding-right: 75px;
+      padding-bottom: 14px;
       margin: 10px;
       min-height: 70px;
-      border-bottom: 1px dotted slategray; }
+      border-bottom: 1px solid #E8E8E8; }
       .travelb-home .results .meeting-points .meeting-point:last-of-type {
         border-bottom: 0; }
       .travelb-home .results .meeting-points .meeting-point .photo-cont {
@@ -3986,20 +4069,29 @@ footer {
         top: 0; }
         .travelb-home .results .meeting-points .meeting-point .photo-cont .photo {
           width: 60px;
-          height: 60px;
-          border-radius: 2px; }
+          height: 60px; }
       .travelb-home .results .meeting-points .meeting-point .cont .people-met {
-        font-size: 14px; }
+        margin-top: 8px;
+        font-size: 14px;
+        color: #BCB3B8; }
       .travelb-home .results .meeting-points .meeting-point .btn-cont {
         position: absolute;
         right: 0;
         top: 5px; }
+        .travelb-home .results .meeting-points .meeting-point .btn-cont .pin {
+          width: 0.6em; }
         .travelb-home .results .meeting-points .meeting-point .btn-cont .icon-location {
           color: #F56E12; }
+  .travelb-home .results .split {
+    display: table-cell;
+    width: 3%; }
   .travelb-home .results .people {
     display: table-cell;
-    width: 68%; }
+    width: 66%;
+    background-color: white;
+    border-radius: 2px; }
     .travelb-home .results .people .no-people-all {
+      margin: 8px;
       display: table;
       width: 100%;
       margin-bottom: 10px; }
@@ -4023,8 +4115,7 @@ footer {
       position: relative;
       margin: 10px;
       padding: 7px;
-      background-color: #f2f2f2;
-      border-radius: 4px; }
+      border-bottom: 1px solid #E8E8E8; }
       .travelb-home .results .people .person .data {
         display: table;
         width: 100%; }
@@ -4038,43 +4129,51 @@ footer {
             width: 60px;
             height: 60px; }
             .travelb-home .results .people .person .data .photo-cont .photo-all .photo {
-              border-radius: 2px; }
+              border-radius: 50%;
+              border: 1px solid #BCB3B8; }
         .travelb-home .results .people .person .data .cont {
           display: table-cell;
           vertical-align: top; }
-          .travelb-home .results .people .person .data .cont .first .flag {
-            width: 18px;
-            height: 18px; }
+          .travelb-home .results .people .person .data .cont .first {
+            margin-bottom: 6px; }
+            .travelb-home .results .people .person .data .cont .first .name {
+              text-decoration: none;
+              color: #009EC4;
+              font-size: 1.1em;
+              font-weight: bold; }
+              .travelb-home .results .people .person .data .cont .first .name:hover {
+                color: #F56E12; }
+            .travelb-home .results .people .person .data .cont .first .flag {
+              width: 18px;
+              height: 18px; }
+          .travelb-home .results .people .person .data .cont .second {
+            margin-bottom: 6px; }
+            .travelb-home .results .people .person .data .cont .second .place {
+              text-decoration: none;
+              color: #009EC4;
+              font-weight: bold; }
+              .travelb-home .results .people .person .data .cont .second .place:hover {
+                color: #F56E12; }
         .travelb-home .results .people .person .data .btn-cont {
           display: table-cell;
           vertical-align: top;
           width: 120px; }
           .travelb-home .results .people .person .data .btn-cont .chat-btn {
-            text-align: center;
-            display: inline-block;
-            text-decoration: none;
-            background-color: #65BDD7;
-            border-radius: 4px;
-            padding: 5px;
-            color: white; }
-            .travelb-home .results .people .person .data .btn-cont .chat-btn .icon-bubbles2 {
-              font-size: 24px; }
+            background-color: #F56E12;
+            color: white;
+            font-weight: bold; }
             .travelb-home .results .people .person .data .btn-cont .chat-btn:hover {
-              color: #005476; }
-      .travelb-home .results .people .person .message-all .pointer {
-        border-bottom: 10px solid white;
-        border-right: 10px solid transparent;
-        border-left: 10px solid transparent;
-        border-top: 0;
-        height: 0;
-        width: 0;
-        margin-left: 20px; }
-      .travelb-home .results .people .person .message-all .message {
-        background-color: white;
-        border-radius: 15px;
-        padding: 15px; }
+              background-color: #3DA33D; }
+      .travelb-home .results .people .person .message {
+        margin-top: 8px;
+        color: #BCB3B8; }
+    .travelb-home .results .people .person:last-child {
+      border-bottom: 0; }
   @media screen and (max-width: 959px) {
     .travelb-home .results .meeting-points {
+      display: block;
+      width: 100%; }
+    .travelb-home .results .split {
       display: block;
       width: 100%; }
     .travelb-home .results .people {
@@ -4261,20 +4360,6 @@ footer {
     height: 30px;
     border-top: 1px solid black;
     font-size: 20px; }
-  .travelb-home .myTabs {
-    width: 100%; }
-  .travelb-home .myTab {
-    border: 1px solid white;
-    background-color: #57c1db;
-    color: white;
-    display: inline-block;
-    text-align: center;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    padding-top: 14px; }
-  .travelb-home .myTab.act {
-    background-color: red; }
   .travelb-home .mainCont {
     width: 100%;
     height: 370px;
@@ -4333,8 +4418,6 @@ footer {
   .travelb-home .req-settings input[type="text"], .travelb-home .req-settings input[type="number"] {
     width: 200px !important;
     border: 1px solid #AAE0ED; }
-  .travelb-home .req-settings .invalid {
-    border: 2px solid #F56E12 !important; }
   .travelb-home .req-settings .double-row-item {
     display: table;
     margin-bottom: 16px; }

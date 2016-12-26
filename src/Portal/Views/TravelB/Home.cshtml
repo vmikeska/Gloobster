@@ -115,122 +115,135 @@ else
 
     </div>
 
-    <div class="main-menu-cont">
-
-        <div class="checkin-row" style="display: none">
-            <a id="checkin" href="#" data-t="check" class="icon-location now-checkin-btn"><span class="lato"> @Model.W("CheckinBtn")</span></a>
-
-            <a id="cityCheckins" href="#" data-t="manage" class="icon-file-text city-checkins-btn" style="display: none"><span class="lato"> @Model.W("ManageCheckinsBtn")</span></a>
-        </div>
-
-        <div class="checkin-win" style="display: none">
-            <a class="close icon-cross" href="#"></a>
-
-            <div class="cont">
-
-            </div>
-
-        </div>
-
-    </div>
+    
 
     <div class="no-location-perm" style="display: none">
         @Model.W("NoLocationPermissions")
     </div>
 
     
+    <div class="map-wrap-all">
+        
+        <div class="main-menu-cont">
 
-    <div class="map-wrap">
-        <div id="map" class="map"></div>
+            <div class="checkin-row" style="display: none">
+                <a id="checkin" href="#" data-t="check" class="now-checkin-btn">@Model.W("CheckinBtn")</a>
 
-        <div class="search-city">
-            <div id="searchCity" class="dropdown">
-                <input class="inputed" type="text" placeholder="@Model.W("SearchLocationPlaceholder")">
-                <img class="loader" src="/images/loader-gray.gif" style="display: none"/>
-                <ul></ul>
-            </div>
-        </div>
-
-        <div class="entities-filter">
-            <input id="fShowPeople" type="checkbox" checked/>
-            <label for="fShowPeople">@Model.W("People")</label>
-            <br/>
-            <input id="fPoints" type="checkbox"/>
-            <label for="fPoints">@Model.W("MeetingPoints")</label>
-        </div>
-    </div>
-
-    <div class="city-chck-cnt">
-        <span class="cnt" id="cityCount"></span> @Model.W("MorePeopleInCity") <a class="city-link" href="#">@Model.W("City")</a>
-    </div>
-
-    <div class="filter-date" id="filterDateCont" style="display: none">
-        <div class="title">@Model.W("FilterDatesTitle")</div>
-        <input id="fromDateFilter" type="text"/>
-        <span class="split">-</span>
-        <input id="toDateFilter" type="text"/>
-    </div>
-
-    <div class="filter-menu">
-
-        <div id="cbUseFilter" class="checkbox-all">
-            <div class="checker-all">
-                <div class="checker"></div>
-            </div>
-            <div class="label">
-                @Model.W("UseFilter")
-            </div>
-        </div>
-
-        <div id="cbAllCheckins" class="checkbox-all">
-            <div class="checker-all">
-                <div class="checker"></div>
-            </div>
-            <div class="label">
-                @Model.W("ShowAllCheckinsFilter")
-            </div>
-        </div>
-
-    </div>
-
-    <div class="filter" style="display: none">
-
-    </div>
-
-    <div class="results">
-
-        <div class="tbl">
-            <div class="people">
-                <div class="title">@Model.W("PeopleTitle")</div>
-
-                <div class="no-people-all">
-                    <div class="img">
-
-                    </div>
-                    <div class="txt">
-                        @Model.W("NoPeoplePlaceholder")
-                    </div>
-                </div>
-
+                <a id="cityCheckins" href="#" data-t="manage" class="city-checkins-btn" style="display: none">@Model.W("ManageCheckinsBtn")</a>
             </div>
 
-            <div class="meeting-points">
-                <div class="title">@Model.W("MeetingPointsTitle")</div>
+            <div class="checkin-win" style="display: none">
+                <a class="close icon-cross" href="#"></a>
 
-                <div class="no-mp-all">
-                    <div class="img">
+                <div class="cont">
 
-                    </div>
-                    <div class="txt">
-                        @Model.W("NoMeetingPointsPlaceholder")
-                    </div>
                 </div>
 
             </div>
 
         </div>
 
+        <div class="map-wrap">
+            <div id="map" class="map"></div>
+
+            <div class="search-city">
+                <div id="searchCity" class="dropdown">
+                    <input class="inputed" type="text" placeholder="@Model.W("SearchLocationPlaceholder")">
+                    <img class="loader" src="/images/loader-gray.gif" style="display: none"/>
+                    <ul></ul>
+                </div>
+            </div>
+
+            <div class="entities-filter">
+                <input id="fShowPeople" type="checkbox" checked/>
+                <label for="fShowPeople">@Model.W("People")</label>
+                <br/>
+                <input id="fPoints" type="checkbox"/>
+                <label for="fPoints">@Model.W("MeetingPoints")</label>
+            </div>
+        </div>
+        
+        <div class="city-chck-cnt">
+            <span class="cnt" id="cityCount"></span> @Model.W("MorePeopleInCity") <a class="city-link" href="#">@Model.W("City")</a>
+        </div>
+
+        <div class="filter-date" id="filterDateCont" style="display: none">
+            <div class="title">@Model.W("FilterDatesTitle")</div>
+            <input id="fromDateFilter" type="text" />
+            <span class="split">-</span>
+            <input id="toDateFilter" type="text" />
+        </div>
+
+        <div class="results">
+
+            <div class="tbl">
+                <div class="people">
+                    <div class="title">@Model.W("PeopleTitle")
+                    
+                        <div class="filter-menu">
+
+                            <div id="cbUseFilter" class="checkbox-all">
+                                <div class="checker-all">
+                                    <div class="checker"></div>
+                                </div>
+                                <div class="label">
+                                    @Model.W("UseFilter")
+                                </div>
+                            </div>
+
+                            <div id="cbAllCheckins" class="checkbox-all">
+                                <div class="checker-all">
+                                    <div class="checker"></div>
+                                </div>
+                                <div class="label">
+                                    @Model.W("ShowAllCheckinsFilter")
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    
+                    <div class="filter" style="display: none">
+
+                    </div>
+
+                    <div class="no-people-all">
+                        <div class="img">
+
+                        </div>
+                        <div class="txt">
+                            @Model.W("NoPeoplePlaceholder")
+                        </div>
+                    </div>
+
+                </div>
+                
+                <div class="split">
+                    
+                </div>
+
+                <div class="meeting-points">
+                    <div class="title">@Model.W("MeetingPointsTitle")</div>
+
+                    <div class="no-mp-all">
+                        <div class="img">
+
+                        </div>
+                        <div class="txt">
+                            @Model.W("NoMeetingPointsPlaceholder")
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
+
+    
 
 </div>
 

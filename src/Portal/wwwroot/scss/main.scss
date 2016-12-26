@@ -28,7 +28,10 @@ $orange: #F56E12;
 $yellow: #FFC400;
 $yellow2: #F5C519;
 
+
 $light-gray: #EAEAEA;
+$light-gray2: #E8E8E8;
+$darker-gray: #BCB3B8;
 
 $trans-white: rgba(255, 255, 255, 0.9);
 
@@ -187,7 +190,7 @@ a {
 
 .checkbox-all{
     display: inline-block;
-    margin: 5px;
+    
     cursor: pointer;
 
     .checker-all{
@@ -195,11 +198,12 @@ a {
         vertical-align: top;
         padding: 2px;
         position: relative;
-        border: 1px solid gray;
+        /*border: 1px solid gray;*/
         border-radius: 4px;
 
         .checker{                    
-            font-size: 37px;                    
+            font-size: 37px;  
+            vertical-align: top;
         }
 
         .icon-checkmark{
@@ -212,8 +216,8 @@ a {
 
     .label{
         display: inline-block;
-        vertical-align: top;
-        line-height: 37px;
+        vertical-align: middle;
+        line-height: 1.2em;
         font-size: 1.2em;
     }
 }
@@ -289,6 +293,13 @@ textarea{
     }
 }
 
+@include below-width(1280) {
+    .form-close {
+        top: 3px;
+        right: 2px;        
+    }
+}
+
 .standard-form {
     position: relative;
 
@@ -327,13 +338,6 @@ textarea{
             padding-left: 6px;
             padding-right: 6px;
         }
-    }
-}
-
-@include below-width(1280) {
-    .form-close {
-        top: 3px;
-        right: 2px;        
     }
 }
 

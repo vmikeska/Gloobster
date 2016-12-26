@@ -102,11 +102,11 @@
 				$("#theCont").html("");
 			}
 
-			this.tabs.addTab({ id: this.nowTabConst, text: " " + this.t("MajorNowBtn", "jsTravelB"), customClass: "icon-clock" }, () => {
+			this.tabs.addTab({ id: this.nowTabConst, text: this.t("MajorNowBtn", "jsTravelB") }, () => {
 				this.nowTabClicked();
 			});
 		
-			this.tabs.addTab({ id: this.cityTabConst, text: " " + this.t("MajorCityBtn", "jsTravelB"), customClass: "icon-location-on-road" }, () => {
+			this.tabs.addTab({ id: this.cityTabConst, text: this.t("MajorCityBtn", "jsTravelB") }, () => {
 				this.cityTabClicked();
 			});
 
