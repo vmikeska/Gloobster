@@ -78,7 +78,9 @@
 		public hasFullReg(callback: Function) {
 			ViewBase.fullReqCheck(() => {
 
-				var valid = this.props.tbValids.isAllValid();
+					
+
+					var valid = !this.props.tbValids || this.props.tbValids.isAllValid();
 				if (valid) {
 					callback();
 				} else {

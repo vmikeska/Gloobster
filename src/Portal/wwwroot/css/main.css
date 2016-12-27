@@ -3778,6 +3778,10 @@ footer {
       text-decoration: none;
       color: #009EC4;
       background-color: #ccedf5; }
+      @media screen and (max-width: 700px) {
+        .travelb-home .checkin-row a {
+          padding-left: 1em;
+          padding-right: 1em; } }
       .travelb-home .checkin-row a:hover {
         color: white;
         background-color: #009EC4; }
@@ -3821,7 +3825,8 @@ footer {
     position: relative;
     background-color: #ccedf5;
     border-radius: 4px;
-    padding: 8px; }
+    padding: 8px;
+    min-height: 100px; }
     .travelb-home .checkin-win .close {
       position: absolute;
       right: 5px;
@@ -3910,12 +3915,16 @@ footer {
         width: 100%; } }
   .travelb-home .map-wrap-all {
     background-color: #F0FAFC;
-    padding-left: 16px;
-    padding-right: 16px;
     padding-top: 18px;
     padding-bottom: 30px;
+    padding-left: 16px;
+    padding-right: 16px;
     margin-top: 10px;
     margin-bottom: 10px; }
+    @media screen and (max-width: 700px) {
+      .travelb-home .map-wrap-all {
+        padding-left: 4px;
+        padding-right: 4px; } }
   .travelb-home .map-wrap {
     position: relative; }
     .travelb-home .map-wrap .search-city {
@@ -3933,7 +3942,8 @@ footer {
       z-index: 99999;
       position: absolute;
       top: 10px;
-      right: 10px; }
+      right: 10px;
+      max-width: 170px; }
       .travelb-home .map-wrap .entities-filter label {
         font-weight: 600; }
   .travelb-home .map {

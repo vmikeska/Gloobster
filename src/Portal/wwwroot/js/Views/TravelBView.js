@@ -38,7 +38,7 @@ var Views;
         TravelBView.prototype.hasFullReg = function (callback) {
             var _this = this;
             Views.ViewBase.fullReqCheck(function () {
-                var valid = _this.props.tbValids.isAllValid();
+                var valid = !_this.props.tbValids || _this.props.tbValids.isAllValid();
                 if (valid) {
                     callback();
                 }

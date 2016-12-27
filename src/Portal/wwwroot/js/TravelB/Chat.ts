@@ -145,10 +145,12 @@
 		private genUserTitleNameTag(react, isActive: boolean) {
 			var isTarget = (react.targetUserId === Views.ViewBase.currentUserId);
 			var name = isTarget ? react.askingUserName : react.targetUserName;
+			var uid = isTarget ? react.askingUserId : react.targetUserId;
 
 			var context = {
 				name: name,
-				rid: react.reactId
+				rid: react.reactId,
+				uid: uid
 			};
 
 			var $person = $(this.chatTitleTagTmp(context));

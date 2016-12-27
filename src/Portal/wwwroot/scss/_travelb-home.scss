@@ -342,6 +342,11 @@
             padding-left: 2.6em;
             padding-right: 2.6em;
 
+            @include below-width(700) {
+                padding-left: 1em;
+            padding-right: 1em;
+            }
+
             border-top-left-radius: 6px;
             border-top-right-radius: 6px;
 
@@ -420,6 +425,8 @@
         border-radius: 4px;
 
         padding: 8px;
+
+        min-height: 100px;
 
         .close{
             position: absolute;
@@ -573,14 +580,19 @@
     }
 
     .map-wrap-all {
-        background-color: $very-light-blue3;
-        padding-left: 16px;
-        padding-right: 16px;
+        background-color: $very-light-blue3;        
         padding-top: 18px;
         padding-bottom: 30px;
+        padding-left: 16px;
+        padding-right: 16px;
 
         margin-top: 10px;
         margin-bottom: 10px;
+
+        @include below-width(700) {
+        padding-left: 4px;
+        padding-right: 4px;
+        }
     }
 
     .map-wrap {
@@ -609,6 +621,8 @@
             position: absolute;
             top: 10px;
             right: 10px;
+
+            max-width: 170px;
 
             label{
                 font-weight: 600;
