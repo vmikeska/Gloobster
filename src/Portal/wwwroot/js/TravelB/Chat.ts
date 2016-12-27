@@ -37,7 +37,7 @@
 			this.dlg = new Common.ConfirmDialog();
 		}
 			
-		public refreshAll(callback = null) {
+		public refreshAll(callback: Function = null) {
 			var prms = [["type", "s"]];
 
 			this.v.apiGet("CheckinReact", prms, (reacts) => {

@@ -24,7 +24,7 @@ module TravelB {
 
 						$as.click((e) => {
 								e.preventDefault();
-
+								
 								$as.removeClass("active");
 
 								var $t = $(e.delegateTarget);

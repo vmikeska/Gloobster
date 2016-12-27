@@ -251,15 +251,25 @@ else
 <script>
     function onBodyLoad() {
         currentView = new Views.TravelBView();
-        currentView.defaultLangs = @Html.Raw(JsonConvert.SerializeObject(Model.User.Languages));
-        currentView.emptyProps = @Html.Raw(JsonConvert.SerializeObject(Model.EmptyProps));
 
-        @if (Model.User.HomeLocation != null)
-        {
-            @Html.Raw($"currentView.homeLocation = '{Model.User.HomeLocation.City}';")
+
+        
+        @if (Model.User != null) {
+            @Html.Raw("currentView.userExisted = true;")
         }
 
-        @if (Model.User.CurrentLocation != null)
+        currentView.defaultLangs =
+            @(Model.User != null && Model.User.Languages != null ? Html.Raw(JsonConvert.SerializeObject(Model.User.Languages)) : Html.Raw("[]"));
+
+
+        currentView.emptyProps = @Html.Raw(JsonConvert.SerializeObject(Model.EmptyProps));
+
+        @if (Model.User != null && Model.User.HomeLocation != null)
+        {
+            @Html.Raw($"currentView.homeLocation = '{(Model.User == null ? string.Empty : Model.User.HomeLocation.City)}';")
+        }
+
+        @if (Model.User != null && Model.User.CurrentLocation != null)
         {
             @Html.Raw($"currentView.currentLocation = '{Model.User.CurrentLocation.City}';")
         }

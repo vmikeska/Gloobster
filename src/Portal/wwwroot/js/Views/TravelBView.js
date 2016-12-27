@@ -8,12 +8,55 @@ var Views;
     var TravelBView = (function (_super) {
         __extends(TravelBView, _super);
         function TravelBView() {
-            _super.apply(this, arguments);
+            var _this = this;
+            _super.call(this);
             this.hereAndNowTemplate = this.registerTemplate("hereAndNowTabCont-template");
             this.nowTabConst = "nowTab";
             this.cityTabConst = "cityTab";
+            this.userExisted = false;
             this.emptyProps = [];
+            this.loginButtonsManager.onAfterCustom = function (net) {
+                _this.apiGet("UserProps", [], function (user) {
+                    $(".not-registered-info").addClass("hidden");
+                    $(".req-settings").removeClass("hidden");
+                    _this.props = new TravelB.EmptyProps(_this);
+                    $("#firstName").val(user.firstName);
+                    $("#lastName").val(user.lastName);
+                    if (user.birthYear) {
+                        $("#birthYear").val(user.birthYear);
+                    }
+                    $("#gender .selected").html(_this.genderStr(user.gender));
+                    $("#gender input").val(user.gender);
+                    if (user.hasProfileImage) {
+                        $("#avatar").attr("src", "/PortalUser/ProfilePicture?reload=reload");
+                        $("#avatarFile").data("valid", "true");
+                    }
+                    _this.props.generateProps(user.homeLocation, user.currentLocation, user.languages);
+                });
+            };
         }
+        TravelBView.prototype.hasFullReg = function (callback) {
+            var _this = this;
+            Views.ViewBase.fullReqCheck(function () {
+                var valid = _this.props.tbValids.isAllValid();
+                if (valid) {
+                    callback();
+                }
+                else {
+                    var id = new Common.InfoDialog();
+                    id.create("User details", "All user details for this service must be honestly filled out");
+                }
+            });
+        };
+        TravelBView.prototype.genderStr = function (g) {
+            if (g === 1) {
+                return this.t("Male", "jsTravelB");
+            }
+            if (g === 2) {
+                return this.t("Female", "jsTravelB");
+            }
+            return "N/A";
+        };
         TravelBView.prototype.init = function () {
             var _this = this;
             this.checkinWin = new TravelB.CheckinWin(this);
@@ -45,12 +88,19 @@ var Views;
                 });
             };
             this.notifs.startRefresh();
-            this.props = new TravelB.EmptyProps(this);
-            this.props.generateProps(this.emptyProps);
+            if (this.userExisted) {
+                this.initProps();
+            }
             $(".city-chck-cnt .city-link").click(function (e) {
                 e.preventDefault();
                 $("#cityTab").click();
             });
+        };
+        TravelBView.prototype.initProps = function () {
+            this.props = new TravelB.EmptyProps(this);
+            if (this.emptyProps.length > 0) {
+                this.props.generateProps(this.homeLocation, this.currentLocation, this.defaultLangs);
+            }
         };
         TravelBView.prototype.createMainTab = function () {
             var _this = this;
@@ -85,13 +135,13 @@ var Views;
         TravelBView.prototype.createCityCheckinsFnc = function () {
             $(".meeting-points").hide();
             this.filter.initCity();
-            this.cityFncs = new TravelB.CityTab();
+            this.cityFncs = new TravelB.CityTab(this);
             this.displayCityCheckins();
         };
         TravelBView.prototype.createNowCheckinsFnc = function () {
             this.filter.initNow();
             $(".meeting-points").show();
-            this.nowFncs = new TravelB.NowTab();
+            this.nowFncs = new TravelB.NowTab(this);
             this.displayNowCheckins();
             this.displayMeetingPoints();
         };

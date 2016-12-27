@@ -4,19 +4,16 @@ var TravelB;
         function EmptyProps(view) {
             this.view = view;
         }
-        EmptyProps.prototype.generateProps = function (props) {
+        EmptyProps.prototype.generateProps = function (homeLocDef, currLocDef, defaultLangs) {
             var _this = this;
-            if (props.length === 0) {
-                return;
-            }
             Views.SettingsUtils.registerAvatarFileUpload("avatarFile", function () {
                 _this.tbValids.valAvatarBody($("#avatarFile"), $(".photo-cont"), _this.avatarValItem);
                 _this.tbValids.changed();
             });
             this.homeCity = Views.SettingsUtils.registerLocationCombo($("#homeCity"), "HomeLocation");
             this.currentCity = Views.SettingsUtils.registerLocationCombo($("#currentCity"), "CurrentLocation");
-            this.homeCity.setText(this.view.homeLocation);
-            this.currentCity.setText(this.view.currentLocation);
+            this.homeCity.setText(homeLocDef);
+            this.currentCity.setText(currLocDef);
             Views.SettingsUtils.registerEdit("firstName", "FirstName", function (value) {
                 return { name: value };
             });
@@ -29,7 +26,7 @@ var TravelB;
             Views.SettingsUtils.registerCombo("gender", function (val) {
                 return { propertyName: "Gender", values: { gender: val } };
             });
-            this.langsTagger = Views.SettingsUtils.initLangsTagger(this.view.defaultLangs, this.view.t("LangSearch", "jsTravelB"));
+            this.langsTagger = Views.SettingsUtils.initLangsTagger(defaultLangs, this.view.t("LangSearch", "jsTravelB"));
             this.createTbVals();
             var $v = $(".all-valid");
             $v.find("#doneClose").click(function (e) {

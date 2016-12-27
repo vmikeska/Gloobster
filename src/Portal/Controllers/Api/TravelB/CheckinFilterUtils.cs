@@ -7,6 +7,11 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         
         public static bool HasGenderMatch(WantMeet wantMeet, Gender gender)
         {
+            if (gender == Gender.N)
+            {
+                return true;
+            }
+
             if (wantMeet == WantMeet.All)
             {
                 return true;

@@ -13,9 +13,13 @@ module TravelB {
 		private checkinTemplate;
 		private mpTemplate;
 
-		constructor() {
-				this.checkinTemplate = Views.ViewBase.currentView.registerTemplate("checkinNowItem-template");				
-				this.mpTemplate = Views.ViewBase.currentView.registerTemplate("meetingPointItem-template");
+		private v: Views.TravelBView;
+			
+		constructor(v: Views.TravelBView) {
+			this.v = v;
+
+				this.checkinTemplate = this.v.registerTemplate("checkinNowItem-template");				
+				this.mpTemplate = this.v.registerTemplate("meetingPointItem-template");
 		}
 
 		public genMeetingPoints(points) {
@@ -53,9 +57,9 @@ module TravelB {
 				$u.find(".btn-check").click((e) => {
 					e.preventDefault();
 
-					var v = <Views.TravelBView>Views.ViewBase.currentView;
-					v.checkinWin.showNowCheckin(() => {
-							v.checkinWin.placeCombo.initValues({
+					
+					this.v.checkinWin.showNowCheckin(() => {
+							this.v.checkinWin.placeCombo.initValues({
 							sourceId: p.sourceId,
 							sourceType: p.type,
 							lastText: p.text,
@@ -93,7 +97,11 @@ module TravelB {
 				var $u = $(this.checkinTemplate(context));
 				$u.find(".chat-btn").click((e) => {
 						e.preventDefault();
-						cr.askForChat(c.userId, c.id);
+
+					this.v.hasFullReg(() => {
+							cr.askForChat(c.userId, c.id);
+					});
+						
 				});
 				$listCont.append($u);
 			});				

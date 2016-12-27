@@ -145,7 +145,7 @@ namespace Gloobster.Portal.Controllers.Portal
                 user = User;
             }
             
-            if (!user.HasProfileImage)
+            if (user == null || !user.HasProfileImage)
             {
                 return null;
             }

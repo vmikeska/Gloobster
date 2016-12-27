@@ -12,7 +12,7 @@ module TravelB {
 			this.v = view;
 		}
 
-		public refreshReacts(callback = null) {
+		public refreshReacts(callback:Function = null) {
 
 			var prms = [["type", "a"]];
 

@@ -120,7 +120,7 @@ module TravelB {
 
 		private displayPopupCity(latlng, cid) {
 
-			Views.ViewBase.currentView.apiGet("CheckinCity", [["type", "id"], ["id", cid]], (c) => {
+				this.view.apiGet("CheckinCity", [["type", "id"], ["id", cid]], (c) => {
 				var context = CheckinMapping.map(c, CheckinType.City);
 
 				var ppCont = this.popupTemplateCity(context);
@@ -172,11 +172,15 @@ module TravelB {
 
 				$(".chat-btn-popup").click((e) => {
 						e.preventDefault();
-						var cr = new CheckinReact();
+						
+						this.view.hasFullReg(() => {
+								var cr = new CheckinReact();
 
-						var $t = $(e.delegateTarget);
-						var $c = $t.closest(".user-popup");
-						cr.askForChat($c.data("uid"), $c.data("cid"));
+								var $t = $(e.delegateTarget);
+								var $c = $t.closest(".user-popup");
+								cr.askForChat($c.data("uid"), $c.data("cid"));
+						});
+						
 				});
 
 			});

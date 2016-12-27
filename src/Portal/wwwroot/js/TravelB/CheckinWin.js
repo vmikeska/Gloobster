@@ -90,12 +90,14 @@ var TravelB;
             Common.DropDown.registerDropDown(this.$html.find("#toAge"));
             this.$html.find("#submitCheckin").click(function (e) {
                 e.preventDefault();
-                if (type === CheckinType.Now) {
-                    _this.callNow(isEdit);
-                }
-                if (type === CheckinType.City) {
-                    _this.callCity(isEdit);
-                }
+                _this.view.hasFullReg(function () {
+                    if (type === CheckinType.Now) {
+                        _this.callNow(isEdit);
+                    }
+                    if (type === CheckinType.City) {
+                        _this.callCity(isEdit);
+                    }
+                });
             });
         };
         CheckinWin.prototype.createWinNow = function () {

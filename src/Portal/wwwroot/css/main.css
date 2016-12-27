@@ -67,6 +67,9 @@ a {
     display: inline-block;
     font-size: 24px; }
 
+.hidden {
+  display: none; }
+
 .checkbox-all {
   display: inline-block;
   cursor: pointer; }
@@ -4036,7 +4039,7 @@ footer {
     .travelb-home .results .meeting-points .no-mp-all {
       display: table;
       width: 100%;
-      margin-bottom: 10px; }
+      margin: 8px; }
       .travelb-home .results .meeting-points .no-mp-all .img {
         display: table-cell;
         vertical-align: top;
@@ -4093,8 +4096,7 @@ footer {
     .travelb-home .results .people .no-people-all {
       margin: 8px;
       display: table;
-      width: 100%;
-      margin-bottom: 10px; }
+      width: 100%; }
       .travelb-home .results .people .no-people-all .img {
         display: table-cell;
         vertical-align: top;
@@ -4371,6 +4373,13 @@ footer {
     float: left; }
   .travelb-home .listCont {
     border: 1px solid black; }
+  .travelb-home .not-registered-info {
+    color: white;
+    padding: 6px;
+    background-color: #F56E12;
+    font-weight: bold;
+    border-radius: 2px;
+    margin-top: 6px; }
   .travelb-home .req-settings .lr-table {
     display: table; }
     .travelb-home .req-settings .lr-table .l {

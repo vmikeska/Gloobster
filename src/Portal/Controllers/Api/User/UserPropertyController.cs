@@ -14,7 +14,7 @@ using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.User
 {
-	public class UserPropertyController: BaseApiController
+    public class UserPropertyController: BaseApiController
 	{
 		public IGeoNamesService GNS { get; set; }
         public IAirportService AirService { get; set; }

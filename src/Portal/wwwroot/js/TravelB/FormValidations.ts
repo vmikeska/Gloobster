@@ -115,7 +115,7 @@
 			return anySelected;
 		}
 
-		public valMessage($txt, $frame, customVal = null) {
+		public valMessage($txt, $frame, customVal: Function = null) {
 				var valItem = this.addItemVal();
 
 				this.valMessageBody($txt, $frame, valItem, customVal);
@@ -126,7 +126,7 @@
 				};				
 		}
 
-		private valMessageBody($txt, $frame, valItem, customVal = null) {
+		private valMessageBody($txt, $frame, valItem, customVal: Function = null) {
 				var val = $txt.val();
 
 				var hasText = val.length > 0;

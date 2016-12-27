@@ -78,6 +78,8 @@ else
 
     @Html.Raw($"Views.ViewBase.currentUserId = '{Model.UserId}';")
 
+    @Html.Raw($"Views.ViewBase.fullRegistration = {Model.IsUserLogged.ToString().ToLower()};")
+
     @{
         var nets = Model.SocialNetworks.Select(n => ((int) n).ToString());
         var netsStr = string.Join(",", nets);

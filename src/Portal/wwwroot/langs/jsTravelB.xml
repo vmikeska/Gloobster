@@ -1,7 +1,15 @@
 ﻿
   <module name="jsTravelB">
 
+    <Male>
+      <en>Male</en>
+    </Male>
 
+    <Female>
+      <en>Female</en>
+    </Female>
+    
+      
     <AlreadyMet>
       <en>We've already met</en>
     </AlreadyMet>

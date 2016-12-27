@@ -1,8 +1,10 @@
 ﻿
 @model Gloobster.Portal.ViewModels.TravelBViewModel
 
-<div class="standard-form req-settings">
-    <span class="icon-cross form-close"></span>
+<div class="not-registered-info">To be able to use this service fully, you have to register first</div>
+
+<div class="standard-form req-settings @(Model.User == null ? "hidden" : "")">
+    @*<span class="icon-cross form-close"></span>*@
     <div class="ribbon"></div>
     <div class="form-cont-all">
         <div class="form-title">Required info</div>
@@ -20,9 +22,13 @@
                     <div class="photo-cont">
 
                         <img id="avatar" src="/PortalUser/ProfilePicture" />
+                        
+                        @{                            
+                            var hasProfileImage = Model.User == null ? "false" : Model.User.HasProfileImage.ToString().ToLower();
+                        }
 
                         <a class="photo-edit" href="#">
-                            <input type="file" id="avatarFile" data-valid="@Model.User.HasProfileImage.ToString().ToLower()" />
+                            <input type="file" id="avatarFile" data-valid="@hasProfileImage" />
 
                             <label for="avatarFile">
                                 <span class="icon-edit-pencil"></span>
@@ -40,11 +46,11 @@
                     <div class="double-row-item">
                         
                         <div class="item gap">
-                            <input id="firstName" type="text" placeholder="@Model.W("FirstNamePlaceholder")" value="@Model.User.FirstName" />
+                            <input id="firstName" type="text" placeholder="@Model.W("FirstNamePlaceholder")" value="@(Model.User == null ? "" : Model.User.FirstName)" />
                         </div>
                         
                         <div class="item">
-                            <input id="lastName" type="text" placeholder="@Model.W("LastNamePlaceholder")" value="@Model.User.LastName" />
+                            <input id="lastName" type="text" placeholder="@Model.W("LastNamePlaceholder")" value="@(Model.User == null ? "" : Model.User.LastName)" />
                         </div>
 
                     </div>
@@ -74,7 +80,7 @@
                     <div class="double-row-item">
 
                         <div class="item gap">
-                            <input id="birthYear" type="number" max="2002" placeholder="@Model.W("BirthYearPlaceholder")" value="@Model.User.BirthYear" />
+                            <input id="birthYear" type="number" max="2002" placeholder="@Model.W("BirthYearPlaceholder")" value="@(Model.User == null ? 0 : Model.User.BirthYear)" />
                         </div>
 
                         <div class="item">
@@ -84,7 +90,7 @@
                                     <li data-value="1">@Model.W("Male")</li>
                                     <li data-value="2">@Model.W("Female")</li>
                                 </ul>
-                                <input type="hidden" value="@((int) Model.User.Gender)">
+                                <input type="hidden" value="@(Model.User == null ? 0 : (int)Model.User.Gender)">
                             </div>
                         </div>
 

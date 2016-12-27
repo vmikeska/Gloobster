@@ -1,22 +1,25 @@
 module TravelB {
 	export class EmptyProps {
 
-		private formTemp;
-		
+		public tbValids: FormValidations;
+
+		public langs;
+
+		private formTemp;		
+		private homeCity: Common.PlaceSearchBox;
+		private currentCity: Common.PlaceSearchBox;
+		private langsTagger: Planning.TaggingField;		
+		private avatarValItem;
 		private $cont;
 
 		private view: Views.TravelBView;
 
 		constructor(view: Views.TravelBView) {
-			this.view = view;			
+				this.view = view;							
 		}
 
-		public generateProps(props) {
-
-			if (props.length === 0) {
-				return;
-			}
-
+		public generateProps(homeLocDef, currLocDef, defaultLangs) {
+				
 			Views.SettingsUtils.registerAvatarFileUpload("avatarFile", () => {
 					this.tbValids.valAvatarBody($("#avatarFile"), $(".photo-cont"), this.avatarValItem);
 					this.tbValids.changed();
@@ -25,9 +28,9 @@ module TravelB {
 			this.homeCity = Views.SettingsUtils.registerLocationCombo($("#homeCity"), "HomeLocation");
 			this.currentCity = Views.SettingsUtils.registerLocationCombo($("#currentCity"), "CurrentLocation");
 
-			this.homeCity.setText(this.view.homeLocation);
-			this.currentCity.setText(this.view.currentLocation);
-
+			this.homeCity.setText(homeLocDef);
+			this.currentCity.setText(currLocDef);	
+			
 			Views.SettingsUtils.registerEdit("firstName", "FirstName", (value) => {
 				return { name: value };
 			});
@@ -44,7 +47,7 @@ module TravelB {
 				return { propertyName: "Gender", values: { gender: val } };
 			});
 
-			this.langsTagger = Views.SettingsUtils.initLangsTagger(this.view.defaultLangs, this.view.t("LangSearch", "jsTravelB"));
+			this.langsTagger = Views.SettingsUtils.initLangsTagger(defaultLangs, this.view.t("LangSearch", "jsTravelB"));
 
 			this.createTbVals();
 
@@ -55,14 +58,7 @@ module TravelB {
 			});
 		}
 
-		private tbValids: FormValidations;
-		private homeCity: Common.PlaceSearchBox;
-		private currentCity: Common.PlaceSearchBox;
 		
-		private langsTagger: Planning.TaggingField;
-		public langs;
-
-		private avatarValItem;
 
 		private createTbVals() {
 			this.tbValids = new FormValidations();

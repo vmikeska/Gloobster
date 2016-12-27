@@ -79,13 +79,20 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             uids = uids.Distinct().ToList();
             var users = DB.List<UserEntity>(u => uids.Contains(u.User_id));
 
-            var ic = items.Select(i =>
+            var ic = new List<CheckinReactionResponse>();
+
+            foreach (var i in items)
             {
                 var askingUser = users.FirstOrDefault(u => u.User_id == i.AskingUser_id);
                 var targetUser = users.FirstOrDefault(u => u.User_id == i.TargetUser_id);
-                return Convert(i, askingUser, targetUser);
-            }).ToList();
 
+                if (askingUser != null && targetUser != null)
+                {
+                    var conv = Convert(i, askingUser, targetUser);
+                    ic.Add(conv);
+                }
+            }
+            
             return new ObjectResult(ic);            
         }
 

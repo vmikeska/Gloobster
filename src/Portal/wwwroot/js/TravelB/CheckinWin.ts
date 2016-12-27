@@ -24,7 +24,7 @@
 						this.view = view;
 				}
 
-				public showCityCheckin(editId, callback = null) {
+				public showCityCheckin(editId, callback: Function = null) {
 						
 						this.editId = editId;
 
@@ -72,7 +72,7 @@
 						}
 				}
 				
-				public showNowCheckin(callback = null) {
+				public showNowCheckin(callback: Function = null) {
 
 						Views.ViewBase.currentView.apiGet("CheckinNow", [["type", "me"]], (r) => {
 
@@ -140,12 +140,17 @@
 
 						this.$html.find("#submitCheckin").click((e) => {
 								e.preventDefault();
-								if (type === CheckinType.Now) {
-										this.callNow(isEdit);
-								}
-								if (type === CheckinType.City) {
-										this.callCity(isEdit);
-								}
+								
+								this.view.hasFullReg(() => {
+
+										if (type === CheckinType.Now) {
+												this.callNow(isEdit);
+										}
+										if (type === CheckinType.City) {
+												this.callCity(isEdit);
+										}
+
+							});								
 						});						
 				}
 

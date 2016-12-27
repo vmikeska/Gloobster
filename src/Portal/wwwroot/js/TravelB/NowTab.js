@@ -1,11 +1,12 @@
 var TravelB;
 (function (TravelB) {
     var NowTab = (function () {
-        function NowTab() {
+        function NowTab(v) {
             this.peopleTabConst = "people";
             this.mpTabConst = "meetingPoints";
-            this.checkinTemplate = Views.ViewBase.currentView.registerTemplate("checkinNowItem-template");
-            this.mpTemplate = Views.ViewBase.currentView.registerTemplate("meetingPointItem-template");
+            this.v = v;
+            this.checkinTemplate = this.v.registerTemplate("checkinNowItem-template");
+            this.mpTemplate = this.v.registerTemplate("meetingPointItem-template");
         }
         NowTab.prototype.genMeetingPoints = function (points) {
             var _this = this;
@@ -36,9 +37,8 @@ var TravelB;
                 var $u = $(_this.mpTemplate(context));
                 $u.find(".btn-check").click(function (e) {
                     e.preventDefault();
-                    var v = Views.ViewBase.currentView;
-                    v.checkinWin.showNowCheckin(function () {
-                        v.checkinWin.placeCombo.initValues({
+                    _this.v.checkinWin.showNowCheckin(function () {
+                        _this.v.checkinWin.placeCombo.initValues({
                             sourceId: p.sourceId,
                             sourceType: p.type,
                             lastText: p.text,
@@ -67,7 +67,9 @@ var TravelB;
                 var $u = $(_this.checkinTemplate(context));
                 $u.find(".chat-btn").click(function (e) {
                     e.preventDefault();
-                    cr.askForChat(c.userId, c.id);
+                    _this.v.hasFullReg(function () {
+                        cr.askForChat(c.userId, c.id);
+                    });
                 });
                 $listCont.append($u);
             });

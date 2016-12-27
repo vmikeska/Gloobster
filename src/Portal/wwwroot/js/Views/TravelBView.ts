@@ -1,8 +1,5 @@
 ﻿module Views {
-
-
-	
-
+		
 	export class TravelBView extends ViewBase {
 
 		private travelMap: TravelB.TravelBMap;
@@ -31,6 +28,8 @@
 
 		private mapObj;
 
+		public userExisted = false;
+
 		private props: TravelB.EmptyProps;
 
 		public status: TravelB.Status;
@@ -42,6 +41,67 @@
 		public homeLocation;
 		public currentLocation;
 
+		constructor() {
+			super();
+					this.loginButtonsManager.onAfterCustom = (net) => {
+
+							this.apiGet("UserProps", [], (user) => {
+
+									$(".not-registered-info").addClass("hidden");
+									$(".req-settings").removeClass("hidden");		
+
+									this.props = new TravelB.EmptyProps(this);									
+
+									$("#firstName").val(user.firstName);
+									$("#lastName").val(user.lastName);
+
+								if (user.birthYear) {
+									$("#birthYear").val(user.birthYear);
+								}
+
+
+								$("#gender .selected").html(this.genderStr(user.gender));
+								$("#gender input").val(user.gender);
+									
+								if (user.hasProfileImage) {
+									$("#avatar").attr("src", "/PortalUser/ProfilePicture?reload=reload");
+									$("#avatarFile").data("valid", "true");
+								}
+
+								this.props.generateProps(user.homeLocation, user.currentLocation, user.languages);
+									
+							});
+							
+					}
+		}
+
+		public hasFullReg(callback: Function) {
+			ViewBase.fullReqCheck(() => {
+
+				var valid = this.props.tbValids.isAllValid();
+				if (valid) {
+					callback();
+				} else {
+						var id = new Common.InfoDialog();
+						id.create("User details", "All user details for this service must be honestly filled out");
+				}
+
+			});
+		}
+
+		private genderStr(g) {
+				
+				if (g === 1) {
+						return this.t("Male", "jsTravelB");
+				}
+
+				if (g === 2) {
+						return this.t("Female", "jsTravelB");
+				}
+
+				return "N/A";
+			}
+			
 		public init() {
 				
 				this.checkinWin = new TravelB.CheckinWin(this);
@@ -86,14 +146,23 @@
 			}
 			this.notifs.startRefresh();
 
-			this.props = new TravelB.EmptyProps(this);
-			this.props.generateProps(this.emptyProps);
-
+			if (this.userExisted) {
+					this.initProps();	
+			}
+				
 			$(".city-chck-cnt .city-link").click((e) => {
 					e.preventDefault();
 				 $("#cityTab").click();
 			});
 		}
+
+			private initProps() {
+					this.props = new TravelB.EmptyProps(this);
+
+					if (this.emptyProps.length > 0) {
+							this.props.generateProps(this.homeLocation, this.currentLocation, this.defaultLangs);
+					}
+			}
 			
 		private createMainTab() {
 				this.tabs = new TravelB.MenuTabs($(".main-menu"));
@@ -141,7 +210,7 @@
 
 			this.filter.initCity();
 				
-			this.cityFncs = new TravelB.CityTab();
+			this.cityFncs = new TravelB.CityTab(this);
 
 			this.displayCityCheckins();
 		}
@@ -151,7 +220,7 @@
 
 			$(".meeting-points").show();
 
-			this.nowFncs = new TravelB.NowTab();		
+			this.nowFncs = new TravelB.NowTab(this);		
 			this.displayNowCheckins();
 			this.displayMeetingPoints();			
 		}

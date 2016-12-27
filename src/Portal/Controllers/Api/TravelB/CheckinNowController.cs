@@ -9,6 +9,7 @@ using Gloobster.DomainObjects;
 using Gloobster.DomainObjects.TravelB;
 using Gloobster.Entities;
 using Gloobster.Entities.TravelB;
+using Gloobster.Enums;
 using Gloobster.Mappers;
 using Gloobster.Portal.Controllers.Base;
 using Microsoft.AspNet.Mvc;
@@ -80,7 +81,13 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                     return new ObjectResult(responses);
                 }
 
-                responses = responses.Where(r => CheckinFilterUtils.HasGenderMatch(r.wantMeet, User.Gender)).ToList();
+                Gender gender = Gender.N;
+                if (User != null)
+                {
+                    gender = User.Gender;
+                }
+                
+                responses = responses.Where(r => CheckinFilterUtils.HasGenderMatch(r.wantMeet, gender)).ToList();
 
                 if (genderFilter)
                 {

@@ -77,7 +77,7 @@ var TravelB;
         };
         MapCheckins.prototype.displayPopupCity = function (latlng, cid) {
             var _this = this;
-            Views.ViewBase.currentView.apiGet("CheckinCity", [["type", "id"], ["id", cid]], function (c) {
+            this.view.apiGet("CheckinCity", [["type", "id"], ["id", cid]], function (c) {
                 var context = TravelB.CheckinMapping.map(c, CheckinType.City);
                 var ppCont = _this.popupTemplateCity(context);
                 var popup = new L.Popup();
@@ -115,10 +115,12 @@ var TravelB;
                 _this.mapObj.openPopup(popup);
                 $(".chat-btn-popup").click(function (e) {
                     e.preventDefault();
-                    var cr = new TravelB.CheckinReact();
-                    var $t = $(e.delegateTarget);
-                    var $c = $t.closest(".user-popup");
-                    cr.askForChat($c.data("uid"), $c.data("cid"));
+                    _this.view.hasFullReg(function () {
+                        var cr = new TravelB.CheckinReact();
+                        var $t = $(e.delegateTarget);
+                        var $c = $t.closest(".user-popup");
+                        cr.askForChat($c.data("uid"), $c.data("cid"));
+                    });
                 });
             });
         };

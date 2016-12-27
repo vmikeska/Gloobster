@@ -8,8 +8,10 @@ module Views {
 		public static currentView;
 		public static nets: string;
 		public static fbt: string;
-		public static currentUserId: string;
 
+		public static currentUserId: string;
+		public static fullRegistration: boolean;
+			
 			public static v<T>() {
 						return <T>this.currentView;
 	   }
@@ -44,6 +46,17 @@ module Views {
 
 			this.infoCookie();
 		}
+
+			public static fullReqCheck(callback: Function) {
+
+					if (ViewBase.fullRegistration) {
+							callback();
+						return;
+					}
+
+					var id = new Common.InfoDialog();
+					id.create("Full registration required", "To be able to use this feature, you need to create full registration");
+			}
 
 			private infoCookie() {
 				$("#confirmCookies").click((e) => {

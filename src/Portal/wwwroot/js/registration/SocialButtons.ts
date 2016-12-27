@@ -35,7 +35,9 @@
 		 var hint = new Common.HintDialog();
 		 hint.create("You are successfully connected!");
 			$(".login-all").remove();
-				
+
+			Views.ViewBase.fullRegistration = true;
+
 		 if (this.onAfterCustom) {
 			 this.onAfterCustom(net);
 		 }
