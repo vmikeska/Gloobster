@@ -5810,3 +5810,60 @@ footer {
     padding: 10px;
     background-color: antiquewhite;
     font-weight: bold; }
+
+.my-calendar-win {
+  margin-top: 40px;
+  margin-bottom: 40px; }
+
+.calendar-cont {
+  position: relative;
+  display: inline-block; }
+
+.calendar-input {
+  border-radius: 2px;
+  border: 1px solid #65BDD7 !important; }
+
+.my-calendar-win {
+  position: absolute;
+  left: 0;
+  top: 30px;
+  background-color: white;
+  z-index: 99999999;
+  border: 1px solid #009EC4;
+  display: inline-block;
+  padding: 8px;
+  -webkit-box-shadow: 0px 0px 14px 0px rgba(50, 50, 50, 0.75);
+  -moz-box-shadow: 0px 0px 14px 0px rgba(50, 50, 50, 0.75);
+  box-shadow: 0px 0px 14px 0px rgba(50, 50, 50, 0.75);
+  border-radius: 4px; }
+  .my-calendar-win .months {
+    display: table;
+    width: 100%;
+    font-weight: bold; }
+    .my-calendar-win .months .l-arr {
+      display: table-cell; }
+    .my-calendar-win .months .date {
+      display: table-cell; }
+    .my-calendar-win .months .r-arr {
+      display: table-cell; }
+  .my-calendar-win .day {
+    width: 35px; }
+  .my-calendar-win .days-title {
+    display: table;
+    font-weight: bold;
+    margin-top: 12px;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #BCB3B8; }
+    .my-calendar-win .days-title .day {
+      display: table-cell; }
+  .my-calendar-win .week-row {
+    display: table;
+    margin-bottom: 8px; }
+    .my-calendar-win .week-row .day {
+      display: table-cell; }
+      .my-calendar-win .week-row .day:hover {
+        border-radius: 4px;
+        background-color: #009EC4;
+        color: white;
+        cursor: pointer; }

@@ -13,57 +13,72 @@
     
 </script>
 
-<script id="placeItem-template" type="text/x-handlebars-template">				
-		<li data-value="{{sourceId}}" data-type="{{sourceType}}"><span class="{{icoClass}} left mright10"></span>&nbsp;&nbsp;&nbsp;{{name}}<span class="color2">, {{countryCode}}</span></li>
+
+
+
+<script id="calendar-base-template" type="text/x-handlebars-template">
+    <div class="my-calendar-win">
+
+        <div class="months">
+            <div class="l-arr">&#60;</div>
+            <div class="date">November 2016</div>
+            <div class="r-arr">&#62;</div>
+        </div>
+    </div>
 </script>
 
-<script id="userItem-template" type="text/x-handlebars-template">
-		<li data-value="{{userId}}"><span class="thumb"><img src="{{photoUrl}}"></span><span class="txt">{{displayName}}</span></li>
-</script>
 
-<script id="confirmDialog-template" type="text/x-handlebars-template">
-    <div class="popup" id="popup-confirm">
-        <div>
-            <h3>{{title}}</h3>
-            <p>{{text}}</p>
-            <div class="btns">
-                <a class="lbtn cancel" href="#">{{textCancel}}</a>
-                <a class="lbtn confirm" href="#">{{textOk}}</a>
+<script id="placeItem-template" type="text/x-handlebars-template">
+        <li data-value="{{sourceId}}" data-type="{{sourceType}}"><span class="{{icoClass}} left mright10"></span>&nbsp;&nbsp;&nbsp;{{name}}<span class="color2">, {{countryCode}}</span></li>
+    </script>
+
+    <script id="userItem-template" type="text/x-handlebars-template">
+        <li data-value="{{userId}}"><span class="thumb"><img src="{{photoUrl}}"></span><span class="txt">{{displayName}}</span></li>
+    </script>
+
+    <script id="confirmDialog-template" type="text/x-handlebars-template">
+        <div class="popup" id="popup-confirm">
+            <div>
+                <h3>{{title}}</h3>
+                <p>{{text}}</p>
+                <div class="btns">
+                    <a class="lbtn cancel" href="#">{{textCancel}}</a>
+                    <a class="lbtn confirm" href="#">{{textOk}}</a>
+                </div>
+                <a class="icon-close-cross close" href="#"></a>
             </div>
-            <a class="icon-close-cross close" href="#"></a>
         </div>
-    </div>
-</script>
+    </script>
 
-<script id="infoDialog-template" type="text/x-handlebars-template">
-    <div class="popup" id="popup-info">
-        <div>
-            <h3>{{title}}</h3>
-            <p class="h4 color1">{{text}}</p>
-            <div class="tright">
-                <a class="button border cancel" href="#">@Model.W("Close", "layout")</a>                
+    <script id="infoDialog-template" type="text/x-handlebars-template">
+        <div class="popup" id="popup-info">
+            <div>
+                <h3>{{title}}</h3>
+                <p class="h4 color1">{{text}}</p>
+                <div class="tright">
+                    <a class="button border cancel" href="#">@Model.W("Close", "layout")</a>
+                </div>
+                <a class="close" href="#"></a>
             </div>
-            <a class="close" href="#"></a>
         </div>
-    </div>
-</script>
+    </script>
 
-<script id="inPorgressDialog-template" type="text/x-handlebars-template">
-    
-    <div class="popup-n inprogress wrapper">
-        <div class="top-line"></div>
-        <div class="cont">
-            <img src="/images/loader-gray.gif" />
-            <span>{{message}}</span>
+    <script id="inPorgressDialog-template" type="text/x-handlebars-template">
+
+        <div class="popup-n inprogress wrapper">
+            <div class="top-line"></div>
+            <div class="cont">
+                <img src="/images/loader-gray.gif" />
+                <span>{{message}}</span>
+            </div>
         </div>
-    </div>
 
-</script>
+    </script>
 
-<script id="tagger-template" type="text/x-handlebars-template">
-    <div class="dropdown tagger">        
-        <input class="inputed" type="text" placeholder="{{placeholder}}" />
-        <span class="icon-search"></span>
-        <ul style="display: none"></ul>
-    </div>
-</script>
+    <script id="tagger-template" type="text/x-handlebars-template">
+        <div class="dropdown tagger">
+            <input class="inputed" type="text" placeholder="{{placeholder}}" />
+            <span class="icon-search"></span>
+            <ul style="display: none"></ul>
+        </div>
+    </script>
