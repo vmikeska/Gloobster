@@ -30,7 +30,7 @@ var TravelB;
                         lastText: r.waitingAtText,
                         coord: r.waitingCoord
                     });
-                    _this.initDatePickers(r.fromDate, r.toDate);
+                    _this.initDatePickers(TravelB.DateUtils.myDateToMomentDate(r.fromDate), TravelB.DateUtils.myDateToMomentDate(r.toDate));
                     var $msg = _this.$html.find("#chckMsg");
                     $msg.val(r.message);
                     _this.createValidations(CheckinType.City);
@@ -115,13 +115,13 @@ var TravelB;
             if (fromDate === void 0) { fromDate = null; }
             if (toDate === void 0) { toDate = null; }
             if (!fromDate) {
-                fromDate = TravelB.DateUtils.jsDateToMyDate(TravelB.DateUtils.addDays(Date.now(), 2));
+                fromDate = moment().add(2, "days");
             }
             if (!toDate) {
-                toDate = TravelB.DateUtils.jsDateToMyDate(TravelB.DateUtils.addDays(Date.now(), 5));
+                toDate = moment().add(5, "days");
             }
-            TravelB.DateUtils.initDatePicker(this.$html.find("#fromDate"), fromDate);
-            TravelB.DateUtils.initDatePicker(this.$html.find("#toDate"), toDate);
+            this.fdCal = new Common.MyCalendar(this.$html.find("#fromDateCont"), fromDate);
+            this.tdCal = new Common.MyCalendar(this.$html.find("#toDateCont"), toDate);
         };
         CheckinWin.prototype.setCombo = function ($combo, value) {
             $combo.find("input").val(value);
@@ -184,13 +184,11 @@ var TravelB;
                 id.create(this.view.t("InvalidMsgTitle", "jsTravelB"), this.view.t("InvalidMsgBody", "jsTravelB"));
                 return;
             }
-            var origFromDate = $("#fromDate").data("myDate");
-            var origToDate = $("#toDate").data("myDate");
-            var fromDate = origFromDate;
-            var toDate = origToDate;
-            if (TravelB.DateUtils.myDateToJsDate(origFromDate) > TravelB.DateUtils.myDateToJsDate(origToDate)) {
-                fromDate = origToDate;
-                toDate = origFromDate;
+            var fromDateTrans = TravelB.DateUtils.momentDateToMyDate(this.fdCal.date);
+            var toDateTrans = TravelB.DateUtils.momentDateToMyDate(this.tdCal.date);
+            if (this.fdCal.date.isAfter(this.tdCal.date)) {
+                fromDateTrans = TravelB.DateUtils.momentDateToMyDate(this.tdCal.date);
+                toDateTrans = TravelB.DateUtils.momentDateToMyDate(this.fdCal.date);
             }
             var data = this.getRequestObj();
             data = $.extend(data, {
@@ -198,8 +196,8 @@ var TravelB;
                 waitingAtType: this.placeCombo.sourceType,
                 waitingAtText: this.placeCombo.lastText,
                 waitingCoord: this.placeCombo.coord,
-                fromDate: fromDate,
-                toDate: toDate,
+                fromDate: fromDateTrans,
+                toDate: toDateTrans,
                 checkinType: CheckinType.City,
                 id: this.editId
             });

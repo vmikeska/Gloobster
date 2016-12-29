@@ -5840,7 +5840,8 @@ footer {
 
 .calendar-cont {
   position: relative;
-  display: inline-block; }
+  display: inline-block;
+  text-align: center; }
   .calendar-cont .move-month {
     font-size: 1.1em;
     font-weight: bold;
@@ -5919,7 +5920,7 @@ footer {
       border-top: 1px solid #BCB3B8;
       text-align: right;
       padding-right: 12px; }
-      .calendar-cont .my-calendar-win .bottom .close {
+      .calendar-cont .my-calendar-win .bottom .close-cal {
         display: inline-block;
         cursor: pointer;
         background-color: #009EC4;
@@ -5927,5 +5928,5 @@ footer {
         font-size: 0.45em;
         padding: 8px;
         border-radius: 50%; }
-        .calendar-cont .my-calendar-win .bottom .close:hover {
+        .calendar-cont .my-calendar-win .bottom .close-cal:hover {
           color: #F56E12; }

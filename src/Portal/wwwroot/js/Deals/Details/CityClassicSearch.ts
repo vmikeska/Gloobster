@@ -38,11 +38,6 @@ module Planning {
 						$(".multi-conn-cont").show();
 					}
 
-					//var $depDate = $tmp.find(".dep .date");
-					//	this.datepicker($depDate, this.fromDate, (d) => {
-					//			this.fromDate = d;
-					//	});
-
 					var depDate = new Common.MyCalendar($("#depDate"), this.fromDate);
 
 						depDate.onChange = (date) => {
@@ -55,12 +50,7 @@ module Planning {
 								this.depTimeTo = to;
 								this.filterFlightsTime();
 						});
-
-						//var $arrDate = $tmp.find(".arr .date");
-						//this.datepicker($arrDate, this.toDate, (d) => {
-						//		this.toDate = d;
-						//});
-
+						
 						var arrDate = new Common.MyCalendar($("#arrDate"), this.toDate);
 						arrDate.onChange = (date) => {
 								this.toDate = date;
@@ -144,18 +134,7 @@ module Planning {
 						ts.genSlider();
 						return ts;
 				}
-
-				//private datepicker($dp, date, callback) {
-
-				//		$dp.datepicker();
-				//		$dp.datepicker("setDate", date);
-				//		$dp.change((e) => {
-				//				var $this = $(e.target);
-				//				var date = $this.datepicker("getDate");
-
-				//				callback(date);
-				//		});
-				//}
+			
 		}
 		
 }

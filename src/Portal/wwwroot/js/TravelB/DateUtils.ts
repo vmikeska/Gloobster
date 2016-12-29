@@ -20,11 +20,19 @@ module TravelB {
 			return new Date(myDate.Year, myDate.Month - 1, myDate.Day);
 		}
 
-			public static myDateToMomentDate(myDate) {
-				return moment([myDate.Year, myDate.Month, myDate.Day]);
+		public static myDateToMomentDate(myDate) {
+				if (!myDate) {
+						return null;
+				}
+
+				return moment([myDate.Year, myDate.Month -1, myDate.Day]);
 		}
 
 			public static momentDateToMyDate(mDate) {
+					if (!mDate) {
+						return null;
+					}
+
 					return {
 							Year: mDate.year(),
 							Month: mDate.month() + 1,

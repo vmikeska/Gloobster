@@ -43,7 +43,7 @@ var Common;
             var calTmp = Views.ViewBase.currentView.registerTemplate("calendar-base-template");
             this.$calCont = $(calTmp());
             this.$cont.append(this.$calCont);
-            this.$calCont.find(".close").click(function (e) {
+            this.$calCont.find(".close-cal").click(function (e) {
                 e.preventDefault();
                 _this.closeCal();
             });
@@ -122,13 +122,17 @@ var Common;
             }
         };
         MyCalendar.prototype.dayClicked = function (date, $day) {
+            this.date = date;
             this.$cont.find(".week-row .day").removeClass("active");
             $day.addClass("active");
             this.$input.val(date.format("L"));
-            if (this.onChange) {
-                this.onChange(date);
-            }
+            this.callChange();
             this.closeCal();
+        };
+        MyCalendar.prototype.callChange = function () {
+            if (this.onChange) {
+                this.onChange(this.date);
+            }
         };
         MyCalendar.prototype.getCalStart = function (date) {
             var d = date.clone();
@@ -150,6 +154,10 @@ var Common;
             if (this.isNative) {
                 this.$input = $("<input class=\"calendar-input\" type=\"date\" id=\"" + this.id + "\" />");
                 this.$cont.html(this.$input);
+                this.$input.change(function () {
+                    _this.date = moment(_this.$input.val());
+                    _this.callChange();
+                });
             }
             else {
                 this.$input = $("<input class=\"calendar-input\" readonly type=\"text\" id=\"" + this.id + "\" />");

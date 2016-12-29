@@ -18,9 +18,15 @@ var TravelB;
             return new Date(myDate.Year, myDate.Month - 1, myDate.Day);
         };
         DateUtils.myDateToMomentDate = function (myDate) {
-            return moment([myDate.Year, myDate.Month, myDate.Day]);
+            if (!myDate) {
+                return null;
+            }
+            return moment([myDate.Year, myDate.Month - 1, myDate.Day]);
         };
         DateUtils.momentDateToMyDate = function (mDate) {
+            if (!mDate) {
+                return null;
+            }
             return {
                 Year: mDate.year(),
                 Month: mDate.month() + 1,

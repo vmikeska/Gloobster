@@ -54,7 +54,7 @@
 									coord: r.waitingCoord
 								});
 
-								this.initDatePickers(r.fromDate, r.toDate);
+								this.initDatePickers(DateUtils.myDateToMomentDate(r.fromDate), DateUtils.myDateToMomentDate(r.toDate));
 
 								var $msg = this.$html.find("#chckMsg");
 								$msg.val(r.message);
@@ -170,17 +170,21 @@
 						this.placeCombo = this.initPlaceDD("2", this.$html.find("#placeCombo"));						
 				}
 
+				private fdCal;
+				private tdCal;
+
+
 				private initDatePickers(fromDate = null, toDate = null) {
 						if (!fromDate) {
-								fromDate = DateUtils.jsDateToMyDate(DateUtils.addDays(Date.now(), 2));
+							fromDate = moment().add(2, "days");
 						}
 
 						if (!toDate) {
-								toDate = DateUtils.jsDateToMyDate(DateUtils.addDays(Date.now(), 5));
+								toDate = moment().add(5, "days");
 						}
 
-						DateUtils.initDatePicker(this.$html.find("#fromDate"), fromDate);
-						DateUtils.initDatePicker(this.$html.find("#toDate"), toDate);
+						this.fdCal = new Common.MyCalendar(this.$html.find("#fromDateCont"), fromDate);						
+						this.tdCal = new Common.MyCalendar(this.$html.find("#toDateCont"), toDate);						
 				}
 
 				private setCombo($combo, value) {
@@ -251,15 +255,20 @@
 								return;
 						}
 						
-						var origFromDate = $("#fromDate").data("myDate");
-						var origToDate = $("#toDate").data("myDate");
-						var fromDate = origFromDate;
-						var toDate = origToDate;
+						//var origFromDate = $("#fromDate").data("myDate");
+						//var origToDate = $("#toDate").data("myDate");
+						var fromDateTrans = DateUtils.momentDateToMyDate(this.fdCal.date);
+						var toDateTrans = DateUtils.momentDateToMyDate(this.tdCal.date);
 
-						if (DateUtils.myDateToJsDate(origFromDate) > DateUtils.myDateToJsDate(origToDate)) {
-								fromDate = origToDate;
-								toDate = origFromDate;
+						if (this.fdCal.date.isAfter(this.tdCal.date)) {
+								fromDateTrans = DateUtils.momentDateToMyDate(this.tdCal.date);
+								toDateTrans = DateUtils.momentDateToMyDate(this.fdCal.date);
 						}
+
+						//if (DateUtils.myDateToJsDate(origFromDate) > DateUtils.myDateToJsDate(origToDate)) {
+						//		fromDate = origToDate;
+						//		toDate = origFromDate;
+						//}
 						
 						var data = this.getRequestObj();
 						data = $.extend(data, {
@@ -267,8 +276,8 @@
 								waitingAtType: this.placeCombo.sourceType,
 								waitingAtText: this.placeCombo.lastText,
 								waitingCoord: this.placeCombo.coord,
-								fromDate: fromDate,
-								toDate: toDate,
+								fromDate: fromDateTrans,
+								toDate: toDateTrans,
 								checkinType: CheckinType.City,
 								id: this.editId
 						});

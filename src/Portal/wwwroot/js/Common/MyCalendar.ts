@@ -67,7 +67,7 @@
 						this.$calCont = $(calTmp());
 						this.$cont.append(this.$calCont);
 
-						this.$calCont.find(".close").click((e) => {
+						this.$calCont.find(".close-cal").click((e) => {
 								e.preventDefault();
 								this.closeCal();
 						});
@@ -181,16 +181,22 @@
 
 			private dayClicked(date, $day) {
 
+				this.date = date;
+
 						this.$cont.find(".week-row .day").removeClass("active");
 						$day.addClass("active");
 
 						this.$input.val(date.format("L"));
 
-						if (this.onChange) {
-							this.onChange(date);
-						}
+						this.callChange();
 
 					this.closeCal();
+			}
+
+				private callChange() {
+						if (this.onChange) {
+								this.onChange(this.date);
+						}
 				}
 
 			private getCalStart(date) {
@@ -223,8 +229,10 @@
 					this.$input = $(`<input class="calendar-input" type="date" id="${this.id}" />`);
 					this.$cont.html(this.$input);
 
-					//var input = document.getElementById(this.id);
-					//input["valueAsDate"] = this.date.toDate();
+					this.$input.change(() => {
+							this.date = moment(this.$input.val());
+							this.callChange();
+					});
 
 				} else {
 
@@ -232,11 +240,7 @@
 
 					$wrap.prepend(this.$input);
 					this.$cont.html($wrap);
-
-					//var d = moment().format("L");
-
-					//this.$input.val(d);
-
+						
 					this.$input.focusin(() => {
 						this.onFocus();
 					});
