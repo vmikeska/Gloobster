@@ -93,13 +93,16 @@ a {
     line-height: 1.2em;
     font-size: 1.2em; }
 
-input[type="text"], input[type="password"], input[type="number"], textarea {
+input[type="text"], input[type="password"], input[type="number"], input[type="date"], textarea {
   padding: 8px 13px;
   border: 0;
   border-radius: 4px;
   font-size: 20px;
   color: #9999B1;
   border-color: #AAE0ED; }
+
+input[type="date"] {
+  font-family: "Lato", sans-serif; }
 
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
@@ -4500,6 +4503,26 @@ footer {
   display: none; }
 
 .fly-tickets {
+  /*.date-cont{
+        position: relative;              
+        display: inline-block;
+
+        input {
+            font-size: 1.1em;
+            width: 120px;
+            padding-left: 35px;
+            border: 1px solid $light-blue;
+            color: $dark-blue;
+        }
+
+        .icon-calendar {
+            font-size: 1.3em;
+            position: absolute;
+            left: 7px;
+            top: 10px;
+            color: $dark-blue;
+        }
+    }*/
   /*@include below-width(1279) {
         
         .flight-results {
@@ -4525,21 +4548,6 @@ footer {
     }*/ }
   .fly-tickets .expander, .fly-tickets .collapser {
     text-align: left; }
-  .fly-tickets .date-cont {
-    position: relative;
-    display: inline-block; }
-    .fly-tickets .date-cont input {
-      font-size: 1.1em;
-      width: 120px;
-      padding-left: 35px;
-      border: 1px solid #65BDD7;
-      color: #005476; }
-    .fly-tickets .date-cont .icon-calendar {
-      font-size: 1.3em;
-      position: absolute;
-      left: 7px;
-      top: 10px;
-      color: #005476; }
   .fly-tickets .queue-all {
     position: relative;
     text-align: left;
@@ -5820,9 +5828,15 @@ footer {
     background-color: antiquewhite;
     font-weight: bold; }
 
-.my-calendar-win {
-  margin-top: 40px;
-  margin-bottom: 40px; }
+.cal-wrap {
+  display: inline-block;
+  position: relative; }
+  .cal-wrap .icon-calendar {
+    font-size: 1em;
+    position: absolute;
+    left: 7px;
+    top: 12px;
+    color: #009EC4; }
 
 .calendar-cont {
   position: relative;
@@ -5839,12 +5853,17 @@ footer {
       background-color: #009EC4;
       color: white; }
   .calendar-cont .calendar-input {
+    display: inline-block;
     border-radius: 2px;
-    border: 1px solid #65BDD7 !important; }
+    border: 1px solid #65BDD7 !important;
+    font-size: 1.1em;
+    width: 120px;
+    padding-left: 28px; }
   .calendar-cont .my-calendar-win {
     position: absolute;
     left: 0;
-    top: 30px;
+    top: 45px;
+    min-width: 240px;
     background-color: white;
     z-index: 99999999;
     border: 1px solid #009EC4;

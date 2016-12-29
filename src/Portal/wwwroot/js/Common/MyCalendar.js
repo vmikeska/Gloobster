@@ -7,6 +7,7 @@ var Common;
             this.daysOrder = [];
             this.$cont = $cont;
             this.id = id;
+            this.$cont.addClass("calendar-cont");
             this.now = moment();
             if (date) {
                 this.date = date;
@@ -130,6 +131,7 @@ var Common;
             var _this = this;
             var os = Views.ViewBase.getMobileOS();
             var isNative = os !== OS.Other;
+            var $wrap = $("<div class=\"cal-wrap\"><span class=\"icon-calendar\"></span></div>");
             if (isNative) {
                 this.$input = $("<input class=\"calendar-input\" type=\"date\" id=\"" + this.id + "\" />");
                 this.$cont.html(this.$input);
@@ -138,7 +140,8 @@ var Common;
             }
             else {
                 this.$input = $("<input class=\"calendar-input\" readonly type=\"text\" id=\"" + this.id + "\" />");
-                this.$cont.html(this.$input);
+                $wrap.prepend(this.$input);
+                this.$cont.html($wrap);
                 var d = moment().format("L");
                 this.$input.val(d);
                 this.$input.focusin(function () {

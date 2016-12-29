@@ -19,6 +19,8 @@
 						this.$cont = $cont;
 					  this.id = id;
 
+					this.$cont.addClass("calendar-cont");
+
 						this.now = moment();
 
 						if (date) {
@@ -185,36 +187,40 @@
 				d.endOf("week");
 				return d;
 			}
-				
+
 			private createInput() {
 
-					var os = Views.ViewBase.getMobileOS();
+				var os = Views.ViewBase.getMobileOS();
 
-						var isNative = os !== OS.Other;
-				
-						if (isNative) {
-							this.$input = $(`<input class="calendar-input" type="date" id="${this.id}" />`);
-							this.$cont.html(this.$input);
-								
-							var input = document.getElementById(this.id);								
-							input["valueAsDate"] = this.date.toDate();
-							
-						} else {
+				var isNative = os !== OS.Other;
 
-								this.$input = $(`<input class="calendar-input" readonly type="text" id="${this.id}" />`);
-								this.$cont.html(this.$input);
+				var $wrap = $(`<div class="cal-wrap"><span class="icon-calendar"></span></div>`);
 
-							  var d = moment().format("L");
+				if (isNative) {
+					this.$input = $(`<input class="calendar-input" type="date" id="${this.id}" />`);
+					this.$cont.html(this.$input);
 
-								this.$input.val(d);
+					var input = document.getElementById(this.id);
+					input["valueAsDate"] = this.date.toDate();
 
-								this.$input.focusin(() => {
-								this.onFocus();
-							});
+				} else {
 
-						}
+					this.$input = $(`<input class="calendar-input" readonly type="text" id="${this.id}" />`);
+
+					$wrap.prepend(this.$input);
+					this.$cont.html($wrap);
+
+					var d = moment().format("L");
+
+					this.$input.val(d);
+
+					this.$input.focusin(() => {
+						this.onFocus();
+					});
 
 				}
+					
+			}
 
 
 		}
