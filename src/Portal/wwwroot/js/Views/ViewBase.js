@@ -216,6 +216,19 @@ var Views;
                 text += possible.charAt(Math.floor(Math.random() * possible.length));
             return text;
         };
+        ViewBase.getMobileOS = function () {
+            var userAgent = navigator.userAgent || navigator.vendor || window["opera"];
+            if (/windows phone/i.test(userAgent)) {
+                return OS.WP;
+            }
+            if (/android/i.test(userAgent)) {
+                return OS.A;
+            }
+            if (/iPad|iPhone|iPod/.test(userAgent) && !window["MSStream"]) {
+                return OS.IOS;
+            }
+            return OS.Other;
+        };
         return ViewBase;
     }());
     Views.ViewBase = ViewBase;

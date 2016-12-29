@@ -20,6 +20,7 @@
 /// <reference path="js/common/gnonlinesearchbox.js" />
 /// <reference path="js/common/lastitem.js" />
 /// <reference path="js/common/listgenerator.js" />
+/// <reference path="js/common/mycalendar.js" />
 /// <reference path="js/common/nouislider/nouislider.js" />
 /// <reference path="js/common/placesearchbox.js" />
 /// <reference path="js/common/popup.js" />

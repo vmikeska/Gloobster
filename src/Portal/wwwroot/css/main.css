@@ -1173,6 +1173,15 @@ footer {
 .icon-yelp:before {
   content: "\ead7"; }
 
+.icon-arrow-left:before {
+  content: "\e921"; }
+
+.icon-arrow-right:before {
+  content: "\e923"; }
+
+.icon-cross-small:before {
+  content: "\e924"; }
+
 .icon-continent:before {
   content: "\e91e"; }
 
@@ -5818,52 +5827,86 @@ footer {
 .calendar-cont {
   position: relative;
   display: inline-block; }
-
-.calendar-input {
-  border-radius: 2px;
-  border: 1px solid #65BDD7 !important; }
-
-.my-calendar-win {
-  position: absolute;
-  left: 0;
-  top: 30px;
-  background-color: white;
-  z-index: 99999999;
-  border: 1px solid #009EC4;
-  display: inline-block;
-  padding: 8px;
-  -webkit-box-shadow: 0px 0px 14px 0px rgba(50, 50, 50, 0.75);
-  -moz-box-shadow: 0px 0px 14px 0px rgba(50, 50, 50, 0.75);
-  box-shadow: 0px 0px 14px 0px rgba(50, 50, 50, 0.75);
-  border-radius: 4px; }
-  .my-calendar-win .months {
-    display: table;
-    width: 100%;
-    font-weight: bold; }
-    .my-calendar-win .months .l-arr {
-      display: table-cell; }
-    .my-calendar-win .months .date {
-      display: table-cell; }
-    .my-calendar-win .months .r-arr {
-      display: table-cell; }
-  .my-calendar-win .day {
-    width: 35px; }
-  .my-calendar-win .days-title {
-    display: table;
+  .calendar-cont .move-month {
+    font-size: 1.1em;
     font-weight: bold;
-    margin-top: 12px;
-    margin-bottom: 8px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #BCB3B8; }
-    .my-calendar-win .days-title .day {
-      display: table-cell; }
-  .my-calendar-win .week-row {
-    display: table;
-    margin-bottom: 8px; }
-    .my-calendar-win .week-row .day {
-      display: table-cell; }
-      .my-calendar-win .week-row .day:hover {
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 2px;
+    display: inline-block;
+    width: 1em; }
+    .calendar-cont .move-month:hover {
+      background-color: #009EC4;
+      color: white; }
+  .calendar-cont .calendar-input {
+    border-radius: 2px;
+    border: 1px solid #65BDD7 !important; }
+  .calendar-cont .my-calendar-win {
+    position: absolute;
+    left: 0;
+    top: 30px;
+    background-color: white;
+    z-index: 99999999;
+    border: 1px solid #009EC4;
+    display: inline-block;
+    padding: 8px;
+    -webkit-box-shadow: 0px 0px 14px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow: 0px 0px 14px 0px rgba(50, 50, 50, 0.75);
+    box-shadow: 0px 0px 14px 0px rgba(50, 50, 50, 0.75);
+    border-radius: 4px; }
+    .calendar-cont .my-calendar-win .months {
+      display: table;
+      width: 100%;
+      font-weight: bold; }
+      .calendar-cont .my-calendar-win .months .l-arr {
+        display: table-cell; }
+      .calendar-cont .my-calendar-win .months .date {
+        display: table-cell; }
+      .calendar-cont .my-calendar-win .months .r-arr {
+        display: table-cell; }
+    .calendar-cont .my-calendar-win .day {
+      width: 35px; }
+    .calendar-cont .my-calendar-win .days-title {
+      display: table;
+      font-weight: bold;
+      margin-top: 12px;
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #BCB3B8; }
+      .calendar-cont .my-calendar-win .days-title .day {
+        display: table-cell; }
+      .calendar-cont .my-calendar-win .days-title .weekend {
+        color: #009EC4; }
+    .calendar-cont .my-calendar-win .week-row {
+      display: table;
+      margin-bottom: 8px; }
+      .calendar-cont .my-calendar-win .week-row .day {
+        display: table-cell; }
+        .calendar-cont .my-calendar-win .week-row .day.weekend {
+          color: #009EC4; }
+        .calendar-cont .my-calendar-win .week-row .day.old {
+          color: #BCB3B8; }
+        .calendar-cont .my-calendar-win .week-row .day.active {
+          border-radius: 4px;
+          background-color: #009EC4;
+          color: white;
+          cursor: pointer; }
+      .calendar-cont .my-calendar-win .week-row .selectable:hover {
         border-radius: 4px;
         background-color: #009EC4;
         color: white;
         cursor: pointer; }
+    .calendar-cont .my-calendar-win .bottom {
+      border-top: 1px solid #BCB3B8;
+      text-align: right;
+      padding-right: 12px; }
+      .calendar-cont .my-calendar-win .bottom .close {
+        display: inline-block;
+        cursor: pointer;
+        background-color: #009EC4;
+        color: white;
+        font-size: 0.45em;
+        padding: 8px;
+        border-radius: 50%; }
+        .calendar-cont .my-calendar-win .bottom .close:hover {
+          color: #F56E12; }

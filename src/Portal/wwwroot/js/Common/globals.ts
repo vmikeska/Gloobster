@@ -77,4 +77,6 @@ enum TripEntityType { Place, Travel }
 
 enum ScoreLevel { Excellent, Good, Standard }
 
+enum OS { A, WP, IOS, Other }
+
 

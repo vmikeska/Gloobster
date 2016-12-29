@@ -105,4 +105,11 @@ var ScoreLevel;
     ScoreLevel[ScoreLevel["Good"] = 1] = "Good";
     ScoreLevel[ScoreLevel["Standard"] = 2] = "Standard";
 })(ScoreLevel || (ScoreLevel = {}));
+var OS;
+(function (OS) {
+    OS[OS["A"] = 0] = "A";
+    OS[OS["WP"] = 1] = "WP";
+    OS[OS["IOS"] = 2] = "IOS";
+    OS[OS["Other"] = 3] = "Other";
+})(OS || (OS = {}));
 //# sourceMappingURL=globals.js.map
