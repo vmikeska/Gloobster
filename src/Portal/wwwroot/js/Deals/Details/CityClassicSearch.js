@@ -2,8 +2,8 @@ var Planning;
 (function (Planning) {
     var CityClassicSearch = (function () {
         function CityClassicSearch(cd) {
-            this.fromDate = this.addDays(new Date(), 1);
-            this.toDate = this.addDays(this.fromDate, 3);
+            this.fromDate = moment().add(1, "days");
+            this.toDate = this.fromDate.clone().add(3, "days");
             this.currentFlights = [];
             this.depTimeFrom = 0;
             this.depTimeTo = 1440;
@@ -27,19 +27,19 @@ var Planning;
                 this.airSel.init();
                 $(".multi-conn-cont").show();
             }
-            var $depDate = $tmp.find(".dep .date");
-            this.datepicker($depDate, this.fromDate, function (d) {
-                _this.fromDate = d;
-            });
+            var depDate = new Common.MyCalendar($("#depDate"), this.fromDate);
+            depDate.onChange = function (date) {
+                _this.fromDate = date;
+            };
             var $depTime = this.timeSlider($tmp.find(".dep .time"), "depTime", function (from, to) {
                 _this.depTimeFrom = from;
                 _this.depTimeTo = to;
                 _this.filterFlightsTime();
             });
-            var $arrDate = $tmp.find(".arr .date");
-            this.datepicker($arrDate, this.toDate, function (d) {
-                _this.toDate = d;
-            });
+            var arrDate = new Common.MyCalendar($("#arrDate"), this.toDate);
+            arrDate.onChange = function (date) {
+                _this.toDate = date;
+            };
             var $arrTime = this.timeSlider($tmp.find(".arr .time"), "arrTime", function (from, to) {
                 _this.arrTimeFrom = from;
                 _this.arrTimeTo = to;
@@ -77,8 +77,8 @@ var Planning;
         };
         CityClassicSearch.prototype.genCustomFlights = function () {
             var _this = this;
-            var fromDate = TravelB.DateUtils.myDateToTrans(TravelB.DateUtils.jsDateToMyDate(this.fromDate));
-            var toDate = TravelB.DateUtils.myDateToTrans(TravelB.DateUtils.jsDateToMyDate(this.toDate));
+            var fromDate = TravelB.DateUtils.myDateToTrans(TravelB.DateUtils.momentDateToMyDate(this.fromDate));
+            var toDate = TravelB.DateUtils.myDateToTrans(TravelB.DateUtils.momentDateToMyDate(this.toDate));
             var prms = [
                 ["ss", "1"],
                 ["dateFrom", fromDate],
@@ -100,15 +100,6 @@ var Planning;
             };
             ts.genSlider();
             return ts;
-        };
-        CityClassicSearch.prototype.datepicker = function ($dp, date, callback) {
-            $dp.datepicker();
-            $dp.datepicker("setDate", date);
-            $dp.change(function (e) {
-                var $this = $(e.target);
-                var date = $this.datepicker("getDate");
-                callback(date);
-            });
         };
         return CityClassicSearch;
     }());

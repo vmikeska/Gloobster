@@ -1,8 +1,9 @@
 module Planning {
 	export class CityClassicSearch {
 				
-				private fromDate = this.addDays(new Date(), 1);
-				private toDate = this.addDays(this.fromDate, 3);
+			private fromDate = moment().add(1, "days");			
+			private toDate = this.fromDate.clone().add(3, "days");
+
 				private currentFlights: Flight[] = [];
 
 				private depTimeFrom = 0;
@@ -37,10 +38,17 @@ module Planning {
 						$(".multi-conn-cont").show();
 					}
 
-					var $depDate = $tmp.find(".dep .date");
-						this.datepicker($depDate, this.fromDate, (d) => {
-								this.fromDate = d;
-						});
+					//var $depDate = $tmp.find(".dep .date");
+					//	this.datepicker($depDate, this.fromDate, (d) => {
+					//			this.fromDate = d;
+					//	});
+
+					var depDate = new Common.MyCalendar($("#depDate"), this.fromDate);
+
+						depDate.onChange = (date) => {
+								this.fromDate = date;
+						}
+
 
 						var $depTime = this.timeSlider($tmp.find(".dep .time"), "depTime", (from, to) => {
 								this.depTimeFrom = from;
@@ -48,10 +56,15 @@ module Planning {
 								this.filterFlightsTime();
 						});
 
-						var $arrDate = $tmp.find(".arr .date");
-						this.datepicker($arrDate, this.toDate, (d) => {
-								this.toDate = d;
-						});
+						//var $arrDate = $tmp.find(".arr .date");
+						//this.datepicker($arrDate, this.toDate, (d) => {
+						//		this.toDate = d;
+						//});
+
+						var arrDate = new Common.MyCalendar($("#arrDate"), this.toDate);
+						arrDate.onChange = (date) => {
+								this.toDate = date;
+						}
 
 						var $arrTime = this.timeSlider($tmp.find(".arr .time"), "arrTime", (from, to) => {
 								this.arrTimeFrom = from;
@@ -102,8 +115,8 @@ module Planning {
 				}
 
 				private genCustomFlights() {
-						var fromDate = TravelB.DateUtils.myDateToTrans(TravelB.DateUtils.jsDateToMyDate(this.fromDate));
-						var toDate = TravelB.DateUtils.myDateToTrans(TravelB.DateUtils.jsDateToMyDate(this.toDate));
+						var fromDate = TravelB.DateUtils.myDateToTrans(TravelB.DateUtils.momentDateToMyDate(this.fromDate));
+						var toDate = TravelB.DateUtils.myDateToTrans(TravelB.DateUtils.momentDateToMyDate(this.toDate));
 
 						var prms = [
 								["ss", "1"],								
@@ -132,17 +145,17 @@ module Planning {
 						return ts;
 				}
 
-				private datepicker($dp, date, callback) {
+				//private datepicker($dp, date, callback) {
 
-						$dp.datepicker();
-						$dp.datepicker("setDate", date);
-						$dp.change((e) => {
-								var $this = $(e.target);
-								var date = $this.datepicker("getDate");
+				//		$dp.datepicker();
+				//		$dp.datepicker("setDate", date);
+				//		$dp.change((e) => {
+				//				var $this = $(e.target);
+				//				var date = $this.datepicker("getDate");
 
-								callback(date);
-						});
-				}
+				//				callback(date);
+				//		});
+				//}
 		}
 		
 }

@@ -23,7 +23,7 @@ var TravelB;
         DateUtils.momentDateToMyDate = function (mDate) {
             return {
                 Year: mDate.year(),
-                Month: mDate.month(),
+                Month: mDate.month() + 1,
                 Day: mDate.date()
             };
         };
