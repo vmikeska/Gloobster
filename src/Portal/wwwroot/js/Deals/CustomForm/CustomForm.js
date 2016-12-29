@@ -45,27 +45,29 @@ var Planning;
         CustomFrom.prototype.initDateRange = function () {
             var _this = this;
             var depOpts = { minDate: moment().add(1, "days").toDate() };
-            this.datepicker(this.$dpDep, depOpts, function (date) {
-                _this.depDate = TravelB.DateUtils.jsDateToMyDate(date);
-                var td = TravelB.DateUtils.myDateToTrans(_this.depDate);
+            this.dpDep = new Common.MyCalendar($("#dpDepCont"));
+            this.dpDep.onChange = function (date) {
+                _this.depDate = date;
+                var md = TravelB.DateUtils.momentDateToMyDate(_this.depDate);
+                var td = TravelB.DateUtils.myDateToTrans(md);
                 var caller = new Planning.PropsDataUpload(_this.searchId, "dep");
                 caller.setVal(td);
                 caller.send();
-            });
-            this.datepicker(this.$dpArr, {}, function (date) {
-                _this.arrDate = TravelB.DateUtils.jsDateToMyDate(date);
-                var td = TravelB.DateUtils.myDateToTrans(_this.arrDate);
+            };
+            this.dpArr = new Common.MyCalendar($("#dpArrCont"));
+            this.dpArr.onChange = function (date) {
+                _this.arrDate = date;
+                var md = TravelB.DateUtils.momentDateToMyDate(_this.arrDate);
+                var td = TravelB.DateUtils.myDateToTrans(md);
                 var caller = new Planning.PropsDataUpload(_this.searchId, "arr");
                 caller.setVal(td);
                 caller.send();
-            });
+            };
         };
         CustomFrom.prototype.create = function () {
             var tmp = this.v.registerTemplate("custom-template");
             this.$form = $(tmp());
             $("#tabContent").html(this.$form);
-            this.$dpDep = this.$form.find("#dpDep");
-            this.$dpArr = this.$form.find("#dpArr");
             this.initShowHide();
         };
         CustomFrom.prototype.initShowHide = function () {
@@ -167,10 +169,10 @@ var Planning;
         };
         CustomFrom.prototype.loadSearch = function (search) {
             this.$form.find("#cbStandard").prop("checked", search.standardAirs);
-            this.depDate = search.deparature;
-            this.arrDate = search.arrival;
-            this.$dpDep.datepicker("setDate", TravelB.DateUtils.myDateToJsDate(this.depDate));
-            this.$dpArr.datepicker("setDate", TravelB.DateUtils.myDateToJsDate(this.arrDate));
+            this.depDate = TravelB.DateUtils.myDateToMomentDate(search.deparature);
+            this.arrDate = TravelB.DateUtils.myDateToMomentDate(search.arrival);
+            this.dpDep.setDate(this.depDate);
+            this.dpArr.setDate(this.arrDate);
             this.slider.setVals(search.daysFrom, search.daysTo);
             var airs = this.getAirs(search);
             this.airTagger.setSelectedItems(airs);
@@ -183,8 +185,8 @@ var Planning;
             var $fixedPart = this.$form.find(".fixed-part");
             if (started) {
                 var days = this.slider.getRange();
-                var dep = moment(TravelB.DateUtils.myDateToJsDate(this.depDate)).format("l");
-                var arr = moment(TravelB.DateUtils.myDateToJsDate(this.arrDate)).format("l");
+                var dep = this.depDate.format("l");
+                var arr = this.arrDate.format("l");
                 $(".earliest-dep").html(dep);
                 $(".latest-arr").html(arr);
                 $(".days-from").html(days.from);

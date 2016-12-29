@@ -12,8 +12,8 @@ module Planning {
 		private dataLoader: SearchDataLoader;
 		private menu: CustomMenu;
 
-		private $dpDep;
-		private $dpArr;
+		private dpDep: Common.MyCalendar;
+		private dpArr: Common.MyCalendar;
 
 		public searchId;
 
@@ -72,34 +72,40 @@ module Planning {
 		private initDateRange() {
 
 				var depOpts = { minDate: moment().add(1, "days").toDate() };
-				
-				this.datepicker(this.$dpDep, depOpts, (date) => {
-						this.depDate = TravelB.DateUtils.jsDateToMyDate(date);
-						var td = TravelB.DateUtils.myDateToTrans(this.depDate);
+
+				this.dpDep = new Common.MyCalendar($("#dpDepCont"));
+				this.dpDep.onChange = (date) => {
+
+						this.depDate = date;
+						
+						var md = TravelB.DateUtils.momentDateToMyDate(this.depDate);
+						var td = TravelB.DateUtils.myDateToTrans(md);
 
 						var caller = new PropsDataUpload(this.searchId, "dep");
 						caller.setVal(td);
 						caller.send();
-				});
+				}
 
-				this.datepicker(this.$dpArr, {}, (date) => {
-						this.arrDate = TravelB.DateUtils.jsDateToMyDate(date);
-						var td = TravelB.DateUtils.myDateToTrans(this.arrDate);
+				this.dpArr = new Common.MyCalendar($("#dpArrCont"));
+				this.dpArr.onChange = (date) => {
+						
+						this.arrDate = date;
+						
+						var md = TravelB.DateUtils.momentDateToMyDate(this.arrDate);
+						var td = TravelB.DateUtils.myDateToTrans(md);
 
 						var caller = new PropsDataUpload(this.searchId, "arr");
 						caller.setVal(td);
 						caller.send();
-				});
+					}
+				
 		}
 
 		private create() {
 			var tmp = this.v.registerTemplate("custom-template");
 			this.$form = $(tmp());
 			$("#tabContent").html(this.$form);
-
-			this.$dpDep = this.$form.find("#dpDep");
-			this.$dpArr = this.$form.find("#dpArr");
-
+				
 			this.initShowHide();
 		}
 
@@ -230,11 +236,11 @@ module Planning {
 		private loadSearch(search) {
 			this.$form.find("#cbStandard").prop("checked", search.standardAirs);
 
-			this.depDate = search.deparature;
-			this.arrDate = search.arrival;
+			this.depDate = TravelB.DateUtils.myDateToMomentDate(search.deparature);
+			this.arrDate = TravelB.DateUtils.myDateToMomentDate(search.arrival);
 
-			this.$dpDep.datepicker("setDate", TravelB.DateUtils.myDateToJsDate(this.depDate));
-			this.$dpArr.datepicker("setDate", TravelB.DateUtils.myDateToJsDate(this.arrDate));
+			this.dpDep.setDate(this.depDate);
+			this.dpArr.setDate(this.arrDate);
 				
 			this.slider.setVals(search.daysFrom, search.daysTo);
 
@@ -256,8 +262,8 @@ module Planning {
 					if (started) {
 							var days = this.slider.getRange();
 
-							var dep = moment(TravelB.DateUtils.myDateToJsDate(this.depDate)).format("l");
-							var arr = moment(TravelB.DateUtils.myDateToJsDate(this.arrDate)).format("l");
+							var dep = this.depDate.format("l");
+							var arr = this.arrDate.format("l");
 
 							$(".earliest-dep").html(dep);
 							$(".latest-arr").html(arr);

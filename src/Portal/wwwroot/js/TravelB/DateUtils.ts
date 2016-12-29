@@ -20,6 +20,18 @@ module TravelB {
 			return new Date(myDate.Year, myDate.Month - 1, myDate.Day);
 		}
 
+			public static myDateToMomentDate(myDate) {
+				return moment([myDate.Year, myDate.Month, myDate.Day]);
+		}
+
+			public static momentDateToMyDate(mDate) {
+					return {
+							Year: mDate.year(),
+							Month: mDate.month(),
+							Day: mDate.date()
+					};
+			}
+
 		public static jsDateToMyDate(date) {
 			return {
 				Year: date.getFullYear(),
@@ -34,7 +46,7 @@ module TravelB {
 			};
 		}
 
-		public static initDatePicker($datePicker, date, onChange = null) {
+		public static initDatePicker($datePicker, date, onChange: Function = null) {
 			var dpConfig = this.datePickerConfig();
 
 			$datePicker.datepicker(dpConfig);

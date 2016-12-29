@@ -15,9 +15,12 @@
 
 				private opened = false;
 				
-				constructor($cont, id: string, date = null) {
+				constructor($cont, date = null) {
 						this.$cont = $cont;
-					  this.id = id;
+
+					var inputId = `${$cont.attr("id")}-input`;
+
+					this.id = inputId;
 
 					this.$cont.addClass("calendar-cont");
 
@@ -28,12 +31,30 @@
 						} else {
 							this.date = moment();								
 						}
-						this.date.startOf("day");						
+						this.date.startOf("day");				
+
+						this.gen();
+				}
+				
+				public setDate(date) {
+						this.date = date;
+
+					this.setDateInternal();
 				}
 
-				private daysOrder = [];
+				private setDateInternal() {
+						if (this.isNative) {								
+								var input = document.getElementById(this.id);
+								input["valueAsDate"] = this.date.toDate();
+						} else {
+								
+								var d = this.date.format("L");
+								this.$input.val(d);								
+						}
+				}
 
-				public gen() {						
+
+				private gen() {						
 						this.createInput();
 				}
 
@@ -188,20 +209,22 @@
 				return d;
 			}
 
+				private isNative;
+
 			private createInput() {
 
 				var os = Views.ViewBase.getMobileOS();
 
-				var isNative = os !== OS.Other;
+				this.isNative = os !== OS.Other;
 
 				var $wrap = $(`<div class="cal-wrap"><span class="icon-calendar"></span></div>`);
 
-				if (isNative) {
+				if (this.isNative) {
 					this.$input = $(`<input class="calendar-input" type="date" id="${this.id}" />`);
 					this.$cont.html(this.$input);
 
-					var input = document.getElementById(this.id);
-					input["valueAsDate"] = this.date.toDate();
+					//var input = document.getElementById(this.id);
+					//input["valueAsDate"] = this.date.toDate();
 
 				} else {
 
@@ -210,16 +233,18 @@
 					$wrap.prepend(this.$input);
 					this.$cont.html($wrap);
 
-					var d = moment().format("L");
+					//var d = moment().format("L");
 
-					this.$input.val(d);
+					//this.$input.val(d);
 
 					this.$input.focusin(() => {
 						this.onFocus();
 					});
 
 				}
-					
+
+				this.setDateInternal();
+
 			}
 
 

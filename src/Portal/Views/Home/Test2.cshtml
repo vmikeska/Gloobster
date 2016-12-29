@@ -3,9 +3,8 @@
     Layout = "_LayoutNew";
 }
 
-<script src="/js/TravelB/DateUtils.js" type="text/javascript"></script>
 
-<script src="/js/Common/MyCalendar.js" type="text/javascript"></script>
+
 
 <div id="testCont">
 
@@ -18,8 +17,11 @@
         
         currentView = new Views.ViewBase();
 
-        var cal = new Common.MyCalendar($("#testCont"), "myDate");
-        cal.gen();
+        var ndate = moment().add(5, "days");
+
+
+        var cal = new Common.MyCalendar($("#testCont"));
+        cal.setDate(ndate);
 
     }
 

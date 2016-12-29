@@ -1,12 +1,12 @@
 var Common;
 (function (Common) {
     var MyCalendar = (function () {
-        function MyCalendar($cont, id, date) {
+        function MyCalendar($cont, date) {
             if (date === void 0) { date = null; }
             this.opened = false;
-            this.daysOrder = [];
             this.$cont = $cont;
-            this.id = id;
+            var inputId = $cont.attr("id") + "-input";
+            this.id = inputId;
             this.$cont.addClass("calendar-cont");
             this.now = moment();
             if (date) {
@@ -16,7 +16,22 @@ var Common;
                 this.date = moment();
             }
             this.date.startOf("day");
+            this.gen();
         }
+        MyCalendar.prototype.setDate = function (date) {
+            this.date = date;
+            this.setDateInternal();
+        };
+        MyCalendar.prototype.setDateInternal = function () {
+            if (this.isNative) {
+                var input = document.getElementById(this.id);
+                input["valueAsDate"] = this.date.toDate();
+            }
+            else {
+                var d = this.date.format("L");
+                this.$input.val(d);
+            }
+        };
         MyCalendar.prototype.gen = function () {
             this.createInput();
         };
@@ -130,24 +145,21 @@ var Common;
         MyCalendar.prototype.createInput = function () {
             var _this = this;
             var os = Views.ViewBase.getMobileOS();
-            var isNative = os !== OS.Other;
+            this.isNative = os !== OS.Other;
             var $wrap = $("<div class=\"cal-wrap\"><span class=\"icon-calendar\"></span></div>");
-            if (isNative) {
+            if (this.isNative) {
                 this.$input = $("<input class=\"calendar-input\" type=\"date\" id=\"" + this.id + "\" />");
                 this.$cont.html(this.$input);
-                var input = document.getElementById(this.id);
-                input["valueAsDate"] = this.date.toDate();
             }
             else {
                 this.$input = $("<input class=\"calendar-input\" readonly type=\"text\" id=\"" + this.id + "\" />");
                 $wrap.prepend(this.$input);
                 this.$cont.html($wrap);
-                var d = moment().format("L");
-                this.$input.val(d);
                 this.$input.focusin(function () {
                     _this.onFocus();
                 });
             }
+            this.setDateInternal();
         };
         return MyCalendar;
     }());

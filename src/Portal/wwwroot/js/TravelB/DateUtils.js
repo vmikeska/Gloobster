@@ -17,6 +17,16 @@ var TravelB;
         DateUtils.myDateToJsDate = function (myDate) {
             return new Date(myDate.Year, myDate.Month - 1, myDate.Day);
         };
+        DateUtils.myDateToMomentDate = function (myDate) {
+            return moment([myDate.Year, myDate.Month, myDate.Day]);
+        };
+        DateUtils.momentDateToMyDate = function (mDate) {
+            return {
+                Year: mDate.year(),
+                Month: mDate.month(),
+                Day: mDate.date()
+            };
+        };
         DateUtils.jsDateToMyDate = function (date) {
             return {
                 Year: date.getFullYear(),
