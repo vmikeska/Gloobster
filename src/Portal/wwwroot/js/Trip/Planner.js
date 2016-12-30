@@ -134,8 +134,8 @@ var Trip;
             $root.find(".dateLink").click(function (e) {
                 e.preventDefault();
                 var $t = $(e.target);
-                var id = $t.closest(".placeCont").attr("id");
-                _this.setActivePlaceOrTravel(id);
+                var $block = $t.closest(".placeCont");
+                _this.setActivePlaceOrTravel($block);
             });
         };
         Planner.prototype.appendToTimeline = function ($html) {

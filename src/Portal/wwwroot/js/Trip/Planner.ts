@@ -188,8 +188,8 @@
 			$root.find(".dateLink").click((e) => {
 				e.preventDefault();
 				var $t = $(e.target);
-				var id = $t.closest(".placeCont").attr("id");
-				this.setActivePlaceOrTravel(id);
+				var $block = $t.closest(".placeCont");
+				this.setActivePlaceOrTravel($block);
 			});
 		}
 			
