@@ -196,8 +196,8 @@ var Views;
             if (prms === null) {
                 return;
             }
-            prms.push(["fromDate", TravelB.DateUtils.myDateToTrans(this.filter.filterDateFrom)]);
-            prms.push(["toDate", TravelB.DateUtils.myDateToTrans(this.filter.filterDateTo)]);
+            prms.push(["fromDate", TravelB.DateUtils.momentDateToTrans(this.filter.filterDateFrom)]);
+            prms.push(["toDate", TravelB.DateUtils.momentDateToTrans(this.filter.filterDateTo)]);
             Views.ViewBase.currentView.apiGet("CheckinCity", prms, function (cs) {
                 var fc = _.reject(cs, function (c) { return c.userId === Views.ViewBase.currentUserId; });
                 _this.cityFncs.genCheckinsList(fc);

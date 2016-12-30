@@ -38,16 +38,6 @@ module Planning {
 			}
 		}
 
-		private datepicker($dp, opts = {}, callback) {
-			$dp.datepicker(opts);
-			$dp.change((e) => {
-				var $this = $(e.target);
-				var date = $this.datepicker("getDate");
-
-				callback(date);
-			});
-		}
-
 		private initDatesClosing() {
 			this.$form.find("#datesDoneBtn").click((e) => {
 					e.preventDefault();

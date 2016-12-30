@@ -1,5 +1,5 @@
 module Trip {
-		export class PlaceTravelTime {
+	export class PlaceTravelTime {
 
 		private dialogManager;
 		private data;
@@ -7,7 +7,7 @@ module Trip {
 		private mainTmp;
 
 		private $html;
-			
+
 		constructor(dialogManager, data) {
 			this.mainTmp = Views.ViewBase.currentView.registerTemplate("placeTravelTime-template");
 			this.dialogManager = dialogManager;
@@ -15,7 +15,7 @@ module Trip {
 		}
 
 		public create(type: TripEntityType) {
-				var context = {};
+			var context = {};
 
 
 			if (type === TripEntityType.Travel) {
@@ -31,19 +31,23 @@ module Trip {
 
 				var travel = this.dialogManager.planner.placesMgr.getTravelById(this.data.id);
 
-				this.initDatePicker("leavingDate", this.data.leavingDateTime, (datePrms, date) => {
-					this.updateDateTime(datePrms, null, "leavingDateTime");
+				this.initDatePicker("leavingDate",
+					this.data.leavingDateTime,
+					(datePrms, date) => {
+						this.updateDateTime(datePrms, null, "leavingDateTime");
 
-					var placeId = travel.to.id;
-					this.ribbonUpdate(placeId, date, "arrivingDate");
-				});
+						var placeId = travel.from.id;
+						this.ribbonUpdate(placeId, date, "leavingDate");
+					});
 
-				this.initDatePicker("arrivingDate", this.data.arrivingDateTime, (datePrms, date) => {
-					this.updateDateTime(datePrms, null, "arrivingDateTime");
+				this.initDatePicker("arrivingDate",
+					this.data.arrivingDateTime,
+					(datePrms, date) => {
+						this.updateDateTime(datePrms, null, "arrivingDateTime");
 
-					var placeId = travel.from.id;
-					this.ribbonUpdate(placeId, date, "leavingDate");
-				});
+						var placeId = travel.to.id;
+						this.ribbonUpdate(placeId, date, "arrivingDate");
+					});
 
 				this.initTimePicker("arrivingHours", "arrivingMinutes", "arrivingDateTime", this.data.arrivingDateTime);
 				this.initTimePicker("leavingHours", "leavingMinutes", "leavingDateTime", this.data.leavingDateTime);
@@ -68,69 +72,85 @@ module Trip {
 				this.$html = $(this.mainTmp(context));
 
 				if (showRight) {
-					this.initDatePicker("leavingDate", this.data.leavingDateTime, (datePrms, date) => {
-						this.updateDateTime(datePrms, null, "leavingDateTime", this.data.leavingId);
-						this.ribbonUpdate(this.data.id, date, "leavingDate");
-					});
 
-					this.initTimePicker("leavingHours", "leavingMinutes", "leavingDateTime", this.data.leavingDateTime, this.data.leavingId);
+					this.initDatePicker("leavingDate",
+						this.data.leavingDateTime,
+						(datePrms, date) => {
+							this.updateDateTime(datePrms, null, "leavingDateTime", this.data.leavingId);
+							this.ribbonUpdate(this.data.id, date, "leavingDate");
+						});
+
+					this.initTimePicker("leavingHours",
+						"leavingMinutes",
+						"leavingDateTime",
+						this.data.leavingDateTime,
+						this.data.leavingId);
 				}
 
 				if (showLeft) {
-					this.initDatePicker("arrivingDate", this.data.arrivingDateTime, (datePrms, date) => {
-						this.updateDateTime(datePrms, null, "arrivingDateTime", this.data.arrivingId);
-						this.ribbonUpdate(this.data.id, date, "arrivingDate");
-					});
-					this.initTimePicker("arrivingHours", "arrivingMinutes", "arrivingDateTime", this.data.arrivingDateTime, this.data.arrivingId);
-				}					
+
+					this.initDatePicker("arrivingDate",
+						this.data.arrivingDateTime,
+						(datePrms, date) => {
+							this.updateDateTime(datePrms, null, "arrivingDateTime", this.data.arrivingId);
+							this.ribbonUpdate(this.data.id, date, "arrivingDate");
+						});
+
+					this.initTimePicker("arrivingHours",
+						"arrivingMinutes",
+						"arrivingDateTime",
+						this.data.arrivingDateTime,
+						this.data.arrivingId);
+				}
 			}
-				
+
 			this.setUseTime(type);
 
 			return this.$html;
 		}
 
 		private setUseTime(type) {
-				var $tv = this.$html.find("#timeVis");
-				$tv.prop("checked", this.data.useTime);
-				this.visibilityTime(this.data.useTime);
-				$tv.change((e) => {
-					var state = $tv.prop("checked");
-					var data = this.dialogManager.getPropRequest("useTime", { state: state, entityType: type });
-					this.dialogManager.updateProp(data, (response) => {
+			var $tv = this.$html.find("#timeVis");
+			$tv.prop("checked", this.data.useTime);
+			this.visibilityTime(this.data.useTime);
+			$tv.change((e) => {
+				var state = $tv.prop("checked");
+				var data = this.dialogManager.getPropRequest("useTime", { state: state, entityType: type });
+				this.dialogManager.updateProp(data,
+					(response) => {
 					});
-					this.visibilityTime(state);
-				});
+				this.visibilityTime(state);
+			});
+		}
+
+		private getInfoText(isComplete, showLeft, showRight) {
+			var infoTxt = "";
+			if (isComplete) {
+				infoTxt = "How long are you staying?";
+			} else if (showLeft) {
+				infoTxt = "When do you arrive?";
+			} else if (showRight) {
+				infoTxt = "When do you start your journey?";
 			}
+			return infoTxt;
+		}
 
-			private getInfoText(isComplete, showLeft, showRight) {
-				var infoTxt = "";
-				if (isComplete) {
-					infoTxt = "How long are you staying?";
-				} else if (showLeft) {
-					infoTxt = "When do you arrive?";
-				} else if (showRight) {
-					infoTxt = "When do you start your journey?";
-				}
-				return infoTxt;
+		private visibilityTime(visible) {
+			var $t = this.$html.find(".time");
+
+			if (visible) {
+				$t.show();
+			} else {
+				$t.hide();
 			}
+		}
 
-			private visibilityTime(visible) {
-					var $t = this.$html.find(".time");
-
-				if (visible) {
-					$t.show();
-				} else {
-					$t.hide();
-				}
-			}
-
-			private initTimePicker(hrsElementId, minElementId, propName, curDateStr, customEntityId = null) {
+		private initTimePicker(hrsElementId, minElementId, propName, curDateStr, customEntityId = null) {
 			var $hrs = this.$html.find(`#${hrsElementId}`);
 			var $min = this.$html.find(`#${minElementId}`);
 
 			if (curDateStr) {
-				var utcTime = Utils.dateStringToUtcDate(curDateStr);						
+				var utcTime = Utils.dateStringToUtcDate(curDateStr);
 				$hrs.val(utcTime.getHours());
 				$min.val(utcTime.getMinutes());
 			}
@@ -144,45 +164,33 @@ module Trip {
 			$min.change(() => { this.onTimeChanged($hrs, $min, propName, customEntityId); });
 		}
 
+
 		private initDatePicker(elementId, curDateStr, onChange) {
-			var dpConfig = this.datePickerConfig();
-			var $datePicker = this.$html.find(`#${elementId}`);
 
-			$datePicker.datepicker(dpConfig);
+			var utc = curDateStr ? moment.utc(curDateStr) : moment.utc();
 
-			if (curDateStr) {
-				var utcTime = Utils.dateStringToUtcDate(curDateStr);
-				$datePicker.datepicker("setDate", utcTime);
-			}
+			var $dpCont = this.$html.find(`#${elementId}`);
 
-			$datePicker.change((e) => {
-				var $this = $(e.target);
-				var date = $this.datepicker("getDate");
+			var dp = new Common.MyCalendar($dpCont, utc);
+
+			dp.onChange = (date) => {
+
 				var datePrms = this.getDatePrms(date);
-
-				onChange(datePrms, date);					
-			});
+				onChange(datePrms, date);
+			}
 		}
 
 		private ribbonUpdate(placeId, date, cssClass) {
-				var utcDate = Utils.dateToUtcDate(date);
-				this.dialogManager.planner.updateRibbonDate(placeId, cssClass, utcDate);
+			this.dialogManager.planner.updateRibbonDate(placeId, cssClass, date);
 		}
 
 
 		private getDatePrms(date) {
 			var datePrms = {
-				year: date.getUTCFullYear(),
-				month: date.getUTCMonth() + 1,
-				day: date.getUTCDate() + 1
+				year: date.year(),
+				month: date.month() + 1,
+				day: date.date()
 			}
-
-			if (datePrms.day === 32) {
-				datePrms.day = 1;
-				datePrms.month = datePrms.month + 1;
-			}
-
-			//todo: year ?
 			return datePrms;
 		}
 
@@ -197,7 +205,7 @@ module Trip {
 
 			var data = this.dialogManager.getPropRequest(propName, fullDateTime);
 			if (customEntityId != null) {
-					data.values.entityId = customEntityId;
+				data.values.entityId = customEntityId;
 			}
 
 			this.dialogManager.updateProp(data, (response) => {});
@@ -216,15 +224,6 @@ module Trip {
 			var time = { hour: hrs, minute: min };
 			this.updateDateTime(null, time, propName, customEntityId);
 		}
-
-		private datePickerConfig() {
-			return {
-				//dateFormat: "dd.mm.yy"
-
-			};
-		}
-
-
 
 	}
 }

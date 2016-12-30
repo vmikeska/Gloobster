@@ -30,14 +30,14 @@ var TravelB;
                         lastText: r.waitingAtText,
                         coord: r.waitingCoord
                     });
-                    _this.initDatePickers(TravelB.DateUtils.myDateToMomentDate(r.fromDate), TravelB.DateUtils.myDateToMomentDate(r.toDate));
+                    _this.initCalendars(TravelB.DateUtils.myDateToMomentDate(r.fromDate), TravelB.DateUtils.myDateToMomentDate(r.toDate));
                     var $msg = _this.$html.find("#chckMsg");
                     $msg.val(r.message);
                     _this.createValidations(CheckinType.City);
                 });
             }
             else {
-                this.initDatePickers();
+                this.initCalendars();
                 this.createValidations(CheckinType.City);
             }
             if (callback) {
@@ -111,7 +111,7 @@ var TravelB;
             this.$html.find("#dlgSpec").html($d);
             this.placeCombo = this.initPlaceDD("2", this.$html.find("#placeCombo"));
         };
-        CheckinWin.prototype.initDatePickers = function (fromDate, toDate) {
+        CheckinWin.prototype.initCalendars = function (fromDate, toDate) {
             if (fromDate === void 0) { fromDate = null; }
             if (toDate === void 0) { toDate = null; }
             if (!fromDate) {

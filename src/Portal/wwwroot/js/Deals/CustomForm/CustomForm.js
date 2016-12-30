@@ -18,15 +18,6 @@ var Planning;
                 caller.send();
             };
         };
-        CustomFrom.prototype.datepicker = function ($dp, opts, callback) {
-            if (opts === void 0) { opts = {}; }
-            $dp.datepicker(opts);
-            $dp.change(function (e) {
-                var $this = $(e.target);
-                var date = $this.datepicker("getDate");
-                callback(date);
-            });
-        };
         CustomFrom.prototype.initDatesClosing = function () {
             var _this = this;
             this.$form.find("#datesDoneBtn").click(function (e) {

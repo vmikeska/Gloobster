@@ -3152,12 +3152,8 @@ footer {
         display: inline-block;
         vertical-align: top;
         margin-bottom: 6px;
-        border: 1px solid #005476;
         border-radius: 4px;
         padding: 3px; }
-        .trip-detail .details .place-travel-dates .cell .mdd {
-          width: 110px;
-          text-align: center; }
         .trip-detail .details .place-travel-dates .cell .mtd {
           width: 25px;
           text-align: center; }
@@ -4036,9 +4032,10 @@ footer {
   .travelb-home .filter-date {
     margin-top: 4px;
     padding: 6px 10px 6px 10px;
-    border-radius: 4px; }
-    .travelb-home .filter-date input {
-      width: 100px; }
+    border-radius: 4px;
+    /*input{
+            width: 100px;
+        }*/ }
     .travelb-home .filter-date .split {
       font-size: 30px; }
     .travelb-home .filter-date .title {

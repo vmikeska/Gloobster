@@ -22,13 +22,13 @@ var Trip;
                 var travel = this.dialogManager.planner.placesMgr.getTravelById(this.data.id);
                 this.initDatePicker("leavingDate", this.data.leavingDateTime, function (datePrms, date) {
                     _this.updateDateTime(datePrms, null, "leavingDateTime");
-                    var placeId = travel.to.id;
-                    _this.ribbonUpdate(placeId, date, "arrivingDate");
+                    var placeId = travel.from.id;
+                    _this.ribbonUpdate(placeId, date, "leavingDate");
                 });
                 this.initDatePicker("arrivingDate", this.data.arrivingDateTime, function (datePrms, date) {
                     _this.updateDateTime(datePrms, null, "arrivingDateTime");
-                    var placeId = travel.from.id;
-                    _this.ribbonUpdate(placeId, date, "leavingDate");
+                    var placeId = travel.to.id;
+                    _this.ribbonUpdate(placeId, date, "arrivingDate");
                 });
                 this.initTimePicker("arrivingHours", "arrivingMinutes", "arrivingDateTime", this.data.arrivingDateTime);
                 this.initTimePicker("leavingHours", "leavingMinutes", "leavingDateTime", this.data.leavingDateTime);
@@ -119,34 +119,23 @@ var Trip;
         };
         PlaceTravelTime.prototype.initDatePicker = function (elementId, curDateStr, onChange) {
             var _this = this;
-            var dpConfig = this.datePickerConfig();
-            var $datePicker = this.$html.find("#" + elementId);
-            $datePicker.datepicker(dpConfig);
-            if (curDateStr) {
-                var utcTime = Trip.Utils.dateStringToUtcDate(curDateStr);
-                $datePicker.datepicker("setDate", utcTime);
-            }
-            $datePicker.change(function (e) {
-                var $this = $(e.target);
-                var date = $this.datepicker("getDate");
+            var utc = curDateStr ? moment.utc(curDateStr) : moment.utc();
+            var $dpCont = this.$html.find("#" + elementId);
+            var dp = new Common.MyCalendar($dpCont, utc);
+            dp.onChange = function (date) {
                 var datePrms = _this.getDatePrms(date);
                 onChange(datePrms, date);
-            });
+            };
         };
         PlaceTravelTime.prototype.ribbonUpdate = function (placeId, date, cssClass) {
-            var utcDate = Trip.Utils.dateToUtcDate(date);
-            this.dialogManager.planner.updateRibbonDate(placeId, cssClass, utcDate);
+            this.dialogManager.planner.updateRibbonDate(placeId, cssClass, date);
         };
         PlaceTravelTime.prototype.getDatePrms = function (date) {
             var datePrms = {
-                year: date.getUTCFullYear(),
-                month: date.getUTCMonth() + 1,
-                day: date.getUTCDate() + 1
+                year: date.year(),
+                month: date.month() + 1,
+                day: date.date()
             };
-            if (datePrms.day === 32) {
-                datePrms.day = 1;
-                datePrms.month = datePrms.month + 1;
-            }
             return datePrms;
         };
         PlaceTravelTime.prototype.updateDateTime = function (date, time, propName, customEntityId) {
@@ -176,9 +165,6 @@ var Trip;
             }
             var time = { hour: hrs, minute: min };
             this.updateDateTime(null, time, propName, customEntityId);
-        };
-        PlaceTravelTime.prototype.datePickerConfig = function () {
-            return {};
         };
         return PlaceTravelTime;
     }());

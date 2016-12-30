@@ -93,23 +93,28 @@
             <strong>{{infoTxt}}</strong>
             <br />
             <input id="timeVis" type="checkbox" />
-            <label class="mleft10" for="timeVis">@Model.W("UseExactTime")</label>
+            <label for="timeVis">@Model.W("UseExactTime")</label>
         </div>
         {{#if showLeft}}
         <div class="cell">            
-            <input type="text" id="{{dir1}}Date" class="mdd" />
+            
+            <div id="{{dir1}}Date"></div>
+
+            @*<input type="text" id="{{dir1}}Date" class="mdd" />*@
+            
+
             <span class="time">&nbsp;</span>
             <input id="{{dir1}}Hours" class="mtd time" type="number" min="0" max="23" step="1" /><span class="time"> : </span><input id="{{dir1}}Minutes" class="mtd time" type="number" min="0" max="59" step="1" />            
         </div>
         {{/if}}
-        @*{{#if showMiddle}}
-        <div class="cell">            
-            <strong class="deli">→</strong>            
-        </div>
-        {{/if}}*@
+       
         {{#if showRight}}
         <div class="cell last">            
-            <input type="text" id="{{dir2}}Date" class="mdd" />
+            
+            <div id="{{dir2}}Date"></div>
+
+            @*<input type="text" id="{{dir2}}Date" class="mdd" />*@
+
             <span class="time">&nbsp;</span>
             <input id="{{dir2}}Hours" class="mtd time" type="number" min="0" max="23" step="1" /><span class="time"> : </span><input id="{{dir2}}Minutes" class="mtd time" type="number" min="0" max="59" step="1" />            
         </div>

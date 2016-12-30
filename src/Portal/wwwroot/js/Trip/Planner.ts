@@ -146,8 +146,20 @@
 			});
 		}
 
-		public updateRibbonDate(placeId: string, livingArriving: string, date: Date) {
-			$(`#${placeId}`).find(`.${livingArriving}`).text(this.formatShortDateTime(date));
+		public updateRibbonDate(placeId: string, livingArriving: string, date) {
+				$(`#${placeId}`).find(`.${livingArriving}`).text(this.formatShortDateTimeMoment(date));
+		}
+
+		private formatShortDateTimeMoment(dt) {				
+			var d = dt.format("l");
+			var v = d.replace(dt.year(), "");
+			return v;
+		}
+
+		private formatShortDateTime(dt) {				
+				var d = moment.utc(dt).format("l");				
+				var v = d.replace(dt.getUTCFullYear(), "");
+				return v;
 		}
 
 		private getTravelIcon(travelType) {
@@ -327,11 +339,7 @@
 		}
 
 
-		private formatShortDateTime(dt) {
-			var d = moment.utc(dt).format("l");
-			var v = d.replace(dt.getUTCFullYear(), "");
-			return v;
-		}
+		
 
 	}
 

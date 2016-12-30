@@ -66,18 +66,20 @@ var TravelB;
         };
         Filter.prototype.initFilterDates = function () {
             var _this = this;
-            var fromDate = TravelB.DateUtils.jsDateToMyDate(new Date());
-            var toDate = TravelB.DateUtils.jsDateToMyDate(TravelB.DateUtils.addDays(Date.now(), 30));
+            var fromDate = moment();
+            var toDate = fromDate.clone().add(30, "days");
             this.filterDateFrom = fromDate;
             this.filterDateTo = toDate;
-            TravelB.DateUtils.initDatePicker($("#fromDateFilter"), fromDate, function (d) {
-                _this.filterDateFrom = d;
+            var fd = new Common.MyCalendar($("#fromDateFilterCont"), fromDate);
+            fd.onChange = function (date) {
+                _this.filterDateFrom = date;
                 _this.onFilterSelChanged();
-            });
-            TravelB.DateUtils.initDatePicker($("#toDateFilter"), toDate, function (d) {
-                _this.filterDateTo = d;
+            };
+            var td = new Common.MyCalendar($("#toDateFilterCont"), toDate);
+            td.onChange = function (date) {
+                _this.filterDateTo = date;
                 _this.onFilterSelChanged();
-            });
+            };
         };
         Filter.prototype.initCommon = function () {
             var _this = this;

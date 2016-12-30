@@ -54,7 +54,7 @@
 									coord: r.waitingCoord
 								});
 
-								this.initDatePickers(DateUtils.myDateToMomentDate(r.fromDate), DateUtils.myDateToMomentDate(r.toDate));
+								this.initCalendars(DateUtils.myDateToMomentDate(r.fromDate), DateUtils.myDateToMomentDate(r.toDate));
 
 								var $msg = this.$html.find("#chckMsg");
 								$msg.val(r.message);
@@ -62,7 +62,7 @@
 								this.createValidations(CheckinType.City);
 							});
 						} else {
-								this.initDatePickers();
+								this.initCalendars();
 
 								this.createValidations(CheckinType.City);
 						}
@@ -174,7 +174,7 @@
 				private tdCal;
 
 
-				private initDatePickers(fromDate = null, toDate = null) {
+				private initCalendars(fromDate = null, toDate = null) {
 						if (!fromDate) {
 							fromDate = moment().add(2, "days");
 						}

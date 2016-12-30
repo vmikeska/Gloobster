@@ -98,21 +98,25 @@ module TravelB {
 			this.onFilterSelChanged();
 		}
 
-		private initFilterDates() {
-			var fromDate = DateUtils.jsDateToMyDate(new Date());
-			var toDate = DateUtils.jsDateToMyDate(DateUtils.addDays(Date.now(), 30));
+		private initFilterDates() {			
+			var fromDate = moment();
+			var toDate = fromDate.clone().add(30, "days");
+
+
 			this.filterDateFrom = fromDate;
 			this.filterDateTo = toDate;
 
-			DateUtils.initDatePicker($("#fromDateFilter"), fromDate, (d) => {
-				this.filterDateFrom = d;
-				this.onFilterSelChanged();
-			});
+				var fd = new Common.MyCalendar($("#fromDateFilterCont"), fromDate);
+				fd.onChange = (date) => {
+						this.filterDateFrom = date;
+						this.onFilterSelChanged();
+				}
 
-			DateUtils.initDatePicker($("#toDateFilter"), toDate, (d) => {
-				this.filterDateTo = d;
-				this.onFilterSelChanged();
-			});
+				var td = new Common.MyCalendar($("#toDateFilterCont"), toDate);
+				td.onChange = (date) => {
+						this.filterDateTo = date;
+						this.onFilterSelChanged();
+				}
 		}
 
 		private initCommon() {

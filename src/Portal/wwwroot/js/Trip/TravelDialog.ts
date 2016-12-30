@@ -54,8 +54,6 @@ module Trip {
 			var fs = useTime ? "LLL" : "LL";
 			var v = moment.utc(d).format(fs);
 			return v;
-			//var t = `${d.getUTCDate()}.${d.getUTCMonth()}.${d.getUTCFullYear()} (${d.getUTCHours()}:${d.getUTCMinutes()})`;
-			//return t;
 		}
 
 		private buildTemplateView(data) {

@@ -1,12 +1,5 @@
 module TravelB {
 	export class DateUtils {
-
-			//todo: replace moment js
-		public static addDays(date, days) {
-			var result = new Date(date);
-			result.setDate(result.getDate() + days);
-			return result;
-			}
 			
 		public static myDateToStr(myDate) {
 			return `${myDate.Day}.${myDate.Month}.${myDate.Year}`;
@@ -26,6 +19,10 @@ module TravelB {
 				}
 
 				return moment([myDate.Year, myDate.Month -1, myDate.Day]);
+		}
+
+		public static momentDateToTrans(mDate) {
+				return `${mDate.date()}_${mDate.month() + 1}_${mDate.year()}`;
 		}
 
 			public static momentDateToMyDate(mDate) {
@@ -48,36 +45,5 @@ module TravelB {
 			};
 		}
 
-		private static datePickerConfig() {
-			return {
-				dateFormat: "dd.mm.yy"
-			};
-		}
-
-		public static initDatePicker($datePicker, date, onChange: Function = null) {
-			var dpConfig = this.datePickerConfig();
-
-			$datePicker.datepicker(dpConfig);
-
-			if (date) {
-				var d = DateUtils.myDateToJsDate(date);
-				$datePicker.datepicker("setDate", d);
-				$datePicker.data("myDate", date);
-			}
-				
-			$datePicker.change((e) => {
-				var $this = $(e.target);
-				var date = $this.datepicker("getDate");
-
-				var myDate = DateUtils.jsDateToMyDate(date);
-				$datePicker.data("myDate", myDate);
-				
-				if (onChange) {
-					onChange(myDate);
-				}				
-			});
-
-			
-		}
 	}
 }
