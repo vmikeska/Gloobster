@@ -226,8 +226,10 @@
 				var $wrap = $(`<div class="cal-wrap"><span class="icon-calendar"></span></div>`);
 
 				if (this.isNative) {
-					this.$input = $(`<input class="calendar-input" type="date" id="${this.id}" />`);
-					this.$cont.html(this.$input);
+						this.$input = $(`<input class="calendar-input" type="date" id="${this.id}" />`);
+
+						$wrap.prepend(this.$input);
+						this.$cont.html($wrap);
 
 					this.$input.change(() => {
 							this.date = moment(this.$input.val());

@@ -88,7 +88,13 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                     return new ObjectResult(responses);
                 }
 
-                responses = responses.Where(r => CheckinFilterUtils.HasGenderMatch(r.wantMeet, User.Gender)).ToList();
+                Gender gender = Gender.N;
+                if (User != null)
+                {
+                    gender = User.Gender;
+                }
+
+                responses = responses.Where(r => CheckinFilterUtils.HasGenderMatch(r.wantMeet, gender)).ToList();
 
                 if (genderFilter)
                 {
