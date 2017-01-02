@@ -1,6 +1,8 @@
 module Views {
 	export class DashboardView extends ViewBase {
 
+		public ccs;
+
 		private tabs: Common.Tabs;
 
 		private $tbFriends;
@@ -14,9 +16,7 @@ module Views {
 		private $calendar;
 
 		constructor() {
-			super();
-
-			this.init();
+			super();				
 		}
 
 		private init() {
@@ -34,9 +34,18 @@ module Views {
 				
 				this.initResize();
 
+				this.initMap();
+
 				this.initCalendar();
 		}
-			
+
+			private initMap() {
+				this.ccs.forEach((cc) => {
+						var cg = $(`.your-map-all [cc="${cc.toLowerCase()}"]`);
+						cg.css("fill", "#005476");
+				});
+			}
+
 		private initCalendar() {
 
 			this.createCalendar();
@@ -70,7 +79,7 @@ module Views {
 					fixedWeekCount: false,
 					height: "auto",
 					eventClick(evnt) {
-							window.open(`/trip/${evnt.tripId}`, "_blank");
+							window.open(`/trip/${evnt.tripId}`);
 					}
 				});
 		}

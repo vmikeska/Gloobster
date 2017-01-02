@@ -11,7 +11,6 @@ var Views;
             _super.call(this);
             this.blocksCnt = 0;
             this.lastWidth = 0;
-            this.init();
         }
         DashboardView.prototype.init = function () {
             this.initTabs();
@@ -23,7 +22,14 @@ var Views;
             this.$tabWebNavi = $("#tabWebNavi").parent();
             this.$titles = $(".topic-block .title");
             this.initResize();
+            this.initMap();
             this.initCalendar();
+        };
+        DashboardView.prototype.initMap = function () {
+            this.ccs.forEach(function (cc) {
+                var cg = $(".your-map-all [cc=\"" + cc.toLowerCase() + "\"]");
+                cg.css("fill", "#005476");
+            });
         };
         DashboardView.prototype.initCalendar = function () {
             var _this = this;
@@ -49,7 +55,7 @@ var Views;
                 fixedWeekCount: false,
                 height: "auto",
                 eventClick: function (evnt) {
-                    window.open("/trip/" + evnt.tripId, "_blank");
+                    window.open("/trip/" + evnt.tripId);
                 }
             });
         };

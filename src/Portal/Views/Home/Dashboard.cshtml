@@ -1,6 +1,9 @@
 ﻿@using System.Web.UI
 @using Gloobster.Common
+@using Gloobster.Entities.Trip
 @using Gloobster.Portal.ViewModels
+@using Microsoft.Data.Entity.Metadata.Internal
+@using Newtonsoft.Json
 @model ViewModelDashboard
 
 @{
@@ -146,25 +149,24 @@ else
                 <div class="web-cont">
 
                     <div class="your-trips-all">
+                        
+                        @*todo: invited trips*@
 
                         <div class="items">
+                            
+                            @foreach (TripEntity trip in Model.Trips.Take(5))
+                            {
+                                string imgLink = trip.HasSmallPicture ? $"/Trip/TripPictureSmall_xs/{trip.id}" : "/images/placeholder-70.png";
 
-                            <div class="item">
-                                <a href="#"><img src="/images/samples/trip-ico.jpg" /> <span class="txt">My first trip</span></a>
-                            </div>
-
-                            <div class="item">
-                                <a href="#"><img src="/images/samples/trip-ico.jpg" /> <span class="txt">My travel over the states</span></a>
-                            </div>
-
-                            <div class="item">
-                                <a href="#"><img src="/images/samples/trip-ico.jpg" /> <span class="txt">My travel over the states</span></a>
-                            </div>
+                                <div class="item">
+                                    <a href="/trip/@trip.id"><img src="@imgLink" /> <span class="txt">@trip.Name</span></a>
+                                </div>
+                            }
 
                         </div>
 
                         <div class="srv-zone">
-                            <a href="#" class="lbtn2 srv-btn">+ New trip</a>
+                            <a href="/travelplanner/grid" class="lbtn2 srv-btn">Go to Your trips</a>
                         </div>
 
                     </div>
@@ -199,9 +201,13 @@ else
 
 
 <script>
-    
+
     function onBodyLoad() {
         currentView = new Views.DashboardView();
+
+        currentView.ccs = @Html.Raw(JsonConvert.SerializeObject(Model.CCs));
+
+        currentView.init();
     }
 
 </script>

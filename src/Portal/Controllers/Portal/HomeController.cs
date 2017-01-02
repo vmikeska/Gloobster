@@ -14,6 +14,7 @@ using System.Linq;
 using System.Web;
 using Autofac;
 using Gloobster.Entities;
+using Gloobster.Entities.Trip;
 using Microsoft.AspNet.Http;
 
 namespace Gloobster.Portal.Controllers.Portal
@@ -35,6 +36,18 @@ namespace Gloobster.Portal.Controllers.Portal
         public IActionResult Dashboard()
         {
             var vm = CreateViewModelInstance<ViewModelDashboard>();
+
+            var trips = DB.List<TripEntity>(t => t.User_id == UserIdObj.Value);
+
+            vm.Trips = trips;
+            vm.CCs = new List<string>();
+
+            var visited = DB.FOD<VisitedEntity>(e => e.User_id == UserIdObj.Value);
+            if (visited != null)
+            {
+                vm.CCs = visited.Countries.Select(c => c.CountryCode2).ToList();
+            }
+
             return View(vm);
         }
 

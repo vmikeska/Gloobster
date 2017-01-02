@@ -6015,14 +6015,14 @@ footer {
   .dashboard .friends-item .txt {
     font-size: 0.9em; }
 
-.dashboard .your-map-all #bg {
-  fill: none; }
-
-.dashboard .your-map-all [cc] {
-  fill: #009EC4; }
-
-.dashboard .your-map-all [cc="cz"], .dashboard .your-map-all [cc="de"], .dashboard .your-map-all [cc="ru"], .dashboard .your-map-all [cc="us"], .dashboard .your-map-all [cc="br"], .dashboard .your-map-all [cc="tr"], .dashboard .your-map-all [cc="au"], .dashboard .your-map-all [cc="at"], .dashboard .your-map-all [cc="sp"], .dashboard .your-map-all [cc="pt"], .dashboard .your-map-all [cc="fr"], .dashboard .your-map-all [cc="uk"], .dashboard .your-map-all [cc="it"] {
-  fill: #005476; }
+.dashboard .your-map-all {
+  /*[cc="cz"]{
+                fill: $dark-blue;
+            }*/ }
+  .dashboard .your-map-all #bg {
+    fill: none; }
+  .dashboard .your-map-all [cc] {
+    fill: #009EC4; }
 
 .dashboard .your-trips-all .items .item {
   padding: 6px; }
