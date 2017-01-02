@@ -17,7 +17,7 @@ using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.Friends
 {
-	public class FriendsController : BaseApiController
+    public class FriendsController : BaseApiController
 	{
 		public IFacebookFriendsService FbFriendsService { get; set; }
 		public IFriendsDomain FriendsDoimain { get; set; }

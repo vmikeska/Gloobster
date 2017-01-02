@@ -1,6 +1,10 @@
 ﻿
 .dashboard {
 
+    .f-calendar {
+        max-width: 100%;            
+    }
+
     .navi-cont {
         margin-top: 20px;
     }
@@ -41,8 +45,12 @@
             width: 350px;
         }
 */
-        .tb-web {
-            min-width: 460px;            
+
+        @include above-width(750) {
+
+            .tb-web {
+                width: 460px;            
+            }
         }
 
     }
@@ -62,6 +70,26 @@
 
         .web-cont {
             background-color: $very-light-blue3;
+        }
+
+        .srv-zone {
+            text-align: left;
+            padding: 8px;
+
+            .srv-btn {
+                background-color: $orange;
+                color: white;
+                font-weight: bold;
+
+                padding-top: 1px;
+                padding-bottom: 1px;
+                padding-left: 6px;
+                padding-right: 6px;
+
+                &:hover {
+                    background-color: $green;
+                }
+            }
         }
     }    
 
@@ -173,70 +201,6 @@
             }
         }
 
-        .new-trip {
-            
-            text-align: left;
-
-            padding: 8px;
-
-            .lbtn2 {
-                background-color: $orange;
-                color: white;
-                font-weight: bold;
-
-                padding-top: 1px;
-                padding-bottom: 1px;
-                padding-left: 6px;
-                padding-right: 6px;
-
-                &:hover {
-                    background-color: $green;
-                }
-            }
-        }
-    }
-
-    .your-calendar-all {
-        text-align: center;
-        padding-top: 20px;
-
-        .calendar {
-            display: inline-block;
-            
-
-            .week {
-                 display: table;
-                 width: 100%;
-
-                 border-bottom:1px solid $orange;
-                 &:last-of-type {                        
-                        border-bottom: 0;
-                 }
-
-                .day {
-                    display: table-cell;                    
-                    
-                    border-right:1px solid $orange;
-                    &:last-of-type {                        
-                        border-right: 0;
-                    }
-
-                    .day-inner {
-                        width: 63px;
-                        
-                        
-                        height: 60px;
-
-                        background-color: $info-blue2;
-
-                        &.active {
-                        background-color: $dark-blue;
-                    }
-                    }
-
-                }
-            }
-        }
     }
 
 }

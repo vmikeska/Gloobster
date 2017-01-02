@@ -11,6 +11,8 @@ module Views {
 		private $tabWebNavi;
 		private $titles;
 
+		private $calendar;
+
 		constructor() {
 			super();
 
@@ -29,13 +31,50 @@ module Views {
 				this.$tabWebNavi = $("#tabWebNavi").parent();
 
 				this.$titles = $(".topic-block .title");
+				
+				this.initResize();
 
-
-			this.initResize();
+				this.initCalendar();
 		}
-
 			
+		private initCalendar() {
 
+			this.createCalendar();
+
+			var fromTo = Dashboard.CalendarUtils.getCalRange(this.$calendar);
+
+			var from = TravelB.DateUtils.momentDateToTrans(fromTo.from);
+			var to = TravelB.DateUtils.momentDateToTrans(fromTo.to);
+
+			var prms = [["from", from], ["to", to]];
+
+			this.apiGet("FriendsEvents", prms, (events) => {
+
+					var evnts = _.map(events, (event) => { return Dashboard.CalendarUtils.convertEvent(event) });
+
+					evnts.forEach((evnt) => {
+						this.$calendar.fullCalendar("renderEvent", evnt);
+					});
+
+				});
+		}
+			
+		private createCalendar() {
+				
+			 this.$calendar = $("#calendar").fullCalendar({
+					header: false,
+					footer: false,					
+					navLinks: false, 
+					editable: false,
+					eventLimit: true,
+					fixedWeekCount: false,
+					height: "auto",
+					eventClick(evnt) {
+							window.open(`/trip/${evnt.tripId}`, "_blank");
+					}
+				});
+		}
+			
 		private initTabs() {
 
 			this.tabs = new Common.Tabs($("#menuCont"), "main");
@@ -87,8 +126,7 @@ module Views {
 					}
 
 				this.lastWidth = width;
-
-			console.log(width);
+					
 					var w1 = 1100;
 					var w2 = 750;
 
@@ -147,5 +185,6 @@ module Views {
 					$block.removeClass("hidden");
 			}
 
-	}
+		}
+		
 }

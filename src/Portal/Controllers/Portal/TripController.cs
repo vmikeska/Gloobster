@@ -164,7 +164,7 @@ namespace Gloobster.Portal.Controllers.Portal
 		    var tripIdObj = new ObjectId(id);            
 		    var trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);
 
-		    var tripFromTo = GetTripFromTo(trip);
+		    var tripFromTo = TripDomain.GetTripFromTo(trip);
             var fromDate = tripFromTo.Item1;
             var toDate = tripFromTo.Item2;
             
@@ -394,7 +394,7 @@ namespace Gloobster.Portal.Controllers.Portal
 
         private async Task<TripItemViewModel> TripToViewModel(TripEntity trip, ViewModelBase b)
 		{
-            var tripFromTo = GetTripFromTo(trip);
+            var tripFromTo = TripDomain.GetTripFromTo(trip);
             var fromDate = tripFromTo.Item1;
             var toDate = tripFromTo.Item2;
 
@@ -419,19 +419,7 @@ namespace Gloobster.Portal.Controllers.Portal
 			};
 			return vm;
 		}
-
-        private Tuple<DateTime, DateTime> GetTripFromTo(TripEntity trip)
-        {
-            var ordredPlaces = trip.Places.OrderBy(t => t.OrderNo);
-            var firstPlace = ordredPlaces.First();
-            var lastPlace = ordredPlaces.Last();
-            var firstTravel = trip.Travels.FirstOrDefault(t => t.id == firstPlace.LeavingId);
-            var lastTravel = trip.Travels.FirstOrDefault(t => t.id == lastPlace.ArrivingId);
-            var fromDate = firstTravel.LeavingDateTime.Value;
-            var toDate = lastTravel.ArrivingDateTime.Value;
-
-            return new Tuple<DateTime, DateTime>(fromDate, toDate);
-        }
+        
     }
 
     public class OverviewRequest

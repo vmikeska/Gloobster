@@ -1,0 +1,39 @@
+﻿@using System.Web.UI
+@using Gloobster.Common
+@using Gloobster.Portal.ViewModels
+@model ViewModelCalendar
+
+@{
+    ViewData["Title"] = "Calendar";
+    //Layout = "";
+    ViewBag.BodyClass = "cal-page";
+}
+
+    <link href="/lib/fullcalendar/dist/fullcalendar.css" rel="stylesheet">    
+    
+
+@if (GloobsterConfig.UseMiniScripts)
+{
+    @*<script src="/jsb/dashboard.js" type="text/javascript" data-notbuild="true"></script>*@
+}
+else
+{
+    <script src="/lib/fullcalendar/dist/fullcalendar.js" type="text/javascript"></script>
+    <script src="/js/Dashboard/CalendarUtils.js" type="text/javascript"></script>
+    <script src="/js/Views/CalendarView.js" type="text/javascript"></script>    
+}
+
+
+<div class="wrapper">
+    <div id="calendar" class="full-calendar"></div>
+</div>
+
+
+
+<script>
+    
+    function onBodyLoad() {
+        currentView = new Views.CalendarView();
+    }
+
+</script>

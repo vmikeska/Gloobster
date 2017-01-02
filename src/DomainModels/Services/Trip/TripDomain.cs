@@ -30,5 +30,18 @@ namespace Gloobster.DomainModels.Services.Trip
 
             return true;
         }
+
+        public static Tuple<DateTime, DateTime> GetTripFromTo(TripEntity trip)
+        {
+            var ordredPlaces = trip.Places.OrderBy(t => t.OrderNo);
+            var firstPlace = ordredPlaces.First();
+            var lastPlace = ordredPlaces.Last();
+            var firstTravel = trip.Travels.FirstOrDefault(t => t.id == firstPlace.LeavingId);
+            var lastTravel = trip.Travels.FirstOrDefault(t => t.id == lastPlace.ArrivingId);
+            var fromDate = firstTravel.LeavingDateTime.Value;
+            var toDate = lastTravel.ArrivingDateTime.Value;
+
+            return new Tuple<DateTime, DateTime>(fromDate, toDate);
+        }
     }
 }

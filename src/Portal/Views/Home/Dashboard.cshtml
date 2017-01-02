@@ -9,15 +9,21 @@
     ViewBag.BodyClass = "dashboard";
 }
 
+<link href="/lib/fullcalendar/dist/fullcalendar.css" rel="stylesheet">    
+
 
 @if (GloobsterConfig.UseMiniScripts)
 {
     <script src="/jsb/dashboard.js" type="text/javascript" data-notbuild="true"></script>
 }
 else
-{    
+{
+    <script src="/lib/fullcalendar/dist/fullcalendar.js" type="text/javascript"></script>
+    <script src="/js/Dashboard/CalendarUtils.js" type="text/javascript"></script>
     <script src="/js/Views/DashboardView.js" type="text/javascript"></script>    
 }
+
+
 
 
 <div class="wrapper">
@@ -135,96 +141,51 @@ else
                     </div>
                 </div>
 
-                <div class="web-item">
-                    <div class="web-title">Your trips</div>
-                    <div class="web-cont">
+            <div class="web-item">
+                <div class="web-title">Your trips</div>
+                <div class="web-cont">
 
-                        <div class="your-trips-all">
+                    <div class="your-trips-all">
 
-                            <div class="items">
+                        <div class="items">
 
-                                <div class="item">
-                                    <a href="#"><img src="/images/samples/trip-ico.jpg" /> <span class="txt">My first trip</span></a>
-                                </div>
-
-                                <div class="item">
-                                    <a href="#"><img src="/images/samples/trip-ico.jpg" /> <span class="txt">My travel over the states</span></a>
-                                </div>
-
-                                <div class="item">
-                                    <a href="#"><img src="/images/samples/trip-ico.jpg" /> <span class="txt">My travel over the states</span></a>
-                                </div>
-
+                            <div class="item">
+                                <a href="#"><img src="/images/samples/trip-ico.jpg" /> <span class="txt">My first trip</span></a>
                             </div>
 
-                            <div class="new-trip">
-                                <a href="#" class="lbtn2">+ New trip</a>
+                            <div class="item">
+                                <a href="#"><img src="/images/samples/trip-ico.jpg" /> <span class="txt">My travel over the states</span></a>
+                            </div>
+
+                            <div class="item">
+                                <a href="#"><img src="/images/samples/trip-ico.jpg" /> <span class="txt">My travel over the states</span></a>
                             </div>
 
                         </div>
 
-                    </div>
-                </div>
-
-                <div class="web-item">
-                    <div class="web-title">Calendar of friend's trips</div>
-                    <div class="web-cont">
-
-                        <div class="your-calendar-all">
-
-                            <div class="calendar">
-
-                                <div class="week">
-                                    <div class="day"><div class="day-inner"></div></div>
-                                    <div class="day"><div class="day-inner active"></div></div>
-                                    <div class="day"><div class="day-inner active"></div></div>
-                                    <div class="day"><div class="day-inner"></div></div>
-                                    <div class="day"><div class="day-inner"></div></div>
-                                    <div class="day"><div class="day-inner"></div></div>
-                                    <div class="day"><div class="day-inner"></div></div>
-                                </div>
-                                <div class="week">
-                                    <div class="day"><div class="day-inner"></div></div>
-                                    <div class="day"><div class="day-inner"></div></div>
-                                    <div class="day"><div class="day-inner"></div></div>
-                                    <div class="day"><div class="day-inner active"></div></div>
-                                    <div class="day"><div class="day-inner active"></div></div>
-                                    <div class="day"><div class="day-inner active"></div></div>
-                                    <div class="day"><div class="day-inner active"></div></div>
-                                </div>
-                                <div class="week">
-                                    <div class="day"><div class="day-inner"></div></div>
-                                    <div class="day"><div class="day-inner"></div></div>
-                                    <div class="day"><div class="day-inner"></div></div>
-                                    <div class="day"><div class="day-inner"></div></div>
-                                    <div class="day"><div class="day-inner"></div></div>
-                                    <div class="day"><div class="day-inner"></div></div>
-                                    <div class="day"><div class="day-inner"></div></div>
-                                </div>
-                                <div class="week">
-                                    <div class="day"><div class="day-inner"></div></div>
-                                    <div class="day"><div class="day-inner"></div></div>
-                                    <div class="day"><div class="day-inner"></div></div>
-                                    <div class="day"><div class="day-inner"></div></div>
-                                    <div class="day"><div class="day-inner"></div></div>
-                                    <div class="day"><div class="day-inner"></div></div>
-                                    <div class="day"><div class="day-inner"></div></div>
-                                </div>
-                                <div class="week">
-                                    <div class="day"><div class="day-inner"></div></div>
-                                    <div class="day"><div class="day-inner"></div></div>
-                                    <div class="day"><div class="day-inner"></div></div>
-                                    <div class="day"><div class="day-inner"></div></div>
-                                    <div class="day"><div class="day-inner"></div></div>
-                                    <div class="day"><div class="day-inner"></div></div>
-                                    <div class="day"><div class="day-inner"></div></div>
-                                </div>
-
-                            </div>
+                        <div class="srv-zone">
+                            <a href="#" class="lbtn2 srv-btn">+ New trip</a>
                         </div>
 
                     </div>
+
                 </div>
+            </div>
+            
+            <div class="web-item">
+                <div class="web-title">Friend's calendar</div>
+                <div class="web-cont">
+
+                    <div id="calendar" class="f-calendar"></div>
+                    
+                    <div class="srv-zone">
+                        <a href="/home/calendar" class="lbtn2 srv-btn">Full calendar</a>
+                    </div>
+
+                </div>
+            </div>
+
+            
 
             </div>
         </div>

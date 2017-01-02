@@ -5928,6 +5928,9 @@ footer {
         .calendar-cont .my-calendar-win .bottom .close-cal:hover {
           color: #F56E12; }
 
+.dashboard .f-calendar {
+  max-width: 100%; }
+
 .dashboard .navi-cont {
   margin-top: 20px; }
 
@@ -5954,8 +5957,9 @@ footer {
       margin-bottom: 10px; }
     .dashboard .topics .topic-block .content {
       text-align: left; }
-  .dashboard .topics .tb-web {
-    min-width: 460px; }
+  @media screen and (min-width: 750px) {
+    .dashboard .topics .tb-web {
+      width: 460px; } }
 
 .dashboard .web-item {
   margin-bottom: 10px; }
@@ -5967,6 +5971,19 @@ footer {
     text-align: center; }
   .dashboard .web-item .web-cont {
     background-color: #F0FAFC; }
+  .dashboard .web-item .srv-zone {
+    text-align: left;
+    padding: 8px; }
+    .dashboard .web-item .srv-zone .srv-btn {
+      background-color: #F56E12;
+      color: white;
+      font-weight: bold;
+      padding-top: 1px;
+      padding-bottom: 1px;
+      padding-left: 6px;
+      padding-right: 6px; }
+      .dashboard .web-item .srv-zone .srv-btn:hover {
+        background-color: #3DA33D; }
 
 .dashboard .portal-item {
   margin-bottom: 10px; }
@@ -6023,39 +6040,5 @@ footer {
   .dashboard .your-trips-all .items .item .txt {
     vertical-align: middle; }
 
-.dashboard .your-trips-all .new-trip {
-  text-align: left;
-  padding: 8px; }
-  .dashboard .your-trips-all .new-trip .lbtn2 {
-    background-color: #F56E12;
-    color: white;
-    font-weight: bold;
-    padding-top: 1px;
-    padding-bottom: 1px;
-    padding-left: 6px;
-    padding-right: 6px; }
-    .dashboard .your-trips-all .new-trip .lbtn2:hover {
-      background-color: #3DA33D; }
-
-.dashboard .your-calendar-all {
-  text-align: center;
-  padding-top: 20px; }
-  .dashboard .your-calendar-all .calendar {
-    display: inline-block; }
-    .dashboard .your-calendar-all .calendar .week {
-      display: table;
-      width: 100%;
-      border-bottom: 1px solid #F56E12; }
-      .dashboard .your-calendar-all .calendar .week:last-of-type {
-        border-bottom: 0; }
-      .dashboard .your-calendar-all .calendar .week .day {
-        display: table-cell;
-        border-right: 1px solid #F56E12; }
-        .dashboard .your-calendar-all .calendar .week .day:last-of-type {
-          border-right: 0; }
-        .dashboard .your-calendar-all .calendar .week .day .day-inner {
-          width: 63px;
-          height: 60px;
-          background-color: #009EC4; }
-          .dashboard .your-calendar-all .calendar .week .day .day-inner.active {
-            background-color: #005476; }
+.cal-page .full-calendar {
+  max-width: 100%; }

@@ -23,6 +23,35 @@ var Views;
             this.$tabWebNavi = $("#tabWebNavi").parent();
             this.$titles = $(".topic-block .title");
             this.initResize();
+            this.initCalendar();
+        };
+        DashboardView.prototype.initCalendar = function () {
+            var _this = this;
+            this.createCalendar();
+            var fromTo = Dashboard.CalendarUtils.getCalRange(this.$calendar);
+            var from = TravelB.DateUtils.momentDateToTrans(fromTo.from);
+            var to = TravelB.DateUtils.momentDateToTrans(fromTo.to);
+            var prms = [["from", from], ["to", to]];
+            this.apiGet("FriendsEvents", prms, function (events) {
+                var evnts = _.map(events, function (event) { return Dashboard.CalendarUtils.convertEvent(event); });
+                evnts.forEach(function (evnt) {
+                    _this.$calendar.fullCalendar("renderEvent", evnt);
+                });
+            });
+        };
+        DashboardView.prototype.createCalendar = function () {
+            this.$calendar = $("#calendar").fullCalendar({
+                header: false,
+                footer: false,
+                navLinks: false,
+                editable: false,
+                eventLimit: true,
+                fixedWeekCount: false,
+                height: "auto",
+                eventClick: function (evnt) {
+                    window.open("/trip/" + evnt.tripId, "_blank");
+                }
+            });
         };
         DashboardView.prototype.initTabs = function () {
             var _this = this;
@@ -60,7 +89,6 @@ var Views;
                 return;
             }
             this.lastWidth = width;
-            console.log(width);
             var w1 = 1100;
             var w2 = 750;
             this.$tbFriends.addClass("hidden");
