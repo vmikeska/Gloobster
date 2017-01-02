@@ -14,6 +14,12 @@ namespace Gloobster.Portal
                     template: "{controller=Home}/{action=Index}/{id?}");
 
                 routes.MapRoute(
+                    name: "dashboard",
+                    template: RoutingConsts.DashboardMenuName,
+                    defaults: new { controller = "Home", action = "Dashboard" }
+                    );
+
+                routes.MapRoute(
                     name: "imageDB",
                     template: "Pic/{id}/{cut}",
                     defaults: new { controller = "ImageDB", action = "Pic" }

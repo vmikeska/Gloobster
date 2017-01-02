@@ -83,6 +83,10 @@ var data = [
         {
             i: "Deals/Home",
             o: "deals"
+        },
+        {
+            i: "Home/Dashboard",
+            o: "dashboard"
         }
         
     ];

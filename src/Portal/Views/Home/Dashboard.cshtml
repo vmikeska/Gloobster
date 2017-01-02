@@ -1,13 +1,246 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-    Layout = "";
+﻿@using System.Web.UI
+@using Gloobster.Common
+@using Gloobster.Portal.ViewModels
+@model ViewModelDashboard
+
+@{
+    ViewData["Title"] = "Dashboard";
+    //Layout = "";
+    ViewBag.BodyClass = "dashboard";
 }
+
+
+@if (GloobsterConfig.UseMiniScripts)
+{
+    <script src="/jsb/dashboard.js" type="text/javascript" data-notbuild="true"></script>
+}
+else
+{    
+    <script src="/js/Views/DashboardView.js" type="text/javascript"></script>    
+}
+
+
+<div class="wrapper">
+
+    <div id="menuCont" class="navi-cont"></div>
+
+    <div class="topics">
+
+    <div class="topic-block tb-friends hidden">
+        <div class="title">Friend's feed</div>
+        <div class="content">
+
+            <div class="friends-item">
+
+                <div class="f-tbl">
+                    <div class="l">
+                        <img src="images/n/temp/user1.jpg"/>
+                    </div>
+                    <div class="r">
+                        <div class="name-cont">
+                            <a href="#">John Newman</a>
+                        </div>
+                        <div class="txt">
+                            Just created his public trip "Holidays in Norway"
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="friends-item">
+
+                <div class="f-tbl">
+                    <div class="l">
+                        <img src="images/n/temp/user2.jpg"/>
+                    </div>
+                    <div class="r">
+                        <div class="name-cont">
+                            <a href="#">Jenifer Crow</a>
+                        </div>
+                        <div class="txt">
+                            Just met with John Keneddy over the Travel Buddy.
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="friends-item">
+
+                <div class="f-tbl">
+                    <div class="l">
+                        <img src="images/n/temp/user3.jpg"/>
+                    </div>
+                    <div class="r">
+                        <div class="name-cont">
+                            <a href="#">Radovan Krawitzki</a>
+                        </div>
+                        <div class="txt">
+                            Just made a recommendation to a Karl Benz. "He is such a nice guy, here really showed me how does it work in the city"
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="topic-block tb-portal hidden">            
+        <div class="title">Portal feed</div>
+        <div class="content">
+
+                <div class="portal-item">                    
+                    <h3><a href="#">How to travel South East Asia</a></h3>
+                    <img src="images/n/temp/beach1.jpg" />
+                    <p>Prague is one of the most beautiful historical cities in the world. Its large center, 866 hectares in size makes Prague unique history preservation. A medieval centre with narrow streets, cathedrals, towers and churches, one of the oldest and well preserved castle in Europe, the Vltava river with its swans and its magical bridges. This is Prague but not only this! Prague is a popular night-life destination, with thousands of bars, pubs and clubs.</p>
+                </div>
+                
+                <div class="portal-item">
+                    <h3><a href="#">Traveling budget over the Europe</a></h3>
+                    <img src="images/n/temp/graph1.jpg" />
+                    <p>A large part of the city, including the River Seine, is a UNESCO World Heritage Site.</p>
+                </div>
+                
+                <div class="portal-item">
+                    <h3><a href="#">TOP 10: beautiful cities</a></h3>
+                    <img src="images/n/temp/city1.jpg" />
+                    <p>Lisbon (in Portuguese: Lisboa) is the capital of Portugal. Like İstanbul, Rome and San Francisco, Lisbon is built on seven hills.</p>
+                </div>
+
+            </div>
+
+        </div>
+
+
+    <div class="topic-block tb-web hidden">       
+        <div class="title">Web navigation</div>     
+        <div class="content">
+
+                <div class="web-item">
+                    <div class="web-title">Your travel map</div>
+                    <div class="web-cont">
+
+                        <div class="your-map-all">
+                            <a href="/travelmap">@Html.Partial("MapSvg")</a>
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+                <div class="web-item">
+                    <div class="web-title">Your trips</div>
+                    <div class="web-cont">
+
+                        <div class="your-trips-all">
+
+                            <div class="items">
+
+                                <div class="item">
+                                    <a href="#"><img src="/images/samples/trip-ico.jpg" /> <span class="txt">My first trip</span></a>
+                                </div>
+
+                                <div class="item">
+                                    <a href="#"><img src="/images/samples/trip-ico.jpg" /> <span class="txt">My travel over the states</span></a>
+                                </div>
+
+                                <div class="item">
+                                    <a href="#"><img src="/images/samples/trip-ico.jpg" /> <span class="txt">My travel over the states</span></a>
+                                </div>
+
+                            </div>
+
+                            <div class="new-trip">
+                                <a href="#" class="lbtn2">+ New trip</a>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="web-item">
+                    <div class="web-title">Calendar of friend's trips</div>
+                    <div class="web-cont">
+
+                        <div class="your-calendar-all">
+
+                            <div class="calendar">
+
+                                <div class="week">
+                                    <div class="day"><div class="day-inner"></div></div>
+                                    <div class="day"><div class="day-inner active"></div></div>
+                                    <div class="day"><div class="day-inner active"></div></div>
+                                    <div class="day"><div class="day-inner"></div></div>
+                                    <div class="day"><div class="day-inner"></div></div>
+                                    <div class="day"><div class="day-inner"></div></div>
+                                    <div class="day"><div class="day-inner"></div></div>
+                                </div>
+                                <div class="week">
+                                    <div class="day"><div class="day-inner"></div></div>
+                                    <div class="day"><div class="day-inner"></div></div>
+                                    <div class="day"><div class="day-inner"></div></div>
+                                    <div class="day"><div class="day-inner active"></div></div>
+                                    <div class="day"><div class="day-inner active"></div></div>
+                                    <div class="day"><div class="day-inner active"></div></div>
+                                    <div class="day"><div class="day-inner active"></div></div>
+                                </div>
+                                <div class="week">
+                                    <div class="day"><div class="day-inner"></div></div>
+                                    <div class="day"><div class="day-inner"></div></div>
+                                    <div class="day"><div class="day-inner"></div></div>
+                                    <div class="day"><div class="day-inner"></div></div>
+                                    <div class="day"><div class="day-inner"></div></div>
+                                    <div class="day"><div class="day-inner"></div></div>
+                                    <div class="day"><div class="day-inner"></div></div>
+                                </div>
+                                <div class="week">
+                                    <div class="day"><div class="day-inner"></div></div>
+                                    <div class="day"><div class="day-inner"></div></div>
+                                    <div class="day"><div class="day-inner"></div></div>
+                                    <div class="day"><div class="day-inner"></div></div>
+                                    <div class="day"><div class="day-inner"></div></div>
+                                    <div class="day"><div class="day-inner"></div></div>
+                                    <div class="day"><div class="day-inner"></div></div>
+                                </div>
+                                <div class="week">
+                                    <div class="day"><div class="day-inner"></div></div>
+                                    <div class="day"><div class="day-inner"></div></div>
+                                    <div class="day"><div class="day-inner"></div></div>
+                                    <div class="day"><div class="day-inner"></div></div>
+                                    <div class="day"><div class="day-inner"></div></div>
+                                    <div class="day"><div class="day-inner"></div></div>
+                                    <div class="day"><div class="day-inner"></div></div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+
+
+</div>
+
 
 
 <script>
     
     function onBodyLoad() {
-    
+        currentView = new Views.DashboardView();
     }
 
 </script>

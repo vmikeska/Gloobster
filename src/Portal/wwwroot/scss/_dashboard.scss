@@ -1,0 +1,242 @@
+﻿
+.dashboard {
+
+    .navi-cont {
+        margin-top: 20px;
+    }
+
+    .topics {
+
+        margin-top: 10px;
+
+        display: table;
+        width: 100%;
+
+        .topic-block {
+            display: table-cell;
+            vertical-align: top;
+
+            padding-left: 10px;
+            padding-right: 10px;
+
+            .title {
+                font-weight: bold;
+                font-size: 1.1em;
+
+                margin-bottom: 10px;
+            }
+
+            .content {
+                text-align: left;                
+            }
+
+        }
+
+
+        /*.tb-friends {
+            width: 350px;
+        }
+
+        .tb-portal {
+            width: 350px;
+        }
+*/
+        .tb-web {
+            min-width: 460px;            
+        }
+
+    }
+
+    .web-item {
+        
+        margin-bottom: 10px;
+
+        .web-title {
+            font-weight: bold;
+            background-color: $info-blue2;
+            color: white;
+
+            padding: 4px;
+            text-align: center;
+        }
+
+        .web-cont {
+            background-color: $very-light-blue3;
+        }
+    }    
+
+    .portal-item {
+        
+        margin-bottom: 10px;
+
+        h3 {
+            margin-top: 0;
+            margin-bottom: 4px;
+            
+        }
+
+        p {
+            margin: 0;
+            padding: 0;
+            font-size: 0.9em;
+        }
+
+        img {
+            float: left;
+            margin-right: 10px;
+        }
+        
+            
+    }
+
+    .friends-item {
+        
+        background-color: $very-light-blue3;
+        border-radius: 2px;
+
+        margin-bottom: 6px;
+
+        padding: 6px;
+
+        .f-tbl {
+            display: table;
+
+            .l, .r {
+                display: table-cell;
+                vertical-align: top;
+            }
+
+            .r {
+                padding-left: 8px;
+            }
+        }
+
+        img {
+            border-radius: 50%;
+        }
+
+        .name-cont {
+
+        }
+
+        .txt {
+            font-size: 0.9em;
+        }
+
+    }
+
+    
+        .your-map-all {
+            
+            #bg {                
+                fill: none;
+            }
+
+            [cc] {
+                fill: $info-blue2;                
+
+            }
+
+            [cc="cz"], [cc="de"], [cc="ru"], [cc="us"], [cc="br"], [cc="tr"], [cc="au"], [cc="at"], [cc="sp"], [cc="pt"], [cc="fr"], [cc="uk"], [cc="it"] {
+                fill: $dark-blue;
+            }
+            
+        }
+
+    
+
+    .your-trips-all {
+        .items {
+            .item {                
+                padding: 6px;
+
+                a {
+                    text-decoration: none;
+                    color: $info-blue2;
+
+                    &:hover {
+                        color: $orange;
+                        font-weight: bold;
+                    }
+                }
+
+                img {
+                    vertical-align: middle;
+                    width: 40px;
+                    height: 40px;                    
+                    border-radius: 2px;
+                }
+
+                .txt{
+                    vertical-align: middle;
+                }
+            }
+        }
+
+        .new-trip {
+            
+            text-align: left;
+
+            padding: 8px;
+
+            .lbtn2 {
+                background-color: $orange;
+                color: white;
+                font-weight: bold;
+
+                padding-top: 1px;
+                padding-bottom: 1px;
+                padding-left: 6px;
+                padding-right: 6px;
+
+                &:hover {
+                    background-color: $green;
+                }
+            }
+        }
+    }
+
+    .your-calendar-all {
+        text-align: center;
+        padding-top: 20px;
+
+        .calendar {
+            display: inline-block;
+            
+
+            .week {
+                 display: table;
+                 width: 100%;
+
+                 border-bottom:1px solid $orange;
+                 &:last-of-type {                        
+                        border-bottom: 0;
+                 }
+
+                .day {
+                    display: table-cell;                    
+                    
+                    border-right:1px solid $orange;
+                    &:last-of-type {                        
+                        border-right: 0;
+                    }
+
+                    .day-inner {
+                        width: 63px;
+                        
+                        
+                        height: 60px;
+
+                        background-color: $info-blue2;
+
+                        &.active {
+                        background-color: $dark-blue;
+                    }
+                    }
+
+                }
+            }
+        }
+    }
+
+}

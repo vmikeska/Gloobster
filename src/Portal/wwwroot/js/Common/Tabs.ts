@@ -13,6 +13,8 @@ module Common {
 		private btnContClass = "btn-cont";
 		private contClass = "tab-menu";
 
+		private actClass = "act";
+
 		private $cont;
 		private tabGroup;
 		
@@ -23,13 +25,25 @@ module Common {
 
 		private tabs = [];
 
-		public addTab(id, text, callback = null) {
+		public addTab(id, text, callback: Function = null) {
 			this.tabs.push({ id: id, text: text, callback: callback });
+		}
+
+		public addTabConf(config, callback: Function = null) {
+
+			var cfg = $.extend(config, { callback: callback });
+
+			this.tabs.push(cfg);
 		}
 
 		public create() {
 			this.tabs.forEach((t) => {
-				var $t = this.genTab(t);
+					var $t = this.genTab(t);
+
+					if (t.cls) {
+						$t.addClass(t.cls);
+					}
+
 				this.$cont.append($t);
 				});
 
@@ -41,21 +55,26 @@ module Common {
 
 			this.activeTabId = this.tabs[0].id;
 		}
-			
+
+		public activateTab($btn) {
+			this.deactivate();
+			this.activate($btn);
+		}
+
 		private genTab(t) {
 				var $t = $(`<div class="${this.btnContClass}"><div id="${t.id}" class="${this.btnClass} ${this.tabGroup}">${t.text}</div></div>`);
 
 			var $btn = $t.find(".btn");
 
 			if (this.isFirst) {
-					$btn.addClass("act");
+					$btn.addClass(this.actClass);
 				this.isFirst = false;
 			}
 
 			$btn.click((e) => {
 				e.preventDefault();
 
-				if ($btn.hasClass("act")) {
+				if ($btn.hasClass(this.actClass)) {
 					return;
 				}
 					
@@ -65,9 +84,8 @@ module Common {
 
 				var $target = $(e.target);
 
-				$(`.${this.tabGroup}`).removeClass("act");
-				$target.addClass("act");
-				this.activeTabId = $target.attr("id");
+				this.deactivate();					
+				this.activate($target);
 
 				if (t.callback) {
 					t.callback(t.id);
@@ -79,7 +97,16 @@ module Common {
 			});
 
 			return $t;
-		}
+			}
+
+			private activate($btn) {
+					$btn.addClass(this.actClass);
+					this.activeTabId = $btn.attr("id");
+			}
+
+			private deactivate() {
+					$(`.${this.tabGroup}`).removeClass(this.actClass);
+			}
 
 
 	}

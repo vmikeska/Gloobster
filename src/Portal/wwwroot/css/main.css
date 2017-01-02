@@ -68,7 +68,7 @@ a {
     font-size: 24px; }
 
 .hidden {
-  display: none; }
+  display: none !important; }
 
 .checkbox-all {
   display: inline-block;
@@ -5927,3 +5927,135 @@ footer {
         border-radius: 50%; }
         .calendar-cont .my-calendar-win .bottom .close-cal:hover {
           color: #F56E12; }
+
+.dashboard .navi-cont {
+  margin-top: 20px; }
+
+.dashboard .topics {
+  margin-top: 10px;
+  display: table;
+  width: 100%;
+  /*.tb-friends {
+            width: 350px;
+        }
+
+        .tb-portal {
+            width: 350px;
+        }
+*/ }
+  .dashboard .topics .topic-block {
+    display: table-cell;
+    vertical-align: top;
+    padding-left: 10px;
+    padding-right: 10px; }
+    .dashboard .topics .topic-block .title {
+      font-weight: bold;
+      font-size: 1.1em;
+      margin-bottom: 10px; }
+    .dashboard .topics .topic-block .content {
+      text-align: left; }
+  .dashboard .topics .tb-web {
+    min-width: 460px; }
+
+.dashboard .web-item {
+  margin-bottom: 10px; }
+  .dashboard .web-item .web-title {
+    font-weight: bold;
+    background-color: #009EC4;
+    color: white;
+    padding: 4px;
+    text-align: center; }
+  .dashboard .web-item .web-cont {
+    background-color: #F0FAFC; }
+
+.dashboard .portal-item {
+  margin-bottom: 10px; }
+  .dashboard .portal-item h3 {
+    margin-top: 0;
+    margin-bottom: 4px; }
+  .dashboard .portal-item p {
+    margin: 0;
+    padding: 0;
+    font-size: 0.9em; }
+  .dashboard .portal-item img {
+    float: left;
+    margin-right: 10px; }
+
+.dashboard .friends-item {
+  background-color: #F0FAFC;
+  border-radius: 2px;
+  margin-bottom: 6px;
+  padding: 6px; }
+  .dashboard .friends-item .f-tbl {
+    display: table; }
+    .dashboard .friends-item .f-tbl .l, .dashboard .friends-item .f-tbl .r {
+      display: table-cell;
+      vertical-align: top; }
+    .dashboard .friends-item .f-tbl .r {
+      padding-left: 8px; }
+  .dashboard .friends-item img {
+    border-radius: 50%; }
+  .dashboard .friends-item .txt {
+    font-size: 0.9em; }
+
+.dashboard .your-map-all #bg {
+  fill: none; }
+
+.dashboard .your-map-all [cc] {
+  fill: #009EC4; }
+
+.dashboard .your-map-all [cc="cz"], .dashboard .your-map-all [cc="de"], .dashboard .your-map-all [cc="ru"], .dashboard .your-map-all [cc="us"], .dashboard .your-map-all [cc="br"], .dashboard .your-map-all [cc="tr"], .dashboard .your-map-all [cc="au"], .dashboard .your-map-all [cc="at"], .dashboard .your-map-all [cc="sp"], .dashboard .your-map-all [cc="pt"], .dashboard .your-map-all [cc="fr"], .dashboard .your-map-all [cc="uk"], .dashboard .your-map-all [cc="it"] {
+  fill: #005476; }
+
+.dashboard .your-trips-all .items .item {
+  padding: 6px; }
+  .dashboard .your-trips-all .items .item a {
+    text-decoration: none;
+    color: #009EC4; }
+    .dashboard .your-trips-all .items .item a:hover {
+      color: #F56E12;
+      font-weight: bold; }
+  .dashboard .your-trips-all .items .item img {
+    vertical-align: middle;
+    width: 40px;
+    height: 40px;
+    border-radius: 2px; }
+  .dashboard .your-trips-all .items .item .txt {
+    vertical-align: middle; }
+
+.dashboard .your-trips-all .new-trip {
+  text-align: left;
+  padding: 8px; }
+  .dashboard .your-trips-all .new-trip .lbtn2 {
+    background-color: #F56E12;
+    color: white;
+    font-weight: bold;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 6px;
+    padding-right: 6px; }
+    .dashboard .your-trips-all .new-trip .lbtn2:hover {
+      background-color: #3DA33D; }
+
+.dashboard .your-calendar-all {
+  text-align: center;
+  padding-top: 20px; }
+  .dashboard .your-calendar-all .calendar {
+    display: inline-block; }
+    .dashboard .your-calendar-all .calendar .week {
+      display: table;
+      width: 100%;
+      border-bottom: 1px solid #F56E12; }
+      .dashboard .your-calendar-all .calendar .week:last-of-type {
+        border-bottom: 0; }
+      .dashboard .your-calendar-all .calendar .week .day {
+        display: table-cell;
+        border-right: 1px solid #F56E12; }
+        .dashboard .your-calendar-all .calendar .week .day:last-of-type {
+          border-right: 0; }
+        .dashboard .your-calendar-all .calendar .week .day .day-inner {
+          width: 63px;
+          height: 60px;
+          background-color: #009EC4; }
+          .dashboard .your-calendar-all .calendar .week .day .day-inner.active {
+            background-color: #005476; }

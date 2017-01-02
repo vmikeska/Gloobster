@@ -23,6 +23,10 @@
       <en>Travel Buddy</en>
     </MenuTB>
 
+    <DashboardDeals>
+      <en>Dashboard</en>
+    </DashboardDeals>
+    
     <MenuDeals>
       <en>Travel deals</en>
     </MenuDeals>

@@ -15,6 +15,8 @@ namespace Gloobster.Common
         public const string TravelBuddyMenuName = "travelbuddy";
         public const string DealsMenuName = "deals";
 
+        public const string DashboardMenuName = "dashboard";
+
         public const string UserDetailMenuName = "user";
         public const string UserEditMenuName = "settings";
         public const string FriendsMenuName = "friends";

@@ -37,6 +37,11 @@ $trans-white: rgba(255, 255, 255, 0.9);
 
 $tablet-width: 959px;
 
+$brown10: #FCF4BD;
+$brown20: #F0C300;
+$brown30: #CA8403;
+$brown40: #9D6100;
+
 @mixin noselect {
 
     -webkit-touch-callout: none; /* iOS Safari */
@@ -54,6 +59,12 @@ $tablet-width: 959px;
     }
 }
 
+
+@mixin above-width($width) {
+    @media screen and (min-width: $width + 'px' ) {
+        @content;
+    }
+}
 
 @mixin below-width($width) {
     @media screen and (max-width: $width + 'px' ) {
@@ -189,7 +200,7 @@ a {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 .checkbox-all{
@@ -661,3 +672,4 @@ button:active {
 @import "image-db";
 @import "sp-chat";
 @import "calendar";
+@import "dashboard";

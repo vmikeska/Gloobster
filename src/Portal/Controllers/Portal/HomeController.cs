@@ -31,7 +31,13 @@ namespace Gloobster.Portal.Controllers.Portal
             var vm = CreateViewModelInstance<ViewModelHome>();            
             return View(vm);
         }
-
+        
+        public IActionResult Dashboard()
+        {
+            var vm = CreateViewModelInstance<ViewModelDashboard>();
+            return View(vm);
+        }
+        
         public IActionResult Component(string id)
         {
             var viewModel = CreateViewModelInstance<ViewModelComponent>();
