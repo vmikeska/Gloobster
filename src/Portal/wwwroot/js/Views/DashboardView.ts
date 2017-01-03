@@ -1,7 +1,8 @@
 module Views {
 	export class DashboardView extends ViewBase {
 
-		public ccs;
+			public ccs;
+			public canQueryResults: boolean;
 
 		private tabs: Common.Tabs;
 
@@ -37,7 +38,95 @@ module Views {
 				this.initMap();
 
 				this.initCalendar();
+
+			this.initDeals();
 		}
+
+		private anytimeRes;
+		private weekendRes;
+
+		private anytimeFinished = false;
+		private weekendFinished = false;
+
+			private initDeals() {
+
+					AirLoc.registerLocationCombo($("#currentCity"), (place) => {
+							window.location.href = "/deals";
+					});
+
+				if (this.canQueryResults) {
+
+					this.startResMgr(PlanningType.Anytime,
+						(res) => {
+								this.anytimeRes = res;	
+								this.displayResults();						
+						},
+						() => {
+								this.anytimeFinished = true;
+								this.canHidePreload();								
+						});
+
+					this.startResMgr(PlanningType.Weekend,
+						(res) => {
+								this.weekendRes = res;	
+								this.displayResults();						
+						},
+						() => {
+								this.weekendFinished = true;
+							this.canHidePreload();								
+						});
+
+				}
+
+
+			}
+
+			private canHidePreload() {
+					if (this.anytimeFinished && this.weekendFinished) {
+							$(".your-deals-result-all .preload-all").hide();
+					}
+			}
+
+			private displayResults() {
+					
+					var res = { Excellent: 0, Good: 0, Standard: 0 };
+
+					if (this.anytimeRes) {
+							res.Excellent += this.anytimeRes.Excellent;
+							res.Good += this.anytimeRes.Good;
+							res.Standard += this.anytimeRes.Standard;
+					}
+
+					if (this.weekendRes) {
+							res.Excellent += this.weekendRes.Excellent;
+							res.Good += this.weekendRes.Good;
+							res.Standard += this.weekendRes.Standard;
+					}
+
+					$("#res5").html(res.Excellent);
+					$("#res3").html(res.Good);
+					$("#res1").html(res.Standard);
+
+				
+			}
+
+			private startResMgr(pt: PlanningType, onChange: Function, onQueueFinished: Function) {
+					var rm = new Planning.ResultsManager(this);
+
+					rm.onDrawQueue = () => {						
+							if (!any(rm.queue)) {
+								onQueueFinished();
+							} 
+					}
+
+					rm.onResultsChanged = (queries) => {
+							var de = new Planning.DelasEval(rm.timeType, queries);
+							de.countDeals();
+						onChange(de.res);
+					};
+
+					rm.initalCall(pt);
+			}
 
 			private initMap() {
 				this.ccs.forEach((cc) => {

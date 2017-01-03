@@ -9,6 +9,8 @@ var Views;
         __extends(DashboardView, _super);
         function DashboardView() {
             _super.call(this);
+            this.anytimeFinished = false;
+            this.weekendFinished = false;
             this.blocksCnt = 0;
             this.lastWidth = 0;
         }
@@ -24,6 +26,64 @@ var Views;
             this.initResize();
             this.initMap();
             this.initCalendar();
+            this.initDeals();
+        };
+        DashboardView.prototype.initDeals = function () {
+            var _this = this;
+            Views.AirLoc.registerLocationCombo($("#currentCity"), function (place) {
+                window.location.href = "/deals";
+            });
+            if (this.canQueryResults) {
+                this.startResMgr(PlanningType.Anytime, function (res) {
+                    _this.anytimeRes = res;
+                    _this.displayResults();
+                }, function () {
+                    _this.anytimeFinished = true;
+                    _this.canHidePreload();
+                });
+                this.startResMgr(PlanningType.Weekend, function (res) {
+                    _this.weekendRes = res;
+                    _this.displayResults();
+                }, function () {
+                    _this.weekendFinished = true;
+                    _this.canHidePreload();
+                });
+            }
+        };
+        DashboardView.prototype.canHidePreload = function () {
+            if (this.anytimeFinished && this.weekendFinished) {
+                $(".your-deals-result-all .preload-all").hide();
+            }
+        };
+        DashboardView.prototype.displayResults = function () {
+            var res = { Excellent: 0, Good: 0, Standard: 0 };
+            if (this.anytimeRes) {
+                res.Excellent += this.anytimeRes.Excellent;
+                res.Good += this.anytimeRes.Good;
+                res.Standard += this.anytimeRes.Standard;
+            }
+            if (this.weekendRes) {
+                res.Excellent += this.weekendRes.Excellent;
+                res.Good += this.weekendRes.Good;
+                res.Standard += this.weekendRes.Standard;
+            }
+            $("#res5").html(res.Excellent);
+            $("#res3").html(res.Good);
+            $("#res1").html(res.Standard);
+        };
+        DashboardView.prototype.startResMgr = function (pt, onChange, onQueueFinished) {
+            var rm = new Planning.ResultsManager(this);
+            rm.onDrawQueue = function () {
+                if (!any(rm.queue)) {
+                    onQueueFinished();
+                }
+            };
+            rm.onResultsChanged = function (queries) {
+                var de = new Planning.DelasEval(rm.timeType, queries);
+                de.countDeals();
+                onChange(de.res);
+            };
+            rm.initalCall(pt);
         };
         DashboardView.prototype.initMap = function () {
             this.ccs.forEach(function (cc) {

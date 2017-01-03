@@ -5,39 +5,6 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Views;
 (function (Views) {
-    var DelasEval = (function () {
-        function DelasEval(timeType, queries) {
-            this.res = { Excellent: 0, Good: 0, Standard: 0 };
-            this.timeType = timeType;
-            this.queries = queries;
-        }
-        DelasEval.prototype.countDeals = function () {
-            var _this = this;
-            Planning.FlightsExtractor.f(this.queries, function (f, r, q) {
-                var stars = Planning.AnytimeAggUtils.getScoreStars(f.score);
-                _this.incCategory(stars);
-            });
-        };
-        DelasEval.prototype.incCategory = function (stars) {
-            if (stars >= 4) {
-                this.res.Excellent++;
-            }
-            else if (stars >= 2) {
-                this.res.Good++;
-            }
-            else {
-                this.res.Standard++;
-            }
-        };
-        DelasEval.prototype.dispayDeals = function () {
-            this.countDeals();
-            $("#delasEx").html(this.res.Excellent);
-            $("#delasGo").html(this.res.Good);
-            $("#delasSt").html(this.res.Standard);
-        };
-        return DelasEval;
-    }());
-    Views.DelasEval = DelasEval;
     var FlyView = (function (_super) {
         __extends(FlyView, _super);
         function FlyView() {
@@ -60,9 +27,18 @@ var Views;
         FlyView.prototype.initialize = function () {
             var _this = this;
             this.resultsEngine = new Planning.ResultsManager(this);
+            this.resultsEngine.onDrawQueue = function () {
+                var qv = new Planning.QueueVisualize();
+                if (any(_this.resultsEngine.queue)) {
+                    qv.draw(_this.resultsEngine.timeType, _this.resultsEngine.queue);
+                }
+                else {
+                    qv.hide();
+                }
+            };
             this.resultsEngine.onResultsChanged = function (queries) {
                 _this.currentSetter.setQueries(queries);
-                var de = new DelasEval(_this.resultsEngine.timeType, queries);
+                var de = new Planning.DelasEval(_this.resultsEngine.timeType, queries);
                 de.dispayDeals();
             };
             this.planningMap = new Planning.PlanningMap(this);
@@ -70,7 +46,8 @@ var Views;
                 _this.changeSetter(PlanningType.Anytime);
             };
             this.planningMap.onSelectionChanged = function (id, newState, type) {
-                _this.resultsEngine.selectionChanged(id, newState, type);
+                var customId = _this.currentSetter.getCustomId();
+                _this.resultsEngine.selectionChanged(id, newState, type, customId);
             };
             this.planningMap.init();
             this.mapSwitch(function (type) {
@@ -139,7 +116,8 @@ var Views;
             }
             this.currentSetter.init(function () {
                 _this.planningMap.loadCategory(type);
-                _this.resultsEngine.initalCall(type);
+                var customId = _this.currentSetter.getCustomId();
+                _this.resultsEngine.initalCall(type, customId);
             });
         };
         return FlyView;

@@ -14,6 +14,7 @@ using System.Linq;
 using System.Web;
 using Autofac;
 using Gloobster.Entities;
+using Gloobster.Entities.SearchEngine;
 using Gloobster.Entities.Trip;
 using Microsoft.AspNet.Http;
 
@@ -48,6 +49,29 @@ namespace Gloobster.Portal.Controllers.Portal
                 vm.CCs = visited.Countries.Select(c => c.CountryCode2).ToList();
             }
 
+            vm.HasAirs = false;
+            var airs = DB.FOD<UserAirports>(u => u.User_id == UserIdObj.Value);
+            if (airs != null)
+            {
+                vm.HasAirs = airs.Airports.Any();
+            }
+
+            vm.HasDests = false;
+            var dealsAnytime = DB.FOD<DealsAnytimeEntity>(d => d.User_id == UserIdObj.Value);
+
+            if (dealsAnytime != null)
+            {
+                vm.HasDests = dealsAnytime.Cities.Any() || dealsAnytime.CountryCodes.Any();
+            }
+            if (!vm.HasDests)
+            {
+                var dealsWeekend = DB.FOD<DealsWeekendEntity>(d => d.User_id == UserIdObj.Value);
+                if (dealsWeekend != null)
+                {
+                    vm.HasDests = dealsWeekend.Cities.Any() || dealsWeekend.CountryCodes.Any();
+                }
+            }
+            
             return View(vm);
         }
 

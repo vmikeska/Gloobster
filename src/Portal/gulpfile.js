@@ -87,7 +87,13 @@ var data = [
         {
             i: "Home/Dashboard",
             o: "dashboard"
+        },
+        {
+            i: "Home/Calendar",
+            o: "calendar"
         }
+
+        
         
     ];
 

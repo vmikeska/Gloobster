@@ -196,7 +196,7 @@ module Planning {
 							this.searchId = id;
 							
 							this.v.planningMap.loadCategory(PlanningType.Custom);							
-							this.v.resultsEngine.initalCall(PlanningType.Custom);
+							this.v.resultsEngine.initalCall(PlanningType.Custom, this.searchId);
 					});
 			}
 

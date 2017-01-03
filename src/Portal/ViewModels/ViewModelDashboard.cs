@@ -7,5 +7,7 @@ namespace Gloobster.Portal.ViewModels
     {
         public List<TripEntity> Trips { get; set; }
         public List<string> CCs { get; set; }
+        public bool HasAirs { get; set; }
+        public bool HasDests { get; set; }
     }
 }

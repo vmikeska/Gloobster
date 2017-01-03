@@ -5984,6 +5984,10 @@ footer {
       padding-right: 6px; }
       .dashboard .web-item .srv-zone .srv-btn:hover {
         background-color: #3DA33D; }
+  .dashboard .web-item.dark .web-title {
+    background-color: #005476; }
+  .dashboard .web-item.dark .web-cont {
+    background-color: #009EC4; }
 
 .dashboard .portal-item {
   margin-bottom: 10px; }
@@ -6015,14 +6019,89 @@ footer {
   .dashboard .friends-item .txt {
     font-size: 0.9em; }
 
-.dashboard .your-map-all {
-  /*[cc="cz"]{
-                fill: $dark-blue;
-            }*/ }
-  .dashboard .your-map-all #bg {
-    fill: none; }
-  .dashboard .your-map-all [cc] {
-    fill: #009EC4; }
+.dashboard .your-map-all #bg {
+  fill: none; }
+
+.dashboard .your-map-all [cc] {
+  fill: #009EC4; }
+
+.dashboard .your-deals-all {
+  color: white;
+  text-align: center;
+  padding: 10px; }
+  .dashboard .your-deals-all .no-data-txt {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 12px; }
+  .dashboard .your-deals-all .redirect-btn {
+    color: white;
+    background-color: #FFC400;
+    font-weight: bold; }
+    .dashboard .your-deals-all .redirect-btn:hover {
+      background-color: #3DA33D; }
+  .dashboard .your-deals-all .icos-tbl {
+    display: table;
+    width: 100%; }
+  .dashboard .your-deals-all .ico-block {
+    display: table-cell;
+    font-weight: bold; }
+    .dashboard .your-deals-all .ico-block .txt {
+      font-size: 0.9em; }
+  .dashboard .your-deals-all .loc {
+    font-size: 0.9em;
+    margin-top: 12px; }
+    .dashboard .your-deals-all .loc input {
+      border: 2px solid #005476;
+      text-align: center; }
+
+.dashboard .your-deals-result-all {
+  padding-top: 10px; }
+  .dashboard .your-deals-result-all .preload-all {
+    position: relative;
+    height: 42px;
+    background-color: white;
+    border-radius: 4px;
+    margin-bottom: 12px; }
+    .dashboard .your-deals-result-all .preload-all .preloader {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      display: inline-block;
+      width: 30px;
+      height: 30px; }
+      .dashboard .your-deals-result-all .preload-all .preloader img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 30px;
+        height: 30px;
+        margin-top: -15px;
+        margin-left: -15px;
+        -webkit-animation: spin 1s linear infinite;
+        -moz-animation: spin 1s linear infinite;
+        animation: spin 1s linear infinite; }
+    .dashboard .your-deals-result-all .preload-all .txt {
+      margin-left: 50px;
+      display: inline-block;
+      font-size: 1.1em;
+      margin-top: 8px; }
+  .dashboard .your-deals-result-all .cats {
+    text-align: center; }
+    .dashboard .your-deals-result-all .cats .category {
+      border: 2px solid #005476;
+      border-radius: 4px;
+      display: inline-block;
+      padding: 8px;
+      background-color: white; }
+      .dashboard .your-deals-result-all .cats .category .no {
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #3298C1; }
+      .dashboard .your-deals-result-all .cats .category .stars span {
+        display: inline-block;
+        color: #FFC400; }
+      .dashboard .your-deals-result-all .cats .category .txt-level {
+        color: #BCB3B8; }
 
 .dashboard .your-trips-all .items .item {
   padding: 6px; }

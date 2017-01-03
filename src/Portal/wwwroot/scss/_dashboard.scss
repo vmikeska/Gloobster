@@ -91,6 +91,16 @@
                 }
             }
         }
+
+        &.dark {
+            .web-title {
+                background-color: $dark-blue;
+            }
+
+            .web-cont {
+                background-color: $info-blue2;                     
+            }
+        }
     }    
 
     .portal-item {
@@ -162,16 +172,133 @@
 
             [cc] {
                 fill: $info-blue2;                
-
             }
-
-            /*[cc="cz"]{
-                fill: $dark-blue;
-            }*/
-            
         }
 
+
+        .your-deals-all {
+            color: white;
+            text-align: center;
+
+            padding: 10px;
+
+            .no-data-txt {
+                font-size: 1.1em;
+                font-weight: bold;
+                margin-bottom: 12px;
+            }
+
+            .redirect-btn {
+                color: white;
+                background-color: $yellow;
+                font-weight: bold;
+
+                &:hover {
+                    background-color: $green;
+                }
+            }
+
+            .icos-tbl {
+                display: table;
+                width: 100%;
+            }
+
+            .ico-block {
+                display: table-cell;
+                
+                font-weight: bold;
+
+                .txt {
+                    font-size: 0.9em;
+                }
+            }
+
+            .loc {
+                font-size: 0.9em;
+                margin-top: 12px;
+
+                input {
+                    
+                    border: 2px solid $dark-blue;
+
+                    text-align: center;
+                }
+            }
+        }
     
+
+        .your-deals-result-all {
+        
+            padding-top: 10px;
+
+            .preload-all {
+                position: relative;
+                height: 42px;
+                background-color: white;
+                border-radius: 4px;
+
+                margin-bottom: 12px;
+
+
+                $preload-size: 30px;
+
+                .preloader {            
+                    position: absolute;
+                    top: 6px;
+                    left: 6px;
+
+                    display: inline-block;
+
+                    width: $preload-size;
+                    height: $preload-size;
+
+                    img {
+                        @include spin($preload-size);                        
+                    }            
+                }
+
+                .txt {
+                    margin-left: 50px;
+                    display: inline-block;
+                    font-size: 1.1em;
+                    margin-top: 8px;
+                }
+            }
+
+            .cats {
+                text-align: center;
+
+                .category {
+                    border: 2px solid $dark-blue;
+                    border-radius: 4px;
+                    display: inline-block;
+                    padding: 8px;
+                    background-color: white;
+
+                    .no {
+                        font-size: 1.5em;
+                        font-weight: bold;
+                        color: $light-blue3;
+                    }
+
+                    .stars {
+                        span {
+                            display: inline-block;
+                            color: $yellow;
+                        }
+                    }
+
+                    .txt-level {
+                        color: $darker-gray;
+                    }
+                }
+            }
+
+            
+                
+        }
+
+        
 
     .your-trips-all {
         .items {

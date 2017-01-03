@@ -8,7 +8,7 @@
 
 @{
     ViewData["Title"] = "Dashboard";
-    //Layout = "";
+    ViewBag.MenuGroup = "Dashboard";
     ViewBag.BodyClass = "dashboard";
 }
 
@@ -23,6 +23,11 @@ else
 {
     <script src="/lib/fullcalendar/dist/fullcalendar.js" type="text/javascript"></script>
     <script src="/js/Dashboard/CalendarUtils.js" type="text/javascript"></script>
+    <script src="/js/Views/AirLoc.js" type="text/javascript"></script>
+    <script src="/js/Deals/ResultsManager.js" type="text/javascript"></script>
+    <script src="/js/Deals/DelasEval.js" type="text/javascript"></script>
+    <script src="/js/Deals/Aggregators/FlightsExtractor.js" type="text/javascript"></script>
+    <script src="/js/Deals/Aggregators/AnytimeAggUtils.js" type="text/javascript"></script>
     <script src="/js/Views/DashboardView.js" type="text/javascript"></script>    
 }
 
@@ -130,16 +135,127 @@ else
     <div class="topic-block tb-web hidden">       
         <div class="title">Web navigation</div>     
         <div class="content">
+            
+            <div class="web-item dark">
+                <div class="web-title">Your travel deals</div>
+                <div class="web-cont">
+                    
+                    
+                    @if (!Model.HasAirs)
+                    {
+                        <div class="your-deals-all">
 
-                <div class="web-item">
+                            <div class="no-data-txt">You havent set any locations yet</div>
+
+                            <div class="icos-tbl">
+
+                                <div class="ico-block">
+                                    <img class="svg-img" src="/images/n/fly-pin.svg"/>
+                                    <div class="txt">Set your home city</div>
+                                </div>
+
+                                <div class="ico-block">
+                                    <img class="svg-img" src="/images/n/fly-comp.svg"/>
+                                    <div class="txt">Choose desired destinations</div>
+                                </div>
+
+                                <div class="ico-block">
+                                    <img class="svg-img" src="/images/n/fly-plane.svg"/>
+                                    <div class="txt">Recive the best deals</div>
+                                </div>
+                            </div>
+
+                            <div class="loc">
+                                <div id="currentCity" class="dropdown">
+                                    <input class="inputed" type="text" placeholder="Set your home city">
+                                    <ul></ul>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else if (!Model.HasDests)
+                    {
+                        <div class="your-deals-all">
+
+                            <div class="no-data-txt">You havent set any locations yet</div>
+
+                        </div>
+
+                        <div class="srv-zone">
+                            <a href="/@RoutingConsts.DealsMenuName" class="lbtn2 srv-btn">Set your destinations</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="your-deals-result-all">
+                            
+                            <div class="preload-all">
+                                <span class="preloader">
+                                    <img src="/images/n/Plane_icon.svg">
+                                </span>    
+                                <span class="txt">Evaluating deals...</span>
+                            </div>
+
+                            <div class="cats">
+
+                                <div class="category c5">
+                                    <div id="res5" class="no">0</div>
+                                    <div class="stars">
+                                        <span class="icon-star-full"></span>
+                                        <span class="icon-star-full"></span>
+                                        <span class="icon-star-full"></span>
+                                        <span class="icon-star-full"></span>
+                                        <span class="icon-star-full"></span>
+                                    </div>
+                                    <div class="txt-level">Excellent</div>
+                                </div>
+
+                                <div class="category c3">
+                                    <div id="res3" class="no">0</div>
+                                    <div class="stars">
+                                        <span class="icon-star-full"></span>
+                                        <span class="icon-star-full"></span>
+                                        <span class="icon-star-full"></span>
+                                        <span class="icon-star-full"></span>
+                                        <span class="icon-star-full"></span>
+                                    </div>
+                                    <div class="txt-level">Good</div>
+                                </div>
+
+                                <div class="category c1">
+                                    <div id="res1" class="no">0</div>
+                                    <div class="stars">
+                                        <span class="icon-star-full"></span>
+                                        <span class="icon-star-full"></span>
+                                        <span class="icon-star-full"></span>
+                                        <span class="icon-star-full"></span>
+                                        <span class="icon-star-full"></span>
+                                    </div>
+                                    <div class="txt-level">Standard</div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="srv-zone">
+                            <a href="/@RoutingConsts.DealsMenuName" class="lbtn2 srv-btn">Go see your deals</a>
+                        </div>
+                    }
+
+
+
+                </div>
+            </div>
+            
+
+            <div class="web-item">
                     <div class="web-title">Your travel map</div>
                     <div class="web-cont">
 
                         <div class="your-map-all">
                             <a href="/travelmap">@Html.Partial("MapSvg")</a>
                         </div>
-
-
 
                     </div>
                 </div>
@@ -199,6 +315,18 @@ else
 </div>
 
 
+@*<script id="dash-deals-no-airs-template" type="text/x-handlebars-template">
+    
+</script>
+
+<script id="dash-deals-no-dests-template" type="text/x-handlebars-template">
+
+</script>
+
+<script id="dash-deals-no-dests-template" type="text/x-handlebars-template">
+
+</script>*@
+
 
 <script>
 
@@ -206,6 +334,8 @@ else
         currentView = new Views.DashboardView();
 
         currentView.ccs = @Html.Raw(JsonConvert.SerializeObject(Model.CCs));
+
+        currentView.canQueryResults = @Html.Raw((Model.HasAirs && Model.HasDests).ToString().ToLower());
 
         currentView.init();
     }

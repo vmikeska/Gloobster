@@ -68,18 +68,20 @@ var Planning;
             this.finishedQueries = [];
             this.queue = [];
             this.doRequery = true;
+            this.lastCustomId = "";
             this.v = v;
         }
         ResultsManager.prototype.refresh = function () {
-            this.initalCall(this.timeType);
+            this.initalCall(this.timeType, this.lastCustomId);
         };
-        ResultsManager.prototype.initalCall = function (timeType) {
+        ResultsManager.prototype.initalCall = function (timeType, customId) {
+            if (customId === void 0) { customId = ""; }
+            this.lastCustomId = customId;
             this.timeType = timeType;
             this.stopQuerying();
             this.queue = [];
             this.finishedQueries = [];
             this.resultsChanged();
-            var customId = this.v.currentSetter.getCustomId();
             var request = QueriesBuilder.new()
                 .setFirstQuery(true)
                 .setTimeType(timeType)
@@ -124,10 +126,11 @@ var Planning;
         ResultsManager.prototype.removeFromQueue = function (id) {
             this.queue = _.reject(this.queue, function (item) { return item.qid === id; });
         };
-        ResultsManager.prototype.selectionChanged = function (id, newState, type) {
+        ResultsManager.prototype.selectionChanged = function (id, newState, type, customId) {
+            if (customId === void 0) { customId = ""; }
+            this.lastCustomId = customId;
             if (newState) {
                 this.drawQueue();
-                var customId = this.v.currentSetter.getCustomId();
                 var qb = QueriesBuilder.new()
                     .setTimeType(this.timeType)
                     .setCustomId(customId);
@@ -182,12 +185,8 @@ var Planning;
             }, 3000);
         };
         ResultsManager.prototype.drawQueue = function () {
-            var qv = new QueueVisualize();
-            if (any(this.queue)) {
-                qv.draw(this.timeType, this.queue);
-            }
-            else {
-                qv.hide();
+            if (this.onDrawQueue) {
+                this.onDrawQueue();
             }
         };
         return ResultsManager;

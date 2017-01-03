@@ -138,7 +138,7 @@ var Planning;
                     _this.loadSearch(search);
                     _this.searchId = id;
                     _this.v.planningMap.loadCategory(PlanningType.Custom);
-                    _this.v.resultsEngine.initalCall(PlanningType.Custom);
+                    _this.v.resultsEngine.initalCall(PlanningType.Custom, _this.searchId);
                 });
             };
             this.$form.find(".adder").click(function (e) {

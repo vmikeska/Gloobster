@@ -1,44 +1,5 @@
 ﻿module Views {
-
-	export class DelasEval {
-
-		private timeType: PlanningType;
-		private queries;
-
-		private res = { Excellent: 0, Good: 0, Standard: 0 };
-
-		constructor(timeType: PlanningType, queries) {
-			this.timeType = timeType;
-			this.queries = queries;
-		}
-			
-		private countDeals() {
-				Planning.FlightsExtractor.f(this.queries, (f, r, q) => {
-						var stars = Planning.AnytimeAggUtils.getScoreStars(f.score);
-						this.incCategory(stars);
-				});				
-		}
-
-		private incCategory(stars) {
-			if (stars >= 4) {
-				this.res.Excellent++;
-			} else if (stars >= 2) {
-				this.res.Good++;
-			} else {
-				this.res.Standard++;
-			}
-		}
-
-
-		public dispayDeals() {
-			this.countDeals();
-
-			$("#delasEx").html(this.res.Excellent);
-			$("#delasGo").html(this.res.Good);
-			$("#delasSt").html(this.res.Standard);
-		}
-	}
-
+		
 	export class FlyView extends ViewBase {
 
 		public currentSetter: Planning.IPageSetter;
@@ -67,10 +28,21 @@
 
 		public initialize() {
 				this.resultsEngine = new Planning.ResultsManager(this);
+				
+				this.resultsEngine.onDrawQueue = () => {
+						var qv = new Planning.QueueVisualize();
+
+						if (any(this.resultsEngine.queue)) {
+								qv.draw(this.resultsEngine.timeType, this.resultsEngine.queue);
+						} else {
+								qv.hide();
+						}
+				}
+
 				this.resultsEngine.onResultsChanged = (queries) => {
 						this.currentSetter.setQueries(queries);
 
-						var de = new DelasEval(this.resultsEngine.timeType, queries);
+						var de = new Planning.DelasEval(this.resultsEngine.timeType, queries);
 						de.dispayDeals();
 				};
 
@@ -81,7 +53,9 @@
 				}
 
 				this.planningMap.onSelectionChanged = (id: string, newState: boolean, type: FlightCacheRecordType) => {
-						this.resultsEngine.selectionChanged(id, newState, type);
+
+						var customId = this.currentSetter.getCustomId();
+						this.resultsEngine.selectionChanged(id, newState, type, customId);
 				}
 
 				this.planningMap.init();
@@ -171,7 +145,9 @@
 			this.currentSetter.init(() => {
 					this.planningMap.loadCategory(type);
 
-					this.resultsEngine.initalCall(type);					
+					var customId = this.currentSetter.getCustomId();
+
+					this.resultsEngine.initalCall(type, customId);					
 			});
 				
 		}

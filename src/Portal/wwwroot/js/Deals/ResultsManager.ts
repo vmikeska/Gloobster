@@ -93,28 +93,33 @@ module Planning {
 		public timeType: PlanningType;
 		public onResultsChanged: Function;
 
-		private queue = [];
+		public onDrawQueue: Function;
+
+		public queue = [];
 		private intervalId;
 		private doRequery = true;			
-		private v: Views.FlyView;
+		private v: Views.ViewBase;
 
-			constructor(v: Views.FlyView) {
+			private lastCustomId = "";
+
+		constructor(v: Views.ViewBase) {
 				this.v = v;
 			}
 
 		public refresh() {
-				this.initalCall(this.timeType);
+				this.initalCall(this.timeType, this.lastCustomId);
 		}
 
-		public initalCall(timeType: PlanningType) {
+		public initalCall(timeType: PlanningType, customId = "") {
+
+			this.lastCustomId = customId;
+
 			this.timeType = timeType;
 			this.stopQuerying();
 			this.queue = [];
 			this.finishedQueries = [];
 			this.resultsChanged();
-
-			var customId = this.v.currentSetter.getCustomId();
-
+				
 			var request = QueriesBuilder.new()
 					.setFirstQuery(true)
 					.setTimeType(timeType)
@@ -174,13 +179,14 @@ module Planning {
 			this.queue = _.reject(this.queue, (item) => { return item.qid === id; });
 		}
 
-		public selectionChanged(id: string, newState: boolean, type: FlightCacheRecordType) {
+		
+		public selectionChanged(id: string, newState: boolean, type: FlightCacheRecordType, customId = "") {
+
+				this.lastCustomId = customId;
 
 			if (newState) {
 				this.drawQueue();
-
-				var customId = this.v.currentSetter.getCustomId();
-
+					
 				var qb = QueriesBuilder.new()
 					.setTimeType(this.timeType)
 					.setCustomId(customId);
@@ -249,13 +255,11 @@ module Planning {
 		}
 
 		private drawQueue() {
-			var qv = new QueueVisualize();
 
-			if (any(this.queue)) {
-				qv.draw(this.timeType, this.queue);
-			} else {
-				qv.hide();
-			}
+				if (this.onDrawQueue) {
+					this.onDrawQueue();
+				}
+				
 		}
 
 	}
