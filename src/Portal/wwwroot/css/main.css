@@ -6061,7 +6061,9 @@ footer {
     height: 42px;
     background-color: white;
     border-radius: 4px;
-    margin-bottom: 12px; }
+    margin-bottom: 12px;
+    margin-right: 12px;
+    margin-left: 12px; }
     .dashboard .your-deals-result-all .preload-all .preloader {
       position: absolute;
       top: 6px;
