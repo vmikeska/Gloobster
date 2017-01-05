@@ -201,8 +201,9 @@ namespace Gloobster.Portal
 
             builder.AddTransient<ITripUserLog, TripUserLog>();
             builder.AddTransient<IPinsUserLog, PinsUserLog>();
-            
+            builder.AddTransient<IFriendsUserLog, FriendsUserLog>();
 
+            
 
 
 

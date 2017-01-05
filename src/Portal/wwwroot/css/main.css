@@ -6013,7 +6013,10 @@ footer {
     .dashboard .friends-item .f-tbl .r {
       padding-left: 8px; }
   .dashboard .friends-item img {
-    border-radius: 50%; }
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    background-color: white; }
   .dashboard .friends-item .name-cont a {
     text-decoration: none;
     color: #005476; }

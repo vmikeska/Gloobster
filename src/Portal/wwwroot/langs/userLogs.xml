@@ -13,5 +13,8 @@
       <en>Marked {0} and {1} other cities as visited</en>
     </NewCityAndOthersAdded>
 
+    <BecameFriends>
+      <en>Just became friend with &#60;br&#62;  &#60;a href="{0}"&#62;{1}&#60;/a&#62;</en>
+    </BecameFriends>
 
   </module>

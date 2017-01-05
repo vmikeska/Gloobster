@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
+using Gloobster.DomainInterfaces.UserLogs;
 using Gloobster.DomainObjects;
 using Gloobster.Entities;
 using Gloobster.Mappers;
@@ -16,10 +17,9 @@ namespace Gloobster.DomainModels
 {
 	public class FriendsDomain: IFriendsDomain
 	{
-		public IDbOperations DB { get; set; }
-        public ITripDomain Demandor { get; set; }
-
-		public INotificationsDomain Notification { get; set; }
+		public IDbOperations DB { get; set; }        
+        public IFriendsUserLog UserLog { get; set; }
+        public INotificationsDomain Notification { get; set; }
 
 		public async Task<bool> Unfriend(string myDbUserId, string friendDbUserId)
 		{
@@ -119,8 +119,16 @@ namespace Gloobster.DomainModels
 
             bool f2 = await AddId(myId, friendsId, f => f.Friends);
             bool f4 = await AddId(friendsId, myId, f => f.Friends);
-            
-			return f1 && f2 && f3 && f4;
+
+		    bool wasSuccess = f1 && f2 && f3 && f4;
+
+		    if (wasSuccess)
+		    {
+		        UserLog.Change(myId.ToString(), friendsId.ToString());
+                UserLog.Change(friendsId.ToString(), myId.ToString());
+            }
+
+            return wasSuccess;
 		}
 
 	    private async Task<bool> PullId(ObjectId userId, ObjectId friendId, Expression<Func<FriendsEntity, IEnumerable<ObjectId>>> field)

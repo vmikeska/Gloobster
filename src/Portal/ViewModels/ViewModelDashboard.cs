@@ -29,7 +29,8 @@ namespace Gloobster.Portal.ViewModels
 
         public const string NewCityAdded = "NewCityAdded";
         public const string NewCityAndOthersAdded = "NewCityAndOthersAdded";
-
+        public const string BecameFriends = "BecameFriends";
+        
         public List<TripEntity> Trips { get; set; }
         public List<string> CCs { get; set; }
         public bool HasAirs { get; set; }
@@ -96,6 +97,11 @@ namespace Gloobster.Portal.ViewModels
                 return BuildPinsLogText(userId, log);
             }
 
+            if (log.Type == LogType.Friend)
+            {
+                return BuildFriendsLogText(userId, log);
+            }
+            
             return string.Empty;
         }
 
@@ -132,6 +138,17 @@ namespace Gloobster.Portal.ViewModels
                 int othersCount = totalCount - cities.Count;
                 txtFormated = string.Format(txtBase, citiesStr, othersCount);
             }
+            
+            return txtFormated;
+        }
+
+        private string BuildFriendsLogText(string userId, UserLogSE log)
+        {
+            var txtBase = W(BecameFriends, LogsLangModule);
+
+            var link = $"/{RoutingConsts.UserDetailMenuName}/{log.Major_id}";
+
+            var txtFormated = string.Format(txtBase, link, log.Param1);
             
             return txtFormated;
         }

@@ -5,7 +5,7 @@ using MongoDB.Bson;
 
 namespace Gloobster.Entities
 {
-    public enum LogType { Trip, Pins}
+    public enum LogType { Trip, Pins, Friend}
 
     public class UserLogEntity: EntityBase
     {

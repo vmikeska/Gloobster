@@ -98,29 +98,31 @@
                 var reportEntity = Model.GetReport(new ObjectId(task.TargetId));
                 var creator = Model.GetCreatorUser(reportEntity.Creator_id);
 
-
-            <div>
-                <div class="titem">
-                    <span>Created by: </span><br />
-                    @creator.DisplayName
-                </div>
-                <div class="titem">
-                    <span>Section name: </span><br />
-                    @data.SectionName
-                </div>
-                <div class="titem">
-                    <span>Language: </span><br />
-                    @data.Lang
-                </div>
-                <div class="titem">
-                    <span>Report: </span><br />
-                    @data.Report
-                </div>
-                <div class="titem">
-                    <span>Current text: </span><br />
-                    @data.Text
-                </div>
-            </div>
+                if (creator != null)
+                {
+                    <div>
+                        <div class="titem">
+                            <span>Created by: </span><br/>
+                            @creator.DisplayName
+                        </div>
+                        <div class="titem">
+                            <span>Section name: </span><br/>
+                            @data.SectionName
+                        </div>
+                        <div class="titem">
+                            <span>Language: </span><br/>
+                            @data.Lang
+                        </div>
+                        <div class="titem">
+                            <span>Report: </span><br/>
+                            @data.Report
+                        </div>
+                        <div class="titem">
+                            <span>Current text: </span><br/>
+                            @data.Text
+                        </div>
+                    </div>
+                }
             }
 
             <div>
