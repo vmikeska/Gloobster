@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainModels.Services.Trip;
+using Gloobster.DomainModels.Trips;
 using Gloobster.Entities;
 using Gloobster.Entities.Trip;
 using Gloobster.Portal.Controllers.Base;
@@ -43,7 +44,7 @@ namespace Gloobster.Portal.Controllers.Api.Friends
 
                     if (passed)
                     {
-                        var startEnd = TripDomain.GetTripFromTo(trip);
+                        var startEnd = TripUtils.GetTripFromTo(trip);
                         
                         var filterFrom = req.from.ToDate('_').ToDateStart(DateTimeKind.Utc);
                         var filterTo = req.to.ToDate('_').ToDateStart(DateTimeKind.Utc);

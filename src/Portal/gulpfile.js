@@ -85,11 +85,11 @@ var data = [
             o: "deals"
         },
         {
-            i: "Home/Dashboard",
+            i: "Dashboard/Dashboard",
             o: "dashboard"
         },
         {
-            i: "Home/Calendar",
+            i: "Dashboard/Calendar",
             o: "calendar"
         }
 

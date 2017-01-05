@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainModels.Services.Trip;
+using Gloobster.DomainModels.Trips;
 using Gloobster.Entities;
 using Gloobster.Entities.Trip;
 using Gloobster.Mappers;
@@ -48,7 +49,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
             var response = new NewCommentResponse
 			{
 				comments = trip.Comments.Select(c => c.ToResponse()).OrderByDescending(c => c.postDate).ToList(),
-				users = TripHelper.GetUsers(trip.Comments.Select(u => u.User_id).ToList(), DB)
+				users = TripUtils.GetUsers(trip.Comments.Select(u => u.User_id).ToList(), DB)
 			};
 			
 			return new ObjectResult(response);

@@ -16,7 +16,7 @@ namespace Gloobster.Portal
                 routes.MapRoute(
                     name: "dashboard",
                     template: RoutingConsts.DashboardMenuName,
-                    defaults: new { controller = "Home", action = "Dashboard" }
+                    defaults: new { controller = "Dashboard", action = "Dashboard" }
                     );
 
                 routes.MapRoute(

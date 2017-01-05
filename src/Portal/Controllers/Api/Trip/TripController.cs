@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels.Services.Trip;
+using Gloobster.DomainModels.Trips;
 using Gloobster.Entities;
 using Gloobster.Entities.Trip;
 using Gloobster.Portal.Controllers.Base;
@@ -77,7 +78,7 @@ namespace Gloobster.Portal.Controllers.Api.Trip
                 userIds.AddRange(trip.Participants.Select(i => i.User_id));
             }
             
-		    tripResponse.users = TripHelper.GetUsers(userIds, DB);
+		    tripResponse.users = TripUtils.GetUsers(userIds, DB);
 
 			return new ObjectResult(tripResponse);
 		}

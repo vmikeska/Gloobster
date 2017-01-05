@@ -14,10 +14,12 @@ using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels;
 using Gloobster.DomainModels.Services.Accounts;
 using Gloobster.DomainModels.Services.Trip;
+using Gloobster.DomainModels.Trips;
 using Gloobster.Entities.Trip;
 using Gloobster.Enums;
 using Serilog;
 using Gloobster.Portal.Controllers.Api.Trip;
+
 
 namespace Gloobster.Portal.Controllers.Portal
 {
@@ -26,15 +28,15 @@ namespace Gloobster.Portal.Controllers.Portal
 		public IFilesDomain FileDomain { get; set; }
 		public ITripPlannerDomain TripPlanner { get; set; }
 		public ISharedMapImageDomain SharedImgDomain { get; set; }
-        public IEntitiesDemandor Demandor { get; set; }
+        public ITripDomain Trips { get; set; }
         
-		public TripController(IEntitiesDemandor demandor, ISharedMapImageDomain sharedImgDomain, ITripPlannerDomain tripPlanner, IFilesDomain filesDomain,
+		public TripController(ITripDomain trips, ISharedMapImageDomain sharedImgDomain, ITripPlannerDomain tripPlanner, IFilesDomain filesDomain,
             ILogger log, IDbOperations db, IComponentContext cc, ILanguages langs) : base(log, db, cc, langs)
         {
 			FileDomain = filesDomain;
 			TripPlanner = tripPlanner;
 			SharedImgDomain = sharedImgDomain;
-		    Demandor = demandor;
+		    Trips = trips;
 		}
 
         [CreateAccount]
@@ -55,8 +57,13 @@ namespace Gloobster.Portal.Controllers.Portal
                 {
                     var tripName = vm.W("DefaultTripName");
 
-                    var tripEntity = await Demandor.CreateNewTripEntity(tripName, UserIdObj.Value);
-                    trips.Add(tripEntity);
+                    string tripId = await Trips.CreateNewTrip(tripName, UserId, true);
+
+                    var tripIdObj = new ObjectId(tripId);
+
+                    var trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);                    
+
+                    trips.Add(trip);
                 }
 
                 var query = $"{{ 'Participants.User_id': ObjectId('{UserId}')}}";
@@ -164,7 +171,7 @@ namespace Gloobster.Portal.Controllers.Portal
 		    var tripIdObj = new ObjectId(id);            
 		    var trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);
 
-		    var tripFromTo = TripDomain.GetTripFromTo(trip);
+		    var tripFromTo = TripUtils.GetTripFromTo(trip);
             var fromDate = tripFromTo.Item1;
             var toDate = tripFromTo.Item2;
             
@@ -196,9 +203,9 @@ namespace Gloobster.Portal.Controllers.Portal
 		{
 		    if (IsUserLogged)
 		    {
-		        var tripEntity = await Demandor.CreateNewTripEntity(id, UserIdObj.Value);
+		        string tripId = await Trips.CreateNewTrip(id, UserId, false);
 		        
-		        return RedirectToAction("Detail", "Trip", new {id = tripEntity.id.ToString()});
+		        return RedirectToAction("Detail", "Trip", new {id = tripId });
 		    }
 		    
             return RedirectToAction("List", "Trip");            
@@ -394,7 +401,7 @@ namespace Gloobster.Portal.Controllers.Portal
 
         private async Task<TripItemViewModel> TripToViewModel(TripEntity trip, ViewModelBase b)
 		{
-            var tripFromTo = TripDomain.GetTripFromTo(trip);
+            var tripFromTo = TripUtils.GetTripFromTo(trip);
             var fromDate = tripFromTo.Item1;
             var toDate = tripFromTo.Item2;
 

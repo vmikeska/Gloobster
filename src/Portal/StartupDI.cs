@@ -5,6 +5,7 @@ using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainInterfaces.SearchEngine8;
+using Gloobster.DomainInterfaces.UserLogs;
 using Gloobster.DomainModels;
 using Gloobster.DomainModels.ImageDB;
 using Gloobster.DomainModels.Langs;
@@ -23,6 +24,7 @@ using Gloobster.DomainModels.Services.Places;
 using Gloobster.DomainModels.Services.PlaceSearch;
 using Gloobster.DomainModels.Services.Trip;
 using Gloobster.DomainModels.Services.Twitter;
+using Gloobster.DomainModels.UserLog;
 using Gloobster.DomainModels.Wiki;
 using Gloobster.Enums;
 using Gloobster.Portal.Controllers.Api.PinBoard;
@@ -71,7 +73,7 @@ namespace Gloobster.Portal
 
             builder.AddTransient<IPinBoardStatRequestCreator, PinBoardStatRequestCreator>();
 
-            builder.AddTransient<ITripDomain, TripDomain>();
+            builder.AddTransient<DomainInterfaces.ITripDomain, DomainModels.Services.Trip.TripDomain>();
             builder.AddTransient<ITripWaypointsDomain, TripWaypointsDomain>();
             
             builder.AddTransient<IPlanningDomain, PlanningDomain>();
@@ -149,7 +151,7 @@ namespace Gloobster.Portal
             builder.AddTransient<IExecOperation, DeletePhotoOperation>().Keyed<IExecOperation>("DeletePhotoOperation");
             builder.AddTransient<IExecOperation, SetToResolvedOperation>().Keyed<IExecOperation>("SetToResolvedOperation");
 
-            builder.AddTransient<IEntitiesDemandor, EntitiesDemandor>();
+            builder.AddTransient<ITripDomain, TripDomain>();
             
             builder.AddTransient<ISocNetworkService, SocNetworkService>();
             builder.AddTransient<ISocLogin, FacebookSocLogin>().Keyed<ISocLogin>("Facebook");
@@ -197,8 +199,8 @@ namespace Gloobster.Portal
             builder.AddTransient<IQueriesExecutor, QueriesExecutor>();
 
 
+            builder.AddTransient<ITripUserLog, TripUserLog>();
             
-
 
 
 

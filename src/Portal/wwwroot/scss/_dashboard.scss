@@ -37,11 +37,11 @@
         }
 
 
-        /*.tb-friends {
-            width: 350px;
+        .tb-friends {
+            min-width: 300px;
         }
 
-        .tb-portal {
+ /*       .tb-portal {
             width: 350px;
         }
 */
@@ -155,10 +155,34 @@
 
         .name-cont {
 
+            a {
+                text-decoration: none;
+                color: $dark-blue;
+
+                &:hover {
+                    color: $orange;
+                }
+            }
+        }
+
+        .date-cont {
+            font-size: 0.6em;
+            color: $darker-gray;
         }
 
         .txt {
             font-size: 0.9em;
+        }
+
+        .no-friends {            
+
+            .nof-txt {
+                color: $dark-blue;
+            }
+
+            .nof-link {
+                text-align: center;
+            }
         }
 
     }

@@ -17,7 +17,7 @@ namespace Gloobster.DomainModels
 	public class FriendsDomain: IFriendsDomain
 	{
 		public IDbOperations DB { get; set; }
-        public IEntitiesDemandor Demandor { get; set; }
+        public ITripDomain Demandor { get; set; }
 
 		public INotificationsDomain Notification { get; set; }
 

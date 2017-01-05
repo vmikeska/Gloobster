@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
+using Gloobster.DomainInterfaces.UserLogs;
 using Gloobster.Entities;
 using Gloobster.Entities.Trip;
 using Gloobster.Enums;
@@ -18,20 +19,31 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 {
 	public class TripPropertyController: BaseApiController
 	{
-		
-		
-		[HttpPut]
+        public ITripUserLog UserLog { get; set; }
+
+        public TripPropertyController(ITripUserLog userLog, ILogger log, IDbOperations db) : base(log, db)
+        {
+            UserLog = userLog;
+        }
+
+        [HttpPut]
 		[AuthorizeApi]
 		public async Task<IActionResult> Put([FromBody] PropertyUpdateRequest request)
-		{
-			var tripIdObj = new ObjectId(request.values["id"]);
+        {
+            var tripId = request.values["id"];
+            var tripIdObj = new ObjectId(tripId);
+
 			var filter = DB.F<TripEntity>().Eq(p => p.id, tripIdObj);
 			UpdateDefinition<TripEntity> update = null;
 		    object response = null;
-			
+
+            bool updateUserLog = false;
+
 			if (request.propertyName == "Name")
 			{				
-				update = DB.U<TripEntity>().Set(p => p.Name, request.values["name"]);				
+				update = DB.U<TripEntity>().Set(p => p.Name, request.values["name"]);
+
+			    updateUserLog = true;
 			}
 
 			if (request.propertyName == "Description")
@@ -80,12 +92,15 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 				var res = await DB.UpdateAsync(filter, update);
 			}
 
+            if (updateUserLog)
+            {
+                UserLog.Change(UserId, tripId);
+            }
+
 			return new ObjectResult(response);
 		}
 
-	    public TripPropertyController(ILogger log, IDbOperations db) : base(log, db)
-	    {
-	    }
+	    
 	}
 
 }

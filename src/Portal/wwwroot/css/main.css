@@ -5938,11 +5938,7 @@ footer {
   margin-top: 10px;
   display: table;
   width: 100%;
-  /*.tb-friends {
-            width: 350px;
-        }
-
-        .tb-portal {
+  /*       .tb-portal {
             width: 350px;
         }
 */ }
@@ -5957,6 +5953,8 @@ footer {
       margin-bottom: 10px; }
     .dashboard .topics .topic-block .content {
       text-align: left; }
+  .dashboard .topics .tb-friends {
+    min-width: 300px; }
   @media screen and (min-width: 750px) {
     .dashboard .topics .tb-web {
       width: 460px; } }
@@ -6016,8 +6014,20 @@ footer {
       padding-left: 8px; }
   .dashboard .friends-item img {
     border-radius: 50%; }
+  .dashboard .friends-item .name-cont a {
+    text-decoration: none;
+    color: #005476; }
+    .dashboard .friends-item .name-cont a:hover {
+      color: #F56E12; }
+  .dashboard .friends-item .date-cont {
+    font-size: 0.6em;
+    color: #BCB3B8; }
   .dashboard .friends-item .txt {
     font-size: 0.9em; }
+  .dashboard .friends-item .no-friends .nof-txt {
+    color: #005476; }
+  .dashboard .friends-item .no-friends .nof-link {
+    text-align: center; }
 
 .dashboard .your-map-all #bg {
   fill: none; }

@@ -4,6 +4,8 @@
 @using Gloobster.Portal.ViewModels
 @using Microsoft.Data.Entity.Metadata.Internal
 @using Newtonsoft.Json
+@using System.Linq;
+
 @model ViewModelDashboard
 
 @{
@@ -43,66 +45,67 @@ else
     <div class="topic-block tb-friends hidden">
         <div class="title">Friend's feed</div>
         <div class="content">
-
-            <div class="friends-item">
-
-                <div class="f-tbl">
-                    <div class="l">
-                        <img src="images/n/temp/user1.jpg"/>
-                    </div>
-                    <div class="r">
-                        <div class="name-cont">
-                            <a href="#">John Newman</a>
+            
+            @if (!Model.HasFriends)
+            {
+                <div class="friends-item">
+                    <div class="no-friends">
+                        <div class="nof-txt">
+                            You have no friends yet, go to Friends page and find a one
+                        </div> 
+                        <div class="nof-link">
+                            <a href="/@RoutingConsts.FriendsMenuName">Go to Friends page</a>
                         </div>
-                        <div class="txt">
-                            Just created his public trip "Holidays in Norway"
-                        </div>
-
+                        
                     </div>
                 </div>
 
-            </div>
-
-            <div class="friends-item">
-
-                <div class="f-tbl">
-                    <div class="l">
-                        <img src="images/n/temp/user2.jpg"/>
-                    </div>
-                    <div class="r">
-                        <div class="name-cont">
-                            <a href="#">Jenifer Crow</a>
-                        </div>
-                        <div class="txt">
-                            Just met with John Keneddy over the Travel Buddy.
-                        </div>
-
+            }
+            else if (!Model.Logs.Any())
+            {
+                <div class="friends-item">
+                    <div class="no-friends">
+                        <div class="nof-txt">
+                            There aren't any new notifications from your friends
+                        </div>                        
                     </div>
                 </div>
 
-            </div>
+            }
+            else
+            {
+                foreach (UserLogViewModel log in Model.Logs)
+                {
+                    <div class="friends-item">
 
-            <div class="friends-item">
+                        <div class="f-tbl">
+                            <div class="l">
+                                <img src="/PortalUser/ProfilePicture_s/@log.UserId">
+                            </div>
+                            <div class="r">
+                                <div class="name-cont">
+                                    <a href="/@RoutingConsts.UserDetailMenuName/@log.UserId">@log.Name</a>
+                                </div>
+                                <div class="date-cont">@log.Created.ToShortDateString() @log.Created.ToShortTimeString()</div>
+                                <div class="txt">@Html.Raw(log.Content)</div>
 
-                <div class="f-tbl">
-                    <div class="l">
-                        <img src="images/n/temp/user3.jpg"/>
-                    </div>
-                    <div class="r">
-                        <div class="name-cont">
-                            <a href="#">Radovan Krawitzki</a>
+                            </div>
                         </div>
-                        <div class="txt">
-                            Just made a recommendation to a Karl Benz. "He is such a nice guy, here really showed me how does it work in the city"
-                        </div>
 
                     </div>
+                }
+            }
+
+                    
+                @*Just created his public trip "Holidays in Norway"
+                                    
+                Just met with John Keneddy over the Travel Buddy.
+                                   
+                Just made a recommendation to a Karl Benz. "He is such a nice guy, here really showed me how does it work in the city"*@
+                           
+
+
                 </div>
-
-            </div>
-
-
-        </div>
     </div>
 
     <div class="topic-block tb-portal hidden">            
@@ -297,7 +300,7 @@ else
                     <div id="calendar" class="f-calendar"></div>
                     
                     <div class="srv-zone">
-                        <a href="/home/calendar" class="lbtn2 srv-btn">Full calendar</a>
+                        <a href="/Dashboard/calendar" class="lbtn2 srv-btn">Full calendar</a>
                     </div>
 
                 </div>

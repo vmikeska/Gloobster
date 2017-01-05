@@ -23,7 +23,7 @@ namespace Gloobster.Portal.Controllers.Api.PinBoard
         public IVisitedCitiesDomain VisitedCities { get; set; }
         public IVisitedCountriesDomain VisitedCountries { get; set; }
         public IVisitedStatesDomain VisitedStates { get; set; }
-        public IEntitiesDemandor Demandor { get; set; }
+        public ITripDomain Demandor { get; set; }
 
         public IDbOperations DB { get; set; }
 

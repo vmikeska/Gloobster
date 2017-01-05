@@ -21,7 +21,9 @@ using Microsoft.AspNet.Http;
 namespace Gloobster.Portal.Controllers.Portal
 {
     public class HomeController : PortalBaseController
-    {		
+    {	
+        
+        	
         public HomeController(ILogger log, IDbOperations db, IComponentContext cc, ILanguages langs) : base(log, db, cc, langs)
         {
             
@@ -33,54 +35,7 @@ namespace Gloobster.Portal.Controllers.Portal
             var vm = CreateViewModelInstance<ViewModelHome>();            
             return View(vm);
         }
-        
-        public IActionResult Dashboard()
-        {
-            var vm = CreateViewModelInstance<ViewModelDashboard>();
-
-            var trips = DB.List<TripEntity>(t => t.User_id == UserIdObj.Value);
-
-            vm.Trips = trips;
-            vm.CCs = new List<string>();
-
-            var visited = DB.FOD<VisitedEntity>(e => e.User_id == UserIdObj.Value);
-            if (visited != null)
-            {
-                vm.CCs = visited.Countries.Select(c => c.CountryCode2).ToList();
-            }
-
-            vm.HasAirs = false;
-            var airs = DB.FOD<UserAirports>(u => u.User_id == UserIdObj.Value);
-            if (airs != null)
-            {
-                vm.HasAirs = airs.Airports.Any();
-            }
-
-            vm.HasDests = false;
-            var dealsAnytime = DB.FOD<DealsAnytimeEntity>(d => d.User_id == UserIdObj.Value);
-
-            if (dealsAnytime != null)
-            {
-                vm.HasDests = dealsAnytime.Cities.Any() || dealsAnytime.CountryCodes.Any();
-            }
-            if (!vm.HasDests)
-            {
-                var dealsWeekend = DB.FOD<DealsWeekendEntity>(d => d.User_id == UserIdObj.Value);
-                if (dealsWeekend != null)
-                {
-                    vm.HasDests = dealsWeekend.Cities.Any() || dealsWeekend.CountryCodes.Any();
-                }
-            }
-            
-            return View(vm);
-        }
-
-        public IActionResult Calendar()
-        {
-            var vm = CreateViewModelInstance<ViewModelCalendar>();
-            return View(vm);
-        }
-
+       
         public IActionResult Component(string id)
         {
             var viewModel = CreateViewModelInstance<ViewModelComponent>();
