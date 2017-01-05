@@ -1,0 +1,24 @@
+﻿{
+  "version": "1.0.0-*",
+  "description": "PhotosOptimizer Console Application",
+  "authors": [ "vmike_000" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "compilationOptions": {
+    "emitEntryPoint": true
+  },
+
+  "dependencies": {
+    "Common": "1.0.0-*"
+  },
+
+  "commands": {
+    "PhotosOptimizer": "PhotosOptimizer"
+  },
+
+  "frameworks": {
+    "dnx451": { }
+  }
+}
