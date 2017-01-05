@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Gloobster.Common;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
+using Gloobster.DomainInterfaces.UserLogs;
 using Gloobster.DomainObjects;
 using Gloobster.Entities;
 using Gloobster.Mappers;
@@ -18,6 +19,7 @@ namespace Gloobster.DomainModels
         public IVisitedAggregationDomain AggDomain { get; set; }
         public IGeoNamesService GeoNamesService { get; set; }        
         public IVisitedEntityRequestor Visited { get; set; }
+        public IPinsUserLog UserLog { get; set; }
 
         public async Task<List<VisitedCityDO>> AddNewCitiesByGIDAsync(List<GidDateDO> gids, string userId)
         {
@@ -51,6 +53,8 @@ namespace Gloobster.DomainModels
                 {
                     await AggDomain.AddCity(city.GeoNamesId, userId);                    
                 }
+
+                AddLog(newCities, userId);
             }
 
             var newPlacesDO = newCities.Select(e => e.ToDO()).ToList();
@@ -95,10 +99,18 @@ namespace Gloobster.DomainModels
                         await AggDomain.AddCity(city.GeoNamesId, userId);
                     }
                 }
+
+                AddLog(newCities, userId);
             }
 
             var newPlacesDO = newCities.Select(e => e.ToDO()).ToList();
             return newPlacesDO;
+        }
+
+	    private void AddLog(List<VisitedCitySE> cities, string userId)
+	    {
+            var cityNames = cities.Take(3).Select(c => $"{c.City}, {c.CountryCode}").ToList();
+            UserLog.Change(userId, cityNames, cities.Count);
         }
         
         public List<VisitedCityDO> GetCitiesByUsers(List<string> ids, string meId)

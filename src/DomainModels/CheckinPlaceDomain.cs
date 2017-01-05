@@ -13,7 +13,6 @@ using Gloobster.Enums;
 using Gloobster.SocialLogin.Facebook.Communication;
 using MongoDB.Bson;
 
-//vor allem moechte ich sagen, dass ich dich liebe und dich unterstuetze          ! Du schaffst es!! 
 namespace Gloobster.DomainModels
 {
 	public class CheckinPlaceDomain: ICheckinPlaceDomain

@@ -5,7 +5,13 @@
         <en>Just created trip &#60;br&#62;  &#60;a href="{0}"&#62;{1}&#60;/a&#62;</en>
       </CreatedTrip>
 
-  
+    <NewCityAdded>
+      <en>Marked {0} as visited</en>
+    </NewCityAdded>
+
+    <NewCityAndOthersAdded>
+      <en>Marked {0} and {1} other cities as visited</en>
+    </NewCityAndOthersAdded>
 
 
   </module>

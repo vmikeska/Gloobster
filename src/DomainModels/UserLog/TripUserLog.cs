@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
@@ -29,7 +27,7 @@ namespace Gloobster.DomainModels.UserLog
             bool logExists = log != null;
             if (logExists)
             {
-                await DeleteLog(uid, log.id);                
+                await UserLogUtils.DeleteLog(DB, uid, log.id);                
             }
 
             bool tripExists = (trip != null);
@@ -60,38 +58,9 @@ namespace Gloobster.DomainModels.UserLog
         }
 
 
-        private async Task<bool> DeleteLog(ObjectId uid, ObjectId lid)
-        {
-            var f = DB.F<UserLogEntity>().Eq(p => p.User_id, uid);
-            var u = DB.PF<UserLogEntity, UserLogSE>(t => t.Logs, c => c.id == lid);
-            var result = await DB.UpdateAsync(f, u);
-
-            return result.ModifiedCount > 0;
-        }
+        
 
         
 
     }
-
-    public static class UserLogUtils
-    {
-        public static UserLogEntity GetOrCreate(IDbOperations db, ObjectId uid)
-        {
-            var userLogEntity = db.FOD<UserLogEntity>(u => u.User_id == uid);
-            if (userLogEntity == null)
-            {
-                userLogEntity = new UserLogEntity
-                {
-                    id = ObjectId.GenerateNewId(),
-                    User_id = uid,
-                    Logs = new List<UserLogSE>()
-                };
-
-                db.SaveAsync(userLogEntity);
-            }
-
-            return userLogEntity;
-        }
-    }
-    
 }

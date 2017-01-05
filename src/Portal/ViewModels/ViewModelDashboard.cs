@@ -24,7 +24,11 @@ namespace Gloobster.Portal.ViewModels
     public class ViewModelDashboard : ViewModelBase
     {
         public const string LogsLangModule = "userLogs";
+
         public const string CreatedTripTmp = "CreatedTrip";
+
+        public const string NewCityAdded = "NewCityAdded";
+        public const string NewCityAndOthersAdded = "NewCityAndOthersAdded";
 
         public List<TripEntity> Trips { get; set; }
         public List<string> CCs { get; set; }
@@ -61,7 +65,7 @@ namespace Gloobster.Portal.ViewModels
                             continue;                            
                         }
 
-                        var content = BuildTripLogText(userLog.User_id.ToString(), log);
+                        var content = BuildLogText(userLog.User_id.ToString(), log);
 
                         var outLog = new UserLogViewModel
                         {
@@ -87,6 +91,11 @@ namespace Gloobster.Portal.ViewModels
                 return BuildTripLogText(userId, log);
             }
 
+            if (log.Type == LogType.Pins)
+            {
+                return BuildPinsLogText(userId, log);
+            }
+
             return string.Empty;
         }
 
@@ -97,6 +106,33 @@ namespace Gloobster.Portal.ViewModels
             var url = $"/{RoutingConsts.TripMenuName}/{log.Major_id}";
 
             var txtFormated = string.Format(txtBase, url, log.Param1);
+            return txtFormated;
+        }
+
+        private string BuildPinsLogText(string userId, UserLogSE log)
+        {
+            string txtFormated;
+
+            var cities = log.Param1.Split('|').ToList();
+            int totalCount = int.Parse(log.Param2);
+
+            bool simple = totalCount == cities.Count;
+            
+            string citiesStr = string.Join(" ", cities);
+            
+            if (simple)
+            {
+                var txtBase = W(NewCityAdded, LogsLangModule);
+                
+                txtFormated = string.Format(txtBase, citiesStr);
+            }
+            else
+            {
+                var txtBase = W(NewCityAndOthersAdded, LogsLangModule);
+                int othersCount = totalCount - cities.Count;
+                txtFormated = string.Format(txtBase, citiesStr, othersCount);
+            }
+            
             return txtFormated;
         }
 
