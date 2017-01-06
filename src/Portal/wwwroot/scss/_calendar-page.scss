@@ -3,6 +3,26 @@
 
    .full-calendar {
         max-width: 100%;        
+        margin-bottom: 20px;
     }
+
+   .fc-button {
+       margin: 4px !important;       
+       border: 0;
+
+       background-image: none !important;
+       background-color: $light-blue3 !important;
+
+       &.fc-state-hover {           
+           background-color: $orange !important;
+           z-index: 10;
+       }
+
+       
+
+       .fc-icon {
+           color: white;
+       }
+   }
 
 }
