@@ -10,7 +10,7 @@ var Maps;
                 maxBounds: null,
                 maxZoom: 19,
                 minZoom: 2,
-                zoom: 2,
+                zoom: 3,
                 zoomControl: false,
                 center: new L.LatLng(34.5133, -94.1629)
             };

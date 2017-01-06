@@ -57,40 +57,6 @@
 
 </script>
 
-
-
-<script id="map-controls-template" type="text/x-handlebars-template">
-    <div class="place-search">
-        <input id="citiesInput" class="inputed" type="text" placeholder="@Model.W("PlaceName")">
-        <img class="loader" src="/images/loader-gray.gif" style="display: none" />
-        <div class="results" style="display: none;">
-
-            <div class="base-cont">
-                <ul class="ul-city"></ul>
-                <ul class="ul-country"></ul>
-            </div>
-
-            <a class="search-soc" href="#">@Model.W("SearchOnSoc")</a>
-            <div class="soc-nets"></div>
-
-        </div>
-    </div>
-
-
-    <div id="mapType" class="map-type dropdown">
-        <span class="selected">@Model.W("Map2D")</span>
-        <ul>
-            <li data-value="0">@Model.W("Map2D")</li>
-            <li data-value="1">@Model.W("Map3D")</li>
-        </ul>
-        <input id="mapTypeValue" type="hidden" value="0">
-    </div>
-
-    <div class="share">
-        <span id="share-btn" class="icon-share" title="@Model.W("ShareMap")"></span>
-    </div>
-</script>
-
 <script id="item-template" type="text/x-handlebars-template">
 
     <div class="item" data-value="{{id}}">

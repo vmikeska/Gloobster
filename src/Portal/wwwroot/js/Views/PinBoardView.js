@@ -193,7 +193,6 @@ var Views;
             var _this = this;
             _super.call(this);
             this.currentMapType = 0;
-            this.mapControlsTmp = this.registerTemplate("map-controls-template");
             this.countryLegendTmp = this.registerTemplate("legend-template");
             this.loginButtonsManager.onAfterCustom = function (net) {
                 if (net === SocialNetworkType.Facebook) {
@@ -257,6 +256,11 @@ var Views;
         };
         PinBoardView.prototype.initialize = function () {
             var _this = this;
+            var os = Views.ViewBase.getMobileOS();
+            var isComputer = os !== OS.Other;
+            if (isComputer) {
+                $("#mapType").addClass("hidden");
+            }
             this.switcher = new Views.Switcher();
             this.switcher.onChange = function (group, val) { _this.viewChanged(group, val); };
             this.switcher.init();
@@ -269,6 +273,9 @@ var Views;
             this.mapsManager.onDataChanged = function () {
                 _this.pinBoardBadges.refresh();
             };
+            this.initMapType();
+            this.initPlaceSearch();
+            this.initShareDialog();
             this.switchMapType(Maps.DataType.Cities, Maps.MapType.D2);
             this.pinBoardBadges = new Views.PinBoardBadges();
             this.shareDialogView = new Views.ShareDialogPinsView();
@@ -277,29 +284,16 @@ var Views;
             };
         };
         PinBoardView.prototype.switchMapType = function (dataType, mapType) {
-            var _this = this;
-            this.initMapType(false);
-            this.initPlaceSearch(false);
-            this.initShareDialog(false);
             this.mapsManager.switchToView(mapType, dataType, function () {
-                var html = _this.mapControlsTmp();
-                $("#map").append(html);
-                _this.initMapType(true);
-                _this.initPlaceSearch(true);
-                _this.initShareDialog(true);
             });
         };
         PinBoardView.prototype.viewChanged = function (group, val) {
             this.refreshData();
         };
-        PinBoardView.prototype.initMapType = function (create) {
+        PinBoardView.prototype.initMapType = function () {
             var _this = this;
             var $combo = $("#mapType");
             var $input = $combo.find("input");
-            if (!create) {
-                $combo.remove();
-                return;
-            }
             $input.val(this.currentMapType);
             Common.DropDown.registerDropDown($combo);
             Common.DropDown.setValue($combo, this.currentMapType);
@@ -311,23 +305,14 @@ var Views;
                 _this.setMenuControls();
             });
         };
-        PinBoardView.prototype.initPlaceSearch = function (create) {
+        PinBoardView.prototype.initPlaceSearch = function () {
             var _this = this;
-            var $root = $(".place-search");
-            if (!create) {
-                $root.remove();
-                return;
-            }
             this.search = new PinBoardSearch($(".place-search"));
             this.search.onPlaceSelected = function (request) { return _this.saveNewPlace(request); };
         };
-        PinBoardView.prototype.initShareDialog = function (create) {
+        PinBoardView.prototype.initShareDialog = function () {
             var _this = this;
             var $btn = $("#share-btn");
-            if (!create) {
-                $btn.remove();
-                return;
-            }
             var $dialog = $(".popup-share");
             $btn.click(function (e) {
                 e.preventDefault();
@@ -384,7 +369,7 @@ var Views;
             }
             if (pluginType === Maps.DataType.Countries) {
                 var $l = $(this.countryLegendTmp());
-                $("#map").append($l);
+                $(".map-wrap").append($l);
                 this.$currentLegend = $l;
             }
         };

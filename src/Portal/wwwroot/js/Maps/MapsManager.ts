@@ -93,7 +93,7 @@
 		}
 
 
-		public switchToView(viewType: Maps.MapType, dataType: DataType, callback = null) {
+		public switchToView(viewType: Maps.MapType, dataType: DataType, callback: Function = null) {
 
 			if (this.currentViewType === viewType) {
 				return;

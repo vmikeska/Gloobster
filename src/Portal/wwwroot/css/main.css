@@ -1550,55 +1550,39 @@ footer {
         opacity: 0.7; }
 
 .pins .head-icons-all {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-  margin-bottom: 20px; }
-  @media screen and (max-width: 920px) {
-    .pins .head-icons-all {
-      display: block; } }
-  .pins .head-icons-all .block:first-of-type {
-    margin-right: 20px; }
-    @media screen and (max-width: 920px) {
-      .pins .head-icons-all .block:first-of-type {
-        margin-right: 0; } }
+  position: relative;
+  height: 160px; }
+  .pins .head-icons-all .data-type {
+    left: 0; }
+  .pins .head-icons-all .data-set {
+    right: 0; }
   .pins .head-icons-all .block {
-    display: inline-block; }
-    .pins .head-icons-all .block .pr {
-      padding-right: 10px; }
+    display: inline-block;
+    position: absolute;
+    top: 20px; }
     .pins .head-icons-all .block .ico_all {
       display: inline-block;
-      text-align: center;
-      vertical-align: top; }
+      text-align: center; }
       .pins .head-icons-all .block .ico_all .ico {
-        display: table-cell;
-        vertical-align: middle;
-        width: 136px;
-        height: 136px;
+        font-size: 4em;
+        width: 1.5em;
         background-color: #ccedf5;
-        border-radius: 2px;
-        font-size: 94px; }
-        @media screen and (max-width: 460px) {
-          .pins .head-icons-all .block .ico_all .ico {
-            width: 100px;
-            height: 100px;
-            font-size: 70px; } }
+        border-radius: 2px; }
         .pins .head-icons-all .block .ico_all .ico a {
-          line-height: 136px;
           text-decoration: none;
           color: #65BDD7; }
-          @media screen and (max-width: 460px) {
-            .pins .head-icons-all .block .ico_all .ico a {
-              line-height: 100px; } }
         .pins .head-icons-all .block .ico_all .ico a:hover {
           color: #005476; }
         .pins .head-icons-all .block .ico_all .ico .active {
           color: #005476; }
       .pins .head-icons-all .block .ico_all .txt {
-        margin-top: 13px;
-        font-size: 16px;
-        font-weight: 600;
+        margin-top: 8px;
+        font-size: 0.8em;
+        font-weight: bold;
         color: #65BDD7; }
+        @media screen and (max-width: 680px) {
+          .pins .head-icons-all .block .ico_all .txt {
+            font-size: 0.7em; } }
         .pins .head-icons-all .block .ico_all .txt .cmb_all {
           position: relative; }
           .pins .head-icons-all .block .ico_all .txt .cmb_all .cmb {
@@ -1634,76 +1618,27 @@ footer {
             .pins .head-icons-all .block .ico_all .txt .cmb_all .list .cont .item {
               border-bottom: 1px solid #65BDD7;
               padding-left: 10px; }
+  @media screen and (max-width: 770px) {
+    .pins .head-icons-all {
+      height: 140px; }
+      .pins .head-icons-all .ico {
+        font-size: 3.5em !important;
+        width: 1.3em !important; } }
+  @media screen and (max-width: 590px) {
+    .pins .head-icons-all {
+      height: 130px; }
+      .pins .head-icons-all .ico {
+        font-size: 3.2em !important;
+        width: 1.15em !important; } }
 
-.pins #map {
-  max-width: 1280px;
-  width: 100%;
-  height: 600px;
-  background-color: white; }
-  .pins #map .place-search {
+.pins .map-wrap {
+  position: relative; }
+  .pins .map-wrap .map-type {
     position: absolute;
-    display: inline-block;
-    top: 21px;
-    left: 48px;
-    z-index: 99999;
-    height: 46px;
-    font-size: 18px; }
-    .pins #map .place-search .loader {
-      position: absolute;
-      right: 5px;
-      top: 5px; }
-    .pins #map .place-search input {
-      background: url(/images/n/magnifier.svg) no-repeat scroll 7px 7px;
-      background-color: white;
-      background-position-y: 10px;
-      background-position-x: 10px;
-      padding-left: 37px;
-      width: 200px; }
-    .pins #map .place-search .results {
-      background-color: rgba(255, 255, 255, 0.95);
-      position: absolute;
-      top: 47px;
-      left: -45px; }
-      .pins #map .place-search .results .base-cont {
-        width: 660px;
-        text-align: left;
-        margin-top: 10px; }
-        @media screen and (max-width: 700px) {
-          .pins #map .place-search .results .base-cont {
-            width: 335px; } }
-        .pins #map .place-search .results .base-cont ul {
-          width: 320px;
-          display: inline-block; }
-          .pins #map .place-search .results .base-cont ul li {
-            list-style: none;
-            margin-bottom: 3px;
-            text-align: left; }
-            .pins #map .place-search .results .base-cont ul li .icon-city, .pins #map .place-search .results .base-cont ul li .icon-country {
-              font-size: 26px;
-              color: #F56E12; }
-      .pins #map .place-search .results .soc-nets ul {
-        list-style: none;
-        text-align: left;
-        margin: 0;
-        padding: 0; }
-        .pins #map .place-search .results .soc-nets ul li {
-          margin: 0;
-          padding: 0; }
-      .pins #map .place-search .results .soc-nets .soc-item {
-        display: inline-block;
-        vertical-align: top;
-        width: 210px;
-        margin-right: 3px; }
-      .pins #map .place-search .results .search-soc {
-        margin-left: 20px;
-        color: black;
-        font-size: 22px; }
-  .pins #map .map-type {
-    position: absolute;
-    top: 17px;
-    left: 260px;
+    top: 20px;
+    left: 270px;
     z-index: 99999; }
-  .pins #map .share {
+  .pins .map-wrap .share {
     position: absolute;
     top: 17px;
     right: 10px;
@@ -1716,13 +1651,71 @@ footer {
     height: 44px;
     background-color: white;
     border-radius: 4px; }
-  .pins #map .share:hover {
-    color: #005476; }
-  .pins #map .preloader-cont {
+    .pins .map-wrap .share:hover {
+      color: #005476; }
+  .pins .map-wrap .place-search {
+    position: absolute;
+    display: inline-block;
+    top: 21px;
+    left: 10px;
+    z-index: 99999;
+    height: 46px;
+    font-size: 18px; }
+    .pins .map-wrap .place-search .loader {
+      position: absolute;
+      right: 5px;
+      top: 5px; }
+    .pins .map-wrap .place-search input {
+      background: url(/images/n/magnifier.svg) no-repeat scroll 7px 7px;
+      background-color: white;
+      background-position-y: 10px;
+      background-position-x: 10px;
+      padding-left: 37px;
+      width: 200px; }
+    .pins .map-wrap .place-search .results {
+      background-color: rgba(255, 255, 255, 0.95);
+      position: absolute;
+      top: 47px;
+      left: -45px; }
+      .pins .map-wrap .place-search .results .base-cont {
+        width: 660px;
+        text-align: left;
+        margin-top: 10px; }
+        @media screen and (max-width: 700px) {
+          .pins .map-wrap .place-search .results .base-cont {
+            width: 335px; } }
+        .pins .map-wrap .place-search .results .base-cont ul {
+          width: 320px;
+          display: inline-block; }
+          .pins .map-wrap .place-search .results .base-cont ul li {
+            list-style: none;
+            margin-bottom: 3px;
+            text-align: left; }
+            .pins .map-wrap .place-search .results .base-cont ul li .icon-city, .pins .map-wrap .place-search .results .base-cont ul li .icon-country {
+              font-size: 26px;
+              color: #F56E12; }
+      .pins .map-wrap .place-search .results .soc-nets ul {
+        list-style: none;
+        text-align: left;
+        margin: 0;
+        padding: 0; }
+        .pins .map-wrap .place-search .results .soc-nets ul li {
+          margin: 0;
+          padding: 0; }
+      .pins .map-wrap .place-search .results .soc-nets .soc-item {
+        display: inline-block;
+        vertical-align: top;
+        width: 210px;
+        margin-right: 3px; }
+      .pins .map-wrap .place-search .results .search-soc {
+        margin-left: 20px;
+        color: black;
+        font-size: 22px; }
+  .pins .map-wrap .preloader-cont {
     width: 100%;
     height: 500px;
     background-color: white; }
-    .pins #map .preloader-cont img {
+    .pins .map-wrap .preloader-cont img {
       width: 128px;
       height: 128px;
       position: absolute;
@@ -1730,6 +1723,11 @@ footer {
       top: 50%;
       margin-left: -64px;
       margin-top: -64px; }
+  .pins .map-wrap #map {
+    max-width: 1280px;
+    width: 100%;
+    height: 600px;
+    background-color: white; }
 
 .pins .stats {
   margin-top: 12px;

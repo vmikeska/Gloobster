@@ -232,8 +232,7 @@
 	}
 
 	export class PinBoardView extends ViewBase {
-
-			private mapControlsTmp;
+			
 			private countryLegendTmp;
 
 			private switcher: Switcher;
@@ -254,8 +253,7 @@
 
 			constructor() {
 					super();
-
-					this.mapControlsTmp = this.registerTemplate("map-controls-template");
+					
 					this.countryLegendTmp = this.registerTemplate("legend-template");
 
 					this.loginButtonsManager.onAfterCustom = (net) => {
@@ -326,6 +324,12 @@
 
 			public initialize() {
 
+					var os = Views.ViewBase.getMobileOS();
+					var isComputer = os !== OS.Other;
+					if (isComputer) {
+							$("#mapType").addClass("hidden");
+					}
+
 					this.switcher = new Switcher();
 					this.switcher.onChange = (group, val) => { this.viewChanged(group, val); };
 					this.switcher.init();
@@ -340,6 +344,11 @@
 					this.mapsManager.onDataChanged = () => {
 							this.pinBoardBadges.refresh();
 					};
+
+					this.initMapType();
+					this.initPlaceSearch();
+					this.initShareDialog();
+
 					this.switchMapType(Maps.DataType.Cities, Maps.MapType.D2);
 
 					this.pinBoardBadges = new PinBoardBadges();
@@ -354,17 +363,9 @@
 			}
 
 			private switchMapType(dataType, mapType) {
-					this.initMapType(false);
-					this.initPlaceSearch(false);
-					this.initShareDialog(false);
-
+					
 					this.mapsManager.switchToView(mapType, dataType, () => {
-						var html = this.mapControlsTmp();
-						$("#map").append(html);
-
-						this.initMapType(true);
-						this.initPlaceSearch(true);
-						this.initShareDialog(true);
+						
 					});
 		  }
 
@@ -373,14 +374,9 @@
 					//this.setMenuControls();					
 			}
 
-			private initMapType(create) {
+			private initMapType() {
 				var $combo = $("#mapType");
 				var $input = $combo.find("input");
-
-				if (!create) {
-					$combo.remove();
-					return;
-				}
 
 				$input.val(this.currentMapType);
 
@@ -397,26 +393,15 @@
 				});
 			}
 
-			private initPlaceSearch(create) {
-					var $root = $(".place-search");
-
-					if (!create) {
-							$root.remove();
-							return;
-					}
-
+			private initPlaceSearch() {
+					
 					this.search = new PinBoardSearch($(".place-search"));
 					this.search.onPlaceSelected = (request) => this.saveNewPlace(request);
 			}
 
-			private initShareDialog(create) {
+			private initShareDialog() {
 					var $btn = $("#share-btn");
-
-					if (!create) {
-							$btn.remove();
-							return;
-					}
-
+					
 					var $dialog = $(".popup-share");
 
 					$btn.click((e) => {
@@ -485,7 +470,7 @@
 
 				if (pluginType === Maps.DataType.Countries) {
 							var $l = $(this.countryLegendTmp());
-							$("#map").append($l);
+							$(".map-wrap").append($l);
 
 							this.$currentLegend = $l;
 					}
