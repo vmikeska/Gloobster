@@ -1,21 +1,5 @@
 ﻿
   <module name="login">    
-  
-      <FbButton>
-        <en>
-          Sign in with Facebook
-        </en>        
-      </FbButton>
-      <TwButton>
-        <en>
-          Sign in with Twitter
-        </en>
-      </TwButton>
-      <GoButton>
-        <en>
-          Sign in with Google
-        </en>
-      </GoButton>
 
       <FbButton1>
         <en>Facebook</en>
@@ -28,13 +12,13 @@
       </GoButton1>
       
       <FbButtonPair>
-        <en>Pair with Facebook</en>
+        <en>Facebook</en>
       </FbButtonPair>
       <TwButtonPair>
-        <en>Pair with Twitter</en>
+        <en>Twitter</en>
       </TwButtonPair>
       <GoButtonPair>
-        <en>Pair with Google</en>
+        <en>Google</en>
       </GoButtonPair>
 
 

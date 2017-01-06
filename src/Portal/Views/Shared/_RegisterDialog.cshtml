@@ -5,7 +5,7 @@
     <div class="cont">
 
         <div class="txt">
-            A temporary account was created, if you want to make your account permanent, register with following services.
+            A temporary account was created. To make your account permanent, register or login with one of following services.
         </div>
         <div class="links">
             <a id="fbBtnReg" class="facebook" href="#"><span class="icon-facebook2"></span>@Model.W("FbButtonPair", "login")</a>
@@ -26,11 +26,11 @@
         <div class="cont">
 
             <div class="txt">
-                A temporary account was created, if you want to make your account permanent, register with following services.
+                Register or login with an email.
             </div>
             <div class="links">
                 <span>@Model.W("Mail", "login")</span>
-                <input id="email" type="text" placeholder="@Model.W("Mail", "login")">
+                <input id="email" type="email" placeholder="@Model.W("Mail", "login")" data-valid="false">
                 <span>@Model.W("Password", "login")</span>
                 <input id="password" type="password">
 

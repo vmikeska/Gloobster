@@ -52,6 +52,7 @@ var Reg;
                     }
                 });
                 $("#emailBtn").click(function (e) {
+                    e.preventDefault();
                     _this.$socDialog.hide();
                     _this.$emailDialog.show();
                 });
@@ -63,17 +64,53 @@ var Reg;
         };
         LoginButtonsManager.prototype.regEmailDialog = function () {
             var _this = this;
+            var emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            var $email = $("#email");
+            var $pass = $("#password");
+            $email.on("input", function (e) {
+                var val = $email.val();
+                var valid = emailRegex.test(val);
+                $email.data("valid", valid);
+            });
             $("#emailReg").click(function (e) {
                 e.preventDefault();
-                _this.$emailDialog.hide();
-                var data = {
-                    mail: $("#email").val(),
-                    password: $("#password").val()
-                };
-                Views.ViewBase.currentView.apiPost("MailUser", data, function (r) {
-                    _this.cookieSaver.saveCookies(r);
-                    _this.onAfter(SocialNetworkType.Base);
-                });
+                _this.sendMailReq();
+            });
+            $pass.keypress(function (e) {
+                var keycode = (e.keyCode ? e.keyCode : e.which);
+                if (keycode === 13) {
+                    _this.sendMailReq();
+                }
+            });
+        };
+        LoginButtonsManager.prototype.sendMailReq = function () {
+            var _this = this;
+            var $email = $("#email");
+            var $pass = $("#password");
+            var passLength = $pass.val().length;
+            var id = new Common.InfoDialog();
+            var mail = $email.data("valid");
+            if (mail === "false" || mail === false) {
+                id.create("Invalid email", "The inputed email is not valid. Please correct the email.");
+                return;
+            }
+            if (passLength < 4 || passLength > 30) {
+                id.create("Invalid password", "Password must be at least 4 and max 30 characters long.");
+                return;
+            }
+            this.$emailDialog.hide();
+            var data = {
+                mail: $email.val(),
+                password: $("#password").val()
+            };
+            Views.ViewBase.currentView.apiPost("MailUser", data, function (r) {
+                if (!r.Successful) {
+                    id.create("Incorrect password", "Password inputed for this email was not correct.");
+                    _this.$emailDialog.show();
+                    return;
+                }
+                _this.cookieSaver.saveCookies(r);
+                _this.onAfter(SocialNetworkType.Base);
             });
         };
         return LoginButtonsManager;

@@ -93,7 +93,7 @@ a {
     line-height: 1.2em;
     font-size: 1.2em; }
 
-input[type="text"], input[type="password"], input[type="number"], input[type="date"], textarea {
+input[type="text"], input[type="password"], input[type="number"], input[type="date"], input[type="email"], textarea {
   padding: 8px 13px;
   border: 0;
   border-radius: 4px;
