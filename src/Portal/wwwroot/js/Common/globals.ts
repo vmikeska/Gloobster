@@ -79,4 +79,6 @@ enum ScoreLevel { Excellent, Good, Standard }
 
 enum OS { A, WP, IOS, Other }
 
+enum PageType { HomePage, PinBoard, TripList, TwitterAuth, Friends }
+
 

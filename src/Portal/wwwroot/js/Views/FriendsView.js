@@ -30,7 +30,7 @@ var FriendsView = (function (_super) {
         _super.call(this);
     }
     Object.defineProperty(FriendsView.prototype, "pageType", {
-        get: function () { return Views.PageType.Friends; },
+        get: function () { return PageType.Friends; },
         enumerable: true,
         configurable: true
     });

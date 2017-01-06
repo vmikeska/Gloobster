@@ -1,8 +1,6 @@
 
 module Views {
-
-	export enum PageType {HomePage, PinBoard, TripList, TwitterAuth, Friends}
-
+		
 	export class ViewBase {
 
 		public static currentView;

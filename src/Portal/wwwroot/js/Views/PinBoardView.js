@@ -201,7 +201,7 @@ var Views;
             };
         }
         Object.defineProperty(PinBoardView.prototype, "pageType", {
-            get: function () { return Views.PageType.PinBoard; },
+            get: function () { return PageType.PinBoard; },
             enumerable: true,
             configurable: true
         });

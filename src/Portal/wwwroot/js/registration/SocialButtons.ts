@@ -32,15 +32,22 @@
 		}
 
 		private onAfter(net: SocialNetworkType) {
-		 var hint = new Common.HintDialog();
-		 hint.create("You are successfully connected!");
-			$(".login-all").remove();
 
-			Views.ViewBase.fullRegistration = true;
+				Views.ViewBase.fullRegistration = true;
 
-		 if (this.onAfterCustom) {
-			 this.onAfterCustom(net);
-		 }
+				if (this.onAfterCustom) {
+						this.onAfterCustom(net);
+				}
+
+				$(".login-all").remove();
+
+				if (Views.ViewBase.currentView.pageType === PageType.HomePage) {
+					window.location.href = window["dashboardLink"];
+				} else {
+						var hint = new Common.HintDialog();
+						hint.create("You are successfully connected!");
+						this.showUserMenu();
+				}				
 		}
 
 		private getUserMenu(callback) {
@@ -61,31 +68,41 @@
 				this.$socDialog.show();
 				this.initialize("fbBtnReg", "googleBtnReg", "twitterBtnReg");
 
-				$(".login-all").find(".close").click((e) => {
+				$(".login-all")
+					.find(".close")
+					.click((e) => {
 						e.preventDefault();
 
-					var $act = $(e.target).closest(".login-all");
+						var $act = $(e.target).closest(".login-all");
 
-					$act.hide();
+						$act.hide();
 
-					if ($act.attr("id") === "emailDlg") {
-						this.$socDialog.show();
-					}
-				});
+						if ($act.attr("id") === "emailDlg") {
+							this.$socDialog.show();
+						}
+					});
 
-				$("#emailBtn").click((e) => {
-					e.preventDefault();
-					this.$socDialog.hide();
-					this.$emailDialog.show();
-				});
+				$("#emailBtn")
+					.click((e) => {
+						e.preventDefault();
+						this.$socDialog.hide();
+						this.$emailDialog.show();
+					});
 
-				$("#emailCancel").click((e) => {
+				$("#emailCancel")
+					.click((e) => {
 						this.$emailDialog.hide();
-						this.$socDialog.show();						
-				});
+						this.$socDialog.show();
+					});
 
+			} else {
+				this.showUserMenu();
 			}
 		}
+
+			private showUserMenu() {
+				$(".after-login").removeClass("hidden");
+			}
 
 		private regEmailDialog() {
 

@@ -249,7 +249,7 @@
 
 			private pinBoardBadges: PinBoardBadges;
 
-			get pageType(): Views.PageType { return PageType.PinBoard; }
+			get pageType(): PageType { return PageType.PinBoard; }
 
 			constructor() {
 					super();

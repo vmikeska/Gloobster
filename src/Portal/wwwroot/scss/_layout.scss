@@ -46,11 +46,6 @@
         img {
             height: 35px;
             width: 210px;
-
-            @include below-width(420){            
-                height: 30px;
-                width: 180px;
-            }
         }
 
     }
@@ -69,6 +64,10 @@
             justify-content: space-between;
             font-size: 0.8em;
 
+            @include below-width(700) {
+                display: block;
+            }
+
             a {
                 display: inline-block;
                 font-weight: 600;            
@@ -77,6 +76,7 @@
                 vertical-align:top;
                 margin-top: 5px;
                 margin-right: 10px;
+                @include noselect;
             }   
 
             a:hover {
@@ -271,27 +271,6 @@
         }
     }
 }
-
-@include below-width(479){            
-    .menu_all{
-        
-        .logo_all{
-            position: static;
-        }
-
-        .icons_all{
-            position: static;
-        }
-
-        .links_all{
-            position: static;                       
-            justify-content: space-around;            
-            padding-top: 0;
-            width: 100%;
-        }
-    }
-}
-
 
 footer {
     background-color: $light-blue3;

@@ -112,4 +112,12 @@ var OS;
     OS[OS["IOS"] = 2] = "IOS";
     OS[OS["Other"] = 3] = "Other";
 })(OS || (OS = {}));
+var PageType;
+(function (PageType) {
+    PageType[PageType["HomePage"] = 0] = "HomePage";
+    PageType[PageType["PinBoard"] = 1] = "PinBoard";
+    PageType[PageType["TripList"] = 2] = "TripList";
+    PageType[PageType["TwitterAuth"] = 3] = "TwitterAuth";
+    PageType[PageType["Friends"] = 4] = "Friends";
+})(PageType || (PageType = {}));
 //# sourceMappingURL=globals.js.map

@@ -17,70 +17,70 @@
         <div class="icons_all">
             <div class="icons">
 
+                <div class="icon after-login hidden">
+                    <a class="icon-my-data" title="my profile" href="/@RoutingConsts.UserDetailMenuName"></a>
+                </div>
+
+                <div class="icon after-login hidden">
+                    <a class="icon-friends" title="friends" href="/@RoutingConsts.FriendsMenuName"></a>
+                </div>
+
+                <div class="icon after-login hidden">
+                    <a class="icon-message" title="messages" href="/@RoutingConsts.MessagesMenuName"></a>
+
+                    @if (Model.UnreadMessagesCount > 0)
+                    {
+                        <div class="notif">@Model.UnreadMessagesCount</div>
+                    }
+                </div>
+
+                <div class="icon after-login hidden">
+                    <a class="icon-envelope" title="notifications" href="/@RoutingConsts.NotifsMenuName"></a>
+
+                    @if (Model.NotificationCount > 0)
+                    {
+                        <div class="notif">@Model.NotificationCount</div>
+                    }
+
+                </div>
+
+                <div class="icon after-login hidden">
+                    <a id="logoutUser" title="logout" class="icon-switch" href="#"></a>
+                </div>
+                
+                
+                <!-- admin and debug-->
+
                 <div class="icon ver-switch" style="display: none">
                     <a id="switchVersion" title="switch between full and demo version" class="" href="#"></a>
                 </div>
 
-                @if (Model.IsUserLogged)
+                @if (Model.HasAnyWikiPermissions || Model.CanManageArticleAdmins)
                 {
-
                     <div class="icon">
-                        <a class="icon-my-data" title="my profile" href="/@RoutingConsts.UserDetailMenuName"></a>
-                    </div>
+                        <a id="admin-btn" title="administration" class="icon-user-tie" href="#"></a>
 
-                    <div class="icon">
-                        <a class="icon-friends" title="friends" href="/@RoutingConsts.FriendsMenuName"></a>
-                    </div>
-
-                    <div class="icon">
-                        <a class="icon-message" title="messages" href="/@RoutingConsts.MessagesMenuName"></a>
-
-                        @if (Model.UnreadMessagesCount > 0)
-                        {
-                            <div class="notif">@Model.UnreadMessagesCount</div>
-                        }
-                    </div>
-
-                    <div class="icon">
-                        <a class="icon-envelope" title="notifications" href="/@RoutingConsts.NotifsMenuName"></a>
-
-                        @if (Model.NotificationCount > 0)
-                        {
-                            <div class="notif">@Model.NotificationCount</div>
-                        }
-
-                    </div>
-
-                    if (Model.HasAnyWikiPermissions || Model.CanManageArticleAdmins)
-                     {
-                         <div class="icon">
-                             <a id="admin-btn" title="administration" class="icon-user-tie" href="#"></a>
-
-                             <div class="admin-menu-all" style="display: none">
-                                 @if (Model.HasAnyWikiPermissions)
-                                 {
-                                     <a href="/WikiAdmin/List">Wiki admin</a>
-                                 }
-                                 @if (Model.CanManageArticleAdmins)
-                                 {
-                                     <a href="/imagedb/list">Image DB</a>
-                                     <a href="/git/issues">GIT issues</a>
-                                     <a href="/wiki/permissions">Wiki permissions</a>
-                                     <a href="/mylog/index">Logs</a>
-                                     <a href="/mylog/stats">DB stats</a>
-                                     <a href="/mylog/userstodelete">Accounts clean</a>
-                                     <a href="/travelb/management">TravelB management</a>
-                                 }
-                             </div>
-                         </div>
-
-                     }
-
-                    <div class="icon">
-                        <a id="logoutUser" title="logout" class="icon-switch" href="#"></a>
+                        <div class="admin-menu-all" style="display: none">
+                            @if (Model.HasAnyWikiPermissions)
+                            {
+                                <a href="/WikiAdmin/List">Wiki admin</a>
+                            }
+                            @if (Model.CanManageArticleAdmins)
+                            {
+                                <a href="/imagedb/list">Image DB</a>
+                                    <a href="/git/issues">GIT issues</a>
+                                    <a href="/wiki/permissions">Wiki permissions</a>
+                                    <a href="/mylog/index">Logs</a>
+                                    <a href="/mylog/stats">DB stats</a>
+                                    <a href="/mylog/userstodelete">Accounts clean</a>
+                                    <a href="/travelb/management">TravelB management</a>
+                            }
+                        </div>
                     </div>
 
                 }
+
+                
 
             </div>
         </div>
@@ -89,10 +89,8 @@
         <div class="links_all">
             <nav class="links">
 
-            @if (Model.IsDemo)
-            {
-                <a class="MenuDashboard" href="/@RoutingConsts.DashboardMenuName">@Model.W("DashboardDeals", "layout")</a>
-            }
+                <a class="MenuDashboard after-login hidden" href="/@RoutingConsts.DashboardMenuName">@Model.W("DashboardDeals", "layout")</a>
+            
                 <a class="MenuDeals" href="/@RoutingConsts.DealsMenuName">@Model.W("MenuDeals", "layout")</a>
             
                 <a class="MenuTravelB" href="/@RoutingConsts.TravelBuddyMenuName">@Model.W("MenuTB", "layout")</a>

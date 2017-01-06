@@ -14,7 +14,7 @@ var Views;
             });
         }
         Object.defineProperty(HomePageView.prototype, "pageType", {
-            get: function () { return Views.PageType.HomePage; },
+            get: function () { return PageType.HomePage; },
             enumerable: true,
             configurable: true
         });

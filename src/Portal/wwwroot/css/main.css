@@ -705,10 +705,6 @@ button:active {
     .menu_all .logo_all img {
       height: 35px;
       width: 210px; }
-      @media screen and (max-width: 420px) {
-        .menu_all .logo_all img {
-          height: 30px;
-          width: 180px; } }
   .menu_all .links_all {
     position: absolute;
     left: 250px;
@@ -723,6 +719,9 @@ button:active {
       flex-flow: row wrap;
       justify-content: space-between;
       font-size: 0.8em; }
+      @media screen and (max-width: 700px) {
+        .menu_all .links_all .links {
+          display: block; } }
       .menu_all .links_all .links a {
         display: inline-block;
         font-weight: 600;
@@ -730,7 +729,19 @@ button:active {
         text-decoration: none;
         vertical-align: top;
         margin-top: 5px;
-        margin-right: 10px; }
+        margin-right: 10px;
+        -webkit-touch-callout: none;
+        /* iOS Safari */
+        -webkit-user-select: none;
+        /* Chrome/Safari/Opera */
+        -khtml-user-select: none;
+        /* Konqueror */
+        -moz-user-select: none;
+        /* Firefox */
+        -ms-user-select: none;
+        /* Internet Explorer/Edge */
+        user-select: none;
+        /* Non-prefixed version, currently not supported by any browser */ }
       .menu_all .links_all .links a:hover {
         color: #65BDD7; }
       .menu_all .links_all .links .active {
@@ -849,17 +860,6 @@ button:active {
       padding-top: 50px;
       justify-content: space-between;
       width: 100%; } }
-
-@media screen and (max-width: 479px) {
-  .menu_all .logo_all {
-    position: static; }
-  .menu_all .icons_all {
-    position: static; }
-  .menu_all .links_all {
-    position: static;
-    justify-content: space-around;
-    padding-top: 0;
-    width: 100%; } }
 
 footer {
   background-color: #3298C1; }
@@ -2736,6 +2736,7 @@ footer {
   .login-all .cont {
     border-bottom-left-radius: 2px;
     border-bottom-right-radius: 2px;
+    text-align: center;
     padding-right: 40px; }
     .login-all .cont .links input {
       border: 1px solid #65BDD7; }

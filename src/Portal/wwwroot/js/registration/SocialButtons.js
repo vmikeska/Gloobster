@@ -21,12 +21,18 @@ var Reg;
             this.$socDialog.hide();
         };
         LoginButtonsManager.prototype.onAfter = function (net) {
-            var hint = new Common.HintDialog();
-            hint.create("You are successfully connected!");
-            $(".login-all").remove();
             Views.ViewBase.fullRegistration = true;
             if (this.onAfterCustom) {
                 this.onAfterCustom(net);
+            }
+            $(".login-all").remove();
+            if (Views.ViewBase.currentView.pageType === PageType.HomePage) {
+                window.location.href = window["dashboardLink"];
+            }
+            else {
+                var hint = new Common.HintDialog();
+                hint.create("You are successfully connected!");
+                this.showUserMenu();
             }
         };
         LoginButtonsManager.prototype.getUserMenu = function (callback) {
@@ -43,7 +49,9 @@ var Reg;
                 this.$emailDialog = $("#emailDlg");
                 this.$socDialog.show();
                 this.initialize("fbBtnReg", "googleBtnReg", "twitterBtnReg");
-                $(".login-all").find(".close").click(function (e) {
+                $(".login-all")
+                    .find(".close")
+                    .click(function (e) {
                     e.preventDefault();
                     var $act = $(e.target).closest(".login-all");
                     $act.hide();
@@ -51,16 +59,24 @@ var Reg;
                         _this.$socDialog.show();
                     }
                 });
-                $("#emailBtn").click(function (e) {
+                $("#emailBtn")
+                    .click(function (e) {
                     e.preventDefault();
                     _this.$socDialog.hide();
                     _this.$emailDialog.show();
                 });
-                $("#emailCancel").click(function (e) {
+                $("#emailCancel")
+                    .click(function (e) {
                     _this.$emailDialog.hide();
                     _this.$socDialog.show();
                 });
             }
+            else {
+                this.showUserMenu();
+            }
+        };
+        LoginButtonsManager.prototype.showUserMenu = function () {
+            $(".after-login").removeClass("hidden");
         };
         LoginButtonsManager.prototype.regEmailDialog = function () {
             var _this = this;

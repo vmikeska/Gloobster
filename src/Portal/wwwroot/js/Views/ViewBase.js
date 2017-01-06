@@ -1,13 +1,5 @@
 var Views;
 (function (Views) {
-    (function (PageType) {
-        PageType[PageType["HomePage"] = 0] = "HomePage";
-        PageType[PageType["PinBoard"] = 1] = "PinBoard";
-        PageType[PageType["TripList"] = 2] = "TripList";
-        PageType[PageType["TwitterAuth"] = 3] = "TwitterAuth";
-        PageType[PageType["Friends"] = 4] = "Friends";
-    })(Views.PageType || (Views.PageType = {}));
-    var PageType = Views.PageType;
     var ViewBase = (function () {
         function ViewBase() {
             ViewBase.currentView = this;

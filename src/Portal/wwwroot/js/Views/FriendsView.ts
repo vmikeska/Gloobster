@@ -21,7 +21,7 @@ class FriendsView extends Views.ViewBase {
 		super();
 	}
 
-	get pageType(): Views.PageType { return Views.PageType.Friends; }
+	get pageType(): PageType { return PageType.Friends; }
 
 	public initialize() {
 	 var self = this;
