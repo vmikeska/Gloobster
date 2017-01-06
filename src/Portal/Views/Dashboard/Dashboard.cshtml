@@ -148,8 +148,6 @@ else
                     {
                         <div class="your-deals-all">
 
-                            <div class="no-data-txt">You havent set any locations yet</div>
-
                             <div class="icos-tbl">
 
                                 <div class="ico-block">
@@ -164,7 +162,7 @@ else
 
                                 <div class="ico-block">
                                     <img class="svg-img" src="/images/n/fly-plane.svg"/>
-                                    <div class="txt">Recive the best deals</div>
+                                    <div class="txt">Receive the best deals</div>
                                 </div>
                             </div>
 
@@ -184,8 +182,8 @@ else
 
                         </div>
 
-                        <div class="srv-zone">
-                            <a href="/@RoutingConsts.DealsMenuName" class="lbtn2 srv-btn">Set your destinations</a>
+                        <div class="redir-btn-cont">
+                            <a href="/@RoutingConsts.DealsMenuName" class="lbtn2 redir-btn">Set your destinations</a>
                         </div>
                     }
                     else
@@ -239,11 +237,11 @@ else
 
                             </div>
 
+                            <div class="redir-btn-cont">
+                                <a href="/@RoutingConsts.DealsMenuName" class="lbtn2 redir-btn">See your deals</a>
+                            </div>
                         </div>
-
-                        <div class="srv-zone">
-                            <a href="/@RoutingConsts.DealsMenuName" class="lbtn2 srv-btn">Go see your deals</a>
-                        </div>
+                        
                     }
 
 
@@ -253,18 +251,24 @@ else
             
 
             <div class="web-item">
-                    <div class="web-title">Your travel map</div>
+                <div class="web-title">
+                    <span class="txt">Your travel map</span>
+                    <a href="/@RoutingConsts.PinsMenuName" class="lbtn2 go-btn">To the map</a>
+                </div>
                     <div class="web-cont">
 
                         <div class="your-map-all">
-                            <a href="/travelmap">@Html.Partial("MapSvg")</a>
+                            <a href="/@RoutingConsts.PinsMenuName">@Html.Partial("MapSvg")</a>
                         </div>
 
                     </div>
                 </div>
 
-            <div class="web-item">
-                <div class="web-title">Your trips</div>
+            <div class="web-item">                
+                <div class="web-title">
+                    <span class="txt">Your trips</span>
+                    <a href="/@RoutingConsts.PlannerMenuName/grid" class="lbtn2 go-btn">To the planner</a>
+                </div>
                 <div class="web-cont">
 
                     <div class="your-trips-all">
@@ -278,14 +282,10 @@ else
                                 string imgLink = trip.HasSmallPicture ? $"/Trip/TripPictureSmall_xs/{trip.id}" : "/images/placeholder-70.png";
 
                                 <div class="item">
-                                    <a href="/trip/@trip.id"><img src="@imgLink" /> <span class="txt">@trip.Name</span></a>
+                                    <a href="/@RoutingConsts.TripMenuName/@trip.id"><img src="@imgLink" /> <span class="txt">@trip.Name</span></a>
                                 </div>
                             }
 
-                        </div>
-
-                        <div class="srv-zone">
-                            <a href="/travelplanner/grid" class="lbtn2 srv-btn">Go to Your trips</a>
                         </div>
 
                     </div>
@@ -294,14 +294,13 @@ else
             </div>
             
             <div class="web-item">
-                <div class="web-title">Friend's calendar</div>
+                <div class="web-title">
+                    <span class="txt">Friend's calendar</span>
+                    <a href="/@RoutingConsts.CalendarName" class="lbtn2 go-btn">To the calendar</a>
+                </div>                
                 <div class="web-cont">
 
                     <div id="calendar" class="f-calendar"></div>
-                    
-                    <div class="srv-zone">
-                        <a href="/Dashboard/calendar" class="lbtn2 srv-btn">Full calendar</a>
-                    </div>
 
                 </div>
             </div>

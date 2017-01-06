@@ -5959,28 +5959,46 @@ footer {
       width: 460px; } }
 
 .dashboard .web-item {
-  margin-bottom: 10px; }
+  margin-bottom: 10px;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px; }
   .dashboard .web-item .web-title {
+    position: relative;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
     font-weight: bold;
     background-color: #009EC4;
     color: white;
-    padding: 4px;
-    text-align: center; }
-  .dashboard .web-item .web-cont {
-    background-color: #F0FAFC; }
-  .dashboard .web-item .srv-zone {
-    text-align: left;
-    padding: 8px; }
-    .dashboard .web-item .srv-zone .srv-btn {
-      background-color: #F56E12;
+    padding: 8px;
+    text-align: left; }
+    .dashboard .web-item .web-title .go-btn {
+      position: absolute;
+      right: 6px;
+      top: 6px;
+      background-color: #FFC400;
       color: white;
       font-weight: bold;
-      padding-top: 1px;
-      padding-bottom: 1px;
+      padding-top: 2px;
+      padding-bottom: 2px;
       padding-left: 6px;
       padding-right: 6px; }
-      .dashboard .web-item .srv-zone .srv-btn:hover {
-        background-color: #3DA33D; }
+      .dashboard .web-item .web-title .go-btn:hover {
+        background-color: #F56E12; }
+  .dashboard .web-item .web-cont {
+    background-color: #F0FAFC;
+    padding: 8px; }
+    .dashboard .web-item .web-cont .redir-btn-cont {
+      text-align: center; }
+    .dashboard .web-item .web-cont .redir-btn {
+      background-color: #FFC400;
+      color: white;
+      font-weight: bold;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      padding-left: 6px;
+      padding-right: 6px; }
+      .dashboard .web-item .web-cont .redir-btn:hover {
+        background-color: #F56E12; }
   .dashboard .web-item.dark .web-title {
     background-color: #005476; }
   .dashboard .web-item.dark .web-cont {
@@ -6100,7 +6118,8 @@ footer {
       font-size: 1.1em;
       margin-top: 8px; }
   .dashboard .your-deals-result-all .cats {
-    text-align: center; }
+    text-align: center;
+    margin-bottom: 15px; }
     .dashboard .your-deals-result-all .cats .category {
       border: 2px solid #005476;
       border-radius: 4px;

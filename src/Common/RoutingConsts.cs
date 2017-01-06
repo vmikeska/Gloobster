@@ -24,5 +24,7 @@ namespace Gloobster.Common
 
         public const string MessagesMenuName = "messages";
         public const string MessageMenuName = "message";
+
+        public const string CalendarName = "calendar";
     }
 }

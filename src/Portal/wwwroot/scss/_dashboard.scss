@@ -59,35 +59,64 @@
         
         margin-bottom: 10px;
 
+        border-top-left-radius: 2px;
+        border-top-right-radius: 2px;
+
         .web-title {
+            position: relative;
+
+            border-top-left-radius: 2px;
+            border-top-right-radius: 2px;
+
             font-weight: bold;
             background-color: $info-blue2;
             color: white;
 
-            padding: 4px;
-            text-align: center;
-        }
-
-        .web-cont {
-            background-color: $very-light-blue3;
-        }
-
-        .srv-zone {
+            padding: 8px;            
             text-align: left;
-            padding: 8px;
 
-            .srv-btn {
-                background-color: $orange;
+            .go-btn {
+                position: absolute;
+                right: 6px;
+                top: 6px;
+                
+                background-color: $yellow;
                 color: white;
                 font-weight: bold;
 
-                padding-top: 1px;
-                padding-bottom: 1px;
+                padding-top: 2px;
+                padding-bottom: 2px;
                 padding-left: 6px;
                 padding-right: 6px;
 
                 &:hover {
-                    background-color: $green;
+                    background-color: $orange;
+                }
+            }
+        }
+
+        .web-cont {
+            background-color: $very-light-blue3;
+
+            padding: 8px;
+
+            .redir-btn-cont {
+                text-align: center;
+            }
+
+            .redir-btn {
+                
+                background-color: $yellow;
+                color: white;
+                font-weight: bold;
+
+                padding-top: 2px;
+                padding-bottom: 2px;
+                padding-left: 6px;
+                padding-right: 6px;
+
+                &:hover {
+                    background-color: $orange;
                 }
             }
         }
@@ -297,6 +326,8 @@
 
             .cats {
                 text-align: center;
+
+                margin-bottom: 15px;
 
                 .category {
                     border: 2px solid $dark-blue;

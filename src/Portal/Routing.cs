@@ -13,6 +13,13 @@ namespace Gloobster.Portal
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
 
+
+                routes.MapRoute(
+                    name: "calendar",
+                    template: RoutingConsts.CalendarName,
+                    defaults: new { controller = "Dashboard", action = "Calendar" }
+                    );
+                
                 routes.MapRoute(
                     name: "dashboard",
                     template: RoutingConsts.DashboardMenuName,
