@@ -1,5 +1,4 @@
-﻿enum FriendActionType { Confirm, Request, Unfriend, Block, CancelRequest}
-
+﻿
 enum FriendshipState { None, Friends, Proposed, AwaitingConfirmation, Blocked }
 
 class Friend {

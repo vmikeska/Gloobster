@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Common;
 using Gloobster.DomainInterfaces;
+using Gloobster.DomainObjects;
 using MongoDB.Bson;
 
 namespace Gloobster.Portal.ViewModels
@@ -36,6 +37,7 @@ namespace Gloobster.Portal.ViewModels
         public bool HasAirs { get; set; }
         public bool HasDests { get; set; }
         public List<UserLogViewModel> Logs { get; set; }
+        public List<UserDO> FbFriends { get; set; }
 
         public bool HasFriends { get; set; }
 
@@ -83,6 +85,40 @@ namespace Gloobster.Portal.ViewModels
             }
 
             Logs = passedLogs.OrderByDescending(o => o.Created).ToList();            
+        }
+
+        private void DetectFbFriends(IFacebookFriendsService fbFriendsSvc, string userId)
+        {
+            FbFriends = new List<UserDO>();
+
+            var uid = new ObjectId(userId);
+            var friends = DB.FOD<FriendsEntity>(f => f.User_id == uid);
+
+            if (friends == null)
+            {
+                return;
+            }
+            
+            try
+            {                
+                var fbFriends = fbFriendsSvc.GetFriends(userId);
+                if (fbFriends != null)
+                {
+                    FbFriends = fbFriends.Where(f =>
+                    {
+                        var userIdObj = new ObjectId(f.UserId);
+                        return !friends.Friends.Contains(userIdObj) &&
+                               !friends.Proposed.Contains(userIdObj) &&
+                               !friends.AwaitingConfirmation.Contains(userIdObj);
+                    }).ToList();
+                }
+            }
+            catch (Exception exc)
+            {
+                //todo: add log
+            }
+
+            
         }
 
         public string BuildLogText(string userId, UserLogSE log)
@@ -153,12 +189,14 @@ namespace Gloobster.Portal.ViewModels
             return txtFormated;
         }
 
-        public async Task Init(IDbOperations db, string userId, ITripDomain tripDomain)
+        public async Task Init(IDbOperations db, string userId, ITripDomain tripDomain, IFacebookFriendsService fbFriendsSvc)
         {
             var userIdObj = new ObjectId(userId);
 
             LoadUserLogs(userIdObj);
-            
+
+            DetectFbFriends(fbFriendsSvc, userId);
+
             var trips = DB.List<TripEntity>(t => t.User_id == userIdObj);
             
             if (!trips.Any())

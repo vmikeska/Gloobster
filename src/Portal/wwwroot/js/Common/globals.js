@@ -120,4 +120,12 @@ var PageType;
     PageType[PageType["TwitterAuth"] = 3] = "TwitterAuth";
     PageType[PageType["Friends"] = 4] = "Friends";
 })(PageType || (PageType = {}));
+var FriendActionType;
+(function (FriendActionType) {
+    FriendActionType[FriendActionType["Confirm"] = 0] = "Confirm";
+    FriendActionType[FriendActionType["Request"] = 1] = "Request";
+    FriendActionType[FriendActionType["Unfriend"] = 2] = "Unfriend";
+    FriendActionType[FriendActionType["Block"] = 3] = "Block";
+    FriendActionType[FriendActionType["CancelRequest"] = 4] = "CancelRequest";
+})(FriendActionType || (FriendActionType = {}));
 //# sourceMappingURL=globals.js.map

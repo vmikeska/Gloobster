@@ -12,17 +12,19 @@ namespace Gloobster.Portal.Controllers.Portal
     public class DashboardController : PortalBaseController
     {
         public ITripDomain TripDomain { get; set; }
-
-        public DashboardController(ITripDomain tripDomain, ILogger log, IDbOperations db, IComponentContext cc, ILanguages langs) : base(log, db, cc, langs)
+        public IFacebookFriendsService FbFriendsSvc { get; set; }
+        
+        public DashboardController(IFacebookFriendsService fbFriendsSvc, ITripDomain tripDomain, ILogger log, IDbOperations db, IComponentContext cc, ILanguages langs) : base(log, db, cc, langs)
         {
             TripDomain = tripDomain;
+            FbFriendsSvc = fbFriendsSvc;
         }
 
         public async Task<IActionResult> Dashboard()
         {
             var vm = CreateViewModelInstance<ViewModelDashboard>();
             
-            await vm.Init(DB, UserId, TripDomain);
+            await vm.Init(DB, UserId, TripDomain, FbFriendsSvc);
 
             return View(vm);
         }

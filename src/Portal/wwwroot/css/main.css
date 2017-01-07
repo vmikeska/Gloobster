@@ -5927,6 +5927,42 @@ footer {
         .calendar-cont .my-calendar-win .bottom .close-cal:hover {
           color: #F56E12; }
 
+.dashboard .joined-friends .items {
+  text-align: left;
+  margin-top: 12px; }
+
+.dashboard .joined-friends .item-all {
+  border: 2px solid #009EC4;
+  display: inline-block;
+  border-radius: 2px;
+  padding: 8px; }
+
+.dashboard .joined-friends .item {
+  display: table; }
+  .dashboard .joined-friends .item .l, .dashboard .joined-friends .item .r {
+    display: table-cell;
+    vertical-align: top; }
+  .dashboard .joined-friends .item .l {
+    padding-top: 4px; }
+  .dashboard .joined-friends .item .r {
+    padding-left: 8px; }
+  .dashboard .joined-friends .item img {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    background-color: white; }
+  .dashboard .joined-friends .item .name {
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 4px; }
+  .dashboard .joined-friends .item .request {
+    background-color: #3DA33D;
+    color: white;
+    font-weight: bold;
+    padding: 4px; }
+    .dashboard .joined-friends .item .request:hover {
+      background-color: #F56E12; }
+
 .dashboard .f-calendar {
   max-width: 100%; }
 

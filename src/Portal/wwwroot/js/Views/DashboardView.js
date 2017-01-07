@@ -27,6 +27,29 @@ var Views;
             this.initMap();
             this.initCalendar();
             this.initDeals();
+            this.regFriendsRecomm();
+        };
+        DashboardView.prototype.regFriendsRecomm = function () {
+            var _this = this;
+            var $form = $(".joined-friends");
+            $form.find(".form-close").click(function (e) {
+                e.preventDefault();
+                $form.hide();
+            });
+            $form.find(".request").click(function (e) {
+                e.preventDefault();
+                var $t = $(e.target);
+                var $item = $t.closest(".item-all");
+                var uid = $item.data("uid");
+                var data = { "friendId": uid, "action": FriendActionType.Request };
+                _this.apiPost("Friends", data, function (response) {
+                    $item.remove();
+                    var anyItems = $form.find(".item-all").length > 0;
+                    if (!anyItems) {
+                        $form.hide();
+                    }
+                });
+            });
         };
         DashboardView.prototype.initDeals = function () {
             var _this = this;

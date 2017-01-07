@@ -3,14 +3,6 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var FriendActionType;
-(function (FriendActionType) {
-    FriendActionType[FriendActionType["Confirm"] = 0] = "Confirm";
-    FriendActionType[FriendActionType["Request"] = 1] = "Request";
-    FriendActionType[FriendActionType["Unfriend"] = 2] = "Unfriend";
-    FriendActionType[FriendActionType["Block"] = 3] = "Block";
-    FriendActionType[FriendActionType["CancelRequest"] = 4] = "CancelRequest";
-})(FriendActionType || (FriendActionType = {}));
 var FriendshipState;
 (function (FriendshipState) {
     FriendshipState[FriendshipState["None"] = 0] = "None";

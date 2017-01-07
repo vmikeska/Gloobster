@@ -39,7 +39,9 @@ module Views {
 
 				this.initCalendar();
 
-			this.initDeals();
+				this.initDeals();
+
+			this.regFriendsRecomm();
 		}
 
 		private anytimeRes;
@@ -47,6 +49,35 @@ module Views {
 
 		private anytimeFinished = false;
 		private weekendFinished = false;
+
+			private regFriendsRecomm() {
+					var $form = $(".joined-friends");
+
+					$form.find(".form-close").click((e) => {
+						e.preventDefault();
+					$form.hide();
+				});
+
+				$form.find(".request").click((e) => {
+					e.preventDefault();
+
+						var $t = $(e.target);
+
+						var $item = $t.closest(".item-all");
+						var uid = $item.data("uid");
+
+						var data = { "friendId": uid, "action": FriendActionType.Request };
+						this.apiPost("Friends", data, response => {
+								$item.remove();
+
+							var anyItems = $form.find(".item-all").length > 0;
+							if (!anyItems) {
+								$form.hide();
+							}
+						});
+
+				});
+			}
 
 			private initDeals() {
 
