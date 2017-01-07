@@ -89,7 +89,7 @@
         <div class="links_all">
             <nav class="links">
 
-                <a class="MenuDashboard after-login hidden" href="/@RoutingConsts.DashboardMenuName">@Model.W("DashboardDeals", "layout")</a>
+                <a class="MenuDashboard after-login @(Model.IsUserLogged ? string.Empty : "hidden")" href="/@RoutingConsts.DashboardMenuName">@Model.W("DashboardDeals", "layout")</a>
             
                 <a class="MenuDeals" href="/@RoutingConsts.DealsMenuName">@Model.W("MenuDeals", "layout")</a>
             

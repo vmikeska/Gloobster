@@ -13,6 +13,7 @@ using Serilog;
 using System.Linq;
 using System.Web;
 using Autofac;
+using Gloobster.Common;
 using Gloobster.Entities;
 using Gloobster.Entities.SearchEngine;
 using Gloobster.Entities.Trip;
@@ -32,7 +33,13 @@ namespace Gloobster.Portal.Controllers.Portal
         [CreateAccount]
         public IActionResult Index()
         {
-            var vm = CreateViewModelInstance<ViewModelHome>();            
+            var vm = CreateViewModelInstance<ViewModelHome>();
+
+            if (vm.IsUserLogged)
+            {
+                return Redirect("/" + RoutingConsts.DashboardMenuName);
+            }
+
             return View(vm);
         }
        
