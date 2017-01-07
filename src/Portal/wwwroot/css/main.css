@@ -6008,7 +6008,8 @@ footer {
   margin-bottom: 10px; }
   .dashboard .portal-item h3 {
     margin-top: 0;
-    margin-bottom: 4px; }
+    margin-bottom: 4px;
+    font-size: 1em; }
   .dashboard .portal-item p {
     margin: 0;
     padding: 0;
@@ -6166,3 +6167,22 @@ footer {
     z-index: 10; }
   .cal-page .fc-button .fc-icon {
     color: white; }
+
+.articles {
+  text-align: left; }
+  .articles h1 {
+    padding: 0;
+    margin: 0;
+    color: #005476;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 1.3em; }
+  .articles h2 {
+    padding: 0;
+    margin: 0;
+    color: #005476;
+    font-size: 1.1em; }
+  .articles p {
+    padding: 0;
+    margin: 0;
+    margin-bottom: 20px; }
