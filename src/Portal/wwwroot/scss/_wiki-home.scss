@@ -91,7 +91,8 @@ $light-gray: #f2f2f2;
                     }
                 }         
             }
-    
+
+             
         }
 
         .cont{            
@@ -108,21 +109,39 @@ $light-gray: #f2f2f2;
                 font-weight: 500;
                 margin-top: 80px;
             }
-
-            /*height: 450px;
-            width: 600px;
-            position: absolute;
-            top:0;
-            left:0;
-
-            z-index: 99999;*/
         }
+
+        @include below-width(700) {
+                .circle-bck {
+                    display: none;
+                }
+
+                .cont{
+                    display: block;
+
+                    top: 80px;
+
+                    min-width: initial;
+                    max-width: initial;
+                    transform: initial;
+
+                    background-color: rgba($light-blue3, 0.7);
+
+                    height: initial;
+
+                    padding-top: 20px;
+                    padding-bottom: 20px;
+
+                    h1 {
+                        margin-top: 0;
+                    }
+                }
+
+            }   
 
     }
 
-    .wiki_info{
-    
-        /*background-color: $light-blue3;*/
+    .wiki_info{    
         background-color: $dark-blue;
  
         .bl{
@@ -175,6 +194,11 @@ $light-gray: #f2f2f2;
     }
 
     
+    .all-articles {
+        padding-left: 6px;
+        padding-right: 6px;
+    }
+
 
 
     .wiki_article_wide{  

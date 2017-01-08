@@ -120,9 +120,9 @@
 					this.changeSetter(PlanningType.Custom);					
 				});
 
-			this.tabs.addTab("tabClassic", "Classic search", () => {
+			//this.tabs.addTab("tabClassic", "Classic search", () => {
 
-			});
+			//});
 
 			this.tabs.create();
 		}

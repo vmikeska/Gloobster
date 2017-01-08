@@ -57,20 +57,20 @@
 		private initResizer() {
 				this.resizer = new TripResizer();
 
-			this.resizer.onBeforeResize = () => {								
-					var $cd = $(".details");
-					if ($cd.length > 0) {
-						$cd.hide();
-					}
+				this.resizer.onBeforeResize = () => {
+						var $cd = $(".details");
+						if ($cd.length > 0) {
+							$cd.hide();
+						}
 			}
 
-			this.resizer.onAfterResize = () => {								
-				var $cd = $(".details");
-				if ($cd.length > 0) {
-						this.$lastBlockOnRow = this.resizer.getLast(this.$activeBlock.data("no"));
-						this.$lastBlockOnRow.after($cd);
-						$cd.slideDown();
-				}
+			this.resizer.onAfterResize = () => {						
+						var $cd = $(".details");
+						if ($cd.length > 0) {
+							this.$lastBlockOnRow = this.resizer.getLast(this.$activeBlock.data("no"));
+							this.$lastBlockOnRow.after($cd);
+							$cd.slideDown();
+						}
 			}
 		}
 
@@ -209,8 +209,7 @@
 			this.dialogManager.$lastBlockOnRow = this.$lastBlockOnRow;			
 		}
 
-		private setActivePlaceOrTravel($block) {
-				
+		private setActivePlaceOrTravel($block) {				
 				this.activeBlockChanged($block);
 				var id = $block.attr("id");
 
@@ -298,7 +297,7 @@
 			var $html = $(html);
 			this.regDateLinks($html);
 
-			$html.find(".destination").click("*", (e) => {
+			$html.find(".destination").click("*", (e) => {					
 				var $t = $(e.delegateTarget);
 				var $block = $t.closest(".block");				
 				this.setActivePlaceOrTravel($block);
@@ -327,7 +326,7 @@
 				var html = this.travelTemplate(context);
 				var $html = $(html);
 
-				$html.find(".transport").click("*", (e) => {
+				$html.find(".transport").click("*", (e) => {						
 						var $t = $(e.delegateTarget);
 						var $block = $t.closest(".block");						
 						this.setActivePlaceOrTravel($block);

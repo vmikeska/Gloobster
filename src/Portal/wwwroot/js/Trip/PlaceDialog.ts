@@ -12,11 +12,10 @@ module Trip {
 			this.dialogManager = dialogManager;
 		}
 
-		public display() {
-				
+		public display() {				
 				this.dialogManager.getDialogData(TripEntityType.Place, (data) => {
 					
-					if (this.dialogManager.planner.editable) {
+						if (this.dialogManager.planner.editable) {								
 							this.createEdit(data);
 					} else {
 						this.createView(data);
@@ -32,8 +31,7 @@ module Trip {
 				this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);					
 			}
 
-			private createEdit(data) {
-
+			private createEdit(data) {					
 					this.buildTemplateEdit(data);
 
 				this.createNameSearch(data);
@@ -53,7 +51,7 @@ module Trip {
 				}
 
 				this.files = this.dialogManager.createFilesInstance(data.id, TripEntityType.Place);
-				this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);
+				this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);				
 			}
 
 			private createNameSearch(data) {
@@ -207,18 +205,19 @@ module Trip {
 
 		
 
-		private buildTemplateEdit(data) {
-
+		private buildTemplateEdit(data) {				
 			var context = {
 				showDelButton: (data.isLastPlace && data.placesCount > 2)
 			};
-
+				
 			var $html = $(this.dialogManager.placeDetailTemplate(context));
-
+				
 			var ptt = new PlaceTravelTime(this.dialogManager, data);
+				
 			var $time = ptt.create(TripEntityType.Place);
+				
 			$html.find(".the-first").after($time);
-
+				
 			$html.find(".delete").click((e) => {
 					e.preventDefault();
 
@@ -232,9 +231,9 @@ module Trip {
 					});
 					
 			});
-
+				
 			this.dialogManager.regClose($html);
-
+				
 			this.dialogManager.insertDialog($html);
 		}
 

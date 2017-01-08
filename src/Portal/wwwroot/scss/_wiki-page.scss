@@ -3,15 +3,15 @@ $buttons-active: darkred;
 
 .wiki-page {
 
+    .page-all {
+        padding-left: 6px;
+        padding-right: 6px;
+    }
+
     h1 {
         font-size: 1.4em;
     }
 
-    @include below-width(479){
-        .title-white{
-            display: none;
-        }
-    }
 
     .titlePhoto{
         position: relative;
@@ -33,18 +33,13 @@ $buttons-active: darkred;
             padding-bottom: 10px;
 
             background-image: -webkit-linear-gradient(rgba(0,0,0,.4),transparent);
-                background-image: linear-gradient(rgba(0,0,0,.4),transparent);
+            background-image: linear-gradient(rgba(0,0,0,.4),transparent);
 
             h1{
-            
-            /*left: 10px;
-            top: 10px;*/
-            color: white;
-            padding:0;
-            margin:0;
-            margin-left: 10px;
-
-            
+                color: white;
+                padding:0;
+                margin:0;
+                margin-left: 10px;
             }
         }
 
@@ -198,8 +193,11 @@ $buttons-active: darkred;
                 color: black;
             }
 
-            input {
+            textarea {
                 border: 1px solid $light-blue3;
+                min-width: 460px;
+                max-width: 660px;
+                min-height: 200px;
             }
 
             .btns{
@@ -219,12 +217,14 @@ $buttons-active: darkred;
     .tbl {
         border-collapse:collapse;
         border: 1px solid $color8;
-        border-radius: 2px;
-                
+        
         td, th {
             background-color: white;
-            padding: 10px 20px;
-            
+            /*padding: 10px 20px;*/
+            padding-left: 10px;
+            padding-right: 10px;            
+            padding-top: 10px;
+            padding-bottom: 10px;
         }
         th {
             background-color: $color8;
@@ -240,6 +240,8 @@ $buttons-active: darkred;
         }
         
         .icon-plus,.icon-minus{
+            display: inline-block;
+
             height: 20px;
             width: 20px;
             color: $light-blue3;
@@ -360,7 +362,9 @@ $buttons-active: darkred;
 
             .item{
                 
-                margin-bottom: 8px;
+                margin-bottom: 16px;
+                margin-right:4px;
+                margin-left:4px;
 
                 .icon-like,.icon-dislike{
                     height: 20px;
@@ -378,6 +382,17 @@ $buttons-active: darkred;
             }
 
             
+        }
+    }
+
+    @include below-width(770) {
+        .does-donts {
+            display: block;
+
+            .block {
+                display: block;
+                max-width: initial;
+            }
         }
     }
 

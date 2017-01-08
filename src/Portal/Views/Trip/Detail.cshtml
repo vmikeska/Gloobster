@@ -52,7 +52,7 @@ else
 <div class="info-block-bck @infoBlock.Class" id="info-tripdetail">
 
     <div class="wrapper">
-        
+
         @Html.Partial("TitleBlock", infoBlock)
 
         <div class="info-block info-block2" style="@infoBlock.Css">
@@ -80,60 +80,64 @@ else
     </div>
 </div>
 
-<div class="service-menu wrapper">
+<div class="page-all">
 
-    <div class="name">
-        <input id="nameInput" type="text" value="@Model.Name"/>
-        <span class="icon-edit-pencil"></span>
-    </div>
+    <div class="service-menu wrapper">
 
-    <div class="items">
-        <a class="lbtn menu-btn icon-earth" data-t="menuPrivacy-template" href="#">
-            <span class="lato">@Model.W("Privacy")</span>            
-        </a>
-        <a class="lbtn menu-btn icon-users" data-t="participants-template" href="#">
-            <span class="lato">@Model.W("Participants")</span>            
-        </a>
-        <a class="lbtn icon-eye" href="/trip/@Model.TripId">
-            <span class="lato">@Model.W("Preview")</span>            
-        </a>
-    </div>
-
-</div>
-
-<div id="menuItemContent" class="wrapper menu-cont" style="display: none;">
-    <div class="bar"></div>
-    <div class="wrap">
-        <div class="desc">
-            <div class="title"></div>
-            <div class="txt"></div>
+        <div class="name">
+            <input id="nameInput" type="text" value="@Model.Name" />
+            <span class="icon-edit-pencil"></span>
         </div>
-        <div class="cont"></div>
-        <a class="close icon-cross" href="#"></a>
+
+        <div class="items">
+            <a class="lbtn menu-btn icon-earth" data-t="menuPrivacy-template" href="#">
+                <span class="lato">@Model.W("Privacy")</span>
+            </a>
+            <a class="lbtn menu-btn icon-users" data-t="participants-template" href="#">
+                <span class="lato">@Model.W("Participants")</span>
+            </a>
+            <a class="lbtn icon-eye" href="/trip/@Model.TripId">
+                <span class="lato">@Model.W("Preview")</span>
+            </a>
+        </div>
+
     </div>
-</div>
 
-<div class="wrapper">
-    <textarea id="description" placeholder="@Model.W("TripDescription")">@Model.Description</textarea>
+    <div id="menuItemContent" class="wrapper menu-cont" style="display: none;">
+        <div class="bar"></div>
+        <div class="wrap">
+            <div class="desc">
+                <div class="title"></div>
+                <div class="txt"></div>
+            </div>
+            <div class="cont"></div>
+            <a class="close icon-cross" href="#"></a>
+        </div>
+    </div>
 
-    <h3>@Model.W("DayByDay")</h3>
-</div>
+    <div class="wrapper">
+        <textarea id="description" placeholder="@Model.W("TripDescription")">@Model.Description</textarea>
 
-<div class="wrapper">
-    <div id="dataCont" class="scheduler"></div>    
-</div>
+        <h3>@Model.W("DayByDay")</h3>
+    </div>
+
+    <div class="wrapper">
+        <div id="dataCont" class="scheduler"></div>
+    </div>
 
 
-@Html.Partial("Files")
+    @Html.Partial("Files")
 
-<div class="wrapper">
-	
-	<h3>@Model.W("Notes")</h3>
-	
-	<input id="public" type="checkbox" @(Model.NotesPublic ? "checked='checked'" : string.Empty)>
-	<label for="public">@Model.W("Public")</label>
-	
-	<textarea id="notes" placeholder="@Model.W("SimpleNotes")">@Model.Notes</textarea>	
+    <div class="wrapper">
+
+        <h3>@Model.W("Notes")</h3>
+
+        <input id="public" type="checkbox" @(Model.NotesPublic ? "checked='checked'" : string.Empty)>
+        <label for="public">@Model.W("Public")</label>
+
+        <textarea id="notes" placeholder="@Model.W("SimpleNotes")">@Model.Notes</textarea>
+    </div>
+
 </div>
 
 @Html.Partial("Templates")

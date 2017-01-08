@@ -31,9 +31,9 @@ module Trip {
 
 		public $lastBlockOnRow;
 
-		public insertDialog($html) {
+		public insertDialog($html) {				
 				var $detail = $(".details");
-				$detail.remove();
+				$detail.remove();				
 				this.$lastBlockOnRow.after($html);
 		}
 

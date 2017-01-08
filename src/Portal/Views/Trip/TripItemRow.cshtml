@@ -18,11 +18,13 @@
     <div class="cell">
         <a href="/@RoutingConsts.TripEditMenuName/@Model.Id"><h3>@Model.Name</h3></a>
     </div>
-    <div class="cell">        
-        @Model.FromDate.ToString("dd. MMM yyyy", CultureInfo.GetCultureInfo(Model.B.Locale)) - @Model.ToDate.ToString("dd. MMM yyyy", CultureInfo.GetCultureInfo(Model.B.Locale))        
+    <div class="cell date-cell">        
+        <div>@Model.FromDate.ToString("dd. MMM yyyy", CultureInfo.GetCultureInfo(Model.B.Locale))</div>
+        
+        <div>@Model.ToDate.ToString("dd. MMM yyyy", CultureInfo.GetCultureInfo(Model.B.Locale))</div>
     </div>
     <div class="cell">
-        @Model.Participants.Count friends
+        
         <div>
             @foreach (var participant in Model.Participants)
             {
@@ -31,6 +33,7 @@
                 </div>
             }
         </div>
+        <span class="nowrap">@Model.Participants.Count friends</span>
     </div>
     <div class="cell">
         @if (Model.IsOwner)

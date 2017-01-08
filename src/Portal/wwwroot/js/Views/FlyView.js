@@ -98,8 +98,6 @@ var Views;
             this.tabs.addTab("tabCustom", "Long term search", function () {
                 _this.changeSetter(PlanningType.Custom);
             });
-            this.tabs.addTab("tabClassic", "Classic search", function () {
-            });
             this.tabs.create();
         };
         FlyView.prototype.changeSetter = function (type) {

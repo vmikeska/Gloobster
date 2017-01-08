@@ -118,6 +118,10 @@
 
                 border-bottom: 1px solid $light-blue2;
             }
+
+            .date-cell {
+                min-width: 120px;
+            }
         }
 
         .photo{
@@ -153,19 +157,17 @@
 
             .plus-ico-all{
                 display: inline-block;
-                /*border: 1px solid red;*/
-                width: 70px;
-                height: 70px;
-                background-color: $light-blue;
+                padding: 15px;
+                
+                background-color: $light-blue2;
                 border-radius: 4px;
-                text-align: center;
+                
                
                 .icon-plus{
-                    display: inline-block;
-                    vertical-align: top;
-                    margin-top: 15px;
+                    display: inline-block;                    
                     font-size: 40px;
-                    color: $dark-blue;
+                    color: white;
+                    vertical-align: top;
                 }
             }
         }

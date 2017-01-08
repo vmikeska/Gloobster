@@ -69,7 +69,7 @@ var Views;
                     lang: _this.langVersion,
                     articleId: _this.articleId,
                     sectionId: $frame.data("id"),
-                    text: $bubble.find("input").val()
+                    text: $bubble.find(".txt").val()
                 };
                 Views.ViewBase.currentView.apiPost("WikiReport", data, function (r) {
                     _this.toggleForm($target);

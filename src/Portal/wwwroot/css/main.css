@@ -5,6 +5,9 @@ body {
   text-align: center;
   font-size: 20px; }
 
+.nowrap {
+  white-space: nowrap; }
+
 .master-cont {
   min-height: 600px; }
 
@@ -730,6 +733,7 @@ button:active {
         vertical-align: top;
         margin-top: 5px;
         margin-right: 10px;
+        margin-bottom: 5px;
         -webkit-touch-callout: none;
         /* iOS Safari */
         -webkit-user-select: none;
@@ -1889,21 +1893,28 @@ footer {
     min-width: 320px;
     max-width: 400px;
     height: 450px;
-    transform: translateX(-50%);
-    /*height: 450px;
-            width: 600px;
-            position: absolute;
-            top:0;
-            left:0;
-
-            z-index: 99999;*/ }
+    transform: translateX(-50%); }
     .wiki .wiki_header_all .cont h1 {
       color: white;
       font-weight: 500;
       margin-top: 80px; }
+  @media screen and (max-width: 700px) {
+    .wiki .wiki_header_all .circle-bck {
+      display: none; }
+    .wiki .wiki_header_all .cont {
+      display: block;
+      top: 80px;
+      min-width: initial;
+      max-width: initial;
+      transform: initial;
+      background-color: rgba(50, 152, 193, 0.7);
+      height: initial;
+      padding-top: 20px;
+      padding-bottom: 20px; }
+      .wiki .wiki_header_all .cont h1 {
+        margin-top: 0; } }
 
 .wiki .wiki_info {
-  /*background-color: $light-blue3;*/
   background-color: #005476; }
   .wiki .wiki_info .bl {
     margin-right: 30px; }
@@ -1938,6 +1949,10 @@ footer {
       .wiki .wiki_info .block .btn .lbtn, .wiki .wiki_info .block .btn .photo-button label, .photo-button .wiki .wiki_info .block .btn label, .wiki .wiki_info .block .btn .wiki-page .langs a, .wiki-page .langs .wiki .wiki_info .block .btn a {
         color: #3298C1;
         background-color: #F5C519; }
+
+.wiki .all-articles {
+  padding-left: 6px;
+  padding-right: 6px; }
 
 .wiki .wiki_article_wide .photo {
   height: 450px;
@@ -2047,11 +2062,11 @@ footer {
 
 .wiki-page {
   text-align: left; }
+  .wiki-page .page-all {
+    padding-left: 6px;
+    padding-right: 6px; }
   .wiki-page h1 {
     font-size: 1.4em; }
-  @media screen and (max-width: 479px) {
-    .wiki-page .title-white {
-      display: none; } }
   .wiki-page .titlePhoto {
     position: relative; }
     .wiki-page .titlePhoto img {
@@ -2068,8 +2083,6 @@ footer {
       background-image: -webkit-linear-gradient(rgba(0, 0, 0, 0.4), transparent);
       background-image: linear-gradient(rgba(0, 0, 0, 0.4), transparent); }
       .wiki-page .titlePhoto .h-cont h1 {
-        /*left: 10px;
-            top: 10px;*/
         color: white;
         padding: 0;
         margin: 0;
@@ -2168,8 +2181,11 @@ footer {
       z-index: 9999; }
       .wiki-page .article_rating .bubble .title {
         color: black; }
-      .wiki-page .article_rating .bubble input {
-        border: 1px solid #3298C1; }
+      .wiki-page .article_rating .bubble textarea {
+        border: 1px solid #3298C1;
+        min-width: 460px;
+        max-width: 660px;
+        min-height: 200px; }
       .wiki-page .article_rating .bubble .btns {
         margin-top: 10px; }
         .wiki-page .article_rating .bubble .btns a {
@@ -2177,11 +2193,14 @@ footer {
           background-color: #3298C1; }
   .wiki-page .tbl {
     border-collapse: collapse;
-    border: 1px solid #72cf72;
-    border-radius: 2px; }
+    border: 1px solid #72cf72; }
     .wiki-page .tbl td, .wiki-page .tbl th {
       background-color: white;
-      padding: 10px 20px; }
+      /*padding: 10px 20px;*/
+      padding-left: 10px;
+      padding-right: 10px;
+      padding-top: 10px;
+      padding-bottom: 10px; }
     .wiki-page .tbl th {
       background-color: #72cf72;
       border: 1px solid #72cf72;
@@ -2191,6 +2210,7 @@ footer {
     .wiki-page .tbl tr:nth-child(odd) td {
       background-color: #fffae9; }
     .wiki-page .tbl .icon-plus, .wiki-page .tbl .icon-minus {
+      display: inline-block;
       height: 20px;
       width: 20px;
       color: #3298C1;
@@ -2260,7 +2280,9 @@ footer {
       display: table-cell;
       max-width: 50%; }
       .wiki-page .does-donts .block .item {
-        margin-bottom: 8px; }
+        margin-bottom: 16px;
+        margin-right: 4px;
+        margin-left: 4px; }
         .wiki-page .does-donts .block .item .icon-like, .wiki-page .does-donts .block .item .icon-dislike {
           height: 20px;
           width: 20px;
@@ -2271,6 +2293,12 @@ footer {
           padding: 5px; }
         .wiki-page .does-donts .block .item .icon-like:hover, .wiki-page .does-donts .block .item .icon-dislike:hover {
           color: #005476; }
+  @media screen and (max-width: 770px) {
+    .wiki-page .does-donts {
+      display: block; }
+      .wiki-page .does-donts .block {
+        display: block;
+        max-width: initial; } }
   .wiki-page .gallery-photos .photo {
     display: inline-block; }
     .wiki-page .gallery-photos .photo img {
@@ -2760,6 +2788,9 @@ footer {
 
 .trip-detail {
   text-align: left; }
+  .trip-detail .page-all {
+    padding-left: 6px;
+    padding-right: 6px; }
   .trip-detail .line {
     border-top: 1px solid #f2f2f2;
     margin-top: 10px;
@@ -3134,8 +3165,8 @@ footer {
     position: relative;
     padding: 15px;
     margin-bottom: 20px;
-    display: inline-block;
-    width: 95%; }
+    /*display: inline-block;        
+        width: 95%;*/ }
     .trip-detail .details .close {
       position: absolute;
       top: 7px;
@@ -3144,7 +3175,7 @@ footer {
       font-size: 30px;
       color: #005476; }
       .trip-detail .details .close:hover {
-        color: darkred; }
+        color: #F56E12; }
     .trip-detail .details .place-travel-dates {
       margin-top: 10px; }
       .trip-detail .details .place-travel-dates .cell {
@@ -3381,6 +3412,8 @@ footer {
       vertical-align: middle;
       padding: 8px;
       border-bottom: 1px solid #009EC4; }
+    .trip-root .trips-table .row .date-cell {
+      min-width: 120px; }
   .trip-root .trips-table .photo {
     display: inline-block;
     border-radius: 4px;
@@ -3402,18 +3435,14 @@ footer {
     resize: none; }
   .trip-root .trips-table .service-row .plus-ico-all {
     display: inline-block;
-    /*border: 1px solid red;*/
-    width: 70px;
-    height: 70px;
-    background-color: #65BDD7;
-    border-radius: 4px;
-    text-align: center; }
+    padding: 15px;
+    background-color: #009EC4;
+    border-radius: 4px; }
     .trip-root .trips-table .service-row .plus-ico-all .icon-plus {
       display: inline-block;
-      vertical-align: top;
-      margin-top: 15px;
       font-size: 40px;
-      color: #005476; }
+      color: white;
+      vertical-align: top; }
 
 .trip-root .trips-big {
   padding-left: 10px;

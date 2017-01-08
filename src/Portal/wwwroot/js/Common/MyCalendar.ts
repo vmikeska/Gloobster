@@ -13,48 +13,53 @@
 				private id;
 				private $input;
 
+				private isNative;
+
 				private opened = false;
-				
-				constructor($cont, date = null) {
-						this.$cont = $cont;
 
-					var inputId = `${$cont.attr("id")}-input`;
+			constructor($cont, date = null) {
+				this.$cont = $cont;
 
-					this.id = inputId;
+				var inputId = `${$cont.attr("id")}-input`;
 
-					this.$cont.addClass("calendar-cont");
+				this.id = inputId;
 
-						this.now = moment();
+				this.$cont.addClass("calendar-cont");
 
-						if (date) {
-								this.date = date;								
-						} else {
-							this.date = moment();								
-						}
-						this.date.startOf("day");				
-
-						this.gen();
+				this.now = moment();
+				if (date) {
+					this.date = date;
+				} else {
+					this.date = moment();
 				}
-				
-				public setDate(date) {
+
+				this.date.startOf("day");
+
+				this.gen();
+			}
+
+			public setDate(date) {
 						this.date = date;
 
 					this.setDateInternal();
 				}
 
-				private setDateInternal() {
-						if (this.isNative) {								
-								var input = document.getElementById(this.id);
-								input["valueAsDate"] = this.date.toDate();
-						} else {
-								
-								var d = this.date.format("L");
-								this.$input.val(d);								
-						}
+			private setDateInternal() {
+
+				if (this.isNative) {
+
+					var input = this.$input.get(0);
+						
+					input["valueAsDate"] = this.date.toDate();					
+				} else {
+
+					var d = this.date.format("L");
+					this.$input.val(d);
 				}
+			}
 
 
-				private gen() {						
+			private gen() {						
 						this.createInput();
 				}
 
@@ -214,43 +219,38 @@
 				d.endOf("week");
 				return d;
 			}
-
-				private isNative;
-
+				
 			private createInput() {
-
+					
 				var os = Views.ViewBase.getMobileOS();
-
+				
 				this.isNative = os !== OS.Other;
+				//this.isNative = true;
 
 				var $wrap = $(`<div class="cal-wrap"><span class="icon-calendar"></span></div>`);
 
 				if (this.isNative) {
-						this.$input = $(`<input class="calendar-input" type="date" id="${this.id}" />`);
-
-						$wrap.prepend(this.$input);
-						this.$cont.html($wrap);
-
+					this.$input = $(`<input class="calendar-input" type="date" id="${this.id}" />`);
+					$wrap.prepend(this.$input);
+					this.$cont.html($wrap);
 					this.$input.change(() => {
-							this.date = moment(this.$input.val());
-							this.callChange();
+						this.date = moment(this.$input.val());
+						this.callChange();
 					});
-
 				} else {
 
 					this.$input = $(`<input class="calendar-input" readonly type="text" id="${this.id}" />`);
 
 					$wrap.prepend(this.$input);
 					this.$cont.html($wrap);
-						
+
 					this.$input.focusin(() => {
 						this.onFocus();
 					});
 
 				}
-
-				this.setDateInternal();
-
+				
+				this.setDateInternal();				
 			}
 
 

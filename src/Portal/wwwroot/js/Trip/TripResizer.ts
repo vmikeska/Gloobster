@@ -9,6 +9,8 @@ module Trip {
 			private itemCont = ".block";
 			
 			private timeout;
+
+			private lastWidth = 0;
 			
 			constructor() {					
 					this.initResize();
@@ -43,13 +45,22 @@ module Trip {
 
 						curBlockNo++;
 					}
-
-				return $lastBlock;					
+					
+				return $lastBlock;
 			}
 				
 			private initResize() {
 
 					$(window).resize(() => {
+
+							var currentWidth = $(window).width();
+							
+							if (this.lastWidth === currentWidth) {
+								return;
+							}
+
+						this.lastWidth = currentWidth;
+
 						if (this.onBeforeResize) {
 							this.onBeforeResize();
 						}

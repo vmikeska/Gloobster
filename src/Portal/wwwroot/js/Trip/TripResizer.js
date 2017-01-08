@@ -4,6 +4,7 @@ var Trip;
         function TripResizer() {
             this.rootCont = ".scheduler";
             this.itemCont = ".block";
+            this.lastWidth = 0;
             this.initResize();
         }
         TripResizer.prototype.getLast = function (blockNo) {
@@ -34,6 +35,11 @@ var Trip;
         TripResizer.prototype.initResize = function () {
             var _this = this;
             $(window).resize(function () {
+                var currentWidth = $(window).width();
+                if (_this.lastWidth === currentWidth) {
+                    return;
+                }
+                _this.lastWidth = currentWidth;
                 if (_this.onBeforeResize) {
                     _this.onBeforeResize();
                 }

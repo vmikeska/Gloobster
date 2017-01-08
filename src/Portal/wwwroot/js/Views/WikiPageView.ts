@@ -88,7 +88,7 @@
 					lang: this.langVersion,
 					articleId: this.articleId,
 					sectionId: $frame.data("id"),
-					text: $bubble.find("input").val()
+					text: $bubble.find(".txt").val()
 				};
 
 				ViewBase.currentView.apiPost("WikiReport", data, (r) => {

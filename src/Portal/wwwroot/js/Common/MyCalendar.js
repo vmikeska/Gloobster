@@ -24,7 +24,7 @@ var Common;
         };
         MyCalendar.prototype.setDateInternal = function () {
             if (this.isNative) {
-                var input = document.getElementById(this.id);
+                var input = this.$input.get(0);
                 input["valueAsDate"] = this.date.toDate();
             }
             else {

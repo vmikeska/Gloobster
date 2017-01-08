@@ -34,7 +34,7 @@
 
 		private v: Views.ViewBase;
 
-		constructor(config: FilesConfig, customConfig = null) {
+		constructor(config: FilesConfig, customConfig: Common.TripFileCustom = null) {
 
 			if (config.adderTemplate) {
 				this.fileInputTemplate = Views.ViewBase.currentView.registerTemplate(config.adderTemplate);

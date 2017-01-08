@@ -8,6 +8,11 @@ $detail-background: #abe0ed;
 
 .trip-detail{
 
+    .page-all {
+        padding-left: 6px;
+        padding-right: 6px;
+    }
+
     .line{
         border-top: 1px solid $light-gray;
         margin-top: 10px;
@@ -615,8 +620,8 @@ $detail-background: #abe0ed;
         position: relative;
         padding: 15px;
         margin-bottom: 20px;
-        display: inline-block;        
-        width: 95%;
+        /*display: inline-block;        
+        width: 95%;*/
 
 
 
@@ -630,7 +635,7 @@ $detail-background: #abe0ed;
             color: $dark-blue;
 
             &:hover{
-                color: darkred;
+                color: $orange;
             }
         }
 

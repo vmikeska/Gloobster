@@ -16,9 +16,9 @@ module Trip {
 
 		public create(type: TripEntityType) {
 			var context = {};
-
-
+				
 			if (type === TripEntityType.Travel) {
+
 				context = {
 					infoTxt: "How long takes the travel?",
 					dir1: "leaving",
@@ -26,39 +26,35 @@ module Trip {
 					showLeft: true,
 					showMiddle: true,
 					showRight: true
-				}
+					};
+					
 				this.$html = $(this.mainTmp(context));
-
+					
 				var travel = this.dialogManager.planner.placesMgr.getTravelById(this.data.id);
-
-				this.initDatePicker("leavingDate",
-					this.data.leavingDateTime,
-					(datePrms, date) => {
+					
+				this.initDatePicker("leavingDate", this.data.leavingDateTime, (datePrms, date) => {
 						this.updateDateTime(datePrms, null, "leavingDateTime");
 
 						var placeId = travel.from.id;
 						this.ribbonUpdate(placeId, date, "leavingDate");
 					});
-
-				this.initDatePicker("arrivingDate",
-					this.data.arrivingDateTime,
-					(datePrms, date) => {
+					
+				this.initDatePicker("arrivingDate", this.data.arrivingDateTime, (datePrms, date) => {
 						this.updateDateTime(datePrms, null, "arrivingDateTime");
 
 						var placeId = travel.to.id;
 						this.ribbonUpdate(placeId, date, "arrivingDate");
-					});
-
+				});
+					
 				this.initTimePicker("arrivingHours", "arrivingMinutes", "arrivingDateTime", this.data.arrivingDateTime);
-				this.initTimePicker("leavingHours", "leavingMinutes", "leavingDateTime", this.data.leavingDateTime);
+				this.initTimePicker("leavingHours", "leavingMinutes", "leavingDateTime", this.data.leavingDateTime);					
 			}
 
-			if (type === TripEntityType.Place) {
-
+			if (type === TripEntityType.Place) {					
 				var showLeft = (this.data.arrivingDateTime != null);
 				var showRight = (this.data.leavingDateTime != null);
 				var isComplete = showLeft && showRight;
-
+					
 				var infoTxt = this.getInfoText(isComplete, showLeft, showRight);
 
 				context = {
@@ -68,44 +64,42 @@ module Trip {
 					showLeft: showLeft,
 					showMiddle: isComplete,
 					showRight: showRight
-				}
+				};
+					
 				this.$html = $(this.mainTmp(context));
-
-				if (showRight) {
-
-					this.initDatePicker("leavingDate",
-						this.data.leavingDateTime,
-						(datePrms, date) => {
+					
+				if (showRight) {						
+					this.initDatePicker("leavingDate", this.data.leavingDateTime, (datePrms, date) => {
 							this.updateDateTime(datePrms, null, "leavingDateTime", this.data.leavingId);
 							this.ribbonUpdate(this.data.id, date, "leavingDate");
 						});
-
-					this.initTimePicker("leavingHours",
+						
+					this.initTimePicker(
+						"leavingHours",
 						"leavingMinutes",
 						"leavingDateTime",
 						this.data.leavingDateTime,
-						this.data.leavingId);
+						this.data.leavingId);						
 				}
-
+					
 				if (showLeft) {
-
-					this.initDatePicker("arrivingDate",
-						this.data.arrivingDateTime,
-						(datePrms, date) => {
+						
+					this.initDatePicker("arrivingDate", this.data.arrivingDateTime, (datePrms, date) => {
 							this.updateDateTime(datePrms, null, "arrivingDateTime", this.data.arrivingId);
 							this.ribbonUpdate(this.data.id, date, "arrivingDate");
 						});
-
-					this.initTimePicker("arrivingHours",
+						
+					this.initTimePicker(
+						"arrivingHours",
 						"arrivingMinutes",
 						"arrivingDateTime",
 						this.data.arrivingDateTime,
 						this.data.arrivingId);
 				}
 			}
-
+				
 			this.setUseTime(type);
-
+				
 			return this.$html;
 		}
 
@@ -165,16 +159,14 @@ module Trip {
 		}
 
 
-		private initDatePicker(elementId, curDateStr, onChange) {
-
+		private initDatePicker(elementId, curDateStr, onChange) {				
 			var utc = curDateStr ? moment.utc(curDateStr) : moment.utc();
-
+			
 			var $dpCont = this.$html.find(`#${elementId}`);
-
+			
 			var dp = new Common.MyCalendar($dpCont, utc);
-
+			
 			dp.onChange = (date) => {
-
 				var datePrms = this.getDatePrms(date);
 				onChange(datePrms, date);
 			}
