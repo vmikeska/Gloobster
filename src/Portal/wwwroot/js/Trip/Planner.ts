@@ -134,8 +134,9 @@
 				var p = this.placesMgr.mapPlace(response.place, t, null);
 				t.to = p;
 				this.placesMgr.places.push(p);
-					
-				this.updateRibbonDate(lastPlace.id, "leavingDate", t.leavingDateTime);
+
+				var ld = moment.utc(t.leavingDateTime);
+				this.updateRibbonDate(lastPlace.id, "leavingDate", ld);
 
 				this.addTravel(t, !this.inverseColor);
 				this.addPlace(p, this.inverseColor);
