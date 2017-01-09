@@ -139,7 +139,9 @@ module Planning {
 
 							var $lc = Common.LastItem.getLast($weekCont, "flight-result", $city.data("no"));
 
-							var title = `Deals for ${city.name}`;
+							var v = Views.ViewBase.currentView;
+							
+							var title = `${v.t("DealsFor", "jsDeals")} ${city.name}`;
 							
 							var pairs: CodePair[] = [{ from: flights[0].from, to: flights[0].to }];
 
@@ -220,8 +222,10 @@ module Planning {
 
 						var $lc = Common.LastItem.getLast($weekCont, "flight-result", $country.data("no"));
 
-							var title = `Deals for ${name}`;
+						var v = Views.ViewBase.currentView;
 
+						var title = `${v.t("DealsFor", "jsDeals")} ${name}`;
+						
 							var pairs: CodePair[] = [{ from: flights[0].from, to: flights[0].to }];
 
 						var gid = 0;

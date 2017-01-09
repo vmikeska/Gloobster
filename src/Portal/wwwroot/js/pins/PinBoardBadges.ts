@@ -193,9 +193,7 @@ module Views {
 			});
 
 			return $cont;
-
-			////var $badge = $(`<div class="cell" data-gid="${city.g}"> <span class="badge"> <span class="thumbnail"> <img src="../images/badges/${city.i}"> </span>${name}</span> </div>`);
-
+				
 		}
 
 		private badgeClick(e) {

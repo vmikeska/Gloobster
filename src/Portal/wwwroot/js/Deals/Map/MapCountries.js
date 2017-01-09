@@ -122,7 +122,7 @@ var Planning;
                         callback();
                     }
                 })
-                    .error(function () { alert("error voe"); });
+                    .error(function () { alert("error"); });
             }
         };
         MapCountries.prototype.getLayer = function (e) {

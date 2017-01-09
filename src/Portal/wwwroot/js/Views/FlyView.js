@@ -15,7 +15,7 @@ var Views;
         }
         FlyView.prototype.showAirsFirst = function () {
             var id = new Common.InfoDialog();
-            id.create("No airports", "Location and airports must be selected first");
+            id.create(this.t("NoAirsTitle", "jsDeals"), this.t("NoAirsBody", "jsDeals"));
         };
         Object.defineProperty(FlyView.prototype, "hasAirs", {
             get: function () {
@@ -89,13 +89,13 @@ var Views;
                 _this.$cont.empty();
                 _this.$filter.empty();
             };
-            this.tabs.addTab("tabAnytime", "All deals", function () {
+            this.tabs.addTab("tabAnytime", this.t("TabAnytime", "jsDeals"), function () {
                 _this.changeSetter(PlanningType.Anytime);
             });
-            this.tabs.addTab("tabWeekend", "Weekend deals", function () {
+            this.tabs.addTab("tabWeekend", this.t("TabWeekend", "jsDeals"), function () {
                 _this.changeSetter(PlanningType.Weekend);
             });
-            this.tabs.addTab("tabCustom", "Long term search", function () {
+            this.tabs.addTab("tabCustom", this.t("TabCustom", "jsDeals"), function () {
                 _this.changeSetter(PlanningType.Custom);
             });
             this.tabs.create();

@@ -160,7 +160,7 @@ module Planning {
 							callback();
 						}
 					})
-					.error(() => { alert("error voe") });
+					.error(() => { alert("error") });
 			}
 		}
 

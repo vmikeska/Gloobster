@@ -14,13 +14,6 @@
 			var data = resp;
 			this.apiPost("TwitterUser", data, (r) => {
 			 
-				//var resValid = !r.AccountAlreadyInUse;
-				//lrv.validate(r);
-			 //if (!resValid) {
-				// close();
-				//return;
-			 //}
-
 			 this.cookiesSaver.saveTwitterLogged();
 			 this.cookiesSaver.saveCookies(r);		
 			 this.twitterLoginWatch(() => {

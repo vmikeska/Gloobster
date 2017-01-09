@@ -82,7 +82,8 @@ var Views;
                 SettingsUtils.callServer("Inters", { value: id, action: action }, function () { });
             });
             var data = TravelB.TravelBUtils.getInterestsTaggerData();
-            interests.create($c, "inters", data, "Pick some characteristics of you");
+            var v = Views.ViewBase.currentView;
+            interests.create($c, "inters", data, v.t("PickCharacteristics", "jsUserSettings"));
             interests.initData(inters);
         };
         SettingsUtils.initLangsTagger = function (selectedItems, placeholder) {

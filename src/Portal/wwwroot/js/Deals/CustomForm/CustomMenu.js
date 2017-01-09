@@ -74,7 +74,8 @@ var Planning;
         CustomMenu.prototype.delClicked = function (id) {
             var _this = this;
             var cd = new Common.ConfirmDialog();
-            cd.create("Search removal", "Do you want to remove the search?", "Cancel", "Delete", function () {
+            var v = Views.ViewBase.currentView;
+            cd.create(v.t("SearchRemovalDlgTitle", "jsDeals"), v.t("SearchRemovalDlgBody", "jsDeals"), v.t("Cancel", "jsLayout"), v.t("Delete", "jsLayout"), function () {
                 _this.dataLoader.deleteSearch(id, function () {
                     $("#" + id).remove();
                 });

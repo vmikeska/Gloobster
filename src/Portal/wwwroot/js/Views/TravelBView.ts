@@ -76,16 +76,14 @@
 		}
 
 		public hasFullReg(callback: Function) {
-			ViewBase.fullReqCheck(() => {
-
-					
-
+			ViewBase.fullReqCheck(() => {					
 					var valid = !this.props.tbValids || this.props.tbValids.isAllValid();
+
 				if (valid) {
 					callback();
 				} else {
 						var id = new Common.InfoDialog();
-						id.create("User details", "All user details for this service must be honestly filled out");
+						id.create(this.t("MustBeFilledTitle", "jsTravelB"), this.t("MustBeFilledBody", "jsTravelB"));
 				}
 
 			});
@@ -512,22 +510,26 @@
 			}
 
 			public static getGenderStr(val) {
+					var v = Views.ViewBase.currentView;
+					
 					if (val === 0) {
-							return "Man";
+							return v.t("Man", "jsTravelB");
 					}
 					if (val === 1) {
-							return "Woman";
+							return v.t("Woman", "jsTravelB");
 					}
 
-					return "Any gender";
+					return v.t("AnyGender", "jsTravelB");
 			}
 
 			public static getMultiStr(multi: boolean) {
+					var v = Views.ViewBase.currentView;
+
 					if (multi) {
-						return "More people can come";
+							return v.t("MorePeopleCome", "jsTravelB");
 					}
 
-					return "Prefer one single person";
+					return v.t("PreferSinglePerson", "jsTravelB");
 			}
 	}
 }

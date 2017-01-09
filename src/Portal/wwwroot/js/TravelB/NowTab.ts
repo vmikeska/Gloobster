@@ -1,10 +1,6 @@
 module TravelB {
 	export class NowTab {
 
-		//public onPlacesCheckins: Function;
-		//public onMeetingPoints: Function;
-		//public onBeforeSwitch: Function;
-
 		public tabs;
 
 		public peopleTabConst = "people";

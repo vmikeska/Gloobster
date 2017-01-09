@@ -35,7 +35,8 @@ var Views;
                 return;
             }
             var id = new Common.InfoDialog();
-            id.create("Full registration required", "To be able to use this feature, you need to create full registration");
+            var v = ViewBase.currentView;
+            id.create(v.t("FullReqRequiredTitle", "jsLayout"), v.t("FullReqRequiredBody", "jsLayout"));
         };
         ViewBase.prototype.infoCookie = function () {
             var _this = this;

@@ -94,8 +94,6 @@ module Trip {
 
 		public closeDialog() {
 				$(".details").remove();
-			
-			//$(".daybyday-view").remove();
 		}
 
 		public regClose($html) {

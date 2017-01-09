@@ -54,5 +54,45 @@
       <en>You are successfully paired!</en>
     </SuccessfulPaired>
 
+    <TaggingFieldPlacehoder>
+      <en>Search</en>
+    </TaggingFieldPlacehoder>
 
-  </module>
+    <SuccessConnected>
+      <en>You are successfully connected</en>
+    </SuccessConnected>
+
+    <InvalidEmailTitle>
+      <en>Invalid email</en>
+    </InvalidEmailTitle>
+
+    <InvalidEmailBody>
+      <en>The inputed email is not valid.Please correct the email.</en>
+    </InvalidEmailBody>
+
+    <InvalidPasswordTitle>
+      <en>Invalid password</en>
+    </InvalidPasswordTitle>
+
+    <InvalidPasswordBody>
+      <en>Password must be at least 4 and max 30 characters long.</en>
+    </InvalidPasswordBody>
+
+    <IncorrectPasswordTitle>
+      <en>Incorrect password</en>
+    </IncorrectPasswordTitle>
+
+    <IncorrectPasswordBody>
+      <en>Password inputed for this email was not correct.</en>
+    </IncorrectPasswordBody>
+
+    <FullReqRequiredTitle>
+      <en>Full registration required</en>
+    </FullReqRequiredTitle>
+
+    <FullReqRequiredBody>
+      <en>To be able to use this feature, you need to create full registration</en>
+    </FullReqRequiredBody> 
+
+
+</module>

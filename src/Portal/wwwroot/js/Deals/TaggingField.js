@@ -12,8 +12,9 @@ var Planning;
             this.taggerTemplate = Views.ViewBase.currentView.registerTemplate("tagger-template");
             this.selectedItems = [];
             this.config = config;
+            var v = Views.ViewBase.currentView;
             if (!this.config.placeholder) {
-                this.config.placeholder = "Search";
+                this.config.placeholder = v.t("TaggingFieldPlacehoder", "jsLayout");
             }
             this.$cont = $("#" + this.config.containerId);
             this.$tagger = this.createTagger();
@@ -91,7 +92,6 @@ var Planning;
         };
         TaggingField.prototype.fillTagger = function ($input, $ul) {
             var _this = this;
-            console.log("filling");
             $ul.html("");
             var inputVal = $input.val().toLowerCase();
             this.getItemsRange(inputVal, function (items) {

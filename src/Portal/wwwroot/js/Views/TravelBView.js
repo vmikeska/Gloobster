@@ -44,7 +44,7 @@ var Views;
                 }
                 else {
                     var id = new Common.InfoDialog();
-                    id.create("User details", "All user details for this service must be honestly filled out");
+                    id.create(_this.t("MustBeFilledTitle", "jsTravelB"), _this.t("MustBeFilledBody", "jsTravelB"));
                 }
             });
         };
@@ -364,19 +364,21 @@ var Views;
             return outStrs.join(", ");
         };
         StrOpers.getGenderStr = function (val) {
+            var v = Views.ViewBase.currentView;
             if (val === 0) {
-                return "Man";
+                return v.t("Man", "jsTravelB");
             }
             if (val === 1) {
-                return "Woman";
+                return v.t("Woman", "jsTravelB");
             }
-            return "Any gender";
+            return v.t("AnyGender", "jsTravelB");
         };
         StrOpers.getMultiStr = function (multi) {
+            var v = Views.ViewBase.currentView;
             if (multi) {
-                return "More people can come";
+                return v.t("MorePeopleCome", "jsTravelB");
             }
-            return "Prefer one single person";
+            return v.t("PreferSinglePerson", "jsTravelB");
         };
         return StrOpers;
     }());

@@ -148,15 +148,15 @@ var Views;
             this.tabs.initCall = false;
             this.tabs.onBeforeSwitch = function () {
             };
-            var tab1 = { id: "tabFriends", text: "Friend's feed", cls: "hidden" };
+            var tab1 = { id: "tabFriends", text: this.t("TabFriends", "jsDashboard"), cls: "hidden" };
             this.tabs.addTabConf(tab1, function () {
                 _this.setConts(_this.$tbFriends);
             });
-            var tab2 = { id: "tabPortal", text: "Portal feed", cls: "hidden" };
+            var tab2 = { id: "tabPortal", text: this.t("TabPortal", "jsDashboard"), cls: "hidden" };
             this.tabs.addTabConf(tab2, function () {
                 _this.setConts(_this.$tbPortal);
             });
-            var tab3 = { id: "tabWebNavi", text: "Web navigation", cls: "hidden" };
+            var tab3 = { id: "tabWebNavi", text: this.t("TabWeb", "jsDashboard"), cls: "hidden" };
             this.tabs.addTabConf(tab3, function () {
                 _this.setConts(_this.$tbWebNavi);
             });

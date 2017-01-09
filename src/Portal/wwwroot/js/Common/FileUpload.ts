@@ -101,9 +101,7 @@
 
 		private sendBlobToServer(isInitialCall) {		 
 			if (this.reachedEnd) {
-				//console.log("transfere complete");
-				//console.log("file length: " + this.currentFile.size);
-
+				
 				if (this.onUploadFinished) {
 					this.onUploadFinished(this.currentFile, this.finalResponse);
 				}
@@ -126,7 +124,7 @@
 			}
 
 			var reader = this.createReader();
-			//console.log("reading: " + this.currentStart + ".." + this.currentEnd);
+			
 			var blob = this.currentFile.slice(this.currentStart, this.currentEnd);
 			reader.readAsDataURL(blob);
 

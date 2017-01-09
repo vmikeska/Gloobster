@@ -44,8 +44,10 @@
 				if (Views.ViewBase.currentView.pageType === PageType.HomePage) {
 					window.location.href = window["dashboardLink"];
 				} else {
+						var v = Views.ViewBase.currentView;
+
 						var hint = new Common.HintDialog();
-						hint.create("You are successfully connected!");
+						hint.create(v.t("SuccessConnected", "jsLayout"));
 						this.showUserMenu();
 				}				
 		}
@@ -139,16 +141,17 @@
 				var passLength = $pass.val().length;
 
 			var id = new Common.InfoDialog();
-
+				
+			var v = Views.ViewBase.currentView;
 
 			var mail = $email.data("valid");
-			if (mail === "false" || mail === false) {
-				id.create("Invalid email", "The inputed email is not valid. Please correct the email.");
+			if (mail === "false" || mail === false) {					
+					id.create(v.t("InvalidEmailTitle", "jsLayout"), v.t("InvalidEmailBody", "jsLayout"));
 				return;
 			}
 				
 			if (passLength < 4 || passLength > 30) {
-					id.create("Invalid password", "Password must be at least 4 and max 30 characters long.");
+					id.create(v.t("InvalidPasswordTitle", "jsLayout"), v.t("InvalidPasswordBody", "jsLayout"));
 					return;
 			}
 
@@ -162,7 +165,7 @@
 			Views.ViewBase.currentView.apiPost("MailUser", data, (r) => {
 
 					if (!r.Successful) {
-							id.create("Incorrect password", "Password inputed for this email was not correct.");
+							id.create(v.t("IncorrectPasswordTitle", "jsLayout"), v.t("IncorrectPasswordBody", "jsLayout"));
 							this.$emailDialog.show();
 						return;
 					}

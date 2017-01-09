@@ -13,14 +13,16 @@ module Trip {
 			this.dialogManager = dialogManager;
 			this.data = data;
 		}
-
+			
 		public create(type: TripEntityType) {
 			var context = {};
 				
+			var v = Views.ViewBase.currentView;
+
 			if (type === TripEntityType.Travel) {
 
 				context = {
-					infoTxt: "How long takes the travel?",
+					infoTxt: v.t("HowLongTakesTravel", "jsTrip"),
 					dir1: "leaving",
 					dir2: "arriving",
 					showLeft: true,
@@ -116,15 +118,18 @@ module Trip {
 				this.visibilityTime(state);
 			});
 		}
-
+			
 		private getInfoText(isComplete, showLeft, showRight) {
+
+				var v = Views.ViewBase.currentView;
+				
 			var infoTxt = "";
 			if (isComplete) {
-				infoTxt = "How long are you staying?";
+					infoTxt = v.t("HowLongStaying", "jsTrip");
 			} else if (showLeft) {
-				infoTxt = "When do you arrive?";
+					infoTxt = v.t("WhenArrive", "jsTrip");
 			} else if (showRight) {
-				infoTxt = "When do you start your journey?";
+					infoTxt = v.t("WhenStartJourney", "jsTrip");
 			}
 			return infoTxt;
 		}

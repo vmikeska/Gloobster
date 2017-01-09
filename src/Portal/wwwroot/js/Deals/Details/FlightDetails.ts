@@ -207,7 +207,7 @@ module Planning {
 						var first = _.first(parts);
 						var last = _.last(parts);
 
-						var airName = "Multi airlines";						
+						var airName = Views.ViewBase.currentView.v.t("MultiAirlines", "jsDeals");
 						var logoLink = "/images/n/airlogos/default-airline.svg";
 
 						var allAirSame = _.every(parts, (p) => { return p.airline === first.airline });

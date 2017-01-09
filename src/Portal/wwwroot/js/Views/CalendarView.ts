@@ -1,8 +1,6 @@
 module Views {
 	export class CalendarView extends ViewBase {
-
-			//todo: eventClick (callback)
-
+			
 			private $calendar;
 
 			constructor() {
@@ -40,12 +38,9 @@ module Views {
 		}
 			
 		private showData(view) {
-
-			//var fromTo = Dashboard.CalendarUtils.getCalRange(this.$calendar);
-
+				
 			view.calendar.removeEvents();
-			//this.$calendar.fullCalendar('removeEvents');
-
+			
 			var tFrom = TravelB.DateUtils.momentDateToTrans(view.start);
 			var tTo = TravelB.DateUtils.momentDateToTrans(view.end);
 

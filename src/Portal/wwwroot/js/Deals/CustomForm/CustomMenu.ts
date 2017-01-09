@@ -108,14 +108,15 @@ module Planning {
 
 						var cd = new Common.ConfirmDialog();
 
-						cd.create("Search removal",
-								"Do you want to remove the search?",
-								"Cancel",
-								"Delete",
+					var v = Views.ViewBase.currentView;
+						
+					 cd.create(v.t("SearchRemovalDlgTitle", "jsDeals"),
+							 v.t("SearchRemovalDlgBody", "jsDeals"),
+								v.t("Cancel", "jsLayout"),
+								v.t("Delete", "jsLayout"),
 								() => {
 
-										this.dataLoader.deleteSearch(id,
-												() => {
+										this.dataLoader.deleteSearch(id, () => {
 														$(`#${id}`).remove();
 												});
 

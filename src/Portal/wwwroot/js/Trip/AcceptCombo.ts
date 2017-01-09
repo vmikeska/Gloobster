@@ -23,8 +23,7 @@
 			this.$input = this.$combo.find("input");
 
 			this.initState(config.initialState);
-
-			//this.$ul.find("li").click((e) => this.onClick(e));
+				
 			this.$input.change((e) => this.onChange(e));
 		}
 

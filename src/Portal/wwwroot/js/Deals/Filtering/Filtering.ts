@@ -46,19 +46,21 @@ module Planning {
 					type: i
 				};
 
+				var v = Views.ViewBase.currentView;
+					
 				if (i === LocationGrouping.ByCity) {
 					base.icon = "city";
-					base.txt = "By city";
+					base.txt = v.t("ByCity", "jsDeals");
 				}
 
 				if (i === LocationGrouping.ByCountry) {
 					base.icon = "country";
-					base.txt = "By country";
+					base.txt = v.t("ByCountry", "jsDeals");
 				}
 
 				if (i === LocationGrouping.ByContinent) {
 					base.icon = "continent";
-					base.txt = "By continent";
+					base.txt = v.t("ByContinent", "jsDeals");
 				}
 
 				return base;
@@ -258,12 +260,14 @@ module Planning {
 
 		private initSelect() {
 
+				var v = Views.ViewBase.currentView;
+				
 			var items = [
-				{ ni: 4, name: "Thu" },
-				{ ni: 5, name: "Fri" },
-				{ ni: 6, name: "Sat", c: "perm-sel" },
-				{ ni: 7, name: "Sun" },
-				{ ni: 1, name: "Mon" }
+					{ ni: 4, name: v.t("SelDayThu", "jsDeals") },
+					{ ni: 5, name: v.t("SelDayFri", "jsDeals") },
+					{ ni: 6, name: v.t("SelDaySat", "jsDeals"), c: "perm-sel" },
+					{ ni: 7, name: v.t("SelDaySun", "jsDeals") },
+					{ ni: 1, name: v.t("SelDayMon", "jsDeals") }
 			];
 
 			var lg = Common.ListGenerator.init(this.$filterCont.find(".ftbl"), "weekend-day-selector-template");

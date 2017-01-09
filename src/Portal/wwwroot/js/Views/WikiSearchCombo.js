@@ -46,14 +46,15 @@ var Views;
             var $ul = this.$combo.find("ul");
             $ul.empty();
             $ul.show();
+            var v = Views.ViewBase.currentView;
             var hasRated = (places.length > 0 && places[0].rating > 0);
             if (hasRated) {
-                $ul.append(this.getDisabledItem("Articles rich on content"));
+                $ul.append(this.getDisabledItem(v.t("ArticlesRich", "jsWiki")));
             }
             var ratedFinished = false;
             places.forEach(function (item) {
                 if (item.rating === 0 && !ratedFinished) {
-                    $ul.append(_this.getDisabledItem("Help us contribute on these articles"));
+                    $ul.append(_this.getDisabledItem(v.t("ArticlesHelpUs", "jsWiki")));
                     ratedFinished = true;
                 }
                 var $li = _this.getItemHtml(item);

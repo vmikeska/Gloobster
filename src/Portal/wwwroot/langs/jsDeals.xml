@@ -1,7 +1,103 @@
 ﻿
   <module name="jsDeals">
-
     
+    <SearchRemovalDlgTitle>
+      <en>Search removal</en>
+    </SearchRemovalDlgTitle>
 
+    <SearchRemovalDlgBody>
+      <en>Do you want to remove the search?</en>
+    </SearchRemovalDlgBody>
+
+    <MultiAirlines>
+      <en>Multi airlines</en>
+    </MultiAirlines>
+
+    <DealsFor>
+      <en>Deals for </en>
+    </DealsFor>
+
+
+    <Europe>
+      <en>Europe</en>
+    </Europe>
+
+    <NorthAmerica>
+      <en>North America</en>
+    </NorthAmerica>
+
+    <SouthAmerica>
+      <en>South America</en>
+    </SouthAmerica>
+
+    <Asia>
+      <en>Asia</en>
+    </Asia>
+
+    <Australia>
+      <en>Australia</en>
+    </Australia>
+
+    <Africa>
+      <en>Africa</en>
+    </Africa>
+
+    <ByCity>
+      <en>By city</en>
+    </ByCity>
     
+    <ByCountry>
+      <en>By country</en>
+    </ByCountry>
+
+    <ByContinent>
+      <en>By continent</en>
+    </ByContinent>
+
+    <SelDayThu>
+      <en>Thu</en>
+    </SelDayThu>
+
+    <SelDayFri>
+      <en>Fri</en>
+    </SelDayFri>
+
+    <SelDaySat>
+      <en>Sat</en>
+    </SelDaySat>
+
+    <SelDaySun>
+      <en>Sun</en>
+    </SelDaySun>
+
+    <SelDayMon>
+      <en>Mon</en>
+    </SelDayMon>
+
+    <WeekNo>
+      <en>week</en>
+    </WeekNo>
+
+    <NoAirsTitle>
+      <en>No airports</en>
+    </NoAirsTitle>
+    
+    <NoAirsBody>
+      <en>Location and airports must be selected first</en>
+    </NoAirsBody>
+
+    <TabAnytime>
+      <en>All deals</en>
+    </TabAnytime>
+
+    <TabWeekend>
+      <en>Weekend deals</en>
+    </TabWeekend>
+
+    <TabCustom>
+      <en>Long term search</en>
+    </TabCustom> 
+
+
+
   </module>

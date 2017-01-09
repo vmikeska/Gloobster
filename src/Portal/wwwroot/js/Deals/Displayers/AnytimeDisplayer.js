@@ -71,7 +71,8 @@ var Planning;
                 var $lc = Common.LastItem.getLast(_this.$cont, "flight-result", $cityBox.data("no"));
                 var result = _.find(_this.results, function (r) { return r.from === from && r.to === to; });
                 var flights = Planning.FlightConvert2.cFlights(result.fs);
-                var title = "Deals for " + name;
+                var v = Views.ViewBase.currentView;
+                var title = v.t("DealsFor", "jsDeals") + " " + name;
                 var pairs = [{ from: from, to: to }];
                 var cd = new Planning.CityDetail(_this.scoreLevel, pairs, title, name, gid);
                 cd.createLayout($lc);
@@ -134,7 +135,8 @@ var Planning;
                         flights.push(flight);
                     });
                 });
-                var title = "Deals for " + name;
+                var v = Views.ViewBase.currentView;
+                var title = v.t("DealsFor", "jsDeals") + " " + name;
                 var cd = new Planning.CityDetail(_this.scoreLevel, pairs, title, name, gid);
                 cd.createLayout($lc);
                 cd.init(flights);
@@ -173,23 +175,24 @@ var Planning;
             bc.render(countries, $continent.find(".cont"));
         };
         AnytimeByContinentDis.prototype.mapContObjs = function (conts) {
+            var v = Views.ViewBase.currentView;
             if (conts.europe.length > 0) {
-                this.addCont("Europe", conts.europe);
+                this.addCont(v.t("Europe", "jsDeals"), conts.europe);
             }
             if (conts.nAmerica.length > 0) {
-                this.addCont("North America", conts.nAmerica);
+                this.addCont(v.t("NorthAmerica", "jsDeals"), conts.nAmerica);
             }
             if (conts.sAmerica.length > 0) {
-                this.addCont("South America", conts.sAmerica);
+                this.addCont(v.t("SouthAmerica", "jsDeals"), conts.sAmerica);
             }
             if (conts.asia.length > 0) {
-                this.addCont("Asia", conts.asia);
+                this.addCont(v.t("Asia", "jsDeals"), conts.asia);
             }
             if (conts.australia.length > 0) {
-                this.addCont("Australia", conts.australia);
+                this.addCont(v.t("Australia", "jsDeals"), conts.australia);
             }
             if (conts.africa.length > 0) {
-                this.addCont("Africa", conts.africa);
+                this.addCont(v.t("Africa", "jsDeals"), conts.africa);
             }
         };
         AnytimeByContinentDis.prototype.addCont = function (name, countries) {

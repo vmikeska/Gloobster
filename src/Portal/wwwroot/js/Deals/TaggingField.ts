@@ -24,8 +24,10 @@ module Planning {
 		constructor(config: TaggingFieldConfig) {
 			this.config = config;
 
+			var v = Views.ViewBase.currentView;
+
 			if (!this.config.placeholder) {
-				this.config.placeholder = "Search";
+					this.config.placeholder = v.t("TaggingFieldPlacehoder", "jsLayout");
 			}
 
 			this.$cont = $(`#${this.config.containerId}`);
@@ -120,8 +122,7 @@ module Planning {
 			return $html;
 		}
 
-		private fillTagger($input, $ul) {
-			console.log("filling");
+		private fillTagger($input, $ul) {			
 			$ul.html("");
 
 			var inputVal = $input.val().toLowerCase();

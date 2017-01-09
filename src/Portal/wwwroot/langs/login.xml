@@ -38,11 +38,17 @@
         <en>Join</en>
       </JoinButton>
 
-
-      
       <JoinInfoMessage>
-        <en>We have created temporary account for you. You can work with the application, but if you want to have your data safely stored, you must pair this account with any of listed social networks or mail.</en>
+        <en>A temporary account was created. To make your account permanent, register or login with one of following services.</en>
       </JoinInfoMessage>
+    
+    <SignIn>
+      <en>Sign-In</en>
+    </SignIn>
+
+    <ViaEmail>
+      <en>via email</en>
+    </ViaEmail>
 
       <TermsOfService>
         <en>Terms of service</en>
@@ -56,6 +62,9 @@
         <en>Sign Up with email</en>
       </EmailRedirectionLink>
 
-
+<JoinEmailMessage>
+  <en>Register or login with an email.</en>
+</JoinEmailMessage> 
+                
 
   </module>

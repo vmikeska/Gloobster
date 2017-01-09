@@ -81,4 +81,20 @@
       <en>Everbody who is invited into the trip will be able to see all information (except private files). Who has "Can edit" permission can on top of that edit all information.</en>
     </ParticipText>
 
+    <HowLongTakesTravel>
+      <en>How long takes the travel?</en>
+    </HowLongTakesTravel>
+
+    <HowLongStaying>
+      <en>How long are you staying?</en>
+    </HowLongStaying>
+
+    <WhenArrive>
+      <en>When do you arrive?</en>
+    </WhenArrive>
+
+    <WhenStartJourney>
+      <en>When do you start your journey?</en>
+    </WhenStartJourney> 
+
   </module>

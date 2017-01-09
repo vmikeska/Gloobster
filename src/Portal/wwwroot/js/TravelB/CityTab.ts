@@ -12,7 +12,6 @@ module TravelB {
 		constructor(v: Views.TravelBView) {
 			this.v = v;
 			this.checkinTemplate = Views.ViewBase.currentView.registerTemplate("checkinCityItem-template");
-			//this.checkinMgmtTemplate = Views.ViewBase.currentView.registerTemplate("checkinCityMgmtItem-template");
 		}
 
 		public genCheckinsList(checkins) {

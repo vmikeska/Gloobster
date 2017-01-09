@@ -17,7 +17,13 @@
       <en>Thank you, the photo was uploaded! Confirmation task was assigned to one of our admins and will be processed as soon as possible.</en>
     </UploadBody>
 
-   
+    <ArticlesRich>
+      <en>Articles rich on content</en>
+    </ArticlesRich>
 
-    
+    <ArticlesHelpUs>
+      <en>Help us contribute on these articles</en>
+    </ArticlesHelpUs> 
+
+
   </module>

@@ -1,0 +1,16 @@
+﻿
+  <module name="jsDashboard">
+
+    <TabFriends>
+      <en>Friend's feed</en>
+    </TabFriends>
+
+    <TabPortal>
+      <en>Portal feed</en>
+    </TabPortal>
+
+    <TabWeb>
+      <en>Web navigation</en>
+    </TabWeb> 
+
+  </module>

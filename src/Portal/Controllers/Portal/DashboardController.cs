@@ -23,7 +23,9 @@ namespace Gloobster.Portal.Controllers.Portal
         public async Task<IActionResult> Dashboard()
         {
             var vm = CreateViewModelInstance<ViewModelDashboard>();
-            
+            vm.DefaultLangModuleName = "pageDashboard";
+            vm.LoadClientTexts(new[] { "jsDashboard" });
+
             await vm.Init(DB, UserId, TripDomain, FbFriendsSvc);
 
             return View(vm);

@@ -138,4 +138,32 @@
       <en>Known languages</en>
     </LangSearch>
 
+    <Man>
+      <en>Man</en>
+    </Man>
+    
+    <Woman>
+      <en>Woman</en>
+    </Woman>
+
+    <AnyGender>
+      <en>Any gender</en>
+    </AnyGender>
+
+    <MorePeopleCome>
+      <en>More people can come</en>
+    </MorePeopleCome>
+
+    <PreferSinglePerson>
+      <en>Prefer one single person</en>
+    </PreferSinglePerson>
+
+    <MustBeFilledTitle>
+      <en>User details</en>
+    </MustBeFilledTitle>
+
+    <MustBeFilledBody>
+      <en>All user details for this service must be honestly filled out</en>
+    </MustBeFilledBody> 
+
   </module>

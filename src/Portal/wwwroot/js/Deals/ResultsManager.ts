@@ -290,13 +290,15 @@ module Planning {
 				qd = qd.slice(0, maxItems);
 			}
 
+			var v = Views.ViewBase.currentView;
+
 			qd.forEach((query) => {
 
 				var prmsTxt = "";
-
+					
 				if (timeType === PlanningType.Weekend) {
 					var dates = ParamsParsers.weekend(query.prms);
-					prmsTxt = `(${dates.week}. week, ${dates.year})`;
+					prmsTxt = `(${dates.week}. ${v.t("WeekNo", "jsDeals")}, ${dates.year})`;
 				}
 
 

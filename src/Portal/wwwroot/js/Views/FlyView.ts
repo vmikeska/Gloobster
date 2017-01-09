@@ -16,10 +16,10 @@
 
 			this.initialize();
 		}
-
+			
 		public showAirsFirst() {
-				var id = new Common.InfoDialog();
-				id.create("No airports", "Location and airports must be selected first");				
+				var id = new Common.InfoDialog();				
+				id.create(this.t("NoAirsTitle", "jsDeals"), this.t("NoAirsBody", "jsDeals"));				
 		}
 
 		public get hasAirs(): boolean {
@@ -108,15 +108,15 @@
 				this.$cont.empty();
 				this.$filter.empty();
 			}
-
-			this.tabs.addTab("tabAnytime", "All deals", () => {
+				
+			this.tabs.addTab("tabAnytime", this.t("TabAnytime", "jsDeals"), () => {
 					this.changeSetter(PlanningType.Anytime);
 				});
-			this.tabs.addTab("tabWeekend", "Weekend deals", () => {
+			this.tabs.addTab("tabWeekend", this.t("TabWeekend", "jsDeals"), () => {
 					this.changeSetter(PlanningType.Weekend);
 				});
 
-			this.tabs.addTab("tabCustom", "Long term search", () => {
+			this.tabs.addTab("tabCustom", this.t("TabCustom", "jsDeals"), () => {
 					this.changeSetter(PlanningType.Custom);					
 				});
 

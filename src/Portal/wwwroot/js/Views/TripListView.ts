@@ -11,9 +11,7 @@
 				e.preventDefault();
 				$(".trip-menu").hide();
 			});
-
-			
-
+				
 			this.registerTripDeletion();
 		 
 			$("#newTrip").keypress((e) => {

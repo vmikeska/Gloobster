@@ -73,13 +73,6 @@ module Planning {
 			this.loadCitiesInRange();
 			this.callToLoadCities();
 		}
-
-		//wait a bit
-		//private destroyCities() {			
-		//		this.citiesLayerGroup.clearLayers();
-		//		this.mapObj.removeLayer(this.citiesLayerGroup);
-		//		this.citiesLayerGroup = null;			
-		//}
 			
 		private createMapboxLayer() {
 				var tempUrl =
@@ -147,7 +140,6 @@ module Planning {
 
 			cities.forEach((city) => {
 				var cityMarker = this.createCity(city);
-				//this.addCityToMarker(city, cityMarker);
 			});
 
 		}

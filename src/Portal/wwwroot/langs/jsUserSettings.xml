@@ -12,6 +12,10 @@
 
     <Unpair>
       <en>Unpair</en>
-    </Unpair> 
+    </Unpair>
 
-  </module>
+    <PickCharacteristics>
+      <en>Pick some characteristics of you</en>
+    </PickCharacteristics> 
+
+</module>

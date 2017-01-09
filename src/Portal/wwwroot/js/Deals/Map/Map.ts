@@ -12,8 +12,7 @@ module Planning {
 				};
 
 				public static tileOptions = {
-						noWrap: true,
-						//continuousWorld: false
+						noWrap: true
 				};
 
 				public static unselCountryStyle = {

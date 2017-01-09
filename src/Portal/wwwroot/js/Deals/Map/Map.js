@@ -12,7 +12,7 @@ var Planning;
             center: [34.5133, -94.1629]
         };
         MapConstants.tileOptions = {
-            noWrap: true,
+            noWrap: true
         };
         MapConstants.unselCountryStyle = {
             color: "#9096a0",

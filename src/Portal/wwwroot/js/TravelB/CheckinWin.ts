@@ -255,8 +255,7 @@
 								return;
 						}
 						
-						//var origFromDate = $("#fromDate").data("myDate");
-						//var origToDate = $("#toDate").data("myDate");
+						//todo: simplify dates conversion
 						var fromDateTrans = DateUtils.momentDateToMyDate(this.fdCal.date);
 						var toDateTrans = DateUtils.momentDateToMyDate(this.tdCal.date);
 
@@ -264,11 +263,6 @@
 								fromDateTrans = DateUtils.momentDateToMyDate(this.tdCal.date);
 								toDateTrans = DateUtils.momentDateToMyDate(this.fdCal.date);
 						}
-
-						//if (DateUtils.myDateToJsDate(origFromDate) > DateUtils.myDateToJsDate(origToDate)) {
-						//		fromDate = origToDate;
-						//		toDate = origFromDate;
-						//}
 						
 						var data = this.getRequestObj();
 						data = $.extend(data, {

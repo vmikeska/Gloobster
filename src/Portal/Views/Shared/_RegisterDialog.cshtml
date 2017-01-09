@@ -5,17 +5,16 @@
     <div class="cont">
 
         <div class="txt">
-            A temporary account was created. To make your account permanent, register or login with one of following services.
+            @Model.W("JoinInfoMessage", "login")
         </div>
         <div class="links">
             <a id="fbBtnReg" class="facebook" href="#"><span class="icon-facebook2"></span>@Model.W("FbButtonPair", "login")</a>
             <a id="twitterBtnReg" class="twitter" href="#"><span class="icon-twitter"></span>@Model.W("TwButtonPair", "login")</a>
             <a id="googleBtnReg" class="google" href="#"><span class="icon-google-plus"></span>@Model.W("GoButtonPair", "login")</a>
-            <a id="emailBtn" class="email" href="#">Sign-In <span class="via">via email</span></a>
-        </div>
-        <div class="tos">By joining you accept the <a href="/legal/TermsAndConds">Terms of service</a>
-        </div>
-
+            <a id="emailBtn" class="email" href="#">@Model.W("SignIn", "login")<span class="via">@Model.W("ViaEmail", "login")</span></a>
+        </div>  
+        <div class="tos">@Model.W("ByJoining", "login") <a href="/legal/TermsAndConds">@Model.W("TermsOfService", "login")</a></div>
+        
         <a class="close" href="#"><span class="icon-close-cross"></span></a>
     </div>
 </div>
@@ -26,7 +25,7 @@
         <div class="cont">
 
             <div class="txt">
-                Register or login with an email.
+                @Model.W("JoinEmailMessage", "login")                
             </div>
             <div class="links">
                 <span>@Model.W("Mail", "login")</span>
@@ -36,7 +35,7 @@
 
                 <a id="emailReg" class="lbtn">@Model.W("JoinButton", "login")</a>                
             </div>
-            <div class="tos">By joining you accept the <a href="/legal/TermsAndConds">Terms of service</a></div>
+            <div class="tos">@Model.W("ByJoining", "login") <a href="/legal/TermsAndConds">@Model.W("TermsOfService", "login")</a></div>
 
             <a class="close" href="#"><span class="icon-close-cross"></span></a>
         </div>
