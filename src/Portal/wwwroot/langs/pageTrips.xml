@@ -58,8 +58,10 @@
     <DefaultTripName>
       <en>My first trip</en>
     </DefaultTripName>
-      
-      
+
+    <FriendsCount>
+      <en>friends</en>
+    </FriendsCount>
       
     
   </module>

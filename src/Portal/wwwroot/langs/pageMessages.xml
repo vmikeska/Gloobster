@@ -1,0 +1,22 @@
+﻿
+  <module name="pageMessages">
+
+    <MainTitle>
+      <en>Messages</en>
+    </MainTitle>
+
+    <LinkBackToMain>
+      <en>Messages</en>
+    </LinkBackToMain>
+
+    <SendMessageBtn>
+      <en>Send</en>
+    </SendMessageBtn>
+
+    <YourMessagePlaceholder>
+      <en>Your comment...</en>
+    </YourMessagePlaceholder>
+      
+   
+   
+  </module>

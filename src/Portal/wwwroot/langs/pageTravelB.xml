@@ -304,6 +304,17 @@
       <en>Dates you are visiting</en>
     </VisitingDates>
 
+    <NotRegisteredInfo>
+      <en>To be able to use this service fully, you have to register first</en>
+    </NotRegisteredInfo>
+
+    <RequiredInfo>
+      <en>Required info</en>
+    </RequiredInfo>
+
+    <UserDataFormTitle>
+      <en>User data</en>
+    </UserDataFormTitle>
     
 
   </module>

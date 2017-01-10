@@ -12,7 +12,7 @@
 <head>
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-	<title>Gloobster</title>
+	<title>Gloobster.com</title>
     
     <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
     <link rel="icon" type="image/png" href="/favicons/favicon-32x32.png" sizes="32x32">
@@ -54,8 +54,8 @@
     
 @if (!Model.CookiesConfirmed)
 {
-    <div class="cookies-info">This site cannot work without cookies.
-        <a id="confirmCookies" href="#" class="lbtn2 ok-btn">I understand</a>
+    <div class="cookies-info">@Model.W("CookiesRequiredText") 
+        <a id="confirmCookies" href="#" class="lbtn2 ok-btn">@Model.W("CookiesRequiredBtn")</a>
     </div>
 }
 

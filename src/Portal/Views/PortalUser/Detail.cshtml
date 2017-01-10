@@ -4,6 +4,7 @@
 @using Gloobster.Common
 @using Gloobster.Enums
 @using Gloobster.Portal.ViewModels
+@using Microsoft.Data.Entity.Metadata.Internal
 @model UserDetailViewModel
 
 @Html.Partial("GAnalytics")
@@ -112,8 +113,8 @@ else
                 @if (!isSameUser)
                 {
                     <div class="new-rating">
-                        <textarea id="newText" placeholder="Rating content"></textarea>
-                        <a id="sendNewText" href="#" class="lbtn">Add rating</a>
+                        <textarea id="newText" placeholder="@Model.W("AddRatingBtn")"></textarea>
+                        <a id="sendNewText" href="#" class="lbtn">@Model.W("AddRatingPlaceholder")</a>
                     </div>
                 }
 

@@ -279,5 +279,17 @@
     <Dislike>
       <en>Dislike</en>
     </Dislike>
+
+    <NoContentLine1>
+      <en>Unfortunately this section doesn't have any content yet</en>
+    </NoContentLine1>
+
+    <NoContentLine2>
+      <en>Share your knowledge and help us to build biggest travel WIKI in te world.</en>
+    </NoContentLine2>
+
+    <NoContentBtn>
+      <en>Contribute</en>
+    </NoContentBtn>
     
   </module>

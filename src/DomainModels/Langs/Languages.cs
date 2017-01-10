@@ -22,7 +22,7 @@ namespace Gloobster.DomainModels.Langs
 
         private readonly string[] _mods = { "sharing",  "notifications", "login", "layout", "userLogs",
             "jsDashboard", "jsTripJoin", "jsLayout", "jsFriends", "jsPins", "jsTrip", "jsWiki", "jsUserSettings", "jsUserDetail", "jsTravelB", "jsDeals",
-            "pageDashboard", "pageDeals", "pageTravelB", "pageTripJoin", "pageFriends", "pageNotifications", "pageUserSettings", "pageUserDetail", "pageHomeOld", "pageTripShare", "pagePins", "pageTrips", "pageTripDetail", "pageWikiHome", "pageWikiPage" };
+            "pageMessages", "pageDashboard", "pageDeals", "pageTravelB", "pageTripJoin", "pageFriends", "pageNotifications", "pageUserSettings", "pageUserDetail", "pageHome", "pageTripShare", "pagePins", "pageTrips", "pageTripDetail", "pageWikiHome", "pageWikiPage" };
 
         public Dictionary<string, LangModule> Modules = new Dictionary<string, LangModule>();
 

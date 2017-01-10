@@ -3,10 +3,11 @@
 @using Gloobster.Portal.ViewModels
 @model ViewModelDeals
 
+
 @if (!Model.HasAirports)
 {
     <div class="no-airs-info">
-        <span class="icon-bell icon"></span> <span class="txt">To be able to use this service, you have to first select your home location and home airports</span>
+        <span class="icon-bell icon"></span> <span class="txt">@Model.W("FirstHomeLocationAndAirports")</span>
     </div>
 }
 
@@ -15,7 +16,7 @@
             
         @if (string.IsNullOrEmpty(Model.CityName))
         {
-            <span class="home-location-name">City not set</span>
+            <span class="home-location-name">@Model.W("CityNotSet")</span>
         }
         else
         {
@@ -26,7 +27,7 @@
 
         <div class="airports"></div>
 
-        <a href="#" class="edit">edit</a>
+        <a href="#" class="edit">@Model.W("EditBtn")</a>
     </div>
 
 
@@ -36,15 +37,15 @@
 
     <div>
         <div class="input-block">
-            <div class="title">Where do you live?</div>
+            <div class="title">@Model.W("WhereDoYouLive")</div>
             <div id="currentCity" class="dropdown">
-                <input class="inputed" type="text" placeholder="City name" value="@Model.InitCurrentLocation">
+                <input class="inputed" type="text" placeholder="@Model.W("CityNamePlaceholder")" value="@Model.InitCurrentLocation">
                 <ul></ul>
             </div>
         </div>
         
         <div id="rangeBlock" class="input-block @(string.IsNullOrEmpty(Model.InitCurrentLocation) ? "hidden" : string.Empty)">
-            <div class="title">Select airports in range of</div>
+            <div class="title">@Model.W("SelectAirportsInRange")</div>
             <div id="airportsRange" class="dropdown">
                 <span class="selected">200 km</span>
                 <ul>
@@ -56,24 +57,24 @@
                 </ul>
                 <input type="hidden">
             </div>
-            <a id="addAirsRange" class="lbtn2 add-btn" href="#">Select</a>
+            <a id="addAirsRange" class="lbtn2 add-btn" href="#">@Model.W("SelectBtn")</a>
         </div>    
     </div>
     
     <div class="bottom-line">
-        <div class="title">Customize your airports</div>
+        <div class="title">@Model.W("CustomizeYourAirports")</div>
         <div id="airportsCont" class="airports-cont">
         </div>
 
 
         <div id="airportCombo" class="dropdown">
-            <input class="inputed" type="text" placeholder="+ Search for airports">
+            <input class="inputed" type="text" placeholder="@Model.W("SearchForAirportsPlaceholder")">
             <ul></ul>
         </div>
     </div>
     
     <div class="refresh-line hidden">
-        <a id="refreshResults" class="lbtn2 refresh-results" href="#">Refresh results</a>
+        <a id="refreshResults" class="lbtn2 refresh-results" href="#">@Model.W("RefreshResultsBtn")</a>
     </div>
     
 

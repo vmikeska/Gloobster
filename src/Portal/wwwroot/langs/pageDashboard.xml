@@ -1,4 +1,100 @@
 ﻿
   <module name="pageDashboard">
-    
+
+    <FrindsAlreadyUsing>
+      <en>Some of your friends are already using Gloobster</en>
+    </FrindsAlreadyUsing>
+
+    <RequestFriendshipBtn>
+      <en>Request friendship</en>
+    </RequestFriendshipBtn>
+
+    <NoFriendsYet>
+      <en>You have no friends yet, go to Friends page and find a one</en>
+    </NoFriendsYet>
+
+    <GoFriendsPage>
+      <en>Go to Friends page</en>
+    </GoFriendsPage>
+
+    <NoNewFriendsNotifs>
+      <en>There aren't any new notifications from your friends</en>
+    </NoNewFriendsNotifs>
+
+    <WebNavTitle>
+      <en>Web navigation</en>
+    </WebNavTitle>
+
+    <YourTravelDealsTitle>
+      <en>Your travel deals</en>
+    </YourTravelDealsTitle>
+
+    <SetYourHomeCity>
+      <en>Set your home city</en>
+    </SetYourHomeCity>
+
+    <ChooseDestination>
+      <en>Choose desired destinations</en>
+    </ChooseDestination>
+
+    <ReceiveBestDeals>
+      <en>Receive the best deals</en>
+    </ReceiveBestDeals>
+
+    <NoLocationsYet>
+      <en>You havent set any locations yet</en>
+    </NoLocationsYet>
+
+    <SetYourDestinations>
+      <en>Set your destinations</en>
+    </SetYourDestinations>
+
+    <EvaluatingDeals>
+      <en>Evaluating deals...</en>
+    </EvaluatingDeals>
+
+    <Level5>
+      <en>Excellent</en>
+    </Level5>
+
+    <Level3>
+      <en>Good</en>
+    </Level3>
+
+    <Level1>
+      <en>Standard</en>
+    </Level1>
+
+    <SetHomeCityPlaceholder>
+      <en>Set your home city</en>
+    </SetHomeCityPlaceholder>
+
+    <SeeYourDeals>
+      <en>See your deals</en>
+    </SeeYourDeals>
+
+    <ToTheMapBtn>
+      <en>To the map</en>
+    </ToTheMapBtn>
+
+    <YourTrips>
+      <en>Your trips</en>
+    </YourTrips>
+
+    <ToThePlannerBtn>
+      <en>To the planner</en>
+    </ToThePlannerBtn>
+
+    <FriendsCalendar>
+      <en>Friend's calendar</en>
+    </FriendsCalendar>
+
+    <ToTheCalendarBtn>
+      <en>To the calendar</en>
+    </ToTheCalendarBtn>
+
+    <YourTravelMap>
+      <en>Your travel map</en>
+    </YourTravelMap> 
+
   </module>

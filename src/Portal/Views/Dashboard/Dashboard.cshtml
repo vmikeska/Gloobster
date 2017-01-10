@@ -34,9 +34,6 @@ else
     <script src="/js/Views/DashboardView.js" type="text/javascript"></script>    
 }
 
-
-
-
 <div class="wrapper">
 
     @if (Model.FbFriends.Any())
@@ -46,7 +43,7 @@ else
             <span class="icon-cross form-close"></span>
             <div class="ribbon"></div>
             <div class="form-cont-all">
-                <div class="form-title">Some of your friends are already using Gloobster</div>
+                <div class="form-title">@Model.W("FrindsAlreadyUsing")</div>
 
                 <div class="form-cont">
 
@@ -62,7 +59,7 @@ else
                                     <div class="r">
                                         <div class="name">@item.DisplayName (@item.FirstName @item.LastName)</div>
                                         <div class="actions">
-                                            <a class="lbtn2 request" href="#">Request friendship</a>
+                                            <a class="lbtn2 request" href="#">@Model.W("RequestFriendshipBtn")</a>
                                         </div>
                                     </div>
                                 </div>
@@ -84,15 +81,13 @@ else
                         <div class="title">Friend's feed</div>
                         <div class="content">
 
-                            @if (!Model.HasFriends)
+            @if (!Model.HasFriends)
             {
             <div class="friends-item">
                 <div class="no-friends">
-                    <div class="nof-txt">
-                        You have no friends yet, go to Friends page and find a one
-                    </div>
+                    <div class="nof-txt">@Model.W("NoFriendsYet")</div>
                     <div class="nof-link">
-                        <a href="/@RoutingConsts.FriendsMenuName">Go to Friends page</a>
+                        <a href="/@RoutingConsts.FriendsMenuName">@Model.W("GoFriendsPage")</a>
                     </div>
 
                 </div>
@@ -101,48 +96,38 @@ else
             }
             else if (!Model.Logs.Any())
             {
-            <div class="friends-item">
-                <div class="no-friends">
-                    <div class="nof-txt">
-                        There aren't any new notifications from your friends
+                <div class="friends-item">
+                    <div class="no-friends">
+                        <div class="nof-txt">@Model.W("NoNewFriendsNotifs")</div>
                     </div>
                 </div>
-            </div>
 
             }
             else
             {
                 foreach (UserLogViewModel log in Model.Logs)
                 {
-            <div class="friends-item">
+                    <div class="friends-item">
 
-                <div class="f-tbl">
-                    <div class="l">
-                        <img src="/PortalUser/ProfilePicture_s/@log.UserId">
-                    </div>
-                    <div class="r">
-                        <div class="name-cont">
-                            <a href="/@RoutingConsts.UserDetailMenuName/@log.UserId">@log.Name</a>
+                        <div class="f-tbl">
+                            <div class="l">
+                                <img src="/PortalUser/ProfilePicture_s/@log.UserId">
+                            </div>
+                            <div class="r">
+                                <div class="name-cont">
+                                    <a href="/@RoutingConsts.UserDetailMenuName/@log.UserId">@log.Name</a>
+                                </div>
+                                <div class="date-cont">@log.Created.ToShortDateString() @log.Created.ToShortTimeString()</div>
+                                <div class="txt">@Html.Raw(log.Content)</div>
+
+                            </div>
                         </div>
-                        <div class="date-cont">@log.Created.ToShortDateString() @log.Created.ToShortTimeString()</div>
-                        <div class="txt">@Html.Raw(log.Content)</div>
 
                     </div>
-                </div>
-
-            </div>
                 }
             }
 
-
-                            @*Just created his public trip "Holidays in Norway"
-
-                                Just met with John Keneddy over the Travel Buddy.
-
-                                Just made a recommendation to a Karl Benz. "He is such a nice guy, here really showed me how does it work in the city"*@
-
-
-
+                            
                         </div>
                     </div>
 
@@ -189,18 +174,17 @@ else
                         </div>
 
                     </div>
-
-
-                    <div class="topic-block tb-web hidden">
-                        <div class="title">Web navigation</div>
+                    
+                <div class="topic-block tb-web hidden">
+                        <div class="title">@Model.W("WebNavTitle")</div>
                         <div class="content">
 
                             <div class="web-item dark">
-                                <div class="web-title">Your travel deals</div>
+                                <div class="web-title">@Model.W("YourTravelDealsTitle")</div>
                                 <div class="web-cont">
 
 
-                                    @if (!Model.HasAirs)
+                    @if (!Model.HasAirs)
                     {
                     <div class="your-deals-all">
 
@@ -208,23 +192,23 @@ else
 
                             <div class="ico-block">
                                 <img class="svg-img" src="/images/n/fly-pin.svg" />
-                                <div class="txt">Set your home city</div>
+                                <div class="txt">@Model.W("SetYourHomeCity")</div>
                             </div>
 
                             <div class="ico-block">
                                 <img class="svg-img" src="/images/n/fly-comp.svg" />
-                                <div class="txt">Choose desired destinations</div>
+                                <div class="txt">@Model.W("ChooseDestination")</div>
                             </div>
 
                             <div class="ico-block">
                                 <img class="svg-img" src="/images/n/fly-plane.svg" />
-                                <div class="txt">Receive the best deals</div>
+                                <div class="txt">@Model.W("ReceiveBestDeals")</div>
                             </div>
                         </div>
 
                         <div class="loc">
                             <div id="currentCity" class="dropdown">
-                                <input class="inputed" type="text" placeholder="Set your home city">
+                                <input class="inputed" type="text" placeholder="@Model.W("SetHomeCityPlaceholder")">
                                 <ul></ul>
                             </div>
                         </div>
@@ -234,12 +218,12 @@ else
                     {
                     <div class="your-deals-all">
 
-                        <div class="no-data-txt">You havent set any locations yet</div>
+                        <div class="no-data-txt">@Model.W("NoLocationsYet")</div>
 
                     </div>
 
                     <div class="redir-btn-cont">
-                        <a href="/@RoutingConsts.DealsMenuName" class="lbtn2 redir-btn">Set your destinations</a>
+                        <a href="/@RoutingConsts.DealsMenuName" class="lbtn2 redir-btn">@Model.W("SetYourDestinations")</a>
                     </div>
                     }
                     else
@@ -250,9 +234,9 @@ else
                             <span class="preloader">
                                 <img src="/images/n/Plane_icon.svg">
                             </span>
-                            <span class="txt">Evaluating deals...</span>
+                            <span class="txt">@Model.W("EvaluatingDeals")</span>
                         </div>
-
+                        
                         <div class="cats">
 
                             <div class="category c5">
@@ -264,7 +248,7 @@ else
                                     <span class="icon-star-full"></span>
                                     <span class="icon-star-full"></span>
                                 </div>
-                                <div class="txt-level">Excellent</div>
+                                <div class="txt-level">@Model.W("Level5")</div>
                             </div>
 
                             <div class="category c3">
@@ -272,44 +256,36 @@ else
                                 <div class="stars">
                                     <span class="icon-star-full"></span>
                                     <span class="icon-star-full"></span>
-                                    <span class="icon-star-full"></span>
-                                    <span class="icon-star-full"></span>
-                                    <span class="icon-star-full"></span>
+                                    <span class="icon-star-full"></span>                                    
                                 </div>
-                                <div class="txt-level">Good</div>
+                                <div class="txt-level">@Model.W("Level3")</div>
                             </div>
 
                             <div class="category c1">
                                 <div id="res1" class="no">0</div>
                                 <div class="stars">
-                                    <span class="icon-star-full"></span>
-                                    <span class="icon-star-full"></span>
-                                    <span class="icon-star-full"></span>
-                                    <span class="icon-star-full"></span>
-                                    <span class="icon-star-full"></span>
+                                    <span class="icon-star-full"></span>                                    
                                 </div>
-                                <div class="txt-level">Standard</div>
+                                <div class="txt-level">@Model.W("Level1")</div>
                             </div>
 
                         </div>
 
                         <div class="redir-btn-cont">
-                            <a href="/@RoutingConsts.DealsMenuName" class="lbtn2 redir-btn">See your deals</a>
+                            <a href="/@RoutingConsts.DealsMenuName" class="lbtn2 redir-btn">@Model.W("SeeYourDeals")</a>
                         </div>
                     </div>
 
                     }
-
-
-
+                                    
                                 </div>
                             </div>
 
-
+                            
                             <div class="web-item">
                                 <div class="web-title">
-                                    <span class="txt">Your travel map</span>
-                                    <a href="/@RoutingConsts.PinsMenuName" class="lbtn2 go-btn">To the map</a>
+                                    <span class="txt">@Model.W("YourTravelMap")</span>
+                                    <a href="/@RoutingConsts.PinsMenuName" class="lbtn2 go-btn">@Model.W("ToTheMapBtn")</a>
                                 </div>
                                 <div class="web-cont">
 
@@ -322,8 +298,8 @@ else
 
                             <div class="web-item">
                                 <div class="web-title">
-                                    <span class="txt">Your trips</span>
-                                    <a href="/@RoutingConsts.PlannerMenuName/grid" class="lbtn2 go-btn">To the planner</a>
+                                    <span class="txt">@Model.W("YourTrips")</span>
+                                    <a href="/@RoutingConsts.PlannerMenuName/grid" class="lbtn2 go-btn">@Model.W("ToThePlannerBtn")</a>
                                 </div>
                                 <div class="web-cont">
 
@@ -351,8 +327,8 @@ else
 
                             <div class="web-item">
                                 <div class="web-title">
-                                    <span class="txt">Friend's calendar</span>
-                                    <a href="/@RoutingConsts.CalendarName" class="lbtn2 go-btn">To the calendar</a>
+                                    <span class="txt">@Model.W("FriendsCalendar")</span>
+                                    <a href="/@RoutingConsts.CalendarName" class="lbtn2 go-btn">@Model.W("ToTheCalendarBtn")</a>
                                 </div>
                                 <div class="web-cont">
 

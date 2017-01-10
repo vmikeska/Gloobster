@@ -1,13 +1,13 @@
 ﻿
 @model Gloobster.Portal.ViewModels.TravelBViewModel
 
-<div class="not-registered-info">To be able to use this service fully, you have to register first</div>
+<div class="not-registered-info">@Model.W("NotRegisteredInfo")</div>
 
 <div class="standard-form req-settings @(Model.User == null ? "hidden" : "")">
     @*<span class="icon-cross form-close"></span>*@
     <div class="ribbon"></div>
     <div class="form-cont-all">
-        <div class="form-title">Required info</div>
+        <div class="form-title">@Model.W("RequiredInfo")</div>
         
         <div class="form-caption">@Model.W("RequiredPropsTitle") <a href="/legal/TermsAndConds">@Model.W("TermsOfUse")</a></div>
 
@@ -41,7 +41,7 @@
                 
                 <div class="r">
                     
-                    <div class="photo-title">User data</div>
+                    <div class="photo-title">@Model.W("UserDataFormTitle")</div>
 
                     <div class="double-row-item">
                         

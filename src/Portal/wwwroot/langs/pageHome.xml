@@ -1,0 +1,80 @@
+﻿
+  <module name="pageHome">
+
+    <MainMotto>
+      <en>The only portal you need to travel the world</en>
+    </MainMotto>
+
+    <FlyTicketSearch>
+      <en>Fly ticket search – three easy steps to travel the world</en>
+    </FlyTicketSearch>
+
+    <SetYourHomeLocation>
+      <en>Set your home location</en>
+    </SetYourHomeLocation>
+
+    <CustomizeYourDashboard>
+      <en>Customize your dashboard</en>
+    </CustomizeYourDashboard>
+
+    <GetDeals>
+      <en>Get your best deals</en>
+    </GetDeals>
+
+    <HomeCityPlaceholder>
+      <en>Set your home city</en>
+    </HomeCityPlaceholder>
+
+    <TryOurComponents>
+      <en>Try one of our free social components</en>
+    </TryOurComponents>
+
+    <CompTitleTravelBuddy>
+      <en>Travel buddy</en>
+    </CompTitleTravelBuddy>
+
+    <CompBodyTravelBuddy>
+      <en>Find your travel buddy here and now. Whereever you are, whenever you‘re on your way – get in contact with travellers all over the world.</en>
+    </CompBodyTravelBuddy> 
+    
+    <CompBtnTravelBuddy>
+      <en>Find your buddy</en>
+    </CompBtnTravelBuddy>
+
+    <CompTitleOrganizer>
+      <en>Travel organizer</en>
+    </CompTitleOrganizer>
+
+    <CompBodyOrganizer>
+      <en>Organize your travel documents and notes day by day. Invite your friend or let know to the people about your trip over social networks.</en>
+    </CompBodyOrganizer> 
+    
+    <CompBtnOrganizer>
+      <en>Try it now</en>
+    </CompBtnOrganizer>
+
+    <CompTitleWiki>
+      <en>Travel wiki</en>
+    </CompTitleWiki>
+
+    <CompBodyWiki>
+      <en>Become a part of our travel community and help us to build one of the biggest travel databases on the internet.</en>
+    </CompBodyWiki>
+
+    <CompBtnWiki>
+      <en>Join us</en>
+    </CompBtnWiki>
+
+    <CompTitlePinboard>
+      <en>Travel map</en>
+    </CompTitlePinboard>
+
+    <CompBodyPinboard>
+      <en>Pin places you‘ve visited, share and compare with your friends. See most visited places all over the world. Let‘s build the travel map together!</en>
+    </CompBodyPinboard>
+
+    <CompBtnPinboard>
+      <en>Build your map</en>
+    </CompBtnPinboard> 
+
+  </module>

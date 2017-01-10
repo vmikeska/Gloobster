@@ -125,9 +125,7 @@ else
 </div>
 
 <div class="wrapper">
-    
-    @Html.Partial("LocationSettingsDialog")
-    
+        
     <div id="naviCont" class="navi-cont"></div>
 
     <div id="tabContent"></div>
@@ -138,8 +136,8 @@ else
 
         <div class="map-type-switch">
             <div class="items-tbl">
-                <div class="country btn active">Countries</div>
-                <div class="city btn">Cities</div>
+                <div class="country btn active">@Model.W("ViewSwitchCountries")</div>
+                <div class="city btn">@Model.W("ViewSwitchCities")</div>
             </div>
         </div>
         

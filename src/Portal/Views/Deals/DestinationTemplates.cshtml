@@ -1,34 +1,28 @@
 ﻿
-
 <script id="flights-empty-template" type="text/x-handlebars-template">
 
     <div class="other-flights-empty">
         
         <div class="info">
             <span class="smile">:(</span>
-            No results were found. You can try to search with lower score level.
+            @Model.W("NoResultsFound")
         </div>
     </div>
 
-</script>
-
-@*remove this when not needed, was just for test*@
-<script id="list-tst-template" type="text/x-handlebars-template">
-    <div>{{v}}</div>
 </script>
 
 <script id="deals-srch-template" type="text/x-handlebars-template">
     <div class="other-flights-filter">
         
         <div class="multi-conn-cont" style="display: none">
-            <div class="title">What connection are you interested?</div>
+            <div class="title">@Model.W("WhatConnectionsInterested")</div>
             <div class="airpairs-filter"></div>
         </div>
 
-            <div class="title">How many days would you like to stay in destination?</div>
+            <div class="title">@Model.W("HowManyDayInDestination")</div>
             <div class="days-range"></div>
 
-            <div class="title">What month are you interested of?</div>
+            <div class="title">@Model.W("WhichMonth")</div>
             <div class="months"></div>
 
         </div>
@@ -38,7 +32,7 @@
     <div class="other-flights-filter">
         
         <div class="multi-conn-cont" style="display: none">
-            <div class="tit">What connection are you interested?</div>
+            <div class="tit">@Model.W("WhatConnectionsInterested")</div>
             <div class="airpairs-filter"></div>
         </div>
 
@@ -46,7 +40,7 @@
 
             <div class="block">
                 <div class="dep-arr dep">
-                    <div class="tit">Deparature</div>
+                    <div class="tit">@Model.W("Deparature")</div>
 
                     <div class="middle">
                         
@@ -61,7 +55,7 @@
             
             <div class="block">
                 <div class="dep-arr arr">
-                    <div class="tit">Arrival</div>
+                    <div class="tit">@Model.W("Arrival")</div>
 
                     <div class="date-cont-all">
                        
@@ -77,7 +71,7 @@
         </div>
         
         <div class="srvc">
-            <a id="search" class="lbtn" href="#">Search</a>
+            <a id="search" class="lbtn" href="#">@Model.W("SearchBtn")</a>
         </div>
 
     </div>
@@ -100,11 +94,11 @@
                 <div class="items-table">
 
                     <div class="cell">
-                        <span data-b="price" data-o="asc" class="item l">by price</span>
+                        <span data-b="price" data-o="asc" class="item l">@Model.W("OrderPriceBtn")</span>
                     </div>
 
                     <div class="cell">
-                        <span data-b="score" data-o="desc" class="item r">by score</span>
+                        <span data-b="score" data-o="desc" class="item r">@Model.W("OrderScoreBtn")</span>
                     </div>
 
                 </div>
@@ -140,18 +134,18 @@
             </div>
 
             <div class="title-deal">
-                <span class="txt">Our best deals</span>
+                <span class="txt">@Model.W("OurBestDealsTitle")</span>
                 
                 <div class="deals-ordering">
                     
                     <div class="items-table">
                         
                         <div class="cell">
-                            <span data-b="price" data-o="asc" class="item l">by price</span>
+                            <span data-b="price" data-o="asc" class="item l">@Model.W("OrderPriceBtn")</span>
                         </div>
                         
                         <div class="cell">
-                            <span data-b="score" data-o="desc" class="item r">by score</span>
+                            <span data-b="score" data-o="desc" class="item r">@Model.W("OrderScoreBtn")</span>
                         </div>
                         
                     </div>
@@ -164,15 +158,15 @@
             </div>
 
             <div class="title">
-                Not flexible? See another options in following months
+                @Model.W("NotFlexible")
             </div>
 
             <div class="search-tabs">
                 <div class="tab active" data-t="deals">
-                    Best deal search
+                    @Model.W("BestDealSearch")
                 </div>
                 <div class="tab" data-t="classic">
-                    Classic search
+                    @Model.W("ClassicSearch")
                 </div>
             </div>
 
@@ -192,7 +186,7 @@
                         </div>
                     </div>
                     <div class="bottom">
-                        <span class="txt">Not flexible ? We are seraching other good flights with similar prices for you</span>
+                        <span class="txt">@Model.W("WeAreSearchingAnotherFlights")</span>
                     </div>
                 </div>
             </div>
@@ -227,7 +221,7 @@
                         <div class="checker icon-checkmark2"></div>
                     </div>
                     <div class="label">
-                        Use days filter
+                        @Model.W("UseDaysFilter")
                     </div>
                 </div>
             </div>
@@ -275,7 +269,7 @@
                                         <span class="icon-star-full"></span>
                                         <span class="icon-star-full"></span>
                                     </div>
-                                    <div class="txt">Excellent deals</div>
+                                    <div class="txt">@Model.W("Star5Deals")</div>
                                 </div>
                             </div>
 
@@ -287,7 +281,7 @@
                                         <span class="icon-star-full"></span>
                                         <span class="icon-star-full"></span>
                                     </div>
-                                    <div class="txt">Good deals</div>
+                                    <div class="txt">@Model.W("Star3Deals")</div>
                                 </div>
                             </div>
 
@@ -297,7 +291,7 @@
                                     <div class="stars">
                                         <span class="icon-star-full"></span>
                                     </div>
-                                    <div class="txt">Standard deals</div>
+                                    <div class="txt">@Model.W("Star1Deals")</div>
                                 </div>
                             </div>
 
@@ -403,10 +397,10 @@
                     <div class="di direct-cont">
 
                         {{#ifCond stops 0}}
-                        <div class="direct">Direct</div>
+                        <div class="direct">@Model.W("DirectFlight")</div>
                         {{else}}
                         <div class="stops">
-                            <a class="stops-btn" href="#"><span class="txt">{{stops}} Stops </span><span class="icon-dropdown-arrow"></span></a>
+                            <a class="stops-btn" href="#"><span class="txt">{{stops}} @Model.W("StopsCnt") </span><span class="icon-dropdown-arrow"></span></a>
                         </div>
                         {{/ifCond}}
 
@@ -421,16 +415,13 @@
 
     </script>
 
-    <script id="connection-flight-template" type="text/x-handlebars-template">
+
+<script id="connection-flight-template" type="text/x-handlebars-template">
 
         <div class="conn">
 
             <div class="layout-tbl">
                 <div class="left">
-
-                    @*<div class="service">
-                            <a href="#"><span class="txt">show detail </span><span class="icon-dropdown-arrow"></span></a>
-                        </div>*@
 
                 </div>
                 <div class="right">
@@ -438,9 +429,9 @@
                     <div class="book-zone">
                         <div class="score">
                             <div class="txt-score">
-                                {{#ifCond scoreText "E"}}Excellent{{/ifCond}}
-                                {{#ifCond scoreText "G"}}Good{{/ifCond}}
-                                {{#ifCond scoreText "S"}}Standard{{/ifCond}}
+                                {{#ifCond scoreText "E"}}@Model.W("Score5"){{/ifCond}}
+                                {{#ifCond scoreText "G"}}@Model.W("Score3"){{/ifCond}}
+                                {{#ifCond scoreText "S"}}@Model.W("Score1"){{/ifCond}}
                             </div>
                             <div class="stars-score">
 
@@ -450,7 +441,7 @@
 
                             </div>
                             <div class="cap">
-                                Flight score
+                                @Model.W("FlightScore")                                
                             </div>
                         </div>
                         <div class="price-all">
@@ -458,7 +449,7 @@
                         </div>
 
                         <div class="btn-cont">
-                            <a href="{{bookLink}}" target="_blank">Book now</a>
+                            <a href="{{bookLink}}" target="_blank">@Model.W("BookNow")</a>
                         </div>
                     </div>
 
@@ -471,10 +462,11 @@
 
     </script>
 
-    <script id="offers-expander-template" type="text/x-handlebars-template">
+
+<script id="offers-expander-template" type="text/x-handlebars-template">
         <tr class="expander">
             <td colspan="4">
-                <a class="btn" href="#">more</a>
+                <a class="btn" href="#">@Model.W("MoreBtn")</a>
             </td>
         </tr>
     </script>
@@ -482,7 +474,7 @@
     <script id="offers-collapser-template" type="text/x-handlebars-template">
         <tr class="collapser">
             <td colspan="4">
-                <a class="btn" href="#">less</a>
+                <a class="btn" href="#">@Model.W("LessBtn")</a>
             </td>
         </tr>
     </script>
@@ -492,7 +484,7 @@
             <div class="title">
                 <span class="txt">{{name}}</span>
 
-                <a href="#" data-v="true" class="visi">collapse</a>
+                <a href="#" data-v="true" class="visi">@Model.W("CollapseBtn")</a>
             </div>
             <div class="cont">
 
@@ -511,7 +503,7 @@
                 <div class="txt-cont darker">{{title}}</div>
                 <div class="price-cont">
                     <div class="wrap">
-                        <span class="from">from</span>
+                        <span class="from">@Model.W("FromPrice")</span>
                         <br />
                         <span class="price-all">
                             <span class="currency">€</span><span class="price">{{price}}</span>
@@ -537,7 +529,7 @@
                 <div class="txt-cont">{{title}}</div>
                 <div class="price-cont">
                     <div class="wrap">
-                        <span class="from">from</span>
+                        <span class="from">@Model.W("FromPrice")</span>
                         <br />
                         <span class="price-all">
                             <span class="currency">€</span><span class="price">{{price}}</span>
@@ -558,18 +550,18 @@
     <script id="resultGroup-priceItem-template" type="text/x-handlebars-template">
         <tr data-f="{{from}}" data-t="{{to}}">
             <td><strong>{{from}} → {{to}}</strong></td>
-            <td>from</td>
+            <td>@Model.W("FromPrice")</td>
             <td><strong>€{{price}}</strong></td>
-            <td><a class="btn" href="#">see offers</a></td>
+            <td><a class="btn" href="#">@Model.W("SeeOffersBtn")</a></td>
         </tr>
     </script>
 
     <script id="grouped-country-city-template" type="text/x-handlebars-template">
         <tr data-gid="{{gid}}">
             <td><strong>{{name}}</strong></td>
-            <td>from</td>
+            <td>@Model.W("FromPrice")</td>
             <td><strong>€{{price}}</strong></td>
-            <td><a class="btn" href="#">see offers</a></td>
+            <td><a class="btn" href="#">@Model.W("SeeOffersBtn")</a></td>
         </tr>
     </script>
 
@@ -578,7 +570,7 @@
         <div class="weekend-item" data-w="{{week}}" data-t="{{year}}">
 
             <div class="title">
-                <span class="week">{{week}}. weekend</span> <span class="date">({{dateFrom}} - {{dateTo}})</span>
+                <span class="week">{{week}}. @Model.W("WeekendNo")</span> <span class="date">({{dateFrom}} - {{dateTo}})</span>
             </div>
 
             <div class="cont"></div>
@@ -596,7 +588,7 @@
             <div class="service">
                 <span class="edit icon-edit-pencil"></span>
                 <span class="delete icon-cross"></span>
-                <a class="edit-save" href="#">save</a>
+                <a class="edit-save" href="#">@Model.W("SaveBtn")</a>
             </div>
         </div>
 
@@ -618,6 +610,8 @@
 
 
 
+
+
 <script id="custom-template" type="text/x-handlebars-template">
 
         <div class="form-custom">
@@ -630,29 +624,28 @@
             <div class="form-cont">
                 
                 <div class="dates-static">
-                    <div class="title">Dates selection info</div>
-                    <div>
-                        @*<a id="resetDates" href="#">edit</a>*@
-                        <span class="cap">Earliest deparature/Latest arrival</span> 
+                    <div class="title">@Model.W("DatesSelectionInfo")</div>
+                    <div>                        
+                        <span class="cap">@Model.W("EarliestDeparatureLatestArrival")</span> 
                         <span class="earliest-dep val">02/19/2017</span>
                         <span> - </span>
                         <span class="latest-arr val">02/19/2017</span>
                         
-                        <span class="cap">Earliest deparature/Latest arrival</span> 
-                        <span> min </span> 
+                        <span class="cap">@Model.W("EarliestDeparatureLatestArrival")</span> 
+                        <span> @Model.W("MinForDays") </span> 
                         <span class="days-from val">8</span>
-                        <span> max </span> 
+                        <span> @Model.W("MaxForDays") </span> 
                         <span class="days-to val">12</span>
-                        <span> days</span> 
+                        <span> @Model.W("DaysSentenceEnd")</span> 
                     </div>
                 </div>
 
                 <div class="fixed-part">
                     
-                    <div class="title">How many days would you like to spend in destination?</div>
+                    <div class="title">@Model.W("HowManyDaysInDestination")</div>
                     <div class="days-range-cont"></div>
 
-                    <div class="title">When is your earliest deparature and latest arrival?</div>
+                    <div class="title">@Model.W("EarliestDepLatestArrivalQuestion")</div>
                     <div class="dates">
                         
                         <div id="dpDepCont"></div>
@@ -662,23 +655,23 @@
                     </div>    
                     
                     <div class="action-bar">
-                        <a id="datesDoneBtn" class="lbtn2 finish-dates-btn" href="#">I'm done with dates editing</a>
+                        <a id="datesDoneBtn" class="lbtn2 finish-dates-btn" href="#">@Model.W("DoneWithDatesEditingBtn")</a>
                     </div>
 
                 </div>
                 
                 <div class="flexible-part">
                     
-                    <div class="title">What are departing airports?</div>
+                    <div class="title">@Model.W("DepartingAirports")</div>
                     <div class="airports-cont">
                         <div class="sta-air-cont">
                             <input id="cbStandard" type="checkbox" />
-                            <label for="cbStandard">My standard airports</label>
+                            <label for="cbStandard">@Model.W("MyStandardAirsOption")</label>
                         </div>
                         <div class="tagger-cont" id="airTagger"></div>
                     </div>
 
-                    <div class="title">How often would you like to receive newsletter?</div>
+                    <div class="title">@Model.W("NewsletterFrequency")</div>
                     <div class="freq-cont">
                         <div class="itbl">
 

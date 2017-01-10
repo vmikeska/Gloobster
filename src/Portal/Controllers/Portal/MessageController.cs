@@ -52,6 +52,7 @@ namespace Gloobster.Portal.Controllers.Portal
             }
              
             var vm = CreateViewModelInstance<MessagesViewModel>();
+            vm.DefaultLangModuleName = "pageMessages";
             vm.UserMessages = messages.OrderByDescending(m => m.Date).ToList();
 
             return View(vm);

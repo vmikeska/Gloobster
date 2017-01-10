@@ -38,11 +38,7 @@ else
         
 
         <div class="text-area">
-            <h1 class="motto">
-                The only portal
-                you need to
-                travel the world
-            </h1>
+            <h1 class="motto">@Model.W("MainMotto")</h1>
 
             @*<a class="link" href="#">Learn more</a>*@
         </div>
@@ -56,14 +52,14 @@ else
     <div class="fly_all">
 
         <div class="motto">
-            <span>Fly ticket search – three easy steps to travel the world</span>
+            <span>@Model.W("FlyTicketSearch")</span>
         </div>
 
         <div class="icons">
 
             <div class="icon block mr">
                 <img class="svg-img"  src="/images/n/fly-pin.svg"/>
-                <div class="txt c1">Set your home location</div>
+                <div class="txt c1">@Model.W("SetYourHomeLocation")</div>
             </div>
             <div class="pointer block mr">
                 <div class="center_cont">
@@ -76,7 +72,7 @@ else
             </div>
             <div class="icon block mr">
                 <img class="svg-img" src="/images/n/fly-comp.svg"/>
-                <div class="txt">Customize your dashboard</div>
+                <div class="txt">@Model.W("CustomizeYourDashboard")</div>
             </div>
             <div class="pointer block mr">
                 <div class="center_cont">
@@ -89,14 +85,14 @@ else
             </div>
             <div class="icon block">
                 <img class="svg-img"  src="/images/n/fly-plane.svg"/>
-                <div class="txt">Get your best deals</div>
+                <div class="txt">@Model.W("GetDeals")</div>
             </div>
 
         </div>
 
         <div class="loc">
             <div id="currentCity" class="dropdown">
-                <input class="inputed" type="text" placeholder="Set your home city">
+                <input class="inputed" type="text" placeholder="@Model.W("HomeCityPlaceholder")">
                 <ul>
                 </ul>
             </div>
@@ -108,25 +104,18 @@ else
 
     <div class="blocks">
 
-        <div class="motto">Try one of our free social components</div>
+        <div class="motto">@Model.W("TryOurComponents")</div>
 
     <div class="item mr">
         <div class="image">
             <span class="icon-ico-travel-buddy blue"></span>
         </div>
         <div class="name">
-            <span class="blue">Travel buddy</span>
+            <span class="blue">@Model.W("CompTitleTravelBuddy")</span>
         </div>
-        <div class="txt">
-            Find your travel buddy
-            here and now. Whereever
-            you are, whenever you‘re
-            on your way – get in contact
-            with travellers all over
-            the world.
-        </div>
+        <div class="txt">@Model.W("CompBodyTravelBuddy")</div>
         <div class="btn">
-            <a class="blue" href="/@RoutingConsts.TravelBuddyMenuName">Find your buddy</a>
+            <a class="blue" href="/@RoutingConsts.TravelBuddyMenuName">@Model.W("CompBtnTravelBuddy")</a>
         </div>
     </div>
 
@@ -135,18 +124,11 @@ else
                 <span class="icon-ico-organizer green"></span>
             </div>
             <div class="name">
-                <span class="green">Travel organizer</span>
+                <span class="green">@Model.W("CompTitleOrganizer")</span>
             </div>
-            <div class="txt">
-                Organize your travel documents
-                and notes day
-                by day. Invite your friend
-                or let know to the people
-                about your trip over social
-                networks.
-            </div>
+            <div class="txt">@Model.W("CompBodyOrganizer")</div>
             <div class="btn">
-                <a class="green" href="/@RoutingConsts.PlannerMenuName/grid">Try it now</a>
+                <a class="green" href="/@RoutingConsts.PlannerMenuName/grid">@Model.W("CompBtnOrganizer")</a>
             </div>
         </div>
 
@@ -155,17 +137,11 @@ else
                 <span class="icon-ico-wiki orange"></span>                
             </div>
             <div class="name">
-                <span class="orange">Travel wiki</span>
+                <span class="orange">@Model.W("CompTitleWiki")</span>
             </div>
-            <div class="txt">
-                Become a part of our travel
-                community and help
-                us to build one of the
-                biggest travel databases
-                on the internet.
-            </div>
+            <div class="txt">@Model.W("CompBodyWiki")</div>
             <div class="btn">                
-                <a class="orange" href="@RoutingConsts.WikiMenuName">Join us</a>
+                <a class="orange" href="@RoutingConsts.WikiMenuName">@Model.W("CompBtnWiki")</a>
             </div>
         </div>
 
@@ -174,18 +150,11 @@ else
                 <span class="icon-ico-travel-map yellow"></span>                
             </div>
             <div class="name">
-                <span class="yellow">Travel map</span>
+                <span class="yellow">@Model.W("CompTitlePinboard")p</span>
             </div>
-            <div class="txt">
-                Pin places you‘ve visited,
-                share and compare with
-                your friends. See most
-                visited places all over the
-                world. Let‘s build the travel
-                map together!
-            </div>
+            <div class="txt">@Model.W("CompBodyPinboard")</div>
             <div class="btn">                
-                <a class="yellow" href="@RoutingConsts.PinsMenuName">Build your map</a>
+                <a class="yellow" href="@RoutingConsts.PinsMenuName">@Model.W("CompBtnPinboard")</a>
             </div>
         </div>
 

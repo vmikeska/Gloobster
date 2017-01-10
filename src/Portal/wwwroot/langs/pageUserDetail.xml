@@ -64,5 +64,13 @@
     <en>Current city</en>
   </CurrentCity>
 
+  <AddRatingBtn>
+    <en>Add rating</en>
+  </AddRatingBtn>
+
+  <AddRatingPlaceholder>
+    <en>Add rating content</en>
+  </AddRatingPlaceholder>
+
 
 </module>

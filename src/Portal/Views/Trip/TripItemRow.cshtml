@@ -33,7 +33,7 @@
                 </div>
             }
         </div>
-        <span class="nowrap">@Model.Participants.Count friends</span>
+        <span class="nowrap">@Model.Participants.Count @Model.W("FriendsCount")</span>
     </div>
     <div class="cell">
         @if (Model.IsOwner)

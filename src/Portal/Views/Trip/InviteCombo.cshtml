@@ -1,22 +1,23 @@
 ﻿@using Microsoft.CodeAnalysis
+@using Microsoft.Data.Entity.Metadata.Internal
 
 <div id="invitationState" class="dropdown blue-trans" style="display: none;">
     <span class="selected"></span>
     <ul>
         <li data-value="0" style="display: none;">
-            <span class="icon-invite left mright10"></span>
+            <span class="icon-invite"></span>
             @Model.W("Invited")
         </li>
         <li data-value="1">
-            <span class="icon-accept left mright10"></span>
+            <span class="icon-accept"></span>
             @Model.W("Accepted")
         </li>
         <li data-value="2">
-            <span class="icon-maybe left mright10"></span>
+            <span class="icon-maybe"></span>
             @Model.W("Maybe")
         </li>
         <li data-value="3">
-            <span class="icon-refuse left mright10"></span>
+            <span class="icon-refuse"></span>
             @Model.W("Refused")
         </li>
     </ul>

@@ -23,7 +23,7 @@
 
         <div class="title-table">
             <div class="left">
-                <a href="/messages">Messages</a> &gt;
+                <a href="/messages">@Model.W("LinkBackToMain")</a> &gt;
                 <h1>@Model.OtherUserDisplayName</h1>
             </div>
 
@@ -41,10 +41,10 @@
 
     <div class="txt-input">
         <div class="txt">
-            <textarea id="commentInput" class="box-sizing" type="text" placeholder="Your comment..."></textarea>
+            <textarea id="commentInput" class="box-sizing" type="text" placeholder="@Model.W("YourMessagePlaceholder")"></textarea>
         </div>
         <div class="btn">
-            <a id="commentSubmit" class="lbtn" href="#">Send</a>
+            <a id="commentSubmit" class="lbtn" href="#">@Model.W("SendMessageBtn")</a>
         </div>
     </div>
 

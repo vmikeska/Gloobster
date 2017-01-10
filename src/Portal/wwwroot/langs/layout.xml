@@ -84,7 +84,13 @@
         <en>Female</en>
       </Female>
 
+    <CookiesRequiredText>
+      <en>This site cannot work without cookies.</en>
+    </CookiesRequiredText>
 
+    <CookiesRequiredBtn>
+      <en>I understand</en>
+    </CookiesRequiredBtn>
 
 
 

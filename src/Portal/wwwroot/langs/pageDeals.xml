@@ -17,7 +17,227 @@
     <InfoBlock2>
       <en>We will evaluate for you best travel deals for holiday, weekend or help you to fullfil your dream of visiting an exotic country.</en>
     </InfoBlock2>
+
+
+    <FirstHomeLocationAndAirports>
+      <en>To be able to use this service, you have to first select your home location and home airports</en>
+    </FirstHomeLocationAndAirports>
+
+    <CityNotSet>
+      <en>City not set</en>
+    </CityNotSet>
+
+    <WhereDoYouLive>
+      <en>Where do you live?</en>
+    </WhereDoYouLive>
+
+    <SelectAirportsInRange>
+      <en>Select airports in range of</en>
+    </SelectAirportsInRange>
+
+    <SelectBtn>
+      <en>Select</en>
+    </SelectBtn>
+
+    <CustomizeYourAirports>
+      <en>Customize your airports</en>
+    </CustomizeYourAirports>
+
+    <CityNamePlaceholder>
+      <en>City name</en>
+    </CityNamePlaceholder>
+
+    <EditBtn>
+      <en>edit</en>
+    </EditBtn>
+
+    <SearchForAirportsPlaceholder>
+      <en>+ Search for airports</en>
+    </SearchForAirportsPlaceholder>
+
+    <RefreshResultsBtn>
+      <en>Refresh results</en>
+    </RefreshResultsBtn>
+
+    <ViewSwitchCountries>
+      <en>Countries</en>
+    </ViewSwitchCountries>
+
+    <ViewSwitchCities>
+      <en>Cities</en>
+    </ViewSwitchCities>
+
+    <NoResultsFound>
+      <en>No results were found. You can try to search with lower score level.</en>
+    </NoResultsFound>
+
+    <WhatConnectionsInterested>
+      <en>What connection are you interested?</en>
+    </WhatConnectionsInterested>
+
+    <HowManyDayInDestination>
+      <en>How many days would you like to stay in destination?</en>
+    </HowManyDayInDestination>
+
+    <WhichMonth>
+      <en>What month are you interested of?</en>
+    </WhichMonth>
+
+    <Deparature>
+      <en>Deparature</en>
+    </Deparature>
+
+    <Arrival>
+      <en>Arrival</en>
+    </Arrival>
+
+    <SearchBtn>
+      <en>Search</en>
+    </SearchBtn>
+
+    <OrderPriceBtn>
+      <en>by price</en>
+    </OrderPriceBtn>
+
+    <OrderScoreBtn>
+      <en>by score</en>
+    </OrderScoreBtn>
+
+    <OurBestDealsTitle>
+      <en>Our best deals</en>
+    </OurBestDealsTitle>
+
+    <NotFlexible>
+      <en>Not flexible? See another options in following months</en>
+    </NotFlexible>
+
+    <BestDealSearch>
+      <en>Best deal search</en>
+    </BestDealSearch>
     
+    <ClassicSearch>
+      <en>Classic search</en>
+    </ClassicSearch>
+
+    <WeAreSearchingAnotherFlights>
+      <en>Not flexible ? We are seraching other good flights with similar prices for you</en>
+    </WeAreSearchingAnotherFlights>
+
+    <UseDaysFilter>
+      <en>Use days filter</en>
+    </UseDaysFilter>
+
+    <Star5Deals>
+      <en>Excellent deals</en>
+    </Star5Deals>
+
+    <Star3Deals>
+      <en>Good deals</en>
+    </Star3Deals>
+
+    <Star1Deals>
+      <en>Standard deals</en>
+    </Star1Deals>
+
+    <DirectFlight>
+      <en>Direct</en>
+    </DirectFlight>
+
+    <StopsCnt>
+      <en>Stops</en>
+    </StopsCnt>
+
+    <Score5>
+      <en>Excellent</en>
+    </Score5>
+
+    <Score3>
+      <en>Good</en>
+    </Score3>
+
+    <Score1>
+      <en>Standard</en>
+    </Score1>
+
+    <BookNow>
+      <en>Book now</en>
+    </BookNow>
+
+    <FlightScore>
+      <en>Flight score</en>
+    </FlightScore>
+
+    <MoreBtn>
+      <en>more</en>
+    </MoreBtn>
+
+    <LessBtn>
+      <en>less</en>
+    </LessBtn>
+
+    <CollapseBtn>
+      <en>collapse</en>
+    </CollapseBtn>
+
+    <FromPrice>
+      <en>from</en>
+    </FromPrice>
+
+    <SeeOffersBtn>
+      <en>see offers</en>
+    </SeeOffersBtn>
+
+    <WeekendNo>
+      <en>weekend</en>
+    </WeekendNo>
+
+    <SaveBtn>
+      <en>save</en>
+    </SaveBtn>
+
+    <DatesSelectionInfo>
+      <en>Dates selection info</en>
+    </DatesSelectionInfo>
+
+    <EarliestDeparatureLatestArrival>
+      <en>Earliest deparature/Latest arrival</en>
+    </EarliestDeparatureLatestArrival>
+
+    <MinForDays>
+      <en>min</en>
+    </MinForDays>
+
+    <MaxForDays>
+      <en>max</en>
+    </MaxForDays>
+
+    <DaysSentenceEnd>
+      <en>days</en>
+    </DaysSentenceEnd>
+
+    <HowManyDaysInDestination>
+      <en>How many days would you like to spend in destination?</en>    
+    </HowManyDaysInDestination>
+    
+    <EarliestDepLatestArrivalQuestion>
+      <en>When is your earliest deparature and latest arrival?</en>
+    </EarliestDepLatestArrivalQuestion>
+
+    <DoneWithDatesEditingBtn>
+      <en>I'm done with dates editing</en>
+    </DoneWithDatesEditingBtn>
+
+    <DepartingAirports>
+      <en>What are departing airports?</en>
+    </DepartingAirports>
+
+    <MyStandardAirsOption>
+      <en>My standard airports</en>
+    </MyStandardAirsOption>
+
+    <NewsletterFrequency>
+      <en>How often would you like to receive newsletter?</en>
+    </NewsletterFrequency> 
 
 
   </module>
