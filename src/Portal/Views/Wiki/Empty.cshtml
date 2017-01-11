@@ -1,15 +1,15 @@
-﻿@model object
+﻿@model Gloobster.Portal.ViewModels.EmptyVM
 
 @{
-    var cls = (Model is string) ? Model : string.Empty;
+    var cls = (Model.Data is string) ? Model.Data : string.Empty;
 }
 
 <p class="empty-block @cls">
     <span class="txt">TXT</span>
     <span class="msg">
-        @Model.W("NoContentLine1")
+        @Model.B.W("NoContentLine1")
         <br />
-        @Model.W("NoContentLine2")
-        <a class="contrib-link" href="#">@Model.W("NoContentBtn")</a>
+        @Model.B.W("NoContentLine2")
+        <a class="contrib-link" href="#">@Model.B.W("NoContentBtn")</a>
     </span>
 </p>

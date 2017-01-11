@@ -84,6 +84,15 @@ var TravelB;
                 popup.setLatLng(latlng);
                 popup.setContent(ppCont);
                 _this.mapObj.openPopup(popup);
+                $(".chat-btn").click(function (e) {
+                    e.preventDefault();
+                    _this.view.hasFullReg(function () {
+                        var $t = $(e.delegateTarget);
+                        var uid = $t.data("uid");
+                        var link = window["messagesLink"] + "/" + uid;
+                        window.open(link, "_blank");
+                    });
+                });
             });
         };
         MapCheckins.prototype.displayPopupMP = function (latlng, id) {

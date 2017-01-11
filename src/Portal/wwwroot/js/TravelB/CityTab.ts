@@ -33,6 +33,22 @@ module TravelB {
 				var tmp = this.checkinTemplate;
 
 				var $u = $(tmp(context));
+
+				$u.find(".chat-btn").click((e) => {
+						e.preventDefault();
+
+						var $t = $(e.target);
+						var uid = $t.data("uid");
+
+						this.v.hasFullReg(() => {
+								var link = `${window["messagesLink"]}/${uid}`;
+								window.open(link, "_blank");
+						});
+
+				});
+
+
+				
 				
 				$listCont.append($u);
 			});

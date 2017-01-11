@@ -37,6 +37,7 @@ namespace Gloobster.Portal.ViewModels
 
                 var article = new ArticleVM
                 {
+                    VM = this,
                     GID = city.GID,
                     Title = text.Title,
                     About = baseSection.Text,
@@ -92,6 +93,7 @@ namespace Gloobster.Portal.ViewModels
 
     public class ArticleVM
     {
+        public WikiHomeViewModel VM { get; set; }
         public int GID { get; set; }
         public string Title { get; set; }
         public string About { get; set; }

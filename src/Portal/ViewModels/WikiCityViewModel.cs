@@ -376,6 +376,13 @@ namespace Gloobster.Portal.ViewModels
         public ViewModelBase B { get; set; }
     }
 
+    public class EmptyVM
+    {
+        public object Data { get; set; }
+
+        public ViewModelBase B { get; set; }
+    }
+
     public class DdVM
     {
         public string Id { get; set; }

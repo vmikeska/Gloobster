@@ -5,8 +5,19 @@
 @using Gloobster.Portal.ViewModels
 @model TripItemViewModel
 
-    <div class="trip-all trip-holder" id="@Model.Id">
-        <a href="/@RoutingConsts.TripEditMenuName/@Model.Id">
+
+@{
+
+
+    string itemLink = $"/{RoutingConsts.TripEditMenuName}/{Model.Id}";
+    if (!Model.IsOwner)
+    {
+        itemLink = $"/{RoutingConsts.TripMenuName}/{Model.Id}";
+    }
+}
+
+<div class="trip-all trip-holder" id="@Model.Id">
+        <a href="@itemLink">
 
             @if (Model.HasSmallPicture)
             {

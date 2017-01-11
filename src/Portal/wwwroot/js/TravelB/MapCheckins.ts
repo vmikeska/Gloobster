@@ -128,7 +128,20 @@ module TravelB {
 				var popup = new L.Popup();
 				popup.setLatLng(latlng);
 				popup.setContent(ppCont);
-				this.mapObj.openPopup(popup);					
+				this.mapObj.openPopup(popup);			
+
+				$(".chat-btn").click((e) => {
+								e.preventDefault();
+
+								this.view.hasFullReg(() => {
+										
+										var $t = $(e.delegateTarget);
+									var uid = $t.data("uid");
+									var link = `${window["messagesLink"]}/${uid}`;
+									window.open(link, "_blank");
+								});
+
+						});
 			});
 
 		}

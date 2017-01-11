@@ -3165,8 +3165,8 @@ footer {
     position: relative;
     padding: 15px;
     margin-bottom: 20px;
-    /*display: inline-block;        
-        width: 95%;*/ }
+    display: inline-block;
+    width: 95%; }
     .trip-detail .details .close {
       position: absolute;
       top: 7px;
@@ -3543,6 +3543,8 @@ footer {
     display: none !important; }
   .trip-share .map-wrapper {
     position: relative; }
+  .trip-share .map {
+    height: 600px; }
   .trip-share .map-logo {
     height: 60px;
     width: 170px;

@@ -30,12 +30,18 @@
 		private regContribute() {
 			$(".contrib-link").click((e) => {
 					e.preventDefault();
-					var $t = $(e.target);
-					var $cont = $t.closest(".empty-cont");
-					if ($cont.length > 0) {
-							var sid = $cont.data("sid");
-							$(`.article_rating[data-id="${sid}"]`).find(".bubble").toggle();
+					
+					if (ViewBase.currentView.fullReg) {
+							var $t = $(e.target);
+							var $cont = $t.closest(".empty-cont");
+							if ($cont.length > 0) {
+									var sid = $cont.data("sid");
+									$(`.article_rating[data-id="${sid}"]`).find(".bubble").toggle();
+							}
+					} else {
+							RegMessages.displayFullRegMessage();
 					}
+					
 			});
 		}
 

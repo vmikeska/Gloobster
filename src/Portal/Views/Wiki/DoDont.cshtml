@@ -18,7 +18,7 @@
 
         @if (!Model.Dos.Any())
         {
-            <div class="wrapper">@Html.Partial("Empty")</div>
+            <div class="wrapper">@Html.Partial("Empty", new EmptyVM { B = Model.B})</div>
         }
         else
         {
@@ -40,7 +40,7 @@
 
         @if (!Model.Dos.Any())
         {
-            <div class="wrapper">@Html.Partial("Empty")</div>
+            <div class="wrapper">@Html.Partial("Empty", new EmptyVM { B = Model.B })</div>
         }
         else
         {

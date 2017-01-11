@@ -66,6 +66,7 @@ namespace Gloobster.Portal.Controllers.Portal
             var user = DB.FOD<UserEntity>(u => u.User_id == userIdObj);
 
             var vm = CreateViewModelInstance<MessageViewModel>();
+            vm.DefaultLangModuleName = "pageMessages";
             vm.OtherUserId = id;
             vm.OtherUserDisplayName = user.DisplayName;
             vm.OtherUserFirstName = user.FirstName;

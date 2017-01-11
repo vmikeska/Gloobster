@@ -26,11 +26,16 @@ var Views;
         WikiPageView.prototype.regContribute = function () {
             $(".contrib-link").click(function (e) {
                 e.preventDefault();
-                var $t = $(e.target);
-                var $cont = $t.closest(".empty-cont");
-                if ($cont.length > 0) {
-                    var sid = $cont.data("sid");
-                    $(".article_rating[data-id=\"" + sid + "\"]").find(".bubble").toggle();
+                if (Views.ViewBase.currentView.fullReg) {
+                    var $t = $(e.target);
+                    var $cont = $t.closest(".empty-cont");
+                    if ($cont.length > 0) {
+                        var sid = $cont.data("sid");
+                        $(".article_rating[data-id=\"" + sid + "\"]").find(".bubble").toggle();
+                    }
+                }
+                else {
+                    RegMessages.displayFullRegMessage();
                 }
             });
         };

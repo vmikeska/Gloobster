@@ -21,7 +21,7 @@
 
     @if (Model.Text.ToLower() == "no content")
     {
-        @Html.Partial("Empty", "noborder")
+        @Html.Partial("Empty", new EmptyVM {B = Model.B, Data = "noborder" } )
     }
     else
     {

@@ -21,6 +21,15 @@ var TravelB;
                 var context = TravelB.CheckinMapping.map(c, CheckinType.City);
                 var tmp = _this.checkinTemplate;
                 var $u = $(tmp(context));
+                $u.find(".chat-btn").click(function (e) {
+                    e.preventDefault();
+                    var $t = $(e.target);
+                    var uid = $t.data("uid");
+                    _this.v.hasFullReg(function () {
+                        var link = window["messagesLink"] + "/" + uid;
+                        window.open(link, "_blank");
+                    });
+                });
                 $listCont.append($u);
             });
         };

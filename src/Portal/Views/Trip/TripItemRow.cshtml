@@ -7,6 +7,12 @@
 
 @{
     string imgLink = Model.HasSmallPicture ? $"/Trip/TripPictureSmall_xs/{Model.Id}" : "/images/placeholder-70.png";
+    
+    string itemLink = $"/{RoutingConsts.TripEditMenuName}/{Model.Id}";
+    if (!Model.IsOwner)
+    {
+        itemLink = $"/{RoutingConsts.TripMenuName}/{Model.Id}";
+    }
 }
 
 <div class="row trip-holder" id="@Model.Id">
@@ -16,7 +22,7 @@
         </div>
     </div>
     <div class="cell">
-        <a href="/@RoutingConsts.TripEditMenuName/@Model.Id"><h3>@Model.Name</h3></a>
+        <a href="@itemLink"><h3>@Model.Name</h3></a>
     </div>
     <div class="cell date-cell">        
         <div>@Model.FromDate.ToString("dd. MMM yyyy", CultureInfo.GetCultureInfo(Model.B.Locale))</div>
@@ -33,7 +39,7 @@
                 </div>
             }
         </div>
-        <span class="nowrap">@Model.Participants.Count @Model.W("FriendsCount")</span>
+        <span class="nowrap">@Model.Participants.Count @Model.B.W("FriendsCount")</span>
     </div>
     <div class="cell">
         @if (Model.IsOwner)
