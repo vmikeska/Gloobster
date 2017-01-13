@@ -14,6 +14,7 @@ namespace PhotosOptimizer
         {
             string[] dirs = Directory.GetDirectories(@"C:\Users\vmike_000\Downloads\CityPhotos\CC");
             string dest = @"C:\Users\vmike_000\Downloads\CityPhotos\Conv";
+            int totalFiles = 0;
             foreach (var dir in dirs)
             {
                 string lastDirName = new DirectoryInfo(dir).Name;
@@ -23,15 +24,21 @@ namespace PhotosOptimizer
 
                 foreach (var file in files)
                 {
+                    totalFiles++;
+
+
+
                     var fullFileName = Path.GetFileName(file);
                     var prms = fullFileName.Split('.');
                     var fileName = prms[0];
                     var ext = prms[1];
 
+                    Console.WriteLine($"{totalFiles} - {fileName}");
+
                     using (var fs = new FileStream(file, FileMode.Open, FileAccess.Read))
                     {
                         var origBmp = new Bitmap(fs);
-                        
+
                         float wRate = 1.0f;
                         float hRate = 1.0f;
 
@@ -46,8 +53,8 @@ namespace PhotosOptimizer
 
                         int newWidth = 1280;
 
-                        int newHeight = (int) ((float) newWidth*(float) hRate);
-                        
+                        int newHeight = (int)((float)newWidth * (float)hRate);
+
                         using (var stream = GeneratePic(origBmp, wRate, hRate, newWidth, newHeight))
                         {
                             var newFileDir = Path.Combine(dest, cc);
@@ -67,9 +74,9 @@ namespace PhotosOptimizer
                         }
 
                     }
-  
+
                 }
-                
+
             }
         }
 
@@ -78,7 +85,7 @@ namespace PhotosOptimizer
             var rect = BitmapUtils.CalculateBestImgCut(origBitmap.Width, origBitmap.Height, rateWidth, rateHeight);
             var cutBmp = BitmapUtils.ExportPartOfBitmap(origBitmap, rect);
             var newBmp = BitmapUtils.ResizeImage(cutBmp, newWidth, newHeight);
-            var jpgStream = BitmapUtils.ConvertBitmapToJpg(newBmp, 50);
+            var jpgStream = BitmapUtils.ConvertBitmapToJpg(newBmp, 70);
 
             jpgStream.Position = 0;
 

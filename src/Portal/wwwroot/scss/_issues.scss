@@ -1,0 +1,86 @@
+
+.issues {
+
+    
+    td {
+        text-align: left;
+
+        border-bottom: 1px solid black;
+        border-right: 1px solid black;
+
+        vertical-align: top;
+    }
+    .issue {
+        background-color: #F0FAFC;
+
+        padding: 10px;
+        
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .issue a {
+        color: darkblue;
+    }
+
+    th {
+        font-size: 25px;
+        background-color: lightslategrey;
+        color: white;
+    }
+
+    .est {
+            border-top: 2px solid white;
+        }
+
+    tr{ 
+        td:first-child {
+            font-size: 25px;
+            background-color: chocolate;
+            color: white;
+        }
+    }
+
+    .active {
+        width: 400px;
+    }
+
+    .service {
+        position: relative;
+        border-bottom: 2px solid black;
+        height: 30px;
+    }
+
+    .estimation {
+        display: inline-block;
+
+        
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 2px;
+        font-weight: bold;
+        background-color: #009EC4;
+        color: white;
+        
+        text-align: center;
+    }
+
+    .set-act {
+        display: inline-block;
+
+        width: 24px;
+        height: 24px;
+
+        position: absolute;
+        top: 0;
+        right: 2px;
+        padding: 2px;
+        background-color: #009EC4;
+        color: white !important;
+        text-align: center;
+        text-decoration: none;
+    }
+
+
+}

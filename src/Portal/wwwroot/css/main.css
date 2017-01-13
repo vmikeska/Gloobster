@@ -954,6 +954,27 @@ footer {
   .popup .close:hover {
     color: darkred; }
 
+.popup-error {
+  text-align: left; }
+  .popup-error span {
+    display: block; }
+  .popup-error .first {
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom: 30px; }
+  .popup-error .second {
+    margin-bottom: 30px; }
+  .popup-error .third {
+    text-align: center; }
+    .popup-error .third .lbtn2 {
+      background-color: #FFC400;
+      font-weight: bold;
+      color: white; }
+      .popup-error .third .lbtn2:hover {
+        background-color: #F56E12; }
+  .popup-error .error {
+    display: none; }
+
 .popup-n {
   margin-bottom: 10px;
   position: relative; }
@@ -6253,3 +6274,63 @@ footer {
     padding: 0;
     margin: 0;
     margin-bottom: 20px; }
+
+.issues td {
+  text-align: left;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+  vertical-align: top; }
+
+.issues .issue {
+  background-color: #F0FAFC;
+  padding: 10px;
+  font-size: 20px;
+  margin-bottom: 10px; }
+
+.issues .issue a {
+  color: darkblue; }
+
+.issues th {
+  font-size: 25px;
+  background-color: lightslategrey;
+  color: white; }
+
+.issues .est {
+  border-top: 2px solid white; }
+
+.issues tr td:first-child {
+  font-size: 25px;
+  background-color: chocolate;
+  color: white; }
+
+.issues .active {
+  width: 400px; }
+
+.issues .service {
+  position: relative;
+  border-bottom: 2px solid black;
+  height: 30px; }
+
+.issues .estimation {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 2px;
+  font-weight: bold;
+  background-color: #009EC4;
+  color: white;
+  text-align: center; }
+
+.issues .set-act {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 0;
+  right: 2px;
+  padding: 2px;
+  background-color: #009EC4;
+  color: white !important;
+  text-align: center;
+  text-decoration: none; }

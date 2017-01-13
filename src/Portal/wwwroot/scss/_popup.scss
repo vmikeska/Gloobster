@@ -64,6 +64,42 @@
 }
 
 
+.popup-error {    
+    text-align: left;
+
+    span {
+        display: block;        
+    }
+
+    .first {
+        font-size: 2em;
+        font-weight: bold;
+        margin-bottom: 30px;
+    }
+
+    .second {
+        margin-bottom: 30px;
+    }
+
+    .third {
+        text-align: center;
+
+        .lbtn2 {
+            background-color: $yellow;
+            font-weight: bold;
+            color: white;
+
+            &:hover {
+                background-color: $orange;
+            }
+        }
+    }
+
+    .error {
+        display: none;
+    }
+}
+
 .popup-n{
     margin-bottom: 10px;
     position: relative;

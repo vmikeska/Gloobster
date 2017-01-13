@@ -160,7 +160,9 @@ module Planning {
 							callback();
 						}
 					})
-					.error(() => { alert("error") });
+					.error(() => {
+							Common.ErrorDialog.show("getGeoJson");
+					});
 			}
 		}
 

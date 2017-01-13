@@ -41,7 +41,7 @@
         <li data-value="{{userId}}"><span class="thumb"><img src="{{photoUrl}}"></span><span class="txt">{{displayName}}</span></li>
     </script>
 
-    <script id="confirmDialog-template" type="text/x-handlebars-template">
+<script id="confirmDialog-template" type="text/x-handlebars-template">
         <div class="popup" id="popup-confirm">
             <div>
                 <h3>{{title}}</h3>
@@ -55,7 +55,26 @@
         </div>
     </script>
 
-    <script id="infoDialog-template" type="text/x-handlebars-template">
+<script id="error-dialog-template" type="text/x-handlebars-template">
+    <div class="popup popup-error" id="popup-error" style="display: block">
+        <div>
+            <span class="first">
+                OOPS :(
+            </span>
+            <span class="second">
+                @Model.W("GeneralErrorMessageText", "layout")
+            </span>
+            <span class="third">
+                <a class="lbtn2 refresh-btn" href="#">@Model.W("GeneralErrorMessageRefreshBtn", "layout")</a>
+            </span>
+            <span class="error">
+                {{error}}
+            </span>
+        </div>
+    </div>
+</script>
+
+<script id="infoDialog-template" type="text/x-handlebars-template">
         <div class="popup" id="popup-info">
             <div>
                 <h3>{{title}}</h3>

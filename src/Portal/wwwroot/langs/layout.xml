@@ -91,9 +91,13 @@
     <CookiesRequiredBtn>
       <en>I understand</en>
     </CookiesRequiredBtn>
+    
+    <GeneralErrorMessageText>
+      <en>Sorry, something went wrong, please refresh the page and start over.</en>
+    </GeneralErrorMessageText>
 
-
-
-
+    <GeneralErrorMessageRefreshBtn>
+      <en>Refresh page</en>
+    </GeneralErrorMessageRefreshBtn>
 
   </module>

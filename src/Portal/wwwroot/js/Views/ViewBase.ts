@@ -211,7 +211,9 @@ module Views {
 			var request = new Common.RequestSender(endpoint, null, true);
 			request.params = params;
 			request.onSuccess = callback;
-			request.onError = response => { alert(`error: ${endpointName}`) };
+			request.onError = response => {
+					Common.ErrorDialog.show(endpointName);					
+			};
 			request.sendGet();
 		}
 
@@ -223,7 +225,9 @@ module Views {
 			var request = new Common.RequestSender(endpoint, data, true);
 			request.serializeData();
 			request.onSuccess = callback;
-			request.onError = response => { alert('error') };
+			request.onError = response => {
+					Common.ErrorDialog.show(endpointName);
+			};
 			request.sendPost();
 		}
 
@@ -235,7 +239,9 @@ module Views {
 			var request = new Common.RequestSender(endpoint, data, true);
 			request.serializeData();
 			request.onSuccess = callback;
-			request.onError = response => { alert('error') };
+			request.onError = response => {
+					Common.ErrorDialog.show(endpointName);					
+			};
 			request.sendPut();
 		}
 
@@ -247,7 +253,9 @@ module Views {
 			var request = new Common.RequestSender(endpoint, null, true);
 			request.params = params;
 			request.onSuccess = callback;
-			request.onError = response => { alert('error') };
+			request.onError = response => {
+					Common.ErrorDialog.show(endpointName);					
+			};
 			request.sendDelete();
 		}
 

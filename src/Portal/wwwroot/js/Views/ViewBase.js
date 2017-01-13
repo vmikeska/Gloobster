@@ -164,7 +164,9 @@ var Views;
             var request = new Common.RequestSender(endpoint, null, true);
             request.params = params;
             request.onSuccess = callback;
-            request.onError = function (response) { alert("error: " + endpointName); };
+            request.onError = function (response) {
+                Common.ErrorDialog.show(endpointName);
+            };
             request.sendGet();
         };
         ViewBase.prototype.apiPost = function (endpointName, data, callback) {
@@ -173,7 +175,9 @@ var Views;
             var request = new Common.RequestSender(endpoint, data, true);
             request.serializeData();
             request.onSuccess = callback;
-            request.onError = function (response) { alert('error'); };
+            request.onError = function (response) {
+                Common.ErrorDialog.show(endpointName);
+            };
             request.sendPost();
         };
         ViewBase.prototype.apiPut = function (endpointName, data, callback) {
@@ -182,7 +186,9 @@ var Views;
             var request = new Common.RequestSender(endpoint, data, true);
             request.serializeData();
             request.onSuccess = callback;
-            request.onError = function (response) { alert('error'); };
+            request.onError = function (response) {
+                Common.ErrorDialog.show(endpointName);
+            };
             request.sendPut();
         };
         ViewBase.prototype.apiDelete = function (endpointName, params, callback) {
@@ -191,7 +197,9 @@ var Views;
             var request = new Common.RequestSender(endpoint, null, true);
             request.params = params;
             request.onSuccess = callback;
-            request.onError = function (response) { alert('error'); };
+            request.onError = function (response) {
+                Common.ErrorDialog.show(endpointName);
+            };
             request.sendDelete();
         };
         ViewBase.prototype.registerTemplate = function (name) {

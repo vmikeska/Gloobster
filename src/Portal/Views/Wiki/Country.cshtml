@@ -7,7 +7,7 @@
 @{
     ViewBag.BodyClass = "wiki-page";
     ViewBag.MenuGroup = "Wiki";
-    Layout = "_LayoutNew";
+    ViewData["Title"] = "gloobster.com - wiki - " + Model.Texts.Title;
 }
 
 @if (GloobsterConfig.UseMiniScripts)

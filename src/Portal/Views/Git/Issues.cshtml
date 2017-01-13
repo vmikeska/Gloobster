@@ -1,65 +1,85 @@
-﻿@using System.Threading.Tasks
+﻿@using System
+@using System.Threading.Tasks
 @using Gloobster.Entities
 @using Gloobster.Portal.Controllers.Portal
 @using Octokit
-@model IssuesModel
+@model IssuesViewModel
 
-@{
-    Layout = "";
-
+@{    
+    ViewBag.BodyClass = "issues";
     var m = Model;
 }
 
-<style>
-    
-
-     table {
-         /*border: 1px solid black;*/
-     }
-    td {
-        border-bottom: 1px solid black;
-        border-right: 1px solid black;
-    }
-    .issue {
-        border-bottom: 1px solid red;
-        font-size: 20px;
-        margin-bottom: 10px;
-    }
-
-    .issue a {
-        color: darkblue;
-    }
-
-    th {
-        font-size: 25px;
-        background-color: lightslategrey;
-        color: white;
-    }
-
-    tr td:first-child {
-        font-size: 25px;
-        background-color: chocolate;
-        color: white;
-    }
-
-</style>
-
-
+<script type="text/javascript" src="/js/Views/IssuesView.js"></script>
 <table>
     <tr>
-        <th>Stage</th>
+        @foreach (string category in Model.Categories)
+        {
+            string txt = category;
+            if (category != "Stage")
+            {
+                txt = category.Replace("c-", string.Empty);
+            }
+
+            <th>
+                
+                <div>@txt</div>
+                <div class="est">@(Model.GetEstimationByTag(Model.Issues, category) / 8.0) days</div>
+            </th>
+        }
         
-        <th>Pins</th>
-        <th>Fly</th>
-        <th>TravelB</th>
-        <th>Trips</th>
-        <th>Wiki</th>
-        <th>Other</th>
-        <th>Presentation</th>
-        <th>Marketing</th>
+        @foreach (string importance in Model.Importances)
+        {
+            <tr>
+                <td><div>
+                        @importance.Replace("i-", string.Empty)
+                    </div>
+                    <div class="est">@(Model.GetEstimationByTag(Model.Issues, importance) / 8.0) days</div>
+                </td>
+                
+                @foreach (string category in Model.Categories)
+                {
+                    if (category == "Stage")
+                    {
+                        continue;
+                    }
+
+                    <td>
+                        
+                        @{
+                            var issues = Model.GetIssues(category, importance);
+                        }
+
+                        @foreach (var issue in issues)
+                        {
+                            <div class="issue">
+                                <div class="service">
+                                    <div class="estimation">@Model.GetHoursEstimation(issue)</div>
+                                    <a class="set-act" href="#">D</a>
+                                </div>
+                                <div>
+                                    <a href="@issue.HtmlUrl">@issue.Title</a>
+                                </div>
+                                <div class="issue-body hidden">
+                                    @issue.Body
+                                </div>
+
+                                
+                            </div>
+                        }
+                    </td>
+                }
+
+            </tr>
+
+        }
+
     </tr>
-    @Html.Partial("IssueGroup", new FitlerModel { Model = Model, ActFilter = "Bug"})
-    @Html.Partial("IssueGroup", new FitlerModel { Model = Model, ActFilter = "Backlog" })
-    @Html.Partial("IssueGroup", new FitlerModel { Model = Model, ActFilter = "Plans" })
-    @Html.Partial("IssueGroup", new FitlerModel { Model = Model, ActFilter = "Visions" })
 </table>
+
+<script>
+
+    function onBodyLoad() {
+        currentView = new Views.IssuesView();
+    }
+</script>

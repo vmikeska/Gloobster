@@ -122,7 +122,9 @@ var Planning;
                         callback();
                     }
                 })
-                    .error(function () { alert("error"); });
+                    .error(function () {
+                    Common.ErrorDialog.show("getGeoJson");
+                });
             }
         };
         MapCountries.prototype.getLayer = function (e) {

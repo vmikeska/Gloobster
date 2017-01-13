@@ -37,6 +37,27 @@
 	 }
 	}
 
+		export class ErrorDialog {
+
+			public static show(error) {
+
+					var v = Views.ViewBase.currentView;
+
+					var tmp = v.registerTemplate("error-dialog-template");
+
+					var $h = $(tmp({ error: error }));
+
+					$("body").append($h);
+
+					$h.find(".refresh-btn").click((e) => {
+							e.preventDefault();
+
+							window.location.reload(true);
+
+					});
+			}
+		}
+
 	export class InfoDialog {
 		private template;
 		private $html;

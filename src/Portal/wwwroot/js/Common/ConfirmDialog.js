@@ -30,6 +30,22 @@ var Common;
         return InprogressDialog;
     }());
     Common.InprogressDialog = InprogressDialog;
+    var ErrorDialog = (function () {
+        function ErrorDialog() {
+        }
+        ErrorDialog.show = function (error) {
+            var v = Views.ViewBase.currentView;
+            var tmp = v.registerTemplate("error-dialog-template");
+            var $h = $(tmp({ error: error }));
+            $("body").append($h);
+            $h.find(".refresh-btn").click(function (e) {
+                e.preventDefault();
+                window.location.reload(true);
+            });
+        };
+        return ErrorDialog;
+    }());
+    Common.ErrorDialog = ErrorDialog;
     var InfoDialog = (function () {
         function InfoDialog() {
             this.template = Views.ViewBase.currentView.registerTemplate("infoDialog-template");

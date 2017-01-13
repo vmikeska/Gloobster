@@ -10,7 +10,7 @@
 @Html.Partial("GAnalytics")
 
 @{
-    Layout = "_LayoutNew";
+    ViewData["Title"] = "gloobster.com - user detail";
     ViewBag.BodyClass = "user-detail";
 
     bool isSameUser = Model.DisplayedUserId == Model.UserId;
