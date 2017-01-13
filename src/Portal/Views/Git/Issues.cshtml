@@ -54,7 +54,12 @@
                         {
                             <div class="issue">
                                 <div class="service">
-                                    <div class="estimation">@Model.GetHoursEstimation(issue)</div>
+                                    
+                                    @{
+                                        int hrs = Model.GetHoursEstimation(issue);
+                                    }
+
+                                    <div class="estimation @(hrs == 0 ? "unestimated" : string.Empty)">@hrs</div>
                                     <a class="set-act" href="#">D</a>
                                 </div>
                                 <div>

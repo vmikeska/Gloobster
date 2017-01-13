@@ -60,10 +60,14 @@
         left: 0;
         padding: 2px;
         font-weight: bold;
-        background-color: #009EC4;
+        background-color: $info-blue2;
         color: white;
         
         text-align: center;
+
+        &.unestimated {
+            background-color: $orange;
+        }
     }
 
     .set-act {

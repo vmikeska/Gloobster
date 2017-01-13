@@ -6321,6 +6321,8 @@ footer {
   background-color: #009EC4;
   color: white;
   text-align: center; }
+  .issues .estimation.unestimated {
+    background-color: #F56E12; }
 
 .issues .set-act {
   display: inline-block;
