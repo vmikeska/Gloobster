@@ -201,8 +201,10 @@ else
                         <span class="item-title">@Model.W("HomeCity")</span>
                     </td>
                     <td>
-                        <div id="homeCity" class="dropdown">
+                        <div id="homeCity" class="dropdown place-combo">
                             <input class="inputed" type="text" placeholder="@Model.W("CityPlaceholder")" value="">
+                            <img class="loader" src="/images/loader-gray.gif" style="display: none" />
+                            <span class="icon-logo-pin"></span>
                             <ul></ul>
                         </div>
                     </td>
@@ -212,8 +214,10 @@ else
                         <span class="item-title">@Model.W("CurrentCity")</span>
                     </td>
                     <td>
-                        <div id="currentCity" class="dropdown">
+                        <div id="currentCity" class="dropdown place-combo">
                             <input class="inputed" type="text" placeholder="@Model.W("CityPlaceholder")" value="">
+                            <img class="loader" src="/images/loader-gray.gif" style="display: none" />
+                            <span class="icon-logo-pin"></span>
                             <ul></ul>
                         </div>
                     </td>
