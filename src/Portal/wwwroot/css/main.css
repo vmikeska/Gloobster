@@ -5,6 +5,30 @@ body {
   text-align: center;
   font-size: 20px; }
 
+.place-combo {
+  position: relative; }
+  .place-combo input {
+    padding-left: 28px !important; }
+  .place-combo .icon-logo-pin {
+    display: inline-block;
+    color: #AAE0ED;
+    position: absolute;
+    font-size: 1.2em;
+    top: 10px;
+    left: 8px; }
+
+.air-combo {
+  position: relative; }
+  .air-combo input {
+    padding-left: 32px !important; }
+  .air-combo .icon-airplane {
+    color: #AAE0ED;
+    display: inline-block;
+    position: absolute;
+    font-size: 1.1em;
+    top: 12px;
+    left: 8px; }
+
 .nowrap {
   white-space: nowrap; }
 
@@ -1200,6 +1224,9 @@ footer {
 
 .icon-yelp:before {
   content: "\ead7"; }
+
+.icon-logo-pin:before {
+  content: "\e925"; }
 
 .icon-arrow-left:before {
   content: "\e921"; }

@@ -123,6 +123,42 @@ body {
     font-size: 20px;
 }
 
+.place-combo {
+    position: relative;
+
+    input {
+        padding-left: 28px !important;
+    }
+
+    .icon-logo-pin {
+        display: inline-block;
+        color: $input-margin-blue;
+
+        position: absolute;
+        font-size: 1.2em;
+        top: 10px;
+        left: 8px;
+    }
+}
+
+.air-combo {
+    position: relative;
+
+    input {
+        padding-left: 32px !important;
+    }
+
+    .icon-airplane {
+        color: $input-margin-blue;
+        display: inline-block;
+
+        position: absolute;
+        font-size: 1.1em;
+        top: 12px;
+        left: 8px;
+    }
+}
+
 .nowrap {
     white-space: nowrap;
 }

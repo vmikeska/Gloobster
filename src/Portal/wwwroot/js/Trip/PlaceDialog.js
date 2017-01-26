@@ -258,7 +258,7 @@ var Trip;
         PlaceDialog.prototype.getIcon = function (sourceType) {
             switch (sourceType) {
                 case SourceType.FB:
-                    return "icon-facebook";
+                    return "icon-facebook2";
                 case SourceType.S4:
                     return "icon-foursquare";
                 case SourceType.Yelp:

@@ -45,32 +45,32 @@ module Trip {
 				this.dialogManager.initDescription(data.description, TripEntityType.Place);
 
 				if (data.wantVisit) {
-					data.wantVisit.forEach((place) => {
+						data.wantVisit.forEach((place) => {
 						this.addPlaceToVisit(place.id, place.selectedName, place.sourceType, place.sourceId);
-					});
+						});
 				}
 
 				this.files = this.dialogManager.createFilesInstance(data.id, TripEntityType.Place);
 				this.files.setFiles(data.files, this.dialogManager.planner.trip.tripId, data.filesPublic);				
-			}
+				}
 
 			private createNameSearch(data) {
 
 				var $c = $("#cities");
 					var c = new Common.PlaceSearchConfig();
-			c.providers = "0,1,2,3,4";
-			c.selOjb = $c;
-			c.minCharsToSearch = 1;
-			c.clearAfterSearch = false;
-			c.customSelectedFormat = (place) => this.placeNameCustom(place);
+					c.providers = "0,1,2,3,4";
+					c.selOjb = $c;
+					c.minCharsToSearch = 1;
+					c.clearAfterSearch = false;
+					c.customSelectedFormat = (place) => this.placeNameCustom(place);
 
-			this.placeSearch = new Common.PlaceSearchBox(c);
-			$c.change((e, req, place) => this.onPlaceSelected(req, place));
+					this.placeSearch = new Common.PlaceSearchBox(c);
+					$c.change((e, req, place) => this.onPlaceSelected(req, place));
 
-			if (data.place) {
-				this.placeSearch.setText(data.place.selectedName);
-			}
-		}
+					if (data.place) {
+						this.placeSearch.setText(data.place.selectedName);
+					}
+				}
 
 		private placeNameCustom(place) {
 			var name = "";
@@ -331,7 +331,7 @@ module Trip {
 
 			switch (sourceType) {
 			case SourceType.FB:
-				return "icon-facebook";
+				return "icon-facebook2";
 			case SourceType.S4:
 				return "icon-foursquare";
 			case SourceType.Yelp:

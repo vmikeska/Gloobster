@@ -127,9 +127,10 @@
 		<div class="place-detail details">
 			
             <div class="the-first">
-                <div id="cities" class="dropdown">
+                <div id="cities" class="dropdown place-combo">
                     <input class="inputed" type="text" placeholder="@Model.W("PlaceName")">
                     <img class="loader" src="/images/loader-gray.gif" style="display: none" />
+                    <span class="icon-logo-pin"></span>
                     <ul></ul>
                 </div>		
             </div>
@@ -142,9 +143,10 @@
                         <div class="title">@Model.W("AddressStay")</div>
                         
                         <div class="cont">
-                            <div id="stayPlace" class="dropdown">
+                            <div id="stayPlace" class="dropdown place-combo">
                                 <input class="inputed" type="text" placeholder="@Model.W("SearchForPlace")">
                                 <img class="loader" src="/images/loader-gray.gif" style="display: none" />
+                                <span class="icon-logo-pin"></span>
                                 <ul></ul>
                             </div>
                             <input id="stayAddress" class="inputed text-address" type="text" placeholder="@Model.W("TextAddress")">
@@ -155,9 +157,10 @@
                         <div class="title">@Model.W("PlacesToVisit")</div>
                         
                         <div class="cont">
-                            <div id="placeToVisit" class="dropdown">
+                            <div id="placeToVisit" class="dropdown place-combo">
                                 <input class="inputed" type="text" placeholder="@Model.W("PlacesToVisitPlaceholder")">
                                 <img class="loader" src="/images/loader-gray.gif" style="display: none" />
+                                <span class="icon-logo-pin"></span>
                                 <ul></ul>
                             </div>
                         </div>
@@ -282,12 +285,14 @@
             </div>
 
             <div id="flightDetails" style="display: none">
-                <div id="airportFrom" class="dropdown">
+                <div id="airportFrom" class="dropdown air-combo">
                     <input class="inputed" type="text" placeholder="@Model.W("FromAirport")">
+                    <span class="icon-airplane"></span>
                     <ul></ul>
                 </div>
-                <div id="airportTo" class="dropdown">
+                <div id="airportTo" class="dropdown air-combo">
                     <input class="inputed" type="text" placeholder="@Model.W("ToAirport")">
+                    <span class="icon-airplane"></span>
                     <ul></ul>
                 </div>
             </div>

@@ -54,8 +54,8 @@
     
 @if (!Model.CookiesConfirmed)
 {
-    <div class="cookies-info">@Model.W("CookiesRequiredText") 
-        <a id="confirmCookies" href="#" class="lbtn2 ok-btn">@Model.W("CookiesRequiredBtn")</a>
+    <div class="cookies-info">@Model.W("CookiesRequiredText", "layout") 
+        <a id="confirmCookies" href="#" class="lbtn2 ok-btn">@Model.W("CookiesRequiredBtn", "layout")</a>
     </div>
 }
 

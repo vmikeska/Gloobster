@@ -27,9 +27,8 @@ module Common {
 					e.stopPropagation();
 			});
 
-			var source = $("#placeItem-template").html();
-			this.template = Handlebars.compile(source);
-
+			this.template = Views.ViewBase.currentView.registerTemplate("placeItem-template");
+				
 			this.$input.focus((e) => {
 				$(e.target).val("");
 			});
@@ -162,7 +161,7 @@ module Common {
 		private getIconForSearch(sourceType: SourceType) {
 			switch (sourceType) {
 			case SourceType.FB:
-				return "icon-facebook";
+				return "icon-facebook2";
 			case SourceType.City:
 				return "icon-city";
 			case SourceType.Country:

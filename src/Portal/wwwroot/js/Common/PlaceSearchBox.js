@@ -9,8 +9,7 @@ var Common;
             this.$input.change(function (e) {
                 e.stopPropagation();
             });
-            var source = $("#placeItem-template").html();
-            this.template = Handlebars.compile(source);
+            this.template = Views.ViewBase.currentView.registerTemplate("placeItem-template");
             this.$input.focus(function (e) {
                 $(e.target).val("");
             });
@@ -120,7 +119,7 @@ var Common;
         PlaceSearchBox.prototype.getIconForSearch = function (sourceType) {
             switch (sourceType) {
                 case SourceType.FB:
-                    return "icon-facebook";
+                    return "icon-facebook2";
                 case SourceType.City:
                     return "icon-city";
                 case SourceType.Country:
