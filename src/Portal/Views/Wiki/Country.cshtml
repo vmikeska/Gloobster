@@ -19,8 +19,9 @@ else
     <script type="text/javascript" src="/js/Views/WikiPageView.js"></script>
 }
 
+<div class="wrapper">
 
-@Html.Partial("GAnalytics")
+    @Html.Partial("GAnalytics")
 
     @Html.Partial("PageAdmin")
 
@@ -52,8 +53,6 @@ else
 
     @Html.Partial("StandardBlock", @Model.Section("AboutPeople"))
 
-    @Html.Partial("DoDont", Model.DoDonts())
-
     @Html.Partial("StandardBlock", @Model.Section("Languages"))
 
     @Html.Partial("StandardBlock", @Model.Section("Safety"))
@@ -62,11 +61,14 @@ else
 
     @Html.Partial("StandardBlock", @Model.Section("Gay"))
 
-
     @Html.Partial("StandardBlock", @Model.Section("Internet"))
+
     @Html.Partial("StandardBlock", @Model.Section("SimCards"))
-    
+
+    @Html.Partial("DoDont", Model.DoDonts())
 
     @Html.Partial("GeoLinks")
+    
+</div>
 
-    @Html.Partial("PageScripts")
+@Html.Partial("PageScripts")

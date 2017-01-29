@@ -3,17 +3,12 @@
 @model BlockVM
 
 
-<div class="blue-block wrapper adminBlock empty-cont" data-sid="@Model.SectionId" data-at="standard" data-id="@Model.SectionId">
+<div class="blue-block adminBlock empty-cont" data-sid="@Model.SectionId" data-at="standard" data-id="@Model.SectionId">
     
-        <div class="about">
-            <h3>@Model.B.W("About")</h3>
-            <p>
-
-                <table>
-                    @Html.Partial("TableItem", Model.InfoByName("PopulationCity"))
-                </table>
-
-            </p>
+        <div class="about">            
+            <table>
+                @Html.Partial("TableItem", Model.InfoByName("PopulationCity"))
+            </table>
         </div>
     
         @Html.Partial("NewArticleRating")

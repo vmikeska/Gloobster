@@ -6,7 +6,7 @@
 
 @Html.Partial("BlockHeader")
 
-<div class="wrapper">
+<div>
     <table class="tbl">
 
         @foreach (var item in Model.TableItems)
@@ -32,7 +32,7 @@
 
     @if (Model.Text.ToLower() == "no content")
     {
-        <div class="wrapper empty-cont" data-sid="@Model.SectionId">@Html.Partial("Empty", new EmptyVM { B = Model.B })</div>
+        <div class="empty-cont" data-sid="@Model.SectionId">@Html.Partial("Empty", new EmptyVM { B = Model.B })</div>
     }
     else
     {

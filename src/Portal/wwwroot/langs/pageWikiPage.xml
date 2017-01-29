@@ -1,10 +1,6 @@
 ﻿
   <module name="pageWikiPage">    
 
-      <About>
-        <en>About</en>        
-      </About>
-
       <PopulationCity>
         <en>Population</en>
       </PopulationCity>

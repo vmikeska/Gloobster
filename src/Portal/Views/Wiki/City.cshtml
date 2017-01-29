@@ -23,7 +23,7 @@ else
 }
 @Html.Partial("GAnalytics")
 
-<div class="page-all">
+<div class="wrapper">
 
     @Html.Partial("PageAdmin")
 
@@ -44,32 +44,34 @@ else
 
     @Html.Partial("TagsBlock", Model.Sights())
 
-    @Html.Partial("DoDont", Model.DoDonts())
-
     @Html.Partial("StandardBlock", Model.Section("NightLife"))
+
     @Html.Partial("Table3Block", Model.NightLifePrices())
+
     @Html.Partial("TagsBlock", Model.BarDistricts())
 
     @Html.Partial("Table1Block", Model.Restaurant())
 
     @Html.Partial("Table1Block", Model.Transport())
 
-    <div style="min-height: 270px">
-        @Html.Partial("Table1Block", Model.Accommodation())
-    </div>
-
+    @Html.Partial("Table1Block", Model.Accommodation())
+    
     @Html.Partial("StandardBlock", Model.Section("Safety"))
+
     @Html.Partial("StandardBlock", Model.Section("MuseumsAndTheater"))
+
     @Html.Partial("StandardBlock", Model.Section("Sport"))
+    
+    @Html.Partial("DoDont", Model.DoDonts())
 
     @Html.Partial("ArticlePhotos", new PhotosVM
-{
-    Photos = Model.Photos.Where(p => p.Confirmed).ToList(),
-    ArticleId = Model.ArticleId,
-    Admin = false,
-    UserIsAdmin = Model.IsAdmin,
-    B = Model
-})
+    {
+        Photos = Model.Photos.Where(p => p.Confirmed).ToList(),
+        ArticleId = Model.ArticleId,
+        Admin = false,
+        UserIsAdmin = Model.IsAdmin,
+        B = Model
+    })
 
     @Html.Partial("GeoLinks")
 

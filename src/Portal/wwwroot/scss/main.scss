@@ -165,6 +165,11 @@ body {
 
 .master-cont {
     min-height: 600px;
+
+    @include below-width(1310) {
+        padding-left: 6px;
+        padding-right: 6px;
+    }
 }
 
 a {
@@ -454,13 +459,18 @@ h1{
 }
 
 
-p{
+/*p{
     max-width: 1280px;
     margin-left: auto;
     margin-right: auto;
     text-align: left;
     padding-left: 15px;
     padding-right: 15px;
+}*/
+
+p {
+    padding: 0;
+    margin: 0;
 }
 
  .photo-button{ 

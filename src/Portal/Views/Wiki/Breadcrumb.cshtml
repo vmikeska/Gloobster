@@ -3,7 +3,7 @@
 @using Gloobster.Portal.ViewModels
 @model WikiModelBase
 
-<div class="breadcrumb wrapper">
+<div class="breadcrumb">
 
     @{
         var bc = Model.GetBreadcrumb();
@@ -21,7 +21,7 @@
         else
         {
             <a href="@item.Link">@item.Name</a>
-            @: &gt;
+            <span class="arrow">&gt;</span>
         }
     }
 </div>

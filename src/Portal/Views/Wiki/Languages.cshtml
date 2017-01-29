@@ -2,9 +2,9 @@
 @using Gloobster.Portal.ViewModels
 @model WikiModelBase
 
-<div class="langs wrapper">
+<div class="langs">
     @foreach (var item in Model.LangVersions)
     {
-        <a class="tag" href="@($"/wiki/{item.Language}/{item.LinkName}")">@Model.GetLangName(item.Language)</a>
+        <a class="lang lbtn2" href="@($"/wiki/{item.Language}/{item.LinkName}")">@Model.GetLangName(item.Language)</a>
     }
 </div>

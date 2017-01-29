@@ -23,7 +23,14 @@
 
     <ArticlesHelpUs>
       <en>Help us contribute to these articles</en>
-    </ArticlesHelpUs> 
+    </ArticlesHelpUs>
 
+    <ContributionThanksTitle>
+      <en>Many thanks</en>
+    </ContributionThanksTitle>
+
+    <ContributionThanksBody>
+      <en>Many thanks for your contribution, our content administrators will process it ASAP</en>
+    </ContributionThanksBody>
 
   </module>

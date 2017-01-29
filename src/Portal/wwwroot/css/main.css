@@ -34,6 +34,10 @@ body {
 
 .master-cont {
   min-height: 600px; }
+  @media screen and (max-width: 1310px) {
+    .master-cont {
+      padding-left: 6px;
+      padding-right: 6px; } }
 
 a {
   color: #3298C1; }
@@ -144,7 +148,7 @@ textarea {
   border-color: #AAE0ED;
   color: #9999B1; }
 
-.lbtn, .photo-button label, .wiki-page .langs a {
+.lbtn, .photo-button label {
   border-style: solid;
   border-width: 0;
   border-radius: 4px;
@@ -255,13 +259,17 @@ h1 {
   padding-left: 15px;
   padding-right: 15px; }
 
+/*p{
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+    padding-left: 15px;
+    padding-right: 15px;
+}*/
 p {
-  max-width: 1280px;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: left;
-  padding-left: 15px;
-  padding-right: 15px; }
+  padding: 0;
+  margin: 0; }
 
 .photo-button {
   text-decoration: none; }
@@ -386,7 +394,7 @@ button:active {
     display: inline-block;
     vertical-align: top;
     /*border: 1px solid red;*/ }
-    .comments .txt-input .btn .lbtn, .comments .txt-input .btn .photo-button label, .photo-button .comments .txt-input .btn label, .comments .txt-input .btn .wiki-page .langs a, .wiki-page .langs .comments .txt-input .btn a {
+    .comments .txt-input .btn .lbtn, .comments .txt-input .btn .photo-button label, .photo-button .comments .txt-input .btn label {
       color: white;
       background-color: #3298C1; }
 
@@ -1068,7 +1076,7 @@ footer {
   .popup-share .htbl .right {
     vertical-align: middle;
     padding: 16px; }
-    .popup-share .htbl .right .lbtn, .popup-share .htbl .right .photo-button label, .photo-button .popup-share .htbl .right label, .popup-share .htbl .right .wiki-page .langs a, .wiki-page .langs .popup-share .htbl .right a {
+    .popup-share .htbl .right .lbtn, .popup-share .htbl .right .photo-button label, .photo-button .popup-share .htbl .right label {
       color: white;
       background-color: #3298C1; }
 
@@ -1994,7 +2002,7 @@ footer {
       height: 170px; }
     .wiki .wiki_info .block .btn {
       height: 50px; }
-      .wiki .wiki_info .block .btn .lbtn, .wiki .wiki_info .block .btn .photo-button label, .photo-button .wiki .wiki_info .block .btn label, .wiki .wiki_info .block .btn .wiki-page .langs a, .wiki-page .langs .wiki .wiki_info .block .btn a {
+      .wiki .wiki_info .block .btn .lbtn, .wiki .wiki_info .block .btn .photo-button label, .photo-button .wiki .wiki_info .block .btn label {
         color: #3298C1;
         background-color: #F5C519; }
 
@@ -2110,17 +2118,16 @@ footer {
 
 .wiki-page {
   text-align: left; }
-  .wiki-page .page-all {
-    padding-left: 6px;
-    padding-right: 6px; }
   .wiki-page h1 {
     font-size: 1.4em; }
+  .wiki-page p {
+    margin-bottom: 1em; }
   .wiki-page .titlePhoto {
     position: relative; }
     .wiki-page .titlePhoto img {
       width: 100%;
       margin: 0;
-      border-radius: 4px; }
+      border-radius: 2px; }
     .wiki-page .titlePhoto .h-cont {
       position: absolute;
       left: 0;
@@ -2128,19 +2135,18 @@ footer {
       width: 100%;
       padding-top: 10px;
       padding-bottom: 10px;
-      background-image: -webkit-linear-gradient(rgba(0, 0, 0, 0.4), transparent);
-      background-image: linear-gradient(rgba(0, 0, 0, 0.4), transparent); }
+      border-top-left-radius: 2px;
+      border-top-right-radius: 2px;
+      background-color: rgba(0, 0, 0, 0.5); }
       .wiki-page .titlePhoto .h-cont h1 {
         color: white;
         padding: 0;
         margin: 0;
         margin-left: 10px; }
   .wiki-page .empty-block {
-    border: 3px dotted lightgray;
+    border: 3px dotted #BCB3B8;
     border-radius: 4px;
     padding: 16px;
-    margin-right: 8px;
-    margin-left: 8px;
     margin-top: 10px;
     margin-bottom: 10px; }
     .wiki-page .empty-block.noborder {
@@ -2150,11 +2156,9 @@ footer {
       vertical-align: top; }
     .wiki-page .empty-block .txt {
       text-decoration: line-through;
-      font-size: 60px;
-      color: gray;
-      margin-right: 15px; }
-    .wiki-page .empty-block .msg {
-      /*line-height: 78px;*/ }
+      margin-right: 16px;
+      font-size: 3em;
+      color: #BCB3B8; }
   .wiki-page .admin-block-edit textarea {
     width: 100%;
     height: 150px;
@@ -2267,7 +2271,7 @@ footer {
       border-radius: 2px;
       padding: 5px; }
     .wiki-page .tbl .icon-plus:hover, .wiki-page .tbl .icon-minus:hover {
-      color: #005476; }
+      color: #F56E12; }
     .wiki-page .tbl .active {
       color: #F56E12 !important; }
   .wiki-page .breadcrumb {
@@ -2275,31 +2279,34 @@ footer {
     margin-bottom: 10px; }
     .wiki-page .breadcrumb a {
       text-decoration: none;
-      color: #65BDD7; }
+      color: #3298C1; }
+    .wiki-page .breadcrumb .arrow {
+      font-weight: bold; }
   .wiki-page .langs {
     margin-bottom: 10px; }
-    .wiki-page .langs a {
-      line-height: inherit;
-      background-color: #65BDD7;
-      color: white; }
+    .wiki-page .langs .lang {
+      color: white;
+      background-color: #3298C1; }
+      .wiki-page .langs .lang:hover {
+        background-color: #F56E12; }
   .wiki-page .title-photo img {
     border-radius: 4px; }
-  .wiki-page .blue-block h3 {
-    color: #009dc4; }
   .wiki-page .blue-block .about {
-    float: left;
-    padding-left: 14px;
-    margin-right: 20px;
-    margin-bottom: 10px;
-    background-color: rgba(87, 193, 219, 0.3);
-    border-radius: 6px;
-    width: 300px; }
+    padding: 1em;
+    margin-bottom: 0.5em;
+    background-color: #9FD2E3;
+    border-radius: 4px; }
     .wiki-page .blue-block .about table {
       margin-left: 10px;
       width: 100%; }
       .wiki-page .blue-block .about table td:nth-child(even) {
         text-align: right;
         padding-right: 20px; }
+  @media screen and (min-width: 700px) {
+    .wiki-page .blue-block .about {
+      float: left;
+      width: 300px;
+      margin-right: 1em; } }
   .wiki-page .blue-block .article_rating {
     float: right; }
   .wiki-page .block-header {
@@ -2340,7 +2347,7 @@ footer {
           border-radius: 2px;
           padding: 5px; }
         .wiki-page .does-donts .block .item .icon-like:hover, .wiki-page .does-donts .block .item .icon-dislike:hover {
-          color: #005476; }
+          color: #F56E12; }
   @media screen and (max-width: 770px) {
     .wiki-page .does-donts {
       display: block; }
@@ -2351,7 +2358,7 @@ footer {
     display: inline-block; }
     .wiki-page .gallery-photos .photo img {
       border-radius: 2px; }
-  .wiki-page .gallery-photos .recomm-photo .lbtn, .wiki-page .gallery-photos .recomm-photo .photo-button label, .photo-button .wiki-page .gallery-photos .recomm-photo label, .wiki-page .gallery-photos .recomm-photo .langs a, .wiki-page .langs .gallery-photos .recomm-photo a {
+  .wiki-page .gallery-photos .recomm-photo .lbtn, .wiki-page .gallery-photos .recomm-photo .photo-button label, .photo-button .wiki-page .gallery-photos .recomm-photo label {
     color: white;
     background-color: #3298C1; }
   .wiki-page .gallery-photos .photos-form a {
@@ -2359,9 +2366,11 @@ footer {
     text-decoration: none; }
   .wiki-page .links {
     margin-bottom: 30px; }
-    .wiki-page .links .lbtn, .wiki-page .links .photo-button label, .photo-button .wiki-page .links label, .wiki-page .links .langs a, .wiki-page .langs .links a {
+    .wiki-page .links .lbtn2 {
       background-color: #3298C1;
       color: white; }
+      .wiki-page .links .lbtn2:hover {
+        background-color: #F56E12; }
   .wiki-page .favItem {
     border: 1px solid #009DC4;
     display: inline-block;
@@ -2575,7 +2584,7 @@ footer {
   .user-detail .ratings .new-rating textarea {
     resize: none;
     border: 1px solid #65BDD7; }
-  .user-detail .ratings .new-rating .lbtn, .user-detail .ratings .new-rating .photo-button label, .photo-button .user-detail .ratings .new-rating label, .user-detail .ratings .new-rating .wiki-page .langs a, .wiki-page .langs .user-detail .ratings .new-rating a {
+  .user-detail .ratings .new-rating .lbtn, .user-detail .ratings .new-rating .photo-button label, .photo-button .user-detail .ratings .new-rating label {
     background-color: #3298C1;
     color: white; }
 
@@ -2816,7 +2825,7 @@ footer {
     padding-right: 40px; }
     .login-all .cont .links input {
       border: 1px solid #65BDD7; }
-    .login-all .cont .links .lbtn, .login-all .cont .links .photo-button label, .photo-button .login-all .cont .links label, .login-all .cont .links .wiki-page .langs a, .wiki-page .langs .login-all .cont .links a {
+    .login-all .cont .links .lbtn, .login-all .cont .links .photo-button label, .photo-button .login-all .cont .links label {
       color: white;
       background-color: #3298C1; }
     .login-all .cont .tos {
@@ -2863,7 +2872,7 @@ footer {
         vertical-align: top; }
         .trip-detail .background-wrap .items a:hover {
           color: #005476; }
-      .trip-detail .background-wrap .items .lbtn, .trip-detail .background-wrap .items .photo-button label, .photo-button .trip-detail .background-wrap .items label, .trip-detail .background-wrap .items .wiki-page .langs a, .wiki-page .langs .trip-detail .background-wrap .items a {
+      .trip-detail .background-wrap .items .lbtn, .trip-detail .background-wrap .items .photo-button label, .photo-button .trip-detail .background-wrap .items label {
         background-color: rgba(255, 255, 255, 0.9);
         border: 1px solid #005476; }
     .trip-detail .background-wrap .size-wrapper {
@@ -2981,7 +2990,7 @@ footer {
         vertical-align: top; }
         .trip-detail .service-menu .items a:hover {
           color: #005476; }
-      .trip-detail .service-menu .items .lbtn, .trip-detail .service-menu .items .photo-button label, .photo-button .trip-detail .service-menu .items label, .trip-detail .service-menu .items .wiki-page .langs a, .wiki-page .langs .trip-detail .service-menu .items a {
+      .trip-detail .service-menu .items .lbtn, .trip-detail .service-menu .items .photo-button label, .photo-button .trip-detail .service-menu .items label {
         border: 1px solid #65BDD7;
         color: #65BDD7; }
   .trip-detail .menu-cont {
@@ -3028,7 +3037,7 @@ footer {
           border-left: 0;
           padding-left: 0;
           margin-top: 15px; } }
-      .trip-detail .menu-cont .cont .share .right .lbtn, .trip-detail .menu-cont .cont .share .right .photo-button label, .photo-button .trip-detail .menu-cont .cont .share .right label, .trip-detail .menu-cont .cont .share .right .wiki-page .langs a, .wiki-page .langs .trip-detail .menu-cont .cont .share .right a {
+      .trip-detail .menu-cont .cont .share .right .lbtn, .trip-detail .menu-cont .cont .share .right .photo-button label, .photo-button .trip-detail .menu-cont .cont .share .right label {
         background-color: #3298C1;
         color: white; }
       .trip-detail .menu-cont .cont .privacy {
@@ -3630,7 +3639,7 @@ footer {
     text-align: right;
     background-color: #ccedf5;
     padding: 10px; }
-    .trip-share .service .lbtn, .trip-share .service .photo-button label, .photo-button .trip-share .service label, .trip-share .service .wiki-page .langs a, .wiki-page .langs .trip-share .service a {
+    .trip-share .service .lbtn, .trip-share .service .photo-button label, .photo-button .trip-share .service label {
       background-color: #3298C1;
       color: white; }
   .trip-share .participant {
@@ -4446,10 +4455,10 @@ footer {
         .travelb-home .nchat-all .chat-stop-win .ln span[class^="icon-"] {
           color: #F56E12;
           font-size: 1.1em; }
-      .travelb-home .nchat-all .chat-stop-win .lbtn, .travelb-home .nchat-all .chat-stop-win .photo-button label, .photo-button .travelb-home .nchat-all .chat-stop-win label, .travelb-home .nchat-all .chat-stop-win .wiki-page .langs a, .wiki-page .langs .travelb-home .nchat-all .chat-stop-win a {
+      .travelb-home .nchat-all .chat-stop-win .lbtn, .travelb-home .nchat-all .chat-stop-win .photo-button label, .photo-button .travelb-home .nchat-all .chat-stop-win label {
         color: white;
         background-color: #65BDD7; }
-        .travelb-home .nchat-all .chat-stop-win .lbtn:hover, .travelb-home .nchat-all .chat-stop-win .photo-button label:hover, .photo-button .travelb-home .nchat-all .chat-stop-win label:hover, .travelb-home .nchat-all .chat-stop-win .wiki-page .langs a:hover, .wiki-page .langs .travelb-home .nchat-all .chat-stop-win a:hover {
+        .travelb-home .nchat-all .chat-stop-win .lbtn:hover, .travelb-home .nchat-all .chat-stop-win .photo-button label:hover, .photo-button .travelb-home .nchat-all .chat-stop-win label:hover {
           color: #005476; }
   .travelb-home #theCont {
     overflow-y: scroll; }
@@ -5645,11 +5654,11 @@ footer {
         display: block; }
     .fly-tickets .city-deal .srvc {
       padding: 12px; }
-      .fly-tickets .city-deal .srvc .lbtn, .fly-tickets .city-deal .srvc .photo-button label, .photo-button .fly-tickets .city-deal .srvc label, .fly-tickets .city-deal .srvc .wiki-page .langs a, .wiki-page .langs .fly-tickets .city-deal .srvc a {
+      .fly-tickets .city-deal .srvc .lbtn, .fly-tickets .city-deal .srvc .photo-button label, .photo-button .fly-tickets .city-deal .srvc label {
         color: white;
         background-color: #F56E12;
         font-weight: bold; }
-        .fly-tickets .city-deal .srvc .lbtn:hover, .fly-tickets .city-deal .srvc .photo-button label:hover, .photo-button .fly-tickets .city-deal .srvc label:hover, .fly-tickets .city-deal .srvc .wiki-page .langs a:hover, .wiki-page .langs .fly-tickets .city-deal .srvc a:hover {
+        .fly-tickets .city-deal .srvc .lbtn:hover, .fly-tickets .city-deal .srvc .photo-button label:hover, .photo-button .fly-tickets .city-deal .srvc label:hover {
           background-color: #005476; }
     .fly-tickets .city-deal .other-flights-preloader {
       text-align: center; }

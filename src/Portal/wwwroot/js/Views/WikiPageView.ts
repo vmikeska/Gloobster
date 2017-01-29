@@ -97,8 +97,13 @@
 					text: $bubble.find(".txt").val()
 				};
 
-				ViewBase.currentView.apiPost("WikiReport", data, (r) => {
-					this.toggleForm($target);
+				var v = ViewBase.currentView;
+
+				v.apiPost("WikiReport", data, (r) => {
+						this.toggleForm($target);
+
+						var id = new Common.InfoDialog();
+						id.create(v.t("ContributionThanksTitle", "jsWiki"), v.t("ContributionThanksBody", "jsWiki"));
 				});
 
 			});

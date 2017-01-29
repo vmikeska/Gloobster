@@ -76,8 +76,11 @@ var Views;
                     sectionId: $frame.data("id"),
                     text: $bubble.find(".txt").val()
                 };
-                Views.ViewBase.currentView.apiPost("WikiReport", data, function (r) {
+                var v = Views.ViewBase.currentView;
+                v.apiPost("WikiReport", data, function (r) {
                     _this.toggleForm($target);
+                    var id = new Common.InfoDialog();
+                    id.create(v.t("ContributionThanksTitle", "jsWiki"), v.t("ContributionThanksBody", "jsWiki"));
                 });
             });
         };

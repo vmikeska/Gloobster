@@ -14,12 +14,10 @@
     }    
 }
 
-<div class="blue-block wrapper adminBlock empty-cont" data-sid="@Model.SectionId" data-at="standard" data-id="@Model.SectionId">
+<div class="blue-block adminBlock empty-cont" data-sid="@Model.SectionId" data-at="standard" data-id="@Model.SectionId">
    
         
-        <div class="about">
-            <h3>@Model.B.W("About")</h3>
-
+        <div class="about">            
             <table>
                 @Html.Partial("TableItem", Model.InfoByName("Population"))                
                 @Html.Partial("TableItem", Model.InfoByName("CapitalName"))
