@@ -1,0 +1,53 @@
+
+
+.new-admin {
+    
+    text-align: left;
+
+    .tab-menu {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .page-cont {
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 2px solid $dark-blue;
+    }
+
+
+    .sections-content {
+        table{
+            border: 1px solid black;
+        }
+    }
+
+    .del-cross {
+        color: red;
+        cursor: pointer;
+        &:hover {
+            color: $orange;
+        }
+    }
+
+    .new-section-cont {
+        margin: 10px;
+        padding: 10px;
+
+        border-top: 2px solid $dark-blue;
+
+        input {
+            border: 1px solid $dark-blue;
+        }
+
+        .lbtn2 {
+            color: white;
+            background-color: $green;
+
+            &:hover {
+                background-color: $orange;
+            }
+        }
+    }
+
+}

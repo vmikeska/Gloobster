@@ -1,0 +1,78 @@
+﻿
+@model Gloobster.Portal.ViewModels.NewAdminViewModel
+
+@{
+    
+    ViewData["Title"] = "Administration";
+    ViewBag.BodyClass = "new-admin";
+}
+
+<script src="/js/views/newadminview.js"></script>
+
+<div class="wrapper">
+
+    <div id="mainTabs" class="main-tab">
+
+    </div>
+
+    <div class="page-cont">
+
+    </div>
+
+</div>
+
+<script>
+
+    function onBodyLoad() {
+        currentView = new Views.NewAdminView();
+        currentView.init();
+    }
+
+</script>
+
+
+<script id="menu-content-tmp" type="text/x-handlebars-template">
+    
+    <div class="sub-menu">
+
+    </div>
+    
+    <div class="sub-content">
+
+    </div>
+
+</script>
+
+<script id="sections-content-tmp" type="text/x-handlebars-template">
+
+    <div class="sections-menu">
+
+    </div>
+
+    <div class="sections-content">
+        <table id="sectionsTable">
+
+        </table>
+        
+        <div class="new-section-cont">
+            <input id="newSectionText" type="text" />
+            <a id="newSectionBtn" class="lbtn2" href="#">Create new</a>
+        </div>
+    </div>
+
+</script>
+
+<script id="section-item-tmp" type="text/x-handlebars-template">
+
+    <tr data-t="{{type}}">
+        <td>{{type}}</td>
+        <td>
+            <span class="icon-cross del-cross"></span>
+        </td>
+        <td>
+            {{msg}}
+        </td>
+    </tr>
+
+</script>
+    

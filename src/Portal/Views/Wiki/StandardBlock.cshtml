@@ -5,7 +5,7 @@
 @Html.Partial("BlockHeader")
 
 
-@if (Model.Text.ToLower() == "no content")
+@if (Model.Text.ToLower() == "no content" || Model.Text == string.Empty)
 {
     <div class="wrapper empty-cont" data-sid="@Model.SectionId">@Html.Partial("Empty", new EmptyVM { B = Model.B })</div>
 }

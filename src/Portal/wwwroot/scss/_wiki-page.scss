@@ -1,5 +1,4 @@
 ﻿
-$buttons-active: darkred;
 
 .wiki-page {
 
@@ -105,7 +104,7 @@ $buttons-active: darkred;
         position: relative;
 
         .active{
-            color: $buttons-active !important;
+            color: $orange !important;
         }
         .green{
             color: darkgreen;
@@ -148,7 +147,7 @@ $buttons-active: darkred;
                 }
 
                 a:hover{
-                    color: $dark-blue;
+                    color: $orange;
                 }
 
                 .icon-edit-pencil{
@@ -256,7 +255,7 @@ $buttons-active: darkred;
         }
 
         .active{
-            color: $buttons-active !important;
+            color: $orange !important;
         }
     }
 
@@ -353,7 +352,7 @@ $buttons-active: darkred;
         width: 100%;
 
         .active{
-            color: $buttons-active !important;
+            color: $orange !important;
         }
 
         .block{

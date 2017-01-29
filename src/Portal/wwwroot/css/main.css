@@ -2174,7 +2174,7 @@ footer {
     border-radius: 2px;
     position: relative; }
     .wiki-page .article_rating .active {
-      color: darkred !important; }
+      color: #F56E12 !important; }
     .wiki-page .article_rating .green {
       color: darkgreen; }
     .wiki-page .article_rating .blue {
@@ -2203,7 +2203,7 @@ footer {
         .wiki-page .article_rating .wrap .frame .score {
           display: inline-block; }
         .wiki-page .article_rating .wrap .frame a:hover {
-          color: #005476; }
+          color: #F56E12; }
         .wiki-page .article_rating .wrap .frame .icon-edit-pencil {
           margin-top: 4px; }
         .wiki-page .article_rating .wrap .frame .icon-dislike {
@@ -2269,7 +2269,7 @@ footer {
     .wiki-page .tbl .icon-plus:hover, .wiki-page .tbl .icon-minus:hover {
       color: #005476; }
     .wiki-page .tbl .active {
-      color: darkred !important; }
+      color: #F56E12 !important; }
   .wiki-page .breadcrumb {
     margin-top: 10px;
     margin-bottom: 10px; }
@@ -2323,7 +2323,7 @@ footer {
     display: table;
     width: 100%; }
     .wiki-page .does-donts .active {
-      color: darkred !important; }
+      color: #F56E12 !important; }
     .wiki-page .does-donts .block {
       display: table-cell;
       max-width: 50%; }
@@ -6363,3 +6363,31 @@ footer {
   color: white !important;
   text-align: center;
   text-decoration: none; }
+
+.new-admin {
+  text-align: left; }
+  .new-admin .tab-menu {
+    margin-top: 10px;
+    margin-bottom: 10px; }
+  .new-admin .page-cont {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 2px solid #005476; }
+  .new-admin .sections-content table {
+    border: 1px solid black; }
+  .new-admin .del-cross {
+    color: red;
+    cursor: pointer; }
+    .new-admin .del-cross:hover {
+      color: #F56E12; }
+  .new-admin .new-section-cont {
+    margin: 10px;
+    padding: 10px;
+    border-top: 2px solid #005476; }
+    .new-admin .new-section-cont input {
+      border: 1px solid #005476; }
+    .new-admin .new-section-cont .lbtn2 {
+      color: white;
+      background-color: #3DA33D; }
+      .new-admin .new-section-cont .lbtn2:hover {
+        background-color: #F56E12; }
