@@ -2,7 +2,7 @@
   <module name="jsTrip">
 
     <DelDialogTitle>
-      <en>File deletion</en>
+      <en>Delete file</en>
     </DelDialogTitle>
 
     <DelDialogBody>
@@ -10,7 +10,7 @@
     </DelDialogBody>
 
     <TripDelTitle>
-      <en>Trip deletion</en>
+      <en>Delete trip</en>
     </TripDelTitle>
 
     <TripDelMessage>
@@ -38,11 +38,11 @@
     </Unnamed>
     
     <PlaceRemovelDialogTitle>
-      <en>Place removal</en>
+      <en>Remove place</en>
     </PlaceRemovelDialogTitle>
 
     <PlaceRemovelDialogBody>
-      <en>Would you like to remove last place from your trip?</en>
+      <en>Would you like to remove the last place from your trip?</en>
     </PlaceRemovelDialogBody>
     
     <SharingTrip>
@@ -54,19 +54,19 @@
     </TripShared>
 
     <CannotShareUnnamed>
-      <en>Trip cannot be shared, you have some unnamed places</en>
+      <en>Trip cannot be shared, there are some unnamed places</en>
     </CannotShareUnnamed>
 
     <PrivacyText>
-      <en>Set privacy of your trip. In participants menu you can select admins of the trip.</en>
+      <en>Set privacy on your trip. In Participants menu you can select admins of the trip.</en>
     </PrivacyText>
 
     <PrivacySettings>
-      <en>Privacy Settings</en>
+      <en>Privacy settings</en>
     </PrivacySettings>
 
     <ShareTripText>
-      <en>Share your trip to social networks and make your friends aware of your trip. This will not give anybody permission to manipulate with your trip, or see your sensitive data. Just basic trip overview will be displayed.</en>
+      <en>Share your trip on social networks and let your friends know about it. This will not allow anybody to edit your trip, or see your sensitive data. Basic trip overview only will be displayed.</en>
     </ShareTripText>
 
     <ShareTripTitle>
@@ -78,11 +78,11 @@
     </ParticipTitle>
 
     <ParticipText>
-      <en>Everbody who is invited into the trip will be able to see all information (except private files). Who has "Can edit" permission can on top of that edit all information.</en>
+      <en>Everbody who is invited on the trip will be able to see all information (except for private files). Users with "Can edit" authorisation can additionally edit all information.</en>
     </ParticipText>
 
     <HowLongTakesTravel>
-      <en>How long takes the travel?</en>
+      <en>How long is the travel?</en>
     </HowLongTakesTravel>
 
     <HowLongStaying>
@@ -90,11 +90,11 @@
     </HowLongStaying>
 
     <WhenArrive>
-      <en>When do you arrive?</en>
+      <en>When are you going to arrive?</en>
     </WhenArrive>
 
     <WhenStartJourney>
-      <en>When do you start your journey?</en>
+      <en>When does your journey start?</en>
     </WhenStartJourney> 
 
   </module>

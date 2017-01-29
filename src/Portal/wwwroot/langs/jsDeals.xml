@@ -2,7 +2,7 @@
   <module name="jsDeals">
     
     <SearchRemovalDlgTitle>
-      <en>Search removal</en>
+      <en>Remove search</en>
     </SearchRemovalDlgTitle>
 
     <SearchRemovalDlgBody>
@@ -83,7 +83,7 @@
     </NoAirsTitle>
     
     <NoAirsBody>
-      <en>Location and airports must be selected first</en>
+      <en>Your location and airports must be selected first</en>
     </NoAirsBody>
 
     <TabAnytime>

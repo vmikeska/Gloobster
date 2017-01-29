@@ -2,7 +2,7 @@
   <module name="sharing">
 
     <FbShare1>
-      <en>{0} shared his travel map</en>
+      <en>{0} shared his/her travel map</en>
     </FbShare1>
 
     <FbShare2>
@@ -10,7 +10,7 @@
     </FbShare2>
 
     <FbShare3>
-      <en>gloobster.com, the only portal you'll need to travel the world</en>
+      <en>gloobster.com, the only portal you need to travel the world</en>
     </FbShare3>
 
     <TripShare>

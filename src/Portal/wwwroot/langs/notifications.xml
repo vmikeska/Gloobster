@@ -2,7 +2,7 @@
   <module name="notifications">
 
     <TripInvitationBody>
-        <en>You are invited to take part of '{0}' trip organized by {1}. {2}</en>
+        <en>You are invited to take part in '{0}' trip organized by {1}. {2}</en>
       </TripInvitationBody>
 
     <TripInvitationLink>
@@ -22,15 +22,15 @@
     </FriendshipRequestBody>
 
     <FriendshipRequestTitle>
-      <en>{0} want to be your friend</en>
+      <en>{0} wants to be your friend</en>
     </FriendshipRequestTitle>
 
     <NewUserWelcomeBody>
-      <en>Our application is still in beta, so please be patient with us :) We are improving and developing fast. Explore how you can organize documents for your travel, invite your friends to you custom trips, pin the places you have visited and compare with your friends. On our Wiki you can find informations collected by real travelers from all around the world. </en>
+      <en>Our app is still in beta, please be patient with us :) We are improving and developing fast. Explore how you can organize documents for your travel, invite your friends on your custom trips, pin the places you have visited and compare with your friends. Our Wiki has information collected by real travelers from all around the world. </en>
     </NewUserWelcomeBody>
 
     <NewUserWelcomeTitle>
-      <en>Welcome on our portal</en>
+      <en>Welcome to Gloobster</en>
     </NewUserWelcomeTitle>
 
     <TripRequestTitle>
@@ -38,11 +38,11 @@
     </TripRequestTitle>
 
     <TripRequestBody>
-      <en>Would you like to invite him?</en>
+      <en>Would you like to invite him/her?</en>
     </TripRequestBody>
 
     <TripRequestLink>
-      <en>Go to trip</en>
+      <en>Go on a trip</en>
     </TripRequestLink>
   
 </module>

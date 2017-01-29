@@ -2,7 +2,7 @@
   <module name="pageUserSettings">    
     
       <Title>
-        <en>Your profile edit</en>        
+        <en>Edit your profile</en>        
       </Title>
 
     <PreviewLink>
@@ -30,7 +30,7 @@
     </BasicInfo>
 
     <BasicInfoText>
-      <en>These are only the data we require for basic website use</en>
+      <en>Data required for basic website use</en>
     </BasicInfoText>
     
     <DisplayName>
@@ -42,7 +42,7 @@
     </TravelBuddyRequired>
 
     <TravelBuddyRequiredText>
-      <en>As Travel Buddy service is about meeting real people in real world, users must honestly provide their real credentials. Users must be at least 18 years old</en>
+      <en>As the Travel Buddy service is about meeting real people in the real world, users must provide their real credentials. Users cannot be younger than 18 years old</en>
     </TravelBuddyRequiredText>
 
     <FirstName>
@@ -87,7 +87,7 @@
     </TravelBuddyOptional>
 
     <TravelBuddyOptionalText>
-      <en>These data are not required but might give you some extra credit while searching for new friends</en>
+      <en>The data are not compulsory but might give you some extra credit while searching for new friends</en>
     </TravelBuddyOptionalText>
 
     <Characteristics>
@@ -99,11 +99,11 @@
     </ShortDesc>
 
     <ShortDescPlaceholder>
-      <en>Write short description about yourself</en>
+      <en>Write short description of yourself</en>
     </ShortDescPlaceholder>
 
     <FamilyStatus>
-      <en>Family status</en>
+      <en>Relationship status</en>
     </FamilyStatus>
 
     <Single>
@@ -111,7 +111,7 @@
     </Single>
 
     <InRelationship>
-      <en>In relationship</en>
+      <en>In a relationship</en>
     </InRelationship>
     
   </module>

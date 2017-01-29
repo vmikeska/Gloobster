@@ -9,18 +9,18 @@
     <InfoBlock1>
       <en>
         Choose your home airports and places you'd like to visit.
-        We will keep these information saved and anytime you come back you'll be offerd best travel deals for your favourite places.
-        Setup a long term search and let us help you to find your perfect summer trip.
+        We will keep the information saved and anytime you come back you'll be offerd the best travel deals for your favourite places.
+        Set up a long term search and let us help you find your perfect summer trip.
       </en>
     </InfoBlock1>
 
     <InfoBlock2>
-      <en>We will evaluate for you best travel deals for holiday, weekend or help you to fullfil your dream of visiting an exotic country.</en>
+      <en>We will evaluate the best travel deals for your holiday, weekend or help make your dream of visiting an exotic country true.</en>
     </InfoBlock2>
 
 
     <FirstHomeLocationAndAirports>
-      <en>To be able to use this service, you have to first select your home location and home airports</en>
+      <en>Select your home location and home airports to use this service</en>
     </FirstHomeLocationAndAirports>
 
     <CityNotSet>
@@ -68,19 +68,19 @@
     </ViewSwitchCities>
 
     <NoResultsFound>
-      <en>No results were found. You can try to search with lower score level.</en>
+      <en>No results were found. You can try searching with lower score level.</en>
     </NoResultsFound>
 
     <WhatConnectionsInterested>
-      <en>What connection are you interested?</en>
+      <en>What connection are you interested in?</en>
     </WhatConnectionsInterested>
 
     <HowManyDayInDestination>
-      <en>How many days would you like to stay in destination?</en>
+      <en>How many days would you like to stay in the destination?</en>
     </HowManyDayInDestination>
 
     <WhichMonth>
-      <en>What month are you interested of?</en>
+      <en>What month are you interested in?</en>
     </WhichMonth>
 
     <Deparature>
@@ -108,7 +108,7 @@
     </OurBestDealsTitle>
 
     <NotFlexible>
-      <en>Not flexible? See another options in following months</en>
+      <en>Not flexible? See other options in the following months</en>
     </NotFlexible>
 
     <BestDealSearch>
@@ -116,11 +116,11 @@
     </BestDealSearch>
     
     <ClassicSearch>
-      <en>Classic search</en>
+      <en>Standard search</en>
     </ClassicSearch>
 
     <WeAreSearchingAnotherFlights>
-      <en>Not flexible ? We are seraching other good flights with similar prices for you</en>
+      <en>Not flexible ? We are searching for other good flights at similar prices for you</en>
     </WeAreSearchingAnotherFlights>
 
     <UseDaysFilter>
@@ -216,11 +216,11 @@
     </DaysSentenceEnd>
 
     <HowManyDaysInDestination>
-      <en>How many days would you like to spend in destination?</en>    
+      <en>How many days would you like to spend in your destination?</en>    
     </HowManyDaysInDestination>
     
     <EarliestDepLatestArrivalQuestion>
-      <en>When is your earliest deparature and latest arrival?</en>
+      <en>When is your earliest deparature and latest arrival time?</en>
     </EarliestDepLatestArrivalQuestion>
 
     <DoneWithDatesEditingBtn>
@@ -228,7 +228,7 @@
     </DoneWithDatesEditingBtn>
 
     <DepartingAirports>
-      <en>What are departing airports?</en>
+      <en>What are departure airports?</en>
     </DepartingAirports>
 
     <MyStandardAirsOption>
@@ -236,7 +236,7 @@
     </MyStandardAirsOption>
 
     <NewsletterFrequency>
-      <en>How often would you like to receive newsletter?</en>
+      <en>How often would you like to receive the newsletter?</en>
     </NewsletterFrequency> 
 
 

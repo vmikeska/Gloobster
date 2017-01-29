@@ -15,7 +15,7 @@
     </AlreadyMet>
 
     <DidntMeet>
-      <en>We didn't meet</en>
+      <en>We haven't met</en>
     </DidntMeet>
 
     <UserBlockingTitle>
@@ -55,7 +55,7 @@
     </StopConversationStop>
 
     <AlreadyMetTitle>
-      <en>Already met</en>
+      <en>Already have met</en>
     </AlreadyMetTitle>
 
     <AlreadyMetBody>
@@ -67,15 +67,15 @@
     </AlreadyMetConfirm>
 
     <DidntMeetTitle>
-      <en>Didn't meet</en>
+      <en>Haven't met</en>
     </DidntMeetTitle>
 
     <DidntMeetBody>
-      <en>We didn't meet</en>
+      <en>We haven't met</en>
     </DidntMeetBody>
 
     <DidntMeetConfirm>
-      <en>We didn't meet</en>
+      <en>We haven't met</en>
     </DidntMeetConfirm>
 
     <AcceptBtn>
@@ -91,15 +91,15 @@
     </ActivitesEmptyText>
 
     <Checkin>
-      <en>Checkin</en>
+      <en>Check-in</en>
     </Checkin>
 
     <UpdateCheckin>
-      <en>Update checkin</en>
+      <en>Update check-in</en>
     </UpdateCheckin>
 
     <InvalidMsgTitle>
-      <en>Cannot create checkin</en>
+      <en>Cannot create check-in</en>
     </InvalidMsgTitle>
 
     <InvalidMsgBody>
@@ -107,11 +107,11 @@
     </InvalidMsgBody>
 
     <CheckinDelTitle>
-      <en>Checkin deletion</en>
+      <en>Check-in deletion</en>
     </CheckinDelTitle>
 
     <CheckinDelBody>
-      <en>Do you want to delete this checkin ?</en>
+      <en>Do you want to delete this check-in ?</en>
     </CheckinDelBody>
 
     <FilterActivitesPlacehodler>
@@ -135,7 +135,7 @@
     </MajorNowBtn>
 
     <LangSearch>
-      <en>Known languages</en>
+      <en>Languages</en>
     </LangSearch>
 
     <Man>
@@ -163,7 +163,7 @@
     </MustBeFilledTitle>
 
     <MustBeFilledBody>
-      <en>All user details for this service must be honestly filled out</en>
+      <en>All user details for this service must be filled out honestly</en>
     </MustBeFilledBody> 
 
   </module>

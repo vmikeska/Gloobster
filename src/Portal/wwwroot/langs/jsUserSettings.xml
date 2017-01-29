@@ -2,7 +2,7 @@
   <module name="jsUserSettings">
 
     <UnpairingConfirmTitle>
-      <en>Unpairing confirmation</en>
+      <en>Confirm unpairing</en>
     </UnpairingConfirmTitle>
 
 
@@ -15,7 +15,7 @@
     </Unpair>
 
     <PickCharacteristics>
-      <en>Pick some characteristics of you</en>
+      <en>Choose some of your characteristics</en>
     </PickCharacteristics> 
 
 </module>

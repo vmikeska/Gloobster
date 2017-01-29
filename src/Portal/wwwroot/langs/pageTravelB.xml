@@ -2,27 +2,27 @@
   <module name="pageTravelB">
 
     <WantMeetMan>
-      <en>want meet man</en>
+      <en>want to meet a man</en>
     </WantMeetMan>
 
     <WantMeetWoman>
-      <en>want meet woman</en>
+      <en>want to meet a woman</en>
     </WantMeetWoman>
 
     <WantMeetGroupWomen>
-      <en>want meet group of women</en>
+      <en>want to meet a group of women</en>
     </WantMeetGroupWomen>
 
     <WantMeetGroupMan>
-      <en>want meet group of men</en>
+      <en>want to meet a group of men</en>
     </WantMeetGroupMan>
 
     <WantMeetGroupMixed>
-      <en>want meet gender mixed group</en>
+      <en>want to meet a mixed gender group</en>
     </WantMeetGroupMixed>
 
     <Years>
-      <en>years</en>
+      <en>age</en>
     </Years>
 
     <WantDo>
@@ -46,11 +46,11 @@
     </AnyGender>
 
     <MultiPeopleAllowed>
-      <en>Can be more people</en>
+      <en>More people</en>
     </MultiPeopleAllowed>
 
     <AgeRange>
-      <en>Are range</en>
+      <en>Age range</en>
     </AgeRange>
 
     <CheckinMessage>
@@ -66,11 +66,11 @@
     </Message>
 
     <InterestedActivitesFitler>
-      <en>What activites are you interested of?</en>
+      <en>What activites are you interested in?</en>
     </InterestedActivitesFitler>
 
     <LanguagesFilter>
-      <en>Show people speaking one of following languages</en>
+      <en>Show people speaking one of the following languages</en>
     </LanguagesFilter>
 
     <StillWaiting>
@@ -102,19 +102,19 @@
     </MessageBtn>
 
     <ChatRequestMsg>
-      <en>want's to start chat with you. Would you like to accept the request ?</en>
+      <en>wants to start a chat with you. Would you like to accept the request?</en>
     </ChatRequestMsg>
 
     <StopChatInfo>
-      <en>You can anytime stop conversation without any reason. Just press the button bellow.</en>
+      <en>You can stop conversation anytime without any reason. Just press the button bellow.</en>
     </StopChatInfo>
 
     <StopChatBlock>
-      <en>Would you like to block this person and make you invisible?</en>
+      <en>Would you like to block this person and make yourself invisible?</en>
     </StopChatBlock>
 
     <StopChatReport>
-      <en>Were you offended or assulted? Then report this chat and we will evaluate it. Please use this just when you are sure about it, you might get negative rating if you misuse this reporting.</en>
+      <en>Were you offended or assaulted? Report this chat and we will analyse it. Please use this in serious situations only, you might get negative rating if you misuse reporting.</en>
     </StopChatReport>
 
     <StopChatBtn>
@@ -163,11 +163,11 @@
     </InfoCity>
 
     <InfoNow>
-      <en>Find your travel companion right here and right now. See other people around you with similar activites.</en>
+      <en>Find your travel companion right here and right now. See other people around you with similar favourite activites.</en>
     </InfoNow>
 
     <NoLocationPermissions>
-      <en>Seems you didn't grant us location permissions, so we cannot show your exact location. Once you change your mind, you must go to your browser Location settings and allow it.</en>
+      <en>Seems like you haven't granted us location permission, so we cannot show your exact location. Once you change your mind, go to your browser Location settings and allow it.</en>
     </NoLocationPermissions>
 
     <SearchLocationPlaceholder>
@@ -192,7 +192,7 @@
     </City>
 
     <FilterDatesTitle>
-      <en>Show checkins between following dates</en>
+      <en>Show check-ins between following dates</en>
     </FilterDatesTitle>
 
     <UseFilter>
@@ -208,7 +208,7 @@
     </PeopleTitle>
 
     <NoPeoplePlaceholder>
-      <en>Sorry, no people here at the moment, but you can visit one of our popular Meeting Points.</en>
+      <en>Sorry, there are no people at the moment, but you can visit one of our popular Meeting Points.</en>
     </NoPeoplePlaceholder>
 
     <MeetingPointsTitle>
@@ -216,7 +216,7 @@
     </MeetingPointsTitle>
     
     <NoMeetingPointsPlaceholder>
-      <en>Sorry, we are not yet active in this area.</en>
+      <en>Sorry, we are not active in this area yet.</en>
     </NoMeetingPointsPlaceholder>
 
     <ProfilePhoto>
@@ -224,7 +224,7 @@
     </ProfilePhoto>
     
     <RequiredPropsTitle>
-      <en>Before you start... Travel Buddy service is about meeting real people in real world. Therefore we have to ask you to fill in honestly following information. By using this service, you agree with</en>
+      <en>Before you start... Travel Buddy service is for meeting real people in the real world. Therefore we have to ask you to fill in the following information honestly. By using the service, you agree with</en>
     </RequiredPropsTitle>
 
     <TermsOfUse>
@@ -280,7 +280,7 @@
     </ManageCheckinsBtn>
 
     <MeetingPlace>
-      <en>Where you are?</en>
+      <en>Where are you?</en>
     </MeetingPlace>
 
     <PlaceNamePlaceholder>
@@ -297,15 +297,15 @@
     </WaitingTime>
 
     <MeetingCity>
-      <en>What city are you visiting?</en>
+      <en>What city are you visiting</en>
     </MeetingCity>
 
     <VisitingDates>
-      <en>Dates you are visiting</en>
+      <en>Dates of your stay</en>
     </VisitingDates>
 
     <NotRegisteredInfo>
-      <en>To be able to use this service fully, you have to register first</en>
+      <en>Register to use this service in full.</en>
     </NotRegisteredInfo>
 
     <RequiredInfo>

@@ -2,7 +2,7 @@
   <module name="pageDashboard">
 
     <FrindsAlreadyUsing>
-      <en>Some of your friends are already using Gloobster</en>
+      <en>Some of your friends already use Gloobster</en>
     </FrindsAlreadyUsing>
 
     <RequestFriendshipBtn>
@@ -10,7 +10,7 @@
     </RequestFriendshipBtn>
 
     <NoFriendsYet>
-      <en>You have no friends yet, go to Friends page and find a one</en>
+      <en>You have no friends yet, go to Friends page and find some</en>
     </NoFriendsYet>
 
     <GoFriendsPage>
@@ -42,7 +42,7 @@
     </ReceiveBestDeals>
 
     <NoLocationsYet>
-      <en>You havent set any locations yet</en>
+      <en>You haven't set any locations yet</en>
     </NoLocationsYet>
 
     <SetYourDestinations>
@@ -86,7 +86,7 @@
     </ToThePlannerBtn>
 
     <FriendsCalendar>
-      <en>Friend's calendar</en>
+      <en>Friends calendar</en>
     </FriendsCalendar>
 
     <ToTheCalendarBtn>

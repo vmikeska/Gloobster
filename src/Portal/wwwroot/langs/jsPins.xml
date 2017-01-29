@@ -38,11 +38,11 @@
     </NoSocNetTitle>
 
     <NoSocNetShare>
-      <en>You have currently no social networks paired with your account, add Facebook or Twitter to your account to be able to share your travel map. You can do this in user settings.</en>
+      <en>No social networks are currently paired with your account, add Facebook or Twitter to your account and share your travel map. You can do so in user settings.</en>
     </NoSocNetShare>
 
     <ImportingCheckins>
-      <en>Importing your fb checkins</en>
+      <en>Importing your fb check-ins</en>
     </ImportingCheckins>
 
     <SharingMap>
@@ -50,15 +50,15 @@
     </SharingMap>
 
     <MapShared>
-      <en>Your map was successfully shared</en>
+      <en>Your map has been successfully shared</en>
     </MapShared>
 
     <ClickCheck>
-      <en>Click here to mark this city as visited</en>
+      <en>Click here to mark the city as visited</en>
     </ClickCheck>
 
     <ClickDelete>
-      <en>Click here to remove this city from visited cities</en>
+      <en>Click here to remove this city from your visited cities</en>
     </ClickDelete>
 
     <DelDialogTitle>
@@ -66,7 +66,7 @@
     </DelDialogTitle>
 
     <DelDialogBody>
-      <en>Do you want to remove this city from the list of cities you've visited ?</en>
+      <en>Do you want to remove this city from the list of your visited cities?</en>
     </DelDialogBody>
 
     

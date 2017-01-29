@@ -2,19 +2,19 @@
   <module name="jsLayout">
 
     <FileTooBigTitle>
-        <en>The size of file too big </en>
+        <en>The file is too big</en>
       </FileTooBigTitle>
 
     <FileTooBigBody>
-      <en>Maximal allowed size of uploaded file is ${maxSize}MB</en>
+      <en>Uploaded file size up to ${maxSize}MB</en>
     </FileTooBigBody>
 
     <OverLimitTitle>
-      <en>File usage over limit</en>
+      <en>File exceeds the limit</en>
     </OverLimitTitle>
 
     <OverLimitBody>
-      <en>Currently is for you allowed file usage max. 300MB. If you need more, contact us on info@gloobster.com</en>
+      <en>Currently you can use 300MB of storage space. If you need more, contact us on info@gloobster.com</en>
     </OverLimitBody>
 
     <UnsuccessLogin>
@@ -30,7 +30,7 @@
     </CannotPair>
 
     <CannotPairBody>
-      <en>The social network you are trying to pair with current account is already in use by another account.</en>
+      <en>The social network you are trying to pair with the account is already in use by another one.</en>
     </CannotPairBody>
 
 
@@ -51,7 +51,7 @@
     </Ok>
 
     <SuccessfulPaired>
-      <en>You are successfully paired!</en>
+      <en>Your accounts are successfully paired!</en>
     </SuccessfulPaired>
 
     <TaggingFieldPlacehoder>
@@ -67,7 +67,7 @@
     </InvalidEmailTitle>
 
     <InvalidEmailBody>
-      <en>The inputed email is not valid.Please correct the email.</en>
+      <en>The email is not valid. Please correct it.</en>
     </InvalidEmailBody>
 
     <InvalidPasswordTitle>
@@ -75,7 +75,7 @@
     </InvalidPasswordTitle>
 
     <InvalidPasswordBody>
-      <en>Password must be at least 4 and max 30 characters long.</en>
+      <en>Password must be at least 4 and maximum 30 characters long.</en>
     </InvalidPasswordBody>
 
     <IncorrectPasswordTitle>
@@ -83,7 +83,7 @@
     </IncorrectPasswordTitle>
 
     <IncorrectPasswordBody>
-      <en>Password inputed for this email was not correct.</en>
+      <en>Password does not match this email.</en>
     </IncorrectPasswordBody>
 
     <FullReqRequiredTitle>
@@ -91,7 +91,7 @@
     </FullReqRequiredTitle>
 
     <FullReqRequiredBody>
-      <en>To be able to use this feature, you need to create full registration</en>
+      <en>To use this feature full registration is required</en>
     </FullReqRequiredBody> 
 
 

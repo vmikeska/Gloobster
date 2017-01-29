@@ -14,7 +14,7 @@
     </InfoBlock1>
 
     <InfoBlock2>
-      <en>Invite your friend or let know to the people about your trip over social networks.</en>
+      <en>Invite your friends or let people know about your trip via social networks.</en>
     </InfoBlock2>
 
     <TitlePhoto>
@@ -114,7 +114,7 @@
       </Share>
 
     <ShareTitle>
-      <en>The file is shared just with friends invited into this trip</en>
+      <en>The file is shared just with friends invited on this trip</en>
     </ShareTitle>
 
       <ShareOnSoc>
@@ -136,7 +136,7 @@
       </AllowRequestJoinCheckbox>
 
       <FriendsPublicCheckbox>
-        <en>Friends can see basic info of the trip, even they are not invited</en>
+        <en>Friends can see basic info on the trip, even if they are not invited</en>
       </FriendsPublicCheckbox>
 
       
@@ -150,7 +150,7 @@
       </PlaceName>
 
       <AddressStay>
-        <en>Address where I stay</en>
+        <en>Address where I am staying</en>
       </AddressStay>
 
       <SearchForPlace>
@@ -198,11 +198,11 @@
     </UseExactTime>
     
     <ToAirport>
-        <en>To airport</en>
+        <en>To the airport</en>
       </ToAirport>
 
       <FromAirport>
-        <en>From airport</en>
+        <en>From the airport</en>
       </FromAirport>
 
       <Walk>

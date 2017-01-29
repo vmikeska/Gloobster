@@ -2,11 +2,11 @@
   <module name="jsDashboard">
 
     <TabFriends>
-      <en>Friend's feed</en>
+      <en>Friends feed</en>
     </TabFriends>
 
     <TabPortal>
-      <en>Portal feed</en>
+      <en>Gloobster feed</en>
     </TabPortal>
 
     <TabWeb>

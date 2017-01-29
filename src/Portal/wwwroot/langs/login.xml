@@ -39,19 +39,19 @@
       </JoinButton>
 
       <JoinInfoMessage>
-        <en>A temporary account was created. To make your account permanent, register or login with one of following services.</en>
+        <en>A temporary account has been created. Register or login with one of the following services to make your account permanent.</en>
       </JoinInfoMessage>
     
     <SignIn>
-      <en>Sign-In</en>
+      <en>Sign In</en>
     </SignIn>
 
     <ViaEmail>
-      <en>via email</en>
+      <en>email</en>
     </ViaEmail>
 
       <TermsOfService>
-        <en>Terms of service</en>
+        <en>Terms and conditions</en>
       </TermsOfService>
 
       <ByJoining>

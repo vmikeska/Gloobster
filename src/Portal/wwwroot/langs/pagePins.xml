@@ -5,13 +5,13 @@
 
     <InfoBlock1>
       
-      <en>Keep track of your traveled cities, countries and places. See where your friends are traveling mostly.</en>
+      <en>Keep track of cities, countries and places you have traveled. See where your friends travel the most.</en>
       
       
     </InfoBlock1>
 
     <InfoBlock2>
-      <en>Are you new in town ? See what places are being visited by people mostly.</en>
+      <en>Are you new in town ? See what places are visited by most people.</en>
     </InfoBlock2>
 
     
@@ -91,15 +91,15 @@
       </UsStates>
 
       <FbCheckinsTitle>
-        <en>Facebook checkins import</en>
+        <en>Facebook check-ins import</en>
       </FbCheckinsTitle>
 
       <FbCheckinsMessage>
-        <en>Authorize us to import your facebook checked-in places and pair your tagged places with your local account</en>
+        <en>Authorize us to import your facebook check-in places and pair your tagged places with your local account</en>
       </FbCheckinsMessage>
 
       <FbCheckinsButton>
-        <en>Give us tagged places permission</en>
+        <en>Give us permission to your tagged places</en>
       </FbCheckinsButton>
 
 

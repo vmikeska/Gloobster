@@ -2,7 +2,7 @@
   <module name="jsUserDetail">
 
     <RatingDelTitle>
-      <en>Rating deletion</en>
+      <en>Delete rating</en>
     </RatingDelTitle>
 
     <RatingDelBody>
