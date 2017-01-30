@@ -1,76 +1,6 @@
 ﻿module Views {
 	export class WikiPermissionsView extends ViewBase {
-
-	  private isMasterAdmin: boolean;
-		private isSuperAdmin: boolean;
-
-		private userTemplate;
-
-		constructor(isMasterAdmin: boolean, isSuperAdmin: boolean) {
-			super();
-
-			this.isMasterAdmin = isMasterAdmin;
-			this.isSuperAdmin = isSuperAdmin;
-
-			this.regSaSearch();
-			this.regUserSearch();
-
-			this.initSaDelete();
-			this.initArticleDelete();
-			this.initTagsSearch();
-
-			this.initUserCustomDelete();
-
-			this.userTemplate = this.registerTemplate("userPermission-template");
-		}
-
-		private initUserCustomDelete() {
-			$(".userCustom").toArray().forEach((u) => {
-				this.regUserCustomDelete($(u));
-			});
-		}
-
-		private initTagsSearch() {
-			$(".articleCombo").toArray().forEach((combo) => {
-				var $combo = $(combo);
-				var userId = $combo.closest(".blue-form").data("userid");
-				this.initTagCombo($(combo), userId);
-			});
-		}
-
-		private initArticleDelete() {
-			$(".userCustom").find(".tag").toArray().forEach((tag) => {
-				var $tag = $(tag);
-				var userId = $tag.closest(".blue-form").data("userid");
-				this.articleTagDelete($tag, userId);
-			});
-		}
-
-		private initSaDelete() {
-			$("#saTags").find(".tag").toArray().forEach((tag) => {
-				this.saDelete($(tag));
-			});
-		}
-
-		private regSaSearch() {
-			this.getSearchBox("superAdminCombo", (user) => {
-				var data = {
-					id: user.friendId
-				};
-				this.apiPost("WikiPermissions", data, (created) => {
-				 if (created) {					 
-						var $tag = this.getTag(user.displayName, user.friendId, this.isMasterAdmin);
-						this.saDelete($tag);
-						$("#saTags").append($tag);
-					} else {
-						var id = new Common.InfoDialog();
-						id.create("User creation unsuccessful", "Maybe user already exists ?");
-					}
-
-				});
-			});
-		}
-
+		
 		private regUserSearch() {
 			this.getSearchBox("newUserCombo", (user) => {
 				var data = { id: user.friendId };
@@ -85,15 +15,7 @@
 				});
 			});
 		}
-
-		private addUserCustom(user) {
-			var context = { name: user.displayName };
-			var $html = $(this.userTemplate(context));
-			this.initTagCombo($html.find(".articleCombo"), user.friendId);
-			this.regUserCustomDelete($html);
-			$("#newUserCombo").after($html);
-		}
-
+			
 		private initTagCombo($combo, userId) {
 			var $cont = $combo.closest(".blue-form");
 
@@ -132,32 +54,6 @@
 			});
 		}
 
-		private addTagToCont($tags, $tag) {
-			var $tagArray = $tags.find(".tag");
-			if ($tagArray.length === 0) {
-				$tags.prepend($tag);
-			} else {
-				$tagArray.last().after($tag);
-			}
-		}
-
-		private saDelete($tag) {
-			var id = $tag.attr("id");
-			$tag.find(".delete").click((e) => {
-				e.preventDefault();
-				var dialog = new Common.ConfirmDialog();
-				dialog.create("Delete", "Do you want to remove SA ?", "Cancel", "Yes", () => {
-
-					var data = [["id", id]];
-					this.apiDelete("WikiPermissions", data, (r) => {
-						$("#" + id).remove();
-						dialog.hide();
-					});
-
-				});
-			});
-		}
-
 		private articleTagDelete($tag, userId) {
 			var id = $tag.attr("id");
 			$tag.find(".delete").click((e) => {
@@ -175,25 +71,6 @@
 			});
 		}
 
-		private getTag(text, id, withDelete) {
-			if (withDelete) {
-				return $(`<span id="${id}" class="tag">${text}<a class="delete" href="#"></a></span>`);
-			} else {
-			 return $(`<span id="${id}" class="tag">${text}</span>`);
-			}
-		}
-
-		private getSearchBox(id, callback) {
-			var config = new Common.UserSearchConfig();
-			config.elementId = id;
-			config.clearAfterSearch = true;
-			config.endpoint = "FriendsSearch";
-			var box = new Common.UserSearchBox(config);
-			box.onUserSelected = (user) => {
-				callback(user);
-			};
-		}
-
-
+		
 	}
 }

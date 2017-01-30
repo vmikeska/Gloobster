@@ -85,12 +85,93 @@
 						});
 						
 						tabs.addTab("wikiSuperAdmins", "SuperAdmins management", () => {
-
+								var fnc = new WikiSuperAdminMgmt(this.$cont);
+								fnc.init();
 						});
 						
 						tabs.create();
 				}
 				
+		}
+
+		export class WikiSuperAdminMgmt {
+				private $cont;
+
+				constructor($cont) {
+						this.$cont = $cont;
+				}
+
+				public init() {
+						var tmp = ViewBase.currentView.registerTemplate("super-admins-mgmt-tmp");
+						var $l = $(tmp());
+						this.$cont.find(".sub-content").html($l);
+
+						this.getAdmins((admins) => {
+								this.genAdmins(admins);
+						});
+
+					  this.regSearch();
+				}
+
+				private getAdmins(callback: Function) {
+					var data = [];
+
+					ViewBase.currentView.apiGet("WikiSuperAdmins", data, (r) => {
+							callback(r);
+					});
+				}
+
+				private genAdmins(admins) {
+						var lg = Common.ListGenerator.init(this.$cont.find(".super-admins-mgmt .cont"), "super-admin-item-tmp");
+					  lg.clearCont = true;
+
+					lg.evnt(".del", (e, $item, $target, item) => {
+							var dialog = new Common.ConfirmDialog();
+							dialog.create("Delete", "Do you want to remove SA ?", "Cancel", "Yes", () => {
+
+									var data = [["id", item.id]];
+									ViewBase.currentView.apiDelete("WikiSuperAdmins", data, (r) => {
+											$(`.item[data-uid="${item.id}"]`).remove();											
+									});
+
+							});
+						});
+
+						lg.generateList(admins);
+				}
+
+				private getSearchBox(id, callback) {
+						var config = new Common.UserSearchConfig();
+						config.elementId = id;
+						config.clearAfterSearch = true;
+						config.endpoint = "FriendsSearch";
+						var box = new Common.UserSearchBox(config);
+						box.onUserSelected = (user) => {
+								callback(user);
+						};
+				}
+
+			private regSearch() {
+				this.getSearchBox("userCombo", (user) => {
+						var data = {
+							id: user.friendId
+						};
+
+						Views.ViewBase.currentView.apiPost("WikiSuperAdmins", data, (created) => {
+
+								if (created) {
+									this.getAdmins((admins) => {
+										this.genAdmins(admins);
+									});
+								} else {
+									var id = new Common.InfoDialog();
+									id.create("User creation unsuccessful", "Maybe user already exists ?");
+								}
+
+							});
+					});
+			}
+
 		}
 
 		export class WikiAdminTasks {

@@ -6470,3 +6470,13 @@ footer {
       padding: 1em; }
     .new-admin .task-all .actions {
       padding: 1em; }
+  .new-admin .super-admins-mgmt .item {
+    background-color: #65BDD7;
+    border-radius: 4px;
+    padding: 8px;
+    display: inline-block;
+    margin-right: 4px;
+    margin-bottom: 4px; }
+    .new-admin .super-admins-mgmt .item .del {
+      color: red;
+      cursor: pointer; }

@@ -72,12 +72,80 @@ var Views;
                 fnc.init();
             });
             tabs.addTab("wikiSuperAdmins", "SuperAdmins management", function () {
+                var fnc = new WikiSuperAdminMgmt(_this.$cont);
+                fnc.init();
             });
             tabs.create();
         };
         return WikiAdminPage;
     }(AdminPageBase));
     Views.WikiAdminPage = WikiAdminPage;
+    var WikiSuperAdminMgmt = (function () {
+        function WikiSuperAdminMgmt($cont) {
+            this.$cont = $cont;
+        }
+        WikiSuperAdminMgmt.prototype.init = function () {
+            var _this = this;
+            var tmp = Views.ViewBase.currentView.registerTemplate("super-admins-mgmt-tmp");
+            var $l = $(tmp());
+            this.$cont.find(".sub-content").html($l);
+            this.getAdmins(function (admins) {
+                _this.genAdmins(admins);
+            });
+            this.regSearch();
+        };
+        WikiSuperAdminMgmt.prototype.getAdmins = function (callback) {
+            var data = [];
+            Views.ViewBase.currentView.apiGet("WikiSuperAdmins", data, function (r) {
+                callback(r);
+            });
+        };
+        WikiSuperAdminMgmt.prototype.genAdmins = function (admins) {
+            var lg = Common.ListGenerator.init(this.$cont.find(".super-admins-mgmt .cont"), "super-admin-item-tmp");
+            lg.clearCont = true;
+            lg.evnt(".del", function (e, $item, $target, item) {
+                var dialog = new Common.ConfirmDialog();
+                dialog.create("Delete", "Do you want to remove SA ?", "Cancel", "Yes", function () {
+                    var data = [["id", item.id]];
+                    Views.ViewBase.currentView.apiDelete("WikiSuperAdmins", data, function (r) {
+                        $(".item[data-uid=\"" + item.id + "\"]").remove();
+                    });
+                });
+            });
+            lg.generateList(admins);
+        };
+        WikiSuperAdminMgmt.prototype.getSearchBox = function (id, callback) {
+            var config = new Common.UserSearchConfig();
+            config.elementId = id;
+            config.clearAfterSearch = true;
+            config.endpoint = "FriendsSearch";
+            var box = new Common.UserSearchBox(config);
+            box.onUserSelected = function (user) {
+                callback(user);
+            };
+        };
+        WikiSuperAdminMgmt.prototype.regSearch = function () {
+            var _this = this;
+            this.getSearchBox("userCombo", function (user) {
+                var data = {
+                    id: user.friendId
+                };
+                Views.ViewBase.currentView.apiPost("WikiSuperAdmins", data, function (created) {
+                    if (created) {
+                        _this.getAdmins(function (admins) {
+                            _this.genAdmins(admins);
+                        });
+                    }
+                    else {
+                        var id = new Common.InfoDialog();
+                        id.create("User creation unsuccessful", "Maybe user already exists ?");
+                    }
+                });
+            });
+        };
+        return WikiSuperAdminMgmt;
+    }());
+    Views.WikiSuperAdminMgmt = WikiSuperAdminMgmt;
     var WikiAdminTasks = (function () {
         function WikiAdminTasks($cont) {
             this.$cont = $cont;

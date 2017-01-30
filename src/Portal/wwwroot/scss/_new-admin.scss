@@ -91,4 +91,27 @@
         }
     }
 
+    .super-admins-mgmt {
+       
+        .item {
+        
+            background-color: $light-blue;
+            border-radius: 4px;
+            padding: 8px;
+            display: inline-block;
+
+            margin-right: 4px;
+            margin-bottom: 4px;
+                
+            .name {
+
+            }
+
+            .del {                
+                color: red;
+                cursor: pointer;
+            }
+        }
+    }
+
 }
