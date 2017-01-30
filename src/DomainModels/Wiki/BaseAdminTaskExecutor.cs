@@ -27,7 +27,7 @@ namespace Gloobster.DomainModels.Wiki
             return oper;
         }
 
-        protected WikiAdminTaskEntity GetNewTask(string articleId, AdminTaskType type)
+        protected WikiAdminTaskEntity GetNewTask(string articleId, string creatorId, AdminTaskType type)
         {
             var articleIdObj = new ObjectId(articleId);
             var task = new WikiAdminTaskEntity
@@ -35,7 +35,8 @@ namespace Gloobster.DomainModels.Wiki
                 id = ObjectId.GenerateNewId(),
                 Article_id = articleIdObj,
                 State = AdminTaskState.New,
-                Type = type
+                Type = type,
+                Creator_id = new ObjectId(creatorId)
             };
 
             return task;

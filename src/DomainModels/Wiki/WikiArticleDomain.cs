@@ -144,7 +144,7 @@ namespace Gloobster.DomainModels.Wiki
             var sections = CitySecions();
             foreach (string section in sections)
             {
-                builder.AddSection(section, "No content");
+                builder.AddSection(section, string.Empty);
             }
 
             article.Links.Add(new LinkSE

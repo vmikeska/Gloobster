@@ -19,12 +19,14 @@ var Common;
         };
         GNOnlineSearchBox.prototype.fillItems = function (cities) {
             var _this = this;
+            var $ul = this.$combo.find("ul");
             this.$combo.find("li").remove();
             cities.forEach(function (city) {
-                var ch = _this.getCityHtml(city);
-                _this.$combo.find("ul").append(ch);
+                var $ch = _this.getCityHtml(city);
+                $ul.append($ch);
             });
             this.registerEvents();
+            $ul.show();
         };
         GNOnlineSearchBox.prototype.registerEvents = function () {
             var _this = this;

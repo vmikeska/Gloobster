@@ -2048,7 +2048,9 @@ footer {
 .wiki .wiki_article_wide .txt {
   padding-left: 0;
   padding-right: 0;
-  margin-bottom: 20px; }
+  margin-top: 0.7em;
+  margin-bottom: 1em;
+  text-align: left; }
 
 .wiki .wiki_articles > :nth-child(odd) {
   margin-right: 10px; }
@@ -2092,11 +2094,13 @@ footer {
       .wiki .wiki_articles .article .service .stars .star {
         font-size: 26px; }
   .wiki .wiki_articles .article .txt {
+    text-align: left;
     height: 100px;
     overflow: hidden;
     padding-left: 0;
     padding-right: 0;
-    margin-bottom: 5px; }
+    margin-top: 0.7em;
+    margin-bottom: 0.3em; }
   .wiki .wiki_articles .article .more {
     text-align: left; }
     .wiki .wiki_articles .article .more a {
@@ -6375,6 +6379,11 @@ footer {
 
 .new-admin {
   text-align: left; }
+  .new-admin .lbtn2 {
+    color: white;
+    background-color: #3DA33D; }
+    .new-admin .lbtn2:hover {
+      background-color: #F56E12; }
   .new-admin .tab-menu {
     margin-top: 10px;
     margin-bottom: 10px; }
@@ -6395,8 +6404,25 @@ footer {
     border-top: 2px solid #005476; }
     .new-admin .new-section-cont input {
       border: 1px solid #005476; }
-    .new-admin .new-section-cont .lbtn2 {
+  .new-admin .task-all {
+    background-color: #F0FAFC;
+    border-radius: 4px;
+    margin-bottom: 1em; }
+    .new-admin .task-all .task-header {
       color: white;
-      background-color: #3DA33D; }
-      .new-admin .new-section-cont .lbtn2:hover {
-        background-color: #F56E12; }
+      font-weight: bold;
+      padding: 1em;
+      background-color: #005476; }
+    .new-admin .task-all .task-inner {
+      padding: 1em; }
+    .new-admin .task-all .title {
+      font-weight: bold;
+      font-size: 1.1em; }
+    .new-admin .task-all .line {
+      margin-bottom: 1em; }
+    .new-admin .task-all .white-txt {
+      background-color: white;
+      border-radius: 4px;
+      padding: 1em; }
+    .new-admin .task-all .actions {
+      padding: 1em; }

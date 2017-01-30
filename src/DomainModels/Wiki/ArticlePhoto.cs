@@ -164,7 +164,8 @@ namespace Gloobster.DomainModels.Wiki
                         TaskType = AdminTaskType.ConfirmPhoto,
                         ArticleId = articleId,
                         TargetId = fileId.ToString(),
-                        Data = dataString
+                        Data = dataString,
+                        UserId = userId
                     };
                     AdminTasks.AddTask(task);
                 }
@@ -219,6 +220,7 @@ namespace Gloobster.DomainModels.Wiki
             SaveVersion(stream, articleId, EventType.Create);
         }
 
+        //TODO: here change
         private void SaveVersion(Stream stream, string articleId, EventType eventType)
         {
             stream.Position = 0;

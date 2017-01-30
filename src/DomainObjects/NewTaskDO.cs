@@ -9,6 +9,7 @@ namespace Gloobster.DomainObjects
         public string TargetId { get; set; }
         public AdminTaskType TaskType { get; set; }
         public string Data { get; set; }
+        public string UserId { get; set; }
     }
 
     public class TaskDO
@@ -17,6 +18,7 @@ namespace Gloobster.DomainObjects
         public string TargetId { get; set; }
         public AdminTaskType TaskType { get; set; }
         public string Data { get; set; }
+        public string CreatorId { get; set; }
 
         public string Caption { get; set; }
         public List<ActionDO> Actions { get; set; }

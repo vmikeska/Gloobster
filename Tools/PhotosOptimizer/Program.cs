@@ -12,8 +12,8 @@ namespace PhotosOptimizer
     {
         public static void Main(string[] args)
         {
-            string[] dirs = Directory.GetDirectories(@"C:\Users\vmike_000\Downloads\CityPhotos\CC");
-            string dest = @"C:\Users\vmike_000\Downloads\CityPhotos\Conv";
+            string[] dirs = Directory.GetDirectories(@"C:\Users\vmike_000\Downloads\Photosx");
+            string dest = @"C:\Users\vmike_000\Downloads\Photosx\Conv";
             int totalFiles = 0;
             foreach (var dir in dirs)
             {

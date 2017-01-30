@@ -255,7 +255,10 @@ $light-gray: #f2f2f2;
         .txt{                        
             padding-left: 0;
             padding-right: 0;
-            margin-bottom: 20px;
+            margin-top: 0.7em;
+            margin-bottom: 1em;
+            text-align: left;
+
         }
     
     }
@@ -326,11 +329,14 @@ $light-gray: #f2f2f2;
             }*/
 
             .txt{
+                text-align: left;
+
                     height: 100px;                    
                     overflow: hidden;
                     padding-left: 0;
                     padding-right: 0;
-                    margin-bottom: 5px;
+                    margin-top: 0.7em;
+                    margin-bottom: 0.3em;
                 }
 
             .more{

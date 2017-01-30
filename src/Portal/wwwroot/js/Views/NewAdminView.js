@@ -55,15 +55,125 @@ var Views;
         WikiAdminPage.prototype.createWikiTabs = function () {
             var _this = this;
             var tabs = new Common.Tabs(this.$cont.find(".sub-menu"), "subMenu");
+            tabs.onBeforeSwitch = function () {
+                _this.$cont.find(".sub-content").empty();
+            };
+            tabs.addTab("wikiTasks", "Manage tasks", function () {
+                var fnc = new WikiAdminTasks(_this.$cont);
+                fnc.init();
+            });
             tabs.addTab("wikiSections", "Sections management", function () {
-                _this.createSectionsTabs();
-                _this.regCreateNewSection();
+                var fnc = new WikiPageSectionsAdmin(_this.$cont);
+                fnc.createSectionsTabs();
+                fnc.regCreateNewSection();
+            });
+            tabs.addTab("wikiNewCity", "Add new city", function () {
+                var fnc = new WikiAdminAddCity(_this.$cont);
+                fnc.init();
             });
             tabs.addTab("wikiSuperAdmins", "SuperAdmins management", function () {
             });
             tabs.create();
         };
-        WikiAdminPage.prototype.createSectionsTabs = function () {
+        return WikiAdminPage;
+    }(AdminPageBase));
+    Views.WikiAdminPage = WikiAdminPage;
+    var WikiAdminTasks = (function () {
+        function WikiAdminTasks($cont) {
+            this.$cont = $cont;
+        }
+        WikiAdminTasks.prototype.init = function () {
+            var _this = this;
+            this.getTasks(function (tasks) {
+                _this.genTasks(tasks);
+            });
+        };
+        WikiAdminTasks.prototype.genTasks = function (tasks) {
+            var lg = Common.ListGenerator.init(this.$cont.find(".sub-content"), "task-base-tmp");
+            lg.evnt(".action-btn", function (e, $item, $target, item) {
+                var name = $target.data("action");
+                var id = $item.attr("id");
+                var cd = new Common.ConfirmDialog();
+                cd.create("Action confirmation", "Do you want to perform action '" + name + "' ?", "Cancel", "Execute", function () {
+                    var data = {
+                        action: name,
+                        id: id
+                    };
+                    Views.ViewBase.currentView.apiPost("WikiAdminAction", data, function (r) {
+                        if (r) {
+                            $item.remove();
+                        }
+                    });
+                });
+            });
+            lg.generateList(tasks);
+        };
+        WikiAdminTasks.prototype.getTasks = function (callback) {
+            Views.ViewBase.currentView.apiGet("WikiAdminAction", [], function (tasks) {
+                callback(tasks);
+            });
+        };
+        return WikiAdminTasks;
+    }());
+    Views.WikiAdminTasks = WikiAdminTasks;
+    var WikiAdminAddCity = (function () {
+        function WikiAdminAddCity($cont) {
+            this.$cont = $cont;
+        }
+        WikiAdminAddCity.prototype.init = function () {
+            var _this = this;
+            var tmp = Views.ViewBase.currentView.registerTemplate("add-city-tmp");
+            var $l = $(tmp());
+            this.$cont.find(".sub-content").html($l);
+            $("#SendCity").click(function (e) {
+                e.preventDefault();
+                _this.createCity();
+            });
+            this.regSearchBox();
+        };
+        WikiAdminAddCity.prototype.regSearchBox = function () {
+            var _this = this;
+            var searchBox = new Common.GNOnlineSearchBox("gnCombo");
+            searchBox.onSelected = function (city) { return _this.onCitySelected(city); };
+        };
+        WikiAdminAddCity.prototype.onCitySelected = function (city) {
+            $("#txtGID").val(city.geonameId);
+            $("#txtPopulation").val(city.population);
+            $("#txtTitle").val(city.name);
+            this.selectedCity = city;
+        };
+        WikiAdminAddCity.prototype.createCity = function () {
+            var _this = this;
+            if ($("#txtGID").val() === "") {
+                return;
+            }
+            var dialog = new Common.ConfirmDialog();
+            dialog.create("Add city", "Do you want to add the city ?", "Cancel", "Create", function () {
+                var data = {
+                    gid: _this.selectedCity.geonameId,
+                    population: $("#txtPopulation").val(),
+                    title: $("#txtTitle").val(),
+                    countryCode: _this.selectedCity.countryCode
+                };
+                Views.ViewBase.currentView.apiPost("WikiCity", data, function (r) {
+                    var id = new Common.InfoDialog();
+                    if (r) {
+                        id.create("The city added", "The city has been added");
+                    }
+                    else {
+                        id.create("The city not added", "The city has NOT been added");
+                    }
+                });
+            });
+        };
+        return WikiAdminAddCity;
+    }());
+    Views.WikiAdminAddCity = WikiAdminAddCity;
+    var WikiPageSectionsAdmin = (function () {
+        function WikiPageSectionsAdmin($cont) {
+            this.$cont = $cont;
+        }
+        WikiPageSectionsAdmin.prototype.createSectionsTabs = function () {
             var _this = this;
             var tmp = Views.ViewBase.currentView.registerTemplate("sections-content-tmp");
             var $l = $(tmp());
@@ -81,7 +191,7 @@ var Views;
             });
             this.sectionsTab.create();
         };
-        WikiAdminPage.prototype.regCreateNewSection = function () {
+        WikiPageSectionsAdmin.prototype.regCreateNewSection = function () {
             var _this = this;
             var txtInput = $("#newSectionText");
             $("#newSectionBtn").click(function (e) {
@@ -105,7 +215,7 @@ var Views;
                 }
             });
         };
-        WikiAdminPage.prototype.genSectionsTable = function (sections) {
+        WikiPageSectionsAdmin.prototype.genSectionsTable = function (sections) {
             var _this = this;
             var lg = Common.ListGenerator.init(this.$cont.find("#sectionsTable"), "section-item-tmp");
             lg.clearCont = true;
@@ -125,14 +235,14 @@ var Views;
             });
             lg.generateList(sections);
         };
-        WikiAdminPage.prototype.getSectionsMgmt = function (type, callback) {
+        WikiPageSectionsAdmin.prototype.getSectionsMgmt = function (type, callback) {
             var data = [["type", type]];
             Views.ViewBase.currentView.apiGet("WikiPageSection", data, function (r) {
                 callback(r);
             });
         };
-        return WikiAdminPage;
-    }(AdminPageBase));
-    Views.WikiAdminPage = WikiAdminPage;
+        return WikiPageSectionsAdmin;
+    }());
+    Views.WikiPageSectionsAdmin = WikiPageSectionsAdmin;
 })(Views || (Views = {}));
 //# sourceMappingURL=NewAdminView.js.map

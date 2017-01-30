@@ -5,7 +5,7 @@
 	  public onSelected: Function;
 
 		constructor(id) {
-			this.$combo = $("#" + id);
+			this.$combo = $(`#${id}`);
 			var input = this.$combo.find(".inputed");
 
 			var d = new DelayedCallback(input);
@@ -13,6 +13,7 @@
 				this.search(query);
 			}
 		}
+
 
 		private search(query) {
 			var data = [["q", query]];
@@ -23,12 +24,15 @@
 		}
 
 		private fillItems(cities) {
+			var $ul = this.$combo.find("ul");
+
 			this.$combo.find("li").remove();
 			cities.forEach((city) => {
-				var ch = this.getCityHtml(city);
-				this.$combo.find("ul").append(ch);
+				var $ch = this.getCityHtml(city);
+				$ul.append($ch);
 			});
 			this.registerEvents();
+			$ul.show();
 		}
 
 	  private registerEvents() {

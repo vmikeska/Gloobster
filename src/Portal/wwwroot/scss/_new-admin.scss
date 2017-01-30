@@ -4,6 +4,15 @@
     
     text-align: left;
 
+    .lbtn2 {
+            color: white;
+            background-color: $green;
+
+            &:hover {
+                background-color: $orange;
+            }
+        }
+
     .tab-menu {
         margin-top: 10px;
         margin-bottom: 10px;
@@ -40,13 +49,45 @@
             border: 1px solid $dark-blue;
         }
 
-        .lbtn2 {
-            color: white;
-            background-color: $green;
+    }
 
-            &:hover {
-                background-color: $orange;
-            }
+    .add-city {
+
+    }
+
+    .task-all {
+        background-color: $very-light-blue3;
+        border-radius: 4px;
+        margin-bottom: 1em;
+
+        .task-header {
+            color: white;
+            font-weight: bold;
+            padding: 1em;
+            background-color: $dark-blue;
+        }
+
+        .task-inner {
+            padding: 1em;
+        }
+
+        .title {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .line {
+            margin-bottom: 1em;
+        }
+
+        .white-txt {
+            background-color: white;
+            border-radius: 4px;
+            padding: 1em;
+        }
+
+        .actions {
+            padding: 1em;
         }
     }
 

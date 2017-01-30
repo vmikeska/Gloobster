@@ -24,10 +24,10 @@ namespace Gloobster.DomainModels.Wiki
         {
             var photoIdObj = new ObjectId(taskDO.TargetId);
 
-            var task = GetNewTask(taskDO.ArticleId, AdminTaskType.ConfirmPhoto);
+            var task = GetNewTask(taskDO.ArticleId, taskDO.UserId, AdminTaskType.ConfirmPhoto);
             task.Target_id = photoIdObj;
             task.Data = taskDO.Data;
-
+            
             DB.SaveAsync(task);
         }
     }

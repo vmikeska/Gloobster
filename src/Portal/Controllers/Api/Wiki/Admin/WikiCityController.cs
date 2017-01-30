@@ -6,6 +6,7 @@ using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.DomainModels.Wiki;
 using Gloobster.DomainObjects;
+using Gloobster.Entities.Wiki;
 using Gloobster.Portal.Controllers.Base;
 using Microsoft.AspNet.Mvc;
 using Serilog;
@@ -51,6 +52,12 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         [AuthorizeApi]
         public async Task<IActionResult> Post([FromBody] WikiCityRequest req)
         {
+
+            var city = DB.FOD<WikiCityEntity>(c => c.GID == req.gid);
+            if (city != null)
+            {
+                return new ObjectResult(false);
+            }
 
             var pi = new PricesInitializer();
             pi.InitPrices();

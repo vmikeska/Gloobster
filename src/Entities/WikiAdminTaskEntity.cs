@@ -16,6 +16,7 @@ namespace Gloobster.Entities
 
         public ObjectId Article_id { get; set; }
         public ObjectId ResolvedBy_id { get; set; }
+        public ObjectId Creator_id { get; set; }
     }
 
     public class WikiReportEntity : EntityBase

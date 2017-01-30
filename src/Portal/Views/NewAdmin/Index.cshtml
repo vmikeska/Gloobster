@@ -1,4 +1,5 @@
-﻿
+﻿@using Gloobster.Common
+
 @model Gloobster.Portal.ViewModels.NewAdminViewModel
 
 @{
@@ -7,6 +8,7 @@
     ViewBag.BodyClass = "new-admin";
 }
 
+<script type="text/javascript" src="@Url.Content("~/js/Common/GNOnlineSearchBox.js")"></script>
 <script src="/js/views/newadminview.js"></script>
 
 <div class="wrapper">
@@ -30,6 +32,60 @@
 
 </script>
 
+<script id="task-base-tmp" type="text/x-handlebars-template">
+    
+    <div id="{{id}}" class="task-all">
+        
+        <div class="task-header">
+            {{caption}} - {{articleTitle}}
+        </div>
+        
+        <div class="task-inner">
+            
+            <div class="info-line"><span class="title">Created by: </span><span class="value">{{creatorName}}</span></div>
+            
+            
+            {{#ifCond taskType 0}}
+
+            <div>
+                <a href="/Wiki/ArticlePhoto?photoId={{targetId}}&articleId={{articleId}}" target="_blank"><img class="" src="/Wiki/ArticlePhotoThumb?photoId={{targetId}}&articleId={{articleId}}"></a>
+            </div>
+
+
+            {{/ifCond}}
+
+            {{#ifCond taskType 1}}
+            
+            <div class="info-line"><span class="title">Article link: </span><span class="value"><a target="_blank" href="/@RoutingConsts.WikiMenuName/{{data.Lang}}/{{link}}">Article</a></span></div>
+
+            <div class="info-line"><span class="title">Section name: </span><span class="value">{{data.SectionName}}</span></div>
+            <div class="info-line"><span class="title">Language: </span><span class="value">{{data.Lang}}</span></div>
+
+            <div class="title">Report</div>
+            <div class="white-txt line">{{data.Report}}</div>
+
+            <div class="title">Current text</div>
+            <div class="white-txt line">{{data.Text}}</div>
+
+
+
+            {{/ifCond}}
+
+        </div>
+        
+        <div class="actions">
+            {{#each actions}}
+            <a class="lbtn2 action-btn" href="#" data-action="{{name}}">{{caption}}</a>
+            {{/each}}
+
+        </div>
+
+        
+    </div>
+
+
+
+</script>
 
 <script id="menu-content-tmp" type="text/x-handlebars-template">
     
@@ -58,6 +114,36 @@
             <input id="newSectionText" type="text" />
             <a id="newSectionBtn" class="lbtn2" href="#">Create new</a>
         </div>
+    </div>
+
+</script>
+
+<script id="add-city-tmp" type="text/x-handlebars-template">
+
+    <div class="add-city">
+
+        <div id="gnCombo" class="dropdown">
+            <input type="text" class="inputed" placeholder="Search city">
+            <ul></ul>
+        </div>
+
+        <table>
+            <tr>
+                <td><span>GID</span></td>
+                <td><input id="txtGID" type="text" disabled /></td>
+            </tr>
+            <tr>
+                <td><span>Population</span></td>
+                <td><input id="txtPopulation" type="text" /></td>
+            </tr>
+            <tr>
+                <td><span>Title</span></td>
+                <td><input id="txtTitle" type="text" /></td>
+            </tr>
+        </table>
+
+        <a href="#" class="lbtn2" id="SendCity">Add city</a>
+
     </div>
 
 </script>

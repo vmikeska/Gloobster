@@ -23,7 +23,7 @@ namespace Gloobster.DomainModels.Wiki
         {
             var reportIdObj = new ObjectId(taskDO.TargetId);
 
-            var task = GetNewTask(taskDO.ArticleId, AdminTaskType.ResolveReport);
+            var task = GetNewTask(taskDO.ArticleId, taskDO.UserId, AdminTaskType.ResolveReport);
             task.Target_id = reportIdObj;
             task.Data = taskDO.Data;
 

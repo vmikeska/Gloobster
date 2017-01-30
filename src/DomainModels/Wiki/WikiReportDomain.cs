@@ -17,8 +17,7 @@ namespace Gloobster.DomainModels.Wiki
         public string SectionName { get; set; }
         public string Text { get; set; }
         public string Report { get; set; }
-        public string Lang { get; set; }
-        public string CreatorName { get; set; }
+        public string Lang { get; set; }     
     }
 
     public class WikiReportDomain : IWikiReportDomain
@@ -65,7 +64,7 @@ namespace Gloobster.DomainModels.Wiki
                 SectionName = section.Type,
                 Lang = newReport.Lang,
                 Text = sectionText.Text,
-                Report = newReport.Text            
+                Report = newReport.Text
             };
 
             var dataString = JsonConvert.SerializeObject(data);
@@ -75,7 +74,8 @@ namespace Gloobster.DomainModels.Wiki
                 TaskType = AdminTaskType.ResolveReport,
                 ArticleId = newReport.ArticleId,
                 TargetId = reportEntity.id.ToString(),
-                Data = dataString
+                Data = dataString,
+                UserId = newReport.UserId
             };
             AdminTasks.AddTask(task);
 
