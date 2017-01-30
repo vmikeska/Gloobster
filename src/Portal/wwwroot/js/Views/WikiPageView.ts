@@ -251,8 +251,8 @@
 				e.preventDefault();
 
 				if (ViewBase.currentView.fullReg) {
-					$("#photosForm").show();
-					$("#recommendPhoto").hide();
+					$("#photosForm").toggleClass("hidden");
+					$("#photoFormOpen").toggleClass("hidden");
 				} else {
 					RegMessages.displayFullRegMessage();
 				}
@@ -260,8 +260,8 @@
 
 			$("#photosForm .cancel").click((e) => {
 				e.preventDefault();
-				$("#photosForm").hide();
-				$("#recommendPhoto").show();
+				$("#photosForm").toggleClass("hidden");
+				$("#photoFormOpen").toggleClass("hidden");
 			});
 
 			var $terms = $("#photosForm #cid");

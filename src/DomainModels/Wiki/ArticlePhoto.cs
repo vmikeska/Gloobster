@@ -88,7 +88,7 @@ namespace Gloobster.DomainModels.Wiki
             if (fileExists)
             {
                 using (var file = FileDomain.GetFile(galleryDir, name))
-                {
+                {                    
                     SaveVersion(file, articleId, EventType.Delete);
                 }
 
@@ -140,9 +140,7 @@ namespace Gloobster.DomainModels.Wiki
                 {
                     var name = $"{fileId.ToString()}.jpg";
                     var path = FileDomain.Storage.Combine(galleryDir, name);
-                    FileDomain.Storage.SaveStream(path, stream);
-
-                    SaveVersion(stream, articleId, EventType.Create);
+                    FileDomain.Storage.SaveStream(path, stream);                    
                 }
 
                 bool confirmed = isUserAdmin;
@@ -215,12 +213,8 @@ namespace Gloobster.DomainModels.Wiki
             return jpgStream;
         }
         
-        public void SaveVersionCreate(Stream stream, string articleId)
-        {
-            SaveVersion(stream, articleId, EventType.Create);
-        }
-
-        //TODO: here change
+       
+        
         private void SaveVersion(Stream stream, string articleId, EventType eventType)
         {
             stream.Position = 0;
@@ -238,7 +232,7 @@ namespace Gloobster.DomainModels.Wiki
 
         private void RemovePhotoFromDb(ObjectId articleIdObj, ObjectId photoId)
         {
-            var article = DB.C<WikiCityEntity>().FirstOrDefault(c => c.id == articleIdObj);
+            var article = DB.FOD<WikiCityEntity>(c => c.id == articleIdObj);
             var photo = article.Photos.FirstOrDefault(p => p.id == photoId);
 
             var filter = DB.F<WikiCityEntity>().Eq(p => p.id, articleIdObj);

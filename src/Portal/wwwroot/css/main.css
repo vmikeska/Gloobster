@@ -148,7 +148,7 @@ textarea {
   border-color: #AAE0ED;
   color: #9999B1; }
 
-.lbtn, .photo-button label {
+.lbtn {
   border-style: solid;
   border-width: 0;
   border-radius: 4px;
@@ -161,7 +161,7 @@ textarea {
   cursor: pointer;
   white-space: nowrap; }
 
-.lbtn2 {
+.lbtn2, .photo-button label {
   display: inline-block;
   text-decoration: none;
   cursor: pointer;
@@ -281,10 +281,13 @@ p {
     position: absolute;
     z-index: -1; }
   .photo-button label {
-    color: #3298C1;
-    border: 1px solid #3298C1;
-    cursor: pointer;
-    cursor: hand; }
+    color: white;
+    background-color: #3DA33D;
+    cursor: pointer; }
+    .photo-button label:hover {
+      background-color: #F56E12;
+      border: 0 !important;
+      color: white !important; }
 
 .photo-link input {
   width: 0.1px;
@@ -394,7 +397,7 @@ button:active {
     display: inline-block;
     vertical-align: top;
     /*border: 1px solid red;*/ }
-    .comments .txt-input .btn .lbtn, .comments .txt-input .btn .photo-button label, .photo-button .comments .txt-input .btn label {
+    .comments .txt-input .btn .lbtn {
       color: white;
       background-color: #3298C1; }
 
@@ -940,7 +943,8 @@ footer {
 
 .popup {
   display: none;
-  z-index: 99999; }
+  z-index: 99999;
+  text-align: left; }
   .popup:before {
     position: fixed;
     top: 0;
@@ -967,6 +971,20 @@ footer {
     padding: 30px;
     width: 50%;
     z-index: 99999; }
+  .popup .btns2 {
+    text-align: right; }
+    .popup .btns2 .ok-btn, .popup .btns2 .confirm-btn {
+      color: white;
+      font-weight: bold;
+      background-color: #3DA33D; }
+      .popup .btns2 .ok-btn:hover, .popup .btns2 .confirm-btn:hover {
+        background-color: #F56E12; }
+    .popup .btns2 .cancel-btn {
+      color: white;
+      font-weight: bold;
+      background-color: #FFC400; }
+      .popup .btns2 .cancel-btn:hover {
+        background-color: #F56E12; }
   .popup .btns .cancel {
     color: white;
     background-color: darkred; }
@@ -998,11 +1016,11 @@ footer {
     margin-bottom: 30px; }
   .popup-error .third {
     text-align: center; }
-    .popup-error .third .lbtn2 {
+    .popup-error .third .lbtn2, .popup-error .third .photo-button label, .photo-button .popup-error .third label {
       background-color: #FFC400;
       font-weight: bold;
       color: white; }
-      .popup-error .third .lbtn2:hover {
+      .popup-error .third .lbtn2:hover, .popup-error .third .photo-button label:hover, .photo-button .popup-error .third label:hover {
         background-color: #F56E12; }
   .popup-error .error {
     display: none; }
@@ -1076,7 +1094,7 @@ footer {
   .popup-share .htbl .right {
     vertical-align: middle;
     padding: 16px; }
-    .popup-share .htbl .right .lbtn, .popup-share .htbl .right .photo-button label, .photo-button .popup-share .htbl .right label {
+    .popup-share .htbl .right .lbtn {
       color: white;
       background-color: #3298C1; }
 
@@ -2002,7 +2020,7 @@ footer {
       height: 170px; }
     .wiki .wiki_info .block .btn {
       height: 50px; }
-      .wiki .wiki_info .block .btn .lbtn, .wiki .wiki_info .block .btn .photo-button label, .photo-button .wiki .wiki_info .block .btn label {
+      .wiki .wiki_info .block .btn .lbtn {
         color: #3298C1;
         background-color: #F5C519; }
 
@@ -2358,22 +2376,48 @@ footer {
       .wiki-page .does-donts .block {
         display: block;
         max-width: initial; } }
-  .wiki-page .gallery-photos .photo {
-    display: inline-block; }
-    .wiki-page .gallery-photos .photo img {
-      border-radius: 2px; }
-  .wiki-page .gallery-photos .recomm-photo .lbtn, .wiki-page .gallery-photos .recomm-photo .photo-button label, .photo-button .wiki-page .gallery-photos .recomm-photo label {
-    color: white;
-    background-color: #3298C1; }
-  .wiki-page .gallery-photos .photos-form a {
-    color: #3298C1;
-    text-decoration: none; }
+  .wiki-page .gallery-photos {
+    background-color: #F0FAFC;
+    padding: 0.5em; }
+    .wiki-page .gallery-photos .photo {
+      display: inline-block;
+      margin-left: 0.3em;
+      margin-right: 0.3em;
+      margin-bottom: 0.3em; }
+      .wiki-page .gallery-photos .photo img {
+        border-radius: 2px; }
+    .wiki-page .gallery-photos .recomm-photo {
+      background-color: #009EC4;
+      margin-top: 1em;
+      padding: 0.5em;
+      color: white;
+      border-radius: 4px;
+      display: inline-block; }
+      .wiki-page .gallery-photos .recomm-photo .open-form-btn {
+        color: white;
+        font-weight: bold;
+        background-color: #3DA33D;
+        margin-left: 1em; }
+        .wiki-page .gallery-photos .recomm-photo .open-form-btn:hover {
+          background-color: #F56E12; }
+    .wiki-page .gallery-photos .photos-form {
+      background-color: #ccedf5;
+      margin-top: 1em;
+      padding: 0.5em;
+      border-radius: 4px; }
+      .wiki-page .gallery-photos .photos-form .svc-btns {
+        margin-top: 1em; }
+      .wiki-page .gallery-photos .photos-form .cancel {
+        color: white;
+        background-color: #FFC400; }
+        .wiki-page .gallery-photos .photos-form .cancel:hover {
+          background-color: #F56E12; }
   .wiki-page .links {
     margin-bottom: 30px; }
-    .wiki-page .links .lbtn2 {
+    .wiki-page .links .lbtn2, .wiki-page .links .photo-button label, .photo-button .wiki-page .links label {
       background-color: #3298C1;
       color: white; }
-      .wiki-page .links .lbtn2:hover {
+      .wiki-page .links .lbtn2:hover, .wiki-page .links .photo-button label:hover, .photo-button .wiki-page .links label:hover {
         background-color: #F56E12; }
   .wiki-page .favItem {
     border: 1px solid #009DC4;
@@ -2588,7 +2632,7 @@ footer {
   .user-detail .ratings .new-rating textarea {
     resize: none;
     border: 1px solid #65BDD7; }
-  .user-detail .ratings .new-rating .lbtn, .user-detail .ratings .new-rating .photo-button label, .photo-button .user-detail .ratings .new-rating label {
+  .user-detail .ratings .new-rating .lbtn {
     background-color: #3298C1;
     color: white; }
 
@@ -2829,7 +2873,7 @@ footer {
     padding-right: 40px; }
     .login-all .cont .links input {
       border: 1px solid #65BDD7; }
-    .login-all .cont .links .lbtn, .login-all .cont .links .photo-button label, .photo-button .login-all .cont .links label {
+    .login-all .cont .links .lbtn {
       color: white;
       background-color: #3298C1; }
     .login-all .cont .tos {
@@ -2876,7 +2920,7 @@ footer {
         vertical-align: top; }
         .trip-detail .background-wrap .items a:hover {
           color: #005476; }
-      .trip-detail .background-wrap .items .lbtn, .trip-detail .background-wrap .items .photo-button label, .photo-button .trip-detail .background-wrap .items label {
+      .trip-detail .background-wrap .items .lbtn {
         background-color: rgba(255, 255, 255, 0.9);
         border: 1px solid #005476; }
     .trip-detail .background-wrap .size-wrapper {
@@ -2994,7 +3038,7 @@ footer {
         vertical-align: top; }
         .trip-detail .service-menu .items a:hover {
           color: #005476; }
-      .trip-detail .service-menu .items .lbtn, .trip-detail .service-menu .items .photo-button label, .photo-button .trip-detail .service-menu .items label {
+      .trip-detail .service-menu .items .lbtn {
         border: 1px solid #65BDD7;
         color: #65BDD7; }
   .trip-detail .menu-cont {
@@ -3041,7 +3085,7 @@ footer {
           border-left: 0;
           padding-left: 0;
           margin-top: 15px; } }
-      .trip-detail .menu-cont .cont .share .right .lbtn, .trip-detail .menu-cont .cont .share .right .photo-button label, .photo-button .trip-detail .menu-cont .cont .share .right label {
+      .trip-detail .menu-cont .cont .share .right .lbtn {
         background-color: #3298C1;
         color: white; }
       .trip-detail .menu-cont .cont .privacy {
@@ -3643,7 +3687,7 @@ footer {
     text-align: right;
     background-color: #ccedf5;
     padding: 10px; }
-    .trip-share .service .lbtn, .trip-share .service .photo-button label, .photo-button .trip-share .service label {
+    .trip-share .service .lbtn {
       background-color: #3298C1;
       color: white; }
   .trip-share .participant {
@@ -4459,10 +4503,10 @@ footer {
         .travelb-home .nchat-all .chat-stop-win .ln span[class^="icon-"] {
           color: #F56E12;
           font-size: 1.1em; }
-      .travelb-home .nchat-all .chat-stop-win .lbtn, .travelb-home .nchat-all .chat-stop-win .photo-button label, .photo-button .travelb-home .nchat-all .chat-stop-win label {
+      .travelb-home .nchat-all .chat-stop-win .lbtn {
         color: white;
         background-color: #65BDD7; }
-        .travelb-home .nchat-all .chat-stop-win .lbtn:hover, .travelb-home .nchat-all .chat-stop-win .photo-button label:hover, .photo-button .travelb-home .nchat-all .chat-stop-win label:hover {
+        .travelb-home .nchat-all .chat-stop-win .lbtn:hover {
           color: #005476; }
   .travelb-home #theCont {
     overflow-y: scroll; }
@@ -4549,10 +4593,10 @@ footer {
   .travelb-home .req-settings .all-valid {
     margin-top: 16px;
     font-weight: bold; }
-    .travelb-home .req-settings .all-valid .lbtn2 {
+    .travelb-home .req-settings .all-valid .lbtn2, .travelb-home .req-settings .all-valid .photo-button label, .photo-button .travelb-home .req-settings .all-valid label {
       background-color: #3DA33D;
       color: white; }
-      .travelb-home .req-settings .all-valid .lbtn2:hover {
+      .travelb-home .req-settings .all-valid .lbtn2:hover, .travelb-home .req-settings .all-valid .photo-button label:hover, .photo-button .travelb-home .req-settings .all-valid label:hover {
         background-color: #F56E12; }
   @media screen and (max-width: 792px) {
     .travelb-home .req-settings .lr-table, .travelb-home .req-settings .l, .travelb-home .req-settings .r {
@@ -5658,11 +5702,11 @@ footer {
         display: block; }
     .fly-tickets .city-deal .srvc {
       padding: 12px; }
-      .fly-tickets .city-deal .srvc .lbtn, .fly-tickets .city-deal .srvc .photo-button label, .photo-button .fly-tickets .city-deal .srvc label {
+      .fly-tickets .city-deal .srvc .lbtn {
         color: white;
         background-color: #F56E12;
         font-weight: bold; }
-        .fly-tickets .city-deal .srvc .lbtn:hover, .fly-tickets .city-deal .srvc .photo-button label:hover, .photo-button .fly-tickets .city-deal .srvc label:hover {
+        .fly-tickets .city-deal .srvc .lbtn:hover {
           background-color: #005476; }
     .fly-tickets .city-deal .other-flights-preloader {
       text-align: center; }
@@ -6379,10 +6423,10 @@ footer {
 
 .new-admin {
   text-align: left; }
-  .new-admin .lbtn2 {
+  .new-admin .lbtn2, .new-admin .photo-button label, .photo-button .new-admin label {
     color: white;
     background-color: #3DA33D; }
-    .new-admin .lbtn2:hover {
+    .new-admin .lbtn2:hover, .new-admin .photo-button label:hover, .photo-button .new-admin label:hover {
       background-color: #F56E12; }
   .new-admin .tab-menu {
     margin-top: 10px;

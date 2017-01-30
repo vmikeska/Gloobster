@@ -402,8 +402,16 @@
     }
 
     .gallery-photos{
+        background-color: $very-light-blue3;
+
+        padding: 0.5em;
+
         .photo{
             display: inline-block;
+            
+            margin-left: 0.3em;
+            margin-right: 0.3em;
+            margin-bottom: 0.3em;
 
             img {
                 border-radius: 2px;
@@ -411,17 +419,48 @@
         }
 
         .recomm-photo{
-            .lbtn{
+            background-color: $info-blue2;
+            margin-top: 1em;
+            padding: 0.5em;
+            color: white;
+            border-radius: 4px;
+            display: inline-block;
+
+            .open-form-btn{
                 color: white;
-                background-color: $light-blue3;
+                font-weight: bold;
+                background-color: $green;
+                margin-left: 1em;
+
+                &:hover {
+                    background-color: $orange;
+                }
             }
         }
 
         .photos-form{
-            a {
-                color: $light-blue3;
-                text-decoration: none;
+            background-color: $light-blue4;
+            margin-top: 1em;
+            padding: 0.5em;
+
+            border-radius: 4px;
+
+            .svc-btns {
+                margin-top: 1em;
             }
+
+          .cancel{
+              color: white;
+              background-color: $yellow;
+
+              &:hover {
+                  background-color: $orange;
+              }
+          }
+
+          .photo-button {
+            
+          }
         }
     }
 

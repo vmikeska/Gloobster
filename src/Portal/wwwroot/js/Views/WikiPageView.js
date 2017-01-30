@@ -207,8 +207,8 @@ var Views;
             $("#recommendPhoto").click(function (e) {
                 e.preventDefault();
                 if (Views.ViewBase.currentView.fullReg) {
-                    $("#photosForm").show();
-                    $("#recommendPhoto").hide();
+                    $("#photosForm").toggleClass("hidden");
+                    $("#photoFormOpen").toggleClass("hidden");
                 }
                 else {
                     RegMessages.displayFullRegMessage();
@@ -216,8 +216,8 @@ var Views;
             });
             $("#photosForm .cancel").click(function (e) {
                 e.preventDefault();
-                $("#photosForm").hide();
-                $("#recommendPhoto").show();
+                $("#photosForm").toggleClass("hidden");
+                $("#photoFormOpen").toggleClass("hidden");
             });
             var $terms = $("#photosForm #cid");
             $terms.change(function (e) {

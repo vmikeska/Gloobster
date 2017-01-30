@@ -487,11 +487,17 @@ p {
     }
 
      label {
-        @extend .lbtn;
-        color: $light-blue3;
-        border: 1px solid $light-blue3;
+        @extend .lbtn2;
+        color: white;
+        background-color: $green;
 
-        cursor: pointer;cursor: hand;
+        cursor: pointer;
+
+        &:hover {
+            background-color: $orange;
+            border: 0 !important;
+            color: white !important;
+        }
     }
  }
 

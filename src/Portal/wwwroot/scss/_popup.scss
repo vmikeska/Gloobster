@@ -2,6 +2,8 @@
 .popup {
     display: none;
     z-index: 99999;
+    text-align: left;
+
     &:before {
         position:fixed;
         top: 0;
@@ -32,6 +34,31 @@
         width: 50%;
         z-index: 99999;
     }
+
+    .btns2 {
+        text-align: right;
+
+        .ok-btn, .confirm-btn{
+            color: white;
+            font-weight: bold;
+            background-color: $green;
+
+            &:hover {
+                background-color: $orange;
+            }
+        }
+
+        .cancel-btn {
+            color: white;
+            font-weight: bold;
+            background-color: $yellow;
+
+            &:hover {
+                background-color: $orange;
+            }
+        }
+    }
+
 
     .btns{
         .cancel {
