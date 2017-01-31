@@ -67,12 +67,12 @@
 								this.$cont.find(".sub-content").empty();
 						}
 
-						tabs.addTab("wikiTasks", "Manage tasks", () => {
+						tabs.addTab("wikiTasks", "Tasks", () => {
 								var fnc = new WikiAdminTasks(this.$cont);
 								fnc.init();
 						});
 
-						tabs.addTab("wikiSections", "Sections management", () => {
+						tabs.addTab("wikiSections", "Sections", () => {
 								var fnc = new WikiPageSectionsAdmin(this.$cont);
 								
 								fnc.createSectionsTabs();
@@ -84,14 +84,165 @@
 								fnc.init();
 						});
 						
-						tabs.addTab("wikiSuperAdmins", "SuperAdmins management", () => {
+						tabs.addTab("wikiSuperAdmins", "Super admins", () => {
 								var fnc = new WikiSuperAdminMgmt(this.$cont);
+								fnc.init();
+						});
+
+						tabs.addTab("wikiArticleAdmins", "Article admins", () => {
+								var fnc = new WikiArticlesAdminMgmt(this.$cont);
 								fnc.init();
 						});
 						
 						tabs.create();
 				}
 				
+		}
+
+		export class WikiArticlesAdminMgmt {
+				private $cont;
+
+				constructor($cont) {
+						this.$cont = $cont;
+				}
+
+
+				public init() {
+						var tmp = ViewBase.currentView.registerTemplate("article-admins-mgmt-tmp");
+						var $l = $(tmp());
+						this.$cont.find(".sub-content").html($l);
+
+						this.regUserSearch();
+
+						this.getUsers((users) => {
+							this.genUsers(users);
+						});
+				}
+
+				private getSearchBox(id, callback) {
+						var config = new Common.UserSearchConfig();
+						config.elementId = id;
+						config.clearAfterSearch = true;
+						config.endpoint = "FriendsSearch";
+						var box = new Common.UserSearchBox(config);
+						box.onUserSelected = (user) => {
+								callback(user);
+						};
+				}
+
+				private getUsers(callback: Function) {
+					Views.ViewBase.currentView.apiGet("WikiArticlesPermissions", [], (users) => {
+						callback(users);
+					});
+				}
+
+				private genUsers(users) {
+						var lg = Common.ListGenerator.init(this.$cont.find(".users-cont"), "article-admin-item-tmp");
+					 lg.clearCont = true;
+
+					 lg.evnt(".del", (e, $item, $target, item) => {
+						 var data = [["id", item.id]];
+
+						 var cd = new Common.ConfirmDialog();
+						 cd.create("Delete",
+							 "Do you really want to remove the user?",
+							 "Cancel",
+							 "Delete",
+							 () => {
+									 Views.ViewBase.currentView.apiDelete("WikiArticlesPermissions", data, () => {
+											 $item.remove();
+									 });
+							 });
+							 
+					 });
+
+					 lg.onItemAppended = ($item, item) => {
+							 var $combo = $item.find(".article-combo");
+							 this.initPlaceCombo($combo, item.id);
+
+							 this.getArticles(item.id, (articles) => {
+								 this.genArticles(articles, $item);
+							 });							 
+					 }
+
+					lg.generateList(users);
+				}
+
+				private genArticles(articles, $item) {
+						var lgp = Common.ListGenerator.init($item.find(".places"), "place-item-tmp");
+					lgp.clearCont = true;
+					lgp.evnt(".del", (e, $item, $target, item) => {
+
+						  var uid = $item.closest(".user-item").data("uid");
+
+							var data = [["articleId", item.id], ["userId", uid]];
+							
+							var cd = new Common.ConfirmDialog();
+							cd.create("Remove",
+									"Do you really want to remove permissions?",
+									"Cancel",
+									"Remove",
+									() => {
+											Views.ViewBase.currentView.apiDelete("WikiArticlePermissions", data, () => {
+													$item.remove();
+											});
+									});
+
+					});
+
+						lgp.generateList(articles);	 
+				}
+
+			private getArticles(id, callback: Function) {
+
+				var data = [["id", id]];
+				
+				Views.ViewBase.currentView.apiGet("WikiArticlePermissions", data, (articles) => {
+						callback(articles);
+					});
+			}
+
+			private regUserSearch() {
+						this.getSearchBox("userCombo", (user) => {
+								var data = { id: user.friendId };
+								Views.ViewBase.currentView.apiPost("WikiArticlesPermissions", data, (created) => {
+										if (created) {
+												
+												this.getUsers((users) => {
+														this.genUsers(users);
+												});
+
+										} else {
+												var id = new Common.InfoDialog();
+												id.create("User creation unsuccessful", "Maybe user already exists ?");
+										}
+
+								});
+						});
+				}
+
+				private initPlaceCombo($combo, userId) {
+						
+						var combo = new WikiSearchCombo();
+						combo.initElement($combo);
+						combo.selectionCallback = ($a) => {
+								var articleId = $a.data("articleid");
+
+								var data = {
+										userId: userId,
+										articleId: articleId
+								};
+
+								Views.ViewBase.currentView.apiPost("WikiArticlePermissions", data, (r) => {
+
+									var $cont = $combo.closest(".user-item");
+
+										this.getArticles(userId, (articles) => {
+												this.genArticles(articles, $cont);
+										});			
+								});
+						};
+				}
 		}
 
 		export class WikiSuperAdminMgmt {

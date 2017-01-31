@@ -114,4 +114,88 @@
         }
     }
 
+    .articles-admins-mgmt {
+        
+        
+        .adding-form {
+            background-color: $light-blue4;
+            padding: 1em;
+            margin: 1em;
+
+            .title {
+                font-weight: bold;
+            }
+
+            .dropdown {
+
+            }
+        }
+
+        .users-splitter {
+            font-weight: bold;
+            font-size: 1.1em;
+            border-bottom: 2px solid $dark-blue;
+            margin-bottom: 1em;
+        }
+
+        .users-cont {
+            
+            .user-item {
+                margin-bottom: 1em;
+                
+                    
+                .name-cont {
+                    font-weight: bold;
+                    background-color: $light-blue;
+                    padding: 0.5em;
+
+                    .del {
+                            color: darkred;
+                            cursor: pointer;
+
+                            &:hover {
+                                color: $orange;
+                            }
+                        }
+                }
+
+                .places {
+                    border: 1px solid $light-blue;
+                    padding: 1em;
+
+                    .article-item {
+                        background-color: $light-blue3;
+                        border-radius: 4px;
+                        padding: 0.5em;
+                        display:inline-block;
+                        margin-right: 0.2em;
+                        margin-bottom: 0.2em;
+
+                        .name {
+                            color: white;
+                            font-weight: bold;
+                        }
+
+                        .del {
+                            color: darkred;
+                            cursor: pointer;
+
+                            &:hover {
+                                color: $orange;
+                            }
+                        }
+                    }
+                }
+
+                .adder {
+                    .title {
+                        font-weight: bold;
+                        margin-right: 1em;
+                    }
+                }
+                
+            }
+        }
+    }
+
 }

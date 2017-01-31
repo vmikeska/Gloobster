@@ -58,11 +58,11 @@ var Views;
             tabs.onBeforeSwitch = function () {
                 _this.$cont.find(".sub-content").empty();
             };
-            tabs.addTab("wikiTasks", "Manage tasks", function () {
+            tabs.addTab("wikiTasks", "Tasks", function () {
                 var fnc = new WikiAdminTasks(_this.$cont);
                 fnc.init();
             });
-            tabs.addTab("wikiSections", "Sections management", function () {
+            tabs.addTab("wikiSections", "Sections", function () {
                 var fnc = new WikiPageSectionsAdmin(_this.$cont);
                 fnc.createSectionsTabs();
                 fnc.regCreateNewSection();
@@ -71,8 +71,12 @@ var Views;
                 var fnc = new WikiAdminAddCity(_this.$cont);
                 fnc.init();
             });
-            tabs.addTab("wikiSuperAdmins", "SuperAdmins management", function () {
+            tabs.addTab("wikiSuperAdmins", "Super admins", function () {
                 var fnc = new WikiSuperAdminMgmt(_this.$cont);
+                fnc.init();
+            });
+            tabs.addTab("wikiArticleAdmins", "Article admins", function () {
+                var fnc = new WikiArticlesAdminMgmt(_this.$cont);
                 fnc.init();
             });
             tabs.create();
@@ -80,6 +84,116 @@ var Views;
         return WikiAdminPage;
     }(AdminPageBase));
     Views.WikiAdminPage = WikiAdminPage;
+    var WikiArticlesAdminMgmt = (function () {
+        function WikiArticlesAdminMgmt($cont) {
+            this.$cont = $cont;
+        }
+        WikiArticlesAdminMgmt.prototype.init = function () {
+            var _this = this;
+            var tmp = Views.ViewBase.currentView.registerTemplate("article-admins-mgmt-tmp");
+            var $l = $(tmp());
+            this.$cont.find(".sub-content").html($l);
+            this.regUserSearch();
+            this.getUsers(function (users) {
+                _this.genUsers(users);
+            });
+        };
+        WikiArticlesAdminMgmt.prototype.getSearchBox = function (id, callback) {
+            var config = new Common.UserSearchConfig();
+            config.elementId = id;
+            config.clearAfterSearch = true;
+            config.endpoint = "FriendsSearch";
+            var box = new Common.UserSearchBox(config);
+            box.onUserSelected = function (user) {
+                callback(user);
+            };
+        };
+        WikiArticlesAdminMgmt.prototype.getUsers = function (callback) {
+            Views.ViewBase.currentView.apiGet("WikiArticlesPermissions", [], function (users) {
+                callback(users);
+            });
+        };
+        WikiArticlesAdminMgmt.prototype.genUsers = function (users) {
+            var _this = this;
+            var lg = Common.ListGenerator.init(this.$cont.find(".users-cont"), "article-admin-item-tmp");
+            lg.clearCont = true;
+            lg.evnt(".del", function (e, $item, $target, item) {
+                var data = [["id", item.id]];
+                var cd = new Common.ConfirmDialog();
+                cd.create("Delete", "Do you really want to remove the user?", "Cancel", "Delete", function () {
+                    Views.ViewBase.currentView.apiDelete("WikiArticlesPermissions", data, function () {
+                        $item.remove();
+                    });
+                });
+            });
+            lg.onItemAppended = function ($item, item) {
+                var $combo = $item.find(".article-combo");
+                _this.initPlaceCombo($combo, item.id);
+                _this.getArticles(item.id, function (articles) {
+                    _this.genArticles(articles, $item);
+                });
+            };
+            lg.generateList(users);
+        };
+        WikiArticlesAdminMgmt.prototype.genArticles = function (articles, $item) {
+            var lgp = Common.ListGenerator.init($item.find(".places"), "place-item-tmp");
+            lgp.clearCont = true;
+            lgp.evnt(".del", function (e, $item, $target, item) {
+                var uid = $item.closest(".user-item").data("uid");
+                var data = [["articleId", item.id], ["userId", uid]];
+                var cd = new Common.ConfirmDialog();
+                cd.create("Remove", "Do you really want to remove permissions?", "Cancel", "Remove", function () {
+                    Views.ViewBase.currentView.apiDelete("WikiArticlePermissions", data, function () {
+                        $item.remove();
+                    });
+                });
+            });
+            lgp.generateList(articles);
+        };
+        WikiArticlesAdminMgmt.prototype.getArticles = function (id, callback) {
+            var data = [["id", id]];
+            Views.ViewBase.currentView.apiGet("WikiArticlePermissions", data, function (articles) {
+                callback(articles);
+            });
+        };
+        WikiArticlesAdminMgmt.prototype.regUserSearch = function () {
+            var _this = this;
+            this.getSearchBox("userCombo", function (user) {
+                var data = { id: user.friendId };
+                Views.ViewBase.currentView.apiPost("WikiArticlesPermissions", data, function (created) {
+                    if (created) {
+                        _this.getUsers(function (users) {
+                            _this.genUsers(users);
+                        });
+                    }
+                    else {
+                        var id = new Common.InfoDialog();
+                        id.create("User creation unsuccessful", "Maybe user already exists ?");
+                    }
+                });
+            });
+        };
+        WikiArticlesAdminMgmt.prototype.initPlaceCombo = function ($combo, userId) {
+            var _this = this;
+            var combo = new Views.WikiSearchCombo();
+            combo.initElement($combo);
+            combo.selectionCallback = function ($a) {
+                var articleId = $a.data("articleid");
+                var data = {
+                    userId: userId,
+                    articleId: articleId
+                };
+                Views.ViewBase.currentView.apiPost("WikiArticlePermissions", data, function (r) {
+                    var $cont = $combo.closest(".user-item");
+                    _this.getArticles(userId, function (articles) {
+                        _this.genArticles(articles, $cont);
+                    });
+                });
+            };
+        };
+        return WikiArticlesAdminMgmt;
+    }());
+    Views.WikiArticlesAdminMgmt = WikiArticlesAdminMgmt;
     var WikiSuperAdminMgmt = (function () {
         function WikiSuperAdminMgmt($cont) {
             this.$cont = $cont;

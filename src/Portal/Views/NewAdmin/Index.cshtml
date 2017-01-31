@@ -9,6 +9,7 @@
 }
 
 <script type="text/javascript" src="@Url.Content("~/js/Common/GNOnlineSearchBox.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/js/Views/WikiSearchCombo.js")"></script>
 <script src="/js/views/newadminview.js"></script>
 
 <div class="wrapper">
@@ -29,6 +30,61 @@
         currentView = new Views.NewAdminView();
         currentView.init();
     }
+
+</script>
+
+<script id="article-admins-mgmt-tmp" type="text/x-handlebars-template">
+
+    <div class="articles-admins-mgmt">
+        
+        <div class="adding-form">
+            <span class="title">Add new user</span>
+
+            <div id="userCombo" class="dropdown">
+                <input type="text" class="inputed" placeholder="Search user">
+                <ul></ul>
+            </div>
+        </div>
+        
+        <div class="users-splitter">Users</div>
+
+        <div class="users-cont"></div>
+
+    </div>
+
+</script>
+
+<script id="article-admin-item-tmp" type="text/x-handlebars-template">
+
+  <div class="user-item" data-uid="{{id}}">
+      
+      <div class="name-cont">
+          <span class="name">{{name}}</span>
+          <span class="icon-cross del"></span>
+      </div>
+
+      <div class="places">
+         
+      </div>
+      
+      <div class="adder">
+          <span class="title">Add new place</span>
+          <div class="dropdown article-combo">
+              <input type="text" class="inputed" placeholder="Add Place">
+              <ul></ul>
+          </div>
+      </div>
+  </div>
+
+</script>
+
+<script id="place-item-tmp" type="text/x-handlebars-template">
+
+    <div class="article-item" data-id="{{id}}">
+        
+        <span class="name">{{name}}</span>
+        <span class="icon-cross del"></span>
+    </div>
 
 </script>
 

@@ -159,55 +159,7 @@ namespace Gloobster.Portal.Controllers.Portal
             var stream = GetPicture(articleId, name, WikiFileConstants.GalleryDir);
             return stream;
         }
-
-
-        [AuthorizeWeb]
-        public IActionResult Permissions()
-        {
-            var perms = DB.List<WikiPermissionEntity>();
-
-            bool masterAdmin = perms.Any(u => u.IsMasterAdmin && u.User_id == UserIdObj.Value);
-            bool superAdmin = perms.Any(u => u.IsSuperAdmin && u.User_id == UserIdObj.Value);
-            if (!masterAdmin && !superAdmin)
-            {
-                return HttpUnauthorized();
-            }
-
-            var userIds = perms.Select(u => u.User_id).ToList();
-            var users = DB.List<UserEntity>(u => userIds.Contains(u.User_id));
-
-            var vm = CreateViewModelInstance<WikiPermissionsViewModel>();
-            vm.IsMasterAdmin = masterAdmin;
-            vm.IsSuperAdmin = superAdmin;
-
-            vm.MasterAdmins = perms
-                .Where(u => u.IsMasterAdmin)
-                .ToList()
-                .Select(i => ConvertUser(users, i.User_id))
-                .ToList();
-
-            vm.SuperAdmins = perms
-                .Where(u => u.IsSuperAdmin)
-                .ToList()
-                .Select(i => ConvertUser(users, i.User_id))
-                .ToList();
-
-            var unrichAdmins = perms.Where(u => !u.IsSuperAdmin && !u.IsMasterAdmin).ToList();
-            var involvedArticlesIds = unrichAdmins.SelectMany(a => a.Articles).ToList();
-            var involvedArticles = DB.List<WikiTextsEntity>(a => involvedArticlesIds.Contains(a.Article_id));
-
-            vm.Users = unrichAdmins.Select(i => new UserPermVM
-            {
-                UserId = i.User_id.ToString(),
-                Name = users.First(u => u.User_id == i.User_id).DisplayName,
-                Items = i.Articles.Select(a => ConvertArticle(involvedArticles, a)).ToList()
-            }).ToList();
-
-            return View(vm);
-        }
-
-
-
+        
         private WikiCityViewModel GetCityVM(WikiTextsEntity text)
         {
             var article = DB.FOD<WikiCityEntity>(i => i.id == text.Article_id);
@@ -324,33 +276,6 @@ namespace Gloobster.Portal.Controllers.Portal
             }
 
             return langItem;
-        }
-        
-        private PermItemVM ConvertArticle(List<WikiTextsEntity> involvedArticles, ObjectId articleId)
-        {
-            var article = involvedArticles.FirstOrDefault(a => a.Article_id == articleId && a.Language == "en");
-
-            return new PermItemVM
-            {
-                WikiId = article.Article_id.ToString(),
-                Name = article.Title
-            };
-        }
-
-        private UserViewModel ConvertUser(List<UserEntity> users, ObjectId userId)
-        {
-            var user = users.FirstOrDefault(u => u.User_id == userId);
-
-            if (user == null)
-            {
-                return null;
-            }
-
-            return new UserViewModel
-            {
-                Id = user.User_id.ToString(),
-                Name = user.DisplayName
-            };
         }
         
     }
