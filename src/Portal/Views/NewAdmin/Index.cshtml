@@ -1,4 +1,5 @@
 ﻿@using Gloobster.Common
+@using Microsoft.Data.Entity.Metadata.Internal
 
 @model Gloobster.Portal.ViewModels.NewAdminViewModel
 
@@ -28,7 +29,14 @@
 
     function onBodyLoad() {
         currentView = new Views.NewAdminView();
+
+        currentView.isMasterAdmin = @Model.IsMasterAdmin.ToString().ToLower();
+        currentView.isSuperAdmin = @Model.IsSuperAdmin.ToString().ToLower();
+        currentView.isAdminOfSomething = @Model.IsAdminOfSomething.ToString().ToLower();
+
         currentView.init();
+
+
     }
 
 </script>

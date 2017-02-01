@@ -10,15 +10,22 @@ namespace Gloobster.Portal.Controllers.Portal
 {
     public class NewAdminController : PortalBaseController
     {
-        public NewAdminController(ILogger log, IDbOperations db, IComponentContext cc, ILanguages langs) : base(log, db, cc, langs)
-        {
+        public IWikiPermissions Perms { get; set; }
 
+        public NewAdminController(IWikiPermissions perms, ILogger log, IDbOperations db, IComponentContext cc, ILanguages langs) : base(log, db, cc, langs)
+        {
+            Perms = perms;
         }
 
         [AuthorizeWeb]
         public IActionResult Index()
         {
-            var vm = CreateViewModelInstance<NewAdminViewModel>();            
+            var vm = CreateViewModelInstance<NewAdminViewModel>();
+
+            vm.IsMasterAdmin = Perms.IsMasterAdmin(UserId);
+            vm.IsSuperAdmin = Perms.IsSuperAdmin(UserId);
+            vm.IsAdminOfSomething = Perms.IsAdminOfSomething(UserId);
+            
             return View(vm);
         }
         

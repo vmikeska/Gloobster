@@ -71,7 +71,7 @@ module Views {
 		private initTitleFnc() {
 			var $ibAll = $(".info-block-bck");
 			var $btn = $ibAll.find(".showHide");
-
+				
 			$btn.click((e) => {
 				e.preventDefault();
 
@@ -79,7 +79,15 @@ module Views {
 				var $ib = $ibAll.find(".info-block");
 
 				var visible = $ib.css("display") === "block";
-				$btn.html(visible ? $btn.data("ts") : $btn.data("th"));
+				$btn.attr("title", (visible ? $btn.data("ts") : $btn.data("th")));
+
+					if (visible) {
+							$btn.addClass("icon-info");
+							$btn.removeClass("icon-close-cross");
+					} else {
+							$btn.removeClass("icon-info");
+							$btn.addClass("icon-close-cross");
+					}
 
 				if (!visible) {
 						$ibAll.removeClass("collapsed");

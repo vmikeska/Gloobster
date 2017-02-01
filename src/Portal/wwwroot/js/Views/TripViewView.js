@@ -14,7 +14,8 @@ var Views;
             var self = this;
             this.createFilesConfig();
             this.getTrip(id);
-            $("#commentSubmit").click(function () {
+            $("#commentSubmit").click(function (e) {
+                e.preventDefault();
                 self.comments.postComment(self.trip.tripId);
             });
             this.tripMenu = new Views.TripMenu();

@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700">
 
     <link href="/lib/mapbox.js/mapbox.css" rel="stylesheet"/>
-    <link href="/lib/leaflet/dist/leaflet.css" rel="stylesheet"/>
+    @*<link href="/lib/leaflet/dist/leaflet.css" rel="stylesheet"/>*@
     <link href="~/css/main.css" rel="stylesheet"/>
 
     @Html.Partial("_GlobalTemplates")
@@ -77,10 +77,10 @@
         
         @if (!Model.TripIsPrivate)
         {
-            <a class="lbtn" href="/trip/@Model.Id">@Model.W("DetailOfTheTripBtn")</a>
+            <a class="lbtn2" href="/@RoutingConsts.TripMenuName/@Model.Id">@Model.W("DetailOfTheTripBtn")</a>
         }
 
-        <a class="lbtn" href="/">@Model.W("JoinGloobsterBtn")</a>
+        <a class="lbtn2" href="/">@Model.W("JoinGloobsterBtn")</a>
         
     </div>
 

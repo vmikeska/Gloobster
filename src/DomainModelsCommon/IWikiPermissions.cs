@@ -8,6 +8,7 @@ namespace Gloobster.DomainInterfaces
         bool HasArticleAdminPermissions(string userId, string articleId);
         bool IsSuperOrMasterAdmin(string userId);
         bool IsAdminOfSomething(string userId);
+        bool IsSuperAdmin(string userId);
         bool IsMasterAdmin(string userId);
 
         Task AddArticlePermission(string userId, string articleId);

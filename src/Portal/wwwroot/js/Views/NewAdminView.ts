@@ -2,35 +2,47 @@
 
 	export class NewAdminView extends ViewBase {
 
-			private currentPage: AdminPageBase;
+		public isMasterAdmin;
+		public isSuperAdmin;
+		public isAdminOfSomething;
+
+		private currentPage: AdminPageBase;
 
 		constructor() {
-			super();			
+			super();
 		}
 
-			private init() {
-				this.initTabs();
-			}
+		private init() {
+			this.initTabs();
+		}
 
 
+		private initTabs() {
+			var tabs = new Common.Tabs($("#mainTabs"), "main");
 
-			private initTabs() {
-					var tabs = new Common.Tabs($("#mainTabs"), "main");
-					tabs.addTab("wikiTab", "WIKI", () => {
-							this.currentPage = new WikiAdminPage();
+			if (this.isMasterAdmin || this.isSuperAdmin || this.isAdminOfSomething) {
+				tabs.addTab("wikiTab", "WIKI", () => {
+						this.currentPage = new WikiAdminPage(this);
 					});
-					tabs.addTab("travelbTab", "Travel buddy");
-					tabs.addTab("dashboardTab", "Dashboard");
-
-					tabs.create();
 			}
+
+			if (this.isMasterAdmin) {
+				tabs.addTab("travelbTab", "Travel buddy");
+				tabs.addTab("dashboardTab", "Dashboard");
+			}
+
+			tabs.create();
 		}
+	}
 
 
-		export class AdminPageBase {
+	export class AdminPageBase {
 			public $cont;
 
-			constructor(layoutTmpName: string = null) {
+			public v: NewAdminView;
+
+			constructor(v: NewAdminView, layoutTmpName: string = null) {
+					this.v = v;
 					this.$cont = $(".page-cont");
 
 					if (layoutTmpName) {
@@ -52,8 +64,8 @@
 		
 		export class WikiAdminPage extends AdminPageBase
 		{
-				constructor() {
-						super("menu-content-tmp");
+				constructor(v: NewAdminView) {
+						super(v, "menu-content-tmp");
 				}
 
 				createCustom() {
@@ -67,34 +79,51 @@
 								this.$cont.find(".sub-content").empty();
 						}
 
+					if (this.v.isAdminOfSomething) {
+
 						tabs.addTab("wikiTasks", "Tasks", () => {
 								var fnc = new WikiAdminTasks(this.$cont);
 								fnc.init();
-						});
+							});
+					}
+
+					if (this.v.isMasterAdmin) {
 
 						tabs.addTab("wikiSections", "Sections", () => {
 								var fnc = new WikiPageSectionsAdmin(this.$cont);
-								
+
 								fnc.createSectionsTabs();
 								fnc.regCreateNewSection();
-						});
+							});
+
+					}
+
+					if (this.v.isSuperAdmin) {
 
 						tabs.addTab("wikiNewCity", "Add new city", () => {
 								var fnc = new WikiAdminAddCity(this.$cont);
 								fnc.init();
-						});
-						
+							});
+
+					}
+
+					if (this.v.isMasterAdmin) {
+
 						tabs.addTab("wikiSuperAdmins", "Super admins", () => {
 								var fnc = new WikiSuperAdminMgmt(this.$cont);
 								fnc.init();
-						});
+							});
+					}
+
+					if (this.v.isSuperAdmin) {
 
 						tabs.addTab("wikiArticleAdmins", "Article admins", () => {
 								var fnc = new WikiArticlesAdminMgmt(this.$cont);
 								fnc.init();
-						});
-						
-						tabs.create();
+							});
+					}
+
+					tabs.create();
 				}
 				
 		}

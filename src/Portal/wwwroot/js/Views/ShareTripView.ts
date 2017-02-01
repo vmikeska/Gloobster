@@ -114,27 +114,27 @@
 			};
 
 			switch (type) {
-			case TravelType.Bus:
-				iconBase.iconUrl = this.icoUrl("bus");
-				break;
-			case TravelType.Car:
-				iconBase.iconUrl = this.icoUrl("car");
-				break;
-			case TravelType.Plane:
-				iconBase.iconUrl = this.icoUrl("plane");
-				break;
-			case TravelType.Ship:
-				iconBase.iconUrl = this.icoUrl("ship");
-				break;
-			case TravelType.Walk:
-				iconBase.iconUrl = this.icoUrl("walk");
-				break;
-			case TravelType.Bike:
-				iconBase.iconUrl = this.icoUrl("bike");
-				break;
-			case TravelType.Train:
-				iconBase.iconUrl = this.icoUrl("train");
-				break;
+					case TravelType.Bus:
+						iconBase.iconUrl = this.icoUrl("bus");
+						break;
+					case TravelType.Car:
+						iconBase.iconUrl = this.icoUrl("car");
+						break;
+					case TravelType.Plane:
+						iconBase.iconUrl = this.icoUrl("plane");
+						break;
+					case TravelType.Ship:
+						iconBase.iconUrl = this.icoUrl("ship");
+						break;
+					case TravelType.Walk:
+						iconBase.iconUrl = this.icoUrl("walk");
+						break;
+					case TravelType.Bike:
+						iconBase.iconUrl = this.icoUrl("bike");
+						break;
+					case TravelType.Train:
+						iconBase.iconUrl = this.icoUrl("train");
+						break;
 			}
 
 			return L.icon(iconBase);

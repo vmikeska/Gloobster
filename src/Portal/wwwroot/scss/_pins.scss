@@ -74,7 +74,7 @@
                             right:0;
                             text-align: left;
                                                 
-                            height: 300px;
+                            min-height: 100px;
                             width: 300px;
 
                             z-index: 999999;
@@ -82,32 +82,38 @@
 
                             border: 1px solid $light-blue;
 
-                            border-bottom-left-radius: 2px;
-                            border-bottom-right-radius: 2px;
+                            border-radius: 4px;
+                            padding: 1em;
 
-                            font-size: 20px;
-                            font-weight: 500;
-
+                            font-size: 1.2em;
+                            
                             .clear{
                                 border-bottom: 1px solid $light-blue;
-                                padding-left: 10px;
+                                padding: 4px;
 
-                                a {                                
-                                    color: darkred;
-                                    /*font-size: 18px;*/
-                                    text-decoration: none;
-                                    font-weight: 600;
+                                .lbtn2 {                                
+                                    color: white;
+                                    background-color: $red;
+                                    font-size: 1.1em;
+                                    text-decoration: none;  
+                                    
+                                    padding: 4px;
                                 }
                                 a:hover{
-                                    color: $dark-blue;
+                                    background-color: $orange;
                                 }
                             }
 
                             .cont {
 
                                 .item{
-                                    border-bottom: 1px solid $light-blue;
-                                    padding-left: 10px;                            
+                                    
+                                    input {
+                                        $cb-size: 1.2em;
+
+                                        width: $cb-size;
+                                        height: $cb-size;
+                                    }
                                 }
                             }
 
@@ -160,16 +166,15 @@
             top: 17px;
             right: 10px;
 
+            display: inline-block;
+            padding: 4px;
             z-index: 99999; 
 
-            text-align:center;
-            padding-top:1px;
-        
             color: $light-blue;
             font-size: 32px;
 
-            width: 44px;
-            height: 44px;
+            width: 40px;
+            height: 40px;
 
             background-color: white;
             border-radius: 4px;

@@ -80,7 +80,6 @@
             display: table-cell;
             vertical-align: top;
 
-            padding-left: 10px;
             padding-right: 10px;
 
             .title {
@@ -94,7 +93,12 @@
                 text-align: left;                
             }
 
+
+            &:last-of-type {
+                padding-right: 0;
+            }
         }
+
 
 
         .tb-friends {

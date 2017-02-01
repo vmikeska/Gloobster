@@ -34,10 +34,6 @@ body {
 
 .master-cont {
   min-height: 600px; }
-  @media screen and (max-width: 1310px) {
-    .master-cont {
-      padding-left: 6px;
-      padding-right: 6px; } }
 
 a {
   color: #3298C1; }
@@ -246,6 +242,10 @@ textarea:focus, input:focus {
   max-width: 1280px;
   margin-left: auto;
   margin-right: auto; }
+  @media screen and (max-width: 1310px) {
+    .wrapper {
+      padding-left: 6px;
+      padding-right: 6px; } }
 
 @media screen and (max-width: 1023px) {
   .menu_all:nth-of-type(2) {
@@ -259,14 +259,6 @@ h1 {
   padding-left: 15px;
   padding-right: 15px; }
 
-/*p{
-    max-width: 1280px;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: left;
-    padding-left: 15px;
-    padding-right: 15px;
-}*/
 p {
   padding: 0;
   margin: 0; }
@@ -288,6 +280,13 @@ p {
       background-color: #F56E12;
       border: 0 !important;
       color: white !important; }
+  .photo-button.light label {
+    color: #009EC4;
+    background-color: white;
+    border: 1px solid #005476; }
+    .photo-button.light label:hover {
+      color: #005476 !important;
+      border: 1px solid #005476 !important; }
 
 .photo-link input {
   width: 0.1px;
@@ -395,11 +394,12 @@ button:active {
     min-width: 300px; }
   .comments .txt-input .btn {
     display: inline-block;
-    vertical-align: top;
-    /*border: 1px solid red;*/ }
-    .comments .txt-input .btn .lbtn {
+    vertical-align: top; }
+    .comments .txt-input .btn .lbtn2, .comments .txt-input .btn .photo-button label, .photo-button .comments .txt-input .btn label {
       color: white;
       background-color: #3298C1; }
+      .comments .txt-input .btn .lbtn2:hover, .comments .txt-input .btn .photo-button label:hover, .photo-button .comments .txt-input .btn label:hover {
+        background-color: #F56E12; }
 
 .comments .comment-all .comment {
   display: table;
@@ -865,6 +865,9 @@ button:active {
       display: table-cell;
       text-align: right;
       padding-right: 10px; }
+      .info-block-bck .title-table .right .info-btn {
+        font-size: 1.4em;
+        cursor: pointer; }
     .info-block-bck .title-table .showHide:hover {
       color: #F56E12; }
 
@@ -885,11 +888,12 @@ button:active {
         display: block; } }
   .info-block2 img {
     float: left;
-    vertical-align: top;
+    vertical-align: middle;
     width: 120px;
     margin-right: 15px; }
   .info-block2 .txt {
-    vertical-align: top; }
+    vertical-align: middle;
+    text-align: left; }
 
 @media screen and (max-width: 1150px) {
   .menu_all {
@@ -1674,28 +1678,28 @@ footer {
             top: 30px;
             right: 0;
             text-align: left;
-            height: 300px;
+            min-height: 100px;
             width: 300px;
             z-index: 999999;
             background-color: white;
             border: 1px solid #65BDD7;
-            border-bottom-left-radius: 2px;
-            border-bottom-right-radius: 2px;
-            font-size: 20px;
-            font-weight: 500; }
+            border-radius: 4px;
+            padding: 1em;
+            font-size: 1.2em; }
             .pins .head-icons-all .block .ico_all .txt .cmb_all .list .clear {
               border-bottom: 1px solid #65BDD7;
-              padding-left: 10px; }
-              .pins .head-icons-all .block .ico_all .txt .cmb_all .list .clear a {
-                color: darkred;
-                /*font-size: 18px;*/
+              padding: 4px; }
+              .pins .head-icons-all .block .ico_all .txt .cmb_all .list .clear .lbtn2, .pins .head-icons-all .block .ico_all .txt .cmb_all .list .clear .photo-button label, .photo-button .pins .head-icons-all .block .ico_all .txt .cmb_all .list .clear label {
+                color: white;
+                background-color: #E02327;
+                font-size: 1.1em;
                 text-decoration: none;
-                font-weight: 600; }
+                padding: 4px; }
               .pins .head-icons-all .block .ico_all .txt .cmb_all .list .clear a:hover {
-                color: #005476; }
-            .pins .head-icons-all .block .ico_all .txt .cmb_all .list .cont .item {
-              border-bottom: 1px solid #65BDD7;
-              padding-left: 10px; }
+                background-color: #F56E12; }
+            .pins .head-icons-all .block .ico_all .txt .cmb_all .list .cont .item input {
+              width: 1.2em;
+              height: 1.2em; }
   @media screen and (max-width: 770px) {
     .pins .head-icons-all {
       height: 140px; }
@@ -1720,13 +1724,13 @@ footer {
     position: absolute;
     top: 17px;
     right: 10px;
+    display: inline-block;
+    padding: 4px;
     z-index: 99999;
-    text-align: center;
-    padding-top: 1px;
     color: #65BDD7;
     font-size: 32px;
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
     background-color: white;
     border-radius: 4px; }
     .pins .map-wrap .share:hover {
@@ -2379,6 +2383,12 @@ footer {
   .wiki-page .gallery-photos {
     background-color: #F0FAFC;
     padding: 0.5em; }
+    .wiki-page .gallery-photos .empty-photo {
+      font-weight: bold;
+      font-size: 4em;
+      color: #BCB3B8;
+      text-align: center;
+      text-decoration: line-through; }
     .wiki-page .gallery-photos .photo {
       display: inline-block;
       margin-left: 0.3em;
@@ -2420,29 +2430,49 @@ footer {
       .wiki-page .links .lbtn2:hover, .wiki-page .links .photo-button label:hover, .photo-button .wiki-page .links label:hover {
         background-color: #F56E12; }
   .wiki-page .favItem {
-    border: 1px solid #009DC4;
+    background-color: #F0FAFC;
     display: inline-block;
-    padding: 2px 6px 2px 6px;
-    margin: 4px;
-    border-radius: 5px; }
-    .wiki-page .favItem .cont {
-      display: table; }
-      .wiki-page .favItem .cont .cell {
-        display: table-cell; }
+    padding: 0.3em;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-bottom: 4px;
+    border-radius: 4px; }
     .wiki-page .favItem .name {
-      margin-top: 8px;
-      margin-right: 4px;
+      /*margin-top: 8px;
+            margin-right: 4px;*/
       display: inline-block;
-      vertical-align: top;
-      font-weight: 600;
-      font-size: 18px; }
-    .wiki-page .favItem img {
-      width: 32px;
-      height: 32px; }
-    .wiki-page .favItem a {
-      margin-top: 4px;
+      vertical-align: middle;
+      font-weight: bold; }
+    .wiki-page .favItem .ico-link {
+      color: #005476;
+      text-decoration: none;
       display: inline-block;
-      vertical-align: top; }
+      vertical-align: middle;
+      font-size: 1.2em; }
+      .wiki-page .favItem .ico-link:hover {
+        color: #F56E12; }
+  .wiki-page .link-form {
+    background-color: #F0FAFC;
+    padding: 1em; }
+    .wiki-page .link-form .title {
+      font-weight: bold; }
+    .wiki-page .link-form .links {
+      background-color: white;
+      min-height: 2em;
+      border-radius: 4px; }
+    .wiki-page .link-form .btns {
+      padding: 4px; }
+      .wiki-page .link-form .btns .lbtn2, .wiki-page .link-form .btns .photo-button label, .photo-button .wiki-page .link-form .btns label {
+        color: white;
+        background-color: #3DA33D; }
+        .wiki-page .link-form .btns .lbtn2.y, .wiki-page .link-form .btns .photo-button label.y, .photo-button .wiki-page .link-form .btns label.y {
+          background-color: #FFC400; }
+        .wiki-page .link-form .btns .lbtn2.r, .wiki-page .link-form .btns .photo-button label.r, .photo-button .wiki-page .link-form .btns label.r {
+          background-color: red; }
+        .wiki-page .link-form .btns .lbtn2:hover, .wiki-page .link-form .btns .photo-button label:hover, .photo-button .wiki-page .link-form .btns label:hover {
+          background-color: #F56E12; }
+    .wiki-page .link-form .buttons {
+      border-top: 2px solid #005476; }
 
 .notif .del-btn {
   border: 1px solid #3298C1;
@@ -2893,9 +2923,6 @@ footer {
 
 .trip-detail {
   text-align: left; }
-  .trip-detail .page-all {
-    padding-left: 6px;
-    padding-right: 6px; }
   .trip-detail .line {
     border-top: 1px solid #f2f2f2;
     margin-top: 10px;
@@ -3450,7 +3477,7 @@ footer {
   color: #005476;
   cursor: pointer; }
   .trip-root .setting:hover {
-    opacity: 0.8; }
+    color: #F56E12; }
 
 .trip-root .trip-menu {
   position: absolute;
@@ -3534,8 +3561,11 @@ footer {
     border-radius: 4px;
     color: #F56E12; }
   .trip-root .trips-table .btn-create {
-    color: #005476;
-    border: 1px solid #005476; }
+    color: white;
+    background-color: #3DA33D;
+    font-weight: bold; }
+    .trip-root .trips-table .btn-create:hover {
+      background-color: #F56E12; }
   .trip-root .trips-table .service-row textarea {
     resize: none; }
   .trip-root .trips-table .service-row .plus-ico-all {
@@ -3548,6 +3578,12 @@ footer {
       font-size: 40px;
       color: white;
       vertical-align: top; }
+
+@media screen and (max-width: 650px) {
+  .trip-root .photo-cell {
+    display: none !important; }
+  .trip-root .cell {
+    padding: 2px !important; } }
 
 .trip-root .trips-big {
   padding-left: 10px;
@@ -3687,9 +3723,10 @@ footer {
     text-align: right;
     background-color: #ccedf5;
     padding: 10px; }
-    .trip-share .service .lbtn {
+    .trip-share .service .lbtn2, .trip-share .service .photo-button label, .photo-button .trip-share .service label {
       background-color: #3298C1;
-      color: white; }
+      color: white;
+      margin-bottom: 4px; }
   .trip-share .participant {
     display: inline-block;
     max-width: 150px;
@@ -4064,10 +4101,6 @@ footer {
     padding-right: 16px;
     margin-top: 10px;
     margin-bottom: 10px; }
-    @media screen and (max-width: 700px) {
-      .travelb-home .map-wrap-all {
-        padding-left: 4px;
-        padding-right: 4px; } }
   .travelb-home .map-wrap {
     position: relative; }
     .travelb-home .map-wrap .search-city {
@@ -6116,7 +6149,6 @@ footer {
   .dashboard .topics .topic-block {
     display: table-cell;
     vertical-align: top;
-    padding-left: 10px;
     padding-right: 10px; }
     .dashboard .topics .topic-block .title {
       font-weight: bold;
@@ -6124,6 +6156,8 @@ footer {
       margin-bottom: 10px; }
     .dashboard .topics .topic-block .content {
       text-align: left; }
+    .dashboard .topics .topic-block:last-of-type {
+      padding-right: 0; }
   .dashboard .topics .tb-friends {
     min-width: 300px; }
   @media screen and (min-width: 750px) {

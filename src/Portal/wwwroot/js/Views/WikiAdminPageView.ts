@@ -192,7 +192,7 @@ module Views {
 
 		public generateAdmin() {
 			var $html = $(this.buttonTemplate());
-			$(".titlePhoto").prepend($html);
+			$(".titlePhoto").before($html);
 
 			this.registerPhotoUpload(this.articleId, "titlePhotoInput");
 		}
@@ -529,6 +529,7 @@ module Views {
 			var $link = $(`#faviItem_${id}`);
 			var $socLinks = $link.find(".socLink");
 			var socLinks = $socLinks.toArray();
+
 			socLinks.forEach((socLink) => {
 				var $socLink = $(socLink);
 				var type = $socLink.data("type");
@@ -540,6 +541,7 @@ module Views {
 					selectedValue: type,
 					sid: sid
 				};
+
 				this.createSingleLinkEdit($html.find(".links"), lContext);
 			});
 		}
@@ -623,15 +625,16 @@ module Views {
 
 		private getLinkIco(t) {
 			if (t === SourceType.S4) {
-				return "disc-foursquare";
+				return "icon-foursquare";
 			}
 			if (t === SourceType.FB) {
-				return "disc-facebook";
+				return "icon-facebook2";
 			}
 			
 			if (t === SourceType.Yelp) {
-				return "disc-yelp";
+				return "icon-yelp";
 			}
+			return "";
 		}
 
 		private getLink(t, sid) {
@@ -667,7 +670,7 @@ module Views {
 					ico: this.getLinkIco(l.type)
 				};
 				var $h = $(this.favLinkLink(cx));
-				$html.find(".txt").after($h);
+				$html.append($h);
 			});
 
 			this.createItemEditButton($html, sectionId);
@@ -677,11 +680,13 @@ module Views {
 
 
 		private createSingleLinkEdit($cont, context) {
-			var $lHtml = $(this.linkItemLinkTemplate(context));
-			$lHtml.find(".delete").click((e) => this.linkDelete(e));
+			var $l = $(this.linkItemLinkTemplate(context));
+			$l.find(".delete").click((e) => {
+				this.linkDelete(e);
+			});
             
-		  Common.DropDown.registerDropDown($lHtml.find(".dropdown"));		    
-			$cont.append($lHtml);
+		  Common.DropDown.registerDropDown($l.find(".dropdown"));		    
+			$cont.append($l);
 		}
 
 		private itemDelete(e, sectionId) {

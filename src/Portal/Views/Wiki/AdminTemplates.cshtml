@@ -25,23 +25,29 @@
     </div>
 </script>
 
+
+
+
 <script id="linkItem-template" type="text/x-handlebars-template">
-    <div id="linksEdit_{{id}}" class="wrapper">
-        <input class="admin-input" id="name" type="text" value="{{name}}" />
+    <div id="linksEdit_{{id}}" class="link-form">
+        <span class="title">Site name: </span> <input class="admin-input" id="name" type="text" value="{{name}}" />
+        <div class="title">Links list:</div>
         <div class="links">
            
         </div>
-        <div class="buttons">
-            <button class="add">Add Link</button>
-            <button data-id="{{id}}" class="cancel">Cancel</button>
-            <button data-id="{{id}}" class="save">Save item</button>
-            <button data-id="{{id}}" class="delete">Delete item</button>
+        <div class="links-buttons btns">
+            <a href="#" class="add lbtn2">Add Link</a>
+        </div>
+        <div class="buttons btns">            
+            <a href="#" data-id="{{id}}" class="cancel lbtn2 y">Cancel</a>
+            <a href="#"  data-id="{{id}}" class="save lbtn2">Save item</a>
+            <a href="#" data-id="{{id}}" class="delete lbtn2 r">Delete item</a>
         </div>
     </div>    
 </script>
 
 <script id="linkItemLink-template" type="text/x-handlebars-template">   
-    <div id="linkItem_{{id}}" data-id="{{id}}" class="linkItem" style="border: 1px solid black;">
+    <div id="linkItem_{{id}}" data-id="{{id}}" class="linkItem">
         <div class="dropdown">
             <span class="selected">{{selectedName}}</span>
             <ul>
@@ -60,22 +66,19 @@
 
 
 <script id="favLink-template" type="text/x-handlebars-template">
-    <div id="faviItem_{{id}}" class="favItem" data-id="{{id}}" data-name="{{name}}">
-        
-        <div class="cont">
-            <div class="cell">
-                <span class="name">{{name}}</span>
-            </div>
-            <div class="cell txt">
-                
-            </div>
-        </div>
-    </div>
     
+    <div id="faviItem_{{id}}" class="favItem" data-id="{{id}}" data-name="{{name}}">
+        <span class="name">{{name}}</span>
+    </div>
+
 </script>
 
 <script id="favLinkLink-template" type="text/x-handlebars-template">
-    <a href="{{link}}" target="_blank"><img data-type="{{type}}" data-id="{{id}}" data-sid="{{sid}}" class="opacity5 middle socLink" src="/images/{{ico}}.png"></a>
+    
+    <a class="ico-link" href="{{link}}" target="_blank">
+        <span class="{{ico}}"></span>
+    </a>
+
 </script>
 
 

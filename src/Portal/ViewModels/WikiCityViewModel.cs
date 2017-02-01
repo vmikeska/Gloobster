@@ -301,16 +301,17 @@ namespace Gloobster.Portal.ViewModels
         {
             if (type == SourceType.S4)
             {
-                return "disc-foursquare";
+                return "icon-foursquare";
             }
+
             if (type == SourceType.FB)
             {
-                return "disc-facebook";
+                return "icon-facebook2";
             }
             
             if (type == SourceType.Yelp)
             {
-                return "disc-yelp";
+                return "icon-yelp";
             }
 
             return string.Empty;

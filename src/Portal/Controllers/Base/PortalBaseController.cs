@@ -149,7 +149,10 @@ namespace Gloobster.Portal.Controllers.Base
                 {
                     infos = new List<InfoBlock>()
                 },
-                UnreadMessagesCount = 0
+                UnreadMessagesCount = 0,
+
+                AdminTasks = 0,
+                WikiAdminTasks = 0
             };
             
             var hasDemoCookie = Request.Cookies.ContainsKey("Demo");
@@ -189,9 +192,20 @@ namespace Gloobster.Portal.Controllers.Base
                 }
                 
                 var permissions = CC.Resolve<IWikiPermissions>();
-                instance.HasAnyWikiPermissions = permissions.IsAdminOfSomething(UserId);
-                instance.CanManageArticleAdmins = permissions.IsSuperOrMasterAdmin(UserId);
 
+                bool adminOfSomething = permissions.IsAdminOfSomething(UserId);
+                if (adminOfSomething)
+                {
+                    instance.HasAnyWikiPermissions = permissions.IsAdminOfSomething(UserId);
+                    instance.CanManageArticleAdmins = permissions.IsSuperOrMasterAdmin(UserId);
+
+                    var adminTasks = CC.Resolve<IWikiAdminTasks>();
+                    var tasks = adminTasks.GetUnresolvedTasks(UserId);
+
+                    instance.WikiAdminTasks = tasks.Count;
+                    instance.AdminTasks += instance.WikiAdminTasks;
+                }
+                
                 instance.SocialNetworks = Networks;
 
                 if (Networks.Contains(SocialNetworkType.Facebook))

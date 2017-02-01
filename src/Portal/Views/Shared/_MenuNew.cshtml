@@ -59,15 +59,20 @@
                 {
                     <div class="icon">
                         <a id="admin-btn" title="administration" class="icon-user-tie" href="#"></a>
+                        
+                        @if (Model.AdminTasks > 0)
+                        {
+                            <div class="notif">@Model.AdminTasks</div>
+                        }
 
                         <div class="admin-menu-all" style="display: none">
                             
+                            <a href="/newadmin/index">New admin</a>
+
                             @if (Model.CanManageArticleAdmins)
-                            {
-                                <a href="/newadmin/index">New admin</a>
+                            {                                
                                 <a href="/imagedb/list">Image DB</a>
-                                    <a href="/git/issues">GIT issues</a>
-                                    <a href="/wiki/permissions">Wiki permissions</a>
+                                    <a href="/git/issues">GIT issues</a>                                    
                                     <a href="/mylog/index">Logs</a>
                                     <a href="/mylog/stats">DB stats</a>
                                     <a href="/mylog/userstodelete">Accounts clean</a>

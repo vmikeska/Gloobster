@@ -588,11 +588,6 @@
 
         margin-top: 10px;
         margin-bottom: 10px;
-
-        @include below-width(700) {
-        padding-left: 4px;
-        padding-right: 4px;
-        }
     }
 
     .map-wrap {

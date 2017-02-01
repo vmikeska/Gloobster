@@ -28,6 +28,8 @@ $orange: #F56E12;
 $yellow: #FFC400;
 $yellow2: #F5C519;
 
+$red: #E02327;
+
 
 $light-gray: #EAEAEA;
 $light-gray2: #E8E8E8;
@@ -166,10 +168,6 @@ body {
 .master-cont {
     min-height: 600px;
 
-    @include below-width(1310) {
-        padding-left: 6px;
-        padding-right: 6px;
-    }
 }
 
 a {
@@ -439,6 +437,11 @@ textarea:focus, input:focus{
     max-width: 1280px;
     margin-left: auto;
     margin-right: auto;
+
+    @include below-width(1310) {
+        padding-left: 6px;
+        padding-right: 6px;
+    }
 }
 
 @include below-width(1023){
@@ -457,16 +460,6 @@ h1{
     padding-left: 15px;
     padding-right: 15px;
 }
-
-
-/*p{
-    max-width: 1280px;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: left;
-    padding-left: 15px;
-    padding-right: 15px;
-}*/
 
 p {
     padding: 0;
@@ -499,6 +492,19 @@ p {
             color: white !important;
         }
     }
+
+     &.light {
+         label {
+             color: $light-blue2;
+             background-color: white;
+             border: 1px solid $dark-blue;
+
+             &:hover {
+                 color: $dark-blue !important;
+                 border: 1px solid $dark-blue !important;
+             }
+         }
+     }
  }
 
  .photo-link{
@@ -649,11 +655,14 @@ button:active {
             .btn{
                 display: inline-block;
                 vertical-align: top;
-                /*border: 1px solid red;*/
-
-                .lbtn{
+                
+                .lbtn2{
                     color: white;
                     background-color: $light-blue3;
+
+                    &:hover {
+                        background-color: $orange;
+                    }
                 }
             }
         }

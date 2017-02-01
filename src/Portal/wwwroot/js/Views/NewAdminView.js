@@ -16,19 +16,24 @@ var Views;
         NewAdminView.prototype.initTabs = function () {
             var _this = this;
             var tabs = new Common.Tabs($("#mainTabs"), "main");
-            tabs.addTab("wikiTab", "WIKI", function () {
-                _this.currentPage = new WikiAdminPage();
-            });
-            tabs.addTab("travelbTab", "Travel buddy");
-            tabs.addTab("dashboardTab", "Dashboard");
+            if (this.isMasterAdmin || this.isSuperAdmin || this.isAdminOfSomething) {
+                tabs.addTab("wikiTab", "WIKI", function () {
+                    _this.currentPage = new WikiAdminPage(_this);
+                });
+            }
+            if (this.isMasterAdmin) {
+                tabs.addTab("travelbTab", "Travel buddy");
+                tabs.addTab("dashboardTab", "Dashboard");
+            }
             tabs.create();
         };
         return NewAdminView;
     }(Views.ViewBase));
     Views.NewAdminView = NewAdminView;
     var AdminPageBase = (function () {
-        function AdminPageBase(layoutTmpName) {
+        function AdminPageBase(v, layoutTmpName) {
             if (layoutTmpName === void 0) { layoutTmpName = null; }
+            this.v = v;
             this.$cont = $(".page-cont");
             if (layoutTmpName) {
                 var layoutTmp = Views.ViewBase.currentView.registerTemplate(layoutTmpName);
@@ -46,8 +51,8 @@ var Views;
     Views.AdminPageBase = AdminPageBase;
     var WikiAdminPage = (function (_super) {
         __extends(WikiAdminPage, _super);
-        function WikiAdminPage() {
-            _super.call(this, "menu-content-tmp");
+        function WikiAdminPage(v) {
+            _super.call(this, v, "menu-content-tmp");
         }
         WikiAdminPage.prototype.createCustom = function () {
             this.createWikiTabs();
@@ -58,27 +63,37 @@ var Views;
             tabs.onBeforeSwitch = function () {
                 _this.$cont.find(".sub-content").empty();
             };
-            tabs.addTab("wikiTasks", "Tasks", function () {
-                var fnc = new WikiAdminTasks(_this.$cont);
-                fnc.init();
-            });
-            tabs.addTab("wikiSections", "Sections", function () {
-                var fnc = new WikiPageSectionsAdmin(_this.$cont);
-                fnc.createSectionsTabs();
-                fnc.regCreateNewSection();
-            });
-            tabs.addTab("wikiNewCity", "Add new city", function () {
-                var fnc = new WikiAdminAddCity(_this.$cont);
-                fnc.init();
-            });
-            tabs.addTab("wikiSuperAdmins", "Super admins", function () {
-                var fnc = new WikiSuperAdminMgmt(_this.$cont);
-                fnc.init();
-            });
-            tabs.addTab("wikiArticleAdmins", "Article admins", function () {
-                var fnc = new WikiArticlesAdminMgmt(_this.$cont);
-                fnc.init();
-            });
+            if (this.v.isAdminOfSomething) {
+                tabs.addTab("wikiTasks", "Tasks", function () {
+                    var fnc = new WikiAdminTasks(_this.$cont);
+                    fnc.init();
+                });
+            }
+            if (this.v.isMasterAdmin) {
+                tabs.addTab("wikiSections", "Sections", function () {
+                    var fnc = new WikiPageSectionsAdmin(_this.$cont);
+                    fnc.createSectionsTabs();
+                    fnc.regCreateNewSection();
+                });
+            }
+            if (this.v.isSuperAdmin) {
+                tabs.addTab("wikiNewCity", "Add new city", function () {
+                    var fnc = new WikiAdminAddCity(_this.$cont);
+                    fnc.init();
+                });
+            }
+            if (this.v.isMasterAdmin) {
+                tabs.addTab("wikiSuperAdmins", "Super admins", function () {
+                    var fnc = new WikiSuperAdminMgmt(_this.$cont);
+                    fnc.init();
+                });
+            }
+            if (this.v.isSuperAdmin) {
+                tabs.addTab("wikiArticleAdmins", "Article admins", function () {
+                    var fnc = new WikiArticlesAdminMgmt(_this.$cont);
+                    fnc.init();
+                });
+            }
             tabs.create();
         };
         return WikiAdminPage;

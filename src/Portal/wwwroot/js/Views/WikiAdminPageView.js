@@ -156,7 +156,7 @@ var Views;
         }
         PhotoAdmin.prototype.generateAdmin = function () {
             var $html = $(this.buttonTemplate());
-            $(".titlePhoto").prepend($html);
+            $(".titlePhoto").before($html);
             this.registerPhotoUpload(this.articleId, "titlePhotoInput");
         };
         PhotoAdmin.prototype.clean = function () {
@@ -518,14 +518,15 @@ var Views;
         };
         LinksAdmin.prototype.getLinkIco = function (t) {
             if (t === SourceType.S4) {
-                return "disc-foursquare";
+                return "icon-foursquare";
             }
             if (t === SourceType.FB) {
-                return "disc-facebook";
+                return "icon-facebook2";
             }
             if (t === SourceType.Yelp) {
-                return "disc-yelp";
+                return "icon-yelp";
             }
+            return "";
         };
         LinksAdmin.prototype.getLink = function (t, sid) {
             if (t === SourceType.S4) {
@@ -558,17 +559,19 @@ var Views;
                     ico: _this.getLinkIco(l.type)
                 };
                 var $h = $(_this.favLinkLink(cx));
-                $html.find(".txt").after($h);
+                $html.append($h);
             });
             this.createItemEditButton($html, sectionId);
             $("#addNew_" + sectionId).before($html);
         };
         LinksAdmin.prototype.createSingleLinkEdit = function ($cont, context) {
             var _this = this;
-            var $lHtml = $(this.linkItemLinkTemplate(context));
-            $lHtml.find(".delete").click(function (e) { return _this.linkDelete(e); });
-            Common.DropDown.registerDropDown($lHtml.find(".dropdown"));
-            $cont.append($lHtml);
+            var $l = $(this.linkItemLinkTemplate(context));
+            $l.find(".delete").click(function (e) {
+                _this.linkDelete(e);
+            });
+            Common.DropDown.registerDropDown($l.find(".dropdown"));
+            $cont.append($l);
         };
         LinksAdmin.prototype.itemDelete = function (e, sectionId) {
             var _this = this;

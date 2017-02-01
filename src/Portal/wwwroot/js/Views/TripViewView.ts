@@ -15,7 +15,8 @@
 			this.createFilesConfig();
 			this.getTrip(id);
 
-			$("#commentSubmit").click(() => {
+			$("#commentSubmit").click((e) => {
+				e.preventDefault();
 				self.comments.postComment(self.trip.tripId);
 			});
 

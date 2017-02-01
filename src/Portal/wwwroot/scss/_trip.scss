@@ -14,7 +14,7 @@
         cursor: pointer;
         
         &:hover{
-            opacity: 0.8;
+            color: $orange;
         }
     }
 
@@ -122,6 +122,7 @@
             .date-cell {
                 min-width: 120px;
             }
+
         }
 
         .photo{
@@ -145,8 +146,13 @@
         }
 
         .btn-create{
-            color: $dark-blue;
-            border: 1px solid $dark-blue;;
+            color: white;
+            background-color: $green;
+            font-weight: bold;
+
+            &:hover {
+                background-color: $orange;
+            }
         }
 
         .service-row{
@@ -171,6 +177,17 @@
                 }
             }
         }
+    }
+
+    @include below-width(650) {
+        .photo-cell {
+            display: none !important;
+        }
+
+        .cell {
+            padding: 2px !important;
+        }
+        
     }
 
     .trips-big{

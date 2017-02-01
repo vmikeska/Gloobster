@@ -50,8 +50,10 @@
     }
         
     @if (!Model.Photos.Any())
-    {    
-        @Html.Partial("EmptyPhoto")
+    {
+        <div class="empty-photo">
+            PHOTOS
+        </div>
     }
 
     @if (!Model.UserIsAdmin)

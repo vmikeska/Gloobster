@@ -53,6 +53,9 @@ namespace Gloobster.Portal.ViewModels
         public bool CookiesConfirmed { get; set; }
         public int UnreadMessagesCount { get; set; }
 
+        public int AdminTasks { get; set; }
+        public int WikiAdminTasks { get; set; }
+
         public bool HasSocNet(SocialNetworkType net)
 	    {
 	        return SocialNetworks.Contains(net);

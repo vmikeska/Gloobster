@@ -14,7 +14,8 @@
     </div>
 
     <div class="right">
-        <a class="showHide" data-ts="@Model.BaseModel.W("ShowTitleInfo", "layout")" data-th="@Model.BaseModel.W("HideTitleInfo", "layout")" href="#">@Model.BtnTxt</a>
+        
+        <span title="@(Model.IsVisible ? Model.BaseModel.W("HideTitleInfo", "layout") : Model.BaseModel.W("ShowTitleInfo", "layout"))" class="@(Model.IsVisible ? "icon-close-cross" : "icon-info") info-btn showHide" data-ts="@Model.BaseModel.W("ShowTitleInfo", "layout")" data-th="@Model.BaseModel.W("HideTitleInfo", "layout")"></span>
     </div>
 
 </div>

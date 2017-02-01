@@ -74,12 +74,12 @@ else
     {
         <div class="trips-table">
             <div class="row">
-                <div class="cell"></div>
+                <div class="cell photo-cell"></div>
                 <div class="cell">@Model.W("Name")</div>
                 <div class="cell">@Model.W("Term")</div>
                 <div class="cell">@Model.W("Team")</div>
                 <div class="cell">@Model.W("Owner")</div>
-                <div class="cell"></div>
+                <div class="cell setting-cell"></div>
             </div>
 
             @foreach (var trip in Model.Trips)
@@ -88,7 +88,7 @@ else
             }
 
             <div class="row service-row">
-                <div class="cell">
+                <div class="cell photo-cell">
                     <div class="plus-ico-all">
                         <div class="icon-plus"></div>
                     </div>
@@ -100,7 +100,7 @@ else
                 <div class="cell"></div>
                 <div class="cell"></div>
                 <div class="cell">
-                    <a class="lbtn btn-create" href="javascript:currentView.createNewTrip();">@Model.W("Create")</a>
+                    <a class="lbtn2 btn-create" href="javascript:currentView.createNewTrip();">@Model.W("Create")</a>
                 </div>
             </div>
 

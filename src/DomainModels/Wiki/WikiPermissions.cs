@@ -41,6 +41,19 @@ namespace Gloobster.DomainModels.Wiki
             return perm.IsMasterAdmin;
         }
 
+        public bool IsSuperAdmin(string userId)
+        {
+            var userIdObj = new ObjectId(userId);
+
+            var perm = Permissions.FirstOrDefault(u => u.User_id == userIdObj);
+            if (perm == null)
+            {
+                return false;
+            }
+
+            return perm.IsSuperAdmin;
+        }
+
         public bool IsSuperOrMasterAdmin(string userId)
         {
             var userIdObj = new ObjectId(userId);
