@@ -33,27 +33,6 @@
         text-align: left;        
     }
 
-    /*.date-cont{
-        position: relative;              
-        display: inline-block;
-
-        input {
-            font-size: 1.1em;
-            width: 120px;
-            padding-left: 35px;
-            border: 1px solid $light-blue;
-            color: $dark-blue;
-        }
-
-        .icon-calendar {
-            font-size: 1.3em;
-            position: absolute;
-            left: 7px;
-            top: 10px;
-            color: $dark-blue;
-        }
-    }*/
-    
     .queue-all{
         $preload-size: 1.3em;
 
@@ -947,19 +926,24 @@
     }
 
     .flight-results {
-
         margin-top: 12px;
         
-        text-align: center;
-
         .weekend-item{
             .title{
                 margin-bottom: 12px;
+                text-align: left;
+
+                padding: 1em;
+
+                background-color: $info-blue2;
+                border-top-left-radius: 6px;
+                border-top-right-radius: 6px;
+
+                color: white;
 
                 .week {
-                    font-weight: bold;
-                    text-decoration: underline;
-                    font-size: 1.2em;
+                    font-weight: bold;                    
+                    font-size: 1.2em;                    
                 }
 
                 .date {
@@ -969,23 +953,40 @@
             }
         }
 
+        .cont {
+            text-align: left;
 
-        .flight-result {
+            @include below-width(649) {
+                text-align: center;
+            }
+
+            /*@include above-width(1280) {
+              
+                @include display-flex;
+                    flex-flow: row wrap;
+                    justify-content: space-between;
+                    align-content: flex-start;
+            }*/
+        }
+
+        
+
+        .flight-result {            
             width: 306px;
             margin-bottom: 8px;
 
             display: inline-block;
             
-            text-align: left;
-
-            margin-left: 4px;
             margin-right: 4px;
 
-            @include below-width(641) {
-                margin-left: 2px;
-                margin-right: 2px;
+            @include above-width(1280) {
+                margin-right: 14px;
             }
-            
+
+            &:last-of-type {
+                margin-right: 0;
+            }
+
             .img-cont {
                 position: relative;
 
@@ -1143,8 +1144,16 @@
 
     .continent-all {
         .title {
+
+            background-color: $info-blue2;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+            color: white;
+            padding: 1em;
+
             position: relative;
             margin-bottom: 6px;
+            text-align: left;
 
             .txt{
                 font-size: 1.4em;
@@ -1154,38 +1163,12 @@
             .visi{
                 display: inline-block;
                 position: absolute;
-                right: 5px;
-                top: 0px;
+                right: 1em;
+                top: 1em;
+                color: white;
             }
         }
     }
-
-    /*@include below-width(1279) {
-        
-        .flight-results {
-         display: initial;
-        }
-
-
-        .flight-result {
-            display: inline-block;
-         width: 300px !important;
-        }
-    }
-
-    @include below-width(990) {
-        .flight-results {
-         display: initial;
-        }
-
-        .flight-result {
-            display: inline-block;
-         width: 280px !important;         
-        }
-    }*/
-  
-
-
       
     .conn {              
         margin-bottom: 12px;

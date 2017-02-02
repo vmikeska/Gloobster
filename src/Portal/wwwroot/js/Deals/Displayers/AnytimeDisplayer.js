@@ -21,7 +21,10 @@ var Planning;
                 var fs2 = this.filter.getStateBase();
                 agg2.exe(fs2.starsLevel);
                 var dis2 = new AnytimeByCountryDis(results, filterState.currentLevel);
-                dis2.render(agg2.countries, $("#resultsCont"));
+                var $res = $("#resultsCont");
+                var $cont = $("<div class=\"cont\"></div>");
+                $res.html($cont);
+                dis2.render(agg2.countries, $cont);
             }
             if (grouping === Planning.LocationGrouping.ByContinent) {
                 var agg3 = new Planning.AnytimeByContinentAgg(this.queries);
@@ -36,13 +39,15 @@ var Planning;
     Planning.AnytimeDisplayer = AnytimeDisplayer;
     var AnytimeByCityDis = (function () {
         function AnytimeByCityDis(results, scoreLevel) {
-            this.$cont = $("#resultsCont");
             this.results = results;
             this.scoreLevel = scoreLevel;
         }
         AnytimeByCityDis.prototype.render = function (cities) {
             var _this = this;
             cities = _.sortBy(cities, "fromPrice");
+            var $res = $("#resultsCont");
+            this.$cont = $("<div class=\"cont\"></div>");
+            $res.html(this.$cont);
             var lg = Common.ListGenerator.init(this.$cont, "resultGroupItem-template");
             lg.clearCont = true;
             lg.customMapping = function (i) {

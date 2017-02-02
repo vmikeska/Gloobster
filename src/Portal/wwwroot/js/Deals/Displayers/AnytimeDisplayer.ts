@@ -37,7 +37,11 @@ module Planning {
 					agg2.exe(fs2.starsLevel);
 
 					var dis2 = new AnytimeByCountryDis(results, filterState.currentLevel);
-					dis2.render(agg2.countries, $("#resultsCont"));
+					var $res = $("#resultsCont");
+					var $cont = $(`<div class="cont"></div>`);
+					$res.html($cont);
+					
+					dis2.render(agg2.countries, $cont);
 			}
 
 			if (grouping === LocationGrouping.ByContinent) {
@@ -57,7 +61,7 @@ module Planning {
 	}
 
 	export class AnytimeByCityDis {
-		private $cont = $("#resultsCont");
+		private $cont;
 
 		private results;
 		private scoreLevel;
@@ -70,6 +74,10 @@ module Planning {
 		public render(cities) {
 			cities = _.sortBy(cities, "fromPrice");
 
+			var $res = $("#resultsCont");
+			this.$cont = $(`<div class="cont"></div>`);
+			$res.html(this.$cont);
+				
 			var lg = Common.ListGenerator.init(this.$cont, "resultGroupItem-template");
 			lg.clearCont = true;
 
@@ -133,7 +141,8 @@ module Planning {
 			}
 
 			public render(countries, $cont) {
-				  this.$cont = $cont;
+
+					this.$cont = $cont;
 					countries = _.sortBy(countries, "fromPrice");
 
 					var lg = Common.ListGenerator.init(this.$cont, "resultGroupItemCountry-template");
