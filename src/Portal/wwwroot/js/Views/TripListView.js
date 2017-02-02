@@ -10,7 +10,8 @@ var Views;
         function TripListView() {
             var _this = this;
             _super.call(this);
-            this.registerUploads();
+            var isBig = window.location.href.indexOf("grid") !== -1;
+            this.registerUploads(isBig);
             $(".menuClose").click(function (e) {
                 e.preventDefault();
                 $(".trip-menu").hide();
@@ -46,13 +47,13 @@ var Views;
                 });
             });
         };
-        TripListView.prototype.registerUploads = function () {
+        TripListView.prototype.registerUploads = function (isBig) {
             var _this = this;
             var $i = $(".photo-link input");
             var inputs = $i.toArray();
             inputs.forEach(function (input) {
                 var $input = $(input);
-                _this.registerPhotoUpload($input.data("tid"), $input.attr("id"));
+                _this.registerPhotoUpload($input.data("tid"), $input.attr("id"), isBig);
             });
         };
         TripListView.prototype.createNewTrip = function () {
@@ -62,7 +63,7 @@ var Views;
             }
             window.location.href = "/Trip/CreateNewTrip/" + tripName;
         };
-        TripListView.prototype.registerPhotoUpload = function (tripId, inputId) {
+        TripListView.prototype.registerPhotoUpload = function (tripId, inputId, isBig) {
             var _this = this;
             var c = new Common.FileUploadConfig();
             c.inputId = inputId;
@@ -71,18 +72,23 @@ var Views;
             c.useMaxSizeValidation = false;
             var pu = new Common.FileUpload(c);
             pu.customId = tripId;
+            var ud = null;
             pu.onProgressChanged = function (percent) {
-                var $pb = $("#progressBar");
-                $pb.show();
-                var pt = percent + "%";
-                $(".progress").css("width", pt);
-                $pb.find("span").text(pt);
+                if (ud === null) {
+                    ud = new Common.UploadDialog();
+                    ud.create();
+                }
+                ud.update(percent);
             };
             pu.onUploadFinished = function (file, files) {
                 $(".trip-menu").hide();
-                $("#tripImg_" + tripId).attr("src", "/Trip/TripPictureSmall_s/" + tripId + "?d=" + _this.makeRandomString(10));
-                var $pb = $("#progressBar");
-                $pb.hide();
+                if (isBig) {
+                    $("#tripImg_" + tripId).attr("src", "/Trip/TripPictureSmall_s/" + tripId + "?d=" + _this.makeRandomString(10));
+                }
+                else {
+                    $("#tripImg_" + tripId).attr("src", "/Trip/TripPictureSmall_xs/" + tripId + "?d=" + _this.makeRandomString(10));
+                }
+                ud.destroy();
             };
         };
         return TripListView;

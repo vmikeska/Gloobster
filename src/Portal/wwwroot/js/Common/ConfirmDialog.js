@@ -16,6 +16,35 @@ var Common;
         return HintDialog;
     }());
     Common.HintDialog = HintDialog;
+    var UploadDialog = (function () {
+        function UploadDialog() {
+            this.visible = false;
+        }
+        UploadDialog.prototype.create = function () {
+            var t = Views.ViewBase.currentView.registerTemplate("upload-dialog-template");
+            this.$html = $(t());
+            this.$progresBar = this.$html.find("#progressBar");
+            this.$progresBar.show();
+            this.$html.show();
+            $("body").append(this.$html);
+            this.visible = true;
+        };
+        UploadDialog.prototype.update = function (percent) {
+            if (this.$html) {
+                var pt = percent + "%";
+                this.$progresBar.find(".progress").css("width", pt);
+                this.$progresBar.find("span").text(pt);
+            }
+        };
+        UploadDialog.prototype.destroy = function () {
+            if (this.$html) {
+                this.$html.remove();
+                this.visible = false;
+            }
+        };
+        return UploadDialog;
+    }());
+    Common.UploadDialog = UploadDialog;
     var InprogressDialog = (function () {
         function InprogressDialog() {
             this.template = Views.ViewBase.currentView.registerTemplate("inPorgressDialog-template");

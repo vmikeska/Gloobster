@@ -83,15 +83,17 @@
 
 
 <script id="doDontAdmin-template" type="text/x-handlebars-template">
-    <textarea placeholder="Add or edit..." style="width: 100%">{{text}}</textarea>
-    <br />
-    <input type="button" class="save" value="Save">
-    <input type="button" class="cancel" value="Cancel">
-    <input type="button" class="delete" value="Delete">
+    
+    <div>
+        <textarea placeholder="Add or edit..." style="width: 100%">{{text}}</textarea>
+    </div>
+    <a href="#" type="button" class="save lbtn2 green-orange bold">Save</a>
+    <a href="#" type="button" class="cancel lbtn2 green-orange bold">Cancel</a>
+    <a href="#" type="button" class="delete lbtn2 green-orange bold">Delete</a>
 </script>
 
 <script id="doDontItem-template" type="text/x-handlebars-template">
-    <div data-id="{{id}}" data-t="{{type}}" class="place">       
+    <div data-id="{{id}}" data-t="{{type}}" class="item">       
         <span>{{text}}</span>
     </div>
 </script>

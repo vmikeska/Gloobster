@@ -284,7 +284,9 @@ var Views;
             };
         };
         PinBoardView.prototype.switchMapType = function (dataType, mapType) {
+            var _this = this;
             this.mapsManager.switchToView(mapType, dataType, function () {
+                _this.refreshData();
             });
         };
         PinBoardView.prototype.viewChanged = function (group, val) {
@@ -295,8 +297,6 @@ var Views;
             var $combo = $("#mapType");
             var $input = $combo.find("input");
             $input.val(this.currentMapType);
-            Common.DropDown.registerDropDown($combo);
-            Common.DropDown.setValue($combo, this.currentMapType);
             $input.change(function (e) {
                 _this.currentMapType = parseInt($input.val());
                 _this.getFormState(function (dataType, mapType) {

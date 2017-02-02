@@ -220,7 +220,7 @@
 
 .info-block2{
         
-        padding: 8px;
+        /*padding: 8px;*/
         text-align: center;
 
         .info-inner-table{
@@ -230,6 +230,7 @@
                 width: 50%;
                 display: table-cell;
                 min-height: 125px;
+                padding: 1em;
             }
         }
 

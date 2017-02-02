@@ -38,22 +38,21 @@ var Views;
             c.useMaxSizeValidation = false;
             this.pictureUpload = new Common.FileUpload(c);
             this.pictureUpload.customId = this.trip.tripId;
+            var ud = new Common.UploadDialog();
             this.pictureUpload.onProgressChanged = function (percent) {
-                var $pb = $("#progressBarTit");
-                $pb.show();
-                var pt = percent + "%";
-                $(".progress").css("width", pt);
-                $pb.find("span").text(pt);
+                if (!ud) {
+                    ud.create();
+                }
+                ud.update(percent);
             };
             this.pictureUpload.onUploadFinished = function (file, files) {
                 _this.refreshBackground(_this.trip.tripId);
-                var $pb = $("#progressBarTit");
-                $pb.hide();
+                ud.destroy();
             };
         };
         TripViewView.prototype.refreshBackground = function (tripId) {
             $("#bckPhoto").css("background", "");
-            $("#bckPhoto").css("background", "transparent url('../../Trip/TripPicture/" + tripId + "') center top no-repeat");
+            $("#bckPhoto").css("background", "transparent url('/Trip/TripPicture/" + tripId + "?asdf=" + this.makeRandomString(10) + "') center top no-repeat");
         };
         TripViewView.prototype.getTrip = function (id) {
             var _this = this;

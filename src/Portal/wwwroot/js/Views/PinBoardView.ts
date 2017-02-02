@@ -365,7 +365,7 @@
 			private switchMapType(dataType, mapType) {
 					
 					this.mapsManager.switchToView(mapType, dataType, () => {
-						
+						this.refreshData();
 					});
 		  }
 
@@ -374,15 +374,13 @@
 					//this.setMenuControls();					
 			}
 
+
 			private initMapType() {
 				var $combo = $("#mapType");
 				var $input = $combo.find("input");
 
 				$input.val(this.currentMapType);
-
-				Common.DropDown.registerDropDown($combo);
-				Common.DropDown.setValue($combo, this.currentMapType);
-
+					
 				$input.change((e) => {
 					this.currentMapType = parseInt($input.val());
 

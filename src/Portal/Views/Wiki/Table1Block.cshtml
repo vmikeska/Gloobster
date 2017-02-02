@@ -33,6 +33,7 @@
     @if (Model.Text.ToLower() == "no content")
     {
         <div class="empty-cont" data-sid="@Model.SectionId">@Html.Partial("Empty", new EmptyVM { B = Model.B })</div>
+        <p id="text_@Model.SectionId" class="h4"></p>
     }
     else
     {

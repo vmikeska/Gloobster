@@ -116,10 +116,10 @@
 
 			this.initView(viewType);
 			this.currentMaps.show(() => {
-					this.onMapsLoaded(savedPosition, savedZoom, dataType);
+				this.onMapsLoaded(savedPosition, savedZoom, dataType);
 				if (callback) {
 					callback();
-				}
+				}					
 			});
 		}
 

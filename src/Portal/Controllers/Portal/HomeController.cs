@@ -35,6 +35,7 @@ namespace Gloobster.Portal.Controllers.Portal
         {
             var vm = CreateViewModelInstance<ViewModelHome>();
             vm.DefaultLangModuleName = "pageHome";
+            vm.LoadClientTexts();
 
             if (vm.IsUserLogged)
             {

@@ -41,9 +41,9 @@
                 <h3>@Model.Name - by @Model.OwnerName</h3>
             }
 
-            <p class="serv">
+            <div class="serv">
                 @Model.FromDate.ToString("MMM yyyy", CultureInfo.GetCultureInfo(Model.B.Locale))                
-            </p>
+            </div>
             @if (Model.IsOwner)
             {
                 <span class="setting icon-gear"></span>

@@ -33,7 +33,7 @@
 		 
 		 this.files = new Trip.TripFiles(c);
 		}
-
+			
 		private registerPhotoUpload() {
 			var c = new Common.FileUploadConfig();
 			c.inputId = "photoInput";
@@ -44,24 +44,27 @@
 			this.pictureUpload = new Common.FileUpload(c);
 			this.pictureUpload.customId = this.trip.tripId;
 
-			this.pictureUpload.onProgressChanged = (percent) => {
-			 var $pb = $("#progressBarTit");
-			 $pb.show();
-			 var pt = `${percent}%`;
-			 $(".progress").css("width", pt);
-			 $pb.find("span").text(pt);				 
-			}
-			this.pictureUpload.onUploadFinished = (file, files) => {
-			 this.refreshBackground(this.trip.tripId);
+			var ud = new Common.UploadDialog();
 
-			 var $pb = $("#progressBarTit");
-			 $pb.hide();
+			this.pictureUpload.onProgressChanged = (percent) => {
+
+					if (!ud) {							
+							ud.create();
+					}
+
+					ud.update(percent);					
+			}
+
+			this.pictureUpload.onUploadFinished = (file, files) => {
+					this.refreshBackground(this.trip.tripId);
+
+					ud.destroy();
 			}
 		}
 
 		private refreshBackground(tripId) {
 			$("#bckPhoto").css("background", "");
-			$("#bckPhoto").css("background", `transparent url('../../Trip/TripPicture/${tripId}') center top no-repeat`);
+			$("#bckPhoto").css("background", `transparent url('/Trip/TripPicture/${tripId}?asdf=${this.makeRandomString(10)}') center top no-repeat`);
 		}
 
 		private getTrip(id: string) {

@@ -4,9 +4,11 @@
 		private pictureUpload: Common.FileUpload;
 	
 		constructor() {
-			super();
-			this.registerUploads();
+				super();
 
+			var isBig = window.location.href.indexOf("grid") !== -1;
+			this.registerUploads(isBig);
+	
 			$(".menuClose").click((e) => {
 				e.preventDefault();
 				$(".trip-menu").hide();
@@ -49,15 +51,15 @@
 			 
 		 });		 
 		}
-	
-		private registerUploads() {
-				var $i = $(".photo-link input");
-		 var inputs = $i.toArray();
-		  inputs.forEach((input) => {
-			 var $input = $(input);			 
-			 this.registerPhotoUpload($input.data("tid"), $input.attr("id"));
-		  });
-	  }
+
+		private registerUploads(isBig: boolean) {
+			var $i = $(".photo-link input");
+			var inputs = $i.toArray();
+			inputs.forEach((input) => {
+				var $input = $(input);
+				this.registerPhotoUpload($input.data("tid"), $input.attr("id"), isBig);
+			});
+		}
 
 		public createNewTrip() {
 			var tripName = $("#newTrip").val();
@@ -68,7 +70,7 @@
 			window.location.href = `/Trip/CreateNewTrip/${tripName}`;
 		}
 	 
-		private registerPhotoUpload(tripId, inputId) {
+		private registerPhotoUpload(tripId, inputId, isBig: boolean) {
 			var c = new Common.FileUploadConfig();
 			c.inputId = inputId;
 			c.endpoint = "TripPhotoSmall";
@@ -78,19 +80,28 @@
 			var pu = new Common.FileUpload(c);
 			pu.customId = tripId;
 
+			var ud = null;
+
 			pu.onProgressChanged = (percent) => {
-			 var $pb = $("#progressBar");
-			 $pb.show();
-			 var pt = `${percent}%`;
-			 $(".progress").css("width", pt);
-			 $pb.find("span").text(pt);			 
+					if (ud === null) {
+							ud = new Common.UploadDialog();
+							ud.create();
+					}
+
+					ud.update(percent);
 			}
 
 			pu.onUploadFinished = (file, files) => {				
-				$(".trip-menu").hide();
-				$(`#tripImg_${tripId}`).attr("src", `/Trip/TripPictureSmall_s/${tripId}?d=${this.makeRandomString(10)}`);			 
-				var $pb = $("#progressBar");
-				$pb.hide();
+					$(".trip-menu").hide();
+
+					if (isBig) {
+							$(`#tripImg_${tripId}`).attr("src", `/Trip/TripPictureSmall_s/${tripId}?d=${this.makeRandomString(10)}`);			 
+					} else {
+							$(`#tripImg_${tripId}`).attr("src", `/Trip/TripPictureSmall_xs/${tripId}?d=${this.makeRandomString(10)}`);			 		
+					}
+				
+
+				ud.destroy();				
 			}
 		}	 
 	}

@@ -192,13 +192,12 @@
 
     .trips-big{
         
-        padding-left: 10px;
-        padding-right: 10px;
+        @include above-width(650) {
+            @include display-flex;
+            flex-flow: wrap;
+            justify-content: space-around;
+        }
 
-        @include display-flex;
-        flex-flow: wrap;
-        justify-content: flex-start;
-        
         .trip-new{
             display: inline-block;
             position: relative;
@@ -252,7 +251,12 @@
             overflow: hidden;
             
             margin-bottom: 15px;
-            margin-right: 15px;
+            
+            margin-right: 4px;
+
+            &:last-of-type {
+                margin-right: 0;
+            }
 
             img{
                 position: absolute;
@@ -265,20 +269,16 @@
                 position: absolute;
                 bottom: 0;
                 left: 0;
-                
-                margin: 0;
-                padding-left: 10px;
-                padding-right: 10px;
+                right: 0;
                 
                 color: white;
 
-                height: 46px;
-                line-height: 46px;
-                width: 300px;
+                padding: 1em;
+                
                 font-size: 16px;
                 
                 background: rgba(black, 0.3);
-
+                text-align: left;
             }
 
             .setting{

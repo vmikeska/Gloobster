@@ -320,13 +320,13 @@ module Views {
 		}
 
 		public generateAdmin() {
-			var $places = this.$cont.find(".place");
-			var places = $places.toArray();
-			places.forEach((place) => {
-				var $place = $(place);
-				var id = $place.data("id");
+			var $items = this.$cont.find(".item");
+			var items = $items.toArray();
+			items.forEach((item) => {
+				var $item = $(item);
+				var id = $item.data("id");
 				var $html = this.editButton(id);
-				$place.append($html);
+				$item.append($html);
 			});
 
 			$(".admindo").after(this.generateAdder("do"));
@@ -785,6 +785,8 @@ module Views {
 				$(`#edit_${id}`).remove();
 				$(`#text_${id}`).text(data.newText);
 				$(`#editSection_${id}`).show();
+				$(`.empty-cont[data-sid="${id}"]`).remove();
+
 			});
 		}
 

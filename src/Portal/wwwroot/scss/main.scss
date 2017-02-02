@@ -337,6 +337,19 @@ textarea{
     @include noselect;
 }
 
+ .green-orange {
+     background-color: $green;
+     color: white;
+
+     &:hover {
+         background-color: $orange;
+     }
+ }
+
+ .bold {
+     font-weight: bold;
+ }
+
 .form-close {
     position: absolute;
     top: -18px;

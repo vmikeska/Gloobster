@@ -87,7 +87,19 @@
         </div>
     </script>
 
-    <script id="inPorgressDialog-template" type="text/x-handlebars-template">
+<script id="upload-dialog-template" type="text/x-handlebars-template">
+    <div class="popup popup-upload" id="popupUpload">
+        <div>
+            
+            <div class="prog-bar-cont">
+                <div class="title">Uploading file</div>  
+                @Html.Partial("ProgressBar", "progressBar")
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="inPorgressDialog-template" type="text/x-handlebars-template">
 
         <div class="popup-n inprogress wrapper">
             <div class="top-line"></div>

@@ -19,6 +19,43 @@
 	 }
 	}
 
+		export class UploadDialog {
+
+				public $html;
+				public $progresBar;
+				public visible = false;
+
+				public create() {
+						var t = Views.ViewBase.currentView.registerTemplate("upload-dialog-template");
+						this.$html = $(t());
+						this.$progresBar = this.$html.find("#progressBar");
+
+						this.$progresBar.show();
+						this.$html.show();
+
+						$("body").append(this.$html);
+					this.visible = true;
+				}
+
+				public update(percent) {
+					if (this.$html) {
+						var pt = `${percent}%`;
+						this.$progresBar.find(".progress").css("width", pt);
+						this.$progresBar.find("span").text(pt);
+					}
+				}
+
+				public destroy() {
+
+					if (this.$html) {
+							this.$html.remove();
+							this.visible = false;
+					}
+					
+				}
+
+		}
+
 	export class InprogressDialog {
 	 private template;
 	 private $html;

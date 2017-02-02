@@ -21,6 +21,18 @@ namespace Gloobster.Portal.Controllers.Portal
             return View(vm);
         }
 
+        public IActionResult TravelDeals()
+        {
+            var vm = CreateViewModelInstance<EmptyViewModel>();
+            return View(vm);
+        }
+
+        public IActionResult TravelBuddy()
+        {
+            var vm = CreateViewModelInstance<EmptyViewModel>();
+            return View(vm);
+        }
+        
         public IActionResult Wiki()
         {
             var vm = CreateViewModelInstance<EmptyViewModel>();
