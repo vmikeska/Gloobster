@@ -849,13 +849,9 @@ button:active {
 .info-block-bck {
   background-color: #009EC4;
   color: white; }
-  .info-block-bck a {
-    color: white; }
   .info-block-bck.collapsed {
     color: black;
     background-color: white; }
-    .info-block-bck.collapsed a {
-      color: #005476; }
   .info-block-bck .title-table {
     display: table;
     width: 100%;
@@ -894,7 +890,7 @@ button:active {
     .info-block2 .info-inner-table {
       display: block; }
       .info-block2 .info-inner-table .block {
-        width: 100%;
+        width: unset;
         display: block; } }
   .info-block2 img {
     float: left;

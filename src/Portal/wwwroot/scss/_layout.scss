@@ -164,18 +164,11 @@
 .info-block-bck{
         background-color: $info-blue2;
         
-
         color: white;
-        a {
-            color: white;
-        }
 
         &.collapsed {
             color: black;
-            background-color: white;
-            a {
-                color: $dark-blue;
-            }
+            background-color: white;            
         }
 
         .title-table{
@@ -239,8 +232,8 @@
                 display: block;
 
                 .block {
-                    width: 100%;
-                    display: block;
+                    width: unset;
+                    display: block;                    
                 }
             }
         }
