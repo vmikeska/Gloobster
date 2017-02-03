@@ -20,6 +20,18 @@
     </div>        
 </script>
 
+
+<script id="place-tag-template" type="text/x-handlebars-template">
+    <span data-t="{{type}}" data-id="{{id}}" class="ptag">
+        <span class="icon-{{icon}} icon"></span>
+        <span class="txt">{{name}}</span>        
+        {{#if showCC}}
+        <span>, </span>
+        <span class="cc">{{cc}}</span>
+        {{/if}}
+    </span>
+</script>
+
 <script id="badges-frame-template" type="text/x-handlebars-template">
     <div class="continent">
         <h2 class="title">{{title}}</h2>

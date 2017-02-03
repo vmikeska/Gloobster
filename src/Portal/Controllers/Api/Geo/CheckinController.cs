@@ -43,7 +43,7 @@ namespace Gloobster.Portal.Controllers.Api.Geo
 			
 			var checkedDO = await CheckinDomain.CheckinPlace(place.SourceId, sourceType, UserId);
             
-		    if (sourceType == SourceType.FB)
+		    if (sourceType == SourceType.FB && place.CheckToSoc)
 		    {
 		        CheckinToFb(place);
 		    }

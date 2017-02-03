@@ -852,6 +852,10 @@ button:active {
   .info-block-bck.collapsed {
     color: black;
     background-color: white; }
+    .info-block-bck.collapsed a {
+      color: black !important; }
+      .info-block-bck.collapsed a:hover {
+        color: #F56E12 !important; }
   .info-block-bck .title-table {
     display: table;
     width: 100%;
@@ -861,6 +865,13 @@ button:active {
     .info-block-bck .title-table .left {
       display: table-cell;
       padding-left: 10px; }
+      .info-block-bck .title-table .left a {
+        vertical-align: central;
+        color: white;
+        display: inline-block;
+        text-decoration: none; }
+        .info-block-bck .title-table .left a:hover {
+          color: #F56E12; }
       .info-block-bck .title-table .left h1 {
         display: inline-block;
         padding: 0;
@@ -1759,52 +1770,13 @@ footer {
       position: absolute;
       right: 5px;
       top: 5px; }
-    .pins .map-wrap .place-search input {
+    .pins .map-wrap .place-search input[type="text"] {
       background: url(/images/n/magnifier.svg) no-repeat scroll 7px 7px;
       background-color: white;
       background-position-y: 10px;
       background-position-x: 10px;
       padding-left: 37px;
       width: 200px; }
-    .pins .map-wrap .place-search .results {
-      background-color: rgba(255, 255, 255, 0.95);
-      position: absolute;
-      top: 47px;
-      left: -45px; }
-      .pins .map-wrap .place-search .results .base-cont {
-        width: 660px;
-        text-align: left;
-        margin-top: 10px; }
-        @media screen and (max-width: 700px) {
-          .pins .map-wrap .place-search .results .base-cont {
-            width: 335px; } }
-        .pins .map-wrap .place-search .results .base-cont ul {
-          width: 320px;
-          display: inline-block; }
-          .pins .map-wrap .place-search .results .base-cont ul li {
-            list-style: none;
-            margin-bottom: 3px;
-            text-align: left; }
-            .pins .map-wrap .place-search .results .base-cont ul li .icon-city, .pins .map-wrap .place-search .results .base-cont ul li .icon-country {
-              font-size: 26px;
-              color: #F56E12; }
-      .pins .map-wrap .place-search .results .soc-nets ul {
-        list-style: none;
-        text-align: left;
-        margin: 0;
-        padding: 0; }
-        .pins .map-wrap .place-search .results .soc-nets ul li {
-          margin: 0;
-          padding: 0; }
-      .pins .map-wrap .place-search .results .soc-nets .soc-item {
-        display: inline-block;
-        vertical-align: top;
-        width: 210px;
-        margin-right: 3px; }
-      .pins .map-wrap .place-search .results .search-soc {
-        margin-left: 20px;
-        color: black;
-        font-size: 22px; }
   .pins .map-wrap .preloader-cont {
     width: 100%;
     height: 500px;
@@ -1822,6 +1794,50 @@ footer {
     width: 100%;
     height: 600px;
     background-color: white; }
+
+.pins .place-search-results {
+  text-align: left;
+  position: absolute;
+  top: 50px;
+  left: 8px;
+  z-index: 999999;
+  display: inline-block;
+  min-width: 440px;
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 1em;
+  border-radius: 4px; }
+  @media screen and (min-width: 600px) {
+    .pins .place-search-results {
+      min-width: 600px; } }
+  .pins .place-search-results .section {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em; }
+    .pins .place-search-results .section .title {
+      font-weight: bold;
+      font-size: 1.1em;
+      margin-bottom: 0.2em; }
+    .pins .place-search-results .section .content .ptag {
+      display: inline-block;
+      border-radius: 4px;
+      padding-left: 4px;
+      padding-right: 4px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      margin-left: 2px;
+      margin-right: 2px;
+      margin-bottom: 2px;
+      background-color: #3298C1;
+      color: white;
+      cursor: pointer; }
+      .pins .place-search-results .section .content .ptag .txt {
+        font-weight: bold; }
+      .pins .place-search-results .section .content .ptag .icon {
+        color: #005476;
+        margin-right: 0.3em; }
+      .pins .place-search-results .section .content .ptag .cc {
+        color: #005476; }
+      .pins .place-search-results .section .content .ptag:hover {
+        background-color: #F56E12; }
 
 .pins .stats {
   margin-top: 12px;
@@ -1883,7 +1899,7 @@ footer {
   color: black;
   font-family: "PT Sans", sans-serif;
   font-size: 16px;
-  z-index: 99999;
+  z-index: 99998;
   background-color: white;
   opacity: 0.7;
   border-radius: 10px; }

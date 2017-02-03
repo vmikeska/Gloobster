@@ -168,7 +168,15 @@
 
         &.collapsed {
             color: black;
-            background-color: white;            
+            background-color: white;
+
+            a {
+                color: black !important;
+
+                &:hover {
+                        color: $orange !important;
+                    }
+            }
         }
 
         .title-table{
@@ -181,6 +189,19 @@
             .left{
                 display: table-cell;
                 padding-left: 10px;
+
+                a {
+                    vertical-align: central;
+                    
+                    color: white;
+                    display: inline-block;
+                    
+                    text-decoration: none;
+
+                    &:hover {
+                        color: $orange;
+                    }
+                }
 
                 h1{  
                     display: inline-block;                  

@@ -1,4 +1,5 @@
 ﻿module Views {
+		
 
 	export class PinBoardSearch {
 
@@ -8,98 +9,70 @@
 		private socProv = [SourceType.FB, SourceType.S4, SourceType.Yelp];
 		private socNetProviders = this.provToStr(this.socProv);
 
-		private template = ViewBase.currentView.registerTemplate("placeItem-template");
+		private itemTmp = ViewBase.currentView.registerTemplate("place-tag-template");
 
 		private coordinates: any;
 		private lastQuery: string;
+		private searchOnSoc = false;
 
 		private $root;
 		private $input;
-		private $ulCity;
-		private $ulCountry;
+		private $cities;
+		private $countries;
+		private $socials;
 		private $results;
-
-
+			
 		private delayedCallback: Common.DelayedCallback;
 
-
-		constructor($root) {
+		private v: PinBoardView;
+			
+		constructor($root, v: PinBoardView) {
+			this.v = v;
 			this.$root = $root;
-			this.$input = $root.find("input");
-			this.$ulCity = $root.find(".ul-city");
-			this.$ulCountry = $root.find(".ul-country");
-			this.$results = $root.find(".results");
+			this.$input = $root.find("#citiesInput");
+			this.$cities = $root.find("#sectCities");
+			this.$countries = $root.find("#sectCountries");
+			this.$socials = $root.find("#sectSocial");
+			this.$results = $root.find(".place-search-results");
 
 			this.regCallback();
 			this.regSearchSoc();
 		}
-
-		private show(show) {
-			if (show) {
-				this.$results.show();
-			} else {
-				this.$results.hide();
-			}
+			
+		private shouldCreateCheckin() {
+			return this.$root.find("#cbCreateCheckin").prop("checked");
 		}
 
-			
-		private socNetsActive = false;
-
 		private regSearchSoc() {
-			this.$root.find(".search-soc").click((e) => {
-				e.preventDefault();
+			var $btn = this.$root.find("#socSearchBtn");
 
-				this.socNetsActive = !this.socNetsActive;
-				var $nets = $(".soc-nets");
-				$nets.empty();
+			$btn.click((e) => {
+						e.preventDefault();
 
-				if (this.socNetsActive) {
-					this.searchSoc();
-				}
+						this.$socials.toggleClass("hidden");
 
+						this.searchSoc();
+
+				this.searchOnSoc = true;
+
+				$btn.hide();
 			});
 
 		}
 
 		private searchSoc() {
-			var $nets = $(".soc-nets");
 			
 			this.search(this.lastQuery, false, (places) => {
-				$nets.empty();
-				for (var act = 1; act <= this.socProv.length; act++) {
-					var type = this.socProv[act - 1];
-					var plcs = this.getByType(places, type);
-					if (plcs.length > 0) {
-						var $box = this.getBox(act);
-						$nets.append($box);
 
-						this.fill(plcs, $box.find("ul"));
-					}
-				}
-
+					this.fillContent(places, this.$socials, false);
+				
 			});
 		}
-
-		private cityTemp(item) {
-				return `<li data-value="${item.sourceId}" data-type="${item.sourceType}"> <span class="${item.icoClass}"> </span><a href="#">${item.name}</a><span class="color2">, ${item.countryCode}</span> </li>`;
-		}
-
-		private countryTemp(item) {
-				return `<li data-value="${item.sourceId}" data-type="${item.sourceType}"> <span class="${item.icoClass} left mright10"> </span><a href="#">${item.name}</a></li>`;
-		}
-
-		private socTemp(item) {
-				return `<li data-value="${item.sourceId}" data-type="${item.sourceType}"> <span class="${item.icoClass} left mright10"> </span><a href="#">${item.name}</a></li>`;
-		}
-
-		private getBox(num) {
-			return $(`<div class="soc-item"><ul class="${num}"></ul></div>`);
-		}
-
+			
 		private getByType(places, type: SourceType) {
 			return _.filter(places, (p) => { return p.SourceType === type; });
 		}
-
+			
 		private regCallback() {
 			this.delayedCallback = new Common.DelayedCallback(this.$input);
 			this.delayedCallback.callback = (query) => {
@@ -107,16 +80,75 @@
 
 				this.search(query, true, (places) => {
 						var cities = this.getByType(places, SourceType.City);
-						this.fill(cities, this.$ulCity);
-						var countries = this.getByType(places, SourceType.Country);
-						this.fill(countries, this.$ulCountry);
 
-						if (this.socNetsActive) {
+						this.fillContent(cities, this.$cities, true);
+
+						var countries = this.getByType(places, SourceType.Country);
+
+						this.fillContent(countries, this.$countries, false);
+
+						this.show(true);
+
+						if (this.searchOnSoc) {
 								this.searchSoc();
 						}
 				});
 			};
 		}
+
+		private show(state) {
+			if (state) {
+				this.$results.removeClass("hidden");
+			} else {
+				this.$results.addClass("hidden");
+			}
+		}
+
+		private fillContent(items, $section, showCC: boolean) {
+
+				if (!any(items)) {
+					$section.addClass("hidden");
+				}
+				
+			var $cont = $section.find(".content");
+
+				var lg = Common.ListGenerator.init($cont, "place-tag-template");
+			 lg.clearCont = true;
+
+				lg.customMapping = (item) => {
+					var r = {
+						id: item.SourceId,
+						type: item.SourceType,
+						icon: this.getIcon(item.SourceType),
+						name: item.Name,
+						showCC: showCC,
+						cc: item.CountryCode
+						};
+						
+					return r;
+			 }
+
+			lg.evnt(null, (e, $item, $target, item) => {					
+					var req = { SourceType: item.SourceType, SourceId: item.SourceId, CheckToSoc: this.shouldCreateCheckin() };
+
+				  this.show(false);
+					this.$input.val("");
+					this.v.saveNewPlace(req);
+				});
+
+				lg.generateList(items);
+
+				if (any(items)) {
+						$section.removeClass("hidden");
+				}
+
+		}
+
+
+
+
+
+
 
 		public search(query: string, isBase: boolean, callback) {
 			this.loader(true);
@@ -147,71 +179,24 @@
 			});
 		}
 
-		private fill(places, $ul) {
-
-			var htmlContent = "";
-			places.forEach(item => {
-				htmlContent += this.getItemHtml(item);
-			});
-
-			$ul.html(htmlContent);
-
-			$ul.find("a").click((e) => this.itemClick(e));				
-		}
-
-		private itemClick(e) {
-			e.preventDefault();
-			var $a = $(e.target);
-			var $li = $a.closest("li");
-
-			var sourceId = $li.data("value");
-			var sourceType = $li.data("type");
-			var req = { SourceType: sourceType, SourceId: sourceId };
-			var view = <PinBoardView>ViewBase.currentView;
-			this.$results.hide();
-			this.$input.val("");
-			view.saveNewPlace(req);
-		}
-
 		public setCoordinates(lat, lng) {
 			this.coordinates = { lat: lat, lng: lng };
 		}
+			
+		//		countryCode: item.CountryCode
 
-		private getItemHtml(item) {
-
-			var context = {
-				sourceId: item.SourceId,
-				sourceType: item.SourceType,
-				icoClass: this.getIconForSearch(item.SourceType),
-				name: item.Name,
-				countryCode: item.CountryCode
-			}
-
-			var html = "";
-			if (item.SourceType === SourceType.City) {
-					html = this.cityTemp(context);
-			} else if (item.SourceType === SourceType.Country) {
-					html = this.countryTemp(context);
-			} else {
-					html = this.socTemp(context);
-			}
-
-			this.template(context);
-			return html;
-		}
-
-		private getIconForSearch(sourceType: SourceType) {
+		private getIcon(sourceType: SourceType) {
 			switch (sourceType) {
 			case SourceType.FB:
-				return "icon-facebook2";
+				return "facebook2";
 			case SourceType.City:
-				return "icon-city";
+				return "city";
 			case SourceType.Country:
-				return "icon-country";
+				return "country";
 			case SourceType.S4:
-				return "icon-foursquare";
+				return "foursquare";
 			case SourceType.Yelp:
-				return "icon-yelp";
+				return "yelp";
 			}
 			return "";
 		}
@@ -393,7 +378,7 @@
 
 			private initPlaceSearch() {
 					
-					this.search = new PinBoardSearch($(".place-search"));
+					this.search = new PinBoardSearch($(".place-search"), this);
 					this.search.onPlaceSelected = (request) => this.saveNewPlace(request);
 			}
 

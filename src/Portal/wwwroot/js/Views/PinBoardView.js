@@ -6,67 +6,41 @@ var __extends = (this && this.__extends) || function (d, b) {
 var Views;
 (function (Views) {
     var PinBoardSearch = (function () {
-        function PinBoardSearch($root) {
+        function PinBoardSearch($root, v) {
             this.baseProviders = this.provToStr([SourceType.City, SourceType.Country]);
             this.socProv = [SourceType.FB, SourceType.S4, SourceType.Yelp];
             this.socNetProviders = this.provToStr(this.socProv);
-            this.template = Views.ViewBase.currentView.registerTemplate("placeItem-template");
-            this.socNetsActive = false;
+            this.itemTmp = Views.ViewBase.currentView.registerTemplate("place-tag-template");
+            this.searchOnSoc = false;
+            this.v = v;
             this.$root = $root;
-            this.$input = $root.find("input");
-            this.$ulCity = $root.find(".ul-city");
-            this.$ulCountry = $root.find(".ul-country");
-            this.$results = $root.find(".results");
+            this.$input = $root.find("#citiesInput");
+            this.$cities = $root.find("#sectCities");
+            this.$countries = $root.find("#sectCountries");
+            this.$socials = $root.find("#sectSocial");
+            this.$results = $root.find(".place-search-results");
             this.regCallback();
             this.regSearchSoc();
         }
-        PinBoardSearch.prototype.show = function (show) {
-            if (show) {
-                this.$results.show();
-            }
-            else {
-                this.$results.hide();
-            }
+        PinBoardSearch.prototype.shouldCreateCheckin = function () {
+            return this.$root.find("#cbCreateCheckin").prop("checked");
         };
         PinBoardSearch.prototype.regSearchSoc = function () {
             var _this = this;
-            this.$root.find(".search-soc").click(function (e) {
+            var $btn = this.$root.find("#socSearchBtn");
+            $btn.click(function (e) {
                 e.preventDefault();
-                _this.socNetsActive = !_this.socNetsActive;
-                var $nets = $(".soc-nets");
-                $nets.empty();
-                if (_this.socNetsActive) {
-                    _this.searchSoc();
-                }
+                _this.$socials.toggleClass("hidden");
+                _this.searchSoc();
+                _this.searchOnSoc = true;
+                $btn.hide();
             });
         };
         PinBoardSearch.prototype.searchSoc = function () {
             var _this = this;
-            var $nets = $(".soc-nets");
             this.search(this.lastQuery, false, function (places) {
-                $nets.empty();
-                for (var act = 1; act <= _this.socProv.length; act++) {
-                    var type = _this.socProv[act - 1];
-                    var plcs = _this.getByType(places, type);
-                    if (plcs.length > 0) {
-                        var $box = _this.getBox(act);
-                        $nets.append($box);
-                        _this.fill(plcs, $box.find("ul"));
-                    }
-                }
+                _this.fillContent(places, _this.$socials, false);
             });
-        };
-        PinBoardSearch.prototype.cityTemp = function (item) {
-            return "<li data-value=\"" + item.sourceId + "\" data-type=\"" + item.sourceType + "\"> <span class=\"" + item.icoClass + "\"> </span><a href=\"#\">" + item.name + "</a><span class=\"color2\">, " + item.countryCode + "</span> </li>";
-        };
-        PinBoardSearch.prototype.countryTemp = function (item) {
-            return "<li data-value=\"" + item.sourceId + "\" data-type=\"" + item.sourceType + "\"> <span class=\"" + item.icoClass + " left mright10\"> </span><a href=\"#\">" + item.name + "</a></li>";
-        };
-        PinBoardSearch.prototype.socTemp = function (item) {
-            return "<li data-value=\"" + item.sourceId + "\" data-type=\"" + item.sourceType + "\"> <span class=\"" + item.icoClass + " left mright10\"> </span><a href=\"#\">" + item.name + "</a></li>";
-        };
-        PinBoardSearch.prototype.getBox = function (num) {
-            return $("<div class=\"soc-item\"><ul class=\"" + num + "\"></ul></div>");
         };
         PinBoardSearch.prototype.getByType = function (places, type) {
             return _.filter(places, function (p) { return p.SourceType === type; });
@@ -78,14 +52,53 @@ var Views;
                 _this.lastQuery = query;
                 _this.search(query, true, function (places) {
                     var cities = _this.getByType(places, SourceType.City);
-                    _this.fill(cities, _this.$ulCity);
+                    _this.fillContent(cities, _this.$cities, true);
                     var countries = _this.getByType(places, SourceType.Country);
-                    _this.fill(countries, _this.$ulCountry);
-                    if (_this.socNetsActive) {
+                    _this.fillContent(countries, _this.$countries, false);
+                    _this.show(true);
+                    if (_this.searchOnSoc) {
                         _this.searchSoc();
                     }
                 });
             };
+        };
+        PinBoardSearch.prototype.show = function (state) {
+            if (state) {
+                this.$results.removeClass("hidden");
+            }
+            else {
+                this.$results.addClass("hidden");
+            }
+        };
+        PinBoardSearch.prototype.fillContent = function (items, $section, showCC) {
+            var _this = this;
+            if (!any(items)) {
+                $section.addClass("hidden");
+            }
+            var $cont = $section.find(".content");
+            var lg = Common.ListGenerator.init($cont, "place-tag-template");
+            lg.clearCont = true;
+            lg.customMapping = function (item) {
+                var r = {
+                    id: item.SourceId,
+                    type: item.SourceType,
+                    icon: _this.getIcon(item.SourceType),
+                    name: item.Name,
+                    showCC: showCC,
+                    cc: item.CountryCode
+                };
+                return r;
+            };
+            lg.evnt(null, function (e, $item, $target, item) {
+                var req = { SourceType: item.SourceType, SourceId: item.SourceId, CheckToSoc: _this.shouldCreateCheckin() };
+                _this.show(false);
+                _this.$input.val("");
+                _this.v.saveNewPlace(req);
+            });
+            lg.generateList(items);
+            if (any(items)) {
+                $section.removeClass("hidden");
+            }
         };
         PinBoardSearch.prototype.search = function (query, isBase, callback) {
             var _this = this;
@@ -112,63 +125,21 @@ var Views;
                 _this.loader(false);
             });
         };
-        PinBoardSearch.prototype.fill = function (places, $ul) {
-            var _this = this;
-            var htmlContent = "";
-            places.forEach(function (item) {
-                htmlContent += _this.getItemHtml(item);
-            });
-            $ul.html(htmlContent);
-            $ul.find("a").click(function (e) { return _this.itemClick(e); });
-        };
-        PinBoardSearch.prototype.itemClick = function (e) {
-            e.preventDefault();
-            var $a = $(e.target);
-            var $li = $a.closest("li");
-            var sourceId = $li.data("value");
-            var sourceType = $li.data("type");
-            var req = { SourceType: sourceType, SourceId: sourceId };
-            var view = Views.ViewBase.currentView;
-            this.$results.hide();
-            this.$input.val("");
-            view.saveNewPlace(req);
-        };
         PinBoardSearch.prototype.setCoordinates = function (lat, lng) {
             this.coordinates = { lat: lat, lng: lng };
         };
-        PinBoardSearch.prototype.getItemHtml = function (item) {
-            var context = {
-                sourceId: item.SourceId,
-                sourceType: item.SourceType,
-                icoClass: this.getIconForSearch(item.SourceType),
-                name: item.Name,
-                countryCode: item.CountryCode
-            };
-            var html = "";
-            if (item.SourceType === SourceType.City) {
-                html = this.cityTemp(context);
-            }
-            else if (item.SourceType === SourceType.Country) {
-                html = this.countryTemp(context);
-            }
-            else {
-                html = this.socTemp(context);
-            }
-            this.template(context);
-            return html;
-        };
-        PinBoardSearch.prototype.getIconForSearch = function (sourceType) {
+        PinBoardSearch.prototype.getIcon = function (sourceType) {
             switch (sourceType) {
                 case SourceType.FB:
-                    return "icon-facebook2";
+                    return "facebook2";
                 case SourceType.City:
-                    return "icon-city";
+                    return "city";
                 case SourceType.Country:
-                    return "icon-country";
+                    return "country";
                 case SourceType.S4:
-                    return "icon-foursquare";
+                    return "foursquare";
                 case SourceType.Yelp:
-                    return "icon-yelp";
+                    return "yelp";
             }
             return "";
         };
@@ -307,7 +278,7 @@ var Views;
         };
         PinBoardView.prototype.initPlaceSearch = function () {
             var _this = this;
-            this.search = new PinBoardSearch($(".place-search"));
+            this.search = new PinBoardSearch($(".place-search"), this);
             this.search.onPlaceSelected = function (request) { return _this.saveNewPlace(request); };
         };
         PinBoardView.prototype.initShareDialog = function () {

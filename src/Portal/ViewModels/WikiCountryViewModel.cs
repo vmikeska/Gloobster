@@ -3,6 +3,7 @@ using Gloobster.Entities;
 using Gloobster.Entities.Wiki;
 using MongoDB.Bson;
 using System.Linq;
+using MongoDB.Driver.Linq;
 
 namespace Gloobster.Portal.ViewModels
 {
@@ -215,14 +216,22 @@ namespace Gloobster.Portal.ViewModels
         {
             var rl = new List<RelatedLink>();
 
-            var citiesArticles = DB.List<WikiCityEntity>(c => c.CountryCode == Article.CountryCode);
-            var citiesIds = citiesArticles
-                .Select(c => c.id)
+            var citiesIds = DB
+                .C<WikiCityEntity>()
+                .Where(c => c.CountryCode == Article.CountryCode)
+                .Select(a => a.id)
                 .ToList();
             
-            var citiesTexts = DB.List<WikiTextsEntity>(c => citiesIds.Contains(c.Article_id) && c.Language == Texts.Language && c.Rating > 0);
+            //rating evaluation didn't work
+            //var citiesTexts = DB.List<WikiTextsEntity>(c => citiesIds.Contains(c.Article_id) && c.Language == Texts.Language && c.Rating > 0.0);
+
+            var texts = DB.C<WikiTextsEntity>()
+                .Where(c => citiesIds.Contains(c.Article_id) && c.Language == Texts.Language)
+                .Select(a => new {a.Rating, a.Title, a.LinkName})
+                .ToList();
+            var ratedTexts = texts.Where(t => t.Rating > 0);
             
-            foreach (var city in citiesTexts)
+            foreach (var city in ratedTexts)
             {
                 var link = new RelatedLink
                 {
