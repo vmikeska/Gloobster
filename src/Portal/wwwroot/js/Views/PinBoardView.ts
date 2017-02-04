@@ -37,6 +37,14 @@
 
 			this.regCallback();
 			this.regSearchSoc();
+
+			this.$root.find(".close").click((e) => {
+					e.preventDefault();
+
+					this.show(false);
+					this.clear();
+
+			});
 		}
 			
 		private shouldCreateCheckin() {
@@ -132,7 +140,7 @@
 					var req = { SourceType: item.SourceType, SourceId: item.SourceId, CheckToSoc: this.shouldCreateCheckin() };
 
 				  this.show(false);
-					this.$input.val("");
+					this.clear();
 					this.v.saveNewPlace(req);
 				});
 
@@ -144,7 +152,9 @@
 
 		}
 
-
+			private clear() {
+					this.$input.val("");
+			}
 
 
 

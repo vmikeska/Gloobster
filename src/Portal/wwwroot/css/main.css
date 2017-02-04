@@ -1776,7 +1776,8 @@ footer {
       background-position-y: 10px;
       background-position-x: 10px;
       padding-left: 37px;
-      width: 200px; }
+      width: 200px;
+      border: 2px solid #005476; }
   .pins .map-wrap .preloader-cont {
     width: 100%;
     height: 500px;
@@ -1798,17 +1799,32 @@ footer {
 .pins .place-search-results {
   text-align: left;
   position: absolute;
-  top: 50px;
-  left: 8px;
+  top: 46px;
+  left: 0;
   z-index: 999999;
   display: inline-block;
-  min-width: 440px;
+  min-width: 400px;
   background-color: rgba(255, 255, 255, 0.85);
   padding: 1em;
   border-radius: 4px; }
   @media screen and (min-width: 600px) {
     .pins .place-search-results {
-      min-width: 600px; } }
+      min-width: 530px; } }
+  @media screen and (min-width: 700px) {
+    .pins .place-search-results {
+      min-width: 630px; } }
+  .pins .place-search-results .close {
+    position: absolute;
+    right: -0.5em;
+    top: -0.5em;
+    display: inline-block;
+    padding: 6px;
+    background-color: white;
+    color: #005476;
+    border-radius: 50%;
+    cursor: pointer; }
+    .pins .place-search-results .close:hover {
+      color: #F56E12; }
   .pins .place-search-results .section {
     margin-top: 0.5em;
     margin-bottom: 0.5em; }

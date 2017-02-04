@@ -7,6 +7,7 @@ var Views;
 (function (Views) {
     var PinBoardSearch = (function () {
         function PinBoardSearch($root, v) {
+            var _this = this;
             this.baseProviders = this.provToStr([SourceType.City, SourceType.Country]);
             this.socProv = [SourceType.FB, SourceType.S4, SourceType.Yelp];
             this.socNetProviders = this.provToStr(this.socProv);
@@ -21,6 +22,11 @@ var Views;
             this.$results = $root.find(".place-search-results");
             this.regCallback();
             this.regSearchSoc();
+            this.$root.find(".close").click(function (e) {
+                e.preventDefault();
+                _this.show(false);
+                _this.clear();
+            });
         }
         PinBoardSearch.prototype.shouldCreateCheckin = function () {
             return this.$root.find("#cbCreateCheckin").prop("checked");
@@ -92,13 +98,16 @@ var Views;
             lg.evnt(null, function (e, $item, $target, item) {
                 var req = { SourceType: item.SourceType, SourceId: item.SourceId, CheckToSoc: _this.shouldCreateCheckin() };
                 _this.show(false);
-                _this.$input.val("");
+                _this.clear();
                 _this.v.saveNewPlace(req);
             });
             lg.generateList(items);
             if (any(items)) {
                 $section.removeClass("hidden");
             }
+        };
+        PinBoardSearch.prototype.clear = function () {
+            this.$input.val("");
         };
         PinBoardSearch.prototype.search = function (query, isBase, callback) {
             var _this = this;
