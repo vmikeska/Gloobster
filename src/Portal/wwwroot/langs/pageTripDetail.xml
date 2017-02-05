@@ -17,6 +17,10 @@
       <en>Invite your friends or let people know about your trip via social networks.</en>
     </InfoBlock2>
 
+    <UseCustomAddress>
+      <en>Use custom address</en>
+    </UseCustomAddress>
+
     <TitlePhoto>
         <en>Title Photo</en>
       </TitlePhoto>

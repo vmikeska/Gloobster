@@ -186,23 +186,23 @@ else
                 <span class="icon-cross-small close"></span>
 
                 <div id="sectCities" class="section hidden">
-                    <div class="title">Cities</div>
+                    <div class="title">@Model.W("SectionCities")</div>
                     <div class="content"></div>
                 </div>
 
                 <div id="sectCountries" class="section hidden">
-                    <div class="title">Countries</div>
+                    <div class="title">@Model.W("SectionCountries")</div>
                     <div class="content"></div>
                 </div>
-
+                
                 <div class="social-search">
-                    <a href="#" id="socSearchBtn" class="lbtn2 soc-btn green-orange">Search on social networks</a>
+                    <a href="#" id="socSearchBtn" class="lbtn2 soc-btn green-orange">@Model.W("SearchOnSocBtn")</a>
                 </div>
 
                 <div id="sectSocial" class="section hidden">
-                    <div class="title">Social networks</div>
+                    <div class="title">@Model.W("SectionSocial")</div>
                     <div class="cb-cont">
-                        <input id="cbCreateCheckin" type="checkbox"/> <label for="cbCreateCheckin">Create check-in on social network</label>
+                        <input id="cbCreateCheckin" type="checkbox"/> <label for="cbCreateCheckin">@Model.W("CreateCheckinCb")</label>
                     </div>
                     <div class="content"></div>
                 </div>

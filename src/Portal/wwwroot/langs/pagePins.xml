@@ -14,8 +14,26 @@
       <en>Are you new in town ? See what places are visited by most people.</en>
     </InfoBlock2>
 
-    
-    
+
+    <SectionCities>
+      <en>Cities</en>
+    </SectionCities>
+
+    <SectionCountries>
+      <en>Countries</en>
+    </SectionCountries>
+
+    <SectionSocial>
+      <en>Social networks</en>
+    </SectionSocial>
+
+    <CreateCheckinCb>
+      <en>Create check-in on social network</en>
+    </CreateCheckinCb>
+
+    <SearchOnSocBtn>
+      <en>Search on social networks</en>
+    </SearchOnSocBtn>
     
     
     
@@ -69,10 +87,6 @@
       <PlaceName>
         <en>Place to add</en>
       </PlaceName>
-
-    <SearchOnSoc>
-      <en>Search on social networks</en>
-    </SearchOnSoc>
 
       <StatCities>
         <en>Cities</en>
