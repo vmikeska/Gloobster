@@ -11,9 +11,11 @@ namespace Gloobster.Entities.Trip
 		public ObjectId ArrivingId { get; set; }
 		public ObjectId LeavingId { get; set; }
 		public PlaceSE Place { get; set; }
-        public bool UseTime { get; set; }
+        public bool UseTime { get; set; }        
+		public List<PlaceIdSE> WantVisit { get; set; }
+
+        public bool UseCustomAddress { get; set; }
         public PlaceSE Address { get; set; }
-		public string AddressText { get; set; }
-		public List<PlaceIdSE> WantVisit { get; set; }		
-	}
+        public string AddressText { get; set; }
+    }
 }

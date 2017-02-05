@@ -39,22 +39,13 @@ $detail-background: #abe0ed;
             margin-bottom: 15px;
 
             .active{
-                border: 2px solid $dark-blue !important;
+                background-color: $orange;
             }
 
-            a{
-                display: inline-block;
-                margin-bottom: 5px;
-                vertical-align: top;
-
-                &:hover{                    
-                    color: $dark-blue;
+            .lbtn2{              
+                span {
+                    vertical-align: middle;
                 }
-            }
-
-            .lbtn{              
-                background-color: rgba(255,255,255, 0.9);
-                border: 1px solid $dark-blue;                
             }
 
         }
@@ -108,7 +99,6 @@ $detail-background: #abe0ed;
     .file {
         display: inline-block;
         &:before {
-            /*@include transition(all $speed);*/
                 
             width: 40px;
             height: 40px;
@@ -218,28 +208,21 @@ $detail-background: #abe0ed;
             position: absolute;
             right: 0;
 
-            .active{
-                border: 2px solid $dark-blue !important;
-            }
-
+            
             @include below-width(830){
                 position: static;
                 margin-top: 10px;
             }
 
-            a{
-                display: inline-block;
-                margin-bottom: 5px;
-                vertical-align: top;
-
-                &:hover{                    
-                    color: $dark-blue;
+            .lbtn2{                                
+                
+                span {
+                    vertical-align: middle;
                 }
             }
 
-            .lbtn{                
-                border: 1px solid $light-blue;
-                color: $light-blue;                
+            .active{
+                background-color: $orange;
             }
 
         }
@@ -247,11 +230,13 @@ $detail-background: #abe0ed;
 
     .menu-cont{
         position: relative;
-        margin-bottom: 10px;
+        margin-top: 0.8em;
+        margin-bottom: 0.5em;
+
         font-size: 0.8em;
         
         .bar{
-            border-top: 6px solid $light-blue;
+            border-top: 6px solid $dark-blue;
             border-top-left-radius: 4px;
             border-top-right-radius: 4px;
         }
@@ -267,8 +252,7 @@ $detail-background: #abe0ed;
             background-color: $trans-white;            
         }
 
-        .desc { 
-            /*border: 1px solid red;*/
+        .desc {             
             display: inline-block;
             vertical-align: top;                        
             width: 35%;
@@ -425,6 +409,10 @@ $detail-background: #abe0ed;
         }
     }
 
+    .first-new {
+        margin-left: -6px;
+    }
+
     .travelCont{        
         
         
@@ -442,9 +430,7 @@ $detail-background: #abe0ed;
             height: 40px;
             width: 100px;
             position: relative;
-            -webkit-transition: background-color .3s;
-            -moz-transition: background-color .3s;
-            transition: background-color .3s;
+            
             background-color: $blue-background;
             color: #fff;
             cursor: pointer;            
@@ -733,17 +719,16 @@ $detail-background: #abe0ed;
             }
         }
 
+        .delete-line {
+            padding-top: 0.5em;
+            padding-bottom: 0.5em;
+        }
+
         .documents-all {
             padding: 8px;
 
             .documents{                
                 padding-top: 6px;
-
-                .photo-button{
-                    display: inline-block;
-                    vertical-align: top;
-                }
-                
             }
         }
         
@@ -774,11 +759,16 @@ $detail-background: #abe0ed;
         }
     }
 
-    .documents.view-docs{
+    .documents {
+        
+        &.view-docs{
+
         .file{
             margin-bottom: 5px;
             margin-right: 15px;
-            border: 1px solid $light-blue3;
+            
+            border: 1px solid $info-blue2;
+
             padding: 3px;
             border-radius: 4px;
 
@@ -790,6 +780,8 @@ $detail-background: #abe0ed;
                 color: black;
             }
         }
+    }
+
     }
 
     .place-detail-view,.travel-detail-view{

@@ -346,6 +346,24 @@ textarea{
      }
  }
 
+ .red-orange {
+     background-color: $red;
+     color: white;
+
+     &:hover {
+         background-color: $orange;
+     }
+ }
+
+ .yellow-orange {
+     background-color: $yellow;
+     color: white;
+
+     &:hover {
+         background-color: $orange;
+     }
+ }
+
  .bold {
      font-weight: bold;
  }
@@ -518,6 +536,18 @@ p {
              }
          }
      }
+
+     &.yellow {
+         label {             
+             background-color: $yellow;
+         }
+
+         &:hover {                
+             label {             
+                background-color: $orange;
+            }            
+        }
+     }
  }
 
  .photo-link{
@@ -532,17 +562,9 @@ p {
 
      label {        
         color: $light-blue3;        
-        cursor: pointer;cursor: hand;
+        cursor: pointer;
     }
  }
-
-  .photo-button:hover{
-
-      label {
-          border: 1px solid $dark-blue;
-          color: $dark-blue;
-      }      
-  }
 
   .htbl{
       display: table;
@@ -568,7 +590,6 @@ button{
     color: white;
     font-weight: bold;
     background-color: $light-blue3;
-    /*border-color: $light-blue3;*/
     border: none;
     border-radius: 4px;
     padding: 9px 29px;
@@ -578,7 +599,7 @@ button{
 }
 
 button:hover{
-    cursor: pointer;cursor: hand;
+    cursor: pointer;
     opacity: 0.8;
 }
 

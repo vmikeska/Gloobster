@@ -137,8 +137,32 @@ module Trip {
 
 			if (data.place && data.place.coordinates) {
 				this.addressSearch.setCoordinates(data.place.coordinates.Lat, data.place.coordinates.Lng);
-			}				
+			}
+
+			var $cb = $("#justCustomAddress");			
+				
+			$cb.prop("checked", data.useCustomAddress);
+
+			if (!data.useCustomAddress) {
+					$p.removeClass("hidden");
+			}
+			
+			$cb.change((e) => {					
+					var ss = $cb.prop("checked");
+
+					var data = this.dialogManager.getPropRequest("useCustomAddress", {
+							state: ss
+					});
+					this.dialogManager.updateProp(data, (r) => { });
+
+					if (ss) {
+						$p.addClass("hidden");
+					} else {
+							$p.removeClass("hidden");
+					}
+			});
 		}
+				
 
 		private regAddressText() {
 				var d = new Common.DelayedCallback("stayAddress");

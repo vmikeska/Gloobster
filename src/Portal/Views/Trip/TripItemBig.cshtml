@@ -28,17 +28,14 @@
                 <img id="tripImg_@Model.Id" src="~/images/TripDefault.jpg">
             }
 
-            <p class="title">
-
-            </p>
-
+            
             @if (Model.IsOwner)
             {
-                <h3>@Model.Name</h3>
+                <div class="title">@Model.Name</div>
             }
             else
             {
-                <h3>@Model.Name - by @Model.OwnerName</h3>
+                <div class="title">@Model.Name - by @Model.OwnerName</div>
             }
 
             <div class="serv">

@@ -68,12 +68,14 @@ else
         </div>
     </div>
 
-    @*@Html.Partial("ProgressBar", "progressBar")*@
-
     @if (!Model.DisplayType)
     {
+        <div class="title">
+            @Model.W("TitleCurrent")
+        </div>
+
         <div class="trips-table">
-            <div class="row">
+            <div class="row headers">
                 <div class="cell photo-cell"></div>
                 <div class="cell">@Model.W("Name")</div>
                 <div class="cell">@Model.W("Term")</div>
@@ -82,7 +84,7 @@ else
                 <div class="cell setting-cell"></div>
             </div>
 
-            @foreach (var trip in Model.Trips)
+            @foreach (var trip in Model.NewTrips)
             {
                 await Html.RenderPartialAsync("TripItemRow", (object)trip);
             }
@@ -105,22 +107,70 @@ else
             </div>
 
         </div>
+
+        <div class="title">
+            @Model.W("TitleOld")
+        </div>
+
+        <div class="trips-table">
+            <div class="row headers">
+                <div class="cell photo-cell"></div>
+                <div class="cell">@Model.W("Name")</div>
+                <div class="cell">@Model.W("Term")</div>
+                <div class="cell">@Model.W("Team")</div>
+                <div class="cell">@Model.W("Owner")</div>
+                <div class="cell setting-cell"></div>
+            </div>
+
+            @foreach (var trip in Model.OldTrips) {
+                await Html.RenderPartialAsync("TripItemRow", (object)trip);
+            }
+
+        </div>
+
     }
     else
     {
         <div class="trips-big">
 
-            @foreach (var trip in Model.Trips)
-            {
-                await Html.RenderPartialAsync("TripItemBig", (object)trip);
-            }
+            <div class="title">
+                @Model.W("TitleCurrent")
+            </div>
 
-            <div class="trip-new">
-                <textarea id="newTrip" placeholder="@Model.W("NewTripName")..."></textarea>
-                <a class="create" href="javascript:currentView.createNewTrip();">@Model.W("Create")<span>   </span><span class="icon-plus"></span> </a>
+            <div class="cont">
+
+                @foreach (var trip in Model.NewTrips)
+                {
+                    await Html.RenderPartialAsync("TripItemBig", (object)trip);
+                }
+
+                <div class="trip-new">
+                    <textarea id="newTrip" placeholder="@Model.W("NewTripName")..."></textarea>
+                    <a class="create" href="javascript:currentView.createNewTrip();">@Model.W("Create")<span>   </span><span class="icon-plus"></span> </a>
+                </div>
+
             </div>
 
         </div>
+
+
+        <div class="trips-big">
+
+            <div class="title">
+                @Model.W("TitleOld")
+            </div>
+
+            <div class="cont">
+
+                @foreach (var trip in Model.OldTrips)
+                {
+                    await Html.RenderPartialAsync("TripItemBig", (object)trip);
+                }
+
+            </div>
+
+        </div>
+
     }
 
 </div>

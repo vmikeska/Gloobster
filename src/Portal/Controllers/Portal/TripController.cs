@@ -46,48 +46,77 @@ namespace Gloobster.Portal.Controllers.Portal
             vm.DefaultLangModuleName = "pageTrips";
             vm.LoadClientTexts(new [] { "jsTrip" });
 
-            vm.Trips = new List<TripItemViewModel>();
+            vm.NewTrips = new List<TripItemViewModel>();
+            vm.OldTrips = new List<TripItemViewModel>();
+
             vm.DisplayType = string.IsNullOrEmpty(id) || (id == "grid");
 
-            if (IsUserLogged)
+            if (!IsUserLogged)
             {
-                var trips = DB.List<TripEntity>(t => t.User_id == UserIdObj);
-
-                if (!trips.Any())
-                {
-                    var tripName = vm.W("DefaultTripName");
-
-                    string tripId = await Trips.CreateNewTrip(tripName, UserId, true);
-
-                    var tripIdObj = new ObjectId(tripId);
-
-                    var trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);                    
-
-                    trips.Add(trip);
-                }
-
-                var query = $"{{ 'Participants.User_id': ObjectId('{UserId}')}}";
-                var invitedTrips = await DB.FindAsync<TripEntity>(query);
-
-                var myTripsVM = new List<TripItemViewModel>();
-                foreach (var t in trips)
-                {
-                    var tc = await TripToViewModel(t, vm);
-                    myTripsVM.Add(tc);
-                }
-
-                var invitedTripsVM = new List<TripItemViewModel>();
-                foreach (var t in invitedTrips)
-                {
-                    var tc = await TripToViewModel(t, vm);
-                    invitedTripsVM.Add(tc);
-                }
-
-                vm.Trips.AddRange(myTripsVM);
-                vm.Trips.AddRange(invitedTripsVM);
+                return View(vm);
             }
             
+            var oldTrips = new List<TripEntity>();
+            var newTrips = new List<TripEntity>();
+
+            var trips = DB.List<TripEntity>(t => t.User_id == UserIdObj);
+
+            CreateTripIfNone(trips, vm);
+
+            var query = $"{{ 'Participants.User_id': ObjectId('{UserId}')}}";
+            var invitedTrips = await DB.FindAsync<TripEntity>(query);
+
+            trips.AddRange(invitedTrips);
+
+            foreach (var trip in trips)
+            {
+                var ft = TripUtils.GetTripFromTo(trip);
+
+                var tripEnd = ft.Item2;
+
+                bool isOld = tripEnd < DateTime.UtcNow;
+                if (isOld)
+                {
+                    oldTrips.Add(trip);
+                }
+                else
+                {
+                    newTrips.Add(trip);
+                }
+            }
+            
+            vm.OldTrips = ConvertTrips(oldTrips, vm);
+            vm.NewTrips = ConvertTrips(newTrips, vm);
+
             return View(vm);
+        }
+
+	    private List<TripItemViewModel> ConvertTrips(List<TripEntity> trips, ViewModelTrips vm)
+	    {
+            var tripsVM = new List<TripItemViewModel>();
+            foreach (var t in trips)
+            {
+                var tc = TripToViewModel(t, vm);
+                tripsVM.Add(tc);
+            }
+
+	        return tripsVM;
+	    }
+
+	    private async void CreateTripIfNone(List<TripEntity> trips, ViewModelTrips vm)
+	    {
+            if (!trips.Any())
+            {
+                var tripName = vm.W("DefaultTripName");
+
+                string tripId = await Trips.CreateNewTrip(tripName, UserId, true);
+
+                var tripIdObj = new ObjectId(tripId);
+
+                var trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);
+
+                trips.Add(trip);
+            }
         }
 
         [CreateAccount]
@@ -399,7 +428,7 @@ namespace Gloobster.Portal.Controllers.Portal
 	        return displayName;
 	    }
 
-        private async Task<TripItemViewModel> TripToViewModel(TripEntity trip, ViewModelBase b)
+        private TripItemViewModel TripToViewModel(TripEntity trip, ViewModelBase b)
 		{
             var tripFromTo = TripUtils.GetTripFromTo(trip);
             var fromDate = tripFromTo.Item1;

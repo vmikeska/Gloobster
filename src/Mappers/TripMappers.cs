@@ -117,7 +117,8 @@ namespace Gloobster.Mappers
 				leavingId = e.LeavingId.ToString(),
 				orderNo = e.OrderNo,
 				addressText = e.AddressText,
-                useTime = e.UseTime
+                useTime = e.UseTime,
+                useCustomAddress = e.UseCustomAddress
 			};
 
 			if (e.Place != null)

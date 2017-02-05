@@ -66,6 +66,13 @@ namespace Gloobster.DomainModels
 				await UpdatePlaceProperty(tripIdObj, entityIdObj, "Place", place);
 			}
 
+		    if (propertyName == "useCustomAddress")
+		    {
+		        bool state = bool.Parse(values["state"]);
+
+		        await UpdatePlaceProperty(tripIdObj, entityIdObj, "UseCustomAddress", state);                
+		    }
+
 			if (propertyName == "flightFrom")
 			{
 				var airportId = values["id"];

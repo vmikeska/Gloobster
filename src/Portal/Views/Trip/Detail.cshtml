@@ -90,14 +90,17 @@ else
         </div>
 
         <div class="items">
-            <a class="lbtn menu-btn icon-earth" data-t="menuPrivacy-template" href="#">
-                <span class="lato">@Model.W("Privacy")</span>
+            <a class="lbtn2 menu-btn yellow-orange" data-t="menuPrivacy-template" href="#">
+                <span class="icon-earth"></span>
+                <span>@Model.W("Privacy")</span>                                
             </a>
-            <a class="lbtn menu-btn icon-users" data-t="participants-template" href="#">
-                <span class="lato">@Model.W("Participants")</span>
+            <a class="lbtn2 menu-btn yellow-orange" data-t="participants-template" href="#">
+                <span class="icon-users"></span>
+                <span>@Model.W("Participants")</span>                
             </a>
-            <a class="lbtn icon-eye" href="/trip/@Model.TripId">
-                <span class="lato">@Model.W("Preview")</span>
+            <a class="lbtn2 green-orange" href="/@RoutingConsts.TripMenuName/@Model.TripId">
+                <span class="icon-eye"></span>
+                <span>@Model.W("Preview")</span>
             </a>
         </div>
 
@@ -111,7 +114,8 @@ else
                 <div class="txt"></div>
             </div>
             <div class="cont"></div>
-            <a class="close icon-cross" href="#"></a>
+
+            <span class="icon-cross form-close"></span>
         </div>
     </div>
 

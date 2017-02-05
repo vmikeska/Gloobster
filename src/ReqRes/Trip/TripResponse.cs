@@ -59,7 +59,9 @@ namespace Gloobster.ReqRes.Trip
         public bool isLastPlace { get; set; }
 	    public int placesCount { get; set; }
 	    public string tripId { get; set; }
-	}
+
+        public bool useCustomAddress { get; set; }
+    }
 
 	public class PlaceResponse
 	{

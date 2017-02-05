@@ -6,6 +6,7 @@ namespace Gloobster.Portal.ViewModels
 	{
         public bool DisplayType { get; set; }
 
-		public List<TripItemViewModel> Trips { get; set; }
-	}
+		public List<TripItemViewModel> NewTrips { get; set; }
+        public List<TripItemViewModel> OldTrips { get; set; }
+    }
 }

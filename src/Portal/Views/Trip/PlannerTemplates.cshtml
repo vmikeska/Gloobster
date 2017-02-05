@@ -19,7 +19,6 @@
 
 
 <script id="place-template" type="text/x-handlebars-template">
-	
     <div id="{{id}}" data-no="{{no}}" class="placeCont block">
 
         <div class="timeline-cont">
@@ -38,16 +37,11 @@
         {{else}}
         <div class="destination">
             <span class="name">{{name}}</span>            
-        </div>
-        
+        </div>        
         {{/if}}
         
-        <div class="tab-cont">            
-        </div>
-        
-
+        <div class="tab-cont"></div>        
     </div>
-
 </script>
 
 
@@ -143,13 +137,16 @@
                         <div class="title">@Model.W("AddressStay")</div>
                         
                         <div class="cont">
-                            <div id="stayPlace" class="dropdown place-combo">
+                            <div>
+                                <input type="checkbox" id="justCustomAddress" /><label for="justCustomAddress">Use custom address</label>
+                            </div>
+                            <div id="stayPlace" class="dropdown place-combo hidden">
                                 <input class="inputed" type="text" placeholder="@Model.W("SearchForPlace")">
                                 <img class="loader" src="/images/loader-gray.gif" style="display: none" />
                                 <span class="icon-logo-pin"></span>
                                 <ul></ul>
                             </div>
-                            <input id="stayAddress" class="inputed text-address" type="text" placeholder="@Model.W("TextAddress")">
+                            <input id="stayAddress" class="inputed text-address" type="text" placeholder="@Model.W("TextAddress")"/>                            
                         </div>
                     </div>
 
@@ -170,8 +167,8 @@
                 </div>
             
             {{#if showDelButton}}
-            <div>
-                <button class="delete" style="background-color: #800000;">@Model.W("RemovePlace")</button>
+            <div class="delete-line">
+                <a href="#" class="delete red-orange lbtn2">@Model.W("RemovePlace")</a>
             </div>
             {{/if}}
 				

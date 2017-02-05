@@ -119,6 +119,8 @@
 			this.placeTemplate = Views.ViewBase.currentView.registerTemplate("place-template");
 		}
 
+		private isNewAdded = true;
+
 		public addEnd() {
 			this.dialogManager.closeDialog();
 			this.dialogManager.deactivate();
@@ -137,9 +139,13 @@
 
 				var ld = moment.utc(t.leavingDateTime);
 				this.updateRibbonDate(lastPlace.id, "leavingDate", ld);
-
-				this.addTravel(t, !this.inverseColor);
+					
+				this.addTravel(t, !this.inverseColor, this.isNewAdded);
 				this.addPlace(p, this.inverseColor);
+
+				if (this.isNewAdded) {
+						this.isNewAdded = false;
+				}
 
 				this.inverseColor = !this.inverseColor;
 
@@ -309,7 +315,7 @@
 			return $html;
 		}
 
-		public addTravel(travel: Travel, inverseColor: boolean) {
+		public addTravel(travel: Travel, inverseColor: boolean, isNew = false) {
 
 				var context = {
 						id: travel.id,
@@ -324,8 +330,13 @@
 						context.colorClass = "green";
 				}
 
-				var html = this.travelTemplate(context);
+				var html = this.travelTemplate(context);				
 				var $html = $(html);
+
+				//fix of unknown bug
+				if (isNew) {
+					$html.addClass("first-new");
+				}
 
 				$html.find(".transport").click("*", (e) => {						
 						var $t = $(e.delegateTarget);

@@ -62,24 +62,29 @@ else
 
         @if (Model.IsUserAdmin)
         {
-            <a class="photo-button light" href="#">
+            <a class="photo-button yellow" href="#">
                 <input id="photoInput" type="file"/>
-                <label for="photoInput" class="icon-camera">
-                    <span class="lato">@Model.W("TitlePhoto")</span>
+                <label for="photoInput">   
+                    <span class="icon-camera"></span>                 
+                    <span>@Model.W("TitlePhoto")</span>
                 </label>
             </a>
 
-            <a class="lbtn menu-btn icon-earth" data-t="menuPrivacy-template" href="#">
-                <span class="lato">@Model.W("Privacy")</span>                
+            <a class="lbtn2 menu-btn yellow-orange" data-t="menuPrivacy-template" href="#">
+                <span class="icon-earth"></span>
+                <span>@Model.W("Privacy")</span>
             </a>
-            <a class="lbtn menu-btn icon-users" data-t="participants-template" href="#">                
-                <span class="lato">@Model.W("Participants")</span>
+            <a class="lbtn2 menu-btn yellow-orange" data-t="participants-template" href="#">                
+                <span class="icon-users"></span>
+                <span>@Model.W("Participants")</span>
             </a>
-            <a class="lbtn menu-btn icon-share" data-t="menuShare-template" href="#">
-                <span class="lato">@Model.W("ShareTrip")</span>                
+            <a class="lbtn2 menu-btn yellow-orange" data-t="menuShare-template" href="#">
+                <span class="icon-share"></span>
+                <span>@Model.W("ShareTrip")</span>
             </a>
-            <a class="lbtn icon-edit-pencil" href="/@RoutingConsts.TripEditMenuName/@Model.TripId">
-                <span class="lato">@Model.W("Edit")</span>                
+            <a class="lbtn2 green-orange" href="/@RoutingConsts.TripEditMenuName/@Model.TripId">
+                <span class="icon-edit-pencil"></span>
+                <span>@Model.W("Edit")</span>
             </a>
         }
 
@@ -92,6 +97,9 @@ else
 
     <div class="size-wrapper">
         <div id="menuItemContent" class="wrapper menu-cont" style="display: none;">
+            
+            <span class="icon-cross form-close"></span>
+
             <div class="bar"></div>
             <div class="wrap">
                 <div class="desc">
@@ -99,7 +107,6 @@ else
                     <div class="txt"></div>
                 </div>
                 <div class="cont"></div>
-                <a class="close icon-cross" href="#"></a>
             </div>
         </div>
     </div>

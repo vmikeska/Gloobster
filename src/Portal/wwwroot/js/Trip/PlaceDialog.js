@@ -107,6 +107,24 @@ var Trip;
             if (data.place && data.place.coordinates) {
                 this.addressSearch.setCoordinates(data.place.coordinates.Lat, data.place.coordinates.Lng);
             }
+            var $cb = $("#justCustomAddress");
+            $cb.prop("checked", data.useCustomAddress);
+            if (!data.useCustomAddress) {
+                $p.removeClass("hidden");
+            }
+            $cb.change(function (e) {
+                var ss = $cb.prop("checked");
+                var data = _this.dialogManager.getPropRequest("useCustomAddress", {
+                    state: ss
+                });
+                _this.dialogManager.updateProp(data, function (r) { });
+                if (ss) {
+                    $p.addClass("hidden");
+                }
+                else {
+                    $p.removeClass("hidden");
+                }
+            });
         };
         PlaceDialog.prototype.regAddressText = function () {
             var _this = this;

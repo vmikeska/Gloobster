@@ -233,8 +233,9 @@ module Views {
 				this.displayContent(t);
 			});
 
-			this.$win.find(".close").click((e) => {
+			this.$win.find(".form-close").click((e) => {
 					e.preventDefault();
+					$(".menu-btn").removeClass("active");
 					this.$win.slideUp();
 			});
 		}

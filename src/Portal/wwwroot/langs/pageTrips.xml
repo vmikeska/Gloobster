@@ -62,6 +62,13 @@
     <FriendsCount>
       <en>friends</en>
     </FriendsCount>
-      
+
+    <TitleCurrent>
+      <en>Current trips</en>
+    </TitleCurrent>
+
+    <TitleOld>
+      <en>Older trips</en>
+    </TitleOld>
     
   </module>

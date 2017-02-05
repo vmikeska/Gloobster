@@ -10,7 +10,7 @@
 
     .setting{        
         font-size: 32px;
-        color: $dark-blue;
+        color: $yellow;
         cursor: pointer;
         
         &:hover{
@@ -125,6 +125,10 @@
 
         }
 
+        .headers {
+            font-weight: bold;
+        }
+
         .photo{
             display: inline-block;
             border-radius: 4px;
@@ -185,17 +189,34 @@
         }
 
         .cell {
-            padding: 2px !important;
+            padding: 2px !important;            
         }
         
     }
 
+    .title {
+            font-weight: bold;
+            font-size: 1.3em;
+            text-align: left;
+            padding-top: 1em;
+            padding-bottom: 1em;
+        }
+
     .trips-big{
         
-        @include above-width(650) {
-            @include display-flex;
-            flex-flow: wrap;
-            justify-content: space-around;
+        
+
+        .cont {
+            text-align: left;
+
+            @include below-width(641) {
+                text-align: center;
+            }
+            /*@include above-width(650) {
+                @include display-flex;
+                flex-flow: wrap;
+                justify-content: space-between;
+            }*/
         }
 
         .trip-new{
@@ -243,6 +264,16 @@
         }
 
         .trip-all{
+            margin-right: 4px;
+
+            @include above-width(1280) {
+                margin-right: 15px;
+            }
+
+            &:last-of-type {
+                margin-right: 0;
+            }
+
             position: relative;
             display: inline-block;
             width: 300px;
@@ -252,7 +283,6 @@
             
             margin-bottom: 15px;
             
-            margin-right: 4px;
 
             &:last-of-type {
                 margin-right: 0;
@@ -290,27 +320,21 @@
             .title {
                 position: absolute;
                 top: 0;
+                left: 0;
+                right: 0;
 
-                margin: 0;
-                background-image: -webkit-linear-gradient(rgba(0,0,0,.4),transparent);
-                background-image: linear-gradient(rgba(0,0,0,.4),transparent);
-
-                border-top-left-radius: 4px;
-                border-top-right-radius: 4px;
+                padding: 0.8em;
                 
-                width: 300px;
-                height: 90px;
+                font-size: 1.1em;
+                font-weight: bold;
+                color: white;
+                text-align: left;
+
+                background-color: rgba(black, 0.5);
+
             }
 
-            h3{
-                position: absolute;
-                top: 6px;
-                left: 10px;
-                margin: 0;
-                color: white;
-                text-shadow: 0 -1px #000;
-                font-size: 24px;
-            }
+            
 
         }
     }

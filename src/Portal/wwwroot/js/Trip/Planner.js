@@ -5,6 +5,7 @@ var Trip;
             this.$currentContainer = $("#dataCont");
             this.emptyName = Views.ViewBase.currentView.t("Unnamed", "jsTrip");
             this.inverseColor = false;
+            this.isNewAdded = true;
             var thisParticipant = _.find(trip.participants, function (p) {
                 return p.userId === Views.ViewBase.currentUserId;
             });
@@ -91,8 +92,11 @@ var Trip;
                 _this.placesMgr.places.push(p);
                 var ld = moment.utc(t.leavingDateTime);
                 _this.updateRibbonDate(lastPlace.id, "leavingDate", ld);
-                _this.addTravel(t, !_this.inverseColor);
+                _this.addTravel(t, !_this.inverseColor, _this.isNewAdded);
                 _this.addPlace(p, _this.inverseColor);
+                if (_this.isNewAdded) {
+                    _this.isNewAdded = false;
+                }
                 _this.inverseColor = !_this.inverseColor;
                 _this.dialogManager.selectedId = response.place.id;
             });
@@ -236,8 +240,9 @@ var Trip;
             this.appendToTimeline($html);
             return $html;
         };
-        Planner.prototype.addTravel = function (travel, inverseColor) {
+        Planner.prototype.addTravel = function (travel, inverseColor, isNew) {
             var _this = this;
+            if (isNew === void 0) { isNew = false; }
             var context = {
                 id: travel.id,
                 icon: this.getTravelIcon(travel.type),
@@ -252,6 +257,9 @@ var Trip;
             }
             var html = this.travelTemplate(context);
             var $html = $(html);
+            if (isNew) {
+                $html.addClass("first-new");
+            }
             $html.find(".transport").click("*", function (e) {
                 var $t = $(e.delegateTarget);
                 var $block = $t.closest(".block");

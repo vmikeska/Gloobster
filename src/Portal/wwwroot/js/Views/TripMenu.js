@@ -184,8 +184,9 @@ var Views;
                 var t = $btn.data("t");
                 _this.displayContent(t);
             });
-            this.$win.find(".close").click(function (e) {
+            this.$win.find(".form-close").click(function (e) {
                 e.preventDefault();
+                $(".menu-btn").removeClass("active");
                 _this.$win.slideUp();
             });
         };

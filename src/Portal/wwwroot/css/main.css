@@ -183,6 +183,18 @@ textarea {
   .green-orange:hover {
     background-color: #F56E12; }
 
+.red-orange {
+  background-color: #E02327;
+  color: white; }
+  .red-orange:hover {
+    background-color: #F56E12; }
+
+.yellow-orange {
+  background-color: #FFC400;
+  color: white; }
+  .yellow-orange:hover {
+    background-color: #F56E12; }
+
 .bold {
   font-weight: bold; }
 
@@ -296,6 +308,10 @@ p {
     .photo-button.light label:hover {
       color: #005476 !important;
       border: 1px solid #005476 !important; }
+  .photo-button.yellow label {
+    background-color: #FFC400; }
+  .photo-button.yellow:hover label {
+    background-color: #F56E12; }
 
 .photo-link input {
   width: 0.1px;
@@ -307,12 +323,7 @@ p {
 
 .photo-link label {
   color: #3298C1;
-  cursor: pointer;
-  cursor: hand; }
-
-.photo-button:hover label {
-  border: 1px solid #005476;
-  color: #005476; }
+  cursor: pointer; }
 
 .htbl {
   display: table;
@@ -329,7 +340,6 @@ button {
   color: white;
   font-weight: bold;
   background-color: #3298C1;
-  /*border-color: $light-blue3;*/
   border: none;
   border-radius: 4px;
   padding: 9px 29px;
@@ -339,7 +349,6 @@ button {
 
 button:hover {
   cursor: pointer;
-  cursor: hand;
   opacity: 0.8; }
 
 button:active {
@@ -2984,16 +2993,9 @@ footer {
     .trip-detail .background-wrap .items {
       margin-bottom: 15px; }
       .trip-detail .background-wrap .items .active {
-        border: 2px solid #005476 !important; }
-      .trip-detail .background-wrap .items a {
-        display: inline-block;
-        margin-bottom: 5px;
-        vertical-align: top; }
-        .trip-detail .background-wrap .items a:hover {
-          color: #005476; }
-      .trip-detail .background-wrap .items .lbtn {
-        background-color: rgba(255, 255, 255, 0.9);
-        border: 1px solid #005476; }
+        background-color: #F56E12; }
+      .trip-detail .background-wrap .items .lbtn2 span, .trip-detail .background-wrap .items .photo-button label span, .photo-button .trip-detail .background-wrap .items label span {
+        vertical-align: middle; }
     .trip-detail .background-wrap .size-wrapper {
       min-height: 140px; }
     .trip-detail .background-wrap .view {
@@ -3024,7 +3026,6 @@ footer {
   .trip-detail .file {
     display: inline-block; }
     .trip-detail .file:before {
-      /*@include transition(all $speed);*/
       width: 40px;
       height: 40px;
       background-position: center center;
@@ -3097,27 +3098,21 @@ footer {
       display: inline-block;
       position: absolute;
       right: 0; }
-      .trip-detail .service-menu .items .active {
-        border: 2px solid #005476 !important; }
       @media screen and (max-width: 830px) {
         .trip-detail .service-menu .items {
           position: static;
           margin-top: 10px; } }
-      .trip-detail .service-menu .items a {
-        display: inline-block;
-        margin-bottom: 5px;
-        vertical-align: top; }
-        .trip-detail .service-menu .items a:hover {
-          color: #005476; }
-      .trip-detail .service-menu .items .lbtn {
-        border: 1px solid #65BDD7;
-        color: #65BDD7; }
+      .trip-detail .service-menu .items .lbtn2 span, .trip-detail .service-menu .items .photo-button label span, .photo-button .trip-detail .service-menu .items label span {
+        vertical-align: middle; }
+      .trip-detail .service-menu .items .active {
+        background-color: #F56E12; }
   .trip-detail .menu-cont {
     position: relative;
-    margin-bottom: 10px;
+    margin-top: 0.8em;
+    margin-bottom: 0.5em;
     font-size: 0.8em; }
     .trip-detail .menu-cont .bar {
-      border-top: 6px solid #65BDD7;
+      border-top: 6px solid #005476;
       border-top-left-radius: 4px;
       border-top-right-radius: 4px; }
     .trip-detail .menu-cont .wrap {
@@ -3129,7 +3124,6 @@ footer {
       padding: 12px;
       background-color: rgba(255, 255, 255, 0.9); }
     .trip-detail .menu-cont .desc {
-      /*border: 1px solid red;*/
       display: inline-block;
       vertical-align: top;
       width: 35%; }
@@ -3222,6 +3216,8 @@ footer {
         .trip-detail .block .adder-cont .adder:hover {
           background-color: white;
           color: #005476; }
+  .trip-detail .first-new {
+    margin-left: -6px; }
   .trip-detail .travelCont .timeline {
     height: 30px;
     background-color: #b8e7b8;
@@ -3232,9 +3228,6 @@ footer {
     height: 40px;
     width: 100px;
     position: relative;
-    -webkit-transition: background-color .3s;
-    -moz-transition: background-color .3s;
-    transition: background-color .3s;
     background-color: #57c1db;
     color: #fff;
     cursor: pointer;
@@ -3409,13 +3402,13 @@ footer {
         .trip-detail .details .bottom-area .cont .text-address {
           width: 80%;
           margin-top: 6px; }
+    .trip-detail .details .delete-line {
+      padding-top: 0.5em;
+      padding-bottom: 0.5em; }
     .trip-detail .details .documents-all {
       padding: 8px; }
       .trip-detail .details .documents-all .documents {
         padding-top: 6px; }
-        .trip-detail .details .documents-all .documents .photo-button {
-          display: inline-block;
-          vertical-align: top; }
   .trip-detail .trip-participants {
     background-color: #f2f2f2;
     padding-top: 0;
@@ -3429,7 +3422,7 @@ footer {
   .trip-detail .documents.view-docs .file {
     margin-bottom: 5px;
     margin-right: 15px;
-    border: 1px solid #3298C1;
+    border: 1px solid #009EC4;
     padding: 3px;
     border-radius: 4px; }
     .trip-detail .documents.view-docs .file span {
@@ -3518,7 +3511,7 @@ footer {
 
 .trip-root .setting {
   font-size: 32px;
-  color: #005476;
+  color: #FFC400;
   cursor: pointer; }
   .trip-root .setting:hover {
     color: #F56E12; }
@@ -3590,6 +3583,8 @@ footer {
       border-bottom: 1px solid #009EC4; }
     .trip-root .trips-table .row .date-cell {
       min-width: 120px; }
+  .trip-root .trips-table .headers {
+    font-weight: bold; }
   .trip-root .trips-table .photo {
     display: inline-block;
     border-radius: 4px;
@@ -3629,15 +3624,23 @@ footer {
   .trip-root .cell {
     padding: 2px !important; } }
 
-@media screen and (min-width: 650px) {
-  .trip-root .trips-big {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    flex-flow: wrap;
-    justify-content: space-around; } }
+.trip-root .title {
+  font-weight: bold;
+  font-size: 1.3em;
+  text-align: left;
+  padding-top: 1em;
+  padding-bottom: 1em; }
+
+.trip-root .trips-big .cont {
+  text-align: left;
+  /*@include above-width(650) {
+                @include display-flex;
+                flex-flow: wrap;
+                justify-content: space-between;
+            }*/ }
+  @media screen and (max-width: 641px) {
+    .trip-root .trips-big .cont {
+      text-align: center; } }
 
 .trip-root .trips-big .trip-new {
   display: inline-block;
@@ -3675,14 +3678,19 @@ footer {
       top: 8px; }
 
 .trip-root .trips-big .trip-all {
+  margin-right: 4px;
   position: relative;
   display: inline-block;
   width: 300px;
   height: 370px;
   border-radius: 4px;
   overflow: hidden;
-  margin-bottom: 15px;
-  margin-right: 4px; }
+  margin-bottom: 15px; }
+  @media screen and (min-width: 1280px) {
+    .trip-root .trips-big .trip-all {
+      margin-right: 15px; } }
+  .trip-root .trips-big .trip-all:last-of-type {
+    margin-right: 0; }
   .trip-root .trips-big .trip-all:last-of-type {
     margin-right: 0; }
   .trip-root .trips-big .trip-all img {
@@ -3706,21 +3714,14 @@ footer {
   .trip-root .trips-big .trip-all .title {
     position: absolute;
     top: 0;
-    margin: 0;
-    background-image: -webkit-linear-gradient(rgba(0, 0, 0, 0.4), transparent);
-    background-image: linear-gradient(rgba(0, 0, 0, 0.4), transparent);
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-    width: 300px;
-    height: 90px; }
-  .trip-root .trips-big .trip-all h3 {
-    position: absolute;
-    top: 6px;
-    left: 10px;
-    margin: 0;
+    left: 0;
+    right: 0;
+    padding: 0.8em;
+    font-size: 1.1em;
+    font-weight: bold;
     color: white;
-    text-shadow: 0 -1px #000;
-    font-size: 24px; }
+    text-align: left;
+    background-color: rgba(0, 0, 0, 0.5); }
 
 .trip-share {
   text-align: left; }
