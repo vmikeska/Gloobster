@@ -83,7 +83,7 @@ var Planning;
             },
             {
                 "code": "ZE",
-                "name": "Líneas Aéreas Azteca"
+                "name": "L�neas A�reas Azteca"
             },
             {
                 "code": "ZB",
@@ -103,7 +103,7 @@ var Planning;
             },
             {
                 "code": "Z8",
-                "name": "Línea Aérea Amaszonas"
+                "name": "L�nea A�rea Amaszonas"
             },
             {
                 "code": "Z7",
@@ -143,7 +143,7 @@ var Planning;
             },
             {
                 "code": "YS",
-                "name": "Régional Compagnie Aérienne Européenne"
+                "name": "R�gional Compagnie A�rienne Europ�enne"
             },
             {
                 "code": "YQ",
@@ -251,7 +251,7 @@ var Planning;
             },
             {
                 "code": "XK",
-                "name": "Corse Méditerranée"
+                "name": "Corse M�diterran�e"
             },
             {
                 "code": "XJ",
@@ -279,7 +279,7 @@ var Planning;
             },
             {
                 "code": "X3",
-                "name": "Hapag-Lloyd Express (TUIfly)"
+                "name": "Hapag-Lloyd Express�(TUIfly)"
             },
             {
                 "code": "WZ",
@@ -347,7 +347,7 @@ var Planning;
             },
             {
                 "code": "WH",
-                "name": "WebJet Linhas Aéreas"
+                "name": "WebJet Linhas A�reas"
             },
             {
                 "code": "WG",
@@ -355,7 +355,7 @@ var Planning;
             },
             {
                 "code": "WF",
-                "name": "Widerøe"
+                "name": "Wider�e"
             },
             {
                 "code": "WE",
@@ -563,7 +563,7 @@ var Planning;
             },
             {
                 "code": "VD",
-                "name": "Air Liberté"
+                "name": "Air Libert�"
             },
             {
                 "code": "VD",
@@ -623,7 +623,7 @@ var Planning;
             },
             {
                 "code": "V5",
-                "name": "Avolar Aerolíneas"
+                "name": "Avolar Aerol�neas"
             },
             {
                 "code": "V5",
@@ -811,7 +811,7 @@ var Planning;
             },
             {
                 "code": "TY",
-                "name": "Air Calédonie"
+                "name": "Air Cal�donie"
             },
             {
                 "code": "TY",
@@ -819,11 +819,11 @@ var Planning;
             },
             {
                 "code": "TX",
-                "name": "Air Caraïbes"
+                "name": "Air Cara�bes"
             },
             {
                 "code": "TX",
-                "name": "Transportes Aéreos Nacionales"
+                "name": "Transportes A�reos Nacionales"
             },
             {
                 "code": "TW",
@@ -879,7 +879,7 @@ var Planning;
             },
             {
                 "code": "TM",
-                "name": "Linhas Aéreas de Moçambique"
+                "name": "Linhas A�reas de Mo�ambique"
             },
             {
                 "code": "TL",
@@ -915,7 +915,7 @@ var Planning;
             },
             {
                 "code": "TF",
-                "name": "Malmö Aviation"
+                "name": "Malm� Aviation"
             },
             {
                 "code": "TE",
@@ -955,7 +955,7 @@ var Planning;
             },
             {
                 "code": "T4",
-                "name": "TRIP Linhas Aéreas"
+                "name": "TRIP Linhas A�reas"
             },
             {
                 "code": "T3",
@@ -1047,7 +1047,7 @@ var Planning;
             },
             {
                 "code": "SL",
-                "name": "Rio Sul Serviços Aéreos Regionais"
+                "name": "Rio Sul Servi�os A�reos Regionais"
             },
             {
                 "code": "SL",
@@ -1191,7 +1191,7 @@ var Planning;
             },
             {
                 "code": "RS",
-                "name": "Intercontinental de Aviación"
+                "name": "Intercontinental de Aviaci�n"
             },
             {
                 "code": "RS",
@@ -1219,7 +1219,7 @@ var Planning;
             },
             {
                 "code": "RL",
-                "name": "Rio Linhas Aéreas"
+                "name": "Rio Linhas A�reas"
             },
             {
                 "code": "RL",
@@ -1243,7 +1243,7 @@ var Planning;
             },
             {
                 "code": "RG",
-                "name": "VRG Linhas Aéreas"
+                "name": "VRG Linhas A�reas"
             },
             {
                 "code": "RF",
@@ -1403,7 +1403,7 @@ var Planning;
             },
             {
                 "code": "QL",
-                "name": "Línea Aérea de Servicio Ejecutivo Regional"
+                "name": "L�nea A�rea de Servicio Ejecutivo Regional"
             },
             {
                 "code": "QK",
@@ -1459,7 +1459,7 @@ var Planning;
             },
             {
                 "code": "QD",
-                "name": "Air Class Líneas Aéreas"
+                "name": "Air Class L�neas A�reas"
             },
             {
                 "code": "QC",
@@ -1491,7 +1491,7 @@ var Planning;
             },
             {
                 "code": "Q4",
-                "name": "Mastertop Linhas Aéreas"
+                "name": "Mastertop Linhas A�reas"
             },
             {
                 "code": "Q4",
@@ -1571,7 +1571,7 @@ var Planning;
             },
             {
                 "code": "PL",
-                "name": "Aeroperú"
+                "name": "Aeroper�"
             },
             {
                 "code": "PL",
@@ -1659,7 +1659,7 @@ var Planning;
             },
             {
                 "code": "P8",
-                "name": "Pantanal Linhas Aéreas"
+                "name": "Pantanal Linhas A�reas"
             },
             {
                 "code": "P7",
@@ -1667,15 +1667,15 @@ var Planning;
             },
             {
                 "code": "P6",
-                "name": "Privilege Style Líneas Aéreas"
+                "name": "Privilege Style L�neas A�reas"
             },
             {
                 "code": "P5",
-                "name": "AeroRepública"
+                "name": "AeroRep�blica"
             },
             {
                 "code": "P3",
-                "name": "Passaredo Transportes Aéreos"
+                "name": "Passaredo Transportes A�reos"
             },
             {
                 "code": "P0",
@@ -1691,7 +1691,7 @@ var Planning;
             },
             {
                 "code": "OY",
-                "name": "Andes Líneas Aéreas"
+                "name": "Andes L�neas A�reas"
             },
             {
                 "code": "OY",
@@ -1771,7 +1771,7 @@ var Planning;
             },
             {
                 "code": "OF",
-                "name": "Transports et Travaux Aériens de Madagascar"
+                "name": "Transports et Travaux A�riens de Madagascar"
             },
             {
                 "code": "OE",
@@ -2011,7 +2011,7 @@ var Planning;
             },
             {
                 "code": "MX",
-                "name": "Mexicana de Aviación"
+                "name": "Mexicana de Aviaci�n"
             },
             {
                 "code": "MW",
@@ -2083,7 +2083,7 @@ var Planning;
             },
             {
                 "code": "ML",
-                "name": "Midway Airlines (1976–1991)"
+                "name": "Midway Airlines (1976�1991)"
             },
             {
                 "code": "MK",
@@ -2091,7 +2091,7 @@ var Planning;
             },
             {
                 "code": "MJ",
-                "name": "Líneas Aéreas Privadas Argentinas"
+                "name": "L�neas A�reas Privadas Argentinas"
             },
             {
                 "code": "MJ",
@@ -2139,7 +2139,7 @@ var Planning;
             },
             {
                 "code": "MA",
-                "name": "Malév Hungarian Airlines"
+                "name": "Mal�v Hungarian Airlines"
             },
             {
                 "code": "M9",
@@ -2291,11 +2291,11 @@ var Planning;
             },
             {
                 "code": "LC",
-                "name": "Varig Logística"
+                "name": "Varig Log�stica"
             },
             {
                 "code": "LB",
-                "name": "Lloyd Aéreo Boliviano"
+                "name": "Lloyd A�reo Boliviano"
             },
             {
                 "code": "LA",
@@ -2323,7 +2323,7 @@ var Planning;
             },
             {
                 "code": "L7",
-                "name": "Línea Aérea SAPSA"
+                "name": "L�nea A�rea SAPSA"
             },
             {
                 "code": "L6",
@@ -2331,7 +2331,7 @@ var Planning;
             },
             {
                 "code": "L5",
-                "name": "Línea Aérea Cuencana"
+                "name": "L�nea A�rea Cuencana"
             },
             {
                 "code": "L5",
@@ -2363,7 +2363,7 @@ var Planning;
             },
             {
                 "code": "KY",
-                "name": "Air São Tomé and Príncipe"
+                "name": "Air S�o Tom� and Pr�ncipe"
             },
             {
                 "code": "KX",
@@ -2443,7 +2443,7 @@ var Planning;
             },
             {
                 "code": "KG",
-                "name": "LAI - Línea Aérea IAACA"
+                "name": "LAI - L�nea A�rea IAACA"
             },
             {
                 "code": "KF",
@@ -2619,11 +2619,11 @@ var Planning;
             },
             {
                 "code": "JI",
-                "name": "Midway Airlines (1993–2003)"
+                "name": "Midway Airlines (1993�2003)"
             },
             {
                 "code": "JH",
-                "name": "Nordeste Linhas Aéreas Regionais"
+                "name": "Nordeste Linhas A�reas Regionais"
             },
             {
                 "code": "JF",
@@ -2847,7 +2847,7 @@ var Planning;
             },
             {
                 "code": "HZ",
-                "name": "Sakhalinskie Aviatrassy (SAT)"
+                "name": "Sakhalinskie Aviatrassy�(SAT)"
             },
             {
                 "code": "HZ",
@@ -2927,7 +2927,7 @@ var Planning;
             },
             {
                 "code": "HK",
-                "name": "Four Star Aviation / Four Star Cargo"
+                "name": "Four Star Aviation�/�Four Star Cargo"
             },
             {
                 "code": "HJ",
@@ -3011,7 +3011,7 @@ var Planning;
             },
             {
                 "code": "H4",
-                "name": "Héli Sécurité Helicopter Airlines"
+                "name": "H�li S�curit� Helicopter Airlines"
             },
             {
                 "code": "H4",
@@ -3191,7 +3191,7 @@ var Planning;
             },
             {
                 "code": "G8",
-                "name": "Enkor JSC"
+                "name": "Enkor�JSC"
             },
             {
                 "code": "G8",
@@ -3231,7 +3231,7 @@ var Planning;
             },
             {
                 "code": "G3",
-                "name": "Gol Transportes Aéreos"
+                "name": "Gol Transportes A�reos"
             },
             {
                 "code": "G2",
@@ -3283,7 +3283,7 @@ var Planning;
             },
             {
                 "code": "FS",
-                "name": "Servicios de Transportes Aéreos Fueguinos"
+                "name": "Servicios de Transportes A�reos Fueguinos"
             },
             {
                 "code": "FR",
@@ -3295,7 +3295,7 @@ var Planning;
             },
             {
                 "code": "FP",
-                "name": "Servicios Aéreos de los Andes"
+                "name": "Servicios A�reos de los Andes"
             },
             {
                 "code": "FO",
@@ -3435,7 +3435,7 @@ var Planning;
             },
             {
                 "code": "EU",
-                "name": "Empresa Ecuatoriana De Aviación"
+                "name": "Empresa Ecuatoriana De Aviaci�n"
             },
             {
                 "code": "ET",
@@ -3543,7 +3543,7 @@ var Planning;
             },
             {
                 "code": "E7",
-                "name": "Estafeta Carga Aérea"
+                "name": "Estafeta Carga A�rea"
             },
             {
                 "code": "E7",
@@ -3551,7 +3551,7 @@ var Planning;
             },
             {
                 "code": "E6",
-                "name": "Bringer Air Cargo Taxi Aéreo"
+                "name": "Bringer Air Cargo Taxi A�reo"
             },
             {
                 "code": "E5",
@@ -3623,7 +3623,7 @@ var Planning;
             },
             {
                 "code": "DO",
-                "name": "Dominicana de Aviación"
+                "name": "Dominicana de Aviaci�n"
             },
             {
                 "code": "DM",
@@ -3751,7 +3751,7 @@ var Planning;
             },
             {
                 "code": "CU",
-                "name": "Cubana de Aviación"
+                "name": "Cubana de Aviaci�n"
             },
             {
                 "code": "CT",
@@ -3883,7 +3883,7 @@ var Planning;
             },
             {
                 "code": "C7",
-                "name": "Rico Linhas Aéreas"
+                "name": "Rico Linhas A�reas"
             },
             {
                 "code": "C6",
@@ -4063,7 +4063,7 @@ var Planning;
             },
             {
                 "code": "B2",
-                "name": "Belavia Belarusian Airlines"
+                "name": "Belavia�Belarusian Airlines"
             },
             {
                 "code": "AZ",
@@ -4095,11 +4095,11 @@ var Planning;
             },
             {
                 "code": "AV",
-                "name": "Avianca - Aerovías del Continente Americano S.A."
+                "name": "Avianca - Aerov�as del Continente Americano S.A."
             },
             {
                 "code": "AU",
-                "name": "Austral Líneas Aéreas"
+                "name": "Austral L�neas A�reas"
             },
             {
                 "code": "AT",
@@ -4111,7 +4111,7 @@ var Planning;
             },
             {
                 "code": "AR",
-                "name": "Aerolíneas Argentinas"
+                "name": "Aerol�neas Argentinas"
             },
             {
                 "code": "AQ",
@@ -4135,7 +4135,7 @@ var Planning;
             },
             {
                 "code": "AM",
-                "name": "Aeroméxico"
+                "name": "Aerom�xico"
             },
             {
                 "code": "AL",
@@ -4159,11 +4159,11 @@ var Planning;
             },
             {
                 "code": "AI",
-                "name": "Air India Limited"
+                "name": "Air India�Limited"
             },
             {
                 "code": "AH",
-                "name": "Air Algérie"
+                "name": "Air Alg�rie"
             },
             {
                 "code": "AF",
@@ -4183,7 +4183,7 @@ var Planning;
             },
             {
                 "code": "AD",
-                "name": "Azul Linhas Aéreas Brasileiras"
+                "name": "Azul Linhas A�reas Brasileiras"
             },
             {
                 "code": "AC",
@@ -4435,7 +4435,7 @@ var Planning;
             },
             {
                 "code": "7W",
-                "name": "Wayraperú"
+                "name": "Wayraper�"
             },
             {
                 "code": "7T",
@@ -4451,7 +4451,7 @@ var Planning;
             },
             {
                 "code": "7R",
-                "name": "BRA-Transportes Aéreos"
+                "name": "BRA-Transportes A�reos"
             },
             {
                 "code": "7O[30]",
@@ -4727,7 +4727,7 @@ var Planning;
             },
             {
                 "code": "4N",
-                "name": "Air North Charter - Canada"
+                "name": "Air North Charter�- Canada"
             },
             {
                 "code": "4M",
@@ -4827,7 +4827,7 @@ var Planning;
             },
             {
                 "code": "3C",
-                "name": "Calima Aviación"
+                "name": "Calima Aviaci�n"
             },
             {
                 "code": "3C",
@@ -5055,7 +5055,7 @@ var Planning;
             },
             {
                 "code": "0V",
-                "name": "Vietnam Air Services Company (VASCO)"
+                "name": "Vietnam Air Services Company�(VASCO)"
             },
             {
                 "code": "0J",
