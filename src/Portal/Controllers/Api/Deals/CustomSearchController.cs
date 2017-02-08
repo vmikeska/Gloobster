@@ -24,8 +24,7 @@ namespace Gloobster.Portal.Controllers.Api.Planning
 		public ICustomSearchDomain SearchDomain { get; set; }
 		
 		public CustomSearchController(ICustomSearchDomain searchDomain, ILogger log, IDbOperations db) : base(log, db)
-		{			
-			DB = db;
+		{						
             SearchDomain = searchDomain;			
 		}
         

@@ -64,12 +64,11 @@ var Planning;
     }());
     Planning.QueriesBuilder = QueriesBuilder;
     var ResultsManager = (function () {
-        function ResultsManager(v) {
+        function ResultsManager() {
             this.finishedQueries = [];
             this.queue = [];
             this.doRequery = true;
             this.lastCustomId = "";
-            this.v = v;
         }
         ResultsManager.prototype.refresh = function () {
             this.initalCall(this.timeType, this.lastCustomId);

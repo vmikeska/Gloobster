@@ -1,18 +1,18 @@
 var Planning;
 (function (Planning) {
     var WeekendPageSetter = (function () {
-        function WeekendPageSetter(v) {
+        function WeekendPageSetter(dealsSearch) {
             this.grouping = Planning.LocationGrouping.ByCity;
             this.$cont = $("#resultsCont");
             this.$filter = $("#filterCont");
-            this.v = v;
+            this.dealsSearch = dealsSearch;
         }
         WeekendPageSetter.prototype.setQueries = function (queries) {
             this.queries = queries;
             this.onFilterChanged();
         };
         WeekendPageSetter.prototype.init = function (callback) {
-            var layoutTmp = this.v.registerTemplate("filtering-template");
+            var layoutTmp = this.dealsSearch.v.registerTemplate("filtering-template");
             this.$filter.html(layoutTmp());
             this.initFilters();
             this.displayer = new Planning.WeekendDisplayer(this.$cont, this.filtering);

@@ -72,8 +72,8 @@ var Planning;
             });
         };
         MapCountries.prototype.countryClicked = function (cc, layer) {
-            if (!this.map.planningMap.v.hasAirs) {
-                this.map.planningMap.v.showAirsFirst();
+            if (!this.map.planningMap.dealsSearch.hasAirs) {
+                this.map.planningMap.dealsSearch.showAirsFirst();
                 return;
             }
             var selected = this.isCountrySelected(cc);

@@ -13,10 +13,9 @@ module Planning {
 		
 		private resultsEngine: ResultsManager;
 
-		public v: Views.FlyView;
-
-		constructor(v: Views.FlyView) {
-			this.v = v;
+		public dealsSearch: Planning.DealsSearch;
+		constructor(dealsSearch: Planning.DealsSearch) {
+				this.dealsSearch = dealsSearch;
 		}
 
 		public init() {
@@ -47,11 +46,11 @@ module Planning {
 			this.map.onCountryChange = (cc, isSelected) => {
 				this.onSelectionChanged(cc, isSelected, FlightCacheRecordType.Country);
 
-				var customId = this.v.currentSetter.getCustomId();
+				var customId = this.dealsSearch.currentSetter.getCustomId();
 					
 				var data = { type: this.planningType, cc: cc, selected: isSelected, customId: customId};
 					
-				this.v.apiPut("SelCountry", data, () => {});					
+				this.dealsSearch.v.apiPut("SelCountry", data, () => {});					
 			};
 		}
 
@@ -60,11 +59,11 @@ module Planning {
 				this.map.onCityChange = (gid, isSelected) => {
 						this.onSelectionChanged(gid, isSelected, FlightCacheRecordType.City);
 
-						var customId = this.v.currentSetter.getCustomId();
+						var customId = this.dealsSearch.currentSetter.getCustomId();
 
 						var data = { type: this.planningType, gid: gid, selected: isSelected, customId: customId };
 
-						this.v.apiPut("SelCity", data, () => { });		
+						this.dealsSearch.v.apiPut("SelCity", data, () => { });		
 				};				
 		}
 
@@ -84,7 +83,7 @@ module Planning {
 		}
 
 		private getSelectedCCs(planningType: PlanningType, callback) {
-				var customId = this.v.currentSetter.getCustomId();
+				var customId = this.dealsSearch.currentSetter.getCustomId();
 
 				var prms = [["type", planningType.toString()], ["customId", customId]];
 				

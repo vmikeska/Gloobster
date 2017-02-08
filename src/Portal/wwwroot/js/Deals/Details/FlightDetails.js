@@ -53,6 +53,13 @@ var Planning;
     var FlightDetails = (function () {
         function FlightDetails() {
         }
+        Object.defineProperty(FlightDetails.prototype, "v", {
+            get: function () {
+                return Views.ViewBase.currentView;
+            },
+            enumerable: true,
+            configurable: true
+        });
         FlightDetails.prototype.genFlights = function ($cont, flights) {
             var _this = this;
             var lg = Common.ListGenerator.init($cont, "connection-flight-template");
@@ -161,7 +168,7 @@ var Planning;
         FlightDetails.prototype.viewForMultiFlight = function (parts) {
             var first = _.first(parts);
             var last = _.last(parts);
-            var airName = Views.ViewBase.currentView.v.t("MultiAirlines", "jsDeals");
+            var airName = this.v.t("MultiAirlines", "jsDeals");
             var logoLink = "/images/n/airlogos/default-airline.svg";
             var allAirSame = _.every(parts, function (p) { return p.airline === first.airline; });
             if (allAirSame) {

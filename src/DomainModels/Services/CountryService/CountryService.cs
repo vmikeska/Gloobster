@@ -28,8 +28,24 @@ namespace Gloobster.DomainModels.Services.CountryService
 
 			return country;
 		}
+        
+        public List<Country> GetByCountryNameStarting(string txt)
+        {
+            var ltxt = txt.ToLower();
+            var countries = CountriesList.Where(c => c.CountryName.ToLower().StartsWith(ltxt)).ToList();
+            
+            return countries;
+        }
 
-		public Country GetCountryByCountryCode2(string countryCode2)
+        public List<Country> GetCountryByCountryCode2Starting(string txt)
+        {
+            var ltxt = txt.ToLower();
+            var countries = CountriesList.Where(c => c.CountryCode.ToLower().StartsWith(ltxt)).ToList();
+
+            return countries;
+        }
+
+        public Country GetCountryByCountryCode2(string countryCode2)
 		{
 			var country = CountriesList.FirstOrDefault(c => c.CountryCode.Equals(countryCode2));
 			return country;

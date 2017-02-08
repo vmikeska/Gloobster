@@ -11,89 +11,53 @@
 @using Microsoft.AspNet.Mvc.Rendering
 @model Gloobster.Portal.ViewModels.ViewModelDeals
 
-
-<link href="/lib/leaflet/dist/leaflet.css" rel="stylesheet" />
-
-
-
-@if (GloobsterConfig.UseMiniScripts)
-{
-    <script src="/jsb/deals.js" type="text/javascript" data-notbuild="true"></script>
-}
-else
-{
-    <script type="text/javascript" src="/lib/leaflet/dist/leaflet-src.js"></script>
-    <script src="/js/Common/nouislider/nouislider.js" type="text/javascript"></script>
-    <script src="/js/Common/LastItem.js" type="text/javascript"></script>
-    <script src="/js/Common/CountriesGroup.js" type="text/javascript"></script>
-    <script src="/js/Common/CustomCheckbox.js" type="text/javascript"></script>
-
-    <script src="/js/Views/AirLoc.js" type="text/javascript"></script>
-
-
-    <script src="/js/Deals/Filtering/Filtering.js" type="text/javascript"></script>
-    <script src="/js/Deals/DelasEval.js" type="text/javascript"></script>
-
-    <script src="/js/Deals/Aggregators/FlightsExtractor.js" type="text/javascript"></script>
-
-    <script src="/js/Deals/Filtering/AirportSelector.js" type="text/javascript"></script>
-    <script src="/js/Deals/Filtering/MonthsSelector.js" type="text/javascript"></script>
-    <script src="/js/Deals/Filtering/RangeSlider.js" type="text/javascript"></script>
-    <script src="/js/Deals/Filtering/TimeSlider.js" type="text/javascript"></script>
-
-    <script src="/js/Views/FlyView.js" type="text/javascript"></script>
-    <script src="/js/Trip/AirportCombo.js" type="text/javascript"></script>
-    <script src="/js/Views/LocationSettingsDialog.js" type="text/javascript"></script>
-
-    <script src="/js/TravelB/DateUtils.js" type="text/javascript"></script>
-
-    <script src="/js/Deals/Map/Map.js" type="text/javascript"></script>
-    <script src="/js/Deals/Map/MapCities.js" type="text/javascript"></script>
-    <script src="/js/Deals/Map/MapCountries.js" type="text/javascript"></script>
-
-
-    <script src="/js/Deals/CustomForm/CustomForm.js" type="text/javascript"></script>
-    <script src="/js/Deals/CustomForm/CustomMenu.js" type="text/javascript"></script>
-    <script src="/js/Deals/CustomForm/PropsDataUpload.js" type="text/javascript"></script>
-    <script src="/js/Deals/CustomForm/SearchDataLoader.js" type="text/javascript"></script>
-
-    <script src="/js/Deals/Details/Convert.js" type="text/javascript"></script>
-    <script src="/js/Deals/Details/CityClassicSearch.js" type="text/javascript"></script>
-    <script src="/js/Deals/Details/CityDetail.js" type="text/javascript"></script>
-    <script src="/js/Deals/Details/FlightDetails.js" type="text/javascript"></script>
-
-
-
-    <script src="/js/Deals/TaggingField.js" type="text/javascript"></script>
-
-    <script src="/js/Deals/PlanningMap.js" type="text/javascript"></script>
-    <script src="/js/Deals/ResultsManager.js" type="text/javascript"></script>
-
-    <script src="/js/Deals/AirlineCodes.js" type="text/javascript"></script>
-
-    <script src="/js/Deals/Displayers/AnytimeDisplayer.js" type="text/javascript"></script>
-    <script src="/js/Deals/Displayers/WeekendDisplayer.js" type="text/javascript"></script>
-
-    <script src="/js/Deals/Aggregators/AnytimeAggUtils.js" type="text/javascript"></script>
-    <script src="/js/Deals/Aggregators/AnytimeByCityAgg.js" type="text/javascript"></script>
-    <script src="/js/Deals/Aggregators/AnytimeByCountryAgg.js" type="text/javascript"></script>
-    <script src="/js/Deals/Aggregators/AnytimeByContinentAgg.js" type="text/javascript"></script>
-
-    <script src="/js/Deals/Aggregators/WeekendByCityAgg.js" type="text/javascript"></script>
-    <script src="/js/Deals/Aggregators/WeekendByCountryAgg.js" type="text/javascript"></script>
-
-
-    <script src="/js/Deals/PageSetters/WeekendPageSetter.js" type="text/javascript"></script>
-    <script src="/js/Deals/PageSetters/AnytimePageSetter.js" type="text/javascript"></script>
-    <script src="/js/Deals/PageSetters/CustomPageSetter.js" type="text/javascript"></script>
-
-}
+@Html.Partial("Scripts")
 
 @{
     var infoBlock = Model.InfoBlock("info-deals");
 }
 
-<div class="info-block-bck @infoBlock.Class" id="info-deals">
+<div id="classicCont">
+    
+</div>
+
+<div class="deals-block-all">
+    
+    <div class="wrapper">
+        <h2 class="motto">
+            <span>Are you fexible on time? Try our new best deals search!</span>
+        </h2>
+
+        <div class="icons">
+            <div class="ico">
+                <img class="svg-img" src="/images/n/fly-pin.svg" />    
+            </div>
+            <div class="ico">
+                <img class="svg-img" src="/images/n/fly-comp.svg" />
+            </div>
+            <div class="ico">
+                <img class="svg-img" src="/images/n/fly-plane.svg" />
+            </div>
+        </div>
+
+        <div class="labels">
+            <div class="label">Set your home location</div>
+            <div class="label">Customize your dashboard</div>
+            <div class="label">Get the best deals</div>
+        </div>
+        
+        <div class="loc">
+            <div id="currentCity" class="dropdown">
+                <input class="inputed" type="text" placeholder="Set your home city">
+                <ul></ul>
+            </div>
+        </div>    
+    </div>
+    
+</div>
+
+
+@*<div class="info-block-bck @infoBlock.Class" id="info-deals">
 
     <div class="wrapper">
         
@@ -122,53 +86,23 @@ else
         </div>
 
     </div>
-</div>
+</div>*@
 
-<div class="wrapper">
+<div>
         
-    @Html.Partial("LocationSettingsDialog")
-
-    <div id="naviCont" class="navi-cont"></div>
-
-    <div id="tabContent"></div>
+    @*@Html.Partial("LocationSettingsDialog")*@
     
-    <div class="map-cont">
-        <div class="map" id="mapCountries"></div>
-        <div class="map" id="mapCities" style="display: none"></div>
-
-        <div class="map-type-switch">
-            <div class="items-tbl">
-                <div class="country btn active">@Model.W("ViewSwitchCountries")</div>
-                <div class="city btn">@Model.W("ViewSwitchCities")</div>
-            </div>
-        </div>
-        
-        <div id="mapDisabler"></div>
-    </div>
-
-    <div id="filterCont">
-
-    </div>
+    <div id="categoryNavi" class="navi-cont"></div>
     
-    <div id="queue" class="queue-all hidden">
-        
-        <span class="preloader">
-            <img src="/images/n/Plane_icon.svg" />
-        </span>
-        
-        <div class="cont"></div>
-    </div>
-
-    <div class="flight-results" id="resultsCont"></div>
+    <div id="categoryCont"></div>
+  
 </div>
-
-
 
 @Html.Partial("DestinationTemplates")
 
 <script>
 	function onBodyLoad() {
-	    currentView = new Views.FlyView();
+	    currentView = new Views.DealsView();
 	}
 
 </script>

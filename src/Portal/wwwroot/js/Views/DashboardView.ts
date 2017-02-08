@@ -141,8 +141,8 @@ module Views {
 				
 			}
 
-			private startResMgr(pt: PlanningType, onChange: Function, onQueueFinished: Function) {
-					var rm = new Planning.ResultsManager(this);
+			private startResMgr(pt: PlanningType, onChange: Function, onQueueFinished: Function) {					
+					var rm = new Planning.ResultsManager();
 
 					rm.onDrawQueue = () => {						
 							if (!any(rm.queue)) {

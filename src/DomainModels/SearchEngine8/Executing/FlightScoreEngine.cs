@@ -16,7 +16,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
     public class FlightScoreEngine : IFlightScoreEngine
     {
         public IDbOperations DB { get; set; }
-        public IOldAirportsCache AirCache { get; set; }
+        public IAirportCache AirCache { get; set; }
 
         public double MinIndexByScoreLevel(ScoreLevel level)
         {

@@ -110,7 +110,7 @@ module Planning {
 			var zoom = this.mapObj.getZoom();
 			var population = this.getPopulationFromZoom(zoom);
 
-			var customId = this.map.planningMap.v.currentSetter.getCustomId();
+			var customId = this.map.planningMap.dealsSearch.currentSetter.getCustomId();
 
 			var prms = [
 				["latSouth", bounds._southWest.lat],
@@ -174,8 +174,8 @@ module Planning {
 
 		private cityClicked(e) {
 
-			if (!this.map.planningMap.v.hasAirs) {
-					this.map.planningMap.v.showAirsFirst();
+			if (!this.map.planningMap.dealsSearch.hasAirs) {
+					this.map.planningMap.dealsSearch.showAirsFirst();
 				return;
 			}
 

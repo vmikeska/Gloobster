@@ -15,7 +15,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
         public IDbOperations DB { get; set; }
         public IFlightScoreEngine ScoreEngine { get; set; }
         public IFlightsBigDataCalculator BigDataCalculator { get; set; }
-        public IAirportsCache AirCache { get; set; }
+        public INewAirportCache AirCache { get; set; }
         
         public async Task ProcessFlightsAsync(List<FlightDO> flights, TimeType timeType, string queryId, string prms)
         {            

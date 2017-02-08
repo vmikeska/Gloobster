@@ -1,4 +1,6 @@
-﻿module Views {
+﻿module Planning {
+
+
 	export class LocationSettingsDialog {
 
 		private airTemplate = Views.ViewBase.currentView.registerTemplate("homeAirportItem-template");
@@ -8,11 +10,11 @@
 
 		private kmRangeSelected = 200;
 
-			private v: FlyView;
-
-		constructor(v: FlyView) {
-			this.v = v;
-			AirLoc.registerLocationCombo($("#currentCity"),
+		private dealsSearch: DealsSearch;
+		constructor(dealsSearch: DealsSearch) {
+				this.dealsSearch = dealsSearch;
+		
+			Views.AirLoc.registerLocationCombo($("#currentCity"),
 				(place) => {
 					$("#rangeBlock").removeClass("hidden");
 					$(".home-location-name").html(`${place.City}, (${place.CountryCode})`);
@@ -40,7 +42,7 @@
 
 			$("#refreshResults").click((e) => {
 					e.preventDefault();
-					this.v.resultsEngine.refresh();
+					this.dealsSearch.resultsEngine.refresh();
 				  this.hideRefresh();
 			});
 		}
@@ -50,7 +52,7 @@
 			}
 
 		private changed() {
-			var sel = this.v.planningMap.map.anySelected();
+			var sel = this.dealsSearch.planningMap.map.anySelected();
 			if (sel) {
 				$(".refresh-line").removeClass("hidden");
 			}
@@ -61,7 +63,7 @@
 		}
 
 		private loadMgmtAirports() {
-			this.v.apiGet("airportRange", null, (as) => {
+			this.dealsSearch.v.apiGet("airportRange", null, (as) => {
 				this.generateAirports(as);
 			});
 		}
@@ -71,7 +73,7 @@
 			ac.onSelected = (e) => {
 
 				var data = { airportId: e.id };
-				this.v.apiPost("airportRange", data, (a) => {
+				this.dealsSearch.v.apiPost("airportRange", data, (a) => {
 						this.genAirport(a);
 						this.genAirportS(a.airCode);
 						this.changed();
@@ -100,7 +102,7 @@
 
 		private callAirportsByRange() {
 			var data = { distance: this.kmRangeSelected };
-			this.v.apiPut("AirportRange", data, (airports) => {
+			this.dealsSearch.v.apiPut("AirportRange", data, (airports) => {
 					this.generateAirports(airports);
 				  this.changed();
 			});

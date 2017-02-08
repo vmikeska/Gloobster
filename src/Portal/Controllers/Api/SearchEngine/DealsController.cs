@@ -20,10 +20,10 @@ namespace Gloobster.Portal.Controllers.Api.SearchEngine
     public class DealsController : BaseApiController
     {
         public IClientRequestExecutor ClientExecutor { get; set; }
-        public IAirportsCache AirCache { get; set; }
+        public INewAirportCache AirCache { get; set; }
 
 
-        public DealsController(IAirportsCache airCache, IClientRequestExecutor clientExecutor, ILogger log, IDbOperations db) : base(log, db)
+        public DealsController(INewAirportCache airCache, IClientRequestExecutor clientExecutor, ILogger log, IDbOperations db) : base(log, db)
         {
             ClientExecutor = clientExecutor;
             AirCache = airCache;

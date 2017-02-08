@@ -73,7 +73,11 @@ module Planning {
 		}
 
 	export class FlightDetails {
-			
+
+			public get v(): Views.ViewBase {
+					return Views.ViewBase.currentView;
+			}
+
 				public genFlights($cont, flights: Flight[]) {
 						var lg = Common.ListGenerator.init($cont, "connection-flight-template");
 						lg.clearCont = true;
@@ -207,7 +211,7 @@ module Planning {
 						var first = _.first(parts);
 						var last = _.last(parts);
 
-						var airName = Views.ViewBase.currentView.v.t("MultiAirlines", "jsDeals");
+						var airName = this.v.t("MultiAirlines", "jsDeals");
 						var logoLink = "/images/n/airlogos/default-airline.svg";
 
 						var allAirSame = _.every(parts, (p) => { return p.airline === first.airline });

@@ -128,4 +128,10 @@ var FriendActionType;
     FriendActionType[FriendActionType["Block"] = 3] = "Block";
     FriendActionType[FriendActionType["CancelRequest"] = 4] = "CancelRequest";
 })(FriendActionType || (FriendActionType = {}));
+var DealsPlaceReturnType;
+(function (DealsPlaceReturnType) {
+    DealsPlaceReturnType[DealsPlaceReturnType["CountryCode"] = 0] = "CountryCode";
+    DealsPlaceReturnType[DealsPlaceReturnType["GID"] = 1] = "GID";
+    DealsPlaceReturnType[DealsPlaceReturnType["AirCode"] = 2] = "AirCode";
+})(DealsPlaceReturnType || (DealsPlaceReturnType = {}));
 //# sourceMappingURL=globals.js.map

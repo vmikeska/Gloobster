@@ -1,23 +1,177 @@
 ﻿
-<script id="flights-empty-template" type="text/x-handlebars-template">
+<script id="deals-template" type="text/x-handlebars-template">
 
-    <div class="other-flights-empty">
-        
-        <div class="info">
-            <span class="smile">:(</span>
-            @Model.W("NoResultsFound")
+    <div id="naviCont" class="navi-cont"></div>
+
+    <div id="tabContent"></div>
+
+    <div class="map-cont">
+        <div class="map" id="mapCountries"></div>
+        <div class="map" id="mapCities" style="display: none"></div>
+
+        <div class="map-type-switch">
+            <div class="items-tbl">
+                <div class="country btn active">@Model.W("ViewSwitchCountries")</div>
+                <div class="city btn">@Model.W("ViewSwitchCities")</div>
+            </div>
         </div>
+
+        <div id="mapDisabler"></div>
+    </div>
+
+    <div id="filterCont">
+
+    </div>
+
+    <div id="queue" class="queue-all hidden">
+
+        <span class="preloader">
+            <img src="/images/n/Plane_icon.svg" />
+        </span>
+
+        <div class="cont"></div>
+    </div>
+
+    <div class="flight-results" id="resultsCont"></div>
+
+</script>
+
+<script id="city-air-search-template" type="text/x-handlebars-template">
+    
+    <span class="icon-logo-pin ico"></span>
+
+    <input type="text" class="input-txt" placeholder="{{placeholder}}" />
+
+    <span class="icon-cross-small close"></span>
+    <img class="preload-wheel hidden" src="/images/n/preloader.gif" />
+
+
+    <div class="results hidden">
+
+        <div class="section">
+            <div class="title">Cities</div>
+
+            <div class="cont">
+
+                <div class="city"></div>
+
+
+            </div>
+
+        </div>
+
+
     </div>
 
 </script>
 
-<script id="deals-srch-template" type="text/x-handlebars-template">
-    <div class="other-flights-filter">
+<script id="city-air-item-template" type="text/x-handlebars-template">
+
+    <div class="item {{cls}}">
         
-        <div class="multi-conn-cont" style="display: none">
-            <div class="title">@Model.W("WhatConnectionsInterested")</div>
-            <div class="airpairs-filter"></div>
+        <div class="itbl">
+            <div class="l">
+                <span class="icon-{{icon}} ico-item"></span>
+            </div>
+            <div class="r">
+                <span class="txt">{{txt}}</span><span class="code">{{code}}</span>                
+            </div>
         </div>
+
+    </div>
+
+</script>
+
+<script id="classic-template" type="text/x-handlebars-template">
+    
+    <div class="search-form">
+        
+        <div class="bck"></div>
+        
+        <div class="darker"></div>
+        
+        <div class="inner">
+            
+            <div class="search-group">
+
+                <div class="search-field">
+                    <div class="capt">From</div>
+                    <div class="ctrl">
+                        <div id="searchFrom"></div>
+                    </div>
+                </div>
+
+                <div class="search-field">
+                    <div class="capt">To</div>
+                    <div class="ctrl">
+                        <div id="searchTo"></div>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="search-group">
+
+                <div class="search-field">
+                    <div class="capt">Depart</div>
+                    <div class="ctrl">
+                        <div id="dateFrom"></div>
+                    </div>
+                </div>
+
+                <div class="search-field">
+                    <div class="capt">Return</div>
+                    <div class="ctrl">
+                        <div id="dateTo"></div>
+                    </div>
+                </div>
+
+                <div class="search-field">
+                    <div class="capt">Seats</div>
+                    <div class="ctrl">
+                        <div id="passangersCnt"></div>
+                    </div>
+                </div>
+
+            </div>
+
+                <div class="sec-row">
+                    <input type="checkbox" id="directFlights" /><label for="directFlights">Just direct flights</label>
+                </div>
+
+                <div>
+                    <a href="#" id="btnSearch" class="lbtn2 green-orange">Search</a>
+                </div>
+
+            </div>
+    </div>
+    
+    <div class="search-results">
+
+    </div>
+    
+</script>
+
+
+    <script id="flights-empty-template" type="text/x-handlebars-template">
+
+        <div class="other-flights-empty">
+
+            <div class="info">
+                <span class="smile">:(</span>
+                @Model.W("NoResultsFound")
+            </div>
+        </div>
+
+    </script>
+
+    <script id="deals-srch-template" type="text/x-handlebars-template">
+        <div class="other-flights-filter">
+
+            <div class="multi-conn-cont" style="display: none">
+                <div class="title">@Model.W("WhatConnectionsInterested")</div>
+                <div class="airpairs-filter"></div>
+            </div>
 
             <div class="title">@Model.W("HowManyDayInDestination")</div>
             <div class="days-range"></div>
@@ -26,107 +180,107 @@
             <div class="months"></div>
 
         </div>
-</script>
+    </script>
 
-<script id="classics-srch-template" type="text/x-handlebars-template">
-    <div class="other-flights-filter">
-        
-        <div class="multi-conn-cont" style="display: none">
-            <div class="tit">@Model.W("WhatConnectionsInterested")</div>
-            <div class="airpairs-filter"></div>
-        </div>
+    <script id="classics-srch-template" type="text/x-handlebars-template">
+        <div class="other-flights-filter">
 
-        <div class="ltbl">
-
-            <div class="block">
-                <div class="dep-arr dep">
-                    <div class="tit">@Model.W("Deparature")</div>
-
-                    <div class="middle">
-                        
-                        <div id="depDate"></div>
-
-                    </div>
-                    <div class="bottom">
-                        <div class="time"></div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="block">
-                <div class="dep-arr arr">
-                    <div class="tit">@Model.W("Arrival")</div>
-
-                    <div class="date-cont-all">
-                       
-                        <div id="arrDate"></div>
-
-                    </div>
-                    <div class="time-cont">
-                        <div class="time"></div>
-                    </div>
-                </div>
+            <div class="multi-conn-cont" style="display: none">
+                <div class="tit">@Model.W("WhatConnectionsInterested")</div>
+                <div class="airpairs-filter"></div>
             </div>
 
-        </div>
-        
-        <div class="srvc">
-            <a id="search" class="lbtn" href="#">@Model.W("SearchBtn")</a>
-        </div>
+            <div class="ltbl">
 
-    </div>
-</script>
+                <div class="block">
+                    <div class="dep-arr dep">
+                        <div class="tit">@Model.W("Deparature")</div>
 
-<script id="city-deals-weekend-template" type="text/x-handlebars-template">
+                        <div class="middle">
 
-    <div class="city-deal" data-gid="{{gid}}">
+                            <div id="depDate"></div>
 
-        <span class="icon-cross form-close close"></span>
-
-        <div class="title-top">
-            {{title}}
-        </div>
-        
-        <div class="title-deal">
-            
-            <div class="deals-ordering">
-
-                <div class="items-table">
-
-                    <div class="cell">
-                        <span data-b="price" data-o="asc" class="item l">@Model.W("OrderPriceBtn")</span>
+                        </div>
+                        <div class="bottom">
+                            <div class="time"></div>
+                        </div>
                     </div>
+                </div>
 
-                    <div class="cell">
-                        <span data-b="score" data-o="desc" class="item r">@Model.W("OrderScoreBtn")</span>
+                <div class="block">
+                    <div class="dep-arr arr">
+                        <div class="tit">@Model.W("Arrival")</div>
+
+                        <div class="date-cont-all">
+
+                            <div id="arrDate"></div>
+
+                        </div>
+                        <div class="time-cont">
+                            <div class="time"></div>
+                        </div>
                     </div>
-
                 </div>
 
             </div>
-        </div>
 
-
-        <div class="splitter">
-            <div></div>
-        </div>
-
-        <div class="flights">
+            <div class="srvc">
+                <a id="search" class="lbtn" href="#">@Model.W("SearchBtn")</a>
+            </div>
 
         </div>
+    </script>
 
-    </div>
-
-</script>
-
-<script id="city-deals-template" type="text/x-handlebars-template">
+    <script id="city-deals-weekend-template" type="text/x-handlebars-template">
 
         <div class="city-deal" data-gid="{{gid}}">
-            
+
             <span class="icon-cross form-close close"></span>
-            
+
             <div class="title-top">
-                {{title}}                                
+                {{title}}
+            </div>
+
+            <div class="title-deal">
+
+                <div class="deals-ordering">
+
+                    <div class="items-table">
+
+                        <div class="cell">
+                            <span data-b="price" data-o="asc" class="item l">@Model.W("OrderPriceBtn")</span>
+                        </div>
+
+                        <div class="cell">
+                            <span data-b="score" data-o="desc" class="item r">@Model.W("OrderScoreBtn")</span>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="splitter">
+                <div></div>
+            </div>
+
+            <div class="flights">
+
+            </div>
+
+        </div>
+
+    </script>
+
+    <script id="city-deals-template" type="text/x-handlebars-template">
+
+        <div class="city-deal" data-gid="{{gid}}">
+
+            <span class="icon-cross form-close close"></span>
+
+            <div class="title-top">
+                {{title}}
             </div>
 
             <div class="splitter">
@@ -135,19 +289,19 @@
 
             <div class="title-deal">
                 <span class="txt">@Model.W("OurBestDealsTitle")</span>
-                
+
                 <div class="deals-ordering">
-                    
+
                     <div class="items-table">
-                        
+
                         <div class="cell">
                             <span data-b="price" data-o="asc" class="item l">@Model.W("OrderPriceBtn")</span>
                         </div>
-                        
+
                         <div class="cell">
                             <span data-b="score" data-o="desc" class="item r">@Model.W("OrderScoreBtn")</span>
                         </div>
-                        
+
                     </div>
 
                 </div>
@@ -173,7 +327,7 @@
             <div class="tabs-cont">
 
             </div>
-            
+
             <div class="splitter">
                 <div></div>
             </div>
@@ -211,7 +365,7 @@
 
     </script>
 
-<script id="filtering-weekend-template" type="text/x-handlebars-template">
+    <script id="filtering-weekend-template" type="text/x-handlebars-template">
 
         <div class="weekend-deals-filter">
 
@@ -237,11 +391,11 @@
 
     </script>
 
-<script id="weekend-day-selector-template" type="text/x-handlebars-template">
-    <div class="cell">
-        <div class="day {{c}}" data-i="{{ni}}">{{name}}</div>
-    </div>
-</script>
+    <script id="weekend-day-selector-template" type="text/x-handlebars-template">
+        <div class="cell">
+            <div class="day {{c}}" data-i="{{ni}}">{{name}}</div>
+        </div>
+    </script>
 
     <script id="filtering-template" type="text/x-handlebars-template">
 
@@ -365,7 +519,7 @@
 
     </script>
 
-<script id="connection-single-flight-template" type="text/x-handlebars-template">
+    <script id="connection-single-flight-template" type="text/x-handlebars-template">
 
         <div class="flight-bck-cont {{customClass}}">
 
@@ -409,14 +563,14 @@
                 </div>
 
             </div>
-            
+
             <div class="flights-sub"></div>
         </div>
 
     </script>
 
 
-<script id="connection-flight-template" type="text/x-handlebars-template">
+    <script id="connection-flight-template" type="text/x-handlebars-template">
 
         <div class="conn">
 
@@ -441,7 +595,7 @@
 
                             </div>
                             <div class="cap">
-                                @Model.W("FlightScore")                                
+                                @Model.W("FlightScore")
                             </div>
                         </div>
                         <div class="price-all">
@@ -453,8 +607,6 @@
                         </div>
                     </div>
 
-
-
                 </div>
             </div>
 
@@ -463,7 +615,7 @@
     </script>
 
 
-<script id="offers-expander-template" type="text/x-handlebars-template">
+    <script id="offers-expander-template" type="text/x-handlebars-template">
         <tr class="expander">
             <td colspan="4">
                 <a class="btn" href="#">@Model.W("MoreBtn")</a>
@@ -595,7 +747,7 @@
     </script>
 
 
-<script id="freq-item-template" type="text/x-handlebars-template">
+    <script id="freq-item-template" type="text/x-handlebars-template">
 
         <div class="cell">
             <div class="item" data-d="{{days}}">{{text}}</div>
@@ -604,15 +756,15 @@
     </script>
 
 
-<script id="queue-item-tmp" type="text/x-handlebars-template">
-    <div class="item">{{text}}</div>
-</script>
+    <script id="queue-item-tmp" type="text/x-handlebars-template">
+        <div class="item">{{text}}</div>
+    </script>
 
 
 
 
 
-<script id="custom-template" type="text/x-handlebars-template">
+    <script id="custom-template" type="text/x-handlebars-template">
 
         <div class="form-custom">
 
@@ -620,48 +772,48 @@
                 <a class="adder icon-plus"></a>
                 <a class="show-hide" href="#"></a>
             </div>
-            
+
             <div class="form-cont">
-                
+
                 <div class="dates-static">
                     <div class="title">@Model.W("DatesSelectionInfo")</div>
-                    <div>                        
-                        <span class="cap">@Model.W("EarliestDeparatureLatestArrival")</span> 
+                    <div>
+                        <span class="cap">@Model.W("EarliestDeparatureLatestArrival")</span>
                         <span class="earliest-dep val">02/19/2017</span>
                         <span> - </span>
                         <span class="latest-arr val">02/19/2017</span>
-                        
-                        <span class="cap">@Model.W("EarliestDeparatureLatestArrival")</span> 
-                        <span> @Model.W("MinForDays") </span> 
+
+                        <span class="cap">@Model.W("EarliestDeparatureLatestArrival")</span>
+                        <span> @Model.W("MinForDays") </span>
                         <span class="days-from val">8</span>
-                        <span> @Model.W("MaxForDays") </span> 
+                        <span> @Model.W("MaxForDays") </span>
                         <span class="days-to val">12</span>
-                        <span> @Model.W("DaysSentenceEnd")</span> 
+                        <span> @Model.W("DaysSentenceEnd")</span>
                     </div>
                 </div>
 
                 <div class="fixed-part">
-                    
+
                     <div class="title">@Model.W("HowManyDaysInDestination")</div>
                     <div class="days-range-cont"></div>
 
                     <div class="title">@Model.W("EarliestDepLatestArrivalQuestion")</div>
                     <div class="dates">
-                        
+
                         <div id="dpDepCont"></div>
-                        
+
                         <div id="dpArrCont"></div>
 
-                    </div>    
-                    
+                    </div>
+
                     <div class="action-bar">
                         <a id="datesDoneBtn" class="lbtn2 finish-dates-btn" href="#">@Model.W("DoneWithDatesEditingBtn")</a>
                     </div>
 
                 </div>
-                
+
                 <div class="flexible-part">
-                    
+
                     <div class="title">@Model.W("DepartingAirports")</div>
                     <div class="airports-cont">
                         <div class="sta-air-cont">
@@ -677,14 +829,14 @@
 
                         </div>
                     </div>
-                    
+
                     <div class="click-blocker" style="display: none"></div>
 
                 </div>
 
-                
 
-                
+
+
             </div>
         </div>
 

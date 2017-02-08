@@ -1,11 +1,11 @@
-var Views;
-(function (Views) {
+var Planning;
+(function (Planning) {
     var LocationSettingsDialog = (function () {
-        function LocationSettingsDialog(v) {
+        function LocationSettingsDialog(dealsSearch) {
             var _this = this;
             this.airTemplate = Views.ViewBase.currentView.registerTemplate("homeAirportItem-template");
             this.kmRangeSelected = 200;
-            this.v = v;
+            this.dealsSearch = dealsSearch;
             Views.AirLoc.registerLocationCombo($("#currentCity"), function (place) {
                 $("#rangeBlock").removeClass("hidden");
                 $(".home-location-name").html(place.City + ", (" + place.CountryCode + ")");
@@ -27,7 +27,7 @@ var Views;
             });
             $("#refreshResults").click(function (e) {
                 e.preventDefault();
-                _this.v.resultsEngine.refresh();
+                _this.dealsSearch.resultsEngine.refresh();
                 _this.hideRefresh();
             });
         }
@@ -35,7 +35,7 @@ var Views;
             $(".refresh-line").addClass("hidden");
         };
         LocationSettingsDialog.prototype.changed = function () {
-            var sel = this.v.planningMap.map.anySelected();
+            var sel = this.dealsSearch.planningMap.map.anySelected();
             if (sel) {
                 $(".refresh-line").removeClass("hidden");
             }
@@ -45,7 +45,7 @@ var Views;
         };
         LocationSettingsDialog.prototype.loadMgmtAirports = function () {
             var _this = this;
-            this.v.apiGet("airportRange", null, function (as) {
+            this.dealsSearch.v.apiGet("airportRange", null, function (as) {
                 _this.generateAirports(as);
             });
         };
@@ -54,7 +54,7 @@ var Views;
             var ac = new Trip.AirportCombo("airportCombo", { clearAfterSelection: true });
             ac.onSelected = function (e) {
                 var data = { airportId: e.id };
-                _this.v.apiPost("airportRange", data, function (a) {
+                _this.dealsSearch.v.apiPost("airportRange", data, function (a) {
                     _this.genAirport(a);
                     _this.genAirportS(a.airCode);
                     _this.changed();
@@ -79,7 +79,7 @@ var Views;
         LocationSettingsDialog.prototype.callAirportsByRange = function () {
             var _this = this;
             var data = { distance: this.kmRangeSelected };
-            this.v.apiPut("AirportRange", data, function (airports) {
+            this.dealsSearch.v.apiPut("AirportRange", data, function (airports) {
                 _this.generateAirports(airports);
                 _this.changed();
             });
@@ -121,6 +121,6 @@ var Views;
         };
         return LocationSettingsDialog;
     }());
-    Views.LocationSettingsDialog = LocationSettingsDialog;
-})(Views || (Views = {}));
+    Planning.LocationSettingsDialog = LocationSettingsDialog;
+})(Planning || (Planning = {}));
 //# sourceMappingURL=LocationSettingsDialog.js.map

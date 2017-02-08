@@ -17,7 +17,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
     {
         public IDbOperations DB { get; set; }
         public IRequestBuilder8 ReqBuilder { get; set; }
-        public IOldAirportsCache AirCache { get; set; }
+        public IAirportCache AirCache { get; set; }
 
         public List<FlightQuery8DO> BuildQueriesAnytime(DestinationRequests8DO destinations, string userId)
         {

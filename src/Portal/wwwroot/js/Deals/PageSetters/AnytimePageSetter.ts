@@ -6,17 +6,16 @@ module Planning {
 		public queries;
 
 		public grouping = LocationGrouping.ByCity;
-
-		private v: Views.FlyView;
-
+			
 		private $cont = $("#resultsCont");
 		private $filter = $("#filterCont");
 
 		public displayer: AnytimeDisplayer;
 		public filter: FilteringAnytime;
 
-		constructor(v: Views.FlyView) {
-			this.v = v;
+		private dealsSearch: Planning.DealsSearch;
+		constructor(dealsSearch: Planning.DealsSearch) {
+				this.dealsSearch = dealsSearch;
 		}
 
 		public setQueries(queries) {
@@ -25,7 +24,7 @@ module Planning {
 		}
 
 		public init(callback: Function) {
-			var layoutTmp = this.v.registerTemplate("filtering-template");
+			var layoutTmp = this.dealsSearch.v.registerTemplate("filtering-template");
 			this.$filter.html(layoutTmp());
 
 			this.initFilters();

@@ -29,6 +29,128 @@
 
 .fly-tickets{
    
+    .search-form {
+
+        border-top: 2px solid $light-blue3;
+
+        position: relative;
+        background-color: $very-light-blue3;
+        height: 300px;
+
+        .bck {
+            width: 1920px;
+            height: 300px;
+            @include centerer;
+            background-image: url(/images/n/deals-title.jpg);
+        }
+
+        .darker {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(black,0.3);
+        }
+
+        .inner {
+            padding-top: 3em;
+            position: relative;               
+            border: 1px solid red;
+
+        }
+
+        label {
+            color: white;
+        }
+
+        .search-group {
+            display: inline-block;
+        }
+        
+        .search-field {
+            
+            display: inline-block;
+
+            .capt {
+                font-weight: bold;
+                text-align: left;
+                color: white;                
+            }
+
+            .ctrl {
+
+            }
+        }
+
+        .sec-row  {
+            text-align: left;
+            
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+
+
+            border: 1px solid red;
+        }
+
+        @include below-width(1045) {
+            .city-airport-search {
+                width: 45%;
+                border: 1px solid pink;
+            }
+        }
+    }
+
+    .deals-block-all {
+        background-color: $dark-blue;
+        padding: 1em;
+
+        border-top: 2px solid $light-blue3;
+
+        .motto {
+            color: white;
+            font-size: 1.1em;
+        }
+
+        .icons {
+            display: table;
+            width: 100%;
+
+            .ico {
+                display: table-cell;                
+                width: 33.3%
+            }
+
+            .svg-img {
+                width: 120px;
+                height: 120px;
+            }
+        }
+
+        .labels {
+            color: white;
+            display: table;
+            width: 100%;
+
+            .label {
+                display: table-cell;                
+                width: 33.3%;
+                font-weight: bold;
+
+            }
+        }
+
+        .loc {
+            margin: 2em;
+
+            input {
+                text-align: center;
+             }   
+        }
+    }
+
+
     .expander, .collapser {
         text-align: left;        
     }

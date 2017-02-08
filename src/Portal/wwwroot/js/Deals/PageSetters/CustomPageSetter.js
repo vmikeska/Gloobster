@@ -1,22 +1,22 @@
 var Planning;
 (function (Planning) {
     var CustomPageSetter = (function () {
-        function CustomPageSetter(v) {
+        function CustomPageSetter(dealsSearch) {
             this.grouping = Planning.LocationGrouping.ByCity;
             this.$cont = $("#resultsCont");
             this.$filter = $("#filterCont");
-            this.v = v;
+            this.dealsSearch = dealsSearch;
         }
         CustomPageSetter.prototype.setQueries = function (queries) {
             this.queries = queries;
             this.onFilterChanged();
         };
         CustomPageSetter.prototype.init = function (callback) {
-            var layoutTmp = this.v.registerTemplate("filtering-template");
+            var layoutTmp = this.dealsSearch.v.registerTemplate("filtering-template");
             this.$filter.html(layoutTmp());
             this.initFilters();
             this.displayer = new Planning.AnytimeDisplayer(this.$cont, this.filter);
-            this.customForm = new Planning.CustomFrom(this.v);
+            this.customForm = new Planning.CustomFrom(this.dealsSearch);
             this.customForm.init(function () {
                 callback();
             });

@@ -97,15 +97,9 @@ module Planning {
 
 		public queue = [];
 		private intervalId;
-		private doRequery = true;			
-		private v: Views.ViewBase;
-
-			private lastCustomId = "";
-
-		constructor(v: Views.ViewBase) {
-				this.v = v;
-			}
-
+		private doRequery = true;					
+		private lastCustomId = "";
+			
 		public refresh() {
 				this.initalCall(this.timeType, this.lastCustomId);
 		}

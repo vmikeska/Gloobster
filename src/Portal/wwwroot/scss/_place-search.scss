@@ -1,0 +1,206 @@
+﻿
+.city-airport-search {
+    position: relative;
+    display: inline-block;
+
+    .ico {
+        position: absolute;
+        left: 0.3em;
+        top: 0.45em;
+        color: $orange;
+        font-size: 1.2em;
+    }
+
+    .close {
+        position: absolute;
+        right: 6px;
+        top: 15px;
+        color: $darker-gray;
+        cursor: pointer;
+        font-size: 0.7em;
+
+        &:hover {
+            color: $red;
+        }
+    }
+
+    .input-txt {
+        padding-left: 34px;
+        padding-right: 20px;
+
+        border: 1px solid $input-margin-blue;
+
+        border-radius: 2px;
+        padding-top: 0.5em;
+        padding-top: 0.5em;
+
+    }
+
+    .preload-wheel {
+        position: absolute;
+        right: 4px;
+        top: 4px;
+        
+        $size: 1.7em;
+
+        width: $size;
+        height: $size;
+    }
+
+    .results {
+        position: absolute;
+        left: 0;
+        top: 44px;
+        z-index: 999999;
+
+        background-color: white;
+        border: 1px solid $light-blue3;
+        border-radius: 2px;
+
+        .item {
+            padding: 0.3em;
+
+            cursor: pointer;
+            
+            border-bottom: 1px solid $light-blue3;
+
+            &.sub {
+                padding-left: 1.5em;
+            }
+
+            .itbl {
+                display: table;
+
+                .l {
+                    display: table-cell;
+                    vertical-align: middle;
+                    text-align: center;                    
+                }
+
+                .r {
+                    display: table-cell;
+                    vertical-align: middle;
+                    text-align: left;
+                }
+            }
+
+            .ico-item {
+                color: $light-blue3;
+            }
+
+            .txt {
+                padding-left: 0.5em;
+            }
+
+            .code {
+                color: $darker-gray;
+            }
+
+            &:hover {
+                background-color: $very-light-blue3;
+            }
+        }
+    }
+}
+
+
+.place-search-results {
+
+        text-align: left;
+
+        position: absolute;
+        top: 46px;
+        left: 0;
+
+        z-index: 999999;
+        
+        display: inline-block;
+        min-width: 400px;
+        
+        @include above-width(600) {
+            min-width: 530px;
+        }
+
+        @include above-width(700) {
+            min-width: 630px;
+        }
+
+        background-color: rgba(white, 0.85);
+        
+        padding: 1em;
+        border-radius: 4px;
+
+        .close {
+            position: absolute;
+            right: -0.5em;
+            top: -0.5em;
+            display: inline-block;
+            padding: 6px;
+            background-color: white;
+            color: $dark-blue;
+            border-radius: 50%;
+
+            cursor: pointer; 
+
+            &:hover {
+                color: $orange;
+            }
+        }
+
+        .section {
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+
+            .title {
+                font-weight: bold;
+                font-size: 1.1em;
+                margin-bottom: 0.2em;
+            }
+
+            .content {
+                .ptag {
+                    display: inline-block;
+
+                    border-radius: 4px;
+
+                    padding-left: 4px;
+                    padding-right: 4px;
+                    padding-top: 2px;
+                    padding-bottom: 2px;
+                    
+                    margin-left:2px;
+                    margin-right:2px;
+                    margin-bottom:2px;
+
+                    background-color: $light-blue3;
+                    color: white;
+
+                    cursor: pointer;
+
+                    .txt {
+                        font-weight: bold;
+                    }
+
+                    .icon {
+                        color: $dark-blue;
+                        margin-right: 0.3em;
+                    }
+
+                    .cc {
+                        color: $dark-blue;
+                    }
+
+                    &:hover {
+                        background-color: $orange;
+                    }
+                }
+            }
+        }
+
+        .social-search {
+            .soc-btn {
+
+            }
+        }
+
+    }

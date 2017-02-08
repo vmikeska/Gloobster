@@ -26,6 +26,7 @@ using Gloobster.DomainModels.Services.Trip;
 using Gloobster.DomainModels.Services.Twitter;
 using Gloobster.DomainModels.UserLog;
 using Gloobster.DomainModels.Wiki;
+using Gloobster.Entities;
 using Gloobster.Enums;
 using Gloobster.Portal.Controllers.Api.PinBoard;
 using Gloobster.Portal.Controllers.Portal;
@@ -170,17 +171,19 @@ namespace Gloobster.Portal
 
             
 
-            var airportsCache = new AirportsCache
+            var airportsCache = new NewAirportCache
 		    {
 		        DB = new DbOperations()
 		    };
 
-		    builder.AddInstance<IAirportsCache>(airportsCache);
+		    NewAirportCache.Airports = airportsCache.DB.List<NewAirportEntity>(n => !string.IsNullOrEmpty(n.Name));
+            
+            builder.AddInstance<INewAirportCache>(airportsCache);
 
 
-		    var oldAirCache = new OldAirportsCache();
+		    var oldAirCache = new AirportCache();
             oldAirCache.Init(new DbOperations());
-            builder.AddInstance<IOldAirportsCache>(oldAirCache);
+            builder.AddInstance<IAirportCache>(oldAirCache);
 
 
 		    var newAirCityCache = new NewAirportCityCache();

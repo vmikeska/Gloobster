@@ -95,7 +95,7 @@ var Views;
             $("#res1").html(res.Standard);
         };
         DashboardView.prototype.startResMgr = function (pt, onChange, onQueueFinished) {
-            var rm = new Planning.ResultsManager(this);
+            var rm = new Planning.ResultsManager();
             rm.onDrawQueue = function () {
                 if (!any(rm.queue)) {
                     onQueueFinished();

@@ -5,14 +5,14 @@ using Gloobster.Entities;
 
 namespace Gloobster.DomainModels.SearchEngine
 {
-    public interface IOldAirportsCache
+    public interface IAirportCache
     {
         void Init(IDbOperations db);
         AirportEntity GetByOrigId(int origId);
         AirportEntity GetByCode(string code);
     }
 
-    public class OldAirportsCache: IOldAirportsCache
+    public class AirportCache: IAirportCache
     {
         private List<AirportEntity> Airports;
 

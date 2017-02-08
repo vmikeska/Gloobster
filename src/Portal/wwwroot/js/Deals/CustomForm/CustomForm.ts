@@ -3,9 +3,7 @@ module Planning {
 	export class CustomFrom {
 
 		private slider: RangeSlider;
-
-		private v: Views.FlyView;
-
+			
 		private $form;
 		private airTagger;
 
@@ -17,9 +15,10 @@ module Planning {
 
 		public searchId;
 
-		constructor(v: Views.FlyView) {
-			this.v = v;
-
+		private dealsSearch: Planning.DealsSearch;
+		constructor(dealsSearch: Planning.DealsSearch) {
+			this.dealsSearch = dealsSearch;
+		
 			this.create();
 
 			this.dataLoader = new SearchDataLoader();
@@ -92,7 +91,7 @@ module Planning {
 		}
 
 		private create() {
-			var tmp = this.v.registerTemplate("custom-template");
+			var tmp = this.dealsSearch.v.registerTemplate("custom-template");
 			this.$form = $(tmp());
 			$("#tabContent").html(this.$form);
 				
@@ -195,8 +194,8 @@ module Planning {
 							this.loadSearch(search);
 							this.searchId = id;
 							
-							this.v.planningMap.loadCategory(PlanningType.Custom);							
-							this.v.resultsEngine.initalCall(PlanningType.Custom, this.searchId);
+							this.dealsSearch.planningMap.loadCategory(PlanningType.Custom);							
+							this.dealsSearch.resultsEngine.initalCall(PlanningType.Custom, this.searchId);
 					});
 			}
 
@@ -263,12 +262,12 @@ module Planning {
 							$flexPart.removeClass("disabled-block");
 							$datesStatic.removeClass("hidden");
 							$fixedPart.addClass("hidden");
-						  this.v.enableMap(true);
+						  this.dealsSearch.enableMap(true);
 					} else {
 							$flexPart.addClass("disabled-block");
 							$datesStatic.addClass("hidden");
 							$fixedPart.removeClass("hidden");
-							this.v.enableMap(false);
+							this.dealsSearch.enableMap(false);
 					}
 
 					
@@ -300,7 +299,7 @@ module Planning {
 				pdu.addVal("text", text);
 				pdu.addVal("origId", val);
 				pdu.send(() => {
-						this.v.resultsEngine.refresh();
+						this.dealsSearch.resultsEngine.refresh();
 					callback();
 				});
 			}

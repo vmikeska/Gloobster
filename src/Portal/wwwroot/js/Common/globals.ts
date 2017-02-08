@@ -83,4 +83,6 @@ enum PageType { HomePage, PinBoard, TripList, TwitterAuth, Friends }
 
 enum FriendActionType { Confirm, Request, Unfriend, Block, CancelRequest }
 
+enum DealsPlaceReturnType { CountryCode, GID, AirCode }
+
 

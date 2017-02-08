@@ -282,12 +282,42 @@ a {
 
 
 input[type="text"],input[type="password"],input[type="number"],input[type="date"],input[type="email"],textarea{    
-    padding: 8px 13px;
+    
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    padding-right: 0.6em;
+    padding-left: 0.6em;
+
     border: 0;
     border-radius: 4px;
-    font-size: 20px;
+    font-size: 1em;
     color: $input-color;
     border-color: $input-margin-blue;
+}
+
+select {
+    border: 1px solid $input-margin-blue;
+    border-radius: 2px;
+    
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    padding-right: 0.6em;
+    padding-left: 0.6em;
+     
+    color: $input-color;
+    font-size: 1em;    
+    font-weight: bold;
+}
+
+input[type="checkbox"] {
+    width: 1.2em;
+    height: 1.2em;
+    vertical-align: middle;
+    margin-right: 0.5em;
+}
+
+label {
+    vertical-align: middle;
 }
 
 input[type="date"] {
@@ -776,3 +806,4 @@ button:active {
 @import "articles";
 @import "issues";
 @import "new-admin";
+@import "place-search";

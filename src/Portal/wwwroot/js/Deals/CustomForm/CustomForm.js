@@ -1,8 +1,8 @@
 var Planning;
 (function (Planning) {
     var CustomFrom = (function () {
-        function CustomFrom(v) {
-            this.v = v;
+        function CustomFrom(dealsSearch) {
+            this.dealsSearch = dealsSearch;
             this.create();
             this.dataLoader = new Planning.SearchDataLoader();
             this.menu = new Planning.CustomMenu(this.$form.find(".searches-menu"));
@@ -56,7 +56,7 @@ var Planning;
             };
         };
         CustomFrom.prototype.create = function () {
-            var tmp = this.v.registerTemplate("custom-template");
+            var tmp = this.dealsSearch.v.registerTemplate("custom-template");
             this.$form = $(tmp());
             $("#tabContent").html(this.$form);
             this.initShowHide();
@@ -137,8 +137,8 @@ var Planning;
                 _this.dataLoader.getSearch(id, function (search) {
                     _this.loadSearch(search);
                     _this.searchId = id;
-                    _this.v.planningMap.loadCategory(PlanningType.Custom);
-                    _this.v.resultsEngine.initalCall(PlanningType.Custom, _this.searchId);
+                    _this.dealsSearch.planningMap.loadCategory(PlanningType.Custom);
+                    _this.dealsSearch.resultsEngine.initalCall(PlanningType.Custom, _this.searchId);
                 });
             };
             this.$form.find(".adder").click(function (e) {
@@ -185,13 +185,13 @@ var Planning;
                 $flexPart.removeClass("disabled-block");
                 $datesStatic.removeClass("hidden");
                 $fixedPart.addClass("hidden");
-                this.v.enableMap(true);
+                this.dealsSearch.enableMap(true);
             }
             else {
                 $flexPart.addClass("disabled-block");
                 $datesStatic.addClass("hidden");
                 $fixedPart.removeClass("hidden");
-                this.v.enableMap(false);
+                this.dealsSearch.enableMap(false);
             }
         };
         CustomFrom.prototype.getAirs = function (search) {
@@ -217,7 +217,7 @@ var Planning;
                 pdu.addVal("text", text);
                 pdu.addVal("origId", val);
                 pdu.send(function () {
-                    _this.v.resultsEngine.refresh();
+                    _this.dealsSearch.resultsEngine.refresh();
                     callback();
                 });
             };
