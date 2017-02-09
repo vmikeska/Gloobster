@@ -38,7 +38,7 @@ else
 
     <div class="search-form wrapper">
         
-        <h1 class="classic-motto">Gloobster - cheapest flights</h1>
+        <h1 class="motto">Gloobster - cheapest flights</h1>
 
         <div class="inner">
 
@@ -87,75 +87,60 @@ else
 
 </div>
 
-    <div class="fly_all">
+<div class="deals-block-all">
 
-        <div class="motto">
-            <span>@Model.W("FlyTicketSearch")</span>
-        </div>
+    <div class="wrapper">
+        <h1 class="motto">Are you fexible on time? Try our new best deals search!</h1>
 
         <div class="icons">
+            <div class="ico">
+                <img class="svg-img" src="/images/n/fly-pin.svg" />
+            </div>
+            <div class="ico">
+                <img class="svg-img" src="/images/n/fly-comp.svg" />
+            </div>
+            <div class="ico">
+                <img class="svg-img" src="/images/n/fly-plane.svg" />
+            </div>
+        </div>
 
-            <div class="icon block mr">
-                <img class="svg-img"  src="/images/n/fly-pin.svg"/>
-                <div class="txt c1">@Model.W("SetYourHomeLocation")</div>
-            </div>
-            <div class="pointer block mr">
-                <div class="center_cont">
-                    <div class="dashed_cont">
-                        <div class="line"></div>
-                    </div>
-                    <div class="arrow"><img class="svg-img" src="/images/n/fly-arrow.svg"/>
-                    </div>
-                </div>
-            </div>
-            <div class="icon block mr">
-                <img class="svg-img" src="/images/n/fly-comp.svg"/>
-                <div class="txt">@Model.W("CustomizeYourDashboard")</div>
-            </div>
-            <div class="pointer block mr">
-                <div class="center_cont">
-                    <div class="dashed_cont">
-                        <div class="line"></div>
-                    </div>
-                    <div class="arrow"><img class="svg-img" src="/images/n/fly-arrow.svg"/>
-                    </div>
-                </div>
-            </div>
-            <div class="icon block">
-                <img class="svg-img"  src="/images/n/fly-plane.svg"/>
-                <div class="txt">@Model.W("GetDeals")</div>
-            </div>
-
+        <div class="labels">
+            <div class="label">1. Set your home city</div>
+            <div class="label">2. Customize your dashboard</div>
+            <div class="label">3. Get the best deals</div>
         </div>
 
         <div class="loc">
             <div id="currentCity" class="dropdown">
-                <input class="inputed" type="text" placeholder="@Model.W("HomeCityPlaceholder")">
-                <ul>
-                </ul>
+                <input class="inputed" type="text" placeholder="Set your home city">
+                <ul></ul>
             </div>
         </div>
-
     </div>
 
-<div class="social">
+</div>
+
+
+
+
+<div class="social wrapper">
+    
+    <h1 class="motto">@Model.W("TryOurComponents")</h1>
 
     <div class="blocks">
-
-        <div class="motto">@Model.W("TryOurComponents")</div>
-
-    <div class="item mr">
-        <div class="image">
-            <span class="icon-ico-travel-buddy blue"></span>
+        
+        <div class="item mr">
+            <div class="image">
+                <span class="icon-ico-travel-buddy blue"></span>
+            </div>
+            <div class="name">
+                <span class="blue">@Model.W("CompTitleTravelBuddy")</span>
+            </div>
+            <div class="txt">@Model.W("CompBodyTravelBuddy")</div>
+            <div class="btn">
+                <a class="blue" href="/@RoutingConsts.TravelBuddyMenuName">@Model.W("CompBtnTravelBuddy")</a>
+            </div>
         </div>
-        <div class="name">
-            <span class="blue">@Model.W("CompTitleTravelBuddy")</span>
-        </div>
-        <div class="txt">@Model.W("CompBodyTravelBuddy")</div>
-        <div class="btn">
-            <a class="blue" href="/@RoutingConsts.TravelBuddyMenuName">@Model.W("CompBtnTravelBuddy")</a>
-        </div>
-    </div>
 
         <div class="item mr">
             <div class="image">
@@ -178,7 +163,7 @@ else
                 <span class="orange">@Model.W("CompTitleWiki")</span>
             </div>
             <div class="txt">@Model.W("CompBodyWiki")</div>
-            <div class="btn">                
+            <div class="btn">
                 <a class="orange" href="@RoutingConsts.WikiMenuName">@Model.W("CompBtnWiki")</a>
             </div>
         </div>
@@ -191,7 +176,7 @@ else
                 <span class="yellow">@Model.W("CompTitlePinboard")</span>
             </div>
             <div class="txt">@Model.W("CompBodyPinboard")</div>
-            <div class="btn">                
+            <div class="btn">
                 <a class="yellow" href="@RoutingConsts.PinsMenuName">@Model.W("CompBtnPinboard")</a>
             </div>
         </div>
