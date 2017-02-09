@@ -1,0 +1,50 @@
+﻿<script id="city-air-search-template" type="text/x-handlebars-template">
+    
+    <div class="atbl">
+        <div class="cell-pin cell">
+            <span class="icon-logo-pin ico"></span>
+        </div>
+        <div class="cell-input cell">
+            <input type="text" class="input-txt" placeholder="{{placeholder}}" />
+        </div>
+        <div class="cell-cross cell">
+            <span class="icon-cross-small close"></span>
+            <img class="preload-wheel hidden" src="/images/n/preloader.gif" />
+        </div>
+    </div>
+
+    <div class="results hidden">
+
+        <div class="section">
+            <div class="title">Cities</div>
+
+            <div class="cont">
+
+                <div class="city"></div>
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</script>
+
+<script id="city-air-item-template" type="text/x-handlebars-template">
+
+    <div class="item {{cls}}">
+
+        <div class="itbl">
+            <div class="l">
+                <span class="icon-{{icon}} ico-item"></span>
+            </div>
+            <div class="r">
+                <span class="txt">{{txt}}</span><span class="code">{{code}}</span>
+            </div>
+        </div>
+
+    </div>
+
+</script>

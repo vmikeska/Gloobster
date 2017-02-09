@@ -21,33 +21,71 @@
 }
 else
 {
+    <script src="/js/Deals/DealsPlaceSearch.js" type="text/javascript"></script>
     <script src="/js/Views/AirLoc.js" type="text/javascript"></script>
     <script src="/js/Views/HomePageView.js" type="text/javascript"></script>
     <script src="/js/views/settingsutils.js" type="text/javascript"></script>    
 }
 
-<div class="title-show-all">
-    <div class="photo">
-        <div class="empty-fill"></div>   
-    </div>
-    
-    <div class="photo-small"></div>
 
-    <div class="wrapper">
-        <div class="main-fill"></div>
+<div class="title-block-all">
+
+    <div class="title-photo">
+        <div class="bck"></div>
+
+        <div class="darker"></div>
+    </div>
+
+    <div class="search-form wrapper">
         
+        <h1 class="classic-motto">Gloobster - cheapest flights</h1>
 
-        <div class="text-area">
-            <h1 class="motto">@Model.W("MainMotto")</h1>
+        <div class="inner">
 
-            @*<a class="link" href="#">Learn more</a>*@
+            <div class="search-group places-row">
+
+                <div class="search-field">
+                    <div class="capt">From</div>
+                    <div class="ctrl">
+                        <div id="searchFrom"></div>
+                    </div>
+                </div>
+
+                <div class="search-field">
+                    <div class="capt">To</div>
+                    <div class="ctrl">
+                        <div id="searchTo"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="search-group">
+
+                <div class="search-field">
+                    <div class="capt">Depart</div>
+                    <div class="ctrl">
+                        <div id="dateFrom"></div>
+                    </div>
+                </div>
+
+                <div class="search-field">
+                    <div class="capt">Return</div>
+                    <div class="ctrl">
+                        <div id="dateTo"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="sec-row">
+                <a href="#" id="btnSearch" class="lbtn2 green-orange bold">Search deals</a>
+            </div>
+
         </div>
-
     </div>
-    
+
 </div>
-
-
 
     <div class="fly_all">
 
@@ -161,6 +199,8 @@ else
     </div>
 
 </div>
+
+@Html.Partial("_DestPlaceCombo")
 
 <script>
     

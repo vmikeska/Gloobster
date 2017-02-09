@@ -1,20 +1,46 @@
 ﻿
 .city-airport-search {
     position: relative;
-    display: inline-block;
+    display: inline-block;    
+    
+    .atbl {
+        display: table;
+        background-color: white;
+        width: 100%;
+        
+        border-radius: 2px;
+        border: 1px solid $input-margin-blue;
 
-    .ico {
-        position: absolute;
-        left: 0.3em;
-        top: 0.45em;
-        color: $orange;
-        font-size: 1.2em;
+        .cell {
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .cell-pin {
+            padding-top: 3px;
+            width: 1.4em;            
+        }
+
+        .cell-input {
+            
+        }
+
+        .cell-cross {
+            width: 1.6em;
+        }
     }
 
-    .close {
-        position: absolute;
-        right: 6px;
-        top: 15px;
+    .ico {        
+        color: $orange;
+        font-size: 1.2em;
+
+        &.icon-airplane {
+            font-size: 1em;
+        }
+    }
+
+    .close {        
         color: $darker-gray;
         cursor: pointer;
         font-size: 0.7em;
@@ -24,16 +50,17 @@
         }
     }
 
-    .input-txt {
-        padding-left: 34px;
-        padding-right: 20px;
+    .input-txt {        
+        padding-left: 0;
+        padding-right: 0;
 
-        border: 1px solid $input-margin-blue;
+        border: 0;
 
-        border-radius: 2px;
+        width: 100%;
+
+        border-radius: 0;
         padding-top: 0.5em;
         padding-top: 0.5em;
-
     }
 
     .preload-wheel {
