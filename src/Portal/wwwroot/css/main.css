@@ -4816,11 +4816,9 @@ footer {
 
 .fly-tickets .deals-block-all {
   background-color: #005476;
-  padding: 1em;
   border-top: 2px solid #3298C1; }
   .fly-tickets .deals-block-all .motto {
-    color: white;
-    font-size: 1.1em; }
+    color: white; }
   .fly-tickets .deals-block-all .icons {
     display: table;
     width: 100%; }
@@ -4839,7 +4837,7 @@ footer {
       width: 33.3%;
       font-weight: bold; }
   .fly-tickets .deals-block-all .loc {
-    margin: 2em; }
+    padding: 1em; }
     .fly-tickets .deals-block-all .loc input {
       text-align: center; }
 

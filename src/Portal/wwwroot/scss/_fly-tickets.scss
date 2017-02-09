@@ -102,15 +102,13 @@
         }
     }
 
-    .deals-block-all {
-        background-color: $dark-blue;
-        padding: 1em;
+    .deals-block-all {        
+        background-color: $dark-blue;        
 
         border-top: 2px solid $light-blue3;
 
         .motto {
-            color: white;
-            font-size: 1.1em;
+            color: white;            
         }
 
         .icons {
@@ -142,7 +140,7 @@
         }
 
         .loc {
-            margin: 2em;
+            padding: 1em;
 
             input {
                 text-align: center;
