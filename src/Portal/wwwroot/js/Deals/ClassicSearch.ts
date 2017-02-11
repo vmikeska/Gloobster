@@ -9,18 +9,11 @@
 						return Views.ViewBase.currentView;
 				}
 
-				constructor($cont) {
-						this.$mainCont = $cont;
-						this.createLayout();
+				constructor() {
+						this.$mainCont = $(".classic-search");						
+						this.$results = this.$mainCont.find(".search-results");
 				}
-
-			private createLayout() {
-				var tmp = this.v.registerTemplate("classic-template");
-				var $t = $(tmp());
-				this.$mainCont.html($t);
-
-				this.$results = this.$mainCont.find(".search-results");
-			}
+				
 
 			public regSearch() {
 					$("#btnSearch").click((e) => {

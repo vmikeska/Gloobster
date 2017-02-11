@@ -133,6 +133,34 @@ body {
     body { font-size: 16px; }
 }
 
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
+.hidable-hide {
+    display: none;
+}
+
+.list-state-collapsed {
+    .expander {
+       
+    }
+    
+    .collapser {
+        display: none;
+    }
+}
+
+.list-state-expanded {
+    .expander {
+       display: none;
+    }
+    
+    .collapser {
+        
+    }
+}
+
 .place-combo {
     position: relative;
 

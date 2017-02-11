@@ -5,10 +5,8 @@
 
 			constructor() {
 				super();
-
-				//this.initMainTabs();
-
-				var cs = new Planning.ClassicSearch($("#classicCont"));
+					
+				var cs = new Planning.ClassicSearch();
 				cs.init();
 
 			}

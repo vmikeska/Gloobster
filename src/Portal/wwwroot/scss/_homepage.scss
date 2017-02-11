@@ -26,14 +26,13 @@
             
         .motto {
             font-size: 1.5em;
-            /*margin-bottom: 1em;*/
         }
     }
 
     .title-block-all {
         position: relative;
         height: 300px;
-        background-color: $light-blue6;
+        background-color: rgba($darker-gray, 0.4);
     
 
         .title-photo {
@@ -225,143 +224,21 @@
     }
 
 
-
-
-
-/*.fly_all {
-    background-color: $light-blue3;
-    background-color: $dark-blue;
-    text-align: center;
-    padding-top: 50px;
-    
-    .motto{
-        font-size: 28px;
-        color: white;        
-        margin-bottom: 50px;
-    }
-
-    .icons {
-        
-        .block {
-            display: inline-block;
-            vertical-align: top;
-            height:250px;            
-        }
-
-        .mr{
-            margin-right: 30px;
-
-            @include below-width(830){
-                margin-right: 5px;
-            }
-        }
-
-        .icon {                        
-            width: 120px;
-            @include below-width(510){
-                width: 80px;
-            }
-
-            img {
-                @include below-width(510){
-                    width: 80px;
-                }
-            }
-
-            .txt {
-                margin-top: 30px;
-                color: white;
-                font-size: 24px;
-
-                @include below-width(510){
-                    font-size: 18px;
-                    text-align: left;
-                }
-            }
-        }
-
-        .pointer {                        
-            
-            @include below-width(420){
-                display: none;
-            }
-
-            .center_cont {      
-                margin-top: 59px;
-                @include below-width(510){
-                    margin-top: 40px;
-                }
-                height: 15px;
-                
-                .dashed_cont {
-                    display: inline-block;
-                    
-                    height: 15px;
-
-                    .line{           
-                        margin-top: 6px;             
-                        width: 120px;
-                        @include below-width(720){
-                            width: 60px;
-                        }
-                        @include below-width(590){
-                            width: 20px;
-                        }
-
-                        height: 1px;
-                        border-top: 4px dashed white;
-                    }
-                }
-
-                .arrow  {
-                    display: inline-block;
-                    
-                    width: 15px;
-                    height: 15px;
-                }
-                 
-            }
-        }
-    }
-
-    .loc{        
-        padding-top: 40px;
-        padding-bottom: 50px;
-        
-        input {
-            text-align: center;
-        }
-
-        ul {
-            border-color:  $dark-blue !important;
-        }
-        li {
-            border-color:  $dark-blue !important;
-            color:  $dark-blue !important;
-
-            text-align: left;
-
-            .icon-city {
-                font-size: 26px;
-                color: $orange;
-            }
-        }
-    }
-}*/
-
 .social 
 {    
     .blocks {
 
-        .mr{
+        .item {
             margin-right: 50px;
+
+            &:last-of-type {
+                margin-right: 0;
+            }
 
             @include tablet {
                 margin-right: 00px;
             }
-        }
 
-        .item {
             .blue{
                 color: $light-blue2;
             }

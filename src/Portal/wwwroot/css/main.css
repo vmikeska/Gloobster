@@ -13,6 +13,28 @@ body {
   body {
     font-size: 16px; } }
 
+@-moz-keyframes spin {
+  100% {
+    -moz-transform: rotate(360deg); } }
+
+@-webkit-keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg); } }
+
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+
+.hidable-hide {
+  display: none; }
+
+.list-state-collapsed .collapser {
+  display: none; }
+
+.list-state-expanded .expander {
+  display: none; }
+
 .place-combo {
   position: relative; }
   .place-combo input {
@@ -1472,312 +1494,196 @@ footer {
   .dropdown.dropdown-open ul {
     display: block; }
 
-.homepage {
-  /*.fly_all {
-    background-color: $light-blue3;
-    background-color: $dark-blue;
-    text-align: center;
-    padding-top: 50px;
-    
-    .motto{
-        font-size: 28px;
-        color: white;        
-        margin-bottom: 50px;
-    }
+.homepage .motto {
+  font-size: 2em;
+  font-weight: 500;
+  padding: 0;
+  margin: 0;
+  margin-top: 0.5em;
+  margin-bottom: 0.9em;
+  text-align: center; }
 
-    .icons {
-        
-        .block {
-            display: inline-block;
-            vertical-align: top;
-            height:250px;            
-        }
-
-        .mr{
-            margin-right: 30px;
-
-            @include below-width(830){
-                margin-right: 5px;
-            }
-        }
-
-        .icon {                        
-            width: 120px;
-            @include below-width(510){
-                width: 80px;
-            }
-
-            img {
-                @include below-width(510){
-                    width: 80px;
-                }
-            }
-
-            .txt {
-                margin-top: 30px;
-                color: white;
-                font-size: 24px;
-
-                @include below-width(510){
-                    font-size: 18px;
-                    text-align: left;
-                }
-            }
-        }
-
-        .pointer {                        
-            
-            @include below-width(420){
-                display: none;
-            }
-
-            .center_cont {      
-                margin-top: 59px;
-                @include below-width(510){
-                    margin-top: 40px;
-                }
-                height: 15px;
-                
-                .dashed_cont {
-                    display: inline-block;
-                    
-                    height: 15px;
-
-                    .line{           
-                        margin-top: 6px;             
-                        width: 120px;
-                        @include below-width(720){
-                            width: 60px;
-                        }
-                        @include below-width(590){
-                            width: 20px;
-                        }
-
-                        height: 1px;
-                        border-top: 4px dashed white;
-                    }
-                }
-
-                .arrow  {
-                    display: inline-block;
-                    
-                    width: 15px;
-                    height: 15px;
-                }
-                 
-            }
-        }
-    }
-
-    .loc{        
-        padding-top: 40px;
-        padding-bottom: 50px;
-        
-        input {
-            text-align: center;
-        }
-
-        ul {
-            border-color:  $dark-blue !important;
-        }
-        li {
-            border-color:  $dark-blue !important;
-            color:  $dark-blue !important;
-
-            text-align: left;
-
-            .icon-city {
-                font-size: 26px;
-                color: $orange;
-            }
-        }
-    }
-}*/ }
+@media screen and (max-width: 620px) {
   .homepage .motto {
-    font-size: 2em;
-    font-weight: 500;
-    padding: 0;
-    margin: 0;
-    margin-top: 0.5em;
-    margin-bottom: 0.9em;
-    text-align: center; }
-  @media screen and (max-width: 620px) {
-    .homepage .motto {
-      font-size: 1.2em;
-      margin-top: 0.3em;
-      margin-bottom: 0.3em; } }
-  @media screen and (max-width: 959px) {
-    .homepage .motto {
-      font-size: 1.5em;
-      /*margin-bottom: 1em;*/ } }
-  .homepage .title-block-all {
-    position: relative;
-    height: 300px;
-    background-color: #9FD2E3; }
-    .homepage .title-block-all .title-photo {
-      display: none;
-      border-top: 2px solid #3298C1;
+    font-size: 1.2em;
+    margin-top: 0.3em;
+    margin-bottom: 0.3em; } }
+
+@media screen and (max-width: 959px) {
+  .homepage .motto {
+    font-size: 1.5em; } }
+
+.homepage .title-block-all {
+  position: relative;
+  height: 300px;
+  background-color: rgba(188, 179, 184, 0.4); }
+  .homepage .title-block-all .title-photo {
+    display: none;
+    border-top: 2px solid #3298C1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden; }
+    .homepage .title-block-all .title-photo .bck {
+      width: 1920px;
+      height: 300px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-image: url(/images/n/deals-title.jpg); }
+    .homepage .title-block-all .title-photo .darker {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      overflow: hidden; }
-      .homepage .title-block-all .title-photo .bck {
-        width: 1920px;
-        height: 300px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-image: url(/images/n/deals-title.jpg); }
-      .homepage .title-block-all .title-photo .darker {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(0, 0, 0, 0.3); }
-    .homepage .title-block-all .search-form {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0; }
-      .homepage .title-block-all .search-form .inner {
-        text-align: right;
-        max-width: 959px;
-        margin-left: auto;
-        margin-right: auto; }
-      .homepage .title-block-all .search-form label {
-        color: white; }
-      .homepage .title-block-all .search-form .search-group {
-        display: inline-block; }
-      .homepage .title-block-all .search-form .city-airport-search {
-        max-width: 290px;
-        vertical-align: middle; }
-      .homepage .title-block-all .search-form .calendar-cont {
-        vertical-align: middle; }
-      .homepage .title-block-all .search-form .search-field {
-        display: inline-block; }
-        .homepage .title-block-all .search-form .search-field .capt {
-          text-align: left; }
-      .homepage .title-block-all .search-form .sec-row {
-        text-align: right;
-        margin-top: 0.7em;
-        padding-right: 1em; }
-      @media screen and (max-width: 959px) {
-        .homepage .title-block-all .search-form .search-group {
-          display: table;
-          width: 100%; }
-          .homepage .title-block-all .search-form .search-group .search-field {
-            display: table-cell;
-            width: 50%;
-            text-align: left;
-            padding-left: 0.5em;
-            padding-right: 0.5em; }
-        .homepage .title-block-all .search-form .city-airport-search {
-          max-width: none;
-          width: 100%; } }
-      @media screen and (max-width: 620px) {
-        .homepage .title-block-all .search-form .places-row {
-          display: block;
-          width: auto; }
-          .homepage .title-block-all .search-form .places-row .search-field {
-            display: block;
-            width: auto; } }
-      @media screen and (min-width: 720px) {
-        .homepage .title-block-all .search-form .motto {
-          color: white; }
-        .homepage .title-block-all .search-form .search-field .capt {
-          color: white;
-          font-weight: bold; } }
-    @media screen and (min-width: 720px) {
-      .homepage .title-block-all .title-photo {
-        display: block; } }
-  .homepage .deals-block-all {
-    background-color: #005476;
-    border-top: 2px solid #3298C1; }
-    .homepage .deals-block-all .motto {
-      color: white; }
-    .homepage .deals-block-all .icons {
-      display: table;
-      width: 100%; }
-      .homepage .deals-block-all .icons .ico {
-        display: table-cell;
-        width: 33.3%; }
-      .homepage .deals-block-all .icons .svg-img {
-        width: 120px;
-        height: 120px; }
-    .homepage .deals-block-all .labels {
-      color: white;
-      display: table;
-      width: 100%; }
-      .homepage .deals-block-all .labels .label {
-        display: table-cell;
-        width: 33.3%;
-        font-weight: bold; }
-    .homepage .deals-block-all .loc {
-      padding: 1em; }
-      .homepage .deals-block-all .loc input {
-        text-align: center; }
-  .homepage .social .blocks .mr {
-    margin-right: 50px; }
-    @media screen and (max-width: 959px) {
-      .homepage .social .blocks .mr {
-        margin-right: 00px; } }
-  .homepage .social .blocks .item {
-    display: inline-block;
-    width: 200px;
-    margin-bottom: 30px; }
-    .homepage .social .blocks .item .blue {
-      color: #009EC4; }
-    .homepage .social .blocks .item .yellow {
-      color: #FFC400; }
-    .homepage .social .blocks .item .orange {
-      color: #F56E12; }
-    .homepage .social .blocks .item .green {
-      color: #3DA33D; }
-    .homepage .social .blocks .item .image {
-      width: 84px;
-      height: 84px;
+      background-color: rgba(0, 0, 0, 0.3); }
+  .homepage .title-block-all .search-form {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0; }
+    .homepage .title-block-all .search-form .inner {
+      text-align: right;
+      max-width: 959px;
       margin-left: auto;
-      margin-right: auto;
-      margin-bottom: 20px;
-      font-size: 84px; }
-    .homepage .social .blocks .item .name {
-      font-size: 28px;
-      font-weight: 500;
-      height: 30px;
-      margin-bottom: 20px; }
-    .homepage .social .blocks .item .txt {
-      font-size: 16px;
-      height: 150px; }
-    .homepage .social .blocks .item .btn {
-      text-align: center; }
-      .homepage .social .blocks .item .btn .blue {
-        background-color: #009EC4; }
-      .homepage .social .blocks .item .btn .yellow {
-        background-color: #FFC400; }
-      .homepage .social .blocks .item .btn .orange {
-        background-color: #F56E12; }
-      .homepage .social .blocks .item .btn .green {
-        background-color: #3DA33D; }
-      .homepage .social .blocks .item .btn a {
-        display: inline-block;
+      margin-right: auto; }
+    .homepage .title-block-all .search-form label {
+      color: white; }
+    .homepage .title-block-all .search-form .search-group {
+      display: inline-block; }
+    .homepage .title-block-all .search-form .city-airport-search {
+      max-width: 290px;
+      vertical-align: middle; }
+    .homepage .title-block-all .search-form .calendar-cont {
+      vertical-align: middle; }
+    .homepage .title-block-all .search-form .search-field {
+      display: inline-block; }
+      .homepage .title-block-all .search-form .search-field .capt {
+        text-align: left; }
+    .homepage .title-block-all .search-form .sec-row {
+      text-align: right;
+      margin-top: 0.7em;
+      padding-right: 1em; }
+    @media screen and (max-width: 959px) {
+      .homepage .title-block-all .search-form .search-group {
+        display: table;
+        width: 100%; }
+        .homepage .title-block-all .search-form .search-group .search-field {
+          display: table-cell;
+          width: 50%;
+          text-align: left;
+          padding-left: 0.5em;
+          padding-right: 0.5em; }
+      .homepage .title-block-all .search-form .city-airport-search {
+        max-width: none;
+        width: 100%; } }
+    @media screen and (max-width: 620px) {
+      .homepage .title-block-all .search-form .places-row {
+        display: block;
+        width: auto; }
+        .homepage .title-block-all .search-form .places-row .search-field {
+          display: block;
+          width: auto; } }
+    @media screen and (min-width: 720px) {
+      .homepage .title-block-all .search-form .motto {
+        color: white; }
+      .homepage .title-block-all .search-form .search-field .capt {
         color: white;
-        background-color: #009EC4;
-        border-style: solid;
-        border-width: 0;
-        border-radius: 4px;
-        font-weight: 500;
-        font-size: 18px;
-        width: 75%;
-        padding-top: 13px;
-        padding-bottom: 13px;
-        text-decoration: none; }
-      .homepage .social .blocks .item .btn a:hover {
-        opacity: 0.7; }
+        font-weight: bold; } }
+  @media screen and (min-width: 720px) {
+    .homepage .title-block-all .title-photo {
+      display: block; } }
+
+.homepage .deals-block-all {
+  background-color: #005476;
+  border-top: 2px solid #3298C1; }
+  .homepage .deals-block-all .motto {
+    color: white; }
+  .homepage .deals-block-all .icons {
+    display: table;
+    width: 100%; }
+    .homepage .deals-block-all .icons .ico {
+      display: table-cell;
+      width: 33.3%; }
+    .homepage .deals-block-all .icons .svg-img {
+      width: 120px;
+      height: 120px; }
+  .homepage .deals-block-all .labels {
+    color: white;
+    display: table;
+    width: 100%; }
+    .homepage .deals-block-all .labels .label {
+      display: table-cell;
+      width: 33.3%;
+      font-weight: bold; }
+  .homepage .deals-block-all .loc {
+    padding: 1em; }
+    .homepage .deals-block-all .loc input {
+      text-align: center; }
+
+.homepage .social .blocks .item {
+  margin-right: 50px;
+  display: inline-block;
+  width: 200px;
+  margin-bottom: 30px; }
+  .homepage .social .blocks .item:last-of-type {
+    margin-right: 0; }
+  @media screen and (max-width: 959px) {
+    .homepage .social .blocks .item {
+      margin-right: 00px; } }
+  .homepage .social .blocks .item .blue {
+    color: #009EC4; }
+  .homepage .social .blocks .item .yellow {
+    color: #FFC400; }
+  .homepage .social .blocks .item .orange {
+    color: #F56E12; }
+  .homepage .social .blocks .item .green {
+    color: #3DA33D; }
+  .homepage .social .blocks .item .image {
+    width: 84px;
+    height: 84px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    font-size: 84px; }
+  .homepage .social .blocks .item .name {
+    font-size: 28px;
+    font-weight: 500;
+    height: 30px;
+    margin-bottom: 20px; }
+  .homepage .social .blocks .item .txt {
+    font-size: 16px;
+    height: 150px; }
+  .homepage .social .blocks .item .btn {
+    text-align: center; }
+    .homepage .social .blocks .item .btn .blue {
+      background-color: #009EC4; }
+    .homepage .social .blocks .item .btn .yellow {
+      background-color: #FFC400; }
+    .homepage .social .blocks .item .btn .orange {
+      background-color: #F56E12; }
+    .homepage .social .blocks .item .btn .green {
+      background-color: #3DA33D; }
+    .homepage .social .blocks .item .btn a {
+      display: inline-block;
+      color: white;
+      background-color: #009EC4;
+      border-style: solid;
+      border-width: 0;
+      border-radius: 4px;
+      font-weight: 500;
+      font-size: 18px;
+      width: 75%;
+      padding-top: 13px;
+      padding-bottom: 13px;
+      text-decoration: none; }
+    .homepage .social .blocks .item .btn a:hover {
+      opacity: 0.7; }
 
 .pins .head-icons-all {
   position: relative;
@@ -4747,72 +4653,41 @@ footer {
     .travelb-home .req-settings .gap {
       padding-right: 4px; } }
 
-@-moz-keyframes spin {
-  100% {
-    -moz-transform: rotate(360deg); } }
+.fly-tickets .motto {
+  font-size: 1.5em;
+  text-align: center; }
 
-@-webkit-keyframes spin {
-  100% {
-    -webkit-transform: rotate(360deg); } }
+.fly-tickets .classic-search .search-bar {
+  background-color: #BCB3B8; }
 
-@keyframes spin {
-  100% {
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg); } }
+.fly-tickets .search-form label {
+  color: white; }
 
-.hidable-hide {
-  display: none; }
+.fly-tickets .search-form .search-group {
+  display: inline-block; }
 
-.list-state-collapsed .collapser {
-  display: none; }
-
-.list-state-expanded .expander {
-  display: none; }
-
-.fly-tickets .search-form {
-  border-top: 2px solid #3298C1;
-  position: relative;
-  background-color: #F0FAFC;
-  height: 300px; }
-  .fly-tickets .search-form .bck {
-    width: 1920px;
-    height: 300px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-image: url(/images/n/deals-title.jpg); }
-  .fly-tickets .search-form .darker {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.3); }
-  .fly-tickets .search-form .inner {
-    padding-top: 3em;
-    position: relative;
-    border: 1px solid red; }
-  .fly-tickets .search-form label {
-    color: white; }
-  .fly-tickets .search-form .search-group {
-    display: inline-block; }
-  .fly-tickets .search-form .search-field {
-    display: inline-block; }
-    .fly-tickets .search-form .search-field .capt {
-      font-weight: bold;
-      text-align: left;
-      color: white; }
-  .fly-tickets .search-form .sec-row {
+.fly-tickets .search-form .search-field {
+  display: inline-block;
+  vertical-align: top; }
+  .fly-tickets .search-form .search-field .capt {
+    font-weight: bold;
     text-align: left;
-    max-width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
-    border: 1px solid red; }
-  @media screen and (max-width: 1045px) {
-    .fly-tickets .search-form .city-airport-search {
-      width: 45%;
-      border: 1px solid pink; } }
+    color: white; }
+
+.fly-tickets .search-form .one-line {
+  padding-top: 1.35em; }
+
+.fly-tickets .search-form .sec-row {
+  text-align: left;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid red; }
+
+@media screen and (max-width: 1045px) {
+  .fly-tickets .search-form .city-airport-search {
+    width: 45%;
+    border: 1px solid pink; } }
 
 .fly-tickets .deals-block-all {
   background-color: #005476;

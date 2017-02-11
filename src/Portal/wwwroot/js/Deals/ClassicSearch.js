@@ -1,9 +1,9 @@
 var Planning;
 (function (Planning) {
     var ClassicSearch = (function () {
-        function ClassicSearch($cont) {
-            this.$mainCont = $cont;
-            this.createLayout();
+        function ClassicSearch() {
+            this.$mainCont = $(".classic-search");
+            this.$results = this.$mainCont.find(".search-results");
         }
         Object.defineProperty(ClassicSearch.prototype, "v", {
             get: function () {
@@ -12,12 +12,6 @@ var Planning;
             enumerable: true,
             configurable: true
         });
-        ClassicSearch.prototype.createLayout = function () {
-            var tmp = this.v.registerTemplate("classic-template");
-            var $t = $(tmp());
-            this.$mainCont.html($t);
-            this.$results = this.$mainCont.find(".search-results");
-        };
         ClassicSearch.prototype.regSearch = function () {
             var _this = this;
             $("#btnSearch").click(function (e) {

@@ -1,64 +1,22 @@
 ﻿
-@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
-@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
-@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
 
-.hidable-hide {
-    display: none;
-}
-
-.list-state-collapsed {
-    .expander {
-       
-    }
-    
-    .collapser {
-        display: none;
-    }
-}
-
-.list-state-expanded {
-    .expander {
-       display: none;
-    }
-    
-    .collapser {
-        
-    }
-}
 
 .fly-tickets{
    
+    .motto {
+        font-size: 1.5em;
+        text-align: center;
+    }
+
+    .classic-search {
+        
+        .search-bar {
+            background-color: $darker-gray;
+        }
+    }
+
     .search-form {
 
-        border-top: 2px solid $light-blue3;
-
-        position: relative;
-        background-color: $very-light-blue3;
-        height: 300px;
-
-        .bck {
-            width: 1920px;
-            height: 300px;
-            @include centerer;
-            background-image: url(/images/n/deals-title.jpg);
-        }
-
-        .darker {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(black,0.3);
-        }
-
-        .inner {
-            padding-top: 3em;
-            position: relative;               
-            border: 1px solid red;
-
-        }
 
         label {
             color: white;
@@ -71,6 +29,7 @@
         .search-field {
             
             display: inline-block;
+            vertical-align: top;
 
             .capt {
                 font-weight: bold;
@@ -81,6 +40,10 @@
             .ctrl {
 
             }
+        }
+
+        .one-line {
+            padding-top: 1.35em;
         }
 
         .sec-row  {
@@ -147,6 +110,16 @@
              }   
         }
     }
+
+
+
+
+
+
+
+
+
+
 
 
     .expander, .collapser {

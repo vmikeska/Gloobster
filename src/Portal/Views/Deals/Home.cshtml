@@ -13,12 +13,80 @@
 
 @Html.Partial("Scripts")
 
-@{
+@*@{
     var infoBlock = Model.InfoBlock("info-deals");
-}
+}*@
 
-<div id="classicCont">
+<div class="classic-search">
     
+    <div class="search-bar">
+        <div class="wrapper">
+            <div class="search-form">
+
+                <div class="search-group">
+
+                    <div class="search-field">
+                        <div class="capt">From</div>
+                        <div class="ctrl">
+                            <div id="searchFrom"></div>
+                        </div>
+                    </div>
+
+                    <div class="search-field">
+                        <div class="capt">To</div>
+                        <div class="ctrl">
+                            <div id="searchTo"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="search-group">
+
+                    <div class="search-field">
+                        <div class="capt">Depart</div>
+                        <div class="ctrl">
+                            <div id="dateFrom"></div>
+                        </div>
+                    </div>
+
+                    <div class="search-field">
+                        <div class="capt">Return</div>
+                        <div class="ctrl">
+                            <div id="dateTo"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="search-field one-line">                        
+                        <div class="ctrl">
+                            <a href="#" id="btnSearch" class="lbtn2 green-orange">Search</a>
+                        </div>
+                    </div>
+
+                    
+
+                </div>
+
+                
+                @*<div class="search-field">
+                    <div class="capt">Seats</div>
+                    <div class="ctrl">
+                        <div id="passangersCnt"></div>
+                    </div>
+                </div>
+
+                <input type="checkbox" id="directFlights" /><label for="directFlights">Just direct flights</label>
+                *@
+            </div>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <div class="search-results">
+
+        </div>
+    </div>
+
 </div>
 
 <div class="deals-block-all">

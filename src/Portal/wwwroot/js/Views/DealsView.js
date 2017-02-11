@@ -9,7 +9,7 @@ var Views;
         __extends(DealsView, _super);
         function DealsView() {
             _super.call(this);
-            var cs = new Planning.ClassicSearch($("#classicCont"));
+            var cs = new Planning.ClassicSearch();
             cs.init();
         }
         return DealsView;
