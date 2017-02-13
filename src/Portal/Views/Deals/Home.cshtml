@@ -92,7 +92,7 @@
 <div class="deals-block-all">
 
     <div class="wrapper">
-        <h1 class="motto">Are you fexible on time? Try our new best deals search!</h1>
+        <h1 class="motto">Are you fexible? Try our new best deals search!</h1>
 
         <div class="icons">
             <div class="ico">
@@ -122,54 +122,112 @@
 
 </div>
 
+<div class="wrapper">
 
-@*<div class="info-block-bck @infoBlock.Class" id="info-deals">
+    <div class="cat-all">
+        <div class="cat-bar">
 
-    <div class="wrapper">
-        
-        @Html.Partial("TitleBlock", infoBlock)
-
-        <div class="info-block info-block2" style="@infoBlock.Css">
-            
-            <div class="info-inner-table">
-                
-                <div class="block">
-                    <img class="svg-img" src="/images/n/fly-pin.svg">
-                    <p class="txt">
-                        @Model.W("InfoBlock1")
-                    </p>
+            <div class="htbl">
+                <div class="left">
+                    <h2>Anytime deals</h2>
+                    <span class="icon-"></span>
                 </div>
+                <div class="right">
+
+                    <div class="ico-wrap">
+                        <div class="ico-part">
+                            <span class="icon-edit-pencil"></span>
+                        </div>
+                        <div class="desc-part">Edit as list</div>
+                    </div>
+
+                    <div class="ico-wrap">
+                        <div class="ico-part">
+                            <span class="icon-everybody-data"></span>
+                        </div>
+                        <div class="desc-part">Edit on map</div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="cat-set">
+            <div class="cat-set-win">
                 
-                <div class="block">
-                    <img class="svg-img" src="/images/n/fly-plane.svg">
-                    <p class="txt">
-                        @Model.W("InfoBlock2")
-                    </p>
+                <span class="icon-cross form-close"></span>
+
+                <div class="places-tagger">
+
+                    <span class="place-tag">
+                        <span class="txt">Brno</span><span class="icon-cross-small close"></span>
+                    </span>
+                    
+                    <div id="placesAdder">
+
+                    </div>
+
                 </div>
 
             </div>
-            
+        </div>
+
+        <div class="cat-cont">
+
         </div>
 
     </div>
-</div>*@
 
-<div>
-        
-    @*@Html.Partial("LocationSettingsDialog")*@
-    
-    <div id="categoryNavi" class="navi-cont"></div>
-    
-    <div id="categoryCont"></div>
-  
 </div>
 
-@Html.Partial("DestinationTemplates")
-@Html.Partial("_DestPlaceCombo")
+    @*<div class="info-block-bck @infoBlock.Class" id="info-deals">
 
-<script>
-	function onBodyLoad() {
-	    currentView = new Views.DealsView();
-	}
+        <div class="wrapper">
 
-</script>
+            @Html.Partial("TitleBlock", infoBlock)
+
+            <div class="info-block info-block2" style="@infoBlock.Css">
+
+                <div class="info-inner-table">
+
+                    <div class="block">
+                        <img class="svg-img" src="/images/n/fly-pin.svg">
+                        <p class="txt">
+                            @Model.W("InfoBlock1")
+                        </p>
+                    </div>
+
+                    <div class="block">
+                        <img class="svg-img" src="/images/n/fly-plane.svg">
+                        <p class="txt">
+                            @Model.W("InfoBlock2")
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>*@
+
+    <div>
+
+        @*@Html.Partial("LocationSettingsDialog")*@
+
+        <div id="categoryNavi" class="navi-cont"></div>
+
+        <div id="categoryCont"></div>
+
+    </div>
+
+    @Html.Partial("DestinationTemplates")
+    @Html.Partial("_DestPlaceCombo")
+
+    <script>
+        function onBodyLoad() {
+            currentView = new Views.DealsView();
+        }
+
+    </script>

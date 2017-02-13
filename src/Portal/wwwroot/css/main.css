@@ -4716,6 +4716,63 @@ footer {
     .fly-tickets .deals-block-all .loc input {
       text-align: center; }
 
+.fly-tickets .cat-all {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em; }
+  .fly-tickets .cat-all h2 {
+    padding: 0;
+    margin: 0;
+    color: white; }
+  .fly-tickets .cat-all .cat-bar {
+    background-color: #57c1db;
+    padding: 1em; }
+    .fly-tickets .cat-all .cat-bar .left, .fly-tickets .cat-all .cat-bar .right {
+      vertical-align: middle; }
+  .fly-tickets .cat-all .ico-wrap {
+    display: inline-block;
+    color: #005476;
+    cursor: pointer;
+    margin-left: 0.5em; }
+    .fly-tickets .cat-all .ico-wrap .ico-part {
+      text-align: center;
+      font-size: 1.3em; }
+    .fly-tickets .cat-all .ico-wrap .desc-part {
+      font-weight: bold; }
+    .fly-tickets .cat-all .ico-wrap:hover {
+      color: white; }
+
+.fly-tickets .cat-set-win {
+  position: relative;
+  background-color: #F0FAFC;
+  padding: 1em; }
+
+.fly-tickets .places-tagger .place-tag {
+  background-color: #3298C1;
+  display: inline-block;
+  padding: 0.1em;
+  border-radius: 4px;
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Chrome/Safari/Opera */
+  -khtml-user-select: none;
+  /* Konqueror */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently not supported by any browser */ }
+  .fly-tickets .places-tagger .place-tag .txt {
+    color: white;
+    margin-right: 0.3em; }
+  .fly-tickets .places-tagger .place-tag .close {
+    cursor: pointer;
+    font-size: 0.7em;
+    color: #005476; }
+    .fly-tickets .places-tagger .place-tag .close:hover {
+      color: #E02327; }
+
 .fly-tickets .expander, .fly-tickets .collapser {
   text-align: left; }
 

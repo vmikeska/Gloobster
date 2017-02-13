@@ -111,10 +111,82 @@
         }
     }
 
+    .cat-all {
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
 
+        h2 {
+            padding: 0;
+            margin: 0;
+            color: white;
+        }
 
+        .cat-bar {
+            background-color: $light-blue5;
+            padding: 1em;
 
+            .left,.right {
+                vertical-align: middle;
+            }
 
+        }
+
+        .ico-wrap {
+            display: inline-block;
+            color: $dark-blue;
+
+            cursor: pointer;
+
+            margin-left: 0.5em;
+
+            .ico-part {
+                text-align: center;
+                font-size: 1.3em;
+            }
+
+            .desc-part {
+                font-weight: bold;
+            }
+
+            &:hover {
+                color: white;
+            }
+        }
+    }
+
+    .cat-set-win {
+        position: relative;
+
+        background-color: $very-light-blue3;
+        padding: 1em;
+
+    }
+
+    .places-tagger {
+        .place-tag {
+            background-color: $light-blue3;
+            display: inline-block;
+            padding: 0.1em;
+            border-radius: 4px;
+            @include noselect;
+
+            .txt {
+                color: white;
+                margin-right: 0.3em;
+            }
+
+            .close {
+                cursor: pointer;
+                font-size: 0.7em;
+
+                color: $dark-blue;
+
+                &:hover {
+                    color: $red;
+                }
+            }
+        }
+    }
 
 
 
