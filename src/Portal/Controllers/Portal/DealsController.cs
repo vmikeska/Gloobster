@@ -44,17 +44,20 @@ namespace Gloobster.Portal.Controllers.Portal
             vm.InitCurrentLocation = FormatCityStr(ua);
 
             vm.HasAirports = false;
+		    vm.HasCity = false;
 
             if (ua != null)
 			{
                 vm.CurrentLocation = ua.CurrentLocation;
+
+			    vm.HasCity = ua.CurrentLocation != null;
 
                 var airportIds = ua.Airports.Select(a => a.OrigId);
                 vm.Airports = DB.List<AirportEntity>(a => airportIds.Contains(a.OrigId));
 
 			    if (airportIds.Any())
 			    {
-                    vm.HasAirports = true;
+                    vm.HasAirports = true;                    
 			    }
 			}
 

@@ -69,6 +69,7 @@ namespace Gloobster.Portal.ViewModels
         }
 
         public bool HasAirports { get; set; }
+        public bool HasCity { get; set; }
     }
 
     public class ViewModelSkypickerChat : ViewModelBase

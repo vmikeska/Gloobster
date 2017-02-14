@@ -59,7 +59,7 @@ var Planning;
             this.mapSwitch(function (type) {
                 _this.planningMap.changeViewType(type);
             });
-            this.locDlg = new Planning.LocationSettingsDialog(this);
+            this.locDlg = new Planning.LocationSettingsDialog();
             this.initDealsTabs();
         };
         DealsSearch.prototype.enableMap = function (state) {

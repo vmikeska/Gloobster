@@ -37,9 +37,23 @@
 </script>
 
 
+<script id="wiz-air-item" type="text/x-handlebars-template">
+    <span data-code="{{airCode}}" class="wiz-air">
+        <span class="name" title="{{airName}}">{{city}} ({{airCode}})</span>
+        <a class="icon-cross-small delete" href="#"></a>
+    </span>
+</script>
 
 
-    <script id="flights-empty-template" type="text/x-handlebars-template">
+<script id="map-place-item" type="text/x-handlebars-template">
+    <span data-t="{{type}}" data-id="{{id}}" class="place-tag">
+        <span class="txt">{{name}}</span><span class="icon-cross-small close"></span>
+    </span>
+</script>
+
+
+
+<script id="flights-empty-template" type="text/x-handlebars-template">
 
         <div class="other-flights-empty">
 

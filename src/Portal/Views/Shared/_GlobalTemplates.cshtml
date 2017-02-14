@@ -33,6 +33,17 @@
 </script>
 
 
+<script id="place-tag-template" type="text/x-handlebars-template">
+    <span data-t="{{type}}" data-id="{{id}}" class="ptag">
+        <span class="icon-{{icon}} icon"></span>
+        <span class="txt">{{name}}</span>
+        {{#if showCC}}
+        <span>, </span>
+        <span class="cc">{{cc}}</span>
+        {{/if}}
+    </span>
+</script>
+
 <script id="placeItem-template" type="text/x-handlebars-template">
         <li data-value="{{sourceId}}" data-type="{{sourceType}}"><span class="{{icoClass}} ico"></span> <span class="txt">{{name}}</span>, <span class="cc">{{countryCode}}</span></li>
     </script>

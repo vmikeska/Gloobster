@@ -17,7 +17,7 @@ using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.Planning
 {
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	public class SelCountryController : BaseApiController
 	{						
 		public IPlanningDomain Planning { get; set; }

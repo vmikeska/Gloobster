@@ -12,9 +12,7 @@
 						var box = new Common.PlaceSearchBox(c);
 						$c.change((e, request, place) => {
 								var data = { gid: place.SourceId };
-								ViewBase.currentView.apiPut("DealsCurrentLocation",
-										data,
-										(res) => {
+								ViewBase.currentView.apiPut("DealsCurrentLocation", data, (res) => {
 												callback(place);
 										});
 						});

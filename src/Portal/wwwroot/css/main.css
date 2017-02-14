@@ -1685,6 +1685,11 @@ footer {
     .homepage .social .blocks .item .btn a:hover {
       opacity: 0.7; }
 
+.pins .place-search {
+  position: absolute;
+  top: 21px;
+  left: 10px; }
+
 .pins .head-icons-all {
   position: relative;
   height: 160px; }
@@ -1789,26 +1794,6 @@ footer {
     border-radius: 4px; }
     .pins .map-wrap .share:hover {
       color: #005476; }
-  .pins .map-wrap .place-search {
-    position: absolute;
-    display: inline-block;
-    top: 21px;
-    left: 10px;
-    z-index: 99999;
-    height: 46px;
-    font-size: 18px; }
-    .pins .map-wrap .place-search .loader {
-      position: absolute;
-      right: 5px;
-      top: 5px; }
-    .pins .map-wrap .place-search input[type="text"] {
-      background: url(/images/n/magnifier.svg) no-repeat scroll 7px 7px;
-      background-color: white;
-      background-position-y: 10px;
-      background-position-x: 10px;
-      padding-left: 37px;
-      width: 200px;
-      border: 2px solid #005476; }
   .pins .map-wrap .preloader-cont {
     width: 100%;
     height: 500px;
@@ -4653,10 +4638,6 @@ footer {
     .travelb-home .req-settings .gap {
       padding-right: 4px; } }
 
-.fly-tickets .motto {
-  font-size: 1.5em;
-  text-align: center; }
-
 .fly-tickets .classic-search .search-bar {
   background-color: #BCB3B8; }
 
@@ -4690,10 +4671,31 @@ footer {
     border: 1px solid pink; } }
 
 .fly-tickets .deals-block-all {
-  background-color: #005476;
-  border-top: 2px solid #3298C1; }
-  .fly-tickets .deals-block-all .motto {
-    color: white; }
+  background-color: #009EC4;
+  border-top: 2px solid #3298C1;
+  padding: 1em; }
+  .fly-tickets .deals-block-all .wiz-air {
+    border-radius: 4px;
+    background-color: #005476;
+    display: inline-block;
+    padding-left: 4px;
+    padding-right: 4px;
+    margin-bottom: 4px;
+    margin-right: 4px; }
+    .fly-tickets .deals-block-all .wiz-air .name {
+      color: white;
+      margin-right: 3px;
+      vertical-align: middle; }
+    .fly-tickets .deals-block-all .wiz-air .delete {
+      vertical-align: middle;
+      color: #FFC400;
+      font-size: 0.7em; }
+      .fly-tickets .deals-block-all .wiz-air .delete:hover {
+        color: #E02327; }
+  .fly-tickets .deals-block-all .txt-block {
+    color: white;
+    text-align: left;
+    margin-bottom: 1em; }
   .fly-tickets .deals-block-all .icons {
     display: table;
     width: 100%; }
@@ -4706,15 +4708,17 @@ footer {
   .fly-tickets .deals-block-all .labels {
     color: white;
     display: table;
-    width: 100%; }
+    width: 100%;
+    margin-bottom: 0.5em; }
     .fly-tickets .deals-block-all .labels .label {
       display: table-cell;
       width: 33.3%;
       font-weight: bold; }
-  .fly-tickets .deals-block-all .loc {
-    padding: 1em; }
-    .fly-tickets .deals-block-all .loc input {
-      text-align: center; }
+      .fly-tickets .deals-block-all .labels .label.active {
+        color: #FFC400;
+        text-decoration: underline; }
+  .fly-tickets .deals-block-all .step input {
+    text-align: center; }
 
 .fly-tickets .cat-all {
   margin-top: 0.5em;
@@ -4744,12 +4748,20 @@ footer {
 .fly-tickets .cat-set-win {
   position: relative;
   background-color: #F0FAFC;
-  padding: 1em; }
+  padding: 1em;
+  text-align: left; }
+
+.fly-tickets .places-tagger .places-cont {
+  display: inline-block;
+  margin-right: 4px; }
+
+.fly-tickets .places-tagger .place-search {
+  display: inline-block; }
 
 .fly-tickets .places-tagger .place-tag {
   background-color: #3298C1;
   display: inline-block;
-  padding: 0.1em;
+  padding: 2px;
   border-radius: 4px;
   -webkit-touch-callout: none;
   /* iOS Safari */
@@ -4762,10 +4774,12 @@ footer {
   -ms-user-select: none;
   /* Internet Explorer/Edge */
   user-select: none;
-  /* Non-prefixed version, currently not supported by any browser */ }
+  /* Non-prefixed version, currently not supported by any browser */
+  margin-right: 4px;
+  margin-bottom: 4px; }
   .fly-tickets .places-tagger .place-tag .txt {
     color: white;
-    margin-right: 0.3em; }
+    margin-right: 4px; }
   .fly-tickets .places-tagger .place-tag .close {
     cursor: pointer;
     font-size: 0.7em;
@@ -6739,6 +6753,25 @@ footer {
         color: #BCB3B8; }
       .city-airport-search .results .item:hover {
         background-color: #F0FAFC; }
+
+.place-search {
+  position: relative;
+  display: inline-block;
+  z-index: 99999;
+  height: 46px;
+  font-size: 18px; }
+  .place-search .loader {
+    position: absolute;
+    right: 5px;
+    top: 5px; }
+  .place-search input[type="text"] {
+    background: url(/images/n/magnifier.svg) no-repeat scroll 7px 7px;
+    background-color: white;
+    background-position-y: 10px;
+    background-position-x: 10px;
+    padding-left: 37px;
+    width: 200px;
+    border: 2px solid #005476; }
 
 .place-search-results {
   text-align: left;

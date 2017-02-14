@@ -13,175 +13,11 @@
 
 @Html.Partial("Scripts")
 
-@*@{
+@{
     var infoBlock = Model.InfoBlock("info-deals");
-}*@
+}
 
-<div class="classic-search">
-    
-    <div class="search-bar">
-        <div class="wrapper">
-            <div class="search-form">
-
-                <div class="search-group">
-
-                    <div class="search-field">
-                        <div class="capt">From</div>
-                        <div class="ctrl">
-                            <div id="searchFrom"></div>
-                        </div>
-                    </div>
-
-                    <div class="search-field">
-                        <div class="capt">To</div>
-                        <div class="ctrl">
-                            <div id="searchTo"></div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="search-group">
-
-                    <div class="search-field">
-                        <div class="capt">Depart</div>
-                        <div class="ctrl">
-                            <div id="dateFrom"></div>
-                        </div>
-                    </div>
-
-                    <div class="search-field">
-                        <div class="capt">Return</div>
-                        <div class="ctrl">
-                            <div id="dateTo"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="search-field one-line">                        
-                        <div class="ctrl">
-                            <a href="#" id="btnSearch" class="lbtn2 green-orange">Search</a>
-                        </div>
-                    </div>
-
-                    
-
-                </div>
-
-                
-                @*<div class="search-field">
-                    <div class="capt">Seats</div>
-                    <div class="ctrl">
-                        <div id="passangersCnt"></div>
-                    </div>
-                </div>
-
-                <input type="checkbox" id="directFlights" /><label for="directFlights">Just direct flights</label>
-                *@
-            </div>
-        </div>
-    </div>
-
-    <div class="wrapper">
-        <div class="search-results">
-
-        </div>
-    </div>
-
-</div>
-
-<div class="deals-block-all">
-
-    <div class="wrapper">
-        <h1 class="motto">Are you fexible? Try our new best deals search!</h1>
-
-        <div class="icons">
-            <div class="ico">
-                <img class="svg-img" src="/images/n/fly-pin.svg" />
-            </div>
-            <div class="ico">
-                <img class="svg-img" src="/images/n/fly-comp.svg" />
-            </div>
-            <div class="ico">
-                <img class="svg-img" src="/images/n/fly-plane.svg" />
-            </div>
-        </div>
-
-        <div class="labels">
-            <div class="label">1. Set your home city</div>
-            <div class="label">2. Customize your dashboard</div>
-            <div class="label">3. Get the best deals</div>
-        </div>
-
-        <div class="loc">
-            <div id="currentCity" class="dropdown">
-                <input class="inputed" type="text" placeholder="Set your home city">
-                <ul></ul>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-<div class="wrapper">
-
-    <div class="cat-all">
-        <div class="cat-bar">
-
-            <div class="htbl">
-                <div class="left">
-                    <h2>Anytime deals</h2>
-                    <span class="icon-"></span>
-                </div>
-                <div class="right">
-
-                    <div class="ico-wrap">
-                        <div class="ico-part">
-                            <span class="icon-edit-pencil"></span>
-                        </div>
-                        <div class="desc-part">Edit as list</div>
-                    </div>
-
-                    <div class="ico-wrap">
-                        <div class="ico-part">
-                            <span class="icon-everybody-data"></span>
-                        </div>
-                        <div class="desc-part">Edit on map</div>
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
-        
-        <div class="cat-set">
-            <div class="cat-set-win">
-                
-                <span class="icon-cross form-close"></span>
-
-                <div class="places-tagger">
-
-                    <span class="place-tag">
-                        <span class="txt">Brno</span><span class="icon-cross-small close"></span>
-                    </span>
-                    
-                    <div id="placesAdder">
-
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
-
-        <div class="cat-cont">
-
-        </div>
-
-    </div>
-
-</div>
-
-    @*<div class="info-block-bck @infoBlock.Class" id="info-deals">
+@*<div class="info-block-bck @infoBlock.Class" id="info-deals">
 
         <div class="wrapper">
 
@@ -212,15 +48,240 @@
         </div>
     </div>*@
 
-    <div>
+<div class="deals-block-all">
 
-        @*@Html.Partial("LocationSettingsDialog")*@
+    <div class="wrapper">
 
-        <div id="categoryNavi" class="navi-cont"></div>
+        <p class="txt-block">
+            @Model.W("InfoBlock1")
+        </p>
 
-        <div id="categoryCont"></div>
+        <p class="txt-block">
+            @Model.W("InfoBlock2")
+        </p>
+
+        <div class="icons">
+            <div class="ico">
+                <img class="svg-img" src="/images/n/fly-pin.svg" />
+            </div>
+            <div class="ico">
+                <img class="svg-img" src="/images/n/fly-plane.svg" />
+            </div>
+            <div class="ico">
+                <img class="svg-img" src="/images/n/fly-comp.svg" />
+            </div>
+        </div>
+
+        <div class="labels">
+            <div class="label label-one">1. Set your home city</div>
+            <div class="label label-two">2. Customize your home airports</div>
+            <div class="label label-three">3. Choose places you'd like to visit</div>
+        </div>
+
+        <div class="step step-one hidden">
+            <div id="wizCurrentCity" class="dropdown">
+                <input class="inputed" type="text" placeholder="Set your home city">
+                <ul></ul>
+            </div>
+        </div>
+
+        <div class="step step-two hidden">
+            <div id="wizAirCont">
+            </div>
+
+
+            <div id="wizAirCombo" class="dropdown">
+                <input class="inputed" type="text" placeholder="@Model.W("SearchForAirportsPlaceholder")">
+                <ul></ul>
+            </div>
+        </div>
+        
+        <div class="step step-three">
+            Please choose places in the sections
+        </div>
 
     </div>
+
+</div>
+
+<div class="wrapper">
+    
+    @Html.Partial("LocationSettingsDialog")
+
+    <div id="categoryNavi" class="navi-cont"></div>
+
+    <div id="categoryCont"></div>
+
+</div>
+
+<div class="deals-search-all" >
+
+    
+
+    <div class="wrapper">
+
+        <div class="cat-all" id="placesWinAnytime">
+            <div class="cat-bar">
+
+                <div class="htbl">
+                    <div class="left">
+                        <h2>Anytime deals</h2>
+                        <span class="icon-"></span>
+                    </div>
+                    <div class="right">
+
+                        <div class="ico-wrap edit-list">
+                            <div class="ico-part">
+                                <span class="icon-edit-pencil"></span>
+                            </div>
+                            <div class="desc-part">Edit as list</div>
+                        </div>
+
+                        <div class="ico-wrap edit-map">
+                            <div class="ico-part">
+                                <span class="icon-everybody-data"></span>
+                            </div>
+                            <div class="desc-part">Edit on map</div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="cat-set">
+                <div class="cat-set-win places-tag-sel hidden">
+
+                    <span class="icon-cross form-close"></span>
+
+                    <div class="places-tagger">
+
+                        <div class="places-cont">
+                            
+                        </div>
+
+                        <div class="place-search">
+                            <input class="inputed" type="text" placeholder="Place name">
+                            <img class="loader" src="/images/loader-gray.gif" style="display: none" />
+
+                            <div class="place-search-results hidden">
+
+                                <span class="icon-cross-small close"></span>
+
+                                <div class="section sect-cities hidden">
+                                    <div class="title">Cities</div>
+                                    <div class="content"></div>
+                                </div>
+
+                                <div id="sectCountries" class="section sect-countries hidden">
+                                    <div class="title">Countries</div>
+                                    <div class="content"></div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                
+                <div class="cat-set-win places-map-sel hidden">
+
+                    <span class="icon-cross form-close"></span>
+
+                    maps
+                </div>
+                
+
+            </div>
+
+            <div class="cat-cont">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="classic-search-all hidden">
+
+    <div class="classic-search">
+
+        <div class="search-bar">
+            <div class="wrapper">
+                <div class="search-form">
+
+                    <div class="search-group">
+
+                        <div class="search-field">
+                            <div class="capt">From</div>
+                            <div class="ctrl">
+                                <div id="searchFrom"></div>
+                            </div>
+                        </div>
+
+                        <div class="search-field">
+                            <div class="capt">To</div>
+                            <div class="ctrl">
+                                <div id="searchTo"></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="search-group">
+
+                        <div class="search-field">
+                            <div class="capt">Depart</div>
+                            <div class="ctrl">
+                                <div id="dateFrom"></div>
+                            </div>
+                        </div>
+
+                        <div class="search-field">
+                            <div class="capt">Return</div>
+                            <div class="ctrl">
+                                <div id="dateTo"></div>
+                            </div>
+                        </div>
+
+                        <div class="search-field one-line">
+                            <div class="ctrl">
+                                <a href="#" id="btnSearch" class="lbtn2 green-orange">Search</a>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+
+                    @*<div class="search-field">
+                            <div class="capt">Seats</div>
+                            <div class="ctrl">
+                                <div id="passangersCnt"></div>
+                            </div>
+                        </div>
+
+                        <input type="checkbox" id="directFlights" /><label for="directFlights">Just direct flights</label>
+                    *@
+                </div>
+            </div>
+        </div>
+
+        <div class="wrapper">
+            <div class="search-results">
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
 
     @Html.Partial("DestinationTemplates")
     @Html.Partial("_DestPlaceCombo")
@@ -228,6 +289,9 @@
     <script>
         function onBodyLoad() {
             currentView = new Views.DealsView();
-        }
+            currentView.hasCity = @Model.HasCity.ToString().ToLower();
+            currentView.hasAirs = @Model.HasAirports.ToString().ToLower();
+            currentView.init();
+        }                            
 
     </script>

@@ -79,7 +79,7 @@
 					});
 
 
-					this.locDlg = new Planning.LocationSettingsDialog(this);
+					this.locDlg = new Planning.LocationSettingsDialog();
 
 					this.initDealsTabs();
 			}

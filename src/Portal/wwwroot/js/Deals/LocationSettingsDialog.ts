@@ -1,6 +1,100 @@
 ﻿module Planning {
 
 
+		export class DealsInitSettings {
+				private airTemplate = Views.ViewBase.currentView.registerTemplate("homeAirportItem-template");
+				private $airportsCont;
+				private kmRangeSelected = 200;
+
+				private $stepOne = $(".step-one");
+				private $stepTwo = $(".step-two");
+				private $stepThree = $(".step-three");
+
+				public get v(): Views.ViewBase {
+						return Views.ViewBase.currentView;
+				}
+
+				private locDlg: LocationSettingsDialog;
+
+				constructor(locDlg: LocationSettingsDialog) {
+					this.locDlg = locDlg;
+				}
+
+
+			public init(hasCity, hasCountry) {
+
+				this.setForm(hasCity, hasCountry, false);
+
+				Views.AirLoc.registerLocationCombo($("#wizCurrentCity"), (place) => {
+						this.locDlg.updateLoc(place.City, place.CountryCode);
+						this.setForm(true, false, false);
+
+						this.getAirs((as) => {
+								this.genAirs(as);
+						});
+
+				});
+
+				this.initAirports();
+			}
+
+			private setForm(hasCity, hasAirs, anyItems) {
+						$(".labels .label").removeClass("active");
+						$(".step").addClass("hidden");
+
+					  var num;
+						if (!hasCity) {
+							 num = "one";
+						} else if (!hasAirs) {
+								num = "two";								
+						} else if (!anyItems) {
+								num = "three";
+						}
+
+						$(`.step-${num}`).removeClass("hidden");
+						$(`.label-${num}`).addClass("active");
+			}
+				
+				private getAirs(callback: Function) {
+					this.v.apiGet("airportRange", null, (as) => {							
+						  callback(as);
+					});
+				}
+
+				private genAirs(as) {
+						var lg = Common.ListGenerator.init($("#wizAirCont"), "wiz-air-item");
+					  lg.clearCont = true;
+					  lg.evnt(".delete", (e, $item, $target, item) => {
+								var data = [["id", item.origId]];
+								Views.ViewBase.currentView.apiDelete("AirportRange", data, () => {
+
+									this.getAirs((ass) => {
+											this.genAirs(ass);
+									});
+										
+								});
+						});
+
+						lg.generateList(as);
+				}
+				
+				private initAirports() {
+						var ac = new Trip.AirportCombo("wizAirCombo", { clearAfterSelection: true });
+						ac.onSelected = (e) => {
+
+								var data = { airportId: e.id };
+								this.v.apiPost("airportRange", data, (a) => {
+
+										this.getAirs((ass) => {
+												this.genAirs(ass);
+										});
+
+								});
+
+						}
+				}
+		}
+
 	export class LocationSettingsDialog {
 
 		private airTemplate = Views.ViewBase.currentView.registerTemplate("homeAirportItem-template");
@@ -9,16 +103,13 @@
 		private $airContS;
 
 		private kmRangeSelected = 200;
-
-		private dealsSearch: DealsSearch;
-		constructor(dealsSearch: DealsSearch) {
-				this.dealsSearch = dealsSearch;
+			
+		constructor() {
+			
 		
-			Views.AirLoc.registerLocationCombo($("#currentCity"),
-				(place) => {
-					$("#rangeBlock").removeClass("hidden");
-					$(".home-location-name").html(`${place.City}, (${place.CountryCode})`);
-				});
+			Views.AirLoc.registerLocationCombo($("#currentCity"), (place) => {
+				this.updateLoc(place.City, place.CountryCode);
+			});
 
 			this.regRangeCombo();
 
@@ -42,20 +133,25 @@
 
 			$("#refreshResults").click((e) => {
 					e.preventDefault();
-					this.dealsSearch.resultsEngine.refresh();
+					//this.dealsSearch.resultsEngine.refresh();
 				  this.hideRefresh();
 			});
 		}
+
+			public updateLoc(city, cc) {
+					$("#rangeBlock").removeClass("hidden");
+					$(".home-location-name").html(`${city}, (${cc})`);
+			} 
 
 		private hideRefresh() {
 					$(".refresh-line").addClass("hidden");
 			}
 
 		private changed() {
-			var sel = this.dealsSearch.planningMap.map.anySelected();
-			if (sel) {
-				$(".refresh-line").removeClass("hidden");
-			}
+			//var sel = this.dealsSearch.planningMap.map.anySelected();
+			//if (sel) {
+			//	$(".refresh-line").removeClass("hidden");
+			//}
 
 				if (this.hasAirports()) {
 					$(".no-airs-info").hide();
@@ -63,9 +159,9 @@
 		}
 
 		private loadMgmtAirports() {
-			this.dealsSearch.v.apiGet("airportRange", null, (as) => {
-				this.generateAirports(as);
-			});
+			//this.dealsSearch.v.apiGet("airportRange", null, (as) => {
+			//	this.generateAirports(as);
+			//});
 		}
 
 		private initAirports() {				
@@ -73,11 +169,11 @@
 			ac.onSelected = (e) => {
 
 				var data = { airportId: e.id };
-				this.dealsSearch.v.apiPost("airportRange", data, (a) => {
-						this.genAirport(a);
-						this.genAirportS(a.airCode);
-						this.changed();
-				});
+				//this.dealsSearch.v.apiPost("airportRange", data, (a) => {
+				//		this.genAirport(a);
+				//		this.genAirportS(a.airCode);
+				//		this.changed();
+				//});
 
 			}				
 		}
@@ -102,10 +198,10 @@
 
 		private callAirportsByRange() {
 			var data = { distance: this.kmRangeSelected };
-			this.dealsSearch.v.apiPut("AirportRange", data, (airports) => {
-					this.generateAirports(airports);
-				  this.changed();
-			});
+			//this.dealsSearch.v.apiPut("AirportRange", data, (airports) => {
+			//		this.generateAirports(airports);
+			//	  this.changed();
+			//});
 		}
 
 		private generateAirports(airports) {

@@ -131,6 +131,35 @@
 }
 
 
+.place-search{    
+        position:relative;
+
+        display: inline-block;
+        
+        z-index: 99999; 
+
+        height: 46px;    
+
+        font-size: 18px;
+    
+        .loader {
+            position: absolute; 
+            right: 5px; 
+            top: 5px;
+        }
+
+        input[type="text"] {
+            background: url(/images/n/magnifier.svg) no-repeat scroll 7px 7px;
+            background-color: white;
+            background-position-y: 10px;
+            background-position-x: 10px;
+            padding-left:37px;
+            width: 200px;
+            border: 2px solid $dark-blue;
+        }
+
+    }
+
 .place-search-results {
 
         text-align: left;

@@ -52,6 +52,7 @@ else
     <script type="text/javascript" src="/js/pins/ShareDialogPinsView.js"></script>
     <script type="text/javascript" src="/js/pins/PeopleFilter.js"></script>
     <script type="text/javascript" src="/js/pins/AggregatedCountries.js"></script>
+    <script type="text/javascript" src="/js/Common/AllPlacesSearch.js"></script>
     <script type="text/javascript" src="/js/pins/PinBoardBadges.js"></script>
 }
 
@@ -178,19 +179,19 @@ else
         <div id="map"></div>
 
         <div class="place-search">
-            <input id="citiesInput" class="inputed" type="text" placeholder="@Model.W("PlaceName")">
+            <input class="inputed" type="text" placeholder="@Model.W("PlaceName")">
             <img class="loader" src="/images/loader-gray.gif" style="display: none" />
             
             <div class="place-search-results hidden">
                 
                 <span class="icon-cross-small close"></span>
 
-                <div id="sectCities" class="section hidden">
+                <div class="section sect-cities hidden">
                     <div class="title">@Model.W("SectionCities")</div>
                     <div class="content"></div>
                 </div>
 
-                <div id="sectCountries" class="section hidden">
+                <div class="section sect-countries hidden">
                     <div class="title">@Model.W("SectionCountries")</div>
                     <div class="content"></div>
                 </div>
@@ -199,7 +200,7 @@ else
                     <a href="#" id="socSearchBtn" class="lbtn2 soc-btn green-orange">@Model.W("SearchOnSocBtn")</a>
                 </div>
 
-                <div id="sectSocial" class="section hidden">
+                <div class="section sect-social hidden">
                     <div class="title">@Model.W("SectionSocial")</div>
                     <div class="cb-cont">
                         <input id="cbCreateCheckin" type="checkbox"/> <label for="cbCreateCheckin">@Model.W("CreateCheckinCb")</label>

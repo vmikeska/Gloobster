@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Database;
@@ -73,7 +74,7 @@ namespace Gloobster.Portal.Controllers.Api.SearchEngine
                 return new ObjectResult(new object[0]);
             }
             
-			var airportsResponse = ua.Airports.Select(a => a.ToResponse()).ToList();
+			List<AirportSaveResponse> airportsResponse = ua.Airports.Select(a => a.ToResponse()).ToList();
 			return new ObjectResult(airportsResponse);
 		}
 
