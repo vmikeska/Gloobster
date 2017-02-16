@@ -12,32 +12,14 @@
 			private $filter;
 			private $mainCont;
 				
-			public get v(): Views.ViewBase {
-				return Views.ViewBase.currentView;
-			}
+			//public showAirsFirst() {
+			//		var id = new Common.InfoDialog();
+			//		id.create(this.v.t("NoAirsTitle", "jsDeals"), this.v.t("NoAirsBody", "jsDeals"));
+			//}
 
-			constructor() {
-				this.$mainCont = $("#categoryCont");
-				this.createLayout();
-
-				this.$resultsCont = $("#resultsCont");
-				this.$filter = $("#filterCont");
-			}
-
-			private createLayout() {
-				var tmp = this.v.registerTemplate("deals-template");
-				var $deals = $(tmp());
-				this.$mainCont.html($deals);				
-			}
-
-			public showAirsFirst() {
-					var id = new Common.InfoDialog();
-					id.create(this.v.t("NoAirsTitle", "jsDeals"), this.v.t("NoAirsBody", "jsDeals"));
-			}
-
-			public get hasAirs(): boolean {
-					return this.locDlg.hasAirports();
-			}
+			//public get hasAirs(): boolean {
+			//		return this.locDlg.hasAirports();
+			//}
 
 			public init() {
 					this.resultsEngine = new Planning.ResultsManager();
@@ -59,29 +41,20 @@
 							de.dispayDeals();
 					};
 
-					this.planningMap = new Planning.PlanningMap(this);
+					//this.planningMap = new Planning.PlanningMap(this);
 
 					this.planningMap.onMapLoaded = () => {
-							this.changeSetter(PlanningType.Anytime);
+							//this.changeSetter(PlanningType.Anytime);
 					}
 
 					this.planningMap.onSelectionChanged = (id: string, newState: boolean, type: FlightCacheRecordType) => {
 
-							var customId = this.currentSetter.getCustomId();
+						var customId = null;//this.currentSetter.getCustomId();
 							this.resultsEngine.selectionChanged(id, newState, type, customId);
 					}
-
-					this.planningMap.init();
-
-
-					this.mapSwitch((type) => {
-							this.planningMap.changeViewType(type);
-					});
-
-
+					
 					this.locDlg = new Planning.LocationSettingsDialog();
-
-					this.initDealsTabs();
+					
 			}
 
 			public enableMap(state) {
@@ -93,73 +66,56 @@
 					}
 			}
 
-			private mapSwitch(callback) {
-					var $cont = $(".map-type-switch");
-					var $btns = $cont.find(".btn");
-					$btns.click((e) => {
-							var $t = $(e.target);
-							var type = $t.hasClass("country") ? FlightCacheRecordType.Country : FlightCacheRecordType.City;
+			
 
-							if (type === this.planningMap.viewType) {
-									return;
-							}
+		//	private initDealsTabs() {
 
-							$btns.removeClass("active");
-							$t.addClass("active");
+		//			this.tabs = new Common.Tabs($("#naviCont"), "main");
+		//			this.tabs.initCall = false;
+		//			this.tabs.onBeforeSwitch = () => {
+		//					this.enableMap(true);
+		//					this.$resultsCont.empty();
+		//					this.$filter.empty();
+		//			}
 
+		//			this.tabs.addTab("tabAnytime", this.v.t("TabAnytime", "jsDeals"), () => {
+		//					this.changeSetter(PlanningType.Anytime);
+		//			});
+		//			this.tabs.addTab("tabWeekend", this.v.t("TabWeekend", "jsDeals"), () => {
+		//					this.changeSetter(PlanningType.Weekend);
+		//			});
 
-							callback(type);
-					});
-			}
-
-			private initDealsTabs() {
-
-					this.tabs = new Common.Tabs($("#naviCont"), "main");
-					this.tabs.initCall = false;
-					this.tabs.onBeforeSwitch = () => {
-							this.enableMap(true);
-							this.$resultsCont.empty();
-							this.$filter.empty();
-					}
-
-					this.tabs.addTab("tabAnytime", this.v.t("TabAnytime", "jsDeals"), () => {
-							this.changeSetter(PlanningType.Anytime);
-					});
-					this.tabs.addTab("tabWeekend", this.v.t("TabWeekend", "jsDeals"), () => {
-							this.changeSetter(PlanningType.Weekend);
-					});
-
-					this.tabs.addTab("tabCustom", this.v.t("TabCustom", "jsDeals"), () => {
-							this.changeSetter(PlanningType.Custom);
-					});
+		//			this.tabs.addTab("tabCustom", this.v.t("TabCustom", "jsDeals"), () => {
+		//					this.changeSetter(PlanningType.Custom);
+		//			});
 					
-					this.tabs.create();
-			}
+		//			this.tabs.create();
+		//	}
 
-			private changeSetter(type: PlanningType) {
+		//	private changeSetter(type: PlanningType) {
 
-					$("#tabContent").empty();
+		//			$("#tabContent").empty();
 
-					if (type === PlanningType.Anytime) {
-							this.currentSetter = new Planning.AnytimePageSetter(this);
-					}
-					if (type === PlanningType.Weekend) {
-							this.currentSetter = new Planning.WeekendPageSetter(this);
-					}
+		//			if (type === PlanningType.Anytime) {
+		//					this.currentSetter = new Planning.AnytimePageSetter(this);
+		//			}
+		//			if (type === PlanningType.Weekend) {
+		//					this.currentSetter = new Planning.WeekendPageSetter(this);
+		//			}
 
-					if (type === PlanningType.Custom) {
-							this.currentSetter = new Planning.CustomPageSetter(this);
-					}
+		//			if (type === PlanningType.Custom) {
+		//					this.currentSetter = new Planning.CustomPageSetter(this);
+		//			}
 
-					this.currentSetter.init(() => {
-							this.planningMap.loadCategory(type);
+		//			this.currentSetter.init(() => {
+		//					this.planningMap.loadCategory(type);
 
-							var customId = this.currentSetter.getCustomId();
+		//					var customId = this.currentSetter.getCustomId();
 
-							this.resultsEngine.initalCall(type, customId);
-					});
+		//					this.resultsEngine.initalCall(type, customId);
+		//			});
 
-			}
+		//	}
 
 		}
 

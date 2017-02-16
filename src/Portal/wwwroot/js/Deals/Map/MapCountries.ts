@@ -1,11 +1,12 @@
 module Planning {
-		
-	export class MapCountries {
+		export class MapCountries implements IMap {
+			public get v(): Views.ViewBase {
+					return Views.ViewBase.currentView;
+			}
+
 
 		public position: MapPosition;
-
-		private countriesData;
-
+			
 		private ccsLayerGroup;
 		private mapboxPane;
 		private mapLayer;
@@ -13,18 +14,42 @@ module Planning {
 		private map: Map;
 
 		private mapObj;
-		private $map = $("#mapCountries");
+		private $map;
 
-		public selectedCountries = [];
+		private selectedCountries = [];
 		private featureArray = [];
 
-		constructor(map: Map) {
-				this.map = map;
-				this.mapObj = L.map("mapCountries", MapConstants.mapOptions);
-				this.position = new MapPosition(this.mapObj);
+		constructor(map: Map) {				
+				this.map = map;			  
+				this.$map = $(`#${this.mapId()}`);				
+				
+				this.init();
+		}
+
+
+		private init() {
+			this.mapObj = L.map(this.mapId(), MapConstants.mapOptions);
+			this.position = new MapPosition(this.mapObj);
+
+			this.createMapboxLayer();
+			this.createCountries();
+		}
+
+		private loadData() {
+				var customId = this.map.planningMap.config.getCustomId();
+
+				var prms = [["type", this.map.planningMap.config.type.toString()], ["customId", customId]];
+
+				this.v.apiGet("SelCountry", prms, (ccs) => {
+						this.set(ccs);
+				});
+		}
+
+		private mapId() {
+				return `mapCountries_${this.map.planningMap.config.catId}`;
 		}
 			
-		public set(ccs) {
+		private set(ccs) {
 			this.selectedCountries = ccs;
 
 			this.featureArray.forEach((i) => {
@@ -41,28 +66,21 @@ module Planning {
 		}
 
 		public show() {
-			this.$map.show();
+				this.$map.removeClass("hidden");
+
+				this.loadData();
 		}
 
 		public hide() {
-			this.$map.hide();
+				this.$map.addClass("hidden");
 		}
 			
-		public init(callback) {								
-				this.getGeoJson(() => {
-
-					this.createMapboxLayer();
-					this.createCountries();
-
-					callback();
-				});				
-		}
 			
 		private createCountries() {
 			this.ccsLayerGroup = L.layerGroup();
 			this.mapObj.addLayer(this.ccsLayerGroup);
 
-			$(this.countriesData.features)
+			$(CountriesData.data.features)
 				.each((key, feature) => {
 					this.createMapFeature(feature);
 				});
@@ -100,10 +118,10 @@ module Planning {
 
 		private countryClicked(cc, layer) {
 
-				if (!this.map.planningMap.dealsSearch.hasAirs) {
-						this.map.planningMap.dealsSearch.showAirsFirst();
-						return;
-				}
+				//if (!this.map.planningMap.dealsSearch.hasAirs) {
+				//		this.map.planningMap.dealsSearch.showAirsFirst();
+				//		return;
+				//}
 
 			var selected = this.isCountrySelected(cc);
 
@@ -144,26 +162,6 @@ module Planning {
 		private isCountrySelected(cc) {
 			var selected = _.contains(this.selectedCountries, cc);
 			return selected;
-		}
-
-		private getGeoJson(callback) {
-
-			if (this.countriesData) {
-				callback();
-			} else {
-
-				$.ajax({
-						dataType: "json",
-						url: "/geo/custom.geo.json",
-						success: (data) => {
-							this.countriesData = data;
-							callback();
-						}
-					})
-					.error(() => {
-							Common.ErrorDialog.show("getGeoJson");
-					});
-			}
 		}
 
 		private getLayer(e) {

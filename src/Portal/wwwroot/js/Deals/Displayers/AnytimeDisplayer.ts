@@ -23,10 +23,10 @@ module Planning {
 
 				var fs = this.filter.getStateBase();
 
-				agg1.exe(fs.starsLevel);
+				//agg1.exe(fs.starsLevel);
 					
-				var dis = new AnytimeByCityDis(results, filterState.currentLevel);
-				dis.render(agg1.cities);
+				//var dis = new AnytimeByCityDis(results, filterState.currentLevel);
+				//dis.render(agg1.cities);
 			}
 
 			if (grouping === LocationGrouping.ByCountry) {
@@ -34,14 +34,14 @@ module Planning {
 
 					var fs2 = this.filter.getStateBase();
 
-					agg2.exe(fs2.starsLevel);
+					//agg2.exe(fs2.starsLevel);
 
-					var dis2 = new AnytimeByCountryDis(results, filterState.currentLevel);
+					//var dis2 = new AnytimeByCountryDis(results, filterState.currentLevel);
 					var $res = $("#resultsCont");
 					var $cont = $(`<div class="cont"></div>`);
 					$res.html($cont);
 					
-					dis2.render(agg2.countries, $cont);
+					//dis2.render(agg2.countries, $cont);
 			}
 
 			if (grouping === LocationGrouping.ByContinent) {
@@ -49,10 +49,10 @@ module Planning {
 
 					var fs3 = this.filter.getStateBase();
 
-					agg3.exe(fs3.starsLevel);
+					//agg3.exe(fs3.starsLevel);
 
-					var dis3 = new AnytimeByContinentDis(results, filterState.currentLevel);
-					dis3.render(agg3.getAllConts());
+					//var dis3 = new AnytimeByContinentDis(results, filterState.currentLevel);
+					//dis3.render(agg3.getAllConts());
 			}
 
 

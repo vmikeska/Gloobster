@@ -20,31 +20,31 @@ var Planning;
         function MapCities(map) {
             this.citiesToMarkers = [];
             this.cities = [];
-            this.$map = $("#mapCities");
             this.inited = false;
             this.map = map;
+            this.$map = $("#" + this.mapId());
         }
         MapCities.prototype.show = function () {
-            this.$map.show();
+            this.$map.removeClass("hidden");
             if (!this.inited) {
-                this.init();
+                this.initMap();
+                this.initDelayedCallback();
                 this.inited = true;
-                this.initCities();
             }
+            this.loadData();
         };
         MapCities.prototype.hide = function () {
-            this.$map.hide();
+            this.$map.addClass("hidden");
         };
-        MapCities.prototype.init = function () {
-            this.mapObj = L.map("mapCities", Planning.MapConstants.mapOptions);
+        MapCities.prototype.mapId = function () {
+            return "mapCities_" + this.map.planningMap.config.catId;
+        };
+        MapCities.prototype.initMap = function () {
+            this.mapObj = L.map(this.mapId(), Planning.MapConstants.mapOptions);
             this.position = new MapPosition(this.mapObj);
             this.createMapboxLayer();
             this.citiesLayerGroup = L.layerGroup();
             this.mapObj.addLayer(this.citiesLayerGroup);
-        };
-        MapCities.prototype.initCities = function () {
-            this.loadCitiesInRange();
-            this.callToLoadCities();
         };
         MapCities.prototype.createMapboxLayer = function () {
             var tempUrl = "https://api.mapbox.com/styles/v1/gloobster/civo64vmw004i2kqkwpcocjyp/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ2xvb2JzdGVyIiwiYSI6ImQxZWY5MjRkZjU1NDk2MGU3OWI2OGRiM2U3NTM0MGYxIn0.nCG7hOsSQzb0c-_qzfTCRQ";
@@ -72,19 +72,19 @@ var Planning;
             }
             return 1;
         };
-        MapCities.prototype.callToLoadCities = function () {
+        MapCities.prototype.loadData = function () {
             var _this = this;
             var bounds = this.mapObj.getBounds();
             var zoom = this.mapObj.getZoom();
             var population = this.getPopulationFromZoom(zoom);
-            var customId = this.map.planningMap.dealsSearch.currentSetter.getCustomId();
+            var customId = this.map.planningMap.config.getCustomId();
             var prms = [
                 ["latSouth", bounds._southWest.lat],
                 ["lngWest", bounds._southWest.lng],
                 ["latNorth", bounds._northEast.lat],
                 ["lngEast", bounds._northEast.lng],
                 ["minPopulation", population.toString()],
-                ["planningType", this.map.planningMap.planningType.toString()],
+                ["planningType", this.map.planningMap.config.type.toString()],
                 ["customId", customId]
             ];
             Views.ViewBase.currentView.apiGet("airportGroup", prms, function (cities) {
@@ -126,19 +126,15 @@ var Planning;
             return marker;
         };
         MapCities.prototype.cityClicked = function (e) {
-            if (!this.map.planningMap.dealsSearch.hasAirs) {
-                this.map.planningMap.dealsSearch.showAirsFirst();
-                return;
-            }
             e.target.setIcon(MapIcons.selected);
             e.target.selected = !e.target.selected;
             this.map.onCityChange(e.target.gid, e.target.selected);
         };
-        MapCities.prototype.loadCitiesInRange = function () {
+        MapCities.prototype.initDelayedCallback = function () {
             var _this = this;
             this.delayedCallback = new DelayedCallbackMap();
             this.delayedCallback.callback = function () {
-                _this.callToLoadCities();
+                _this.loadData();
             };
             this.mapObj.on("zoomend", function (e) {
                 _this.delayedCallback.receiveEvent();

@@ -116,91 +116,49 @@
 
 <div class="deals-search-all" >
 
-    
+    <div class="rating-filter">
+        <div class="levels">
 
-    <div class="wrapper">
-
-        <div class="cat-all" id="placesWinAnytime">
-            <div class="cat-bar">
-
-                <div class="htbl">
-                    <div class="left">
-                        <h2>Anytime deals</h2>
-                        <span class="icon-"></span>
+            <div class="itm">
+                <div class="level lev5 active" data-s="5">
+                    <div id="delasEx" class="num">0</div>
+                    <div class="stars">
+                        <span class="icon-star-full"></span>
+                        <span class="icon-star-full"></span>
+                        <span class="icon-star-full"></span>
+                        <span class="icon-star-full"></span>
+                        <span class="icon-star-full"></span>
                     </div>
-                    <div class="right">
-
-                        <div class="ico-wrap edit-list">
-                            <div class="ico-part">
-                                <span class="icon-edit-pencil"></span>
-                            </div>
-                            <div class="desc-part">Edit as list</div>
-                        </div>
-
-                        <div class="ico-wrap edit-map">
-                            <div class="ico-part">
-                                <span class="icon-everybody-data"></span>
-                            </div>
-                            <div class="desc-part">Edit on map</div>
-                        </div>
-
-                    </div>
+                    <div class="txt">@Model.W("Star5Deals")</div>
                 </div>
-
             </div>
 
-            <div class="cat-set">
-                <div class="cat-set-win places-tag-sel hidden">
-
-                    <span class="icon-cross form-close"></span>
-
-                    <div class="places-tagger">
-
-                        <div class="places-cont">
-                            
-                        </div>
-
-                        <div class="place-search">
-                            <input class="inputed" type="text" placeholder="Place name">
-                            <img class="loader" src="/images/loader-gray.gif" style="display: none" />
-
-                            <div class="place-search-results hidden">
-
-                                <span class="icon-cross-small close"></span>
-
-                                <div class="section sect-cities hidden">
-                                    <div class="title">Cities</div>
-                                    <div class="content"></div>
-                                </div>
-
-                                <div id="sectCountries" class="section sect-countries hidden">
-                                    <div class="title">Countries</div>
-                                    <div class="content"></div>
-                                </div>
-
-                            </div>
-
-                        </div>
-
+            <div class="itm">
+                <div class="level lev3" data-s="3">
+                    <div id="delasGo" class="num">0</div>
+                    <div class="stars">
+                        <span class="icon-star-full"></span>
+                        <span class="icon-star-full"></span>
+                        <span class="icon-star-full"></span>
                     </div>
-
+                    <div class="txt">@Model.W("Star3Deals")</div>
                 </div>
-                
-                <div class="cat-set-win places-map-sel hidden">
-
-                    <span class="icon-cross form-close"></span>
-
-                    maps
-                </div>
-                
-
             </div>
 
-            <div class="cat-cont">
-
+            <div class="itm">
+                <div class="level lev1" data-s="1">
+                    <div id="delasSt" class="num">0</div>
+                    <div class="stars">
+                        <span class="icon-star-full"></span>
+                    </div>
+                    <div class="txt">@Model.W("Star1Deals")</div>
+                </div>
             </div>
 
         </div>
+    </div>
+
+    <div id="catsCont" class="wrapper">
 
     </div>
 

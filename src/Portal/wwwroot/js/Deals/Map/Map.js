@@ -39,17 +39,10 @@ var Planning;
         function Map(planningMap) {
             this.planningMap = planningMap;
         }
-        Map.prototype.anySelected = function () {
-            var city = _.find(this.mapCities.cities, function (c) { return c.selected; });
-            return (city) || any(this.mapCountries.selectedCountries);
-        };
         Map.prototype.init = function () {
-            var _this = this;
             this.mapCities = new Planning.MapCities(this);
             this.mapCountries = new Planning.MapCountries(this);
-            this.mapCountries.init(function () {
-                _this.onMapLoaded();
-            });
+            this.switch(FlightCacheRecordType.Country);
         };
         Map.prototype.switch = function (type) {
             if (type === FlightCacheRecordType.Country) {
@@ -59,12 +52,14 @@ var Planning;
                     var po1 = this.mapCities.position.getPos();
                     this.mapCountries.position.setPos(po1);
                 }
+                this.currentMap = this.mapCountries;
             }
             if (type === FlightCacheRecordType.City) {
                 var po2 = this.mapCountries.position.getPos();
                 this.mapCountries.hide();
                 this.mapCities.show();
                 this.mapCities.position.setPos(po2);
+                this.currentMap = this.mapCities;
             }
         };
         Map.prototype.countrySelChanged = function (cc, isSelected) {

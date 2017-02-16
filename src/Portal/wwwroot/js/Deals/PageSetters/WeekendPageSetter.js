@@ -12,8 +12,6 @@ var Planning;
             this.onFilterChanged();
         };
         WeekendPageSetter.prototype.init = function (callback) {
-            var layoutTmp = this.dealsSearch.v.registerTemplate("filtering-template");
-            this.$filter.html(layoutTmp());
             this.initFilters();
             this.displayer = new Planning.WeekendDisplayer(this.$cont, this.filtering);
             callback();

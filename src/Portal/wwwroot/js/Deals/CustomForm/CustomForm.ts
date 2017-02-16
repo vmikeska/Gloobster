@@ -91,8 +91,8 @@ module Planning {
 		}
 
 		private create() {
-			var tmp = this.dealsSearch.v.registerTemplate("custom-template");
-			this.$form = $(tmp());
+			//var tmp = this.dealsSearch.v.registerTemplate("custom-template");
+			//this.$form = $(tmp());
 			$("#tabContent").html(this.$form);
 				
 			this.initShowHide();
@@ -193,8 +193,9 @@ module Planning {
 					this.dataLoader.getSearch(id, (search) => {							
 							this.loadSearch(search);
 							this.searchId = id;
-							
-							this.dealsSearch.planningMap.loadCategory(PlanningType.Custom);							
+
+							//todo: was commented out coz of build, do we still need it ?
+							//this.dealsSearch.planningMap.loadCategory(PlanningType.Custom);							
 							this.dealsSearch.resultsEngine.initalCall(PlanningType.Custom, this.searchId);
 					});
 			}

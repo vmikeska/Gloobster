@@ -2,13 +2,36 @@ var Planning;
 (function (Planning) {
     var MapCountries = (function () {
         function MapCountries(map) {
-            this.$map = $("#mapCountries");
             this.selectedCountries = [];
             this.featureArray = [];
             this.map = map;
-            this.mapObj = L.map("mapCountries", Planning.MapConstants.mapOptions);
-            this.position = new Planning.MapPosition(this.mapObj);
+            this.$map = $("#" + this.mapId());
+            this.init();
         }
+        Object.defineProperty(MapCountries.prototype, "v", {
+            get: function () {
+                return Views.ViewBase.currentView;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        MapCountries.prototype.init = function () {
+            this.mapObj = L.map(this.mapId(), Planning.MapConstants.mapOptions);
+            this.position = new Planning.MapPosition(this.mapObj);
+            this.createMapboxLayer();
+            this.createCountries();
+        };
+        MapCountries.prototype.loadData = function () {
+            var _this = this;
+            var customId = this.map.planningMap.config.getCustomId();
+            var prms = [["type", this.map.planningMap.config.type.toString()], ["customId", customId]];
+            this.v.apiGet("SelCountry", prms, function (ccs) {
+                _this.set(ccs);
+            });
+        };
+        MapCountries.prototype.mapId = function () {
+            return "mapCountries_" + this.map.planningMap.config.catId;
+        };
         MapCountries.prototype.set = function (ccs) {
             this.selectedCountries = ccs;
             this.featureArray.forEach(function (i) {
@@ -24,24 +47,17 @@ var Planning;
             });
         };
         MapCountries.prototype.show = function () {
-            this.$map.show();
+            this.$map.removeClass("hidden");
+            this.loadData();
         };
         MapCountries.prototype.hide = function () {
-            this.$map.hide();
-        };
-        MapCountries.prototype.init = function (callback) {
-            var _this = this;
-            this.getGeoJson(function () {
-                _this.createMapboxLayer();
-                _this.createCountries();
-                callback();
-            });
+            this.$map.addClass("hidden");
         };
         MapCountries.prototype.createCountries = function () {
             var _this = this;
             this.ccsLayerGroup = L.layerGroup();
             this.mapObj.addLayer(this.ccsLayerGroup);
-            $(this.countriesData.features)
+            $(Planning.CountriesData.data.features)
                 .each(function (key, feature) {
                 _this.createMapFeature(feature);
             });
@@ -72,10 +88,6 @@ var Planning;
             });
         };
         MapCountries.prototype.countryClicked = function (cc, layer) {
-            if (!this.map.planningMap.dealsSearch.hasAirs) {
-                this.map.planningMap.dealsSearch.showAirsFirst();
-                return;
-            }
             var selected = this.isCountrySelected(cc);
             if (selected) {
                 this.selectedCountries = _.reject(this.selectedCountries, function (c) { return c === cc; });
@@ -107,25 +119,6 @@ var Planning;
         MapCountries.prototype.isCountrySelected = function (cc) {
             var selected = _.contains(this.selectedCountries, cc);
             return selected;
-        };
-        MapCountries.prototype.getGeoJson = function (callback) {
-            var _this = this;
-            if (this.countriesData) {
-                callback();
-            }
-            else {
-                $.ajax({
-                    dataType: "json",
-                    url: "/geo/custom.geo.json",
-                    success: function (data) {
-                        _this.countriesData = data;
-                        callback();
-                    }
-                })
-                    .error(function () {
-                    Common.ErrorDialog.show("getGeoJson");
-                });
-            }
         };
         MapCountries.prototype.getLayer = function (e) {
             var id = e.layer._leaflet_id;

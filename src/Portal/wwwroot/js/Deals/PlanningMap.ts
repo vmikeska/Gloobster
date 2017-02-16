@@ -1,24 +1,32 @@
 module Planning {
 	export class PlanningMap {
+			public get v(): Views.ViewBase {
+					return Views.ViewBase.currentView;
+			}
+
+		public map: Map;
+		public config: ISectionConfig;
 
 		public onSelectionChanged: Function;		
 		public onMapLoaded: Function;
 			
-		public map: Map;
-			
 		public viewType = FlightCacheRecordType.Country;
-
-		public planningType: PlanningType;
-		public customId;
-		
-		private resultsEngine: ResultsManager;
-
-		public dealsSearch: Planning.DealsSearch;
-		constructor(dealsSearch: Planning.DealsSearch) {
-				this.dealsSearch = dealsSearch;
+	
+		constructor(config: ISectionConfig) {
+				this.config = config;
 		}
 
+		private inited = false;
+
 		public init() {
+
+			if (this.inited) {
+				this.map.currentMap.show();
+				return;
+			}
+
+			this.inited = true;
+
 			this.initMap();
 
 			this.initCountriesFnc();
@@ -26,74 +34,63 @@ module Planning {
 			this.initCitiesFnc();
 		}
 
-		public changeViewType(type: FlightCacheRecordType) {
-			this.viewType = type;
-				
-			this.map.switch(this.viewType);
-		}
-
 		private initMap() {
 			this.map = new Map(this);
-
-			this.map.onMapLoaded = () => {				
-				this.onMapLoaded();
-			}
-
 			this.map.init();
+
+			this.initMapSwitch();
 		}
 
 		private initCountriesFnc() {
-			this.map.onCountryChange = (cc, isSelected) => {
-				this.onSelectionChanged(cc, isSelected, FlightCacheRecordType.Country);
+				this.map.onCountryChange = (cc, isSelected) => {
 
-				var customId = this.dealsSearch.currentSetter.getCustomId();
+					if (this.onSelectionChanged) {
+						this.onSelectionChanged(cc, isSelected, FlightCacheRecordType.Country);
+						}
+
+					var customId = this.config.getCustomId();
 					
-				var data = { type: this.planningType, cc: cc, selected: isSelected, customId: customId};
+				var data = { type: this.config.type, cc: cc, selected: isSelected, customId: customId};
 					
-				this.dealsSearch.v.apiPut("SelCountry", data, () => {});					
-			};
+				this.v.apiPut("SelCountry", data, () => {});					
+				};
 		}
 
 		private initCitiesFnc() {
+			this.map.onCityChange = (gid, isSelected) => {
 
-				this.map.onCityChange = (gid, isSelected) => {
-						this.onSelectionChanged(gid, isSelected, FlightCacheRecordType.City);
+				if (this.onSelectionChanged) {
+					this.onSelectionChanged(gid, isSelected, FlightCacheRecordType.City);
+				}
 
-						var customId = this.dealsSearch.currentSetter.getCustomId();
+				var customId = this.config.getCustomId();
 
-						var data = { type: this.planningType, gid: gid, selected: isSelected, customId: customId };
+				var data = { type: this.config.type, gid: gid, selected: isSelected, customId: customId };
 
-						this.dealsSearch.v.apiPut("SelCity", data, () => { });		
-				};				
+				this.v.apiPut("SelCity", data, () => {});
+			};
 		}
 
-		public loadCategory(pt: PlanningType) {
-			this.planningType = pt;
-			this.initData();								
-		}
+		private initMapSwitch() {
+				var $cont = $(".map-type-switch");
+				var $btns = $cont.find(".btn");
+				$btns.click((e) => {
+						var $t = $(e.target);
+						var type = $t.hasClass("country") ? FlightCacheRecordType.Country : FlightCacheRecordType.City;
 
-		private initData() {
+						if (type === this.viewType) {
+								return;
+						} 
 
-				this.getSelectedCCs(this.planningType, (ccs) => {
-					
-					this.map.mapCountries.set(ccs);
+						this.viewType = type;
 
-					this.map.switch(this.viewType);					
-				});				
-		}
-
-		private getSelectedCCs(planningType: PlanningType, callback) {
-				var customId = this.dealsSearch.currentSetter.getCustomId();
-
-				var prms = [["type", planningType.toString()], ["customId", customId]];
-				
-				Views.ViewBase.currentView.apiGet("SelCountry", prms, (response) => {
-						callback(response);
+						$btns.removeClass("active");
+						$t.addClass("active");
+								
+						this.map.switch(this.viewType);
 				});
 		}
-			
-			
-
+	
 		}
 
 }

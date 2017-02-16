@@ -56,8 +56,6 @@ var Planning;
             };
         };
         CustomFrom.prototype.create = function () {
-            var tmp = this.dealsSearch.v.registerTemplate("custom-template");
-            this.$form = $(tmp());
             $("#tabContent").html(this.$form);
             this.initShowHide();
         };
@@ -137,7 +135,6 @@ var Planning;
                 _this.dataLoader.getSearch(id, function (search) {
                     _this.loadSearch(search);
                     _this.searchId = id;
-                    _this.dealsSearch.planningMap.loadCategory(PlanningType.Custom);
                     _this.dealsSearch.resultsEngine.initalCall(PlanningType.Custom, _this.searchId);
                 });
             };

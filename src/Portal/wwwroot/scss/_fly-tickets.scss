@@ -147,8 +147,13 @@
         margin-bottom: 0.5em;
 
         h2 {
+            display: inline-block;
             padding: 0;
             margin: 0;
+            color: white;
+        }
+
+        .icon-info {
             color: white;
         }
 
@@ -159,6 +164,41 @@
             .left,.right {
                 vertical-align: middle;
             }
+
+        }
+
+        .order-combo {
+            display: inline-block;
+            background-color: white;
+            border-radius: 4px;
+            padding: 0.2em;
+            cursor: pointer;
+            color: $dark-blue;
+
+            &.opened {                
+                .arrow{
+                    display: inline-block;
+                    transform: scale(1, -1);                                    
+                }
+
+            }
+
+            .cmb-tbl {
+                display: table;
+
+                .c {
+                    display: table-cell;
+                    padding: 0.5em;
+                    text-align: center;
+                    vertical-align: middle;
+                }
+
+                .sel-ico {
+                    font-size: 1.1em;
+                    color: $yellow;
+                }
+            }
+
 
         }
 
@@ -191,8 +231,50 @@
         position: relative;
 
         background-color: $very-light-blue3;
-        padding: 1em;
+        
         text-align: left;
+    }
+
+    .places-tag-sel {
+        padding: 1em;
+    }
+
+    .places-map-sel {
+
+    }
+
+    .order-sel {
+        padding: 0.7em;
+        text-align: right;
+        
+        .item {
+            color: white;
+            display: inline-block;
+
+            cursor: pointer;
+
+            border-radius: 4px;
+            background-color: $light-blue3;
+            padding: 0.5em;
+
+            font-size: 1.2em;
+
+            margin-right: 0.3em;
+
+            &:last-of-type {
+                margin-right: 0;
+            }
+
+            .icon {
+                color: $yellow;
+                vertical-align: middle;
+            }
+
+            .txt {
+                vertical-align: middle;
+            }
+
+        }
     }
 
     .places-tagger {
@@ -234,6 +316,11 @@
             }
         }
     }
+
+    
+
+
+
 
 
 
@@ -1007,7 +1094,7 @@
             }
         }
 
-        .locations {
+        /*.locations {
             margin-bottom: 10px;
 
             .location {
@@ -1043,7 +1130,7 @@
                     }
                 }
             }
-        }
+        }*/
 
         .sec-line {
             text-align: left;            

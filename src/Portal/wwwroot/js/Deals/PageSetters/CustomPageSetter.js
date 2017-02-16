@@ -12,8 +12,6 @@ var Planning;
             this.onFilterChanged();
         };
         CustomPageSetter.prototype.init = function (callback) {
-            var layoutTmp = this.dealsSearch.v.registerTemplate("filtering-template");
-            this.$filter.html(layoutTmp());
             this.initFilters();
             this.displayer = new Planning.AnytimeDisplayer(this.$cont, this.filter);
             this.customForm = new Planning.CustomFrom(this.dealsSearch);

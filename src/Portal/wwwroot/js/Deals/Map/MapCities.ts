@@ -20,7 +20,7 @@ module Planning {
 			}
 	}
 
-	export class MapCities {
+	export class MapCities implements IMap {
 
 		public onSelectionChanged: Function;
 
@@ -39,39 +39,42 @@ module Planning {
 
 		private delayedCallback: DelayedCallbackMap;
 
-		private $map = $("#mapCities");
+		private $map; 
 		private inited = false;
 
 
 		constructor(map: Map) {
-			this.map = map;
+				this.map = map;
+				this.$map = $(`#${this.mapId()}`);
 		}
 
 		public show() {
-			this.$map.show();
+				this.$map.removeClass("hidden");
 
 			if (!this.inited) {
-					this.init();
-					this.inited = true;
-				  this.initCities();
+				this.initMap();
+				this.initDelayedCallback();
+				this.inited = true;
 			}
+
+			this.loadData();
 		}
 
 		public hide() {
-				this.$map.hide();					
+				this.$map.addClass("hidden");
 		}
-	
-		private init() {
-			this.mapObj = L.map("mapCities", MapConstants.mapOptions);
+
+		private mapId() {
+			return `mapCities_${this.map.planningMap.config.catId}`;
+		}
+
+		private initMap() {							
+			this.mapObj = L.map(this.mapId(), MapConstants.mapOptions);
 			this.position = new MapPosition(this.mapObj);
+
 			this.createMapboxLayer();
 			this.citiesLayerGroup = L.layerGroup();
 			this.mapObj.addLayer(this.citiesLayerGroup);
-		}
-			
-		public initCities() {
-			this.loadCitiesInRange();
-			this.callToLoadCities();
 		}
 			
 		private createMapboxLayer() {
@@ -105,12 +108,12 @@ module Planning {
 			return 1;
 		}
 
-		public callToLoadCities() {
+		private loadData() {
 			var bounds = this.mapObj.getBounds();
 			var zoom = this.mapObj.getZoom();
 			var population = this.getPopulationFromZoom(zoom);
 
-			var customId = this.map.planningMap.dealsSearch.currentSetter.getCustomId();
+			var customId = this.map.planningMap.config.getCustomId();
 
 			var prms = [
 				["latSouth", bounds._southWest.lat],
@@ -118,7 +121,7 @@ module Planning {
 				["latNorth", bounds._northEast.lat],
 				["lngEast", bounds._northEast.lng],
 				["minPopulation", population.toString()],
-				["planningType", this.map.planningMap.planningType.toString()],
+				["planningType", this.map.planningMap.config.type.toString()],
 				["customId", customId]
 			];
 				
@@ -174,10 +177,10 @@ module Planning {
 
 		private cityClicked(e) {
 
-			if (!this.map.planningMap.dealsSearch.hasAirs) {
-					this.map.planningMap.dealsSearch.showAirsFirst();
-				return;
-			}
+			//if (!this.map.planningMap.dealsSearch.hasAirs) {
+			//		this.map.planningMap.dealsSearch.showAirsFirst();
+			//	return;
+			//}
 
 			e.target.setIcon(MapIcons.selected);
 				e.target.selected = !e.target.selected;
@@ -185,10 +188,10 @@ module Planning {
 				this.map.onCityChange(e.target.gid, e.target.selected);					
 		}
 
-		private loadCitiesInRange() {
+		private initDelayedCallback() {
 			this.delayedCallback = new DelayedCallbackMap();
 			this.delayedCallback.callback = () => {
-				this.callToLoadCities();
+				this.loadData();
 			};
 
 			this.mapObj.on("zoomend", e => {

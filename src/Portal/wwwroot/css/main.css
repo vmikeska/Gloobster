@@ -4724,14 +4724,37 @@ footer {
   margin-top: 0.5em;
   margin-bottom: 0.5em; }
   .fly-tickets .cat-all h2 {
+    display: inline-block;
     padding: 0;
     margin: 0;
+    color: white; }
+  .fly-tickets .cat-all .icon-info {
     color: white; }
   .fly-tickets .cat-all .cat-bar {
     background-color: #57c1db;
     padding: 1em; }
     .fly-tickets .cat-all .cat-bar .left, .fly-tickets .cat-all .cat-bar .right {
       vertical-align: middle; }
+  .fly-tickets .cat-all .order-combo {
+    display: inline-block;
+    background-color: white;
+    border-radius: 4px;
+    padding: 0.2em;
+    cursor: pointer;
+    color: #005476; }
+    .fly-tickets .cat-all .order-combo.opened .arrow {
+      display: inline-block;
+      transform: scale(1, -1); }
+    .fly-tickets .cat-all .order-combo .cmb-tbl {
+      display: table; }
+      .fly-tickets .cat-all .order-combo .cmb-tbl .c {
+        display: table-cell;
+        padding: 0.5em;
+        text-align: center;
+        vertical-align: middle; }
+      .fly-tickets .cat-all .order-combo .cmb-tbl .sel-ico {
+        font-size: 1.1em;
+        color: #FFC400; }
   .fly-tickets .cat-all .ico-wrap {
     display: inline-block;
     color: #005476;
@@ -4748,8 +4771,30 @@ footer {
 .fly-tickets .cat-set-win {
   position: relative;
   background-color: #F0FAFC;
-  padding: 1em;
   text-align: left; }
+
+.fly-tickets .places-tag-sel {
+  padding: 1em; }
+
+.fly-tickets .order-sel {
+  padding: 0.7em;
+  text-align: right; }
+  .fly-tickets .order-sel .item {
+    color: white;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 4px;
+    background-color: #3298C1;
+    padding: 0.5em;
+    font-size: 1.2em;
+    margin-right: 0.3em; }
+    .fly-tickets .order-sel .item:last-of-type {
+      margin-right: 0; }
+    .fly-tickets .order-sel .item .icon {
+      color: #FFC400;
+      vertical-align: middle; }
+    .fly-tickets .order-sel .item .txt {
+      vertical-align: middle; }
 
 .fly-tickets .places-tagger .places-cont {
   display: inline-block;
@@ -5299,7 +5344,44 @@ footer {
   padding: 12px;
   background-color: #F0F8FA;
   border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px; }
+  border-bottom-right-radius: 4px;
+  /*.locations {
+            margin-bottom: 10px;
+
+            .location {
+                display: inline-block;                
+                text-align: center;
+                margin-right: 50px;
+
+                &:last-of-type {
+                    margin-right: 0;
+                }
+
+                .ico-all{
+                    cursor: pointer;
+                            
+                    .icon {
+                        font-size: 100px;
+                        color: $light-blue5;
+                            
+                        &:hover {
+                            color: $dark-blue;
+                        }
+                    }
+                }
+
+                .txt {
+                    margin-top: 6px;
+                    font-weight: bold;                    
+                }
+
+                &.active {
+                    .icon {
+                        color: $orange !important;
+                    }
+                }
+            }
+        }*/ }
   .fly-tickets .filtering .layout-table {
     display: table;
     width: 100%; }
@@ -5320,26 +5402,6 @@ footer {
       .fly-tickets .filtering .layout-table .r {
         display: block;
         text-align: center; } }
-  .fly-tickets .filtering .locations {
-    margin-bottom: 10px; }
-    .fly-tickets .filtering .locations .location {
-      display: inline-block;
-      text-align: center;
-      margin-right: 50px; }
-      .fly-tickets .filtering .locations .location:last-of-type {
-        margin-right: 0; }
-      .fly-tickets .filtering .locations .location .ico-all {
-        cursor: pointer; }
-        .fly-tickets .filtering .locations .location .ico-all .icon {
-          font-size: 100px;
-          color: #57c1db; }
-          .fly-tickets .filtering .locations .location .ico-all .icon:hover {
-            color: #005476; }
-      .fly-tickets .filtering .locations .location .txt {
-        margin-top: 6px;
-        font-weight: bold; }
-      .fly-tickets .filtering .locations .location.active .icon {
-        color: #F56E12 !important; }
   .fly-tickets .filtering .sec-line {
     text-align: left;
     padding-top: 12px; }

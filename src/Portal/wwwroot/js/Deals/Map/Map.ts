@@ -39,14 +39,19 @@ module Planning {
 				};
 		}
 
+	export interface IMap {
+			show();
+			hide();
+	}
+
 	export class Map {
 			
 		public onCountryChange: Function;
 		public onCityChange: Function;
-		public onMapLoaded: Function;
-
+		
 		public mapCountries: MapCountries;
 		public mapCities: MapCities;
+		public currentMap: IMap;
 
 		public planningMap: PlanningMap;
 			
@@ -54,20 +59,16 @@ module Planning {
 			this.planningMap = planningMap;
 		}
 
-		public anySelected() {
-			var city = _.find(this.mapCities.cities, (c) => { return c.selected; });
-			return (city) || any(this.mapCountries.selectedCountries);
-		}
+		//public anySelected() {
+		//	var city = _.find(this.mapCities.cities, (c) => { return c.selected; });
+		//	return (city) || any(this.mapCountries.selectedCountries);
+		//}
 
-		public init() {
-				
+		public init() {				
 				this.mapCities = new MapCities(this);
-
 				this.mapCountries = new MapCountries(this);
 
-				this.mapCountries.init(() => {
-						this.onMapLoaded();									
-				});				
+				this.switch(FlightCacheRecordType.Country);
 		}
 
 		public switch(type: FlightCacheRecordType) {
@@ -81,6 +82,7 @@ module Planning {
 								var po1 = this.mapCities.position.getPos();
 								this.mapCountries.position.setPos(po1);
 						}
+					this.currentMap = this.mapCountries;
 				}
 
 				if (type === FlightCacheRecordType.City) {
@@ -90,6 +92,8 @@ module Planning {
 						this.mapCities.show();
 
 						this.mapCities.position.setPos(po2);
+
+						this.currentMap = this.mapCities;
 				}
 		}
 			

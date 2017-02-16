@@ -23,8 +23,8 @@ module Planning {
 		}
 
 		public init(callback: Function) {
-			var layoutTmp = this.dealsSearch.v.registerTemplate("filtering-template");
-			this.$filter.html(layoutTmp());
+			//var layoutTmp = this.dealsSearch.v.registerTemplate("filtering-template");
+			//this.$filter.html(layoutTmp());
 
 			this.initFilters();
 

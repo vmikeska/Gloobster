@@ -12,26 +12,17 @@ var Planning;
             if (grouping === Planning.LocationGrouping.ByCity) {
                 var agg1 = new Planning.AnytimeByCityAgg(this.queries);
                 var fs = this.filter.getStateBase();
-                agg1.exe(fs.starsLevel);
-                var dis = new AnytimeByCityDis(results, filterState.currentLevel);
-                dis.render(agg1.cities);
             }
             if (grouping === Planning.LocationGrouping.ByCountry) {
                 var agg2 = new Planning.AnytimeByCountryAgg(this.queries);
                 var fs2 = this.filter.getStateBase();
-                agg2.exe(fs2.starsLevel);
-                var dis2 = new AnytimeByCountryDis(results, filterState.currentLevel);
                 var $res = $("#resultsCont");
                 var $cont = $("<div class=\"cont\"></div>");
                 $res.html($cont);
-                dis2.render(agg2.countries, $cont);
             }
             if (grouping === Planning.LocationGrouping.ByContinent) {
                 var agg3 = new Planning.AnytimeByContinentAgg(this.queries);
                 var fs3 = this.filter.getStateBase();
-                agg3.exe(fs3.starsLevel);
-                var dis3 = new AnytimeByContinentDis(results, filterState.currentLevel);
-                dis3.render(agg3.getAllConts());
             }
         };
         return AnytimeDisplayer;
