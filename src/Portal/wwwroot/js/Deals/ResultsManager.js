@@ -192,8 +192,9 @@ var Planning;
     }());
     Planning.ResultsManager = ResultsManager;
     var QueueVisualize = (function () {
-        function QueueVisualize() {
-            this.$mainCont = $("#queue");
+        function QueueVisualize($rootCont) {
+            this.$rootCont = $rootCont;
+            this.$mainCont = this.$rootCont.find(".cat-queue");
             this.$cont = this.$mainCont.find(".cont");
             this.itemTmp = Views.ViewBase.currentView.registerTemplate("queue-item-tmp");
         }

@@ -13,6 +13,13 @@ var Views;
             this.$classicCont = $(".classic-search-all");
             this.$catsCont = $("#catsCont");
         }
+        Object.defineProperty(DealsView.prototype, "v", {
+            get: function () {
+                return Views.ViewBase.currentView;
+            },
+            enumerable: true,
+            configurable: true
+        });
         DealsView.prototype.init = function () {
             var cs = new Planning.ClassicSearch();
             cs.init();
@@ -26,6 +33,37 @@ var Views;
             var df = new Planning.DealsLevelFilter();
             this.anytimeCat = new Planning.SectionBlock();
             this.anytimeCat.init(PlanningType.Anytime, this.$catsCont, "catAnytime", "Anytime deals");
+            this.weekendCat = new Planning.SectionBlock();
+            this.weekendCat.init(PlanningType.Weekend, this.$catsCont, "catWeekend", "Weekend deals");
+            this.initDealsCustom();
+            this.initAddCustomBtn();
+        };
+        DealsView.prototype.initDealsCustom = function () {
+            var _this = this;
+            var sdl = new Planning.SearchDataLoader();
+            sdl.getInitData(function (searches) {
+                searches.forEach(function (s) {
+                    _this.initDealCustom(s);
+                });
+            });
+        };
+        DealsView.prototype.initDealCustom = function (s) {
+            var cs = new Planning.SectionBlock();
+            cs.init(PlanningType.Custom, this.$catsCont, "catCustom_" + s.id, s.name, s.id);
+            if (!s.started) {
+                cs.setMenuContVisibility(true);
+                var cf = new Planning.CustomForm(cs.$cont, s.id);
+            }
+        };
+        DealsView.prototype.initAddCustomBtn = function () {
+            var _this = this;
+            $("#addCustom").click(function (e) {
+                e.preventDefault();
+                var sdl = new Planning.SearchDataLoader();
+                sdl.createNewSearch(function (s) {
+                    _this.initDealCustom(s);
+                });
+            });
         };
         DealsView.prototype.initMainTabs = function () {
             var _this = this;

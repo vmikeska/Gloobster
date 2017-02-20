@@ -34,7 +34,7 @@ var Planning;
                 if (_this.onSelectionChanged) {
                     _this.onSelectionChanged(cc, isSelected, FlightCacheRecordType.Country);
                 }
-                var customId = _this.config.getCustomId();
+                var customId = _this.config.customId;
                 var data = { type: _this.config.type, cc: cc, selected: isSelected, customId: customId };
                 _this.v.apiPut("SelCountry", data, function () { });
             };
@@ -45,7 +45,7 @@ var Planning;
                 if (_this.onSelectionChanged) {
                     _this.onSelectionChanged(gid, isSelected, FlightCacheRecordType.City);
                 }
-                var customId = _this.config.getCustomId();
+                var customId = _this.config.customId;
                 var data = { type: _this.config.type, gid: gid, selected: isSelected, customId: customId };
                 _this.v.apiPut("SelCity", data, function () { });
             };

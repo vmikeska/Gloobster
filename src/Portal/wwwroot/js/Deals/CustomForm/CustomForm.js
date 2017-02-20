@@ -1,15 +1,55 @@
 var Planning;
 (function (Planning) {
-    var CustomFrom = (function () {
-        function CustomFrom(dealsSearch) {
-            this.dealsSearch = dealsSearch;
-            this.create();
+    var CustomForm = (function () {
+        function CustomForm($cont, searchId) {
+            this.searchId = searchId;
             this.dataLoader = new Planning.SearchDataLoader();
-            this.menu = new Planning.CustomMenu(this.$form.find(".searches-menu"));
+            this.$formCont = $cont.find(".cat-drop-cont .cont");
+            this.create();
         }
-        CustomFrom.prototype.initDaysRange = function () {
+        Object.defineProperty(CustomForm.prototype, "v", {
+            get: function () {
+                return Views.ViewBase.currentView;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        CustomForm.prototype.create = function () {
             var _this = this;
-            this.slider = new Planning.RangeSlider(this.$form.find(".days-range-cont"), "daysRange");
+            this.getSearch(function () {
+                _this.init();
+            });
+        };
+        CustomForm.prototype.init = function () {
+            if (this.search.started) {
+                var t2 = this.v.registerTemplate("custom-setting-2-template");
+                var $t2 = $(t2());
+                this.$formCont.html($t2);
+                this.initFreq();
+                this.initAirTagger();
+                this.initStandardAir();
+                this.loadSearch2();
+            }
+            else {
+                var t1 = this.v.registerTemplate("custom-setting-1-template");
+                var $t1 = $(t1());
+                this.$formCont.html($t1);
+                this.initDaysRange();
+                this.initDateRange();
+                this.initDatesClosing();
+                this.loadSearch1();
+            }
+        };
+        CustomForm.prototype.getSearch = function (callback) {
+            var _this = this;
+            this.dataLoader.getSearch(this.searchId, function (search) {
+                _this.search = search;
+                callback();
+            });
+        };
+        CustomForm.prototype.initDaysRange = function () {
+            var _this = this;
+            this.slider = new Planning.RangeSlider(this.$formCont.find(".days-range-cont"), "daysRange");
             this.slider.genSlider(1, 21);
             this.slider.onRangeChanged = function (from, to) {
                 var caller = new Planning.PropsDataUpload(_this.searchId, "daysRange");
@@ -18,25 +58,10 @@ var Planning;
                 caller.send();
             };
         };
-        CustomFrom.prototype.initDatesClosing = function () {
-            var _this = this;
-            this.$form.find("#datesDoneBtn").click(function (e) {
-                e.preventDefault();
-                _this.updateStarted(true, function () {
-                    _this.setFormState(true);
-                });
-            });
-            this.$form.find("#resetDates").click(function (e) {
-                e.preventDefault();
-                _this.updateStarted(false, function () {
-                    _this.setFormState(false);
-                });
-            });
-        };
-        CustomFrom.prototype.initDateRange = function () {
+        CustomForm.prototype.initDateRange = function () {
             var _this = this;
             var depOpts = { minDate: moment().add(1, "days").toDate() };
-            this.dpDep = new Common.MyCalendar($("#dpDepCont"));
+            this.dpDep = new Common.MyCalendar(this.$formCont.find(".dp-dep-cont"));
             this.dpDep.onChange = function (date) {
                 _this.depDate = date;
                 var md = TravelB.DateUtils.momentDateToMyDate(_this.depDate);
@@ -45,7 +70,7 @@ var Planning;
                 caller.setVal(td);
                 caller.send();
             };
-            this.dpArr = new Common.MyCalendar($("#dpArrCont"));
+            this.dpArr = new Common.MyCalendar(this.$formCont.find(".dp-arr-cont"));
             this.dpArr.onChange = function (date) {
                 _this.arrDate = date;
                 var md = TravelB.DateUtils.momentDateToMyDate(_this.arrDate);
@@ -55,35 +80,19 @@ var Planning;
                 caller.send();
             };
         };
-        CustomFrom.prototype.create = function () {
-            $("#tabContent").html(this.$form);
-            this.initShowHide();
-        };
-        CustomFrom.prototype.initShowHide = function () {
+        CustomForm.prototype.initDatesClosing = function () {
             var _this = this;
-            var $cont = $(".form-cont");
-            var $btn = this.$form.find(".show-hide");
-            this.setShowHideBtn($cont, $btn, false);
-            $btn.click(function (e) {
+            this.$formCont.find(".finish-dates-btn").click(function (e) {
                 e.preventDefault();
-                var isHidden = $cont.hasClass("hidden");
-                _this.setShowHideBtn($cont, $btn, !isHidden);
+                _this.updateStarted(true, function () {
+                    _this.create();
+                });
             });
         };
-        CustomFrom.prototype.setShowHideBtn = function ($cont, $btn, hide) {
-            if (hide) {
-                $btn.html("show");
-                $cont.addClass("hidden");
-            }
-            else {
-                $btn.html("hide");
-                $cont.removeClass("hidden");
-            }
-        };
-        CustomFrom.prototype.initFreq = function () {
+        CustomForm.prototype.initFreq = function () {
             var _this = this;
             var items = [{ days: 1, text: "Daily" }, { days: 7, text: "Weekly" }, { days: 30, text: "Monthly" }];
-            var $c = this.$form.find(".freq-cont .itbl");
+            var $c = this.$formCont.find(".freq-cont .itbl");
             var lg = Common.ListGenerator.init($c, "freq-item-template");
             lg.evnt(".item", function (e, $item, $target, item) {
                 _this.updateFreq(item.days, function () {
@@ -92,29 +101,29 @@ var Planning;
             });
             lg.generateList(items);
         };
-        CustomFrom.prototype.updateStarted = function (started, callback) {
-            var pdu = new Planning.PropsDataUpload(this.searchId, "started");
-            pdu.setVal(started);
-            pdu.send(function () {
-                callback();
-            });
+        CustomForm.prototype.setFreq = function (days) {
+            var $c = this.$formCont.find(".freq-cont");
+            $c.find(".item").removeClass("active");
+            var $item = $c.find("[data-d=\"" + days + "\"]");
+            $item.addClass("active");
         };
-        CustomFrom.prototype.updateFreq = function (days, callback) {
+        CustomForm.prototype.updateFreq = function (days, callback) {
             var pdu = new Planning.PropsDataUpload(this.searchId, "freq");
             pdu.setVal(days);
             pdu.send(function () {
                 callback();
             });
         };
-        CustomFrom.prototype.setFreq = function (days) {
-            var $c = this.$form.find(".freq-cont");
-            $c.find(".item").removeClass("active");
-            var $item = $c.find("[data-d=\"" + days + "\"]");
-            $item.addClass("active");
+        CustomForm.prototype.updateStarted = function (started, callback) {
+            var pdu = new Planning.PropsDataUpload(this.searchId, "started");
+            pdu.setVal(started);
+            pdu.send(function () {
+                callback();
+            });
         };
-        CustomFrom.prototype.initStandardAir = function () {
+        CustomForm.prototype.initStandardAir = function () {
             var _this = this;
-            var $cb = this.$form.find("#cbStandard");
+            var $cb = this.$formCont.find(".cb-standard");
             $cb.change(function () {
                 var state = $cb.prop("checked");
                 var caller = new Planning.PropsDataUpload(_this.searchId, "stdAir");
@@ -122,83 +131,27 @@ var Planning;
                 caller.send();
             });
         };
-        CustomFrom.prototype.init = function (callback) {
-            var _this = this;
-            this.dataLoader.getInitData(function (data) {
-                _this.searchId = data.first.id;
-                _this.menu.init(data.headers);
-                _this.initFormControls();
-                _this.loadSearch(data.first);
-                callback();
-            });
-            this.menu.onSearchChange = function (id) {
-                _this.dataLoader.getSearch(id, function (search) {
-                    _this.loadSearch(search);
-                    _this.searchId = id;
-                    _this.dealsSearch.resultsEngine.initalCall(PlanningType.Custom, _this.searchId);
-                });
-            };
-            this.$form.find(".adder").click(function (e) {
-                e.preventDefault();
-                _this.dataLoader.createNewSearch(function (search) {
-                    _this.menu.addItem(search.id, search.name);
-                    _this.loadSearch(search);
-                    _this.searchId = search.id;
-                });
-            });
-        };
-        CustomFrom.prototype.initFormControls = function () {
-            this.initDaysRange();
-            this.initAirTagger();
-            this.initDateRange();
-            this.initStandardAir();
-            this.initFreq();
-            this.initDatesClosing();
-        };
-        CustomFrom.prototype.loadSearch = function (search) {
-            this.$form.find("#cbStandard").prop("checked", search.standardAirs);
-            this.depDate = TravelB.DateUtils.myDateToMomentDate(search.deparature);
-            this.arrDate = TravelB.DateUtils.myDateToMomentDate(search.arrival);
+        CustomForm.prototype.loadSearch1 = function () {
+            this.depDate = TravelB.DateUtils.myDateToMomentDate(this.search.deparature);
+            this.arrDate = TravelB.DateUtils.myDateToMomentDate(this.search.arrival);
             this.dpDep.setDate(this.depDate);
             this.dpArr.setDate(this.arrDate);
-            this.slider.setVals(search.daysFrom, search.daysTo);
-            var airs = this.getAirs(search);
+            this.slider.setVals(this.search.daysFrom, this.search.daysTo);
+        };
+        CustomForm.prototype.loadSearch2 = function () {
+            this.$formCont.find(".cb-standard").prop("checked", this.search.standardAirs);
+            var airs = this.getAirs(this.search);
             this.airTagger.setSelectedItems(airs);
-            this.setFreq(search.freq);
-            this.setFormState(search.started);
+            this.setFreq(this.search.freq);
         };
-        CustomFrom.prototype.setFormState = function (started) {
-            var $datesStatic = this.$form.find(".dates-static");
-            var $flexPart = this.$form.find(".flexible-part");
-            var $fixedPart = this.$form.find(".fixed-part");
-            if (started) {
-                var days = this.slider.getRange();
-                var dep = this.depDate.format("l");
-                var arr = this.arrDate.format("l");
-                $(".earliest-dep").html(dep);
-                $(".latest-arr").html(arr);
-                $(".days-from").html(days.from);
-                $(".days-to").html(days.to);
-                $flexPart.removeClass("disabled-block");
-                $datesStatic.removeClass("hidden");
-                $fixedPart.addClass("hidden");
-                this.dealsSearch.enableMap(true);
-            }
-            else {
-                $flexPart.addClass("disabled-block");
-                $datesStatic.addClass("hidden");
-                $fixedPart.removeClass("hidden");
-                this.dealsSearch.enableMap(false);
-            }
-        };
-        CustomFrom.prototype.getAirs = function (search) {
+        CustomForm.prototype.getAirs = function (search) {
             var si = [];
             search.customAirs.forEach(function (a) {
                 si.push({ kind: "airport", value: a.origId, text: a.text });
             });
             return si;
         };
-        CustomFrom.prototype.initAirTagger = function () {
+        CustomForm.prototype.initAirTagger = function () {
             var _this = this;
             var config = new Planning.TaggingFieldConfig();
             config.containerId = "airTagger";
@@ -214,7 +167,6 @@ var Planning;
                 pdu.addVal("text", text);
                 pdu.addVal("origId", val);
                 pdu.send(function () {
-                    _this.dealsSearch.resultsEngine.refresh();
                     callback();
                 });
             };
@@ -224,8 +176,8 @@ var Planning;
                 });
             };
         };
-        return CustomFrom;
+        return CustomForm;
     }());
-    Planning.CustomFrom = CustomFrom;
+    Planning.CustomForm = CustomForm;
 })(Planning || (Planning = {}));
 //# sourceMappingURL=CustomForm.js.map

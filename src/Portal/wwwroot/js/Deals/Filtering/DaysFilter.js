@@ -11,6 +11,32 @@ var Planning;
             this.initCb(useDaysFilter);
             this.initSelect();
         };
+        DaysFilter.prototype.getActItems = function () {
+            var acts = this.$filterCont.find(".act").toArray();
+            var o = _.map(acts, function (a) { return parseInt($(a).data("i")); });
+            var from = 6;
+            if (_.contains(o, 5)) {
+                from = 5;
+            }
+            if (_.contains(o, 4)) {
+                from = 4;
+            }
+            var to = 6;
+            if (_.contains(o, 7)) {
+                to = 7;
+            }
+            if (_.contains(o, 1)) {
+                to = 1;
+            }
+            return { from: from, to: to };
+        };
+        DaysFilter.prototype.getState = function () {
+            var days = null;
+            if (this.cbUse.isChecked()) {
+                days = this.getActItems();
+            }
+            return days;
+        };
         DaysFilter.prototype.initCb = function (useDaysFilter) {
             var _this = this;
             this.cbUse = new Common.CustomCheckbox(this.$cbCont, useDaysFilter);
@@ -114,25 +140,6 @@ var Planning;
                     _this.addActNo(a);
                 });
             }
-        };
-        DaysFilter.prototype.getActItems = function () {
-            var acts = this.$filterCont.find(".act").toArray();
-            var o = _.map(acts, function (a) { return parseInt($(a).data("i")); });
-            var from = 6;
-            if (_.contains(o, 5)) {
-                from = 5;
-            }
-            if (_.contains(o, 4)) {
-                from = 4;
-            }
-            var to = 6;
-            if (_.contains(o, 7)) {
-                to = 7;
-            }
-            if (_.contains(o, 1)) {
-                to = 1;
-            }
-            return { from: from, to: to };
         };
         DaysFilter.prototype.showFocus = function (no) {
             var _this = this;

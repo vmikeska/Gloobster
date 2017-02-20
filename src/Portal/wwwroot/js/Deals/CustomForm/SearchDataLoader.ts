@@ -6,9 +6,7 @@ module Planning {
 
 			var prms = [["actionName", "init"]];
 
-			Views.ViewBase.currentView.apiGet("CustomSearch",
-				prms,
-				(res) => {
+			Views.ViewBase.currentView.apiGet("CustomSearch", prms, (res) => {
 					callback(res);
 				});
 		}
@@ -16,9 +14,7 @@ module Planning {
 		public getSearch(id, callback: Function) {
 			var prms = [["actionName", "search"], ["id", id]];
 
-			Views.ViewBase.currentView.apiGet("CustomSearch",
-				prms,
-				(res) => {
+			Views.ViewBase.currentView.apiGet("CustomSearch", prms, (res) => {
 					callback(res);
 				});
 		}
@@ -29,17 +25,13 @@ module Planning {
 				actionName: "new"
 			};
 
-			Views.ViewBase.currentView.apiPost("CustomSearch",
-				data,
-				(res) => {
+			Views.ViewBase.currentView.apiPost("CustomSearch", data, (res) => {
 					callback(res);
 				});
 		}
 
 		public deleteSearch(id, callback: Function) {
-			Views.ViewBase.currentView.apiDelete("CustomSearch",
-				[["actionName", "search"], ["id", id]],
-				(res) => {
+			Views.ViewBase.currentView.apiDelete("CustomSearch", [["actionName", "search"], ["id", id]], (res) => {
 					callback(res);
 				});
 		}
@@ -48,9 +40,7 @@ module Planning {
 
 			var prms = [["actionName", "air"], ["id", searchId], ["paramId", origId]];
 
-			Views.ViewBase.currentView.apiDelete("CustomSearch",
-				prms,
-				(res) => {
+			Views.ViewBase.currentView.apiDelete("CustomSearch", prms, (res) => {
 					callback(res);
 				});
 		}

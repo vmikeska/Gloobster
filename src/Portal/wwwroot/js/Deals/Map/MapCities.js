@@ -77,7 +77,7 @@ var Planning;
             var bounds = this.mapObj.getBounds();
             var zoom = this.mapObj.getZoom();
             var population = this.getPopulationFromZoom(zoom);
-            var customId = this.map.planningMap.config.getCustomId();
+            var customId = this.map.planningMap.config.customId;
             var prms = [
                 ["latSouth", bounds._southWest.lat],
                 ["lngWest", bounds._southWest.lng],

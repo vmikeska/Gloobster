@@ -1,32 +1,79 @@
 module Planning {
 		
-	export class CustomFrom {
+	export class CustomForm {
+			public get v(): Views.ViewBase {
+					return Views.ViewBase.currentView;
+			}
 
 		private slider: RangeSlider;
 			
-		private $form;
+		
 		private airTagger;
 
 		private dataLoader: SearchDataLoader;
-		private menu: CustomMenu;
-
+		
 		private dpDep: Common.MyCalendar;
 		private dpArr: Common.MyCalendar;
 
-		public searchId;
+		private search;
 
-		private dealsSearch: Planning.DealsSearch;
-		constructor(dealsSearch: Planning.DealsSearch) {
-			this.dealsSearch = dealsSearch;
-		
-			this.create();
+		private depDate;
+		private arrDate;
+
+		private $formCont;
+		private searchId;
+
+		constructor($cont, searchId) {
+			this.searchId = searchId;
 
 			this.dataLoader = new SearchDataLoader();
-			this.menu = new CustomMenu(this.$form.find(".searches-menu"));				
+
+			this.$formCont = $cont.find(".cat-drop-cont .cont");
+
+			this.create();
 		}
 
+
+		private create() {
+			this.getSearch(() => {
+				this.init();
+			});
+		}
+
+		private init() {
+			if (this.search.started) {
+					var t2 = this.v.registerTemplate("custom-setting-2-template");
+					var $t2 = $(t2());
+					this.$formCont.html($t2);
+
+					this.initFreq();
+				  this.initAirTagger();
+					this.initStandardAir();
+					this.loadSearch2();
+			} else {
+					var t1 = this.v.registerTemplate("custom-setting-1-template");
+					var $t1 = $(t1());
+					this.$formCont.html($t1);
+
+					this.initDaysRange();
+					this.initDateRange();
+					this.initDatesClosing();
+					this.loadSearch1();				
+			}
+		}
+
+		private getSearch(callback: Function) {
+
+				this.dataLoader.getSearch(this.searchId, (search) => {
+					this.search = search;
+						callback();
+				});
+
+		}
+			
+		
 		private initDaysRange() {
-			this.slider = new RangeSlider(this.$form.find(".days-range-cont"), "daysRange");
+			this.slider = new RangeSlider(this.$formCont.find(".days-range-cont"), "daysRange");
 			this.slider.genSlider(1, 21);
 			this.slider.onRangeChanged = (from, to) => {
 
@@ -37,36 +84,15 @@ module Planning {
 			}
 		}
 
-		private initDatesClosing() {
-			this.$form.find("#datesDoneBtn").click((e) => {
-					e.preventDefault();
-
-				this.updateStarted(true, () => {
-
-						this.setFormState(true);
-						
-					});
-					
-				});
-
-			this.$form.find("#resetDates").click((e) => {
-					e.preventDefault();
-
-					this.updateStarted(false, () => {
-							this.setFormState(false);
-					});
-				});
-		}
-
 		private initDateRange() {
 
 				var depOpts = { minDate: moment().add(1, "days").toDate() };
 
-				this.dpDep = new Common.MyCalendar($("#dpDepCont"));
+				this.dpDep = new Common.MyCalendar(this.$formCont.find(".dp-dep-cont"));
 				this.dpDep.onChange = (date) => {
 
 						this.depDate = date;
-						
+
 						var md = TravelB.DateUtils.momentDateToMyDate(this.depDate);
 						var td = TravelB.DateUtils.myDateToTrans(md);
 
@@ -75,56 +101,51 @@ module Planning {
 						caller.send();
 				}
 
-				this.dpArr = new Common.MyCalendar($("#dpArrCont"));
+				this.dpArr = new Common.MyCalendar(this.$formCont.find(".dp-arr-cont"));
 				this.dpArr.onChange = (date) => {
-						
+
 						this.arrDate = date;
-						
+
 						var md = TravelB.DateUtils.momentDateToMyDate(this.arrDate);
 						var td = TravelB.DateUtils.myDateToTrans(md);
 
 						var caller = new PropsDataUpload(this.searchId, "arr");
 						caller.setVal(td);
 						caller.send();
-					}
-				
+				}
+
 		}
 
-		private create() {
-			//var tmp = this.dealsSearch.v.registerTemplate("custom-template");
-			//this.$form = $(tmp());
-			$("#tabContent").html(this.$form);
-				
-			this.initShowHide();
+		private initDatesClosing() {
+			this.$formCont.find(".finish-dates-btn").click((e) => {
+					e.preventDefault();
+					
+					this.updateStarted(true, () => {
+							this.create();
+					});
+
+				});
 		}
 
-		private initShowHide() {
-			var $cont = $(".form-cont");
-			var $btn = this.$form.find(".show-hide");
-			this.setShowHideBtn($cont, $btn, false);
-			$btn.click((e) => {
-				e.preventDefault();
 
-				var isHidden = $cont.hasClass("hidden");
-				this.setShowHideBtn($cont, $btn, !isHidden);
+		//private setFormState(started) {
+		//		var days = this.slider.getRange();
 
-			});
-		}
+		//		var dep = this.depDate.format("l");
+		//		var arr = this.arrDate.format("l");
 
-		private setShowHideBtn($cont, $btn, hide) {
-			if (hide) {
-				$btn.html("show");
-				$cont.addClass("hidden");
-			} else {
-				$btn.html("hide");
-				$cont.removeClass("hidden");
-			}
-		}
+		//		$(".earliest-dep").html(dep);
+		//		$(".latest-arr").html(arr);
+		//		$(".days-from").html(days.from);
+		//		$(".days-to").html(days.to);
+		//}
+
+
 
 		private initFreq() {
 			var items = [{ days: 1, text: "Daily" }, { days: 7, text: "Weekly" }, { days: 30, text: "Monthly" }];
 
-			var $c = this.$form.find(".freq-cont .itbl");
+			var $c = this.$formCont.find(".freq-cont .itbl");
 
 			var lg = Common.ListGenerator.init($c, "freq-item-template");
 
@@ -137,6 +158,24 @@ module Planning {
 			lg.generateList(items);
 		}
 
+		private setFreq(days) {
+				var $c = this.$formCont.find(".freq-cont");
+
+				$c.find(".item").removeClass("active");
+
+				var $item = $c.find(`[data-d="${days}"]`);
+				$item.addClass("active");
+		}
+
+		private updateFreq(days, callback) {
+				var pdu = new PropsDataUpload(this.searchId, "freq");
+				pdu.setVal(days);
+				pdu.send(() => {
+						callback();
+				});
+		}
+
+
 		private updateStarted(started, callback) {
 				var pdu = new PropsDataUpload(this.searchId, "started");
 				pdu.setVal(started);
@@ -144,27 +183,10 @@ module Planning {
 						callback();
 				});
 		}
-
-		private updateFreq(days, callback) {
-			var pdu = new PropsDataUpload(this.searchId, "freq");
-			pdu.setVal(days);
-			pdu.send(() => {
-				callback();
-			});
-		}
-
-		private setFreq(days) {
-			var $c = this.$form.find(".freq-cont");
-
-			$c.find(".item").removeClass("active");
-
-			var $item = $c.find(`[data-d="${days}"]`);
-			$item.addClass("active");
-		}
 			
 		private initStandardAir() {
 
-			var $cb = this.$form.find("#cbStandard");
+			var $cb = this.$formCont.find(".cb-standard");
 
 			$cb.change(() => {
 					var state = $cb.prop("checked");
@@ -174,106 +196,51 @@ module Planning {
 			});
 				
 		}
-
-		public init(callback: Function) {
 			
-			this.dataLoader.getInitData((data) => {
-				  this.searchId = data.first.id;
+	//		this.menu.onSearchChange = (id) => {
+	//		this.dataLoader.getSearch(id, (search) => {
+	//				this.loadSearch(search);
+	//				this.searchId = id;
 
-					this.menu.init(data.headers);
+	//				//todo: was commented out coz of build, do we still need it ?
+	//				//this.dealsSearch.planningMap.loadCategory(PlanningType.Custom);							
+	//				this.dealsSearch.resultsEngine.initalCall(PlanningType.Custom, this.searchId);
+	//		});
+	//}
 
-					this.initFormControls();
+		//private initFormControls() {
+		//	this.initDaysRange();
+		//	this.initAirTagger();
+		//	this.initDateRange();
+		//	this.initStandardAir();
+		//	this.initFreq();
+		//	this.initDatesClosing();
+		//}
 
-					this.loadSearch(data.first);
-
-					callback();
-			});
-
-			this.menu.onSearchChange = (id) => {
-					this.dataLoader.getSearch(id, (search) => {							
-							this.loadSearch(search);
-							this.searchId = id;
-
-							//todo: was commented out coz of build, do we still need it ?
-							//this.dealsSearch.planningMap.loadCategory(PlanningType.Custom);							
-							this.dealsSearch.resultsEngine.initalCall(PlanningType.Custom, this.searchId);
-					});
-			}
-
-			this.$form.find(".adder").click((e) => {
-				e.preventDefault();
-				this.dataLoader.createNewSearch((search) => {
-						this.menu.addItem(search.id, search.name);
-						this.loadSearch(search);
-					this.searchId = search.id;
-				});
-				});
-
-		}
-
-		private initFormControls() {
-			this.initDaysRange();
-			this.initAirTagger();
-			this.initDateRange();
-			this.initStandardAir();
-			this.initFreq();
-			this.initDatesClosing();
-		}
-
-		private depDate;
-		private arrDate;
 		
-		private loadSearch(search) {
-			this.$form.find("#cbStandard").prop("checked", search.standardAirs);
-
-			this.depDate = TravelB.DateUtils.myDateToMomentDate(search.deparature);
-			this.arrDate = TravelB.DateUtils.myDateToMomentDate(search.arrival);
+		
+		private loadSearch1() {
+			
+			this.depDate = TravelB.DateUtils.myDateToMomentDate(this.search.deparature);
+			this.arrDate = TravelB.DateUtils.myDateToMomentDate(this.search.arrival);
 
 			this.dpDep.setDate(this.depDate);
 			this.dpArr.setDate(this.arrDate);
 				
-			this.slider.setVals(search.daysFrom, search.daysTo);
-
-			var airs = this.getAirs(search);
-			this.airTagger.setSelectedItems(airs);
-
-			this.setFreq(search.freq);
-
-			this.setFormState(search.started);
+			this.slider.setVals(this.search.daysFrom, this.search.daysTo);
+				
 		}
 
 
-			private setFormState(started) {
+		private loadSearch2() {
+				this.$formCont.find(".cb-standard").prop("checked", this.search.standardAirs);
 
-					var $datesStatic = this.$form.find(".dates-static");
-					var $flexPart = this.$form.find(".flexible-part");
-				  var $fixedPart = this.$form.find(".fixed-part");
+				var airs = this.getAirs(this.search);
+				this.airTagger.setSelectedItems(airs);
 
-					if (started) {
-							var days = this.slider.getRange();
-
-							var dep = this.depDate.format("l");
-							var arr = this.arrDate.format("l");
-
-							$(".earliest-dep").html(dep);
-							$(".latest-arr").html(arr);
-							$(".days-from").html(days.from);
-							$(".days-to").html(days.to);
-							
-							$flexPart.removeClass("disabled-block");
-							$datesStatic.removeClass("hidden");
-							$fixedPart.addClass("hidden");
-						  this.dealsSearch.enableMap(true);
-					} else {
-							$flexPart.addClass("disabled-block");
-							$datesStatic.addClass("hidden");
-							$fixedPart.removeClass("hidden");
-							this.dealsSearch.enableMap(false);
-					}
-
-					
-			}
-
+				this.setFreq(this.search.freq);
+		}
+			
 		private getAirs(search) {
 				var si = [];
 				search.customAirs.forEach((a) => {
@@ -300,7 +267,7 @@ module Planning {
 				pdu.addVal("text", text);
 				pdu.addVal("origId", val);
 				pdu.send(() => {
-						this.dealsSearch.resultsEngine.refresh();
+						//this.dealsSearch.resultsEngine.refresh();
 					callback();
 				});
 			}
@@ -318,3 +285,13 @@ module Planning {
 	}
 		
 }
+
+//this.$form.find(".adder").click((e) => {
+//				e.preventDefault();
+//				this.dataLoader.createNewSearch((search) => {
+//				this.menu.addItem(search.id, search.name);
+//				this.loadSearch(search);
+//				this.searchId = search.id;
+//				});
+//});
+

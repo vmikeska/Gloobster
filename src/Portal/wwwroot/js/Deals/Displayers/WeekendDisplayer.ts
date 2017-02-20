@@ -2,40 +2,53 @@ module Planning {
 
 	export enum LocationGrouping { ByCity, ByCountry, ByContinent }
 		
-	export class WeekendDisplayer {
-
-			private queries;
+	export class WeekendDisplayer implements IDisplayer {
+		private queries;
 		private $cont;
-		private filter: FilteringWeekend;
 
-			
-		constructor($cont, filter: FilteringWeekend) {
-				this.$cont = $cont;
-				this.filter = filter;
+		private filter: DaysFilter;
+
+		//TODO: stars filter
+		private getStarsLevel() {
+				return 5;
+		}
+		//todo: score level
+		private getScoreLevel() {
+				return 0.7;
+		}
+
+		constructor($cont, filter: DaysFilter) {
+			this.$cont = $cont;
+			this.filter = filter;
 		}
 
 		public showResults(queries, grouping: LocationGrouping) {
 				this.queries = queries;
 
-			var fs = this.filter.getState();
+				var days = this.filter.getState();
 
-			if (grouping === LocationGrouping.ByCity) {					
+			if (grouping === LocationGrouping.ByCity) {				  
 					var agg1 = new WeekendByCityAgg();
-					var r1 = agg1.exe(this.queries, fs.days, fs.starsLevel);
 					
-					var d1 = new WeekendByCityDis(this.$cont, fs.currentLevel);
+					var r1 = agg1.exe(this.queries, days, this.getStarsLevel());
+					
+					var d1 = new WeekendByCityDis(this.$cont, this.getScoreLevel());
 					d1.render(r1);									
 			}
 				
-			if (grouping === LocationGrouping.ByCountry) {					
+			if (grouping === LocationGrouping.ByCountry) {										
 					var agg2 = new WeekendByCountryAgg();
-					var r2 = agg2.exe(this.queries, fs.days, fs.starsLevel);
 
-					var d2 = new ByCountryDisplay(this.$cont, fs.currentLevel);
+					var r2 = agg2.exe(this.queries, days, this.getStarsLevel());
+
+					var d2 = new ByCountryDisplay(this.$cont, this.getScoreLevel());
 					d2.render(r2);
 				}
 			}
 
+		public refresh(grouping: LocationGrouping) {
+			this.showResults(this.queries, grouping);
+		}
 	}
 
 

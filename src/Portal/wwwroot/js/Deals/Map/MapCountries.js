@@ -23,7 +23,7 @@ var Planning;
         };
         MapCountries.prototype.loadData = function () {
             var _this = this;
-            var customId = this.map.planningMap.config.getCustomId();
+            var customId = this.map.planningMap.config.customId;
             var prms = [["type", this.map.planningMap.config.type.toString()], ["customId", customId]];
             this.v.apiGet("SelCountry", prms, function (ccs) {
                 _this.set(ccs);

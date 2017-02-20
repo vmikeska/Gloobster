@@ -1,58 +1,62 @@
 module Planning {
 
-	export class AnytimeDisplayer {
+		export interface IDisplayer {
+				showResults(queries, grouping: LocationGrouping);
+				refresh(grouping: LocationGrouping);
+		}
+
+		export class AnytimeDisplayer implements IDisplayer {
 
 		private queries;
-		private $cont;
-		private filter: FilteringAnytime;
+		private $section;
 
-		constructor($cont, filter: FilteringAnytime) {
-			this.$cont = $cont;
-			this.filter = filter;
+		constructor($section) {
+				this.$section = $section;		
 		}
+			//TODO: stars filter
+			private getStarsLevel() {
+				return 5;
+		}
+			//todo: score level
+			private getScoreLevel() {
+				return 0.7;
+			}
+
+			public refresh(grouping: LocationGrouping) {
+				this.showResults(this.queries, grouping);
+			}
 
 		public showResults(queries, grouping: LocationGrouping) {
 				this.queries = queries;
-
-			var filterState = this.filter.getStateBase();
-
+				
 			var results = FlightsExtractor.getResults(this.queries);
 
 			if (grouping === LocationGrouping.ByCity) {
 				var agg1 = new AnytimeByCityAgg(this.queries);
-
-				var fs = this.filter.getStateBase();
-
-				//agg1.exe(fs.starsLevel);
 					
-				//var dis = new AnytimeByCityDis(results, filterState.currentLevel);
-				//dis.render(agg1.cities);
+				agg1.exe(this.getStarsLevel());
+					
+				var dis = new AnytimeByCityDis(this.$section, results, this.getScoreLevel());
+				dis.render(agg1.cities);
 			}
 
 			if (grouping === LocationGrouping.ByCountry) {
 					var agg2 = new AnytimeByCountryAgg(this.queries);
-
-					var fs2 = this.filter.getStateBase();
-
-					//agg2.exe(fs2.starsLevel);
-
-					//var dis2 = new AnytimeByCountryDis(results, filterState.currentLevel);
-					var $res = $("#resultsCont");
-					var $cont = $(`<div class="cont"></div>`);
-					$res.html($cont);
 					
-					//dis2.render(agg2.countries, $cont);
+					agg2.exe(this.getStarsLevel());
+
+					var $res = this.$section.find(".cat-res");
+					var dis2 = new AnytimeByCountryDis($res, results, this.getScoreLevel());					
+					dis2.render(agg2.countries);
 			}
 
 			if (grouping === LocationGrouping.ByContinent) {
 					var agg3 = new AnytimeByContinentAgg(this.queries);
+					
+					agg3.exe(this.getStarsLevel());
 
-					var fs3 = this.filter.getStateBase();
-
-					//agg3.exe(fs3.starsLevel);
-
-					//var dis3 = new AnytimeByContinentDis(results, filterState.currentLevel);
-					//dis3.render(agg3.getAllConts());
+					var dis3 = new AnytimeByContinentDis(this.$section, results, this.getScoreLevel());
+					dis3.render(agg3.getAllConts());
 			}
 
 
@@ -61,22 +65,24 @@ module Planning {
 	}
 
 	export class AnytimeByCityDis {
-		private $cont;
+			private $section;
+			private $cont;
 
 		private results;
 		private scoreLevel;
 
-		constructor(results, scoreLevel) {
+		constructor($section, results, scoreLevel) {
+			this.$section = $section;
 			this.results = results;
 			this.scoreLevel = scoreLevel;
+
+			var $res = this.$section.find(".cat-res");
+			this.$cont = $(`<div class="cont"></div>`);
+			$res.html(this.$cont);
 		}
 
 		public render(cities) {
 			cities = _.sortBy(cities, "fromPrice");
-
-			var $res = $("#resultsCont");
-			this.$cont = $(`<div class="cont"></div>`);
-			$res.html(this.$cont);
 				
 			var lg = Common.ListGenerator.init(this.$cont, "resultGroupItem-template");
 			lg.clearCont = true;
@@ -129,22 +135,26 @@ module Planning {
 
 	}
 
-	export class AnytimeByCountryDis {
+	export class AnytimeByCountryDis {			
+			private $res;
 			private $cont;
 
 			private results;
 			private scoreLevel;
 
-			constructor(results, scoreLevel) {
+			constructor($res, results, scoreLevel) {
+					this.$res = $res;
 					this.results = results;
 					this.scoreLevel = scoreLevel;
+					
+					this.$cont = $(`<div class="cont"></div>`);
+					$res.html(this.$cont);
 			}
 
-			public render(countries, $cont) {
-
-					this.$cont = $cont;
+			public render(countries) {
+					
 					countries = _.sortBy(countries, "fromPrice");
-
+					
 					var lg = Common.ListGenerator.init(this.$cont, "resultGroupItemCountry-template");
 					lg.clearCont = true;
 					
@@ -213,22 +223,24 @@ module Planning {
 	}
 
 		export class AnytimeByContinentDis {
-			private $cont = $("#resultsCont");
+				private $res;
 
 			private results;
 			private continents = [];
 			private scoreLevel;
 
-			constructor(results, scoreLevel) {
+			constructor($section, results, scoreLevel) {
 					this.results = results;
-				this.scoreLevel = scoreLevel;
+					this.scoreLevel = scoreLevel;
+
+					this.$res =$section.find(".cat-res");
 			}
 
 			public render(conts) {
 
 				this.mapContObjs(conts);
 
-				var lg = Common.ListGenerator.init(this.$cont, "continent-group-template");
+				var lg = Common.ListGenerator.init(this.$res, "continent-group-template");
 				lg.clearCont = true;
 					
 				lg.onItemAppended = ($continent, continent) => {
@@ -250,8 +262,8 @@ module Planning {
 			}
 
 			private genCountries($continent, countries) {
-					var bc = new AnytimeByCountryDis(this.results, this.scoreLevel);
-					bc.render(countries, $continent.find(".cont"));
+					var bc = new AnytimeByCountryDis($continent.find(".cont"), this.results, this.scoreLevel);
+					bc.render(countries);
 			}
 
 			private mapContObjs(conts) {

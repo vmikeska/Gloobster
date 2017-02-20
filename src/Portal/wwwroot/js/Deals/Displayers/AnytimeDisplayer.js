@@ -1,44 +1,56 @@
 var Planning;
 (function (Planning) {
     var AnytimeDisplayer = (function () {
-        function AnytimeDisplayer($cont, filter) {
-            this.$cont = $cont;
-            this.filter = filter;
+        function AnytimeDisplayer($section) {
+            this.$section = $section;
         }
+        AnytimeDisplayer.prototype.getStarsLevel = function () {
+            return 5;
+        };
+        AnytimeDisplayer.prototype.getScoreLevel = function () {
+            return 0.7;
+        };
+        AnytimeDisplayer.prototype.refresh = function (grouping) {
+            this.showResults(this.queries, grouping);
+        };
         AnytimeDisplayer.prototype.showResults = function (queries, grouping) {
             this.queries = queries;
-            var filterState = this.filter.getStateBase();
             var results = Planning.FlightsExtractor.getResults(this.queries);
             if (grouping === Planning.LocationGrouping.ByCity) {
                 var agg1 = new Planning.AnytimeByCityAgg(this.queries);
-                var fs = this.filter.getStateBase();
+                agg1.exe(this.getStarsLevel());
+                var dis = new AnytimeByCityDis(this.$section, results, this.getScoreLevel());
+                dis.render(agg1.cities);
             }
             if (grouping === Planning.LocationGrouping.ByCountry) {
                 var agg2 = new Planning.AnytimeByCountryAgg(this.queries);
-                var fs2 = this.filter.getStateBase();
-                var $res = $("#resultsCont");
-                var $cont = $("<div class=\"cont\"></div>");
-                $res.html($cont);
+                agg2.exe(this.getStarsLevel());
+                var $res = this.$section.find(".cat-res");
+                var dis2 = new AnytimeByCountryDis($res, results, this.getScoreLevel());
+                dis2.render(agg2.countries);
             }
             if (grouping === Planning.LocationGrouping.ByContinent) {
                 var agg3 = new Planning.AnytimeByContinentAgg(this.queries);
-                var fs3 = this.filter.getStateBase();
+                agg3.exe(this.getStarsLevel());
+                var dis3 = new AnytimeByContinentDis(this.$section, results, this.getScoreLevel());
+                dis3.render(agg3.getAllConts());
             }
         };
         return AnytimeDisplayer;
     }());
     Planning.AnytimeDisplayer = AnytimeDisplayer;
     var AnytimeByCityDis = (function () {
-        function AnytimeByCityDis(results, scoreLevel) {
+        function AnytimeByCityDis($section, results, scoreLevel) {
+            this.$section = $section;
             this.results = results;
             this.scoreLevel = scoreLevel;
+            var $res = this.$section.find(".cat-res");
+            this.$cont = $("<div class=\"cont\"></div>");
+            $res.html(this.$cont);
         }
         AnytimeByCityDis.prototype.render = function (cities) {
             var _this = this;
             cities = _.sortBy(cities, "fromPrice");
-            var $res = $("#resultsCont");
-            this.$cont = $("<div class=\"cont\"></div>");
-            $res.html(this.$cont);
             var lg = Common.ListGenerator.init(this.$cont, "resultGroupItem-template");
             lg.clearCont = true;
             lg.customMapping = function (i) {
@@ -80,13 +92,15 @@ var Planning;
     }());
     Planning.AnytimeByCityDis = AnytimeByCityDis;
     var AnytimeByCountryDis = (function () {
-        function AnytimeByCountryDis(results, scoreLevel) {
+        function AnytimeByCountryDis($res, results, scoreLevel) {
+            this.$res = $res;
             this.results = results;
             this.scoreLevel = scoreLevel;
+            this.$cont = $("<div class=\"cont\"></div>");
+            $res.html(this.$cont);
         }
-        AnytimeByCountryDis.prototype.render = function (countries, $cont) {
+        AnytimeByCountryDis.prototype.render = function (countries) {
             var _this = this;
-            this.$cont = $cont;
             countries = _.sortBy(countries, "fromPrice");
             var lg = Common.ListGenerator.init(this.$cont, "resultGroupItemCountry-template");
             lg.clearCont = true;
@@ -143,16 +157,16 @@ var Planning;
     }());
     Planning.AnytimeByCountryDis = AnytimeByCountryDis;
     var AnytimeByContinentDis = (function () {
-        function AnytimeByContinentDis(results, scoreLevel) {
-            this.$cont = $("#resultsCont");
+        function AnytimeByContinentDis($section, results, scoreLevel) {
             this.continents = [];
             this.results = results;
             this.scoreLevel = scoreLevel;
+            this.$res = $section.find(".cat-res");
         }
         AnytimeByContinentDis.prototype.render = function (conts) {
             var _this = this;
             this.mapContObjs(conts);
-            var lg = Common.ListGenerator.init(this.$cont, "continent-group-template");
+            var lg = Common.ListGenerator.init(this.$res, "continent-group-template");
             lg.clearCont = true;
             lg.onItemAppended = function ($continent, continent) {
                 _this.genCountries($continent, continent.countries);
@@ -167,8 +181,8 @@ var Planning;
             lg.generateList(this.continents);
         };
         AnytimeByContinentDis.prototype.genCountries = function ($continent, countries) {
-            var bc = new AnytimeByCountryDis(this.results, this.scoreLevel);
-            bc.render(countries, $continent.find(".cont"));
+            var bc = new AnytimeByCountryDis($continent.find(".cont"), this.results, this.scoreLevel);
+            bc.render(countries);
         };
         AnytimeByContinentDis.prototype.mapContObjs = function (conts) {
             var v = Views.ViewBase.currentView;

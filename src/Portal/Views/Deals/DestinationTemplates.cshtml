@@ -6,7 +6,27 @@
     </span>
 </script>
 
-    <script id="category-block-template" type="text/x-handlebars-template">
+<script id="custom-bar-icons-tmp" type="text/x-handlebars-template">
+    
+    <div class="ico-wrap delete">
+        <div class="ico-part">
+            <span class="icon-bin"></span>
+        </div>
+        <div class="desc-part">Delete search</div>
+    </div>
+    
+    <div class="ico-wrap settings">
+        <div class="ico-part">
+            <span class="icon-gear"></span>
+        </div>
+        <div class="desc-part">Search settings</div>
+    </div>
+
+</script>
+
+
+
+<script id="category-block-template" type="text/x-handlebars-template">
 
         <div class="cat-all" id="{{catId}}">
             <div class="cat-bar">
@@ -18,6 +38,24 @@
                     </div>
                     <div class="right">
 
+                        <div class="icons-wrap">
+
+                            <div class="ico-wrap edit-list">
+                                <div class="ico-part">
+                                    <span class="icon-edit-pencil"></span>
+                                </div>
+                                <div class="desc-part">Edit as list</div>
+                            </div>
+
+                            <div class="ico-wrap edit-map">
+                                <div class="ico-part">
+                                    <span class="icon-everybody-data"></span>
+                                </div>
+                                <div class="desc-part">Edit on map</div>
+                            </div>
+
+                        </div>
+                        
                         <div class="order-combo">
 
                             <div class="cmb-tbl">
@@ -34,33 +72,26 @@
 
                         </div>
 
-                        <div class="ico-wrap edit-list">
-                            <div class="ico-part">
-                                <span class="icon-edit-pencil"></span>
-                            </div>
-                            <div class="desc-part">Edit as list</div>
-                        </div>
-
-                        <div class="ico-wrap edit-map">
-                            <div class="ico-part">
-                                <span class="icon-everybody-data"></span>
-                            </div>
-                            <div class="desc-part">Edit on map</div>
-                        </div>
-
                     </div>
                 </div>
+                
+            </div>
+            
+            <div class="cat-drop-cont" style="display: none;">
+                
+                <span class="icon-cross form-close"></span>
+                <div class="cont">
+
+                </div>
+
+            </div>
+            
+            <div class="cat-filter">
 
             </div>
 
             <div class="cat-set">
-
-                <div class="cat-set-win order-sel hidden">
-
-                    <div class="items"></div>
-
-                </div>
-
+ 
                 <div class="cat-set-win places-tag-sel hidden">
 
                     <span class="icon-cross form-close"></span>
@@ -118,53 +149,23 @@
 
 
             </div>
+            
+            <div class="cat-queue">
+                <span class="preloader">
+                    <img src="/images/n/Plane_icon.svg">
+                </span>
+                <div class="cont">
 
-            <div class="cat-cont">
+                </div>
+            </div>
+
+            <div class="cat-res">
 
             </div>
 
         </div>
 
     </script>
-
-
-    @*<script id="deals-template" type="text/x-handlebars-template">
-
-            <div id="naviCont" class="navi-cont"></div>
-
-            <div id="tabContent"></div>
-
-            <div class="map-cont">
-                <div class="map" id="mapCountries"></div>
-                <div class="map" id="mapCities" style="display: none"></div>
-
-                <div class="map-type-switch">
-                    <div class="items-tbl">
-                        <div class="country btn active">@Model.W("ViewSwitchCountries")</div>
-                        <div class="city btn">@Model.W("ViewSwitchCities")</div>
-                    </div>
-                </div>
-
-                <div id="mapDisabler"></div>
-            </div>
-
-            <div id="filterCont">
-
-            </div>
-
-            <div id="queue" class="queue-all hidden">
-
-                <span class="preloader">
-                    <img src="/images/n/Plane_icon.svg" />
-                </span>
-
-                <div class="cont"></div>
-            </div>
-
-            <div class="flight-results" id="resultsCont"></div>
-
-        </script>*@
-
 
     <script id="wiz-air-item" type="text/x-handlebars-template">
         <span data-code="{{airCode}}" class="wiz-air">
@@ -426,48 +427,6 @@
         </div>
     </script>
 
-
-
-
-
-    @*<script id="filtering-template" type="text/x-handlebars-template">
-
-            <div class="filtering">
-
-                <div class="layout-table">
-                    <div class="l">
-                        <div class="locations">
-
-                        </div>
-                    </div>
-
-                    <div class="r">
-
-
-
-                    </div>
-                </div>
-
-                <div class="sec-line">
-
-                </div>
-
-            </div>
-
-        </script>*@
-
-    <script id="filter-location-template" type="text/x-handlebars-template">
-        <div class="location" data-type="{{type}}">
-            <div class="ico-all">
-                <span class="icon icon-{{icon}}"></span>
-            </div>
-            <div class="txt">
-                <span>{{txt}}</span>
-            </div>
-        </div>
-    </script>
-
-
     <script id="range-slider-template" type="text/x-handlebars-template">
 
         <div class="slider-cont">
@@ -723,22 +682,6 @@
 
     </script>
 
-    <script id="custom-menu-btn-template" type="text/x-handlebars-template">
-
-        <div id="{{id}}" class="item" data-id="{{id}}">
-            <div class="name">
-                <span class="name-txt">{{name}}</span>
-                <input class="name-edit" type="text" value="{{name}}" />
-            </div>
-            <div class="service">
-                <span class="edit icon-edit-pencil"></span>
-                <span class="delete icon-cross"></span>
-                <a class="edit-save" href="#">@Model.W("SaveBtn")</a>
-            </div>
-        </div>
-
-    </script>
-
 
     <script id="freq-item-template" type="text/x-handlebars-template">
 
@@ -757,82 +700,81 @@
 
 
 
-    <script id="custom-template" type="text/x-handlebars-template">
+<script id="custom-setting-2-template" type="text/x-handlebars-template">
+    
+    <div class="custom-form">
+        
+        <div class="block">
 
-        <div class="form-custom">
+            <div class="title">@Model.W("DatesSelectionInfo")</div>
+            <div>
+                <span class="cap">@Model.W("EarliestDeparatureLatestArrival")</span>
+                <span class="earliest-dep bold val">02/19/2017</span>
+                <span> - </span>
+                <span class="latest-arr bold val">02/19/2017</span>
 
-            <div class="searches-menu">
-                <a class="adder icon-plus"></a>
-                <a class="show-hide" href="#"></a>
+                <span class="cap">@Model.W("EarliestDeparatureLatestArrival")</span>
+                
+                <span class="bold">
+                    <span> @Model.W("MinForDays") </span>
+                    <span class="days-from val">8</span>
+                    <span> @Model.W("MaxForDays") </span>
+                    <span class="days-to val">12</span>
+                    <span> @Model.W("DaysSentenceEnd")</span>
+                </span>
             </div>
 
-            <div class="form-cont">
+        </div>
+        
+        <div class="block">
 
-                <div class="dates-static">
-                    <div class="title">@Model.W("DatesSelectionInfo")</div>
-                    <div>
-                        <span class="cap">@Model.W("EarliestDeparatureLatestArrival")</span>
-                        <span class="earliest-dep val">02/19/2017</span>
-                        <span> - </span>
-                        <span class="latest-arr val">02/19/2017</span>
-
-                        <span class="cap">@Model.W("EarliestDeparatureLatestArrival")</span>
-                        <span> @Model.W("MinForDays") </span>
-                        <span class="days-from val">8</span>
-                        <span> @Model.W("MaxForDays") </span>
-                        <span class="days-to val">12</span>
-                        <span> @Model.W("DaysSentenceEnd")</span>
-                    </div>
+            <div class="title">@Model.W("DepartingAirports")</div>
+            <div class="airports-cont">
+                <div class="sta-air-cont">
+                    <label><input class="cb-standard" type="checkbox" /> <span>@Model.W("MyStandardAirsOption")</span></label>
                 </div>
+                <div class="tagger-cont" id="airTagger"></div>
+            </div>
 
-                <div class="fixed-part">
+        </div>
+        
+        <div class="block">
 
-                    <div class="title">@Model.W("HowManyDaysInDestination")</div>
-                    <div class="days-range-cont"></div>
-
-                    <div class="title">@Model.W("EarliestDepLatestArrivalQuestion")</div>
-                    <div class="dates">
-
-                        <div id="dpDepCont"></div>
-
-                        <div id="dpArrCont"></div>
-
-                    </div>
-
-                    <div class="action-bar">
-                        <a id="datesDoneBtn" class="lbtn2 finish-dates-btn" href="#">@Model.W("DoneWithDatesEditingBtn")</a>
-                    </div>
+            <div class="title">@Model.W("NewsletterFrequency")</div>
+            <div class="freq-cont">
+                <div class="itbl">
 
                 </div>
-
-                <div class="flexible-part">
-
-                    <div class="title">@Model.W("DepartingAirports")</div>
-                    <div class="airports-cont">
-                        <div class="sta-air-cont">
-                            <input id="cbStandard" type="checkbox" />
-                            <label for="cbStandard">@Model.W("MyStandardAirsOption")</label>
-                        </div>
-                        <div class="tagger-cont" id="airTagger"></div>
-                    </div>
-
-                    <div class="title">@Model.W("NewsletterFrequency")</div>
-                    <div class="freq-cont">
-                        <div class="itbl">
-
-                        </div>
-                    </div>
-
-                    <div class="click-blocker" style="display: none"></div>
-
-                </div>
-
-
-
-
             </div>
         </div>
 
+    </div>
 
 
-    </script>
+
+
+</script>
+
+<script id="custom-setting-1-template" type="text/x-handlebars-template">
+    
+    <div class="custom-form">
+
+        <div class="block">
+            <div class="title">@Model.W("HowManyDaysInDestination")</div>
+            <div class="days-range-cont"></div>
+        </div>
+
+        <div class="block">
+            <div class="title">@Model.W("EarliestDepLatestArrivalQuestion")</div>
+            
+            <div class="dp-dep-cont"></div>
+            <div class="dp-arr-cont"></div>
+        </div>
+
+        <div class="block">
+            <a class="lbtn2 finish-dates-btn" href="#">@Model.W("DoneWithDatesEditingBtn")</a>
+        </div>
+
+    </div>
+
+</script>

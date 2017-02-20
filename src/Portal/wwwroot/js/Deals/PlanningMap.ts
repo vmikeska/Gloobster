@@ -48,7 +48,7 @@ module Planning {
 						this.onSelectionChanged(cc, isSelected, FlightCacheRecordType.Country);
 						}
 
-					var customId = this.config.getCustomId();
+					var customId = this.config.customId;
 					
 				var data = { type: this.config.type, cc: cc, selected: isSelected, customId: customId};
 					
@@ -63,7 +63,7 @@ module Planning {
 					this.onSelectionChanged(gid, isSelected, FlightCacheRecordType.City);
 				}
 
-				var customId = this.config.getCustomId();
+				var customId = this.config.customId;
 
 				var data = { type: this.config.type, gid: gid, selected: isSelected, customId: customId };
 

@@ -1,4 +1,7 @@
 module Planning {
+
+		
+
 	export class DaysFilter {
 
 		public onFilterChange: Function;
@@ -17,6 +20,38 @@ module Planning {
 		public init(useDaysFilter: boolean) {
 			this.initCb(useDaysFilter);
 			this.initSelect();
+		}
+
+		public getActItems() {
+			var acts = this.$filterCont.find(".act").toArray();
+			var o = _.map(acts, (a) => { return parseInt($(a).data("i")); });
+
+			var from = 6;
+			if (_.contains(o, 5)) {
+				from = 5;
+			}
+			if (_.contains(o, 4)) {
+				from = 4;
+			}
+
+			var to = 6;
+			if (_.contains(o, 7)) {
+				to = 7;
+			}
+			if (_.contains(o, 1)) {
+				to = 1;
+			}
+
+			return { from: from, to: to };
+		}
+
+		public getState() {
+			var days = null;
+			if (this.cbUse.isChecked()) {
+				days = this.getActItems();
+			}
+
+			return days;
 		}
 
 		private initCb(useDaysFilter: boolean) {
@@ -82,12 +117,10 @@ module Planning {
 
 			lg.evnt(".day", (e, $item, $target, item) => {
 					
-					
 					this.focusTimeoutId = setTimeout(() => {
 						this.focusTimeoutId = null;
 						this.unsetFocus(null);
 					}, 200);	
-					
 					
 				})
 				.setEvent("mouseleave");
@@ -155,28 +188,7 @@ module Planning {
 			}
 		}
 
-		public getActItems() {
-			var acts = this.$filterCont.find(".act").toArray();
-			var o = _.map(acts, (a) => { return parseInt($(a).data("i")); });
-
-			var from = 6;
-			if (_.contains(o, 5)) {
-				from = 5;
-			}
-			if (_.contains(o, 4)) {
-				from = 4;
-			}
-
-			var to = 6;
-			if (_.contains(o, 7)) {
-				to = 7;
-			}
-			if (_.contains(o, 1)) {
-				to = 1;
-			}
-
-			return { from: from, to: to };
-		}
+		
 
 		private showFocus(no) {
 			if (!this.enabled) {

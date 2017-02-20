@@ -5,11 +5,11 @@ using Gloobster.Common;
 
 namespace Gloobster.ReqRes.Planning
 {
-    public class PlanningCustomResponse
-    {
-        public List<CustomSearchHeaderResponse> headers { get; set; }
-        public CustomSearchResponse first { get; set; }
-    }
+    //public class PlanningCustomResponse
+    //{
+    //    public List<CustomSearchHeaderResponse> headers { get; set; }
+    //    public CustomSearchResponse first { get; set; }
+    //}
 
     public class CustomSearchHeaderResponse
     {

@@ -1,7 +1,11 @@
 ﻿module Views {
 
 	export class DealsView extends ViewBase {
-				private tabs;
+			public get v(): Views.ViewBase {
+					return Views.ViewBase.currentView;
+			}
+
+			private tabs;
 
 				private $dealsCont = $(".deals-search-all");
 				private $classicCont = $(".classic-search-all");
@@ -15,7 +19,8 @@
 				public hasAirs;
 
 
-			  private anytimeCat;
+				private anytimeCat;
+			  private weekendCat;
 
 				constructor() {
 						super();						
@@ -32,6 +37,8 @@
 					  this.initDeals();
 				}
 
+
+
 			private initDeals() {
 					var ds = new Planning.DealsInitSettings(this.settings);
 					ds.init(this.hasCity, this.hasAirs);
@@ -40,6 +47,45 @@
 
 					this.anytimeCat = new Planning.SectionBlock();
 					this.anytimeCat.init(PlanningType.Anytime, this.$catsCont, "catAnytime", "Anytime deals");
+
+					this.weekendCat = new Planning.SectionBlock();
+					this.weekendCat.init(PlanningType.Weekend, this.$catsCont, "catWeekend", "Weekend deals");
+
+					this.initDealsCustom();
+
+				this.initAddCustomBtn();
+			}
+
+			private initDealsCustom() {
+
+					var sdl = new Planning.SearchDataLoader();
+
+					sdl.getInitData((searches) => {
+						searches.forEach((s) => {
+							this.initDealCustom(s);
+						});
+					});
+
+			}
+
+			private initDealCustom(s) {
+					var cs = new Planning.SectionBlock();
+					cs.init(PlanningType.Custom, this.$catsCont, `catCustom_${s.id}`, s.name, s.id);
+					if (!s.started) {
+							cs.setMenuContVisibility(true);
+							var cf = new Planning.CustomForm(cs.$cont, s.id);
+					}							
+			}
+
+
+			private initAddCustomBtn() {
+					$("#addCustom").click((e) => {
+						e.preventDefault();
+						var sdl = new Planning.SearchDataLoader();
+						sdl.createNewSearch((s) => {
+							this.initDealCustom(s);
+						});
+				});
 			}
 
 

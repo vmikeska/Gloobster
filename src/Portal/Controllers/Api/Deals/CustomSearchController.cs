@@ -138,17 +138,17 @@ namespace Gloobster.Portal.Controllers.Api.Planning
                     name = s.Name
                 }).ToList();
 
-		        var resp = new PlanningCustomResponse
-		        {
-		            headers = headers,
-		        };
+		        //var resp = new PlanningCustomResponse
+		        //{
+		        //    headers = headers,
+		        //};
 
-		        if (custom.Searches.Any())
-		        {
-		            resp.first = custom.Searches.First().ToResponse();
-		        }
+		        //if (custom.Searches.Any())
+		        //{
+		        //    resp.first = custom.Searches.First().ToResponse();
+		        //}
 
-                return new ObjectResult(resp);                
+                return new ObjectResult(headers);
             }
 
 		    if (req.actionName == "search")

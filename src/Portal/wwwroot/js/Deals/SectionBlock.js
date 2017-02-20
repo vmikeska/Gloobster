@@ -2,80 +2,37 @@ var Planning;
 (function (Planning) {
     var AnytimeConfig = (function () {
         function AnytimeConfig() {
+            this.customId = null;
             this.type = PlanningType.Anytime;
         }
-        AnytimeConfig.prototype.getCustomId = function () {
-            return null;
-        };
         AnytimeConfig.prototype.getGrouping = function () {
             return [Planning.LocationGrouping.ByCity, Planning.LocationGrouping.ByCountry, Planning.LocationGrouping.ByContinent];
         };
         return AnytimeConfig;
     }());
     Planning.AnytimeConfig = AnytimeConfig;
-    var OrderCombo = (function () {
-        function OrderCombo() {
-            this.ocls = "opened";
-            this.selected = Planning.LocationGrouping.ByCity;
+    var WeekendConfig = (function () {
+        function WeekendConfig() {
+            this.customId = null;
+            this.type = PlanningType.Weekend;
         }
-        OrderCombo.prototype.init = function ($sect, groupings) {
-            var _this = this;
-            this.$sect = $sect;
-            this.$cmb = this.$sect.find(".order-combo");
-            this.$win = this.$sect.find(".order-sel");
-            this.$cmb.click(function (e) {
-                var opened = _this.isOpened();
-                _this.setState(!opened);
-            });
-            var items = [];
-            groupings.forEach(function (i) {
-                var item = {
-                    id: i,
-                    icon: "",
-                    txt: ""
-                };
-                if (i === Planning.LocationGrouping.ByCity) {
-                    item.icon = "city";
-                    item.txt = "By city";
-                }
-                if (i === Planning.LocationGrouping.ByCountry) {
-                    item.icon = "country";
-                    item.txt = "By country";
-                }
-                if (i === Planning.LocationGrouping.ByContinent) {
-                    item.icon = "continent";
-                    item.txt = "By continent";
-                }
-                items.push(item);
-            });
-            var lg = Common.ListGenerator.init(this.$win.find(".items"), "grouping-itm-tmp");
-            lg.evnt(null, function (e, $item, $target, item) {
-                _this.selected = item.id;
-                _this.setState(false);
-                _this.setCmb(item.icon, item.txt);
-            });
-            lg.generateList(items);
+        WeekendConfig.prototype.getGrouping = function () {
+            return [Planning.LocationGrouping.ByCity, Planning.LocationGrouping.ByCountry];
         };
-        OrderCombo.prototype.isOpened = function () {
-            return this.$cmb.hasClass(this.ocls);
-        };
-        OrderCombo.prototype.setCmb = function (ico, txt) {
-            this.$cmb.find(".sel-ico").attr("class", "icon-" + ico + " sel-ico");
-            this.$cmb.find(".txt").html(txt);
-        };
-        OrderCombo.prototype.setState = function (opened) {
-            if (opened) {
-                this.$win.removeClass("hidden");
-                this.$cmb.addClass(this.ocls);
-            }
-            else {
-                this.$win.addClass("hidden");
-                this.$cmb.removeClass(this.ocls);
-            }
-        };
-        return OrderCombo;
+        return WeekendConfig;
     }());
-    Planning.OrderCombo = OrderCombo;
+    Planning.WeekendConfig = WeekendConfig;
+    var CustomConfig = (function () {
+        function CustomConfig(customId) {
+            this.type = PlanningType.Custom;
+            this.customId = customId;
+        }
+        CustomConfig.prototype.getGrouping = function () {
+            return [Planning.LocationGrouping.ByCity, Planning.LocationGrouping.ByCountry, Planning.LocationGrouping.ByContinent];
+        };
+        return CustomConfig;
+    }());
+    Planning.CustomConfig = CustomConfig;
     var SectionBlock = (function () {
         function SectionBlock() {
         }
@@ -86,30 +43,138 @@ var Planning;
             enumerable: true,
             configurable: true
         });
-        SectionBlock.prototype.init = function (type, $parentCont, catId, titleName) {
+        SectionBlock.prototype.init = function (type, $parentCont, catId, titleName, customId) {
+            if (customId === void 0) { customId = null; }
             this.$parentCont = $parentCont;
             this.type = type;
             this.createLayout(catId, titleName);
-            this.initConfig(catId);
-            var oc = new OrderCombo();
-            oc.init(this.$parentCont, this.sectConfig.getGrouping());
-            this.initEditBtns();
-            this.planningTags = new PlanningTags(this.$parentCont, this.type);
+            this.initConfig(catId, customId);
+            this.initFilter();
+            this.initGroupingCombo();
+            this.initBtns();
+            this.planningTags = new Planning.PlanningTags(this.$cont, this.type);
             this.planningMap = new Planning.PlanningMap(this.sectConfig);
-            this.editMap();
+            this.initDisplayer();
+            this.initResultMgr();
         };
-        SectionBlock.prototype.initConfig = function (catId) {
+        SectionBlock.prototype.initGroupingCombo = function () {
+            var _this = this;
+            this.grouping = new Planning.GroupCombo();
+            this.grouping.init(this, this.$cont, this.sectConfig.getGrouping());
+            this.grouping.onChange = function () {
+                if (_this.displayer) {
+                    _this.displayer.refresh(_this.grouping.selected);
+                }
+            };
+        };
+        SectionBlock.prototype.initConfig = function (catId, customId) {
             if (this.type === PlanningType.Anytime) {
                 this.sectConfig = new AnytimeConfig();
             }
+            if (this.type === PlanningType.Weekend) {
+                this.sectConfig = new WeekendConfig();
+            }
+            if (this.type === PlanningType.Custom) {
+                this.sectConfig = new CustomConfig(customId);
+            }
             this.sectConfig.catId = catId;
         };
-        SectionBlock.prototype.initEditBtns = function () {
+        SectionBlock.prototype.initDisplayer = function () {
+            if (this.type === PlanningType.Anytime) {
+                this.displayer = new Planning.AnytimeDisplayer(this.$cont);
+            }
+            if (this.type === PlanningType.Weekend) {
+                this.displayer = new Planning.WeekendDisplayer(this.$cont.find(".cat-res"), this.filter);
+            }
+            if (this.type === PlanningType.Custom) {
+                this.displayer = new Planning.AnytimeDisplayer(this.$cont);
+            }
+        };
+        SectionBlock.prototype.initFilter = function () {
+            var _this = this;
+            var $f = this.$cont.find(".cat-filter");
+            if (this.type === PlanningType.Weekend) {
+                var t = this.v.registerTemplate("filtering-weekend-template");
+                var $t = $(t());
+                $f.html($t);
+                this.filter = new Planning.DaysFilter($f.find("#cbUseDaysFilter"), $f.find(".days-filter"));
+                this.filter.onFilterChange = function () {
+                    _this.displayer.refresh(_this.grouping.selected);
+                };
+                this.filter.init(false);
+            }
+        };
+        SectionBlock.prototype.initResultMgr = function () {
+            var _this = this;
+            this.resultsEngine = new Planning.ResultsManager();
+            this.resultsEngine.onDrawQueue = function () {
+                var qv = new Planning.QueueVisualize(_this.$cont);
+                if (any(_this.resultsEngine.queue)) {
+                    qv.draw(_this.resultsEngine.timeType, _this.resultsEngine.queue);
+                }
+                else {
+                    qv.hide();
+                }
+            };
+            this.resultsEngine.onResultsChanged = function (queries) {
+                if (_this.displayer) {
+                    _this.displayer.showResults(queries, _this.grouping.selected);
+                }
+            };
+            this.planningMap.onMapLoaded = function () {
+            };
+            this.planningMap.onSelectionChanged = function (id, newState, type) {
+                var customId = _this.sectConfig.customId;
+                _this.resultsEngine.selectionChanged(id, newState, type, customId);
+            };
+            this.resultsEngine.initalCall(this.type, this.sectConfig.customId);
+        };
+        SectionBlock.prototype.showData = function () {
+        };
+        SectionBlock.prototype.initBtns = function () {
             var _this = this;
             this.$placesTagSel = this.$cont.find(".places-tag-sel");
             this.$placesMapSel = this.$cont.find(".places-map-sel");
             this.$cont.find(".edit-list").click(function (e) { _this.editList(); });
             this.$cont.find(".edit-map").click(function (e) { _this.editMap(); });
+            if (this.type === PlanningType.Custom) {
+                var t = this.v.registerTemplate("custom-bar-icons-tmp");
+                var $t = $(t());
+                var $c = this.$cont.find(".icons-wrap");
+                $c.prepend($t);
+                $c.find(".settings").click(function (e) {
+                    var cf = new Planning.CustomForm(_this.$cont, _this.sectConfig.customId);
+                    _this.setMenuContVisibility(true);
+                });
+                $c.find(".delete").click(function (e) {
+                    var cd = new Common.ConfirmDialog();
+                    cd.create("Search removal", "Would you like to delete this search?", "Cancel", "Delete", function () {
+                        var sdl = new Planning.SearchDataLoader();
+                        sdl.deleteSearch(_this.sectConfig.customId, function () {
+                            _this.$cont.remove();
+                        });
+                    });
+                });
+            }
+            var $menuCont = this.$cont.find(".cat-drop-cont");
+            $menuCont.find(".form-close").click(function (e) {
+                _this.setMenuContVisibility(false);
+                _this.grouping.reset();
+            });
+        };
+        SectionBlock.prototype.setMenuContVisibility = function (state) {
+            var $c = this.$cont.find(".cat-drop-cont");
+            var $fc = $c.find(".form-close");
+            if (state) {
+                $c.slideDown(function () {
+                    $fc.show();
+                });
+            }
+            else {
+                $fc.hide();
+                $c.slideUp(function () {
+                });
+            }
         };
         SectionBlock.prototype.editList = function () {
             if (this.$placesTagSel.hasClass("hidden")) {
@@ -143,98 +208,5 @@ var Planning;
         return SectionBlock;
     }());
     Planning.SectionBlock = SectionBlock;
-    var PlanningTags = (function () {
-        function PlanningTags($cont, type) {
-            this.$cont = $cont;
-            this.type = type;
-        }
-        Object.defineProperty(PlanningTags.prototype, "v", {
-            get: function () {
-                return Views.ViewBase.currentView;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        PlanningTags.prototype.init = function () {
-            var _this = this;
-            this.getPlaces(function (places) {
-                _this.genPlaces(places);
-            });
-            var placeSearch = new Common.AllPlacesSearch(this.$cont.find(".place-search"), this.v);
-            placeSearch.onPlaceSelected = function (r) {
-                if (r.SourceType === SourceType.City) {
-                    _this.changeCitySel(r.SourceId, true, function () {
-                        _this.getPlaces(function (places) {
-                            _this.genPlaces(places);
-                        });
-                    });
-                }
-                if (r.SourceType === SourceType.Country) {
-                    _this.changeCountrySel(r.SourceId, true, function () {
-                        _this.getPlaces(function (places) {
-                            _this.genPlaces(places);
-                        });
-                    });
-                }
-            };
-        };
-        PlanningTags.prototype.changeCountrySel = function (cc, state, callback) {
-            if (callback === void 0) { callback = null; }
-            var data = {
-                type: this.type,
-                cc: cc,
-                selected: state,
-                customId: null
-            };
-            this.v.apiPut("SelCountry", data, function () {
-                callback();
-            });
-        };
-        PlanningTags.prototype.changeCitySel = function (gid, state, callback) {
-            if (callback === void 0) { callback = null; }
-            var data = {
-                type: this.type,
-                gid: gid,
-                selected: state,
-                customId: null
-            };
-            this.v.apiPut("SelCity", data, function () {
-                callback();
-            });
-        };
-        PlanningTags.prototype.getPlaces = function (callback) {
-            var data = [["type", this.type.toString()]];
-            this.v.apiGet("DealsPlaces", data, function (places) {
-                callback(places);
-            });
-        };
-        PlanningTags.prototype.genPlaces = function (places) {
-            var _this = this;
-            var lgc = Common.ListGenerator.init(this.$cont.find(".places-cont"), "map-place-item");
-            lgc.clearCont = true;
-            lgc.customMapping = function (item) {
-                return {
-                    id: item.code,
-                    name: item.name,
-                    type: item.type
-                };
-            };
-            lgc.evnt(".close", function (e, $item, $target, item) {
-                if (item.type === FlightCacheRecordType.City) {
-                    _this.changeCitySel(item.code, false, function () {
-                        $item.remove();
-                    });
-                }
-                if (item.type === FlightCacheRecordType.Country) {
-                    _this.changeCountrySel(item.code, false, function () {
-                        $item.remove();
-                    });
-                }
-            });
-            lgc.generateList(places);
-        };
-        return PlanningTags;
-    }());
-    Planning.PlanningTags = PlanningTags;
 })(Planning || (Planning = {}));
 //# sourceMappingURL=SectionBlock.js.map

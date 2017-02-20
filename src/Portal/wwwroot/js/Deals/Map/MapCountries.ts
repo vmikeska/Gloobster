@@ -36,7 +36,7 @@ module Planning {
 		}
 
 		private loadData() {
-				var customId = this.map.planningMap.config.getCustomId();
+				var customId = this.map.planningMap.config.customId;
 
 				var prms = [["type", this.map.planningMap.config.type.toString()], ["customId", customId]];
 

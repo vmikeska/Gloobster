@@ -259,16 +259,19 @@ module Planning {
 	}
 
 	export class QueueVisualize {			
-		private $cont;
-		private $mainCont;
-		private itemTmp;
+			private $rootCont;
+			private $mainCont;
+			private $cont;
+		
+		  private itemTmp;
 
-			constructor() {
-					this.$mainCont = $("#queue");
-					this.$cont = this.$mainCont.find(".cont");
+		constructor($rootCont) {
+			this.$rootCont = $rootCont;
+			this.$mainCont = this.$rootCont.find(".cat-queue");
+			this.$cont = this.$mainCont.find(".cont");
 
-					this.itemTmp = Views.ViewBase.currentView.registerTemplate("queue-item-tmp");						 
-			}
+			this.itemTmp = Views.ViewBase.currentView.registerTemplate("queue-item-tmp");
+		}
 
 		public draw(timeType, queries) {
 

@@ -145,6 +145,7 @@
     .cat-all {
         margin-top: 0.5em;
         margin-bottom: 0.5em;
+        /*border-radius: 2px;*/
 
         h2 {
             display: inline-block;
@@ -157,14 +158,20 @@
             color: white;
         }
 
-        .cat-bar {
+        .cat-bar {            
             background-color: $light-blue5;
-            padding: 1em;
+            padding: 0.5em;
 
             .left,.right {
                 vertical-align: middle;
             }
 
+        }
+
+        .cat-drop-cont {
+            position: relative;
+            background-color: $very-light-blue3;
+        
         }
 
         .order-combo {
@@ -174,6 +181,8 @@
             padding: 0.2em;
             cursor: pointer;
             color: $dark-blue;
+
+            margin-left: 0.5em;
 
             &.opened {                
                 .arrow{
@@ -188,13 +197,13 @@
 
                 .c {
                     display: table-cell;
-                    padding: 0.5em;
+                    padding: 2px;
                     text-align: center;
                     vertical-align: middle;
                 }
 
                 .sel-ico {
-                    font-size: 1.1em;
+                    font-size: 1em;
                     color: $yellow;
                 }
             }
@@ -203,6 +212,9 @@
         }
 
         
+        .icons-wrap {
+            display: inline-block;
+        }
 
         .ico-wrap {
             display: inline-block;
@@ -214,15 +226,109 @@
 
             .ico-part {
                 text-align: center;
-                font-size: 1.3em;
+                font-size: 1em;
             }
 
             .desc-part {
                 font-weight: bold;
+                font-size: 0.9em;
             }
 
             &:hover {
                 color: white;
+            }
+        }
+    }
+
+    .cat-set {
+        position: relative;
+    }
+
+    .cat-filter {
+        text-align: left;
+        padding: 0.5em;
+
+        .weekend-deals-filter {            
+            
+            .all-deals {
+                vertical-align: middle;
+                display: inline-block;
+        
+                margin-top: 8px;
+        
+                font-weight: bold;
+        
+                white-space: nowrap;
+            }
+    
+            .days-filter {
+                vertical-align: middle;
+
+                display: inline-block;
+                text-align: center;
+
+                .ftbl {
+                    display: table;
+
+                    .cell {
+                        display: table-cell;
+                    }
+                }
+
+                .txt {
+                    display: inline-block;
+                    font-weight: bold;
+                    margin-left: 10px;
+                    margin-right: 25px;
+                }
+    
+                .day{
+                    position: relative;
+                    box-sizing: border-box;
+                    border-width: 2px;
+                    border-style: solid;
+
+                    display: inline-block;
+                    background-color: $light-blue3;
+                    color: white;
+                    border-radius: 4px;
+            
+                    padding-top: 20px;
+                    padding-bottom: 20px;
+            
+                    font-weight: bold;
+                    margin-left: 4px;
+                    width: 66px;
+                    @include noselect;
+
+                    &.act {
+                        background-color: $orange;
+                    }
+
+                    &.foc {
+                        width: 74px;
+                        padding-top: 24px;
+                        padding-bottom: 24px;
+
+                        /*top: -2px;*/
+                        left: -4px;
+                    }
+
+                    &.perm-sel{
+                        background-color: $orange;
+                        cursor: default !important;
+                    }
+                }
+
+                &.enabled {
+                    .day {
+                        cursor: pointer;
+                    }
+                }
+
+                &.disabled {
+                    filter: grayscale(70%);
+                }
             }
         }
     }
@@ -244,8 +350,11 @@
     }
 
     .order-sel {
+        
         padding: 0.7em;
         text-align: right;
+
+        font-size: 0.9em;
         
         .item {
             color: white;
@@ -317,22 +426,138 @@
         }
     }
 
-    
+     .custom-form {
+        background-color: $very-light-blue3;
+        padding: 12px;
+        text-align: center;
+        border-radius: 4px;
+        margin-bottom: 4px;
+        font-size: 0.9em;
+
+        .title {
+            font-weight: bold;
+            font-size: 1em;
+            margin-bottom: 0.5em;            
+        }
+        
+        .block {
+            margin: 0.5em;
+        }
 
 
+        .tag {
+            padding: 4px;
+        }
 
+        .tagger{
+            input {
+                padding: 5px 19px;
+            }
 
+            .icon-search{
+                font-size: 19px;
+            }            
+        }
 
+        .airports-cont {
+            border-radius: 4px;
+            background-color: white;            
+            text-align: left;
+            
+            .sta-air-cont {
+                display: inline-block;
+                vertical-align: middle;
+                
+                background-color: $light-blue;
 
+                color: white;
+                border-radius: 4px;
+                margin: 2px;
+                padding-top: 3px;
+                padding-bottom: 3px;
+                padding-left: 6px;                
+                padding-right: 6px;
 
+                label {
+                    @include noselect;
+                    vertical-align: middle;
+                    display: inline-block;
+                    cursor: pointer;
 
+                    input {
+                        display: inline-block;
+                        margin: 0;
+                        padding:0;
+                        vertical-align: middle;
+                    }
 
+                    span {
+                        display: inline-block;
+                        vertical-align: middle;
+                    }
+                }             
+            }
 
-    .expander, .collapser {
-        text-align: left;        
+            .tagger-cont {
+                vertical-align: middle;
+                display: inline-block;
+
+                border-radius: 4px;
+                
+                padding-left: 4px;
+                padding-right: 4px;
+                padding-top: 4px;                
+            }
+        }
+
+        
+
+        .freq-cont {
+            margin-top: 10px;
+            margin-bottom: 10px;
+
+            .itbl {
+                display: table;
+                width: 100%;
+
+                .cell{
+                    display: table-cell;
+                    width: 33%;
+                }
+
+                .item {
+                    @include noselect;
+
+                    text-align: center;                    
+                    color: white;
+                    font-weight: bold;
+                    background-color: $light-blue;
+                    border-radius: 4px;
+                    padding: 10px;
+                    margin-left: 5px;
+                    margin-right: 5px;
+                    cursor: pointer;
+
+                    &.active {
+                        background-color: $orange;
+                    }
+                }
+            }
+        }
+
+      
+        .finish-dates-btn {
+            color: white;
+            background-color: $green3;
+
+            &:hover {
+                background-color: $orange;
+            }
+        }
+
     }
 
-    .queue-all{
+     .cat-queue{
         $preload-size: 1.3em;
 
         position: relative;
@@ -373,275 +598,55 @@
         }
     }
 
-    .form-custom {
-        background-color: $very-light-blue3;
-        padding: 12px;
-        text-align: left;
-        border-radius: 4px;
-        margin-bottom: 4px;
+     .add-custom-cont {
+          padding-bottom: 1em;
 
-        .title {
-            font-weight: bold;
-            font-size: 1.1em;
-            margin-bottom: 10px;
-            margin-top: 10px;
-        }
+         .add-btn{
+             
+             display: inline-block;
+             background-color: $green;
+             /*border: 2px solid $dark-blue;*/
+             border-radius: 4px;
 
-        .searches-menu {
-            position: relative;                        
-            padding-right: 30px;
+             text-decoration: none;
+
+             padding: 0.5em;
+             
+             
+             .icon-plus {
+                 color: white;
+                 font-size: 1.3em;
+                 display: inline-block;
+                 vertical-align: middle;
+             }
 
 
-            .item {
-                @include noselect;
+             .txt {
+                 color: white;
+                 font-size: 1.3em;
+                 display: inline-block;
+                 vertical-align: middle;
+                 margin-left: 0.3em;
+                 font-weight: bold;
+             }
 
-                display: inline-block;
-                border-radius: 4px;
-                padding: 8px;
-                color: white;
-                background-color: $light-blue;
-                font-weight: bold;
-                cursor: pointer;
-                margin-right: 10px;
+             &:hover {
+                 background-color: $orange;
+             }
+         }
+     }
 
-                .name{
-                    display: inline-block;
 
-                    .name-txt {
-                        
-                    }
 
-                    .name-edit {
-                        display: none;
-                        vertical-align: middle;
-                    }
-                }
 
-                .service {
-                    display: inline-block;
 
-                    .edit, .delete {
-                        display: none;
 
-                        color: $dark-blue;
-                        margin-left: 4px;
 
-                        &:hover{
-                            color: $orange;
-                            cursor: pointer;
-                        }
-                    }
 
-                    .edit-save {
-                        display: none;
-                        vertical-align: middle;
 
-                        background-color: $green;
-                        color: white;
-                        padding: 8px;
-                        text-decoration: none;
-                        border-radius: 4px;
-                        border: 1px solid white;
-
-                        &:hover {
-                            background-color: $orange;
-                        }
-                    }
-
-                }
-
-                &.state-active {
-                    background-color: $light-blue3;
-
-                    .edit, .delete {
-                        display: inline-block;
-                    }
-                }
-
-                &.state-editing {
-                    
-                    .edit, .delete {
-                        display: none;
-                    }
-
-                    .name-edit{
-                        display: inline !important;
-                    }
-
-                    .name-txt {
-                        display: none !important;
-                    }
-
-                    .edit-save {
-                        display: inline-block !important;
-                    }
-                }
-
-                
-            }
-
-            .adder {
-                display: inline-block;
-                border-radius: 4px;
-                border: 1px solid $light-blue3;
-                padding: 8px;
-                cursor: pointer;
-
-                &:hover {
-                    color: $orange;
-                    border-color: $orange;
-                }
-            }
-
-            .show-hide{
-                position: absolute;
-                right: 0;
-                top:5px;
-            }
-        }
-
-        .form-cont {
-            border-top: 1px dotted $light-blue3;
-            margin-top: 6px;
-
-            .disabled-block {
-                position: relative;
-
-                filter: grayscale(70%);
-                
-                .click-blocker {
-                    display: block !important;
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    cursor: default;
-                }
-            }
-
-            .fixed-part {
-                &.hidden {
-                    display: none;
-                }
-            } 
-
-            .dates-static {
-                .cap {
-                    font-weight: bold;
-                    color: $input-color; 
-                }
-
-                .val {
-                    font-weight:bold;
-                }
-
-                &.hidden {
-                    display: none;
-                }
-            }
-
-            &.hidden {
-                display: none;
-            }
-        }
-
-        .tag {
-            padding: 4px;
-        }
-        .tagger{
-            input {
-                padding: 5px 19px;
-            }
-
-            .icon-search{
-                font-size: 19px;
-            }            
-        }
-
-        .airports-cont {
-            border-radius: 4px;
-            background-color: white;
-            padding-left: 4px;
-            padding-right: 4px;
-
-            .sta-air-cont {
-                background-color: $light-blue;
-
-                display: inline-block;
-                color: white;
-                border-radius: 4px;
-                padding: 5px;
-            }
-
-            .tagger-cont {
-                
-                border-radius: 4px;
-                display: inline-block;
-                padding-left: 4px;
-                padding-right: 4px;
-                padding-top: 4px;                
-            }
-        }
-
-        
-
-        .days-range-cont {
-
-        }
-
-        .freq-cont {
-            margin-top: 10px;
-            margin-bottom: 10px;
-
-            .itbl {
-                display: table;
-                width: 100%;
-
-                .cell{
-                    display: table-cell;
-                    width: 33%;
-                }
-
-                .item {
-                    @include noselect;
-
-                    text-align: center;                    
-                    color: white;
-                    font-weight: bold;
-                    background-color: $light-blue;
-                    border-radius: 4px;
-                    padding: 10px;
-                    margin-left: 5px;
-                    margin-right: 5px;
-                    cursor: pointer;
-
-                    &.active {
-                        background-color: $orange;
-                    }
-                }
-            }
-        }
-
-        .action-bar {
-            margin-top: 8px;
-            padding-top: 8px;
-
-            border-top: 1px dotted $light-blue3;
-
-            .finish-dates-btn {
-                color: white;
-                background-color: $green3;
-
-                &:hover {
-                    background-color: $orange;
-                }
-            }
-
-        }
-        
+    .expander, .collapser {
+        text-align: left;        
     }
-
 
     .navi-cont {
         margin-bottom: 5px;
@@ -1132,99 +1137,9 @@
             }
         }*/
 
-        .sec-line {
-            text-align: left;            
-            padding-top: 12px;
-            
-            .weekend-deals-filter {
-                padding-top: 12px;    
-                border-top: 1px dotted $light-blue3;
-
-                .all-deals {
-                    vertical-align: top;
-                    display: inline-block;
-        
-                    margin-top: 8px;
-        
-                    font-weight: bold;
-        
-                    white-space: nowrap;
-                }
-    
-                .days-filter {
-                    display: inline-block;
-                    text-align: center;
-
-                    .ftbl {
-                        display: table;
-
-                        .cell {
-                            display: table-cell;
-                        }
-                    }
-
-                    .txt {
-                        display: inline-block;
-                        font-weight: bold;
-                        margin-left: 10px;
-                        margin-right: 25px;
-                    }
-    
-                    .day{
-                        position: relative;
-                        box-sizing: border-box;
-                        border-width: 2px;
-                        border-style: solid;
-
-                        display: inline-block;
-                        background-color: $light-blue3;
-                        color: white;
-                        border-radius: 4px;
-            
-                        padding-top: 20px;
-                        padding-bottom: 20px;
-            
-                        font-weight: bold;
-                        margin-left: 4px;
-                        width: 66px;
-                        @include noselect;
-
-                        &.act {
-                            background-color: $orange;
-                        }
-
-                        &.foc {
-                            width: 74px;
-                            padding-top: 24px;
-                            padding-bottom: 24px;
-
-                            /*top: -2px;*/
-                            left: -4px;
-                        }
-
-                        &.perm-sel{
-                            background-color: $orange;
-                            cursor: default !important;
-                        }
-                    }
-
-                    &.enabled {
-                        .day {
-                            cursor: pointer;
-                        }
-                    }
-
-                    &.disabled {
-                        filter: grayscale(70%);
-                    }
-                }
-            }
-  
-
-        }
     }
 
-    .flight-results {
+    .cat-res {
         margin-top: 12px;
         
         .weekend-item{
