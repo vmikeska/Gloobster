@@ -2,6 +2,9 @@
 
 
 		export class DealsInitSettings {
+
+				public onThirdStep: Function;
+
 				private airTemplate = Views.ViewBase.currentView.registerTemplate("homeAirportItem-template");
 				private $airportsCont;
 				private kmRangeSelected = 200;
@@ -30,10 +33,12 @@
 						this.setForm(true, false, false);
 
 						this.getAirs((as) => {
-								this.genAirs(as);
+								this.genAirs(as);								
 						});
 
 				});
+
+				this.regNextBtns();
 
 				this.initAirports();
 			}
@@ -54,6 +59,20 @@
 						$(`.step-${num}`).removeClass("hidden");
 						$(`.label-${num}`).addClass("active");
 			}
+
+				private regNextBtns() {
+						$("#stepTwoNext").click((e) => {
+							e.preventDefault();
+							this.setForm(true, true, false);
+
+							this.onThirdStep();
+						});
+
+						$("#stepThreeClose").click((e) => {
+								e.preventDefault();
+							$(".deals-block-all").remove();
+						});
+				}
 				
 				private getAirs(callback: Function) {
 					this.v.apiGet("airportRange", null, (as) => {							
@@ -62,6 +81,8 @@
 				}
 
 				private genAirs(as) {
+						this.locDlg.generateAirports(as);
+
 						var lg = Common.ListGenerator.init($("#wizAirCont"), "wiz-air-item");
 					  lg.clearCont = true;
 					  lg.evnt(".delete", (e, $item, $target, item) => {
@@ -96,6 +117,10 @@
 		}
 
 	export class LocationSettingsDialog {
+
+			public get v(): Views.ViewBase {
+					return Views.ViewBase.currentView;
+			}
 
 		private airTemplate = Views.ViewBase.currentView.registerTemplate("homeAirportItem-template");
 
@@ -159,9 +184,9 @@
 		}
 
 		private loadMgmtAirports() {
-			//this.dealsSearch.v.apiGet("airportRange", null, (as) => {
-			//	this.generateAirports(as);
-			//});
+			this.v.apiGet("airportRange", null, (as) => {
+				this.generateAirports(as);
+			});
 		}
 
 		private initAirports() {				
@@ -169,11 +194,11 @@
 			ac.onSelected = (e) => {
 
 				var data = { airportId: e.id };
-				//this.dealsSearch.v.apiPost("airportRange", data, (a) => {
-				//		this.genAirport(a);
-				//		this.genAirportS(a.airCode);
-				//		this.changed();
-				//});
+				this.v.apiPost("airportRange", data, (a) => {
+						this.genAirport(a);
+						this.genAirportS(a.airCode);
+						this.changed();
+				});
 
 			}				
 		}
@@ -198,13 +223,13 @@
 
 		private callAirportsByRange() {
 			var data = { distance: this.kmRangeSelected };
-			//this.dealsSearch.v.apiPut("AirportRange", data, (airports) => {
-			//		this.generateAirports(airports);
-			//	  this.changed();
-			//});
+			this.v.apiPut("AirportRange", data, (airports) => {
+					this.generateAirports(airports);
+				  this.changed();
+			});
 		}
-
-		private generateAirports(airports) {
+			                                                                                                                                                                                            
+		public generateAirports(airports) {
 			this.$airportsCont.find(".airport").remove();
 			this.$airContS.empty();
 

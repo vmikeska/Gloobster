@@ -57,7 +57,7 @@
 		public sectConfig: ISectionConfig;
 		private resultsEngine: ResultsManager;
 
-		private planningMap: PlanningMap;
+		public planningMap: PlanningMap;
 		private planningTags: PlanningTags;
 
 		private type: PlanningType;
@@ -66,12 +66,14 @@
 
 		private grouping: GroupCombo;
 
+		private filter;
+			
 		public $cont;
 		private $parentCont;			
 		private $placesTagSel;
 		private $placesMapSel;
 
-		public init(type: PlanningType, $parentCont, catId, titleName, customId = null) {
+		public init(type: PlanningType, $parentCont, catId, titleName, hasAirs, customId = null) {
 			this.$parentCont = $parentCont;
 			this.type = type;
 
@@ -85,17 +87,58 @@
 
 			this.initBtns();
 
-			this.planningTags = new PlanningTags(this.$cont, this.type);			
-			this.planningMap = new PlanningMap(this.sectConfig);
+			this.planningTags = new PlanningTags(this.$cont, this.type, customId);			
+			this.planningMap = new PlanningMap(this.sectConfig, this.$cont);
 
 			this.initDisplayer();
 
 			this.initResultMgr();
 
+			this.regInfo();
+
+			this.initNameEdit();
+
+			this.hasAnyPlaces((hasPlaces) => {
+					if (!hasPlaces) {
+							this.editMap();
+
+							if (!hasAirs) {
+									this.planningMap.enableMap(false);
+								this.initMapDisabler();
+							}
+					}
+			});
+				
+		}
+
+			private regInfo() {
+
+				this.$cont.find(".info-btn").click((e) => {						
+					var $c = $(`<div class="info-txt-wrap"></div>`);
+					this.$cont.find(".cat-drop-cont .cont").html($c);
+
+					var txt = this.getInfoTxt();
+					$c.html(txt);
+
+					this.setMenuContVisibility(true);
+				});
 
 
-			//init just at the beginning, coz you want to dispaly it
-			//this.editMap();
+				
+			}
+
+		private initMapDisabler() {
+				this.$cont.find(".map-disabler").click((e) => {
+						$("html,body").animate({ scrollTop: 0 }, "slow");
+				});
+		}
+			
+		private hasAnyPlaces(callback: Function) {
+				var data = [["type", this.type.toString()], ["customId", this.sectConfig.customId], ["justCount", "true"]];
+
+				this.v.apiGet("DealsPlaces", data, (hasPlaces) => {
+						callback(hasPlaces);
+				});
 		}
 
 			private initGroupingCombo() {
@@ -108,19 +151,70 @@
 					}
 			}
 
+			private getInfoTxt() {
+					if (this.type === PlanningType.Anytime) {
+						return "By this type of search, we will be looking for any kind of deal defined by your cities and countries you'd like to visit. Deparature, arrival or how many days you'd like to stay is here not a thing.";
+					}
+
+					if (this.type === PlanningType.Weekend) {
+							return "By this type of search, we will find best deals for following weekends of cities and countries defined by you.";
+					}
+
+					if (this.type === PlanningType.Custom) {
+							return "Make completly custom defined search. Setup frequency of email notifications and we will keep you updated on the best deals.";
+					}
+			}
+
+			private initNameEdit() {
+					
+				if (this.type === PlanningType.Custom) {
+					var $penBtn = this.$cont.find(".name-edit-btn");
+					var $editGroup = this.$cont.find(".name-edit");
+					var $titleName = this.$cont.find(".title-name");
+
+					$penBtn.removeClass("hidden");
+
+					$penBtn.click((e) => {
+							$editGroup.removeClass("hidden");
+							$penBtn.addClass("hidden");
+						$titleName.addClass("hidden");
+					});
+
+					$editGroup.find(".save").click((e) => {
+							e.preventDefault();
+
+						  var name = $editGroup.find(".input").val();
+							var data = {
+									id: this.sectConfig.customId,
+									name: "name",
+									value: name
+							};
+							
+							this.v.apiPut("CustomSearch", data, () => {
+								  $titleName.html(name);
+									$editGroup.addClass("hidden");
+									$penBtn.removeClass("hidden");
+									$titleName.removeClass("hidden");
+							});
+					});
+				}
+
+			}
+			
+
 		private initConfig(catId, customId) {
 			if (this.type === PlanningType.Anytime) {
 				this.sectConfig = new AnytimeConfig();
-				}
+			}
 
 			if (this.type === PlanningType.Weekend) {
-					this.sectConfig = new WeekendConfig();
+				this.sectConfig = new WeekendConfig();
 			}
 
 			if (this.type === PlanningType.Custom) {
 				this.sectConfig = new CustomConfig(customId);
 			}
-				
+
 			this.sectConfig.catId = catId;
 		}
 
@@ -138,7 +232,7 @@
 			}
 		}
 
-			private filter;
+			
 
 		private initFilter() {
 			var $f = this.$cont.find(".cat-filter");
@@ -196,18 +290,18 @@
 
 					this.resultsEngine.initalCall(this.type, this.sectConfig.customId);
 			}
-
-		private showData() {
-				
-					//this.v.apiGet("DealsPlaces", data, (places) => {
-					//		callback(places);
-					//});
-			}
-
-
+			
 		private initBtns() {
 			this.$placesTagSel = this.$cont.find(".places-tag-sel");
 			this.$placesMapSel = this.$cont.find(".places-map-sel");
+
+			this.$placesTagSel.find(".form-close").click(() => {
+				this.$placesTagSel.addClass("hidden");
+			});
+
+			this.$placesMapSel.find(".form-close").click(() => {
+					this.$placesMapSel.addClass("hidden");
+			});
 
 			this.$cont.find(".edit-list").click((e) => { this.editList(); });
 			this.$cont.find(".edit-map").click((e) => { this.editMap(); });
@@ -216,7 +310,7 @@
 				var t = this.v.registerTemplate("custom-bar-icons-tmp");
 				var $t = $(t());
 
-				var $c = this.$cont.find(".icons-wrap");
+				var $c = this.$cont.find(".custom-icons");
 				$c.prepend($t);
 
 				$c.find(".settings").click((e) => {						
@@ -261,6 +355,11 @@
 			}
 		}
 
+
+			private hideAllPlaceEdits() {
+					this.$placesMapSel .addClass("hidden");
+					this.$placesTagSel.removeClass("hidden");
+			}
 
 		private editList() {
 			if (this.$placesTagSel.hasClass("hidden")) {

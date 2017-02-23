@@ -73,6 +73,7 @@ module Planning {
 							.value();	
 					
 					var lg = Common.ListGenerator.init(this.$cont, "weekend-week-template");
+					
 					lg.clearCont = true;
 					lg.customMapping = (w) => {
 
@@ -112,7 +113,7 @@ module Planning {
 				 var $weekCont = $week.find(".cont");
 
 				 var lg = Common.ListGenerator.init($weekCont, "resultGroupItem-template");				
-
+				 AnytimeAggUtils.enrichMoreLess(lg);
 					lg.customMapping = (c) => {
 							return {
 									gid: c.gid,
@@ -132,7 +133,7 @@ module Planning {
 
 					var $cont = $city.find(".items table");
 					var lg = Common.ListGenerator.init($cont, "resultGroup-priceItem-template");
-
+					
 					lg.listLimit = 2;
 					lg.listLimitMoreTmp = "offers-expander-template";
 					lg.listLimitLessTmp = "offers-collapser-template";
@@ -194,6 +195,7 @@ module Planning {
 				  var $weekCont = $week.find(".cont");
 
 					var lg = Common.ListGenerator.init($weekCont, "resultGroupItemCountry-template");
+					AnytimeAggUtils.enrichMoreLess(lg);
 					lg.customMapping = (c) => {
 							return {
 									cc: c.countryCode,

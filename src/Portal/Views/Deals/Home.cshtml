@@ -17,146 +17,166 @@
     var infoBlock = Model.InfoBlock("info-deals");
 }
 
-@*<div class="info-block-bck @infoBlock.Class" id="info-deals">
+@if (!Model.HasAirports)
+{
+
+    <div class="deals-block-all">
 
         <div class="wrapper">
 
-            @Html.Partial("TitleBlock", infoBlock)
+            <p class="txt-block">
+                @Model.W("InfoBlock1")
+            </p>
 
-            <div class="info-block info-block2" style="@infoBlock.Css">
+            <p class="txt-block">
+                @Model.W("InfoBlock2")
+            </p>
 
-                <div class="info-inner-table">
+            <div class="icons">
+                <div class="ico">
+                    <img class="svg-img" src="/images/n/fly-pin.svg"/>
+                </div>
+                <div class="ico">
+                    <img class="svg-img" src="/images/n/fly-plane.svg"/>
+                </div>
+                <div class="ico">
+                    <img class="svg-img" src="/images/n/fly-comp.svg"/>
+                </div>
+            </div>
 
-                    <div class="block">
-                        <img class="svg-img" src="/images/n/fly-pin.svg">
-                        <p class="txt">
-                            @Model.W("InfoBlock1")
-                        </p>
-                    </div>
+            <div class="labels">
+                <div class="label label-one">1. Set your home city</div>
+                <div class="label label-two">2. Customize your home airports</div>
+                <div class="label label-three">3. Choose places you'd like to visit</div>
+            </div>
 
-                    <div class="block">
-                        <img class="svg-img" src="/images/n/fly-plane.svg">
-                        <p class="txt">
-                            @Model.W("InfoBlock2")
-                        </p>
-                    </div>
+            <div class="step step-one hidden">
+                <div id="wizCurrentCity" class="dropdown">
+                    <input class="inputed" type="text" placeholder="Set your home city">
+                    <img class="loader" src="/images/loader-gray.gif" style="display: none" />
+                    <ul></ul>
+                </div>
+            </div>
 
+            <div class="step step-two hidden">
+                <div id="wizAirCont" class="wiz-airs-cont">
                 </div>
 
+
+                <div id="wizAirCombo" class="dropdown">
+                    <input class="inputed" type="text" placeholder="@Model.W("SearchForAirportsPlaceholder")">
+                    <ul></ul>
+                </div>
+                
+                <div class="next-btn-cont">
+                    <a href="#" id="stepTwoNext" class="lbtn2 yellow-orange bold next-btn">Finished with airports, proceed to the next step</a>
+                </div>
             </div>
 
-        </div>
-    </div>*@
-
-<div class="deals-block-all">
-
-    <div class="wrapper">
-
-        <p class="txt-block">
-            @Model.W("InfoBlock1")
-        </p>
-
-        <p class="txt-block">
-            @Model.W("InfoBlock2")
-        </p>
-
-        <div class="icons">
-            <div class="ico">
-                <img class="svg-img" src="/images/n/fly-pin.svg" />
+            <div class="step step-three">
+                <div class="next-btn-cont">
+                    <a href="#" id="stepThreeClose" class="lbtn2 yellow-orange bold next-btn">Close this dialog</a>
+                </div>
             </div>
-            <div class="ico">
-                <img class="svg-img" src="/images/n/fly-plane.svg" />
-            </div>
-            <div class="ico">
-                <img class="svg-img" src="/images/n/fly-comp.svg" />
-            </div>
-        </div>
-
-        <div class="labels">
-            <div class="label label-one">1. Set your home city</div>
-            <div class="label label-two">2. Customize your home airports</div>
-            <div class="label label-three">3. Choose places you'd like to visit</div>
-        </div>
-
-        <div class="step step-one hidden">
-            <div id="wizCurrentCity" class="dropdown">
-                <input class="inputed" type="text" placeholder="Set your home city">
-                <ul></ul>
-            </div>
-        </div>
-
-        <div class="step step-two hidden">
-            <div id="wizAirCont">
-            </div>
-
-
-            <div id="wizAirCombo" class="dropdown">
-                <input class="inputed" type="text" placeholder="@Model.W("SearchForAirportsPlaceholder")">
-                <ul></ul>
-            </div>
-        </div>
-        
-        <div class="step step-three">
-            Please choose places in the sections
         </div>
 
     </div>
 
+}
+    
+<div class="top-all wrapper">
+    
+    <div class="top-tbl">
+        <div class="ic l">
+            
+            <div class="l1">
+                <div class="top-ribbon">
+                    <span class="icon-home"></span>
+
+                    @if (string.IsNullOrEmpty(Model.CityName))
+                    {
+                    <span class="home-location-name">@Model.W("CityNotSet")</span>
+                    }
+                    else
+                    {
+                    <span class="home-location-name">
+                        <strong>@Model.CityName</strong>, @Model.CountryName
+                    </span>
+                    }
+
+                    <div class="airports"></div>
+
+                    <a href="#" class="edit">@Model.W("EditBtn")</a>
+                </div>
+            </div>
+            
+            <div class="l2">
+                <div id="categoryNavi" class="navi-cont"></div>
+            </div>
+            
+        </div>
+        <div class="ic r">
+            
+            <div class="rating-filter">
+                <div class="levels">
+
+                    <div class="itm">
+                        <div class="level lev5 active" data-s="5">
+                            <div id="delasEx" class="num">0</div>
+                            <div class="stars">
+                                <span class="icon-star-full"></span>
+                                <span class="icon-star-full"></span>
+                                <span class="icon-star-full"></span>
+                                <span class="icon-star-full"></span>
+                                <span class="icon-star-full"></span>
+                            </div>
+                            <div class="txt">@Model.W("Star5Deals")</div>
+                        </div>
+                    </div>
+
+                    <div class="itm">
+                        <div class="level lev3" data-s="3">
+                            <div id="delasGo" class="num">0</div>
+                            <div class="stars">
+                                <span class="icon-star-full"></span>
+                                <span class="icon-star-full"></span>
+                                <span class="icon-star-full"></span>
+                            </div>
+                            <div class="txt">@Model.W("Star3Deals")</div>
+                        </div>
+                    </div>
+
+                    <div class="itm">
+                        <div class="level lev1" data-s="1">
+                            <div id="delasSt" class="num">0</div>
+                            <div class="stars">
+                                <span class="icon-star-full"></span>
+                            </div>
+                            <div class="txt">@Model.W("Star1Deals")</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
 </div>
 
-<div class="wrapper">
+
+<div id="topContDeals" class="wrapper">
     
     @Html.Partial("LocationSettingsDialog")
 
-    <div id="categoryNavi" class="navi-cont"></div>
+    
 
     <div id="categoryCont"></div>
 
 </div>
 
 <div class="deals-search-all" >
-
-    <div class="rating-filter">
-        <div class="levels">
-
-            <div class="itm">
-                <div class="level lev5 active" data-s="5">
-                    <div id="delasEx" class="num">0</div>
-                    <div class="stars">
-                        <span class="icon-star-full"></span>
-                        <span class="icon-star-full"></span>
-                        <span class="icon-star-full"></span>
-                        <span class="icon-star-full"></span>
-                        <span class="icon-star-full"></span>
-                    </div>
-                    <div class="txt">@Model.W("Star5Deals")</div>
-                </div>
-            </div>
-
-            <div class="itm">
-                <div class="level lev3" data-s="3">
-                    <div id="delasGo" class="num">0</div>
-                    <div class="stars">
-                        <span class="icon-star-full"></span>
-                        <span class="icon-star-full"></span>
-                        <span class="icon-star-full"></span>
-                    </div>
-                    <div class="txt">@Model.W("Star3Deals")</div>
-                </div>
-            </div>
-
-            <div class="itm">
-                <div class="level lev1" data-s="1">
-                    <div id="delasSt" class="num">0</div>
-                    <div class="stars">
-                        <span class="icon-star-full"></span>
-                    </div>
-                    <div class="txt">@Model.W("Star1Deals")</div>
-                </div>
-            </div>
-
-        </div>
-    </div>
 
     <div id="catsCont" class="wrapper">
 

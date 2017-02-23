@@ -18,6 +18,8 @@ module Common {
 		public listLimit = 0;
 		public listLimitMoreTmp = "";
 		public listLimitLessTmp = "";
+		public listLimitLast = true;
+		private hidableIdClass;
 			
 		private itemTemplate;
 		public emptyTemplate;
@@ -25,6 +27,10 @@ module Common {
 		static get v(): Views.ViewBase {
         return Views.ViewBase.currentView;
     }
+
+		constructor() {
+			this.hidableIdClass = `hidable-${Views.ViewBase.currentView.makeRandomString()}`;
+		}
 		
 		public onItemAppended: Function;
 
@@ -128,53 +134,70 @@ module Common {
 			if (this.listLimit === 0) {
 				return false;
 			}
-
-			return items.length > this.listLimit + 1;
+				
+			return items.length > this.getListLimit();
 		}
 
 		public activeItem: Function;
 
+			private getListLimit() {
+					var l = this.listLimitLast ? this.listLimit + 1 : this.listLimit;
+					return l;
+			}
+
+			private $expander;
+			private $collapser;
+
 		private hidableFnc(itemNo, $item, items) {
-			if (itemNo + 1 === this.listLimit) {
+			var limit = this.getListLimit();
+			if (itemNo + 1 === limit) {
 				var t = ListGenerator.v.registerTemplate(this.listLimitMoreTmp);
-				var $t = $(t());
-				$t.click((e) => {
+				this.$expander = $(t());
+				this.$expander.click((e) => {
 					e.preventDefault();						
 					this.toggleHidingCls(true);
 				});
-				this.$cont.append($t);
+				this.$cont.append(this.$expander);
 			}
 
-			if (itemNo + 1 > this.listLimit) {
-				$item.addClass("hidable");
+			if (itemNo + 1 > limit) {
+				$item.addClass(this.hidableIdClass);
 				$item.addClass("hidable-hide");
 			}
 
 			var isLast = itemNo + 1 === items.length;
 			if (isLast) {
 					var tl = ListGenerator.v.registerTemplate(this.listLimitLessTmp);
-					var $tl = $(tl());
-					$tl.click((e) => {
+					this.$collapser = $(tl());
+					this.$collapser.click((e) => {
 							e.preventDefault();							
 							this.toggleHidingCls(false);
 					});
-					this.$cont.append($tl);
+					this.$cont.append(this.$collapser);
+
+					this.$collapser.addClass("hidden");
 
 				this.toggleHidingCls(false);
 			}
 		}
 			
 		private toggleHidingCls(state) {
-			var $hs = this.$cont.find(".hidable");
+				var $hs = this.$cont.find(`.${this.hidableIdClass}`);
 
 			if (state) {
 				this.$cont.removeClass("list-state-collapsed");
 				this.$cont.addClass("list-state-expanded");
 
+				this.$collapser.removeClass("hidden");
+				this.$expander.addClass("hidden");
+
 				$hs.removeClass("hidable-hide");
 			} else {					
 				this.$cont.addClass("list-state-collapsed");
 				this.$cont.removeClass("list-state-expanded");
+
+				this.$collapser.addClass("hidden");
+				this.$expander.removeClass("hidden");
 
 				$hs.addClass("hidable-hide");
 			}

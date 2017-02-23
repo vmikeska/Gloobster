@@ -4,7 +4,7 @@ module Planning {
 				showResults(queries, grouping: LocationGrouping);
 				refresh(grouping: LocationGrouping);
 		}
-
+		
 		export class AnytimeDisplayer implements IDisplayer {
 
 		private queries;
@@ -85,6 +85,7 @@ module Planning {
 			cities = _.sortBy(cities, "fromPrice");
 				
 			var lg = Common.ListGenerator.init(this.$cont, "resultGroupItem-template");
+			AnytimeAggUtils.enrichMoreLess(lg);
 			lg.clearCont = true;
 
 			lg.customMapping = (i) => {
@@ -156,6 +157,7 @@ module Planning {
 					countries = _.sortBy(countries, "fromPrice");
 					
 					var lg = Common.ListGenerator.init(this.$cont, "resultGroupItemCountry-template");
+					AnytimeAggUtils.enrichMoreLess(lg);
 					lg.clearCont = true;
 					
 					lg.customMapping = (i) => {
@@ -241,6 +243,7 @@ module Planning {
 				this.mapContObjs(conts);
 
 				var lg = Common.ListGenerator.init(this.$res, "continent-group-template");
+				AnytimeAggUtils.enrichMoreLess(lg);
 				lg.clearCont = true;
 					
 				lg.onItemAppended = ($continent, continent) => {

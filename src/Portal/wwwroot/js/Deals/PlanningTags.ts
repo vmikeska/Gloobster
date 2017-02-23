@@ -7,10 +7,12 @@
 
 		private $cont;
 		private type: PlanningType;
+		private customId;
 
-		constructor($cont, type) {
+		constructor($cont, type, customId) {
 			this.$cont = $cont;
 			this.type = type;
+			this.customId = customId;
 		}
 
 		public init() {
@@ -66,7 +68,7 @@
 		}
 
 		private getPlaces(callback: Function) {
-			var data = [["type", this.type.toString()]];
+				var data = [["type", this.type.toString()], ["customId", this.customId]];
 
 			this.v.apiGet("DealsPlaces", data, (places) => {
 				callback(places);

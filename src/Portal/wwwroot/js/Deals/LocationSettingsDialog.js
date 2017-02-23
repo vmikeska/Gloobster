@@ -26,6 +26,7 @@ var Planning;
                     _this.genAirs(as);
                 });
             });
+            this.regNextBtns();
             this.initAirports();
         };
         DealsInitSettings.prototype.setForm = function (hasCity, hasAirs, anyItems) {
@@ -44,6 +45,18 @@ var Planning;
             $(".step-" + num).removeClass("hidden");
             $(".label-" + num).addClass("active");
         };
+        DealsInitSettings.prototype.regNextBtns = function () {
+            var _this = this;
+            $("#stepTwoNext").click(function (e) {
+                e.preventDefault();
+                _this.setForm(true, true, false);
+                _this.onThirdStep();
+            });
+            $("#stepThreeClose").click(function (e) {
+                e.preventDefault();
+                $(".deals-block-all").remove();
+            });
+        };
         DealsInitSettings.prototype.getAirs = function (callback) {
             this.v.apiGet("airportRange", null, function (as) {
                 callback(as);
@@ -51,6 +64,7 @@ var Planning;
         };
         DealsInitSettings.prototype.genAirs = function (as) {
             var _this = this;
+            this.locDlg.generateAirports(as);
             var lg = Common.ListGenerator.init($("#wizAirCont"), "wiz-air-item");
             lg.clearCont = true;
             lg.evnt(".delete", function (e, $item, $target, item) {
@@ -106,6 +120,13 @@ var Planning;
                 _this.hideRefresh();
             });
         }
+        Object.defineProperty(LocationSettingsDialog.prototype, "v", {
+            get: function () {
+                return Views.ViewBase.currentView;
+            },
+            enumerable: true,
+            configurable: true
+        });
         LocationSettingsDialog.prototype.updateLoc = function (city, cc) {
             $("#rangeBlock").removeClass("hidden");
             $(".home-location-name").html(city + ", (" + cc + ")");
@@ -119,11 +140,21 @@ var Planning;
             }
         };
         LocationSettingsDialog.prototype.loadMgmtAirports = function () {
+            var _this = this;
+            this.v.apiGet("airportRange", null, function (as) {
+                _this.generateAirports(as);
+            });
         };
         LocationSettingsDialog.prototype.initAirports = function () {
+            var _this = this;
             var ac = new Trip.AirportCombo("airportCombo", { clearAfterSelection: true });
             ac.onSelected = function (e) {
                 var data = { airportId: e.id };
+                _this.v.apiPost("airportRange", data, function (a) {
+                    _this.genAirport(a);
+                    _this.genAirportS(a.airCode);
+                    _this.changed();
+                });
             };
         };
         LocationSettingsDialog.prototype.hasAirports = function () {
@@ -142,7 +173,12 @@ var Planning;
             });
         };
         LocationSettingsDialog.prototype.callAirportsByRange = function () {
+            var _this = this;
             var data = { distance: this.kmRangeSelected };
+            this.v.apiPut("AirportRange", data, function (airports) {
+                _this.generateAirports(airports);
+                _this.changed();
+            });
         };
         LocationSettingsDialog.prototype.generateAirports = function (airports) {
             var _this = this;

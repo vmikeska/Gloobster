@@ -1,9 +1,10 @@
 var Planning;
 (function (Planning) {
     var PlanningMap = (function () {
-        function PlanningMap(config) {
+        function PlanningMap(config, $section) {
             this.viewType = FlightCacheRecordType.Country;
             this.inited = false;
+            this.$section = $section;
             this.config = config;
         }
         Object.defineProperty(PlanningMap.prototype, "v", {
@@ -22,6 +23,15 @@ var Planning;
             this.initMap();
             this.initCountriesFnc();
             this.initCitiesFnc();
+        };
+        PlanningMap.prototype.enableMap = function (state) {
+            var disabler = this.$section.find(".map-disabler");
+            if (state) {
+                disabler.removeClass("map-disabled");
+            }
+            else {
+                disabler.addClass("map-disabled");
+            }
         };
         PlanningMap.prototype.initMap = function () {
             this.map = new Planning.Map(this);

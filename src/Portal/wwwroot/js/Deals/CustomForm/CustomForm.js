@@ -23,7 +23,10 @@ var Planning;
         CustomForm.prototype.init = function () {
             if (this.search.started) {
                 var t2 = this.v.registerTemplate("custom-setting-2-template");
-                var $t2 = $(t2());
+                var context = {
+                    customId: this.search.id
+                };
+                var $t2 = $(t2(context));
                 this.$formCont.html($t2);
                 this.initFreq();
                 this.initAirTagger();
@@ -154,7 +157,7 @@ var Planning;
         CustomForm.prototype.initAirTagger = function () {
             var _this = this;
             var config = new Planning.TaggingFieldConfig();
-            config.containerId = "airTagger";
+            config.containerId = "airTagger_" + this.searchId;
             config.localValues = false;
             config.listSource = "TaggerAirports";
             config.clientMatch = false;

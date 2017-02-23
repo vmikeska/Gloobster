@@ -3,6 +3,12 @@ var Planning;
     var AnytimeAggUtils = (function () {
         function AnytimeAggUtils() {
         }
+        AnytimeAggUtils.enrichMoreLess = function (lg) {
+            lg.listLimit = 4;
+            lg.listLimitMoreTmp = "flights-list-more-tmp";
+            lg.listLimitLessTmp = "flights-list-less-tmp";
+            lg.listLimitLast = false;
+        };
         AnytimeAggUtils.checkFilter = function (flight, starsLevel) {
             var scoreOk = this.matchesScore(flight, starsLevel);
             return scoreOk;

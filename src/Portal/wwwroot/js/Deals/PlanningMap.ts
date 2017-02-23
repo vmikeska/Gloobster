@@ -11,13 +11,16 @@ module Planning {
 		public onMapLoaded: Function;
 			
 		public viewType = FlightCacheRecordType.Country;
-	
-		constructor(config: ISectionConfig) {
-				this.config = config;
-		}
+
+		public $section;
 
 		private inited = false;
 
+		constructor(config: ISectionConfig, $section) {
+			this.$section = $section;
+			this.config = config;
+		}
+			
 		public init() {
 
 			if (this.inited) {
@@ -32,6 +35,15 @@ module Planning {
 			this.initCountriesFnc();
 
 			this.initCitiesFnc();
+		}
+
+		public enableMap(state) {
+				var disabler = this.$section.find(".map-disabler");
+				if (state) {
+						disabler.removeClass("map-disabled");
+				} else {
+						disabler.addClass("map-disabled");
+				}
 		}
 
 		private initMap() {

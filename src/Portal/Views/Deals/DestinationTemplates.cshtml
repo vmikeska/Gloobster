@@ -29,17 +29,59 @@
 <script id="category-block-template" type="text/x-handlebars-template">
 
         <div class="cat-all" id="{{catId}}">
+
             <div class="cat-bar">
 
-                <div class="htbl">
-                    <div class="left">
-                        <h2>{{titleName}}</h2>
-                        <span class="icon-info"></span>
+                <div class="tbl">
+                    
+                    <div class="cb-c cb-l">
+                        
+                        
+                            <div class="block-item">
+                                
+                                <span class="title-name">{{titleName}}</span>
+                                
+                                <span class="icon-edit-pencil name-edit-btn hidden"></span>
+                                <span class="name-edit hidden">                                                                        
+                                    <input type="text" class="input" value="{{titleName}}" />
+                                    <a href="#" class="lbtn2 green-orange save">Save</a>
+                                </span>
+
+                                <span class="icon-info info-btn"></span>
+
+                            </div>
+                            
+                            <div class="block-item">
+                                
+                                <div class="order-combo">
+
+                                    <div class="cmb-tbl">
+                                        <div class="c l">
+                                            <span class="icon-city sel-ico"></span>
+                                        </div>
+                                        <div class="c m">
+                                            <span class="txt">By city</span>
+                                        </div>
+                                        <div class="c r">
+                                            <span class="icon-dropdown-arrow arrow"></span>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        
+
                     </div>
-                    <div class="right">
+                    
+                    <div class="cb-c cb-r">
 
-                        <div class="icons-wrap">
+                        <div class="block-item custom-icons">
 
+                        </div>
+
+                        <div class="block-item">
+                                
                             <div class="ico-wrap edit-list">
                                 <div class="ico-part">
                                     <span class="icon-edit-pencil"></span>
@@ -56,23 +98,8 @@
 
                         </div>
                         
-                        <div class="order-combo">
-
-                            <div class="cmb-tbl">
-                                <div class="c l">
-                                    <span class="icon-city sel-ico"></span>
-                                </div>
-                                <div class="c m">
-                                    <span class="txt">By city</span>
-                                </div>
-                                <div class="c r">
-                                    <span class="icon-dropdown-arrow arrow"></span>
-                                </div>
-                            </div>
-
-                        </div>
-
                     </div>
+
                 </div>
                 
             </div>
@@ -143,7 +170,7 @@
                             </div>
                         </div>
 
-                        <div id="mapDisabler"></div>
+                        <div class="map-disabler"></div>
                     </div>
                 </div>
 
@@ -696,7 +723,17 @@
         <div class="item">{{text}}</div>
     </script>
 
+    <script id="flights-list-more-tmp" type="text/x-handlebars-template">
+        <div class="more-less-btn-cont expander">
+            <a href="#" class="more lbtn2 bold more-less-btn">more...</a>
+        </div>    
+    </script>
 
+    <script id="flights-list-less-tmp" type="text/x-handlebars-template">
+        <div class="more-less-btn-cont collapser">
+            <a href="#" class="less lbtn2 bold more-less-btn">...less</a>
+        </div>    
+    </script>
 
 
 
@@ -733,7 +770,7 @@
                 <div class="sta-air-cont">
                     <label><input class="cb-standard" type="checkbox" /> <span>@Model.W("MyStandardAirsOption")</span></label>
                 </div>
-                <div class="tagger-cont" id="airTagger"></div>
+                <div class="tagger-cont" id="airTagger_{{customId}}"></div>
             </div>
 
         </div>

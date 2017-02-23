@@ -27,7 +27,7 @@ namespace Gloobster.Portal.Controllers.Api.Deals
 
         [HttpGet]
         [AuthorizeApi]
-        public async Task<IActionResult> Get(PlanningType type, string customId)
+        public async Task<IActionResult> Get(PlanningType type, string customId, bool justCount)
         {
             var ccs = new List<string>();
             var gids = new List<int>();
@@ -69,6 +69,12 @@ namespace Gloobster.Portal.Controllers.Api.Deals
 
                 ccs = search.CCs;
                 gids = search.GIDs;
+            }
+
+            if (justCount)
+            {
+                var hasAny = ccs.Any() || gids.Any();
+                return new ObjectResult(hasAny);
             }
 
             var res = new List<DealsPlaceResult>();

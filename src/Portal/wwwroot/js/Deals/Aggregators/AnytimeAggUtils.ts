@@ -3,6 +3,13 @@ module Planning {
 	export class AnytimeAggUtils {
 
 
+			public static enrichMoreLess(lg: Common.ListGenerator) {
+					lg.listLimit = 4;
+					lg.listLimitMoreTmp = "flights-list-more-tmp";
+					lg.listLimitLessTmp = "flights-list-less-tmp";
+					lg.listLimitLast = false;
+			}
+
 			public static checkFilter(flight, starsLevel: number) {
 				var scoreOk = this.matchesScore(flight, starsLevel);
 			return scoreOk;

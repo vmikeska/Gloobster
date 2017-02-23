@@ -63,17 +63,7 @@ module Planning {
 		//	var city = _.find(this.mapCities.cities, (c) => { return c.selected; });
 		//	return (city) || any(this.mapCountries.selectedCountries);
 		//}
-
-
-		//public enableMap(state) {
-		//		var disabler = $("#mapDisabler");
-		//		if (state) {
-		//				disabler.removeClass("map-disabled");
-		//		} else {
-		//				disabler.addClass("map-disabled");
-		//		}
-		//}
-
+			
 		public init() {				
 				this.mapCities = new MapCities(this);
 				this.mapCountries = new MapCountries(this);

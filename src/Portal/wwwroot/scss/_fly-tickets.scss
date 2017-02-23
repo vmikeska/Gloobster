@@ -1,13 +1,38 @@
 ﻿
-
-
 .fly-tickets{
   
+    .top-all {
+        margin-top: 0.5em;
+
+        @include above-width(790) {
+
+            .top-tbl {
+                display: table;
+                width: 100%;
+                
+                .ic {
+                    display: table-cell;
+                    vertical-align: top;
+                }
+
+                .l {
+                    text-align: left;                
+                }
+
+                .r {
+                    text-align: right;                
+                }
+            }
+        }
+
+    }
+
     .classic-search {
         
         .search-bar {
             background-color: $darker-gray;
         }
+
     }
 
     .search-form {
@@ -67,13 +92,16 @@
 
         padding: 1em;
 
+        .wiz-airs-cont {
+            display: inline-block;
+        }
+
         .wiz-air {
             border-radius: 4px;
             background-color: $dark-blue;
             display: inline-block;
 
-            padding-left: 4px;
-            padding-right: 4px;
+            padding: 0.5em;
 
             margin-bottom: 4px;
             margin-right: 4px;
@@ -129,60 +157,157 @@
 
                 &.active {
                     color: $yellow;
-                    text-decoration: underline;
+                    font-size: 1.3em;
                 }
             }
         }
 
-        .step {
-            
-            input {
+        .step {            
+            border-top: 2px solid $yellow;
+            margin-top: 0.5em;
+            padding-top: 0.5em;
+
+            /*input {
                 text-align: center;
-             }   
+            }*/   
+        }
+
+        .next-btn-cont {
+            padding-top: 0.5em;
+
+            .next-btn {
+                padding: 0.7em;
+                
+            }
         }
     }
 
     .cat-all {
         margin-top: 0.5em;
-        margin-bottom: 0.5em;
-        /*border-radius: 2px;*/
+        margin-bottom: 1.5em;
 
-        h2 {
-            display: inline-block;
-            padding: 0;
-            margin: 0;
-            color: white;
-        }
-
-        .icon-info {
-            color: white;
-        }
+        background-color: $very-light-blue3;
+        
+        
 
         .cat-bar {            
-            background-color: $light-blue5;
+            background-color: $info-blue2;
             padding: 0.5em;
 
-            .left,.right {
+            border-top-left-radius: 2px;
+            border-top-right-radius: 2px;
+
+            .title-name {
+                display: inline-block;                
+                color: white;
+                font-size: 1.3em;
+            }
+
+            .name-edit-btn {
+                display: inline-block;
+                color: $dark-blue;
+                cursor: pointer;
+
+                &:hover {
+                    color: $dark-blue;
+                }
+            }
+
+            .name-edit {
+                .input {
+
+                }
+
+                .save {
+
+                }
+            }
+
+
+            .icon-info {
+                color: $yellow;
+                cursor: pointer;
+
+                margin-right: 0.5em;
+
+                &:hover {
+                    color: $dark-blue;
+                }
+            }
+
+            .tbl {
+                display: table;
+                width: 100%;
+            }
+
+            .cb-c {
+                display: table-cell;                
+            }
+
+            .cb-l {
+                text-align: left;
+                vertical-align: middle;                
+            }
+
+            .cb-r {
+                text-align: right;
                 vertical-align: middle;
             }
 
+            @include above-width(850) {
+                
+                .block-item {
+                    display: inline-block;
+                }
+                
+            }
         }
 
-        .cat-drop-cont {
-            position: relative;
-            background-color: $very-light-blue3;
-        
-        }
-
-        .order-combo {
+        /*.icons-wrap {
             display: inline-block;
+        }*/
+
+        .ico-wrap {
+            display: inline-block;
+            vertical-align: middle;
+            
+            cursor: pointer;
+
+            margin-left: 0.5em;
+
+            .ico-part {
+                text-align: center;
+                font-size: 1em;
+                color: $yellow;
+            }
+
+            .desc-part {
+                font-weight: bold;
+                font-size: 0.9em;
+                color: white;
+            }
+
+            &:hover {
+
+                .ico-part {                
+                    color: $dark-blue;
+                }
+
+                .desc-part {                    
+                    color: $dark-blue;
+                }
+            }
+        }
+
+         .order-combo {
+            display: inline-block;
+            vertical-align: middle;
+
             background-color: white;
             border-radius: 4px;
             padding: 0.2em;
             cursor: pointer;
             color: $dark-blue;
-
-            margin-left: 0.5em;
 
             &.opened {                
                 .arrow{
@@ -211,33 +336,24 @@
 
         }
 
-        
-        .icons-wrap {
-            display: inline-block;
+        .cat-res {
+            min-height: 350px;
         }
 
-        .ico-wrap {
-            display: inline-block;
-            color: $dark-blue;
+        .cat-drop-cont {
+            position: relative;
+            /*background-color: $very-light-blue3;*/
 
-            cursor: pointer;
-
-            margin-left: 0.5em;
-
-            .ico-part {
-                text-align: center;
-                font-size: 1em;
-            }
-
-            .desc-part {
-                font-weight: bold;
-                font-size: 0.9em;
-            }
-
-            &:hover {
-                color: white;
+            margin-top: 1.1em;
+            
+            .info-txt-wrap {
+                text-align: left;
+                padding: 1em;
             }
         }
+
+       
+
     }
 
     .cat-set {
@@ -246,7 +362,7 @@
 
     .cat-filter {
         text-align: left;
-        padding: 0.5em;
+        /*padding: 0.5em;*/
 
         .weekend-deals-filter {            
             
@@ -339,6 +455,10 @@
         background-color: $very-light-blue3;
         
         text-align: left;
+
+        .form-close {
+            z-index: 99999999;
+        }
     }
 
     .places-tag-sel {
@@ -349,13 +469,10 @@
 
     }
 
-    .order-sel {
-        
+    .order-sel {        
         padding: 0.7em;
         text-align: right;
 
-        font-size: 0.9em;
-        
         .item {
             color: white;
             display: inline-block;
@@ -366,7 +483,7 @@
             background-color: $light-blue3;
             padding: 0.5em;
 
-            font-size: 1.2em;
+            font-size: 1em;
 
             margin-right: 0.3em;
 
@@ -381,6 +498,15 @@
 
             .txt {
                 vertical-align: middle;
+            }
+
+            &:hover {
+                background-color: $yellow;
+                color: $dark-blue;
+
+                .icon {
+                    color: $orange;
+                }
             }
 
         }
@@ -637,7 +763,26 @@
      }
 
 
+     .more-less-btn-cont {
+         text-align: center !important;
+         padding-bottom: 0.5em;
 
+         .more-less-btn {
+             text-align: center;
+             font-size: 1.1em;
+             color: white;
+             background-color: $yellow;
+
+             min-width: 160px;
+
+             padding: 0.5em;
+
+             &:hover {
+                 background-color: $green;
+             }
+         }
+
+     }
 
 
 
@@ -645,7 +790,8 @@
 
 
     .expander, .collapser {
-        text-align: left;        
+        text-align: left;
+        @include noselect;
     }
 
     .navi-cont {
@@ -685,8 +831,8 @@
         .map-type-switch {
             display: inline-block;
             position: absolute;
-            right: 20px;
-            top: 20px;
+            right: 2.5em;
+            top: 0.5em;
             z-index: 999999;
 
 
@@ -703,19 +849,25 @@
 
                     background-color: $light-blue;
 
-                    &.active, &:hover {
+                    &.active {
+                        background-color: $yellow;
+                    }
+
+                    &:hover {
                         background-color: $orange;
                     }
                 }
 
+                $radius: 2px;
+
                 .country {
-                    border-bottom-left-radius: 8px;
-                    border-top-left-radius: 8px;
+                    border-bottom-left-radius: $radius;
+                    border-top-left-radius: $radius;
                 }
 
                 .city {
-                    border-bottom-right-radius: 8px;
-                    border-top-right-radius: 8px;
+                    border-bottom-right-radius: $radius;
+                    border-top-right-radius: $radius;
                 }
 
             }
@@ -843,8 +995,7 @@
 
 
     .top-ribbon{
-        text-align: left;
-        margin-top: 8px;
+        text-align: left;        
         margin-bottom: 8px;
 
         .icon-home {
@@ -1012,10 +1163,11 @@
 
     .rating-filter {
         display: inline-block;
+        width: 440px;
 
         .levels{
             display: table;
-            width: 460px;
+            width: 100%;
 
             .itm {
                 display: table-cell;
@@ -1030,27 +1182,32 @@
                 }
 
                 border-radius: 4px;
-                margin: 6px;
+                
+                margin-left: 4px;
+                margin-right: 4px;
 
                 background-color: white;
                 text-align: center;
                 cursor: pointer;
                 
-                .num {
+                .num {                    
                     color: $light-blue3;
-                    font-size: 2em;
+                    font-size: 1.5em;
+                    line-height: 1.0em;
                     font-weight: bold;
+
                 }
 
                 .stars{
                    span{
                         color: $yellow;
+                        font-size: 0.8em;
                     }
                 }
 
                 .txt {
-                    font-size: 0.9em;
-                    color: darkgray;
+                    font-size: 0.8em;
+                    color: $darker-gray;
                 }
             }
         }

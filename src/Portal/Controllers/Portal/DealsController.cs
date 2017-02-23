@@ -3,6 +3,7 @@ using Autofac;
 using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.Entities;
+using Gloobster.Entities.SearchEngine;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.Portal.ViewModels;
 using Microsoft.AspNet.Mvc;
@@ -59,10 +60,13 @@ namespace Gloobster.Portal.Controllers.Portal
 			    {
                     vm.HasAirports = true;                    
 			    }
-			}
+                
+            }
 
 			return View(vm);
 		}
+
+
 
 		private string FormatCityStr(UserAirports ua)
 		{            

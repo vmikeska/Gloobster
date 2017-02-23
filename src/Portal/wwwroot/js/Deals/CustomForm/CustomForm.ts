@@ -43,7 +43,12 @@ module Planning {
 		private init() {
 			if (this.search.started) {
 					var t2 = this.v.registerTemplate("custom-setting-2-template");
-					var $t2 = $(t2());
+
+					var context = {
+						customId: this.search.id
+					};
+
+					var $t2 = $(t2(context));
 					this.$formCont.html($t2);
 
 					this.initFreq();
@@ -207,18 +212,7 @@ module Planning {
 	//				this.dealsSearch.resultsEngine.initalCall(PlanningType.Custom, this.searchId);
 	//		});
 	//}
-
-		//private initFormControls() {
-		//	this.initDaysRange();
-		//	this.initAirTagger();
-		//	this.initDateRange();
-		//	this.initStandardAir();
-		//	this.initFreq();
-		//	this.initDatesClosing();
-		//}
-
-		
-		
+			
 		private loadSearch1() {
 			
 			this.depDate = TravelB.DateUtils.myDateToMomentDate(this.search.deparature);
@@ -252,7 +246,7 @@ module Planning {
 
 		private initAirTagger() {
 			var config = new TaggingFieldConfig();
-			config.containerId = "airTagger";
+			config.containerId = `airTagger_${this.searchId}`;
 			config.localValues = false;
 			config.listSource = "TaggerAirports";
 			config.clientMatch = false;

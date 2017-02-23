@@ -52,6 +52,7 @@ var Planning;
             var _this = this;
             cities = _.sortBy(cities, "fromPrice");
             var lg = Common.ListGenerator.init(this.$cont, "resultGroupItem-template");
+            Planning.AnytimeAggUtils.enrichMoreLess(lg);
             lg.clearCont = true;
             lg.customMapping = function (i) {
                 return {
@@ -103,6 +104,7 @@ var Planning;
             var _this = this;
             countries = _.sortBy(countries, "fromPrice");
             var lg = Common.ListGenerator.init(this.$cont, "resultGroupItemCountry-template");
+            Planning.AnytimeAggUtils.enrichMoreLess(lg);
             lg.clearCont = true;
             lg.customMapping = function (i) {
                 return {
@@ -167,6 +169,7 @@ var Planning;
             var _this = this;
             this.mapContObjs(conts);
             var lg = Common.ListGenerator.init(this.$res, "continent-group-template");
+            Planning.AnytimeAggUtils.enrichMoreLess(lg);
             lg.clearCont = true;
             lg.onItemAppended = function ($continent, continent) {
                 _this.genCountries($continent, continent.countries);

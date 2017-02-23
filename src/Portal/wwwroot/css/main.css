@@ -1,9 +1,10 @@
 body {
   font-family: "PT Sans", sans-serif;
+  /*font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;*/
   min-width: 480px;
   margin: 0;
   text-align: center;
-  font-size: 20px; }
+  font-size: 19px; }
 
 @media screen and (max-width: 641px) {
   body {
@@ -11,7 +12,7 @@ body {
 
 @media screen and (max-width: 481px) {
   body {
-    font-size: 16px; } }
+    font-size: 17px; } }
 
 @-moz-keyframes spin {
   100% {
@@ -27,14 +28,34 @@ body {
     transform: rotate(360deg); } }
 
 .hidable-hide {
-  display: none; }
+  display: none !important; }
 
-.list-state-collapsed .collapser {
-  display: none; }
+/*.blink-me {
+  animation: blinker 1s linear infinite;
+}
 
-.list-state-expanded .expander {
-  display: none; }
+@keyframes blinker {  
+  50% { opacity: 0; }
+}*/
+/*.list-state-collapsed {
+    .expander {
+       
+    }
+    
+    .collapser {
+        display: none;
+    }
+}
 
+.list-state-expanded {
+    .expander {
+       display: none;
+    }
+    
+    .collapser {
+        
+    }
+}*/
 .place-combo {
   position: relative; }
   .place-combo input {
@@ -262,7 +283,7 @@ textarea {
   background-color: #3298C1;
   cursor: pointer; }
   .form-close:hover {
-    color: #F56E12; }
+    color: #E02327; }
 
 @media screen and (max-width: 1280px) {
   .form-close {
@@ -4638,6 +4659,20 @@ footer {
     .travelb-home .req-settings .gap {
       padding-right: 4px; } }
 
+.fly-tickets .top-all {
+  margin-top: 0.5em; }
+  @media screen and (min-width: 790px) {
+    .fly-tickets .top-all .top-tbl {
+      display: table;
+      width: 100%; }
+      .fly-tickets .top-all .top-tbl .ic {
+        display: table-cell;
+        vertical-align: top; }
+      .fly-tickets .top-all .top-tbl .l {
+        text-align: left; }
+      .fly-tickets .top-all .top-tbl .r {
+        text-align: right; } }
+
 .fly-tickets .classic-search .search-bar {
   background-color: #BCB3B8; }
 
@@ -4674,12 +4709,13 @@ footer {
   background-color: #009EC4;
   border-top: 2px solid #3298C1;
   padding: 1em; }
+  .fly-tickets .deals-block-all .wiz-airs-cont {
+    display: inline-block; }
   .fly-tickets .deals-block-all .wiz-air {
     border-radius: 4px;
     background-color: #005476;
     display: inline-block;
-    padding-left: 4px;
-    padding-right: 4px;
+    padding: 0.5em;
     margin-bottom: 4px;
     margin-right: 4px; }
     .fly-tickets .deals-block-all .wiz-air .name {
@@ -4716,37 +4752,86 @@ footer {
       font-weight: bold; }
       .fly-tickets .deals-block-all .labels .label.active {
         color: #FFC400;
-        text-decoration: underline; }
-  .fly-tickets .deals-block-all .step input {
-    text-align: center; }
+        font-size: 1.3em; }
+  .fly-tickets .deals-block-all .step {
+    border-top: 2px solid #FFC400;
+    margin-top: 0.5em;
+    padding-top: 0.5em;
+    /*input {
+                text-align: center;
+            }*/ }
+  .fly-tickets .deals-block-all .next-btn-cont {
+    padding-top: 0.5em; }
+    .fly-tickets .deals-block-all .next-btn-cont .next-btn {
+      padding: 0.7em; }
 
 .fly-tickets .cat-all {
   margin-top: 0.5em;
-  margin-bottom: 0.5em;
-  /*border-radius: 2px;*/ }
-  .fly-tickets .cat-all h2 {
-    display: inline-block;
-    padding: 0;
-    margin: 0;
-    color: white; }
-  .fly-tickets .cat-all .icon-info {
-    color: white; }
+  margin-bottom: 1.5em;
+  background-color: #F0FAFC;
+  /*.icons-wrap {
+            display: inline-block;
+        }*/ }
   .fly-tickets .cat-all .cat-bar {
-    background-color: #57c1db;
-    padding: 0.5em; }
-    .fly-tickets .cat-all .cat-bar .left, .fly-tickets .cat-all .cat-bar .right {
+    background-color: #009EC4;
+    padding: 0.5em;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px; }
+    .fly-tickets .cat-all .cat-bar .title-name {
+      display: inline-block;
+      color: white;
+      font-size: 1.3em; }
+    .fly-tickets .cat-all .cat-bar .name-edit-btn {
+      display: inline-block;
+      color: #005476;
+      cursor: pointer; }
+      .fly-tickets .cat-all .cat-bar .name-edit-btn:hover {
+        color: #005476; }
+    .fly-tickets .cat-all .cat-bar .icon-info {
+      color: #FFC400;
+      cursor: pointer;
+      margin-right: 0.5em; }
+      .fly-tickets .cat-all .cat-bar .icon-info:hover {
+        color: #005476; }
+    .fly-tickets .cat-all .cat-bar .tbl {
+      display: table;
+      width: 100%; }
+    .fly-tickets .cat-all .cat-bar .cb-c {
+      display: table-cell; }
+    .fly-tickets .cat-all .cat-bar .cb-l {
+      text-align: left;
       vertical-align: middle; }
-  .fly-tickets .cat-all .cat-drop-cont {
-    position: relative;
-    background-color: #F0FAFC; }
+    .fly-tickets .cat-all .cat-bar .cb-r {
+      text-align: right;
+      vertical-align: middle; }
+    @media screen and (min-width: 850px) {
+      .fly-tickets .cat-all .cat-bar .block-item {
+        display: inline-block; } }
+  .fly-tickets .cat-all .ico-wrap {
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+    margin-left: 0.5em; }
+    .fly-tickets .cat-all .ico-wrap .ico-part {
+      text-align: center;
+      font-size: 1em;
+      color: #FFC400; }
+    .fly-tickets .cat-all .ico-wrap .desc-part {
+      font-weight: bold;
+      font-size: 0.9em;
+      color: white; }
+    .fly-tickets .cat-all .ico-wrap:hover .ico-part {
+      color: #005476; }
+    .fly-tickets .cat-all .ico-wrap:hover .desc-part {
+      color: #005476; }
   .fly-tickets .cat-all .order-combo {
     display: inline-block;
+    vertical-align: middle;
     background-color: white;
     border-radius: 4px;
     padding: 0.2em;
     cursor: pointer;
-    color: #005476;
-    margin-left: 0.5em; }
+    color: #005476; }
     .fly-tickets .cat-all .order-combo.opened .arrow {
       display: inline-block;
       transform: scale(1, -1); }
@@ -4760,28 +4845,22 @@ footer {
       .fly-tickets .cat-all .order-combo .cmb-tbl .sel-ico {
         font-size: 1em;
         color: #FFC400; }
-  .fly-tickets .cat-all .icons-wrap {
-    display: inline-block; }
-  .fly-tickets .cat-all .ico-wrap {
-    display: inline-block;
-    color: #005476;
-    cursor: pointer;
-    margin-left: 0.5em; }
-    .fly-tickets .cat-all .ico-wrap .ico-part {
-      text-align: center;
-      font-size: 1em; }
-    .fly-tickets .cat-all .ico-wrap .desc-part {
-      font-weight: bold;
-      font-size: 0.9em; }
-    .fly-tickets .cat-all .ico-wrap:hover {
-      color: white; }
+  .fly-tickets .cat-all .cat-res {
+    min-height: 350px; }
+  .fly-tickets .cat-all .cat-drop-cont {
+    position: relative;
+    /*background-color: $very-light-blue3;*/
+    margin-top: 1.1em; }
+    .fly-tickets .cat-all .cat-drop-cont .info-txt-wrap {
+      text-align: left;
+      padding: 1em; }
 
 .fly-tickets .cat-set {
   position: relative; }
 
 .fly-tickets .cat-filter {
   text-align: left;
-  padding: 0.5em; }
+  /*padding: 0.5em;*/ }
   .fly-tickets .cat-filter .weekend-deals-filter .all-deals {
     vertical-align: middle;
     display: inline-block;
@@ -4847,14 +4926,15 @@ footer {
   position: relative;
   background-color: #F0FAFC;
   text-align: left; }
+  .fly-tickets .cat-set-win .form-close {
+    z-index: 99999999; }
 
 .fly-tickets .places-tag-sel {
   padding: 1em; }
 
 .fly-tickets .order-sel {
   padding: 0.7em;
-  text-align: right;
-  font-size: 0.9em; }
+  text-align: right; }
   .fly-tickets .order-sel .item {
     color: white;
     display: inline-block;
@@ -4862,7 +4942,7 @@ footer {
     border-radius: 4px;
     background-color: #3298C1;
     padding: 0.5em;
-    font-size: 1.2em;
+    font-size: 1em;
     margin-right: 0.3em; }
     .fly-tickets .order-sel .item:last-of-type {
       margin-right: 0; }
@@ -4871,6 +4951,11 @@ footer {
       vertical-align: middle; }
     .fly-tickets .order-sel .item .txt {
       vertical-align: middle; }
+    .fly-tickets .order-sel .item:hover {
+      background-color: #FFC400;
+      color: #005476; }
+      .fly-tickets .order-sel .item:hover .icon {
+        color: #F56E12; }
 
 .fly-tickets .places-tagger .places-cont {
   display: inline-block;
@@ -5069,8 +5154,33 @@ footer {
     .fly-tickets .add-custom-cont .add-btn:hover {
       background-color: #F56E12; }
 
+.fly-tickets .more-less-btn-cont {
+  text-align: center !important;
+  padding-bottom: 0.5em; }
+  .fly-tickets .more-less-btn-cont .more-less-btn {
+    text-align: center;
+    font-size: 1.1em;
+    color: white;
+    background-color: #FFC400;
+    min-width: 160px;
+    padding: 0.5em; }
+    .fly-tickets .more-less-btn-cont .more-less-btn:hover {
+      background-color: #3DA33D; }
+
 .fly-tickets .expander, .fly-tickets .collapser {
-  text-align: left; }
+  text-align: left;
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Chrome/Safari/Opera */
+  -khtml-user-select: none;
+  /* Konqueror */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently not supported by any browser */ }
 
 .fly-tickets .navi-cont {
   margin-bottom: 5px; }
@@ -5098,8 +5208,8 @@ footer {
   .fly-tickets .map-cont .map-type-switch {
     display: inline-block;
     position: absolute;
-    right: 20px;
-    top: 20px;
+    right: 2.5em;
+    top: 0.5em;
     z-index: 999999; }
     .fly-tickets .map-cont .map-type-switch .items-tbl {
       display: table; }
@@ -5123,14 +5233,16 @@ footer {
         font-weight: bold;
         padding: 8px;
         background-color: #65BDD7; }
-        .fly-tickets .map-cont .map-type-switch .items-tbl .btn.active, .fly-tickets .map-cont .map-type-switch .items-tbl .btn:hover {
+        .fly-tickets .map-cont .map-type-switch .items-tbl .btn.active {
+          background-color: #FFC400; }
+        .fly-tickets .map-cont .map-type-switch .items-tbl .btn:hover {
           background-color: #F56E12; }
       .fly-tickets .map-cont .map-type-switch .items-tbl .country {
-        border-bottom-left-radius: 8px;
-        border-top-left-radius: 8px; }
+        border-bottom-left-radius: 2px;
+        border-top-left-radius: 2px; }
       .fly-tickets .map-cont .map-type-switch .items-tbl .city {
-        border-bottom-right-radius: 8px;
-        border-top-right-radius: 8px; }
+        border-bottom-right-radius: 2px;
+        border-top-right-radius: 2px; }
 
 .fly-tickets .mainCont {
   width: 100%;
@@ -5225,7 +5337,6 @@ footer {
 
 .fly-tickets .top-ribbon {
   text-align: left;
-  margin-top: 8px;
   margin-bottom: 8px; }
   .fly-tickets .top-ribbon .icon-home {
     color: #005476;
@@ -5330,10 +5441,11 @@ footer {
     color: #F56E12; }
 
 .fly-tickets .rating-filter {
-  display: inline-block; }
+  display: inline-block;
+  width: 440px; }
   .fly-tickets .rating-filter .levels {
     display: table;
-    width: 460px; }
+    width: 100%; }
     .fly-tickets .rating-filter .levels .itm {
       display: table-cell;
       width: 33.3%; }
@@ -5351,7 +5463,8 @@ footer {
       user-select: none;
       /* Non-prefixed version, currently not supported by any browser */
       border-radius: 4px;
-      margin: 6px;
+      margin-left: 4px;
+      margin-right: 4px;
       background-color: white;
       text-align: center;
       cursor: pointer; }
@@ -5359,13 +5472,15 @@ footer {
         border: 2px solid #3298C1; }
       .fly-tickets .rating-filter .levels .level .num {
         color: #3298C1;
-        font-size: 2em;
+        font-size: 1.5em;
+        line-height: 1.0em;
         font-weight: bold; }
       .fly-tickets .rating-filter .levels .level .stars span {
-        color: #FFC400; }
+        color: #FFC400;
+        font-size: 0.8em; }
       .fly-tickets .rating-filter .levels .level .txt {
-        font-size: 0.9em;
-        color: darkgray; }
+        font-size: 0.8em;
+        color: #BCB3B8; }
 
 .fly-tickets .filtering {
   margin-bottom: 20px;

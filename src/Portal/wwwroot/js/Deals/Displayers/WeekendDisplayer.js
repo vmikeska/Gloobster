@@ -89,6 +89,7 @@ var Planning;
             var cities = _.sortBy(week.cities, "fromPrice");
             var $weekCont = $week.find(".cont");
             var lg = Common.ListGenerator.init($weekCont, "resultGroupItem-template");
+            Planning.AnytimeAggUtils.enrichMoreLess(lg);
             lg.customMapping = function (c) {
                 return {
                     gid: c.gid,
@@ -144,6 +145,7 @@ var Planning;
             var countries = _.sortBy(week.countries, "fromPrice");
             var $weekCont = $week.find(".cont");
             var lg = Common.ListGenerator.init($weekCont, "resultGroupItemCountry-template");
+            Planning.AnytimeAggUtils.enrichMoreLess(lg);
             lg.customMapping = function (c) {
                 return {
                     cc: c.countryCode,

@@ -1,9 +1,10 @@
 var Planning;
 (function (Planning) {
     var PlanningTags = (function () {
-        function PlanningTags($cont, type) {
+        function PlanningTags($cont, type, customId) {
             this.$cont = $cont;
             this.type = type;
+            this.customId = customId;
         }
         Object.defineProperty(PlanningTags.prototype, "v", {
             get: function () {
@@ -60,7 +61,7 @@ var Planning;
             });
         };
         PlanningTags.prototype.getPlaces = function (callback) {
-            var data = [["type", this.type.toString()]];
+            var data = [["type", this.type.toString()], ["customId", this.customId]];
             this.v.apiGet("DealsPlaces", data, function (places) {
                 callback(places);
             });
