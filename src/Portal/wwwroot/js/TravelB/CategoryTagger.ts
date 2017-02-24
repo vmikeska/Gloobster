@@ -136,7 +136,7 @@ module TravelB {
 		}
 
 		private tagItem(catId, id, name) {
-			var $i = $(`<span class="tag" data-catid="${catId}" data-id="${id}">${name}<a class="icon-cross" href="#"></a></span>`);
+			var $i = $(`<span class="tag" data-catid="${catId}" data-id="${id}">${name}<a class="icon-cross-small" href="#"></a></span>`);
 			$i.find("a").click((e) => {
 				e.preventDefault();
 

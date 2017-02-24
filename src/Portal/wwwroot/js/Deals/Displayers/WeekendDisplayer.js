@@ -16,25 +16,19 @@ var Planning;
             this.$cont = $cont;
             this.filter = filter;
         }
-        WeekendDisplayer.prototype.getStarsLevel = function () {
-            return 5;
-        };
-        WeekendDisplayer.prototype.getScoreLevel = function () {
-            return 0.7;
-        };
         WeekendDisplayer.prototype.showResults = function (queries, grouping) {
             this.queries = queries;
             var days = this.filter.getState();
             if (grouping === LocationGrouping.ByCity) {
                 var agg1 = new Planning.WeekendByCityAgg();
-                var r1 = agg1.exe(this.queries, days, this.getStarsLevel());
-                var d1 = new WeekendByCityDis(this.$cont, this.getScoreLevel());
+                var r1 = agg1.exe(this.queries, days, Planning.DealsLevelFilter.currentStars);
+                var d1 = new WeekendByCityDis(this.$cont, Planning.DealsLevelFilter.currentScore);
                 d1.render(r1);
             }
             if (grouping === LocationGrouping.ByCountry) {
                 var agg2 = new Planning.WeekendByCountryAgg();
-                var r2 = agg2.exe(this.queries, days, this.getStarsLevel());
-                var d2 = new ByCountryDisplay(this.$cont, this.getScoreLevel());
+                var r2 = agg2.exe(this.queries, days, Planning.DealsLevelFilter.currentStars);
+                var d2 = new ByCountryDisplay(this.$cont, Planning.DealsLevelFilter.currentScore);
                 d2.render(r2);
             }
         };

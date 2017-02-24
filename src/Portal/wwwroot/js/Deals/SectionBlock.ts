@@ -54,8 +54,10 @@
 			return Views.ViewBase.currentView;
 		}
 
+		public onResultChange: Function;
+
 		public sectConfig: ISectionConfig;
-		private resultsEngine: ResultsManager;
+		public resultsEngine: ResultsManager;
 
 		public planningMap: PlanningMap;
 		private planningTags: PlanningTags;
@@ -65,6 +67,8 @@
 		private displayer: IDisplayer;
 
 		private grouping: GroupCombo;
+
+		public dealsEval: DelasEval;
 
 		private filter;
 			
@@ -87,7 +91,7 @@
 
 			this.initBtns();
 
-			this.planningTags = new PlanningTags(this.$cont, this.type, customId);			
+			this.planningTags = new PlanningTags(this.$cont, this.type, customId);
 			this.planningMap = new PlanningMap(this.sectConfig, this.$cont);
 
 			this.initDisplayer();
@@ -99,17 +103,21 @@
 			this.initNameEdit();
 
 			this.hasAnyPlaces((hasPlaces) => {
-					if (!hasPlaces) {
-							this.editMap();
+				if (!hasPlaces) {
+					this.editMap();
 
-							if (!hasAirs) {
-									this.planningMap.enableMap(false);
-								this.initMapDisabler();
-							}
+					if (!hasAirs) {
+						this.planningMap.enableMap(false);
+						this.initMapDisabler();
 					}
+				}
 			});
-				
+
 		}
+
+		public refreshResults() {
+				this.displayer.refresh(this.grouping.selected);
+			}
 
 			private regInfo() {
 
@@ -141,17 +149,18 @@
 				});
 		}
 
-			private initGroupingCombo() {
-					this.grouping = new GroupCombo();
-					this.grouping.init(this, this.$cont, this.sectConfig.getGrouping());
-					this.grouping.onChange = () => {
-						if (this.displayer) {
-							this.displayer.refresh(this.grouping.selected);
-						}
+		private initGroupingCombo() {
+			this.grouping = new GroupCombo();
+			this.grouping.init(this, this.$cont, this.sectConfig.getGrouping());
+			this.grouping.onChange = () => {
+				if (this.displayer) {
+					this.displayer.refresh(this.grouping.selected);
 					}
+					this.setMenuContVisibility(false);
 			}
+		}
 
-			private getInfoTxt() {
+		private getInfoTxt() {
 					if (this.type === PlanningType.Anytime) {
 						return "By this type of search, we will be looking for any kind of deal defined by your cities and countries you'd like to visit. Deparature, arrival or how many days you'd like to stay is here not a thing.";
 					}
@@ -165,42 +174,44 @@
 					}
 			}
 
-			private initNameEdit() {
-					
-				if (this.type === PlanningType.Custom) {
-					var $penBtn = this.$cont.find(".name-edit-btn");
-					var $editGroup = this.$cont.find(".name-edit");
-					var $titleName = this.$cont.find(".title-name");
+		private initNameEdit() {
 
-					$penBtn.removeClass("hidden");
+			if (this.type === PlanningType.Custom) {
+				var $penBtn = this.$cont.find(".name-edit-btn");
+				var $editGroup = this.$cont.find(".name-edit");
+				var $titleName = this.$cont.find(".title-name");
 
-					$penBtn.click((e) => {
-							$editGroup.removeClass("hidden");
-							$penBtn.addClass("hidden");
-						$titleName.addClass("hidden");
-					});
+				$penBtn.removeClass("hidden");
 
-					$editGroup.find(".save").click((e) => {
-							e.preventDefault();
+				$penBtn.click((e) => {
+					$editGroup.removeClass("hidden");
+					$penBtn.addClass("hidden");
+					$titleName.addClass("hidden");
+				});
 
-						  var name = $editGroup.find(".input").val();
-							var data = {
-									id: this.sectConfig.customId,
-									name: "name",
-									value: name
-							};
-							
-							this.v.apiPut("CustomSearch", data, () => {
-								  $titleName.html(name);
-									$editGroup.addClass("hidden");
-									$penBtn.removeClass("hidden");
-									$titleName.removeClass("hidden");
+				$editGroup.find(".save").click((e) => {
+						e.preventDefault();
+
+						var name = $editGroup.find(".input").val();
+						var data = {
+							id: this.sectConfig.customId,
+							name: "name",
+							value: name
+						};
+
+						this.v.apiPut("CustomSearch",
+							data,
+							() => {
+								$titleName.html(name);
+								$editGroup.addClass("hidden");
+								$penBtn.removeClass("hidden");
+								$titleName.removeClass("hidden");
 							});
 					});
-				}
-
 			}
-			
+
+		}
+
 
 		private initConfig(catId, customId) {
 			if (this.type === PlanningType.Anytime) {
@@ -253,10 +264,15 @@
 			}
 		}
 
-		private initResultMgr() {
-				this.resultsEngine = new ResultsManager();
+			private initEmptyResultsBtns() {
+					this.$cont.find(".no-dests .ico-map").click((e) => { this.editList(); });
+					this.$cont.find(".no-dests .ico-search").click((e) => { this.editMap(); });
+			}
 
-				this.resultsEngine.onDrawQueue = () => {
+		private initResultMgr() {
+			this.resultsEngine = new ResultsManager();
+
+			this.resultsEngine.onDrawQueue = () => {
 				var qv = new QueueVisualize(this.$cont);
 
 				if (any(this.resultsEngine.queue)) {
@@ -267,30 +283,41 @@
 			}
 
 			this.resultsEngine.onResultsChanged = (queries) => {
+					
+					this.displayer.showResults(queries, this.grouping.selected);
+				this.initEmptyResultsBtns();
+				
+				this.dealsEval = new DelasEval(this.resultsEngine.timeType, queries);
+				this.dealsEval.countDeals();
 
-						if (this.displayer) {//remove when all implemented
-							this.displayer.showResults(queries, this.grouping.selected);
-						}
+				this.callOnResultChange();				
+			};
 
-						//var de = new Planning.DelasEval(this.resultsEngine.timeType, queries);
-							//de.dispayDeals();
-					};
+			//this.planningMap = new Planning.PlanningMap(this);
 
-					//this.planningMap = new Planning.PlanningMap(this);
-
-					this.planningMap.onMapLoaded = () => {
-							//this.changeSetter(PlanningType.Anytime);
-					}
-
-					this.planningMap.onSelectionChanged = (id: string, newState: boolean, type: FlightCacheRecordType) => {
-
-							var customId = this.sectConfig.customId;
-							this.resultsEngine.selectionChanged(id, newState, type, customId);
-					}
-
-					this.resultsEngine.initalCall(this.type, this.sectConfig.customId);
+			this.planningMap.onMapLoaded = () => {
+				//this.changeSetter(PlanningType.Anytime);
 			}
-			
+
+			this.planningMap.onSelectionChanged = (id: string, newState: boolean, type: FlightCacheRecordType) => {
+				var customId = this.sectConfig.customId;
+				this.resultsEngine.selectionChanged(id, newState, type, customId);
+			}
+
+			this.planningTags.onSelectionChanged = (id: string, newState: boolean, type: FlightCacheRecordType) => {
+					var customId = this.sectConfig.customId;
+					this.resultsEngine.selectionChanged(id, newState, type, customId);
+			}
+
+			this.resultsEngine.initalCall(this.type, this.sectConfig.customId);
+		}
+
+			private callOnResultChange() {
+					if (this.onResultChange) {
+						this.onResultChange();
+					}
+			}
+
 		private initBtns() {
 			this.$placesTagSel = this.$cont.find(".places-tag-sel");
 			this.$placesMapSel = this.$cont.find(".places-map-sel");

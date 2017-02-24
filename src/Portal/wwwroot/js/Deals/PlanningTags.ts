@@ -5,6 +5,8 @@
 			return Views.ViewBase.currentView;
 		}
 
+		public onSelectionChanged: Function;		
+
 		private $cont;
 		private type: PlanningType;
 		private customId;
@@ -49,6 +51,10 @@
 				customId: null
 			};
 
+			if (this.onSelectionChanged) {
+					this.onSelectionChanged(cc, state, FlightCacheRecordType.Country);
+			}
+
 			this.v.apiPut("SelCountry", data, () => {
 				callback();
 			});
@@ -61,6 +67,10 @@
 				selected: state,
 				customId: null
 			};
+
+			if (this.onSelectionChanged) {
+					this.onSelectionChanged(gid.toString(), state, FlightCacheRecordType.Country);
+				}
 
 			this.v.apiPut("SelCity", data, () => {
 				callback();

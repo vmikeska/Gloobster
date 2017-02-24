@@ -44,6 +44,9 @@ var Planning;
                 selected: state,
                 customId: null
             };
+            if (this.onSelectionChanged) {
+                this.onSelectionChanged(cc, state, FlightCacheRecordType.Country);
+            }
             this.v.apiPut("SelCountry", data, function () {
                 callback();
             });
@@ -56,6 +59,9 @@ var Planning;
                 selected: state,
                 customId: null
             };
+            if (this.onSelectionChanged) {
+                this.onSelectionChanged(gid.toString(), state, FlightCacheRecordType.Country);
+            }
             this.v.apiPut("SelCity", data, function () {
                 callback();
             });

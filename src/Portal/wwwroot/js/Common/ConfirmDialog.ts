@@ -1,5 +1,53 @@
 ﻿module Common {
 
+		export class CustomDialog {
+
+				private $t;
+				
+				public init($html, title, custClass = "") {
+						var t = Views.ViewBase.currentView.registerTemplate("custom-dialog-template");
+					var context = {
+							title: title,
+							custClass: custClass
+					};
+					this.$t = $(t(context));
+						$("body").append(this.$t);
+
+						this.$t.find(".dlg-cont").html($html);
+
+						this.$t.fadeIn();
+
+						this.$t.click((e) => {
+								var isOut = e.target.className === "popup3";
+								if (isOut) {
+										e.preventDefault();
+										this.close();
+								}
+						});
+
+					this.$t.find(".close").click((e) => {
+							this.close();
+					});
+						
+				}
+
+				public addBtn(txt, cls, callback) {
+						var $b = $(`<a href="#" class="lbtn2 ${cls}">${txt}</a>`);
+						this.$t.find(".dlg-btns").append($b);
+
+					$b.click((e) => {
+							e.preventDefault();
+						callback();
+					});
+				}
+
+				public close() {
+						this.$t.fadeOut(() => {
+								this.$t.remove();
+						});
+				}
+		}
+
 	export class HintDialog {
 	 private template;
 	 private $html;

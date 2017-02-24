@@ -69,6 +69,9 @@ var Planning;
                 }
             });
         };
+        SectionBlock.prototype.refreshResults = function () {
+            this.displayer.refresh(this.grouping.selected);
+        };
         SectionBlock.prototype.regInfo = function () {
             var _this = this;
             this.$cont.find(".info-btn").click(function (e) {
@@ -98,6 +101,7 @@ var Planning;
                 if (_this.displayer) {
                     _this.displayer.refresh(_this.grouping.selected);
                 }
+                _this.setMenuContVisibility(false);
             };
         };
         SectionBlock.prototype.getInfoTxt = function () {
@@ -177,6 +181,11 @@ var Planning;
                 this.filter.init(false);
             }
         };
+        SectionBlock.prototype.initEmptyResultsBtns = function () {
+            var _this = this;
+            this.$cont.find(".no-dests .ico-map").click(function (e) { _this.editList(); });
+            this.$cont.find(".no-dests .ico-search").click(function (e) { _this.editMap(); });
+        };
         SectionBlock.prototype.initResultMgr = function () {
             var _this = this;
             this.resultsEngine = new Planning.ResultsManager();
@@ -190,9 +199,11 @@ var Planning;
                 }
             };
             this.resultsEngine.onResultsChanged = function (queries) {
-                if (_this.displayer) {
-                    _this.displayer.showResults(queries, _this.grouping.selected);
-                }
+                _this.displayer.showResults(queries, _this.grouping.selected);
+                _this.initEmptyResultsBtns();
+                _this.dealsEval = new Planning.DelasEval(_this.resultsEngine.timeType, queries);
+                _this.dealsEval.countDeals();
+                _this.callOnResultChange();
             };
             this.planningMap.onMapLoaded = function () {
             };
@@ -200,7 +211,16 @@ var Planning;
                 var customId = _this.sectConfig.customId;
                 _this.resultsEngine.selectionChanged(id, newState, type, customId);
             };
+            this.planningTags.onSelectionChanged = function (id, newState, type) {
+                var customId = _this.sectConfig.customId;
+                _this.resultsEngine.selectionChanged(id, newState, type, customId);
+            };
             this.resultsEngine.initalCall(this.type, this.sectConfig.customId);
+        };
+        SectionBlock.prototype.callOnResultChange = function () {
+            if (this.onResultChange) {
+                this.onResultChange();
+            }
         };
         SectionBlock.prototype.initBtns = function () {
             var _this = this;

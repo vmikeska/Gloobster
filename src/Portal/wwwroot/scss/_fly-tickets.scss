@@ -186,17 +186,13 @@
         margin-top: 0.5em;
         margin-bottom: 1.5em;
 
-        background-color: $very-light-blue3;
-        
-        
-
         .cat-bar {            
-            background-color: $info-blue2;
+            background-color: $dark-blue;
             padding: 0.5em;
 
-            border-top-left-radius: 2px;
-            border-top-right-radius: 2px;
-
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            
             .title-name {
                 display: inline-block;                
                 color: white;
@@ -205,11 +201,11 @@
 
             .name-edit-btn {
                 display: inline-block;
-                color: $dark-blue;
+                color: $yellow;
                 cursor: pointer;
 
                 &:hover {
-                    color: $dark-blue;
+                    color: $info-blue2;
                 }
             }
 
@@ -231,7 +227,7 @@
                 margin-right: 0.5em;
 
                 &:hover {
-                    color: $dark-blue;
+                    color: $info-blue2;
                 }
             }
 
@@ -259,13 +255,18 @@
                 .block-item {
                     display: inline-block;
                 }
+
+            }
+
+            @include below-width(850) {
+                
+                .order-combo {
+                    margin-top: 0.3em;
+                }
                 
             }
         }
 
-        /*.icons-wrap {
-            display: inline-block;
-        }*/
 
         .ico-wrap {
             display: inline-block;
@@ -290,11 +291,11 @@
             &:hover {
 
                 .ico-part {                
-                    color: $dark-blue;
+                    color: $info-blue2;
                 }
 
                 .desc-part {                    
-                    color: $dark-blue;
+                    color: $info-blue2;
                 }
             }
         }
@@ -337,12 +338,12 @@
         }
 
         .cat-res {
-            min-height: 350px;
+            /*min-height: 320px;*/
         }
 
         .cat-drop-cont {
             position: relative;
-            /*background-color: $very-light-blue3;*/
+            border-bottom: 4px solid $info-blue2;
 
             margin-top: 1.1em;
             
@@ -356,21 +357,62 @@
 
     }
 
+    .no-dests {
+        border: 2px solid $darker-gray;
+        color: $darker-gray;
+        padding: 2em;
+        text-align: center;       
+        border-radius: 2px;
+
+        .ln1 {
+            font-size: 1.6em;     
+            margin-bottom: 2em;    
+        }
+
+        .tbl {
+            display: table;
+            width: 100%;
+
+            .cell {
+                display: table-cell;
+            }
+        }
+
+        .ico-all {
+            display: inline-block;
+            cursor: pointer;
+
+            .txt {
+
+            }
+            .ico {
+                font-size: 4em;
+            }
+
+            &:hover {
+                color: $orange;
+            }
+        }
+
+        .or {
+            font-size: 1.5em;
+        }
+    }
+
+
     .cat-set {
         position: relative;
     }
 
     .cat-filter {
         text-align: left;
-        /*padding: 0.5em;*/
+        padding: 0.5em;
 
         .weekend-deals-filter {            
             
             .all-deals {
                 vertical-align: middle;
                 display: inline-block;
-        
-                margin-top: 8px;
         
                 font-weight: bold;
         
@@ -471,7 +513,7 @@
 
     .order-sel {        
         padding: 0.7em;
-        text-align: right;
+        text-align: left;
 
         .item {
             color: white;
@@ -589,6 +631,8 @@
             border-radius: 4px;
             background-color: white;            
             text-align: left;
+            padding: 3px;
+            padding-bottom: 0;
             
             .sta-air-cont {
                 display: inline-block;
@@ -598,12 +642,14 @@
 
                 color: white;
                 border-radius: 4px;
-                margin: 2px;
-                padding-top: 3px;
-                padding-bottom: 3px;
+                
+                padding-top: 5px;
+                padding-bottom: 6px;
                 padding-left: 6px;                
                 padding-right: 6px;
 
+                margin-bottom: 3px;
+                
                 label {
                     @include noselect;
                     vertical-align: middle;
@@ -624,15 +670,31 @@
                 }             
             }
 
+            .tag {
+                vertical-align: middle;
+
+                padding-top: 6px;
+                padding-bottom: 7px;
+                padding-left: 6px;                
+                padding-right: 6px;
+
+                margin-bottom: 3px;
+                margin-right: 3px;
+            }
+
             .tagger-cont {
                 vertical-align: middle;
-                display: inline-block;
+                display: inline-block;            
 
-                border-radius: 4px;
-                
-                padding-left: 4px;
-                padding-right: 4px;
-                padding-top: 4px;                
+                .tagger {
+                    vertical-align: middle;
+
+                    input {
+                        vertical-align: middle;
+                        margin-top: -2px;
+
+                    }
+                }
             }
         }
 
@@ -712,9 +774,8 @@
             .item{
                 display: inline-block;
                 border: 2px solid $light-blue3;
-                padding:3px;
-                border-radius: 4px;
-                margin: 2px;
+                padding: 0.5em;
+                border-radius: 4px;                
                 font-weight: bold;
             }
         }
@@ -1047,32 +1108,20 @@
 
     }
 
-    .location-dialog{
-        position: relative;
-
-        border-top: 4px solid $ribbon-blue;
-        background-color: $very-light-blue3;
-
-        margin-top: 12px;
-        margin-bottom: 12px;
-
-        padding-left: 8px;
-        
-        border-top-left-radius: 1px;
-        border-top-right-radius: 1px;
-
-        border-bottom-left-radius: 4px;
-        border-bottom-right-radius: 4px;
-
-        text-align: left;
-
-        &.hidden {
-            display: none;
+    .air-dlg {
+        .dlg-cont {
+            padding: 1em;
         }
+
+    }
+
+    .location-dialog{
+        
+        text-align: left;
 
         .title{            
             font-weight: bold;
-            font-size: 1.1em;
+            font-size: 1em;
             margin-bottom: 3px;
         }
 
@@ -1093,24 +1142,18 @@
         }
 
         .add-btn{
-            color: white;
-            font-weight: bold;
-            background-color: $light-blue3;
-
-            &:hover {
-                background-color: $orange;
-            }
+            
         }
 
 
         .airports-cont{
             display: inline-block;
-
+            
             .airport{
                 color: white;
                 border-radius: 4px;
                 display: inline-block;
-                background-color: $light-blue;
+                background-color: $light-blue3;
 
                 padding-top: 2px;
                 padding-bottom: 2px;
@@ -1119,12 +1162,12 @@
 
                 margin: 2px;
 
-                .icon-cross{
+                .delete{
                     color: $dark-blue;
-                    font-size: 0.8em;
+                    font-size: 0.7em;
 
                     &:hover{
-                        color:$orange;
+                        color: $red;
                     }
                 }
             }
@@ -1301,20 +1344,24 @@
         
         .weekend-item{
             .title{
-                margin-bottom: 12px;
+                margin-bottom: 0.5em;
+                margin-top: 0.5em;
+
                 text-align: left;
 
-                padding: 1em;
+                padding-left: 0.5em;
+                padding-right: 0.5em;
+                padding-top: 0.2em;
+                padding-bottom: 0.2em;
 
                 background-color: $info-blue2;
-                border-top-left-radius: 6px;
-                border-top-right-radius: 6px;
+                /*border-top-left-radius: 2px;
+                border-top-right-radius: 2px;*/
 
                 color: white;
 
                 .week {
-                    font-weight: bold;                    
-                    font-size: 1.2em;                    
+                    
                 }
 
                 .date {

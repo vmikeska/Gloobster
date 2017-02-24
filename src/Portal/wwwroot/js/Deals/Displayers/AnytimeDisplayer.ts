@@ -13,56 +13,48 @@ module Planning {
 		constructor($section) {
 				this.$section = $section;		
 		}
-			//TODO: stars filter
-			private getStarsLevel() {
-				return 5;
-		}
-			//todo: score level
-			private getScoreLevel() {
-				return 0.7;
-			}
-
+				
 			public refresh(grouping: LocationGrouping) {
 				this.showResults(this.queries, grouping);
 			}
 
-		public showResults(queries, grouping: LocationGrouping) {
+			public showResults(queries, grouping: LocationGrouping) {
 				this.queries = queries;
-				
-			var results = FlightsExtractor.getResults(this.queries);
 
-			if (grouping === LocationGrouping.ByCity) {
-				var agg1 = new AnytimeByCityAgg(this.queries);
-					
-				agg1.exe(this.getStarsLevel());
-					
-				var dis = new AnytimeByCityDis(this.$section, results, this.getScoreLevel());
-				dis.render(agg1.cities);
-			}
+				var results = FlightsExtractor.getResults(this.queries);
 
-			if (grouping === LocationGrouping.ByCountry) {
+				if (grouping === LocationGrouping.ByCity) {
+					var agg1 = new AnytimeByCityAgg(this.queries);
+
+					agg1.exe(DealsLevelFilter.currentStars);
+
+					var dis = new AnytimeByCityDis(this.$section, results, DealsLevelFilter.currentScore);
+					dis.render(agg1.cities);
+				}
+
+				if (grouping === LocationGrouping.ByCountry) {
 					var agg2 = new AnytimeByCountryAgg(this.queries);
-					
-					agg2.exe(this.getStarsLevel());
+
+					agg2.exe(DealsLevelFilter.currentStars);
 
 					var $res = this.$section.find(".cat-res");
-					var dis2 = new AnytimeByCountryDis($res, results, this.getScoreLevel());					
+					var dis2 = new AnytimeByCountryDis($res, results, DealsLevelFilter.currentScore);
 					dis2.render(agg2.countries);
-			}
+				}
 
-			if (grouping === LocationGrouping.ByContinent) {
+				if (grouping === LocationGrouping.ByContinent) {
 					var agg3 = new AnytimeByContinentAgg(this.queries);
-					
-					agg3.exe(this.getStarsLevel());
 
-					var dis3 = new AnytimeByContinentDis(this.$section, results, this.getScoreLevel());
+					agg3.exe(DealsLevelFilter.currentStars);
+
+					var dis3 = new AnytimeByContinentDis(this.$section, results, DealsLevelFilter.currentScore);
 					dis3.render(agg3.getAllConts());
-			}
+				}
 
+
+			}
 
 		}
-
-	}
 
 	export class AnytimeByCityDis {
 			private $section;
@@ -87,6 +79,7 @@ module Planning {
 			var lg = Common.ListGenerator.init(this.$cont, "resultGroupItem-template");
 			AnytimeAggUtils.enrichMoreLess(lg);
 			lg.clearCont = true;
+			lg.emptyTemplate = "no-destinations-tmp";
 
 			lg.customMapping = (i) => {
 				return {

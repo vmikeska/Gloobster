@@ -42,6 +42,19 @@ namespace Gloobster.Portal.Controllers.Api.SearchEngine
 
             if (req.timeType == TimeType.Weekend)
             {
+                //if (req.qids != null)
+                //{
+                //    if (req.qids.Any())
+                //    {
+                        
+                //    }
+                //}
+
+                if (!req.firstQuery)
+                {
+                    
+                }
+
                 var results = await GetResults<WeekendResultDO>(req);
                 var cr = results.Select(r => r.ToResponse<WeekendResultDO, WeekendResultResponse>());
                 return new ObjectResult(cr);

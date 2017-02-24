@@ -118,50 +118,67 @@
 
 	export class LocationSettingsDialog {
 
-			public get v(): Views.ViewBase {
-					return Views.ViewBase.currentView;
-			}
+		public get v(): Views.ViewBase {
+				return Views.ViewBase.currentView;
+		}
 
-		private airTemplate = Views.ViewBase.currentView.registerTemplate("homeAirportItem-template");
+		private airTemplate = this.v.registerTemplate("homeAirportItem-template");
+		private contTmp = this.v.registerTemplate("loc-dlg-tmp");
 
 		private $airportsCont;
 		private $airContS;
 
 		private kmRangeSelected = 200;
-			
+
+		private dialog: Common.CustomDialog;
+
 		constructor() {
-			
-		
-			Views.AirLoc.registerLocationCombo($("#currentCity"), (place) => {
-				this.updateLoc(place.City, place.CountryCode);
-			});
-
-			this.regRangeCombo();
-
-			this.$airportsCont = $("#airportsCont");
-			this.$airContS = $(".top-ribbon .airports");
-
-			this.initAirports();
-			this.loadMgmtAirports();
-
-			$(".top-ribbon .edit").click((e) => {
-					e.preventDefault();
-					$(".location-dialog").toggleClass("hidden");
-					this.hideRefresh();
-				});
-
-			$("#airClose").click((e) => {
-					e.preventDefault();
-					$(".location-dialog").addClass("hidden");
-					this.hideRefresh();
-				});
-
-			$("#refreshResults").click((e) => {
-					e.preventDefault();
-					//this.dealsSearch.resultsEngine.refresh();
-				  this.hideRefresh();
-			});
+				
 		}
+
+			public initTopBar() {
+					this.$airContS = $(".top-ribbon .airports");
+					this.loadMgmtAirports();
+			}
+
+		public initDlg() {
+
+			  var $tmp = this.contTmp();
+
+				this.dialog = new Common.CustomDialog();
+				this.dialog.init($tmp, "Airports and Home location settings", "air-dlg");
+				this.dialog.addBtn("Close", "green-orange", () => {
+					this.dialog.close();
+				});
+				
+				Views.AirLoc.registerLocationCombo($("#currentCity"), (place) => {
+						this.updateLoc(place.City, place.CountryCode);
+				});
+
+				this.regRangeCombo();
+
+				this.$airportsCont = $("#airportsCont");
+				
+
+				this.initAirports();
+				this.loadMgmtAirports();
+				
+				$("#airClose").click((e) => {
+						e.preventDefault();
+						$(".location-dialog").addClass("hidden");
+						this.hideRefresh();
+				});
+
+				$("#refreshResults").click((e) => {
+						e.preventDefault();
+						//this.dealsSearch.resultsEngine.refresh();
+						this.hideRefresh();
+				});
+
+				this.hideRefresh();
+			}
+
+		
 
 			public updateLoc(city, cc) {
 					$("#rangeBlock").removeClass("hidden");
@@ -209,15 +226,16 @@
 
 		private regRangeCombo() {
 			var $dd = $("#airportsRange");
+			Common.DropDown.registerDropDown($dd);
 			$dd.change((e) => {
 				var kms = parseInt($dd.find("input").val());
-				this.kmRangeSelected = kms;				
+				this.kmRangeSelected = kms;
 			});
 
 			$("#addAirsRange").click((e) => {
-				e.preventDefault();
-				this.callAirportsByRange();
-			});
+					e.preventDefault();
+					this.callAirportsByRange();
+				});
 
 		}
 
@@ -230,7 +248,11 @@
 		}
 			                                                                                                                                                                                            
 		public generateAirports(airports) {
-			this.$airportsCont.find(".airport").remove();
+
+			if (this.$airportsCont) {
+				this.$airportsCont.find(".airport").remove();
+			}
+
 			this.$airContS.empty();
 
 			airports.forEach((a) => {
@@ -240,11 +262,15 @@
 		}
 
 		private genAirportS(code) {
-				var $h = $(`<span id="s_${code}" class="airport">${code}</span>`);
+			var $h = $(`<span id="s_${code}" class="airport">${code}</span>`);
 			this.$airContS.append($h);
 		}
 
 		private genAirport(a) {
+				if (!this.$airportsCont) {
+						return;
+				}
+
 			var context = {
 				id: a.origId,
 				city: a.city,

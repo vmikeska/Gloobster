@@ -7,16 +7,7 @@ module Planning {
 		private $cont;
 
 		private filter: DaysFilter;
-
-		//TODO: stars filter
-		private getStarsLevel() {
-				return 5;
-		}
-		//todo: score level
-		private getScoreLevel() {
-				return 0.7;
-		}
-
+			
 		constructor($cont, filter: DaysFilter) {
 			this.$cont = $cont;
 			this.filter = filter;
@@ -30,18 +21,18 @@ module Planning {
 			if (grouping === LocationGrouping.ByCity) {				  
 					var agg1 = new WeekendByCityAgg();
 					
-					var r1 = agg1.exe(this.queries, days, this.getStarsLevel());
+					var r1 = agg1.exe(this.queries, days, DealsLevelFilter.currentStars);
 					
-					var d1 = new WeekendByCityDis(this.$cont, this.getScoreLevel());
+					var d1 = new WeekendByCityDis(this.$cont, DealsLevelFilter.currentScore);
 					d1.render(r1);									
 			}
 				
 			if (grouping === LocationGrouping.ByCountry) {										
 					var agg2 = new WeekendByCountryAgg();
 
-					var r2 = agg2.exe(this.queries, days, this.getStarsLevel());
+					var r2 = agg2.exe(this.queries, days, DealsLevelFilter.currentStars);
 
-					var d2 = new ByCountryDisplay(this.$cont, this.getScoreLevel());
+					var d2 = new ByCountryDisplay(this.$cont, DealsLevelFilter.currentScore);
 					d2.render(r2);
 				}
 			}
@@ -169,16 +160,7 @@ module Planning {
 
 
 	}
-
-
-
-
 		
-	
-		
-	
-		
-
 	export class ByCountryDisplay extends ByWeekDisplay {
 
 			constructor($cont, scoreLevel) {

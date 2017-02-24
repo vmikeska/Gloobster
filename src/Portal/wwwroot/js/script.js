@@ -42,12 +42,12 @@
         }            
     });
     // scrollto
-    $(document).on('click', '.scrollto, a[href^=#]', function (e) {
-        if ($($(this).attr('href')).length > 0) {
-            e.preventDefault();
-            $('html, body').animate({ scrollTop: $($(this).attr('href')).offset().top }, 1000);
-        }
-    });
+    //$(document).on('click', '.scrollto, a[href^=#]', function (e) {
+    //    if ($($(this).attr('href')).length > 0) {
+    //        e.preventDefault();
+    //        $('html, body').animate({ scrollTop: $($(this).attr('href')).offset().top }, 1000);
+    //    }
+    //});
    
     //$(document).on('click', '.trip-holder .icon-wheel', function (e) {
     //    e.preventDefault();

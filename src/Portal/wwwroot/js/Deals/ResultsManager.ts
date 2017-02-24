@@ -99,6 +99,8 @@ module Planning {
 		private intervalId;
 		private doRequery = true;					
 		private lastCustomId = "";
+
+		public maxQueries = 60;
 			
 		public refresh() {
 				this.initalCall(this.timeType, this.lastCustomId);
@@ -220,32 +222,46 @@ module Planning {
 						clearInterval(this.intervalId);
 				}
 		}
-			
+
 		private startQuerying() {
 
 			if (!this.doRequery) {
 				return;
 			}
 
-			this.intervalId = setInterval(() => {				
-				this.drawQueue();
+			this.intervalId = setInterval(() => {
+					this.drawQueue();
 
-				if (this.queue.length === 0) {
-					this.stopQuerying();
-				}
+					if (this.queue.length === 0) {
+						this.stopQuerying();
+					}
+
+					var qb = QueriesBuilder.new()
+						.setTimeType(this.timeType);
+
+
 					
-				var qb = QueriesBuilder.new()
-					.setTimeType(this.timeType);
+
+					if (this.queue.length > this.maxQueries) {
+
+							for (var act = 0; act <= this.maxQueries - 1; act++) {
+									var q = this.queue[act];
+									qb.addQID(q.qid);
+							}
+
+					} else {
+							this.queue.forEach((q) => {
+									qb.addQID(q.qid);
+							});	
+					}
+
 					
-					
-				this.queue.forEach((q) => {
-					qb.addQID(q.qid);
-				});
-				
-				var prms = qb.build();
-					
-				this.getQueries(prms);
-			}, 3000);
+
+					var prms = qb.build();
+
+					this.getQueries(prms);
+				},
+				3000);
 		}
 
 		private drawQueue() {

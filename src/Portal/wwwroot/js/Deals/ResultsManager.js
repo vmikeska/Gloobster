@@ -69,6 +69,7 @@ var Planning;
             this.queue = [];
             this.doRequery = true;
             this.lastCustomId = "";
+            this.maxQueries = 60;
         }
         ResultsManager.prototype.refresh = function () {
             this.initalCall(this.timeType, this.lastCustomId);
@@ -176,9 +177,17 @@ var Planning;
                 }
                 var qb = QueriesBuilder.new()
                     .setTimeType(_this.timeType);
-                _this.queue.forEach(function (q) {
-                    qb.addQID(q.qid);
-                });
+                if (_this.queue.length > _this.maxQueries) {
+                    for (var act = 0; act <= _this.maxQueries - 1; act++) {
+                        var q = _this.queue[act];
+                        qb.addQID(q.qid);
+                    }
+                }
+                else {
+                    _this.queue.forEach(function (q) {
+                        qb.addQID(q.qid);
+                    });
+                }
                 var prms = qb.build();
                 _this.getQueries(prms);
             }, 3000);

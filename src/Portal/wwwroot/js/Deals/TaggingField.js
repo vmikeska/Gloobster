@@ -43,7 +43,7 @@ var Planning;
         };
         TaggingField.prototype.createTag = function (text, value, kind) {
             var _this = this;
-            var $html = $("<span class=\"tag\" data-vl=\"" + value + "\" data-kd=\"" + kind + "\">" + text + "<a class=\"icon-cross\" href=\"#\"></a></span>");
+            var $html = $("<span class=\"tag\" data-vl=\"" + value + "\" data-kd=\"" + kind + "\">" + text + "<a class=\"icon-cross-small\" href=\"#\"></a></span>");
             $html.find("a").click(function (e) {
                 e.preventDefault();
                 var $target = $(e.target);

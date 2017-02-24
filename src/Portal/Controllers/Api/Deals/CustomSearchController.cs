@@ -135,18 +135,9 @@ namespace Gloobster.Portal.Controllers.Api.Planning
                 var headers = custom.Searches.Select(s => new CustomSearchHeaderResponse
                 {
                     id = s.id.ToString(),
-                    name = s.Name
+                    name = s.Name,
+                    started = s.Started
                 }).ToList();
-
-		        //var resp = new PlanningCustomResponse
-		        //{
-		        //    headers = headers,
-		        //};
-
-		        //if (custom.Searches.Any())
-		        //{
-		        //    resp.first = custom.Searches.First().ToResponse();
-		        //}
 
                 return new ObjectResult(headers);
             }

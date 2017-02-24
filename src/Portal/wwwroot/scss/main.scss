@@ -443,6 +443,15 @@ textarea{
      }
  }
 
+ .yellow-green {
+     background-color: $yellow;
+     color: white;
+
+     &:hover {
+         background-color: $green;
+     }
+ }
+
  .bold {
      font-weight: bold;
  }
@@ -687,30 +696,28 @@ button:active {
     border: none;
 }
 
-.tag{
-    position: relative;
-    margin: 0 6px 6px 0;
+.tag{    
+    /*margin: 0 6px 6px 0;*/
     padding: 6px 10px;
-    transition: all .3s;
-    background-color: #57c1db;
-    border: 1px solid #57c1db;
+    
+    background-color: $light-blue2;    
     border-radius: 4px;
     color: #fff;
     display: inline-block;
-    text-decoration: none;
-
-    .icon-cross{
+    
+    .icon-cross-small{
         margin-left: 10px;
         margin-top: 4px;
         display: inline-block;
         text-decoration: none;
         color: $dark-blue;
-        font-size: 14px;
+        font-size: 0.7em;
+
+        &:hover {
+            color: $red;
+        }
     }
 
-    .icon-cross:hover {
-        color: darkred;
-    }
 }
 
 .tleft{

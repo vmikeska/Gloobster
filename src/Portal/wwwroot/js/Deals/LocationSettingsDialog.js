@@ -94,22 +94,36 @@ var Planning;
     Planning.DealsInitSettings = DealsInitSettings;
     var LocationSettingsDialog = (function () {
         function LocationSettingsDialog() {
-            var _this = this;
-            this.airTemplate = Views.ViewBase.currentView.registerTemplate("homeAirportItem-template");
+            this.airTemplate = this.v.registerTemplate("homeAirportItem-template");
+            this.contTmp = this.v.registerTemplate("loc-dlg-tmp");
             this.kmRangeSelected = 200;
+        }
+        Object.defineProperty(LocationSettingsDialog.prototype, "v", {
+            get: function () {
+                return Views.ViewBase.currentView;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        LocationSettingsDialog.prototype.initTopBar = function () {
+            this.$airContS = $(".top-ribbon .airports");
+            this.loadMgmtAirports();
+        };
+        LocationSettingsDialog.prototype.initDlg = function () {
+            var _this = this;
+            var $tmp = this.contTmp();
+            this.dialog = new Common.CustomDialog();
+            this.dialog.init($tmp, "Airports and Home location settings", "air-dlg");
+            this.dialog.addBtn("Close", "green-orange", function () {
+                _this.dialog.close();
+            });
             Views.AirLoc.registerLocationCombo($("#currentCity"), function (place) {
                 _this.updateLoc(place.City, place.CountryCode);
             });
             this.regRangeCombo();
             this.$airportsCont = $("#airportsCont");
-            this.$airContS = $(".top-ribbon .airports");
             this.initAirports();
             this.loadMgmtAirports();
-            $(".top-ribbon .edit").click(function (e) {
-                e.preventDefault();
-                $(".location-dialog").toggleClass("hidden");
-                _this.hideRefresh();
-            });
             $("#airClose").click(function (e) {
                 e.preventDefault();
                 $(".location-dialog").addClass("hidden");
@@ -119,14 +133,8 @@ var Planning;
                 e.preventDefault();
                 _this.hideRefresh();
             });
-        }
-        Object.defineProperty(LocationSettingsDialog.prototype, "v", {
-            get: function () {
-                return Views.ViewBase.currentView;
-            },
-            enumerable: true,
-            configurable: true
-        });
+            this.hideRefresh();
+        };
         LocationSettingsDialog.prototype.updateLoc = function (city, cc) {
             $("#rangeBlock").removeClass("hidden");
             $(".home-location-name").html(city + ", (" + cc + ")");
@@ -163,6 +171,7 @@ var Planning;
         LocationSettingsDialog.prototype.regRangeCombo = function () {
             var _this = this;
             var $dd = $("#airportsRange");
+            Common.DropDown.registerDropDown($dd);
             $dd.change(function (e) {
                 var kms = parseInt($dd.find("input").val());
                 _this.kmRangeSelected = kms;
@@ -182,7 +191,9 @@ var Planning;
         };
         LocationSettingsDialog.prototype.generateAirports = function (airports) {
             var _this = this;
-            this.$airportsCont.find(".airport").remove();
+            if (this.$airportsCont) {
+                this.$airportsCont.find(".airport").remove();
+            }
             this.$airContS.empty();
             airports.forEach(function (a) {
                 _this.genAirport(a);
@@ -195,6 +206,9 @@ var Planning;
         };
         LocationSettingsDialog.prototype.genAirport = function (a) {
             var _this = this;
+            if (!this.$airportsCont) {
+                return;
+            }
             var context = {
                 id: a.origId,
                 city: a.city,

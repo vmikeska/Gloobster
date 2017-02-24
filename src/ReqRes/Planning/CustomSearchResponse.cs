@@ -15,6 +15,7 @@ namespace Gloobster.ReqRes.Planning
     {
         public string id { get; set; }
         public string name { get; set; }
+        public bool started { get; set; }
     }
 
     public class CustomSearchResponse

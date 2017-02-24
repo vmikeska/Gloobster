@@ -1,4 +1,102 @@
 ﻿
+
+
+
+
+<script id="no-destinations-tmp" type="text/x-handlebars-template">
+    <div class="no-dests">
+        <div class="ln1">You havent's set any destinations yet or no results were found</div>
+        <div class="tbl">
+            
+            <div class="cell">
+                
+                <div class="ico-all ico-map">
+                    <div class="txt">Click out your destinations</div>
+                    <div class="ico">
+                        <span class="icon-earth"></span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="cell">
+                <span class="or">OR</span>
+            </div>
+
+            <div class="cell">
+                <div class="ico-all ico-search">
+                    <div class="txt">Search for your destinations</div>
+                    <div class="ico">
+                        <span class="icon-search"></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</script>
+
+<script id="loc-dlg-tmp" type="text/x-handlebars-template">
+    
+    <div class="location-dialog">
+
+        <div>
+            <div class="input-block">
+                <div class="title">@Model.W("WhereDoYouLive")</div>
+                <div id="currentCity" class="dropdown place-combo">
+                    <input class="inputed" type="text" placeholder="@Model.W("CityNamePlaceholder")" value="@Model.InitCurrentLocation">
+                    <img class="loader" src="/images/loader-gray.gif" style="display: none" />
+                    <span class="icon-logo-pin"></span>
+                    <ul></ul>
+                </div>
+            </div>
+
+            <div id="rangeBlock" class="input-block @(string.IsNullOrEmpty(Model.InitCurrentLocation) ? "hidden" : string.Empty)">
+                <div class="title">@Model.W("SelectAirportsInRange")</div>
+                <div id="airportsRange" class="dropdown">
+                    <span class="selected">200 km</span>
+                    <ul>
+                        <li data-value="100">100 km</li>
+                        <li data-value="200">200 km</li>
+                        <li data-value="300">300 km</li>
+                        <li data-value="400">400 km</li>
+                        <li data-value="500">500 km</li>
+                    </ul>
+                    <input type="hidden">
+                </div>
+                <a id="addAirsRange" class="lbtn2 yellow-green add-btn" href="#">@Model.W("SelectBtn")</a>
+            </div>
+        </div>
+
+        <div class="bottom-line">
+            <div class="title">@Model.W("CustomizeYourAirports")</div>
+            <div id="airportsCont" class="airports-cont">
+            </div>
+
+
+            <div id="airportCombo" class="dropdown">
+                <input class="inputed" type="text" placeholder="@Model.W("SearchForAirportsPlaceholder")">
+                <ul></ul>
+            </div>
+        </div>
+
+        <div class="refresh-line hidden">
+            <a id="refreshResults" class="lbtn2 refresh-results" href="#">@Model.W("RefreshResultsBtn")</a>
+        </div>
+
+
+    </div>
+
+</script>
+
+<script id="homeAirportItem-template" type="text/x-handlebars-template">
+    <div id="{{id}}" data-code="{{airCode}}" class="airport">
+        <span class="name" title="{{airName}}">{{city}} ({{airCode}})</span>
+        <a class="icon-cross-small delete" href="#"></a>
+    </div>
+</script>
+
+
 <script id="grouping-itm-tmp" type="text/x-handlebars-template">
     <span class="item" data-id="{{id}}">
         <span class="icon icon-{{icon}}"></span>
@@ -81,19 +179,19 @@
                         </div>
 
                         <div class="block-item">
-                                
-                            <div class="ico-wrap edit-list">
-                                <div class="ico-part">
-                                    <span class="icon-edit-pencil"></span>
-                                </div>
-                                <div class="desc-part">Edit as list</div>
-                            </div>
-
+                            
                             <div class="ico-wrap edit-map">
                                 <div class="ico-part">
                                     <span class="icon-everybody-data"></span>
                                 </div>
                                 <div class="desc-part">Edit on map</div>
+                            </div>
+                                
+                            <div class="ico-wrap edit-list">
+                                <div class="ico-part">
+                                    <span class="icon-search"></span>
+                                </div>
+                                <div class="desc-part">Edit as list</div>
                             </div>
 
                         </div>
@@ -106,7 +204,7 @@
             
             <div class="cat-drop-cont" style="display: none;">
                 
-                <span class="icon-cross form-close"></span>
+                <span class="icon-cross-small form-close"></span>
                 <div class="cont">
 
                 </div>
@@ -121,7 +219,7 @@
  
                 <div class="cat-set-win places-tag-sel hidden">
 
-                    <span class="icon-cross form-close"></span>
+                    <span class="icon-cross-small form-close"></span>
 
                     <div class="places-tagger">
 
@@ -157,7 +255,7 @@
 
                 <div class="cat-set-win places-map-sel hidden">
 
-                    <span class="icon-cross form-close"></span>
+                    <span class="icon-cross-small form-close"></span>
 
                     <div class="map-cont">
                         <div class="map" id="mapCountries_{{catId}}"></div>
@@ -292,7 +390,7 @@
 
         <div class="city-deal" data-gid="{{gid}}">
 
-            <span class="icon-cross form-close close"></span>
+            <span class="icon-cross-small form-close close"></span>
 
             <div class="title-top">
                 {{title}}
@@ -334,7 +432,7 @@
 
         <div class="city-deal" data-gid="{{gid}}">
 
-            <span class="icon-cross form-close close"></span>
+            <span class="icon-cross-small form-close close"></span>
 
             <div class="title-top">
                 {{title}}

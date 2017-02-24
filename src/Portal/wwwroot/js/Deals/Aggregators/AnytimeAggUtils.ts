@@ -1,17 +1,16 @@
 module Planning {
 	
 	export class AnytimeAggUtils {
+			
+		public static enrichMoreLess(lg: Common.ListGenerator) {
+			lg.listLimit = 4;
+			lg.listLimitMoreTmp = "flights-list-more-tmp";
+			lg.listLimitLessTmp = "flights-list-less-tmp";
+			lg.listLimitLast = false;
+		}
 
-
-			public static enrichMoreLess(lg: Common.ListGenerator) {
-					lg.listLimit = 4;
-					lg.listLimitMoreTmp = "flights-list-more-tmp";
-					lg.listLimitLessTmp = "flights-list-less-tmp";
-					lg.listLimitLast = false;
-			}
-
-			public static checkFilter(flight, starsLevel: number) {
-				var scoreOk = this.matchesScore(flight, starsLevel);
+		public static checkFilter(flight, starsLevel: number) {
+			var scoreOk = this.matchesScore(flight, starsLevel);
 			return scoreOk;
 		}
 
@@ -32,22 +31,22 @@ module Planning {
 		}
 
 		public static getScoreStars(index) {
-				var percents = index * 100;
-				
-				if (percents >= 90) {
-					return 5;
-				}
-				if (percents >= 80) {
-						return 4;
-				}
-				if (percents >= 70) {
-						return 3;
-				}
-				if (percents >= 60) {
-						return 2;
-				}
+			var percents = index * 100;
 
-				return 1;				
+			if (percents >= 90) {
+				return 5;
+			}
+			if (percents >= 80) {
+				return 4;
+			}
+			if (percents >= 70) {
+				return 3;
+			}
+			if (percents >= 60) {
+				return 2;
+			}
+
+			return 1;
 		}
 	}
 		

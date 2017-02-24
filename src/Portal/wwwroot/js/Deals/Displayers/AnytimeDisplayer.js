@@ -4,12 +4,6 @@ var Planning;
         function AnytimeDisplayer($section) {
             this.$section = $section;
         }
-        AnytimeDisplayer.prototype.getStarsLevel = function () {
-            return 5;
-        };
-        AnytimeDisplayer.prototype.getScoreLevel = function () {
-            return 0.7;
-        };
         AnytimeDisplayer.prototype.refresh = function (grouping) {
             this.showResults(this.queries, grouping);
         };
@@ -18,21 +12,21 @@ var Planning;
             var results = Planning.FlightsExtractor.getResults(this.queries);
             if (grouping === Planning.LocationGrouping.ByCity) {
                 var agg1 = new Planning.AnytimeByCityAgg(this.queries);
-                agg1.exe(this.getStarsLevel());
-                var dis = new AnytimeByCityDis(this.$section, results, this.getScoreLevel());
+                agg1.exe(Planning.DealsLevelFilter.currentStars);
+                var dis = new AnytimeByCityDis(this.$section, results, Planning.DealsLevelFilter.currentScore);
                 dis.render(agg1.cities);
             }
             if (grouping === Planning.LocationGrouping.ByCountry) {
                 var agg2 = new Planning.AnytimeByCountryAgg(this.queries);
-                agg2.exe(this.getStarsLevel());
+                agg2.exe(Planning.DealsLevelFilter.currentStars);
                 var $res = this.$section.find(".cat-res");
-                var dis2 = new AnytimeByCountryDis($res, results, this.getScoreLevel());
+                var dis2 = new AnytimeByCountryDis($res, results, Planning.DealsLevelFilter.currentScore);
                 dis2.render(agg2.countries);
             }
             if (grouping === Planning.LocationGrouping.ByContinent) {
                 var agg3 = new Planning.AnytimeByContinentAgg(this.queries);
-                agg3.exe(this.getStarsLevel());
-                var dis3 = new AnytimeByContinentDis(this.$section, results, this.getScoreLevel());
+                agg3.exe(Planning.DealsLevelFilter.currentStars);
+                var dis3 = new AnytimeByContinentDis(this.$section, results, Planning.DealsLevelFilter.currentScore);
                 dis3.render(agg3.getAllConts());
             }
         };
@@ -54,6 +48,7 @@ var Planning;
             var lg = Common.ListGenerator.init(this.$cont, "resultGroupItem-template");
             Planning.AnytimeAggUtils.enrichMoreLess(lg);
             lg.clearCont = true;
+            lg.emptyTemplate = "no-destinations-tmp";
             lg.customMapping = function (i) {
                 return {
                     gid: i.gid,

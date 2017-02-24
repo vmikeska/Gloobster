@@ -2,8 +2,6 @@ var Planning;
 (function (Planning) {
     var DealsLevelFilter = (function () {
         function DealsLevelFilter() {
-            this.currentStarsCnt = 5;
-            this.currentLevel = ScoreLevel.Excellent;
             this.$root = $(".levels");
             this.$levels = this.$root.find(".level");
             this.$l5 = this.$root.find(".lev5");
@@ -28,21 +26,25 @@ var Planning;
             });
             this.$levels.mouseleave(function (e) {
                 _this.$levels.removeClass("active");
-                _this.levelsHover(_this.currentStarsCnt);
+                _this.levelsHover(DealsLevelFilter.currentStars);
             });
             this.$levels.click(function (e) {
                 var $t = $(e.delegateTarget);
                 var val = $t.data("s");
-                _this.currentStarsCnt = val;
+                DealsLevelFilter.currentStars = val;
                 if (val === 5) {
-                    _this.currentLevel = ScoreLevel.Excellent;
+                    DealsLevelFilter.currentLevel = ScoreLevel.Excellent;
+                    DealsLevelFilter.currentScore = 0.8;
                 }
                 if (val === 3) {
-                    _this.currentLevel = ScoreLevel.Good;
+                    DealsLevelFilter.currentLevel = ScoreLevel.Good;
+                    DealsLevelFilter.currentScore = 0.66;
                 }
                 if (val === 1) {
-                    _this.currentLevel = ScoreLevel.Standard;
+                    DealsLevelFilter.currentLevel = ScoreLevel.Standard;
+                    DealsLevelFilter.currentScore = 0.5;
                 }
+                _this.stateChanged();
             });
         };
         DealsLevelFilter.prototype.levelsHover = function (stars) {
@@ -54,6 +56,9 @@ var Planning;
                 this.$l1.addClass("active");
             }
         };
+        DealsLevelFilter.currentStars = 5;
+        DealsLevelFilter.currentLevel = ScoreLevel.Excellent;
+        DealsLevelFilter.currentScore = 0.8;
         return DealsLevelFilter;
     }());
     Planning.DealsLevelFilter = DealsLevelFilter;

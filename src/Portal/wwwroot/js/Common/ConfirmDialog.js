@@ -1,5 +1,48 @@
 var Common;
 (function (Common) {
+    var CustomDialog = (function () {
+        function CustomDialog() {
+        }
+        CustomDialog.prototype.init = function ($html, title, custClass) {
+            var _this = this;
+            if (custClass === void 0) { custClass = ""; }
+            var t = Views.ViewBase.currentView.registerTemplate("custom-dialog-template");
+            var context = {
+                title: title,
+                custClass: custClass
+            };
+            this.$t = $(t(context));
+            $("body").append(this.$t);
+            this.$t.find(".dlg-cont").html($html);
+            this.$t.fadeIn();
+            this.$t.click(function (e) {
+                var isOut = e.target.className === "popup3";
+                if (isOut) {
+                    e.preventDefault();
+                    _this.close();
+                }
+            });
+            this.$t.find(".close").click(function (e) {
+                _this.close();
+            });
+        };
+        CustomDialog.prototype.addBtn = function (txt, cls, callback) {
+            var $b = $("<a href=\"#\" class=\"lbtn2 " + cls + "\">" + txt + "</a>");
+            this.$t.find(".dlg-btns").append($b);
+            $b.click(function (e) {
+                e.preventDefault();
+                callback();
+            });
+        };
+        CustomDialog.prototype.close = function () {
+            var _this = this;
+            this.$t.fadeOut(function () {
+                _this.$t.remove();
+            });
+        };
+        return CustomDialog;
+    }());
+    Common.CustomDialog = CustomDialog;
     var HintDialog = (function () {
         function HintDialog() {
             this.template = Views.ViewBase.currentView.registerTemplate("hint-template");

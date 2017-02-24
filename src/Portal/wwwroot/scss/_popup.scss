@@ -1,6 +1,87 @@
 
-.popup {
-    display: none;
+.popup3 {    
+    z-index: 99999;
+    text-align: left;
+
+    &:before {
+        position:fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        
+        background-color: rgba(0, 0, 0, 0.5);
+        content: "";
+        display: block;
+        z-index: 99999;        
+    }
+
+    .dlg-frame-all {
+        position:fixed;
+        top: 50%;
+        left: 50%;        
+        transform: translate(-50%, -50%);        
+        background-color: white;
+        border-top: 6px solid $dark-blue;
+        border-radius: 4px;
+        box-shadow: 0 0 0 4px rgba(black, .1);
+        color: black;
+        height: auto;
+        /*max-width: 640px;
+        min-width: 320px;*/        
+        width: 50%;
+        z-index: 99999;
+
+        .dlg-frame {
+            position: relative;
+
+            .dlg-title{
+                
+                font-size: 1.1em;                
+                padding-right: 2em;
+                padding-left: 0.5em;
+                padding-top: 0.2em;
+                color: $dark-blue;                
+            }
+
+            .close {
+               display: inline-block;
+               background-color: white;
+               vertical-align: middle;
+
+               cursor: pointer;
+
+               padding: 0.3em;
+
+               font-size: 0.7em;
+
+                position: absolute;
+                top: 2px;
+                right: 2px;
+
+                border-radius: 50%;
+                
+                color: $dark-blue;   
+                &:hover {
+                    color: $red;
+                }
+            }
+
+            .dlg-cont{
+                
+            }
+
+            .dlg-btns {
+                padding: 1em;
+                text-align: right;
+            }
+        }
+    }
+
+}
+
+
+.popup {    
     z-index: 99999;
     text-align: left;
 
@@ -34,6 +115,54 @@
         width: 50%;
         z-index: 99999;
     }
+
+    .dlg-frame-all {
+        position:fixed;
+        top: 50%;
+        left: 50%;        
+        transform: translate(-50%, -50%);        
+        background-color: white;
+        border-top: 6px solid $dark-blue;
+        border-radius: 4px;
+        box-shadow: 0 0 0 4px rgba(black, .1);
+        color: black;
+        height: auto;
+        /*max-width: 640px;
+        min-width: 320px;*/        
+        width: 50%;
+        z-index: 99999;
+
+        .dlg-frame {
+            position: relative;
+
+            .close {
+               display: inline-block;
+
+               z-index: 999999;
+
+                width: 32px;
+                height: 32px;
+
+                position: absolute;
+                top: 7px;
+                right: 5px;
+
+                text-decoration: none;
+                font-size: 32px;
+                color: $dark-blue;   
+
+                &:hover {
+                    color: $red;
+                }
+            }
+
+            .dlg-cont{
+                
+            }
+        }
+    }
+
+    
 
     .btns2 {
         text-align: right;
@@ -84,10 +213,12 @@
         text-decoration: none;
         font-size: 32px;
         color: $dark-blue;   
+
+        &:hover {
+            color: $red;
+        }
     }
-    .close:hover{
-        color: darkred;
-    }
+    
 }
 
 .popup-upload 

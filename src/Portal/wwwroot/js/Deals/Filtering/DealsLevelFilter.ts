@@ -1,7 +1,12 @@
 module Planning {
-	export class DealsLevelFilter {
-		private currentStarsCnt = 5;
-		private currentLevel = ScoreLevel.Excellent;
+		export class DealsLevelFilter {
+
+			public stateChanged: Function;
+
+			public static currentStars = 5;
+
+			public static currentLevel = ScoreLevel.Excellent;
+			public static currentScore = 0.8;
 
 		private $root = $(".levels");
 		private $levels = this.$root.find(".level");
@@ -34,26 +39,29 @@ module Planning {
 
 			this.$levels.mouseleave((e) => {
 				this.$levels.removeClass("active");
-				this.levelsHover(this.currentStarsCnt);
+				this.levelsHover(DealsLevelFilter.currentStars);
 			});
 
 			this.$levels.click((e) => {
 				var $t = $(e.delegateTarget);
 				var val = $t.data("s");
 
-				this.currentStarsCnt = val;
+				DealsLevelFilter.currentStars = val;
 
 				if (val === 5) {
-					this.currentLevel = ScoreLevel.Excellent;
+						DealsLevelFilter.currentLevel = ScoreLevel.Excellent;
+						DealsLevelFilter.currentScore = 0.8;
 				}
 				if (val === 3) {
-					this.currentLevel = ScoreLevel.Good;
+						DealsLevelFilter.currentLevel = ScoreLevel.Good;
+						DealsLevelFilter.currentScore = 0.66;
 				}
 				if (val === 1) {
-					this.currentLevel = ScoreLevel.Standard;
+						DealsLevelFilter.currentLevel = ScoreLevel.Standard;
+					  DealsLevelFilter.currentScore = 0.5;
 				}
 
-				//this.stateChanged();
+				this.stateChanged();
 			});
 		}
 

@@ -107,7 +107,7 @@ var TravelB;
         };
         CategoryTagger.prototype.tagItem = function (catId, id, name) {
             var _this = this;
-            var $i = $("<span class=\"tag\" data-catid=\"" + catId + "\" data-id=\"" + id + "\">" + name + "<a class=\"icon-cross\" href=\"#\"></a></span>");
+            var $i = $("<span class=\"tag\" data-catid=\"" + catId + "\" data-id=\"" + id + "\">" + name + "<a class=\"icon-cross-small\" href=\"#\"></a></span>");
             $i.find("a").click(function (e) {
                 e.preventDefault();
                 if (_this.tabs.activeTabId === _this.tabId(_this.instName, catId)) {
