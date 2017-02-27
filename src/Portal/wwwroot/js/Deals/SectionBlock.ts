@@ -107,12 +107,34 @@
 					this.editMap();
 
 					if (!hasAirs) {
-						this.planningMap.enableMap(false);
-						this.initMapDisabler();
+						//this.planningMap.enableMap(false);
+						//this.initMapDisabler();
 					}
 				}
 			});
 
+			var $dv = $("#dealsWizard");
+			var $doc = $(document);
+
+			$doc.scroll(() => {
+
+					//todo: unregister event when not needed
+					if (!$dv.length) {
+						return;
+					}
+
+				var treshold = $dv.offset().top + $dv.height();
+
+				var current = $doc.scrollTop();
+
+				if (treshold < current) {
+						console.log("over");	
+				}
+
+				
+			});
+				
+			//$("html,body").offset().scrollTop
 		}
 
 		public refreshResults() {
@@ -137,7 +159,7 @@
 
 		private initMapDisabler() {
 				this.$cont.find(".map-disabler").click((e) => {
-						$("html,body").animate({ scrollTop: 0 }, "slow");
+						$("html,body").animate({ scrollTop: $("#dealsWizard").offset().top }, "slow");
 				});
 		}
 			
@@ -265,8 +287,8 @@
 		}
 
 			private initEmptyResultsBtns() {
-					this.$cont.find(".no-dests .ico-map").click((e) => { this.editList(); });
-					this.$cont.find(".no-dests .ico-search").click((e) => { this.editMap(); });
+					this.$cont.find(".no-dests .ico-map").click((e) => { this.editMap(); });
+					this.$cont.find(".no-dests .ico-search").click((e) => { this.editList(); });
 			}
 
 		private initResultMgr() {

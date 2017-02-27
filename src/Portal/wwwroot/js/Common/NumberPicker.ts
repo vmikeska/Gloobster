@@ -16,6 +16,14 @@
 						this.init();
 				}
 
+				public enabled(state) {
+						if (state === null) {
+								return !this.$cont.hasClass("disabled");
+						}
+
+						this.$cont.toggleClass("disabled", state);
+				}
+
 				public val() {
 					return this.$control.val();
 				}

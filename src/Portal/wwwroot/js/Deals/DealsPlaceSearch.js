@@ -17,6 +17,12 @@ var Planning;
         DealsPlaceSearch.prototype.hasSelected = function () {
             return (this.selectedItem != null);
         };
+        DealsPlaceSearch.prototype.enabled = function (state) {
+            if (state === null) {
+                return !this.$cont.hasClass("disabled");
+            }
+            this.$cont.toggleClass("disabled", state);
+        };
         DealsPlaceSearch.prototype.init = function (placeholder) {
             var tmp = this.v.registerTemplate("city-air-search-template");
             var $t = $(tmp({ placeholder: placeholder }));

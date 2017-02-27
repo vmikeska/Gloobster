@@ -62,10 +62,10 @@ namespace Gloobster.DomainModels.Services
 	
 			var userIdObj = new ObjectId(userId);
 
-            var ua = DB.FOD<UserAirports>(u => u.User_id == userIdObj);
+            var ua = DB.FOD<UserAirportsEntity>(u => u.User_id == userIdObj);
 		    if (ua == null)
 		    {
-		        var newUa = new UserAirports
+		        var newUa = new UserAirportsEntity
 		        {
 		            id = ObjectId.GenerateNewId(),
 		            User_id = userIdObj,
@@ -74,8 +74,8 @@ namespace Gloobster.DomainModels.Services
 		        await DB.SaveAsync(newUa);
 		    }
 
-            var filter = DB.F<UserAirports>().Eq(p => p.User_id, userIdObj);
-			var update = DB.U<UserAirports>().Set(p => p.Airports, airportsEnts);
+            var filter = DB.F<UserAirportsEntity>().Eq(p => p.User_id, userIdObj);
+			var update = DB.U<UserAirportsEntity>().Set(p => p.Airports, airportsEnts);
 
 			var res = await DB.UpdateAsync(filter, update);
 
@@ -104,8 +104,8 @@ namespace Gloobster.DomainModels.Services
 
 
             var userIdObj = new ObjectId(userId);
-			var filter = DB.F<UserAirports>().Eq(p => p.User_id, userIdObj);
-			var update = DB.U<UserAirports>().Push(p => p.Airports, saveAirport);
+			var filter = DB.F<UserAirportsEntity>().Eq(p => p.User_id, userIdObj);
+			var update = DB.U<UserAirportsEntity>().Push(p => p.Airports, saveAirport);
 
 			var res = await DB.UpdateAsync(filter, update);
 
@@ -115,12 +115,12 @@ namespace Gloobster.DomainModels.Services
 		public async Task<bool> RemoveAirportInRange(string userId, int airportOrigId)
 		{
 			var userIdObj = new ObjectId(userId);
-			var ua = DB.FOD<UserAirports>(u => u.User_id == userIdObj);
+			var ua = DB.FOD<UserAirportsEntity>(u => u.User_id == userIdObj);
 
 			var airportToDelete = ua.Airports.FirstOrDefault(a => a.OrigId == airportOrigId);
 			
-			var filter = DB.F<UserAirports>().Eq(p => p.User_id, userIdObj);
-			var update = DB.U<UserAirports>().Pull(p => p.Airports, airportToDelete);
+			var filter = DB.F<UserAirportsEntity>().Eq(p => p.User_id, userIdObj);
+			var update = DB.U<UserAirportsEntity>().Pull(p => p.Airports, airportToDelete);
 
 			var res = await DB.UpdateAsync(filter, update);
 

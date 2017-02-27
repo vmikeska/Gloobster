@@ -38,6 +38,14 @@
 				this.gen();
 			}
 
+			public enabled(state) {
+					if (state === null) {
+							return !this.$cont.hasClass("disabled");
+					}
+
+					this.$cont.toggleClass("disabled", state);
+			}
+
 			public setDate(date) {
 						this.date = date;
 

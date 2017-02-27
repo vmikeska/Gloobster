@@ -18,6 +18,14 @@
 					return (this.selectedItem != null);
 				}
 
+				public enabled(state) {
+						if (state === null) {
+								return !this.$cont.hasClass("disabled");
+						}
+
+						this.$cont.toggleClass("disabled", state);
+				}
+
 				constructor($cont, placeholder) {
 				this.$cont = $cont;
 

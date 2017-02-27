@@ -58,6 +58,9 @@
 
 						$(`.step-${num}`).removeClass("hidden");
 						$(`.label-${num}`).addClass("active");
+					
+						this.locDlg.showTop(hasCity && hasAirs);				
+						this.locDlg.showRatingFilter(hasCity && hasAirs);		
 			}
 
 				private regNextBtns() {
@@ -136,9 +139,19 @@
 				
 		}
 
-			public initTopBar() {
-					this.$airContS = $(".top-ribbon .airports");
-					this.loadMgmtAirports();
+		public initTopBar(hasCity, hasAirs) {
+			this.$airContS = $(".top-all .airports");
+			this.loadMgmtAirports();
+
+			this.showTop(hasCity && hasAirs);
+		}
+
+			public showTop(show) {
+					$(".top-all").toggleClass("hidden", !show);
+		}
+
+			public showRatingFilter(show) {
+					$(".rating-filter").toggleClass("hidden", !show);
 			}
 
 		public initDlg() {

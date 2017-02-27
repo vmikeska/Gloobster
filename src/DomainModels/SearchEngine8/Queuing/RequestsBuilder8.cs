@@ -165,7 +165,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
         {
             var userIdObj = new ObjectId(userId);
 
-            var ua = DB.FOD<UserAirports>(u => u.User_id == userIdObj);
+            var ua = DB.FOD<UserAirportsEntity>(u => u.User_id == userIdObj);
 
             var airIds = new List<int>();
 

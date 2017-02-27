@@ -104,7 +104,7 @@ $brown40: #9D6100;
 }
 
 @mixin display-flex{
-    display: -webkit-box;
+  display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-flex;
@@ -118,11 +118,11 @@ $brown40: #9D6100;
   left: 50%;
   transform: translate(-50%, -50%);
 }
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
 body {
     font-family: $font-ptsans;
 
-   /*font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;*/
+    /*font-family: helvetica,arial,verdana,sans-serif;*/
 
     min-width: 480px;    
     margin: 0;
@@ -293,6 +293,11 @@ a {
 
 .hidden {
     display: none !important;
+}
+
+.disabled {
+    filter: grayscale(100%);
+    pointer-events: none;
 }
 
 .checkbox-all{

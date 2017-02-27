@@ -7,6 +7,12 @@ var Common;
             this.max = max;
             this.init();
         }
+        NumberPicker.prototype.enabled = function (state) {
+            if (state === null) {
+                return !this.$cont.hasClass("disabled");
+            }
+            this.$cont.toggleClass("disabled", state);
+        };
         NumberPicker.prototype.val = function () {
             return this.$control.val();
         };

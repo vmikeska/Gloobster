@@ -30,7 +30,7 @@ namespace Gloobster.Portal.Controllers.Api.SearchEngine
 
             var location = await GetLocationSubEntity(req.gid);
 
-            var ua = DB.FOD<UserAirports>(u => u.User_id == UserIdObj);
+            var ua = DB.FOD<UserAirportsEntity>(u => u.User_id == UserIdObj);
 
             bool firstInit = ua == null;
             if (firstInit)
@@ -41,8 +41,8 @@ namespace Gloobster.Portal.Controllers.Api.SearchEngine
                 var airportsDO = await AirService.SaveAirportsInRange(UserId, airports);
             }
             
-            var filter = DB.F<UserAirports>().Eq(p => p.User_id, UserIdObj);
-            var update = DB.U<UserAirports>().Set(p => p.CurrentLocation, location);            
+            var filter = DB.F<UserAirportsEntity>().Eq(p => p.User_id, UserIdObj);
+            var update = DB.U<UserAirportsEntity>().Set(p => p.CurrentLocation, location);            
             var res = await DB.UpdateAsync(filter, update);
 
             return new ObjectResult(null);

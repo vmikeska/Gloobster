@@ -7,12 +7,12 @@
 
 		private tabs;
 
-		private $dealsCont = $(".deals-search-all");
-		private $classicCont = $(".classic-search-all");
+		private $dealsCont = $(".deals-search-cont");
+		private $classicCont = $(".classic-search-cont");
 
 		private $catsCont = $("#catsCont");
 
-		private initSettings: Planning.DealsInitSettings;
+		//private initSettings: Planning.DealsInitSettings;
 		private settings: Planning.LocationSettingsDialog;
 
 		public hasCity;
@@ -31,22 +31,26 @@
 			var cs = new Planning.ClassicSearch();
 			cs.init();
 
+			this.initTopBar();
+
 			this.initMainTabs();
-
-			this.settings = new Planning.LocationSettingsDialog();
-
+				
 			this.initDeals();
-
-			this.settings.initTopBar();
-
-			$(".top-ribbon .edit").click((e) => {
-					e.preventDefault();					
-					this.settings.initDlg();					
-			});
 				
 		}
 
+			private initTopBar() {
 
+					this.settings = new Planning.LocationSettingsDialog();
+
+					this.settings.initTopBar(this.hasCity, this.hasAirs);
+
+					$(".top-all .edit").click((e) => {
+							e.preventDefault();
+							this.settings.initDlg();
+					});
+			}
+			
 			private countDelasCnt() {
 					var res = { Excellent: 0, Good: 0, Standard: 0 };
 
@@ -66,9 +70,8 @@
 			var ds = new Planning.DealsInitSettings(this.settings);
 			ds.init(this.hasCity, this.hasAirs);
 			ds.onThirdStep = () => {
-				this.allSections.forEach((s) => {
-					s.planningMap.enableMap(true);
-					$("html, body").animate({ scrollTop: $("#topContDeals").offset().top }, "slow");
+				this.allSections.forEach((s) => {					
+					$("html, body").animate({ scrollTop: $("#catsCont").offset().top }, "slow");
 				});
 			}
 
@@ -138,12 +141,12 @@
 				private initMainTabs() {
 						this.tabs = new Common.Tabs($("#categoryNavi"), "category");
 
-						this.tabs.addTab("tabDeals", "Deals search", () => {
-								this.setTab(true);								
-						});
-
 						this.tabs.addTab("tabClassics", "Classic search", () => {
 								this.setTab(false);
+						});
+
+						this.tabs.addTab("tabDeals", "Deals search", () => {
+								this.setTab(true);								
 						});
 						
 						this.tabs.create();
@@ -152,11 +155,13 @@
 				private setTab(deals) {
 						if (deals) {
 								this.$dealsCont.removeClass("hidden");
-								this.$classicCont.addClass("hidden");
+								this.$classicCont.addClass("hidden");							  
 						} else {
 								this.$classicCont.removeClass("hidden");
-								this.$dealsCont.addClass("hidden");
+								this.$dealsCont.addClass("hidden");								
 						}
+
+					  this.settings.showRatingFilter(deals);
 
 				}
 		}

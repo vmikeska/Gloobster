@@ -92,7 +92,7 @@ namespace Gloobster.Entities
         public List<UserRatingSE> Ratings { get; set; }        
     }
 
-    public class UserAirports: EntityBase
+    public class UserAirportsEntity: EntityBase
     {
         public ObjectId User_id { get; set; }
         public List<AirportSaveSE> Airports { get; set; }

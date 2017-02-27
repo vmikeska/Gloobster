@@ -1,5 +1,12 @@
 ﻿
 .fly-tickets{
+
+        .main-navi {
+            margin-top: 0.5em;
+            
+            text-align: left;
+        }
+
   
     .top-all {
         margin-top: 0.5em;
@@ -27,20 +34,42 @@
 
     }
 
-    .classic-search {
-        
-        .search-bar {
-            background-color: $darker-gray;
-        }
-
+    .search-bar {
+        background-color: $light-gray2;
     }
 
     .search-form {
 
+        h1 {
+            font-size: 1.2em;
+            display: block;
+            padding: 0;
+            margin: 0;
+            margin-bottom: 0.5em;            
+            text-align: center;
+        }
+
+
+        display: inline-block;
+
+        padding-top: 1em;
+        padding-bottom: 1em;
+
+        input[type="checkbox"] {
+            font-size: 0.7em;
+        }
 
         label {
-            color: white;
+            /*color: white;*/
+            font-size: 14px;
         }
+
+        .city-airport-search {
+            width: 260px;
+        }
+        
+
+        
 
         .search-group {
             display: inline-block;
@@ -50,11 +79,11 @@
             
             display: inline-block;
             vertical-align: top;
+            text-align: left;
 
             .capt {
-                font-weight: bold;
-                text-align: left;
-                color: white;                
+                font-size: 16px;
+                /*color: white;*/
             }
 
             .ctrl {
@@ -62,35 +91,84 @@
             }
         }
 
-        .one-line {
-            padding-top: 1.35em;
+        .bottom-line {
+            padding-top: 0.5em;
+            text-align: right;
         }
 
-        .sec-row  {
-            text-align: left;
-            
-            max-width: 1000px;
-            margin-left: auto;
-            margin-right: auto;
-
-
-            border: 1px solid red;
-        }
-
-        @include below-width(1045) {
-            .city-airport-search {
-                width: 45%;
-                border: 1px solid pink;
-            }
-        }
     }
 
-    .deals-block-all {        
+    @include below-width(1070) {
+            
+        .search-form {
+            max-width: none;
+            padding-left: 1em;
+            padding-right: 1em;
+            display: block;
+
+            text-align: right;
+        }
+
+        .first-line {
+
+            &.search-group {
+                display: block;
+
+                .search-field {
+                    width: 49%;
+
+                    .city-airport-search {
+                        display: block;
+                        width: auto;
+                    }
+                }
+            }
+
+        }
+
+        .classic-search-all {
+            height: 300px;
+        }
+        
+    }
+
+    .filter-bar {
+
+        .one-line {
+            display: table;
+            width: 100%;
+
+            .cell {
+                display: table-cell;
+                width: 50%;
+                padding: 0.5em;
+            }
+        }
+
+    }
+
+
+
+
+
+
+    .deals-block-all {   
+        h1 {
+            font-size: 1.2em;
+            display: block;
+            padding: 0;
+            margin: 0;
+            margin-bottom: 0.5em;
+            color: white;
+            text-align: center;
+        }
+        
+             
         background-color: $info-blue2;        
 
-        border-top: 2px solid $light-blue3;
-
         padding: 1em;
+
+        margin-bottom: 1em;
 
         .wiz-airs-cont {
             display: inline-block;
@@ -153,11 +231,11 @@
             .label {
                 display: table-cell;                
                 width: 33.3%;
-                font-weight: bold;
-
+                
                 &.active {
                     color: $yellow;
                     font-size: 1.3em;
+                    font-weight: bold;
                 }
             }
         }
@@ -174,7 +252,7 @@
 
         .next-btn-cont {
             padding-top: 0.5em;
-
+                        
             .next-btn {
                 padding: 0.7em;
                 
@@ -183,15 +261,15 @@
     }
 
     .cat-all {
-        margin-top: 0.5em;
+        
         margin-bottom: 1.5em;
 
         .cat-bar {            
             background-color: $dark-blue;
             padding: 0.5em;
 
-            border-top-left-radius: 4px;
-            border-top-right-radius: 4px;
+            /*border-top-left-radius: 4px;
+            border-top-right-radius: 4px;*/
             
             .title-name {
                 display: inline-block;                
@@ -282,8 +360,7 @@
                 color: $yellow;
             }
 
-            .desc-part {
-                font-weight: bold;
+            .desc-part {                
                 font-size: 0.9em;
                 color: white;
             }
@@ -482,10 +559,6 @@
                     .day {
                         cursor: pointer;
                     }
-                }
-
-                &.disabled {
-                    filter: grayscale(70%);
                 }
             }
         }
@@ -747,6 +820,8 @@
 
      .cat-queue{
         $preload-size: 1.3em;
+        padding: 0.5em;
+
 
         position: relative;
         text-align: left;
@@ -755,7 +830,7 @@
 
         .preloader {            
             position: absolute;
-            top: 6px;
+            top: 0.5em;
             left: 0;
 
             display: inline-block;
@@ -771,10 +846,10 @@
         }
 
         .cont {
+            
             .item{
                 display: inline-block;
-                border: 2px solid $light-blue3;
-                padding: 0.5em;
+                border: 2px solid $light-blue3;               
                 border-radius: 4px;                
                 font-weight: bold;
             }
@@ -850,6 +925,7 @@
 
 
 
+
     .expander, .collapser {
         text-align: left;
         @include noselect;
@@ -875,7 +951,7 @@
             background-color: $light-blue2;
         }
 
-        .map-disabled {
+        /*.map-disabled {
             display: block !important;
             position: absolute;
             top: 0;
@@ -887,7 +963,7 @@
             opacity: 0.7;
             
             z-index: 9999999;
-        }
+        }*/
 
         .map-type-switch {
             display: inline-block;
@@ -1055,7 +1131,7 @@
     }
 
 
-    .top-ribbon{
+    .top-all{
         text-align: left;        
         margin-bottom: 8px;
 

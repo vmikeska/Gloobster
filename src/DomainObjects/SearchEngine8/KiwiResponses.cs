@@ -95,7 +95,7 @@ namespace Gloobster.DomainObjects.SearchEngine8
         public Conversion conversion { get; set; }
         public string deep_link { get; set; }
         public string mapIdto { get; set; }
-        public int nightsInDest { get; set; }
+        public int? nightsInDest { get; set; }
         public string id { get; set; }
         public bool facilitated_booking_available { get; set; }
         public string fly_duration { get; set; }

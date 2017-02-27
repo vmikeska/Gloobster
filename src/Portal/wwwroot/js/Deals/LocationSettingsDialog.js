@@ -44,6 +44,8 @@ var Planning;
             }
             $(".step-" + num).removeClass("hidden");
             $(".label-" + num).addClass("active");
+            this.locDlg.showTop(hasCity && hasAirs);
+            this.locDlg.showRatingFilter(hasCity && hasAirs);
         };
         DealsInitSettings.prototype.regNextBtns = function () {
             var _this = this;
@@ -105,9 +107,16 @@ var Planning;
             enumerable: true,
             configurable: true
         });
-        LocationSettingsDialog.prototype.initTopBar = function () {
-            this.$airContS = $(".top-ribbon .airports");
+        LocationSettingsDialog.prototype.initTopBar = function (hasCity, hasAirs) {
+            this.$airContS = $(".top-all .airports");
             this.loadMgmtAirports();
+            this.showTop(hasCity && hasAirs);
+        };
+        LocationSettingsDialog.prototype.showTop = function (show) {
+            $(".top-all").toggleClass("hidden", !show);
+        };
+        LocationSettingsDialog.prototype.showRatingFilter = function (show) {
+            $(".rating-filter").toggleClass("hidden", !show);
         };
         LocationSettingsDialog.prototype.initDlg = function () {
             var _this = this;

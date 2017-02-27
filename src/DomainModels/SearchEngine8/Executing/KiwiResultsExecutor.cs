@@ -25,7 +25,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
                 .Endpoint(Endpoint)
 
                 .Param("partner", "picky")
-                .Param("v", "3");
+                .Param("v", "2");
 
 
             foreach (var prop in req.GetType().GetProperties())

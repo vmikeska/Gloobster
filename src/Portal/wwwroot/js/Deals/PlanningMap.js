@@ -24,15 +24,6 @@ var Planning;
             this.initCountriesFnc();
             this.initCitiesFnc();
         };
-        PlanningMap.prototype.enableMap = function (state) {
-            var disabler = this.$section.find(".map-disabler");
-            if (state) {
-                disabler.removeClass("map-disabled");
-            }
-            else {
-                disabler.addClass("map-disabled");
-            }
-        };
         PlanningMap.prototype.initMap = function () {
             this.map = new Planning.Map(this);
             this.map.init();

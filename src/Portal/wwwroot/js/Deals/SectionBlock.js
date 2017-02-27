@@ -63,9 +63,19 @@ var Planning;
                 if (!hasPlaces) {
                     _this.editMap();
                     if (!hasAirs) {
-                        _this.planningMap.enableMap(false);
-                        _this.initMapDisabler();
                     }
+                }
+            });
+            var $dv = $("#dealsWizard");
+            var $doc = $(document);
+            $doc.scroll(function () {
+                if (!$dv.length) {
+                    return;
+                }
+                var treshold = $dv.offset().top + $dv.height();
+                var current = $doc.scrollTop();
+                if (treshold < current) {
+                    console.log("over");
                 }
             });
         };
@@ -84,7 +94,7 @@ var Planning;
         };
         SectionBlock.prototype.initMapDisabler = function () {
             this.$cont.find(".map-disabler").click(function (e) {
-                $("html,body").animate({ scrollTop: 0 }, "slow");
+                $("html,body").animate({ scrollTop: $("#dealsWizard").offset().top }, "slow");
             });
         };
         SectionBlock.prototype.hasAnyPlaces = function (callback) {
@@ -183,8 +193,8 @@ var Planning;
         };
         SectionBlock.prototype.initEmptyResultsBtns = function () {
             var _this = this;
-            this.$cont.find(".no-dests .ico-map").click(function (e) { _this.editList(); });
-            this.$cont.find(".no-dests .ico-search").click(function (e) { _this.editMap(); });
+            this.$cont.find(".no-dests .ico-map").click(function (e) { _this.editMap(); });
+            this.$cont.find(".no-dests .ico-search").click(function (e) { _this.editList(); });
         };
         SectionBlock.prototype.initResultMgr = function () {
             var _this = this;

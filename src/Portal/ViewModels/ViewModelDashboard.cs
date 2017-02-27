@@ -216,7 +216,7 @@ namespace Gloobster.Portal.ViewModels
             }
 
             HasAirs = false;
-            var airs = DB.FOD<UserAirports>(u => u.User_id == userIdObj);
+            var airs = DB.FOD<UserAirportsEntity>(u => u.User_id == userIdObj);
             if (airs != null)
             {
                 HasAirs = airs.Airports.Any();

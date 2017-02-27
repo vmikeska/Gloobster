@@ -32,7 +32,7 @@ namespace Gloobster.Portal.Controllers.Portal
         [CreateAccount]
         public IActionResult Home()
 		{
-            var ua = DB.FOD<UserAirports>(u => u.User_id == UserIdObj);
+            var ua = DB.FOD<UserAirportsEntity>(u => u.User_id == UserIdObj);
 
             //temp remove then
             PlanningDom.CreateDBStructure(UserId);
@@ -68,7 +68,7 @@ namespace Gloobster.Portal.Controllers.Portal
 
 
 
-		private string FormatCityStr(UserAirports ua)
+		private string FormatCityStr(UserAirportsEntity ua)
 		{            
 			if (ua?.CurrentLocation == null)
 			{

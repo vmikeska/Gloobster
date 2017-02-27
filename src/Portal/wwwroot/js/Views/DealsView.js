@@ -9,8 +9,8 @@ var Views;
         __extends(DealsView, _super);
         function DealsView() {
             _super.call(this);
-            this.$dealsCont = $(".deals-search-all");
-            this.$classicCont = $(".classic-search-all");
+            this.$dealsCont = $(".deals-search-cont");
+            this.$classicCont = $(".classic-search-cont");
             this.$catsCont = $("#catsCont");
             this.allSections = [];
         }
@@ -22,14 +22,17 @@ var Views;
             configurable: true
         });
         DealsView.prototype.init = function () {
-            var _this = this;
             var cs = new Planning.ClassicSearch();
             cs.init();
+            this.initTopBar();
             this.initMainTabs();
-            this.settings = new Planning.LocationSettingsDialog();
             this.initDeals();
-            this.settings.initTopBar();
-            $(".top-ribbon .edit").click(function (e) {
+        };
+        DealsView.prototype.initTopBar = function () {
+            var _this = this;
+            this.settings = new Planning.LocationSettingsDialog();
+            this.settings.initTopBar(this.hasCity, this.hasAirs);
+            $(".top-all .edit").click(function (e) {
                 e.preventDefault();
                 _this.settings.initDlg();
             });
@@ -51,8 +54,7 @@ var Views;
             ds.init(this.hasCity, this.hasAirs);
             ds.onThirdStep = function () {
                 _this.allSections.forEach(function (s) {
-                    s.planningMap.enableMap(true);
-                    $("html, body").animate({ scrollTop: $("#topContDeals").offset().top }, "slow");
+                    $("html, body").animate({ scrollTop: $("#catsCont").offset().top }, "slow");
                 });
             };
             var df = new Planning.DealsLevelFilter();
@@ -111,11 +113,11 @@ var Views;
         DealsView.prototype.initMainTabs = function () {
             var _this = this;
             this.tabs = new Common.Tabs($("#categoryNavi"), "category");
-            this.tabs.addTab("tabDeals", "Deals search", function () {
-                _this.setTab(true);
-            });
             this.tabs.addTab("tabClassics", "Classic search", function () {
                 _this.setTab(false);
+            });
+            this.tabs.addTab("tabDeals", "Deals search", function () {
+                _this.setTab(true);
             });
             this.tabs.create();
         };
@@ -128,6 +130,7 @@ var Views;
                 this.$classicCont.removeClass("hidden");
                 this.$dealsCont.addClass("hidden");
             }
+            this.settings.showRatingFilter(deals);
         };
         return DealsView;
     }(Views.ViewBase));

@@ -37,14 +37,14 @@ module Planning {
 			this.initCitiesFnc();
 		}
 
-		public enableMap(state) {
-				var disabler = this.$section.find(".map-disabler");
-				if (state) {
-						disabler.removeClass("map-disabled");
-				} else {
-						disabler.addClass("map-disabled");
-				}
-		}
+		//public enableMap(state) {
+		//		var disabler = this.$section.find(".map-disabler");
+		//		if (state) {
+		//				disabler.removeClass("map-disabled");
+		//		} else {
+		//				disabler.addClass("map-disabled");
+		//		}
+		//}
 
 		private initMap() {
 			this.map = new Map(this);

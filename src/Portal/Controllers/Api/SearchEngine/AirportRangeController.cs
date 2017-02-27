@@ -47,7 +47,7 @@ namespace Gloobster.Portal.Controllers.Api.SearchEngine
 		[AuthorizeApi]
 		public async Task<IActionResult> Put([FromBody] AirportsInRangeRequest req)
 		{
-            var ua = DB.FOD<UserAirports>(u => u.User_id == UserIdObj);
+            var ua = DB.FOD<UserAirportsEntity>(u => u.User_id == UserIdObj);
 
 		    var loc = ua.CurrentLocation;
 
@@ -67,7 +67,7 @@ namespace Gloobster.Portal.Controllers.Api.SearchEngine
 		[AuthorizeApi]
 		public IActionResult Get()
 		{
-		    var ua = DB.FOD<UserAirports>(u => u.User_id == UserIdObj);
+		    var ua = DB.FOD<UserAirportsEntity>(u => u.User_id == UserIdObj);
 
 		    if (ua == null)
 		    {

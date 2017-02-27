@@ -18,6 +18,12 @@ var Common;
             this.date.startOf("day");
             this.gen();
         }
+        MyCalendar.prototype.enabled = function (state) {
+            if (state === null) {
+                return !this.$cont.hasClass("disabled");
+            }
+            this.$cont.toggleClass("disabled", state);
+        };
         MyCalendar.prototype.setDate = function (date) {
             this.date = date;
             this.setDateInternal();
