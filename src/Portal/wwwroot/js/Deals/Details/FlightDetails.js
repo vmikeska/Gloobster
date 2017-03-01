@@ -64,7 +64,9 @@ var Planning;
             var _this = this;
             var lg = Common.ListGenerator.init($cont, "connection-flight-template");
             lg.clearCont = true;
-            lg.isAsync = true;
+            lg.listLimit = 30;
+            lg.listLimitMoreTmp = "flights-list-more-tmp";
+            lg.listLimitLessTmp = "flights-list-less-tmp";
             lg.emptyTemplate = "flights-empty-template";
             lg.customMapping = function (i) {
                 var stars = Planning.AnytimeAggUtils.getScoreStars(i.score);
@@ -122,12 +124,14 @@ var Planning;
                 var vt = this.viewForMultiFlight(thereParts);
                 majorFlights.push(vt);
             }
-            if (backParts.length === 1) {
-                majorFlights.push(backParts[0]);
-            }
-            else {
-                var vb = this.viewForMultiFlight(backParts);
-                majorFlights.push(vb);
+            if (backParts.length > 0) {
+                if (backParts.length === 1) {
+                    majorFlights.push(backParts[0]);
+                }
+                else {
+                    var vb = this.viewForMultiFlight(backParts);
+                    majorFlights.push(vb);
+                }
             }
             var lgi = Common.ListGenerator.init($cont, "connection-single-flight-template");
             lgi.customMapping = function (f) {

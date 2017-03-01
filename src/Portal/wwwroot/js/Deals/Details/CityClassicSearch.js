@@ -52,7 +52,6 @@ var Planning;
         };
         CityClassicSearch.prototype.filterFlightsTime = function () {
             var _this = this;
-            this.$flightsCont.empty();
             var flights = _.filter(this.currentFlights, function (f) {
                 var first = _.first(f.parts);
                 var last = _.last(f.parts);

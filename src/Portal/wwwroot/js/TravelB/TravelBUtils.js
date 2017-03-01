@@ -369,7 +369,7 @@ var TravelB;
                 TravelBUtils.i("uz", "Uzbek"),
                 TravelBUtils.i("ve", "Venda"),
                 TravelBUtils.i("vi", "Vietnamese"),
-                TravelBUtils.i("vo", "Volap�k"),
+                TravelBUtils.i("vo", "Volapük"),
                 TravelBUtils.i("cy", "Welsh"),
                 TravelBUtils.i("wa", "Walloon"),
                 TravelBUtils.i("wo", "Wolof"),

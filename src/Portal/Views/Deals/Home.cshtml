@@ -186,29 +186,66 @@
         </div>
     </div>
     
-    <div class="wrapper">
-        
-        <div class="filter-bar">
+    
+    
 
-            <div class="one-line">
-                <div class="cell"></div>
-                <div class="cell"></div>
+   
+        
+    <div class="filter-bar hidden">
+            
+        <div class="wrapper">
+
+            <div class="line first-line">
+                <div id="stopsCont" class="stops-cont"></div>
             </div>
             
             <div class="one-line">
+                <div class="cell l">
+            
+                    <div class="air-filter-all hidden">
+                        <div class="capt">Connections filter</div>    
+                        <div class="air-filter-cont"></div>
+                    </div>        
+                    
+                </div>
+                <div class="cell r">
+                    
+                    <div class="order-switch">
+                        <div class="capt">
+                            Order by
+                        </div>
+                        <div class="controls">
+                            <div class="item by-price active">By price</div>
+                            <div class="item by-score">By score</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            
+            
+
+            <div class="one-line">
                 <div class="cell">
+                    <div>Depart time filter</div>
                     <div class="dep-time-filter"></div>
                 </div>
                 <div class="cell">
+                    <div>Return time filter</div>
                     <div class="arr-time-filter"></div>
                 </div>
             </div>
 
-            
-            
-
         </div>
-        
+
+    </div>
+
+    <div class="wrapper">
+        <div id="foundFlightsAll" class="found-flights-all hidden">
+            <span id="flightsFound" class="bold"></span> <span> flights in total were found</span>
+        </div>
+
         <div class="search-results">
 
         </div>

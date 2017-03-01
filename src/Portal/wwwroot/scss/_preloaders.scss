@@ -1,0 +1,268 @@
+﻿
+.flip {
+	cursor:pointer;
+	margin:40px;
+}
+
+.preloader8
+{
+	width:30px;
+	height:30px;
+	display:inline-block;
+	padding:0px;
+	text-align:left;
+}
+.preloader8 span
+{
+	position:absolute;
+	display:inline-block;
+	width:30px;
+	height:30px;
+	
+	border-radius:100%;
+	background:$red;
+	
+	-webkit-animation:preloader8 1.6s linear infinite;
+	animation:preloader8 1.6s linear infinite;
+}
+.preloader8 span:last-child
+{
+	animation-delay:-0.8s;
+	-webkit-animation-delay:-0.8s;
+}
+@keyframes preloader8
+{
+    0% {transform: scale(0, 0);opacity:0.5;}
+    100% {transform: scale(1, 1);opacity:0;}
+}
+@-webkit-keyframes preloader8
+{
+    0% {-webkit-transform: scale(0, 0);opacity:0.5;}
+    100% {-webkit-transform: scale(1, 1);opacity:0;}
+}
+
+.preloader1
+{
+	width:40px;
+	height:40px;
+	display:inline-block;
+	padding:0px;
+	text-align:left;
+	
+	-webkit-animation:preloader1 1.4s linear infinite;
+	animation:preloader1 1.4s linear infinite;
+}
+.preloader1 span
+{
+	position:absolute;
+	vertical-align:top;
+	border-radius:100%;
+	background:$dark-blue;
+	display:inline-block;
+	width:8px;
+	height:8px;
+	margin-left:16px;
+	
+	transform-origin:center 20px;
+	-webkit-transform-origin:center 20px;
+}
+.preloader1 span:nth-child(2) {transform: rotate(36deg);-webkit-transform: rotate(36deg); opacity:0.1;}
+.preloader1 span:nth-child(3) {transform: rotate(72deg);-webkit-transform: rotate(72deg); opacity:0.2;}
+.preloader1 span:nth-child(4) {transform: rotate(108deg);-webkit-transform: rotate(108deg); opacity:0.3;}
+.preloader1 span:nth-child(5) {transform: rotate(144deg);-webkit-transform: rotate(144deg); opacity:0.4;}
+.preloader1 span:nth-child(6) {transform: rotate(180deg);-webkit-transform: rotate(180deg); opacity:0.5;}
+.preloader1 span:nth-child(7) {transform: rotate(216deg);-webkit-transform: rotate(216deg); opacity:0.6;}
+.preloader1 span:nth-child(8) {transform: rotate(252deg);-webkit-transform: rotate(252deg); opacity:0.7;}
+.preloader1 span:nth-child(9) {transform: rotate(288deg);-webkit-transform: rotate(288deg); opacity:0.8;}
+.preloader1 span:nth-child(10) {transform: rotate(324deg);-webkit-transform: rotate(324deg); opacity:0.9;}
+@keyframes preloader1
+{
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
+}
+@-webkit-keyframes preloader1
+{
+    from {-webkit-transform: rotate(0deg);}
+    to {-webkit-transform: rotate(360deg);}
+}
+
+
+
+.fountainG-all{
+	position:relative;
+	width:234px;
+	height:28px;
+	margin: auto;
+}
+
+.fountainG{
+	position:absolute;
+	top:0;
+	background-color:rgba(0,85,118,0.87);
+	width:28px;
+	height:28px;
+	animation-name:bounce_fountainG;
+		-o-animation-name:bounce_fountainG;
+		-ms-animation-name:bounce_fountainG;
+		-webkit-animation-name:bounce_fountainG;
+		-moz-animation-name:bounce_fountainG;
+	animation-duration:1.165s;
+		-o-animation-duration:1.165s;
+		-ms-animation-duration:1.165s;
+		-webkit-animation-duration:1.165s;
+		-moz-animation-duration:1.165s;
+	animation-iteration-count:infinite;
+		-o-animation-iteration-count:infinite;
+		-ms-animation-iteration-count:infinite;
+		-webkit-animation-iteration-count:infinite;
+		-moz-animation-iteration-count:infinite;
+	animation-direction:normal;
+		-o-animation-direction:normal;
+		-ms-animation-direction:normal;
+		-webkit-animation-direction:normal;
+		-moz-animation-direction:normal;
+	transform:scale(.3);
+		-o-transform:scale(.3);
+		-ms-transform:scale(.3);
+		-webkit-transform:scale(.3);
+		-moz-transform:scale(.3);
+	border-radius:19px;
+		-o-border-radius:19px;
+		-ms-border-radius:19px;
+		-webkit-border-radius:19px;
+		-moz-border-radius:19px;
+}
+
+#fountainG_1{
+	left:0;
+	animation-delay:0.466s;
+		-o-animation-delay:0.466s;
+		-ms-animation-delay:0.466s;
+		-webkit-animation-delay:0.466s;
+		-moz-animation-delay:0.466s;
+}
+
+#fountainG_2{
+	left:29px;
+	animation-delay:0.5825s;
+		-o-animation-delay:0.5825s;
+		-ms-animation-delay:0.5825s;
+		-webkit-animation-delay:0.5825s;
+		-moz-animation-delay:0.5825s;
+}
+
+#fountainG_3{
+	left:58px;
+	animation-delay:0.699s;
+		-o-animation-delay:0.699s;
+		-ms-animation-delay:0.699s;
+		-webkit-animation-delay:0.699s;
+		-moz-animation-delay:0.699s;
+}
+
+#fountainG_4{
+	left:88px;
+	animation-delay:0.8155s;
+		-o-animation-delay:0.8155s;
+		-ms-animation-delay:0.8155s;
+		-webkit-animation-delay:0.8155s;
+		-moz-animation-delay:0.8155s;
+}
+
+#fountainG_5{
+	left:117px;
+	animation-delay:0.932s;
+		-o-animation-delay:0.932s;
+		-ms-animation-delay:0.932s;
+		-webkit-animation-delay:0.932s;
+		-moz-animation-delay:0.932s;
+}
+
+#fountainG_6{
+	left:146px;
+	animation-delay:1.0485s;
+		-o-animation-delay:1.0485s;
+		-ms-animation-delay:1.0485s;
+		-webkit-animation-delay:1.0485s;
+		-moz-animation-delay:1.0485s;
+}
+
+#fountainG_7{
+	left:175px;
+	animation-delay:1.165s;
+		-o-animation-delay:1.165s;
+		-ms-animation-delay:1.165s;
+		-webkit-animation-delay:1.165s;
+		-moz-animation-delay:1.165s;
+}
+
+#fountainG_8{
+	left:205px;
+	animation-delay:1.2915s;
+		-o-animation-delay:1.2915s;
+		-ms-animation-delay:1.2915s;
+		-webkit-animation-delay:1.2915s;
+		-moz-animation-delay:1.2915s;
+}
+
+
+
+@keyframes bounce_fountainG{
+	0%{
+	transform:scale(1);
+		background-color:rgba(0,85,118,0.9);
+	}
+
+	100%{
+	transform:scale(.3);
+		background-color:rgba(255,255,255,0.92);
+	}
+}
+
+@-o-keyframes bounce_fountainG{
+	0%{
+	-o-transform:scale(1);
+		background-color:rgba(0,85,118,0.9);
+	}
+
+	100%{
+	-o-transform:scale(.3);
+		background-color:rgba(255,255,255,0.92);
+	}
+}
+
+@-ms-keyframes bounce_fountainG{
+	0%{
+	-ms-transform:scale(1);
+		background-color:rgba(0,85,118,0.9);
+	}
+
+	100%{
+	-ms-transform:scale(.3);
+		background-color:rgba(255,255,255,0.92);
+	}
+}
+
+@-webkit-keyframes bounce_fountainG{
+	0%{
+	-webkit-transform:scale(1);
+		background-color:rgba(0,85,118,0.9);
+	}
+
+	100%{
+	-webkit-transform:scale(.3);
+		background-color:rgba(255,255,255,0.92);
+	}
+}
+
+@-moz-keyframes bounce_fountainG{
+	0%{
+	-moz-transform:scale(1);
+		background-color:rgba(0,85,118,0.9);
+	}
+
+	100%{
+	-moz-transform:scale(.3);
+		background-color:rgba(255,255,255,0.92);
+	}
+}

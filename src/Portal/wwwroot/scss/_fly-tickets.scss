@@ -1,13 +1,12 @@
 ﻿
 .fly-tickets{
 
-        .main-navi {
-            margin-top: 0.5em;
+    .main-navi {
+        margin-top: 0.5em;
             
-            text-align: left;
-        }
+        text-align: left;
+    }
 
-  
     .top-all {
         margin-top: 0.5em;
 
@@ -36,6 +35,7 @@
 
     .search-bar {
         background-color: $light-gray2;
+        border-top: 2px solid $dark-blue;
     }
 
     .search-form {
@@ -133,24 +133,149 @@
     }
 
     .filter-bar {
+        background-color: $very-light-blue3;
+        padding: 1em;
+        border-bottom: 2px solid $dark-blue;
 
-        .one-line {
-            display: table;
-            width: 100%;
+        .stops-cont {
+            font-size: 0.8em;
+            text-align: left;
 
-            .cell {
-                display: table-cell;
-                width: 50%;
-                padding: 0.5em;
+            .dir-item {
+                white-space: nowrap;
+                display:inline-block;
+                margin-left: 0.6em;
+            }
+        }
+        
+        .line {
+            padding-top: 0.5em;
+            padding-bottom: 0.5em;
+        }
+
+        .first-line {
+            text-align: left;
+        }
+
+        .second-line {
+            text-align: right;
+        }
+
+        .order-switch {
+            display: inline-block;
+            text-align: left;
+
+            .controls {
+                border: 2px solid white;
+                white-space: nowrap;
+            }
+
+            .item {
+                display: inline-block;
+                padding: 0.2em;
+                border-right: 2px solid white;
+                
+                background-color: $yellow;
+                color: white;
+
+                cursor: pointer;
+
+                text-align: center;
+
+                &:last-of-type {
+                    border-right: 0;
+                    margin-left: -4px;
+                }
+
+                &.active {
+                    background-color: $orange;
+                }
+
+                &:hover {
+                    background-color: $orange;
+                }
+
             }
         }
 
+        .air-filter-all {
+            display: inline-block;
+
+            .air-filter-cont {
+                .pair {
+                    display: inline-block;
+                
+                    font-size: 0.8em;
+
+                    background-color: $light-blue3;
+                    color: white;
+                
+                    margin-left: 2px;
+                    margin-right: 2px;
+                    margin-bottom: 2px;
+                
+                    border-radius: 4px;
+                    padding: 2px;
+                    padding-left: 4px;                
+                    padding-right: 4px;
+
+                    cursor: pointer;
+                    @include noselect;
+
+                    &.active {
+                        background-color: $orange;
+                    }
+
+                    &:hover {
+                        background-color: $yellow;
+                    }
+                }
+            }
+        }
+
+        .one-line {
+            .cell{
+                padding-top: 0.5em;
+                vertical-align: top;
+            }
+
+            .l {
+                text-align: left;
+            }
+
+            .r {
+                text-align: right;
+            }
+        }
+
+        @include above-width(800) {
+
+            .one-line {
+                display: table;
+                width: 100%;
+
+                .cell {
+                    display: table-cell;
+                    /*width: 50%;*/
+                    padding: 0.5em;
+                }
+            }
+
+        }
+
+        
+
     }
 
+    .search-results {
+        margin-top: 1em;
+    }
 
-
-
-
+    .major-preload {
+       .dlg-frame-all {
+           padding: 2em;
+       }
+    }
 
     .deals-block-all {   
         h1 {

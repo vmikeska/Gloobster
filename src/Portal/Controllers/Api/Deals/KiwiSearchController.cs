@@ -20,11 +20,13 @@ namespace Gloobster.Portal.Controllers.Api.Deals
     {	
         public IKiwiResultsExecutor Executor { get; set; }
         public INewAirportCityCache NewAirCache { get; set; }
-        
-        public KiwiSearchController(IKiwiResultsExecutor executor, INewAirportCityCache newAirCache, ILogger log, IDbOperations db) : base(log, db)
+        public IFlightScoreEngine ScoreEngine { get; set; }
+
+        public KiwiSearchController(IFlightScoreEngine scoreEngine, IKiwiResultsExecutor executor, INewAirportCityCache newAirCache, ILogger log, IDbOperations db) : base(log, db)
         {
             Executor = executor;
             NewAirCache = newAirCache;
+            ScoreEngine = scoreEngine;
         }
         
         [HttpGet]
@@ -58,14 +60,44 @@ namespace Gloobster.Portal.Controllers.Api.Deals
 
             List<FlightDO> flights = Executor.Search(request);
 
+            ScoreFlights(flights, req.justOneway);
+
             List<FlightResponse> fs = flights.Select(f => f.ToResponse()).ToList();
+            
 
             return new ObjectResult(fs);
         }
 
+        private void ScoreFlights(List<FlightDO> flights, bool justOneway)
+        {
+            foreach (var f in flights)
+            {
+                double s = 0;
+                if (justOneway)
+                {
+                    var s1 = ScoreEngine.EvaluateSingleFlight(f.FlightParts, (int)f.Price);
+                    if (s1.HasValue)
+                    {
+                        s = s1.Value * 2;
+                    }
+                }
+                else
+                {
+                    var s2 = ScoreEngine.EvaluateFlight(f);
+                    if (s2.HasValue)
+                    {
+                        s = s2.Value;
+                    }
+                }
+
+                f.FlightScore = s;
+            }
+
+        }
+
         private string GetCodes(bool useHome, string reqCode, DealsPlaceReturnType type)
         {
-            var res = useHome ? string.Join(",",GetHomeAirs()) : GetKiwiCodeFromCode(reqCode, type);
+            string res = useHome ? string.Join(",",GetHomeAirs()) : GetKiwiCodeFromCode(reqCode, type);
             return res;
         }
 

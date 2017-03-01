@@ -81,11 +81,16 @@ module Planning {
 				public genFlights($cont, flights: Flight[]) {
 						var lg = Common.ListGenerator.init($cont, "connection-flight-template");
 						lg.clearCont = true;
-						lg.isAsync = true;
+						//lg.isAsync = true;
+
+						lg.listLimit = 30;
+						lg.listLimitMoreTmp = "flights-list-more-tmp";
+						lg.listLimitLessTmp = "flights-list-less-tmp";
+
 						lg.emptyTemplate = "flights-empty-template";
 						lg.customMapping = (i) => {
 
-							var stars = AnytimeAggUtils.getScoreStars(i.score);
+								var stars = AnytimeAggUtils.getScoreStars(i.score);
 
 								return {
 										price: i.price,
@@ -155,14 +160,16 @@ module Planning {
 								majorFlights.push(vt);
 						}
 
+					if (backParts.length > 0) {
 						if (backParts.length === 1) {
-								majorFlights.push(backParts[0]);
+							majorFlights.push(backParts[0]);
 						} else {
-								var vb = this.viewForMultiFlight(backParts);
-								majorFlights.push(vb);
+							var vb = this.viewForMultiFlight(backParts);
+							majorFlights.push(vb);
 						}
+					}
 
-						var lgi = Common.ListGenerator.init($cont, "connection-single-flight-template");
+					var lgi = Common.ListGenerator.init($cont, "connection-single-flight-template");
 						lgi.customMapping = (f) => {
 
 								if (f.isMulti) {

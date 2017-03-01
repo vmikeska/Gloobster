@@ -328,7 +328,13 @@
 
     </script>
 
-    <script id="deals-srch-template" type="text/x-handlebars-template">
+<script id="stops-filter-item-tmp" type="text/x-handlebars-template">
+    
+    <span class="dir-item"><input id="sfcb_{{order}}" type="checkbox" checked /><label for="sfcb_{{order}}"><span class="bold">{{txt}}</span> ({{cnt}} flights) from <span class="bold">€{{from}}</span></label></span>
+    
+</script>
+
+<script id="deals-srch-template" type="text/x-handlebars-template">
         <div class="other-flights-filter">
 
             <div class="multi-conn-cont" style="display: none">

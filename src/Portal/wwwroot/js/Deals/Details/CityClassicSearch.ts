@@ -71,7 +71,7 @@ module Planning {
 				}
 
 				private filterFlightsTime() {						
-						this.$flightsCont.empty();
+						//this.$flightsCont.empty();
 
 						var flights = _.filter(this.currentFlights, (f: Flight) => {
 

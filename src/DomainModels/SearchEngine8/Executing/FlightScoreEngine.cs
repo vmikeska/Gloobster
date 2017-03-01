@@ -126,7 +126,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
         }
 
 
-        private double? EvaluateSingleFlight(List<FlightPartDO> parts, int price)
+        public double? EvaluateSingleFlight(List<FlightPartDO> parts, int price)
         {
             var firstPart = parts.First();
             var lastPart = parts.Last();

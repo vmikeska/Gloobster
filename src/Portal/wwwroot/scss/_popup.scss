@@ -78,6 +78,14 @@
         }
     }
 
+    &.plain {
+        .close {
+            display: none !important;
+        }
+        .dlg-frame-all {
+            border-top: 0 !important;
+        }
+    }
 }
 
 

@@ -9,5 +9,6 @@ namespace Gloobster.DomainInterfaces.SearchEngine8
     {
         ScoredFlightsDO FilterFlightsByScore(List<FlightDO> allFlights, ScoreLevel level = ScoreLevel.Standard);
         double? EvaluateFlight(FlightDO flight);
+        double? EvaluateSingleFlight(List<FlightPartDO> parts, int price);
     }
 }
