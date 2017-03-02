@@ -4,6 +4,7 @@ using Gloobster.Database;
 using Gloobster.DomainInterfaces;
 using Gloobster.Entities;
 using Gloobster.Entities.SearchEngine;
+using Gloobster.Portal.Controllers.Api.Deals;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.Portal.ViewModels;
 using Microsoft.AspNet.Mvc;
@@ -30,7 +31,7 @@ namespace Gloobster.Portal.Controllers.Portal
         }
 
         [CreateAccount]
-        public IActionResult Home()
+        public IActionResult Home(DealsReq req)
 		{
             var ua = DB.FOD<UserAirportsEntity>(u => u.User_id == UserIdObj);
 
@@ -65,9 +66,7 @@ namespace Gloobster.Portal.Controllers.Portal
 
 			return View(vm);
 		}
-
-
-
+        
 		private string FormatCityStr(UserAirportsEntity ua)
 		{            
 			if (ua?.CurrentLocation == null)
@@ -82,6 +81,30 @@ namespace Gloobster.Portal.Controllers.Portal
 
 	}
 
+    public enum DealsSearchType { Deals, Classic }
+
+    public class DealsReq
+    {
+        public DealsSearchType type { get; set; }
+
+        public string fc { get; set; }
+        public DealsPlaceReturnType ft { get; set; }
+        
+        public string tc { get; set; }
+        public DealsPlaceReturnType tt { get; set; }
+
+        public string dep { get; set; }
+        public int depFlex { get; set; }
+        public bool depHome { get; set; }
+
+        public string ret { get; set; }
+        public int retFlex { get; set; }
+        public bool retHome { get; set; }
+
+        public int seats { get; set; }
+        
+        public bool oneway { get; set; }
+    }
 	
 
 }

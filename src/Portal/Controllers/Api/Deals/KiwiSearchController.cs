@@ -51,11 +51,11 @@ namespace Gloobster.Portal.Controllers.Api.Deals
             if (!req.justOneway)
             {
                 DateTime arrDate = req.dateTo.ToDate('_').ToDateStart(DateTimeKind.Utc);                
-                Date myArrDateFrom = arrDate.AddDays(-req.arrFlexDays).ToDate();
-                Date myArrDateTo = arrDate.AddDays(req.arrFlexDays).ToDate();
+                Date myRetDateFrom = arrDate.AddDays(-req.retFlexDays).ToDate();
+                Date myRetDateTo = arrDate.AddDays(req.retFlexDays).ToDate();
 
-                request.returnFrom = myArrDateFrom.ToString();
-                request.returnTo = myArrDateTo.ToString();
+                request.returnFrom = myRetDateFrom.ToString();
+                request.returnTo = myRetDateTo.ToString();
             }
 
             List<FlightDO> flights = Executor.Search(request);
@@ -156,7 +156,7 @@ namespace Gloobster.Portal.Controllers.Api.Deals
         public bool useHomeAirsTo { get; set; }
 
         public int depFlexDays { get; set; }
-        public int arrFlexDays { get; set; }
+        public int retFlexDays { get; set; }
         
 
     }

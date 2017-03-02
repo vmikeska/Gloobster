@@ -45,8 +45,11 @@ module Planning {
 			if (percents >= 60) {
 				return 2;
 			}
+			if (percents >= 50) {
+					return 1;
+			}
 
-			return 1;
+			return 0;
 		}
 	}
 		

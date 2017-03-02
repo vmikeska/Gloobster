@@ -29,7 +29,11 @@ var Views;
             enumerable: true,
             configurable: true
         });
-        ViewBase.fullReqCheck = function (callback) {
+        ViewBase.scrollTo = function ($s) {
+            $("html, body").animate({ scrollTop: $s.offset().top }, "slow");
+        };
+        ViewBase.fullReqCheck = function (callback, unCallback) {
+            if (unCallback === void 0) { unCallback = null; }
             if (ViewBase.fullRegistration) {
                 callback();
                 return;
@@ -37,6 +41,13 @@ var Views;
             var id = new Common.InfoDialog();
             var v = ViewBase.currentView;
             id.create(v.t("FullReqRequiredTitle", "jsLayout"), v.t("FullReqRequiredBody", "jsLayout"));
+            if (unCallback) {
+                unCallback();
+            }
+        };
+        ViewBase.setUrl = function (url, title, state) {
+            if (state === void 0) { state = null; }
+            window.history.replaceState(state, title, url);
         };
         ViewBase.prototype.infoCookie = function () {
             var _this = this;

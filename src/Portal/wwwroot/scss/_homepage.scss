@@ -101,13 +101,14 @@
         .search-field {
             
             display: inline-block;
+            vertical-align: top;
 
             .capt {                
                 text-align: left;                
             }
 
             .ctrl {
-
+                text-align: left;
             }
         }
 

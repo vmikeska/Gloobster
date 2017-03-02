@@ -13,6 +13,8 @@ var Views;
             this.$classicCont = $(".classic-search-cont");
             this.$catsCont = $("#catsCont");
             this.allSections = [];
+            this.tabDealsId = "tabDeals";
+            this.tabClassicsId = "tabClassics";
         }
         Object.defineProperty(DealsView.prototype, "v", {
             get: function () {
@@ -22,11 +24,11 @@ var Views;
             configurable: true
         });
         DealsView.prototype.init = function () {
-            var cs = new Planning.ClassicSearch();
-            cs.init();
             this.initTopBar();
-            this.initMainTabs();
             this.initDeals();
+            this.classicSearch = new Planning.ClassicSearch();
+            this.classicSearch.init();
+            this.initMainTabs();
         };
         DealsView.prototype.initTopBar = function () {
             var _this = this;
@@ -54,7 +56,7 @@ var Views;
             ds.init(this.hasCity, this.hasAirs);
             ds.onThirdStep = function () {
                 _this.allSections.forEach(function (s) {
-                    $("html, body").animate({ scrollTop: $("#catsCont").offset().top }, "slow");
+                    Views.ViewBase.scrollTo($("#catsCont"));
                 });
             };
             var df = new Planning.DealsLevelFilter();
@@ -113,18 +115,35 @@ var Views;
         DealsView.prototype.initMainTabs = function () {
             var _this = this;
             this.tabs = new Common.Tabs($("#categoryNavi"), "category");
-            this.tabs.addTab("tabClassics", "Classic search", function () {
-                _this.setTab(false);
-            });
-            this.tabs.addTab("tabDeals", "Deals search", function () {
+            this.tabs.initCall = false;
+            this.tabs.addTab(this.tabDealsId, "Deals search", function () {
                 _this.setTab(true);
             });
+            this.tabs.addTab(this.tabClassicsId, "Classic search", function () {
+                _this.setTab(false);
+                _this.classicSearch.stateChanged();
+            });
             this.tabs.create();
+            var type = this.getUrlParam("type");
+            if (type) {
+                if (type === "0") {
+                    this.setTab(true);
+                }
+                if (type === "1") {
+                    this.setTab(false);
+                    this.tabs.activateTab($("#" + this.tabClassicsId));
+                    this.classicSearch.initComps();
+                }
+            }
+            else {
+                this.setTab(true);
+            }
         };
         DealsView.prototype.setTab = function (deals) {
             if (deals) {
                 this.$dealsCont.removeClass("hidden");
                 this.$classicCont.addClass("hidden");
+                window.history.replaceState("", "gloobster.com", "/deals?type=0");
             }
             else {
                 this.$classicCont.removeClass("hidden");

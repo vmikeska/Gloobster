@@ -36,6 +36,7 @@
     .search-bar {
         background-color: $light-gray2;
         border-top: 2px solid $dark-blue;
+        border-bottom: 2px solid $dark-blue;
     }
 
     .search-form {
@@ -98,6 +99,12 @@
 
     }
 
+    @include below-width(1220) {
+        .search-form {            
+            text-align: right;
+        }     
+    }
+
     @include below-width(1070) {
             
         .search-form {
@@ -105,8 +112,6 @@
             padding-left: 1em;
             padding-right: 1em;
             display: block;
-
-            text-align: right;
         }
 
         .first-line {
@@ -130,6 +135,59 @@
             height: 300px;
         }
         
+    }
+
+    @include below-width(610) {
+    .last-line {
+        display: block !important;
+     }       
+    }
+
+    .found-flights-all {
+        padding: 0.5em;
+
+        .order-switch {
+            display: inline-block;
+            text-align: left;
+            border: 2px solid white;
+            white-space: nowrap;
+
+            .item {
+                display: inline-block;
+                padding: 0.2em;
+                border-right: 2px solid white;
+                
+                border-radius: 2px;
+
+                background-color: $yellow;
+                color: white;
+
+                cursor: pointer;
+
+                text-align: center;
+
+                &:last-of-type {
+                    border-right: 0;
+                    margin-left: -4px;
+                }
+
+                &.active {
+                    background-color: $green;
+                }
+
+                &:hover {
+                    background-color: $green2;
+                }
+
+                &:first-of-type {
+                    
+                }
+
+                &:last-of-type {
+                    
+                }
+            }
+        }
     }
 
     .filter-bar {
@@ -161,43 +219,6 @@
             text-align: right;
         }
 
-        .order-switch {
-            display: inline-block;
-            text-align: left;
-
-            .controls {
-                border: 2px solid white;
-                white-space: nowrap;
-            }
-
-            .item {
-                display: inline-block;
-                padding: 0.2em;
-                border-right: 2px solid white;
-                
-                background-color: $yellow;
-                color: white;
-
-                cursor: pointer;
-
-                text-align: center;
-
-                &:last-of-type {
-                    border-right: 0;
-                    margin-left: -4px;
-                }
-
-                &.active {
-                    background-color: $orange;
-                }
-
-                &:hover {
-                    background-color: $orange;
-                }
-
-            }
-        }
-
         .air-filter-all {
             display: inline-block;
 
@@ -207,7 +228,7 @@
                 
                     font-size: 0.8em;
 
-                    background-color: $light-blue3;
+                    background-color: $red;
                     color: white;
                 
                     margin-left: 2px;
@@ -223,7 +244,7 @@
                     @include noselect;
 
                     &.active {
-                        background-color: $orange;
+                        background-color: $green;
                     }
 
                     &:hover {
@@ -266,6 +287,8 @@
         
 
     }
+
+    
 
     .search-results {
         margin-top: 1em;
@@ -1051,6 +1074,7 @@
 
 
 
+
     .expander, .collapser {
         text-align: left;
         @include noselect;
@@ -1791,6 +1815,7 @@
       
     .conn {              
         margin-bottom: 12px;
+        font-size: 0.9em;
 
         .layout-tbl {
             display: table;

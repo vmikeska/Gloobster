@@ -13,6 +13,17 @@ module TravelB {
 			return new Date(myDate.Year, myDate.Month - 1, myDate.Day);
 		}
 
+		public static transToMomentDate(trans) {
+			var prms = trans.split("_");
+
+			var o = {
+					y: parseInt(prms[2]),
+					M: parseInt(prms[1]) - 1,
+					d: parseInt(prms[0])
+			};
+			return moment(o);
+		}
+
 		public static myDateToMomentDate(myDate) {
 				if (!myDate) {
 						return null;

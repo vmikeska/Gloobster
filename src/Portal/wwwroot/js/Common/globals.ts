@@ -36,6 +36,10 @@ function notNull(a) {
 	return (a !== null) && (a !== "null") && (a !== undefined) && (a !== "undefined");
 }
 
+function parseBool(a) {
+	return a.toLowerCase() === "true";
+}
+
 declare var geoip_latitude;
 declare var geoip_longitude;
 

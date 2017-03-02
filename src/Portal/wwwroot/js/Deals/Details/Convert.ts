@@ -7,6 +7,8 @@ module Planning {
 		score: number;
 		bookLink: string;
 		parts: FlightPart[];
+		stars: number;
+		scoreOk: boolean;
 	}
 
 
@@ -38,7 +40,9 @@ module Planning {
 							price: f.price,
 							score: f.score,
 							parts: [],
-							bookLink: f.bl
+							bookLink: f.bl,
+							stars: 0,
+							scoreOk: true
 					};
 
 					f.parts.forEach((p) => {

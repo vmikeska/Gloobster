@@ -20,7 +20,9 @@ var Planning;
                 price: f.price,
                 score: f.score,
                 parts: [],
-                bookLink: f.bl
+                bookLink: f.bl,
+                stars: 0,
+                scoreOk: true
             };
             f.parts.forEach(function (p) {
                 var part = _this.cPart(p);

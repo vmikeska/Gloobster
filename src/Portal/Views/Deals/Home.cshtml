@@ -167,83 +167,39 @@
 
                 </div>
 
+                <div class="search-group last-line">
+                    <div class="search-field">
+                        <div class="capt">Seats</div>
+                        <div class="ctrl">
+                            <div id="passangersCnt"></div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="bottom-line">
                     <a href="#" id="btnSearch" class="lbtn2 green-orange">Search deals</a>
                 </div>
 
-
-                @*
-                <div class="search-field">
-                    <div class="capt">Seats</div>
-                    <div class="ctrl">
-                        <div id="passangersCnt"></div>
-                    </div>
                 </div>
-
-                <input type="checkbox" id="directFlights" /><label for="directFlights">Just direct flights</label>
-                *@
-            </div>
         </div>
     </div>
     
-    
-    
-
-   
-        
-    <div class="filter-bar hidden">
-            
-        <div class="wrapper">
-
-            <div class="line first-line">
-                <div id="stopsCont" class="stops-cont"></div>
-            </div>
-            
-            <div class="one-line">
-                <div class="cell l">
-            
-                    <div class="air-filter-all hidden">
-                        <div class="capt">Connections filter</div>    
-                        <div class="air-filter-cont"></div>
-                    </div>        
-                    
-                </div>
-                <div class="cell r">
-                    
-                    <div class="order-switch">
-                        <div class="capt">
-                            Order by
-                        </div>
-                        <div class="controls">
-                            <div class="item by-price active">By price</div>
-                            <div class="item by-score">By score</div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            
-            
-
-            <div class="one-line">
-                <div class="cell">
-                    <div>Depart time filter</div>
-                    <div class="dep-time-filter"></div>
-                </div>
-                <div class="cell">
-                    <div>Return time filter</div>
-                    <div class="arr-time-filter"></div>
-                </div>
-            </div>
-
-        </div>
-
-    </div>
+    <div id="filterCont"></div>
 
     <div class="wrapper">
-        <div id="foundFlightsAll" class="found-flights-all hidden">
-            <span id="flightsFound" class="bold"></span> <span> flights in total were found</span>
+        <div id="foundFlightsAll" class="found-flights-all hidden">            
+            <div class="htbl">
+                <div class="left">
+                    <span id="flightsFound" class="bold"></span> <span> flights in total were found</span>
+                </div>
+                <div class="right">
+                    <div id="orderSwitch" class="order-switch">                        
+                        <div class="item by-score active">By score</div>
+                        <div class="item by-price">By price</div>                        
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <div class="search-results">

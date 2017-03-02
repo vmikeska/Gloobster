@@ -64,7 +64,7 @@ var Planning;
             var _this = this;
             var lg = Common.ListGenerator.init($cont, "connection-flight-template");
             lg.clearCont = true;
-            lg.listLimit = 30;
+            lg.listLimit = 20;
             lg.listLimitMoreTmp = "flights-list-more-tmp";
             lg.listLimitLessTmp = "flights-list-less-tmp";
             lg.emptyTemplate = "flights-empty-template";
@@ -74,7 +74,8 @@ var Planning;
                     price: i.price,
                     scoreText: _this.getScoreText(stars),
                     scoreStars: stars,
-                    bookLink: i.bookLink
+                    bookLink: i.bookLink,
+                    scoreOk: i.scoreOk
                 };
             };
             lg.onItemAppended = function ($flightAll, flight) {

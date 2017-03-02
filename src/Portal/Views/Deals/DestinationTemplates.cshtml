@@ -560,7 +560,44 @@
 
     </script>
 
-    <script id="weekend-day-selector-template" type="text/x-handlebars-template">
+<script id="classic-search-filter-tmp" type="text/x-handlebars-template">
+    <div class="filter-bar hidden">
+
+        <div class="wrapper">
+
+            <div class="line first-line">
+                <div id="stopsCont" class="stops-cont"></div>                
+            </div>
+
+            <div class="line">
+                
+                <div class="air-filter-all hidden">
+                    <div class="capt">Connections filter</div>
+                    <div class="air-filter-cont"></div>
+                </div>
+
+            </div>
+
+
+
+
+            <div class="one-line">
+                <div class="cell">
+                    <div>Depart time filter</div>
+                    <div class="dep-time-filter"></div>
+                </div>
+                <div class="cell">
+                    <div>Return time filter</div>
+                    <div class="arr-time-filter"></div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</script>
+
+<script id="weekend-day-selector-template" type="text/x-handlebars-template">
         <div class="cell">
             <div class="day {{c}}" data-i="{{ni}}">{{name}}</div>
         </div>
@@ -661,7 +698,7 @@
     </script>
 
 
-    <script id="connection-flight-template" type="text/x-handlebars-template">
+<script id="connection-flight-template" type="text/x-handlebars-template">
 
         <div class="conn">
 
@@ -672,23 +709,28 @@
                 <div class="right">
 
                     <div class="book-zone">
-                        <div class="score">
-                            <div class="txt-score">
-                                {{#ifCond scoreText "E"}}@Model.W("Score5"){{/ifCond}}
-                                {{#ifCond scoreText "G"}}@Model.W("Score3"){{/ifCond}}
-                                {{#ifCond scoreText "S"}}@Model.W("Score1"){{/ifCond}}
-                            </div>
-                            <div class="stars-score">
+                        
+                        {{#if scoreOk}}
+                            <div class="score">
+                                <div class="txt-score">
+                                    {{#ifCond scoreText "E"}}@Model.W("Score5"){{/ifCond}}
+                                    {{#ifCond scoreText "G"}}@Model.W("Score3"){{/ifCond}}
+                                    {{#ifCond scoreText "S"}}@Model.W("Score1"){{/ifCond}}
+                                </div>
+                                <div class="stars-score">
 
-                                {{#for 0 scoreStars 1}}
-                                <span class="icon-star-full"></span>
-                                {{/for}}
+                                    {{#for 0 scoreStars 1}}
+                                    <span class="icon-star-full"></span>
+                                    {{/for}}
 
+                                </div>
+                                <div class="cap">
+                                    @Model.W("FlightScore")
+                                </div>
                             </div>
-                            <div class="cap">
-                                @Model.W("FlightScore")
-                            </div>
-                        </div>
+                        {{/if}}
+                        
+
                         <div class="price-all">
                             <span class="currency">€</span><span class="price">{{price}}</span>
                         </div>

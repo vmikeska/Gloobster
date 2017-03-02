@@ -40,7 +40,10 @@ var Planning;
             if (percents >= 60) {
                 return 2;
             }
-            return 1;
+            if (percents >= 50) {
+                return 1;
+            }
+            return 0;
         };
         return AnytimeAggUtils;
     }());

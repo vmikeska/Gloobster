@@ -45,7 +45,11 @@ module Views {
 			this.infoCookie();
 		}
 
-			public static fullReqCheck(callback: Function) {
+			public static scrollTo($s) {
+					$("html, body").animate({ scrollTop: $s.offset().top }, "slow");
+			}
+
+			public static fullReqCheck(callback: Function, unCallback: Function = null) {
 
 					if (ViewBase.fullRegistration) {
 							callback();
@@ -56,6 +60,14 @@ module Views {
 					
 					var v = ViewBase.currentView;
 					id.create(v.t("FullReqRequiredTitle", "jsLayout"), v.t("FullReqRequiredBody", "jsLayout"));
+
+					if (unCallback) {
+						unCallback();
+					}
+			}
+
+			public static setUrl(url, title, state = null) {
+					window.history.replaceState(state, title, url);
 			}
 
 			private infoCookie() {
@@ -150,7 +162,7 @@ module Views {
 			}
 		}
 
-		private getUrlParam(name) {
+		public getUrlParam(name) {
 			var url = window.location.href;
 			name = name.replace(/[\[\]]/g, "\\$&");
 			var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)");

@@ -9,6 +9,9 @@ function any(a) {
 function notNull(a) {
     return (a !== null) && (a !== "null") && (a !== undefined) && (a !== "undefined");
 }
+function parseBool(a) {
+    return a.toLowerCase() === "true";
+}
 var Constants;
 (function (Constants) {
     Constants.tokenCookieName = "token";

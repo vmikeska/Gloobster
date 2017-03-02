@@ -238,12 +238,7 @@ module Planning {
 					if (callback) {
 							callback(flights);
 					}
-
-					//fs = _(fs).chain()
-					//		.sortBy("FlightScore").reverse()
-					//		.sortBy("Price")
-					//		.value();		
-
+					
 					flights = _(flights)
 						.chain()
 						.sortBy("price")

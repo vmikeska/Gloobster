@@ -1,6 +1,8 @@
 ﻿module Planning {
 		
 		export class DealsPlaceSearch {
+				public onChange: Function;
+
 				private $cont;
 				private $input;
 				private $results;
@@ -10,7 +12,7 @@
 
 				public selectedItem = null;
 
-				public get v(): Views.ViewBase {
+				private get v(): Views.ViewBase {
 						return Views.ViewBase.currentView;
 				}
 
@@ -26,7 +28,33 @@
 						this.$cont.toggleClass("disabled", state);
 				}
 
-				constructor($cont, placeholder) {
+				public setByCode(code, type) {
+						var data = [["byId", "true"], ["id", code], ["type", type]];
+
+						this.v.apiGet("DealsPlace", data, (item) => {
+						this.setActiveItem(item, false);
+					});
+				}
+
+				private setActiveItem(item, triggerChange) {
+						var itxt = `${item.name}${this.codeStrForItem(item)}`;
+						this.$input.val(itxt);
+						this.$ico.attr("class", `icon-${this.iconForItem(item.type)} ico`);
+						this.selectedItem = item;
+						this.showRes(false);
+
+						if (triggerChange) {
+							this.change();
+						}
+				}
+
+				private change() {
+					if (this.onChange) {
+						this.onChange();
+					}
+				}
+
+			constructor($cont, placeholder) {
 				this.$cont = $cont;
 
 				this.$cont.addClass("city-airport-search");
@@ -81,17 +109,7 @@
 						this.$ico.attr("class", `icon-logo-pin ico`);
 				});
 			}
-
-			
-
-				private itemClicked(item) {
-					var itxt = `${item.name}${this.codeStrForItem(item)}`;
-					this.$input.val(itxt);					
-					this.$ico.attr("class", `icon-${this.iconForItem(item.type)} ico`);
-					this.selectedItem = item;
-					this.showRes(false);
-			}
-
+				
 				private preloader(show) {
 					if (show) {
 							this.$close.addClass("hidden");
@@ -117,8 +135,7 @@
 				}
 
 				if (item.type === 1) {
-					var hasSubCities = (item.type === 1) && any(item.childern);
-					var ac = hasSubCities ? "All" : item.air;
+						var ac = item.isMulti ? "All" : item.air;
 					return `, ${item.cc ? item.cc : ""} (${ac})`;
 				}
 
@@ -161,7 +178,7 @@
 						var lg = Common.ListGenerator.init(this.$results, "city-air-item-template");
 						lg.clearCont = true;
 					  lg.appendStyle = "append";
-						lg.evnt(null, (e, $item, $target, item) => { this.itemClicked(item); });
+						lg.evnt(null, (e, $item, $target, item) => { this.setActiveItem(item, true); });
 						lg.customMapping = (i) => { return this.itemMapping(i); };
 
 							lg.onItemAppended = ($item, item) => {
@@ -170,7 +187,7 @@
 								if (hasSubCities) {
 									var lgt = Common.ListGenerator.init(this.$results, "city-air-item-template");
 									lgt.appendStyle = "append";
-									lgt.evnt(null, (e, $item, $target, item) => { this.itemClicked(item); });
+									lgt.evnt(null, (e, $item, $target, item) => { this.setActiveItem(item, true); });
 									lgt.customMapping = (i) => { return this.itemMapping(i) };
 									lgt.generateList(item.childern);
 								}
@@ -178,7 +195,51 @@
 
 						lg.generateList(items);
 
-				}
+			}
+
+			public static getType(item): DealsPlaceReturnType {
+
+					if (!item) {
+							return 0;
+					}
+
+					if (item.type === 0) {
+							return DealsPlaceReturnType.CountryCode;
+					}
+
+					if (item.type === 1) {
+							if (any(item.childern)) {
+									return DealsPlaceReturnType.GID;
+							} else {
+									return DealsPlaceReturnType.AirCode;
+							}
+					}
+
+					if (item.type === 2) {
+							return DealsPlaceReturnType.AirCode;
+					}
+			}
+
+			public static getCode(item): string {
+
+					if (!item) {
+							return null;
+					}
+
+					if (item.type === 0) {
+							return item.cc;
+					}
+					if (item.type === 1) {
+							if (any(item.childern)) {
+									return item.gid.toString();
+							} else {
+									return item.air;
+							}
+					}
+					if (item.type === 2) {
+							return item.air;
+					}
+			}
 		}
 		
 }

@@ -83,7 +83,7 @@ module Planning {
 						lg.clearCont = true;
 						//lg.isAsync = true;
 
-						lg.listLimit = 30;
+						lg.listLimit = 20;
 						lg.listLimitMoreTmp = "flights-list-more-tmp";
 						lg.listLimitLessTmp = "flights-list-less-tmp";
 
@@ -96,7 +96,8 @@ module Planning {
 										price: i.price,
 										scoreText: this.getScoreText(stars),
 										scoreStars: stars,
-										bookLink: i.bookLink
+										bookLink: i.bookLink,
+										scoreOk: i.scoreOk
 								};
 						};
 

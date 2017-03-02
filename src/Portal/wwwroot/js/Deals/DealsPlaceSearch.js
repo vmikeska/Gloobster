@@ -23,6 +23,28 @@ var Planning;
             }
             this.$cont.toggleClass("disabled", state);
         };
+        DealsPlaceSearch.prototype.setByCode = function (code, type) {
+            var _this = this;
+            var data = [["byId", "true"], ["id", code], ["type", type]];
+            this.v.apiGet("DealsPlace", data, function (item) {
+                _this.setActiveItem(item, false);
+            });
+        };
+        DealsPlaceSearch.prototype.setActiveItem = function (item, triggerChange) {
+            var itxt = "" + item.name + this.codeStrForItem(item);
+            this.$input.val(itxt);
+            this.$ico.attr("class", "icon-" + this.iconForItem(item.type) + " ico");
+            this.selectedItem = item;
+            this.showRes(false);
+            if (triggerChange) {
+                this.change();
+            }
+        };
+        DealsPlaceSearch.prototype.change = function () {
+            if (this.onChange) {
+                this.onChange();
+            }
+        };
         DealsPlaceSearch.prototype.init = function (placeholder) {
             var tmp = this.v.registerTemplate("city-air-search-template");
             var $t = $(tmp({ placeholder: placeholder }));
@@ -61,13 +83,6 @@ var Planning;
                 _this.$ico.attr("class", "icon-logo-pin ico");
             });
         };
-        DealsPlaceSearch.prototype.itemClicked = function (item) {
-            var itxt = "" + item.name + this.codeStrForItem(item);
-            this.$input.val(itxt);
-            this.$ico.attr("class", "icon-" + this.iconForItem(item.type) + " ico");
-            this.selectedItem = item;
-            this.showRes(false);
-        };
         DealsPlaceSearch.prototype.preloader = function (show) {
             if (show) {
                 this.$close.addClass("hidden");
@@ -91,8 +106,7 @@ var Planning;
                 return ", " + item.cc;
             }
             if (item.type === 1) {
-                var hasSubCities = (item.type === 1) && any(item.childern);
-                var ac = hasSubCities ? "All" : item.air;
+                var ac = item.isMulti ? "All" : item.air;
                 return ", " + (item.cc ? item.cc : "") + " (" + ac + ")";
             }
             if (item.type === 2) {
@@ -127,19 +141,57 @@ var Planning;
             var lg = Common.ListGenerator.init(this.$results, "city-air-item-template");
             lg.clearCont = true;
             lg.appendStyle = "append";
-            lg.evnt(null, function (e, $item, $target, item) { _this.itemClicked(item); });
+            lg.evnt(null, function (e, $item, $target, item) { _this.setActiveItem(item, true); });
             lg.customMapping = function (i) { return _this.itemMapping(i); };
             lg.onItemAppended = function ($item, item) {
                 var hasSubCities = (item.type === 1) && any(item.childern);
                 if (hasSubCities) {
                     var lgt = Common.ListGenerator.init(_this.$results, "city-air-item-template");
                     lgt.appendStyle = "append";
-                    lgt.evnt(null, function (e, $item, $target, item) { _this.itemClicked(item); });
+                    lgt.evnt(null, function (e, $item, $target, item) { _this.setActiveItem(item, true); });
                     lgt.customMapping = function (i) { return _this.itemMapping(i); };
                     lgt.generateList(item.childern);
                 }
             };
             lg.generateList(items);
+        };
+        DealsPlaceSearch.getType = function (item) {
+            if (!item) {
+                return 0;
+            }
+            if (item.type === 0) {
+                return DealsPlaceReturnType.CountryCode;
+            }
+            if (item.type === 1) {
+                if (any(item.childern)) {
+                    return DealsPlaceReturnType.GID;
+                }
+                else {
+                    return DealsPlaceReturnType.AirCode;
+                }
+            }
+            if (item.type === 2) {
+                return DealsPlaceReturnType.AirCode;
+            }
+        };
+        DealsPlaceSearch.getCode = function (item) {
+            if (!item) {
+                return null;
+            }
+            if (item.type === 0) {
+                return item.cc;
+            }
+            if (item.type === 1) {
+                if (any(item.childern)) {
+                    return item.gid.toString();
+                }
+                else {
+                    return item.air;
+                }
+            }
+            if (item.type === 2) {
+                return item.air;
+            }
         };
         return DealsPlaceSearch;
     }());

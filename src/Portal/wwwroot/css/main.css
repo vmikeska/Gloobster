@@ -4,7 +4,8 @@ body {
   min-width: 480px;
   margin: 0;
   text-align: center;
-  font-size: 19px; }
+  font-size: 19px;
+  font-weight: 400; }
 
 @media screen and (max-width: 641px) {
   body {
@@ -1676,8 +1677,11 @@ footer {
     .homepage .title-block-all .search-form .calendar-cont {
       vertical-align: middle; }
     .homepage .title-block-all .search-form .search-field {
-      display: inline-block; }
+      display: inline-block;
+      vertical-align: top; }
       .homepage .title-block-all .search-form .search-field .capt {
+        text-align: left; }
+      .homepage .title-block-all .search-form .search-field .ctrl {
         text-align: left; }
     .homepage .title-block-all .search-form .sec-row {
       text-align: right;
@@ -4772,7 +4776,8 @@ footer {
 
 .fly-tickets .search-bar {
   background-color: #E8E8E8;
-  border-top: 2px solid #005476; }
+  border-top: 2px solid #005476;
+  border-bottom: 2px solid #005476; }
 
 .fly-tickets .search-form {
   display: inline-block;
@@ -4805,13 +4810,16 @@ footer {
     padding-top: 0.5em;
     text-align: right; }
 
+@media screen and (max-width: 1220px) {
+  .fly-tickets .search-form {
+    text-align: right; } }
+
 @media screen and (max-width: 1070px) {
   .fly-tickets .search-form {
     max-width: none;
     padding-left: 1em;
     padding-right: 1em;
-    display: block;
-    text-align: right; }
+    display: block; }
   .fly-tickets .first-line.search-group {
     display: block; }
     .fly-tickets .first-line.search-group .search-field {
@@ -4821,6 +4829,34 @@ footer {
         width: auto; }
   .fly-tickets .classic-search-all {
     height: 300px; } }
+
+@media screen and (max-width: 610px) {
+  .fly-tickets .last-line {
+    display: block !important; } }
+
+.fly-tickets .found-flights-all {
+  padding: 0.5em; }
+  .fly-tickets .found-flights-all .order-switch {
+    display: inline-block;
+    text-align: left;
+    border: 2px solid white;
+    white-space: nowrap; }
+    .fly-tickets .found-flights-all .order-switch .item {
+      display: inline-block;
+      padding: 0.2em;
+      border-right: 2px solid white;
+      border-radius: 2px;
+      background-color: #FFC400;
+      color: white;
+      cursor: pointer;
+      text-align: center; }
+      .fly-tickets .found-flights-all .order-switch .item:last-of-type {
+        border-right: 0;
+        margin-left: -4px; }
+      .fly-tickets .found-flights-all .order-switch .item.active {
+        background-color: #3DA33D; }
+      .fly-tickets .found-flights-all .order-switch .item:hover {
+        background-color: #72cf72; }
 
 .fly-tickets .filter-bar {
   background-color: #F0FAFC;
@@ -4840,33 +4876,12 @@ footer {
     text-align: left; }
   .fly-tickets .filter-bar .second-line {
     text-align: right; }
-  .fly-tickets .filter-bar .order-switch {
-    display: inline-block;
-    text-align: left; }
-    .fly-tickets .filter-bar .order-switch .controls {
-      border: 2px solid white;
-      white-space: nowrap; }
-    .fly-tickets .filter-bar .order-switch .item {
-      display: inline-block;
-      padding: 0.2em;
-      border-right: 2px solid white;
-      background-color: #FFC400;
-      color: white;
-      cursor: pointer;
-      text-align: center; }
-      .fly-tickets .filter-bar .order-switch .item:last-of-type {
-        border-right: 0;
-        margin-left: -4px; }
-      .fly-tickets .filter-bar .order-switch .item.active {
-        background-color: #F56E12; }
-      .fly-tickets .filter-bar .order-switch .item:hover {
-        background-color: #F56E12; }
   .fly-tickets .filter-bar .air-filter-all {
     display: inline-block; }
     .fly-tickets .filter-bar .air-filter-all .air-filter-cont .pair {
       display: inline-block;
       font-size: 0.8em;
-      background-color: #3298C1;
+      background-color: #E02327;
       color: white;
       margin-left: 2px;
       margin-right: 2px;
@@ -4889,7 +4904,7 @@ footer {
       user-select: none;
       /* Non-prefixed version, currently not supported by any browser */ }
       .fly-tickets .filter-bar .air-filter-all .air-filter-cont .pair.active {
-        background-color: #F56E12; }
+        background-color: #3DA33D; }
       .fly-tickets .filter-bar .air-filter-all .air-filter-cont .pair:hover {
         background-color: #FFC400; }
   .fly-tickets .filter-bar .one-line .cell {
@@ -5933,7 +5948,8 @@ footer {
     color: white; }
 
 .fly-tickets .conn {
-  margin-bottom: 12px; }
+  margin-bottom: 12px;
+  font-size: 0.9em; }
   .fly-tickets .conn .layout-tbl {
     display: table;
     width: 100%; }
@@ -7204,10 +7220,6 @@ footer {
         color: #005476; }
       .place-search-results .section .content .ptag:hover {
         background-color: #F56E12; }
-
-.flip {
-  cursor: pointer;
-  margin: 40px; }
 
 .preloader8 {
   width: 30px;

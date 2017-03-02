@@ -76,7 +76,6 @@ else
         return options.inverse(this);
     });
 
-
     window["modules"] = @Html.Raw(JsonConvert.SerializeObject(Model.ClientModules));
 
     @Html.Raw($"Views.ViewBase.currentUserId = '{Model.UserId}';")
