@@ -78,17 +78,6 @@
       <en>What month are you interested in?</en>
     </WhichMonth>
 
-    <Deparature>
-      <en>Deparature</en>
-    </Deparature>
-
-    <Arrival>
-      <en>Arrival</en>
-    </Arrival>
-
-    <SearchBtn>
-      <en>Search</en>
-    </SearchBtn>
 
     <OrderPriceBtn>
       <en>by price</en>
@@ -105,14 +94,6 @@
     <NotFlexible>
       <en>Not flexible? See other options in the following months</en>
     </NotFlexible>
-
-    <BestDealSearch>
-      <en>Best deal search</en>
-    </BestDealSearch>
-    
-    <ClassicSearch>
-      <en>Standard search</en>
-    </ClassicSearch>
 
     <WeAreSearchingAnotherFlights>
       <en>Not flexible ? We are searching for other good flights at similar prices for you</en>

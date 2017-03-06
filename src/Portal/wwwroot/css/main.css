@@ -5920,7 +5920,7 @@ footer {
       width: 10%; }
     .fly-tickets .cat-res .flight-result-small .r {
       text-align: right; }
-    .fly-tickets .cat-res .flight-result-small .title {
+    .fly-tickets .cat-res .flight-result-small .tit {
       font-weight: 700; }
     .fly-tickets .cat-res .flight-result-small .price-box {
       background-color: #3DA33D;
@@ -6180,30 +6180,6 @@ footer {
     background-color: #F0F8FA; }
     .fly-tickets .city-deal .splitter div {
       border-top: 1px solid #65BDD7; }
-  .fly-tickets .city-deal .search-tabs {
-    background-color: white;
-    padding-top: 20px; }
-    .fly-tickets .city-deal .search-tabs .tab {
-      display: inline-block;
-      margin-left: 30px;
-      font-weight: bold;
-      font-size: 1.1em;
-      color: #3298C1;
-      border-bottom-width: 0;
-      border-top-left-radius: 8px;
-      border-top-right-radius: 8px;
-      padding: 12px;
-      cursor: pointer;
-      background-color: #F0F8FA; }
-      .fly-tickets .city-deal .search-tabs .tab.active, .fly-tickets .city-deal .search-tabs .tab:hover {
-        border: 1px solid #3298C1;
-        color: #005476;
-        border-bottom-width: 0;
-        position: relative;
-        bottom: -1px; }
-  .fly-tickets .city-deal .tabs-cont {
-    background-color: #F0F8FA;
-    border-top: 1px solid #3298C1; }
   .fly-tickets .city-deal .title {
     font-size: 1.3em;
     font-weight: bold;
@@ -6213,14 +6189,14 @@ footer {
     .fly-tickets .city-deal .title.blue {
       background-color: #F0F8FA; }
   .fly-tickets .city-deal .other-flights-filter {
+    background-color: #F0F8FA;
+    border-top: 1px solid #3298C1;
     padding-left: 12px;
     padding-right: 12px;
     text-align: center;
-    margin-top: 20px;
-    margin-bottom: 20px; }
+    margin-top: 1em; }
     .fly-tickets .city-deal .other-flights-filter .tit {
       font-weight: bold;
-      font-size: 1.2em;
       margin-bottom: 6px; }
     .fly-tickets .city-deal .other-flights-filter .airpairs-filter .pair {
       display: inline-block;

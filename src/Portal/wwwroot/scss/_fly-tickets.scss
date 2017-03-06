@@ -1799,7 +1799,7 @@
                 text-align: right;
             }
 
-            .title {
+            .tit {
                 font-weight: 700;
             }
 
@@ -2187,8 +2187,6 @@
 
           background-color: $very-light-blue;          
           
-          
-
           .txt {
               display: inline-block;
               font-size: 1.3em;
@@ -2252,39 +2250,6 @@
           }
       }
 
-      .search-tabs {
-          background-color: white;
-          padding-top: 20px;
-
-          .tab{              
-              display: inline-block;
-              margin-left: 30px;
-              font-weight: bold;
-              font-size: 1.1em;
-              color: $light-blue3;
-              border-bottom-width: 0;
-              border-top-left-radius: 8px;
-              border-top-right-radius: 8px;
-              padding: 12px;
-              cursor: pointer;
-              background-color: $very-light-blue;
-
-              &.active,&:hover{
-                border: 1px solid $light-blue3;
-                color: $dark-blue;
-                border-bottom-width: 0;
-                position:relative;
-              bottom: -1px;
-              }
-          }
-      }
-
-      .tabs-cont{
-          
-          background-color: $very-light-blue;
-          border-top: 1px solid $light-blue3;
-      }
-
       .title {
           font-size: 1.3em;
           font-weight: bold;
@@ -2298,16 +2263,17 @@
       }
 
       .other-flights-filter {
+          background-color: $very-light-blue;
+          border-top: 1px solid $light-blue3;
+
           padding-left: 12px;
           padding-right: 12px;
 
-        text-align: center;
-        margin-top: 20px;
-        margin-bottom: 20px;
-
+          text-align: center;
+          margin-top: 1em;
+      
         .tit{
-              font-weight: bold;
-              font-size: 1.2em;
+              font-weight: bold;              
               margin-bottom: 6px;
           }
 

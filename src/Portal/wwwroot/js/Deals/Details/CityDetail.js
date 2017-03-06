@@ -60,18 +60,6 @@ var Planning;
         CityDetail.prototype.destroyLayout = function () {
             $(".city-deal").remove();
         };
-        CityDetail.prototype.initTabs = function ($cont, callback) {
-            var $tabs = $cont.find(".tab");
-            $cont.find(".tab")
-                .click(function (e) {
-                e.preventDefault();
-                var $t = $(e.delegateTarget);
-                $tabs.removeClass("active");
-                $t.addClass("active");
-                var t = $t.data("t");
-                callback(t);
-            });
-        };
         CityDetail.prototype.createLayout = function ($lastBox) {
             var _this = this;
             this.destroyLayout();
@@ -83,17 +71,6 @@ var Planning;
             this.$layout = $(cityDealLayout(context));
             $lastBox.after(this.$layout);
             this.initDeals();
-            this.initTabs(this.$layout.find(".search-tabs"), function (t) {
-                _this.$layout.find(".tabs-cont").empty();
-                _this.$layout.find(".other-flights-cont").empty();
-                if (t === "deals") {
-                    _this.initDeals();
-                }
-                if (t === "classic") {
-                    _this.classicSearch = new Planning.CityClassicSearch(_this);
-                    _this.classicSearch.init();
-                }
-            });
             this.$layout.find(".close").click(function (e) {
                 e.preventDefault();
                 _this.destroyLayout();
@@ -107,22 +84,22 @@ var Planning;
         };
         CityDetail.prototype.initDeals = function () {
             var _this = this;
-            var $tmp = this.filterLayout("deals-srch-template");
+            var $filter = this.$layout.find(".other-flights-filter");
             if (this.codePairs.length > 1) {
-                this.airSel = new Planning.AirportSelector($tmp.find(".airpairs-filter"), this.codePairs);
+                this.airSel = new Planning.AirportSelector($filter.find(".airpairs-filter"), this.codePairs);
                 this.airSel.onChange = function () {
                     _this.genMonthFlights();
                 };
                 this.airSel.init();
                 $(".multi-conn-cont").show();
             }
-            this.slider = new Planning.RangeSlider($tmp.find(".days-range"), "daysRange");
+            this.slider = new Planning.RangeSlider($filter.find(".days-range"), "daysRange");
             this.slider.genSlider(1, 21);
             this.slider.setVals(5, 7);
             this.slider.onRangeChanged = function () {
                 _this.genMonthFlights();
             };
-            this.monthsSel = new Planning.MonthsSelector($tmp.find(".months"));
+            this.monthsSel = new Planning.MonthsSelector($filter.find(".months"));
             this.monthsSel.gen(12);
             this.monthsSel.onChange = function () {
                 _this.genMonthFlights();

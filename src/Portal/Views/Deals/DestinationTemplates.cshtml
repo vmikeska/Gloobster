@@ -1,4 +1,5 @@
-﻿
+﻿@using Microsoft.Data.Entity.Metadata.Internal
+
 
 
 
@@ -334,72 +335,6 @@
     
 </script>
 
-<script id="deals-srch-template" type="text/x-handlebars-template">
-        <div class="other-flights-filter">
-
-            <div class="multi-conn-cont" style="display: none">
-                <div class="title">@Model.W("WhatConnectionsInterested")</div>
-                <div class="airpairs-filter"></div>
-            </div>
-
-            <div class="title">@Model.W("HowManyDayInDestination")</div>
-            <div class="days-range"></div>
-
-            <div class="title">@Model.W("WhichMonth")</div>
-            <div class="months"></div>
-
-        </div>
-    </script>
-
-    <script id="classics-srch-template" type="text/x-handlebars-template">
-        <div class="other-flights-filter">
-
-            <div class="multi-conn-cont" style="display: none">
-                <div class="tit">@Model.W("WhatConnectionsInterested")</div>
-                <div class="airpairs-filter"></div>
-            </div>
-
-            <div class="ltbl">
-
-                <div class="block">
-                    <div class="dep-arr dep">
-                        <div class="tit">@Model.W("Deparature")</div>
-
-                        <div class="middle">
-
-                            <div id="depDate"></div>
-
-                        </div>
-                        <div class="bottom">
-                            <div class="time"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="block">
-                    <div class="dep-arr arr">
-                        <div class="tit">@Model.W("Arrival")</div>
-
-                        <div class="date-cont-all">
-
-                            <div id="arrDate"></div>
-
-                        </div>
-                        <div class="time-cont">
-                            <div class="time"></div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="srvc">
-                <a id="search" class="lbtn" href="#">@Model.W("SearchBtn")</a>
-            </div>
-
-        </div>
-    </script>
-
     <script id="city-deals-weekend-template" type="text/x-handlebars-template">
 
         <div class="city-deal" data-gid="{{gid}}">
@@ -483,19 +418,23 @@
             <div class="title">
                 @Model.W("NotFlexible")
             </div>
+            
+            
+                <div class="other-flights-filter">
 
-            <div class="search-tabs">
-                <div class="tab active" data-t="deals">
-                    @Model.W("BestDealSearch")
+                    <div class="multi-conn-cont" style="display: none">
+                        <div class="tit">@Model.W("WhatConnectionsInterested")</div>
+                        <div class="airpairs-filter"></div>
+                    </div>
+
+                    <div class="tit">@Model.W("HowManyDayInDestination")</div>
+                    <div class="days-range"></div>
+
+                    <div class="tit">@Model.W("WhichMonth")</div>
+                    <div class="months"></div>
+
                 </div>
-                <div class="tab" data-t="classic">
-                    @Model.W("ClassicSearch")
-                </div>
-            </div>
-
-            <div class="tabs-cont">
-
-            </div>
+            
 
             <div class="splitter">
                 <div></div>

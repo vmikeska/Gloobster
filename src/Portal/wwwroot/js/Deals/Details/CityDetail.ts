@@ -74,8 +74,7 @@ module Planning {
 		private slider: RangeSlider;
 		private monthsSel: MonthsSelector;
 		private airSel: AirportSelector;
-
-		private classicSearch: CityClassicSearch;
+			
 		private ordering: FlightsOrdering;
 
 		public $layout;
@@ -108,22 +107,22 @@ module Planning {
 			$(".city-deal").remove();
 		}
 
-		private initTabs($cont, callback) {
-			var $tabs = $cont.find(".tab");
+		//private initTabs($cont, callback) {
+		//	var $tabs = $cont.find(".tab");
 
-			$cont.find(".tab")
-				.click((e) => {
-					e.preventDefault();
-					var $t = $(e.delegateTarget);
+		//	$cont.find(".tab")
+		//		.click((e) => {
+		//			e.preventDefault();
+		//			var $t = $(e.delegateTarget);
 
-					$tabs.removeClass("active");
-					$t.addClass("active");
+		//			$tabs.removeClass("active");
+		//			$t.addClass("active");
 
-					var t = $t.data("t");
-					callback(t);
-				});
+		//			var t = $t.data("t");
+		//			callback(t);
+		//		});
 
-		}
+		//}
 
 		public createLayout($lastBox) {
 			this.destroyLayout();
@@ -138,22 +137,7 @@ module Planning {
 			$lastBox.after(this.$layout);
 
 			this.initDeals();
-
-
-			this.initTabs(this.$layout.find(".search-tabs"), (t) => {
-					this.$layout.find(".tabs-cont").empty();
-					this.$layout.find(".other-flights-cont").empty();
-
-					if (t === "deals") {
-						this.initDeals();
-					}
-
-					if (t === "classic") {
-						this.classicSearch = new CityClassicSearch(this);
-						this.classicSearch.init();
-					}
-				});
-
+				
 			this.$layout.find(".close").click((e) => {
 					e.preventDefault();
 					this.destroyLayout();
@@ -168,10 +152,11 @@ module Planning {
 		}
 
 		private initDeals() {
-			var $tmp = this.filterLayout("deals-srch-template");
+
+			var $filter = this.$layout.find(".other-flights-filter");
 
 			if (this.codePairs.length > 1) {
-				this.airSel = new AirportSelector($tmp.find(".airpairs-filter"), this.codePairs);
+				this.airSel = new AirportSelector($filter.find(".airpairs-filter"), this.codePairs);
 				this.airSel.onChange = () => {
 					this.genMonthFlights();
 				}
@@ -179,14 +164,14 @@ module Planning {
 				$(".multi-conn-cont").show();
 			}
 
-			this.slider = new RangeSlider($tmp.find(".days-range"), "daysRange");
+			this.slider = new RangeSlider($filter.find(".days-range"), "daysRange");
 			this.slider.genSlider(1, 21);
-			this.slider.setVals(5,7);
+			this.slider.setVals(5, 7);
 			this.slider.onRangeChanged = () => {
 				this.genMonthFlights();
 			}
 
-			this.monthsSel = new MonthsSelector($tmp.find(".months"));
+			this.monthsSel = new MonthsSelector($filter.find(".months"));
 			this.monthsSel.gen(12);
 			this.monthsSel.onChange = () => {
 				this.genMonthFlights();
