@@ -24,17 +24,21 @@ var Views;
             configurable: true
         });
         DealsView.prototype.init = function () {
+            Planning.ResultConfigs.init();
+            this.decideSize();
             this.initTopBar();
             this.initDeals();
             this.classicSearch = new Planning.ClassicSearch();
             this.classicSearch.init();
             this.initMainTabs();
+            this.initResize();
         };
         DealsView.prototype.initTopBar = function () {
             var _this = this;
             this.settings = new Planning.LocationSettingsDialog();
             this.settings.initTopBar(this.hasCity, this.hasAirs);
-            $(".top-all .edit").click(function (e) {
+            $(".top-all .edit")
+                .click(function (e) {
                 e.preventDefault();
                 _this.settings.initDlg();
             });
@@ -104,7 +108,8 @@ var Views;
         };
         DealsView.prototype.initAddCustomBtn = function () {
             var _this = this;
-            $("#addCustom").click(function (e) {
+            $("#addCustom")
+                .click(function (e) {
                 e.preventDefault();
                 var sdl = new Planning.SearchDataLoader();
                 sdl.createNewSearch(function (s) {
@@ -151,6 +156,34 @@ var Views;
             }
             this.settings.showRatingFilter(deals);
         };
+        DealsView.prototype.initResize = function () {
+            var _this = this;
+            $(window).resize(function () {
+                _this.decideSize();
+            });
+        };
+        DealsView.prototype.onListSizeChange = function () {
+            this.allSections.forEach(function (s) {
+                s.refreshResults();
+            });
+        };
+        DealsView.prototype.getNewListSize = function (currentWidth) {
+            var s = currentWidth > 650 ? ListSize.Big : ListSize.Small;
+            return s;
+        };
+        DealsView.prototype.decideSize = function () {
+            var currentWidth = $(window).width();
+            var newListSize = this.getNewListSize(currentWidth);
+            if (DealsView.listSize === ListSize.None) {
+                DealsView.listSize = newListSize;
+                return;
+            }
+            if (DealsView.listSize !== newListSize) {
+                DealsView.listSize = newListSize;
+                this.onListSizeChange();
+            }
+        };
+        DealsView.listSize = ListSize.None;
         return DealsView;
     }(Views.ViewBase));
     Views.DealsView = DealsView;

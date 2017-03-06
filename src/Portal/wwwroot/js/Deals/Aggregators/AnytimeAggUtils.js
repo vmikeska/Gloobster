@@ -3,11 +3,20 @@ var Planning;
     var AnytimeAggUtils = (function () {
         function AnytimeAggUtils() {
         }
-        AnytimeAggUtils.enrichMoreLess = function (lg) {
-            lg.listLimit = 4;
-            lg.listLimitMoreTmp = "flights-list-more-tmp";
-            lg.listLimitLessTmp = "flights-list-less-tmp";
-            lg.listLimitLast = false;
+        AnytimeAggUtils.enrichMoreLess = function (lg, listSize) {
+            if (listSize === void 0) { listSize = ListSize.Big; }
+            if (listSize === ListSize.Big) {
+                lg.listLimit = 4;
+                lg.listLimitMoreTmp = "flights-list-more-tmp";
+                lg.listLimitLessTmp = "flights-list-less-tmp";
+                lg.listLimitLast = false;
+            }
+            if (listSize === ListSize.Small) {
+                lg.listLimit = 5;
+                lg.listLimitMoreTmp = "flights-list-more-small-tmp";
+                lg.listLimitLessTmp = "flights-list-less-small-tmp";
+                lg.listLimitLast = false;
+            }
         };
         AnytimeAggUtils.checkFilter = function (flight, starsLevel) {
             var scoreOk = this.matchesScore(flight, starsLevel);

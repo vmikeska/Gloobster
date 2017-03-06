@@ -66,6 +66,7 @@ var Planning;
                     }
                 }
             });
+            this.initResizer();
             var $dv = $("#dealsWizard");
             var $doc = $(document);
             $doc.scroll(function () {
@@ -77,6 +78,11 @@ var Planning;
                 if (treshold < current) {
                     console.log("over");
                 }
+            });
+        };
+        SectionBlock.prototype.initResizer = function () {
+            $(document).on("resizeEvent", function (e, width) {
+                console.log("my width " + width);
             });
         };
         SectionBlock.prototype.refreshResults = function () {

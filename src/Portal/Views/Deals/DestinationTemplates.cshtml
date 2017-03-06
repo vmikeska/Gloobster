@@ -748,120 +748,20 @@
     </script>
 
 
-    <script id="offers-expander-template" type="text/x-handlebars-template">
-        <tr class="expander">
-            <td colspan="4">
-                <a class="btn" href="#">@Model.W("MoreBtn")</a>
-            </td>
-        </tr>
-    </script>
-
-    <script id="offers-collapser-template" type="text/x-handlebars-template">
-        <tr class="collapser">
-            <td colspan="4">
-                <a class="btn" href="#">@Model.W("LessBtn")</a>
-            </td>
-        </tr>
-    </script>
-
-    <script id="continent-group-template" type="text/x-handlebars-template">
-        <div class="continent-all">
-            <div class="title">
-                <span class="txt">{{name}}</span>
-
-                <a href="#" data-v="true" class="visi">@Model.W("CollapseBtn")</a>
-            </div>
-            <div class="cont">
-
-            </div>
-        </div>
-    </script>
-
-    <script id="resultGroupItemCountry-template" type="text/x-handlebars-template">
-        <div class="flight-result" data-cc="{{cc}}">
-            <div class="img-cont">
-
-                <div class="img-wrap">
-                    <img src="/images/n/flags-square/{{cc}}.svg" />
-                </div>
-
-                <div class="txt-cont darker">{{title}}</div>
-                <div class="price-cont">
-                    <div class="wrap">
-                        <span class="from">@Model.W("FromPrice")</span>
-                        <br />
-                        <span class="price-all">
-                            <span class="currency">€</span><span class="price">{{price}}</span>
-                        </span>
-                    </div>
-                </div>
-
-            </div>
-            <div class="items">
-
-                <table></table>
-
-            </div>
-        </div>
-    </script>
 
 
-    <script id="resultGroupItem-template" type="text/x-handlebars-template">
-        <div class="flight-result" data-gid="{{gid}}" data-name="{{title}}">
-            <div class="img-cont">
-
-                <img src="/picd/{{gid}}/f" />
-                <div class="txt-cont">{{title}}</div>
-                <div class="price-cont">
-                    <div class="wrap">
-                        <span class="from">@Model.W("FromPrice")</span>
-                        <br />
-                        <span class="price-all">
-                            <span class="currency">€</span><span class="price">{{price}}</span>
-                        </span>
-                    </div>
-                </div>
-
-            </div>
-            <div class="items">
-
-                <table></table>
-
-            </div>
-        </div>
-    </script>
 
 
-    <script id="resultGroup-priceItem-template" type="text/x-handlebars-template">
-        <tr data-f="{{from}}" data-t="{{to}}">
-            <td><strong>{{from}} → {{to}}</strong></td>
-            <td>@Model.W("FromPrice")</td>
-            <td><strong>€{{price}}</strong></td>
-            <td><a class="btn" href="#">@Model.W("SeeOffersBtn")</a></td>
-        </tr>
-    </script>
-
-    <script id="grouped-country-city-template" type="text/x-handlebars-template">
-        <tr data-gid="{{gid}}">
-            <td><strong>{{name}}</strong></td>
-            <td>@Model.W("FromPrice")</td>
-            <td><strong>€{{price}}</strong></td>
-            <td><a class="btn" href="#">@Model.W("SeeOffersBtn")</a></td>
-        </tr>
-    </script>
 
 
-    <script id="weekend-week-template" type="text/x-handlebars-template">
-        <div class="weekend-item" data-w="{{week}}" data-t="{{year}}">
 
-            <div class="title">
-                <span class="week">{{week}}. @Model.W("WeekendNo")</span> - <span class="date">{{dateFrom}} - {{dateTo}}</span>
-            </div>
 
-            <div class="cont"></div>
-        </div>
 
-    </script>
+
+
+
+
+    
 
 
     <script id="freq-item-template" type="text/x-handlebars-template">
@@ -877,21 +777,11 @@
         <div class="item">{{text}}</div>
     </script>
 
-    <script id="flights-list-more-tmp" type="text/x-handlebars-template">
-        <div class="more-less-btn-cont expander">
-            <a href="#" class="more lbtn2 bold more-less-btn">more...</a>
-        </div>
-    </script>
-
-    <script id="flights-list-less-tmp" type="text/x-handlebars-template">
-        <div class="more-less-btn-cont collapser">
-            <a href="#" class="less lbtn2 bold more-less-btn">...less</a>
-        </div>
-    </script>
 
 
 
-    <script id="custom-setting-2-template" type="text/x-handlebars-template">
+
+<script id="custom-setting-2-template" type="text/x-handlebars-template">
 
         <div class="custom-form">
 

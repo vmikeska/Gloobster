@@ -538,7 +538,7 @@
             &.opened {                
                 .arrow{
                     display: inline-block;
-                    transform: scale(1, -1);                                    
+                    transform: scale(1, -1);
                 }
 
             }
@@ -1068,6 +1068,27 @@
 
      }
 
+     .more-less-btn-cont-small {
+         text-align: center !important;
+         padding-bottom: 0.5em;
+
+         .more-less-btn {
+             text-align: center;
+             font-size: 0.9em;
+             color: white;
+             background-color: $yellow;
+
+             padding: 4px;
+             padding-left: 8px;
+             padding-right: 8px;
+
+             &:hover {
+                 background-color: $green;
+             }
+         }
+
+     }
+
 
 
 
@@ -1524,44 +1545,6 @@
             }
         }
 
-        /*.locations {
-            margin-bottom: 10px;
-
-            .location {
-                display: inline-block;                
-                text-align: center;
-                margin-right: 50px;
-
-                &:last-of-type {
-                    margin-right: 0;
-                }
-
-                .ico-all{
-                    cursor: pointer;
-                            
-                    .icon {
-                        font-size: 100px;
-                        color: $light-blue5;
-                            
-                        &:hover {
-                            color: $dark-blue;
-                        }
-                    }
-                }
-
-                .txt {
-                    margin-top: 6px;
-                    font-weight: bold;                    
-                }
-
-                &.active {
-                    .icon {
-                        color: $orange !important;
-                    }
-                }
-            }
-        }*/
-
     }
 
     .cat-res {
@@ -1597,7 +1580,7 @@
         }
 
         .cont {
-            text-align: left;
+            text-align: center;
 
             @include below-width(649) {
                 text-align: center;
@@ -1652,7 +1635,7 @@
                     border-top-right-radius: 4px;
                     overflow: hidden;
                     
-                    img {
+                    svg {
                         width: 330px !important;
                         @include centerer;
                     }
@@ -1783,31 +1766,122 @@
             }
 
         }
+
+        .flight-result-small {
+            display: table;
+            width: 100%;
+            margin-bottom: 8px;
+
+            table{
+                font-size: 0.9em;
+                width: 100%;
+                margin: 0;
+                    
+                border-spacing:0; 
+                border-collapse: collapse;  
+            }
+
+            .cell {
+                display: table-cell;
+                vertical-align: middle;
+            }
+
+            .l {
+                width: 25%;
+                text-align: left;
+            }
+
+            .m {
+                width: 10%;
+            }
+
+            .r {
+                text-align: right;
+            }
+
+            .title {
+                font-weight: 700;
+            }
+
+            .price-box{
+                background-color: $green;
+
+                display: inline-block;
+                padding: 0.3em;
+                border-radius: 50%;
+                color: white;
+                text-align: center;
+                
+                .wrap {
+                    display: inline-block;
+                    width: 50px;
+                    height: 50px;
+                }
+
+                .price-all {                    
+                    font-weight: 700;
+                }
+            }
+
+            .one-city-offer {
+                cursor: pointer;
+
+                td {
+                    padding: 4px;
+                }
+                
+                .btn {
+                    background-color: $light-blue4;
+                    border-radius: 4px;
+                    text-decoration: none;
+                    color: black;
+                    font-weight: 700;
+                    padding: 2px;
+                    padding-left: 4px;
+                    padding-right: 4px;
+                }
+
+                &:hover {
+                    background-color: $light-blue4;
+
+                    .btn {
+                        background-color: $dark-blue;
+                        color: white;
+                    }
+                }
+
+
+
+            }
+        }
     }
 
     .continent-all {
+
+        &.opened {
+            .visi {
+                transform: scale(1, -1);
+            }
+        }
+
         .title {
 
             background-color: $info-blue2;
-            border-top-left-radius: 6px;
-            border-top-right-radius: 6px;
+            border-top-left-radius: 2px;
+            border-top-right-radius: 2px;
             color: white;
-            padding: 1em;
+            padding: 0.5em;
 
             position: relative;
             margin-bottom: 6px;
             text-align: left;
 
             .txt{
-                font-size: 1.4em;
-                font-weight: bold;
+                
             }
 
             .visi{
-                display: inline-block;
-                position: absolute;
-                right: 1em;
-                top: 1em;
+                display: inline-block;                
                 color: white;
             }
         }
@@ -2142,8 +2216,7 @@
                   display: inline-block;
                   border: 2px solid white;
                   background-color: $light-blue;
-                  color: white;
-                  font-weight: bold;
+                  color: white;                  
                   padding: 3px;
                   cursor: pointer;
 

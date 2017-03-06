@@ -1,0 +1,218 @@
+﻿@using Microsoft.Data.Entity.Metadata.Internal
+
+<script id="result-box-city-template" type="text/x-handlebars-template">
+    <div class="flight-result group_{{gid}}" data-gid="{{gid}}" data-name="{{title}}">
+        <div class="img-cont">
+
+            <img class="img" src="/images/n/no-fly-img.png" />
+            <div class="txt-cont">{{title}}</div>
+            <div class="price-cont">
+                <div class="wrap">
+                    <div class="from">@Model.W("FromPrice")</div>
+                    <div class="price-all">
+                        <span class="currency">€</span><span class="price">{{price}}</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="items">
+
+            <table></table>
+
+        </div>
+    </div>
+</script>
+
+<script id="result-box-city-small-template" type="text/x-handlebars-template">
+    <div class="flight-result-small" data-gid="{{gid}}" data-name="{{title}}">
+
+        <div class="cell l">
+            <span class="title">{{title}}</span>
+        </div>
+        <div class="cell m">
+
+
+            <div class="price-box">
+                <div class="wrap">
+                    <div class="from">@Model.W("FromPrice")</div>
+
+                    <div class="price-all">
+                        <span class="currency">€</span><span class="price">{{price}}</span>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="cell r">
+            <table></table>
+        </div>
+
+    </div>
+</script>
+
+
+<script id="result-box-country-template" type="text/x-handlebars-template">
+    <div class="flight-result group_{{cc}}" data-cc="{{cc}}">
+        <div class="img-cont">
+
+            <div class="img-wrap">
+                @*<img src="/images/n/flags-square/{{cc}}.svg" />*@
+                <img class="img" src="/images/n/no-fly-img.png" />
+            </div>
+
+            <div class="txt-cont darker">{{title}}</div>
+            <div class="price-cont">
+                <div class="wrap">
+                    <span class="from">@Model.W("FromPrice")</span>
+                    <br />
+                    <span class="price-all">
+                        <span class="currency">€</span><span class="price">{{price}}</span>
+                    </span>
+                </div>
+            </div>
+
+        </div>
+        <div class="items">
+
+            <table></table>
+
+        </div>
+    </div>
+</script>
+
+
+<script id="result-box-country-small-template" type="text/x-handlebars-template">
+    <div class="flight-result-small" data-cc="{{cc}}">
+        <div class="cell l">
+            <span class="title">{{title}}</span>
+        </div>
+        <div class="cell m">
+
+
+            <div class="price-box">
+                <div class="wrap">
+                    <div class="from">@Model.W("FromPrice")</div>
+
+                    <div class="price-all">
+                        <span class="currency">€</span><span class="price">{{price}}</span>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="cell r">
+            <table></table>
+        </div>
+    </div>
+
+</script>
+
+
+
+
+
+
+<script id="one-offer-airports-template" type="text/x-handlebars-template">
+    <tr class="one-city-offer" data-f="{{from}}" data-t="{{to}}">
+        <td><span class="bold">{{from}} → {{to}}</span></td>
+        <td>@Model.W("FromPrice")</td>
+        <td><span class="bold">€{{price}}</span></td>
+        <td><a class="btn" href="#">@Model.W("SeeOffersBtn")</a></td>
+    </tr>
+</script>
+
+<script id="one-offer-city-template" type="text/x-handlebars-template">
+    <tr data-gid="{{gid}}">
+        <td><span class="bold">{{name}}</span></td>
+        <td>@Model.W("FromPrice")</td>
+        <td><span class="bold">€{{price}}</span></td>
+        <td><a class="btn" href="#">@Model.W("SeeOffersBtn")</a></td>
+    </tr>
+</script>
+
+<script id="offers-expander-template" type="text/x-handlebars-template">
+    <tr class="expander">
+        <td colspan="4">
+            <a class="btn" href="#">@Model.W("MoreBtn")</a>
+        </td>
+    </tr>
+</script>
+
+<script id="offers-collapser-template" type="text/x-handlebars-template">
+    <tr class="collapser">
+        <td colspan="4">
+            <a class="btn" href="#">@Model.W("LessBtn")</a>
+        </td>
+    </tr>
+</script>
+
+
+
+
+
+
+<script id="weekend-week-template" type="text/x-handlebars-template">
+    <div class="weekend-item" data-w="{{week}}" data-t="{{year}}">
+
+        <div class="title">
+            <span class="week">{{week}}. @Model.W("WeekendNo")</span> - <span class="date">{{dateFrom}} - {{dateTo}}</span>
+        </div>
+
+        <div class="cont"></div>
+    </div>
+
+</script>
+
+
+<script id="flights-list-more-tmp" type="text/x-handlebars-template">
+    <div class="more-less-btn-cont expander">
+        <a href="#" class="more lbtn2 bold more-less-btn">more...</a>
+    </div>
+</script>
+
+<script id="flights-list-less-tmp" type="text/x-handlebars-template">
+    <div class="more-less-btn-cont collapser">
+        <a href="#" class="less lbtn2 bold more-less-btn">...less</a>
+    </div>
+</script>
+
+
+
+<script id="flights-list-more-small-tmp" type="text/x-handlebars-template">
+    <div class="more-less-btn-cont-small expander">
+        <a href="#" class="more lbtn2 more-less-btn">more...</a>
+    </div>
+</script>
+
+<script id="flights-list-less-small-tmp" type="text/x-handlebars-template">
+    <div class="more-less-btn-cont-small collapser">
+        <a href="#" class="less lbtn2 more-less-btn">...less</a>
+    </div>
+</script>
+
+
+
+
+
+<script id="continent-group-template" type="text/x-handlebars-template">
+    <div class="continent-all opened">
+        
+        <div class="htbl title">
+            <div class="left">
+                <span class="txt">{{name}}</span>
+            </div>
+            <div class="right">
+                <span class="icon-dropdown-arrow visi"></span>
+            </div>
+        </div>
+
+        <div class="cont">
+
+        </div>
+
+    </div>
+</script>
+

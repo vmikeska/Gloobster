@@ -42,7 +42,7 @@ var Common;
             if (this.clearCont) {
                 this.$cont.empty();
             }
-            if (items.length === 0) {
+            if (!any(items)) {
                 if (this.emptyTemplate) {
                     var t = ListGenerator.v.registerTemplate(this.emptyTemplate);
                     var $t = $(t());
@@ -167,6 +167,9 @@ var Common;
                     eh.handler(e, $item, $target, item);
                 });
             });
+            if (this.beforeItemAppended) {
+                this.beforeItemAppended($item, item);
+            }
             if (this.appendStyle === "append") {
                 this.$cont.append($item);
             }

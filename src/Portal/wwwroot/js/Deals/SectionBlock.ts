@@ -113,9 +113,14 @@
 				}
 			});
 
+				this.initResizer();
+
+
+
 			var $dv = $("#dealsWizard");
 			var $doc = $(document);
 
+				//not used - finish it or not ?
 			$doc.scroll(() => {
 
 					//todo: unregister event when not needed
@@ -136,6 +141,15 @@
 				
 			//$("html,body").offset().scrollTop
 		}
+
+		
+
+		private initResizer() {
+			$(document).on("resizeEvent", (e, width) => {
+						console.log("my width " + width);
+					});
+		}
+
 
 		public refreshResults() {
 				this.displayer.refresh(this.grouping.selected);
@@ -314,9 +328,7 @@
 
 				this.callOnResultChange();				
 			};
-
-			//this.planningMap = new Planning.PlanningMap(this);
-
+				
 			this.planningMap.onMapLoaded = () => {
 				//this.changeSetter(PlanningType.Anytime);
 			}

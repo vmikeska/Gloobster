@@ -189,7 +189,7 @@ var Views;
             request.sendGet();
         };
         ViewBase.prototype.apiPost = function (endpointName, data, callback) {
-            var endpoint = '/api/' + endpointName;
+            var endpoint = "/api/" + endpointName;
             console.log("posting: " + endpoint);
             var request = new Common.RequestSender(endpoint, data, true);
             request.serializeData();
@@ -200,7 +200,7 @@ var Views;
             request.sendPost();
         };
         ViewBase.prototype.apiPut = function (endpointName, data, callback) {
-            var endpoint = '/api/' + endpointName;
+            var endpoint = "/api/" + endpointName;
             console.log("putting: " + endpoint);
             var request = new Common.RequestSender(endpoint, data, true);
             request.serializeData();
@@ -211,7 +211,7 @@ var Views;
             request.sendPut();
         };
         ViewBase.prototype.apiDelete = function (endpointName, params, callback) {
-            var endpoint = '/api/' + endpointName;
+            var endpoint = "/api/" + endpointName;
             console.log("deleting: " + endpoint);
             var request = new Common.RequestSender(endpoint, null, true);
             request.params = params;

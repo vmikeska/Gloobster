@@ -24,6 +24,11 @@ module Common {
 		private itemTemplate;
 		public emptyTemplate;
 
+		private $items = [];
+
+		public onItemAppended: Function;
+		public beforeItemAppended: Function;
+
 		static get v(): Views.ViewBase {
         return Views.ViewBase.currentView;
     }
@@ -31,10 +36,6 @@ module Common {
 		constructor() {
 			this.hidableIdClass = `hidable-${Views.ViewBase.currentView.makeRandomString()}`;
 		}
-		
-		public onItemAppended: Function;
-
-		private $items = [];
 			
 		public static init($cont, itemTemplateName): ListGenerator {
 			var lg = new ListGenerator();
@@ -69,7 +70,7 @@ module Common {
 				this.$cont.empty();
 			}
 
-			if (items.length === 0) {
+			if (!any(items)) {
 
 				if (this.emptyTemplate) {
 					var t = ListGenerator.v.registerTemplate(this.emptyTemplate);
@@ -234,6 +235,10 @@ module Common {
 						eh.handler(e, $item, $target, item);
 					});
 				});
+
+			if (this.beforeItemAppended) {
+				this.beforeItemAppended($item, item);
+			}
 
 			if (this.appendStyle === "append") {
 				this.$cont.append($item);

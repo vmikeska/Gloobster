@@ -2,11 +2,22 @@ module Planning {
 	
 	export class AnytimeAggUtils {
 			
-		public static enrichMoreLess(lg: Common.ListGenerator) {
-			lg.listLimit = 4;
-			lg.listLimitMoreTmp = "flights-list-more-tmp";
-			lg.listLimitLessTmp = "flights-list-less-tmp";
-			lg.listLimitLast = false;
+			public static enrichMoreLess(lg: Common.ListGenerator, listSize: ListSize = ListSize.Big) {
+
+				if (listSize === ListSize.Big) {
+						lg.listLimit = 4;
+						lg.listLimitMoreTmp = "flights-list-more-tmp";
+						lg.listLimitLessTmp = "flights-list-less-tmp";
+						lg.listLimitLast = false;		
+				}
+
+				if (listSize === ListSize.Small) {
+						lg.listLimit = 5;
+						lg.listLimitMoreTmp = "flights-list-more-small-tmp";
+						lg.listLimitLessTmp = "flights-list-less-small-tmp";
+						lg.listLimitLast = false;
+				}
+			
 		}
 
 		public static checkFilter(flight, starsLevel: number) {

@@ -90,6 +90,18 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
                     result.Results = GetResults<T>(query.id);
                 }
 
+
+                if (query.State == QueryState.Started)
+                {
+                    var executedAgo = DateTime.UtcNow - query.Created;
+                    bool isOld = executedAgo.TotalSeconds > 60;
+
+                    if (isOld)
+                    {
+                        RestartQueryAsync(query);
+                    }
+                }
+
                 results.Add(result);
             }
 
@@ -191,6 +203,14 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
             await DB.SaveAsync(ent);
 
             return id.ToString();
+        }
+
+        private async Task RestartQueryAsync(QueryEntity q)
+        {            
+            q.State = QueryState.Saved;
+            q.Created = DateTime.UtcNow;
+
+            await DB.ReplaceOneAsync(q);
         }
     }
 }

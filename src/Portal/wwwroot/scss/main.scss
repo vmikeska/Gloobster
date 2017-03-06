@@ -263,9 +263,6 @@ a {
         padding-left: 10px;
         padding-right: 10px;
 
-        font-weight: bold;
-        /*font-size: 1.1em;*/
-
         &.act, &:hover {
             background-color: $light-blue2;
             color: white;
@@ -459,7 +456,7 @@ textarea{
  }
 
  .bold {
-     font-weight: bold;
+     font-weight: 700;
  }
 
 .form-close {

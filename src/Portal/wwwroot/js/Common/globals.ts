@@ -89,4 +89,6 @@ enum FriendActionType { Confirm, Request, Unfriend, Block, CancelRequest }
 
 enum DealsPlaceReturnType { CountryCode, GID, AirCode }
 
+enum ListSize { None, Big, Small }
+
 

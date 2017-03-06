@@ -137,4 +137,10 @@ var DealsPlaceReturnType;
     DealsPlaceReturnType[DealsPlaceReturnType["GID"] = 1] = "GID";
     DealsPlaceReturnType[DealsPlaceReturnType["AirCode"] = 2] = "AirCode";
 })(DealsPlaceReturnType || (DealsPlaceReturnType = {}));
+var ListSize;
+(function (ListSize) {
+    ListSize[ListSize["None"] = 0] = "None";
+    ListSize[ListSize["Big"] = 1] = "Big";
+    ListSize[ListSize["Small"] = 2] = "Small";
+})(ListSize || (ListSize = {}));
 //# sourceMappingURL=globals.js.map

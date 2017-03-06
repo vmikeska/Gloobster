@@ -125,9 +125,7 @@ a {
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 10px;
-    padding-right: 10px;
-    font-weight: bold;
-    /*font-size: 1.1em;*/ }
+    padding-right: 10px; }
     .tab-menu .btn.act, .tab-menu .btn:hover {
       background-color: #009EC4;
       color: white; }
@@ -281,7 +279,7 @@ textarea {
     background-color: #3DA33D; }
 
 .bold {
-  font-weight: bold; }
+  font-weight: 700; }
 
 .form-close {
   position: absolute;
@@ -1611,7 +1609,7 @@ footer {
 
 .homepage .motto {
   font-size: 2em;
-  font-weight: 500;
+  font-weight: 400;
   padding: 0;
   margin: 0;
   margin-top: 0.5em;
@@ -1711,8 +1709,7 @@ footer {
       .homepage .title-block-all .search-form .motto {
         color: white; }
       .homepage .title-block-all .search-form .search-field .capt {
-        color: white;
-        font-weight: bold; } }
+        color: white; } }
   @media screen and (min-width: 720px) {
     .homepage .title-block-all .title-photo {
       display: block; } }
@@ -1737,8 +1734,7 @@ footer {
     width: 100%; }
     .homepage .deals-block-all .labels .label {
       display: table-cell;
-      width: 33.3%;
-      font-weight: bold; }
+      width: 33.3%; }
   .homepage .deals-block-all .loc {
     padding: 1em; }
     .homepage .deals-block-all .loc input {
@@ -5427,6 +5423,20 @@ footer {
     .fly-tickets .more-less-btn-cont .more-less-btn:hover {
       background-color: #3DA33D; }
 
+.fly-tickets .more-less-btn-cont-small {
+  text-align: center !important;
+  padding-bottom: 0.5em; }
+  .fly-tickets .more-less-btn-cont-small .more-less-btn {
+    text-align: center;
+    font-size: 0.9em;
+    color: white;
+    background-color: #FFC400;
+    padding: 4px;
+    padding-left: 8px;
+    padding-right: 8px; }
+    .fly-tickets .more-less-btn-cont-small .more-less-btn:hover {
+      background-color: #3DA33D; }
+
 .fly-tickets .expander, .fly-tickets .collapser {
   text-align: left;
   -webkit-touch-callout: none;
@@ -5734,44 +5744,7 @@ footer {
   padding: 12px;
   background-color: #F0F8FA;
   border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
-  /*.locations {
-            margin-bottom: 10px;
-
-            .location {
-                display: inline-block;                
-                text-align: center;
-                margin-right: 50px;
-
-                &:last-of-type {
-                    margin-right: 0;
-                }
-
-                .ico-all{
-                    cursor: pointer;
-                            
-                    .icon {
-                        font-size: 100px;
-                        color: $light-blue5;
-                            
-                        &:hover {
-                            color: $dark-blue;
-                        }
-                    }
-                }
-
-                .txt {
-                    margin-top: 6px;
-                    font-weight: bold;                    
-                }
-
-                &.active {
-                    .icon {
-                        color: $orange !important;
-                    }
-                }
-            }
-        }*/ }
+  border-bottom-right-radius: 4px; }
   .fly-tickets .filtering .layout-table {
     display: table;
     width: 100%; }
@@ -5811,7 +5784,7 @@ footer {
       font-size: 0.8em;
       vertical-align: central; }
   .fly-tickets .cat-res .cont {
-    text-align: left;
+    text-align: center;
     /*@include above-width(1280) {
               
                 @include display-flex;
@@ -5847,7 +5820,7 @@ footer {
         border-top-left-radius: 4px;
         border-top-right-radius: 4px;
         overflow: hidden; }
-        .fly-tickets .cat-res .flight-result .img-cont .img-wrap img {
+        .fly-tickets .cat-res .flight-result .img-cont .img-wrap svg {
           width: 330px !important;
           position: absolute;
           top: 50%;
@@ -5927,24 +5900,74 @@ footer {
         padding-right: 2px;
         background-color: #ccedf5;
         white-space: nowrap; }
+  .fly-tickets .cat-res .flight-result-small {
+    display: table;
+    width: 100%;
+    margin-bottom: 8px; }
+    .fly-tickets .cat-res .flight-result-small table {
+      font-size: 0.9em;
+      width: 100%;
+      margin: 0;
+      border-spacing: 0;
+      border-collapse: collapse; }
+    .fly-tickets .cat-res .flight-result-small .cell {
+      display: table-cell;
+      vertical-align: middle; }
+    .fly-tickets .cat-res .flight-result-small .l {
+      width: 25%;
+      text-align: left; }
+    .fly-tickets .cat-res .flight-result-small .m {
+      width: 10%; }
+    .fly-tickets .cat-res .flight-result-small .r {
+      text-align: right; }
+    .fly-tickets .cat-res .flight-result-small .title {
+      font-weight: 700; }
+    .fly-tickets .cat-res .flight-result-small .price-box {
+      background-color: #3DA33D;
+      display: inline-block;
+      padding: 0.3em;
+      border-radius: 50%;
+      color: white;
+      text-align: center; }
+      .fly-tickets .cat-res .flight-result-small .price-box .wrap {
+        display: inline-block;
+        width: 50px;
+        height: 50px; }
+      .fly-tickets .cat-res .flight-result-small .price-box .price-all {
+        font-weight: 700; }
+    .fly-tickets .cat-res .flight-result-small .one-city-offer {
+      cursor: pointer; }
+      .fly-tickets .cat-res .flight-result-small .one-city-offer td {
+        padding: 4px; }
+      .fly-tickets .cat-res .flight-result-small .one-city-offer .btn {
+        background-color: #ccedf5;
+        border-radius: 4px;
+        text-decoration: none;
+        color: black;
+        font-weight: 700;
+        padding: 2px;
+        padding-left: 4px;
+        padding-right: 4px; }
+      .fly-tickets .cat-res .flight-result-small .one-city-offer:hover {
+        background-color: #ccedf5; }
+        .fly-tickets .cat-res .flight-result-small .one-city-offer:hover .btn {
+          background-color: #005476;
+          color: white; }
+
+.fly-tickets .continent-all.opened .visi {
+  transform: scale(1, -1); }
 
 .fly-tickets .continent-all .title {
   background-color: #009EC4;
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
   color: white;
-  padding: 1em;
+  padding: 0.5em;
   position: relative;
   margin-bottom: 6px;
   text-align: left; }
-  .fly-tickets .continent-all .title .txt {
-    font-size: 1.4em;
-    font-weight: bold; }
   .fly-tickets .continent-all .title .visi {
     display: inline-block;
-    position: absolute;
-    right: 1em;
-    top: 1em;
     color: white; }
 
 .fly-tickets .conn {
@@ -6140,7 +6163,6 @@ footer {
         border: 2px solid white;
         background-color: #65BDD7;
         color: white;
-        font-weight: bold;
         padding: 3px;
         cursor: pointer; }
         .fly-tickets .city-deal .title-deal .deals-ordering .item:hover {
@@ -7221,6 +7243,18 @@ footer {
       .place-search-results .section .content .ptag:hover {
         background-color: #F56E12; }
 
+/*<div class="preloader1 flip flip1">
+					<span></span>
+				    <span></span>
+					<span></span>
+				    <span></span>
+					<span></span>
+				    <span></span>
+					<span></span>
+				    <span></span>
+					<span></span>
+				    <span></span>
+				</div>*/
 .preloader8 {
   width: 30px;
   height: 30px;

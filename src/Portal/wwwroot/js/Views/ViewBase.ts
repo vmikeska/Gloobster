@@ -239,7 +239,7 @@ module Views {
 
 		public apiPost(endpointName: string, data: any, callback: Function) {
 
-			var endpoint = '/api/' + endpointName;
+			var endpoint = `/api/${endpointName}`;
 			console.log("posting: " + endpoint);
 
 			var request = new Common.RequestSender(endpoint, data, true);
@@ -253,7 +253,7 @@ module Views {
 
 		public apiPut(endpointName: string, data: any, callback: Function) {
 
-			var endpoint = '/api/' + endpointName;
+			var endpoint = `/api/${endpointName}`;
 			console.log("putting: " + endpoint);
 
 			var request = new Common.RequestSender(endpoint, data, true);
@@ -267,7 +267,7 @@ module Views {
 
 		public apiDelete(endpointName: string, params: string[][], callback: Function) {
 
-			var endpoint = '/api/' + endpointName;
+			var endpoint = `/api/${endpointName}`;
 			console.log("deleting: " + endpoint);
 
 			var request = new Common.RequestSender(endpoint, null, true);
