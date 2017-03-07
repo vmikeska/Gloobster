@@ -1,4 +1,38 @@
 ﻿
+
+.all-page-pop {
+    position:fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+        
+    background-color: rgba(0, 0, 0, 0.5);
+    content: "";
+    display: block;
+    z-index: 99999;   
+
+
+    .frame {
+        position: absolute;
+        top:0;
+        bottom: 0;
+
+        left: 50%;
+        transform: translateX(-50%);
+
+        width: 100%;
+        max-width: 1280px;
+        min-width: 480px;
+
+        background-color: white;
+
+        overflow-y: auto;
+    }
+
+}
+
+
 .fly-tickets{
 
     .main-navi {
@@ -411,14 +445,18 @@
     .cat-all {
         
         margin-bottom: 1.5em;
+        padding-bottom: 1.5em;
+
+        border: 1px solid $dark-blue;
+        border-bottom: 5px solid $light-blue3;
+
+        border-radius: 4px;
 
         .cat-bar {            
             background-color: $dark-blue;
             padding: 0.5em;
+            padding-left: 1em;
 
-            /*border-top-left-radius: 4px;
-            border-top-right-radius: 4px;*/
-            
             .title-name {
                 display: inline-block;                
                 color: white;
@@ -493,6 +531,11 @@
             }
         }
 
+        .cat-cont-wrap {
+            padding-left: 4px;        
+            padding-right: 4px;
+
+        }
 
         .ico-wrap {
             display: inline-block;
@@ -583,11 +626,11 @@
     }
 
     .no-dests {
-        border: 2px solid $darker-gray;
+        /*border: 2px solid $darker-gray;*/
         color: $darker-gray;
         padding: 2em;
         text-align: center;       
-        border-radius: 2px;
+        /*border-radius: 2px;*/
 
         .ln1 {
             font-size: 1.6em;     
@@ -998,8 +1041,8 @@
             .item{
                 display: inline-block;
                 border: 2px solid $light-blue3;               
-                border-radius: 4px;                
-                font-weight: bold;
+                border-radius: 4px;
+                margin-bottom: 4px;
             }
         }
 
@@ -1015,13 +1058,12 @@
              
              display: inline-block;
              background-color: $green;
-             /*border: 2px solid $dark-blue;*/
+             
              border-radius: 4px;
 
              text-decoration: none;
 
              padding: 0.5em;
-             
              
              .icon-plus {
                  color: white;
@@ -1036,8 +1078,7 @@
                  font-size: 1.3em;
                  display: inline-block;
                  vertical-align: middle;
-                 margin-left: 0.3em;
-                 font-weight: bold;
+                 margin-left: 0.3em;                 
              }
 
              &:hover {
@@ -1088,6 +1129,90 @@
          }
 
      }
+
+     .flight-the-detail {
+         .f-header {
+             position: fixed;
+             top: 0;
+             left: 0;
+             right: 0;
+
+             padding: 1em;
+
+             background-color: white;
+             z-index: 9999999999;
+
+             background-color: $light-blue3;
+
+             color: white;
+
+
+             .f-tbl {
+                 display: table;
+                 width: 100%;
+
+                 .left {
+                     display: table-cell;
+                     text-align: left;
+                 }
+
+                 .right {
+                     display: table-cell;
+                     text-align: right;
+                 }
+             }
+
+             .title-holder {
+                 .link-back {
+                     vertical-align: middle;
+                     display: inline-block;
+
+                     cursor: pointer;
+
+                     &:hover {
+                         color: $yellow;
+                     }
+
+                 }
+
+                 .arrow {
+                     vertical-align: middle;
+                     display: inline-block;
+
+                     margin-left: 0.4em;
+                     margin-right: 0.4em;                     
+
+                     font-size: 1.2em;
+                 }
+
+                 .detail-txt {
+                     vertical-align: middle;
+                     display: inline-block;
+
+                     font-size: 1.3em;
+                     font-weight: 700;
+                 }
+             }
+
+             .close {
+                 display: inline-block;
+
+                 padding: 0.5em;
+
+                 font-size: 1.3em;
+
+                 color: white;
+
+                 cursor: pointer;
+
+                 &:hover {
+                     color: red;
+                 }
+             }
+
+         }
+     }
+
 
 
 
@@ -1305,6 +1430,19 @@
         text-align: left;        
         margin-bottom: 8px;
 
+        .dlg-btn-wrap {
+            display: inline-block;
+            cursor: pointer;
+            padding: 4px;
+            
+            &:hover {
+                border: 2px solid $yellow;
+                border-radius: 4px;
+                margin-top: -2px;
+                margin-left: -2px;
+            }
+        }
+
         .icon-home {
             color: $dark-blue;
             font-size: 1.3em;
@@ -1315,20 +1453,70 @@
             font-size: 1.1em;
         }
 
-        .airports{
-            display: inline-block;
+        .airports-cont {
+            position: relative;
 
-            .airport{
-                display: inline-block;
-                border: 1px dotted $light-blue;
-                padding-left: 1px;
-                padding-right: 1px;
-                border-radius: 4px;
-                margin-left: 2px;
-                margin-right: 2px;
-                font-size: 0.9em;
+            max-width: 240px;
+            min-width: 160px;
+            height: 1.2em;
+            
+            overflow: hidden;
+
+            .airports{
+                position: absolute;
+            
+                top: 0;
+                left: 0;
+
+                width: 1280px;
+
+                height: 1em;
+                
+                .airport{
+                    line-height: 1em;
+                    display: inline-block;
+                    border: 1px dotted $light-blue;
+                    padding-left: 1px;
+                    padding-right: 1px;
+                    border-radius: 4px;
+                    margin-left: 2px;
+                    margin-right: 2px;
+                    font-size: 0.9em;
+                }
+
             }
+
+            .edit-cont {
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+
+                width: 100px;
+
+                background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 56%, rgba(255,255,255,1) 100%);
+                background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,0)), color-stop(56%,rgba(255,255,255,1)), color-stop(100%,rgba(255,255,255,1)));
+                background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 56%,rgba(255,255,255,1) 100%);
+                background: -o-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 56%,rgba(255,255,255,1) 100%);
+                background: -ms-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 56%,rgba(255,255,255,1) 100%);
+                background: linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 56%,rgba(255,255,255,1) 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 );
+
+                text-align: right;
+
+                .edit {
+                    color: $dark-blue;
+
+                    &:hover {
+                        color: $light-blue3;
+
+                    }
+                }
+            }
+
         }
+
+            
     }
 
     .no-airs-info {
@@ -1563,8 +1751,8 @@
                 padding-bottom: 0.2em;
 
                 background-color: $info-blue2;
-                /*border-top-left-radius: 2px;
-                border-top-right-radius: 2px;*/
+                border-top-left-radius: 2px;
+                border-top-right-radius: 2px;
 
                 color: white;
 
@@ -1606,7 +1794,7 @@
             margin-right: 4px;
 
             @include above-width(1280) {
-                margin-right: 14px;
+                margin-right: 6px;
             }
 
             &:last-of-type {
@@ -1731,8 +1919,9 @@
                         }
                     }
 
-                    tr {                        
-                        
+                    tr {                                                
+                         text-align: left;
+
                         &:hover {
                             background-color: $light-blue4;
 
@@ -1826,8 +2015,10 @@
             .one-city-offer {
                 cursor: pointer;
 
+                text-align: left;
+
                 td {
-                    padding: 4px;
+                    padding: 4px;                    
                 }
                 
                 .btn {
@@ -1925,7 +2116,12 @@
             .flight {
                 padding-left: 20px;
                 text-align: left;
+                
                 border-bottom: 1px solid $light-blue6;
+
+                &:last-of-type {
+                    border-bottom: 0;
+                }
 
                 .top-line {                          
                     font-size: 0.8em;
@@ -2166,41 +2362,21 @@
 
       
   .city-deal {
-      position: relative;
-      border-top-left-radius: 4px;
-      border-top-right-radius: 4px;
-      border: 1px solid $light-blue;
-      border-top: 5px solid $light-blue3;
+      position: relative;      
+     
+     padding-top: 5em;
       
-      margin-bottom: 20px;
+       
+      margin-bottom: 1em;
 
-      .title-top {
-          font-size: 1.3em;
-          font-weight: bold;
-          padding: 12px;
-          background-color: $very-light-blue;    
-      }
-
+    
       .title-deal {
-          position: relative;
-          min-height: 30px;
-
-          background-color: $very-light-blue;          
-          
-          .txt {
-              display: inline-block;
-              font-size: 1.3em;
-              font-weight: bold;          
-              text-decoration: underline;
-              margin-left: 14px;
-              margin-bottom: 12px;
-          }
+          padding-top: 0.5em;
+          padding-bottom: 0.5em;
+          text-align: right;
 
           .deals-ordering {
               display: inline-block;
-              position: absolute;
-              top: 1px;
-              right: 5px;
               
               .items-table {
                   display: table;
@@ -2217,34 +2393,34 @@
                   color: white;                  
                   padding: 3px;
                   cursor: pointer;
+                  text-align: center;
 
                   &:hover{
                       background-color: $orange;
                   }
                       
                   &.active {
-                      background-color: $orange;
+                      background-color: $yellow;
                   }
               }
 
               .l {
-                  border-bottom-left-radius: 5px;
-                  border-top-left-radius: 5px;
+                  border-bottom-left-radius: 2px;
+                  border-top-left-radius: 2px;
               }
 
               .r {
-                  border-bottom-right-radius: 5px;
-                  border-top-right-radius: 5px;
+                  border-bottom-right-radius: 2px;
+                  border-top-right-radius: 2px;
               }
           }
-          
-
           
       }
 
       .splitter{
           padding: 12px;
           background-color: $very-light-blue;
+
           div{
               border-top: 1px solid $light-blue;
           }

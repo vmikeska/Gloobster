@@ -3,19 +3,23 @@
 		export class CustomDialog {
 
 				private $t;
-				
+				private $dlgFrameAll;
+
 				public init($html, title, custClass = "") {
 						var t = Views.ViewBase.currentView.registerTemplate("custom-dialog-template");
-					var context = {
-							title: title,
-							custClass: custClass
-					};
-					this.$t = $(t(context));
+						var context = {
+								title: title,
+								custClass: custClass
+						};
+						this.$t = $(t(context));
+
+						this.$dlgFrameAll = this.$t.find(".dlg-frame-all");
+
 						$("body").append(this.$t);
 
 						this.$t.find(".dlg-cont").html($html);
-
-						this.$t.fadeIn();
+						
+						this.$dlgFrameAll.fadeIn();
 
 						this.$t.click((e) => {
 								var isOut = e.target.className === "popup3";
@@ -25,47 +29,47 @@
 								}
 						});
 
-					this.$t.find(".close").click((e) => {
-							this.close();
-					});
-						
+						this.$t.find(".close").click((e) => {
+								this.close();
+						});
+
 				}
 
 				public addBtn(txt, cls, callback) {
 						var $b = $(`<a href="#" class="lbtn2 ${cls}">${txt}</a>`);
 						this.$t.find(".dlg-btns").append($b);
 
-					$b.click((e) => {
-							e.preventDefault();
-						callback();
-					});
+						$b.click((e) => {
+								e.preventDefault();
+								callback();
+						});
 				}
 
 				public close() {
-						this.$t.fadeOut(() => {
+						this.$dlgFrameAll.fadeOut(() => {
 								this.$t.remove();
 						});
 				}
 		}
 
-	export class HintDialog {
-	 private template;
-	 private $html;
+		export class HintDialog {
+				private template;
+				private $html;
 
-	 constructor() {
-		this.template = Views.ViewBase.currentView.registerTemplate("hint-template");
-	 }
+				constructor() {
+						this.template = Views.ViewBase.currentView.registerTemplate("hint-template");
+				}
 
-	 public create(message) {
-		this.$html = $(this.template({ message: message }));
-		 this.$html.find(".close").click((e) => {
-			e.preventDefault();
-			 this.$html.remove();
-		 });
+				public create(message) {
+						this.$html = $(this.template({ message: message }));
+						this.$html.find(".close").click((e) => {
+								e.preventDefault();
+								this.$html.remove();
+						});
 
-		 $("body").append(this.$html);
-	 }
-	}
+						$("body").append(this.$html);
+				}
+		}
 
 		export class UploadDialog {
 
@@ -82,134 +86,134 @@
 						this.$html.show();
 
 						$("body").append(this.$html);
-					this.visible = true;
+						this.visible = true;
 				}
 
 				public update(percent) {
-					if (this.$html) {
-						var pt = `${percent}%`;
-						this.$progresBar.find(".progress").css("width", pt);
-						this.$progresBar.find("span").text(pt);
-					}
+						if (this.$html) {
+								var pt = `${percent}%`;
+								this.$progresBar.find(".progress").css("width", pt);
+								this.$progresBar.find("span").text(pt);
+						}
 				}
 
 				public destroy() {
 
-					if (this.$html) {
-							this.$html.remove();
-							this.visible = false;
-					}
-					
+						if (this.$html) {
+								this.$html.remove();
+								this.visible = false;
+						}
+
 				}
 
 		}
 
-	export class InprogressDialog {
-	 private template;
-	 private $html;
+		export class InprogressDialog {
+				private template;
+				private $html;
 
-	 constructor() {
-		this.template = Views.ViewBase.currentView.registerTemplate("inPorgressDialog-template");
-	 }
+				constructor() {
+						this.template = Views.ViewBase.currentView.registerTemplate("inPorgressDialog-template");
+				}
 
-	 public create(message, $before) {
-		this.$html = $(this.template({ message: message }));		
-		$before.before(this.$html);		
-	 }
+				public create(message, $before) {
+						this.$html = $(this.template({ message: message }));
+						$before.before(this.$html);
+				}
 
-	 public remove() {
-		 this.$html.remove();
-	 }
-	}
+				public remove() {
+						this.$html.remove();
+				}
+		}
 
 		export class ErrorDialog {
 
-			public static show(error) {
+				public static show(error) {
 
-					var v = Views.ViewBase.currentView;
+						var v = Views.ViewBase.currentView;
 
-					var tmp = v.registerTemplate("error-dialog-template");
+						var tmp = v.registerTemplate("error-dialog-template");
 
-					var $h = $(tmp({ error: error }));
+						var $h = $(tmp({ error: error }));
 
-					$("body").append($h);
+						$("body").append($h);
 
-					$h.find(".refresh-btn").click((e) => {
-							e.preventDefault();
+						$h.find(".refresh-btn").click((e) => {
+								e.preventDefault();
 
-							window.location.reload(true);
+								window.location.reload(true);
 
-					});
-			}
-		}
-
-	export class InfoDialog {
-		private template;
-		private $html;
-
-		constructor() {
-			this.template = Views.ViewBase.currentView.registerTemplate("infoDialog-template");
-		}
-
-		public create(title, text, callback = null) {
-			var context = {
-				title: title,
-				text: text
-			};
-
-			this.$html = $(this.template(context));
-			this.$html.find(".cancel").click((e) => {
-				e.preventDefault();
-				if (callback) {
-					callback();
+						});
 				}
-				this.$html.fadeOut();
-			});
-
-			$("body").append(this.$html);
-			this.$html.fadeIn();
 		}
 
-		public hide() {
-			this.$html.hide();
+		export class InfoDialog {
+				private template;
+				private $html;
+
+				constructor() {
+						this.template = Views.ViewBase.currentView.registerTemplate("infoDialog-template");
+				}
+
+				public create(title, text, callback = null) {
+						var context = {
+								title: title,
+								text: text
+						};
+
+						this.$html = $(this.template(context));
+						this.$html.find(".cancel").click((e) => {
+								e.preventDefault();
+								if (callback) {
+										callback();
+								}
+								this.$html.fadeOut();
+						});
+
+						$("body").append(this.$html);
+						this.$html.fadeIn();
+				}
+
+				public hide() {
+						this.$html.hide();
+				}
+
 		}
 
-	}
+		export class ConfirmDialog {
+				private template;
+				private $html;
 
-	export class ConfirmDialog {
-		private template;
-		private $html;
+				constructor() {
+						this.template = Views.ViewBase.currentView.registerTemplate("confirmDialog-template");
+				}
 
-		constructor() {
-			this.template = Views.ViewBase.currentView.registerTemplate("confirmDialog-template");
+				public create(title, text, textCancel, textOk, okCallback) {
+						var context = {
+								title: title,
+								text: text,
+								textCancel: textCancel,
+								textOk: textOk
+						};
+
+						this.$html = $(this.template(context));
+						this.$html.find(".confirm").click((e) => {
+								e.preventDefault();
+								okCallback(this.$html);
+								this.$html.fadeOut();
+						});
+						this.$html.find(".cancel").click((e) => {
+								e.preventDefault();
+								this.$html.fadeOut();
+						});
+
+						$("body").append(this.$html);
+						this.$html.fadeIn();
+				}
+
+				public hide() {
+						this.$html.hide();
+				}
+
 		}
-
-		public create(title, text, textCancel, textOk, okCallback) {
-			var context = {
-				title: title,
-				text: text,
-				textCancel: textCancel,
-				textOk: textOk
-			};
-
-			this.$html = $(this.template(context));
-			this.$html.find(".confirm").click((e) => {
-				e.preventDefault();
-				okCallback(this.$html);
-				this.$html.fadeOut();
-			});
-			this.$html.find(".cancel").click((e) => {
-				e.preventDefault();
-				this.$html.fadeOut();
-			});
-
-			$("body").append(this.$html);
-			this.$html.fadeIn();
-		}
-
-	  public hide() {
-		  this.$html.hide();
-	  }
-
-	}
 }

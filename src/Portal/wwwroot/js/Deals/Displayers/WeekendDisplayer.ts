@@ -67,7 +67,9 @@ module Planning {
 							.value();	
 					
 					var lg = Common.ListGenerator.init(this.$cont, "weekend-week-template");
-					
+
+					lg.emptyTemplate = "no-destinations-tmp";
+
 					lg.clearCont = true;
 					lg.customMapping = (w) => {
 
@@ -105,15 +107,13 @@ module Planning {
 
 			public regEvent($group, $item, group, item) {
 				var flights = FlightConvert2.cFlights(item.flights);
-
-				var $lc = Common.LastItem.getLast(this.$cont, this.config.groupClass, $group.data("no"));
-
+					
 				var title = `${this.v.t("DealsFor", "jsDeals")} ${group.name}`;
 
 				var pairs: CodePair[] = [{ from: flights[0].from, to: flights[0].to }];
 
 				var cd = new WeekendDetail(pairs, title, group.gid);
-				cd.createLayout($lc);
+				cd.createLayout();
 				cd.init(flights);
 			}
 
@@ -186,8 +186,6 @@ module Planning {
 
 						var flightsOrig = this.extractFlights(item.flightsGroups);
 						var flights = FlightConvert2.cFlights(flightsOrig);
-
-						var $lc = Common.LastItem.getLast(this.$cont, "flight-result", $group.data("no"));
 						
 						var title = `${this.v.t("DealsFor", "jsDeals")} ${item.name}`;
 
@@ -195,7 +193,7 @@ module Planning {
 
 						var gid = 0;
 						var cd = new WeekendDetail(pairs, title, gid);
-						cd.createLayout($lc);
+						cd.createLayout();
 						cd.init(flights);						
 				}
 

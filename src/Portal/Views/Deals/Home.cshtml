@@ -1,4 +1,4 @@
-﻿@{		
+﻿@{
     ViewBag.BodyClass = "fly-tickets";
     ViewBag.MenuGroup = "Deals";
     ViewData["Title"] = "gloobster.com - travel deals";
@@ -13,34 +13,48 @@
 
 @Html.Partial("Scripts")
 
+<div id="allTheSearch">
+
+
 <div class="top-all wrapper hidden">
 
     <div class="top-tbl">
         <div class="ic l">
 
-            <div class="l1">
-                <div class="top-ribbon">
-                    <span class="icon-home"></span>
+            <div class="dlg-btn-wrap">
 
-                    @if (string.IsNullOrEmpty(Model.CityName))
-                    {
-                        <span class="home-location-name">@Model.W("CityNotSet")</span>
-                    }
-                    else
-                    {
-                        <span class="home-location-name">
+                <div class="l1">
+                    <div class="top-ribbon">
+                        <span class="icon-home"></span>
+
+                        @if (string.IsNullOrEmpty(Model.CityName))
+                        {
+                            <span class="home-location-name">@Model.W("CityNotSet")</span>
+                        }
+                        else
+                        {
+                            <span class="home-location-name">
                             <strong>@Model.CityName</strong>, @Model.CountryName
                         </span>
-                    }
+                        }
+                    </div>
                 </div>
-            </div>
 
-            <div class="l2">
-                <div class="airports"></div>
-                <a href="#" class="edit">@Model.W("EditBtn")</a>
+                <div class="l2">
+
+                    <div class="airports-cont">
+                        <div class="airports"></div>
+                        <div class="edit-cont">
+                            <span class="icon-edit-pencil edit"></span>
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
 
         </div>
+
         <div class="ic r">
 
             <div class="rating-filter hidden">
@@ -92,13 +106,13 @@
 </div>
 
 <div class="wrapper">
-    <div id="categoryNavi" class="navi-cont main-navi"></div>    
+    <div id="categoryNavi" class="navi-cont main-navi"></div>
 </div>
 
 <div class="classic-search-cont hidden">
-    
+
     <div class="search-bar">
-        
+
         <div class="wrapper">
 
             <div class="search-form">
@@ -147,13 +161,13 @@
 
                 </div>
                 <div class="search-group">
-                    
+
                     <div class="search-field">
                         <div class="capt">Return</div>
                         <div class="ctrl">
                             <div id="dateTo"></div>
                             <div>
-                                <input id="cbOneWay" type="checkbox"/><label for="cbOneWay">Just oneway</label>
+                                <input id="cbOneWay" type="checkbox" /><label for="cbOneWay">Just oneway</label>
                             </div>
                         </div>
                     </div>
@@ -180,22 +194,22 @@
                     <a href="#" id="btnSearch" class="lbtn2 green-orange">Search deals</a>
                 </div>
 
-                </div>
+            </div>
         </div>
     </div>
-    
+
     <div id="filterCont"></div>
 
     <div class="wrapper">
-        <div id="foundFlightsAll" class="found-flights-all hidden">            
+        <div id="foundFlightsAll" class="found-flights-all hidden">
             <div class="htbl">
                 <div class="left">
                     <span id="flightsFound" class="bold"></span> <span> flights in total were found</span>
                 </div>
                 <div class="right">
-                    <div id="orderSwitch" class="order-switch">                        
+                    <div id="orderSwitch" class="order-switch">
                         <div class="item by-score active">By score</div>
-                        <div class="item by-price">By price</div>                        
+                        <div class="item by-price">By price</div>
                     </div>
                 </div>
             </div>
@@ -208,7 +222,6 @@
     </div>
 
 </div>
-
 
 <div class="deals-search-cont hidden">
 
@@ -291,17 +304,41 @@
 
 </div>
 
+</div>
 
-    @Html.Partial("DestinationTemplates")
-    @Html.Partial("FlightResultsTemplates")
-    @Html.Partial("_DestPlaceCombo")
+<div id="flightTheDetail" class="flight-the-detail wrapper hidden">
+    
+    <div class="f-header">
+        <div class="wrapper">
+            <div class="f-tbl">
+                <div class="left">
+                    <span class="title-holder">
+                        <span class="link-back">Search results</span><span class="arrow">&#62;</span><span class="detail-txt"></span>
+                    </span>
+                </div>
+                <div class="right">
+                    <span class="icon-close-cross close"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="cont">
+        
+    </div>
 
-    <script>
-        function onBodyLoad() {
-            currentView = new Views.DealsView();
-            currentView.hasCity = @Model.HasCity.ToString().ToLower();
-            currentView.hasAirs = @Model.HasAirports.ToString().ToLower();
-            currentView.init();
-        }
+</div>
 
-    </script>
+@Html.Partial("DestinationTemplates")
+@Html.Partial("FlightResultsTemplates")
+@Html.Partial("_DestPlaceCombo")
+
+<script>
+    function onBodyLoad() {
+        currentView = new Views.DealsView();
+        currentView.hasCity = @Model.HasCity.ToString().ToLower();
+        currentView.hasAirs = @Model.HasAirports.ToString().ToLower();
+        currentView.init();
+    }
+
+</script>

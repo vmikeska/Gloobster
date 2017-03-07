@@ -22,6 +22,9 @@ var Planning;
             this.$cont.find("[data-b=\"" + id + "\"]").addClass(this.act);
         };
         FlightsOrdering.prototype.setFlights = function (flights) {
+            if (flights.length > 1) {
+                this.$cont.removeClass("hidden");
+            }
             this.flights = flights;
         };
         FlightsOrdering.prototype.change = function () {

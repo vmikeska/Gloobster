@@ -53,6 +53,7 @@ var Planning;
                 .sortBy("year")
                 .value();
             var lg = Common.ListGenerator.init(this.$cont, "weekend-week-template");
+            lg.emptyTemplate = "no-destinations-tmp";
             lg.clearCont = true;
             lg.customMapping = function (w) {
                 var wr = DateOps.getWeekendRange(w.week);
@@ -83,11 +84,10 @@ var Planning;
         };
         WeekendCityResultsItemsGenerator.prototype.regEvent = function ($group, $item, group, item) {
             var flights = Planning.FlightConvert2.cFlights(item.flights);
-            var $lc = Common.LastItem.getLast(this.$cont, this.config.groupClass, $group.data("no"));
             var title = this.v.t("DealsFor", "jsDeals") + " " + group.name;
             var pairs = [{ from: flights[0].from, to: flights[0].to }];
             var cd = new Planning.WeekendDetail(pairs, title, group.gid);
-            cd.createLayout($lc);
+            cd.createLayout();
             cd.init(flights);
         };
         WeekendCityResultsItemsGenerator.prototype.groupMapping = function (group) {
@@ -151,12 +151,11 @@ var Planning;
         WeekendCountryResultsItemsGenerator.prototype.regEvent = function ($group, $item, group, item) {
             var flightsOrig = this.extractFlights(item.flightsGroups);
             var flights = Planning.FlightConvert2.cFlights(flightsOrig);
-            var $lc = Common.LastItem.getLast(this.$cont, "flight-result", $group.data("no"));
             var title = this.v.t("DealsFor", "jsDeals") + " " + item.name;
             var pairs = [{ from: flights[0].from, to: flights[0].to }];
             var gid = 0;
             var cd = new Planning.WeekendDetail(pairs, title, gid);
-            cd.createLayout($lc);
+            cd.createLayout();
             cd.init(flights);
         };
         WeekendCountryResultsItemsGenerator.prototype.extractFlights = function (flightsGroups) {

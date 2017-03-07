@@ -3,27 +3,23 @@ var Planning;
     var WeekendDetail = (function () {
         function WeekendDetail(codePairs, title, gid) {
             this.v = Views.ViewBase.currentView;
+            this.switcher = new FlightDetailSwitcher();
+            this.switcher.init();
             this.flightDetails = new Planning.FlightDetails();
             this.gid = gid;
             this.title = title;
         }
         WeekendDetail.prototype.destroyLayout = function () {
-            $(".city-deal").remove();
+            this.$layout.remove();
         };
-        WeekendDetail.prototype.createLayout = function ($lastBox) {
-            var _this = this;
-            this.destroyLayout();
+        WeekendDetail.prototype.createLayout = function () {
             var cityDealLayout = this.v.registerTemplate("city-deals-weekend-template");
             var context = {
                 gid: this.gid,
                 title: this.title
             };
             this.$layout = $(cityDealLayout(context));
-            $lastBox.after(this.$layout);
-            this.$layout.find(".close").click(function (e) {
-                e.preventDefault();
-                _this.destroyLayout();
-            });
+            this.switcher.showDetail(this.$layout);
         };
         WeekendDetail.prototype.init = function (flights) {
             var _this = this;
@@ -37,9 +33,46 @@ var Planning;
         return WeekendDetail;
     }());
     Planning.WeekendDetail = WeekendDetail;
+    var FlightDetailSwitcher = (function () {
+        function FlightDetailSwitcher() {
+            this.$searching = $("#allTheSearch");
+            this.$detail = $("#flightTheDetail");
+            this.$detailCont = this.$detail.find(".cont");
+            this.$header = $(".header");
+            this.lastTop = 0;
+        }
+        FlightDetailSwitcher.prototype.init = function () {
+            var _this = this;
+            this.$detail.find(".close,.link-back").click(function () {
+                _this.hideDetail();
+            });
+        };
+        FlightDetailSwitcher.prototype.setTitle = function (txt) {
+            this.$detail.find(".detail-txt").html(txt);
+        };
+        FlightDetailSwitcher.prototype.showDetail = function ($html) {
+            this.lastTop = document.body.scrollTop;
+            this.$searching.addClass("hidden");
+            this.$detail.removeClass("hidden");
+            this.$header.addClass("hidden");
+            document.body.scrollTop = 0;
+            this.$detailCont.html($html);
+        };
+        FlightDetailSwitcher.prototype.hideDetail = function () {
+            this.$detailCont.empty();
+            this.$header.removeClass("hidden");
+            this.$searching.removeClass("hidden");
+            this.$detail.addClass("hidden");
+            document.body.scrollTop = this.lastTop;
+        };
+        return FlightDetailSwitcher;
+    }());
+    Planning.FlightDetailSwitcher = FlightDetailSwitcher;
     var CityDetail = (function () {
         function CityDetail(scoreLevel, codePairs, title, cityName, gid) {
             this.v = Views.ViewBase.currentView;
+            this.switcher = new FlightDetailSwitcher();
+            this.switcher.init();
             this.flightDetails = new Planning.FlightDetails();
             this.scoreLevel = scoreLevel;
             this.codePairs = codePairs;
@@ -57,24 +90,15 @@ var Planning;
             this.ordering.change();
             this.genMonthFlights();
         };
-        CityDetail.prototype.destroyLayout = function () {
-            $(".city-deal").remove();
-        };
-        CityDetail.prototype.createLayout = function ($lastBox) {
-            var _this = this;
-            this.destroyLayout();
+        CityDetail.prototype.createLayout = function () {
             var cityDealLayout = this.v.registerTemplate("city-deals-template");
             var context = {
                 gid: this.gid,
                 title: this.title
             };
             this.$layout = $(cityDealLayout(context));
-            $lastBox.after(this.$layout);
+            this.switcher.showDetail(this.$layout);
             this.initDeals();
-            this.$layout.find(".close").click(function (e) {
-                e.preventDefault();
-                _this.destroyLayout();
-            });
         };
         CityDetail.prototype.filterLayout = function (tmpName) {
             var t = this.v.registerTemplate(tmpName);

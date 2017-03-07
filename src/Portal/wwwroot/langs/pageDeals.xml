@@ -42,18 +42,10 @@
       <en>City name</en>
     </CityNamePlaceholder>
 
-    <EditBtn>
-      <en>edit</en>
-    </EditBtn>
-
     <SearchForAirportsPlaceholder>
       <en>+ Search for airports</en>
     </SearchForAirportsPlaceholder>
-
-    <RefreshResultsBtn>
-      <en>Refresh results</en>
-    </RefreshResultsBtn>
-
+    
     <ViewSwitchCountries>
       <en>Countries</en>
     </ViewSwitchCountries>
@@ -86,10 +78,6 @@
     <OrderScoreBtn>
       <en>by score</en>
     </OrderScoreBtn>
-
-    <OurBestDealsTitle>
-      <en>Our best deals</en>
-    </OurBestDealsTitle>
 
     <NotFlexible>
       <en>Not flexible? See other options in the following months</en>

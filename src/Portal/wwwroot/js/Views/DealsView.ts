@@ -23,12 +23,18 @@
 
 		private classicSearch: Planning.ClassicSearch;
 
-		private allSections = [];
+		public allSections = [];
 
 		public static listSize = ListSize.None;
 
 		constructor() {
 			super();
+
+			this.loginButtonsManager.onAfterCustom = () => {
+					this.allSections.forEach((s: Planning.SectionBlock) => {
+						window.location.reload(true);
+					});
+			};
 		}
 
 		private tabDealsId = "tabDeals";
@@ -54,11 +60,11 @@
 
 		private initTopBar() {
 
-			this.settings = new Planning.LocationSettingsDialog();
+			this.settings = new Planning.LocationSettingsDialog(this);
 
 			this.settings.initTopBar(this.hasCity, this.hasAirs);
 
-			$(".top-all .edit")
+			$(".top-all .dlg-btn-wrap")
 				.click((e) => {
 					e.preventDefault();
 					this.settings.initDlg();
@@ -102,7 +108,7 @@
 				this.countDelasCnt();
 			};
 			this.allSections.push(this.anytimeCat);
-
+				
 			this.weekendCat = new Planning.SectionBlock();
 			this.weekendCat.init(PlanningType.Weekend, this.$catsCont, "catWeekend", "Weekend deals", this.hasAirs);
 			this.weekendCat.onResultChange = () => {

@@ -12,9 +12,10 @@ var Common;
                 custClass: custClass
             };
             this.$t = $(t(context));
+            this.$dlgFrameAll = this.$t.find(".dlg-frame-all");
             $("body").append(this.$t);
             this.$t.find(".dlg-cont").html($html);
-            this.$t.fadeIn();
+            this.$dlgFrameAll.fadeIn();
             this.$t.click(function (e) {
                 var isOut = e.target.className === "popup3";
                 if (isOut) {
@@ -36,7 +37,7 @@ var Common;
         };
         CustomDialog.prototype.close = function () {
             var _this = this;
-            this.$t.fadeOut(function () {
+            this.$dlgFrameAll.fadeOut(function () {
                 _this.$t.remove();
             });
         };

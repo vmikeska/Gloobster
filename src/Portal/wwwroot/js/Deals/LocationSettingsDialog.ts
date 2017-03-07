@@ -120,13 +120,9 @@
 		}
 
 	export class LocationSettingsDialog {
-
-		public get v(): Views.ViewBase {
-				return Views.ViewBase.currentView;
-		}
-
-		private airTemplate = this.v.registerTemplate("homeAirportItem-template");
-		private contTmp = this.v.registerTemplate("loc-dlg-tmp");
+			
+		private airTemplate;
+		private contTmp;
 
 		private $airportsCont;
 		private $airContS;
@@ -135,8 +131,12 @@
 
 		private dialog: Common.CustomDialog;
 
-		constructor() {
-				
+		private v: Views.DealsView;
+
+		constructor(v: Views.DealsView) {
+			this.v = v;
+			this.airTemplate = this.v.registerTemplate("homeAirportItem-template");
+			this.contTmp = this.v.registerTemplate("loc-dlg-tmp");
 		}
 
 		public initTopBar(hasCity, hasAirs) {
@@ -161,8 +161,11 @@
 				this.dialog = new Common.CustomDialog();
 				this.dialog.init($tmp, "Airports and Home location settings", "air-dlg");
 				this.dialog.addBtn("Close", "green-orange", () => {
-					this.dialog.close();
-				});
+						this.v.allSections.forEach((s) => {
+							s.resultsEngine.refresh();
+						});
+						this.dialog.close();
+					});
 				
 				Views.AirLoc.registerLocationCombo($("#currentCity"), (place) => {
 						this.updateLoc(place.City, place.CountryCode);
@@ -181,13 +184,7 @@
 						$(".location-dialog").addClass("hidden");
 						this.hideRefresh();
 				});
-
-				$("#refreshResults").click((e) => {
-						e.preventDefault();
-						//this.dealsSearch.resultsEngine.refresh();
-						this.hideRefresh();
-				});
-
+				
 				this.hideRefresh();
 			}
 
@@ -202,12 +199,7 @@
 					$(".refresh-line").addClass("hidden");
 			}
 
-		private changed() {
-			//var sel = this.dealsSearch.planningMap.map.anySelected();
-			//if (sel) {
-			//	$(".refresh-line").removeClass("hidden");
-			//}
-
+		private changed() {			
 				if (this.hasAirports()) {
 					$(".no-airs-info").hide();
 				}

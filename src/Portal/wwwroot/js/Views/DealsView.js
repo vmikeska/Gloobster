@@ -8,6 +8,7 @@ var Views;
     var DealsView = (function (_super) {
         __extends(DealsView, _super);
         function DealsView() {
+            var _this = this;
             _super.call(this);
             this.$dealsCont = $(".deals-search-cont");
             this.$classicCont = $(".classic-search-cont");
@@ -15,6 +16,11 @@ var Views;
             this.allSections = [];
             this.tabDealsId = "tabDeals";
             this.tabClassicsId = "tabClassics";
+            this.loginButtonsManager.onAfterCustom = function () {
+                _this.allSections.forEach(function (s) {
+                    window.location.reload(true);
+                });
+            };
         }
         Object.defineProperty(DealsView.prototype, "v", {
             get: function () {
@@ -35,9 +41,9 @@ var Views;
         };
         DealsView.prototype.initTopBar = function () {
             var _this = this;
-            this.settings = new Planning.LocationSettingsDialog();
+            this.settings = new Planning.LocationSettingsDialog(this);
             this.settings.initTopBar(this.hasCity, this.hasAirs);
-            $(".top-all .edit")
+            $(".top-all .dlg-btn-wrap")
                 .click(function (e) {
                 e.preventDefault();
                 _this.settings.initDlg();

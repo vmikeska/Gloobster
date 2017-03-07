@@ -17,6 +17,11 @@ module Planning {
 				private flights;
 
 				public setFlights(flights) {
+
+						if (flights.length > 1) {
+							this.$cont.removeClass("hidden");
+						}
+
 					this.flights = flights;
 				}
 
@@ -81,8 +86,7 @@ module Planning {
 				public genFlights($cont, flights: Flight[]) {
 						var lg = Common.ListGenerator.init($cont, "connection-flight-template");
 						lg.clearCont = true;
-						//lg.isAsync = true;
-
+						
 						lg.listLimit = 20;
 						lg.listLimitMoreTmp = "flights-list-more-tmp";
 						lg.listLimitLessTmp = "flights-list-less-tmp";

@@ -283,9 +283,7 @@ module Planning {
 						var to = $item.data("t");
 						var gid = $group.data("gid");
 						var name = $group.data("name");
-
-						var $lc = Common.LastItem.getLast(this.$cont, this.config.groupClass, $group.data("no"));
-
+						
 						var result = _.find(this.results, (r) => { return r.from === from && r.to === to });
 
 						var flights = FlightConvert2.cFlights(result.fs);
@@ -295,7 +293,9 @@ module Planning {
 						var pairs: CodePair[] = [{ from: from, to: to }];
 
 						var cd = new CityDetail(this.scoreLevel, pairs, title, name, gid);
-						cd.createLayout($lc);
+
+
+						cd.createLayout();
 						cd.init(flights);
 				}
 
@@ -336,9 +336,7 @@ module Planning {
 
 				protected regEvent($group, $item, group, item) {
 						var gid = $item.data("gid");
-
-						var $lc = Common.LastItem.getLast(this.$cont, this.config.groupClass, $group.data("no"));
-
+						
 						var results = _.filter(this.results, (r) => { return r.gid === gid });
 						var first = _.first(results);
 						var name = first.name;
@@ -358,7 +356,7 @@ module Planning {
 						var title = `${this.v.t("DealsFor", "jsDeals")} ${name}`;
 
 						var cd = new CityDetail(this.scoreLevel, pairs, title, name, gid);
-						cd.createLayout($lc);
+						cd.createLayout();
 						cd.init(flights);
 				}
 		}
