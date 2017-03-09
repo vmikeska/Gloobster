@@ -12,7 +12,7 @@
 				private static queue: IQueueItem[] = [];
 				
 				public static getImageById(id, type: FlightCacheRecordType, size: ListSize, $group) {
-						console.log(`QQ:GettingImg: ${id}`);
+						//console.log(`QQ:GettingImg: ${id}`);
 
 						var image = _.find(this.images, { id: id });
 						if (!image) {
@@ -28,7 +28,7 @@
 									this.exeQueueSafe();
 								}
 						} else {								
-								console.log(`QQ:Applaying: ${id}`);
+								//console.log(`QQ:Applaying: ${id}`);
 								this.applyImage($group, image);
 						}						
 				}
@@ -37,7 +37,7 @@
 
 				private static exeQueueSafe() {
 						this.dret.receive(() => {
-								console.log(`QQ:ExecutingCache`);
+								//console.log(`QQ:ExecutingCache`);
 								this.exeQueue();
 					});
 				}
@@ -58,7 +58,7 @@
 
 						this.v.apiGet("PlaceImage", data, (images) => {
 
-								console.log(`QQ:Received: ${images.length}`);
+								//console.log(`QQ:Received: ${images.length}`);
 								images.forEach((image: IImageRecord) => {
 										
 										this.images.push(image);
@@ -66,7 +66,7 @@
 										
 										var $group = $(`.group_${image.id}`);
 
-										console.log(`QQ:Applaying-get: ${image.id}`);
+										//console.log(`QQ:Applaying-get: ${image.id}`);
 										this.applyImage($group, image);
 									
 								});

@@ -116,7 +116,7 @@ var Planning;
             var _this = this;
             var $tmp = this.contTmp();
             this.dialog = new Common.CustomDialog();
-            this.dialog.init($tmp, "Airports and Home location settings", "air-dlg");
+            this.dialog.init($tmp, this.v.t("AirsAndLocationSettings", "jsDeals"), "air-dlg");
             this.dialog.addBtn("Close", "green-orange", function () {
                 _this.v.allSections.forEach(function (s) {
                     s.resultsEngine.refresh();

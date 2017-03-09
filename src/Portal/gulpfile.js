@@ -6,18 +6,33 @@ var gulp = require("gulp"),
     cssmin = require("gulp-cssmin"),
     uglify = require("gulp-uglify"),
     sass = require('gulp-sass'),
+    clean = require('gulp-clean'),
     sizereport = require('gulp-sizereport'),
     ghtmlSrc = require('gulp-html-src'),
     print = require('gulp-print'),
     resources = require('gulp-resources'),
     gulpif = require('gulp-if'),
+    fs = require("fs"),
     project = require("./project.json");
+
 
 var webroot = "./" + project.webroot + "/";
 var jsBuildPath = webroot + "jsb/";
 
 var scssPath = webroot + "scss/**/*.scss";
 var scssDest = webroot + "css";
+
+function getVersion() {
+    var verFilePath = webroot + "../ScriptsVersion.cs";    
+    var verFile = fs.readFileSync(verFilePath, "utf8");
+    var verPrms1 = verFile.split(" ");
+    var verPrms2 = verPrms1[verPrms1.length - 1].split(";");
+    var version = verPrms2[0];
+    return version;
+}
+
+var version = getVersion();
+
 
 var data = [
         {
@@ -81,7 +96,7 @@ var data = [
             o: "tb"
         },
         {
-            i: "Deals/Home",
+            i: "Deals/Scripts",
             o: "deals"
         },
         {
@@ -107,11 +122,16 @@ gulp.task("default", function () {
     gulp.watch(scssPath, ["buildStyles"]);    
 });
 
-gulp.task("buildJsFromPages", function () {
+gulp.task("cleanScripts", function () {
+    return gulp.src(jsBuildPath + "*.*", { read: false })
+      .pipe(clean());
+});
+
+gulp.task("buildJsFromPages", ["cleanScripts"], function () {
 
     function buildOne(d) {
         var srcFileName = webroot + "../Views/" + d.i + ".cshtml";
-        var destFileName = jsBuildPath + d.o + ".js";
+        var destFileName = jsBuildPath + d.o + "-" + version +  ".js";
         console.log("building from: " + srcFileName + " to: " + destFileName);
 
         return gulp.src(srcFileName)
@@ -121,6 +141,8 @@ gulp.task("buildJsFromPages", function () {
             .pipe(uglify())
             .pipe(gulp.dest("."));
     }
+
+
 
     data.forEach(function(d) {
         buildOne(d);

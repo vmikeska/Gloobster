@@ -7,6 +7,7 @@
 @using System.Collections.Generic
 @using System.Threading.Tasks
 @using Gloobster.Common
+@using Gloobster.Portal
 @using Gloobster.Portal.Controllers.Portal
 @using Gloobster.Portal.ViewModels
 @using Microsoft.Data.Entity.Metadata.Internal
@@ -16,7 +17,7 @@
 
 @if (GloobsterConfig.UseMiniScripts)
 {
-    <script src="/jsb/tripDetail.js" type="text/javascript" data-notbuild="true"></script>
+    <script src="/jsb/tripDetail-@(ScriptsVersion.Version).js" type="text/javascript" data-notbuild="true"></script>
 }
 else
 {

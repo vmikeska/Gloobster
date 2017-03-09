@@ -105,52 +105,12 @@
 			this.hasAnyPlaces((hasPlaces) => {
 				if (!hasPlaces) {
 					this.editMap();
-
-					if (!hasAirs) {
-						//this.planningMap.enableMap(false);
-						//this.initMapDisabler();
-					}
+						
 				}
 			});
-
-				this.initResizer();
-
-
-
-			var $dv = $("#dealsWizard");
-			var $doc = $(document);
-
-				//not used - finish it or not ?
-			$doc.scroll(() => {
-
-					//todo: unregister event when not needed
-					if (!$dv.length) {
-						return;
-					}
-
-				var treshold = $dv.offset().top + $dv.height();
-
-				var current = $doc.scrollTop();
-
-				if (treshold < current) {
-						console.log("over");	
-				}
-
 				
-			});
-				
-			//$("html,body").offset().scrollTop
 		}
-
-		
-
-		private initResizer() {
-			$(document).on("resizeEvent", (e, width) => {
-						console.log("my width " + width);
-					});
-		}
-
-
+			
 		public refreshResults() {
 				this.displayer.refresh(this.grouping.selected);
 			}
@@ -197,16 +157,17 @@
 		}
 
 		private getInfoTxt() {
-					if (this.type === PlanningType.Anytime) {
-						return "By this type of search, we will be looking for any kind of deal defined by your cities and countries you'd like to visit. Deparature, arrival or how many days you'd like to stay is here not a thing.";
+				if (this.type === PlanningType.Anytime) {
+						
+						return this.v.t("InfoAnytime", "jsDeals");
 					}
 
 					if (this.type === PlanningType.Weekend) {
-							return "By this type of search, we will find best deals for following weekends of cities and countries defined by you.";
+							return this.v.t("InfoWeekend", "jsDeals");
 					}
 
 					if (this.type === PlanningType.Custom) {
-							return "Make completly custom defined search. Setup frequency of email notifications and we will keep you updated on the best deals.";
+							return this.v.t("InfoCustom", "jsDeals");
 					}
 			}
 
@@ -382,7 +343,7 @@
 					
 				$c.find(".delete").click((e) => {
 						var cd = new Common.ConfirmDialog();
-						cd.create("Search removal", "Would you like to delete this search?", "Cancel", "Delete", () => {
+						cd.create(this.v.t("SearchRemoval", "jsDeals"), this.v.t("SearchRemovalDlgBody", "jsDeals"), this.v.t("Cancel", "jsLayout"), this.v.t("Delete", "jsLayout"), () => {
 								var sdl = new SearchDataLoader();
 								sdl.deleteSearch(this.sectConfig.customId, () => {
 									this.$cont.remove();

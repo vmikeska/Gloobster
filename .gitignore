@@ -11,3 +11,4 @@ obj
 /src/Portal/wwwroot/FileRepository
 /DBScripts/Cities.json
 node_modules
+/src/Portal/wwwroot/jsb

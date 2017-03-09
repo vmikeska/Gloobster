@@ -3,6 +3,7 @@
 @using System.Threading.Tasks
 @using Gloobster.Common
 @using Gloobster.Enums
+@using Gloobster.Portal
 @using Newtonsoft.Json
 @model SettingsViewModel
 
@@ -15,7 +16,7 @@
 
 @if (GloobsterConfig.UseMiniScripts)
 {
-    <script src="/jsb/userSettings.js" type="text/javascript" data-notbuild="true"></script>
+    <script src="/jsb/userSettings-@(ScriptsVersion.Version).js" type="text/javascript" data-notbuild="true"></script>
 }
 else
 {

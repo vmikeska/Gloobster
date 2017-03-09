@@ -1,11 +1,12 @@
 ﻿
 @using Gloobster.Common
+@using Gloobster.Portal
 
 <link href="/lib/leaflet/dist/leaflet.css" rel="stylesheet" />
 
 @if (GloobsterConfig.UseMiniScripts)
 {
-    <script src="/jsb/deals.js" type="text/javascript" data-notbuild="true"></script>
+    <script src="/jsb/deals-@(ScriptsVersion.Version).js" type="text/javascript" data-notbuild="true"></script>
 }
 else
 {

@@ -1,4 +1,6 @@
-﻿
+﻿@using Microsoft.Data.Entity.Metadata.Internal
+
+
 <script id="result-box-city-template" type="text/x-handlebars-template">
     <div class="flight-result group_{{gid}}" data-gid="{{gid}}" data-name="{{title}}">
         <div class="img-cont">
@@ -168,13 +170,13 @@
 
 <script id="flights-list-more-tmp" type="text/x-handlebars-template">
     <div class="more-less-btn-cont expander">
-        <a href="#" class="more lbtn2 bold more-less-btn">more...</a>
+        <a href="#" class="more lbtn2 bold more-less-btn">@Model.W("MoreBtn2")</a>
     </div>
 </script>
 
 <script id="flights-list-less-tmp" type="text/x-handlebars-template">
     <div class="more-less-btn-cont collapser">
-        <a href="#" class="less lbtn2 bold more-less-btn">...less</a>
+        <a href="#" class="less lbtn2 bold more-less-btn">@Model.W("LessBtn2")</a>
     </div>
 </script>
 
@@ -182,13 +184,13 @@
 
 <script id="flights-list-more-small-tmp" type="text/x-handlebars-template">
     <div class="more-less-btn-cont-small expander">
-        <a href="#" class="more lbtn2 more-less-btn">more...</a>
+        <a href="#" class="more lbtn2 more-less-btn">@Model.W("MoreBtn2")</a>
     </div>
 </script>
 
 <script id="flights-list-less-small-tmp" type="text/x-handlebars-template">
     <div class="more-less-btn-cont-small collapser">
-        <a href="#" class="less lbtn2 more-less-btn">...less</a>
+        <a href="#" class="less lbtn2 more-less-btn">@Model.W("LessBtn2")</a>
     </div>
 </script>
 

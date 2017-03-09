@@ -1,5 +1,6 @@
 ﻿@using System.Threading.Tasks
 @using Gloobster.Common
+@using Gloobster.Portal
 @{		
     ViewData["Title"] = "gloobster.com - friends";
     ViewBag.BodyClass = "friends";
@@ -7,7 +8,7 @@
 
 @if (GloobsterConfig.UseMiniScripts)
 {
-    <script src="/jsb/friends.js" type="text/javascript" data-notbuild="true"></script>
+    <script src="/jsb/friends-@(ScriptsVersion.Version).js" type="text/javascript" data-notbuild="true"></script>
 }
 else
 {

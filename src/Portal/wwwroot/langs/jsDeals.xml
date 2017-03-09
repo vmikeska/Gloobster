@@ -78,26 +78,52 @@
       <en>week</en>
     </WeekNo>
 
-    <NoAirsTitle>
-      <en>No airports</en>
-    </NoAirsTitle>
-    
-    <NoAirsBody>
-      <en>Your location and airports must be selected first</en>
-    </NoAirsBody>
+    <SectionTitleAnytime>
+      <en>Anytime deals</en>
+    </SectionTitleAnytime>
 
-    <TabAnytime>
-      <en>All deals</en>
-    </TabAnytime>
-
-    <TabWeekend>
+    <SectionTitleWeekend>
       <en>Weekend deals</en>
-    </TabWeekend>
+    </SectionTitleWeekend>
 
-    <TabCustom>
-      <en>Long term search</en>
-    </TabCustom> 
+    <DealsSearchTab>
+      <en>Deals search</en>
+    </DealsSearchTab>
 
+    <ClasssicSearchTab>
+      <en>Classic search</en>
+    </ClasssicSearchTab>
 
+    <InfoAnytime>
+      <en>By this type of search, we will be looking for any kind of deal defined by your cities and countries you'd like to visit. Deparature, arrival or how many days you'd like to stay is here not a thing.</en>
+    </InfoAnytime>
+
+    <InfoWeekend>
+      <en>By this type of search, we will find best deals for following weekends of cities and countries defined by you.</en>
+    </InfoWeekend>
+
+    <InfoCustom>
+      <en>Make completly custom defined search. Setup frequency of email notifications and we will keep you updated on the best deals.</en>
+    </InfoCustom>
+
+    <AirsAndLocationSettings>
+      <en>Airports and Home location settings</en>
+    </AirsAndLocationSettings>
+
+    <FromPlacePlaceholder>
+      <en>From place</en>
+    </FromPlacePlaceholder>
+
+    <ToPlacePlaceholder>
+      <en>To place</en>
+    </ToPlacePlaceholder>
+
+    <NotAllPlacesTitleDlg>
+      <en>Places must be filled out</en>
+    </NotAllPlacesTitleDlg>
+
+    <NotAllPlacesBodyDlg>
+      <en>Source and destination place must be filled out</en>
+    </NotAllPlacesBodyDlg>
 
   </module>

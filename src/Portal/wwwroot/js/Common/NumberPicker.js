@@ -33,7 +33,7 @@ var Common;
             var os = Views.ViewBase.getMobileOS();
             this.isNative = os !== OS.Other;
             if (this.isNative) {
-                this.$control = $("<input type=\"number\" min=\"" + this.min + "\" max=\"" + this.max + "\" />");
+                this.$control = $("<input type=\"number\" min=\"" + this.min + "\" max=\"" + this.max + "\" value=\"" + this.min + "\" />");
                 this.$cont.html(this.$control);
             }
             else {

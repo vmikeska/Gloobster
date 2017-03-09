@@ -8,6 +8,7 @@ var Planning;
             this.flightDetails = new Planning.FlightDetails();
             this.gid = gid;
             this.title = title;
+            this.switcher.setTitle(title);
         }
         WeekendDetail.prototype.destroyLayout = function () {
             this.$layout.remove();
@@ -79,6 +80,7 @@ var Planning;
             this.cityName = cityName;
             this.gid = gid;
             this.title = title;
+            this.switcher.setTitle(title);
         }
         CityDetail.prototype.init = function (flights) {
             var _this = this;

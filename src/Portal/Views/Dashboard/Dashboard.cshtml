@@ -6,6 +6,7 @@
 @using Newtonsoft.Json
 @using System.Linq;
 @using Gloobster.DomainObjects
+@using Gloobster.Portal
 
 @model ViewModelDashboard
 
@@ -20,7 +21,7 @@
 
 @if (GloobsterConfig.UseMiniScripts)
 {
-    <script src="/jsb/dashboard.js" type="text/javascript" data-notbuild="true"></script>
+    <script src="/jsb/dashboard-@(ScriptsVersion.Version).js" type="text/javascript" data-notbuild="true"></script>
 }
 else
 {

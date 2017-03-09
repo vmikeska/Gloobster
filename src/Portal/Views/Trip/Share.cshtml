@@ -5,6 +5,7 @@
 
 @using System.Threading.Tasks
 @using Gloobster.Common
+@using Gloobster.Portal
 @using Gloobster.Portal.Controllers.Portal
 @using Gloobster.Portal.ViewModels
 @using Microsoft.AspNet.Mvc.Rendering
@@ -31,7 +32,7 @@
 
     @if (GloobsterConfig.UseMiniScripts)
     {
-        <script src="/jsb/shareTrip.js" type="text/javascript" data-notbuild="true"></script>
+        <script src="/jsb/shareTrip-@(ScriptsVersion.Version).js" type="text/javascript" data-notbuild="true"></script>
     }
     else
     {

@@ -217,7 +217,7 @@ body {
 
 .master-cont {
     min-height: 600px;
-
+    position: relative;
 }
 
 a {
@@ -867,3 +867,4 @@ button:active {
 @import "new-admin";
 @import "place-search";
 @import "preloaders";
+@import "timeline";

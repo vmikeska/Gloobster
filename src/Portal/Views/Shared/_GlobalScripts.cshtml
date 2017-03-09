@@ -1,6 +1,7 @@
 ﻿@using Gloobster.Common
 @using System.Linq;
 @using System.Threading.Tasks
+@using Gloobster.Portal
 @using Gloobster.Portal.ViewModels
 @using Newtonsoft.Json
 @model ViewModelBase
@@ -16,7 +17,7 @@
 
 @if (GloobsterConfig.UseMiniScripts)
 {
-    <script src="/jsb/globalScripts.js" type="text/javascript" data-notbuild="true"></script>
+    <script src="/jsb/globalScripts-@(ScriptsVersion.Version).js" type="text/javascript" data-notbuild="true"></script>
 }
 else
 {

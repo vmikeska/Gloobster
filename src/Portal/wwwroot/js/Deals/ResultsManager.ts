@@ -225,6 +225,8 @@ module Planning {
 
 		private startQuerying() {
 
+				this.drawQueue();
+
 			if (!this.doRequery) {
 				return;
 			}

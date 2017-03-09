@@ -1,0 +1,48 @@
+
+
+.timeline {
+
+    .main-frame {
+        border-bottom: 2px solid black;
+        position: absolute;
+        /*overflow: hidden;*/
+
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+
+
+        .item {
+            position: absolute;
+
+            height: 50px;
+
+            border-radius: 4px;
+
+            font-size: 0.7em;
+            
+        }
+
+        .time {
+            position: absolute;
+            display: inline-block;
+            width: 30px;
+            border-left: 2px solid black;
+            font-size: 0.7em;
+            text-align: left;
+
+            bottom: 0;
+
+            .month{
+                font-weight: bold;
+            }
+
+            .year {
+                font-weight: bold;
+            }
+        }
+
+    }
+
+}

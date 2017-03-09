@@ -5,6 +5,13 @@ var Planning;
             this.ocls = "opened";
             this.selected = Planning.LocationGrouping.ByCity;
         }
+        Object.defineProperty(GroupCombo.prototype, "v", {
+            get: function () {
+                return Views.ViewBase.currentView;
+            },
+            enumerable: true,
+            configurable: true
+        });
         GroupCombo.prototype.init = function (section, $sect, groupings) {
             var _this = this;
             this.section = section;
@@ -37,15 +44,15 @@ var Planning;
                 };
                 if (i === Planning.LocationGrouping.ByCity) {
                     item.icon = "city";
-                    item.txt = "By city";
+                    item.txt = _this.v.t("ByCity", "jsDeals");
                 }
                 if (i === Planning.LocationGrouping.ByCountry) {
                     item.icon = "country";
-                    item.txt = "By country";
+                    item.txt = _this.v.t("ByCountry", "jsDeals");
                 }
                 if (i === Planning.LocationGrouping.ByContinent) {
                     item.icon = "continent";
-                    item.txt = "By continent";
+                    item.txt = _this.v.t("ByContinent", "jsDeals");
                 }
                 items.push(item);
             });

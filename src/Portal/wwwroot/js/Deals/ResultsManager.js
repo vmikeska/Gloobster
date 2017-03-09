@@ -167,6 +167,7 @@ var Planning;
         };
         ResultsManager.prototype.startQuerying = function () {
             var _this = this;
+            this.drawQueue();
             if (!this.doRequery) {
                 return;
             }

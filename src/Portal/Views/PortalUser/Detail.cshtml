@@ -3,6 +3,7 @@
 @using System.Threading.Tasks
 @using Gloobster.Common
 @using Gloobster.Enums
+@using Gloobster.Portal
 @using Gloobster.Portal.ViewModels
 @using Microsoft.Data.Entity.Metadata.Internal
 @model UserDetailViewModel
@@ -18,7 +19,7 @@
 
 @if (GloobsterConfig.UseMiniScripts)
 {
-    <script src="/jsb/userDetail.js" type="text/javascript" data-notbuild="true"></script>
+    <script src="/jsb/userDetail-@(ScriptsVersion.Version).js" type="text/javascript" data-notbuild="true"></script>
 }
 else
 {

@@ -1,6 +1,7 @@
 ﻿@using System.Threading.Tasks
 @using Gloobster.Common
 @using Gloobster.Enums
+@using Gloobster.Portal
 @using Newtonsoft.Json
 
 @using Gloobster.Portal.ViewModels
@@ -19,7 +20,7 @@
 
 @if (GloobsterConfig.UseMiniScripts)
 {
-    <script src="/jsb/pins.js" type="text/javascript" data-notbuild="true"></script>
+    <script src="/jsb/pins-@(ScriptsVersion.Version).js" type="text/javascript" data-notbuild="true"></script>
 }
 else
 {   

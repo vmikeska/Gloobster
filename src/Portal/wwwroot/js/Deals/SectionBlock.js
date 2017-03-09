@@ -62,27 +62,7 @@ var Planning;
             this.hasAnyPlaces(function (hasPlaces) {
                 if (!hasPlaces) {
                     _this.editMap();
-                    if (!hasAirs) {
-                    }
                 }
-            });
-            this.initResizer();
-            var $dv = $("#dealsWizard");
-            var $doc = $(document);
-            $doc.scroll(function () {
-                if (!$dv.length) {
-                    return;
-                }
-                var treshold = $dv.offset().top + $dv.height();
-                var current = $doc.scrollTop();
-                if (treshold < current) {
-                    console.log("over");
-                }
-            });
-        };
-        SectionBlock.prototype.initResizer = function () {
-            $(document).on("resizeEvent", function (e, width) {
-                console.log("my width " + width);
             });
         };
         SectionBlock.prototype.refreshResults = function () {
@@ -122,13 +102,13 @@ var Planning;
         };
         SectionBlock.prototype.getInfoTxt = function () {
             if (this.type === PlanningType.Anytime) {
-                return "By this type of search, we will be looking for any kind of deal defined by your cities and countries you'd like to visit. Deparature, arrival or how many days you'd like to stay is here not a thing.";
+                return this.v.t("InfoAnytime", "jsDeals");
             }
             if (this.type === PlanningType.Weekend) {
-                return "By this type of search, we will find best deals for following weekends of cities and countries defined by you.";
+                return this.v.t("InfoWeekend", "jsDeals");
             }
             if (this.type === PlanningType.Custom) {
-                return "Make completly custom defined search. Setup frequency of email notifications and we will keep you updated on the best deals.";
+                return this.v.t("InfoCustom", "jsDeals");
             }
         };
         SectionBlock.prototype.initNameEdit = function () {
@@ -261,7 +241,7 @@ var Planning;
                 });
                 $c.find(".delete").click(function (e) {
                     var cd = new Common.ConfirmDialog();
-                    cd.create("Search removal", "Would you like to delete this search?", "Cancel", "Delete", function () {
+                    cd.create(_this.v.t("SearchRemoval", "jsDeals"), _this.v.t("SearchRemovalDlgBody", "jsDeals"), _this.v.t("Cancel", "jsLayout"), _this.v.t("Delete", "jsLayout"), function () {
                         var sdl = new Planning.SearchDataLoader();
                         sdl.deleteSearch(_this.sectConfig.customId, function () {
                             _this.$cont.remove();

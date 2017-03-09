@@ -6,6 +6,7 @@
 
 @using System.Threading.Tasks
 @using Gloobster.Common
+@using Gloobster.Portal
 @using Gloobster.Portal.ViewModels
 @using Microsoft.AspNet.Mvc.Rendering
 @model ViewModelTripDetail
@@ -14,7 +15,7 @@
 
 @if (GloobsterConfig.UseMiniScripts)
 {
-    <script src="/jsb/tripoverview.js" type="text/javascript" data-notbuild="true"></script>
+    <script src="/jsb/tripoverview-@(ScriptsVersion.Version).js" type="text/javascript" data-notbuild="true"></script>
 }
 else
 {

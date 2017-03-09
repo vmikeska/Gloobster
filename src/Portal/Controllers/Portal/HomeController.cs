@@ -44,7 +44,18 @@ namespace Gloobster.Portal.Controllers.Portal
 
             return View(vm);
         }
-       
+
+        [CreateAccount]
+        public IActionResult Timeline()
+        {
+            var vm = CreateViewModelInstance<ViewModelTimeline>();
+            //vm.DefaultLangModuleName = "pageHome";
+            vm.LoadClientTexts();
+            
+
+            return View(vm);
+        }
+
         public IActionResult Component(string id)
         {
             var viewModel = CreateViewModelInstance<ViewModelComponent>();

@@ -132,21 +132,6 @@ module Planning {
 				});
 		}
 
-
-		//private setFormState(started) {
-		//		var days = this.slider.getRange();
-
-		//		var dep = this.depDate.format("l");
-		//		var arr = this.arrDate.format("l");
-
-		//		$(".earliest-dep").html(dep);
-		//		$(".latest-arr").html(arr);
-		//		$(".days-from").html(days.from);
-		//		$(".days-to").html(days.to);
-		//}
-
-
-
 		private initFreq() {
 			var items = [{ days: 1, text: "Daily" }, { days: 7, text: "Weekly" }, { days: 30, text: "Monthly" }];
 
@@ -201,18 +186,7 @@ module Planning {
 			});
 				
 		}
-			
-	//		this.menu.onSearchChange = (id) => {
-	//		this.dataLoader.getSearch(id, (search) => {
-	//				this.loadSearch(search);
-	//				this.searchId = id;
-
-	//				//todo: was commented out coz of build, do we still need it ?
-	//				//this.dealsSearch.planningMap.loadCategory(PlanningType.Custom);							
-	//				this.dealsSearch.resultsEngine.initalCall(PlanningType.Custom, this.searchId);
-	//		});
-	//}
-			
+	
 		private loadSearch1() {
 			
 			this.depDate = TravelB.DateUtils.myDateToMomentDate(this.search.deparature);
@@ -260,8 +234,7 @@ module Planning {
 				var pdu = new PropsDataUpload(this.searchId, "custAir");
 				pdu.addVal("text", text);
 				pdu.addVal("origId", val);
-				pdu.send(() => {
-						//this.dealsSearch.resultsEngine.refresh();
+				pdu.send(() => {						
 					callback();
 				});
 			}
@@ -279,13 +252,4 @@ module Planning {
 	}
 		
 }
-
-//this.$form.find(".adder").click((e) => {
-//				e.preventDefault();
-//				this.dataLoader.createNewSearch((search) => {
-//				this.menu.addItem(search.id, search.name);
-//				this.loadSearch(search);
-//				this.searchId = search.id;
-//				});
-//});
 

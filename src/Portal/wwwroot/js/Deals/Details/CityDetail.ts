@@ -28,6 +28,8 @@ module Planning {
 
 						this.gid = gid;
 						this.title = title;
+
+						this.switcher.setTitle(title);
 				}
 
 				public destroyLayout() {
@@ -136,6 +138,8 @@ module Planning {
 						this.cityName = cityName;
 						this.gid = gid;
 						this.title = title;
+
+						this.switcher.setTitle(title);
 				}
 
 				public init(flights: Flight[]) {

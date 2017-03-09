@@ -2,6 +2,7 @@
 @using System.Threading.Tasks
 @using Gloobster.Common
 @using Gloobster.Entities
+@using Gloobster.Portal
 @using Gloobster.Portal.ViewModels
 @using Microsoft.AspNet.Mvc.Rendering
 @using Microsoft.Data.Entity.Metadata.Internal
@@ -21,7 +22,7 @@
 
 @if (GloobsterConfig.UseMiniScripts)
 {    
-    <script src="/jsb/wikihome.js" type="text/javascript" data-notbuild="true"></script>
+    <script src="/jsb/wikihome-@(ScriptsVersion.Version).js" type="text/javascript" data-notbuild="true"></script>
 }
 else
 {

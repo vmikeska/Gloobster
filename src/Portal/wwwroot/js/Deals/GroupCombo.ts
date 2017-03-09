@@ -16,6 +16,10 @@
 
 		private section: SectionBlock;
 
+		private get v(): Views.ViewBase {
+				return Views.ViewBase.currentView;
+				}
+
 		public init(section: SectionBlock, $sect, groupings) {
 			this.section = section;
 
@@ -56,17 +60,17 @@
 
 							if (i === LocationGrouping.ByCity) {
 									item.icon = "city";
-									item.txt = "By city";
+									item.txt = this.v.t("ByCity", "jsDeals");
 							}
 
 							if (i === LocationGrouping.ByCountry) {
 									item.icon = "country";
-									item.txt = "By country";
+									item.txt = this.v.t("ByCountry", "jsDeals");
 							}
 
 							if (i === LocationGrouping.ByContinent) {
 									item.icon = "continent";
-									item.txt = "By continent";
+									item.txt = this.v.t("ByContinent", "jsDeals");
 							}
 
 							items.push(item);

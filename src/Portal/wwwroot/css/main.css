@@ -85,7 +85,8 @@ body {
   white-space: nowrap; }
 
 .master-cont {
-  min-height: 600px; }
+  min-height: 600px;
+  position: relative; }
 
 a {
   color: #3298C1; }
@@ -860,7 +861,7 @@ button:active {
       .menu_all .links_all .links a {
         font-size: 1.1em;
         display: inline-block;
-        font-weight: 600;
+        font-weight: 700;
         color: white;
         text-decoration: none;
         vertical-align: top;
@@ -1066,19 +1067,19 @@ footer {
     z-index: 99999; }
   .popup3 .dlg-frame-all {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 25%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 99999;
     background-color: white;
+    color: black;
     border-top: 6px solid #005476;
     border-radius: 4px;
     box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.1);
-    color: black;
     height: auto;
-    /*max-width: 640px;
-        min-width: 320px;*/
-    width: 50%;
-    z-index: 99999; }
+    min-width: 460px;
+    max-width: 800px; }
     .popup3 .dlg-frame-all .dlg-frame {
       position: relative; }
       .popup3 .dlg-frame-all .dlg-frame .dlg-title {
@@ -5661,8 +5662,7 @@ footer {
     width: 30px;
     text-align: center;
     padding: 4px;
-    background-color: white;
-    font-weight: bold; }
+    background-color: white; }
   .fly-tickets .slider-cont .tbl {
     display: table;
     width: 100%; }
@@ -6628,7 +6628,8 @@ footer {
     border-radius: 0;
     font-size: 1em;
     width: 120px;
-    padding-left: 28px; }
+    padding-left: 28px;
+    background-color: white; }
   .calendar-cont .my-calendar-win {
     position: absolute;
     left: 0;
@@ -7589,3 +7590,29 @@ footer {
   100% {
     -moz-transform: scale(0.3);
     background-color: rgba(255, 255, 255, 0.92); } }
+
+.timeline .main-frame {
+  border-bottom: 2px solid black;
+  position: absolute;
+  /*overflow: hidden;*/
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0; }
+  .timeline .main-frame .item {
+    position: absolute;
+    height: 50px;
+    border-radius: 4px;
+    font-size: 0.7em; }
+  .timeline .main-frame .time {
+    position: absolute;
+    display: inline-block;
+    width: 30px;
+    border-left: 2px solid black;
+    font-size: 0.7em;
+    text-align: left;
+    bottom: 0; }
+    .timeline .main-frame .time .month {
+      font-weight: bold; }
+    .timeline .main-frame .time .year {
+      font-weight: bold; }

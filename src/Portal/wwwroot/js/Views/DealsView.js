@@ -76,13 +76,13 @@ var Views;
                 });
             };
             this.anytimeCat = new Planning.SectionBlock();
-            this.anytimeCat.init(PlanningType.Anytime, this.$catsCont, "catAnytime", "Anytime deals", this.hasAirs);
+            this.anytimeCat.init(PlanningType.Anytime, this.$catsCont, "catAnytime", this.v.t("SectionTitleAnytime", "jsDeals"), this.hasAirs);
             this.anytimeCat.onResultChange = function () {
                 _this.countDelasCnt();
             };
             this.allSections.push(this.anytimeCat);
             this.weekendCat = new Planning.SectionBlock();
-            this.weekendCat.init(PlanningType.Weekend, this.$catsCont, "catWeekend", "Weekend deals", this.hasAirs);
+            this.weekendCat.init(PlanningType.Weekend, this.$catsCont, "catWeekend", this.v.t("SectionTitleWeekend", "jsDeals"), this.hasAirs);
             this.weekendCat.onResultChange = function () {
                 _this.countDelasCnt();
             };
@@ -127,10 +127,10 @@ var Views;
             var _this = this;
             this.tabs = new Common.Tabs($("#categoryNavi"), "category");
             this.tabs.initCall = false;
-            this.tabs.addTab(this.tabDealsId, "Deals search", function () {
+            this.tabs.addTab(this.tabDealsId, this.v.t("DealsSearchTab", "jsDeals"), function () {
                 _this.setTab(true);
             });
-            this.tabs.addTab(this.tabClassicsId, "Classic search", function () {
+            this.tabs.addTab(this.tabClassicsId, this.v.t("ClasssicSearchTab", "jsDeals"), function () {
                 _this.setTab(false);
                 _this.classicSearch.stateChanged();
             });

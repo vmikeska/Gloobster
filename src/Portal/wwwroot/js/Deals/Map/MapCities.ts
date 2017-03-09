@@ -176,12 +176,7 @@ module Planning {
 		}
 
 		private cityClicked(e) {
-
-			//if (!this.map.planningMap.dealsSearch.hasAirs) {
-			//		this.map.planningMap.dealsSearch.showAirsFirst();
-			//	return;
-			//}
-
+				
 			e.target.setIcon(MapIcons.selected);
 				e.target.selected = !e.target.selected;
 

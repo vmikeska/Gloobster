@@ -75,6 +75,51 @@
 
     <CompBtnPinboard>
       <en>Build your map</en>
-    </CompBtnPinboard> 
+    </CompBtnPinboard>
+
+    <TitleDirectSearch>
+      <en>Gloobster - cheapest flights</en>
+    </TitleDirectSearch>
+
+    <TitleDealsSearch>
+      <en>Are you fexible? Try our new best deals search!</en>
+    </TitleDealsSearch>
+
+    <FromPlace>
+      <en>From</en>
+    </FromPlace>
+
+    <ToPlace>
+      <en>To</en>
+    </ToPlace>
+
+    <SearchDepart>
+      <en>Depart</en>
+    </SearchDepart>
+
+    <SearchReturn>
+      <en>Return</en>
+    </SearchReturn>
+
+    <JustOneWay>
+      <en>Just oneway</en>
+    </JustOneWay>
+
+    <SearchDeals>
+      <en>Search deals</en>
+    </SearchDeals>
+
+
+    <WizardStep1>
+      <en>1. Set your home city</en>
+    </WizardStep1>
+
+    <WizardStep2>
+      <en>2. Customize your home airports</en>
+    </WizardStep2>
+
+    <WizardStep3>
+      <en>3. Choose places you'd like to visit</en>
+    </WizardStep3>
 
   </module>

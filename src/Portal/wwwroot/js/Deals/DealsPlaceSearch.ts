@@ -28,12 +28,15 @@
 						this.$cont.toggleClass("disabled", state);
 				}
 
-				public setByCode(code, type) {
+				public setByCode(code, type, callback: Function = null) {
 						var data = [["byId", "true"], ["id", code], ["type", type]];
 
 						this.v.apiGet("DealsPlace", data, (item) => {
-						this.setActiveItem(item, false);
-					});
+								this.setActiveItem(item, false);
+								if (callback) {
+									callback();
+								}
+						});
 				}
 
 				private setActiveItem(item, triggerChange) {

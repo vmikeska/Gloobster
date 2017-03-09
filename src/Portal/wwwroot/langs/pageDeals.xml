@@ -6,17 +6,6 @@
     </Title>
 
 
-    <InfoBlock1>
-      <en>
-        Choose your home airports and places you'd like to visit.
-        We will keep the information saved and anytime you come back you'll be offerd the best travel deals for your favourite places.
-        Set up a long term search and let us help you find your perfect summer trip.
-      </en>
-    </InfoBlock1>
-
-    <InfoBlock2>
-      <en>We will evaluate the best travel deals for your holiday, weekend or help make your dream of visiting an exotic country true.</en>
-    </InfoBlock2>
 
     <CityNotSet>
       <en>City not set</en>
@@ -201,7 +190,167 @@
 
     <NewsletterFrequency>
       <en>How often would you like to receive the newsletter?</en>
-    </NewsletterFrequency> 
+    </NewsletterFrequency>
 
+    <NoResultsTxt>
+      <en>You haven't set any destinations yet or no results were found</en>
+    </NoResultsTxt>
+
+    <NoResultsChooseOr>
+      <en>OR</en>
+    </NoResultsChooseOr>
+
+    <NoResultsChooseMap>
+      <en>Click out your destinations</en>
+    </NoResultsChooseMap>
+
+    <NoResultsChooseSearch>
+      <en>Search for your destinations</en>
+    </NoResultsChooseSearch>
+
+    <BarIcoDelete>
+      <en>Delete search</en>
+    </BarIcoDelete>
+
+    <BarIcoSettings>
+      <en>Search settings</en>
+    </BarIcoSettings>
+
+    <BarIcoMap>
+      <en>Edit on map</en>
+    </BarIcoMap>
+
+    <BarIcoList>
+      <en>Edit as list</en>
+    </BarIcoList>
+
+    <SaveNameBtn>
+      <en>Save</en>
+    </SaveNameBtn>
+
+    <PlaceSearchCities>
+      <en>Cities</en>
+    </PlaceSearchCities>
+
+    <PlaceSearchCountries>
+      <en>Countries</en>
+    </PlaceSearchCountries>
+
+    <FlightsFilterFlights>
+      <en>flights</en>
+    </FlightsFilterFlights>
+
+    <FlightsFilterFrom>
+      <en>from</en>
+    </FlightsFilterFrom>
+
+    <FilterConnections>
+      <en>Connections filter</en>
+    </FilterConnections>
+
+    <FilterDepart>
+      <en>Depart time filter</en>
+    </FilterDepart>
+
+    <FilterReturn>
+      <en>Return time filter</en>
+    </FilterReturn>
+
+    <ByCity>
+      <en>By city</en>
+    </ByCity>
+
+    <MottoClassic>
+      <en>Best travel deals on the internet</en>
+    </MottoClassic>
+
+    <UseHomeAirsports>
+      <en>Use home airports</en>
+    </UseHomeAirsports>
+
+    <FromPlace>
+      <en>From</en>
+    </FromPlace>
+
+    <ToPlace>
+      <en>To</en>
+    </ToPlace>
+
+    <SearchDepart>
+      <en>Depart</en>
+    </SearchDepart>
+
+    <SearchReturn>
+      <en>Return</en>
+    </SearchReturn>
+
+    <SearchSeats>
+      <en>Seats</en>
+    </SearchSeats>
+
+    <PlusMinusDays>
+      <en>+/- days </en>
+    </PlusMinusDays>
+
+    <JustOneWay>
+      <en>Just oneway</en>
+    </JustOneWay>
+
+    <SearchDeals>
+      <en>Search deals</en>
+    </SearchDeals>
+
+    <FlightsTotalFound>
+      <en>flights in total were found</en>
+    </FlightsTotalFound>
+
+
+    <WizardTitle>
+      <en>Try our best deals search</en>
+    </WizardTitle>
+
+    <WizardTxt>
+      <en>Pick the places you'd like to visit and we will keep you up to date on the best deals. Don't worry about spam, you decide how often we should notify you. Furthermore, our unique score algorithm helps you to recognize an excellent deal offer.</en>
+    </WizardTxt>
+
+    <WizardStep1>
+      <en>1. Set your home city</en>
+    </WizardStep1>
+
+    <WizardStep2>
+      <en>2. Customize your home airports</en>
+    </WizardStep2>
+
+    <WizardStep3>
+      <en>3. Choose places you'd like to visit</en>
+    </WizardStep3>
+
+    <WizardFinished>
+      <en>Finished with airports, proceed to the next step</en>
+    </WizardFinished>
+
+    <WizardCloseDialog>
+      <en>Close this dialog</en>
+    </WizardCloseDialog>
+
+    <WizardHomeCityPlaceholder>
+      <en>Set your home city</en>
+    </WizardHomeCityPlaceholder>
+
+    <AddCustomSearchBtn>
+      <en>Add custom search</en>
+    </AddCustomSearchBtn>
+
+    <SearchResultsDetail>
+      <en>Search results</en>
+    </SearchResultsDetail>
+
+    <MoreBtn2>
+      <en>more...</en>
+    </MoreBtn2>
+
+    <LessBtn2>
+      <en>...less</en>
+    </LessBtn2>
 
   </module>

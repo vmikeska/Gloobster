@@ -2,7 +2,9 @@
 @using Gloobster.Common
 @using Newtonsoft.Json
 @using System.Linq;
+@using Gloobster.Portal
 @using Microsoft.AspNet.Mvc.Rendering
+@using Microsoft.Data.Entity.Metadata.Internal
 
 @model Gloobster.Portal.ViewModels.TravelBViewModel
 
@@ -22,7 +24,7 @@
 
 @if (GloobsterConfig.UseMiniScripts)
 {
-    <script src="/jsb/tb.js" type="text/javascript" data-notbuild="true"></script>
+    <script src="/jsb/tb-@(ScriptsVersion.Version).js" type="text/javascript" data-notbuild="true"></script>
 }
 else
 {

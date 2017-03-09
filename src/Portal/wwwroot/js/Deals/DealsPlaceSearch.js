@@ -23,11 +23,15 @@ var Planning;
             }
             this.$cont.toggleClass("disabled", state);
         };
-        DealsPlaceSearch.prototype.setByCode = function (code, type) {
+        DealsPlaceSearch.prototype.setByCode = function (code, type, callback) {
             var _this = this;
+            if (callback === void 0) { callback = null; }
             var data = [["byId", "true"], ["id", code], ["type", type]];
             this.v.apiGet("DealsPlace", data, function (item) {
                 _this.setActiveItem(item, false);
+                if (callback) {
+                    callback();
+                }
             });
         };
         DealsPlaceSearch.prototype.setActiveItem = function (item, triggerChange) {

@@ -19,12 +19,12 @@ var Planning;
             var $depTime = this.timeSlider($f.find(".dep-time-filter"), "depTime", function (from, to) {
                 _this.depTimeFrom = from;
                 _this.depTimeTo = to;
-                _this.filterFlightsTime();
+                _this.execFilter();
             });
             var $arrTime = this.timeSlider($f.find(".arr-time-filter"), "arrTime", function (from, to) {
                 _this.arrTimeFrom = from;
                 _this.arrTimeTo = to;
-                _this.filterFlightsTime();
+                _this.execFilter();
             });
             var $airFilterAll = $f.find(".air-filter-all");
             var pairs = [];
@@ -40,7 +40,7 @@ var Planning;
             if (this.hasMoreConns) {
                 this.airSel = new Planning.AirportSelector($airFilterAll.find(".air-filter-cont"), pairs);
                 this.airSel.onChange = function () {
-                    _this.filterFlightsTime();
+                    _this.execFilter();
                 };
                 this.airSel.init();
             }
@@ -73,7 +73,15 @@ var Planning;
             stops--;
             return stops;
         };
-        FlightsFilter.prototype.filterFlightsTime = function () {
+        FlightsFilter.prototype.execFilter = function () {
+            var _this = this;
+            this.search.majorPreloader(true);
+            setTimeout(function () {
+                _this.processFilter();
+                _this.search.majorPreloader(false);
+            }, 200);
+        };
+        FlightsFilter.prototype.processFilter = function () {
             var _this = this;
             var flights = _.filter(this.search.lastFlights, function (f) {
                 var first = _.first(f.parts);
@@ -138,7 +146,7 @@ var Planning;
             var $cont = $("#stopsCont");
             var lg = Common.ListGenerator.init($cont, "stops-filter-item-tmp");
             lg.evnt("input", function (e, $item, $target, item) {
-                _this.filterFlightsTime();
+                _this.execFilter();
             })
                 .setEvent("change");
             lg.generateList(this.lastStopCats);
@@ -217,42 +225,46 @@ var Planning;
             var _this = this;
             $("#btnSearch").click(function (e) {
                 e.preventDefault();
-                var canBuild = _this.canBuildLink();
-                if (!canBuild) {
-                    var id = new Common.InfoDialog();
-                    id.create("Places must be filled out", "Source and destination place must be filled out");
-                    return;
-                }
-                var state = _this.getState();
-                var data = [
-                    ["from", state.codeFrom],
-                    ["to", state.codeTo],
-                    ["fromType", state.codeFromType],
-                    ["toType", state.codeToType],
-                    ["dateFrom", state.dateFromTrans],
-                    ["dateTo", state.dateToTrans],
-                    ["useHomeAirsFrom", state.depHome],
-                    ["useHomeAirsTo", state.retHome],
-                    ["depFlexDays", state.depFlexDays],
-                    ["retFlexDays", state.retFlexDays],
-                    ["justOneway", state.justOneway],
-                    ["passengers", state.passCnt]
-                ];
-                _this.majorPreloader(true);
-                _this.v.apiGet("KiwiSearch", data, function (fs) {
-                    _this.lastFlights = Planning.FlightConvert2.cFlights(fs);
-                    _this.lastFlights.forEach(function (f) {
-                        f.stars = Planning.AnytimeAggUtils.getScoreStars(f.score);
-                        f.scoreOk = f.score >= 0.5;
-                    });
-                    _this.sortBy();
-                    _this.lastJustOneway = _this.$cbOneWay.prop("checked");
-                    _this.flightDetail.genFlights(_this.$results, _this.lastFlights);
-                    _this.showTotalResults(_this.lastFlights.length);
-                    _this.filter.create();
-                    Views.ViewBase.scrollTo($("#filterCont"));
-                    _this.majorPreloader(false);
+                _this.send();
+            });
+        };
+        ClassicSearch.prototype.send = function () {
+            var _this = this;
+            var canBuild = this.canBuildLink();
+            if (!canBuild) {
+                var id = new Common.InfoDialog();
+                id.create(this.v.t("NotAllPlacesTitleDlg", "jsDeals"), this.v.t("NotAllPlacesBodyDlg", "jsDeals"));
+                return;
+            }
+            var state = this.getState();
+            var data = [
+                ["from", state.codeFrom],
+                ["to", state.codeTo],
+                ["fromType", state.codeFromType],
+                ["toType", state.codeToType],
+                ["dateFrom", state.dateFromTrans],
+                ["dateTo", state.dateToTrans],
+                ["useHomeAirsFrom", state.depHome],
+                ["useHomeAirsTo", state.retHome],
+                ["depFlexDays", state.depFlexDays],
+                ["retFlexDays", state.retFlexDays],
+                ["justOneway", state.justOneway],
+                ["passengers", state.passCnt]
+            ];
+            this.majorPreloader(true);
+            this.v.apiGet("KiwiSearch", data, function (fs) {
+                _this.lastFlights = Planning.FlightConvert2.cFlights(fs);
+                _this.lastFlights.forEach(function (f) {
+                    f.stars = Planning.AnytimeAggUtils.getScoreStars(f.score);
+                    f.scoreOk = f.score >= 0.5;
                 });
+                _this.sortBy();
+                _this.lastJustOneway = _this.$cbOneWay.prop("checked");
+                _this.flightDetail.genFlights(_this.$results, _this.lastFlights);
+                _this.showTotalResults(_this.lastFlights.length);
+                _this.filter.create();
+                Views.ViewBase.scrollTo($("#filterCont"));
+                _this.majorPreloader(false);
             });
         };
         ClassicSearch.prototype.stateChanged = function () {
@@ -340,11 +352,11 @@ var Planning;
         };
         ClassicSearch.prototype.init = function () {
             var _this = this;
-            this.searchFrom = new Planning.DealsPlaceSearch($("#searchFrom"), "From place");
+            this.searchFrom = new Planning.DealsPlaceSearch($("#searchFrom"), this.v.t("FromPlacePlaceholder", "jsDeals"));
             this.searchFrom.onChange = function () {
                 _this.stateChanged();
             };
-            this.searchTo = new Planning.DealsPlaceSearch($("#searchTo"), "To place");
+            this.searchTo = new Planning.DealsPlaceSearch($("#searchTo"), this.v.t("ToPlacePlaceholder", "jsDeals"));
             this.searchTo.onChange = function () {
                 _this.stateChanged();
             };
@@ -378,27 +390,10 @@ var Planning;
             this.regSearch();
         };
         ClassicSearch.prototype.initComps = function () {
+            var _this = this;
             var isValid = notNull(this.v.getUrlParam("depHome"));
             if (!isValid) {
                 return;
-            }
-            var depHome = parseBool(this.v.getUrlParam("depHome"));
-            if (depHome) {
-                this.$cbUseHomeAirsFrom.prop("checked", true);
-            }
-            else {
-                var fromCode = this.v.getUrlParam("fc");
-                var fromType = this.v.getUrlParam("ft");
-                this.searchFrom.setByCode(fromCode, fromType);
-            }
-            var retHome = parseBool(this.v.getUrlParam("retHome"));
-            if (retHome) {
-                this.$cbUseHomeAirsTo.prop("checked", true);
-            }
-            else {
-                var toCode = this.v.getUrlParam("tc");
-                var toType = this.v.getUrlParam("tt");
-                this.searchTo.setByCode(toCode, toType);
             }
             var depDate = TravelB.DateUtils.transToMomentDate(this.v.getUrlParam("dep"));
             this.dateFrom.setDate(depDate);
@@ -418,6 +413,35 @@ var Planning;
             this.retFlexDays.val(retFlex);
             var seats = this.v.getUrlParam("seats");
             this.passangers.val(seats);
+            this.initDepart(function () {
+                _this.initReturn(function () {
+                    _this.send();
+                });
+            });
+        };
+        ClassicSearch.prototype.initDepart = function (callback) {
+            if (callback === void 0) { callback = null; }
+            var depHome = parseBool(this.v.getUrlParam("depHome"));
+            if (depHome) {
+                this.$cbUseHomeAirsFrom.prop("checked", true);
+            }
+            else {
+                var fromCode = this.v.getUrlParam("fc");
+                var fromType = this.v.getUrlParam("ft");
+                this.searchFrom.setByCode(fromCode, fromType, callback);
+            }
+        };
+        ClassicSearch.prototype.initReturn = function (callback) {
+            if (callback === void 0) { callback = null; }
+            var retHome = parseBool(this.v.getUrlParam("retHome"));
+            if (retHome) {
+                this.$cbUseHomeAirsTo.prop("checked", true);
+            }
+            else {
+                var toCode = this.v.getUrlParam("tc");
+                var toType = this.v.getUrlParam("tt");
+                this.searchTo.setByCode(toCode, toType, callback);
+            }
         };
         return ClassicSearch;
     }());
@@ -437,8 +461,7 @@ var Planning;
         };
         Preloaders.p2 = function ($cont) {
             if ($cont === void 0) { $cont = null; }
-            var $h = $("<div class=\"fountainG-all " + this
-                .idClass + "\"><div id=\"fountainG_1\" class=\"fountainG\"></div><div id=\"fountainG_2\" class=\"fountainG\"></div><div id=\"fountainG_3\" class=\"fountainG\"></div><div id=\"fountainG_4\" class=\"fountainG\"></div><div id=\"fountainG_5\" class=\"fountainG\"></div><div id=\"fountainG_6\" class=\"fountainG\"></div><div id=\"fountainG_7\" class=\"fountainG\"></div><div id=\"fountainG_8\" class=\"fountainG\"></div></div>");
+            var $h = $("<div class=\"fountainG-all " + this.idClass + "\"><div id=\"fountainG_1\" class=\"fountainG\"></div><div id=\"fountainG_2\" class=\"fountainG\"></div><div id=\"fountainG_3\" class=\"fountainG\"></div><div id=\"fountainG_4\" class=\"fountainG\"></div><div id=\"fountainG_5\" class=\"fountainG\"></div><div id=\"fountainG_6\" class=\"fountainG\"></div><div id=\"fountainG_7\" class=\"fountainG\"></div><div id=\"fountainG_8\" class=\"fountainG\"></div></div>");
             if (!$cont) {
                 return $h;
             }

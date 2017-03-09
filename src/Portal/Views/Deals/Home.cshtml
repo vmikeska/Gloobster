@@ -13,307 +13,304 @@
 
 @Html.Partial("Scripts")
 
+
 <div id="allTheSearch">
 
 
-<div class="top-all wrapper hidden">
+    <div class="top-all wrapper hidden">
 
-    <div class="top-tbl">
-        <div class="ic l">
+        <div class="top-tbl">
+            <div class="ic l">
 
-            <div class="dlg-btn-wrap">
+                <div class="dlg-btn-wrap">
 
-                <div class="l1">
-                    <div class="top-ribbon">
-                        <span class="icon-home"></span>
+                    <div class="l1">
+                        <div class="top-ribbon">
+                            <span class="icon-home"></span>
 
-                        @if (string.IsNullOrEmpty(Model.CityName))
-                        {
-                            <span class="home-location-name">@Model.W("CityNotSet")</span>
-                        }
-                        else
-                        {
-                            <span class="home-location-name">
-                            <strong>@Model.CityName</strong>, @Model.CountryName
-                        </span>
-                        }
-                    </div>
-                </div>
-
-                <div class="l2">
-
-                    <div class="airports-cont">
-                        <div class="airports"></div>
-                        <div class="edit-cont">
-                            <span class="icon-edit-pencil edit"></span>
+                            @if (string.IsNullOrEmpty(Model.CityName))
+                            {
+                                <span class="home-location-name">@Model.W("CityNotSet")</span>
+                            }
+                            else
+                            {
+                                <span class="home-location-name">
+                                    <strong>@Model.CityName</strong>, @Model.CountryName
+                                </span>
+                            }
                         </div>
+                    </div>
+
+                    <div class="l2">
+
+                        <div class="airports-cont">
+                            <div class="airports"></div>
+                            <div class="edit-cont">
+                                <span class="icon-edit-pencil edit"></span>
+                            </div>
+                        </div>
+
                     </div>
 
                 </div>
 
             </div>
 
-        </div>
+            <div class="ic r">
 
-        <div class="ic r">
+                <div class="rating-filter hidden">
+                    <div class="levels">
 
-            <div class="rating-filter hidden">
-                <div class="levels">
-
-                    <div class="itm">
-                        <div class="level lev5 active" data-s="5">
-                            <div id="delasEx" class="num">0</div>
-                            <div class="stars">
-                                <span class="icon-star-full"></span>
-                                <span class="icon-star-full"></span>
-                                <span class="icon-star-full"></span>
-                                <span class="icon-star-full"></span>
-                                <span class="icon-star-full"></span>
+                        <div class="itm">
+                            <div class="level lev5 active" data-s="5">
+                                <div id="delasEx" class="num">0</div>
+                                <div class="stars">
+                                    <span class="icon-star-full"></span>
+                                    <span class="icon-star-full"></span>
+                                    <span class="icon-star-full"></span>
+                                    <span class="icon-star-full"></span>
+                                    <span class="icon-star-full"></span>
+                                </div>
+                                <div class="txt">@Model.W("Star5Deals")</div>
                             </div>
-                            <div class="txt">@Model.W("Star5Deals")</div>
                         </div>
-                    </div>
 
-                    <div class="itm">
-                        <div class="level lev3" data-s="3">
-                            <div id="delasGo" class="num">0</div>
-                            <div class="stars">
-                                <span class="icon-star-full"></span>
-                                <span class="icon-star-full"></span>
-                                <span class="icon-star-full"></span>
+                        <div class="itm">
+                            <div class="level lev3" data-s="3">
+                                <div id="delasGo" class="num">0</div>
+                                <div class="stars">
+                                    <span class="icon-star-full"></span>
+                                    <span class="icon-star-full"></span>
+                                    <span class="icon-star-full"></span>
+                                </div>
+                                <div class="txt">@Model.W("Star3Deals")</div>
                             </div>
-                            <div class="txt">@Model.W("Star3Deals")</div>
                         </div>
-                    </div>
 
-                    <div class="itm">
-                        <div class="level lev1" data-s="1">
-                            <div id="delasSt" class="num">0</div>
-                            <div class="stars">
-                                <span class="icon-star-full"></span>
+                        <div class="itm">
+                            <div class="level lev1" data-s="1">
+                                <div id="delasSt" class="num">0</div>
+                                <div class="stars">
+                                    <span class="icon-star-full"></span>
+                                </div>
+                                <div class="txt">@Model.W("Star1Deals")</div>
                             </div>
-                            <div class="txt">@Model.W("Star1Deals")</div>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
-            </div>
 
+            </div>
         </div>
+
+
     </div>
-
-
-</div>
-
-<div class="wrapper">
-    <div id="categoryNavi" class="navi-cont main-navi"></div>
-</div>
-
-<div class="classic-search-cont hidden">
-
-    <div class="search-bar">
-
-        <div class="wrapper">
-
-            <div class="search-form">
-
-                <h1>Your fly tickets - our problem</h1>
-
-                <div class="search-group first-line">
-
-                    <div class="search-field">
-                        <div class="capt">From</div>
-                        <div class="ctrl">
-                            <div id="searchFrom"></div>
-                            <div>
-                                <input id="cbUseHomeAirsFrom" type="checkbox" /><label for="cbUseHomeAirsFrom">Use home airports</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="search-field">
-                        <div class="capt">To</div>
-                        <div class="ctrl">
-                            <div id="searchTo"></div>
-                            <div>
-                                <input id="cbUseHomeAirsTo" type="checkbox" /><label for="cbUseHomeAirsTo">Use home airports</label>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="search-group">
-
-                    <div class="search-field">
-                        <div class="capt">Depart</div>
-                        <div class="ctrl">
-                            <div id="dateFrom"></div>
-                        </div>
-                    </div>
-
-                    <div class="search-field">
-                        <div class="capt">+/- days</div>
-                        <div class="ctrl">
-                            <div id="depFlexDays"></div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="search-group">
-
-                    <div class="search-field">
-                        <div class="capt">Return</div>
-                        <div class="ctrl">
-                            <div id="dateTo"></div>
-                            <div>
-                                <input id="cbOneWay" type="checkbox" /><label for="cbOneWay">Just oneway</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="search-field">
-                        <div class="capt">+/- days</div>
-                        <div class="ctrl">
-                            <div id="arrFlexDays"></div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="search-group last-line">
-                    <div class="search-field">
-                        <div class="capt">Seats</div>
-                        <div class="ctrl">
-                            <div id="passangersCnt"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bottom-line">
-                    <a href="#" id="btnSearch" class="lbtn2 green-orange">Search deals</a>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <div id="filterCont"></div>
 
     <div class="wrapper">
-        <div id="foundFlightsAll" class="found-flights-all hidden">
-            <div class="htbl">
-                <div class="left">
-                    <span id="flightsFound" class="bold"></span> <span> flights in total were found</span>
-                </div>
-                <div class="right">
-                    <div id="orderSwitch" class="order-switch">
-                        <div class="item by-score active">By score</div>
-                        <div class="item by-price">By price</div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="search-results">
-
-        </div>
+        <div id="categoryNavi" class="navi-cont main-navi"></div>
     </div>
 
-</div>
+    <div class="classic-search-cont hidden">
 
-<div class="deals-search-cont hidden">
-
-    @if (!Model.HasAirports)
-    {
-        <div class="deals-block-all" id="dealsWizard">
+        <div class="search-bar">
 
             <div class="wrapper">
 
-                <h1>
-                    Try our best deals search
-                </h1>
+                <div class="search-form">
 
-                <p class="txt-block">
-                    Pick the places you'd like to visit and we will keep you up to date on the best deals. Don't worry about spam, you decide how often we should notify you. Furthermore, our unique score algorithm helps you to recognize an excellent deal offer.
-                </p>
+                    <h1>@Model.W("MottoClassic")</h1>
 
-                <div class="icons">
-                    <div class="ico">
-                        <img class="svg-img" src="/images/n/fly-pin.svg" />
-                    </div>
-                    <div class="ico">
-                        <img class="svg-img" src="/images/n/fly-plane.svg" />
-                    </div>
-                    <div class="ico">
-                        <img class="svg-img" src="/images/n/fly-comp.svg" />
-                    </div>
-                </div>
+                    <div class="search-group first-line">
 
-                <div class="labels">
-                    <div class="label label-one">1. Set your home city</div>
-                    <div class="label label-two">2. Customize your home airports</div>
-                    <div class="label label-three">3. Choose places you'd like to visit</div>
-                </div>
+                        <div class="search-field">
+                            <div class="capt">@Model.W("FromPlace")</div>
+                            <div class="ctrl">
+                                <div id="searchFrom"></div>
+                                <div>
+                                    <input id="cbUseHomeAirsFrom" type="checkbox" /><label for="cbUseHomeAirsFrom">@Model.W("UseHomeAirsports")</label>
+                                </div>
+                            </div>
+                        </div>
 
-                <div class="step step-one hidden">
-                    <div id="wizCurrentCity" class="dropdown">
-                        <input class="inputed" type="text" placeholder="Set your home city">
-                        <img class="loader" src="/images/loader-gray.gif" style="display: none" />
-                        <ul></ul>
-                    </div>
-                </div>
+                        <div class="search-field">
+                            <div class="capt">@Model.W("ToPlace")</div>
+                            <div class="ctrl">
+                                <div id="searchTo"></div>
+                                <div>
+                                    <input id="cbUseHomeAirsTo" type="checkbox" /><label for="cbUseHomeAirsTo">@Model.W("UseHomeAirsports")</label>
+                                </div>
+                            </div>
+                        </div>
 
-                <div class="step step-two hidden">
-                    <div id="wizAirCont" class="wiz-airs-cont">
                     </div>
 
+                    <div class="search-group">
+                        
+                        <div class="search-field">
+                            <div class="capt">@Model.W("SearchDepart")</div>
+                            <div class="ctrl">
+                                <div id="dateFrom"></div>
+                            </div>
+                        </div>
 
-                    <div id="wizAirCombo" class="dropdown">
-                        <input class="inputed" type="text" placeholder="@Model.W("SearchForAirportsPlaceholder")">
-                        <ul></ul>
+                        <div class="search-field">
+                            <div class="capt">@Model.W("PlusMinusDays")</div>
+                            <div class="ctrl">
+                                <div id="depFlexDays"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="search-group">
+
+                        <div class="search-field">
+                            <div class="capt">@Model.W("SearchReturn")</div>
+                            <div class="ctrl">
+                                <div id="dateTo"></div>
+                                <div>
+                                    <input id="cbOneWay" type="checkbox" /><label for="cbOneWay">@Model.W("JustOneWay")</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="search-field">
+                            <div class="capt">@Model.W("PlusMinusDays")</div>
+                            <div class="ctrl">
+                                <div id="arrFlexDays"></div>
+                            </div>
+                        </div>
+
                     </div>
 
-                    <div class="next-btn-cont">
-                        <a href="#" id="stepTwoNext" class="lbtn2 yellow-orange bold next-btn">Finished with airports, proceed to the next step</a>
+                    <div class="search-group last-line">
+                        <div class="search-field">
+                            <div class="capt">@Model.W("SearchSeats")</div>
+                            <div class="ctrl">
+                                <div id="passangersCnt"></div>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="step step-three">
-                    <div class="next-btn-cont">
-                        <a href="#" id="stepThreeClose" class="lbtn2 yellow-orange bold next-btn">Close this dialog</a>
+                    <div class="bottom-line">
+                        <a href="#" id="btnSearch" class="lbtn2 green-orange">@Model.W("SearchDeals")</a>
                     </div>
+
                 </div>
             </div>
-
-        </div>
-    }
-
-    <div class="deals-search-all">
-
-        <div id="catsCont">
-
         </div>
 
-        <div class="add-custom-cont wrapper">
-            <a href="#" id="addCustom" class="add-btn"><span class="icon-plus"></span><span class="txt">Add custom search</span></a>
+        <div id="filterCont"></div>
+
+        <div class="wrapper">
+            <div id="foundFlightsAll" class="found-flights-all hidden">
+                <div class="htbl">
+                    <div class="left">
+                        <span id="flightsFound" class="bold"></span> <span> @Model.W("FlightsTotalFound")</span>
+                    </div>
+                    <div class="right">
+                        <div id="orderSwitch" class="order-switch">
+                            <div class="item by-score active">@Model.W("OrderScoreBtn")</div>
+                            <div class="item by-price">@Model.W("OrderPriceBtn")</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="search-results">
+
+            </div>
         </div>
 
     </div>
 
-</div>
+    <div class="deals-search-cont hidden">
+
+        @if (!Model.HasAirports)
+        {
+            <div class="deals-block-all" id="dealsWizard">
+
+                <div class="wrapper">
+
+                    <h1>@Model.W("WizardTitle")</h1>
+
+                    <p class="txt-block">@Model.W("WizardTxt")</p>
+
+                    <div class="icons">
+                        <div class="ico">
+                            <img class="svg-img" src="/images/n/fly-pin.svg" />
+                        </div>
+                        <div class="ico">
+                            <img class="svg-img" src="/images/n/fly-plane.svg" />
+                        </div>
+                        <div class="ico">
+                            <img class="svg-img" src="/images/n/fly-comp.svg" />
+                        </div>
+                    </div>
+
+                    <div class="labels">
+                        <div class="label label-one">@Model.W("WizardStep1")</div>
+                        <div class="label label-two">@Model.W("WizardStep2")</div>
+                        <div class="label label-three">@Model.W("WizardStep3")</div>
+                    </div>
+
+                    <div class="step step-one hidden">
+                        <div id="wizCurrentCity" class="dropdown">
+                            <input class="inputed" type="text" placeholder="@Model.W("WizardHomeCityPlaceholder")">
+                            <img class="loader" src="/images/loader-gray.gif" style="display: none" />
+                            <ul></ul>
+                        </div>
+                    </div>
+
+                    <div class="step step-two hidden">
+                        <div id="wizAirCont" class="wiz-airs-cont">
+                        </div>
+
+
+                        <div id="wizAirCombo" class="dropdown">
+                            <input class="inputed" type="text" placeholder="@Model.W("SearchForAirportsPlaceholder")">
+                            <ul></ul>
+                        </div>
+
+                        <div class="next-btn-cont">
+                            <a href="#" id="stepTwoNext" class="lbtn2 yellow-orange bold next-btn">@Model.W("WizardFinished")</a>
+                        </div>
+                    </div>
+
+                    <div class="step step-three">
+                        <div class="next-btn-cont">
+                            <a href="#" id="stepThreeClose" class="lbtn2 yellow-orange bold next-btn">@Model.W("WizardCloseDialog")</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        }
+
+        <div class="deals-search-all">
+
+            <div id="catsCont">
+
+            </div>
+
+            <div class="add-custom-cont wrapper">
+                <a href="#" id="addCustom" class="add-btn"><span class="icon-plus"></span><span class="txt">@Model.W("AddCustomSearchBtn")</span></a>
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
 
 <div id="flightTheDetail" class="flight-the-detail wrapper hidden">
-    
+
     <div class="f-header">
         <div class="wrapper">
             <div class="f-tbl">
                 <div class="left">
                     <span class="title-holder">
-                        <span class="link-back">Search results</span><span class="arrow">&#62;</span><span class="detail-txt"></span>
+                        <span class="link-back">@Model.W("SearchResultsDetail")</span><span class="arrow">&#62;</span><span class="detail-txt"></span>
                     </span>
                 </div>
                 <div class="right">
@@ -322,9 +319,9 @@
             </div>
         </div>
     </div>
-    
+
     <div class="cont">
-        
+
     </div>
 
 </div>

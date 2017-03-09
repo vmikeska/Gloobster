@@ -1,0 +1,37 @@
+﻿@using Gloobster.Portal.ViewModels
+@using System.Linq
+@using System.Threading.Tasks
+@using Gloobster.Common
+@using Gloobster.Portal
+@using Microsoft.AspNet.Mvc.Rendering
+@using Microsoft.Data.Entity.Metadata.Internal
+@model ViewModelTimeline
+
+@{
+    ViewData["Title"] = "gloobster.com - timeline";
+    ViewBag.BodyClass = "timeline";
+}
+
+<script src="/js/Views/TimelineView.js" type="text/javascript"></script>
+
+<style>
+    header, footer {
+        display: none;
+    }
+     
+</style>
+
+
+<div class="main-frame">
+    
+    
+
+</div>
+ 
+<script>
+    
+    function onBodyLoad() {
+        currentView = new Views.TimelineView();
+    }
+
+</script>
