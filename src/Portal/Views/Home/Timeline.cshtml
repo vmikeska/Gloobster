@@ -12,22 +12,75 @@
     ViewBag.BodyClass = "timeline";
 }
 
+<script src="/js/Business/Consts.js" type="text/javascript"></script>
+<script src="/js/Business/MonthBalanceCalculator.js" type="text/javascript"></script>
+<script src="/js/Business/UsersGrowth.js" type="text/javascript"></script>
 <script src="/js/Views/TimelineView.js" type="text/javascript"></script>
+
+
 
 <style>
     header, footer {
         display: none;
-    }
-     
+    } 
 </style>
 
+<div class="top-menu">
+    <a id="btnMonthlyBalance" href="#" class="lbtn2 yellow-orange item-btn">Monthly balance</a>
+    <a id="btnUserGrowth" href="#" class="lbtn2 yellow-orange item-btn">User growth</a>
+    <a id="btnExpense" href="#" class="lbtn2 yellow-orange item-btn">Expenses</a>
+    <a id="btnValues" href="#" class="lbtn2 green-orange item-btn">Edit values</a>
+</div>
+
+<div class="filters-modal">
+    <input type="checkbox" id="showMilestones" checked /><label for="showMilestones">Milestones</label>
+</div>
 
 <div class="main-frame">
+    <div class="times"></div>
+</div>
+
+
+
+
+<div class="modal-dlg hidden">
+    <div class="title">
+        ModalDlg        
+    </div>
+    <span class="icon-close-cross close"></span>
     
-    
+    <div class="cont-wrap">
+        <div class="cont">
+
+            <table>
+                <tr>
+                    <th>
+
+                    </th>
+
+                </tr>
+            </table>
+
+        </div>
+    </div>
 
 </div>
  
+<script id="value-edit-template" type="text/x-handlebars-template">
+    
+    <tr class="value-edit-all" data-id="{{id}}">
+        <td>
+            <span class="caption">{{caption}}</span>
+        </td>
+        
+        <td>
+            <input id="value_{{id}}" type="text" value="{{value}}" {{#if disabled}} disabled {{/if}} />
+        </td>
+    </tr>
+
+    
+</script>
+
 <script>
     
     function onBodyLoad() {

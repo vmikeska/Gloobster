@@ -2,11 +2,88 @@
 
 .timeline {
 
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    .top-menu {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 50px;
+
+        background-color: white;
+
+        border-bottom: 2px solid $light-blue3;
+
+        z-index: 999;
+    }
+
+    table {
+        border: none;
+        text-align: left;
+        display: inline-block;
+        margin: 1em;
+
+        &.oddEven {
+            tr:nth-child(even) {background-color: $very-light-blue3;}
+            tr:nth-child(odd) {background-color: white;}
+        }
+
+        th {
+            background-color: $dark-blue;
+            color: white;
+            padding: 4px;
+            border: 1px solid white;            
+        }
+
+        td {
+            border: 1px solid $dark-blue;
+            padding: 4px;
+        }
+    }
+
+    .values-edit-table {
+        input {
+            border: 2px solid $dark-blue;
+        }
+    }
+
+    .master-cont {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        min-height: unset;
+    }
+    
+
+    .filters-modal {
+        position: fixed;
+        top: 150px;
+        right: 30px;
+
+        min-width: 100px;
+        min-height: 50px;
+        border: 4px solid $orange;
+        background-color: white;
+
+        padding: 1em;
+
+        border-radius: 4px;
+        
+        z-index: 99999;
+    }
+
     .main-frame {
         border-bottom: 2px solid black;
         position: absolute;
-        /*overflow: hidden;*/
-
+        
         top: 0;
         left: 0;
         bottom: 0;
@@ -16,13 +93,72 @@
         .item {
             position: absolute;
 
-            height: 50px;
-
             border-radius: 4px;
 
             font-size: 0.7em;
+
+            border: 2px solid $dark-blue;            
+        }
+
+        .items-title {
+            position: absolute;
+            font-size: 2em;
+            display: inline-block;
+        }
+
+        .milestone {
+            position: absolute;            
+            border-left: 2px solid $red;
+            z-index: 9999;
+
+            .txt {
+                position: absolute;
+                left: -2px;
+                bottom: 0;
+
+                border: 2px solid red;                
+                display: inline-block;
+                width: 100px;
+                background-color: white;
+                
+            }
+        }
+
+        .budget-item {
+            position: absolute;
+
+            padding: 1em;
+
+            .title {
+                
+                color: white;
+            }
+
+            .cost {
+                
+                font-size: 0.8em;
+                color: $yellow;
+            }
+
+            border-left: 2px solid $light-blue;
+            border-right: 2px solid $light-blue;
             
         }
+
+    }
+
+
+
+    .times {
+        position: absolute;
+        top: 50px;
+        
+        background-color: white;
+
+        height: 40px;
+        width: 100%;
+        
+        z-index: 100;
 
         .time {
             position: absolute;
@@ -32,7 +168,9 @@
             font-size: 0.7em;
             text-align: left;
 
-            bottom: 0;
+            
+
+            top: 0;
 
             .month{
                 font-weight: bold;
@@ -42,7 +180,48 @@
                 font-weight: bold;
             }
         }
+    }
 
+    .modal-dlg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        background-color: white;
+
+        z-index: 9999999;
+
+        .title {
+            font-weight: bold;
+            font-size: 1.1em;
+            padding: 1em;
+            border-bottom: 2px solid $dark-blue;
+        }
+
+        .close {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+
+                font-size: 1.4em;
+                color: $dark-blue;
+
+                cursor: pointer;
+
+                &:hover {
+                    color: $red;
+                }
+            }
+
+        .cont-wrap {
+            overflow: auto;
+        }
+
+        .cont {
+            text-align: center;
+        }
     }
 
 }

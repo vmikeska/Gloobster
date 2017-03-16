@@ -7591,28 +7591,138 @@ footer {
     -moz-transform: scale(0.3);
     background-color: rgba(255, 255, 255, 0.92); } }
 
-.timeline .main-frame {
-  border-bottom: 2px solid black;
+.timeline {
   position: absolute;
-  /*overflow: hidden;*/
   top: 0;
-  left: 0;
   bottom: 0;
+  left: 0;
   right: 0; }
-  .timeline .main-frame .item {
-    position: absolute;
+  .timeline .top-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     height: 50px;
-    border-radius: 4px;
-    font-size: 0.7em; }
-  .timeline .main-frame .time {
-    position: absolute;
-    display: inline-block;
-    width: 30px;
-    border-left: 2px solid black;
-    font-size: 0.7em;
+    background-color: white;
+    border-bottom: 2px solid #3298C1;
+    z-index: 999; }
+  .timeline table {
+    border: none;
     text-align: left;
-    bottom: 0; }
-    .timeline .main-frame .time .month {
-      font-weight: bold; }
-    .timeline .main-frame .time .year {
-      font-weight: bold; }
+    display: inline-block;
+    margin: 1em; }
+    .timeline table.oddEven tr:nth-child(even) {
+      background-color: #F0FAFC; }
+    .timeline table.oddEven tr:nth-child(odd) {
+      background-color: white; }
+    .timeline table th {
+      background-color: #005476;
+      color: white;
+      padding: 4px;
+      border: 1px solid white; }
+    .timeline table td {
+      border: 1px solid #005476;
+      padding: 4px; }
+  .timeline .values-edit-table input {
+    border: 2px solid #005476; }
+  .timeline .master-cont {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    min-height: unset; }
+  .timeline .filters-modal {
+    position: fixed;
+    top: 150px;
+    right: 30px;
+    min-width: 100px;
+    min-height: 50px;
+    border: 4px solid #F56E12;
+    background-color: white;
+    padding: 1em;
+    border-radius: 4px;
+    z-index: 99999; }
+  .timeline .main-frame {
+    border-bottom: 2px solid black;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0; }
+    .timeline .main-frame .item {
+      position: absolute;
+      border-radius: 4px;
+      font-size: 0.7em;
+      border: 2px solid #005476; }
+    .timeline .main-frame .items-title {
+      position: absolute;
+      font-size: 2em;
+      display: inline-block; }
+    .timeline .main-frame .milestone {
+      position: absolute;
+      border-left: 2px solid #E02327;
+      z-index: 9999; }
+      .timeline .main-frame .milestone .txt {
+        position: absolute;
+        left: -2px;
+        bottom: 0;
+        border: 2px solid red;
+        display: inline-block;
+        width: 100px;
+        background-color: white; }
+    .timeline .main-frame .budget-item {
+      position: absolute;
+      padding: 1em;
+      border-left: 2px solid #65BDD7;
+      border-right: 2px solid #65BDD7; }
+      .timeline .main-frame .budget-item .title {
+        color: white; }
+      .timeline .main-frame .budget-item .cost {
+        font-size: 0.8em;
+        color: #FFC400; }
+  .timeline .times {
+    position: absolute;
+    top: 50px;
+    background-color: white;
+    height: 40px;
+    width: 100%;
+    z-index: 100; }
+    .timeline .times .time {
+      position: absolute;
+      display: inline-block;
+      width: 30px;
+      border-left: 2px solid black;
+      font-size: 0.7em;
+      text-align: left;
+      top: 0; }
+      .timeline .times .time .month {
+        font-weight: bold; }
+      .timeline .times .time .year {
+        font-weight: bold; }
+  .timeline .modal-dlg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: white;
+    z-index: 9999999; }
+    .timeline .modal-dlg .title {
+      font-weight: bold;
+      font-size: 1.1em;
+      padding: 1em;
+      border-bottom: 2px solid #005476; }
+    .timeline .modal-dlg .close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 1.4em;
+      color: #005476;
+      cursor: pointer; }
+      .timeline .modal-dlg .close:hover {
+        color: #E02327; }
+    .timeline .modal-dlg .cont-wrap {
+      overflow: auto; }
+    .timeline .modal-dlg .cont {
+      text-align: center; }
