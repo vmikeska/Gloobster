@@ -1276,33 +1276,6 @@ footer {
     top: 4px;
     left: 5px; }
 
-/*delete when dialogs extracted*/
-.popup-share .message {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  padding-left: 5px;
-  padding-right: 5px; }
-  .popup-share .message textarea {
-    width: 95%;
-    border: 1px solid #3298C1;
-    border-radius: 2px;
-    line-height: 2;
-    padding: 10px;
-    font-size: 16px; }
-
-.popup-share .htbl {
-  padding-left: 10px;
-  padding-right: 10px; }
-  .popup-share .htbl .left {
-    vertical-align: middle;
-    padding: 8px; }
-  .popup-share .htbl .right {
-    vertical-align: middle;
-    padding: 16px; }
-    .popup-share .htbl .right .lbtn {
-      color: white;
-      background-color: #3298C1; }
-
 @font-face {
   font-family: 'icomoon';
   src: url("/fonts/pins/icomoon.eot?f4h0hv");
@@ -6644,7 +6617,7 @@ footer {
     border: 0;
     border-radius: 0;
     font-size: 1em;
-    width: 120px;
+    width: 140px;
     padding-left: 28px;
     background-color: white; }
   .calendar-cont .my-calendar-win {
@@ -7608,13 +7581,13 @@ footer {
     -moz-transform: scale(0.3);
     background-color: rgba(255, 255, 255, 0.92); } }
 
-.timeline {
+.timeline-c {
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0; }
-  .timeline .top-menu {
+  .timeline-c .top-menu {
     position: fixed;
     top: 0;
     left: 0;
@@ -7623,33 +7596,33 @@ footer {
     background-color: white;
     border-bottom: 2px solid #3298C1;
     z-index: 999; }
-  .timeline table {
+  .timeline-c table {
     border: none;
     text-align: left;
     display: inline-block;
     margin: 1em; }
-    .timeline table.oddEven tr:nth-child(even) {
+    .timeline-c table.oddEven tr:nth-child(even) {
       background-color: #F0FAFC; }
-    .timeline table.oddEven tr:nth-child(odd) {
+    .timeline-c table.oddEven tr:nth-child(odd) {
       background-color: white; }
-    .timeline table th {
+    .timeline-c table th {
       background-color: #005476;
       color: white;
       padding: 4px;
       border: 1px solid white; }
-    .timeline table td {
+    .timeline-c table td {
       border: 1px solid #005476;
       padding: 4px; }
-  .timeline .values-edit-table input {
+  .timeline-c .values-edit-table input {
     border: 2px solid #005476; }
-  .timeline .master-cont {
+  .timeline-c .master-cont {
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
     min-height: unset; }
-  .timeline .filters-modal {
+  .timeline-c .filters-modal {
     position: fixed;
     top: 150px;
     right: 30px;
@@ -7660,27 +7633,27 @@ footer {
     padding: 1em;
     border-radius: 4px;
     z-index: 99999; }
-  .timeline .main-frame {
+  .timeline-c .main-frame {
     border-bottom: 2px solid black;
     position: absolute;
     top: 0;
     left: 0;
     bottom: 0;
     right: 0; }
-    .timeline .main-frame .item {
+    .timeline-c .main-frame .item {
       position: absolute;
       border-radius: 4px;
       font-size: 0.7em;
       border: 2px solid #005476; }
-    .timeline .main-frame .items-title {
+    .timeline-c .main-frame .items-title {
       position: absolute;
       font-size: 2em;
       display: inline-block; }
-    .timeline .main-frame .milestone {
+    .timeline-c .main-frame .milestone {
       position: absolute;
       border-left: 2px solid #E02327;
       z-index: 9999; }
-      .timeline .main-frame .milestone .txt {
+      .timeline-c .main-frame .milestone .txt {
         position: absolute;
         left: -2px;
         bottom: 0;
@@ -7688,24 +7661,24 @@ footer {
         display: inline-block;
         width: 100px;
         background-color: white; }
-    .timeline .main-frame .budget-item {
+    .timeline-c .main-frame .budget-item {
       position: absolute;
       padding: 1em;
       border-left: 2px solid #65BDD7;
       border-right: 2px solid #65BDD7; }
-      .timeline .main-frame .budget-item .title {
+      .timeline-c .main-frame .budget-item .title {
         color: white; }
-      .timeline .main-frame .budget-item .cost {
+      .timeline-c .main-frame .budget-item .cost {
         font-size: 0.8em;
         color: #FFC400; }
-  .timeline .times {
+  .timeline-c .times {
     position: absolute;
     top: 50px;
     background-color: white;
     height: 40px;
     width: 100%;
     z-index: 100; }
-    .timeline .times .time {
+    .timeline-c .times .time {
       position: absolute;
       display: inline-block;
       width: 30px;
@@ -7713,11 +7686,11 @@ footer {
       font-size: 0.7em;
       text-align: left;
       top: 0; }
-      .timeline .times .time .month {
+      .timeline-c .times .time .month {
         font-weight: bold; }
-      .timeline .times .time .year {
+      .timeline-c .times .time .year {
         font-weight: bold; }
-  .timeline .modal-dlg {
+  .timeline-c .modal-dlg {
     position: fixed;
     top: 0;
     left: 0;
@@ -7725,21 +7698,21 @@ footer {
     bottom: 0;
     background-color: white;
     z-index: 9999999; }
-    .timeline .modal-dlg .title {
+    .timeline-c .modal-dlg .title {
       font-weight: bold;
       font-size: 1.1em;
       padding: 1em;
       border-bottom: 2px solid #005476; }
-    .timeline .modal-dlg .close {
+    .timeline-c .modal-dlg .close {
       position: absolute;
       top: 10px;
       right: 10px;
       font-size: 1.4em;
       color: #005476;
       cursor: pointer; }
-      .timeline .modal-dlg .close:hover {
+      .timeline-c .modal-dlg .close:hover {
         color: #E02327; }
-    .timeline .modal-dlg .cont-wrap {
+    .timeline-c .modal-dlg .cont-wrap {
       overflow: auto; }
-    .timeline .modal-dlg .cont {
+    .timeline-c .modal-dlg .cont {
       text-align: center; }

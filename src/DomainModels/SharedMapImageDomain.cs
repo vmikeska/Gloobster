@@ -9,13 +9,16 @@ using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
 using Gloobster.Entities;
 using Gloobster.Entities.Trip;
+using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
+using ILogger = Serilog.ILogger;
 
 namespace Gloobster.DomainModels
 {
 	public class SharedMapImageDomain: ISharedMapImageDomain
 	{		
 		public IDbOperations DB { get; set; }
+        public ILogger Log { get; set; }
 
 		public IMapBoxImgCreator ImageCreator { get; set; }
 
@@ -35,30 +38,38 @@ namespace Gloobster.DomainModels
 
 		public string GeneratePinBoardMapLink(string userId)
 		{
-			var userIdObj = new ObjectId(userId);
-			var visited = DB.FOD<VisitedEntity>(v => v.User_id == userIdObj);
-			
-			if (visited == null)
-			{
-			    throw new Exception("NoVisitedFound");
-			}
+		    try
+		    {
+		        var userIdObj = new ObjectId(userId);
+		        var visited = DB.FOD<VisitedEntity>(v => v.User_id == userIdObj);
+                
+		        if (visited == null)
+		        {
+		            throw new Exception("NoVisitedFound");
+		        }
+                
+                var markers = GetPinBoardMarkers(visited);
+                
+                var features = new List<FeatureBaseDO>();
+		        features.AddRange(markers);
 
-			var markers = GetPinBoardMarkers(visited);
+		        var cfg = new BuildMapConfigDO
+		        {
+		            MapId = "mapbox.streets",
+		            Height = 900,
+		            Width = 1200,
+		            AutoFit = true,
+		            Features = features
+		        };
 
-			var features = new List<FeatureBaseDO>();
-			features.AddRange(markers);
-			
-			var cfg = new BuildMapConfigDO
-			{
-				MapId = "mapbox.streets",
-				Height = 900,
-				Width = 1200,
-				AutoFit = true,
-				Features = features
-			};
-
-			var mapLink = ImageCreator.BuildMapLink(cfg, GloobsterConfig.MapBoxSecret);
-			return mapLink;
+		        var mapLink = ImageCreator.BuildMapLink(cfg, GloobsterConfig.MapBoxSecret);
+		        return mapLink;
+		    }
+		    catch (Exception exc)
+		    {
+                Log.Error("Map logger, GeneratePinBoardMapLink: " + exc.Message);
+		        throw;
+		    }
 		}
 		
 		public string GenerateMapLink(string tripId)
@@ -88,12 +99,20 @@ namespace Gloobster.DomainModels
 
 	    private Stream GetFile(string link)
 	    {
-	        using (var client = new WebClient())
+	        try
 	        {
-	            Stream stream = client.OpenRead(link);
-                return stream;
-            }	        
-	    }
+	            using (var client = new WebClient())
+	            {                    
+	                Stream stream = client.OpenRead(link);
+	                return stream;
+	            }
+	        }
+            catch (Exception exc)
+            {
+                Log.Error("Map logger, GetFile, link: " + link);
+                throw;
+            }
+        }
 	
 
 		private List<FeatureBaseDO> GetFeatures(TripEntity trip)

@@ -39,14 +39,14 @@ else
                 <div class="block">
                     <img class="svg-img" src="/images/n/yellow-ico-calendar.svg">
                     <p class="txt">
-                        @Model.W("InfoBlock1")                        
+                        @Model.W("InfoBlock1")
                     </p>
                 </div>
 
                 <div class="block">
                     <img class="svg-img" src="/images/n/guy.svg">
                     <p class="txt">
-                        @Model.W("InfoBlock2")                        
+                        @Model.W("InfoBlock2")
                     </p>
                 </div>
 
@@ -108,25 +108,33 @@ else
 
         </div>
 
-        <div class="title">
-            @Model.W("TitleOld")
-        </div>
 
-        <div class="trips-table">
-            <div class="row headers">
-                <div class="cell photo-cell"></div>
-                <div class="cell">@Model.W("Name")</div>
-                <div class="cell">@Model.W("Term")</div>
-                <div class="cell">@Model.W("Team")</div>
-                <div class="cell">@Model.W("Owner")</div>
-                <div class="cell setting-cell"></div>
+        @if (Model.OldTrips.Count > 0)
+        {
+            <div class="title">
+                @Model.W("TitleOld")
             </div>
 
-            @foreach (var trip in Model.OldTrips) {
-                await Html.RenderPartialAsync("TripItemRow", (object)trip);
-            }
 
-        </div>
+            <div class="trips-table">
+                <div class="row headers">
+                    <div class="cell photo-cell"></div>
+                    <div class="cell">@Model.W("Name")</div>
+                    <div class="cell">@Model.W("Term")</div>
+                    <div class="cell">@Model.W("Team")</div>
+                    <div class="cell">@Model.W("Owner")</div>
+                    <div class="cell setting-cell"></div>
+                </div>
+
+
+                @foreach (var trip in Model.OldTrips)
+                {
+                    await Html.RenderPartialAsync("TripItemRow", (object)trip);
+                }
+
+
+            </div>
+        }
 
     }
     else
@@ -154,22 +162,25 @@ else
         </div>
 
 
-        <div class="trips-big">
+            <div class="trips-big">
 
-            <div class="title">
-                @Model.W("TitleOld")
-            </div>
-
-            <div class="cont">
-
-                @foreach (var trip in Model.OldTrips)
+                @if (Model.OldTrips.Count > 0)
                 {
-                    await Html.RenderPartialAsync("TripItemBig", (object)trip);
+                    <div class="title">
+                        @Model.W("TitleOld")
+                    </div>
                 }
 
-            </div>
+                <div class="cont">
 
-        </div>
+                    @foreach (var trip in Model.OldTrips)
+                    {
+                        await Html.RenderPartialAsync("TripItemBig", (object)trip);
+                    }
+
+                </div>
+
+            </div>
 
     }
 

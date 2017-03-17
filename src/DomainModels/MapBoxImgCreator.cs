@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Web;
 using System.Web.Util;
 using Gloobster.Common;
@@ -20,7 +21,11 @@ namespace Gloobster.DomainModels
 			urlParams.Add(veryBaseUrl);
 
 			var featuresStr = new List<string>();
-			foreach (var feature in config.Features)
+
+            //TODO: solve this limitation o 4096 characters
+		    var features = config.Features.Take(80);
+            
+            foreach (var feature in features)
 			{
 				string featureStr = string.Empty;
 				if (feature is FeaturePathDO)

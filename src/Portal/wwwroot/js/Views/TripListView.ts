@@ -6,7 +6,15 @@
 		constructor() {
 				super();
 
-			var isBig = window.location.href.indexOf("grid") !== -1;
+				var isBig = window.location.href.indexOf("grid") !== -1;
+
+			//	if (isBig) {
+			//			var currentWidth = $(window).width();
+			//			if (currentWidth < 640) {
+			//				window.location.href = "/travelplanner/table";
+			//			}
+			//}
+
 			this.registerUploads(isBig);
 	
 			$(".menuClose").click((e) => {
