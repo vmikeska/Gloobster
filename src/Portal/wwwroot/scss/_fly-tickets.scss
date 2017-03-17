@@ -1457,9 +1457,11 @@
 
             max-width: 240px;
             min-width: 160px;
-            height: 1.2em;
+            height: 1.3em;
             
             overflow: hidden;
+
+
 
             .airports{
                 position: absolute;
@@ -1469,10 +1471,10 @@
 
                 width: 1280px;
 
-                height: 1em;
+                height: 1.1em;
                 
                 .airport{
-                    line-height: 1em;
+                    line-height: 1.1em;
                     display: inline-block;
                     border: 1px dotted $light-blue;
                     padding-left: 1px;
@@ -1491,7 +1493,7 @@
                 right: 0;
                 bottom: 0;
 
-                width: 100px;
+                width: 65px;
 
                 background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 56%, rgba(255,255,255,1) 100%);
                 background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,0)), color-stop(56%,rgba(255,255,255,1)), color-stop(100%,rgba(255,255,255,1)));

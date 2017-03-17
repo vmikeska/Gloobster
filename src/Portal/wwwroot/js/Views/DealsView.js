@@ -16,6 +16,8 @@ var Views;
             this.allSections = [];
             this.tabDealsId = "tabDeals";
             this.tabClassicsId = "tabClassics";
+            this.dealsSet = false;
+            this.classsicSet = false;
             this.loginButtonsManager.onAfterCustom = function () {
                 _this.allSections.forEach(function (s) {
                     window.location.reload(true);
@@ -33,11 +35,17 @@ var Views;
             Planning.ResultConfigs.init();
             this.decideSize();
             this.initTopBar();
-            this.initDeals();
-            this.classicSearch = new Planning.ClassicSearch();
-            this.classicSearch.init();
             this.initMainTabs();
             this.initResize();
+        };
+        DealsView.prototype.initDealsAll = function () {
+            this.initDeals();
+            this.dealsSet = true;
+        };
+        DealsView.prototype.initClassicAll = function () {
+            this.classicSearch = new Planning.ClassicSearch();
+            this.classicSearch.init();
+            this.classsicSet = true;
         };
         DealsView.prototype.initTopBar = function () {
             var _this = this;
@@ -152,11 +160,17 @@ var Views;
         };
         DealsView.prototype.setTab = function (deals) {
             if (deals) {
+                if (!this.dealsSet) {
+                    this.initDealsAll();
+                }
                 this.$dealsCont.removeClass("hidden");
                 this.$classicCont.addClass("hidden");
                 window.history.replaceState("", "gloobster.com", "/deals?type=0");
             }
             else {
+                if (!this.classsicSet) {
+                    this.initClassicAll();
+                }
                 this.$classicCont.removeClass("hidden");
                 this.$dealsCont.addClass("hidden");
             }

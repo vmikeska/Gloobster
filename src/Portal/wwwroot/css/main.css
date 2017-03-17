@@ -5700,16 +5700,16 @@ footer {
     position: relative;
     max-width: 240px;
     min-width: 160px;
-    height: 1.2em;
+    height: 1.3em;
     overflow: hidden; }
     .fly-tickets .top-all .airports-cont .airports {
       position: absolute;
       top: 0;
       left: 0;
       width: 1280px;
-      height: 1em; }
+      height: 1.1em; }
       .fly-tickets .top-all .airports-cont .airports .airport {
-        line-height: 1em;
+        line-height: 1.1em;
         display: inline-block;
         border: 1px dotted #65BDD7;
         padding-left: 1px;
@@ -5723,7 +5723,7 @@ footer {
       top: 0;
       right: 0;
       bottom: 0;
-      width: 100px;
+      width: 65px;
       background: -moz-linear-gradient(left, rgba(255, 255, 255, 0) 0%, white 56%, white 100%);
       background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(56%, white), color-stop(100%, white));
       background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, white 56%, white 100%);

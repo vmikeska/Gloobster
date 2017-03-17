@@ -46,16 +46,23 @@
 
 						this.initTopBar();
 
-						this.initDeals();
-
-						this.classicSearch = new Planning.ClassicSearch();
-						this.classicSearch.init();
-
 						this.initMainTabs();
 
 						this.initResize();
 
 				}
+
+				private initDealsAll() {
+						this.initDeals();
+						this.dealsSet = true;
+				}
+
+				private initClassicAll() {
+						this.classicSearch = new Planning.ClassicSearch();
+						this.classicSearch.init();
+						this.classsicSet = true;
+				}
+
 
 				private initTopBar() {
 
@@ -89,12 +96,10 @@
 						var ds = new Planning.DealsInitSettings(this.settings);
 						ds.init(this.hasCity, this.hasAirs);
 						ds.onThirdStep = () => {
-
 								setTimeout(() => {
 										ViewBase.scrollTo($("#catsCont"));
 								},
-								200);
-
+										200);
 						}
 
 						var df = new Planning.DealsLevelFilter();
@@ -191,12 +196,25 @@
 						}
 				}
 
+				private dealsSet = false;
+				private classsicSet = false;
+
 				private setTab(deals) {
 						if (deals) {
+
+								if (!this.dealsSet) {
+										this.initDealsAll();
+								}
+
 								this.$dealsCont.removeClass("hidden");
 								this.$classicCont.addClass("hidden");
 								window.history.replaceState("", `gloobster.com`, "/deals?type=0");
 						} else {
+
+								if (!this.classsicSet) {
+										this.initClassicAll();
+								}
+
 								this.$classicCont.removeClass("hidden");
 								this.$dealsCont.addClass("hidden");
 						}

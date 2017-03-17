@@ -38,7 +38,7 @@ var Business;
             { id: "oneVisitorCost", caption: "How many costs one unique vistor" },
             { id: "userSellCases", caption: "How many times user buy something / month" },
             { id: "commision", caption: "Commision from sold stuff" },
-            { id: "averageSellVolume", caption: "Average € value of one sell case" },
+            { id: "averageSellVolume", caption: "Average � value of one sell case" },
             { id: "monthsIncomeOffset", caption: "Project customer ready months offset" },
             { id: "investorShare", caption: "Share of the 1. investor" },
             { id: "userBaseProfit", caption: "Profit from one user / month", disabled: true },
