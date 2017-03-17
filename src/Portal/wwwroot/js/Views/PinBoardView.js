@@ -96,7 +96,6 @@ var Views;
             this.initShareDialog();
             this.switchMapType(Maps.DataType.Cities, Maps.MapType.D2);
             this.pinBoardBadges = new Views.PinBoardBadges();
-            this.shareDialogView = new Views.ShareDialogPinsView();
             this.mapsManager.onCenterChanged = function (center) {
                 _this.search.setCoordinates(center.lat, center.lng);
             };
@@ -131,12 +130,11 @@ var Views;
         PinBoardView.prototype.initShareDialog = function () {
             var _this = this;
             var $btn = $("#share-btn");
-            var $dialog = $(".popup-share");
             $btn.click(function (e) {
                 e.preventDefault();
                 var hasSocNets = _this.hasSocNetwork(SocialNetworkType.Facebook) || _this.hasSocNetwork(SocialNetworkType.Twitter);
                 if (hasSocNets) {
-                    $dialog.slideToggle();
+                    _this.showShareDialog();
                 }
                 else {
                     var id = new Common.InfoDialog();
@@ -144,6 +142,9 @@ var Views;
                     id.create(_this.t("NoSocNetTitle", "jsPins"), _this.t("NoSocNetShare", "jsPins"));
                 }
             });
+        };
+        PinBoardView.prototype.showShareDialog = function () {
+            this.shareDialogView = new Views.ShareDialogPins();
         };
         PinBoardView.prototype.getFormState = function (callback) {
             var dataType = this.switcher.getGroupVal("data-type");

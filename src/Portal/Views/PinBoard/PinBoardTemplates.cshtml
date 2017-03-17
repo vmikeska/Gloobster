@@ -2,23 +2,39 @@
 <script id="cityPopup-template" type="text/x-handlebars-template">
     <div>
         <h1>{{city}}</h1>
-        
+
         {{#if dates}}
         <b>Dates</b>
         <br />
         {{/if}}
-        
+
         {{#each dates}}
-            {{this}}
+        {{this}}
         <br />
         {{/each}}
-        
+
         <br />
         {{#if isJustMe}}
         <a href="javascript:currentView.deletePin({{geoNamesId}})">@Model.W("Delete", "layout")</a>
         {{/if}}
-    </div>        
+    </div>
 </script>
+
+
+<script id="pins-share-template" type="text/x-handlebars-template">
+    <div class="dlg-wrap">
+
+        <div class="message">
+            <textarea placeholder="@Model.W("Message", "layout")..."></textarea>
+        </div>
+        
+        <div>@Model.W("ShareButtons", "layout")</div>
+        <div class="share-cont">
+        </div>
+
+    </div>
+</script>
+
 
 
 

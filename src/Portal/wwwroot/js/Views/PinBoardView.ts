@@ -9,7 +9,7 @@
 			public mapsManager: Maps.MapsManager;
 			private search: Common.AllPlacesSearch;
 
-			private shareDialogView: ShareDialogPinsView;
+			private shareDialogView: ShareDialogPins;
 			private fbPermissions: Common.FacebookPermissions;
 			private $currentLegend: any;
 			public peopleFilter: PeopleFilter;
@@ -121,8 +121,6 @@
 					this.switchMapType(Maps.DataType.Cities, Maps.MapType.D2);
 
 					this.pinBoardBadges = new PinBoardBadges();
-
-					this.shareDialogView = new ShareDialogPinsView();
 					
 					this.mapsManager.onCenterChanged = (center) => {
 							this.search.setCoordinates(center.lat, center.lng);
@@ -169,20 +167,22 @@
 			private initShareDialog() {
 					var $btn = $("#share-btn");
 					
-					var $dialog = $(".popup-share");
-
 					$btn.click((e) => {
 							e.preventDefault();
 
 							var hasSocNets = this.hasSocNetwork(SocialNetworkType.Facebook) || this.hasSocNetwork(SocialNetworkType.Twitter);
-							if (hasSocNets) {
-									$dialog.slideToggle();
+							if (hasSocNets) {									
+									this.showShareDialog();
 							} else {
 									var id = new Common.InfoDialog();
 									$("#popup-joinSoc").slideToggle();
 									id.create(this.t("NoSocNetTitle", "jsPins"), this.t("NoSocNetShare", "jsPins"));
 							}
 					});
+			}
+
+			private showShareDialog() {				
+				this.shareDialogView = new ShareDialogPins();					
 			}
 				
 			private getFormState(callback) {					
@@ -218,10 +218,7 @@
 							});
 					});
 			}
-
 			
-
-
 			private refreshData() {
 					this.getFormState((dataType, mapType) => {
 							var people = this.peopleFilter.getSelection();

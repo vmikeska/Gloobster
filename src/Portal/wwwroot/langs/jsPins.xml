@@ -69,6 +69,12 @@
       <en>Do you want to remove this city from the list of your visited cities?</en>
     </DelDialogBody>
 
-    
+    <ShareTitle>
+      <en>Share your map</en>
+    </ShareTitle>
+
+    <ShareBtn>
+      <en>Share</en>
+    </ShareBtn>
 
   </module>

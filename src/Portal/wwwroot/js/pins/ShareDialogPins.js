@@ -1,41 +1,41 @@
 var Views;
 (function (Views) {
-    var ShareDialogPinsView = (function () {
-        function ShareDialogPinsView() {
+    var ShareDialogPins = (function () {
+        function ShareDialogPins() {
             var _this = this;
-            this.$dialog = $(".popup-share");
+            var v = Views.ViewBase.currentView;
+            var t = v.registerTemplate("pins-share-template");
+            this.$html = $(t());
+            var cd = new Common.CustomDialog();
+            cd.init(this.$html, v.t("ShareTitle", "jsPins"), "share-dlg");
             this.shareButtons = new Common.ShareButtons($(".share-cont"));
             this.shareButtons.onSelectionChanged = function (nets) {
                 _this.fillSocStr(nets);
             };
-            var v = Views.ViewBase.currentView;
-            this.$dialog.find(".share").click(function () {
-                var id = new Common.InprogressDialog();
-                _this.$dialog.hide();
-                id.create(v.t("SharingMap", "jsPins"), _this.$dialog);
+            cd.addBtn(v.t("ShareBtn", "jsPins"), "green-orange", function () {
+                cd.close();
                 _this.share(function () {
-                    id.remove();
                     var hd = new Common.HintDialog();
                     hd.create(v.t("MapShared", "jsPins"));
                 });
             });
             this.fillSocStr(this.shareButtons.getStr());
         }
-        ShareDialogPinsView.prototype.fillSocStr = function (str) {
+        ShareDialogPins.prototype.fillSocStr = function (str) {
             $("#share").find("span").html(str);
         };
-        ShareDialogPinsView.prototype.share = function (callback) {
+        ShareDialogPins.prototype.share = function (callback) {
             var networks = this.shareButtons.getSelectedNetworks();
             var data = {
-                message: this.$dialog.find("textarea").val(),
+                message: this.$html.find("textarea").val(),
                 networks: networks
             };
             Views.ViewBase.currentView.apiPost("PinBoardShare", data, function (response) {
                 callback();
             });
         };
-        return ShareDialogPinsView;
+        return ShareDialogPins;
     }());
-    Views.ShareDialogPinsView = ShareDialogPinsView;
+    Views.ShareDialogPins = ShareDialogPins;
 })(Views || (Views = {}));
-//# sourceMappingURL=ShareDialogPinsView.js.map
+//# sourceMappingURL=ShareDialogPins.js.map
