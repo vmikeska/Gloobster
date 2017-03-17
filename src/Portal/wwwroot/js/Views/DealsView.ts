@@ -11,7 +11,7 @@
 				private $classicCont = $(".classic-search-cont");
 
 				private $catsCont = $("#catsCont");
-				
+
 				private settings: Planning.LocationSettingsDialog;
 
 				public hasCity;
@@ -89,9 +89,12 @@
 						var ds = new Planning.DealsInitSettings(this.settings);
 						ds.init(this.hasCity, this.hasAirs);
 						ds.onThirdStep = () => {
-								this.allSections.forEach((s) => {
+
+								setTimeout(() => {
 										ViewBase.scrollTo($("#catsCont"));
-								});
+								},
+								200);
+
 						}
 
 						var df = new Planning.DealsLevelFilter();
@@ -161,15 +164,15 @@
 				private initMainTabs() {
 						this.tabs = new Common.Tabs($("#categoryNavi"), "category");
 						this.tabs.initCall = false;
-						
+
 						this.tabs.addTab(this.tabDealsId, this.v.t("DealsSearchTab", "jsDeals"), () => {
-										this.setTab(true);
-								});
+								this.setTab(true);
+						});
 
 						this.tabs.addTab(this.tabClassicsId, this.v.t("ClasssicSearchTab", "jsDeals"), () => {
-										this.setTab(false);
-										this.classicSearch.stateChanged();
-								});
+								this.setTab(false);
+								this.classicSearch.stateChanged();
+						});
 
 						this.tabs.create();
 

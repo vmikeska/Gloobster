@@ -343,7 +343,7 @@
 					
 				$c.find(".delete").click((e) => {
 						var cd = new Common.ConfirmDialog();
-						cd.create(this.v.t("SearchRemoval", "jsDeals"), this.v.t("SearchRemovalDlgBody", "jsDeals"), this.v.t("Cancel", "jsLayout"), this.v.t("Delete", "jsLayout"), () => {
+						cd.create(this.v.t("SearchRemovalDlgTitle", "jsDeals"), this.v.t("SearchRemovalDlgBody", "jsDeals"), this.v.t("Cancel", "jsLayout"), this.v.t("Delete", "jsLayout"), () => {
 								var sdl = new SearchDataLoader();
 								sdl.deleteSearch(this.sectConfig.customId, () => {
 									this.$cont.remove();

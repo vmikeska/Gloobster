@@ -65,9 +65,9 @@ var Views;
             var ds = new Planning.DealsInitSettings(this.settings);
             ds.init(this.hasCity, this.hasAirs);
             ds.onThirdStep = function () {
-                _this.allSections.forEach(function (s) {
+                setTimeout(function () {
                     Views.ViewBase.scrollTo($("#catsCont"));
-                });
+                }, 200);
             };
             var df = new Planning.DealsLevelFilter();
             df.stateChanged = function () {

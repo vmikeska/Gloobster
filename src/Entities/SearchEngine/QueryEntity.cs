@@ -16,5 +16,7 @@ namespace Gloobster.Entities.SearchEngine
 
         public DateTime Created { get; set; }
         public DateTime? Executed { get; set; }
+
+        public int Restarted { get; set; }
     }
 }

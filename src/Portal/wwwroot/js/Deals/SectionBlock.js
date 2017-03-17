@@ -241,7 +241,7 @@ var Planning;
                 });
                 $c.find(".delete").click(function (e) {
                     var cd = new Common.ConfirmDialog();
-                    cd.create(_this.v.t("SearchRemoval", "jsDeals"), _this.v.t("SearchRemovalDlgBody", "jsDeals"), _this.v.t("Cancel", "jsLayout"), _this.v.t("Delete", "jsLayout"), function () {
+                    cd.create(_this.v.t("SearchRemovalDlgTitle", "jsDeals"), _this.v.t("SearchRemovalDlgBody", "jsDeals"), _this.v.t("Cancel", "jsLayout"), _this.v.t("Delete", "jsLayout"), function () {
                         var sdl = new Planning.SearchDataLoader();
                         sdl.deleteSearch(_this.sectConfig.customId, function () {
                             _this.$cont.remove();

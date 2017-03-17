@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Gloobster.Database;
@@ -7,6 +8,7 @@ using Gloobster.DomainObjects.SearchEngine8;
 using Gloobster.Entities.SearchEngine;
 using Gloobster.Enums.SearchEngine;
 using MongoDB.Bson;
+using Serilog;
 
 namespace Gloobster.DomainModels.SearchEngine8.Queuing
 {
@@ -16,29 +18,55 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
         public IRequestsBuilder8 ReqBuilder { get; set; }
         public IFlightsDb FlightsDB { get; set; }
 
+        public ILogger Log { get; set; }
+
         public async Task<List<FlightQueryResult8DO<T>>> ExeFirstRequestAsync<T>(string userId, TimeType timeType, string customId = null)
         {
-            var userIdObj = new ObjectId(userId);
-            
-            var dests = GetDestinations(timeType, userIdObj, customId);
-            var queries = GetQueries(timeType, dests, userId, customId);
-            
-            var results = await ExeQueriesAsync<T>(queries);
-            return results;
+            try
+            {
+                var userIdObj = new ObjectId(userId);
+
+                var dests = GetDestinations(timeType, userIdObj, customId);
+                var queries = GetQueries(timeType, dests, userId, customId);
+
+                var results = await ExeQueriesAsync<T>(queries);
+                return results;
+            }
+            catch (Exception exc)
+            {
+                Log.Error($"FlightsFnc, ExeFirstRequestAsync: {exc.Message}");
+                throw;
+            }
         }
 
         public async Task<List<FlightQueryResult8DO<T>>> ExeSingleRequestsAsync<T>(string userId, TimeType timeType, DestinationRequests8DO dests, string customId = null)
         {
-            var queries = GetQueries(timeType, dests, userId, customId);
+            try
+            {
+                var queries = GetQueries(timeType, dests, userId, customId);
 
-            var results = await ExeQueriesAsync<T>(queries);
-            return results;
+                var results = await ExeQueriesAsync<T>(queries);
+                return results;
+            }
+            catch (Exception exc)
+            {
+                Log.Error($"FlightsFnc, ExeSingleRequestsAsync: {exc.Message}");
+                throw;
+            }
         }
 
         public List<FlightQueryResult8DO<T>> ExeRequery<T>(List<string> ids)
         {
-            var results = FlightsDB.CheckOnResults<T>(ids);
-            return results;
+            try
+            {
+                var results = FlightsDB.CheckOnResults<T>(ids);
+                return results;
+            }
+            catch (Exception exc)
+            {
+                Log.Error($"FlightsFnc, ExeRequery: {exc.Message}");
+                throw;
+            }
         }
 
 

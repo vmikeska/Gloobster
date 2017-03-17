@@ -2,10 +2,16 @@ var Planning;
 (function (Planning) {
     var DealsPlaceSearch = (function () {
         function DealsPlaceSearch($cont, placeholder) {
+            var _this = this;
             this.selectedItem = null;
             this.$cont = $cont;
             this.$cont.addClass("city-airport-search");
             this.init(placeholder);
+            this.$close.click(function (e) {
+                _this.selectedItem = null;
+                _this.$input.val("");
+                _this.$ico.attr("class", "icon-logo-pin ico");
+            });
         }
         Object.defineProperty(DealsPlaceSearch.prototype, "v", {
             get: function () {
@@ -62,7 +68,7 @@ var Planning;
         };
         DealsPlaceSearch.prototype.regCall = function () {
             var _this = this;
-            this.$input.on("input", function (e) {
+            this.$input.keydown(function (e) {
                 var txt = _this.$input.val();
                 var data = [["txt", txt], ["max", "10"]];
                 _this.preloader(true);
@@ -81,11 +87,6 @@ var Planning;
                     _this.$input.val(itxt);
                 }
             });
-            this.$close.click(function (e) {
-                _this.selectedItem = null;
-                _this.$input.val("");
-                _this.$ico.attr("class", "icon-logo-pin ico");
-            });
         };
         DealsPlaceSearch.prototype.preloader = function (show) {
             if (show) {
@@ -98,12 +99,15 @@ var Planning;
             }
         };
         DealsPlaceSearch.prototype.showRes = function (show) {
-            if (show) {
-                this.$results.removeClass("hidden");
-            }
-            else {
-                this.$results.addClass("hidden");
-            }
+            var _this = this;
+            setTimeout(function () {
+                if (show) {
+                    _this.$results.removeClass("hidden");
+                }
+                else {
+                    _this.$results.addClass("hidden");
+                }
+            }, 100);
         };
         DealsPlaceSearch.prototype.codeStrForItem = function (item) {
             if (item.type === 0) {

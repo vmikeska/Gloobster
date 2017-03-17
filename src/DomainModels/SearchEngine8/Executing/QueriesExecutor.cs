@@ -121,6 +121,11 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
 
                 List<FlightDO> flights = KiwiExecutor.Search(request);
 
+                if (flights.Count == 0)
+                {
+                    
+                }
+
                 await ResultsProcessor.ProcessFlightsAsync(flights, query.TimeType, query.id.ToString(), query.Params);
 
                 await UpdateQueryExcecutedAsync(query.id);

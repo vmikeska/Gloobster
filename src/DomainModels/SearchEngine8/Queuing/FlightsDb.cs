@@ -9,6 +9,8 @@ using Gloobster.Entities.SearchEngine;
 using Gloobster.Enums.SearchEngine;
 using MongoDB.Bson;
 using Gloobster.Mappers.SearchEngine8;
+using MongoDB.Driver;
+using Serilog;
 
 namespace Gloobster.DomainModels.SearchEngine8.Queuing
 {
@@ -18,98 +20,133 @@ namespace Gloobster.DomainModels.SearchEngine8.Queuing
 
         public IDbOperations DB { get; set; }
         public IQueriesExecutor QueriesExecutor { get; set; }
+        public ILogger Log { get; set; }
 
         public async Task<FlightQueryResult8DO<T>> GetResultsAsync<T>(FlightQuery8DO q)
         {
-            QueryEntity queryEntity = GetQuery(q);
-
-            bool queryExists = queryEntity != null;
-            if (queryExists)
+            try
             {
-                var qid = queryEntity.id.ToString();
+                QueryEntity queryEntity = GetQuery(q);
 
-                if (queryEntity.State == QueryState.Saved)
+                bool queryExists = queryEntity != null;
+                if (queryExists)
                 {
-                    return GetResultBase<T>(q, qid, QueryState.Saved);
-                }
+                    var qid = queryEntity.id.ToString();
 
-                if (queryEntity.State == QueryState.Started)
-                {
-                    return GetResultBase<T>(q, qid, QueryState.Started);
-                }
-
-                if (queryEntity.State == QueryState.Finished)
-                {
-                    TimeSpan age = DateTime.UtcNow - queryEntity.Executed.Value;
-                    bool isOld = age.TotalMinutes > MaxCacheLifeTimeMins;
-
-                    if (isOld)
+                    if (queryEntity.State == QueryState.Saved)
                     {
-                        await DeleteQueryAsync(queryEntity);
+                        return BuildResultBase<T>(q, qid, QueryState.Saved);
                     }
-                    else
+
+                    if (queryEntity.State == QueryState.Started)
                     {
-                        var finishedResult = GetResultBase<T>(q, qid, QueryState.Finished);
-                        var results = GetResults<T>(queryEntity.id);
-                        finishedResult.Results = results;
-                        return finishedResult;
+                        return BuildResultBase<T>(q, qid, QueryState.Started);
+                    }
+
+                    if (queryEntity.State == QueryState.Failed)
+                    {
+                        if (queryEntity.Restarted > 0)
+                        {
+                            return BuildResultBase<T>(q, qid, QueryState.Failed);
+                        }
+
+                        queryEntity.Restarted = 1;
+                        queryEntity.State = QueryState.Saved;
+
+                        await DB.ReplaceOneAsync(queryEntity);
+                        return BuildResultBase<T>(q, qid, QueryState.Saved);
+                    }
+
+                    if (queryEntity.State == QueryState.Finished)
+                    {
+                        bool isOld = true;
+                        if (queryEntity.Executed.HasValue)
+                        {
+                            TimeSpan age = DateTime.UtcNow - queryEntity.Executed.Value;
+                            isOld = age.TotalMinutes > MaxCacheLifeTimeMins;
+                        }
+
+                        if (isOld)
+                        {
+                            await DeleteQueryAsync(queryEntity);
+                        }
+                        else
+                        {
+                            var finishedResult = BuildResultBase<T>(q, qid, QueryState.Finished);
+                            var results = GetResults<T>(queryEntity.id);
+                            finishedResult.Results = results;
+                            return finishedResult;
+                        }
                     }
                 }
+
+                var newQueryId = await SaveQueryAsync(q);
+                QueriesExecutor.ExecuteQueriesAsync();
+                return BuildResultBase<T>(q, newQueryId, QueryState.Saved);
             }
-            
-            var newQueryId = await SaveQueryAsync(q);
-            QueriesExecutor.ExecuteQueriesAsync();
-            return GetResultBase<T>(q, newQueryId, QueryState.Saved);            
+            catch (Exception exc)
+            {
+                Log.Error($"FlightsFnc, GetResultsAsync: {exc.Message}");
+                throw;
+            }
         }
 
         public List<FlightQueryResult8DO<T>> CheckOnResults<T>(List<string> ids)
         {
-            var results = new List<FlightQueryResult8DO<T>>();
-
-            var objIds = ids.Select(i => new ObjectId(i)).ToList();
-
-            var queries = DB.List<QueryEntity>(e => objIds.Contains(e.id));
-
-            foreach (QueryEntity query in queries)
+            try
             {
-                var result = new FlightQueryResult8DO<T>
+                var results = new List<FlightQueryResult8DO<T>>();
+
+                var objIds = ids.Select(i => new ObjectId(i)).ToList();
+
+                var queries = DB.List<QueryEntity>(e => objIds.Contains(e.id));
+
+                foreach (QueryEntity query in queries)
                 {
-                    QueryId = query.id.ToString(),
-                    State = query.State,
-
-                    From = query.FromAir,
-
-                    ToType = query.ToType,
-                    To = query.To,
-
-                    Prms = query.Params
-                };
-
-                if (query.State == QueryState.Finished)
-                {
-                    result.Results = GetResults<T>(query.id);
-                }
-
-
-                if (query.State == QueryState.Started)
-                {
-                    var executedAgo = DateTime.UtcNow - query.Created;
-                    bool isOld = executedAgo.TotalSeconds > 60;
-
-                    if (isOld)
+                    var result = new FlightQueryResult8DO<T>
                     {
-                        RestartQueryAsync(query);
+                        QueryId = query.id.ToString(),
+                        State = query.State,
+
+                        From = query.FromAir,
+
+                        ToType = query.ToType,
+                        To = query.To,
+
+                        Prms = query.Params
+                    };
+
+                    if (query.State == QueryState.Finished)
+                    {
+                        result.Results = GetResults<T>(query.id);
                     }
+
+
+                    if (query.State == QueryState.Started)
+                    {
+                        var executedAgo = DateTime.UtcNow - query.Created;
+                        bool isOld = executedAgo.TotalSeconds > 60;
+
+                        if (isOld)
+                        {
+                            RestartQueryAsync(query);
+                        }
+                    }
+
+                    results.Add(result);
                 }
 
-                results.Add(result);
+                return results;
             }
-
-            return results;
+            catch (Exception exc)
+            {
+                Log.Error($"FlightsFnc, CheckOnResults: {exc.Message}");
+                throw;
+            }
         }
 
 
-        private FlightQueryResult8DO<T> GetResultBase<T>(FlightQuery8DO query, string qid, QueryState state)
+        private FlightQueryResult8DO<T> BuildResultBase<T>(FlightQuery8DO query, string qid, QueryState state)
         {            
             return new FlightQueryResult8DO<T>
             {

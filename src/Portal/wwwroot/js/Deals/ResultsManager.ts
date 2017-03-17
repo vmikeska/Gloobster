@@ -301,10 +301,14 @@ module Planning {
 			var qd = queries;
 			var shrinkQueue = qd.length > maxItems;
 
+			var origSize = qd.length;
+
 			if (shrinkQueue) {
 				qd = qd.slice(0, maxItems);
 			}
 
+			var itemsCut = origSize - qd.length;
+			
 			var v = Views.ViewBase.currentView;
 
 			qd.forEach((query) => {
@@ -328,7 +332,7 @@ module Planning {
 			});
 
 				if (shrinkQueue) {
-					this.$cont.append(`<span>...</span>`);
+						this.$cont.append(`<span>+ ${itemsCut} more</span>`);
 				}
 		}
 

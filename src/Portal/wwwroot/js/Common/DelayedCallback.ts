@@ -16,8 +16,7 @@ module Common {
 			} else {
 				this.$input = input;
 			}
-
-
+				
 			this.$input.keydown(() => { this.keyPressed() });
 		}
 

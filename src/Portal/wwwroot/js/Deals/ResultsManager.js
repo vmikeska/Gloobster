@@ -215,9 +215,11 @@ var Planning;
             var maxItems = 7;
             var qd = queries;
             var shrinkQueue = qd.length > maxItems;
+            var origSize = qd.length;
             if (shrinkQueue) {
                 qd = qd.slice(0, maxItems);
             }
+            var itemsCut = origSize - qd.length;
             var v = Views.ViewBase.currentView;
             qd.forEach(function (query) {
                 var prmsTxt = "";
@@ -233,7 +235,7 @@ var Planning;
                 _this.$cont.append($itm);
             });
             if (shrinkQueue) {
-                this.$cont.append("<span>...</span>");
+                this.$cont.append("<span>+ " + itemsCut + " more</span>");
             }
         };
         QueueVisualize.prototype.hide = function () {

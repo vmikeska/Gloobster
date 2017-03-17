@@ -27,7 +27,12 @@ function getVersion() {
     var verFile = fs.readFileSync(verFilePath, "utf8");
     var verPrms1 = verFile.split(" ");
     var verPrms2 = verPrms1[verPrms1.length - 1].split(";");
-    var version = verPrms2[0];
+    var version = parseInt(verPrms2[0]);
+
+    //var newVersion = version + 1;
+    //var newTxt = "namespace Gloobster.Portal { public class ScriptsVersion { public static int Version = " + newVersion + ";}}";
+    //fs.writeFileSync(verFilePath, newTxt, "utf8");
+    
     return version;
 }
 
