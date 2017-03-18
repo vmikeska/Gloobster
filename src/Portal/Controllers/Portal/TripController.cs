@@ -40,69 +40,23 @@ namespace Gloobster.Portal.Controllers.Portal
 		}
 
         [CreateAccount]
-        public async Task<IActionResult> List(string id = "grid")
+        public async Task<IActionResult> List()
         {
             var vm = CreateViewModelInstance<ViewModelTrips>();
             vm.DefaultLangModuleName = "pageTrips";
             vm.LoadClientTexts(new [] { "jsTrip" });
-
-            vm.NewTrips = new List<TripItemViewModel>();
-            vm.OldTrips = new List<TripItemViewModel>();
-
-            vm.DisplayType = string.IsNullOrEmpty(id) || (id == "grid");
-
+            
             if (!IsUserLogged)
             {
                 return View(vm);
             }
             
-            var oldTrips = new List<TripEntity>();
-            var newTrips = new List<TripEntity>();
-
             var trips = DB.List<TripEntity>(t => t.User_id == UserIdObj);
-
             CreateTripIfNone(trips, vm);
-
-            var query = $"{{ 'Participants.User_id': ObjectId('{UserId}')}}";
-            var invitedTrips = await DB.FindAsync<TripEntity>(query);
-
-            trips.AddRange(invitedTrips);
-
-            foreach (var trip in trips)
-            {
-                var ft = TripUtils.GetTripFromTo(trip);
-
-                var tripEnd = ft.Item2;
-
-                bool isOld = tripEnd < DateTime.UtcNow;
-                if (isOld)
-                {
-                    oldTrips.Add(trip);
-                }
-                else
-                {
-                    newTrips.Add(trip);
-                }
-            }
             
-            vm.OldTrips = ConvertTrips(oldTrips, vm);
-            vm.NewTrips = ConvertTrips(newTrips, vm);
-
             return View(vm);
         }
-
-	    private List<TripItemViewModel> ConvertTrips(List<TripEntity> trips, ViewModelTrips vm)
-	    {
-            var tripsVM = new List<TripItemViewModel>();
-            foreach (var t in trips)
-            {
-                var tc = TripToViewModel(t, vm);
-                tripsVM.Add(tc);
-            }
-
-	        return tripsVM;
-	    }
-
+        
 	    private async void CreateTripIfNone(List<TripEntity> trips, ViewModelTrips vm)
 	    {
             if (!trips.Any())
@@ -428,34 +382,6 @@ namespace Gloobster.Portal.Controllers.Portal
 	        return displayName;
 	    }
 
-        private TripItemViewModel TripToViewModel(TripEntity trip, ViewModelBase b)
-		{
-            var tripFromTo = TripUtils.GetTripFromTo(trip);
-            var fromDate = tripFromTo.Item1;
-            var toDate = tripFromTo.Item2;
-
-            var owner = DB.FOD<UserEntity>(u => u.User_id == trip.User_id);
-            var displayName = GetDisplayName(owner);
-            
-            var vm = new TripItemViewModel
-			{
-                B = b,
-				Id = trip.id.ToString(),
-                FromDate = fromDate,
-                ToDate = toDate,                
-				Name = trip.Name,
-                Participants = GetParticipantsView(trip.Participants, trip.User_id),
-                HasSmallPicture = trip.HasSmallPicture,
-
-                IsOwner = trip.User_id == UserIdObj.Value,
-                OwnerName = displayName,
-                OwnerId = trip.User_id.ToString(),
-
-				IsLocked = true
-			};
-			return vm;
-		}
-        
     }
 
     public class OverviewRequest

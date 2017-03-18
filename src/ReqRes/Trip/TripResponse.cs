@@ -27,6 +27,9 @@ namespace Gloobster.ReqRes.Trip
 
 		public List<ParticipantResponse> participants { get; set; }
 
+        public bool hasBigPicture { get; set; }
+        public bool hasSmallPicture { get; set; }
+
         public bool friendsPublic { get; set; }
         public bool allowToRequestJoin { get; set; }
         public string sharingCode { get; set; }

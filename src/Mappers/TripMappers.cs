@@ -60,7 +60,9 @@ namespace Gloobster.Mappers
 				ownerId = entity.User_id.ToString(),
                 allowToRequestJoin = entity.AllowToRequestJoin,
                 friendsPublic = entity.FriendsPublic,
-                sharingCode = entity.SharingCode
+                sharingCode = entity.SharingCode,
+                hasBigPicture = entity.HasBigPicture,
+                hasSmallPicture = entity.HasSmallPicture
 			};
 
 			if (entity.Comments != null)

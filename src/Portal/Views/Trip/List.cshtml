@@ -59,133 +59,41 @@ else
 
 
 
-<div class="wrapper">
+@Html.Partial("TripListTemplates")
 
+<div class="wrapper">
+    
     <div class="blue-holder-all">
         <div class="blue-holder">
-            <a class="icon-table2 @(Model.DisplayType ? "active" : string.Empty)" href="/@RoutingConsts.PlannerMenuName/grid"></a>
-            <a class="icon-paragraph-justify @(!Model.DisplayType ? "active" : string.Empty)" href="/@RoutingConsts.PlannerMenuName/table"></a>
+            <a id="bigSwitch" data-type="grid" class="type-switcher icon-table2" href="#"></a>
+            <a id="smallSwitch" data-type="table" class="type-switcher icon-paragraph-justify" href="#"></a>
         </div>
     </div>
 
-    @if (!Model.DisplayType)
-    {
+    <div id="resultsCont" class="">
+
         <div class="title">
             @Model.W("TitleCurrent")
         </div>
 
-        <div class="trips-table">
-            <div class="row headers">
-                <div class="cell photo-cell"></div>
-                <div class="cell">@Model.W("Name")</div>
-                <div class="cell">@Model.W("Term")</div>
-                <div class="cell">@Model.W("Team")</div>
-                <div class="cell">@Model.W("Owner")</div>
-                <div class="cell setting-cell"></div>
-            </div>
+        <div id="currentResults" class=""></div>
 
-            @foreach (var trip in Model.NewTrips)
-            {
-                await Html.RenderPartialAsync("TripItemRow", (object)trip);
-            }
-
-            <div class="row service-row">
-                <div class="cell photo-cell">
-                    <div class="plus-ico-all">
-                        <div class="icon-plus"></div>
-                    </div>
-                </div>
-                <div class="cell">
-                    <textarea id="newTrip" placeholder="@Model.W("NewTripName")"></textarea>
-                </div>
-                <div class="cell"></div>
-                <div class="cell"></div>
-                <div class="cell"></div>
-                <div class="cell">
-                    <a class="lbtn2 btn-create" href="javascript:currentView.createNewTrip();">@Model.W("Create")</a>
-                </div>
-            </div>
-
+        <div id="titleOld" class="title hidden">
+            @Model.W("TitleOld")
         </div>
 
-
-        @if (Model.OldTrips.Count > 0)
-        {
-            <div class="title">
-                @Model.W("TitleOld")
-            </div>
+        <div id="oldResults" class=""></div>
 
 
-            <div class="trips-table">
-                <div class="row headers">
-                    <div class="cell photo-cell"></div>
-                    <div class="cell">@Model.W("Name")</div>
-                    <div class="cell">@Model.W("Term")</div>
-                    <div class="cell">@Model.W("Team")</div>
-                    <div class="cell">@Model.W("Owner")</div>
-                    <div class="cell setting-cell"></div>
-                </div>
-
-
-                @foreach (var trip in Model.OldTrips)
-                {
-                    await Html.RenderPartialAsync("TripItemRow", (object)trip);
-                }
-
-
-            </div>
-        }
-
-    }
-    else
-    {
-        <div class="trips-big">
-
-            <div class="title">
-                @Model.W("TitleCurrent")
-            </div>
-
-            <div class="cont">
-
-                @foreach (var trip in Model.NewTrips)
-                {
-                    await Html.RenderPartialAsync("TripItemBig", (object)trip);
-                }
-
-                <div class="trip-new">
-                    <textarea id="newTrip" placeholder="@Model.W("NewTripName")..."></textarea>
-                    <a class="create" href="javascript:currentView.createNewTrip();">@Model.W("Create")<span>   </span><span class="icon-plus"></span> </a>
-                </div>
-
-            </div>
-
-        </div>
-
-
-            <div class="trips-big">
-
-                @if (Model.OldTrips.Count > 0)
-                {
-                    <div class="title">
-                        @Model.W("TitleOld")
-                    </div>
-                }
-
-                <div class="cont">
-
-                    @foreach (var trip in Model.OldTrips)
-                    {
-                        await Html.RenderPartialAsync("TripItemBig", (object)trip);
-                    }
-
-                </div>
-
-            </div>
-
-    }
+    </div>
 
 </div>
 
+
+@*<div class="trips-big">
+
+
+    </div>*@
 
 <script>
     function onBodyLoad() {

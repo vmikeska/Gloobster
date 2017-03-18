@@ -1,80 +1,83 @@
 ﻿
 .trip-root {
 
-    
-
-    .setting-wrap{
+    .setting-wrap {
         display: inline-block;
         position: relative;
     }
 
-    .setting{        
+    .setting {
         font-size: 32px;
         color: $yellow;
         cursor: pointer;
-        
-        &:hover{
+
+        &:hover {
             color: $orange;
         }
     }
 
-    .trip-menu{
+    .trip-menu {
         position: absolute;
         top: 25px;
         right: 5px;
-        /*display: inline-block;*/
+        display: inline-block;
         padding: 0;
         z-index: 10;
-
-        font-size: 0.9em;
-
-        list-style: none;
+        
+        
         text-align: left;
+        border-radius: 2px;
+        border: 2px solid $dark-blue;
 
-        border-radius: 4px;
-        border: 1px solid gray;
-        background-color: rgba(black, 0.5);
-
-        li{
-            border-bottom: 1px solid lightgray;
+        background-color: white;
+        
+        .item {
+            /*border-bottom: 1px solid lightgray;*/
             padding: 5px;
 
-            a{
-                color: $light-blue3;
-                text-decoration: none;
-                font-size: 18px;
+            a {                
+                text-decoration: none;                
                 white-space: nowrap;
 
-                .lato{
-                    color: white;
+                .txt {
+                    color: $light-blue3;
+                    font-size: 0.9em;
                 }
 
-                &:hover{
-                    .lato{
-                        color: $light-blue3;
+                .ico {
+                    color: $yellow;
+                }
+
+                &:hover {                                        
+                    .ico {
+                        color: $orange;
+                    }
+
+                    .txt {
+                        color: $orange;
                     }
                 }
             }
 
-            &:last-of-type{
+            /*&:last-of-type {
                 border-bottom: 0;
-            }
+            }*/
         }
     }
 
-    .blue-holder-all{
+    .blue-holder-all {
         margin-top: 8px;
         margin-bottom: 8px;
         text-align: right;
 
-        .blue-holder{
+        .blue-holder {
             display: inline-block;
             background-color: #f0fafc;
             border-radius: 4px;
             padding: 8px;
             margin-right: 8px;
 
-            a{
+            a {
                 display: inline-block;
                 text-decoration: none;
                 font-size: 34px;
@@ -82,74 +85,69 @@
                 margin: 0;
                 padding: 4px;
 
-                &:hover{
+                &:hover {
                     color: $dark-blue;
                 }
 
-                &.active{
+                &.active {
                     border: 1px solid $light-blue2;
                     border-radius: 4px;
-                
                 }
 
-                &:first-of-type{
+                &:first-of-type {
                     margin-right: 6px;
                 }
             }
-
         }
-
     }
 
-    .trips-table{
+    .trips-table {
         display: table;
         width: 100%;
         text-align: left;
         margin-bottom: 30px;
 
-        .row{
+        .row {
             display: table-row;
-            
 
-            .cell{
+
+            .cell {
                 display: table-cell;
                 vertical-align: middle;
                 padding: 8px;
-
                 border-bottom: 1px solid $light-blue2;
             }
 
             .date-cell {
                 min-width: 120px;
             }
-
         }
 
         .headers {
             font-weight: bold;
         }
 
-        .photo{
+        .photo {
             display: inline-block;
             border-radius: 4px;
             overflow: hidden;
             width: 70px;
             height: 70px;
 
-            img{
+            img {
                 display: inline-block;
                 margin: 0;
             }
         }
 
-        .you{
+        .you {
             border: 1px solid $orange;
             padding: 6px;
             border-radius: 4px;
             color: $orange;
         }
 
-        .btn-create{
+        .btn-create {
             color: white;
             background-color: $green;
             font-weight: bold;
@@ -159,22 +157,21 @@
             }
         }
 
-        .service-row{
+        .service-row {
 
-            textarea{                    
+            textarea {
                 resize: none;
             }
 
-            .plus-ico-all{
+            .plus-ico-all {
                 display: inline-block;
                 padding: 15px;
-                
                 background-color: $light-blue2;
                 border-radius: 4px;
-                
-               
-                .icon-plus{
-                    display: inline-block;                    
+
+
+                .icon-plus {
+                    display: inline-block;
                     font-size: 40px;
                     color: white;
                     vertical-align: top;
@@ -189,49 +186,33 @@
         }
 
         .cell {
-            padding: 2px !important;            
+            padding: 2px !important;
         }
-        
     }
 
     .title {
-            font-weight: bold;
-            font-size: 1.3em;
-            text-align: left;
-            padding-top: 1em;
-            padding-bottom: 1em;
-        }
+        font-weight: bold;
+        font-size: 1.3em;
+        text-align: left;
+        padding-top: 1em;
+        padding-bottom: 1em;
+    }
 
-    .trips-big{
-        
-        
+    .trips-big {
 
-        .cont {
-            text-align: left;
+        text-align: left;
 
-            @include below-width(641) {
-                text-align: center;
-            }
-            /*@include above-width(650) {
-                @include display-flex;
-                flex-flow: wrap;
-                justify-content: space-between;
-            }*/
-        }
-
-        .trip-new{
+        .trip-new {
             display: inline-block;
             position: relative;
             width: 300px;
             height: 370px;
             border-radius: 4px;
             overflow: hidden;
-
             margin-bottom: 15px;
-            
             background-color: #cdedf4;
 
-            textarea{
+            textarea {
                 background-color: #cdedf4;
                 resize: none;
                 width: 280px;
@@ -239,10 +220,10 @@
                 border-bottom: 1px solid white;
                 margin-right: 8px;
                 margin-left: 8px;
-                box-sizing:border-box;
+                box-sizing: border-box;
             }
 
-            .create{
+            .create {
                 display: inline-block;
                 text-decoration: none;
                 position: absolute;
@@ -253,17 +234,17 @@
                 font-size: 22px;
                 padding-right: 34px;
 
-                .icon-plus{
-                    display: inline-block;                    
+                .icon-plus {
+                    display: inline-block;
                     font-size: 26px;
                     position: absolute;
                     right: 0;
-                    top:8px;
+                    top: 8px;
                 }
             }
         }
 
-        .trip-all{
+        .trip-all {
             margin-right: 4px;
 
             @include above-width(1280) {
@@ -280,41 +261,35 @@
             height: 370px;
             border-radius: 4px;
             overflow: hidden;
-            
             margin-bottom: 15px;
-            
+
 
             &:last-of-type {
                 margin-right: 0;
             }
 
-            img{
+            img {
                 position: absolute;
                 top: 0;
                 left: 0;
-
             }
 
-            .serv{
+            .serv {
                 position: absolute;
                 bottom: 0;
                 left: 0;
                 right: 0;
-                
                 color: white;
-
                 padding: 1em;
-                
                 font-size: 16px;
-                
                 background: rgba(black, 0.3);
                 text-align: left;
             }
 
-            .setting{
+            .setting {
                 position: absolute;
                 top: 5px;
-                right: 5px;                
+                right: 5px;
             }
 
             .title {
@@ -322,21 +297,13 @@
                 top: 0;
                 left: 0;
                 right: 0;
-
                 padding: 0.8em;
-                
                 font-size: 1.1em;
                 font-weight: bold;
                 color: white;
                 text-align: left;
-
                 background-color: rgba(black, 0.5);
-
             }
-
-            
-
         }
     }
-
 }

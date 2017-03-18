@@ -8,7 +8,7 @@
   "Environment": {
     "Domain": "gloobster.com",
     "IsLocal": "false",
-    "Protocol": "http",
+    "Protocol": "https",
     "UseMiniScripts": "true"
   },
   "AppSecret": "adksfjasfljagkams;gfaksdfa;sfa;sfjas;dklfjsa;kdflas;klfjas;klfjasd;klfja;lkfjas;dkfjas;dkas;dkhg;dsfiasdf",

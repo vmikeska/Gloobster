@@ -1,0 +1,178 @@
+﻿
+<script id="trip-item-row-template" type="text/x-handlebars-template">
+
+    <div class="row trip-holder" id="{{id}}">
+        <div class="cell photo-cell">
+            <div class="photo">
+                <img id="tripImg_{{id}}" src="{{imgLink}}">
+            </div>
+        </div>
+        <div class="cell">
+            <a href="{{itemLink}}"><h3>{{name}}</h3></a>
+        </div>
+        <div class="cell date-cell">
+            <div>{{fromDateDis}}</div>
+
+            <div>{{toDateDis}}</div>
+        </div>
+        <div class="cell">
+
+            <div class="participants">
+
+            </div>
+            <span class="nowrap">{{participantsCount}} @Model.W("FriendsCount")</span>
+        </div>
+        <div class="cell">
+            {{#if isOwner}}
+            <span class="you">@Model.W("You")</span>
+            {{else}}
+            <div class="thumb-cont xs border">
+                <img src="/PortalUser/ProfilePicture_xs/{{ownerId}}" alt="{{ownerName}}">
+            </div>
+            {{/if}}
+
+        </div>
+        <div class="cell">
+
+            {{#if isOwner}}
+            <div class="setting-wrap">
+                <span class="setting icon-gear"></span>
+            </div>
+            {{/if}}
+
+        </div>
+
+
+    </div>
+
+</script>
+
+<script id="trip-item-big-template" type="text/x-handlebars-template">
+    <div class="trip-all trip-holder" id="{{id}}">
+        <a href="{{itemLink}}">
+
+            {{#if hasSmallPicture}}
+            <img id="tripImg_{{id}}" src="/Trip/TripPictureSmall_s/{{id}}">
+            {{else}}
+            <img id="tripImg_{{id}}" src="/images/TripDefault.jpg">
+            {{/if}}
+
+            {{#if isOwner}}
+            <div class="title">{{name}}</div>
+            {{else}}
+            <div class="title">{{name}} - by {{ownerName}}</div>
+            {{/if}}
+
+            <div class="serv">
+                {{fromeDate}}
+            </div>
+
+            {{#if isOwner}}
+            <span class="setting icon-gear"></span>
+            {{/if}}
+
+        </a>
+
+    </div>
+</script>
+
+
+
+<script id="trip-menu-template" type="text/x-handlebars-template">
+
+    <div class="trip-menu" id="tripMenu_{{id}}" data-tid="{{id}}">
+        <div class="item">
+            <a class="photo-link" href="#">
+                <input id="photoInput_{{id}}" data-tid="{{id}}" type="file" />
+                <label for="photoInput_{{id}}">
+                    <span class="icon-camera ico"></span>
+                    <span class="txt">@Model.W("TitlePhoto")</span>
+                </label>
+            </a>
+        </div>
+        <div class="item">
+            <a class="overviewTrip" href="/trip/{{id}}">
+                <span class="icon-eye ico"></span>
+                <span class="txt">@Model.W("Preview")</span>
+            </a>
+
+        </div>
+        <div class="item">
+            <a class="deleteTrip" href="#">
+                <span class="icon-bin ico"></span>
+                <span class="txt">@Model.W("Delete", "layout")</span>
+            </a>
+        </div>
+        <div class="item">
+            <a class="menuClose" href="#">
+                <span class="icon-cross-small ico"></span>
+                <span class="txt">@Model.W("Close", "layout")</span>
+            </a>
+        </div>
+
+    </div>
+
+</script>
+
+<script id="participant-row-template" type="text/x-handlebars-template">
+    <div class="thumb-cont xs border">
+        <img src="/PortalUser/ProfilePicture_xs/{{id}}" alt="{{name}}">
+    </div>
+</script>
+
+
+<script id="table-layout-template" type="text/x-handlebars-template">
+
+    <div class="trips-table">
+        <div class="row headers">
+            <div class="cell photo-cell"></div>
+            <div class="cell">@Model.W("Name")</div>
+            <div class="cell">@Model.W("Term")</div>
+            <div class="cell">@Model.W("Team")</div>
+            <div class="cell">@Model.W("Owner")</div>
+            <div class="cell setting-cell"></div>
+        </div>
+
+
+
+    </div>
+
+</script>
+
+
+<script id="new-trip-big-template" type="text/x-handlebars-template">
+
+    <div class="trip-new">
+        <textarea id="newTrip" placeholder="@Model.W("NewTripName")..."></textarea>
+        <a class="create" href="javascript:currentView.createNewTrip();">@Model.W("Create")<span>   </span><span class="icon-plus"></span> </a>
+    </div>
+
+</script>
+
+
+<script id="new-trip-small-template" type="text/x-handlebars-template">
+
+    <div class="row service-row">
+        <div class="cell photo-cell">
+            <div class="plus-ico-all">
+                <div class="icon-plus"></div>
+            </div>
+        </div>
+        <div class="cell">
+            <textarea id="newTrip" placeholder="@Model.W("NewTripName")"></textarea>
+        </div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell">
+            <a class="lbtn2 btn-create" href="javascript:currentView.createNewTrip();">@Model.W("Create")</a>
+        </div>
+    </div>
+
+
+</script>
+
+
+
+
+

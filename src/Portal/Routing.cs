@@ -70,7 +70,7 @@ namespace Gloobster.Portal
 
                 routes.MapRoute(
                     name: "travelplanner",
-                    template: RoutingConsts.PlannerMenuName + "/{id}",
+                    template: RoutingConsts.PlannerMenuName,
                     defaults: new { controller = "trip", action = "list" }
                     );
 

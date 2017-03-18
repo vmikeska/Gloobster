@@ -3573,29 +3573,31 @@ footer {
   position: absolute;
   top: 25px;
   right: 5px;
-  /*display: inline-block;*/
+  display: inline-block;
   padding: 0;
   z-index: 10;
-  font-size: 0.9em;
-  list-style: none;
   text-align: left;
-  border-radius: 4px;
-  border: 1px solid gray;
-  background-color: rgba(0, 0, 0, 0.5); }
-  .trip-root .trip-menu li {
-    border-bottom: 1px solid lightgray;
-    padding: 5px; }
-    .trip-root .trip-menu li a {
-      color: #3298C1;
+  border-radius: 2px;
+  border: 2px solid #005476;
+  background-color: white; }
+  .trip-root .trip-menu .item {
+    /*border-bottom: 1px solid lightgray;*/
+    padding: 5px;
+    /*&:last-of-type {
+                border-bottom: 0;
+            }*/ }
+    .trip-root .trip-menu .item a {
       text-decoration: none;
-      font-size: 18px;
       white-space: nowrap; }
-      .trip-root .trip-menu li a .lato {
-        color: white; }
-      .trip-root .trip-menu li a:hover .lato {
-        color: #3298C1; }
-    .trip-root .trip-menu li:last-of-type {
-      border-bottom: 0; }
+      .trip-root .trip-menu .item a .txt {
+        color: #3298C1;
+        font-size: 0.9em; }
+      .trip-root .trip-menu .item a .ico {
+        color: #FFC400; }
+      .trip-root .trip-menu .item a:hover .ico {
+        color: #F56E12; }
+      .trip-root .trip-menu .item a:hover .txt {
+        color: #F56E12; }
 
 .trip-root .blue-holder-all {
   margin-top: 8px;
@@ -3684,97 +3686,87 @@ footer {
   padding-top: 1em;
   padding-bottom: 1em; }
 
-.trip-root .trips-big .cont {
-  text-align: left;
-  /*@include above-width(650) {
-                @include display-flex;
-                flex-flow: wrap;
-                justify-content: space-between;
-            }*/ }
-  @media screen and (max-width: 641px) {
-    .trip-root .trips-big .cont {
-      text-align: center; } }
-
-.trip-root .trips-big .trip-new {
-  display: inline-block;
-  position: relative;
-  width: 300px;
-  height: 370px;
-  border-radius: 4px;
-  overflow: hidden;
-  margin-bottom: 15px;
-  background-color: #cdedf4; }
-  .trip-root .trips-big .trip-new textarea {
-    background-color: #cdedf4;
-    resize: none;
-    width: 280px;
-    height: 150px;
-    border-bottom: 1px solid white;
-    margin-right: 8px;
-    margin-left: 8px;
-    box-sizing: border-box; }
-  .trip-root .trips-big .trip-new .create {
+.trip-root .trips-big {
+  text-align: left; }
+  .trip-root .trips-big .trip-new {
     display: inline-block;
-    text-decoration: none;
-    position: absolute;
-    bottom: 5px;
-    right: 7px;
-    vertical-align: middle;
-    line-height: 40px;
-    font-size: 22px;
-    padding-right: 34px; }
-    .trip-root .trips-big .trip-new .create .icon-plus {
+    position: relative;
+    width: 300px;
+    height: 370px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 15px;
+    background-color: #cdedf4; }
+    .trip-root .trips-big .trip-new textarea {
+      background-color: #cdedf4;
+      resize: none;
+      width: 280px;
+      height: 150px;
+      border-bottom: 1px solid white;
+      margin-right: 8px;
+      margin-left: 8px;
+      box-sizing: border-box; }
+    .trip-root .trips-big .trip-new .create {
       display: inline-block;
-      font-size: 26px;
+      text-decoration: none;
       position: absolute;
+      bottom: 5px;
+      right: 7px;
+      vertical-align: middle;
+      line-height: 40px;
+      font-size: 22px;
+      padding-right: 34px; }
+      .trip-root .trips-big .trip-new .create .icon-plus {
+        display: inline-block;
+        font-size: 26px;
+        position: absolute;
+        right: 0;
+        top: 8px; }
+  .trip-root .trips-big .trip-all {
+    margin-right: 4px;
+    position: relative;
+    display: inline-block;
+    width: 300px;
+    height: 370px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 15px; }
+    @media screen and (min-width: 1280px) {
+      .trip-root .trips-big .trip-all {
+        margin-right: 15px; } }
+    .trip-root .trips-big .trip-all:last-of-type {
+      margin-right: 0; }
+    .trip-root .trips-big .trip-all:last-of-type {
+      margin-right: 0; }
+    .trip-root .trips-big .trip-all img {
+      position: absolute;
+      top: 0;
+      left: 0; }
+    .trip-root .trips-big .trip-all .serv {
+      position: absolute;
+      bottom: 0;
+      left: 0;
       right: 0;
-      top: 8px; }
-
-.trip-root .trips-big .trip-all {
-  margin-right: 4px;
-  position: relative;
-  display: inline-block;
-  width: 300px;
-  height: 370px;
-  border-radius: 4px;
-  overflow: hidden;
-  margin-bottom: 15px; }
-  @media screen and (min-width: 1280px) {
-    .trip-root .trips-big .trip-all {
-      margin-right: 15px; } }
-  .trip-root .trips-big .trip-all:last-of-type {
-    margin-right: 0; }
-  .trip-root .trips-big .trip-all:last-of-type {
-    margin-right: 0; }
-  .trip-root .trips-big .trip-all img {
-    position: absolute;
-    top: 0;
-    left: 0; }
-  .trip-root .trips-big .trip-all .serv {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    color: white;
-    padding: 1em;
-    font-size: 16px;
-    background: rgba(0, 0, 0, 0.3);
-    text-align: left; }
-  .trip-root .trips-big .trip-all .setting {
-    position: absolute;
-    top: 5px;
-    right: 5px; }
-  .trip-root .trips-big .trip-all .title {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    padding: 0.8em;
-    font-size: 1.1em;
-    font-weight: bold;
-    color: white;
-    text-align: left;
-    background-color: rgba(0, 0, 0, 0.5); }
+      color: white;
+      padding: 1em;
+      font-size: 16px;
+      background: rgba(0, 0, 0, 0.3);
+      text-align: left; }
+    .trip-root .trips-big .trip-all .setting {
+      position: absolute;
+      top: 5px;
+      right: 5px; }
+    .trip-root .trips-big .trip-all .title {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 0.8em;
+      font-size: 1.1em;
+      font-weight: bold;
+      color: white;
+      text-align: left;
+      background-color: rgba(0, 0, 0, 0.5); }
 
 .trip-share {
   text-align: left; }

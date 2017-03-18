@@ -47,10 +47,10 @@ namespace Gloobster.Portal.Controllers.Api.Trip
 
 	    [HttpGet]
 		[AuthorizeApi]
-		public IActionResult Get(string id)
-		{
+		public async Task<IActionResult> Get(string id)
+		{		    
 			var tripIdObj = new ObjectId(id);
-			var trip = DB.C<TripEntity>().FirstOrDefault(t => t.id == tripIdObj);
+			var trip = DB.FOD<TripEntity>(t => t.id == tripIdObj);
 			
 			if (trip == null)
 			{

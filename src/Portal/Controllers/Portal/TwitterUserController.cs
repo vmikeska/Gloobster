@@ -7,6 +7,7 @@ using Gloobster.DomainInterfaces;
 using Gloobster.DomainObjects;
 using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
+using Serilog;
 
 namespace Gloobster.Portal.Controllers
 {
@@ -15,12 +16,14 @@ namespace Gloobster.Portal.Controllers
 	    public IMyTwitterService TwitterSvc { get; set; }	    
 		public IDbOperations DB { get; set; }
 		public IComponentContext ComponentContext { get; set; }
+        public ILogger Log { get; set; }
 
-		public TwitterUserController(IMyTwitterService twitterService, IDbOperations db, IComponentContext componentContext)
+		public TwitterUserController(ILogger log, IMyTwitterService twitterService, IDbOperations db, IComponentContext componentContext)
 		{
 			TwitterSvc = twitterService;			
 			DB = db;
 			ComponentContext = componentContext;
+		    Log = log;
 		}
         
 	    public ActionResult Authorize()
@@ -31,17 +34,17 @@ namespace Gloobster.Portal.Controllers
 		}
 		
 		public IActionResult AuthCallback(string oauth_token, string oauth_verifier)
-		{			
-			var auth = TwitterSvc.VerifyCredintial(oauth_token, oauth_verifier);
-			
-			var response = new TwitterResponse
+		{			            
+            var auth = TwitterSvc.VerifyCredintial(oauth_token, oauth_verifier);
+            
+            var response = new TwitterResponse
 			{
 				userId = auth.UserId,
 				accessToken = auth.AccessToken,				
 				tokenSecret = auth.TokenSecret				
 			};
-
-			return View(response);
+            
+            return View(response);
 		}        
 	}
 
