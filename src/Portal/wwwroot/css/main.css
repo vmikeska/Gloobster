@@ -1011,6 +1011,64 @@ button:active {
       justify-content: space-between;
       width: 100%; } }
 
+.aboutus .deals-block {
+  background-color: #009EC4; }
+  .aboutus .deals-block .wrapper {
+    padding: 1em; }
+  .aboutus .deals-block .txt {
+    padding: 1em;
+    color: white;
+    text-align: left; }
+  .aboutus .deals-block .icons {
+    display: table;
+    width: 100%; }
+    .aboutus .deals-block .icons .ico {
+      display: table-cell;
+      width: 33.3%; }
+    .aboutus .deals-block .icons .svg-img {
+      width: 120px;
+      height: 120px; }
+  .aboutus .deals-block .labels {
+    color: white;
+    display: table;
+    width: 100%; }
+    .aboutus .deals-block .labels .label {
+      display: table-cell;
+      width: 33.3%; }
+
+.aboutus .blocks .item {
+  display: table;
+  width: 100%;
+  padding: 1em; }
+  .aboutus .blocks .item .left {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: left;
+    width: 200px; }
+  .aboutus .blocks .item .right {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: left; }
+
+.aboutus .blocks .image {
+  font-size: 5em; }
+
+.aboutus .blocks .name {
+  /*padding-top: 0.5em;*/
+  font-size: 1.1em; }
+
+.aboutus .blocks .blue {
+  color: #009EC4; }
+
+.aboutus .blocks .yellow {
+  color: #FFC400; }
+
+.aboutus .blocks .orange {
+  color: #F56E12; }
+
+.aboutus .blocks .green {
+  color: #3DA33D; }
+
 footer {
   background-color: #3298C1; }
   footer .footer_cont {

@@ -1,0 +1,71 @@
+﻿
+  <module name="pageAbout">
+
+    <DealsTxt>
+      <en>Pick the places you'd like to visit and we will keep you up to date on the best deals. Don't worry about spam, you decide how often we should notify you. Furthermore, our unique score algorithm helps you to recognize an excellent deal offer.</en>
+    </DealsTxt>
+
+    <WizardStep1>
+      <en>1. Set your home city</en>
+    </WizardStep1>
+
+    <WizardStep2>
+      <en>2. Customize your home airports</en>
+    </WizardStep2>
+
+    <WizardStep3>
+      <en>3. Choose places you'd like to visit</en>
+    </WizardStep3>
+
+    
+    <CompTitleTravelBuddy>
+      <en>Travel buddy</en>
+    </CompTitleTravelBuddy>
+
+    <CompBodyTravelBuddy>
+      <en>Find your travel buddy here and now. Wherever you are, whenever you are on your way – get in touch with travellers all over the world.</en>
+    </CompBodyTravelBuddy>
+
+    <CompBtnTravelBuddy>
+      <en>Find your buddy</en>
+    </CompBtnTravelBuddy>
+
+    <CompTitleOrganizer>
+      <en>Travel organizer</en>
+    </CompTitleOrganizer>
+
+    <CompBodyOrganizer>
+      <en>Organize your travel documents and notes day by day. Invite your friend or let people know about your trip via social networks.</en>
+    </CompBodyOrganizer>
+
+    <CompBtnOrganizer>
+      <en>Try it now</en>
+    </CompBtnOrganizer>
+
+    <CompTitleWiki>
+      <en>Travel wiki</en>
+    </CompTitleWiki>
+
+    <CompBodyWiki>
+      <en>Become a part of our travel community and help us build one of the biggest travel databases on the Internet.</en>
+    </CompBodyWiki>
+
+    <CompBtnWiki>
+      <en>Join us</en>
+    </CompBtnWiki>
+
+    <CompTitlePinboard>
+      <en>Travel map</en>
+    </CompTitlePinboard>
+
+    <CompBodyPinboard>
+      <en>Pin places you have visited, share and compare with your friends. See most visited places all over the world. Let‘s build the travel map together!</en>
+    </CompBodyPinboard>
+
+    <CompBtnPinboard>
+      <en>Build your map</en>
+    </CompBtnPinboard>
+
+
+
+  </module>

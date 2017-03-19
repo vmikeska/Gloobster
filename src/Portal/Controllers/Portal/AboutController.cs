@@ -17,7 +17,10 @@ namespace Gloobster.Portal.Controllers.Portal
 
         public IActionResult Us()
         {
-            var vm = CreateViewModelInstance<EmptyViewModel>();            
+            var vm = CreateViewModelInstance<AboutViewModel>();
+            vm.DefaultLangModuleName = "pageAbout";
+            vm.LoadClientTexts();
+
             return View(vm);
         }
 

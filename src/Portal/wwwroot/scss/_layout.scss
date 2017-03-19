@@ -292,6 +292,99 @@
     }
 }
 
+
+.aboutus {
+
+    .deals-block {
+        background-color: $info-blue2;
+
+        .wrapper {
+            padding: 1em;
+        }
+
+        .txt {
+            padding: 1em;
+            color: white;
+            text-align: left;
+        }
+
+        .icons {
+            display: table;
+            width: 100%;
+
+            .ico {
+                display: table-cell;                
+                width: 33.3%
+            }
+
+            .svg-img {
+                width: 120px;
+                height: 120px;
+            }
+        }
+
+        .labels {
+            color: white;
+            display: table;
+            width: 100%;
+
+            .label {
+                display: table-cell;                
+                width: 33.3%;                
+            }
+        }
+
+    }
+
+    .blocks {
+        .item {
+            display: table;
+            width: 100%;
+
+            padding: 1em;
+
+            .left {
+                display: table-cell;
+                vertical-align: middle;
+                text-align: left;
+                width: 200px;
+            }
+
+            .right {
+                display: table-cell;
+                vertical-align: middle;
+                text-align: left;
+            }
+        }
+
+        .image {            
+            font-size: 5em;            
+        }
+
+        .name {
+            /*padding-top: 0.5em;*/
+            font-size: 1.1em;
+        }
+
+        .blue{
+                color: $light-blue2;
+            }
+
+            .yellow{
+                color: $yellow;
+            }
+
+            .orange{
+                color: $orange;
+            }
+
+            .green{
+                color: $green;
+            }
+    }
+    
+}
+
 footer {
     background-color: $light-blue3;
 

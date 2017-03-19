@@ -21,6 +21,11 @@ namespace Gloobster.Portal.ViewModels
         
     }
 
+    public class AboutViewModel : ViewModelBase
+    {
+
+    }
+
 
     public class InfoBlocks
     {

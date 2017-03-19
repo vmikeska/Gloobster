@@ -1,6 +1,125 @@
-﻿@{
-    ViewData["Title"] = "Who we are";
-    Layout = "_LayoutNew";
+﻿@using Gloobster.Common
+@using Microsoft.Data.Entity.Metadata.Internal
+@{
+    ViewData["Title"] = "About gloobster.com";
+    ViewBag.BodyClass = "aboutus";
 }
 
-We are community of travelers from all around the world.
+<div class="deals-block">
+
+    <div class="wrapper">
+        
+        
+        <div class="txt">
+            @Model.W("DealsTxt")            
+        </div>
+
+        <div class="icons">
+            <div class="ico">
+                <img class="svg-img" src="/images/n/fly-pin.svg" />
+            </div>
+            <div class="ico">
+                <img class="svg-img" src="/images/n/fly-plane.svg" />
+            </div>
+            <div class="ico">
+                <img class="svg-img" src="/images/n/fly-comp.svg" />
+            </div>
+        </div>
+
+        <div class="labels">
+            <div class="label">@Model.W("WizardStep1")</div>
+            <div class="label">@Model.W("WizardStep2")</div>
+            <div class="label">@Model.W("WizardStep3")</div>
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<div class="wrapper">
+
+    <div class="social">
+
+        <div class="blocks">
+
+            <div id="sectionOrganizer" class="item">
+
+                <div class="left">
+                    <div class="image">
+                        <span class="icon-ico-organizer green"></span>
+                    </div>
+                    <div class="name">
+                        <span class="green">@Model.W("CompTitleOrganizer")</span>
+                    </div>
+                </div>
+                <div class="right">                    
+                    <div class="txt">@Model.W("CompBodyOrganizer")</div>
+                </div>
+
+            </div>
+
+            <div id="sectionPins" class="item">
+                
+                <div class="left">
+                    <div class="image">
+                        <span class="icon-ico-travel-map yellow"></span>
+                    </div>
+                    <div class="name">
+                        <span class="yellow">@Model.W("CompTitlePinboard")</span>
+                    </div>
+                </div>
+                <div class="right">
+                    <div class="txt">@Model.W("CompBodyPinboard")</div>
+                </div>
+
+            </div>
+
+            <div id="sectionWiki" class="item">
+                
+                <div class="left">
+                    <div class="image">
+                        <span class="icon-ico-wiki orange"></span>
+                    </div>
+                    <div class="name">
+                        <span class="orange">@Model.W("CompTitleWiki")</span>
+                    </div>
+                </div>
+                <div class="right">
+                    <div class="txt">@Model.W("CompBodyWiki")</div>
+                </div>
+
+            </div>
+
+            <div id="sectionBuddy" class="item">
+                
+                <div class="left">
+                    <div class="image">
+                        <span class="icon-ico-travel-buddy blue"></span>
+                    </div>
+                    <div class="name">
+                        <span class="blue">@Model.W("CompTitleTravelBuddy")</span>
+                    </div>
+                </div>
+                <div class="right">
+                    <div class="txt">@Model.W("CompBodyTravelBuddy")</div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    function onBodyLoad() {
+        currentView = new Views.ViewBase();
+    }
+
+</script>
