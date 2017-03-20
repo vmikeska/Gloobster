@@ -136,6 +136,7 @@
 /// <reference path="js/Views/Message.js" />
 /// <reference path="js/Views/Messages.js" />
 /// <reference path="js/Views/NewAdminView.js" />
+/// <reference path="js/views/newwikipageview.js" />
 /// <reference path="js/Views/NotificationsView.js" />
 /// <reference path="js/Views/PinBoardView.js" />
 /// <reference path="js/Views/RequestToJoinView.js" />

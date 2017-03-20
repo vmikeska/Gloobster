@@ -1,0 +1,14 @@
+﻿@using System.Threading.Tasks
+@using Gloobster.Portal.ViewModels
+@model NewWikiModelBase
+
+<div class="info-block">
+    <div class="header"><span class="title">About</span></div>
+    <div class="bcont padding">
+
+        <table>
+            @Html.Partial("AATableItem", Model.InfoByName("PopulationCity"))
+        </table>
+
+    </div>
+</div>

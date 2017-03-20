@@ -18,8 +18,6 @@ var Views;
             this.articleType = articleType;
             this.articleId = articleId;
             this.langVersion = this.getLangVersion();
-            this.photos = new WikiPhotosUser(articleId);
-            this.rating = new Rating(articleId, this.langVersion);
             this.report = new Report(articleId, this.langVersion);
             this.regContribute();
         }
@@ -35,7 +33,7 @@ var Views;
                     }
                 }
                 else {
-                    RegMessages.displayFullRegMessage();
+                    Views.RegMessages.displayFullRegMessage();
                 }
             });
         };
@@ -93,168 +91,12 @@ var Views;
                     _this.toggleForm($target);
                 }
                 else {
-                    RegMessages.displayFullRegMessage();
+                    Views.RegMessages.displayFullRegMessage();
                 }
             });
         };
         return Report;
     }());
     Views.Report = Report;
-    var RegMessages = (function () {
-        function RegMessages() {
-        }
-        RegMessages.displayFullRegMessage = function () {
-            var id = new Common.InfoDialog();
-            var v = Views.ViewBase.currentView;
-            id.create(v.t("FullRegTitle", "jsWiki"), v.t("FullRegBody", "jsWiki"));
-        };
-        return RegMessages;
-    }());
-    Views.RegMessages = RegMessages;
-    var Rating = (function () {
-        function Rating(articleId, langVersion) {
-            this.regRating();
-            this.regRatingDD();
-            this.regRatingPrice();
-            this.articleId = articleId;
-            this.langVersion = langVersion;
-        }
-        Rating.prototype.getRatingDesign = function (rating) {
-            var res = {
-                rstr: rating,
-                cls: ""
-            };
-            if (rating > 0) {
-                res.rstr = "+" + rating;
-                res.cls = "plus";
-            }
-            else {
-                res.cls = "minus";
-            }
-            return res;
-        };
-        Rating.prototype.regRatingDD = function () {
-            var _this = this;
-            this.regRatingBase("pmBtn", "item", "WikiRating", function (c) {
-                _this.setLikeDislike(c.$cont, c.like, "pmBtn");
-            });
-        };
-        Rating.prototype.regRatingPrice = function () {
-            var _this = this;
-            this.regRatingBase("priceBtn", "rate", "WikiPriceRating", function (c) {
-                _this.setLikeDislike(c.$cont, c.like, "priceBtn");
-                c.$cont.prev().find(".price").text(c.res.toFixed(2));
-            });
-        };
-        Rating.prototype.regRatingBase = function (btnClass, contClass, endpoint, callback) {
-            var _this = this;
-            $("." + btnClass).click(function (e) {
-                e.preventDefault();
-                var $btn = $(e.target);
-                var like = $btn.data("like");
-                var $cont = $btn.closest("." + contClass);
-                var id = $cont.data("id");
-                var data = {
-                    articleId: _this.articleId,
-                    sectionId: id,
-                    language: _this.langVersion,
-                    like: like
-                };
-                if (Views.ViewBase.currentView.fullReg) {
-                    Views.ViewBase.currentView.apiPut(endpoint, data, function (r) {
-                        callback({ $cont: $cont, like: like, res: r });
-                    });
-                }
-                else {
-                    RegMessages.displayFullRegMessage();
-                }
-            });
-        };
-        Rating.prototype.regRating = function () {
-            var _this = this;
-            this.regRatingBase("ratingBtn", "article_rating", "WikiRating", function (c) {
-                _this.setLikeDislike(c.$cont, c.like, "ratingBtn");
-                if (c.res != null) {
-                    var $r = c.$cont.find(".score");
-                    $r.removeClass("plus").removeClass("minus");
-                    var d = _this.getRatingDesign(c.res);
-                    $r.text(d.rstr);
-                    $r.addClass(d.cls);
-                }
-            });
-        };
-        Rating.prototype.setLikeDislike = function ($cont, state, btnClass) {
-            var $btns = $cont.find("." + btnClass);
-            var btns = $btns.toArray();
-            $btns.removeClass("active");
-            btns.forEach(function (btn) {
-                var $btn = $(btn);
-                var isLike = $btn.data("like");
-                if (isLike && state) {
-                    $btn.addClass("active");
-                }
-                if (!isLike && !state) {
-                    $btn.addClass("active");
-                }
-            });
-        };
-        return Rating;
-    }());
-    Views.Rating = Rating;
-    var WikiPhotosUser = (function () {
-        function WikiPhotosUser(articleId) {
-            this.articleId = articleId;
-            $("#recommendPhoto").click(function (e) {
-                e.preventDefault();
-                if (Views.ViewBase.currentView.fullReg) {
-                    $("#photosForm").toggleClass("hidden");
-                    $("#photoFormOpen").toggleClass("hidden");
-                }
-                else {
-                    RegMessages.displayFullRegMessage();
-                }
-            });
-            $("#photosForm .cancel").click(function (e) {
-                e.preventDefault();
-                $("#photosForm").toggleClass("hidden");
-                $("#photoFormOpen").toggleClass("hidden");
-            });
-            var $terms = $("#photosForm #cid");
-            $terms.change(function (e) {
-                e.preventDefault();
-                var checked = $terms.prop("checked");
-                if (checked) {
-                    $(".photoButton").show();
-                }
-                else {
-                    $(".photoButton").hide();
-                }
-            });
-            this.registerPhotoUpload(this.articleId, "galleryInput");
-        }
-        WikiPhotosUser.prototype.registerPhotoUpload = function (articleId, inputId) {
-            var config = new Common.FileUploadConfig();
-            config.inputId = inputId;
-            config.endpoint = "WikiPhotoGallery";
-            var picUpload = new Common.FileUpload(config);
-            picUpload.customId = articleId;
-            picUpload.onProgressChanged = function (percent) {
-                var $pb = $("#galleryProgress");
-                $pb.show();
-                var pt = percent + "%";
-                $(".progress").css("width", pt);
-                $pb.find("span").text(pt);
-            };
-            picUpload.onUploadFinished = function (file, fileId) {
-                var $pb = $("#galleryProgress");
-                $pb.hide();
-                var id = new Common.InfoDialog();
-                var v = Views.ViewBase.currentView;
-                id.create(v.t("UploadTitle", "jsWiki"), v.t("UploadBody", "jsWiki"));
-            };
-        };
-        return WikiPhotosUser;
-    }());
-    Views.WikiPhotosUser = WikiPhotosUser;
 })(Views || (Views = {}));
 //# sourceMappingURL=WikiPageView.js.map

@@ -197,7 +197,7 @@ namespace Gloobster.DomainModels.Wiki
 
             DB.UpdateAsync(filter, update);
         }
-        
+
         private Stream GeneratePic(Bitmap origBitmap, float rateWidth, float rateHeight, int newWidth, int newHeight)
         {
             var rect = BitmapUtils.CalculateBestImgCut(origBitmap.Width, origBitmap.Height, rateWidth, rateHeight);
@@ -212,9 +212,9 @@ namespace Gloobster.DomainModels.Wiki
 
             return jpgStream;
         }
-        
-       
-        
+
+
+
         private void SaveVersion(Stream stream, string articleId, EventType eventType)
         {
             stream.Position = 0;

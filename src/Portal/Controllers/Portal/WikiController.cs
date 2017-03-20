@@ -45,8 +45,8 @@ namespace Gloobster.Portal.Controllers.Portal
 
         [CreateAccount]
         public IActionResult PageRegular(string id, string lang)
-        {
-            WikiModelBase vm = null;
+        {            
+            NewWikiModelBase vm = null;
             string template = string.Empty;
             var text = DB.FOD<WikiTextsEntity>(i => i.LinkName == id && i.Language == lang);
 
@@ -54,38 +54,114 @@ namespace Gloobster.Portal.Controllers.Portal
             {
                 return HttpNotFound();
             }
-            
+
             if (text.Type == ArticleType.Country)
             {
                 vm = GetCountryVM(text);
-                template = "Country";                
+                template = "AACity";
             }
+
             if (text.Type == ArticleType.City)
             {
                 vm = GetCityVM(text);
-                template = "City";
+                template = "AACity";
             }
 
-            if (string.IsNullOrEmpty(vm.TitleLink))
-            {                
-                vm.TitleLink = "/images/WikiDefault.jpg";
-            }
+            vm.LoadSections();
+            
+            //if (string.IsNullOrEmpty(vm.TitleLink))
+            //{
+            //    vm.TitleLink = "/images/WikiDefault.jpg";
+            //}
 
             vm.IsAdmin = IsUserLogged && WikiPerms.HasArticleAdminPermissions(UserId, text.Article_id.ToString());
             vm.ArticleId = text.Article_id.ToString();
 
-            var langVers = DB.C<WikiTextsEntity>()
-                .Where(i => i.Article_id == text.Article_id)
-                .Select(a => new {a.Language, a.LinkName})
-                .ToList();
+            //var langVers = DB.C<WikiTextsEntity>()
+            //    .Where(i => i.Article_id == text.Article_id)
+            //    .Select(a => new { a.Language, a.LinkName })
+            //    .ToList();
 
-            vm.LangVersions = 
-                langVers.Select(i => new LangVersionVM {Language = i.Language, LinkName = i.LinkName}).ToList();
+            //vm.LangVersions =
+            //    langVers.Select(i => new LangVersionVM { Language = i.Language, LinkName = i.LinkName }).ToList();
 
             vm.LoadClientTexts(new[] { "jsWiki" });
 
-            return View(template, vm);
+            return View(template, vm);            
         }
+        
+        private NewWikiCityViewModel GetCityVM(WikiTextsEntity text)
+        {
+            var article = DB.FOD<WikiCityEntity>(i => i.id == text.Article_id);
+
+            var vm = CreateViewModelInstance<NewWikiCityViewModel>();
+            vm.DefaultLangModuleName = "pageWikiPage";                        
+            vm.Texts = text;
+            vm.Sections = article.Sections;
+            vm.Dos = article.Dos;
+            vm.Donts = article.Donts;
+
+            vm.Prices = article.Prices;
+
+            vm.CountryCode = article.CountryCode;
+
+            vm.Data = article.Data;
+            
+            ////if (vm.Article.HasTitlePhoto)
+            ////{
+            ////    vm.TitleLink = $"/wiki/ArticleTitlePhoto/{vm.Article.id}";
+            ////}
+            ////else
+            ////{
+            //var imgCityEntity = DB.FOD<ImageCityEntity>(c => c.GID == article.GID);
+            //if (imgCityEntity != null)
+            //{
+            //    vm.TitleLink = $"/picd/{article.GID}/wt";
+            //}
+            ////}
+
+            return vm;
+        }
+
+        private NewWikiCountryViewModel GetCountryVM(WikiTextsEntity text)
+        {
+            var article = DB.FOD<WikiCountryEntity>(i => i.id == text.Article_id);
+
+            var vm = CreateViewModelInstance<NewWikiCountryViewModel>();
+            vm.DefaultLangModuleName = "pageWikiPage";
+            vm.Texts = text;
+            vm.CountryCode = article.CountryCode;
+
+            vm.Dos = article.Dos;
+            vm.Donts = article.Donts;
+
+            vm.Sections = article.Sections;
+            vm.Data = article.Data;
+
+            var gidDataItem = article.Data.FirstOrDefault(a => a.Name == "CapitalId");
+            if (gidDataItem != null)
+            {
+                int cityGID = int.Parse(gidDataItem.Value);
+                var city = DB.FOD<WikiCityEntity>(c => c.GID == cityGID);
+
+                ////if (city != null && city.HasTitlePhoto)
+                ////{
+                ////    vm.TitleLink = $"/wiki/ArticleTitlePhoto/{city.id}";
+                ////}
+                ////else
+                ////{
+                //var imgCityEntity = DB.FOD<ImageCityEntity>(c => c.GID == cityGID);
+                //if (imgCityEntity != null)
+                //{
+                //    vm.TitleLink = $"/picd/{cityGID}/wt";
+                //}
+                ////}
+            }
+
+            return vm;
+        }
+
+
 
         [CreateAccount]
         public IActionResult Page(string id)
@@ -158,63 +234,6 @@ namespace Gloobster.Portal.Controllers.Portal
             var name = $"{photoId}_thumb.jpg";
             var stream = GetPicture(articleId, name, WikiFileConstants.GalleryDir);
             return stream;
-        }
-        
-        private WikiCityViewModel GetCityVM(WikiTextsEntity text)
-        {
-            var article = DB.FOD<WikiCityEntity>(i => i.id == text.Article_id);
-
-            var vm = CreateViewModelInstance<WikiCityViewModel>();
-            vm.DefaultLangModuleName = "pageWikiPage";
-            vm.Texts = text;
-            vm.Article = article;
-
-            //if (vm.Article.HasTitlePhoto)
-            //{
-            //    vm.TitleLink = $"/wiki/ArticleTitlePhoto/{vm.Article.id}";
-            //}
-            //else
-            //{
-                var imgCityEntity = DB.FOD<ImageCityEntity>(c => c.GID == article.GID);
-                if (imgCityEntity != null)
-                {
-                    vm.TitleLink = $"/picd/{article.GID}/wt";
-                }
-            //}
-
-            return vm;
-        }
-
-        private WikiCountryViewModel GetCountryVM(WikiTextsEntity text)
-        {
-            var article = DB.FOD<WikiCountryEntity>(i => i.id == text.Article_id);
-            
-            var vm = CreateViewModelInstance<WikiCountryViewModel>();
-            vm.DefaultLangModuleName = "pageWikiPage";
-            vm.Texts = text;
-            vm.Article = article;
-
-            var gidDataItem = article.Data.FirstOrDefault(a => a.Name == "CapitalId");
-            if (gidDataItem != null)
-            {
-                int cityGID = int.Parse(gidDataItem.Value);
-                var city = DB.FOD<WikiCityEntity>(c => c.GID == cityGID);
-
-                //if (city != null && city.HasTitlePhoto)
-                //{
-                //    vm.TitleLink = $"/wiki/ArticleTitlePhoto/{city.id}";
-                //}
-                //else
-                //{
-                    var imgCityEntity = DB.FOD<ImageCityEntity>(c => c.GID == cityGID);
-                    if (imgCityEntity != null)
-                    {
-                        vm.TitleLink = $"/picd/{cityGID}/wt";
-                    }
-                //}
-            }
-            
-            return vm;
         }
         
         private FileStreamResult GetPicture(string articleId, string picName, string customDir = null)

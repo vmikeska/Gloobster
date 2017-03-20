@@ -22,7 +22,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             FileDomain = (FilesDomain) filesDomain;                        
             ArticlePhoto = articlePhoto;
         }
-
+        
         [HttpPut]
         [AuthorizeApi]
         public async Task<IActionResult> Put([FromBody] UpdateConfirmedRequest req)

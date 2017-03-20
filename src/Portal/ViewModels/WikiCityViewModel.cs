@@ -9,6 +9,8 @@ using MongoDB.Bson;
 
 namespace Gloobster.Portal.ViewModels
 {
+    
+
     public class WikiCityViewModel : WikiModelBase
     {        
         public WikiCityEntity Article { get; set; }
@@ -272,6 +274,8 @@ namespace Gloobster.Portal.ViewModels
         }        
     }
 
+    
+
     public class BlockVM
     {
         public WikiModelBase B { get; set; }
@@ -341,8 +345,7 @@ namespace Gloobster.Portal.ViewModels
 
         public InfoItemVM InfoByName(string name)
         {
-            var info = Infos.FirstOrDefault(i => i.Name == name);
-            info.B = B;
+            var info = Infos.FirstOrDefault(i => i.Name == name);            
             return info;
         }
     }
@@ -356,6 +359,8 @@ namespace Gloobster.Portal.ViewModels
 
     public class TableItemVM
     {
+        //todo: remove additional "cols"
+
         public bool? Liked1 { get; set; }
         public bool? Liked3 { get; set; }
         public bool? Liked2 { get; set; }

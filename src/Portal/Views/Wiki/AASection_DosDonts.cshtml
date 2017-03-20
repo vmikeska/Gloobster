@@ -1,28 +1,24 @@
 ﻿@using System.Threading.Tasks
 @using Gloobster.Entities
 @using Gloobster.Portal.ViewModels
-@model DoDontsVM
+@model WikiPageBlock
 
-<style>    
-     .doDont button {
-         border-radius: 5px;        
-     }
-</style>
-
-
+@{
+    var tModel = (DoDontsVM) Model.Data;
+}
 
 <div class="does-donts doDont">
     
     <div class="block">
-        <h3>@Model.B.W("TryThis")</h3>
+        <h3>@Model.Base.W("TryThis")</h3>
 
-        @if (!Model.Dos.Any())
+        @if (!tModel.Dos.Any())
         {
-            <div class="wrapper">@Html.Partial("Empty", new EmptyVM { B = Model.B})</div>
+            <div class="wrapper">@Html.Partial("Empty", new EmptyVM { B = Model.Base})</div>
         }
         else
         {
-            foreach (DdVM item in Model.Dos)
+            foreach (DdVM item in tModel.Dos)
             {
                 <div data-id="@item.Id" data-t="do" class="item">
                     @Html.Partial("PlusMinusDD", item)
@@ -36,15 +32,15 @@
     </div>
 
     <div class="block">
-        <h3>@Model.B.W("DontTryThat")</h3>
+        <h3>@Model.Base.W("DontTryThat")</h3>
 
-        @if (!Model.Dos.Any())
+        @if (!tModel.Dos.Any())
         {
-            <div class="wrapper">@Html.Partial("Empty", new EmptyVM { B = Model.B })</div>
+            <div class="wrapper">@Html.Partial("Empty", new EmptyVM { B = Model.Base })</div>
         }
         else
         {
-            foreach (DdVM item in Model.Donts)
+            foreach (DdVM item in tModel.Donts)
             {
                 <div data-id="@item.Id" data-t="dont" class="item">
                     @Html.Partial("PlusMinusDD", item)

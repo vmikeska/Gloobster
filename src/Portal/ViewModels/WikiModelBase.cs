@@ -29,10 +29,9 @@ namespace Gloobster.Portal.ViewModels
 
     public class InfoItemVM
     {
-        public ViewModelBase B { get; set; }
-
         public string Id { get; set; }
         public string Name { get; set; }
+        public string TranslatedName { get; set; }
         public string AfterName { get; set; }
         public string Value { get; set; }
         public bool Show { get; set; }

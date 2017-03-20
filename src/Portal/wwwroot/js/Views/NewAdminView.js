@@ -88,7 +88,7 @@ var Views;
                     fnc.init();
                 });
             }
-            if (this.v.isSuperAdmin) {
+            if (this.v.isMasterAdmin || this.v.isSuperAdmin) {
                 tabs.addTab("wikiArticleAdmins", "Article admins", function () {
                     var fnc = new WikiArticlesAdminMgmt(_this.$cont);
                     fnc.init();

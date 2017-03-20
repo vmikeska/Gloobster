@@ -1,7 +1,7 @@
 ﻿
 @using System.Threading.Tasks
 @using Gloobster.Portal.ViewModels
-@model WikiModelBase
+@model NewWikiModelBase
 
 <div class="breadcrumb">
 
@@ -15,13 +15,17 @@
         var item = bc[act];
         bool isLast = act == (cnt - 1);
         if (isLast)
-        {            
-            <strong>@item.Name</strong>
+        {
+            <span class="item black">@item.Name</span>            
         }
         else
         {
-            <a href="@item.Link">@item.Name</a>
-            <span class="arrow">&gt;</span>
+            <a href="@item.Link" class="item">@item.Name</a>
+            <span class="arrow">&#62;</span>            
         }
     }
+</div>
+
+<div class="breadcrumb">
+    
 </div>

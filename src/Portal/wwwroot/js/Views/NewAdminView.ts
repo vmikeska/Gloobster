@@ -115,7 +115,7 @@
 							});
 					}
 
-					if (this.v.isSuperAdmin) {
+					if (this.v.isMasterAdmin || this.v.isSuperAdmin) {
 
 						tabs.addTab("wikiArticleAdmins", "Article admins", () => {
 								var fnc = new WikiArticlesAdminMgmt(this.$cont);

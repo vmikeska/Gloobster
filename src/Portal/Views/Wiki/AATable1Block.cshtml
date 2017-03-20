@@ -1,0 +1,45 @@
+﻿@using System.Globalization
+@using System.Threading.Tasks
+@using Gloobster.Enums
+@using Gloobster.Portal.ViewModels
+@model Table1ViewModel
+
+
+<div class="info-block">
+    <div class="header">
+        <span class="title">@Model.Title
+        
+        @if (!string.IsNullOrEmpty(Model.SubTitle))
+        {
+            <span> - </span>
+            @Model.SubTitle
+        }
+
+        </span>
+    </div>
+    <div class="bcont padding">
+
+        <table class="prices-table">
+
+            @foreach (var item in Model.TableItems)
+            {
+                <tr>
+                    <td class="item-name">@Model.B.W(item.Name)</td>
+                    <td class="@(Model.Type == ArticleType.City ? "priceItemAdmin" : string.Empty) " data-id="@item.Id1">
+                        €<span class="price">@item.Price1.ToString("0.00", CultureInfo.InvariantCulture)</span>
+                    </td>
+                    @if (Model.ShowButtons)
+                {
+                        <td class="rate" data-id="@item.Id1">
+                            @if (Model.Type == ArticleType.City)
+                    {
+                                @Html.Partial("PlusMinus", new PVM { B = Model.B, Liked = item.Liked1 })
+                            }
+                        </td>
+                    }
+                </tr>
+            }
+        </table>
+
+    </div>
+</div>

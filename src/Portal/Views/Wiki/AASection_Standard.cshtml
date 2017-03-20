@@ -1,0 +1,16 @@
+﻿@using System.Threading.Tasks
+@using Gloobster.Portal.ViewModels
+@model WikiPageBlock
+
+<div class="block">
+    <div class="htbl">
+        <div class="left">
+            <h2>@Model.Title</h2>
+        </div>
+        <div class="right">
+            @Html.Partial("AANewArticleRating")
+        </div>
+    </div>
+
+    <p>@Model.Text</p>
+</div>

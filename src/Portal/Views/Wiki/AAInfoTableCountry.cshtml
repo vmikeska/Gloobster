@@ -1,0 +1,49 @@
+﻿@using System.Threading.Tasks
+@using Gloobster.Portal.ViewModels
+@model NewWikiModelBase
+
+@{
+    var area = Model.InfoByName("Area");
+    area.AfterName = "(km²)";
+
+    var mainLang = Model.InfoByName("Languages");
+    var langs = mainLang.Value.Split(',').ToList();
+    if (langs.Any())
+    {
+        mainLang.Value = langs[0];
+    }    
+}
+
+
+<div class="info-block">
+    <div class="header"><span class="title">About</span></div>
+    <div class="bcont padding">
+
+        <table>
+            @Html.Partial("AATableItem", Model.InfoByName("Population"))
+            @Html.Partial("AATableItem", Model.InfoByName("CapitalName"))
+            @Html.Partial("AATableItem", area)
+            @*@Html.Partial("TableItem", Model.InfoByName("HDI"))*@
+            @*@Html.Partial("TableItem", Model.InfoByName("CallingCode"))*@
+            @*@Html.Partial("TableItem", Model.InfoByName("DrivingRight"))*@
+            @Html.Partial("AATableItem", Model.InfoByName("CurrencyCode"))
+
+            @Html.Partial("AATableItem", mainLang)
+            @{
+                var otherLangs = Model.InfoByName("Languages");
+                otherLangs.AfterName = " (Other)";
+                if (langs.Count() > 1)
+                {
+                    langs.RemoveAt(0);
+                    otherLangs.Value = string.Join(", ", langs);
+                }
+            }
+
+
+            @Html.Partial("AATableItem", otherLangs)
+
+        </table>
+        
+    </div>
+</div>
+

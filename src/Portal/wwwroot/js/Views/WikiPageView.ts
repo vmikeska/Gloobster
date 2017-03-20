@@ -9,8 +9,6 @@
 		public articleId: string;
 		public langVersion: string;
 	 
-		private rating: Rating;
-		private photos: WikiPhotosUser;
 		private report: Report;
 	 
 		constructor(articleId, articleType) {
@@ -19,9 +17,7 @@
 			this.articleType = articleType;
 			this.articleId = articleId;
 			this.langVersion = this.getLangVersion();
-
-			this.photos = new WikiPhotosUser(articleId);
-			this.rating = new Rating(articleId, this.langVersion);
+				
 			this.report = new Report(articleId, this.langVersion);
 
 			this.regContribute();
@@ -126,184 +122,8 @@
 
 	}
 
-	export class RegMessages {
-	 public static displayFullRegMessage() {
-		var id = new Common.InfoDialog();
-		var v = ViewBase.currentView;
-		id.create(v.t("FullRegTitle", "jsWiki"), v.t("FullRegBody", "jsWiki"));
-	 }
-	}
+	
 
-	export class Rating {
-
-		private articleId;
-		private langVersion;
-
-		constructor(articleId, langVersion) {
-			this.regRating();
-			this.regRatingDD();
-			this.regRatingPrice();
-
-			this.articleId = articleId;
-			this.langVersion = langVersion;
-		}
-
-		private getRatingDesign(rating) {
-			var res = {
-				rstr: rating,
-				cls: ""
-			};
-
-			if (rating > 0) {
-				res.rstr = `+${rating}`;
-				res.cls = "plus";
-			} else {
-				res.cls = "minus";
-			}
-
-			return res;
-		}
-
-		private regRatingDD() {
-			this.regRatingBase("pmBtn", "item", "WikiRating", (c) => {
-				this.setLikeDislike(c.$cont, c.like, "pmBtn");
-			});
-		}
-
-		private regRatingPrice() {
-			this.regRatingBase("priceBtn", "rate", "WikiPriceRating", (c) => {
-				this.setLikeDislike(c.$cont, c.like, "priceBtn");
-				c.$cont.prev().find(".price").text(c.res.toFixed(2));
-			});
-		}
-
-		private regRatingBase(btnClass, contClass, endpoint, callback) {
-			$(`.${btnClass}`).click((e) => {
-				e.preventDefault();
-				var $btn = $(e.target);
-				var like = $btn.data("like");
-				var $cont = $btn.closest(`.${contClass}`);
-				var id = $cont.data("id");
-
-				var data = {
-					articleId: this.articleId,
-					sectionId: id,
-					language: this.langVersion,
-
-					like: like
-				};
-
-				if (ViewBase.currentView.fullReg) {
-					ViewBase.currentView.apiPut(endpoint, data, (r) => {
-						callback({ $cont: $cont, like: like, res: r });
-					});
-				} else {
-				 RegMessages.displayFullRegMessage();
-				}
-			});
-		}
-
-		private regRating() {
-			this.regRatingBase("ratingBtn", "article_rating", "WikiRating", (c) => {
-				this.setLikeDislike(c.$cont, c.like, "ratingBtn");
-				if (c.res != null) {
-					var $r = c.$cont.find(".score");
-
-					$r.removeClass("plus").removeClass("minus");
-					var d = this.getRatingDesign(c.res);
-					$r.text(d.rstr);
-					$r.addClass(d.cls);
-				}
-			});
-		}
-
-		private setLikeDislike($cont, state, btnClass) {
-				var $btns = $cont.find(`.${btnClass}`);				
-				var btns = $btns.toArray();
-
-			$btns.removeClass("active");
-
-			btns.forEach((btn) => {
-				var $btn = $(btn);
-				var isLike = $btn.data("like");
-				
-				if (isLike && state) {						
-						$btn.addClass("active");					
-				}
-				if (!isLike && !state) {
-						$btn.addClass("active");
-				}
-					
-			});
-
-		}
-	}
-
-	export class WikiPhotosUser {
-
-		private articleId;
-
-		constructor(articleId) {
-
-			this.articleId = articleId;
-
-			$("#recommendPhoto").click((e) => {
-				e.preventDefault();
-
-				if (ViewBase.currentView.fullReg) {
-					$("#photosForm").toggleClass("hidden");
-					$("#photoFormOpen").toggleClass("hidden");
-				} else {
-					RegMessages.displayFullRegMessage();
-				}
-			});
-
-			$("#photosForm .cancel").click((e) => {
-				e.preventDefault();
-				$("#photosForm").toggleClass("hidden");
-				$("#photoFormOpen").toggleClass("hidden");
-			});
-
-			var $terms = $("#photosForm #cid");
-			$terms.change((e) => {
-				e.preventDefault();
-
-				var checked = $terms.prop("checked");
-				if (checked) {
-					$(".photoButton").show();
-				} else {
-					$(".photoButton").hide();
-				}
-			});
-
-			this.registerPhotoUpload(this.articleId, "galleryInput");
-		}
-
-
-		private registerPhotoUpload(articleId, inputId) {
-			var config = new Common.FileUploadConfig();
-			config.inputId = inputId;
-			config.endpoint = "WikiPhotoGallery";
-
-			var picUpload = new Common.FileUpload(config);
-			picUpload.customId = articleId;
-
-			picUpload.onProgressChanged = (percent) => {
-				var $pb = $("#galleryProgress");
-				$pb.show();
-				var pt = `${percent}%`;
-				$(".progress").css("width", pt);
-				$pb.find("span").text(pt);
-			}
-
-			picUpload.onUploadFinished = (file, fileId) => {
-				var $pb = $("#galleryProgress");
-				$pb.hide();
-				var id = new Common.InfoDialog();
-				var v = ViewBase.currentView;
-				id.create(v.t("UploadTitle", "jsWiki"), v.t("UploadBody", "jsWiki"));
-			}
-		}
-	}
-
+	
+	
 }
