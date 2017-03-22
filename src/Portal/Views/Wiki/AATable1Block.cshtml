@@ -25,7 +25,7 @@
             {
                 <tr>
                     <td class="item-name">@Model.B.W(item.Name)</td>
-                    <td class="@(Model.Type == ArticleType.City ? "priceItemAdmin" : string.Empty) " data-id="@item.Id1">
+                    <td class="@(Model.Type == ArticleType.City ? "price-item-admin" : string.Empty) " data-id="@item.Id1">
                         €<span class="price">@item.Price1.ToString("0.00", CultureInfo.InvariantCulture)</span>
                     </td>
                     @if (Model.ShowButtons)

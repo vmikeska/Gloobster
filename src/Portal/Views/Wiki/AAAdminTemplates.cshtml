@@ -1,0 +1,122 @@
+﻿
+
+
+
+<script id="block-report-admin-tmp" type="text/x-handlebars-template">
+
+    <div class="standard-admin-dlg">
+
+        <div class="tit">Original text</div>
+        <div id="origText" class="orig-text">{{txt}}</div>
+
+        <div class="tit">New text</div>
+        <div>
+            <textarea id="newSectText" class="txt-area">{{txt}}</textarea>
+        </div>
+
+    </div>
+</script>
+
+<script id="do-dont-admin-tmp" type="text/x-handlebars-template">
+
+    <div class="do-dont-admin-dlg">
+
+        <div class="tit">Text</div>
+        <div>
+            <textarea id="doDontTxt" class="txt-area">{{txt}}</textarea>
+        </div>
+
+
+    </div>
+</script>
+
+<script id="doDontItem-template" type="text/x-handlebars-template">
+    <div id="ddi_{{id}}" data-id="{{id}}" class="item">
+        <div class="itbl">
+            <div class="l">
+                <span class="icon-{{plusMinus}} ico"></span>
+            </div>
+            <div class="r">
+                <div class="txt">{{text}}</div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="price-edit-template" type="text/x-handlebars-template">
+    <div class="price-edit-dlg">
+        €<input type="text" value="{{price}}" />        
+    </div>
+</script>
+
+<script id="links-item-admin-template" type="text/x-handlebars-template">
+    
+    <div class="links-admin-dlg">
+        
+        <div>
+            <div class="tit">Link name</div>
+            <input id="linkName" type="text" placeholder="Link name" />
+        </div>
+        
+        <div class="add-btn-cont">
+            <a href="#" id="addSocLink" class="lbtn2 green-orange">Add soc link</a>
+        </div>
+
+        <div class="soc-links-list">
+            <div class="no-links">No links yet</div>
+        </div>
+
+    </div>
+
+</script>
+
+<script id="links-soc-link-admin-template" type="text/x-handlebars-template">
+
+    <div class="links-soc-admin-dlg">
+        
+        <div>
+            <div class="dropdown">
+                <span class="selected">FB</span>
+                <ul>
+                    <li data-value="0">FB</li>
+                    <li data-value="1">Foursquare</li>
+                    <li data-value="4">Yelp</li>
+                </ul>
+                <input class="selectedValue" type="hidden" value="0">
+            </div>
+        </div>
+        <div>
+            <input type="text" class="linkId" placeholder="Id of the link" />
+        </div>
+
+    </div>
+
+</script>
+
+<script id="soc-link-item-template" type="text/x-handlebars-template">
+    
+    <div class="soc-link-admin" data-value="{{val}}" data-sid="{{sid}}">
+
+        <span class="{{icon}} ico"></span>
+        <a href="{{link}}" target="_blank" class="link">Link</a>        
+        <a href="#" class="lbtn2 red-orange del">Remove</a>
+        
+    </div>
+
+</script>
+
+<script id="new-link-template" type="text/x-handlebars-template">
+
+    <div id="faviItem_{{id}}" class="fav-item" data-id="{{id}}" data-name="{{name}}">
+
+        <span class="name">{{name}}</span>
+
+        {{#each socLinks}}        
+        <a class="ico-link" href="{{link}}" target="_blank" data-sid="{{sid}}" data-t="{{type}}">
+            <span class="{{ico}} ico"></span>
+        </a>
+        {{/each}}
+
+    </div>
+   
+</script>

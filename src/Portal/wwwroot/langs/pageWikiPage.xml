@@ -233,17 +233,10 @@
         <en>Very high</en>
       </VeryHigh>
 
-      <ReportText>
-        <en>Let us know where to improve</en>
-      </ReportText>
 
       <TextPlaceholder>
         <en>Your opinion...</en>
       </TextPlaceholder>
-
-      <ReportSend>
-        <en>Send</en>
-      </ReportSend>
 
     <LikeSection>
       <en>I like this section</en>

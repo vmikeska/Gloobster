@@ -55,7 +55,19 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         [AuthorizeApi]
         public IActionResult Post([FromBody] FileRequest request)
         {
-            var articleId = request.customId;
+            string articleId = null;
+            string sectionId = null;
+            var idPrms = request.customId.Split(',');
+            if (idPrms.Length > 1)
+            {
+                articleId = idPrms[0];
+                sectionId = idPrms[1];
+            }
+            else
+            {
+                articleId = request.customId;
+            }
+            
             var articleDir = FileDomain.Storage.Combine(WikiFileConstants.FileLocation, articleId);
 
             var filePartDo = new WriteFilePartDO
@@ -68,7 +80,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 FileType = request.type
             };
 
-            var res = ArticlePhoto.ReceiveFilePart(articleId, UserId, filePartDo);
+            var res = ArticlePhoto.ReceiveFilePart(articleId, UserId, filePartDo, sectionId);
             return new ObjectResult(res);
 
         }

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using Gloobster.Database;
 using Gloobster.Portal.Controllers.Base;
 using Gloobster.Portal.ViewModels;
@@ -11,6 +13,7 @@ using MongoDB.Bson;
 using Serilog;
 using System.Linq;
 using Autofac;
+using Gloobster.Common;
 using Gloobster.DomainModels.Wiki;
 using Gloobster.Entities.ImageDB;
 using Gloobster.Portal.Controllers.Api.Wiki;
@@ -103,23 +106,29 @@ namespace Gloobster.Portal.Controllers.Portal
 
             vm.Prices = article.Prices;
 
+            vm.ArticleId = article.id.ToString();
+
             vm.CountryCode = article.CountryCode;
 
             vm.Data = article.Data;
-            
-            ////if (vm.Article.HasTitlePhoto)
-            ////{
-            ////    vm.TitleLink = $"/wiki/ArticleTitlePhoto/{vm.Article.id}";
-            ////}
-            ////else
-            ////{
-            //var imgCityEntity = DB.FOD<ImageCityEntity>(c => c.GID == article.GID);
-            //if (imgCityEntity != null)
-            //{
-            //    vm.TitleLink = $"/picd/{article.GID}/wt";
-            //}
-            ////}
 
+            vm.Photos = article.Photos;
+
+            vm.PlacesLinks = article.PlacesLinks;
+
+            //if (vm.Article.HasTitlePhoto)
+            //{
+            //    vm.TitleLink = $"/wiki/ArticleTitlePhoto/{vm.Article.id}";
+            //}
+            //else
+            //{
+            var imgCityEntity = DB.FOD<ImageCityEntity>(c => c.GID == article.GID);
+            if (imgCityEntity != null)
+            {
+                vm.TitleLink = $"/picd/{article.GID}/wtn";
+            }
+            //}
+            
             return vm;
         }
 
@@ -138,24 +147,28 @@ namespace Gloobster.Portal.Controllers.Portal
             vm.Sections = article.Sections;
             vm.Data = article.Data;
 
+            vm.ArticleId = article.id.ToString();
+
+            vm.Photos = article.Photos;
+
             var gidDataItem = article.Data.FirstOrDefault(a => a.Name == "CapitalId");
             if (gidDataItem != null)
             {
                 int cityGID = int.Parse(gidDataItem.Value);
-                var city = DB.FOD<WikiCityEntity>(c => c.GID == cityGID);
+                //var city = DB.FOD<WikiCityEntity>(c => c.GID == cityGID);
 
-                ////if (city != null && city.HasTitlePhoto)
-                ////{
-                ////    vm.TitleLink = $"/wiki/ArticleTitlePhoto/{city.id}";
-                ////}
-                ////else
-                ////{
-                //var imgCityEntity = DB.FOD<ImageCityEntity>(c => c.GID == cityGID);
-                //if (imgCityEntity != null)
+                //if (city != null && city.HasTitlePhoto)
                 //{
-                //    vm.TitleLink = $"/picd/{cityGID}/wt";
+                //    vm.TitleLink = $"/wiki/ArticleTitlePhoto/{city.id}";
                 //}
-                ////}
+                //else
+                //{
+                var imgCityEntity = DB.FOD<ImageCityEntity>(c => c.GID == cityGID);
+                if (imgCityEntity != null)
+                {
+                    vm.TitleLink = $"/picd/{cityGID}/wtn";
+                }
+                //}
             }
 
             return vm;
@@ -218,25 +231,33 @@ namespace Gloobster.Portal.Controllers.Portal
 
         public IActionResult ArticleTitlePhoto(string id)
         {
-            var stream = GetPicture(id, WikiFileConstants.TitlePhotoNameExt);
+            var stream = GetPicture(id, WikiFileConstants.TitlePhotoNameExt, "full");
             return stream;
         }
 
         public IActionResult ArticlePhoto(string photoId, string articleId)
         {
             var name = $"{photoId}.jpg";
-            var stream = GetPicture(articleId, name, WikiFileConstants.GalleryDir);
+            var stream = GetPicture(articleId, name, "full", WikiFileConstants.GalleryDir);
             return stream;
         }
 
-        public IActionResult ArticlePhotoThumb(string photoId, string articleId)
+        public IActionResult SectionPhoto(string photoId, string articleId)
         {
-            var name = $"{photoId}_thumb.jpg";
-            var stream = GetPicture(articleId, name, WikiFileConstants.GalleryDir);
+            var name = $"{photoId}.jpg";
+            var stream = GetPicture(articleId, name, "section", WikiFileConstants.GalleryDir);
             return stream;
         }
-        
-        private FileStreamResult GetPicture(string articleId, string picName, string customDir = null)
+
+        //todo: what to do with thumbs?
+        //public IActionResult ArticlePhotoThumb(string photoId, string articleId)
+        //{
+        //    var name = $"{photoId}_thumb.jpg";
+        //    var stream = GetPicture(articleId, name, WikiFileConstants.GalleryDir);
+        //    return stream;
+        //}
+
+        private FileStreamResult GetPicture(string articleId, string picName, string size, string customDir = null)
         {
             var articleDir = FileDomain.Storage.Combine(WikiFileConstants.FileLocation, articleId);
             var finalDir = articleDir;
@@ -250,13 +271,45 @@ namespace Gloobster.Portal.Controllers.Portal
             bool exists = FileDomain.Storage.FileExists(filePath);
             if (exists)
             {
-                var fileStream = FileDomain.GetFile(finalDir, picName);
-                return new FileStreamResult(fileStream, "image/jpeg");
+
+                if (size == "section")
+                {
+                    var fileStream = FileDomain.GetFile(finalDir, picName);
+                    var sizedFileStream = GeneratePic(fileStream, 980, 450);
+                    return new FileStreamResult(sizedFileStream, "image/jpeg");                    
+                }
+
+                if (size == "full")
+                {
+                    var fileStream = FileDomain.GetFile(finalDir, picName);
+                    return new FileStreamResult(fileStream, "image/jpeg");
+                }                
             }
 
             return null;
         }
-        
+
+        private Stream GeneratePic(Stream origFileStream, int newWidth, int newHeight)
+        {
+            Bitmap origBitmap = new Bitmap(origFileStream);
+
+            float rateWidth = 1.0f;
+            float rateHeight = ((float)newHeight) / ((float)newWidth);
+
+
+            var rect = BitmapUtils.CalculateBestImgCut(origBitmap.Width, origBitmap.Height, rateWidth, rateHeight);
+            var cutBmp = BitmapUtils.ExportPartOfBitmap(origBitmap, rect);
+            var newBmp = BitmapUtils.ResizeImage(cutBmp, newWidth, newHeight);
+            var jpgStream = BitmapUtils.ConvertBitmapToJpg(newBmp, 90);
+
+            jpgStream.Position = 0;
+
+            cutBmp.Dispose();
+            newBmp.Dispose();
+
+            return jpgStream;
+        }
+
         private WikiLanguageVM GetLanguageEntries(string language, List<WikiCountryEntity> countriesE, 
             List<WikiCityEntity> citiesE, List<WikiContinentEntity> continents)
         {

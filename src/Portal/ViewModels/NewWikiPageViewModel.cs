@@ -10,17 +10,23 @@ namespace Gloobster.Portal.ViewModels
 {
     public abstract class NewWikiModelBase : ViewModelBase
     {
+        public string TitleLink { get; set; }
+
+        public List<WikiPhotoSE> Photos { get; set; }
+
         public List<SectionSE> Sections { get; set; }
         public string ArticleId { get; set; }
         public List<ArticleDataSE> Data { get; set; }
         public string CountryCode { get; set; }
+
+        public List<LinkObjectSE> PlacesLinks { get; set; }
 
         public List<ObjectId> Dos { get; set; }
         public List<ObjectId> Donts { get; set; }
 
         public WikiTextsEntity Texts { get; set; }
 
-        public List<WikiPageBlock> BigBlocks { get; set; }
+        public List<WikiPageBlock> BigBlocks = new List<WikiPageBlock>();
 
         public bool IsAdmin { get; set; }
 
@@ -40,9 +46,7 @@ namespace Gloobster.Portal.ViewModels
         }
 
         public void LoadSections()
-        {
-            BigBlocks = new List<WikiPageBlock>();
-
+        {            
             foreach (var section in Sections)
             {
                 var text = Texts.Texts.FirstOrDefault(t => t.Section_id == section.id);
@@ -56,9 +60,17 @@ namespace Gloobster.Portal.ViewModels
                     Type = GetSectionType(section.Type),
                     Rating = text.Rating,
                     SectionId = section.id.ToString(),
-                    PhotoId = "todo"
+                    ArticleId = ArticleId,
+                    PhotoId = null
                 };
 
+                var sectionPhoto = Photos.FirstOrDefault(p => p.Section_id == section.id);
+                bool sectionHasPhoto = sectionPhoto != null;
+                if (sectionHasPhoto)
+                {
+                    block.PhotoId = sectionPhoto.id.ToString();
+                }
+                
                 if (section.Type == "Base")
                 {
                     block.Title = Texts.Title;
@@ -66,6 +78,18 @@ namespace Gloobster.Portal.ViewModels
                 else
                 {
                     block.Title = W(section.Type);
+                }
+
+                if (section.Type == "BarDistricts")
+                {
+                    var links = GetLinksBlockByCategory("BarDistricts");
+                    block.Data = links;
+                }
+
+                if (section.Type == "FavoriteSites")
+                {
+                    var links = GetLinksBlockByCategory("FavoriteSites");
+                    block.Data = links;
                 }
 
                 BigBlocks.Add(block);
@@ -78,8 +102,28 @@ namespace Gloobster.Portal.ViewModels
                 Type = SectionType.DosDonts
             };
             BigBlocks.Add(dosDontsBlock);
-
+            
             OrderBlocks();
+        }
+
+        public List<LinkVM> GetLinksBlockByCategory(string category)
+        {
+            var links = GetLinksByCategory(category);
+
+            var linkItems = links.Select(b => new LinkVM
+            {
+                Name = b.Name,
+                Id = b.id.ToString(),
+                Links = b.Links
+            }).ToList();
+            
+            return linkItems;
+        }
+
+        private List<LinkObjectSE> GetLinksByCategory(string category)
+        {
+            var links = PlacesLinks.Where(c => c.Category == category).ToList();
+            return links;
         }
 
         protected virtual List<string> OrderPreference { get; }
@@ -115,6 +159,10 @@ namespace Gloobster.Portal.ViewModels
                 return SectionType.Header;
             }
 
+            if (category == "BarDistricts" || category == "FavoriteSites")
+            {
+                return SectionType.Links;
+            }
             
             return SectionType.Standard;            
         }
@@ -360,19 +408,13 @@ namespace Gloobster.Portal.ViewModels
             return item;
         }
 
-        //public string TitleLink { get; set; }
-
-        //public virtual List<RelatedLink> GetRelatedLinks()
-        //{
-        //    return new List<RelatedLink>();
-        //}
 
 
-        //public abstract List<ObjectId> Dos { get; }
-        //public abstract List<ObjectId> Donts { get; }
-
-
-
+        public virtual List<RelatedLink> GetRelatedLinks()
+        {
+            return new List<RelatedLink>();
+        }
+        
         //public List<LangVersionVM> LangVersions { get; set; }
 
         //public string GetLangName(string langCode)
@@ -563,6 +605,39 @@ namespace Gloobster.Portal.ViewModels
 
             return outPrices;
         }
+
+        public override List<RelatedLink> GetRelatedLinks()
+        {
+            var rl = new List<RelatedLink>();
+
+            var citiesIds = DB
+                .C<WikiCityEntity>()
+                .Where(c => c.CountryCode == CountryCode)
+                .Select(a => a.id)
+                .ToList();
+
+            //rating evaluation didn't work
+            //var citiesTexts = DB.List<WikiTextsEntity>(c => citiesIds.Contains(c.Article_id) && c.Language == Texts.Language && c.Rating > 0.0);
+
+            var texts = DB.C<WikiTextsEntity>()
+                .Where(c => citiesIds.Contains(c.Article_id) && c.Language == Texts.Language)
+                .Select(a => new { a.Rating, a.Title, a.LinkName })
+                .ToList();
+            var ratedTexts = texts.Where(t => t.Rating > 0);
+
+            foreach (var city in ratedTexts)
+            {
+                var link = new RelatedLink
+                {
+                    Name = city.Title,
+                    Link = $"/wiki/{Texts.Language}/{city.LinkName}"
+                };
+                rl.Add(link);
+            }
+
+
+            return rl;
+        }
     }
 
 
@@ -570,6 +645,8 @@ namespace Gloobster.Portal.ViewModels
     public class NewWikiCityViewModel : NewWikiModelBase
     {
         public List<PriceItemSE> Prices { get; set; }
+
+        
 
         protected override List<string> OrderPreference => new List<string>
         {
@@ -593,6 +670,23 @@ namespace Gloobster.Portal.ViewModels
             //NightlifePrices
             //Surfing
         };
+
+        public override List<RelatedLink> GetRelatedLinks()
+        {
+            var coutntryArticle = DB.FOD<WikiCountryEntity>(c => c.CountryCode == CountryCode);
+            var countryText = DB.FOD<WikiTextsEntity>(c => c.Article_id == coutntryArticle.id);
+
+            var rl = new List<RelatedLink>
+            {
+                new RelatedLink
+                {
+                    Name = countryText.Title,
+                    Link = $"/wiki/{Texts.Language}/{countryText.LinkName}"
+                }
+            };
+
+            return rl;
+        }
 
         public override Table1ViewModel GetPricesByCategory(string category, string subCategory = null)
         {
@@ -690,7 +784,87 @@ namespace Gloobster.Portal.ViewModels
             );
 
             return bc;
-        }        
+        }
+
+        
+
+        //public WikiPageBlock BarDistricts()
+        //{
+        //    var cat = "BarDistricts";
+            
+        //    var links = GetLinksByCategory(cat);
+        //    block.Category = cat;
+        //    block.LinkItems = links.Select(b => new LinkVM
+        //    {
+        //        Name = b.Name,
+        //        Id = b.id.ToString(),
+        //        Links = b.Links
+        //    }).ToList();
+
+        //    return block;
+        //}
+
+        //public WikiPageBlock Sights()
+        //{
+        //    var cat = "Sights";
+
+        //    var block = Section("FavoriteSites", "links");
+        //    var links = GetLinksByCategory(cat);
+        //    block.Category = cat;
+        //    block.LinkItems = links.Select(b => new LinkVM
+        //    {
+        //        Name = b.Name,
+        //        Id = b.id.ToString(),
+        //        Links = b.Links
+        //    }).ToList();
+
+        //    return block;
+        //}
+
+        
+    }
+
+    public class LinkItemFncs
+    {
+        public static string GetLinkIco(SourceType type)
+        {
+            if (type == SourceType.S4)
+            {
+                return "icon-foursquare";
+            }
+
+            if (type == SourceType.FB)
+            {
+                return "icon-facebook2";
+            }
+
+            if (type == SourceType.Yelp)
+            {
+                return "icon-yelp";
+            }
+
+            return string.Empty;
+        }
+
+        public static string GetLink(SourceType type, string sid)
+        {
+            var template = "";
+
+            if (type == SourceType.S4)
+            {
+                template = "https://foursquare.com/v/{0}";
+            }
+            if (type == SourceType.FB)
+            {
+                template = "https://www.facebook.com/{0}";
+            }
+            if (type == SourceType.Yelp)
+            {
+                template = "https://www.yelp.com/biz/{0}";
+            }
+
+            return string.Format(template, sid);
+        }
     }
 
     public class Table1ViewModel
@@ -704,7 +878,7 @@ namespace Gloobster.Portal.ViewModels
         public bool ShowButtons { get; set; }
     }
 
-    public enum SectionType { Header, Standard, DosDonts }
+    public enum SectionType { Header, Standard, DosDonts, Links }
 
     public class WikiPageBlock
     {
@@ -718,6 +892,8 @@ namespace Gloobster.Portal.ViewModels
 
         public string Title { get; set; }
         public string Text { get; set; }
+
+        public string ArticleId { get; set; }
 
         public string PhotoId { get; set; }
  

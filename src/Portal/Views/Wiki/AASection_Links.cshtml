@@ -1,0 +1,59 @@
+﻿@using System.Collections.Generic
+@using System.Threading.Tasks
+@using Gloobster.Enums
+@using Gloobster.Portal.ViewModels
+@using Microsoft.Data.Entity.Metadata.Internal
+@model WikiPageBlock
+
+@{
+    var tModel = (List<LinkVM>)Model.Data;
+}
+
+
+
+<div class="block adminable-links block-links" data-c="@Model.SectionType">
+    <div class="title-cont">
+        <div class="left">
+            <h2>@Model.Title</h2>
+            <span class="admin-btn-cont"></span>
+        </div>
+        <div class="right">
+            @Html.Partial("AANewArticleRating")
+        </div>
+    </div>
+
+    <div id="Links_@Model.SectionId" data-category="@Model.SectionType" class="links-cont">
+
+        @if (!tModel.Any())
+        {
+            <div class="empty-cont" data-sid="@Model.SectionId">@Html.Partial("Empty", new EmptyVM { B = Model.Base })</div>
+        }
+        else
+        {
+            foreach (var item in tModel)
+            {
+                <div id="faviItem_@item.Id" class="fav-item" data-id="@item.Id" data-name="@item.Name">
+
+                    <span class="name">@item.Name</span>
+
+                    @if (item.Links != null)
+                    {
+
+                        foreach (var link in item.Links)
+                        {
+                            <a class="ico-link" href="@LinkItemFncs.GetLink(link.Type, link.SourceId)" data-sid="@link.SourceId" data-t="@((int)link.Type)" target="_blank">
+                                <span class="@LinkItemFncs.GetLinkIco(link.Type) ico"></span>                                
+                            </a>
+
+                        }
+                    }
+
+                </div>
+            }
+        }
+
+
+    </div>
+</div>
+
+

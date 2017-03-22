@@ -1,13 +1,13 @@
 ﻿
 @using System.Threading.Tasks
 @using Gloobster.Portal.ViewModels
-@model WikiModelBase
+@model NewWikiModelBase
 
 <div class="links">
     <h3>@Model.W("RelatedLinks")</h3>
 
     @foreach (var link in Model.GetRelatedLinks())
     {
-        <a class="lbtn2" href="@link.Link">@link.Name</a>
+        <a class="lbtn2 blue-yellow" href="@link.Link">@link.Name</a>
     }
 </div>

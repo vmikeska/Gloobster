@@ -25,7 +25,7 @@ namespace Gloobster.Entities.Wiki
     public class SectionSE
     {
         public ObjectId id { get; set; }
-
+        public ObjectId picId { get; set; }
         public string Type { get; set; }
     }
 
@@ -33,6 +33,7 @@ namespace Gloobster.Entities.Wiki
     {
         public ObjectId id { get; set; }
         public ObjectId Owner_id { get; set; }
+        public ObjectId? Section_id { get; set; }
         public bool Confirmed { get; set; }
         public DateTime Inserted { get; set; }
         public string Description { get; set; }

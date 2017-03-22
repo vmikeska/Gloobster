@@ -132,8 +132,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 var thumbStream = GeneratePic(origFileStream, widthHeight.Width, widthHeight.Height);
 
                 var thumbBase64 = BitmapUtils.ConvertToBase64(thumbStream);
-
-                //todo: check on base64 prefix
+                
                 thumbs.Add(thumbBase64);
             }
             

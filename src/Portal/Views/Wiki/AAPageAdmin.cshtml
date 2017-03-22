@@ -1,11 +1,11 @@
 ﻿
 @using System.Threading.Tasks
 @using Gloobster.Portal.ViewModels
-@model WikiModelBase
+@model NewWikiModelBase
 
 @if (Model.IsAdmin)
 {
-    <script type="text/javascript" src="@Url.Content("~/js/Views/WikiAdminPageView.js")"></script>
+    @*<script type="text/javascript" src="@Url.Content("~/js/Views/WikiAdminPageView.js")"></script>*@
     @Html.Partial("AdminTemplates")
 
     <div class="wrapper admin">

@@ -33,4 +33,12 @@
       <en>Many thanks for your contribution, our content administrators will process it ASAP</en>
     </ContributionThanksBody>
 
+    <ReportText>
+      <en>Let us know where to improve</en>
+    </ReportText>
+
+    <ReportSend>
+      <en>Send</en>
+    </ReportSend>
+
   </module>

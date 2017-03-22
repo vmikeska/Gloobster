@@ -107,7 +107,7 @@ namespace Gloobster.DomainModels.Wiki
             return true;
         }
 
-        public string ReceiveFilePart(string articleId, string userId, WriteFilePartDO filePartDo)
+        public string ReceiveFilePart(string articleId, string userId, WriteFilePartDO filePartDo, string sectionId = null)
         {
             var userIdObj = new ObjectId(userId);
 
@@ -143,8 +143,14 @@ namespace Gloobster.DomainModels.Wiki
                     FileDomain.Storage.SaveStream(path, stream);                    
                 }
 
+                ObjectId? sid = null;
+                if (!string.IsNullOrEmpty(sectionId))
+                {
+                    sid = new ObjectId(sectionId);
+                }
+
                 bool confirmed = isUserAdmin;
-                AddPhotoToDb(userIdObj, articleIdObj, fileId.Value, confirmed);
+                AddPhotoToDb(userIdObj, articleIdObj, sid, fileId.Value, confirmed);
 
                 if (!confirmed)
                 {
@@ -181,13 +187,14 @@ namespace Gloobster.DomainModels.Wiki
             return res;
         }
 
-        private void AddPhotoToDb(ObjectId userIdObj, ObjectId articleIdObj, ObjectId photoId, bool confirmed)
+        private void AddPhotoToDb(ObjectId userIdObj, ObjectId articleIdObj, ObjectId? sectionId, ObjectId photoId, bool confirmed)
         {
             var photo = new WikiPhotoSE
             {
                 id = photoId,
                 Description = "",
                 Inserted = DateTime.UtcNow,
+                Section_id = sectionId,
                 Owner_id = userIdObj,
                 Confirmed = confirmed
             };

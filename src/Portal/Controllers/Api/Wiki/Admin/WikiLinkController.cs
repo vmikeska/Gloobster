@@ -66,7 +66,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 return HttpUnauthorized();
             }
 
-            if (req.linkId != "Temp")
+            if (!string.IsNullOrEmpty(req.linkId))
             {
                 return null;
             }

@@ -93,7 +93,7 @@ namespace Gloobster.DomainModels.Wiki
 
         private decimal RecalculatePrices(decimal defaultPrice, int plusCnt, int minusCnt)
         {
-            int percentsPerBid = 5;
+            int percentsPerBid = 2;
             decimal onePercent = defaultPrice/100;
             decimal bidAction = (onePercent*percentsPerBid);
 

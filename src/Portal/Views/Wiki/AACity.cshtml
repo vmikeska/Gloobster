@@ -16,7 +16,7 @@
 }
 
 @Html.Partial("GAnalytics")
-@Html.Partial("AAPageScripts")
+@Html.Partial("AAAdminTemplates")
 
 @if (GloobsterConfig.UseMiniScripts)
 {
@@ -28,8 +28,10 @@ else
     <script type="text/javascript" src="/js/Views/NewWikiPageView.js"></script>
 }
 
+@Html.Partial("AAPageAdmin")
+
 <div class="wrapper">
-    <img src="/images/samples/city-title.jpg" />
+    <img src="@Model.TitleLink" />
 </div>
 
 <div class="wrapper">
@@ -75,5 +77,45 @@ else
 
     </div>
 
-
+    
+    @Html.Partial("AAGeoLinks")
+    
+    @Html.Partial("AAPageScripts")
 </div>
+
+<script id="photo-upload-dlg-template" type="text/x-handlebars-template">
+
+    <div class="photo-upload-dlg">
+        
+        <div class="button-box">
+
+            <input id="addUserPhoto" type="file">
+            <label for="addUserPhoto">
+                <span class="lbtn2 green-orange">upload a photo</span>
+            </label>
+
+        </div>
+
+        <div class="info-box">            
+            <a target="_blank" href="/legal/TermsAndConds">Terms and conditions for adding photos</a>
+        </div>
+        
+    </div>
+     
+</script>
+
+<script id="block-report-tmp" type="text/x-handlebars-template">
+
+    <div class="report-dlg">
+
+        <div>
+            <textarea class="txt-area" placeholder="@Model.W("TextPlaceholder")"></textarea>
+        </div>
+
+        <div>
+            <a id="uploadSectionPhoto" href="#" class="lbtn2 green-orange">Upload section title photo</a>
+        </div>
+
+    </div>
+
+</script>

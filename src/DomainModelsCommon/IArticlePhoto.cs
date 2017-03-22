@@ -9,6 +9,6 @@ namespace Gloobster.DomainInterfaces
         Task<bool> Confirm(string userId, string articleId, string photoId);
         bool Delete(string userId, string articleId, string photoId);
         //void SaveVersionCreate(Stream stream, string articleId);
-        string ReceiveFilePart(string articleId, string userId, WriteFilePartDO filePartDo);
+        string ReceiveFilePart(string articleId, string userId, WriteFilePartDO filePartDo, string sectionId = null);
     }
 }

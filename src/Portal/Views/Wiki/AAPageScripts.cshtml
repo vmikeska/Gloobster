@@ -9,7 +9,7 @@
 
         @if (Model.IsAdmin)
         {
-            @Html.Raw("currentView = new Views.WikiAdminPageView(articleId, type);")
+            @Html.Raw("currentView = new Views.NewWikiAdminPageView(articleId, type);")
         }
         else
         {

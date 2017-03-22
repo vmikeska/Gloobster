@@ -455,6 +455,15 @@ textarea{
      }
  }
 
+ .blue-yellow {
+     background-color: $light-blue3;
+     color: white;
+
+     &:hover {
+         background-color: $yellow;
+     }
+ }
+
  .bold {
      font-weight: 700;
  }

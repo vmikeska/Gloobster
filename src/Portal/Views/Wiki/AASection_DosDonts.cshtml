@@ -4,50 +4,74 @@
 @model WikiPageBlock
 
 @{
-    var tModel = (DoDontsVM) Model.Data;
+    var tModel = (DoDontsVM)Model.Data;
 }
 
 <div class="does-donts doDont">
-    
-    <div class="block">
-        <h3>@Model.Base.W("TryThis")</h3>
 
-        @if (!tModel.Dos.Any())
-        {
-            <div class="wrapper">@Html.Partial("Empty", new EmptyVM { B = Model.Base})</div>
-        }
-        else
-        {
-            foreach (DdVM item in tModel.Dos)
+    <div class="dd-block" data-t="do">
+
+        <div class="inner">
+
+            <h3 class="title">@Model.Base.W("TryThis")</h3>
+
+            @if (!tModel.Dos.Any())
             {
-                <div data-id="@item.Id" data-t="do" class="item">
-                    @Html.Partial("PlusMinusDD", item)
-                    <span>@item.Text</span>
-                </div>
+                <div class="wrapper">@Html.Partial("Empty", new EmptyVM { B = Model.Base })</div>
             }
-        }
+            else
+            {
+                foreach (DdVM item in tModel.Dos)
+                {
+                    <div id="ddi_@item.Id" data-id="@item.Id" class="item">
+
+                        <div class="itbl">
+                            <div class="l">
+                                <span class="icon-plus ico"></span>
+                            </div>
+                            <div class="r">
+                                <div class="txt">@item.Text</div>
+                            </div>
+                        </div>
+
+                    </div>
+                }
+            }
+
+        </div>
 
         <div class="admindo">
-        </div>        
+        </div>
     </div>
 
-    <div class="block">
-        <h3>@Model.Base.W("DontTryThat")</h3>
+    <div class="dd-block" data-t="dont">
 
-        @if (!tModel.Dos.Any())
-        {
-            <div class="wrapper">@Html.Partial("Empty", new EmptyVM { B = Model.Base })</div>
-        }
-        else
-        {
-            foreach (DdVM item in tModel.Donts)
+        <div class="inner">
+            <h3 class="title">@Model.Base.W("DontTryThat")</h3>
+
+            @if (!tModel.Donts.Any())
             {
-                <div data-id="@item.Id" data-t="dont" class="item">
-                    @Html.Partial("PlusMinusDD", item)
-                    <span>@item.Text</span>
-                </div>
+                <div class="wrapper">@Html.Partial("Empty", new EmptyVM { B = Model.Base })</div>
             }
-        }
+            else
+            {
+                foreach (DdVM item in tModel.Donts)
+                {
+                    <div id="ddi_@item.Id" data-id="@item.Id" class="item">
+
+                        <div class="itbl">
+                            <div class="l">
+                                <span class="icon-minus ico"></span>
+                            </div>
+                            <div class="r">
+                                <div class="txt">@item.Text</div>
+                            </div>
+                        </div>
+
+                    </div>
+                }
+            }
+        </div>
 
         <div class="admindont">
         </div>

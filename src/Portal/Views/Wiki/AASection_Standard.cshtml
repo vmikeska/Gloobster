@@ -2,15 +2,23 @@
 @using Gloobster.Portal.ViewModels
 @model WikiPageBlock
 
-<div class="block">
+<div class="block adminable-block" data-id="@Model.SectionId" data-at="@((int)Model.Type)">
     <div class="htbl">
         <div class="left">
-            <h2>@Model.Title</h2>
+            <h2>@Model.Title</h2> <span class="admin-btn-cont"></span>
         </div>
         <div class="right">
             @Html.Partial("AANewArticleRating")
         </div>
     </div>
 
-    <p>@Model.Text</p>
+    @if (!string.IsNullOrEmpty(Model.PhotoId))
+    {
+        var link = $"/wiki/SectionPhoto?photoId={Model.PhotoId}&articleId={Model.ArticleId}";
+        <div class="section-photo">
+            <img src="@link" alt="@Model.Title" />
+        </div>
+    }
+
+    <p class="text">@Model.Text</p>
 </div>
