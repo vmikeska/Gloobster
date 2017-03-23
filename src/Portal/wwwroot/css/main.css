@@ -2316,336 +2316,362 @@ footer {
       color: #3298C1; }
 
 .wiki-page {
-  text-align: left; }
-  .wiki-page h1 {
-    font-size: 1.4em; }
-  .wiki-page p {
-    margin-bottom: 1em; }
-  .wiki-page .titlePhoto {
-    position: relative; }
-    .wiki-page .titlePhoto img {
-      width: 100%;
-      margin: 0;
-      border-radius: 2px; }
-    .wiki-page .titlePhoto .h-cont {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      padding-top: 10px;
-      padding-bottom: 10px;
-      border-top-left-radius: 2px;
-      border-top-right-radius: 2px;
-      background-color: rgba(0, 0, 0, 0.5); }
-      .wiki-page .titlePhoto .h-cont h1 {
-        color: white;
-        padding: 0;
-        margin: 0;
-        margin-left: 10px; }
-  .wiki-page .empty-block {
-    border: 3px dotted #BCB3B8;
-    border-radius: 4px;
-    padding: 16px;
-    margin-top: 10px;
-    margin-bottom: 10px; }
-    .wiki-page .empty-block.noborder {
-      border: 0; }
-    .wiki-page .empty-block > div {
-      display: inline-block;
-      vertical-align: top; }
-    .wiki-page .empty-block .txt {
-      text-decoration: line-through;
-      margin-right: 16px;
-      font-size: 3em;
-      color: #BCB3B8; }
-  .wiki-page .admin-block-edit textarea {
+  /*admin*/ }
+  .wiki-page input[type="file"] {
+    width: 0.1px;
+    height: 0.1px; }
+  .wiki-page .admin {
+    text-align: left; }
+  .wiki-page h1, .wiki-page h2, .wiki-page h3, .wiki-page h4 {
+    padding: 0;
+    margin: 0;
+    text-align: left;
+    margin-bottom: 0.2em;
+    display: inline-block; }
+  .wiki-page .title-img {
     width: 100%;
-    height: 150px;
-    border: 1px solid #3298C1;
-    border-radius: 4px;
-    margin: 8px;
-    font-family: "PT Sans", sans-serif;
-    font-size: 18px; }
-  .wiki-page .admin-input {
-    border: 1px solid #3298C1; }
-  .wiki-page .article_rating {
-    width: 155px;
-    height: 41px;
-    color: #3298C1;
-    display: table;
-    border: 1px solid #3298C1;
-    border-radius: 2px;
-    position: relative; }
-    .wiki-page .article_rating .active {
-      color: #F56E12 !important; }
-    .wiki-page .article_rating .green {
-      color: darkgreen; }
-    .wiki-page .article_rating .blue {
-      color: #3298C1; }
-    .wiki-page .article_rating .plus {
-      color: darkgreen; }
-    .wiki-page .article_rating .minus {
-      color: darkred; }
-    .wiki-page .article_rating .wrap {
-      display: table-cell;
-      vertical-align: middle;
-      text-align: center; }
-      .wiki-page .article_rating .wrap .frame {
-        display: inline-block;
-        text-align: center;
-        width: 40px;
-        height: 32px;
-        border-left: 1px solid #3298C1; }
-        .wiki-page .article_rating .wrap .frame a {
-          width: 24px;
-          height: 24px;
-          display: inline-block;
-          font-size: 21px;
-          text-decoration: none;
-          color: #3298C1; }
-        .wiki-page .article_rating .wrap .frame .score {
-          display: inline-block; }
-        .wiki-page .article_rating .wrap .frame a:hover {
-          color: #F56E12; }
-        .wiki-page .article_rating .wrap .frame .icon-edit-pencil {
-          margin-top: 4px; }
-        .wiki-page .article_rating .wrap .frame .icon-dislike {
-          margin-top: 9px; }
-        .wiki-page .article_rating .wrap .frame .icon-like {
-          margin-top: 2px; }
-        .wiki-page .article_rating .wrap .frame .score {
-          width: 32px;
-          margin-top: 2px;
-          font-weight: 600;
-          text-align: center; }
-    .wiki-page .article_rating .wrap:first-of-type .frame {
-      border: 0; }
-    .wiki-page .article_rating .bubble {
-      position: absolute;
-      top: 42px;
-      right: 0;
-      border: 1px solid #3298C1;
-      padding: 8px;
-      border-bottom-left-radius: 4px;
-      border-bottom-right-radius: 4px;
-      background-color: white;
-      z-index: 9999; }
-      .wiki-page .article_rating .bubble .title {
-        color: black; }
-      .wiki-page .article_rating .bubble textarea {
-        border: 1px solid #3298C1;
-        min-width: 460px;
-        max-width: 660px;
-        min-height: 200px; }
-      .wiki-page .article_rating .bubble .btns {
-        margin-top: 10px; }
-        .wiki-page .article_rating .bubble .btns a {
-          color: white;
-          background-color: #3298C1; }
-  .wiki-page .tbl {
-    border-collapse: collapse;
-    border: 1px solid #72cf72; }
-    .wiki-page .tbl td, .wiki-page .tbl th {
-      background-color: white;
-      /*padding: 10px 20px;*/
-      padding-left: 10px;
-      padding-right: 10px;
-      padding-top: 10px;
-      padding-bottom: 10px; }
-    .wiki-page .tbl th {
-      background-color: #72cf72;
-      border: 1px solid #72cf72;
-      color: white;
-      font-weight: normal;
-      text-align: left; }
-    .wiki-page .tbl tr:nth-child(odd) td {
-      background-color: #fffae9; }
-    .wiki-page .tbl .icon-plus, .wiki-page .tbl .icon-minus {
+    max-width: 1280px; }
+  .wiki-page .empty-title-photo {
+    background-color: #BCB3B8;
+    text-align: center;
+    padding-top: 2em;
+    padding-bottom: 2em;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto; }
+    .wiki-page .empty-title-photo .ico {
       display: inline-block;
-      height: 20px;
-      width: 20px;
-      color: #3298C1;
-      text-decoration: none;
-      border: 1px solid #3298C1;
-      border-radius: 2px;
-      padding: 5px; }
-    .wiki-page .tbl .icon-plus:hover, .wiki-page .tbl .icon-minus:hover {
-      color: #F56E12; }
-    .wiki-page .tbl .active {
-      color: #F56E12 !important; }
+      font-size: 5em;
+      color: white; }
+  .wiki-page .cont-wrap {
+    display: table;
+    width: 100%; }
+    .wiki-page .cont-wrap .cont-left {
+      display: table-cell;
+      vertical-align: top;
+      padding-right: 1.5em; }
+    .wiki-page .cont-wrap .cont-right {
+      display: table-cell;
+      vertical-align: top;
+      width: 300px; }
+  .wiki-page .middle-bar {
+    margin-top: 0.5em; }
+  .wiki-page .stars {
+    display: inline-block;
+    vertical-align: middle; }
   .wiki-page .breadcrumb {
-    margin-top: 10px;
-    margin-bottom: 10px; }
-    .wiki-page .breadcrumb a {
-      text-decoration: none;
-      color: #3298C1; }
+    display: inline-block;
+    vertical-align: middle;
+    text-align: left;
+    color: #009EC4; }
+    .wiki-page .breadcrumb .item {
+      font-size: 1em;
+      text-decoration: none; }
     .wiki-page .breadcrumb .arrow {
-      font-weight: bold; }
-  .wiki-page .langs {
-    margin-bottom: 10px; }
-    .wiki-page .langs .lang {
-      color: white;
-      background-color: #3298C1; }
-      .wiki-page .langs .lang:hover {
-        background-color: #F56E12; }
-  .wiki-page .title-photo img {
-    border-radius: 4px; }
-  .wiki-page .blue-block .about {
-    padding: 1em;
-    margin-bottom: 0.5em;
-    background-color: #9FD2E3;
-    border-radius: 4px; }
-    .wiki-page .blue-block .about table {
-      margin-left: 10px;
+      font-size: 0.8em; }
+    .wiki-page .breadcrumb .black {
+      color: black; }
+  .wiki-page .block {
+    text-align: left;
+    margin-bottom: 1em; }
+    .wiki-page .block .title-cont {
+      display: table;
       width: 100%; }
-      .wiki-page .blue-block .about table td:nth-child(even) {
-        text-align: right;
-        padding-right: 20px; }
-  @media screen and (min-width: 700px) {
-    .wiki-page .blue-block .about {
-      float: left;
-      width: 300px;
-      margin-right: 1em; } }
-  .wiki-page .blue-block .article_rating {
-    float: right; }
-  .wiki-page .block-header {
-    display: table;
-    width: 100%; }
-    .wiki-page .block-header .left {
-      display: table-cell;
-      text-align: left;
-      vertical-align: middle;
-      width: auto; }
-      .wiki-page .block-header .left h3, .wiki-page .block-header .left h4 {
-        display: inline-block;
-        margin: 0; }
-    .wiki-page .block-header .right {
-      display: table-cell;
-      text-align: right;
-      width: auto; }
-      .wiki-page .block-header .right .rating_all {
-        display: inline-block; }
-  .wiki-page .does-donts {
-    display: table;
-    width: 100%; }
-    .wiki-page .does-donts .active {
-      color: #F56E12 !important; }
-    .wiki-page .does-donts .block {
-      display: table-cell;
-      max-width: 50%; }
-      .wiki-page .does-donts .block .item {
-        margin-bottom: 16px;
-        margin-right: 4px;
-        margin-left: 4px; }
-        .wiki-page .does-donts .block .item .icon-like, .wiki-page .does-donts .block .item .icon-dislike {
-          height: 20px;
-          width: 20px;
-          color: #3298C1;
-          text-decoration: none;
-          border: 1px solid #3298C1;
-          border-radius: 2px;
-          padding: 5px; }
-        .wiki-page .does-donts .block .item .icon-like:hover, .wiki-page .does-donts .block .item .icon-dislike:hover {
-          color: #F56E12; }
-  @media screen and (max-width: 770px) {
-    .wiki-page .does-donts {
-      display: block; }
-      .wiki-page .does-donts .block {
-        display: block;
-        max-width: initial; } }
-  .wiki-page .gallery-photos {
-    background-color: #F0FAFC;
-    padding: 0.5em; }
-    .wiki-page .gallery-photos .empty-photo {
-      font-weight: bold;
-      font-size: 4em;
-      color: #BCB3B8;
-      text-align: center;
-      text-decoration: line-through; }
-    .wiki-page .gallery-photos .photo {
-      display: inline-block;
-      margin-left: 0.3em;
-      margin-right: 0.3em;
-      margin-bottom: 0.3em; }
-      .wiki-page .gallery-photos .photo img {
-        border-radius: 2px; }
-    .wiki-page .gallery-photos .recomm-photo {
-      background-color: #009EC4;
-      margin-top: 1em;
-      padding: 0.5em;
+      .wiki-page .block .title-cont .left {
+        vertical-align: top;
+        display: table-cell;
+        text-align: left; }
+      .wiki-page .block .title-cont .right {
+        vertical-align: top;
+        display: table-cell;
+        text-align: right; }
+    .wiki-page .block .section-photo img {
+      width: 100%; }
+  .wiki-page .info-block {
+    margin-bottom: 1em; }
+    .wiki-page .info-block .header {
+      position: relative;
+      background-color: #57C2DB;
       color: white;
-      border-radius: 4px;
-      display: inline-block; }
-      .wiki-page .gallery-photos .recomm-photo .open-form-btn {
-        color: white;
-        font-weight: bold;
-        background-color: #3DA33D;
-        margin-left: 1em; }
-        .wiki-page .gallery-photos .recomm-photo .open-form-btn:hover {
-          background-color: #F56E12; }
-    .wiki-page .gallery-photos .photos-form {
-      background-color: #ccedf5;
-      margin-top: 1em;
       padding: 0.5em;
-      border-radius: 4px; }
-      .wiki-page .gallery-photos .photos-form .svc-btns {
-        margin-top: 1em; }
-      .wiki-page .gallery-photos .photos-form .cancel {
+      padding-left: 1em;
+      font-weight: 700;
+      text-align: left;
+      font-size: 0.9em;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px; }
+      .wiki-page .info-block .header .info-btn {
+        position: absolute;
+        right: 8px;
+        top: 8px;
+        cursor: pointer;
+        font-size: 0.8em;
+        font-weight: 400;
+        padding: 4px;
+        padding-left: 12px;
+        padding-right: 12px;
+        border-radius: 6px;
         color: white;
         background-color: #FFC400; }
-        .wiki-page .gallery-photos .photos-form .cancel:hover {
+        .wiki-page .info-block .header .info-btn:hover {
           background-color: #F56E12; }
-  .wiki-page .links {
-    margin-bottom: 30px; }
-    .wiki-page .links .lbtn2, .wiki-page .links .photo-button label, .photo-button .wiki-page .links label {
-      background-color: #3298C1;
-      color: white; }
-      .wiki-page .links .lbtn2:hover, .wiki-page .links .photo-button label:hover, .photo-button .wiki-page .links label:hover {
-        background-color: #F56E12; }
-  .wiki-page .favItem {
-    background-color: #F0FAFC;
-    display: inline-block;
-    padding: 0.3em;
-    margin-left: 2px;
-    margin-right: 2px;
-    margin-bottom: 4px;
-    border-radius: 4px; }
-    .wiki-page .favItem .name {
-      /*margin-top: 8px;
-            margin-right: 4px;*/
-      display: inline-block;
-      vertical-align: middle;
-      font-weight: bold; }
-    .wiki-page .favItem .ico-link {
-      color: #005476;
-      text-decoration: none;
-      display: inline-block;
-      vertical-align: middle;
-      font-size: 1.2em; }
-      .wiki-page .favItem .ico-link:hover {
-        color: #F56E12; }
-  .wiki-page .link-form {
-    background-color: #F0FAFC;
+    .wiki-page .info-block .bcont {
+      background-color: #F0FAFC; }
+      .wiki-page .info-block .bcont.photos {
+        text-align: left; }
+        .wiki-page .info-block .bcont.photos .photo-link img {
+          vertical-align: middle; }
+        .wiki-page .info-block .bcont.photos .photo-link:hover {
+          filter: contrast(150%); }
+      .wiki-page .info-block .bcont.padding {
+        padding: 0.8em; }
+    .wiki-page .info-block table {
+      font-size: 0.8em;
+      width: 100%; }
+      .wiki-page .info-block table td {
+        /*padding: 0.3em;*/ }
+        .wiki-page .info-block table td:first-of-type {
+          text-align: left; }
+        .wiki-page .info-block table td:last-of-type {
+          text-align: right; }
+      .wiki-page .info-block table.prices-table {
+        margin-top: -1em;
+        margin-bottom: -1em; }
+        .wiki-page .info-block table.prices-table tr td {
+          border-bottom: 1px dotted #57C2DB;
+          padding-top: 0.4em;
+          padding-bottom: 0.4em; }
+        .wiki-page .info-block table.prices-table tr:last-of-type td {
+          border-bottom: 0; }
+        .wiki-page .info-block table.prices-table .item-name {
+          font-weight: 700; }
+        .wiki-page .info-block table.prices-table .priceBtn {
+          vertical-align: middle;
+          display: inline-block;
+          font-size: 0.65em;
+          border: 1px solid #57C2DB;
+          padding: 0.4em; }
+          .wiki-page .info-block table.prices-table .priceBtn:hover, .wiki-page .info-block table.prices-table .priceBtn.active {
+            border-color: #F56E12;
+            color: #F56E12; }
+  .wiki-page .report-dlg {
     padding: 1em; }
-    .wiki-page .link-form .title {
-      font-weight: bold; }
-    .wiki-page .link-form .links {
-      background-color: white;
-      min-height: 2em;
-      border-radius: 4px; }
-    .wiki-page .link-form .btns {
-      padding: 4px; }
-      .wiki-page .link-form .btns .lbtn2, .wiki-page .link-form .btns .photo-button label, .photo-button .wiki-page .link-form .btns label {
-        color: white;
-        background-color: #3DA33D; }
-        .wiki-page .link-form .btns .lbtn2.y, .wiki-page .link-form .btns .photo-button label.y, .photo-button .wiki-page .link-form .btns label.y {
-          background-color: #FFC400; }
-        .wiki-page .link-form .btns .lbtn2.r, .wiki-page .link-form .btns .photo-button label.r, .photo-button .wiki-page .link-form .btns label.r {
-          background-color: red; }
-        .wiki-page .link-form .btns .lbtn2:hover, .wiki-page .link-form .btns .photo-button label:hover, .photo-button .wiki-page .link-form .btns label:hover {
-          background-color: #F56E12; }
-    .wiki-page .link-form .buttons {
-      border-top: 2px solid #005476; }
+    .wiki-page .report-dlg .file-btn {
+      width: 0.1px;
+      height: 0.1px; }
+    .wiki-page .report-dlg .txt-area {
+      border: 1px solid #3298C1;
+      height: 250px; }
+  .wiki-page .does-donts .inner {
+    background-color: #F0FAFC;
+    padding: 1em;
+    margin: 0.5em; }
+  .wiki-page .does-donts .ico {
+    display: inline-block;
+    padding: 4px;
+    font-size: 0.8em;
+    color: white;
+    border-radius: 50%;
+    background-color: #009EC4; }
+  .wiki-page .does-donts .title {
+    font-size: 1.2em;
+    color: #009EC4;
+    margin-bottom: 0.5em; }
+  .wiki-page .does-donts .item {
+    display: table;
+    width: 100%;
+    margin-bottom: 0.8em; }
+    .wiki-page .does-donts .item .l {
+      display: table-cell;
+      vertical-align: top;
+      padding-right: 0.6em; }
+    .wiki-page .does-donts .item .r {
+      display: table-cell;
+      vertical-align: top;
+      text-align: left; }
+  @media screen and (min-width: 800px) {
+    .wiki-page .does-donts {
+      display: table;
+      width: 100%; }
+      .wiki-page .does-donts .dd-block {
+        display: table-cell;
+        width: 50%; } }
+  .wiki-page .article-rating-all {
+    display: inline-block; }
+    .wiki-page .article-rating-all .article-rating {
+      width: 155px;
+      height: 41px;
+      color: #3298C1;
+      display: table;
+      border: 1px solid #3298C1;
+      border-radius: 2px;
+      position: relative; }
+      .wiki-page .article-rating-all .article-rating .active {
+        color: #F56E12 !important; }
+      .wiki-page .article-rating-all .article-rating .green {
+        color: darkgreen; }
+      .wiki-page .article-rating-all .article-rating .blue {
+        color: #3298C1; }
+      .wiki-page .article-rating-all .article-rating .plus {
+        color: darkgreen; }
+      .wiki-page .article-rating-all .article-rating .minus {
+        color: darkred; }
+      .wiki-page .article-rating-all .article-rating .wrap {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center; }
+        .wiki-page .article-rating-all .article-rating .wrap .frame {
+          display: inline-block;
+          text-align: center;
+          width: 40px;
+          height: 32px;
+          border-left: 1px solid #3298C1; }
+          .wiki-page .article-rating-all .article-rating .wrap .frame a {
+            width: 24px;
+            height: 24px;
+            display: inline-block;
+            font-size: 21px;
+            text-decoration: none;
+            color: #3298C1; }
+          .wiki-page .article-rating-all .article-rating .wrap .frame .score {
+            display: inline-block; }
+          .wiki-page .article-rating-all .article-rating .wrap .frame a:hover {
+            color: #F56E12; }
+          .wiki-page .article-rating-all .article-rating .wrap .frame .icon-edit-pencil {
+            margin-top: 4px; }
+          .wiki-page .article-rating-all .article-rating .wrap .frame .icon-dislike {
+            margin-top: 9px; }
+          .wiki-page .article-rating-all .article-rating .wrap .frame .icon-like {
+            margin-top: 2px; }
+          .wiki-page .article-rating-all .article-rating .wrap .frame .score {
+            width: 32px;
+            margin-top: 2px;
+            font-weight: 600;
+            text-align: center; }
+      .wiki-page .article-rating-all .article-rating .wrap:first-of-type .frame {
+        border: 0; }
+      .wiki-page .article-rating-all .article-rating .bubble {
+        position: absolute;
+        top: 42px;
+        right: 0;
+        border: 1px solid #3298C1;
+        padding: 8px;
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 4px;
+        background-color: white;
+        z-index: 9999; }
+        .wiki-page .article-rating-all .article-rating .bubble .title {
+          color: black; }
+        .wiki-page .article-rating-all .article-rating .bubble textarea {
+          border: 1px solid #3298C1;
+          min-width: 460px;
+          max-width: 660px;
+          min-height: 200px; }
+        .wiki-page .article-rating-all .article-rating .bubble .btns {
+          margin-top: 10px; }
+          .wiki-page .article-rating-all .article-rating .bubble .btns a {
+            color: white;
+            background-color: #3298C1; }
+  .wiki-page .block-links .links-cont {
+    background-color: #F0FAFC;
+    padding: 0.5em;
+    border-radius: 2px; }
+    .wiki-page .block-links .links-cont .fav-item {
+      display: inline-block;
+      border: 1px solid #57C2DB;
+      padding: 0.2em;
+      border-radius: 4px;
+      background-color: white; }
+      .wiki-page .block-links .links-cont .fav-item .name {
+        vertical-align: middle;
+        display: inline-block;
+        color: #57C2DB;
+        font-size: 0.9em;
+        font-weight: 700;
+        margin-right: 2px; }
+      .wiki-page .block-links .links-cont .fav-item .ico-link {
+        display: inline-block;
+        text-decoration: none;
+        vertical-align: middle; }
+        .wiki-page .block-links .links-cont .fav-item .ico-link .ico {
+          vertical-align: middle;
+          color: #005476;
+          font-size: 1.1em; }
+          .wiki-page .block-links .links-cont .fav-item .ico-link .ico:hover {
+            color: #FFC400; }
+  .wiki-page .links {
+    text-align: left; }
+    .wiki-page .links .lbtn2, .wiki-page .links .photo-button label, .photo-button .wiki-page .links label {
+      margin-bottom: 0.3em; }
+  .wiki-page .photo-upload-dlg {
+    padding: 1em; }
+    .wiki-page .photo-upload-dlg .info-box {
+      background-color: #F0FAFC;
+      border-radius: 4px;
+      padding: 0.5em; }
+      .wiki-page .photo-upload-dlg .info-box a {
+        text-decoration: none;
+        color: #57C2DB; }
+        .wiki-page .photo-upload-dlg .info-box a:hover {
+          color: #F56E12; }
+    .wiki-page .photo-upload-dlg .button-box {
+      padding: 1em;
+      text-align: center;
+      font-size: 1.2em; }
+  .wiki-page .standard-admin-dlg {
+    padding: 1em; }
+    .wiki-page .standard-admin-dlg .tit {
+      font-weight: 700; }
+    .wiki-page .standard-admin-dlg .orig-text {
+      border: 2px solid #005476;
+      padding: 0.5em;
+      border-radius: 2px;
+      max-height: 250px;
+      overflow-y: auto; }
+    .wiki-page .standard-admin-dlg .txt-area {
+      border: 2px solid #005476;
+      padding: 0.5em;
+      border-radius: 2px;
+      min-height: 200px; }
+  .wiki-page .do-dont-admin-dlg {
+    padding: 1em; }
+    .wiki-page .do-dont-admin-dlg .tit {
+      font-weight: 700; }
+    .wiki-page .do-dont-admin-dlg .txt-area {
+      border: 2px solid #005476;
+      padding: 0.5em;
+      border-radius: 2px;
+      min-height: 100px; }
+  .wiki-page .price-edit-dlg {
+    padding: 1em;
+    text-align: right; }
+    .wiki-page .price-edit-dlg input {
+      border: 2px solid #005476; }
+  .wiki-page .links-admin-dlg {
+    padding: 1em; }
+    .wiki-page .links-admin-dlg .tit {
+      font-weight: 700; }
+    .wiki-page .links-admin-dlg input {
+      border: 2px solid #005476; }
+    .wiki-page .links-admin-dlg .add-btn-cont {
+      padding: 1em; }
+    .wiki-page .links-admin-dlg .no-links {
+      font-weight: 700;
+      padding: 0.5em;
+      font-size: 1.1em; }
+    .wiki-page .links-admin-dlg .soc-links-list {
+      border: 2px solid #005476;
+      padding: 0.5em; }
+      .wiki-page .links-admin-dlg .soc-links-list .soc-link-admin {
+        padding: 0.2em; }
+        .wiki-page .links-admin-dlg .soc-links-list .soc-link-admin .icon {
+          color: #005476; }
+  .wiki-page .links-soc-admin-dlg {
+    padding: 1em; }
+    .wiki-page .links-soc-admin-dlg .tit {
+      font-weight: 700; }
+    .wiki-page .links-soc-admin-dlg input {
+      border: 2px solid #005476; }
 
 .notif .del-btn {
   border: 1px solid #3298C1;
@@ -7776,66 +7802,81 @@ footer {
     .timeline-c .modal-dlg .cont {
       text-align: center; }
 
-.wiki-page-new {
+.wiki-page {
   /*admin*/ }
-  .wiki-page-new input[type="file"] {
+  .wiki-page input[type="file"] {
     width: 0.1px;
     height: 0.1px; }
-  .wiki-page-new .admin {
+  .wiki-page .admin {
     text-align: left; }
-  .wiki-page-new h1, .wiki-page-new h2, .wiki-page-new h3, .wiki-page-new h4 {
+  .wiki-page h1, .wiki-page h2, .wiki-page h3, .wiki-page h4 {
     padding: 0;
     margin: 0;
     text-align: left;
     margin-bottom: 0.2em;
     display: inline-block; }
-  .wiki-page-new .cont-wrap {
+  .wiki-page .title-img {
+    width: 100%;
+    max-width: 1280px; }
+  .wiki-page .empty-title-photo {
+    background-color: #BCB3B8;
+    text-align: center;
+    padding-top: 2em;
+    padding-bottom: 2em;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto; }
+    .wiki-page .empty-title-photo .ico {
+      display: inline-block;
+      font-size: 5em;
+      color: white; }
+  .wiki-page .cont-wrap {
     display: table;
     width: 100%; }
-    .wiki-page-new .cont-wrap .cont-left {
+    .wiki-page .cont-wrap .cont-left {
       display: table-cell;
       vertical-align: top;
       padding-right: 1.5em; }
-    .wiki-page-new .cont-wrap .cont-right {
+    .wiki-page .cont-wrap .cont-right {
       display: table-cell;
       vertical-align: top;
       width: 300px; }
-  .wiki-page-new .middle-bar {
+  .wiki-page .middle-bar {
     margin-top: 0.5em; }
-  .wiki-page-new .stars {
+  .wiki-page .stars {
     display: inline-block;
     vertical-align: middle; }
-  .wiki-page-new .breadcrumb {
+  .wiki-page .breadcrumb {
     display: inline-block;
     vertical-align: middle;
     text-align: left;
     color: #009EC4; }
-    .wiki-page-new .breadcrumb .item {
+    .wiki-page .breadcrumb .item {
       font-size: 1em;
       text-decoration: none; }
-    .wiki-page-new .breadcrumb .arrow {
+    .wiki-page .breadcrumb .arrow {
       font-size: 0.8em; }
-    .wiki-page-new .breadcrumb .black {
+    .wiki-page .breadcrumb .black {
       color: black; }
-  .wiki-page-new .block {
+  .wiki-page .block {
     text-align: left;
     margin-bottom: 1em; }
-    .wiki-page-new .block .title-cont {
+    .wiki-page .block .title-cont {
       display: table;
       width: 100%; }
-      .wiki-page-new .block .title-cont .left {
+      .wiki-page .block .title-cont .left {
         vertical-align: top;
         display: table-cell;
         text-align: left; }
-      .wiki-page-new .block .title-cont .right {
+      .wiki-page .block .title-cont .right {
         vertical-align: top;
         display: table-cell;
         text-align: right; }
-    .wiki-page-new .block .section-photo img {
+    .wiki-page .block .section-photo img {
       width: 100%; }
-  .wiki-page-new .info-block {
+  .wiki-page .info-block {
     margin-bottom: 1em; }
-    .wiki-page-new .info-block .header {
+    .wiki-page .info-block .header {
       position: relative;
       background-color: #57C2DB;
       color: white;
@@ -7846,7 +7887,7 @@ footer {
       font-size: 0.9em;
       border-top-left-radius: 8px;
       border-top-right-radius: 8px; }
-      .wiki-page-new .info-block .header .info-btn {
+      .wiki-page .info-block .header .info-btn {
         position: absolute;
         right: 8px;
         top: 8px;
@@ -7859,92 +7900,92 @@ footer {
         border-radius: 6px;
         color: white;
         background-color: #FFC400; }
-        .wiki-page-new .info-block .header .info-btn:hover {
+        .wiki-page .info-block .header .info-btn:hover {
           background-color: #F56E12; }
-    .wiki-page-new .info-block .bcont {
+    .wiki-page .info-block .bcont {
       background-color: #F0FAFC; }
-      .wiki-page-new .info-block .bcont.photos {
+      .wiki-page .info-block .bcont.photos {
         text-align: left; }
-        .wiki-page-new .info-block .bcont.photos .photo-link img {
+        .wiki-page .info-block .bcont.photos .photo-link img {
           vertical-align: middle; }
-        .wiki-page-new .info-block .bcont.photos .photo-link:hover {
+        .wiki-page .info-block .bcont.photos .photo-link:hover {
           filter: contrast(150%); }
-      .wiki-page-new .info-block .bcont.padding {
+      .wiki-page .info-block .bcont.padding {
         padding: 0.8em; }
-    .wiki-page-new .info-block table {
+    .wiki-page .info-block table {
       font-size: 0.8em;
       width: 100%; }
-      .wiki-page-new .info-block table td {
+      .wiki-page .info-block table td {
         /*padding: 0.3em;*/ }
-        .wiki-page-new .info-block table td:first-of-type {
+        .wiki-page .info-block table td:first-of-type {
           text-align: left; }
-        .wiki-page-new .info-block table td:last-of-type {
+        .wiki-page .info-block table td:last-of-type {
           text-align: right; }
-      .wiki-page-new .info-block table.prices-table {
+      .wiki-page .info-block table.prices-table {
         margin-top: -1em;
         margin-bottom: -1em; }
-        .wiki-page-new .info-block table.prices-table tr td {
+        .wiki-page .info-block table.prices-table tr td {
           border-bottom: 1px dotted #57C2DB;
           padding-top: 0.4em;
           padding-bottom: 0.4em; }
-        .wiki-page-new .info-block table.prices-table tr:last-of-type td {
+        .wiki-page .info-block table.prices-table tr:last-of-type td {
           border-bottom: 0; }
-        .wiki-page-new .info-block table.prices-table .item-name {
+        .wiki-page .info-block table.prices-table .item-name {
           font-weight: 700; }
-        .wiki-page-new .info-block table.prices-table .priceBtn {
+        .wiki-page .info-block table.prices-table .priceBtn {
           vertical-align: middle;
           display: inline-block;
           font-size: 0.65em;
           border: 1px solid #57C2DB;
           padding: 0.4em; }
-          .wiki-page-new .info-block table.prices-table .priceBtn:hover, .wiki-page-new .info-block table.prices-table .priceBtn.active {
+          .wiki-page .info-block table.prices-table .priceBtn:hover, .wiki-page .info-block table.prices-table .priceBtn.active {
             border-color: #F56E12;
             color: #F56E12; }
-  .wiki-page-new .report-dlg {
+  .wiki-page .report-dlg {
     padding: 1em; }
-    .wiki-page-new .report-dlg .file-btn {
+    .wiki-page .report-dlg .file-btn {
       width: 0.1px;
       height: 0.1px; }
-    .wiki-page-new .report-dlg .txt-area {
+    .wiki-page .report-dlg .txt-area {
       border: 1px solid #3298C1;
       height: 250px; }
-  .wiki-page-new .does-donts .inner {
+  .wiki-page .does-donts .inner {
     background-color: #F0FAFC;
     padding: 1em;
     margin: 0.5em; }
-  .wiki-page-new .does-donts .ico {
+  .wiki-page .does-donts .ico {
     display: inline-block;
     padding: 4px;
     font-size: 0.8em;
     color: white;
     border-radius: 50%;
     background-color: #009EC4; }
-  .wiki-page-new .does-donts .title {
+  .wiki-page .does-donts .title {
     font-size: 1.2em;
     color: #009EC4;
     margin-bottom: 0.5em; }
-  .wiki-page-new .does-donts .item {
+  .wiki-page .does-donts .item {
     display: table;
     width: 100%;
     margin-bottom: 0.8em; }
-    .wiki-page-new .does-donts .item .l {
+    .wiki-page .does-donts .item .l {
       display: table-cell;
       vertical-align: top;
       padding-right: 0.6em; }
-    .wiki-page-new .does-donts .item .r {
+    .wiki-page .does-donts .item .r {
       display: table-cell;
       vertical-align: top;
       text-align: left; }
   @media screen and (min-width: 800px) {
-    .wiki-page-new .does-donts {
+    .wiki-page .does-donts {
       display: table;
       width: 100%; }
-      .wiki-page-new .does-donts .dd-block {
+      .wiki-page .does-donts .dd-block {
         display: table-cell;
         width: 50%; } }
-  .wiki-page-new .article-rating-all {
+  .wiki-page .article-rating-all {
     display: inline-block; }
-    .wiki-page-new .article-rating-all .article-rating {
+    .wiki-page .article-rating-all .article-rating {
       width: 155px;
       height: 41px;
       color: #3298C1;
@@ -7952,51 +7993,51 @@ footer {
       border: 1px solid #3298C1;
       border-radius: 2px;
       position: relative; }
-      .wiki-page-new .article-rating-all .article-rating .active {
+      .wiki-page .article-rating-all .article-rating .active {
         color: #F56E12 !important; }
-      .wiki-page-new .article-rating-all .article-rating .green {
+      .wiki-page .article-rating-all .article-rating .green {
         color: darkgreen; }
-      .wiki-page-new .article-rating-all .article-rating .blue {
+      .wiki-page .article-rating-all .article-rating .blue {
         color: #3298C1; }
-      .wiki-page-new .article-rating-all .article-rating .plus {
+      .wiki-page .article-rating-all .article-rating .plus {
         color: darkgreen; }
-      .wiki-page-new .article-rating-all .article-rating .minus {
+      .wiki-page .article-rating-all .article-rating .minus {
         color: darkred; }
-      .wiki-page-new .article-rating-all .article-rating .wrap {
+      .wiki-page .article-rating-all .article-rating .wrap {
         display: table-cell;
         vertical-align: middle;
         text-align: center; }
-        .wiki-page-new .article-rating-all .article-rating .wrap .frame {
+        .wiki-page .article-rating-all .article-rating .wrap .frame {
           display: inline-block;
           text-align: center;
           width: 40px;
           height: 32px;
           border-left: 1px solid #3298C1; }
-          .wiki-page-new .article-rating-all .article-rating .wrap .frame a {
+          .wiki-page .article-rating-all .article-rating .wrap .frame a {
             width: 24px;
             height: 24px;
             display: inline-block;
             font-size: 21px;
             text-decoration: none;
             color: #3298C1; }
-          .wiki-page-new .article-rating-all .article-rating .wrap .frame .score {
+          .wiki-page .article-rating-all .article-rating .wrap .frame .score {
             display: inline-block; }
-          .wiki-page-new .article-rating-all .article-rating .wrap .frame a:hover {
+          .wiki-page .article-rating-all .article-rating .wrap .frame a:hover {
             color: #F56E12; }
-          .wiki-page-new .article-rating-all .article-rating .wrap .frame .icon-edit-pencil {
+          .wiki-page .article-rating-all .article-rating .wrap .frame .icon-edit-pencil {
             margin-top: 4px; }
-          .wiki-page-new .article-rating-all .article-rating .wrap .frame .icon-dislike {
+          .wiki-page .article-rating-all .article-rating .wrap .frame .icon-dislike {
             margin-top: 9px; }
-          .wiki-page-new .article-rating-all .article-rating .wrap .frame .icon-like {
+          .wiki-page .article-rating-all .article-rating .wrap .frame .icon-like {
             margin-top: 2px; }
-          .wiki-page-new .article-rating-all .article-rating .wrap .frame .score {
+          .wiki-page .article-rating-all .article-rating .wrap .frame .score {
             width: 32px;
             margin-top: 2px;
             font-weight: 600;
             text-align: center; }
-      .wiki-page-new .article-rating-all .article-rating .wrap:first-of-type .frame {
+      .wiki-page .article-rating-all .article-rating .wrap:first-of-type .frame {
         border: 0; }
-      .wiki-page-new .article-rating-all .article-rating .bubble {
+      .wiki-page .article-rating-all .article-rating .bubble {
         position: absolute;
         top: 42px;
         right: 0;
@@ -8006,115 +8047,115 @@ footer {
         border-bottom-right-radius: 4px;
         background-color: white;
         z-index: 9999; }
-        .wiki-page-new .article-rating-all .article-rating .bubble .title {
+        .wiki-page .article-rating-all .article-rating .bubble .title {
           color: black; }
-        .wiki-page-new .article-rating-all .article-rating .bubble textarea {
+        .wiki-page .article-rating-all .article-rating .bubble textarea {
           border: 1px solid #3298C1;
           min-width: 460px;
           max-width: 660px;
           min-height: 200px; }
-        .wiki-page-new .article-rating-all .article-rating .bubble .btns {
+        .wiki-page .article-rating-all .article-rating .bubble .btns {
           margin-top: 10px; }
-          .wiki-page-new .article-rating-all .article-rating .bubble .btns a {
+          .wiki-page .article-rating-all .article-rating .bubble .btns a {
             color: white;
             background-color: #3298C1; }
-  .wiki-page-new .block-links .links-cont {
+  .wiki-page .block-links .links-cont {
     background-color: #F0FAFC;
     padding: 0.5em;
     border-radius: 2px; }
-    .wiki-page-new .block-links .links-cont .fav-item {
+    .wiki-page .block-links .links-cont .fav-item {
       display: inline-block;
       border: 1px solid #57C2DB;
       padding: 0.2em;
       border-radius: 4px;
       background-color: white; }
-      .wiki-page-new .block-links .links-cont .fav-item .name {
+      .wiki-page .block-links .links-cont .fav-item .name {
         vertical-align: middle;
         display: inline-block;
         color: #57C2DB;
         font-size: 0.9em;
         font-weight: 700;
         margin-right: 2px; }
-      .wiki-page-new .block-links .links-cont .fav-item .ico-link {
+      .wiki-page .block-links .links-cont .fav-item .ico-link {
         display: inline-block;
         text-decoration: none;
         vertical-align: middle; }
-        .wiki-page-new .block-links .links-cont .fav-item .ico-link .ico {
+        .wiki-page .block-links .links-cont .fav-item .ico-link .ico {
           vertical-align: middle;
           color: #005476;
           font-size: 1.1em; }
-          .wiki-page-new .block-links .links-cont .fav-item .ico-link .ico:hover {
+          .wiki-page .block-links .links-cont .fav-item .ico-link .ico:hover {
             color: #FFC400; }
-  .wiki-page-new .links {
+  .wiki-page .links {
     text-align: left; }
-    .wiki-page-new .links .lbtn2, .wiki-page-new .links .photo-button label, .photo-button .wiki-page-new .links label {
+    .wiki-page .links .lbtn2, .wiki-page .links .photo-button label, .photo-button .wiki-page .links label {
       margin-bottom: 0.3em; }
-  .wiki-page-new .photo-upload-dlg {
+  .wiki-page .photo-upload-dlg {
     padding: 1em; }
-    .wiki-page-new .photo-upload-dlg .info-box {
+    .wiki-page .photo-upload-dlg .info-box {
       background-color: #F0FAFC;
       border-radius: 4px;
       padding: 0.5em; }
-      .wiki-page-new .photo-upload-dlg .info-box a {
+      .wiki-page .photo-upload-dlg .info-box a {
         text-decoration: none;
         color: #57C2DB; }
-        .wiki-page-new .photo-upload-dlg .info-box a:hover {
+        .wiki-page .photo-upload-dlg .info-box a:hover {
           color: #F56E12; }
-    .wiki-page-new .photo-upload-dlg .button-box {
+    .wiki-page .photo-upload-dlg .button-box {
       padding: 1em;
       text-align: center;
       font-size: 1.2em; }
-  .wiki-page-new .standard-admin-dlg {
+  .wiki-page .standard-admin-dlg {
     padding: 1em; }
-    .wiki-page-new .standard-admin-dlg .tit {
+    .wiki-page .standard-admin-dlg .tit {
       font-weight: 700; }
-    .wiki-page-new .standard-admin-dlg .orig-text {
+    .wiki-page .standard-admin-dlg .orig-text {
       border: 2px solid #005476;
       padding: 0.5em;
       border-radius: 2px;
       max-height: 250px;
       overflow-y: auto; }
-    .wiki-page-new .standard-admin-dlg .txt-area {
+    .wiki-page .standard-admin-dlg .txt-area {
       border: 2px solid #005476;
       padding: 0.5em;
       border-radius: 2px;
       min-height: 200px; }
-  .wiki-page-new .do-dont-admin-dlg {
+  .wiki-page .do-dont-admin-dlg {
     padding: 1em; }
-    .wiki-page-new .do-dont-admin-dlg .tit {
+    .wiki-page .do-dont-admin-dlg .tit {
       font-weight: 700; }
-    .wiki-page-new .do-dont-admin-dlg .txt-area {
+    .wiki-page .do-dont-admin-dlg .txt-area {
       border: 2px solid #005476;
       padding: 0.5em;
       border-radius: 2px;
       min-height: 100px; }
-  .wiki-page-new .price-edit-dlg {
+  .wiki-page .price-edit-dlg {
     padding: 1em;
     text-align: right; }
-    .wiki-page-new .price-edit-dlg input {
+    .wiki-page .price-edit-dlg input {
       border: 2px solid #005476; }
-  .wiki-page-new .links-admin-dlg {
+  .wiki-page .links-admin-dlg {
     padding: 1em; }
-    .wiki-page-new .links-admin-dlg .tit {
+    .wiki-page .links-admin-dlg .tit {
       font-weight: 700; }
-    .wiki-page-new .links-admin-dlg input {
+    .wiki-page .links-admin-dlg input {
       border: 2px solid #005476; }
-    .wiki-page-new .links-admin-dlg .add-btn-cont {
+    .wiki-page .links-admin-dlg .add-btn-cont {
       padding: 1em; }
-    .wiki-page-new .links-admin-dlg .no-links {
+    .wiki-page .links-admin-dlg .no-links {
       font-weight: 700;
       padding: 0.5em;
       font-size: 1.1em; }
-    .wiki-page-new .links-admin-dlg .soc-links-list {
+    .wiki-page .links-admin-dlg .soc-links-list {
       border: 2px solid #005476;
       padding: 0.5em; }
-      .wiki-page-new .links-admin-dlg .soc-links-list .soc-link-admin {
+      .wiki-page .links-admin-dlg .soc-links-list .soc-link-admin {
         padding: 0.2em; }
-        .wiki-page-new .links-admin-dlg .soc-links-list .soc-link-admin .icon {
+        .wiki-page .links-admin-dlg .soc-links-list .soc-link-admin .icon {
           color: #005476; }
-  .wiki-page-new .links-soc-admin-dlg {
+  .wiki-page .links-soc-admin-dlg {
     padding: 1em; }
-    .wiki-page-new .links-soc-admin-dlg .tit {
+    .wiki-page .links-soc-admin-dlg .tit {
       font-weight: 700; }
-    .wiki-page-new .links-soc-admin-dlg input {
+    .wiki-page .links-soc-admin-dlg input {
       border: 2px solid #005476; }

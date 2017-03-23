@@ -1,0 +1,147 @@
+﻿@using System.Threading.Tasks
+@using Gloobster.Common
+@using Gloobster.DomainModels.Wiki
+@using Gloobster.Enums
+@using Gloobster.Portal
+@using Gloobster.Portal.Controllers.Portal
+@using Gloobster.Portal.ViewModels
+@using Microsoft.AspNet.Mvc.Rendering
+@using Microsoft.Data.Entity.Metadata.Internal
+@model WikiModelBase
+
+@{    
+    ViewBag.BodyClass = "wiki-page";
+    ViewBag.MenuGroup = "Wiki";
+    ViewData["Title"] = "gloobster.com - wiki - " + Model.Texts.Title;
+}
+
+@Html.Partial("GAnalytics")
+
+@if (GloobsterConfig.UseMiniScripts)
+{
+    <script src="/jsb/wikipage-@(ScriptsVersion.Version).js" type="text/javascript" data-notbuild="true"></script>
+}
+else
+{
+    <script type="text/javascript" src="/js/PageWiki/Enums.js"></script>
+    <script type="text/javascript" src="/js/PageWiki/ArticlePhotos.js"></script>    
+    <script type="text/javascript" src="/js/PageWiki/Rating.js"></script>
+    <script type="text/javascript" src="/js/PageWiki/ReportWindow.js"></script>    
+    <script type="text/javascript" src="/js/PageWiki/WikiResizer.js"></script>
+    <script type="text/javascript" src="/js/Views/WikiPageView.js"></script>
+}
+
+@if (Model.IsAdmin)
+{
+    <script type="text/javascript" src="/js/Views/WikiAdminPageView.js" data-notbuild="true"></script>
+}
+
+
+@if (string.IsNullOrEmpty(Model.TitleLink))
+{
+    <div class="empty-title-photo">
+        <span class="icon-city ico"></span>
+        <span class="icon-city ico"></span>
+        <span class="icon-city ico"></span>
+        <span class="icon-city ico"></span>
+        <span class="icon-city ico"></span>
+    </div>
+}
+else
+{
+    <img class="title-img" />
+}
+
+
+<div class="wrapper">
+    
+    <div class="htbl middle-bar">
+        <div class="left">
+            @Html.Partial("Breadcrumb")        
+        </div>
+        <div class="right">
+            @Html.Partial("Stars", Model.Texts.Rating)        
+        </div>
+    </div>
+    
+    @Html.Partial("PageAdmin")
+    
+    <div id="mainPageCont" class="">
+        
+        <div class="cont-left">
+            
+            @foreach (var block in Model.BigBlocks)
+            {                
+                @Html.Partial("Section_" + block.Type, block)
+            }
+
+        </div>
+        
+        <div id="rightCont" class="cont-right hidden">
+            
+            @if (Model.Texts.Type == ArticleType.City)
+            {
+                @Html.Partial("InfoTableCity")
+            }
+             
+            @if (Model.Texts.Type == ArticleType.Country)
+            {
+                @Html.Partial("InfoTableCountry")
+            }
+            
+            @Html.Partial("Photos")
+            
+            @Html.Partial("Table1Block", Model.GetPricesByCategory("Restaurant"))
+            @Html.Partial("Table1Block", Model.GetPricesByCategory("Transport"))
+            @Html.Partial("Table1Block", Model.GetPricesByCategory("Accommodation"))
+            @Html.Partial("Table1Block", Model.GetPricesByCategory("Nightlife", "Pub"))
+            @Html.Partial("Table1Block", Model.GetPricesByCategory("Nightlife", "Bar"))
+            @Html.Partial("Table1Block", Model.GetPricesByCategory("Nightlife", "Club"))
+            
+
+        </div>
+
+    </div>
+
+    
+    @Html.Partial("GeoLinks")
+    
+    @Html.Partial("PageScripts")
+</div>
+
+<script id="photo-upload-dlg-template" type="text/x-handlebars-template">
+
+    <div class="photo-upload-dlg">
+        
+        <div class="button-box">
+
+            <input id="addUserPhoto" type="file">
+            <label for="addUserPhoto">
+                <span class="lbtn2 green-orange">@Model.W("UploadAPhoto")</span>
+            </label>
+
+        </div>
+
+        <div class="info-box">            
+            <a target="_blank" href="/legal/TermsAndConds">@Model.W("TermsAndCondsForPhotos")</a>
+        </div>
+        
+    </div>
+     
+</script>
+
+<script id="block-report-tmp" type="text/x-handlebars-template">
+
+    <div class="report-dlg">
+
+        <div>
+            <textarea class="txt-area" placeholder="@Model.W("TextPlaceholder")"></textarea>
+        </div>
+
+        <div>
+            <a id="uploadSectionPhoto" href="#" class="lbtn2 green-orange">@Model.W("UploadSectionPhotoBtn")</a>
+        </div>
+
+    </div>
+
+</script>

@@ -1,11 +1,11 @@
 ﻿
 @using System.Threading.Tasks
 @using Gloobster.Portal.ViewModels
-@model NewWikiModelBase
+@model WikiModelBase
 
 @if (Model.IsAdmin)
 {    
-    @Html.Partial("AAAdminTemplates")
+    @Html.Partial("AdminTemplates")
 
     <div class="wrapper admin">
         <input id="adminMode" type="checkbox"><label for="adminMode">Admin mode</label>        

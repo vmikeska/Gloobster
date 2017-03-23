@@ -8,7 +8,7 @@ using MongoDB.Bson;
 
 namespace Gloobster.Portal.ViewModels
 {
-    public abstract class NewWikiModelBase : ViewModelBase
+    public abstract class WikiModelBase : ViewModelBase
     {
         public string TitleLink { get; set; }
 
@@ -44,6 +44,8 @@ namespace Gloobster.Portal.ViewModels
                 return _info;
             }
         }
+
+        public int PhotoGID { get; set; }
 
         public void LoadSections()
         {            
@@ -490,7 +492,7 @@ namespace Gloobster.Portal.ViewModels
 
     }
 
-    public class NewWikiCountryViewModel : NewWikiModelBase
+    public class WikiCountryViewModel : WikiModelBase
     {
         protected override List<string> OrderPreference => new List<string>
         {
@@ -683,7 +685,7 @@ namespace Gloobster.Portal.ViewModels
 
 
 
-    public class NewWikiCityViewModel : NewWikiModelBase
+    public class WikiCityViewModel : WikiModelBase
     {
         public List<PriceItemSE> Prices { get; set; }
 
@@ -924,7 +926,7 @@ namespace Gloobster.Portal.ViewModels
         public string HtmlId { get; set; }
         
         public List<TableItemVM> TableItems { get; set; }
-        public NewWikiModelBase B { get; set; }
+        public WikiModelBase B { get; set; }
         public ArticleType Type { get; set; }
         public bool ShowButtons { get; set; }
     }
@@ -933,7 +935,7 @@ namespace Gloobster.Portal.ViewModels
 
     public class WikiPageBlock
     {
-        public NewWikiModelBase Base { get; set; }
+        public WikiModelBase Base { get; set; }
         
         public SectionType Type { get; set; }
         public string SectionType { get; set; }

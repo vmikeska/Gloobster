@@ -1,11 +1,11 @@
 ﻿@using Gloobster.Portal.ViewModels
-@model NewWikiModelBase
+@model WikiModelBase
 
 <div class="info-block" id="lbPhotos">
     <div class="header">
-        <span class="title">Photos</span>
+        <span class="title">@Model.W("PhotosTitle")</span>
         
-        <span id="openPhotoDialog" class="info-btn">upload</span>
+        <span id="openPhotoDialog" class="info-btn">@Model.W("PhotosUpload")</span>
         
     </div>
     <div id="photosCont" class="bcont photos">

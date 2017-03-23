@@ -1,13 +1,13 @@
 ﻿@using System.Threading.Tasks
 @using Gloobster.Portal.ViewModels
-@model NewWikiModelBase
+@model WikiModelBase
 
 <div class="info-block" id="lbInfoTable">
-    <div class="header"><span class="title">About</span></div>
+    <div class="header"><span class="title">@Model.W("About")</span></div>
     <div class="bcont padding">
 
         <table>
-            @Html.Partial("AATableItem", Model.InfoByName("PopulationCity"))
+            @Html.Partial("TableItem", Model.InfoByName("PopulationCity"))
         </table>
 
     </div>

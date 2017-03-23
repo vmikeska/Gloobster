@@ -1,129 +1,49 @@
 ﻿module Views {
+		
+		export class WikiPageView extends ViewBase {
 
-	export enum ArticleType { Continent, Country, City } 
+				private rating: Wiki.Rating;
+				public articlePhotos: Wiki.ArticlePhotos;
+				private reportWin: Wiki.ReportWindow;
 
+				private resizer: Wiki.WikiResizer;
 
-	export class WikiPageView extends ViewBase {
+				public articleType: Wiki. ArticleType;
+				public articleId: string;
+				public langVersion: string;
 
-		public articleType: ArticleType;
-		public articleId: string;
-		public langVersion: string;
-	 
-		private report: Report;
-	 
-		constructor(articleId, articleType) {
-		 super();
-		 
-			this.articleType = articleType;
-			this.articleId = articleId;
-			this.langVersion = this.getLangVersion();
-				
-			this.report = new Report(articleId, this.langVersion);
+				public photoGID;
 
-			this.regContribute();
-		}
+				constructor(articleId, articleType, photoGID) {
+						super();
 
-		private regContribute() {
-			$(".contrib-link").click((e) => {
-					e.preventDefault();
-					
-					if (ViewBase.currentView.fullReg) {
-							var $t = $(e.target);
-							var $cont = $t.closest(".empty-cont");
-							if ($cont.length > 0) {
-									var sid = $cont.data("sid");
-									$(`.article_rating[data-id="${sid}"]`).find(".bubble").toggle();
-							}
-					} else {
-							RegMessages.displayFullRegMessage();
-					}
-					
-			});
-		}
+						this.photoGID = photoGID;
+						this.articleType = articleType;
+						this.articleId = articleId;
+						
+						this.resizer = new Wiki.WikiResizer(this);
 
+						this.resizer.init();
+						
+						this.langVersion = this.getLangVersion();
 
-		public getLangVersion() {
-			var urlParams = window.location.pathname.split("/");
-			return urlParams[2];
-		}
+						this.rating = new Wiki.Rating(articleId, this.langVersion);
 
-	}
+						this.articlePhotos = new Wiki.ArticlePhotos(articleId);
+						this.loadPhotos();
 
-	export class Report {
-
-		private $bubble;
-		private $evaluate;
-
-		private articleId;
-		private langVersion;
-
-		constructor(articleId, langVersion) {
-			this.regToggleButton();
-
-			this.articleId = articleId;
-			this.langVersion = langVersion;
-
-			this.$bubble = $(".bubble");
-
-			this.$bubble.find(".cancel").click((e) => {
-				e.preventDefault();
-				var $target = $(e.target);
-				this.toggleForm($target);
-			});
-
-			this.regSend();
-		}
-
-		public toggleForm($element) {
-			$element.closest(".article_rating").find(".bubble").toggle();
-		}
-
-		private regSend() {
-			this.$bubble.find(".send").click((e) => {
-				e.preventDefault();
-				var $target = $(e.target);
-
-				var $frame = $target.closest(".article_rating");
-				var $bubble = $target.closest(".bubble");
-
-				var data = {
-					lang: this.langVersion,
-					articleId: this.articleId,
-					sectionId: $frame.data("id"),
-					text: $bubble.find(".txt").val()
-				};
-
-				var v = ViewBase.currentView;
-
-				v.apiPost("WikiReport", data, (r) => {
-						this.toggleForm($target);
-
-						var id = new Common.InfoDialog();
-						id.create(v.t("ContributionThanksTitle", "jsWiki"), v.t("ContributionThanksBody", "jsWiki"));
-				});
-
-			});
-		}
-
-		private regToggleButton() {
-				$(".icon-edit-pencil").click((e) => {
-				e.preventDefault();
-
-				if (ViewBase.currentView.fullReg) {
-					var $target = $(e.target);
-					this.toggleForm($target);
-				} else {
-				 RegMessages.displayFullRegMessage();
+						this.reportWin = new Wiki.ReportWindow(this.langVersion, this.articleId, this);
 				}
-			 
-			});
+
+				private loadPhotos() {
+						this.articlePhotos.fillPhotos($("#photosCont"), 0, 9);
+				}
+
+				public getLangVersion() {
+						var urlParams = window.location.pathname.split("/");
+						return urlParams[2];
+				}
+
 		}
-
-
-	}
-
-	
-
-	
-	
+		
 }

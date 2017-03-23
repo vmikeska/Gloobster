@@ -9,6 +9,10 @@
         <en>About people</en>
       </AboutPeople>
 
+    <About>
+      <en>About</en>
+    </About>
+
       <NightLife>
         <en>Nightlife</en>
       </NightLife>
@@ -120,10 +124,6 @@
       <IUnderstand>
         <en>I understand</en>
       </IUnderstand>
-
-      <TermsAndCondsForPhotos>
-        <en>Terms and conditions for adding photos</en>
-      </TermsAndCondsForPhotos>
 
       <Cancel>
         <en>Cancel</en>
@@ -281,5 +281,25 @@
     <NoContentBtn>
       <en>Contribute</en>
     </NoContentBtn>
- 
+
+    <UploadAPhoto>
+      <en>upload a photo</en>
+    </UploadAPhoto>
+
+    <TermsAndCondsForPhotos>
+      <en>Terms and conditions for adding photos</en>
+    </TermsAndCondsForPhotos>
+
+    <UploadSectionPhotoBtn>
+      <en>Upload section title photo</en>
+    </UploadSectionPhotoBtn>
+
+    <PhotosUpload>
+      <en>upload</en>
+    </PhotosUpload>
+
+    <PhotosTitle>
+      <en>Photos</en>
+    </PhotosTitle>
+    
   </module>

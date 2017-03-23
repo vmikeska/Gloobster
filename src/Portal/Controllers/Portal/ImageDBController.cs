@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using Gloobster.Database;
 using Gloobster.Portal.Controllers.Base;
@@ -29,9 +30,7 @@ namespace Gloobster.Portal.Controllers.Portal
         
         public IActionResult List()
         {
-            var vm = CreateViewModelInstance<ImageDBListViewModel>();
-
-            
+            var vm = CreateViewModelInstance<ImageDBListViewModel>();            
             return View(vm);
         }
 
@@ -51,7 +50,7 @@ namespace Gloobster.Portal.Controllers.Portal
             return null;
         }
 
-        public IActionResult Picd(string id, string cut)
+        public IActionResult Picd(string id, string cut, int? maxWidth, int? maxHeight)
         {
             var fileName = $"{cut}.jpg";
 
@@ -61,7 +60,14 @@ namespace Gloobster.Portal.Controllers.Portal
             bool exists = FileDomain.Storage.FileExists(fullPath);
             if (exists)
             {
-                var fileStream = FileDomain.GetFile(fullPath);
+                Stream fileStream = null;
+                fileStream = FileDomain.GetFile(fullPath);
+
+                if (maxWidth.HasValue && maxHeight.HasValue)
+                {
+                    fileStream = GeneratePic(fileStream, maxWidth.Value, maxHeight.Value);
+                }
+
                 return new FileStreamResult(fileStream, "image/jpeg");
             }
             else
@@ -86,8 +92,29 @@ namespace Gloobster.Portal.Controllers.Portal
             return null;
         }
 
+        private Stream GeneratePic(Stream origFileStream, int newWidth, int newHeight)
+        {
+            Bitmap origBitmap = new Bitmap(origFileStream);
+
+            float rateWidth = 1.0f;
+            float rateHeight = ((float)newHeight) / ((float)newWidth);
+
+
+            var rect = BitmapUtils.CalculateBestImgCut(origBitmap.Width, origBitmap.Height, rateWidth, rateHeight);
+            var cutBmp = BitmapUtils.ExportPartOfBitmap(origBitmap, rect);
+            var newBmp = BitmapUtils.ResizeImage(cutBmp, newWidth, newHeight);
+            var jpgStream = BitmapUtils.ConvertBitmapToJpg(newBmp, 90);
+
+            jpgStream.Position = 0;
+
+            cutBmp.Dispose();
+            newBmp.Dispose();
+
+            return jpgStream;
+        }
+
         // /Picd/{{cityId}}/{{shortName}}
-        
+
 
 
     }

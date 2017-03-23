@@ -1,6 +1,6 @@
 ﻿@using System.Threading.Tasks
 @using Gloobster.Portal.ViewModels
-@model NewWikiModelBase
+@model WikiModelBase
 
 @{
     var area = Model.InfoByName("Area");
@@ -16,19 +16,19 @@
 
 
 <div class="info-block" id="lbInfoTable">
-    <div class="header"><span class="title">About</span></div>
+    <div class="header"><span class="title">@Model.W("About")</span></div>
     <div class="bcont padding">
 
         <table>
-            @Html.Partial("AATableItem", Model.InfoByName("Population"))
-            @Html.Partial("AATableItem", Model.InfoByName("CapitalName"))
-            @Html.Partial("AATableItem", area)
+            @Html.Partial("TableItem", Model.InfoByName("Population"))
+            @Html.Partial("TableItem", Model.InfoByName("CapitalName"))
+            @Html.Partial("TableItem", area)
             @*@Html.Partial("TableItem", Model.InfoByName("HDI"))*@
             @*@Html.Partial("TableItem", Model.InfoByName("CallingCode"))*@
             @*@Html.Partial("TableItem", Model.InfoByName("DrivingRight"))*@
-            @Html.Partial("AATableItem", Model.InfoByName("CurrencyCode"))
+            @Html.Partial("TableItem", Model.InfoByName("CurrencyCode"))
 
-            @Html.Partial("AATableItem", mainLang)
+            @Html.Partial("TableItem", mainLang)
             @{
                 var otherLangs = Model.InfoByName("Languages");
                 otherLangs.AfterName = " (Other)";
@@ -40,7 +40,7 @@
             }
 
 
-            @Html.Partial("AATableItem", otherLangs)
+            @Html.Partial("TableItem", otherLangs)
 
         </table>
         

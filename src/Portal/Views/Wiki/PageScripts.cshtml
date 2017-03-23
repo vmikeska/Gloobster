@@ -1,19 +1,20 @@
 ﻿@using System.Threading.Tasks
 @using Gloobster.Portal.ViewModels
-@model NewWikiModelBase
+@model WikiModelBase
 <script>
     function onBodyLoad() {
 
         var articleId = "@Model.ArticleId";
         var type = @((int)Model.Texts.Type);
+        var photoGID = @Model.PhotoGID;
 
         @if (Model.IsAdmin)
         {
-            @Html.Raw("currentView = new Views.NewWikiAdminPageView(articleId, type);")
+            @Html.Raw("currentView = new Views.WikiAdminPageView(articleId, type, photoGID);")
         }
         else
         {
-            @Html.Raw("currentView = new Views.NewWikiPageView(articleId, type);")
+            @Html.Raw("currentView = new Views.WikiPageView(articleId, type, photoGID);")
         }
     }
 

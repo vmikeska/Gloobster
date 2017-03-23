@@ -1,6 +1,6 @@
 ﻿@using System.Threading.Tasks
 @using Gloobster.Portal.ViewModels
-@model BlockVM
+@model WikiPageBlock
 
 @{
     bool? liked = Model.Liked;
@@ -33,37 +33,29 @@
 
 }
 
+<div class="article-rating-all">
+    <div class="article-rating" data-id="@Model.SectionId">
 
-<div class="article_rating"  data-id="@Model.SectionId" >
+        <div class="wrap">
+            <div class="frame">
+                <div title="@Model.Base.W("RatingBalance")" class="score @ratingCls">@ratingStr</div>
+            </div>
+        </div>
+        <div class="wrap">
+            <div class="frame">
+                <a href="#" title="@Model.Base.W("LikeSection")" data-like="true" class="icon-like ratingBtn @(likedIsActive ? "active" : string.Empty)"></a>
+            </div>
+        </div>
+        <div class="wrap">
+            <div class="frame">
+                <a href="#" title="@Model.Base.W("DontLikeSection")" data-like="false" class="icon-dislike ratingBtn @(dislikeIsActive ? "active" : string.Empty)"></a>
+            </div>
+        </div>
+        <div class="wrap">
+            <div class="frame">
+                <a href="#" title="@Model.Base.W("RecommendContent")" class="icon-edit-pencil report-btn"></a>
+            </div>
+        </div>
 
-    <div class="wrap">
-        <div class="frame">
-            <div title="@Model.B.W("RatingBalance")" class="score @ratingCls">@ratingStr</div>
-        </div>
-    </div>
-    <div class="wrap">
-        <div class="frame">
-            <a href="#" title="@Model.B.W("LikeSection")" data-like="true" class="icon-like ratingBtn @(likedIsActive ? "active" : string.Empty)"></a>
-        </div>
-    </div>
-    <div class="wrap">
-        <div class="frame">
-            <a href="#" title="@Model.B.W("DontLikeSection")" data-like="false" class="icon-dislike ratingBtn @(dislikeIsActive ? "active" : string.Empty)"></a>
-        </div>
-    </div>
-    <div class="wrap">
-        <div class="frame">
-            <a href="#" title="@Model.B.W("RecommendContent")" class="icon-edit-pencil"></a>
-        </div>
-    </div>
-
-
-    <div class="bubble" style="display: none">
-        <span class="title">@Model.B.W("ReportText")</span>
-        <textarea class="txt" placeholder="@Model.B.W("TextPlaceholder")"></textarea>        
-        <div class="btns">
-            <a class="lbtn cancel" href="#">@Model.B.W("Cancel", "layout")</a>
-            <a class="lbtn send" href="#">@Model.B.W("ReportSend")</a>
-        </div>
     </div>
 </div>
