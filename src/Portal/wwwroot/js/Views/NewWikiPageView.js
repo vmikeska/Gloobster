@@ -12,10 +12,18 @@ var Views;
         SectionType[SectionType["Links"] = 3] = "Links";
     })(Views.SectionType || (Views.SectionType = {}));
     var SectionType = Views.SectionType;
+    (function (LayoutSize) {
+        LayoutSize[LayoutSize["Web"] = 0] = "Web";
+        LayoutSize[LayoutSize["Mobile"] = 1] = "Mobile";
+    })(Views.LayoutSize || (Views.LayoutSize = {}));
+    var LayoutSize = Views.LayoutSize;
+    ;
     var NewWikiPageView = (function (_super) {
         __extends(NewWikiPageView, _super);
         function NewWikiPageView(articleId, articleType) {
             _super.call(this);
+            this.resizer = new WikiResizer();
+            this.resizer.init();
             this.articleType = articleType;
             this.articleId = articleId;
             this.langVersion = this.getLangVersion();
@@ -34,6 +42,68 @@ var Views;
         return NewWikiPageView;
     }(Views.ViewBase));
     Views.NewWikiPageView = NewWikiPageView;
+    var WikiResizer = (function () {
+        function WikiResizer() {
+            var _this = this;
+            this.threshold = 830;
+            this.$cont = $("#mainPageCont");
+            this.$rightCont = $("#rightCont");
+            $(window).resize(function () {
+                _this.set();
+            });
+        }
+        WikiResizer.prototype.set = function () {
+            var width = this.getWidth();
+            var layoutType = (width < this.threshold) ? LayoutSize.Mobile : LayoutSize.Web;
+            if (this.layoutType !== layoutType) {
+                if (layoutType === LayoutSize.Web) {
+                    this.$rightCont.append($("#lbInfoTable"));
+                    this.$rightCont.append($("#lbPhotos"));
+                    this.$rightCont.append($("#lbRestaurant"));
+                    this.$rightCont.append($("#lbTransport"));
+                    this.$rightCont.append($("#lbAccommodation"));
+                    this.$rightCont.append($("#lbNightlife-Pub"));
+                    this.$rightCont.append($("#lbNightlife-Bar"));
+                    this.$rightCont.append($("#lbNightlife-Club"));
+                }
+                else {
+                    var $about = this.getCatContByType("About");
+                    $about.append($("#lbInfoTable"));
+                    var $cPhotos = this.getCatContByType("Photos");
+                    $cPhotos.append($("#lbPhotos"));
+                    var $oPrices = this.getCatContByType("OtherPrices");
+                    $oPrices.append($("#lbRestaurant"));
+                    $oPrices.append($("#lbTransport"));
+                    $oPrices.append($("#lbAccommodation"));
+                    var $nPrices = this.getCatContByType("NightLifePrices");
+                    $nPrices.append($("#lbNightlife-Pub"));
+                    $nPrices.append($("#lbNightlife-Bar"));
+                    $nPrices.append($("#lbNightlife-Club"));
+                }
+            }
+            if (layoutType === LayoutSize.Web) {
+                this.$cont.addClass("cont-wrap");
+            }
+            else {
+                this.$cont.removeClass("cont-wrap");
+            }
+            this.layoutType = layoutType;
+        };
+        WikiResizer.prototype.getCatContByType = function (type) {
+            var $cont = $(".block[data-c=\"" + type + "\"]");
+            return $cont;
+        };
+        WikiResizer.prototype.init = function () {
+            this.set();
+            this.$rightCont.removeClass("hidden");
+        };
+        WikiResizer.prototype.getWidth = function () {
+            var width = $(window).width();
+            return width;
+        };
+        return WikiResizer;
+    }());
+    Views.WikiResizer = WikiResizer;
     var NewWikiAdminPageView = (function (_super) {
         __extends(NewWikiAdminPageView, _super);
         function NewWikiAdminPageView(articleId, articleType) {
@@ -58,6 +128,7 @@ var Views;
                 this.generateBlocks();
             }
             else {
+                this.destroyBlocks();
             }
         };
         NewWikiAdminPageView.prototype.generateBlocks = function () {
@@ -65,6 +136,12 @@ var Views;
             this.doDontAdmin.generateAdmin();
             this.priceAdmin.generateAdmin();
             this.linksAdmin.addLinks();
+        };
+        NewWikiAdminPageView.prototype.destroyBlocks = function () {
+            this.linksAdmin.clean();
+            this.priceAdmin.clean();
+            this.doDontAdmin.clean();
+            this.standardBlockAdmin.clean();
         };
         return NewWikiAdminPageView;
     }(NewWikiPageView));
@@ -80,6 +157,10 @@ var Views;
             enumerable: true,
             configurable: true
         });
+        LinksAdmin.prototype.clean = function () {
+            $(".links-admin-btn").remove();
+            this.removeEditLinks();
+        };
         LinksAdmin.prototype.addLinks = function () {
             var _this = this;
             var $links = $(".adminable-links");
@@ -92,7 +173,7 @@ var Views;
         LinksAdmin.prototype.addAdminBtn = function ($linkBlock) {
             var _this = this;
             var $cont = $linkBlock.find(".admin-btn-cont");
-            var $btn = $("<a class=\"lbtn2 red-orange\" href=\"#\">Add item</a>");
+            var $btn = $("<a class=\"lbtn2 red-orange links-admin-btn\" href=\"#\"> Add item</a>");
             $cont.append($btn);
             $btn.click(function (e) {
                 e.preventDefault();
@@ -322,6 +403,9 @@ var Views;
             var tds = $tds.toArray();
             tds.forEach(function (td) { return _this.generateAdminItem(td); });
         };
+        PriceAdmin.prototype.clean = function () {
+            $(".price-edit").remove();
+        };
         PriceAdmin.prototype.generateAdminItem = function (td) {
             var $td = $(td);
             var id = $td.data("id");
@@ -523,6 +607,9 @@ var Views;
             enumerable: true,
             configurable: true
         });
+        BlockAdmin.prototype.clean = function () {
+            $(".edit-section").remove();
+        };
         BlockAdmin.prototype.generateAdmin = function () {
             var _this = this;
             var adminBlocks = $(".adminable-block").toArray();
@@ -617,9 +704,11 @@ var Views;
             });
         };
         ArticlePhotos.prototype.fillPhotos = function ($cont, layoutSize, photosLimit) {
+            var _this = this;
             this.getThumbs(layoutSize, photosLimit, function (photos) {
                 photos.forEach(function (p) {
-                    var $img = $("<img src=\"data:image/jpeg;base64," + p + "\" />");
+                    var link = "/Wiki/ArticlePhoto?photoId=" + p.photoId + "&articleId=" + _this.articleId;
+                    var $img = $("<a class=\"photo-link\" href=\"" + link + "\" target=\"_blank\"><img src=\"data:image/jpeg;base64," + p.data + "\" /></a>");
                     $cont.append($img);
                 });
             });

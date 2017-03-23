@@ -102,7 +102,39 @@ namespace Gloobster.Portal.ViewModels
                 Type = SectionType.DosDonts
             };
             BigBlocks.Add(dosDontsBlock);
-            
+
+            var about = new WikiPageBlock
+            {
+                Base = this,
+                Type = SectionType.LayoutCont,
+                SectionType = "About"
+            };
+            BigBlocks.Add(about);
+
+            var nightLifePrice = new WikiPageBlock
+            {
+                Base = this,                
+                Type = SectionType.LayoutCont,
+                SectionType = "NightLifePrices"
+            };
+            BigBlocks.Add(nightLifePrice);
+
+            var otherPrices = new WikiPageBlock
+            {
+                Base = this,
+                Type = SectionType.LayoutCont,
+                SectionType = "OtherPrices"
+            };
+            BigBlocks.Add(otherPrices);
+
+            var photos = new WikiPageBlock
+            {
+                Base = this,
+                Type = SectionType.LayoutCont,
+                SectionType = "Photos"
+            };
+            BigBlocks.Add(photos);
+
             OrderBlocks();
         }
 
@@ -463,15 +495,19 @@ namespace Gloobster.Portal.ViewModels
         protected override List<string> OrderPreference => new List<string>
         {
             "Base",
+            "About", //spec            
             "AboutPeople",
+            "Photos", //spec
             "Accommodation",
             "Languages",
             "Safety",
             "Transport",
             
             "Restaurant",
+            "OtherPrices", //spec
             "Alcohol",
             "NightLife",
+            "NightLifePrices", //spec
             "Tipping",
 
             "Marihuana",
@@ -480,9 +516,7 @@ namespace Gloobster.Portal.ViewModels
             "Hitchhiking",
 
             "Internet",
-            "SimCards",
-            
-            //"NightlifePrices",
+            "SimCards"
         };
 
         public override Table1ViewModel GetPricesByCategory(string category, string subCategory = null)
@@ -495,12 +529,19 @@ namespace Gloobster.Portal.ViewModels
                 Price1 = cp.Price                
             }).ToList();
 
+            var htmlId = $"lb{category}";
+            if (!string.IsNullOrEmpty(subCategory))
+            {
+                htmlId += subCategory;
+            }
+
             var res = new Table1ViewModel
             {
                 Type = Texts.Type,
                 B = this,
                 ShowButtons = false,
                 TableItems = catPrices,
+                HtmlId = htmlId,
 
                 Title = category, //todo: WORD
                 SubTitle = subCategory //todo: WORD
@@ -652,23 +693,23 @@ namespace Gloobster.Portal.ViewModels
         {
             "Base",
             "AboutPeople",
+            "About", //spec            
             "Accommodation",
+            "Photos", //spec
             "Safety",
             "BarDistricts",
             "Transport",
             "NightLife",
+            "NightLifePrices", //spec
             "Restaurant",
-            "Tipping",
-            "DosDonts",
+            
+            "OtherPrices", //spec
+            "DosDonts", //spec
 
             "FavoriteSites",
             
             "MuseumsAndTheater",
-            "Sport"
-            
-
-            //NightlifePrices
-            //Surfing
+            "Sport"            
         };
 
         public override List<RelatedLink> GetRelatedLinks()
@@ -694,11 +735,19 @@ namespace Gloobster.Portal.ViewModels
 
             List<TableItemVM> prices = categoryPrices.Select(ConvertTableItem).ToList();
 
+            var htmlId = $"lb{category}";
+            if (!string.IsNullOrEmpty(subCategory))
+            {
+                htmlId += $"-{subCategory}";
+            }
+
             var res = new Table1ViewModel {
                 Type = Texts.Type,
                 B = this,
                 ShowButtons = true,
                 TableItems = prices,
+
+                HtmlId = htmlId,
 
                 Title = category, //todo: WORD
                 SubTitle = subCategory //todo: WORD
@@ -871,6 +920,8 @@ namespace Gloobster.Portal.ViewModels
     {
         public string Title { get; set; }
         public string SubTitle { get; set; }
+
+        public string HtmlId { get; set; }
         
         public List<TableItemVM> TableItems { get; set; }
         public NewWikiModelBase B { get; set; }
@@ -878,7 +929,7 @@ namespace Gloobster.Portal.ViewModels
         public bool ShowButtons { get; set; }
     }
 
-    public enum SectionType { Header, Standard, DosDonts, Links }
+    public enum SectionType { Header, Standard, DosDonts, Links, LayoutCont }
 
     public class WikiPageBlock
     {

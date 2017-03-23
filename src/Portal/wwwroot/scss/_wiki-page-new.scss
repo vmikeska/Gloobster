@@ -7,6 +7,10 @@
         height: 0.1px;
     }
 
+    .admin {
+        text-align: left;
+    }
+
     h1, h2, h3, h4 {
         padding: 0;
         margin: 0;
@@ -35,12 +39,24 @@
         }
     }
 
+    .middle-bar {
+        margin-top: 0.5em;
+    }
+
+    .stars {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
     .breadcrumb {
+        display: inline-block;
+        vertical-align: middle;
+
         text-align: left;
         color: $info-blue2;
 
         .item {
-            font-size: 0.9em;
+            font-size: 1em;
             text-decoration: none;
         }
 
@@ -120,11 +136,19 @@
             background-color: $very-light-blue3;
 
             &.photos {
-                text-align: left;
+                text-align: left;                
 
-                img {
-                    vertical-align: middle;
+                .photo-link {
+
+                    img {
+                        vertical-align: middle;
+                    }
+
+                    &:hover {
+                        filter: contrast(150%);
+                    }
                 }
+                
             }
 
             &.padding {

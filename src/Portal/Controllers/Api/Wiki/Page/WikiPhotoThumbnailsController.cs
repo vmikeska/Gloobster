@@ -35,6 +35,12 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
         public string PhotoId { get; set; }
     }
 
+    public class ThumbResult
+    {
+        public string photoId { get; set; }
+        public string data { get; set; }
+    }
+
     public class ThumbsRequest
     {
         public string articleId { get; set; }
@@ -113,7 +119,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 }                
             }
 
-            var thumbs = new List<string>();
+            var thumbs = new List<ThumbResult>();
             
             var widthHeight = GetNewWidthHeight(photos.Count, req.layoutSize);
 
@@ -132,8 +138,9 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
                 var thumbStream = GeneratePic(origFileStream, widthHeight.Width, widthHeight.Height);
 
                 var thumbBase64 = BitmapUtils.ConvertToBase64(thumbStream);
-                
-                thumbs.Add(thumbBase64);
+
+                var photoRes = new ThumbResult {data = thumbBase64, photoId = photo.PhotoId};
+                thumbs.Add(photoRes);
             }
             
             return new ObjectResult(thumbs);

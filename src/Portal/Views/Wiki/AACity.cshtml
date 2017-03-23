@@ -12,15 +12,14 @@
 @{    
     ViewBag.BodyClass = "wiki-page-new";
     ViewBag.MenuGroup = "Wiki";
-    //ViewData["Title"] = "gloobster.com - wiki - " + Model.Texts.Title;
+    ViewData["Title"] = "gloobster.com - wiki - " + Model.Texts.Title;
 }
 
 @Html.Partial("GAnalytics")
-@Html.Partial("AAAdminTemplates")
 
 @if (GloobsterConfig.UseMiniScripts)
 {
-    @*<script src="/jsb/wikipage-@(ScriptsVersion.Version).js" type="text/javascript" data-notbuild="true"></script>*@
+    <script src="/jsb/wikipage-@(ScriptsVersion.Version).js" type="text/javascript" data-notbuild="true"></script>
 }
 else
 {
@@ -28,17 +27,24 @@ else
     <script type="text/javascript" src="/js/Views/NewWikiPageView.js"></script>
 }
 
-@Html.Partial("AAPageAdmin")
-
 <div class="wrapper">
     <img src="@Model.TitleLink" />
 </div>
 
 <div class="wrapper">
-
-    @Html.Partial("AABreadcrumb")
     
-    <div class="cont-wrap">
+    <div class="htbl middle-bar">
+        <div class="left">
+            @Html.Partial("AABreadcrumb")        
+        </div>
+        <div class="right">
+            @Html.Partial("Stars", Model.Texts.Rating)        
+        </div>
+    </div>
+    
+    @Html.Partial("AAPageAdmin")
+    
+    <div id="mainPageCont" class="">
         
         <div class="cont-left">
             
@@ -49,7 +55,7 @@ else
 
         </div>
         
-        <div class="cont-right">
+        <div id="rightCont" class="cont-right hidden">
             
             @if (Model.Texts.Type == ArticleType.City)
             {
@@ -63,8 +69,6 @@ else
             
             @Html.Partial("AAPhotos")
             
-            
-
             @Html.Partial("AATable1Block", Model.GetPricesByCategory("Restaurant"))
             @Html.Partial("AATable1Block", Model.GetPricesByCategory("Transport"))
             @Html.Partial("AATable1Block", Model.GetPricesByCategory("Accommodation"))

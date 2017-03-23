@@ -1,6 +1,7 @@
 ﻿module Views {
 
 		export enum SectionType { Header, Standard, DosDonts, Links }
+		export enum LayoutSize { Web, Mobile };
 
 		export class NewWikiPageView extends ViewBase {
 
@@ -8,12 +9,18 @@
 				public articlePhotos: ArticlePhotos;
 				private reportWin: ReportWindow;
 
+				private resizer: WikiResizer;
+
 				public articleType: ArticleType;
 				public articleId: string;
 				public langVersion: string;
 
 				constructor(articleId, articleType) {
 						super();
+
+						this.resizer = new WikiResizer();
+
+						this.resizer.init();
 
 						this.articleType = articleType;
 						this.articleId = articleId;
@@ -36,6 +43,84 @@
 						return urlParams[2];
 				}
 
+		}
+
+		export class WikiResizer {
+				private threshold = 830;
+				private layoutType: LayoutSize;
+				private $cont = $("#mainPageCont");
+				private $rightCont = $("#rightCont");
+
+				constructor() {
+						$(window).resize(() => {
+								this.set();
+						});
+				}
+
+				private set() {
+						var width = this.getWidth();
+
+						var layoutType = (width < this.threshold) ? LayoutSize.Mobile : LayoutSize.Web;
+
+						if (this.layoutType !== layoutType) {
+								if (layoutType === LayoutSize.Web) {
+										this.$rightCont.append($("#lbInfoTable"));
+										this.$rightCont.append($("#lbPhotos"));
+
+										this.$rightCont.append($("#lbRestaurant"));
+										this.$rightCont.append($("#lbTransport"));
+										this.$rightCont.append($("#lbAccommodation"));
+
+										this.$rightCont.append($("#lbNightlife-Pub"));
+										this.$rightCont.append($("#lbNightlife-Bar"));
+										this.$rightCont.append($("#lbNightlife-Club"));
+								} else {
+										var $about = this.getCatContByType("About");
+										$about.append($("#lbInfoTable"));
+
+										var $cPhotos = this.getCatContByType("Photos");
+										$cPhotos.append($("#lbPhotos"));
+
+										var $oPrices = this.getCatContByType("OtherPrices");
+
+										$oPrices.append($("#lbRestaurant"));
+										$oPrices.append($("#lbTransport"));
+										$oPrices.append($("#lbAccommodation"));
+
+										var $nPrices = this.getCatContByType("NightLifePrices");
+
+										$nPrices.append($("#lbNightlife-Pub"));
+										$nPrices.append($("#lbNightlife-Bar"));
+										$nPrices.append($("#lbNightlife-Club"));
+								}
+						}
+
+						if (layoutType === LayoutSize.Web) {
+								this.$cont.addClass("cont-wrap");
+						} else {
+								this.$cont.removeClass("cont-wrap");
+						}
+
+						this.layoutType = layoutType;
+				}
+
+				private getCatContByType(type) {
+						var $cont = $(`.block[data-c="${type}"]`);
+						return $cont;
+				}
+
+				public init() {
+						this.set();
+
+						this.$rightCont.removeClass("hidden");
+				}
+
+
+
+				private getWidth() {
+						var width = $(window).width();
+						return width;
+				}
 		}
 
 		export class NewWikiAdminPageView extends NewWikiPageView {
@@ -71,36 +156,23 @@
 						if (this.isAdminMode) {
 								this.generateBlocks();
 						} else {
-								//this.destroyBlocks();
+								this.destroyBlocks();
 						}
 				}
 
 				private generateBlocks() {
 						this.standardBlockAdmin.generateAdmin();
-
 						this.doDontAdmin.generateAdmin();
 						this.priceAdmin.generateAdmin();
-
-						this.linksAdmin.addLinks();
-
-						//this.photoAdmin.generateAdmin();
-
-						//if (this.articleType === Views.ArticleType.City) {
-						//		this.photosAdmin.createAdmin();
-						//}
+						this.linksAdmin.addLinks();						
 				}
 
-				//private destroyBlocks() {
-				//		$(".editSection").remove();
-				//		this.linksAdmin.removeAdminLinks();
-				//		this.priceAdmin.clean();
-				//		this.doDontAdmin.clean();
-				//		this.photoAdmin.clean();
-
-				//		if (this.articleType === Views.ArticleType.City) {
-				//				this.photosAdmin.clean();
-				//		}
-				//}
+				private destroyBlocks() {
+						this.linksAdmin.clean();
+						this.priceAdmin.clean();
+						this.doDontAdmin.clean();
+						this.standardBlockAdmin.clean();						
+				}
 
 		}
 
@@ -118,6 +190,10 @@
 						this.articleId = articleId;
 				}
 
+				public clean() {
+						$(".links-admin-btn").remove();
+						this.removeEditLinks();
+				}
 
 				public addLinks() {
 						var $links = $(".adminable-links");
@@ -132,7 +208,7 @@
 				private addAdminBtn($linkBlock) {
 						var $cont = $linkBlock.find(".admin-btn-cont");
 
-						var $btn = $(`<a class="lbtn2 red-orange" href="#">Add item</a>`);
+						var $btn = $(`<a class="lbtn2 red-orange links-admin-btn" href="#"> Add item</a>`);
 						$cont.append($btn);
 
 						$btn.click((e) => {
@@ -425,9 +501,9 @@
 						tds.forEach((td) => this.generateAdminItem(td));
 				}
 
-				//public clean() {
-				//		$(".priceEdit").remove();
-				//}
+				public clean() {
+						$(".price-edit").remove();
+				}
 
 				private generateAdminItem(td) {
 						var $td = $(td);
@@ -536,9 +612,7 @@
 						$(".admindo").after(this.generateAdder("do"));
 						$(".admindont").after(this.generateAdder("dont"));
 				}
-
-
-
+				
 				private generateDialog(id) {
 						var isEdit = id !== null;
 
@@ -685,6 +759,10 @@
 
 				}
 
+				public clean() {
+					$(".edit-section").remove();
+				}
+
 				public generateAdmin() {
 						var adminBlocks = $(".adminable-block").toArray();
 
@@ -697,7 +775,7 @@
 						});
 				}
 
-				public createEditWindow(sectionId) {
+				private createEditWindow(sectionId) {
 
 						this.lastPosition = 0;
 
@@ -770,7 +848,7 @@
 						});
 				}
 
-				public createAdminLink($block, id) {
+				private createAdminLink($block, id) {
 						var $html = $(`<a href="#" id="editSection_${id}" class="lbtn2 red-orange edit-section" data-id="${id}">edit</a>`);
 
 						$html.click((e) => {
@@ -813,7 +891,9 @@
 						this.getThumbs(layoutSize, photosLimit, (photos) => {
 
 								photos.forEach((p) => {
-										var $img = $(`<img src="data:image/jpeg;base64,${p}" />`);
+										var link = `/Wiki/ArticlePhoto?photoId=${p.photoId}&articleId=${this.articleId}`;
+
+										var $img = $(`<a class="photo-link" href="${link}" target="_blank"><img src="data:image/jpeg;base64,${p.data}" /></a>`);
 
 										$cont.append($img);
 								});
@@ -849,7 +929,7 @@
 
 						pu.customId = articleId;
 						if (sectionId) {
-							pu.customId += `,${sectionId}`;
+								pu.customId += `,${sectionId}`;
 						}
 
 						var ud = null;

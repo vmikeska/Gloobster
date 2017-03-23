@@ -4,9 +4,8 @@
 @model NewWikiModelBase
 
 @if (Model.IsAdmin)
-{
-    @*<script type="text/javascript" src="@Url.Content("~/js/Views/WikiAdminPageView.js")"></script>*@
-    @Html.Partial("AdminTemplates")
+{    
+    @Html.Partial("AAAdminTemplates")
 
     <div class="wrapper admin">
         <input id="adminMode" type="checkbox"><label for="adminMode">Admin mode</label>        
