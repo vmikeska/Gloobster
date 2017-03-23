@@ -5,9 +5,10 @@
 
 <div class="links">
     <h3>@Model.W("RelatedLinks")</h3>
-
-    @foreach (var link in Model.GetRelatedLinks())
-    {
-        <a class="lbtn2 blue-yellow" href="@link.Link">@link.Name</a>
-    }
+    <div>
+        @foreach (var link in Model.GetRelatedLinks())
+        {
+            <a class="lbtn2 blue-yellow" href="@link.Link">@link.Name</a>
+        }
+    </div>
 </div>
