@@ -1,0 +1,17 @@
+﻿@using Gloobster.Common
+@using Gloobster.Portal
+@using Microsoft.Data.Entity.Metadata.Internal
+
+@if (GloobsterConfig.UseMiniScripts)
+{
+    <script src="/jsb/wikipageuser-@(ScriptsVersion.Version).js" type="text/javascript" data-notbuild="true"></script>
+}
+else
+{
+    <script type="text/javascript" src="/js/PageWiki/Enums.js"></script>
+    <script type="text/javascript" src="/js/PageWiki/ArticlePhotos.js"></script>    
+    <script type="text/javascript" src="/js/PageWiki/Rating.js"></script>
+    <script type="text/javascript" src="/js/PageWiki/ReportWindow.js"></script>    
+    <script type="text/javascript" src="/js/PageWiki/WikiResizer.js"></script>
+    <script type="text/javascript" src="/js/Views/WikiPageView.js"></script>
+}

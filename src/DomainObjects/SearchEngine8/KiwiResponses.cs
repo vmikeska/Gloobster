@@ -128,9 +128,15 @@ namespace Gloobster.DomainObjects.SearchEngine8
         public object del { get; set; }
         public int time { get; set; }
         public SearchParams search_params { get; set; }
-        public int currency_rate { get; set; }
+        public double currency_rate { get; set; }
         public List<KiwiFlightSearchResult> data { get; set; }
+        public RefTasks ref_tasks { get; set; }
+        public List<object> refresh { get; set; }
         public double distance { get; set; }
+    }
+
+    public class RefTasks
+    {
     }
 
 }

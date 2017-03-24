@@ -7,6 +7,7 @@ using Gloobster.DomainModels.SearchEngine;
 using Gloobster.DomainObjects.SearchEngine;
 using Gloobster.DomainObjects.SearchEngine8;
 using Gloobster.DomainObjects;
+using Serilog;
 
 namespace Gloobster.DomainModels.SearchEngine8.Executing
 {
@@ -14,6 +15,8 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
     {
         public const string BaseUrl = "https://api.skypicker.com/";
         public const string Endpoint = "flights";
+
+        public ICalls Caller { get; set; }
 
         public List<FlightDO> Search(FlightRequestDO req)
         {
@@ -49,7 +52,7 @@ namespace Gloobster.DomainModels.SearchEngine8.Executing
 
             var query = qb.Build();
 
-            var result = caller.CallServer<SearchResultRoot>(query);
+            var result = Caller.CallServer<SearchResultRoot>(query);
             if (result == null)
             {
                 return null;

@@ -74,7 +74,7 @@ namespace Gloobster.Portal
 
             builder.AddTransient<IPinBoardStatRequestCreator, PinBoardStatRequestCreator>();
 
-            builder.AddTransient<DomainInterfaces.ITripDomain, DomainModels.Services.Trip.TripDomain>();
+            builder.AddTransient<ITripDomain, TripDomain>();
             builder.AddTransient<ITripWaypointsDomain, TripWaypointsDomain>();
             
             builder.AddTransient<IPlanningDomain, PlanningDomain>();
@@ -206,16 +206,8 @@ namespace Gloobster.Portal
             builder.AddTransient<IPinsUserLog, PinsUserLog>();
             builder.AddTransient<IFriendsUserLog, FriendsUserLog>();
 
+            builder.AddTransient<ICalls, Calls>();
             
-
-
-
-
-
-
-
-
-
         }
 		
 	}

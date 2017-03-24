@@ -89,8 +89,12 @@ var data = [
             o: "notifications"
         },
         {
-            i: "Wiki/Country",
-            o: "wikipage"
+            i: "Wiki/ScriptsUser",
+            o: "wikipageuser"
+        },
+        {
+            i: "Wiki/ScriptsAdmin",
+            o: "wikipageadmin"
         },
         {
             i: "Wiki/Home",

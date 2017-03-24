@@ -17,24 +17,16 @@
 
 @Html.Partial("GAnalytics")
 
-@if (GloobsterConfig.UseMiniScripts)
-{
-    <script src="/jsb/wikipage-@(ScriptsVersion.Version).js" type="text/javascript" data-notbuild="true"></script>
-}
-else
-{
-    <script type="text/javascript" src="/js/PageWiki/Enums.js"></script>
-    <script type="text/javascript" src="/js/PageWiki/ArticlePhotos.js"></script>    
-    <script type="text/javascript" src="/js/PageWiki/Rating.js"></script>
-    <script type="text/javascript" src="/js/PageWiki/ReportWindow.js"></script>    
-    <script type="text/javascript" src="/js/PageWiki/WikiResizer.js"></script>
-    <script type="text/javascript" src="/js/Views/WikiPageView.js"></script>
-}
 
 @if (Model.IsAdmin)
 {
-    <script type="text/javascript" src="/js/Views/WikiAdminPageView.js" data-notbuild="true"></script>
+    @Html.Partial("ScriptsAdmin")
 }
+else
+{
+    @Html.Partial("ScriptsUser")
+}
+
 
 
 @if (string.IsNullOrEmpty(Model.TitleLink))
