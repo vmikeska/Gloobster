@@ -301,5 +301,17 @@
     <PhotosTitle>
       <en>Photos</en>
     </PhotosTitle>
+
+    <EmptyBlockBtn>
+      <en>Contribute on empty sections</en>
+    </EmptyBlockBtn>
+
+    <EmptyBlockTitle>
+      <en>Help us to build the biggest Travel wiki</en>
+    </EmptyBlockTitle>
+
+    <EmptyBlockText>
+      <en>Like many others, help us with articles content and build one of the biggest travel databases in the world</en>
+    </EmptyBlockText>
     
   </module>

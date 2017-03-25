@@ -7,7 +7,7 @@
     var tModel = (DoDontsVM)Model.Data;
 }
 
-<div class="does-donts doDont">
+<section class="does-donts doDont">
 
     <div class="dd-block" data-t="do">
 
@@ -17,7 +17,7 @@
 
             @if (!tModel.Dos.Any())
             {
-                <div class="wrapper">@Html.Partial("Empty", new EmptyVM { B = Model.Base })</div>
+                <div class="wrapper">@Html.Partial("Empty")</div>
             }
             else
             {
@@ -51,7 +51,7 @@
 
             @if (!tModel.Donts.Any())
             {
-                <div class="wrapper">@Html.Partial("Empty", new EmptyVM { B = Model.Base })</div>
+                <div class="wrapper">@Html.Partial("Empty")</div>
             }
             else
             {
@@ -76,4 +76,4 @@
         <div class="admindont">
         </div>
     </div>
-</div>
+</section>

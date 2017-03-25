@@ -8,6 +8,7 @@ var Wiki;
             this.$rightCont = $("#rightCont");
             this.imgRate = 350.0 / 1280.0;
             this.imageSize = 0;
+            this.$collapsers = $(".block .collapser");
             this.v = v;
             $(window).resize(function () {
                 _this.set();
@@ -65,9 +66,13 @@ var Wiki;
             }
             if (layoutType === Wiki.LayoutSize.Web) {
                 this.$cont.addClass("cont-wrap");
+                this.$collapsers.addClass("hidden");
+                $(".block .text").show();
+                this.$collapsers.addClass("opened");
             }
             else {
                 this.$cont.removeClass("cont-wrap");
+                this.$collapsers.removeClass("hidden");
             }
             this.layoutType = layoutType;
         };
@@ -77,6 +82,19 @@ var Wiki;
         };
         WikiResizer.prototype.init = function () {
             this.set();
+            if (this.layoutType === Wiki.LayoutSize.Mobile) {
+                $(".block .text").hide();
+                this.$collapsers.removeClass("opened");
+            }
+            this.$collapsers.click(function (e) {
+                var $t = $(e.target);
+                var $b = $t.closest(".block");
+                var $text = $b.find(".text");
+                $text.slideToggle(function () {
+                    var opened = !($text.css('display') === "none");
+                    $t.toggleClass("opened", opened);
+                });
+            });
             this.$rightCont.removeClass("hidden");
         };
         WikiResizer.prototype.getWidth = function () {

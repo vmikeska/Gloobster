@@ -66,7 +66,7 @@ namespace Gloobster.Portal.Controllers.Portal
             {
                 vm = GetCityVM(text);                
             }
-
+            
             vm.LoadSections();
             
             vm.IsAdmin = IsUserLogged && WikiPerms.HasArticleAdminPermissions(UserId, text.Article_id.ToString());
@@ -80,7 +80,11 @@ namespace Gloobster.Portal.Controllers.Portal
             //vm.LangVersions =
             //    langVers.Select(i => new LangVersionVM { Language = i.Language, LinkName = i.LinkName }).ToList();
 
+            
+
             vm.LoadClientTexts(new[] { "jsWiki" });
+
+            Log.Debug("MMMMM: here1");
 
             return View("WikiPage", vm);            
         }

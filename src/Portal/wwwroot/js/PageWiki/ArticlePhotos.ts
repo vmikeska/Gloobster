@@ -5,12 +5,16 @@
 
 				private articleId;
 
-				constructor(articleId) {
+				constructor(articleId, canUpload) {
 						this.articleId = articleId;
 
 						$("#openPhotoDialog").click((e) => {
 								this.showPhotoUploadDialog(null);
 						});
+
+						if (canUpload) {
+							$("#openPhotoDialog").removeClass("hidden");
+						}
 				}
 
 				private getThumbs(layoutSize, photosLimit, callback: Function) {
@@ -26,7 +30,7 @@
 						this.getThumbs(layoutSize, photosLimit, (photos) => {
 
 								photos.forEach((p) => {
-										var link = `/Wiki/ArticlePhoto?photoId=${p.photoId}&articleId=${this.articleId}`;
+										var link = `/Wiki/ArticlePhoto?photoId=${p.photoId}&articleId=${p.articleId}`;
 
 										var $img = $(`<a class="photo-link" href="${link}" target="_blank"><img src="data:image/jpeg;base64,${p.data}" /></a>`);
 

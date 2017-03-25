@@ -17,6 +17,19 @@
         text-align: left;
         margin-bottom: 0.2em;
         display: inline-block;
+        vertical-align: middle;
+    }
+
+    h1 {
+        font-size: 2.5em;
+    }
+
+    h2 {
+        font-size: 1.3em;
+    }
+
+    h3 {
+        font-size: 1.2em;
     }
 
     .title-img {
@@ -37,6 +50,127 @@
             display: inline-block;
             font-size: 5em;
             color: white;
+        }
+    }
+
+    .empty-block {
+        color: $ribbon-blue;
+        background-color: $very-light-blue3;
+        padding: 1em;
+        border-radius: 2px;
+
+        .ltbl {
+            display: table;
+            width: 100%;
+
+            .l {
+                display: table-cell;
+                vertical-align: middle;
+            }
+
+            .r {
+                display: table-cell;
+                vertical-align: middle;
+            }
+        }
+
+
+
+        .txt {
+            font-size: 4em;
+            text-decoration: line-through;
+        }
+
+        .msg {
+            padding-left: 0.4em;
+            text-align: left;
+        }
+
+        .contrib-link-cont {
+            text-align: center;
+
+            .contrib-link {
+                font-size: 1.4em;
+                cursor: pointer;
+
+                .icoo {
+                    vertical-align: middle;
+                }
+
+                .ttxt {
+                    vertical-align: middle;
+                }
+
+                &:hover {
+                    color: $dark-blue;
+                }
+            }
+        }
+    }
+
+    .empty-block-all {
+        background-color: $dark-blue;
+        padding: 1em;
+
+        .tbl {
+            display: table;
+            width: 100%;
+
+            .l {
+                display: table-cell;
+                vertical-align: middle;
+            }
+
+            .r {
+                display: table-cell;
+                vertical-align: middle;
+                padding-left: 1em;
+            }
+        }
+
+        .ico {
+            $size: 120px;
+            width: $size;
+            height: $size;
+            display: inline-block;
+        }
+
+        .title {
+            color: $yellow;
+            font-weight: 700;
+            font-size: 2em;
+            margin-bottom: 0.5em;
+        }
+
+        .text {
+            color: white;
+            text-align: left;            
+            margin-bottom: 0.5em;
+        }
+
+        .empty-button-cont {
+
+            .empty-button {
+                display: inline-block;
+                border-radius: 4px;
+                background-color: $yellow;
+                color: $dark-blue;
+                
+                padding-top: 0.4em;
+                padding-bottom: 0.4em;
+                
+                padding-left: 0.6em;
+                padding-right: 0.6em;
+
+                font-weight: 700;
+
+                cursor: pointer;
+
+                &:hover {
+                    background-color: $green3;
+                }
+            }
+
         }
     }
 
@@ -72,7 +206,6 @@
     .breadcrumb {
         display: inline-block;
         vertical-align: middle;
-
         text-align: left;
         color: $info-blue2;
 
@@ -97,6 +230,7 @@
         .title-cont {
             display: table;
             width: 100%;
+            margin-bottom: 0.4em;
 
             .left {
                 vertical-align: top;
@@ -114,6 +248,21 @@
         .section-photo {
             img {
                 width: 100%;
+            }
+        }
+
+        .collapser {
+            display:inline-block;
+            vertical-align: middle;
+
+            color: $dark-blue;
+            margin-right: 8px;
+            font-size: 1.2em;
+            
+            cursor: pointer;
+
+            &.opened {
+                transform: scale(1, -1);
             }
         }
     }
@@ -157,7 +306,7 @@
             background-color: $very-light-blue3;
 
             &.photos {
-                text-align: left;                
+                text-align: left;
 
                 .photo-link {
 
@@ -169,7 +318,6 @@
                         filter: contrast(150%);
                     }
                 }
-                
             }
 
             &.padding {
@@ -305,6 +453,7 @@
 
     .article-rating-all {
         display: inline-block;
+        vertical-align: middle;
 
         .article-rating {
             width: 155px;
@@ -427,7 +576,7 @@
     }
 
     .block-links {
-        
+
 
         .links-cont {
             background-color: $very-light-blue3;
@@ -501,14 +650,6 @@
             font-size: 1.2em;
         }
     }
-
-
-
-
-
-
-
-
     /*admin*/
     .standard-admin-dlg {
         padding: 1em;

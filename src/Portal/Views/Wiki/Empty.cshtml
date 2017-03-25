@@ -1,15 +1,20 @@
-﻿@model Gloobster.Portal.ViewModels.EmptyVM
+﻿@using Gloobster.Portal.ViewModels
+@model WikiPageBlock
 
-@{
-    var cls = (Model.Data is string) ? Model.Data : string.Empty;
-}
+    <div class="empty-block" data-sid="@Model.SectionId">
+        <div class="ltbl">
+            <div class="l txt">TXT</div>
+            <div class="r msg">
+                @Model.Base.W("NoContentLine1")
+                <br />
+                @Model.Base.W("NoContentLine2")
 
-<p class="empty-block @cls">
-    <span class="txt">TXT</span>
-    <span class="msg">
-        @Model.B.W("NoContentLine1")
-        <br />
-        @Model.B.W("NoContentLine2")
-        <a class="contrib-link" href="#">@Model.B.W("NoContentBtn")</a>
-    </span>
-</p>
+            </div>
+        </div>
+        <div class="contrib-link-cont">
+            <span class="contrib-link" href="#">
+                <span class="icon-edit-pencil icoo"></span>
+                <span class="ttxt">@Model.Base.W("NoContentBtn")</span>
+            </span>
+        </div>
+    </div>

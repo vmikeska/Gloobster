@@ -377,9 +377,6 @@ var Views;
             this.$cont.find(".sub-content").html($l);
             this.sectionsTab = new Common.Tabs(this.$cont.find(".sections-menu"), "entitySwitch");
             this.sectionsTab.addTab("entCity", "Cities", function () {
-                _this.getSectionsMgmt("0", function (sections) {
-                    _this.genSectionsTable(sections);
-                });
             });
             this.sectionsTab.addTab("entCountry", "Countries", function () {
                 _this.getSectionsMgmt("1", function (sections) {

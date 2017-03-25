@@ -2327,7 +2327,14 @@ footer {
     margin: 0;
     text-align: left;
     margin-bottom: 0.2em;
-    display: inline-block; }
+    display: inline-block;
+    vertical-align: middle; }
+  .wiki-page h1 {
+    font-size: 2.5em; }
+  .wiki-page h2 {
+    font-size: 1.3em; }
+  .wiki-page h3 {
+    font-size: 1.2em; }
   .wiki-page .title-img {
     width: 100%;
     max-width: 1280px; }
@@ -2343,6 +2350,76 @@ footer {
       display: inline-block;
       font-size: 5em;
       color: white; }
+  .wiki-page .empty-block {
+    color: #57C2DB;
+    background-color: #F0FAFC;
+    padding: 1em;
+    border-radius: 2px; }
+    .wiki-page .empty-block .ltbl {
+      display: table;
+      width: 100%; }
+      .wiki-page .empty-block .ltbl .l {
+        display: table-cell;
+        vertical-align: middle; }
+      .wiki-page .empty-block .ltbl .r {
+        display: table-cell;
+        vertical-align: middle; }
+    .wiki-page .empty-block .txt {
+      font-size: 4em;
+      text-decoration: line-through; }
+    .wiki-page .empty-block .msg {
+      padding-left: 0.4em;
+      text-align: left; }
+    .wiki-page .empty-block .contrib-link-cont {
+      text-align: center; }
+      .wiki-page .empty-block .contrib-link-cont .contrib-link {
+        font-size: 1.4em;
+        cursor: pointer; }
+        .wiki-page .empty-block .contrib-link-cont .contrib-link .icoo {
+          vertical-align: middle; }
+        .wiki-page .empty-block .contrib-link-cont .contrib-link .ttxt {
+          vertical-align: middle; }
+        .wiki-page .empty-block .contrib-link-cont .contrib-link:hover {
+          color: #005476; }
+  .wiki-page .empty-block-all {
+    background-color: #005476;
+    padding: 1em; }
+    .wiki-page .empty-block-all .tbl {
+      display: table;
+      width: 100%; }
+      .wiki-page .empty-block-all .tbl .l {
+        display: table-cell;
+        vertical-align: middle; }
+      .wiki-page .empty-block-all .tbl .r {
+        display: table-cell;
+        vertical-align: middle;
+        padding-left: 1em; }
+    .wiki-page .empty-block-all .ico {
+      width: 120px;
+      height: 120px;
+      display: inline-block; }
+    .wiki-page .empty-block-all .title {
+      color: #FFC400;
+      font-weight: 700;
+      font-size: 2em;
+      margin-bottom: 0.5em; }
+    .wiki-page .empty-block-all .text {
+      color: white;
+      text-align: left;
+      margin-bottom: 0.5em; }
+    .wiki-page .empty-block-all .empty-button-cont .empty-button {
+      display: inline-block;
+      border-radius: 4px;
+      background-color: #FFC400;
+      color: #005476;
+      padding-top: 0.4em;
+      padding-bottom: 0.4em;
+      padding-left: 0.6em;
+      padding-right: 0.6em;
+      font-weight: 700;
+      cursor: pointer; }
+      .wiki-page .empty-block-all .empty-button-cont .empty-button:hover {
+        background-color: #3DA243; }
   .wiki-page .cont-wrap {
     display: table;
     width: 100%; }
@@ -2376,7 +2453,8 @@ footer {
     margin-bottom: 1em; }
     .wiki-page .block .title-cont {
       display: table;
-      width: 100%; }
+      width: 100%;
+      margin-bottom: 0.4em; }
       .wiki-page .block .title-cont .left {
         vertical-align: top;
         display: table-cell;
@@ -2387,6 +2465,15 @@ footer {
         text-align: right; }
     .wiki-page .block .section-photo img {
       width: 100%; }
+    .wiki-page .block .collapser {
+      display: inline-block;
+      vertical-align: middle;
+      color: #005476;
+      margin-right: 8px;
+      font-size: 1.2em;
+      cursor: pointer; }
+      .wiki-page .block .collapser.opened {
+        transform: scale(1, -1); }
   .wiki-page .info-block {
     margin-bottom: 1em; }
     .wiki-page .info-block .header {
@@ -2497,7 +2584,8 @@ footer {
         display: table-cell;
         width: 50%; } }
   .wiki-page .article-rating-all {
-    display: inline-block; }
+    display: inline-block;
+    vertical-align: middle; }
     .wiki-page .article-rating-all .article-rating {
       width: 155px;
       height: 41px;
@@ -7814,7 +7902,14 @@ footer {
     margin: 0;
     text-align: left;
     margin-bottom: 0.2em;
-    display: inline-block; }
+    display: inline-block;
+    vertical-align: middle; }
+  .wiki-page h1 {
+    font-size: 2.5em; }
+  .wiki-page h2 {
+    font-size: 1.3em; }
+  .wiki-page h3 {
+    font-size: 1.2em; }
   .wiki-page .title-img {
     width: 100%;
     max-width: 1280px; }
@@ -7830,6 +7925,76 @@ footer {
       display: inline-block;
       font-size: 5em;
       color: white; }
+  .wiki-page .empty-block {
+    color: #57C2DB;
+    background-color: #F0FAFC;
+    padding: 1em;
+    border-radius: 2px; }
+    .wiki-page .empty-block .ltbl {
+      display: table;
+      width: 100%; }
+      .wiki-page .empty-block .ltbl .l {
+        display: table-cell;
+        vertical-align: middle; }
+      .wiki-page .empty-block .ltbl .r {
+        display: table-cell;
+        vertical-align: middle; }
+    .wiki-page .empty-block .txt {
+      font-size: 4em;
+      text-decoration: line-through; }
+    .wiki-page .empty-block .msg {
+      padding-left: 0.4em;
+      text-align: left; }
+    .wiki-page .empty-block .contrib-link-cont {
+      text-align: center; }
+      .wiki-page .empty-block .contrib-link-cont .contrib-link {
+        font-size: 1.4em;
+        cursor: pointer; }
+        .wiki-page .empty-block .contrib-link-cont .contrib-link .icoo {
+          vertical-align: middle; }
+        .wiki-page .empty-block .contrib-link-cont .contrib-link .ttxt {
+          vertical-align: middle; }
+        .wiki-page .empty-block .contrib-link-cont .contrib-link:hover {
+          color: #005476; }
+  .wiki-page .empty-block-all {
+    background-color: #005476;
+    padding: 1em; }
+    .wiki-page .empty-block-all .tbl {
+      display: table;
+      width: 100%; }
+      .wiki-page .empty-block-all .tbl .l {
+        display: table-cell;
+        vertical-align: middle; }
+      .wiki-page .empty-block-all .tbl .r {
+        display: table-cell;
+        vertical-align: middle;
+        padding-left: 1em; }
+    .wiki-page .empty-block-all .ico {
+      width: 120px;
+      height: 120px;
+      display: inline-block; }
+    .wiki-page .empty-block-all .title {
+      color: #FFC400;
+      font-weight: 700;
+      font-size: 2em;
+      margin-bottom: 0.5em; }
+    .wiki-page .empty-block-all .text {
+      color: white;
+      text-align: left;
+      margin-bottom: 0.5em; }
+    .wiki-page .empty-block-all .empty-button-cont .empty-button {
+      display: inline-block;
+      border-radius: 4px;
+      background-color: #FFC400;
+      color: #005476;
+      padding-top: 0.4em;
+      padding-bottom: 0.4em;
+      padding-left: 0.6em;
+      padding-right: 0.6em;
+      font-weight: 700;
+      cursor: pointer; }
+      .wiki-page .empty-block-all .empty-button-cont .empty-button:hover {
+        background-color: #3DA243; }
   .wiki-page .cont-wrap {
     display: table;
     width: 100%; }
@@ -7863,7 +8028,8 @@ footer {
     margin-bottom: 1em; }
     .wiki-page .block .title-cont {
       display: table;
-      width: 100%; }
+      width: 100%;
+      margin-bottom: 0.4em; }
       .wiki-page .block .title-cont .left {
         vertical-align: top;
         display: table-cell;
@@ -7874,6 +8040,15 @@ footer {
         text-align: right; }
     .wiki-page .block .section-photo img {
       width: 100%; }
+    .wiki-page .block .collapser {
+      display: inline-block;
+      vertical-align: middle;
+      color: #005476;
+      margin-right: 8px;
+      font-size: 1.2em;
+      cursor: pointer; }
+      .wiki-page .block .collapser.opened {
+        transform: scale(1, -1); }
   .wiki-page .info-block {
     margin-bottom: 1em; }
     .wiki-page .info-block .header {
@@ -7984,7 +8159,8 @@ footer {
         display: table-cell;
         width: 50%; } }
   .wiki-page .article-rating-all {
-    display: inline-block; }
+    display: inline-block;
+    vertical-align: middle; }
     .wiki-page .article-rating-all .article-rating {
       width: 155px;
       height: 41px;

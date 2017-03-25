@@ -16,10 +16,18 @@ var Views;
             this.resizer.init();
             this.langVersion = this.getLangVersion();
             this.rating = new Wiki.Rating(articleId, this.langVersion);
-            this.articlePhotos = new Wiki.ArticlePhotos(articleId);
+            var canUpload = this.articleType === Wiki.ArticleType.City;
+            this.articlePhotos = new Wiki.ArticlePhotos(articleId, canUpload);
             this.loadPhotos();
             this.reportWin = new Wiki.ReportWindow(this.langVersion, this.articleId, this);
+            this.regEmptySectionsBtn();
         }
+        WikiPageView.prototype.regEmptySectionsBtn = function () {
+            $(".empty-button").click(function () {
+                $(".cont-left").append($(".empty-blocks").children());
+                $(".empty-block-all").hide();
+            });
+        };
         WikiPageView.prototype.loadPhotos = function () {
             this.articlePhotos.fillPhotos($("#photosCont"), 0, 9);
         };

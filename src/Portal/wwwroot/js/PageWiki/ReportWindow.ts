@@ -24,7 +24,17 @@
 								var sectionId = $p.data("id");
 								this.createWindow(sectionId);
 						});
+
+						$(".empty-block .contrib-link").click((e) => {
+								e.preventDefault();
+								var $t = $(e.target);
+								var $p = $t.closest(".empty-block");
+								var sectionId = $p.data("sid");
+								this.createWindow(sectionId);
+						});
 				}
+
+
 
 				private createWindow(sectionId) {
 						var cd = new Common.CustomDialog();

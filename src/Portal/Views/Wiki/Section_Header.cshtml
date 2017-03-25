@@ -2,15 +2,24 @@
 @using Gloobster.Portal.ViewModels
 @model WikiPageBlock
 
-<div class="block">
+<section class="block adminable-block" data-id="@Model.SectionId" data-at="@((int)Model.Type)">    
     <div class="title-cont">
         <div class="left">
-            <h1>@Model.Title</h1>
+            <h1>@Model.Title</h1> <span class="admin-btn-cont"></span>
         </div>
         <div class="right">
             @Html.Partial("NewArticleRating")
         </div>
     </div>
 
-    <p>@Model.Text</p>
-</div>
+    @if (Model.IsEmpty)
+    {
+        <p class="text">
+        </p>
+        @Html.Partial("Empty")
+    }
+    else
+    {
+        <p class="text">@Model.Text</p>
+    }
+</section>

@@ -493,9 +493,9 @@
 
 						this.sectionsTab.addTab("entCity", "Cities", () => {
 
-								this.getSectionsMgmt("0", (sections) => {
-										this.genSectionsTable(sections);
-								});
+								//this.getSectionsMgmt("0", (sections) => {
+								//		this.genSectionsTable(sections);
+								//});
 
 						});
 						this.sectionsTab.addTab("entCountry", "Countries", () => {

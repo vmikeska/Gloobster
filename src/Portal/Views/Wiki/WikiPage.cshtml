@@ -9,7 +9,7 @@
 @using Microsoft.Data.Entity.Metadata.Internal
 @model WikiModelBase
 
-@{    
+@{
     ViewBag.BodyClass = "wiki-page";
     ViewBag.MenuGroup = "Wiki";
     ViewData["Title"] = "gloobster.com - wiki - " + Model.Texts.Title;
@@ -46,65 +46,99 @@ else
 
 
 <div class="wrapper">
-    
+
     <div class="htbl middle-bar">
         <div class="left">
-            @Html.Partial("Breadcrumb")        
+            @Html.Partial("Breadcrumb")
         </div>
         <div class="right">
-            @Html.Partial("Stars", Model.Texts.Rating)        
+            @Html.Partial("Stars", Model.Texts.Rating)
         </div>
     </div>
-    
+
     @Html.Partial("PageAdmin")
     
-    <div id="mainPageCont" class="">
-        
+    <article id="mainPageCont" class="">
+
         <div class="cont-left">
-            
-            @foreach (var block in Model.BigBlocks)
-            {                
+
+            @{
+                var richBlocks = Model.BigBlocks.Where(b => !b.IsEmpty).ToList();
+                var emptyBlocks = Model.BigBlocks.Where(b => b.IsEmpty).ToList();
+            }
+
+            @foreach (var block in richBlocks)
+            {
                 @Html.Partial("Section_" + block.Type, block)
             }
 
+            @if (emptyBlocks.Any())
+            {
+                                
+                <div class="empty-block-all">
+
+                    <div class="tbl">
+                        <div class="l">
+                            <img class="ico svg-img" src="/images/n/pencil.svg">
+                        </div>
+                        <div class="r">
+                            <div class="title">@Model.W("EmptyBlockTitle")</div>
+                            <div class="text">@Model.W("EmptyBlockText")</div>
+                        </div>
+                    </div>
+
+                    <div class="empty-button-cont">
+                        <span class="empty-button">@Model.W("EmptyBlockBtn")</span>
+                    </div>
+
+                </div>
+            }
+
+            <div class="empty-blocks hidden">
+                @foreach (var block in emptyBlocks)
+                {
+                    @Html.Partial("Section_" + block.Type, block)
+                }
+            </div>
+
         </div>
-        
+
         <div id="rightCont" class="cont-right hidden">
-            
+
             @if (Model.Texts.Type == ArticleType.City)
             {
                 @Html.Partial("InfoTableCity")
             }
-             
+
             @if (Model.Texts.Type == ArticleType.Country)
             {
                 @Html.Partial("InfoTableCountry")
             }
-            
+
             @Html.Partial("Photos")
-            
+
             @Html.Partial("Table1Block", Model.GetPricesByCategory("Restaurant"))
             @Html.Partial("Table1Block", Model.GetPricesByCategory("Transport"))
             @Html.Partial("Table1Block", Model.GetPricesByCategory("Accommodation"))
             @Html.Partial("Table1Block", Model.GetPricesByCategory("Nightlife", "Pub"))
             @Html.Partial("Table1Block", Model.GetPricesByCategory("Nightlife", "Bar"))
             @Html.Partial("Table1Block", Model.GetPricesByCategory("Nightlife", "Club"))
-            
+
 
         </div>
 
-    </div>
+    </article>
 
-    
+
     @Html.Partial("GeoLinks")
-    
+
     @Html.Partial("PageScripts")
 </div>
 
 <script id="photo-upload-dlg-template" type="text/x-handlebars-template">
 
     <div class="photo-upload-dlg">
-        
+
         <div class="button-box">
 
             <input id="addUserPhoto" type="file">
@@ -114,12 +148,12 @@ else
 
         </div>
 
-        <div class="info-box">            
+        <div class="info-box">
             <a target="_blank" href="/legal/TermsAndConds">@Model.W("TermsAndCondsForPhotos")</a>
         </div>
-        
+
     </div>
-     
+
 </script>
 
 <script id="block-report-tmp" type="text/x-handlebars-template">

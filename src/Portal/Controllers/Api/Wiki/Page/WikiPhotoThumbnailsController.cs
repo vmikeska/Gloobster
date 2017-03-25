@@ -37,6 +37,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
     public class ThumbResult
     {
+        public string articleId { get; set; }
         public string photoId { get; set; }
         public string data { get; set; }
     }
@@ -102,11 +103,8 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
             {
                 var country = DB.FOD<WikiCountryEntity>(c => c.id == aid);
 
-                var cities = DB
-                    .C<WikiCityEntity>()
-                    .Where(c => c.Photos.Count > 0 && c.CountryCode == country.CountryCode)                    
-                    .ToList();
-
+                var cities = DB.List<WikiCityEntity>(c => c.Photos.Count > 0 && c.CountryCode == country.CountryCode);
+                
                 foreach (var city in cities)
                 {
                     var pids = city.Photos.Where(p => p.Confirmed).Select(a => a.id.ToString()).ToList();
@@ -139,7 +137,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki
 
                 var thumbBase64 = BitmapUtils.ConvertToBase64(thumbStream);
 
-                var photoRes = new ThumbResult {data = thumbBase64, photoId = photo.PhotoId};
+                var photoRes = new ThumbResult {data = thumbBase64, photoId = photo.PhotoId, articleId = photo.ArticleId};
                 thumbs.Add(photoRes);
             }
             

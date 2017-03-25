@@ -1,12 +1,15 @@
 var Wiki;
 (function (Wiki) {
     var ArticlePhotos = (function () {
-        function ArticlePhotos(articleId) {
+        function ArticlePhotos(articleId, canUpload) {
             var _this = this;
             this.articleId = articleId;
             $("#openPhotoDialog").click(function (e) {
                 _this.showPhotoUploadDialog(null);
             });
+            if (canUpload) {
+                $("#openPhotoDialog").removeClass("hidden");
+            }
         }
         ArticlePhotos.prototype.getThumbs = function (layoutSize, photosLimit, callback) {
             var data = [["articleId", this.articleId], ["layoutSize", layoutSize.toString()], ["photosLimit", photosLimit.toString()]];
@@ -15,10 +18,9 @@ var Wiki;
             });
         };
         ArticlePhotos.prototype.fillPhotos = function ($cont, layoutSize, photosLimit) {
-            var _this = this;
             this.getThumbs(layoutSize, photosLimit, function (photos) {
                 photos.forEach(function (p) {
-                    var link = "/Wiki/ArticlePhoto?photoId=" + p.photoId + "&articleId=" + _this.articleId;
+                    var link = "/Wiki/ArticlePhoto?photoId=" + p.photoId + "&articleId=" + p.articleId;
                     var $img = $("<a class=\"photo-link\" href=\"" + link + "\" target=\"_blank\"><img src=\"data:image/jpeg;base64," + p.data + "\" /></a>");
                     $cont.append($img);
                 });

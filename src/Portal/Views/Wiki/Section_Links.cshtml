@@ -11,7 +11,7 @@
 
 
 
-<div class="block adminable-links block-links" data-c="@Model.SectionType">
+<section class="block adminable-links block-links" data-c="@Model.SectionType">
     <div class="title-cont">
         <div class="left">
             <h2>@Model.Title</h2>
@@ -26,7 +26,7 @@
 
         @if (!tModel.Any())
         {
-            <div class="empty-cont" data-sid="@Model.SectionId">@Html.Partial("Empty", new EmptyVM { B = Model.Base })</div>
+            <div class="empty-cont" data-sid="@Model.SectionId">@Html.Partial("Empty")</div>
         }
         else
         {
@@ -54,6 +54,6 @@
 
 
     </div>
-</div>
+</section>
 
 

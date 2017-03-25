@@ -16,6 +16,13 @@ var Wiki;
                 var sectionId = $p.data("id");
                 _this.createWindow(sectionId);
             });
+            $(".empty-block .contrib-link").click(function (e) {
+                e.preventDefault();
+                var $t = $(e.target);
+                var $p = $t.closest(".empty-block");
+                var sectionId = $p.data("sid");
+                _this.createWindow(sectionId);
+            });
         };
         ReportWindow.prototype.createWindow = function (sectionId) {
             var _this = this;
