@@ -12,6 +12,8 @@
 
 				private $collapsers = $(".block .collapser");
 
+				private $layoutConts = $(`.block[data-at="4"]`);
+
 				private v: Views.WikiPageView;
 
 				constructor(v: Views.WikiPageView) {
@@ -67,6 +69,8 @@
 										this.$rightCont.append($("#lbNightlife-Pub"));
 										this.$rightCont.append($("#lbNightlife-Bar"));
 										this.$rightCont.append($("#lbNightlife-Club"));
+										
+										this.$layoutConts.addClass("hidden");
 								} else {
 										var $about = this.getCatContByType("About");
 										$about.append($("#lbInfoTable"));
@@ -85,6 +89,8 @@
 										$nPrices.append($("#lbNightlife-Pub"));
 										$nPrices.append($("#lbNightlife-Bar"));
 										$nPrices.append($("#lbNightlife-Club"));
+
+										this.$layoutConts.removeClass("hidden");
 								}
 						}
 
@@ -92,7 +98,7 @@
 								this.$cont.addClass("cont-wrap");
 								this.$collapsers.addClass("hidden");
 
-								$(".block .text").show();
+								$(".block .content").show();
 								this.$collapsers.addClass("opened");
 
 						} else {
@@ -104,7 +110,7 @@
 				}
 
 				private getCatContByType(type) {
-						var $cont = $(`.block[data-c="${type}"]`);
+						var $cont = $(`.block[data-c="${type}"] .content`);
 						return $cont;
 				}
 
@@ -112,14 +118,14 @@
 						this.set();
 
 						if (this.layoutType === LayoutSize.Mobile) {
-								$(".block .text").hide();
+								$(".block .content").hide();
 								this.$collapsers.removeClass("opened");
 						}
 
 						this.$collapsers.click((e) => {
 								var $t = $(e.target);
 								var $b = $t.closest(".block");
-								var $text = $b.find(".text");
+								var $text = $b.find(".content");
 								$text.slideToggle(() => {
 
 										//setTimeout(() => {

@@ -2,6 +2,15 @@
 @using Gloobster.Portal.ViewModels
 @model WikiPageBlock
 
-<section class="block" data-c="@Model.SectionType" data-at="@((int)Model.Type)">
-    
+<section class="block hidden" data-c="@Model.SectionType" data-at="@((int)Model.Type)">
+    <div class="title-cont">
+        <div class="left">
+            <span class="icon-dropdown-arrow collapser hidden opened"></span> 
+            <h2>@Model.Base.W(Model.SectionType)</h2> 
+        </div>
+        <div class="right">
+            
+        </div>
+    </div>
+    <div class="content"></div>
 </section>

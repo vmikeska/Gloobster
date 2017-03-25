@@ -9,6 +9,7 @@ var Wiki;
             this.imgRate = 350.0 / 1280.0;
             this.imageSize = 0;
             this.$collapsers = $(".block .collapser");
+            this.$layoutConts = $(".block[data-at=\"4\"]");
             this.v = v;
             $(window).resize(function () {
                 _this.set();
@@ -48,6 +49,7 @@ var Wiki;
                     this.$rightCont.append($("#lbNightlife-Pub"));
                     this.$rightCont.append($("#lbNightlife-Bar"));
                     this.$rightCont.append($("#lbNightlife-Club"));
+                    this.$layoutConts.addClass("hidden");
                 }
                 else {
                     var $about = this.getCatContByType("About");
@@ -62,12 +64,13 @@ var Wiki;
                     $nPrices.append($("#lbNightlife-Pub"));
                     $nPrices.append($("#lbNightlife-Bar"));
                     $nPrices.append($("#lbNightlife-Club"));
+                    this.$layoutConts.removeClass("hidden");
                 }
             }
             if (layoutType === Wiki.LayoutSize.Web) {
                 this.$cont.addClass("cont-wrap");
                 this.$collapsers.addClass("hidden");
-                $(".block .text").show();
+                $(".block .content").show();
                 this.$collapsers.addClass("opened");
             }
             else {
@@ -77,19 +80,19 @@ var Wiki;
             this.layoutType = layoutType;
         };
         WikiResizer.prototype.getCatContByType = function (type) {
-            var $cont = $(".block[data-c=\"" + type + "\"]");
+            var $cont = $(".block[data-c=\"" + type + "\"] .content");
             return $cont;
         };
         WikiResizer.prototype.init = function () {
             this.set();
             if (this.layoutType === Wiki.LayoutSize.Mobile) {
-                $(".block .text").hide();
+                $(".block .content").hide();
                 this.$collapsers.removeClass("opened");
             }
             this.$collapsers.click(function (e) {
                 var $t = $(e.target);
                 var $b = $t.closest(".block");
-                var $text = $b.find(".text");
+                var $text = $b.find(".content");
                 $text.slideToggle(function () {
                     var opened = !($text.css('display') === "none");
                     $t.toggleClass("opened", opened);

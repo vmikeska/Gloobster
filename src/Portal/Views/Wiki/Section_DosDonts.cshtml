@@ -7,73 +7,87 @@
     var tModel = (DoDontsVM)Model.Data;
 }
 
-<section class="does-donts doDont">
-
-    <div class="dd-block" data-t="do">
-
-        <div class="inner">
-
-            <h3 class="title">@Model.Base.W("TryThis")</h3>
-
-            @if (!tModel.Dos.Any())
-            {
-                <div class="wrapper">@Html.Partial("Empty")</div>
-            }
-            else
-            {
-                foreach (DdVM item in tModel.Dos)
-                {
-                    <div id="ddi_@item.Id" data-id="@item.Id" class="item">
-
-                        <div class="itbl">
-                            <div class="l">
-                                <span class="icon-plus ico"></span>
-                            </div>
-                            <div class="r">
-                                <div class="txt">@item.Text</div>
-                            </div>
-                        </div>
-
-                    </div>
-                }
-            }
-
+<section class="block does-donts doDont">
+    
+    <div class="title-cont">
+        <div class="left">
+            <span class="icon-dropdown-arrow collapser hidden opened"></span> <h2>@Model.Base.W("DosDonts")</h2> <span class="admin-btn-cont"></span>
         </div>
-
-        <div class="admindo">
+        <div class="right">
+            @Html.Partial("NewArticleRating")
         </div>
     </div>
+    
+    <div class="content">
 
-    <div class="dd-block" data-t="dont">
+        <div class="dd-block" data-t="do">
 
-        <div class="inner">
-            <h3 class="title">@Model.Base.W("DontTryThat")</h3>
+            <div class="inner">
 
-            @if (!tModel.Donts.Any())
-            {
-                <div class="wrapper">@Html.Partial("Empty")</div>
-            }
-            else
-            {
-                foreach (DdVM item in tModel.Donts)
+                <h3 class="title">@Model.Base.W("TryThis")</h3>
+
+                @if (!tModel.Dos.Any())
                 {
-                    <div id="ddi_@item.Id" data-id="@item.Id" class="item">
-
-                        <div class="itbl">
-                            <div class="l">
-                                <span class="icon-minus ico"></span>
-                            </div>
-                            <div class="r">
-                                <div class="txt">@item.Text</div>
-                            </div>
-                        </div>
-
-                    </div>
+                    <div class="wrapper">@Html.Partial("Empty")</div>
                 }
-            }
+                else
+                {
+                    foreach (DdVM item in tModel.Dos)
+                    {
+                        <div id="ddi_@item.Id" data-id="@item.Id" class="item">
+
+                            <div class="itbl">
+                                <div class="l">
+                                    <span class="icon-plus ico"></span>
+                                </div>
+                                <div class="r">
+                                    <div class="txt">@item.Text</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+                }
+
+            </div>
+
+            <div class="admindo">
+            </div>
         </div>
 
-        <div class="admindont">
+        <div class="dd-block" data-t="dont">
+
+            <div class="inner">
+                <h3 class="title">@Model.Base.W("DontTryThat")</h3>
+
+                @if (!tModel.Donts.Any())
+                {
+                    <div class="wrapper">@Html.Partial("Empty")</div>
+                }
+                else
+                {
+                    foreach (DdVM item in tModel.Donts)
+                    {
+                        <div id="ddi_@item.Id" data-id="@item.Id" class="item">
+
+                            <div class="itbl">
+                                <div class="l">
+                                    <span class="icon-minus ico"></span>
+                                </div>
+                                <div class="r">
+                                    <div class="txt">@item.Text</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+                }
+            </div>
+
+            <div class="admindont">
+            </div>
         </div>
+
     </div>
+
 </section>

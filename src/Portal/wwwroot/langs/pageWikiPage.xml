@@ -313,5 +313,21 @@
     <EmptyBlockText>
       <en>Like many others, help us with articles content and build one of the biggest travel databases in the world</en>
     </EmptyBlockText>
+
+    <Photos>
+      <en>Photos</en>
+    </Photos>
+
+    <NightLifePrices>
+      <en>Nightlife prices</en>
+    </NightLifePrices>
+
+    <OtherPrices>
+      <en>Other prices</en>
+    </OtherPrices>
+
+    <DosDonts>
+      <en>Do's / Don'ts</en>
+    </DosDonts>
     
   </module>

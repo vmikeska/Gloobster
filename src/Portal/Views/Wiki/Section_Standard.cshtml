@@ -11,26 +11,28 @@
             @Html.Partial("NewArticleRating")
         </div>
     </div>
+    
+    <div class="content">
+        @if (!string.IsNullOrEmpty(Model.PhotoId))
+        {
+            var link = $"/wiki/SectionPhoto?photoId={Model.PhotoId}&articleId={Model.ArticleId}";
+            <div class="section-photo">
+                <img src="@link" alt="@Model.Title" />
+            </div>
+        }
 
-    @if (!string.IsNullOrEmpty(Model.PhotoId))
-    {
-        var link = $"/wiki/SectionPhoto?photoId={Model.PhotoId}&articleId={Model.ArticleId}";
-        <div class="section-photo">
-            <img src="@link" alt="@Model.Title" />
-        </div>
-    }
 
-
-    @if (Model.IsEmpty)
-    {
-        <p class="text">            
-        </p>
-        @Html.Partial("Empty")
-    }
-    else
-    {
-        <p class="text">@Model.Text</p>
-    }
+        @if (Model.IsEmpty)
+        {
+            <p class="text"></p>
+            @Html.Partial("Empty")
+        }
+        else
+        {
+            <p class="text">@Model.Text</p>
+        }
+        
+    </div>
 
 
 </section>
