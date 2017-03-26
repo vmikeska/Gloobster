@@ -39,9 +39,7 @@ namespace Gloobster.DomainModels.Langs
         public void Refresh()
         {
             DownloadModueles();
-
-            //var modules = DB.List<LangModuleEntity>();
-
+            
             foreach (var xml in ModTxt)
             {
                 LoadModuleFromXml(xml);

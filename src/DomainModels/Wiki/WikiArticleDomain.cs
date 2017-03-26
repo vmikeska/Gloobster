@@ -453,14 +453,23 @@ namespace Gloobster.DomainModels.Wiki
 
         public void AddSection(string type, string text)
         {
+            var sec = GetSectionAndTexts(type);
+
+            Article.Sections.Add(sec.Section);
+            Texts.Texts.Add(sec.Texts);
+        }
+
+        public SectionAndTexts GetSectionAndTexts(string type)
+        {
             var id = ObjectId.GenerateNewId();
 
             var sectionText = new SectionTextsSE
             {
-                Text = text,
+                Text = "",
                 Dislikes = new List<ObjectId>(),
                 Likes = new List<ObjectId>(),
-                Section_id = id
+                Section_id = id,
+                Rating = 0,
             };
 
             var section = new SectionSE
@@ -469,9 +478,11 @@ namespace Gloobster.DomainModels.Wiki
                 Type = type
             };
 
-            Article.Sections.Add(section);
-
-            Texts.Texts.Add(sectionText);
+            return new SectionAndTexts
+            {
+                Section = section,
+                Texts = sectionText
+            };
         }
 
         public void Save<T>(IDbOperations db) where T : WikiArticleBaseEntity
@@ -479,5 +490,11 @@ namespace Gloobster.DomainModels.Wiki
             db.SaveAsync((T)Article);
             db.SaveAsync(Texts);
         }
+    }
+
+    public class SectionAndTexts
+    {
+        public SectionSE Section { get; set; }
+        public SectionTextsSE Texts { get; set; }
     }
 }

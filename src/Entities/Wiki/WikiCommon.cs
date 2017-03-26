@@ -24,8 +24,8 @@ namespace Gloobster.Entities.Wiki
 
     public class SectionSE
     {
-        public ObjectId id { get; set; }
-        public ObjectId picId { get; set; }
+        public ObjectId id { get; set; }        
+        public ObjectId? picId { get; set; }
         public string Type { get; set; }
     }
 

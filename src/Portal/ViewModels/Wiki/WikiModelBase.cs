@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
+using Gloobster.DomainModels.Wiki;
 using Gloobster.Entities;
 using Gloobster.Entities.Wiki;
 using Gloobster.Enums;
@@ -47,8 +49,79 @@ namespace Gloobster.Portal.ViewModels
 
         public int PhotoGID { get; set; }
 
-        public void LoadSections()
+        private async Task FixSectionsAsync()
         {
+            var aid = new ObjectId(ArticleId);
+
+            //foreach (var section in Sections)
+            //{
+            //    if (section.Type == "op" || section.Type == "test" || section.Type == "koko")
+            //    {
+            //        if (Texts.Type == ArticleType.City)
+            //        {
+            //            var af = DB.F<WikiCityEntity>().Eq(a => a.id, aid);
+            //            var au = DB.PF<WikiCityEntity, SectionSE>(s => s.Sections, a => a.id == section.id);                        
+            //            var upd = await DB.UpdateAsync(af, au);
+            //        }
+
+            //        if (Texts.Type == ArticleType.Country)
+            //        {
+            //            var af = DB.F<WikiCountryEntity>().Eq(a => a.id, aid);
+            //            var au = DB.PF<WikiCountryEntity, SectionSE>(s => s.Sections, a => a.id == section.id);                        
+            //            var upd = await DB.UpdateAsync(af, au);
+            //        }
+
+            //        var tf = DB.F<WikiTextsEntity>().Eq(a => a.Article_id, aid);
+            //        var tu = DB.PF<WikiTextsEntity, SectionTextsSE>(p => p.Texts, a=> a.Section_id == section.id);
+            //        var upd2 = await DB.UpdateAsync(tf, tu);
+            //    }
+            //}
+
+
+            foreach (var op in OrderPreference)
+            {
+                bool sectionExists = false;
+                foreach (var section in Sections)
+                {
+                    if (section.Type == op)
+                    {
+                        sectionExists = true;
+                        break;
+                    }
+                }
+
+                if (!sectionExists)
+                {
+                    var ab = new ArticleBuilder();
+                    var sectAndTxt = ab.GetSectionAndTexts(op);
+                    
+                    if (Texts.Type == ArticleType.City)
+                    {
+                        var af = DB.F<WikiCityEntity>().Eq(a => a.id, aid);
+                        var au = DB.U<WikiCityEntity>().Push(p => p.Sections, sectAndTxt.Section);
+                        var upd = await DB.UpdateAsync(af, au);
+                    }
+
+                    if (Texts.Type == ArticleType.Country)
+                    {
+                        var af = DB.F<WikiCountryEntity>().Eq(a => a.id, aid);
+                        var au = DB.U<WikiCountryEntity>().Push(p => p.Sections, sectAndTxt.Section);
+                        var upd = await DB.UpdateAsync(af, au);
+                    }
+
+                    var tf = DB.F<WikiTextsEntity>().Eq(a => a.Article_id, aid) & DB.F<WikiTextsEntity>().Eq(a => a.Language, "en");
+                    var tu = DB.U<WikiTextsEntity>().Push(p => p.Texts, sectAndTxt.Texts);
+                    var upd2 = await DB.UpdateAsync(tf, tu);
+                }
+
+
+            }
+        }
+
+        public async Task LoadSections()
+        {
+            await FixSectionsAsync();
+
             foreach (var section in Sections)
             {
                 var text = Texts.Texts.FirstOrDefault(t => t.Section_id == section.id);
@@ -196,119 +269,10 @@ namespace Gloobster.Portal.ViewModels
 
                 BigBlocks.Add(block);
             }
-
-            TempFixBlocks();
-
-
+            
             OrderBlocks();            
         }
-
-        private void TempFixBlocks()
-        {
-            if (Texts.Type == ArticleType.City)
-            {
-
-                if (BigBlocks.FirstOrDefault(f => f.SectionType == "BarDistricts") == null)
-                {
-                    var links = GetLinksBlockByCategory("BarDistricts");
-                    var block1 = new WikiPageBlock
-                    {
-                        Base = this,
-                        Data = links,
-                        Type = SectionType.Links,
-                        ArticleId = ArticleId,
-                        IsEmpty = !links.Any()
-                    };
-
-                    BigBlocks.Add(block1);
-                }
-
-                if (BigBlocks.FirstOrDefault(f => f.SectionType == "FavoriteSites") == null)
-                {
-                    var links = GetLinksBlockByCategory("FavoriteSites");
-                    var block1 = new WikiPageBlock
-                    {
-                        Base = this,
-                        Data = links,
-                        Type = SectionType.Links,
-                        ArticleId = ArticleId,
-                        IsEmpty = !links.Any()
-                    };
-
-                    BigBlocks.Add(block1);
-                }
-
-            }
-
-            if (BigBlocks.FirstOrDefault(f => f.SectionType == "DosDonts") == null)
-            {
-                var data = DoDonts();
-                var block1 = new WikiPageBlock
-                {
-                    Base = this,
-                    Data = data,
-                    SectionType = "DosDonts",
-                    Type = SectionType.Links,
-                    ArticleId = ArticleId,
-                    IsEmpty = false
-                };
-
-                BigBlocks.Add(block1);
-            }
-
-            if (BigBlocks.FirstOrDefault(f => f.SectionType == "About") == null)
-            {
-                var block1 = new WikiPageBlock
-                {
-                    Base = this,
-                    Type = SectionType.LayoutCont,
-                    SectionType = "About",
-                    IsEmpty = false,
-                    ArticleId = ArticleId
-                };
-                BigBlocks.Add(block1);
-            }
-
-            if (BigBlocks.FirstOrDefault(f => f.SectionType == "NightLifePrices") == null)
-            {
-                var block1 = new WikiPageBlock
-                {
-                    Base = this,
-                    Type = SectionType.LayoutCont,
-                    SectionType = "NightLifePrices",
-                    IsEmpty = false,
-                    ArticleId = ArticleId
-                };
-                BigBlocks.Add(block1);
-            }
-
-            if (BigBlocks.FirstOrDefault(f => f.SectionType == "OtherPrices") == null)
-            {
-                var block1 = new WikiPageBlock
-                {
-                    Base = this,
-                    Type = SectionType.LayoutCont,
-                    SectionType = "OtherPrices",
-                    IsEmpty = false,
-                    ArticleId = ArticleId
-                };
-                BigBlocks.Add(block1);
-            }
-
-            if (BigBlocks.FirstOrDefault(f => f.SectionType == "Photos") == null)
-            {
-                var block1 = new WikiPageBlock
-                {
-                    Base = this,
-                    Type = SectionType.LayoutCont,
-                    SectionType = "Photos",
-                    IsEmpty = false,
-                    ArticleId = ArticleId
-                };
-                BigBlocks.Add(block1);
-            }
-        }
-
+        
         public List<LinkVM> GetLinksBlockByCategory(string category)
         {
             var links = GetLinksByCategory(category);
@@ -398,7 +362,7 @@ namespace Gloobster.Portal.ViewModels
 
         private bool? WasLiked(SectionTextsSE text)
         {
-            if (string.IsNullOrEmpty(UserId))
+            if (text == null || string.IsNullOrEmpty(UserId))
             {
                 return null;
             }

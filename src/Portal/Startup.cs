@@ -216,20 +216,21 @@ namespace Gloobster.Portal
 
 		        loggerFactory.AddSerilog();
 
-		        //var logging = Configuration.GetSection("Logging");
-		        //loggerFactory.AddConsole(logging);
-		        //loggerFactory.AddDebug();
-
-		        if (env.IsDevelopment())
-		        {
+                //var logging = Configuration.GetSection("Logging");
+                //loggerFactory.AddConsole(logging);
+                //loggerFactory.AddDebug();
+                
+          //      if (env.IsDevelopment())
+		        //{
 		            app.UseBrowserLink();
 		            app.UseDeveloperExceptionPage();
 		            app.UseDatabaseErrorPage();
-		        }
-		        else
-		        {
-		            app.UseExceptionHandler("/Home/Error");
-		        }
+		        //}
+		        //else
+		        //{
+                //not yet implemented
+		        //    app.UseExceptionHandler("/Home/Error");
+		        //}
 
 
 

@@ -130,7 +130,7 @@ namespace Gloobster.Portal.Controllers.Api.NewAdmin.Wiki
 
             if (req.type == WikiPageType.City)
             {
-                var cities = DB.List<WikiCityEntity>();
+                var cities = DB.C<WikiCityEntity>().Select(c => new { c.id, c.Sections}).ToList();
                 List<SectionSE> sections = cities.SelectMany(c => c.Sections).ToList();
 
                 var types = sections.Select(s => s.Type).Distinct().ToList();

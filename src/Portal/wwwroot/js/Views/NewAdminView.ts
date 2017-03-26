@@ -491,13 +491,6 @@
 
 						this.sectionsTab = new Common.Tabs(this.$cont.find(".sections-menu"), "entitySwitch");
 
-						this.sectionsTab.addTab("entCity", "Cities", () => {
-
-								//this.getSectionsMgmt("0", (sections) => {
-								//		this.genSectionsTable(sections);
-								//});
-
-						});
 						this.sectionsTab.addTab("entCountry", "Countries", () => {
 
 								this.getSectionsMgmt("1", (sections) => {
@@ -505,6 +498,15 @@
 								});
 
 						});
+
+						this.sectionsTab.addTab("entCity", "Cities", () => {
+
+								this.getSectionsMgmt("0", (sections) => {
+										this.genSectionsTable(sections);
+								});
+
+						});
+						
 
 						this.sectionsTab.create();
 				}

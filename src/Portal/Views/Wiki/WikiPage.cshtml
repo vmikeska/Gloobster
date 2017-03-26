@@ -69,7 +69,14 @@ else
 
             @foreach (var block in richBlocks)
             {
-                @Html.Partial("Section_" + block.Type, block)
+                SectionType type = block.Type;
+
+                //if (type == SectionType.Links)
+                //{
+                //    continue;
+                //}
+
+                @Html.Partial("Section_" + type, block)
             }
 
             @if (emptyBlocks.Any())

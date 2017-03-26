@@ -32,7 +32,7 @@ namespace Gloobster.Portal.ViewModels
             "FavoriteSites",
             
             "MuseumsAndTheater",
-            "Sport"            
+            "Sport",
         };
 
         public override List<RelatedLink> GetRelatedLinks()
@@ -157,42 +157,7 @@ namespace Gloobster.Portal.ViewModels
 
             return bc;
         }
-
         
-
-        //public WikiPageBlock BarDistricts()
-        //{
-        //    var cat = "BarDistricts";
-            
-        //    var links = GetLinksByCategory(cat);
-        //    block.Category = cat;
-        //    block.LinkItems = links.Select(b => new LinkVM
-        //    {
-        //        Name = b.Name,
-        //        Id = b.id.ToString(),
-        //        Links = b.Links
-        //    }).ToList();
-
-        //    return block;
-        //}
-
-        //public WikiPageBlock Sights()
-        //{
-        //    var cat = "Sights";
-
-        //    var block = Section("FavoriteSites", "links");
-        //    var links = GetLinksByCategory(cat);
-        //    block.Category = cat;
-        //    block.LinkItems = links.Select(b => new LinkVM
-        //    {
-        //        Name = b.Name,
-        //        Id = b.id.ToString(),
-        //        Links = b.Links
-        //    }).ToList();
-
-        //    return block;
-        //}
-
         
     }
 }

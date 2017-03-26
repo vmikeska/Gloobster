@@ -12,6 +12,7 @@ using Gloobster.Enums;
 using MongoDB.Bson;
 using Serilog;
 using System.Linq;
+using System.Threading.Tasks;
 using Autofac;
 using Gloobster.Common;
 using Gloobster.DomainModels.Wiki;
@@ -47,8 +48,10 @@ namespace Gloobster.Portal.Controllers.Portal
 
 
         [CreateAccount]
-        public IActionResult PageRegular(string id, string lang)
-        {            
+        public async Task<IActionResult> PageRegular(string id, string lang)
+        {
+            Log.Debug("MMMMM: 1");
+
             WikiModelBase vm = null;            
             var text = DB.FOD<WikiTextsEntity>(i => i.LinkName == id && i.Language == lang);
 
@@ -56,19 +59,19 @@ namespace Gloobster.Portal.Controllers.Portal
             {
                 return HttpNotFound();
             }
-
+            Log.Debug("MMMMM: 2");
             if (text.Type == ArticleType.Country)
             {
                 vm = GetCountryVM(text);                
             }
-
+            Log.Debug("MMMMM: 3");
             if (text.Type == ArticleType.City)
             {
                 vm = GetCityVM(text);                
             }
-            
-            vm.LoadSections();
-            
+            Log.Debug("MMMMM: 4");
+            await vm.LoadSections();
+            Log.Debug("MMMMM: 5");
             vm.IsAdmin = IsUserLogged && WikiPerms.HasArticleAdminPermissions(UserId, text.Article_id.ToString());
             vm.ArticleId = text.Article_id.ToString();
 
@@ -80,12 +83,11 @@ namespace Gloobster.Portal.Controllers.Portal
             //vm.LangVersions =
             //    langVers.Select(i => new LangVersionVM { Language = i.Language, LinkName = i.LinkName }).ToList();
 
-            
 
+            Log.Debug("MMMMM: 6");
             vm.LoadClientTexts(new[] { "jsWiki" });
-
-            Log.Debug("MMMMM: here1");
-
+            Log.Debug("MMMMM: 7");
+            
             return View("WikiPage", vm);            
         }
         
