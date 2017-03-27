@@ -1,0 +1,129 @@
+﻿
+.cv {
+
+    font-size: 19px;
+
+    .menu_all {
+        display: none;
+    }
+
+    footer {
+        display: none;
+    }
+
+    text-align: left;
+
+    .print-block {
+        width: 1000px;
+        margin-left: auto;
+        margin-right: auto;
+        page-break-after: always;
+
+        border-bottom: 1px dotted $dark-blue;
+    }
+
+    .name-title {
+        border-top: 5px solid $dark-blue;
+        padding-top: 1em;
+
+        .ltbl {
+            display: table;
+
+            .left {
+                display: table-cell;
+                vertical-align: top;
+            }
+
+            .right {
+                display: table-cell;
+                vertical-align: top;
+                padding-left: 2em;
+            }
+        }
+
+        .photo {
+            width: 200px;
+            border-radius:50%;
+        }
+
+        .name {
+            font-size: 3em;
+            color: $dark-blue;            
+        }
+
+        .info {
+            font-size: 0.9em;
+        }
+    }
+
+    .about-block {
+
+        margin-top: 1em;
+        margin-bottom: 0.5em;
+
+        .title {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+    }
+
+    .title-cont {
+        display: table;
+        width: 100%;
+
+        .left {
+            display: table-cell;
+            text-align: left;
+        }
+
+        .right {
+            display: table-cell;
+            text-align: right;
+        }
+
+        .name {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+    }
+
+    .category-block {
+        .title {
+            
+        }
+    }
+
+    .category-block-sub {
+        margin-left: 1em;
+
+        .name {
+            font-size: 1.2em;
+        }
+    }
+
+    .iblock {
+        display: inline-block;
+        margin: 0.3em;
+        
+        color: $dark-blue;
+        text-align: center;
+
+        border-radius: 4px;
+        border: 2px solid $dark-blue;
+
+        font-weight: bold;
+
+        .caption {
+            font-size: 0.7em;
+            color: white;
+            background-color: $dark-blue;
+            padding: 0.2em;
+        }
+
+        .value {
+            font-size: 1.4em;
+            padding: 0.2em;
+        }
+    }
+
+}

@@ -130,6 +130,7 @@
 /// <reference path="js/Trip/Utils.js" />
 /// <reference path="js/Views/AirLoc.js" />
 /// <reference path="js/Views/CalendarView.js" />
+/// <reference path="js/views/cvview.js" />
 /// <reference path="js/Views/DashboardView.js" />
 /// <reference path="js/Views/DealsView.js" />
 /// <reference path="js/Views/DetailView.js" />

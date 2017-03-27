@@ -8335,3 +8335,75 @@ footer {
       font-weight: 700; }
     .wiki-page .links-soc-admin-dlg input {
       border: 2px solid #005476; }
+
+.cv {
+  font-size: 19px;
+  text-align: left; }
+  .cv .menu_all {
+    display: none; }
+  .cv footer {
+    display: none; }
+  .cv .print-block {
+    width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    page-break-after: always;
+    border-bottom: 1px dotted #005476; }
+  .cv .name-title {
+    border-top: 5px solid #005476;
+    padding-top: 1em; }
+    .cv .name-title .ltbl {
+      display: table; }
+      .cv .name-title .ltbl .left {
+        display: table-cell;
+        vertical-align: top; }
+      .cv .name-title .ltbl .right {
+        display: table-cell;
+        vertical-align: top;
+        padding-left: 2em; }
+    .cv .name-title .photo {
+      width: 200px;
+      border-radius: 50%; }
+    .cv .name-title .name {
+      font-size: 3em;
+      color: #005476; }
+    .cv .name-title .info {
+      font-size: 0.9em; }
+  .cv .about-block {
+    margin-top: 1em;
+    margin-bottom: 0.5em; }
+    .cv .about-block .title {
+      font-size: 1.5em;
+      font-weight: bold; }
+  .cv .title-cont {
+    display: table;
+    width: 100%; }
+    .cv .title-cont .left {
+      display: table-cell;
+      text-align: left; }
+    .cv .title-cont .right {
+      display: table-cell;
+      text-align: right; }
+    .cv .title-cont .name {
+      font-size: 1.5em;
+      font-weight: bold; }
+  .cv .category-block-sub {
+    margin-left: 1em; }
+    .cv .category-block-sub .name {
+      font-size: 1.2em; }
+  .cv .iblock {
+    display: inline-block;
+    margin: 0.3em;
+    color: #005476;
+    text-align: center;
+    border-radius: 4px;
+    border: 2px solid #005476;
+    font-weight: bold; }
+    .cv .iblock .caption {
+      font-size: 0.7em;
+      color: white;
+      background-color: #005476;
+      padding: 0.2em; }
+    .cv .iblock .value {
+      font-size: 1.4em;
+      padding: 0.2em; }
