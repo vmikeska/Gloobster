@@ -20,6 +20,8 @@ module Common {
 		public listLimitLessTmp = "";
 		public listLimitLast = true;
 		private hidableIdClass;
+
+		public useNo = true;
 			
 		private itemTemplate;
 		public emptyTemplate;
@@ -121,7 +123,10 @@ module Common {
 			items.forEach((item) => {
 				var $item = this.generateItem(item);
 				this.$items.push($item);
-				$item.data("no", itemNo);
+
+				if (this.useNo) {
+					$item.data("no", itemNo);
+				}
 
 				if (hidable) {
 					this.hidableFnc(itemNo, $item, items);

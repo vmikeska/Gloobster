@@ -1,17 +1,22 @@
-﻿@using Gloobster.Common
+﻿@using System.Web.UI
+@using Gloobster.Common
 @using Microsoft.Data.Entity.Metadata.Internal
 
 @model Gloobster.Portal.ViewModels.NewAdminViewModel
 
 @{
-    
+
     ViewData["Title"] = "Administration";
     ViewBag.BodyClass = "new-admin";
 }
 
-<script type="text/javascript" src="@Url.Content("~/js/Common/GNOnlineSearchBox.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/js/Views/WikiSearchCombo.js")"></script>
-<script src="/js/views/newadminview.js"></script>
+<script type="text/javascript" src="@Url.Content(" ~/js/Common/GNOnlineSearchBox.js")"></script>
+<script type="text/javascript" src="@Url.Content(" ~/js/Views/WikiSearchCombo.js")"></script>
+<script src="/js/views/NewAdmin/NewAdminView.js"></script>
+<script src="/js/views/NewAdmin/QuizAdminPage.js"></script>
+<script src="/js/views/NewAdmin/WikiAdminPage.js"></script>
+
+@Html.Partial("QuizTemplates")
 
 <div class="wrapper">
 
@@ -44,7 +49,7 @@
 <script id="article-admins-mgmt-tmp" type="text/x-handlebars-template">
 
     <div class="articles-admins-mgmt">
-        
+
         <div class="adding-form">
             <span class="title">Add new user</span>
 
@@ -53,7 +58,7 @@
                 <ul></ul>
             </div>
         </div>
-        
+
         <div class="users-splitter">Users</div>
 
         <div class="users-cont"></div>
@@ -64,32 +69,32 @@
 
 <script id="article-admin-item-tmp" type="text/x-handlebars-template">
 
-  <div class="user-item" data-uid="{{id}}">
-      
-      <div class="name-cont">
-          <span class="name">{{name}}</span>
-          <span class="icon-cross del"></span>
-      </div>
+    <div class="user-item" data-uid="{{id}}">
 
-      <div class="places">
-         
-      </div>
-      
-      <div class="adder">
-          <span class="title">Add new place</span>
-          <div class="dropdown article-combo">
-              <input type="text" class="inputed" placeholder="Add Place">
-              <ul></ul>
-          </div>
-      </div>
-  </div>
+        <div class="name-cont">
+            <span class="name">{{name}}</span>
+            <span class="icon-cross del"></span>
+        </div>
+
+        <div class="places">
+
+        </div>
+
+        <div class="adder">
+            <span class="title">Add new place</span>
+            <div class="dropdown article-combo">
+                <input type="text" class="inputed" placeholder="Add Place">
+                <ul></ul>
+            </div>
+        </div>
+    </div>
 
 </script>
 
 <script id="place-item-tmp" type="text/x-handlebars-template">
 
     <div class="article-item" data-id="{{id}}">
-        
+
         <span class="name">{{name}}</span>
         <span class="icon-cross del"></span>
     </div>
@@ -97,18 +102,18 @@
 </script>
 
 <script id="super-admins-mgmt-tmp" type="text/x-handlebars-template">
-    
+
     <div class="super-admins-mgmt">
-        
+
         <div class="cont">
-            
+
         </div>
-        
+
         <div id="userCombo" class="dropdown">
             <input type="text" class="inputed" placeholder="+ Add User">
             <ul></ul>
         </div>
-        
+
     </div>
 
 </script>
@@ -121,18 +126,18 @@
 
 
 <script id="task-base-tmp" type="text/x-handlebars-template">
-    
+
     <div id="{{id}}" class="task-all">
-        
+
         <div class="task-header">
             {{caption}} - {{articleTitle}}
         </div>
-        
+
         <div class="task-inner">
-            
+
             <div class="info-line"><span class="title">Created by: </span><span class="value">{{creatorName}}</span></div>
-            
-            
+
+
             {{#ifCond taskType 0}}
 
             <div>
@@ -143,7 +148,7 @@
             {{/ifCond}}
 
             {{#ifCond taskType 1}}
-            
+
             <div class="info-line"><span class="title">Article link: </span><span class="value"><a target="_blank" href="/@RoutingConsts.WikiMenuName/{{data.Lang}}/{{link}}">Article</a></span></div>
 
             <div class="info-line"><span class="title">Section name: </span><span class="value">{{data.SectionName}}</span></div>
@@ -160,15 +165,15 @@
             {{/ifCond}}
 
         </div>
-        
+
         <div class="actions">
             {{#each actions}}
-            <a class="lbtn2 action-btn" href="#" data-action="{{name}}">{{caption}}</a>
+            <a class="lbtn2 green-orange action-btn" href="#" data-action="{{name}}">{{caption}}</a>
             {{/each}}
 
         </div>
 
-        
+
     </div>
 
 
@@ -176,16 +181,19 @@
 </script>
 
 <script id="menu-content-tmp" type="text/x-handlebars-template">
-    
+
     <div class="sub-menu">
 
     </div>
-    
+
     <div class="sub-content">
 
     </div>
 
 </script>
+
+
+
 
 <script id="sections-content-tmp" type="text/x-handlebars-template">
 
@@ -194,13 +202,11 @@
     </div>
 
     <div class="sections-content">
-        <table id="sectionsTable">
+        <table id="sectionsTable"></table>
 
-        </table>
-        
         <div class="new-section-cont">
             <input id="newSectionText" type="text" />
-            <a id="newSectionBtn" class="lbtn2" href="#">Create new</a>
+            <a id="newSectionBtn" class="lbtn2 green-orange " href="#">Create new</a>
         </div>
     </div>
 
@@ -230,7 +236,7 @@
             </tr>
         </table>
 
-        <a href="#" class="lbtn2" id="SendCity">Add city</a>
+        <a href="#" class="lbtn2 green-orange " id="SendCity">Add city</a>
 
     </div>
 
@@ -249,4 +255,4 @@
     </tr>
 
 </script>
-    
+

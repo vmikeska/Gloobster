@@ -4,14 +4,9 @@
     
     text-align: left;
 
-    .lbtn2 {
-            color: white;
-            background-color: $green;
-
-            &:hover {
-                background-color: $orange;
-            }
-        }
+    input, textarea {
+            border: 1px solid $dark-blue;
+        } 
 
     .tab-menu {
         margin-top: 10px;
@@ -198,4 +193,59 @@
         }
     }
 
+
+
+    .quiz-detail {
+        
+        .title, .title-url {
+            width: 400px;
+        }
+
+        .item-file-input {
+            width: 0.1px;
+            height: 0.1px;
+            display: none;
+        }
+
+        .info {
+            border-bottom: 2px solid $dark-blue;
+            padding: 0.5em;
+            margin: 0.5em;
+        }
+
+        .items {
+            .item {
+                /*border: 1px solid $dark-blue;*/
+
+                .options {
+                    /*border-bottom: 1px solid $dark-blue;*/
+
+                    .option {
+                        border-bottom: 2px solid $dark-blue;
+                        padding: 1em;
+
+
+                        display: table;
+                        width: 100%;
+
+                        .l {
+                            display: table-cell;
+                            vertical-align:top;
+                            font-weight: bold;
+                            width: 3em;
+                        }
+
+                        .r {
+                            display: table-cell;
+                            vertical-align:top;
+
+                            input {
+                                width: 100%;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

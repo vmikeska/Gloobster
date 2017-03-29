@@ -1,0 +1,129 @@
+﻿
+<script id="quiz-list-layout-tmp" type="text/x-handlebars-template">
+
+    <div>
+
+        <div class="list">
+            <table class="items">
+                <tr>
+                    <th>Name</th>
+                    <th>No</th>
+                    <th>Actions</th>
+                </tr>
+            </table>
+        </div>
+
+        <div class="btns">
+            <a href="#" id="addNewQuiz" class="lbtn2 green-orange">Add new</a>
+        </div>
+
+    </div>
+
+</script>
+
+<script id="quiz-list-item-tmp" type="text/x-handlebars-template">
+
+    <tr class="item" id="{{id}}">
+        <td class="title">
+            <a target="_blank" href="/quiz/detail/{{titleUrl}}">{{title}}</a>
+        </td>
+        <td class="no">{{no}}</td>
+        <td class="actions">
+            {{#unless active}}
+            <a href="#" class="lbtn2 green-orange activate">Activate</a>
+            {{/unless}}
+
+            <a href="#" class="lbtn2 green-orange share">Share</a>
+
+            <a href="#" class="lbtn2 green-orange edit">Edit</a>
+        </td>
+    </tr>
+
+</script>
+
+<script id="quiz-detail-layout-tmp" type="text/x-handlebars-template">
+
+    <div class="quiz-detail" data-id="{{id}}" data-lang="{{lang}}">
+
+        <div class="info">
+            <input class="title" type="text" placeholder="Title of the quiz" value="{{title}}" />
+            <br />
+            <input class="title-url" type="text" placeholder="Title url of the quiz" value="{{titleUrl}}" />
+        </div>
+
+        <div class="items">
+
+
+
+        </div>
+
+        <div class="btns">
+            <a href="#" id="btnSave" class="lbtn2 green-orange">Save</a>
+            <a href="#" id="btnCancel" class="lbtn2 yellow-orange">Cancel</a>
+        </div>
+
+    </div>
+
+</script>
+
+<script id="quiz-detail-item-tmp" type="text/x-handlebars-template">
+
+    <div class="item" data-id="{{id}}" data-no="{{no}}">
+        <div class="top">
+            <span class="number">{{no}}.</span> <textarea class="question" placeholder="Question without question mark">{{question}}</textarea>
+        </div>
+        <div class="photo-box">
+
+            {{#if hasPhoto}}
+            <img class="image" src="/quiz/photo?quizNo={{quizNo}}&itemNo={{no}}" />
+            {{else}}
+            <img class="image" />
+            {{/if}}
+
+            <input class="item-file-input" id="photoInput_{{no}}" type="file" />
+            <label class="lbtn2 green-orange" for="photoInput_{{no}}">Upload photo</label>
+
+        </div>
+        <div class="options">           
+             
+            <div class="option">
+                <div class="l">
+                    <input class="correct-cb" data-no="1" type="checkbox" {{#ifCond correctNo 1}}checked{{/ifCond}} />  
+                    A)
+                </div>
+                <div class="r">
+                    <input class="opt1" type="text" placeholder="Option" value="{{option1}}" />
+                </div>
+            </div>
+            <div class="option">
+                <div class="l">
+                    <input class="correct-cb" data-no="2" type="checkbox" {{#ifCond correctNo 2}}checked{{/ifCond}} />  
+                    B)
+                </div>
+                <div class="r">
+                    <input class="opt2" type="text" placeholder="Option" value="{{option2}}" />
+                </div>
+            </div>
+            <div class="option">
+                <div class="l">
+                    <input class="correct-cb" data-no="3" type="checkbox" {{#ifCond correctNo 3}}checked{{/ifCond}} />
+                    C)
+                </div>
+                <div class="r">
+                    <input class="opt3" type="text" placeholder="Option" value="{{option3}}" />
+                </div>
+            </div>
+            <div class="option">
+                <div class="l">
+                    <input class="correct-cb" data-no="4" type="checkbox" {{#ifCond correctNo 4}}checked{{/ifCond}} />
+                    D)
+                </div>
+                <div class="r">
+                    <input class="opt4" type="text" placeholder="Option" value="{{option4}}" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</script>

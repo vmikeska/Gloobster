@@ -1472,6 +1472,12 @@ footer {
 .icon-stop3:before {
   content: "\ea17"; }
 
+.icon-arrow-right2:before {
+  content: "\ea34"; }
+
+.icon-arrow-left2:before {
+  content: "\ea38"; }
+
 .icon-table2:before {
   content: "\ea71"; }
 
@@ -7225,11 +7231,8 @@ footer {
 
 .new-admin {
   text-align: left; }
-  .new-admin .lbtn2, .new-admin .photo-button label, .photo-button .new-admin label {
-    color: white;
-    background-color: #3DA33D; }
-    .new-admin .lbtn2:hover, .new-admin .photo-button label:hover, .photo-button .new-admin label:hover {
-      background-color: #F56E12; }
+  .new-admin input, .new-admin textarea {
+    border: 1px solid #005476; }
   .new-admin .tab-menu {
     margin-top: 10px;
     margin-bottom: 10px; }
@@ -7325,6 +7328,35 @@ footer {
     .new-admin .articles-admins-mgmt .users-cont .user-item .adder .title {
       font-weight: bold;
       margin-right: 1em; }
+  .new-admin .quiz-detail .title, .new-admin .quiz-detail .title-url {
+    width: 400px; }
+  .new-admin .quiz-detail .item-file-input {
+    width: 0.1px;
+    height: 0.1px;
+    display: none; }
+  .new-admin .quiz-detail .info {
+    border-bottom: 2px solid #005476;
+    padding: 0.5em;
+    margin: 0.5em; }
+  .new-admin .quiz-detail .items .item {
+    /*border: 1px solid $dark-blue;*/ }
+    .new-admin .quiz-detail .items .item .options {
+      /*border-bottom: 1px solid $dark-blue;*/ }
+      .new-admin .quiz-detail .items .item .options .option {
+        border-bottom: 2px solid #005476;
+        padding: 1em;
+        display: table;
+        width: 100%; }
+        .new-admin .quiz-detail .items .item .options .option .l {
+          display: table-cell;
+          vertical-align: top;
+          font-weight: bold;
+          width: 3em; }
+        .new-admin .quiz-detail .items .item .options .option .r {
+          display: table-cell;
+          vertical-align: top; }
+          .new-admin .quiz-detail .items .item .options .option .r input {
+            width: 100%; }
 
 .city-airport-search {
   position: relative;
@@ -8407,3 +8439,86 @@ footer {
     .cv .iblock .value {
       font-size: 1.4em;
       padding: 0.2em; }
+
+.quiz .quiz-wrapper {
+  max-width: 900px;
+  margin-right: auto;
+  margin-left: auto; }
+
+.quiz .title {
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  display: inline-block;
+  text-align: left; }
+
+.quiz .top-tbl {
+  display: table;
+  width: 100%; }
+  .quiz .top-tbl .l {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: left; }
+  .quiz .top-tbl .r {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: right; }
+
+.quiz .buttons {
+  display: inline-block;
+  white-space: nowrap; }
+  .quiz .buttons .btn {
+    display: inline-block;
+    background-color: #3DA243;
+    color: white;
+    padding: 0.5em;
+    margin: 0.5em;
+    width: 60px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center; }
+    .quiz .buttons .btn:hover {
+      background-color: #F56E12; }
+  .quiz .buttons .displayer {
+    display: inline-block;
+    font-weight: bold;
+    font-size: 1.2em; }
+
+.quiz .quiz-item .photo-cont img {
+  width: 100%; }
+
+.quiz .quiz-item .question {
+  border: 2px solid #005476;
+  border-radius: 2px;
+  padding: 0.7em;
+  font-weight: bold;
+  margin-bottom: 0.4em; }
+
+.quiz .quiz-item .options .option-cont {
+  /*padding: 0.5em;*/
+  margin-bottom: 0.2em;
+  border-radius: 4px;
+  /*border: 1px solid $dark-blue;*/
+  background-color: #F0FAFC;
+  cursor: pointer; }
+  .quiz .quiz-item .options .option-cont .itbl {
+    display: table; }
+  .quiz .quiz-item .options .option-cont .num {
+    display: table-cell;
+    vertical-align: middle;
+    padding-right: 0.5em;
+    padding-left: 0.3em;
+    font-size: 2em;
+    font-weight: bold;
+    color: #005476; }
+  .quiz .quiz-item .options .option-cont .text {
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 1.2em; }
+  .quiz .quiz-item .options .option-cont:hover {
+    color: white;
+    background-color: #3DA33D;
+    /*border: 1px solid $orange;*/ }
+  .quiz .quiz-item .options .option-cont.active {
+    color: white;
+    background-color: #3DA33D; }

@@ -5,50 +5,6 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var Views;
 (function (Views) {
-    var NewAdminView = (function (_super) {
-        __extends(NewAdminView, _super);
-        function NewAdminView() {
-            _super.call(this);
-        }
-        NewAdminView.prototype.init = function () {
-            this.initTabs();
-        };
-        NewAdminView.prototype.initTabs = function () {
-            var _this = this;
-            var tabs = new Common.Tabs($("#mainTabs"), "main");
-            if (this.isMasterAdmin || this.isSuperAdmin || this.isAdminOfSomething) {
-                tabs.addTab("wikiTab", "WIKI", function () {
-                    _this.currentPage = new WikiAdminPage(_this);
-                });
-            }
-            if (this.isMasterAdmin) {
-                tabs.addTab("travelbTab", "Travel buddy");
-                tabs.addTab("dashboardTab", "Dashboard");
-            }
-            tabs.create();
-        };
-        return NewAdminView;
-    }(Views.ViewBase));
-    Views.NewAdminView = NewAdminView;
-    var AdminPageBase = (function () {
-        function AdminPageBase(v, layoutTmpName) {
-            if (layoutTmpName === void 0) { layoutTmpName = null; }
-            this.v = v;
-            this.$cont = $(".page-cont");
-            if (layoutTmpName) {
-                var layoutTmp = Views.ViewBase.currentView.registerTemplate(layoutTmpName);
-                var $l = $(layoutTmp());
-                this.$cont.html($l);
-            }
-            this.create();
-        }
-        AdminPageBase.prototype.create = function () {
-            this.createCustom();
-        };
-        AdminPageBase.prototype.createCustom = function () { };
-        return AdminPageBase;
-    }());
-    Views.AdminPageBase = AdminPageBase;
     var WikiAdminPage = (function (_super) {
         __extends(WikiAdminPage, _super);
         function WikiAdminPage(v) {
@@ -97,7 +53,7 @@ var Views;
             tabs.create();
         };
         return WikiAdminPage;
-    }(AdminPageBase));
+    }(Views.AdminPageBase));
     Views.WikiAdminPage = WikiAdminPage;
     var WikiArticlesAdminMgmt = (function () {
         function WikiArticlesAdminMgmt($cont) {
@@ -442,4 +398,4 @@ var Views;
     }());
     Views.WikiPageSectionsAdmin = WikiPageSectionsAdmin;
 })(Views || (Views = {}));
-//# sourceMappingURL=NewAdminView.js.map
+//# sourceMappingURL=WikiAdminPage.js.map

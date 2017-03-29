@@ -10,6 +10,7 @@ var Common;
             this.listLimitMoreTmp = "";
             this.listLimitLessTmp = "";
             this.listLimitLast = true;
+            this.useNo = true;
             this.$items = [];
             this.hidableIdClass = "hidable-" + Views.ViewBase.currentView.makeRandomString();
         }
@@ -81,7 +82,9 @@ var Common;
             items.forEach(function (item) {
                 var $item = _this.generateItem(item);
                 _this.$items.push($item);
-                $item.data("no", itemNo);
+                if (_this.useNo) {
+                    $item.data("no", itemNo);
+                }
                 if (hidable) {
                     _this.hidableFnc(itemNo, $item, items);
                 }
