@@ -1,26 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Gloobster.Database;
+﻿using Gloobster.Database;
 using Gloobster.Portal.Controllers.Base;
 using Microsoft.AspNet.Mvc;
-using MongoDB.Bson;
 using Gloobster.DomainInterfaces;
-using Gloobster.DomainModels.Services.GeonamesService;
-using Gloobster.DomainModels.Wiki;
 using Gloobster.Portal.ViewModels;
 using Serilog;
-using System.Linq;
-using System.Web;
 using Autofac;
-using Gloobster.Common;
-using Gloobster.DomainModels.Services.Trip;
 using Gloobster.Entities;
-using Gloobster.Entities.SearchEngine;
-using Gloobster.Entities.Trip;
-using Microsoft.AspNet.Http;
-using Gloobster.DomainModels;
-using Gloobster.Portal.Controllers.Api.Wiki;
 using Gloobster.Portal.Controllers.Api.Wiki.Admin;
 
 namespace Gloobster.Portal.Controllers.Portal
@@ -37,17 +22,21 @@ namespace Gloobster.Portal.Controllers.Portal
         [CreateAccount]
         public IActionResult Detail(string id)
         {
-
-
             var lang = "en";
 
             QuizEntity quiz = DB.FOD<QuizEntity>(q => q.TitleUrl == id);
             
             var vm = CreateViewModelInstance<ViewModelQuiz>();
             vm.Quiz = quiz;
-            //vm.DefaultLangModuleName = "pageHome";
+            vm.DefaultLangModuleName = "pageQuiz";
             vm.LoadClientTexts();
-
+            
+            vm.FbShareMeta.og_url = $"https://gloobster.com/quiz/{quiz.TitleUrl}";
+            vm.FbShareMeta.og_title = string.Format(vm.W("QuizShareTitle"), quiz.Title);
+            vm.FbShareMeta.og_description = vm.W("QuizShareDescription"); 
+            vm.FbShareMeta.og_image = "https://gloobster.com/images/n/QuizTitleSmall.jpg";
+            vm.FbShareMeta.og_image_type = "image/jpg";
+            
             return View(vm);
         }
 

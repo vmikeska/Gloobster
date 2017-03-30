@@ -47,16 +47,24 @@ var Views;
             });
         };
         QuizAdminPage.prototype.save = function () {
+            var _this = this;
             var $d = this.$cont.find(".quiz-detail");
             var data = this.getDetailValues($d);
             if (data.id) {
                 this.v.apiPut("Quiz", data, function () {
+                    _this.saved();
                 });
             }
             else {
-                this.v.apiPost("Quiz", data, function () {
+                this.v.apiPost("Quiz", data, function (newId) {
+                    $d.data("id", newId);
+                    _this.saved();
                 });
             }
+        };
+        QuizAdminPage.prototype.saved = function () {
+            var id = new Common.InfoDialog();
+            id.create("Saved", "Was saved");
         };
         QuizAdminPage.prototype.registerFileInputs = function () {
             var _this = this;
@@ -89,12 +97,6 @@ var Views;
             this.v.apiGet("Quiz", [["list", "true"], ["lang", this.currentLang]], function (items) {
                 var lg = Common.ListGenerator.init(_this.$list.find(".items"), "quiz-list-item-tmp");
                 lg.useNo = false;
-                lg.evnt(".share", function (e, $item, $target, item) {
-                    var id = new Common.ConfirmDialog();
-                    id.create("Sharing to soc net", "Do you want to share it to soc nets ?", "Cancel", "Yes", function () {
-                        _this.shareToSocNet(item);
-                    });
-                });
                 lg.evnt(".activate", function (e, $item, $target, item) {
                     var id = new Common.ConfirmDialog();
                     id.create("Activation", "Do you want to activate this quiz ?", "Cancel", "Yes", function () {
@@ -115,8 +117,6 @@ var Views;
             this.v.apiPut("Quiz", data, function () {
                 $item.find(".activate").remove();
             });
-        };
-        QuizAdminPage.prototype.shareToSocNet = function (item) {
         };
         QuizAdminPage.prototype.showDetail = function (no) {
             var _this = this;

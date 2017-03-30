@@ -18,7 +18,7 @@ namespace Gloobster.Portal.ViewModels
 
     public class EmptyViewModel : ViewModelBase
     {
-        
+
     }
 
     public class AboutViewModel : ViewModelBase
@@ -39,7 +39,7 @@ namespace Gloobster.Portal.ViewModels
     }
 
     public class ViewModelBase
-	{
+    {
         public string Locale { get; set; }
         public Languages Langs { get; set; }
         public string Lang { get; set; }
@@ -47,31 +47,33 @@ namespace Gloobster.Portal.ViewModels
 
         public string UserId { get; set; }
         public bool IsUserLogged => User != null;
-		public UserEntity User { get; set; }
-		public IDbOperations DB { get; set; }
-		public List<SocialNetworkType> SocialNetworks { get; set; }        
+        public UserEntity User { get; set; }
+        public IDbOperations DB { get; set; }
+        public List<SocialNetworkType> SocialNetworks { get; set; }
         public int NotificationCount { get; set; }
-	    public List<ModuleTexts> ClientModules { get; set; }
+        public List<ModuleTexts> ClientModules { get; set; }
         public string FbToken { get; set; }
         public bool HasUserAgent { get; set; }
         public InfoBlocks InfoBlocks { get; set; }
         public bool CookiesConfirmed { get; set; }
         public int UnreadMessagesCount { get; set; }
 
+        public FbShareConfig FbShareMeta { get; set; }
+
         public int AdminTasks { get; set; }
         public int WikiAdminTasks { get; set; }
 
         public bool HasSocNet(SocialNetworkType net)
-	    {
-	        return SocialNetworks.Contains(net);
-	    }
-        
+        {
+            return SocialNetworks.Contains(net);
+        }
+
         public bool IsDemo { get; set; }
 
         public string W(string key)
-	    {	        
-	        return W(key, DefaultLangModuleName);
-	    }
+        {
+            return W(key, DefaultLangModuleName);
+        }
 
         public string W(string key, string module)
         {
@@ -79,32 +81,32 @@ namespace Gloobster.Portal.ViewModels
             return text;
         }
 
-	    public void LoadClientTexts(string[] modules = null)
-	    {
+        public void LoadClientTexts(string[] modules = null)
+        {
             if (!HasUserAgent)
             {
                 return;
             }
 
             ClientModules = new List<ModuleTexts>();
-            
-            var allModules = new List<string> {"jsLayout"};
-	        if (modules != null)
-	        {
-	            allModules.AddRange(modules);
-	        }
 
-	        foreach (var module in allModules)
-	        {
-	            var moduleText = new ModuleTexts
-	            {
-	                Texts = Langs.GetModuleTexts(module, Lang),
-	                Name = module
-	            };
-                ClientModules.Add(moduleText);                
-	        }
-	    }
-        
+            var allModules = new List<string> { "jsLayout" };
+            if (modules != null)
+            {
+                allModules.AddRange(modules);
+            }
+
+            foreach (var module in allModules)
+            {
+                var moduleText = new ModuleTexts
+                {
+                    Texts = Langs.GetModuleTexts(module, Lang),
+                    Name = module
+                };
+                ClientModules.Add(moduleText);
+            }
+        }
+
 
         public bool HasAnyWikiPermissions { get; set; }
         public bool CanManageArticleAdmins { get; set; }
@@ -175,7 +177,20 @@ namespace Gloobster.Portal.ViewModels
             };
 
             return res;
-        }        
+        }
+    }
+
+    public class FbShareConfig
+    {
+        public string fb_app_id { get; set; }
+        public string og_url { get; set; }
+        public string og_type { get; set; }
+        public string og_title { get; set; }
+        public string og_description { get; set; }
+        public string og_image { get; set; }
+        public string og_image_type { get; set; }
+        public string og_image_width { get; set; }
+        public string og_image_height { get; set; }
     }
 
     public class InfoBlockResult
@@ -185,7 +200,7 @@ namespace Gloobster.Portal.ViewModels
         public bool IsVisible { get; set; }
         public string Css { get; set; }
         public string Class { get; set; }
-        public string BtnTxt { get; set; }        
+        public string BtnTxt { get; set; }
 
         public List<LinkStep> LinkSteps { get; set; }
     }

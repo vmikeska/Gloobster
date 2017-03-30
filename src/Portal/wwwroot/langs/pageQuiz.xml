@@ -1,0 +1,28 @@
+﻿
+  <module name="pageQuiz">
+
+    <QuizShareTitle>
+      <en>Travel quiz - {0}?</en>
+    </QuizShareTitle>
+
+    <QuizShareDescription>
+      <en>Weekly travel quiz</en>
+    </QuizShareDescription>
+
+    <FinishCongrats>
+      <en>CONGRATS!</en>
+    </FinishCongrats>
+
+    <FinishMsg1>
+      <en>You've got</en>
+    </FinishMsg1>
+
+    <FinishMsg2>
+      <en>correct</en>
+    </FinishMsg2>
+
+    <FbShareBtn>
+      <en>Share on Facebook</en>
+    </FbShareBtn>
+    
+  </module>

@@ -13,7 +13,7 @@ using Serilog;
 
 namespace Gloobster.Portal.Controllers.Api.Wiki.Admin
 {
-    
+
     public class QuizController : BaseApiController
     {
         public IWikiPermissions WikiPerms { get; set; }
@@ -25,15 +25,18 @@ namespace Gloobster.Portal.Controllers.Api.Wiki.Admin
             FilesDomain = filesDomain;
         }
 
-        //if (!WikiPerms.HasArticleAdminPermissions(UserId, req.articleId))
-        //{
-        // return HttpUnauthorized();
-        //}
+
+
 
         [HttpGet]
         [AuthorizeApi]
         public async Task<IActionResult> Get(QuizGetRequest req)
         {
+            if (!WikiPerms.IsSuperOrMasterAdmin(UserId))
+            {
+                return HttpUnauthorized();
+            }
+
             if (req.getEmptyNumber)
             {
                 var nos = DB.C<QuizEntity>().Select(q => q.No).ToList();
@@ -88,6 +91,11 @@ namespace Gloobster.Portal.Controllers.Api.Wiki.Admin
         [AuthorizeApi]
         public async Task<IActionResult> Delete(int no)
         {
+            if (!WikiPerms.IsSuperOrMasterAdmin(UserId))
+            {
+                return HttpUnauthorized();
+            }
+
             var qs = DB.List<QuizEntity>(q => q.No == no);
 
             foreach (var q in qs)
@@ -104,6 +112,11 @@ namespace Gloobster.Portal.Controllers.Api.Wiki.Admin
         [AuthorizeApi]
         public async Task<IActionResult> Post([FromBody] QuizRespReq req)
         {
+            if (!WikiPerms.IsSuperOrMasterAdmin(UserId))
+            {
+                return HttpUnauthorized();
+            }
+
             var lang = string.IsNullOrEmpty(req.lang) ? "en" : req.lang;
 
             var entity = req.ToEntity();
@@ -112,7 +125,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki.Admin
 
             foreach (var item in entity.Items)
             {
-                item.id = ObjectId.GenerateNewId();                
+                item.id = ObjectId.GenerateNewId();
             }
 
             await DB.SaveAsync(entity);
@@ -126,6 +139,11 @@ namespace Gloobster.Portal.Controllers.Api.Wiki.Admin
         [AuthorizeApi]
         public async Task<IActionResult> Put([FromBody] QuizRespReq req)
         {
+            if (!WikiPerms.IsSuperOrMasterAdmin(UserId))
+            {
+                return HttpUnauthorized();
+            }
+
             if (!string.IsNullOrEmpty(req.specAction))
             {
                 if (req.specAction == "activate")
@@ -150,7 +168,7 @@ namespace Gloobster.Portal.Controllers.Api.Wiki.Admin
 
     }
 
-    
+
 
 
 }

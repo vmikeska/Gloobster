@@ -7,6 +7,7 @@ namespace Gloobster.Common
 {
     public class RoutingConsts
     {
+        public const string QuizName = "quiz";
         public const string PinsMenuName = "travelmap";
         public const string PlannerMenuName = "travelplanner";
         public const string TripMenuName = "trip";

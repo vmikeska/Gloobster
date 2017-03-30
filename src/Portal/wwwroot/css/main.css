@@ -1430,6 +1430,9 @@ footer {
 .icon-search:before {
   content: "\e986"; }
 
+.icon-trophy:before {
+  content: "\e99e"; }
+
 .icon-bin:before {
   content: "\e9ac"; }
 
@@ -1489,6 +1492,9 @@ footer {
 
 .icon-google-plus:before {
   content: "\ea8b"; }
+
+.icon-facebook:before {
+  content: "\ea90"; }
 
 .icon-facebook2:before {
   content: "\ea91"; }
@@ -8522,3 +8528,31 @@ footer {
   .quiz .quiz-item .options .option-cont.active {
     color: white;
     background-color: #3DA33D; }
+
+.quiz .quiz-result {
+  text-align: center;
+  padding-top: 3em; }
+  .quiz .quiz-result .title-line {
+    font-size: 4em;
+    font-weight: bold; }
+  .quiz .quiz-result .trophy-line .trophy {
+    font-size: 10em;
+    color: #BC9B1B; }
+  .quiz .quiz-result .score-line {
+    font-size: 3em;
+    font-weight: bold; }
+  .quiz .quiz-result .share-line {
+    padding-top: 1em; }
+    .quiz .quiz-result .share-line .quiz-fb-share {
+      text-decoration: none;
+      font-size: 1.2em;
+      padding: 0.3em;
+      background-color: #4360A0;
+      border-radius: 4px; }
+      .quiz .quiz-result .share-line .quiz-fb-share .fb-ico {
+        color: white;
+        margin-right: 0.2em; }
+      .quiz .quiz-result .share-line .quiz-fb-share .text {
+        color: white; }
+      .quiz .quiz-result .share-line .quiz-fb-share:hover {
+        filter: brightness(120%); }

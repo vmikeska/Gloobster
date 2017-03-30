@@ -10,70 +10,88 @@
 
 <script type="text/javascript" src="/js/Views/QuizDetailView.js"></script>
 
-<div class="wrapper">
+<input id="titleUrl" type="hidden" value="@Model.Quiz.TitleUrl" />
 
-    @*<div class="quiz-wrapper">
-        
-        
-        
-        <div class="top-tbl">
-            
-            <div class="l">
-                <h1 class="title">@Model.Quiz.Title</h1>
-            </div>
-            
-            <div class="r">
-                
-                <div class="buttons">
-                    <span class="btn left">
-                        <span class="icon-arrow-left2"></span>
-                    </span>
-                    <span class="displayer">
-                        <span class="curr-page">1</span>/10
-                    </span>
-                    <span class="btn right">
-                        <span class="icon-arrow-right2"></span>
-                    </span>
-                </div>
+<div id="quizCont" class="wrapper">
+    
+    <div class="quiz-wrapper">
 
+
+
+    <div class="top-tbl">
+
+        <div class="l">
+            <h1 class="title">@Model.Quiz.Title?</h1>
+        </div>
+
+        <div class="r">
+
+            <div class="buttons">
+                <span class="btn left">
+                    <span class="icon-arrow-left2"></span>
+                </span>
+                <span class="displayer">
+                    <span class="curr-page">1</span>/10
+                </span>
+                <span class="btn right">
+                    <span class="icon-arrow-right2"></span>
+                </span>
             </div>
 
         </div>
 
-        
+    </div>
 
-        @foreach (QuizItemSE item in Model.Quiz.Items)
-        {
-            <div class="quiz-item" style="@(item.No == 1? string.Empty : "display: none")" data-no="@item.No" data-c="@item.CorrectNo" >
-                
-                <div class="photo-cont">
-                    <img src="/quiz/photo?quizNo=@(Model.Quiz.No)&itemNo=@(item.No)"/>
-                </div>
-                
-                <div class="question">@item.Question ?</div>
 
-                <div class="options">
-                    @foreach (QuizOptionSE option in item.Options)
-                    {
-                        <div class="option-cont" data-no="@option.No">
 
-                            <div class="itbl">
-                                <div class="num">@(Model.GetLetterFromNumber(option.No))</div>
-                                <div class="text">@option.Text</div>
-                            </div>
+    @foreach (QuizItemSE item in Model.Quiz.Items)
+    {
+        <div class="quiz-item" style="@(item.No == 1? string.Empty : "display: none")" data-no="@item.No" data-c="@item.CorrectNo" >
 
-                        </div>
-                    }
-                </div>
-
+            <div class="photo-cont">
+                <img src="/quiz/photo?quizNo=@(Model.Quiz.No)&itemNo=@(item.No)"/>
             </div>
-        }
 
-    </div>*@
+            <div class="question">@item.Question ?</div>
+
+            <div class="options">
+                @foreach (QuizOptionSE option in item.Options)
+                {
+                    <div class="option-cont" data-no="@option.No">
+
+                        <div class="itbl">
+                            <div class="num">@(Model.GetLetterFromNumber(option.No))</div>
+                            <div class="text">@option.Text</div>
+                        </div>
+
+                    </div>
+                }
+            </div>
+
+        </div>
+    }
+
+</div>
 </div>
 
 <script id="quiz-result-tmp" type="text/x-handlebars-template">
+    
+    <div class="quiz-result">
+        <div class="title-line">@Model.W("FinishCongrats")</div>
+        <div class="trophy-line">
+            <span class="icon-trophy trophy"></span>
+        </div>
+        <div class="score-line">
+            @Model.W("FinishMsg1") <span class="score-all"><span class="score">{{score}}</span>/10</span> @Model.W("FinishMsg2")
+        </div>
+        <div class="share-line">
 
+            <a class="quiz-fb-share" href="https://facebook.com/sharer/sharer.php?u=https%3A//gloobster.com/quiz/{{titleUrl}}" target="_blank">
+                <span class="icon-facebook fb-ico"></span><span class="text">@Model.W("FbShareBtn")</span>
+            </a>
+
+        </div>
+    </div>
 
 </script>
 
@@ -82,7 +100,5 @@
     function onBodyLoad() {
         currentView = new Views.QuizDetailView();
         currentView.init();
-
-
     }
 </script>

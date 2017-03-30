@@ -11,7 +11,6 @@ var Views;
             _super.call(this);
             this.currentItem = 1;
             this.maxItems = 10;
-            this.results = [];
         }
         QuizDetailView.prototype.init = function () {
             this.regArrows();
@@ -20,23 +19,14 @@ var Views;
         QuizDetailView.prototype.regOptions = function () {
             var _this = this;
             $(".option-cont").click(function (e) {
-                var $t = $(e.target);
-                var itemNo = $t.closest(".quiz-item").data("no");
+                var $t = $(e.delegateTarget);
+                var $i = $t.closest(".quiz-item");
                 var optNo = $t.data("no");
-                var result = _this.getOptionRes(itemNo);
-                result.voted = optNo;
+                $i.data("v", optNo);
                 _this.onChange();
                 _this.move(true);
                 _this.setOptions(_this.currentItem);
             });
-        };
-        QuizDetailView.prototype.getOptionRes = function (itemNo) {
-            var result = _.find(this.results, { itemNo: itemNo });
-            if (!result) {
-                result = { itemNo: itemNo, voted: null };
-                this.results.push(result);
-            }
-            return result;
         };
         QuizDetailView.prototype.regArrows = function () {
             var _this = this;
@@ -78,37 +68,46 @@ var Views;
         };
         QuizDetailView.prototype.showFinished = function () {
             var score = this.countScore();
-            alert(score);
+            var t = this.registerTemplate("quiz-result-tmp");
+            var context = {
+                titleUrl: $("#titleUrl").val(),
+                score: score
+            };
+            var $t = $(t(context));
+            $("#quizCont").html($t);
         };
         QuizDetailView.prototype.countScore = function () {
             var correct = 0;
-            for (var act = 1; act <= this.maxItems; act++) {
-                var res = this.getOptionRes(act);
-                var $i = this.getItemByNo(act);
-                var ok = (res.voted === $i.data("c"));
-                if (ok) {
+            var $items = $(".quiz-item");
+            $items.each(function (i, item) {
+                var $item = $(item);
+                var v = $item.data("v");
+                var c = $item.data("c");
+                if (c === v) {
                     correct++;
                 }
-            }
+            });
             return correct;
         };
         QuizDetailView.prototype.allVoted = function () {
             var isFull = true;
-            for (var act = 1; act <= this.maxItems; act++) {
-                var res = this.getOptionRes(act);
-                if (!res.voted) {
+            var $items = $(".quiz-item");
+            $items.each(function (i, item) {
+                var $item = $(item);
+                var v = $item.data("v");
+                if (!v) {
                     isFull = false;
                 }
-            }
+            });
             return isFull;
         };
         QuizDetailView.prototype.setOptions = function (no) {
-            var result = this.getOptionRes(no);
-            if (!result.voted) {
+            var $i = this.getItemByNo(no);
+            var v = $i.data("v");
+            if (!v) {
                 return;
             }
-            var $i = this.getItemByNo(no);
-            var $o = $i.find(".option-cont[data-no=\"" + result.voted + "\"]");
+            var $o = $i.find(".option-cont[data-no=\"" + v + "\"]");
             $i.find(".option-cont").removeClass("active");
             $o.addClass("active");
         };

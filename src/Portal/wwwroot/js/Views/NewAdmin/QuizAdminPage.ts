@@ -66,15 +66,19 @@
 
 						if (data.id) {
 								this.v.apiPut("Quiz", data, () => {
-
-
+										this.saved();
 								});
 						} else {
-								this.v.apiPost("Quiz", data, () => {
-
-
+								this.v.apiPost("Quiz", data, (newId) => {
+										$d.data("id", newId);
+										this.saved();
 								});
 						}
+				}
+
+				private saved() {
+						var id = new Common.InfoDialog();
+						id.create("Saved", "Was saved");
 				}
 
 				private registerFileInputs() {
@@ -118,14 +122,14 @@
 								var lg = Common.ListGenerator.init(this.$list.find(".items"), "quiz-list-item-tmp");
 								lg.useNo = false;
 
-								lg.evnt(".share", (e, $item, $target, item) => {
+								//lg.evnt(".share", (e, $item, $target, item) => {
 
-										var id = new Common.ConfirmDialog();
-										id.create("Sharing to soc net", "Do you want to share it to soc nets ?", "Cancel", "Yes", () => {
-												this.shareToSocNet(item);
-										});
+								//		var id = new Common.ConfirmDialog();
+								//		id.create("Sharing to soc net", "Do you want to share it to soc nets ?", "Cancel", "Yes", () => {
+								//				this.shareToSocNet(item);
+								//		});
 
-								});
+								//});
 
 								lg.evnt(".activate", (e, $item, $target, item) => {
 
@@ -142,8 +146,6 @@
 
 								});
 
-
-
 								lg.generateList(items);
 						});
 				}
@@ -159,10 +161,6 @@
 								$item.find(".activate").remove();
 						});
 
-				}
-
-				private shareToSocNet(item) {
-						//todo:
 				}
 
 				private showDetail(no) {
@@ -206,18 +204,18 @@
 
 						var items = _.map(quiz.items, (i) => {
 
-							var o = {
-								id: i.id,
-								question: i.question,
-								no: i.no,
-								hasPhoto: i.hasPhoto,
-								quizNo: this.currentNo,
-								option1: this.findOptionByNo(i.options, 1),
-								option2: this.findOptionByNo(i.options, 2),
-								option3: this.findOptionByNo(i.options, 3),
-								option4: this.findOptionByNo(i.options, 4),
-								correctNo: i.correctNo
-						};
+								var o = {
+										id: i.id,
+										question: i.question,
+										no: i.no,
+										hasPhoto: i.hasPhoto,
+										quizNo: this.currentNo,
+										option1: this.findOptionByNo(i.options, 1),
+										option2: this.findOptionByNo(i.options, 2),
+										option3: this.findOptionByNo(i.options, 3),
+										option4: this.findOptionByNo(i.options, 4),
+										correctNo: i.correctNo
+								};
 
 								return o;
 						});

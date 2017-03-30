@@ -36,28 +36,15 @@ namespace Gloobster.Portal.Controllers.Api.Wiki.Admin
             WikiPerms = wikiPerms;
         }
 
-        //if (!WikiPerms.HasArticleAdminPermissions(UserId, req.articleId))
-        //{
-        // return HttpUnauthorized();
-        //}
-
-        
-
-        //[HttpDelete]
-        //[AuthorizeApi]
-        //public async Task<IActionResult> Delete(int no)
-        //{
-    
-        //    return new ObjectResult(null);
-        //}
-
-
-        
-
         [HttpPost]
         [AuthorizeApi]
         public async Task<IActionResult> Post([FromBody] QuizFileRequest req)
-        {            
+        {
+            if (!WikiPerms.IsSuperOrMasterAdmin(UserId))
+            {
+                return HttpUnauthorized();
+            }
+
             var filePath = QuizPhotoConsts.GetFilePath(FilesDomain, req.quizNo, req.itemNo);
             
             if (FilesDomain.Storage.FileExists(filePath))

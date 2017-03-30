@@ -57,6 +57,12 @@ namespace Gloobster.Portal
                     );
 
                 routes.MapRoute(
+                    name: "quiz",
+                    template: RoutingConsts.QuizName + "/{id}",
+                    defaults: new { controller = "Quiz", action = "Detail" }
+                    );
+
+                routes.MapRoute(
                     name: "pinsLink",
                     template: "tm",
                     defaults: new { controller = "Pinboard", action = "Pins" }

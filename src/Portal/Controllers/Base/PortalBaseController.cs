@@ -21,10 +21,10 @@ using Gloobster.Entities.TravelB;
 
 namespace Gloobster.Portal.Controllers.Base
 {
-    
-    public class PortalBaseController: Controller
+
+    public class PortalBaseController : Controller
     {
-		public IDbOperations DB { get; set; }
+        public IDbOperations DB { get; set; }
         public ILogger Log { get; set; }
         public IComponentContext CC { get; set; }
         public ILanguages Langs { get; set; }
@@ -42,7 +42,8 @@ namespace Gloobster.Portal.Controllers.Base
         }
 
         private string _userId;
-        public string UserId {
+        public string UserId
+        {
             get
             {
                 if (string.IsNullOrEmpty(_userId))
@@ -50,7 +51,7 @@ namespace Gloobster.Portal.Controllers.Base
                     var utils = new TokenUtils();
 
                     var token = utils.ReadToken(Request.HttpContext);
-                    _userId = token?.UserId;                    
+                    _userId = token?.UserId;
                 }
 
                 return _userId;
@@ -58,14 +59,14 @@ namespace Gloobster.Portal.Controllers.Base
 
             set { _userId = value; }
         }
-        
+
         public bool IsUserLogged => !string.IsNullOrEmpty(UserId);
-        
+
         private UserEntity _user;
         public new UserEntity User
         {
             get
-            {                
+            {
                 if (!IsUserLogged)
                 {
                     return null;
@@ -77,7 +78,7 @@ namespace Gloobster.Portal.Controllers.Base
                 }
 
                 _user = DB.FOD<UserEntity>(u => u.User_id == UserIdObj);
-                
+
                 return _user;
             }
         }
@@ -96,7 +97,7 @@ namespace Gloobster.Portal.Controllers.Base
                 {
                     _account = DB.FOD<AccountEntity>(u => u.User_id == UserIdObj);
                 }
-                
+
                 return _account;
             }
         }
@@ -154,7 +155,20 @@ namespace Gloobster.Portal.Controllers.Base
                 AdminTasks = 0,
                 WikiAdminTasks = 0
             };
-            
+
+            instance.FbShareMeta = new FbShareConfig
+            {
+                fb_app_id = "1519189774979242",
+                og_url = "https://gloobster.com/",
+                og_type = "website",
+                og_title = "gloobster.com - traveler's homepage",
+                og_description = "Travel deals search provider, travel buddy site, travel documents organizer, your travel pinboard, travel wiki",
+                og_image = "https://gloobster.com/images/n/fb-title.png",
+                og_image_type = "image/png",
+                og_image_width = "1024",
+                og_image_height = "924"
+            };
+
             var hasDemoCookie = Request.Cookies.ContainsKey("Demo");
             if (hasDemoCookie)
             {
@@ -166,7 +180,7 @@ namespace Gloobster.Portal.Controllers.Base
             {
                 var str = Request.Cookies["InfoBlocks"].ToString();
                 var infoBlocks = JsonConvert.DeserializeObject<InfoBlocks>(str);
-                instance.InfoBlocks = infoBlocks;                
+                instance.InfoBlocks = infoBlocks;
             }
 
             instance.CookiesConfirmed = Request.Cookies.ContainsKey("CookiesConfirmed");
@@ -190,7 +204,7 @@ namespace Gloobster.Portal.Controllers.Base
                 {
                     instance.NotificationCount = notifications.Notifications.Count(n => n.Status == NotificationStatus.Created);
                 }
-                
+
                 var permissions = CC.Resolve<IWikiPermissions>();
 
                 bool adminOfSomething = permissions.IsAdminOfSomething(UserId);
@@ -205,7 +219,7 @@ namespace Gloobster.Portal.Controllers.Base
                     instance.WikiAdminTasks = tasks.Count;
                     instance.AdminTasks += instance.WikiAdminTasks;
                 }
-                
+
                 instance.SocialNetworks = Networks;
 
                 if (Networks.Contains(SocialNetworkType.Facebook))
@@ -214,7 +228,7 @@ namespace Gloobster.Portal.Controllers.Base
                     instance.FbToken = fbNet.AccessToken;
                 }
             }
-            
+
             return instance;
         }
 
@@ -225,7 +239,7 @@ namespace Gloobster.Portal.Controllers.Base
             {
                 if (_socNetworks == null)
                 {
-                    _socNetworks = DB.List<SocialAccountEntity>(a => a.User_id == UserIdObj);                    
+                    _socNetworks = DB.List<SocialAccountEntity>(a => a.User_id == UserIdObj);
                 }
 
                 return _socNetworks;
@@ -238,7 +252,7 @@ namespace Gloobster.Portal.Controllers.Base
             get
             {
                 if (_networks == null)
-                {                    
+                {
                     _networks = SocNetworks.Select(n => n.NetworkType).ToList();
 
                     if (!string.IsNullOrEmpty(Account.Mail))
@@ -262,6 +276,6 @@ namespace Gloobster.Portal.Controllers.Base
         }
 
 
-        
+
     }
 }

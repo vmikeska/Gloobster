@@ -6,10 +6,9 @@
 
 				private currentItem = 1;
 				private maxItems = 10;
-				private results = [];
-
+				
 				constructor() {
-						super();
+						super();						
 				}
 
 				private init() {
@@ -19,31 +18,18 @@
 
 				private regOptions() {
 						$(".option-cont").click((e) => {
-								var $t = $(e.target);
-								var itemNo = $t.closest(".quiz-item").data("no");
+								var $t = $(e.delegateTarget);
+							  var $i = $t.closest(".quiz-item");
+								
 								var optNo = $t.data("no");
 
-								var result = this.getOptionRes(itemNo);
-								result.voted = optNo;
-
-							//console.log(`itemNo: ${itemNo}, optNo: ${optNo}, voted: ${result.voted}`);
-
+								$i.data("v", optNo);
+								
 								this.onChange();
 
 								this.move(true);
 								this.setOptions(this.currentItem);
 						});
-				}
-
-				private getOptionRes(itemNo) {
-						var result = _.find(this.results, { itemNo: itemNo });
-
-						if (!result) {
-								result = { itemNo: itemNo, voted: null };
-								this.results.push(result);
-						}
-
-						return result;
 				}
 
 				private regArrows() {
@@ -88,7 +74,6 @@
 						$(".displayer .curr-page").html(this.currentItem);
 				}
 
-
 				private onChange() {
 
 						if (this.allVoted()) {
@@ -98,23 +83,33 @@
 				}
 
 				private showFinished() {
-					var score = this.countScore();
-						alert(score);
+						var score = this.countScore();
+
+						var t = this.registerTemplate("quiz-result-tmp");
+
+						var context = {
+								titleUrl: $("#titleUrl").val(),
+								score: score
+						};
+
+						var $t = $(t(context));
+
+						$("#quizCont").html($t);
 				}
 
 				private countScore() {
 						var correct = 0;
 
-						for (var act = 1; act <= this.maxItems; act++) {
-								var res = this.getOptionRes(act);
-								var $i = this.getItemByNo(act);
-
-								var ok = (res.voted === $i.data("c"));
-								if (ok) {
+						var $items = $(".quiz-item");
+						$items.each((i, item) => {
+								var $item = $(item);
+								var v = $item.data("v");
+								var c = $item.data("c");
+								if (c === v) {
 										correct++;
 								}
-						}
-
+						});
+						
 						return correct;
 				}
 
@@ -122,25 +117,30 @@
 
 						var isFull = true;
 
-						for (var act = 1; act <= this.maxItems; act++) {
-								var res = this.getOptionRes(act);
-								if (!res.voted) {
-										isFull = false;
+						var $items = $(".quiz-item");
+						$items.each((i, item) => {
+								var $item = $(item);
+								var v = $item.data("v");
+								
+								if (!v) {
+									isFull = false;
 								}
-						}
+						});
 
 						return isFull;
 				}
 
 				private setOptions(no) {
-						var result = this.getOptionRes(no);
+						
+						var $i = this.getItemByNo(no);
 
-						if (!result.voted) {
-								return;
+					var v = $i.data("v");
+
+						if (!v) {
+							return;
 						}
 
-						var $i = this.getItemByNo(no);
-						var $o = $i.find(`.option-cont[data-no="${result.voted}"]`);
+						var $o = $i.find(`.option-cont[data-no="${v}"]`);
 
 						$i.find(".option-cont").removeClass("active");
 

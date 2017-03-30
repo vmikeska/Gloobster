@@ -25,15 +25,13 @@
 
     <tr class="item" id="{{id}}">
         <td class="title">
-            <a target="_blank" href="/quiz/detail/{{titleUrl}}">{{title}}</a>
+            <a target="_blank" href="/quiz/{{titleUrl}}">{{title}}</a>
         </td>
         <td class="no">{{no}}</td>
         <td class="actions">
             {{#unless active}}
             <a href="#" class="lbtn2 green-orange activate">Activate</a>
             {{/unless}}
-
-            <a href="#" class="lbtn2 green-orange share">Share</a>
 
             <a href="#" class="lbtn2 green-orange edit">Edit</a>
         </td>
@@ -44,6 +42,11 @@
 <script id="quiz-detail-layout-tmp" type="text/x-handlebars-template">
 
     <div class="quiz-detail" data-id="{{id}}" data-lang="{{lang}}">
+        
+        <div class="btns">
+            <a href="#" id="btnSave" class="lbtn2 green-orange">Save</a>
+            <a href="#" id="btnCancel" class="lbtn2 yellow-orange">Cancel</a>
+        </div>
 
         <div class="info">
             <input class="title" type="text" placeholder="Title of the quiz" value="{{title}}" />
@@ -57,10 +60,7 @@
 
         </div>
 
-        <div class="btns">
-            <a href="#" id="btnSave" class="lbtn2 green-orange">Save</a>
-            <a href="#" id="btnCancel" class="lbtn2 yellow-orange">Cancel</a>
-        </div>
+        
 
     </div>
 
