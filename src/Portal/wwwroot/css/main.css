@@ -8425,9 +8425,12 @@ footer {
     .cv .title-cont .name {
       font-size: 1.5em;
       font-weight: bold; }
-  .cv .category-block-sub {
+  .cv .root-block {
+    margin-top: 1em;
+    margin-bottom: 1em; }
+  .cv .sub-cont {
     margin-left: 1em; }
-    .cv .category-block-sub .name {
+    .cv .sub-cont .name {
       font-size: 1.2em; }
   .cv .iblock {
     display: inline-block;

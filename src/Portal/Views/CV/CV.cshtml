@@ -3,6 +3,10 @@
 ViewBag.BodyClass = "cv";
 }
 
+<script type="text/javascript" src="/js/Views/CVView.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script>
+
+
 <div class="print-block">
 
     <div class="name-title">
@@ -36,78 +40,92 @@ ViewBag.BodyClass = "cv";
     <div class="about-block">
         <div class="title">About me</div>
         <div class="text">
-            I am an IT professional with over 14 years of experience.
-            I have 10 years of experience in .NET technologies. I have very strong knowledge of full development cycle.
-            I have also experience with Project management, Architecture and Research in Big Data field.
+            I was born in Czech Republic, but last 6 years I am living in Frankfurt area with my German wife. We have together one daughter. Software development is my second most frequent activity right after sleeping. Beside that, I am enusiastic traveler. I do a lot of sports. I was especially passionate about football, but currently having a break due to injury.
         </div>
     </div>
     
     <div class="about-block">
-        <div class="title">About developement</div>
+        <div class="title">About my skills</div>
         <div class="text">
-            I am an IT professional with over 14 years of experience.
-            I have 10 years of experience in .NET technologies. I have very strong knowledge of full development cycle.
-            I have also experience with Project management, Architecture and Research in Big Data field.
+            I do software development since 1994 and last 16 years for living. I took part of roughly 25 projects in multiple countries across the globe. 
+            I work with Microsoft .NET platform, which I joined since very beginning, the 1.0 beta and I am skilled web developer.
+            I can take part of any backend or web frontent team. I am very familiar with full cycle of agile SW development. I have project leading skills, I like application architecture and during the years, changing multiple project and domains, I developed general sense for analysis.
+            I have basic experience with Research in Big Data field.
+        </div>
+    </div>
+    
+    <div class="htbl">
+        <div class="left">
+            <canvas id="pieChart" width="500" height="400"></canvas>        
+        </div>
+        
+        <div class="right">
+            <canvas id="technoBars" width="500" height="400"></canvas>
         </div>
     </div>
 
 </div>
 
 
+<div class="print-block" id="techno1">
 
-<div class="print-block">
+    <table>
+        <tr>
+            <td></td>
+        </tr>
+    </table>
     
-    <div class="category-block">
+
+</div>
+
+
+<div class="print-block" id="bprint1">
+    
+   
+</div>
+
+
+<script id="category-block-tmp" type="text/x-handlebars-template">
+    
+    <div class="category-block {{#if isRoot}}root-block{{/if}} {{id}}">
         <div class="title">
             
             <div class="title-cont">
                 <div class="left">
-                    <span class="name">Backend</span>
+                    <span class="name">{{title}}</span>
                 </div>
                 <div class="right">
+                    
+                    {{#unless isRoot}}
                     <div class="iblock">
                         <div class="caption">Years experience</div>
-                        <div class="value">8</div>
+                        <div class="value">{{yearsExperience}}</div>
                     </div>
                     <div class="iblock">
                         <div class="caption">Real knowledge</div>
-                        <div class="value">8/10</div>
+                        <div class="value">{{realKnowledge}}/10</div>
                     </div>
+                    {{/unless}}
+
                 </div>
             </div>
 
         </div>
-        <div class="text">
-            I am an IT professional with over 14 years of experience. I have 10 years of experience in .NET technologies. I have very strong knowledge of full development cycle. I have also experience with Project management, Architecture and Research in Big Data field.
-        </div>
-        
-        
-        <div class="category-block-sub">
+        <div class="text">{{text}}</div>
 
-            
-            <div class="title-cont">
-                <div class="left">
-                    <span class="name">ASP.NET</span>
-                </div>
-                <div class="right">
-                    <div class="iblock">
-                        <div class="caption">Years experience</div>
-                        <div class="value">5</div>
-                    </div>
-                    <div class="iblock">
-                        <div class="caption">Real knowledge</div>
-                        <div class="value">9/10</div>
-                    </div>
-                </div>
-            </div>
-            
+        <div class="sub-cont subCont_{{id}}"></div>
 
-            <div class="text">
-                I am an IT professional with over 14 years of experience. I have 10 years of experience in .NET technologies. I have very strong knowledge of full development cycle. I have also experience with Project management, Architecture and Research in Big Data field.
-            </div>
-
-        </div>
     </div>
     
+</script>
 
-</div>
+
+<script>
+
+    function onBodyLoad() {
+        currentView = new Views.CVView();
+
+        currentView.init();
+    }
+
+</script>
