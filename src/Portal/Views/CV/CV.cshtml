@@ -1,10 +1,10 @@
 ﻿
 @{
-ViewBag.BodyClass = "cv";
+    ViewBag.BodyClass = "cv";
 }
 
 <script type="text/javascript" src="/js/Views/CVView.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.0/Chart.js"></script>
 
 
 <div class="print-block">
@@ -37,65 +37,186 @@ ViewBag.BodyClass = "cv";
         </div>
     </div>
     
-    <div class="about-block">
-        <div class="title">About me</div>
-        <div class="text">
-            I was born in Czech Republic, but last 6 years I am living in Frankfurt area with my German wife. We have together one daughter. Software development is my second most frequent activity right after sleeping. Beside that, I am enusiastic traveler. I do a lot of sports. I was especially passionate about football, but currently having a break due to injury.
-        </div>
-    </div>
-    
-    <div class="about-block">
-        <div class="title">About my skills</div>
-        <div class="text">
-            I do software development since 1994 and last 16 years for living. I took part of roughly 25 projects in multiple countries across the globe. 
-            I work with Microsoft .NET platform, which I joined since very beginning, the 1.0 beta and I am skilled web developer.
-            I can take part of any backend or web frontent team. I am very familiar with full cycle of agile SW development. I have project leading skills, I like application architecture and during the years, changing multiple project and domains, I developed general sense for analysis.
-            I have basic experience with Research in Big Data field.
-        </div>
-    </div>
-    
-    <div class="htbl">
+    <div class="htbl first-page-table">
         <div class="left">
-            <canvas id="pieChart" width="500" height="400"></canvas>        
+    
+            <div class="about-block">
+                <div class="title">About me</div>
+                <div class="text">
+                    I was born in the Czech Republic, but last 6 years I am living in Frankfurt area with my German wife and daughter. Software development is for me a passion and it’s my second most frequent activity right after sleeping. Besides that, I am an enthusiastic traveler. I do a lot of sports. I was especially passionate about football, but currently having a break due to an injury.
+                </div>
+            </div>
+
+            <div class="about-block">
+                <div class="title">About my skills</div>
+                <div class="text">
+                    I do software development since 1994 and last 16 years for a living.
+                    I took part of roughly 20 projects in several countries across the globe.
+                    I work with Microsoft .NET platform, which I joined since the very beginning, the 1.0 beta.
+                    I can take part of any backend or web-frontend team.
+                    I am very familiar with the full cycle of agile SW development.
+                    I also have project leading skills and I like application architecture.
+                    During the years, changing multiple project and domains, I developed an analytical way of thinking.
+                    I have basic experience with research in Big Data field.
+                </div>
+            </div>
+                    
         </div>
-        
-        <div class="right">
-            <canvas id="technoBars" width="500" height="400"></canvas>
+        <div class="right">            
+            <div class="title-skills">Fields worked</div>
+            <div class="skills-cont">
+                <canvas id="pieChart" width="300" height="300"></canvas>
+            </div>
         </div>
     </div>
 
+    <div class="title-techno">Years of experience</div>
+    <canvas id="technoBars" width="1000" height="500"></canvas>
+
 </div>
 
 
-<div class="print-block" id="techno1">
+<div class="print-block" id="employersBlock">
 
-    <table>
-        <tr>
-            <td></td>
-        </tr>
-    </table>
+    <div class="section-title">
+        Companies
+    </div>
+
+    <table id="tblEmployers" class="tbl-employers"></table>
+
+
+</div>
+
+<div class="print-block" id="employersBlock">
+
+    <div class="section-title">
+        Projects
+    </div>
+
+    <div id="projectsCont" class="projects-cont">
+        
+    </div>
+
+
+</div>
+
+<div class="block margin">
+
+    <div class="section-title">
+        Education
+    </div>
+
+    <div class="text-block">
+        I don't have any finished university. I was attending IT management at Unicorn College in Prague, but decided not to continue after the first year, due to lack of time.
+    </div>
+
+
+</div>
+
+<div class="block margin">
+
+    <div class="section-title">
+        Languages
+    </div>
+
+    <div>
+        <table class="langs-table">
+            <tr>
+                <th class="first">English</th>
+                <td class="second">Something between C1 and C2</td>
+                <td class="third">I'm using English as my main business language last 8 years</td>                
+            </tr>
+            <tr>
+                <th class="first">German</th>
+                <td class="second">Something between B1 and B2</td>
+                <td class="third">My German is insufficient to be used as a business language</td>                
+            </tr>
+            <tr>
+                <th class="first">Czech</th>
+                <td class="second">Mother tongue</td>
+                <td class="third">Mother tongue</td>
+            </tr>
+        </table>
+    </div>
+
+
+</div>
+
+
+<div class="print-block">
     
-
-</div>
-
-
-<div class="print-block" id="bprint1">
+    <div class="section-title">
+        Technologies
+    </div>
     
-   
+    <div id="bprint1"></div>
+
+
 </div>
+
+
+
+
+
+<script id="projs-row-tmp" type="text/x-handlebars-template">
+    
+    <div class="proj-item">
+        <div class="top-tbl">
+            <div class="left">
+                <img class="logo" src="/images/n/cv/{{logo}}" />
+            </div>
+            <div class="right">
+                <div class="pos">{{position}}, {{company}}</div>
+                <div class="duration"><span class="icon-calendar ico"></span> {{startMonth}}/{{startYear}} - {{endMonth}}/{{endYear}}</div>
+                <div class="cities"><span class="icon-logo-pin ico"></span> {{cities}}</div>
+            </div>
+        </div>
+        <div class="description">
+            {{description}}
+        </div>
+    </div>
+
+</script>
+
+<script id="comps-row-tmp" type="text/x-handlebars-template">
+
+
+    <tr>
+        <td class="group-name">{{compGroupName}}</td>
+
+        <td class="years">{{yearStart}} - {{yearEnd}}</td>
+
+        <td class="cities">{{cities}}</td>
+
+        <td>{{form}}</td>
+
+        <td class="projs">
+            <ul>
+                {{#each emps}}
+                <li>{{this}}</li>
+
+                {{/each}}
+            </ul>
+
+        </td>
+    </tr>
+
+
+
+</script>
 
 
 <script id="category-block-tmp" type="text/x-handlebars-template">
-    
+
     <div class="category-block {{#if isRoot}}root-block{{/if}} {{id}}">
         <div class="title">
-            
+
             <div class="title-cont">
                 <div class="left">
                     <span class="name">{{title}}</span>
                 </div>
                 <div class="right">
-                    
+
                     {{#unless isRoot}}
                     <div class="iblock">
                         <div class="caption">Years experience</div>
@@ -116,8 +237,11 @@ ViewBag.BodyClass = "cv";
         <div class="sub-cont subCont_{{id}}"></div>
 
     </div>
-    
+
 </script>
+
+
+
 
 
 <script>

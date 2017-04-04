@@ -988,7 +988,7 @@ button:active {
   text-align: center; }
   .info-block2 .info-inner-table {
     display: table; }
-    .info-block2 .info-inner-table .block {
+    .info-block2 .info-inner-table .block, .info-block2 .info-inner-table .cv .print-block, .cv .info-block2 .info-inner-table .print-block {
       width: 50%;
       display: table-cell;
       min-height: 125px;
@@ -996,7 +996,7 @@ button:active {
   @media screen and (max-width: 800px) {
     .info-block2 .info-inner-table {
       display: block; }
-      .info-block2 .info-inner-table .block {
+      .info-block2 .info-inner-table .block, .info-block2 .info-inner-table .cv .print-block, .cv .info-block2 .info-inner-table .print-block {
         width: unset;
         display: block; } }
   .info-block2 img {
@@ -1088,23 +1088,23 @@ footer {
       display: flex;
       flex-flow: row wrap;
       justify-content: space-around; }
-      footer .footer_cont .blocks .block {
+      footer .footer_cont .blocks .block, footer .footer_cont .blocks .cv .print-block, .cv footer .footer_cont .blocks .print-block {
         display: inline-block;
         vertical-align: top;
         text-align: left; }
-        footer .footer_cont .blocks .block h3 {
+        footer .footer_cont .blocks .block h3, footer .footer_cont .blocks .cv .print-block h3, .cv footer .footer_cont .blocks .print-block h3 {
           font-size: 0.9em; }
-        footer .footer_cont .blocks .block ul {
+        footer .footer_cont .blocks .block ul, footer .footer_cont .blocks .cv .print-block ul, .cv footer .footer_cont .blocks .print-block ul {
           list-style: none;
           margin: 0;
           padding: 0; }
-        footer .footer_cont .blocks .block a {
+        footer .footer_cont .blocks .block a, footer .footer_cont .blocks .cv .print-block a, .cv footer .footer_cont .blocks .print-block a {
           color: white;
           text-decoration: none;
           font-size: 0.9em; }
-          footer .footer_cont .blocks .block a:hover {
+          footer .footer_cont .blocks .block a:hover, footer .footer_cont .blocks .cv .print-block a:hover, .cv footer .footer_cont .blocks .print-block a:hover {
             color: #005476; }
-          footer .footer_cont .blocks .block a.link {
+          footer .footer_cont .blocks .block a.link, footer .footer_cont .blocks .cv .print-block a.link, .cv footer .footer_cont .blocks .print-block a.link {
             text-decoration: underline; }
     footer .footer_cont .socials {
       text-align: right; }
@@ -1865,41 +1865,41 @@ footer {
     left: 0; }
   .pins .head-icons-all .data-set {
     right: 0; }
-  .pins .head-icons-all .block {
+  .pins .head-icons-all .block, .pins .head-icons-all .cv .print-block, .cv .pins .head-icons-all .print-block {
     display: inline-block;
     position: absolute;
     top: 20px; }
-    .pins .head-icons-all .block .ico_all {
+    .pins .head-icons-all .block .ico_all, .pins .head-icons-all .cv .print-block .ico_all, .cv .pins .head-icons-all .print-block .ico_all {
       display: inline-block;
       text-align: center; }
-      .pins .head-icons-all .block .ico_all .ico {
+      .pins .head-icons-all .block .ico_all .ico, .pins .head-icons-all .cv .print-block .ico_all .ico, .cv .pins .head-icons-all .print-block .ico_all .ico {
         font-size: 4em;
         width: 1.5em;
         background-color: #ccedf5;
         border-radius: 2px; }
-        .pins .head-icons-all .block .ico_all .ico a {
+        .pins .head-icons-all .block .ico_all .ico a, .pins .head-icons-all .cv .print-block .ico_all .ico a, .cv .pins .head-icons-all .print-block .ico_all .ico a {
           text-decoration: none;
           color: #65BDD7; }
-        .pins .head-icons-all .block .ico_all .ico a:hover {
+        .pins .head-icons-all .block .ico_all .ico a:hover, .pins .head-icons-all .cv .print-block .ico_all .ico a:hover, .cv .pins .head-icons-all .print-block .ico_all .ico a:hover {
           color: #005476; }
-        .pins .head-icons-all .block .ico_all .ico .active {
+        .pins .head-icons-all .block .ico_all .ico .active, .pins .head-icons-all .cv .print-block .ico_all .ico .active, .cv .pins .head-icons-all .print-block .ico_all .ico .active {
           color: #005476; }
-      .pins .head-icons-all .block .ico_all .txt {
+      .pins .head-icons-all .block .ico_all .txt, .pins .head-icons-all .cv .print-block .ico_all .txt, .cv .pins .head-icons-all .print-block .ico_all .txt {
         margin-top: 8px;
         font-size: 0.8em;
         font-weight: 700;
         color: #65BDD7; }
         @media screen and (max-width: 680px) {
-          .pins .head-icons-all .block .ico_all .txt {
+          .pins .head-icons-all .block .ico_all .txt, .pins .head-icons-all .cv .print-block .ico_all .txt, .cv .pins .head-icons-all .print-block .ico_all .txt {
             font-size: 0.7em; } }
-        .pins .head-icons-all .block .ico_all .txt .cmb_all {
+        .pins .head-icons-all .block .ico_all .txt .cmb_all, .pins .head-icons-all .cv .print-block .ico_all .txt .cmb_all, .cv .pins .head-icons-all .print-block .ico_all .txt .cmb_all {
           position: relative; }
-          .pins .head-icons-all .block .ico_all .txt .cmb_all .cmb {
+          .pins .head-icons-all .block .ico_all .txt .cmb_all .cmb, .pins .head-icons-all .cv .print-block .ico_all .txt .cmb_all .cmb, .cv .pins .head-icons-all .print-block .ico_all .txt .cmb_all .cmb {
             text-decoration: none;
             color: #65BDD7; }
-          .pins .head-icons-all .block .ico_all .txt .cmb_all .cmb:hover {
+          .pins .head-icons-all .block .ico_all .txt .cmb_all .cmb:hover, .pins .head-icons-all .cv .print-block .ico_all .txt .cmb_all .cmb:hover, .cv .pins .head-icons-all .print-block .ico_all .txt .cmb_all .cmb:hover {
             color: #005476; }
-          .pins .head-icons-all .block .ico_all .txt .cmb_all .list {
+          .pins .head-icons-all .block .ico_all .txt .cmb_all .list, .pins .head-icons-all .cv .print-block .ico_all .txt .cmb_all .list, .cv .pins .head-icons-all .print-block .ico_all .txt .cmb_all .list {
             display: block;
             position: absolute;
             top: 30px;
@@ -1913,18 +1913,18 @@ footer {
             border-radius: 4px;
             padding: 1em;
             font-size: 1.2em; }
-            .pins .head-icons-all .block .ico_all .txt .cmb_all .list .clear {
+            .pins .head-icons-all .block .ico_all .txt .cmb_all .list .clear, .pins .head-icons-all .cv .print-block .ico_all .txt .cmb_all .list .clear, .cv .pins .head-icons-all .print-block .ico_all .txt .cmb_all .list .clear {
               border-bottom: 1px solid #65BDD7;
               padding: 4px; }
-              .pins .head-icons-all .block .ico_all .txt .cmb_all .list .clear .lbtn2, .pins .head-icons-all .block .ico_all .txt .cmb_all .list .clear .photo-button label, .photo-button .pins .head-icons-all .block .ico_all .txt .cmb_all .list .clear label {
+              .pins .head-icons-all .block .ico_all .txt .cmb_all .list .clear .lbtn2, .pins .head-icons-all .cv .print-block .ico_all .txt .cmb_all .list .clear .lbtn2, .cv .pins .head-icons-all .print-block .ico_all .txt .cmb_all .list .clear .lbtn2, .pins .head-icons-all .block .ico_all .txt .cmb_all .list .clear .photo-button label, .photo-button .pins .head-icons-all .block .ico_all .txt .cmb_all .list .clear label, .pins .head-icons-all .cv .print-block .ico_all .txt .cmb_all .list .clear .photo-button label, .photo-button .pins .head-icons-all .cv .print-block .ico_all .txt .cmb_all .list .clear label, .cv .pins .head-icons-all .print-block .ico_all .txt .cmb_all .list .clear .photo-button label, .photo-button .cv .pins .head-icons-all .print-block .ico_all .txt .cmb_all .list .clear label {
                 color: white;
                 background-color: #E02327;
                 font-size: 1.1em;
                 text-decoration: none;
                 padding: 4px; }
-              .pins .head-icons-all .block .ico_all .txt .cmb_all .list .clear a:hover {
+              .pins .head-icons-all .block .ico_all .txt .cmb_all .list .clear a:hover, .pins .head-icons-all .cv .print-block .ico_all .txt .cmb_all .list .clear a:hover, .cv .pins .head-icons-all .print-block .ico_all .txt .cmb_all .list .clear a:hover {
                 background-color: #F56E12; }
-            .pins .head-icons-all .block .ico_all .txt .cmb_all .list .cont .item input {
+            .pins .head-icons-all .block .ico_all .txt .cmb_all .list .cont .item input, .pins .head-icons-all .cv .print-block .ico_all .txt .cmb_all .list .cont .item input, .cv .pins .head-icons-all .print-block .ico_all .txt .cmb_all .list .cont .item input {
               width: 1.2em;
               height: 1.2em; }
   @media screen and (max-width: 770px) {
@@ -2189,27 +2189,27 @@ footer {
     @media screen and (max-width: 803px) {
       .wiki .wiki_info .br {
         margin-left: 0; } }
-  .wiki .wiki_info .block {
+  .wiki .wiki_info .block, .wiki .wiki_info .cv .print-block, .cv .wiki .wiki_info .print-block {
     display: inline-block;
     vertical-align: top;
     padding-top: 50px;
     max-width: 360px;
     min-width: 320px;
     /*border: 1px solid red;*/ }
-    .wiki .wiki_info .block .ico {
+    .wiki .wiki_info .block .ico, .wiki .wiki_info .cv .print-block .ico, .cv .wiki .wiki_info .print-block .ico {
       width: 180px;
       height: 180px;
       margin-right: auto;
       margin-left: auto;
       margin-bottom: 35px; }
-    .wiki .wiki_info .block .title {
+    .wiki .wiki_info .block .title, .wiki .wiki_info .cv .print-block .title, .cv .wiki .wiki_info .print-block .title {
       color: #F5C519; }
-    .wiki .wiki_info .block .text {
+    .wiki .wiki_info .block .text, .wiki .wiki_info .cv .print-block .text, .cv .wiki .wiki_info .print-block .text {
       color: white;
       height: 170px; }
-    .wiki .wiki_info .block .btn {
+    .wiki .wiki_info .block .btn, .wiki .wiki_info .cv .print-block .btn, .cv .wiki .wiki_info .print-block .btn {
       height: 50px; }
-      .wiki .wiki_info .block .btn .lbtn {
+      .wiki .wiki_info .block .btn .lbtn, .wiki .wiki_info .cv .print-block .btn .lbtn, .cv .wiki .wiki_info .print-block .btn .lbtn {
         color: #3298C1;
         background-color: #F5C519; }
 
@@ -2319,12 +2319,12 @@ footer {
   padding-top: 20px; }
   .wiki .counties h2 {
     font-weight: 500; }
-  .wiki .counties .block {
+  .wiki .counties .block, .wiki .counties .cv .print-block, .cv .wiki .counties .print-block {
     display: inline-block;
     vertical-align: top;
     width: 250px;
     margin-top: 30px; }
-    .wiki .counties .block .item a {
+    .wiki .counties .block .item a, .wiki .counties .cv .print-block .item a, .cv .wiki .counties .print-block .item a {
       color: #3298C1; }
 
 .wiki-page {
@@ -2460,31 +2460,31 @@ footer {
       font-size: 0.8em; }
     .wiki-page .breadcrumb .black {
       color: black; }
-  .wiki-page .block {
+  .wiki-page .block, .wiki-page .cv .print-block, .cv .wiki-page .print-block {
     text-align: left;
     margin-bottom: 1em; }
-    .wiki-page .block .title-cont {
+    .wiki-page .block .title-cont, .wiki-page .cv .print-block .title-cont, .cv .wiki-page .print-block .title-cont {
       display: table;
       width: 100%;
       margin-bottom: 0.4em; }
-      .wiki-page .block .title-cont .left {
+      .wiki-page .block .title-cont .left, .wiki-page .cv .print-block .title-cont .left, .cv .wiki-page .print-block .title-cont .left {
         vertical-align: top;
         display: table-cell;
         text-align: left; }
-      .wiki-page .block .title-cont .right {
+      .wiki-page .block .title-cont .right, .wiki-page .cv .print-block .title-cont .right, .cv .wiki-page .print-block .title-cont .right {
         vertical-align: top;
         display: table-cell;
         text-align: right; }
-    .wiki-page .block .section-photo img {
+    .wiki-page .block .section-photo img, .wiki-page .cv .print-block .section-photo img, .cv .wiki-page .print-block .section-photo img {
       width: 100%; }
-    .wiki-page .block .collapser {
+    .wiki-page .block .collapser, .wiki-page .cv .print-block .collapser, .cv .wiki-page .print-block .collapser {
       display: inline-block;
       vertical-align: middle;
       color: #005476;
       margin-right: 8px;
       font-size: 1.2em;
       cursor: pointer; }
-      .wiki-page .block .collapser.opened {
+      .wiki-page .block .collapser.opened, .wiki-page .cv .print-block .collapser.opened, .cv .wiki-page .print-block .collapser.opened {
         transform: scale(1, -1); }
   .wiki-page .info-block {
     margin-bottom: 1em; }
@@ -3444,14 +3444,14 @@ footer {
     border-top-right-radius: 4px;
     padding-left: 4px;
     padding-right: 4px; }
-  .trip-detail .block {
+  .trip-detail .block, .trip-detail .cv .print-block, .cv .trip-detail .print-block {
     display: inline-block;
     vertical-align: top;
     margin-left: -1px; }
-    .trip-detail .block .adder-cont {
+    .trip-detail .block .adder-cont, .trip-detail .cv .print-block .adder-cont, .cv .trip-detail .print-block .adder-cont {
       padding-top: 48px;
       padding-left: 15px; }
-      .trip-detail .block .adder-cont .adder {
+      .trip-detail .block .adder-cont .adder, .trip-detail .cv .print-block .adder-cont .adder, .cv .trip-detail .print-block .adder-cont .adder {
         display: inline-block;
         font-size: 34px;
         padding: 14px;
@@ -3459,7 +3459,7 @@ footer {
         background-color: #65BDD7;
         text-decoration: none;
         border-radius: 50%; }
-        .trip-detail .block .adder-cont .adder:hover {
+        .trip-detail .block .adder-cont .adder:hover, .trip-detail .cv .print-block .adder-cont .adder:hover, .cv .trip-detail .print-block .adder-cont .adder:hover {
           background-color: white;
           color: #005476; }
   .trip-detail .first-new {
@@ -5454,7 +5454,7 @@ footer {
     font-weight: bold;
     font-size: 1em;
     margin-bottom: 0.5em; }
-  .fly-tickets .custom-form .block {
+  .fly-tickets .custom-form .block, .fly-tickets .custom-form .cv .print-block, .cv .fly-tickets .custom-form .print-block {
     margin: 0.5em; }
   .fly-tickets .custom-form .tag {
     padding: 4px; }
@@ -6496,13 +6496,13 @@ footer {
     .fly-tickets .city-deal .other-flights-filter .ltbl {
       width: 100%;
       display: table; }
-      .fly-tickets .city-deal .other-flights-filter .ltbl .block {
+      .fly-tickets .city-deal .other-flights-filter .ltbl .block, .fly-tickets .city-deal .other-flights-filter .ltbl .cv .print-block, .cv .fly-tickets .city-deal .other-flights-filter .ltbl .print-block {
         width: 50%;
         display: table-cell; }
     @media screen and (max-width: 800px) {
       .fly-tickets .city-deal .other-flights-filter .ltbl {
         display: block; }
-        .fly-tickets .city-deal .other-flights-filter .ltbl .block {
+        .fly-tickets .city-deal .other-flights-filter .ltbl .block, .fly-tickets .city-deal .other-flights-filter .ltbl .cv .print-block, .cv .fly-tickets .city-deal .other-flights-filter .ltbl .print-block {
           width: initial;
           display: block; } }
   .fly-tickets .city-deal .dep-arr {
@@ -8061,31 +8061,31 @@ footer {
       font-size: 0.8em; }
     .wiki-page .breadcrumb .black {
       color: black; }
-  .wiki-page .block {
+  .wiki-page .block, .wiki-page .cv .print-block, .cv .wiki-page .print-block {
     text-align: left;
     margin-bottom: 1em; }
-    .wiki-page .block .title-cont {
+    .wiki-page .block .title-cont, .wiki-page .cv .print-block .title-cont, .cv .wiki-page .print-block .title-cont {
       display: table;
       width: 100%;
       margin-bottom: 0.4em; }
-      .wiki-page .block .title-cont .left {
+      .wiki-page .block .title-cont .left, .wiki-page .cv .print-block .title-cont .left, .cv .wiki-page .print-block .title-cont .left {
         vertical-align: top;
         display: table-cell;
         text-align: left; }
-      .wiki-page .block .title-cont .right {
+      .wiki-page .block .title-cont .right, .wiki-page .cv .print-block .title-cont .right, .cv .wiki-page .print-block .title-cont .right {
         vertical-align: top;
         display: table-cell;
         text-align: right; }
-    .wiki-page .block .section-photo img {
+    .wiki-page .block .section-photo img, .wiki-page .cv .print-block .section-photo img, .cv .wiki-page .print-block .section-photo img {
       width: 100%; }
-    .wiki-page .block .collapser {
+    .wiki-page .block .collapser, .wiki-page .cv .print-block .collapser, .cv .wiki-page .print-block .collapser {
       display: inline-block;
       vertical-align: middle;
       color: #005476;
       margin-right: 8px;
       font-size: 1.2em;
       cursor: pointer; }
-      .wiki-page .block .collapser.opened {
+      .wiki-page .block .collapser.opened, .wiki-page .cv .print-block .collapser.opened, .cv .wiki-page .print-block .collapser.opened {
         transform: scale(1, -1); }
   .wiki-page .info-block {
     margin-bottom: 1em; }
@@ -8377,19 +8377,32 @@ footer {
 .cv {
   font-size: 19px;
   text-align: left; }
+  .cv table {
+    border-collapse: collapse; }
   .cv .menu_all {
     display: none; }
   .cv footer {
     display: none; }
-  .cv .print-block {
+  .cv .block, .cv .print-block {
     width: 1000px;
     margin-left: auto;
-    margin-right: auto;
+    margin-right: auto; }
+    .cv .block.margin, .cv .margin.print-block {
+      margin-top: 1em;
+      margin-bottom: 1em; }
+    .cv .block .text-block, .cv .print-block .text-block {
+      margin-top: 0.5em;
+      margin-bottom: 0.5em; }
+  .cv .print-block {
+    min-height: 1414px;
     page-break-after: always;
+    border-top: 1px dotted #005476;
     border-bottom: 1px dotted #005476; }
+    @media print {
+      .cv .print-block {
+        border: 0; } }
   .cv .name-title {
-    border-top: 5px solid #005476;
-    padding-top: 1em; }
+    padding-top: 4em; }
     .cv .name-title .ltbl {
       display: table; }
       .cv .name-title .ltbl .left {
@@ -8407,8 +8420,37 @@ footer {
       color: #005476; }
     .cv .name-title .info {
       font-size: 0.9em; }
+  .cv .langs-table {
+    margin-top: 0.5em;
+    width: 100%; }
+    .cv .langs-table .first {
+      width: 15%; }
+    .cv .langs-table .second {
+      width: 35%; }
+    .cv .langs-table .third {
+      width: 50%; }
+    .cv .langs-table td, .cv .langs-table th {
+      padding: 0.3em; }
+  .cv .title-techno {
+    font-size: 1.5em;
+    font-weight: bold;
+    padding-bottom: 0.3em; }
+  .cv .title-skills {
+    font-size: 1.5em;
+    font-weight: bold;
+    padding-bottom: 0.3em;
+    text-align: center;
+    margin-top: 30px; }
+  .cv .skills-cont {
+    padding-left: 1em; }
+  .cv .first-page-table {
+    margin-bottom: 1em; }
+    .cv .first-page-table .left {
+      vertical-align: middle; }
+    .cv .first-page-table .right {
+      vertical-align: middle; }
   .cv .about-block {
-    margin-top: 1em;
+    margin-top: 3em;
     margin-bottom: 0.5em; }
     .cv .about-block .title {
       font-size: 1.5em;
@@ -8425,6 +8467,8 @@ footer {
     .cv .title-cont .name {
       font-size: 1.5em;
       font-weight: bold; }
+  .cv .category-block {
+    page-break-inside: avoid; }
   .cv .root-block {
     margin-top: 1em;
     margin-bottom: 1em; }
@@ -8448,6 +8492,56 @@ footer {
     .cv .iblock .value {
       font-size: 1.4em;
       padding: 0.2em; }
+  .cv .section-title {
+    background-color: #57C2DB;
+    color: white;
+    font-size: 2em;
+    padding: 0.8em; }
+  .cv .tbl-employers td {
+    border-bottom: 1px solid black; }
+  .cv .tbl-employers .group-name {
+    font-weight: bold; }
+  .cv .tbl-employers .years {
+    width: 120px; }
+  .cv .tbl-employers .cities {
+    font-weight: bold; }
+  .cv .tbl-employers .projs ul li {
+    font-weight: bold; }
+  .cv .projects-cont {
+    text-align: left; }
+    .cv .projects-cont .proj-item {
+      page-break-inside: avoid;
+      margin-top: 1em;
+      padding-bottom: 1em;
+      border-bottom: 2px solid #005476; }
+      .cv .projects-cont .proj-item .top-tbl {
+        display: table;
+        width: 100%; }
+        .cv .projects-cont .proj-item .top-tbl .left {
+          display: table-cell;
+          vertical-align: middle;
+          padding: 4px;
+          width: 140px; }
+        .cv .projects-cont .proj-item .top-tbl .right {
+          display: table-cell;
+          vertical-align: top; }
+          .cv .projects-cont .proj-item .top-tbl .right .ico {
+            color: #005476;
+            margin-right: 0.5em;
+            display: inline-block;
+            text-align: left; }
+      .cv .projects-cont .proj-item .description {
+        border-top: 1px solid #BCB3B8;
+        padding-top: 0.5em;
+        margin-top: 0.5em;
+        padding-left: 0.5em; }
+      .cv .projects-cont .proj-item .pos {
+        font-weight: bold; }
+      .cv .projects-cont .proj-item .duration {
+        font-size: 0.9em; }
+      .cv .projects-cont .proj-item .logo {
+        width: 100px;
+        display: inline-block; }
 
 .quiz .quiz-wrapper {
   max-width: 900px;

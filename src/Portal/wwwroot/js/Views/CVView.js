@@ -25,7 +25,7 @@ var Views;
                     realKnowledge: 9,
                     isRoot: false,
                     cont: "blockLangs",
-                    text: "I've been working with C# on every project in my professional career. During the years, using this language, I developed knowledge of a lot design patterns and architecutre skills"
+                    text: "I've been coding in C# on every project in my professional career. \n\t\t\t\t\t\t\t\t\t\t\t\tDuring this time, I developed a general sense for application designing and architecture."
                 },
                 {
                     technoExport: true,
@@ -35,7 +35,7 @@ var Views;
                     realKnowledge: 7,
                     isRoot: false,
                     cont: "blockLangs",
-                    text: "Roughly half of project I took part of required usage of JavaScript. I know the language quite well, however I consider ES5 as outdated and prefer to use some modern supersets. I don't have any experience yet with ES6 or higher."
+                    text: "Roughly half of the projects I took part of, required usage of JavaScript. \n\t\t\t\t\t\t\t\t\t\t\t\tHowever I was using TypeScript in last 2 years, I still know ES5 syntax quite well. I don't have any experience with ES6 or higher."
                 },
                 {
                     technoExport: true,
@@ -45,14 +45,14 @@ var Views;
                     realKnowledge: 8,
                     isRoot: false,
                     cont: "blockLangs",
-                    text: "I was using TypeScript on the last project last 2 years and I felt in love with its syntax."
+                    text: "I was using TypeScript on the last project, nearly 2 years and I felt in love with its syntax."
                 },
                 {
                     id: "blockBackend",
                     title: "Backend",
                     isRoot: true,
                     cont: "bprint1",
-                    text: "I am an IT professional with over 14 years of experience. I have 10 years of experience in .NET technologies. I have very strong knowledge of full development cycle. I have also experience with Project management, Architecture and Research in Big Data field."
+                    text: ""
                 },
                 {
                     technoExport: true,
@@ -62,17 +62,18 @@ var Views;
                     realKnowledge: 7,
                     isRoot: false,
                     cont: "blockBackend",
-                    text: "I have worked on several ASP.NET MVC projects. Currently have a bit fresher knowledge of the vNext, but I can refresh my knowledge of previous version within days."
+                    text: "I have worked on several ASP.NET MVC projects.These days I am a bit more familiar with vNext MVC, but I can update my knowledge within days."
                 },
                 {
                     technoExport: true,
                     id: "blockAspNetVN",
                     title: "ASP.NET MVC vNext",
+                    titleShort: "vNext",
                     yearsExperience: 2,
                     realKnowledge: 8,
                     isRoot: false,
                     cont: "blockBackend",
-                    text: "This is the technology of my last project. It's excellent work done by Microsoft. I have to especially appriciate its integration of Bower packages, middleware-like flow and project structure generally. I consider this technology as perfect for web development."
+                    text: "The technology of my last project. Well done by Microsoft. I appreciate it's integration with Bower packages, middleware-like request flow and project structure generally.\n\t\t\t\t\t\t\t\t\t\t\t\tI consider this technology as a current peak of web development."
                 },
                 {
                     technoExport: true,
@@ -82,7 +83,7 @@ var Views;
                     realKnowledge: 6,
                     isRoot: false,
                     cont: "blockBackend",
-                    text: "I am familiar with deployment on Windows Azure platform. I am able make full configuration and deployment to the service."
+                    text: "I have experience with deployment and configuration of web services from two projects."
                 },
                 {
                     id: "blockWeb",
@@ -99,7 +100,7 @@ var Views;
                     realKnowledge: 8,
                     isRoot: false,
                     cont: "blockWeb",
-                    text: "I worked with jQuery on several projects and still consider it as one of the best JS frameworks."
+                    text: "I worked with jQuery on several projects and still consider it as one of the best JS frameworks out there."
                 },
                 {
                     id: "blockBrowserInterface",
@@ -108,7 +109,7 @@ var Views;
                     realKnowledge: 6,
                     isRoot: false,
                     cont: "blockWeb",
-                    text: "My knowledge of browser functions/interface was in last years hidden behind jQuery. I have planned to increase my knowledge in this field in next years."
+                    text: "My knowledge of browser functionality interface is mostly hidden behind jQuery. I have an average knowledge, but already started improving my knowledge in this field. Due to rising HTML5 support across all web browser platforms and end of the old IE's."
                 },
                 {
                     technoExport: true,
@@ -118,7 +119,7 @@ var Views;
                     realKnowledge: 8,
                     isRoot: false,
                     cont: "blockWeb",
-                    text: "I can make any desgin I can think of, I can write code without too many sub-steps. Lately I gained some knowledge of CSS3 features. I prefer to use SCSS, but I can learn any other CSS superset fast."
+                    text: "I am able to code any design I can think of. Lately I gained some knowledge of CSS3 features. I prefer to use SCSS, but I can learn any other CSS superset fast."
                 },
                 {
                     id: "blockAngBack",
@@ -127,16 +128,16 @@ var Views;
                     realKnowledge: 1,
                     isRoot: false,
                     cont: "blockWeb",
-                    text: "I worked roughly half a year on a Backbone project and half year on an Angular1 project. I have forgotten most of it, but I'm generally very familiar with SPA concept."
+                    text: "I worked roughly a year on a Backbone project and a half a year on an Angular1 project. I have forgotten most of it, but I'm generally very familiar with SPA concept."
                 },
                 {
                     id: "blockUX",
                     title: "UX",
-                    yearsExperience: 6,
+                    yearsExperience: 2,
                     realKnowledge: 8,
                     isRoot: false,
                     cont: "blockWeb",
-                    text: "Especially with the last project I've grown a lot on my UX skills. I'm convinced I'm better than many professional graphic designers. I can think from scratch how the functionality can be displayed in multiple resolutions and crate real responsive design. I am skilled with using mocking tools (Balsamique). And have exceptional skill to task graphic designers."
+                    text: "I was gaining some little UX skills on all the web projects I took part of. But thanks to the last project I qualified me to a higher league.\n\t\t\t\t\t\t\t\t\t\t\t\tI'm convinced I'm better than many professional graphic designers. \n\t\t\t\t\t\t\t\t\t\t\t\tFrom the very beginning of UX planning, I can think of behaviour across multiple resolutions and its responsive design.\n\t\t\t\t\t\t\t\t\t\t\t\tI am a skilled user of Balsamique mocking tools. I have exceptional skill and patience to talk to graphic designers."
                 },
                 {
                     id: "blockGrapDesign",
@@ -145,7 +146,34 @@ var Views;
                     realKnowledge: 6,
                     isRoot: false,
                     cont: "blockWeb",
-                    text: "With the last project, I wasn't that lucky on graphic designers so I had to overtake some design task. I am not talented and I don't plan to develop in this field, but I can definitelly make first design, which is later replaced by a one made by graphic designer."
+                    text: "With the last project, I wasn't that lucky on graphic designers so I had to overtake some design task. \n\t\t\t\t\t\t\t\t\t\t\t\tI am not talented and I don't plan to develop in this field, but I can definitely make a design based on some defined templates/styles."
+                },
+                {
+                    id: "blockAPI",
+                    title: "API's",
+                    isRoot: true,
+                    cont: "bprint1",
+                    text: ""
+                },
+                {
+                    technoExport: true,
+                    id: "blockMapbox",
+                    title: "Mapbox + Leaflet",
+                    yearsExperience: 1,
+                    realKnowledge: 7,
+                    isRoot: false,
+                    cont: "blockAPI",
+                    text: "I have solid knowledge of Mapbox.js and Leaflet.js. I can develop nice looking maps and visualise on them basically anything."
+                },
+                {
+                    technoExport: true,
+                    id: "blockFacebookAPI",
+                    title: "Facebook API",
+                    yearsExperience: 5,
+                    realKnowledge: 8,
+                    isRoot: false,
+                    cont: "blockAPI",
+                    text: "I have solid knowledge of Facebook API. I can make completely customised login or play with the user data. I have also solid knowledge of Facebook terms and conditions."
                 },
                 {
                     id: "blockArchitecture",
@@ -161,7 +189,7 @@ var Views;
                     realKnowledge: 9,
                     isRoot: false,
                     cont: "blockArchitecture",
-                    text: "I worked on many projects using many implementations of DDD. I read the book (DDD from Fowler) and I'm familiar with the terminology a key patterns"
+                    text: "I worked on many projects using many implementations of DDD. I read the book (DDD from Fowler) and I'm familiar with the terminology and key patterns."
                 },
                 {
                     id: "blockCommQuery",
@@ -170,7 +198,7 @@ var Views;
                     realKnowledge: 10,
                     isRoot: false,
                     cont: "blockArchitecture",
-                    text: "DDD has it's specifics and on many projects (roughly 20%) has no competitiv metodology. But for most of the projects is better use Command & Query pattern. It's simple pattern where blocks of funcionality are encapsulated by an overriding execution metod. These Commands or Queries can be organized by multiple styles, on directory level, namespace level and so on..."
+                    text: "I would say you should use Command & Query for most of the projects. For most of the projects is DDD overkill."
                 },
                 {
                     id: "block",
@@ -179,7 +207,7 @@ var Views;
                     realKnowledge: 10,
                     isRoot: false,
                     cont: "blockArchitecture",
-                    text: "This might maybe surprise you, but this is definitelly the best technique how to develop prototypes. While prototyping, developer shouldn't loose time with overthinking the architecture. Developer should rather keep focus on finding/testing/proving the key technical aspects. They can be shaped later into a proper application."
+                    text: "A very favourite pattern on my - for prototyping. Let's not loose time by architecture where is it not necessary."
                 },
                 {
                     id: "blockMvc",
@@ -188,7 +216,7 @@ var Views;
                     realKnowledge: 9,
                     isRoot: false,
                     cont: "blockArchitecture",
-                    text: "I have strong experience with both, MVC and MVVM patterns. These are my favorite in web developement."
+                    text: "I have strong experience with both, MVC and MVVM patterns. These are my favourite in web development."
                 },
                 {
                     id: "blockSPA",
@@ -206,7 +234,7 @@ var Views;
                     realKnowledge: 7,
                     isRoot: false,
                     cont: "blockArchitecture",
-                    text: "I don't have any exceptional knowledge of designing high level architecture."
+                    text: "I never took part of any task for high-level architecture on a bigger project. But after 16 years a developed common sense in this field."
                 },
                 {
                     id: "blockProject",
@@ -222,7 +250,7 @@ var Views;
                     realKnowledge: 8,
                     isRoot: false,
                     cont: "blockProject",
-                    text: "I was working as the head of two start-ups. I spent one year as a head of department for release management and automation strategy. Being 16 years in software development overall, I have naturally gained project leading skills. I have future team leading plans."
+                    text: "I was working as the head of two start-ups. I spent one year as a head of Release Management department and automation strategy. I have future plans to develop in this field."
                 },
                 {
                     id: "blockGIT",
@@ -240,7 +268,7 @@ var Views;
                     realKnowledge: 8,
                     isRoot: false,
                     cont: "blockProject",
-                    text: "I was working for couple of years on release management and automation positions. I'm fully familiar with full development cycle."
+                    text: "I was working for a couple of years on release management and automation positions. I'm fully familiar with the full development cycle."
                 },
                 {
                     id: "blockScrum",
@@ -249,7 +277,7 @@ var Views;
                     realKnowledge: 9,
                     isRoot: false,
                     cont: "blockProject",
-                    text: "I have rich experience of developing software by Scrum metodology. I have experienced a lot of implmentations, excellent, good and bad. Except prototyping, I consider Scrum and all the agile approach to develop software as the only one possible."
+                    text: "I have rich experience of developing software by Scrum methodology. \n\t\t\t\t\t\t\t\t\t\t\t\tI have experienced a lot of implementations, excellent, good and bad. Except prototyping, I consider Scrum and all the agile approach generally as the only one to develop software."
                 },
                 {
                     id: "blockUnitTests",
@@ -258,7 +286,16 @@ var Views;
                     realKnowledge: 9,
                     isRoot: false,
                     cont: "blockProject",
-                    text: "Unit tests are undivadable part of enterprise software development. 100% of business logic should be covered. I'm not a fan of TDD, or better said unit tests first - except for business logic modules."
+                    text: "Unit tests are undividable part of enterprise software development. 100% of business logic should be covered. I'm not a fan of TDD, or better said unit tests first - except for business logic modules."
+                },
+                {
+                    id: "blockGulp",
+                    title: "Gulp",
+                    yearsExperience: 1,
+                    realKnowledge: 7,
+                    isRoot: false,
+                    cont: "blockProject",
+                    text: "I like this technology. I managed to set up one project to one-click from build to deployment."
                 },
                 {
                     id: "blockDatabase",
@@ -271,57 +308,24 @@ var Views;
                     technoExport: true,
                     id: "blockMsSql",
                     title: "Relational databases (MS SQL)",
+                    titleShort: "MS SQL",
                     yearsExperience: 12,
                     realKnowledge: 8,
                     isRoot: false,
                     cont: "blockDatabase",
-                    text: "I am good in designing relational DB. However my RD knowledge is high, I didn't write one single SQL query in last 3 years. However I used to work on projects, where I was writing just Stored procedures for all year long, I didn't write one single T-SQL line last 5 years. I would be able to refresh my knowledge within a week or two."
+                    text: "I have roughly 12 years of experience with MS SQL. But in last 3 years, I didn't take part of a project using MS SQL. I have a perfect RD design skills. However I worked on projects, where I was writing just Stored procedures for all year long, I didn't write one single T-SQL line last 5 years. I would be able to refresh my knowledge to expert level within a week or two."
                 },
                 {
                     technoExport: true,
                     id: "blockMongo",
                     title: "Document DB (Mongo)",
+                    titleShort: "Mongo",
                     yearsExperience: 4,
                     realKnowledge: 8,
                     isRoot: false,
                     cont: "blockDatabase",
-                    text: "Since last couple of years I felt in love with Document DB. I strongly belive that it's the fastest and cheapest way how to develop most of the applications, however it doesn't fit to all of them."
-                },
-                {
-                    id: "blockAPI",
-                    title: "API's",
-                    isRoot: true,
-                    cont: "bprint1",
-                    text: ""
-                },
-                {
-                    technoExport: true,
-                    id: "blockMapbox",
-                    title: "Mapbox + Leaflet",
-                    yearsExperience: 1,
-                    realKnowledge: 7,
-                    isRoot: false,
-                    cont: "blockAPI",
-                    text: "I have solid knowledge of Mapbox.js and Leaflet.js. I can develop nice looking maps and visualize date on them by many approaches."
-                },
-                {
-                    technoExport: true,
-                    id: "blockFacebookAPI",
-                    title: "Facebook API",
-                    yearsExperience: 5,
-                    realKnowledge: 8,
-                    isRoot: false,
-                    cont: "blockAPI",
-                    text: "I have solid knowledge of Facebook API. I can make completely customized login or play with the user data. I have also solid knowledge of Facebook API terms and conditons."
-                },
-            ];
-            this.groups = [
-                { g: "FJ1", d: "Own project" },
-                { g: "AGT", d: "Employee" },
-                { g: "FJ2", d: "Freelancer" },
-                { g: "UNICORN", d: "Employee, Freelancer" },
-                { g: "AQUA", d: "Employee" },
-                { g: "FJ3", d: "Freelancer" },
+                    text: "Since the last couple of years, I felt in love with Document DBs. I am convinced, that it's the fastest and cheapest way how to develop most of the applications. But of course, it doesn't fit for every software solution."
+                }
             ];
             this.projects = [
                 {
@@ -330,11 +334,12 @@ var Views;
                     endMonth: 4,
                     endYear: 2017,
                     projectGroup: "FJ1",
+                    logo: "gloobster.svg",
                     company: "Gloobster.com",
                     employed: false,
-                    position: "CTO/CEO",
+                    position: "Founder",
                     locations: ["Frankfurt"],
-                    description: "Social travel portal"
+                    description: "Goobster is a travel startup offering long term fly ticket search and a wide range of supportive social network features."
                 },
                 {
                     startMonth: 1,
@@ -342,11 +347,12 @@ var Views;
                     endMonth: 8,
                     endYear: 2015,
                     projectGroup: "AGT",
+                    logo: "agt.png",
                     company: "AGT Int.",
                     employed: true,
                     position: "Senior Developer",
                     locations: ["Darmstadt", "Tel Aviv"],
-                    description: "Mybitat, joint venture of Samsung and AGT to Improve Ability of the Elderly to Live at Home Longer with Enhanced Quality of Life. Our team was working on supporting tools for sensor collected data evaluation. I was working mostly on client development tasks."
+                    description: "Mybitat is a joint venture of Samsung and AGT to Improve Ability of the Elderly to Live at Home Longer with Enhanced Quality of Life. \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOur team was working on supporting tools for sensor collected data evaluation. I was working mostly on client development tasks."
                 },
                 {
                     startMonth: 9,
@@ -354,11 +360,12 @@ var Views;
                     endMonth: 12,
                     endYear: 2015,
                     projectGroup: "AGT",
+                    logo: "agt.png",
                     company: "AGT Int.",
                     employed: true,
                     position: "Senior Developer",
                     locations: ["Darmstadt"],
-                    description: "Video anomaly detection tool and several other tools for visualization and support big data field."
+                    description: "Video anomaly detection tool and several other tools for visualization and support of big data field."
                 },
                 {
                     startMonth: 10,
@@ -366,11 +373,12 @@ var Views;
                     endMonth: 9,
                     endYear: 2014,
                     projectGroup: "AGT",
+                    logo: "agt.png",
                     company: "AGT Int.",
                     employed: true,
                     position: "Senior Developer",
                     locations: ["Darmstadt", "Abu Dhabi"],
-                    description: "Urban Shield is a large public security and smart city enterprise solution for Abu Dhabi emirate. Collects, process and evaluate thousands of sensors data all around the city. Possibly biggest project I ever took part of with current cost over 7 billion €. On the project I performed multiple tasks including integration, development, analysis, architecture, refactoring and big data experiments. I was also often visiting customer site to supervise deployment and test process. "
+                    description: "Urban Shield is a large public security and smart city enterprise solution for Abu Dhabi emirate. \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tCollects, process and evaluate thousands of sensors data all around the city. \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tPossibly the biggest project I ever took part of. \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOn the project, I performed multiple tasks including integration, development, analysis, architecture, refactoring and big data experiments. I was also often visiting customer's site to supervise deployment and test process."
                 },
                 {
                     startMonth: 1,
@@ -378,11 +386,12 @@ var Views;
                     endMonth: 8,
                     endYear: 2013,
                     projectGroup: "FJ2",
+                    logo: "simplias.png",
                     company: "Simplias GMBH",
                     employed: false,
                     position: "Senior Developer",
                     locations: ["Munich"],
-                    description: "Mobile field reporting management project, 9 months fixed contract. I worked as a developer of a management portal web application using single page application pattern based on the Backbone framework. During the project, I gained deep knowledge about Single page application patterns and dozens of other JavaScript technologies and frameworks.",
+                    description: "Mobile field reporting management project. \n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tI worked as a developer of the management web application. It is developed as Backbone SPA",
                     url: "http://www.mobilefieldreport.com"
                 },
                 {
@@ -391,11 +400,12 @@ var Views;
                     endMonth: 1,
                     endYear: 2013,
                     projectGroup: "FJ2",
+                    logo: "cid.svg",
                     company: "CID GMBH",
                     employed: false,
                     position: "Senior Developer",
                     locations: ["Gelnhausen"],
-                    description: "I worked as a developer of a web crawler application. The web crawler component is a part of a larger solution called Topic Analyst. I was responsible mainly for development and partially for deployment and maintenance. My other duties included investigation and analysis of crawling mechanisms and algorithms. During this project I gained strong experience with Unit Testing, web request/response&HTTP, MSMQ/NserviceBus",
+                    description: "I worked as a developer of a web crawler application. The web crawler component is a part of a larger solution called Topic Analyst. I was responsible mainly for development and partially for deployment and maintenance. My other duties included investigation and analysis of crawling mechanisms and algorithms.",
                 },
                 {
                     startMonth: 3,
@@ -403,11 +413,12 @@ var Views;
                     endMonth: 6,
                     endYear: 2011,
                     projectGroup: "UNICORN",
+                    logo: "bgs.png",
                     company: "Be a Golf Star",
                     employed: false,
                     position: "CTO",
                     locations: ["Prague"],
-                    description: "Online golf manager game. The application is divided into several parts and uses various technologies and frameworks: Websites in MVC2, Background service, Silverlight game graphic view, tools for drawing golf courses in WPF and Silverlight CMS client. On this project I have been responsible for architecture, management of three technical based employees and partially for the analysis. I did most of the work on the database logic and the application core.",
+                    description: "Online golf manager game. An unsuccessful startup in the gaming industry.\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOn this project, I've been working as a CTO.",
                 },
                 {
                     startMonth: 12,
@@ -415,11 +426,12 @@ var Views;
                     endMonth: 3,
                     endYear: 2010,
                     projectGroup: "UNICORN",
+                    logo: "kbc.png",
                     company: "KBC",
                     employed: false,
                     position: "Senior Developer",
                     locations: ["Prague"],
-                    description: "A call center administration application. It was an existing application, my role was to implement some new features. Project is based on KBC Nirvana framework, MVC architectural pattern, and it was developed using SCRUM methodology. Apart from my .NET framework skills, I was able to put to use my exceptional knowledge of TFS server and Build process for application deployment.",
+                    description: "A rework of a call center administration application.",
                 },
                 {
                     startMonth: 4,
@@ -427,11 +439,12 @@ var Views;
                     endMonth: 3,
                     endYear: 2010,
                     projectGroup: "UNICORN",
+                    logo: "rm.png",
                     company: "Rooms Outdoor",
                     employed: false,
                     position: "Senior Developer",
                     locations: ["Prague"],
-                    description: "A Silverlight application called Configurator that allows their customers to design custom garden studios. I did most of the analytical work and all technical based work. The solution includes a simple Silverlight administration and was connected into company’s 3rd party ERP.",
+                    description: "A web app for designing and configuration of garden houses.",
                     url: "http://roomsoutdoor.co.uk/configurator"
                 },
                 {
@@ -440,11 +453,12 @@ var Views;
                     endMonth: 3,
                     endYear: 2009,
                     projectGroup: "UNICORN",
+                    logo: "cit.png",
                     company: "Sitronics",
                     employed: false,
                     position: "Senior Build Engineer",
                     locations: ["Prague"],
-                    description: "On this project I learnt a great deal about .NET Build process. I also got some experience as team leader. My first role in this company was to implement a number of new features to the company’s Release management system and to debug the existing Build system. In the second phase I was responsible for the Build system future vision and architecture.This build system is large solution based on TFS server modified by custom plug-ins for automated deployment. ",
+                    description: "I was working as a developer/project manager of an automated CI build/deploy/test system.",
                 },
                 {
                     startMonth: 11,
@@ -452,11 +466,12 @@ var Views;
                     endMonth: 2,
                     endYear: 2008,
                     projectGroup: "UNICORN",
+                    logo: "kbc.png",
                     company: "KBC",
                     employed: false,
                     position: "Senior Developer",
                     locations: ["Prague"],
-                    description: "Projects Storm and SySel are two internal applications which were made to replace a former internal application. It is used for accounting management and management of economic adherent structure. The two applications are part of a large banking system and were developed on an existing Oracle database. My role was to implement the Views and Business logic into the common internal framework.",
+                    description: "Projects Storm and SySel are remakes of two internal applications, used for accounting management and company's economic plans projection.",
                 },
                 {
                     startMonth: 5,
@@ -464,6 +479,7 @@ var Views;
                     endMonth: 10,
                     endYear: 2007,
                     projectGroup: "UNICORN",
+                    logo: "kbc.png",
                     company: "KBC",
                     employed: false,
                     position: "Senior Developer",
@@ -477,11 +493,12 @@ var Views;
                     endMonth: 4,
                     endYear: 2007,
                     projectGroup: "UNICORN",
+                    logo: "mcd.png",
                     company: "MC DONALD'S",
                     employed: true,
                     position: "Developer",
                     locations: ["Prague"],
-                    description: "McDonalds, project McDonald Human Resources. A human resources management system. It was made as a desktop application.",
+                    description: "McDonald's, project human resources management.",
                 },
                 {
                     startMonth: 7,
@@ -489,11 +506,12 @@ var Views;
                     endMonth: 1,
                     endYear: 2007,
                     projectGroup: "UNICORN",
+                    logo: "IRC.png",
                     company: "Inland revenue and custom of Czech Republic",
                     employed: true,
                     position: "Developer",
                     locations: ["Prague"],
-                    description: "A web application based on the SharePoint technology with intranet and internet applications.",
+                    description: "A web-based SharePoint search extension.",
                 },
                 {
                     startMonth: 1,
@@ -501,11 +519,12 @@ var Views;
                     endMonth: 6,
                     endYear: 2006,
                     projectGroup: "UNICORN",
+                    logo: "erste.svg",
                     company: "Erste bank",
                     employed: true,
                     position: "Developer",
                     locations: ["Prague"],
-                    description: "A client service suite which contains systems for managing common, savings and budged accounts.",
+                    description: "A client service suite for managing common, savings and budget accounts.",
                 },
                 {
                     startMonth: 1,
@@ -513,6 +532,7 @@ var Views;
                     endMonth: 12,
                     endYear: 2005,
                     projectGroup: "AQUA",
+                    logo: "solitea.jpg",
                     company: "Aquasoft",
                     employed: true,
                     position: "Developer",
@@ -525,11 +545,12 @@ var Views;
                     endMonth: 12,
                     endYear: 2004,
                     projectGroup: "FJ3",
+                    logo: "egem.jpg",
                     company: "EGEM GMBH",
                     employed: false,
                     position: "Developer",
                     locations: ["Brno"],
-                    description: "A client-server solution for storing and versioning the company’s documents. The communication was based on TCP/IP protocol. The client application also had off-line mode with local storing and synchronization. I was responsible for the technical solution and partially for the analysis ",
+                    description: "A client-server solution for storing and versioning the company\u2019s documents.",
                 },
                 {
                     startMonth: 1,
@@ -537,18 +558,68 @@ var Views;
                     endMonth: 12,
                     endYear: 2003,
                     projectGroup: "FJ3",
+                    logo: "netbox.svg",
                     company: "Netbox",
                     employed: false,
                     position: "Developer",
                     locations: ["Brno"],
-                    description: "Tools for network system administration",
+                    description: "Development of tools for network system administration.",
                 }
             ];
+            this.groups = [
+                { g: "FJ1", d: "Own project", m: "Own project" },
+                { g: "AGT", d: "Employee", m: "AGT" },
+                { g: "FJ2", d: "Freelancer", m: "Freelance jobs" },
+                { g: "UNICORN", d: "Employee, Freelancer", m: "Unicorn" },
+                { g: "AQUA", d: "Employee", m: "Aquasoft" },
+                { g: "FJ3", d: "Freelancer", m: "Freelance jobs" }
+            ];
+            this.myDoughnutChart = null;
         }
+        CVView.prototype.genProjects = function () {
+            var vProjects = _.map(this.projects, function (p) {
+                p.cities = p.locations.join(", ");
+                return p;
+            });
+            var t = this.registerTemplate("projs-row-tmp");
+            vProjects.forEach(function (p) {
+                var $i = $(t(p));
+                $("#projectsCont").append($i);
+            });
+        };
+        CVView.prototype.genCompanies = function () {
+            var projGroups = _.groupBy(this.projects, "projectGroup");
+            var comps = [];
+            for (var key in projGroups) {
+                if (projGroups.hasOwnProperty(key)) {
+                    var projects = projGroups[key];
+                    var g = _.find(this.groups, { g: key });
+                    var locArrays = _.map(projects, function (p) { return p.locations; });
+                    var allCities = [].concat.apply([], locArrays);
+                    var comp = {
+                        yearStart: _.min(_.map(projects, function (p) { return p.startYear; })),
+                        yearEnd: _.max(_.map(projects, function (p) { return p.endYear; })),
+                        compGroupName: g.m,
+                        cities: _.uniq(allCities).join(", "),
+                        form: g.d,
+                        emps: _.uniq(_.map(projects, function (p) { return p.company; }))
+                    };
+                    comps.push(comp);
+                }
+                ;
+            }
+            var tmp = this.registerTemplate("comps-row-tmp");
+            comps.forEach(function (c) {
+                var $row = $(tmp(c));
+                $("#tblEmployers").append($row);
+            });
+        };
         CVView.prototype.init = function () {
             this.genArticles();
             this.genSkillsPie();
             this.genTechnoBars();
+            this.genCompanies();
+            this.genProjects();
         };
         CVView.prototype.genArticles = function () {
             var t = this.registerTemplate("category-block-tmp");
@@ -574,29 +645,89 @@ var Views;
                             "#36A2EB",
                             "#FFCE56",
                             "#57C2DB",
-                            "#9FD2E3"
+                            "#4B966E",
+                            "#FF6384",
+                            "#36A2EB",
+                            "#FFCE56",
+                            "#57C2DB",
+                            "#4B966E",
+                            "#FF6384",
+                            "#36A2EB",
+                            "#FFCE56",
+                            "#57C2DB",
+                            "#4B966E",
                         ],
                         data: [],
                     }
                 ]
             };
+            var options = {
+                legend: {
+                    display: false,
+                },
+                scales: {
+                    xAxes: [{
+                            ticks: {
+                                fontSize: 19
+                            }
+                        }]
+                }
+            };
             var ts = _.filter(this.technos, { technoExport: true });
             ts = _.sortBy(ts, "yearsExperience").reverse();
             ts.forEach(function (t) {
-                data.labels.push(t.title);
+                data.labels.push(t.titleShort ? t.titleShort : t.title);
                 data.datasets[0].data.push((t.yearsExperience));
             });
             var myBarChart = new Chart(ctx, {
                 type: 'bar',
                 data: data,
+                options: options
             });
         };
         CVView.prototype.genSkillsPie = function () {
+            Chart.defaults.global.defaultFontSize = 20;
+            Chart.pluginService.register({
+                beforeRender: function (chart) {
+                    if (chart.config.options.showAllTooltips) {
+                        chart.pluginTooltips = [];
+                        chart.config.data.datasets.forEach(function (dataset, i) {
+                            chart.getDatasetMeta(i).data.forEach(function (sector, j) {
+                                chart.pluginTooltips.push(new Chart.Tooltip({
+                                    _chart: chart.chart,
+                                    _chartInstance: chart,
+                                    _data: chart.data,
+                                    _options: chart.options,
+                                    _active: [sector]
+                                }, chart));
+                            });
+                        });
+                        chart.options.tooltips.enabled = false;
+                    }
+                },
+                afterDraw: function (chart, easing) {
+                    if (chart.config.options.showAllTooltips) {
+                        if (!chart.allTooltipsOnce) {
+                            if (easing !== 1)
+                                return;
+                            chart.allTooltipsOnce = true;
+                        }
+                        chart.options.tooltips.enabled = true;
+                        Chart.helpers.each(chart.pluginTooltips, function (tooltip) {
+                            tooltip.initialize();
+                            tooltip.update();
+                            tooltip.pivot();
+                            tooltip.transition(easing).draw();
+                        });
+                        chart.options.tooltips.enabled = false;
+                    }
+                }
+            });
             var ctx = $("#pieChart");
             var data = {
                 labels: [
-                    "Backend",
-                    "Frontent",
+                    "Backend development",
+                    "Frontent development",
                     "Project management",
                     "Architecture",
                     "UX"
@@ -609,14 +740,30 @@ var Views;
                             "#36A2EB",
                             "#FFCE56",
                             "#57C2DB",
-                            "#9FD2E3"
+                            "#4B966E",
                         ],
                     }]
             };
-            var myDoughnutChart = new Chart(ctx, {
+            var options = {
+                legend: {
+                    display: false,
+                },
+                showAllTooltips: true,
+                tooltips: {
+                    callbacks: {
+                        label: function (tooltipItem, data) {
+                            var label = data.labels[tooltipItem.index];
+                            return label;
+                        }
+                    },
+                }
+            };
+            var cfg = {
                 type: 'doughnut',
                 data: data,
-            });
+                options: options
+            };
+            this.myDoughnutChart = new Chart(ctx, cfg);
         };
         return CVView;
     }(Views.ViewBase));
