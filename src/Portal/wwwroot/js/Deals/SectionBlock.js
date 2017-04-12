@@ -71,11 +71,9 @@ var Planning;
         SectionBlock.prototype.regInfo = function () {
             var _this = this;
             this.$cont.find(".info-btn").click(function (e) {
-                var $c = $("<div class=\"info-txt-wrap\"></div>");
-                _this.$cont.find(".cat-drop-cont .cont").html($c);
                 var txt = _this.getInfoTxt();
-                $c.html(txt);
-                _this.setMenuContVisibility(true);
+                var cd = new Common.NewInfoDialog();
+                cd.create("", txt);
             });
         };
         SectionBlock.prototype.initMapDisabler = function () {

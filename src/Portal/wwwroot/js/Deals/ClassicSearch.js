@@ -27,6 +27,7 @@ var Planning;
                 _this.execFilter();
             });
             var $airFilterAll = $f.find(".air-filter-all");
+            var $connsFilterCol = $f.find("#connsFilterCol");
             var pairs = [];
             this.search.lastFlights.forEach(function (f) {
                 var pair = { from: f.from, to: f.to };
@@ -36,7 +37,7 @@ var Planning;
                 }
             });
             this.hasMoreConns = pairs.length > 1;
-            $airFilterAll.toggleClass("hidden", !this.hasMoreConns);
+            $connsFilterCol.toggleClass("hidden", !this.hasMoreConns);
             if (this.hasMoreConns) {
                 this.airSel = new Planning.AirportSelector($airFilterAll.find(".air-filter-cont"), pairs);
                 this.airSel.onChange = function () {

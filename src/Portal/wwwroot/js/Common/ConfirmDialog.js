@@ -119,6 +119,24 @@ var Common;
         return ErrorDialog;
     }());
     Common.ErrorDialog = ErrorDialog;
+    var NewInfoDialog = (function () {
+        function NewInfoDialog() {
+        }
+        NewInfoDialog.prototype.create = function (title, text, callback) {
+            var _this = this;
+            if (callback === void 0) { callback = null; }
+            this.cd = new CustomDialog();
+            this.cd.init(text, title, "info-dlg-new");
+            this.cd.addBtn(Views.ViewBase.currentView.t("Close", "jsLayout"), "yellow-orange", function () {
+                _this.cd.close();
+            });
+        };
+        NewInfoDialog.prototype.hide = function () {
+            this.cd.close();
+        };
+        return NewInfoDialog;
+    }());
+    Common.NewInfoDialog = NewInfoDialog;
     var InfoDialog = (function () {
         function InfoDialog() {
             this.template = Views.ViewBase.currentView.registerTemplate("infoDialog-template");

@@ -35,7 +35,7 @@ var Views;
                     realKnowledge: 7,
                     isRoot: false,
                     cont: "blockLangs",
-                    text: "Roughly half of the projects I took part of, required usage of JavaScript. \n\t\t\t\t\t\t\t\t\t\t\t\tHowever I was using TypeScript in last 2 years, I still know ES5 syntax quite well. I don't have any experience with ES6 or higher."
+                    text: "Roughly half of the projects I took part of, involved client side coding. \n\t\t\t\t\t\t\t\t\t\t\t\tI know ES5 well, but in last two years, I became a bit ES5 lazy due to TypeScript.\n\t\t\t\t\t\t\t\t\t\t\t\tI don't have any experience with ES6 or higher, but it's on my to-learn list."
                 },
                 {
                     technoExport: true,
@@ -100,7 +100,7 @@ var Views;
                     realKnowledge: 8,
                     isRoot: false,
                     cont: "blockWeb",
-                    text: "I worked with jQuery on several projects and still consider it as one of the best JS frameworks out there."
+                    text: "I worked with jQuery on dozen projects and still consider it as one of the best JS frameworks out there. Of course I understand that it's not suitable for projects with expected high need of client debugging and tweeking."
                 },
                 {
                     id: "blockBrowserInterface",
@@ -163,7 +163,7 @@ var Views;
                     realKnowledge: 7,
                     isRoot: false,
                     cont: "blockAPI",
-                    text: "I have solid knowledge of Mapbox.js and Leaflet.js. I can develop nice looking maps and visualise on them basically anything."
+                    text: "I have solid knowledge of Mapbox.js and Leaflet.js. I can implement nice looking maps and visualize any kind of data on it."
                 },
                 {
                     technoExport: true,
@@ -186,10 +186,10 @@ var Views;
                     id: "blockDomModel",
                     title: "Domain model",
                     yearsExperience: 8,
-                    realKnowledge: 9,
+                    realKnowledge: 8,
                     isRoot: false,
                     cont: "blockArchitecture",
-                    text: "I worked on many projects using many implementations of DDD. I read the book (DDD from Fowler) and I'm familiar with the terminology and key patterns."
+                    text: "I worked on dozen projects using many implementations of DDD. I read the book (DDD from Fowler) and I'm familiar with the terminology and key patterns."
                 },
                 {
                     id: "blockCommQuery",
@@ -198,20 +198,20 @@ var Views;
                     realKnowledge: 10,
                     isRoot: false,
                     cont: "blockArchitecture",
-                    text: "I would say you should use Command & Query for most of the projects. For most of the projects is DDD overkill."
+                    text: "DDD is over-kill or unsuitable for a lot of the projects. Command & Query is sufficient for most of them."
                 },
                 {
-                    id: "block",
+                    id: "blockBBM",
                     title: "Big Ball of Mud",
                     yearsExperience: 16,
                     realKnowledge: 10,
                     isRoot: false,
                     cont: "blockArchitecture",
-                    text: "A very favourite pattern on my - for prototyping. Let's not loose time by architecture where is it not necessary."
+                    text: "A very favorite pattern on mine for prototyping. Let's not loose time by architecture where it's not necessary."
                 },
                 {
                     id: "blockMvc",
-                    title: "MVC & MVVM + REST",
+                    title: "MVC & MVVM",
                     yearsExperience: 8,
                     realKnowledge: 9,
                     isRoot: false,
@@ -234,7 +234,7 @@ var Views;
                     realKnowledge: 7,
                     isRoot: false,
                     cont: "blockArchitecture",
-                    text: "I never took part of any task for high-level architecture on a bigger project. But after 16 years a developed common sense in this field."
+                    text: "I don't have much experience with high-level architecture on a big project, but I have a lot of experience with high-level architecture on mid-sized projects."
                 },
                 {
                     id: "blockProject",
@@ -418,7 +418,7 @@ var Views;
                     employed: false,
                     position: "CTO",
                     locations: ["Prague"],
-                    description: "Online golf manager game. An unsuccessful startup in the gaming industry.\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOn this project, I've been working as a CTO.",
+                    description: "Online golf manager game. An unsuccessful startup in the gaming industry.\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tOn this project, I worked as a CTO.",
                 },
                 {
                     startMonth: 12,
@@ -498,7 +498,7 @@ var Views;
                     employed: true,
                     position: "Developer",
                     locations: ["Prague"],
-                    description: "McDonald's, project human resources management.",
+                    description: "HR management system to improve manpower sharing among subsidiaries.",
                 },
                 {
                     startMonth: 7,

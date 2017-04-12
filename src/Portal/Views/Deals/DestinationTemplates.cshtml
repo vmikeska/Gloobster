@@ -1,123 +1,123 @@
 ﻿@using Microsoft.Data.Entity.Metadata.Internal
 
 
-    <script id="no-destinations-tmp" type="text/x-handlebars-template">
-        <div class="no-dests">
-            <div class="ln1">@Model.W("NoResultsTxt")</div>
-            <div class="tbl">
+<script id="no-destinations-tmp" type="text/x-handlebars-template">
+    <div class="no-dests">
+        <div class="ln1">@Model.W("NoResultsTxt")</div>
+        <div class="tbl">
 
-                <div class="cell">
+            <div class="cell">
 
-                    <div class="ico-all ico-map">
-                        <div class="txt">@Model.W("NoResultsChooseMap")</div>
-                        <div class="ico">
-                            <span class="icon-earth"></span>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="cell">
-                    <span class="or">@Model.W("NoResultsChooseOr")</span>
-                </div>
-
-                <div class="cell">
-                    <div class="ico-all ico-search">
-                        <div class="txt">@Model.W("NoResultsChooseSearch")</div>
-                        <div class="ico">
-                            <span class="icon-search"></span>
-                        </div>
+                <div class="ico-all ico-map">
+                    <div class="txt">@Model.W("NoResultsChooseMap")</div>
+                    <div class="ico">
+                        <span class="icon-earth"></span>
                     </div>
                 </div>
 
             </div>
+
+            <div class="cell">
+                <span class="or">@Model.W("NoResultsChooseOr")</span>
+            </div>
+
+            <div class="cell">
+                <div class="ico-all ico-search">
+                    <div class="txt">@Model.W("NoResultsChooseSearch")</div>
+                    <div class="ico">
+                        <span class="icon-search"></span>
+                    </div>
+                </div>
+            </div>
+
         </div>
-    </script>
+    </div>
+</script>
 
-    <script id="loc-dlg-tmp" type="text/x-handlebars-template">
+<script id="loc-dlg-tmp" type="text/x-handlebars-template">
 
-        <div class="location-dialog">
+    <div class="location-dialog">
 
-            <div>
-                <div class="input-block">
-                    <div class="title">@Model.W("WhereDoYouLive")</div>
-                    <div id="currentCity" class="dropdown place-combo">
-                        <input class="inputed" type="text" placeholder="@Model.W("CityNamePlaceholder")" value="@Model.InitCurrentLocation">
-                        <img class="loader" src="/images/loader-gray.gif" style="display: none" />
-                        <span class="icon-logo-pin"></span>
-                        <ul></ul>
-                    </div>
-                </div>
-
-                <div id="rangeBlock" class="input-block @(string.IsNullOrEmpty(Model.InitCurrentLocation) ? "hidden" : string.Empty)">
-                    <div class="title">@Model.W("SelectAirportsInRange")</div>
-                    <div id="airportsRange" class="dropdown">
-                        <span class="selected">200 km</span>
-                        <ul>
-                            <li data-value="100">100 km</li>
-                            <li data-value="200">200 km</li>
-                            <li data-value="300">300 km</li>
-                            <li data-value="400">400 km</li>
-                            <li data-value="500">500 km</li>
-                        </ul>
-                        <input type="hidden" value="200">
-                    </div>
-                    <a id="addAirsRange" class="lbtn2 yellow-green add-btn" href="#">@Model.W("SelectBtn")</a>
-                </div>
-            </div>
-
-            <div class="bottom-line">
-                <div class="title">@Model.W("CustomizeYourAirports")</div>
-                <div id="airportsCont" class="airports-cont">
-                </div>
-
-
-                <div id="airportCombo" class="dropdown">
-                    <input class="inputed" type="text" placeholder="@Model.W("SearchForAirportsPlaceholder")">
+        <div>
+            <div class="input-block">
+                <div class="title">@Model.W("WhereDoYouLive")</div>
+                <div id="currentCity" class="dropdown place-combo">
+                    <input class="inputed" type="text" placeholder="@Model.W("CityNamePlaceholder")" value="@Model.InitCurrentLocation">
+                    <img class="loader" src="/images/loader-gray.gif" style="display: none" />
+                    <span class="icon-logo-pin"></span>
                     <ul></ul>
                 </div>
             </div>
-        </div>
 
-    </script>
-
-    <script id="homeAirportItem-template" type="text/x-handlebars-template">
-        <div id="{{id}}" data-code="{{airCode}}" class="airport">
-            <span class="name" title="{{airName}}">{{city}} ({{airCode}})</span>
-            <a class="icon-cross-small delete" href="#"></a>
-        </div>
-    </script>
-
-
-    <script id="grouping-itm-tmp" type="text/x-handlebars-template">
-        <span class="item" data-id="{{id}}">
-            <span class="icon icon-{{icon}}"></span>
-            <span class="txt">{{txt}}</span>
-        </span>
-    </script>
-
-    <script id="custom-bar-icons-tmp" type="text/x-handlebars-template">
-
-        <div class="ico-wrap delete">
-            <div class="ico-part">
-                <span class="icon-bin"></span>
+            <div id="rangeBlock" class="input-block @(string.IsNullOrEmpty(Model.InitCurrentLocation) ? "hidden" : string.Empty)">
+                <div class="title">@Model.W("SelectAirportsInRange")</div>
+                <div id="airportsRange" class="dropdown">
+                    <span class="selected">200 km</span>
+                    <ul>
+                        <li data-value="100">100 km</li>
+                        <li data-value="200">200 km</li>
+                        <li data-value="300">300 km</li>
+                        <li data-value="400">400 km</li>
+                        <li data-value="500">500 km</li>
+                    </ul>
+                    <input type="hidden" value="200">
+                </div>
+                <a id="addAirsRange" class="lbtn2 yellow-green add-btn" href="#">@Model.W("SelectBtn")</a>
             </div>
-            <div class="desc-part">@Model.W("BarIcoDelete")</div>
         </div>
 
-        <div class="ico-wrap settings">
-            <div class="ico-part">
-                <span class="icon-gear"></span>
+        <div class="bottom-line">
+            <div class="title">@Model.W("CustomizeYourAirports")</div>
+            <div id="airportsCont" class="airports-cont">
             </div>
-            <div class="desc-part">@Model.W("BarIcoSettings")</div>
-        </div>
 
-    </script>
+
+            <div id="airportCombo" class="dropdown">
+                <input class="inputed" type="text" placeholder="@Model.W("SearchForAirportsPlaceholder")">
+                <ul></ul>
+            </div>
+        </div>
+    </div>
+
+</script>
+
+<script id="homeAirportItem-template" type="text/x-handlebars-template">
+    <div id="{{id}}" data-code="{{airCode}}" class="airport">
+        <span class="name" title="{{airName}}">{{city}} ({{airCode}})</span>
+        <a class="icon-cross-small delete" href="#"></a>
+    </div>
+</script>
+
+
+<script id="grouping-itm-tmp" type="text/x-handlebars-template">
+    <span class="item" data-id="{{id}}">
+        <span class="icon icon-{{icon}}"></span>
+        <span class="txt">{{txt}}</span>
+    </span>
+</script>
+
+<script id="custom-bar-icons-tmp" type="text/x-handlebars-template">
+
+    <div class="ico-wrap delete">
+        <div class="ico-part">
+            <span class="icon-bin"></span>
+        </div>
+        <div class="desc-part">@Model.W("BarIcoDelete")</div>
+    </div>
+
+    <div class="ico-wrap settings">
+        <div class="ico-part">
+            <span class="icon-gear"></span>
+        </div>
+        <div class="desc-part">@Model.W("BarIcoSettings")</div>
+    </div>
+
+</script>
 
 
 
 <script id="category-block-template" type="text/x-handlebars-template">
-        
+
     <div class="wrapper">
 
         <div class="cat-all" id="{{catId}}">
@@ -126,10 +126,10 @@
 
                 <div class="tbl">
 
-                    <div class="cb-c cb-l">
+                    <div class="cb-l">
 
 
-                        <div class="block-item">
+                        <div class="block-item b-l">
 
                             <span class="title-name">{{titleName}}</span>
 
@@ -143,7 +143,7 @@
 
                         </div>
 
-                        <div class="block-item">
+                        <div class="block-item b-r">
 
                             <div class="order-combo">
 
@@ -166,13 +166,13 @@
 
                     </div>
 
-                    <div class="cb-c cb-r">
+                    <div class="cb-r">
 
                         <div class="block-item custom-icons">
 
                         </div>
 
-                        <div class="block-item">
+                        <div class="block-item normal-icons b-r">
 
                             <div class="ico-wrap edit-map">
                                 <div class="ico-part">
@@ -272,10 +272,21 @@
 
                 </div>
 
-                <div class="cat-queue">
-                    <span class="preloader">
-                        <img src="/images/n/Plane_icon.svg">
-                    </span>
+                @*<div class="cat-queue">
+                        <span class="preloader">
+                            <img src="/images/n/Plane_icon.svg">
+                        </span>
+                        <div class="cont">
+
+                        </div>
+                    </div>*@
+
+                <div class="cat-queue hidden">
+
+                    <div class="preloader-svg">
+                        <img class="" src="/images/n/Plane-icon.svg">
+                    </div>
+
                     <div class="cont">
 
                     </div>
@@ -288,393 +299,418 @@
             </div>
         </div>
     </div>
-    </script>
+</script>
 
-    <script id="wiz-air-item" type="text/x-handlebars-template">
-        <span data-code="{{airCode}}" class="wiz-air">
-            <span class="name" title="{{airName}}">{{city}} ({{airCode}})</span>
-            <a class="icon-cross-small delete" href="#"></a>
-        </span>
-    </script>
-
-
-    <script id="map-place-item" type="text/x-handlebars-template">
-        <span data-t="{{type}}" data-id="{{id}}" class="place-tag">
-            <span class="txt">{{name}}</span><span class="icon-cross-small close"></span>
-        </span>
-    </script>
+<script id="wiz-air-item" type="text/x-handlebars-template">
+    <span data-code="{{airCode}}" class="wiz-air">
+        <span class="name" title="{{airName}}">{{city}} ({{airCode}})</span>
+        <a class="icon-cross-small delete" href="#"></a>
+    </span>
+</script>
 
 
+<script id="map-place-item" type="text/x-handlebars-template">
+    <span data-t="{{type}}" data-id="{{id}}" class="place-tag">
+        <span class="txt">{{name}}</span><span class="icon-cross-small close"></span>
+    </span>
+</script>
 
-    <script id="flights-empty-template" type="text/x-handlebars-template">
 
-        <div class="other-flights-empty">
 
-            <div class="info">
-                <span class="smile">:(</span>
-                @Model.W("NoResultsFound")
+<script id="flights-empty-template" type="text/x-handlebars-template">
+
+    <div class="other-flights-empty">
+
+        <div class="info">
+            <span class="smile">:(</span>
+            @Model.W("NoResultsFound")
+        </div>
+    </div>
+
+</script>
+
+<script id="stops-filter-item-tmp" type="text/x-handlebars-template">
+
+    <div class="dir-item"><input id="sfcb_{{order}}" type="checkbox" checked /><label for="sfcb_{{order}}"><span class="bold">{{txt}}</span> ({{cnt}} @Model.W("FlightsFilterFlights")) @Model.W("FlightsFilterFrom") <span class="bold">€{{from}}</span></label></div>
+
+</script>
+
+<script id="city-deals-weekend-template" type="text/x-handlebars-template">
+
+    <div class="city-deal" data-gid="{{gid}}">
+
+        <div class="title-deal">
+
+            <div class="deals-ordering hidden">
+
+                <div class="items-table">
+
+                    <div class="cell">
+                        <span data-b="price" data-o="asc" class="item l">@Model.W("OrderPriceBtn")</span>
+                    </div>
+
+                    <div class="cell">
+                        <span data-b="score" data-o="desc" class="item r">@Model.W("OrderScoreBtn")</span>
+                    </div>
+
+                </div>
+
             </div>
         </div>
 
-    </script>
 
-    <script id="stops-filter-item-tmp" type="text/x-handlebars-template">
+        <div class="splitter">
+            <div></div>
+        </div>
 
-        <span class="dir-item"><input id="sfcb_{{order}}" type="checkbox" checked /><label for="sfcb_{{order}}"><span class="bold">{{txt}}</span> ({{cnt}} @Model.W("FlightsFilterFlights")) @Model.W("FlightsFilterFrom") <span class="bold">€{{from}}</span></label></span>
-
-    </script>
-
-    <script id="city-deals-weekend-template" type="text/x-handlebars-template">
-
-        <div class="city-deal" data-gid="{{gid}}">
-
-            <div class="title-deal">
-
-                <div class="deals-ordering hidden">
-
-                    <div class="items-table">
-
-                        <div class="cell">
-                            <span data-b="price" data-o="asc" class="item l">@Model.W("OrderPriceBtn")</span>
-                        </div>
-
-                        <div class="cell">
-                            <span data-b="score" data-o="desc" class="item r">@Model.W("OrderScoreBtn")</span>
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-
-
-            <div class="splitter">
-                <div></div>
-            </div>
-
-            <div class="flights">
-
-            </div>
+        <div class="flights">
 
         </div>
 
+    </div>
 
-    </script>
 
-    <script id="city-deals-template" type="text/x-handlebars-template">
+</script>
 
-        <div class="city-deal" data-gid="{{gid}}">
+<script id="city-deals-template" type="text/x-handlebars-template">
 
-            <div class="title-deal">
+    <div class="city-deal" data-gid="{{gid}}">
 
-                <div class="deals-ordering hidden">
+        <div class="title-deal">
 
-                    <div class="items-table">
+            <div class="deals-ordering hidden">
 
-                        <div class="cell">
-                            <span data-b="price" data-o="asc" class="item l">@Model.W("OrderPriceBtn")</span>
-                        </div>
+                <div class="items-table">
 
-                        <div class="cell">
-                            <span data-b="score" data-o="desc" class="item r">@Model.W("OrderScoreBtn")</span>
-                        </div>
+                    <div class="cell">
+                        <span data-b="price" data-o="asc" class="item l">@Model.W("OrderPriceBtn")</span>
+                    </div>
 
+                    <div class="cell">
+                        <span data-b="score" data-o="desc" class="item r">@Model.W("OrderScoreBtn")</span>
                     </div>
 
                 </div>
-            </div>
-
-            <div class="flights">
 
             </div>
+        </div>
 
-            <div class="title">
-                @Model.W("NotFlexible")
-            </div>
-
-
-            <div class="other-flights-filter">
-
-                <div class="multi-conn-cont" style="display: none">
-                    <div class="tit">@Model.W("WhatConnectionsInterested")</div>
-                    <div class="airpairs-filter"></div>
-                </div>
-
-                <div class="tit">@Model.W("HowManyDayInDestination")</div>
-                <div class="days-range"></div>
-
-                <div class="tit">@Model.W("WhichMonth")</div>
-                <div class="months"></div>
-
-            </div>
-
-
-            <div class="splitter">
-                <div></div>
-            </div>
-
-            <div class="other-flights-preloader">
-                <div class="center">
-                    <div class="top">
-                        <div class="plane-preloader">
-                            <img src="/images/n/Plane_icon.svg" />
-                        </div>
-                    </div>
-                    <div class="bottom">
-                        <span class="txt">@Model.W("WeAreSearchingAnotherFlights")</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="other-flights-cont">
-
-            </div>
+        <div class="flights">
 
         </div>
 
-    </script>
+        <div class="title">
+            @Model.W("NotFlexible")
+        </div>
 
-    <script id="air-pair-item-template" type="text/x-handlebars-template">
 
-        <div class="pair" data-f="{{from}}" data-t="{{to}}">{{from}} - {{to}}</div>
+        <div class="other-flights-filter">
 
-    </script>
-
-    <script id="month-item-filter-template" type="text/x-handlebars-template">
-
-        <div class="month" data-m="{{month}}" data-y="{{year}}"><span>{{txt}}</span></div>
-
-    </script>
-
-    <script id="filtering-weekend-template" type="text/x-handlebars-template">
-
-        <div class="weekend-deals-filter">
-
-            <div class="all-deals">
-                <div id="cbUseDaysFilter" class="checkbox-all">
-                    <div class="checker-all">
-                        <div class="checker icon-checkmark2"></div>
-                    </div>
-                    <div class="label">
-                        @Model.W("UseDaysFilter")
-                    </div>
-                </div>
+            <div class="multi-conn-cont" style="display: none">
+                <div class="tit">@Model.W("WhatConnectionsInterested")</div>
+                <div class="airpairs-filter"></div>
             </div>
 
-            <div class="days-filter">
-                <div class="ftbl">
+            <div class="tit">@Model.W("HowManyDayInDestination")</div>
+            <div class="days-range"></div>
 
-                </div>
-            </div>
+            <div class="tit">@Model.W("WhichMonth")</div>
+            <div class="months"></div>
 
         </div>
 
 
-    </script>
+        <div class="splitter">
+            <div></div>
+        </div>
 
-    <script id="classic-search-filter-tmp" type="text/x-handlebars-template">
+        <div class="other-flights-preloader">
+            <div class="center">
+                <div class="top">
+                    <div class="plane-preloader">
+                        <img src="/images/n/Plane_icon.svg" />
+                    </div>
+                </div>
+                <div class="bottom">
+                    <span class="txt">@Model.W("WeAreSearchingAnotherFlights")</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="other-flights-cont">
+
+        </div>
+
+    </div>
+
+</script>
+
+<script id="air-pair-item-template" type="text/x-handlebars-template">
+
+    <div class="pair" data-f="{{from}}" data-t="{{to}}">{{from}} - {{to}}</div>
+
+</script>
+
+<script id="month-item-filter-template" type="text/x-handlebars-template">
+
+    <div class="month" data-m="{{month}}" data-y="{{year}}"><span>{{txt}}</span></div>
+
+</script>
+
+<script id="filtering-weekend-template" type="text/x-handlebars-template">
+
+    <div class="weekend-deals-filter">
+
+        <div class="all-deals">
+            <div id="cbUseDaysFilter" class="checkbox-all">
+                <div class="checker-all">
+                    <div class="checker icon-checkmark2"></div>
+                </div>
+                <div class="label">
+                    @Model.W("UseDaysFilter")
+                </div>
+            </div>
+        </div>
+
+        <div class="days-filter">
+            <div class="ftbl">
+
+            </div>
+        </div>
+
+    </div>
+
+
+</script>
+
+<script id="classic-search-filter-tmp" type="text/x-handlebars-template">
+
+    <div class="wrapper">
         <div class="filter-bar hidden">
 
-            <div class="wrapper">
-
-                <div class="line first-line">
-                    <div id="stopsCont" class="stops-cont"></div>
-                </div>
-
-                <div class="line">
-
-                    <div class="air-filter-all hidden">
-                        <div class="capt">@Model.W("FilterConnections")</div>
-                        <div class="air-filter-cont"></div>
-                    </div>
-
-                </div>
-
-
-
-
-                <div class="one-line">
-                    <div class="cell">
-                        <div>@Model.W("FilterDepart")</div>
-                        <div class="dep-time-filter"></div>
-                    </div>
-                    <div class="cell">
-                        <div>@Model.W("FilterReturn")</div>
-                        <div class="arr-time-filter"></div>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-    </script>
-
-    <script id="weekend-day-selector-template" type="text/x-handlebars-template">
-        <div class="cell">
-            <div class="day {{c}}" data-i="{{ni}}">{{name}}</div>
-        </div>
-    </script>
-
-    <script id="range-slider-template" type="text/x-handlebars-template">
-
-        <div class="slider-cont">
-
-            <div class="tbl">
-                <div class="left">
-                    <input id="{{id}}_from" type="number" />
-                </div>
-                <div class="center">
-                    <div class="inner-cont-slider">
-                        <div id="{{id}}"></div>
-                    </div>
-                </div>
-                <div class="right">
-                    <input id="{{id}}_to" type="number" />
-                </div>
-            </div>
-
-        </div>
-
-    </script>
-
-    <script id="time-slider-template" type="text/x-handlebars-template">
-
-        <div class="slider-cont">
-
-            <div class="tbl">
-                <div class="left">
-                    <span class="value" id="{{id}}_from"></span>
-                </div>
-                <div class="center">
-                    <div class="inner-cont-slider">
-                        <div id="{{id}}"></div>
-                    </div>
-                </div>
-                <div class="right">
-                    <span class="value" id="{{id}}_to"></span>
-                </div>
-            </div>
-
-        </div>
-
-    </script>
-
-    <script id="connection-single-flight-template" type="text/x-handlebars-template">
-
-        <div class="flight-bck-cont {{customClass}}">
-
-            <div class="flight">
-                <div class="top-line">
-                    {{airName}}
-                </div>
-
-                <div class="data-tbl">
-
-                    <div class="di logo-cont">
-                        <img class="air-logo" src="{{logoLink}}" />
-                    </div>
-
-                    <div class="di flight-dir">
-                        <div class="from-to">{{codeFrom}} → {{codeTo}}</div>
-                        <div class="flight-no">{{flightNo}}</div>
-                    </div>
-
-                    <div class="di">
-                        <div class="date">{{date}}</div>
-                    </div>
-
-                    <div class="di time-cont">
-                        <div class="time">{{timeFrom}} - {{timeTo}}</div>
-                        <div class="duration">({{durHours}}h {{durMins}}min)</div>
-                    </div>
-
-                    <div class="di direct-cont">
-
-                        {{#ifCond stops 0}}
-                        <div class="direct">@Model.W("DirectFlight")</div>
-                        {{else}}
-                        <div class="stops">
-                            <a class="stops-btn" href="#"><span class="txt">{{stops}} @Model.W("StopsCnt") </span><span class="icon-dropdown-arrow"></span></a>
+            <div class="lay-tbl">
+                <div class="lc col">
+                    
+                    <div class="block">
+                        <div class="b-title">
+                            Stops filter
                         </div>
-                        {{/ifCond}}
-
+                        <div class="b-cont">            
+                            <div id="stopsCont" class="stops-cont"></div>
+                        </div>
                     </div>
 
                 </div>
 
-            </div>
-
-            <div class="flights-sub"></div>
-        </div>
-
-    </script>
-
-
-    <script id="connection-flight-template" type="text/x-handlebars-template">
-
-        <div class="conn">
-
-            <div class="layout-tbl">
-                <div class="left">
-
-                </div>
-                <div class="right">
-
-                    <div class="book-zone">
-
-                        {{#if scoreOk}}
-                        <div class="score">
-                            <div class="txt-score">
-                                {{#ifCond scoreText "E"}}@Model.W("Score5"){{/ifCond}}
-                                {{#ifCond scoreText "G"}}@Model.W("Score3"){{/ifCond}}
-                                {{#ifCond scoreText "S"}}@Model.W("Score1"){{/ifCond}}
-                            </div>
-                            <div class="stars-score">
-
-                                {{#for 0 scoreStars 1}}
-                                <span class="icon-star-full"></span>
-                                {{/for}}
-
-                            </div>
-                            <div class="cap">
-                                @Model.W("FlightScore")
+                <div id="connsFilterCol"  class="mc col hidden">
+                    
+                    <div class="block">
+                        <div class="b-title">
+                            @Model.W("FilterConnections")
+                        </div>
+                        <div class="b-cont">
+                            <div class="air-filter-all">                                
+                                <div class="air-filter-cont"></div>
                             </div>
                         </div>
-                        {{/if}}
-
-
-                        <div class="price-all">
-                            <span class="currency">€</span><span class="price">{{price}}</span>
-                        </div>
-
-                        <div class="btn-cont">
-                            <a href="{{bookLink}}" target="_blank">@Model.W("BookNow")</a>
-                        </div>
                     </div>
 
+                </div>
+
+                <div class="rc col">
+                    
+                    <div class="block">
+                        <div class="b-title">
+                            Time filter
+                        </div>
+                        <div class="b-cont">
+                            <div class="line">
+                                <div class="slide-title">@Model.W("FilterDepart")</div>
+                                <div class="dep-time-filter"></div>
+                            </div>
+                            <div class="line">
+                                <div class="slide-title">@Model.W("FilterReturn")</div>
+                                <div class="arr-time-filter"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
 
         </div>
+    </div>
 
-    </script>
+</script>
 
-    <script id="freq-item-template" type="text/x-handlebars-template">
+<script id="weekend-day-selector-template" type="text/x-handlebars-template">
+    <div class="cell">
+        <div class="day {{c}}" data-i="{{ni}}">{{name}}</div>
+    </div>
+</script>
 
-        <div class="cell">
-            <div class="item" data-d="{{days}}">{{text}}</div>
+<script id="range-slider-template" type="text/x-handlebars-template">
+
+    <div class="slider-cont">
+
+        <div class="tbl">
+            <div class="left">
+                <input id="{{id}}_from" type="number" />
+            </div>
+            <div class="center">
+                <div class="inner-cont-slider">
+                    <div id="{{id}}"></div>
+                </div>
+            </div>
+            <div class="right">
+                <input id="{{id}}_to" type="number" />
+            </div>
         </div>
 
-    </script>
+    </div>
+
+</script>
+
+<script id="time-slider-template" type="text/x-handlebars-template">
+
+    <div class="slider-cont">
+
+        <div class="tbl">
+            <div class="left">
+                <span class="value" id="{{id}}_from"></span>
+            </div>
+            <div class="center">
+                <div class="inner-cont-slider">
+                    <div id="{{id}}"></div>
+                </div>
+            </div>
+            <div class="right">
+                <span class="value" id="{{id}}_to"></span>
+            </div>
+        </div>
+
+    </div>
+
+</script>
+
+<script id="connection-single-flight-template" type="text/x-handlebars-template">
+
+    <div class="flight-bck-cont {{customClass}}">
+
+        <div class="flight">
+            <div class="top-line">
+                {{airName}}
+            </div>
+
+            <div class="data-tbl">
+
+                <div class="di logo-cont">
+                    <img class="air-logo" src="{{logoLink}}" />
+                </div>
+
+                <div class="di flight-dir">
+                    <div class="from-to">{{codeFrom}} → {{codeTo}}</div>
+                    <div class="flight-no">{{flightNo}}</div>
+                </div>
+
+                <div class="di">
+                    <div class="date">{{date}}</div>
+                </div>
+
+                <div class="di time-cont">
+                    <div class="time">{{timeFrom}} - {{timeTo}}</div>
+                    <div class="duration">({{durHours}}h {{durMins}}min)</div>
+                </div>
+
+                <div class="di direct-cont">
+
+                    {{#ifCond stops 0}}
+                    <div class="direct">@Model.W("DirectFlight")</div>
+                    {{else}}
+                    <div class="stops">
+                        <a class="stops-btn" href="#"><span class="txt">{{stops}} @Model.W("StopsCnt") </span><span class="icon-dropdown-arrow"></span></a>
+                    </div>
+                    {{/ifCond}}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="flights-sub"></div>
+    </div>
+
+</script>
 
 
-    <script id="queue-item-tmp" type="text/x-handlebars-template">
-        <div class="item">{{text}}</div>
-    </script>
+<script id="connection-flight-template" type="text/x-handlebars-template">
 
-    <script id="custom-setting-2-template" type="text/x-handlebars-template">
+    <div class="conn">
 
-        <div class="custom-form">
+        <div class="layout-tbl">
+            <div class="left">
+
+            </div>
+            <div class="right">
+
+                <div class="book-zone">
+
+                    {{#if scoreOk}}
+                    <div class="score">
+                        <div class="txt-score">
+                            {{#ifCond scoreText "E"}}@Model.W("Score5"){{/ifCond}}
+                            {{#ifCond scoreText "G"}}@Model.W("Score3"){{/ifCond}}
+                            {{#ifCond scoreText "S"}}@Model.W("Score1"){{/ifCond}}
+                        </div>
+                        <div class="stars-score">
+
+                            {{#for 0 scoreStars 1}}
+                            <span class="icon-star-full"></span>
+                            {{/for}}
+
+                        </div>
+                        <div class="cap">
+                            @Model.W("FlightScore")
+                        </div>
+                    </div>
+                    {{/if}}
+
+
+                    <div class="price-all">
+                        <span class="currency">€</span><span class="price">{{price}}</span>
+                    </div>
+
+                    <div class="btn-cont">
+                        <a href="{{bookLink}}" target="_blank">@Model.W("BookNow")</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</script>
+
+<script id="freq-item-template" type="text/x-handlebars-template">
+
+    <div class="cell">
+        <div class="item" data-d="{{days}}">{{text}}</div>
+    </div>
+
+</script>
+
+
+<script id="queue-item-tmp" type="text/x-handlebars-template">
+    <div class="item">{{text}}</div>
+</script>
+
+<script id="custom-setting-2-template" type="text/x-handlebars-template">
+
+    <div class="custom-form">
+
+        <div class="blocks-cont">
 
             <div class="block">
 
@@ -710,43 +746,46 @@
 
             </div>
 
-            <div class="block hidden">
+        </div>
 
-                <div class="title">@Model.W("NewsletterFrequency")</div>
-                <div class="freq-cont">
-                    <div class="itbl">
+        <div class="block hidden">
 
-                    </div>
+            <div class="title">@Model.W("NewsletterFrequency")</div>
+            <div class="freq-cont">
+                <div class="itbl">
+
                 </div>
             </div>
-
         </div>
 
+    </div>
 
 
 
-    </script>
 
-    <script id="custom-setting-1-template" type="text/x-handlebars-template">
+</script>
 
-        <div class="custom-form">
+<script id="custom-setting-1-template" type="text/x-handlebars-template">
 
-            <div class="block">
-                <div class="title">@Model.W("HowManyDaysInDestination")</div>
-                <div class="days-range-cont"></div>
-            </div>
+    <div class="blocks-cont">
 
-            <div class="block">
-                <div class="title">@Model.W("EarliestDepLatestArrivalQuestion")</div>
+        <div class="block">
+            <div class="title">@Model.W("HowManyDaysInDestination")</div>
+            <div class="days-range-cont"></div>
+        </div>
 
-                <div class="dp-dep-cont"></div>
-                <div class="dp-arr-cont"></div>
-            </div>
+        <div class="block tright">
+            <div class="title">@Model.W("EarliestDepLatestArrivalQuestion")</div>
 
-            <div class="block">
+            <div class="dp-dep-cont"></div>
+            <div class="dp-arr-cont"></div>
+
+            <div class="btn-cont">
                 <a class="lbtn2 finish-dates-btn" href="#">@Model.W("DoneWithDatesEditingBtn")</a>
             </div>
-
         </div>
 
-    </script>
+    </div>
+
+
+</script>

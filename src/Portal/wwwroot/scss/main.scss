@@ -10,6 +10,7 @@ $light-blue3: #3298C1;
 $light-blue4: #ccedf5;
 $light-blue5: #57c1db;
 $light-blue6: #9FD2E3;
+$light-blue7: #AED8E5;
 
 $info-blue: #99DBEC;
 $info-blue2: #009EC4;
@@ -257,13 +258,13 @@ a {
         color: $light-blue2;
         background-color: $very-light-blue3;
             
-        border-top-left-radius: 6px;
-        border-top-right-radius: 6px;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
 
-        padding-top: 10px;
-        padding-bottom: 10px;
-        padding-left: 10px;
-        padding-right: 10px;
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+        padding-left: 1.5em;
+        padding-right: 1.5em;
 
         &.act, &:hover {
             background-color: $light-blue2;

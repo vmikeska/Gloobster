@@ -29,7 +29,7 @@ module Planning {
 						weight: 1,
 						opacity: 1,
 						
-						fillColor: "#3DA243",
+						fillColor: "#FFC400",
 						fillOpacity: 1		
 				};
 

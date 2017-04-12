@@ -147,6 +147,25 @@
 				}
 		}
 
+		export class NewInfoDialog {
+
+				public cd: CustomDialog;
+
+				public create(title, text, callback: Function = null) {						
+						this.cd = new CustomDialog();
+						this.cd.init(text, title, "info-dlg-new");
+
+						this.cd.addBtn(Views.ViewBase.currentView.t("Close", "jsLayout"), "yellow-orange", () => {
+								this.cd.close();
+						});						
+				}
+
+				public hide() {
+						this.cd.close();
+				}
+
+		}
+
 		export class InfoDialog {
 				private template;
 				private $html;

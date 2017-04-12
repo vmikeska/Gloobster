@@ -25,7 +25,7 @@ var Planning;
             color: "#9096a0",
             weight: 1,
             opacity: 1,
-            fillColor: "#3DA243",
+            fillColor: "#FFC400",
             fillOpacity: 1
         };
         MapConstants.hoverStyle = {

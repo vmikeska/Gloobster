@@ -42,6 +42,10 @@
       <en>Cancel</en>
     </Cancel>
 
+    <Close>
+      <en>Close</en>
+    </Close>
+
     <Delete>
       <en>Delete</en>
     </Delete>

@@ -211,7 +211,7 @@ var Planning;
         QueueVisualize.prototype.draw = function (timeType, queries) {
             var _this = this;
             this.$cont.empty();
-            this.$mainCont.removeClass("hidden");
+            this.$cont.append("<span class=\"queue-txt\">Search queue:</span>");
             var maxItems = 7;
             var qd = queries;
             var shrinkQueue = qd.length > maxItems;
@@ -236,6 +236,9 @@ var Planning;
             });
             if (shrinkQueue) {
                 this.$cont.append("<span>+ " + itemsCut + " more</span>");
+            }
+            if (qd.length > 0) {
+                this.$mainCont.removeClass("hidden");
             }
         };
         QueueVisualize.prototype.hide = function () {

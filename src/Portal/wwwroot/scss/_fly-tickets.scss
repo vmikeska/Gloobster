@@ -1,43 +1,36 @@
 ﻿
 
 .all-page-pop {
-    position:fixed;
+    position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-        
     background-color: rgba(0, 0, 0, 0.5);
     content: "";
     display: block;
-    z-index: 99999;   
+    z-index: 99999;
 
 
     .frame {
         position: absolute;
-        top:0;
+        top: 0;
         bottom: 0;
-
         left: 50%;
         transform: translateX(-50%);
-
         width: 100%;
         max-width: 1280px;
         min-width: 480px;
-
         background-color: white;
-
         overflow-y: auto;
     }
-
 }
 
 
-.fly-tickets{
+.fly-tickets {
 
     .main-navi {
         margin-top: 0.5em;
-            
         text-align: left;
     }
 
@@ -49,28 +42,27 @@
             .top-tbl {
                 display: table;
                 width: 100%;
-                
+
                 .ic {
                     display: table-cell;
                     vertical-align: top;
                 }
 
                 .l {
-                    text-align: left;                
+                    text-align: left;
                 }
 
                 .r {
-                    text-align: right;                
+                    text-align: right;
                 }
             }
         }
-
     }
 
-    .search-bar {
-        background-color: $light-gray2;
-        border-top: 2px solid $dark-blue;
-        border-bottom: 2px solid $dark-blue;
+    .search-form-cont {
+        background-color: $very-light-blue;
+        border-radius: 10px;
+        margin-bottom: 1em;
     }
 
     .search-form {
@@ -80,13 +72,11 @@
             display: block;
             padding: 0;
             margin: 0;
-            margin-bottom: 0.5em;            
-            text-align: center;
+            margin-bottom: 0.5em;
+            text-align: left;
         }
 
-
         display: inline-block;
-
         padding-top: 1em;
         padding-bottom: 1em;
 
@@ -95,34 +85,32 @@
         }
 
         label {
-            /*color: white;*/
             font-size: 14px;
+            font-weight: bold;
         }
 
         .city-airport-search {
             width: 260px;
         }
-        
 
-        
+
+
 
         .search-group {
             display: inline-block;
         }
-        
+
         .search-field {
-            
             display: inline-block;
             vertical-align: top;
             text-align: left;
 
             .capt {
+                font-weight: bold;
                 font-size: 16px;
-                /*color: white;*/
             }
 
             .ctrl {
-
             }
         }
 
@@ -130,17 +118,16 @@
             padding-top: 0.5em;
             text-align: right;
         }
-
     }
 
     @include below-width(1220) {
-        .search-form {            
+        .search-form {
             text-align: right;
-        }     
+        }
     }
 
     @include below-width(1070) {
-            
+
         .search-form {
             max-width: none;
             padding-left: 1em;
@@ -162,19 +149,17 @@
                     }
                 }
             }
-
         }
 
         .classic-search-all {
             height: 300px;
         }
-        
     }
 
     @include below-width(610) {
-    .last-line {
-        display: block !important;
-     }       
+        .last-line {
+            display: block !important;
+        }
     }
 
     .found-flights-all {
@@ -182,28 +167,22 @@
 
         .order-switch {
             display: inline-block;
-            text-align: left;
-            border: 2px solid white;
+            text-align: left;            
             white-space: nowrap;
+
+            $bradius: 6px;
 
             .item {
                 display: inline-block;
-                padding: 0.2em;
-                border-right: 2px solid white;
                 
-                border-radius: 2px;
-
+                padding: 0.3em;
+                padding-left: 0.8em;
+                padding-right: 0.8em;
+                
                 background-color: $yellow;
                 color: white;
-
                 cursor: pointer;
-
                 text-align: center;
-
-                &:last-of-type {
-                    border-right: 0;
-                    margin-left: -4px;
-                }
 
                 &.active {
                     background-color: $green;
@@ -213,12 +192,15 @@
                     background-color: $green2;
                 }
 
-                &:first-of-type {
-                    
+                &:first-of-type {                    
+                    border-bottom-left-radius: $bradius;
+                    border-top-left-radius: $bradius;
                 }
 
                 &:last-of-type {
-                    
+                    margin-left: -4px;
+                    border-bottom-right-radius: $bradius;
+                    border-top-right-radius: $bradius;
                 }
             }
         }
@@ -227,7 +209,72 @@
     .filter-bar {
         background-color: $very-light-blue3;
         padding: 1em;
-        border-bottom: 2px solid $dark-blue;
+        padding-top: 0;
+        border-radius: 10px;
+
+        @include above-width(830) {
+
+            .lay-tbl {
+                display: table;
+                width: 100%;
+
+                .col {
+                    display: table-cell;                    
+                    vertical-align: top;
+                    padding-left: 0.5em;
+                    padding-right: 0.5em;
+                }
+
+                .lc {
+                    padding-left: 0;
+                    width: 40%;
+                }
+
+                .mc {
+                }
+
+                .rc {
+                    padding-right: 0;
+                    width: 40%;
+                }
+            }
+        }
+
+        .block {
+
+            .b-title {
+                font-weight: bold;
+                font-size: 1.1em;
+                text-align: left;
+                margin-bottom: 0.5em;
+                margin-top: 0.7em;
+            }
+
+            .b-cont {
+                background-color: white;
+                border-radius: 10px;
+                padding: 0.5em;
+            }
+        }
+
+        .slide-title {
+            font-weight: bold;
+            font-size: 0.9em;
+            text-align: left;
+            margin-bottom: 0.4em;
+        }
+
+        .slider-cont {
+            font-size: 0.9em;
+
+            .noUi-handle {
+                width: 20px;
+                height: 20px;
+                left: -10px;
+                top: -10px;
+            }
+        }
+
 
         .stops-cont {
             font-size: 0.8em;
@@ -235,45 +282,63 @@
 
             .dir-item {
                 white-space: nowrap;
-                display:inline-block;
-                margin-left: 0.6em;
+
+                input[type="checkbox"] {
+                    display: none;
+                }
+
+                label {
+                    cursor: pointer;
+                }
+
+                span {
+                    vertical-align: middle;
+                }
+
+                input[type="checkbox"] + label:before {
+                    border-radius: 6px;
+                    border: 1px solid $darker-gray;
+                    content: "\00a0";
+                    display: inline-block;
+                    font-size: 10px;
+                    height: 14px;
+                    width: 14px;
+                    margin-right: 0.4em;
+                    padding: 0;
+                    vertical-align: middle;
+                }
+
+                input[type="checkbox"]:checked + label:before {
+                    border: 1px solid $green;
+                    background: $green;
+                    color: white;
+                    content: "\2714";
+                    text-align: center;
+                }
+
+                input[type="checkbox"]:checked + label:after {
+                    font-weight: bold;
+                }
             }
-        }
-        
-        .line {
-            padding-top: 0.5em;
-            padding-bottom: 0.5em;
-        }
-
-        .first-line {
-            text-align: left;
-        }
-
-        .second-line {
-            text-align: right;
         }
 
         .air-filter-all {
-            display: inline-block;
-
+            
             .air-filter-cont {
+                text-align: left;
+
                 .pair {
                     display: inline-block;
-                
                     font-size: 0.8em;
-
                     background-color: $red;
                     color: white;
-                
-                    margin-left: 2px;
-                    margin-right: 2px;
-                    margin-bottom: 2px;
-                
+                    margin-left: 0.1em;
+                    margin-right: 0.1em;
+                    margin-bottom: 0.2em;
                     border-radius: 4px;
-                    padding: 2px;
-                    padding-left: 4px;                
-                    padding-right: 4px;
-
+                    padding: 0.2em;
+                    padding-left: 0.6em;
+                    padding-right: 0.6em;
                     cursor: pointer;
                     @include noselect;
 
@@ -287,54 +352,21 @@
                 }
             }
         }
-
-        .one-line {
-            .cell{
-                padding-top: 0.5em;
-                vertical-align: top;
-            }
-
-            .l {
-                text-align: left;
-            }
-
-            .r {
-                text-align: right;
-            }
-        }
-
-        @include above-width(800) {
-
-            .one-line {
-                display: table;
-                width: 100%;
-
-                .cell {
-                    display: table-cell;
-                    /*width: 50%;*/
-                    padding: 0.5em;
-                }
-            }
-
-        }
-
-        
-
     }
 
-    
+
 
     .search-results {
         margin-top: 1em;
     }
 
     .major-preload {
-       .dlg-frame-all {
-           padding: 2em;
-       }
+        .dlg-frame-all {
+            padding: 2em;
+        }
     }
 
-    .deals-block-all {   
+    .deals-block-all {
         h1 {
             font-size: 1.2em;
             display: block;
@@ -344,12 +376,9 @@
             color: white;
             text-align: center;
         }
-        
-             
-        background-color: $info-blue2;        
 
+        background-color: $info-blue2;
         padding: 1em;
-
         margin-bottom: 1em;
 
         .wiz-airs-cont {
@@ -360,9 +389,7 @@
             border-radius: 4px;
             background-color: $dark-blue;
             display: inline-block;
-
             padding: 0.5em;
-
             margin-bottom: 4px;
             margin-right: 4px;
 
@@ -392,10 +419,10 @@
         .icons {
             display: table;
             width: 100%;
-            
+
             .ico {
-                display: table-cell;                
-                width: 33.3%
+                display: table-cell;
+                width: 33.3%;
             }
 
             .svg-img {
@@ -411,9 +438,9 @@
             margin-bottom: 0.5em;
 
             .label {
-                display: table-cell;                
+                display: table-cell;
                 width: 33.3%;
-                
+
                 &.active {
                     color: $yellow;
                     font-size: 1.3em;
@@ -422,43 +449,40 @@
             }
         }
 
-        .step {            
+        .step {
             border-top: 2px solid $yellow;
             margin-top: 0.5em;
             padding-top: 0.5em;
-
             /*input {
                 text-align: center;
-            }*/   
+            }*/
         }
 
         .next-btn-cont {
             padding-top: 0.5em;
-                        
+
             .next-btn {
                 padding: 0.7em;
-                
             }
         }
     }
 
     .cat-all {
-        
-        margin-bottom: 1.5em;
+        margin-bottom: 3.5em;
         padding-bottom: 1.5em;
-
-        border: 1px solid $dark-blue;
-        border-bottom: 5px solid $light-blue3;
-
+        background-color: $very-light-blue;
         border-radius: 4px;
 
-        .cat-bar {            
-            background-color: $dark-blue;
+        .cat-bar {
+            background-color: $light-blue3;
             padding: 0.5em;
-            padding-left: 1em;
+            padding-left: 1.3em;
+            padding-right: 1.3em;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
 
             .title-name {
-                display: inline-block;                
+                display: inline-block;
                 color: white;
                 font-size: 1.3em;
             }
@@ -475,38 +499,30 @@
 
             .name-edit {
                 .input {
-
                 }
 
                 .save {
-
                 }
             }
 
 
-            .icon-info {
+            .info-btn {
                 color: $yellow;
                 cursor: pointer;
-
-                margin-right: 0.5em;
+                margin-left: 0.5em;
+                margin-right: 0.6em;
 
                 &:hover {
-                    color: $info-blue2;
+                    color: $dark-blue;
                 }
             }
 
-            .tbl {
-                display: table;
-                width: 100%;
-            }
 
-            .cb-c {
-                display: table-cell;                
-            }
 
             .cb-l {
                 text-align: left;
-                vertical-align: middle;                
+                vertical-align: middle;
+                display: table-cell;
             }
 
             .cb-r {
@@ -515,75 +531,117 @@
             }
 
             @include above-width(850) {
-                
+
                 .block-item {
                     display: inline-block;
                 }
-
             }
 
-            @include below-width(850) {
-                
-                .order-combo {
-                    margin-top: 0.3em;
+
+            @include above-width(955) {
+                .tbl {
+                    display: table;
+                    width: 100%;
                 }
-                
+
+                .cb-r {
+                    display: table-cell;
+                }
+            }
+
+            @include below-width(955) {
+                .cb-l {
+                    display: table;
+                    width: 100%;
+
+                    .block-item {
+                        display: table-cell;
+                    }
+                }
+
+                .cb-r {
+                    padding-top: 0.5em;
+                }
+
+                .custom-icons {
+                    display: inline-block;
+                }
+
+                .normal-icons {
+                    display: inline-block;
+                }
+
+                .b-l {
+                    text-align: left;
+                }
+
+                .b-r {
+                    text-align: right;
+                }
             }
         }
 
         .cat-cont-wrap {
-            padding-left: 4px;        
-            padding-right: 4px;
-
+            padding-left: 1em;
+            padding-right: 1em;
         }
 
         .ico-wrap {
-            display: inline-block;
+            display: inline-table;
             vertical-align: middle;
-            
             cursor: pointer;
-
             margin-left: 0.5em;
 
             .ico-part {
+                display: table-cell;
+                vertical-align: middle;
                 text-align: center;
                 font-size: 1em;
                 color: $yellow;
             }
 
-            .desc-part {                
+            .desc-part {
+                display: table-cell;
+                vertical-align: middle;
+                padding-left: 0.4em;
+                padding-bottom: 0.2em;
                 font-size: 0.9em;
                 color: white;
             }
 
             &:hover {
 
-                .ico-part {                
-                    color: $info-blue2;
+                .ico-part {
+                    color: $orange;
                 }
 
-                .desc-part {                    
-                    color: $info-blue2;
+                .desc-part {
+                    color: $orange;
                 }
             }
         }
 
-         .order-combo {
+        .order-combo {
             display: inline-block;
             vertical-align: middle;
-
             background-color: white;
             border-radius: 4px;
             padding: 0.2em;
+            padding-left: 0.4em;
+            padding-right: 0.4em;
             cursor: pointer;
-            color: $dark-blue;
+            color: $light-blue3;
 
-            &.opened {                
-                .arrow{
+            .arrow {
+                font-size: 0.8em;
+                margin-left: 0.3em;
+            }
+
+            &.opened {
+                .arrow {
                     display: inline-block;
                     transform: scale(1, -1);
                 }
-
             }
 
             .cmb-tbl {
@@ -601,40 +659,25 @@
                     color: $yellow;
                 }
             }
-
-
-        }
-
-        .cat-res {
-            /*min-height: 320px;*/
         }
 
         .cat-drop-cont {
             position: relative;
-            border-bottom: 4px solid $info-blue2;
-
+            background-color: white;
+            border-radius: 8px;
             margin-top: 1.1em;
-            
-            .info-txt-wrap {
-                text-align: left;
-                padding: 1em;
-            }
         }
-
-       
-
     }
 
     .no-dests {
         /*border: 2px solid $darker-gray;*/
         color: $darker-gray;
         padding: 2em;
-        text-align: center;       
+        text-align: center;
         /*border-radius: 2px;*/
-
         .ln1 {
-            font-size: 1.6em;     
-            margin-bottom: 2em;    
+            font-size: 1.6em;
+            margin-bottom: 2em;
         }
 
         .tbl {
@@ -651,8 +694,8 @@
             cursor: pointer;
 
             .txt {
-
             }
+
             .ico {
                 font-size: 4em;
             }
@@ -676,20 +719,17 @@
         text-align: left;
         padding: 0.5em;
 
-        .weekend-deals-filter {            
-            
+        .weekend-deals-filter {
+
             .all-deals {
                 vertical-align: middle;
                 display: inline-block;
-        
                 font-weight: bold;
-        
                 white-space: nowrap;
             }
-    
+
             .days-filter {
                 vertical-align: middle;
-
                 display: inline-block;
                 text-align: center;
 
@@ -707,41 +747,37 @@
                     margin-left: 10px;
                     margin-right: 25px;
                 }
-    
-                .day{
+
+                .day {
                     position: relative;
                     box-sizing: border-box;
                     border-width: 2px;
                     border-style: solid;
-
                     display: inline-block;
-                    background-color: $light-blue3;
+                    background-color: $light-blue6;
                     color: white;
                     border-radius: 4px;
-            
                     padding-top: 20px;
                     padding-bottom: 20px;
-            
                     font-weight: bold;
                     margin-left: 4px;
                     width: 66px;
                     @include noselect;
 
                     &.act {
-                        background-color: $orange;
+                        background-color: $yellow;
                     }
 
                     &.foc {
-                        width: 74px;
+                        /*width: 74px;
                         padding-top: 24px;
-                        padding-bottom: 24px;
-
-                        /*top: -2px;*/
-                        left: -4px;
+                        padding-bottom: 24px;                        
+                        left: -4px;*/
+                        border-color: $orange;
                     }
 
-                    &.perm-sel{
-                        background-color: $orange;
+                    &.perm-sel {
+                        background-color: $yellow;
                         cursor: default !important;
                     }
                 }
@@ -757,9 +793,7 @@
 
     .cat-set-win {
         position: relative;
-
         background-color: $very-light-blue3;
-        
         text-align: left;
 
         .form-close {
@@ -768,30 +802,29 @@
     }
 
     .places-tag-sel {
+        background-color: white;
+        border-radius: 8px;
         padding: 1em;
     }
 
     .places-map-sel {
-
     }
 
-    .order-sel {        
+    .order-sel {
         padding: 0.7em;
         text-align: left;
 
         .item {
             color: white;
             display: inline-block;
-
             cursor: pointer;
-
             border-radius: 4px;
             background-color: $light-blue3;
-            padding: 0.5em;
-
+            padding: 0.4em;
+            padding-left: 0.7em;
+            padding-right: 0.7em;
             font-size: 1em;
-
-            margin-right: 0.3em;
+            margin-right: 0.5em;
 
             &:last-of-type {
                 margin-right: 0;
@@ -803,6 +836,7 @@
             }
 
             .txt {
+                margin-left: 0.25em;
                 vertical-align: middle;
             }
 
@@ -814,7 +848,6 @@
                     color: $orange;
                 }
             }
-
         }
     }
 
@@ -822,23 +855,28 @@
 
         .places-cont {
             display: inline-block;
-
+            vertical-align: middle;
             margin-right: 4px;
         }
 
-        .place-search{
+        .place-search {
             display: inline-block;
+            vertical-align: middle;
+
+            input {
+                width: 120px;
+            }
         }
 
         .place-tag {
             background-color: $light-blue3;
             display: inline-block;
-            padding: 2px;
+            vertical-align: middle;
+            padding: 0.4em;
             border-radius: 4px;
             @include noselect;
-
-            margin-right: 4px;
-            margin-bottom: 4px;
+            margin-right: 6px;
+            margin-bottom: 6px;
 
             .txt {
                 color: white;
@@ -848,7 +886,6 @@
             .close {
                 cursor: pointer;
                 font-size: 0.7em;
-
                 color: $dark-blue;
 
                 &:hover {
@@ -858,22 +895,67 @@
         }
     }
 
-     .custom-form {
-        background-color: $very-light-blue3;
+    .custom-form {
+        background-color: white;
+        border-radius: 10px;
         padding: 12px;
         text-align: center;
         border-radius: 4px;
         margin-bottom: 4px;
-        font-size: 0.9em;
+
 
         .title {
             font-weight: bold;
             font-size: 1em;
-            margin-bottom: 0.5em;            
+            margin-bottom: 1em;
+            text-align: center;
         }
-        
+
+
+
         .block {
-            margin: 0.5em;
+            padding: 0.5em;
+        }
+
+        @include above-width(893) {
+
+            .blocks-cont {
+                display: table;
+                width: 100%;
+            }
+
+            .block {
+                display: table-cell;
+                width: 50%;
+
+                &:first-of-type {
+                    border-right: 1px solid $light-blue4;
+                }
+            }
+        }
+
+        @include below-width(893) {
+
+
+            .block {
+
+                &:first-of-type {
+                    border-bottom: 1px solid $light-blue4;
+                }
+            }
+        }
+
+        .btn-cont {
+            padding-top: 0.5em;
+            padding-bottom: 0.5em;
+        }
+
+        .calendar-cont {
+            /*width: 170px;*/
+        }
+
+        .dp-dep-cont {
+            margin-right: 0.5em;
         }
 
 
@@ -881,39 +963,35 @@
             padding: 4px;
         }
 
-        .tagger{
+        .tagger {
             input {
                 padding: 5px 19px;
             }
 
-            .icon-search{
+            .icon-search {
                 font-size: 19px;
-            }            
+            }
         }
 
         .airports-cont {
             border-radius: 4px;
-            background-color: white;            
+            background-color: white;
             text-align: left;
             padding: 3px;
             padding-bottom: 0;
-            
+
             .sta-air-cont {
                 display: inline-block;
                 vertical-align: middle;
-                
                 background-color: $light-blue;
-
                 color: white;
                 border-radius: 4px;
-                
                 padding-top: 5px;
                 padding-bottom: 6px;
-                padding-left: 6px;                
+                padding-left: 6px;
                 padding-right: 6px;
-
                 margin-bottom: 3px;
-                
+
                 label {
                     @include noselect;
                     vertical-align: middle;
@@ -923,7 +1001,7 @@
                     input {
                         display: inline-block;
                         margin: 0;
-                        padding:0;
+                        padding: 0;
                         vertical-align: middle;
                     }
 
@@ -931,24 +1009,22 @@
                         display: inline-block;
                         vertical-align: middle;
                     }
-                }             
+                }
             }
 
             .tag {
                 vertical-align: middle;
-
                 padding-top: 6px;
                 padding-bottom: 7px;
-                padding-left: 6px;                
+                padding-left: 6px;
                 padding-right: 6px;
-
                 margin-bottom: 3px;
                 margin-right: 3px;
             }
 
             .tagger-cont {
                 vertical-align: middle;
-                display: inline-block;            
+                display: inline-block;
 
                 .tagger {
                     vertical-align: middle;
@@ -956,13 +1032,12 @@
                     input {
                         vertical-align: middle;
                         margin-top: -2px;
-
                     }
                 }
             }
         }
 
-        
+
 
         .freq-cont {
             margin-top: 10px;
@@ -972,15 +1047,14 @@
                 display: table;
                 width: 100%;
 
-                .cell{
+                .cell {
                     display: table-cell;
                     width: 33%;
                 }
 
                 .item {
                     @include noselect;
-
-                    text-align: center;                    
+                    text-align: center;
                     color: white;
                     font-weight: bold;
                     background-color: $light-blue;
@@ -997,7 +1071,7 @@
             }
         }
 
-      
+
         .finish-dates-btn {
             color: white;
             background-color: $green3;
@@ -1006,26 +1080,28 @@
                 background-color: $orange;
             }
         }
-
     }
 
-     .cat-queue{
-        $preload-size: 1.3em;
+    .cat-queue {
+        $preload-size: 2em;
         padding: 0.5em;
-
-
+        margin-top: 0.5em;
         position: relative;
         text-align: left;
-        
         padding-left: $preload-size * 1.3;
+        background-color: white;
+        border-radius: 8px;
+        padding: 0.5em;
 
-        .preloader {            
+        .queue-txt {
+            font-weight: bold;
+            margin-right: 0.3em;
+        }
+        /*.preloader {
             position: absolute;
             top: 0.5em;
             left: 0;
-
             display: inline-block;
-
             width: $preload-size;
             height: $preload-size;
 
@@ -1033,185 +1109,183 @@
                 @include spin($preload-size);
                 color: $dark-blue;
             }
-            
+        }*/
+        .preloader-svg {
+            height: $preload-size;
+            width: $preload-size;
+            animation: nudge 3s linear infinite;
+            position: absolute;
+            top: 0.5em;
+
+
+            img {
+                width: 100%;
+            }
+        }
+
+        @keyframes nudge {
+            0% {
+                left: 0px;
+            }
+
+            100% {
+                left: 100%;
+            }
         }
 
         .cont {
-            
-            .item{
+
+            .item {
                 display: inline-block;
-                border: 2px solid $light-blue3;               
+                border: 2px solid $light-blue3;
                 border-radius: 4px;
                 margin-bottom: 4px;
             }
         }
 
-        &.hidden{
+        &.hidden {
             display: none;
         }
     }
 
-     .add-custom-cont {
-          padding-bottom: 1em;
+    .add-custom-cont {
+        padding-bottom: 1em;
 
-         .add-btn{
-             
-             display: inline-block;
-             background-color: $green;
-             
-             border-radius: 4px;
+        .add-btn {
+            display: inline-block;
+            background-color: $green;
+            border-radius: 4px;
+            text-decoration: none;
+            padding: 0.5em;
 
-             text-decoration: none;
-
-             padding: 0.5em;
-             
-             .icon-plus {
-                 color: white;
-                 font-size: 1.3em;
-                 display: inline-block;
-                 vertical-align: middle;
-             }
+            .icon-plus {
+                color: white;
+                font-size: 1.3em;
+                display: inline-block;
+                vertical-align: middle;
+            }
 
 
-             .txt {
-                 color: white;
-                 font-size: 1.3em;
-                 display: inline-block;
-                 vertical-align: middle;
-                 margin-left: 0.3em;                 
-             }
+            .txt {
+                color: white;
+                font-size: 1.3em;
+                display: inline-block;
+                vertical-align: middle;
+                margin-left: 0.3em;
+            }
 
-             &:hover {
-                 background-color: $orange;
-             }
-         }
-     }
-
-
-     .more-less-btn-cont {
-         text-align: center !important;
-         padding-bottom: 0.5em;
-
-         .more-less-btn {
-             text-align: center;
-             font-size: 1.1em;
-             color: white;
-             background-color: $yellow;
-
-             min-width: 160px;
-
-             padding: 0.5em;
-
-             &:hover {
-                 background-color: $green;
-             }
-         }
-
-     }
-
-     .more-less-btn-cont-small {
-         text-align: center !important;
-         padding-bottom: 0.5em;
-
-         .more-less-btn {
-             text-align: center;
-             font-size: 0.9em;
-             color: white;
-             background-color: $yellow;
-
-             padding: 4px;
-             padding-left: 8px;
-             padding-right: 8px;
-
-             &:hover {
-                 background-color: $green;
-             }
-         }
-
-     }
-
-     .flight-the-detail {
-         .f-header {
-             position: fixed;
-             top: 0;
-             left: 0;
-             right: 0;
-
-             padding: 1em;
-
-             background-color: white;
-             z-index: 9999999999;
-
-             background-color: $light-blue3;
-
-             color: white;
+            &:hover {
+                background-color: $orange;
+            }
+        }
+    }
 
 
-             .f-tbl {
-                 display: table;
-                 width: 100%;
+    .more-less-btn-cont {
+        text-align: center !important;
+        padding-bottom: 0.5em;
 
-                 .left {
-                     display: table-cell;
-                     text-align: left;
-                 }
+        .more-less-btn {
+            text-align: center;
+            font-size: 1.1em;
+            color: white;
+            background-color: $yellow;
+            min-width: 160px;
+            padding: 0.5em;
 
-                 .right {
-                     display: table-cell;
-                     text-align: right;
-                 }
-             }
+            &:hover {
+                background-color: $green;
+            }
+        }
+    }
 
-             .title-holder {
-                 .link-back {
-                     vertical-align: middle;
-                     display: inline-block;
+    .more-less-btn-cont-small {
+        text-align: center !important;
+        padding-bottom: 0.5em;
 
-                     cursor: pointer;
+        .more-less-btn {
+            text-align: center;
+            font-size: 0.9em;
+            color: white;
+            background-color: $yellow;
+            padding: 4px;
+            padding-left: 8px;
+            padding-right: 8px;
 
-                     &:hover {
-                         color: $yellow;
-                     }
+            &:hover {
+                background-color: $green;
+            }
+        }
+    }
 
-                 }
+    .flight-the-detail {
+        .f-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1em;
+            background-color: white;
+            z-index: 9999999999;
+            background-color: $light-blue3;
+            color: white;
 
-                 .arrow {
-                     vertical-align: middle;
-                     display: inline-block;
 
-                     margin-left: 0.4em;
-                     margin-right: 0.4em;                     
+            .f-tbl {
+                display: table;
+                width: 100%;
 
-                     font-size: 1.2em;
-                 }
+                .left {
+                    display: table-cell;
+                    text-align: left;
+                }
 
-                 .detail-txt {
-                     vertical-align: middle;
-                     display: inline-block;
+                .right {
+                    display: table-cell;
+                    text-align: right;
+                }
+            }
 
-                     font-size: 1.3em;
-                     font-weight: 700;
-                 }
-             }
+            .title-holder {
+                .link-back {
+                    vertical-align: middle;
+                    display: inline-block;
+                    cursor: pointer;
 
-             .close {
-                 display: inline-block;
+                    &:hover {
+                        color: $yellow;
+                    }
+                }
 
-                 padding: 0.5em;
+                .arrow {
+                    vertical-align: middle;
+                    display: inline-block;
+                    margin-left: 0.4em;
+                    margin-right: 0.4em;
+                    font-size: 1.2em;
+                }
 
-                 font-size: 1.3em;
+                .detail-txt {
+                    vertical-align: middle;
+                    display: inline-block;
+                    font-size: 1.3em;
+                    font-weight: 700;
+                }
+            }
 
-                 color: white;
+            .close {
+                display: inline-block;
+                padding: 0.5em;
+                font-size: 1.3em;
+                color: white;
+                cursor: pointer;
 
-                 cursor: pointer;
-
-                 &:hover {
-                     color: red;
-                 }
-             }
-
-         }
-     }
+                &:hover {
+                    color: red;
+                }
+            }
+        }
+    }
 
 
 
@@ -1233,19 +1307,17 @@
             .btn {
                 margin-left: 10px;
             }
-        }   
-
+        }
     }
 
     .map-cont {
         position: relative;
-         
-        .map {            
+
+        .map {
             width: 100%;
-            height: 400px;            
+            height: 400px;
             background-color: $light-blue2;
         }
-
         /*.map-disabled {
             display: block !important;
             position: absolute;
@@ -1259,7 +1331,6 @@
             
             z-index: 9999999;
         }*/
-
         .map-type-switch {
             display: inline-block;
             position: absolute;
@@ -1270,6 +1341,7 @@
 
             .items-tbl {
                 display: table;
+
                 .btn {
                     @include noselect;
                     display: table-cell;
@@ -1277,12 +1349,13 @@
                     border: 1px solid white;
                     color: white;
                     font-weight: bold;
-                    padding: 8px;
-
+                    padding: 0.5em;
+                    padding-left: 1em;
+                    padding-right: 1em;
                     background-color: $light-blue;
 
                     &.active {
-                        background-color: $yellow;
+                        background-color: $orange;
                     }
 
                     &:hover {
@@ -1290,7 +1363,7 @@
                     }
                 }
 
-                $radius: 2px;
+                $radius: 4px;
 
                 .country {
                     border-bottom-left-radius: $radius;
@@ -1301,27 +1374,26 @@
                     border-bottom-right-radius: $radius;
                     border-top-right-radius: $radius;
                 }
-
             }
         }
-     }
+    }
 
 
 
-    .mainCont {    
+    .mainCont {
         width: 100%;
         height: 370px;
         margin-bottom: 30px;
         border-bottom: 2px solid black;
     }
 
-    .tabBlock {        
+    .tabBlock {
         width: 49%;
         height: 350px;
         float: left;
     }
 
-    .other-flights-empty{
+    .other-flights-empty {
         text-align: center;
 
         .smile {
@@ -1346,26 +1418,24 @@
     .months-filter {
         margin-top: 8px;
         margin-bottom: 8px;
-        
 
-        .month{
+
+        .month {
             display: inline-block;
             background-color: $light-blue3;
             color: white;
             padding: 4px;
-            
             margin-left: 2px;
             margin-right: 2px;
-            margin-bottom:4px;
-
-            border-radius: 4px;            
+            margin-bottom: 4px;
+            border-radius: 4px;
             cursor: pointer;
             @include noselect;
 
             span {
                 white-space: nowrap;
             }
-            
+
 
             &:hover {
                 background-color: $dark-blue;
@@ -1377,7 +1447,7 @@
         }
     }
 
-    .slider-cont {        
+    .slider-cont {
         width: 100% !important;
         display: inline-block;
 
@@ -1385,16 +1455,16 @@
             border: 1px solid $light-blue;
             border-radius: 4px;
             width: 30px;
-            text-align:center;
+            text-align: center;
         }
 
         .value {
             border: 1px solid $light-blue;
             border-radius: 4px;
             width: 30px;
-            text-align:center;
+            text-align: center;
             padding: 4px;
-            background-color: white;            
+            background-color: white;
         }
 
         .tbl {
@@ -1403,7 +1473,6 @@
 
             .left {
                 display: table-cell;
-
                 padding-right: 16px;
             }
 
@@ -1418,22 +1487,21 @@
 
             .right {
                 display: table-cell;
-
                 padding-left: 16px;
             }
         }
     }
 
 
-    .top-all{
-        text-align: left;        
+    .top-all {
+        text-align: left;
         margin-bottom: 8px;
 
         .dlg-btn-wrap {
             display: inline-block;
             cursor: pointer;
             padding: 4px;
-            
+
             &:hover {
                 border: 2px solid $yellow;
                 border-radius: 4px;
@@ -1454,26 +1522,21 @@
 
         .airports-cont {
             position: relative;
-
             max-width: 240px;
             min-width: 160px;
             height: 1.3em;
-            
             overflow: hidden;
 
 
 
-            .airports{
+            .airports {
                 position: absolute;
-            
                 top: 0;
                 left: 0;
-
                 width: 1280px;
-
                 height: 1.1em;
-                
-                .airport{
+
+                .airport {
                     line-height: 1.1em;
                     display: inline-block;
                     border: 1px dotted $light-blue;
@@ -1484,7 +1547,6 @@
                     margin-right: 2px;
                     font-size: 0.9em;
                 }
-
             }
 
             .edit-cont {
@@ -1492,9 +1554,7 @@
                 top: 0;
                 right: 0;
                 bottom: 0;
-
                 width: 65px;
-
                 background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 56%, rgba(255,255,255,1) 100%);
                 background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,0)), color-stop(56%,rgba(255,255,255,1)), color-stop(100%,rgba(255,255,255,1)));
                 background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 56%,rgba(255,255,255,1) 100%);
@@ -1502,7 +1562,6 @@
                 background: -ms-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 56%,rgba(255,255,255,1) 100%);
                 background: linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 56%,rgba(255,255,255,1) 100%);
                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 );
-
                 text-align: right;
 
                 .edit {
@@ -1510,14 +1569,10 @@
 
                     &:hover {
                         color: $light-blue3;
-
                     }
                 }
             }
-
         }
-
-            
     }
 
     .no-airs-info {
@@ -1526,7 +1581,7 @@
         padding: 6px;
         text-align: left;
         margin-top: 8px;
-        
+
         .icon {
             float: left;
             color: $dark-blue;
@@ -1539,22 +1594,18 @@
             color: white;
             font-size: 1.1em;
         }
-
-
     }
 
     .air-dlg {
         .dlg-cont {
             padding: 1em;
         }
-
     }
 
-    .location-dialog{
-        
+    .location-dialog {
         text-align: left;
 
-        .title{            
+        .title {
             font-weight: bold;
             font-size: 1em;
             margin-bottom: 3px;
@@ -1563,7 +1614,6 @@
         .input-block {
             display: inline-block;
             margin-right: 12px;
-
             margin-top: 10px;
 
             &.hidden {
@@ -1576,32 +1626,29 @@
             padding-bottom: 6px;
         }
 
-        .add-btn{
-            
+        .add-btn {
         }
 
 
-        .airports-cont{
+        .airports-cont {
             display: inline-block;
-            
-            .airport{
+
+            .airport {
                 color: white;
                 border-radius: 4px;
                 display: inline-block;
                 background-color: $light-blue3;
-
                 padding-top: 2px;
                 padding-bottom: 2px;
                 padding-left: 4px;
                 padding-right: 4px;
-
                 margin: 2px;
 
-                .delete{
+                .delete {
                     color: $dark-blue;
                     font-size: 0.7em;
 
-                    &:hover{
+                    &:hover {
                         color: $red;
                     }
                 }
@@ -1625,17 +1672,17 @@
                 }
             }
         }
-
     }
 
-    .checker-all{        
+    .checker-all {
         border: none;
-        
-        .icon-checkmark{
-            color: $green3;
+
+        .icon-checkmark {
+            color: $yellow;
         }
-        .icon-checkmark2{
-            color: $orange;
+
+        .icon-checkmark2 {
+            color: $yellow;
         }
     }
 
@@ -1643,7 +1690,7 @@
         display: inline-block;
         width: 440px;
 
-        .levels{
+        .levels {
             display: table;
             width: 100%;
 
@@ -1654,30 +1701,27 @@
 
             .level {
                 @include noselect;
-                
+
                 &.active {
                     border: 2px solid $light-blue3;
                 }
 
                 border-radius: 4px;
-                
                 margin-left: 4px;
                 margin-right: 4px;
-
                 background-color: white;
                 text-align: center;
                 cursor: pointer;
-                
-                .num {                    
+
+                .num {
                     color: $light-blue3;
                     font-size: 1.5em;
                     line-height: 1.0em;
                     font-weight: bold;
-
                 }
 
-                .stars{
-                   span{
+                .stars {
+                    span {
                         color: $yellow;
                         font-size: 0.8em;
                     }
@@ -1692,19 +1736,17 @@
     }
 
 
-    .filtering {        
+    .filtering {
         margin-bottom: 20px;
-
         padding: 12px;
-
         background-color: $very-light-blue;
         border-bottom-left-radius: 4px;
         border-bottom-right-radius: 4px;
 
-        .layout-table{
+        .layout-table {
             display: table;
             width: 100%;
-            
+
             .l {
                 display: table-cell;
                 vertical-align: top;
@@ -1719,46 +1761,39 @@
         }
 
         @include below-width(890) {
-            .layout-table{
+            .layout-table {
                 display: block;
-            
+
                 .l {
-                    display: block;           
-                    text-align:center;
+                    display: block;
+                    text-align: center;
                 }
 
                 .r {
-                    display: block;   
-                    text-align:center;             
+                    display: block;
+                    text-align: center;
                 }
             }
         }
-
     }
 
     .cat-res {
         margin-top: 12px;
-        
-        .weekend-item{
-            .title{
-                margin-bottom: 0.5em;
+
+        .weekend-item {
+            .title {
                 margin-top: 0.5em;
-
                 text-align: left;
-
-                padding-left: 0.5em;
-                padding-right: 0.5em;
-                padding-top: 0.2em;
-                padding-bottom: 0.2em;
-
-                background-color: $info-blue2;
-                border-top-left-radius: 2px;
-                border-top-right-radius: 2px;
-
+                padding-left: 0.8em;
+                padding-right: 0.8em;
+                padding-top: 0.5em;
+                padding-bottom: 0.5em;
+                background-color: $light-blue3;
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
                 color: white;
 
                 .week {
-                    
                 }
 
                 .date {
@@ -1766,15 +1801,23 @@
                     vertical-align: central;
                 }
             }
+
+            .cont {
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
+            }
         }
 
         .cont {
+            background-color: white;
+            border-radius: 8px;
+            padding-top: 1em;
+            padding-bottom: 1em;
             text-align: center;
 
             @include below-width(649) {
                 text-align: center;
             }
-
             /*@include above-width(1280) {
               
                 @include display-flex;
@@ -1784,15 +1827,21 @@
             }*/
         }
 
-        
 
-        .flight-result {            
-            width: 306px;
+
+        .flight-result {
+            width: 284px;
             margin-bottom: 8px;
-
             display: inline-block;
-            
-            margin-right: 4px;
+            margin-left: 0.5em;
+            margin-right: 0.5em;
+
+            @include below-width(600) {
+                margin-left: 0.2em;
+                margin-right: 0.2em;
+            }
+
+            background-color: white;
 
             @include above-width(1280) {
                 margin-right: 6px;
@@ -1808,167 +1857,143 @@
                 img {
                     border-top-left-radius: 4px;
                     border-top-right-radius: 4px;
-
-                    width: 100%;                    
+                    width: 100%;
                     vertical-align: middle;
                 }
 
                 .img-wrap {
                     position: relative;
                     z-index: 1;
-                    
-                    width: 306px;
-                    height: 200px;
-                        
+                    /*width: 290px;*/
+                    height: 189px;
                     border-top-left-radius: 4px;
                     border-top-right-radius: 4px;
                     overflow: hidden;
-                    
+
                     svg {
                         width: 330px !important;
                         @include centerer;
                     }
                 }
-                
+
 
                 .txt-cont {
                     position: absolute;
                     top: 0;
                     left: 0;
                     right: 0;
-
                     z-index: 10;
-
                     border-top-left-radius: 4px;
                     border-top-right-radius: 4px;
-
-                    background-color: rgba(black, 0.5);
-
-                    &.darker {
-                        background-color: rgba(black, 0.7);
-                    }
-
-                    color: white;                    
-                    font-weight: 600;
+                    background-color: rgba(black, 0.6);
+                    text-align: left;
+                    /*&.darker {
+                        background-color: rgba(black, 0.9);
+                    }*/
+                    color: white;
                     font-size: 1.1em;
-
                     padding: 0.8em;
                 }
 
-                .price-cont{
+                .price-cont {
                     display: inline-block;
                     position: absolute;
                     top: 60px;
                     left: -12px;
-                    
                     z-index: 15;
-
                     width: 60px;
                     height: 60px;
-
                     padding: 12px;
                     border: 2px solid white;
                     border-radius: 50%;
-
                     background-color: $green3;
                     color: white;
-
                     text-align: center;
 
                     .wrap {
                         display: inline-block;
-                        
-                        .from{
+
+                        .from {
                             display: inline-block;
-                            font-size: 0.8em;                            
+                            font-size: 0.8em;
                         }
 
-                        .price-all{
+                        .price-all {
                             display: inline-block;
                             font-weight: bold;
-                            font-size: 1.3em;                                                        
+                            font-size: 1.3em;
                         }
                     }
                 }
             }
 
-            .items {                
+            .items {
                 border-left: 1px solid $light-blue;
                 border-bottom: 1px solid $light-blue;
                 border-right: 1px solid $light-blue;
-
                 border-bottom-left-radius: 4px;
                 border-bottom-right-radius: 4px;
-
                 padding-top: 12px;
                 padding-bottom: 12px;
 
-                table{
+                table {
                     font-size: 0.8em;
                     width: 100%;
                     margin: 0;
-                    
-                    border-spacing:0; 
-                    border-collapse: collapse;  
+                    border-spacing: 0;
+                    border-collapse: collapse;
 
-                    td{
+                    td {
                         padding-bottom: 4px;
                         cursor: pointer;
 
-                        &:first-of-type{
+                        &:first-of-type {
                             padding-left: 8px;
                         }
                     }
 
-                    tr {                                                
-                         text-align: left;
+                    tr {
+                        text-align: left;
 
                         &:hover {
                             background-color: $light-blue4;
 
                             .btn {
                                 color: white;
-                                background-color: $dark-blue;                                
+                                background-color: $dark-blue;
                             }
-
                         }
                     }
                 }
 
-                .btn{
+                .btn {
                     display: inline-block;
-                    vertical-align:middle;
-                    
+                    vertical-align: middle;
                     font-weight: bold;
                     text-transform: uppercase;
-
                     border-radius: 4px;
-
-                    color: black;                    
+                    color: black;
                     text-decoration: none;
-
                     padding-left: 2px;
                     padding-right: 2px;
-
                     background-color: $light-blue4;
                     white-space: nowrap;
                 }
             }
-
         }
 
         .flight-result-small {
             display: table;
             width: 100%;
             margin-bottom: 8px;
+            margin-left: 0.3em;
 
-            table{
+            table {
                 font-size: 0.9em;
                 width: 100%;
                 margin: 0;
-                    
-                border-spacing:0; 
-                border-collapse: collapse;  
+                border-spacing: 0;
+                border-collapse: collapse;
             }
 
             .cell {
@@ -1993,35 +2018,33 @@
                 font-weight: 700;
             }
 
-            .price-box{
+            .price-box {
                 background-color: $green;
-
                 display: inline-block;
                 padding: 0.3em;
                 border-radius: 50%;
                 color: white;
                 text-align: center;
-                
+
                 .wrap {
                     display: inline-block;
                     width: 50px;
                     height: 50px;
                 }
 
-                .price-all {                    
+                .price-all {
                     font-weight: 700;
                 }
             }
 
             .one-city-offer {
                 cursor: pointer;
-
                 text-align: left;
 
                 td {
-                    padding: 4px;                    
+                    padding: 4px;
                 }
-                
+
                 .btn {
                     background-color: $light-blue4;
                     border-radius: 4px;
@@ -2041,9 +2064,6 @@
                         color: white;
                     }
                 }
-
-
-
             }
         }
     }
@@ -2057,29 +2077,27 @@
         }
 
         .title {
-
-            background-color: $info-blue2;
-            border-top-left-radius: 2px;
-            border-top-right-radius: 2px;
+            background-color: $light-blue3;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
             color: white;
             padding: 0.5em;
-
+            padding-left: 1em;
             position: relative;
             margin-bottom: 6px;
             text-align: left;
 
-            .txt{
-                
+            .txt {
             }
 
-            .visi{
-                display: inline-block;                
+            .visi {
+                display: inline-block;
                 color: white;
             }
         }
     }
-      
-    .conn {              
+
+    .conn {
         margin-bottom: 12px;
         font-size: 0.9em;
 
@@ -2097,19 +2115,17 @@
                 display: table-cell;
                 vertical-align: top;
                 text-align: right;
-                      
             }
         }
 
         .flight-bck-cont {
-
             background-color: $very-light-blue;
-
             padding-top: 10px;
 
             &.sub-part {
-            background-color: white !important;
-                &:last-of-type{
+                background-color: white !important;
+
+                &:last-of-type {
                     margin-bottom: 12px;
                 }
             }
@@ -2117,14 +2133,13 @@
             .flight {
                 padding-left: 20px;
                 text-align: left;
-                
                 border-bottom: 1px solid $light-blue6;
 
                 &:last-of-type {
                     border-bottom: 0;
                 }
 
-                .top-line {                          
+                .top-line {
                     font-size: 0.8em;
                     color: darkgray;
                     margin-bottom: 14px;
@@ -2134,36 +2149,34 @@
                     display: table;
                     width: 100%;
                     white-space: nowrap;
-                        
                     /*text-align: left;*/
-
                     .di {
                         display: table-cell;
                         vertical-align: top;
                         padding-bottom: 12px;
 
-                        &:first-of-type {                                  
+                        &:first-of-type {
                             /*padding-left: 20px;*/
                         }
                     }
 
                     .logo-cont {
-                            width: 15%;
+                        width: 15%;
 
                         .air-logo {
-                            width: 50px;                                  
+                            width: 50px;
                         }
                     }
 
                     .flight-dir {
                         width: 25%;
-                              
-                        .from-to{
+
+                        .from-to {
                             font-weight: bold;
-                            font-size: 1.2em;                              
+                            font-size: 1.2em;
                         }
 
-                        .flight-no{
+                        .flight-no {
                             font-size: 0.8em;
                             color: darkgray;
                         }
@@ -2171,11 +2184,10 @@
 
                     .date {
                         width: 20%;
-
                         font-weight: bold;
                     }
 
-                    .time-cont{
+                    .time-cont {
                         width: 20%;
 
                         .time {
@@ -2193,22 +2205,20 @@
                         text-align: right;
                         padding-right: 20px;
 
-                        .direct {                            
+                        .direct {
                             font-weight: bold;
                             color: $green2;
                         }
 
                         .stops {
-                                
+
                             .stops-btn {
                                 text-decoration: none;
-                                
+
                                 .txt {
                                     display: inline-block;
-                                    vertical-align:top;
-
+                                    vertical-align: top;
                                     text-decoration: underline;
-
                                     color: $light-blue;
                                 }
 
@@ -2219,26 +2229,20 @@
                                     }
 
                                     display: inline-block;
-                                    vertical-align:top;
-
+                                    vertical-align: top;
                                     color: white;
                                     border-radius: 4px;
                                     padding: 3px;
-
                                     color: white;
                                     background-color: $light-blue;
-
                                     font-weight: 100;
                                     font-size: 0.8em;
-
                                     margin-left: 8px;
                                 }
-                            }                            
+                            }
                         }
                     }
-
                 }
-
             }
 
             .flights-sub {
@@ -2246,11 +2250,10 @@
                 background-color: white;
             }
         }
+
         .book-zone {
             display: inline-block;
-
             padding: 20px;
-
             background-color: $light-blue6;
 
             .score {
@@ -2265,12 +2268,12 @@
                     font-size: 1.1em;
                 }
 
-                .stars-score{
+                .stars-score {
                     color: $yellow;
                     font-size: 0.7em;
                 }
 
-                .cap{
+                .cap {
                     font-size: 0.75em;
                     color: gray;
                 }
@@ -2281,16 +2284,15 @@
                 text-align: right;
 
                 .currency {
-                              
                 }
 
-                .price{
-                    font-size: 2em;                              
+                .price {
+                    font-size: 2em;
                 }
             }
 
-            .btn-cont{
-                a{
+            .btn-cont {
+                a {
                     font-weight: bold;
                     text-decoration: none;
                     display: inline-block;
@@ -2301,251 +2303,237 @@
                     white-space: nowrap;
 
                     &:hover {
-                        background-color: $green2;                                
+                        background-color: $green2;
                     }
                 }
             }
-
         }
 
         @include below-width(720) {
-            .layout-tbl{
+            .layout-tbl {
                 display: block;
 
-                .left,.right{
+                .left, .right {
                     display: block;
                     width: initial;
                 }
             }
 
-            .book-zone {                      
+            .book-zone {
                 display: block;
                 position: relative;
                 padding: 5px;
 
-                .score {                      
-                    display: inline-block;  
+                .score {
+                    display: inline-block;
                     vertical-align: top;
-
                     position: absolute;
                     left: 10px;
                     top: 8px;
 
 
-                .txt-score {
-                    display: inline-block;  
-                }
+                    .txt-score {
+                        display: inline-block;
+                    }
 
-                .stars-score{
-                    display: inline-block !important;  
-                }
+                    .stars-score {
+                        display: inline-block !important;
+                    }
 
-                .cap{
-                    display: inline-block !important;  
+                    .cap {
+                        display: inline-block !important;
+                    }
                 }
-            }
 
                 .price-all {
-                    display: inline-block;  
+                    display: inline-block;
                     vertical-align: top;
                 }
-                      
+
                 .btn-cont {
-                    display: inline-block;  
+                    display: inline-block;
                     vertical-align: top;
                 }
-        }
-        }
-
-              
-
-    }
-
-      
-  .city-deal {
-      position: relative;      
-     
-     padding-top: 5em;
-      
-       
-      margin-bottom: 1em;
-
-    
-      .title-deal {
-          padding-top: 0.5em;
-          padding-bottom: 0.5em;
-          text-align: right;
-
-          .deals-ordering {
-              display: inline-block;
-              
-              .items-table {
-                  display: table;
-
-                  .cell {
-                      display: table-cell;
-                  }
-              }
-
-              .item{
-                  display: inline-block;
-                  border: 2px solid white;
-                  background-color: $light-blue;
-                  color: white;                  
-                  padding: 3px;
-                  cursor: pointer;
-                  text-align: center;
-
-                  &:hover{
-                      background-color: $orange;
-                  }
-                      
-                  &.active {
-                      background-color: $yellow;
-                  }
-              }
-
-              .l {
-                  border-bottom-left-radius: 2px;
-                  border-top-left-radius: 2px;
-              }
-
-              .r {
-                  border-bottom-right-radius: 2px;
-                  border-top-right-radius: 2px;
-              }
-          }
-          
-      }
-
-      .splitter{
-          padding: 12px;
-          background-color: $very-light-blue;
-
-          div{
-              border-top: 1px solid $light-blue;
-          }
-      }
-
-      .title {
-          font-size: 1.3em;
-          font-weight: bold;
-          margin-bottom: 12px;
-          text-decoration: underline;
-          padding-left: 14px;
-
-          &.blue{
-              background-color: $very-light-blue;
-          }
-      }
-
-      .other-flights-filter {
-          background-color: $very-light-blue;
-          border-top: 1px solid $light-blue3;
-
-          padding-left: 12px;
-          padding-right: 12px;
-
-          text-align: center;
-          margin-top: 1em;
-      
-        .tit{
-              font-weight: bold;              
-              margin-bottom: 6px;
-          }
-
-        .airpairs-filter {
-              .pair {
-                  display: inline-block;
-                  background-color: $light-blue3;
-                  color: white;
-                  padding: 6px;
-                  margin-left: 2px;
-                  margin-right: 2px;
-                  border-radius: 4px;
-                  cursor: pointer;
-                  @include noselect;
-
-                  &.active {
-                      background-color: $orange;
-                  }
-              }
-          }
-
-        .ltbl{
-            width: 100%;
-            display: table;
-
-            .block{
-                width: 50%;
-                display: table-cell;                
             }
         }
+    }
 
-        @include below-width(800) {
-            .ltbl{                
-                display: block;
 
-                .block{
-                    width: initial;
-                    display: block;
+    .city-deal {
+        position: relative;
+        padding-top: 5em;
+        margin-bottom: 1em;
+
+
+        .title-deal {
+            padding-top: 0.5em;
+            padding-bottom: 0.5em;
+            text-align: right;
+
+            .deals-ordering {
+                display: inline-block;
+
+                .items-table {
+                    display: table;
+
+                    .cell {
+                        display: table-cell;
+                    }
+                }
+
+                .item {
+                    display: inline-block;
+                    border: 2px solid white;
+                    background-color: $light-blue;
+                    color: white;
+                    padding: 3px;
+                    cursor: pointer;
+                    text-align: center;
+
+                    &:hover {
+                        background-color: $orange;
+                    }
+
+                    &.active {
+                        background-color: $yellow;
+                    }
+                }
+
+                .l {
+                    border-bottom-left-radius: 2px;
+                    border-top-left-radius: 2px;
+                }
+
+                .r {
+                    border-bottom-right-radius: 2px;
+                    border-top-right-radius: 2px;
                 }
             }
         }
 
+        .splitter {
+            padding: 12px;
+            background-color: $very-light-blue;
+
+            div {
+                border-top: 1px solid $light-blue;
+            }
+        }
+
+        .title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 12px;
+            text-decoration: underline;
+            padding-left: 14px;
+
+            &.blue {
+                background-color: $very-light-blue;
+            }
+        }
+
+        .other-flights-filter {
+            background-color: $very-light-blue;
+            border-top: 1px solid $light-blue3;
+            padding-left: 12px;
+            padding-right: 12px;
+            text-align: center;
+            margin-top: 1em;
+
+            .tit {
+                font-weight: bold;
+                margin-bottom: 6px;
+            }
+
+            .airpairs-filter {
+                .pair {
+                    display: inline-block;
+                    background-color: $light-blue3;
+                    color: white;
+                    padding: 6px;
+                    margin-left: 2px;
+                    margin-right: 2px;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    @include noselect;
+
+                    &.active {
+                        background-color: $orange;
+                    }
+                }
+            }
+
+            .ltbl {
+                width: 100%;
+                display: table;
+
+                .block {
+                    width: 50%;
+                    display: table-cell;
+                }
+            }
+
+            @include below-width(800) {
+                .ltbl {
+                    display: block;
+
+                    .block {
+                        width: initial;
+                        display: block;
+                    }
+                }
+            }
+        }
+
+        .dep-arr {
+            padding: 10px;
+
+
+            .time-cont {
+                display: block;
+            }
+        }
+
+        .srvc {
+            padding: 12px;
+
+            .lbtn {
+                color: white;
+                background-color: $orange;
+                font-weight: bold;
+
+                &:hover {
+                    background-color: $dark-blue;
+                }
+            }
+        }
+
+        .other-flights-preloader {
+            text-align: center;
+
+            .center {
+                margin: 10px;
+                display: inline-block;
+                font-weight: bold;
+                padding: 20px;
+                border: 2px solid $orange;
+                font-weight: bold;
+                border-radius: 4px;
+            }
+        }
     }
 
-      .dep-arr {          
-          padding: 10px;
+    .plane-preloader {
+        $size: 60px;
 
-          
-          .time-cont {
-              display: block;              
-          }
-      }
-
-      .srvc{
-          padding: 12px;
-
-          .lbtn{
-              color: white;
-              background-color: $orange;
-              font-weight: bold;
-
-              &:hover {
-                  background-color: $dark-blue;
-              }
-          }
-      }
-
-      .other-flights-preloader {
-          text-align: center;
-
-          .center {
-              margin: 10px;
-              display: inline-block;
-              font-weight: bold;
-              padding: 20px;
-              border: 2px solid $orange;
-              font-weight: bold;
-              border-radius: 4px;
-            }
-          
-      }
-
-  }
-
-  .plane-preloader{      
-      $size: 60px;
-      
-        position:relative;
+        position: relative;
         display: inline-block;
         width: $size;
         height: $size;
-            
-        img{                
+
+        img {
             @include spin($size);
             color: $dark-blue;
         }
-    }  
+    }
 }

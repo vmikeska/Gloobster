@@ -48,6 +48,8 @@
 								});
 
 						var $airFilterAll = $f.find(".air-filter-all");
+						var $connsFilterCol = $f.find("#connsFilterCol");
+						
 						var pairs: CodePair[] = [];
 						this.search.lastFlights.forEach((f) => {
 								var pair = { from: f.from, to: f.to };
@@ -60,7 +62,7 @@
 
 						this.hasMoreConns = pairs.length > 1;
 
-						$airFilterAll.toggleClass("hidden", !this.hasMoreConns);
+						$connsFilterCol.toggleClass("hidden", !this.hasMoreConns);
 
 						if (this.hasMoreConns) {
 								this.airSel = new AirportSelector($airFilterAll.find(".air-filter-cont"), pairs);
