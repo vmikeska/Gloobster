@@ -1,0 +1,72 @@
+﻿@{
+    ViewBag.MenuGroup = "Wiki";
+    ViewBag.BodyClass = "stats";
+    ViewData["Title"] = "stats";
+}
+
+
+@using Gloobster.Portal.Controllers.Portal
+@using Gloobster.Portal.ViewModels
+@using Microsoft.Data.Entity.Metadata.Internal
+@model StatViewModel
+
+<link href="/lib/leaflet/dist/leaflet.css" rel="stylesheet" />
+
+@*<script src="/js/Deals/Map/CountriesData.js" type="text/javascript"></script>*@
+
+<script type="text/javascript" src="/lib/leaflet/dist/leaflet-src.js"></script>
+
+<script type="text/javascript" src="/lib/leaflet-heat.js"></script>
+
+<script src="/js/Deals/Map/CountriesData.js" type="text/javascript"></script>
+
+<script src="/js/Views/StatsView.js" type="text/javascript"></script>
+
+<script src="/js/Stats/StatsFncs.js" type="text/javascript"></script>
+
+
+@foreach (Script s in Model.Page.Scripts)
+{
+    <script src="/js/@(s.Namespace)/@(s.FileName).js" type="text/javascript"></script>
+}
+
+
+
+
+
+<div class="wrapper">
+    
+    <h1>@Model.Page.Title</h1>
+    
+    
+
+    <div class="map-wrap">
+        <div class="stat-map" id="statMap"></div>
+        <div class="legend-cont"></div>
+    </div>
+
+</div>
+
+
+<script>
+
+    function onBodyLoad() {
+        currentView = new Views.StatsView();
+        currentView.init("@(Model.Page.Scripts[0].FileName)");
+    }
+</script>
+
+
+<script id="legend-item-template" type="text/x-handlebars-template">
+
+    <div class="item">
+        <div class="color"></div>
+        <div class="txt">{{txt}}</div>
+    </div>
+
+</script>
+
+
+
+
+

@@ -29,5 +29,7 @@ namespace Gloobster.Common
         public const string CalendarName = "calendar";
 
         public const string ArticleName = "article";
+
+        public const string StatsName = "stats";
     }
 }

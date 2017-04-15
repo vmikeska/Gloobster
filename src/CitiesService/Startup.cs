@@ -14,14 +14,18 @@ namespace Gloobster.CitiesService
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .AddEnvironmentVariables();
-            Configuration = builder.Build();			
-		}
+            Configuration = builder.Build();            
+        }
 
         public IConfigurationRoot Configuration { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(o => o.AddPolicy("AllowAll", p => p.AllowAnyOrigin()
+                                                                        .AllowAnyMethod()
+                                                                         .AllowAnyHeader()));
+
             // Add framework services.
             services.AddMvc();
 
@@ -36,6 +40,8 @@ namespace Gloobster.CitiesService
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            app.UseCors("AllowAll");
+
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
@@ -44,7 +50,8 @@ namespace Gloobster.CitiesService
             app.UseStaticFiles();
 
 			app.UseMvc();
-		}
+            
+        }
 
         // Entry point for the application.
         public static void Main(string[] args)

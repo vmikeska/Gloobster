@@ -1,13 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Gloobster.DomainObjects;
 using Gloobster.Mappers;
 using Gloobster.ReqRes.CitiesService;
 using Microsoft.AspNet.Mvc;
 using System.Linq;
+using Microsoft.AspNet.Cors;
 
 namespace Gloobster.CitiesService.Controllers
 {
     [Route("api/[controller]")]
+    [EnableCors("AllowAll")]
     public class CityController : Controller
     {
 		public ICitiesDB CDB { get; set; }
@@ -47,6 +50,21 @@ namespace Gloobster.CitiesService.Controllers
         {            
             var cities = CDB.CitiesByPopulation(minPopulation);
             return cities.Select(c => c.ToResponse()).ToList();
+        }
+
+        [HttpGet("mpc/{minPopulation}")]
+        public List<CityDensity> GetCitiesByPopulationCordinates(int minPopulation)
+        {
+            var cities = CDB.CitiesByPopulation(minPopulation);
+
+            var cs = cities.Select(c => new CityDensity
+            {
+                lat = Math.Round(c.Coordinates.Lat, 2),
+                lng = Math.Round(c.Coordinates.Lng, 2),
+                pop = c.Population
+            }).ToList();
+            
+            return cs;
         }
 
     }

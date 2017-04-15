@@ -10,6 +10,19 @@ var Views;
         function StatsView() {
             _super.apply(this, arguments);
         }
+        StatsView.prototype.init = function (scriptName) {
+            this.createMap(scriptName);
+        };
+        StatsView.prototype.createMap = function (scriptName) {
+            var options = {
+                zoom: 3,
+                maxBounds: L.latLngBounds(L.latLng(-85, -180), L.latLng(85, 180)),
+                zoomControl: false,
+                center: [34.5133, -94.1629]
+            };
+            this.mapObj = L.map("statMap", options);
+            var statInstance = Stats.InstanceLoader.getInstance(window["Stats"], scriptName, this.mapObj);
+        };
         return StatsView;
     }(Views.ViewBase));
     Views.StatsView = StatsView;

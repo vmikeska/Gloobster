@@ -17,4 +17,11 @@ namespace Gloobster.ReqRes.CitiesService
 		public string timeZone { get; set; }
         public string usState { get; set; }
 	}
+
+    public class CityDensity
+    {
+        public double lat { get; set; }
+        public double lng { get; set; }
+        public int pop { get; set; }
+    }
 }
