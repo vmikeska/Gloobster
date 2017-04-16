@@ -11,7 +11,20 @@ var Views;
             _super.call(this);
             this.combo = new Views.WikiSearchCombo();
             this.combo.initId("SearchCombo", { showRating: true });
+            this.regMoreBtn();
         }
+        WikiHomeView.prototype.regMoreBtn = function () {
+            var _this = this;
+            $(".more-btn").click(function (e) {
+                _this.changeInfoVisibility();
+            });
+            $(".close").click(function (e) {
+                _this.changeInfoVisibility();
+            });
+        };
+        WikiHomeView.prototype.changeInfoVisibility = function () {
+            $(".wiki-info-all").toggleClass("collapsed");
+        };
         return WikiHomeView;
     }(Views.ViewBase));
     Views.WikiHomeView = WikiHomeView;

@@ -12,6 +12,8 @@ namespace Gloobster.Portal.ViewModels
         public List<WikiCityEntity> Cities { get; set; }
         public List<WikiTextsEntity> Texts { get; set; }
 
+        public QuizEntity Quiz { get; set; }
+
         public void LoadArticles()
         {
             //prague 3067696
@@ -20,7 +22,7 @@ namespace Gloobster.Portal.ViewModels
             //vienna 2761369
             //lisboa 2267057
 
-            var gids = new[] { 3067696, 2988507, 2964574, 2761369, 2267057 };
+            var gids = new[] { 3067696, 2988507, 2761369};
 
             var articles = DB.List<WikiCityEntity>(c => gids.Contains(c.GID));
             var aids = articles.Select(a => a.id);
@@ -47,6 +49,10 @@ namespace Gloobster.Portal.ViewModels
 
                 Articles.Add(article);
             }
+
+            int lastQuizNo = DB.C<QuizEntity>().Select(q => q.No).ToList().Max();
+
+            Quiz = DB.FOD<QuizEntity>(q => q.No == lastQuizNo);            
         }
 
         public WikiTextsEntity TextById(int gid)

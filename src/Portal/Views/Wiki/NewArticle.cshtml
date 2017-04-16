@@ -3,24 +3,22 @@
 @using Gloobster.Portal.ViewModels
 @model ArticleVM
 
-<div class="article">
-    
-    <div class="photo">
-        <img src="/picd/@Model.GID/whs" />
-    </div>
 
-    <div class="service">
-        <div class="title">
-            <a href="/wiki/@Model.Link">
-                <h2>@Model.Title</h2>
-            </a>
+<div class="article">
+
+    <a class="all-link" href="/wiki/@Model.Link">
+        <h2 class="title">@Model.Title</h2>
+
+        <div class="top">
+            <img src="/picd/@Model.GID/whs" />
         </div>
 
-        @Html.Partial("Stars", Model.Rating)
-    </div>
+        <div class="txt-cont">
+            <div class="txt">@Model.About</div>
 
-    <p class="txt">
-        @Model.About
-    </p>
-    <div class="more"><a href="/wiki/@Model.Link">@Model.VM.W("ReadMoreBtn")</a></div>
+            <div class="shadow"></div>
+        </div>
+
+    </a>
+
 </div>

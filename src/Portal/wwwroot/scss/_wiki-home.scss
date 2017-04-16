@@ -2,10 +2,10 @@
 $light-gray: #f2f2f2;
 
 .stars {
-    .star{        
-        display:inline-block;
+    .star {
+        display: inline-block;
         font-size: 30px;
-        
+
         .active {
             color: $yellow;
         }
@@ -17,6 +17,7 @@ $light-gray: #f2f2f2;
         .icon-star-left {
             float: left;
         }
+
         .icon-star-right {
             margin-left: -0.4px;
             float: right;
@@ -26,332 +27,423 @@ $light-gray: #f2f2f2;
 
 .wiki {
 
-    h1{
-        text-align: center;
-    }
+    $bck-display-width: 800;
 
-    .search {
-        
-        input {            
-            border:0;
-        }
-
-        li{
-            min-width: 320px;
-
-            a {
-                display: inline-block;                
-            }
-
-            .stars {
-                position: absolute;
-                right: 5px;
-                display: inline-block;                
-                .star{
-                    font-size: 18px;
-                }
-            }
-        }
-    }
-
-    .wiki_header_all {
-        height: 450px;
+    .wiki-search-header {
         position: relative;
-        text-align: center;
+        height: 350px;
+        border-bottom: 4px solid $dark-blue;
 
-        .wiki_header{
-            border-bottom: 2px solid $dark-blue;
-    
-            height: 450px;
-            overflow: hidden;
+        .picture-cont {
             position: relative;
+            overflow: hidden;
+            background-color: $light-blue3;
+            height: 350px;
 
-            .bck {            
-                width: 1920px;
-                height: 450px;
+            @include below-width($bck-display-width) {
 
-                text-align: center;
-
-                @include centerer;
-
-                background-image: url("/images/n/nyc1.jpg");   
-            
-                .search_all{                
-                    display: inline-block;
-                    position: relative;
-                    height: 450px;
-                    width: 600px;
-                
-                    .circle-bck{
-                        height: 450px;
-                        width: 600px;
-                        position: relative;
-                        background: url("/images/n/middle-circle.svg");
-                        opacity: 0.7;
-                    }
-                }         
-            }
-
-             
-        }
-
-        .cont{            
-            display: inline-block;
-            position: absolute;
-            top: 0;
-            min-width: 320px;
-            max-width: 400px;
-            height: 450px;
-            transform: translateX(-50%);
-
-            h1 {                
-                color: white;
-                font-weight: 500;
-                margin-top: 80px;
-            }
-        }
-
-        @include below-width(700) {
-                .circle-bck {
+                .picture {
                     display: none;
                 }
+            }
 
-                .cont{
-                    display: block;
+            @include above-width($bck-display-width) {
+                .picture {
+                    background-image: url("/images/n/nyc2.jpg");
+                    width: 1920px;
+                    height: 350px;
 
-                    top: 80px;
+                    @include centerer;
+                }
+            }
 
-                    min-width: initial;
-                    max-width: initial;
-                    transform: initial;
+            @include above-width($bck-display-width) {
 
-                    background-color: rgba($light-blue3, 0.7);
+                .background-circle {
+                    background-color: rgba($light-blue3, 0.6);
+                    border-radius: 50%;
+                    height: 600px;
+                    width: 600px;
 
-                    height: initial;
+                    @include centerer;
+                }
+            }
+        }
 
-                    padding-top: 20px;
-                    padding-bottom: 20px;
+        .title-block {
+            /*position: absolute;*/
+            @include centerer;
+            top: 3em;
+            color: white;
+            width: 100%;
 
-                    h1 {
-                        margin-top: 0;
+            h1 {
+                padding: 0;
+                margin: 0;
+                font-weight: 400;
+                display: inline-block;
+            }
+        }
+
+        .search {
+            @include centerer;
+            font-size: 1.1em;
+
+            .icon-logo-pin {
+                font-size: 1.1em;
+                position: absolute;
+                top: 0.6em;
+                left: 0.5em;
+                color: $orange;
+                z-index: 2;
+            }
+
+            input {
+                width: 300px;
+                padding: 0.6em;
+                padding-left: 1.6em;
+                padding-right: 1.3em;
+                border: 0;
+            }
+
+            ul {
+                top: 2.3em;
+
+                li {
+                    min-width: 320px;
+
+                    a {
+                        display: inline-block;
+                    }
+
+                    .stars {
+                        position: absolute;
+                        right: 5px;
+                        display: inline-block;
+
+                        .star {
+                            font-size: 18px;
+                        }
                     }
                 }
-
-            }   
-
+            }
+        }
     }
 
-    .wiki_info{    
+
+    .wiki-info-all {
         background-color: $dark-blue;
- 
-        .bl{
-            margin-right: 30px;
+        position: relative;
 
-            @include below-width(803){
-                margin-right: 0;        
+        .wiki-info-btn-cont {
+            display: none;
+
+            padding .more-btn {
+                padding-left: 1.5em;
+                padding-right: 1.5em;
             }
         }
 
-        .br{
-            margin-left: 30px;
-
-            @include below-width(803){     
-                margin-left: 0;
-            }
-        }
-
-        .block { 
+        .close {
             display: inline-block;
-            vertical-align: top;
-            padding-top: 50px;
-            max-width: 360px;
-            min-width: 320px;
-            /*border: 1px solid red;*/
+            color: $yellow;
+            position: absolute;
+            right: 1em;
+            top: 1em;
+            font-size: 1.2em;
+            cursor: pointer;
 
-            .ico {
-                width: 180px;
-                height: 180px;
-                margin-right: auto;
-                margin-left: auto;
-                margin-bottom: 35px;
-            }
-            .title {
-                color: $yellow2;            
-            }
-            .text {            
-                color: white;
-                height: 170px;
-            }
-            .btn {            
-                height: 50px;
-
-                .lbtn {
-                    color: $light-blue3;
-                    background-color: $yellow2;
-                }
-            }
-        }
-    }
-
-    
-    .all-articles {
-        padding-left: 6px;
-        padding-right: 6px;
-    }
-
-
-
-    .wiki_article_wide{  
-    
-        .photo {
-            height: 450px;
-            overflow: hidden;
-            position: relative;
-            border-radius: 2px;
-
-            .bck{
-            
-                width: 1280px;
-                height: 450px;
-
-                @include centerer;
-
-                /*background-image: url("/images/n/wiki_wide.jpg");*/            
+            &:hover {
+                color: $red;
             }
         }
 
-        .service {                
-                position: relative;
-                height: 20px;
-                
-                .title {                    
-                    position: absolute;
-                    left: 0;
+        .wiki-info {
+            .bl {
+                margin-right: 30px;
 
-                    a {
-                        color: $light-blue3;
-                        vertical-align: top;
-
-                        h2{
-                            font-weight: 500;
-                            font-size: 28px;
-                            margin-top: 0;
-                            margin-bottom: 0;
-                        }                        
-                    }
-                }
-
-                .stars{                    
-                    position: absolute;
-                    right: 0;
-                    top: 5px;
-                     
-                     .star{        
-                        font-size: 26px;
-                     }
+                @include below-width(803) {
+                    margin-right: 0;
                 }
             }
 
-        .txt{                        
-            padding-left: 0;
-            padding-right: 0;
-            margin-top: 0.7em;
-            margin-bottom: 1em;
-            text-align: left;
+            .br {
+                margin-left: 30px;
 
-        }
-    
-    }
-
-    .wiki_articles{
-        
-        > :nth-child(odd){
-            margin-right: 10px;
-            @include below-width(1280){
-                margin-right: 0;
-            }
-        }
-    
-        .article{                    
-            display:inline-block;
-            vertical-align: top;
-            max-width: 626px;
-            margin-bottom: 20px;
-            /*height: 416px;*/
-
-            .photo{
-            
-                img {
-                    max-width: 626px;
-
-                    border-radius: 2px;
-
-                    @include below-width(626){
-                        max-width: 100%;
-                    }
+                @include below-width(803) {
+                    margin-left: 0;
                 }
             }
 
-            .service {                
-                position: relative;
-                height: 20px;
-                
-                .title {                    
-                    position: absolute;
-                    left: 0;
-
-                    a {
-                        color: $light-blue3;
-                        vertical-align: top;
-
-                        h2{
-                            font-weight: 500;
-                            font-size: 24px;
-                            margin-top: 0;
-                            margin-bottom: 0;
-                        }                        
-                    }
-                }
-
-                .stars{                    
-                    position: absolute;
-                    right: 0;
-                     
-                     .star{        
-                        font-size: 26px;
-                     }
-                }
-            }
-
-            /*.rate {
-                display:inline-block;
+            .block {
+                display: inline-block;
                 vertical-align: top;
-            }*/
-
-            .txt{
-                text-align: left;
-
-                    height: 100px;                    
-                    overflow: hidden;
-                    padding-left: 0;
-                    padding-right: 0;
-                    margin-top: 0.7em;
-                    margin-bottom: 0.3em;
+                padding-top: 50px;
+                max-width: 360px;
+                min-width: 320px;
+                /*border: 1px solid red;*/
+                .ico {
+                    width: 180px;
+                    height: 180px;
+                    margin-right: auto;
+                    margin-left: auto;
+                    margin-bottom: 35px;
                 }
 
-            .more{
-                text-align: left;
-                
-                a {
-                    color: $light-blue3;
+                .title {
+                    color: $yellow2;
+                }
+
+                .text {
+                    color: white;
+                    height: 170px;
+                }
+
+                .btn {
+                    height: 50px;
+
+                    .lbtn {
+                        color: $light-blue3;
+                        background-color: $yellow2;
+                    }
                 }
             }
+        }
+
+        &.collapsed {
+
+            .wiki-info-btn-cont {
+                display: block;
+            }
+
+            .wiki-info {
+                display: none;
+            }
+
+            .close {
+                display: none;
+            }
+        }
+    }
+
+    .wiki-articles-all {
+        background-color: $dark-blue;
+        padding-top: 1em;
+
+        .wiki-articles {
+            padding-top: 1em;
+            padding: 1em;
+            color: white;
+
+            .tbl {
+                display: table;
+                width: 100%;
+
+                .i {
+                    vertical-align: top;
+                    display: table-cell;
+                    width: 33%;
+                }
+
+                @include below-width(900) {
+                    .i {
+                        width: 50%;
+                    }
+
+                    .r {
+                        display: none;
+                    }
+                }
+            }
+
+            .article {
+
+                .all-link {
+                    text-decoration: none;
+                    color: white;
+                }
+
+                display: inline-block;
+                vertical-align: top;
+                margin-left: 0.5em;
+                margin-right: 0.5em;
+
+                .title {
+                    padding: 0;
+                    padding-bottom: 0.3em;
+                    margin: 0;
+                    text-align: left;
+                    font-weight: 400;
+                    font-size: 1.6em;                    
+                }
+
+                img {
+                    width: 100%;
+                    border: 1px solid $light-blue;
+                    border-radius: 2px;
+                }
+
+                .txt-cont {
+                    height: 160px;
+                    position: relative;
+                    overflow: hidden;
+
+                    .txt {
+                    }
+
+                    .shadow {
+                        position: absolute;
+                        top: 60px;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        z-index: 999999;
+                        background: linear-gradient(transparent, $dark-blue);
+                    }
+                }
+
+
+                .txt {
+                    text-align: left;
+                    font-size: 0.9em;
+                }
+            }
+        }
+    }
+
+    .wiki-stats-all {
+        padding: 1em;
+
+        .block-title {
+            color: $dark-blue;
+        }
+
+        .tbl {
+            display: table;
+            width: 100%;
+
+            .i {
+                vertical-align: top;
+                display: table-cell;
+                width: 50%;
+            }
+
+            .r {
+                vertical-align: middle;
+            }
+        }
+
+        .example {
+            text-decoration: none;
+
+            .title {
+                padding: 0;
+                margin: 0;
+                text-align: left;
+            }
+
+            img {
+                width: 100%;
+                border-radius: 6px;
+            }
+        }
+
+        .links {
+            font-size: 1.2em;
+            padding-left: 1em;
+
+            a {
+                display: block;
+            }
+
+            @include below-width(700) {
+                font-size: 1.1em;
+                text-align: left;
+            }
+        }
+
+        .btn-cont {
+            padding-top: 2em;
+        }
+    }
+
+
+    .wiki-quiz-all {
+        background-color: $very-light-blue;
+        padding: 1em;
+        border-radius: 6px;
+        margin-bottom: 1em;
+
+        .block-title {
+            color: $light-blue2;
+        }
+
+        .tbl {
+            display: table;
+            width: 100%;
+            margin-top: 1em;
+
+            .i {
+                vertical-align: middle;
+                display: table-cell;
+            }
+
+            .l {
+                width: 250px;
+            }
+
+            .r {
+                padding: 1em;
+            }
+        }
+
+        /*img {
+            border-radius: 50%;
+            width: 250px;
+            height: 250px;
+        }*/
+
+        .current-quiz {
+            text-decoration: none;
+
+            .txt {
+                font-size: 2em;
+                font-weight: bold;
+                color: $light-blue2;
+                margin-bottom: 0.7em;
+                vertical-align: middle;
+            }
+
+            .btn-start-quiz {
+            }
+
+             @include below-width(600) {
+                .txt {
+                    font-size: 1.3em;
+                }
+            }
+        }
+
+        .quiz-pic {
+            width: 250px;
+            height: 250px;
+            border-radius: 100%;
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+            background-color: $light-blue3;
+
+            .question-mark {
+                font-size: 10em;
+                color: $dark-blue;
+            }
+
         }
     }
 
     .counties {
 
-        h2{
+        h2 {
             font-weight: 500;
         }
 
@@ -365,11 +457,11 @@ $light-gray: #f2f2f2;
             width: 250px;
             margin-top: 30px;
 
-            .item{
+            .item {
                 a {
                     color: $light-blue3;
                 }
             }
-        }        
+        }
     }
 }
