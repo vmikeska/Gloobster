@@ -21,30 +21,29 @@
 								realKnowledge: 9,
 								isRoot: false,
 								cont: "blockLangs",
-								text: `I've been coding in C# on every project in my professional career. 
+								text: `I've been coding in C# on nearly every project in my professional career. 
 												During this time, I developed a general sense for application designing and architecture.`
 						},
 						{
 								technoExport: true,
 								id: "blockES5",
 								title: "JavaScript 5",
-								yearsExperience: 8,
+								yearsExperience: 9,
 								realKnowledge: 7,
 								isRoot: false,
 								cont: "blockLangs",
 								text: `Roughly half of the projects I took part of, involved client side coding. 
-												I know ES5 well, but in last two years, I became a bit ES5 lazy due to TypeScript.
-												I don't have any experience with ES6 or higher, but it's on my to-learn list.`
+												I knew ES5 very well, but in last three years I switched completely to ES6/TS.`
 						},
 						{
 								technoExport: true,
 								id: "blockTS",
-								title: "TypeScript",
-								yearsExperience: 2,
+								title: "ES6/TypeScript",
+								yearsExperience: 3,
 								realKnowledge: 8,
 								isRoot: false,
 								cont: "blockLangs",
-								text: `I was using TypeScript on the last project, nearly 2 years and I felt in love with its syntax.`
+								text: `I was using TypeScript in last three years on every project and totally felt in love with this technology.`
 						},
 
 						{
@@ -73,8 +72,7 @@
 								realKnowledge: 8,
 								isRoot: false,
 								cont: "blockBackend",
-								text: `The technology of my last project. Well done by Microsoft. I appreciate it's integration with Bower packages, middleware-like request flow and project structure generally.
-												I consider this technology as a current peak of web development.`
+								text: `Like this technology. I appreciate it's integration with Bower packages, middleware-like request flow and project structure generally.`
 						},
 						{
 								technoExport: true,
@@ -102,16 +100,16 @@
 								realKnowledge: 8,
 								isRoot: false,
 								cont: "blockWeb",
-								text: `I worked with jQuery on dozen projects and still consider it as one of the best JS frameworks out there. Of course I understand that it's not suitable for projects with expected high need of client debugging and tweeking.`
+								text: `I consider jQuery dead, but have nothing against using some jQuery-like-syntax library.`
 						},
 						{
 								id: "blockBrowserInterface",
-								title: "HTML/HTML5 browser interface",
+								title: "HTML5 Web API",
 								yearsExperience: 6,
 								realKnowledge: 6,
 								isRoot: false,
 								cont: "blockWeb",
-								text: `My knowledge of browser functionality interface is mostly hidden behind jQuery. I have an average knowledge, but already started improving my knowledge in this field. Due to rising HTML5 support across all web browser platforms and end of the old IE's.`
+								text: `Within last years developing enterprise web applications, my Web API knowledge rapidly grown.`
 						},
 						{
 								technoExport: true,
@@ -124,13 +122,14 @@
 								text: `I am able to code any design I can think of. Lately I gained some knowledge of CSS3 features. I prefer to use SCSS, but I can learn any other CSS superset fast.`
 						},
 						{
-								id: "blockAngBack",
-								title: "Angular1, Backbone",
-								yearsExperience: 2,
-								realKnowledge: 1,
+								technoExport: true,
+								id: "blockAngular",
+								title: "Angular4",
+								yearsExperience: 1,
+								realKnowledge: 8,
 								isRoot: false,
 								cont: "blockWeb",
-								text: `I worked roughly a year on a Backbone project and a half a year on an Angular1 project. I have forgotten most of it, but I'm generally very familiar with SPA concept.`
+								text: `The technology of my last project, really like this technology for developing SPA.`
 						},
 						{
 								id: "blockUX",
@@ -139,7 +138,7 @@
 								realKnowledge: 8,
 								isRoot: false,
 								cont: "blockWeb",
-								text: `I was gaining some little UX skills on all the web projects I took part of. But thanks to the last project I qualified me to a higher league.
+								text: `Thanks to the last two projects I learnt great deal in UX.
 												I'm convinced I'm better than many professional graphic designers. 
 												From the very beginning of UX planning, I can think of behaviour across multiple resolutions and its responsive design.
 												I am a skilled user of Balsamique mocking tools. I have exceptional skill and patience to talk to graphic designers.`
@@ -152,7 +151,7 @@
 								isRoot: false,
 								cont: "blockWeb",
 								text: `With the last project, I wasn't that lucky on graphic designers so I had to overtake some design task. 
-												I am not talented and I don't plan to develop in this field, but I can definitely make a design based on some defined templates/styles.`
+												I am not talented and I don't plan to develop in this field, but I can definitely make any design based on any designed templates.`
 						},
 
 						{
@@ -259,7 +258,7 @@
 								realKnowledge: 8,
 								isRoot: false,
 								cont: "blockProject",
-								text: `I was working as the head of two start-ups. I spent one year as a head of Release Management department and automation strategy. I have future plans to develop in this field.`
+								text: `I was working as the head of 3 start-ups. I spent one year as a head of Release Management department and automation strategy. I have future plans to develop in this field.`
 						},
 						{
 								id: "blockGIT",
@@ -296,7 +295,7 @@
 								realKnowledge: 9,
 								isRoot: false,
 								cont: "blockProject",
-								text: `Unit tests are undividable part of enterprise software development. 100% of business logic should be covered. I'm not a fan of TDD, or better said unit tests first - except for business logic modules.`
+								text: `Unit tests are undividable part of enterprise software development. 100% of interfaces should be covered, but lets not overuse it. I'm not a fan of TDD, or better said unit tests first - except for business logic modules.`
 						},
 						{
 								id: "blockGulp",
@@ -341,6 +340,22 @@
 
 				private projects = [
 						{
+								startMonth: 5,
+								startYear: 2017,
+								endMonth: 11,
+								endYear: 2017,
+
+								projectGroup: "eBrokers",
+
+								logo: "ebrokers.png",
+								company: "e-Brokers",
+								employed: false,
+
+								position: "Senior Frontend Developer",
+								locations: ["Frankfurt"],
+								description: `SPA application for gas and electricity market trading.`
+						},
+						{
 								startMonth: 9,
 								startYear: 2015,
 								endMonth: 4,
@@ -354,8 +369,8 @@
 
 								position: "Founder",
 								locations: ["Frankfurt"],
-								description: `Goobster is a travel startup offering long term fly ticket search and a wide range of supportive social network features.`
-						},
+								description: `Gloobster is a travel startup offering long term fly ticket search and a wide range of supportive social network features.`
+						},						
 						{
 								startMonth: 1,
 								startYear: 2014,
@@ -638,12 +653,14 @@
 								locations: ["Brno"],
 								description: "Development of tools for network system administration.",
 						}
+						
 
 
 				];
 
 				private groups = [
 						{ g: "FJ1", d: "Own project", m: "Own project" },
+						{ g: "eBrokers", d: "Freelancer, Employee", m: "eBrokers" },
 						{ g: "AGT", d: "Employee", m: "AGT" },
 						{ g: "FJ2", d: "Freelancer", m: "Freelance jobs" },
 						{ g: "UNICORN", d: "Employee, Freelancer", m: "Unicorn" },
