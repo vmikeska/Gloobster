@@ -11,7 +11,6 @@ declare var noUiSlider: any;
 
 declare var Chart: any;
 
-declare var Promise: any;
 
 
 //function geoip_country_code() { return 'DE'; }

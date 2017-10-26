@@ -463,7 +463,7 @@
 								endMonth: 6,
 								endYear: 2011,
 
-								projectGroup: "UNICORN",
+								projectGroup: "FJP",
 
 								logo: "bgs.png",
 								company: "Be a Golf Star",
@@ -480,7 +480,7 @@
 								endMonth: 3,
 								endYear: 2010,
 
-								projectGroup: "UNICORN",
+								projectGroup: "FJP",
 
 								logo: "kbc.png",
 								company: "KBC",
@@ -496,14 +496,14 @@
 								endMonth: 3,
 								endYear: 2010,
 
-								projectGroup: "UNICORN",
+								projectGroup: "FJP",
 
 								logo: "rm.png",
 								company: "Rooms Outdoor",
 								employed: false,
 
 								position: "Senior Developer",
-								locations: ["Prague"],
+								locations: ["London"],
 								description: `A web app for designing and configuration of garden houses.`,
 								url: "http://roomsoutdoor.co.uk/configurator"
 						},
@@ -663,6 +663,7 @@
 						{ g: "eBrokers", d: "Freelancer, Employee", m: "eBrokers" },
 						{ g: "AGT", d: "Employee", m: "AGT" },
 						{ g: "FJ2", d: "Freelancer", m: "Freelance jobs" },
+						{ g: "FJP", d: "Freelancer", m: "Freelance jobs" },
 						{ g: "UNICORN", d: "Employee, Freelancer", m: "Unicorn" },
 						{ g: "AQUA", d: "Employee", m: "Aquasoft" },
 						{ g: "FJ3", d: "Freelancer", m: "Freelance jobs" }
